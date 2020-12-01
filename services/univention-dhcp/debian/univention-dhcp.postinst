@@ -89,7 +89,7 @@ then
 
 	if [ -d /etc/runit/univention/univention-dhcp ] && dpkg --compare-versions "${2:-}" lt-nl 14.0.2-3
 	then
-		sv force-shutdown univention-dhcp
+		sv -w 30 force-shutdown univention-dhcp || true
 		rm -rf /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp
 		univention-config-registry update
 	fi

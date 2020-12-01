@@ -51,7 +51,7 @@ fi
 
 if dpkg --compare-versions "$2" lt-nl 14.0.1-1; then
 	# cleanup runsv and switch to systemd unit
-	sv -w 30 exit univention-directory-listener || true
+	sv -w 30 force-shutdown univention-directory-listener || true
 	rm -f /etc/runit/univention/univention-directory-listener
 	rm -rf /etc/runit/univention-directory-listener/
 	rm -rf /etc/univention/templates/files/etc/runit/univention-directory-listener/
