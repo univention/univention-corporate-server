@@ -95,10 +95,6 @@ define([
 			this.own(this._dateBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', this._dateToString(newVal));
 			})));
-
-			this.own(aspect.after(this._dateBox, 'closeDropDown', lang.hitch(this, function() {
-				this._dateBox.dropDown.hideTooltip();
-			})));
 		},
 
 		_dateToString: function(dateObj) {
