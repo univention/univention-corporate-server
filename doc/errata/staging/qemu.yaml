@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u12A~4.4.7.202012011517
+desc: |
+ This update addresses the following issues:
+ * sdhci: out-of-bounds access issue while doing multi block SDMA
+   (CVE-2020-25085)
+ * usb: hcd-ohci: out-of-bound access issue while processing transfer
+   descriptors (CVE-2020-25624)
+ * usb: hcd-ohci: infinite loop issue while processing transfer descriptors
+   (CVE-2020-25625)
+ * assertion failure through usb_packet_unmap() in hw/usb/hcd-ehci.c
+   (CVE-2020-25723)
+ * net: an assert failure via eth_get_gso_type (CVE-2020-27617)
+bug: [52450]
+cve:
+- CVE-2020-25085
+- CVE-2020-25624
+- CVE-2020-25625
+- CVE-2020-25723
+- CVE-2020-27617
