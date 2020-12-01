@@ -63,7 +63,7 @@
 					The update to Samba 4.10.18 mitigates the <wordasword>Zerologon</wordasword> security issue, <ulink url="https://help.univention.com/t/16107">new options allow secure configuration</ulink> in environments where <wordasword>Secure Channel</wordasword> must be used.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-6, e.g. <application>Postgresql</application>, Samba, the Linux Kernel and PHP.
+					Various security updates have been integrated into UCS 4.4-7, e.g. <application>Postgresql</application>, Samba, the Linux Kernel and PHP.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
