@@ -1,3 +1,10 @@
+univention-directory-notifier (14.0.4-4) unstable; urgency=medium
+
+  * Bug #51804: call unset_listener_callback before unlocking the listener file.
+    Check listener file on restart, even if listener.priv exists
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 09 Dec 2020 11:10:47 +0100
+
 univention-directory-notifier (14.0.4-3) unstable; urgency=low
 
   * Bug #52448: Remove univention-runit
