@@ -1,3 +1,9 @@
+univention-dhcp (14.0.2-2) unstable; urgency=low
+
+  * Bug #43688: Convert from runit to systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Dec 2020 10:24:59 +0100
+
 univention-dhcp (14.0.2-1) unstable; urgency=low
 
   * Bug #43688: Convert from runit to systemd

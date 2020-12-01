@@ -20,7 +20,6 @@ Depends:
  univention-directory-listener,
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (>= 4.0.13-3),
- univention-runit (>= 0.2),
  ${misc:Depends},
 Breaks:
  univention-bind (<< 11.0.0-4),
