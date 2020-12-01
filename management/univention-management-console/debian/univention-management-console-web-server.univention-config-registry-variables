@@ -105,3 +105,15 @@ Description[de]=Definiert, ob Tracebacks in Fehlerfällen dem Benutzer angezeigt
 Description[en]=Defines whether tracebacks are shown to the user in error cases.
 Type=bool
 Categories=management-umc
+
+[umc/http/processes]
+Description[de]=Definiert die Anzahl paralleler UMC-Web-Server Prozesse (Standard: keine)
+Description[en]=Defines the number of parallel UMC-Web-Servers processes (default: none).
+Type=int
+Categories=management-umc
+
+[umc/http/processes/start-port]
+Description[de]=Definiert den ersten port für parallele UMC-Webserver (Standard: 18200).
+Description[en]=Defines the first port for parallel UMC-Webserver (default: 18200).
+Type=int
+Categories=management-umc
