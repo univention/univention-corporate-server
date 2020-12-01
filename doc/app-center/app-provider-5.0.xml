@@ -344,9 +344,9 @@
                 Example: The app has been created for <option>UCS
                     Version</option> <userinput>4.4</userinput>. Two
                 entries for <guimenu>Supported UCS versions for App</guimenu>
-                could be made: <userinput>4.4-6</userinput> and
+                could be made: <userinput>4.4-7</userinput> and
                 <userinput>5.0-0</userinput>. This means that for the
-                installation of the app UCS 4.4-6 or UCS 5.0-0 are required.
+                installation of the app UCS 4.4-7 or UCS 5.0-0 are required.
             </para>
         </section>
 
