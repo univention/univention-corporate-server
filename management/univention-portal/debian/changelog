@@ -1,3 +1,9 @@
+univention-portal (4.0.3-2) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - move some stylings to univention-web
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 01 Dec 2020 17:39:08 +0100
+
 univention-portal (4.0.3-1) unstable; urgency=medium
 
   * Bug #52293: get session info from Apache instead of UMC-Webserver

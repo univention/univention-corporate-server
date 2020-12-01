@@ -1,3 +1,9 @@
+univention-quota (14.0.1-2) unstable; urgency=medium
+
+  * Bug #52453: UCS5 design - adjust buttons
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 01 Dec 2020 17:25:11 +0100
+
 univention-quota (14.0.1-1) unstable; urgency=medium
 
   * Bug #43686: Convert init.d to systemctl commands for UDL

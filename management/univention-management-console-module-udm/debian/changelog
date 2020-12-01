@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.0-5) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - adjust button icons and add css class to jpegPhoto widget
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 01 Dec 2020 17:27:55 +0100
+
 univention-management-console-module-udm (10.0.0-4) unstable; urgency=medium
 
   * Bug #52125: adjust wording for new portal
