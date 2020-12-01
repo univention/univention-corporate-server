@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 #
 # Univention DHCP
 #  postinst script
@@ -86,13 +86,6 @@ then
 		/usr/lib/univention-install/25univention-dhcp.inst || true
 		;;
 	esac
-
-	if [ -d /etc/runit/univention/univention-dhcp ] && dpkg --compare-versions "${2:-}" lt-nl 14.0.2-3
-	then
-		sv -w 30 force-shutdown univention-dhcp || true
-		rm -rf /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp
-		univention-config-registry update
-	fi
 
 	if [ -d /run/systemd/system ]
 	then

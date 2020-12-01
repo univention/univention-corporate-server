@@ -35,14 +35,6 @@
 
 univention-config-registry set notifier/autostart?yes
 
-if dpkg --compare-versions "$2" lt-nl 14.0.3; then
-	# cleanup runsv and switch to systemd unit
-	sv -w 30 force-shutdown univention-directory-notifier || true
-	rm -f /etc/runit/univention/univention-directory-notifier
-	rm -rf /etc/runit/univention-directory-notifier
-	rm -rf /etc/univention/templates/files/etc/runit/univention-directory-notifier
-fi
-
 #DEBHELPER#
 
 if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then

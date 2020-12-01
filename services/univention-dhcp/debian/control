@@ -10,13 +10,12 @@ Standards-Version: 3.8.2
 Package: univention-dhcp
 Architecture: all
 Pre-Depends:
- dpkg (>= 1.15.7.2),
+ univention-config (>= 7),
 Depends:
  isc-dhcp-server-ldap,
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 1.0.3-1),
  univention-base-files,
- univention-config (>= 7),
  univention-directory-listener,
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (>= 4.0.13-3),
