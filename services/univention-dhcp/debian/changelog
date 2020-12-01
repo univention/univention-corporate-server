@@ -1,6 +1,7 @@
 univention-dhcp (14.0.2-5) unstable; urgency=low
 
   * Bug #52448: Remove univention-runit
+  * Bug #52259: Convert to Python 3
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 01 Dec 2020 11:27:13 +0100
 

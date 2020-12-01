@@ -57,10 +57,12 @@ attributes = []
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	pass
 
 
 def postrun():
+	# type: () -> None
 	if ucr.is_true("dhcpd/autostart", False):
 		if ucr.is_true('dhcpd/restart/listener', False):
 			ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')

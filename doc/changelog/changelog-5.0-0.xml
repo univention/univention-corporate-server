@@ -726,7 +726,7 @@
 			<title>DHCP server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The Python code has been converted to Python 3 (<u:bug>52259</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
