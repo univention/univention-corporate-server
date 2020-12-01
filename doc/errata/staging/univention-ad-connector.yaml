@@ -8,9 +8,10 @@ desc: |
  This update addresses the following issues:
  * The connector creates a temporary password before synchronizing
    the users actual password. This temporary password did not conform
-   to MS standard password complexity. This led to rejects, due to the password
-   being too simple.
+   to MS standard password complexity. This led to rejects, due to
+   the password being too simple.
  * If a modification is done in AD and the user does not yet exist in UCS, the
-   connector should set all values on the UCS object, if they have changed or not.
-   Not doing that, led to rejects due to missing mandatory values.
-bug: [53429, 52261]
+   connector should set all values on the UCS object, if they have
+   changed or not. Not doing that, led to rejects due to
+   missing mandatory values.
+bug: [52439, 52261]
