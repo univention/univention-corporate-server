@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.1-5) unstable; urgency=medium
+
+  * Bug #52261: Set all values, if modtype is add, not just changed values
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 04 Dec 2020 12:36:45 +0100
+
 univention-ad-connector (14.0.1-4) unstable; urgency=medium
 
   * Bug #52439: Create temporary password which is sufficient of mspasswordpolicy
