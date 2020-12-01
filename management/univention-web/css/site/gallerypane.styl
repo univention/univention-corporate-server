@@ -45,10 +45,11 @@
 		position: relative
 		outline: none
 		padding: material-grid(2)
-		background-color: #fff
+		background-color: var(--color-grey0)
 		box-sizing: content-box
 		transition: $material-shadow-transition-value, background-color 0.25s
-		material-shadow(1)
+		box-shadow: var(--box-shadow)
+		// material-shadow(1)
 		border-radius: 2px
 
 		// definitions in px instead of em due to size of image in px
@@ -61,14 +62,14 @@
 
 		.umcGalleryName
 			font-size: $font-size-subheading
-			color: $material-text-dark-high
+			// color: $material-text-dark-high
 			font-weight: 500
 			word-break: break-word
 			margin-right: 24px
 			max-height: 26px
 
 		.umcGalleryDescription
-			color: $material-text-dark-medium
+			// color: $material-text-dark-medium
 			padding-top: 8px
 			max-height: 64px
 			line-height: 1.25
@@ -98,7 +99,7 @@
 		.umcFavoriteIconDefault
 			position: absolute
 			top: 0
-			right: 13px
+			right: 19px
 			width: 10px
 			height: 10px
 			line-height: 0
@@ -107,47 +108,33 @@
 				transition: fill 0.25s
 
 		.umcGalleryContextIcon
-			icon-image(0, -40, "../")
 			position: absolute
-			top: 11px
-			left: auto
-			right: 8px
+			top: 0.5rem
+			right: 0.5rem
+			--button-size: 1.5rem
 
 	.umcGalleryItem.touched,
 	.umcGalleryItemActive,
 	.umcGalleryItem:hover
 		cursor: pointer
 
-		.umcGalleryName,
-		.umcGalleryDescription
-			color: white
-
 		.umcFavoriteIconDefault polyline
 			fill: white
-
-		.umcGalleryContextIcon
-			icon-image(0, -40, "../", "-white")
-
-		.umcGalleryContextIcon:hover
-			background-position: -20px -40px
-
-		.umcGalleryContextIcon:active
-			background-position: -20px -40px
-			opacity: 0.67
 
 		&.umcGalleryCategory--contrastDark
 			.umcGalleryName,
 			.umcGalleryDescription
-				color: $material-text-dark-high
+				color: var(--font-color-dark)
+			.umcGalleryContextIcon
+				color: var(--font-color-dark)
 
 			.umcFavoriteIconDefault polyline
 				fill: rgba(0, 0, 0, 0.87)
 
-			.umcGalleryContextIcon
-				icon-image(0, -40, "../")
-
+/*
 .umcGalleryPane .umcGalleryItem:active
 	material-shadow(2)
+*/
 
 // no left/right padding for full size item
 @media (max-width: $xxs-max)
