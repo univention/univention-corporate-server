@@ -93,7 +93,7 @@ define([
 			}, {
 				name: 'edit',
 				label: _('Configure'),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit-2',
 				isStandardAction: true,
 				isMultiAction: false,
 				canExecute: function(item) { return item.inUse; },

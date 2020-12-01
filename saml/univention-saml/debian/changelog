@@ -1,3 +1,9 @@
+univention-saml (7.0.4-2) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - adopt the new design for the login page
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 01 Dec 2020 17:32:53 +0100
+
 univention-saml (7.0.4-1) unstable; urgency=medium
 
   * Bug #52323: make assertion.lifetime configurable

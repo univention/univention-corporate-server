@@ -42,8 +42,10 @@ define([
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
 	"dijit/Tooltip",
-	"umc/tools"
-], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin, _Container, Tooltip, tools) {
+	"umc/tools",
+	"umc/widgets/Icon"
+], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin,
+		_Container, Tooltip, tools, Icon) {
 	lang.extend(_WidgetBase, {
 		// displayLabel: Boolean?
 		//		If specified as false, LabelPane will not display the label value.
@@ -63,10 +65,10 @@ define([
 		//		Simple widget that displays a widget/HTML code with a label above.
 
 		templateString: '<div class="umcLabelPane">' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeTop" dojoAttachPoint="labelNodeTopWrapper"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
 			'<span class="umcLabelPaneContainerNode" dojoAttachPoint="containerNode,contentNode"></span>' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
-			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeBottom"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeRight" dojoAttachPoint="labelNodeRightWrapper"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
+			'<div class="umcLabelPaneLabelNode umcLabelPaneLabelNodeBottom" dojoAttachPoint="labelNodeBottomWrapper"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
 			'</div>',
 
 		// content: String|dijit/_WidgetBase
@@ -96,7 +98,7 @@ define([
 
 		labelNodeRight: null,
 
-		tooltipNode: null,
+		_tooltipIcon: null,
 
 		usesHoverTooltip: false,
 
@@ -200,6 +202,24 @@ define([
 				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 				})));
+
+				if ('disabled' in this.content) {
+					domClass.toggle(this.domNode, this.baseClass + 'Disabled', this.content.disabled);
+					this.own(this.content.watch('disabled', lang.hitch(this, function(attr, oldVal, newVal) {
+						domClass.toggle(this.domNode, this.baseClass + 'Disabled', newVal);
+					})));
+				}
+				if ('state' in this.content) {
+					if (!!this.content.state) {
+						domClass.add(this.domNode, this.baseClass + this.content.state);
+					}
+					this.own(this.content.watch('state', lang.hitch(this, function(attr, oldVal, newVal) {
+						domClass.remove(this.domNode, [this.baseClass + 'Incomplete', this.baseClass + 'Error']);
+						if (newVal) {
+							domClass.add(this.domNode, this.baseClass + newVal);
+						}
+					})));
+				}
 			}
 			else if (typeof this.label != "string") {
 				this.label = '';
@@ -213,12 +233,27 @@ define([
 		},
 
 		_forEachLabeNode: function(callback) {
-			array.forEach([this.labelNodeTop, this.labelNodeRight, this.labelNodeBottom], callback, this);
+			array.forEach([
+				{
+					labelNode: this.labelNodeTop,
+					wrapperNode: this.labelNodeTopWrapper
+				},
+				{
+					labelNode: this.labelNodeRight,
+					wrapperNode: this.labelNodeRightWrapper
+				},
+				{
+					labelNode: this.labelNodeBottom,
+					wrapperNode: this.labelNodeBottomWrapper
+				},
+			], callback, this);
 		},
 
 		_hideNodes: function(exceptOfThisNode) {
-			this._forEachLabeNode(function(inode) {
-				domClass.toggle(inode, 'dijitDisplayNone', exceptOfThisNode != inode);
+			this._forEachLabeNode(function(o) {
+				var labelNode = o.labelNode;
+				var wrapperNode = o.wrapperNode;
+				domClass.toggle(wrapperNode, 'dijitDisplayNone', exceptOfThisNode != labelNode);
 			});
 		},
 
@@ -271,18 +306,20 @@ define([
 				if (!this.usesHoverTooltip) {
 					if (this._isLabelDisplayed() && this.label && this.label !== '&nbsp;') {
 						labelNode = this._getLabelNode();
-						this.tooltipNode = domConstruct.create("div",{
-							'class': "umcDescription umcDescriptionIcon"
+						this._tooltipIcon = new Icon({
+							'class': 'umcDescriptionIcon',
+							iconName: 'help-circle'
 						});
-						domConstruct.place(this.tooltipNode, labelNode, 'after');
+						this.own(this._tooltipIcon);
+						domConstruct.place(this._tooltipIcon.domNode, labelNode, 'after');
 						//register events to show and hide the tooltip
-						this.own(on(this.tooltipNode, "click", lang.hitch(this, function(clickEvent) {
-							Tooltip.show(description, this.tooltipNode);
+						this.own(on(this._tooltipIcon, "click", lang.hitch(this, function(clickEvent) {
+							Tooltip.show(description, this._tooltipIcon.domNode);
 							//stop onClick event
 							event.stop(clickEvent);
 							// register global onClick to close the tooltip again
 							on.once(window, "click", lang.hitch(this, function(event) {
-								Tooltip.hide(this.tooltipNode);
+								Tooltip.hide(this._tooltipIcon.domNode);
 							}));
 						})));
 					}
@@ -299,8 +336,8 @@ define([
 		},
 
 		_destroyExistingTooltipNode: function() {
-			if ((!this.usesHoverTooltip) && this.tooltipNode) {
-				domConstruct.destroy(this.tooltipNode);
+			if ((!this.usesHoverTooltip) && this._tooltipIcon) {
+				this._tooltipIcon.destroyRecursive();
 			}
 		},
 
@@ -342,9 +379,9 @@ define([
 		},
 
 		_setDisabledAttr: function(value) {
-			if (this._isContentAWidget()) {
-				this.content.set('disabled', value);
-			}
+			// if (this._isContentAWidget()) {
+				// this.content.set('disabled', value);
+			// }
 		}
 	});
 });

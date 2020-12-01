@@ -180,14 +180,15 @@ define([
 				delete child.$headerButtons$;
 			}
 
-			// make sure no icons are shown in the module header
-			array.forEach(headerButtons, function(btn) {
-				delete btn.iconClass;
-			});
-
 			child._headerButtons = null;
 			if (headerButtons && headerButtons.length) {
-				var container = new ContainerWidget({});
+				headerButtons = array.map(headerButtons, function(headerButton) {
+					headerButton.class = (headerButton.class || '') + ' ucsButton';
+					return headerButton;
+				});
+				var container = new ContainerWidget({
+					'class': 'umcModuleHeaderRight__buttons'
+				});
 				child.own(container);
 
 				child._headerButtons = render.buttons(headerButtons.reverse(), container);

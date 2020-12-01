@@ -33,14 +33,45 @@ var date_de_format = /^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$/;
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/query",
 	"dojo/aspect",
 	"dojox/string/sprintf",
 	"dijit/form/DateTextBox",
 	"umc/widgets/Calendar",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/tools"
-], function(declare, lang, aspect, sprintf, DateTextBox, Calendar, ContainerWidget, _FormWidgetMixin, tools) {
+	"umc/widgets/Button",
+	"umc/widgets/Icon",
+	"umc/tools",
+	"put-selector/put"
+], function(declare, lang, query, aspect, sprintf, DateTextBox, Calendar, ContainerWidget, _FormWidgetMixin, Button,
+		Icon, tools, put) {
+
+	var _DateTextBox = declare([DateTextBox], {
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// exchange validation icon node
+			var icon = new Icon({
+				'class': 'umcTextBox__validationIcon',
+				iconName: 'alert-circle'
+			});
+			var validationContainerNode = query('.dijitValidationContainer', this.domNode)[0];
+			put(validationContainerNode, '+', icon.domNode);
+			put(validationContainerNode, '!');
+
+			// exchange dropdown icon node
+			var button = new Button({
+				iconClass: 'chevron-down',
+				'class': 'ucsIconButton umcTextBox__downArrowButton',
+				tabIndex: '-1'
+			});
+			put(this._buttonNode, '+', button.domNode);
+			put(this._buttonNode, '!');
+			this._buttonNode = button.domNode;
+		}
+	});
+
 	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
 		_dateBox: null,
 
@@ -53,7 +84,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._dateBox = this.own(new DateTextBox({
+			this._dateBox = this.own(new _DateTextBox({
 				popupClass: Calendar,
 				name: this.name,
 				disabled: this.disabled
@@ -63,10 +94,6 @@ define([
 			// hook to the onChange event
 			this.own(this._dateBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', this._dateToString(newVal));
-			})));
-
-			this.own(aspect.after(this._dateBox, 'closeDropDown', lang.hitch(this, function() {
-				this._dateBox.dropDown.hideTooltip();
 			})));
 		},
 

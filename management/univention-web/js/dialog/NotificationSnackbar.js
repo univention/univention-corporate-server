@@ -42,7 +42,8 @@ define([
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/tools",
 	"umc/i18n!",
-	"umc/widgets/Button"
+	"umc/widgets/Button",
+	"umc/widgets/Icon"
 ], function(declare, lang, baseFx, domClass, domGeometry, domStyle, on, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, tools, _) {
 	var notificationSnackbarDeferred = new Deferred({});
 	var NotificationSnackbar = declare('umc.widgets.NotificationSnackbar', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -68,15 +69,11 @@ define([
 		templateString: '' +
 			'<div class="umcNotificationSnackbar" data-dojo-attach-point="domNode">' +
 				'<div class="umcSnackbarNotification dijitOffScreen" data-dojo-attach-point="notificationNode">' +
-					'<div class="umcNotificationMessageContainer">' +
-						'<div class="umcNotificationMessageIconContainer dijitDisplayNone" data-dojo-attach-point="iconContainerNode">' +
-							'<div class="umcNotificationMessageIcon" data-dojo-attach-point="iconNode"></div>' +
-						'</div>' +
-						'<span class="umcNotificationMessage" data-dojo-attach-point="messageNode"></span>' +
-						'<div class="umcNotificationMessageClose">' +
-							'<button data-dojo-type="umc/widgets/Button" data-dojo-attach-event="click: onClose" data-dojo-props="iconClass: \'iconX\', class: \'ucsIconButton ucsIconButtonCompact\'"></button>' +
-						'</div>' +
-						'<button type="button" class="umcNotificationActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
+					'<div class="umcSnackbarNotificationMessage">' +
+						'<div data-dojo-type="umc/widgets/Icon" class="umcSnackbarNotificationMessageIcon dijitDisplayNone" data-dojo-attach-point="icon"></div>' +
+						'<span class="umcSnackbarNotificationMessageText" data-dojo-attach-point="messageNode"></span>' +
+						'<button data-dojo-type="umc/widgets/Button" data-dojo-attach-event="click: onClose" data-dojo-props="iconClass: \'x\', class: \'umcSnackbarNotificationMessageClose ucsIconButton ucsIconButtonToFontSize\'"></button>' +
+						'<button type="button" class="umcSnackbarNotificationMessageActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
 					'</div>' +
 				'</div>' +
 			'</div>',
@@ -90,12 +87,15 @@ define([
 				domClass.add(this.notificationNode, 'umcSnackbarNotificationSuccess');
 			}
 
-			tools.toggleVisibility(this.iconContainerNode, !!type);
-			domClass.remove(this.iconNode, 'iconWarningTriangle iconCheckCircle');
+			if (type) {
+				this.icon.domNode.classList.remove('dijitDisplayNone');
+			} else {
+				this.icon.domNode.classList.add('dijitDisplayNone');
+			}
 			if (type === 'warning') {
-				domClass.add(this.iconNode, 'iconWarningTriangle');
+				this.icon.set('iconName', 'alert-triangle');
 			} else if (type === 'success') {
-				domClass.add(this.iconNode, 'iconCheckCircle');
+				this.icon.set('iconName', 'check-circle');
 			}
 			this._set('notificationType', type);
 		},
@@ -281,7 +281,6 @@ define([
 		},
 
 		_notify: function(notification) {
-			window.foo = this;
 			this._queue.push(lang.mixin({
 				message: '',
 				action: null,

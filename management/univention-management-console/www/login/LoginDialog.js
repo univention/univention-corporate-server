@@ -72,8 +72,6 @@ define([
 
 		_currentResult: null,
 
-		_scrollPosY: 0,
-
 		id: 'umcLoginWrapper',
 
 		open: false,
@@ -94,30 +92,16 @@ define([
 
 			// create the info text fields
 			this._notice = new Text({
-				class: 'umcLoginNotices',
 				content: ''
 			}, 'umcLoginNotices');
-
-			this._warning = new Text({
-				class: 'umcLoginWarnings',
-				content: ''
-			}, 'umcLoginWarnings');
-		},
-
-		_setLoginWarningAttr: function(content) {
-			if (content) {
-				content = '<p class="umcLoginWarning">' + entities.encode(content) + '</p>';
-			}
-			this._warning.set('content', content);
-			query('.umcLoginWarnings').style('display', content ? 'block' : 'none');
 		},
 
 		_setLoginNoticeAttr: function(content) {
 			if (content) {
-				content = '<p class="umcLoginNotice">' + entities.encode(content) + '</p>';
+				content = '<p>' + entities.encode(content) + '</p>';
 			}
 			this._notice.set('content', content);
-			query('.umcLoginNotices').style('display', content ? 'block' : 'none');
+			tools.toggleVisibility(this._notice, !!content);
 		},
 
 		updateForm: function(info) {
@@ -125,20 +109,15 @@ define([
 			var result = info.result || {};
 			this._updateView(result);
 
-			var notice = false;
 			var title = '';
 			if (message) {
 				if (message.slice(-1) !== '.') {
 					message += '.';
 				}
 				title = info.title || '';
-				if (result.missing_prompts || result.password_expired) {
-					notice = true;
-				}
 				message = title + ' ' + message;
 			}
-			this.set('LoginWarning', notice ? '' : message);
-			this.set('LoginNotice', notice ? message : '');
+			this.set('LoginNotice', message);
 		},
 
 		_updateView: function(result) {
@@ -192,14 +171,14 @@ define([
 
 		disableForm: function(message) {
 			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], function(name) {
-				query('input', dom.byId(name)).forEach(function(node) {
+				query('input, button', dom.byId(name)).forEach(function(node) {
 					attr.set(node, 'disabled', 'disabled');
 				});
 				query('#' + name).style('display', 'none');
 			});
 			this.standby(true);
 			setTimeout(lang.hitch(this, function() {
-				this.set('LoginWarning', message);
+				this.set('LoginNotice', message);
 			}, 1000));
 		},
 
@@ -243,7 +222,7 @@ define([
 
 			// validate new password form
 			if (name === 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
-				this.set('LoginWarning', _('Changing password failed. The passwords do not match, please retype again.'));
+				this.set('LoginNotice', _('Changing password failed. The passwords do not match, please retype again.'));
 				return;
 			}
 			// custom prompts
@@ -256,8 +235,8 @@ define([
 
 		_replaceLabels: function() {
 			// all submit buttons
-			query('.umcLoginForm input[type=submit]').attr('value', _('Login'));
-			query('input#umcNewPasswordSubmit').attr('value', _('Set password'));
+			query('.umcLoginFormButton__label').innerHTML(_('Login'));
+			query('#umcNewPasswordSubmitLabel').innerHTML(_('Set password'));
 
 			tools.forIn({
 				'umcLoginUsername': _('Username'),
@@ -266,33 +245,14 @@ define([
 				'umcLoginNewPasswordRetype': _('New Password (retype)'),
 				'umcLoginCustomPrompt': _('One time password')
 			}, function(id, placeholder) {
-				var node = dom.byId(id);
+				var labelId = id + 'Label';
+				var node = dom.byId(labelId);
 				if (!node) {
-					return;  // the SAML single sign on page is shown
+					return;
 				}
-				attr.set(node, 'placeholder', placeholder);
-				if (!('placeholder' in node)) {
-					this.fixIEPlaceholders(node);
-				}
+				node.innerHTML = placeholder;
 			});
 			domClass.remove(document.body, 'umcLoginLoading', false);
-		},
-
-		fixIEPlaceholders: function(node) {
-			var svg = lang.replace('<svg width="277px" height="20px" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
-					'<text fill="#ababab" font-size="18px" y="15" x="0" text-anchor="start">{0}</text></svg>', [attr.get(node, "placeholder")]);
-
-			var bits = [];
-			for (var i=0; i<svg.length; i++) {
-				bits.push(svg.charCodeAt(i));
-			}
-			styles.insertCssRule('.background-' + node.id, lang.replace("background-image: url(\"data:image/svg+xml;base64,{0}\")!important; background-repeat: no-repeat!important;", [base64.encode(bits)]));
-			styles.insertCssRule('.background-' + node.id + ':focus', "background-image: none!important");
-			domClass.toggle(node, 'background-' + node.id, !node.value);
-
-			this.own(on(node, 'change', function() {
-				domClass.toggle(node, 'background-' + node.id, !node.value);
-			}));
 		},
 
 		_authenticate: function(data) {
@@ -363,18 +323,12 @@ define([
 				return when();
 			}
 			this.set('open', true);
-			this.set('LoginWarning', '');
 			this.set('LoginNotice', '');
 			return this._show();
 		},
 
 		_show: function() {
 			this._setFocus();
-			if (has('ie') < 10) {
-				// trigger IE9 workaround
-				// a saved password/username contains a placeholder if we don't run this again
-				this._replaceLabels();
-			}
 		},
 
 		_setFocus: function() {
@@ -391,9 +345,6 @@ define([
 		focus: function() {
 			this._setFocus();
 		},
-
-//		_getFocusItems: function() {
-//		},
 
 		onLogin: function(/*String username*/) {
 			// event stub

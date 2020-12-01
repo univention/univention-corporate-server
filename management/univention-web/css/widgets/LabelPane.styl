@@ -1,0 +1,60 @@
+/* labels for form elements */
+.umcLabelPane
+	display: inline-block
+
+	.umcLabelPaneLabelNode
+		--local-color: inherit
+		display: inline-flex
+		align-items: center
+		font-size: var(--font-size-small)
+		color: var(--local-color)
+		transition: color 250ms
+
+		&Top
+			margin-bottom: 0.5rem
+		&Right
+			margin-left: 0.5rem
+		&Bottom
+			margin-top: 0.5rem
+
+	&Error .umcLabelPaneLabelNode
+		--local-color: var(--color-error)
+	&Disabled
+		.umcLabelPaneLabelNode
+			--local-color: var(--color-grey40)
+		.umcDescriptionIcon
+			opacity: 0.4
+
+// TODO what is this
+.umcLabelPane .umcToolTip
+	background-position: 0 -36px
+
+	.umcToolTipHover
+		background-position: -12px -36px
+		opacity: 0.66
+
+	.umcToolTipClicked
+		background-position: -48px -36px
+
+.umcDescriptionIcon
+	flex: 0 0 auto
+	height: 1em
+	width: @height
+	margin-left: 0.5rem
+	transition: opacity 250ms
+	cursor: pointer
+
+// widget specific styles
+.umcLabelPane-dijitCheckBox,
+.umcLabelPane-dijitRadio
+	display: inline-flex
+	align-items: center
+
+	.umcLabelPaneContainerNode
+		display: flex
+
+	.umcLabelPaneLabelNode label
+		cursor: pointer
+	&.umcLabelPaneDisabled
+		.umcLabelPaneLabelNode label
+			cursor: var(--cursor-disabled)

@@ -33,11 +33,22 @@ define([
 	"dojo/_base/array",
 	"dijit/TitlePane",
 	"dijit/_Container",
-	"dojox/grid/_Grid"
-], function(declare, array, TitlePane, _Container, _Grid) {
+	"dojox/grid/_Grid",
+	"./Icon",
+	"put-selector/put"
+], function(declare, array, TitlePane, _Container, _Grid, Icon, put) {
 	return declare("umc.widgets.TitlePane", [ TitlePane, _Container ], {
 		// summary:
 		//		Widget that extends dijit.TitlePane with methods of a container widget.
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			var icon = new Icon({
+				'class': 'umcTitlePaneTitleFocus__arrowIcon',
+				iconName: 'chevron-down'
+			});
+			put(this.focusNode, icon.domNode);
+		},
 
 		startup: function() {
 			this.inherited(arguments);

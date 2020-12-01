@@ -31,13 +31,14 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojo/on",
 	"dijit/form/ToggleButton",
 	"umc/widgets/TextBox",
 	"umc/widgets/_FormWidgetMixin",
 	"put-selector/put"
-], function(declare, lang, domClass, on, ToggleButton, TextBox, _FormWidgetMixin, put) {
+], function(declare, lang, domAttr, domClass, on, ToggleButton, TextBox, _FormWidgetMixin, put) {
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
 		type: 'password',
 		_setTypeAttr: { node: 'focusNode', type: 'attribute' },
@@ -80,6 +81,11 @@ define([
 			this.focusCatchNode = put('input.dijitInputInner[type="password"][tabIndex="-1"][style="position: absolute; opacity: 0;"]');
 			on(this.focusCatchNode, 'focus', lang.hitch(this, 'focus'));
 			put(this.focusNode, '-', this.focusCatchNode);
+		},
+
+		_setDisabledAttr: function(disabled) {
+			this.inherited(arguments);
+			domAttr.set(this.focusCatchNode, 'disabled', disabled);
 		}
 	});
 });

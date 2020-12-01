@@ -41,7 +41,6 @@ define([
 	"dojo/topic",
 	"dojo/json",
 	"dojox/html/entities",
-	"dijit/TitlePane",
 	"umc/render",
 	"umc/tools",
 	"umc/dialog",
@@ -52,6 +51,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TabController",
+	"umc/widgets/TitlePane",
 	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
@@ -63,7 +63,9 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, render, tools,
+		dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, TitlePane,
+		StackContainer, Text, Button, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
 	var Anchor = Text;
 	require(['umc/widgets/Anchor'], function(A) {  // Anchor is new in UCS 4.4, so due to caching problems load it async
@@ -657,6 +659,11 @@ define([
 				if (iprop.id.slice(0, 1) == '$' && iprop.id.slice(-1) == '$') {
 					properties.push(iprop);
 					return;
+				}
+
+				if (iprop.id === 'jpegPhoto') {
+					iprop.class = 'umcUDMUsersModule__jpegPhoto';
+					iprop.buttonLabel = _('Upload profile image');
 				}
 
 				if (iprop.syntax === 'PortalCategorySelection') {
@@ -1380,14 +1387,14 @@ define([
 			var buttonDefinitions = [
 			{
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'save',
 				label: createLabel,
 				callback: lang.hitch(this, function() {
 					this._form.onSubmit();
 				})
 			}, {
 				name: 'help',
-				iconClass: 'umcHelpIconWhite',
+				// iconClass: 'umcHelpIconWhite',
 				label: _('Help'),
 				'class': 'dijitDisplayNone',
 				callback: lang.hitch(this, function() {
@@ -1396,7 +1403,6 @@ define([
 			}, {
 				name: 'close',
 				label: closeLabel,
-				iconClass: 'umcCloseIconWhite',
 				callback: lang.hitch(this, 'confirmClose')
 			}];
 
@@ -1408,7 +1414,7 @@ define([
 			if (array.indexOf(extendableModules, this.moduleFlavor) >= 0) {
 				buttonDefinitions.unshift({
 					name: 'extendedAttr',
-					iconClass: 'umcExtendedAttrIconWhite',
+					// iconClass: 'umcExtendedAttrIconWhite',
 					label: _('Customize this page'),
 					callback: lang.hitch(this, function() {
 						var version = tools.status('ucsVersion').split('-')[0];

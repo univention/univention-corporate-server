@@ -202,7 +202,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			var closeButton = new Button({
-				iconClass: 'iconX',
+				iconClass: 'x',
 				'class': 'ucsIconButton',
 				tabindex: -1
 			});

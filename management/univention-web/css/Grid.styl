@@ -1,80 +1,20 @@
 @import "variables"
-
-.umcGrid .dojoxGridScrollbox
-	overflow-y: scroll
-	overflow-x: hidden
-
-.umc .umcMultiSelect
-	.dojoxGridMasterHeader
-		background-color: white
-
-		.dojoxGridHeader
-			background-color: @background-color
-			display: none
-
-			^[-2].umcMultiSelectWithContent ^[-2..-1]
-				display: block
-
-			.dojoxGridCell
-				background-color: @background-color
-				color: $text-color
-				^[-3].umcMultiSelectDisabled ^[-3..-1]
-					color: $text-color-lightest
-
-			.dijitCheckBox
-				icon-image(0, -48, "", "-small", 12px, 12px)
-
-				&.dijitCheckBoxChecked
-					background-position: -48px -48px
-
-	.dojoxGridView
-		min-width: 100%
-		max-width: 100%
-
-		^[-1].umcMultiSelectWithContent ^[-1..-1]
-			border-top: 1px solid rgba(0, 0, 0, 1)
-		^[-1].umcMultiSelectDisabled ^[-1..-1]
-			border-color: rgba(0, 0, 0, 0.2)
-
-		.dojoxGridContent
-			min-width: 100%
-			max-width: 100%
-
-			div[role="presentation"]
-				max-width: 100%
-
-				.dojoxGridRow
-					max-width: 100%
-
-					.dojoxGridRowTable
-						width: 100% !important
-	&.umcMultiSelectNoHeader
-		.dojoxGridMasterHeader .dojoxGridHeader
-			display: none
-		.dojoxGridView
-			border-top: none
+@require "icons.styl"
 
 $umcGrid-edge-padding = 24px
 .umc .umcGrid
-	background-color: #fff
-	material-shadow(1)
+	background-color: var(--color-grey0)
+	border-radius: var(--border-radius-container)
+	overflow: hidden // clip the scrollbar
 
 	.umcGridHeader
 		flex: 0 0 auto
 		display: flex
 		flex-wrap: wrap
-		padding: material-grid(1)
+		padding: 1rem
 
-		.dijitButton,
-		.dijitDropDownButton
-			material-flat-button()
-
-		.dijitButton
-			.dijitIcon
-				display: none
-		.umcIconButton
-			.dijitIcon
-				display: inline-block
+	.umcGridHeader .dijitButton
+		margin-right: 0.5rem
 
 	.umcGrid__contextWrapper
 		max-width: 100%
@@ -82,193 +22,74 @@ $umcGrid-edge-padding = 24px
 		display: flex
 		justify-content: flex-end
 
-	.umcGridStatus
+	.umcGridStatusWrapper
 		flex: 0 1 auto
+		display: flex
+		align-items: center
+		font-size: var(--font-size-small)
+		color: var(--font-color-contrast-middle)
+		padding-right: 2rem
+		overflow: hidden
+
+	.umcGridStatus
 		white-space: nowrap
 		overflow: hidden
 		text-overflow: ellipsis
-		height: 52px
-		line-height: @height
-		text-align: right
-		font-size: 12px
-		color: $material-text-dark-medium
-		padding-right: material-grid(2)
 
 	.umcGrid__contextActionsToolbar
 		flex: 1 0 auto
 
-	.dgrid
-		clear: both
+	.umcGridRowIcon
+		margin-right: 0.5em
+		margin-bottom: 0.1em
+
+	.dgrid-cell
 		border: none
-		border-top: 1px solid #e0e0e0
+		vertical-align: middle
+		padding: 0.75em 0
+		white-space: nowrap
+		text-overflow: ellipsis
 
-		.dgrid-cell
-			border: none
-			vertical-align: middle
-			padding: 0
-			-webkit-user-select: text
-			-moz-user-select: text
-			-ms-user-select: text
-			user-select: text
+		&.dgrid-selector
+			width: 3rem
+			padding-left: 1rem
+			padding-right: 1rem
 
-			&.dgrid-selector
-				box-sizing: content-box
-				width: 20px !important
-				padding: 0 $umcGrid-edge-padding 0 0
-				-webkit-user-select: none
-				-moz-user-select: none
-				-ms-user-select: none
-				user-select: none
+	.dgrid-cell:not(.dgrid-selector) *
+		display: inline
 
-				&:after
-					content: ''
-					display: block
-					icon-image(-200, -100)
+	.dgrid__sortIcon
+		margin-right: 0.3em
+		position: relative
+		top: 3px
 
-					^[-3] .dgrid-row.dgrid-selected ^[-3..-1]
-						icon-image(-220, -100)
+	.dgrid
+		border: none
+		border-top: 1px solid var(--color-grey8)
 
-					^[-1].dgrid-allSelected^[-1..-1]
-						icon-image(-220, -100)
+	.dgrid-header
+		background-color: inherit
+		border-bottom: 1px solid var(--color-grey8)
 
-					^[-1].dgrid-indeterminate^[-1..-1]
-						icon-image(-240, -100)
+	.dgrid-row
+		transition: background-color 250ms
+		border-top: 1px solid var(--color-grey8)
+		&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
+			border-top: none
 
-				input
-					display: none
+		&:hover,
+		&.dgrid-selected
+			background-color: rgba(255, 255, 255, 0.04)
 
-			&:first-child
-				padding-left: $umcGrid-edge-padding
-
-			&:last-child
-				padding-right: $umcGrid-edge-padding
-
-			div img
-				float: none !important
-
-			.dgrid-sort-arrow
-				float: left
-
-		.dgrid-header
-			height: 56px
-			line-height: @height
-			font-size: 12px
-			background-color: inherit
-			border-bottom: 1px solid #e0e0e0
-
-			.dgrid-cell
-				color: rgba(0, 0, 0, 0.54)
-
-				.dgrid-sort-arrow
-					opacity: 0.87
-					float: none
-					display: inline-block
-					vertical-align: text-bottom
-
-				&.dgrid-sort-up,
-				&.dgrid-sort-down
-					color: rgba(0, 0, 0, 0.87)
-
-
-				&.dgrid-sort-up .dgrid-sort-arrow
-					icon-image(-280, -80)
-
-				&.dgrid-sort-down .dgrid-sort-arrow
-					icon-image(-260, -80)
-
-		.dgrid-row-table
-			height: material-grid(6)
-
-		.dgrid-row
-			color: rgba(0, 0, 0, 0.87)
-			box-sizing: content-box
-			transition: background-color 0.2s
-			border-top: 1px solid #e0e0e0
-			&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
-				border-top: none
-
-			&:hover
-				background-color: #eeeeee
-
-			&.dgrid-selected
-				background-color: #f5f5f5
-
-			// adapt inline buttons
-			.dijitButton
-				material-flat-button()
-				margin-top: 0
-				margin-bottom: 0
+	.umcGridRowSelectorCheckBox
+		display: block // center the checkbox in the row
 
 .umc .umcGrid--filtering
 	.dgrid
 		max-height: 0px !important
 
-
-.umc .dojoxGridHeader
-	background-color: $text-color
-	.dojoxGridCell
-		background-color: $text-color
-		color: $text-color-dark-background
-
-	.dojoxGridCellOver
-		background-color: $primary-color
-
-	.dojoxGridCellFocus,
-	.dojoxGridCell,
-	.dojoxGridCellOver
-		border: none
-
-	.dijitCheckBox
-		$_iconImage = replace("^(.*)(\.\w*)$", "$1-small-white$2", $image-icons)
-		_urlPNG = replace("\.svg$", ".png", $_iconImage)
-		background-image: url($_iconImage)
-		html.dj_trident &,
-		html.dj_ie &
-			background-image: url(_urlPNG)
-
-.umc .dojoxGrid
-	font-family: inherit
-	background: none
-
-	.dojoxGridRow
-		background-color: white
-		border: none
-
-	.dojoxGridRowOdd
-		background-color: $grey-lightest
-
-	.dojoxGridRowSelected
-		background-color: $grey-medium
-
-	.dojoxGridCell
-		background-image: none
-		border: none
-		-webkit-user-select: text
-		-moz-user-select: text
-		-ms-user-select: text
-		user-select: text
-
-		.dijitButton
-			.dijitIcon
-				margin-top: -3px
-				margin-bottom: -2px
-
-			.dijitButtonText
-				font-size: 1em
-				margin-top: -3px
-				margin-bottom: 0px
-				padding: 0
-
-			.dijitButtonNode
-				padding-top: 0
-				padding-bottom: 0
-
 .umcGrid .dgrid-scroller
 	max-height: inherit
-
-.umcGrid .dgrid-cell div
-	display: inline
-	vertical-align: middle
 
 .umcGrid .umcGridDefaultAction:hover
 	text-decoration: underline
@@ -276,24 +97,3 @@ $umcGrid-edge-padding = 24px
 
 .umc .umcGridFooter
 	display: none
-
-.umc .umcGrid .dgrid-cell
-	white-space: nowrap
-	overflow: hidden
-	text-overflow: ellipsis
-
-.umc .dojoxGridArrowButtonChar
-	display: none
-	float: right
-
-.umc .dojoxGridSortUp .dojoxGridArrowButtonNode
-	background-position: -60px 0px
-
-.umc .dojoxGridArrowButtonNode
-	background: url("images/icons-small-white.svg") -48px 0px no-repeat
-	display: block
-	float: right
-	margin: 2px 4px 0 5px
-	padding-left: 0
-	width: 12px
-	height: 12px

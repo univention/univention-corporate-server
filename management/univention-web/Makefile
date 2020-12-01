@@ -107,18 +107,18 @@ TMP_DOJO_PACKAGES := $(DOJO_PACKAGES:$(DOJO_DIR)/%=$(TMP_DIR)/%)
 TMP_I18N_FILES := $(addprefix $(TMP_I18N_DIR)/, en/app.json de/app.json en/branding.json de/branding.json)
 
 # font files
-FONT_FILES := $(shell unzip -l roboto.zip | sed -n 's/^.*\s*\(Roboto.*\.woff\).*$$/\1/p')
+FONT_FILES := $(shell unzip -Z1 Open_Sans.zip | grep "ttf\|woff")
 TMP_FONT_FILES := $(addprefix $(TMP_THEME_DIR)/fonts/, $(FONT_FILES))
 
 # image files
 IMG_FILES := $(shell find css -name "*.svg" -o -name "*.png" -o -name "*.gif")
 WHITE_IMG_FILES := $(addprefix css/images/,icons-white.svg icons-small-white.svg univention-white.svg univention_u-white.svg home-white.svg)
 SVG_IMG_FILES := $(shell find css -name "*.svg")
-PNG_IMG_FILES := $(filter-out css/images/login_logo.png,$(SVG_IMG_FILES:.svg=.png))
+PNG_IMG_FILES := $(filter-out css/images/login_logo.png css/images/feather-sprite.png,$(SVG_IMG_FILES:.svg=.png))
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES) $(TMP_THEME_DIR)/globalCustom.css
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
@@ -170,9 +170,27 @@ $(TMP_THEME_DIR)/umc.css: css/umc.css
 	mkdir -p $(@D)
 	ln -fs $(CURDIR)/css/umc.css* $(@D)
 
+$(TMP_THEME_DIR)/login.css: css/login.css
+	mkdir -p $(@D)
+	ln -fs $(CURDIR)/css/login.css* $(@D)
+
+$(TMP_THEME_DIR)/dijit.css: css/dijit.css
+	mkdir -p $(@D)
+	ln -fs $(CURDIR)/css/dijit.css* $(@D)
+
+$(TMP_THEME_DIR)/bootstrap.css: css/bootstrap.css
+	mkdir -p $(@D)
+	ln -fs $(CURDIR)/css/bootstrap.css* $(@D)
+
+$(TMP_THEME_DIR)/globalCustom.css:
+	touch $@
+
 STYL_FILES := $(shell find css -name "*.styl")
 
 css/umc.css: css/umc.styl $(STYL_FILES) $(ALL_IMG_FILES)
+	cd $(@D); stylus --sourcemap --resolve-url --hoist-atrules $(<F)
+
+css/login.css: css/login.styl
 	cd $(@D); stylus --sourcemap --resolve-url --hoist-atrules $(<F)
 
 $(TMP_THEME_DIR): $(TMP_DIR)
@@ -184,11 +202,11 @@ $(TMP_IMG_FILES): $(TMP_THEME_DIR)/%: css/%
 	mkdir -p $(@D)
 	cp $< $@
 
-%/bootstrap.css: bootstrap.zip
-	unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
-	sed -i '/font-size: 10px/d' $@
+# %/bootstrap.css: bootstrap.zip
+	# unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
+	# sed -i '/font-size: 10px/d' $@
 
-$(TMP_FONT_FILES): roboto.zip
+$(TMP_FONT_FILES): Open_Sans.zip
 	mkdir -p $(@D)
 	unzip -o $< $(@F) -d $(@D)
 	touch $@

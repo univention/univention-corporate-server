@@ -1,0 +1,132 @@
+@require "icons.styl"
+
+//// overarching button styling
+.dijitButton,
+.dijitDropDownButton
+	--bgc: transparent
+	--bgc-state: transparent
+	--button-size: 2rem
+	--button-iconSize: 1rem
+	margin: 0
+	font-size: var(--button-font-size)
+	border-radius: var(--button-border-radius)
+	background-color: var(--bgc)
+	transition: opacity 250ms
+
+.dijitButtonNode
+	border: none
+	border-radius: inherit
+	display: flex
+	align-items: center // mainly for umc/widgets/NumberSpinner arrows
+	justify-content: center
+	transition: var(--button-bgc-transition)
+	background-color: var(--bgc-state)
+
+.dijitButtonContents
+	height: var(--button-size)
+	display: flex
+	align-items: center
+	justify-content: center
+
+.dijitButtonText
+	color: var(--font-color-contrast-high)
+	font-weight: 600
+	text-transform: uppercase
+
+
+//// specific button styling
+.dijitDropDownButton .dijitArrowButtonInner
+	display: none
+
+
+//// button types
+.ucsButton
+	--bgc: var(--button-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-bgc-overlay-disabled)
+			opacity: 0.4
+
+.ucsPrimaryButton
+	--bgc: var(--button-primary-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-primary-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-primary-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-primary-bgc-overlay-disabled)
+			opacity: 0.4
+
+.ucsTextButton
+	--bgc: var(--button-text-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-text-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-text-bgc-overlay-active)
+		&Disabled
+			--bgc-state: transparent
+			opacity: 0.4
+
+	.dijitButtonContents
+		padding: 0 0.5rem
+
+.ucsPrimaryButton,
+.ucsButton,
+.ucsTextButton
+	.featherIcon
+		margin-right: 0.4rem
+
+.ucsPrimaryButton,
+.ucsButton,
+.ucsTextButton,
+.ucsIconButton
+	.featherIcon
+		width: var(--button-iconSize)
+		height: @width
+
+.ucsPrimaryButton,
+.ucsButton
+	.dijitButtonContents
+		padding: 0 1rem
+
+.ucsIconButton
+	--bgc: transparent
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-icon-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-icon-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-icon-bgc-overlay-disabled)
+			opacity: 0.4
+
+	border-radius: var(--border-radius-circles)
+	.dijitButtonNode
+		border-radius: var(--border-radius-circles)
+
+	.dijitButtonContents
+		width: var(--button-size)
+	&ToFontSize
+		--button-size: 1em
+
+//// misc
+.dijitUploader input
+	cursor: pointer
+
+
+.dijitButton:not(.ucsButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.umcCategoryButton)
+	@extends .ucsButton

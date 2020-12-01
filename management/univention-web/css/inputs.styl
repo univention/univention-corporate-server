@@ -1,0 +1,105 @@
+//// textbox
+
+// colors
+.dijitTextBox
+	--color: var(--font-color-contrast-high)
+	--border-color: transparent
+	--local-icon-color: var(--color)
+	position: relative
+	height: 3rem
+	width: 100%
+	color: var(--color)
+	background-color: var(--color-grey8)
+	border: 1px solid var(--border-color)
+	border-radius: var(--border-radius-interactable)
+	transition: background-color, color, border
+	transition-duration: 250ms
+
+	&Hover,
+	&Focused
+		--border-color: var(--color-grey40)
+	&Disabled
+		--color: var(--font-color-disabled)
+	&Error
+		--border-color: var(--color-error)
+		--local-icon-color: var(--border-color)
+
+.umcTextBox__validationIcon,
+.umcTextBox__downArrowButton,
+.dijitSpinnerButtonContainer
+	color: var(--local-icon-color)
+
+.umcTextBox__downArrowButton
+	--button-size: 1.5em
+	margin-right: 0.5rem
+
+	.dijitButtonContents
+		outline: none
+
+.dijitTextBoxDisabled .umcTextBox__downArrowButton,
+.umcTextBox__validationIcon
+	pointer-events: none
+
+
+// layout
+.dijitTextBox
+	display: flex
+	flex-direction: row-reverse // put warning and dropdown icon to the right
+	align-items: center // center warning and dropdown icon
+
+	> *
+		flex: 0 0 auto
+
+	.dijitInputContainer
+		flex: 1 1 auto
+		height: 100%
+
+		.dijitInputInner,
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			height: 100%
+			text-overflow: ellipsis
+			padding: 0 1rem !important
+
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			display: flex
+			align-items: center
+			position: absolute
+			top: 0
+			left: 0
+			height: 100%
+			width: 100%
+			white-space: nowrap
+			overflow: hidden
+			pointer-events: none // we want the cursor for the inputfield not these placeholder elements
+			color: var(--font-color-contrast-low)
+			font-style: inherit
+
+
+		.umcInlineLabel
+			visibility: hidden
+			&.umcEmptyValue
+				visibility: visible
+//// textbox end
+
+
+//// textarea
+.dijitTextArea
+	padding: 0.5rem
+	height: 110px
+//// textarea end
+
+
+//// validation icon
+.dijitTextBox:not(.dijitTextBoxError) .umcTextBox__validationIcon
+		display: none
+
+.dijitTextBox
+	.umcTextBox__validationIcon
+		margin-right: 1rem
+
+.dijitComboBox
+	.umcTextBox__validationIcon
+		margin-right: 0.5rem
+//// validation icon end

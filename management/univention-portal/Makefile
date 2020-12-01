@@ -35,7 +35,7 @@ build-dev: build
 	ln -fs /usr/share/univention-portal/icons/ /usr/share/univention-portal/apps.json /usr/share/univention-portal/portal.json /usr/share/univention-portal/portal.css www
 
 %.css: %.styl
-	stylus "$<"
+	stylus --hoist-atrules "$<"
 
 clean:
 	rm -f www/style.css www/portal.json www/apps.json www/portal.css

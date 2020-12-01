@@ -22,7 +22,7 @@ var umcConfig = {
 			return text;
 		};
 
-		query('h1').html(_getText('title', _('Login at %(domainname)s', tools.status())));
+		query('#umcLoginTitle').html(_getText('title', _('Login at %(domainname)s', tools.status())));
 		tools.status('username', getQuery('username') || tools.status('username'));
 		tools.status('password', getQuery('password'));
 		login.renderLoginDialog();

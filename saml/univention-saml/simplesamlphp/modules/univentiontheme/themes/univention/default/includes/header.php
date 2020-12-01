@@ -77,7 +77,7 @@ if ($json != NULL) {
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="/univention/management/style.css"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/login.css" />
 		<link rel="stylesheet" href="/univention/login/css/custom.css"/>
 <?php
 if ($this->isLanguageRTL()) {
@@ -118,11 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</script>
 	</head>
 	<body class="umc umcLoginLoading">
-		<div class="umcHeader">
-			<div class="umcHeaderRight">
-				<div data-dojo-type="umc/menu/Button"></div>
-				<div class="univentionLogo"></div>
+		<div class="umcLoginHeader">
+			<div class="umcLoginHeader__left">
+				<img src="/univention/login/univention_u_white.svg" />
+				<h2>UCS</h2>
 			</div>
+			<!-- <div class="umcHeaderRight"> -->
+			<!-- </div> -->
 		</div>
 <?php
 if (!empty($this->data['htmlinject']['htmlContentPre'])) {

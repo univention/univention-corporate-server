@@ -700,7 +700,7 @@ define([
 				name: 'add',
 				label: _('Add'),
 				description: _addDescriptionText(),
-				iconClass: 'umcIconAdd',
+				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
 				callback: lang.hitch(this, 'showNewObjectDialog')
@@ -708,7 +708,7 @@ define([
 				name: 'edit',
 				label: _('Edit'),
 				description: _editDescriptionText(),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit-2',
 				isStandardAction: true,
 				isMultiAction: true,
 				canExecute: lang.hitch(this, '_canEdit'),
@@ -758,7 +758,7 @@ define([
 				description: _deleteDescriptionText(),
 				isStandardAction: true,
 				isMultiAction: true,
-				iconClass: 'umcIconDelete',
+				iconClass: 'trash',
 				canExecute: lang.hitch(this, '_canDelete'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.removeObjects(objects);
@@ -799,7 +799,7 @@ define([
 					isStandardAction: false,
 					isMultiAction: true,
 					label: _('Create report'),
-					iconClass: 'umcIconReport',
+					iconClass: 'file-text',
 					callback: lang.hitch(this, '_createReport')
 				});
 			}
@@ -1050,11 +1050,11 @@ define([
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
 					name: 'toggleSearch',
-					showLabel: false,
+					// showLabel: false,
 					labelConf: {
 						'class': 'umcSearchFormSubmitButton'
 					},
-					iconClass: 'umcDoubleRightIcon',
+					iconClass: 'filter',
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
@@ -1584,7 +1584,7 @@ define([
 			// create an HTML image that contains the icon (if we have a valid iconName)
 			var result = value;
 			if (iconName) {
-				result = lang.replace('<img src="{src}" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+				result = lang.replace('<img class="umcGridRowIcon" src="{src}" height="{height}" width="{width}" />{value}', {
 					icon: iconName,
 					height: '16px',
 					width: '16px',

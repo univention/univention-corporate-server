@@ -31,10 +31,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dijit/form/CheckBox",
 	"umc/tools",
-	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, CheckBox, tools, _FormWidgetMixin) {
+	"umc/widgets/_FormWidgetMixin",
+	"./Icon"
+], function(declare, lang, domClass, domConstruct, CheckBox, tools, _FormWidgetMixin, Icon) {
 	return declare("umc.widgets.CheckBox", [ CheckBox, _FormWidgetMixin ], {
 		// by default, the checkbox is turned off
 		value: false,
@@ -53,11 +56,34 @@ define([
 			this.inherited(arguments);
 		},
 
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var iconCheck = new Icon({
+				iconName: 'check'
+			});
+			var iconIndeterminate = new Icon({
+				iconName: 'minus'
+			});
+			this.own(iconCheck);
+			this.own(iconIndeterminate);
+			domConstruct.place(iconCheck.domNode, this.domNode, 'first');
+			domConstruct.place(iconIndeterminate.domNode, this.domNode, 'first');
+
+			var node = domConstruct.create('div', {
+				'class': 'dijitCheckBoxInputStretcher'
+			}, this.focusNode, 'after');
+			domConstruct.place(this.focusNode, node);
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
-			this.watch("checked", lang.hitch(this, function(attr, oldVal, newVal) {
-				this.set("value", newVal);
-			}));
+			this.own(
+				this.watch("checked", lang.hitch(this, function(attr, oldVal, newVal) {
+					this.set('indeterminate', false);
+					this.set("value", newVal);
+				}))
+			);
 		},
 
 		_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
@@ -69,6 +95,15 @@ define([
 				this.set('checked', newValue, priorityChange);
 			}
 			this._set("value", newValue);
+		},
+
+		indeterminate: false,
+		_setIndeterminateAttr: function(indeterminate) {
+			this.focusNode.indeterminate = indeterminate;
+			var ariaValue = indeterminate ? 'mixed' : this.get('checked').toString();
+			this.focusNode.setAttribute('aria-checked', ariaValue);
+			domClass.toggle(this.domNode, 'dijitCheckBoxIndeterminate', indeterminate);
+			this._set('indeterminate', indeterminate);
 		},
 
 		_getValueAttr: function() {

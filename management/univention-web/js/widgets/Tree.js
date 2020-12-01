@@ -46,8 +46,13 @@ define([
 	"dstore/Tree",
 	"umc/tools",
 	"./ContainerWidget",
-	"./_RegisterOnShowMixin"
-], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, tools, ContainerWidget, _RegisterOnShowMixin) {
+	"./Icon",
+	"./StandbyCircle",
+	"./_RegisterOnShowMixin",
+	"put-selector/put"
+], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection,
+		DijitRegistry, Memory, Trackable, TreeDstore, tools, ContainerWidget, Icon, StandbyCircle,
+		_RegisterOnShowMixin, put) {
 
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
@@ -69,7 +74,17 @@ define([
 				treeIndentWidth: 24,
 				columns: {
 					label: {
-						renderExpando: true,
+						renderExpando: lang.hitch(this, function(level, hasChildren, expanded) {
+							var icon = new Icon({
+								iconName: 'chevron-right'
+							});
+							this.own(icon);
+							var standbyCircle = new StandbyCircle({});
+							this.own(standbyCircle);
+							var node = put(`div.dgrid-expando-icon[style="--level: ${level}"]`, icon.domNode,
+									'+', standbyCircle.domNode, '<');
+							return node;
+						}),
 						formatter: lang.hitch(this, 'columnsFormatter')
 					}
 				}

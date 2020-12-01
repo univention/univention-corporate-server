@@ -1,0 +1,60 @@
+Exchanges icon nodes with umc/widgets/Icon
+--- dijit/MenuItem.js.orig	2020-11-16 17:44:50.284712438 +0100
++++ dijit/MenuItem.js	2020-11-16 17:45:05.208724761 +0100
+@@ -8,17 +8,19 @@
+ 	"dojo/_base/lang", // lang.hitch
+ 	"./_Widget",
+ 	"./_TemplatedMixin",
++	"./_WidgetsInTemplateMixin",
+ 	"./_Contained",
+ 	"./_CssStateMixin",
+-	"dojo/text!./templates/MenuItem.html"
++	"dojo/text!./templates/MenuItem.html",
++	"umc/widgets/Icon"
+ ], function(declare, dom, domAttr, domClass, kernel, has, lang,
+-			_Widget, _TemplatedMixin, _Contained, _CssStateMixin, template){
++			_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _Contained, _CssStateMixin, template){
+ 
+ 	// module:
+ 	//		dijit/MenuItem
+ 
+ 	var MenuItem = declare("dijit.MenuItem" + (has("dojo-bidi") ? "_NoBidi" : ""),
+-		[_Widget, _TemplatedMixin, _Contained, _CssStateMixin], {
++		[_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _Contained, _CssStateMixin], {
+ 		// summary:
+ 		//		A line item in a Menu Widget
+ 
+@@ -61,8 +63,11 @@
+ 
+ 		// iconClass: String
+ 		//		Class to apply to DOMNode to make it display an icon.
+-		iconClass: "dijitNoIcon",
+-		_setIconClassAttr: { node: "iconNode", type: "class" },
++		iconClass: "",
++		_setIconClassAttr: function(iconClass) {
++			this.icon.set('iconName', iconClass);
++			this._set('iconClass', iconClass);
++		},
+ 
+ 		// accelKey: String
+ 		//		Text for the accelerator (shortcut) key combination, a control, alt, etc. modified keystroke meant to
+--- dijit/templates/MenuItem.html.orig	2020-11-17 09:02:03.272346781 +0100
++++ dijit/templates/MenuItem.html	2020-11-17 09:02:25.864401818 +0100
+@@ -1,14 +1,13 @@
+ <tr class="dijitReset" data-dojo-attach-point="focusNode" role="menuitem" tabIndex="-1">
+ 	<td class="dijitReset dijitMenuItemIconCell" role="presentation">
+-		<span role="presentation" class="dijitInline dijitIcon dijitMenuItemIcon" data-dojo-attach-point="iconNode"></span>
++		<svg data-dojo-type="umc/widgets/Icon" data-dojo-attach-point="icon"></svg>
+ 	</td>
+ 	<td class="dijitReset dijitMenuItemLabel" colspan="2" data-dojo-attach-point="containerNode,textDirNode"
+ 		role="presentation"></td>
+ 	<td class="dijitReset dijitMenuItemAccelKey" style="display: none" data-dojo-attach-point="accelKeyNode"></td>
+ 	<td class="dijitReset dijitMenuArrowCell" role="presentation">
+-		<span data-dojo-attach-point="arrowWrapper" style="visibility: hidden">
+-			<span class="dijitInline dijitIcon dijitMenuExpand"></span>
+-			<span class="dijitMenuExpandA11y">+</span>
++		<span data-dojo-attach-point="arrowWrapper" class="dijitDisplayNone">
++			<svg data-dojo-type="umc/widgets/Icon" data-dojo-props="iconName: 'chevron-right'"></svg>
+ 		</span>
+ 	</td>
+ </tr>

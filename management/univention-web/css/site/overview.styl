@@ -8,74 +8,40 @@
 	text-align: center
 	margin-bottom: material-grid(4)
 
-.umc .umcCategoryBar .dijitButton
+.umcCategoryButton
+	--button-size: auto
 	min-width: 95px
 	@media (max-width: 400px)
 		min-width: 70px
-
 	max-width: 160px
-	margin: material-grid(1, true) 0
-	position: relative
-	vertical-align: top
+	margin-bottom: 0.7rem
 
-	.dijitButtonNode
-		box-shadow: none
-		margin: auto
-		padding: 0
-		border: 0 none
-		background: none
-		filter: none
-		display: block
-		height: auto
+	.dijitButtonContents
+		flex-direction: column
 
-		.dijitButtonContents
-			overflow: visible
-
-			.umcCategoryButtonCircleWrapper
-				transition: transform 0.3s, opacity 0.3s
-				opacity: 0.75
-				transform: scale(0.8, 0.8)
-
-				^[-3].dijitButtonSelected ^[-3..-1]
-					opacity: 1
-					transform: scale(1, 1)
-
-				.circle
-					height: 70px
-					width: 70px
-					border-radius: 50%
-					display: inline-block
-					material-shadow-common()
-					material-shadow(1)
-
-					^[-4].dijitButtonHover ^[-4..-1],
-					^[-4].dijitButtonFocused ^[-4..-1]
-						material-shadow(2)
-
-					^[-4].dijitButtonSelected ^[-4..-1]
-						material-shadow(3)
-
-	.dijitButtonText
-		display: block
-		font-weight: normal
-		text-transform: none
-		color: $text-color-lightest
-		margin-top: 1.5em
-		white-space: pre-line
-		letter-spacing: normal
+	.umcCategoryButtonCircleWrapper
+		transition: transform 0.3s, opacity 0.3s
+		opacity: 0.75
+		transform: scale(0.8, 0.8)
+		.circle
+			height: 70px
+			width: 70px
+			border-radius: 50%
+			display: inline-block
+	&.dijitButtonSelected .umcCategoryButtonCircleWrapper
+		opacity: 1
+		transform: scale(1, 1)
 
 	.dijitIcon
-		display: block
 		position: absolute
 		top: 0
-		width: 100%
-		background-position: center top
 		transition: transform 0.3s 0.0s
 		transform: scale(0.8, 0.8)
-		margin: 0
+	&.dijitButtonSelected .dijitIcon
+		transform: scale(1, 1)
 
-		^[-1].dijitButtonSelected ^[-1..-1]
-			transform: scale(1, 1)
+	.dijitButtonText
+		margin-top: 1em
 
 
 /* LiveSearchSidebar */

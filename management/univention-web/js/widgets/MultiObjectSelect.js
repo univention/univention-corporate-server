@@ -83,7 +83,7 @@ define([
 				this.actions = [{
 					$align: 'left',
 					label: _('Cancel'),
-					iconClass: 'iconX',
+					iconClass: 'x',
 					'class': 'ucsTextButton',
 					onClick: lang.hitch(this, function() {
 						// hide the dialog
@@ -95,7 +95,7 @@ define([
 					})
 				}, {
 					label: _('Add'),
-					iconClass: 'iconCheck',
+					iconClass: 'check',
 					'class': 'ucsTextButton',
 					onClick: lang.hitch(this, function() {
 						// get all elements an trigger onAdd event
@@ -314,10 +314,12 @@ define([
 			this.addChild(container);
 
 			// add the Buttons
-			container = new ContainerWidget({});
+			container = new ContainerWidget({
+				'class': this.baseClass + '__buttons'
+			});
 			this._addButton = new Button({
 				label: _('Add'),
-				iconClass: 'iconPlus',
+				iconClass: 'plus',
 				'class': 'ucsTextButton',
 				onClick: lang.hitch(this, function() {
 					if (!this._detailDialog) {
@@ -343,7 +345,7 @@ define([
 			this._removeButton = new Button({
 				label: _('Remove'),
 				'class': 'ucsTextButton',
-				iconClass: 'iconTrash',
+				iconClass: 'trash',
 				onClick: lang.hitch(this, '_removeSelectedElements')
 			});
 			container.addChild(this._removeButton);

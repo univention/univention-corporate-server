@@ -42,8 +42,29 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/Icon",
+	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, when, domClass, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
+], function(declare, lang, array, when, domClass, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button,
+		_FormWidgetMixin, Icon, put, _) {
+
+	var _Uploader = declare([Uploader], {
+		//// overwrites
+		_setIconClassAttr: function(iconClass) {
+			this._icon.set('iconName', iconClass);
+			this._set('iconClass', iconClass);
+		},
+
+
+		//// lifecycle
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._icon = new Icon({});
+			put(this.iconNode /* from dojox/form/resources/Uploader.html */, '+', this._icon.domNode);
+			put(this.iconNode, '!');
+		}
+	});
+
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
 		baseClass: 'umcUploader',
 
@@ -65,7 +86,7 @@ define([
 
 		// buttonIconClass: String
 		// 		The class for the icon of the upload button.
-		buttonIconClass: 'iconUpload',
+		buttonIconClass: 'upload',
 
 		// showClearButton: Boolean
 		//		The clear button is shown only if this attribute is set to true.
@@ -77,7 +98,7 @@ define([
 
 		// clearButtonIconClass: String
 		// 		The class for the icon of the clear button.
-		clearButtonIconClass: 'iconTrash',
+		clearButtonIconClass: 'trash',
 
 		// displayErrorMessage: Boolean
 		//		Show message if error occurred when uploading file.
@@ -148,7 +169,7 @@ define([
 			this.inherited(arguments);
 
 			// until Dojo2.0 "dojox.form.Uploader" must be used!
-			this._uploader = new dojox.form.Uploader({
+			this._uploader = new _Uploader({
 				'class': 'ucsTextButton',
 				url: '/univention/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,

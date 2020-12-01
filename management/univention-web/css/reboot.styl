@@ -1,0 +1,25 @@
+// reset browser defaults that are not covered by bootstrap.css
+// and overwrite unwanted bootstrap defaults
+
+*,
+p,
+label,
+h1, h2, h3, h4, h5, h6,
+input,
+.dijitReset
+	margin: 0
+	padding: 0
+	border: 0
+	font: inherit
+	color: inherit
+
+.dijitReset
+	line-height: inherit
+
+input[type="checkbox"],
+input[type="radio"]
+	cursor: pointer
+
+button[disabled],
+html input[disabled]
+	cursor: var(--cursor-disabled)

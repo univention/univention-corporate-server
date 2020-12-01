@@ -1518,7 +1518,7 @@ define([
 
 				var button = new Button({
 					label: category.label,
-					'class': lang.replace('umcCategory-{id}', category),
+					'class': lang.replace('umcCategoryButton umcCategory-{id}', category),
 					onClick: lang.hitch(this, function() {
 						topic.publish('/umc/actions', 'overview', 'category', category.id);
 						this._lastCategory = category;
@@ -1527,13 +1527,11 @@ define([
 						this._header._search._searchTextBox._updateInlineLabelVisibility();
 						this._header._updateMoreTabsVisibility();
 					}),
-					color: color,
-					categoryID: category.id,
-					iconClass: iconClass
+					categoryID: category.id
 				});
 
 				// add a node to the button for the colored circle
-				put(button.iconNode, '-div.umcCategoryButtonCircleWrapper div.circle <', button.iconNode);
+				put(button._icon.domNode, '-div.umcCategoryButtonCircleWrapper div.circle + div.dijitIcon.$', iconClass);
 				styles.insertCssRule(lang.replace('.umcCategory-{id} .umcCategoryButtonCircleWrapper .circle', category), lang.replace('background-color: {0};', [color]));
 
 				category._button = button;
@@ -1744,10 +1742,6 @@ define([
 				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked, .umc .umcModuleTab-{0}.dijitTabHover, .umc .umcModuleTab-{0}.dijitTabActive', [module_flavor_css]),
 				lang.replace('background-color: {0} !important;', [dijitTabColor])
 			);
-
-			// color the grid header when items are selected
-			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGrid .umcGridHeader--items-selected', [tab.categoryColor]), lang.replace('background-color: {0}', [gridHeaderColor.toHex()]));
 		},
 
 		__getModuleColor: function(module) {
