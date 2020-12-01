@@ -1050,11 +1050,11 @@ define([
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
 					name: 'toggleSearch',
-					showLabel: false,
+					// showLabel: false,
 					labelConf: {
 						'class': 'umcSearchFormSubmitButton'
 					},
-					iconClass: 'umcDoubleRightIcon',
+					iconClass: 'filter',
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;

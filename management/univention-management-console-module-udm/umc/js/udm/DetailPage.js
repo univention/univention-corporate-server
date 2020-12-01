@@ -41,7 +41,6 @@ define([
 	"dojo/topic",
 	"dojo/json",
 	"dojox/html/entities",
-	"dijit/TitlePane",
 	"umc/render",
 	"umc/tools",
 	"umc/dialog",
@@ -52,6 +51,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TabController",
+	"umc/widgets/TitlePane",
 	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
@@ -63,7 +63,9 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, render, tools,
+		dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, TitlePane,
+		StackContainer, Text, Button, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
 	var Anchor = Text;
 	require(['umc/widgets/Anchor'], function(A) {  // Anchor is new in UCS 4.4, so due to caching problems load it async

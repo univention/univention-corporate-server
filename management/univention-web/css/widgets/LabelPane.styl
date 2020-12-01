@@ -37,6 +37,7 @@
 		background-position: -48px -36px
 
 .umcDescriptionIcon
+	flex: 0 0 auto
 	height: 1em
 	width: @height
 	margin-left: 0.5rem
@@ -54,3 +55,6 @@
 
 	.umcLabelPaneLabelNode label
 		cursor: pointer
+	&.umcLabelPaneDisabled
+		.umcLabelPaneLabelNode label
+			cursor: var(--cursor-disabled)

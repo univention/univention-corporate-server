@@ -39,6 +39,7 @@ define([
 ], function(declare, lang, domClass, Button, Tooltip, Icon, put) {
 	return declare("umc.widgets.Button", [ Button ], {
 		//// overwrites
+		iconClass: '',
 		_setIconClassAttr: function(iconClass) {
 			this._icon.set('iconName', iconClass);
 			this._set('iconClass', iconClass);

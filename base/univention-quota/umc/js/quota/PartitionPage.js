@@ -67,7 +67,6 @@ define([
 			this.inherited(arguments);
 			this.headerButtons = [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Back to overview'),
 				callback: lang.hitch(this, 'onShowOverview')
 			}];
@@ -116,7 +115,7 @@ define([
 			var actions = [{
 				name: 'add',
 				label: _('Add'),
-				iconClass: 'umcIconAdd',
+				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
 				isMultiAction: false,
@@ -126,7 +125,7 @@ define([
 			}, {
 				name: 'edit',
 				label: _('Configure'),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit-2',
 				isStandardAction: true,
 				isMultiAction: false,
 				callback: lang.hitch(this, function(ids, items) {
@@ -135,7 +134,7 @@ define([
 			}, {
 				name: 'remove',
 				label: _('Remove'),
-				iconClass: 'umcIconDelete',
+				iconClass: 'trash',
 				isStandardAction: true,
 				isMultiAction: true,
 				callback: lang.hitch(this, function(data) {

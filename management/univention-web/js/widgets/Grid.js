@@ -872,7 +872,7 @@ define([
 				var ilabel = typeof iaction.label === "function" ? iaction.label() : iaction.label;
 
 				var props = {
-					iconClass: iiconClass || 'umcIconNoIcon',
+					iconClass: iiconClass || '',
 					label: ilabel,
 					_action: iaction,
 					name: iaction.name

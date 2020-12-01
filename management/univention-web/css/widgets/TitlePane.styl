@@ -50,13 +50,15 @@
 		@extends h2
 		flex: 1 0 auto
 
-	.umcTitlePaneTitleFocus__arrowIcon
-		flex: 0 0 auto
-		transition: transform 250ms
-
+.umcTitlePaneTitleFocus__arrowIcon
+	flex: 0 0 auto
+	transition: transform 250ms
 .dijitTitlePaneTitleOpen
 	.umcTitlePaneTitleFocus__arrowIcon
 		transform: rotate(180deg)
+.dijitTitlePaneTitleFixedOpen
+	.umcTitlePaneTitleFocus__arrowIcon
+		display: none
 // TitlePane title (end)
 
 
@@ -69,12 +71,7 @@
 
 // nested TitlePanes (?)
 .dijitTitlePane .dijitTitlePane
-	  margin-left: 3em
-	  margin-top: 3em
-	  margin-bottom: 0
-
-	.dijitTitlePaneTitle
-		font-size: 1.4em
+	margin-bottom: 0
 // nested TitlePanes (?) (end)
 
 

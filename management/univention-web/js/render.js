@@ -311,7 +311,7 @@ define([
 								label: widget.label,
 								betweenNonCheckBoxes: betweenNonCheckBoxes,
 								content: widget,
-								disabled: !!widget.disabled,
+								// disabled: !!widget.disabled,
 								style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
 							});
 							widget.$refLabel$ = label;
@@ -326,7 +326,7 @@ define([
 								label = new LabelPane({
 									label: '&nbsp;',
 									content: button,
-									disabled: !!button.disabled,
+									// disabled: !!button.disabled,
 									style: button.align ? 'float: ' + button.align : ''
 								});
 								button.$refLabel$ = label;

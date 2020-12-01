@@ -202,6 +202,13 @@ define([
 				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 				})));
+
+				if (Object.hasOwnProperty.call(this.content, 'disabled')) {
+					domClass.toggle(this.domNode, this.baseClass + 'Disabled', this.content.disabled);
+					this.own(this.content.watch('disabled', lang.hitch(this, function(attr, oldVal, newVal) {
+						domClass.toggle(this.domNode, this.baseClass + 'Disabled', newVal);
+					})));
+				}
 			}
 			else if (typeof this.label != "string") {
 				this.label = '';
@@ -361,9 +368,9 @@ define([
 		},
 
 		_setDisabledAttr: function(value) {
-			if (this._isContentAWidget()) {
-				this.content.set('disabled', value);
-			}
+			// if (this._isContentAWidget()) {
+				// this.content.set('disabled', value);
+			// }
 		}
 	});
 });

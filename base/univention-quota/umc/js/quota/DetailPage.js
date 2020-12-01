@@ -59,12 +59,11 @@ define([
 			this.inherited(arguments);
 			this.headerButtons = [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Back to partition'),
 				callback: lang.hitch(this, 'onClosePage')
 			}, {
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'save',
 				label: _('Save changes'),
 				callback: lang.hitch(this, function() {
 					if (this.validateValues()) {

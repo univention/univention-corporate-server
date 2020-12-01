@@ -1975,7 +1975,7 @@ div.dijitTabDisabled, .dj_ie div.dijitTabDisabled {
 }
 
 /* TimePicker */
-
+/*
 .dijitTimePicker {
 	background-color: white;
 }
@@ -2027,7 +2027,7 @@ div.dijitTabDisabled, .dj_ie div.dijitTabDisabled {
 .dj_a11y .dijitTimePickerItemHover .dijitTimePickerItemInner {
 	border: dashed 4px black;
 }
-
+*/
 
 .dijitToggleButtonIconChar {
 	/* character (instead of icon) to show that ToggleButton is checked */

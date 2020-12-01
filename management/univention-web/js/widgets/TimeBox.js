@@ -31,12 +31,42 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/query",
 	"dijit/form/TimeTextBox",
 	"dojox/string/sprintf",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/tools"
-], function(declare, lang, TimeTextBox, sprintf, ContainerWidget, _FormWidgetMixin, tools) {
+	"umc/widgets/Button",
+	"umc/widgets/Icon",
+	"umc/tools",
+	"put-selector/put"
+], function(declare, lang, query, TimeTextBox, sprintf, ContainerWidget, _FormWidgetMixin, Button, Icon, tools, put) {
+
+	var _TimeTextBox = declare([TimeTextBox], {
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// exchange validation icon node
+			var icon = new Icon({
+				'class': 'umcTextBox__validationIcon',
+				iconName: 'alert-circle'
+			});
+			var validationContainerNode = query('.dijitValidationContainer', this.domNode)[0];
+			put(validationContainerNode, '+', icon.domNode);
+			put(validationContainerNode, '!');
+
+			// exchange dropdown icon node
+			var button = new Button({
+				iconClass: 'chevron-down',
+				'class': 'ucsIconButton umcTextBox__downArrowButton',
+				tabIndex: '-1'
+			});
+			put(this._buttonNode, '+', button.domNode);
+			put(this._buttonNode, '!');
+			this._buttonNode = button.domNode;
+		}
+	});
+
 	return declare("umc.widgets.TimeBox", [ ContainerWidget, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
 		baseClass: 'umcTimeBox',
@@ -48,7 +78,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._timeBox = new TimeTextBox({
+			this._timeBox = new _TimeTextBox({
 				name: this.name,
 				disabled: this.disabled
 			});

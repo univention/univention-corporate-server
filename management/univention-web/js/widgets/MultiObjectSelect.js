@@ -345,7 +345,7 @@ define([
 			this._removeButton = new Button({
 				label: _('Remove'),
 				'class': 'ucsTextButton',
-				iconClass: 'iconTrash',
+				iconClass: 'trash',
 				onClick: lang.hitch(this, '_removeSelectedElements')
 			});
 			container.addChild(this._removeButton);
