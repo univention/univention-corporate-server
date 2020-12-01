@@ -21,7 +21,7 @@
 				Systems can only join into the domain with at least UCS 4.4-7 (<u:bug>51625</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-				The upgrade to UCS 5.0 is blocked if there are systems in the domain which don't have at least UCS 4.4-6 (<u:bug>51621</u:bug>)
+				The upgrade to UCS 5.0 is blocked if there are systems in the domain which don't have at least UCS 4.4-7 (<u:bug>51621</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 				The legacy terms for the UCS server roles &ucsMaster;, &ucsBackup;, &ucsSlave; and &ucsMember;

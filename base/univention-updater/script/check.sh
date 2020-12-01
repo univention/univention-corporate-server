@@ -39,7 +39,7 @@ fi
 
 VERSION="50"
 VERSION_NAME="5.0"
-MIN_VERSION="4.4-6"
+MIN_VERSION="4.4-7"
 
 echo
 echo "Starting $0 ($(date)):"
