@@ -87,7 +87,7 @@ then
 		;;
 	esac
 
-	if [ -d /etc/runit/univention/univention-dhcp ] && dpkg --compare-versions "${2:-}" lt-nl 13.0.0-2
+	if [ -d /etc/runit/univention/univention-dhcp ] && dpkg --compare-versions "${2:-}" lt-nl 14.0.2-3
 	then
 		sv force-shutdown univention-dhcp
 		rm -rf /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp
