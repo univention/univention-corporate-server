@@ -317,6 +317,9 @@
 				<listitem><simpara>
 					The <filename>preup.sh</filename> script executed before a system upgrade now fetches the version of the &ucsPrimaryDN; from LDAP instead of using <command>ssh</command> (<u:bug>40027</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The service <systemitem class="service">univention-maintenance</systemitem> now waits for the DNS service before starting the package maintenance during boot-up (<u:bug>45119</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
