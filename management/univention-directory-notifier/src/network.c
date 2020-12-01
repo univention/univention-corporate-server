@@ -63,7 +63,6 @@ extern void set_listener_callback ( int sig, siginfo_t *si, void *data);
 extern int get_schema_callback ();
 extern int get_listener_callback ();
 extern void unset_schema_callback ();
-extern void unset_listener_callback ();
 
 extern NotifyId_t notify_last_id;
 
@@ -294,7 +293,6 @@ void check_callbacks()
 	}
 	if ( get_listener_callback () ) {
 		notify_listener_change_callback ( 0, NULL, NULL);
-		unset_listener_callback();
 	}
 }
 int network_client_main_loop ( )
