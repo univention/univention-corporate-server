@@ -50,11 +50,9 @@ then
 	mv -f /sbin/start-stop-daemon /sbin/start-stop-daemon.UCS
 	dpkg-divert --quiet --remove --rename /sbin/start-stop-daemon
 fi
-invoke-rc.d univention-runit start
 
 /usr/lib/univention-system-setup/scripts/setup-join.sh
 
-invoke-rc.d univention-runit stop
 if [ -f /sbin/start-stop-daemon.UCS ]
 then
 	dpkg-divert --quiet --add --divert "/sbin/start-stop-daemon.REAL" --rename "/sbin/start-stop-daemon"

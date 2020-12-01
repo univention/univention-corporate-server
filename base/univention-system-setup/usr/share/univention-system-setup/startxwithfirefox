@@ -91,7 +91,6 @@ then # call self in xinit as nobody, then start gdm
 		esac
 
 		# Start/Restart UMC and Webserver
-		service univention-runit start
 		service univention-management-console-server restart
 		service univention-management-console-web-server restart
 

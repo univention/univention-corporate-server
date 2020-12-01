@@ -37,6 +37,9 @@
 				The corresponding meta package <package>univention-basesystem</package> has
 				been removed. (<u:bug>52137</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Process supervision by <package>univention-runit</package> has been replaced with <package>systemd</package> (<u:bug>52448</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

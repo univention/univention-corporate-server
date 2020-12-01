@@ -29,7 +29,6 @@ do
 	single) continue ;;
 	sendsigs) continue ;;
 	umount*) continue ;;
-	univention-runit) continue ;; # breaks running services
 	esac
 
 	case "$name" in # handle incomplete scripts
@@ -45,7 +44,6 @@ do
 	univention-maintenance) status= ;;
 	univention-management-console-server) restart=crestart status= ;;
 	univention-management-console-web-server) restart=crestart status= ;;
-	univention-runit) status= ;;
 	*) restart=restart status=status ;;
 	esac
 
