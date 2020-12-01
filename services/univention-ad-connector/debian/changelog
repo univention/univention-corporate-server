@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-61) unstable; urgency=medium
+
+  * Bug #52261: Set all values, if modtype is add, not just changed values
+    Bug #52439: Create temporary password which is sufficient of mspasswordpolicy
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 01 Dec 2020 17:18:00 +0100
+
 univention-ad-connector (13.0.0-60) unstable; urgency=medium
 
   * Bug #49981: Made mappings user configurable
