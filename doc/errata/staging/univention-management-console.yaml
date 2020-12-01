@@ -13,4 +13,4 @@ desc: |
    response is received.
  * The UMC-Web-Server is now multiprocessing capable.
  * The removal of sessions has been optimized.
-bug: [52371, 52443, 52442, 52444, 52293, 52272]
+bug: [52371, 52443, 52442, 52444, 52293, 52273]
