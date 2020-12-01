@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The UMC-Server is now multiprocessing capable.
+ * Expired sessions are now removed from the SAML cache.
+ * SAML identities are now cached in a BDB database instead of in memory.
+ * Data stored for outstanding SAML queries are now removed when a SAML
+   response is received.
+ * The UMC-Web-Server is now multiprocessing capable.
+ * The removal of sessions has been optimized.
+bug: [52371, 52443, 52442, 52444, 52293, 52272]

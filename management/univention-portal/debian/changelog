@@ -1,3 +1,9 @@
+univention-portal (3.0.2-15) unstable; urgency=medium
+
+  * Bug #52293: get session info from Apache instead of UMC-Webserver
+
+ -- Florian Best <best@univention.de>  Mon, 30 Nov 2020 14:17:22 +0100
+
 univention-portal (3.0.2-14) unstable; urgency=medium
 
   * Bug #52302: Some minor code fixes

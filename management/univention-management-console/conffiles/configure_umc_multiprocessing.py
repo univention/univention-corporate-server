@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  logrotate postrotate script
+# Univention Configuration Registry Module to create systemd services for multiprocessing
 #
-# Copyright 2014-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,14 +31,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# SIGHUP for UMC-server and UMC-web-server
-for file in "/var/run/umc-server.pid" "/var/run/umc-web-server"*".pid"; do
-	if [ -e "$file" ]; then
-		pkill -1 -F "$file"
-	fi
-done
+import os
+import subprocess
 
-# SIGHUP for all running UMC modules
-pkill -1 -f /usr/sbin/univention-management-console-module
 
-exit 0
+def handler(ucr, changes):
+	try:
+		processes = int(ucr.get('umc/http/processes', 1))
+	except ValueError:
+		processes = 1
+
+	start_port = 18200
+	try:
+		start_port = int(ucr.get('umc/http/processes/start-port', start_port))
+	except ValueError:
+		pass
+
+	systemd_target_dir = '/etc/systemd/system/univention-management-console-web-server-multiprocessing.target.wants/'
+
+	if os.path.isdir(systemd_target_dir):
+		for service in os.listdir(systemd_target_dir):
+			subprocess.call(['systemctl', 'disable', service])
+
+	if processes > 1:
+		for i in range(processes):
+			subprocess.call(['systemctl', 'enable', 'univention-management-console-web-server@{}'.format(i + start_port)])

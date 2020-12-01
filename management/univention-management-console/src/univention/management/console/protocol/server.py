@@ -41,7 +41,9 @@ import fcntl
 import socket
 import resource
 import traceback
+import multiprocessing
 
+from tornado import process
 import notifier
 import notifier.signals as signals
 from OpenSSL import SSL
@@ -81,19 +83,23 @@ class MagicBucket(object):
 		state.session.signal_connect('success', notifier.Callback(self._response, state))
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
-		self._timeout_connection(state)
+		self.reset_connection_timeout(state)
 
-	def _timeout_connection(self, state):
+	def reset_connection_timeout(self, state):
+		state.reset_connection_timeout()
+		notifier.timer_remove(state._timer)
+		state._timer = notifier.timer_add(state.timeout * 1000, notifier.Callback(self._timed_out, state))
+
+	def _timed_out(self, state):
 		"""Closes the connection after a specified timeout"""
-		state.time_remaining -= 1
-
-		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
-			CORE.process('Session timed out.')
+		if not state.active:
+			CORE.process('Session %r timed out' % (state,))
 			self._cleanup(state.socket)
 		else:
-			# count down the timer second-wise (in order to avoid problems when
-			# changing the system time, e.g. via rdate)
-			notifier.timer_add(1000, lambda: self._timeout_connection(state))
+			CORE.process('Session %r timed out: There are open requests. Postpone session shutdown' % (state,))
+			# state.timeout = 1
+			return True
+		return False
 
 	def exit(self):
 		'''Closes all open connections.'''
@@ -138,7 +144,7 @@ class MagicBucket(object):
 			return False
 		state.buffer += data
 
-		state.reset_connection_timeout()
+		self.reset_connection_timeout(state)
 
 		try:
 			while state.buffer:
@@ -202,7 +208,7 @@ class MagicBucket(object):
 			CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
 			return
 
-		state.reset_connection_timeout()
+		self.reset_connection_timeout(state)
 		try:
 			data = bytes(msg)
 			# there is no data from another request in the send queue
@@ -266,7 +272,7 @@ class Server(signals.Provider):
 	:param bool load_ressources: if the modules and categories definitions should be loaded
 	"""
 
-	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True):
+	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True, processes=1):
 		'''Initializes the socket to listen for requests'''
 		signals.Provider.__init__(self)
 
@@ -275,12 +281,20 @@ class Server(signals.Provider):
 			CORE.info('Loading resources ...')
 			self.reload()
 
-		CORE.info('Initialising server process')
 		self.__port = port
 		self.__unix = unix
 		self.__realtcpsocket = None
 		self.__realunixsocket = None
 		self.__ssl = ssl
+		self.__processes = processes
+		self._child_number = None
+		self._children = {}
+		self.__magic = magic
+		self.__magicClass = magicClass
+		self.__bucket = None
+
+	def __enter__(self):
+		CORE.info('Initialising server process')
 		if self.__unix:
 			CORE.info('Using a UNIX socket')
 			self.__realunixsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -295,9 +309,12 @@ class Server(signals.Provider):
 		for sock in (self.__realtcpsocket, self.__realunixsocket):
 			if sock is None:
 				continue
+			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			sock.setblocking(0)
-			fcntl.fcntl(sock.fileno(), fcntl.F_SETFD, 1)
+			fd = sock.fileno()
+			flags = fcntl.fcntl(fd, fcntl.F_GETFD)
+			fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
 
 		if self.__ssl and self.__port:
 			CORE.info('Setting up SSL configuration')
@@ -348,9 +365,16 @@ class Server(signals.Provider):
 			CRYPT.info('Server listening to UNIX connections')
 			self.__realunixsocket.listen(SERVER_MAX_CONNECTIONS)
 
-		self.__magic = magic
-		self.__magicClass = magicClass
-		self.__bucket = None
+		if self.__processes != 1:
+			self._children = multiprocessing.Manager().dict()
+			try:
+				self._child_number = process.fork_processes(self.__processes, 0)
+			except RuntimeError as exc:
+				CORE.warn('Child process died: %s' % (exc,))
+				raise SystemExit(str(exc))
+			if self._child_number is not None:
+				self._children[self._child_number] = os.getpid()
+
 		if self.__magic:
 			self.__bucket = self.__magicClass()
 		else:
@@ -362,6 +386,8 @@ class Server(signals.Provider):
 			notifier.socket_add(self.__realtcpsocket, self._connection)
 		if self.__unix:
 			notifier.socket_add(self.__realunixsocket, self._connection)
+
+		return self
 
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
@@ -398,6 +424,9 @@ class Server(signals.Provider):
 				# unknown errno - log traceback and continue
 				CORE.error(traceback.format_exc())
 			return True
+		fd = socket.fileno()
+		flags = fcntl.fcntl(fd, fcntl.F_GETFD)
+		fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
 		socket.setblocking(0)
 		if addr:
 			client = '%s:%d' % (addr[0], addr[1])
@@ -417,6 +446,10 @@ class Server(signals.Provider):
 		if self.__bucket:
 			self.__bucket.exit()
 
+		if self._child_number is not None:
+			self._children.pop(self._child_number, None)
+			self._child_number = None
+
 		if self.__ssl and self.__port:
 			notifier.socket_remove(self.connection)
 			self.connection.close()
@@ -434,9 +467,6 @@ class Server(signals.Provider):
 			self.__unix = None
 
 		self.__bucket = None
-
-	def __enter__(self):
-		return self
 
 	def __exit__(self, etype, exc, etraceback):
 		self.exit()
@@ -487,7 +517,7 @@ class State(object):
 	:param fd socket: file descriptor or socket object
 	"""
 
-	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'time_remaining')
+	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'timeout', '_timer')
 
 	def __init__(self, client, socket):
 		self.client = client
@@ -496,10 +526,14 @@ class State(object):
 		self.requests = {}
 		self.resend_queue = []
 		self.session = SessionHandler()
+		self._timer = None
 		self.reset_connection_timeout()
 
 	def reset_connection_timeout(self):
-		self.time_remaining = SERVER_CONNECTION_TIMEOUT
+		self.timeout = SERVER_CONNECTION_TIMEOUT
+
+	def active(self):
+		return bool(self.requests or self.session.has_active_module_processes())
 
 	def __repr__(self):
-		return '<State(%s %r buffer=%d requests=%d time_remaining=%r)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.time_remaining)
+		return '<State(%s %r buffer=%d requests=%d)>' % (self.client, self.socket, len(self.buffer), len(self.requests))
