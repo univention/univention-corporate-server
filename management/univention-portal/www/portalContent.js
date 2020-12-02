@@ -37,7 +37,7 @@ define([
 	"umc/json",
 	"umc/store",
 	"./links",
-	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
+	"umc/json!./portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/i18n!portal"
 ], function(lang, Deferred, i18nTools, tools, dialog, json, store, portalLinks, portalJson, _) {
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
@@ -104,6 +104,10 @@ define([
 
 		portal() {
 			return this._portalJson.portal;
+		},
+
+		mayEditPortal() {
+			return this._portalJson.may_edit_portal;
 		},
 
 		content() {

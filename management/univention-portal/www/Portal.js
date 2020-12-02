@@ -285,6 +285,9 @@ define([
 			}
 		},
 		_checkEditAuthorization: async function() {
+			if (! portalContent.mayEditPortal()) {
+				return false;
+			}
 			try {
 				const res = await tools.umcpCommand('get/modules');
 				return res.modules.some(module => module.flavor === 'portals/all');

@@ -27,7 +27,12 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import univention.portal.config as config
+
+
 class User(object):
 	def __init__(self, username, groups):
 		self.username = username
 		self.groups = groups
+		admin_groups = config.fetch("admin_groups")
+		self.is_admin = any(group in admin_groups for group in self.groups)

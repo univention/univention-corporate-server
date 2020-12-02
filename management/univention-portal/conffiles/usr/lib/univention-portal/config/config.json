@@ -1,6 +1,13 @@
 {
 	"port": @%@portal/port@%@,
-	"admin_group": "@%@groups/default/domainadmins@%@",
+	"admin_groups": @!@
+import json
+from univention.lib.misc import custom_groupname
+default_admin_groups = custom_groupname("Domain Admins", configRegistry) + ",cn=groups," + configRegistry.get("ldap/base")
+admin_groups = configRegistry.get("portal/admin-groups", default_admin_groups).split(", ")
+admin_groups = [group.strip() for group in admin_groups]
+print(json.dumps(admin_groups), end="")
+	@!@,
 	"fqdn": "@%@hostname@%@.@%@domainname@%@",
 	"hostdn": "@%@ldap/hostdn@%@",
 	"ldap_base": "@%@ldap/base@%@",
