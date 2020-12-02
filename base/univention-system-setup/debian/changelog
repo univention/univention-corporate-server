@@ -1,3 +1,9 @@
+univention-system-setup (13.0.2-6) unstable; urgency=medium
+
+  * Bug #52453: fix VirtualKeyboardBox undefined error
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 02 Dec 2020 13:33:24 +0100
+
 univention-system-setup (13.0.2-5) unstable; urgency=medium
 
   * Bug #52194: Bug #51633: pass valid locale to univention.i18n.Locale
