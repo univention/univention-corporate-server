@@ -77,9 +77,7 @@ class JsonHandler(PortalHandler):
         admin_mode = False
         if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
             get_logger("admin").info("Admin mode requested")
-            admin_group_name = config.fetch("admin_group")
-            admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
-            admin_mode = user and user.username in admins
+            admin_mode = user and user.is_admin
             if admin_mode:
                 get_logger("admin").info("Admin mode granted")
             else:
@@ -94,6 +92,7 @@ class JsonHandler(PortalHandler):
         answer["categories"] = portal.get_categories(visible_content)
         answer["portal"] = portal.get_meta(visible_content, answer["categories"])
         answer["filtered"] = not admin_mode
+        answer["may_edit_portal"] = user and user.is_admin
         answer["login_url"] = "https://{}/univention/portal/portal/login/".format(self.request.host)  # FIXME
         self.write(answer)
 

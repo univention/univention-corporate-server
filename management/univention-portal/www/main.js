@@ -1529,12 +1529,16 @@ define([
 
 		_checkEditAuthorization: function() {
 			var deferred = new Deferred();
-			tools.umcpCommand('get/modules').then(function(result) {
-				var isAuthorized = result.modules.some(function(module) {
-					return module.flavor === 'portals/all';
+			if (portalJson.may_edit_portal) {
+				tools.umcpCommand('get/modules').then(function(result) {
+					var isAuthorized = result.modules.some(function(module) {
+						return module.flavor === 'portals/all';
+					});
+					deferred.resolve(isAuthorized);
 				});
-				deferred.resolve(isAuthorized);
-			});
+			} else {
+				deferred.resolve(false);
+			}
 			return deferred;
 		},
 

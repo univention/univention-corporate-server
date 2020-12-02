@@ -30,5 +30,6 @@ Variables: umc/http/interface
 Variables: umc/http/port
 Variables: groups/default/domainadmins
 Variables: portal/port
+Variables: portal/admin-groups
 Variables: hostname
 Variables: domainname
