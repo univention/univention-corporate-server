@@ -172,6 +172,8 @@ class Portal(with_metaclass(Plugin)):
 			if not admin_mode:
 				if not entry['activated']:
 					continue
+				if not entry['anonymous'] and username:
+					continue
 				if entry['allowedGroups']:
 					for group_dn in entry['allowedGroups']:
 						if user and group_dn in user.groups:
