@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python-monotonic
+fix: 1.1-2
+desc: |
+ This update addresses the following issue(s):
+ * This package has been added to the maintained repository.
+bug: [52273]
