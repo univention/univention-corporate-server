@@ -52,10 +52,12 @@ import time
 import pipes
 import subprocess
 
-import six
-import psutil
+import bz2
+import base64
 import ldap
 import ldap.filter
+import psutil
+import six
 
 import univention.admin.uldap
 import univention.admin.modules
@@ -529,7 +531,6 @@ class UCSTestUDM(object):
 		}
 		self.remove_object('users/user', wait_for_replication, **kwargs)
 
-
 	def create_with_defaults(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		modules_dict = {
 			'appcenter': self.create_appcenter,
@@ -537,14 +538,13 @@ class UCSTestUDM(object):
 			'container': self.create_container,
 			'dhcp': self.create_dhcp,
 			'dns': self.create_dns,
-			'groups': self.create_group,
+			'groups': self.create_groups,
 			'kerberos': self.create_kerberos,
 			'mail': self.create_mail,
 			'nagios': self.create_nagios,
 			'networks': self.create_networks,
 			'policies': self.create_policies,
 			'saml': self.create_saml,
-			'sba': self.create_sba,
 			'settings': self.create_settings,
 			'shares': self.create_shares,
 			'users': self.create_users,
@@ -570,20 +570,29 @@ class UCSTestUDM(object):
 
 		return self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr)
 
-	def create_appcenter(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
-		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=appcenter,%s' % self.LDAP_BASE),
-													   ('id', -1()),
-													   ('name', uts.random_name()),
-													   ('version', '0.0.0')
-													   )
-											  )
+	def create_groups(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		"""
+		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
+		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
+
+		:param str position: `cn=users,$ldap_base`
+		:param str name: <random value>
+		:return: (dn, groupname)
+
+		If "groupname" is missing, a random group name will be used.
+		"""
+		attr = self._set_module_default_attr(kwargs, (
+			('position', 'cn=groups,%s' % self.LDAP_BASE),
+			('name', uts.random_groupname())
+		))
 
 		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
 
-	def create_sba(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
-		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=sba,%s' % self.LDAP_BASE),
+	def create_appcenter(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=appcenter,%s' % self.LDAP_BASE),
+													   ('id', -1),
 													   ('name', uts.random_name()),
-													   ('displayName', uts.random_name())
+													   ('version', '0.0.0')
 													   )
 											  )
 
@@ -597,6 +606,16 @@ class UCSTestUDM(object):
 
 		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
 
+	def create_networks(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr = self.__set_module_default_attr(kwargs, (
+			('position', 'cn=networks,%s' % self.LDAP_BASE),
+			('name', uts.random_element_name),
+			('network', '127.0.0.1'),
+			('networkmask', '255.255.255.0')
+		))
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
 	def create_dns(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		attr_dict = {
 			'alias': (('position', 'cn=dns,%s' % self.LDAP_BASE),
@@ -606,21 +625,34 @@ class UCSTestUDM(object):
 					('name', uts.random_name())),
 			'forward_zone': (('position', 'cn=dns,%s' % self.LDAP_BASE),
 							 ('zone', uts.random_name()),
-							 ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
-							 ('zonettl', uts.random_name())),
+							 ('nameserver', udm.FQHN),
+							 ('zonettl', '%s' % (uts.random_int(bottom_end=100, top_end=999))),
+							 ('contact', '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name())),
+							 ('serial', '%s' % (uts.random_int())),
+							 ('refresh', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+							 ('expire', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+							 ('ttl', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+							 ('retry', '%s' % (uts.random_int()))),
 			'host_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
-							('name', uts.random_name())),
+							('name', uts.random_name()),
+							('zone', uts.random_name()),
+							('nameserver', udm.FQHN),
+							('zonettl', '%s' % (uts.random_int(bottom_end=100, top_end=999))),
+						 	('contact', '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name())),
+					 		('serial', '%s' % (uts.random_int())),
+						 	('refresh', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+						 	('expire', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+						 	('ttl', '%s' % (uts.random_int(bottom_end=10, top_end=99))),
+						 	('retry', '%s' % (uts.random_int()))),
 			'ns_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
 						  ('zone', uts.random_name()),
-						  ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()])),
+						  ('nameserver', udm.FQHN)),
 			'ptr_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
-						   ('zone', uts.random_name()),
-						   ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
-						   ('zonettl', uts.random_name())),
+						   ('address', uts.random_ip().split('.')),
+						   ('ptr_record', '%s.%s.' % (uts.random_name(), uts.random_name()))),
 			'srv_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
-						   ('zone', uts.random_name()),
-						   ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
-						   ('zonettl', uts.random_name())),
+						   ('name', uts.random_name()),
+						   ('location', '0 1 2 %s.%s' % (uts.random_name(), uts.random_name()))),
 			'txt_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name()),
 						   ('txt', uts.random_name())),
@@ -645,14 +677,17 @@ class UCSTestUDM(object):
 	def create_users(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		attr_dict = {
 			'contact': (('position', 'cn=users,%s' % self.LDAP_BASE),
-						('lastname', uts.random_name())),
+						('lastname', uts.random_name()),
+						('homePostalAddress', [udm.random_name()])),
 			'ldap': (('position', 'cn=users,%s' % self.LDAP_BASE),
 					 ('username', uts.random_name()),
 					 ('password', 'univention')),
 			'user': (('position', 'cn=users,%s' % self.LDAP_BASE),
 					 ('lastname', uts.random_name()),
 					 ('username', uts.random_name()),
-					 ('password', 'univention'))
+					 ('password', 'univention'),
+					 ('umcProperty', [udm.random_name()]),
+					 ('disabled', False))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -662,9 +697,10 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'cloudconnection': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
 								('name', uts.random_name()),
-								('type', uts.random_name()),
+								('type', "cn=OpenStack,cn=CloudType,cn=Virtual Machine Manager,dc=ucs,dc=local"),
 								('searchPattern', uts.random_name()),
-								('includeUCSimages', uts.random_name())),
+								('includeUCSimages', 0),
+								('parameter', ["password password"])),
 			'cloudtype': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
 						  ('name', uts.random_name())),
 			'info': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
@@ -695,7 +731,8 @@ class UCSTestUDM(object):
 			'dhcp_netbios': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name())),
 			'dhcp_routing': (('position', 'cn=policies,%s' % self.LDAP_BASE),
-							 ('name', uts.random_name())),
+							 ('name', uts.random_name()),
+							 ('routers', '127.0.0.1')),
 			'dhcp_scope': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name())),
 			'dhcp_statements': (('position', 'cn=policies,%s' % self.LDAP_BASE),
@@ -703,7 +740,8 @@ class UCSTestUDM(object):
 			'ldapserver': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name())),
 			'maintenance': (('position', 'cn=policies,%s' % self.LDAP_BASE),
-							('name', uts.random_name())),
+							('name', uts.random_name()),
+							('minute', 1)),
 			'masterpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							   ('name', uts.random_name())),
 			'memberpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
@@ -725,13 +763,15 @@ class UCSTestUDM(object):
 			'repositoryserver': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 								 ('name', uts.random_name())),
 			'repositorysync': (('position', 'cn=policies,%s' % self.LDAP_BASE),
-							   ('name', uts.random_name())),
+							   ('name', uts.random_name()),
+							   ('minute', 1)),
 			'share_userquota': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 								('name', uts.random_name())),
 			'slavepackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							  ('name', uts.random_name())),
 			'umc': (('position', 'cn=policies,%s' % self.LDAP_BASE),
-					('name', uts.random_name()))
+					('name', uts.random_name()),
+					('allow', ['create', 'add']))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -741,11 +781,14 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'data': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					 ('name', uts.random_name()),
-					 ('data_type', uts.random_name())),
+					 ('data_type', uts.random_name()),
+					 ('meta', [uts.random_name(), uts.random_name()]),
+					 ('ucsversionend', uts.random_ucs_version())),
 			'default': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						('name', uts.random_name())),
 			'directory': (('position', 'cn=settings,%s' % self.LDAP_BASE),
-						  ('name', uts.random_name())),
+						  ('name', uts.random_name()),
+						  ('users', 'dc=foo,dc=bar,dc=test')),
 			'extended_attributes': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 									('name', uts.random_name()),
 									('shortDescription', uts.random_name())),
@@ -756,11 +799,13 @@ class UCSTestUDM(object):
 			'ldapacl': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
 						('filename', uts.random_name()),
-						('data', uts.random_name())),
+						('data', base64.encodebytes(bz2.compress(uts.random_name()))),
+						('appidentifier', udm.random_name())),
 			'ldapschema': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name()),
 						   ('filename', uts.random_name()),
-						   ('data', uts.random_name())),
+						   ('data', uts.random_name()),
+						   ('appidentifier', udm.random_name())),
 			'license': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
 						('expires', uts.random_name()),
@@ -771,6 +816,9 @@ class UCSTestUDM(object):
 			'lock': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					 ('name', uts.random_name()),
 					 ('locktime', uts.random_name())),
+			'packages': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						 ('name', uts.random_name()),
+						 ('packagelist', ["foo", 'bar'])),
 			'portal': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name()),
 					   ('displayName', ['de', uts.random_name()])),
@@ -785,11 +833,14 @@ class UCSTestUDM(object):
 							 ('description', ['de', uts.random_name()]),
 							 ('link', [uts.random_name()])),
 			'printermodel': (('position', 'cn=settings,%s' % self.LDAP_BASE),
-							 ('name', uts.random_name())),
+							 ('name', uts.random_name()),
+							 ('printmodel', ["foo", 'bar'])),
 			'printeruri': (('position', 'cn=settings,%s' % self.LDAP_BASE),
-						   ('name', uts.random_name())),
+						   ('name', uts.random_name()),
+						   ('printeruri', [udm.random_name()])),
 			'prohibited_username': (('position', 'cn=settings,%s' % self.LDAP_BASE),
-									('name', uts.random_name())),
+									('name', uts.random_name()),
+									('usernames', [udm.random_name()])),
 			'sambaconfig': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 							('name', uts.random_name()),
 							('SID', uts.random_name())),
@@ -800,31 +851,38 @@ class UCSTestUDM(object):
 						('name', uts.random_name())),
 			'syntax': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name()),
-					   ('filter', uts.random_name())),
+					   ('filter', uts.random_name()),
+					   ('attribute', 'computers/memberserver: fqdn')),
 			'udm_hook': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						 ('name', uts.random_name()),
 						 ('filename', uts.random_name()),
-						 ('data', uts.random_name())),
+						 ('data', uts.random_name()),
+						 ('appidentifier', udm.random_name())),
 			'udm_module': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name()),
 						   ('filename', uts.random_name()),
-						   ('data', uts.random_name())),
+						   ('data', uts.random_name()),
+						   ('appidentifier', udm.random_name())),
 			'udm_syntax': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name()),
 						   ('filename', uts.random_name()),
-						   ('data', uts.random_name())),
+						   ('data', uts.random_name()),
+						   ('appidentifier', udm.random_name())),
 			'umc_operationset': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 								 ('name', uts.random_name()),
-								 ('description', uts.random_name())),
+								 ('description', uts.random_name()),
+								 ('operation', ["lib/server/*"])),
 			'usertemplate': (('position', 'cn=settings,%s' % self.LDAP_BASE),
-							 ('name', uts.random_name())),
+							 ('name', uts.random_name()),
+							 ('e-mail', ['test@univention.com']),
+							 ('departmentNumbuer', [1]),
+							 ('disabled', True)),
 			'xconfig_choices': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 								('name', uts.random_name()))
 		}
-		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1])
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name].split('/')[1])
 
 		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
-
 
 	def create_saml(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		attr_dict = {
@@ -843,16 +901,17 @@ class UCSTestUDM(object):
 			'printer': (('position', 'cn=printer,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
 						('spoolHost', [uts.random_name()]),
-						('uri', uts.random_name()),
+						('uri', "uri=socket:// 127.0.0.1:12345"),
 						('model', uts.random_name())),
 			'printergroup': (('position', 'cn=printer,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
-							 ('sppoolHost', uts.random_domain_name()),
-							 ('groupMember', uts.random_name())),
+							 ('sppoolHost', [uts.random_domain_name()]),
+							 ('groupMember', [uts.random_name()])),
 			'share': (('position', 'cn=printer,%s' % self.LDAP_BASE),
 					  ('name', uts.random_name()),
 					  ('host', uts.random_name()),
-					  ('path', uts.random_name())),
+					  ('path', uts.random_name()),
+					  ('writeable', True)),
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -861,28 +920,58 @@ class UCSTestUDM(object):
 	def create_computer(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		attr_dict = {
 			'domaincontroller_backup': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-										('name', uts.random_name())),
+										('name', uts.random_name()),
+										('service', ['foo', 'bar']),
+										('inventoryNumber', ['1337']),
+										('reinstall', True)),
 			'domaincontroller_master': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-										('name', uts.random_name())),
+										('name', uts.random_name()),
+										('service', ['foo', 'bar']),
+										('inventoryNumber', ['1337']),
+										('reinstall', True)),
 			'domaincontroller_slave': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-									   ('name', uts.random_name())),
+										('name', uts.random_name()),
+										('service', ['foo', 'bar']),
+										('inventoryNumber', ['1337']),
+										('reinstall', True)),
 			'ipmanagedclient': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-								('name', uts.random_name())),
+								('name', uts.random_name()),
+								('ip', ['127.0.0.1']),
+								('inventoryNumber', ['1337']),
+								('network', 'univention')),
 			'linux': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-					  ('name', uts.random_name())),
+						('name', uts.random_name()),
+						('ip', ['127.0.0.1']),
+						('inventoryNumber', ['1337']),
+						('unixhome', '/')),
 			'macos': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-					  ('name', uts.random_name())),
+						('name', uts.random_name()),
+						('ip', ['127.0.0.1']),
+						('inventoryNumber', ['1337']),
+						('unixhome', '/')),
 			'memberserver': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-							 ('name', uts.random_name())),
+							('name', uts.random_name()),
+							('ip', ['127.0.0.1']),
+							('inventoryNumber', ['1337']),
+							('unixhome', '/')),
 			'trustaccount': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
 							 ('password', uts.random_name())),
 			'ubuntu': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-					   ('name', uts.random_name())),
+						('name', uts.random_name()),
+						('ip', ['127.0.0.1']),
+						('inventoryNumber', ['1337']),
+						('unixhome', '/')),
 			'windows': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-						('name', uts.random_name())),
+						('name', uts.random_name()),
+						('ip', ['127.0.0.1']),
+						('inventoryNumber', ['1337']),
+						('unixhome', '/')),
 			'wwindows_domaincontroller': (('position', 'cn=computers,%s' % self.LDAP_BASE),
-										  ('name', uts.random_name()))
+											('name', uts.random_name()),
+											('ip', ['127.0.0.1']),
+											('inventoryNumber', ['1337']),
+											('unixhome', '/'))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -891,7 +980,8 @@ class UCSTestUDM(object):
 	def create_container(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		attr_dict = {
 			'cn': (('position', 'cn=container,%s' % self.LDAP_BASE),
-				   ('name', uts.random_name())),
+				   ('name', uts.random_name()),
+				   ('dnsForwardZone', ['255.255.0.0'])),
 			'dc': (('position', 'cn=container,%s' % self.LDAP_BASE),
 				   ('name', uts.random_name()),
 				   ('sambaSID', 0)),
@@ -922,16 +1012,22 @@ class UCSTestUDM(object):
 			'pool': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 					 ('name', uts.random_name()),
 					 ('range', [])),
+			'host': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+					 ('host', "Client222"),
+					 ('fixedaddress', ['127.0.0.1']),
+					 ('hwaddress', 'ethernet 00:11:22:33:44:55')),
 			'subnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 					   ('subnet', '127.0.0.1'),
-					   ('subnetmask', '255.255.255.0')),
+					   ('subnetmask', '255.255.255.0'),
+					   ('range', ['127.0.0.1', '127.0.0.2'])),
 			'shared': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name())),
 			'service': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 						('service', uts.random_name())),
 			'sharedsubnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 							 ('subnet', '127.0.0.1'),
-							 ('subnetmask', '255.255.255.0'))
+							 ('subnetmask', '255.255.255.0'),
+							 ('range', ['127.0.0.1', '127.0.0.2']))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -1069,6 +1165,14 @@ class UCSTestUDM(object):
 
 		self.stop_cli_server()
 		print('UCSTestUDM cleanup done')
+
+	def lookup(self, module_element_name, base, filter_s=None):
+		udm_module = univention.admin.modules.get(module_element_name)
+		if filter_s is None:
+			lookup_list = udm_module.lookup(base=base)
+		else:
+			lookup_list = udm_module.lookup(base=base, filter=filter_s)
+		return lookup_list
 
 	def stop_cli_server(self):
 		""" restart UDM CLI server """
