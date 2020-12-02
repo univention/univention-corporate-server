@@ -235,12 +235,12 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join(installComponents)
 
-	current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8'))
+	current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8').split(':', 1)[0])
 	if newValues['server/role'] == 'domaincontroller_master':
 		# add newValues for SSL UCR variables
 		default_locale = current_locale
 		if 'locale/default' in newValues:
-			default_locale = Locale(newValues['locale/default'])
+			default_locale = Locale(newValues['locale/default'].split(':', 1)[0])
 		newValues['ssl/state'] = default_locale.territory
 		newValues['ssl/locality'] = default_locale.territory
 		newValues['ssl/organization'] = newValues.get('organization', default_locale.territory)
@@ -255,8 +255,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['locale'] = newValues.get('locale/default', '')
 	forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
 	if current_locale:
-		current_locale = '{0}:{1}'.format(str(current_locale), current_locale.codeset)
-		forcedLocales.append(current_locale)
+		forcedLocales.append('{0}:{1}'.format(str(current_locale), current_locale.codeset))
 	for ilocale in forcedLocales:
 		if ilocale not in newValues['locale']:
 			newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
