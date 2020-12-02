@@ -46,23 +46,22 @@ define([
 	return declare("umc.modules.setup.VirtualKeyboardBox", [ TextBox ], {
 
 		chars: null,
-		iconNode: null,
 		keyboard: null,
 
 		_renderKeyboard: function() {
-			var siblingNode = query('.dijitValidationContainer', this.domNode)[0];
-			this.iconNode = put("span.umcKeyboardIcon", {
+			var siblingNode = query('.umcTextBox__validationIcon', this.domNode)[0];
+			var iconNode = put("span.umcKeyboardIcon", {
 				title: _('Virtual keyboard')
 			});
-			touch.press(this.iconNode, lang.hitch(this, function() {
+			touch.press(iconNode, lang.hitch(this, function() {
 				popup.open({
 					parent: this,
 					popup: this.keyboard,
-					around: this.iconNode,
+					around: iconNode,
 					orient: ["below-centered"]
 				});
 			}));
-			put(siblingNode, '-', this.iconNode);
+			put(siblingNode, '-', iconNode);
 
 			var charNodes = put('div.umcKeyboardRow', {
 				innerHTML: _("Please click on the required character.")
