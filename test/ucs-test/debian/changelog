@@ -1,4 +1,4 @@
-ucs-test (9.0.7-4) unstable; urgency=medium
+ucs-test (9.0.7-5) unstable; urgency=medium
 
   *  Bug #52274: New, minimal test to test if the ucr var for max-file-descriptors works
 
