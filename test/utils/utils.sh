@@ -999,6 +999,14 @@ add_branch_repository () {
 	fi
 }
 
+add_ucsschool_dev_repo () {
+	local majorminor="$(ucr get version/version)"
+	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
+EOF
+}
+
 restart_services_bug_47762 ()
 {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47762
