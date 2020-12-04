@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
 version: [6,7]
-scope: ucs_4.4-0-errata4.4-6
+scope: ucs_4.4-0-errata4.4-7
 src: qemu
 fix: 1:2.8+dfsg-6+deb9u12A~4.4.7.202012011517
 desc: |
