@@ -27,7 +27,7 @@ prepare aptly:
   stage: build
   rules:
     - when: always
-  image: curlimages/curl
+  image: docker-registry.knut.univention.de/curlimages/curl
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
     - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
@@ -41,7 +41,7 @@ drop aptly:
   stage: build
   variables:
     GIT_STRATEGY: none
-  image: curlimages/curl
+  image: docker-registry.knut.univention.de/curlimages/curl
   script:
     - "curl --silent --show-error -X DELETE $APTLY/publish/$CI_COMMIT_REF_SLUG/git || :"
     - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
