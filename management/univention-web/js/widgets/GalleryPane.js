@@ -54,10 +54,11 @@ define([
 	"dijit/Destroyable",
 	"../tools",
 	"./Tooltip",
+	"./Button",
 	"dgrid/List",
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put"
-], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, touch, timing, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
+], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, touch, timing, Menu, MenuItem, Destroyable, tools, Tooltip, Button, List, DijitRegistry, put) {
 	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], /** @lends module:umc/widgets/GalleryPane# */ {
 		style: "",
 
@@ -400,8 +401,7 @@ define([
 				// if the text overflows the max height first put the name on 2 lines
 				if (domGeometry.position(inode).h > nameMaxHeight) {
 					domStyle.set(inode, {
-						fontSize: (nameMaxHeight / 2) + 'px',
-						lineHeight: '1'
+						fontSize: (nameMaxHeight / 2) + 'px'
 					});
 				}
 				// if the name still overflows the max height show ellipsis and
@@ -476,7 +476,7 @@ define([
 			var description = this.getItemDescription(item);
 			var iconClass = this.getIconClass(item);
 			if (this._contextMenu) {
-				put(div, 'div.umcGalleryContextIcon');
+				put(div, Button.simpleIconButtonNode('more-horizontal', 'umcGalleryContextIcon'));
 			}
 			if (item.is_link) {
 				div = domConstruct.create('a', {href: item.url, target: '_blank'}, div);
