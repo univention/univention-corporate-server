@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-ad-connector
-fix: 13.0.0-61A~4.4.0.202012011729
+fix: 13.0.0-62A~4.4.0.202012040949
 desc: |
  This update addresses the following issues:
  * The connector creates a temporary password before synchronizing
