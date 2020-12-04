@@ -86,7 +86,8 @@ password_charsets = [
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	'0123456789',
 	'^!\$%&/()=?{[]}+~#-_.:,;<>|\\',
-	]
+]
+
 
 def generate_strong_password(length=24):
 	pwd = []

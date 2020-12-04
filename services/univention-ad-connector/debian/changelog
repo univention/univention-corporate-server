@@ -1,4 +1,4 @@
-univention-ad-connector (13.0.0-61) unstable; urgency=medium
+univention-ad-connector (13.0.0-62) unstable; urgency=medium
 
   * Bug #52261: Set all values, if modtype is add, not just changed values
     Bug #52439: Create temporary password which is sufficient of mspasswordpolicy
