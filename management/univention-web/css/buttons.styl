@@ -91,7 +91,8 @@
 .ucsPrimaryButton,
 .ucsButton,
 .ucsTextButton,
-.ucsIconButton
+.ucsIconButton,
+.ucsSimpleIconButton
 	.featherIcon
 		width: var(--button-iconSize)
 		height: @width
@@ -101,10 +102,30 @@
 	.dijitButtonContents
 		padding: 0 1rem
 
+.ucsSimpleIconButton
+	--bgc: transparent
+	--bgc-state: transparent
+	--button-size: 2rem
+	--button-iconSize: 1rem
+	width: var(--button-size)
+	height: var(--button-size)
+	display: flex
+	align-items: center
+	justify-content: center
+	background-color: var(--bgc-state)
+	border-radius: var(--border-radius-circles)
+	transition: var(--button-bgc-transition)
+
+	&:hover,
+	&:focus
+		--bgc-state: var(--button-icon-bgc-overlay-hover)
+	&:active
+		--bgc-state: var(--button-icon-bgc-overlay-active)
+
 .ucsIconButton
 	--bgc: transparent
 	--bgc-state: transparent
-	&.dijit
+	&.dijitButton
 		&Hover,
 		&Focused
 			--bgc-state: var(--button-icon-bgc-overlay-hover)

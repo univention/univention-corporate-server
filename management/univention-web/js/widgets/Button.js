@@ -37,7 +37,7 @@ define([
 	"./Icon",
 	"put-selector/put"
 ], function(declare, lang, domClass, Button, Tooltip, Icon, put) {
-	return declare("umc.widgets.Button", [ Button ], {
+	var Button = declare("umc.widgets.Button", [ Button ], {
 		//// overwrites
 		iconClass: '',
 		_setIconClassAttr: function(iconClass) {
@@ -106,4 +106,20 @@ define([
 			}
 		}
 	});
+
+	Button.simpleIconButtonNode = function(iconName, claz) {
+		// performant rendering of a simple stateless IconButton
+		var buttonNode = document.createElement('span');
+		buttonNode.className = `ucsSimpleIconButton ${claz || ''}`;
+		var svgNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+		svgNode.className.baseVal = `featherIcon icon-${iconName}`;
+
+		var useNode = document.createElementNS("http://www.w3.org/2000/svg", "use");
+		useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `/univention/js/dijit/themes/umc/images/feather-sprite.svg#${iconName}`);
+		svgNode.appendChild(useNode);
+		buttonNode.appendChild(svgNode);
+		return buttonNode;
+	};
+
+	return Button;
 });
