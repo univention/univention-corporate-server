@@ -25,5 +25,5 @@ variables:
     DOCKER_DRIVER: overlay2
   tags:
     - docker
-  image: docker:stable
+  image: docker-registry.knut.univention.de/docker:stable
 
