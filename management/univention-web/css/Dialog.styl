@@ -34,6 +34,7 @@
 .umc .dijitDialog
 	material-shadow(5)
 	max-width: $dialog-max-width
+	border-radius: var(--border-radius-container)
 
 	@media (max-width: $dialog-max-width)
 		max-width: 100%
@@ -113,18 +114,32 @@
 .umc .dijitDialogPaneActionBar .dijitButton
 	float: none
 
+.umcDialogActionBar
+	background-color: var(--color-black)
+	display: flex
+	justify-content: space-between
+	border-top: thin solid var(--color-grey0)
+	padding: 8px 24px
+
+
 .umc .dijitDialogTitleBar
 	/* outer container for the titlebar of the dialog */
-	background-color: white
+	background-color: var(--color-black)
+	font-size: var(--font-size-header2)
 	padding: 24px 24px 19px 24px
+	display: flex
+	align-items: center
+
+	.dijitDialogCloseIcon
+		margin-left: auto
 
 
 .umc .dijitDialogTitle
 	/* typography and styling of the dialog title */
 	font-size: $font-size-title
-	font-weight: 500
+	font-weight: 600
 	line-height: 28px
-	color: $text-color
+	color: var(--font-color-contrast-high)
 
 .umc .dijitDialogUnderlay
 	background: $dialog-underlay-color
