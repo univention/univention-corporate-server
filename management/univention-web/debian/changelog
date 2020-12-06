@@ -1,3 +1,9 @@
+univention-web (4.0.0-6) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - Dialog
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Dec 2020 00:05:07 +0100
+
 univention-web (4.0.0-5) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adopt new design
