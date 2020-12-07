@@ -34,7 +34,7 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojo/on",
-	"dijit/form/ToggleButton",
+	"umc/widgets/ToggleButton",
 	"umc/widgets/TextBox",
 	"umc/widgets/_FormWidgetMixin",
 	"put-selector/put"
@@ -57,13 +57,13 @@ define([
 
 			if (this.showRevealToggle) {
 				var revealToggle = new ToggleButton({
-					iconClass: 'umcEyeIcon',
-					'class': 'umcPasswordBox__revealToggle umcFlatButton umcIconButton--aligned-to-textfield',
+					iconClass: 'eye',
+					checkedIconClass: 'eye-off',
+					'class': 'ucsIconButton',
 					tabindex: '-1'
 				});
 				revealToggle.placeAt(this, 'first');
 				on(revealToggle, 'change', lang.hitch(this, function(checked) {
-					revealToggle.set('iconClass', checked ? 'umcEyeCrossedOutIcon' : 'umcEyeIcon');
 					this.set('type', checked ? 'text' : 'password');
 				}));
 			}

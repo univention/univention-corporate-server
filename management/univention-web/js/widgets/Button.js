@@ -32,16 +32,29 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dijit/form/Button",
 	"dijit/Tooltip",
 	"./Icon",
 	"put-selector/put"
-], function(declare, lang, domClass, Button, Tooltip, Icon, put) {
+], function(declare, lang, domClass, domConstruct, Button, Tooltip, Icon, put) {
 	var Button = declare("umc.widgets.Button", [ Button ], {
 		//// overwrites
 		iconClass: '',
 		_setIconClassAttr: function(iconClass) {
-			this._icon.set('iconName', iconClass);
+			if (iconClass) {
+				if (this.iconNode) {
+					Icon.setIconOfNode(this.iconNode, iconClass);
+				} else {
+					this.iconNode = Icon.createNode(iconClass);
+					domConstruct.place(this.iconNode, this.titleNode, 'first');
+				}
+			} else {
+				if (this.iconNode) {
+					this.iconNode.remove();
+					this.iconNode = null;
+				}
+			}
 			this._set('iconClass', iconClass);
 		},
 
@@ -89,9 +102,8 @@ define([
 		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
-			this._icon = new Icon({});
-			put(this.iconNode /* from dijit/form/templates/Button.html */, '+', this._icon.domNode);
 			put(this.iconNode, '!');
+			this.iconNode = null;
 		},
 
 		postCreate: function() {
@@ -111,12 +123,9 @@ define([
 		// performant rendering of a simple stateless IconButton
 		var buttonNode = document.createElement('span');
 		buttonNode.className = `ucsSimpleIconButton ${claz || ''}`;
-		var svgNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-		svgNode.className.baseVal = `featherIcon icon-${iconName}`;
 
-		var useNode = document.createElementNS("http://www.w3.org/2000/svg", "use");
-		useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `/univention/js/dijit/themes/umc/images/feather-sprite.svg#${iconName}`);
-		svgNode.appendChild(useNode);
+		var svgNode = Icon.createNode(iconName);
+
 		buttonNode.appendChild(svgNode);
 		return buttonNode;
 	};

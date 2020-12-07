@@ -34,8 +34,9 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin"
 ], function(declare, domClass, _WidgetBase, _TemplatedMixin) {
-	return declare("umc.widgets.Icon", [_WidgetBase, _TemplatedMixin], {
-		_SVG_SPRITE_PATH: '/univention/js/dijit/themes/umc/images/feather-sprite.svg',
+	var SVG_SPRITE_PATH = '/univention/js/dijit/themes/umc/images/feather-sprite.svg';
+	var Icon = declare("umc.widgets.Icon", [_WidgetBase, _TemplatedMixin], {
+		_SVG_SPRITE_PATH: SVG_SPRITE_PATH,
 
 		templateString: '' +
 			'<svg class="featherIcon dijitDisplayNone" xmlns="http://www.w3.org/2000/svg">' +
@@ -68,4 +69,40 @@ define([
 			}
 		}
 	});
+
+	Icon.createNode = function(iconName, claz) {
+		// performant rendering of a stateless Icon node
+		var svgNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		var className = 'featherIcon';
+		if (iconName) {
+			className += ` icon-${iconName}`;
+			svgNode.setAttribute('data-iconName', iconName);
+		}
+		if (claz) {
+			className += ` ${claz}`;
+		}
+		svgNode.className.baseVal = className;
+
+		var useNode = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+		useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${SVG_SPRITE_PATH}#${iconName || ''}`);
+
+		svgNode.appendChild(useNode);
+		return svgNode;
+	};
+
+	Icon.setIconOfNode = function(node, iconName) {
+		var lastIconName = node.getAttribute('data-iconName');
+		if (lastIconName) {
+			node.classList.remove(`icon-${lastIconName}`);
+		}
+		if (iconName) {
+			node.setAttribute('data-iconName', iconName);
+			node.classList.add(`icon-${iconName}`);
+		} else {
+			node.removeAttribute('data-iconName');
+		}
+		node.firstChild.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${SVG_SPRITE_PATH}#${iconName || ''}`);
+	};
+
+	return Icon;
 });

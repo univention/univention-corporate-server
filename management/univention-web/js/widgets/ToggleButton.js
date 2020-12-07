@@ -31,29 +31,46 @@
 define([
 	"dojo/_base/declare",
 	"dojo/dom-construct",
-	"dijit/form/DropDownButton",
+	"dijit/form/ToggleButton",
 	"./Icon",
 	"put-selector/put"
-], function(declare, domConstruct, DropDownButton, Icon, put) {
-	return declare("umc.widgets.DropDownButton", [ DropDownButton ], {
+], function(declare, domConstruct, ToggleButton, Icon, put) {
+	return declare("umc.widgets.ToggleButton", [ ToggleButton ], {
 		//// overwrites
-		iconClass: 'more-horizontal',
+		iconClass: '',
 		_setIconClassAttr: function(iconClass) {
 			if (iconClass) {
 				if (this.iconNode) {
 					Icon.setIconOfNode(this.iconNode, iconClass);
 				} else {
-					this.iconNode = Icon.createNode(iconClass);
+					this.iconNode = Icon.createNode(iconClass, 'umcToggleButton__icon umcToggleButton__icon--notchecked');
 					domConstruct.place(this.iconNode, this.titleNode, 'first');
 				}
 			} else {
 				if (this.iconNode) {
-					this.iconNode.remove();
+					iconNode.remove();
 					this.iconNode = null;
 				}
 			}
 			this._set('iconClass', iconClass);
 		},
+
+		_setCheckedAttr: function(checked) {
+			if (this.checkedIconClass) {
+				if (checked) {
+					this._beforeCheckedIconClass = this.iconClass || '';
+					this.set('iconClass', this.checkedIconClass);
+				} else {
+					this.set('iconClass', this._beforeCheckedIconClass);
+				}
+			}
+			this.inherited(arguments);
+		},
+
+
+		//// self
+		_beforeCheckedIconClass: '',
+		checkedIconClass: '',
 
 
 		//// lifecycle
@@ -64,3 +81,4 @@ define([
 		}
 	});
 });
+

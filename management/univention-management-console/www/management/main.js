@@ -1531,7 +1531,8 @@ define([
 				});
 
 				// add a node to the button for the colored circle
-				put(button._icon.domNode, '-div.umcCategoryButtonCircleWrapper div.circle + div.dijitIcon.$', iconClass);
+				var circleNode = put('div.umcCategoryButtonCircleWrapper div.circle + div.dijitIcon.$ <', iconClass);
+				domConstruct.place(circleNode, button.titleNode, 'first');
 				styles.insertCssRule(lang.replace('.umcCategory-{id} .umcCategoryButtonCircleWrapper .circle', category), lang.replace('background-color: {0};', [color]));
 
 				category._button = button;
