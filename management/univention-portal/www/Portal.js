@@ -55,16 +55,15 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
-	"dijit/form/Button", // TODO put in umc/widgets
-	"dijit/form/ToggleButton", // TODO put in umc/widgets
 	"dijit/DropDownMenu",
 	"dijit/MenuItem",
-	"dijit/form/DropDownButton",
 	"dijit/a11yclick",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/Button",
+	"umc/widgets/ToggleButton",
 	"umc/menu",
 	"umc/store",
 	"umc/dialog",
@@ -91,10 +90,11 @@ define([
 	"./NotificationsButton",
 	"./Menu",
 ], function(
-	declare, lang, array, Deferred, domStyle, domClass, domConstruct, domAttr, when, aspect, on, onDebounce, debounce, mouse, query, topic, ioQuery, regexp,
-	Source, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Button, ToggleButton, DropDownMenu, MenuItem,
-	DropDownButton, a11yclick, Text, TextBox, ContainerWidget, ConfirmDialog, menu, store, dialog, render, tools, i18nTools,
-	put, PortalEntryWizard, AppTile, PortalPropertiesButton, Dialog, CategoryPropertiesDialog, FolderPropertiesDialog, AddCategoryButton, AddEntryButton, portalLinks, properties,
+	declare, lang, array, Deferred, domStyle, domClass, domConstruct, domAttr, when, aspect, on, onDebounce, debounce,
+	mouse, query, topic, ioQuery, regexp, Source, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
+	DropDownMenu, MenuItem, a11yclick, Text, TextBox, ContainerWidget, ConfirmDialog, Button, ToggleButton,
+	menu, store, dialog, render, tools, i18nTools, put, PortalEntryWizard, AppTile, PortalPropertiesButton, Dialog,
+	CategoryPropertiesDialog, FolderPropertiesDialog, AddCategoryButton, AddEntryButton, portalLinks, properties,
 	portalContent, login, _
 ) {
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
@@ -187,10 +187,10 @@ define([
 						></button>
 						<button
 							class="ucsIconButton"
-							data-dojo-type="dijit/form/ToggleButton"
+							data-dojo-type="umc/widgets/ToggleButton"
 							data-dojo-attach-point="toggleSearchButton"
 							data-dojo-props="
-								iconClass: 'iconSearch',
+								iconClass: 'search',
 								showLabel: false
 							"
 						></button>
@@ -200,10 +200,10 @@ define([
 						></button>
 						<button
 							class="ucsIconButton"
-							data-dojo-type="dijit/form/ToggleButton"
+							data-dojo-type="umc/widgets/ToggleButton"
 							data-dojo-attach-point="toggleMenuButton"
 							data-dojo-props="
-								iconClass: 'iconMenu',
+								iconClass: 'menu',
 								showLabel: false
 							"
 						></button>
@@ -314,7 +314,7 @@ define([
 				container.addChild(this.portalPropertiesButton);
 				container.addChild(new Button({
 					'class': 'ucsIconButton',
-					iconClass: 'iconX',
+					iconClass: 'x',
 					showLabel: false,
 					onClick: () => {
 						this.leaveEditMode();

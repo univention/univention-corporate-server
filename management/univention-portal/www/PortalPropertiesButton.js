@@ -45,10 +45,10 @@ define([
 	"dijit/_WidgetsInTemplateMixin",
 	"dijit/focus",
 	"dijit/a11y",
-	"dijit/form/Button",
-	"dijit/form/ToggleButton",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Form",
+	"umc/widgets/Button",
+	"umc/widgets/ToggleButton",
 	"umc/store",
 	"umc/render",
 	"umc/tools",
@@ -61,8 +61,8 @@ define([
 	"umc/i18n!portal",
 ], function(
 	declare, array, lang, domClass, on, when, Deferred, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
-	dijitFocus, a11y, Button, ToggleButton, ContainerWidget, Form, store, render, tools, dialog, i18nTools, put, standby,
-	portalContent, properties, _
+	dijitFocus, a11y, ContainerWidget, Form, Button, ToggleButton, store, render, tools, dialog, i18nTools, put,
+	standby, portalContent, properties, _
 ) {
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
 	var PortalPropertiesForm = declare("PortalPropertiesForm", [Form], {
@@ -298,9 +298,9 @@ define([
 				<div class="portalProperties__saveButtonWrapper">
 					<button
 						class="portalSidebarButton ucsPrimaryButton"
-						data-dojo-type="dijit/form/Button"
+						data-dojo-type="umc/widgets/Button"
 						data-dojo-props="
-							iconClass: 'iconSave',
+							iconClass: 'save',
 							label: this._saveLabel,
 							disabled: true,
 						"
@@ -356,7 +356,7 @@ define([
 
 	return declare("PortalPropertiesButton", [ToggleButton], {
 		showLabel: false,
-		iconClass: 'iconGear',
+		iconClass: 'settings',
 
 		buildRendering: function() {
 			this.inherited(arguments);

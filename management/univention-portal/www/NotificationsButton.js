@@ -41,15 +41,15 @@ define([
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"dijit/form/Button",
-	"dijit/form/ToggleButton",
 	"dijit/layout/ContentPane",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/ToggleButton",
 	"umc/tools",
 	"./portalContent",
 	"umc/i18n!portal"
 ], function(
-	declare, lang, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Button, ToggleButton,
-	ContentPane, ContainerWidget, tools, portalContent, _
+	declare, lang, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Button, ContentPane,
+	ContainerWidget, ToggleButton, tools, portalContent, _
 ) {
 	var Notification = declare("Notification", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
@@ -267,7 +267,7 @@ define([
 
 	return declare("NotificationsButton", [ToggleButton], {
 		showLabel: false,
-		iconClass: 'iconBell',
+		iconClass: 'bell',
 
 		buildRendering: function() {
 			this.inherited(arguments);
