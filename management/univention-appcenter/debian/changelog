@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-136) unstable; urgency=medium
+
+  * Bug #52456: removed unnecessary second pull during upgrade
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Dec 2020 09:58:19 +0100
+
 univention-appcenter (8.0.11-137) unstable; urgency=medium
 
   * Bug #52429: As preparation to the UCS-5 release the UDM extensions,
