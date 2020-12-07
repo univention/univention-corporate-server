@@ -387,9 +387,12 @@ class User(object):
 		return False
 
 	def reset_timeout(self):
-		notifier.timer_remove(self._timeout_id)
+		self.disconnect_timer()
 		self._timeout = monotonic() + _session_timeout
 		self._timeout_id = notifier.timer_add(int(self.session_end_time - monotonic()) * 1000, self._session_timeout_timer)
+
+	def disconnect_timer(self):
+		notifier.timer_remove(self._timeout_id)
 
 	def timed_out(self, now):
 		return self.session_end_time < now
@@ -408,7 +411,7 @@ class User(object):
 		return self.password is None and self.saml
 
 	def on_logout(self):
-		notifier.timer_remove(self._timeout_id)
+		self.disconnect_timer()
 		if SAML.SP and self.saml:
 			SAML.SP.local_logout(decode_name_id(self.saml.name_id))
 
@@ -693,7 +696,8 @@ class Ressource(object):
 
 	def set_session(self, sessionid, username, password=None, saml=None):
 		olduser = self.get_user()
-
+		if olduser:
+			olduser.disconnect_timer()
 		user = User(sessionid, username, password, saml or olduser and olduser.saml)
 		self.sessions[sessionid] = user
 		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
