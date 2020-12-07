@@ -1,4 +1,4 @@
-univention-appcenter (8.0.11-136) unstable; urgency=medium
+univention-appcenter (8.0.11-138) unstable; urgency=medium
 
   * Bug #52456: removed unnecessary second pull during upgrade
 
