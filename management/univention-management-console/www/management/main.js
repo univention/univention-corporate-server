@@ -823,8 +823,8 @@ define([
 
 		setupBackToOverview: function() {
 			this._backToOverviewButton = new Button({
-				'class': 'umcBackToOverview umcFlatButton',
-				iconClass: 'umcBackToOverview__icon',
+				'class': 'umcBackToOverviewButton ucsIconButton',
+				iconClass: 'home',
 				onClick: function() {
 					require('umc/app').switchToOverview();
 				}
@@ -937,6 +937,33 @@ define([
 		}
 	});
 
+	var TabButton = declare([TabController.TabButton], {
+		//// overwrites
+		cssStateNodes: {
+			closeNode: 'umcModuleTab__closeButton'
+		},
+
+
+		//// lifecycle
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcModuleTab');
+
+			var backgroundNode = put('div.umcModuleTab__background');
+			domConstruct.place(backgroundNode, this.domNode, 'first');
+			var nodeLeft = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--left" viewBox="0 0 100 100"><path d="M0,100 L100,100 L100,0 Q 85 85 0 100 z" /></svg>');
+			domConstruct.place(nodeLeft, backgroundNode);
+
+			var nodeRight = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--right" viewBox="0 0 100 100"><path d="M0,0 Q 15 85 100 100  L 0,100 z" /></svg>');
+			domConstruct.place(nodeRight, backgroundNode);
+
+			var closeButtonNode = Button.simpleIconButtonNode('x', 'umcModuleTab__closeButton');
+			put(this.closeNode, '+', closeButtonNode);
+			put(this.closeNode, '!');
+			this.closeNode = closeButtonNode;
+		}
+	});
+
 	var app = new declare([Evented], {
 		start: function(/*Object*/ props) {
 			// summary:
@@ -1016,8 +1043,10 @@ define([
 
 			// the tab bar
 			this._tabController = new TabController({
-				'class': 'umcMainTabController dijitTabContainer dijitTabContainerTop-tabs dijitDisplayNone',
-				containerId: this._tabContainer.id
+				'class': 'umcMainTabController dijitDisplayNone',
+				containerId: this._tabContainer.id,
+				buttonWidget: TabButton,
+				buttonWidgetCloseClass: 'umcModuleTab__closeButton'
 			});
 
 			// the header
@@ -1740,8 +1769,8 @@ define([
 
 			// color module tabs
 			styles.insertCssRule(
-				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked, .umc .umcModuleTab-{0}.dijitTabHover, .umc .umcModuleTab-{0}.dijitTabActive', [module_flavor_css]),
-				lang.replace('background-color: {0} !important;', [dijitTabColor])
+				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked .umcModuleTab__background, .umc .umcModuleTab-{0}.dijitTabHover .umcModuleTab__background, .umc .umcModuleTab-{0}.dijitTabActive .umcModuleTab__background', [module_flavor_css]),
+				lang.replace('--tabColor: {0} !important;', [dijitTabColor])
 			);
 		},
 

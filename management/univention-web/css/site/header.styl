@@ -1,4 +1,4 @@
-@import "../variables"
+@require "../variables"
 
 @keyframes shake {
 	10%, 90% {
@@ -16,117 +16,105 @@
 
 headerHeight = 48px
 .umc .umcHeader
-	min-height: headerHeight
+	background-color: var(--color-grey0)
+	height: var(--layout-height-header)
 	position: relative
 	padding: 0
 	overflow: hidden
+	display: flex
+	align-items: center
 
-	.dijitTextBox
-		background-color: transparent
+	.umcBackToOverviewButton
+		--button-size: var(--layout-height-header)
+		border-radius: 0
 
-	/* do not treat formatted elements differently */
-	.dijitButtonText *
-		vertical-align: baseline
-
-	.umcBackToOverview
-		float: left
-		margin: 0
-
-		.dijitIcon
-			background-image: url('../images/home-white.svg')
-			background-repeat: no-repeat
-			background-position: center center
-			width: material-grid(7)
-			height: headerHeight
-			margin: 0
-
-	.umcMainTabController
-		background: transparent
-		float: left
-
-		.dijitTab
-			display: inline-flex
-			align-items: center
-			height: headerHeight
-			transition: background-color 0.2s, color 0.2s
-			color: #fff
-			margin: 0
-			padding: 0
-			background: none
-			min-width: 0
-			box-shadow: none
-
-			.tabLabel
-				padding: 0 0 0 material-grid(2)
-				text-transform: uppercase
-				font-weight: 500
-				font-size: $font-size-button
-				max-width: 264px
-				overflow: hidden
-				text-overflow: ellipsis
-
-			.dijitTabCloseButton
-				background: none
-				height: 100%
-				width: 32px
-				position: relative
-				top: 0
-				right: 0
-				margin: 0
-				cursor: pointer
-				display: flex
-				align-items: center
-				justify-content: center
-
-				&:before
-					content: ''
-					display: block
-					border-radius: 100%
-					background-color: rgba(0, 0, 0, 0.1)
-					position: absolute
-					height: 24px
-					width: 24px
-					opacity: 0
-				&Hover:before
-					opacity: 1
-
-				&:after
-					content: ''
-					display: block
-					opacity: 0
-					transition: opacity 0.2s
-					icon-image(-240, -80, '../', '-white')
-
-			&.dijitTabChecked
-				&:after
-					content: ''
-					display: block
-					position: absolute
-					bottom: 0
-					left: 0
-					right: 0
-					height: material-grid(1, true)
-					background-color: white
-
+	$moduleTabBGCTransitionDur = 250ms
+	.umcModuleTab
+		display: inline-flex
+		align-items: center
+		padding: 0
+		height: 100%
+		--tabColor: transparent
+		--seperatorColor: var(--color-grey8)
+		&.contrastDark
 			&.dijitTabChecked,
 			&.dijitTabActive,
 			&.dijitTabHover
-				.dijitTabCloseButton:after
-					opacity: 1
+				color: var(--font-color-dark)
 
-			&.contrastDark
-				&.dijitTabChecked,
-				&.dijitTabActive,
-				&.dijitTabHover
-					color: $material-text-dark-high
+		&.dijit
+			&Hover,
+			&Focused
+				// --tabColor: rgba(255, 255, 255, 0.04)
+				--tabColor: #272726
+				z-index: 1
+			&Checked
+				--tabColor: var(--color-grey8)
+				z-index: 2
 
-				.dijitTabCloseButton:after
-					icon-image(-240, -80, '../')
+		&:before,
+		&:after
+			content: ''
+			display: block
+			height: 1.2rem
+			width: 1px
+			background: var(--color-grey8)
+			position: absolute
+			z-index: -2
+		&:before
+			left: 0
+		&:after
+			right: 0
+
+		.tabLabel
+			outline: none
+
+	.umcModuleTab__closeButton
+		--button-size: 1.2rem
+		--button-iconSize: 0.9rem
+		--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
+		--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.08)
+		margin: 0 0.3rem 0 0.5rem
+		.featherIcon
+			transition: none
+
+	.umcModuleTab__background__svg
+		position: absolute
+		bottom: 0
+		height: 12px
+		width: 12px
+		fill: currentColor
+		color: var(--tabColor)
+		transition: color $moduleTabBGCTransitionDur
+
+		&--left
+			left: -@width
+		&--right
+			right: -@width
+
+	.umcModuleTab__background
+		transition: background-color $moduleTabBGCTransitionDur
+		position: absolute
+		top: 10px
+		right: 0px
+		bottom: 0
+		left: 0px
+		border-radius: 8px 8px 0 0
+		background-color: var(--tabColor)
+		z-index: -1
+
+	.umcModuleTab .tabLabel
+		margin: 0 0 0 0.5rem
+		font-size: var(--font-size-small)
+		max-width: 264px
+		overflow: hidden
+		text-overflow: ellipsis
 
 
+	.umcMainTabController
+		height: 100%
 
 	.umcMoreTabsDropDownButton
-		float: left
 		width: 30px
 		height: 100%
 		margin: 0
@@ -243,28 +231,6 @@ headerHeight = 48px
 			@media (max-width: 650px)
 				background-image: url(../images/univention_u.svg)
 				width: 30px
-
-	.dijitButton,
-	.dijitDropDownButton
-		margin: 0
-		.dijitButtonNode
-			border-radius: 0
-			height: headerHeight
-			padding: 0
-
-.umc
-	&.umcOverviewShown .umcHeader
-		.umcBackToOverview
-			position: relative
-			&:after
-				content: ''
-				display: block
-				position: absolute
-				bottom: 0
-				left: 0
-				right: 0
-				height: material-grid(1, true)
-				background-color: #fff
 
 /* more tabs drop down menu */
 .umc .umcMoreTabsMenuPopupWrapper
@@ -671,10 +637,6 @@ headerHeight = 48px
 				transform: translate3d(0, -7px, 0) rotate(-45deg)
 
 .umc .umcHeader--umc
-	background-color: #6e6e6e
-	material-shadow(1)
-	z-index: 2
-
 	.umcMainTabController
 		background: inherit
 

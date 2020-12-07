@@ -1,7 +1,7 @@
 // Special style for sites where the page itself should not scroll
 // but only the components of the site e.g. Tree widgets.
 
-@import "variables"
+@require "variables"
 
 #umcTopContainer
 	position: absolute
@@ -18,7 +18,7 @@
 
 .umcMainTabContainer
 	position: absolute
-	top: 48px
+	top: var(--layout-height-header)
 	bottom: 0
 	left: 0
 	right: 0

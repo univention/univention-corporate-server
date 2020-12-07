@@ -36,7 +36,7 @@ define([
 	"dijit/layout/TabController",
 	"umc/i18n!"
 ], function(declare, lang, array, domClass, TabController, _) {
-	return declare("umc.widgets.TabController", [TabController], {
+	var _TabController =  declare("umc.widgets.TabController", [TabController], {
 		setVisibilityOfChild: function(child, visible) {
 			array.forEach(this.getChildren(), lang.hitch(this, function(ibutton) {
 				if (ibutton.page == child) {
@@ -54,4 +54,6 @@ define([
 			this.setVisibilityOfChild(child, true);
 		}
 	});
+	_TabController.TabButton = TabController.TabButton;
+	return _TabController;
 });
