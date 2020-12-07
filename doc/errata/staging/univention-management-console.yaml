@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-management-console
-fix: 
+fix: 11.0.5-25A~4.4.0.202012080011
 desc: |
  This update addresses the following issue(s):
  * The UMC-Server is now multiprocessing capable.

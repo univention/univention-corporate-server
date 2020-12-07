@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python-notifier
+fix: 0.9.7-8A~4.4.0.202012011529
+desc: |
+ This update addresses the following issue(s):
+ * The timer is now using a monotonic clock so that system time adjustments
+   do not affect the timer execution.
+bug: [52273]
