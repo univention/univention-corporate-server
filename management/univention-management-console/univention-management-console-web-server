@@ -1640,6 +1640,10 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			CORE.info('stopping cherrypy: %s' % (exc,))
 			cherrypy.engine.exit()
 			CORE.info('cherrypy stopped')
+		except BaseException:
+			CORE.error('FATAL error: %s' % (traceback.format_exc(),))
+			cherrypy.engine.exit()
+			raise
 
 
 if __name__ == '__main__':
