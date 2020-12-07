@@ -1,3 +1,12 @@
+univention-management-console (11.0.5-25) unstable; urgency=medium
+
+  * Bug #52273: handle exception when SAML session does not exists
+  * Bug #52273: fix duplicated timer execution
+  * Bug #52273: stop cherrypy correctly when exception in notifier loop
+    happens
+
+ -- Florian Best <best@univention.de>  Tue, 08 Dec 2020 00:05:00 +0100
+
 univention-management-console (11.0.5-24) unstable; urgency=medium
 
   * Bug #52371: make UMC-Server multiprocessing capable
