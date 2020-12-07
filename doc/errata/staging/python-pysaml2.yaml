@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python-pysaml2
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The memory consumption has been optimized.
+bug: [52466]
