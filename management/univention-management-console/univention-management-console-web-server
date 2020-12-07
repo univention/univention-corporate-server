@@ -416,7 +416,10 @@ class User(object):
 	def on_logout(self):
 		self.disconnect_timer()
 		if SAML.SP and self.saml:
-			SAML.SP.local_logout(decode_name_id(self.saml.name_id))
+			try:
+				SAML.SP.local_logout(decode_name_id(self.saml.name_id))
+			except Exception as exc:  # e.g. bsddb.DBNotFoundError
+				CORE.warn('Could not remove SAML session: %s' % (exc,))
 
 	def get_umc_password(self):
 		if self.is_saml_user():
