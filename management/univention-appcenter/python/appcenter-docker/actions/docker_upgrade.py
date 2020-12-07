@@ -181,6 +181,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		ucr_save({app.ucr_image_key: None})
 		old_configure = args.configure
 		args.configure = False
+		args.pull_image = False
 		self._install_new_app(app, args)
 		self._update_converter_service(app)
 		args.configure = old_configure
