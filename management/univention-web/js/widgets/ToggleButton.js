@@ -30,11 +30,12 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dijit/form/ToggleButton",
 	"./Icon",
 	"put-selector/put"
-], function(declare, domConstruct, ToggleButton, Icon, put) {
+], function(declare, domClass, domConstruct, ToggleButton, Icon, put) {
 	return declare("umc.widgets.ToggleButton", [ ToggleButton ], {
 		//// overwrites
 		iconClass: '',
@@ -76,6 +77,7 @@ define([
 		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'ucsButton');
 			put(this.iconNode, '!');
 			this.iconNode = null;
 		}

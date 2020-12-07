@@ -183,7 +183,7 @@ define([
 			child._headerButtons = null;
 			if (headerButtons && headerButtons.length) {
 				headerButtons = array.map(headerButtons, function(headerButton) {
-					headerButton.class = (headerButton.class || '') + ' ucsButton';
+					headerButton.class = (headerButton.class || '') + ' ucsNormalButton';
 					return headerButton;
 				});
 				var container = new ContainerWidget({

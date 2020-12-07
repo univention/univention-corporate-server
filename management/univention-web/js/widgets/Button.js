@@ -102,6 +102,7 @@ define([
 		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'ucsButton');
 			put(this.iconNode, '!');
 			this.iconNode = null;
 		},
@@ -110,7 +111,7 @@ define([
 			this.inherited(arguments);
 
 			if (this.defaultButton) {
-				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsButton');
+				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsNormalButton');
 			}
 
 			if (typeof this.callback === "function") {

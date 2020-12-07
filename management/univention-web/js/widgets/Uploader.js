@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojox/form/Uploader",
 	"dijit/Tooltip",
@@ -45,13 +46,26 @@ define([
 	"umc/widgets/Icon",
 	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, when, domClass, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button,
-		_FormWidgetMixin, Icon, put, _) {
+], function(declare, lang, array, when, domClass, domConstruct, style, Uploader, Tooltip, tools, dialog,
+		ContainerWidget, Button, _FormWidgetMixin, Icon, put, _) {
 
 	var _Uploader = declare([Uploader], {
 		//// overwrites
+		iconClass: '',
 		_setIconClassAttr: function(iconClass) {
-			this._icon.set('iconName', iconClass);
+			if (iconClass) {
+				if (this.iconNode) {
+					Icon.setIconOfNode(this.iconNode, iconClass);
+				} else {
+					this.iconNode = Icon.createNode(iconClass);
+					domConstruct.place(this.iconNode, this.titleNode, 'first');
+				}
+			} else {
+				if (this.iconNode) {
+					this.iconNode.remove();
+					this.iconNode = null;
+				}
+			}
 			this._set('iconClass', iconClass);
 		},
 
@@ -59,9 +73,9 @@ define([
 		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
-			this._icon = new Icon({});
-			put(this.iconNode /* from dojox/form/resources/Uploader.html */, '+', this._icon.domNode);
+			domClass.add(this.domNode, 'ucsButton');
 			put(this.iconNode, '!');
+			this.iconNode = null;
 		}
 	});
 

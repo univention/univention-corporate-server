@@ -1,9 +1,7 @@
 @require "icons.styl"
 
 //// overarching button styling
-.dijitButton,
-.dijitDropDownButton,
-.dijitToggleButton
+.ucsButton
 	--bgc: transparent
 	--bgc-state: transparent
 	--button-size: 2rem
@@ -41,7 +39,7 @@
 	display: none
 
 //// button types
-.ucsButton
+.ucsNormalButton
 	--bgc: var(--button-bgc)
 	--bgc-state: transparent
 	&.dijit
@@ -84,17 +82,17 @@
 		padding: 0 0.5rem
 
 .ucsPrimaryButton,
-.ucsButton
+.ucsNormalButton
 	box-shadow: var(--box-shadow)
 
 .ucsPrimaryButton,
-.ucsButton,
+.ucsNormalButton,
 .ucsTextButton
 	.featherIcon
 		margin-right: 0.4rem
 
 .ucsPrimaryButton,
-.ucsButton,
+.ucsNormalButton,
 .ucsTextButton,
 .ucsIconButton,
 .ucsSimpleIconButton
@@ -103,7 +101,7 @@
 		height: @width
 
 .ucsPrimaryButton,
-.ucsButton
+.ucsNormalButton
 	.dijitButtonContents
 		padding: 0 1rem
 
@@ -114,6 +112,7 @@
 	--button-iconSize: 1rem
 	width: var(--button-size)
 	height: var(--button-size)
+	cursor: pointer
 	display: flex
 	align-items: center
 	justify-content: center
@@ -142,8 +141,6 @@
 			opacity: 0.4
 
 	border-radius: var(--border-radius-circles)
-	.dijitButtonNode
-		border-radius: var(--border-radius-circles)
 
 	.dijitButtonContents
 		width: var(--button-size)
@@ -155,5 +152,5 @@
 	cursor: pointer
 
 
-.dijitButton:not(.ucsButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.umcCategoryButton)
-	@extends .ucsButton
+.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.umcCategoryButton)
+	@extends .ucsNormalButton
