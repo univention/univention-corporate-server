@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-appcenter
+fix: 8.0.11-138A~4.4.0.202012071004
+desc: |
+ This update addresses the following issue(s):
+ * To reduce the risk of problems during the upgrade of apps an
+   unnecessary second docker.pull call has been removed.
+bug: [52456]
