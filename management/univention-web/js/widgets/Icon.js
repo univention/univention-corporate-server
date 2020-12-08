@@ -39,7 +39,7 @@ define([
 		_SVG_SPRITE_PATH: SVG_SPRITE_PATH,
 
 		templateString: '' +
-			'<svg class="featherIcon dijitDisplayNone" xmlns="http://www.w3.org/2000/svg">' +
+			'<svg class="featherIcon dijitDisplayNone" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
 				'<use ' +
 					'data-dojo-attach-point="useNode" ' +
 					'xlink:href="${_SVG_SPRITE_PATH}" ' +

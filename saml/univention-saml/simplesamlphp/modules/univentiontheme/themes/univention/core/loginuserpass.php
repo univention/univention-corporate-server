@@ -107,7 +107,7 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 ?>
 								<button class="umcLoginFormButton" type="submit" name="submit">
 									<div class="umcLoginFormButton__background"></div>
-									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg">
+									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 										<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />
 									</svg>
 									<span class="umcLoginFormButton__label"><?php echo htmlspecialchars($this->t('{login:login_button}'), ENT_QUOTES); ?></span>

@@ -32,7 +32,7 @@ class SamlLoginError(SamlError):
 		super(SamlLoginError, self).__init__(message)
 
 	def __new__(cls, saml):
-		message = saml.xpath('p[@class="umcLoginWarning"]') or saml.xpath('p[@id="umcLoginNotices"]')
+		message = saml.xpath('div[@id="umcLoginNotices"]')
 		if message is not None:
 			message = message.text.strip()
 		errors = {
