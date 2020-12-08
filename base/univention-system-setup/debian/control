@@ -97,6 +97,32 @@ Description: Starting univention-system-setup on next boot
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
+Package: di-univention-system-setup
+Package-Type: udeb
+Architecture: any
+Section: debian-installer
+Priority: standard
+XB-Subarchitecture: ${subarch}
+Provides:
+ configured-ucs,
+Depends:
+ bootable-system,
+ cdebconf-udeb,
+ created-fstab,
+ di-utils,
+ installed-base,
+ kernel-installer,
+ ${misc:Depends},
+XB-Installer-Menu-Item: 7650
+Description: Configure Univention System Setup
+ This package is used to configure Univention System Setup in boot mode from
+ the Debian based UCS installer.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
 Package: univention-management-console-module-setup
 Architecture: all
 Depends:
