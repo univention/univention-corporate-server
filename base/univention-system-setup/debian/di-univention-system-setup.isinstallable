@@ -1,4 +1,6 @@
-#!/usr/bin/make -f
+#!/bin/sh
+#
+# Debian-Installer Univention System Setup
 #
 # Copyright 2014-2020 Univention GmbH
 #
@@ -26,27 +28,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+. /usr/share/debconf/confmodule
 
-.PHONY: build install clean
-
-#INITIALSETUP_DE_JSON := usr/share/univention-system-setup-boot/www/i18n/de/initialsetup.json
-STYL_FILES := $(shell find usr/share -name '*.styl')
-CSS_FILES := $(STYL_FILES:.styl=.css)
-
-build: get-volume-set-identifier $(CSS_FILES)
-
-clean:
-	$(RM) -f $(CSS_FILES)
-	$(RM) -f umc/js/*.json
-
-install: build
-	@echo "Nothing to install"
-
-%.css: %.styl
-	stylus "$<"
-
-%.json: %.po
-	dh-umc-po2json "$<"
-
-get-volume-set-identifier: get-volume-set-identifier.c
-	gcc -std=c11 -O3 -Wall -Wextra -Wconversion $< -o $@
+exit 0

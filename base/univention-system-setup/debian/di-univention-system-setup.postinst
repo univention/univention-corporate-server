@@ -1,4 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
+#
+# Debian-Installer Univention System Setup
+#  postinst script
 #
 # Copyright 2014-2020 Univention GmbH
 #
@@ -27,26 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-.PHONY: build install clean
+. /usr/share/debconf/confmodule
 
-#INITIALSETUP_DE_JSON := usr/share/univention-system-setup-boot/www/i18n/de/initialsetup.json
-STYL_FILES := $(shell find usr/share -name '*.styl')
-CSS_FILES := $(STYL_FILES:.styl=.css)
+#DEBHELPER#
 
-build: get-volume-set-identifier $(CSS_FILES)
+# set DVD identifier in UCR variable
+cdrom_device=$(debconf-get cdrom-detect/cdrom_device)
+identifier=$(get-volume-set-identifier "$cdrom_device")
+if [ -n "$identifier" ]
+then
+	in-target /usr/sbin/ucr set "updater/identify=UCS (${identifier})"
+fi
 
-clean:
-	$(RM) -f $(CSS_FILES)
-	$(RM) -f umc/js/*.json
+# start system setup in installer mode
+in-target /usr/sbin/ucr set "system/setup/boot/installer=true"
 
-install: build
-	@echo "Nothing to install"
-
-%.css: %.styl
-	stylus "$<"
-
-%.json: %.po
-	dh-umc-po2json "$<"
-
-get-volume-set-identifier: get-volume-set-identifier.c
-	gcc -std=c11 -O3 -Wall -Wextra -Wconversion $< -o $@
+exit 0
