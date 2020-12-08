@@ -75,20 +75,6 @@ then # call self in xinit as nobody, then start gdm
 	# stop plymouth - otherwise it is burning CPU power in background
 	plymouth quit
 	if [ "$mode" = "installer" ] ; then
-		# mount
-		mountpoint /proc || mount -t proc proc /proc
-		mountpoint /dev || mount -t devtmpfs devtmpfs /dev
-		mkdir -p /dev/pts
-		mountpoint /dev/pts || mount -t devpts devpts /dev/pts
-		mountpoint /sys || mount -t sysfs sysfs /sys
-
-		# firefox needs a tmpfs on /dev/shm which is not mounted by the debian installer
-		mkdir -m 777 /dev/shm || true
-		mountpoint /dev/shm || mount -t tmpfs tmpfs /dev/shm
-
-		# Get DHCP IP address saved in UCR by /etc/network/if-up.d/12_ucr
-		service networking start
-
 		# make sure en_US is set as available locale to avoid problems
 		# with locale fallbacks to en_US (Bug #42853)
 		available_locales="$(/usr/sbin/univention-config-registry get locale)"
@@ -96,10 +82,6 @@ then # call self in xinit as nobody, then start gdm
 			*en_US*) ;;
 			*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 		esac
-
-		# Start/Restart UMC and Webserver
-		service univention-management-console-server restart
-		service univention-management-console-web-server restart
 
 		# hide some system setup fields Bug #35685
 		/usr/sbin/univention-config-registry set \
