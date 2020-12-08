@@ -3,8 +3,8 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: python-pysaml2
-fix: 
+fix: 3.0.0-5+deb9u1A~4.4.0.202012080102
 desc: |
  This update addresses the following issue(s):
  * The memory consumption has been optimized.
-bug: [52466]
+bug: [52466, 52467]
