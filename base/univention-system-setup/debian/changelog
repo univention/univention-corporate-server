@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-1) unstable; urgency=low
+
+  * Bug #52469: readd di-univention-system-setup
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Dec 2020 21:14:40 +0100
+
 univention-system-setup (13.0.2-6) unstable; urgency=medium
 
   * Bug #52453: fix VirtualKeyboardBox undefined error
