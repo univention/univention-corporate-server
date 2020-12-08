@@ -20,7 +20,7 @@ import univention.testing.utils as utils
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
-	DOMAIN = ucr.get("domainname").lower()
+	DOMAIN = ucr.get("domainname")
 	HOSTNAME = ucr.get("hostname")
 	FQDN = "%s.%s" % (HOSTNAME, DOMAIN)
 
