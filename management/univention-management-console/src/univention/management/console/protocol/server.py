@@ -448,7 +448,6 @@ class Server(signals.Provider):
 
 		if self._child_number is not None:
 			self._children.pop(self._child_number, None)
-			self._child_number = None
 
 		if self.__ssl and self.__port:
 			notifier.socket_remove(self.connection)
@@ -462,7 +461,7 @@ class Server(signals.Provider):
 				notifier.socket_remove(self.__realunixsocket)
 				self.__realunixsocket.close()
 				self.__realunixsocket = None
-			if os.path.exists(self.__unix):
+			if self._child_number is not None and os.path.exists(self.__unix):
 				os.unlink(self.__unix)
 			self.__unix = None
 
