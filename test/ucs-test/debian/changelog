@@ -1,3 +1,9 @@
+ucs-test (9.0.7-7) unstable; urgency=medium
+
+  * Bug #52443: add 82_saml/07_umc_session_timeout
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 08 Dec 2020 16:12:16 +0100
+
 ucs-test (9.0.7-6) unstable; urgency=medium
 
   * Bug #45025: ucs-test fix 47_mailForwardAddress_corner_cases
