@@ -1,0 +1,58 @@
+#!/usr/share/ucs-test/runner python
+## desc: Session timeout at UMC
+## tags: [saml]
+## join: true
+## exposure: safe
+## roles: [domaincontroller_master]
+## packages:
+##   - python-requests
+
+from __future__ import print_function
+import time
+import subprocess
+import samltest
+import univention.testing.utils as utils
+import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
+
+
+def main():
+	session_timeout = 10
+	with ucr_test.UCSTestConfigRegistry():
+		handler_set(['umc/saml/assertion-lifetime={}'.format(session_timeout)])
+		subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
+		utils.wait_for_listener_replication()
+		account = utils.UCSTestDomainAdminCredentials()
+		SamlSession = samltest.SamlTest(account.username, account.bindpw)
+		try:
+			SamlSession.login_with_new_session_at_IdP()
+			SamlSession.test_login()
+			SamlSession.test_slapd()
+			print('Waiting for session timeout')
+			time.sleep(session_timeout + 10)
+			try:
+				SamlSession.test_login()
+			except samltest.SamlError:
+				if SamlSession.page.status_code == 401:
+					pass
+				else:
+					raise
+			else:
+				utils.fail('No session timeout error')
+			SamlSession.login_with_existing_session_at_IdP()
+			SamlSession.test_login()
+			SamlSession.test_slapd()
+			SamlSession.logout_at_IdP()
+			SamlSession.test_logout_at_IdP()
+			SamlSession.test_logout()
+		except samltest.SamlError as exc:
+			utils.fail(exc.message)
+
+
+if __name__ == '__main__':
+	try:
+		main()
+	finally:
+		subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
+		utils.wait_for_listener_replication()
+	print("####Success: SSO login is working####")
