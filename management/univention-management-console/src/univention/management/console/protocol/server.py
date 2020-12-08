@@ -38,6 +38,7 @@ Defines the basic class for an UMC server.
 import os
 import errno
 import fcntl
+import signal
 import socket
 import resource
 import traceback
@@ -371,6 +372,7 @@ class Server(signals.Provider):
 				self._child_number = process.fork_processes(self.__processes, 0)
 			except RuntimeError as exc:
 				CORE.warn('Child process died: %s' % (exc,))
+				os.kill(os.getpid(), signal.SIGTERM)
 				raise SystemExit(str(exc))
 			if self._child_number is not None:
 				self._children[self._child_number] = os.getpid()
