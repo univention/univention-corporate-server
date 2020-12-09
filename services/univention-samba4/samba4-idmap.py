@@ -322,7 +322,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
 if __name__ == '__main__':
     import io
     import subprocess
-    import sys
     from argparse import ArgumentParser
 
     from ldif import LDIFParser
@@ -339,7 +338,6 @@ if __name__ == '__main__':
 
     if not options.direct_resync:
         parser.error("The option --direct-resync is required to run this module directly")
-        sys.exit(1)
 
     ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
     ucr = ConfigRegistry()
