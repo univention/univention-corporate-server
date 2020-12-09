@@ -33,11 +33,7 @@ from __future__ import absolute_import
 import subprocess
 
 import listener
-from univention.config_registry import ConfigRegistry
 import univention.debug as ud
-
-ucr = ConfigRegistry()
-ucr.load()
 
 name = 'portal_server'
 description = 'Tell portal server to refresh when something important changed'
