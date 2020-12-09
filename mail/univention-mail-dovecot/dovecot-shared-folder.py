@@ -143,7 +143,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         return
 
     listener.configRegistry.load()
-    dl = DovecotSharedFolderListener(listener, name)
+    dl = DovecotSharedFolderListener(name)
 
     #
     # Create a new shared folder
