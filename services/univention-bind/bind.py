@@ -85,7 +85,7 @@ def chgrp_bind(filename):
 	try:
 		bind_gid = grp.getgrnam("bind").gr_gid
 	except KeyError:
-		ud.debug(ud.LISTENER, ud.WARNING, 'Failed to change grp to bind for %s. gid for bind not found' % filename)
+		ud.debug(ud.LISTENER, ud.WARN, 'Failed to change grp to bind for %s. gid for bind not found' % filename)
 		return
 
 	os.chown(filename, 0, bind_gid)
