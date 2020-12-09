@@ -463,7 +463,7 @@ class Server(signals.Provider):
 				notifier.socket_remove(self.__realunixsocket)
 				self.__realunixsocket.close()
 				self.__realunixsocket = None
-			if self._child_number is not None and os.path.exists(self.__unix):
+			if self._child_number is None and os.path.exists(self.__unix):
 				os.unlink(self.__unix)
 			self.__unix = None
 

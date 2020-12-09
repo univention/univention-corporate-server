@@ -1,4 +1,4 @@
-univention-management-console (11.0.5-26) unstable; urgency=medium
+univention-management-console (11.0.5-27) unstable; urgency=medium
 
   * Bug #52371: die when child process crashes
   * Bug #52371: remove UNIX socket only in parent process
