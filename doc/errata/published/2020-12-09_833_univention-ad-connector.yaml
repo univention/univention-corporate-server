@@ -15,3 +15,5 @@ desc: |
    changed or not. Not doing that, led to rejects due to
    missing mandatory values.
 bug: [52439, 52261]
+erratum: 833
+announced: 2020-12-09
