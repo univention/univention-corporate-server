@@ -592,7 +592,7 @@ class UCSTestUDM(object):
 		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=appcenter,%s' % self.LDAP_BASE),
 													   ('id', -1),
 													   ('name', uts.random_name()),
-													   ('version', '0.0.0')
+													   ('version', '%i.%i' % (uts.random_int(bottom_end=0, top_end=9), uts.random_int(bottom_end=0, top_end=9)))
 													   )
 											  )
 
@@ -610,8 +610,18 @@ class UCSTestUDM(object):
 		attr = self.__set_module_default_attr(kwargs, (
 			('position', 'cn=networks,%s' % self.LDAP_BASE),
 			('name', uts.random_element_name),
-			('network', '127.0.0.1'),
-			('networkmask', '255.255.255.0')
+			('network', '%i.%i.%i.%i' % (
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256)
+			)),
+			('networkmask', '%i.%i.%i.%i' % (
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256),
+				uts.random_int(bottom_end=0, top_end=256)
+			))
 		))
 
 		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
@@ -681,13 +691,13 @@ class UCSTestUDM(object):
 						('homePostalAddress', [udm.random_name()])),
 			'ldap': (('position', 'cn=users,%s' % self.LDAP_BASE),
 					 ('username', uts.random_name()),
-					 ('password', 'univention')),
+					 ('password', uts.random_name())),
 			'user': (('position', 'cn=users,%s' % self.LDAP_BASE),
 					 ('lastname', uts.random_name()),
 					 ('username', uts.random_name()),
-					 ('password', 'univention'),
+					 ('password', uts.random_name()),
 					 ('umcProperty', [udm.random_name()]),
-					 ('disabled', False))
+					 ('disabled', bool(uts.random_int(bottom_end=0, top_end=1))))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -697,10 +707,10 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'cloudconnection': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
 								('name', uts.random_name()),
-								('type', "cn=OpenStack,cn=CloudType,cn=Virtual Machine Manager,dc=ucs,dc=local"),
+								('type', "cn=%s,cn=CloudType,cn=Virtual Machine Manager,dc=ucs,dc=local" % uts.random_name()),
 								('searchPattern', uts.random_name()),
 								('includeUCSimages', 0),
-								('parameter', ["password password"])),
+								('parameter', ["password %s" % uts.random_name()])),
 			'cloudtype': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
 						  ('name', uts.random_name())),
 			'info': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
@@ -732,7 +742,12 @@ class UCSTestUDM(object):
 							 ('name', uts.random_name())),
 			'dhcp_routing': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
-							 ('routers', '127.0.0.1')),
+							 ('routers', '%i.%i.%i.%i' % (
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256)
+							 ))),
 			'dhcp_scope': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name())),
 			'dhcp_statements': (('position', 'cn=policies,%s' % self.LDAP_BASE),
@@ -741,7 +756,7 @@ class UCSTestUDM(object):
 						   ('name', uts.random_name())),
 			'maintenance': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							('name', uts.random_name()),
-							('minute', 1)),
+							('minute', uts.random_int())),
 			'masterpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							   ('name', uts.random_name())),
 			'memberpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
@@ -764,14 +779,14 @@ class UCSTestUDM(object):
 								 ('name', uts.random_name())),
 			'repositorysync': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							   ('name', uts.random_name()),
-							   ('minute', 1)),
+							   ('minute', uts.random_int())),
 			'share_userquota': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 								('name', uts.random_name())),
 			'slavepackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 							  ('name', uts.random_name())),
 			'umc': (('position', 'cn=policies,%s' % self.LDAP_BASE),
 					('name', uts.random_name()),
-					('allow', ['create', 'add']))
+					('allow', [['create', 'add', 'list'][uts.random_int(bottom_end=0, top_end=2)]]))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -788,14 +803,14 @@ class UCSTestUDM(object):
 						('name', uts.random_name())),
 			'directory': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						  ('name', uts.random_name()),
-						  ('users', 'dc=foo,dc=bar,dc=test')),
+						  ('users', 'dc=foo,dc=bar,dc=%s' % uts.random_name())),
 			'extended_attributes': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 									('name', uts.random_name()),
 									('shortDescription', uts.random_name())),
 			'extended_options': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 								 ('name', uts.random_name()),
 									('shortDescription', uts.random_name()),
-								 ('module', [])),
+								 ('module', [uts.random_name()])),
 			'ldapacl': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
 						('filename', uts.random_name()),
@@ -818,7 +833,7 @@ class UCSTestUDM(object):
 					 ('locktime', uts.random_name())),
 			'packages': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						 ('name', uts.random_name()),
-						 ('packagelist', ["foo", 'bar'])),
+						 ('packagelist', [uts.random_name()])),
 			'portal': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name()),
 					   ('displayName', ['de', uts.random_name()])),
@@ -834,7 +849,7 @@ class UCSTestUDM(object):
 							 ('link', [uts.random_name()])),
 			'printermodel': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
-							 ('printmodel', ["foo", 'bar'])),
+							 ('printmodel', [uts.random_name()])),
 			'printeruri': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						   ('name', uts.random_name()),
 						   ('printeruri', [udm.random_name()])),
@@ -852,7 +867,7 @@ class UCSTestUDM(object):
 			'syntax': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name()),
 					   ('filter', uts.random_name()),
-					   ('attribute', 'computers/memberserver: fqdn')),
+					   ('attribute', 'computers/memberserver: %s' % uts.random_name())),
 			'udm_hook': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 						 ('name', uts.random_name()),
 						 ('filename', uts.random_name()),
@@ -871,12 +886,12 @@ class UCSTestUDM(object):
 			'umc_operationset': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 								 ('name', uts.random_name()),
 								 ('description', uts.random_name()),
-								 ('operation', ["lib/server/*"])),
+								 ('operation', ["lib/%s/*" % uts.random_name()])),
 			'usertemplate': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
-							 ('e-mail', ['test@univention.com']),
-							 ('departmentNumbuer', [1]),
-							 ('disabled', True)),
+							 ('e-mail', ['%s@univention.com' % uts.random_name()]),
+							 ('departmentNumbuer', [uts.random_int()]),
+							 ('disabled', bool(uts.random_int(bottom_end=0, top_end=1)))),
 			'xconfig_choices': (('position', 'cn=settings,%s' % self.LDAP_BASE),
 								('name', uts.random_name()))
 		}
@@ -889,8 +904,8 @@ class UCSTestUDM(object):
 			'idconfig': (('position', 'cn=saml,%s' % self.LDAP_BASE),
 						 ('id', 0)),
 			'serviceprovider': (('position', 'cn=saml,%s' % self.LDAP_BASE),
-								('Identifier', 0),
-								('AssertionConsumerService', []))
+								('Identifier', uts.random_int()),
+								('AssertionConsumerService', [uts.random_name()]))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -901,7 +916,7 @@ class UCSTestUDM(object):
 			'printer': (('position', 'cn=printer,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
 						('spoolHost', [uts.random_name()]),
-						('uri', "uri=socket:// 127.0.0.1:12345"),
+						('uri', "uri=socket:// 127.0.0.1:%i" % uts.random_int()),
 						('model', uts.random_name())),
 			'printergroup': (('position', 'cn=printer,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
@@ -911,7 +926,7 @@ class UCSTestUDM(object):
 					  ('name', uts.random_name()),
 					  ('host', uts.random_name()),
 					  ('path', uts.random_name()),
-					  ('writeable', True)),
+					  ('writeable', bool(uts.random_int(bottom_end=0, top_end=1)))),
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -921,57 +936,92 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'domaincontroller_backup': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 										('name', uts.random_name()),
-										('service', ['foo', 'bar']),
-										('inventoryNumber', ['1337']),
-										('reinstall', True)),
+										('service', [uts.random_name(), uts.random_name()]),
+										('inventoryNumber', [str(uts.random_int())]),
+										('reinstall', bool(uts.random_int(bottom_end=0, top_end=1)))),
 			'domaincontroller_master': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 										('name', uts.random_name()),
-										('service', ['foo', 'bar']),
-										('inventoryNumber', ['1337']),
-										('reinstall', True)),
+										('service', [uts.random_name(), uts.random_name()]),
+										('inventoryNumber', [str(uts.random_int())]),
+										('reinstall', bool(uts.random_int(bottom_end=0, top_end=1)))),
 			'domaincontroller_slave': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 										('name', uts.random_name()),
-										('service', ['foo', 'bar']),
-										('inventoryNumber', ['1337']),
-										('reinstall', True)),
+										('service', [uts.random_name(), uts.random_name()]),
+										('inventoryNumber', [str(uts.random_int())]),
+										('reinstall', bool(uts.random_int(bottom_end=0, top_end=1)))),
 			'ipmanagedclient': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 								('name', uts.random_name()),
-								('ip', ['127.0.0.1']),
-								('inventoryNumber', ['1337']),
-								('network', 'univention')),
+								('ip', ['%i.%i.%i.%i' % (
+									uts.random_int(bottom_end=0, top_end=256),
+									uts.random_int(bottom_end=0, top_end=256),
+									uts.random_int(bottom_end=0, top_end=256),
+									uts.random_int(bottom_end=0, top_end=256)
+								)]),
+								('inventoryNumber', [str(uts.random_int())]),
+								('network', uts.random_name())),
 			'linux': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
-						('ip', ['127.0.0.1']),
-						('inventoryNumber', ['1337']),
-						('unixhome', '/')),
+						('ip', ['%i.%i.%i.%i' % (
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256)
+						)]),
+						('inventoryNumber', [str(uts.random_int())]),
+						('unixhome', '/%s' % (uts.random_name()))),
 			'macos': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
-						('ip', ['127.0.0.1']),
-						('inventoryNumber', ['1337']),
-						('unixhome', '/')),
+						('ip', ['%i.%i.%i.%i' % (
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256)
+						)]),
+						('inventoryNumber', [str(uts.random_int())]),
+						('unixhome', '/%s' % uts.random_name())),
 			'memberserver': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 							('name', uts.random_name()),
-							('ip', ['127.0.0.1']),
-							('inventoryNumber', ['1337']),
-							('unixhome', '/')),
+							('ip', ['%i.%i.%i.%i' % (
+								uts.random_int(bottom_end=0, top_end=256),
+								uts.random_int(bottom_end=0, top_end=256),
+								uts.random_int(bottom_end=0, top_end=256),
+								uts.random_int(bottom_end=0, top_end=256)
+							)]),
+							('inventoryNumber', [str(uts.random_int())]),
+							('unixhome', '/%s' % uts.random_name())),
 			'trustaccount': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 							 ('name', uts.random_name()),
 							 ('password', uts.random_name())),
 			'ubuntu': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
-						('ip', ['127.0.0.1']),
-						('inventoryNumber', ['1337']),
-						('unixhome', '/')),
+						('ip', ['%i.%i.%i.%i' % (
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256)
+						)]),
+						('inventoryNumber', [str(uts.random_int())]),
+						('unixhome', '/%s' % uts.random_name())),
 			'windows': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 						('name', uts.random_name()),
-						('ip', ['127.0.0.1']),
-						('inventoryNumber', ['1337']),
-						('unixhome', '/')),
+						('ip', ['%i.%i.%i.%i' % (
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256),
+							uts.random_int(bottom_end=0, top_end=256)
+						)]),
+						('inventoryNumber', [str(uts.random_int())]),
+						('unixhome', '/%s' % (uts.random_name()))),
 			'wwindows_domaincontroller': (('position', 'cn=computers,%s' % self.LDAP_BASE),
 											('name', uts.random_name()),
-											('ip', ['127.0.0.1']),
-											('inventoryNumber', ['1337']),
-											('unixhome', '/'))
+											('ip', ['%i.%i.%i.%i' % (
+												uts.random_int(bottom_end=0, top_end=256),
+												uts.random_int(bottom_end=0, top_end=256),
+												uts.random_int(bottom_end=0, top_end=256),
+												uts.random_int(bottom_end=0, top_end=256)
+											)]),
+											('inventoryNumber', [str(uts.random_int())]),
+											('unixhome', '/%s' % (uts.random_name())))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
@@ -981,10 +1031,15 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'cn': (('position', 'cn=container,%s' % self.LDAP_BASE),
 				   ('name', uts.random_name()),
-				   ('dnsForwardZone', ['255.255.0.0'])),
+				   ('dnsForwardZone', ['%i.%i.%i.%i' % (
+					   uts.random_int(bottom_end=0, top_end=256),
+					   uts.random_int(bottom_end=0, top_end=256),
+					   uts.random_int(bottom_end=0, top_end=256),
+					   uts.random_int(bottom_end=0, top_end=256)
+				   )])),
 			'dc': (('position', 'cn=container,%s' % self.LDAP_BASE),
 				   ('name', uts.random_name()),
-				   ('sambaSID', 0)),
+				   ('sambaSID', uts.random_int())),
 			'ou': (('position', 'cn=container,%s' % self.LDAP_BASE),
 				   ('name', uts.random_name()))
 		}
@@ -1011,23 +1066,82 @@ class UCSTestUDM(object):
 		attr_dict = {
 			'pool': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 					 ('name', uts.random_name()),
-					 ('range', [])),
+					 ('range', ['%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 ), '%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 )])),
 			'host': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
-					 ('host', "Client222"),
-					 ('fixedaddress', ['127.0.0.1']),
-					 ('hwaddress', 'ethernet 00:11:22:33:44:55')),
+					 ('host', uts.random_name()),
+					 ('fixedaddress', ['%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 )]),
+					 ('hwaddress', 'ethernet 00:11:22:%i:%i:%i' % (
+						 uts.random_int(bottom_end=10, top_end=99),
+						 uts.random_int(bottom_end=10, top_end=99),
+						 uts.random_int(bottom_end=10, top_end=99)
+					 ))),
 			'subnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
-					   ('subnet', '127.0.0.1'),
-					   ('subnetmask', '255.255.255.0'),
-					   ('range', ['127.0.0.1', '127.0.0.2'])),
+					   ('subnet', '%i.%i.%i.%i' % (
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256)
+					   )),
+					   ('subnetmask', '%i.%i.%i.%i' % (
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256),
+						   uts.random_int(bottom_end=0, top_end=256)
+					   )),
+					   ('range', ['%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 ), '%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 )])),
 			'shared': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 					   ('name', uts.random_name())),
 			'service': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
 						('service', uts.random_name())),
 			'sharedsubnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
-							 ('subnet', '127.0.0.1'),
-							 ('subnetmask', '255.255.255.0'),
-							 ('range', ['127.0.0.1', '127.0.0.2']))
+							 ('subnet', '%i.%i.%i.%i' % (
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256)
+							 )),
+							 ('subnetmask', '%i.%i.%i.%i' % (
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256),
+								 uts.random_int(bottom_end=0, top_end=256)
+							 )),
+							 ('range', ['%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 ), '%i.%i.%i.%i' % (
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256),
+						 uts.random_int(bottom_end=0, top_end=256)
+					 )]))
 		}
 		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
 
