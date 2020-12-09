@@ -6,8 +6,8 @@ src: postgresql-9.6
 fix: 9.6.20-0+deb9u1
 desc: |
  This update addresses the following issues:
- * This is an import of the latest debian package. Some of the mentioned
-   security issues have been fixed previously with UCS 4.4 errata 817.
+ * This is an import of the latest debian package. The security issues
+   have been fixed previously with UCS 4.4 errata 817.
 
  * Fixes timetz regression test failures. (Closes: #974063)
 
