@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-3) unstable; urgency=low
+
+  * Bug #52469: restart UMC (web) server after USS
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Dec 2020 12:06:14 +0100
+
 univention-system-setup (13.0.3-2) unstable; urgency=medium
 
   * Bug #52453: System setup design adjustments
