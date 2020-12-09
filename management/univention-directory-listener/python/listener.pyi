@@ -34,7 +34,6 @@ from univention.config_registry import ConfigRegistry
 from typing import List, Union
 
 configRegistry: ConfigRegistry
-baseConfig: configRegistry
 
 
 def setuid(uid: Union[str, int]) -> None:

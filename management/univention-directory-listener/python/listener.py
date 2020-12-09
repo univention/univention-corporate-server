@@ -47,8 +47,6 @@ except ImportError:
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
-baseConfig = configRegistry
-
 
 def setuid(uid):  # type: (Union[int, Text]) -> None
 	"""

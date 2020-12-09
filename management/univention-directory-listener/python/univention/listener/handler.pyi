@@ -34,7 +34,6 @@ import types
 import inspect
 import logging
 from contextlib import contextmanager
-import listener
 from univention.admin.uldap import access, position
 from univention.config_registry import ConfigRegistry
 from univention.listener.handler_logging import get_logger
