@@ -74,12 +74,12 @@ def _split_file(fetch_list, new_line):
 @listener.SetUID(0)
 def load_rc(ofile: str) -> List[str] | None:
     """open an textfile with setuid(0) for root-action"""
-    rc = None
     try:
         with open(ofile) as fd:
             rc = reduce(_split_file, fd, [])
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
+        rc = None
     return rc
 
 
@@ -192,7 +192,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         with open(FETCHMAIL_OLD_PICKLE, 'wb+') as fd:
             os.chmod(FETCHMAIL_OLD_PICKLE, 0o600)
             p = pickle.Pickler(fd)
-            old = p.dump(old)
+            p.dump(old)
             p.clear_memo()
 
     flist = load_rc(fn_fetchmailrc)
