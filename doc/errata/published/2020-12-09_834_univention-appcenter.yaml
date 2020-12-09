@@ -9,3 +9,5 @@ desc: |
  * To reduce the risk of problems during the upgrade of apps an
    unnecessary second docker.pull call has been removed.
 bug: [52456]
+erratum: 834
+announced: 2020-12-09
