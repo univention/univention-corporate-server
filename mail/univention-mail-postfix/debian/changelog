@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.4-2) unstable; urgency=medium
+
+  * raised postfix compatibility_level to 3
+
+ -- Toni Röhmeyer <roehmeyer@univention.de>  Wed, 09 Dec 2020 11:55:36 +0100
+
 univention-mail-postfix (13.0.4-1) unstable; urgency=medium
 
   * Bug #45205: increase changlog version twice
