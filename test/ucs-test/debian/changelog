@@ -1,3 +1,9 @@
+ucs-test (9.0.7-8) unstable; urgency=medium
+
+  * Bug #52470: fix saml auth for school tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 09 Dec 2020 10:12:37 +0100
+
 ucs-test (9.0.7-7) unstable; urgency=medium
 
   * Bug #52443: add 82_saml/07_umc_session_timeout

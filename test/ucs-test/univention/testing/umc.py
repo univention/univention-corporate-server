@@ -35,6 +35,7 @@ import sys
 import pprint
 
 from six.moves.html_parser import HTMLParser
+from six.moves.http_cookies import SimpleCookie
 import requests
 
 from univention.lib.umc import Client as _Client
@@ -125,7 +126,8 @@ class ClientSaml(Client):
 
 		print('SAML message received from %s' % saml_idp_login_ans.url)
 		self._send_saml_response_to_sp(saml_idp_login_ans)
-		self.cookies = self.__samlSession.cookies
+		self.cookies = SimpleCookie()
+		self.cookies.update(self.__samlSession.cookies.get_dict(domain=self.hostname))
 
 	def _login_at_idp_with_credentials(self, saml_login_page):
 		"""Send login form to IdP"""
