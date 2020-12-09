@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-2) unstable; urgency=medium
+
+  * Bug #52453: System setup design adjustments
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Dec 2020 02:54:59 +0100
+
 univention-system-setup (13.0.3-1) unstable; urgency=low
 
   * Bug #52469: readd di-univention-system-setup

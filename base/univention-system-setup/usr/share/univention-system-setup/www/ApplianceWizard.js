@@ -3255,8 +3255,8 @@ define([
 
 		_getMaxHeight: function() {
 			var x = this.inherited(arguments);
-			if (x > 500) {
-				x = 500;
+			if (x > 550) {
+				x = 550;
 			}
 			return x;
 		},
