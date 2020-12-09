@@ -135,48 +135,16 @@ headerHeight = 48px
 		top: 0
 
 	.umcHeaderRight
-		height: headerHeight
+		display: flex
+		align-items: center
+		height: var(--layout-height-header)
 		margin-right: 30px
 		position: absolute
 		right: 0
 		top: 0
 
-		.umcLiveSearch
-			float: left
-			width: 150px
-			height: 100%
-			transition: width 0.3s
-			margin-right: material-grid(1)
-
-			.umcSearchBox
-				border-radius: 4px
-				margin-top: 4px
-
-			.dijitInputField
-				transition: opacity 0.25s, width 0.25s
-
-			.umcSearchIcon
-				transition: opacity 0.25s, margin 0.25s
-
-			.umcLiveSearchSidebarRadioButtonGroup
-				display: none
-
-			@media (max-width: $xxs-max)
-				&.collapsed
-					width: 60px
-
-					.umcSearchBox:after
-						border-color: transparent
-
-					.umcSearchIcon
-						margin-right: 20px
-
-					.dijitInputField
-						opacity: 0
-						width: 0
 
 		.umcNotificationDropDownButton
-			float: left
 			position: relative
 
 			.notificationCountNode
@@ -210,27 +178,8 @@ headerHeight = 48px
 				display: none
 
 		.umcLoginButton
-			float: left
 			.dijitButtonNode
 				padding: 0 material-grid(1)
-
-		.umcMobileMenuToggleButton
-			float: left
-
-		.univentionLogo
-			float: left
-			display: inline-block
-			vertical-align: top
-			background-image: url(../images/univention.svg)
-			background-repeat: no-repeat
-			background-position: center center
-			height: headerHeight
-			width: 160px
-			margin-left: material-grid(1)
-
-			@media (max-width: 650px)
-				background-image: url(../images/univention_u.svg)
-				width: 30px
 
 /* more tabs drop down menu */
 .umc .umcMoreTabsMenuPopupWrapper
@@ -269,10 +218,6 @@ headerHeight = 48px
 			color: rgba(255, 255, 255, 1)
 
 	.umcHeaderRight
-		.umcSearchBox
-			color: #fff
-			border-color: #fff
-
 		.umcSearchIcon,
 		.umcLoggedInIcon,
 		.umcLoggedOutIcon
@@ -642,24 +587,22 @@ headerHeight = 48px
 
 	.umcHeaderRight
 		margin-right: 0
-		.univentionLogo
-			margin-left: 0
-			background-image: url(../images/univention_u-white.svg)
-			width: material-grid(7)
 
-		.umcMobileMenuToggleButton div
-			background-color: #fff
+.umcModuleSearchToggleButton.dijitChecked
+	color: var(--color-primary)
+.umcModuleSearch
+	width: 95%
+	max-width: calc(40 * var(--layout-spacing-unit))
+	position: fixed
+	top: "calc(%s + %s)" % (var(--layout-height-header) var(--layout-height-header-seperator))
+	transition: right 250ms
+	right: calc(-40 * var(--layout-spacing-unit))
+	z-index: 1
 
-		.umcSearchBox
-			color: #fff
-			border-color: transparent
-			background-color: rgba(255, 255, 255, 0.1)
+	&--open
+		right: 0
 
-			&.dijitTextBoxFocused
-				background-color: rgba(0, 0, 0, 0.2)
-
-			.umcInlineLabel
-				color: #fff
-
-		.umcSearchIcon
-			background-image: url(../images/icons-white.svg)
+	.umcSearchBox
+		background-color: var(--bgc-content-container)
+	.umcSearchBox__searchButton
+		display: none

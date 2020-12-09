@@ -44,8 +44,6 @@ define([
 
 		searchLabel: null,
 
-		collapsible: true,
-
 		// searchableAttributes: String[]
 		//		Array of strings that shall be searched.
 		//		defaults to ['name', 'description', 'categories', 'keywords']
@@ -73,25 +71,6 @@ define([
 			this._searchTextBox.on('keyup', lang.hitch(this, 'search'));
 			this._searchTextBox.on('focus', lang.hitch(this, 'onFocus'));
 			this._searchTextBox.on('blur', lang.hitch(this, 'onBlur'));
-			if (this.collapsible) {
-				this._searchTextBox.on(mouse.enter, lang.hitch(this, 'expandSearch'));
-				this._searchTextBox.on('focus', lang.hitch(this, 'expandSearch'));
-				this._searchTextBox.on(mouse.leave, lang.hitch(this, 'collapseSearch', false));
-				this._searchTextBox.on('blur', lang.hitch(this, 'collapseSearch', true));
-				this.collapseSearch(true);
-			}
-		},
-
-		expandSearch: function() {
-			if (this.get('disabled')) {
-				return;
-			}
-			domClass.remove(this.domNode, 'collapsed');
-		},
-
-		collapseSearch: function(ignoreFocus) {
-			var shouldCollapse = (ignoreFocus || !this.focused) && !this.get('value');
-			domClass.toggle(this.domNode, 'collapsed', shouldCollapse);
 		},
 
 		_setDisabledAttr: function(disabled) {

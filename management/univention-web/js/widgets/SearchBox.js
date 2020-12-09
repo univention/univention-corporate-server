@@ -31,40 +31,37 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"put-selector/put",
-	"dojo/on",
-	"umc/widgets/TextBox"
-], function(declare, lang, put, on, TextBox) {
+	"dojo/dom-class",
+	"dojo/dom-construct",
+	"umc/widgets/TextBox",
+	"umc/widgets/Button"
+], function(declare, lang, domClass, domConstruct, TextBox, Button) {
 	return declare("umc.widgets.SearchBox", TextBox, {
-		'class': 'umcSearchBox',
-
-		_searchIconEventHandler: null,
-
-		_createSearchIcon: function() {
-			this._searchIconNode = put(this.domNode.firstChild, '-div.umcSearchIcon');
-			this._searchIconEventHandler = on.pausable(this._searchIconNode, 'click', lang.hitch(this, function() {
-				this.focus();
-				this.onSearch();
-			}));
-			this.own(this._searchIconEventHandler);
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this._createSearchIcon();
-		},
-
-		_setDisabledAttr: function(disabled) {
-			if (disabled) {
-				this._searchIconEventHandler.pause();
-			} else {
-				this._searchIconEventHandler.resume();
-			}
-			this.inherited(arguments);
-		},
-
+		//// self
 		onSearch: function() {
 			// event stub
+		},
+
+
+		//// lifecycle
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcSearchBox');
+
+			// create search button
+			var button = new Button({
+				'class': 'ucsIconButton umcSearchBox__searchButton',
+				iconClass: 'search',
+				tabIndex: '-1',
+				onClick: lang.hitch(this, function() {
+					if (this.disabled) {
+						return;
+					}
+					this.focus();
+					this.onSearch();
+				})
+			});
+			domConstruct.place(button.domNode, this.domNode, 'first');
 		}
 	});
 });

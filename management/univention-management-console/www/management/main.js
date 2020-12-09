@@ -84,6 +84,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/Button",
+	"umc/widgets/ToggleButton",
 	"umc/widgets/Text",
 	"umc/widgets/ConfirmDialog",
 	"umc/i18n/tools",
@@ -93,7 +94,7 @@ define([
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, style, put, dojoHash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, ConfirmDialog, i18nTools, _
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, i18nTools, _
 ) {
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
@@ -799,16 +800,47 @@ define([
 			if (_menuVisible) {
 				this._setupMenu();
 			}
-			this._headerRight.addChild(new ContainerWidget({
-				'class': 'univentionLogo'
-			}));
 		},
 
 		setupSearchField: function() {
 			this._search = new LiveSearch({
-				searchLabel: _('Search')
+				searchLabel: _('Search'),
+				'class': 'umcModuleSearch',
+				collapsible: false,
+				disabled: true
+			});
+			var searchToggleButton = new ToggleButton({
+				iconClass: 'search',
+				'class': 'ucsIconButton umcModuleSearchToggleButton'
 			});
 
+			on(this._search, 'keyup', lang.hitch(this, function(evt) {
+				if (evt.key === 'Escape') {
+					searchToggleButton.set('checked', false);
+					setTimeout(function() {
+						searchToggleButton.focus();
+					});
+				}
+			}));
+			searchToggleButton.watch('checked', lang.hitch(this, function(_attr, _oldChecked, checked) {
+				domClass.toggle(this._search.domNode, 'umcModuleSearch--open', checked);
+				if (checked) {
+					setTimeout(lang.hitch(this, function() {
+						this._search.focus();
+					}, 0));
+				} else {
+					this._search.set('value', '');
+					this._search.search();
+				}
+				this._search.set('disabled', !checked);
+			}));
+			this._tabContainer.watch('selectedChildWidget', function(_name, _oldModule, newModule) {
+				if (newModule.id !== 'umcOverviewPage') {
+					searchToggleButton.set('checked', false);
+				}
+			});
+
+			this._headerRight.addChild(searchToggleButton);
 			this._headerRight.addChild(this._search);
 		},
 
@@ -1520,7 +1552,6 @@ define([
 			this._tabController.hideChild(this._overviewPage);
 
 			aspect.after(this._overviewPage, '_onShow', lang.hitch(this, function() {
-				this._focusSearchField();
 				this._grid._resizeItemNames();
 			}));
 			this._registerGridEvents();
@@ -1578,17 +1609,6 @@ define([
 
 			// spread category buttons over whole width
 			styles.insertCssRule('.umc .umcCategoryBar .dijitButton', lang.replace('width: {0}%', [100.0 / this.getCategories().length]));
-		},
-
-		_focusSearchField: function() {
-			if (!this._header._search) {
-				return;
-			}
-			if (!has('touch') && !tools.status('mobileView')) {
-				setTimeout(lang.hitch(this, function() {
-					this._header._search.focus();
-				}, 0));
-			}
 		},
 
 		_registerGridEvents: function() {
