@@ -867,7 +867,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						f.write("%s\n" % dn)
 				except IOError:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
-					set_handler_message(name, dn, 'Error writing backlink file %s.'.format(new_backlink_filename))
+					set_handler_message(name, dn, 'Error writing backlink file {}.'.format(new_backlink_filename))
 					return
 
 				# and UCR registration
