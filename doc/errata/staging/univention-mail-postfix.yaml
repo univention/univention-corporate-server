@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-mail-postfix
+fix: 13.0.4-2A~4.4.0.202012091157
+desc: |
+  This update addresses the following issue(s):
+  * The default Postfix version compatibility level was raised from 2 to 3 (Bug #46895).
+bug: [46895]
