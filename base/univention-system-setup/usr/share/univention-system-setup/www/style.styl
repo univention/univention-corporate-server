@@ -33,6 +33,57 @@ $header-color ?= #787878
 $header-height = 48px
 
 .umc
+	.umcHeader
+		background-color: var(--color-grey0)
+	.umcWizard.umcInlineDialog
+		background-color: var(--color-grey8)
+
+	#setup_ApplianceWizard_0
+		padding: 0px 24px 19px 24px
+
+		.umcPageHeader
+			font-size: 20px
+			font-weight: 600
+			line-height: 28px
+			color: var(--font-color-contrast-high)
+			position: unset
+			hyphens: auto
+		.umcPageHelpText
+			color: var(--font-color-contrast-middle)
+			font-size: var(--font-size-small)
+		.umcPageMain
+			padding: 24px 24px 19px 24px
+			background-color: var(--color-grey0)
+			border-radius: var(--border-radius-container)
+			min-height: 388px
+		.umcPageFooter
+			min-height: 40px
+
+			.dijitButton
+				margin-left: 25px
+
+		.umc-setup-page-role, .umc-setup-page-role-nonmaster-ad
+			.umcPageMain
+				background-color: var(--color-grey8)
+
+				.umcChooseRoleBox
+					&.selected
+						border-color: var(--color-primary)
+					background-color: var(--color-grey0)
+					border-radius: var(--border-radius-container)
+					border: medium solid var(--color-grey0)
+					padding: 24px
+					.title
+						font-size: var(--font-size-small);
+						line-height: var(--font-lineheight-normal);
+						font-weight: 600;
+						.tag
+							float: right
+					.content
+						padding-top: 12px
+						color: var(--color-grey62)
+						font-size: var(--font-size-small)
+
 	min-height: 100%
 
 	@media (min-width: 768px)
@@ -49,22 +100,6 @@ $header-height = 48px
 
 		#content
 			opacity: 0
-
-	/* styling of headers and page */
-	.umcHeader,
-	.umcHeader .umcHeaderLeft
-		height: $header-height
-
-	.umcHeader
-		background-color: $header-color
-
-		.umcHeaderRight
-			left: 0
-
-			.univentionLogo
-				background: url(/univention/js/dijit/themes/umc/images/univention-white.svg) left center no-repeat
-				margin-left: 12px
-				width: 100%
 
 	.umcWizard
 		.umcPage
@@ -328,6 +363,7 @@ $header-height = 48px
 
 	.umc-ucssetup-wizard-indent
 		margin-left: 16px
+		font-size: var(--font-size-small)
 
 	.umcUCSSetupLicenseAgreement
 		overflow: auto

@@ -62,14 +62,14 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/Wizard",
 	"umc/widgets/Grid",
-	"umc/widgets/RadioButton",
+	"./ChooseRoleBox",
 	"umc/widgets/ProgressBar",
 	"./LiveSearch",
 	"./VirtualKeyboardBox",
 	"umc/i18n/tools",
 	"umc/i18n!setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, ChooseRoleBox, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -339,7 +339,18 @@ define([
 
 			var pageConf = {
 				navBootstrapClasses: 'col-xs-12 col-sm-4 col-md-4 col-lg-4',
-				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8'
+				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8',
+				headerTextAllowHTML: true
+			};
+
+			var chooseRoleCallback = function(pageName, name) {
+				var ipage = this.getPage(pageName);
+				array.some(ipage._form.widgets, function(_iwidget) {
+					var iwidget = this.getWidget(pageName, _iwidget.name);
+					if (iwidget.isInstanceOf(ChooseRoleBox) && iwidget.get('visible')) {
+						iwidget.set('value', iwidget.name == name);
+					}
+				}, this);
 			};
 
 			this.pages = [lang.mixin({}, pageConf, {
@@ -569,98 +580,57 @@ define([
 				headerText: _('Domain setup'),
 				helpText: _('Please select your domain settings.'),
 				widgets: [{
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_preconfiguredDomain',
-					label: _('Fast demo configuration'),
-					checked: true,
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'},
+					type: ChooseRoleBox,
+					name: "_choose_role_demo",
+					callback: lang.hitch(this, chooseRoleCallback, "role"),
+					title: _('Fast demo configuration'),
+					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
 					visible: showPreconfiguredSetupOption,
 					disabled: !showPreconfiguredSetupOption
 				}, {
-					type: Text,
-					name: 'preconfiguredDomainHelpText',
-					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'},
-					visible: showPreconfiguredSetupOption
+					type: ChooseRoleBox,
+					name: "_choose_role_primary",
+					callback: lang.hitch(this, chooseRoleCallback, "role"),
+					title: creatDomainLabel,
+					value: true,
+					tag: _("Recommended"),
+					content: createDomainHelpTextContent
 				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_createDomain',
-					label: creatDomainLabel,
-					checked: true,
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'createDomainHelpText',
-					content: createDomainHelpTextContent,
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_joinDomain',
-					label: _('Join into an existing UCS domain'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'joinDomainHelpText',
+					type: ChooseRoleBox,
+					name: "_choose_role_join",
+					callback: lang.hitch(this, chooseRoleCallback, "role"),
+					title: _('Join into an existing UCS domain'),
 					content: _('Use this option if you already have one or more UCS systems.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_adDomain',
-					label: _('Join into an existing Microsoft Active Directory domain'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'adDomainHelpText',
+					type: ChooseRoleBox,
+					name: "_choose_role_admember",
+					callback: lang.hitch(this, chooseRoleCallback, "role"),
+					title: _('Join into an existing Microsoft Active Directory domain'),
 					content: _('This system will become part of an existing non-UCS Active Directory domain.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: Text,
-					name: 'ifUnsureHelpText',
-					content: _('If unsure, select <i>%s</i>.', creatDomainLabel),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'role-nonmaster-ad',
 				headerText: _('System role'),
 				helpText: _('Specify the type of this system.'),
 				widgets: [{
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_roleBackup',
-					label: _('Backup Directory Node'),
-					checked: true,
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+					type: ChooseRoleBox,
+					name: "_roleBackup",
+					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
+					title: _('Backup Directory Node'),
+					content: _('A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over the role of the Primary Directory Node permanently. It is recommended to use at least one Backup Directory Node in the domain.')
 				}, {
-					type: Text,
-					name: 'helpBackup',
-					content: _('A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over the role of the Primary Directory Node permanently. It is recommended to use at least one Backup Directory Node in the domain.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
+					type: ChooseRoleBox,
 					name: '_roleSlave',
-					label: _('Replica Directory Node'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+					value: true,
+					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
+					title: _('Replica Directory Node'),
+					content: _('Replica Directory Node systems are ideal for site servers, they provide authentication services for the domain. Local services running on a Replica Directory Node can access the local LDAP database.')
 				}, {
-					type: Text,
-					name: 'helpSlave',
-					content: _('Replica Directory Node systems are ideal for site servers, they provide authentication services for the domain. Local services running on a Replica Directory Node can access the local LDAP database.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
+					type: ChooseRoleBox,
 					name: '_roleMember',
-					label: _('Managed Node'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'helpMember',
-					content: _('Managed Nodes should be used for services which do not need a local authentication database, for example for file or print servers.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
+					title: _('Managed Node'),
+					content: _('Managed Nodes should be used for services which do not need a local authentication database, for example for file or print servers.')
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-master',
@@ -837,39 +807,24 @@ define([
 				headerText: _('Server role inside the UCS@school domain'),
 				helpText: _('Choose which role this server is supposed to take in your UCS@school domain.'),
 				widgets: [{
-					type: RadioButton,
-					radioButtonGroup: 'schoolrole',
+					type: ChooseRoleBox,
 					name: '_schoolRoleEducational',
-					label: _('School server of the educational network'),
-					checked: true,
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+					value: true,
+					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
+					title: _('School server of the educational network'),
+					content: _('The server will provide educational UCS@school services for a school, e.g. exam mode.')
 				}, {
-					type: Text,
-					name: 'helpEducational',
-					content: _('The server will provide educational UCS@school services for a school, e.g. exam mode.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'schoolrole',
+					type: ChooseRoleBox,
 					name: '_schoolRoleAdministrative',
-					label: _('School server of the administrative network'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
+					title: _('School server of the administrative network'),
+					content: _('The server will only provide domain services to a school\'s administrative network, not educational UCS@school services.')
 				}, {
-					type: Text,
-					name: 'helpAdministrative',
-					content: _('The server will only provide domain services to a school\'s administrative network, not educational UCS@school services.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'schoolrole',
+					type: ChooseRoleBox,
 					name: '_schoolRoleCentral',
-					label: _('Central server'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'helpCentral',
-					content: _('The server will not be assigned to a specific school and will not provide UCS@school services.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
+					title: _('Central server'),
+					content: _('The server will not be assigned to a specific school and will not provide UCS@school services.')
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'software',
@@ -1031,11 +986,9 @@ define([
 					disable.push(['locale', 'xorg/keyboard/options/XkbLayout']);
 					disable.push(['locale', 'timezone']);
 				} else if (field == 'ad') {
-					disable.push(['role', '_adDomain']);
-					disable.push(['role', 'adDomainHelpText']);
+					disable.push(['role', '_choose_role_admember']);
 				} else if (field == 'preconfigured_system') {
-					disable.push(['role', '_preconfiguredDomain']);
-					disable.push(['role', 'preconfiguredDomainHelpText']);
+					disable.push(['role', '_choose_role_demo']);
 				} else if (field == 'domaincontroller_backup') {
 					disable.push(['role-nonmaster-ad', '_roleBackup']);
 					disable.push(['role-nonmaster-ad', 'helpBackup']);
@@ -1050,8 +1003,7 @@ define([
 
 			if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
 				// hide option to join a UCS domain
-				disable.push(['role', '_joinDomain']);
-				disable.push(['role', 'joinDomainHelpText']);
+				disable.push(['role', '_choose_role_join']);
 			}
 
 			array.forEach(disable, lang.hitch(this, function(page_widget) {
@@ -1061,19 +1013,6 @@ define([
 					widget.set('disabled', true);
 				}
 			}));
-		},
-
-		_preselectFirstVisibleRadioButton: function() {
-			array.forEach(['role', 'role-nonmaster-ad'], function(_ipage) {
-				var ipage = this.getPage(_ipage);
-				array.some(ipage._form.widgets, function(_iwidget) {
-					var iwidget = this.getWidget(_ipage, _iwidget.name);
-					if (iwidget.isInstanceOf(RadioButton) && iwidget.get('visible')) {
-						iwidget.set('value', true);
-						return true;
-					}
-				}, this);
-			}, this);
 		},
 
 		_sendDHCPQueries: function() {
@@ -1554,7 +1493,6 @@ define([
 			this._setupFooterButtons();
 			this._updateOrganizationName('');
 			this._evaluateBlacklist();
-			this._preselectFirstVisibleRadioButton();
 		},
 
 		_randomHostName: function() {
@@ -2143,7 +2081,7 @@ define([
 			if (!showRoleSelection) {
 				return this.ucr['server/role'] == 'domaincontroller_master';
 			}
-			var createNewDomain = this.getWidget('_createDomain').get('value');
+			var createNewDomain = this.getWidget('_choose_role_primary').get('value');
 			return createNewDomain || this._isUsingPreconfiguredSetup();
 		},
 
@@ -2152,11 +2090,11 @@ define([
 		},
 
 		_isUsingPreconfiguredSetup: function() {
-			return this.getWidget('_preconfiguredDomain').get('value');
+			return this.getWidget('_choose_role_demo').get('value');
 		},
 
 		_isAdMember: function() {
-			return this.getWidget('role', '_adDomain').get('value');
+			return this.getWidget('role', '_choose_role_admember').get('value');
 		},
 
 		_isAdMemberMaster: function() {
@@ -3197,10 +3135,10 @@ define([
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
-			var implicitMaster = this._isAdMemberMaster() || _vals._preconfiguredDomain;
+			var implicitMaster = this._isAdMemberMaster() || _vals._choose_role_demo;
 			if (!showRoleSelection) {
 				return this.ucr['server/role'];
-			} else if (_vals._createDomain || implicitMaster) {
+			} else if (_vals._choose_role_primary || implicitMaster) {
 				return 'domaincontroller_master';
 			} else if (_vals._roleBackup) {
 				return 'domaincontroller_backup';
@@ -3313,6 +3251,14 @@ define([
 			vals.install_memberof_overlay = this._install_memberof_overlay;
 
 			return vals;
+		},
+
+		_getMaxHeight: function() {
+			var x = this.inherited(arguments);
+			if (x > 500) {
+				x = 500;
+			}
+			return x;
 		},
 
 		destroy: function() {

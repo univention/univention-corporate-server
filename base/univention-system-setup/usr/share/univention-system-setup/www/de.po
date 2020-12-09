@@ -223,7 +223,7 @@ msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
 
 #: ApplianceWizard.js:431
 msgid "Domain and network configuration"
-msgstr "Domänen- und Netzwerkeinstellung"
+msgstr "Domänen- und<br />Netzwerkeinstellung"
 
 #: ApplianceWizard.js:432
 msgid "Specify the network settings for this system."
