@@ -118,12 +118,12 @@ class CLI_Client(Client):
 		msg.arguments = args
 		if options.flavor is not None:
 			msg.flavor = options.flavor
-		if options.list_options and not options.eval_options:
+		if options.list_options and not options.eval_option:
 			msg.options = options.options
 		elif options.filename:
 			msg.body = options.filename.read()
 			msg.mimetype = options.mimetype
-		elif options.eval_options:
+		elif options.eval_option:
 			if not options.list_options:
 				msg.options = ast.literal_eval(options.options[0])
 			else:
@@ -283,7 +283,7 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 	parser.add_argument_group(group)
 
 	prog = os.path.basename(sys.argv[0])
-	command = prog[4:] if prog.startswith("umc-") and not prog != "umc-client" else ""
+	command = prog[4:] if prog.startswith("umc-") and prog != "umc-client" else ""
 	if command:
 		parser.set_defaults(command=command)
 	else:
