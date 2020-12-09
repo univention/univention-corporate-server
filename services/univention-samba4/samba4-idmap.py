@@ -331,7 +331,8 @@ if __name__ == '__main__':
 
     parser = ArgumentParser()
     parser.add_argument(
-        "--direct-resync", action="store_true", dest="direct_resync", default=False,
+        "--direct-resync",
+        action="store_true",
         help="Filter the output of univention-ldapsearch through this module",
     )
     options = parser.parse_args()

@@ -219,7 +219,13 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         # type: () -> Tuple[int, Optional[str]]
         object_dn = None
 
-        cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", filter_format("(&(cn=%s)(%s=TRUE))", (self.objectname, self.active_flag_attribute))]
+        cmd = [
+            "univention-ldapsearch",
+            "-LLL",
+            "-b", self.object_dn,
+            "-s", "base",
+            filter_format("(&(cn=%s)(%s=TRUE))", (self.objectname, self.active_flag_attribute)),
+        ]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _ = p.communicate()
         if p.returncode:
