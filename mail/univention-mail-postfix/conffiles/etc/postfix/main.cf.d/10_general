@@ -43,6 +43,8 @@ if configRegistry.get('mail/postfix/smtp/hostlookup'):
 
 append_dot_mydomain = no
 
+compatibility_level = 3
+
 @!@
 import re
 
