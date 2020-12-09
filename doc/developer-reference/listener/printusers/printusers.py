@@ -1,7 +1,9 @@
 """
 Example for a listener module, which logs changes to users.
 """
-__package__ = ""  # workaround for PEP 366
+
+from __future__ import print_function
+
 from listener import SetUID
 import os
 import errno
@@ -10,7 +12,7 @@ from collections import namedtuple
 
 name = 'printusers'
 description = 'print all names/users/uidNumbers into a file'
-filter = """\
+filter = ''.join("""\
 (&
 	(|
 		(&
@@ -25,9 +27,9 @@ filter = """\
 	(!(objectClass=univentionHost))
 	(!(uidNumber=0))
 	(!(uid=*$))
-)""".translate(None, '\t\n\r')
+)""".split())
 attributes = ['uid', 'uidNumber', 'cn']
-_Rec = namedtuple('Rec', ' '.join(attributes))
+_Rec = namedtuple('Rec', 'uid uidNumber cn')
 
 USER_LIST = '/root/UserList.txt'
 
@@ -55,7 +57,7 @@ def _handle_change(dn, new, old):
 	n_rec = _rec(new)
 	ud.debug(ud.LISTENER, ud.INFO, 'Edited user "%s"' % (o_rec.uid,))
 	_writeit(o_rec, u'edited. Is now:')
-	_writeit(n_rec, None)
+	_writeit(n_rec, u'')
 
 
 def _handle_add(dn, new):
@@ -96,11 +98,11 @@ def _writeit(rec, comment):
 	try:
 		with SetUID():
 			with open(USER_LIST, 'a') as out:
-				print >> out, u'%sName: "%s"' % (indent, rec.cn)
-				print >> out, u'%sUser: "%s"' % (indent, rec.uid)
-				print >> out, u'%sUID: "%s"' % (indent, nuid)
+				print(u'%sName: "%s"' % (indent, rec.cn), file=out)
+				print(u'%sUser: "%s"' % (indent, rec.uid), file=out)
+				print(u'%sUID: "%s"' % (indent, nuid), file=out)
 				if comment:
-					print >> out, u'%s%s' % (indent, comment,)
+					print(u'%s%s' % (indent, comment,), file=out)
 	except IOError as ex:
 		ud.debug(
 			ud.LISTENER, ud.ERROR,
