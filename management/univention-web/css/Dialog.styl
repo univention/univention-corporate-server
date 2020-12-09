@@ -115,12 +115,13 @@
 	float: none
 
 
-.umcDialogActionBar
-	background-color: var(--color-grey0)
-	display: flex
-	justify-content: space-between
-	border-top: thin solid var(--color-grey8)
-	padding: 8px 24px
+.dijitDialog
+	.umcDialogActionBar, .umcPageFooter
+		background-color: var(--color-grey0)
+		display: flex
+		justify-content: space-between
+		border-top: thin solid var(--color-grey8)
+		padding: 8px 24px
 
 
 .umc .dijitDialogTitleBar
@@ -135,8 +136,10 @@
 		margin-left: auto
 
 
-.umc .dijitDialogPaneContent
-	background-color: var(--color-grey0)
+.umc .dijitDialog
+	.dijitDialogPaneContent, .umcPageMain
+		background-color: var(--color-grey0)
+		font-size: var(--font-size-small)
 
 
 .umc .dijitDialogTitle
