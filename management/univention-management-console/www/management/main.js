@@ -64,7 +64,6 @@ define([
 	"umc/tools",
 	"login",
 	"umc/dialog",
-	"umc/dialog/NotificationDropDownButton",
 	"umc/dialog/NotificationSnackbar",
 	"umc/store",
 	"dijit/_WidgetBase",
@@ -87,14 +86,15 @@ define([
 	"umc/widgets/ToggleButton",
 	"umc/widgets/Text",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/NotificationsButton",
 	"umc/i18n/tools",
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, style, put, dojoHash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
+		dom, domAttr, domClass, domGeometry, domConstruct, style, put, dojoHash, styles, entities, gfx, registry, tools, login, dialog, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, i18nTools, _
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton, i18nTools, _
 ) {
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
@@ -793,10 +793,7 @@ define([
 			if (_overviewVisible) {
 				this.setupSearchField();
 			}
-			this._headerRight.addChild(new NotificationDropDownButton({
-				iconClass: 'umcNotificationIcon',
-				'class': 'umcFlatButton'
-			}));
+			this._headerRight.addChild(new NotificationsButton({}));
 			if (_menuVisible) {
 				this._setupMenu();
 			}

@@ -143,40 +143,6 @@ headerHeight = 48px
 		right: 0
 		top: 0
 
-
-		.umcNotificationDropDownButton
-			position: relative
-
-			.notificationCountNode
-				position: absolute
-				top: 7px
-				right: 14px
-				box-sizing: content-box
-				width: 17px
-				height: 17px
-				background-color: #fff
-				border: 1px solid #6e6e6e
-				border-radius: 50%
-				display: flex
-				justify-content: center
-				align-items: center
-				font-size: 12px
-				color: $material-text-dark-high
-				opacity: 0
-				transition: opacity 0.2s
-			&.hasNotifications .notificationCountNode
-				opacity: 1
-
-			.umcNotificationIcon
-				margin: 14px 18px
-				icon-image(-220, -80, '../', '-white')
-				^[-3].hasNotifications ^[-3..-1]
-					animation-name: shake
-					animation-duration: 1s
-
-			.dijitArrowButtonInner
-				display: none
-
 		.umcLoginButton
 			.dijitButtonNode
 				padding: 0 material-grid(1)

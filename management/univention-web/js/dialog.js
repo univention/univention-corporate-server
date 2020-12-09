@@ -37,15 +37,16 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-style",
-	"umc/dialog/NotificationDropDownButton",
 	"umc/dialog/NotificationSnackbar",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
+	"umc/widgets/NotificationsButton",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationSnackbar, ConfirmDialog, Text,
+		Form, NotificationsButton, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 
@@ -93,12 +94,11 @@ define([
 			// component:
 			// 		The title for the notification.
 
-			var notificationDeferred = new Deferred();
-			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				var notification = dropDownButton.addNotification(message, component || _('Notification'), truncate);
-				notificationDeferred.resolve(notification);
-			});
-			return notificationDeferred;
+			var item = {
+				title: component || _('Notification'),
+				content: message || ''
+			};
+			NotificationsButton.addNotification(item);
 		},
 
 		warn: function(/*String*/ message, /*String?*/ component, /*Boolean?*/ truncate) {
@@ -109,12 +109,11 @@ define([
 			// component:
 			// 		The title for the notification.
 
-			var notificationDeferred = new Deferred();
-			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				var notification = dropDownButton.addWarning(message, component || _('Warning'), truncate);
-				notificationDeferred.resolve(notification);
-			});
-			return notificationDeferred;
+			var item = {
+				title: component || _('Warning'),
+				content: message || ''
+			};
+			NotificationsButton.addWarning(item);
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog

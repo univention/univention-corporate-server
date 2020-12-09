@@ -64,6 +64,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Button",
 	"umc/widgets/ToggleButton",
+	"umc/widgets/NotificationsButton",
 	"umc/menu",
 	"umc/store",
 	"umc/dialog",
@@ -87,15 +88,14 @@ define([
 	"umc/dialog/NotificationSnackbar",
 	"./_PortalIframeTabsContainer",
 	"./_PortalIframesContainer",
-	"./NotificationsButton",
 	"./Menu",
 ], function(
 	declare, lang, array, Deferred, domStyle, domClass, domConstruct, domAttr, when, aspect, on, onDebounce, debounce,
 	mouse, query, topic, ioQuery, regexp, Source, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
 	DropDownMenu, MenuItem, a11yclick, Text, TextBox, ContainerWidget, ConfirmDialog, Button, ToggleButton,
-	menu, store, dialog, render, tools, i18nTools, put, PortalEntryWizard, AppTile, PortalPropertiesButton, Dialog,
-	CategoryPropertiesDialog, FolderPropertiesDialog, AddCategoryButton, AddEntryButton, portalLinks, properties,
-	portalContent, login, _
+	NotificationsButton, menu, store, dialog, render, tools, i18nTools, put, PortalEntryWizard, AppTile,
+	PortalPropertiesButton, Dialog, CategoryPropertiesDialog, FolderPropertiesDialog, AddCategoryButton,
+	AddEntryButton, portalLinks, properties, portalContent, login, _
 ) {
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
 
@@ -195,7 +195,7 @@ define([
 							"
 						></button>
 						<button
-							data-dojo-type="NotificationsButton"
+							data-dojo-type="umc/widgets/NotificationsButton"
 							data-dojo-attach-point="notificationsButton"
 						></button>
 						<button

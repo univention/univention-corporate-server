@@ -34,29 +34,30 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/on",
 	"dijit/popup",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
-	"dijit/form/Button",
 	"dijit/layout/ContentPane",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Button",
 	"umc/widgets/ToggleButton",
 	"umc/tools",
-	"./portalContent",
-	"umc/i18n!portal"
+	"umc/i18n!"
 ], function(
-	declare, lang, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Button, ContentPane,
-	ContainerWidget, ToggleButton, tools, portalContent, _
+	declare, lang, Deferred, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, ContentPane,
+	ContainerWidget, Button, ToggleButton, tools, _
 ) {
-	var Notification = declare("Notification", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	var Notification = declare("umc.widgets.NotificationsButton.Notification",
+			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
 			<div class="ucsNotification">
 				<div class="ucsNotification__header">
 					<div
-						class="ucsNotification__logoWrapper"
+						class="ucsNotification__logoWrapper dijitDisplayNone"
 						data-dojo-attach-point="logoWrapperNode"
 					>
 						<img
@@ -71,8 +72,8 @@ define([
 					<button
 						class="ucsNotification__closeButton ucsIconButton"
 						data-dojo-attach-point="closeButton"
-						data-dojo-type="dijit/form/Button"
-						data-dojo-props="iconClass: 'iconX'"
+						data-dojo-type="umc/widgets/Button"
+						data-dojo-props="iconClass: 'x'"
 					></button>
 				</div>
 				<div
@@ -104,6 +105,15 @@ define([
 			this._set('content', content);
 		},
 
+		type: '',
+		_setTypeAttr: function(type) {
+			domClass.remove(this.domNode, `ucsNotification--${this.type}`);
+			if (type) {
+				domClass.add(this.domNode, `ucsNotification--${type}`);
+			}
+			this._set('type', type);
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
 			this.closeButton.on('click', () => {
@@ -116,7 +126,8 @@ define([
 		},
 	});
 
-	var NotificationsPreview = declare("NotificationsPreview", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	var NotificationsPreview = declare("umc.widgets.NotificationsButton.NotificationsPreview",
+			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
 			<div class="ucsNotificationPreview dijitDisplayNone">
 				<div class="ucsNotificationPreview__triangle"></div>
@@ -230,7 +241,8 @@ define([
 		}
 	});
 
-	var NotificationsContainer = declare("NotificationsContainer", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	var NotificationsContainer = declare("umc.widgets.NotificationsButton.NotificationsContainer",
+			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
 			<div class="ucsNotifications">
 				<div
@@ -265,13 +277,14 @@ define([
 	});
 
 
-	return declare("NotificationsButton", [ToggleButton], {
+	var notificationsButtonCreatedDeferred = new Deferred();
+	var NotificationsButton = declare("umc.widgets.NotificationsButton", [ToggleButton], {
 		showLabel: false,
 		iconClass: 'bell',
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			domClass.add(this.domNode, 'ucsIconButton');
+			domClass.add(this.domNode, 'ucsIconButton ucsNotificationsButton');
 		},
 
 		_setCheckedAttr: function(checked) {
@@ -282,6 +295,11 @@ define([
 		addNotification: function(item) {
 			this.notificationsContainer.addNotification(lang.clone(item));
 			this.notificationsPreview.addNotification(item);
+		},
+
+		addWarning: function(item) {
+			item.type = 'warning';
+			this.addNotification(item);
 		},
 
 		advance: function() {
@@ -298,8 +316,24 @@ define([
 			this.notificationsContainer = new NotificationsContainer({});
 			document.body.appendChild(this.notificationsContainer.domNode);
 			this.notificationsContainer.startup();
+
+			notificationsButtonCreatedDeferred.resolve(this);
 		}
 	});
+
+	NotificationsButton.addNotification = function(item) {
+		notificationsButtonCreatedDeferred.then(function(notificationsButton) {
+			notificationsButton.addNotification(item);
+		});
+	};
+
+	NotificationsButton.addWarning = function(item) {
+		notificationsButtonCreatedDeferred.then(function(notificationsButton) {
+			notificationsButton.addWarning(item);
+		});
+	};
+
+	return NotificationsButton;
 });
 
 

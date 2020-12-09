@@ -14,10 +14,6 @@ body{
 #umcHeaderRight {
 }
 
-/* (span) Container for the notification button*/
-.umcNotificationDropDownButton {
-}
-
 /* (span) Container for the login button*/
 .umcLoginButton {
 }
