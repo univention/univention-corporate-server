@@ -31,10 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import os
-import subprocess
+from sys import exit
 from shlex import quote
+from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 # Name of the cron.d file
 CRON_D = '/etc/cron.d/univention-maintenance'
@@ -64,46 +66,37 @@ def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reb
         print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file)
 
 
-configRegistry = ConfigRegistry()
-configRegistry.load()
+def one(results: Dict[str, List[str]], key: str) -> str:
+    try:
+        return results[key][0]
+    except LookupError:
+        return ""
 
-if os.path.exists(CRON_D):
-    os.unlink(CRON_D)
 
-ldap_hostdn = configRegistry.get('ldap/hostdn')
-if ldap_hostdn:
-    cmd = (
-        'univention_policy_result',
-        '-D', ldap_hostdn,
-        '-y', '/etc/machine.secret',
-        '-s',
-        ldap_hostdn,
-    )
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    assert p1.stdout
+def main() -> None:
+    if os.path.exists(CRON_D):
+        os.unlink(CRON_D)
 
-    updateto = ''
-    cron_active = ''
-    reboot = ''
-    cron = ''
-    try_release_update = False
+    configRegistry = ConfigRegistry()
+    configRegistry.load()
+    ldap_hostdn = configRegistry.get('ldap/hostdn')
+    if not ldap_hostdn:
+        return
 
-    for line in p1.stdout:
-        key, value = line.decode('utf-8').split('=', 1)
-        value = value.strip('"')
-        if key == 'univentionCronActive':
-            cron_active = value
-        elif key == 'univentionCron':
-            cron = value
-        elif key == 'univentionUpdateVersion':
-            updateto = value
-        elif key == 'univentionInstallationReboot':
-            reboot = value
-        elif key == 'univentionUpdateActivate':
-            try_release_update = value == 'TRUE'
+    try:
+        results, _policies = policy_result(ldap_hostdn)
+    except PolicyResultFailed as ex:
+        exit('failed to execute univention_policy_result: %s' % ex)
 
-    if p1.wait():
-        raise SystemExit('failed to execute univention_policy_result')
+    cron_active = one(results, "univentionCronActive") == "1"
+    cron = one(results, "univentionCron")
+    updateto = one(results, "univentionUpdateVersion")
+    reboot = one(results, "univentionInstallationReboot")
+    try_release_update = one(results, "univentionUpdateActivate") == "TRUE"
 
-    if cron_active == '1' and cron:
+    if cron_active and cron:
         write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
+
+
+if __name__ == "__main__":
+    main()
