@@ -32,7 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-class",
-	"dijit/form/Button",
+	"umc/widgets/Button",
 	"login/main",
 	"umc/i18n!"
 ], function(declare, lang, domClass, Button, login, _) {
@@ -40,17 +40,17 @@ define([
 		type: 'button',
 		label: _('Login'),
 
-		'class': 'umcLoginButton umcFlatButton',
+		iconClass: 'lock',
 
 		loggedIn: false,
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			this.set('iconClass', 'umcLoggedOutIcon');
+			domClass.add(this.domNode, 'umcLoginButton ucsTextButton');
 		},
 
 		_setLoggedInAttr: function(loggedIn) {
-			this.set('iconClass', loggedIn ? 'umcLoggedInIcon' : 'umcLoggedOutIcon');
+			this.set('iconClass', loggedIn ? 'unlock' : 'lock');
 			this.set('label', loggedIn ? _('Logout') : _('Login'));
 			this._set('loggedIn', loggedIn);
 		},

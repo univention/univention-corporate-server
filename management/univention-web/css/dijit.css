@@ -264,14 +264,16 @@ TABLE.dijitSelect {
 	opacity: 0.5;
 }
 
+/*
 .dijitToggleButton,
 .dijitButton,
 .dijitDropDownButton,
 .dijitComboButton {
-	/* outside of button */
+	/ outside of button /
 	margin: 0.2em;
 	vertical-align: middle;
 }
+*/
 
 .dijitButtonContents {
 	display: block;		/* to make focus border rectangular */

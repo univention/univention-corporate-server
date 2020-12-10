@@ -30,25 +30,41 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin",
+	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/Text",
+	"umc/widgets/Icon",
 	"umc/widgets/ContainerWidget"
-], function(declare, Text, ContainerWidget) {
-	return declare('umc.menu.Slide', [ContainerWidget], {
+], function(declare, domClass, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Text, Icon, ContainerWidget) {
+	return declare('umc.menu.Slide', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		isSubMenu: true,
 		label: '',
-		'class': 'menuSlide hiddenSlide',
+		_setLabelAttr: { node: 'labelNode', type: 'innerHTML' },
+
+		templateString: `
+			<div class="menuSlide hiddenSlide">
+				<div
+					data-dojo-attach-point="headerNode"
+					class="menuSlideHeader fullWidthTile"
+				>
+					${Icon.asHTMLString('chevron-left')}
+					<div data-dojo-attach-point="labelNode"></div>
+				</div>
+				<div
+					data-dojo-type="umc/widgets/ContainerWidget"
+					data-dojo-attach-point="itemsContainer"
+					class="menuSlideItemsContainer"
+				></div>
+			</div>
+		`.trim(),
+
 		buildRendering: function() {
 			this.inherited(arguments);
-			var headerClass = this.isSubMenu ? 'menuSlideHeader subMenu fullWidthTile' : 'menuSlideHeader fullWidthTile';
-			this.header = new Text({
-				content: this.label,
-				'class': headerClass
-			});
-			this.itemsContainer = new ContainerWidget({
-				'class': 'menuSlideItemsContainer'
-			});
-			this.addChild(this.header);
-			this.addChild(this.itemsContainer);
+			if (this.isSubMenu) {
+				domClass.add(this.headerNode, 'subMenu');
+			}
 		}
 	});
 });

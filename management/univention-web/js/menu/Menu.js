@@ -46,13 +46,15 @@ define([
 	"umc/tools",
 	"umc/menu/MenuItem",
 	"umc/menu/SubMenuItem",
-	"umc/menu/_Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!"
-], function(declare, lang, array, on, Deferred, topic, tap, domClass, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, umcButton, _) {
-
+], function(
+		declare, lang, array, on, Deferred, topic, tap, domClass, _WidgetBase, _TemplatedMixin,
+		_WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem,
+		ContainerWidget, Text, Button, _
+) {
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
 	require(["umc/menu"], function(_menu) {
@@ -148,9 +150,7 @@ define([
 
 	var MobileMenu = declare('umc.menu.Menu', [ContainerWidget], {
 		_menuMap: null,
-		'class': 'mobileMenu',
 		menuSlides: null,
-		permaHeader: null,
 		popupHistory: null,
 
 		showLoginHeader: false,
@@ -167,12 +167,12 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'mobileMenu');
 			this._menuMap = {};
 
 			this.addLoginHeader();
 			this.addMenuSlides();
 			this.addUserMenu();
-			this.addPermaHeader();
 			this.addCloseOverlay();
 			dojo.body().appendChild(this.domNode);
 		},
@@ -210,33 +210,6 @@ define([
 			this.menuSlides.addChild(userMenuItem.menuSlide);
 		},
 
-		addPermaHeader: function() {
-			// create permaHeader
-			var permaHeader = new Text({
-				content: 'Menu',
-				'class': 'menuSlideHeader permaHeader fullWidthTile'
-			});
-			this.permaHeader = permaHeader;
-			this.addChild(permaHeader);
-
-			// add listeners
-			this.permaHeader.on(tap, lang.hitch(this, function() {
-				var lastClickedSubMenuItem = this.popupHistory.pop();
-
-				this._updateMobileMenuPermaHeaderForClosing(lastClickedSubMenuItem);
-				lastClickedSubMenuItem.close();
-			}));
-		},
-
-		_updateMobileMenuPermaHeaderForClosing: function(subMenuItem) {
-			if (!subMenuItem) {
-				return;
-			}
-			this.permaHeader.set('content', subMenuItem.parentSlide.header.content);
-			var isSubMenu = domClass.contains(subMenuItem.parentSlide.header.domNode, 'subMenu');
-			domClass.toggle(this.permaHeader.domNode, 'subMenu', isSubMenu);
-		},
-
 		addCloseOverlay: function() {
 			this._mobileMenuCloseOverlay = new ContainerWidget({
 				'class': 'mobileMenuCloseOverlay'
@@ -259,7 +232,6 @@ define([
 			do {
 				this.popupHistory.pop().close();
 			} while (this.popupHistory.length);
-			this._updateMobileMenuPermaHeaderForClosing(firstClickedSubMenuItem);
 		},
 
 		_registerOrphanedEntry: function(menuEntry, parentMenuId) {
@@ -317,16 +289,15 @@ define([
 			var _addClickListeners = lang.hitch(this, function(subMenuItem) {
 				// open the slide of the subMenuItem
 				subMenuItem.on(tap , lang.hitch(this, function() {
+					this.popupHistory.push(subMenuItem);
 					subMenuItem.open();
-					this._updateMobileMenuPermaHeaderForOpening(subMenuItem);
 				}));
 
 				// close the slide of the subMenuItem
-				subMenuItem.menuSlide.header.on(tap , lang.hitch(this, function() {
+				on(subMenuItem.menuSlide.headerNode, tap, lang.hitch(this, function() {
 					var lastClickedSubMenuItem = this.popupHistory.pop();
 
 					lastClickedSubMenuItem.close();
-					this._updateMobileMenuPermaHeaderForClosing(subMenuItem);
 				}));
 			});
 
@@ -344,12 +315,6 @@ define([
 
 			parentMenuItem.addMenuItem(subMenuItem);
 			return subMenuItem;
-		},
-
-		_updateMobileMenuPermaHeaderForOpening: function(subMenuItem) {
-			this.permaHeader.set('content', subMenuItem.menuSlide.header.content);
-			this.popupHistory.push(subMenuItem);
-			domClass.toggle(this.permaHeader.domNode, 'subMenu', domClass.contains(subMenuItem.menuSlide.header.domNode, 'subMenu'));
 		},
 
 		addMenuEntry: function(/*Object*/ item) {

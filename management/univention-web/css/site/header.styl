@@ -138,14 +138,16 @@ headerHeight = 48px
 		display: flex
 		align-items: center
 		height: var(--layout-height-header)
-		margin-right: 30px
+		margin-right: spacing(2)
 		position: absolute
 		right: 0
 		top: 0
 
-		.umcLoginButton
-			.dijitButtonNode
-				padding: 0 material-grid(1)
+		.ucsButton
+			margin: 0 spacing(1, true)
+
+	.umcLoginButton
+		--button-size: var(--layout-height-header)
 
 /* more tabs drop down menu */
 .umc .umcMoreTabsMenuPopupWrapper
@@ -176,37 +178,6 @@ headerHeight = 48px
 /* more tabs drop down menu  END */
 
 
-.umc .umcHeader.umcWhiteIcons
-	.umcMainTabController .dijitTab
-		color: rgba(255, 255, 255, 0.7)
-
-		&.dijitTabChecked
-			color: rgba(255, 255, 255, 1)
-
-	.umcHeaderRight
-		.umcSearchIcon,
-		.umcLoggedInIcon,
-		.umcLoggedOutIcon
-			background-image: url(../images/icons-white.svg)
-
-		.umcLoginButton .dijitButtonText
-			color: #fff
-
-		.umcMobileMenuToggleButton div
-			background-color: #fff
-
-		.univentionLogo
-			background-image: url(../images/univention-white.svg)
-
-			@media (max-width: 650px)
-				background-image: url(../images/univention_u-white.svg)
-
-	.dijitSelect, .dijitTextBox
-		.dijitInputContainer .umcInlineLabel
-			color: rgba(255, 255, 255, 1)
-
-
-
 /* special stylings depending on device class */
 
 @media (max-width: 500px)
@@ -229,331 +200,12 @@ headerHeight = 48px
 .umc .umcTopContainer .dijitTabContainerTop
 	clear: both
 
-/* menu styling */
-.umc
-	.umcMobileMenuToggleButton
-		position: relative
-		width: parentWidth = material-grid(7)
-		height: parentHeight = headerHeight
-		$stripeWidth = 20px
-		$stripeHeight = 4px
-		$gap = 3px
-		$topPadding = (parentHeight - ($stripeHeight * 3) - ($gap * 2)) / 2
-
-		div
-			position: absolute
-			width: $stripeWidth
-			height: $stripeHeight
-			right: ((parentWidth - @width) / 2)
-			background-color: $text-color
-
-			//for firefox mobile
-			pointer-events: none
-
-			transition: transform 0.35s, width 0.35s, right 0.35s
-			//for mobile(chrome)
-			-webkit-transition: -webkit-transform 0.35s, width 0.35s, right 0.35s
-
-		div:nth-child(1)
-			top: $topPadding + ($stripeHeight * 0) + ($gap * 0)
-
-		div:nth-child(2)
-			top: $topPadding + ($stripeHeight * 1) + ($gap * 1)
-
-		div:nth-child(3)
-			top: $topPadding + ($stripeHeight * 2) + ($gap * 2)
-
-		.umcMobileMenuToggleButtonTouchStyle
-			width: w = 2px
-			height: h = 2px
-			position: absolute
-			top: ((parentHeight - h) / 2)
-			left: ((parentWidth - w) /2)
-			color = rgba(0, 0, 0, 0.2)
-			background-color: color
-			box-shadow: 0 0 15px 27px color
-			border-radius: 100%
-			opacity: 0
-			transition: opacity 0.4s
-
-		&.umcMobileMenuToggleButtonTouched
-			.umcMobileMenuToggleButtonTouchStyle
-				opacity: 1
-
-		&.umcMobileMenuToggleButtonHover
-			div:nth-child(1)
-				width: 16px
-				right: 26px
-				transform: translate(0, 3px) rotate(-38deg)
-
-			div:nth-child(3)
-				width: 16px
-				right: 26px
-				transform: translate(0, -3px) rotate(38deg)
-
-		&.umcMobileMenuToggleButtonActive
-			div:nth-child(1)
-				transform: translate3d(0, 7px, 0) rotate(45deg)
-
-			div:nth-child(2)
-				transform: rotate(45deg)
-
-			div:nth-child(3)
-				transform: translate3d(0, -7px, 0) rotate(-45deg)
-
-	.mobileMenu
-		$informationHeaderHeight = 64px
-
-		overflow: hidden
-		position: fixed
-		top: 0
-		bottom: 0
-		right: 0
-		width: 80%
-		max-width: 360px
-		background-color: #fff
-		transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
-		z-index: 30
-		transform: translate3d(110%, 0, 0)
-
-		.umcMobileMenuToggleButton
-			z-index: 10
-			margin: 0 !important
-			position: absolute
-			top: 7px
-			right: 0
-
-			&.umcMobileMenuToggleButtonTouchStyle
-				box-shadow: 0 0 15px 27px rgba(255, 255, 255, 0.2)
-
-			&.umcMobileMenuToggleButtonHover
-				div:nth-child(1)
-					width: 16px
-					right: 17px
-					transform: translate(0, 3px) rotate(38deg) !important
-
-				div:nth-child(2)
-					transform: none !important
-
-				div:nth-child(3)
-					width: 16px
-					right: 17px
-					transform: translate(0, -3px) rotate(-38deg) !important
-
-		.fullWidthTile
-			color: $text-color
-			position: relative
-			height: headerHeight
-			line-height: 20px
-			padding: ((headerHeight - @line-height) / 2) 0
-
-		.menuInformationHeader
-			height: $informationHeaderHeight
-			background-color: #e1e1e1
-			border-bottom: 1px solid rgba(0, 0, 0, 0.1)
-			box-sizing: content-box
-
-			div
-				line-height: 20px
-				padding-left: 40px
-
-			.menuInformationHeaderUsername
-				font-weight: 500
-				padding-top: 12px
-
-		.menuSlideHeader
-			cursor: default
-			padding-left: 40px
-			margin-bottom: 8px
-			font-weight: 500
-			text-transform: uppercase
-
-			&.subMenu
-				cursor: pointer
-
-				&:before
-					content: ''
-					icon-image(-200, -20, '../')
-					position: absolute
-					left: 0
-					margin-left: 12px
-
-			&:hover
-				background-color: #f1f1f1
-
-			&.permaHeader
-				display: none
-
-		&.hasPermaHeader
-			$top = 0
-			$height = 48px
-			.menuSlideHeader.permaHeader
-				display: block
-				position: absolute
-				top: $top
-				left: 0
-				right: 0
-				height: $height
-				background-color: #e1e1e1
-
-			.menuSlides
-				top: $height + $top
-				margin-top: 8px
-				.menuSlide .menuSlideHeader
-					display: none
-
-		.menuSlides,
-		.menuSlide
-			position: absolute
-			z-index: 0
-			background: inherit
-
-		.menuSlides
-			top: $informationHeaderHeight
-			bottom: 0px
-			left: 0
-			right: 0
-			margin-top: 8px
-
-			overflow: hidden
-
-			.menuSlide
-				top: 0
-				bottom: 0
-				left: 0
-				right: 0
-
-				overflow: auto
-
-				transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
-
-				&.mainSlide
-					.menuSlideHeader
-						display: none
-
-				.menuSlideItemsContainer
-					.menuItem
-						cursor: pointer
-						padding-left: 40px
-
-						&:hover
-							background-color: #eee
-
-							.popupMenuItemArrowActive
-								opacity: 1
-
-						&.menuItemActive
-							background-color: #f5f5f5
-
-						&.menuItemActiveTransition
-							$transitionDur = 0.3s
-
-							transition: background-color $transitionDur
-							.popupMenuItemArrow,
-							.popupMenuItemArrowActive
-								transition: opacity $transitionDur
-
-					.popupMenuItem
-						.childItemsCounter
-							position: absolute
-							right: 0
-							margin-right: 40px
-							display: inline
-
-						.popupMenuItemArrow,
-						.popupMenuItemArrowActive
-							content: ''
-							position: absolute
-							right: 0
-							margin-right: 12px
-							display: inline
-
-						.popupMenuItemArrow
-							opacity: 1
-							icon-image(-220, -20, '../')
-
-						.popupMenuItemArrowActive
-							opacity: 0
-							icon-image(-220, -20, '../')
-
-					.separator
-						padding: 0
-						height: 1px
-						margin: 8px 0
-						cursor: default
-						background-color: #e0e0e0
-
-						&:hover
-							background-color: @background-color
-
-			&.popupSlideNormalTransition .menuSlide
-				transform: translate3d(100%, 0, 0)
-
-			&.overlappedSlidePushTransition .menuSlide.overlappedSlide
-				transform: translate3d(-30%, 0, 0)
-				-webkit-transform: translate3d(-30%, 0, 0)
-
-			.hiddenSlide
-				display: none !important
-
-			.topLevelSlide
-				z-index: 1
-
-			.menuSlide.visibleSlide
-				transform: translate3d(0, 0, 0) scale(1, 1)
-				transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
-
-	.mobileMenuCloseOverlay
-		position: fixed
-		top: 0
-		bottom: 0
-		left: 0
-		right: 0
-		background-color: black
-		opacity: 0
-		z-index: 29
-		visibility: hidden
-		transition: opacity 0.5s, visibility 0.5s
-		-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0.5s
-
-	&.mobileMenuActive
-		&.hasScrollbar
-			position: fixed
-			top: 0
-			bottom: 0
-			left: 0
-			right: 0
-			overflow-y: scroll
-
-		.mobileMenuCloseOverlay
-			visibility: visible
-			opacity: 0.3
-			transition: opacity 0.5s, visibility 0s
-			-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0s
-
-		.mobileMenu
-			transform: translate3d(0, 0, 0) !important
-			box-shadow: 0px 0px 10px 3px $grey-dark
-			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
-
-	&.mobileMenuToggleButtonActive
-		.umcMobileMenuToggleButton
-			div:nth-child(1)
-				transform: translate3d(0, 7px, 0) rotate(45deg)
-
-			div:nth-child(2)
-				transform: rotate(45deg)
-
-			div:nth-child(3)
-				transform: translate3d(0, -7px, 0) rotate(-45deg)
-
 .umc .umcHeader--umc
 	.umcMainTabController
 		background: inherit
 
-	.umcHeaderRight
-		margin-right: 0
 
+// module search
 .umcModuleSearchToggleButton.dijitChecked
 	color: var(--color-primary)
 .umcModuleSearch
@@ -572,3 +224,4 @@ headerHeight = 48px
 		background-color: var(--bgc-content-container)
 	.umcSearchBox__searchButton
 		display: none
+// module search end

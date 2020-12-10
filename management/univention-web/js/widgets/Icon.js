@@ -70,6 +70,10 @@ define([
 		}
 	});
 
+	Icon.asHTMLString = function(iconName, claz) {
+		return `<svg class="featherIcon icon-${iconName} ${claz || ''}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="${SVG_SPRITE_PATH}#${iconName}"/></svg>`;
+	};
+
 	Icon.createNode = function(iconName, claz) {
 		// performant rendering of a stateless Icon node
 		var svgNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

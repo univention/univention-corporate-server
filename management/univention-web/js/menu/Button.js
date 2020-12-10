@@ -30,12 +30,12 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
+	"dojo/topic",
 	"dojo/Deferred",
-	"dijit/Tooltip",
-	"umc/menu/_Button",
-	"umc/tools",
+	"umc/widgets/ToggleButton",
 	"umc/i18n!"
-], function(declare, Deferred, Tooltip, _Button, tools, _) {
+], function(declare, domClass, topic, Deferred, ToggleButton, _) {
 
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -45,21 +45,40 @@ define([
 
 	var menuButtonDeferred = new Deferred();
 
-	var MenuButton = declare('umc.menu.Button', [_Button], {
+	var MenuButton = declare('umc.menu.Button', [ToggleButton], {
+		//// overwrites
+		iconClass: 'menu',
+
+
+		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'ucsIconButton umcMenuButton');
+
+			this.watch('checked', function(_name, _oldChecked, checked) {
+				menuDeferred.then(function(menu) {
+					if (checked) {
+						menu.open();
+					} else {
+						menu.close();
+					}
+				});
+			});
+
+			topic.subscribe('/umc/menu', action => {
+				switch (action) {
+					case 'open':
+						this.set('checked', true);
+						break;
+					case 'close':
+						this.set('checked', false);
+						break;
+				}
+			});
+
 			menuDeferred.then(function(menu) {
 				menu.createMenu();
 			});
-			this._tooltip = new Tooltip({
-				label: _('Click for menu options'),
-				connectId: [ this.domNode ]
-			});
-			this.own(this._tooltip);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
 			menuButtonDeferred.resolve(this);
 		}
 	});

@@ -35,10 +35,11 @@ define([
 	"dojo/dom-class",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
+	"umc/widgets/Icon",
 	"umc/menu/_ShowHideMixin",
 	"umc/menu/Slide",
 	"umc/tools"
-], function(declare, lang, array, domClass, _WidgetBase, _TemplatedMixin, _ShowHideMixin, Slide, tools) {
+], function(declare, lang, array, domClass, _WidgetBase, _TemplatedMixin, Icon, _ShowHideMixin, Slide, tools) {
 	return declare('umc.menu.SubMenuItem', [_WidgetBase, _TemplatedMixin, _ShowHideMixin], {
 		label: '',
 		isSubMenu: true,
@@ -49,8 +50,7 @@ define([
 			'<div data-dojo-attach-point="contentNode" class="menuItem popupMenuItem fullWidthTile">' +
 				'${label}' +
 				'<div data-dojo-attach-point="childItemsCounterNode" class="childItemsCounter"></div>' +
-				'<div class="popupMenuItemArrow"></div>' +
-				'<div class="popupMenuItemArrowActive"></div>' +
+				Icon.asHTMLString('chevron-right', 'popupMenuItemArrow') +
 			'</div>',
 
 		buildRendering: function() {

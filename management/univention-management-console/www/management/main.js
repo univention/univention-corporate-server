@@ -842,9 +842,7 @@ define([
 		},
 
 		_setupMenu: function() {
-			var menuButton = new MenuButton();
-			this._headerRight.addChild(menuButton);
-
+			this._headerRight.addChild(new MenuButton({}));
 			this._tabController.on('selectChild', lang.hitch(this, function() {
 				menu.close();
 			}));

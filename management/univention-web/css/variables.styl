@@ -10,6 +10,18 @@ material-grid(multiplicant, use4dp=false)
 		spacing = $material-grid4
 	spacing * multiplicant
 
+$spacing-normal ?= s('var(--layout-spacing-unit)')
+$spacing-small ?= s('var(--layout-spacing-unit-small)')
+spacing(multiplicant, small=false)
+	if typeof(small) != 'boolean'
+		error('"small" has to be a boolean')
+	spacing = $spacing-normal
+	if small
+		spacing = $spacing-small
+	s('calc(%s * %s)', multiplicant, spacing)
+
+
+
 $material-border-radius ?= 2px
 
 // typography

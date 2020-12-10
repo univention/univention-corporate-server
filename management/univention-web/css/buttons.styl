@@ -1,4 +1,5 @@
 @require "icons.styl"
+@require "HTMLElements.styl"
 
 //// overarching button styling
 .ucsButton
@@ -147,10 +148,18 @@
 	&ToFontSize
 		--button-size: 1em
 
+.ucsLinkButton
+	--button-size: auto
+
+	.dijitButtonText
+		text-transform: none
+		@extends a
+
+
 //// misc
 .dijitUploader input
 	cursor: pointer
 
 
-.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.umcCategoryButton)
+.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.ucsLinkButton):not(.umcCategoryButton)
 	@extends .ucsNormalButton
