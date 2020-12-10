@@ -68,8 +68,12 @@ def check_preconditions(options):
             sys.exit(1)
 
     # install univention-debmirror
-    ret, msg = urepo.is_debmirror_installed()
-    if ret:
+    cmd = ('dpkg-query', '-W', '-f', '${Status}', 'univention-debmirror')
+    with open(os.path.devnull, 'w') as devnull:
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=devnull)
+        output = p.communicate()[0].decode("UTF-8")
+
+    if output == 'install ok installed':
         return
 
     print('Installing univention-debmirror')
