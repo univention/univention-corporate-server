@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-4) unstable; urgency=low
+
+  * Bug #42469: remove get-volume-set-identifier
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Dec 2020 11:25:33 +0100
+
 univention-system-setup (13.0.3-3) unstable; urgency=low
 
   * Bug #52469: restart UMC (web) server after USS
