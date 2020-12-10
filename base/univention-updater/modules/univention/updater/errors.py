@@ -130,15 +130,6 @@ class ProxyError(ConfigurationError):
         return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
 
 
-class LockingError(UpdaterException):
-    """
-    Signal other updater process running.
-    """
-
-    def __str__(self):
-        return "Another updater process is currently running - abort\n%s" % self.args[0]
-
-
 class UnmetDependencyError(UpdaterException):
     """
     Signal unmet package dependencies
