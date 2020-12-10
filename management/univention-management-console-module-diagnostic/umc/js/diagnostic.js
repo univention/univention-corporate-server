@@ -103,7 +103,9 @@ define([
 		},
 
 		renderRow: function(item) {
-			var div = new ContainerWidget({});
+			var div = new ContainerWidget({
+				'class': 'umc-diagnostic-content'
+			});
 
 			var text = new Text({
 				'class': 'umc-diagnostic-description'
@@ -147,7 +149,9 @@ define([
 				});
 			})), this);
 
-			var buttonctn = new ContainerWidget();
+			var buttonctn = new ContainerWidget({
+				'class': 'umc-diagnostic-buttonrow'
+			});
 			div.addChild(buttonctn);
 			this.own(buttonctn);
 			array.forEach(buttons.$order$, function(button) {

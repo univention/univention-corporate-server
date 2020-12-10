@@ -6,7 +6,7 @@
 	-webkit-user-select: none;
 }
 .umc-diagnostic.dgrid .dgrid-selected {
-	background-color: inherit;
+	background-color: var(--bgc-content-container);
 }
 .umc-diagnostic.dgrid .dgrid-scroller {
 	outline: none;
@@ -14,9 +14,15 @@
 	overflow: visible;
 }
 
+.umc-diagnostic-content {
+	font-size: var(--font-size-small);
+}
 .umc-diagnostic-description {
 	white-space: pre-wrap;
 	word-wrap: break-word;
+}
+.umc-diagnostic-buttonrow {
+	margin-top: calc(2 * var(--layout-spacing-unit));
 }
 .umc-diagnostic h1 {
 	margin-bottom: 0;
@@ -26,7 +32,7 @@
 	font-size: 1em;
 }
 .umc-diagnostic .diagnostic-critical span.dijitTitlePaneTextNode::before {
-	color: red;
+	color: var(--color-error);
 }
 .umc-diagnostic .diagnostic-conflict span.dijitTitlePaneTextNode::before {
 	color: darkorange;
@@ -35,10 +41,10 @@
 	color: orange;
 }
 .umc-diagnostic .diagnostic-problemfixed span.dijitTitlePaneTextNode::before {
-	color: green;
+	color: var(--color-success);
 }
 .umc-diagnostic .diagnostic-success span.dijitTitlePaneTextNode::before {
-	color: green;
+	color: var(--color-success);
 }
 .umc-diagnostic .diagnostic-problem span.dijitTitlePaneTextNode::before {
 	color: orange;
