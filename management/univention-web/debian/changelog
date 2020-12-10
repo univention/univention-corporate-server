@@ -1,3 +1,9 @@
+univention-web (4.0.0-8) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - adjust header styling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Dec 2020 09:14:16 +0100
+
 univention-web (4.0.0-7) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - buttons, overview and performance

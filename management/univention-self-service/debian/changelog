@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-2) unstable; urgency=medium
+
+  * bug #52453: adjust header styling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Dec 2020 09:18:10 +0100
+
 univention-self-service (5.0.1-1) unstable; urgency=medium
 
   * Bug #52362: fix token validity check if more than one day passed

@@ -1,3 +1,9 @@
+univention-portal (4.0.3-3) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - move menu styling to univention-web
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Dec 2020 09:13:28 +0100
+
 univention-portal (4.0.3-2) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - move some stylings to univention-web
