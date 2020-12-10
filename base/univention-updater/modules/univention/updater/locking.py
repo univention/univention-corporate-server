@@ -35,17 +35,36 @@ from __future__ import print_function
 
 import os
 from sys import (exit, stderr)
-from time import (time, sleep)
+from time import sleep
+try:
+    from time import monotonic  # type: ignore
+except ImportError:
+    from monotonic import monotonic  # type: ignore
 from errno import (EEXIST, ESRCH, ENOENT)
-from .errors import LockingError
+from .errors import UpdaterException
+
+
+UPDATER_LOCK_FILE_NAME = '/var/lock/univention-updater'
+
+
+class LockingError(UpdaterException):
+    """
+    Signal other updater process running.
+    """
+
+    def __str__(self):
+        # type: () -> str
+        return "Another updater process %s is currently running according to %s: %s" % (
+            self.args[0],
+            UPDATER_LOCK_FILE_NAME,
+            self.args[1],
+        )
 
 
 class UpdaterLock(object):
     """
     Context wrapper for updater-lock :file:`/var/lock/univention-updater`.
     """
-
-    __UPDATER_LOCK_FILE_NAME = '/var/lock/univention-updater'
 
     def __init__(self, timeout=0):
         self.timeout = timeout
@@ -54,6 +73,7 @@ class UpdaterLock(object):
     def __enter__(self):
         try:
             self.lock = self.updater_lock_acquire()
+            return self
         except LockingError as ex:
             print(ex, file=stderr)
             exit(5)
@@ -70,68 +90,59 @@ class UpdaterLock(object):
         :rtype: int
         :raises LockingError: otherwise.
         '''
-        deadline = time() + self.timeout
-        my_pid = "%d\n" % os.getpid()
-        parent_pid = "%d\n" % os.getppid()
+        deadline = monotonic() + self.timeout
         while True:
             try:
-                lock_fd = os.open(
-                    self.__UPDATER_LOCK_FILE_NAME,
-                    os.O_WRONLY | os.O_CREAT | os.O_EXCL,
-                    0o644)
+                lock_fd = os.open(UPDATER_LOCK_FILE_NAME, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+                my_pid = b"%d\n" % os.getpid()
                 bytes_written = os.write(lock_fd, my_pid)
                 assert bytes_written == len(my_pid)
                 os.close(lock_fd)
                 return 0
-            except OSError as ex:
+            except EnvironmentError as ex:
                 if ex.errno != EEXIST:
                     raise
                 try:
-                    lock_fd = os.open(
-                        self.__UPDATER_LOCK_FILE_NAME,
-                        os.O_RDONLY | os.O_EXCL)
+                    lock_fd = os.open(UPDATER_LOCK_FILE_NAME, os.O_RDONLY | os.O_EXCL)
                     try:
-                        lock_pid = os.read(
-                            lock_fd, 11)  # sizeof(s32) + len('\n')
+                        lock_pid_b = os.read(lock_fd, 11)  # sizeof(s32) + len('\n')
                     finally:
                         os.close(lock_fd)
-                    if my_pid == lock_pid:
-                        return 0
-                    if parent_pid == lock_pid:  # u-repository-* called from u-updater
-                        return 1
+
                     try:
-                        lock_pid = lock_pid.strip() or '?'
-                        lock_pid = int(lock_pid)
-                        os.kill(lock_pid, 0)
+                        lock_pid_s = lock_pid_b.decode('ASCII').strip()
+                    except UnicodeDecodeError:
+                        raise LockingError(lock_pid_b, "Invalid PID")
+
+                    if not lock_pid_s:
+                        print('Empty lockfile %s, removing.' % (UPDATER_LOCK_FILE_NAME,), file=stderr)
+                        os.remove(UPDATER_LOCK_FILE_NAME)
+                        continue  # redo acquire
+
+                    try:
+                        lock_pid = int(lock_pid_s)
                     except ValueError:
-                        msg = 'Invalid PID %s in lockfile %s.' % (
-                            lock_pid,
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                        raise LockingError(msg)
-                    except OSError as ex:
+                        raise LockingError(lock_pid_s, "Invalid PID")
+
+                    if lock_pid == os.getpid():
+                        return 0
+
+                    if lock_pid == os.getppid():  # u-repository-* called from u-updater
+                        return 1
+
+                    try:
+                        os.kill(lock_pid, 0)
+                    except EnvironmentError as ex:
                         if ex.errno == ESRCH:
-                            print('Stale PID %s in lockfile %s, removing.' % (
-                                lock_pid,
-                                self.__UPDATER_LOCK_FILE_NAME,
-                            ), file=stderr)
-                            os.remove(self.__UPDATER_LOCK_FILE_NAME)
+                            print('Stale PID %d in lockfile %s, removing.' % (lock_pid, UPDATER_LOCK_FILE_NAME), file=stderr)
+                            os.remove(UPDATER_LOCK_FILE_NAME)
                             continue  # redo acquire
                     # PID is valid and process is still alive...
-                except OSError:
+                except EnvironmentError:
                     pass
-                if time() > deadline:
-                    if self.timeout > 0:
-                        msg = 'Timeout: still locked by PID %s. Check lockfile %s' % (
-                            lock_pid,
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                    else:
-                        msg = 'Locked by PID %s. Check lockfile %s' % (
-                            lock_pid or '?',
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                    raise LockingError(msg)
+
+                if monotonic() > deadline:
+                    raise LockingError(lock_pid, "Check lockfile")
                 else:
                     sleep(1)
 
@@ -146,15 +157,10 @@ class UpdaterLock(object):
             # parent process still owns the lock, do nothing and just return success
             return True
         try:
-            os.remove(self.__UPDATER_LOCK_FILE_NAME)
+            os.remove(UPDATER_LOCK_FILE_NAME)
             return True
-        except OSError as error:
+        except EnvironmentError as error:
             if error.errno == ENOENT:
                 return False
             else:
                 raise
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])
