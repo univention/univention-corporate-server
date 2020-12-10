@@ -34,14 +34,6 @@
 
 #DEBHELPER#
 
-# set DVD identifier in UCR variable
-cdrom_device=$(debconf-get cdrom-detect/cdrom_device)
-identifier=$(get-volume-set-identifier "$cdrom_device")
-if [ -n "$identifier" ]
-then
-	in-target /usr/sbin/ucr set "updater/identify=UCS (${identifier})"
-fi
-
 # start system setup in installer mode
 in-target /usr/sbin/ucr set "system/setup/boot/installer=true"
 
