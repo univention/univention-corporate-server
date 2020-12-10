@@ -54,7 +54,7 @@ override_dh_auto_test:
 	PYTHONPATH=modules python2.7 -m univention.updater.repo_url -v
 	PYTHONPATH=modules python2.7 -m univention.updater.tools -v
 	PYTHONPATH=modules python2.7 -m univention.updater.mirror -v
-	PYTHONPATH=modules python2.7 -m univention.updater.errors -v
+	PYTHONPATH=modules python3 -m univention.updater.errors -v
 	# unittest
 	PYTHONPATH=modules python2.7 tests/test_updater.py -v
 	PYTHONPATH=modules python2.7 tests/test_mirror.py -v

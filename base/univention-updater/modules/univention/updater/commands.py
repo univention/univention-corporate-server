@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Common commands to manage Debian packages.
-"""
 # Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,9 @@ Common commands to manage Debian packages.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Common commands to manage Debian packages.
+"""
 
 from univention.config_registry import ConfigRegistry
 configRegistry = ConfigRegistry()

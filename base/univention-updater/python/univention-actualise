@@ -384,25 +384,25 @@ def update_ucr_updatestatus():
 
 def check_failed():
     # type: () -> None
-            failure = '/var/lib/univention-updater/update-failed'
-            if os.path.exists(failure):
-                print('univention-actualise: univention-updater failed, stopping...')
-                print('	   remove `%s\' to proceed' % failure)
-                sys.exit(2)
+    failure = '/var/lib/univention-updater/update-failed'
+    if os.path.exists(failure):
+        print('univention-actualise: univention-updater failed, stopping...')
+        print('	   remove `%s\' to proceed' % failure)
+        sys.exit(2)
 
 
 def remove_temp():
     # type: () -> None
-            try:
-                for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
-                    for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
-                        filename = os.path.join(root, file)
-                        print('Warning: Deleting `%s` from incomplete update.' % filename)
-                        os.remove(filename)
-                    del dirs[:]
-            except:
-                print('Failed, aborting.')
-                sys.exit(2)
+    try:
+        for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
+            for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
+                filename = os.path.join(root, file)
+                print('Warning: Deleting `%s` from incomplete update.' % filename)
+                os.remove(filename)
+            del dirs[:]
+    except EnvironmentError:
+        print('Failed, aborting.')
+        sys.exit(2)
 
 
 if __name__ == '__main__':

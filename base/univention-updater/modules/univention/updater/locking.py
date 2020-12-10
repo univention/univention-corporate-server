@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Updater locking
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,9 @@ Univention Updater locking
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Updater locking
+"""
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -41,6 +41,11 @@ try:
 except ImportError:
     from monotonic import monotonic  # type: ignore
 from errno import (EEXIST, ESRCH, ENOENT)
+try:
+    from typing import Optional, Type  # noqa F401
+    from types import TracebackType  # noqa F401
+except ImportError:
+    pass
 from .errors import UpdaterException
 
 
@@ -67,10 +72,12 @@ class UpdaterLock(object):
     """
 
     def __init__(self, timeout=0):
+        # type: (int) -> None
         self.timeout = timeout
         self.lock = 0
 
     def __enter__(self):
+        # type: () -> UpdaterLock
         try:
             self.lock = self.updater_lock_acquire()
             return self
@@ -79,10 +86,12 @@ class UpdaterLock(object):
             exit(5)
 
     def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         if not self.updater_lock_release():
             print('WARNING: updater-lock already released!', file=stderr)
 
     def updater_lock_acquire(self):
+        # type: () -> int
         '''
         Acquire the updater-lock.
 
@@ -147,6 +156,7 @@ class UpdaterLock(object):
                     sleep(1)
 
     def updater_lock_release(self):
+        # type: () -> bool
         '''
         Release the updater-lock.
 

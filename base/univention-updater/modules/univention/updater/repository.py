@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Updater helper functions for managing a local repository.
-"""
 # Copyright 2009-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,9 @@ Univention Updater helper functions for managing a local repository.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Updater helper functions for managing a local repository.
+"""
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -38,9 +38,13 @@ import shutil
 import subprocess
 import sys
 import gzip
+try:
+    from typing import IO, List, Optional, Tuple  # noqa F401
+except ImportError:
+    pass
 
 from univention.config_registry import ConfigRegistry
-from univention.lib.ucs import UCS_Version
+from univention.lib.ucs import UCS_Version  # noqa F401
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
@@ -56,6 +60,7 @@ class TeeFile(object):
     """
 
     def __init__(self, fds=[]):
+        # type: (List[IO[str]]) -> None
         """
         Register multiple file descriptors, to which the data is written.
 
@@ -65,6 +70,7 @@ class TeeFile(object):
         self._fds = fds or [sys.stdout]
 
     def write(self, data):
+        # type: (str) -> None
         """
         Write string to all registered files.
 
@@ -76,6 +82,7 @@ class TeeFile(object):
 
 
 def gzip_file(filename):
+    # type: (str) -> int
     """
     Compress file.
 
@@ -87,6 +94,7 @@ def gzip_file(filename):
 
 
 def copy_package_files(source_dir, dest_dir):
+    # type: (str, str) -> None
     """
     Copy all Debian binary package files and signed updater scripts from `source_dir` to `dest_dir`.
 
@@ -143,7 +151,8 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
         lines = []
         names = [os.path.join(base, name, 'Packages') for name in ('all', arch)]
         with gzip.open(src, 'rb') as f_src, open(names[0], 'w') as f_all, open(names[1], 'w') as f_arch:
-            for line in f_src:
+            for raw in f_src:
+                line = raw.decode("UTF-8")
                 if line.startswith(A):
                     arch = line[len(A):].strip()
                 elif line.startswith(F):
@@ -161,6 +170,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
 
 
 def get_repo_basedir(packages_dir):
+    # type: (str) -> str
     """
     Check if a file path is a UCS package repository.
 
@@ -181,6 +191,7 @@ def get_repo_basedir(packages_dir):
 
 
 def get_installation_version():
+    # type: () -> Optional[str]
     """
     Return UCS release version of local repository mirror.
 
@@ -205,6 +216,7 @@ def get_installation_version():
 
 
 def assert_local_repository(out=sys.stderr):
+    # type: (IO[str]) -> None
     """
     Exit with error if the local repository is not enabled.
 

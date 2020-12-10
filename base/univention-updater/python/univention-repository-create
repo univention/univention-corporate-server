@@ -136,9 +136,9 @@ def copy_dists(options):
     if os.path.isdir(dists_dest):
         shutil.rmtree(dists_dest)
     try:
-            dists_src = os.path.join(options.mount_point, 'dists')
-            if os.path.isdir(dists_src):
-                shutil.copytree(dists_src, dists_dest, symlinks=True)
+        dists_src = os.path.join(options.mount_point, 'dists')
+        if os.path.isdir(dists_src):
+            shutil.copytree(dists_src, dists_dest, symlinks=True)
     except shutil.Error as ex:
         print("failed (%s)." % (ex,))
     else:

@@ -207,10 +207,7 @@ def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> str
 def verbose(verbose_mode=True):
     """Turn on verbose network mode."""
     U.ud.init('stdout', U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
-    if verbose_mode:
-        level = U.ud.ALL
-    else:
-        level = U.ud.ERROR
+    level = U.ud.ALL if verbose_mode else U.ud.ERROR
     U.ud.set_level(U.ud.NETWORK, level)
 
 
