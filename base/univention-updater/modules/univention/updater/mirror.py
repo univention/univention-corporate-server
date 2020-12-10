@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Mirror Univention repository server.
-"""
 # Copyright 2009-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,9 @@ Mirror Univention repository server.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Mirror Univention repository server.
+"""
 
 from __future__ import absolute_import
 import os
@@ -46,14 +46,16 @@ from univention.lib.ucs import UCS_Version
 try:
     import univention.debug as ud
 except ImportError:
-    import univention.debug2 as ud
+    import univention.debug2 as ud  # type: ignore
 try:
-    from typing import Any, Iterator, Optional, Tuple  # noqa F401
+    from typing import Any, Iterator, List, Optional, Tuple  # noqa F401
+    from typing_extensions import Literal  # noqa F401
 except ImportError:
     pass
 
 
 def makedirs(dirname, mode=0o755):
+    # type: (str, int) -> None
     """
     Recursively create directory hierarchy will all parent directories.
 
@@ -99,6 +101,7 @@ def filter_releases_json(releases, start, end):
 class UniventionMirror(UniventionUpdater):
 
     def __init__(self, check_access=True):
+        # type: (bool) -> None
         """
         Create new mirror with settings from UCR.
 
@@ -120,6 +123,7 @@ class UniventionMirror(UniventionUpdater):
             self.architectures = archs.split(' ')
 
     def config_repository(self):
+        # type: () -> None
         """
         Retrieve configuration to access repository. Overrides :py:class:`univention.updater.UniventionUpdater`.
         """
@@ -131,6 +135,7 @@ class UniventionMirror(UniventionUpdater):
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
+        # type: (Optional[str], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
         """
         Check if an update is available for the `ucs_version`.
 
@@ -144,6 +149,7 @@ class UniventionMirror(UniventionUpdater):
         return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
 
     def mirror_repositories(self):
+        # type: () -> int
         """
         Uses :command:`apt-mirror` to copy a repository.
         """
@@ -168,13 +174,14 @@ class UniventionMirror(UniventionUpdater):
             log.close()
 
     def mirror_update_scripts(self):
+        # type: () -> None
         """
         Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts.
         """
         start = self.version_start
         end = self.version_end
         parts = self.parts
-        archs = []  # only 'all'
+        archs = []  # type: List[str] # only 'all'
 
         repos = self._iterate_version_repositories(start, end, parts, archs)  # returns generator
 
@@ -250,7 +257,7 @@ class UniventionMirror(UniventionUpdater):
             releases = json.loads(data)
         except ValueError as exc:
             ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
-            if isinstance(self.server, UCSHttpServer) and self.server.proxy_handler.proxies:
+            if hasattr(self.server, "proxy_handler") and self.server.proxy_handler.proxies:
                 ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
 
             raise

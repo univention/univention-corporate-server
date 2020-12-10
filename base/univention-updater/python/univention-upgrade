@@ -446,7 +446,7 @@ def do_update(options):
         update_status(status='FAILED', errorsource='SETTINGS')
         print('The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e, file=sys.stderr)
         sys.exit(3)
-    except Exception as e:
+    except Exception:
         update_status(status='FAILED')
         print('An error occurred - see "%s" for details' % (LOGFN,))
         print('Traceback in univention-upgrade:', file=logfd)
@@ -471,10 +471,10 @@ def do_update(options):
 
 
 def do_exec():
-        # The updater/UCR/libs might have been replaced - re-execute!
-        cmd = sys.argv + ['--setucr']
-        print("execv(%r)" % (cmd,), file=logfd)
-        os.execv(sys.argv[0], cmd)
+    # The updater/UCR/libs might have been replaced - re-execute!
+    cmd = sys.argv + ['--setucr']
+    print("execv(%r)" % (cmd,), file=logfd)
+    os.execv(sys.argv[0], cmd)
 
 
 if __name__ == '__main__':

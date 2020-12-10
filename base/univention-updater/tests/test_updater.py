@@ -2,6 +2,9 @@
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 """Unit test for univention.updater.tools"""
 # pylint: disable-msg=C0301,W0212,C0103,R0904
+
+from __future__ import print_function
+
 import unittest
 from tempfile import NamedTemporaryFile
 import six
@@ -129,9 +132,7 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/version': 'current',
         })
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)])
-        })
-        self._uri({
+            'releases.json': gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)]),
             '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
         })
         versions, components = self.u.get_all_available_release_updates()
@@ -305,8 +306,8 @@ class TestUniventionUpdater(unittest.TestCase):
         ORIG = UU.FN_UPDATER_APTSOURCES_COMPONENT
         try:
             tmp = NamedTemporaryFile()
-            print >> tmp, 'deb http://host:port/prefix/0.0/maintained/component/ d/arch/'
-            print >> tmp, '# credentials not accepted: d'
+            print('deb http://host:port/prefix/0.0/maintained/component/ d/arch/', file=tmp)
+            print('# credentials not accepted: d', file=tmp)
             tmp.flush()
             UU.FN_UPDATER_APTSOURCES_COMPONENT = tmp.name
             self.assertEqual(UU.COMPONENT_PERMISSION_DENIED, self.u.get_current_component_status('d'))
@@ -353,8 +354,8 @@ class TestUniventionUpdater(unittest.TestCase):
         ORIG = UU.FN_UPDATER_APTSOURCES_COMPONENT
         try:
             tmp = NamedTemporaryFile()
-            print >> tmp, 'deb http://host:port/prefix/0.0/maintained/component/ c/arch/'
-            print >> tmp, 'deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/'
+            print('deb http://host:port/prefix/0.0/maintained/component/ c/arch/', file=tmp)
+            print('deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/', file=tmp)
             tmp.flush()
             UU.FN_UPDATER_APTSOURCES_COMPONENT = tmp.name
             self.assertEqual(UU.COMPONENT_AVAILABLE, self.u.get_current_component_status('c'))

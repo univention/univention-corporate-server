@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Updater: UCR Repository Server URL
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,8 +26,17 @@ Univention Updater: UCR Repository Server URL
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Updater: UCR Repository Server URL
+"""
 
 from copy import copy
+try:
+    from typing import Optional, TypeVar, Union  # noqa F401
+    from univention.config_registry import ConfigRegistry  # noqa F401
+    _T = TypeVar("_T")
+except ImportError:
+    pass
 
 from six.moves.urllib_parse import urlsplit, quote
 
@@ -43,6 +49,7 @@ class UcsRepoUrl(object):
     DEFAULT = 'https://updates.software-univention.de/'
 
     def __init__(self, ucr, prefix, default=None):
+        # type: (ConfigRegistry, str, Union[None, str, UcsRepoUrl]) -> None
         '''
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
         ''
@@ -56,6 +63,7 @@ class UcsRepoUrl(object):
         'http://hostname/'
         '''
         def ucrv(key, default=None):
+            # type: (str, _T) -> _T
             return ucr.get('%s/%s' % (prefix, key), default)
 
         server = ucrv('server', '')
@@ -72,20 +80,20 @@ class UcsRepoUrl(object):
                 default = self.DEFAULT
             elif isinstance(default, UcsRepoUrl):
                 default = default.private()
-            default = urlsplit(default)
+            defaults = urlsplit(default)
 
-            self.username = ucrv('username', default.username)
-            self.password = ucrv('password', default.password)
+            self.username = ucrv('username', defaults.username)
+            self.password = ucrv('password', defaults.password)
             if server:
                 self.hostname = server
                 port = ucrv('port', 80)
                 self.scheme = 'https' if port == 443 else 'http'
                 prefix = ucrv('prefix', None)
             else:
-                self.hostname = default.hostname
-                port = ucrv('port', default.port)
-                self.scheme = default.scheme
-                prefix = ucrv('prefix', default.path)
+                self.hostname = defaults.hostname
+                port = ucrv('port', defaults.port)
+                self.scheme = defaults.scheme
+                prefix = ucrv('prefix', defaults.path)
         self.port = int(port if port else 443 if self.scheme == 'https' else 80)
         if prefix:
             prefix = prefix.strip('/')
@@ -98,13 +106,15 @@ class UcsRepoUrl(object):
 
     @property
     def cred(self):
+        # type: () -> str
         if self.username:
             # FIXME http://bugs.debian.org/500560: [@:/] don't work
-            return '%s:%s@' % (quote(self.username), quote(self.password))
+            return '%s:%s@' % (quote(self.username), quote(self.password or ''))
         return ''
 
     @property
     def _port(self):
+        # type: () -> str
         return ':%d' % (self.port) if (self.scheme, self.port) not in (
             ('http', 80),
             ('https', 443)
@@ -112,9 +122,11 @@ class UcsRepoUrl(object):
 
     @property
     def _path(self):
+        # type: () -> str
         return quote('/%s' % (self.path.lstrip('/'),))
 
     def public(self):
+        # type: () -> str
         """
         URI without credentials.
 
@@ -130,6 +142,7 @@ class UcsRepoUrl(object):
         return '{0.scheme}://{0.hostname}{0._port}{0._path}'.format(self)
 
     def private(self):
+        # type: () -> str
         """
         URI with credentials.
 
@@ -145,6 +158,7 @@ class UcsRepoUrl(object):
         return '{0.scheme}://{0.cred}{0.hostname}{0._port}{0._path}'.format(self)
 
     def __repr__(self):
+        # type: () -> str
         return '%s(%r, %r, %r)' % (
             self.__class__.__name__,
             {},
@@ -153,9 +167,11 @@ class UcsRepoUrl(object):
         )
 
     def __eq__(self, other):
-        return self.private() == other.private()
+        # type: (object) -> bool
+        return isinstance(other, UcsRepoUrl) and self.private() == other.private()
 
     def __add__(self, rel):
+        # type: (str) -> UcsRepoUrl
         """
         Append relative path component.
 

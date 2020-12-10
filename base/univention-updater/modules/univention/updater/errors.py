@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Updater exceptions.
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,13 @@ Univention Updater exceptions.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Updater exceptions.
+"""
+try:
+    from typing import Set  # noqa F401
+except ImportError:
+    pass
 
 
 class UpdaterException(Exception):
@@ -42,15 +46,17 @@ class RequiredComponentError(UpdaterException):
     Signal required component not available.
 
     :param str version: The UCS release version.
-    :param components: A list of components.
+    :param components: A collection of components.
     :type components: set(str)
     """
 
     def __init__(self, version, components):
+        # type: (str, Set[str]) -> None
         self.version = version
         self.components = components
 
     def __str__(self):
+        # type: () -> str
         """
         >>> '%s' % RequiredComponentError('4.0-0', set(('a',)))
         "The update to UCS 4.0-0 is blocked because the component 'a' is marked as required."
@@ -75,6 +81,7 @@ class PreconditionError(UpdaterException):
     """
 
     def __init__(self, phase, order, component, script):
+        # type: (str, str, str, str) -> None
         Exception.__init__(self, phase, order, component, script)
 
 
@@ -84,6 +91,7 @@ class DownloadError(UpdaterException):
     """
 
     def __str__(self):
+        # type: () -> str
         return "Error downloading %s: %d" % self.args
 
 
@@ -93,6 +101,7 @@ class ConfigurationError(UpdaterException):
     """
 
     def __str__(self):
+        # type: () -> str
         return "Configuration error: %s" % self.args[1]
 
 
@@ -102,6 +111,7 @@ class VerificationError(ConfigurationError):
     """
 
     def __str__(self):
+        # type: () -> str
         return "Verification error: %s" % self.args[1]
 
 
@@ -114,10 +124,12 @@ class CannotResolveComponentServerError(ConfigurationError):
     """
 
     def __init__(self, component, for_mirror_list):
+        # type: (str, bool) -> None
         self.component = component
         self.for_mirror_list = for_mirror_list
 
     def __str__(self):
+        # type: () -> str
         return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
 
 
@@ -127,6 +139,7 @@ class ProxyError(ConfigurationError):
     """
 
     def __str__(self):
+        # type: () -> str
         return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
 
 
@@ -136,6 +149,7 @@ class UnmetDependencyError(UpdaterException):
     """
 
     def __str__(self):
+        # type: () -> str
         return "You have unmet dependencies %s" % self.args[0]
 
 

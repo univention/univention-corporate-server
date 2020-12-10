@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Python tools for Updater and repository maintenance.
-"""
 # Copyright 2009-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,5 +26,8 @@ Python tools for Updater and repository maintenance.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Python tools for Updater and repository maintenance.
+"""
 
 from univention.updater.tools import UniventionUpdater  # NOQA

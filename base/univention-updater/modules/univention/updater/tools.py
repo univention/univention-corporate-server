@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Update tools.
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,13 +26,16 @@ Univention Update tools.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Update tools.
+"""
 
 from __future__ import absolute_import
 from __future__ import print_function
 try:
     import univention.debug as ud
 except ImportError:
-    import univention.debug2 as ud
+    import univention.debug2 as ud  # type: ignore
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
 from .commands import (
@@ -75,7 +75,9 @@ import functools
 import six
 import base64
 try:
-    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
+    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, TypeVar, Union  # noqa F401
+    from typing_extensions import Literal  # noqa F401
+    _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
     pass
 
@@ -520,6 +522,22 @@ class _UCSServer(object):
         """
         raise NotImplementedError()
 
+    def __add__(self, rel):
+        # type: (_TS, str) -> _TS
+        """
+        Append relative path component.
+
+        :param str rel: Relative path.
+        :return: A clone of this instance using the new base path.
+        :rtype: UCSHttpServer
+        """
+        raise NotImplementedError()
+
+    @property
+    def prefix(self):
+        # type: () -> str
+        raise NotImplementedError()
+
 
 class UCSHttpServer(_UCSServer):
     """
@@ -680,7 +698,9 @@ class UCSHttpServer(_UCSServer):
         req = urllib2.Request(uri)
 
         def get_host():
-            return req.host if six.PY3 else req.get_host()
+            # type: () -> str
+            return req.host if six.PY3 else req.get_host()  # type: ignore
+
         if get_host() in self.failed_hosts:
             self.log.error('Already failed %s', get_host())
             raise DownloadError(uri, -1)
@@ -761,7 +781,8 @@ class UCSHttpServer(_UCSServer):
                         reason = 'port is blocked'
                     elif e.reason.args[0] == errno.ECONNREFUSED:  # 111
                         reason = 'port is closed'
-            selector = req.get_selector() if six.PY2 else req.selector
+
+            selector = req.selector if six.PY3 else req.get_selector()  # type: ignore
             if selector.startswith('/'):  # direct
                 self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, reason)
@@ -787,10 +808,12 @@ class UCSLocalServer(_UCSServer):
         self.log = logging.getLogger('updater.UCSFile')
         self.log.addHandler(logging.NullHandler())
         prefix = str(prefix).strip('/')
-        if prefix:
-            self.prefix = '%s/' % prefix
-        else:
-            self.prefix = ''
+        self._prefix = '%s/' % prefix if prefix else ''
+
+    @property
+    def prefix(self):
+        # type: () -> str
+        return self._prefix
 
     def __str__(self):
         # type: () -> str
@@ -816,7 +839,7 @@ class UCSLocalServer(_UCSServer):
         :rtype: UCSLocalServer
         """
         uri = copy.copy(self)
-        uri.prefix += str(rel).lstrip('/')
+        uri._prefix += str(rel).lstrip('/')
         return uri
 
     def join(self, rel):
@@ -1015,7 +1038,7 @@ class UniventionUpdater(object):
                     ))
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
-        # type: (UCS_Version, Iterable[str], str) -> Optional[str]
+        # type: (UCS_Version, Iterable[str], Literal["stderr", "exception", "none"]) -> Optional[str]
         """
         Check if a new patchlevel, minor or major release is available for the given version.
         Components must be available for the same major.minor version.
@@ -1075,7 +1098,7 @@ class UniventionUpdater(object):
         return None
 
     def get_all_available_release_updates(self, ucs_version=None):
-        # type: (Optional[UCS_Version]) -> Tuple[List[str], Optional[str]]
+        # type: (Optional[UCS_Version]) -> Tuple[List[str], Optional[Set[str]]]
         """
         Returns a list of all available release updates - the function takes required components into account
         and stops if a required component is missing
@@ -1096,7 +1119,7 @@ class UniventionUpdater(object):
             try:
                 ver = self.get_next_version(ucs_version, components, errorsto='exception')
             except RequiredComponentError as ex:
-                self.log.warn('Update blocked by components %s', ', '.join(ex.components))
+                self.log.warning('Update blocked by components %s', ', '.join(ex.components))
                 # ex.components blocks update to next version ==> return current list and blocking component
                 return result, ex.components
 
@@ -1108,7 +1131,7 @@ class UniventionUpdater(object):
         return result, None
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        # type: (Optional[UCS_Version], str) -> Optional[str]
+        # type: (Optional[UCS_Version], Literal["stderr", "exception", "none"]) -> Optional[str]
         """
         Check if an update is available for the `ucs_version`.
 
@@ -1466,7 +1489,7 @@ class UniventionUpdater(object):
                     break
 
     def _iterate_versions(self, ver, start, end, parts, archs, server):
-        # type: (_UCSRepo, UCS_Version, UCS_Version, List[str], List[str], _UCSServer) -> Iterator
+        # type: (_UCSRepo, UCS_Version, UCS_Version, Iterable[str], Iterable[str], _UCSServer) -> Iterator
         """
         Iterate through all versions of repositories between start and end.
 
@@ -1474,9 +1497,7 @@ class UniventionUpdater(object):
         :param UCS_Version start: The UCS release to start from.
         :param UCS_Version end: The UCS release where to stop.
         :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
         :param archs: List of architectures.
-        :type archs: list[str]
         :param UCSHttpServer server: The UCS repository server to use.
         :returns: A iterator through all UCS releases between `start` and `end` returning `ver`.
         :raises ProxyError: if the repository server is blocked by the proxy.
@@ -1543,7 +1564,7 @@ class UniventionUpdater(object):
             )
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
-        # type: (List[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
+        # type: (Iterable[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
         """
         Iterate over all components and return (server, version).
 
@@ -1766,18 +1787,7 @@ class UniventionUpdater(object):
         """
         result = []  # type: List[str]
 
-        # Sanitize versions: UCS_Version() and Major.Minor
-        versions_mmp = set()  # type: Set[UCS_Version]
-        for version in versions:
-            if isinstance(version, six.string_types):
-                version = UCS_Version(version if '-' in version else '%s-0' % version)
-            elif isinstance(version, UCS_Version):
-                version = copy.copy(version)
-            else:
-                raise TypeError('Not a UCS Version', version)
-            version.patchlevel = 0  # component don't use the patchlevel
-            versions_mmp.add(version)
-
+        versions_mmp = {UCS_Version((v.major, v.minor, 0)) for v in versions}
         for version in versions_mmp:
             for server, ver in self._iterate_component_repositories([component], version, version, self.architectures, for_mirror_list=for_mirror_list):
                 result.append(ver.deb(server))
@@ -2000,7 +2010,7 @@ class UniventionUpdater(object):
 
     @staticmethod
     def get_sh_files(repositories, verify=False):
-        # type: (Iterable[Tuple[UCSHttpServer, _UCSRepo]], bool) -> Iterator[Tuple]
+        # type: (Iterable[Tuple[_UCSServer, _UCSRepo]], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, str]]
         """
         Return all preup- and postup-scripts of repositories.
 
@@ -2012,6 +2022,7 @@ class UniventionUpdater(object):
         See :py:meth:`call_sh_files` for an example.
         """
         for server, struct in repositories:
+            uses_proxy = hasattr(server, "proxy_handler") and server.proxy_handler.proxies  # type: ignore
             for phase in ('preup', 'postup'):
                 name = '%s.sh' % phase
                 path = struct.path(name)
@@ -2019,7 +2030,7 @@ class UniventionUpdater(object):
                 try:
                     _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
-                    if not script.startswith('#!') and server.proxy_handler.proxies:
+                    if not script.startswith('#!') and uses_proxy:
                         uri = server.join(path)
                         raise ProxyError(uri, "download blocked by proxy?")
                     if verify and struct >= UCS_Version((3, 2, 0)):
@@ -2027,7 +2038,7 @@ class UniventionUpdater(object):
                         path_gpg = struct.path(name_gpg)
                         try:
                             _code, _size, signature = server.access(struct, name_gpg, get=True)
-                            if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and server.proxy_handler.proxies:
+                            if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and uses_proxy:
                                 uri = server.join(path_gpg)
                                 raise ProxyError(uri, "download blocked by proxy?")
                         except DownloadError:

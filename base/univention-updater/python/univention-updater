@@ -254,8 +254,8 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
             assert updater.server.access(None, '')
             nextversion = updater.release_update_available(errorsto='exception')
         except DownloadError:
-            raise UpdateError('A local repository was not found.\n' +
-                              '       Please check the UCR variable repository/mirror/basepath\n' +
+            raise UpdateError('A local repository was not found.\n'
+                              '       Please check the UCR variable repository/mirror/basepath\n'
                               '       or try to install via "univention-updater net"', errorsource='SETTINGS')
 
     elif mode == 'cdrom':
@@ -698,7 +698,7 @@ if __name__ == '__main__':
             # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
             do_ucr_update = False
             sys.exit(1)
-        except UpToDateNoError as error:
+        except UpToDateNoError:
             update_status(status='DONE')
             if os.path.exists(failure):
                 os.unlink(failure)
