@@ -180,31 +180,6 @@ def get_repo_basedir(packages_dir):
     sys.exit(1)
 
 
-def is_debmirror_installed():
-    """
-    Check if the package `univention-debmirror` is installed.
-
-    :returns: a 2-tuple (status, error) where status is a boolean representing the state and error a optional error string - None otherwise.
-    :rtype: tuple(bool, str or None)
-    """
-    devnull = open(os.path.devnull, 'w')
-    p = subprocess.Popen(['dpkg-query', '-s', 'univention-debmirror'], stdout=subprocess.PIPE, stderr=devnull)
-    output = p.communicate()[0]
-
-    devnull.close()
-    # univention-debmirror is not installed
-    if p.returncode:
-        return (False, 'Error: Please install the package univention-debmirror.')
-
-    # package status of univentionn-debmirror is not ok
-    for line in output:
-        if line.startswith('Status: '):
-            if line.find('install ok installed') == -1:
-                return (False, "Please check the installation of the package univention-debmirror (status: %s). Aborted." % line[8:])
-
-    return (True, None)
-
-
 def get_installation_version():
     """
     Return UCS release version of local repository mirror.
