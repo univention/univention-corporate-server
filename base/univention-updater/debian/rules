@@ -67,4 +67,4 @@ override_dh_python3:
 	dh_python3 --skip-private
 
 %:
-	dh $@ --with python2,python3,umc,ucr
+	dh $@ --with python2,python3,umc,ucr,bash_completion

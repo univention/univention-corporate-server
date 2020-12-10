@@ -1,0 +1,1 @@
+rm_conffile /etc/bash_completion.d/univention-updater 15.0.2~
