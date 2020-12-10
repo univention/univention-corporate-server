@@ -81,7 +81,7 @@ define([
 			if (this.liveSearch) {
 				this._searchSidebar = new AppLiveSearchSidebar({
 					region: 'nav',
-					searchLabel: _('Search applications...'),
+					searchLabel: _('Search Apps'),
 					searchableAttributes: ['name', 'description', 'long_description', 'categories', 'vendor', 'maintainer']
 				});
 				this.addChild(this._searchSidebar);

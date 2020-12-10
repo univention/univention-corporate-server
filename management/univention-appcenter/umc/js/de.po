@@ -938,8 +938,8 @@ msgid "Repository server"
 msgstr "Repository-Server"
 
 #: umc/js/appcenter/AppCenterPage.js:84
-msgid "Search applications..."
-msgstr "Suche Applikationen..."
+msgid "Search Apps"
+msgstr "Apps suchen"
 
 #: umc/js/appcenter/SearchForm.js:66
 msgid "Search key"

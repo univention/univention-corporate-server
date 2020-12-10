@@ -140,9 +140,9 @@ $app-detailspane-background-color = #fff
 
 	.umcAppSidebarButton .dijitButtonNode
 		width: 100%
-		background-color: #74b627
+		background-color: var(--color-primary)
 		&:hover
-			background-color: #5f9434
+			background-color: var(--color-success)
 
 	.umcAppSidebarButton .dijitButtonNode .dijitButtonText
 		color: white
@@ -202,9 +202,11 @@ $app-detailspane-background-color = #fff
 		opacity: 0.66
 
 .appcenterMetaCategory
-	margin-bottom: 3em
-	padding-bottom: 2em
-	border-bottom: 1px solid #c8c8c8
+	background-color: var(--color-grey0)
+	border-radius: var(--border-radius-container)
+
+	margin-bottom: 5em
+	padding: 0.5em
 
 	.umcText
 		font-size: 20px
@@ -366,18 +368,29 @@ $app-detailspane-background-color = #fff
 		padding: 3em 0 1em 0
 
 	.descriptionContainer
+		background-color: var(--color-grey0)
+		border-radius: var(--border-radius-container)
+		font-size: var(--font-size-small)
+		padding: 40px
 		margin-bottom: 3em
 
 	.appDetailsPane
-		background-color: $app-detailspane-background-color
 		margin: 0 -1000px
 		padding: 1.5em 1000px
 
 
 	.appDetailsSidebarElement
-		background-color: #f2f2f2
+		background-color: var(--color-grey0)
+		border-radius: var(--border-radius-container)
+		font-size: var(--font-size-small)
 		margin-bottom: 20px
 		padding: 10px
+		color: var(--font-color-contrast-high)
+
+		table
+			td:first-child
+				color: var(--font-color-contrast-middle)
+				padding-right: 12px
 
 .AppLiveSearchSidebarDropDown
 	.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell
@@ -408,7 +421,8 @@ $app-detailspane-background-color = #fff
 
 	.umcAppCenter .umcLiveSearchSidebar
 		.appLiveSearchSidebarElement
-			background-color: white
+			background-color: var(--color-grey0)
+			border-radius: var(--border-radius-container)
 			margin-bottom: 20px
 			margin-top: 20px
 			padding: 10px
