@@ -8,8 +8,6 @@ univention-directory-policy/univention-policy-set-repository-server usr/lib/univ
 univention-directory-policy/univention-policy-repository-sync usr/lib/univention-directory-policy/
 univention-directory-policy/univention-policy-maintenance usr/lib/univention-directory-policy/
 
-bash_completion.d/univention-updater etc/bash_completion.d/
-
 script/univention-install usr/sbin/
 script/univention-remove usr/sbin/
 script/reboot.at var/lib/univention-updater/
