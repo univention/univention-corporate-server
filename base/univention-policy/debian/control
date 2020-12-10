@@ -31,8 +31,6 @@ Description: UCS - group policy library
 
 Package: libunivention-policy-dev
 Architecture: any
-Suggests:
- libunivention-policy-krb5-dev,
 Depends:
  libldap2-dev,
  libunivention-policy0 (= ${binary:Version}),
