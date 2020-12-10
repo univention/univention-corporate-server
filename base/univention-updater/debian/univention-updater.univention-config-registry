@@ -12,8 +12,6 @@ Variables: repository/online/httpmethod
 
 Type: file
 File: etc/apt/sources.list.d/20_ucs-online-component.list
-Preinst: 20_ucs-online-component.py
-Postinst: 20_ucs-online-component.py
 Variables: local/repository
 Variables: version/version
 Variables: version/patchlevel

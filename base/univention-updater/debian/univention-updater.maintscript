@@ -1,3 +1,4 @@
 rm_conffile /etc/apt/apt.conf.d/99updatecheck.conf 15.0.2~
 rm_conffile /etc/univention/templates/modules/15_ucs-online-version.py 15.0.2~
+rm_conffile /etc/univention/templates/modules/20_ucs-online-component.py 15.0.2~
 rm_conffile /etc/bash_completion.d/univention-updater 15.0.2~
