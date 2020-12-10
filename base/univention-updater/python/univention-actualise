@@ -1,16 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""\
-{prog}: Perform a (dist-)upgrade and (un-)install packages as set
-                      through policies
-
-usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
-
--?, --help       Show this message
---dist-upgrade   Perform a dist-upgrade instead of a regular update
---silent         Don't show normal output, but error messages only
---check          Don't do anything, just check if updates are available
-"""
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -42,17 +31,16 @@ usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
 from __future__ import print_function
 
 import os
-import sys
-import time
-import commands
+import re
 import shlex
 import subprocess
-try:
-    from typing import List  # noqa F401
-except ImportError:
-    pass
+import sys
+import time
+from argparse import ArgumentParser, Namespace  # noqa F401
+from typing import Any, Container, List, NoReturn, Optional, Sequence  # noqa F401
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 from univention.updater.commands import (
     cmd_config,
     cmd_dist_upgrade,
@@ -67,7 +55,16 @@ from univention.updater.commands import (
 from univention.updater.locking import UpdaterLock, apt_lock
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 
+try:
+    from typing_extensions import Literal  # noqa F401
+    _JOB = Literal["add", "remove"]
+except ImportError:
+    _JOB = str  # type: ignore
+
+
 LOGNAME = '/var/log/univention/actualise.log'
+RE_STAT = re.compile(br'^(\d+) upgraded, (\d+) newly installed, (\d+) to remove and (?:\d+) not upgraded.')
+RE_APT = re.compile(r'^(?:deb|deb-src)\s+(?:\[[^]]+\]\s+)?([^:]*):')
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
@@ -82,15 +79,14 @@ class Tee(object):
     with the print statement
     '''
 
-    def __init__(self, files=[], stdout=True, filter=None):
+    def __init__(self, files: Sequence[str] = [], stdout: bool = True, filter: Optional[str] = None) -> None:
         self.stdout = stdout
         self.files = files
         self.filter = filter
 
-    def call(self, command, **kwargs):
-        devnull = None
+    def call(self, command: Sequence[str], **kwargs: Any) -> int:
         p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kwargs)
-        tee_command = ['tee', '-a'] + self.files
+        tee_command = ['tee', '-a'] + list(self.files)
         if self.stdout:
             if self.filter:
                 tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -99,29 +95,19 @@ class Tee(object):
             else:
                 tee = subprocess.Popen(tee_command, stdin=p.stdout)
         else:
-            with open(os.path.devnull, 'a') as devnull:
-                tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=devnull)
+            tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=subprocess.DEVNULL)
 
         # Must wait for exit from back to front, only the exit status of p is relevant
         ret = tee.wait()
         ret = p.wait()
-        if devnull:
-            devnull.close()
 
         return ret
 
 
-def usage(fd=sys.stdout):
+def getUpdate() -> None:
     """
-    Print usage message.
-
-    :param file fd: Override standard error output. Defaults to :py:obj:`sys.stdout`.
+    Small function waiting for apt lockfile to vanish then starts apt-get update
     """
-    fd.write(__doc__.format(prog=os.path.basename(__file__)))
-
-
-def getUpdate(configRegistry):
-    # Small function waiting for apt lockfile to vanish then starts apt-get update
 
     print("Running apt-get update")
     with apt_lock(), open(LOGNAME, 'a') as logfile:
@@ -132,64 +118,67 @@ def getUpdate(configRegistry):
         sys.exit(res)
 
 
-def deactivateSourcesListMethods(methods=['cdrom']):
-    cnt = 0
+def deactivateSourcesListMethods(methods: Container[str] = ['cdrom']) -> None:
+    """
+    Remove APT repositories using given scheme.
+
+    :param methods: The list of URI schemes to remove.
+    """
+    FN = '/etc/apt/sources.list'
     lines = []
     deactivated_lines = []
-    with open('/etc/apt/sources.list', 'r') as f:
-        for line in f.readlines():
-            line = line.strip(' \n\t')
-            for method in methods:
-                if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
-                    line = '#%s' % line
-                    deactivated_lines.append(line)
-                    cnt += 1
+
+    with open(FN, 'r') as f:
+        for line in f:
+            match = RE_APT.match(line)
+            if match and match.group(1) in methods:
+                line = '#' + line
+                deactivated_lines.append('  ' + line)
+
             lines.append(line)
 
-    if cnt:
-        with open('/etc/apt/sources.list', 'w') as f:
-            f.write('\n'.join(lines))
-            f.write('\n')
+    if deactivated_lines:
+        with open(FN, 'w') as f:
+            f.write(''.join(lines))
 
         with open(LOGNAME, 'a+') as debug_file:
-            debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
-            debug_file.write('   %s\n' % '\n   '.join(deactivated_lines))
+            debug_file.write('Hint: deactivated %d lines in %s:\n' % (len(deactivated_lines), FN))
+            debug_file.write(''.join(deactivated_lines))
 
 
-def check(configRegistry, dist_upgrade=False):
-    # Just probe if there are packages to add or remove
+def check(configRegistry: ConfigRegistry, dist_upgrade: bool = False) -> bool:
+    """
+    Just probe if there are packages to add or remove
 
-    actualise = False
-    getUpdate(configRegistry)
+    :param dist_upgrade: Perform distribution upgrade instead of package updates.
+    :returns: `True` if there are package changes.
+    """
+    getUpdate()
 
     # Probe for packages to actualise
-    if dist_upgrade:
-        cmd = cmd_dist_upgrade_sim
-    else:
-        cmd = cmd_upgrade_sim
+    cmd = cmd_dist_upgrade_sim if dist_upgrade else cmd_upgrade_sim
 
     with apt_lock():
-        res = commands.getoutput('%s | egrep ".*[0-9] upgraded, [0-9].*"' % (cmd))
-    sres = res.split()
+        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+        assert proc.stdout
+        for line in proc.stdout:
+            match = RE_STAT.match(line)
+            if match:
+                upgraded, newlyinstalled, remove = (int(_) for _ in match.groups())
+                break
+        else:
+            return False
 
-    # These ones are nicer to read
-    upgraded = int(sres[0])
-    newlyinstalled = int(sres[2])
-    remove = int(sres[5])
-
-    # If there are any packages to upgrade, install or remove
-    if upgraded != 0 or newlyinstalled != 0 or remove != 0:
-        actualise = True
-
-    # Probe for policies
-    rem_packages = getPackageList(configRegistry, 'remove')
-    add_packages = getPackageList(configRegistry, 'add')
-
-    return 1 if rem_packages or add_packages or actualise else 0
+    return any((
+        upgraded,
+        newlyinstalled,
+        remove,
+        getPackageList(configRegistry, 'remove'),
+        getPackageList(configRegistry, 'add'),
+    ))
 
 
-def getPackageList(configRegistry, job):
-    # type: (ConfigRegistry, str) -> List[str]
+def getPackageList(configRegistry: ConfigRegistry, job: _JOB) -> List[str]:
     """
     Get a list of packages to remove or add, depending on the value of job.
 
@@ -214,49 +203,39 @@ def getPackageList(configRegistry, job):
         exit("E: no valid job defined")
 
     try:
-        results, policies = policy_result(ldap_hostdn)
+        results, _policies = policy_result(ldap_hostdn)
         return results.get(packages_name, [])
     except PolicyResultFailed as ex:
         sys.exit('failed to execute univention_policy_result: %s' % ex)
 
 
-def main():
-    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
-    os.environ['LC_ALL'] = 'C'
+def parse_args() -> Namespace:
+    parser = ArgumentParser(description="Perform a (dist-)upgrade and (un-)install packages as set through policies")
+    parser.add_argument("--dist-upgrade", action="store_true", help="Perform a dist-upgrade instead of a regular update")
+    parser.add_argument("--silent", action="store_true", help="Don't show normal output, but error messages only")
+    parser.add_argument("--check", action="store_true", help="Don't do anything, just check if updates are available")
+    return parser.parse_args()
+
+
+def run(opt: Namespace) -> int:
+    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
+    os.environ['LC_ALL'] = 'C.UTF-8'
+    os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+
+    check_failed()
+    remove_temp()
 
     pkgdb = None
     pkgdb_scope = None
-    silent = False
-    print_usage = False
-    dist_upgrade = False
-    check_only = False
 
-    # parse arguments
-    for arg in sys.argv[1:]:
-        if arg == "--silent":
-            silent = True
-        elif arg == "-?" or arg == "--help":
-            print_usage = True
-        elif arg == "--dist-upgrade":
-            dist_upgrade = True
-        elif arg == '--check':
-            check_only = True
-        else:
-            # unknown parameter
-            print_usage = True
-
-    if print_usage:
-        usage()
-        sys.exit(0)
-
-    if silent:
+    if opt.silent:
         # redirect stdout to /dev/null
         sys.stdout = open("/dev/null", "w")
 
     try:
-        if check_only:
+        if opt.check:
             # Only probe for packages to add/remove
-            return check(configRegistry, dist_upgrade)
+            return check(configRegistry, opt.dist_upgrade)
 
         if ldap_hostdn:
             logfile = open(LOGNAME, 'a')
@@ -264,7 +243,7 @@ def main():
 
             deactivateSourcesListMethods(methods=['cdrom'])
 
-            getUpdate(configRegistry)
+            getUpdate()
 
             # temporarily disable pkgdb
             pkgdb_scan = configRegistry.get('pkgdb/scan', getscope=True)
@@ -282,11 +261,10 @@ def main():
                     res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Removing packages: %s" % package)
-                    os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
-                    if not res:
-                        res = subprocess.call(shlex.split(cmd_remove) + [package], stdout=logfile, stderr=logfile)
+                        if not res:
+                            res = subprocess.call(shlex.split(cmd_remove) + [package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0
@@ -300,11 +278,10 @@ def main():
                     res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Installing packages: %s" % package)
-                    os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
-                    if not res:
-                        res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
+                        if not res:
+                            res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0
@@ -318,7 +295,7 @@ def main():
             if configRegistry['server/role'] != 'basesystem':
                 print("W: ldap/hostdn is not set - please run univention-join", file=sys.stderr)
 
-        if dist_upgrade:
+        if opt.dist_upgrade:
             msg = "Dist-upgrading system"
             cmd = cmd_dist_upgrade
         else:
@@ -328,14 +305,13 @@ def main():
         print(msg)
         # TODO: use mkstemp and close directly the file descriptor
 
-        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
         with apt_lock():
-            tee = Tee([LOGNAME], stdout=not silent)
+            tee = Tee([LOGNAME], stdout=not opt.silent)
             res = tee.call(shlex.split(cmd_config))
         if res != 0:
             print("E: failed to configure packets, see %s for details." % LOGNAME, file=sys.stderr)
         else:
-            tee = Tee([LOGNAME], stdout=not silent, filter='(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)')
+            tee = Tee([LOGNAME], stdout=not opt.silent, filter='(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)')
             res = tee.call(cmd.split(' '))
             if res != 0:
                 print("E: failed to upgrade, see %s for details." % LOGNAME, file=sys.stderr)
@@ -352,43 +328,49 @@ def main():
                 handler_unset(['pkgdb/scan'], {'force': True})
 
             if str(pkgdb).lower() in ("yes", "enable", "enabled", "true", "1"):
-                if not silent:
-                    os.system('/usr/sbin/univention-pkgdb-scan')
-                else:
-                    os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
+                subprocess.call(('/usr/sbin/univention-pkgdb-scan',))
 
 
-def update_ucr_updatestatus():
+def update_ucr_updatestatus() -> None:
     try:
-        with open(os.path.devnull, 'w') as devnull:
-            subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
+        subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         print('Warning: calling univention-updater-check failed.')
 
 
-if __name__ == '__main__':
+def check_failed() -> None:
+    failure = '/var/lib/univention-updater/update-failed'
+    if os.path.exists(failure):
+        print('univention-actualise: univention-updater failed, stopping...')
+        print('	   remove `%s\' to proceed' % failure)
+        sys.exit(2)
+
+
+def remove_temp() -> None:
+    try:
+        for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
+            for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
+                filename = os.path.join(root, file)
+                print('Warning: Deleting `%s` from incomplete update.' % filename)
+                os.remove(filename)
+            del dirs[:]
+    except EnvironmentError:
+        print('Failed, aborting.')
+        sys.exit(2)
+
+
+def main() -> NoReturn:
+    opt = parse_args()
+
     res = 0
     try:
         with UpdaterLock():
-            failure = '/var/lib/univention-updater/update-failed'
-            if os.path.exists(failure):
-                print('univention-actualise: univention-updater failed, stopping...')
-                print('	   remove `%s\' to proceed' % failure)
-                sys.exit(2)
-
-            try:
-                for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
-                    for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
-                        filename = os.path.join(root, file)
-                        print('Warning: Deleting `%s` from incomplete update.' % filename)
-                        os.remove(filename)
-                    del dirs[:]
-            except:
-                print('Failed, aborting.')
-                sys.exit(2)
-
-            res = main()
+            res = run(opt)
     except SystemExit as ex:
         if ex.args[0] == 0:
             update_ucr_updatestatus()
     sys.exit(res)
+
+
+if __name__ == '__main__':
+    main()
