@@ -1,7 +1,5 @@
 Type: file
 File: etc/apt/sources.list.d/15_ucs-online-version.list
-Preinst: 15_ucs-online-version.py
-Postinst: 15_ucs-online-version.py
 Variables: version/version
 Variables: version/patchlevel
 Variables: local/repository
