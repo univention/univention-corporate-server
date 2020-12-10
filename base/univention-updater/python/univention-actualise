@@ -47,6 +47,10 @@ import time
 import commands
 import shlex
 import subprocess
+try:
+    from typing import List  # noqa F401
+except ImportError:
+    pass
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.updater.commands import (
@@ -61,6 +65,7 @@ from univention.updater.commands import (
     cmd_upgrade_sim,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 LOGNAME = '/var/log/univention/actualise.log'
 
@@ -184,43 +189,35 @@ def check(configRegistry, dist_upgrade=False):
 
 
 def getPackageList(configRegistry, job):
-    # Get a list of packages to remove or add, depending on the value of job
-    # getPackageList(configRegistryObject, pkgdb, job={add,remove})
+    # type: (ConfigRegistry, str) -> List[str]
+    """
+    Get a list of packages to remove or add, depending on the value of job.
 
-    packageList = []
-    packages_name = ""
+    :param configRegistry: UCR instance.
+    :param job: `add` or `remove`.
+    :returns: List of package names.
+    """
+    try:
+        packages_name = 'univention%sPackages%s' % (
+            {
+                "memberserver": "Member",
+                "domaincontroller_slave": "Slave",
+                "domaincontroller_master": "Master",
+                "domaincontroller_backup": "Master",
+            }[configRegistry['server/role']],
+            {
+                "remove": "Remove",
+                "add": "",
+            }[job],
+        )
+    except LookupError:
+        exit("E: no valid job defined")
 
-    if job == 'remove':
-        if configRegistry['server/role'] == 'memberserver':
-            packages_name = 'univentionMemberPackagesRemove='
-        elif configRegistry['server/role'] == 'domaincontroller_slave':
-            packages_name = 'univentionSlavePackagesRemove='
-        elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
-            packages_name = 'univentionMasterPackagesRemove='
-    elif job == 'add':
-        if configRegistry['server/role'] == 'memberserver':
-            packages_name = 'univentionMemberPackages='
-        elif configRegistry['server/role'] == 'domaincontroller_slave':
-            packages_name = 'univentionSlavePackages='
-        elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
-            packages_name = 'univentionMasterPackages='
-    else:
-        print("E: no valid job defined", file=sys.stderr)
-        sys.exit(1)
-
-    p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
-    result = p1.communicate()[0]
-
-    if p1.returncode != 0:
-        print('failed to execute univention_policy_result', file=sys.stderr)
-        sys.exit(p1.returncode)
-
-    for line in result.split('\n'):
-        line = line.strip(' ').replace('"', '')
-        if line.startswith(packages_name):
-            package = line.strip('\n').replace('%s' % packages_name, '').split('/')[-1]
-            packageList.append(package)
-    return packageList
+    try:
+        results, policies = policy_result(ldap_hostdn)
+        return results.get(packages_name, [])
+    except PolicyResultFailed as ex:
+        sys.exit('failed to execute univention_policy_result: %s' % ex)
 
 
 def main():

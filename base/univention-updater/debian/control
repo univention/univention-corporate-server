@@ -39,6 +39,7 @@ Depends:
  univention-config,
  univention-directory-policy,
  univention-errata-level,
+ univention-policy-tools,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
