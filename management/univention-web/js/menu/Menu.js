@@ -153,7 +153,7 @@ define([
 		menuSlides: null,
 		popupHistory: null,
 
-		showLoginHeader: false,
+		showLoginHeader: true,
 		loginCallbacks: null,
 
 		// save entries which have no parent yet
