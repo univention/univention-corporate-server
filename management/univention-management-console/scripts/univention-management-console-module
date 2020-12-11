@@ -35,20 +35,20 @@
 # <https://www.gnu.org/licenses/>.
 
 import locale
+import logging
 import os
 import os.path
-import signal
 import sys
 from argparse import ArgumentParser
 
 import notifier
 import notifier.log as nflog
-from daemon.daemon import DaemonContext
 
 # don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
+import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
-from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
-from univention.management.console.log import MODULE, log_init, log_reopen
+from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER
+from univention.management.console.log import MODULE, log_init
 
 
 if __name__ == '__main__':
@@ -56,28 +56,40 @@ if __name__ == '__main__':
         sys.stderr.write('%s must be started as root\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
-    parser = ArgumentParser(usage="usage: %(prog)s [options]")
-    parser.add_argument('-s', '--socket', action='store', dest='socket', help='defines the socket to bind to')
-    parser.add_argument('-l', '--language', action='store', dest='language', default='C', help='defines the language to use')
-    parser.add_argument('-m', '--module', action='store', dest='module', help='set the UMC daemon module to load')
-    parser.add_argument('-n', '--notifier', action='store', dest='notifier', default='generic', help='defines the notifier implementation to use')
+    parser = ArgumentParser()
+    parser.add_argument('-s', '--socket', help='defines the socket to bind to')
+    parser.add_argument('-l', '--language', default='C', help='defines the language to use')
+    parser.add_argument('-m', '--module', help='set the UMC daemon module to load')
+    parser.add_argument('-n', '--notifier', default='tornado', choices={'tornado', 'generic', 'qt'}, help='defines the notifier implementation to use')
 
-    default_debug = MODULE_DEBUG_LEVEL
-    parser.add_argument('-d', '--debug', action='store', type=int, dest='debug', default=default_debug, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
-    parser.add_argument('-L', '--log-file', action='store', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
-    parser.add_argument('-f', '--foreground', action='store_true', dest='foreground', default=False, help='do not daemonize the process')
+    parser.add_argument('-d', '--debug', type=int, default=MODULE_DEBUG_LEVEL, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
+    parser.add_argument('-L', '--log-file', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
+    parser.add_argument('-f', '--foreground', action='store_true', default=False, help='start in foreground, do not daemonize the process')
 
     options = parser.parse_args()
 
+    # no notifier logging
+    for handler in nflog.instance.handlers[:]:
+        nflog.instance.removeHandler(handler)
+
+    os.umask(0o077)
+    os.chdir("/")
     if not options.foreground:
-        daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0o077, files_preserve=[x.stream.fileno() for x in nflog.instance.handlers])
-        daemon.signal_map = {
-            signal.SIGHUP: lambda signal, frame: log_reopen(),
-        }
-        daemon.open()
+        os.closerange(3, max(int(fd) for fd in os.listdir("/proc/self/fd")))  # FIXME: when closing 0-2 some subprocesses e.g. univention-app info cannot be called anymore (e.g. in UCS@school installer)
+        for fd in range(3):
+            null = os.open(os.path.devnull, os.O_WRONLY if fd else os.O_RDONLY)
+            if fd != null:
+                os.dup2(null, fd)
+                os.close(null)
+
+    # to activate notifier logging
+    # nflog.set_level(nflog.DEBUG)
+    # nflog.open()
 
     # MUST be called after initializing the daemon
-    if options.notifier.lower() == 'generic':
+    if options.notifier.lower() == 'tornado':
+        notifier.init(notifier.TORNADO)
+    elif options.notifier.lower() == 'generic':
         notifier.init(notifier.GENERIC)
     elif options.notifier.lower() == 'qt':
         import PyQt4.Qt as qt
@@ -85,14 +97,20 @@ if __name__ == '__main__':
         notifier.init(notifier.QT)
 
     # init logging
-    debug_fd = log_init(options.logfile % {'module': options.module}, options.debug)
-
-    # no notifier logging
-    for handler in nflog.instance.handlers[:]:
-        nflog.instance.removeHandler(handler)
-    # to activate notifier logging
-    # nflog.set_level(nflog.DEBUG)
-    # nflog.open()
+    import tornado.log
+    logfile = options.logfile % {'module': options.module}
+    debug_fd = log_init(logfile, options.debug)
+    if logfile in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
+        channel = logging.StreamHandler(sys.stdout if logfile in {'stdout', '/dev/stdout'} else sys.stderr)
+    else:
+        if not os.path.isabs(logfile):
+            logfile = '/var/log/univention/%s.log' % (logfile,)
+        channel = logging.FileHandler(logfile, 'a+')
+    channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+    for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
+        logger = logging.getLogger(logname)
+        logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(options.debug, logging.DEBUG))
+        logger.addHandler(channel)
 
     try:
         locale_obj = Locale(options.language)
@@ -103,7 +121,7 @@ if __name__ == '__main__':
         MODULE.error('The specified locale %r is not available' % (options.language,))
 
     # this import must be done after the locale is set!
-    import univention.management.console.protocol as umcp
+    from univention.management.console.modserver import ModuleServer
 
     if not options.socket:
         raise SystemError('socket name is missing')
@@ -112,16 +130,9 @@ if __name__ == '__main__':
     if not os.path.exists('/run/univention-management-console'):
         os.mkdir('/run/univention-management-console')
 
-    # get the timeout
-    session_timeout = 300
     try:
-        session_timeout = int(ucr.get('umc/module/timeout', 300))
-    except (TypeError, ValueError):
-        MODULE.warn('Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds')
-
-    try:
-        with umcp.ModuleServer(options.socket, options.module, check_acls=False, timeout=session_timeout):
-            notifier.loop()
+        with ModuleServer(options.socket, options.module, logfile, timeout=MODULE_INACTIVITY_TIMER // 1000) as server:
+            server.loop()
     except (SystemExit, KeyboardInterrupt):
         raise
     except BaseException:

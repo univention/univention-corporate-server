@@ -54,11 +54,13 @@ from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union, overl
 import six
 from six.moves import http_client as httplib  # noqa: F401
 from six.moves.http_client import HTTPException, HTTPSConnection
-from six.moves.http_cookies import SimpleCookie
+# the SameSite cookie attribute is only available from Python 3.8
+from six.moves.http_cookies import Morsel, SimpleCookie
 
 from univention.config_registry import ConfigRegistry
 
 
+Morsel._reserved['samesite'] = 'SameSite'
 _T = TypeVar("_T")
 
 ucr = ConfigRegistry()

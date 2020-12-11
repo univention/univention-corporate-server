@@ -45,7 +45,44 @@ import gzip
 import json
 import os
 import re
+import signal
+import stat
+import subprocess
+import time
+import uuid
+from ipaddress import ip_address
 
+import ldap
+import pycurl
+import six
+import tornado
+import tornado.curl_httpclient
+import tornado.gen
+import tornado.httpclient
+import tornado.web
+from six.moves.http_client import LENGTH_REQUIRED, REQUEST_ENTITY_TOO_LARGE
+from six.moves.urllib_parse import urlsplit, urlunsplit
+from tornado.web import HTTPError
+
+import univention.admin.uexceptions as udm_errors
+from univention.lib.i18n import I18N_Error, Locale
+
+from .config import MODULE_COMMAND, MODULE_INACTIVITY_TIMER, ucr
+from .error import BadGateway, BadRequest, Forbidden, NotFound, UMC_Error, Unauthorized
+from .ldap import reset_cache as reset_ldap_connection_cache
+from .locales import I18N, I18N_Manager
+from .log import CORE
+from .modules.decorators import copy_function_meta_data, sanitize_args
+from .modules.sanitizers import DictSanitizer, ListSanitizer, StringSanitizer
+from .pam import PasswordChangeFailed
+from .resource import Resource
+from .session import categoryManager, moduleManager
+
+
+try:
+    from time import monotonic
+except ImportError:
+    from monotonic import monotonic
 
 try:
     from shlex import quote
@@ -53,44 +90,71 @@ except ImportError:
     from pipes import quote
 
 
-import time
-import traceback
+def sanitize(*sargs, **skwargs):
+    defaults = {'default': {}, 'required': True, 'may_change_value': True}
+    if sargs:
+        defaults.update(skwargs)
+        sanitizer = ListSanitizer(sargs[0], **defaults)
+    else:
+        sanitizer = DictSanitizer(skwargs, **defaults)
 
-import ldap
-import ldap.filter
-import notifier
-import six
-from notifier import popen, threads
-
-import univention.admin.uexceptions as udm_errors
-
-from ..acl import ACLs, LDAP_ACLs
-from ..auth import AuthHandler
-from ..base import Base
-from ..config import MODULE_COMMAND, MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
-from ..error import BadRequest, Forbidden, NotFound, ServiceUnavailable, UMC_Error, Unauthorized
-from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
-from ..locales import I18N, I18N_Manager
-from ..log import CORE
-from ..modules.decorators import allow_get_request, sanitize, sanitize_args, simple_response
-from ..modules.sanitizers import DictSanitizer, StringSanitizer
-from ..pam import PamAuth, PasswordChangeFailed
-from ..resources import categoryManager, moduleManager
-from .client import Client, NoSocketError
-from .definitions import SERVER_ERR_MODULE_DIED, SERVER_ERR_MODULE_FAILED, status_description
-from .message import MIMETYPE_JSON, Request, Response
-from .version import VERSION
+    def _decorator(function):
+        def _response(self, *args, **kwargs):
+            self.request.body_arguments = sanitize_args(sanitizer, 'request.options', {'request.options': self.request.body_arguments})
+            return function(self, *args, **kwargs)
+        copy_function_meta_data(function, _response)
+        return _response
+    return _decorator
 
 
-try:
-    from typing import Any, Dict, Iterable, List, Optional  # noqa: F401
-except ImportError:
+class CouldNotConnect(Exception):
     pass
 
-TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
+
+class ModuleConnection(object):
+
+    @tornado.gen.coroutine
+    def connect(self, connect_retries=0):
+        pass
+
+    @tornado.gen.coroutine
+    def request(self, method, uri, headers=None, body=None):
+        pass
+
+    @tornado.gen.coroutine
+    def do_request(self, method, uri, headers=None, body=None, unix_socket=None):
+        request = tornado.httpclient.HTTPRequest(
+            self.get_uri(uri),
+            method=method,
+            body=body,
+            headers=headers,
+            allow_nonstandard_methods=True,
+            follow_redirects=False,
+            connect_timeout=11.0,
+            request_timeout=60 * 60 * 24,  # ucr.get_int('umc/http/response-timeout', 310) + 2,  # never!
+            prepare_curl_callback=(lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, unix_socket)) if unix_socket else None,
+        )
+
+        try:
+            response = yield self._client.fetch(request, raise_error=True)
+        except tornado.curl_httpclient.CurlError as exc:
+            CORE.warn('Reaching module failed: %s' % (exc,))
+            raise CouldNotConnect(exc)
+        except tornado.httpclient.HTTPError as exc:
+            response = exc.response
+            if response is None:  # (599, 'Timeout while connecting', None)
+                raise CouldNotConnect(exc)
+        except ValueError as exc:  # HTTP GET request with body
+            CORE.warn('Reaching module failed: %s' % (exc,))
+            raise BadRequest(str(exc))
+
+        raise tornado.gen.Return(response)
+
+    def get_uri(self, uri):
+        return uri
 
 
-class ModuleProcess(Client):
+class ModuleProcess(ModuleConnection):
     """
     handles the communication with a UMC module process
 
@@ -99,374 +163,459 @@ class ModuleProcess(Client):
     :param str locale: locale to use for the module process
     """
 
-    def __init__(self, module, debug='0', locale=None):
-        # type: (str, str, str) -> None
-        socket = '/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
-        # determine locale settings
+    def __init__(self, module, debug='0', locale=None, no_daemonize_module_processes=False):
+        self.name = module
+        self.socket = '/run/univention-management-console/%u-%lu-%s.socket' % (os.getpid(), int(time.time() * 1000), uuid.uuid4())
         modxmllist = moduleManager[module]
         python = '/usr/bin/python3' if any(modxml.python_version == 3 for modxml in modxmllist) else '/usr/bin/python2.7'
-        args = [python, MODULE_COMMAND, '-m', module, '-s', socket, '-d', str(debug)]
+        args = [python, MODULE_COMMAND, '-m', module, '-s', self.socket, '-d', str(debug)]
         for modxml in modxmllist:
             if modxml.notifier:
                 args.extend(['-n', modxml.notifier])
                 break
         if locale:
             args.extend(('-l', '%s' % locale))
-            self.__locale = locale  # type: Optional[str]
-        else:
-            self.__locale = None
-        Client.__init__(self, unix=socket, ssl=False)
-        self.signal_connect('response', self._response)
+        if no_daemonize_module_processes:
+            args.extend(('-f', '-L', 'stdout'))
+
         CORE.process('running: %s' % ' '.join(quote(x) for x in args))
-        self.__process = popen.RunIt(args, stdout=False)
-        self.__process.signal_connect('killed', self._died)
-        self.__pid = self.__process.start()
-        self._connect_retries = 1
-        self.signal_new('result')
-        self.signal_new('finished')
-        self.name = module
-        self.running = False
-        self._queued_requests = []  # type: List
+        self.__process = tornado.process.Subprocess(args, stderr=subprocess.PIPE)
+        # self.__process.initialize()  # TODO: do we need SIGCHILD handler?
+        self.set_exit_callback(self._died)  # default
+        self._client = tornado.httpclient.AsyncHTTPClient()
+
+        self._active_requests = set()
         self._inactivity_timer = None
-        self._inactivity_counter = 0
-        self._connect_timer = None
+
+    def set_exit_callback(self, callback):
+        self.__process.set_exit_callback(callback)
+
+    @tornado.gen.coroutine
+    def connect(self, connect_retries=0):
+        if os.path.exists(self.socket) and stat.S_ISSOCK(os.stat(self.socket).st_mode):
+            raise tornado.gen.Return(True)
+        elif connect_retries > 200:
+            raise CouldNotConnect('timeout exceeded')
+        elif self.__process and self.__process.proc.poll() is not None:
+            stderr_fd = self.__process.stderr
+            stderr = stderr_fd.read().decode('utf-8', 'replace') if stderr_fd else ''
+            if stderr:
+                CORE.error(stderr)
+            raise CouldNotConnect('process died' + stderr)
+        else:
+            if not connect_retries % 50:
+                CORE.info('No connection to module process yet')
+            connect_retries += 1
+            yield tornado.gen.sleep(0.05)
+            yield self.connect(connect_retries)
+
+    @tornado.gen.coroutine
+    def request(self, method, uri, headers=None, body=None):
+        # watch the module's activity and kill it after X seconds inactivity
+        self.reset_inactivity_timer()
+        request_id = uuid.uuid4()
+        self._active_requests.add(request_id)
+
+        try:
+            response = yield self.do_request(method, uri, headers, body, self.socket)
+        finally:
+            self._active_requests.remove(request_id)
+            self.reset_inactivity_timer()
+
+        raise tornado.gen.Return(response)
+
+    def get_uri(self, uri):
+        if uri.startswith('https://'):
+            uri = 'http://' + uri[8:]
+
+        return uri
 
     def stop(self):
         # type: () -> None
-        CORE.process('ModuleProcess: stopping %r' % (self.__pid,))
-        notifier.timer_remove(self._connect_timer)
+        CORE.process('ModuleProcess: stopping %r' % (self.pid(),))
         if self.__process:
-            self.disconnect()
-            self.__process.signal_disconnect('killed', self._died)
-            self.__process.stop()
-            self.__process = None
-            CORE.info('ModuleProcess: child stopped')
+            tornado.ioloop.IOLoop.current().add_callback(self.stop_process)
 
-    def _died(self, pid, status):
-        # type: (int, Any) -> None
-        CORE.process('ModuleProcess: child %d exited with %d' % (pid, status))
-        self.signal_emit('finished', pid, status)
+    @tornado.gen.coroutine
+    def stop_process(self):
+        proc = self.__process.proc
+        if proc.poll() is None:
+            proc.terminate()
+        yield tornado.gen.sleep(3.0)
+        if proc.poll() is None:
+            proc.kill()
+        CORE.info('ModuleProcess: child stopped')
+        self.__process = None
 
-    def _response(self, msg):
-        # type: (Response) -> None
-        # these responses must not be send to the external client as
-        # this commands were generated within the server
-        if msg.command == 'EXIT' and 'internal' in msg.arguments:
-            return
+    def _died(self, returncode):
+        # type: (int) -> None
+        pid = self.pid()
+        CORE.process('ModuleProcess: child %d (%s) exited with %d%s' % (pid, self.name, returncode, self.str_returncode(returncode)))
+        self.disconnect_inactivity_timer()
 
-        self.signal_emit('result', msg)
+    def str_returncode(self, returncode):
+        if returncode == 0:
+            return ' (success)'
+        elif returncode < 0:
+            try:
+                return ' (%s)' % (signal.Signals(abs(returncode)).name,)
+            except ValueError:
+                pass
+        try:
+            return ' (%s?)' % (errno.errorcode[abs(returncode)],)
+        except KeyError:
+            return ''
 
     def pid(self):
         # type: () -> int
         """Returns process ID of module process"""
-        return self.__pid
+        if self.__process is None:
+            return 0
+        return self.__process.pid
+
+    def disconnect_inactivity_timer(self):
+        if self._inactivity_timer is not None:
+            ioloop = tornado.ioloop.IOLoop.current()
+            ioloop.remove_timeout(self._inactivity_timer)
+            self._inactivity_timer = None
+
+    def reset_inactivity_timer(self):
+        """
+        Resets the inactivity timer. This timer watches the
+        inactivity of the module process. If the module did not receive
+        a request for MODULE_INACTIVITY_TIMER seconds the module process
+        is shut down to save resources.
+        """
+        self.disconnect_inactivity_timer()
+        ioloop = tornado.ioloop.IOLoop.current()
+        self._inactivity_timer = ioloop.call_later(MODULE_INACTIVITY_TIMER // 1000, self._mod_inactive)
+
+    def _mod_inactive(self):
+        CORE.info('The module %s is inactive for too long. Sending shutdown request to module' % (self.name,))
+        if self._active_requests:
+            CORE.info('There are unfinished requests. Waiting for %s requests to finish.' % len(self._active_requests))
+            ioloop = tornado.ioloop.IOLoop.current()
+            self._inactivity_timer = ioloop.call_later(1, self._mod_inactive)
+
+        if self.__process:
+            try:
+                # or /exit HTTP request?
+                self.__process.proc.send_signal(signal.SIGALRM)
+            except ProcessLookupError as exc:
+                CORE.warn('Could not shutdown module: %s' % (exc,))
 
 
-class ProcessorBase(Base):
-    """
-    Implements a proxy and command handler. It handles all internal
-    UMCP commands and passes the commands for a module to the
-    subprocess.
+class ModuleProxy(ModuleConnection):
 
-    :param str username: name of the user who authenticated for this session
-    :param str password: password of the user
-    """
+    def __init__(self, proxy_address, unix_socket=None):
+        self.proxy_address = proxy_address
+        self.unix_socket = None
+
+    @tornado.gen.coroutine
+    def connect(self, connect_retries=0):
+        raise tornado.gen.Return(not self.unix_socket or os.path.exists(self.unix_socket))
+
+    @tornado.gen.coroutine
+    def request(self, method, uri, headers=None, body=None):
+        response = yield self.do_request(method, uri, headers, body, self.unix_socket)
+        raise tornado.gen.Return(response)
+
+    def get_uri(self, uri):
+        request = urlsplit(uri)
+        proxy = urlsplit(self.proxy_address)
+        # TODO: join base path of proxy?
+        return urlunsplit((proxy.scheme, proxy.netloc, request.path, request.query, ''))
+
+
+class Index(Resource):
+    """Redirect to correct path when bypassing gateway"""
+
+    def get(self):
+        self.redirect('/univention/', status=305)
+
+    post = get
+
+
+class Logout(Resource):
+    """Logout a user"""
+
+    requires_authentication = False
+    ignore_session_timeout_reset = True
+
+    def get(self, **kwargs):
+        if self.current_user.saml is not None:
+            return self.redirect('/univention/saml/logout', status=303)
+
+        self.expire_session()
+        self.redirect(ucr.get('umc/logout/location') or '/univention/', status=303)
+
+    post = get
+
+
+class Nothing(Resource):
+
+    requires_authentication = False
+
+    def prepare(self, *args, **kwargs):
+        super(Nothing, self).prepare(*args, **kwargs)
+        raise NotFound()
+
+
+class SessionInfo(Resource):
+    """Get information about the current session"""
+
+    requires_authentication = False
+    ignore_session_timeout_reset = True
+
+    def get(self):
+        info = {}
+        session = self.current_user
+        if not session.authenticated:
+            raise Unauthorized()
+        info['username'] = session.user.username
+        info['auth_type'] = session.get_umc_auth_type()
+        info['remaining'] = int(session.session_end_time - monotonic())
+        self.content_negotiation(info)
+
+    post = get
+
+
+class GetIPAddress(Resource):
+    """Get the most likely IP address of the client"""
+
+    requires_authentication = False
+
+    def get(self):
+        try:
+            addresses = self.addresses
+        except ValueError:
+            # hacking attempt
+            addresses = [self.request.remote_ip]
+        self.content_negotiation(addresses, False)
 
     @property
-    def lo(self):
-        return get_machine_connection(write=False)[0]
+    def addresses(self):
+        addresses = self.request.headers.get('X-Forwarded-For', self.request.remote_ip).split(',') + [self.request.remote_ip]
+        addresses = {ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses}
+        addresses.discard(ip_address(u'::1'))
+        addresses.discard(ip_address(u'127.0.0.1'))
+        return tuple(address.exploded for address in addresses)
 
-    def __init__(self):
-        Base.__init__(self, 'univention-management-console')
-        self.__processes = {}
-        self.__killtimer = {}
-        self.__command_list = None
-        self.i18n = I18N_Manager()
-        self.i18n['umc-core'] = I18N()
+    post = get
 
-    def set_locale(self, locale):
-        # don't call the super method because it sets the process locale LC_*!
-        self.set_language(locale)
-        self.i18n.set_locale(locale)
 
-    def set_credentials(self, username, password, auth_type):
-        self.username = username
-        self._password = password
-        self.auth_type = auth_type
-        self._search_user_dn()
-        self._reload_acls_and_permitted_commands()
-        self.update_module_passwords()
+class NewSession(Resource):
+    """Drop all information from the current session - like a relogin"""
 
-    def _reload_acls_and_permitted_commands(self):
-        self._reload_acls()
-        self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
+    def get(self):
+        self.current_user.renew()
+        self.content_negotiation(None)
 
-    def _reload_acls(self):
+    post = get
+
+
+class Auth(Resource):
+    """Authenticate the user via PAM - either via plain password or via SAML message"""
+
+    requires_authentication = False
+
+    def parse_authorization(self):
+        return  # do not call super method: prevent basic auth
+
+    @sanitize(
+        username=StringSanitizer(required=True, minimum=1),
+        password=StringSanitizer(required=True, minimum=1),
+        auth_type=StringSanitizer(allow_none=True),
+        new_password=StringSanitizer(required=False, allow_none=True, minimum=1),
+    )
+    @tornado.gen.coroutine
+    def post(self):
         try:
-            self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
-        except (ldap.LDAPError, udm_errors.ldapError):
-            reset_ldap_connection_cache()
-            raise
+            content_length = int(self.request.headers.get("Content-Length", 0))
+        except ValueError:
+            content_length = None
+        if not content_length and content_length != 0:
+            CORE.process('auth: missing Content-Length header')
+            raise HTTPError(int(LENGTH_REQUIRED))
 
-    def _reload_i18n(self):
-        self.i18n.set_locale(str(self.i18n.locale))
+        if self.request.method in ('POST', 'PUT'):
+            max_length = 2000 * 1024
+            if content_length >= max_length:  # prevent some DoS
+                raise HTTPError(int(REQUEST_ENTITY_TOO_LARGE), 'Request data is too large, allowed length is %d' % max_length)
 
-    def _search_user_dn(self):
-        if self.lo and self._username:
-            # get the LDAP DN of the authorized user
-            try:
-                ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
-            except (ldap.LDAPError, udm_errors.base):
-                reset_ldap_connection_cache()
-                ldap_dn = None
-                CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
-            if ldap_dn:
-                self._user_dn = ldap_dn[0]
-                CORE.info('The LDAP DN for user %s is %s' % (self._username, self._user_dn))
+        self.request.body_arguments['auth_type'] = None
+        self.request.body_arguments['locale'] = self.locale.code
+        session = self.current_user
+        # create a sessionid if the user is not yet authenticated
+        # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
+        sessionid = self.create_sessionid(True)
 
-        if not self._user_dn and self._username not in ('root', '__systemsetup__', None):
-            CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self._username, self.lo))
+        result = yield session.authenticate(self.request.body_arguments)
 
-    def error_handling(self, etype, exc, etraceback):
-        super(ProcessorBase, self).error_handling(etype, exc, etraceback)
-        if isinstance(exc, UMC_Error) and exc.msg is None:
-            exc.args = (status_description(exc.status),)
-
-    def request(self, msg):
-        """
-        Handles an incoming UMCP request and passes the requests to
-        specific handler functions.
-
-        :param Request msg: UMCP request
-        """
-        if msg.command in ('AUTH', 'EXIT', 'GET', 'SET', 'VERSION', 'COMMAND', 'UPLOAD'):
-            method = 'handle_request_%s' % (msg.command.lower(),)
-        else:
-            method = 'handle_request_unknown'
-
-        self.execute(method, msg)
-
-    @allow_get_request
-    def handle_request_unknown(self, msg):
-        """Handles an unknown or invalid request"""
-        raise NotFound()
-
-    @allow_get_request
-    def handle_request_unauthorized(self, msg):
-        raise Unauthorized(self._('For using this request a login is required.'))
-
-    @allow_get_request
-    def handle_request_auth(self, request):
-        result = request.authentication_result
-        del request.authentication_result
-        response = Response(request)
-        response.status = result.status
+        self.set_session(sessionid)
+        self.set_status(result.status)
         if result.message:
-            response.message = result.message
-        response.result = result.result
-        self.finished(request.id, response)
+            self.set_header('X-UMC-Message', json.dumps(result.message))
+        self.content_negotiation(result.result)
 
-    handle_request_get_ucr = handle_request_unauthorized
-    handle_request_get_info = handle_request_unauthorized
-    handle_request_get_user_preferences = handle_request_unauthorized
-    handle_request_get_hosts = handle_request_unauthorized
-    handle_request_set_password = handle_request_unauthorized
-    handle_request_set_locale = handle_request_unauthorized
-    handle_request_set_user = handle_request_unauthorized
-    handle_request_version = handle_request_unauthorized
+    get = post
 
-    @allow_get_request
-    def handle_request_get(self, msg):
-        """Handles a GET request"""
-        for arg in msg.arguments:
-            method = {
-                'ucr': self.handle_request_get_ucr,
-                'meta': self.handle_request_get_meta,
-                'info': self.handle_request_get_info,
-                'modules/list': self.handle_request_get_modules,
-                'modules': self.handle_request_get_modules,
-                'categories/list': self.handle_request_get_categories,
-                'categories': self.handle_request_get_categories,
-                'user/preferences': self.handle_request_get_user_preferences,
-                'hosts/list': self.handle_request_get_hosts,
-                'hosts': self.handle_request_get_hosts,
-            }.get(arg)
-            if method:
-                self.finished(msg.id, method(msg))
-                return
-        raise NotFound()
 
-    META_JSON_PATH = '/var/www/univention/meta.json'
+class Modules(Resource):
+    """Get a list of available modules"""
 
-    def handle_request_get_meta(self, request):
-        try:
-            with open(self.META_JSON_PATH) as fd:
-                return json.load(fd)
-        except (EnvironmentError, ValueError) as exc:
-            CORE.error('meta.json is not available: %s' % (exc,))
-            return {}
+    requires_authentication = False
 
-    def handle_request_set(self, msg):
-        for key, _value in msg.options.items():
-            method = {
-                'password': self.handle_request_set_password,
-                'locale': self.handle_request_set_locale,
-                'user': self.handle_request_set_user,
-            }.get(key)
-            if method:
-                return method(msg)
-        raise NotFound()
+    def prepare(self):
+        super(Modules, self).prepare()
+        self.i18n = I18N_Manager()  # TODO: move into a session class
+        self.i18n['umc-core'] = I18N()
+        self.i18n.set_locale(self.locale.code)
 
-    def handle_request_get_modules(self, request):
+    def get(self):
         categoryManager.load()
         moduleManager.load()
-        if isinstance(request.options, dict) and request.options.get('reload'):
+        if self.get_argument('reload', False):
             CORE.info('Reloading ACLs for existing session')
-            self._reload_acls_and_permitted_commands()
-            self._reload_i18n()
+            self.current_user.acls._reload_acls_and_permitted_commands()
+
+        permitted_commands = list(self.current_user.acls.get_permitted_commands(moduleManager).values())
 
         favorites = self._get_user_favorites()
-        modules = []
-        for id, module in self.__command_list.items():
-            # check for translation
-            if module.flavors:
-                for flavor in module.flavors:
-                    favcat = []
-                    if '%s:%s' % (id, flavor.id) in favorites:
-                        favcat.append('_favorites_')
+        modules = [
+            self._module_definition(module, favorites)
+            for module in permitted_commands
+            if not module.flavors
+        ]
+        modules.extend([
+            self._flavor_definition(module, flavor, favorites)
+            for module in permitted_commands
+            for flavor in module.flavors
+        ])
 
-                    translationId = flavor.translationId
-                    if not translationId:
-                        translationId = id
-                    modules.append({
-                        'id': id,
-                        'flavor': flavor.id,
-                        'name': self.i18n._(flavor.name, translationId),
-                        'url': self.i18n._(module.url, translationId),
-                        'description': self.i18n._(flavor.description, translationId),
-                        'icon': flavor.icon,
-                        'categories': (flavor.categories or (module.categories if not flavor.hidden else [])) + favcat,
-                        'priority': flavor.priority,
-                        'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords])),
-                        'version': flavor.version,
-                    })
-            else:
-                favcat = []
-                if id in favorites:
-                    favcat.append('_favorites_')
-                translationId = module.translationId
-                if not translationId:
-                    translationId = id
-                modules.append({
-                    'id': id,
-                    'name': self.i18n._(module.name, translationId),
-                    'url': self.i18n._(module.url, translationId),
-                    'description': self.i18n._(module.description, translationId),
-                    'icon': module.icon,
-                    'categories': module.categories + favcat,
-                    'priority': module.priority,
-                    'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords])),
-                    'version': module.version,
-                })
         CORE.info('Modules: %s' % (modules,))
-        res = Response(request)
-        res.body['modules'] = modules
-        return res
+        self.content_negotiation({'modules': modules}, wrap=False)
+
+    def _flavor_definition(self, module, flavor, favorites):
+        favcat = []
+        if '%s:%s' % (module.id, flavor.id) in favorites:
+            favcat.append('_favorites_')
+
+        translationId = flavor.translationId or module.id
+        return {
+            'id': module.id,
+            'flavor': flavor.id,
+            'name': self.i18n._(flavor.name, translationId),
+            'url': self.i18n._(module.url, translationId),
+            'description': self.i18n._(flavor.description, translationId),
+            'icon': flavor.icon,
+            'categories': (flavor.categories or (module.categories if not flavor.hidden else [])) + favcat,
+            'priority': flavor.priority,
+            'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords])),
+            'version': flavor.version,
+        }
+
+    def _module_definition(self, module, favorites):
+        favcat = []
+        if module.id in favorites:
+            favcat.append('_favorites_')
+        translationId = module.translationId or module.id
+        return {
+            'id': module.id,
+            'name': self.i18n._(module.name, translationId),
+            'url': self.i18n._(module.url, translationId),
+            'description': self.i18n._(module.description, translationId),
+            'icon': module.icon,
+            'categories': module.categories + favcat,
+            'priority': module.priority,
+            'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords])),
+            'version': module.version,
+        }
 
     def _get_user_favorites(self):
-        if not self._user_dn:  # user not authenticated or no LDAP user
+        if not self.current_user.user.user_dn:  # user not authenticated or no LDAP user
             return set(ucr.get('umc/web/favorites/default', '').split(','))
-        favorites = self._get_user_preferences(self.get_user_ldap_connection(no_cache=True)).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+        lo = self.current_user.user.get_user_ldap_connection(no_cache=True)
+        favorites = self._get_user_preferences(lo).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
         return set(favorites.split(','))
 
-    def handle_request_get_categories(self, request):
+    def _get_user_preferences(self, lo):
+        user_dn = self.current_user.user.user_dn
+        if not user_dn or not lo:
+            return {}
+        try:
+            preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
+        except (ldap.LDAPError, udm_errors.base) as exc:
+            CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+            return {}
+        preferences = (val.decode('utf-8', 'replace') for val in preferences)
+        return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
+
+    post = get
+
+
+class Categories(Resource):
+    """Get a list of available categories"""
+
+    requires_authentication = False
+
+    def prepare(self):
+        super(Categories, self).prepare()
+        self.i18n = I18N_Manager()  # TODO: move into a session class
+        self.i18n['umc-core'] = I18N()
+        self.i18n.set_locale(self.locale.code)
+
+    def get(self):
         categoryManager.load()
         ucr.load()
         _ucr_dict = dict(ucr.items())
         categories = []
-        for catID, category in categoryManager.items():
+        for category in categoryManager.values():
             categories.append({
-                'id': catID,
+                'id': category.id,
                 'icon': category.icon,
                 'color': category.color,
                 'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
                 'priority': category.priority,
             })
         CORE.info('Categories: %s' % (categories,))
-        res = Response(request)
-        res.body['categories'] = categories
-        return res
+        self.content_negotiation({'categories': categories}, wrap=False)
 
-    @sanitize(locale=StringSanitizer(required=True))
-    @simple_response
-    def handle_request_set_locale(self, locale):
-        self.update_language([locale])
+    post = get
 
-    def update_module_passwords(self):
-        if self.__processes:
-            CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
-        for module_name, proc in self.__processes.items():
-            CORE.info('Update the users password in the running %r module instance.' % (module_name,))
-            req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
-            try:
-                proc.request(req)
-            except Exception:
-                CORE.error(traceback.format_exc())
 
-    @allow_get_request
-    @sanitize(DictSanitizer({
-        "tmpfile": StringSanitizer(required=True),
-        "filename": StringSanitizer(required=True),
-        "name": StringSanitizer(required=True),
-    }))
-    def handle_request_upload(self, msg):
-        """
-        Handles an UPLOAD request. The command is used for the HTTP
-        access to the UMC server. Incoming HTTP requests that send a
-        list of files are passed on to the UMC server by storing the
-        files in temporary files and passing the information about the
-        files to the UMC server in the options of the request. The
-        request options must be a list of dictionaries. Each dictionary
-        must contain the following keys:
+class Upload(Resource):
+    """Handle generic file upload which is not targeted for any module"""
 
-        * *filename* -- the original name of the file
-        * *name* -- name of the form field
-        * *tmpfile* -- filename of the temporary file
-
-        :param Request msg: UMCP request
-        """
-        direct_response = not msg.arguments or msg.arguments[0] in ('', '/')
+    def post(self):
+        """Handles a file UPLOAD request, respond with a base64 representation of the content."""
         result = []
-        for file_obj in msg.options:
-            tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
+        for name, file_objs in self.request.files.items():
+            for file_obj in file_objs:
+                # don't accept files bigger than umc/server/upload/max
+                max_size = ucr.get_int('umc/server/upload/max', 64) * 1024
+                if len(file_obj['body']) > max_size:
+                    raise BadRequest(self._('filesize is too large, maximum allowed filesize is %d bytes') % (max_size,))
 
-            # limit files to tmpdir
-            if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-                raise BadRequest('invalid file: invalid path')
+                b64buf = base64.b64encode(file_obj['body']).decode('ASCII')
+                result.append({'filename': file_obj['filename'], 'name': name, 'content': b64buf})
 
-            # check if file exists
-            if not os.path.isfile(tmpfilename):
-                raise BadRequest('invalid file: file does not exists')
+        self.content_negotiation(result)
 
-            # don't accept files bigger than umc/server/upload/max
-            st = os.stat(tmpfilename)
-            max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
-            if st.st_size > max_size:
-                os.remove(tmpfilename)
-                raise BadRequest('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
-            if direct_response:
-                with open(tmpfilename, 'rb') as buf:
-                    b64buf = base64.b64encode(buf.read()).decode('ASCII')
-                result.append({'filename': filename, 'name': name, 'content': b64buf})
+class Command(Resource):
+    """Gateway for command/upload requests to UMC module processes"""
 
-        if direct_response:
-            self.finished(msg.id, result)
-        else:
-            self.handle_request_command(msg)
+    requires_authentication = False
 
-    @allow_get_request
-    def handle_request_command(self, msg):
+    def forbidden_or_unauthenticated(self, message):
+        # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
+        if self.current_user.authenticated:
+            return Forbidden(message)
+        return Unauthorized(self._("For using this request a login is required."))
+
+    @tornado.gen.coroutine
+    def get(self, umcp_command, command):
         """
         Handles a COMMAND request. The request must contain a valid
         and known command that can be accessed by the current user. If
@@ -479,294 +628,119 @@ class ProcessorBase(Base):
 
         If a module process is already running the request is passed on
         and the inactivity timer is reset.
-
-        :param Request msg: UMCP request
         """
-        # only one command?
-        command = None
-        if msg.arguments:
-            command = msg.arguments[0]
+        session = self.current_user
+        acls = session.acls
 
-        module_name = moduleManager.module_providing(self.__command_list, command)
-
-        try:
-            # check if the module exists in the module manager
-            moduleManager[module_name]
-        except KeyError:
-            # the module has been removed from moduleManager (probably through a reload)
-            CORE.warn('Module %r (command=%r, id=%r) does not exists anymore' % (module_name, command, msg.id))
-            moduleManager.load()
-            self._reload_acls_and_permitted_commands()
-            module_name = None
-
+        module_name = acls.get_module_providing(moduleManager, command)
         if not module_name:
-            raise Forbidden()
+            CORE.warn('No module provides %s' % (command))
+            raise self.forbidden_or_unauthenticated(self._("No module found for this request."))
 
-        if msg.arguments:
-            if msg.mimetype == MIMETYPE_JSON:
-                is_allowed = moduleManager.is_command_allowed(self.acls, msg.arguments[0], options=msg.options, flavor=msg.flavor)
-            else:
-                is_allowed = moduleManager.is_command_allowed(self.acls, msg.arguments[0])
-            if not is_allowed:
-                raise Forbidden()
-            if module_name not in self.__processes:
-                CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
-                try:
-                    mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
-                except EnvironmentError as exc:
-                    message = self._('Could not open the module. %s Please try again later.') % {
-                        errno.ENOMEM: self._('There is not enough memory available on the server.'),
-                        errno.EMFILE: self._('There are too many opened files on the server.'),
-                        errno.ENFILE: self._('There are too many opened files on the server.'),
-                        errno.ENOSPC: self._('There is not enough free space on the server.'),
-                    }.get(exc.errno, self._('An unknown operating system error occurred (%s).' % (exc,)))
-                    raise ServiceUnavailable(message)
-                mod_proc.signal_connect('result', self.result)
+        CORE.info('Checking ACLs for %s (%s)' % (command, module_name))
+        if not acls.is_command_allowed(self.request, command):
+            CORE.warn('Command %s is not allowed' % (command))
+            raise self.forbidden_or_unauthenticated(self._("Not allowed to perform this request."))
 
-                cb = notifier.Callback(self._mod_error, module_name)
-                mod_proc.signal_connect('error', cb)
+        methodname = acls.get_method_name(moduleManager, module_name, command)
+        if not methodname:
+            CORE.warn('Command %s does not exists' % (command))
+            raise self.forbidden_or_unauthenticated(self._("Unknown request."))
 
-                cb = notifier.Callback(self._socket_died, module_name)
-                mod_proc.signal_connect('closed', cb)
+        headers = self.get_request_header(session, methodname, umcp_command)
 
-                cb = notifier.Callback(self._mod_died, module_name)
-                mod_proc.signal_connect('finished', cb)
-
-                self.__processes[module_name] = mod_proc
-
-                cb = notifier.Callback(self._mod_connect, mod_proc, msg)
-                mod_proc._connect_timer = notifier.timer_add(50, cb)
-            else:
-                proc = self.__processes[module_name]
-                if proc.running:
-                    CORE.info('Passing new request to running module %s' % module_name)
-                    proc.request(msg)
-                    self.reset_inactivity_timer(proc)
-                else:
-                    CORE.info('Queuing incoming request for module %s that is not yet ready to receive' % module_name)
-                    proc._queued_requests.append(msg)
-
-    def _mod_connect(self, mod, msg):
-        """Callback for a timer event: Trying to connect to newly started module process"""
-        def _send_error():
-            # inform client
-            res = Response(msg)
-            res.status = SERVER_ERR_MODULE_FAILED  # error connecting to module process
-            res.message = '%s: %s' % (status_description(res.status), mod.name)
-            self.result(res)
-            # cleanup module
-            mod.signal_disconnect('closed', notifier.Callback(self._socket_died))
-            mod.signal_disconnect('result', notifier.Callback(self.result))
-            mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
-            proc = self.__processes.pop(mod.name, None)
-            if proc:
-                proc.stop()
+        # tornado drops the territory because we only have /usr/share/locale/de/LC_MESSAGES/
+        locale = Locale(self.locale.code)
+        if not locale.territory:  # TODO: replace by using the actual provided value
+            locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
+        process = session.processes.get_process(module_name, str(locale), self.settings.get("no_daemonize_module_processes"))
+        request_id = uuid.uuid4()
+        session._active_requests.add(request_id)
+        CORE.info('Passing request to module %s' % (module_name,))
 
         try:
-            mod.connect()
-        except NoSocketError:
-            if mod._connect_retries > 200:
-                CORE.info('Connection to module %s process failed' % mod.name)
-                _send_error()
-                return False
-            if not mod._connect_retries % 50:
-                CORE.info('No connection to module process yet')
-            mod._connect_retries += 1
-            return True
-        except Exception as exc:
-            CORE.error('Unknown error while trying to connect to module process: %s\n%s' % (exc, traceback.format_exc()))
-            _send_error()
-            return False
-        else:
-            CORE.info('Connected to new module process')
-            mod.running = True
-
-            # send acls, commands, credentials, locale
-            options = {
-                'acls': self.acls.json(),
-                'commands': self.__command_list[mod.name].json(),
-                'credentials': {
-                    'auth_type': self.auth_type,
-                    'username': self._username,
-                    'password': self._password,
-                    'user_dn': self._user_dn,
-                },
-            }
-            if str(self.i18n.locale):
-                options['locale'] = str(self.i18n.locale)
-
-            # WARNING! This debug message contains credentials!!!
-            # CORE.info('Initialize module process: %s' % (options,))
-
-            req = Request('SET', options=options)
-            mod.request(req)
-
+            yield process.connect()
             # send first command
-            mod.request(msg)
-
-            # send queued request that were received during start procedure
-            for req in mod._queued_requests:
-                mod.request(req)
-            mod._queued_requests = []
-
-            # watch the module's activity and kill it after X seconds inactivity
-            self.reset_inactivity_timer(mod)
-
-        return False
-
-    def _mod_inactive(self, module):
-        CORE.info('The module %s is inactive for too long. Sending EXIT request to module' % module.name)
-        if module.openRequests:
-            CORE.info('There are unfinished requests. Waiting for %s' % ', '.join(module.openRequests))
-            return True
-
-        # mark as internal so the response will not be forwarded to the client
-        req = Request('EXIT', arguments=[module.name, 'internal'])
-        self.handle_request_exit(req)
-
-        return False
-
-    def _socket_died(self, module_name):
-        CORE.warn('Socket died (module=%s)' % module_name)
-        if module_name in self.__processes:
-            self._mod_died(self.__processes[module_name].pid(), -1, module_name)
-
-    def _mod_error(self, exc, module_name):
-        CORE.error('Module %r ran into error: %s' % (module_name, exc))
-        if module_name in self.__processes:
-            self.__processes[module_name].invalidate_all_requests(status=exc.args[0], message=exc.args[1])
-            self._mod_died(self.__processes[module_name].pid(), -1, module_name)
-        self._purge_child(module_name)
-
-    def _mod_died(self, pid, status, module_name):
-        if status:
-            if os.WIFSIGNALED(status):
-                signal = os.WTERMSIG(status)
-                exitcode = -1
-            elif os.WIFEXITED(status):
-                signal = -1
-                exitcode = os.WEXITSTATUS(status)
-            else:
-                signal = -1
-                exitcode = -1
-            CORE.warn('Module process %s died (pid: %d, exit status: %d, signal: %d, status: %r)' % (module_name, pid, exitcode, signal, status))
+            response = yield process.request(self.request.method, self.request.full_url(), body=self.request.body or None, headers=headers)
+        except CouldNotConnect as exc:
+            # (happens during starting the service and subprocesses when the UNIX sockets aren't available yet)
+            # also happens when module process gets killed during request
+            # cleanup module
+            session.processes.stop_process(module_name)
+            # TODO: read stderr
+            reason = 'UMC-Server module process connection failed'
+            raise BadGateway('%s: %s: %s' % (self._('Connection to module process failed'), module_name, exc), reason=reason)
         else:
-            CORE.info('Module process %s died on purpose' % module_name)
+            CORE.debug('Received response %s' % (response.code,))
+            self.set_status(response.code, response.reason)
+            self._headers = tornado.httputil.HTTPHeaders()
 
-        # if killtimer has been set then remove it
-        CORE.info('Checking for kill timer (%s)' % ', '.join(self.__killtimer.keys()))
-        if module_name in self.__killtimer:
-            CORE.info('Stopping kill timer)')
-            notifier.timer_remove(self.__killtimer[module_name])
-            del self.__killtimer[module_name]
-        if module_name in self.__processes:
-            CORE.warn('Cleaning up requests')
-            self.__processes[module_name].invalidate_all_requests(status=SERVER_ERR_MODULE_DIED)
-            if self.__processes[module_name]._inactivity_timer is not None:
-                CORE.warn('Remove inactivity timer')
-                notifier.timer_remove(self.__processes[module_name]._inactivity_timer)
-            self.__processes.pop(module_name).stop()
+            for header, v in response.headers.get_all():
+                if header.title() not in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason', 'Range', 'Trailer', 'Server', 'Set-Cookie'):
+                    self.add_header(header, v)
 
-    def reset_inactivity_timer(self, module):
-        """
-        Resets the inactivity timer. This timer watches the
-        inactivity of the module process. If the module did not receive
-        a request for MODULE_INACTIVITY_TIMER seconds the module process
-        is shut down to save resources. The timer ticks each seconds to
-        handle glitches of the system clock.
+            message = json.loads(response.headers.get('X-UMC-Message', 'null'))
+            if response.headers.get('Content-Type', '').startswith('application/json'):
+                if response.code >= 400:
+                    body = json.loads(response.body)
+                    exc = UMC_Error(message, response.code, body.get('result'), reason=response.reason)
+                    self.write_error(response.code, (UMC_Error, exc, None), error=body.get('error'))
+                    return
+                elif message:
+                    body = json.loads(response.body)
+                    body['message'] = message
+                    response._body = json.dumps(body).encode('ASCII')
 
-        :param Module module: a UMC module
-        """
-        if module._inactivity_timer is None:
-            module._inactivity_timer = notifier.timer_add(1000, notifier.Callback(self._inactivitiy_tick, module))
+            if response.body:
+                self.set_header('Content-Length', str(len(response.body)))
+                self.write(response.body)
+            self.finish()
+        finally:
+            session._active_requests.remove(request_id)
 
-        module._inactivity_counter = MODULE_INACTIVITY_TIMER
+    def get_request_header(self, session, methodname, umcp_command):
+        headers = dict(self.request.headers)
+        for header in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason', 'Range', 'Trailer', 'Server', 'Set-Cookie', 'X-UMC-AuthType'):
+            headers.pop(header, None)
+        headers['Cookie'] = '; '.join([m.OutputString(attrs=[]) for name, m in self.cookies.items() if not name.startswith('UMCUsername')])
+        headers['X-User-Dn'] = json.dumps(session.user.user_dn)
+        #headers['X-UMC-Flavor'] = None
+        # X-UMC-IP=self.get_ip_address() ?
+        headers['Authorization'] = 'basic ' + base64.b64encode(('%s:%s' % (session.user.username, session.get_umc_password())).encode('ISO8859-1')).decode('ASCII')
+        headers['X-UMC-Method'] = methodname
+        headers['X-UMC-Command'] = umcp_command.upper()
+        auth_type = session.get_umc_auth_type()
+        if auth_type:
+            headers['X-UMC-AuthType'] = auth_type
+        return headers
 
-    def _inactivitiy_tick(self, module):
-        if module._inactivity_counter > 0:
-            module._inactivity_counter -= 1000
-            return True
-        if self._mod_inactive(module):  # open requests -> waiting
-            module._inactivity_counter = MODULE_INACTIVITY_TIMER
-            return True
-
-        module._inactivity_timer = None
-        module._inactivity_counter = 0
-
-        return False
-
-    def handle_request_exit(self, msg):
-        """
-        Handles an EXIT request. If the request does not have an
-        argument that contains a valid name of a running UMC module
-        instance the request is returned as a bad request.
-
-        If the request is valid it is passed on to the module
-        process. Additionally a timer of 3000 milliseconds is
-        started. After that amount of time the module process MUST have
-        been exited itself. If not the UMC server will kill the module
-        process.
-
-        :param Request msg: UMCP request
-        """
-        if len(msg.arguments) < 1:
-            return self.handle_request_unknown(msg)
-
-        module_name = msg.arguments[0]
-        if module_name:
-            if module_name in self.__processes:
-                self.__processes[module_name].request(msg)
-                CORE.info('Ask module %s to shutdown gracefully' % module_name)
-                # added timer to kill away module after 3000ms
-                cb = notifier.Callback(self._purge_child, module_name)
-                self.__killtimer[module_name] = notifier.timer_add(3000, cb)
-            else:
-                CORE.info('Got EXIT request for a non-existing module %s' % module_name)
-
-    def _purge_child(self, module_name):
-        if module_name in self.__processes:
-            CORE.process('module %s is still running - purging module out of memory' % module_name)
-            pid = self.__processes[module_name].pid()
-            try:
-                os.kill(pid, 9)
-            except OSError as exc:
-                CORE.warn('Failed to kill module %s: %s' % (module_name, exc))
-        return False
-
-    def shutdown(self):
-        """Instructs the module process to shutdown"""
-        if self.__processes:
-            CORE.info('The session is shutting down. Sending EXIT request to %d modules.' % len(self.__processes))
-
-        for module_name in list(self.__processes.keys()):
-            CORE.info('Ask module %s to shutdown gracefully' % (module_name,))
-            req = Request('EXIT', arguments=[module_name, 'internal'])
-            process = self.__processes.pop(module_name)
-            process.request(req)
-            notifier.timer_remove(process._connect_timer)
-            notifier.timer_add(4000, process.stop)
-
-        if self._user_connections:
-            reset_ldap_connection_cache(*self._user_connections)
-
-        if isinstance(self.acls, LDAP_ACLs):
-            reset_ldap_connection_cache(self.acls.lo)
-            self.acls = None
+    post = put = delete = patch = options = get
 
 
-class Processor(ProcessorBase):
+class UCR(Resource):
+    """Get UCR Variables matching a pattern"""
 
     @sanitize(StringSanitizer(required=True))
-    def handle_request_get_ucr(self, request):
+    def get(self):
         ucr.load()
         result = {}
-        for value in request.options:
+        for value in self.request.body_arguments:
             if value.endswith('*'):
                 value = value[:-1]
                 result.update({x: ucr.get(x) for x in ucr.keys() if x.startswith(value)})
             else:
                 result[value] = ucr.get(value)
-        return result
+        self.content_negotiation(result)
+
+    post = get
+
+
+class Meta(Resource):
+    """Get Metainformation about the environment"""
+
+    requires_authentication = False
+
+    META_JSON_PATH = '/var/www/univention/meta.json'
 
     META_UCR_VARS = [
         'domainname',
@@ -785,10 +759,11 @@ class Processor(ProcessorBase):
         'uuid/system',
         'version/erratalevel',
         'version/patchlevel',
+        'version/releasename',
         'version/version',
     ]
 
-    def handle_request_get_meta(self, request):
+    def get(self):
         def _get_ucs_version():
             try:
                 return '{version/version}-{version/patchlevel} errata{version/erratalevel}'.format(**ucr)
@@ -802,7 +777,16 @@ class Processor(ProcessorBase):
         def _has_free_license():
             return ucr.get('license/base') in ('UCS Core Edition', 'Free for personal use edition')
 
-        meta_data = super(Processor, self).handle_request_get_meta(request)
+        try:
+            with open(self.META_JSON_PATH) as fd:
+                meta_data = json.load(fd)
+        except (EnvironmentError, ValueError) as exc:
+            CORE.error('meta.json is not available: %s' % (exc,))
+            meta_data = {}
+
+        if not self.current_user.authenticated:
+            self.content_negotiation(meta_data)
+            return
 
         ucr.load()
         meta_data.update({
@@ -815,103 +799,205 @@ class Processor(ProcessorBase):
             "appliance_name": ucr.get('umc/web/appliance/name'),
         })
         meta_data.update([(i, ucr.get(i)) for i in self.META_UCR_VARS])
-        return meta_data
+        self.content_negotiation(meta_data)
+
+    post = get
+
+
+class Info(Resource):
+    """Get UCS and UMC version number and SSL validity"""
 
     CHANGELOG_VERSION = re.compile(r'^[^(]*\(([^)]*)\).*')
 
-    def handle_request_get_info(self, request):
-        ucr.load()
-        result = {}
+    def get_umc_version(self):
         try:
             with gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz') as fd:
                 line = fd.readline().decode('utf-8', 'replace')
-            match = self.CHANGELOG_VERSION.match(line)
-            if not match:
-                raise IOError
-            result['umc_version'] = match.groups()[0]
-            result['ucs_version'] = '%(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr
-            result['server'] = '{}.{}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
-            result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
-            result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
         except IOError:
-            raise Forbidden()
-        return result
+            return
+        try:
+            return self.CHANGELOG_VERSION.match(line).groups()[0]
+        except AttributeError:
+            return
 
-    def handle_request_get_hosts(self, request):
-        result = []
-        if self.lo:
-            try:
-                domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
-            except (ldap.LDAPError, udm_errors.base) as exc:
-                reset_ldap_connection_cache()
-                CORE.warn('Could not search for domaincontrollers: %s' % (exc))
-                domaincontrollers = []
-            result = sorted([(b'%s.%s' % (computer['cn'][0], computer['associatedDomain'][0])).decode('utf-8', 'replace') for dn, computer in domaincontrollers if computer.get('associatedDomain')])
-        return result
+    def get_ucs_version(self):
+        return '{}-{} errata{} ({})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
+
+    def get(self):
+        ucr.load()
+
+        result = {
+            'umc_version': self.get_umc_version(),
+            'ucs_version': self.get_ucs_version(),
+            'server': '{}.{}'.format(ucr.get('hostname', ''), ucr.get('domainname', '')),
+            'ssl_validity_host': ucr.get_int('ssl/validity/host', 0) * 24 * 60 * 60 * 1000,
+            'ssl_validity_root': ucr.get_int('ssl/validity/root', 0) * 24 * 60 * 60 * 1000,
+        }
+        self.content_negotiation(result)
+
+    post = get
+
+
+class Hosts(Resource):
+    """List all directory nodes in the domain"""
+
+    def get(self):
+        self.content_negotiation(self.get_hosts())
+
+    post = get
+
+    def get_hosts(self):
+        lo = self.lo
+        if not lo:  # unjoined / no LDAP connection
+            return []
+        try:
+            domaincontrollers = lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
+        except (ldap.LDAPError, udm_errors.base) as exc:
+            reset_ldap_connection_cache(lo)
+            CORE.warn('Could not search for domaincontrollers: %s' % (exc))
+            return []
+
+        return sorted(
+            b'.'.join((computer['cn'][0], computer['associatedDomain'][0])).decode('utf-8', 'replace')
+            for dn, computer in domaincontrollers
+            if computer.get('associatedDomain')
+        )
+
+
+class Set(Resource):
+    """
+    Generic set of locale, user preferences (favorites) or password
+
+    ..deprecated:: 5.0
+        use specific pathes ("set/{password,locale,user/preferences}") instead
+    """
+
+    @tornado.gen.coroutine
+    def post(self):
+        is_univention_lib = self.request.headers.get('User-Agent', '').startswith('UCS/')
+        for key in self.request.body_arguments:
+            cls = {'password': SetPassword, 'user': SetUserPreferences, 'locale': SetLocale}.get(key)
+            self.set_header('X-UMC-Message', json.dumps('The /univention/set/ endpoint is deprecated and going to be removed.'))
+            if is_univention_lib and cls:
+                # for backwards compatibility with non redirecting clients we cannot redirect here :-(
+                p = cls(self.application, self.request)
+                p._ = self._
+                p.finish = self.finish
+                yield p.post()
+                return
+            if key == 'password':
+                self.redirect('/univention/set/password', status=307)
+            elif key == 'user':
+                self.redirect('/univention/set/user/preferences', status=307)
+            elif key == 'locale':
+                self.redirect('/univention/set/locale', status=307)
+        raise NotFound()
+
+
+class SetLocale(Resource):
+    """
+    Set the locale for the session.
+
+    .. deprecated:: 5.0
+            set language via `Accept-Language` HTTP header
+    """
+
+    requires_authentication = False
+
+    @sanitize(locale=StringSanitizer(required=True))
+    def post(self):
+        self.set_header('X-UMC-Message', json.dumps('Setting a session locale is deprecated and going to be removed. Use Accept-Language header instead!'))
+        locale = self.request.body_arguments['locale'].replace('-', '_')
+        try:
+            lang = Locale(locale)
+        except I18N_Error as exc:
+            CORE.warn('Invalid locale specified: %r -> %s' % (locale, exc))
+            raise BadRequest(self._('Specified locale is not available'))
+        self.current_user.user._locale = locale
+        self.set_header('Content-Language', '%s-%s' % (lang.language, lang.territory) if lang.territory else lang.language)
+        self.content_negotiation(None)
+
+
+class SetPassword(Resource):
+    """Change the password of the currently authenticated user"""
 
     @sanitize(password=DictSanitizer({
         "password": StringSanitizer(required=True),
         "new_password": StringSanitizer(required=True),
     }))
-    def handle_request_set_password(self, request):
-        username = self._username
-        password = request.options['password']['password']
-        new_password = request.options['password']['new_password']
+    @tornado.gen.coroutine
+    def post(self):
+        username = self.current_user.user.username
+        password = self.request.body_arguments['password']['password']
+        new_password = self.request.body_arguments['password']['new_password']
+
+        args = {
+            'locale': str(self.locale.code),
+            'username': username,
+            'password': password,
+            'new_password': new_password,
+        }
 
         CORE.info('Changing password of user %r' % (username,))
-        pam = PamAuth(str(self.i18n.locale))
-        change_password = notifier.Callback(pam.change_password, username, password, new_password)
-        password_changed = notifier.Callback(self._password_changed, request, new_password)
-        thread = threads.Simple('change_password', change_password, password_changed)
-        thread.run()
-
-    def _password_changed(self, thread, result, request, new_password):
-        # it is important that this thread callback must not raise an exception. Otherwise the UMC-Server crashes.
-        if isinstance(result, PasswordChangeFailed):
-            self.finished(request.id, {'new_password': '%s' % (result,)}, message=str(result), status=400)  # 422
-        elif isinstance(result, BaseException):
-            self.thread_finished_callback(thread, result, request)
+        try:
+            yield self.current_user.change_password(args)
+        except PasswordChangeFailed as exc:
+            raise UMC_Error(str(exc), 400, {'new_password': '%s' % (exc,)})  # 422
         else:
             CORE.info('Successfully changed password')
-            self.finished(request.id, None, message=self._('Password successfully changed.'))
-            self.auth_type = None
-            self._password = new_password
-            self.update_module_passwords()
+            self.set_header('X-UMC-Message', json.dumps(self._('Password successfully changed.')))
+            self.content_negotiation(None)
 
-    def handle_request_get_user_preferences(self, request):
+
+class UserPreferences(Resource):
+    """get user specific preferences like favorites"""
+
+    def get(self):
         # fallback is an empty dict
-        res = Response(request)
-        res.body['preferences'] = self._get_user_preferences(self.get_user_ldap_connection())
-        return res
+        lo = self.current_user.user.get_user_ldap_connection()
+        result = {'preferences': self._get_user_preferences(lo)}
+        self.content_negotiation(result, False)
 
-    @sanitize(user=DictSanitizer({
-        "preferences": DictSanitizer({}, required=True),
-    }))
-    @simple_response
-    def handle_request_set_user(self, user):
-        lo = self.get_user_ldap_connection()
-        # eliminate double entries
-        preferences = self._get_user_preferences(lo)
-        preferences.update(dict(user['preferences']))
-        if preferences:
-            self._set_user_preferences(lo, preferences)
+    def post(self):
+        return self.get()
 
     def _get_user_preferences(self, lo):
-        if not self._user_dn or not lo:
+        user_dn = self.current_user.user.user_dn
+        if not user_dn or not lo:
             return {}
         try:
-            preferences = lo.get(self._user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
+            preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
         except (ldap.LDAPError, udm_errors.base) as exc:
             CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
         return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
 
+
+class SetUserPreferences(UserPreferences):
+    """set user specific preferences like favorites"""
+
+    def get(self):
+        return self.post()
+
+    @sanitize(user=DictSanitizer({
+        "preferences": DictSanitizer({}, required=True),
+    }))
+    def post(self):
+        lo = self.current_user.user.get_user_ldap_connection()
+        # eliminate double entries
+        preferences = self._get_user_preferences(lo)
+        preferences.update(dict(self.request.body_arguments['user']['preferences']))
+        if preferences:
+            self._set_user_preferences(lo, preferences)
+        self.content_negotiation(None)
+
     def _set_user_preferences(self, lo, preferences):
-        if not self._user_dn or not lo:
+        user_dn = self.current_user.user.user_dn
+        if not user_dn or not lo:
             return
 
-        user = lo.get(self._user_dn, ['univentionUMCProperty', 'objectClass'])
+        user = lo.get(user_dn, ['univentionUMCProperty', 'objectClass'])
         old_preferences = user.get('univentionUMCProperty')
         object_classes = list(set(user.get('objectClass', [])) | {b'univentionPerson'})
 
@@ -929,121 +1015,4 @@ class Processor(ProcessorBase):
                 new_preferences.append((key, json.dumps(value)))
         new_preferences = [b'%s=%s' % (key.encode('utf-8'), value.encode('utf-8')) for key, value in new_preferences]
 
-        lo.modify(self._user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
-
-    def handle_request_version(self, msg):
-        """
-        Handles a VERSION request by returning the version of the UMC
-        server's protocol version.
-
-        :param Request msg: UMCP request
-        """
-        res = Response(msg)
-        res.body['version'] = VERSION
-        self.finished(msg.id, res)
-
-
-class SessionHandler(ProcessorBase):
-
-    def __init__(self):
-        super(SessionHandler, self).__init__()
-        self.__auth = AuthHandler()
-        self.__auth.signal_connect('authenticated', self._authentication_finished)
-
-        self.processor = None
-        self.authenticated = False
-        self.__credentials = None
-        self.__locale = None
-        self._reload_acls_and_permitted_commands()
-
-    def has_active_module_processes(self):
-        if self.processor:
-            return self.processor._ProcessorBase__processes
-
-    def _reload_acls(self):
-        """All unauthenticated requests are passed here. We need to set empty ACL's"""
-        self.acls = ACLs()
-
-    def error_handling(self, etype, exc, etraceback):
-        super(SessionHandler, self).error_handling(etype, exc, etraceback)
-        # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
-        if isinstance(exc, UMC_Error) and exc.status == 403:
-            exc.status = 401
-
-    def _authentication_finished(self, result, request):
-        # caution! this is not executed in the main loop and any exception will therefore crash the server!
-        self.execute('_authentication_finished2', request, result)
-
-    @allow_get_request
-    def _authentication_finished2(self, request, result):
-        self.authenticated = bool(result)
-        request.authentication_result = result
-        if self.authenticated:
-            if self.processor is None or self.processor.auth_type is not None or result.credentials['auth_type'] is None:
-                # only set the credentials in 1. a new session 2. if password changed or 3. if logged in via plain authentication
-                # to prevent a downgrade of the regular login to a SAML login
-                self.__credentials = result.credentials
-            if self.processor:
-                # set the (new) password (also on re-authentication in the same session)
-                self.processor.set_credentials(**self.__credentials)
-            else:
-                self.initalize_processor(request)
-            self.processor.request(request)
-        else:
-            self.request(request)
-
-    @allow_get_request
-    def handle(self, request):
-        """
-        Ensures that commands are only passed to the processor if a
-        successful authentication has been completed.
-        """
-        CORE.info('Incoming request of type %s' % (request.command,))
-        if not self.authenticated and request.command != 'AUTH':
-            self.request(request)
-        elif request.command == 'AUTH':
-            self._handle_auth(request)
-        elif request.command == 'GET' and 'newsession' in request.arguments:
-            CORE.info('Renewing session')
-            if self.processor:
-                self.__locale = str(self.processor.locale)
-            self.processor = None
-            self.finished(request.id, None)
-        else:
-            self.initalize_processor(request)
-            self.processor.request(request)
-
-    def _handle_auth(self, request):
-        request.body = sanitize_args(DictSanitizer({
-            "username": StringSanitizer(required=True),
-            "password": StringSanitizer(required=True),
-            "auth_type": StringSanitizer(allow_none=True),
-            "new_password": StringSanitizer(required=False, allow_none=True),
-        }), 'request', {'request': request.body})
-        from univention.management.console.protocol.server import Server
-        Server.reload()
-        request.body['locale'] = str(self.i18n.locale)
-        self.__auth.authenticate(request)
-
-    def initalize_processor(self, request):
-        if not self.processor:
-            self.processor = Processor()
-            self.processor.signal_connect('success', self._response)
-            if self.__locale:
-                self.processor.update_language([self.__locale])
-            self.processor.set_credentials(**self.__credentials)
-
-    def _response(self, response):
-        self.signal_emit('success', response)
-
-    @allow_get_request
-    def parse_error(self, request, parse_error):
-        status, message = parse_error.args
-        raise UMC_Error(message, status=status)
-
-    def close_session(self):
-        self.__auth.signal_disconnect('authenticated', self._authentication_finished)
-        self.shutdown()
-        if self.processor is not None:
-            self.processor.shutdown()
-        self.processor = None
+        lo.modify(user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])

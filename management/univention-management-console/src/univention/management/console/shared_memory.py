@@ -1,12 +1,10 @@
-#!/bin/sh
-#
-# Univention Management Console
-#  logrotate postrotate script
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2014-2023 Univention GmbH
+# Copyright 2022-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -33,10 +31,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# SIGHUP for UMC-server
-systemctl kill -s SIGHUP univention-management-console-server.service
+from multiprocessing import managers
 
-# SIGHUP for all running UMC modules
-pkill -SIGHUP -f /usr/sbin/univention-management-console-module
+from setproctitle import getproctitle, setproctitle
 
-exit 0
+
+proctitle = getproctitle()
+
+
+class _SharedMemory(managers.SyncManager):
+
+    saml_state_cache = {}
+    children = {}
+
+    def start(self, *args, **kwargs):
+        setproctitle(proctitle + '   # multiprocessing manager')
+        try:
+            super(_SharedMemory, self).start(*args, **kwargs)
+        finally:
+            setproctitle(proctitle)
+
+        # we must create the parent dictionary instance before forking but after python importing
+        self.saml_state_cache = self.dict()
+        self.children = self.dict()
+
+
+shared_memory = _SharedMemory()

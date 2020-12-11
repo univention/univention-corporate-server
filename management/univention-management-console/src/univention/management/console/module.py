@@ -197,7 +197,7 @@ class Flavor(JSON_Object):
 class Module(JSON_Object):
     """Represents a command attribute"""
 
-    def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None, version=None):
+    def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None, version=None, singleton=False, proxy=None):
         self.id = id
         self.name = name
         self.url = url
@@ -209,6 +209,8 @@ class Module(JSON_Object):
         self.translationId = translationId
         self.required_commands = required_commands or []
         self.version = version
+        self.singleton = singleton
+        self.proxy = proxy
         if flavors is not None:
             self.append_flavors(flavors)
 
@@ -223,7 +225,7 @@ class Module(JSON_Object):
 
     def fromJSON(self, json):
         if isinstance(json, dict):
-            for attr in ('id', 'name', 'description', 'icon', 'categories', 'keywords'):
+            for attr in ('id', 'name', 'description', 'icon', 'categories', 'keywords', 'singleton', 'proxy'):
                 setattr(self, attr, json[attr])
             commands = json['commands']
         else:
@@ -247,7 +249,7 @@ class Module(JSON_Object):
                 self_flavor = [iflavor for iflavor in self.flavors if iflavor.id == other_flavor.id][0]
                 self_flavor.merge(other_flavor)
             except IndexError:  # add if other_flavor does not exist
-                RESOURCES.info('Add flavor: %s' % other_flavor.name)
+                RESOURCES.debug('Add flavor: %s' % other_flavor.name)
                 self.flavors.append(other_flavor)
 
     def merge(self, other):
@@ -262,6 +264,8 @@ class Module(JSON_Object):
             self.description = other.description
 
         self.version = self.version or other.version
+        self.singleton = self.singleton or other.singleton
+        self.proxy = self.proxy or other.proxy
         self.keywords = list(set(self.keywords + other.keywords))
         self.merge_flavors(other.flavors)
         self.categories = JSON_List(set(self.categories + other.categories))
@@ -331,6 +335,10 @@ class XML_Definition(ET.ElementTree):
             return 2
 
     @property
+    def singleton(self):
+        return self.root.get('singleton', 'no').lower() in ('yes', 'true', '1')
+
+    @property
     def icon(self):
         return self.root.get('icon')
 
@@ -388,6 +396,8 @@ class XML_Definition(ET.ElementTree):
             translationId=self.translationId,
             required_commands=[cat.get('name') for cat in self.findall('requiredCommands/requiredCommand')],
             version=self.version,
+            singleton=self.singleton,
+            proxy=self.root.get('proxy'),
         )
 
     def get_flavor(self, name):
@@ -399,7 +409,11 @@ class XML_Definition(ET.ElementTree):
     def get_command(self, name):
         """Retrieves details of a command"""
         for command in self.findall('command'):
-            if command.get('name') == name:
+            cname = command.get('name')
+            if not cname:
+                continue
+            pattern = re.compile('^%s$' % (cname if command.get('pattern', '0').lower() in ('yes', 'true', '1') else re.escape(cname)))
+            if pattern.match(name):
                 return Command(name, command.get('function'), command.get('allow_anonymous', '0').lower() in ('yes', 'true', '1'))
 
     def __bool__(self):
@@ -432,23 +446,25 @@ class Manager(dict):
         before, the method can also be used for reloading
         """
         RESOURCES.info('Loading modules ...')
-        self.clear()
+        modules = {}
         for filename in os.listdir(Manager.DIRECTORY):
             if not filename.endswith('.xml'):
                 continue
             try:
                 parsed_xml = ET.parse(os.path.join(Manager.DIRECTORY, filename))  # noqa: S313
-                RESOURCES.info('Loaded module %s' % filename)
+                RESOURCES.debug('Loaded module %s' % filename)
                 for mod_tree in parsed_xml.getroot():
                     mod = XML_Definition(root=mod_tree)
                     if mod.deactivated:
                         RESOURCES.info('Module is deactivated: %s' % filename)
                         continue
-                    # save list of definitions in self
-                    self.setdefault(mod.id, []).append(mod)
+                    # save list of definitions
+                    modules.setdefault(mod.id, []).append(mod)
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
                 RESOURCES.warn('Failed to load module %s: %s' % (filename, exc))
                 continue
+        self.clear()
+        self.update(modules)
 
     def is_command_allowed(self, acls, command, hostname=None, options={}, flavor=None):
         for module_xmls in self.values():
@@ -457,6 +473,17 @@ class Manager(dict):
                 if cmd and cmd.allow_anonymous:
                     return True
         return acls.is_command_allowed(command, hostname, options, flavor)
+
+    def get_module(self, module_id):
+        # get first Module and merge all subsequent Module objects into it
+        mod = None
+        for module_xml in self[module_id]:
+            nextmod = module_xml.get_module()
+            if mod:
+                mod.merge(nextmod)
+            else:
+                mod = nextmod
+        return mod
 
     def permitted_commands(self, hostname, acls):
         """
@@ -468,14 +495,7 @@ class Manager(dict):
         RESOURCES.info('Retrieving list of permitted commands')
         modules = {}
         for module_id in self:
-            # get first Module and merge all subsequent Module objects into it
-            mod = None
-            for module_xml in self[module_id]:
-                nextmod = module_xml.get_module()
-                if mod:
-                    mod.merge(nextmod)
-                else:
-                    mod = nextmod
+            mod = self.get_module(module_id)
 
             if ucr.is_true('umc/module/%s/disabled' % (module_id)):
                 RESOURCES.info('module %s is deactivated by UCR' % (module_id))
@@ -500,7 +520,7 @@ class Manager(dict):
                     # flavor is deactivated by UCR variable
                     flavor.deactivated = True
 
-                RESOURCES.info('mod=%r flavor=%r deactivated=%r hidden=%r' % (module_id, flavor.id, flavor.deactivated, flavor.hidden))
+                RESOURCES.debug('mod=%r flavor=%r deactivated=%r hidden=%r' % (module_id, flavor.id, flavor.deactivated, flavor.hidden))
                 if flavor.deactivated:
                     deactivated_flavors.add(flavor.id)
                     continue
@@ -530,6 +550,12 @@ class Manager(dict):
             mod.flavors = JSON_List(f for f in mod.flavors if f.id not in overwrites)
 
         return modules
+
+    def is_singleton(self, module_name):
+        return self[module_name] and self.get_module(module_name).singleton
+
+    def proxy_address(self, module_name):
+        return self[module_name] and self.get_module(module_name).proxy
 
     def module_providing(self, modules, command):
         """

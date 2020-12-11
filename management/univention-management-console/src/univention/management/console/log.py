@@ -45,7 +45,7 @@ import logging
 import os
 
 import univention.debug as ud
-from univention.config_registry import ConfigRegistry
+from univention.management.console.config import ucr
 
 
 # no exceptions from logging
@@ -55,7 +55,6 @@ logging.raiseExceptions = 0
 #: list of available debugging components
 COMPONENTS = (ud.MAIN, ud.LDAP, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
 
-_ucr = ConfigRegistry()
 _debug_ready = False
 _debug_loglevel = 2
 _log_pid = None
@@ -63,8 +62,8 @@ _log_pid = None
 
 def _reset_debug_loglevel():
     global _debug_loglevel
-    _ucr.load()
-    _debug_loglevel = max(int(_ucr.get('umc/server/debug/level', 2)), int(_ucr.get('umc/module/debug/level', 2)))
+    ucr.load()
+    _debug_loglevel = max(ucr.get_int('umc/server/debug/level', 2), ucr.get_int('umc/module/debug/level', 2))
 
 
 _reset_debug_loglevel()
@@ -151,6 +150,10 @@ class ILogger(object):
     def info(self, message):
         """Write a debug message with level INFO"""
         self.__log(ud.INFO, message, self._fallbackLogger.debug)
+
+    def debug(self, message):
+        """Write a debug message with level INFO"""
+        self.__log(ud.ALL, message, self._fallbackLogger.debug)
 
     def __log(self, level, message, logger):
         if _log_pid:

@@ -215,7 +215,7 @@ def threaded(function=None):
     return _response
 
 
-def simple_response(function=None, with_flavor=None, with_progress=False):
+def simple_response(function=None, with_flavor=None, with_progress=False, with_request=False):
     '''
     If your function is as simple as: "Just return some variables"
     this decorator is for you.
@@ -295,7 +295,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 
     '''
     if function is None:
-        return lambda f: simple_response(f, with_flavor, with_progress)
+        return lambda f: simple_response(f, with_flavor, with_progress, with_request)
 
     if with_progress is True:
         with_progress = 'progress'
@@ -313,7 +313,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
     # function does not break anything
     _fake_func._original_argument_names = ['self', 'iterator'] + _fake_func._original_argument_names[1:]
 
-    _multi_response = _eval_simple_decorated_function(_fake_func, with_flavor)
+    _multi_response = _eval_simple_decorated_function(_fake_func, with_flavor, with_request=with_request)
 
     def _response(self, request, *args, **kwargs):
         # other arguments than request won't be propagated
@@ -333,8 +333,10 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
                     progress_obj.exception(sys.exc_info())
                 else:
                     progress_obj.finish_with_result(result[0])
-            thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
-            thread.start()
+            thread = notifier.threads.Simple('simple_response', notifier.Callback(_thread, self, progress_obj, _multi_response, request), lambda t, r: None)
+            thread.run()
+            # thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
+            # thread.start()
             self.finished(request.id, progress_obj.initialised())
         else:
             result = _multi_response(self, request)
@@ -405,10 +407,12 @@ def multi_response(function=None, with_flavor=None, single_values=False, progres
     return _response
 
 
-def _eval_simple_decorated_function(function, with_flavor, single_values=False, progress=False):
+def _eval_simple_decorated_function(function, with_flavor, single_values=False, progress=False, with_request=False):
     # name of flavor argument. default: 'flavor' (if given, of course)
     if with_flavor is True:
         with_flavor = 'flavor'
+    if with_request is True:
+        with_request = 'request'
 
     # argument names of the function, including 'self'
     arguments, defaults = arginspect(function)
@@ -417,7 +421,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
     # use defaults as dict
     defaults = dict(zip(arguments[-len(defaults):], defaults)) if defaults else {}
 
-    @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg != with_flavor, default=defaults.get(arg)) for arg in arguments}, _copy_value=False) if not single_values else None)
+    @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg not in (with_flavor, with_request), default=defaults.get(arg)) for arg in arguments}, _copy_value=False) if not single_values else None)
     def _response(self, request):
         # single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
         if not single_values:
@@ -426,6 +430,8 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
                 # add flavor before default checking
                 if with_flavor:
                     element[with_flavor] = request.flavor or defaults.get(with_flavor)
+                if with_request:
+                    element[with_request] = request
 
         # checked for required arguments, set default... now run!
         iterator = RequestOptionsIterator(request.options, arguments, single_values)
@@ -659,7 +665,7 @@ class reloading_ucr(object):
 def require_password(function):
     @functools.wraps(function)
     def _decorated(self, request, *args, **kwargs):
-        self.require_password()
+        request.require_password()
         return function(self, request, *args, **kwargs)
     return _decorated
 

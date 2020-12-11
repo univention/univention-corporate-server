@@ -101,7 +101,7 @@ class I18N(object):
             LOCALE.info('Locale or domain missing. Stopped loading of translation')
             return
 
-        LOCALE.info('Loading locale %s for domain %s' % (self.locale, self.domain))
+        LOCALE.debug('Loading locale %s for domain %s' % (self.locale, self.domain))
         filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain)
         if not os.path.isfile(filename):
             filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain)
@@ -110,14 +110,12 @@ class I18N(object):
                 self.mofile = None
                 return
 
-        LOCALE.info('Found translation file %s' % (filename,))
+        LOCALE.debug('Found translation file %s' % (filename,))
         self.mofile = None
         try:
             self.mofile = polib.mofile(filename)
         except (ValueError, MemoryError) as exc:
             LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
-        except (KeyboardInterrupt, SystemExit, SyntaxError):
-            raise
         except Exception as exc:
             LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
             LOCALE.error(traceback.format_exc())
@@ -188,7 +186,7 @@ class I18N_Manager(dict):
         :param str message: text to translation
         :param str domain: translation domain
         """
-        LOCALE.info('Searching for %s translation of "%s' % (str(self.locale), message))
+        LOCALE.debug('Searching for %s translation of "%s' % (str(self.locale), message))
         try:
             if domain is not None:
                 if domain not in self:

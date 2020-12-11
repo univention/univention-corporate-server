@@ -102,7 +102,10 @@ def all_xml_files_in(dir):
 setup(
     package_dir={'': 'src'},
     packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.protocol', 'univention.management.console.modules'],
-    scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
+    scripts=['scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
+    entry_points={
+        'console_scripts': ['univention-management-console-server = univention.management.console.server:main'],
+    },
     data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories'))],
     cmdclass={'build_py': Build, 'build_i18n': BuildI18N},
     test_suite='',

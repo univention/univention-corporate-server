@@ -113,7 +113,7 @@ if ! is_ucr_false 'umc/web/sso/enabled'; then
 
 fi
 
-systemctl restart univention-management-console-web-server
+systemctl restart univention-management-console-server
 /etc/init.d/slapd crestart
 
 ucs_addServiceToLocalhost 'Univention Management Console' "$@" || die
