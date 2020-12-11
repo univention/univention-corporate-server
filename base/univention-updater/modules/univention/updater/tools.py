@@ -94,7 +94,7 @@ UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 
 def verify_script(script, signature):
-    # type: (str, str) -> Optional[str]
+    # type: (bytes, bytes) -> Optional[bytes]
     """
     Verify detached signature of script:
 
@@ -506,7 +506,7 @@ class _UCSServer(object):
         raise NotImplementedError()
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, str]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -514,7 +514,7 @@ class _UCSServer(object):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content) or None on errors.
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
@@ -669,7 +669,7 @@ class UCSHttpServer(_UCSServer):
         return (self.baseurl + rel).public()
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, AnyStr]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -677,7 +677,7 @@ class UCSHttpServer(_UCSServer):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
@@ -846,7 +846,7 @@ class UCSLocalServer(_UCSServer):
         return uri
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, str]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -854,7 +854,7 @@ class UCSLocalServer(_UCSServer):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
@@ -870,13 +870,10 @@ class UCSLocalServer(_UCSServer):
         if os.path.exists(path):
             if os.path.isdir(path):
                 self.log.info("Got %s", path)
-                return (httplib.OK, 0, '')  # 200
+                return (httplib.OK, 0, b'')  # 200
             elif os.path.isfile(path):
-                f = open(path, 'r')
-                try:
+                with open(path, 'rb') as f:
                     data = f.read()
-                finally:
-                    f.close()
                 self.log.info("Got %s: %d", path, len(data))
                 return (httplib.OK, len(data), data)  # 200
         self.log.error("Failed %s", path)
@@ -1900,7 +1897,7 @@ class UniventionUpdater(object):
 
     @staticmethod
     def get_sh_files(repositories, verify=False):
-        # type: (Iterable[Tuple[_UCSServer, _UCSRepo]], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, str]]
+        # type: (Iterable[Tuple[_UCSServer, _UCSRepo]], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]]
         """
         Return all preup- and postup-scripts of repositories.
 
@@ -1920,7 +1917,7 @@ class UniventionUpdater(object):
                 try:
                     _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
-                    if not script.startswith('#!') and uses_proxy:
+                    if not script.startswith(b'#!') and uses_proxy:
                         uri = server.join(path)
                         raise ProxyError(uri, "download blocked by proxy?")
                     if verify and struct >= UCS_Version((3, 2, 0)):
@@ -1928,14 +1925,14 @@ class UniventionUpdater(object):
                         path_gpg = struct.path(name_gpg)
                         try:
                             _code, _size, signature = server.access(struct, name_gpg, get=True)
-                            if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and uses_proxy:
+                            if not signature.startswith(b"-----BEGIN PGP SIGNATURE-----") and uses_proxy:
                                 uri = server.join(path_gpg)
                                 raise ProxyError(uri, "download blocked by proxy?")
                         except DownloadError:
                             raise VerificationError(path_gpg, "Signature download failed")
                         error = verify_script(script, signature)
                         if error is not None:
-                            raise VerificationError(path, "Invalid signature: %s" % error)
+                            raise VerificationError(path, "Invalid signature: %r" % error)
                         yield server, struct, None, path_gpg, signature
                     yield server, struct, phase, path, script
                 except DownloadError as e:

@@ -205,12 +205,9 @@ class UniventionMirror(UniventionUpdater):
             #   continue
 
             makedirs(os.path.dirname(filename))
-            fd = open(filename, "w")
-            try:
+            with open(filename, "wb") as fd:
                 fd.write(script)
                 ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored: %s" % filename)
-            finally:
-                fd.close()
 
     def list_local_repositories(self, start=None, end=None, maintained=True, unmaintained=False):
         """

@@ -9,8 +9,8 @@ univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ig
 import univention.updater.tools as U  # noqa: E402
 
 
-SCRIPT = "#!/bin/sh\nexit 0\n"
-SIGNATURE = """\
+SCRIPT = b"#!/bin/sh\nexit 0\n"
+SIGNATURE = b"""\
 -----BEGIN PGP SIGNATURE-----
 
 iQIcBAABCAAGBQJe9HpqAAoJEDZgK6hri/08ft0P/iVmAsf6J4qF2MHx80Xy0Zgw
