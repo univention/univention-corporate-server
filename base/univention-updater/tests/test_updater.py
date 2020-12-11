@@ -36,6 +36,8 @@ class TestUniventionUpdater(unittest.TestCase):
         """Fill URI mockup."""
         for key, value in uris.items():
             MockUCSHttpServer.mock_add(key, value)
+            if 'releases.json' in key:
+                self.u._get_releases()
 
     def tearDown(self):
         """Clean up Updater mockup."""
@@ -71,6 +73,14 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(ERRAT, self.u.erratalevel)
         self.assertEqual(MAJOR, self.u.version_major)
         self.assertEqual(MINOR, self.u.version_minor)
+
+    def test_get_releases(self):
+        self._uri({
+            RJSON: gen_releases([(MAJOR, minor, patch) for minor in range(3) for patch in range(3)])
+        })
+        expected = [(U.UCS_Version((MAJOR, 1, patch)), dict(major=MAJOR, minor=1, patchlevel=patch, status="maintained")) for patch in range(3)]
+        found = list(self.u.get_releases(start=expected[0][0], end=expected[-1][0]))
+        self.assertEqual(expected, found)
 
     def test_get_next_version(self):
         """Test no next version."""

@@ -28,6 +28,7 @@ class TestUniventionMirror(unittest.TestCase):
             # 'univention-repository/': '',
             '': b'',
             '/': b'',
+            'releases.json': b'{"releases":[]}',
         })
         self.base_dir = mkdtemp()
         self.mock_file = MockFile(os.path.join(self.base_dir, 'mock'))
@@ -118,6 +119,7 @@ class TestUniventionMirror(unittest.TestCase):
             'releases.json': gen_releases([(MAJOR, MINOR, 0), ])
         }
         self._uri(uris)
+        self.m._get_releases()
         del uris['releases.json']
         self.m.mirror_update_scripts()
         for key, value in uris.items():
@@ -207,6 +209,7 @@ class TestUniventionMirrorList(unittest.TestCase):
             '': b'',
             '/': b'',
             'univention-repository/': b'',
+            'releases.json': b'{"releases":[]}',
         })
         self.m = M.UniventionMirror()
         repos = (

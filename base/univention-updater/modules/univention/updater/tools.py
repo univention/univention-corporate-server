@@ -981,26 +981,33 @@ class UniventionUpdater(object):
         user_agent = self._get_user_agent_string()
         UCSHttpServer.load_credentials(self.configRegistry)
 
-        # Auto-detect prefix
         self.server = UCSHttpServer(
             baseurl=self.repourl,
             user_agent=user_agent,
             timeout=self.timeout,
         )
+        self._get_releases()
+
+    def _get_releases(self):
+        # type: () -> None
+        """
+        Detect server prefix and download `releases.json` file.
+        """
         try:
             if not self.repourl.path:
                 try:
-                    assert self.server.access(None, '/univention-repository/')
+                    _code, _size, data = self.server.access(None, '/univention-repository/releases.json', get=True)
                     self.server += '/univention-repository/'
                     self.log.info('Using detected prefix /univention-repository/')
+                    self.releases = json.loads(data)
                 except DownloadError as e:
                     self.log.info('No prefix /univention-repository/ detected, using /')
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                return  # already validated or implicit /
             # Validate server settings
             try:
-                assert self.server.access(None, '')
+                _code, _size, data = self.server.access(None, 'releases.json', get=True)
                 self.log.info('Using configured prefix %s', self.repourl.path)
+                self.releases = json.loads(data)
             except DownloadError as e:
                 self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
                 uri, code = e.args
@@ -1009,30 +1016,33 @@ class UniventionUpdater(object):
             if self.check_access:
                 self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
-
-    @staticmethod
-    def get_releases(server):
-        # type: (_UCSServer) -> Iterator[UCS_Version]
-        try:
-            _code, _size, data = server.access(None, 'releases.json', get=True)
-        except DownloadError as e:
-            ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-            return
-        try:
-            releases = json.loads(data)['releases']
-        except (ValueError, KeyError) as exc:
+            self.releases = {"error": str(e)}
+        except (ValueError, LookupError) as exc:
             ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
-            if isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
-                ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
-            return
-        for major_release in releases:
+            self.releases = {"error": str(exc)}
+
+    def get_releases(self, start=None, end=None):
+        # type: (Optional[UCS_Version], Optional[UCS_Version]) -> Iterator[Tuple[UCS_Version, Dict[str, Any]]]
+        """
+        Return UCS releases in range.
+
+        :param start: Minimum requried version.
+        :param end: Maximum allowed version.
+        :returns: Iterator of 2-tuples (UCS_Version, data).
+        """
+        for major_release in self.releases.get('releases', []):
             for minor_release in major_release['minors']:
                 for patchlevel_release in minor_release['patchlevels']:
-                    yield UCS_Version((
+                    ver = UCS_Version((
                         major_release['major'],
                         minor_release['minor'],
                         patchlevel_release['patchlevel']
                     ))
+                    if start and ver < start:
+                        continue
+                    if end and ver > end:
+                        continue
+                    yield (ver, dict(patchlevel_release, major=major_release['major'], minor=minor_release['minor']))
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
         # type: (UCS_Version, Iterable[str], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
@@ -1049,7 +1059,7 @@ class UniventionUpdater(object):
         :raises RequiredComponentError: if a required component is missing
         """
         debug = (errorsto == 'stderr')
-        releases = list(self.get_releases(self.server))
+        releases = [ver for ver, _data in self.get_releases() if ver > version)
 
         for ver in (
             UCS_Version((version.major, version.minor, version.patchlevel + 1)),
@@ -1504,7 +1514,7 @@ class UniventionUpdater(object):
         :returns: A iterator returning 2-tuples (server, ver).
         """
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
-        releases = sorted(r for r in self.get_releases(self.server) if r >= start and r <= end)
+        releases = sorted(ver for ver, _data in self.get_releases(start, end))
         for release in releases:
             yield self.server, UCSRepoPool5(
                 major=release['major'],
