@@ -4,8 +4,7 @@
 
 """Unit test for univention.updater.tools"""
 
-import unittest
-from mockups import U, verbose
+import univention.updater.tools as U
 
 
 SCRIPT = b"#!/bin/sh\nexit 0\n"
@@ -29,11 +28,6 @@ erp3pQbx5rD0cMYJBw3K
 """
 
 
-class TestSignatures(unittest.TestCase):
+class TestSignatures(object):
     def test_verify_script(self):
-        self.assertIsNone(U.verify_script(SCRIPT, SIGNATURE))
-
-
-if __name__ == '__main__':
-    verbose()
-    unittest.main()
+        assert U.verify_script(SCRIPT, SIGNATURE) is None

@@ -1,7 +1,8 @@
 #!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
-"""Unit test for univention.updater.tools"""
 # pylint: disable-msg=C0301,W0212,C0103,R0904
+
+"""Unit test for univention.updater.tools"""
 
 from __future__ import print_function
 
@@ -11,7 +12,7 @@ from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import rmtree
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
-    MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
+    MockFile, MockUCSHttpServer, MockPopen,
     gen_releases, verbose,
 )
 
@@ -44,7 +45,6 @@ class TestUniventionUpdater(unittest.TestCase):
     def tearDown(self):
         """Clean up Updater mockup."""
         del self.u
-        MockConfigRegistry._EXTRA = {}
         MockUCSHttpServer.mock_reset()
         MockPopen.mock_reset()
 
@@ -405,41 +405,41 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual('a.example.net', u.hostname)
         self.assertEqual(4711, u.port)
 
-    def test__get_component_baseurl_local(self):
+    def test__get_component_baseurl_local(self, ucr):
         """Test getting local component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/server': 'a.example.net',
             'repository/online/port': '4711',
             'repository/online/component/a': 'yes',
-        }
+        })
         self.u.ucr_reinit()
         u = self.u.component('a').baseurl()
         self.assertEqual('a.example.net', u.hostname)
         self.assertEqual(4711, u.port)
 
-    def test__get_component_baseurl_nonlocal(self):
+    def test__get_component_baseurl_nonlocal(self, ucr):
         """Test getting non local mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
+        })
         self.u.ucr_reinit()
         u = self.u.component('a').baseurl()
         self.assertEqual('a.example.net', u.hostname)
         self.assertEqual(4711, u.port)
 
-    def test__get_component_baseurl_mirror(self):
+    def test__get_component_baseurl_mirror(self, ucr):
         """Test getting mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
+        })
         self.u.ucr_reinit()
         u = self.u.component('a').baseurl(for_mirror_list=True)
         self.assertEqual('a.example.net', u.hostname)
@@ -470,41 +470,41 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual('a.example.net', s.mock_url.hostname)
         self.assertEqual(4711, s.mock_url.port)
 
-    def test__get_component_server_local(self):
+    def test__get_component_server_local(self, ucr):
         """Test getting local component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/server': 'a.example.net',
             'repository/online/port': '4711',
             'repository/online/component/a': 'yes',
-        }
+        })
         self.u.ucr_reinit()
         s = self.u.component('a').server()
         self.assertEqual('a.example.net', s.mock_url.hostname)
         self.assertEqual(4711, s.mock_url.port)
 
-    def test__get_component_server_nonlocal(self):
+    def test__get_component_server_nonlocal(self, ucr):
         """Test getting non local mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
+        })
         self.u.ucr_reinit()
         s = self.u.component('a').server()
         self.assertEqual('a.example.net', s.mock_url.hostname)
         self.assertEqual(4711, s.mock_url.port)
 
-    def test__get_component_server_mirror(self):
+    def test__get_component_server_mirror(self, ucr):
         """Test getting mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
+        })
         self.u.ucr_reinit()
         s = self.u.component('a').server(for_mirror_list=True)
         self.assertEqual('a.example.net', s.mock_url.hostname)
