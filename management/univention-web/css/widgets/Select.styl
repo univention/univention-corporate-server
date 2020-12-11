@@ -1,0 +1,44 @@
+/* Select
+ * 
+ * Styling Select mainly includes:
+ * 
+ * 1. Containers
+ * 		.dijitSelect - for border, background-color
+ * 		.dijitButtonContents - for border
+ *
+ * 2. Arrow
+ * 		.dijitArrowButton - for border, padding and background-color|image
+ * 		.dijitArrowButtonInner - for border, background-color|image, display and width|height
+ * 
+ * 3. Menu
+ * 		.dijitSelectMenu .* - for border, padding
+ * 
+ * 4. Various states
+ * 		.dijitSelectHover|.dijitSelectFocused|.dijitSelectDisabled .* - for border, padding and background-color|image 
+ */
+
+@import "../variables"
+
+.umcSelect
+	.dijitArrowButtonInner
+		display: none
+	.dijitArrowButton
+		display: table-cell
+		--local-width: 1.5rem
+		width: var(--local-width)
+		padding: 0 0.5rem 0 0
+
+		.ucsSimpleIconButton
+			--button-size: var(--local-width)
+
+	.dijitButtonText
+		font-size: inherit
+		color: inherit
+		text-transform: none
+		font-weight: normal
+
+	.dijitButtonContents
+		border: none
+
+	.dijitSelectLabel
+		padding: 0 0 0 1rem
