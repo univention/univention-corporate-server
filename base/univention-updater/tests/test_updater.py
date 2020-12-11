@@ -10,13 +10,12 @@ from os.path import join
 from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import rmtree
 from mockups import (
-    U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
+    U, MAJOR, MINOR, PATCH, ARCH, DATA, ERRAT, PART,
     MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
     gen_releases,
 )
 
 UU = U.UniventionUpdater
-DATA = 'x' * U.MIN_GZIP
 
 
 class TestUniventionUpdater(unittest.TestCase):
@@ -547,7 +546,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting component versions in range from MAJOR.MINOR-PATCH."""
         self._ucr({'repository/online/component/a/version': 'current'})
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): b'',
             'releases.json': gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
@@ -558,7 +557,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting component empty versions in range from MAJOR.MINOR-PATCH."""
         self._ucr({'repository/online/component/a/version': ''})
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): b'',
             'releases.json': gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
@@ -658,9 +657,9 @@ class TestUniventionUpdater(unittest.TestCase):
         server = MockUCSHttpServer('server')
         struct = U.UCSRepoPool5(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
         preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, '#!preup_content')
+        server.mock_add(preup_path, b'#!preup_content')
         postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, '#!postup_content')
+        server.mock_add(postup_path, b'#!postup_content')
         repo = ((server, struct),)
 
         gen = U.UniventionUpdater.get_sh_files(repo)
@@ -674,9 +673,9 @@ class TestUniventionUpdater(unittest.TestCase):
         server = MockUCSHttpServer('server')
         struct = U.UCSRepoPoolNoArch(major=MAJOR, minor=MINOR, part='%s/component' % (PART,), patch='a')
         preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, '#!preup_content')
+        server.mock_add(preup_path, b'#!preup_content')
         postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, '#!postup_content')
+        server.mock_add(postup_path, b'#!postup_content')
         repo = ((server, struct),)
 
         gen = U.UniventionUpdater.get_sh_files(repo)

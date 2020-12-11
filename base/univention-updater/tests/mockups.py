@@ -34,6 +34,7 @@ PATCH = 1
 ERRAT = 3
 PART = 'part'
 ARCH = 'arch'
+DATA = b'x' * U.MIN_GZIP
 
 
 class MockConfigRegistry(C.ConfigRegistry):
@@ -62,7 +63,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
 
     """Mockup for UCSHttpServer."""
     PREFIX = 'mock'
-    mock_content = {}  # type: Dict[str, str]
+    mock_content = {}  # type: Dict[str, bytes]
 
     def __init__(self, baseurl, user_agent=None, timeout=None):
         U.UCSLocalServer.__init__(self, MockUCSHttpServer.PREFIX)
@@ -89,7 +90,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
         dirname, _base = os.path.split(relpath)
         while dirname:
             uri = 'file:///%s/%s/' % (MockUCSHttpServer.PREFIX, dirname)
-            cls.mock_content.setdefault(uri, '')
+            cls.mock_content.setdefault(uri, b'')
             dirname = os.path.dirname(dirname)
             if dirname == '/':
                 break
@@ -183,7 +184,7 @@ class MockFile(object):
             return MockFile._ORIG(filename, mode, *args, **kwargs)
 
 
-def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> str
+def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> bytes
     """Generate a releases.json string from a list of given releases"""
     data = dict(
         releases=[
@@ -203,7 +204,7 @@ def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> str
             ) for major, minors in groupby(releases, key=itemgetter(0))
         ]
     )
-    return json.dumps(data)
+    return json.dumps(data).encode('UTF-8')
 
 
 def verbose(verbose_mode=True):

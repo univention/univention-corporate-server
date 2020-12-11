@@ -10,13 +10,12 @@ import json
 from copy import deepcopy
 from univention.lib.ucs import UCS_Version
 from mockups import (
-    U, M, MAJOR, MINOR, PATCH, ARCH,
+    U, M, MAJOR, MINOR, PATCH, ARCH, DATA,
     MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
     gen_releases,
 )
 
 UM = M.UniventionMirror
-DATA = 'x' * U.MIN_GZIP
 
 
 class TestUniventionMirror(unittest.TestCase):
@@ -27,8 +26,8 @@ class TestUniventionMirror(unittest.TestCase):
         """Create Mirror mockup."""
         self._uri({
             # 'univention-repository/': '',
-            '': '',
-            '/': '',
+            '': b'',
+            '/': b'',
         })
         self.base_dir = mkdtemp()
         self.mock_file = MockFile(os.path.join(self.base_dir, 'mock'))
@@ -105,17 +104,17 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            'dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): '#!r_pre',
-            'dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): '#!r_post',
+            'dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
+            'dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
             'dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
-            '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_pre',
-            '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_post',
+            '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
+            '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_post',
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
-            '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): '#!b_pre',
-            '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): '#!b_post',
+            '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
+            '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
             'releases.json': gen_releases([(MAJOR, MINOR, 0), ])
         }
         self._uri(uris)
@@ -128,7 +127,7 @@ class TestUniventionMirror(unittest.TestCase):
             # "base_dir+repo+mirror" as the configured repository_root
             # "mock+key" from the remote host prefix and struct
             filename = os.path.join(self.base_dir, 'mock', self.base_dir.lstrip('/'), 'repo', 'mirror', 'mock', key)
-            fd_script = open(filename, 'r')
+            fd_script = open(filename, 'rb')
             try:
                 script = fd_script.read()
             finally:
@@ -205,9 +204,9 @@ class TestUniventionMirrorList(unittest.TestCase):
             'repository/mirror/basepath': self.base_dir,
         }
         self._uri({
-            '': '',
-            '/': '',
-            'univention-repository/': '',
+            '': b'',
+            '/': b'',
+            'univention-repository/': b'',
         })
         self.m = M.UniventionMirror()
         repos = (
