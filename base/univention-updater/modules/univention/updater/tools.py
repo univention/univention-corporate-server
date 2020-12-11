@@ -1801,18 +1801,9 @@ class UniventionUpdater(object):
 
         result = []  # type: List[str]
         for component in self.get_components(only_localmirror_enabled=for_mirror_list):
-            try:
                 versions = self._get_component_versions(component, start, end)
                 repos = self.get_component_repositories(component, versions, clean, for_mirror_list=for_mirror_list)
-                if versions and not repos:
-                    server = self._get_component_server(component)
-                    version = ','.join(map(str, versions))
-                    uri = server.join('%s/component/%s/' % (version, component))
-                    raise ConfigurationError(uri, 'component not found')
                 result += repos
-            except ConfigurationError as e:
-                # just log configuration errors and continue
-                result.append('# %s: %s' % (e, component))
         return '\n'.join(result)
 
     def _get_user_agent_string(self):
