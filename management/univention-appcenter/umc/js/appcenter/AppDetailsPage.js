@@ -566,7 +566,7 @@ define([
 					name: 'open',
 					label: this.app.getOpenLabel(),
 					defaultButton: true,
-					'class': 'umcAppSidebarButton',
+					'class': 'umcAppSidebarButton ucsPrimaryButton',
 					callback: lang.hitch(this.app, 'open')
 				});
 			} else if (this.app.canInstall() && !this.app.isInstalled) {
@@ -575,7 +575,7 @@ define([
 				button = new Button({
 					name: 'install',
 					label: _('Install'),
-					'class': 'umcAppSidebarButton',
+					'class': 'umcAppSidebarButton ucsPrimaryButton',
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
@@ -616,7 +616,7 @@ define([
 			var button = new Button({
 				name: 'vote',
 				label: _('Vote now'),
-				'class': 'umcAppSidebarButton',
+				'class': 'umcAppSidebarButton ucsPrimaryButton',
 				callback: lang.hitch(this, 'vote')
 			});
 			container.addChild(button);
@@ -661,7 +661,7 @@ define([
 			var buy_button = new Button({
 				name: 'shop',
 				label: _('Buy now'),
-				'class': 'umcAppSidebarButton',
+				'class': 'umcAppSidebarButton ucsPrimaryButton',
 				callback: lang.hitch(this, 'openShop')
 			});
 			parentContainer.addChild(buy_button);
