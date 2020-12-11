@@ -115,7 +115,7 @@ class UniventionMirror(UniventionUpdater):
 
         version_end = self.configRegistry.get('repository/mirror/version/end') or self.current_version
         self.version_end = UCS_Version(version_end)
-        version_start = self.configRegistry.get('repository/mirror/version/start') or (self.version_major, 0, 0)
+        version_start = self.configRegistry.get('repository/mirror/version/start') or (self.current_version.major, 0, 0)
         self.version_start = UCS_Version(version_start)
         # set architectures to mirror
         archs = self.configRegistry.get('repository/mirror/architectures', '')
