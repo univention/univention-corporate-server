@@ -70,6 +70,7 @@ $header-height = 48px
 				.umcChooseRoleBox
 					&.selected
 						border-color: var(--color-primary)
+					cursor: pointer
 					background-color: var(--color-grey0)
 					border-radius: var(--border-radius-container)
 					border: medium solid var(--color-grey0)
@@ -131,9 +132,11 @@ $header-height = 48px
 	.umc-ucssetup-wizard-city-details
 		min-width: 50%
 
+		.dijitTitlePaneContentInner
+			font-size: var(--font-size-small)
+
 	.umc-ucssetup-wizard-change-locale-button
-		margin-top: 0.5em
-		float: right
+		margin-top: 0.5rem
 
 
 	/* generic stylings for all setup pages */
