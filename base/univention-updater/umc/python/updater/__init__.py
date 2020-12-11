@@ -40,10 +40,7 @@ from hashlib import md5
 import subprocess
 import psutil
 import pipes
-import json
-import requests
 from datetime import datetime
-from urlparse import urljoin
 
 import notifier.threads
 
@@ -56,7 +53,6 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer, ListSanitizer
 
 from univention.updater.tools import UniventionUpdater
-from univention.updater.repo_url import UcsRepoUrl
 from univention.updater.errors import RequiredComponentError, UpdaterException
 
 try:
@@ -239,52 +235,27 @@ class Instance(Base):
 		return ret
 
 	def _maintenance_information(self):  # type: () -> Dict[str, Any]
-		ucr.load()
-		releases = {}
 		default = {'show_warning': False}
-		if ucr.is_true('license/extended_maintenance/disable_warning') or not self.uu:
+		if not self.uu:
+			return default
+
+		ucr.load()
+		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return default
 
 		version = self.uu.current_version
-		url = urljoin(UcsRepoUrl(ucr, 'repository/online').private(), 'releases.json')
-		try:
-			if url.startswith('file://'):
-				with open(url, 'r') as releases_fd:
-					releases = json.load(releases_fd)
-			else:
-				response = requests.get(url, timeout=10)
-				if not response.ok:
-					response.raise_for_status()
-				releases = response.json()
-		except (requests.exceptions.RequestException, EnvironmentError) as exc:
-			MODULE.error("Querying maintenance information failed: %s" % (exc,))
-		except ValueError as exc:
-			MODULE.error('The JSON format is malformed: %s' % (exc,))
-		try:
-			for majors in releases['releases']:
-				if majors['major'] != version.major:
-					continue
-				for minors in majors["minors"]:
-					if minors['minor'] != version.minor:
-						continue
-					for patchlevel in minors["patchlevels"]:
-						if patchlevel['patchlevel'] != version.patchlevel:
-							continue
+		for _ver, data in self.uu.get_releases(version, version):
+			status = data.get('status', 'unmaintained')
 
-						_maintained_status = patchlevel.get('status', 'unmaintained')
-						maintenance_extended = _maintained_status == 'extended'
-						show_warning = maintenance_extended or _maintained_status != 'maintained'
+			maintenance_extended = status == 'extended'
+			show_warning = maintenance_extended or status != 'maintained'
 
-						return {
-							'ucs_version': str(version),
-							'show_warning': show_warning,
-							'maintenance_extended': maintenance_extended,
-							'base_dn': ucr.get('license/base')
-						}
-					break
-				break
-		except KeyError as exc:
-			MODULE.error('The JSON format is missing keys: %s' % (exc,))
+			return {
+				'ucs_version': str(version),
+				'show_warning': show_warning,
+				'maintenance_extended': maintenance_extended,
+				'base_dn': ucr.get('license/base'),
+			}
 
 		return default
 
