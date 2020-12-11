@@ -256,8 +256,18 @@ define([
 				//   String -> reference to widget
 				//   Array  -> references to widgets
 				//   Object -> grouped widgets -> recursive call of layout()
+				//
+				//   Object -> in form of { 'layoutRowClass': 'myclass', 'layout': layout }
+				//             where 'layout' is one of the above. The 'layoutRowClass' will be added to the
+				//             'umcLayoutRow' ContainerWidget in the form of 'umcLayoutRow--myclass'
 				var el = layout[iel];
 				var elList = null;
+				var layoutRowClass = '';
+				if (typeof el === 'object' && el.layoutRowClass) {
+					layoutRowClass = el.layoutRowClass;
+					el = el.layout;
+				}
+
 				if (typeof el == "string") {
 					elList = [el];
 					layout[iel] = elList;
@@ -284,6 +294,9 @@ define([
 					var elContainer = new ContainerWidget({
 						'class': 'umcLayoutRow'
 					});
+					if (layoutRowClass) {
+						domClass.add(elContainer.domNode, `umcLayoutRow--${layoutRowClass}`);
+					}
 					var label = null;
 					array.forEach(elList, function(jel) {
 						// make sure the reference to the widget/button exists
