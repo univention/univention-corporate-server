@@ -268,24 +268,6 @@ class TestUniventionUpdater(unittest.TestCase):
         c = self.u.get_all_components()
         self.assertEqual(c, set(('a', 'b')))
 
-    def test_get_component_ON(self):
-        """Test active component setup data."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-            'repository/online/component/a/foo': 'bar',
-        })
-        c = self.u.get_component('a')
-        self.assertEqual({'name': 'a', 'activated': True, 'foo': 'bar'}, c)
-
-    def test_get_component_OFF(self):
-        """Test active component setup data."""
-        self._ucr({
-            'repository/online/component/b': 'no',
-            'repository/online/component/b/foo': 'bar',
-        })
-        c = self.u.get_component('b')
-        self.assertEqual({'name': 'b', 'activated': False, 'foo': 'bar'}, c)
-
     def test_get_current_component_status_DISABLED(self):
         """Test status of disabled components."""
         self._ucr({
