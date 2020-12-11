@@ -1038,7 +1038,7 @@ class UniventionUpdater(object):
                     ))
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
-        # type: (UCS_Version, Iterable[str], Literal["stderr", "exception", "none"]) -> Optional[str]
+        # type: (UCS_Version, Iterable[str], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
         """
         Check if a new patchlevel, minor or major release is available for the given version.
         Components must be available for the same major.minor version.
@@ -1048,45 +1048,30 @@ class UniventionUpdater(object):
         :type components: list[str]
         :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
         :returns: The next UCS release or None.
-        :rtype: str or None
+        :rtype: UCS_Version or None
         :raises RequiredComponentError: if a required component is missing
         """
         debug = (errorsto == 'stderr')
         releases = list(self.get_releases(self.server))
 
-        def versions(major, minor, patchlevel):
-            # type: (int, int, int) -> Iterator[Dict[str, int]]
-            """
-            Generate next valid version numbers as hash.
-
-            :param int major: Major release version number.
-            :param int minor: Minor release version number.
-            :param int patchlevel: Patch-level release version number.
-            :returns: A generator returning the possible next patch-level, minor or major release as a mapping.
-            :rtype: hash(str, int)
-            """
-            if patchlevel < 99:
-                yield {'major': major, 'minor': minor, 'patchlevel': patchlevel + 1}
-            if minor < 99:
-                yield {'major': major, 'minor': minor + 1, 'patchlevel': 0}
-            if major < 99:
-                yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
-
-        for ver in versions(version.major, version.minor, version.patchlevel):
+        for ver in (
+            UCS_Version((version.major, version.minor, version.patchlevel + 1)),
+            UCS_Version((version.major, version.minor + 1, 0)),
+            UCS_Version((version.major + 1, 0, 0)),
+        ):
             self.log.info('Checking for version %s', ver)
-            if UCS_Version((ver['major'], ver['minor'], ver['patchlevel'])) not in releases:
+            if ver not in releases:
                 continue
             self.log.info('Found version %s', ver)
 
             failed = set()
             for component in components:
                 self.log.info('Checking for component %s', component)
-                mm_version = UCS_Version.FORMAT % ver
-                if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
+                if not self.get_component_repositories(component, [ver], clean=False, debug=debug):
                     self.log.error('Missing component %s', component)
                     failed.add(component)
             if failed:
-                ex = RequiredComponentError(mm_version, failed)
+                ex = RequiredComponentError(str(ver), failed)
                 if errorsto == 'exception':
                     raise ex
                 elif errorsto == 'stderr':
@@ -1094,11 +1079,11 @@ class UniventionUpdater(object):
                 return None
             else:
                 self.log.info('Going for version %s', ver)
-                return UCS_Version.FULLFORMAT % ver
+                return ver
         return None
 
     def get_all_available_release_updates(self, ucs_version=None):
-        # type: (Optional[UCS_Version]) -> Tuple[List[str], Optional[Set[str]]]
+        # type: (Optional[UCS_Version]) -> Tuple[List[UCS_Version], Optional[Set[str]]]
         """
         Returns a list of all available release updates - the function takes required components into account
         and stops if a required component is missing
@@ -1114,24 +1099,23 @@ class UniventionUpdater(object):
 
         components = self.get_current_components()
 
-        result = []  # type: List[str]
+        result = []  # type: List[UCS_Version]
         while ucs_version:
             try:
-                ver = self.get_next_version(ucs_version, components, errorsto='exception')
+                ucs_version = self.get_next_version(ucs_version, components, errorsto='exception')
             except RequiredComponentError as ex:
                 self.log.warning('Update blocked by components %s', ', '.join(ex.components))
                 # ex.components blocks update to next version ==> return current list and blocking component
                 return result, ex.components
 
-            if not ver:
+            if not ucs_version:
                 break
-            result.append(ver)
-            ucs_version = UCS_Version(ver)
+            result.append(ucs_version)
         self.log.info('Found release updates %r', result)
         return result, None
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        # type: (Optional[UCS_Version], Literal["stderr", "exception", "none"]) -> Optional[str]
+        # type: (Optional[UCS_Version], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
         """
         Check if an update is available for the `ucs_version`.
 
@@ -1148,11 +1132,11 @@ class UniventionUpdater(object):
         return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
     def release_update_temporary_sources_list(self, version, components=None):
-        # type: (str, Iterable[str]) -> List[str]
+        # type: (UCS_Version, Iterable[str]) -> List[str]
         """
         Return list of Debian repository statements for the release update including all enabled components.
 
-        :param str version: The UCS release.
+        :param version: The UCS release.
         :param components: A list of required component names or None.
         :type components: list or None
         :returns: A list of Debian APT `sources.list` lines.
@@ -1161,18 +1145,13 @@ class UniventionUpdater(object):
         if components is None:
             components = self.get_components()
 
-        mmp_version = UCS_Version(version)
         current_components = self.get_current_components()
 
-        result = [UCSRepoPool5(
-            major=mmp_version['major'],
-            minor=mmp_version['minor'],
-            patchlevel=mmp_version['patchlevel']
-        ).deb(self.server)]
+        result = [UCSRepoPool5(version).deb(self.server)]
         for component in components:
             repos = []  # type: List[str]
             try:
-                repos = self.get_component_repositories(component, [mmp_version], False)
+                repos = self.get_component_repositories(component, [version], False)
             except (ConfigurationError, ProxyError):
                 # if component is marked as required (UCR variable "version" contains "current")
                 # then raise error, otherwise ignore it
@@ -1748,7 +1727,7 @@ class UniventionUpdater(object):
         return versions
 
     def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False):
-        # type: (str, Iterable[Union[UCS_Version, str]], bool, bool, bool) -> List[str]
+        # type: (str, Iterable[UCS_Version], bool, bool, bool) -> List[str]
         """
         Return list of Debian repository statements for requested component.
 

@@ -301,16 +301,15 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
             except ValueError:
                 pass
             else:
-                mm_version = UCS_Version.FORMAT % ver
                 if not updater:
                     updater = LocalUpdater()
                 components = updater.get_current_components()
                 failed = set()
                 for component in components:
-                    if not updater.get_component_repositories(component, [mm_version], False):
+                    if not updater.get_component_repositories(component, [ver], False):
                         failed.add(component)
                 if failed:
-                    raise RequiredComponentError(mm_version, failed)
+                    raise RequiredComponentError(str(ver), failed)
 
     elif mode == 'net':
         dprint('Checking network repository')
@@ -326,7 +325,7 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
     if nextversion in (None, 'none'):
         return None
     else:
-        return nextversion
+        return str(nextversion)
 
 
 def update_ucr_updatestatus():
@@ -557,7 +556,7 @@ def main():
             dprint('       or try to install via "univention-updater net"')
             sys.exit(1)
 
-    add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
+    add_temporary_sources_list(updater.release_update_temporary_sources_list(new_version))
     try:
         phase = 'preup'
         update_status(phase='PREUP')
