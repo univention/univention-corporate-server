@@ -43,7 +43,6 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/request",
-	"dijit/form/Select",
 	"dijit/Tooltip",
 	"dijit/focus",
 	"dojox/timing/_base",
@@ -51,6 +50,7 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
+	"umc/widgets/Select",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
@@ -69,7 +69,12 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, ChooseRoleBox, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(
+	dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request,
+	Tooltip, focusUtil, timing, styles, entities, dialog, tools, Select, TextBox, CheckBox, ComboBox, ContainerWidget,
+	Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, ChooseRoleBox, ProgressBar, LiveSearch,
+	VirtualKeyboardBox, i18nTools, _
+) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
