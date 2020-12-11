@@ -306,7 +306,7 @@ class Instance(Base):
 		appliance_mode = ucr.is_true('server/appliance')
 
 		available_versions, blocking_components = self.uu.get_all_available_release_updates()
-		result = [{'id': rel, 'label': 'UCS %s' % (rel,)} for rel in available_versions]
+		result = [{'id': str(rel), 'label': 'UCS %s' % (rel,)} for rel in available_versions]
 		#
 		# appliance_mode=no ; blocking_comp=no  → add "latest version"
 		# appliance_mode=no ; blocking_comp=yes →  no "latest version"
@@ -452,11 +452,10 @@ class Instance(Base):
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'
 			try:
-				result['release_update_available'] = self.uu.release_update_available(errorsto='exception')
+				ver = self.uu.release_update_available(errorsto='exception')
+				result['release_update_available'] = '' if ver is None else str(ver)
 			except RequiredComponentError as exc:
 				result['release_update_available'] = exc.version
-			if result['release_update_available'] is None:
-				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
 			try:

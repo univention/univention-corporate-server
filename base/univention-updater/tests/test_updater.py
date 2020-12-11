@@ -175,7 +175,7 @@ class TestUniventionUpdater(unittest.TestCase):
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', ARCH): DATA,
         })
-        tmp = self.u.release_update_temporary_sources_list('%d.%d-%d' % (MAJOR, MINOR + 1, 0))
+        tmp = self.u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
         self.assertEqual(set((
             'deb file:///mock/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0, ),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
@@ -583,7 +583,7 @@ class TestUniventionUpdater(unittest.TestCase):
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
         })
-        r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),))
+        r = self.u.get_component_repositories(component='a', versions=(U.UCS_Version((MAJOR, MINOR, 0)),))
         self.assertEqual(set((
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
@@ -597,7 +597,7 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/component/a/Packages.gz' % (MAJOR, MINOR): DATA,
         })
-        r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),))
+        r = self.u.get_component_repositories(component='a', versions=(U.UCS_Version((MAJOR, MINOR, 0)),))
         self.assertEqual(set((
             'deb file:///mock/%d.%d/maintained/component/a/ ./' % (MAJOR, MINOR),
         )), set(r))
