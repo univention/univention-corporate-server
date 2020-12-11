@@ -1266,26 +1266,6 @@ class UniventionUpdater(object):
                     components.add(component_part)
         return components
 
-    def get_component(self, name):
-        # type: (str) -> Dict[str, str]
-        """
-        Retrieve named component from registry as hash.
-
-        :param str name: The name of the component.
-        :return: A dictionary containsing the component specific settions.
-        :rtype: dict(str, str)
-        """
-        component = {
-            'name': name,
-            'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
-        }
-        PREFIX = 'repository/online/component/%s/' % (name,)
-        for key, value in self.configRegistry.items():
-            if key.startswith(PREFIX):
-                var = key[len(PREFIX):]
-                component[var] = value
-        return component
-
     def get_current_component_status(self, name):
         # type: (str) -> str
         """
