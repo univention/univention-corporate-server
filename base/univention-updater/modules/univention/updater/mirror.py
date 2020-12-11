@@ -38,7 +38,7 @@ import itertools
 import logging
 import json
 
-from .tools import UniventionUpdater, UCSHttpServer
+from .tools import UniventionUpdater
 from .repo_url import UcsRepoUrl
 from univention.lib.ucs import UCS_Version
 try:
@@ -225,8 +225,3 @@ class UniventionMirror(UniventionUpdater):
         self.mirror_repositories()
         self.mirror_update_scripts()
         self.write_releases_json()
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])

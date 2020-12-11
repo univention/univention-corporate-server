@@ -38,6 +38,11 @@ except ImportError:
 class UpdaterException(Exception):
     """
     The root of all updater exceptions.
+
+    >>> raise UpdaterException()  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.UpdaterException
     """
 
 
@@ -58,10 +63,14 @@ class RequiredComponentError(UpdaterException):
     def __str__(self):
         # type: () -> str
         """
-        >>> '%s' % RequiredComponentError('4.0-0', set(('a',)))
-        "The update to UCS 4.0-0 is blocked because the component 'a' is marked as required."
-        >>> '%s' % RequiredComponentError('4.0-0', set(('a', 'b'))) #doctest: +ELLIPSIS
-        "The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required."
+        >>> raise RequiredComponentError('4.0-0', set(('a',)))  # doctest: +IGNORE_EXCEPTION_DETAIL
+        Traceback (most recent call last):
+            ...
+        univention.updater.errors.RequiredComponentError: The update to UCS 4.0-0 is blocked because the component 'a' is marked as required.
+        >>> raise RequiredComponentError('4.0-0', set(('a', 'b')))  #doctest: +ELLIPSIS,+IGNORE_EXCEPTION_DETAIL
+        Traceback (most recent call last):
+            ...
+        univention.updater.errors.RequiredComponentError: The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required.
         """
         return (
             "The update to UCS %s is blocked because the component %s is marked as required."
@@ -78,6 +87,11 @@ class PreconditionError(UpdaterException):
     :param str order: either `pre` or `main` or `post`.
     :param str component: The name of the component or None.
     :param str script: The name of the failing script.
+
+    >>> raise PreconditionError('preup', 'main', None, 'preup.sh')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.PreconditionError: ('preup', 'main', None, 'preup.sh')
     """
 
     def __init__(self, phase, order, component, script):
@@ -88,6 +102,11 @@ class PreconditionError(UpdaterException):
 class DownloadError(UpdaterException):
     """
     Signal temporary error in network communication.
+
+    >>> raise DownloadError("file:///preup.sh", 404)  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.DownloadError: Error downloading file:///preup.sh: 404
     """
 
     def __str__(self):
@@ -98,6 +117,11 @@ class DownloadError(UpdaterException):
 class ConfigurationError(UpdaterException):
     """
     Signal permanent error in configuration.
+
+    >>> raise ConfigurationError("file:///preup.sh", "not found")  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.ConfigurationError: Configuration error: not found
     """
 
     def __str__(self):
@@ -108,6 +132,11 @@ class ConfigurationError(UpdaterException):
 class VerificationError(ConfigurationError):
     """
     Signal permanent error in script verification.
+
+    >>> raise VerificationError("file:///preup.sh", "not signed")  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.VerificationError: Verification error: not signed
     """
 
     def __str__(self):
@@ -121,6 +150,11 @@ class CannotResolveComponentServerError(ConfigurationError):
 
     :param str component: The name of the component.
     :param bool for_mirror_list: `True` if the error happened while generating the list of repositories to mirror, `False` while generating the list of repositories for the server itself.
+
+    >>> raise CannotResolveComponentServerError("comp", False)  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.CannotResolveComponentServerError: Cannot resolve component server for disabled component 'comp' (mirror_list=False).
     """
 
     def __init__(self, component, for_mirror_list):
@@ -136,6 +170,11 @@ class CannotResolveComponentServerError(ConfigurationError):
 class ProxyError(ConfigurationError):
     """
     Signal permanent error in proxy configuration.
+
+    >>> raise ProxyError("file:///preup.sh", "blocked")  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.ProxyError: Proxy configuration error: blocked file:///preup.sh
     """
 
     def __str__(self):
@@ -146,13 +185,13 @@ class ProxyError(ConfigurationError):
 class UnmetDependencyError(UpdaterException):
     """
     Signal unmet package dependencies
+
+    >>> raise UnmetDependencyError("stderr")  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.errors.UnmetDependencyError: You have unmet dependencies stderr
     """
 
     def __str__(self):
         # type: () -> str
         return "You have unmet dependencies %s" % self.args[0]
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])

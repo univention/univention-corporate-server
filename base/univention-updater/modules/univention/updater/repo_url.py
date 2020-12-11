@@ -59,8 +59,12 @@ class UcsRepoUrl(object):
         '/path/'
         >>> UcsRepoUrl({}, '', UcsRepoUrl({'_/server': 'https://hostname/'}, '_')).private()
         'https://hostname/'
-        >>> UcsRepoUrl({'_/server': 'hostname'}, '_', UcsRepoUrl({'_/server': 'https://hostname:80/'}, '_')).private()
-        'http://hostname/'
+        >>> UcsRepoUrl({'_/server': 'other'}, '_', UcsRepoUrl({'_/server': 'https://hostname:80/'}, '_')).private()
+        'http://other/'
+        >>> UcsRepoUrl({'_/server': 'other'}, '_', UcsRepoUrl.DEFAULT).private()
+        'http://other/'
+        >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
+        True
         '''
         def ucrv(key, default=None):
             # type: (str, _T) -> _T
@@ -159,6 +163,10 @@ class UcsRepoUrl(object):
 
     def __repr__(self):
         # type: () -> str
+        """
+        >>> repr(UcsRepoUrl({'_/server': 'hostname'}, '_'))
+        "UcsRepoUrl({}, '', 'http://hostname/')"
+        """
         return '%s(%r, %r, %r)' % (
             self.__class__.__name__,
             {},
@@ -168,6 +176,12 @@ class UcsRepoUrl(object):
 
     def __eq__(self, other):
         # type: (object) -> bool
+        """
+        >>> UcsRepoUrl({}, '') == UcsRepoUrl({}, '')
+        True
+        >>> UcsRepoUrl({}, '') == UcsRepoUrl({'_/server': 'other'}, '_')
+        False
+        """
         return isinstance(other, UcsRepoUrl) and self.private() == other.private()
 
     def __add__(self, rel):
@@ -189,8 +203,3 @@ class UcsRepoUrl(object):
         cfg = copy(self)
         cfg.path = '%s/%s' % (self._path.rstrip('/'), str(rel).lstrip('/'))
         return cfg
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])

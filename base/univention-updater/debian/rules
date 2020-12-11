@@ -49,16 +49,8 @@ override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
 
 override_dh_auto_test:
-	# doctest
-	PYTHONPATH=modules python3 -m univention.updater.locking -v
-	PYTHONPATH=modules python3 -m univention.updater.repo_url -v
-	PYTHONPATH=modules python3 -m univention.updater.tools -v
-	PYTHONPATH=modules python2.7 -m univention.updater.mirror -v
-	PYTHONPATH=modules python3 -m univention.updater.errors -v
-	# unittest
-	PYTHONPATH=modules python2.7 tests/test_updater.py -v
-	PYTHONPATH=modules python2.7 tests/test_mirror.py -v
-	PYTHONPATH=modules python2.7 tests/test_toools.py -v
+	PYTHONPATH=modules pytest
+	PYTHONPATH=modules pytest-3 --cov-append
 
 override_dh_python2:
 	dh_python2 --skip-private

@@ -1,55 +1,50 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
-"""Unit test for univention.updater.tools"""
 # pylint: disable-msg=C0301,W0212,C0103,R0904
+
+"""Unit test for univention.updater.tools"""
 
 from __future__ import print_function
 
-import unittest
-from os.path import join
-from tempfile import NamedTemporaryFile, mkdtemp
-from shutil import rmtree
-from mockups import (
-    U, MAJOR, MINOR, PATCH, ARCH, DATA, ERRAT, PART,
-    MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
-    gen_releases, verbose,
-)
+from tempfile import NamedTemporaryFile
+
+import pytest
+from lazy_object_proxy import Proxy
+
+import univention.updater.tools as U
+from mockups import ARCH, DATA, ERRAT, MAJOR, MINOR, PATCH, RJSON, gen_releases
 
 UU = U.UniventionUpdater
-RJSON = "releases.json"
 
 
-class TestUniventionUpdater(unittest.TestCase):
+@pytest.fixture
+def u(http):
+    """
+    Mock UCS updater.
+    """
+    http({
+        '': b'',
+        '/': b'',
+        RJSON: b'{"releases":[]}',
+    })
+    return Proxy(U.UniventionUpdater)
+
+
+@pytest.fixture(autouse=True)
+def log(mockopen):
+    """
+    Mock log file for UCS updater.
+    """
+    mockopen.write("/var/log/univention/updater.log", b"")
+
+
+class TestUniventionUpdater(object):
 
     """Unit test for univention.updater.tools"""
 
-    def setUp(self):
-        """Create Updater mockup."""
-        MockUCSHttpServer.mock_add(RJSON, gen_releases())
-        self.u = U.UniventionUpdater(check_access=False)
-
-    def _ucr(self, variables):
-        """Fill UCR mockup."""
-        for key, value in variables.items():
-            self.u.configRegistry[key] = value
-
-    def _uri(self, uris):
-        """Fill URI mockup."""
-        for key, value in uris.items():
-            MockUCSHttpServer.mock_add(key, value)
-            if RJSON in key:
-                self.u._get_releases()
-
-    def tearDown(self):
-        """Clean up Updater mockup."""
-        del self.u
-        MockConfigRegistry._EXTRA = {}
-        MockUCSHttpServer.mock_reset()
-        MockPopen.mock_reset()
-
-    def test_config_repository(self):
+    def test_config_repository(self, ucr, u):
         """Test setup from UCR repository/online."""
-        self._ucr({
+        ucr({
             'repository/online': 'no',
             'repository/online/server': 'example.net',
             'repository/online/port': '1234',
@@ -57,154 +52,263 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/sources': 'yes',
             'repository/online/httpmethod': 'POST',
         })
-        self.u.config_repository()
-        self.assertFalse(self.u.online_repository)
-        self.assertEqual(self.u.repourl.hostname, 'example.net')
-        self.assertEqual(self.u.repourl.port, 1234)
-        self.assertEqual(self.u.repourl.path, '/prefix/')
-        self.assertTrue(self.u.sources)
-        self.assertEqual(U.UCSHttpServer.http_method, 'POST')
+        u.config_repository()
+        assert not u.online_repository
+        assert u.repourl.hostname == 'example.net'
+        assert u.repourl.port == 1234
+        assert u.repourl.path == '/prefix/'
+        assert u.sources
+        assert U.UCSHttpServer.http_method == 'POST'
 
-    def test_ucs_reinit(self):
+    def test_ucs_reinit(self, u):
         """Test reinitialization."""
-        self.assertFalse(self.u.is_repository_server)
-        self.assertEqual(ERRAT, self.u.erratalevel)
+        assert not u.is_repository_server
+        assert ERRAT == u.erratalevel
 
-    def test_get_releases(self):
-        self._uri({
-            RJSON: gen_releases([(MAJOR, minor, patch) for minor in range(3) for patch in range(3)])
+    def test_get_releases(self, u, http):
+        http({
+            RJSON: gen_releases([(MAJOR, minor, patch) for minor in range(3) for patch in range(3)]),
         })
         expected = [(U.UCS_Version((MAJOR, 1, patch)), dict(major=MAJOR, minor=1, patchlevel=patch, status="maintained")) for patch in range(3)]
-        found = list(self.u.get_releases(start=expected[0][0], end=expected[-1][0]))
-        self.assertEqual(expected, found)
+        found = list(u.get_releases(start=expected[0][0], end=expected[-1][0]))
+        assert expected == found
 
-    def test_get_next_version(self):
+    def test_get_next_version(self, u):
         """Test no next version."""
-        ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
-        self.assertEqual(None, ver)
+        ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
+        assert ver is None
 
-    def test_get_next_version_PATCH(self):
+    def test_get_next_version_PATCH(self, u, http):
         """Test next patch version."""
-        self._uri({
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
-        ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
-        self.assertEqual(U.UCS_Version((MAJOR, MINOR, PATCH + 1)), ver)
+        ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
+        assert U.UCS_Version((MAJOR, MINOR, PATCH + 1)) == ver
 
-    def test_get_next_version_MINOR(self):
+    def test_get_next_version_MINOR(self, u, http):
         """Test next minor version."""
-        self._uri({
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
-        ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
-        self.assertEqual(U.UCS_Version((MAJOR, MINOR + 1, 0)), ver)
+        ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
+        assert U.UCS_Version((MAJOR, MINOR + 1, 0)) == ver
 
-    def test_get_next_version_MAJOR(self):
+    def test_get_next_version_MAJOR(self, u, http):
         """Test next major version."""
-        self._uri({
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
-        ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
-        self.assertEqual(U.UCS_Version((MAJOR + 1, 0, 0)), ver)
+        ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
+        assert U.UCS_Version((MAJOR + 1, 0, 0)) == ver
 
-    def test_get_all_available_release_updates(self):
+    def test_get_all_available_release_updates(self, ucr, u, http):
         """Test next updates until blocked by missing current component."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/a/version': 'current',
         })
-        self._uri({
-            RJSON: gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)]),
-            '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
+        http({
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)]),
+            '/%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
+            '/%d.%d/maintained/component/%s/amd64/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
         })
-        versions, components = self.u.get_all_available_release_updates()
-        self.assertEqual([U.UCS_Version((MAJOR, MINOR + 1, 0))], versions)
-        self.assertEqual({'a'}, components)
+        versions, components = u.get_all_available_release_updates()
+        assert [U.UCS_Version((MAJOR, MINOR + 1, 0))] == versions
+        assert {'a'} == components
 
-    def test_release_update_available_NO(self):
+    def test_release_update_available_NO(self, u, http):
         """Test no update available."""
-        self._uri({
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)])
         })
-        next = self.u.release_update_available()
-        self.assertEqual(None, next)
+        next_u = u.release_update_available()
+        assert next_u is None
 
-    def test_release_update_available_PATCH(self):
+    def test_release_update_available_PATCH(self, u, http):
         """Test next patch-level update."""
-        NEXT = U.UCS_Version((MAJOR, MINOR, PATCH + 1))
-        self._uri({
+        NEXT_u = U.UCS_Version((MAJOR, MINOR, PATCH + 1))
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
-        next = self.u.release_update_available()
-        self.assertEqual(NEXT, next)
+        next_u = u.release_update_available()
+        assert NEXT_u == next_u
 
-    def test_release_update_available_MINOR(self):
+    def test_release_update_available_MINOR(self, u, http):
         """Test next minor update."""
-        NEXT = U.UCS_Version((MAJOR, MINOR + 1, 0))
-        self._uri({
+        NEXT_u = U.UCS_Version((MAJOR, MINOR + 1, 0))
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
-        next = self.u.release_update_available()
-        self.assertEqual(NEXT, next)
+        next_u = u.release_update_available()
+        assert NEXT_u == next_u
 
-    def test_release_update_available_MAJOR(self):
+    def test_release_update_available_MAJOR(self, u, http):
         """Test next major update."""
-        NEXT = U.UCS_Version((MAJOR + 1, 0, 0))
-        self._uri({
+        NEXT_u = U.UCS_Version((MAJOR + 1, 0, 0))
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
-        next = self.u.release_update_available()
-        self.assertEqual(NEXT, next)
+        next_u = u.release_update_available()
+        assert NEXT_u == next_u
 
-    def test_release_update_available_CURRENT(self):
+    def test_release_update_available_CURRENT(self, ucr, u, http):
         """Test next update block because of missing current component."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/a/version': 'current',
         })
-        self._uri({
+        http({
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
-        self.assertRaises(U.RequiredComponentError, self.u.release_update_available, errorsto='exception')
+        assert u.release_update_available() is None
 
-    def test_release_update_temporary_sources_list(self):
+    def test_release_update_temporary_sources_list(self, ucr, u, http):
         """Test temporary sources list for update with one enabled component."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'no',
         })
-        self._uri({
+        http({
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', ARCH): DATA,
             RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
-        tmp = self.u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
-        self.assertEqual({
-            'deb file:///mock/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0, ),
-            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
-        }, set(tmp))
+        tmp = u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
+        assert {
+            'deb https://updates.software-univention.de/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0, ),
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
+        } == set(tmp)
 
-    def test_current_version(self):
+    def test_current_version(self, u):
         """Test current version property."""
-        ver = self.u.current_version
-        self.assertTrue(isinstance(ver, U.UCS_Version))
-        self.assertEqual(U.UCS_Version((3, 0, 1)), ver)
+        ver = u.current_version
+        assert isinstance(ver, U.UCS_Version)
+        assert U.UCS_Version((3, 0, 1)) == ver
 
-    def test_get_components(self):
+    def test_run_dist_upgrade(self, u, mockpopen):
+        """Test running dist-upgrade."""
+        u.run_dist_upgrade()
+        cmds = mockpopen.mock_get()
+        cmd = cmds[0]
+        if isinstance(cmd, (list, tuple)):
+            cmd = ' '.join(cmd)
+        assert ' dist-upgrade' in cmd
+
+    def test_print_component_repositories(self, ucr, http, u):
+        """Test printing component repositories."""
+        ucr({
+            'repository/online/component/a': 'yes',
+        })
+        http({
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', 'all'): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', ARCH): DATA,
+            RJSON: gen_releases(patches=[PATCH, PATCH + 1]),
+        })
+        tmp = u.print_component_repositories()
+        assert {
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR, 'a', 'all'),
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR, 'a', ARCH),
+        } == set(tmp.splitlines())
+
+    def test_call_sh_files(self, u, http, mockpopen):
+        """Test calling preup.sh / postup.sh scripts."""
+        def structs():
+            """Mockups for called scripts."""
+            struct_r = U.UCSRepoPool5(major=MAJOR, minor=MINOR, patchlevel=PATCH)
+            preup_r = struct_r.path('preup.sh')
+            postup_r = struct_r.path('postup.sh')
+            struct_c = U.UCSRepoPool(major=MAJOR, minor=MINOR, part='maintained/component', patch='c', arch=ARCH)
+            preup_c = struct_c.path('preup.sh')
+            postup_c = struct_c.path('postup.sh')
+
+            yield (u.server, struct_r, 'preup', preup_r, b'r_pre')
+            yield (u.server, struct_r, 'postup', postup_r, b'r_post')
+            yield (u.server, struct_c, 'preup', preup_c, b'c_pre')
+            yield (u.server, struct_c, 'postup', postup_c, b'c_post')
+        tmp = NamedTemporaryFile()
+
+        gen = u.call_sh_files(structs(), tmp.name, 'arg')
+
+        # The Updater only yields the intent, the content is only available after the next step
+        assert ('update', 'pre') == next(gen)  # download
+        assert [] == mockpopen.mock_get()
+        assert ('preup', 'pre') == next(gen)  # pre
+        assert [] == mockpopen.mock_get()
+        assert ('preup', 'main') == next(gen)
+        assert ('pre', 'arg', 'c_pre') == mockpopen.mock_get()[0][1:]
+        assert ('preup', 'post') == next(gen)
+        assert ('arg', 'r_pre') == mockpopen.mock_get()[0][1:]
+        assert ('update', 'main') == next(gen)  # update
+        assert ('post', 'arg', 'c_pre') == mockpopen.mock_get()[0][1:]
+        assert ('postup', 'pre') == next(gen)  # post
+        assert [] == mockpopen.mock_get()
+        assert ('postup', 'main') == next(gen)
+        assert ('pre', 'arg', 'c_post') == mockpopen.mock_get()[0][1:]
+        assert ('postup', 'post') == next(gen)
+        assert ('arg', 'r_post') == mockpopen.mock_get()[0][1:]
+        assert ('update', 'post') == next(gen)
+        assert ('post', 'arg', 'c_post') == mockpopen.mock_get()[0][1:]
+        with pytest.raises(StopIteration):
+            next(gen)
+        assert [] == mockpopen.mock_get()
+
+    def test_get_sh_files(self, u, http):
+        """Test preup.sh / postup.sh download."""
+        struct = U.UCSRepoPool5(major=MAJOR, minor=MINOR, patchlevel=PATCH, arch=ARCH)
+        preup_path = struct.path('preup.sh')
+        postup_path = struct.path('postup.sh')
+        http({
+            preup_path: b'#!preup_content',
+            postup_path: b'#!postup_content',
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
+        })
+        repo = ((u.server, struct),)
+
+        gen = U.UniventionUpdater.get_sh_files(repo)
+
+        assert (u.server, struct, 'preup', preup_path, b'#!preup_content') == next(gen)
+        assert (u.server, struct, 'postup', postup_path, b'#!postup_content') == next(gen)
+        with pytest.raises(StopIteration):
+            next(gen)
+
+    def test_get_sh_files_bug27149(self, u, http):
+        """Test preup.sh / postup.sh download for non-architecture component."""
+        struct = U.UCSRepoPoolNoArch(major=MAJOR, minor=MINOR, part='maintained/component', patch='a')
+        preup_path = struct.path('preup.sh')
+        postup_path = struct.path('postup.sh')
+        http({
+            preup_path: b'#!preup_content',
+            postup_path: b'#!postup_content',
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
+        })
+        repo = ((u.server, struct),)
+
+        gen = U.UniventionUpdater.get_sh_files(repo)
+
+        assert (u.server, struct, 'preup', preup_path, b'#!preup_content') == next(gen)
+        assert (u.server, struct, 'postup', postup_path, b'#!postup_content') == next(gen)
+        with pytest.raises(StopIteration):
+            next(gen)
+
+
+class TestComponents(object):
+
+    def test_get_components(self, ucr, u):
         """Test enabled components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'no',
         })
-        c = {c.name for c in self.u.get_components()}
-        self.assertEqual(c, {'a'})
+        c = {c.name for c in u.get_components()}
+        assert c == {'a'}
 
-    def test_get_components_MIRRORED(self):
+    def test_get_components_MIRRORED(self, ucr, u):
         """Test localy mirrored components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'no',
             'repository/online/component/c': 'yes',
@@ -216,12 +320,12 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/f': 'no',
             'repository/online/component/f/localmirror': 'no',
         })
-        c = {c.name for c in self.u.get_components(only_localmirror_enabled=True)}
-        self.assertEqual(c, {'a', 'c', 'e'})
+        c = {c.name for c in u.get_components(only_localmirror_enabled=True)}
+        assert c == {'a', 'c', 'e'}
 
-    def test_get_current_components(self):
+    def test_get_current_components(self, ucr, u):
         """Test current components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/a/version': '1.2-3',
             'repository/online/component/b': 'yes',
@@ -231,446 +335,326 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/d/version': '1.2-3 current',
             'repository/online/component/e': 'no',
         })
-        c = {c.name for c in self.u.get_components(only_current=True)}
-        self.assertEqual(c, {'c', 'd'})
+        c = {c.name for c in u.get_components(only_current=True)}
+        assert c == {'c', 'd'}
 
-    def test_get_all_components(self):
+    def test_get_all_components(self, ucr, u):
         """Test all defined components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'no',
         })
-        c = {c.name for c in self.u.get_components(all=True)}
-        self.assertEqual(c, {'a', 'b'})
+        c = {c.name for c in u.get_components(all=True)}
+        assert c == {'a', 'b'}
 
-    def test_get_current_component_status_DISABLED(self):
+    def test_get_current_component_status_DISABLED(self, ucr, u, mockopen):
         """Test status of disabled components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'no',
         })
-        ORIG = U.Component.FN_APTSOURCES
-        try:
-            tmp = NamedTemporaryFile()
-            U.Component.FN_APTSOURCES = tmp.name
-            self.assertEqual(U.Component.DISABLED, self.u.component('a').status())
-        finally:
-            U.Component.FN_APTSOURCES = ORIG
-            tmp.close()
+        mockopen.write(U.Component.FN_APTSOURCES, b"")
+        assert U.Component.DISABLED == u.component('a').status()
 
-    def test_get_current_component_status_PERMISSION(self):
+    def test_get_current_component_status_PERMISSION(self, ucr, u, mockopen):
         """Test status of authenticated components."""
-        self._ucr({
+        ucr({
             'repository/online/component/d': 'yes',
         })
-        ORIG = U.Component.FN_APTSOURCES
-        try:
-            tmp = NamedTemporaryFile()
-            print('deb http://host:port/prefix/0.0/maintained/component/ d/arch/', file=tmp)
-            print('# credentials not accepted: d', file=tmp)
-            tmp.flush()
-            U.Component.FN_APTSOURCES = tmp.name
-            self.assertEqual(U.Component.PERMISSION_DENIED, self.u.component('d').status())
-        finally:
-            U.Component.FN_APTSOURCES = ORIG
-            tmp.close()
+        mockopen.write(
+            U.Component.FN_APTSOURCES,
+            b'deb http://host:port/prefix/0.0/maintained/component/ d/arch/\n'
+            b'# credentials not accepted: d\n')
+        assert U.Component.PERMISSION_DENIED == u.component('d').status()
 
-    def test_get_current_component_status_UNKNOWN(self):
+    def test_get_current_component_status_UNKNOWN(self, ucr, u, mockopen):
         """Test status of unknown components."""
-        self._ucr({
+        ucr({
             'repository/online/component/d': 'yes',
         })
-        ORIG = U.Component.FN_APTSOURCES
-        try:
-            tmp = NamedTemporaryFile()
-            tmp.close()
-            U.Component.FN_APTSOURCES = tmp.name
-            self.assertEqual(U.Component.UNKNOWN, self.u.component('d').status())
-        finally:
-            U.Component.FN_APTSOURCES = ORIG
+        mockopen[U.Component.FN_APTSOURCES] = IOError()
+        assert U.Component.UNKNOWN == u.component('d').status()
 
-    def test_get_current_component_status_MISSING(self):
+    def test_get_current_component_status_MISSING(self, ucr, u, mockopen):
         """Test status of missing components."""
-        self._ucr({
+        ucr({
             'repository/online/component/b': 'yes',
         })
-        ORIG = U.Component.FN_APTSOURCES
-        try:
-            tmp = NamedTemporaryFile()
-            U.Component.FN_APTSOURCES = tmp.name
-            self.assertEqual(U.Component.NOT_FOUND, self.u.component('b').status())
-        finally:
-            U.Component.FN_APTSOURCES = ORIG
-            tmp.close()
+        mockopen.write(U.Component.FN_APTSOURCES, b"")
+        assert U.Component.NOT_FOUND == u.component('b').status()
 
-    def test_get_current_component_status_OK(self):
+    def test_get_current_component_status_OK(self, ucr, u, mockopen):
         """Test status of components."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'no',
             'repository/online/component/b': 'yes',
             'repository/online/component/c': 'yes',
             'repository/online/component/d': 'yes',
         })
-        ORIG = U.Component.FN_APTSOURCES
-        try:
-            tmp = NamedTemporaryFile()
-            print('deb http://host:port/prefix/0.0/maintained/component/ c/arch/', file=tmp)
-            print('deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/', file=tmp)
-            tmp.flush()
-            U.Component.FN_APTSOURCES = tmp.name
-            self.assertEqual(U.Component.AVAILABLE, self.u.component('c').status())
-            self.assertEqual(U.Component.AVAILABLE, self.u.component('d').status())
-        finally:
-            U.Component.FN_APTSOURCES = ORIG
-            tmp.close()
+        mockopen.write(
+            U.Component.FN_APTSOURCES,
+            b'deb http://host:port/prefix/0.0/maintained/component/ c/arch/\n'
+            b'deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/\n')
+        assert U.Component.AVAILABLE == u.component('c').status()
+        assert U.Component.AVAILABLE == u.component('d').status()
 
-    def test_get_component_defaultpackage_UNKNOWN(self):
+    def test_get_component_defaultpackage_UNKNOWN(self, u):
         """Test default packages for unknown components."""
-        self.assertEqual(set(), self.u.component('a').default_packages)
+        assert set() == u.component('a').default_packages
 
-    def test_get_component_defaultpackage(self):
+    def test_get_component_defaultpackage(self, ucr, u):
         """Test default packages for components."""
-        self._ucr({
+        ucr({
             'repository/online/component/b/defaultpackage': 'b',
             'repository/online/component/c/defaultpackages': 'ca cb',
             'repository/online/component/d/defaultpackages': 'da,db',
         })
-        self.assertEqual({'b'}, self.u.component('b').default_packages)
-        self.assertEqual({'ca', 'cb'}, self.u.component('c').default_packages)
-        self.assertEqual({'da', 'db'}, self.u.component('d').default_packages)
+        assert {'b'} == u.component('b').default_packages
+        assert {'ca', 'cb'} == u.component('c').default_packages
+        assert {'da', 'db'} == u.component('d').default_packages
 
-    def test_is_component_default_package_installed_UNKNOWN(self):
+    def test_is_component_default_package_installed_UNKNOWN(self, u):
         """Test unknown default package installation."""
-        self.assertEqual(None, self.u.component('a').defaultpackage_installed())
+        assert u.component('a').defaultpackage_installed() is None
 
-    def test_is_component_default_package_installed_MISSING(self):
+    def test_is_component_default_package_installed_MISSING(self, ucr, u):
         """Test missing default package installation."""
-        self._ucr({
+        ucr({
             'repository/online/component/b/defaultpackage': 'b',
         })
-        self.assertFalse(self.u.component('b').defaultpackage_installed())
+        assert not u.component('b').defaultpackage_installed()
 
-    def test_is_component_default_package_installed_SINGLE(self):
+    def test_is_component_default_package_installed_SINGLE(self, ucr, u, mockpopen):
         """Test single default package installation."""
-        self._ucr({
+        ucr({
             'repository/online/component/c/defaultpackages': 'c',
         })
-        MockPopen.mock_stdout = 'Status: install ok installed\n'
-        self.assertTrue(self.u.component('c').defaultpackage_installed())
+        mockpopen.mock_stdout = b'Status: install ok installed\n'
+        assert u.component('c').defaultpackage_installed()
 
-    def test_is_component_default_package_installed_DOUBLE(self):
+    def test_is_component_default_package_installed_DOUBLE(self, ucr, u, mockpopen):
         """Test default package installation."""
-        self._ucr({
+        ucr({
             'repository/online/component/d/defaultpackages': 'da,db',
         })
-        MockPopen.mock_stdout = 'Status: install ok installed\n' * 2
-        self.assertTrue(self.u.component('d').defaultpackage_installed())
+        mockpopen.mock_stdout = b'Status: install ok installed\n' * 2
+        assert u.component('d').defaultpackage_installed()
 
-    def test_component_update_get_packages(self):
+    def test_component_update_get_packages(self, u, mockpopen):
         """Test component update packages."""
-        MockPopen.mock_stdout = 'Inst a [old] (new from)\nInst b (new from)\nRemv c (old PKG)\nRemv d PKG'
-        installed, upgraded, removed = self.u.component_update_get_packages()
-        self.assertEqual([('b', 'new')], installed)
-        self.assertEqual([('a', 'old', 'new')], upgraded)
-        self.assertEqual([('c', 'old'), ('d', 'unknown')], removed)
+        mockpopen.mock_stdout = b'Inst a [old] (new from)\nInst b (new from)\nRemv c (old PKG)\nRemv d PKG'
+        installed, upgraded, removed = u.component_update_get_packages()
+        assert [('b', 'new')] == installed
+        assert [('a', 'old', 'new')] == upgraded
+        assert [('c', 'old'), ('d', 'unknown')] == removed
 
-    def test_run_dist_upgrade(self):
-        """Test running dist-upgrade."""
-        base_dir = mkdtemp()
-        self.mock_file = MockFile(join(base_dir, 'mock'))
-        __builtins__.open = self.mock_file
-        try:
-            _rc = self.u.run_dist_upgrade()
-            cmds = MockPopen.mock_get()
-            cmd = cmds[0]
-            if isinstance(cmd, (list, tuple)):
-                cmd = ' '.join(cmd)
-            self.assertTrue(' dist-upgrade' in cmd)
-        finally:
-            __builtins__.open = MockFile._ORIG
-            rmtree(base_dir, ignore_errors=True)
-
-    def test__get_component_baseurl_default(self):
+    def test__get_component_baseurl_default(self, u):
         """Test getting default component configuration."""
-        u = self.u.component('a').baseurl()
-        self.assertEqual(self.u.repourl, u)
+        a_baseurl = u.component('a').baseurl()
+        assert u.repourl == a_baseurl
 
-    def test__get_component_baseurl_custom(self):
+    def test__get_component_baseurl_custom(self, ucr, u):
         """Test getting custom component configuration."""
-        self._ucr({
+        ucr({
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
         })
-        u = self.u.component('a').baseurl()
-        self.assertEqual('a.example.net', u.hostname)
-        self.assertEqual(4711, u.port)
+        a_baseurl = u.component('a').baseurl()
+        assert 'a.example.net' == a_baseurl.hostname
+        assert 4711 == a_baseurl.port
 
-    def test__get_component_baseurl_local(self):
+    def test__get_component_baseurl_local(self, ucr, u):
         """Test getting local component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/server': 'a.example.net',
             'repository/online/port': '4711',
             'repository/online/component/a': 'yes',
-        }
-        self.u.ucr_reinit()
-        u = self.u.component('a').baseurl()
-        self.assertEqual('a.example.net', u.hostname)
-        self.assertEqual(4711, u.port)
+        })
+        u.ucr_reinit()
+        a_baseurl = u.component('a').baseurl()
+        assert 'a.example.net' == a_baseurl.hostname
+        assert 4711 == a_baseurl.port
 
-    def test__get_component_baseurl_nonlocal(self):
+    def test__get_component_baseurl_nonlocal(self, ucr, u):
         """Test getting non local mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
-        self.u.ucr_reinit()
-        u = self.u.component('a').baseurl()
-        self.assertEqual('a.example.net', u.hostname)
-        self.assertEqual(4711, u.port)
+        })
+        u.ucr_reinit()
+        a_baseurl = u.component('a').baseurl()
+        assert 'a.example.net' == a_baseurl.hostname
+        assert 4711 == a_baseurl.port
 
-    def test__get_component_baseurl_mirror(self):
+    def test__get_component_baseurl_mirror(self, ucr, u):
         """Test getting mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
-        self.u.ucr_reinit()
-        u = self.u.component('a').baseurl(for_mirror_list=True)
-        self.assertEqual('a.example.net', u.hostname)
-        self.assertEqual(4711, u.port)
+        })
+        u.ucr_reinit()
+        a_baseurl = u.component('a').baseurl(for_mirror_list=True)
+        assert 'a.example.net' == a_baseurl.hostname
+        assert 4711 == a_baseurl.port
 
-    def test__get_component_baseurl_url(self):
+    def test__get_component_baseurl_url(self, ucr, u):
         """Test getting custom component configuration."""
-        self._ucr({
+        ucr({
             'repository/online/component/a/server': 'https://a.example.net/',
         })
-        u = self.u.component('a').baseurl()
-        self.assertEqual('a.example.net', u.hostname)
-        self.assertEqual(443, u.port)
-        self.assertEqual('/', u.path)
+        a_baseurl = u.component('a').baseurl()
+        assert 'a.example.net' == a_baseurl.hostname
+        assert 443 == a_baseurl.port
+        assert '/' == a_baseurl.path
 
-    def test__get_component_server_default(self):
+    def test__get_component_server_default(self, u):
         """Test getting default component configuration."""
-        s = self.u.component('a').server()
-        self.assertEqual(self.u.repourl, s.mock_url)
+        a_server = u.component('a').server()
+        assert u.repourl == a_server.baseurl
 
-    def test__get_component_server_custom(self):
+    def test__get_component_server_custom(self, ucr, u):
         """Test getting custom component configuration."""
-        self._ucr({
+        ucr({
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
         })
-        s = self.u.component('a').server()
-        self.assertEqual('a.example.net', s.mock_url.hostname)
-        self.assertEqual(4711, s.mock_url.port)
+        a_server = u.component('a').server()
+        assert 'a.example.net' == a_server.baseurl.hostname
+        assert 4711 == a_server.baseurl.port
 
-    def test__get_component_server_local(self):
+    def test__get_component_server_local(self, ucr, u):
         """Test getting local component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/server': 'a.example.net',
             'repository/online/port': '4711',
             'repository/online/component/a': 'yes',
-        }
-        self.u.ucr_reinit()
-        s = self.u.component('a').server()
-        self.assertEqual('a.example.net', s.mock_url.hostname)
-        self.assertEqual(4711, s.mock_url.port)
+        })
+        u.ucr_reinit()
+        a_server = u.component('a').server()
+        assert 'a.example.net' == a_server.baseurl.hostname
+        assert 4711 == a_server.baseurl.port
 
-    def test__get_component_server_nonlocal(self):
+    def test__get_component_server_nonlocal(self, ucr, u):
         """Test getting non local mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
-        self.u.ucr_reinit()
-        s = self.u.component('a').server()
-        self.assertEqual('a.example.net', s.mock_url.hostname)
-        self.assertEqual(4711, s.mock_url.port)
+        })
+        u.ucr_reinit()
+        a_server = u.component('a').server()
+        assert 'a.example.net' == a_server.baseurl.hostname
+        assert 4711 == a_server.baseurl.port
 
-    def test__get_component_server_mirror(self):
+    def test__get_component_server_mirror(self, ucr, u):
         """Test getting mirror component configuration."""
-        MockConfigRegistry._EXTRA = {
+        ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/port': '4711',
-        }
-        self.u.ucr_reinit()
-        s = self.u.component('a').server(for_mirror_list=True)
-        self.assertEqual('a.example.net', s.mock_url.hostname)
-        self.assertEqual(4711, s.mock_url.port)
+        })
+        u.ucr_reinit()
+        a_server = u.component('a').server(for_mirror_list=True)
+        assert 'a.example.net' == a_server.baseurl.hostname
+        assert 4711 == a_server.baseurl.port
 
-    def test__get_component_server_none(self):
+    def test__get_component_server_none(selfi, ucr, u):
         """Test getting custom component configuration."""
-        self._ucr({
+        ucr({
             'repository/online/component/a/server': 'a.example.net',
             'repository/online/component/a/prefix': 'none',
         })
-        s = self.u.component('a').server()
-        self.assertEqual('a.example.net', s.mock_url.hostname)
-        self.assertEqual('', s.mock_url.path)
-        self.assertEqual(1, len(s.mock_uris))
+        a_server = u.component('a').server()
+        assert 'a.example.net' == a_server.baseurl.hostname
+        assert '' == a_server.baseurl.path
 
-    def test__get_component_version_short(self):
+    def test__get_component_version_short(self, ucr, u, http):
         """Test getting component versions in range from MAJOR.MINOR."""
-        self._ucr({'repository/online/component/a/version': '%d.%d' % (MAJOR, MINOR)})
+        ucr({'repository/online/component/a/version': '%d.%d' % (MAJOR, MINOR)})
+        http({
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
+        })
         ver = U.UCS_Version((MAJOR, MINOR, 0))
-        comp_ver = self.u.component('a')._versions(None, None)
-        self.assertEqual({ver}, set(comp_ver))
+        comp_ver = u.component('a')._versions(None, None)
+        assert {ver} == set(comp_ver)
 
-    def test__get_component_version_full(self):
+    def test__get_component_version_full(self, ucr, u, http):
         """Test getting component versions in range from MAJOR.MINOR-PATCH."""
-        self._ucr({'repository/online/component/a/version': '%d.%d-%d' % (MAJOR, MINOR, PATCH)})
-        comp_ver = self.u.component('a')._versions(None, None)
-        self.assertEqual(set(), set(comp_ver))
+        ucr({'repository/online/component/a/version': '%d.%d-%d' % (MAJOR, MINOR, PATCH)})
+        http({
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
+        })
+        comp_ver = u.component('a')._versions(None, None)
+        assert set() == set(comp_ver)
 
-    def test__get_component_version_current(self):
+    def test__get_component_version_current(self, ucr, u, http):
         """Test getting component versions in range from MAJOR.MINOR-PATCH."""
-        self._ucr({'repository/online/component/a/version': 'current'})
+        ucr({'repository/online/component/a/version': 'current'})
+        http({
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
+        })
         ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
-        comp_ver = self.u.component('a')._versions(start=ver, end=ver)
-        self.assertEqual({ver}, comp_ver)
+        comp_ver = u.component('a')._versions(start=ver, end=ver)
+        assert {ver} == comp_ver
 
-    def test__get_component_version_empty(self):
+    def test__get_component_version_empty(self, ucr, u, http):
         """Test getting component empty versions in range from MAJOR.MINOR-PATCH."""
-        self._ucr({'repository/online/component/a/version': ''})
+        ucr({'repository/online/component/a/version': ''})
+        http({
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
+        })
         ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
-        comp_ver = self.u.component('a')._versions(start=ver, end=ver)
-        self.assertEqual({ver}, set(comp_ver))
+        comp_ver = u.component('a')._versions(start=ver, end=ver)
+        assert {ver} == set(comp_ver)
 
-    def test_get_component_repositories_ARCH(self):
+    def test_get_component_repositories_ARCH(self, ucr, http, u):
         """
         Test component repositories with architecture sub directories.
         """
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
         })
-        self._uri({
+        http({
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-            RJSON: gen_releases(patches=[PATCH, PATCH + 1])
+            RJSON: gen_releases(patches=[PATCH, PATCH + 1]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))
-        r = self.u.component('a').repositories(ver, ver)
-        self.assertEqual({
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
-        }, set(r))
+        a_repo = u.component('a').repositories(ver, ver)
+        assert {
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
+        } == set(a_repo)
 
-    def test_get_component_repositories_NOARCH(self):
+    def test_get_component_repositories_NOARCH(self, ucr, http, u):
         """Test component repositories without architecture sub directories."""
-        self._ucr({
+        ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/a/layout': 'flat',
         })
-        self._uri({
+        http({
             '%d.%d/maintained/component/a/Packages.gz' % (MAJOR, MINOR): DATA,
+            RJSON: gen_releases(patches=[PATCH, PATCH + 1]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))
-        r = self.u.component('a').repositories(ver, ver)
-        self.assertEqual({
-            'deb file:///mock/%d.%d/maintained/component/a/ ./' % (MAJOR, MINOR),
-        }, set(r))
-
-    def test_print_component_repositories(self):
-        """Test printing component repositories."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-        })
-        self._uri({
-            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', 'all'): DATA,
-            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', ARCH): DATA,
-        })
-        tmp = self.u.print_component_repositories()
-        self.assertEqual({
-            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR, 'a', 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR, 'a', ARCH),
-        }, set(tmp.splitlines()))
-
-    def test_call_sh_files(self):
-        """Test calling preup.sh / postup.sh scripts."""
-        def structs():
-            """Mockups for called scripts."""
-            server = MockUCSHttpServer('server')
-            struct_r = U.UCSRepoPool5(major=MAJOR, minor=MINOR, patchlevel=PATCH)
-            preup_r = struct_r.path('preup.sh')
-            postup_r = struct_r.path('postup.sh')
-            struct_c = U.UCSRepoPool(major=MAJOR, minor=MINOR, part='%s/component' % (PART,), patch='c', arch=ARCH)
-            preup_c = struct_c.path('preup.sh')
-            postup_c = struct_c.path('postup.sh')
-
-            yield (server, struct_r, 'preup', preup_r, 'r_pre')
-            yield (server, struct_r, 'postup', postup_r, 'r_post')
-            yield (server, struct_c, 'preup', preup_c, 'c_pre')
-            yield (server, struct_c, 'postup', postup_c, 'c_post')
-        tmp = NamedTemporaryFile()
-
-        gen = self.u.call_sh_files(structs(), tmp.name, 'arg')
-
-        # The Updater only yields the intent, the content is only available after the next step
-        self.assertEqual(('update', 'pre'), gen.next())  # download
-        self.assertEqual([], MockPopen.mock_get())
-        self.assertEqual(('preup', 'pre'), gen.next())  # pre
-        self.assertEqual([], MockPopen.mock_get())
-        self.assertEqual(('preup', 'main'), gen.next())
-        self.assertEqual(('pre', 'arg', 'c_pre'), MockPopen.mock_get()[0][1:])
-        self.assertEqual(('preup', 'post'), gen.next())
-        self.assertEqual(('arg', 'r_pre'), MockPopen.mock_get()[0][1:])
-        self.assertEqual(('update', 'main'), gen.next())  # update
-        self.assertEqual(('post', 'arg', 'c_pre'), MockPopen.mock_get()[0][1:])
-        self.assertEqual(('postup', 'pre'), gen.next())  # post
-        self.assertEqual([], MockPopen.mock_get())
-        self.assertEqual(('postup', 'main'), gen.next())
-        self.assertEqual(('pre', 'arg', 'c_post'), MockPopen.mock_get()[0][1:])
-        self.assertEqual(('postup', 'post'), gen.next())
-        self.assertEqual(('arg', 'r_post'), MockPopen.mock_get()[0][1:])
-        self.assertEqual(('update', 'post'), gen.next())
-        self.assertEqual(('post', 'arg', 'c_post'), MockPopen.mock_get()[0][1:])
-        self.assertRaises(StopIteration, gen.next)  # done
-        self.assertEqual([], MockPopen.mock_get())
-
-    def test_get_sh_files(self):
-        """Test preup.sh / postup.sh download."""
-        server = MockUCSHttpServer('server')
-        struct = U.UCSRepoPool5(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
-        preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, b'#!preup_content')
-        postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, b'#!postup_content')
-        repo = ((server, struct),)
-
-        gen = U.UniventionUpdater.get_sh_files(repo)
-
-        self.assertEqual((server, struct, 'preup', preup_path, '#!preup_content'), gen.next())
-        self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
-        self.assertRaises(StopIteration, gen.next)
-
-    def test_get_sh_files_bug27149(self):
-        """Test preup.sh / postup.sh download for non-architecture component."""
-        server = MockUCSHttpServer('server')
-        struct = U.UCSRepoPoolNoArch(major=MAJOR, minor=MINOR, part='%s/component' % (PART,), patch='a')
-        preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, b'#!preup_content')
-        postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, b'#!postup_content')
-        repo = ((server, struct),)
-
-        gen = U.UniventionUpdater.get_sh_files(repo)
-
-        self.assertEqual((server, struct, 'preup', preup_path, '#!preup_content'), gen.next())
-        self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
-        self.assertRaises(StopIteration, gen.next)
+        a_repo = u.component('a').repositories(ver, ver)
+        assert {
+            'deb https://updates.software-univention.de/%d.%d/maintained/component/a/ ./' % (MAJOR, MINOR),
+        } == set(a_repo)
 
 
-if __name__ == '__main__':
-    verbose()
-    unittest.main()
+@pytest.mark.parametrize('prefix', ["", "/p"])
+def test_UCSHttpServer(prefix):
+    url = U.UcsRepoUrl({"_/server": "hostname"}, "_")
+    a = U.UCSHttpServer(url)
+    b = U.UCSHttpServer(url + prefix)
+    assert (a == b) != bool(prefix)

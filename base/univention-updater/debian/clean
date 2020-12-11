@@ -1,0 +1,10 @@
+.coverage
+.mypy_cache/
+.pytest_cache/
+coverage.xml
+modules/univention/__pycache__/
+modules/univention/updater/__pycache__/
+pytest.xml
+pytest/
+tests/__pycache__/
+umc/js/??.json

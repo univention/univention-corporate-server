@@ -147,6 +147,14 @@ class _UCSRepo(UCS_Version):
         # type: () -> str
         return '%s(**%r)' % (self.__class__.__name__, self.__dict__)
 
+    def __eq__(self, other):
+        # type: (object) -> bool
+        return isinstance(other, _UCSRepo) and self.path() == other.path()
+
+    def __ne__(self, other):
+        # type: (object) -> bool
+        return not isinstance(other, _UCSRepo) or self.path() != other.path()
+
     def _format(self, format):
         # type: (str) -> str
         """
@@ -483,6 +491,14 @@ class _UCSServer(object):
     def prefix(self):
         # type: () -> str
         raise NotImplementedError()
+
+    def __eq__(self, other):
+        # type: (object) -> bool
+        return isinstance(other, _UCSServer) and self.prefix == other.prefix
+
+    def __ne__(self, other):
+        # type: (object) -> bool
+        return not isinstance(other, _UCSServer) or self.prefix != other.prefix
 
 
 class UCSHttpServer(_UCSServer):
@@ -1780,8 +1796,3 @@ class LocalUpdater(UniventionUpdater):
         self.log.addHandler(logging.NullHandler())
         repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
         self.server = UCSLocalServer("%s/mirror/" % repository_path)  # type: _UCSServer
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])

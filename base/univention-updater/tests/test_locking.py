@@ -8,6 +8,9 @@ import univention.updater.locking as L
 
 @pytest.fixture
 def lock(tmpdir, monkeypatch):
+    """
+    Mock locking file
+    """
     lock = tmpdir / "lock"
     monkeypatch.setattr(L, "FN_LOCK_UP", str(lock))
     return lock
