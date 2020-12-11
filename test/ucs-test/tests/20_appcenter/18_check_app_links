@@ -13,36 +13,38 @@ from __future__ import print_function
 import re
 import requests
 import time
+import glob
 import univention.testing.utils as utils
 
-from appcentertest import *
-from univention.testing.codes import TestCodes
+from appcentertest import get_requested_apps
 
 # taken from https://mail.python.org/pipermail/tutor/2002-September/017228.html
 urls = '(?: %s)' % '|'.join("http https telnet gopher file wais ftp".split())
 ltrs = r'\w'
 gunk = r'/#~:.?+=&%@!\-'
 punc = r'.:?\-'
-any = "%(ltrs)s%(gunk)s%(punc)s" % {'ltrs': ltrs,
-                                     'gunk': gunk,
-                                     'punc': punc}
+anyl = "%(ltrs)s%(gunk)s%(punc)s" % {
+    'ltrs': ltrs,
+    'gunk': gunk,
+    'punc': punc
+}
 
 url = r"""
     \b                            # start at word boundary
         %(urls)s    :             # need resource and a colon
-        [%(any)s]  +?             # followed by one or more
+        [%(anyl)s]  +?            # followed by one or more
                                   #  of any valid character, but
                                   #  be conservative and take only
                                   #  what you need to....
     (?=                           # look-ahead non-consumptive assertion
             [%(punc)s]*           # either 0 or more punctuation
-            (?:   [^%(any)s]      #  followed by a non-url char
+            (?:   [^%(anyl)s]     #  followed by a non-url char
                 |                 #   or end of the string
                   $
             )
     )
     """ % {'urls': urls,
-           'any': any,
+           'anyl': anyl,
            'punc': punc}
 
 url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
@@ -59,37 +61,46 @@ forbidden_links['http://www.cloudssky.com/en/support/opencms/index.html'] = True
 forbidden_links['http://cloudssky.com/en/solutions/index.html'] = True
 forbidden_links['http://www.cloudssky.com'] = True
 
-
-def fail_the_test(bad_link):
-    """
-    Increases the global failures counter and makes a list of bad links.
-    """
-    global failures_counter, bad_links
-    failures_counter += 1
-    bad_links.append(bad_link)
+README_FILES = [
+    'README',
+    'README_INSTALL',
+    'README_POST_INSTALL',
+    'README_UPDATE',
+    'README_POST_UPDATE',
+    'README_UNINSTALL',
+    'README_POST_UNINSTALL',
+]
 
 
 def findall_urls(app):
     """
     Returns a set of 'http:' and 'https:' URLs found in the given app.
     """
-    all_urls = []
+    all_urls = dict()
+    files_to_check = [app.get_ini_file()]
+    for readme_file in README_FILES:
+        for f in glob.glob('%s*' % app.get_cache_file(readme_file)):
+            files_to_check.append(f)
 
-    filename = app.get_ini_file()
-    print("\nChecking file:", filename)
-    try:
-        with open(filename, 'r') as ini_file:
-            for line in ini_file:
-                if not line.startswith('#'):
-                    url = url_re.findall(line)
-                    for u in url:
-                        all_urls.append(re.sub(r'<[^>]+>', '', u))
+    for filename in files_to_check:
+        print("\nChecking file:", filename)
+        try:
+            with open(filename, 'r') as ini_file:
+                for line in ini_file:
+                    if not line.startswith('#'):
+                        url = url_re.findall(line)
+                        for u in url:
+                            print('found URL - %s' % u)
+                            u = re.sub(r'<[^>]+>', '', u)
+                            if all_urls.get(u):
+                                all_urls[u].append(filename)
+                            else:
+                                all_urls[u] = [filename]
+        except (IOError, OSError) as exc:
+            utils.fail("An %r error occurred while working with %s"
+                       % (exc, filename))
 
-    except (IOError, OSError) as exc:
-        utils.fail("An %r error occurred while working with %s"
-                   % (exc, filename))
-
-    return set(all_urls)
+    return all_urls
 
 
 def collect_links():
@@ -97,12 +108,11 @@ def collect_links():
     Looks for all links in the installed Apps
     Adds links found to a set and returns it when done.
     """
-    links_to_check = set()
-
+    links_to_check = dict()
     for app in get_requested_apps():
         print("\nChecking App:", app)
         # determine links to be checked (duplicates are ignored):
-        links_to_check.update(findall_urls(app))
+        links_to_check[app.id] = findall_urls(app)
     return links_to_check
 
 
@@ -111,34 +121,39 @@ def check_ini_files():
     Collects all links from .inis of installed Apps;
     Tries to open each URL found using urlopen with a timeout.
     """
-    for link in collect_links():
-        if link in forbidden_links:
-	    print("\nIgnore link:", link)
-            continue
-        time.sleep(1)
-        print("\nChecking link:", link)
-        requests_timeout = 10
-        headers = requests.utils.default_headers()
-        headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
-        try:
-            r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
-        except Exception as exc:
-            print("Response code indicates a problem. %s" % str(exc))
-            fail_the_test(link)
-            continue
-        print(r.status_code)
-        if str(r.status_code).startswith(('4', '5')):
-            print("Response code indicates a problem.")
-            fail_the_test(link)
+    links = collect_links()
+    bad_links = []
+    for app in links:
+        for link in links[app]:
+            if link in forbidden_links:
+                print("Ignore link:", link)
+                continue
+            time.sleep(1)
+            print("Checking link:", link)
+            requests_timeout = 10
+            headers = requests.utils.default_headers()
+            headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
+            try:
+                r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
+            except Exception as exc:
+                print("Response code indicates a problem. %s" % str(exc))
+                bad_links.append('Link: {} App: {} File: {}'.format(link, app, links[app][link]))
+                continue
+            print(r.status_code)
+            if str(r.status_code).startswith(('4', '5')):
+                print("Response code indicates a problem.")
+                bad_links.append('Link: {} App: {} File: {}'.format(link, app, links[app][link]))
+    return bad_links
 
 
 if __name__ == '__main__':
     # skip the test if there are no Apps (in 'APPCENTER_FILE'):
-    check_ini_files()
+    bad_links = check_ini_files()
 
-    if failures_counter:
+    if bad_links:
+        bad_links = '\n\t* ' + '\n\t* '.join(bad_links)
         utils.fail(" %d link error(s) were detected, please "
-                   "check a complete test output.\n Problematic links are: %s"
+                   "check a complete test output.\n Problematic links are:%s"
                    % (failures_counter, bad_links))
     else:
         print("\nNo errors were detected.\n")
