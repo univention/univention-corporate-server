@@ -166,7 +166,9 @@ class MockFile(object):
 
     def __init__(self, base='/tmp'):
         self.mock_base = base
-        self.mock_whitelist = set()
+        self.mock_whitelist = {
+            '/var/log/univention',
+        }
 
     def __call__(self, name, mode='r', *args, **kwargs):
         if mode.startswith('r'):

@@ -1470,17 +1470,16 @@ class UniventionUpdater(object):
         return (new_packages, upgraded_packages, removed_packages)
 
     def run_dist_upgrade(self):
-        # type: () -> Tuple[int, str, str]
+        # type: () -> int
         """
         Run `apt-get dist-upgrade` command.
 
         :returns: a 3-tuple (return_code, stdout, stderr)
         :rtype: tuple(int, str, str)
         """
-        cmd = 'export DEBIAN_FRONTEND=noninteractive;%s >>/var/log/univention/updater.log 2>&1' % cmd_dist_upgrade
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        stdout, stderr = p.communicate()
-        return p.returncode, stdout, stderr
+        env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
+        with open("/var/log/univention/updater.log", "a") as log:
+            return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log)
 
     def _iterate_release(self, ver, start, end):
         # type: (_UCSRepo, UCS_Version, UCS_Version) -> Generator[_UCSRepo, bool, None]

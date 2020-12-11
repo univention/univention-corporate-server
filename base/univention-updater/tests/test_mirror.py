@@ -86,7 +86,6 @@ class TestUniventionMirror(unittest.TestCase):
 
     def test_mirror_repositories(self):
         """Test mirror structure and apt-mirror called."""
-        self.mock_file.mock_whitelist.add('/var/log/univention')
         self.m.mirror_repositories()
         self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'var')))
         self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'skel')))
