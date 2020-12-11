@@ -6,11 +6,13 @@
 from __future__ import print_function
 
 import unittest
-from tempfile import NamedTemporaryFile
+from os.path import join
+from tempfile import NamedTemporaryFile, mkdtemp
+from shutil import rmtree
 import six
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
-    MockConfigRegistry, MockUCSHttpServer, MockPopen,
+    MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
     gen_releases,
 )
 
@@ -435,13 +437,19 @@ class TestUniventionUpdater(unittest.TestCase):
 
     def test_run_dist_upgrade(self):
         """Test running dist-upgrade."""
-        _rc, _stdout, _stderr = self.u.run_dist_upgrade()
-        cmds = MockPopen.mock_get()
-        cmd = cmds[0]
-        if isinstance(cmd, (list, tuple)):
-            cmd = ' '.join(cmd)
-        self.assertTrue('DEBIAN_FRONTEND=noninteractive' in cmd)
-        self.assertTrue(' dist-upgrade' in cmd)
+        base_dir = mkdtemp()
+        self.mock_file = MockFile(join(base_dir, 'mock'))
+        __builtins__.open = self.mock_file
+        try:
+            _rc = self.u.run_dist_upgrade()
+            cmds = MockPopen.mock_get()
+            cmd = cmds[0]
+            if isinstance(cmd, (list, tuple)):
+                cmd = ' '.join(cmd)
+            self.assertTrue(' dist-upgrade' in cmd)
+        finally:
+            __builtins__.open = MockFile._ORIG
+            rmtree(base_dir, ignore_errors=True)
 
     def test__iterate_release(self):
         """Test iterating releases."""

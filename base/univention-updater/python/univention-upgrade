@@ -222,7 +222,7 @@ def do_package_updates(options, checkForUpdates, silent):
     context_id = write_event(UPDATE_STARTED, {'hostname': hostname})
     if context_id:
         os.environ['ADMINDIARY_CONTEXT'] = context_id
-    returncode, stdout, stderr = updater.run_dist_upgrade()
+    returncode = updater.run_dist_upgrade()
 
     if returncode:
         dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
