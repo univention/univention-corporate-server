@@ -447,7 +447,7 @@ class Instance(Base):
 			self.uu.ucr_reinit()
 
 			what = 'getting UCS version'
-			result['ucs_version'] = self.uu.get_ucs_version()
+			result['ucs_version'] = str(self.uu.current_version)
 
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'

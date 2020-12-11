@@ -1175,16 +1175,6 @@ class UniventionUpdater(object):
         """
         return UCS_Version((self.version_major, self.version_minor, self.patchlevel))
 
-    def get_ucs_version(self):
-        # type: () -> str
-        """
-        Return current (major.minor-patchlevel) version as string.
-
-        :returns: The current UCS release.
-        :rtype: str
-        """
-        return str(self.current_version)
-
     def get_components(self, only_localmirror_enabled=False):
         # type: (bool) -> Set[str]
         """
