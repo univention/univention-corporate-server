@@ -423,62 +423,6 @@ class UCSRepoPoolNoArch(_UCSRepo):
         return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
-class UCSRepoDist(_UCSRepo):
-    """
-    Debian APT repository using 'suites'.
-
-    .. attention::
-       UCS-2.x used a different and broken layout!
-    """
-
-    def __init__(self, **kw):
-        # type: (**Any) -> None
-        kw.setdefault('version', UCS_Version.FORMAT)
-        kw.setdefault('patch', UCS_Version.FULLFORMAT)
-        kw.setdefault('suite', 'ucs%(major)d%(minor)d%(patchlevel)d')
-        kw.setdefault('component', 'main')
-        kw.setdefault('components', 'main/debian-installer')
-        super(UCSRepoDist, self).__init__(**kw)
-
-    def deb(self, server, type="deb"):
-        # type: (_UCSServer, str) -> str
-        """
-        Format for :file:`/etc/apt/sources.list`.
-
-        :param str server: The URL of the repository server.
-        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
-        :returns: The APT repository stanza.
-        :rtype: str
-
-        >>> r=UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained')
-        >>> r.deb('https://updates.software-univention.de/')
-        'deb https://updates.software-univention.de/4.3/maintained/4.3-1/ ucs431 main main/debian-installer'
-        """
-        fmt = "%(version)s/%(part)s/%(patch)s/ %(suite)s %(component)s %(components)s"
-        return "%s %s%s" % (type, server, super(UCSRepoDist, self)._format(fmt))
-
-    def path(self, filename=None):
-        # type: (str) -> str
-        """
-        Format dist for directory/file access.
-
-        :param filename: The name of a file in the repository.
-        :returns: relative path.
-        :rtype: str
-
-        >>> UCSRepoDist(major=4,minor=3).path()
-        '4.3/'
-        >>> UCSRepoDist(major=4,minor=3,part='maintained').path()
-        '4.3/maintained/'
-        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained').path()
-        '4.3/maintained/4.3-1/dists/ucs431/main/'
-        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained',arch='i386').path()
-        '4.3/maintained/4.3-1/dists/ucs431/main/binary-i386/Packages.gz'
-        """
-        fmt = "%(version)s/%(part)s/%(patch)s/dists/%(suite)s/%(component)s/binary-%(arch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoDist, self)._format(fmt)
-
-
 class _UCSServer(object):
     """
     Abstrace base class to access UCS compatible update server.
@@ -1478,8 +1422,8 @@ class UniventionUpdater(object):
         except StopIteration:
             pass
 
-    def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
-        # type: (UCS_Version, UCS_Version, List[str], List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
+    def _iterate_version_repositories(self, start, end, parts, archs):
+        # type: (UCS_Version, UCS_Version, List[str], List[str]) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
         """
         Iterate over all UCS releases and return (server, version).
 
@@ -1489,10 +1433,9 @@ class UniventionUpdater(object):
         :type parts: list[str]
         :param archs: List of architectures without `all`.
         :type archs: list[str]
-        :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
         :returns: A iterator returning 2-tuples (server, ver).
         """
-        self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
+        self.log.info('Searching releases [%s..%s)', start, end)
         releases = sorted(ver for ver, _data in self.get_releases(start, end))
         for release in releases:
             yield self.server, UCSRepoPool5(release=release, prefix=self.server)
