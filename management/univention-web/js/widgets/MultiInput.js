@@ -75,7 +75,7 @@ define([
 
 		newEntryButtonLabel: _('New entry'),
 
-		newEntryButtonIconClass: 'dijitNoIcon',
+		newEntryButtonIconClass: 'plus',
 
 		_widgets: null,
 
@@ -606,12 +606,12 @@ define([
 			var button = new Button({
 				disabled: this.disabled,
 				visible: !this.disabled,
-				iconClass: 'iconTrash',
+				iconClass: 'trash',
 				showLabel: false,
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
 				}),
-				'class': 'umcMultiInputRemoveButton umcOutlinedButton ucsIconButton',
+				'class': 'umcMultiInputRemoveButton ucsIconButton',
 				description: _('Remove entry')
 			});
 			rowContainer.addChild(button);
