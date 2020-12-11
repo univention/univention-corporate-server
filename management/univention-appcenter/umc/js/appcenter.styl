@@ -32,7 +32,7 @@ column-count(count)
 	-webkit-column-count: count
 	-moz-column-count: count
 
-$app-detailspane-background-color = #fff
+$app-detailspane-background-color = var(--color-grey0)
 
 .umcAppCenterGallery
 	.umcGalleryWrapperItem
@@ -92,6 +92,7 @@ $app-detailspane-background-color = #fff
 			background-image: url("../../dijit/themes/umc/images/icons-white.svg")
 
 .AppDetailsDialog__warning
+	border-radius: var(--border-radius-container)
 	display: flex
 	align-items: center
 	padding: 8px
@@ -235,8 +236,10 @@ $app-detailspane-background-color = #fff
 	.dijitDefaultButton
 		float: right
 
-.umcAppCenterInstallWizard
+.umc .umcModule .umcAppCenterInstallWizard
 	margin: 7px 0 !important
+	background-color: var(--color-grey0)
+	border-radius: var(--border-radius-container)
 
 .umcAppCenterInstallDialog
 	.umcPageHelpText
