@@ -1389,17 +1389,6 @@ class UniventionUpdater(object):
         # if pkg count and number of counted lines match, all packages are installed
         return len(pkglist) == installed_correctly
 
-    def component_update_available(self):
-        # type: () -> bool
-        """
-        Check if any component has new or upgradeable packages available.
-
-        :returns: True if updates are pending, False otherwise.
-        :rtype: bool
-        """
-        new, upgrade, removed = self.component_update_get_packages()
-        return any((new, upgrade, removed))
-
     def component_update_get_packages(self):
         # type: () -> Tuple[List[Tuple[Text, Text]], List[Tuple[Text, Text, Text]], List[Tuple[Text, Text]]]
         """

@@ -408,25 +408,6 @@ class TestUniventionUpdater(unittest.TestCase):
         MockPopen.mock_stdout = 'Status: install ok installed\n' * 2
         self.assertTrue(self.u.is_component_defaultpackage_installed('d'))
 
-    def test_component_update_available_NO(self):
-        """Test no component update available."""
-        self.assertFalse(self.u.component_update_available())
-
-    def test_component_update_available_NEW(self):
-        """Test new component update available."""
-        MockPopen.mock_stdout = 'Inst b (new from)'
-        self.assertTrue(self.u.component_update_available())
-
-    def test_component_update_available_UPGRADE(self):
-        """Test upgraded component update available."""
-        MockPopen.mock_stdout = 'Inst a [old] (new from)'
-        self.assertTrue(self.u.component_update_available())
-
-    def test_component_update_available_REMOVE(self):
-        """Test removal component update available."""
-        MockPopen.mock_stdout = 'Remv c (old PKG)\nRemv d PKG'
-        self.assertTrue(self.u.component_update_available())
-
     def test_component_update_get_packages(self):
         """Test component update packages."""
         MockPopen.mock_stdout = 'Inst a [old] (new from)\nInst b (new from)\nRemv c (old PKG)\nRemv d PKG'
