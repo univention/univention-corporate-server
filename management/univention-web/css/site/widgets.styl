@@ -71,10 +71,22 @@
 .umc .umcProgressBar,
 .umc .umcProgressInfo
 	width: 400px
+	min-height: 150px
 	> *
 		width: 100%
 
+.umc .umcProgressDetails
+	display: flex
+	align-items: end
+
+	.umcProgressPercentage
+		color: var(--color-grey62);
+		font-size: var(--font-size-small);
+
 .umc .umcProgressBar
+	background-color: var(--color-grey0);
+	border-radius: var(--border-radius-container);
+	padding: 0 12px;
 	overflow: visible
 
 	.umcProgressBarComponent
@@ -82,7 +94,13 @@
 		overflow: visible
 		display: flex
 		align-items: flex-end
+		font-size: var(--font-size-header2);
+		font-weight: 600
+		margin-bottom: 24px
 
 	.umcProgressBarMessage
 		height: 40px
 		overflow: visible
+		font-size: var(--font-size-small);
+		margin-top: 12px;
+		color: var(--color-grey62);

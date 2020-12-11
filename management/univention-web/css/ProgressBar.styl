@@ -28,19 +28,18 @@
 @import "variables"
 
 .umc .dijitProgressBar
-	margin:2px 0 2px 0
-	border-radius: 18px
+	margin: 2px 0 2px 0
 
 .umc .dijitProgressBarEmpty
 	/* outer container and background of the bar that's not finished yet*/
 	//background-color: $progressbar-empty-background-color
-	border-color: $progressbar-border-color
 	//background: $progressbar-empty-background-color
-	vertical-gradient-and-filter($secondary-color, $grey-medium)
+	background-color: var(--color-grey62)
+	height: 5px
 
 .umc .dijitProgressBarTile
 	/* inner container for finished portion when in 'tile' (image) mode */
-	background-color: $progressbar-full-background-color
+	background-color: var(--color-success)
 
 	// gradient background using CSS gradient, with fallback to image for IE
 	//background-image: url("images/progressBarFull.png")

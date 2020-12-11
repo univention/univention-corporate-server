@@ -34,13 +34,14 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojox/html/entities",
+	"put-selector/put",
 	"dijit/ProgressBar",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, entities, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
+], function(declare, lang, array, domClass, entities, put, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information
@@ -49,7 +50,6 @@ define([
 		allowHTMLErrors: false,
 
 		_component: null,
-		_message: null,
 		_progressBar: null,
 		_errors: null,
 		_criticalError: null,
@@ -67,11 +67,9 @@ define([
 			this.addChild(this._component);
 			this._progressBar = new ProgressBar({});
 			this.addChild(this._progressBar);
-			this._message = new Text({
-				content : '&nbsp;',
-				'class': 'umcProgressBarMessage'
-			});
-			this.addChild(this._message);
+			var detailsNode = put(this.domNode, 'div.umcProgressDetails');
+			this._messageNode = put(detailsNode, 'div.umcProgressBarMessage');
+			this._percentageNode = put(detailsNode, 'div.umcProgressPercentage');
 
 			this._progressBar.set('value', 0);
 			this._progressBar.set('maximum', 100);
@@ -81,6 +79,7 @@ define([
 				//   (like going backwards). Used in App Center; Bug #32649
 				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
 				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
+				this._percentageNode.innerHTML = newValue === Infinity ? "&nbsp;" : newValue + "%";
 			}));
 
 			this.reset();
@@ -98,7 +97,7 @@ define([
 
 			// make sure that at least a not breakable space is printed
 			// ... this avoids vertical jumping of widgets
-			this._message.set('content', '&nbsp;');
+			this._messageNode.innerHTML = "&nbsp;";
 
 			this._progressBar.set('value', 0);
 		},
@@ -111,7 +110,7 @@ define([
 				this._progressBar.set('value', percentage);
 			}
 			if (message || component) {
-				this._message.set('content', entities.encode(message) || '&nbsp;');
+				this._messageNode.innerHTML = entities.encode(message) || '&nbsp;';
 			}
 			this._addErrors(errors);
 			if (critical) {
