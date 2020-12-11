@@ -100,6 +100,12 @@ Description[en]=In addition to the standard repository additional components can
 Type=bool
 Categories=service-software-management
 
+[repository/online/component/.*/defaultpackages?]
+Description[de]=Ein Liste von Paketnamen der Komponente, die standardmäßig installiert werden sollen.
+Description[en]=A list of package names from the component, which should be installed by default.
+Type=str
+Categories=service-software-management
+
 [repository/online/component/.*/description]
 Description[de]=Die Beschreibung einer Repository-Komponente.
 Description[en]=The description of a repository component.
@@ -133,6 +139,12 @@ Categories=service-software-management
 [repository/online/component/.*/prefix]
 Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad für die Komponente konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
 Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a path for the component. If the variable is unset, no prefix is used.
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/layout]
+Description[de]=Das Layout der Paketstruktur der Komponente. Standard ist "arch", alternative ist "flat".
+Description[en]=The layout of the package repository of the component. Default is "arch", alternative is "flat".
 Type=str
 Categories=service-software-management
 

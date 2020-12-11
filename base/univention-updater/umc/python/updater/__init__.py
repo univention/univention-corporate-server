@@ -439,14 +439,9 @@ class Instance(Base):
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"
-			c_count = 0
-			e_count = 0
-			for comp in self.uu.get_all_components():
-				c_count = c_count + 1
-				if ucr.is_true('repository/online/component/%s' % (comp,), False):
-					e_count = e_count + 1
-			result['components'] = c_count
-			result['enabled'] = e_count
+			components = [bool(self.uu.component(comp)) for comp in self.uu.get_all_components]
+			result['components'] = len(components)
+			result['enabled'] = sum(components)
 
 			# HACK: the 'Updates' form polls on the serial file
 			#       to refresh itself. Including the serial value

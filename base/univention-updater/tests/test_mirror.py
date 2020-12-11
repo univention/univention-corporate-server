@@ -100,6 +100,7 @@ class TestUniventionMirror(unittest.TestCase):
         self._ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'yes',
+            'repository/online/component/b/layout': 'flat',
             'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
@@ -112,7 +113,6 @@ class TestUniventionMirror(unittest.TestCase):
             '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_post',
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
-            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
             '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
             'releases.json': gen_releases([(MAJOR, MINOR, 0), ])
@@ -122,17 +122,14 @@ class TestUniventionMirror(unittest.TestCase):
         del uris['releases.json']
         self.m.mirror_update_scripts()
         for key, value in uris.items():
-            if not value != DATA:
+            if value == DATA:
                 continue
             # "base_dir+mock" for the mock_open redirector
             # "base_dir+repo+mirror" as the configured repository_root
             # "mock+key" from the remote host prefix and struct
             filename = os.path.join(self.base_dir, 'mock', self.base_dir.lstrip('/'), 'repo', 'mirror', 'mock', key)
-            fd_script = open(filename, 'rb')
-            try:
+            with open(filename, 'rb') as fd_script:
                 script = fd_script.read()
-            finally:
-                fd_script.close()
             self.assertEqual(script, value)
 
     def test_write_releases_json(self):

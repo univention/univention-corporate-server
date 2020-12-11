@@ -31,6 +31,9 @@ Repository Server
 
 With arch/
 ----------
+
+This is the default layout with `repository/online/component/$comp/layout=arch`:
+
 		1.3/
 			##### ????? #####
 		2.0/
@@ -154,6 +157,9 @@ With arch/
 
 Without arch/
 -------------
+
+This is an alternative layout with `repository/online/component/$comp/layout=flat`:
+
 		2.4/maintained/component/COMP/
 			##### Paths in Packages file are relative to here #####
 			*_all.deb

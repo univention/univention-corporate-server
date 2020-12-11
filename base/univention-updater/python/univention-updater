@@ -303,13 +303,15 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
             else:
                 if not updater:
                     updater = LocalUpdater()
+
                 components = updater.get_current_components()
-                failed = set()
+                failed = set()  # type: Set[Tuple[Component, str]]
                 for component in components:
-                    if not updater.get_component_repositories(component, [ver], False):
-                        failed.add(component)
+                    comp = updater.component(component)
+                    any(comp.repositories(ver, ver, failed=failed))
+
                 if failed:
-                    raise RequiredComponentError(str(ver), failed)
+                    raise RequiredComponentError(str(ver), {comp.name for comp, _ex in failed})
 
     elif mode == 'net':
         dprint('Checking network repository')
