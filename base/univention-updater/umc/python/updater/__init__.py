@@ -418,7 +418,8 @@ class Instance(Base):
 			self.uu.ucr_reinit()
 
 			what = 'checking update availability'
-			return self.uu.component_update_available()
+			new, upgrade, removed = self.uu.component_update_get_packages()
+			return any((new, upgrade, removed))
 		except Exception as ex:
 			typ = str(type(ex)).strip('<>')
 			msg = '[while %s] [%s] %s' % (what, typ, str(ex))
