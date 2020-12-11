@@ -1,3 +1,9 @@
+univention-samba4 (9.0.5-1) unstable; urgency=medium
+
+  * Bug #52485: Depend on samba-dsdb-modules
+
+ -- Arvid <requate@univention.de>  Fri, 11 Dec 2020 23:13:29 +0100
+
 univention-samba4 (9.0.4-1) unstable; urgency=medium
 
   * Bug #51835: add new ucr variable "create/spn/account/timeout".

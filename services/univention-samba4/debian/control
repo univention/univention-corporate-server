@@ -25,6 +25,7 @@ Depends:
  python3-univention,
  python3-univention-lib,
  samba (>= 2:4.13.0-1),
+ samba-dsdb-modules,
  samba-vfs-modules,
  shell-univention-lib (>= 6.0.9-8),
  univention-config (>= 15),
