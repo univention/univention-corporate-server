@@ -222,10 +222,16 @@ define([
 			}
 
 			// get icon and label (these properties may be functions)
-			var iiconClass = buttonConf.iconClass;
-			var ilabel = buttonConf.label;
-			buttonConf.iconClass = typeof iiconClass == "function" ? iiconClass() : iiconClass;
-			buttonConf.label = typeof ilabel == "function" ? ilabel() : ilabel;
+			if (buttonConf.iconClass) {
+				buttonConf.iconClass = typeof buttonConf.iconClass === "function"
+					? buttonConf.iconClass()
+					: buttonConf.iconClass;
+			}
+			if (buttonConf.label) {
+				buttonConf.label = typeof buttonConf.label === "function"
+					? buttonConf.label()
+					: buttonConf.label;
+			}
 
 			// render the button
 			var button = new ButtonClass(buttonConf);
