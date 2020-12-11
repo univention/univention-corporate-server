@@ -1058,36 +1058,32 @@ class UniventionUpdater(object):
         :rtype: UCS_Version or None
         :raises RequiredComponentError: if a required component is missing
         """
-        debug = (errorsto == 'stderr')
-        releases = [ver for ver, _data in self.get_releases() if ver > version)
+        try:
+            ver = min(ver for ver, _data in self.get_releases() if ver > version)
+        except ValueError:
+            return None
 
-        for ver in (
-            UCS_Version((version.major, version.minor, version.patchlevel + 1)),
-            UCS_Version((version.major, version.minor + 1, 0)),
-            UCS_Version((version.major + 1, 0, 0)),
-        ):
-            self.log.info('Checking for version %s', ver)
-            if ver not in releases:
-                continue
-            self.log.info('Found version %s', ver)
+        self.log.info('Found version %s', ver)
 
-            failed = set()
-            for component in components:
-                self.log.info('Checking for component %s', component)
-                if not self.get_component_repositories(component, [ver], clean=False, debug=debug):
-                    self.log.error('Missing component %s', component)
-                    failed.add(component)
-            if failed:
-                ex = RequiredComponentError(str(ver), failed)
-                if errorsto == 'exception':
-                    raise ex
-                elif errorsto == 'stderr':
-                    print(ex, file=sys.stderr)
-                return None
-            else:
-                self.log.info('Going for version %s', ver)
-                return ver
-        return None
+        failed = set()
+        for component in components:
+            self.log.info('Checking for component %s', component)
+            try:
+                self.get_component_repositories(component, [ver], clean=False, debug=(errorsto == 'stderr')
+            except UpdaterException:
+                self.log.error('Missing component %s', component)
+                failed.add(component)
+
+        if failed:
+            ex = RequiredComponentError(str(ver), failed)
+            if errorsto == 'exception':
+                raise ex
+            elif errorsto == 'stderr':
+                print(ex, file=sys.stderr)
+            return None
+
+        self.log.info('Going for version %s', ver)
+        return ver
 
     def get_all_available_release_updates(self, ucs_version=None):
         # type: (Optional[UCS_Version]) -> Tuple[List[UCS_Version], Optional[Set[str]]]
@@ -1516,12 +1512,7 @@ class UniventionUpdater(object):
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
         releases = sorted(ver for ver, _data in self.get_releases(start, end))
         for release in releases:
-            yield self.server, UCSRepoPool5(
-                major=release['major'],
-                minor=release['minor'],
-                patchlevel=release['patchlevel'],
-                prefix=self.server
-            )
+            yield self.server, UCSRepoPool5(release=release, prefix=self.server)
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
         # type: (Iterable[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
