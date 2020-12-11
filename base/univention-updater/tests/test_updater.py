@@ -9,7 +9,6 @@ import unittest
 from os.path import join
 from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import rmtree
-import six
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
@@ -187,12 +186,6 @@ class TestUniventionUpdater(unittest.TestCase):
         ver = self.u.current_version
         self.assertTrue(isinstance(ver, U.UCS_Version))
         self.assertEqual(U.UCS_Version((3, 0, 1)), ver)
-
-    def test_get_ucs_version(self):
-        """Test current version string."""
-        ver = self.u.get_ucs_version()
-        self.assertTrue(isinstance(ver, six.string_types))
-        self.assertEqual('3.0-1', ver)
 
     def test_get_components(self):
         """Test enabled components."""
