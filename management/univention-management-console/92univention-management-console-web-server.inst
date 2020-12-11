@@ -100,7 +100,7 @@ if ! is_ucr_false 'umc/web/sso/enabled'; then
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
 fi
 
-systemctl restart univention-management-console-web-server
+systemctl restart univention-management-console-server
 /etc/init.d/slapd crestart
 
 ucs_addServiceToLocalhost 'Univention Management Console' "$@"

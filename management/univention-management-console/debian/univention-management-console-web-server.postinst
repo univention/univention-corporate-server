@@ -40,8 +40,6 @@ a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http
 a2enmod headers
-a2enmod lbmethod_bybusyness
-a2enmod proxy_balancer
 a2ensite univention.conf
 
 if apache2ctl --configtest; then

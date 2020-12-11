@@ -16,12 +16,6 @@ Description[en]=This variable configures the maximum size of file uploads in kil
 Type=int
 Categories=management-umc
 
-[umc/server/dispatch-interval]
-Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Server in Millisekunden (Standard: 100).
-Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC server in milliseconds (default: 100)
-Type=int
-Categories=management-umc
-
 [umc/server/processes]
 Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden (Standard: 1).
 Description[en]=Defined the number of UMC-Server processes, which are started in parallel (default: 1).

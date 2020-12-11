@@ -6,4 +6,3 @@ usr/share/locale/*
 data/categories/icon/*.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable
 umc-service-providers.py usr/lib/univention-directory-listener/system/
 scripts/postrotate	usr/share/univention-management-console/
-systemd/system/univention-management-console-server.service.d lib/systemd/system/

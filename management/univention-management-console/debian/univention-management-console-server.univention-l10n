@@ -1,8 +1,7 @@
 [
 	{
 		"input_files": [
-			"src/.*\\.py",
-			"univention-management-console-web-server"
+			"src/.*\\.py"
 		],
 		"po_subdir": "src/univention/management/console",
 		"target_type": "mo",

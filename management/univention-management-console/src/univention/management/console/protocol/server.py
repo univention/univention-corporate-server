@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  simple UMCP server implementation
+#  UMC server
 #
 # Copyright 2006-2022 Univention GmbH
 #
@@ -31,510 +31,881 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Defines the basic class for an UMC server.
-"""
+from __future__ import division
 
 import os
-import errno
-import fcntl
+import sys
+import time
+import json
+import zlib
+import base64
 import signal
-import socket
-import resource
+import logging
+import tempfile
 import traceback
-import multiprocessing
+import threading
+from argparse import ArgumentParser
+from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
-from tornado import process
-import notifier
-import notifier.signals as signals
-from OpenSSL import SSL
+import six
+import setproctitle
+from ipaddress import ip_address
+from tornado.web import Application as TApplication, HTTPError
+from tornado.httpserver import HTTPServer
+from tornado.netutil import bind_sockets
+import tornado
+from concurrent.futures import ThreadPoolExecutor
 
-from univention.lib.i18n import Translation
+from univention.management.console.protocol.message import Request
+from univention.management.console.protocol.session import Resource, Auth, Upload, Command, UCR, Meta, Info, Modules, Categories, UserPreferences, Hosts, Set, SetPassword, SetLocale, SetUserPreferences
+from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.config import ucr, get_int
+from univention.management.console.shared_memory import shared_memory
 
-from .message import Message, IncompleteMessageError, ParseError
-from .session import SessionHandler
-from .definitions import RECV_BUFFER_SIZE
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
+from saml2.client import Saml2Client
+from saml2.metadata import create_metadata_string
+from saml2.response import VerificationError, UnsolicitedResponse, StatusError
+from saml2.s_utils import UnknownPrincipal, UnsupportedBinding
+from saml2.sigver import MissingKey, SignatureError
+from saml2.ident import code as encode_name_id, decode as decode_name_id
 
-from ..resources import moduleManager, categoryManager
-from ..log import CORE, CRYPT, RESOURCES
-from ..config import ucr, SERVER_MAX_CONNECTIONS, SERVER_CONNECTION_TIMEOUT
+from univention.lib.i18n import NullTranslation
 
-_ = Translation('univention.management.console').translate
+try:
+	from time import monotonic
+except ImportError:
+	from monotonic import monotonic
+
+_ = NullTranslation('univention-management-console-frontend').translate
+
+_session_timeout = get_int('umc/http/session/timeout', 300)
+
+REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE = int(REQUEST_ENTITY_TOO_LARGE), int(LENGTH_REQUIRED), int(NOT_FOUND), int(BAD_REQUEST), int(UNAUTHORIZED), int(SERVICE_UNAVAILABLE)
+
+pool = ThreadPoolExecutor(max_workers=get_int('umc/http/maxthreads', 35))
+TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
+
+if 422 not in tornado.httputil.responses:
+	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
 
 
-class MagicBucket(object):
-
-	'''Manages a connection (session) to the UMC server. Therefore it
-	ensures that without successful authentication no other command is
-	accepted. All commands are passed to the SessionHandler. After the user
-	has authenticated the commands are passed on to the Processor.'''
+class NotFound(HTTPError):
 
 	def __init__(self):
-		self.__states = {}
+		super(NotFound, self).__init__(404)
 
-	def new(self, client, socket):
-		"""Is called by the Server object to announce a new incoming
-		connection.
 
-		:param str client: IP address + port
-		:param fd socket: a file descriptor or socket object
-		"""
-		CORE.info('Established connection: %s' % client)
-		state = State(client, socket)
-		state.session.signal_connect('success', notifier.Callback(self._response, state))
-		self.__states[socket] = state
-		notifier.socket_add(socket, self._receive)
-		self.reset_connection_timeout(state)
+class UMCP_Dispatcher(object):
 
-	def reset_connection_timeout(self, state):
-		state.reset_connection_timeout()
-		notifier.timer_remove(state._timer)
-		state._timer = notifier.timer_add(state.timeout * 1000, notifier.Callback(self._timed_out, state))
+	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
+	sessions = {}
 
-	def _timed_out(self, state):
-		"""Closes the connection after a specified timeout"""
-		if not state.active:
-			CORE.info('Session %r timed out' % (state,))
-			self._cleanup(state.socket)
-		else:
-			CORE.info('Session %r timed out: There are open requests. Postpone session shutdown' % (state,))
+
+class UploadManager(dict):
+
+	def add(self, request_id, store):
+		with tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False) as tmpfile:
+			tmpfile.write(store['body'])
+		self.setdefault(request_id, []).append(tmpfile.name)
+
+		return tmpfile.name
+
+	def cleanup(self, request_id):
+		if request_id in self:
+			filenames = self[request_id]
+			for filename in filenames:
+				if os.path.isfile(filename):
+					os.unlink(filename)
+			del self[request_id]
 			return True
+
 		return False
 
-	def exit(self):
-		'''Closes all open connections.'''
-		# remove all sockets
-		for sock in list(self.__states.keys()):
-			CORE.info('Shutting down connection %s' % sock)
-			self._cleanup(sock)
 
-	def _receive(self, sock):
-		"""Signal callback: Handles incoming data. Processes SSL events
-		and parses the incoming data. If a valid UMCP was found it is
-		passed to _handle.
+_upload_manager = UploadManager()
 
-		:param fd socket: file descriptor or socket object that reported incoming data
-		"""
-		data = ''
 
-		try:
-			data = sock.recv(RECV_BUFFER_SIZE)
-		except SSL.WantReadError:
-			# this error can be ignored (SSL need to do something)
-			return True
-		except (SSL.SysCallError, SSL.Error) as exc:
-			if exc.args and exc.args[0] == -1:
-				CRYPT.warn('The socket was closed by the client.')
-			else:
-				CRYPT.error('SSL error in _receive: %s.' % (exc,))
-			self._cleanup(sock)
-			return False
-		except socket.error as exc:
-			CORE.warn('Socket error in _receive: %s. Probably close (114).' % (exc,))
-			self._cleanup(sock)
-			return False
+class User(object):
 
-		if not data:
-			self._cleanup(sock)
-			return False
+	__slots__ = ('sessionid', 'username', 'password', 'saml', '_timeout', '_timeout_id')
 
-		try:
-			state = self.__states[sock]
-		except KeyError:
-			return False
-		state.buffer += data
+	def __init__(self, sessionid, username, password, saml=None):
+		self.sessionid = sessionid
+		self.username = username
+		self.password = password
+		self.saml = saml
+		self._timeout_id = None
+		self.reset_timeout()
 
-		self.reset_connection_timeout(state)
-
-		try:
-			while state.buffer:
-				msg = Message()
-				state.buffer = msg.parse(state.buffer)
-				state.requests[msg.id] = msg
-				state.session.execute('handle', msg)
-		except (KeyboardInterrupt, SystemExit, SyntaxError):
-			raise  # let the UMC-server crash/exit
-		except IncompleteMessageError as exc:
-			CORE.info('MagicBucket: incomplete message: %s' % (exc,))
-		except ParseError as exc:
-			CORE.process('Parse error: %r' % (exc,))
-			if msg.id is None:
-				# close the connection in case we use could not parse the header
-				self._cleanup(sock)
-				return False
-			state.requests[msg.id] = msg
-			state.session.execute('parse_error', msg, exc)
-
-		return True
-
-	def _do_send(self, sock):
-		try:
-			state = self.__states[sock]
-		except KeyError:
-			CORE.warn('The socket was already removed.')
-			return False
-		try:
-			id, first = state.resend_queue.pop(0)
-		except IndexError:
-			CORE.error('The response queue for %r is empty.' % (state,))
-			return False
-		try:
-			ret = sock.send(first)
-			if ret < len(first):
-				state.resend_queue.insert(0, (id, first[ret:]))
-			else:
-				if id != -1:
-					del state.requests[id]
-		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
-			CRYPT.info('UMCP: SSL error during re-send')
-			state.resend_queue.insert(0, (id, first))
-			return True
-		except (SSL.SysCallError, SSL.Error) as error:
-			CRYPT.warn('SSL error in _do_send: %s. Probably the socket was closed by the client.' % str(error))
-			self._cleanup(sock)
-			return False
-		except socket.error as exc:
-			CORE.warn('socket.error in _do_send: %s. Probably the socket was closed by the client.' % (exc,))
-			self._cleanup(sock)
-			return False
-
-		return (len(state.resend_queue) > 0)
-
-	def _response(self, msg, state):
-		''' Send UMCP response to client. If the status code is 250 the
-		module process is asking for exit. This method forfills the
-		request.'''
-		if msg.id not in state.requests and msg.id != -1:
-			CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
+	def _session_timeout_timer(self):
+		session = UMCP_Dispatcher.sessions.get(self.sessionid)
+		if session and session._requestid2response_queue:
+			self._timeout = 1
+			ioloop = tornado.ioloop.IOLoop.current()
+			self._timeout_id = ioloop.call_later(1000, self._session_timeout_timer)
 			return
 
-		self.reset_connection_timeout(state)
-		try:
-			data = bytes(msg)
-			# there is no data from another request in the send queue
-			if not state.resend_queue:
-				ret = state.socket.send(data)
-			else:
-				ret = 0
-			# not all data could be send; retry later
-			if ret < len(data):
-				if not state.resend_queue:
-					notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
-				state.resend_queue.append((msg.id, data[ret:]))
-			else:
-				if msg.id != -1:
-					del state.requests[msg.id]
-		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
-			CRYPT.info('UMCP: SSL error need to re-send chunk')
+		CORE.info('session %r timed out' % (self.sessionid,))
+		Resource.sessions.pop(self.sessionid, None)
+		self.on_logout()
+		return False
+
+	def reset_timeout(self):
+		self.disconnect_timer()
+		self._timeout = monotonic() + _session_timeout
+		ioloop = tornado.ioloop.IOLoop.current()
+		self._timeout_id = ioloop.call_later(int(self.session_end_time - monotonic()) * 1000, self._session_timeout_timer)
+
+	def disconnect_timer(self):
+		if self._timeout_id is not None:
+			ioloop = tornado.ioloop.IOLoop.current()
+			ioloop.remove_timeout(self._timeout_id)
+
+	def timed_out(self, now):
+		return self.session_end_time < now
+
+	@property
+	def session_end_time(self):
+		if self.is_saml_user() and self.saml.session_end_time:
+			return self.saml.session_end_time
+		return self._timeout
+
+	def is_saml_user(self):
+		# self.saml indicates that it was originally a
+		# saml user. but it may have upgraded and got a
+		# real password. the saml user object is still there,
+		# though
+		return self.password is None and self.saml
+
+	def on_logout(self):
+		self.disconnect_timer()
+		if SAMLBase.SP and self.saml:
 			try:
-				notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
-				state.resend_queue.append((msg.id, data[ret:]))
-			except socket.error as error:
-				CRYPT.error('Socket error in _response: %s. Probably the socket was closed by the client.' % str(error))
-				self._cleanup(state.socket)
-		except (SSL.SysCallError, SSL.Error, socket.error) as error:
-			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
-			self._cleanup(state.socket)
-		except socket.error as exc:
-			CORE.warn('socket error in _response: %s. Probably the socket was closed by the client.' % (exc,))
-			self._cleanup(state.socket)
-		except Exception:  # close the connection to the client. we can't do anything else
-			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
-			self._cleanup(state.socket)
+				SAMLBase.SP.local_logout(decode_name_id(self.saml.name_id))
+			except Exception as exc:  # e.g. bsddb.DBNotFoundError
+				CORE.warn('Could not remove SAML session: %s' % (exc,))
 
-	def _cleanup(self, socket):
-		state = self.__states.pop(socket, None)
-		if state is None:
-			return
+	def get_umc_password(self):
+		if self.is_saml_user():
+			return self.saml.message
+		else:
+			return self.password
 
-		state.session.close_session()
+	def get_umc_auth_type(self):
+		if self.is_saml_user():
+			return "SAML"
+		else:
+			return None
 
-		notifier.socket_remove(socket)
+	def __repr__(self):
+		return '<User(%s, %s, %s)>' % (self.username, self.sessionid, self.saml is not None)
+
+
+class SAMLUser(object):
+
+	__slots__ = ('message', 'username', 'session_end_time', 'name_id')
+
+	def __init__(self, response, message):
+		self.name_id = encode_name_id(response.name_id)
+		self.message = message
+		self.username = u''.join(response.ava['uid'])
+		self.session_end_time = 0
+		if response.not_on_or_after:
+			self.session_end_time = int(monotonic() + (response.not_on_or_after - time.time()))
+
+
+class SamlError(HTTPError):
+
+	def __init__(self, _=_):
+		self._ = _
+
+	def error(func=None, status=400):  # noqa: N805
+		def _decorator(func):
+			def _decorated(self, *args, **kwargs):
+				message = func(self, *args, **kwargs) or ()
+				super(SamlError, self).__init__(status, message)
+				if "Passive authentication not supported." not in message:
+					# "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
+					CORE.warn('SamlError: %s %s' % (status, message))
+				return self
+			return _decorated
+		if func is None:
+			return _decorator
+		return _decorator(func)
+
+	def from_exception(self, etype, exc, etraceback):
+		if isinstance(exc, UnknownPrincipal):
+			return self.unknown_principal(exc)
+		if isinstance(exc, UnsupportedBinding):
+			return self.unsupported_binding(exc)
+		if isinstance(exc, VerificationError):
+			return self.verification_error(exc)
+		if isinstance(exc, UnsolicitedResponse):
+			return self.unsolicited_response(exc)
+		if isinstance(exc, StatusError):
+			return self.status_error(exc)
+		if isinstance(exc, MissingKey):
+			return self.missing_key(exc)
+		if isinstance(exc, SignatureError):
+			return self.signature_error(exc)
+		six.reraise(etype, exc, etraceback)
+
+	@error
+	def unknown_principal(self, exc):
+		return self._('The principal is unknown: %s') % (exc,)
+
+	@error
+	def unsupported_binding(self, exc):
+		return self._('The requested SAML binding is not known: %s') % (exc,)
+
+	@error
+	def unknown_logout_binding(self, binding):
+		return self._('The logout binding is not known.')
+
+	@error
+	def verification_error(self, exc):
+		return self._('The SAML response could not be verified: %s') % (exc,)
+
+	@error
+	def unsolicited_response(self, exc):
+		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention/saml/. Error message: %s') % (exc,)
+
+	@error
+	def status_error(self, exc):
+		return self._('The identity provider reported a status error: %s') % (exc,)
+
+	@error(status=500)
+	def missing_key(self, exc):
+		return self._('The issuer %r is now known to the SAML service provider. This is probably a misconfiguration and might be resolved by restarting the univention-management-console-server.') % (str(exc),)
+
+	@error
+	def signature_error(self, exc):
+		return self._('The SAML response contained a invalid signature: %s') % (exc,)
+
+	@error
+	def unparsed_saml_response(self):
+		return self._("The SAML message is invalid for this service provider.")
+
+	@error(status=500)
+	def no_identity_provider(self):
+		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
+
+	@error  # TODO: multiple choices redirection status
+	def multiple_identity_provider(self, idps, idp_query_param):
+		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
+
+
+class Application(TApplication):
+
+	def __init__(self, **kwargs):
+		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
+		super(Application, self).__init__([
+			#(r'/auth/sso', AuthSSO),
+			(r'/auth/?', Auth),
+			(r'/upload/', Upload),
+			(r'/(upload)/(.+)', Command),
+			(r'/(command)/(.+)', Command),
+			(r'/get/session-info', SessionInfo),
+			(r'/get/ipaddress', GetIPAddress),
+			(r'/get/ucr', UCR),
+			(r'/get/meta', Meta),
+			(r'/get/info', Info),
+			(r'/get/modules', Modules),
+			(r'/get/categories', Categories),
+			(r'/get/user/preferences', UserPreferences),
+			(r'/get/hosts', Hosts),
+			(r'/set/?', Set),
+			(r'/set/password', SetPassword),
+			(r'/set/locale', SetLocale),
+			(r'/set/user/preferences', SetUserPreferences),
+			(r'/saml/', SamlACS),
+			(r'/saml/metadata', SamlMetadata),
+			(r'/saml/slo/?', SamlSingleLogout),
+			(r'/saml/logout', SamlLogout),
+			(r'/saml/iframe/?', SamlIframeACS),
+			(r'/', Index),
+			(r'/logout', Logout),
+		], default_handler_class=Nothing, **kwargs)
+
+		SamlACS.reload()
+
+
+class Index(Resource):
+
+	def get(self):
+		self.redirect('/univention/', status=305)
+
+	def post(self, path):
+		return self.get(path)
+
+
+class Logout(Resource):
+
+	def get(self, **kwargs):
+		user = self.get_user()
+		if user and user.saml is not None:
+			return self.redirect('/univention/saml/logout', status=303)
+		self.expire_session()
+		self.redirect(ucr.get('umc/logout/location') or '/univention/', status=303)
+
+	def post(self, path):
+		return self.get(path)
+
+
+class Nothing(Resource):
+
+	def prepare(self, *args, **kwargs):
+		super(Nothing, self).prepare(*args, **kwargs)
+		raise NotFound()
+
+
+class SessionInfo(Resource):
+
+	def get(self):
+		info = {}
+		user = self.get_user()
+		if user is None:
+			raise HTTPError(UNAUTHORIZED)
+		info['username'] = user.username
+		info['auth_type'] = user.saml and 'SAML'
+		info['remaining'] = int(user.session_end_time - monotonic())
+		self.content_negotiation(info)
+
+	def post(self):
+		return self.get()
+
+
+class GetIPAddress(Resource):
+
+	def get(self):
 		try:
-			socket.close()
+			addresses = self.addresses
+		except ValueError:
+			# hacking attempt
+			addresses = [self.request.remote_ip]
+		self.content_negotiation(addresses, False)
+
+	@property
+	def addresses(self):
+		addresses = self.request.headers.get('X-Forwarded-For', self.request.remote_ip).split(',') + [self.request.remote_ip]
+		addresses = set(ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses)
+		addresses.discard(ip_address(u'::1'))
+		addresses.discard(ip_address(u'127.0.0.1'))
+		return tuple(address.exploded for address in addresses)
+
+	def post(self):
+		return self.get()
+
+
+class CPCommand(Resource):
+
+	def post(self, path):
+		return self.get(path)
+
+	def get_request(self, path, args):
+		if self._is_file_upload():
+			return self.get_request_upload(path, args)
+
+		if not path:
+			raise HTTPError(NOT_FOUND)
+
+		req = Request('COMMAND', [path], options=args.get('options', {}))
+		if 'flavor' in args:
+			req.flavor = args['flavor']
+
+		return req
+
+	def get_response(self, sessionid, path, args):
+		response = super(CPCommand, self).get_response(sessionid, path, args)
+
+		# check if the request is a iframe upload
+		if 'X-Iframe-Response' in self.request.headers:
+			# this is a workaround to make iframe uploads work, they need the textarea field
+			self.set_header('Content-Type', 'text/html')
+			return '<html><body><textarea>%s</textarea></body></html>' % (response)
+
+		return response
+
+	def get_request_upload(self, path, args):
+		CORE.info('Handle upload command')
+		self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
+		if args.get('options', {}).get('iframe', False) not in ('false', False, 0, '0'):
+			self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
+		req = Request('UPLOAD', arguments=[path or ''])
+		req.body = self._get_upload_arguments(req)
+		return req
+
+	def _is_file_upload(self):
+		return self.request.headers.get('Content-Type', '').startswith('multipart/form-data')
+
+	def _get_upload_arguments(self, req):
+		options = []
+		body = {}
+
+		# check if enough free space is available
+		min_size = get_int('umc/server/upload/min_free_space', 51200)  # kilobyte
+		s = os.statvfs(TEMPUPLOADDIR)
+		free_disk_space = s.f_bavail * s.f_frsize // 1024  # kilobyte
+		if free_disk_space < min_size:
+			CORE.error('there is not enough free space to upload files')
+			raise HTTPError(BAD_REQUEST, 'There is not enough free space on disk')
+
+		for name, field in self.request.files.items():
+			for part in field:
+				tmpfile = _upload_manager.add(req.id, part)
+				options.append(self._sanitize_file(tmpfile, name, part))
+
+		for name in self.request.body_arguments:
+			value = self.get_body_arguments(name)
+			if len(value) == 1:
+				value = value[0]
+			body[name] = value
+
+		body['options'] = options
+		return body
+
+	def _sanitize_file(self, tmpfile, name, store):
+		# check if filesize is allowed
+		st = os.stat(tmpfile)
+		max_size = get_int('umc/server/upload/max', 64) * 1024
+		if st.st_size > max_size:
+			CORE.warn('file of size %d could not be uploaded' % (st.st_size))
+			raise HTTPError(BAD_REQUEST, 'The size of the uploaded file is too large')
+
+		filename = store['filename']
+		# some security
+		for c in '<>/':
+			filename = filename.replace(c, '_')
+
+		return {
+			'filename': filename,
+			'name': name,
+			'tmpfile': tmpfile,
+			'content_type': store['content_type'],
+		}
+
+
+#class AuthSSO(Resource):
+#
+#	def parse_authorization(self):
+#		return  # do not call super method, prevent basic auth
+#
+#	def get(self):
+#		CORE.info('/auth/sso: got new auth request')
+#
+#		user = self.get_user()
+#		if not user or not user.saml or user.timed_out(monotonic()):
+#			# redirect user to login page in case he's not authenticated or his session timed out
+#			self.redirect('/univention/saml/', status=303)
+#			return
+#
+#		req = Request('AUTH')
+#		req.body = {
+#			"auth_type": "SAML",
+#			"username": user.username,
+#			"password": user.saml.message
+#		}
+#
+#		try:
+#			self._auth_request(req, user.sessionid)
+#		except UMC_HTTPError as exc:
+#			if exc.status == UNAUTHORIZED:
+#				# slapd down, time synchronization between IDP and SP is wrong, etc.
+#				CORE.error('SAML authentication failed: Make sure slapd runs and the time on the service provider and identity provider is identical.')
+#				raise HTTPError(
+#					500,
+#					'The SAML authentication failed. This might be a temporary problem. Please login again.\n'
+#					'Further information can be found in the following logfiles:\n'
+#					'* /var/log/univention/management-console-web-server.log\n'
+#					'* /var/log/univention/management-console-server.log\n'
+#				)
+#			raise
+#
+#		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+#		location = urlparse(self.get_query_argument('return', '/univention/management/'))
+#		if location.path.startswith('//'):
+#			location = urlparse('')
+#		location = urlunsplit(('', '', location.path, location.query, location.fragment))
+#		self.redirect(location, status=303)
+#
+#	def post(self):
+#		return self.get()
+
+
+class SAMLBase(Resource):
+
+	SP = None
+	identity_cache = '/var/cache/univention-management-console/saml.bdb'
+	configfile = '/usr/share/univention-management-console/saml/sp.py'
+	idp_query_param = "IdpQuery"
+	bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
+	outstanding_queries = {}
+
+
+class SamlMetadata(SAMLBase):
+
+	def get(self):
+		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
+		self.set_header('Content-Type', 'application/xml')
+		self.finish(metadata)
+
+
+class SamlACS(SAMLBase):
+
+	@property
+	def sp(self):
+		if not self.SP and not self.reload():
+			raise HTTPError(SERVICE_UNAVAILABLE, 'Single sign on is not available due to misconfiguration. See logfiles.')
+		return self.SP
+
+	@classmethod
+	def reload(cls):
+		CORE.info('Reloading SAML service provider configuration')
+		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
+		try:
+			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=cls.identity_cache, state_cache=shared_memory.state_cache)
+			return True
 		except Exception:
-			pass
+			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+		return False
 
-		state.session.signal_disconnect('success', self._response)
+	def get(self):
+		binding, message, relay_state = self._get_saml_message()
 
+		if message is None:
+			return self.do_single_sign_on(relay_state=self.get_query_argument('location', '/univention/management/'))
 
-class Server(signals.Provider):
+		acs = self.attribute_consuming_service
+		if relay_state == 'iframe-passive':
+			acs = self.attribute_consuming_service_iframe
+		acs(binding, message, relay_state)
 
-	"""Creates an UMC server. It handles incoming connections on UNIX or
-	TCP sockets and passes the control to an external session handler
-	(e.g. :class:`.MagicBucket`)
+	def post(self):
+		return self.get()
 
-	:param int port: port to listen to
-	:param bool ssl: if SSL should be used
-	:param str unix: if given it must be the filename of the UNIX socket to use
-	:param bool magic: if an external session handler should be used
-	:param class magicClass: a reference to the class for the external session handler
-	:param bool load_ressources: if the modules and categories definitions should be loaded
-	"""
+	def attribute_consuming_service(self, binding, message, relay_state):
+		response = self.acs(message, binding)
+		saml = SAMLUser(response, message)
+		self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+		location = urlparse(relay_state)
+		if location.path.startswith('//'):
+			location = urlparse('')
+		location = urlunsplit(('', '', location.path, location.query, location.fragment))
+		self.redirect(location, status=303)
 
-	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True, processes=1):
-		'''Initializes the socket to listen for requests'''
-		signals.Provider.__init__(self)
+	def attribute_consuming_service_iframe(self, binding, message, relay_state):
+		self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
+		self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
+		response = self.acs(message, binding)
+		saml = SAMLUser(response, message)
+		sessionid = self.create_sessionid()
+		self.set_session(sessionid, saml.username, saml=saml)
+		self.set_header('Content-Type', 'text/html')
+		data = {"status": 200, "result": {"username": saml.username}}
+		self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
 
-		# loading resources
-		if load_ressources:
-			CORE.info('Loading resources ...')
-			self.reload()
+	def _logout_success(self):
+		user = self.get_user()
+		if user:
+			user.saml = None
+		self.redirect('/univention/logout', status=303)
 
-		self.__port = port
-		self.__unix = unix
-		self.__realtcpsocket = None
-		self.__realunixsocket = None
-		self.__ssl = ssl
-		self.__processes = processes
-		self._child_number = None
-		self._children = {}
-		self.__magic = magic
-		self.__magicClass = magicClass
-		self.__bucket = None
+	def _get_saml_message(self):
+		"""Get the SAML message and corresponding binding from the HTTP request"""
+		if self.request.method not in ('GET', 'POST'):
+			self.set_header('Allow', 'GET, HEAD, POST')
+			raise HTTPError(405)
 
-	def __enter__(self):
-		CORE.info('Initialising server process')
-		if self.__unix:
-			CORE.info('Using a UNIX socket')
-			self.__realunixsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-		if self.__port:
-			CORE.info('Using a TCP socket')
+		if self.request.method == 'GET':
+			binding = BINDING_HTTP_REDIRECT
+			args = self.request.query_arguments
+		elif self.request.method == "POST":
+			binding = BINDING_HTTP_POST
+			args = self.request.body_arguments
+
+		relay_state = args.get('RelayState', [b''])[0].decode('UTF-8')
+		try:
+			message = args['SAMLResponse'][0].decode('UTF-8')
+		except KeyError:
 			try:
-				self.__realtcpsocket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-			except Exception:
-				CORE.warn('Cannot open socket with AF_INET6 (Python reports socket.has_ipv6 is %s), trying AF_INET' % socket.has_ipv6)
-				self.__realtcpsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+				message = args['SAMLRequest'][0].decode('UTF-8')
+			except KeyError:
+				try:
+					message = args['SAMLart'][0].decode('UTF-8')
+				except KeyError:
+					return None, None, None
+				message = self.sp.artifact2message(message, 'spsso')
+				binding = BINDING_HTTP_ARTIFACT
 
-		for sock in (self.__realtcpsocket, self.__realunixsocket):
-			if sock is None:
-				continue
-			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			sock.setblocking(0)
-			fd = sock.fileno()
-			flags = fcntl.fcntl(fd, fcntl.F_GETFD)
-			fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
+		return binding, message, relay_state
 
-		if self.__ssl and self.__port:
-			CORE.info('Setting up SSL configuration')
-			self.crypto_context = SSL.Context(SSL.TLSv1_METHOD)
-			self.crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
-			self.crypto_context.set_options(SSL.OP_NO_SSLv2)
-			self.crypto_context.set_options(SSL.OP_NO_SSLv3)
-			self.crypto_context.set_verify(SSL.VERIFY_PEER, self.__verify_cert_cb)
-			dir = '/etc/univention/ssl/%s.%s' % (ucr['hostname'], ucr['domainname'])
+	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
+		try:
+			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
+		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
+			raise SamlError().from_exception(*sys.exc_info())
+		if response is None:
+			raise SamlError().unparsed_saml_response()
+		self.outstanding_queries.pop(response.in_response_to, None)
+		return response
+
+	def do_single_sign_on(self, **kwargs):
+		binding, http_args = self.create_authn_request(**kwargs)
+		self.http_response(binding, http_args)
+
+	def create_authn_request(self, **kwargs):
+		"""Creates the SAML <AuthnRequest> request and returns the SAML binding and HTTP response.
+
+			Returns (binding, http-arguments)
+		"""
+		identity_provider_entity_id = self.select_identity_provider()
+		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
+
+		relay_state = kwargs.pop('relay_state', None)
+
+		reply_binding, service_provider_url = self.select_service_provider()
+		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
+
+		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
+		self.outstanding_queries[sid] = service_provider_url  # self.request.full_url()  # TODO: shouldn't this contain service_provider_url?
+		return binding, http_args
+
+	def select_identity_provider(self):
+		"""Select an identity provider based on the available identity providers.
+			If multiple IDP's are set up the client might have specified one in the query string.
+			Otherwise an error is raised where the user can choose one.
+
+			Returns the EntityID of the IDP.
+		"""
+		idps = self.sp.metadata.with_descriptor("idpsso")
+		if not idps and self.reload():
+			idps = self.sp.metadata.with_descriptor("idpsso")
+		if self.get_query_argument(self.idp_query_param, None) in idps:
+			return self.get_query_argument(self.idp_query_param)
+		if len(idps) == 1:
+			return list(idps.keys())[0]
+		if not idps:
+			raise SamlError().no_identity_provider()
+		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param)
+
+	def get_identity_provider_destination(self, entity_id):
+		"""Get the destination (with SAML binding) of the specified entity_id.
+
+			Returns (binding, destination-URI)
+		"""
+		return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+
+	def select_service_provider(self):
+		"""Select the ACS-URI and binding of this service provider based on the request uri.
+			Tries to preserve the current scheme (HTTP/HTTPS) and netloc (host/IP) but falls back to FQDN if it is not set up.
+
+			Returns (binding, service-provider-URI)
+		"""
+		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
+		service_url, reply_binding = acs[0]
+		netloc = False
+		p2 = urlparse(self.request.full_url())
+		for _url, _binding in acs:
+			p1 = urlparse(_url)
+			if p1.scheme == p2.scheme and p1.netloc == p2.netloc:
+				netloc = True
+				service_url, reply_binding = _url, _binding
+				if p1.path == p2.path:
+					break
+			elif not netloc and p1.netloc == p2.netloc:
+				service_url, reply_binding = _url, _binding
+		CORE.info('SAML: picked %r for %r with binding %r' % (service_url, self.request.full_url(), reply_binding))
+		return reply_binding, service_url
+
+	def http_response(self, binding, http_args):
+		"""Converts the HTTP arguments from pysaml2 into the tornado response."""
+		body = u''.join(http_args["data"])
+		for key, value in http_args["headers"]:
+			self.set_header(key, value)
+
+		if binding in (BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT):
+			self.set_status(303 if self.request.supports_http_1_1() and self.request.method == 'POST' else 302)
+			if not body:
+				self.redirect(self._headers['Location'], status=self.get_status())
+				return
+
+		self.finish(body.encode('UTF-8'))
+
+
+class SamlIframeACS(SamlACS):
+
+	def get(self):
+		self.do_single_sign_on(is_passive='true', relay_state='iframe-passive')
+
+
+class SamlSingleLogout(SamlACS):
+
+	def get(self, *args, **kwargs):  # single logout service
+		binding, message, relay_state = self._get_saml_message()
+		if message is None:
+			raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+
+		try:
+			is_logout_request = b'LogoutRequest' in zlib.decompress(base64.b64decode(message.encode('UTF-8')), -15).split(b'>', 1)[0]
+		except Exception:
+			CORE.error(traceback.format_exc())
+			is_logout_request = False
+
+		if is_logout_request:
+			user = self.get_user()
+			if not user or user.saml is None:
+				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
+				name_id = None
+			else:
+				name_id = user.saml.name_id
+				user.saml = None
+			http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
+			self.expire_session()
+			self.http_response(binding, http_args)
+			return
+		else:
+			response = self.sp.parse_logout_request_response(message, binding)
+			self.sp.handle_logout_response(response)
+		self._logout_success()
+
+
+class SamlLogout(SamlACS):
+
+	def get(self):
+		user = self.get_user()
+
+		if user is None or user.saml is None:
+			return self._logout_success()
+
+		# What if more than one
+		try:
+			data = self.sp.global_logout(user.saml.name_id)
+		except KeyError:
 			try:
-				self.crypto_context.use_privatekey_file(os.path.join(dir, 'private.key'))
-				self.crypto_context.use_certificate_file(os.path.join(dir, 'cert.pem'))
-				self.crypto_context.load_verify_locations('/etc/univention/ssl/ucsCA/CAcert.pem')
-			except SSL.Error as exc:
-				# SSL is not possible
-				CRYPT.error('Setting up SSL configuration failed: %s' % (exc,))
-				CRYPT.warn('Communication will not be encrypted!')
-				self.__ssl = False
-				self.crypto_context = None
-				self.__realtcpsocket.bind(('', self.__port))
-				CRYPT.info('Server listening to unencrypted connections')
-				self.__realtcpsocket.listen(SERVER_MAX_CONNECTIONS)
-
-			if self.crypto_context:
-				self.connection = SSL.Connection(self.crypto_context, self.__realtcpsocket)
-				self.connection.setblocking(0)
-				self.connection.bind(('', self.__port))
-				self.connection.set_accept_state()
-				CRYPT.info('Server listening to SSL connections')
-				self.connection.listen(SERVER_MAX_CONNECTIONS)
-		elif not self.__ssl and self.__port:
-			self.crypto_context = None
-			self.__realtcpsocket.bind(('', self.__port))
-			CRYPT.info('Server listening to TCP connections')
-			self.__realtcpsocket.listen(SERVER_MAX_CONNECTIONS)
-
-		if self.__unix:
-			# ensure that the UNIX socket is only accessible by root
-			old_umask = os.umask(0o077)
-			try:
-				self.__realunixsocket.bind(self.__unix)
-			except EnvironmentError:
-				if os.path.exists(self.__unix):
-					os.unlink(self.__unix)
+				tb = sys.exc_info()[2]
+				while tb.tb_next:
+					tb = tb.tb_next
+				if tb.tb_frame.f_code.co_name != 'entities':
+					raise
 			finally:
-				# restore old umask
-				os.umask(old_umask)
-			CRYPT.info('Server listening to UNIX connections')
-			self.__realunixsocket.listen(SERVER_MAX_CONNECTIONS)
+				tb = None
+			# already logged out or UMC-Webserver restart
+			user.saml = None
+			data = {}
 
-		if self.__processes != 1:
-			self._children = multiprocessing.Manager().dict()
+		for entity_id, logout_info in data.items():
+			if not isinstance(logout_info, tuple):
+				continue  # result from logout, should be OK
+
+			binding, http_args = logout_info
+			if binding not in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT):
+				raise SamlError().unknown_logout_binding(binding)
+
+			self.http_response(binding, http_args)
+			return
+		self._logout_success()
+
+
+class Server(object):
+
+	def __init__(self):
+		self.parser = ArgumentParser()
+		self.parser.add_argument(
+			'-d', '--debug', type=int, default=get_int('umc/server/debug/level', 1),
+			help='if given than debugging is activated and set to the specified level [default: %(default)s]'
+		)
+		self.parser.add_argument(
+			'-L', '--log-file', default='stdout',
+			help='specifies an alternative log file [default: %(default)s]'
+		)
+		self.parser.add_argument(
+			'-c', '--processes', default=get_int('umc/http/processes', 1), type=int,
+			help='How many processes to start'
+		)
+		self.options = self.parser.parse_args()
+		self._child_number = None
+
+		# TODO? not really
+		# os.environ['LANG'] = locale.normalize(self.options.language)
+
+		# init logging
+		log_init(self.options.log_file, self.options.debug, self.options.processes > 1)
+
+	def signal_handler_hup(self, signo, frame):
+		"""Handler for the reload action"""
+		ucr.load()
+		log_reopen()
+		self._inform_childs(signal)
+		print(''.join(['%s:\n%s' % (th, ''.join(traceback.format_stack(sys._current_frames()[th.ident]))) for th in threading.enumerate()]))
+
+	def signal_handler_reload(self, signo, frame):
+		log_reopen()
+		SamlACS.reload()
+		self._inform_childs(signal)
+
+	def _inform_childs(self, signal):
+		if self._child_number is not None:
+			return  # we are the child process
+		try:
+			children = list(shared_memory.children.items())
+		except EnvironmentError:
+			children = []
+		for child, pid in children:
 			try:
-				self._child_number = process.fork_processes(self.__processes, 0)
+				os.kill(pid, signal)
+			except EnvironmentError as exc:
+				CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
+
+	def run(self):
+		setproctitle.setproctitle('%s # /usr/sbin/univention-management-console-server' % (setproctitle.getproctitle(),))
+		signal.signal(signal.SIGHUP, self.signal_handler_hup)
+		signal.signal(signal.SIGUSR1, self.signal_handler_reload)
+
+		sockets = bind_sockets(get_int('umc/http/port', 8090), ucr.get('umc/http/interface', '127.0.0.1'), backlog=get_int('umc/http/requestqueuesize', 100), reuse_port=True)
+		if self.options.processes != 1:
+			shared_memory.start()
+
+			CORE.process('Starting with %r processes' % (self.options.processes,))
+			try:
+				self._child_number = tornado.process.fork_processes(self.options.processes, 0)
 			except RuntimeError as exc:
 				CORE.warn('Child process died: %s' % (exc,))
 				os.kill(os.getpid(), signal.SIGTERM)
 				raise SystemExit(str(exc))
 			if self._child_number is not None:
-				self._children[self._child_number] = os.getpid()
+				shared_memory.children[self._child_number] = os.getpid()
 
-		if self.__magic:
-			self.__bucket = self.__magicClass()
-		else:
-			self.signal_new('session_new')
-
-		if self.__ssl:
-			notifier.socket_add(self.connection, self._connection)
-		if (not self.__ssl and self.__port):
-			notifier.socket_add(self.__realtcpsocket, self._connection)
-		if self.__unix:
-			notifier.socket_add(self.__realunixsocket, self._connection)
-
-		return self
-
-	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
-		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
-		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
-		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
-		return ok
-
-	def _connection(self, socket):
-		'''Signal callback: Invoked on incoming connections.'''
-		try:
-			socket, addr = socket.accept()
-		except EnvironmentError as exc:
-			if exc.errno == errno.EAGAIN:
-				# got an EAGAIN --> try again later
-				return True
-			CORE.error('Cannot accept new connection: %s' % (exc,))
-			if exc.errno == errno.EMFILE:
-				# got an EMFILE --> Too many open files
-				# If the process permanently lacks free file descriptors, incoming
-				# connections waiting in the listening socket backlog will starve.
-				# Therefore the limit is temporarily increased by 2 and the connection
-				# waiting in the backlog is temporarily accepted and immediately
-				# closed again to provoke an error message in the user's browser.
-				soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-				resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
-				try:
-					socket, addr = socket.accept()
-					socket.close()
-				except EnvironmentError:
-					pass
-				finally:
-					resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
-			else:
-				# unknown errno - log traceback and continue
-				CORE.error(traceback.format_exc())
-			return True
-		fd = socket.fileno()
-		flags = fcntl.fcntl(fd, fcntl.F_GETFD)
-		fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-		socket.setblocking(0)
-		if addr:
-			client = '%s:%d' % (addr[0], addr[1])
-		else:
-			client = ''
-		CORE.info('Incoming connection from %s' % client)
-		if self.__magic:
-			self.__bucket.new(client, socket)
-		else:
-			self.signal_emit('session_new', client, socket)
-		return True
-
-	def exit(self):
-		'''Shuts down all open connections.'''
-		CORE.warn('Shutting down all open connections')
-
-		if self.__bucket:
-			self.__bucket.exit()
-
-		if self._child_number is not None:
-			self._children.pop(self._child_number, None)
-
-		if self.__ssl and self.__port:
-			notifier.socket_remove(self.connection)
-			self.connection.close()
-		elif not self.__ssl and self.__port and self.__realtcpsocket:
-			notifier.socket_remove(self.__realtcpsocket)
-			self.__realtcpsocket.close()
-			self.__realtcpsocket = None
-		if self.__unix:
-			if self.__realunixsocket is not None:
-				notifier.socket_remove(self.__realunixsocket)
-				self.__realunixsocket.close()
-				self.__realunixsocket = None
-			if self._child_number is None and os.path.exists(self.__unix):
-				os.unlink(self.__unix)
-			self.__unix = None
-
-		self.__bucket = None
-
-	def __exit__(self, etype, exc, etraceback):
-		self.exit()
-
-	@staticmethod
-	def reload():
-		"""Reloads resources like module and category definitions"""
-		CORE.info('Reloading resources: modules, categories')
-		moduleManager.load()
-		categoryManager.load()
-		RESOURCES.info('Reloading UCR variables')
-		ucr.load()
-
-	@staticmethod
-	def analyse_memory():
-		"""Print the number of living UMC objects. Helpful when analysing memory leaks."""
-		components = (
-			'protocol.server.State', 'protocol.session.ModuleProcess',
-			'protocol.session.Processor', 'protocol.session.SessionHandler',
-			'protocol.message.Message', 'protocol.message.Request', 'protocol.message.Response',
-			'auth.AuthHandler', 'pam.PamAuth', 'protocol.client.Client',
-			'locales.I18N', 'locales.I18N_Manager', 'module.Command', 'module.Flavor', 'module.Module',
-			'tools.JSON_List',
-			# 'module.Link',
-			# 'auth.AuthenticationResult',
-			# 'base.Base', 'category.XML_Definition', 'error.UMC_Error',
-			# 'module.XML_Definition', 'module.Manager', 'pam.AuthenticationError', 'pam.AuthenticationFailed', 'pam.AuthenticationInformationMissing',
-			# 'pam.AccountExpired', 'pam.PasswordExpired', 'pam.PasswordChangeFailed',
-			# 'protocol.message.ParseError', 'protocol.message.IncompleteMessageError',
-			# 'protocol.modserver.ModuleServer', 'protocol.server.MagicBucket', 'protocol.server.Server',
-			# 'protocol.session.ProcessorBase',
-			# 'tools.JSON_Object', 'tools.JSON_Dict',
+		application = Application(serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
+		server = HTTPServer(
+			application,
+			idle_connection_timeout=get_int('umc/http/response-timeout', 310),  # is this correct? should be internal response timeout
+			max_body_size=get_int('umc/http/max_request_body_size', 104857600),
 		)
+		self.server = server
+		server.add_sockets(sockets)
+
+		channel = logging.StreamHandler()
+		channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+		logger = logging.getLogger()
+		logger.setLevel(logging.INFO)
+		logger.addHandler(channel)
+
+		ioloop = tornado.ioloop.IOLoop.current()
+
 		try:
-			import objgraph
-		except ImportError:
-			return
-		CORE.warn('')
-		for component in components:
-			CORE.warn('%s: %d' % (component, len(objgraph.by_type('univention.management.console.%s' % (component,)))))
+			ioloop.start()
+		except Exception:
+			CORE.error(traceback.format_exc())
+			ioloop.stop()
+			pool.shutdown(False)
+			raise
+		except (KeyboardInterrupt, SystemExit):
+			ioloop.stop()
+			pool.shutdown(False)
 
 
-class State(object):
-
-	"""Holds information about the state of an active session
-
-	:param str client: IP address + port
-	:param fd socket: file descriptor or socket object
-	"""
-
-	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'timeout', '_timer')
-
-	def __init__(self, client, socket):
-		self.client = client
-		self.socket = socket
-		self.buffer = b''
-		self.requests = {}
-		self.resend_queue = []
-		self.session = SessionHandler()
-		self._timer = None
-		self.reset_connection_timeout()
-
-	def reset_connection_timeout(self):
-		self.timeout = SERVER_CONNECTION_TIMEOUT
-
-	@property
-	def active(self):
-		return bool(self.requests or self.session.has_active_module_processes())
-
-	def __repr__(self):
-		return '<State(%s %r buffer=%d requests=%d processes=%s)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.session.has_active_module_processes())
+if __name__ == '__main__':
+	Server().run()

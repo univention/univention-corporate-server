@@ -38,10 +38,6 @@ import traceback
 import ldap
 from ldap.filter import filter_format
 
-import notifier
-import notifier.signals as signals
-import notifier.threads as threads
-
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Locale
 
@@ -50,16 +46,10 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
-try:
-	from typing import Any, Dict, Optional, Tuple, Union  # noqa F401
-	from univention.management.console.protocol.meesage import Request  # noqa F401
-except ImportError:
-	pass
-
 
 class AuthenticationResult(object):
 
-	def __init__(self, result, locale):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
+	def __init__(self, result, locale):
 		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_UNAUTH
 		self.credentials = None
 		self.status = SUCCESS
@@ -67,7 +57,7 @@ class AuthenticationResult(object):
 		if self.authenticated:
 			self.credentials = result
 		self.message = None
-		self.result = None  # type: Optional[Dict[str, Any]]
+		self.result = None
 		self.password_expired = False
 		if isinstance(result, AuthenticationError):
 			self.status = BAD_REQUEST_UNAUTH
@@ -82,42 +72,48 @@ class AuthenticationResult(object):
 			elif isinstance(result, PasswordChangeFailed):
 				self.result['password_change_failed'] = True
 			if isinstance(result, (PasswordExpired, PasswordChangeFailed)):
-				_locale = Locale(locale)
-				self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s' % (_locale.language,), ucr.get('umc/login/password-complexity-message/en', '')),)).rstrip()
+				locale = Locale(locale)
+				self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s' % (locale.language,), ucr.get('umc/login/password-complexity-message/en', '')),)).rstrip()
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
 		else:
 			self.result = {'username': result['username']}
 
-	def __bool__(self):  # type: () -> bool
+	def __bool__(self):
 		return self.authenticated
 
 	__nonzero__ = __bool__  # Python 2
 
 
-class AuthHandler(signals.Provider):
+class AuthHandler(object):
 
-	def __init__(self):  # type: () -> None
-		signals.Provider.__init__(self)
-		self.signal_new('authenticated')
-
-	def authenticate(self, msg):  # type: (Request) -> None
+	def get_handler(self, locale):
 		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so.
 		# See http://pam-python.sourceforge.net/doc/html/#bugs
+		return PamAuth(locale)
 
-		args = msg.body.copy()
-		locale = args.pop('locale', None)
+	def authenticate(self, pam, args):
 		args.pop('pam', None)
+		locale = args.pop('locale')
 		args.setdefault('new_password', None)
 		args.setdefault('username', '')
 		args.setdefault('password', '')
 
-		pam = PamAuth(locale)
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg, locale))
-		thread.run()
+		try:
+			result = self.__authenticate_thread(pam, **args)
+		except (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired) as exc:
+			result = exc
+		except BaseException as exc:
+			result = exc
+			AUTH.error(traceback.format_exc())
 
-	def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):  # type: (PamAuth, str, str, Optional[str], Optional[str], **Optional[str]) -> Tuple[str, str]
+		if isinstance(result, tuple):
+			username, password = result
+			result = {'username': username, 'password': password, 'auth_type': args.get('auth_type')}
+		return AuthenticationResult(result, locale)
+
+	def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
 		AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
 		username = self.__canonicalize_username(username)
 		try:
@@ -142,7 +138,7 @@ class AuthHandler(signals.Provider):
 			AUTH.info('Authentication for %r was successful' % (username,))
 			return (username, password)
 
-	def __canonicalize_username(self, username):  # type: (str) -> str
+	def __canonicalize_username(self, username):
 		try:
 			lo, po = get_machine_connection(write=False)
 			result = None
@@ -159,14 +155,3 @@ class AuthHandler(signals.Provider):
 		except Exception:
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
 		return username
-
-	def __authentication_result(self, thread, result, pam, request, locale):  # type: (threads.Simple, Union[BaseException, Tuple[str, str], Dict[str, str]], PamAuth, Request, Optional[str]) -> None
-		pam.end()
-		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
-			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-			AUTH.error(msg)
-		if isinstance(result, tuple):
-			username, password = result
-			result = {'username': username, 'password': password, 'auth_type': request.body.get('auth_type')}
-		auth_result = AuthenticationResult(result, locale)
-		self.signal_emit('authenticated', auth_result, request)

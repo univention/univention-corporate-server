@@ -55,19 +55,19 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	parser = ArgumentParser(usage="usage: %(prog)s [options]")
-	parser.add_argument('-s', '--socket', action='store', dest='socket', help='defines the socket to bind to')
-	parser.add_argument('-l', '--language', action='store', dest='language', default='C', help='defines the language to use')
-	parser.add_argument('-m', '--module', action='store', dest='module', help='set the UMC daemon module to load')
-	parser.add_argument('-n', '--notifier', action='store', dest='notifier', default='generic', help='defines the notifier implementation to use')
+	parser.add_argument('-s', '--socket', help='defines the socket to bind to')
+	parser.add_argument('-l', '--language', default='C', help='defines the language to use')
+	parser.add_argument('-m', '--module', help='set the UMC daemon module to load')
+	parser.add_argument('-n', '--notifier', default='tornado', choices={'tornado', 'generic', 'qt'}, help='defines the notifier implementation to use')
 
 	default_debug = MODULE_DEBUG_LEVEL
-	parser.add_argument('-d', '--debug', action='store', type=int, dest='debug', default=default_debug, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
-	parser.add_argument('-L', '--log-file', action='store', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
-	parser.add_argument('-f', '--foreground', action='store_true', dest='foreground', default=False, help='do not daemonize the process')
+	parser.add_argument('-d', '--debug', type=int, default=default_debug, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
+	parser.add_argument('-L', '--log-file', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
+	parser.add_argument('-f', '--foreground', action='store_true', default=False, help='do not daemonize the process')
 
 	options = parser.parse_args()
 
-	if not options.foreground:
+	if not options.foreground:  # TODO: fork via tornado
 		daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0o077, files_preserve=[x.stream.fileno() for x in nflog.instance.handlers])
 		daemon.signal_map = {
 			signal.SIGHUP: lambda signal, frame: log_reopen(),
@@ -75,7 +75,9 @@ if __name__ == '__main__':
 		daemon.open()
 
 	# MUST be called after initializing the daemon
-	if options.notifier.lower() == 'generic':
+	if options.notifier.lower() == 'tornado':
+		notifier.init(notifier.TORNADO)
+	elif options.notifier.lower() == 'generic':
 		notifier.init(notifier.GENERIC)
 	elif options.notifier.lower() == 'qt':
 		import PyQt4.Qt as qt
@@ -118,8 +120,8 @@ if __name__ == '__main__':
 		MODULE.warn('Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds')
 
 	try:
-		with umcp.ModuleServer(options.socket, options.module, check_acls=False, timeout=session_timeout):
-			notifier.loop()
+		with umcp.ModuleServer(options.socket, options.module, options.logfile, timeout=session_timeout) as server:
+			server.loop()
 	except (SystemExit, KeyboardInterrupt):
 		raise
 	except BaseException:

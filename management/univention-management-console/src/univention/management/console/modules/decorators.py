@@ -314,8 +314,10 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 					progress_obj.exception(sys.exc_info())
 				else:
 					progress_obj.finish_with_result(result[0])
-			thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
-			thread.start()
+			thread = notifier.threads.Simple('simple_response', notifier.Callback(_thread, self, progress_obj, _multi_response, request), lambda t, r: None)
+			thread.run()
+			# thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
+			# thread.start()
 			self.finished(request.id, progress_obj.initialised())
 		else:
 			result = _multi_response(self, request)

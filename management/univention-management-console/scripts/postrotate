@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# SIGHUP for UMC-server and UMC-web-server
-systemctl kill -s SIGHUP univention-management-console-server.service univention-management-console-web-server.service
+# SIGHUP for UMC-server
+systemctl kill -s SIGHUP univention-management-console-server.service
 
 # SIGHUP for all running UMC modules
 pkill -SIGHUP -f /usr/sbin/univention-management-console-module

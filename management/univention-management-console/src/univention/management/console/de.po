@@ -12,6 +12,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Invalid JSON document"
+msgstr ""
+
+#, python-format
+msgid "The issuer %r is now known to the SAML service provider. This is probably a misconfiguration and might be resolved by restarting the univention-management-console-server."
+msgstr ""
+
 #: src/univention/management/console/modules/sanitizers.py:121
 #, python-format
 msgid "%d error(s) occurred"

@@ -1,7 +1,3 @@
-univention-management-console-web-server	usr/sbin/
 92univention-management-console-web-server.inst usr/lib/univention-install/
 09univention-management-console-web-server.uinst usr/lib/univention-uninstall/
 usr/share/univention-management-console/
-systemd/system/univention-management-console-web-server.service.d lib/systemd/system/
-systemd/system/univention-management-console-web-server-multiprocessing.target lib/systemd/system/
-systemd/system/univention-management-console-web-server@.service lib/systemd/system/

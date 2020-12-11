@@ -54,7 +54,7 @@ udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https:/
 rm /usr/share/univention-management-console/saml/idp/*.xml || die
 ucr unset umc/saml/idp-server || die
 
-systemctl restart univention-management-console-web-server
+systemctl restart univention-management-console-server
 /etc/init.d/slapd crestart
 
 joinscript_remove_script_from_status_file univention-management-console-web-server

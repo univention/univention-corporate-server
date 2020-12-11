@@ -147,6 +147,7 @@ class Base(signals.Provider, Translation):
 		self.__current_language = None
 		self.__requests = {}
 		self._user_connections = set()
+		self._accepted_language = None
 		Translation.__init__(self, domain)
 
 	def update_language(self, locales):
@@ -205,14 +206,6 @@ class Base(signals.Provider, Translation):
 		self._password = password
 
 	@property
-	def acls(self):
-		return self.__acls
-
-	@acls.setter
-	def acls(self, acls):
-		self.__acls = acls
-
-	@property
 	def auth_type(self):
 		return self.__auth_type
 
@@ -240,7 +233,6 @@ class Base(signals.Provider, Translation):
 			return
 
 		try:
-			MODULE.info('Executing %r' % (request.arguments or request.command,))
 			self._parse_accept_language(request)
 			if ucr.is_false('umc/server/disable-security-restrictions', True):
 				self.security_checks(request, function)
@@ -257,8 +249,9 @@ class Base(signals.Provider, Translation):
 			return  # don't change the language if Accept-Language header contains the value of the browser and not those we set in Javascript
 
 		accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', ''))
-		if accepted_locales:
-			self.update_language(l.replace('-', '_') for l in accepted_locales)
+		if accepted_locales != self._accepted_language:
+			self._accepted_language = accepted_locales
+			self.update_language(lang.replace('-', '_') for lang in accepted_locales)
 
 	def security_checks(self, request, function):
 		if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
@@ -294,10 +287,10 @@ class Base(signals.Provider, Translation):
 		:param etraceback: The exception traceback instance; may be None.
 		"""
 		if (isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.LDAPError)) or isinstance(exc, ldap.LDAPError):
-			#  After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
-			#  in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
-			#  of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
-			#  Bug #46089
+			# After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
+			# in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
+			# of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
+			# Bug #46089
 			reset_ldap_connection_cache()
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
 			exc = exc.original_exception
@@ -308,8 +301,8 @@ class Base(signals.Provider, Translation):
 		if isinstance(exc, ldap.CONNECT_ERROR):
 			raise LDAP_ConnectionFailed(exc)
 		if isinstance(exc, ldap.INVALID_CREDENTIALS):
-			#  Ensure the connection cache is empty to prevent the use of expired saml messages
-			#  Bug #44621
+			# Ensure the connection cache is empty to prevent the use of expired saml messages
+			# Bug #44621
 			reset_ldap_connection_cache()
 			raise Unauthorized
 
@@ -427,11 +420,6 @@ class Base(signals.Provider, Translation):
 		if self.auth_type is not None:
 			raise PasswordRequired()
 
-	def permitted(self, command, options, flavor=None):
-		if not self.__acls:
-			return False
-		return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
-
 	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None):
 		"""Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
 
@@ -457,10 +445,8 @@ class Base(signals.Provider, Translation):
 		if not res.status:
 			if status is not None:
 				res.status = status
-			elif success:
-				res.status = SUCCESS
 			else:
-				res.status = MODULE_ERR
+				res.status = SUCCESS if success else MODULE_ERR
 
 		self.result(res)
 

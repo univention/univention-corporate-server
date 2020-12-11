@@ -1,10 +1,7 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-# Univention Configuration Registry Module to create systemd services for multiprocessing
-#
-# Copyright 2020-2022 Univention GmbH
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,28 +28,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import subprocess
+from multiprocessing import managers
+
+from setproctitle import getproctitle, setproctitle
+
+proctitle = getproctitle()
 
 
-def handler(ucr, changes):
-	try:
-		processes = int(ucr.get('umc/http/processes', 1))
-	except ValueError:
-		processes = 1
+class _SharedMemory(managers.SyncManager):
 
-	start_port = 18200
-	try:
-		start_port = int(ucr.get('umc/http/processes/start-port', start_port))
-	except ValueError:
-		pass
+	saml_state_cache = {}
+	children = {}
 
-	systemd_target_dir = '/etc/systemd/system/univention-management-console-web-server-multiprocessing.target.wants/'
+	def start(self, *args, **kwargs):
+		setproctitle(proctitle + '   # multiprocessing manager')
+		try:
+			super(_SharedMemory, self).start(*args, **kwargs)
+		finally:
+			setproctitle(proctitle)
 
-	if os.path.isdir(systemd_target_dir):
-		for service in os.listdir(systemd_target_dir):
-			subprocess.call(['systemctl', 'disable', service])
+		# we must create the parent dictionary instance before forking but after python importing
+		self.saml_state_cache = self.dict()
+		self.children = self.dict()
 
-	if processes > 1:
-		for i in range(processes):
-			subprocess.call(['systemctl', 'enable', 'univention-management-console-web-server@{}'.format(i + start_port)])
+
+shared_memory = _SharedMemory()
