@@ -82,17 +82,20 @@ define([
 		renderForm: function() {
 			var widgets = [{
 				type: TextBox,
+				'class': 'umcTextBoxDark',
 				name: 'user',
 				label: _('User'),
 				required: true
 			}, {
 				type: TextBox,
+				'class': 'umcTextBoxDark',
 				name: 'partitionDevice',
 				label: _('Partition'),
 				value: this.partitionDevice,
 				disabled: true
 			}, {
 				type: NumberSpinner,
+				'class': 'umcTextBoxDark',
 				name: 'sizeLimitSoft',
 				label: _('Data size soft limit (MB)'),
 				value: 0,
@@ -103,6 +106,7 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
+				'class': 'umcTextBoxDark',
 				name: 'sizeLimitHard',
 				label: _('Data size hard limit (MB)'),
 				value: 0,
@@ -113,6 +117,7 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
+				'class': 'umcTextBoxDark',
 				name: 'fileLimitSoft',
 				label: _('Files soft limit'),
 				value: 0,
@@ -123,6 +128,7 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
+				'class': 'umcTextBoxDark',
 				name: 'fileLimitHard',
 				label: _('Files hard limit'),
 				value: 0,

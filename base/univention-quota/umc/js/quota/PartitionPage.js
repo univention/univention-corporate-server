@@ -94,6 +94,7 @@ define([
 			var widgets = [{
 				type: SearchBox,
 				name: 'filter',
+				'class': 'umcTextBoxDark',
 				value: '',
 				inlineLabel: _('Search...'),
 				onSearch: lang.hitch(this, function() {
