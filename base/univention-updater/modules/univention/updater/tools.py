@@ -75,7 +75,7 @@ import functools
 import six
 import base64
 try:
-    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, TypeVar, Union  # noqa F401
+    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union  # noqa F401
     from typing_extensions import Literal  # noqa F401
     _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
@@ -1401,28 +1401,44 @@ class UniventionUpdater(object):
         return any((new, upgrade, removed))
 
     def component_update_get_packages(self):
-        # type: () -> Tuple[List[Tuple[str, str]], List[Tuple[str, str, str]], List[Tuple[str, str]]]
+        # type: () -> Tuple[List[Tuple[Text, Text]], List[Tuple[Text, Text, Text]], List[Tuple[Text, Text]]]
         """
         Return tuple with list of (new, upgradeable, removed) packages.
 
         :return: A 3-tuple (new, upgraded, removed).
         :rtype: tuple(list[str], list[str], list[str])
         """
-        p1 = subprocess.Popen(
-            ['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        (stdout, stderr) = p1.communicate()
-        ud.debug(ud.NETWORK, ud.PROCESS, 'check for updates with "dist-upgrade -s", the returncode is %d' % p1.returncode)
+        env = dict(os.environ, LC_ALL="C.UTF-8")
 
-        if p1.returncode == 100:
+        proc = subprocess.Popen(("univention-config-registry", "commit", "/etc/apt/sources.list.d/20_ucs-online-component.list"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+        # FIXME: error handling
+
+        proc = subprocess.Popen(cmd_update, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+        # FIXME: error handling
+
+        proc = subprocess.Popen(cmd_dist_upgrade_sim, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+
+        if proc.returncode == 100:
             raise UnmetDependencyError(stderr)
 
-        ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
-        ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
-
-        new_packages = []  # type: List[Tuple[str, str]]
-        upgraded_packages = []  # type: List[Tuple[str, str, str]]
-        removed_packages = []  # type: List[Tuple[str, str]]
+        new_packages = []  # type: List[Tuple[Text, Text]]
+        upgraded_packages = []  # type: List[Tuple[Text, Text, Text]]
+        removed_packages = []  # type: List[Tuple[Text, Text]]
         for line in stdout.splitlines():
             line_split = line.split(' ')
             if line.startswith('Inst '):
