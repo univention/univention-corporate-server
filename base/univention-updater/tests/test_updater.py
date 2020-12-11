@@ -68,11 +68,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test reinitialization."""
         self.assertFalse(self.u.is_repository_server)
         self.assertEqual(['maintained'], self.u.parts)
-        self.assertEqual('%d.%d' % (MAJOR, MINOR), self.u.ucs_version)
-        self.assertEqual(PATCH, self.u.patchlevel)
         self.assertEqual(ERRAT, self.u.erratalevel)
-        self.assertEqual(MAJOR, self.u.version_major)
-        self.assertEqual(MINOR, self.u.version_minor)
 
     def test_get_releases(self):
         self._uri({
