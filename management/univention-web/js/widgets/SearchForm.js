@@ -84,8 +84,8 @@ define([
 					name: 'submit',
 					showLabel: false,
 					// label: _('Search'),
-					'class': 'ucsIconButton',
-					iconClass: 'iconSearch'
+					'class': 'ucsIconButtonHighlighted',
+					iconClass: 'search'
 				});
 			}
 

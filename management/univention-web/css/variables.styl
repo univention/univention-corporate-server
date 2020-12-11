@@ -114,18 +114,19 @@ $button-border-radius ?= 2px								// Rounded corner radius for buttons (except
 
 // Buttons in LayoutRow
 // the exact space the Button takes up (padding included)
-$_layoutrow-button-width = "%s + %s + %s" % ($material-textfield-height $labelpane-padding-left $labelpane-padding-right)
+$_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
 $layoutrow-button-width = "calc(%s)" % ($_layoutrow-button-width)
+$layoutrow-button-top = s('calc((var(--inputfield-size) - var(--g-button-size)) / 2)')
 
 $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
 	if not amount-of-visual-buttons
 		amount-of-visual-buttons = amount-of-physical-buttons
 
 	// Make physical space. With only this the button and the element before the button will overlap. Need to make visual space too
-	margin-right:  "calc( -1 * (%s * (%s))      )" % (amount-of-physical-buttons $_layoutrow-button-width)
+	margin-right:  "calc( -1 * (%s * (%s)))" % (amount-of-physical-buttons $_layoutrow-button-width)
 
 	// Make visual space.
-	padding-right: "calc(  1 * (%s * (%s)) + %s )" % (amount-of-visual-buttons $_layoutrow-button-width $labelpane-padding-right)
+	padding-right: "calc(  1 * (%s * (%s)))" % (amount-of-visual-buttons $_layoutrow-button-width)
 
 
 // Input widgets
@@ -355,6 +356,7 @@ material-shadow(level)
 		box-shadow: none
 
 
+/*
 // material-flat-button()
 	// .dijitButtonNode
 		// box-shadow: none
@@ -404,6 +406,7 @@ material-shadow(level)
 
 // umc-icon-button-aligned-to-textfield()
 	// umc-icon-button($material-textfield-height)
+*/
 
 
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)

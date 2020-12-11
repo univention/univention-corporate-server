@@ -471,7 +471,7 @@ define([
 			var buttons = [];
 			if (metaInfo.help_link) {
 				buttons = [{name: 'help',
-					iconClass: 'umcHelpIconWhite',
+					iconClass: 'help-circle',
 					label: _('Help'),
 					callback: lang.hitch(this, function() {
 						window.open(metaInfo.help_link);
@@ -843,7 +843,17 @@ define([
 			if (view != this._grid.activeViewMode) {
 				_saveGridViewPreference(view);
 				this._grid.changeView(view);
-				this._searchForm._buttons.changeView.set('iconClass', lang.replace('umcGridViewIcon-{activeViewMode}', this._grid));
+				var iconClass = {
+					tile: 'list',
+					default: 'grid',
+				}[view];
+				this._searchForm._buttons.changeView.set('iconClass', iconClass);
+			}
+		},
+
+		_updateSearchFormClasses: function() {
+			if (this._searchForm) { // this is called during the creation of SearchForm. so this._searchForm is not yet set
+				domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox);
 			}
 		},
 
@@ -915,6 +925,7 @@ define([
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
+					'class': 'umcTextBoxDark',
 					autoHide: true,
 					label: _('Search in:'),
 					value: containers[0].id || containers[0],
@@ -936,6 +947,7 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
+				'class': 'umcTextBoxDark',
 				autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
@@ -977,6 +989,7 @@ define([
 				type: ComboBox,
 				autoHide: true,
 				name: 'objectProperty',
+				'class': 'umcTextBoxDark',
 				label: _('Property'),
 				staticValues: objProperties,
 				dynamicValues: lang.hitch(this, function(options) {
@@ -1021,13 +1034,17 @@ define([
 				type: MixedInput,
 				name: 'objectPropertyValue',
 				label: '&nbsp;',
+				'class': 'umcTextBoxDark',
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
 					return moduleCache.getValues(this._searchForm.getWidget('objectType').get('value'), options.objectProperty);
 				}),
 				umcpCommand: umcpCmd,
-				depends: 'objectProperty'
+				depends: 'objectProperty',
+				onValuesLoaded: lang.hitch(this, function() {
+					this._updateSearchFormClasses();
+				})
 			}]);
 			layout[0].push('objectType');
 			if (hasSuperordinates) {
@@ -1050,10 +1067,11 @@ define([
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
 					name: 'toggleSearch',
-					// showLabel: false,
+					showLabel: false,
 					labelConf: {
 						'class': 'umcSearchFormSubmitButton'
 					},
+					'class': 'ucsIconButtonHighlighted',
 					iconClass: 'filter',
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
@@ -1067,7 +1085,6 @@ define([
 								this._searchForm.getWidget(iWidget.name).reset();
 							}));
 						}
-						domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
 
 						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, search);
@@ -1080,11 +1097,14 @@ define([
 						name: 'changeView',
 						showLabel: false,
 						label: _('Toggle visual presentation'),
-						iconClass: 'umcGridViewIcon-default',
-						'class': 'umcSearchFormChangeViewButton umcFlatButton',
+						iconClass: 'grid',
+						'class': 'umcSearchFormChangeViewButton ucsIconButtonHighlighted',
 						callback: lang.hitch(this, '_toggleGridView')
 					});
-					layout.push(['changeView']);
+					layout.push({
+						layoutRowClass: 'umcSearchFormChangeViewButton',
+						layout: ['changeView']
+					});
 				}
 			}
 
@@ -1099,7 +1119,7 @@ define([
 				_getValueAttr: lang.hitch(this, '_getValueAttr'),
 				onSearch: lang.hitch(this, 'filter')
 			});
-			domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
+			this._updateSearchFormClasses();
 			// only allow _updateVisibility calls on ComboBoxes if search is advanced.
 			// prevents ComboBoxes from being shown when the values are loaded and then
 			// immediately hidden again because the search form is in simple mode.
@@ -1190,14 +1210,14 @@ define([
 			var menu = new Menu({});
 			menu.addChild(this._menuEdit = new MenuItem({
 				label: _('Edit'),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit-2',
 				onClick: lang.hitch(this, function() {
 					this.createDetailPage('edit', this._navContextItem.objectType, this._navContextItem.id);
 				})
 			}));
 			menu.addChild(this._menuDelete = new MenuItem({
 				label: _('Delete'),
-				iconClass: 'umcIconDelete',
+				iconClass: 'trash',
 				onClick: lang.hitch(this, function() {
 					this.removeObjects([this._navContextItem]);
 				})
@@ -1210,7 +1230,7 @@ define([
 			}));
 			menu.addChild(new MenuItem({
 				label: _('Reload'),
-				iconClass: 'umcIconRefresh',
+				iconClass: 'refresh-cw',
 				onClick: lang.hitch(this, 'reloadTree')
 			}));
 
@@ -1297,6 +1317,7 @@ define([
 			if ('navigation' != this.moduleFlavor) {
 				var widgets = this._searchForm._widgets;
 				var toggleButton = this._searchForm._buttons.toggleSearch;
+				domClass.toggle(toggleButton.domNode, 'umcSearchFormToggleSearchButton--advanced', this._isAdvancedSearch);
 				if (this._isAdvancedSearch) {
 					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 1 /*2*/); // if 2 we have to select != all object types
 					// now it gets dirty
@@ -1326,7 +1347,6 @@ define([
 					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('Simplified options'));
-					toggleButton.set('iconClass', 'umcDoubleLeftIcon');
 				} else {
 					widgets.objectType.set('visible', false);
 					if ('container' in widgets) {
@@ -1335,7 +1355,6 @@ define([
 					widgets.objectProperty.set('visible', false);
 					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('Advanced options'));
-					toggleButton.set('iconClass', 'umcDoubleRightIcon');
 				}
 				this.layout();
 			}

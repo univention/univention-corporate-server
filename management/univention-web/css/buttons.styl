@@ -1,11 +1,10 @@
-@require "icons.styl"
 @require "HTMLElements.styl"
 
 //// overarching button styling
 .ucsButton
 	--bgc: transparent
 	--bgc-state: transparent
-	--button-size: 2rem
+	--button-size: var(--g-button-size)
 	--button-iconSize: 1rem
 	margin: 0
 	font-size: var(--button-font-size)
@@ -118,7 +117,7 @@
 	align-items: center
 	justify-content: center
 	background-color: var(--bgc-state)
-	border-radius: var(--border-radius-circles)
+	border-radius: var(--button-icon-border-radius)
 	transition: var(--button-bgc-transition)
 
 	&:hover,
@@ -141,12 +140,16 @@
 			--bgc-state: var(--button-icon-bgc-overlay-disabled)
 			opacity: 0.4
 
-	border-radius: var(--border-radius-circles)
+	border-radius: var(--button-icon-border-radius)
 
 	.dijitButtonContents
 		width: var(--button-size)
 	&ToFontSize
 		--button-size: 1em
+
+.ucsIconButtonHighlighted
+	@extends .ucsIconButton
+	--bgc: var(--button-icon-highlighted-bgc)
 
 .ucsLinkButton
 	--button-size: auto
@@ -161,5 +164,5 @@
 	cursor: pointer
 
 
-.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.ucsLinkButton):not(.ucsMenuButton):not(.umcCategoryButton)
+.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.ucsIconButtonHighlighted):not(.ucsLinkButton):not(.ucsMenuButton):not(.umcCategoryButton)
 	@extends .ucsNormalButton

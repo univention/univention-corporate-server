@@ -1,24 +1,14 @@
 /* umcSearchFormChangeViewButton */
+.umc .umcUDMSearchForm .umcLayoutRow--umcSearchFormChangeViewButton {
+	display: flex;
+	justify-content: flex-end;
+	margin: 0;
+}
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton {
-	float: right;
-	margin-top: -2em;
 	position: relative /* needed so that we can hover without the element above blocking (if extended search is activated) */
 }
-
-.umc .umcUDMSearchForm .umcSearchFormChangeViewButton .dijitIcon {
-	background: url('../../js/dijit/themes/umc/images/udmGridViewIcons.svg');
-	background-size: 46px 150px;
-	background-position: 0px 0px;
-	width: 46px;
-	height: 20px;
-	margin-left: 8px
-}
-
-.umc .umcUDMSearchForm .umcSearchFormChangeViewButton .umcGridViewIcon-default {
-	background-position: 0px 0px;
-}
-.umc .umcUDMSearchForm .umcSearchFormChangeViewButton .umcGridViewIcon-tile {
-	background-position: 0px -78px;
+.umcSearchFormToggleSearchButton--advanced {
+	color: var(--color-primary);
 }
 /* umcSearchFormChangeViewButton END */
 

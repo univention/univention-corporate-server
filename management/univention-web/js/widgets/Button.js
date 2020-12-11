@@ -110,7 +110,10 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			if (this.defaultButton) {
+			var addPrimaryClass = this.defaultButton
+				&& !domClass.contains(this.domNode, 'ucsIconButton')
+				&& !domClass.contains(this.domNode, 'ucsIconButtonHighlighted');
+			if (addPrimaryClass) {
 				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsNormalButton');
 			}
 

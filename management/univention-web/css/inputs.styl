@@ -5,11 +5,12 @@
 	--color: var(--font-color-contrast-high)
 	--border-color: transparent
 	--local-icon-color: var(--color)
+	--bgc: var(--inputfield-bgc)
 	position: relative
-	height: 3rem
+	height: var(--inputfield-size)
 	width: 100%
 	color: var(--color)
-	background-color: var(--color-grey8)
+	background-color: var(--bgc)
 	border: 1px solid var(--border-color)
 	border-radius: var(--border-radius-interactable)
 	transition: background-color, color, border
@@ -39,6 +40,9 @@
 .dijitTextBoxDisabled .umcTextBox__downArrowButton,
 .umcTextBox__validationIcon
 	pointer-events: none
+
+.umcTextBoxDark
+	--bgc: var(--inputfield-dark-bgc)
 
 
 // layout

@@ -1,0 +1,20 @@
+@require "../variables.styl"
+
+.umc .umcSearchForm
+	.umcSearchFormSubmitButton
+		position: relative // needed so that the submit button is visible in the UDM searchform. when the input field overlaps the umcSearchFormSubmitButton
+		top: $layoutrow-button-top
+
+	.umcLabelPane.umcSearchFormElementBeforeSubmitButton
+		$layoutrow--make-space-for-buttons(1)
+
+	// the :not(.dijitDisplayNone) is for the LDAP directory module with 'All types' selected
+	.umcLabelPane-dijitCheckBox.umcSearchFormElementBeforeSubmitButton:not(.dijitDisplayNone) + .umcSearchFormSubmitButton
+		margin-top: -8px
+
+.umc .umcUDMSearchForm .umcLabelPane.umcSearchFormElementBeforeSubmitButton
+	$layoutrow--make-space-for-buttons(2, 2)
+.umc .umcUDMSearchForm.umcUDMSearchFormSimpleTextBox .umcLabelPane.umcSearchFormElementBeforeSubmitButton
+	$layoutrow--make-space-for-buttons(2, 1)
+.umc .umcUDMSearchForm.umcUDMSearchFormSimpleTextBox .umcLabelPane.umcSearchFormElementBeforeSubmitButton .dijitInputContainer
+	margin-right: var(--g-button-size)
