@@ -1,7 +1,7 @@
 High-Level-Overview
 ===================
 
-modules/univention/updater/tools.py#UCSRepo{,Pool,Dist}
+modules/univention/updater/tools.py#UCSRepoPool{,5,NoArch}
 	Structure on a repository server, relative to some UCS*Server
 
 modules/univention/updater/tools.py#UCS{Http,Local}Server
