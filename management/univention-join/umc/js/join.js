@@ -141,7 +141,7 @@ define([
 			this.inherited(arguments);
 			this.headerButtons = [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
+				iconClass: 'arrow-left',
 				label: _('Show Join status'),
 				callback: lang.hitch(this, 'onShowGrid')
 			}];
