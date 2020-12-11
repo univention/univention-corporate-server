@@ -1,3 +1,9 @@
+univention-web (4.0.0-9) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - MultiInput / Select / SearchForm
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Dec 2020 08:46:13 +0100
+
 univention-web (4.0.0-8) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adjust header styling

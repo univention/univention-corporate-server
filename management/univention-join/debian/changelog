@@ -1,3 +1,9 @@
+univention-join (12.0.2-3) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - adjust styling
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Dec 2020 08:47:56 +0100
+
 univention-join (12.0.2-2) unstable; urgency=medium
 
   * Bug #52437: Increase joinscript version and add --ucsversionstart
