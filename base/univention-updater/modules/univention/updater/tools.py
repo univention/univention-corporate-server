@@ -1383,7 +1383,7 @@ class UniventionUpdater(object):
         cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
         cmd.extend(pkglist)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in p.communicate())
         # count number of "Status: install ok installed" lines
         installed_correctly = len([x for x in stdout.splitlines() if x.endswith(' ok installed')])
         # if pkg count and number of counted lines match, all packages are installed
