@@ -1729,29 +1729,21 @@ class UniventionUpdater(object):
         For each component the UCR variable `repository/online/component/%s/version`
         is evaluated, which can be a space/comma separated combination of the following values:
 
-            current
+            `current` or /empty/
                 required component; must exist for requested version.
-            /empty/
-                optional component; used when exists for requested version.
             /major.minor/
                 use exactly this version.
         """
         ver = self.configRegistry.get('repository/online/component/%s/version' % component, '')
         versions = set()  # type: Set[UCS_Version]
-        mm_versions = None  # type: Optional[List[UCS_Version]]
         for version in RE_SPLIT_MULTI.split(ver):
-            if version in ('current', ''):  # all from start to end, defaults to same major
-                # Cache releases because it is network expensive
-                if mm_versions is None:
-                    mm_versions = self._releases_in_range(start, end, component=component)
-                versions |= set(mm_versions)
-            else:
-                version = UCS_Version(version if '-' in version else '%s-0' % version)
-                if start and version < start:
-                    continue
-                if end and version > end:
-                    continue
-                versions.add(version)
+            version = self.current_version if version in ('current', '') else UCS_Version(version if '-' in version else '%s-0' % version)
+
+            if start and version < start:
+                continue
+            if end and version > end:
+                continue
+            versions.add(version)
 
         return versions
 
@@ -1787,42 +1779,6 @@ class UniventionUpdater(object):
                         except DownloadError as e:
                             ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
-        return result
-
-    def _releases_in_range(self, start=None, end=None, component=None):
-        # type: (Optional[UCS_Version], Optional[UCS_Version], Optional[str]) -> List[UCS_Version]
-        """
-        Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.
-
-        :param UCS_Version start: The start UCS release.
-        :param UCS_Version end: The last UCS release.
-        :param str component: Optional name of required component.
-        :returns: A list of available UCS releases between `start` and `end`.
-        :rtype: list[UCS_Version]
-        """
-        if not start:
-            start = UCS_Version((self.version_major, 0, 0))
-
-        if not end:
-            end = self.current_version
-
-        result = [
-            version
-            for version in self.get_releases(self.server)
-            if start <= version <= end
-        ]
-
-        if component:
-            server = self._get_component_server(component)
-            pool = UCSRepoPool(prefix=server)
-            for version in result:
-                pool.mmp = version.mmp
-                try:
-                    assert server.access(pool)
-                except DownloadError:
-                    result.remove(version)
-
-        self.log.info('Releases [%s..%s) are %r', start, end, result)
         return result
 
     def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
