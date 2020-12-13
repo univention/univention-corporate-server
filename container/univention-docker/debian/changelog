@@ -1,3 +1,9 @@
+univention-docker (5.0.0-2) unstable; urgency=medium
+
+  * Bug #52478: Add statx system call to seccomp profile
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Sun, 13 Dec 2020 22:31:09 +0200
+
 univention-docker (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
