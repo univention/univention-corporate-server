@@ -69,7 +69,7 @@ define([
 			this.headerButtons = [{
 				name: 'submit',
 				label: _('Save'),
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'save',
 				callback: lang.hitch(this, function() {
 					this._save(this._form.get('value'));
 				})

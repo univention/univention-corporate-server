@@ -237,7 +237,7 @@ define([
 				name: 'add',
 				label: _( 'Add' ),
 				description: _( 'Adding a new UCR variable' ),
-				iconClass: 'umcIconAdd',
+				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
 				callback: lang.hitch(this, function() {
@@ -247,7 +247,7 @@ define([
 				name: 'edit',
 				label: _( 'Edit' ),
 				description: _( 'Setting the UCR variable, editing the categories and/or description' ),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit',
 				isStandardAction: true,
 				isMultiAction: false,
 				callback: lang.hitch(this, function(ids) {
@@ -259,7 +259,7 @@ define([
 				name: 'delete',
 				label: _( 'Delete' ),
 				description: _( 'Deleting the selected UCR variables' ),
-				iconClass: 'umcIconDelete',
+				iconClass: 'trash',
 				isStandardAction: true,
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {

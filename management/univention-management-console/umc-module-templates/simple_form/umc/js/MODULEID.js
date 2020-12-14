@@ -137,7 +137,7 @@ define([
 			// submit changes
 			var buttons = [ {
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'save',
 				label: _( 'Send' ),
 				'default': true,
 				callback: lang.hitch( this, function() {

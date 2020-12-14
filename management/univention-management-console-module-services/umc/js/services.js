@@ -62,7 +62,7 @@ define([
 			var actions = [{
 				name: 'start',
 				label: _('Start'),
-				iconClass: 'umcPlayIcon',
+				iconClass: 'play',
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/start';
@@ -77,7 +77,7 @@ define([
 			}, {
 				name: 'stop',
 				label: _('Stop'),
-				iconClass: 'umcStopIcon',
+				iconClass: 'square',
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/stop';
@@ -92,7 +92,7 @@ define([
 			}, {
 				name: 'restart',
 				label: _('Restart'),
-				iconClass: 'umcRefreshIcon',
+				iconClass: 'refresh-ccw',
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/restart';

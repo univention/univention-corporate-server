@@ -134,7 +134,7 @@ define([
 				} )
 			}, */{
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'tool',
 				label: _( 'Apply changes' ),
 				callback: lang.hitch(this, function() {
 					this.save();

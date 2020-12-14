@@ -615,7 +615,7 @@ define([
 							type: Button,
 							name: 'edit',
 							isPolicyEdit: true,
-							iconClass: 'umcIconEdit',
+							iconClass: 'edit',
 							disabled: true,
 							description: _('Edit policy'),
 							'class': 'umcUDMMultiInputEditButton umcOutlinedButton umcIconButton--aligned-to-textfield',

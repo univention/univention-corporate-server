@@ -107,7 +107,7 @@ define([
 				name: 'add',
 				label: _('Add object'),
 				description: _('Create a new object'),
-				iconClass: 'umcIconAdd',
+				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
 				callback: lang.hitch(this, '_addObject')
@@ -115,7 +115,7 @@ define([
 				name: 'edit',
 				label: _('Edit'),
 				description: _('Edit the selected object'),
-				iconClass: 'umcIconEdit',
+				iconClass: 'edit',
 				isStandardAction: true,
 				isMultiAction: false,
 				callback: lang.hitch(this, '_editObject')
@@ -125,7 +125,7 @@ define([
 				description: _('Deleting the selected objects.'),
 				isStandardAction: true,
 				isMultiAction: true,
-				iconClass: 'umcIconDelete',
+				iconClass: 'trash',
 				callback: lang.hitch(this, '_deleteObjects')
 			}];
 

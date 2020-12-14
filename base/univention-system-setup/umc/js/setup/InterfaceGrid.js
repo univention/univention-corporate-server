@@ -80,7 +80,7 @@ define([
 				actions: [{
 					name: 'edit',
 					label: _('Edit'),
-					iconClass: 'umcIconEdit',
+					iconClass: 'edit',
 					isMultiAction: false,
 					isStandardAction: true,
 					isContextAction: true,
@@ -88,13 +88,13 @@ define([
 				}, {
 					name: 'add',
 					label: _('Add'),
-					iconClass: 'umcIconAdd',
+					iconClass: 'plus',
 					isContextAction: false,
 					callback: lang.hitch(this, '_addInterface')
 				}, {
 					name: 'delete',
 					label: _('Delete'),
-					iconClass: 'umcIconDelete',
+					iconClass: 'trash',
 					isMultiAction: true,
 					isStandardAction: true,
 					callback: lang.hitch(this, function(ids, items) {
@@ -349,7 +349,6 @@ define([
 				headerButtons: [{
 					name: 'close',
 					label: _('Back to overview'),
-					iconClass: 'umcCloseIconWhite',
 					callback: _cleanup
 				}],
 				onFinished: _finished
