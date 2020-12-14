@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-7) unstable; urgency=medium
+
+  * Bug #52456: removed unnecessary second pull during upgrade
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Dec 2020 11:24:49 +0100
+
 univention-appcenter (9.0.1-6) unstable; urgency=medium
 
   * Bug #52453: use primary button styling
