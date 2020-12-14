@@ -1,3 +1,9 @@
+univention-portal (3.1.0-42) unstable; urgency=medium
+
+  * Bug #52430: flavor for portals/entry validation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Dec 2020 19:35:55 +0100
+
 univention-portal (3.1.0-41) unstable; urgency=medium
 
   * Bug #52405: Fix listner filter
