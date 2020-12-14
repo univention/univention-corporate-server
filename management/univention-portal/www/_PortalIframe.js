@@ -61,6 +61,7 @@ define([
 				<iframe 
 					class="portalIframe__iframe"
 					src="{{ iframe.url }}"
+					allow="geolocation; microphone; camera; midi; encrypted-media"
 					data-dojo-attach-point="iframeNode"
 				></iframe>
 			</div>
