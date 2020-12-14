@@ -40,6 +40,8 @@ VERSION=12
 
 joinscript_init
 
+umc_init
+
 ldap_master="$(ucr get ldap/master)"
 ldap_master_port="$(ucr get ldap/master/port)"
 

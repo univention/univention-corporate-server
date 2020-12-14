@@ -43,7 +43,7 @@ define([
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
 	return {
 		_portalJson: portalJson,
-		_portalLoadDeferred, null,
+		_portalLoadDeferred: null,
 
 		reload(admin_mode, wait_for_listener) {
 			if (this._portalLoadDeferred && !this._portalLoadDeferred.isFulfilled()) {
