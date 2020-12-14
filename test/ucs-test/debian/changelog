@@ -1,3 +1,10 @@
+ucs-test (10.0.1-38) unstable; urgency=medium
+
+  * Bug #51804: Revert the workaround in 96rename* to test if the 
+    problems root-cause has been resolved
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 09 Dec 2020 11:10:46 +0100
+
 ucs-test (10.0.1-37) unstable; urgency=medium
 
   * Bug #52443: add 82_saml/07_umc_session_timeout
