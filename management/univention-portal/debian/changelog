@@ -1,3 +1,14 @@
+univention-portal (4.0.3-4) unstable; urgency=medium
+
+  * Bug #52186: Fix multiple links in user menu and misc menu
+  * Bug #52206: allow use of microphone and camera in portal iframes
+  * Bug #52207: Enable entries for anonymous access only
+  * Bug #52430: operationset for portals/* udm objects
+  * Bug #52314: do not fetch portal.json multiple times
+  * Bug #52405: Fix flavor for validation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Dec 2020 22:32:27 +0100
+
 univention-portal (4.0.3-3) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - move menu styling to univention-web
