@@ -91,19 +91,19 @@ define([
 							linkPrio += link.priority;
 						}
 						menu.addEntry({
-							onClick: function() {
-								switch (link.linkTarget) {
+							onClick: lang.hitch(link, function() {
+								switch (this.linkTarget) {
 									case 'samewindow':
-										window.location = link.web_interface;
+										window.location = this.web_interface;
 										break;
 									case 'newwindow':
-										window.open(link.web_interface);
+										window.open(this.web_interface);
 										break;
 									case 'embedded':
-										topic.publish('/portal/iframes/open', link.dn, link.name, link.logo, link.href);
+										topic.publish('/portal/iframes/open', this.dn, this.name, this.logo, this.href);
 										break;
 								}
-							},
+							}),
 							label: link.name,
 							priority: basePrio + linkPrio
 						});
