@@ -79,7 +79,7 @@ define([
 				//   (like going backwards). Used in App Center; Bug #32649
 				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
 				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
-				this._percentageNode.innerHTML = newValue === Infinity ? "&nbsp;" : newValue + "%";
+				this._percentageNode.innerHTML = newValue === Infinity ? "&nbsp;" : Math.round(newValue) + "%";
 			}));
 
 			this.reset();
@@ -93,7 +93,7 @@ define([
 			this._criticalError = false;
 			this._errors = [];
 
-			this._component.set('content', entities.encode(this._initialComponent));
+			this._component.set('content', '<span>' + entities.encode(this._initialComponent) + '</span>');
 
 			// make sure that at least a not breakable space is printed
 			// ... this avoids vertical jumping of widgets
@@ -104,7 +104,7 @@ define([
 
 		setInfo: function(component, message, percentage, errors, critical) {
 			if (component) {
-				this._component.set('content', entities.encode(component));
+				this._component.set('content', '<span>' + entities.encode(component) + '</span>');
 			}
 			if (percentage) {
 				this._progressBar.set('value', percentage);
