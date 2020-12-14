@@ -264,7 +264,7 @@ define([
 		editMode: false,
 		_setEditModeAttr: function(editMode) {
 			this.editMode = editMode;
-			this._refresh().then(() => {
+			this._refresh(!editMode).then(() => {
 				if (editMode) {
 					this.portalPropertiesButton.load();
 				}
@@ -529,7 +529,7 @@ define([
 					if (pathname === '/univention/portal/loggedin/') {
 						login.start(null, null, true).then(() => {
 							this._setupEditModeIfAuthorized();
-							this._refresh();
+							this._refresh(true);
 						});
 						tools.toggleVisibility(this.loginIframeWrapper, false);
 						this._loginIframe.destroyRecursive();
@@ -563,8 +563,8 @@ define([
 			link.href = href;
 		},
 
-		_refresh: async function() {
-			await portalContent.reload(this.editMode);
+		_refresh: async function(wait_for_listener) {
+			await portalContent.reload(this.editMode, wait_for_listener);
 			this._reloadCss();
 			this.set('portalLogo', portalContent.logo());
 			this.set('portalTitle', portalContent.title());
@@ -1066,7 +1066,7 @@ define([
 
 
 			portalContent.subscribeRefresh(() => {
-				this._refresh();
+				this._refresh(true);
 			});
 			on(window, onDebounce('resize', 200), () => {
 				this.resize();
@@ -1380,10 +1380,10 @@ define([
 								}
 								if (!entryDn) {
 									portalContent.addEntry(parentDn, wizard.dn).then(() => {
-										this._refresh();
+										this._refresh(true);
 									});
 								} else {
-									this._refresh();
+									this._refresh(true);
 								}
 							}));
 						})));
@@ -1392,7 +1392,7 @@ define([
 						wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
 							portalContent.removeEntry(parentDn, entryIdx).then(() => {
 								wizardDialog.hide();
-								this._refresh();
+								this._refresh(true);
 							});
 						})));
 

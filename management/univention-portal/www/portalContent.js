@@ -43,9 +43,13 @@ define([
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
 	return {
 		_portalJson: portalJson,
+		_portalLoadDeferred, null,
 
-		reload(admin_mode) {
-			var loadDeferred = new Deferred();
+		reload(admin_mode, wait_for_listener) {
+			if (this._portalLoadDeferred && !this._portalLoadDeferred.isFulfilled()) {
+				return this._portalLoadDeferred;
+			}
+			this._portalLoadDeferred = new Deferred();
 
 			var headers = null;
 			if (admin_mode) {
@@ -60,18 +64,18 @@ define([
 
 			var _load = () => {
 				if (waitedTime >= 3000) {
-					loadDeferred.resolve();
+					this._portalLoadDeferred.resolve();
 					return;
 				}
 
 				setTimeout(() => {
 					json.load('/univention/portal/portal.json', require, result => {
 						if (result && result.portal && result.entries && result.categories) {
-							if (tools.isEqual(result, previousPortalJson)) {
+							if (wait_for_listener && tools.isEqual(result, previousPortalJson)) {
 								_load();
 							} else {
 								this._portalJson = result;
-								loadDeferred.resolve();
+								this._portalLoadDeferred.resolve();
 							}
 						} else {
 							_load();
@@ -82,7 +86,7 @@ define([
 			};
 
 			_load();
-			return loadDeferred;
+			return this._portalLoadDeferred;
 		},
 
 		logo() {
