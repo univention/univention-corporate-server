@@ -76,8 +76,12 @@
 	background-color: black!important;
 }
 .umcSummit2021Dialog .dijitDialogTitleBar {
+	display: none !important;
 	background: transparent !important;
 	padding: 32px 32px 19px 32px!important;
+}
+.umcSummit2021Dialog .umcSummit2021Message .dijitDialogTitleBar {
+	display: block !important;
 }
 .umcSummit2021Dialog .dijitDialogPaneContent {
 	background: transparent !important;
@@ -86,7 +90,7 @@
 .umcSummit2021Dialog__header-text {
 	color: #fff !important;
 	font-size: 24px !important;
-	margin-bottom: 0.2em !important;
+	margin: 1.2em 0 !important;
 }
 .umcSummit2021Dialog__header-text--important {
 	color: #00acb6 !important;
@@ -109,7 +113,7 @@
 .umcSummit2021Message li:before {
 	content: '\25CF' !important;
 	display: inline-block !important;
-	color: #6CB520 !important;
+	color: #dd0b2f !important;
 	width: 1em !important;
 	margin-left: -1em !important;
 }
@@ -124,7 +128,7 @@
 	display: block !important;
 	margin-bottom: 1em !important;
 	margin-top: 2em !important;
-	color: #6CB520 !important;
+	color: #dd0b2f !important;
 	/*text-transform: uppercase !important;*/
 	font-weight: bold !important;
 }
@@ -134,17 +138,19 @@
 }
 
 .umcSummit2021Message__link {
-	color: #00acb6 !important;
+	color: #dd0b2f !important;
+	text-decoration: none !important;
 }
 .umcSummit2021Message__link:before {
 	content: '\27A4' !important;
 	display: inline-block !important;
-	color: #00acb6 !important;
+	color: #dd0b2f !important;
 	margin-right: 0.5em !important;
 }
 
 .umcSummit2021Message__image {
-	width: 400px !important;
+	width: 450px !important;
+	height: 400px !important;
 	margin-left: 2em;
 	background: url(./univention-summit-2021.svg) no-repeat center center !important;
 	flex: 1 1 auto !important;
