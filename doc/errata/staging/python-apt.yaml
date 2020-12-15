@@ -7,11 +7,8 @@ fix: 1.4.2
 desc: |
  This update addresses the following issue:
  * Various memory and file descriptor leaks were found in apt-python files
-   python/arfile.cc, python/tag.cc, python/tarfile.cc, aka GHSL-2020-170. This
-   issue affects: python-apt 1.1.0~beta1 versions prior to
-   1.1.0~beta1ubuntu0.16.04.10; 1.6.5ubuntu0 versions prior to 1.6.5ubuntu0.4;
-   2.0.0ubuntu0 versions prior to 2.0.0ubuntu0.20.04.2; 2.1.3ubuntu1 versions
-   prior to 2.1.3ubuntu1.1; (CVE-2020-27351)
+   python/arfile.cc, python/tag.cc, python/tarfile.cc, aka GHSL-2020-170.
+   (CVE-2020-27351)
 bug: [52490]
 cve:
 - CVE-2020-27351
