@@ -503,18 +503,23 @@ define([
 			var message_base = '' +
 				'<div class="umcSummit2021Message">' +
 					'<div class="umcSummit2021Message__messageWrapper">' +
+						'{0}' +
 						'<ul>' +
-							'<li>{0}</li>' +
 							'<li>{1}</li>' +
 							'<li>{2}</li>' +
 							'<li>{3}</li>' +
+							'<li>{4}</li>' +
+							'<li>{5}</li>' +
+							'<li>{6}</li>' +
+							'<li>{7}</li>' +
 						'</ul>' +
-						'<a class="umcSummit2021Message__link" href="{4}" target="_blank">{5}</a>' +
+						'<a class="umcSummit2021Message__link" href="{8}" target="_blank">{9}</a>' +
 					'</div>' +
 					'<div class="umcSummit2021Message__image">' +
 					'</div>' +
 				'</div>';
 			var message_de = lang.replace(message_base, [
+				title,
 				'Virtual Venue am 28. Januar 2021',
 				'500 Teilnehmende',
 				'25 Aussteller & Sponsoren',
@@ -527,6 +532,7 @@ define([
 			]);
 
 			var message_en = lang.replace(message_base, [
+				title,
 				'Virtual Venue on January 28, 2021',
 				'500 Attendees',
 				'25 Exhibitors & Sponsors',
