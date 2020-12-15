@@ -1,3 +1,9 @@
+univention-management-console (11.0.6-1) unstable; urgency=medium
+
+  * Bug #52499: Show Univention Summit 2021 message in UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Dec 2020 16:45:16 +0100
+
 univention-management-console (11.0.5-27) unstable; urgency=medium
 
   * Bug #52371: die when child process crashes
