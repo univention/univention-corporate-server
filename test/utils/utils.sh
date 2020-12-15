@@ -836,16 +836,15 @@ update_apps_via_umc () {
 	# update the main app
 	python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
 
-	# TODO, do we want to update additional apps?
 	# In app tests we want to check the new version of the main app.
-	# Normally we do not want to update additional apps to the
-	# the test version, but if that becomes necessary, we can re-add
-	# the update
+	# And for the main app an update is required.
+	# Additional apps can have updates, but if no update is
+	# available, we just ignore this (-i for shared-utils/apps)
 	for app in "$@"; do
 		test "$app" = "$main_app" && continue
 		if ! assert_app_is_installed_and_latest "${app}"; then
 			# try update, but do not except that an update is available
-			python -m shared-utils/apps -U "$username" -p "$password" -a $app -u -i || rv=$?
+			python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -u -i || rv=$?
 		fi
 	done
 
