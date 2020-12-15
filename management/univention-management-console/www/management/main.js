@@ -497,46 +497,47 @@ define([
 			var title = '' +
 				'<div>' +
 					'<p class="umcSummit2021Dialog__header-text">' +
-						'Univention Summit 2021 - be open for <b class="umcSummit2021Dialog__header-text--important">Digital Sovereignty' +
+						'Univention Summit 2021' +
 					'</p>' +
 				'</div>';
 
 			var message_base = '' +
 				'<div class="umcSummit2021Message">' +
 					'<div class="umcSummit2021Message__messageWrapper">' +
-						'<span class="umcSummit2021Message__listHeader">{0}</span>' +
 						'<ul>' +
+							'<li>{0}</li>' +
 							'<li>{1}</li>' +
 							'<li>{2}</li>' +
 							'<li>{3}</li>' +
-							'<li>{4}</li>' +
 						'</ul>' +
-						'<p class="umcSummit2021Message__p">{7}</p>' +
-						'<a class="umcSummit2021Message__link" href="{5}" target="_blank">{6}</a>' +
+						'<a class="umcSummit2021Message__link" href="{4}" target="_blank">{5}</a>' +
 					'</div>' +
 					'<div class="umcSummit2021Message__image">' +
 					'</div>' +
 				'</div>';
 			var message_de = lang.replace(message_base, [
-				'Fakten:',
-				'23. Jan. - 24. Jan. 2021 in Bremen',
-				'400 Teilnehmer',
-				'Ausstellung mit 25 Soft- und Hardware-Herstellern',
-				'Keynotes | Workshops | Round Tables | IT-Barcamp | Praxisvorträge | Get-together',
-				'https://www.univention-summit.de/?pk_campaign=Summit20-UMC-Popup',
-				'www.univention-summit.de',
-				'UCS-Anwender, Open-Source-Hersteller und Univention treffen und alles über UCS 5 und Best Practices von UCS aus erster Hand erfahren.'
+				'Virtual Venue am 28. Januar 2021',
+				'500 Teilnehmende',
+				'25 Aussteller & Sponsoren',
+				'Keynotes, Workshops, Round Tables & Praxisvorträge',
+				'Roadmap: UCS 5 und UCS@school 5',
+				'Digitale Souveränität: Phoenix, Gaia X und SCS',
+				'Digitale Bildung: Bildungs-Cloud, Schulportale und IT-Lösungen',
+				'https://www.univention-summit.de/?pk_campaign=Summit21-UMC-Popup',
+				'Jetzt registrieren'
 			]);
 
 			var message_en = lang.replace(message_base, [
-				'Facts:',
-				'January 23 - 24, 2021 in Bremen | Germany',
-				'400 Attendees',
-				'Exhibition with 25 software and hardware developers',
-				'Keynotes | Workshops | Round tables | IT Barcamp | Practice lectures | Get-together',
-				'https://www.univention-summit.com/?pk_campaign=Summit20-UMC-Popup',
-				'www.univention-summit.com',
-				'Meet UCS users, open source developers and Univention and learn all about UCS 5 and UCS best practices at first hand.'
+				'Univention Summit 2021',
+				'Virtual Venue on January 28, 2021',
+				'500 Attendees',
+				'25 Exhibitors & Sponsors',
+				'Keynotes, Workshops, Round Tables & Best Practices',
+				'Roadmap: UCS 5 and UCS@school 5',
+				'Digital Sovereignty: Phoenix, Gaia X and SCS',
+				'Digital Education: Educational Cloud, School Portals and IT Solutions',
+				'https://www.univention-summit.com/?pk_campaign=Summit21-UMC-Popup',
+				'Register now'
 			]);
 
 			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
