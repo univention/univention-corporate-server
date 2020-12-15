@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-11-14 13:58+0100\n"
+"POT-Creation-Date: 2020-12-15 02:38+0100\n"
 "PO-Revision-Date: 2015-07-01 12:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,7 +35,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:521 umc/python/setup/util.py:184
+#: umc/python/setup/util.py:184 umc/python/setup/__init__.py:521
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -108,7 +108,7 @@ msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
-#: umc/python/setup/setup_script.py:438
+#: umc/python/setup/setup_script.py:436
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
@@ -158,14 +158,6 @@ msgstr "Ungültiger Gerätename: %r"
 
 #: umc/python/setup/__init__.py:537
 msgid ""
-"It is not possible to install KVM and XEN components on one system. Please "
-"select only one of these components."
-msgstr ""
-"Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
-"installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
-
-#: umc/python/setup/__init__.py:539
-msgid ""
 "It is not possible to install Samba 3 and Samba 4 on one system. Please "
 "select only one of these components."
 msgstr ""
@@ -196,7 +188,9 @@ msgstr "Mehrere IPv4 Adressen sind an diesem Gerät nicht unterstützt."
 
 #: umc/python/setup/checks/univention_join.py:61
 msgid "No UCS Primary Directory Node could be found at the address."
-msgstr "Es wurde kein UCS Primary Directory Node unter der angegebenen Adresse gefunden."
+msgstr ""
+"Es wurde kein UCS Primary Directory Node unter der angegebenen Adresse "
+"gefunden."
 
 #: umc/python/setup/__init__.py:420
 msgid "No fully qualified domain name has been specified for the system."
@@ -223,7 +217,7 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:94
 msgid "Request Timeout"
-msgstr ""
+msgstr "Zeitüberschreitung der Anfrage"
 
 #: umc/python/setup/__init__.py:439
 msgid "State"
@@ -249,7 +243,7 @@ msgstr ""
 "Die UCS Version der Domäne, der Sie beitreten wollen ({}), ist niedriger als "
 "als die lokale UCS Version ({}). Diese Konstellation ist nicht unterstützt."
 
-#: umc/python/setup/util.py:1145
+#: umc/python/setup/util.py:1143
 msgid ""
 "The connection to the Active Directory server failed. Please recheck the "
 "address."
@@ -257,7 +251,7 @@ msgstr ""
 "Die Verbindung zum Active Directory Server ist fehlgeschlagen. Bitte "
 "überprüfen Sie die Adresse."
 
-#: umc/python/setup/util.py:1148
+#: umc/python/setup/util.py:1146
 msgid ""
 "The connection to the Active Directory server was refused. Please recheck "
 "the password."
@@ -267,10 +261,11 @@ msgstr ""
 
 #: umc/python/setup/checks/univention_join.py:64
 msgid ""
-"The connection to the UCS Primary Directory Node was refused. Please recheck the password."
+"The connection to the UCS Primary Directory Node was refused. Please recheck "
+"the password."
 msgstr ""
-"Die Verbindung zum UCS Primary Directory Node wurde abgelehnt. Bitte überprüfen Sie das "
-"Passwort."
+"Die Verbindung zum UCS Primary Directory Node wurde abgelehnt. Bitte "
+"überprüfen Sie das Passwort."
 
 #: umc/python/setup/__init__.py:450
 #, python-format
@@ -279,7 +274,7 @@ msgid ""
 msgstr ""
 "Der folgende Wert ist zu lang, es sind nur %(max)s Zeichen erlaubt: %(name)s"
 
-#: umc/python/setup/util.py:1151
+#: umc/python/setup/util.py:1149
 msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
 "This is a requirement for the Active Directory domain join."
@@ -430,8 +425,8 @@ msgstr ""
 "\n"
 
 #~ msgid ""
-#~ "%s Appliance could not be joined because the license on the Primary Directory Node is "
-#~ "not activated."
+#~ "%s Appliance could not be joined because the license on the Primary "
+#~ "Directory Node is not activated."
 #~ msgstr ""
 #~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
 #~ "auf dem Primary Directory Node vor."
@@ -443,6 +438,13 @@ msgstr ""
 
 #~ msgid "Could not query App Center: %s"
 #~ msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
+
+#~ msgid ""
+#~ "It is not possible to install KVM and XEN components on one system. "
+#~ "Please select only one of these components."
+#~ msgstr ""
+#~ "Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
+#~ "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
 #~ msgid ""
 #~ "The system role may not change on a system that has already joined to "

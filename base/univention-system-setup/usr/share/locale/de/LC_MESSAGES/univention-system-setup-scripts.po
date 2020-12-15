@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-11-14 14:50+0100\n"
+"POT-Creation-Date: 2020-12-15 02:38+0100\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Backing up old SSL certificate"
 msgstr "Sichern der alten SSL-Zertifikate"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:304
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:305
 msgid "Configure"
 msgstr "Einrichten von"
 
@@ -54,7 +54,7 @@ msgstr "Einrichten von Kerberos-Einstellungen..."
 msgid "Configuring reverse DNS settings..."
 msgstr "Einrichten von Reverse-DNS-Einstellungen..."
 
-#: usr/lib/univention-system-setup/scripts/05_role/10role:42
+#: usr/lib/univention-system-setup/scripts/05_role/10role:43
 msgid "Configuring server role"
 msgstr "Einrichten der Systemrolle"
 
@@ -109,7 +109,7 @@ msgstr ""
 "Die Zeit zwischen dem UCS-System und dem Active Directory Domänencontroller "
 "konnte nicht synchronisiert werden: %s"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:254
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:255
 msgid "Domain setup (this might take a while)"
 msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Failed to create the Administrator account in UCS."
 msgstr "Das Administrator Konto konnte in UCS nicht erstellt werden."
 
-#: umc/python/setup/setup_script.py:438
+#: umc/python/setup/setup_script.py:436
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Kein Paket für Rolle %s gefunden"
@@ -156,19 +156,15 @@ msgstr "UUID generieren"
 msgid "Generating locales"
 msgstr "Erstellen der Locale-Daten"
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/15_install_univention_welcome_screen:37
-msgid "Installing univention-welcome-screen"
-msgstr "Installiere univention-welcome-screen"
-
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:134
 msgid "Join has been finished successfully."
 msgstr "Der Domänenbeitritt wurde erfolgreich abgeschlossen."
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:260
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:261
 msgid "Preparing domain join"
 msgstr "Vorbereitung des Domänenbeitritts"
 
-#: usr/lib/univention-system-setup/scripts/05_role/10role:48
+#: usr/lib/univention-system-setup/scripts/05_role/10role:49
 msgid "Preparing package lists..."
 msgstr "Vorbereiten der Paketlisten..."
 
@@ -176,7 +172,7 @@ msgstr "Vorbereiten der Paketlisten..."
 msgid "Recreate SSL certificate for %s"
 msgstr "Erstellen von SSL-Zertifikate für %s"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:171
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:168
 msgid "Recreating SSH keys"
 msgstr "Erstellen von SSH-Schlüsseln"
 
@@ -192,7 +188,7 @@ msgstr "Umbennen bekannter SID-Objekte..."
 msgid "Running Samba join script..."
 msgstr "Ausführen des Samba Join-Skripts..."
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:353
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:354
 msgid "Running appliance scripts"
 msgstr "Ausführen der Appliance-Skripte"
 
@@ -204,24 +200,8 @@ msgstr "Setzen des IPv4-Gateways"
 msgid "Setting IPv6 gateway"
 msgstr "Setzen des IPv6-Gateways"
 
-#: usr/lib/univention-system-setup/scripts/10_basis/14ldap_basis:35
-msgid "Setting LDAP base"
-msgstr "Einrichten der LDAP-Basis"
-
-#: usr/lib/univention-system-setup/scripts/10_basis/16windows_domain:35
-msgid "Setting Windows domain"
-msgstr "Einrichten der Windows-Domäne"
-
-#: usr/lib/univention-system-setup/scripts/10_basis/12domainname:37
-msgid "Setting domain name"
-msgstr "Einrichten des Domänennamens"
-
 #: usr/lib/univention-system-setup/scripts/30_net/16forwarder:35
 msgid "Setting external name servers"
-msgstr "Einrichten des Rechnernamens"
-
-#: usr/lib/univention-system-setup/scripts/10_basis/10hostname:35
-msgid "Setting hostname"
 msgstr "Einrichten des Rechnernamens"
 
 #: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:35
@@ -253,9 +233,12 @@ msgid "Starting Active Directory connection service..."
 msgstr "Active Directory-Verbindungsdienst wird gestartet..."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:137
-msgid "The AD member mode can only be configured on a Primary Directory Node server."
+msgid ""
+"The AD member mode can only be configured on a Primary Directory Node "
+"server."
 msgstr ""
-"Der AD-Member-Modus kann nur auf einem Primary Directory Node-System konfiguriert werden."
+"Der AD-Member-Modus kann nur auf einem Primary Directory Node-System "
+"konfiguriert werden."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:115
 msgid ""
@@ -282,7 +265,7 @@ msgid "The sambaSID could not set for the Administrator account in UCS."
 msgstr ""
 "Die sambaSID für das Administrator Konto konnte in UCS nicht gesetzt werden."
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:172
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:169
 msgid "This might take a moment..."
 msgstr "Dies kann einen Moment dauern..."
 
@@ -298,3 +281,18 @@ msgstr "Aktualisiere das System"
 
 #~ msgid "Configuring init-scripts"
 #~ msgstr "Einrichten der Init-Skripte"
+
+#~ msgid "Installing univention-welcome-screen"
+#~ msgstr "Installiere univention-welcome-screen"
+
+#~ msgid "Setting LDAP base"
+#~ msgstr "Einrichten der LDAP-Basis"
+
+#~ msgid "Setting Windows domain"
+#~ msgstr "Einrichten der Windows-Domäne"
+
+#~ msgid "Setting domain name"
+#~ msgstr "Einrichten des Domänennamens"
+
+#~ msgid "Setting hostname"
+#~ msgstr "Einrichten des Rechnernamens"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-11-20 11:08+0100\n"
+"POT-Creation-Date: 2020-12-15 02:38+0100\n"
 "PO-Revision-Date: 2020-07-21 11:53+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -13,144 +13,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-#: ApplianceWizard.js:128
-msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
-msgstr ""
-"Ungültige E-Mail-Adresse!<br/>Erwartetes Format: <i>mail@beispiel.de</i>"
-
-#: ApplianceWizard.js:136
-msgid "Invalid IP address!<br/>Expected format is IPv4 or IPv6."
-msgstr "Ungültige IP-Adresse!<br/>Erwartetes Format ist IPv4 oder IPv6."
-
-#: ApplianceWizard.js:147
-msgid ""
-"Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number "
-"between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected "
-"format for IPv6 is a number between 0 and 128."
-msgstr ""
-"Ungültige IPv4-Netzmaske oder IPv6-Präfix!<br/>Erwartetes Format für IPv4 "
-"ist eine Zahl zwischen 0 und 32 oder ein Format vergleichbar zu "
-"<i>255.255.255.0</i>.<br/>Erwartetes Format für IPv6 ist eine Zahl zwischen "
-"0 und 128."
-
-#: ApplianceWizard.js:190
-msgid "Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>"
-msgstr ""
-"Ungültiger Domänenname!<br/>Erwartetes Format: <i>meinedomaene.intranet</i>"
-
-#: ApplianceWizard.js:197
-msgid ""
-"Invalid fully qualified domain name!<br/>Expected format: <i>hostname."
-"mydomain.intranet</i>"
-msgstr ""
-"Ungültiger vollqualifizierter Domänenname!<br/>Erwartetes Format: "
-"<i>rechnername.meinedomaene.intranet</i>"
-
-#: ApplianceWizard.js:205
-msgid ""
-"Invalid hostname or fully qualified domain name!<br/>Expected format: "
-"<i>myhost</i> or <i>hostname.mydomain.intranet</i>"
-msgstr ""
-"Ungültiger Rechnername oder vollständiger Domänenname!<br/>Erwartetes "
-"Format: <i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
-
-#: ApplianceWizard.js:213
-msgid ""
-"Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any "
-"special characters. Its structure needs to consist of at least two relative "
-"distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or "
-"'l' (e.g., dc=test,dc=net)."
-msgstr ""
-"Ungültige LDAP-Basis!<br/>Die LDAP-Basis darf weder Leer- noch Sonderzeichen "
-"enthalten. Ihre Struktur muss aus mindestens zwei Relative Distinguished "
-"Names (RDN) bestehen, die eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or "
-"'l' verwenden (z.B. dc=test,dc=net)."
-
-#: ApplianceWizard.js:259
-msgid "Validation error"
-msgstr "Validierungsfehler"
-
-#: ApplianceWizard.js:310
-msgid "Welcome to Univention Corporate Server (UCS)."
-msgstr "Wilkommen bei Univention Corporate Server (UCS)."
-
-#: ApplianceWizard.js:311
-msgid "UCS setup"
-msgstr "UCS-Einrichtung"
-
-#: ApplianceWizard.js:312
-msgid "UCS setup successful"
-msgstr "UCS-Einrichtung erfolgreich"
-
-#: ApplianceWizard.js:313
-msgid "UCS setup - An error occurred"
-msgstr "UCS-Einrichtung - Ein Fehler ist aufgetreten"
-
-#: ApplianceWizard.js:314
-msgid "Create a new UCS domain"
-msgstr "Erstellen einer neuen UCS-Domäne"
-
-#: ApplianceWizard.js:315
-msgid ""
-"Configure this system as first system for the new domain. Additional systems "
-"can join the domain later."
-msgstr ""
-"Dieses System als erstes System einer neuen Domäne einrichten. Zusätzliche "
-"Systeme können der Domäne später beitreten."
-
-#: ApplianceWizard.js:316 ApplianceWizard.js:1775 ApplianceWizard.js:1876
-msgid "E-mail address to activate UCS"
-msgstr "E-Mail-Adresse zur Aktivierung von UCS"
-
-#: ApplianceWizard.js:317
-msgid ""
-"<p>Enter the name of your organization, an e-mail address to activate UCS "
-"and a password for your <i>Administrator</i> account.</p><p>The password is "
-"mandatory, it will be used for the domain Administrator as well as for the "
-"local superuser <i>root</i>.</p>"
-msgstr ""
-"<p>Geben Sie den Namen Ihrer Organisation, eine E-Mail-Adresse für die "
-"Aktivierung von UCS sowie ein Passwort für das Konto <i>Administrator</i> an."
-"</p><p>Das Passwort ist ein Pflichtfeld. Es wird sowohl für das Domänen-"
-"Administrator-Konto als auch für den lokalen Superuser <i>root</i> verwendet."
-"</p>"
-
-#: ApplianceWizard.js:320
-#, javascript-format
-msgid "Welcome to the setup of %s Appliance."
-msgstr "Wilkommen bei der Einrichtung von %s Appliance."
-
-#: ApplianceWizard.js:321
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:326
 #, javascript-format
 msgid "%s Appliance"
 msgstr ""
 
-#: ApplianceWizard.js:322
-msgid "Setup successful"
-msgstr "Einrichtung erfolgreich"
-
-#: ApplianceWizard.js:323
-msgid "Setup - An error occurred"
-msgstr "Einrichtung - Ein Fehler ist aufgetreten"
-
-#: ApplianceWizard.js:324
-msgid "Manage users and permissions directly on this system"
-msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System"
-
-#: ApplianceWizard.js:325
-msgid ""
-"A new domain directory is created on this system. User and management data "
-"are stored locally."
-msgstr ""
-"Ein neues Domänenverzeichnis wird auf diesem System erstellt. Benutzer- und "
-"Verwaltungsdaten werden lokal gespeichert."
-
-#: ApplianceWizard.js:326
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2009
 #, javascript-format
-msgid "E-mail address to activate %s Appliance"
-msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
+msgid "%s Appliance has been successfully set up."
+msgstr "%s Appliance wurde erfolgreich eingerichtet."
 
-#: ApplianceWizard.js:327
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1152
+#, javascript-format
+msgid "%s GiB"
+msgstr ""
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1150
+#, javascript-format
+msgid "%s MiB"
+msgstr ""
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:463
+msgid "(Request address again)"
+msgstr "(Adresse erneut anfordern)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:571
+msgid "(configure proxy settings)"
+msgstr "(Einrichten von Proxy-Einstellungen)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1561
+msgid "<b>Unknown</b>"
+msgstr "<b>Unbekannt</b>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:427
+msgid "<b>Warning:</b> Not enough available memory"
+msgstr "<b>Warnung:</b> Nicht genügend freier Arbeitsspeicher"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2025
+msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
+msgstr ""
+"<p>Klicken Sie auf <i>Fertigstellen</i>, um UCS in Betrieb zu nehmen.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2016
+msgid "<p>Click on <i>Finish</i> for putting this system into operation.</p>"
+msgstr ""
+"<p>Klicken Sie auf <i>Fertigstellen</i>, um dieses System in Betrieb zu "
+"nehmen.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2014
+msgid ""
+"<p>Click on <i>Finish</i> to conclude the installation. The system will be "
+"prepared for the first boot procedure and will be rebooted afterwards.</p>"
+msgstr ""
+"<p>Klicken Sie auf <i>Fertigstellen</i> um die Installation abzuschließen. "
+"Anschließend wird das System auf den ersten Bootvorgang vorbereitet und neu "
+"gestartet.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:962
+msgid ""
+"<p>Enter the name of your organization and an e-mail address to activate "
+"UCS.</p>"
+msgstr ""
+"<p>Geben Sie den Namen Ihrer Organisation und eine E-Mail-Adresse für die "
+"Aktivierung von UCS ein.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:332
 #, javascript-format
 msgid ""
 "<p>Enter the name of your organization, an e-mail address to activate %s "
@@ -164,929 +91,20 @@ msgstr ""
 "sowohl für das Domänen-Administrator-Konto als auch für den lokalen "
 "Superuser <i>root</i> verwendet.</p>"
 
-#: ApplianceWizard.js:329
-msgid "A few questions are needed to complete the configuration process."
-msgstr "Ein paar Fragen sind notwendig, um die Einrichtung abzuschließen."
-
-#: ApplianceWizard.js:352
-msgid "Choose your language"
-msgstr "Wählen Sie Ihre Sprache aus"
-
-#: ApplianceWizard.js:365
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:322
 msgid ""
-"Enter a city nearby to preconfigure settings such as timezone, system "
-"language, keyboard layout."
+"<p>Enter the name of your organization, an e-mail address to activate UCS "
+"and a password for your <i>Administrator</i> account.</p><p>The password is "
+"mandatory, it will be used for the domain Administrator as well as for the "
+"local superuser <i>root</i>.</p>"
 msgstr ""
-"Geben Sie eine nahegelegene Stadt zur Einrichtung von Zeitzone, "
-"Systemsprache und Tastaturlayout ein."
-
-#: ApplianceWizard.js:366
-msgid "e.g., Boston..."
-msgstr "bspw. Bremen..."
-
-#: ApplianceWizard.js:373 ApplianceWizard.js:379 ApplianceWizard.js:1861
-msgid "Localization settings"
-msgstr "Standorteinstellungen"
-
-#: ApplianceWizard.js:380
-msgid "Choose your system's localization settings."
-msgstr "Wählen Sie die Systemsprache."
-
-#: ApplianceWizard.js:384
-msgid "Default system locale"
-msgstr "Standard-System-Sprachdefinition"
-
-#: ApplianceWizard.js:392
-msgid "Time zone"
-msgstr "Zeitzone"
-
-#: ApplianceWizard.js:399
-msgid "Keyboard layout"
-msgstr "Tastaturlayout"
-
-#: ApplianceWizard.js:411
-msgid "<b>Warning:</b> Not enough available memory"
-msgstr "<b>Warnung:</b> Nicht genügend freier Arbeitsspeicher"
-
-#: ApplianceWizard.js:413
-msgid "The available memory is not sufficient."
-msgstr "Der verfügbare Arbeitsspeicher reicht nicht aus."
-
-#: ApplianceWizard.js:421
-msgid "License agreement"
-msgstr "Lizenzvereinbarung"
-
-#: ApplianceWizard.js:422
-#, javascript-format
-msgid "Please read carefully the license agreement for %s Appliance."
-msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
-
-#: ApplianceWizard.js:431
-msgid "Domain and network configuration"
-msgstr "Domänen- und<br />Netzwerkeinstellung"
-
-#: ApplianceWizard.js:432
-msgid "Specify the network settings for this system."
-msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
-
-#: ApplianceWizard.js:447
-msgid "(Request address again)"
-msgstr "(Adresse erneut anfordern)"
-
-#: ApplianceWizard.js:453
-msgid "Obtain IP address automatically (DHCP)"
-msgstr "IP-Adresse automatisch beziehen (DHCP)"
-
-#: ApplianceWizard.js:466 ApplianceWizard.js:482 ApplianceWizard.js:500
-#: ApplianceWizard.js:518
-msgid "IPv4/IPv6 address {interface}"
-msgstr "IPv4/IPv6-Adresse {interface}"
-
-#: ApplianceWizard.js:475 ApplianceWizard.js:492 ApplianceWizard.js:510
-#: ApplianceWizard.js:528
-msgid "IPv4 net mask/IPv6 prefix {interface}"
-msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
-
-#: ApplianceWizard.js:536 ApplianceWizard.js:1915
-msgid "Gateway"
-msgstr "Gateway"
-
-#: ApplianceWizard.js:542
-msgid "Preferred DNS server"
-msgstr "Bevorzugter DNS-Server"
-
-#: ApplianceWizard.js:548
-msgid "Alternate DNS server"
-msgstr "Alternativer DNS-Server"
-
-#: ApplianceWizard.js:555
-msgid "(configure proxy settings)"
-msgstr "(Einrichten von Proxy-Einstellungen)"
-
-#: ApplianceWizard.js:561 ApplianceWizard.js:1927
-msgid "HTTP proxy"
-msgstr "HTTP-Proxy"
-
-#: ApplianceWizard.js:563 ApplianceWizard.js:697 ApplianceWizard.js:839
-#: ApplianceWizard.js:917
-msgid "more information"
-msgstr "mehr Informationen"
-
-#: ApplianceWizard.js:569
-msgid "Domain setup"
-msgstr "Domäneneinstellungen"
-
-#: ApplianceWizard.js:570
-msgid "Please select your domain settings."
-msgstr "Bitte wählen Sie die Domäneneinstellungen."
-
-#: ApplianceWizard.js:575
-msgid "Fast demo configuration"
-msgstr "Schnelle Demo-Konfiguration"
-
-#: ApplianceWizard.js:583
-msgid ""
-"Quick setup of a system for testing purposes. Several system configurations "
-"are predefined and cannot be changed at a later point."
-msgstr ""
-"Schnelle Einrichtung eines Systems zu Testzwecken. Einige "
-"Systemeinstellungen sind vorgegeben und können im Nachhinein nicht mehr "
-"geändert werden"
-
-#: ApplianceWizard.js:602
-msgid "Join into an existing UCS domain"
-msgstr "Einer bestehenden UCS-Domäne beitreten"
-
-#: ApplianceWizard.js:607
-msgid "Use this option if you already have one or more UCS systems."
-msgstr ""
-"Wählen Sie diese Option, falls bereits mindestens ein UCS-System existiert."
-
-#: ApplianceWizard.js:613
-msgid "Join into an existing Microsoft Active Directory domain"
-msgstr "Einer bestehenden Microsoft Active-Directory-Domäne beitreten"
-
-#: ApplianceWizard.js:618
-msgid ""
-"This system will become part of an existing non-UCS Active Directory domain."
-msgstr ""
-"Dieses System wird Teil einer existierenden nicht-UCS Active-Directory-"
-"Domäne."
-
-#: ApplianceWizard.js:624
-msgid "Do not use any domain"
-msgstr "Keine Domäne benutzen"
-
-#: ApplianceWizard.js:629
-msgid ""
-"This should only be used in rare use cases, for example as firewall systems."
-msgstr ""
-"Diese Einstellung sollte nur in speziellen Szenarien, z.B. Firewall-"
-"Systemen, gewählt werden."
-
-#: ApplianceWizard.js:634
-#, javascript-format
-msgid "If unsure, select <i>%s</i>."
-msgstr "Wenn unsicher, wählen Sie <i>%s</i>."
-
-#: ApplianceWizard.js:639
-msgid "System role"
-msgstr "Systemrolle"
-
-#: ApplianceWizard.js:640
-msgid "Specify the type of this system."
-msgstr "Eingabe des Typs dieses Systems."
-
-#: ApplianceWizard.js:651
-msgid ""
-"A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over "
-"the role of the Primary Directory Node permanently. It is recommended to use at least one "
-"Backup Directory Node in the domain."
-msgstr ""
-"Ein Backup Directory Node fungiert als Ersatzsystem für den Primary Directory Node und kann die Rolle "
-"des Primary Directory Nodes langfristig übernehmen. Es ist empfohlen, mindestens einen DC "
-"Backup in der Domäne zu verwenden."
-
-#: ApplianceWizard.js:662
-msgid ""
-"Replica Directory Node systems are ideal for site servers, they provide authentication "
-"services for the domain. Local services running on a Replica Directory Node can access the "
-"local LDAP database."
-msgstr ""
-"Replica Directory Node-Systeme bieten sich für Standortserver an, sie stellen "
-"Authentifizierungsdienste bereit. Lokale Dienste auf einem Replica Directory Node haben "
-"Zugriff auf die lokale LDAP-Datenbank."
-
-#: ApplianceWizard.js:668 ApplianceWizard.js:1846
-msgid "Managed Node"
-msgstr "Managed Node"
-
-#: ApplianceWizard.js:673
-msgid ""
-"Managed Nodes should be used for services which do not need a local "
-"authentication database, for example for file or print servers."
-msgstr ""
-"Managed Node sollten für Dienste genutzt werden, die keine lokale Datenbank "
-"für die Authentifizierung benötigen, beispielsweise Datei- oder Druckserver."
-
-#: ApplianceWizard.js:678 ApplianceWizard.js:1873
-msgid "Account information"
-msgstr "Kontoinformationen"
-
-#: ApplianceWizard.js:689 ApplianceWizard.js:1875
-msgid "Organization name"
-msgstr "Name der Organisation"
-
-#: ApplianceWizard.js:705
-msgid ""
-"Fill in the password for the system administrator user <b>root</b> and the "
-"domain administrative user account <b>Administrator</b>."
-msgstr ""
-"Füllen Sie das Passwort für den Systemadministrator-Benutzer <b>root</b> und "
-"den Domänenadministrator-Benutzeraccount <b>Administrator</b> aus."
-
-#: ApplianceWizard.js:710 ApplianceWizard.js:730 ApplianceWizard.js:774
-msgid "Password"
-msgstr "Passwort"
-
-#: ApplianceWizard.js:714
-msgid "Active Directory join information"
-msgstr "Active Directory-Kontoinformationen"
-
-#: ApplianceWizard.js:715 ApplianceWizard.js:736
-msgid ""
-"Enter name and password of a user account which is authorised to join a "
-"system into this domain."
-msgstr ""
-"Geben Sie Namen und Passwort eines Benutzerkontos an, das für den Beitritt "
-"eines Systems in diese Domäne berechtigt ist."
-
-#: ApplianceWizard.js:719
-msgid ""
-"Address of Active Directory domain controller or name of Active Directory "
-"domain"
-msgstr ""
-"Adresse des Active Directory-Domänencontrollers oder Name der Active "
-"Directory-Domäne"
-
-#: ApplianceWizard.js:724 ApplianceWizard.js:768
-msgid "Username"
-msgstr "Benutzername"
-
-#: ApplianceWizard.js:735
-msgid "Domain join information"
-msgstr "Informationen zum Domänenbeitritt"
-
-#: ApplianceWizard.js:740
-msgid "Start join at the end of the installation"
-msgstr "Domänenbeitritt am Ende der Installation starten"
-
-#: ApplianceWizard.js:752
-msgid "Search Primary Directory Node in DNS"
-msgstr "Primary Directory Node im DNS suchen"
-
-#: ApplianceWizard.js:760
-msgid "Hostname of the Primary Directory Node"
-msgstr "Rechnername des Primary Directory Nodes"
-
-#: ApplianceWizard.js:779
-msgid "No domain warning"
-msgstr "Warnung: Keine Domäne"
-
-#: ApplianceWizard.js:780
-msgid ""
-"The installed UCS system will not offer any web-based domain management "
-"functions and will not be able to be a domain member. Such an UCS system "
-"should only be used in some rare use cases, for example as firewall system."
-msgstr ""
-"Das installierte UCS-System wird keinerlei webbasierte Verwaltungsfunktionen "
-"anbieten und kein Mitglied einer Domäne werden. Solch ein UCS-System sollte "
-"nur in seltenen Fällen aufgesetzt werden, etwa als Firewall-System."
-
-#: ApplianceWizard.js:783 ApplianceWizard.js:828
-msgid "Host settings"
-msgstr "Rechnereinstellungen"
-
-#: ApplianceWizard.js:784 ApplianceWizard.js:829
-msgid "Specify the name of this system."
-msgstr "Eingabe des Namens dieses Systems."
-
-#: ApplianceWizard.js:792 ApplianceWizard.js:1593
-msgid "Hostname (unchangeable. Was set while creating the container)"
-msgstr ""
-"Rechnername (unveränderbar. Wurde beim Erstellen des Containers vergeben)"
-
-#: ApplianceWizard.js:800
-msgid "Domain name"
-msgstr "Domänenname"
-
-#: ApplianceWizard.js:813 ApplianceWizard.js:1793 ApplianceWizard.js:1888
-#: ApplianceWizard.js:1892 ApplianceWizard.js:1896
-msgid "Fully qualified domain name"
-msgstr "Vollqualifizierter Domänenname"
-
-#: ApplianceWizard.js:821 ApplianceWizard.js:1900
-msgid "LDAP base"
-msgstr "LDAP-Basis"
-
-#: ApplianceWizard.js:837
-msgid "Hostname or fully qualified domain name"
-msgstr "Rechnername oder vollständiger Domänenname"
-
-#: ApplianceWizard.js:847
-msgid "Local root password"
-msgstr "Lokales Root-Passwort"
-
-#: ApplianceWizard.js:852
-msgid "Server role inside the UCS@school domain"
-msgstr "Serverrolle in der UCS@school-Domäne"
-
-#: ApplianceWizard.js:853
-msgid ""
-"Choose which role this server is supposed to take in your UCS@school domain."
-msgstr ""
-"Wählen Sie welche Rolle dieses System in Ihrer UCS@school-Domäne übernehmen "
-"soll."
-
-#: ApplianceWizard.js:858
-msgid "School server of the educational network"
-msgstr "Schulserver im Edukativnetz"
-
-#: ApplianceWizard.js:864
-msgid ""
-"The server will provide educational UCS@school services for a school, e.g. "
-"exam mode."
-msgstr ""
-"Dieser Server wird edukative UCS@school-Dienste für eine Schule "
-"bereitstellen, z.B. den Klassenarbeitsmodus."
-
-#: ApplianceWizard.js:870
-msgid "School server of the administrative network"
-msgstr "Schulserver im Verwaltungsnetz"
-
-#: ApplianceWizard.js:875
-msgid ""
-"The server will only provide domain services to a school's administrative "
-"network, not educational UCS@school services."
-msgstr ""
-"Der Server wird nur Domänendienste für das Verwaltungsnetz einer Schule "
-"bereitstellen, jedoch keine edukativen UCS@school-Dienste."
-
-#: ApplianceWizard.js:881
-msgid "Central server"
-msgstr "Zentraler Server"
-
-#: ApplianceWizard.js:886
-msgid ""
-"The server will not be assigned to a specific school and will not provide "
-"UCS@school services."
-msgstr ""
-"Der Server wird keiner speziellen Schule zugeordnet und wird keine "
-"UCS@school-Dienste bereitstellen."
-
-#: ApplianceWizard.js:891
-msgid "Software configuration"
-msgstr "Software-Konfiguration"
-
-#: ApplianceWizard.js:892
-msgid ""
-"<p>Select UCS software components for installation on this system. This step "
-"can be skipped; the components are also available in the Univention App "
-"Center in the category <i>UCS components</i>.</p><p>Third-party software (e."
-"g., groupware) is also available through the Univention App Center.</p>"
-msgstr ""
-"<p>Wählen Sie UCS-Software-Komponenten zur Installation auf dem System aus. "
-"Dieser Schritt kann übersprungen werden; die Komponenten sind auch über das "
-"Univention App Center in der Kategorie <i>UCS-Komponenten</i> verfügbar.</"
-"p><p>Software von Drittanbietern (bspw. Groupware) kann ebenfalls über das "
-"Univention App Center installiert werden.</p>"
-
-#: ApplianceWizard.js:895
-msgid "Validation failed"
-msgstr "Validierungsfehler"
-
-#: ApplianceWizard.js:896
-msgid "The following entries could not be validated:"
-msgstr "Die folgenden Einträge konnten nicht validiert werden:"
-
-#: ApplianceWizard.js:904
-msgid "Confirm configuration settings"
-msgstr "Bestätigen der Einstellungen"
-
-#: ApplianceWizard.js:905
-msgid ""
-"Please confirm the chosen configuration settings which are summarized in the "
-"following."
-msgstr ""
-"Bitte bestätigen Sie die gewählten Einstellungen, die nachstehend "
-"zusammengefasst sind."
-
-#: ApplianceWizard.js:915
-msgid "Update system after setup"
-msgstr "System nach der Einrichtung aktualisieren"
-
-#: ApplianceWizard.js:1017
-msgid ""
-"<p>Enter the name of your organization and an e-mail address to activate UCS."
-"</p>"
-msgstr ""
-"<p>Geben Sie den Namen Ihrer Organisation und eine E-Mail-Adresse für die "
-"Aktivierung von UCS ein.</p>"
-
-#: ApplianceWizard.js:1163
-msgid "DHCP query failed."
-msgstr "DHCP-Anfrage schlug fehl."
-
-#: ApplianceWizard.js:1191
-#, javascript-format
-msgid ""
-"A valid e-mail address is required to activate %s Appliance. The address can "
-"be specified now or also at a later point in time. An e-mail with a "
-"personalized license key will then be sent to your e-mail address. This "
-"license can be uploaded after the setup process."
-msgstr ""
-"Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Appliance "
-"notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt "
-"angegeben werden. An diese E-Mail-Adresse wird Ihnen dann ein "
-"personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
-"Lizenzdialog der Univention Management Console eingespielt werden."
-
-#: ApplianceWizard.js:1193
-msgid ""
-"A valid e-mail address allows to activate the UCS system for using the "
-"Univention App Center. The address can be specified now or also at a later "
-"point in time. An e-mail with a personalized license key will then be sent "
-"to your e-mail address. This license can be uploaded via the license dialog "
-"in Univention Management Console."
-msgstr ""
-"Eine gültige E-Mail-Adresse ermöglicht, das UCS-System für die Verwendung "
-"des Univention App Centers freizuschalten. Die Adresse kann jetzt oder auch "
-"zu einem späteren Zeitpunkt angegeben werden. Eine E-Mail mit einem "
-"personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse zugesendet "
-"werden. Die Lizenz kann über den Lizenzdialog der Univention Management "
-"Console eingespielt werden."
-
-#: ApplianceWizard.js:1197
-msgid ""
-"For a specified host name, the domain name is automatically derived from the "
-"domain name server. A fully qualified domain may be necessary for mail "
-"server setups with differing domains.<br/>Note that the domain name "
-"<b>cannot</b> be changed after the UCS setup wizard has been completed."
-msgstr ""
-"Für einen angegebenen Rechnernamen wird der Domänenname automatisch von dem "
-"Domänen-DNS-Server abgeleitet. Ein vollständiger Domänenname kann für Mail-"
-"Server-Umgebungen mit unterschiedlichen Domänen notwendig sein.<br/>Der "
-"eingerichtete Domänenname kann nach dem Durchlaufen des UCS-"
-"Einrichtungsassistenten <b>nicht</b> mehr geändert werden."
-
-#: ApplianceWizard.js:1200
-msgid ""
-"A proxy address needs to be specified in the format: <i>http://proxy."
-"mydomain.intranet:3128</i><br/>Proxy access with username and password may "
-"be specified via the format: <i>http://username:password@proxy.mydomain."
-"intranet:3128</i>"
-msgstr ""
-"Eine Proxy-Adresse kann angegeben werden in dem Format: <i>http://proxy."
-"meinedomaene.intranet:3128</i><br/>Für Proxy-Zugang mit Benutzername und "
-"Password kann das folgenden Format verwendet werden: <i>http://benutzername:"
-"passwort@proxy.meinedomaene.intranet:3128</i>"
-
-#: ApplianceWizard.js:1203
-msgid "Install the latest errata and app updates after the setup."
-msgstr ""
-"Nach der Einrichtung alle verfügbaren Errata und App Updates installieren."
-
-#: ApplianceWizard.js:1205
-msgid "Install the latest patch level, errata and app updates after the setup."
-msgstr ""
-"Nach der Einrichtung alle verfügbaren Patch-Level, Errata und App Updates "
-"installieren."
-
-#: ApplianceWizard.js:1207
-msgid ""
-"Update system to the UCS release version of the Primary Directory Node and "
-"install all available errata and app updates after the setup."
-msgstr ""
-"System nach der Einrichtung auf die Release Version des Primary "
-"Directory Node aktualisieren und alle verfügbaren Errata und App Updates "
-"installieren."
-
-#: ApplianceWizard.js:1224
-#, javascript-format
-msgid "%s MiB"
-msgstr ""
-
-#: ApplianceWizard.js:1226
-#, javascript-format
-msgid "%s GiB"
-msgstr ""
-
-#: ApplianceWizard.js:1229
-msgid ""
-"At least {memory_min} RAM is required for the installation of {product_name}."
-msgstr ""
-"Mindestens {memory_min} Arbeitsspeicher sind notwendig für die Installation "
-"von {product_name}."
-
-#: ApplianceWizard.js:1230
-msgid "This system only has {memory_total} RAM."
-msgstr "Dieses System verfügt nur über {memory_total} Arbeitsspeicher."
-
-#: ApplianceWizard.js:1230
-msgid "Continuing the installation might lead to a non-functional system."
-msgstr ""
-"Ein Fortsetzen der Installation kann zu einem nicht funktionsfähigen System führen."
-
-#: ApplianceWizard.js:1231
-msgid ""
-"For further information please look at https://help.univention.com/t/13595."
-msgstr ""
-"Für weitere Informationen schauen Sie bitte auf https://help.univention.com/"
-"t/13595."
-
-#: ApplianceWizard.js:1234
-msgid "Univention Corporate Server"
-msgstr "Univention Corporate Server"
-
-#: ApplianceWizard.js:1311
-msgid "Software component"
-msgstr "Softwarekomponente"
-
-#: ApplianceWizard.js:1321
-msgid "No additional software component will be installed."
-msgstr "Keine zusätzliche Software-Komponente wird installiert."
-
-#: ApplianceWizard.js:1324
-msgid "Installation of one additional software component."
-msgstr "Installation einer zusätzlichen Software-Komponente."
-
-#: ApplianceWizard.js:1326
-#, javascript-format
-msgid "Installation of %d additional software components."
-msgstr "Installation von %d zusätzlichen Software-Komponenten."
-
-#: ApplianceWizard.js:1400
-msgid "Configure system"
-msgstr "System konfigurieren"
-
-#: ApplianceWizard.js:1402
-msgid "Reconfigure"
-msgstr "Erneut konfigurieren"
-
-#: ApplianceWizard.js:1403 ApplianceWizard.js:1406
-msgid "Finish"
-msgstr "Fertigstellen"
-
-#: ApplianceWizard.js:1405
-msgid "Ignore"
-msgstr "Ignorieren"
-
-#: ApplianceWizard.js:1543 ApplianceWizard.js:2546
-msgid "Waiting for restart of server components..."
-msgstr "Warten auf den Neustart der Server-Komponenten ..."
-
-#: ApplianceWizard.js:1634
-#, javascript-format
-msgid "<tr><td>City:</td><td>%s</td></tr>"
-msgstr "<tr><td>Stadt:</td><td>%s</td></tr>"
-
-#: ApplianceWizard.js:1636
-msgid "<b>Unknown</b>"
-msgstr "<b>Unbekannt</b>"
-
-#: ApplianceWizard.js:1637
-#, javascript-format
-msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
-msgstr "<tr><td>Zeitzone:</td><td>%s</td></tr>"
-
-#: ApplianceWizard.js:1654
-#, javascript-format
-msgid "<tr><td>Default locale:</td><td>%s</td></tr>"
-msgstr "<tr><td>Standard-Systemsprache:</td><td>%s</td></tr>"
-
-#: ApplianceWizard.js:1683
-#, javascript-format
-msgid "<tr><td>Keyboard layout:</td><td>%s</td></tr>"
-msgstr "<tr><td>Tastaturlayout:</td><td>%s</td></tr>"
-
-#: ApplianceWizard.js:1693
-msgid "Adapt settings"
-msgstr "Einstellungen anpassen"
-
-#: ApplianceWizard.js:1746
-#, javascript-format
-msgid ""
-"The hostname '%s' is already used for a computer with a different role, in "
-"the UCS domain. It is recommended to change the hostname for UCS to work "
-"properly."
-msgstr ""
-"Der Rechnername '%s' wird bereits für einen Rechner einer anderen Rolle "
-"verwendet. Es wird empfohlen den Rechnernamen zu ändern, damit UCS voll "
-"funktionsfähig ist."
-
-#: ApplianceWizard.js:1751 ApplianceWizard.js:2775 ApplianceWizard.js:2801
-#: ApplianceWizard.js:2913
-msgid "Adjust settings"
-msgstr "Einstellungen anpassen"
-
-#: ApplianceWizard.js:1754
-msgid "Continue with duplicate hostname"
-msgstr "Mit vergebenem Rechnernamen fortfahren"
-
-#: ApplianceWizard.js:1757 ApplianceWizard.js:1886 ApplianceWizard.js:2765
-#: ApplianceWizard.js:2781 ApplianceWizard.js:2809 ApplianceWizard.js:2919
-#: ApplianceWizard.js:2932 ApplianceWizard.js:3080 ApplianceWizard.js:3104
-msgid "Warning"
-msgstr "Warnung"
-
-#: ApplianceWizard.js:1786
-msgid "Network interfaces"
-msgstr "Netzwerkgeräte"
-
-#: ApplianceWizard.js:1789
-msgid "Primary network interface"
-msgstr "Primäres Netzwerkgerät"
-
-#: ApplianceWizard.js:1795 ApplianceWizard.js:1896
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: ApplianceWizard.js:1834
-msgid "UCS configuration"
-msgstr "UCS-Konfiguration"
-
-#: ApplianceWizard.js:1837
-msgid "A new UCS domain will be created."
-msgstr "Eine neue UCS-Domäne wird erstellt."
-
-#: ApplianceWizard.js:1839
-msgid "A preconfigured test domain will be instantiated."
-msgstr "Eine vorkonfigurierte UCS-Test-Domäne wird instanziiert."
-
-#: ApplianceWizard.js:1841
-msgid ""
-"This system will be a base system without domain integration and without the "
-"capabilities to join one in the future."
-msgstr ""
-"Dieses System wird ein Basissystem ohne jegliche Domänenintegration und ohne "
-"Möglichkeit, später einer Domäne beizutreten."
-
-#: ApplianceWizard.js:645
-#: ApplianceWizard.js:1844
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
-#: ApplianceWizard.js:657
-#: ApplianceWizard.js:1845
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
-
-#: ApplianceWizard.js:1850
-msgid "Primary Directory Node"
-msgstr "Primary Directory Node"
-
-#: ApplianceWizard.js:1852
-#, javascript-format
-msgid "This system will join an existing AD domain with the role <i>%s</i>."
-msgstr ""
-"Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> bei."
-
-#: ApplianceWizard.js:1854
-#, javascript-format
-msgid "This system will join an existing UCS domain with the role <i>%s</i>."
-msgstr ""
-"Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
-
-#: ApplianceWizard.js:1881
-msgid "Domain and host configuration"
-msgstr "Domänen- und Rechnereinstellung"
-
-#: ApplianceWizard.js:1904
-msgid "Address configuration"
-msgstr "Adresskonfiguration"
-
-#: ApplianceWizard.js:1904
-msgid "IP address is obtained dynamically via DHCP"
-msgstr "Die IP-Adresse wird dynamisch über DHCP bezogen"
-
-#: ApplianceWizard.js:1913
-#, javascript-format
-msgid "Address for %s"
-msgstr "Adresse für %s"
-
-#: ApplianceWizard.js:1923
-msgid "DNS server"
-msgstr "DNS-Server"
-
-#: ApplianceWizard.js:1934 ApplianceWizard.js:1937
-msgid "Software components"
-msgstr "Softwarekomponenten"
-
-#: ApplianceWizard.js:1934
-msgid "No additional software components will be installed."
-msgstr "Keine zusätzliche Software-Komponenten werden installiert."
-
-#: ApplianceWizard.js:1996
-msgid "Help us improve UCS by sending the occurred errors as feedback."
-msgstr ""
-"Helfen Sie uns UCS zu verbessern, indem Sie uns die aufgetretenen Fehler als "
-"Feedback senden."
-
-#: ApplianceWizard.js:2009
-msgid "You may restart the configuration process again with modified settings."
-msgstr ""
-"Sie können den Konfigurationsvorgang mit veränderten Einstellungen erneut "
-"starten."
-
-#: ApplianceWizard.js:2014 ApplianceWizard.js:2028
-msgid ""
-"Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
-"and resolve the described problems via Univention Management Console."
-msgstr ""
-"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
-"Einrichtungsassistenten zu beenden und die beschriebenen Probleme mittels "
-"Univention Management Console zu beheben."
-
-#: ApplianceWizard.js:2015
-msgid ""
-"Failed join scripts can be executed via the UMC module <i>Domain join</i>."
-msgstr ""
-"Fehlgeschlagene Domänenbeitritt-Skripte können mit dem UMC-Modul "
-"<i>Domänenbeitritt</i> ausgeführt werden."
-
-#: ApplianceWizard.js:2018
-msgid ""
-"Connect to Univention Management Console on this system either as user "
-"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
-"created a new UCS domain:"
-msgstr ""
-"Verbinden Sie sich auf diesem System zur Univention Management Console "
-"entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
-"falls das System noch keine neue UCS-Domäne erstellt hat:"
-
-#: ApplianceWizard.js:2024
-msgid ""
-"Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
-"and resolve the described problems at a later point."
-msgstr ""
-"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
-"Einrichtungsassistenten zu beenden und die beschriebenen Probleme zu einem "
-"späteren Zeitpunkt zu beheben."
-
-#: ApplianceWizard.js:2025
-msgid ""
-"The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) <i>"
-"%(addresses)s</i>."
-msgstr ""
-"Das System ist unter <i>%(fqdn)s</i> oder seiner/seinen IP-Adresse(n) <i>"
-"%(addresses)s</i> erreichbar."
-
-#: ApplianceWizard.js:2029
-msgid ""
-"Failed join scripts or a new join of the system can be executed via the UMC "
-"module <i>Domain join</i>."
-msgstr ""
-"Fehlgeschlagene Domänenbeitritt-Skripte oder ein erneuter Domänenbeitritt "
-"kann mit dem UMC-Modul <i>Domänenbeitritt</i> ausgeführt werden."
-
-#: ApplianceWizard.js:2032
-msgid ""
-"Connect to Univention Management Console on this system either as user "
-"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
-"joined the domain:"
-msgstr ""
-"Verbinden Sie sich auf diesem System zur Univention Management Console "
-"entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
-"falls das System noch nicht der Domäne beigetreten ist:"
-
-#: ApplianceWizard.js:2041
-msgid "Send feedback"
-msgstr "Feedback senden"
-
-#: ApplianceWizard.js:2048
-msgid "Send to vendor"
-msgstr "An den Hersteller senden"
-
-#: ApplianceWizard.js:2075
-msgid ""
-"The system configuration could not be completed. Please choose to retry the "
-"configuration process or finish the wizard."
-msgstr ""
-"Die Systemkonfiguration konnte nicht fertiggestellt werden. Bitte wählen Sie "
-"den Konfigurationsvorgang zu wiederholen oder den Einrichtungsassistenten zu "
-"beenden."
-
-#: ApplianceWizard.js:2076
-msgid "The following errors occurred while applying the settings."
-msgstr ""
-"Die folgenden Fehler sind beim Setzen der Konfigurationseinstellungen "
-"aufgetreten."
-
-#: ApplianceWizard.js:2094
-#, javascript-format
-msgid "%s Appliance has been successfully set up."
-msgstr "%s Appliance wurde erfolgreich eingerichtet."
-
-#: ApplianceWizard.js:2096
-msgid "UCS has been successfully set up."
-msgstr "UCS wurde erfolgreich eingerichtet."
-
-#: ApplianceWizard.js:2099
-msgid ""
-"<p>Click on <i>Finish</i> to conclude the installation. The system will be "
-"prepared for the first boot procedure and will be rebooted afterwards.</p>"
-msgstr ""
-"<p>Klicken Sie auf <i>Fertigstellen</i> um die Installation abzuschließen. "
-"Anschließend wird das System auf den ersten Bootvorgang vorbereitet und neu "
-"gestartet.</p>"
-
-#: ApplianceWizard.js:2101
-msgid "<p>Click on <i>Finish</i> for putting this system into operation.</p>"
-msgstr ""
-"<p>Klicken Sie auf <i>Fertigstellen</i>, um dieses System in Betrieb zu "
-"nehmen.</p>"
-
-#: ApplianceWizard.js:2104
-msgid ""
-"<p>When accessing the system for the first time, you will be asked to upload "
-"a new license that has been sent to your email account.</p>"
-msgstr ""
-"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
-"Lizenzdatei, die an Ihre E-Mail-Adresse gesendet wurde, hochzuladen.</p>"
-
-#: ApplianceWizard.js:2106
-msgid ""
-"<p>When accessing the system for the first time, you will be asked to "
-"request and upload a new license.</p>"
-msgstr ""
-"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
-"Lizenzdatei anzufordern und hochzuladen.</p>"
-
-#: ApplianceWizard.js:2110
-msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
-msgstr ""
-"<p>Klicken Sie auf <i>Fertigstellen</i>, um UCS in Betrieb zu nehmen.</p>"
-
-#: ApplianceWizard.js:2308
-msgid ""
-"It is not possible to install Samba 3 and Samba 4 on one system. Please "
-"select only one of these components."
-msgstr ""
-"Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
-"Bitte wählen Sie nur eine dieser Komponenten aus."
-
-#: ApplianceWizard.js:2312
-msgid ""
-"It is not possible to install KVM and XEN components on one system. Please "
-"select only one of these components."
-msgstr ""
-"Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
-"installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
-
-#: ApplianceWizard.js:2340
-msgid ""
-"The root password is too short. For security reasons, your password must "
-"contain at least 8 characters."
-msgstr ""
-"Das Root-Passwort ist zu kurz, aus Sicherheitsgründen muss es mindestens 8 "
-"Zeichen lang sein."
-
-#: ApplianceWizard.js:2359
-msgid ""
-"For this system, a computer object already exists in the LDAP directory that "
-"has been configured for the role &quot;<i>school server in the "
-"administration network</i>&quot; and thus contradicts your selection. Please "
-"check and correct this before proceeding."
-msgstr ""
-"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
-"das für die Rolle &quot;<i>Schulserver im Verwaltungsnetz</i>&quot; "
-"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
-"korrigieren Sie dies, bevor Sie fortfahren."
-
-#: ApplianceWizard.js:2362
-msgid ""
-"For this system, a computer object already exists in the LDAP directory that "
-"was configured for the role &quot;<i>school server in the educational "
-"network</i>&quot; and thus contradicts your selection. Please check and "
-"correct this before proceeding."
-msgstr ""
-"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
-"das für die Rolle &quot;<i>Schulserver im Edukativnetz</i>&quot; "
-"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
-"korrigieren Sie dies, bevor Sie fortfahren."
-
-#: ApplianceWizard.js:2365
-msgid ""
-"If this system is to become a school server in the educational network, "
-"please first check whether a corresponding school exists and whether the "
-"computer name of this system was specified as the <i>school server for the "
-"educational network</i>."
-msgstr ""
-"Wenn dieses System ein Schulserver im Edukativnetz werden soll, prüfen Sie "
-"bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
-"dieses Systems als <i>Schulserver für das Edukativnetz</i> angegeben wurde."
-
-#: ApplianceWizard.js:2368
-msgid ""
-"If this system is to become a school server in the administration network, "
-"please first check whether a corresponding school exists and whether the "
-"computer name of this system has been specified as the <i>school server for "
-"the administration network</i>."
-msgstr ""
-"Wenn dieses System ein Schulserver im Verwaltungsnetz werden soll, prüfen "
-"Sie bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
-"dieses Systems als <i>Schulserver für das Verwaltungsnetz</i> angegeben "
-"wurde."
-
-#: ApplianceWizard.js:2415
-msgid "At least one network device needs to be properly configured."
-msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
-
-#: ApplianceWizard.js:2425
-msgid "Initialize the configuration process ..."
-msgstr "Initialisiere den Konfigurationsvorgang ..."
-
-#: ApplianceWizard.js:2745
+"<p>Geben Sie den Namen Ihrer Organisation, eine E-Mail-Adresse für die "
+"Aktivierung von UCS sowie ein Passwort für das Konto <i>Administrator</i> "
+"an.</p><p>Das Passwort ist ein Pflichtfeld. Es wird sowohl für das Domänen-"
+"Administrator-Konto als auch für den lokalen Superuser <i>root</i> "
+"verwendet.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2641
 #, javascript-format
 msgid ""
 "<p>One or more network interfaces could not obtain an IP address via DHCP. "
@@ -1100,29 +118,738 @@ msgstr ""
 "ihre DHCP-Konfiguration an oder bestätigen Sie die Nutzung der privaten "
 "Adresse(n).</p>"
 
-#: ApplianceWizard.js:2750
-msgid "Continue with 169.254.*.* addresse(s)"
-msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
-
-#: ApplianceWizard.js:2753
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:837
 msgid ""
-"<p>With the current settings <b> no </b> internet access is available.</"
-"p><p>Because of this some functions like the App Center or software-updates "
-"will not be accessible</p>"
+"<p>Select UCS software components for installation on this system. This step"
+" can be skipped; the components are also available in the Univention App "
+"Center in the category <i>UCS components</i>.</p><p>Third-party software "
+"(e.g., groupware) is also available through the Univention App Center.</p>"
 msgstr ""
-"<p>Mit den aktuellen Einstellungen ist <b> kein </b> Internetzugriff möglich."
-"</p><p>Dadurch werden einige Funktionen wie zum Beispiel das App Center oder "
-"Software-Aktualisierungen nicht zur Verfügung stehen.</p>"
+"<p>Wählen Sie UCS-Software-Komponenten zur Installation auf dem System aus. "
+"Dieser Schritt kann übersprungen werden; die Komponenten sind auch über das "
+"Univention App Center in der Kategorie <i>UCS-Komponenten</i> "
+"verfügbar.</p><p>Software von Drittanbietern (bspw. Groupware) kann "
+"ebenfalls über das Univention App Center installiert werden.</p>"
 
-#: ApplianceWizard.js:2756 ApplianceWizard.js:2778
-msgid "Continue without internet access"
-msgstr "Ohne Internetzugriff fortfahren"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2967
+#, javascript-format
+msgid ""
+"<p>The hostname <i>%s</i> is longer than 13 characters.</p><p>It will not be"
+" possible to install an Active Directory compatible Domaincontroller (Samba "
+"4) or UCS@school. The hostname cannot be changed after the installation of "
+"%s. It is recommended to shorten the hostname to maximal 13 characters.</p>"
+msgstr ""
+"<p>Der Rechnername <i>%s</i> ist länger als 13 Zeichen.</p><p>Es wird nicht "
+"möglich sein, diese Domäne als Active Directory-kompatiblen "
+"Domänencontroller oder UCS@school zu betreiben. Der Rechnername kann nach "
+"der Installation %s nicht mehr geändert werden. Es wird empfohlen, den "
+"Rechnernamen auf maximal 13 Zeichen zu kürzen.</p>"
 
-#: ApplianceWizard.js:2759 ApplianceWizard.js:2927 ApplianceWizard.js:3098
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2021
+msgid ""
+"<p>When accessing the system for the first time, you will be asked to "
+"request and upload a new license.</p>"
+msgstr ""
+"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
+"Lizenzdatei anzufordern und hochzuladen.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2019
+msgid ""
+"<p>When accessing the system for the first time, you will be asked to upload"
+" a new license that has been sent to your email account.</p>"
+msgstr ""
+"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
+"Lizenzdatei, die an Ihre E-Mail-Adresse gesendet wurde, hochzuladen.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2649
+msgid ""
+"<p>With the current settings <b> no </b> internet access is "
+"available.</p><p>Because of this some functions like the App Center or "
+"software-updates will not be accessible</p>"
+msgstr ""
+"<p>Mit den aktuellen Einstellungen ist <b> kein </b> Internetzugriff "
+"möglich.</p><p>Dadurch werden einige Funktionen wie zum Beispiel das App "
+"Center oder Software-Aktualisierungen nicht zur Verfügung stehen.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1559
+#, javascript-format
+msgid "<tr><td>City:</td><td>%s</td></tr>"
+msgstr "<tr><td>Stadt:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1579
+#, javascript-format
+msgid "<tr><td>Default locale:</td><td>%s</td></tr>"
+msgstr "<tr><td>Standard-Systemsprache:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1608
+#, javascript-format
+msgid "<tr><td>Keyboard layout:</td><td>%s</td></tr>"
+msgstr "<tr><td>Tastaturlayout:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1562
+#, javascript-format
+msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
+msgstr "<tr><td>Zeitzone:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:625
+msgid ""
+"A Backup Directory Node is the fallback system for the UCS Primary Directory"
+" Node and can take over the role of the Primary Directory Node permanently. "
+"It is recommended to use at least one Backup Directory Node in the domain."
+msgstr ""
+"Ein Backup Directory Node fungiert als Ersatzsystem für den Primary "
+"Directory Node und kann die Rolle des Primary Directory Nodes langfristig "
+"übernehmen. Es ist empfohlen, mindestens einen DC Backup in der Domäne zu "
+"verwenden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:334
+msgid "A few questions are needed to complete the configuration process."
+msgstr "Ein paar Fragen sind notwendig, um die Einrichtung abzuschließen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1762
+msgid "A new UCS domain will be created."
+msgstr "Eine neue UCS-Domäne wird erstellt."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:330
+msgid ""
+"A new domain directory is created on this system. User and management data "
+"are stored locally."
+msgstr ""
+"Ein neues Domänenverzeichnis wird auf diesem System erstellt. Benutzer- und "
+"Verwaltungsdaten werden lokal gespeichert."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1764
+msgid "A preconfigured test domain will be instantiated."
+msgstr "Eine vorkonfigurierte UCS-Test-Domäne wird instanziiert."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2822
+msgid ""
+"A previous UCS system has already joined into the Active Directory domain. "
+"Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. If"
+" you continue with \"Replace system\" the registration of the previous UCS "
+"system will be removed."
+msgstr ""
+"Ein früheres UCS System ist bereits der Active Directory Domäne beigetreten."
+" Bitte stellen Sie sicher, dass das System \"%(ucs_master_fqdn)s\" per SSH "
+"erreichbar ist. Wenn Sie mit \"System ersetzen\" fortfahren wird die "
+"Registrierung des früheren Systems gelöscht."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1126
+msgid ""
+"A proxy address needs to be specified in the format: "
+"<i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username "
+"and password may be specified via the format: "
+"<i>http://username:password@proxy.mydomain.intranet:3128</i>"
+msgstr ""
+"Eine Proxy-Adresse kann angegeben werden in dem Format: "
+"<i>http://proxy.meinedomaene.intranet:3128</i><br/>Für Proxy-Zugang mit "
+"Benutzername und Password kann das folgenden Format verwendet werden: "
+"<i>http://benutzername:passwort@proxy.meinedomaene.intranet:3128</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1119
+msgid ""
+"A valid e-mail address allows to activate the UCS system for using the "
+"Univention App Center. The address can be specified now or also at a later "
+"point in time. An e-mail with a personalized license key will then be sent "
+"to your e-mail address. This license can be uploaded via the license dialog "
+"in Univention Management Console."
+msgstr ""
+"Eine gültige E-Mail-Adresse ermöglicht, das UCS-System für die Verwendung "
+"des Univention App Centers freizuschalten. Die Adresse kann jetzt oder auch "
+"zu einem späteren Zeitpunkt angegeben werden. Eine E-Mail mit einem "
+"personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse zugesendet"
+" werden. Die Lizenz kann über den Lizenzdialog der Univention Management "
+"Console eingespielt werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1117
+#, javascript-format
+msgid ""
+"A valid e-mail address is required to activate %s Appliance. The address can"
+" be specified now or also at a later point in time. An e-mail with a "
+"personalized license key will then be sent to your e-mail address. This "
+"license can be uploaded after the setup process."
+msgstr ""
+"Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Appliance "
+"notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt "
+"angegeben werden. An diese E-Mail-Adresse wird Ihnen dann ein "
+"personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
+"Lizenzdialog der Univention Management Console eingespielt werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:642
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1796
+msgid "Account information"
+msgstr "Kontoinformationen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:678
+msgid "Active Directory join information"
+msgstr "Active Directory-Kontoinformationen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1618
+msgid "Adapt settings"
+msgstr "Einstellungen anpassen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1827
+msgid "Address configuration"
+msgstr "Adresskonfiguration"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1836
+#, javascript-format
+msgid "Address for %s"
+msgstr "Adresse für %s"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:683
+msgid ""
+"Address of Active Directory domain controller or name of Active Directory "
+"domain"
+msgstr ""
+"Adresse des Active Directory-Domänencontrollers oder Name der Active "
+"Directory-Domäne"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2970
+msgid "Adjust hostname"
+msgstr "Rechnernamen anpassen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1676
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2671
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2697
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2809
+msgid "Adjust settings"
+msgstr "Einstellungen anpassen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:564
+msgid "Alternate DNS server"
+msgstr "Alternativer DNS-Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1937
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1945
+msgid ""
+"Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
+"and resolve the described problems via Univention Management Console."
+msgstr ""
+"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
+"Einrichtungsassistenten zu beenden und die beschriebenen Probleme mittels "
+"Univention Management Console zu beheben."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2316
+msgid "At least one network device needs to be properly configured."
+msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1155
+msgid ""
+"At least {memory_min} RAM is required for the installation of "
+"{product_name}."
+msgstr ""
+"Mindestens {memory_min} Arbeitsspeicher sind notwendig für die Installation "
+"von {product_name}."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:624
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1767
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2655
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2823
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2994
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ApplianceWizard.js:2771
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:831
+msgid "Central server"
+msgstr "Zentraler Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:813
+msgid ""
+"Choose which role this server is supposed to take in your UCS@school domain."
+msgstr ""
+"Wählen Sie welche Rolle dieses System in Ihrer UCS@school-Domäne übernehmen "
+"soll."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:368
+msgid "Choose your language"
+msgstr "Wählen Sie Ihre Sprache aus"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:396
+msgid "Choose your system's localization settings."
+msgstr "Wählen Sie die Systemsprache."
+
+#: usr/share/univention-system-setup/www/main.js:207
+msgid "Close"
+msgstr "Schließen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1326
+msgid "Configure system"
+msgstr "System konfigurieren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:320
+msgid ""
+"Configure this system as first system for the new domain. Additional systems"
+" can join the domain later."
+msgstr ""
+"Dieses System als erstes System einer neuen Domäne einrichten. Zusätzliche "
+"Systeme können der Domäne später beitreten."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:849
+msgid "Confirm configuration settings"
+msgstr "Bestätigen der Einstellungen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1941
+msgid ""
+"Connect to Univention Management Console on this system either as user "
+"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
+"created a new UCS domain:"
+msgstr ""
+"Verbinden Sie sich auf diesem System zur Univention Management Console "
+"entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
+"falls das System noch keine neue UCS-Domäne erstellt hat:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1949
+msgid ""
+"Connect to Univention Management Console on this system either as user "
+"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
+"joined the domain:"
+msgstr ""
+"Verbinden Sie sich auf diesem System zur Univention Management Console "
+"entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
+"falls das System noch nicht der Domäne beigetreten ist:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2973
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2997
+msgid "Continue"
+msgstr "Fortfahren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2646
+msgid "Continue with 169.254.*.* addresse(s)"
+msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1679
+msgid "Continue with duplicate hostname"
+msgstr "Mit vergebenem Rechnernamen fortfahren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2812
+msgid "Continue with incomplete settings"
+msgstr "Fortfahren mit unvollständigen Einstellungen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2701
+msgid "Continue without access to the repository servers"
+msgstr "Ohne Zugriff auf die Repositories fortfahren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2652
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2674
+msgid "Continue without internet access"
+msgstr "Ohne Internetzugriff fortfahren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1156
+msgid "Continuing the installation might lead to a non-functional system."
+msgstr ""
+"Ein Fortsetzen der Installation kann zu einem nicht funktionsfähigen System "
+"führen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:319
+msgid "Create a new UCS domain"
+msgstr "Erstellen einer neuen UCS-Domäne"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1089
+msgid "DHCP query failed."
+msgstr "DHCP-Anfrage schlug fehl."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1846
+msgid "DNS server"
+msgstr "DNS-Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:400
+msgid "Default system locale"
+msgstr "Standard-System-Sprachdefinition"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1804
+msgid "Domain and host configuration"
+msgstr "Domänen- und Rechnereinstellung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:447
+msgid "Domain and network configuration"
+msgstr "Domänen- und<br />Netzwerkeinstellung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:699
+msgid "Domain join information"
+msgstr "Informationen zum Domänenbeitritt"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:760
+msgid "Domain name"
+msgstr "Domänenname"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:585
+msgid "Domain setup"
+msgstr "Domäneneinstellungen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:331
+#, javascript-format
+msgid "E-mail address to activate %s Appliance"
+msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:321
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1700
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1799
+msgid "E-mail address to activate UCS"
+msgstr "E-Mail-Adresse zur Aktivierung von UCS"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:381
+msgid ""
+"Enter a city nearby to preconfigure settings such as timezone, system "
+"language, keyboard layout."
+msgstr ""
+"Geben Sie eine nahegelegene Stadt zur Einrichtung von Zeitzone, "
+"Systemsprache und Tastaturlayout ein."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:679
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:700
+msgid ""
+"Enter name and password of a user account which is authorised to join a "
+"system into this domain."
+msgstr ""
+"Geben Sie Namen und Passwort eines Benutzerkontos an, das für den Beitritt "
+"eines Systems in diese Domäne berechtigt ist."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1938
+msgid ""
+"Failed join scripts can be executed via the UMC module <i>Domain join</i>."
+msgstr ""
+"Fehlgeschlagene Domänenbeitritt-Skripte können mit dem UMC-Modul "
+"<i>Domänenbeitritt</i> ausgeführt werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1946
+msgid ""
+"Failed join scripts or a new join of the system can be executed via the UMC "
+"module <i>Domain join</i>."
+msgstr ""
+"Fehlgeschlagene Domänenbeitritt-Skripte oder ein erneuter Domänenbeitritt "
+"kann mit dem UMC-Modul <i>Domänenbeitritt</i> ausgeführt werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:591
+msgid "Fast demo configuration"
+msgstr "Schnelle Demo-Konfiguration"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:669
+msgid ""
+"Fill in the password for the system administrator user <b>root</b> and the "
+"domain administrative user account <b>Administrator</b>."
+msgstr ""
+"Füllen Sie das Passwort für den Systemadministrator-Benutzer <b>root</b> und"
+" den Domänenadministrator-Benutzeraccount <b>Administrator</b> aus."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1329
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1332
+msgid "Finish"
+msgstr "Fertigstellen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1123
+msgid ""
+"For a specified host name, the domain name is automatically derived from the"
+" domain name server. A fully qualified domain may be necessary for mail "
+"server setups with differing domains.<br/>Note that the domain name "
+"<b>cannot</b> be changed after the UCS setup wizard has been completed."
+msgstr ""
+"Für einen angegebenen Rechnernamen wird der Domänenname automatisch von dem "
+"Domänen-DNS-Server abgeleitet. Ein vollständiger Domänenname kann für Mail-"
+"Server-Umgebungen mit unterschiedlichen Domänen notwendig sein.<br/>Der "
+"eingerichtete Domänenname kann nach dem Durchlaufen des UCS-"
+"Einrichtungsassistenten <b>nicht</b> mehr geändert werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1157
+msgid ""
+"For further information please look at https://help.univention.com/t/13595."
+msgstr ""
+"Für weitere Informationen schauen Sie bitte auf "
+"https://help.univention.com/t/13595."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2260
+msgid ""
+"For this system, a computer object already exists in the LDAP directory that"
+" has been configured for the role &quot;<i>school server in the "
+"administration network</i>&quot; and thus contradicts your selection. Please"
+" check and correct this before proceeding."
+msgstr ""
+"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
+"das für die Rolle &quot;<i>Schulserver im Verwaltungsnetz</i>&quot; "
+"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
+"korrigieren Sie dies, bevor Sie fortfahren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2263
+msgid ""
+"For this system, a computer object already exists in the LDAP directory that"
+" was configured for the role &quot;<i>school server in the educational "
+"network</i>&quot; and thus contradicts your selection. Please check and "
+"correct this before proceeding."
+msgstr ""
+"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
+"das für die Rolle &quot;<i>Schulserver im Edukativnetz</i>&quot; "
+"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
+"korrigieren Sie dies, bevor Sie fortfahren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:773
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1718
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1811
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1815
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1819
+msgid "Fully qualified domain name"
+msgstr "Vollqualifizierter Domänenname"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:552
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1838
+msgid "Gateway"
+msgstr "Gateway"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:577
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1850
+msgid "HTTP proxy"
+msgstr "HTTP-Proxy"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1919
+msgid "Help us improve UCS by sending the occurred errors as feedback."
+msgstr ""
+"Helfen Sie uns UCS zu verbessern, indem Sie uns die aufgetretenen Fehler als"
+" Feedback senden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:743
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:788
+msgid "Host settings"
+msgstr "Rechnereinstellungen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1720
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1819
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:752
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1518
+msgid "Hostname (unchangeable. Was set while creating the container)"
+msgstr ""
+"Rechnername (unveränderbar. Wurde beim Erstellen des Containers vergeben)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:724
+msgid "Hostname of the Primary Directory Node"
+msgstr "Rechnername des Primary Directory Nodes"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:797
+msgid "Hostname or fully qualified domain name"
+msgstr "Rechnername oder vollständiger Domänenname"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1827
+msgid "IP address is obtained dynamically via DHCP"
+msgstr "Die IP-Adresse wird dynamisch über DHCP bezogen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:491
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:508
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:526
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:544
+msgid "IPv4 net mask/IPv6 prefix {interface}"
+msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:482
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:498
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:516
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:534
+msgid "IPv4/IPv6 address {interface}"
+msgstr "IPv4/IPv6-Adresse {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2269
+msgid ""
+"If this system is to become a school server in the administration network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system has been specified as the <i>school server for "
+"the administration network</i>."
+msgstr ""
+"Wenn dieses System ein Schulserver im Verwaltungsnetz werden soll, prüfen "
+"Sie bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername"
+" dieses Systems als <i>Schulserver für das Verwaltungsnetz</i> angegeben "
+"wurde."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2266
+msgid ""
+"If this system is to become a school server in the educational network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system was specified as the <i>school server for the "
+"educational network</i>."
+msgstr ""
+"Wenn dieses System ein Schulserver im Edukativnetz werden soll, prüfen Sie "
+"bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
+"dieses Systems als <i>Schulserver für das Edukativnetz</i> angegeben wurde."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1331
+msgid "Ignore"
+msgstr "Ignorieren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2326
+msgid "Initialize the configuration process ..."
+msgstr "Initialisiere den Konfigurationsvorgang ..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1129
+msgid "Install the latest errata and app updates after the setup."
+msgstr ""
+"Nach der Einrichtung alle verfügbaren Errata und App Updates installieren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1131
+msgid ""
+"Install the latest patch level, errata and app updates after the setup."
+msgstr ""
+"Nach der Einrichtung alle verfügbaren Patch-Level, Errata und App Updates "
+"installieren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1252
+#, javascript-format
+msgid "Installation of %d additional software components."
+msgstr "Installation von %d zusätzlichen Software-Komponenten."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1250
+msgid "Installation of one additional software component."
+msgstr "Installation einer zusätzlichen Software-Komponente."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:141
+msgid "Invalid IP address!<br/>Expected format is IPv4 or IPv6."
+msgstr "Ungültige IP-Adresse!<br/>Erwartetes Format ist IPv4 oder IPv6."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:152
+msgid ""
+"Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number "
+"between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected "
+"format for IPv6 is a number between 0 and 128."
+msgstr ""
+"Ungültige IPv4-Netzmaske oder IPv6-Präfix!<br/>Erwartetes Format für IPv4 "
+"ist eine Zahl zwischen 0 und 32 oder ein Format vergleichbar zu "
+"<i>255.255.255.0</i>.<br/>Erwartetes Format für IPv6 ist eine Zahl zwischen "
+"0 und 128."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:218
+msgid ""
+"Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any "
+"special characters. Its structure needs to consist of at least two relative "
+"distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or 'l' "
+"(e.g., dc=test,dc=net)."
+msgstr ""
+"Ungültige LDAP-Basis!<br/>Die LDAP-Basis darf weder Leer- noch Sonderzeichen"
+" enthalten. Ihre Struktur muss aus mindestens zwei Relative Distinguished "
+"Names (RDN) bestehen, die eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or "
+"'l' verwenden (z.B. dc=test,dc=net)."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:195
+msgid "Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>"
+msgstr ""
+"Ungültiger Domänenname!<br/>Erwartetes Format: <i>meinedomaene.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:133
+msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
+msgstr ""
+"Ungültige E-Mail-Adresse!<br/>Erwartetes Format: <i>mail@beispiel.de</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:202
+msgid ""
+"Invalid fully qualified domain name!<br/>Expected format: "
+"<i>hostname.mydomain.intranet</i>"
+msgstr ""
+"Ungültiger vollqualifizierter Domänenname!<br/>Erwartetes Format: "
+"<i>rechnername.meinedomaene.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:210
+msgid ""
+"Invalid hostname or fully qualified domain name!<br/>Expected format: "
+"<i>myhost</i> or <i>hostname.mydomain.intranet</i>"
+msgstr ""
+"Ungültiger Rechnername oder vollständiger Domänenname!<br/>Erwartetes "
+"Format: <i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2213
+msgid ""
+"It is not possible to install Samba 3 and Samba 4 on one system. Please "
+"select only one of these components."
+msgstr ""
+"Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
+"Bitte wählen Sie nur eine dieser Komponenten aus."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2845
+msgid ""
+"It seems that a UCS Primary Directory Node system has already joined into "
+"the Windows AD domain. Please choose a different option as other system "
+"roles for joining an AD domain are not available."
+msgstr ""
+"Es scheint, dass ein UCS Primary Directory Node-System bereis der Windows "
+"AD-Domäne beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
+"Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:613
+msgid "Join into an existing Microsoft Active Directory domain"
+msgstr "Einer bestehenden Microsoft Active-Directory-Domäne beitreten"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:607
+msgid "Join into an existing UCS domain"
+msgstr "Einer bestehenden UCS-Domäne beitreten"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:415
+msgid "Keyboard layout"
+msgstr "Tastaturlayout"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:781
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1823
+msgid "LDAP base"
+msgstr "LDAP-Basis"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:437
+msgid "License agreement"
+msgstr "Lizenzvereinbarung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:807
+msgid "Local root password"
+msgstr "Lokales Root-Passwort"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:389
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:395
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1784
+msgid "Localization settings"
+msgstr "Standorteinstellungen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:329
+msgid "Manage users and permissions directly on this system"
+msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:637
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1769
+msgid "Managed Node"
+msgstr "Managed Node"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:638
+msgid ""
+"Managed Nodes should be used for services which do not need a local "
+"authentication database, for example for file or print servers."
+msgstr ""
+"Managed Node sollten für Dienste genutzt werden, die keine lokale Datenbank "
+"für die Authentifizierung benötigen, beispielsweise Datei- oder Druckserver."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1711
+msgid "Network interfaces"
+msgstr "Netzwerkgeräte"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1247
+msgid "No additional software component will be installed."
+msgstr "Keine zusätzliche Software-Komponente wird installiert."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1857
+msgid "No additional software components will be installed."
+msgstr "Keine zusätzliche Software-Komponenten werden installiert."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2808
+msgid ""
+"No domain controller was found at the address of the name server. It is "
+"recommended to verify that the network settings are correct."
+msgstr ""
+"Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
+"werden. Die Netzwerkeinstellungen sollten überprüft werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2840
+msgid ""
+"No domain controller was found at the address of the name server. Please "
+"adjust your network settings."
+msgstr ""
+"Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
+"werden. Bitte überprüfen Sie die Netzwerkeinstellungen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2667
 msgid ""
 "No gateway has been specified and thus no access to the internet is "
 "possible. As UCS requires internet access for its functionality, certain "
@@ -1135,7 +862,202 @@ msgstr ""
 "Aktualisierungen, Installation weiterer Software-Komponenten) nicht wie "
 "erwatet funtionieren werden."
 
-#: ApplianceWizard.js:2792
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:469
+msgid "Obtain IP address automatically (DHCP)"
+msgstr "IP-Adresse automatisch beziehen (DHCP)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:653
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1798
+msgid "Organization name"
+msgstr "Name der Organisation"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:674
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:694
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:738
+msgid "Password"
+msgstr "Passwort"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:67
+msgid "Please click on the required character."
+msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:850
+msgid ""
+"Please confirm the chosen configuration settings which are summarized in the"
+" following."
+msgstr ""
+"Bitte bestätigen Sie die gewählten Einstellungen, die nachstehend "
+"zusammengefasst sind."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:438
+#, javascript-format
+msgid "Please read carefully the license agreement for %s Appliance."
+msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:586
+msgid "Please select your domain settings."
+msgstr "Bitte wählen Sie die Domäneneinstellungen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:558
+msgid "Preferred DNS server"
+msgstr "Bevorzugter DNS-Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1773
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1714
+msgid "Primary network interface"
+msgstr "Primäres Netzwerkgerät"
+
+#: usr/share/univention-system-setup/www/main.js:195
+msgid "Privacy Statement"
+msgstr "Datenschutzerklärung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:592
+msgid ""
+"Quick setup of a system for testing purposes. Several system configurations "
+"are predefined and cannot be changed at a later point."
+msgstr ""
+"Schnelle Einrichtung eines Systems zu Testzwecken. Einige "
+"Systemeinstellungen sind vorgegeben und können im Nachhinein nicht mehr "
+"geändert werden"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:601
+msgid "Recommended"
+msgstr "Empfohlen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1328
+msgid "Reconfigure"
+msgstr "Erneut konfigurieren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2826
+msgid "Replace system"
+msgstr "System ersetzen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:631
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1768
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:632
+msgid ""
+"Replica Directory Node systems are ideal for site servers, they provide "
+"authentication services for the domain. Local services running on a Replica "
+"Directory Node can access the local LDAP database."
+msgstr ""
+"Replica Directory Node-Systeme bieten sich für Standortserver an, sie "
+"stellen Authentifizierungsdienste bereit. Lokale Dienste auf einem Replica "
+"Directory Node haben Zugriff auf die lokale LDAP-Datenbank."
+
+#: usr/share/univention-system-setup/www/main.js:268
+msgid "Restarting server components..."
+msgstr "Neustart der Server-Komponenten..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2993
+msgid "Root password empty. Continue?"
+msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:825
+msgid "School server of the administrative network"
+msgstr "Schulserver im Verwaltungsnetz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:819
+msgid "School server of the educational network"
+msgstr "Schulserver im Edukativnetz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:716
+msgid "Search Primary Directory Node in DNS"
+msgstr "Primary Directory Node im DNS suchen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1958
+msgid "Send feedback"
+msgstr "Feedback senden"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1965
+msgid "Send to vendor"
+msgstr "An den Hersteller senden"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:812
+msgid "Server role inside the UCS@school domain"
+msgstr "Serverrolle in der UCS@school-Domäne"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:328
+msgid "Setup - An error occurred"
+msgstr "Einrichtung - Ein Fehler ist aufgetreten"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:327
+msgid "Setup successful"
+msgstr "Einrichtung erfolgreich"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1237
+msgid "Software component"
+msgstr "Softwarekomponente"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1857
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1860
+msgid "Software components"
+msgstr "Softwarekomponenten"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:836
+msgid "Software configuration"
+msgstr "Software-Konfiguration"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:744
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:789
+msgid "Specify the name of this system."
+msgstr "Eingabe des Namens dieses Systems."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:448
+msgid "Specify the network settings for this system."
+msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:619
+msgid "Specify the type of this system."
+msgstr "Eingabe des Typs dieses Systems."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:704
+msgid "Start join at the end of the installation"
+msgstr "Domänenbeitritt am Ende der Installation starten"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:618
+msgid "System role"
+msgstr "Systemrolle"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:429
+msgid "The available memory is not sufficient."
+msgstr "Der verfügbare Arbeitsspeicher reicht nicht aus."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:841
+msgid "The following entries could not be validated:"
+msgstr "Die folgenden Einträge konnten nicht validiert werden:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1992
+msgid "The following errors occurred while applying the settings."
+msgstr ""
+"Die folgenden Fehler sind beim Setzen der Konfigurationseinstellungen "
+"aufgetreten."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1671
+#, javascript-format
+msgid ""
+"The hostname '%s' is already used for a computer with a different role, in "
+"the UCS domain. It is recommended to change the hostname for UCS to work "
+"properly."
+msgstr ""
+"Der Rechnername '%s' wird bereits für einen Rechner einer anderen Rolle "
+"verwendet. Es wird empfohlen den Rechnernamen zu ändern, damit UCS voll "
+"funktionsfähig ist."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2241
+msgid ""
+"The root password is too short. For security reasons, your password must "
+"contain at least 8 characters."
+msgstr ""
+"Das Root-Passwort ist zu kurz, aus Sicherheitsgründen muss es mindestens 8 "
+"Zeichen lang sein."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2688
 #, javascript-format
 msgid ""
 "The server <b>%s</b> cannot be reached. For UCS to work properly, please "
@@ -1154,159 +1076,218 @@ msgstr[1] ""
 "konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass "
 "diese Server erreichbar sind. Nur so kann UCS voll funktionsfähig sein."
 
-#: ApplianceWizard.js:2805
-msgid "Continue without access to the repository servers"
-msgstr "Ohne Zugriff auf die Repositories fortfahren"
-
-#: ApplianceWizard.js:2912
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:832
 msgid ""
-"No domain controller was found at the address of the name server. It is "
-"recommended to verify that the network settings are correct."
+"The server will not be assigned to a specific school and will not provide "
+"UCS@school services."
 msgstr ""
-"Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
-"werden. Die Netzwerkeinstellungen sollten überprüft werden."
+"Der Server wird keiner speziellen Schule zugeordnet und wird keine "
+"UCS@school-Dienste bereitstellen."
 
-#: ApplianceWizard.js:2916
-msgid "Continue with incomplete settings"
-msgstr "Fortfahren mit unvollständigen Einstellungen"
-
-#: ApplianceWizard.js:2926
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:826
 msgid ""
-"A previous UCS system has already joined into the Active Directory domain. "
-"Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. If "
-"you continue with \"Replace system\" the registration of the previous UCS "
-"system will be removed."
+"The server will only provide domain services to a school's administrative "
+"network, not educational UCS@school services."
 msgstr ""
-"Ein früheres UCS System ist bereits der Active Directory Domäne beigetreten. "
-"Bitte stellen Sie sicher, dass das System \"%(ucs_master_fqdn)s\" per SSH "
-"erreichbar ist. Wenn Sie mit \"System ersetzen\" fortfahren wird die "
-"Registrierung des früheren Systems gelöscht."
+"Der Server wird nur Domänendienste für das Verwaltungsnetz einer Schule "
+"bereitstellen, jedoch keine edukativen UCS@school-Dienste."
 
-#: ApplianceWizard.js:2930
-msgid "Replace system"
-msgstr "System ersetzen"
-
-#: ApplianceWizard.js:2944
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:820
 msgid ""
-"No domain controller was found at the address of the name server. Please "
-"adjust your network settings."
+"The server will provide educational UCS@school services for a school, e.g. "
+"exam mode."
 msgstr ""
-"Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
-"werden. Bitte überprüfen Sie die Netzwerkeinstellungen."
+"Dieser Server wird edukative UCS@school-Dienste für eine Schule "
+"bereitstellen, z.B. den Klassenarbeitsmodus."
 
-#: ApplianceWizard.js:2949
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1991
 msgid ""
-"It seems that a UCS Primary Directory Node system has already joined into the Windows AD "
-"domain. Please choose a different option as other system roles for joining "
-"an AD domain are not available."
+"The system configuration could not be completed. Please choose to retry the "
+"configuration process or finish the wizard."
 msgstr ""
-"Es scheint, dass ein UCS Primary Directory Node-System bereis der Windows AD-Domäne "
-"beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
-"Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
+"Die Systemkonfiguration konnte nicht fertiggestellt werden. Bitte wählen Sie"
+" den Konfigurationsvorgang zu wiederholen oder den Einrichtungsassistenten "
+"zu beenden."
 
-#: ApplianceWizard.js:3067
-msgid "the UCS system"
-msgstr "des UCS-Systems"
+#: usr/share/univention-system-setup/www/main.js:268
+msgid "This may take a few seconds..."
+msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
 
-#: ApplianceWizard.js:3069
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1156
+msgid "This system only has {memory_total} RAM."
+msgstr "Dieses System verfügt nur über {memory_total} Arbeitsspeicher."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:614
+msgid ""
+"This system will become part of an existing non-UCS Active Directory domain."
+msgstr ""
+"Dieses System wird Teil einer existierenden nicht-UCS Active-Directory-"
+"Domäne."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1775
 #, javascript-format
-msgid "the %s Appliance"
-msgstr "der %s Appliance"
-
-#: ApplianceWizard.js:3071
-#, javascript-format
-msgid ""
-"<p>The hostname <i>%s</i> is longer than 13 characters.</p><p>It will not be "
-"possible to install an Active Directory compatible Domaincontroller (Samba "
-"4) or UCS@school. The hostname cannot be changed after the installation of "
-"%s. It is recommended to shorten the hostname to maximal 13 characters.</p>"
+msgid "This system will join an existing AD domain with the role <i>%s</i>."
 msgstr ""
-"<p>Der Rechnername <i>%s</i> ist länger als 13 Zeichen.</p><p>Es wird nicht "
-"möglich sein, diese Domäne als Active Directory-kompatiblen "
-"Domänencontroller oder UCS@school zu betreiben. Der Rechnername kann nach "
-"der Installation %s nicht mehr geändert werden. Es wird empfohlen, den "
-"Rechnernamen auf maximal 13 Zeichen zu kürzen.</p>"
+"Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> bei."
 
-#: ApplianceWizard.js:3074
-msgid "Adjust hostname"
-msgstr "Rechnernamen anpassen"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1777
+#, javascript-format
+msgid "This system will join an existing UCS domain with the role <i>%s</i>."
+msgstr ""
+"Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
 
-#: ApplianceWizard.js:3077 ApplianceWizard.js:3101
-msgid "Continue"
-msgstr "Fortfahren"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:408
+msgid "Time zone"
+msgstr "Zeitzone"
 
-#: ApplianceWizard.js:3097
-msgid "Root password empty. Continue?"
-msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1759
+msgid "UCS configuration"
+msgstr "UCS-Konfiguration"
 
-#: main.js:202
-msgid "Privacy Statement"
-msgstr "Datenschutzerklärung"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2011
+msgid "UCS has been successfully set up."
+msgstr "UCS wurde erfolgreich eingerichtet."
 
-#: main.js:214
-msgid "Close"
-msgstr "Schließen"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:316
+msgid "UCS setup"
+msgstr "UCS-Einrichtung"
 
-#: main.js:231
-msgid "privacy statement"
-msgstr "Datenschutzerklärung"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:318
+msgid "UCS setup - An error occurred"
+msgstr "UCS-Einrichtung - Ein Fehler ist aufgetreten"
 
-#: main.js:232
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:317
+msgid "UCS setup successful"
+msgstr "UCS-Einrichtung erfolgreich"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1160
+msgid "Univention Corporate Server"
+msgstr "Univention Corporate Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:860
+msgid "Update system after setup"
+msgstr "System nach der Einrichtung aktualisieren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1133
+msgid ""
+"Update system to the UCS release version of the Primary Directory Node and "
+"install all available errata and app updates after the setup."
+msgstr ""
+"System nach der Einrichtung auf die Release Version des Primary Directory "
+"Node aktualisieren und alle verfügbaren Errata und App Updates installieren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:608
+msgid "Use this option if you already have one or more UCS systems."
+msgstr ""
+"Wählen Sie diese Option, falls bereits mindestens ein UCS-System existiert."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:688
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:732
+msgid "Username"
+msgstr "Benutzername"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:264
+msgid "Validation error"
+msgstr "Validierungsfehler"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:840
+msgid "Validation failed"
+msgstr "Validierungsfehler"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:54
+msgid "Virtual keyboard"
+msgstr "Virtuelle Tastatur"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1469
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2447
+msgid "Waiting for restart of server components..."
+msgstr "Warten auf den Neustart der Server-Komponenten ..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1682
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1809
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2661
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2677
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2705
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2815
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2828
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2976
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3000
+msgid "Warning"
+msgstr "Warnung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:315
+msgid "Welcome to Univention Corporate Server (UCS)."
+msgstr "Wilkommen bei Univention Corporate Server (UCS)."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:325
+#, javascript-format
+msgid "Welcome to the setup of %s Appliance."
+msgstr "Wilkommen bei der Einrichtung von %s Appliance."
+
+#: usr/share/univention-system-setup/www/main.js:225
 #, javascript-format
 msgid "With the activation of UCS you agree to our %s."
 msgstr "Mit der Inbetriebnahme von UCS willigen Sie in unsere %s ein."
 
-#: main.js:275
-msgid "Restarting server components..."
-msgstr "Neustart der Server-Komponenten..."
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1932
+msgid ""
+"You may restart the configuration process again with modified settings."
+msgstr ""
+"Sie können den Konfigurationsvorgang mit veränderten Einstellungen erneut "
+"starten."
 
-#: main.js:275
-msgid "This may take a few seconds..."
-msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:382
+msgid "e.g., Boston..."
+msgstr "bspw. Bremen..."
 
-#: VirtualKeyboardBox.js:55
-msgid "Virtual keyboard"
-msgstr "Virtuelle Tastatur"
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:579
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:661
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:799
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:862
+msgid "more information"
+msgstr "mehr Informationen"
 
-#: VirtualKeyboardBox.js:68
-msgid "Please click on the required character."
-msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
+#: usr/share/univention-system-setup/www/main.js:224
+msgid "privacy statement"
+msgstr "Datenschutzerklärung"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2965
+#, javascript-format
+msgid "the %s Appliance"
+msgstr "der %s Appliance"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2963
+msgid "the UCS system"
+msgstr "des UCS-Systems"
 
 #~ msgid ""
-#~ "If you want to upgrade your memory first please press the power button of "
-#~ "your server to shutdown the system."
-#~ msgstr ""
-#~ "Wenn Sie zuerst Ihren Arbeitsspeicher aufrüsten möchten, drücken Sie "
-#~ "bitte den Netzschalter des Servers um das System herunterzufahren."
-
-#~ msgid ""
-#~ "%s Appliance could not be joined because the license on the Primary Directory Node is "
-#~ "not activated."
+#~ "%s Appliance could not be joined because the license on the Primary "
+#~ "Directory Node is not activated."
 #~ msgstr ""
 #~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
 #~ "auf dem Primary Directory Node vor."
 
 #~ msgid ""
-#~ "<i>Bond</i> interfaces allows two or more physical network interfaces to "
-#~ "be coupled."
+#~ "<i>Bond</i> interfaces allows two or more physical network interfaces to be "
+#~ "coupled."
 #~ msgstr ""
 #~ "<i>Bond</i> Netzwerkschnittstellen erlaubt einen Verbund von einem oder "
 #~ "mehreren physikalischen Netzwerkgeräten."
 
 #~ msgid ""
-#~ "<i>Bridge</i> interfaces allows a physical network interface to be shared "
-#~ "to connect one or more network segments."
+#~ "<i>Bridge</i> interfaces allows a physical network interface to be shared to"
+#~ " connect one or more network segments."
 #~ msgstr ""
-#~ "<i>Bridge</i> Netzwerkschnittstellen erlaubt physikalischen "
-#~ "Netzwerkgeräten gemeinsam benutzt zu werden um ein oder mehrere "
-#~ "Netzwerksegemente miteinander zu verbinden."
+#~ "<i>Bridge</i> Netzwerkschnittstellen erlaubt physikalischen Netzwerkgeräten "
+#~ "gemeinsam benutzt zu werden um ein oder mehrere Netzwerksegemente "
+#~ "miteinander zu verbinden."
 
 #~ msgid "<i>Ethernet</i> is a standard physical interface."
 #~ msgstr "<i>Ethernet</i> ist ein standard physikalisches Gerät."
 
 #~ msgid ""
-#~ "<i>Language settings</i> incorporate all language relevant "
-#~ "configurations, such as time zone, keyboard layout, and system locales."
+#~ "<i>Language settings</i> incorporate all language relevant configurations, "
+#~ "such as time zone, keyboard layout, and system locales."
 #~ msgstr ""
 #~ "Die <i>Spracheinstellungen</i> beinhalten alle sprachrelevanten "
 #~ "Einstellungsmöglichkeiten wie Zeitzone, Tastaturlayout und Systemsprache."
@@ -1315,9 +1296,9 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ "<i>VLAN</i> interfaces can be used to separate network traffic logically "
 #~ "while using only one or more physical network interfaces."
 #~ msgstr ""
-#~ "<i>VLAN</i> Netzwerkschnittstellen können benutzt werden, um "
-#~ "Netzwerkverkehr logisch mit nur einem oder mehreren physikalischen "
-#~ "Netzwerkgeräten zu trennen."
+#~ "<i>VLAN</i> Netzwerkschnittstellen können benutzt werden, um Netzwerkverkehr"
+#~ " logisch mit nur einem oder mehreren physikalischen Netzwerkgeräten zu "
+#~ "trennen."
 
 #~ msgid "Add"
 #~ msgstr "Hinzufügen"
@@ -1340,6 +1321,14 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgid "Advanced configuration"
 #~ msgstr "Erweiterte Konfiguration"
 
+#~ msgid ""
+#~ "Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
+#~ "and resolve the described problems at a later point."
+#~ msgstr ""
+#~ "Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
+#~ "Einrichtungsassistenten zu beenden und die beschriebenen Probleme zu einem "
+#~ "späteren Zeitpunkt zu beheben."
+
 #~ msgid "Apply changes"
 #~ msgstr "Änderungen übernehmen"
 
@@ -1347,8 +1336,8 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ "At least one ip address have to be specified or DHCP or SLAAC have to be "
 #~ "enabled."
 #~ msgstr ""
-#~ "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC "
-#~ "muss eingeschaltet sein."
+#~ "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss "
+#~ "eingeschaltet sein."
 
 #~ msgid "Autoconfiguration (SLAAC)"
 #~ msgstr "Automatische Konfiguration (SLAAC)"
@@ -1396,35 +1385,36 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgstr "Zertifikateinstellungen"
 
 #~ msgid ""
-#~ "Changes in the SSL certificate settings will result in generating new "
-#~ "root SSL certificates. Note that this will require an update of all host "
-#~ "certificates in the domain as the old root certificate is no longer "
-#~ "valid. Additional information can be found in the <a href=\"http://sdb."
-#~ "univention.de/1183\" target=\"_blank\">Univention Support Database</a>."
+#~ "Changes in the SSL certificate settings will result in generating new root "
+#~ "SSL certificates. Note that this will require an update of all host "
+#~ "certificates in the domain as the old root certificate is no longer valid. "
+#~ "Additional information can be found in the <a "
+#~ "href=\"http://sdb.univention.de/1183\" target=\"_blank\">Univention Support "
+#~ "Database</a>."
 #~ msgstr ""
 #~ "Durch Änderungen an den SSL-Zertifikat-Einstellungen wird ein neues Root-"
 #~ "Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der "
 #~ "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
-#~ "gültig sein wird. Weitere Informationen können in der <a href=\"http://"
-#~ "sdb.univention.de/1000\" target=\"_blank\">Univention Support Database</"
-#~ "a> gefunden werden."
+#~ "gültig sein wird. Weitere Informationen können in der <a "
+#~ "href=\"http://sdb.univention.de/1000\" target=\"_blank\">Univention Support "
+#~ "Database</a> gefunden werden."
 
 #~ msgid ""
 #~ "Changing IP address configurations may result in restarting or stopping "
-#~ "services. This can have severe side-effects when the system is in "
-#~ "productive use at the moment."
+#~ "services. This can have severe side-effects when the system is in productive"
+#~ " use at the moment."
 #~ msgstr ""
-#~ "Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen "
-#~ "Diensten zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte "
-#~ "sich das System im Produktiveinsatz befinden."
+#~ "Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten"
+#~ " zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
+#~ "System im Produktiveinsatz befinden."
 
 #~ msgid ""
-#~ "Changing network settings is disabled. It can be re enabled by unsetting "
-#~ "the UCR variable \"umc/modules/setup/network/disabled/by\"."
+#~ "Changing network settings is disabled. It can be re enabled by unsetting the"
+#~ " UCR variable \"umc/modules/setup/network/disabled/by\"."
 #~ msgstr ""
-#~ "Das Ändern von Netzwerkeinstellungen ist deaktiviert. Es kann durch "
-#~ "löschen der UCR-Variable \"umc/modules/setup/network/disabled/by\" wieder "
-#~ "aktiviert werden."
+#~ "Das Ändern von Netzwerkeinstellungen ist deaktiviert. Es kann durch löschen "
+#~ "der UCR-Variable \"umc/modules/setup/network/disabled/by\" wieder aktiviert "
+#~ "werden."
 
 #~ msgid "Choose interface type"
 #~ msgstr "Wähle Netzwerkgerätetyp aus"
@@ -1453,9 +1443,9 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ "correctly and the set servers can be reached through your network."
 #~ msgstr ""
 #~ "Nicht alle repository Server können erreicht werden. Bitte prüfen Sie, ob "
-#~ "die UCR Variablen \"repository/online/server\" und \"repository/"
-#~ "app_center/server\" korrekte Werte haben und die Server über Ihr Netzwerk "
-#~ "erreichbar sind."
+#~ "die UCR Variablen \"repository/online/server\" und "
+#~ "\"repository/app_center/server\" korrekte Werte haben und die Server über "
+#~ "Ihr Netzwerk erreichbar sind."
 
 #~ msgid "Country"
 #~ msgstr "Land"
@@ -1471,6 +1461,9 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 
 #~ msgid "Delete"
 #~ msgstr "Löschen"
+
+#~ msgid "Do not use any domain"
+#~ msgstr "Keine Domäne benutzen"
 
 #~ msgid "Domain name server"
 #~ msgstr "Domänen-DNS-Server"
@@ -1514,12 +1507,12 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 
 #~ msgid ""
 #~ "Further information can be found in the <a href=\"https://docs.software-"
-#~ "univention.de/manual-%s.html#computers:networkcomplex\" target=\"_blank"
-#~ "\">UCS documentation</a>."
+#~ "univention.de/manual-%s.html#computers:networkcomplex\" "
+#~ "target=\"_blank\">UCS documentation</a>."
 #~ msgstr ""
 #~ "Weitere Informationen können in der <a href=\"https://docs.software-"
-#~ "univention.de/handbuch-%s.html#computers:networkcomplex\" target=\"_blank"
-#~ "\">UCS Dokumentation</a> gefunden werden."
+#~ "univention.de/handbuch-%s.html#computers:networkcomplex\" "
+#~ "target=\"_blank\">UCS Dokumentation</a> gefunden werden."
 
 #~ msgid "Gateway (IPv4)"
 #~ msgstr "Gateway (IPv4)"
@@ -1554,12 +1547,22 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgid "Identifier"
 #~ msgstr "Bezeichner"
 
+#~ msgid "If unsure, select <i>%s</i>."
+#~ msgstr "Wenn unsicher, wählen Sie <i>%s</i>."
+
 #~ msgid ""
-#~ "In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as "
-#~ "name servers, gateways, and HTTP proxies may be specified."
+#~ "If you want to upgrade your memory first please press the power button of "
+#~ "your server to shutdown the system."
 #~ msgstr ""
-#~ "In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) "
-#~ "sowie DNS-Server, Gateways und HTTP-Proxy festgelegt werden."
+#~ "Wenn Sie zuerst Ihren Arbeitsspeicher aufrüsten möchten, drücken Sie bitte "
+#~ "den Netzschalter des Servers um das System herunterzufahren."
+
+#~ msgid ""
+#~ "In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name"
+#~ " servers, gateways, and HTTP proxies may be specified."
+#~ msgstr ""
+#~ "In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie"
+#~ " DNS-Server, Gateways und HTTP-Proxy festgelegt werden."
 
 #~ msgid "Installed system locales"
 #~ msgstr "Verfügbare Systemsprache"
@@ -1572,6 +1575,13 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 
 #~ msgid "Interface type"
 #~ msgstr "Netzwerkgerätetyp"
+
+#~ msgid ""
+#~ "It is not possible to install KVM and XEN components on one system. Please "
+#~ "select only one of these components."
+#~ msgstr ""
+#~ "Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
+#~ "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
 #~ msgid "Keyboard model"
 #~ msgstr "Tastaturmodel"
@@ -1639,6 +1649,9 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgid "No changes have been made."
 #~ msgstr "Es wurden keine Änderungen durchgeführt."
 
+#~ msgid "No domain warning"
+#~ msgstr "Warnung: Keine Domäne"
+
 #~ msgid "None"
 #~ msgstr "Kein"
 
@@ -1692,8 +1705,8 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgid ""
 #~ "Should the UMC module be closed? All unsaved modification will be lost."
 #~ msgstr ""
-#~ "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten "
-#~ "Änderungen gehen verloren."
+#~ "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
+#~ "gehen verloren."
 
 #~ msgid "Should the nameserver and gateway be set: %s"
 #~ msgstr "Sollen DNS-Server und Gateway gesetzt werden: %s"
@@ -1711,29 +1724,57 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgstr "Die Änderungen wurden erfolgreich übernommen."
 
 #~ msgid ""
-#~ "The connection to the server could not be established after {time} "
-#~ "seconds. This problem can occur due to a change of the IP address. In "
-#~ "this case, please login to Univention Management Console again at the "
-#~ "{linkStart}new address{linkEnd}."
+#~ "The connection to the server could not be established after {time} seconds. "
+#~ "This problem can occur due to a change of the IP address. In this case, "
+#~ "please login to Univention Management Console again at the {linkStart}new "
+#~ "address{linkEnd}."
 #~ msgstr ""
 #~ "Die Verbindung zum Server konnte nach {time} Sekunden nicht hergestellt "
 #~ "werden. Dieses Problem kann auf eine Änderung der IP-Adresse zurück zu "
-#~ "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention "
-#~ "Management Console unter der {linkStart}neuen Adresse{linkEnd} ein."
+#~ "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management"
+#~ " Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
 #~ msgid "The following changes will be applied to the system:"
 #~ msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
 #~ msgid ""
-#~ "The following interfaces are already used by other interfaces and can not "
-#~ "be deleted:"
+#~ "The following interfaces are already used by other interfaces and can not be"
+#~ " deleted:"
 #~ msgstr ""
 #~ "Die folgenden Netzwerkgeräte sind bereits von anderen Netzwerkgeräten in "
 #~ "Verwendung und können nicht gelöscht werden:"
 
-#~ msgid "There are no more physical interfaces to create."
+#~ msgid ""
+#~ "The installed UCS system will not offer any web-based domain management "
+#~ "functions and will not be able to be a domain member. Such an UCS system "
+#~ "should only be used in some rare use cases, for example as firewall system."
 #~ msgstr ""
-#~ "Es gibt keine weiteren physikalischen Netzwerkgeräte zum Hinzufügen."
+#~ "Das installierte UCS-System wird keinerlei webbasierte Verwaltungsfunktionen"
+#~ " anbieten und kein Mitglied einer Domäne werden. Solch ein UCS-System sollte"
+#~ " nur in seltenen Fällen aufgesetzt werden, etwa als Firewall-System."
+
+#~ msgid ""
+#~ "The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) "
+#~ "<i>%(addresses)s</i>."
+#~ msgstr ""
+#~ "Das System ist unter <i>%(fqdn)s</i> oder seiner/seinen IP-Adresse(n) "
+#~ "<i>%(addresses)s</i> erreichbar."
+
+#~ msgid "There are no more physical interfaces to create."
+#~ msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum Hinzufügen."
+
+#~ msgid ""
+#~ "This should only be used in rare use cases, for example as firewall systems."
+#~ msgstr ""
+#~ "Diese Einstellung sollte nur in speziellen Szenarien, z.B. Firewall-"
+#~ "Systemen, gewählt werden."
+
+#~ msgid ""
+#~ "This system will be a base system without domain integration and without the"
+#~ " capabilities to join one in the future."
+#~ msgstr ""
+#~ "Dieses System wird ein Basissystem ohne jegliche Domänenintegration und ohne"
+#~ " Möglichkeit, später einer Domäne beizutreten."
 
 #~ msgid "Time zone and keyboard settings"
 #~ msgstr "Zeitzonen- und Tastatureinstellungen"
@@ -1751,13 +1792,13 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ msgstr "Virtuelles LAN"
 
 #~ msgid ""
-#~ "With the activation of UCS you agree to our <a href=\"https://www."
-#~ "univention.com/privacy-statement/\" target=\"_blank\">privacy statement</"
-#~ "a>."
+#~ "With the activation of UCS you agree to our <a "
+#~ "href=\"https://www.univention.com/privacy-statement/\" "
+#~ "target=\"_blank\">privacy statement</a>."
 #~ msgstr ""
-#~ "Mit der Inbetriebnahme von UCS willigen Sie in unsere <a href=\"https://"
-#~ "www.univention.de/datenschutzerklaerung/\" target=\"_blank"
-#~ "\">Datenschutzbestimmung</a> ein."
+#~ "Mit der Inbetriebnahme von UCS willigen Sie in unsere <a "
+#~ "href=\"https://www.univention.de/datenschutzerklaerung/\" "
+#~ "target=\"_blank\">Datenschutzbestimmung</a> ein."
 
 #~ msgid "don't set"
 #~ msgstr "nicht setzen"

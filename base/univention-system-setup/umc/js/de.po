@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-11-14 13:58+0100\n"
+"POT-Creation-Date: 2020-12-15 02:38+0100\n"
 "PO-Revision-Date: 2020-07-21 11:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -61,11 +61,11 @@ msgstr "Weitere Optionen für dieses Netzwerkgerät"
 msgid "Advanced configuration"
 msgstr "Erweiterte Konfiguration"
 
-#: umc/js/setup.js:147 umc/js/setup.js:379
+#: umc/js/setup.js:138 umc/js/setup.js:358
 msgid "Apply changes"
 msgstr "Änderungen übernehmen"
 
-#: umc/js/setup/Interfaces.js:120 umc/js/setup/InterfaceWizard.js:315
+#: umc/js/setup/InterfaceWizard.js:315 umc/js/setup/Interfaces.js:120
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -85,7 +85,7 @@ msgstr "Bond Netzwerkkonfiguration"
 msgid "Bond primary"
 msgstr "Primäre Bond-Netzwerkschnittstellen"
 
-#: umc/js/setup/Interfaces.js:168 umc/js/setup/InterfaceWizard.js:394
+#: umc/js/setup/InterfaceWizard.js:394 umc/js/setup/Interfaces.js:168
 msgid "Bond slaves"
 msgstr "Bond Kindnetzwerkschnittstellen"
 
@@ -105,7 +105,7 @@ msgstr "Bridge-Konfiguration"
 msgid "Bridge interface configuration"
 msgstr "Bridge Netzwerkkonfiguration"
 
-#: umc/js/setup/Interfaces.js:190 umc/js/setup/InterfaceWizard.js:359
+#: umc/js/setup/InterfaceWizard.js:359 umc/js/setup/Interfaces.js:190
 msgid "Bridge ports"
 msgstr "Bridge ports"
 
@@ -113,7 +113,7 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:376 umc/js/setup/InterfaceGrid.js:130
+#: umc/js/setup.js:355 umc/js/setup/InterfaceGrid.js:130
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -146,15 +146,6 @@ msgstr ""
 "zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
 "System im Produktiveinsatz befinden."
 
-#: umc/js/setup.js:193
-msgid ""
-"Changing network settings is disabled. It can be re enabled by unsetting the "
-"UCR variable \"umc/modules/setup/network/disabled/by\"."
-msgstr ""
-"Das Ändern von Netzwerkeinstellungen ist deaktiviert. Es kann durch löschen "
-"der UCR-Variable \"umc/modules/setup/network/disabled/by\" wieder aktiviert "
-"werden."
-
 #: umc/js/setup/InterfaceWizard.js:89
 msgid "Choose interface type"
 msgstr "Wähle Netzwerkgerätetyp aus"
@@ -167,7 +158,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: umc/js/setup.js:449
+#: umc/js/setup.js:428
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -211,7 +202,7 @@ msgstr "Domänen-DNS-Server"
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/setup/Interfaces.js:117 umc/js/setup/InterfaceWizard.js:283
+#: umc/js/setup/InterfaceWizard.js:283 umc/js/setup/Interfaces.js:117
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
@@ -314,7 +305,7 @@ msgstr "IPv6-Präfix"
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/setup.js:437
+#: umc/js/setup.js:416
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
@@ -415,7 +406,7 @@ msgstr "Netzwerkgerätkonfiguration"
 msgid "Network interfaces"
 msgstr "Netzwerkgeräte"
 
-#: umc/js/setup.js:312
+#: umc/js/setup.js:291
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen durchgeführt."
 
@@ -423,11 +414,11 @@ msgstr "Es wurden keine Änderungen durchgeführt."
 msgid "None"
 msgstr "Kein"
 
-#: umc/js/setup.js:470
+#: umc/js/setup.js:449
 msgid "Not all changes could be applied successfully:"
 msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden:"
 
-#: umc/js/setup.js:474
+#: umc/js/setup.js:453
 msgid "Ok"
 msgstr "Ok"
 
@@ -448,7 +439,7 @@ msgid "Please choose a network interface before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:371
+#: umc/js/setup.js:350
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
@@ -475,10 +466,6 @@ msgstr "Gelöscht:"
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
-#: umc/js/setup.js:188
-msgid "Setup for UCS Virtual Machine Manager"
-msgstr "Einrichtung für UCS Virtual Machine Manager"
-
 #: umc/js/setup/InterfaceWizard.js:90
 msgid "Several network types can be chosen."
 msgstr "Mehrere Netzwerktypen können ausgewählt werden."
@@ -500,11 +487,11 @@ msgstr "Statisch"
 msgid "Static (IPv6)"
 msgstr "Statisch (IPv6)"
 
-#: umc/js/setup.js:458 umc/js/setup.js:464
+#: umc/js/setup.js:437 umc/js/setup.js:443
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:444
+#: umc/js/setup.js:423
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -516,11 +503,11 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup.js:361
+#: umc/js/setup.js:340
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:334 umc/js/setup.js:414
+#: umc/js/setup.js:313 umc/js/setup.js:393
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
@@ -573,8 +560,8 @@ msgid "set"
 msgstr "setzen"
 
 #~ msgid ""
-#~ "%s Appliance could not be joined because the license on the Primary Directory Node is "
-#~ "not activated."
+#~ "%s Appliance could not be joined because the license on the Primary "
+#~ "Directory Node is not activated."
 #~ msgstr ""
 #~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
 #~ "auf dem Primary Directory Node vor."
@@ -731,13 +718,15 @@ msgstr "setzen"
 #~ msgstr "<tr><td>Zeitzone:</td><td>%s</td></tr>"
 
 #~ msgid ""
-#~ "A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take "
-#~ "over the role of the Primary Directory Node permanently. It is recommended to use at "
-#~ "least one Backup Directory Node in the domain."
+#~ "A Backup Directory Node is the fallback system for the UCS Primary "
+#~ "Directory Node and can take over the role of the Primary Directory Node "
+#~ "permanently. It is recommended to use at least one Backup Directory Node "
+#~ "in the domain."
 #~ msgstr ""
-#~ "Ein Backup Directory Node fungiert als Ersatzsystem für den Primary Directory Node und kann die "
-#~ "Rolle des Primary Directory Nodes langfristig übernehmen. Es ist empfohlen, mindestens "
-#~ "einen Backup Directory Node in der Domäne zu verwenden."
+#~ "Ein Backup Directory Node fungiert als Ersatzsystem für den Primary "
+#~ "Directory Node und kann die Rolle des Primary Directory Nodes langfristig "
+#~ "übernehmen. Es ist empfohlen, mindestens einen Backup Directory Node in "
+#~ "der Domäne zu verwenden."
 
 #~ msgid "A few questions are needed to complete the configuration process."
 #~ msgstr "Ein paar Fragen sind notwendig, um die Einrichtung abzuschließen."
@@ -850,11 +839,22 @@ msgstr "setzen"
 #~ msgid "At least one network device needs to be properly configured."
 #~ msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
+#~ msgid "Backup Directory Node"
+#~ msgstr "Backup Directory Node"
+
 #~ msgid "Certificate"
 #~ msgstr "Zertifikat"
 
 #~ msgid "Certificate settings"
 #~ msgstr "Zertifikateinstellungen"
+
+#~ msgid ""
+#~ "Changing network settings is disabled. It can be re enabled by unsetting "
+#~ "the UCR variable \"umc/modules/setup/network/disabled/by\"."
+#~ msgstr ""
+#~ "Das Ändern von Netzwerkeinstellungen ist deaktiviert. Es kann durch "
+#~ "löschen der UCR-Variable \"umc/modules/setup/network/disabled/by\" wieder "
+#~ "aktiviert werden."
 
 #~ msgid "Choose your language"
 #~ msgstr "Wählen Sie Ihre Sprache aus"
@@ -923,24 +923,6 @@ msgstr "setzen"
 
 #~ msgid "Create a new UCS domain"
 #~ msgstr "Erstellen einer neuen UCS-Domäne"
-
-#~ msgid "Backup Directory Node"
-#~ msgstr "Backup Directory Node"
-
-#~ msgid "Primary Directory Node"
-#~ msgstr "Primary Directory Node"
-
-#~ msgid "Replica Directory Node"
-#~ msgstr "Replica Directory Node"
-
-#~ msgid ""
-#~ "Replica Directory Node systems are ideal for site servers, they provide authentication "
-#~ "services for the domain. Local services running on a Replica Directory Node can access "
-#~ "the local LDAP database."
-#~ msgstr ""
-#~ "Replica Directory Node-Systeme bieten sich für Standortserver an, sie stellen "
-#~ "Authentifizierungsdienste bereit. Lokale Dienste auf einem Replica Directory Node haben "
-#~ "Zugriff auf die lokale LDAP-Datenbank."
 
 #~ msgid "DNS server"
 #~ msgstr "DNS-Server"
@@ -1143,13 +1125,13 @@ msgstr "setzen"
 #~ "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
 #~ msgid ""
-#~ "It seems that a UCS Primary Directory Node system has already joined into the Windows "
-#~ "AD domain. Please choose a different option as other system roles for "
-#~ "joining an AD domain are not available."
+#~ "It seems that a UCS Primary Directory Node system has already joined into "
+#~ "the Windows AD domain. Please choose a different option as other system "
+#~ "roles for joining an AD domain are not available."
 #~ msgstr ""
-#~ "Es scheint, dass ein UCS Primary Directory Node-System bereis der Windows AD-Domäne "
-#~ "beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
-#~ "Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
+#~ "Es scheint, dass ein UCS Primary Directory Node-System bereis der Windows "
+#~ "AD-Domäne beigetreten ist. Bitte wählen Sie eine andere Option, da "
+#~ "weitere Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
 
 #~ msgid "Join into an existing Active Directory domain"
 #~ msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
@@ -1256,6 +1238,9 @@ msgstr "setzen"
 #~ msgid "Preferred DNS server"
 #~ msgstr "Bevorzugter DNS-Server"
 
+#~ msgid "Primary Directory Node"
+#~ msgstr "Primary Directory Node"
+
 #~ msgid ""
 #~ "Quick setup of a system for testing purposes. Several system "
 #~ "configurations are predefined and cannot be changed at a later point."
@@ -1266,6 +1251,18 @@ msgstr "setzen"
 
 #~ msgid "Reconfigure"
 #~ msgstr "Erneut konfigurieren"
+
+#~ msgid "Replica Directory Node"
+#~ msgstr "Replica Directory Node"
+
+#~ msgid ""
+#~ "Replica Directory Node systems are ideal for site servers, they provide "
+#~ "authentication services for the domain. Local services running on a "
+#~ "Replica Directory Node can access the local LDAP database."
+#~ msgstr ""
+#~ "Replica Directory Node-Systeme bieten sich für Standortserver an, sie "
+#~ "stellen Authentifizierungsdienste bereit. Lokale Dienste auf einem "
+#~ "Replica Directory Node haben Zugriff auf die lokale LDAP-Datenbank."
 
 #~ msgid "Restarting server components..."
 #~ msgstr "Neustart der Server-Komponenten..."
@@ -1284,6 +1281,9 @@ msgstr "setzen"
 
 #~ msgid "Setup - An error occurred"
 #~ msgstr "Einrichtung - Ein Fehler ist aufgetreten"
+
+#~ msgid "Setup for UCS Virtual Machine Manager"
+#~ msgstr "Einrichtung für UCS Virtual Machine Manager"
 
 #~ msgid "Setup successful"
 #~ msgstr "Einrichtung erfolgreich"
