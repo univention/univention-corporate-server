@@ -40,6 +40,10 @@
 	margin-bottom: 20px;
 }
 
+.umc .umcUDMLicenseImportContent {
+	overflow: hidden;
+}
+
 .umc .umcUDMLicenseIcon {
 	background-image: url(udm/license.svg);
 }

@@ -70,7 +70,9 @@ define([
 			this.own(this._progressBar);
 
 			// add icon container
-			this.message = new ContainerWidget({});
+			this.message = new ContainerWidget({
+				'class': 'umcUDMLicenseImportContent'
+			});
 			this.message.addChild(new Text({
 				'class': 'umcUDMLicenseImportIcon col-xxs-12 col-xs-4',
 				content : ''
