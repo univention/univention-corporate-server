@@ -528,7 +528,6 @@ define([
 			]);
 
 			var message_en = lang.replace(message_base, [
-				'Univention Summit 2021',
 				'Virtual Venue on January 28, 2021',
 				'500 Attendees',
 				'25 Exhibitors & Sponsors',
