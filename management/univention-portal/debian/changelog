@@ -1,3 +1,9 @@
+univention-portal (3.0.3-1) unstable; urgency=medium
+
+  * Bug #52293: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Dec 2020 18:17:06 +0100
+
 univention-portal (3.0.2-15) unstable; urgency=medium
 
   * Bug #52293: get session info from Apache instead of UMC-Webserver
