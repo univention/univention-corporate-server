@@ -127,7 +127,7 @@ class UCS_Version(object):
 		>>> UCS_Version((1, 0, 0)) == UCS_Version((2, 0, 0))
 		False
 		"""
-		return self.mmp == other.mmp if isinstance(other, UCS_Version) else NotImplemented
+		return isinstance(other, UCS_Version) and self.mmp == other.mmp
 
 	def __ne__(self, other):
 		# type: (object) -> bool
@@ -137,7 +137,7 @@ class UCS_Version(object):
 		>>> UCS_Version((1, 0, 0)) != UCS_Version((2, 0, 0))
 		True
 		"""
-		return self.mmp != other.mmp if isinstance(other, UCS_Version) else NotImplemented
+		return not isinstance(other, UCS_Version) or self.mmp != other.mmp
 
 	def __ge__(self, other):
 		# type: (UCS_Version) -> bool
@@ -187,7 +187,7 @@ class UCS_Version(object):
 		>>> str(UCS_Version((1,2,3)))
 		'1.2-3'
 		"""
-		return UCS_Version.FULLFORMAT % self
+		return self.FULLFORMAT % self
 
 	def __hash__(self):
 		# type: () -> int
