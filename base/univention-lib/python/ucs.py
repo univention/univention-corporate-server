@@ -34,7 +34,7 @@ import re
 import six
 try:
 	from typing import List, Tuple, Union  # noqa: F401
-except ImportError:
+except ImportError:  # pragma: no cover
 	pass
 
 
@@ -47,6 +47,7 @@ class UCS_Version(object):
 	FULLFORMAT = '%(major)d.%(minor)d-%(patchlevel)d'
 	# regular expression matching a UCS version X.Y-Z
 	_regexp = re.compile(r'(?P<major>[0-9]+)\.(?P<minor>[0-9]+)-(?P<patch>[0-9]+)')
+	_format = re.compile(r'%([%afimp])')
 
 	def __init__(self, version):
 		# type: (Union[Tuple[int, int, int], List[int], str, UCS_Version]) -> None
@@ -127,7 +128,7 @@ class UCS_Version(object):
 		>>> UCS_Version((1, 0, 0)) == UCS_Version((2, 0, 0))
 		False
 		"""
-		return self.mmp == other.mmp if isinstance(other, UCS_Version) else NotImplemented
+		return isinstance(other, UCS_Version) and self.mmp == other.mmp
 
 	def __ne__(self, other):
 		# type: (object) -> bool
@@ -137,7 +138,7 @@ class UCS_Version(object):
 		>>> UCS_Version((1, 0, 0)) != UCS_Version((2, 0, 0))
 		True
 		"""
-		return self.mmp != other.mmp if isinstance(other, UCS_Version) else NotImplemented
+		return not isinstance(other, UCS_Version) or self.mmp != other.mmp
 
 	def __ge__(self, other):
 		# type: (UCS_Version) -> bool
@@ -187,7 +188,7 @@ class UCS_Version(object):
 		>>> str(UCS_Version((1,2,3)))
 		'1.2-3'
 		"""
-		return UCS_Version.FULLFORMAT % self
+		return self.FULLFORMAT % self
 
 	def __hash__(self):
 		# type: () -> int
@@ -203,7 +204,38 @@ class UCS_Version(object):
 		"""
 		return 'UCS_Version((%d,%d,%r))' % self.mmp
 
+	def __format__(self, fmt):
+		# type: (str) -> str
+		"""
+		Support Format String Syntax:
 
-if __name__ == '__main__':
+		>>> "{0:%f}".format(UCS_Version((1, 2, 3))
+		"1.2-3"
+
+		The follwong format codes are supported:
+
+		* `%a`: The major version, e.g. `1`.
+		* `%f`: The full version, e.g. `1.2-3`.
+		* `%i`: The minor version, e.g. `2`.
+		* `%m`: The major and minor version, e.g. `1.2`.
+		* `%p`: The patch-level version, e.g. `3`.
+		* `%%`: A literal `'%'` character.
+		"""
+		if not isinstance(fmt, str):  # pragma: no cover
+			raise TypeError("must be str, not %s" % type(fmt).__name__)
+		if fmt:
+			val = {
+				"%": "%",
+				"a": str(self.major),
+				"i": str(self.minor),
+				"p": str(self.patchlevel),
+				"m": self.FORMAT % self,
+				"f": str(self),
+			}
+			return self._format.sub(lambda m: val[m.group(1)], fmt)
+		return str(self)
+
+
+if __name__ == '__main__':  # pragma: no cover
 	import doctest
 	exit(doctest.testmod()[0])
