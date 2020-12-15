@@ -137,8 +137,6 @@ class _UCSRepo(UCS_Version):
         # type: (Optional[UCS_Version], **Any) -> None
         if release:
             super(_UCSRepo, self).__init__(release)
-        kwargs.setdefault('patchlevel_reset', 0)
-        kwargs.setdefault('patchlevel_max', 99)
         for (k, v) in kwargs.items():
             if isinstance(v, str) and '%(' in v:
                 self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
@@ -1537,79 +1535,6 @@ class UniventionUpdater(object):
         env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
         with open("/var/log/univention/updater.log", "a") as log:
             return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log)
-
-    def _iterate_release(self, ver, start, end):
-        # type: (_UCSRepo, UCS_Version, UCS_Version) -> Generator[_UCSRepo, bool, None]
-        """
-        Iterate through all versions of repositories between start and end.
-
-        :param UCSRepo ver: An instance of :py:class:`UCS_Version` used for iteration.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        """
-        MAX_MINOR = 99
-        for ver.major in range(start.major, end.major + 1):
-            for ver.minor in range(start.minor if ver.major == start.major else 0, (end.minor if ver.major == end.major else MAX_MINOR) + 1):
-                if isinstance(ver.patch, six.string_types):  # patchlevel not used
-                    failed = (yield ver)
-                else:
-                    for ver.patchlevel in range(start.patchlevel if ver.mm == start.mm else ver.patchlevel_reset, (end.patchlevel if ver.mm == end.mm else ver.patchlevel_max) + 1):
-                        failed = (yield ver)
-                        if failed and ver.mm < end.mm:
-                            break
-                if failed and ver.major < end.major:
-                    break
-
-    def _iterate_versions(self, ver, start, end, parts, archs, server):
-        # type: (_UCSRepo, UCS_Version, UCS_Version, Iterable[str], Iterable[str], _UCSServer) -> Iterator
-        """
-        Iterate through all versions of repositories between start and end.
-
-        :param UCSRepo ver: An instance of :py:class:`UCS_Version` used for iteration.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :param archs: List of architectures.
-        :param UCSHttpServer server: The UCS repository server to use.
-        :returns: A iterator through all UCS releases between `start` and `end` returning `ver`.
-        :raises ProxyError: if the repository server is blocked by the proxy.
-        """
-        self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
-        (ver.major, ver.minor, ver.patchlevel) = (start.major, start.minor, start.patchlevel)
-
-        # Workaround version of start << first available repository version,
-        # e.g. repository starts at 2.3-0, but called with start=2.0-0
-        it = self._iterate_release(ver, start, end)
-        try:
-            ver = next(it)
-            while True:
-                self.log.info('Checking version %s', ver)
-                success = False
-                for ver.part in parts:  # part
-                    try:
-                        self.log.info('Checking version %s', ver.path())
-                        assert server.access(ver)  # patchlevel
-                        for ver.arch in archs:  # architecture
-                            try:
-                                code, size, content = server.access(ver)
-                                self.log.info('Found content: code=%d size=%d', code, size)
-                                if size >= MIN_GZIP:
-                                    success = True
-                                    yield ver
-                                elif size == 0 and isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
-                                    uri = server.join(ver.path())
-                                    raise ProxyError(uri, "download blocked by proxy?")
-                            except DownloadError as e:
-                                ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                            finally:
-                                del ver.arch
-                    except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                    finally:
-                        del ver.part
-                ver = it.send(not success)
-        except StopIteration:
-            pass
 
     def _iterate_version_repositories(self, start, end):
         # type: (UCS_Version, UCS_Version) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
