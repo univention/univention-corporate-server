@@ -1,3 +1,10 @@
+univention-web (3.0.6-1) unstable; urgency=medium
+
+  * Bug #52371: Version bump to ensure package update will
+    be done in all scenarios
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Dec 2020 23:21:53 +0100
+
 univention-web (3.0.5-52) unstable; urgency=medium
 
   * Bug 52303: rm maintscript

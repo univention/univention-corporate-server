@@ -1,3 +1,10 @@
+univention-saml (6.0.3-1) unstable; urgency=medium
+
+  * Bug #52371: Version bump to ensure package update will
+    be done in all scenarios
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Dec 2020 23:20:19 +0100
+
 univention-saml (6.0.2-62) unstable; urgency=medium
 
   * Bug #52323: make assertion.lifetime configurable
