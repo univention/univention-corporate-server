@@ -475,50 +475,50 @@ define([
 			}));
 		};
 
-		var summit2020DialogWasShown = true;
-		var showSummit2020Dialog = function() {
+		var summit2021DialogWasShown = true;
+		var showSummit2021Dialog = function() {
 			if (startupDialogWasShown) {
 				// we don't want to spam the user with dialogs
 				// so don't show this one if the StartupDialog was shown
-				summit2020DialogWasShown = false;
+				summit2021DialogWasShown = false;
 				return;
 			}
 
-			var endOfSummit = new Date(2020, 0, 24, 0, 0, 0);
+			var endOfSummit = new Date(2021, 0, 28, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
-			var dontShowDialog = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Dialog');
+			var dontShowDialog = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2021Dialog');
 			if (dontShowDialog) {
-				summit2020DialogWasShown = false;
+				summit2021DialogWasShown = false;
 				return;
 			}
 
 			var title = '' +
 				'<div>' +
-					'<p class="umcSummit2020Dialog__header-text">' +
-						'Univention Summit 2020 - be open for <b class="umcSummit2020Dialog__header-text--important">Digital Sovereignty' +
+					'<p class="umcSummit2021Dialog__header-text">' +
+						'Univention Summit 2021 - be open for <b class="umcSummit2021Dialog__header-text--important">Digital Sovereignty' +
 					'</p>' +
 				'</div>';
 
 			var message_base = '' +
-				'<div class="umcSummit2020Message">' +
-					'<div class="umcSummit2020Message__messageWrapper">' +
-						'<span class="umcSummit2020Message__listHeader">{0}</span>' +
+				'<div class="umcSummit2021Message">' +
+					'<div class="umcSummit2021Message__messageWrapper">' +
+						'<span class="umcSummit2021Message__listHeader">{0}</span>' +
 						'<ul>' +
 							'<li>{1}</li>' +
 							'<li>{2}</li>' +
 							'<li>{3}</li>' +
 							'<li>{4}</li>' +
 						'</ul>' +
-						'<p class="umcSummit2020Message__p">{7}</p>' +
-						'<a class="umcSummit2020Message__link" href="{5}" target="_blank">{6}</a>' +
+						'<p class="umcSummit2021Message__p">{7}</p>' +
+						'<a class="umcSummit2021Message__link" href="{5}" target="_blank">{6}</a>' +
 					'</div>' +
-					'<div class="umcSummit2020Message__image">' +
+					'<div class="umcSummit2021Message__image">' +
 					'</div>' +
 				'</div>';
 			var message_de = lang.replace(message_base, [
 				'Fakten:',
-				'23. Jan. - 24. Jan. 2020 in Bremen',
+				'23. Jan. - 24. Jan. 2021 in Bremen',
 				'400 Teilnehmer',
 				'Ausstellung mit 25 Soft- und Hardware-Herstellern',
 				'Keynotes | Workshops | Round Tables | IT-Barcamp | Praxisvorträge | Get-together',
@@ -529,7 +529,7 @@ define([
 
 			var message_en = lang.replace(message_base, [
 				'Facts:',
-				'January 23 - 24, 2020 in Bremen | Germany',
+				'January 23 - 24, 2021 in Bremen | Germany',
 				'400 Attendees',
 				'Exhibition with 25 software and hardware developers',
 				'Keynotes | Workshops | Round tables | IT Barcamp | Practice lectures | Get-together',
@@ -552,7 +552,7 @@ define([
 				img = null; // garbage collect the img
 
 				var dialog = new ConfirmDialog({
-					'class': 'umcSummit2020Dialog',
+					'class': 'umcSummit2021Dialog',
 					title: title,
 					message: message,
 					options: options,
@@ -560,36 +560,36 @@ define([
 				on(dialog, 'confirm', function() {
 					var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
 					var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
-					cookie('hideSummit2020Dialog', 'true', {expires: expires.toUTCString()});
+					cookie('hideSummit2021Dialog', 'true', {expires: expires.toUTCString()});
 					dialog.close();
 				});
 				dialog.show();
 			});
-			img.src = '/univention/management/univention-summit-2020.svg';
+			img.src = '/univention/management/univention-summit-2021.svg';
 		};
 
-		var showSummit2020Notification = function() {
-			if (startupDialogWasShown || summit2020DialogWasShown) {
+		var showSummit2021Notification = function() {
+			if (startupDialogWasShown || summit2021DialogWasShown) {
 				return;
 			}
 
-			var endOfSummit = new Date(2020, 0, 24, 0, 0, 0);
+			var endOfSummit = new Date(2021, 0, 28, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
-			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Notification');
+			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2021Notification');
 			if (dontShowNotification) {
 				return;
 			}
 
 			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
-			var message_de = '<a href="https://www.univention-summit.de/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2020</a> - Anwender, OS-Hersteller & Univention treffen und alles zu UCS 5 & Best Practices erfahren.';
-			var message_en = '<a href="https://www.univention-summit.com/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2020</a> - Meet users, OS vendors & Univention and learn all about UCS 5 & Best Practices. ';
+			var message_de = '<a href="https://www.univention-summit.de/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2021</a> - Anwender, OS-Hersteller & Univention treffen und alles zu UCS 5 & Best Practices erfahren.';
+			var message_en = '<a href="https://www.univention-summit.com/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2021</a> - Meet users, OS vendors & Univention and learn all about UCS 5 & Best Practices. ';
 			var message = isDE ? message_de : message_en;
 			dialog.notify(message).then(function(notification) {
 				on(notification, 'remove', function() {
 					var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
 					var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
-					cookie('hideSummit2020Notification', 'true', {expires: expires.toUTCString()});
+					cookie('hideSummit2021Notification', 'true', {expires: expires.toUTCString()});
 				});
 			});
 		};
@@ -633,8 +633,8 @@ define([
 		// run several checks
 		checkCertificateValidity();
 		checkShowStartupDialog();
-		showSummit2020Dialog();
-		showSummit2020Notification();
+		showSummit2021Dialog();
+		showSummit2021Notification();
 		showAmbassadorNotification();
 	});
 
