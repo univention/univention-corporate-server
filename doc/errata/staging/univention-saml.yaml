@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-saml
+fix: 6.0.3-1A~4.4.0.202012152332
+desc: |
+ This update addresses the following issue:
+ * Package version bump to ensure package update will be done
+   in all scenarios
+bug: [52371]
