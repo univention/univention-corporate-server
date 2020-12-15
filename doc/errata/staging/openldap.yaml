@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [6,7]
+scope: ucs_4.4-0-errata4.4-7
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202012151059
+desc: |
+ This update addresses the following issue(s):
+ * null-ptr dereference for unauthenticated packet in OpenLDAP slapd
+   (CVE-2020-25692)
+ * assertion failure in Certificate List syntax validation
+   (CVE-2020-25709)
+ * assertion failure in CSN normalization with invalid input
+   (CVE-2020-25710)
+bug: [52406]
+cve:
+- CVE-2020-25692
+- CVE-2020-25709
+- CVE-2020-25710
