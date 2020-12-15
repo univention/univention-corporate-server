@@ -6,8 +6,8 @@
   and Active Directory to keep all objects in sync, neither during start up nor periodically.
 * The AD-Connector only synchronizes a subset of all attributes, objects and OUs/containers. This subset is
   defined by the mapping.
-* During startup, the script `/usr/sbin/univention-s4-connector` converts the mapping UCR template file
-  `/etc/univention/connector/s4/mapping` to a `mapping.py` in the same directory.
+* During startup, the script `/usr/sbin/univention-ad-connector` converts the mapping UCR template file
+  `/etc/univention/connector/mapping` to a `mapping.py` in the same directory.
 * If customers adjust the file `mapping.py`, it will get overwriten during the next service restart.
 * If customers adjust the UCR template file `mapping`, the change will be very persistent, even over updates
   of the Debian package, e.g. during errata updates. dpkg will write the updated `mapping` to a file
@@ -16,18 +16,18 @@
 * When the AD-Connector starts, it first syncs from UDM/OpenLDAP to Active Directory. But it doesn't re-sync everything
   at that point, it just waits for changes.
 * Changes from the OpenLDAP site are communicated by the Listener module to AD-Connector via Python `pickle` files
-  written into the directory `/var/lib/univention-connector/s4/`. The main loop of the AD-Connector periodically
+  written into the directory `/var/lib/univention-connector/ad/`. The main loop of the AD-Connector periodically
   checks that directory.
 * During each replication cycle, the AD-Connector first checks for changes from OpenLDAP and attempts to write them to
   Active Directory. If an object modification works, the `pickle` file gets removed. If the object modification fails,
-  e.g. with a Python traceback, its DN is stored into a table `AD rejected` in `s4internal.sqlite` in the directory
+  e.g. with a Python traceback, its DN is stored into a table `AD rejected` in `internal.sqlite` in the directory
   `/etc/univention/connector/`.
 * During each replication cycle the AD-Connector polls the Active Directory via LDAP for changes (`usnChanged`/
   usnCreated` higher than the last value of `highestCommittedUSN` the AD-Connector has seen during the previous
   replication cycle.
-  The last seen value of `highestCommittedUSN` is stored in `s4internal.sqlite`. The AD-Connector attempts to write
+  The last seen value of `highestCommittedUSN` is stored in `internal.sqlite`. The AD-Connector attempts to write
   the change to OpenLDAP. If possible it uses the python UDM API to write changes to OpenLDAP. If object modification
-  fails, e.g. with a Python traceback, its DN is stored into a table `UCS rejected` in `s4internal.sqlite`.
+  fails, e.g. with a Python traceback, its DN is stored into a table `UCS rejected` in `internal.sqlite`.
 
 ## Developer Information
 
@@ -83,4 +83,3 @@ Improvement Suggestions:
   and don't need to search stuff over and over again.
 * Maybe replace "object" by a "obj_replication_state", which holds "ldap_obj_ol" and "ldap_obj_ad"
 * Differenciate between "ldap_obj_ol_from_listener" and "ldap_obj_ol_current"
-
