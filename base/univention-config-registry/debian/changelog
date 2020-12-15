@@ -1,3 +1,9 @@
+univention-config-registry (15.0.5-1) unstable; urgency=medium
+
+  * Bug #51524: fix parsing of /proc/*/stat in service_info.py
+
+ -- Florian Best <best@univention.de>  Tue, 15 Dec 2020 15:07:13 +0100
+
 univention-config-registry (15.0.4-1) unstable; urgency=medium
 
   * Bug #52157: migrate scripts to Python 3

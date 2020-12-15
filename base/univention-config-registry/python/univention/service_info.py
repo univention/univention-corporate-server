@@ -164,13 +164,14 @@ def pidof(name, docker='/var/run/docker.pid'):
 
 		if docker:
 			stat = os.path.join('/proc', proc, 'stat')
+			status = None
 			try:
 				with open(stat, 'r') as fd:
-					status = fd.read()
-				ppid = int(status.split()[3], 10)
+					status = fd.readline()
+				ppid = int(status.split(')', 1)[-1].split()[1], 10)
 				children.setdefault(ppid, []).append(pid)
 			except (EnvironmentError, ValueError) as ex:
-				log.error('Failed getting parent: %s', ex)
+				log.error('Failed getting parent: %s: %r', ex, status)
 
 		def _running():
 			yield cmd == [link]
