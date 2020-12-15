@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
@@ -32,18 +32,20 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.uldap as uldap
-import univention.config_registry
 
-import ldap
-import ldif
+import io
 import sys
 import os
-import optparse
+import argparse
 import gzip
 import logging
 
+import ldap
+import ldif
 from ldap.controls import SimplePagedResultsControl
+
+import univention.uldap as uldap
+import univention.config_registry
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")
 import replication  # noqa: E402
@@ -94,27 +96,15 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 	if ldif_file == '-':
 		output = sys.stdout
 	else:
-		if os.path.isfile(ldif_file):
-			os.unlink(ldif_file)
-		output = gzip.open(ldif_file, 'wb')
+		output = io.StringIO()
 
-	if hasattr(ldap, 'LDAP_CONTROL_PAGE_OID'):  # python-ldap <= 2.3
-		logging.debug('Using old python-ldap 2.3 API')
-		api24 = False
-		lc = SimplePagedResultsControl(
-			controlType=ldap.LDAP_CONTROL_PAGE_OID,
-			criticality=True,
-			controlValue=(page_size, ''))
-		page_ctrl_oid = ldap.LDAP_CONTROL_PAGE_OID
-	else:  # python-ldap >= 2.4
-		logging.debug('Using new python-ldap 2.4 API')
-		api24 = True
-		lc = SimplePagedResultsControl(
-			criticality=True,
-			size=page_size,
-			cookie='')
-		page_ctrl_oid = lc.controlType
+	lc = SimplePagedResultsControl(
+		criticality=True,
+		size=page_size,
+		cookie='')
+	page_ctrl_oid = lc.controlType
 
+	writer = ldif.LDIFWriter(output, cols=10000)
 	while True:
 		msgid = lo.lo.search_ext(base, ldap.SCOPE_SUBTREE, '(objectclass=*)', ['+', '*'], serverctrls=[lc])
 		rtype, rdata, rmsgid, serverctrls = lo.lo.result3(msgid)
@@ -124,7 +114,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 			for attr in replication.EXCLUDE_ATTRIBUTES:
 				data.pop(attr, None)
 
-			output.write(ldif.CreateLDIF(dn, data, cols=10000))
+			writer.unparse(dn, data)
 
 		pctrls = [
 			c
@@ -132,11 +122,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 			if c.controlType == page_ctrl_oid
 		]
 		if pctrls:
-			if api24:
-				cookie = lc.cookie = pctrls[0].cookie
-			else:
-				_est, cookie = pctrls[0].controlValue
-				lc.controlValue = (page_size, cookie)
+			cookie = lc.cookie = pctrls[0].cookie
 
 			if not cookie:
 				break
@@ -144,18 +130,22 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 			logging.warning("Server ignores RFC 2696 Simple Paged Results Control.")
 			break
 
+	if isinstance(output, io.StringIO):
+		if os.path.isfile(ldif_file):
+			os.unlink(ldif_file)
+		with gzip.open(ldif_file, 'w') as fd:
+			fd.write(output.getvalue().encode('UTF-8'))
 	output.close()
 
 
 def main():
-	usage = "usage: %prog [options]"
-	parser = optparse.OptionParser(usage=usage, description=__doc__)
-	parser.add_option("-l", "--ldif", action="store_true", help="Create LDIF file")
-	parser.add_option("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % SCHEMA)
-	parser.add_option("-o", "--outfile", default=LDIF, help="File to store gzip LDIF data [%default]")
-	parser.add_option("-p", "--pagesize", type=int, default=1000, help="page size to use for LDAP paged search")
-	parser.add_option("-v", "--verbose", action="count", help="Increase verbosity")
-	opts, args = parser.parse_args()
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument("-l", "--ldif", action="store_true", help="Create LDIF file")
+	parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % SCHEMA)
+	parser.add_argument("-o", "--outfile", default=LDIF, help="File to store gzip LDIF data [%(default)s]")
+	parser.add_argument("-p", "--pagesize", type=int, default=1000, help="page size to use for LDAP paged search")
+	parser.add_argument("-v", "--verbose", action="count", help="Increase verbosity")
+	opts = parser.parse_args()
 
 	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
@@ -33,33 +33,27 @@ from __future__ import print_function
 # <https://www.gnu.org/licenses/>.
 
 import socket
-from optparse import OptionParser
+import argparse
 import sys
 
 
 def parse_args():
-	usage = '%prog [options] [master]'
 	desc = sys.modules[__name__].__doc__
-	parser = OptionParser(usage=usage, description=desc)
-	parser.add_option(
-		'-m', '--master',
-		dest='master',
-		help='LDAP Server address')
-	parser.add_option(
+	parser = argparse.ArgumentParser(description=desc)
+	parser.add_argument('-m', '--master', help='LDAP Server address')
+	parser.add_argument(
 		'-s', '--shema',
 		dest='cmd',
 		action='store_const',
 		const='GET_SCHEMA_ID',
 		default='GET_ID',
 		help='Fetch LDAP Schema ID')
-	(options, args) = parser.parse_args()
+	parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS)
+	options = parser.parse_args()
 
 	if not options.master:
-		if args:
-			try:
-				options.master, = args
-			except ValueError:
-				parser.error('incorrect number of arguments')
+		if options.arg:
+			options.master = options.arg
 		else:
 			from univention.config_registry import ConfigRegistry
 			configRegistry = ConfigRegistry()
@@ -78,14 +72,14 @@ def main():
 	try:
 		sock = socket.create_connection((options.master, 6669), 60.0)
 
-		sock.send('Version: 3\nCapabilities: \n\n')
+		sock.send(b'Version: 3\nCapabilities: \n\n')
 		sock.recv(100)
 
-		sock.send('MSGID: 1\n%s\n\n' % (options.cmd,))
+		sock.send(b'MSGID: 1\n%s\n\n' % (options.cmd.encode('UTF-8'),))
 		notifier_result = sock.recv(100)
 
 		if notifier_result:
-			print("%s" % notifier_result.splitlines()[1])
+			print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
 	except socket.error as ex:
 		print('Error: %s' % (ex,), file=sys.stderr)
 		sys.exit(1)

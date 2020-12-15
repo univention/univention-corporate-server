@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
@@ -37,17 +37,16 @@ import univention.config_registry
 
 import ldap
 import ldap.modlist
-import optparse
+import argparse
 
 
 def main():
-	usage = "usage: %prog [options]"
-	parser = optparse.OptionParser(usage=usage, description=__doc__)
-	parser.add_option("-f", "--filter", help="resync objects from Primary found by this filter. Default: (uid=<hostname>$)")
-	parser.add_option("-r", "--remove", action="store_true", help="remove objects in local database before resync")
-	parser.add_option("-s", "--simulate", action="store_true", help="dry run, do not remove or add")
-	parser.add_option("-u", "--update", action="store_true", help="update/modify existing objects")
-	opts, args = parser.parse_args()
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument("-f", "--filter", help="resync objects from Primary found by this filter. Default: (uid=<hostname>$)")
+	parser.add_argument("-r", "--remove", action="store_true", help="remove objects in local database before resync")
+	parser.add_argument("-s", "--simulate", action="store_true", help="dry run, do not remove or add")
+	parser.add_argument("-u", "--update", action="store_true", help="update/modify existing objects")
+	opts = parser.parse_args()
 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -72,10 +71,10 @@ def main():
 
 	# delete local
 	if opts.remove:
-		res = local.search(base=base, filter=opts.filter)
+		res = local.searchDn(base=base, filter=opts.filter)
 		if not res:
 			print('object does not exist local')
-		for dn, data in res:
+		for dn in res:
 			print("remove from local: %s" % (dn,))
 			if not opts.simulate:
 				local.delete(dn)
