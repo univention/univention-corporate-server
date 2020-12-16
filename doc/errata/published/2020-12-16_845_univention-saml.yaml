@@ -9,3 +9,5 @@ desc: |
  * Package version bump to ensure package update will be done
    in all scenarios
 bug: [52371]
+erratum: 845
+announced: 2020-12-16
