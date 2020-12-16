@@ -4,9 +4,21 @@ Description[en]=This variable configures the start mode of the Docker service. I
 Type=bool
 Categories=service-container
 
+[docker/daemon/default/json]
+Description[de]=Zusätzliche JSON Daten, die in '/etc/docker/daemon.json' integriert werden.
+Description[en]=Additional JSON data to be mixed into '/etc/docker/daemon.json'
+Type=str
+Categories=service-container
+
 [docker/daemon/default/opts/.*]
 Description[de]=Optionen für den Docker Daemon.
 Description[en]=Options for the docker daemon.
+Type=str
+Categories=service-container
+
+[docker/daemon/default/opts/registry-mirrors]
+Description[de]=Option zum Setzen von benutzerdefinierten Registry-Mirrors für den Docker Daemon. Die Mirror-Adresse muss 'http://' bzw. 'https://' beinhalten. Bei Angabe mehrerer Mirrors müssen die Adressen kommasepariert übergeben werden.
+Description[en]=Option for defining custom registry mirrors for the Docker daemon. The mirror address has to include 'http://' or 'https://'. Multiple addresses have to be comma-separated.
 Type=str
 Categories=service-container
 
