@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-7
 src: python-monotonic
 fix: 1.1-2
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * This package has been added to the maintained repository.
 bug: [52273]
