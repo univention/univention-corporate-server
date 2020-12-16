@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * This package has been added to the maintained repository.
 bug: [52273]
+erratum: 849
+announced: 2020-12-16
