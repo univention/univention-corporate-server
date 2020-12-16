@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -33,46 +33,34 @@
 
 
 from __future__ import print_function
-import imp
-import sys
-import fcntl
 import os
-import time
 import signal
-from optparse import OptionParser
+import sys
+import time
+from argparse import ArgumentParser
+import fcntl
+import traceback
+import contextlib
 
 import ldap
-import traceback
+
 import univention
 import univention.connector
 import univention.connector.ad
 
 from univention.config_registry import ConfigRegistry
 
-# parse commandline options
 
-parser = OptionParser()
-parser.add_option(
-	"--configbasename", dest="configbasename",
-	help="", metavar="CONFIGBASENAME", default="connector")
-parser.add_option('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-(options, args) = parser.parse_args()
-
-CONFIGBASENAME = "connector"
-if options.configbasename:
-	CONFIGBASENAME = options.configbasename
-STATUSLOGFILE = "/var/log/univention/%s-status.log" % CONFIGBASENAME
-
-mapping = imp.load_source('mapping', '/etc/univention/%s/ad/mapping.py' % CONFIGBASENAME)
-
-
-def bind_stdout():
+@contextlib.contextmanager
+def bind_stdout(options, statuslogfile):
 	if options.daemonize:
-		sys.stdout = open(STATUSLOGFILE, 'w+')
-	return sys.stdout
+		with open(statuslogfile, 'w+') as sys.stdout:
+			yield
+	else:
+		yield
 
 
-def daemon(lock_file):
+def daemon(lock_file, options):
 	try:
 		pid = os.fork()
 	except OSError as e:
@@ -89,7 +77,7 @@ def daemon(lock_file):
 			os.chdir("/")
 			os.umask(0o022)
 		else:
-			pf = open('/var/run/univention-ad-%s' % CONFIGBASENAME, 'w+')
+			pf = open('/var/run/univention-ad-%s' % options.configbasename, 'w+')
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
@@ -99,14 +87,14 @@ def daemon(lock_file):
 	try:
 		maxfd = os.sysconf("SC_OPEN_MAX")
 	except (AttributeError, ValueError):
-		maxfd = 256       # default maximum
+		maxfd = 256  # default maximum
 
 	for fd in range(0, maxfd):
 		if fd == lock_file.fileno():
 			continue
 		try:
 			os.close(fd)
-		except OSError:   # ERROR (ignore)
+		except OSError:  # ERROR (ignore)
 			pass
 
 	os.open("/dev/null", os.O_RDONLY)
@@ -114,86 +102,30 @@ def daemon(lock_file):
 	os.open("/dev/null", os.O_RDWR)
 
 
-def connect():
+def connect(options):
 	print(time.ctime())
 
-	baseConfig = ConfigRegistry()
-	baseConfig.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/ldap/host not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/ldap/port not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/ldap/base not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/ldap/binddn not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/ldap/bindpw not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
-	if baseConfig.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
-		if ca_file:
-			# create a new CAcert file, which contains the UCS CA and the AD CA,
-			# see Bug #17768 for details
-			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
-			new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
-			new_ca = open(new_ca_filename, 'w')
-
-			ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
-			new_ca.write(''.join(ca.readlines()))
-			ca.close()
-
-			ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
-			new_ca.write(''.join(ca.readlines()))
-			ca.close()
-
-			new_ca.close()
-
-			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
-		else:
-			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-
-	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print('%s/ad/listener/dir not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/ad/retryrejected' % CONFIGBASENAME not in baseConfig:
-		baseconfig_retry_rejected = 10
-	else:
-		baseconfig_retry_rejected = baseConfig['%s/ad/retryrejected' % CONFIGBASENAME]
-
-	ad_ldap_bindpw = open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
-	if ad_ldap_bindpw[-1] == '\n':
-		ad_ldap_bindpw = ad_ldap_bindpw[0:-1]
-
-	poll_sleep = int(baseConfig['%s/ad/poll/sleep' % CONFIGBASENAME])
+	poll_sleep = int(ucr['%s/ad/poll/sleep' % options.configbasename])
 	ad_init = None
 	while not ad_init:
 		try:
-			ad = univention.connector.ad.ad(
-				CONFIGBASENAME,
-				mapping.ad_mapping,
-				baseConfig,
-				baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],
-				baseConfig['%s/ad/ldap/port' % CONFIGBASENAME],
-				baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],
-				baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME],
-				ad_ldap_bindpw,
-				baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
-				baseConfig['%s/ad/listener/dir' % CONFIGBASENAME]
-			)
+			ad = univention.connector.ad.ad.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
+			ad.init_ldap_connections()
+			ad.init_group_cache()
 			ad_init = True
 		except ldap.SERVER_DOWN:
 			print("Warning: Can't initialize LDAP-Connections, wait...")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
+	with ad as ad:
+		_connect(ad, poll_sleep, ucr.get('%s/ad/retryrejected' % options.configbasename, 10))
+
+
+def _connect(ad, poll_sleep, baseconfig_retry_rejected):
 	# Initialisierung auf UCS und AD Seite durchfuehren
 	ad_init = None
 	ucs_init = None
@@ -260,7 +192,7 @@ def connect():
 				break
 
 		try:
-			if str(retry_rejected) == baseconfig_retry_rejected:
+			if str(retry_rejected) == baseconfig_retry_rejected:  # FIXME: if the UCR variable is not set this compares string with integer (default value)
 				ad.resync_rejected_ucs()
 				ad.resync_rejected()
 				retry_rejected = 0
@@ -276,41 +208,44 @@ def connect():
 		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
-	ad.close_debug()
 
 
+@contextlib.contextmanager
 def lock(filename):
-	lock_file = open(filename, "a+")
-	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-	return lock_file
-
-
-def main():
 	try:
-		lock_file = lock('/var/lock/univention-ad-%s' % CONFIGBASENAME)
+		lock_file = open(filename, "a+")
+		fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
 	except IOError:
 		print('Error: Another AD connector process is already running.', file=sys.stderr)
 		sys.exit(1)
+	with lock_file as lock_file:
+		yield lock_file
 
-	if options.daemonize:
-		daemon(lock_file)
-	f = bind_stdout()
 
-	while True:
-		try:
-			connect()
-		except SystemExit:
-			lock_file.close()
-			raise
-		except:
-			print(time.ctime())
-			print(" --- connect failed, failure was: ---")
-			print(traceback.format_exc())
-			print(" ---     retry in 30 seconds      ---")
-			sys.stdout.flush()
-			time.sleep(30)
-	lock_file.close()
-	f.close()
+def main():
+	parser = ArgumentParser()
+	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+	parser.add_argument('-d', '--debug', help='debug level', type=int)
+	parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
+	options = parser.parse_args()
+
+	with lock('/var/lock/univention-ad-%s' % options.configbasename) as lock_file:
+		if options.daemonize:
+			daemon(lock_file, options)
+
+		with bind_stdout(options, "/var/log/univention/%s-ad-status.log" % options.configbasename):
+			while True:
+				try:
+					connect(options)
+				except Exception:
+					print(time.ctime())
+
+					print(" --- connect failed, failure was: ---")
+					print(traceback.format_exc())
+					print(" ---     retry in 30 seconds      ---")
+					sys.stdout.flush()
+					time.sleep(30)
 
 
 if __name__ == "__main__":
