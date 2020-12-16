@@ -378,68 +378,6 @@ def format_escaped(format_string, *args, **kwargs):
 	return LDAPEscapeFormatter().format(format_string, *args, **kwargs)
 
 
-class Simple_AD_Connection():
-
-	''' stripped down univention.connector.ad.ad class
-		difference: accept "bindpwd" directly instead of "bindpw" filename
-		difference: don't require mapping
-		difference: Skip init_group_cache code (i.e. use init_group_cache=False)
-		difference: don't use TLS
-	'''
-
-	def __init__(self, CONFIGBASENAME, ucr, host, port, base, binddn, bindpw, certificate):
-
-		self.CONFIGBASENAME = CONFIGBASENAME
-
-		self.host = host
-		self.port = port
-		self.base = base
-		self.binddn = binddn
-		self.bindpw = bindpw
-		self.certificate = certificate
-		self.ucr = ucr
-		self.protocol = 'ldaps' if ucr.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
-		self.uri = "%s://%s:%d" % (self.protocol, self.host, int(self.port))
-
-		if self.certificate:
-			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, self.certificate)
-
-		#ldap.set_option(ldap.OPT_DEBUG_LEVEL, 4095)
-		#ldap._trace_level = 9
-		#ldap.set_option(ldap.OPT_X_SASL_SSF_MIN, 1)
-		#ldap.set_option(ldap.OPT_X_SASL_SECPROPS, "minssf=1")
-
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, retry_max=10, retry_delay=1)
-
-		if ucr.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
-			princ = self.binddn
-			if ldap.dn.is_dn(self.binddn):
-				princ = ldap.dn.str2dn(self.binddn)[0][0][1]
-			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc.well'
-			with NamedTemporaryFile('w') as tmp_file:
-				tmp_file.write(self.bindpw)
-				tmp_file.flush()
-				p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
-				p1.wait()
-				cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % tmp_file.name, princ]
-				p1 = subprocess.Popen(cmd_block, close_fds=True)
-				stdout, stderr = p1.communicate()
-				auth = ldap.sasl.gssapi("")
-				self.lo.sasl_interactive_bind_s("", auth)
-		else:
-			self.lo.simple_bind_s(self.binddn, self.bindpw)
-
-		self.lo.set_option(ldap.OPT_REFERRALS, 0)
-
-		self.ad_sid = None
-		result = self.lo.search_ext_s(self.base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)
-		if 'objectSid' in result[0][1]:
-			objectSid_blob = result[0][1]['objectSid'][0]
-			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
-		if self.ad_sid is None:
-			raise Exception('Failed to get SID from AD!')
-
-
 class ad(univention.connector.ucs):
 	RANGE_RETRIEVAL_PATTERN = re.compile(r"^([^;]+);range=(\d+)-(\d+|\*)$")
 
@@ -463,8 +401,8 @@ class ad(univention.connector.ucs):
 			ad_ldap_host = _ucr['%s/ad/ldap/host' % configbasename]
 			ad_ldap_port = _ucr['%s/ad/ldap/port' % configbasename]
 			ad_ldap_base = _ucr['%s/ad/ldap/base' % configbasename]
-			ad_ldap_binddn = _ucr['%s/ad/ldap/binddn' % configbasename]
-			ad_ldap_bindpw = _ucr['%s/ad/ldap/bindpw' % configbasename]
+			ad_ldap_binddn = kwargs.pop('ad_ldap_binddn', None) or _ucr['%s/ad/ldap/binddn' % configbasename]
+			ad_ldap_bindpw_file = _ucr['%s/ad/ldap/bindpw' % configbasename]
 			ad_ldap_certificate = _ucr.get('%s/ad/ldap/certificate' % configbasename)
 			listener_dir = _ucr['%s/ad/listener/dir' % configbasename]
 		except KeyError as exc:
@@ -487,8 +425,10 @@ class ad(univention.connector.ucs):
 			else:
 				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
-		with open(ad_ldap_bindpw) as fd:
-			ad_ldap_bindpw = fd.read().rstrip()
+		ad_ldap_bindpw = kwargs.pop('ad_ldap_bindpw', None)
+		if not ad_ldap_bindpw:
+			with open(ad_ldap_bindpw_file) as fd:
+				ad_ldap_bindpw = fd.read().rstrip()
 
 		return cls(
 			configbasename,
