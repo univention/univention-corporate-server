@@ -15,3 +15,5 @@ desc: |
  * The removal of sessions has been optimized.
  * UMC now shows a banner to the upcoming Univention Summit 2021 once.
 bug: [52371, 52443, 52442, 52444, 52293, 52273, 52499]
+erratum: 848
+announced: 2020-12-16
