@@ -7,5 +7,5 @@ fix: 11.0.6-3A~4.4.0.202012161931
 desc: |
  This update addresses the following issue(s):
  * The fix addresses a memory leak in univention-management-console-server
-   (Bug #52508).
+   which was introduced in the last erratum.
 bug: [52508]
