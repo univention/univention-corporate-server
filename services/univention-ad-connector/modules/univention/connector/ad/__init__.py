@@ -122,56 +122,6 @@ def disable_user_to_ucs(connector, key, object):
 	return connector.disable_user_to_ucs(key, object)
 
 
-def encode_attrib(attrib):
-	if not attrib or isinstance(attrib, type(u'')):  # referral or already unicode
-		return attrib
-	return unicode(attrib, 'utf8')
-
-
-def encode_attriblist(attriblist):
-	if not isinstance(attriblist, type([])):
-		return encode_attrib(attriblist)
-	else:
-		for i in range(len(attriblist)):
-			attriblist[i] = encode_attrib(attriblist[i])
-		return attriblist
-
-
-def encode_ad_object(ad_object):
-	if isinstance(ad_object, type([])):
-		return encode_attriblist(ad_object)
-	else:
-		for key in ad_object.keys():
-			if key == 'objectSid':
-				ad_object[key] = [decode_sid(ad_object[key][0])]
-			elif key in BINARY_ATTRIBUTES:
-				ud.debug(ud.LDAP, ud.INFO, "encode_ad_object: attrib %s ignored during encoding" % key)  # don't recode
-			else:
-				try:
-					ad_object[key] = encode_attriblist(ad_object[key])
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.WARN, "encode_ad_object: encode attrib %s failed, ignored!" % key)
-		return ad_object
-
-
-def encode_ad_result(ad_result):
-	'''
-	encode an result from an python-ldap search
-	'''
-	return (encode_attrib(ad_result[0]), encode_ad_object(ad_result[1]))
-
-
-def encode_ad_resultlist(ad_resultlist):
-	'''
-	encode an result from an python-ldap search
-	'''
-	for i in range(len(ad_resultlist)):
-		ad_resultlist[i] = encode_ad_result(ad_resultlist[i])
-	return ad_resultlist
-
-
 def unix2ad_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
 	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
@@ -334,7 +284,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: dn-print failed")
 
-			object[dn_key] = encode_attrib(newdn)
+			object[dn_key] = newdn
 	return object
 
 
@@ -1111,7 +1061,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: <print failed>")
-			return encode_ad_object(ad_object)
+			return ad_object
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except:  # FIXME: which exception is to be caught?

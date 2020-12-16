@@ -539,11 +539,7 @@ class ucs(object):
 		return self.config.items(section)
 
 	def _save_rejected_ucs(self, filename, dn):
-		unicode_dn = univention.connector.ad.encode_attrib(dn)
-		self._set_config_option('UCS rejected', filename, unicode_dn)
-
-	def _get_rejected_ucs(self, filename):
-		return self._get_config_option('UCS rejected', filename)
+		self._set_config_option('UCS rejected', filename, dn)
 
 	def _remove_rejected_ucs(self, filename):
 		self._remove_config_option('UCS rejected', filename)
@@ -643,18 +639,6 @@ class ucs(object):
 		'''
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
-
-	def _get_rdn(self, dn):
-		'''
-		return rdn from dn
-		'''
-		return dn.split(',', 1)[0]
-
-	def _get_subtree(self, dn):
-		'''
-		return subtree from dn
-		'''
-		return dn.split(',', 1)[1]
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		'''
