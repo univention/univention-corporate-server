@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The memory consumption has been optimized.
 bug: [52466, 52467]
+erratum: 839
+announced: 2020-12-16
