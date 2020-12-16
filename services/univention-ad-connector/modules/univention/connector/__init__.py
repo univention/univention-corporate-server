@@ -170,7 +170,6 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
@@ -203,7 +202,6 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT * FROM '%s'" % (section))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				return rows
@@ -264,7 +262,6 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
