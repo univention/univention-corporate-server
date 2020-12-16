@@ -9,3 +9,5 @@ desc: |
  * Fetching of user information is now done against the Apache HTTP
    interface instead of directly against the UMC-Webserver.
 bug: [52293]
+erratum: 843
+announced: 2020-12-16
