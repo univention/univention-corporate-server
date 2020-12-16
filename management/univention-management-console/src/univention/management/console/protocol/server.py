@@ -94,11 +94,10 @@ class MagicBucket(object):
 	def _timed_out(self, state):
 		"""Closes the connection after a specified timeout"""
 		if not state.active:
-			CORE.process('Session %r timed out' % (state,))
+			CORE.info('Session %r timed out' % (state,))
 			self._cleanup(state.socket)
 		else:
-			CORE.process('Session %r timed out: There are open requests. Postpone session shutdown' % (state,))
-			# state.timeout = 1
+			CORE.info('Session %r timed out: There are open requests. Postpone session shutdown' % (state,))
 			return True
 		return False
 
@@ -533,8 +532,9 @@ class State(object):
 	def reset_connection_timeout(self):
 		self.timeout = SERVER_CONNECTION_TIMEOUT
 
+	@property
 	def active(self):
 		return bool(self.requests or self.session.has_active_module_processes())
 
 	def __repr__(self):
-		return '<State(%s %r buffer=%d requests=%d)>' % (self.client, self.socket, len(self.buffer), len(self.requests))
+		return '<State(%s %r buffer=%d requests=%d processes=%s)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.session.has_active_module_processes())
