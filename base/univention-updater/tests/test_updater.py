@@ -17,6 +17,7 @@ from mockups import (
 
 UU = U.UniventionUpdater
 DATA = b'x' * U.MIN_GZIP
+RJSON = "releases.json"
 
 
 class TestUniventionUpdater(unittest.TestCase):
@@ -25,6 +26,7 @@ class TestUniventionUpdater(unittest.TestCase):
 
     def setUp(self):
         """Create Updater mockup."""
+        MockUCSHttpServer.mock_add(RJSON, gen_releases())
         self.u = U.UniventionUpdater(check_access=False)
 
     def _ucr(self, variables):
@@ -36,7 +38,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Fill URI mockup."""
         for key, value in uris.items():
             MockUCSHttpServer.mock_add(key, value)
-            if 'releases.json' in key:
+            if RJSON in key:
                 self.u._get_releases()
 
     def tearDown(self):
@@ -86,7 +88,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_PATCH(self):
         """Test next patch version."""
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual(U.UCS_Version((MAJOR, MINOR, PATCH + 1)), ver)
@@ -94,7 +96,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MINOR(self):
         """Test next minor version."""
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual(U.UCS_Version((MAJOR, MINOR + 1, 0)), ver)
@@ -102,7 +104,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MAJOR(self):
         """Test next major version."""
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual(U.UCS_Version((MAJOR + 1, 0, 0)), ver)
@@ -114,7 +116,7 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/version': 'current',
         })
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)]),
+            RJSON: gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)]),
             '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
         })
         versions, components = self.u.get_all_available_release_updates()
@@ -124,7 +126,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_release_update_available_NO(self):
         """Test no update available."""
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(None, next)
@@ -133,7 +135,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next patch-level update."""
         NEXT = U.UCS_Version((MAJOR, MINOR, PATCH + 1))
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
@@ -142,7 +144,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next minor update."""
         NEXT = U.UCS_Version((MAJOR, MINOR + 1, 0))
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
@@ -151,7 +153,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next major update."""
         NEXT = U.UCS_Version((MAJOR + 1, 0, 0))
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
@@ -163,7 +165,7 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/version': 'current',
         })
         self._uri({
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         self.assertRaises(U.RequiredComponentError, self.u.release_update_available, errorsto='exception')
 
@@ -178,6 +180,7 @@ class TestUniventionUpdater(unittest.TestCase):
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', ARCH): DATA,
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         tmp = self.u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
         self.assertEqual(set((
@@ -553,7 +556,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self._ucr({'repository/online/component/a/version': 'current'})
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): b'',
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
@@ -564,7 +566,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self._ucr({'repository/online/component/a/version': ''})
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): b'',
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
@@ -608,7 +609,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', ARCH): DATA,
-            'releases.json': gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         tmp = self.u.print_component_repositories()
         self.assertEqual(set((
