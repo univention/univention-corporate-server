@@ -9,6 +9,7 @@ import os.path
 import errno
 import httplib
 import json
+import logging
 from itertools import groupby
 from operator import itemgetter
 import six
@@ -216,6 +217,11 @@ def verbose(verbose_mode=True):
     U.ud.init('stdout', U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
     level = U.ud.ALL if verbose_mode else U.ud.ERROR
     U.ud.set_level(U.ud.NETWORK, level)
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(levelname)s %(filename)s:%(lineno)d#%(funcName)s: %(message)s",
+    )
 
 
 sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry  # type: ignore
