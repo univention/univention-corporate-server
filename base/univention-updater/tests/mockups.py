@@ -189,8 +189,19 @@ class MockFile(object):
             return MockFile._ORIG(filename, mode, *args, **kwargs)
 
 
-def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> bytes
-    """Generate a releases.json string from a list of given releases"""
+def gen_releases(releases=[], major=MAJOR, minor=MINOR, patches=range(0, PATCH + 1)):  # type: (Iterable[Tuple[int, int, int]], int, int, Iterable[int]) -> bytes
+    """
+    Generate a releases.json string from a list of given releases.
+
+    :param releases: List of UCS releases.
+    :param major: UCS major version.
+    :param minor: UCS minor version.
+    :param patches: List of UCS patch-level versions.
+
+    >>> gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)]) == gen_releases(patches=[0, 1])
+    True
+    """
+    releases = list(releases) or [(major, minor, patch) for patch in patches]
     data = dict(
         releases=[
             dict(
