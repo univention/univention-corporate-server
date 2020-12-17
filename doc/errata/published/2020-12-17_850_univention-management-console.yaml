@@ -10,3 +10,5 @@ desc: |
    which was introduced in the last erratum. In addition, a log message was
    moved from the `process` to the `info` loglevel.
 bug: [52508]
+erratum: 850
+announced: 2020-12-17
