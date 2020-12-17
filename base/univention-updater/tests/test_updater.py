@@ -12,7 +12,7 @@ from shutil import rmtree
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
-    gen_releases,
+    gen_releases, verbose,
 )
 
 UU = U.UniventionUpdater
@@ -692,14 +692,5 @@ class TestUniventionUpdater(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    if False:
-        import univention.debug as ud
-        ud.init('stderr', ud.NO_FUNCTION, ud.NO_FLUSH)
-        ud.set_level(ud.NETWORK, ud.ALL + 1)
-    if False:
-        import logging
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format="%(levelname)s %(filename)s:%(lineno)d#%(funcName)s: %(message)s",
-        )
+    verbose()
     unittest.main()

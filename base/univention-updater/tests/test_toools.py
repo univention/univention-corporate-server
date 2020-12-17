@@ -1,12 +1,11 @@
 #!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
-"""Unit test for univention.updater.tools"""
 # pylint: disable-msg=C0301,W0212,C0103,R0904
+
+"""Unit test for univention.updater.tools"""
+
 import unittest
-import os.path
-import univention
-univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ignore
-import univention.updater.tools as U  # noqa: E402
+from mockups import U, verbose
 
 
 SCRIPT = b"#!/bin/sh\nexit 0\n"
@@ -36,8 +35,5 @@ class TestSignatures(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    if False:
-        import univention.debug as ud
-        ud.init('stderr', ud.NO_FUNCTION, ud.NO_FLUSH)
-        ud.set_level(ud.NETWORK, ud.ALL + 1)
+    verbose()
     unittest.main()
