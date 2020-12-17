@@ -54,6 +54,12 @@ def read_portals_json():
         return {}
 
 
+def write_portals_json(content):
+    with open(portals_json, "w") as fd:
+        os.chmod(fd.name, 0o660)
+        json.dump(content, fd, sort_keys=True, indent=4)
+
+
 @click.group()
 def cli():
     pass
@@ -159,8 +165,7 @@ def add_default(update):
         "type": "class"
     }
     json_content[name] = portal_def
-    with open(portals_json, "w") as fd:
-        json.dump(json_content, fd, sort_keys=True, indent=4)
+    write_portals_json(json_content)
     success("{} written".format(portals_json))
 
 @cli.command()
@@ -186,8 +191,7 @@ def add(name, update):
         klass_default = "Portal()"
     portal_def = ask_value(name, klass_default=klass_default)
     json_content[name] = portal_def
-    with open(portals_json, "w") as fd:
-        json.dump(json_content, fd, sort_keys=True, indent=4)
+    write_portals_json(json_content)
     success("{} written".format(portals_json))
     info("You may want to 'push {}' now".format(name))
 
@@ -267,8 +271,7 @@ def remove(name, purge):
             success("Removed unused {} from database")
         else:
             obj.save()
-    with open(portals_json, "w") as fd:
-        json.dump(json_content, fd, sort_keys=True, indent=4)
+    write_portals_json(json_content)
     success("{} removed".format(name))
 
 
@@ -319,8 +322,7 @@ def pull(name):
     json_data = json.loads(obj.props.data.raw)
     json_content = read_portals_json()
     json_content[name] = json_data
-    with open(portals_json, "w") as fd:
-        json.dump(json_content, fd, sort_keys=True, indent=4)
+    write_portals_json(json_content)
     success("{} updated".format(portals_json))
     if add_localhost(obj):
         obj.save()
