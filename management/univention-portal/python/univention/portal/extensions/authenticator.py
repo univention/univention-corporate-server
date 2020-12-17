@@ -64,13 +64,17 @@ class Authenticator(with_metaclass(Plugin)):
 	This base class does nothing...
 	"""
 
-	def login_request(self, request): pass
+	def login_request(self, request):  # pragma: no cover
+		pass
 
-	def login_user(self, request): pass
+	def login_user(self, request):  # pragma: no cover
+		pass
 
-	def get_user(self, request): pass
+	def get_user(self, request):  # pragma: no cover
+		pass
 
-	def refresh(self, reason=None):	pass
+	def refresh(self, reason=None):  # pragma: no cover
+		pass
 
 
 class OpenIDAuthenticator(Authenticator):

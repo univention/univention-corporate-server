@@ -60,7 +60,8 @@ class Reloader(with_metaclass(Plugin)):
 	If the reloader refreshed the content, the overlying cache will reload
 	itself.
 	"""
-	def refresh(self, reason=None): pass
+	def refresh(self, reason=None):  # pragma: no cover
+		pass
 
 
 class MtimeBasedLazyFileReloader(Reloader):
@@ -116,7 +117,8 @@ class MtimeBasedLazyFileReloader(Reloader):
 					return True
 		return self._file_was_updated()
 
-	def _refresh(self): pass
+	def _refresh(self):  # pragma: no cover
+		pass
 
 
 class PortalReloaderUDM(MtimeBasedLazyFileReloader):
