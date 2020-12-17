@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [6,7]
+scope: ucs_4.4-0-errata4.4-7
+src: squid3
+fix: 3.5.23-5+deb9u5A~4.4.0.202012171304
+desc: |
+ This update addresses the following issue(s):
+ * Request smuggling and poisoning attack against the HTTP cache
+   (CVE-2020-15049)
+ * HTTP Request Smuggling could result in cache poisoning
+   (CVE-2020-15810)
+ * HTTP Request Splitting could result in cache poisoning
+   (CVE-2020-15811)
+ * Improper input validation could result in a DoS (CVE-2020-24606)
+bug: [52182]
+cve:
+- CVE-2020-15049
+- CVE-2020-15810
+- CVE-2020-15811
+- CVE-2020-24606
