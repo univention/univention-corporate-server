@@ -465,11 +465,3 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 			ret.update(self._nested_groups(group_dn, ldap_content, nested_groups_cache))
 		nested_groups_cache[dn] = ret
 		return ret
-
-
-
-if __name__ == '__main__':
-	print "Test Reloader"
-	reloader = PortalReloaderUDM("test", "test_cache")
-	reloader.refresh(reason="force")
-
