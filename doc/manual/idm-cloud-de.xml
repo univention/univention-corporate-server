@@ -20,29 +20,29 @@
 	<para>
 		Mit Hilfe von bereitgestellten Erweiterungen, sogenannten Apps, kann das Managementsystem so erweitert werden, dass
 		Benutzer oder Gruppen auch direkt in Cloud-Dienste repliziert werden. Im App Center sind u.a. Erweiterung für
-		Microsoft Office 365 oder G Suite vorhanden.
+		Microsoft 365 oder G Suite vorhanden.
 	</para>
 	<para>
 		Dank Single Sign-on (SSO) können sich die Benutzer mit ihrem gewohnten Passwort anmelden und anschließend sofort online
 		in der Cloud arbeiten. Dabei bleibt das Passwort im Unternehmensnetzwerk und wird nicht zum Cloud Dienst übertragen.
 	</para>
 	<para>
-		In den folgenden Kapiteln ist die Einrichtung des Microsoft Office 365 und des Google Apps for Work Connector beschrieben.
+		In den folgenden Kapiteln ist die Einrichtung des Microsoft 365 und des Google Apps for Work Connector beschrieben.
 	</para>
   </section>
 
   <section id="idmcloud:o365">
-	<title>Microsoft Office 365 Connector</title>
+	<title>Microsoft 365 Connector</title>
 	<para>
-		Der Microsoft Office 365 Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer Azure Active
-		Directory Domäne, welche von Office 365 verwendet wird. Dabei lässt sich steuern, welche der in UCS angelegten
-		Benutzer Office 365 verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die Azure Active
+		Der Microsoft 365 Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer Azure Active
+		Directory Domäne, welche von Microsoft 365 verwendet wird. Dabei lässt sich steuern, welche der in UCS angelegten
+		Benutzer Microsoft 365 verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die Azure Active
 		Directory Domäne provisioniert. Es kann dabei konfiguriert werden, welche Attribute synchronisiert werden und Attribute
 		können dabei anonymisiert werden.
 	</para>
 
 	<para>
-		Die Single Sign-on Anmeldung an Office 365 erfolgt über die in UCS integrierte SAML-Implementierung, d.h. die Authentifizierung erfolgt dabei gegen den
+		Die Single Sign-on Anmeldung an Microsoft 365 erfolgt über die in UCS integrierte SAML-Implementierung, d.h. die Authentifizierung erfolgt dabei gegen den
 		UCS-Server und es werden keine Passwort-Hashes zu Microsofts Azure Cloud übertragen. Die Authentifikation des Benutzers erfolgt ausschließlich über den
 		Webbrowser des Clients. Dieser sollte aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere
 		für Mobilgeräte wichtig zu beachten.
@@ -51,7 +51,7 @@
 	<section id="idmcloud:o365:setup">
 		<title>Einrichtung</title>
 		<para>
-			Für den Einsatz des Microsoft Office 365 Connectors wird ein Microsoft Office 365 Administrator Konto, ein entsprechendes
+			Für den Einsatz des Microsoft 365 Connectors wird ein Microsoft 365 Administrator Konto, ein entsprechendes
 			Konto im Azure Active Directory, sowie eine von Microsoft
 			<ulink url="https://azure.microsoft.com/de-de/documentation/articles/active-directory-add-domain/">verifizierte
 			Domäne</ulink> benötigt. Die ersten beiden werden zu Testzwecken kostenlos von Microsoft bereitgestellt. Für das
@@ -59,13 +59,13 @@
 		</para>
 
 		<para>
-			Falls noch keine Microsoft Office 365 Subskription vorhanden ist, so kann diese via <ulink url="https://www.office.com/"/>
+			Falls noch keine Microsoft 365 Subskription vorhanden ist, so kann diese via <ulink url="https://www.office.com/"/>
 			im Bereich <guimenu>kostenlos testen für Unternehmen</guimenu> konfiguriert werden. Mit einem privaten Microsoft Konto
 			ist eine Verbindung nicht möglich.
 		</para>
 
 		<para>
-			Anschließend sollte eine Anmeldung mit einem <guimenu>Office 365 Administratorkonto</guimenu> im <guimenu>Office 365 Admin Center</guimenu> erfolgen. In
+			Anschließend sollte eine Anmeldung mit einem <guimenu>Microsoft 365 Administratorkonto</guimenu> im <guimenu>Microsoft 365 Admin Center</guimenu> erfolgen. In
 			der linken Navigationsleiste ganz unten ist <guimenu>Azure AD</guimenu> auszuwählen, welches in einem neuen Fenster das
 			<guimenu>Azure Management Portal</guimenu> öffnet.
 		</para>
@@ -78,13 +78,13 @@
 		</para>
 
 		<para>
-			Nun kann die Microsoft Office 365 App aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
+			Nun kann die Microsoft 365 App aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
 			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
 			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschlossen und der Connector ist einsatzbereit.
 		</para>
 
 		<figure id="idmcloud:o365:wizard">
-			<title>Office 365 Einrichtungsassistent</title>
+			<title>Microsoft 365 Einrichtungsassistent</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations44/office_wizard1_de.png"/>
 		</figure>
 
@@ -93,9 +93,9 @@
 	<section id="idmcloud:o365:config">
 		<title>Konfiguration</title>
 		<para>
-			Nach der Einrichtung über den Einrichtungsassistenten kann über das Benutzermodul an jedem Benutzerobjekt auf dem Reiter <guimenu>Office 365</guimenu>
-			konfiguriert werden, dass dieser Benutzer ins Office 365 provisioniert wird. Der Verbrauch und die Zuweisung von
-			Lizenzen ist im <guimenu>Office 365 Admin Center</guimenu> zu erkennen.
+			Nach der Einrichtung über den Einrichtungsassistenten kann über das Benutzermodul an jedem Benutzerobjekt auf dem Reiter <guimenu>Microsoft 365</guimenu>
+			konfiguriert werden, dass dieser Benutzer ins Microsoft 365 provisioniert wird. Der Verbrauch und die Zuweisung von
+			Lizenzen ist im <guimenu>Microsoft 365 Admin Center</guimenu> zu erkennen.
 		</para>
 
 		<para>
@@ -109,11 +109,11 @@
 			Aufgrund von Sicherheitsrichtlinien des Azure Active Directory können Benutzer oder Gruppen im Azure AD
 			während der Synchronisation nicht gelöscht werden. Sie werden lediglich deaktiviert und umbenannt. Die Lizenzen werden im Azure
 			Active Directory entzogen, so dass diese für andere Benutzer zur Verfügung stehen. Benutzer und Gruppen, deren Namen
-			mit <guimenu>ZZZ_deleted</guimenu> anfangen, können im <guimenu>Office 365 Admin Center</guimenu> gelöscht werden.
+			mit <guimenu>ZZZ_deleted</guimenu> anfangen, können im <guimenu>Microsoft 365 Admin Center</guimenu> gelöscht werden.
 		</para>
 
 		<para>
-			Es ist notwendig in Office 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
+			Es ist notwendig in Microsoft 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
 			Landes aus den Kontaktdaten des Benutzers oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
 			<envar>office365/attributes/usageLocation</envar> kann ein 2-Zeichen-Kürzel, bspw. DE vorgegeben werden.
 		</para>
@@ -140,7 +140,7 @@
 		<para>
 			Die &ucsUCRV;n <envar>office365/attributes/mapping/.*</envar> definieren eine Abbildung der UCS LDAP Attribute zu Azure
 			Attributen. Diese Variablen müssen normalerweise nicht verändert werden. Die Synchronisation der Gruppen der
-Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> aktiviert werden.
+			Microsoft 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> aktiviert werden.
 		</para>
 
 		<para>
@@ -151,7 +151,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 	<section id="idmcloud:o365:multipleconnections">
 		<title>Synchronisation von Benutzern in mehrere Azure <foreignphrase>Active Directories</foreignphrase></title>
 		<para>
-		Der Office365 Connector kann Benutzer in mehrere Azure <foreignphrase>Active Directories</foreignphrase> synchronisieren.
+		Der Microsoft 365 Connector kann Benutzer in mehrere Azure <foreignphrase>Active Directories</foreignphrase> synchronisieren.
 		Sind mehrere Verbindungen verfügbar, können an jedem Benutzerkonto individuell die Azure AD Instanzen zugewiesen werden, in denen ein Account erstellt werden soll.
 		Ein Benutzer bekommt in jedem der seinem UCS Konto zugewiesenen Azure AD ein separates Konto mit eindeutigem Benutzernamen (<wordasword>Userprincipalname</wordasword>, UPN).
 		</para>
@@ -160,10 +160,10 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		Für die Verwaltung der Aliase kann das Programm <command>/usr/share/univention-office365/scripts/manage_adconnections</command> verwendet werden.
 		Ein neuer Alias kann über das Kommando <command>/usr/share/univention-office365/scripts/manage_adconnections create <replaceable>&lt;Aliasname&gt;</replaceable></command> erstellt werden.
 		Dies konfiguriert unter anderem die &ucsUCRV; <envar>office365/adconnection/wizard</envar> auf den neu erstellten Alias um.
-		Der Wert dieser &ucsUCRV; bestimmt, welche Azure Verbindung durch den Office365 Einrichtungswizard konfiguriert wird.
+		Der Wert dieser &ucsUCRV; bestimmt, welche Azure Verbindung durch den Microsoft 365 Einrichtungswizard konfiguriert wird.
 		</para>
 		<para>
-		Nach dem Anlegen muss die Verbindung wie gewohnt über den Office365 Einrichtungswizard eingerichtet werden, damit Benutzer synchronisiert werden können.
+		Nach dem Anlegen muss die Verbindung wie gewohnt über den Microsoft 365 Einrichtungswizard eingerichtet werden, damit Benutzer synchronisiert werden können.
 		</para>
 		<para>
 		Um Single-Sign-On mit mehreren Azure AD Verbindungen zu ermöglichen, muss für jede weitere Verbindung ein neuer logischer SAML Identity Provider erstellt werden. Dies ist in <xref linkend="domain:saml:extendedconfiguration"/> beschrieben.
@@ -172,11 +172,11 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 		<para>
 		Ein UCS Benutzer kann in einer Browser-Sitzung nur zu einem Azure AD gleichzeitig verbunden sein.
-		Um die Verbindung zu wechseln, ist ein Abmelden an Office365 notwendig.
+		Um die Verbindung zu wechseln, ist ein Abmelden an Microsoft 365 notwendig.
 		</para>
 		<para>
 		Zur weiteren Konfiguration gibt es die &ucsUCRV; <envar>office365/defaultalias</envar>. Diese legt fest, in welches Azure AD
-		ein Benutzer- oder Gruppenkonto synchronisiert wird, falls am Benutzerkonto keines explizit ausgewählt wurde. Soll das Konto in ein anderes Azure AD synchronisiert werden, muss bei der Aktivierung für Office365 das entsprechende Azure AD Verbindungsalias als Ziel ausgewählt werden.
+		ein Benutzer- oder Gruppenkonto synchronisiert wird, falls am Benutzerkonto keines explizit ausgewählt wurde. Soll das Konto in ein anderes Azure AD synchronisiert werden, muss bei der Aktivierung für Microsoft 365 das entsprechende Azure AD Verbindungsalias als Ziel ausgewählt werden.
 		</para>
 	</section>
 

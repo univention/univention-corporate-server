@@ -20,8 +20,8 @@
 
 		<para>
 			The management system can be extended with the help of provided extensions, also called Apps. Thus users or
-			groups can also be replicated in cloud services. In the App center there are also among others extensions for Microsoft
-			Office 365 or G Suite.
+			groups can also be replicated in cloud services. In the App center there are also among others extensions for
+			Microsoft 365 or G Suite.
 		</para>
 
 		<para>
@@ -30,22 +30,22 @@
 		</para>
 
 		<para>
-			The following chapter describes how to set up the Microsoft Office 365 Connector and the Google Apps for Work Connector.
+			The following chapter describes how to set up the Microsoft 365 Connector and the Google Apps for Work Connector.
 		</para>
 	</section>
 
 	<section id="idmcloud:o365">
-		<title>Microsoft Office 365 Connector</title>
+		<title>Microsoft 365 Connector</title>
 
 		<para>
-			The synchronization of users and groups to an Azure Directory Domain, which will then be used by Office 365,
+			The synchronization of users and groups to an Azure Directory Domain, which will then be used by Microsoft 365,
 			is made possible by the Microsoft Office connector. The connector makes it possible to control which of the users created in
-			UCS can use Office 365. The selected users will be provisioned accordingly into the Azure Active Directory
+			UCS can use Microsoft 365. The selected users will be provisioned accordingly into the Azure Active Directory
 			domain. It is configurable which user attributes are synchronized and which are anonymized during synchronization.
 		</para>
 
 		<para>
-			The Single Sign-On log-in to Office 365 is done via the UCS integrated SAML implementation. Authentication takes
+			The Single Sign-On log-in to Microsoft 365 is done via the UCS integrated SAML implementation. Authentication takes
 			place against the UCS server, and no password hashes are transmitted to Microsoft Azure Cloud. The user's authentication
 			is done exclusively via the client's web browser. The web browser should however be able to resolve the DNS records
 			of the UCS domain, this is a particularly important point to note for mobile devices.
@@ -54,7 +54,7 @@
 		<section id="idmcloud:o365:setup">
 			<title>Setup</title>
 			<para>
-				To setup the Microsoft Office 365 Connector a Microsoft Office 365 Administrator
+				To setup the Microsoft 365 Connector a Microsoft 365 Administrator
 				account, a corresponding Account in the Azure Active Directory, as well as a <ulink
 				url="https://azure.microsoft.com/en-us/documentation/articles/active-directory-add-domain/"> Domain verified by Microsoft </ulink>
 				are required. The first two are provided for test purposes by Microsoft for free. However to configure the SSO, a separate
@@ -62,14 +62,14 @@
 			</para>
 
 			<para>
-				In case there is no Microsoft Office 365 subscription available, one can be configured it via <ulink
+				In case there is no Microsoft 365 subscription available, one can be configured it via <ulink
 				url="https://www.office.com/"/> in the <guimenu>trial for business</guimenu> section. A
 				connection is not possible with a private Microsoft account.
 			</para>
 
 			<para>
-				You should then log in with a <guimenu>Office 365 Administrator Account</guimenu> into the
-				<guimenu>Office 365 Admin Center</guimenu>. At the bottom left of the navigation bar select <guimenu>Azure
+				You should then log in with a <guimenu>Microsoft 365 Administrator Account</guimenu> into the
+				<guimenu>Microsoft 365 Admin Center</guimenu>. At the bottom left of the navigation bar select <guimenu>Azure
 				AD</guimenu> to open the <guimenu>Azure Management Portal</guimenu> in a new window.
 			</para>
 
@@ -80,12 +80,12 @@
 			</para>
 
 			<para>
-				Now the Microsoft Office 365 App can be installed from the App Center on the UCS system. The
+				Now the Microsoft 365 App can be installed from the App Center on the UCS system. The
 				installation takes a few minutes. There is a setup wizard available for the initial configuration. After completing the wizard the connector is ready for use.
 			</para>
 
 			<figure id="idmcloud:o365:wizard">
-				<title>Office 365 Setup assistant</title>
+				<title>Microsoft 365 Setup assistant</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations44/office_wizard1_en.png"/>
 			</figure>
 		</section>
@@ -94,8 +94,8 @@
 			<title>Configuration</title>
 			<para>
 				After the end of the installation through the setup wizard, users can be enabled to use
-				Office 365. This configuration can be done through the user module on each user object on the <guimenu>Office
-				365</guimenu> tab. Usage and allocation of licenses are acknowledged in the <guimenu>Office 365 Admin Center</guimenu>.
+				Microsoft 365. This configuration can be done through the user module on each user object on the <guimenu>Microsoft
+				365</guimenu> tab. Usage and allocation of licenses are acknowledged in the <guimenu>Microsoft 365 Admin Center</guimenu>.
 			</para>
 
 			<para>
@@ -108,11 +108,11 @@
 				Due to Azure Active Directory security policies, users or groups in the Azure AD can't be deleted during
 				synchronization. They are merely disabled and renamed. The licenses are revoked in the Azure Active Directory so that
 				they become available to other users. Users and groups whose names start with <guimenu>ZZZ_deleted</guimenu> can be
-				deleted in <guimenu>Office 365 Admin Center</guimenu>.
+				deleted in <guimenu>Microsoft 365 Admin Center</guimenu>.
 			</para>
 
 			<para>
-				It is necessary to configure a country for the user in Office 365. The connector uses the specification
+				It is necessary to configure a country for the user in Microsoft 365. The connector uses the specification
 				of the Country from the contact data of the user. If not set, it uses the setting of the server. With the help of
 				&ucsUCRV; <envar>office365/attributes/usageLocation</envar> a 2-character abbreviation, e.g. US, can be set as the default.
 			</para>
@@ -138,7 +138,7 @@
 			<para>
 				The &ucsUCRV;s <envar>office365/attributes/mapping/.*</envar> define a
 				mapping of UCS LDAP attributes to Azure Attributes. Usually these variables don't need to be changed. The
-				synchronization of the groups of Office 365 user can be enabled with the &ucsUCRV;<envar>office365/groups/sync</envar>.
+				synchronization of the groups of Microsoft 365 user can be enabled with the &ucsUCRV;<envar>office365/groups/sync</envar>.
 			</para>
 
 			<para>
@@ -149,7 +149,7 @@
 		<section id="idmcloud:o365:multipleconnections">
 			<title>Synchronization of Users in multiple Azure Active Directories</title>
 			<para>
-			The Office365 Connector is able to synchronize users to multiple Azure Active Directories.
+			The Microsoft 365 Connector is able to synchronize users to multiple Azure Active Directories.
 			For each user account, multiple Azure AD instances can be assigned, where an account should be created.
 				A user gets a distinct username (<wordasword>Userprincipalname</wordasword>, UPN) for every assigned Azure AD.
 			</para>
@@ -158,10 +158,10 @@
 			To manage these aliases the program <command>/usr/share/univention-office365/scripts/manage_adconnections</command> can be used.
 			A new alias is created by calling <command>/usr/share/univention-office365/scripts/manage_adconnections create <replaceable>&lt;Aliasname&gt;</replaceable></command>.
 			This will set the &ucsUCRV; <envar>office365/adconnection/wizard</envar> to the newly created alias.
-			The value of this &ucsUCRV; defines which connection is configured by the next run of the Office365 Configuration Wizard.
+			The value of this &ucsUCRV; defines which connection is configured by the next run of the Microsoft 365 Configuration Wizard.
 			</para>
 			<para>
-			After creating the alias, the new connection must be configured through the Office365 Configuration Wizard as well.
+			After creating the alias, the new connection must be configured through the Microsoft 365 Configuration Wizard as well.
 			</para>
 			<para>
 			To use Single Sign-On with multiple Azure AD connections, a new logical SAML Identity Provider is needed for each connection.
@@ -170,11 +170,11 @@
 			For example the &ucsUCRV; <envar>saml/idp/entityID/supplement/<replaceable>Aliasname</replaceable>=true</envar> needs to be set on all domain controllers responsible for Single Sign-On.
 			</para>
 			<para>
-			A UCS user can only use one Office365 account in one browser session at a time.
-			To change the connection, a logout from Office365 is necessary.
+			A UCS user can only use one Microsoft 365 account in one browser session at a time.
+			To change the connection, a logout from Microsoft 365 is necessary.
 			</para>
 			<para>
-			A default alias for Office365 enabled users and groups can be set in the &ucsUCRV; <envar>office365/defaultalias</envar>.
+			A default alias for Microsoft 365 enabled users and groups can be set in the &ucsUCRV; <envar>office365/defaultalias</envar>.
 			To synchronize them into a different Azure Active Directory the connection alias must be selected explicitly at the user or group object.
 			</para>
 		</section>
