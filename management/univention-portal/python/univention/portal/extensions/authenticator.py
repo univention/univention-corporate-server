@@ -163,41 +163,35 @@ class UMCAuthenticator(Authenticator):
 		The URL where to go to with the cookie. Expects a json answer with the username.
 	group_cache:
 		As UMC does not return groups, we need a cache object that gets us the groups for the username.
-	portal_cookie_name:
-		Name of the Cookie the Authenticator retrieves for the logged in user, default: "UMCSessionId"
-	umc_cookie_name:
-		Name of the Cookie in UMC. Defaults to the `portal_cookie_name`.
 	"""
-	def __init__(self, umc_session_url, group_cache, portal_cookie_name="UMCSessionId", umc_cookie_name=None):
+	def __init__(self, umc_session_url, group_cache):
 		self.umc_session_url = umc_session_url
 		self.group_cache = group_cache
-		self.portal_cookie_name = portal_cookie_name
-		self.umc_cookie_name = umc_cookie_name or portal_cookie_name
 
 	def refresh(self, reason=None):
 		return self.group_cache.refresh(reason=reason)
 
 	def get_user(self, request):
-		session = request.get_cookie(self.portal_cookie_name)
-		username = self._get_username(session)
+		cookies = dict((key, morsel.value) for key, morsel in request.cookies.items())
+		username = self._get_username(cookies)
 		groups = self.group_cache.get().get(username, [])
 		return User(username, groups=groups)
 
-	def _get_username(self, session):
-		if session is None:
+	def _get_username(self, cookies):
+		if not any(cookie.startswith('UMCSessionId') for cookie in cookies):
 			get_logger("user").debug("no user given")
 			return None
-		get_logger("user").debug("searching user for %s" % session)
-		username = self._ask_umc(session)
+		get_logger("user").debug("searching user for cookies=%r".format(cookies))
+		username = self._ask_umc(cookies)
 		if username is None:
 			get_logger("user").debug("no user found")
 		else:
 			get_logger("user").debug("found %s" % username)
 			return username.lower()
 
-	def _ask_umc(self, session):
+	def _ask_umc(self, cookies):
 		try:
-			response = requests.get(self.umc_session_url, cookies={self.umc_cookie_name: session})
+			response = requests.get(self.umc_session_url, cookies=cookies)
 			data = response.json()
 			username = data["result"]["username"]
 		except requests.RequestException as e:
