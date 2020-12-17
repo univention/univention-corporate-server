@@ -56,6 +56,10 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR"
 	mkdir -p "$TARGETDIR/selenium"
+	mkdir -p "$TARGETDIR/listener_modules"
+	mkdir -p "$TARGETDIR/ucs-school-import"
+	mkdir -p "$TARGETDIR/ucsschool-id-connector"
+	mkdir -p "$TARGETDIR/ucsschool-kelvin-rest-api"
 	declare -a FILES=(
 		'artifacts'
 		'packages-under-test.log'
@@ -84,12 +88,17 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/directory-manager-rest.log'
 		'/var/log/univention/join.log'
 		'/var/log/univention/listener.log'
-		'/var/log/univention/listener_modules/*.log'
+		'/var/log/univention/listener_modules'
 		'/var/log/univention/management*'=
 		'/var/log/univention/notifier.log'
 		'/var/log/univention/setup.log'
 		'/var/log/univention/system-stats.log'
 		'/var/log/univention/ucs-windows-tools.log'
+		'/var/log/univention/ucs-school-import'
+		'/var/log/univention/ucs-school-import.*'=
+		'/var/log/univention/ucs-school-import-*'=
+		'/var/log/univention/ucsschool-id-connector'
+		'/var/log/univention/ucsschool-kelvin-rest-api'
 		'/var/log/univention/updater.log'
 		'/var/log/univention/server_password_change.log'
 		'/var/log/univention/37check-ucr-templates-py3-migration-status.md'
