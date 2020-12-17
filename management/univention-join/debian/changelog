@@ -1,3 +1,9 @@
+univention-join (12.0.3-1) unstable; urgency=medium
+
+  * Bug #51330: UMC module join migrated to python 3
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 26 Jan 2021 19:02:42 +0100
+
 univention-join (12.0.2-4) unstable; urgency=medium
 
   * Bug #52453: adjust design of join module
