@@ -1,3 +1,9 @@
+univention-docker (4.0.1-10) unstable; urgency=medium
+
+  * Bug #52344: Add two UCR variables for docker/daemon.json customisation
+
+ -- Christian Castens <castens@univention.de>  Thu, 17 Dec 2020 11:30:55 +0100
+
 univention-docker (4.0.1-9) unstable; urgency=medium
 
   * Bug #52478: Add statx system call to seccomp profile
