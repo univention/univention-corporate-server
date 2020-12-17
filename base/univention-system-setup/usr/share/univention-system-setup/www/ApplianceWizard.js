@@ -303,7 +303,6 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.standbyColor = this.local_mode ? 'var(--document-bgc)' : this.standbyColor;
 		},
 
 		constructor: function(props) {

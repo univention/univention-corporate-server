@@ -89,9 +89,6 @@ define([
 
 		headerButtons: null,
 
-		/* StandbyMixin properties */
-		standbyColor: '#fff',
-
 		buildRendering: function() {
 			this.inherited(arguments);
 

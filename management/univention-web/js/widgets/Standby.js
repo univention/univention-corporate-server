@@ -39,7 +39,7 @@ define([
 		centerIndicator: 'svg',
 		duration: 200,
 		opacity: 0.8,
-		color: 'var(--color-grey8)',
+		color: 'var(--bgc-content-body)',
 
 		buildRendering: function() {
 			this.inherited(arguments);
