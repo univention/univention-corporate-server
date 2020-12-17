@@ -201,6 +201,10 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
 		else:
 			ret['logo'] = None
+		if portal.props.background:
+			ret['background'] = self._write_image(portal.props.name, portal.props.background.raw, 'backgrounds')
+		else:
+			ret['background'] = None
 		ret['name'] = portal.props.displayName
 		ret['ensureLogin'] = portal.props.ensureLogin
 		ret['anonymousEmpty'] = portal.props.anonymousEmpty
@@ -277,6 +281,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 					'allowedGroups': entry.props.allowedGroups,
 					'links': entry.props.link,
 					'linkTarget': entry.props.linkTarget,
+					'backgroundColor': entry.props.backgroundColor,
 				}
 
 		def _add_entry(entry, ret, already_unpacked_folder_dns):
@@ -345,7 +350,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		css_code = ''
 		if background:
 			css_code += '''
-	body.umc.portal #contentWrapper {
+	body.umc.portal {
 		background: %s;
 	}
 	''' % (background, )

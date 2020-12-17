@@ -12,6 +12,6 @@ print(json.dumps(admin_groups), end="")
 	"hostdn": "@%@ldap/hostdn@%@",
 	"ldap_base": "@%@ldap/base@%@",
 	"ldap_uri": "ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@",
-	"umc_session_url": "http://@%@umc/http/interface@%@:@%@umc/http/port@%@/get/session-info",
+	"umc_session_url": "http://localhost/univention/get/session-info",
 	"default_domain_dn": "cn=domain,cn=portal,cn=portals,cn=univention,@%@ldap/base@%@"
 }
