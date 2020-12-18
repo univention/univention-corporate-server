@@ -1,5 +1,5 @@
-# vim:set ft=bash:
 # shellcheck shell=bash
+# vim:set ft=bash:
 #
 # Common library function for updater test, which mostly follow this sequence:
 # 1. `setup_apache`: Setup the local web server to export a directory as a repository
@@ -44,6 +44,9 @@
 # - $GPPID: ID of test GPG key
 # - $GPPPUB: File path to public test GPG key
 # - $COMPRESS: Array of compression algorithms
+# - $result: Array for return values of `dirs_except`
+
+shopt -s extglob
 
 eval "$(univention-config-registry shell | sed -e 's/^/declare -r _/')"
 # shellcheck disable=SC2154,SC2034
@@ -164,6 +167,7 @@ cleanup () { # Undo all changes
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 	find /var/lib/apt/lists/ -type f -not -name lock -delete
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
@@ -249,9 +253,9 @@ config_repo () { # Configure use of repository from local apache: [[server]:port
 	do
 		case "${1}" in
 			/*) prefix="${1#/}" ;;
-			:[1-9]*) port="${1#:}" ;;
+			:[1-9]*([0-9])) port="${1#:}" ;;
 			?*=*) extra+=("${1}") ;;
-			*:[1-9]*) server="${1%:*}" ; port="${1##*:}" ;;
+			*:[1-9]*([0-9])) server="${1%:*}" ; port="${1##*:}" ;;
 			*) server="${1}" ;;
 		esac
 		shift
@@ -281,9 +285,9 @@ config_mirror () { # Configure mirror to use repository from local apache: [[ser
 	do
 		case "${1}" in
 			/*) prefix="${1#/}" ;;
-			:[1-9]*) port="${1#:}" ;;
+			:[1-9]*([0-9])) port="${1#:}" ;;
 			?*=*) extra+=("${1}") ;;
-			*:[1-9]*) server="${1%:*}" ; port="${1##*:}" ;;
+			*:[1-9]*([0-9])) server="${1%:*}" ; port="${1##*:}" ;;
 			*) server="${1}" ;;
 		esac
 		shift
@@ -345,7 +349,7 @@ dump_repo () { # Dump direcory $REPODIR
 	fi >&3 2>&3
 
 	# dump_repo
-	for ((i=0;i<${#DIRS[@]};i++))
+	for i in "${!DIRS[@]}"
 	do
 		printf '%2d: %q\n' "$i" "${DIRS[i]#${REPODIR}/}"
 	done >&3
@@ -358,14 +362,14 @@ mkpdir () { # Create package directory ${dir}
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
-			[1-9]*.[0-9]*-[0-9]*)
+			[1-9]*([0-9]).+([0-9])-+([0-9]))
 				versions+=("${1%--*}")
 				;;
-			[1-9]*.[0-9]*--errata[0-9]*)
+			[1-9]*([0-9]).+([0-9])--errata[0-9]*)
 				versions+=("${1%--*}")
 				suite='errata'
 				;;
-			[1-9]*.[0-9]*--component/*)
+			[1-9]*([0-9]).+([0-9])--component/*)
 				versions+=("${1%--*}-0")
 				component_versions+=("${1}")
 			;;
@@ -402,7 +406,6 @@ mkpdir () { # Create package directory ${dir}
 				then
 					DIRS+=("${dir}")
 					mkdir -p "${dir}"
-					touch "${dir}/Packages"
 					mkpkg "${dir}" "${DIR_POOL}"
 				fi
 			done
@@ -419,8 +422,22 @@ mkpdir () { # Create package directory ${dir}
 				DIRS+=("${DIR}")
 				mkdir -p "${DIR}"
 				touch "${DIR}/Packages"
+				compress "${DIR}/Packages"
 			done
 		done
+	done
+}
+
+dirs_except () {  # Array substract: elements... -- remove...
+	result=("${DIRS[@]}")
+	local i
+	while [ $# -ge 1 ]
+	do
+		for i in "${!result[@]}"
+		do
+			[ "$1" = "${result[i]}" ] && unset result["$i"]
+		done
+		shift
 	done
 }
 
@@ -720,9 +737,9 @@ checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/p
 			http*) pattern="^${prefix} ${1}" ;;
 			ucs[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
 			errata[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
-			[1-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
-			[1-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
-			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
+			[1-9]*([0-9]).+([0-9])-+([0-9])) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
+			[1-9]*([0-9]).+([0-9])--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
+			[1-9]*([0-9]).+([0-9])--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
 			maintained|unmaintained) pattern="^${prefix} .*/${1}/\\(component/\\?\\)\\? .*/.*/" ;;
 			all|${ARCH}|extern) pattern="^${prefix} .*/\\(component/\\?\\)\\? .*/${1}/" ;;
 			i386|amd64) shift ; continue ;;

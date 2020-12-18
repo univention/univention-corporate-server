@@ -19,20 +19,22 @@ compname2="test2${RANDOM}"
 setup_apache "${repoprefix}"
 
 version1="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 0 1
 mkpkg "${DIR}" "${DIR_POOL}"
 
-mkpdir "${major}.${minor}--component/${compname1}" maintained "${ARCH}"
+mkpdir "${major}.${minor}--component/${compname1}" maintained all "${ARCH}"  # 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-mkpdir "${major}.${minor}--component/${compname2}" maintained "${ARCH}"
+mkpdir "${major}.${minor}--component/${compname2}" maintained all "${ARCH}"  # 4 5
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
+declare -a BDIR=("${DIRS[@]}")
+
 minor+=1
 version2="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 6 7
 mkpkg "${DIR}" "${DIR_POOL}"
 
 python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
@@ -46,7 +48,7 @@ UP_LOG="${BASEDIR}/up.log"
 
 (
 	set -e
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[1]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"

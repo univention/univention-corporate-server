@@ -170,10 +170,11 @@ def mount(options):
             return False
 
     print("Checking medium in %s ..." % options.mount_point, end=' ')
-    if os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
-        os.path.isdir(os.path.join(options.mount_point, 'all')) and \
-        (os.path.isdir(os.path.join(options.mount_point, 'amd64')) or
-         os.path.isdir(os.path.join(options.mount_point, 'i386'))):
+    if (
+        os.path.exists(os.path.join(options.mount_point, '.univention_install'))
+        and os.path.isdir(os.path.join(options.mount_point, 'all'))
+        and os.path.isdir(os.path.join(options.mount_point, 'amd64'))
+    ):
         pass
     else:
         print('failed.')

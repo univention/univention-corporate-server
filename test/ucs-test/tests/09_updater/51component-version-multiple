@@ -17,12 +17,14 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
+declare -a BDIR=("${DIRS[@]}")
+
 minor+=1
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 4 5 6 7
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -31,11 +33,11 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${_version
 
 (
 	set -e
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
-	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
-	checkdeb "${pkgname}" 2
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	checkdeb "${pkgname}" 1
 )
 # shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)

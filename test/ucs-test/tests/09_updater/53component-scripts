@@ -22,75 +22,84 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 version1="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 0 1
 # 0:dists/ucs500/main/binary-amd64/
 # 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all
-# 2:5.0/maintained/component/test00000/all
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}" all  # 2 3
+# 2:5.0/maintained/component/test00000/amd64/
+# 3:5.0/maintained/component/test00000/all/
 mkdeb "${pkgname}c" 1 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
+declare -a BDIR=("${DIRS[@]}")
+
 minor+=1
 version2="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-# 3:dists/ucs510/main/binary-amd64/
-# 4:dists/errata510/main/binary-amd64/
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 4 5
+# 4:dists/ucs510/main/binary-amd64/
+# 5:dists/errata510/main/binary-amd64/
+rdir="${DIR%/main/binary-*}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[3]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all
-# 5:5.1/maintained/component/test00000/all
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}" all  # 6 7
+# 6:5.1/maintained/component/test00000/amd64/
+# 7:5.1/maintained/component/test00000/all/
+cdir="${DIR}"
 mkdeb "${pkgname}c" 2 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
 cat >"${SH_LOG}" <<__SH__
-${DIRS[5]}/preup.sh [0-9]\\+ pre ${major}.${minor}-0
-${DIRS[3]%/main\/binary-*}/preup.sh [0-9]\\+ ${major}.${minor}-0
-${DIRS[5]}/preup.sh [0-9]\\+ post ${major}.${minor}-0
-${DIRS[5]}/postup.sh [0-9]\\+ pre ${major}.${minor}-0
-${DIRS[3]%/main\/binary-*}/postup.sh [0-9]\\+ ${major}.${minor}-0
-${DIRS[5]}/postup.sh [0-9]\\+ post ${major}.${minor}-0
+${cdir}/preup.sh [0-9]\\+ pre ${major}.${minor}-0
+${rdir}/preup.sh [0-9]\\+ ${major}.${minor}-0
+${cdir}/preup.sh [0-9]\\+ post ${major}.${minor}-0
+${cdir}/postup.sh [0-9]\\+ pre ${major}.${minor}-0
+${rdir}/postup.sh [0-9]\\+ ${major}.${minor}-0
+${cdir}/postup.sh [0-9]\\+ post ${major}.${minor}-0
 __SH__
 
 major+=1
 version3="${major}.0-0"
-mkpdir "${major}.0-0" maintained "${ARCH}"
-# 6:dists/ucs600/main/binary-amd64/
-# 7:dists/errata600/main/binary-amd64/
+mkpdir "${major}.0-0" maintained "${ARCH}"  # 8 9
+# 8:dists/ucs600/main/binary-amd64/
+# 9:dists/errata600/main/binary-amd64/
+rdir="${DIR%/main/binary-*}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[6]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.0--component/${compname}" maintained all
-# 8:6.0/maintained/component/test00000/all
+mkpdir "${major}.0--component/${compname}" maintained "${ARCH}" all  # 10 11
+# 10:6.0/maintained/component/test00000/amd64/
+# 11:6.0/maintained/component/test00000/all/
+cdir="${DIR}"
 mkdeb "${pkgname}c" 3 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
 cat >>"${SH_LOG}" <<__SH__
-${DIRS[8]}/preup.sh [0-9]\\+ pre ${major}.0-0
-${DIRS[6]%/main/binary-*}/preup.sh [0-9]\\+ ${major}.0-0
-${DIRS[8]}/preup.sh [0-9]\\+ post ${major}.0-0
-${DIRS[8]}/postup.sh [0-9]\\+ pre ${major}.0-0
-${DIRS[6]%/main/binary-*}/postup.sh [0-9]\\+ ${major}.0-0
-${DIRS[8]}/postup.sh [0-9]\\+ post ${major}.0-0
+${cdir}/preup.sh [0-9]\\+ pre ${major}.0-0
+${rdir}/preup.sh [0-9]\\+ ${major}.0-0
+${cdir}/preup.sh [0-9]\\+ post ${major}.0-0
+${cdir}/postup.sh [0-9]\\+ pre ${major}.0-0
+${rdir}/postup.sh [0-9]\\+ ${major}.0-0
+${cdir}/postup.sh [0-9]\\+ post ${major}.0-0
 __SH__
 
 python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3"
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${_version_version},${major}.${minor}"
+config_repo "${comp}=yes" "${comp}/parts=maintained"
 
 (
 	set -e
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}" "${pkgname}c"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"

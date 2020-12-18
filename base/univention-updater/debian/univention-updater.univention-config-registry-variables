@@ -94,12 +94,6 @@ Description[en]=This variable configures the HTTP method the Updater uses to tes
 Type=str
 Categories=service-software-management
 
-[repository/online/architectures]
-Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Server. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
-Description[en]=In the default setting the local repository only contains the architecture of the repository server. If this variable is set to 'i386 amd64', both architectures are mirrored.
-Type=str
-Categories=service-software-management
-
 [repository/online/component/.*]
 Description[de]=Ergänzend zum Standard-Repository können weitere Komponenten eingebunden werden. Zusätzliche Komponenten werden in der Regel durch das Univention App Center eingebunden, können aber auch manuell in Univention Configuration Registry konfiguriert werden. Zur Einbindung einer Komponente wird die Option 'repository/online/component/KOMPONENTENNAME' aktiviert. Zusätzliche Parameter können nach dem Schema 'repository/online/component/KOMPONENTENNAME/OPTION=WERT' gesetzt werden.
 Description[en]=In addition to the standard repository additional components can be included. While such components are usually included through the Univention App Center, they can also be configured manually in Univention Configuration Registry. To include a component the option 'repository/online/component/COMPONENTNAME' must be activated. Additional parameters can be set following the scheme 'repository/online/component/COMPONENTNAME/OPTION=VALUE'.
@@ -194,12 +188,6 @@ Categories=service-software-management
 Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror') und diese Option aktiviert, werden auch Quellcodepakete gespiegelt.
 Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror') and this option is activated, source code packages are mirrored as well.
 Type=bool
-Categories=service-software-management
-
-[repository/mirror/architectures]
-Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Servers. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
-Description[en]=In the default setting the local repository only contains the architecture of the repository server. If this variable is set to 'i386 amd64', both architectures are mirrored.
-Type=str
 Categories=service-software-management
 
 [repository/mirror/basepath]

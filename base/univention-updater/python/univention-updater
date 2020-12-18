@@ -561,11 +561,11 @@ def main():
         phase = 'preup'
         update_status(phase='PREUP')
 
-        rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), [])
+        rel = updater._iterate_version_repositories(new_version, new_version)
 
         components = updater.get_components()
         # components = filter(lambda c: 'current' in ucr.get('repository/online/component/%s/version' % c, '').split(','), components)
-        com = updater._iterate_component_repositories(components, new_version, new_version, [])
+        com = updater._iterate_component_repositories(components, new_version, new_version)
 
         repos = itertools.chain(rel, com)
         scripts = updater.get_sh_files(repos, ucr.is_true('repository/online/verify', True))

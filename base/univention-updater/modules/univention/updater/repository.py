@@ -50,7 +50,7 @@ configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # constants
-ARCHITECTURES = ('i386', 'amd64', 'all')
+ARCHITECTURES = {'amd64', 'all'}
 
 
 class TeeFile(object):
@@ -183,7 +183,7 @@ def get_repo_basedir(packages_dir):
         head, tail = os.path.split(path)
         if tail in ARCHITECTURES:
             return head
-    elif set(os.listdir(path)) & set(ARCHITECTURES):
+    elif set(os.listdir(path)) & ARCHITECTURES:
         return path
 
     print('Error: %s does not seem to be a repository.' % packages_dir, file=sys.stderr)

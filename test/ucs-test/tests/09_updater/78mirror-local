@@ -35,25 +35,25 @@ mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
-BDIR+=("${DIR}")
+
 mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
-BDIR+=("${DIR}")
+
 mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all
+mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"
 # 2:5.0/maintained/component/test00000/all
-mkdeb "${pkgname}ca" 1 all "${DIR}"
-mkpkg "${DIR}" "${DIR}"
-mksh "${DIR}" preup postup
-BDIR+=("${DIR}")
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
 # 3:5.0/maintained/component/test00000/amd64
-mkdeb "${pkgname}cb" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}" "${DIR}"
-BDIR+=("${DIR}")
+mkdeb "${pkgname}ca" 1 all "${DIRS[2]}"
+mkpkg "${DIRS[2]}" "${DIRS[2]}"
+mksh "${DIRS[2]}" preup postup
+
+mkdeb "${pkgname}cb" 1 "${ARCH}" "${DIRS[3]}"
+mkpkg "${DIRS[3]}" "${DIRS[3]}"
+
+BDIR=("${DIRS[@]}")
 
 minor+=1
 
@@ -64,25 +64,25 @@ mkdeb "${pkgname}ua" 2 all "${DIR_POOL}"
 mkpkg "${DIRS[4]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[4]}" "${DIR_POOL}"
-CDIR+=("${DIR}")
+
 mkdeb "${pkgname}ea" 2 all "${DIR_POOL}"
 mkpkg "${DIRS[5]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[5]}" "${DIR_POOL}"
-CDIR+=("${DIR}")
+
 mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all
+mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"
 # 6:5.1/maintained/component/test00000/all
+# 7:5.1/maintained/component/test00000/amd64
 mkdeb "${pkgname}ca" 2 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
-CDIR+=("${DIR}")
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-# 7:5.1/maintained/component/test00000/amd64
+
 mkdeb "${pkgname}cb" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
-CDIR+=("${DIR}")
+
+dirs_except "${BDIR[@]}" && declare -a CDIR=("${result[@]}")
 
 minor+=1
 
@@ -93,12 +93,12 @@ mkdeb "${pkgname}ua" 3 all "${DIR_POOL}"
 mkpkg "${DIRS[8]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[8]}" "${DIR_POOL}"
-ADIR+=("${DIR}")
+
 mkdeb "${pkgname}ea" 3 all "${DIR_POOL}"
 mkpkg "${DIRS[9]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[9]}" "${DIR_POOL}"
-ADIR+=("${DIR}")
+
 mksh "${DIR%/main/binary-*}" preup postup
 
 minor+=-1
@@ -136,7 +136,7 @@ fi
 	dpkg-query -W "${pkgname}cb" | grep -Fqx "${pkgname}cb	1"
 	univention-upgrade --ignoressh --noninteractive --disable-app-updates --ignoreterm
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${CDIR[@]}"
 	dpkg-query -W "${pkgname}ua" | grep -Fqx "${pkgname}ua	2"
 	dpkg-query -W "${pkgname}ub" | grep -Fqx "${pkgname}ub	2"
 	dpkg-query -W "${pkgname}ea" | grep -Fqx "${pkgname}ea	2"

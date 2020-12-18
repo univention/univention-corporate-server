@@ -33,7 +33,7 @@ MINOR = 0
 PATCH = 1
 ERRAT = 3
 PART = 'part'
-ARCH = 'arch'
+ARCH = 'amd64'
 
 
 class MockConfigRegistry(C.ConfigRegistry):
@@ -137,7 +137,11 @@ class MockPopen(object):
                 content = ex
             MockPopen.mock_commands.append(tuple(cmd) + (content,))
 
-    def wait(self):
+    def wait(self, timeout=None):
+        """Return result code."""
+        return self.returncode
+
+    def poll(self):
         """Return result code."""
         return self.returncode
 

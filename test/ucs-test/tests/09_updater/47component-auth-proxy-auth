@@ -24,7 +24,7 @@ proxypass="pass${RANDOM}"
 setup_apache "${repoprefix}"
 htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
-mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
