@@ -1,3 +1,9 @@
+univention-portal (4.0.4-1) unstable; urgency=medium
+
+  * Bug #52512: Modularize portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Dec 2020 17:00:29 +0100
+
 univention-portal (4.0.3-4) unstable; urgency=medium
 
   * Bug #52186: Fix multiple links in user menu and misc menu
