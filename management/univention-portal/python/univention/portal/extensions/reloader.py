@@ -39,7 +39,7 @@ from imghdr import what
 
 import ldap
 from ldap.dn import explode_dn
-from six import StringIO, with_metaclass
+from six import BytesIO, with_metaclass
 from six.moves.urllib.parse import quote
 from univention.portal import Plugin
 from univention.portal.log import get_logger
@@ -91,20 +91,20 @@ class MtimeBasedLazyFileReloader(Reloader):
 			self._mtime = mtime
 			return True
 
-	def _check_reason(self, reason):
+	def _check_reason(self, reason, content=None):
 		if reason is None:
 			return False
 		if reason == 'force':
 			return True
 
 	def refresh(self, reason=None, content=None):
-		if self._check_reason(reason):
+		if self._check_reason(reason, content=content):
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
 				fd = self._refresh()
-			except Exception as exc:
-				get_logger('cache').exception('Error during refresh: {}'.format(exc))
+			except Exception:
+				get_logger('cache').exception('Error during refresh')
 				# hopefully, we can still work with an older cache?
 			else:
 				if fd:
@@ -131,16 +131,13 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	cache_file:
 		Filename this object is responsible for
 	"""
-	udm_udm = importlib.import_module("univention.udm.udm")
-	udm_modules = importlib.import_module("univention.udm.modules")
-
 	def __init__(self, portal_dn, cache_file):
 		super(PortalReloaderUDM, self).__init__(cache_file)
 		self._portal_dn = portal_dn
 
 
 	def _check_reason(self, reason, content=None):
-		if super(PortalReloaderUDM, self)._check_reason(reason):
+		if super(PortalReloaderUDM, self)._check_reason(reason, content):
 			return True
 		if reason is None:
 			return False
@@ -174,7 +171,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return False
 
 	def _refresh(self):
-		UDM = self.udm_udm.UDM
+		udm_udm = importlib.import_module("univention.udm.udm")
+		UDM = udm_udm.UDM
 		udm = UDM.machine().version(2)
 		try:
 			portal = udm.get('portals/portal').get(self._portal_dn)
@@ -187,7 +185,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		content['categories'] = self._extract_categories(portal)
 		content['entries'] = self._extract_entries(portal)
 		content['folders'] = self._extract_folders(portal)
-		with tempfile.NamedTemporaryFile(delete=False) as fd:
+		with tempfile.NamedTemporaryFile(mode='w', delete=False) as fd:
 			json.dump(content, fd, sort_keys=True, indent=4)
 		return fd
 
@@ -266,8 +264,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_entries(self, portal):
-		PortalsPortalEntryObject = self.udm_modules.PortalsPortalEntryObject
-		PortalsPortalFolderObject = self.udm_modules.PortalsPortalFolderObject
+		udm_modules = importlib.import_module("univention.udm.modules.portal")
+		PortalsPortalEntryObject = udm_modules.PortalsPortalEntryObject
+		PortalsPortalFolderObject = udm_modules.PortalsPortalFolderObject
 
 		def _add(entry, ret):
 			if entry.dn not in ret:
@@ -303,7 +302,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_folders(self, portal):
-		PortalsPortalFolderObject = self.udm_modules.PortalsPortalFolderObject
+		udm_modules = importlib.import_module("univention.udm.modules.portal")
+		PortalsPortalFolderObject = udm_modules.PortalsPortalFolderObject
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -375,21 +375,21 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		fname = '/var/www/univention/portal/portal.css'
 		get_logger('css').info('Writing CSS file %s' % fname)
 		try:
-			with open(fname, 'wb') as fd:
+			with open(fname, 'w') as fd:
 				fd.write(css_code)
-		except (EnvironmentError, IOError) as err:
-			get_logger('css').warn('Failed to write CSS file %s: %s' % (fname, err))
+		except (EnvironmentError, IOError):
+			get_logger('css').exception('Failed to write CSS file %s' % fname)
 
 	def _write_image(self, name, img, dirname):
 		try:
 			name = name.replace('/', '-')  # name must not contain / and must be a path which can be accessed via the web!
-			string_buffer = StringIO(img)
+			string_buffer = BytesIO(img)
 			suffix = what(string_buffer) or 'svg'
 			fname = '/usr/share/univention-portal/icons/%s/%s.%s' % (dirname, name, suffix)
 			with open(fname, 'wb') as fd:
 				fd.write(img)
-		except (EnvironmentError, TypeError, IOError) as err:
-			get_logger('css').error(err)
+		except (EnvironmentError, TypeError, IOError):
+			get_logger('img').exception("Error saving image for %s" % name)
 		else:
 			return '/univention/portal/icons/%s/%s.%s' % (quote(dirname), quote(name), quote(suffix))
 
@@ -422,8 +422,8 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 		self._password_file = password_file
 		self._ldap_base = ldap_base
 
-	def _check_reason(self, reason):
-		if super(GroupsReloaderLDAP, self)._check_reason(reason):
+	def _check_reason(self, reason, content=None):
+		if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
 			return True
 		if reason is None:
 			return False
@@ -441,8 +441,8 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 		for dn, attrs in groups:
 			usernames = []
 			groups = []
-			member_uids = [member.lower() for member in attrs.get('memberUid', [])]
-			unique_members = [member.lower() for member in attrs.get('uniqueMember', [])]
+			member_uids = [member.decode('utf-8').lower() for member in attrs.get('memberUid', [])]
+			unique_members = [member.decode('utf-8').lower() for member in attrs.get('uniqueMember', [])]
 			for member in member_uids:
 				if not member.endswith('$'):
 					usernames.append(member.lower())
@@ -460,7 +460,7 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 				groups = users.setdefault(user, set())
 				groups.update(groups_with_nested_groups[group_dn])
 		users = dict((user, list(groups)) for user, groups in users.items())
-		with tempfile.NamedTemporaryFile(delete=False) as fd:
+		with tempfile.NamedTemporaryFile(mode='w', delete=False) as fd:
 			json.dump(users, fd, sort_keys=True, indent=4)
 		return fd
 

@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
 import json
 import datetime
 import ast
@@ -87,7 +88,7 @@ def add_default(update):
                         "kwargs": {
                             "cache_file": {
                                 "type": "static", 
-                                "value": "/usr/lib/univention-portal/caches/groups.json"
+                                "value": "/var/cache/univention-portal/groups.json"
                             }, 
                             "reloader": {
                             "class": "GroupsReloaderLDAP", 
@@ -98,7 +99,7 @@ def add_default(update):
                                 }, 
                                 "cache_file": {
                                     "type": "static", 
-                                    "value": "/usr/lib/univention-portal/caches/groups.json"
+                                    "value": "/var/cache/univention-portal/groups.json"
                                 }, 
                                 "ldap_base": {
                                     "key": "ldap_base", 
@@ -118,14 +119,6 @@ def add_default(update):
                         }, 
                         "type": "class"
                     }, 
-                    "portal_cookie_name": {
-                        "type": "static", 
-                        "value": "UMCSessionId"
-                    }, 
-                    "umc_cookie_name": {
-                        "type": "static", 
-                        "value": "UMCSessionId"
-                    }, 
                     "umc_session_url": {
                         "key": "umc_session_url", 
                         "type": "config"
@@ -138,14 +131,14 @@ def add_default(update):
                 "kwargs": {
                     "cache_file": {
                         "type": "static", 
-                        "value": "/usr/lib/univention-portal/caches/portal.json"
+                        "value": "/var/cache/univention-portal/portal.json"
                     }, 
                     "reloader": {
                         "class": "PortalReloaderUDM", 
                         "kwargs": {
                             "cache_file": {
                                 "type": "static", 
-                                "value": "/usr/lib/univention-portal/caches/portal.json"
+                                "value": "/var/cache/univention-portal/portal.json"
                             }, 
                             "portal_dn": {
                                 "key": "default_domain_dn", 

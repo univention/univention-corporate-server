@@ -181,7 +181,7 @@ class UMCAuthenticator(Authenticator):
 		if not any(cookie.startswith('UMCSessionId') for cookie in cookies):
 			get_logger("user").debug("no user given")
 			return None
-		get_logger("user").debug("searching user for cookies=%r".format(cookies))
+		get_logger("user").debug("searching user for cookies=%r" % cookies)
 		username = self._ask_umc(cookies)
 		if username is None:
 			get_logger("user").debug("no user found")
