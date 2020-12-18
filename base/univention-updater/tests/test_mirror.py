@@ -37,7 +37,6 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/basepath': os.path.join(self.base_dir, 'repo'),
             # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
             # 'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
-            'repository/mirror/architectures': ' '.join(ARCH),
             'repository/mirror/verify': 'no',
         }
         self.m = M.UniventionMirror()

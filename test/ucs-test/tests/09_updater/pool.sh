@@ -1,5 +1,5 @@
-# vim:set ft=bash:
 # shellcheck shell=bash
+# vim:set ft=bash:
 #
 # Common library function for updater test, which mostly follow this sequence:
 # 1. `setup_apache`: Setup the local web server to export a directory as a repository
@@ -44,6 +44,17 @@
 # - $GPPID: ID of test GPG key
 # - $GPPPUB: File path to public test GPG key
 # - $COMPRESS: Array of compression algorithms
+# - $result: Array for return values of `dirs_except`
+#
+# Hints
+# - By default tests cleanup after themselves, which complicates debugging failures. Use
+#   `rm -f /tmp/utest.*; UT_DELAY=60 UT_VERBOSE=/tmp/utest /usr/share/ucs-test/09_updater/28errors -vf`
+#   in a terminal, which executes `sleep 60` in case of failures and created a verbose log file `/tmp/utest.$PID`.
+#   Use `killall -STOP sleep` in a second terminal to extend the `sleep`.
+#   You can then investigate the failed state and use the the log file to get the call chain.
+#   Afterwards use `killall -CONT sleep` to continue with the cleanup.
+
+shopt -s extglob
 
 eval "$(univention-config-registry shell | sed -e 's/^/declare -r _/')"
 # shellcheck disable=SC2154,SC2034
@@ -94,15 +105,14 @@ bug43914 () {
 #bug43914 "${0##*/}"
 # if UT_VERBOSE is set, output messages to STDERR, otherwise /dev/null
 case "${UT_VERBOSE-}" in
-	/?*|./?*)
-		exec 3>&2 4>"${UT_VERBOSE}.$$"
-		PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}@${SECONDS}: '
-		BASH_XTRACEFD=4
-		set -x
-		;;
-	"") exec 3>/dev/null ;;
-	?*) exec 3>&2 ;;
+	/?*|./?*) exec 3>&2 4>>"${UT_VERBOSE}" ;;
+	"") exec 3>/dev/null 4>/dev/null ;;
+	?*) exec 3>&2 4>&2 ;;
 esac
+C0='' C1='' C2='' && [ -n "${TERM:-}" ] && C0=$'\e[0m' C1=$'\e[1;36m' C2=$'\e[1;35m'
+PS4="+${C1}\${BASH_SOURCE}${C0}:${C2}\${LINENO}${C0}:${C1}\${FUNCNAME[0]}${C0}@${C2}\${SECONDS}${C0}: "
+BASH_XTRACEFD=4
+set -x
 
 unset TMPDIR # Unset user-defines base-directroy for mktemp
 BASEDIR="$(mktemp -d -p /var/lib/ucs-test)"
@@ -164,6 +174,7 @@ cleanup () { # Undo all changes
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 	find /var/lib/apt/lists/ -type f -not -name lock -delete
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
@@ -249,9 +260,9 @@ config_repo () { # Configure use of repository from local apache: [[server]:port
 	do
 		case "${1}" in
 			/*) prefix="${1#/}" ;;
-			:[1-9]*) port="${1#:}" ;;
+			:[1-9]*([0-9])) port="${1#:}" ;;
 			?*=*) extra+=("${1}") ;;
-			*:[1-9]*) server="${1%:*}" ; port="${1##*:}" ;;
+			*:[1-9]*([0-9])) server="${1%:*}" ; port="${1##*:}" ;;
 			*) server="${1}" ;;
 		esac
 		shift
@@ -281,9 +292,9 @@ config_mirror () { # Configure mirror to use repository from local apache: [[ser
 	do
 		case "${1}" in
 			/*) prefix="${1#/}" ;;
-			:[1-9]*) port="${1#:}" ;;
+			:[1-9]*([0-9])) port="${1#:}" ;;
 			?*=*) extra+=("${1}") ;;
-			*:[1-9]*) server="${1%:*}" ; port="${1##*:}" ;;
+			*:[1-9]*([0-9])) server="${1%:*}" ; port="${1##*:}" ;;
 			*) server="${1}" ;;
 		esac
 		shift
@@ -345,7 +356,7 @@ dump_repo () { # Dump direcory $REPODIR
 	fi >&3 2>&3
 
 	# dump_repo
-	for ((i=0;i<${#DIRS[@]};i++))
+	for i in "${!DIRS[@]}"
 	do
 		printf '%2d: %q\n' "$i" "${DIRS[i]#${REPODIR}/}"
 	done >&3
@@ -358,14 +369,14 @@ mkpdir () { # Create package directory ${dir}
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
-			[1-9]*.[0-9]*-[0-9]*)
+			[1-9]*([0-9]).+([0-9])-+([0-9]))
 				versions+=("${1%--*}")
 				;;
-			[1-9]*.[0-9]*--errata[0-9]*)
+			[1-9]*([0-9]).+([0-9])--errata[0-9]*)
 				versions+=("${1%--*}")
 				suite='errata'
 				;;
-			[1-9]*.[0-9]*--component/*)
+			[1-9]*([0-9]).+([0-9])--component/*)
 				versions+=("${1%--*}-0")
 				component_versions+=("${1}")
 			;;
@@ -402,7 +413,6 @@ mkpdir () { # Create package directory ${dir}
 				then
 					DIRS+=("${dir}")
 					mkdir -p "${dir}"
-					touch "${dir}/Packages"
 					mkpkg "${dir}" "${DIR_POOL}"
 				fi
 			done
@@ -419,8 +429,22 @@ mkpdir () { # Create package directory ${dir}
 				DIRS+=("${DIR}")
 				mkdir -p "${DIR}"
 				touch "${DIR}/Packages"
+				compress "${DIR}/Packages"
 			done
 		done
+	done
+}
+
+dirs_except () {  # Array substract: elements... -- remove...
+	result=("${DIRS[@]}")
+	local i
+	while [ $# -ge 1 ]
+	do
+		for i in "${!result[@]}"
+		do
+			[ "$1" = "${result[i]}" ] && unset result["$i"]
+		done
+		shift
 	done
 }
 
@@ -548,7 +572,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 		cd "${OLDPWD}" || return $?
 	done
 
-	python2.7 ./create_releases_json.py "$REPODIR"
+	python ./create_releases_json.py "$REPODIR"
 }
 
 compress () { # compress file: <Packages|Sources>
@@ -690,24 +714,6 @@ mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup>
 	done
 }
 
-split_repo_path () { # Split repository path `$mm/$part/($mmp|component/$comp)/$arch` into atoms `($mmp|$mm--$comp,$part,$arch)`
-	# shellcheck disable=SC2016
-	python -c '
-from __future__ import print_function
-from os.path import relpath
-from sys import argv
-repodir, path = argv[1:]
-args = relpath(path, repodir).split("/")
-if args[0] == "dists":  # dists/$suite/$section
-    exit(0)
-if args[2] == "component":  # $mm/$part/component/$comp/$arch
-    version, part, arch = ("%s--%s/%s" % (args[0], args[2], args[3]), args[1], args[4])
-else:  # $mm/$part/$mmp/$arch
-    version, part, arch  = args[2:5]
-print(" ".join((version, part, arch)))
-' "$REPODIR" "$1"
-}
-
 checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/path] [http*] [(ucs|errata)XXX] [[un]maintained] [X.Y-(Z|--errataZ|--component/Z]
 	local files='/etc/apt/sources.list.d/*.list'
 	local prefix=deb
@@ -720,16 +726,16 @@ checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/p
 			http*) pattern="^${prefix} ${1}" ;;
 			ucs[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
 			errata[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
-			[1-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
-			[1-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
-			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
+			[1-9]*([0-9]).+([0-9])-+([0-9])) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
+			[1-9]*([0-9]).+([0-9])--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
+			[1-9]*([0-9]).+([0-9])--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
 			maintained|unmaintained) pattern="^${prefix} .*/${1}/\\(component/\\?\\)\\? .*/.*/" ;;
 			all|${ARCH}|extern) pattern="^${prefix} .*/\\(component/\\?\\)\\? .*/${1}/" ;;
 			i386|amd64) shift ; continue ;;
 			binary-i386|binary-amd64) shift ; continue ;;
 			main) shift ; continue ;;
 			/*) # shellcheck disable=SC2046
-				set -- "$@" $(split_repo_path "${1}") && shift  # IFS
+				set -- "$@" $(python ./split_repo_path.py "${REPODIR}" "${1}") && shift  # IFS
 				continue
 				;;
 			*) echo "Unknown ${1}" >&2 ; cat $files; return 2 ;;

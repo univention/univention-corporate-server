@@ -25,7 +25,6 @@ class TestUniventionUpdater(unittest.TestCase):
     def setUp(self):
         """Create Updater mockup."""
         self.u = U.UniventionUpdater(check_access=False)
-        self.u.architectures = [ARCH]
 
     def _ucr(self, variables):
         """Fill UCR mockup."""

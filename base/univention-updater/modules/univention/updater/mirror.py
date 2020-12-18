@@ -117,10 +117,6 @@ class UniventionMirror(UniventionUpdater):
         self.version_end = UCS_Version(version_end)
         version_start = self.configRegistry.get('repository/mirror/version/start') or (self.current_version.major, 0, 0)
         self.version_start = UCS_Version(version_start)
-        # set architectures to mirror
-        archs = self.configRegistry.get('repository/mirror/architectures', '')
-        if archs:
-            self.architectures = archs.split(' ')
 
     def config_repository(self):
         # type: () -> None
@@ -177,13 +173,11 @@ class UniventionMirror(UniventionUpdater):
         """
         start = self.version_start
         end = self.version_end
-        parts = self.parts
-        archs = []  # type: List[str] # only 'all'
 
-        repos = self._iterate_version_repositories(start, end, parts, archs)  # returns generator
+        repos = self._iterate_version_repositories(start, end)  # returns generator
 
         components = self.get_components(only_localmirror_enabled=True)
-        comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True)  # returns generator
+        comp = self._iterate_component_repositories(components, start, end, for_mirror_list=True)  # returns generator
 
         all_repos = itertools.chain(repos, comp)  # concatenate all generators into a single one
         for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos, self.script_verify):

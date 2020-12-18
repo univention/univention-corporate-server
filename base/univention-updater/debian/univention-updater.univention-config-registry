@@ -41,7 +41,6 @@ Variables: repository/mirror/port
 Variables: repository/mirror/cron
 Variables: repository/mirror/basepath
 Variables: repository/mirror/threads
-Variables: repository/mirror/architectures
 Variables: repository/mirror/version/.*
 Variables: online/repository/clean
 Variables: repository/mirror/sources

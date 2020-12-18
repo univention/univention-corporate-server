@@ -124,7 +124,7 @@ run_tests () { # execute all updater programs
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password" "${comp}/version"
 
-	msg="Configuration error: component not found"
+	msg="Component ${compname}DUMMY: Error downloading"
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " marked as required."

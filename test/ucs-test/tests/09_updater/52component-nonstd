@@ -17,7 +17,7 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 # mkpkg "${DIR}" "${DIR}"
 PDIR="${DIR%/$ARCH}" # only one level
@@ -35,7 +35,7 @@ gpgsign Release
 cd "${OLDPWD}"
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained"
+config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/layout=flat"
 
 (
 	set -e

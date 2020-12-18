@@ -6,6 +6,8 @@
 0009-2: bin/runner
 0009-2: bin/ucs-test
 0009-2: tests/09_updater/proxy.py
+0009-2: tests/09_updater/create_releases_json.py
+0009-2: tests/09_updater/split_repo_path.py
 0009-2: tests/51_samba4/kpasswd_change_pwd.py
 0011-16: debian/pyversions
 # Copyright
