@@ -32,8 +32,9 @@
 export DH_VERBOSE=1
 export PYBUILD_NAME=univention-portal
 
-#override_dh_auto_build:
-#	make
-
 %:
-	dh $@ --with python2,univention-l10n,ucr,univention-join --buildsystem=pybuild
+	dh $@ --with python3,univention-l10n,ucr,univention-join --buildsystem=pybuild
+
+override_dh_auto_build:
+	dh_auto_build
+	make
