@@ -146,7 +146,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			return False
 		if reason_args[0] != 'ldap':
 			return False
-		if reason_args[0] not in ['portal', 'category', 'entry', 'folder']:
+		if reason_args[1] not in ['portal', 'category', 'entry', 'folder']:
 			return False
 		if len(reason_args) == 2:
 			return True

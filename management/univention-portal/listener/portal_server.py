@@ -32,6 +32,8 @@ from __future__ import absolute_import
 
 import subprocess
 
+import univention.debug as ud
+
 import listener
 
 name = 'portal_server'
@@ -50,9 +52,11 @@ def handler(dn, new, old):
 			attrs = new
 		object_type = attrs.get('univentionObjectType', [])
 		if object_type:
-			module = object_type[0].split('/')[-1]
+			module = object_type[0].decode('utf-8').split('/')[-1]
 		else:
 			module = 'unknown'
-		subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', 'ldap:{}:{}'.format(module, dn)])
+		reason = 'ldap:{}:{}'.format(module, dn)
+		ud.debug(ud.LISTENER, ud.INFO, "Updating portal. Reason: %s" % reason)
+		subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', reason], stdout=subprocess.PIPE)
 	finally:
 		listener.unsetuid()
