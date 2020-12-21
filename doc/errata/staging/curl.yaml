@@ -6,11 +6,11 @@ src: curl
 fix: 7.52.1-5+deb9u13
 desc: |
  This update addresses the following issues:
- * dangerous nature of PASV command could be used to make curl extract
+ * Dangerous nature of PASV command could be used to make curl extract
    information otherwise private (CVE-2020-8284)
- * malicious FTP server can trigger stack overflow when
+ * Malicious FTP server can trigger stack overflow when
    CURLOPT_CHUNK_BGN_FUNCTION is used (CVE-2020-8285)
- * inferior OCSP verification (CVE-2020-8286)
+ * Inferior OCSP verification (CVE-2020-8286)
 bug: [52529]
 cve:
 - CVE-2020-8284
