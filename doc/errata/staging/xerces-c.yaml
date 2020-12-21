@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: xerces-c
+fix: 3.1.4+debian-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2018-1311 mitigation: fix use-after-free vulnerability when processing
+   external DTD, at the expense of a memory leak. Users may mitigate both by
+   setting the XERCES_DISABLE_DTD environment variable.
+bug: [52530]
+cve:
+- CVE-2018-1311
