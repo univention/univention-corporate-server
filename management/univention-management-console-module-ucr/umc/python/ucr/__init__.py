@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from io import BytesIO
+from io import StringIO
 
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base, UMC_Error
@@ -48,14 +48,26 @@ import univention.info_tools as uit
 _ = Translation('univention-management-console-module-ucr').translate
 
 
+from typing import Any, Dict, List, Union  # noqa F401
+
+
 class UCRKeySanitizer(StringSanitizer):
 
-	def _sanitize(self, value, name, further_arguments):
+	def _sanitize(self, value: str, name: str, further_arguments: List[Any]) -> Union[str, None]:
+		"""
+		sanitizing UCR keys
+
+		:param value: Value to be sanitized
+		:param name: name of the key
+		:param further_arguments: List of further arguments
+		:return: sanitized value or None if an Error is raised
+		"""
 		value = super(UCRKeySanitizer, self)._sanitize(value, name, further_arguments)
-		b = BytesIO()
+		b = StringIO()
 		if not validate_key(value, b):
 			error_message = b.getvalue()
-			self.raise_validation_error('%s %s' % (_('A valid UCR variable name must contain at least one character and can only contain letters, numerals, "/", ".", ":", "_" and "-".'), error_message))
+			pre_error_message = _('A valid UCR variable name must contain at least one character and can only contain letters, numerals, "/", ".", ":", "_" and "-".')
+			self.raise_validation_error(f'{pre_error_message} {error_message}')
 			return
 		return value
 
@@ -66,7 +78,12 @@ class Instance(Base):
 		# set the language in order to return the correctly localized labels/descriptions
 		uit.set_language(self.locale.language)
 
-	def __create_variable_info(self, options):
+	def __create_variable_info(self, options: Dict) -> None:
+		"""
+		creating variable infos
+
+		:param options: List of options
+		"""
 		all_info = ConfigRegistryInfo(registered_only=False)
 		info = ConfigRegistryInfo(install_mode=True)
 		info.read_customized()
@@ -78,7 +95,7 @@ class Instance(Base):
 			if not text:
 				continue
 			if 'lang' in line:
-				var['description[%s]' % line['lang']] = text
+				var[f'description[{line["lang"]}]'] = text
 			else:
 				var['description'] = text
 		# categories
@@ -95,7 +112,7 @@ class Instance(Base):
 			info.add_variable(options['key'], var)
 			info.write_customized()
 
-	def is_readonly(self, key):
+	def is_readonly(self, key: str) -> bool:
 		ucrinfo_system = ConfigRegistryInfo(registered_only=False, load_customized=False)
 		var = ucrinfo_system.get_variable(key)
 		if var:
@@ -108,7 +125,7 @@ class Instance(Base):
 			'value': StringSanitizer(default=''),
 		})
 	}))
-	def add(self, request):
+	def add(self, request: 'Request') -> None:
 		# does the same as put
 		ucr.load()
 		already_set = set(ucr.keys()) & set(v['object']['key'] for v in request.options)
@@ -123,14 +140,14 @@ class Instance(Base):
 			'value': StringSanitizer(default=''),
 		})
 	}))
-	def put(self, request):
+	def put(self, request: 'Request') -> None:
 		for _var in request.options:
 			var = _var['object']
 			value = var['value'] or ''
 			key = var['key']
 			if self.is_readonly(key):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
-			arg = ['%s=%s' % (key.encode(), value.encode())]
+			arg = [f'{key}={value}']
 			handler_set(arg)
 
 			# handle descriptions, type, and categories
@@ -138,7 +155,7 @@ class Instance(Base):
 				self.__create_variable_info(var)
 		self.finished(request.id, True)
 
-	def remove(self, request):
+	def remove(self, request: 'Request') -> None:
 		variables = [x for x in [x.get('object') for x in request.options] if x is not None]
 		for var in variables:
 			if self.is_readonly(var):
@@ -147,7 +164,7 @@ class Instance(Base):
 		handler_unset(variables)
 		self.finished(request.id, True)
 
-	def get(self, request):
+	def get(self, request: 'Request') -> None:
 		ucrReg = ConfigRegistry()
 		ucrReg.load()
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
@@ -170,7 +187,7 @@ class Instance(Base):
 				raise UMC_Error(_('The UCR variable %(key)s could not be found') % {'key': key})
 		self.finished(request.id, results)
 
-	def categories(self, request):
+	def categories(self, request: 'Request') -> None:
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
 		categories = []
 		for id, obj in ucrInfo.categories.items():
@@ -184,7 +201,7 @@ class Instance(Base):
 
 	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))
 	@simple_response
-	def query(self, pattern, key, category=None):
+	def query(self, pattern: str, key: str, category: Union[List[str], None] = None) -> Dict:
 		'''Returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the
 		UMCP request. Additionally a list of configuration registry
@@ -216,7 +233,7 @@ class Instance(Base):
 		def _match_all(name, var):
 			return _match_value(name, var) or _match_description(name, var) or _match_key(name, var)
 
-		func = locals().get('_match_%s' % key)
+		func = locals().get(f'_match_{key}')
 		for name, var in base_info.get_variables(category).items():
 			if func(name, var):
 				variables.append({

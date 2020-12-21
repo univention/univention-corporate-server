@@ -476,7 +476,7 @@
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The &ucsUMC; module <package>univention-management-console-module-ucr</package> have been migrated to Python 3  (<u:bug>51322</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

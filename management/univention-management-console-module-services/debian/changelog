@@ -1,3 +1,9 @@
+univention-management-console-module-services (9.0.0-2) unstable; urgency=medium
+
+  * Bug #51322: Python3 Migration. Dropped python 2 specific functionality
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 05 Jan 2021 18:44:50 +0100
+
 univention-management-console-module-services (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
