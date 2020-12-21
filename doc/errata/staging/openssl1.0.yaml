@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: openssl1.0
+fix: 1.0.2u-1~deb9u3
+desc: |
+ This update addresses the following issue:
+ * EDIPARTYNAME NULL pointer de-reference (CVE-2020-1971)
+bug: [52526]
+cve:
+- CVE-2020-1971
