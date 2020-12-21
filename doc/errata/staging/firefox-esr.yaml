@@ -6,7 +6,7 @@ src: firefox-esr
 fix: 78.6.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- * Uninitialized Use in V8 (CVE-2020-16042)
+ * Uninitialized use in V8 (CVE-2020-16042)
  * Heap buffer overflow in WebGL (CVE-2020-26971)
  * CSS Sanitizer performed incorrect sanitization (CVE-2020-26973)
  * Incorrect cast of StyleGenericFlexBasis resulted in a heap use-after-free
