@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddress
+from typing import Dict, Union
 
 import univention.config_registry
 import univention.admin.modules
@@ -54,28 +55,25 @@ univention.admin.syntax.update_choices()
 class Instance(Base):
 
 	@simple_response
-	def change(self, role, ip, netmask, oldip=None):
+	def change(self, role: str, ip: str, netmask: str, oldip: Union[str, None] = None) -> Dict:
 		'''Return a dict with all necessary values for ipchange read from the current
 		status of the system.'''
 
 		# ignore link local addresses (no DHCP address received)
-		network = ipaddress.IPv4Network(u'%s/%s' % (ip, netmask), False)
+		network = ipaddress.IPv4Network(f'{ip}/{netmask}', False)
 		if network.is_link_local:
 			MODULE.error('Ignore link local address change.')
 			return
 
 		lo, position = univention.admin.uldap.getAdminConnection()
 		hmodule = univention.admin.modules.get('dns/host_record')
-		cmodule = univention.admin.modules.get('computers/%s' % (role,))
+		cmodule = univention.admin.modules.get(f'computers/{role}')
 
 		# check if already used
 		res = univention.admin.modules.lookup(hmodule, None, lo, scope='sub', filter=filter_format('aRecord=%s', (ip,)))
-		if res:
-			used_by = []
-			for i in res:
-				if 'name' in i:
-					used_by.append(i['name'])
-			raise BadRequest('The IP address is already in used by host record(s) for: %s' % ', '.join(used_by))
+		used_by = [entry['name'] for entry in res if 'name' in entry]
+		if used_by:
+			raise BadRequest(f'The IP address is already in use by host record(s) for: {", ".join(used_by)}')
 
 		# do we have a forward zone for this IP address?
 		if oldip and oldip != ip:
@@ -90,13 +88,13 @@ class Instance(Base):
 		server = cmodule.object(None, lo, position, self.user_dn)
 		server.open()
 		current_ips = server['ip']
-		for e in server['dnsEntryZoneReverse']:
-			if e[1] in current_ips:
-				server['dnsEntryZoneReverse'].remove(e)
+		for entry in server['dnsEntryZoneReverse']:
+			if entry[1] in current_ips:
+				server['dnsEntryZoneReverse'].remove(entry)
 
 		# change IP
 		server['ip'] = ip
-		MODULE.info('Change IP to %s' % (ip,))
+		MODULE.info(f'Change IP to {ip}')
 		server.modify()
 
 		# do we have a new reverse zone for this IP address?

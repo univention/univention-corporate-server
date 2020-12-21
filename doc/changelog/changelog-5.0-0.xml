@@ -479,7 +479,7 @@
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The &ucsUMC; module <package>univention-management-console-module-ucr</package> have been migrated to Python 3  (<u:bug>51322</u:bug>)
+					The &ucsUMC; module <package>univention-management-console-module-ucr</package> has been migrated to Python 3  (<u:bug>51322</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -503,7 +503,10 @@
 					The old system statistics based on <application>MRTG</application> has been removed (<u:bug>44475</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The &ucsUMC; module <package>univention-management-console-module-services</package> have been migrated to Python 3  (<u:bug>51333</u:bug>)
+					The &ucsUMC; module <package>univention-management-console-module-services</package> has been migrated to Python 3  (<u:bug>51333</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUMC; module <package>univention-management-console-module-ipchange</package> has been migrated to Python 3  (<u:bug>51331</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)

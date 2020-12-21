@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.5.2
@@ -14,6 +13,8 @@ Package: univention-management-console-module-ipchange
 Architecture: all
 Depends:
  python-ipaddress,
+Provides:
+ ${python3:Provides},
 Recommends:
  univention-management-console-server (>= 11.0.4-37),
 Description: UMC module for registration the IP address
