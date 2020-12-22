@@ -18,7 +18,7 @@ desc: |
  * Missing maximum length check in WindowsNativeDispatcher.asNativeBuffer()
    (CVE-2020-14798)
  * Race condition in NIO Buffer boundary checks (CVE-2020-14803)
-bug: [52268]
+bug: [52533]
 cve:
 - CVE-2020-14779
 - CVE-2020-14781
@@ -28,5 +28,3 @@ cve:
 - CVE-2020-14797
 - CVE-2020-14798
 - CVE-2020-14803
-erratum: 785
-announced: 2020-10-28
