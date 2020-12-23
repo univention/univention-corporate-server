@@ -6,14 +6,14 @@
 ## packages: [univention-management-console-module-appcenter]
 ## exposure: careful
 
-#from urllib2 import urlopen, URLError, HTTPError, Request
-#from multiprocessing import Process, Pipe as m_Pipe
-
 from __future__ import print_function
 import re
 import requests
 import time
 import glob
+
+from six.moves.html_parser import HTMLParser
+
 import univention.testing.utils as utils
 
 from appcentertest import get_requested_apps
@@ -49,9 +49,6 @@ url = r"""
 
 url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
 
-failures_counter = 0  # errors counter
-bad_links = []  # list of problematic links
-
 # these links return 403 -> Bug #39730
 forbidden_links = dict()
 forbidden_links['https://univention.ikarus.at/index-en.php'] = True
@@ -72,16 +69,49 @@ README_FILES = [
 ]
 
 
-def findall_urls(app):
+class MyHTMLParser(HTMLParser):
+
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.href = list()
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            for name, value in attrs:
+                if name == "href":
+                    self.href.append(value)
+
+
+def findall_urls_from_readme(app):
     """
-    Returns a set of 'http:' and 'https:' URLs found in the given app.
+    Readme files are html snippets, check with html parser
     """
+    files_to_check = []
     all_urls = dict()
-    files_to_check = [app.get_ini_file()]
     for readme_file in README_FILES:
         for f in glob.glob('%s*' % app.get_cache_file(readme_file)):
             files_to_check.append(f)
+    for filename in files_to_check:
+        print("\nChecking file:", filename)
+        parser = MyHTMLParser()
+        try:
+            with open(filename, 'r') as fd:
+                html = fd.read()
+                parser.feed(html)
+                for url in parser.href:
+                    print('found URL - %s' % url)
+                    if all_urls.get(url):
+                        all_urls[url].append(filename)
+                    else:
+                        all_urls[url] = [filename]
+        except (IOError, OSError) as exc:
+            utils.fail("An %r error occurred while working with %s" % (exc, filename))
+    return all_urls
 
+
+def findall_urls_from_ini(app):
+    all_urls = dict()
+    files_to_check = [app.get_ini_file()]
     for filename in files_to_check:
         print("\nChecking file:", filename)
         try:
@@ -97,31 +127,20 @@ def findall_urls(app):
                             else:
                                 all_urls[u] = [filename]
         except (IOError, OSError) as exc:
-            utils.fail("An %r error occurred while working with %s"
-                       % (exc, filename))
-
+            utils.fail("An %r error occurred while working with %s" % (exc, filename))
     return all_urls
 
 
-def collect_links():
+def check_files():
     """
-    Looks for all links in the installed Apps
-    Adds links found to a set and returns it when done.
-    """
-    links_to_check = dict()
-    for app in get_requested_apps():
-        print("\nChecking App:", app)
-        # determine links to be checked (duplicates are ignored):
-        links_to_check[app.id] = findall_urls(app)
-    return links_to_check
-
-
-def check_ini_files():
-    """
-    Collects all links from .inis of installed Apps;
+    Collects all links from .inis and Readmes of installed Apps;
     Tries to open each URL found using urlopen with a timeout.
     """
-    links = collect_links()
+    links = dict()
+    for app in get_requested_apps():
+        print("\nChecking App:", app)
+        links[app.id] = findall_urls_from_ini(app)
+        links[app.id].update(findall_urls_from_readme(app))
     bad_links = []
     for app in links:
         for link in links[app]:
@@ -148,12 +167,8 @@ def check_ini_files():
 
 if __name__ == '__main__':
     # skip the test if there are no Apps (in 'APPCENTER_FILE'):
-    bad_links = check_ini_files()
-
+    bad_links = check_files()
     if bad_links:
-        bad_links = '\n\t* ' + '\n\t* '.join(bad_links)
-        utils.fail(" %d link error(s) were detected, please "
-                   "check a complete test output.\n Problematic links are:%s"
-                   % (failures_counter, bad_links))
+        utils.fail("Problematic links are: \n\t* %s" % ('\n\t* '.join(bad_links)))
     else:
         print("\nNo errors were detected.\n")
