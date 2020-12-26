@@ -200,11 +200,11 @@ $app-detailspane-background-color = var(--color-grey0)
 	padding: 0.5em
 
 	.umcText
-		font-size: 20px
-		font-weight: 500
+		font-size: var(--font-size-normal)
+		font-weight: 600
 		padding-top: 0.4em
 		padding-bottom: 1em
-		float: left
+		padding-left: 1em
 
 	.dijitButton
 		float: right
@@ -413,18 +413,33 @@ $app-detailspane-background-color = var(--color-grey0)
 			height: auto
 
 	.umcAppCenter .umcLiveSearchSidebar
+		border-radius: var(--border-radius-container)
+
+		.umcSearchBox
+			margin-bottom: 40px
+
 		.appLiveSearchSidebarElement
-			background-color: var(--color-grey0)
-			border-radius: var(--border-radius-container)
-			margin-bottom: 20px
-			margin-top: 20px
+			border-top-left-radius: var(--border-radius-container)
+			border-top-right-radius: var(--border-radius-container)
+			background-color: var(--bgc-content-container)
 			padding: 10px
+
+			.umcLayoutRow
+				margin-bottom: 0.5em
+
+		.appLiveSearchSidebarElement + .appLiveSearchSidebarElement
+			border-radius: 0
+			border-top: thin solid var(--font-color-contrast-low)
+
+		.appLiveSearchSidebarElement:last-child
+			border-bottom-left-radius: var(--border-radius-container)
+			border-bottom-right-radius: var(--border-radius-container)
 
 		.mainHeader
 			display: block
-			font-size: 20px
-			font-weight: 500
-			margin-bottom: 16px
+			font-size: var(--font-size-small)
+			font-weight: 600
+			margin-bottom: 20px
 
 		.searchFilterSingle
 			font-size: 17px
