@@ -861,6 +861,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'])
 	auto_mod_proxy = AppBooleanAttribute(default=True)
 	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
+	background_color = AppAttribute()
 
 	database = AppAttribute()
 	database_name = AppAttribute()

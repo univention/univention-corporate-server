@@ -611,6 +611,7 @@ class AppListener(AppListener):
 				'description': app.get_localised('description'),
 				'description/de': app.get_localised('description', 'de'),
 				'link': app.web_interface,
+				'background-color': app.background_color,
 			}
 			for key, value in variables.items():
 				updates[registry_key % key] = value

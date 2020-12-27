@@ -170,6 +170,8 @@ def _handler(ucr, changes):
 			elif key == 'description/fr':
 				entry.setdefault('description', [])
 				entry['description'].append(('fr_FR', value))
+			elif key == 'background-color':
+				entry['backgroundColor'] = value
 			else:
 				portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
 	for cn, attrs in attr_entries.items():
