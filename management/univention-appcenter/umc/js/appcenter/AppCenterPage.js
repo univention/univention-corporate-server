@@ -43,9 +43,10 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
 	"umc/modules/appcenter/AppLiveSearchSidebar",
-	"umc/modules/appcenter/AppCenterMetaCategory",
+	"umc/modules/appcenter/Tiles",
+	"umc/modules/appcenter/Tile",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, on, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, on, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, Tiles, Tile, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -70,8 +71,6 @@ define([
 		navBootstrapClasses: 'col-xs-12 col-md-4 col-lg-3',
 		mainBootstrapClasses: 'col-xs-12 col-md-8 col-lg-9',
 		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
-
-		metaCategoryClass: AppCenterMetaCategory,
 
 		appSuggestions: null,
 
@@ -161,14 +160,14 @@ define([
 
 			var assumedMetaCategories = this.getMetaCategoryDefinition();
 			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
-				var metaCategory = new this.metaCategoryClass(metaObj);
-				metaCategory.on('showApp', lang.hitch(this, 'onShowApp'));
-				metaCategory.set('visible', false);
+				var metaCategory = new Tiles({
+					header: metaObj.label,
+					query: metaObj.query,
+					isSuggestionCategory: !!metaObj.isSuggestionCategory,
+					visible: false
+				});
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
-				this.own(this.watch('appQuery', function(attr, oldval, newval) {
-					metaCategory.set('filterQuery', newval);
-				}));
 			}));
 		},
 
@@ -239,19 +238,6 @@ define([
 				}
 			);
 			return deferred;
-		},
-
-		getVisibleApps: function() {
-			// to show prev or next app on the AppDetailsPage
-			// we need all currently visible apps
-			var visibleApps = [];
-			array.forEach(this.metaCategories, function(metaCategory) {
-				if (metaCategory.grid.store) { // undefined if reloading AppDetailsPage
-					var apps = metaCategory.grid.store.query(metaCategory.filterQuery);
-					visibleApps = visibleApps.concat(apps);
-				}
-			});
-			return visibleApps;
 		},
 
 		getApplications: function(quick) {
@@ -328,8 +314,16 @@ define([
 			return when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
 				return this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
 					var scroll = this._scroll();
-					array.forEach(this.metaCategories, function(metaObj) {
-						metaObj.set('store', applications);
+					array.forEach(this.metaCategories, function(metaCategory) {
+						var tiles = array.map(applications, function(app) {
+							return new Tile({
+								bgc: app.background_color || "",
+								logo: "/univention/js/dijit/themes/umc/icons/scalable/" + app.logo_name,
+								name: app.name,
+								obj: app
+							});
+						});
+						metaCategory.set("tiles", tiles);
 					});
 
 					if (this.liveSearch) {
@@ -414,7 +408,9 @@ define([
 			var query = lang.hitch(this, 'queryApps', searchPattern, selectedCategories, selectedBadges, selectedLicenses, voteForApps);
 
 			// set query options and refresh grid
-			this.set('appQuery', query);
+			array.forEach(this.metaCategories, function(metaCategory) {
+				metaCategory.filter(query);
+			});
 		},
 
 		queryApps: function(searchPattern, selectedCategories, selectedBadges, selectedLicenses, voteForApps, app) {

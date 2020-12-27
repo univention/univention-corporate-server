@@ -54,6 +54,7 @@ define([
 			this.id = props.id;
 			this.name = props.name;
 			this.voteForApp = props.vote_for_app;
+			this.backgroundColor = "green";  // TODO
 			this.logoName = props.logo_name;
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;

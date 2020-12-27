@@ -92,6 +92,9 @@ define([
 			this.inherited(arguments);
 
 			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
+			this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
+				this.showApp(app, suggested);
+			}));
 		},
 
 		_updateModuleState: function() {
@@ -179,9 +182,6 @@ define([
 				_scroll: lang.hitch(this, '_scroll'),
 				_scrollTo: lang.hitch(this, '_scrollTo')
 			});
-			// switched from app center to app details and back
-			this._appCenterPage.on('showApp', lang.hitch(this, 'showApp'));
-
 			this.addChild(this._appCenterPage);
 			this.selectChild(this._appCenterPage);
 
@@ -241,7 +241,6 @@ define([
 				detailsDialog: detailsDialog,
 				configDialog: configDialog,
 				installDialog: installDialog,
-				visibleApps: this._appCenterPage.getVisibleApps(),
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
@@ -265,9 +264,6 @@ define([
 				appDetailsPage.on('back', lang.hitch(this, function() {
 					this.set('title', 'App Center');
 					this.selectChild(this._appCenterPage);
-					tools.forIn(this._appCenterPage.metaCategories, function(metaKey, metaObj) {
-						metaObj._centerApps();
-					});
 					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
 				})),
 				configDialog.on('back', lang.hitch(this, function(applied) {
