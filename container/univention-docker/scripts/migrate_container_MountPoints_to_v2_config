@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """
 Migrate container volume config to config.v2.json
 """
@@ -75,7 +75,7 @@ def migrate_app_container(container_id):
 
 	old_cfg = os.path.join(container_path, 'config.json')
 	if not os.path.exists(old_cfg):
-		log.warn('Ignoring %s (no config.json found)' % (container_id,))
+		log.warning('Ignoring %s (no config.json found)' % (container_id,))
 		return 2
 
 	with open(old_cfg, 'r') as f:
@@ -113,12 +113,10 @@ def migrate_app_container(container_id):
 			("ID", "")
 		])
 
-	if options.dry_run:
-		return 0
-
-	with open(new_cfg, 'w') as f:
-		json.dump(new_data, f, separators=(',', ':'))
-		f.write('\n')
+	if not options.dry_run:
+		with open(new_cfg, 'w') as f:
+			json.dump(new_data, f, separators=(',', ':'))
+			f.write('\n')
 
 	return 0
 

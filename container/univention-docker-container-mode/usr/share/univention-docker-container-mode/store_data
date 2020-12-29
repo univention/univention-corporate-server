@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Appliance Docker Container
 #  save data before the image gets removed
@@ -62,12 +62,12 @@ def copy_to_persistent_storage(src, dest):
 		elif os.path.islink(s):
 			linkto = os.readlink(s)
 			if os.path.exists(d) or os.path.islink(d):
-				print 'rm %s' % d
+				print('rm %s' % d)
 				os.remove(d)
-			print 'ln -sf %s %s' % (linkto, d)
+			print('ln -sf %s %s' % (linkto, d))
 			os.symlink(linkto, d)
 		else:
-			print 'cp %s %s' % (s, d)
+			print('cp %s %s' % (s, d))
 			shutil.copy(s, d)
 			copy_permissions(s, d)
 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
 	try:
 		for f in glob.glob('/etc/univention/base*conf'):
-			print 'cp %s %s' % (f, dest)
+			print('cp %s %s' % (f, dest))
 			shutil.copy(f, dest)
 		copy_files('/etc/*.secret', store)
 		copy_recursive('/etc/univention/ssl', store)
