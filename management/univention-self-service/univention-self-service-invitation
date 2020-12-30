@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2019-2020 Univention GmbH
@@ -86,18 +86,19 @@ class Invitation(object):
 		self.lo = univention.uldap.getMachineConnection()
 
 	def is_valid_user(self, username):
+		# type: (str) -> bool
 		# check if users exists and has univentionPasswordSelfServiceEmail
 		l_filter = 'uid={}'.format(ldap.filter.escape_filter_chars(username))
 		self.logger.debug('checking ldap with filter {}'.format(l_filter))
 		res = self.lo.search(l_filter)
-		if len(res) == 1:
-			if 'univentionPasswordSelfServiceEmail' in res[0][1]:
-				self.logger.debug('user {} is valid'.format(username))
-				return True
+		if res and 'univentionPasswordSelfServiceEmail' in res[0][1]:
+			self.logger.debug('user {} is valid'.format(username))
+			return True
 		self.logger.debug('user {} is NOT valid'.format(username))
 		return False
 
 	def check_trigger(self):
+		# type: () -> None
 		# check trigger dir for users and send token
 		while True:
 			time.sleep(5)

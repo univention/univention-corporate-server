@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # dump data stored in memcache for request limit
@@ -64,11 +64,9 @@ entries = dict()
 reg = re.compile('^ITEM (.*) \[.*; (.*) .*\]$')
 for line in lines:
 	parts = line.split(":")
-	if len(parts) >= 3:
-		slab = parts[1]
-	else:
+	if len(parts) < 3:
 		continue
-	so.sendall("stats cachedump {} 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n".format(slab))
+	so.sendall("stats cachedump {} 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n".format(parts[1]))
 	data = so.recv(1024)
 	cachelines = data.split("\r\n")
 	for line in cachelines:

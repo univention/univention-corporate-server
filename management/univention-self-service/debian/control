@@ -9,6 +9,7 @@ Build-Depends:
  python-all,
  python-polib,
  python3-all,
+ python3-polib,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
@@ -55,6 +56,8 @@ Depends:
  memcached,
  python-psycopg2,
  python-pylibmc,
+ python3-psycopg2,
+ python3-pylibmc,
  shell-univention-lib,
  univention-config,
  univention-join,
@@ -75,6 +78,7 @@ Package: univention-self-service-invitation
 Architecture: all
 Depends:
  python-six,
+ python3-six,
  ${misc:Depends},
 Description: Invitation module for Univention Self Service.
  This package contains a listener and a daemon for the

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -110,7 +110,9 @@ def forward_to_master_if_authentication_disabled(func):
 
 
 def prevent_denial_of_service(func):
+	# type: (function) -> function
 	def _pretty_time(sec):
+		# type: (int) -> str
 		if sec <= 60:
 			return _("one minute")
 		m, s = divmod(sec, 60)
@@ -278,6 +280,7 @@ class Instance(Base):
 		password=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def get_contact(self, username, password):
+		# type: (str, str) -> list
 		"""
 		Get users contact data.
 
@@ -389,9 +392,7 @@ class Instance(Base):
 	def get_registration_attributes(self):
 		ucr.load()
 		property_ids = ['PasswordRecoveryEmail', 'password']
-		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()]:
-			if id_ not in property_ids:
-				property_ids.append(id_)
+		property_ids.extend([attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip() and attr.strip() not in property_ids])
 		lo, po = get_machine_connection()
 		users_mod = UDM_Module('users/user', True, lo, po)
 		properties = {prop['id']: prop for prop in users_mod.properties(None)}
@@ -413,18 +414,18 @@ class Instance(Base):
 		}
 
 	def _update_required_attr_of_props_for_registration(self, properties):
-		for k in properties.keys():
-			if isinstance(properties[k], dict):
-				properties[k]['required'] = False
+		for value in properties.values():
+			if isinstance(value, dict):
+				value['required'] = False
 			else:
-				properties[k].required = False
+				value.required = False
 		required_ids = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()])
-		for id_ in required_ids:
+		for id_, value_ in required_ids.items():
 			if id_ in properties:
-				if isinstance(properties[id_], dict):
-					properties[id_]['required'] = True
+				if isinstance(value_, dict):
+					value_['required'] = True
 				else:
-					properties[id_].required = True
+					value_.required = True
 
 	@forward_to_master_if_authentication_disabled
 	@sanitize(
