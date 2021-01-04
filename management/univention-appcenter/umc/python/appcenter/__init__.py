@@ -281,9 +281,8 @@ class Instance(umcm.Base, ProgressMixin):
 					ret[app.id] = self._run_remote_dry_run(host, app, action, _auto_installed, _settings, progress)
 				else:
 					ret[app.id] = self._run_remote(host, app, action, _auto_installed, _settings, progress)
-			if not dry_run:
-				if not ret[app.id]['success']:
-					break
+			if not dry_run and not ret[app.id]['success']:
+				break
 		return ret
 
 	def _run_local_dry_run(self, app, action, settings, progress):
@@ -448,15 +447,10 @@ class Instance(umcm.Base, ProgressMixin):
 	def get(self, application):
 		list_apps = get_action('list')
 		domain = get_action('domain')
-		apps = list_apps.get_apps()
-		for app in apps:
-			if app.id == application:
-				break
-		else:
-			app = None
-		if app is None:
+		app = [a for a in list_apps.get_apps() if a.id == application][:1]
+		if not app:
 			raise umcm.UMC_Error(_('Could not find an application for %s') % (application,))
-		return domain.to_dict([app])[0]
+		return domain.to_dict(app)[0]
 
 	@sanitize(app=AppSanitizer(required=True))
 	@simple_response
@@ -485,9 +479,8 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def configure(self, progress, app, values, autostart=None):
 		for setting in app.get_settings():
-			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-				if values.get(setting.name):
-					values[setting.name] = values[setting.name].decode('base64')
+			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and values.get(setting.name):
+				values[setting.name] = values[setting.name].decode('base64')
 		configure = get_action('configure')
 		handler = UMCProgressHandler(progress)
 		handler.setLevel(logging.INFO)
@@ -552,9 +545,8 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
 		for setting in app.get_settings():
-			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-				if values.get(setting.name):
-					values[setting.name] = values[setting.name].decode('base64')
+			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and values.get(setting.name):
+				values[setting.name] = values[setting.name].decode('base64')
 		progress.title = _('%s: Running tests') % app.name
 		serious_problems = False
 		if function == 'upgrade':
