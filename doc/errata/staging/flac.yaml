@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: flac
+fix: 1.3.2-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Memory leak in src/libFLAC/stream_decoder.c:read_metadata_vorbiscomment_()
+   (CVE-2017-6888)
+ * out-of-bounds read can lead to remote information disclosure
+   (CVE-2020-0499)
+bug: [52543]
+cve:
+- CVE-2017-6888
+- CVE-2020-0499
