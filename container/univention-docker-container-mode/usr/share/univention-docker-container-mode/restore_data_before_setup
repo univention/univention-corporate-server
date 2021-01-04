@@ -68,15 +68,15 @@ def restore_files(source_dir):
 			src = os.path.join(path, i)
 			if os.path.islink(src):
 				linkto = os.readlink(src)
-				if os.path.exists(file_dest) or os.path.islink(dest):
-					print('rm %s' % dest)
-					os.remove(dest)
-				print('ln -sf %s %s' % (linkto, dest))
-				os.symlink(linkto, dest)
+				if os.path.exists(file_dest) or os.path.islink(file_dest):
+					print('rm %s' % file_dest)
+					os.remove(file_dest)
+				print('ln -sf %s %s' % (linkto, file_dest))
+				os.symlink(linkto, file_dest)
 			else:
-				print('cp %s %s' % (src, dest))
-				shutil.copy(src, dest)
-				copy_permissions(src, dest)
+				print('cp %s %s' % (src, file_dest))
+				shutil.copy(src, file_dest)
+				copy_permissions(src, file_dest)
 
 
 def restore_ucr_layer(ucr_file, options):
