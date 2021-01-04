@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -70,11 +70,13 @@ class DockerImageVerificationFailedChecksum(Exception):
 
 
 def inspect(name):
+	# type: (str) -> json
 	out = check_output(['docker', 'inspect', str(name)])
 	return loads(out)[0]
 
 
 def login(hub, with_license):
+	# type: (str, bool) -> subprocess
 	if with_license:
 		username = password = ucr_get('uuid/license')
 	else:
@@ -83,6 +85,7 @@ def login(hub, with_license):
 
 
 def access(image):
+	# type: (str) -> bool
 	if '/' not in image:
 		return True
 	hub, image_name = image.split('/', 1)
@@ -108,6 +111,7 @@ def access(image):
 
 
 def ps(only_running=True):
+	# type: (bool) -> str
 	args = ['docker', 'ps', '--no-trunc=true']
 	if not only_running:
 		args.append('--all')
@@ -115,6 +119,7 @@ def ps(only_running=True):
 
 
 def execute_with_output(container, args, tty=None):
+	# type: (str, list, bool) -> str
 	docker_exec = ['docker', 'exec', '-u', 'root']
 	if tty is None:
 		tty = sys.stdin.isatty()
@@ -213,6 +218,7 @@ class Docker(object):
 
 	@property
 	def root_dir(self):
+		# type: () -> str
 		if self._root_dir is None:
 			try:
 				self._root_dir = self.inspect_container()['GraphDriver']['Data']['MergedDir']

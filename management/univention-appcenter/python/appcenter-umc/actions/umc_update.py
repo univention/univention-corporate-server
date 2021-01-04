@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -73,6 +73,7 @@ class Update(Update):
 		return conffiles + ['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo']
 
 	def _update_svg_file(self, _dest_file, src_file):
+		# type: (str, str) -> None
 		if not _dest_file:
 			return
 		dest_file = os.path.join(FRONTEND_ICONS_DIR, _dest_file)

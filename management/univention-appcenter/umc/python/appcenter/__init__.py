@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -981,6 +981,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def buy(self, application):
+		# type: (str) -> dict
 		app = Apps().find(application)
 		if not app or not app.shop_url:
 			return None
@@ -996,6 +997,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def enable_disable_app(self, application, enable=True):
+		# type: (str, bool) -> None
 		app = Apps().find(application)
 		if not app:
 			return
@@ -1016,6 +1018,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@sanitize(pattern=PatternSanitizer(required=True))
 	@simple_response
 	def packages_query(self, pattern, section='all', key='package'):
+		# type: (str, str, str) -> list
 		""" Query to fill the grid. Structure is fixed here. """
 		result = []
 		for package in self.package_manager.packages(reopen=True):
@@ -1033,6 +1036,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def packages_get(self, package):
+		# type: (str) -> dict
 		""" retrieves full properties of one package """
 
 		package = self.package_manager.get_package(package)
@@ -1053,6 +1057,7 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response
 	def packages_invoke_dry_run(self, packages, function, update):
+		# type: (str, str, bool) -> dict
 		if update:
 			self.package_manager.update()
 		packages = self.package_manager.get_packages(packages)
@@ -1197,6 +1202,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def components_query(self):
+		# type: () -> list
 		"""	Returns components list for the grid in the ComponentsPage.
 		"""
 		# be as current as possible.
