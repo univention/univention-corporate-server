@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: python-apt
+fix: 1.4.3
+desc: |
+ Fix regression from erratum 838:
+ * Various memory and file descriptor leaks were found in apt-python files
+   python/arfile.cc, python/tag.cc, python/tarfile.cc, aka GHSL-2020-170.
+   (CVE-2020-27351)
+bug: [52544]
+cve:
+- CVE-2020-27351
