@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Memory leak in src/libFLAC/stream_decoder.c:read_metadata_vorbiscomment_()
    (CVE-2017-6888)
- * out-of-bounds read can lead to remote information disclosure
+ * Out-of-bounds read can lead to remote information disclosure
    (CVE-2020-0499)
 bug: [52543]
 cve:
