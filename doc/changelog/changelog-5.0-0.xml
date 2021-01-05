@@ -333,7 +333,7 @@
 					The service <systemitem class="service">univention-maintenance</systemitem> now waits for the DNS service before starting the package maintenance during boot-up (<u:bug>45119</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The deprecated command <command>univention-add-app</command> has been removed in favor of the command <command>univention-add</command> (<u:bug>46474</u:bug>)
+					The deprecated command <command>univention-add-app</command> has been removed in favor of the command <command>univention-app</command> (<u:bug>46474</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
