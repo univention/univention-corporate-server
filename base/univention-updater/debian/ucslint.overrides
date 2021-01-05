@@ -1,3 +1,4 @@
 0010-2:tests/*.py
+0010-2:tests/test_umc-commands.sh
 0010-2:modules/univention/__init__.py
 0011-14: debian/univention-updater.univention-maintenance.init

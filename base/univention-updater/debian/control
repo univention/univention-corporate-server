@@ -102,9 +102,8 @@ Description: UCS Updater Python 3 modules
 Package: univention-management-console-module-updater
 Architecture: all
 Depends:
- python-psutil,
- python-requests,
- python-yaml,
+ python3-apt,
+ python3-psutil,
  univention-directory-manager-tools (>> 7.0.147),
  univention-maintenance-mode,
  univention-management-console-module-lib,
@@ -112,7 +111,8 @@ Depends:
  univention-updater (= ${source:Version}),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
+Provides:
+ ${python3:Provides},
 Description: UMC module for UCS updater
  This package contains the UMC module for the UCS updater.
  .

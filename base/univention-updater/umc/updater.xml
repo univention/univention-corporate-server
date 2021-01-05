@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="updater" priority="50" version="1.0">
+	<module id="updater" priority="50" version="1.0" python="3">
 		<name>Software update</name>
 		<description>Overview and installation of available updates for the local system</description>
 		<keywords>updater</keywords>
