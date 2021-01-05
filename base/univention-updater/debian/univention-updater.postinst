@@ -33,6 +33,7 @@
 #REPOSITORY="https://updates.software-univention.de/"
 REPOSITORY="https://updates-test.software-univention.de/"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640

@@ -33,9 +33,12 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=3
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/umc.sh
 
 joinscript_init
@@ -44,9 +47,9 @@ umc_init
 
 eval "$(ucr shell ldap/base)"
 
-if [ $JS_LAST_EXECUTED_VERSION -le 2 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
+if [ "$JS_LAST_EXECUTED_VERSION" -le 2 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 	# remove previous operation sets as updater-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=updater-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
+	udm settings/umc_operationset remove "$@" --dn "cn=updater-all,cn=operations,cn=UMC,cn=univention,${ldap_base:?}" || die
 fi
 
 umc_operation_create "updater-all" "Online Update" "" "updater/*" "lib/server/*"
@@ -56,5 +59,3 @@ umc_policy_append "default-umc-all" "updater-all"
 joinscript_save_current_version
 
 exit 0
-
-

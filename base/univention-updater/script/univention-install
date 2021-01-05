@@ -48,4 +48,5 @@ echo "***** Starting \"univention-install $*\" on $(date)" >> "$LOGFILE"
 set -e
 set -o pipefail
 ${update_commands_update:-false} 2>&1 | tee -a "$LOGFILE"
+# shellcheck disable=SC2086
 exec ${update_commands_install_interactive:-false} "$@" 2>&1 | tee -a "$LOGFILE"

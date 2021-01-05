@@ -103,7 +103,7 @@ update_check_min_version () {
 update_check_hold_packages () {
 	local var="update$VERSION/ignore_hold"
 	ignore_check "$var" && return 100
-	hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
+	hold_packages=$(LC_ALL=C dpkg -l | awk '/^h/{print $2}')
 	[ -n "$hold_packages" ] || return 0
 
 	echo "	WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent system!"
