@@ -37,15 +37,18 @@ update related TitlePanes will not be displayed to the user.
 Example myhook.py
 =================
 
-	def my_func1(*args, **kwargs):
-		return { 'valid': True,
-				 'title': 'The Title Of The TitlePane',
-				 'message': '<p>The content of the <b>TitlePane</b></p>'
-				 }
+	def my_msg(*args, **kwargs):
+		return {
+			'valid': True,
+			'title': 'The Title Of The TitlePane',
+			'message': '<p>The content of the <b>TitlePane</b></p>'
+		}
 
-	def my_func2(*args, **kwargs):
+	def my_block(*args, **kwargs):
 		return True
 
 	def register_hooks():
-		return [ ('updater_show_message', my_func1),
-				 ('updater_prohibit_update', my_func2)]
+		return [
+			('updater_show_message', my_msg),
+			('updater_prohibit_update', my_block),
+		]
