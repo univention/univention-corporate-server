@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global console,define,window*/
 
 define([
 	"dojo/_base/declare",
@@ -73,8 +73,8 @@ define([
 					if (info.last_update_version) {
 						version = "UCS " + info.last_update_version;
 					}
-					var warning = _("The update to %s failed. Please visit the %s for more information.", version, link);
-					dialog.warn(warning);
+					var warning1 = _("The update to %s failed. Please visit the %s for more information.", version, link);
+					dialog.warn(warning1);
 				}
 
 				if (!info.show_warning) {
@@ -82,8 +82,8 @@ define([
 				}
 
 				// show warning notification
-				var warning = _("The currently used UCS version is out of maintenance. Please visit the %s for more information.", link);
-				dialog.warn(warning);
+				var warning2 = _("The currently used UCS version is out of maintenance. Please visit the %s for more information.", link);
+				dialog.warn(warning2);
 			});
 		};
 		checkUpdateIsRunning();
@@ -92,14 +92,13 @@ define([
 	});
 
 	return declare("umc.modules.updater", Module, {
-
 		// some variables related to error handling
-		_connection_status: 0, 			// 0 ... successful or not set
+		_connection_status: 0,			// 0 ... successful or not set
 										// 1 ... errors received
 										// 2 ... currently authenticating
-		_busy_dialog: null, 		// a handle to the 'connection lost' dialog while
+		_busy_dialog: null,		// a handle to the 'connection lost' dialog while
 								// queries return with errors.
-		_error_count: 0, 		// how much errors in one row
+		_error_count: 0,		// how much errors in one row
 
 		_beforeunloadHandler: null,
 
