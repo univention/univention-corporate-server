@@ -35,9 +35,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /lib/lsb/init-functions
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
+# shellcheck disable=SC2034
 NAME='univention-cloud-init'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
@@ -46,11 +49,11 @@ case "$1" in
 		log_action_msg "Running $DESC"
 
 		if is_ucr_true server/cloud-init; then
-			if [ -e /var/cache/univention-system-setup/profile -a ! -e /var/univention-join/joined ]; then
-				if [ -e /var/cache/univention-system-setup/dcaccount -a -e /var/cache/univention-system-setup/dcpw ]; then
+			if [ -e /var/cache/univention-system-setup/profile ] && [ ! -e /var/univention-join/joined ]; then
+				if [ -e /var/cache/univention-system-setup/dcaccount ] && [ -e /var/cache/univention-system-setup/dcpw ]; then
 					log_action_msg "$(date --rfc-3339=seconds) Found profile: Starting UCS domain join"
 					ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
-					/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount $(</var/cache/univention-system-setup/dcaccount) --password_file /var/cache/univention-system-setup/dcpw >>/var/log/univention/setup.log 2>&1
+					/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount "$(</var/cache/univention-system-setup/dcaccount)" --password_file /var/cache/univention-system-setup/dcpw >>/var/log/univention/setup.log 2>&1
 					rm /var/cache/univention-system-setup/dcaccount /var/cache/univention-system-setup/dcpw
 				else
 					log_action_msg "$(date --rfc-3339=seconds) Found profile: Starting UCS Primary join"
@@ -65,10 +68,11 @@ case "$1" in
 
 				# Check if apps are to be installed
 				if [ -e /var/cache/univention-system-setup/installapps ]; then
-					while read appid; do
+					while read -r appid
+					do
 						log_action_msg "$(date --rfc-3339=seconds) Installing app ${appid}"
-						univention-add-app -a -l ${appid} >>/var/log/univention/setup.log 2>&1
-					done < /var/cache/univention-system-setup/installapps
+						univention-app install --noninteractive "${appid}"
+					done </var/cache/univention-system-setup/installapps >>/var/log/univention/setup.log 2>&1
 				fi
 			fi
 			ucr set apache2/startsite="univention/"

@@ -1,3 +1,9 @@
+univention-updater (15.0.2-1) unstable; urgency=low
+
+  * Bug #46474: Remove deprecated univention-add-app
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2021 13:22:51 +0100
+
 univention-updater (15.0.1-10) unstable; urgency=low
 
   * Bug #52474: Switch to updates-test for now.

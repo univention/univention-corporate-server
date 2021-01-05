@@ -173,12 +173,12 @@ univention-install univention-printserver
 	  </programlisting>
 
 	  Packages from the Univention App Center are installed with the command
-	  <command>univention-add-app</command> once a valid license is available.
+	  <command>univention-app install</command> once a valid license is available.
 	  The ID of an application can be retrieved with the command
-	  <command>univention-add-app --list</command>:
+	  <command>univention-app list</command>:
 
 	  <programlisting language="sh">
-univention-add-app -l APPID
+univention-app install APPID
 	  </programlisting>
 	</para>
 
