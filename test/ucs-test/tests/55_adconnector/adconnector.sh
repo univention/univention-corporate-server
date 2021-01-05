@@ -664,21 +664,32 @@ function ad_connector_restart ()
 
 function connector_mapping_adjust ()
 {
-	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/connector/ad/main.py"
-	cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+
 	if [ -n "$3" ]; then
-		sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.ad_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.ad_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
+		cat > /etc/univention/connector/ad/localmapping.py <<EOF
+def mapping_hook(ad_mapping):
+	ucs_test_filter = ad_mapping['$1'].ignore_filter
+	ucs_test_filter = ucs_test_filter[0:len(ucs_test_filter) - 1]
+	ucs_test_filter = ucs_test_filter + '(uid=$2))'
+	ad_mapping['$1'].ignore_filter = ucs_test_filter
+	return ad_mapping
+EOF
 	else
-		sed -i "/^mapping = imp.*/a mapping.ad_mapping['$1'].ignore_subtree = mapping.ad_mapping['$1'].ignore_subtree + ['$2']" "$MAIN_FILE"
+		cat > /etc/univention/connector/ad/localmapping.py <<EOF
+def mapping_hook(ad_mapping):
+	ad_mapping['$1'].ignore_subtree = ad_mapping['$1'].ignore_subtree + ['$2']
+	return ad_mapping
+EOF
 	fi
+
 }
 
 
 function connector_mapping_restore ()
 {
-	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/connector/ad/main.py"
-	mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+	rm -f /etc/univention/connector/ad/localmapping.py
 }
+
 
 # vim:syntax=sh
 # Local Variables:
