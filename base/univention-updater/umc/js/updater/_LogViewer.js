@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define, window*/
+/*global define,document,window,XMLHttpRequest*/
 
 // Class that provides a logfile viewer. Features are:
 //
@@ -96,7 +96,7 @@ define([
 					}));
 				}
 			});
-			xhr.open('HEAD', loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000), true)
+			xhr.open('HEAD', loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000), true);
 			xhr.send();
 		},
 

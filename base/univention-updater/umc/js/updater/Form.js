@@ -26,7 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define,console*/
+/*jshint -W089 */
 
 // Form with some useful additions:
 //
@@ -57,7 +58,6 @@ define([
 		// as a side effect, sets the focus either to the first invalid field (if any)
 		// or the first field at all.
 		applyErrorIndicators: function(values) {
-
 			var firstname = '';
 			var errname = '';
 			for (var field in this._widgets) {
@@ -118,7 +118,6 @@ define([
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
 			// It is important that error indicators get reset if data from
@@ -129,7 +128,6 @@ define([
 			})));
 
 			this.on('saved', lang.hitch(this, function(success, data) {
-
 				if (success) { // this is only Python module result, not data validation result!
 					var result = data;
 					if (data instanceof Array) {
