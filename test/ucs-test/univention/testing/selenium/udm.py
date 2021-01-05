@@ -322,6 +322,12 @@ class Users(UDMBase):
 		self.selenium.click_checkbox_of_grid_entry(user)
 		self.selenium.click_text(_('more'))
 		self.selenium.click_text(_('Copy'))
+		try:
+			self.selenium.wait_for_text(_('Container'), timeout=1)
+			self.selenium.click_text(_('Next'))
+			self.selenium.wait_until_all_standby_animations_disappeared()
+		except TimeoutException:
+			pass
 		self.selenium.enter_input('username', username)
 		self.selenium.enter_input('lastname', lastname or uts.random_string())
 		self.selenium.enter_input('password_1', password)
