@@ -174,15 +174,15 @@ function ad_exists () {
 	local dn="$1"
 	local configbase="${2:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-if adconnection.exists ('$dn'):
-	sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+if adconnection.exists('$dn'):
+	sys.exit(42)
 else:
-	sys.exit (43)
+	sys.exit(43)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -224,13 +224,13 @@ function ad_move () {
 	local newdn="$2"
 	local configbase="${3:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.move ('$dn', '$newdn')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.move('$dn', '$newdn')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -247,14 +247,21 @@ function ad_set_attribute () {
 	local name="$2"
 	local value="$3"
 	local configbase="${4:-connector}"
+	local treat_value_as_base64="${5:-False}"
+	local encoding="${6:-UTF-8}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.set_attribute ('$dn', '$name', '$value')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+if $treat_value_as_base64:
+	import base64
+	value = base64.b64decode(u'$value'.encode('$encoding'))
+else:
+	value = u'$value'.encode('$encoding')
+adconnection.set_attribute('$dn', '$name', value)
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -271,13 +278,13 @@ function ad_delete_attribute () {
 	local name="$2"
 	local configbase="${3:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.delete_attribute ('$dn', '$name')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.delete_attribute('$dn', '$name')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -295,13 +302,13 @@ function ad_append_to_attribute () {
 	local value="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.append_to_attribute ('$dn', '$name', '$value')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.append_to_attribute('$dn', '$name', b'$value')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -319,13 +326,13 @@ function ad_remove_from_attribute () {
 	local value="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.remove_from_attribute ('$dn', '$name', '$value')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.remove_from_attribute('$dn', '$name', b'$value')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -343,13 +350,13 @@ function ad_createuser () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.createuser ('$username', description='$description', position='$position')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.createuser('$username', description=b'$description', position='$position')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -367,13 +374,13 @@ function ad_group_create () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.group_create ('$groupname', description='$description', position='$position')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.group_create('$groupname', description=b'$description', position='$position')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -391,13 +398,13 @@ function ad_container_create () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.container_create ('$containername', description='$description', position='$position')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.container_create('$containername', description=b'$description', position='$position')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -415,13 +422,13 @@ function ad_createou () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.createou ('$ouname', description='$description', position='$position')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.createou('$ouname', description=b'$description', position='$position')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -437,15 +444,20 @@ function ad_get_attribute () {
 	local dn="$1"
 	local attribute="$2"
 	local configbase="${3:-connector}"
+	local encoding="${4:-UTF-8}"
 
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-for value in adconnection.get_attribute ('$dn', '$attribute'):
-	print value
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+for value in adconnection.get_attribute('$dn', '$attribute'):
+	if '$encoding' == 'base64':
+		import base64
+		print(base64.b64encode(value).decode('ASCII'))
+		continue
+	print(value.decode('$encoding'))
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -461,21 +473,32 @@ function ad_verify_attribute () {
 	local attribute="$2"
 	local expected_value="$3"
 	local configbase="${4:-connector}"
+	local case_sensitive="${5:-false}"
+	local encoding="${6:-UTF-8}"
 
 	info "${dn}: \"$attribute\" == \"$expected_value\" ??"
 
 	local value
-	value="$(ad_get_attribute "$dn" "$attribute" "$configbase")"
+	value="$(ad_get_attribute "$dn" "$attribute" "$configbase" "$encoding")"
 	local retval="$?"
 	if [ "$retval" != 0 ]; then
 		info "Unexpected return value ($retval) of ad_get_attribute in ad_verify_attribute"
 		return 2
 	fi
-	if verify_value "$attribute" "$value" "$expected_value"; then
-		info "Yes"
-		return 0
+	if $case_sensitive; then
+		if verify_value_ignore_case "$attribute" "$value" "$expected_value"; then
+			info "Yes"
+			return 0
+		else
+			return 1
+		fi
 	else
-		return 1
+		if verify_value "$attribute" "$value" "$expected_value"; then
+			info "Yes"
+			return 0
+		else
+			return 1
+		fi
 	fi
 }
 
@@ -506,15 +529,15 @@ function ad_get_primary_group () {
 	local user_dn="$1"
 	local configbase="${2:-connector}"
 
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-group = adconnection.getprimarygroup ('$user_dn')
+adconnection = adconnector.ADConnection('$configbase')
+group = adconnection.getprimarygroup('$user_dn')
 if group:
-	print group
-sys.exit (42)
+	print(group)
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -530,13 +553,13 @@ function ad_set_primary_group () {
 	local group_dn="$2"
 	local configbase="${3:-connector}"
 
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.setprimarygroup ('$user_dn', '$group_dn')
-sys.exit (42)
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.setprimarygroup('$user_dn', '$group_dn')
+sys.exit(42)
 "
 	local retval="$?"
 	if [ "$retval" == 42 ]; then
@@ -559,7 +582,7 @@ function ad_reset_password () {
 
 function ad_get_dn () {
 	local filter="$1"
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -579,12 +602,12 @@ sys.exit(42)
 function ad_add_to_group () {
 	local dn="$1"
 	local member="$2"
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.add_to_group('$dn', '$member')
+adconnection.add_to_group('$dn', b'$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then
@@ -599,12 +622,12 @@ sys.exit(42)
 function ad_remove_from_group () {
 	local dn="$1"
 	local member="$2"
-python2.7 -c "
+python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.remove_from_group('$dn', '$member')
+adconnection.remove_from_group('$dn', b'$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then

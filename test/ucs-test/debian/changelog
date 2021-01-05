@@ -1,3 +1,9 @@
+ucs-test (10.0.1-39) unstable; urgency=medium
+
+  * Bug #52044: migrate AD-Connector tests to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 05 Jan 2021 16:08:04 +0100
+
 ucs-test (10.0.1-38) unstable; urgency=medium
 
   * Bug #51804: Revert the workaround in 96rename* to test if the 

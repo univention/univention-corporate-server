@@ -1,29 +1,40 @@
 import os
 import sys
 
+import ldap
+import subprocess
+import contextlib
+from ldap import modlist
+from time import sleep
+
+import univention.adconnector.ad as ad
+import univention.testing.ucr as testing_ucr
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.objects
+
+import univention.testing.connector_common as tcommon
+
+import univention.config_registry
+from univention.config_registry import handler_set as ucr_set
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
+
 TEST_LIB_PATH = os.getenv('TESTLIBPATH', '/usr/share/ucs-test/lib/')
 if TEST_LIB_PATH is not None:
 	sys.path.append(TEST_LIB_PATH)
 
-import ldap
-import copy
-import time
-import subprocess
-import contextlib
-import ldap_glue
-import ldap.modlist as modlist
-import univention.connector.ad as ad
-import univention.testing.utils as utils
-import univention.testing.ucr as testing_ucr
-import univention.testing.connector_common as tcommon
+import ldap_glue  # noqa: E402
 
-import univention.admin.modules
-import univention.admin.objects
 
-from univention.config_registry import ConfigRegistry
-from univention.config_registry import handler_set as ucr_set
-baseConfig = ConfigRegistry()
-baseConfig.load()
+def to_bytes(value):
+	if isinstance(value, list):
+		return [to_bytes(item) for item in value]
+	if not isinstance(value, bytes):
+		return value.encode('utf-8')
+	return value
 
 
 class ADConnection(ldap_glue.LDAPConnection):
@@ -31,33 +42,23 @@ class ADConnection(ldap_glue.LDAPConnection):
 
 	def __init__(self, configbase='connector'):
 		self.configbase = configbase
-		self.adldapbase = baseConfig['%s/ad/ldap/base' % configbase]
+		self.adldapbase = configRegistry['%s/ad/ldap/base' % configbase]
 		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-		self.kerberos = baseConfig.is_true('%s/ad/ldap/kerberos' % configbase)
+		self.kerberos = configRegistry.is_true('%s/ad/ldap/kerberos' % configbase)
 		if self.kerberos:  # i.e. if UCR ad/member=true
-			## Note: tests/domainadmin/account is an OpenLDAP DN but
-			##       we only extract the username from it in ldap_glue
-			self.login_dn = baseConfig['tests/domainadmin/account']
+			# Note: tests/domainadmin/account is an OpenLDAP DN but
+			#       we only extract the username from it in ldap_glue
+			self.login_dn = configRegistry['tests/domainadmin/account']
 			self.principal = ldap.dn.str2dn(self.login_dn)[0][0][1]
-			self.pw_file = baseConfig['tests/domainadmin/pwdfile']
+			self.pw_file = configRegistry['tests/domainadmin/pwdfile']
 		else:
-			self.login_dn = baseConfig['%s/ad/ldap/binddn' % configbase]
-			self.pw_file = baseConfig['%s/ad/ldap/bindpw' % configbase]
-		self.host = baseConfig['%s/ad/ldap/host' % configbase]
-		self.port = baseConfig['%s/ad/ldap/port' % configbase]
-		self.ca_file = baseConfig['%s/ad/ldap/certificate' % configbase]
-		no_starttls = baseConfig.is_false('%s/ad/ldap/ssl' % configbase)
+			self.login_dn = configRegistry['%s/ad/ldap/binddn' % configbase]
+			self.pw_file = configRegistry['%s/ad/ldap/bindpw' % configbase]
+		self.host = configRegistry['%s/ad/ldap/host' % configbase]
+		self.port = configRegistry['%s/ad/ldap/port' % configbase]
+		self.ca_file = configRegistry['%s/ad/ldap/certificate' % configbase]
+		no_starttls = configRegistry.is_false('%s/ad/ldap/ssl' % configbase)
 		self.connect(no_starttls)
-
-	def _set_module_default_attr(self, attributes, defaults):
-		"""
-		Returns the given attributes, extended by every property given in defaults if not yet set.
-		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
-		"""
-		attr = copy.deepcopy(attributes)
-		for prop, value in defaults:
-			attr.setdefault(prop, value)
-		return attr
 
 	def get(self, dn, attr=[], required=False):
 		'''returns ldap object'''
@@ -76,7 +77,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 	def set_attributes(self, dn, **attributes):
 		old_attributes = self.get(dn, attr=attributes.keys())
 		ldif = modlist.modifyModlist(old_attributes, attributes)
-		self.lo.modify_ext_s(ldap_glue.compatible_modstring(unicode(dn)), ldif)
+		self.lo.modify_ext_s(dn, ldif)
 
 	def add_to_group(self, group_dn, member_dn):
 		self.append_to_attribute(group_dn, 'member', member_dn)
@@ -87,7 +88,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 	def getdn(self, filter):
 		for dn, attr in self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, filter, timeout=10):
 			if dn:
-				print dn
+				print(dn)
 
 	def createuser(self, username, position=None, **attributes):
 		"""
@@ -103,12 +104,15 @@ class ADConnection(ldap_glue.LDAPConnection):
 		new_position = position or 'cn=users,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
 
-		defaults = (('objectclass', ['top', 'user', 'person', 'organizationalPerson']),
-			('cn', cn), ('sn', sn), ('sAMAccountName', username),
-			('userPrincipalName', '%s@%s' % (username, self.addomain)),
-			('displayName', '%s %s' % (username, sn)))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		defaults = (
+			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
+			('cn', to_bytes(cn)),
+			('sn', to_bytes(sn)),
+			('sAMAccountName', to_bytes(username)),
+			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
+			('displayName', b'%s %s' % (to_bytes(username), to_bytes(sn))))
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
 		return new_dn
 
@@ -122,7 +126,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 
 	def group_create(self, groupname, position=None, **attributes):
 		"""
-		Create a S4 group with attributes as given by the keyword-args
+		Create a AD group with attributes as given by the keyword-args
 		`attributes`. The created group will be populated with some defaults if
 		not otherwise set.
 
@@ -131,22 +135,22 @@ class ADConnection(ldap_glue.LDAPConnection):
 		new_position = position or 'cn=groups,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
-		defaults = (('objectclass', ['top', 'group']), ('sAMAccountName', groupname))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
 		return new_dn
 
 	def getprimarygroup(self, user_dn):
 		try:
 			res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
-		except:
+		except Exception:
 			return None
-		primaryGroupID = res[0][1]['primaryGroupID'][0]
+		primaryGroupID = res[0][1]['primaryGroupID'][0].decode('UTF-8')
 		res = self.lo.search_ext_s(
 			self.adldapbase,
 			ldap.SCOPE_SUBTREE,
-			'objectClass=group'.encode('utf8'),
+			'objectClass=group',
 			timeout=10
 		)
 
@@ -162,7 +166,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		res = self.lo.search_ext_s(group_dn, ldap.SCOPE_BASE, timeout=10)
 		import re
 		groupid = (re.search('^(.*)-(.*?)$', ad.decode_sid(res[0][1]['objectSid'][0]))).group(2)
-		self.set_attribute(user_dn, 'primaryGroupID', groupid)
+		self.set_attribute(user_dn, 'primaryGroupID', groupid.encode('UTF-8'))
 
 	def container_create(self, name, position=None, description=None):
 
@@ -170,10 +174,10 @@ class ADConnection(ldap_glue.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'container']
-		attrs['cn'] = name
+		attrs['objectClass'] = [b'top', b'container']
+		attrs['cn'] = to_bytes(name)
 		if description:
-			attrs['description'] = description
+			attrs['description'] = to_bytes(description)
 
 		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
 		self.create(container_dn, attrs)
@@ -185,12 +189,12 @@ class ADConnection(ldap_glue.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'organizationalUnit']
-		attrs['ou'] = name
+		attrs['objectClass'] = [b'top', b'organizationalUnit']
+		attrs['ou'] = to_bytes(name)
 		if description:
-			attrs['description'] = description
+			attrs['description'] = to_bytes(description)
 
-		self.create('ou=%s,%s' % (name, position), attrs)
+		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
 	def verify_object(self, dn, expected_attributes):
 		"""
@@ -207,8 +211,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 			ad_object = self.get(dn)
 			for (key, value) in expected_attributes.iteritems():
 				ad_value = set(tcommon.to_unicode(x).lower() for x in ad_object.get(key, []))
-				expected = set((tcommon.to_unicode(value).lower(),)) if isinstance(value, basestring) \
-					else set(tcommon.to_unicode(v).lower() for v in value)
+				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
 				if not expected.issubset(ad_value):
 					try:
 						ad_value = set(tcommon.normalize_dn(dn) for dn in ad_value)
@@ -220,7 +223,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 
 
 def connector_running_on_this_host():
-	return baseConfig.is_true("connector/ad/autostart")
+	return configRegistry.is_true("connector/ad/autostart")
 
 
 def restart_adconnector():
@@ -237,14 +240,12 @@ def ad_in_sync_mode(sync_mode, configbase='connector'):
 
 
 def wait_for_sync(min_wait_time=0):
-	poll_sleep = baseConfig.get("connector/ad/poll/sleep", 5)
-	try:
-		sleep_time = int(poll_sleep)
-	except ValueError:
-		sleep_time = 5
-	synctime = max((sleep_time + 3) * 2, min_wait_time)
-	print ("Waiting {0} seconds for sync...".format(synctime))
-	time.sleep(synctime)
+	synctime = int(configRegistry.get("connector/ad/poll/sleep", 5))
+	synctime = ((synctime + 3) * 2)
+	if min_wait_time > synctime:
+		synctime = min_wait_time
+	print("Waiting {0} seconds for sync...".format(synctime))
+	sleep(synctime)
 
 
 @contextlib.contextmanager

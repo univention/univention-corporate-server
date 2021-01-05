@@ -97,7 +97,7 @@ sleep 10 ## Wait for replication attempt
 
 	calculate_duration() {
 		STRP_FORMAT='%d.%m.%Y %H:%M:%S.%f'
-		python -c "from datetime import datetime; print (datetime.strptime('$2', '$STRP_FORMAT') - datetime.strptime('$1', '$STRP_FORMAT')).total_seconds()"
+		python3 -c "from datetime import datetime; print(datetime.strptime('$2', '$STRP_FORMAT') - datetime.strptime('$1', '$STRP_FORMAT')).total_seconds()"
 	}
 	DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_change_end")
 
@@ -109,7 +109,7 @@ sleep 10 ## Wait for replication attempt
 	fi
 	echo "TOTAL   Replication time: $DURATION"
 	MAX_DURATION=1
-	if [ "$(python -c "if ($DURATION > $MAX_DURATION): print 'fail'")" = 'fail' ]; then
+	if [ "$(python3 -c "if $DURATION > $MAX_DURATION: print('fail')")" = 'fail' ]; then
 		echo "ERROR: AD-Connector activity took longer than $MAX_DURATION seconds"
 		fail_test 110
 	fi
