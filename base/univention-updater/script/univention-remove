@@ -47,4 +47,5 @@ eval "$(ucr shell)"
 echo "***** Starting \"univention-remove $*\" on $(date)" >> "$LOGFILE"
 set -e
 set -o pipefail
+# shellcheck disable=SC2086
 exec ${update_commands_remove_interactive:-false} "$@" 2>&1 | tee -a "$LOGFILE"

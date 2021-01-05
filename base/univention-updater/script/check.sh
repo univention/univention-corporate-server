@@ -103,7 +103,7 @@ update_check_min_version () {
 update_check_hold_packages () {
 	local var="update$VERSION/ignore_hold"
 	ignore_check "$var" && return 100
-	hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
+	hold_packages=$(LC_ALL=C dpkg -l | awk '/^h/{print $2}')
 	[ -n "$hold_packages" ] || return 0
 
 	echo "	WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent system!"
@@ -506,6 +506,7 @@ update_check_system_date_too_old() {
 update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 
+	# FIXME: python3-univention-lib is not installed on UCS-4.4-7 by default, so this must remain Python 2 (for now):
 	MIN_VERSION="$MIN_VERSION" /usr/bin/python2.7 -c '
 # -*- coding: utf-8 -*-
 from __future__ import print_function
