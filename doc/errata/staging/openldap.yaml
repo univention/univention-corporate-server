@@ -13,7 +13,7 @@ desc: |
  * Assertion failure in CSN normalization with invalid input
    (CVE-2020-25710)
  * slapd segmentation fault in ppolicy overlay
-bug: [52406, 52163, 51910]
+bug: [52406, 52163]
 cve:
 - CVE-2020-25692
 - CVE-2020-25709
