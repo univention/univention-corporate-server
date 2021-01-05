@@ -64,19 +64,9 @@ Breaks:
 Provides:
  ${python:Provides},
 Depends:
- apt-transport-https,
- ca-certificates,
- python-apt,
- python-debian,
  python-monotonic,
  python-six,
- python-univention (>> 5.0.6),
  python-univention-config-registry,
- python-univention-directory-manager,
- python-univention-lib (>= 1.0.25-1),
- shell-univention-lib,
- univention-admin-diary-client (>= 1.0.0-29),
- univention-errata-level,
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Updater Python modules
@@ -89,18 +79,8 @@ Description: UCS Updater Python modules
 Package: python3-univention-updater
 Architecture: all
 Depends:
- apt-transport-https,
- ca-certificates,
- python-apt,
- python-debian,
  python3-six,
- python-univention-config-registry,
- python-univention-directory-manager,
- python-univention-lib,
- python3-univention,
- shell-univention-lib,
- univention-admin-diary-client,
- univention-errata-level,
+ python3-univention-config-registry,
  ${misc:Depends},
  ${python3:Depends},
 Description: UCS Updater Python 3 modules
