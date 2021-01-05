@@ -43,6 +43,7 @@ import pipes
 from datetime import datetime
 
 import notifier.threads
+from apt import Cache
 
 from univention.lib.i18n import Translation
 from univention.lib import atjobs
@@ -331,42 +332,22 @@ class Instance(Base):
 		Returns the list of packages to be updated/installed
 		by a dist-upgrade.
 		"""
-		p0 = subprocess.Popen(['LC_ALL=C apt-get update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout, stderr) = p0.communicate()
-
-		p1 = subprocess.Popen(['LC_ALL=C apt-get -u dist-upgrade -s'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout, stderr) = p1.communicate()
-
 		install = []
 		update = []
 		remove = []
-		for line in stdout.split('\n'):
-			# upgrade:
-			#   Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
-			# inst:
-			#   Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
-			#
-			# *** FIX ***   the above example lines ignore the fact that there's
-			#               some extra text (occasionally) after the last closing
-			#               parenthesis. Until now, I've seen only a pair of empty
-			#               brackets [], but who knows...
-			match = re.search(r'^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)', line)
-			if match:
-				pkg = match.group(1)
-				old = match.group(2)
-				ver = match.group(3)
-				if old:
-					update.append([pkg, ver])
-				else:
-					install.append([pkg, ver])
-			elif line.startswith('Remv '):
-				ll = line.split(' ')
-				pkg = ll[1]
-				# i18n: The package version is unknown.
-				ver = _('unknown')
-				if len(ll) > 2:
-					ver = ll[2].replace('[', '').replace(']', '')
-				remove.append([pkg, ver])
+
+		apt = Cache(memonly=True)
+		apt.update()
+		apt.open()
+		apt.clear()
+		apt.upgrade(dist_upgrade=True)
+		for pkg in apt.get_changes():
+			if pkg.marked_install:
+				install.append((pkg.name, pkg.candidate.version))
+			if pkg.marked_upgrade:
+				update.append((pkg.name, pkg.candidate.version))
+			if pkg.marked_delete:
+				remove.append((pkg.name, pkg.installed.version))
 
 		return dict(
 			update=sorted(update),
