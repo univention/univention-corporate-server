@@ -42,20 +42,20 @@ cmd_show = configRegistry.get('update/commands/show', 'apt-cache show')
 
 cmd_upgrade = configRegistry.get(
     'update/commands/upgrade',
-    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u upgrade')
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 upgrade')
 """Upgrade only installed packages"""
 cmd_upgrade_sim = configRegistry.get(
     'update/commands/upgrade/simulate',
-    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us upgrade')
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s upgrade')
 """Simulate upgrade only installed packages"""
 
 cmd_dist_upgrade = configRegistry.get(
     'update/commands/distupgrade',
-    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u dist-upgrade')
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 dist-upgrade')
 """Upgrade system, may install new packages to satisfy dependencies"""
 cmd_dist_upgrade_sim = configRegistry.get(
     'update/commands/distupgrade/simulate',
-    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade')
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s dist-upgrade')
 """Simulate upgrade system, may install new packages to satisfy dependencies"""
 
 cmd_install = configRegistry.get(
