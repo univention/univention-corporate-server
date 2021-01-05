@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
@@ -33,6 +33,8 @@
 
 from __future__ import absolute_import
 
+from typing import Dict, List, Optional
+
 import listener
 import univention.config_registry
 
@@ -41,14 +43,13 @@ description = 'Dump key id from license to local UCR variable'
 filter = '(&(objectClass=univentionLicense)(cn=admin))'
 
 
-def handler(dn, new, old):
-    # type: (str, dict, dict) -> None
+def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]]) -> None:
     if new:
         listener.setuid(0)
         try:
-            ucrVars = ['license/base=%s' % new.get('univentionLicenseBaseDN')[0].decode('UTF-8')]
+            ucrVars = ['license/base=%s' % new['univentionLicenseBaseDN'][0].decode('UTF-8')]
             if new.get('univentionLicenseKeyID'):
-                ucrVars.append('uuid/license=%s' % new.get('univentionLicenseKeyID')[0].decode('ASCII'))
+                ucrVars.append('uuid/license=%s' % new['univentionLicenseKeyID'][0].decode('ASCII'))
             else:
                 univention.config_registry.handler_unset(['uuid/license'])
             univention.config_registry.handler_set(ucrVars)
