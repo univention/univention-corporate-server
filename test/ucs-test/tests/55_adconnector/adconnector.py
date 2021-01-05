@@ -7,7 +7,7 @@ import contextlib
 from ldap import modlist
 from time import sleep
 
-import univention.adconnector.ad as ad
+import univention.connector.ad as ad
 import univention.testing.ucr as testing_ucr
 import univention.admin.uldap
 import univention.admin.modules
