@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: dovecot
+fix: 1:2.2.27-3+deb9u7
+desc: |
+ This update addresses the following issues:
+ * IMAP hibernation function allows mail access (CVE-2020-24386)
+ * Denial of service via mail MIME parsing (CVE-2020-25275)
+bug: [52550]
+cve:
+- CVE-2020-24386
+- CVE-2020-25275
