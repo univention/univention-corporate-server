@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [6, 7]
 scope: ucs_4.4-0-errata4.4-7
-src: linux
-fix: 4.9.246-2
+src: univention-kernel-image-signed
+fix: 5.0.0-14A~4.4.0.202101061603
 desc: |
  This update addresses the following issues:
  * In create_pinctrl of core.c, there is a possible out of bounds read due to
@@ -28,7 +28,7 @@ desc: |
  * xen: race condition in event-channel removal during the event-handling loop
    (XSA-331) (CVE-2020-27675)
  * slab-out-of-bounds read in fbcon (CVE-2020-28974)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [52549]
 cve:
 - CVE-2020-0427
