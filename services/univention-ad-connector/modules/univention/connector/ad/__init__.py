@@ -162,8 +162,7 @@ def activate_user(connector, key, object):
 
 
 def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
-
-	if connector.baseConfig.is_true('ad/member', False):
+	if connector.configRegistry.is_true('ad/member', False):
 		connector._object_mapping(key, ucs_object, 'ucs')
 
 		ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['univentionObjectFlag'])
@@ -845,11 +844,8 @@ class ad(univention.connector.ucs):
 
 	range_retrieval_pattern = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
 
-	def __init__(self, CONFIGBASENAME, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, init_group_cache=True):
-
-		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
-
-		self.CONFIGBASENAME = CONFIGBASENAME
+	def __init__(self, CONFIGBASENAME, property, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, logfilename=None, debug_level=None):
+		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
 		self.ad_ldap_host = ad_ldap_host
 		self.ad_ldap_port = ad_ldap_port
@@ -857,7 +853,6 @@ class ad(univention.connector.ucs):
 		self.ad_ldap_binddn = ad_ldap_binddn
 		self.ad_ldap_bindpw = ad_ldap_bindpw
 		self.ad_ldap_certificate = ad_ldap_certificate
-		self.baseConfig = baseConfig
 
 		self.open_ad()
 
@@ -945,7 +940,7 @@ class ad(univention.connector.ucs):
 				print("Failed to get SID from AD: %s" % msg)
 				sys.exit(1)
 		else:
-			self.ad_ldap_bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
+			self.ad_ldap_bind_username = self.configRegistry['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
 
 		try:
 			result = self.lo_ad.search(filter='(objectclass=domain)', base=ad_ldap_base, scope='base', attr=['objectSid'])
@@ -956,7 +951,7 @@ class ad(univention.connector.ucs):
 			sys.exit(1)
 
 		# Get NetBios Domain Name
-		self.ad_netbios_domainname = self.baseConfig.get('%s/ad/netbiosdomainname' % self.CONFIGBASENAME, None)
+		self.ad_netbios_domainname = self.configRegistry.get('%s/ad/netbiosdomainname' % self.CONFIGBASENAME, None)
 		if not self.ad_netbios_domainname:
 			lp = LoadParm()
 			net = Net(creds=None, lp=lp)
@@ -1046,8 +1041,7 @@ class ad(univention.connector.ucs):
 		self.drs = None
 		self.samr = None
 
-		self.profiling = self.baseConfig.is_true('%s/ad/poll/profiling' % self.CONFIGBASENAME, False)
-
+		self.profiling = self.configRegistry.is_true('%s/ad/poll/profiling' % self.CONFIGBASENAME, False)
 
 	def open_drs_connection(self):
 		lp = LoadParm()
@@ -1104,18 +1098,15 @@ class ad(univention.connector.ucs):
 	def get_kerberos_ticket(self):
 		p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 		p1.wait()
-		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
+		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.configRegistry['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.configRegistry['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
 		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout))
 
 	def open_ad(self):
-		tls_mode = 2
-		if '%s/ad/ldap/ssl' % self.CONFIGBASENAME in self.baseConfig and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
-			ud.debug(ud.LDAP, ud.INFO, "__init__: The LDAP connection to AD does not use SSL (switched off by UCR \"%s/ad/ldap/ssl\")." % self.CONFIGBASENAME)
-			tls_mode = 0
-		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
+		tls_mode = 2 if self.configRegistry.is_true('%s/ad/ldap/ssl' % self.CONFIGBASENAME, True) else 0
+		ldaps = self.configRegistry.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
 
 		# Determine ad_ldap_base with exact case
 		try:
@@ -1128,7 +1119,7 @@ class ad(univention.connector.ucs):
 		except Exception as ex:
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
 
-		if self.baseConfig.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
+		if self.configRegistry.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
 			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
 			self.get_kerberos_ticket()
 			auth = ldap.sasl.gssapi("")
@@ -2166,7 +2157,7 @@ class ad(univention.connector.ucs):
 		modlist = None
 		if 'userPrincipalName' not in ldap_object_ad:
 			# add missing userPrincipalName
-			kerberosdomain = self.baseConfig.get('%s/ad/mapping/kerberosdomain' % self.CONFIGBASENAME, None)
+			kerberosdomain = self.configRegistry.get('%s/ad/mapping/kerberosdomain' % self.CONFIGBASENAME, None)
 			if kerberosdomain:
 				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 				ucs_admin_object.open()
@@ -2174,7 +2165,7 @@ class ad(univention.connector.ucs):
 				modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [userPrincipalName])]
 		else:
 			# update userPrincipalName
-			if self.baseConfig.is_true('%s/ad/mapping/sync/userPrincipalName' % self.CONFIGBASENAME, True):
+			if self.configRegistry.is_true('%s/ad/mapping/sync/userPrincipalName' % self.CONFIGBASENAME, True):
 				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 				ucs_admin_object.open()
 				if ucs_admin_object['username'] + '@' not in ldap_object_ad['userPrincipalName'][0]:

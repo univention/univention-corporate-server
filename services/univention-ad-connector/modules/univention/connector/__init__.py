@@ -421,20 +421,20 @@ class property:
 		self.position_mapping = position_mapping
 
 
-class ucs:
 
-	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):
+
+class ucs(object):
+
+	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
+		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate;binary']
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate;binary']
-
-		self.baseConfig = baseConfig
-		self.property = _property
+		self.configRegistry = configRegistry
+		self.property = _property  # this is the mapping!
 
 		self.init_debug()
 
-		self.co = None
 		self.listener_dir = listener_dir
 
 		configdbfile = '/etc/univention/%s/internal.sqlite' % self.CONFIGBASENAME
@@ -466,7 +466,7 @@ class ucs:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
-		irrelevant_attributes = self.baseConfig.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
+		irrelevant_attributes = self.configRegistry.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
 		self.irrelevant_attributes = set(irrelevant_attributes.split(','))
 
 		ud.debug(ud.LDAP, ud.INFO, "init finished")
@@ -483,20 +483,19 @@ class ucs:
 			return dn
 
 	def open_ucs(self):
-		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
-		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.baseConfig['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
+		bindpw_file = self.configRegistry.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
+		binddn = self.configRegistry.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.configRegistry['ldap/base'])
+		with open(bindpw_file) as fd:
+			bindpw = fd.read().rstrip()
 
-		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+		host = self.configRegistry.get('%s/ldap/server' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master'))
 
 		try:
-			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
-		except:
+			port = int(self.configRegistry.get('%s/ldap/port' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master/port', 7389)))
+		except ValueError:
 			port = 7389
 
-		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
+		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
 
 	def search_ucs(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
@@ -1298,7 +1297,7 @@ class ucs:
 				self.group_mapping_cache_ucs[object['dn'].lower()] = None
 
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
-			position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
+			position = univention.admin.uldap.position(self.configRegistry['ldap/base'])
 
 			parent_dn = self.lo.parentDn(object['dn'])
 			ud.debug(ud.LDAP, ud.INFO, 'sync_to_ucs: set position to %s' % parent_dn)

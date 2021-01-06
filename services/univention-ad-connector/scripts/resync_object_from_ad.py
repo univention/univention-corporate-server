@@ -56,7 +56,7 @@ class DNNotFound(BaseException):
 
 class ad(univention.connector.ad.ad):
 
-	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
+	def __init__(self, CONFIGBASENAME, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
@@ -66,11 +66,11 @@ class ad(univention.connector.ad.ad):
 		self.ad_ldap_binddn = ad_ldap_binddn
 		self.ad_ldap_bindpw = ad_ldap_bindpw
 		self.ad_ldap_certificate = ad_ldap_certificate
-		if baseConfig:
-			self.baseConfig = baseConfig
+		if configRegistry:
+			self.configRegistry = configRegistry
 		else:
-			self.baseConfig = ConfigRegistry()
-			self.baseConfig.load()
+			self.configRegistry = ConfigRegistry()
+			self.configRegistry.load()
 
 		self.open_ad()
 
@@ -147,7 +147,7 @@ class ad(univention.connector.ad.ad):
 				ldapfilter = '(objectClass=*)'
 
 			if not ldapbase:
-				ldapbase = self.baseConfig['%s/ad/ldap/base' % CONFIGBASENAME]
+				ldapbase = self.configRegistry['%s/ad/ldap/base' % CONFIGBASENAME]
 
 			guid = None
 			try:
@@ -187,27 +187,27 @@ if __name__ == '__main__':
 		parser.print_help()
 		sys.exit(2)
 
-	baseConfig = ConfigRegistry()
-	baseConfig.load()
+	configRegistry = ConfigRegistry()
+	configRegistry.load()
 
-	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/ldap/host' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/ldap/host not set' % CONFIGBASENAME)
 		sys.exit(1)
-	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/ldap/port' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/ldap/port not set' % CONFIGBASENAME)
 		sys.exit(1)
-	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/ldap/base' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/ldap/base not set' % CONFIGBASENAME)
 		sys.exit(1)
-	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/ldap/binddn not set' % CONFIGBASENAME)
 		sys.exit(1)
-	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/ldap/bindpw not set' % CONFIGBASENAME)
 		sys.exit(1)
 
-	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
-	if baseConfig.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
+	ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+	if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
 		if ca_file:
 			# create a new CAcert file, which contains the UCS CA and the AD CA,
 			# see Bug #17768 for details
@@ -217,21 +217,21 @@ if __name__ == '__main__':
 				with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca:
 					new_ca.write(ca.read())
 
-				with open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME]) as ca:
+				with open(configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]) as ca:
 					new_ca.write(ca.read())
 
 			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
 		else:
 			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
-	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
+	if '%s/ad/listener/dir' % CONFIGBASENAME not in configRegistry:
 		print('%s/ad/listener/dir not set' % CONFIGBASENAME)
 		sys.exit(1)
-	ad_ldap_bindpw = open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
+	ad_ldap_bindpw = open(configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
 		ad_ldap_bindpw = ad_ldap_bindpw[0:-1]
 
-	poll_sleep = int(baseConfig['%s/ad/poll/sleep' % CONFIGBASENAME])
+	poll_sleep = int(configRegistry['%s/ad/poll/sleep' % CONFIGBASENAME])
 	ad_init = None
 
 	ad_dns = []
@@ -243,14 +243,14 @@ if __name__ == '__main__':
 	try:
 		resync = ad(
 			CONFIGBASENAME,
-			baseConfig,
-			baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],
-			baseConfig['%s/ad/ldap/port' % CONFIGBASENAME],
-			baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],
-			baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME],
+			configRegistry,
+			configRegistry['%s/ad/ldap/host' % CONFIGBASENAME],
+			configRegistry['%s/ad/ldap/port' % CONFIGBASENAME],
+			configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],
+			configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME],
 			ad_ldap_bindpw,
-			baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
-			baseConfig['%s/ad/listener/dir' % CONFIGBASENAME]
+			configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME],
+			configRegistry['%s/ad/listener/dir' % CONFIGBASENAME]
 		)
 		treated_dns = resync.resync(ad_dns, options.ldapfilter, options.ldapbase)
 	except ldap.SERVER_DOWN:
@@ -274,7 +274,7 @@ if __name__ == '__main__':
 	if treated_dns:
 		estimated_delay = 60
 		try:
-			estimated_delay = int(resync.baseConfig.get('%s/ad/retryrejected' % CONFIGBASENAME, 10)) * int(resync.baseConfig.get('%s/ad/poll/sleep' % CONFIGBASENAME, 5))
+			estimated_delay = int(resync.configRegistry.get('%s/ad/retryrejected' % CONFIGBASENAME, 10)) * int(resync.configRegistry.get('%s/ad/poll/sleep' % CONFIGBASENAME, 5))
 		except ValueError:
 			pass
 

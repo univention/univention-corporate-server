@@ -35,8 +35,8 @@ from univention.config_registry import ConfigRegistry
 
 from univention.connector.ad import format_escaped
 
-baseConfig = ConfigRegistry()
-baseConfig.load()
+configRegistry = ConfigRegistry()
+configRegistry.load()
 
 
 def ignore_filter_from_tmpl(template, ucr_key, default=''):
@@ -52,7 +52,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
 	... 'one,two,three')
 	'(|(cn=one)(cn=two)(cn=three))'
 	"""
-	variables = [v for v in baseConfig.get(ucr_key, default).split(',') if v]
+	variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
 	filter_parts = [format_escaped(template, v) for v in variables]
 	if filter_parts:
 		return '(|{})'.format(''.join(filter_parts))

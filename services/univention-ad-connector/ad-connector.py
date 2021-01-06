@@ -59,11 +59,11 @@ init_mode = False
 group_objects = []
 connector_needs_restart = False
 
-dirs = [listener.baseConfig['connector/ad/listener/dir']]
-if 'connector/listener/additionalbasenames' in listener.baseConfig and listener.baseConfig['connector/listener/additionalbasenames']:
-	for configbasename in listener.baseConfig['connector/listener/additionalbasenames'].split(' '):
-		if '%s/ad/listener/dir' % configbasename in listener.baseConfig and listener.baseConfig['%s/ad/listener/dir' % configbasename]:
-			dirs.append(listener.baseConfig['%s/ad/listener/dir' % configbasename])
+dirs = [listener.configRegistry['connector/ad/listener/dir']]
+if 'connector/listener/additionalbasenames' in listener.configRegistry and listener.configRegistry['connector/listener/additionalbasenames']:
+	for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
+		if '%s/ad/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/ad/listener/dir' % configbasename]:
+			dirs.append(listener.configRegistry['%s/ad/listener/dir' % configbasename])
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
