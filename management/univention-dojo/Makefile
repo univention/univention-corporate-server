@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  Makefile for building/installing the package
 #
-# Copyright 2008-2020 Univention GmbH
+# Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -1,7 +1,7 @@
 """
 Common functions used by tests.
 """
-# Copyright 2013-2020 Univention GmbH
+# Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

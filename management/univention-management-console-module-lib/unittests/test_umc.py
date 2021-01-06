@@ -1,6 +1,6 @@
 #!/usr/bin/py.test
 # -*- coding: utf-8 -*-
-# Copyright 2020 Univention GmbH
+# Copyright 2020-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

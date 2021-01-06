@@ -4,7 +4,7 @@
 # Univention Admin Modules
 #  command line frontend to univention-directory-manager (module)
 #
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

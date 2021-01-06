@@ -2,7 +2,7 @@
 #
 """config registry module for autostart handling."""
 #
-# Copyright 2017-2020 Univention GmbH
+# Copyright 2017-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

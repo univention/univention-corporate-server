@@ -3,7 +3,7 @@
 # Univention Management Console Frontend Package
 #  Makefile for building/installing the package
 #
-# Copyright 2011-2020 Univention GmbH
+# Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

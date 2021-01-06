@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  analyse a tokenized list and perform the tasks
 #
-# Copyright 2007-2020 Univention GmbH
+# Copyright 2007-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

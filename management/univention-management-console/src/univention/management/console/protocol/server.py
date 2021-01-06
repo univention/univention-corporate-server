@@ -4,7 +4,7 @@
 # Univention Management Console
 #  simple UMCP server implementation
 #
-# Copyright 2006-2020 Univention GmbH
+# Copyright 2006-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

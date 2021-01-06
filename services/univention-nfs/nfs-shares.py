@@ -3,7 +3,7 @@
 # Univention NFS
 #  listener module: update configuration of local NFS shares
 #
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -16,7 +16,7 @@ WARNING2:
 The API is currently under development and may change before next UCS release!
 """
 #
-# Copyright 2013-2020 Univention GmbH
+# Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

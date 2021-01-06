@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Error document
 #
-# Copyright 2020 Univention GmbH
+# Copyright 2020-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Management Console
 #  MODULEDESC
 #
-# Copyright 2012-2020 Univention GmbH
+# Copyright 2012-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
