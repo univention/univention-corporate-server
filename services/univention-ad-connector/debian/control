@@ -99,10 +99,10 @@ Description: UCS - Modules for connector sychronisation
 Package: univention-ad-connector
 Architecture: all
 Depends:
- python-ldb,
- python-samba,
- python-univention-connector-ad (= ${binary:Version}),
- python-univention-lib (>= 7.0.0-10),
+ python3-ldb,
+ python3-samba,
+ python3-univention-connector-ad (= ${binary:Version}),
+ python3-univention-lib (>= 7.0.0-10),
  samba-common-bin,
  shell-univention-lib (>= 7.0.0-10),
  smbclient,
