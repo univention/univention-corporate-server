@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-7) unstable; urgency=low
+
+  * Bug #43687: Fix UDN and UDL restart
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2021 08:18:36 +0100
+
 univention-system-setup (13.0.3-6) unstable; urgency=low
 
   * Bug #52469: disable "reboot" hint at end of system setup
