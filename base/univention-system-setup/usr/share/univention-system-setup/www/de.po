@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-12-15 02:38+0100\n"
-"PO-Revision-Date: 2020-07-21 11:53+0200\n"
+"PO-Revision-Date: 2021-01-06 08:47+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:326
 #, javascript-format
 msgid "%s Appliance"
-msgstr ""
+msgstr "%s Appliance"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2009
 #, javascript-format
@@ -26,12 +26,12 @@ msgstr "%s Appliance wurde erfolgreich eingerichtet."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1152
 #, javascript-format
 msgid "%s GiB"
-msgstr ""
+msgstr "%s GiB"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1150
 #, javascript-format
 msgid "%s MiB"
-msgstr ""
+msgstr "%s MiB"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:463
 msgid "(Request address again)"

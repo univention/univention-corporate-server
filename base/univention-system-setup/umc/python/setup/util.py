@@ -897,7 +897,7 @@ def is_domaincontroller(domaincontroller):
 	return is_domaincontroller.RE.match(domaincontroller) is not None
 
 
-is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
+is_domaincontroller.RE = re.compile(r"^[a-zA-Z].*\..*$")
 
 
 def is_ldap_base(ldap_base):

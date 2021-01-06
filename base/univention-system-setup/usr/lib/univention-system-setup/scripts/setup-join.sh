@@ -171,9 +171,10 @@ progress_steps 10
 
 # cleanup secrets
 if [ "$server_role" = "domaincontroller_master" ]; then
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/base.sh
-	echo -n "$(create_machine_password)" > /etc/ldap.secret
-	echo -n "$(create_machine_password)" > /etc/ldap-backup.secret
+	create_machine_password >/etc/ldap.secret
+	create_machine_password >/etc/ldap-backup.secret
 else
 	rm -f /etc/ldap.secret /etc/ldap-backup.secret
 fi

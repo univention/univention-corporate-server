@@ -174,7 +174,7 @@ ldap_binddn () {
 	else
 		ldap_username=`get_profile_var ldap_username`
 		if [ -n "$ldap_username" ]; then
-			dn=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -h $ldap_master "(&(objectClass=person)(uid=$ldap_username))" | grep "dn: " | sed -e 's|dn: ||' | head -n 1`
+			dn="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -h "$ldap_master" "(&(objectClass=person)(uid=$ldap_username))" | sed -ne 's|^dn: ||p;T;q')"
 			echo "$dn"
 		fi
 	fi

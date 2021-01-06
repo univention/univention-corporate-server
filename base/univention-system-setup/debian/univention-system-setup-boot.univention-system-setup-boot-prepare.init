@@ -35,10 +35,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /lib/lsb/init-functions
+# shellcheck disable=SC2034
 NAME='univention-system-setup-boot-prepare'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 case "$1" in
@@ -46,13 +49,12 @@ case "$1" in
 		log_action_msg "Starting $DESC"
 
 		# recreate openssh-hostkeys if they are missing
-		host_key_missing=0
-		for line in $(grep HostKey /etc/ssh/sshd_config | awk '{print $2}')
+		awk '/^HostKey/{print $2}' /etc/ssh/sshd_config | while read -r fn
 		do
-			[ ! -f "$line" ] && host_key_missing=1 && break
+			[ -f "$fn" ] && continue
+			dpkg-reconfigure openssh-server
+			break
 		done
-
-		[ "$host_key_missing" -eq "1" ] && dpkg-reconfigure openssh-server
 
 		# recreate ssl certificates if they are missing
 		[ ! -d /etc/univention/ssl ] && dpkg-reconfigure univention-ssl

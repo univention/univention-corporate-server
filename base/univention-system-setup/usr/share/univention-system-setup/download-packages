@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 check_returnvalue () {
-	local rval=$1 errormessage=$2
+	local rval="$1" errormessage="$2"
 	if [ "${rval}" != 0 ]; then
 		echo "${errormessage}" >&2
 		exit "${rval}"
@@ -77,7 +77,8 @@ chown "_apt" "$CACHE"
 
 	for package in "${PACKAGES[@]}"
 	do
-		apt-get download -o Dir::Cache::Archives="$CACHE" $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+		# shellcheck disable=SC2046
+		apt-get download -o Dir::Cache::Archives="$CACHE" $(LC_ALL=C.UTF-8 $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
 		check_returnvalue $? "Failed to download required packages for ${package}"
 	done

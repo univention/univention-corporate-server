@@ -28,7 +28,6 @@ Package: univention-system-setup
 Architecture: all
 Depends:
  gettext-base,
- passwd,
  python-univention-lib (>= 6.0.9-20),
  shell-univention-lib (>= 3.0.1-1),
  univention-config (>= 8.0-2),
