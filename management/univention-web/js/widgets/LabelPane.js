@@ -43,9 +43,10 @@ define([
 	"dijit/_Container",
 	"dijit/Tooltip",
 	"umc/tools",
-	"umc/widgets/Icon"
+	"umc/widgets/Icon",
+	"umc/widgets/CheckBox"
 ], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin,
-		_Container, Tooltip, tools, Icon) {
+		_Container, Tooltip, tools, Icon, CheckBox) {
 	lang.extend(_WidgetBase, {
 		// displayLabel: Boolean?
 		//		If specified as false, LabelPane will not display the label value.
@@ -53,7 +54,7 @@ define([
 		displayLabel: true,
 
 		// labelPosition: String?
-		labelPosition: '',
+		labelPosition: 'top',
 
 		// visible: Boolean?
 		//		If set to false, the label and widget will be hidden.
@@ -106,6 +107,9 @@ define([
 
 		_orgClass: '',
 
+		// betweenNonCheckBoxes: Boolean
+		// 		Whether this LabelPane is in a layout with non CheckBox widgets
+		betweenNonCheckBoxes: true,
 
 		constructor: function(params) {
 			this._startupDeferred = new Deferred();
@@ -162,7 +166,7 @@ define([
 		},
 
 		_getLabelPosition: function() {
-			return lang.getObject('content.labelPosition', false, this) || 'bottom';
+			return lang.getObject('content.labelPosition', false, this) || 'top';
 		},
 
 		_getLabelNode: function() {
@@ -362,11 +366,17 @@ define([
 
 			if (this._isContentAWidget()) {
 				// add extra CSS classes based on the content type
+				var labelClasses = [this._orgClass];
+
+				var addBetweenNonCheckBoxesClass = this.betweenNonCheckBoxes && this.content.isInstanceOf(CheckBox);
 				var contentClasses = this.content.baseClass.split(/\s+/);
-				var labelClasses = array.map(contentClasses, function(iclass) {
-					return this.baseClass + '-' + iclass;
+				array.forEach(contentClasses, function(iclass) {
+					labelClasses.push(this.baseClass + '-' + iclass);
+					if (addBetweenNonCheckBoxesClass) {
+						labelClasses.push(this.baseClass + '-' + iclass + '--betweenNonCheckBoxes');
+					}
 				}, this);
-				labelClasses.push(this._orgClass);
+
 				this.set('class', labelClasses);
 			}
 

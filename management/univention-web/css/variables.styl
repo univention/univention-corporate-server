@@ -116,7 +116,7 @@ $button-border-radius ?= 2px								// Rounded corner radius for buttons (except
 // the exact space the Button takes up (padding included)
 $_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
 $layoutrow-button-width = "calc(%s)" % ($_layoutrow-button-width)
-$layoutrow-button-top = s('calc((var(--inputfield-size) - var(--g-button-size)) / 2)')
+$layoutrow-button-bottom = s('calc((var(--inputfield-size) - var(--g-button-size)) / 2)')
 
 $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
 	if not amount-of-visual-buttons
@@ -283,9 +283,9 @@ $image-progressbar-anim ?= "images/progressBarAnim.gif"
 
 // LabelPane
 $labelpane-padding-top    ?= 0
-$labelpane-padding-right  ?= 0.5em
-$labelpane-padding-bottom ?= 1em
-$labelpane-padding-left   ?= 0.5em
+$labelpane-padding-right  ?= 0.5rem
+$labelpane-padding-bottom ?= 1rem
+$labelpane-padding-left   ?= 0.5rem
 $labelpane-padding        ?= $labelpane-padding-top $labelpane-padding-right $labelpane-padding-bottom $labelpane-padding-left
 
 //// Mixins

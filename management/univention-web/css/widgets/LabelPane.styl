@@ -1,7 +1,9 @@
+@require "../variables.styl"
+
 /* labels for form elements */
 .umcLabelPane
 	display: inline-block
-	vertical-align: top
+	vertical-align: bottom
 
 	.umcLabelPaneLabelNode
 		--local-color: inherit
@@ -59,3 +61,6 @@
 	&.umcLabelPaneDisabled
 		.umcLabelPaneLabelNode label
 			cursor: var(--cursor-disabled)
+
+.umcLabelPane-dijitCheckBox--betweenNonCheckBoxes
+	height: s('calc(%s + var(--inputfield-size))', $labelpane-padding-bottom)
