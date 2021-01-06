@@ -96,7 +96,7 @@
 					The API of <command>univention.config_registry.interfaces</command> is now using the <package>ipaddress</package> module instead of the <package>ipaddr</package> module (<u:bug>52017</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The detection of children process ID's in <command>univention.service_info</command> has been fixed (<u:bug>51524</u:bug>)
+					The detection of children process IDs in <command>univention.service_info</command> has been fixed (<u:bug>51524</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 
