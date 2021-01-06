@@ -42,7 +42,7 @@ def parse_args():
 	parser = argparse.ArgumentParser(description=desc)
 	parser.add_argument('-m', '--master', help='LDAP Server address')
 	parser.add_argument(
-		'-s', '--shema',
+		'-s', '--schema',
 		dest='cmd',
 		action='store_const',
 		const='GET_SCHEMA_ID',
