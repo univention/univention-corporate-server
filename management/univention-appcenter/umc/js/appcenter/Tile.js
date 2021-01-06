@@ -53,7 +53,9 @@ define([
 			</div>
 		`,
 		_onClick: function() {
-			topic.publish('/appcenter/open', this.obj, this.suggested);
+			if (this.obj) {
+				topic.publish('/appcenter/open', this.obj, this.suggested);
+			}
 		},
 		_setVisibleAttr: function(newVal) {
 			this._set('visible', newVal);

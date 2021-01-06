@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter 3.0.30-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 15:26+0100\n"
+"POT-Creation-Date: 2021-01-06 13:18+0100\n"
 "PO-Revision-Date: 2013-09-10 12:45+0200\n"
 "Last-Translator: Arvid Requate <requate@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -39,119 +39,119 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: udm/handlers/appcenter/app.py:301
+#: udm/handlers/appcenter/app.py:303
 msgid "About"
 msgstr "Über"
 
-#: udm/handlers/appcenter/app.py:293
+#: udm/handlers/appcenter/app.py:295
 msgid "App Definition"
 msgstr "App-Definition"
 
-#: udm/handlers/appcenter/app.py:57
+#: udm/handlers/appcenter/app.py:59
 msgid "App ID"
 msgstr "App ID"
 
-#: udm/handlers/appcenter/app.py:51 udm/handlers/appcenter/app.py:52
+#: udm/handlers/appcenter/app.py:53 udm/handlers/appcenter/app.py:54
 msgid "App Metadata"
 msgstr "App-Metadaten"
 
-#: udm/handlers/appcenter/app.py:50
+#: udm/handlers/appcenter/app.py:52
 msgid "Appcenter: App Metadata"
 msgstr "Appcenter: App-Metadaten"
 
-#: udm/handlers/appcenter/app.py:180
+#: udm/handlers/appcenter/app.py:182
 msgid "Category"
 msgstr "Kategorie"
 
-#: udm/handlers/appcenter/app.py:210
+#: udm/handlers/appcenter/app.py:212
 msgid "Conflicting Apps"
 msgstr "Konfligierende Apps"
 
-#: udm/handlers/appcenter/app.py:220
+#: udm/handlers/appcenter/app.py:222
 msgid "Conflicting System Packages"
 msgstr "Kollidierende Systempakete"
 
-#: udm/handlers/appcenter/app.py:119
+#: udm/handlers/appcenter/app.py:121
 msgid "Contact"
 msgstr "Kontakt"
 
-#: udm/handlers/appcenter/app.py:240
-msgid "Default Primary Node Packages"
-msgstr "Standard Primary Node-Pakete"
-
-#: udm/handlers/appcenter/app.py:230
+#: udm/handlers/appcenter/app.py:232
 msgid "Default Packages"
 msgstr "Standard-Pakete"
 
-#: udm/handlers/appcenter/app.py:293 udm/handlers/appcenter/app.py:294
+#: udm/handlers/appcenter/app.py:242
+msgid "Default Primary Node Packages"
+msgstr "Standard Primary Node-Pakete"
+
+#: udm/handlers/appcenter/app.py:295 udm/handlers/appcenter/app.py:296
 msgid "General"
 msgstr "Allgemein"
 
-#: udm/handlers/appcenter/app.py:169
+#: udm/handlers/appcenter/app.py:171
 msgid "Icon"
 msgstr "Icon"
 
-#: udm/handlers/appcenter/app.py:270
+#: udm/handlers/appcenter/app.py:272
 msgid "Installable on Server Roles"
 msgstr "Mögliche Serverrollen"
 
-#: udm/handlers/appcenter/app.py:280
+#: udm/handlers/appcenter/app.py:282
 msgid "Installed On Server"
 msgstr "Installiert auf Server"
 
-#: udm/handlers/appcenter/app.py:99
+#: udm/handlers/appcenter/app.py:101
 msgid "Long description"
 msgstr "Beschreibung"
 
-#: udm/handlers/appcenter/app.py:129
+#: udm/handlers/appcenter/app.py:131
 msgid "Maintainer"
 msgstr "Maintainer"
 
-#: udm/handlers/appcenter/app.py:309
+#: udm/handlers/appcenter/app.py:311
 msgid "Metadata"
 msgstr "Metadaten"
 
-#: udm/handlers/appcenter/app.py:68
+#: udm/handlers/appcenter/app.py:70
 msgid "Name"
 msgstr "Name"
 
-#: udm/handlers/appcenter/app.py:89
+#: udm/handlers/appcenter/app.py:91
 msgid "Short description"
 msgstr "Kurzbeschreibung"
 
-#: udm/handlers/appcenter/app.py:260
+#: udm/handlers/appcenter/app.py:262
 msgid "UMC Module Flavor"
 msgstr "UMC Modul-Flavor"
 
-#: udm/handlers/appcenter/app.py:250
+#: udm/handlers/appcenter/app.py:252
 msgid "UMC Module Name"
 msgstr "UMC Modulname"
 
-#: udm/handlers/appcenter/app.py:109
+#: udm/handlers/appcenter/app.py:111
 msgid "Vendor"
 msgstr "Hersteller"
 
-#: udm/handlers/appcenter/app.py:79
+#: udm/handlers/appcenter/app.py:81
 msgid "Version"
 msgstr "Version"
 
-#: udm/handlers/appcenter/app.py:190
+#: udm/handlers/appcenter/app.py:192
 msgid "Web Interface"
 msgstr "Web Interface"
 
-#: udm/handlers/appcenter/app.py:200
+#: udm/handlers/appcenter/app.py:202
 msgid "Web Interface Name"
 msgstr "Name des Web Interfaces"
 
-#: udm/handlers/appcenter/app.py:139
+#: udm/handlers/appcenter/app.py:141
 msgid "Website"
 msgstr "Website"
 
-#: udm/handlers/appcenter/app.py:159
+#: udm/handlers/appcenter/app.py:161
 msgid "Website Maintainer"
 msgstr "Website Maintainer"
 
-#: udm/handlers/appcenter/app.py:149
+#: udm/handlers/appcenter/app.py:151
 msgid "Website Vendor"
 msgstr "Webseite Hersteller"
 

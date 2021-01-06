@@ -59,11 +59,13 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
+	"umc/widgets/Icon",
 	"umc/modules/appcenter/AppCenterGallery",
+	"umc/modules/appcenter/AppInfo",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -540,7 +542,7 @@ define([
 		},
 
 		_renderSidebar: function(parentContainer) {
-			this._renderInstallOrOpenButton(parentContainer);
+			this._renderAppInfo(parentContainer);
 			if (this.app.canVote()) {
 				this._renderAppVote(parentContainer);
 			} else {
@@ -555,46 +557,15 @@ define([
 			}
 		},
 
-		_renderInstallOrOpenButton: function(parentContainer) {
-			var button = null;
-			var containerLabel;
-			var headerClasses = 'mainHeader';
-			if (this.app.canOpenInDomain() && this.app.isInstalled) {
-				containerLabel = _('Use this App');
-				headerClasses += ' iconHeaderOpen';
-				button = new Button({
-					name: 'open',
-					label: this.app.getOpenLabel(),
-					defaultButton: true,
-					'class': 'umcAppSidebarButton ucsPrimaryButton',
-					callback: lang.hitch(this.app, 'open')
-				});
-			} else if (this.app.canInstall() && !this.app.isInstalled) {
-				containerLabel = _('Install this App');
-				headerClasses += ' iconHeaderDownload';
-				button = new Button({
-					name: 'install',
-					label: _('Install'),
-					'class': 'umcAppSidebarButton ucsPrimaryButton',
-					callback: lang.hitch(this.app, 'install')
-				});
-			}
-
-			if(button != null) {
-				var appInstallOrOpenContainer = ContainerWidget({
-					class: 'appDetailsSidebarElement'
-				});
-				parentContainer.addChild(appInstallOrOpenContainer);
-				parentContainer.own(appInstallOrOpenContainer);
-
-				domConstruct.create('span', {
-					innerHTML: containerLabel,
-					'class': headerClasses
-				}, appInstallOrOpenContainer.domNode);
-
-				appInstallOrOpenContainer.addChild(button);
-				appInstallOrOpenContainer.own(button);
-			}
+		_renderAppInfo: function(parentContainer) {
+			var info = new AppInfo({
+				bgc: this.app.backgroundColor || "",
+				logo: "/univention/js/dijit/themes/umc/icons/scalable/" + this.app.logoName,
+				name: this.app.name,
+				description: this.app.description,
+				obj: this.app
+			});
+			parentContainer.addChild(info);
 		},
 
 		_renderAppVote: function(parentContainer) {
@@ -691,10 +662,11 @@ define([
 			this.addToDetails(_('Support'), 'SupportURL');
 			this.addToDetails(_('Notification'), 'NotifyVendor');
 
-			domConstruct.create('span', {
+			var span = domConstruct.create('span', {
 				innerHTML: _('More information'),
 				'class': 'mainHeader iconHeaderInfo'
 			}, appDetailsContainer.domNode);
+			//domConstruct.place(Icon.createNode("alert-circle"), span, "before");
 			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
 		},
 

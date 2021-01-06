@@ -207,32 +207,48 @@ $app-detailspane-background-color = var(--color-grey0)
 		grid-gap: calc(5 * var(--layout-spacing-unit))
 		padding: 1em
 
-		.umcTile
-			display: flex
-			flex-direction: column
-			align-items: center
-			cursor: pointer
-			border-radius: calc(2 * var(--border-radius-container))
-			width: 6rem
+.umcTile
+	width: 6rem
+	cursor: pointer
 
-			.tile__box
-				border-radius: calc(2 * var(--border-radius-container))
-				display: flex
-				align-items: center
-				justify-content: center
-				background: var(--color-grey40)
-				width: 6rem
-				height: 6rem
-				margin-bottom: var(--layout-spacing-unit)
+.umcAppInfo
+	background-color: var(--bgc-content-container)
+	border-radius: var(--border-radius-container)
+	padding: 2em
+	margin-bottom: 2em
 
-				.tile__logo
-					width: 80%
+	.umcTile
+		cursor: default
 
-			.tile__name
-				overflow: hidden
-				text-overflow: ellipsis
-				font-size: var(--font-size-small)
-				text-align: center
+	.description
+		margin: 2em 0
+		font-size: var(--font-size-small)
+		text-align: center
+
+.umcTile, .umcAppInfo
+	display: flex
+	flex-direction: column
+	align-items: center
+	border-radius: calc(2 * var(--border-radius-container))
+
+	.tile__box
+		border-radius: calc(2 * var(--border-radius-container))
+		display: flex
+		align-items: center
+		justify-content: center
+		background: var(--color-grey40)
+		width: 6rem
+		height: 6rem
+		margin-bottom: var(--layout-spacing-unit)
+
+		.tile__logo
+			width: 80%
+
+	.tile__name
+		overflow: hidden
+		text-overflow: ellipsis
+		font-size: var(--font-size-small)
+		text-align: center
 
 .appcenterMetaCategory
 	background-color: var(--bgc-content-container)
