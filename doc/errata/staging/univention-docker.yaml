@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-docker
 fix: 4.0.1-10A~4.4.0.202012171138
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The new UCR variable `docker/daemon/default/opts/registry-mirrors` can be
    used to define custom registry mirrors for the docker daemon. It is also
    possible now to configure arbitrary JSON encoded data, which gets mixed
