@@ -8,3 +8,5 @@ desc: |
   This update addresses the following issue:
   * The default Postfix version compatibility level was raised from 2 to 3.
 bug: [46895]
+erratum: 861
+announced: 2021-01-06
