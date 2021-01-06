@@ -1594,7 +1594,6 @@ class ucs(object):
 		"""
 		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
 		# ingoing object format:
-		object = copy.deepcopy(old_object)
 		#	'dn': dn
 		#	'modtype': 'add', 'delete', 'modify', 'move'
 		#	'attributes': { attr: [values] }
@@ -1605,154 +1604,174 @@ class ucs(object):
 		#	'attributes': { attr: [values] }
 		#       'olddn' : dn (only on move)
 
-		object_out = {}
-		object_out['attributes'] = {}
-		if object and 'modtype' in object:
-			object_out['modtype'] = object['modtype']
+		if object_type == 'ucs':
+			return self._object_mapping_ucs(key, old_object)
 		else:
-			object_out['modtype'] = ''
+			return self._object_mapping_con(key, old_object)
+
+	def _object_mapping_ucs(self, key, old_object):
+		object = copy.deepcopy(old_object)
 
 		# DN mapping
-
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
 			if dntype in object:
-				ud.debug(ud.LDAP, ud.INFO, "_dn_type %s" % (object_type))  # don't send str(object) to debug, may lead to segfaults
-
-				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
+				if self._get_dn_by_ucs(object[dntype]):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_ad.base)
 					dn_mapping_stored.append(dntype)
-				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype]) != ''):
+
+		try:
+			MAPPING = self.property[key]
+		except KeyError:
+			return object
+
+		# DN mapping functions
+		for function in MAPPING.dn_mapping_function:
+			object = function(self, object, dn_mapping_stored, isUCSobject=True)
+
+		for dntype in ['dn', 'olddn']:
+			if dntype in object and dntype not in dn_mapping_stored:
+				dn_mapped = object[dntype]
+				# save the old rdn with the correct upper and lower case
+				rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
+				# note: position_mapping == [] by default
+				for mapping in MAPPING.position_mapping:
+					dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
+				if dn_mapped == object[dntype]:
+					if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
+						ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % dn_mapped)
+					else:
+						dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
+				# write the correct upper and lower case back to the DN
+				object[dntype] = dn_mapped.replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+
+		object_out = object
+
+		for attribute, values in list(object['attributes'].items()):
+			for attr_key, attributes in (MAPPING.attributes or {}).items():
+				if attribute.lower() == attributes.ldap_attribute.lower():
+					# mapping function
+					if hasattr(attributes, 'mapping'):
+						# direct mapping
+						if attributes.mapping[0]:
+							object_out['attributes'][attributes.con_attribute] = attributes.mapping[0](self, key, object)
+					else:
+						if attributes.con_other_attribute:
+							object_out['attributes'][attributes.con_attribute] = [values[0]]
+							object_out['attributes'][attributes.con_other_attribute] = values[1:]
+						else:
+							object_out['attributes'][attributes.con_attribute] = values
+
+					# mapping_table
+					if MAPPING.mapping_table and attr_key in MAPPING.mapping_table.keys():
+						for ucsval, conval in MAPPING.mapping_table[attr_key]:
+							if isinstance(object_out['attributes'][attributes.con_attribute], list):
+
+								ucsval_lower = make_lower(ucsval)
+								objectval_lower = make_lower(object_out['attributes'][attributes.con_attribute])
+
+								if ucsval_lower in objectval_lower:
+									object_out['attributes'][attributes.con_attribute][objectval_lower.index(ucsval_lower)] = conval
+								elif ucsval_lower == objectval_lower:
+									object_out['attributes'][attributes.con_attribute] = conval
+
+			for post_attributes in (MAPPING.post_attributes or {}).values():
+				if attribute.lower() == post_attributes.ldap_attribute.lower():
+					if hasattr(post_attributes, 'mapping'):
+						if post_attributes.mapping[0]:
+							object_out['attributes'][post_attributes.con_attribute] = post_attributes.mapping[0](self, key, object)
+					else:
+						if post_attributes.con_other_attribute:
+							object_out['attributes'][post_attributes.con_attribute] = [values[0]]
+							object_out['attributes'][post_attributes.con_other_attribute] = values[1:]
+						else:
+							object_out['attributes'][post_attributes.con_attribute] = values
+
+		return object_out
+
+	def _object_mapping_con(self, key, old_object):
+		object = copy.deepcopy(old_object)
+
+		# DN mapping
+		dn_mapping_stored = []
+		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
+			if dntype in object:
+				if self._get_dn_by_con(object[dntype]):
 					object[dntype] = self._get_dn_by_con(object[dntype])
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
 					dn_mapping_stored.append(dntype)
 
-		if key in self.property:
-			if hasattr(self.property[key], 'dn_mapping_function'):
-				# DN mapping functions
-				for function in self.property[key].dn_mapping_function:
-					object = function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
+		try:
+			MAPPING = self.property[key]
+		except KeyError:
+			return object
 
-		if object_type == 'ucs':
-			if key in self.property:
-				if hasattr(self.property[key], 'position_mapping'):
-					for dntype in ['dn', 'olddn']:
-						if dntype in object and dntype not in dn_mapping_stored:
-							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
-							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[0].lower(), mapping[1])
+		# DN mapping functions
+		for function in MAPPING.dn_mapping_function:
+			object = function(self, object, dn_mapping_stored, isUCSobject=False)
 
-							if self.lo_ad.base == object[dntype][len(object[dntype]) - len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do this again." % object[dntype])
-							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
-							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
-		else:
-			if key in self.property:
-				if hasattr(self.property[key], 'position_mapping'):
-					for dntype in ['dn', 'olddn']:
-						if dntype in object and dntype not in dn_mapping_stored:
-							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
-							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[1].lower(), mapping[0])
+		for dntype in ['dn', 'olddn']:
+			if dntype in object and dntype not in dn_mapping_stored:
+				dn_mapped = object[dntype]
+				# save the old rdn with the correct upper and lower case
+				rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
+				# note: position_mapping == [] by default
+				for mapping in MAPPING.position_mapping:
+					dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
 
-							if self.lo.base == object[dntype][len(object[dntype]) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
-							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
-							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+				if dn_mapped == object[dntype]:
+					if self.lo.base == dn_mapped[len(dn_mapped) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
+						ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % dn_mapped)
+					else:
+						dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
+				# write the correct upper and lower case back to the DN
+				object[dntype] = dn_mapped.replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 
 		object_out = object
 
 		# other mapping
-		if object_type == 'ucs':
-			for attribute, values in object['attributes'].items():
-				for attr_key in self.property[key].attributes.keys():
-					if attribute == self.property[key].attributes[attr_key].ldap_attribute:
-						# mapping function
-						if hasattr(self.property[key].attributes[attr_key], 'mapping'):
-							# direct mapping
-							if self.property[key].attributes[attr_key].mapping[0]:
-								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = self.property[key].attributes[attr_key].mapping[0](self, key, object)
+		# Filter out Configuration objects w/o DN
+		if object['dn'] is None:
+			return object_out
+
+		for attribute, values in list(object['attributes'].items()):
+			for attr_key, attributes in (MAPPING.attributes or {}).items():
+				if attribute.lower() == attributes.con_attribute.lower():
+					# mapping function
+					if hasattr(attributes, 'mapping'):
+						# direct mapping
+						if attributes.mapping[1]:
+							object_out['attributes'][attributes.ldap_attribute] = attributes.mapping[1](self, key, object)
+					else:
+						if attributes.con_other_attribute and object['attributes'].get(attributes.con_other_attribute):
+							object_out['attributes'][attributes.ldap_attribute] = values + object['attributes'].get(attributes.con_other_attribute)
 						else:
-							if self.property[key].attributes[attr_key].con_other_attribute:
-								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = [values[0]]
-								object_out['attributes'][self.property[key].attributes[attr_key].con_other_attribute] = values[1:]
-							else:
-								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = values
+							object_out['attributes'][attributes.ldap_attribute] = values
 
-						# mapping_table
-						if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
-							for ucsval, conval in self.property[key].mapping_table[attr_key]:
-								if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
+					# mapping_table
+					if MAPPING.mapping_table and attr_key in MAPPING.mapping_table.keys():
+						for ucsval, conval in MAPPING.mapping_table[attr_key]:
+							if isinstance(object_out['attributes'][attributes.con_attribute], list):
 
-									ucsval_lower = make_lower(ucsval)
-									objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute])
+								conval_lower = make_lower(conval)
+								objectval_lower = make_lower(object_out['attributes'][attributes.ldap_attribute])
 
-									if ucsval_lower in objectval_lower:
-										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute][objectval_lower.index(ucsval_lower)] = conval
-									elif ucsval_lower == objectval_lower:
-										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = conval
+								if conval_lower in objectval_lower:
+									object_out['attributes'][attributes.ldap_attribute][objectval_lower.index(conval_lower)] = ucsval
+								elif conval_lower == objectval_lower:
+									object_out['attributes'][attributes.ldap_attribute] = ucsval
 
-				if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
-					for attr_key in self.property[key].post_attributes.keys():
-						if attribute == self.property[key].post_attributes[attr_key].ldap_attribute:
-							if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
-								if self.property[key].post_attributes[attr_key].mapping[0]:
-									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
-							else:
-								if self.property[key].post_attributes[attr_key].con_other_attribute:
-									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = [values[0]]
-									object_out['attributes'][self.property[key].post_attributes[attr_key].con_other_attribute] = values[1:]
-								else:
-									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = values
-
-		else:
-			# Filter out Configuration objects w/o DN
-			if object['dn'] is not None:
-				for attribute, values in object['attributes'].items():
-					for attr_key in self.property[key].attributes.keys():
-						if attribute == self.property[key].attributes[attr_key].con_attribute:
-							# mapping function
-							if hasattr(self.property[key].attributes[attr_key], 'mapping'):
-								# direct mapping
-								if self.property[key].attributes[attr_key].mapping[1]:
-									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = self.property[key].attributes[attr_key].mapping[1](self, key, object)
-							else:
-								if self.property[key].attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute):
-									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = values + object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute)
-								else:
-									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = values
-
-							# mapping_table
-							if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
-								for ucsval, conval in self.property[key].mapping_table[attr_key]:
-									if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
-
-										conval_lower = make_lower(conval)
-										objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
-
-										if conval_lower in objectval_lower:
-											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute][objectval_lower.index(conval_lower)] = ucsval
-										elif conval_lower == objectval_lower:
-											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = ucsval
-
-					if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
-						for attr_key in self.property[key].post_attributes.keys():
-							if attribute == self.property[key].post_attributes[attr_key].con_attribute:
-								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
-									if self.property[key].post_attributes[attr_key].mapping[1]:
-										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
-								else:
-									if self.property[key].post_attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute):
-										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values + object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute)
-									else:
-										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values
+			for post_attributes in (MAPPING.post_attributes or {}).values():
+				if attribute.lower() == post_attributes.con_attribute.lower():
+					if hasattr(post_attributes, 'mapping'):
+						if post_attributes.mapping[1]:
+							object_out['attributes'][post_attributes.ldap_attribute] = post_attributes.mapping[1](self, key, object)
+					else:
+						if post_attributes.con_other_attribute and object['attributes'].get(post_attributes.con_other_attribute):
+							object_out['attributes'][post_attributes.ldap_attribute] = values + object['attributes'].get(post_attributes.con_other_attribute)
+						else:
+							object_out['attributes'][post_attributes.ldap_attribute] = values
 
 		return object_out
 
