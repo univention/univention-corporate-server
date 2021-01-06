@@ -1022,7 +1022,7 @@ define([
 					});
 					if (newVal == 'None') {
 						// "Default properties" is not very catchy
-						label = '&nbsp;';
+						label = '';
 					}
 
 					// update the label of objectPropertyValue
@@ -1033,7 +1033,7 @@ define([
 			}, {
 				type: MixedInput,
 				name: 'objectPropertyValue',
-				label: '&nbsp;',
+				label: '',
 				'class': 'umcTextBoxDark',
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
