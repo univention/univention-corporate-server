@@ -82,12 +82,6 @@ Description[en]=The apt installation sources are generated based on the reposito
 Type=bool
 Categories=service-software-management
 
-[repository/online/unmaintained]
-Description[de]=Das Univention-Repository und andere Repository-Komponenten unterscheiden zwischen zwei Bestandteilen: Der von der Maintenance abgedeckte Standard-Paketumfang von UCS befindet sich im maintained-Bereich. Unter unmaintained finden sich die weiteren Pakete, z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch Sicherheits-Updates oder anderweitige Maintenance abgedeckt. Ist diese Option aktiviert, werden die Pakete aus unmaintained bereitgestellt.
-Description[en]=The Univention repository and repository components differentiate between two component parts: The UCS standard package scope covered by the maintenance can be found in the maintained area. Additional packages, e.g., other mail servers than Postfix can be found under unmaintained. These packages are not covered by security updates or ulterior maintenance. If this option is activated, the packages from unmaintained are provided.
-Type=bool
-Categories=service-software-management
-
 [repository/online/httpmethod]
 Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
 Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
