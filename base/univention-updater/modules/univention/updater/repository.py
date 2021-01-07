@@ -190,31 +190,6 @@ def get_repo_basedir(packages_dir):
     sys.exit(1)
 
 
-def get_installation_version():
-    # type: () -> Optional[str]
-    """
-    Return UCS release version of local repository mirror.
-
-    :returns: The UCS releases which was last copied into the local repository.
-    :rtype: str or None
-    """
-    base = configRegistry.get('repository/mirror/basepath')
-    if not base:
-        return None
-    try:
-        path = os.path.join(base, '.univention_install')
-        fd = open(path, 'r')
-    except EnvironmentError:
-        return None
-
-    for line in fd.readlines():
-        if not line.startswith('VERSION='):
-            continue
-        return line[8: -1]
-
-    return None
-
-
 def assert_local_repository(out=sys.stderr):
     # type: (IO[str]) -> None
     """
