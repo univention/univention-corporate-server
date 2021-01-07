@@ -33,7 +33,7 @@
 
 from __future__ import absolute_import
 import listener
-import cPickle
+from six.moves import cPickle as pickle
 import time
 import os
 import univention.debug
@@ -66,41 +66,42 @@ if 'connector/listener/additionalbasenames' in listener.configRegistry and liste
 			dirs.append(listener.configRegistry['%s/ad/listener/dir' % configbasename])
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
+dirs = [dir_ for dir_ in dirs if dir_]
+if not dirs:
+	raise ImportError('UCR variable connector/ad/listener/dir needs to be set!')
 
 
 def _save_old_object(directory, dn, old):
-	# type: (str, str, Dict[str, List[bytes]]) -> None
+	# type: (str, str, Optional[Dict[str, List[bytes]]]) -> None
 	filename = os.path.join(directory, 'tmp', 'old_dn')
 
-	f = open(filename, 'w+')
-	os.chmod(filename, 0o600)
-	p = cPickle.Pickler(f)
-	p.dump((dn, old))
-	p.clear_memo()
-	f.close()
+	with open(filename, 'wb+') as fd:
+		os.chmod(filename, 0o600)
+		p = pickle.Pickler(fd)
+		p.dump((dn, old))
+		p.clear_memo()
 
 
 def _load_old_object(directory):
 	# type: (str) -> Tuple[str, Dict[str, List[bytes]]]
-	f = open(os.path.join(directory, 'tmp', 'old_dn'), 'r')
-	p = cPickle.Unpickler(f)
-	(old_dn, old_object) = p.load()
-	f.close()
+	with open(os.path.join(directory, 'tmp', 'old_dn'), 'rb') as fd:
+		p = pickle.Unpickler(fd)
+		(old_dn, old_object) = p.load()
 
 	return (old_dn, old_object)
 
 
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
-	# type: (str, str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+	# type: (str, str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], Optional[str]) -> None
 	ob = (dn, new, old, old_dn)
 
 	tmpdir = os.path.join(directory, 'tmp')
 	filename = '%f' % (time.time(),)
 	filepath = os.path.join(tmpdir, filename)
 
-	with open(filepath, 'w+') as fd:
+	with open(filepath, 'wb+') as fd:
 		os.chmod(filepath, 0o600)
-		p = cPickle.Pickler(fd)
+		p = pickle.Pickler(fd)
 		p.dump(ob)
 		p.clear_memo()
 
@@ -128,7 +129,7 @@ def handler(dn, new, old, command):
 	global connector_needs_restart
 
 	# restart connector on extended attribute changes
-	if 'univentionUDMProperty' in new.get('objectClass', []) or 'univentionUDMProperty' in old.get('objectClass', []):
+	if b'univentionUDMProperty' in new.get('objectClass', []) or b'univentionUDMProperty' in old.get('objectClass', []):
 		connector_needs_restart = True
 	else:
 		if connector_needs_restart is True:
@@ -158,7 +159,7 @@ def handler(dn, new, old, command):
 					old_dn = None
 
 				if init_mode:
-					if new and 'univentionGroup' in new.get('objectClass', []):
+					if new and b'univentionGroup' in new.get('objectClass', []):
 						group_objects.append((dn, new, old, old_dn))
 
 				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
@@ -197,12 +198,11 @@ def postrun():
 			for ob in group_objects:
 				for directory in dirs:
 					filename = os.path.join(directory, "%f" % time.time())
-					f = open(filename, 'w+')
-					os.chmod(filename, 0o600)
-					p = cPickle.Pickler(f)
-					p.dump(ob)
-					p.clear_memo()
-					f.close()
+					with open(filename, 'wb+') as fd:
+						os.chmod(filename, 0o600)
+						p = pickle.Pickler(fd)
+						p.dump(ob)
+						p.clear_memo()
 			del group_objects
 			group_objects = []
 		finally:
