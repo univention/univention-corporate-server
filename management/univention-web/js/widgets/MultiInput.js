@@ -101,6 +101,7 @@ define([
 
 		_blockChangeEvents: false,
 
+		_labelPaneLabel: '',
 		_hasSubtypeLabel: false,
 
 		_createHandler: function(ifunc) {
@@ -148,6 +149,7 @@ define([
 			tools.assert(this.subtypes instanceof Array,
 					'umc/widgets/ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
 
+			this._labelPaneLabel = this.label;
 			this._hasSubtypeLabel = array.some(this.subtypes, function(iwidget) {
 				return iwidget.label;
 			});
@@ -200,8 +202,19 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
+			this._rowsContainer = new ContainerWidget({});
+			var labelPane = new LabelPane({
+				class: 'umcMultiInputRowsLabelPane',
+				content: this._rowsContainer,
+				label: this._labelPaneLabel,
+			});
+			this.addChild(labelPane);
 			this._renderNewEntryButton();
 			this._appendRows(); // empty row
+
+			if (this.subtypes.length === 1) {
+				domClass.add(this.domNode, 'umcMultiInput--singleWidgetInRows');
+			}
 		},
 
 		_loadValues: function(depends) {
@@ -626,7 +639,7 @@ define([
 			this._widgets[irow] = visibleWidgets;
 			this._rowContainers[irow] = rowContainer;
 			this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
-			this.addChild(rowContainer, irow);
+			this._rowsContainer.addChild(rowContainer, irow);
 
 			// call the _loadValues method by hand
 			array.forEach(order, function(iname) {

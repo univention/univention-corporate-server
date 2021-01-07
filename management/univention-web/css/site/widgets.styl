@@ -29,25 +29,6 @@
 
 @import "../variables"
 
-.umc .umcMultiInput
-	margin-bottom: 1.5em
-
-	.umcMultiInputContainer
-		position: relative
-
-	/* add a padding to the last element of a row */
-	.umcMultiInputContainer .umcMultiInputLastRowEntry
-		$layoutrow--make-space-for-buttons(1)
-
-	.umcMultiInputRemoveButton
-		padding: $labelpane-padding
-		position: relative
-		bottom: $layoutrow-button-bottom
-		margin: 0
-
-	.umcMultiInputAddButton
-		margin: 0 0 0 $labelpane-padding-left
-
 .umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput
 	margin-bottom: 0
 
@@ -61,9 +42,6 @@
 	&:active span.umcHelpIcon
 		background-position: -60px -200px
 		opacity: 1
-
-.umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry
-	padding-right: 0
 
 .umc .umcLiveSearchSidebarRadioButtonGroup
 	margin-top: 1.5em

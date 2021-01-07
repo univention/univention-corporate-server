@@ -116,7 +116,7 @@ $button-border-radius ?= 2px								// Rounded corner radius for buttons (except
 // the exact space the Button takes up (padding included)
 $_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
 $layoutrow-button-width = "calc(%s)" % ($_layoutrow-button-width)
-$layoutrow-button-bottom = s('calc((var(--inputfield-size) - var(--g-button-size)) / 2)')
+$layoutrow-button-bottom = s('calc(%s + ((var(--inputfield-size) - var(--g-button-size)) / 2))', $labelpane-padding-bottom)
 
 $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
 	if not amount-of-visual-buttons
