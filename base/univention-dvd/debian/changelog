@@ -1,3 +1,9 @@
+univention-dvd (5.0.1-1) unstable; urgency=low
+
+  * Bug #51316: Remove `.univention_install` file
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Jan 2021 16:53:59 +0100
+
 univention-dvd (5.0.1-0) unstable; urgency=low
 
   * Bug #39259: Recommends: cifs-utils

@@ -184,17 +184,6 @@ def update_net(options):
             # sync only
             mirror.run()
 
-    # create .univention_install file
-    filename = os.path.join(_mirror_base, '.univention_install')
-    if not os.path.isfile(filename):
-        repos = mirror.list_local_repositories()
-        if not repos:
-            return
-        min_version = min(repo[1] for repo in repos)
-        with open(filename, 'w') as ver:
-            print('VERSION=%d.%d' % (min_version.major, min_version.minor), file=ver)
-            print('PATCHLEVEL=%d' % (min_version.patchlevel,), file=ver)
-
 
 def parse_args():
     for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):

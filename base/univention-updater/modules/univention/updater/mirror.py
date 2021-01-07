@@ -33,12 +33,10 @@ Mirror Univention repository server.
 from __future__ import absolute_import
 import os
 import errno
-import re
 import subprocess
 import itertools
 import logging
 import json
-from operator import itemgetter
 
 from .tools import UniventionUpdater, UCSHttpServer
 from .repo_url import UcsRepoUrl
@@ -199,42 +197,6 @@ class UniventionMirror(UniventionUpdater):
             with open(filename, "wb") as fd:
                 fd.write(script)
                 ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored: %s" % filename)
-
-    def list_local_repositories(self, start=None, end=None, maintained=True, unmaintained=False):
-        """
-        This function returns a sorted list of local (un)maintained repositories.
-
-        :param start: smallest version that shall be returned.
-        :type start: UCS_Version or None
-        :param end: largest version that shall be returned.
-        :type end: UCS_Version or None
-        :param bool maintained: True if list shall contain maintained repositories.
-        :param bool unmaintained: True if list shall contain unmaintained repositories.
-        :returns: A sorted list of repositories as (directory, UCS_Version, is_maintained) tuples.
-        :rtype: list[tuple(str, UCS_Version, bool)]
-        """
-        result = []
-        repobase = os.path.join(self.repository_path, 'mirror')
-        RErepo = re.compile('^%s/(\d+[.]\d)/(maintained|unmaintained)/(\d+[.]\d+-\d+)$' % (re.escape(repobase),))
-        for dirname, subdirs, files in os.walk(repobase):
-            match = RErepo.match(dirname)
-            if match:
-                if not maintained and match.group(2) == 'maintained':
-                    continue
-                if not unmaintained and match.group(2) == 'unmaintained':
-                    continue
-
-                version = UCS_Version(match.group(3))
-                if start is not None and version < start:
-                    continue
-                if end is not None and end < version:
-                    continue
-
-                result.append((dirname, version, match.group(2) == 'maintained'))
-
-        result.sort(key=itemgetter(1))
-
-        return result
 
     def write_releases_json(self):
         """

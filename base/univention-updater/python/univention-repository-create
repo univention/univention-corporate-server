@@ -39,6 +39,8 @@ from optparse import OptionParser
 import shutil
 import subprocess
 import sys
+from os import listdir
+from os.path import join
 from textwrap import dedent
 
 from univention.config_registry import ConfigRegistry, handler_set
@@ -108,13 +110,6 @@ def copy_repository(options):
     print('Copying data. Please be patient ...')
 
     print('  copying version information ...', end=' ')
-    try:
-        shutil.copy2(os.path.join(options.mount_point, '.univention_install'), _mirror_base)
-    except:
-        print('failed.')
-    else:
-        print('done.')
-
     copy_dists(options)
     copy_packages(options)
     urepo.gen_indexes(_repo_base, options.version)
@@ -171,8 +166,7 @@ def mount(options):
 
     print("Checking medium in %s ..." % options.mount_point, end=' ')
     if (
-        os.path.exists(os.path.join(options.mount_point, '.univention_install'))
-        and os.path.isdir(os.path.join(options.mount_point, 'all'))
+        os.path.isdir(os.path.join(options.mount_point, 'all'))
         and os.path.isdir(os.path.join(options.mount_point, 'amd64'))
     ):
         pass
@@ -244,21 +238,19 @@ def main():
             sys.exit(1)
 
         # define repository base path with information from image
-        installfile = os.path.join(options.mount_point, '.univention_install')
-        for line in open(installfile, 'r'):
-            try:
-                key, value = line.strip().split('=', 1)
-            except ValueError:
-                continue
-            if key == 'VERSION':
-                major_version, minor_version = list(map(int, value.split('.', 1)))
-            elif key == 'PATCHLEVEL':
-                patchlevel_version = int(value)
         try:
-            options.version = UCS_Version((major_version, minor_version, patchlevel_version))
-        except (NameError, ValueError):
-            print("Error: Failed to parse %s" % (installfile,), file=sys.stderr)
-            sys.exit(1)
+            dists = join(options.mount_point, "dists")
+            dist = max(join(dists, dist, "Release") for dist in listdir(dists) if dist.startswith("ucs"))
+            with open(dist, "r") as fd:
+                VER = "Version: "
+                for line in fd:
+                    if line.startswith(VER):
+                        options.version = UCS_Version([int(v) for v in line[len(VER):].split(".")])
+                        break
+                else:
+                    sys.exit("Error: Failed to get UCS releae version from %s" % (dist,))
+        except (EnvironmentError, ValueError) as ex:
+            sys.exit("Error: Failed to get UCS release version from %s: %s" % (options.mount_point, ex))
 
         global _repo_base
         _repo_base = os.path.join(
