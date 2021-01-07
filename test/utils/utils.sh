@@ -564,7 +564,7 @@ ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 run_adconnector_tests () {
 	# Test if the failed Jenkins test are timing issues
 	sed -i 's|AD_ESTIMATED_MAX_COMPUTATION_TIME=3|AD_ESTIMATED_MAX_COMPUTATION_TIME=16|' /usr/share/ucs-test/55_adconnector/adconnector.sh
-	run_tests -s checks -s adconnector "$@"
+	run_tests -s checks -s adconnector -s end "$@"
 }
 
 run_adconnector_and_s4connector_tests () {
