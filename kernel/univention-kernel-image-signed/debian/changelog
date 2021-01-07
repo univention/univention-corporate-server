@@ -1,8 +1,8 @@
-univention-kernel-image-signed (5.0.0-14) unstable; urgency=medium
+univention-kernel-image-signed (5.0.0-15) unstable; urgency=medium
 
   * Bug #52549: Update to linux-4.9.246-2
 
- -- Erik Damrose <damrose@univention.de>  Wed, 06 Jan 2021 15:46:58 +0100
+ -- Erik Damrose <damrose@univention.de>  Thu, 07 Jan 2021 12:35:44 +0100
 
 univention-kernel-image-signed (5.0.0-13) unstable; urgency=medium
 
