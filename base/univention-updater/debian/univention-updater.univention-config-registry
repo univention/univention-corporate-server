@@ -6,7 +6,6 @@ Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/sources
 Variables: repository/online/httpmethod
 
@@ -18,7 +17,6 @@ Variables: version/patchlevel
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/component/.*
 Variables: repository/online/sources
 Variables: repository/online/httpmethod
@@ -33,7 +31,6 @@ Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/component/.*
 Variables: repository/mirror
 Variables: repository/mirror/server

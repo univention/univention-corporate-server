@@ -1177,11 +1177,8 @@ class Component(object):
     @property
     def _parts(self):
         # type: () -> List[str]
-        parts_unique = set(self.updater.parts)
-        if self.updater.configRegistry.is_true(self.ucrv('unmaintained')):
-            parts_unique.add("unmaintained")
-
-        return ['%s/component' % (part,) for part in parts_unique]
+        parts = ["maintained"] + ["unmaintained"][:self.updater.configRegistry.is_true(self.ucrv('unmaintained'))]
+        return ['%s/component' % (part,) for part in parts]
 
 
 class UniventionUpdater(object):
@@ -1238,11 +1235,6 @@ class UniventionUpdater(object):
             reinitUCSHttpServer = True
         if reinitUCSHttpServer:
             UCSHttpServer.reinit()
-
-        # check for maintained and unmaintained
-        self.parts = ['maintained']
-        if self.configRegistry.is_true('repository/online/unmaintained', False):
-            self.parts.append('unmaintained')
 
         # UCS version
         self.current_version = UCS_Version("%(version/version)s-%(version/patchlevel)s" % self.configRegistry)
