@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -35,19 +35,19 @@
 from __future__ import print_function
 import sys
 import time
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import ldap
 import univention
 import univention.connector
 import univention.connector.ad
-from univention.connector.ad import compatible_modstring
 import univention.config_registry
 import univention.debug as ud
-import univention.lib.s4
 from samba.dcerpc import security
 from samba.ndr import ndr_unpack, ndr_pack
 import ldap.controls
+from ldap.filter import filter_format
+
 LDAP_SERVER_SHOW_DELETED_OID = '1.2.840.113556.1.4.417'
 LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'
 
@@ -167,12 +167,12 @@ class AD_DSACL_modifier():
 		desc_ndr = ndr_pack(desc)
 		modify_ctrls = []
 		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
-		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SD_FLAGS_OID, criticality=1, encodedControlValue='0\x03\x02\x01\x01'))  # this is a 1 encoded as ASN1 SEQUENCE { INTEGER }
-		self.ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=modify_ctrls)
+		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SD_FLAGS_OID, criticality=1, encodedControlValue=b'0\x03\x02\x01\x01'))  # this is a 1 encoded as ASN1 SEQUENCE { INTEGER }
+		self.ad.lo.modify_ext_s(self.deleted_objects_dn, [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=modify_ctrls)
 
 	def grant_DSACL_LCRP_to_local_system(self):
-		ldap_filter = "(sAMAccountName=%s$)" % (self.ucr["hostname"],)
-		result = self.ad.lo.search_ext_s(self.ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid", ])
+		ldap_filter = filter_format("(sAMAccountName=%s$)", (self.ucr["hostname"],))
+		result = self.ad.lo.search_ext_s(self.ad.base, ldap.SCOPE_SUBTREE, ldap_filter, attrlist=["objectSid", ])
 		if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 			obj = result[0][1]
 			objectSid_ndr = obj.get("objectSid", [None])[0]
@@ -203,7 +203,7 @@ class AD_DSACL_modifier():
 		desc_ndr = ndr_pack(desc)
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
-		self.ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
+		self.ad.lo.modify_ext_s(self.deleted_objects_dn, [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
 		print("INFO: DSACL of Deleted Objects adjusted.")
 
 
@@ -215,15 +215,14 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 	else:
 		bindpw_file = ucr.get('connector/ldap/bindpw', '/etc/ldap.secret')
 		binddn = ucr.get('connector/ldap/binddn', 'cn=admin,' + ucr['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
+		with open(bindpw_file) as fd:
+			bindpw = fd.read().strip()
 
 	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
 
 	try:
 		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port')))
-	except:
+	except ValueError:
 		port = 7389
 
 	lo = univention.admin.uldap.access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=0, follow_referral=True)
@@ -232,18 +231,17 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 
 
 if __name__ == "__main__":
-
-	parser = OptionParser()
-	parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	parser.add_option("--binddn", dest="binddn", help="", metavar="BINDDN")
-	parser.add_option("--bindpwd", dest="bindpwd", help="", metavar="BINDPWD")
-	parser.add_option("--bindpwdfile", dest="bindpwdfile", help="", metavar="BINDPWDFILE")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("--configbasename", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument("--binddn", metavar="BINDDN")
+	parser.add_argument("--bindpwd", metavar="BINDPWD")
+	parser.add_argument("--bindpwdfile", metavar="BINDPWDFILE")
+	options = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
 	if options.bindpwdfile:
-		with open(options.bindpwdfile) as f:
-			options.bindpwd = f.readline().strip()
+		with open(options.bindpwdfile) as fd:
+			options.bindpwd = fd.readline().strip()
 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -257,11 +255,10 @@ if __name__ == "__main__":
 	if not options.bindpwd:
 		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
 		if not bindpwfile:
-			print('--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME)
-			sys.exit(1)
-		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
-		if options.bindpwd[-1] == '\n':
-			options.bindpwd = options.bindpwd[0:-1]
+			parser.error('--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME)
+
+		with open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]) as fd:
+			options.bindpwd = fd.read().strip()
 
 	ud.init(LOGFILE, ud.FLUSH, ud.NO_FUNCTION)
 	debug_level = ucr.get('connector/debug/level', 2)

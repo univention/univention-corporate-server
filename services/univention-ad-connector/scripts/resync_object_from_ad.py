@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -32,13 +32,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from optparse import OptionParser
 import os
-import ldap
 import time
-import sqlite3
 import sys
+from argparse import ArgumentParser
 
+import ldap
+import sqlite3
 from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
 
@@ -56,50 +56,30 @@ class DNNotFound(BaseException):
 
 class ad(univention.connector.ad.ad):
 
-	def __init__(self, CONFIGBASENAME, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
-
-		self.CONFIGBASENAME = CONFIGBASENAME
-
-		self.ad_ldap_host = ad_ldap_host
-		self.ad_ldap_port = ad_ldap_port
-		self.ad_ldap_base = ad_ldap_base
-		self.ad_ldap_binddn = ad_ldap_binddn
-		self.ad_ldap_bindpw = ad_ldap_bindpw
-		self.ad_ldap_certificate = ad_ldap_certificate
-		if configRegistry:
-			self.configRegistry = configRegistry
-		else:
-			self.configRegistry = ConfigRegistry()
-			self.configRegistry.load()
-
-		self.open_ad()
-
 	def _remove_cache_entries(self, guid):
 		cache_filename = '/etc/univention/%s/cache.sqlite' % CONFIGBASENAME
-		if os.path.exists(cache_filename):
-			cache_db = sqlite3.connect(cache_filename)
-			c = cache_db.cursor()
-			c.execute("SELECT id FROM GUIDS WHERE guid='%s'" % guid)
-			guid_ids = c.fetchone()
-			if guid_ids:
-				guid_id = guid_ids[0]
-				c.execute("DELETE from DATA where guid_id = '%s'" % guid_id)
-				c.execute("DELETE from GUIDS where id = '%s'" % guid_id)
-				cache_db.commit()
-			cache_db.close()
+		if not os.path.exists(cache_filename):
+			return
+		cache_db = sqlite3.connect(cache_filename)
+		c = cache_db.cursor()
+		c.execute("SELECT id FROM GUIDS WHERE guid=?", (str(guid),))
+		guid_ids = c.fetchone()
+		if guid_ids:
+			guid_id = guid_ids[0]
+			c.execute("DELETE from DATA where guid_id = ?", (guid_id,))
+			c.execute("DELETE from GUIDS where id = ?", (guid_id,))
+			cache_db.commit()
+		cache_db.close()
 
 	def _add_object_to_rejected(self, ad_dn, usn):
 		state_filename = '/etc/univention/%s/internal.sqlite' % CONFIGBASENAME
 		db = sqlite3.connect(state_filename)
 		c = db.cursor()
-		c.execute("INSERT OR REPLACE INTO 'AD rejected' (key,value) VALUES ('%(key)s', '%(value)s');" % {'key': usn, 'value': ad_dn})
+		c.execute("INSERT OR REPLACE INTO 'AD rejected' (key, value) VALUES (?, ?);", (usn, ad_dn))
 		db.commit()
 		db.close()
 
 	def resync(self, ad_dns=None, ldapfilter=None, ldapbase=None):
-		if ad_dns and not type(ad_dns) in (type(()), type([])):
-			raise ValueError("'ad_dns' is of type %s, must be list or tuple" % type(ad_dns))
-
 		treated_dns = []
 		for ad_dn, guid, usn in self.search_ad(ad_dns, ldapfilter, ldapbase):
 			self._remove_cache_entries(guid)
@@ -109,12 +89,8 @@ class ad(univention.connector.ad.ad):
 		return treated_dns
 
 	def search_ad(self, ad_dns=None, ldapfilter=None, ldapbase=None):
-
 		search_result = []
 		if ad_dns:
-			if not type(ad_dns) in (type(()), type([])):
-				raise ValueError("'ad_dns' is of type %s, must be list or tuple" % type(ad_dns))
-
 			if not ldapfilter:
 				ldapfilter = '(objectClass=*)'
 
@@ -130,7 +106,7 @@ class ad(univention.connector.ad.ad):
 							continue
 						guid_blob = msg[1]["objectGUID"][0]
 						guid = ndr_unpack(misc.GUID, guid_blob)
-						usn = msg[1]["uSNChanged"][0]
+						usn = msg[1]["uSNChanged"][0].decode('ASCII')
 						search_result.append((str(msg[0]), guid, usn))
 					if not guid:
 						missing_dns.append(targetdn)
@@ -158,9 +134,9 @@ class ad(univention.connector.ad.ad):
 						continue
 					guid_blob = msg[1]["objectGUID"][0]
 					guid = ndr_unpack(misc.GUID, guid_blob)
-					usn = msg[1]["uSNChanged"][0]
+					usn = msg[1]["uSNChanged"][0].decode('ASCII')
 					search_result.append((str(msg[0]), guid, usn))
-			except (ldap.REFERRAL, ldap.INVALID_DN_SYNTAX) as ex:
+			except (ldap.REFERRAL, ldap.INVALID_DN_SYNTAX):
 				raise DNNotFound(2, ldapbase)
 
 			if not guid:
@@ -170,88 +146,35 @@ class ad(univention.connector.ad.ad):
 
 
 if __name__ == '__main__':
-
-	parser = OptionParser(usage='resync_object_from_ad.py [--filter <LDAP search filter>] [--base  <LDAP search base>] [dn]')
-	parser.add_option("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
-	parser.add_option("-b", "--base", dest="ldapbase", help="LDAP search base")
-	parser.add_option("-c", "--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
+	parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
+	parser.add_argument("-c", "--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('dn')
+	options = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
 	state_directory = '/etc/univention/%s' % CONFIGBASENAME
 	if not os.path.exists(state_directory):
-		print("Invalid configbasename, directory %s does not exist" % state_directory)
-		sys.exit(1)
+		parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
 
-	if len(args) != 1 and not (options.ldapfilter or options.ldapbase):
+	if not options.dn and not options.ldapfilter:
 		parser.print_help()
 		sys.exit(2)
 
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
 
-	if '%s/ad/ldap/host' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/ldap/host not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/port' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/ldap/port not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/base' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/ldap/base not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/ldap/binddn not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/ldap/bindpw not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
-	if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
-		if ca_file:
-			# create a new CAcert file, which contains the UCS CA and the AD CA,
-			# see Bug #17768 for details
-			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
-			new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
-			with open(new_ca_filename, 'w') as new_ca:
-				with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca:
-					new_ca.write(ca.read())
-
-				with open(configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]) as ca:
-					new_ca.write(ca.read())
-
-			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
-		else:
-			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-
-	if '%s/ad/listener/dir' % CONFIGBASENAME not in configRegistry:
-		print('%s/ad/listener/dir not set' % CONFIGBASENAME)
-		sys.exit(1)
-	ad_ldap_bindpw = open(configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
-	if ad_ldap_bindpw[-1] == '\n':
-		ad_ldap_bindpw = ad_ldap_bindpw[0:-1]
-
 	poll_sleep = int(configRegistry['%s/ad/poll/sleep' % CONFIGBASENAME])
 	ad_init = None
 
-	ad_dns = []
-	if len(args) == 1:
-		ad_dns.append(args[0])
+	ad_dns = list(filter(None, [options.dn]))
 
 	treated_dns = []
 
 	try:
-		resync = ad(
-			CONFIGBASENAME,
-			configRegistry,
-			configRegistry['%s/ad/ldap/host' % CONFIGBASENAME],
-			configRegistry['%s/ad/ldap/port' % CONFIGBASENAME],
-			configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],
-			configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME],
-			ad_ldap_bindpw,
-			configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME],
-			configRegistry['%s/ad/listener/dir' % CONFIGBASENAME]
-		)
+		resync = ad.main(configRegistry, CONFIGBASENAME)
+		resync.init_ldap_connections()
 		treated_dns = resync.resync(ad_dns, options.ldapfilter, options.ldapbase)
 	except ldap.SERVER_DOWN:
 		print("Warning: Can't initialize LDAP-Connections, wait...")
