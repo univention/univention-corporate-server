@@ -35,7 +35,6 @@ import importlib.util
 import os
 import pipes
 import psutil
-import subprocess
 from datetime import datetime
 from hashlib import md5
 from os import stat, getpid
@@ -62,15 +61,6 @@ _ = Translation('univention-management-console-module-updater').translate
 
 # the file whose file time is used as the 'serial' value for the 'Components' grid.
 COMPONENTS_SERIAL_FILE = '/etc/apt/sources.list.d/20_ucs-online-component.list'
-
-# serial files for the 'Updates' page. Whenever only one of these
-# files have changed we have to refresh all elements of the
-# 'Updates' page.
-UPDATE_SERIAL_FILES = [
-	'/etc/apt/mirror.list',
-	'/etc/apt/sources.list.d/15_ucs-online-version.list',
-	'/etc/apt/sources.list.d/20_ucs-online-component.list'
-]
 
 HOOK_DIRECTORY = '/usr/share/univention-updater/hooks'
 
@@ -186,7 +176,6 @@ class Instance(Base):
 		self._current_job = ''
 		self._logfile_start_line = 0
 		self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
-		self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
 		try:
 			self.uu = UniventionUpdater(False)
 		except Exception as exc:  # FIXME: let it raise
@@ -249,10 +238,6 @@ class Instance(Base):
 		return default
 
 	@simple_response
-	def poll(self) -> bool:
-		return True
-
-	@simple_response
 	def query_releases(self) -> List[Dict[str, str]]:
 		"""
 		Returns a list of system releases suitable for the
@@ -304,15 +289,6 @@ class Instance(Base):
 
 		thread = notifier.threads.Simple('call_hooks', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
-
-	@simple_response
-	def updates_serial(self) -> int:
-		"""
-		Watches the three `sources.list` snippets for changes
-		"""
-		result = self._updates_serial.timestamp()
-		MODULE.info(" -> Serial for UPDATES is '%s'" % result)
-		return result
 
 	@simple_response
 	def updates_check(self) -> Dict[str, List[Tuple[str, str]]]:
@@ -427,16 +403,6 @@ class Instance(Base):
 			raise UMC_Error(msg)
 
 		self.finished(request.id, [result])
-
-	@simple_response
-	def reboot(self) -> bool:
-		"""
-		Reboots the computer. Simply invokes /sbin/reboot in the background
-		and returns success to the caller. The caller is prepared for
-		connection loss.
-		"""
-		subprocess.call(['/sbin/reboot'])
-		return True
 
 	@simple_response
 	def running(self) -> str:
