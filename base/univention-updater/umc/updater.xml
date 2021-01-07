@@ -14,12 +14,8 @@
 		-->
 		<!-- GET: the only call really needed -->
 		<command name="updater/updates/get" function="status"/>
-		<!-- POLL: for handling during reboot -->
-		<command name="updater/poll" function="poll"/>
 		<!-- QUERY: to fill the 'available releases' ComboBox -->
 		<command name="updater/updates/query" function="query_releases"/>
-		<!-- SERIAL: check if something has changed. -->
-		<command name="updater/updates/serial" function="updates_serial"/>
 		<!-- AVAILABLE: check if there are component updates. -->
 		<command name="updater/updates/available" function="updates_available"/>
 		<!-- CHECK: return a list of packages eligible for update/install/remove -->
@@ -35,8 +31,6 @@
 		-->
 		<!-- EXECUTE: start any installer/updater action -->
 		<command name="updater/installer/execute" function="run_installer" />
-		<!-- REBOOT: does what it says. -->
-		<command name="updater/installer/reboot" function="reboot"/>
 		<!-- RUNNING: return job key while an installer job is running -->
 		<command name="updater/installer/running" function="running"/>
 		<!-- LOGFILE: read <count> log lines (count=0 -> all, count=-1 -> log timestamp) -->
