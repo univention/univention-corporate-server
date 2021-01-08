@@ -192,6 +192,10 @@ $app-detailspane-background-color = var(--color-grey0)
 		background-position: -20px 0
 		opacity: 0.66
 
+.umcAppMoreInfo
+	table
+		border-spacing: 1em 0.1em
+
 .umcTiles
 	background-color: var(--bgc-content-container)
 	border-radius: var(--border-radius-container)
@@ -212,11 +216,6 @@ $app-detailspane-background-color = var(--color-grey0)
 	cursor: pointer
 
 .umcAppInfo
-	background-color: var(--bgc-content-container)
-	border-radius: var(--border-radius-container)
-	padding: 2em
-	margin-bottom: 2em
-
 	.umcTile
 		cursor: default
 
@@ -343,18 +342,25 @@ $app-detailspane-background-color = var(--color-grey0)
 
 	.umcAppRatingIcon
 		display: inline-block
-		margin: 0.15em
+		margin-right: 1em
 		height: 3em
 		width: 3em
+		border-radius: var(--border-radius-container)
+
+		svg
+			width: 100%
+			height: 100%
+			padding: 20%
+			fill: currentColor
 
 	.umcAppRatingVendorSupported
-		background: transparent url("appcenter/badges/vendor_support.svg") repeat scroll
+		background-color: #93608b
 
 	.umcAppRatingPopularityAward
-		background: transparent url("appcenter/badges/popular.svg") repeat scroll
+		background-color: #dd042d
 
 	.umcAppRatingRecommendedApp
-		background: transparent url("appcenter/badges/recommendation.svg") repeat scroll
+		background-color: #f6aa42
 
 	.umcAppRatingHelp
 		display: inline-block
@@ -368,6 +374,13 @@ $app-detailspane-background-color = var(--color-grey0)
 		font-size: 20px
 		font-weight: 500
 		margin-bottom: 24px
+
+		svg
+			position: relative
+			top: 0.2ex
+		span
+			padding-left: 0.5em
+			vertical-align: text-bottom
 
 	.iconHeaderOpen
 		background: transparent url("appcenter/icons/open.svg") repeat scroll
@@ -434,12 +447,13 @@ $app-detailspane-background-color = var(--color-grey0)
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
 		font-size: var(--font-size-small)
-		margin-bottom: 20px
-		padding: 10px
+		margin-bottom: 1.5em
+		padding: 1.7em
 		color: var(--font-color-contrast-high)
 
 		table
 			td:first-child
+				vertical-align: top
 				color: var(--font-color-contrast-middle)
 				padding-right: 12px
 

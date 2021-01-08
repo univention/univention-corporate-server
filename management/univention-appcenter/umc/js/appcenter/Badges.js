@@ -32,40 +32,34 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-construct",
+	"dojox/html/entities",
 	"dijit/_Widget",
+	"dijit/_Container",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
+	"umc/modules/appcenter/Badge",
 	"umc/i18n!umc/modules/appcenter",
-	"umc/modules/appcenter/Tile",
-	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
-		baseClass: 'umcAppInfo',
+	"umc/modules/appcenter/SidebarElement"
+], function(declare, lang, array, domConstruct, entities, _Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, Badge, _) {
+	var header = _("App Center Badges");
+	return declare("umc.modules.appcenter.Badges", [_Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		baseClass: 'umcAppBadges',
 		buttonLabel: _("Manage installations"),
 		templateString: `
-			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
-				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
+			<div>
+				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
+					header: '${header}',
+					icon: 'bookmark'
+				">
+					<div data-dojo-attach-point="containerNode">
+					</div>
 				</div>
 			</div>
 		`,
-		_onClick: function() {
-			console.log("click stub");
+		addBadge: function(name, description) {
+			var badge = new Badge({name: name, description: description});
+			this.addChild(badge);
 		}
 	});
 });

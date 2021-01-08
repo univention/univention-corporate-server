@@ -32,40 +32,42 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-construct",
+	"dojox/html/entities",
 	"dijit/_Widget",
+	"dijit/_Container",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
-	"umc/modules/appcenter/Tile",
-	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
-		baseClass: 'umcAppInfo',
-		buttonLabel: _("Manage installations"),
+	"umc/modules/appcenter/SidebarElement"
+], function(declare, lang, array, domConstruct, entities, _Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+	var header = _("More information");
+	return declare("umc.modules.appcenter.AppMoreInfo", [_Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		baseClass: 'umcAppMoreInfo',
 		templateString: `
-			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
-				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
+			<div>
+				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
+					header: '${header}',
+					icon: 'info'
+				">
+					<table data-dojo-attach-point="containerNode">
+					</table>
 				</div>
 			</div>
 		`,
-		_onClick: function() {
-			console.log("click stub");
+		addInfo: function(key, value) {
+			if (! value) {
+				return;
+			}
+			var tr = domConstruct.create('tr', {}, this.containerNode);
+			domConstruct.create('td', {innerHTML: entities.encode(key)}, tr);
+			if (typeof value == 'string') {
+				domConstruct.create('td', {innerHTML: value}, tr);
+			} else {
+				// value is a DOM node
+				var td = domConstruct.create('td', {}, tr);
+				domConstruct.place(value, td, 'only');
+			}
 		}
 	});
 });

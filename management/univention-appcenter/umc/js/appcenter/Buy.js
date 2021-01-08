@@ -30,42 +30,36 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
 	"dijit/_Widget",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
-	"umc/modules/appcenter/Tile",
+	"umc/modules/appcenter/SidebarElement",
 	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
-		baseClass: 'umcAppInfo',
-		buttonLabel: _("Manage installations"),
+], function(declare, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+	var header = _("Buy in App Center");
+	var buttonLabel = _("Buy now");
+	return declare("umc.modules.appcenter.Buy", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		baseClass: 'umcAppBuy',
 		templateString: `
-			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
-				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
+			<div>
+				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
+					header: '${header}',
+					icon: 'shopping-cart'
+				">
+					<div class="umcAppSidebarButton ucsPrimaryButton"
+						data-dojo-type="umc/widgets/Button"
+						data-dojo-attach-event="click:_onClick"
+						data-dojo-props="
+							name: 'shop',
+							label: '${buttonLabel}'
+						"
+					></div>
 				</div>
 			</div>
 		`,
 		_onClick: function() {
-			console.log("click stub");
+			this.callback();
 		}
 	});
 });

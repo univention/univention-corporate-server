@@ -62,10 +62,14 @@ define([
 	"umc/widgets/Icon",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppInfo",
+	"umc/modules/appcenter/AppMoreInfo",
+	"umc/modules/appcenter/Buy",
+	"umc/modules/appcenter/Badges",
+	"umc/modules/appcenter/Vote",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -170,11 +174,11 @@ define([
 			return sum;
 		},
 
-		vote: function() {
+		vote: function(voteElement) {
 			tools.umcpCommand('appcenter/track', {app: this.app.id, action: 'vote'}).then(lang.hitch(this, function() {
 				dialog.notify(_('Quick and easy – your ballot has been cast.'), _('Vote for App'));
-				if (this._voteButton) {
-					this._voteButton.hide();
+				if (voteElement) {
+					voteElement.hideButton();
 				}
 			}));
 		},
@@ -547,7 +551,9 @@ define([
 				this._renderAppVote(parentContainer);
 			} else {
 				if (this.app.useShop) {
-					this._renderAppBuy(parentContainer);
+					parentContainer.addChild(new Buy({
+						callback: lang.hitch(this, 'openShop')
+					}));
 				}
 				this._renderAppDetails(parentContainer);
 			}
@@ -569,51 +575,13 @@ define([
 		},
 
 		_renderAppVote: function(parentContainer) {
-			var container = ContainerWidget({
-				class: 'appDetailsSidebarElement'
-			});
-			parentContainer.addChild(container);
-			parentContainer.own(container);
-
-			domConstruct.create('span', {
-				innerHTML: _('Vote for App'),
-				'class': 'mainHeader iconHeaderVote'
-			}, container.domNode);
-
-			domConstruct.create('p', {
-				innerHTML: _('We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you.'),
-			}, container.domNode);
-
-			var button = new Button({
-				name: 'vote',
-				label: _('Vote now'),
-				'class': 'umcAppSidebarButton ucsPrimaryButton',
-				callback: lang.hitch(this, 'vote')
-			});
-			container.addChild(button);
-			container.own(button);
-			this._voteButton = button;
-		},
-
-		_renderAppBuy: function(parentContainer) {
-			var appBuyContainer = ContainerWidget({
-				class: 'appDetailsSidebarElement'
-			});
-			parentContainer.addChild(appBuyContainer);
-			parentContainer.own(appBuyContainer);
-
-			domConstruct.create('span', {
-				innerHTML: _('Buy in App Center'),
-				'class': 'mainHeader iconHeaderBuy'
-			}, appBuyContainer.domNode);
-
-			if (this.app.candidateHasNoInstallPermissions) {
-				this._addBuyableAppInfo(appBuyContainer);
-			}
-			this._addBuyButton(appBuyContainer);
+			var vote = new Vote({});
+			vote.callback = lang.hitch(this, 'vote', vote);
+			parentContainer.addChild(vote);
 		},
 
 		_addBuyableAppInfo: function(parentContainer) {
+			// TODO: should go into Buy({})
 			domConstruct.create('span', {
 				'class': 'appDetailsSidebarText',
 				innerHTML: _('Buy %(appName)s to install version %(candidateVersion)s.',
@@ -628,77 +596,28 @@ define([
 			}
 		},
 
-		_addBuyButton: function(parentContainer) {
-			var buy_button = new Button({
-				name: 'shop',
-				label: _('Buy now'),
-				'class': 'umcAppSidebarButton ucsPrimaryButton',
-				callback: lang.hitch(this, 'openShop')
-			});
-			parentContainer.addChild(buy_button);
-			parentContainer.own(buy_button);
-		},
-
 		_renderAppDetails: function(parentContainer) {
-			var appDetailsContainer = ContainerWidget({
-				class: 'appDetailsSidebarElement'
-			});
-			parentContainer.addChild(appDetailsContainer);
-			parentContainer.own(appDetailsContainer);
-
-			this._detailsTable = domConstruct.create('table', {
-				style: {borderSpacing: '1em 0.1em'}
-			});
-			this.addToDetails(_('Vendor'), 'Vendor');
-			this.addToDetails(_('Provider'), 'Maintainer');
-			this.addToDetails(_('Contact'), 'Contact');
-			this.addToDetails(_('License'), 'License');
+			var moreInfo = new AppMoreInfo({});
+			moreInfo.addInfo(_('Vendor'), this.detailsValue('Vendor'));
+			moreInfo.addInfo(_('Provider'), this.detailsValue('Maintainer'));
+			moreInfo.addInfo(_('Contact'), this.detailsValue('Contact'));
+			moreInfo.addInfo(_('License'), this.detailsValue('License'));
 			if (this.app.isInstalled) {
-				this.addToDetails(_('Version'), 'Version');
-				this.addToDetails(_('Available'), 'CandidateVersion');
+				moreInfo.addInfo(_('Version'), this.detailsValue('Version'));
+				moreInfo.addInfo(_('Available'), this.detailsValue('CandidateVersion'));
 			} else {
-				this.addToDetails(_('Version'), 'CandidateVersion');
+				moreInfo.addInfo(_('Version'), this.detailsValue('CandidateVersion'));
 			}
-			this.addToDetails(_('Support'), 'SupportURL');
-			this.addToDetails(_('Notification'), 'NotifyVendor');
-
-			var span = domConstruct.create('span', {
-				innerHTML: _('More information'),
-				'class': 'mainHeader iconHeaderInfo'
-			}, appDetailsContainer.domNode);
-			//domConstruct.place(Icon.createNode("alert-circle"), span, "before");
-			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
+			moreInfo.addInfo(_('Support'), this.detailsValue('SupportURL'));
+			moreInfo.addInfo(_('Notification'), this.detailsValue('NotifyVendor'));
+			parentContainer.addChild(moreInfo);
 		},
 
 		_renderAppBadges: function(parentContainer) {
-			var appBadgeContainer = new ContainerWidget({
-				class: 'appDetailsSidebarElement'
-			});
-			parentContainer.addChild(appBadgeContainer);
-			parentContainer.own(appBadgeContainer);
-
-			domConstruct.create('span', {
-				innerHTML: _('App Center Badges'),
-				'class': 'mainHeader iconHeaderBadges',
-			}, appBadgeContainer.domNode);
-
+			var badges = new Badges({});
+			parentContainer.addChild(badges);
 			array.forEach(this.app.rating, function(rating) {
-				domConstruct.create('div', {
-						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
-						'style': 'background-size: contain;',  // FIXME: Not sure why this won't work in appcenter.styl
-						onmouseenter: function(evt) {
-							var node = evt.target;
-							Tooltip.show(rating.description, node);  // TODO: html encode?
-							if (evt) {
-								dojoEvent.stop(evt);
-							}
-							on.once(kernel.body(), 'click', function(evt) {
-								Tooltip.hide(node);
-								dojoEvent.stop(evt);
-							});
-						}
-					}, appBadgeContainer.domNode
-				);
+				badges.addBadge(rating.name, rating.description);
 			});
 		},
 
@@ -1233,23 +1152,10 @@ define([
 			}
 		},
 
-		addToDetails: function(label, attribute) {
-			var value;
+		detailsValue: function(attribute) {
 			var detailFunc = this['_detailFieldCustom' + attribute];
 			if (detailFunc) {
-				value = lang.hitch(this, detailFunc)();
-			}
-			if (! value) {
-				return;
-			}
-			var tr = domConstruct.create('tr', {}, this._detailsTable);
-			domConstruct.create('td', {innerHTML: entities.encode(label), style: {verticalAlign: 'top'}}, tr);
-			if (typeof value == 'string') {
-				domConstruct.create('td', {innerHTML: value}, tr);
-			} else {
-				// value is a DOM node
-				var td = domConstruct.create('td', {}, tr);
-				domConstruct.place(value, td, 'only');
+				return lang.hitch(this, detailFunc)();
 			}
 		},
 

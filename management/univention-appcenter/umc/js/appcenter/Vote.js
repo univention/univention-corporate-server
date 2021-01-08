@@ -30,42 +30,45 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
+	"dojo/dom-construct",
 	"dijit/_Widget",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
-	"umc/modules/appcenter/Tile",
+	"umc/modules/appcenter/SidebarElement",
 	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
-		baseClass: 'umcAppInfo',
-		buttonLabel: _("Manage installations"),
+], function(declare, domConstruct, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+	var header = _("Vote for App");
+	var message = _("We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you.");
+	var buttonLabel = _("Vote now");
+	return declare("umc.modules.appcenter.Buy", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		baseClass: 'umcAppVote',
 		templateString: `
-			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
-				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
+			<div>
+				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
+					header: '${header}',
+					icon: 'check-square'
+				">
+					<p>
+						${message}
+					</p>
+					<div class="umcAppSidebarButton ucsPrimaryButton"
+						data-dojo-type="umc/widgets/Button"
+						data-dojo-attach-point="buttonNode"
+						data-dojo-attach-event="click:_onClick"
+						data-dojo-props="
+							name: 'vote',
+							label: '${buttonLabel}'
+						"
+					></div>
 				</div>
 			</div>
 		`,
+		hideButton: function() {
+			domConstruct.destroy(this.buttonNode.id);
+		},
 		_onClick: function() {
-			console.log("click stub");
+			this.callback();
 		}
 	});
 });

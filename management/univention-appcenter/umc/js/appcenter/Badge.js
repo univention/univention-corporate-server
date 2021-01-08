@@ -30,42 +30,32 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
+	"dojo/_base/kernel",
+	"dojo/_base/event",
+	"dijit/Tooltip",
+	"dojo/on",
 	"dijit/_Widget",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
-	"umc/i18n!umc/modules/appcenter",
-	"umc/modules/appcenter/Tile",
-	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
-		baseClass: 'umcAppInfo',
-		buttonLabel: _("Manage installations"),
+	"umc/widgets/Icon"
+], function(declare, kernel, dojoEvent, Tooltip, on, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin) {
+	return declare("umc.modules.appcenter.Badge", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		baseClass: 'umcAppBadge',
 		templateString: `
-			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
-				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
-				</div>
+			<div class="umcAppRatingHelp umcAppRatingIcon umcAppRating\${name}" data-dojo-attach-event="onmouseenter:_onMouseEnter">
+				<svg data-dojo-type="umc/widgets/Icon" data-dojo-props="iconName: 'star'"></svg>
 			</div>
 		`,
-		_onClick: function() {
-			console.log("click stub");
+		_onMouseEnter: function(evt) {
+			var node = evt.target;
+			Tooltip.show(this.description, node);  // TODO: html encode?
+			if (evt) {
+				dojoEvent.stop(evt);
+			}
+			on.once(kernel.body(), 'click', function(evt) {
+				Tooltip.hide(node);
+				dojoEvent.stop(evt);
+			});
 		}
 	});
 });
