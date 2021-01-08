@@ -275,66 +275,14 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 
-class configsaver:
 
-	def __init__(self, filename):
-		self.filename = filename
-		try:
-			f = file(filename, 'r')
-			self.config = cPickle.load(f)
-		except IOError:
-			self.config = {}
-		except EOFError:
-			self.config = {}
 
-	def write(self, ignore=''):
-		def signal_handler(sig, frame):
-			ud.debug(ud.LDAP, ud.INFO, "configsaver.write: SIGTERM caught")
-			univention.connector.term_signal_caught = True
 
-		signal(SIGTERM, signal_handler)
 
-		f = file(self.filename, 'w')
-		cPickle.dump(self.config, f)
-		f.flush()
-		f.close()
 
-		signal(SIGTERM, SIG_DFL)
 
-		if univention.connector.term_signal_caught:
-			ud.debug(ud.LDAP, ud.INFO, "configsaver.write: exit on SIGTERM")
-			sys.exit(0)
 
-	def get(self, section, option):
-		try:
-			return self.config[section][option]
-		except KeyError:
-			return ''
 
-	def set(self, section, option, value):
-		self.config[section][option] = value
-		self.write()
-
-	def items(self, section):
-		ret = []
-		for key in self.config[section].keys():
-			ret.append((key, self.config[section][key]))
-		return ret
-
-	def remove_option(self, section, option):
-		if option in self.config[section]:
-			self.config[section].pop(option)
-		self.write()
-
-	def has_section(self, section):
-		return section in self.config
-
-	def add_section(self, section):
-		self.config[section] = {}
-		self.write()
-
-	def has_option(self, section, option):
-		return section in self.config and option in self.config[section]
 
 
 class attribute:
@@ -441,21 +389,6 @@ class ucs(object):
 		adcachedbfile='/etc/univention/%s/adcache.sqlite' % self.CONFIGBASENAME
 		self.adcache = ADCache(adcachedbfile)
 
-		configfile = '/etc/univention/%s/internal.cfg' % self.CONFIGBASENAME
-		if os.path.exists(configfile):
-			ud.debug(ud.LDAP, ud.PROCESS, "Converting %s into a sqlite database" % configfile)
-			config = configsaver(configfile)
-			ud.debug(ud.LDAP, ud.INFO, "Sections to convert: %s" % config.config.keys())
-			for section in config.config.keys():
-				ud.debug(ud.LDAP, ud.PROCESS, "Converting section %s" % section)
-				self.config.add_section(section)
-				for key in config.config[section].keys():
-					ud.debug(ud.LDAP, ud.INFO, "Adding key: %s" % key)
-					self.config.set(section, key, config.get(section, key))
-
-			new_file = '%s_converted_%f' % (configfile, time.time())
-			os.rename(configfile, new_file)
-			ud.debug(ud.LDAP, ud.PROCESS, "Converting done")
 
 		self.open_ucs()
 
