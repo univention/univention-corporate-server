@@ -34,62 +34,38 @@ column-count(count)
 
 $app-detailspane-background-color = var(--color-grey0)
 
-.umcAppCenterGallery
-	.umcGalleryWrapperItem
-		.appStatusIcon
-			background-image: url("appcenter/statusIcons.svg")
+.appStatusIcon
+	background-image: url("appcenter/statusIcons.svg")
+	position: absolute
+	left: 3.5rem
+	bottom: 4.2rem
+	width: 40px
+	height: 40px
+	filter: drop-shadow(4px 4px 3px rgba(0,0,0,0.5))
 
-			&.appUpdateIcon
-				background-position: 0 0
+	&.appUpdateIcon
+		left: 4.2rem
+		background-position: 0 0
 
-			&.appEndOfLifeIcon
-				background-position: -80px 0
+	&.appEndOfLifeIcon
+		left: 4.2rem
+		background-position: -80px 0
 
-			&.appRecommendedAppIcon
-				background-position: -160px 0
-				right: 0px
+	&.appRecommendedAppIcon
+		background-position: -160px 0
 
-			&.appPopularAppIcon
-				background-position: -240px 0
-				right: 0px
+	&.appPopularAppIcon
+		background-position: -240px 0
 
-			&.appRecommendedAndPopularAppIcon
-				background-position: -280px 0
-				right: 0px
+	&.appRecommendedAndPopularAppIcon
+		background-position: -280px 0
 
-			&.appVoteForApp
-				background-position: -200px 0
-				right: 0px
+	&.appVoteForApp
+		background-position: -200px 0
 
-			&.appUpdatePermissionsIcon
-				background-position: -320px 0
-
-		.appStatusHoverIcon
-			&.appUpdateIcon
-				background-position: -40px 0
-
-			&.appEndOfLifeIcon
-				background-position: -120px 0
-
-			&.appRecommendedAppIcon
-				background-position: -160px 0
-
-			&.appPopularAppIcon
-				background-position: -240px 0
-
-			&.appRecommendedAndPopularAppIcon
-				background-position: -280px 0
-
-			&.appVoteForApp
-				background-position: -200px 0
-
-			&.appUpdatePermissionsIcon
-				background-position: -360px 0
-
-		.umcGalleryItemActive .umcUpdateIcon,
-		.umcGalleryItem:hover .umcUpdateIcon
-			/* change icon color to white on hover */
-			background-image: url("../../dijit/themes/umc/images/icons-white.svg")
+	&.appUpdatePermissionsIcon
+		left: 4.2rem
+		background-position: -320px 0
 
 .AppDetailsDialog__warning
 	border-radius: var(--border-radius-container)
@@ -231,6 +207,7 @@ $app-detailspane-background-color = var(--color-grey0)
 	border-radius: calc(2 * var(--border-radius-container))
 
 	.tile__box
+		position: relative
 		border-radius: calc(2 * var(--border-radius-container))
 		display: flex
 		align-items: center
@@ -357,10 +334,10 @@ $app-detailspane-background-color = var(--color-grey0)
 		background-color: #93608b
 
 	.umcAppRatingPopularityAward
-		background-color: #dd042d
+		background-color: #f6aa42
 
 	.umcAppRatingRecommendedApp
-		background-color: #f6aa42
+		background-color: #dd042d
 
 	.umcAppRatingHelp
 		display: inline-block
