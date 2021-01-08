@@ -1,0 +1,16 @@
+version: "3"
+services:
+  updater:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/work/src
+    networks:
+      - frontend
+    stdin_open: true
+    tty: true
+
+networks:
+  frontend:
+    driver: bridge
