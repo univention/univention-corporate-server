@@ -1,4 +1,4 @@
-univention-docker (4.0.1-11) unstable; urgency=medium
+univention-docker (4.0.1-12) unstable; urgency=medium
 
   * Bug #52344: Add two UCR variables for docker/daemon.json customisation
 
