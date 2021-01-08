@@ -72,93 +72,6 @@ LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
 # page results
 PAGE_SIZE = 1000
-# microsoft ldap schema binary attributes
-# -> ldbsearch --paged -H AD_SERVER -U CREDS --cross-ncs '(|(attributeSyntax=2.5.5.15)(attributeSyntax=2.5.5.10)(attributeSyntax=2.5.5.17)(attributeSyntax=2.5.5.7))' lDAPDisplayName
-BINARY_ATTRIBUTES = [
-	'addressEntryDisplayTable', 'addressEntryDisplayTableMSDOS', 'addressSyntax', 'assocNTAccount',
-	'attributeCertificateAttribute', 'attributeSecurityGUID', 'audio',
-	'auditingPolicy', 'authorityRevocationList', 'birthLocation',
-	'cACertificate', 'categoryId', 'certificateRevocationList',
-	'controlAccessRights', 'cRLPartitionedRevocationList', 'crossCertificatePair',
-	'currentLocation', 'currentValue', 'currMachineId',
-	'dBCSPwd', 'deltaRevocationList', 'dhcpClasses',
-	'dhcpOptions', 'dhcpProperties', 'dNSProperty',
-	'dnsRecord', 'domainWidePolicy', 'dSASignature',
-	'eFSPolicy', 'foreignIdentifier', 'fRSExtensions',
-	'fRSReplicaSetGUID', 'fRSRootSecurity', 'fRSVersionGUID',
-	'groupMembershipSAM', 'helpData16', 'helpData32',
-	'implementedCategories', 'invocationId', 'ipsecData',
-	'jpegPhoto', 'lDAPIPDenyList', 'linkTrackSecret',
-	'lmPwdHistory', 'logonHours', 'logonWorkstation',
-	'machineWidePolicy', 'marshalledInterface', 'may',
-	'meetingBlob', 'moniker', 'moveTreeState',
-	'msAuthz-CentralAccessPolicyID', 'msCOM-ObjectId', 'msDFS-GenerationGUIDv2',
-	'msDFS-LinkIdentityGUIDv2', 'msDFS-LinkSecurityDescriptorv2', 'msDFS-NamespaceIdentityGUIDv2',
-	'msDFSR-ContentSetGuid', 'msDFSR-Extension', 'msDFSR-ReplicationGroupGuid',
-	'msDFSR-Schedule', 'msDFS-TargetListv2', 'msDNS-DNSKEYRecords',
-	'msDNS-SigningKeyDescriptors', 'msDNS-SigningKeys', 'msDRM-IdentityCertificate',
-	'msDS-AllowedToActOnBehalfOfOtherIdentity', 'msDS-AzObjectGuid', 'msDS-BridgeHeadServersUsed',
-	'msDS-ByteArray', 'msDS-Cached-Membership', 'mS-DS-ConsistencyGuid',
-	'mS-DS-CreatorSID', 'msDS-ExecuteScriptPassword', 'msDS-GenerationId',
-	'msDS-GroupMSAMembership', 'msDS-HasInstantiatedNCs', 'msDS-ManagedPassword',
-	'msDS-ManagedPasswordId', 'msDS-ManagedPasswordPreviousId', 'msDS-OptionalFeatureGUID',
-	'msDS-QuotaTrustee', 'mS-DS-ReplicatesNCReason', 'msDS-RetiredReplNCSignatures',
-	'msDS-RevealedUsers', 'msDs-Schema-Extensions', 'msDS-Site-Affinity',
-	'msDS-TransformationRulesCompiled', 'msDS-TrustForestTrustInfo', 'msExchBlockedSendersHash',
-	'msExchDisabledArchiveGUID', 'msExchMailboxGuid', 'msExchMailboxSecurityDescriptor',
-	'msExchMasterAccountSid', 'msExchSafeRecipientsHash', 'msExchSafeSendersHash',
-	'msFVE-KeyPackage', 'msFVE-RecoveryGuid', 'msFVE-VolumeGuid',
-	'msieee80211-Data', 'msImaging-PSPIdentifier', 'msImaging-ThumbprintHash',
-	'msiScript', 'msKds-KDFParam', 'msKds-RootKeyData',
-	'msKds-SecretAgreementParam', 'mSMQDigests', 'mSMQDigestsMig',
-	'mSMQEncryptKey', 'mSMQOwnerID', 'mSMQQMID',
-	'mSMQQueueType', 'mSMQSignCertificates', 'mSMQSignCertificatesMig',
-	'mSMQSignKey', 'mSMQSiteID', 'mSMQSites',
-	'mSMQUserSid', 'ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-8023-GP-PolicyReserved',
-	'msPKIAccountCredentials', 'msPKI-CredentialRoamingTokens', 'msPKIDPAPIMasterKeys',
-	'msPKIRoamingTimeStamp', 'msRTCSIP-UserRoutingGroupId', 'msSPP-ConfigLicense',
-	'msSPP-CSVLKSkuId', 'msSPP-IssuanceLicense', 'msSPP-KMSIds',
-	'msSPP-OnlineLicense', 'msSPP-PhoneLicense', 'msTAPI-ConferenceBlob',
-	'msTPM-SrkPubThumbprint', 'msWMI-TargetObject', 'netbootDUID',
-	'netbootGUID', 'nTGroupMembers', 'ntPwdHistory',
-	'nTSecurityDescriptor', 'objectGUID', 'objectSid',
-	'oMObjectClass', 'oMTGuid', 'oMTIndxGuid',
-	'originalDisplayTable', 'originalDisplayTableMSDOS', 'otherWellKnownObjects',
-	'parentCACertificateChain', 'parentGUID', 'partialAttributeDeletionList',
-	'partialAttributeSet', 'pekList', 'pendingCACertificates',
-	'perMsgDialogDisplayTable', 'perRecipDialogDisplayTable', 'photo',
-	'pKIEnrollmentAccess', 'pKIExpirationPeriod', 'pKIKeyUsage',
-	'pKIOverlapPeriod', 'pKT', 'pKTGuid',
-	'prefixMap', 'previousCACertificates', 'priorValue',
-	'privateKey', 'productCode', 'proxiedObjectName',
-	'publicKeyPolicy', 'registeredAddress', 'replicationSignature',
-	'replPropertyMetaData', 'replUpToDateVector', 'repsFrom',
-	'repsTo', 'requiredCategories', 'retiredReplDSASignatures',
-	'samDomainUpdates', 'schedule', 'schemaIDGUID',
-	'schemaInfo', 'searchGuide', 'securityIdentifier',
-	'serviceClassID', 'serviceClassInfo', 'serviceInstanceVersion',
-	'sIDHistory', 'siteGUID', 'supplementalCredentials',
-	'supportedApplicationContext', 'syncWithSID', 'teletexTerminalIdentifier',
-	'telexNumber', 'terminalServer', 'thumbnailLogo',
-	'thumbnailPhoto', 'tokenGroups', 'tokenGroupsGlobalAndUniversal',
-	'tokenGroupsNoGCAcceptable', 'trustAuthIncoming', 'trustAuthOutgoing',
-	'unicodePwd', 'unixUserPassword', 'upgradeProductCode',
-	'userCert', 'userCertificate', 'userPassword',
-	'userPKCS12', 'userSMIMECertificate', 'volTableGUID',
-	'volTableIdxGUID', 'wellKnownObjects', 'winsockAddresses',
-]
-
-
-def activate_user(connector, key, object):
-	# set userAccountControl to 544
-	for i in range(0, 10):
-		try:
-			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['544'])])
-		except ldap.NO_SUCH_OBJECT:
-			time.sleep(1)
-			continue
-		return True
-	return False
 
 
 def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
@@ -784,13 +697,6 @@ class ad(univention.connector.ucs):
 
 		self.open_ad()
 
-		# update binary attribute list
-		global BINARY_ATTRIBUTES
-		for attr in self.baseConfig.get('%s/ad/binary_attributes' % self.CONFIGBASENAME, '').split(','):
-			attr = attr.strip()
-			if attr not in BINARY_ATTRIBUTES:
-				BINARY_ATTRIBUTES.append(attr)
-
 		if not self.config.has_section('AD'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'AD'")
 			self.config.add_section('AD')
@@ -1051,11 +957,11 @@ class ad(univention.connector.ucs):
 			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
 			self.get_kerberos_ticket()
 			auth = ldap.sasl.gssapi("")
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=BINARY_ATTRIBUTES)
+			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
 			self.get_kerberos_ticket()
 			self.lo_ad.lo.sasl_interactive_bind_s("", auth)
 		else:
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=BINARY_ATTRIBUTES)
+			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
