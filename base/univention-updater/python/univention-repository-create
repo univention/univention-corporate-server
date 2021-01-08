@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Creates a local repository.
-"""
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -30,37 +27,36 @@ Creates a local repository.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
+
+"""
+Creates a local repository.
+"""
+
 from __future__ import print_function
 
-import os
 import errno
-from optparse import OptionParser
 import shutil
 import subprocess
 import sys
-from os import listdir
-from os.path import join
+from argparse import ArgumentParser, Namespace
+from os import listdir, makedirs, remove, symlink
+from os.path import devnull, exists, isdir, islink, join, relpath
 from textwrap import dedent
 
+import univention.updater.repository as urepo
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.ucs import UCS_Version
-import univention.updater.repository as urepo
 from univention.updater.locking import UpdaterLock
-from univention.updater.mirror import makedirs
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
-_mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-_repo_base = ""  # this path is set later in __main__
 
-
-def check_preconditions(options):
+def check_preconditions(options: Namespace) -> None:
     """ Check for already existing mirror and for debmirror package """
     # check directories
-    if os.path.exists(os.path.join(_mirror_base, 'mirror')):
-        print('Warning: The path %s/mirror already exists.' % _mirror_base, file=sys.stderr)
+    if exists(join(options.base, 'mirror')):
+        print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr)
 
     if options.interactive:
         print("Are you sure you want to create a local repository? [yN] ", end=' ')
@@ -71,9 +67,8 @@ def check_preconditions(options):
 
     # install univention-debmirror
     cmd = ('dpkg-query', '-W', '-f', '${Status}', 'univention-debmirror')
-    with open(os.path.devnull, 'w') as devnull:
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=devnull)
-        output = p.communicate()[0].decode("UTF-8")
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    output = p.communicate()[0].decode("UTF-8")
 
     if output == 'install ok installed':
         return
@@ -85,7 +80,7 @@ def check_preconditions(options):
         sys.exit(1)
 
 
-def prepare(options):
+def prepare(options: Namespace) -> None:
     """ Set local/repository and create directory structure """
     if configRegistry.is_false('local/repository', True):
         handler_set(['local/repository=yes'])
@@ -95,44 +90,42 @@ def prepare(options):
         handler_set(['repository/mirror=yes'])
         configRegistry.load()
 
-    makedirs(_repo_base)
-    for arch in urepo.ARCHITECTURES:
-        makedirs(os.path.join(_repo_base, arch))
-
-    for p in ['var', 'skel']:
-        d = os.path.join(_mirror_base, p)
-        if not os.path.exists(d):
-            os.mkdir(d)
+    makedirs(join(options.base, "mirror", "dists"), exist_ok=True)
+    makedirs(join(options.base, "mirror", "pool", "main"), exist_ok=True)
+    makedirs(join(options.base, "skel"), exist_ok=True)
+    makedirs(join(options.base, "var"), exist_ok=True)
 
 
-def copy_repository(options):
+def copy_repository(options: Namespace) -> None:
     """ Copy version info, kernels, grub configuration, profiles, packages and dists """
     print('Copying data. Please be patient ...')
 
     print('  copying version information ...', end=' ')
     copy_dists(options)
     copy_packages(options)
-    urepo.gen_indexes(_repo_base, options.version)
+    urepo.gen_indexes(options.base, options.version)
 
 
-def copy_packages(options):
+def copy_packages(options: Namespace) -> None:
     print('  copying packages ...', end=' ')
+    assert False, "Copy iso:/{amd64,all}/ to pool/main/{src[0]}/{src}/"  # FIXME
     sys.stdout.flush()
     for subdir in urepo.ARCHITECTURES:
-        if os.path.exists(os.path.join(options.mount_point, subdir)):
-            urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
+        if exists(join(options.mount_point, subdir)):
+            urepo.copy_package_files(join(options.mount_point, subdir), options.base)
             sys.stdout.flush()
     print("done.")
 
 
-def copy_dists(options):
+def copy_dists(options: Namespace) -> None:
     print('  copying dists ...', end=' ')
-    dists_dest = os.path.join(_repo_base, 'dists')
-    if os.path.isdir(dists_dest):
+    assert False, "Copy iso:/dists/ucs5XX/ to dists/"  # FIXME
+    dists_dest = join(options.base, "mirror", 'dists')
+    if isdir(dists_dest):
         shutil.rmtree(dists_dest)
     try:
-        dists_src = os.path.join(options.mount_point, 'dists')
-        if os.path.isdir(dists_src):
+        dists_src = join(options.mount_point, 'dists')
+        if isdir(dists_src):
             shutil.copytree(dists_src, dists_dest, symlinks=True)
     except shutil.Error as ex:
         print("failed (%s)." % (ex,))
@@ -140,23 +133,22 @@ def copy_dists(options):
         print('done.')
 
 
-def mount(options):
+def mount(options: Namespace) -> bool:
     """ Mount CDROM and check for valid medium """
     if options.interactive:
         # ask user to insert cdrom
         print('\nPlease insert a UCS installation medium and press <Enter>', end=' ')
         sys.stdin.readline()
+
     if options.mount:
         print("Mounting %s ..." % options.mount_point, end=' ')
         if options.iso:
-            cmd = ('mount', '-o', 'loop,ro', options.iso, options.mount_point)
+            cmd = ['mount', '-o', 'loop,ro', options.iso, options.mount_point]
         else:
-            cmd = ('mount', '-o', 'ro', options.mount_point)
-        devnull = open(os.path.devnull, 'w')
-        try:
-            ret = subprocess.call(cmd, stdout=devnull, stderr=subprocess.STDOUT)
-        finally:
-            devnull.close()
+            cmd = ['mount', '-o', 'ro', options.mount_point]
+
+        ret = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
         # if exit code is 0 or 32 (already mounted)
         if ret in (0, 32):
             print('done.')
@@ -166,8 +158,8 @@ def mount(options):
 
     print("Checking medium in %s ..." % options.mount_point, end=' ')
     if (
-        os.path.isdir(os.path.join(options.mount_point, 'all'))
-        and os.path.isdir(os.path.join(options.mount_point, 'amd64'))
+        isdir(join(options.mount_point, 'all'))
+        and isdir(join(options.mount_point, 'amd64'))
     ):
         pass
     else:
@@ -179,56 +171,76 @@ def mount(options):
     return True
 
 
-def setup_pxe(options):
+def setup_pxe(options: Namespace) -> None:
     '''setup network installation (PXE)'''
     pxedir = '/var/lib/univention-client-boot'
-    installerdir = os.path.join(pxedir, 'installer')
-    makedirs(pxedir)
+    installerdir = join(pxedir, 'installer')
+    makedirs(pxedir, exist_ok=True)
 
     if options.version.major >= 4:
-        installerdir = os.path.join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
-        makedirs(installerdir)
+        installerdir = join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
+        makedirs(installerdir, exist_ok=True)
 
         # copy kernel and initrd to /var/lib/univention-client-boot/installer/<major>.<minor>-<patchlevel>/
         # and create/refresh symlinks in /var/lib/univention-client-boot/ to these files
         for fn in ['linux', 'initrd.gz']:
-            srcfn = os.path.join(options.mount_point, 'netboot', fn)
-            dstfn = os.path.join(installerdir, fn)
-            symlinkfn = os.path.join(pxedir, fn)
-            if os.path.exists(srcfn):
+            srcfn = join(options.mount_point, 'netboot', fn)
+            dstfn = join(installerdir, fn)
+            symlinkfn = join(pxedir, fn)
+            if exists(srcfn):
                 shutil.copy2(srcfn, dstfn)
-                if os.path.islink(symlinkfn):
-                    os.remove(symlinkfn)
-                os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
+                if islink(symlinkfn):
+                    remove(symlinkfn)
+                symlink(relpath(dstfn, pxedir), symlinkfn)
     else:
         print('WARNING: The usage of this DVD for PXE reinstallation is not possible.')
         print('         Please use an UCS installation DVD with UCS 4.0-0 or later.')
 
 
-def main():
+def parse_args() -> Namespace:
     for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-        if os.path.isdir(mount_point_default):
+        if isdir(mount_point_default):
             break
-    parser = OptionParser(usage="usage: %prog [options]", description=__doc__)
-    parser.add_option('-n', '--non-interactive', action='store_false',
-                      dest='interactive', default=True,
-                      help='if given no questions are asked.')
-    parser.add_option('-N', '--no-mount', action='store_false',
-                      dest='mount', default=True,
-                      help='mounting the installation media is not required')
-    parser.add_option('-s', '--silent', action='store_true',
-                      dest='silent', default=False,
-                      help='do not print any information, just errors and warnings')
-    parser.add_option('-m', '--mount-point', action='store',
-                      dest='mount_point', default=mount_point_default,
-                      help='devices mount point for CD-ROM drive')
-    parser.add_option('-i', '--iso', action='store', dest='iso',
-                      default=None, help='define filename of an ISO image')
 
-    (options, arguments) = parser.parse_args()
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '-n', '--non-interactive',
+        action='store_false',
+        dest='interactive',
+        help='if given no questions are asked.')
+    parser.add_argument(
+        '-N', '--no-mount',
+        action='store_false',
+        dest='mount',
+        help='mounting the installation media is not required')
+    parser.add_argument(
+        '-s', '--silent',
+        action='store_true',
+        help='do not print any information, just errors and warnings')
+    parser.add_argument(
+        '-m', '--mount-point',
+        metavar="PATH",
+        default=mount_point_default,
+        help='devices mount point for CD-ROM drive')
+    parser.add_argument(
+        '-i', '--iso',
+        help='define filename of an ISO image')
+    parser.add_argument(
+        '-b', '--base',
+        metavar="DIR",
+        default=configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository'),
+        help="Local mirror base directory")
+
+    return parser.parse_args()
+
+
+def main() -> None:
+    options = parse_args()
+
+    assert False, "THIS TOOL IS CURRENTLY BROKEN"  # FIXME
 
     if options.silent:
-        sys.stdout = open(os.path.devnull, 'w')
+        sys.stdout = open(devnull, 'w')
 
     with UpdaterLock():
         check_preconditions(options)
@@ -251,15 +263,6 @@ def main():
                     sys.exit("Error: Failed to get UCS releae version from %s" % (dist,))
         except (EnvironmentError, ValueError) as ex:
             sys.exit("Error: Failed to get UCS release version from %s: %s" % (options.mount_point, ex))
-
-        global _repo_base
-        _repo_base = os.path.join(
-            _mirror_base,
-            'mirror',
-            UCS_Version.FORMAT % options.version,
-            'maintained',
-            UCS_Version.FULLFORMAT % options.version,
-        )
 
         prepare(options)
 
@@ -284,8 +287,8 @@ def main():
 
         # create symbolic link univention-repository
         try:
-            os.symlink('.', os.path.join(_mirror_base, 'mirror', 'univention-repository'))
-        except OSError as ex:
+            symlink('.', join(options.base, 'mirror', 'univention-repository'))
+        except EnvironmentError as ex:
             if ex.errno != errno.EEXIST:
                 raise
 
@@ -327,12 +330,9 @@ def main():
             print(dedent(
                 """
                 An UCS repository must always start with minor version 0, for example
-                with UCS %(major)s.0-0. Please synchronize the repository
+                with UCS {ver.major}. Please synchronize the repository
                 by using the tool 'univention-repository-update'.
-                """ % {
-                    'major': options.version.major,
-                    'minor': options.version.minor,
-                }))
+                """).format(ver=options.version))
 
 
 if __name__ == '__main__':
