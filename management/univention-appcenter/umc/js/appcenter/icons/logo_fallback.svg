@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="appicon_fallback.svg"
+   id="svg845"
+   version="1.1"
+   viewBox="0 0 22.000001 22"
+   height="22"
+   width="22">
+  <metadata
+     id="metadata851">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs849" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg845"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:cy="29.278991"
+     inkscape:cx="81.401263"
+     inkscape:zoom="4.629406"
+     showgrid="false"
+     id="namedview847"
+     inkscape:window-height="1017"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <g
+     transform="matrix(0.29555194,0,0,0.29555194,1.0000001,1.6667653)"
+     data-name="Gruppe 117"
+     id="Gruppe_117">
+    <path
+       fill="#ffffff"
+       transform="translate(-737,-1203)"
+       d="M 770.835,1203 737,1216.534 v 31.579 l 33.835,18.045 33.835,-18.045 v -31.579 z m -2.256,56.843 -27.068,-14.436 v -21.957 l 27.068,14.436 z m -25.728,-40.791 27.984,-11.193 27.979,11.193 -27.979,14.923 z m 57.307,26.355 -27.068,14.436 v -21.957 l 27.068,-14.436 z"
+       data-name="Pfad 58"
+       id="Pfad_58" />
+  </g>
+</svg>

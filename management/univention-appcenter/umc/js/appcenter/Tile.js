@@ -47,6 +47,7 @@ define([
 						class="tile__logo"
 						src="\${logo}"
 						alt="\${name} logo"
+						onerror="this.src='/univention/management/modules/appcenter/icons/logo_fallback.svg'"
 					>
 				</div>
 				<span class="tile__name">\${name}</span>

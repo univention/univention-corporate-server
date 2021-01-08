@@ -121,11 +121,11 @@ define([
 		},
 
 		_setCategoriesAttr: function(categories) {
-			this._addFilter('categories', _('App Categories'), categories);
+			this._addFilter('categories', _('Category'), categories);
 		},
 
 		_setBadgesAttr: function(badges) {
-			this._addFilter('badges', _('App Badges'), badges);
+			this._addFilter('badges', _('Badges'), badges);
 		},
 
 		_setLicensesAttr: function(licenses) {
