@@ -5,7 +5,8 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-kernel-image-signed
 fix: 5.0.0-15A~4.4.0.202101071237
 desc: |
- This update addresses the following issues:
+ This updates the Linux kernel to version 4.9.246, which addresses (among
+ others) the following security issues:
  * In create_pinctrl of core.c, there is a possible out of bounds read due to
    a use after free. This could lead to local information disclosure with no
    additional execution privileges needed. User interaction is not needed for
