@@ -58,8 +58,6 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 
-DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory', 'msieee80211-Data', 'ms-net-ieee-8023-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', 'msiScript', 'productCode', 'upgradeProductCode', 'categoryId', 'ipsecData']
-
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 LDB_CONTROL_RELAX_OID = "1.3.6.1.4.1.4203.666.5.12"
@@ -193,7 +191,7 @@ def s42samba_time(ltime):
 	return int(((ltime - d)) / 10000000)
 
 
-# mapping funtions
+# mapping functions
 def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocs4, dn_attr=None):
 	'''
 	map dn of given object (which must have an samaccountname in S4)
@@ -686,7 +684,7 @@ class s4(univention.s4connector.ucs):
 		except Exception:  # FIXME: which exception is to be caught
 			self._debug_traceback(ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
 
-		self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=DECODE_IGNORELIST, uri=ldapuri, reconnect=False)
+		self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, uri=ldapuri, reconnect=False)
 
 		self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
 

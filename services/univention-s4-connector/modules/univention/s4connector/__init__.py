@@ -150,7 +150,7 @@ def compare_normal(val1, val2):
 
 
 def compare_lowercase(val1, val2):
-	try:  # TODO: failes if conversion to ascii-str raises exception
+	try:  # TODO: fails if conversion to ascii-str raises exception
 		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
 			return True
 		else:
@@ -991,6 +991,8 @@ class ucs(object):
 						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
 
+					# If the list contains more than one file, the DN will be synced later
+					# but if the object was added or removed, the synchonization is required
 					for i in [0, 1]:  # do it twice if the LDAP connection was closed
 						try:
 							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
@@ -1066,6 +1068,8 @@ class ucs(object):
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
+				# the value isn't set in the AD directory, but it could be set in UCS, so we should delete it on UCS side
+
 				# prevent value resets of mandatory attributes
 				mandatory_attrs = ['lastname', 'unixhome', 'gidNumber', 'uidNumber']
 
@@ -1622,7 +1626,7 @@ class ucs(object):
 		:param object: a mapped or unmapped S4 or UCS object
 		'''
 		if 'dn' not in object:
-			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN")
+			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
 			return True  # ignore not existing object
 
 		if self.property.get(key):
@@ -1714,9 +1718,9 @@ class ucs(object):
 				if attribute.lower() == attributes.ldap_attribute.lower():
 					# mapping function
 					if hasattr(attributes, 'mapping'):
+						# direct mapping
 						if attributes.mapping[0]:
 							object_out['attributes'][attributes.con_attribute] = attributes.mapping[0](self, key, object)
-					# direct mapping
 					else:
 						if attributes.con_other_attribute:
 							object_out['attributes'][attributes.con_attribute] = [values[0]]
@@ -1806,7 +1810,7 @@ class ucs(object):
 						else:
 							object_out['attributes'][attributes.ldap_attribute] = values
 
-						# mapping_table
+					# mapping_table
 					if MAPPING.mapping_table and attr_key in MAPPING.mapping_table.keys():
 						for ucsval, conval in MAPPING.mapping_table[attr_key]:
 							if isinstance(object_out['attributes'][attributes.con_attribute], list):
@@ -1826,8 +1830,7 @@ class ucs(object):
 							object_out['attributes'][post_attributes.ldap_attribute] = post_attributes.mapping[1](self, key, object)
 					else:
 						if post_attributes.con_other_attribute and object['attributes'].get(post_attributes.con_other_attribute):
-							object_out['attributes'][post_attributes.ldap_attribute] = values + \
-								object['attributes'].get(post_attributes.con_other_attribute)
+							object_out['attributes'][post_attributes.ldap_attribute] = values + object['attributes'].get(post_attributes.con_other_attribute)
 						else:
 							object_out['attributes'][post_attributes.ldap_attribute] = values
 
