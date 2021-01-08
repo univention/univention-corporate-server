@@ -41,6 +41,7 @@ import random
 import sys
 import traceback
 import pprint
+import collections
 
 import ldap
 from ldap.controls.readentry import PostReadControl
@@ -1061,7 +1062,7 @@ class ucs(object):
 						if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object:
 							ucs_object.options.extend(ucs_object.descriptions[ucs_key].options)
 						if isinstance(value, list):
-							ucs_object[ucs_key] = list(set(value))
+							ucs_object[ucs_key] = list(collections.OrderedDict.fromkeys(value))
 						else:
 							ucs_object[ucs_key] = value
 						ud.debug(ud.LDAP, ud.INFO, "result key in ucs-object %s: %r" % (ucs_key, ucs_object[ucs_key]))
