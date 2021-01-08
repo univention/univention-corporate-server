@@ -1,5 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
+"""
+Install UCS release and errata updates.
+"""
 # Copyright (C) 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -26,22 +29,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-"""
-Install UCS release and errata updates.
-"""
-
 from __future__ import print_function
 
 import os
 import sys
 import time
+from optparse import OptionParser, OptionGroup
 import subprocess
 import traceback
 import logging
 import socket
-from argparse import ArgumentParser, FileType, Namespace
-from typing import Iterable, List, Optional, NoReturn, Tuple
 
 from univention.lib.ucs import UCS_Version
 from univention.config_registry import ConfigRegistry, handler_set
@@ -58,12 +55,12 @@ FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
 UCR_UPDATE_AVAILABLE = 'update/available'
 LOGFN = '/var/log/univention/updater.log'
 
-configRegistry = ConfigRegistry()
+configRegistry = None
 logfd = None
 silent = False
 
 
-def dprint(silent: bool, msg: str, newline: bool = True, debug: bool = False) -> None:
+def dprint(silent, msg, newline=True, debug=False):
     """Print debug output."""
     if silent:
         return
@@ -84,7 +81,7 @@ def dprint(silent: bool, msg: str, newline: bool = True, debug: bool = False) ->
 updater_status = {}
 
 
-def update_status(**kwargs: str) -> None:
+def update_status(**kwargs):
     '''
     update updater_status and write status to disk
 
@@ -103,19 +100,20 @@ def update_status(**kwargs: str) -> None:
         with open(fn, 'w+') as fd:
             for key, val in updater_status.items():
                 fd.write('%s=%s\n' % (key, val))
-    except EnvironmentError:
+    except:
         dprint(silent, 'Warning: cannot update %s' % fn)
     try:
         os.rename(fn, FN_STATUS)
-    except EnvironmentError:
+    except:
         dprint(silent, 'Warning: cannot update %s' % FN_STATUS)
 
 
-def readcontinue(msg: str) -> bool:
+def readcontinue(msg):
     """Print message and read yes/no/abort answer."""
     while True:
         try:
-            choice = input(msg).lower().strip()
+            print('%s' % msg, end=' ')
+            choice = raw_input().lower().strip()
             if choice == '' or choice == 'y' or choice == 'j':
                 print('')
                 return True
@@ -129,22 +127,24 @@ def readcontinue(msg: str) -> bool:
             return False
 
 
-def _package_list(new_packages: Iterable[Tuple[str, ...]]) -> str:
+def _package_list(new_packages):
     """Return comma separated list of packages."""
-    return ",".join(p[0] for p in new_packages)
+    l = []
+    for p in new_packages:
+        l.append(p[0])
+    return ','.join(l)
 
 
-def performUpdate(options: Namespace, checkForUpdates: bool = False, silent: bool = False) -> bool:
+def performUpdate(options, checkForUpdates=False, silent=False):
     for func in (do_package_updates, do_app_updates, do_release_update):
         if func(options, checkForUpdates, silent):
             if checkForUpdates:
                 return True
             else:
                 do_exec()
-    return False
 
 
-def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -> bool:
+def do_release_update(options, checkForUpdates, silent):
     updater = UniventionUpdater()
 
     # get next release update version
@@ -187,7 +187,7 @@ def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -
     return True
 
 
-def do_package_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> bool:
+def do_package_updates(options, checkForUpdates, silent):
     interactive = not (options.noninteractive or checkForUpdates)
     updater = UniventionUpdater()
     # check if component updates are available
@@ -237,11 +237,11 @@ def do_package_updates(options: Namespace, checkForUpdates: bool, silent: bool) 
     return True
 
 
-def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> Optional[bool]:
+def do_app_updates(options, checkForUpdates, silent):
     dprint(silent, 'Checking for app updates: ', newline=False)
     if not options.app_updates:
         dprint(silent, 'skipped')
-        return None
+        return
 
     interactive = not (options.noninteractive or checkForUpdates)
     try:
@@ -311,7 +311,7 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
             app=app,
             noninteractive=not interactive,
             username=options.username,
-            pwdfile=options.pwdfile.name if options.pwdfile else None,
+            pwdfile=options.pwdfile,
         ))
 
     if not success:
@@ -322,71 +322,72 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
     return not success  # pending updates
 
 
-def parse_args(argv: Optional[List[str]] = None) -> Namespace:
-    parser = ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--updateto",
-        help="update up to specified version")
-    parser.add_argument(
-        "--check",
-        action="store_true",
-        help="check if updates are available")
-    parser.add_argument(
-        "--setucr",
-        action="store_true",
-        help="if set, variable update/available will be updated")
-    parser.add_argument(
-        "--ignoressh",
-        action="store_true",
-        help="pass --ignoressh to univention-updater")
-    parser.add_argument(
-        "--ignoreterm",
-        action="store_true",
-        help="pass --ignoreterm to univention-updater")
-    parser.add_argument(
-        "--noninteractive",
-        action="store_true",
-        help="Perform a non-interactive update")
-    parser.add_argument(
-        "--iso",
-        help="ISO image for the repository update")
-    parser.add_argument(
-        "--cdrom",
-        default="/dev/cdrom",
-        help="CDROM device for the repository update")
-
-    group = parser.add_argument_group("App updates")
-    group.add_argument(
-        "--enable-app-updates",
-        dest="app_updates",
-        action="store_true",
-        help="Update installed Apps")
-    group.add_argument(
-        "--disable-app-updates",
-        dest="app_updates",
-        action="store_false",
-        help="Skip updating installed Apps")
-    group.add_argument(
-        "--username",
-        help="Name of the user used for registering the app")
-    group.add_argument(
-        "--pwdfile",
-        type=FileType("r"),
-        help="Name of the file containing the user password")
-
+def parse_args():
+    usage = "%prog [options] "
+    parser = OptionParser(usage=usage, description=__doc__)
     parser.set_defaults(app_updates=True)
-    options = parser.parse_args()
+    parser.add_option(
+        "--updateto", dest="updateto", default=None,
+        action="store", help="update up to specified version")
+    parser.add_option(
+        "--check", dest="check", default=False,
+        action="store_true", help="check if updates are available")
+    parser.add_option(
+        "--setucr", dest="setucr", default=False, action="store_true",
+        help="if set, variable update/available will be updated")
+    parser.add_option(
+        "--ignoressh", dest="ignoressh", default=False,
+        action="store_true", help="pass --ignoressh to univention-updater")
+    parser.add_option(
+        "--ignoreterm", dest="ignoreterm", default=False,
+        action="store_true", help="pass --ignoreterm to univention-updater")
+    parser.add_option(
+        "--noninteractive", dest="noninteractive", default=False,
+        action="store_true", help="Perform a non-interactive update")
+    parser.add_option(
+        "--iso", dest="iso", default=None,
+        action="store", help="ISO image for the repository update")
+    parser.add_option(
+        "--cdrom", dest="cdrom", default="/dev/cdrom",
+        action="store", help="CDROM device for the repository update")
+    group = OptionGroup(parser, "App updates")
+    group.add_option(
+        "--enable-app-updates",
+        dest="app_updates", action="store_true",
+        help="Update installed Apps")
+    group.add_option(
+        "--disable-app-updates",
+        dest="app_updates", action="store_false",
+        help="Skip updating installed Apps")
+    group.add_option(
+        "--username",
+        dest="username", action="store",
+        help="Name of the user used for registering the app")
+    group.add_option(
+        "--pwdfile",
+        dest="pwdfile", action="store",
+        help="Name of the file containing the user password")
+    parser.add_option_group(group)
+
+    (options, args) = parser.parse_args()
+
+    if args:
+        parser.error("Extra arguments: %r" % (args,))
 
     if options.app_updates:
-        if options.pwdfile and not options.username:
-            parser.error("--pwdfile without --username")
-        elif options.username and not options.pwdfile:
+        if options.pwdfile:
+            if not os.path.exists(options.pwdfile):
+                parser.error("File missing: '%s'" % (options.pwdfile,))
+            if not options.username:
+                parser.error("--pwdfile without --username")
+        elif options.username:
             parser.error("--username without --pwdfile")
 
     return options
 
 
-def main() -> None:
+def main():
+    global configRegistry
     global logfd
 
     options = parse_args()
@@ -400,10 +401,11 @@ def main() -> None:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.setLevel(logging.ERROR)
-    except EnvironmentError:
+    except:
         print('Cannot open %s for writing' % LOGFN)
         sys.exit(1)
 
+    configRegistry = ConfigRegistry()
     configRegistry.load()
 
     if options.noninteractive:
@@ -419,7 +421,7 @@ def main() -> None:
         do_update(options)
 
 
-def update_local_repository(options: Namespace) -> None:
+def update_local_repository(options):
     dprint(silent, 'Checking for local repository: ', newline=False)
     if configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
         dprint(silent, 'found\n')
@@ -437,7 +439,7 @@ def update_local_repository(options: Namespace) -> None:
         dprint(silent, 'none')
 
 
-def do_update(options: Namespace) -> None:
+def do_update(options):
     try:
         update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
     except ConfigurationError as e:
@@ -468,7 +470,7 @@ def do_update(options: Namespace) -> None:
         do_exec()
 
 
-def do_exec() -> NoReturn:
+def do_exec():
     # The updater/UCR/libs might have been replaced - re-execute!
     cmd = sys.argv + ['--setucr']
     print("execv(%r)" % (cmd,), file=logfd)
