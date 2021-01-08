@@ -353,6 +353,9 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The &ucsUMC; module <package>univention-management-console-module-join</package> has been migrated to Python 3  (<u:bug>51330</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					The scripts have been improved for robustness and security (<u:bug>21026</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
