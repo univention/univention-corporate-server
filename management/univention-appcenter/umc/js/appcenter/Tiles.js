@@ -62,10 +62,13 @@ define([
 			this.set("visible", !!tiles.length);
 		},
 		filter: function(filterF) {
+			var anyVisible = false;
 			array.forEach(this.tiles, function(tile) {
 				var visible = filterF(tile.obj);
+				anyVisible = anyVisible || visible;
 				tile.set("visible", visible);
 			});
+			this.set("visible", anyVisible);
 		},
 		_setVisibleAttr: function(newVal) {
 			this._set('visible', newVal);
