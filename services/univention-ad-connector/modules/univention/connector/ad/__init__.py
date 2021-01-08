@@ -37,13 +37,14 @@ import string
 import ldap
 import sys
 import base64
-import time
 import os
 import copy
 import types
 import re
 import array
 import ldap.sasl
+import time
+import calendar
 import subprocess
 import univention.uldap
 import univention.connector
@@ -138,29 +139,26 @@ def str2dn(dn):
 		return ldap.dn.str2dn(fix_dn(dn))
 
 
-def unix2ad_time(l):
+def unix2ad_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
+	return int(calendar.timegm(time.strptime(ltime, "%Y-%m-%d")) - 86400) * 10000000 + d  # AD stores end of day in accountExpires
 
 
-def ad2unix_time(l):
+def ad2unix_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return time.strftime("%d.%m.%y", time.gmtime((l - d) / 10000000))
+	return time.strftime("%Y-%m-%d", time.gmtime((ltime - d) / 10000000 + 86400))  # shadowExpire treats day of expiry as exclusive
 
 
-def samba2ad_time(l):
-	if l in [0, 1]:
-		return l
+def samba2ad_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(time.mktime(time.gmtime(l + 3600))) * 10000000 + d
+	return int(time.mktime(time.localtime(ltime))) * 10000000 + d
 
 
-def ad2samba_time(l):
-	if l == 0:
-		return l
+def ad2samba_time(ltime):
+	if ltime == 0:
+		return ltime
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(((l - d)) / 10000000)
-
+	return int(((ltime - d)) / 10000000)
 # mapping funtions
 
 
