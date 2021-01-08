@@ -330,41 +330,7 @@ def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCS
 
 
 def decode_sid(value):
-	# SID in AD
-	#
-	#   | Byte 1         | Byte 2-7           | Byte 9-12                | Byte 13-16 |
-	#   ----------------------------------------------------------------------------------------------------------------
-	#   | Der erste Wert | Gibt die Laenge    | Hier sind jetzt          | siehe 9-12 |
-	#   | der SID, also  | des restlichen     | die eiegntlichen         |            |
-	#   | der Teil nach  | Strings an, da die | SID Daten.               |            |
-	#   | S-             | SID immer relativ  | In einem int Wert        |            |
-	#   |                | kurz ist, meistens | sind die Werte           |            |
-	#   |                | nur das 2. Byte    | Hexadezimal gespeichert. |            |
-	#
-	sid = 'S-'
-	sid += "%d" % ord(value[0])
-
-	sid_len = ord(value[1])
-
-	sid += "-%d" % ord(value[7])
-
-	for i in range(0, sid_len):
-		res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
-		sid += "-%u" % res
-
-	return sid
-
-
-
-		if attr in BINARY_ATTRIBUTES:
-			newlist.append((newattr, values))
-			continue
-
-		if isinstance(values, type([])):
-			newlist.append((newattr, encode_list(values, encoding)))
-		else:
-			newlist.append((newattr, encode_list(values, encoding)))
-	return newlist
+	return str(ndr_unpack(security.dom_sid, value))
 
 
 
