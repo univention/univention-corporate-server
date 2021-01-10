@@ -333,7 +333,7 @@ define([
 				// never install a 'Vote for App' app
 				return false;
 			}
-			if (this.installations) {
+			if (this.installations && this.installations.length > 1) {
 				// always allow within the domain
 				return true;
 			}
@@ -352,6 +352,12 @@ define([
 			} else {
 				return false;
 			}
+		},
+
+		isInstalledInDomain: function() {
+			return array.some(this.installationData, function(app) {
+				return app.isInstalled;
+			});
 		},
 
 		open: function() {

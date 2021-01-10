@@ -255,7 +255,7 @@ define([
 			return buttons;
 		},
 
-		getActionButtons: function(isSingleServerInstallation) {
+		getActionButtons: function(additionalCallback) {
 			var buttons = [];
 			if (this.app.canInstallInDomain()) {
 				buttons.push({
@@ -264,20 +264,24 @@ define([
 					'class': 'umcAppButton umcActionButton',
 					isStandardAction: true,
 					isContextAction: false,
-					callback: lang.hitch(this.app, 'install')
+					callback: lang.hitch(this, function() {
+						additionalCallback();
+						this.app.install();
+					})
 				});
 			}
-			if (this.app.canOpenInDomain() && !isSingleServerInstallation) {
+			if (this.app.canOpenInDomain()) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),
 					'class': 'umcAppButton umcAppButtonFirstRow',
 					isContextAction: true,
-					isStandardAction: true,
+					isStandardAction: false,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canOpen();
 					}),
 					callback: lang.hitch(this, function(host, app) {
+						additionalCallback();
 						app[0].data.open();
 					})
 				});
@@ -288,11 +292,14 @@ define([
 					label: _('Continue using'),
 					'class': 'umcAppButton umcActionButton',
 					isContextAction: true,
-					isStandardAction: true,
+					isStandardAction: false,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canDisable();
 					}),
-					callback: lang.hitch(this, 'disableApp')
+					callback: lang.hitch(this, function(host, app) {
+						additionalCallback();
+						this.disableApp(host, app);
+					})
 				});
 			}
 			if (this.app.hasConfiguration()) {
@@ -301,27 +308,27 @@ define([
 					label: _('App settings'),
 					'class': 'umcAppButton umcActionButton',
 					isContextAction: true,
-					isStandardAction: true,
+					isStandardAction: false,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canConfigure();
 					}),
-					callback: lang.hitch(this, 'configureApp')
+					callback: lang.hitch(this, function() {
+						additionalCallback();
+						this.configureApp();
+					})
 				});
 			}
 			var callback;
 			if (this.app.canUninstallInDomain()) {
-				if (isSingleServerInstallation) {
-					callback = lang.hitch(this.app, 'uninstall');
-				} else {
-					callback = lang.hitch(this, function(host, app) {
-						app[0].data.uninstall();
-					});
-				}
+				callback = lang.hitch(this, function(host, app) {
+					additionalCallback();
+					app[0].data.uninstall();
+				});
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
 					isContextAction: true,
-					isStandardAction: true,
+					isStandardAction: false,
 					'class': 'umcAppButton umcActionButton',
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canUninstall();
@@ -330,18 +337,15 @@ define([
 				});
 			}
 			if (this.app.canUpgradeInDomain()) {
-				if (isSingleServerInstallation) {
-					callback = lang.hitch(this.app, 'upgrade');
-				} else {
-					callback = lang.hitch(this, function(host, app) {
-						app[0].data.upgrade();
-					});
-				}
+				callback = lang.hitch(this, function(host, app) {
+					additionalCallback();
+					app[0].data.upgrade();
+				});
 				buttons.push({
 					name: 'update',
 					label: _('Upgrade'),
 					isContextAction: true,
-					isStandardAction: true,
+					isStandardAction: false,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canUpgrade();
 					}),
@@ -390,7 +394,7 @@ define([
 			this._renderIcon(detailsContainerMain);
 			if (isAppInstalled) {
 				this._renderAppUsage(detailsContainerMain);
-				this._renderInstallationManagement(detailsContainerMain);
+				// this._renderInstallationManagement(detailsContainerMain);
 			}
 			this._renderDescription(detailsContainerMain, isAppInstalled);
 			this._renderThumbnails(detailsContainerMain, detailsPane);
@@ -451,14 +455,10 @@ define([
 			}
 		},
 
-		_renderInstallationManagement: function(parentContainer) {
-			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
-			var actions = this.getActionButtons(isSingleServerInstallation);
-			if (isSingleServerInstallation) {
-				this._renderSingleManagement(parentContainer, actions);
-			} else {
-				this._renderDomainwideManagement(parentContainer, actions);
-			}
+		_renderInstallationManagement: function(parentContainer, additionalCallback) {
+			var actions = this.getActionButtons(additionalCallback);
+			this._renderDomainwideManagement(parentContainer, actions);
+			return actions;
 		},
 
 		_renderSingleManagement: function(parentContainer, actions) {
@@ -482,13 +482,6 @@ define([
 		},
 
 		_renderDomainwideManagement: function(parentContainer, actions) {
-			var header = new Text({
-				content: _('Manage domain wide installations'),
-				'class': 'mainHeader'
-			});
-			parentContainer.addChild(header);
-			parentContainer.own(header);
-
 			var columns = [{
 				name: 'server',
 				label: _('Server')
@@ -564,14 +557,103 @@ define([
 		},
 
 		_renderAppInfo: function(parentContainer) {
+			var isSingleServerDomain = this.app.installationData.length === 1;
+			var buttonLabel = "";
+			var callback;
+			if (isSingleServerDomain) {
+				if (this.app.canInstall()) {
+					buttonLabel = _("Install");
+					callback = lang.hitch(this.app, 'install')
+				} else if (this.app.isInstalled) {
+					buttonLabel = _("Manage installation");
+					callback = lang.hitch(this, '_openManageDialog');
+				}
+			} else {
+				if (this.app.isInstalledInDomain()) {
+					buttonLabel = _("Manage installations");
+					callback = lang.hitch(this, '_openManageGridDialog');
+				} else if (this.app.canInstallInDomain()) {
+					buttonLabel = _("Install");
+					callback = lang.hitch(this.app, 'install');
+				}
+			}
 			var info = new AppInfo({
 				bgc: this.app.backgroundColor || "",
 				logo: "/univention/js/dijit/themes/umc/icons/scalable/" + this.app.logoName,
 				name: this.app.name,
 				description: this.app.description,
-				obj: this.app
+				buttonLabel: buttonLabel,
+				callback: callback
 			});
 			parentContainer.addChild(info);
+		},
+
+		_openManageDialog: function() {
+			var container = new ContainerWidget({});
+			if (this.app.canUpgrade()) {
+				container.addChild(new Button({
+					label: _("Upgrade"),
+					"class": "umcManageInstallationButton ucsPrimaryButton",
+					callback: lang.hitch(this, function() {
+						deferred.dialog.onConfirm();
+						this.app.upgrade();
+					})
+				}));
+			}
+			if (this.app.canOpen()) {
+				if (this.canUpgrade) {
+					classes = "umcManageInstallationButton";
+				} else {
+					classes = "umcManageInstallationButton ucsPrimaryButton";
+				}
+				container.addChild(new Button({
+					label: _("Open"),
+					"class": classes,
+					callback: lang.hitch(this, function() {
+						deferred.dialog.onConfirm();
+						this.app.open();
+					})
+				}));
+			}
+			if (this.app.canDisable()) {
+				container.addChild(new Button({
+					label: _("Continue using"),
+					"class": "umcManageInstallationButton",
+					callback: lang.hitch(this, function() {
+						deferred.dialog.onConfirm();
+						this.disableApp();
+					})
+				}));
+			}
+			if (this.app.hasConfiguration()) {
+				container.addChild(new Button({
+					label: _("App settings"),
+					"class": "umcManageInstallationButton",
+					callback: lang.hitch(this, function() {
+						deferred.dialog.onConfirm();
+						this.configureApp();
+					})
+				}));
+			}
+			if (this.app.canUninstall) {
+				container.addChild(new Button({
+					label: _("Uninstall"),
+					"class": "umcManageInstallationButton",
+					callback: lang.hitch(this, function() {
+						deferred.dialog.onConfirm();
+						this.app.uninstall();
+					})
+				}));
+			}
+			var options = [];
+			var deferred = dialog.confirm(container, options, _("Manage installation"));
+		},
+
+		_openManageGridDialog: function() {
+			var container = new ContainerWidget({});
+			var options = [];
+			var deferred = dialog.confirm(container, options, _("Manage installations"));
+			var actions = this._renderInstallationManagement(container, deferred.dialog.onConfirm);
 		},
 
 		_renderAppVote: function(parentContainer) {

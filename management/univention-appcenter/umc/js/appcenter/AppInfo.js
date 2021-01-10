@@ -32,16 +32,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dijit/_Widget",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/Tile",
 	"umc/widgets/Button"
-], function(declare, lang, array, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+], function(declare, lang, array, domClass, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
 	return declare("umc.modules.appcenter.AppInfo", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppInfo',
-		buttonLabel: _("Manage installations"),
 		templateString: `
 			<div class="appDetailsSidebarElement">
 				<div
@@ -53,19 +53,27 @@ define([
 					"
 				></div>
 				<div class="description">\${description}</div>
-				<div class="umcAppSidebarButton ucsPrimaryButton"
-					data-dojo-type="umc/widgets/Button"
-					data-dojo-attach-event="click:_onClick"
-					data-dojo-props="
-						name: 'installations',
-						label: '\${buttonLabel}'
-					"
-				>
+				<div class="buttonWrapper" data-dojo-attach-point="buttonNode">
+					<div class="umcAppSidebarButton ucsPrimaryButton"
+						data-dojo-type="umc/widgets/Button"
+						data-dojo-attach-event="click:_onClick"
+						data-dojo-props="
+							name: 'installations',
+							label: '\${buttonLabel}'
+						"
+					>
+					</div>
 				</div>
 			</div>
 		`,
+		buildRendering: function() {
+			this.inherited(arguments);
+			if (! this.buttonLabel) {
+				domClass.add(this.buttonNode, 'dijitDisplayNone');
+			}
+		},
 		_onClick: function() {
-			console.log("click stub");
+			this.callback();
 		}
 	});
 });
