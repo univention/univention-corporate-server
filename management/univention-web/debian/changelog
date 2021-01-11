@@ -1,3 +1,10 @@
+univention-web (4.0.0-11) unstable; urgency=medium
+
+  * Bug #52453: UCS 5 design - MultiInput button styling + search form button
+  	alignment
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 12 Jan 2021 00:02:17 +0100
+
 univention-web (4.0.0-10) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - MultiInput, label position and SearchForm
