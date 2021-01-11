@@ -1203,10 +1203,10 @@ class Instance(umcm.Base, ProgressMixin):
 		self.get_updater().ucr_reinit()
 		self.ucr.load()
 
-		result = []
-		for comp in self.get_updater().get_all_components():
-			result.append(self.get_component_manager().component(comp))
-		return result
+		return [
+			self.get_component_manager().component(comp.name)
+			for comp in self.get_updater().get_components(all=True)
+		]
 
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)

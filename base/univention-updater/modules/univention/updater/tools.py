@@ -1373,7 +1373,7 @@ class UniventionUpdater(object):
         :rtype: tuple(list[str], str or None)
         """
         ucs_version = ucs_version or self.current_version
-        components = self.get_current_components()
+        components = self.get_components(only_current=True)
 
         result = []  # type: List[UCS_Version]
         while ucs_version:
@@ -1401,9 +1401,7 @@ class UniventionUpdater(object):
         :rtype: str or None
         """
         ucs_version = ucs_version or self.current_version
-
-        components = self.get_current_components()
-
+        components = self.get_components(only_current=True)
         return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
     def release_update_temporary_sources_list(self, version):
@@ -1429,16 +1427,18 @@ class UniventionUpdater(object):
         # type: (str) -> Component
         return Component(self, name)
 
-    def get_components(self, only_localmirror_enabled=False):
-        # type: (bool) -> Set[Component]
+    def get_components(self, only_localmirror_enabled=False, all=False, only_current=False):
+        # type: (bool, bool, bool) -> Set[Component]
         """
-        Retrieve all enabled components from registry as set().
+        Retrieve all (enabled) components from registry as set().
         By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
 
         :param bool only_localmirror_enabled:
             Only the components enabled for local mirroring.
             If only_`localmirror`_enabled is `True`, then all components with `repository/online/component/%s/localmirror=$TRUE` will be returned.
             If `repository/online/component/%s/localmirror` is not set, then the value of `repository/online/component/%s` is used for backward compatibility.
+        :param bool all: Also return not enabled components.
+        :param bool only_current: Only return components marked as "current".
         :returns: The set of (enabled) components.
         """
         components = set()
@@ -1451,38 +1451,10 @@ class UniventionUpdater(object):
             enabled = bool(comp)
             if only_localmirror_enabled:
                 enabled = self.configRegistry.is_true(comp.ucrv("localmirror"), enabled)
-            if enabled:
-                components.add(component)
-        return components
-
-    def get_current_components(self):
-        # type: () -> Set[str]
-        """
-        Return set() of all components marked as current.
-
-        :returns: Set of component names marked as current.
-        :rtype: set(str)
-        """
-        return {
-            component
-            for component in self.get_components()
-            if self.component(component).current
-        }
-
-    def get_all_components(self):
-        # type: () -> Set[str]
-        """
-        Retrieve all configured components from registry as set().
-
-        :returns: Set of component names.
-        :rtype: set(str)
-        """
-        components = set()
-        for key in self.configRegistry.keys():
-            if key.startswith('repository/online/component/'):
-                component_part = key[len('repository/online/component/'):]
-                if component_part.find('/') == -1:
-                    components.add(component_part)
+            if only_current and not comp.current:
+                continue
+            if all or enabled:
+                components.add(comp)
         return components
 
     def component_update_get_packages(self):

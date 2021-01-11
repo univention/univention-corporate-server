@@ -304,10 +304,8 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
                 if not updater:
                     updater = LocalUpdater()
 
-                components = updater.get_current_components()
                 failed = set()  # type: Set[Tuple[Component, str]]
-                for component in components:
-                    comp = updater.component(component)
+                for comp in updater.get_components(only_current=True):
                     any(comp.repositories(ver, ver, failed=failed))
 
                 if failed:

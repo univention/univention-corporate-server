@@ -232,7 +232,7 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/d/version': '1.2-3 current',
             'repository/online/component/e': 'no',
         })
-        c = self.u.get_current_components()
+        c = {c.name for c in self.u.get_components(only_current=True)}
         self.assertEqual(c, {'c', 'd'})
 
     def test_get_all_components(self):
@@ -241,7 +241,7 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'no',
         })
-        c = self.u.get_all_components()
+        c = {c.name for c in self.u.get_components(all=True)}
         self.assertEqual(c, {'a', 'b'})
 
     def test_get_current_component_status_DISABLED(self):
