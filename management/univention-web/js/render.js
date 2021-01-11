@@ -284,7 +284,8 @@ define([
 
 				var betweenNonCheckBoxes = array.some(elList, function(el) {
 					var widget = widgets[el];
-					return widget && !widget.isInstanceOf(CheckBox);
+					var button = buttons && buttons[el];
+					return button || (widget && !widget.isInstanceOf(CheckBox));
 				});
 				// for single String / Array
 				if (elList) {
