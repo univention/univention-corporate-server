@@ -62,7 +62,6 @@ define([
 			var node;
 			if (widget) {
 				node = widget.domNode.parentNode.parentNode.parentNode;
-				node.classList.add('wizardInvitationBox');
 			}
 			var inviteWidget = this.getWidget('page1', '_invite');
 			if (inviteWidget) {
@@ -72,7 +71,6 @@ define([
 
 			widget = this.getWidget('page1', 'password');
 			node = widget.domNode.parentNode.parentNode.parentNode;
-			node.classList.add('wizardInvitationBox');
 		},
 
 		postMixInProperties: function() {
