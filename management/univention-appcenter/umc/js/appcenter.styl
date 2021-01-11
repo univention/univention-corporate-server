@@ -255,23 +255,27 @@ $app-detailspane-background-color = var(--color-grey0)
 
 .umc .umcAppCenterDialog,
 .umc .umcAppCenterInstallDialog
+	.umcPageHelpText
+		font-size: var(--font-size-normal)
+
+	.umcText
+		font-size: var(--font-size-small)
+
 	.umcPageNav
 		margin-bottom: 0
 
 	.umcAppMoreTitlePane
+		font-size: var(--font-size-small)
+
 		.dijitTitlePaneTitle
 			font-weight: normal
-			color: #5a5a5a
 			text-decoration: underline
 			border: none
-			font-size: 1em
+			font-size: var(--font-size-normal)
 			padding: 0.5em 0 0.5em 8px
 
-		.dijitArrowNode
+		svg
 			display: none
-
-		.dijitTitlePaneTitleHover
-			color: #282828
 
 .umc .umcAppCenterDialog
 	.dijitDefaultButton
@@ -425,6 +429,21 @@ $app-detailspane-background-color = var(--color-grey0)
 		padding: 40px
 		margin-bottom: 3em
 
+		h1, h2, h3
+			margin-bottom: 0.7rem
+
+			&:not(:first-child)
+				margin-top: 1.4rem
+				padding-top: 1.4rem
+				border-top: thin solid var(--color-grey8)
+		ul, ol
+			margin-bottom: 0.7rem
+			padding-left: 15px
+
+			li::marker
+				color: var(--color-grey40)
+
+
 	.appDetailsPane
 		margin: 0 -1000px
 		padding: 1.5em 1000px
@@ -434,7 +453,7 @@ $app-detailspane-background-color = var(--color-grey0)
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
 		font-size: var(--font-size-small)
-		margin-bottom: 1.5em
+		margin-bottom: 30px
 		padding: 1.7em
 		color: var(--font-color-contrast-high)
 

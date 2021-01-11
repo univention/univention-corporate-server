@@ -393,7 +393,6 @@ define([
 			var detailsContainer = new ContainerWidget({
 				'class': 'descriptionContainer'
 			});
-			this._renderIcon(detailsContainer);
 			if (isAppInstalled) {
 				this._renderAppUsage(detailsContainer);
 				// this._renderInstallationManagement(detailsContainer);
@@ -406,10 +405,10 @@ define([
 			this._renderSidebar(sidebarContainer);
 
 			content.addChild(mainContainer);
-				if (imageGallery) {
-					mainContainer.addChild(imageGallery);
-				}
-				mainContainer.addChild(detailsContainer);
+			if (imageGallery) {
+				mainContainer.addChild(imageGallery);
+			}
+			mainContainer.addChild(detailsContainer);
 			content.addChild(sidebarContainer);
 
 			var detailsPane = new ContentPane({
@@ -417,27 +416,6 @@ define([
 				'class': 'appDetailsPane'
 			});
 			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
-		},
-
-		_renderIcon: function(parentContainer) {
-			if (this._icon) {
-				this.removeChild(this._icon);
-				this._icon.destroyRecursive();
-				this._icon = null;
-			}
-			var iconName = this.app.logoDetailPageName || this.app.logoName;
-			var icon_class = this._grid.getIconClass(iconName);
-			if (icon_class) {
-				this._icon = new ContainerWidget({
-					'class': icon_class + ' icon',
-					'style': {
-						'height': '7em',
-						'margin-bottom': '1em',
-						'background-size': 'contain'
-					}
-				});
-				parentContainer.addChild(this._icon);
-			}
 		},
 
 		_renderAppUsage: function(parentContainer) {
