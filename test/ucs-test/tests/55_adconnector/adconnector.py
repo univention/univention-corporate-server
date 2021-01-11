@@ -102,15 +102,16 @@ class ADConnection(ldap_glue.LDAPConnection):
 		sn = attributes.get('sn', 'SomeSurName')
 
 		new_position = position or 'cn=users,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn.decode('UTF-8')), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(cn)), new_position)
 
 		defaults = (
 			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
 			('cn', to_bytes(cn)),
 			('sn', to_bytes(sn)),
 			('sAMAccountName', to_bytes(username)),
-			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
-			('displayName', b'%s %s' % (to_bytes(username), to_bytes(sn))))
+			('userPrincipalName', to_bytes('%s@%s' % (tcommon.to_unicode(username), tcommon.to_unicode(self.addomain)))),
+			('displayName', to_bytes('%s %s' % (tcommon.to_unicode(username), tcommon.to_unicode(sn))))
+		)
 		new_attributes = dict(defaults)
 		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
@@ -133,7 +134,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		Returns the dn of the created group.
 		"""
 		new_position = position or 'cn=groups,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname.decode('UTF-8')), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(groupname)), new_position)
 
 		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
 		new_attributes = dict(defaults)
@@ -179,7 +180,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name.decode('UTF-8')), position)
+		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(name)), position)
 		self.create(container_dn, attrs)
 		return container_dn
 
@@ -194,7 +195,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name.decode('UTF-8')), position), attrs)
+		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(name)), position), attrs)
 
 	def verify_object(self, dn, expected_attributes):
 		"""
