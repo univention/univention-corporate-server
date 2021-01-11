@@ -466,7 +466,7 @@ define([
 				disabled: this.disabled,
 				visible: !this.disabled,
 				onClick: lang.hitch(this, '_appendRows', 1),
-				'class': 'umcMultiInputAddButton umcOutlinedButton'
+				'class': 'umcMultiInputAddButton ucsTextButton'
 			});
 			this.addChild(this._newEntryButton);
 
