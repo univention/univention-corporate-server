@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
 ## exposure: dangerous
@@ -41,7 +41,7 @@ def test_user_sync_from_udm_to_ad(user_class, sync_mode):
 		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
 
 		print("\nModifying UDM user\n")
-		udm.modify_object('users/user', dn=udm_user_dn, **udm_user.user)
+		udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.user))
 		adconnector.wait_for_sync()
 		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.user))
 
@@ -58,7 +58,7 @@ def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
 		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
 
 		print("\nRename UDM user\n")
-		udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.rename)
+		udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.rename))
 		adconnector.wait_for_sync()
 
 		AD.verify_object(ad_user_dn, None)

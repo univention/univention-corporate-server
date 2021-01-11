@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with groups"
 ## exposure: dangerous
@@ -56,7 +56,7 @@ def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 
 		print("\nRename UDM group\n")
 		old_udm_dn = udm_group_dn  # part of the workaround for bug #41694
-		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.rename)
+		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.to_unicode(udm_group.rename))
 		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
 		if old_udm_dn == udm_group_dn:
 			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)]] +

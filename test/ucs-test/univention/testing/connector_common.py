@@ -63,6 +63,10 @@ class TestUser(object):
 		self.rename.update(rename)
 		self.container = container
 
+	@classmethod
+	def to_unicode(cls, dictionary):
+		return dict((k, to_unicode(v)) for k, v in dictionary.items())
+
 	def __repr__(self):
 		args = (self.user, self.rename, self.container)
 		return "{}({})".format(self.__class__.__name__, ", ".join(repr(a) for a in args))
@@ -150,6 +154,10 @@ class TestGroup(object):
 		self.rename.update(rename)
 		self.container = container
 
+	@classmethod
+	def to_unicode(cls, dictionary):
+		return dict((k, to_unicode(v)) for k, v in dictionary.items())
+
 	def __repr__(self):
 		args = (self.group, self.rename, self.container)
 		return "{}({})".format(self.__class__.__name__, ", ".join(repr(a) for a in args))
@@ -231,7 +239,7 @@ def map_udm_group_to_con(group):
 
 def create_udm_user(udm, con, user, wait_for_sync):
 	print("\nCreating UDM user {}\n".format(user.basic))
-	(udm_user_dn, username) = udm.create_user(**dict((k, to_unicode(v)) for k, v in user.basic.items()))
+	(udm_user_dn, username) = udm.create_user(**user.to_unicode(user.basic))
 	con_user_dn = ldap.dn.dn2str([
 		[("CN", to_unicode(username), ldap.AVA_STRING)],
 		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
@@ -270,7 +278,7 @@ def delete_con_user(con, con_user_dn, udm_user_dn, wait_for_sync):
 
 def create_udm_group(udm, con, group, wait_for_sync):
 	print("\nCreating UDM group {}\n".format(group))
-	(udm_group_dn, groupname) = udm.create_group(**group.group)
+	(udm_group_dn, groupname) = udm.create_group(**group.to_unicode(group.group))
 	con_group_dn = ldap.dn.dn2str([
 		[("CN", to_unicode(groupname), ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
