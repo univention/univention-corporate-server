@@ -33,20 +33,22 @@
 
 
 from __future__ import print_function
+
 import sys
 import os
 import re
-import univention.config_registry
-import ldap
-import ldap.sasl
 import subprocess
 import base64
 
+import ldap
+import ldap.sasl
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
-from univention.connector.ad import decode_sid
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
+
+import univention.config_registry
+from univention.connector.ad import decode_sid
 
 objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
 
@@ -114,10 +116,8 @@ ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBAS
 
 login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
 pw_file = configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]
-fp = open(pw_file, 'r')
-login_pw = fp.readline()
-if login_pw[-1] == '\n':
-	login_pw = login_pw[:-1]
+with open(pw_file, 'r') as fd:
+	login_pw = fd.readline().strip()
 
 certificate_chain_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
 start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
@@ -174,9 +174,9 @@ page_size = 1000
 lc2 = SimplePagedResultsControl(True, page_size, '')
 
 if filter_attributes:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter, filter_attributes, serverctrls=[lc1, lc2])
 else:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter, serverctrls=[lc1, lc2])
 
 res = []
 while True:
@@ -193,9 +193,9 @@ while True:
 			lc2.controlValue = (page_size, cookie)
 			lc2.cookie = cookie
 			if filter_attributes:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter, filter_attributes, serverctrls=[lc1, lc2])
 			else:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter, serverctrls=[lc1, lc2])
 		else:
 			break
 	else:
@@ -222,13 +222,13 @@ for r in res:
 			elif key in ['objectGUID']:
 				val = str(ndr_unpack(misc.GUID, val))
 			elif key in ['dnsRecord', 'auditingPolicy']:
-				val = base64.b64encode(val)
+				val = base64.b64encode(val).decode('ASCII')
 				sep = '::'
 			else:
 				try:
-					val = unicode(val)
+					val = val.decode('UTF-8')
 				except UnicodeDecodeError:
-					val = base64.b64encode(val)
+					val = base64.b64encode(val).decode('ASCII')
 					sep = '::'
 			print("{0}{1} {2}".format(key, sep, val))
 print("")
