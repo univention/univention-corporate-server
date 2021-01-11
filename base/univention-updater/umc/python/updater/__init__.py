@@ -439,7 +439,7 @@ class Instance(Base):
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"
-			components = [bool(self.uu.component(comp)) for comp in self.uu.get_all_components]
+			components = [bool(comp) for comp in self.uu.get_components(all=True)]
 			result['components'] = len(components)
 			result['enabled'] = sum(components)
 

@@ -303,11 +303,10 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
             else:
                 if not updater:
                     updater = LocalUpdater()
-                components = updater.get_current_components()
                 failed = {
-                    component
-                    for component in components
-                    if not any(updater.component(component).repositories([ver]))
+                    comp.name
+                    for component in updater.get_components(only_current=True)
+                    if not any(comp.repositories([ver]))
                 }
                 if failed:
                     raise RequiredComponentError(str(ver), failed)
