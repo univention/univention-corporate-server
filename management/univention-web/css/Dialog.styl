@@ -220,9 +220,16 @@
 		clear: both
 
 	.umcPageMain
-		background-color: #fff
 		material-shadow(1)
 		padding: 24px 24px 8px
+		background-color: var(--color-grey0)
+		border-radius: var(--border-radius-container)
+
+		.umcText
+			font-size: var(--font-size-small)
+
+		.ucsButton
+			margin-bottom: 1em
 
 		.umcPageHeader h1
 			margin: 0 0 20px
@@ -240,10 +247,3 @@
 
 	.umcPageFooter
 		display: none
-
-	.dijitTextBox,
-	.dijitSelect
-		background-color: #fafafa
-
-	.dijitTextBoxDisabled
-		background: $textbox-disabled-background-color
