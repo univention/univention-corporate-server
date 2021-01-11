@@ -99,14 +99,14 @@ def generate_strong_password(length=24):
 	return "".join(pwd)
 
 
-def set_ucs_passwd_user(s4connector, key, ucs_object):
+def set_ucs_passwd_user(connector, key, ucs_object):
 	'''
 	set random password to fulfill required values
 	'''
 	ucs_object['password'] = generate_strong_password()
 
 
-def check_ucs_lastname_user(s4connector, key, ucs_object):
+def check_ucs_lastname_user(connector, key, ucs_object):
 	'''
 	check if required values for lastname are set
 	'''
@@ -114,11 +114,11 @@ def check_ucs_lastname_user(s4connector, key, ucs_object):
 		ucs_object['lastname'] = 'none'
 
 
-def set_primary_group_user(s4connector, key, ucs_object):
+def set_primary_group_user(connector, key, ucs_object):
 	'''
 	check if correct primary group is set
 	'''
-	s4connector.set_primary_group_to_ucs_user(key, ucs_object)
+	connector.set_primary_group_to_ucs_user(key, ucs_object)
 
 # compare functions
 
@@ -300,11 +300,11 @@ class attribute(object):
 		:type ldap_attribute: str
 
 		:param con_attribute:
-			The LDAP attribute name of the object in Samba 4 LDAP
+			The LDAP attribute name of the object in AD LDAP
 		:type con_attribute: str
 
 		:param con_other_attribute:
-			Further LDAP attribute name of the object in Samba 4 LDAP.
+			Further LDAP attribute name of the object in AD LDAP.
 		:type con_other_attribute: str
 
 		:param required:
@@ -312,7 +312,7 @@ class attribute(object):
 		:type required: bool
 
 		:param single_value:
-			Whether the attribute is single_value in the Samba 4 LDAP.
+			Whether the attribute is single_value in the AD LDAP.
 		:type single_value: bool
 
 		:param compare_function:
@@ -593,7 +593,7 @@ class ucs(object):
 				self._remove_config_option('DN Mapping UCS', ucs.lower())
 
 	def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
-		"""Remember the entryCSN of a change committed by the S4-Connector itself"""
+		"""Remember the entryCSN of a change committed by the AD-Connector itself"""
 		value = self._get_config_option('UCS entryCSN', entryUUID)
 		if value:
 			entryCSN_set = set(value.split(','))
@@ -1232,7 +1232,7 @@ class ucs(object):
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
-		"""Removes an Samba-4 object in UCS-LDAP"""
+		"""Removes an AD object in UCS-LDAP"""
 
 		if self.property[property_type].disable_delete_in_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
@@ -1301,7 +1301,7 @@ class ucs(object):
 			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
 
 			if not self._ignore_object(key, back_mapped_subobject):
-				# FIXME: this call is wrong!: sync_to_ucs() must be called with a samba_object not with a ucs_object!
+				# FIXME: this call is wrong!: sync_to_ucs() must be called with a ad_object not with a ucs_object!
 				if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], parent_ucs_object):
 					ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
 					return False
@@ -1327,7 +1327,7 @@ class ucs(object):
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		# this function gets an object from the s4 class, which should be converted into a ucs module
 
-		# if sync is write (sync to S4) or none, there is nothing to do
+		# if sync is write (sync to AD) or none, there is nothing to do
 		if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
 			if property_type:
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
@@ -1624,7 +1624,7 @@ class ucs(object):
 		parse if object should be ignored because of ignore_subtree or ignore_filter
 
 		:param key: the property_type from the mapping
-		:param object: a mapped or unmapped S4 or UCS object
+		:param object: a mapped or unmapped AD or UCS object
 		'''
 		if 'dn' not in object:
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
@@ -1649,7 +1649,7 @@ class ucs(object):
 		return False
 
 	def _object_mapping(self, key, old_object, object_type='con'):
-		"""Create a mapped object from Samba or UCS object definition.
+		"""Create a mapped object from AD or UCS object definition.
 
 		:param key:
 			the mapping key
@@ -1657,7 +1657,7 @@ class ucs(object):
 			the object definition in univention directory listener style
 		:ptype old_object: dict
 		:param object_type:
-			"con" if `old_object` is a S4 object.
+			"con" if `old_object` is a AD object.
 			"ucs" if `old_object` is a UCS object.
 		:ptype object_type: str
 		"""
@@ -1713,7 +1713,6 @@ class ucs(object):
 
 		object_out = object
 
-		# other mapping
 		for attribute, values in list(object['attributes'].items()):
 			for attr_key, attributes in (MAPPING.attributes or {}).items():
 				if attribute.lower() == attributes.ldap_attribute.lower():
