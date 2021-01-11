@@ -165,7 +165,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			assert not self.exists(dn), "S4 object {} should not exist".format(dn)
 		else:
 			s4_object = self.get(dn)
-			for (key, value) in expected_attributes.iteritems():
+			for (key, value) in expected_attributes.items():
 				s4_value = set(tcommon.to_unicode(x).lower() for x in s4_object.get(key, []))
 				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
 				if not expected.issubset(s4_value):

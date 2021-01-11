@@ -754,7 +754,7 @@ def verify_udm_object(module, dn, expected_properties):
 		raise AssertionError("UDM object {} should not exist".format(dn))
 
 	difference = {}
-	for (key, value) in expected_properties.iteritems():
+	for (key, value) in expected_properties.items():
 		udm_value = udm_object.info.get(key, [])
 		if udm_value is None:
 			udm_value = []
@@ -823,11 +823,11 @@ if __name__ == '__disabled__':
 		# test with malformed arguments
 		try:
 			_dnUser, _username = udm.create_user(username='')
-		except UCSTestUDM_CreateUDMObjectFailed as ex:
+		except UCSTestUDM_CreateUDMObjectFailed:
 			print('Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS')
 
 		# try to modify object not created by create_udm_object()
 		try:
 			udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
-		except UCSTestUDM_CannotModifyExistingObject as ex:
+		except UCSTestUDM_CannotModifyExistingObject:
 			print('Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS')

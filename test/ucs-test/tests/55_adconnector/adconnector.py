@@ -209,7 +209,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 			assert not self.exists(dn), "AD object {} should not exist".format(dn)
 		else:
 			ad_object = self.get(dn)
-			for (key, value) in expected_attributes.iteritems():
+			for (key, value) in expected_attributes.items():
 				ad_value = set(tcommon.to_unicode(x).lower() for x in ad_object.get(key, []))
 				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
 				if not expected.issubset(ad_value):

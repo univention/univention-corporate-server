@@ -153,7 +153,7 @@ class TestADCustomMappings(unittest.TestCase):
 
         # check the value from the mapping
         self.assertEqual(
-            self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string]
+            self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string.encode('UTF-8')]
         )
 
 

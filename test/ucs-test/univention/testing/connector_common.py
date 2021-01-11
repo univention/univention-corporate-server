@@ -225,13 +225,13 @@ def map_udm_group_to_con(group):
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}
-	# return {mapping[key]: value for (key, value) in group.iteritems() if key in mapping}
+	# return {mapping[key]: value for (key, value) in group.items() if key in mapping}
 	return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in group.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync):
 	print("\nCreating UDM user {}\n".format(user.basic))
-	(udm_user_dn, username) = udm.create_user(**user.basic)
+	(udm_user_dn, username) = udm.create_user(**dict((k, to_unicode(v)) for k, v in user.basic.items()))
 	con_user_dn = ldap.dn.dn2str([
 		[("CN", to_unicode(username), ldap.AVA_STRING)],
 		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
