@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-10) unstable; urgency=medium
+
+  * Bug #52453: Adjust design of image gallery
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 11 Jan 2021 12:05:44 +0100
+
 univention-appcenter (9.0.1-9) unstable; urgency=medium
 
   * Bug #52538: Add background_color to App class
