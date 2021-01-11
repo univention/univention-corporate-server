@@ -67,9 +67,10 @@ define([
 	"umc/modules/appcenter/Badges",
 	"umc/modules/appcenter/Vote",
 	"umc/modules/appcenter/App",
-	"umc/modules/appcenter/ThumbnailGallery",
+	// "umc/modules/appcenter/ThumbnailGallery",
+	"umc/modules/appcenter/ImageGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -377,34 +378,42 @@ define([
 		},
 
 		_renderDetailsPane: function(isAppInstalled) {
-			this._detailsContainer = new ContainerWidget({
-				'class': 'container'
+			var content = new ContainerWidget({
+				'class': 'container AppDetailsPage__content'
 			});
-			var detailsPane = new ContentPane({
-				content: this._detailsContainer,
-				'class': 'appDetailsPane'
-			});
-			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
 
-			var detailsContainerMain = new ContainerWidget({
-				'class': 'descriptionContainer col-xs-12 col-md-8'
+			var mainContainer = new ContainerWidget({
+				'class': 'col-xs-12 col-md-8'
 			});
-			this._detailsContainer.addChild(detailsContainerMain);
-			this._detailsContainer.own(detailsContainerMain);
-			this._renderIcon(detailsContainerMain);
+			var imageGallery = new ImageGallery({
+				srcs: this.app.thumbnails
+			});
+			var detailsContainer = new ContainerWidget({
+				'class': 'descriptionContainer'
+			});
+			this._renderIcon(detailsContainer);
 			if (isAppInstalled) {
-				this._renderAppUsage(detailsContainerMain);
-				// this._renderInstallationManagement(detailsContainerMain);
+				this._renderAppUsage(detailsContainer);
+				// this._renderInstallationManagement(detailsContainer);
 			}
-			this._renderDescription(detailsContainerMain, isAppInstalled);
-			this._renderThumbnails(detailsContainerMain, detailsPane);
+			this._renderDescription(detailsContainer, isAppInstalled);
+			// this._renderThumbnails(detailsContainer, detailsPane);
 
 			var sidebarContainer = ContainerWidget({
 				'class': 'col-xs-12 col-md-4'
 			});
-			this._detailsContainer.addChild(sidebarContainer);
-			this._detailsContainer.own(sidebarContainer);
 			this._renderSidebar(sidebarContainer);
+
+			content.addChild(mainContainer);
+				mainContainer.addChild(imageGallery);
+				mainContainer.addChild(detailsContainer);
+			content.addChild(sidebarContainer);
+
+			var detailsPane = new ContentPane({
+				content: content,
+				'class': 'appDetailsPane'
+			});
+			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
 		},
 
 		_renderIcon: function(parentContainer) {

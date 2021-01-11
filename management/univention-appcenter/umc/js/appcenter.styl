@@ -288,6 +288,9 @@ $app-detailspane-background-color = var(--color-grey0)
 		margin-bottom: 0.5em
 
 .umc .umcAppDetailsPage
+	&__content
+		padding: 0
+
 	.umcPageNav
 		.icon
 			margin-bottom: 1em
@@ -686,3 +689,89 @@ $app-detailspane-background-color = var(--color-grey0)
 
 	.umcModuleContent
 		overflow: visible
+
+.imageGallery
+	--local-idx: 0
+	padding-bottom: 30px // TODO this is the sum of the left and right padding of the bootstrap container
+
+.imageGallery__aspectRatio
+	width: 100%
+	padding-bottom: calc(100% / (16 / 9))
+	position: relative
+
+.imageGallery__viewport
+	border-radius: var(--border-radius-container)
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+	overflow: hidden
+	display: flex
+	align-items: center
+	background-color: var(--bgc-content-container)
+
+.imageGallery__carousel
+	width: 100%
+	height: 100%
+	display: flex
+	position: relative
+	left: calc(-100% * var(--local-idx))
+	transition: left 250ms
+
+.imageGallery__carouselItem
+	flex: 1 0 auto
+	width: 100%
+	height: 100%
+	display: flex
+	align-items: center
+	justify-content: center
+
+	img
+		max-width: 100%
+		max-height: 100%
+
+.imageGallery__navButton
+	position: absolute
+	--button-icon-highlighted-bgc: var(--color-black)
+
+	&--left
+		left: 1rem
+	&--right
+		right: 1rem
+
+.imageGallery__carouselVideo__video
+	width: 100%
+	height: 100%
+	background: var(--color-black)
+		
+.imageGallery__carouselVideo__playButton
+	--button-size: 3rem
+	--button-iconSize: 1.5rem
+	position: absolute
+
+.imageGallery__dotsWrapper
+	width: 100%
+	padding: 0.5rem 0
+	display: flex
+	justify-content: center
+
+.imageGallery__dots
+	position: relative
+	display: flex
+	grid-gap: 1rem
+
+.imageGallery__dot
+	width: 0.5rem
+	height: @width
+	border-radius: var(--border-radius-circles)
+	background-color: rgba(255, 255, 255, 0.2)
+	cursor: pointer
+
+.imageGallery__dot--reticle
+	position: absolute
+	background-color: rgba(255, 255, 255, 1)
+	left: calc(1.5rem * var(--local-idx))
+	transition: left 250ms
+
+
