@@ -99,11 +99,12 @@ def findall_urls_from_readme(app):
                 html = fd.read()
                 parser.feed(html)
                 for url in parser.href:
-                    print('found URL - %s' % url)
-                    if all_urls.get(url):
-                        all_urls[url].append(filename)
-                    else:
-                        all_urls[url] = [filename]
+                    if 'http://' in url or 'https://' in url:
+                        print('found URL - %s' % url)
+                        if all_urls.get(url):
+                            all_urls[url].append(filename)
+                        else:
+                            all_urls[url] = [filename]
         except (IOError, OSError) as exc:
             utils.fail("An %r error occurred while working with %s" % (exc, filename))
     return all_urls

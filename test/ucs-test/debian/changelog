@@ -1,3 +1,9 @@
+ucs-test (9.0.7-12) unstable; urgency=medium
+
+  * Bug #52484: also check apps readme files
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Jan 2021 12:50:59 +0100
+
 ucs-test (9.0.7-11) unstable; urgency=medium
 
   * Bug #52144: copy function of testing/selenium/udm.py revised
