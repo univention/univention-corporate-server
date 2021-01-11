@@ -49,30 +49,14 @@ define([
 		templateString: `
 			<div>
 				<div class="imageGallery__aspectRatio">
-					<div class="imageGallery__viewport">
+					<div data-dojo-attach-point="viewportNode" class="imageGallery__viewport">
 						<div
 							data-dojo-attach-point="carouselNode"
 							class="imageGallery__carousel"
 						></div>
-						<button
-							data-dojo-type="umc/widgets/Button"
-							data-dojo-attach-event="click: navLeft"
-							data-dojo-props="
-								iconClass: 'chevron-left'
-							"
-							class="ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--left"
-						></button>
-						<button
-							data-dojo-type="umc/widgets/Button"
-							data-dojo-attach-event="click: navRight"
-							data-dojo-props="
-								iconClass: 'chevron-right'
-							"
-							class="ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--right"
-						></button>
 					</div>
 				</div>
-				<div class="imageGallery__dotsWrapper">
+				<div data-dojo-attach-point="dotsWrapper" class="imageGallery__dotsWrapper dijitDisplayNone">
 					<div data-dojo-attach-point="dotsNode" class="imageGallery__dots">
 						<div class="imageGallery__dot imageGallery__dot--reticle"></div>
 					</div>
@@ -84,7 +68,13 @@ define([
 		//// self
 		carouselIdx: 0,
 		_setCarouselIdxAttr: function(carouselIdx) {
-			carouselIdx = Math.min(Math.max(carouselIdx, 0), this._items.length - 1);
+			const maxIdx = this._items.length - 1;
+			if (carouselIdx < 0) {
+				carouselIdx = maxIdx;
+			}
+			if (carouselIdx > maxIdx) {
+				carouselIdx = 0;
+			}
 			this.domNode.style.setProperty('--local-idx', carouselIdx);
 			if (carouselIdx !== this.carouselIdx) {
 				this.pauseAllVideos();
@@ -168,7 +158,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			for (const[idx, item] of this._items.entries()) {
+			for (const item of this._items) {
 				if (item.type === 'video') {
 					var videoId = item.videoId;
 
@@ -197,11 +187,31 @@ define([
 				} else if (item.type === 'img') {
 					put(this.carouselNode, `div.imageGallery__carouselItem img[src=${item.src}]`);
 				}
+			}
 
-				const dot = put(this.dotsNode, 'div.imageGallery__dot');
-				on(dot, 'click', () => {
-					this.set('carouselIdx', idx);
+			if (this._items.length >= 2) {
+				tools.toggleVisibility(this.dotsWrapper, true);
+				for (let x = 0; x < this._items.length; x++) {
+					const dot = put(this.dotsNode, 'div.imageGallery__dot');
+					on(dot, 'click', () => {
+						this.set('carouselIdx', x);
+					});
+				}
+
+				const navLeft = new Button({
+					iconClass: 'chevron-left',
+					class: 'ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--left',
+					onClick: lang.hitch(this, 'navLeft'),
 				});
+				const navRight = new Button({
+					iconClass: 'chevron-right',
+					class: 'ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--right',
+					onClick: lang.hitch(this, 'navRight'),
+				});
+				this.own(navLeft);
+				this.own(navRight);
+				put(this.viewportNode, navLeft.domNode);
+				put(this.viewportNode, navRight.domNode);
 			}
 		},
 

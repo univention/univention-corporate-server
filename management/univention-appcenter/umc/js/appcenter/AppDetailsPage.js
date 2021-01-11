@@ -67,7 +67,6 @@ define([
 	"umc/modules/appcenter/Badges",
 	"umc/modules/appcenter/Vote",
 	"umc/modules/appcenter/App",
-	// "umc/modules/appcenter/ThumbnailGallery",
 	"umc/modules/appcenter/ImageGallery",
 	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
@@ -385,9 +384,12 @@ define([
 			var mainContainer = new ContainerWidget({
 				'class': 'col-xs-12 col-md-8'
 			});
-			var imageGallery = new ImageGallery({
-				srcs: this.app.thumbnails
-			});
+			var imageGallery = null;
+			if (this.app.thumbnails.length) {
+				imageGallery = new ImageGallery({
+					srcs: this.app.thumbnails
+				});
+			}
 			var detailsContainer = new ContainerWidget({
 				'class': 'descriptionContainer'
 			});
@@ -397,7 +399,6 @@ define([
 				// this._renderInstallationManagement(detailsContainer);
 			}
 			this._renderDescription(detailsContainer, isAppInstalled);
-			// this._renderThumbnails(detailsContainer, detailsPane);
 
 			var sidebarContainer = ContainerWidget({
 				'class': 'col-xs-12 col-md-4'
@@ -405,7 +406,9 @@ define([
 			this._renderSidebar(sidebarContainer);
 
 			content.addChild(mainContainer);
-				mainContainer.addChild(imageGallery);
+				if (imageGallery) {
+					mainContainer.addChild(imageGallery);
+				}
 				mainContainer.addChild(detailsContainer);
 			content.addChild(sidebarContainer);
 
@@ -527,24 +530,6 @@ define([
 			}, descriptionContainer.domNode));
 			parentContainer.addChild(descriptionContainer);
 
-		},
-
-		_renderThumbnails: function(parentContainer, detailsPane) {
-			if (this.app.thumbnails.length) {
-				var styleContainer = new ContainerWidget({
-					'class': 'carouselWrapper'
-				});
-				var urls = array.map(this.app.thumbnails, function(ithumb) {
-					return {
-						src: ithumb
-					};
-				});
-				this.thumbnailGallery = new ThumbnailGallery({
-					items: urls
-				});
-				styleContainer.addChild(this.thumbnailGallery);
-				parentContainer.addChild(styleContainer);
-			}
 		},
 
 		_renderSidebar: function(parentContainer) {
