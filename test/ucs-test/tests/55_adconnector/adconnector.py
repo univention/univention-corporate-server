@@ -102,7 +102,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		sn = attributes.get('sn', 'SomeSurName')
 
 		new_position = position or 'cn=users,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn.decode('UTF-8')), new_position)
 
 		defaults = (
 			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
@@ -133,7 +133,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		Returns the dn of the created group.
 		"""
 		new_position = position or 'cn=groups,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname.decode('UTF-8')), new_position)
 
 		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
 		new_attributes = dict(defaults)
@@ -179,7 +179,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
+		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name.decode('UTF-8')), position)
 		self.create(container_dn, attrs)
 		return container_dn
 
@@ -194,7 +194,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
+		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name.decode('UTF-8')), position), attrs)
 
 	def verify_object(self, dn, expected_attributes):
 		"""
