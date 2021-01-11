@@ -296,6 +296,22 @@ systemctl restart apache2
 
 <chapter id="services">
 	<title>Further services and components</title>
+	<section id="apache">
+		<title>Apache</title>
+		<para>
+			In environments with many simultaneous accesses to the web server or Univention Portal and Univention Management Console,
+			it may be advisable to increase the number of possible Apache processes or reserve processes. This can be achieved via
+			the UCR variables <envar>apache2/server-limit</envar>, <envar>apache2/start-servers</envar>, <envar>apache2/min-spare-servers</envar>
+			and <envar>apache2/max-spare-servers</envar>. After setting, the Apache process must be restarted via the command
+			<command>systemctl restart apache2</command>.
+		</para>
+		<para>
+			Detailed information about useful values for the UCR variables can be found at
+			<ulink url="https://httpd.apache.org/docs/2.4/en/mod/mpm_common.html#serverlimit" /> and
+			<ulink url="https://httpd.apache.org/docs/2.4/en/mod/mpm_common.html#startservers" />.
+		</para>
+	</section>
+
 	<section id="squid">
 		<title>Squid</title>
 		<para>
