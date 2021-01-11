@@ -312,6 +312,29 @@ systemctl restart apache2
 		</para>
 	</section>
 
+	<section id="saml">
+		<title>SAML</title>
+		<para>
+			By default, SAML assertions are valid for 300 seconds and must be renewed by clients no later than
+			then to continue using them. In scenarios where refreshing SAML assertions at such short intervals
+			is too expensive (for clients or servers), the lifetime of SAML assertions can be increased via the
+			UCR variable <envar>umc/saml/assertion-lifetime</envar>. This can be achieved on each UCS system
+			with the role &ucsMaster; or &ucsBackup; by executing the following commands:
+			<programlisting language="sh">
+ucr set umc/saml/assertion-lifetime=3600
+cd /usr/share/univention-management-console/saml/
+./update_metadata --binddn USERDN --bindpwdfile FILENAME
+			</programlisting>
+			<literal>USERDN</literal> has to be replaced with a valid DN of a user, that is member of the group
+			<systemitem class="groupname">Domain Admins</systemitem> and the file specified by
+			<literal>FILENAME</literal> has to contain the corresponding password of that user.
+		</para>
+		<para>
+			It should be noted that increasing the lifetime has security implications that should be carefully
+			considered.
+		</para>
+	</section>
+
 	<section id="squid">
 		<title>Squid</title>
 		<para>
