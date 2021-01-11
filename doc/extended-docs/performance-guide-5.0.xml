@@ -282,8 +282,14 @@ systemctl restart univention-management-console-server
 systemctl restart apache2
 		  </programlisting>
 		  The number of instances to configure depends on the workload and the server system. As a general rule of thumb
-		  these should not be higher as the machines CPU cores minus four.
-		</para>
+		  these should not be higher as the machines CPU cores. Good throughput values had resulted in tests with the following combinations:
+		  <itemizedlist>
+			  <listitem><para>6 CPU cores: <literal>umc/http/processes=3</literal> and <literal>umc/server/processes=3</literal></para></listitem>
+			  <listitem><para>16 CPU cores: <literal>umc/http/processes=15</literal> and <literal>umc/server/processes=15</literal></para></listitem>
+			  <listitem><para>32 CPU cores: <literal>umc/http/processes=25</literal> and <literal>umc/server/processes=25</literal></para></listitem>
+		  </itemizedlist>
+		  Note that the number of Apache processes may also need to be increased for the customization to take effect.
+	  </para>
 	</section>
 </chapter>
 
