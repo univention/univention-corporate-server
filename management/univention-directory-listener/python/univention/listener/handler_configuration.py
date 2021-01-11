@@ -69,7 +69,7 @@ class ListenerModuleConfiguration(object):
 
 	def __init__(self, *args, **kwargs):
 		_keys = self.get_configuration_keys()
-		for k, v in kwargs.items():
+		for k, v in list(kwargs.items()):
 			if k in _keys:
 				setattr(self, k, kwargs.pop(k))
 		self.logger = get_logger(self.get_name())
