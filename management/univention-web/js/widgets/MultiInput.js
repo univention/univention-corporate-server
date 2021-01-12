@@ -207,6 +207,7 @@ define([
 				class: 'umcMultiInputRowsLabelPane',
 				content: this._rowsContainer,
 				label: this._labelPaneLabel,
+				description: this.description,
 			});
 			this.addChild(labelPane);
 			this._renderNewEntryButton();
@@ -323,32 +324,6 @@ define([
 			}));
 		},
 
-		_setDescriptionAttr: function(_description) {
-			var description = _description;
-			if (!(description instanceof Array)) {
-				description = [];
-				array.forEach(this.subtypes, function(itype, i) {
-					description.push(i === 0 ? itype.description || _description || '' : itype.description || '');
-				}, this);
-			}
-
-			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
-				// prepare an array with descriptions for all widgets
-				var allDescriptions = [];
-				var i, j;
-				for (i = 0; i < this._widgets.length; ++i) {
-					allDescriptions.push(description);
-				}
-
-				// set all descriptions at once
-				this._setAllDescriptions(allDescriptions);
-
-				// notify observers
-				this._set('description', _description);
-			}));
-		},
-
-
 		_setAllLabels: function(labels) {
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
 				var i, j, jwidget, label;
@@ -358,25 +333,6 @@ define([
 						if (jwidget) {
 							label = i < labels.length && j < labels[i].length ? labels[i][j] : '';
 							jwidget.set('label', label);
-						}
-					}
-				}
-			}));
-		},
-
-		_setAllDescriptions: function(descriptions) {
-			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
-				var i, j, jwidget, label;
-				for (i = 0; i < this._widgets.length; ++i) {
-					for (j = 0; j < this._widgets[i].length; ++j) {
-						jwidget = this._widgets[i][j];
-						if (jwidget) {
-							description = i < descriptions.length && j < descriptions[i].length ? descriptions[i][j] : '';
-							if (! ((description === '') || (description === ' ') || (typeof description == 'undefined')) ) {
-								jwidget.set('description', description);
-							} else {
-								jwidget.set('description', null);
-							}
 						}
 					}
 				}
@@ -554,11 +510,6 @@ define([
 					value: '',
 					dynamicValues: lang.partial(iwidget.dynamicValues, iname)
 				});
-
-				// if no label and description is given, set the main label/description as label/description
-				// of the first subwidget
-				iconf.label = iconf.label || (i === 0 && this.label ? this.label : '&nbsp;');
-				iconf.description = iconf.description || (i === 0 && this.description ? this.description : '');
 
 				if (iwidget.dynamicValuesInfo) {
 					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);
