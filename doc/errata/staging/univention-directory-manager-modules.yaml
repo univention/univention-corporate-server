@@ -3,8 +3,10 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-modules
-fix: 14.0.19-2A~4.4.0.202101111724
+fix: 
 desc: |
  This update addresses the following issue:
  * The multivalue filter does not catch the multivalue elements.
-bug: [51777]
+ * The --remove-option argument of the UDM CLI `create` command has been
+   repaired.
+bug: [51777, 52576]

@@ -726,7 +726,7 @@ def _doit(arglist):
 				object.options.append(option)
 			for option in parsed_remove_options:
 				try:
-					object.option.remove(option)
+					object.options.remove(option)
 				except ValueError:
 					pass
 

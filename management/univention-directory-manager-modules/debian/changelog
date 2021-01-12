@@ -1,4 +1,10 @@
-univention-directory-manager-modules (14.0.19-2) UNRELEASED; urgency=medium
+univention-directory-manager-modules (14.0.20-1) unstable; urgency=medium
+
+  * Bug #52576: fix removing options on UDM CLI create
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jan 2021 11:34:51 +0100
+
+univention-directory-manager-modules (14.0.19-2) unstable; urgency=medium
 
   * Bug #51777: fixing multivalue filter and added tests
 
