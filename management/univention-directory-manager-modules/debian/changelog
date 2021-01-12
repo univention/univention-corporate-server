@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.6-1) unstable; urgency=medium
+
+  * Bug #52576: fix removing options on UDM CLI create
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jan 2021 12:04:22 +0100
+
 univention-directory-manager-modules (15.0.5-1) unstable; urgency=low
 
   * Bug #45205: readd support for email forwarding setting
