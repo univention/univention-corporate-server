@@ -177,7 +177,7 @@ def do_release_update(options, checkForUpdates, silent):
         params.append('--ignoressh')
     if options.ignoreterm:
         params.append('--ignoreterm')
-    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, shell=False, env=os.environ)
+    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, env=os.environ)
     if retcode:
         dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
