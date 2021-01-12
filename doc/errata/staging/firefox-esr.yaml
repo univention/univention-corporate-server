@@ -6,8 +6,6 @@ src: firefox-esr
 fix: 78.6.1esr-1~deb9u1
 desc: |
  This update addresses the following issue:
-
- * 78.6.1esr-1~deb9u1 (Thu, 07 Jan 2021 10:38:06 +0100) * Backport to stretch.
  * Use-after-free write when handling a malicious COOKIE-ECHO SCTP chunk
    (CVE-2020-16044)
 bug: [52571]
