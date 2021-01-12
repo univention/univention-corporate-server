@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-modules
-fix: 
+fix: 14.0.20-1A~4.4.0.202101121202
 desc: |
  This update addresses the following issue:
  * The multivalue filter does not catch the multivalue elements.
