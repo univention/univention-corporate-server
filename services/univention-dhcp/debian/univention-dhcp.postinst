@@ -92,6 +92,11 @@ then
 		systemctl --system daemon-reload >/dev/null || true
 		deb-systemd-invoke restart isc-dhcp-server.service univention-directory-listener.service univention-firewall.service
 	fi
+
+	# shellcheck disable=SC2015
+	dpkg --compare-versions "${2:-}" lt-nl 14.0.3 &&
+		update-rc.d -f univention-dhcp remove ||
+		:
 fi
 
 exit 0
