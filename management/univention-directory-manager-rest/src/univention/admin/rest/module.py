@@ -2284,7 +2284,7 @@ class FormBase(object):
 		# TODO: add files
 		# TODO: respect single-value
 		# TODO: the types should be converted, e.g. type=checkbox to boolean, number to int
-		for key in self.request.body_arguments.keys()[:]:
+		for key in list(self.request.body_arguments.keys()):
 			for name in ('properties', 'policies'):
 				if key.startswith('%s.' % (name,)):
 					properties = self.request.body_arguments.setdefault(name, {})
