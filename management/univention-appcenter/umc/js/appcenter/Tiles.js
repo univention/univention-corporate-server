@@ -33,11 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_Container",
 	"dijit/_TemplatedMixin"
-], function(declare, lang, array, domClass, _Widget, _Container, _TemplatedMixin) {
-	return declare("umc.modules.appcenter.Tiles", [_Widget, _Container, _TemplatedMixin], {
+], function(declare, lang, array, domClass, _WidgetBase, _Container, _TemplatedMixin) {
+	return declare("umc.modules.appcenter.Tiles", [_WidgetBase, _Container, _TemplatedMixin], {
 		tiles: null,
 		baseClass: 'umcTiles',
 		templateString: `

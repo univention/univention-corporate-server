@@ -33,13 +33,13 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_Container",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/Icon"
-], function(declare, lang, array, domClass, _Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin) {
-	return declare("umc.modules.appcenter.SidebarElement", [_Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
+], function(declare, lang, array, domClass, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin) {
+	return declare("umc.modules.appcenter.SidebarElement", [_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'appDetailsSidebarElement',
 		templateString: `
 			<div>

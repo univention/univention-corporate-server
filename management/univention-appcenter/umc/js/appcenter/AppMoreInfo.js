@@ -34,15 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-construct",
 	"dojox/html/entities",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_Container",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/SidebarElement"
-], function(declare, lang, array, domConstruct, entities, _Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+], function(declare, lang, array, domConstruct, entities, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
 	var header = _("More information");
-	return declare("umc.modules.appcenter.AppMoreInfo", [_Widget, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	return declare("umc.modules.appcenter.AppMoreInfo", [_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppMoreInfo',
 		templateString: `
 			<div>

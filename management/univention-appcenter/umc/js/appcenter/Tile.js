@@ -38,11 +38,11 @@ define([
 	"dojo/on",
 	"dojo/topic",
 	"umc/tools",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, kernel, array, domClass, dojoEvent, Tooltip, on, topic, tools, _Widget, _TemplatedMixin, _) {
-	return declare("umc.modules.appcenter.Tile", [_Widget, _TemplatedMixin], {
+], function(declare, kernel, array, domClass, dojoEvent, Tooltip, on, topic, tools, _WidgetBase, _TemplatedMixin, _) {
+	return declare("umc.modules.appcenter.Tile", [_WidgetBase, _TemplatedMixin], {
 		baseClass: 'umcTile',
 		templateString: `
 			<div data-dojo-attach-event="onclick:_onClick">

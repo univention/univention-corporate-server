@@ -34,12 +34,12 @@ define([
 	"dojo/_base/event",
 	"dijit/Tooltip",
 	"dojo/on",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/Icon"
-], function(declare, kernel, dojoEvent, Tooltip, on, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin) {
-	return declare("umc.modules.appcenter.Badge", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
+], function(declare, kernel, dojoEvent, Tooltip, on, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin) {
+	return declare("umc.modules.appcenter.Badge", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppBadge',
 		templateString: `
 			<div class="umcAppRatingHelp umcAppRatingIcon umcAppRating\${name}" data-dojo-attach-event="onmouseenter:_onMouseEnter">

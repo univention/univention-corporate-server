@@ -30,16 +30,16 @@
 
 define([
 	"dojo/_base/declare",
-	"dijit/_Widget",
+	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/SidebarElement",
 	"umc/widgets/Button"
-], function(declare, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
+], function(declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
 	var header = _("Buy in App Center");
 	var buttonLabel = _("Buy now");
-	return declare("umc.modules.appcenter.Buy", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	return declare("umc.modules.appcenter.Buy", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppBuy',
 		templateString: `
 			<div>

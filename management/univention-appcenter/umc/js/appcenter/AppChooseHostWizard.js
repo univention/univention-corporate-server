@@ -46,6 +46,7 @@ define([
 		needsToBeShown: null,
 
 		postMixInProperties: function() {
+			this.baseClass += ' umcAppChooseHostWizard';
 			this.inherited(arguments);
 			this.pages = this._getPages();
 		},
