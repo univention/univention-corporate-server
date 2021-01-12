@@ -1831,7 +1831,7 @@ class UniventionUpdater(object):
             """
             commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
             ud.debug(ud.PROCESS, ud.INFO, "Calling %s" % commandline)
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
             # Order is important! See bug #16454
             tee.wait()

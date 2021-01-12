@@ -167,11 +167,8 @@ class UniventionMirror(UniventionUpdater):
             if ex.errno != errno.EEXIST:
                 raise
 
-        log = open('/var/log/univention/repository.log', 'a')
-        try:
-            return subprocess.call('/usr/bin/apt-mirror', stdout=log, stderr=log, shell=False)
-        finally:
-            log.close()
+        with open('/var/log/univention/repository.log', 'a') as log:
+            return subprocess.call(('/usr/bin/apt-mirror',), stdout=log, stderr=log)
 
     def mirror_update_scripts(self):
         # type: () -> None
