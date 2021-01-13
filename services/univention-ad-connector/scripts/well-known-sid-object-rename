@@ -54,7 +54,7 @@ import univention.admin.uexceptions as uexceptions
 # load UDM modules
 udm_modules.update()
 
-LOGFILE = "/var/log/univention/connector.log"
+LOGFILE = "/var/log/univention/connector-ad.log"
 
 
 def log(level, msg):

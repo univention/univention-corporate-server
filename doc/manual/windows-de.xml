@@ -1361,7 +1361,7 @@ Zur Fehlersuche bei Synchronisationsproblemen finden sich
 entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
 </para>
 <programlisting>
-/var/log/univention/connector.log
+/var/log/univention/connector-ad.log
 /var/log/univention/connector-status.log
 </programlisting>
 </section>

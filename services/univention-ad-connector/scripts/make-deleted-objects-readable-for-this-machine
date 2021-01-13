@@ -51,7 +51,7 @@ from ldap.filter import filter_format
 LDAP_SERVER_SHOW_DELETED_OID = '1.2.840.113556.1.4.417'
 LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'
 
-LOGFILE = "/var/log/univention/connector.log"
+LOGFILE = "/var/log/univention/connector-ad.log"
 
 
 def log(level, msg):

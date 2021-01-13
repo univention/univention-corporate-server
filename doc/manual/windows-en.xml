@@ -1274,7 +1274,7 @@ corresponding messages can be found in the following files on the UCS
 system:
 </para>
 <programlisting>
-/var/log/univention/connector.log
+/var/log/univention/connector-ad.log
 /var/log/univention/connector-status.log
 </programlisting>
 </section>

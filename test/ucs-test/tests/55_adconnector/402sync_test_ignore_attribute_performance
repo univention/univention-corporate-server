@@ -71,9 +71,9 @@ sleep 10 ## Wait for replication attempt
 	RE_START="^$RE_UNIVENTION_DEBUG POLL FROM CON: Incoming .*"
 	RE_END="^$RE_UNIVENTION_DEBUG POLL FROM CON: Processed .*"
 
-	lines_replication_cycle_begin=$(grep "$RE_START" /var/log/univention/connector.log)
+	lines_replication_cycle_begin=$(grep "$RE_START" /var/log/univention/connector-ad.log)
 	if [ -z "$lines_replication_cycle_begin" ]; then 
-		grep "$RE_START" /var/log/univention/connector.log
+		grep "$RE_START" /var/log/univention/connector-ad.log
 		exit 1
 	fi
 
@@ -82,10 +82,10 @@ sleep 10 ## Wait for replication attempt
 		echo -e "ERROR: too many matching lines:\n$lines_replication_cycle_begin"
 		lines_replication_cycle2=$(tail -1 <<<"$lines_replication_cycle_begin")
 	fi
-	grep -i "sync to ucs:   [          user] [    modify] $UDM_USER_DN$" /var/log/univention/connector.log && fail_test 110
-	lines_replication_cycle_end=$(grep "$RE_END" /var/log/univention/connector.log)
+	grep -i "sync to ucs:   [          user] [    modify] $UDM_USER_DN$" /var/log/univention/connector-ad.log && fail_test 110
+	lines_replication_cycle_end=$(grep "$RE_END" /var/log/univention/connector-ad.log)
 	if [ -z "$lines_replication_cycle_end" ]; then 
-		grep "$RE_END" /var/log/univention/connector.log
+		grep "$RE_END" /var/log/univention/connector-ad.log
 		exit 1
 	fi
 	if [ "$(wc -l <<<"$lines_replication_cycle_end")" -ne 1 ]; then
@@ -96,8 +96,13 @@ sleep 10 ## Wait for replication attempt
 	timestamp_change_end=$(sed -n "s/$RE_END/\1/p" <<<"$lines_replication_cycle_end")
 
 	calculate_duration() {
-		STRP_FORMAT='%d.%m.%Y %H:%M:%S.%f'
-		python3 -c "from datetime import datetime; print(datetime.strptime('$2', '$STRP_FORMAT') - datetime.strptime('$1', '$STRP_FORMAT')).total_seconds()"
+		python3 -c '
+from datetime import datetime
+from sys import argv
+FMT = "%d.%m.%Y %H:%M:%S.%f"
+start, end = (datetime.strptime(_, FMT) for _ in argv[1:])
+print((end - start).total_seconds())
+' "$@"
 	}
 	DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_change_end")
 

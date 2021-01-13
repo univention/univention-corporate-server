@@ -440,7 +440,7 @@ class ucs(object):
 		self.configRegistry = configRegistry
 		self.property = _property  # this is the mapping!
 
-		self._logfile = logfilename or '/var/log/univention/%s.log' % self.CONFIGBASENAME
+		self._logfile = logfilename or '/var/log/univention/%s-ad.log' % self.CONFIGBASENAME
 		self._debug_level = debug_level or int(self.configRegistry.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
 		self.init_debug()
 
