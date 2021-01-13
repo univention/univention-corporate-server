@@ -6,6 +6,14 @@ It features comprehensive Active Directory services based on Samba, an extensive
 At the core of UCS is an integrated identity and infrastructure management system including a modern Web GUI as well as various APIs and command line interfaces.
 These tools make it very easy to administrate applications, users and resources in almost any environment.
 
+## Univention Summit 2021
+
+![](210108-NL-banner-en.jpg?raw=true)
+
+Univention Summit is Univention's annual event for customers, partners and vendors. Because of the pandemic situation it will take place as a virtual venue on 28. January 2021. You are happily invited to [register](https://www.univention-summit.com/registration/) and participate. For more information about the agenda visit [www.univention-summit.com](https://www.univention-summit.com/).
+
+We will meet you there.
+
 ## Download and Demo
 
 ISO and virtual machine images of UCS are [available for download](https://www.univention.com/downloads/ucs-download/).
