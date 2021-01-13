@@ -45,7 +45,7 @@ echo "### unsetting ignorefilter attribute ###"
 ad_set_attribute "$AD_DN" "description" "abcdddddd"; fail_bool 0 110
 ad_wait_for_synchronization; fail_bool 0 110
 
-output=$(univention-connector-list-rejected 2>&1)
+output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_test 110 ""

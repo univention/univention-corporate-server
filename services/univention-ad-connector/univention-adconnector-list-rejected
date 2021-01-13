@@ -49,12 +49,12 @@ CONFIGBASENAME = "connector"
 
 def usage():
 	print("")
-	print("This is univention-connector-list-rejected")
+	print("This is univention-adconnector-list-rejected")
 	print("")
 	print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
 	print("")
 	print("Usage:")
-	print("univention-connector-list-rejected [-c configbase]")
+	print("univention-adconnector-list-rejected [-c configbase]")
 	print("")
 	print("The default configbase is \"connector\".")
 

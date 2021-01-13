@@ -108,9 +108,9 @@ case "$ret" in
 		;;
 esac
 
-# count rejects by parsing the output of univention-connector-list-rejected
+# count rejects by parsing the output of univention-adconnector-list-rejected
 # WARNING: if there are any rejects
-nRejects=$(univention-connector-list-rejected -c "$CONNECTOR" | sed -rn '/^ *[1-9]+: *(AD|UCS) DN:/p' | wc -l)
+nRejects=$(univention-adconnector-list-rejected -c "$CONNECTOR" | sed -rn '/^ *[1-9]+: *(AD|UCS) DN:/p' | wc -l)
 [ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "There have been $nRejects reject(s)!"
 
 # check whether we can connect to the AD

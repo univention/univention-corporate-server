@@ -1346,7 +1346,7 @@ univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
 
-<section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
+<section id="ad-connector:univention-adconnector-list-rejected"><title><command>univention-adconnector-list-rejected</command></title>
 <para>
 Dieses Tool führt die DNs nicht synchronisierter Objekte auf. Zusätzlich wird,
 sofern zwischengespeichert, die korrespondierende DN im jeweils anderen LDAP-Verzeichnis

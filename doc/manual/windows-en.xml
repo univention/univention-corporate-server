@@ -1254,7 +1254,7 @@ univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
 
-<section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
+<section id="ad-connector:univention-adconnector-list-rejected"><title><command>univention-adconnector-list-rejected</command></title>
 <para>
 This tool lists the DNs of non-synchronized objects. In addition, in
 so far as temporarily stored, the corresponding DN in the

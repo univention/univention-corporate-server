@@ -94,7 +94,7 @@ function ad_wait_for_synchronization () {
 	#maybe there are ways be more sure whether synchronisation is
 	#already complete:
 	#See /var/log/univention/${configbase}-status.log
-	#and univention-connector-list-rejected
+	#and univention-adconnector-list-rejected
 
 	let local synctime="2 * ($(ucr get $configbase/ad/poll/sleep) + $AD_ESTIMATED_MAX_COMPUTATION_TIME)"
 	if [ "$min_wait_time" -gt "$synctime" ]; then

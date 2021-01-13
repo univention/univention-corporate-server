@@ -9,9 +9,9 @@
 
 test -n "$connector_ad_ldap_host" || exit 137
 
-if univention-connector-list-rejected | egrep -q "(UCS DN|AD DN)"
+if univention-adconnector-list-rejected | egrep -q "(UCS DN|AD DN)"
 then
-	univention-connector-list-rejected
+	univention-adconnector-list-rejected
 	fail_fast 1 "Rejects found"
 fi
 
