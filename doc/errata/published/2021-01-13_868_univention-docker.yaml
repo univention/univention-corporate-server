@@ -12,3 +12,5 @@ desc: |
    into the Docker daemon configuration file `/etc/docker/daemon.json` via
    the UCR variable `docker/daemon/default/json`.
 bug: [52344]
+erratum: 868
+announced: 2021-01-13
