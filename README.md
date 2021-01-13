@@ -8,9 +8,9 @@ These tools make it very easy to administrate applications, users and resources 
 
 ## Univention Summit 2021
 
-![](210108-NL-banner-en.jpg?raw=true)
+[![](210108-NL-banner-en.jpg?raw=true)](https://www.univention-summit.com/?mtm_campaign=github)
 
-Univention Summit is Univention's annual event for customers, partners and vendors. Because of the pandemic situation it will take place as a virtual venue on 28. January 2021. You are happily invited to [register](https://www.univention-summit.com/registration/) and participate. For more information about the agenda visit [www.univention-summit.com](https://www.univention-summit.com/).
+Univention Summit is Univention's annual event for customers, partners and vendors. Because of the pandemic situation it will take place as a virtual venue on 28. January 2021. You are happily invited to [register](https://www.univention-summit.com/registration/?mtm_campaign=github) and participate. For more information about the agenda visit [www.univention-summit.com](https://www.univention-summit.com/?mtm_campaign=github).
 
 We will meet you there.
 
