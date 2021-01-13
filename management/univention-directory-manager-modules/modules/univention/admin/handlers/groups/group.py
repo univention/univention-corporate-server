@@ -573,7 +573,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pass
 		else:
 			for attr, value in attrs.items():
-				if attr.lower().endswith('group') and self.dn in value:
+				if attr.lower().endswith('group') and self.dn.encode('UTF-8') in value:
 					raise univention.admin.uexceptions.primaryGroupUsed(_('It is used as %s.') % attr)
 
 		gidNum = None
