@@ -584,6 +584,22 @@ define([
 			this._grid.refresh();
 			this._grid.resize();
 			this.activeViewMode = newView;
+
+			// update header button css class
+			var oldButtonClass;
+			var newButtonClass;
+			if (newView === 'tile') {
+				oldButtonClass = 'ucsTextButton';
+				bewButtonClass = 'ucsNormalButton';
+			} else {
+				oldButtonClass = 'ucsNormalButton';
+				newButtonClass = 'ucsTextButton';
+			}
+			array.forEach([this._toolbar, this._contextActionsToolbar], function(toolbar) {
+				array.forEach(toolbar.getChildren(), function(button) {
+					domClass.replace(button.domNode, newButtonClass, oldButtonClass);
+				});
+			});
 		},
 
 		_updateGlobalCanExecute: function() {

@@ -31,41 +31,38 @@
 			display: none
 
 	.umcGridTileWrapperItem
-		padding: material-grid(1)
-		border-radius: 2px
+		padding: var(--layout-spacing-unit)
 		&.dgrid-selected
 			background-color: transparent
 
 	.umcGridTileItem
+		--local-border-color: transparent
 		position: relative
 		outline: none
-		padding: 16px
-		background-color: #fff
-		box-sizing: content-box
-		material-shadow-common()
-		material-shadow(1)
-		border-radius: 2px
-
-		// definitions in px instead of em due to size of image in px
-		height: 80px
-		overflow: hidden
+		padding: calc(2 * var(--layout-spacing-unit))
+		background-color: s('rgba(var(--color-grey0-rgb), 0.8)')
+		transition: background-color 0.25s, border 0.25s
+		box-shadow: var(--box-shadow)
+		border: 1px solid var(--local-border-color)
+		border-radius: var(--border-radius-container)
+		font-size: var(--font-size-small)
+		display: grid
+		grid-template-columns: auto 1fr
+		grid-template-rows: auto 1fr
+		grid-template-areas: "icon name" "icon description"
+		grid-gap: var(--layout-spacing-unit) @padding
+		cursor: pointer
 
 		&:hover
-			cursor: pointer
+			--local-border-color: var(--color-grey40)
 
 		.umcGridTileName
-			font-size: $font-size-subheading
-			color: $text-color-lighter
-			font-weight: 500
+			font-weight: 600
 			word-break: break-word
-			margin-right: 24px
-			margin-left: 75px
+			grid-area: name
 
 		.umcGridTileDescription
-			color: $text-color-lightest
-			padding-top: 5px
-			min-height: 70px
-			margin-left: 75px
+			grid-area: description
 
 		.umcGridTileDescription > div,
 		.umcGridTileName
@@ -73,39 +70,31 @@
 			text-overflow: ellipsis
 			white-space: nowrap
 
-		.umcGridTileIcon
-			height: 70px
-			width: 70px
-			left: 11px
-			top: 50%
-			margin-top: -(@height/2)
-			position: absolute
-			border-radius: 35px
+		.umcGridTileName,
+		.umcGridTileDescription
 			overflow: hidden
-			line-height: 70px
-			text-align: center
-			color: white
-			font-size: 24px
-			font-weight: 500
-			background: #FFDB87
-			background-size:cover
-			background-position:center center
-			background-repeat:no-repeat
 
+		.umcGridTileIcon
+			align-self: center
+			grid-area: icon
+			height: 80px
+			width: 80px
+			border-radius: var(--border-radius-circles)
+			color: var(--font-color-contrast-high)
+			font-size: var(--font-size-header1)
+			font-weight: 600
+			background: var(--color-grey8)
+			background-size: cover
+			background-position: center center
+			background-repeat: no-repeat
+			display: flex
+			align-items: center
+			justify-content: center
 
 		.umcGridTileContextIcon
-			icon-image(0, -40, "")
 			position: absolute
-			top: 11px
-			left: auto
-			right: 8px
-			
-			&:hover
-				icon-image(-20, -40, "")
-
-
-	.umcGridTileItem:hover
-		background-color: #EEEEEE
+			top: var(--layout-spacing-unit)
+			right: var(--layout-spacing-unit)
 
 
 // no left/right padding for full size item

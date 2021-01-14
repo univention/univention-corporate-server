@@ -33,8 +33,9 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/lang",
 	"dojo/on",
+	"umc/widgets/Button",
 	"put-selector/put",
-], function(declare, array, lang, on, put) {
+], function(declare, array, lang, on, Button, put) {
 
 	return declare("umc.module.udm.TileView", [], {
 
@@ -101,17 +102,18 @@ define([
 
 
 		renderRow: function(item) {
-			var bootstrapClasses = "col-xxs-12.col-xs-6.col-sm-6.col-md-4.col-lg-3";
+			var bootstrapClasses = "col-xxs-12.col-xs-6.col-sm-6.col-md-4.col-lg-4";
 			var wrapperDiv = put(lang.replace('div.umcGridTileWrapperItem.{bootstrapClasses}', {
 				bootstrapClasses: bootstrapClasses
 			}));
 			var itemDiv = put(wrapperDiv, lang.replace('div.umcGridTileItem', item));
 			if (this.grid._contextMenu) {
-				var contextMenu = put(itemDiv, 'div.umcGridTileContextIcon');
-				on(contextMenu, "click", lang.hitch(this, function(evt) {
+				var contextMenuButtonNode = Button.simpleIconButtonNode('more-horizontal', 'umcGridTileContextIcon');
+				on(contextMenuButtonNode, "click", lang.hitch(this, function(evt) {
 					evt.stopImmediatePropagation();
 					this.grid._contextMenu._openMyself(evt);
 				}));
+				put(itemDiv, contextMenuButtonNode);
 			}
 			this._userImageNodes[item.$dn$] = put(itemDiv, "div.umcGridTileIcon", this._getInitials(item));
 			put(itemDiv, 'div.umcGridTileName', item.name);
