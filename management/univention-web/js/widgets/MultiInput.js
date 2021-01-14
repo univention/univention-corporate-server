@@ -77,6 +77,9 @@ define([
 
 		newEntryButtonIconClass: 'plus',
 
+		// force the rows to not have labels. Used for the the policies MultiInput
+		noRowLabels: false,
+
 		_widgets: null,
 
 		_nRenderedElements: 0,
@@ -215,6 +218,9 @@ define([
 
 			if (this.subtypes.length === 1) {
 				domClass.add(this.domNode, 'umcMultiInput--singleWidgetInRows');
+			}
+			if (this.noRowLabels) {
+				domClass.add(this.domNode, 'umcMultiInput--noRowLabels');
 			}
 		},
 
@@ -575,10 +581,12 @@ define([
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
 				}),
-				'class': 'umcMultiInputRemoveButton ucsIconButton',
+				'class': 'umcMultiInputRemoveButton ucsIconButton ucsButton--textfieldAligned',
 				description: _('Remove entry')
 			});
-			rowContainer.addChild(button);
+			rowContainer.addChild(new LabelPane({
+				content: button
+			}));
 
 			// hide the button when the MultiInput widget is being deactivated
 			button.own(this.watch('disabled', function(attr, oldVal, disabled) {

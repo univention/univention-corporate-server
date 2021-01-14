@@ -115,9 +115,6 @@ $button-border-radius ?= 2px								// Rounded corner radius for buttons (except
 // Buttons in LayoutRow
 // the exact space the Button takes up (padding included)
 $_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
-$layoutrow-button-width = "calc(%s)" % ($_layoutrow-button-width)
-$layoutrow-button-bottom = s('calc(%s + ((var(--inputfield-size) - var(--g-button-size)) / 2))', $labelpane-padding-bottom)
-
 $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
 	if not amount-of-visual-buttons
 		amount-of-visual-buttons = amount-of-physical-buttons
@@ -127,7 +124,6 @@ $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-
 
 	// Make visual space.
 	padding-right: "calc(  1 * (%s * (%s)))" % (amount-of-visual-buttons $_layoutrow-button-width)
-
 
 // Input widgets
 $focused-border-color ?= $base-border-color								// Focused textbox, editor, select, etc.

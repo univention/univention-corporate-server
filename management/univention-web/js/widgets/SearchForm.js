@@ -121,7 +121,7 @@ define([
 				} else if (!button.showLabel) {
 					// add specific CSS classes for placing the default submit button
 					// next to its preceding widget
-					domClass.add(node, 'umcSearchFormSubmitButton');
+					domClass.add(button.domNode, 'ucsButton--textfieldAligned');
 					var previousWidget = node.previousSibling;
 					if (previousWidget) {
 						domClass.add(previousWidget, 'umcSearchFormElementBeforeSubmitButton');

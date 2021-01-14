@@ -1068,10 +1068,7 @@ define([
 				buttons.push({
 					name: 'toggleSearch',
 					showLabel: false,
-					labelConf: {
-						'class': 'umcSearchFormSubmitButton'
-					},
-					'class': 'ucsIconButtonHighlighted',
+					'class': 'ucsIconButtonHighlighted ucsButton--textfieldAligned',
 					iconClass: 'filter',
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {

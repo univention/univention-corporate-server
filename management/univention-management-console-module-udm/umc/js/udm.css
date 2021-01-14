@@ -91,11 +91,6 @@
 	text-overflow: ellipsis;
 }
 
-/* Styling of the MultiInput Edit button */
-.umc .umcUDMMultiInputEditButton {
-	margin: 0;
-}
-
 /* PortalContentSelection */
 .umc .dojoDndItem_PortalCategory {
 	display: -ms-grid;

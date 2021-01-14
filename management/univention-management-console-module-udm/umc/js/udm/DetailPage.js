@@ -74,6 +74,7 @@ define([
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
 	var FixedMultiInput = declare([MultiInput], {
+		noRowLabels: true,
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._resetValue = [];
@@ -618,7 +619,7 @@ define([
 							iconClass: 'edit',
 							disabled: true,
 							description: _('Edit policy'),
-							'class': 'umcUDMMultiInputEditButton umcOutlinedButton umcIconButton--aligned-to-textfield',
+							'class': 'ucsIconButton ucsButton--textfieldAligned',
 							callback: lang.hitch(this, function(dn) {
 								this._openPolicy(ipolicyType, dn);
 							})
@@ -627,7 +628,7 @@ define([
 					var buttonsConf = [{
 						type: Button,
 						name: '$addPolicy$',
-						'class': 'umcMultiInputAddButton umcOutlinedButton', // use umcMultiInputAddButton since this button needs same styling
+						'class': 'umcMultiInputAddButton ucsTextButton',
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
