@@ -22,3 +22,5 @@ desc: |
    * Univention S4 Connector.
    The broken fallback mechanism has been disabled and removed.
 bug: [52518]
+erratum: 869
+announced: 2021-01-15
