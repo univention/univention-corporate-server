@@ -66,10 +66,10 @@ define([
 		//		Simple widget that displays a widget/HTML code with a label above.
 
 		templateString: '<div class="umcLabelPane">' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeTop" dojoAttachPoint="labelNodeTopWrapper"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeTop dijitDisplayNone" dojoAttachPoint="labelNodeTopWrapper"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
 			'<span class="umcLabelPaneContainerNode" dojoAttachPoint="containerNode,contentNode"></span>' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeRight" dojoAttachPoint="labelNodeRightWrapper"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
-			'<div class="umcLabelPaneLabelNode umcLabelPaneLabelNodeBottom" dojoAttachPoint="labelNodeBottomWrapper"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeRight dijitDisplayNone" dojoAttachPoint="labelNodeRightWrapper"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
+			'<div class="umcLabelPaneLabelNode umcLabelPaneLabelNodeBottom dijitDisplayNone" dojoAttachPoint="labelNodeBottomWrapper"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
 			'</div>',
 
 		// content: String|dijit/_WidgetBase
