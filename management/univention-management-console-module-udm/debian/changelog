@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.0-9) unstable; urgency=medium
+
+  * Bug #52453: users/user grid view styling and DetailPage styling
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Jan 2021 11:07:17 +0100
+
 univention-management-console-module-udm (10.0.0-8) unstable; urgency=medium
 
   * Bug #52453: Adjust user creation wizard styling

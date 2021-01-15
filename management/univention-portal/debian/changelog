@@ -1,3 +1,9 @@
+univention-portal (4.0.4-2) unstable; urgency=medium
+
+  * Bug #52453: adjust MultiInput styling
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Jan 2021 11:05:10 +0100
+
 univention-portal (4.0.4-1) unstable; urgency=medium
 
   * Bug #52512: Modularize portal
