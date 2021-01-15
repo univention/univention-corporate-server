@@ -65,6 +65,8 @@ define([
 
 		navButtons: null,
 
+		navContentClass: '',
+
 		// title: String
 		//		Title of the page. This option is necessary for tab pages.
 		title: '',
@@ -93,6 +95,7 @@ define([
 		i18nClass: 'umc.app',
 
 		_nav: null,
+		_navContent: null,
 		_main: null,
 		_footer: null,
 		_helpTextPane: null,
@@ -184,6 +187,11 @@ define([
 				baseClass: 'umcPageNav',
 				'class': 'dijitDisplayNone'
 			});
+			this._navContent = new ContainerWidget({
+				baseClass: 'umcPageNavContent',
+				'class': this.navContentClass
+			});
+			this._nav.addChild(this._navContent);
 			this._main = new ContainerWidget({
 				baseClass: 'umcPageMain',
 				'class': this._initialBootstrapClasses
@@ -244,7 +252,7 @@ define([
 			}
 
 			if (widget.region == 'nav') {
-				this._nav.addChild.apply(this._nav, arguments);
+				this._navContent.addChild.apply(this._navContent, arguments);
 			} else if (widget.region == 'footer') {
 				this._footer.addChild.apply(this._footer, arguments);
 			} else {
@@ -275,7 +283,7 @@ define([
 			domClass.add(this._nav.domNode, this._nav['class'] + ' ' + this._nav.baseClass);
 			domClass.add(this._main.domNode, this._main['class'] + ' ' + this._main.baseClass);
 
-			var hasNav = this._nav.getChildren().length;
+			var hasNav = this._navContent.getChildren().length;
 			if (hasNav) {
 				domClass.toggle(this._nav.domNode, 'dijitDisplayNone', false);
 				domClass.remove(this._nav.domNode, this._initialBootstrapClasses);

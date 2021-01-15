@@ -71,7 +71,9 @@ define([
 	require(['umc/widgets/Anchor'], function(A) {  // Anchor is new in UCS 4.4, so due to caching problems load it async
 		Anchor = A;
 	});
-	var _StandbyPage = declare([Page, StandbyMixin], {});
+	var _StandbyPage = declare([Page, StandbyMixin], {
+		navContentClass: 'umcUDMNavContent'
+	});
 
 	var FixedMultiInput = declare([MultiInput], {
 		noRowLabels: true,
@@ -1011,6 +1013,7 @@ define([
 			return tools.forEachAsync(layout, function(ilayout, idx) {
 				// create a new page, i.e., subtab
 				var subTab = new Page({
+					navContentClass: 'umcUDMNavContent',
 					title: entities.encode(ilayout.label || ilayout.name).replace(/ /g, '&nbsp;'), //TODO: 'name' should not be necessary
 					titleAllowHTML: true,
 					noFooter: true,
