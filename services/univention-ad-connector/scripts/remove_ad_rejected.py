@@ -4,7 +4,7 @@
 # Univention AD Connector
 #  Remove rejected AD object
 #
-# Copyright 2018-2020 Univention GmbH
+# Copyright 2018-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

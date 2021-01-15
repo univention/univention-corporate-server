@@ -5,7 +5,7 @@
 #  univention-app module for installing an app
 #  (docker version)
 #
-# Copyright 2015-2020 Univention GmbH
+# Copyright 2015-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

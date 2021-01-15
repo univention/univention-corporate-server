@@ -3,7 +3,7 @@
 # Univention Python
 #  UTF-8 helper functions
 #
-# Copyright 2002-2020 Univention GmbH
+# Copyright 2002-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  header information for base64.c
  *
- * Copyright 2004-2020 Univention GmbH
+ * Copyright 2004-2021 Univention GmbH
  *
  * https://www.univention.de/
  *

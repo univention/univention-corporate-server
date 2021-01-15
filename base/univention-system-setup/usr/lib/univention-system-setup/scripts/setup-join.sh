@@ -3,7 +3,7 @@
 # Univention System Setup
 #  Appliance mode
 #
-# Copyright 2011-2020 Univention GmbH
+# Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -2,7 +2,7 @@
 #
 # Univention Portal
 #
-# Copyright 2019-2020 Univention GmbH
+# Copyright 2019-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

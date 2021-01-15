@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  verify that Listener DB and local LDAP match
  *
- * Copyright 2004-2020 Univention GmbH
+ * Copyright 2004-2021 Univention GmbH
  *
  * https://www.univention.de/
  *

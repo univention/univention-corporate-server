@@ -2,7 +2,7 @@
 #
 # Univention Mail Dovecot - shared code for listeners
 #
-# Copyright 2015-2020 Univention GmbH
+# Copyright 2015-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

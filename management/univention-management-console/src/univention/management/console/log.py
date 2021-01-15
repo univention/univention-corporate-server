@@ -3,7 +3,7 @@
 # Univention Management Console
 #  logging module for UMC
 #
-# Copyright 2011-2020 Univention GmbH
+# Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
 #

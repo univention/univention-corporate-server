@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  an asynchronous notifier client API.
  *
- * Copyright 2004-2020 Univention GmbH
+ * Copyright 2004-2021 Univention GmbH
  *
  * https://www.univention.de/
  *

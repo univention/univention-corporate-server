@@ -2,7 +2,7 @@
  * Samba LDB module univention_samaccountname_ldap_check
  *	LDB Module for checking samaccountname adds against external LDAP
  *
- * Copyright 2011-2020 Univention GmbH
+ * Copyright 2011-2021 Univention GmbH
  *
  * https://www.univention.de/
  *

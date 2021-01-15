@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS NS records
 #
-# Copyright 2018-2020 Univention GmbH
+# Copyright 2018-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
