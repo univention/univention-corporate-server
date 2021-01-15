@@ -24,6 +24,12 @@
 }
 
 
+.umc .umcUDMDetailPageWarning {
+	font-size: var(--font-size-small)
+	margin-bottom: 1rem;
+}
+
+
 .umc .umcUDMLicenseIcon,
 .umc .umcUDMLicenseImportIcon {
 	height: 150px;
@@ -44,12 +50,6 @@
 .umc .umcUDMLicenseImportIcon {
 	background-image: url(udm/license-import.svg);
 	margin-top: 35px;
-}
-
-.umc .umcUDMDetailPageWarning {
-	border-top: 2px black solid;
-	margin-bottom: 1em;
-	padding-top: 1em;
 }
 
 @media (max-width: 549px) {
