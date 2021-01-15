@@ -2061,6 +2061,7 @@ define([
 				return;
 			}
 
+			this.set('subTitle', '');
 			this._destroyDetailPage();
 			this.selectChild(this._searchPage);
 			this._preloadDetailPage();

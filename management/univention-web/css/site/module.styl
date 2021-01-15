@@ -27,7 +27,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-@import "../variables"
+@require "../variables"
 
 .umcModuleHeader
 	transition: border-color 0.2s
@@ -41,8 +41,11 @@
 
 .umcModuleHeaderWrapper
 	display: flex
-	align-items: center
+	align-items: flex-start
 	flex-wrap: wrap
+
+.umcModuleHeaderLeft
+	align-self: center
 
 .umcModuleHeaderRight
 	flex: 1 1 auto
@@ -50,8 +53,11 @@
 	text-align: right
 
 .umcModuleTitle
-	font-size: $font-size-headline
-	line-height: 1.4em
+	@extends h1
+
+.umcModuleSubTitle
+	font-size: var(--font-size-small)
+	margin-top: var(--layout-spacing-unit)
 
 .umc .umcModule
 	.umcModuleWrapper

@@ -339,12 +339,8 @@ define([
 					var path = tools.ldapDn2Path(ldapName, this.ldapBase);
 					var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
 					var position = _('Position: <i>%(path)s</i>', { path: path });
-					var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
-					array.forEach(this._tabs.getChildren(), lang.hitch(this, function(child) {
-						if (child.position_text) {
-							child.position_text.set('content', position_text);
-						}
-					}));
+					var positionText = lang.replace('<span class="umcUDMUserType">{0}</span><span>{1}</span>', [objecttype, position]);
+					this.moduleWidget.set('subTitle', positionText);
 				}
 
 				return this._form.ready();
@@ -1139,13 +1135,9 @@ define([
 				nested: true
 			});
 			this._tabControllers.push(tabController);
-			page.position_text = new Text({'class': 'positionText', region: 'nav', content: ''});
 
 			page.addChild(tabController, 0);
 			page.own(tabController);
-
-			page.addChild(page.position_text);
-			page.own(page.position_text);
 
 			this._tabs.addChild(page);
 			this.own(page);

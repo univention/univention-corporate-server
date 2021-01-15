@@ -103,6 +103,12 @@ define([
 			this._set('titleDetail', detail);
 		},
 
+		subTitle: '',
+		_setSubTitleAttr: function(subTitle) {
+			this._top.set('subTitle', subTitle);
+			this._set('subTitle', subTitle);
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 

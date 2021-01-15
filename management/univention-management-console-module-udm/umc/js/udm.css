@@ -127,6 +127,12 @@
 }
 
 
+/* Module subTitle in DetailPage */
+.umcUDMUserType {
+	margin-right: calc(2 * var(--layout-spacing-unit))
+}
+
+
 /* Page Nav */
 .umcUDMNavContent {
 	background-color: var(--bgc-content-container);
