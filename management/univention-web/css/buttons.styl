@@ -95,7 +95,8 @@
 .ucsNormalButton,
 .ucsTextButton,
 .ucsIconButton,
-.ucsSimpleIconButton
+.ucsSimpleIconButton,
+.ucsFillButton
 	.featherIcon
 		width: var(--button-iconSize)
 		height: @width
@@ -151,6 +152,26 @@
 	@extends .ucsIconButton
 	--bgc: var(--button-icon-highlighted-bgc)
 
+
+.ucsFillButton
+	--bgc: var(--button-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-bgc-overlay-disabled)
+			opacity: 0.4
+
+	&,
+	.dijitButtonNode
+		width: 100%
+		height: 100%
+
+
 .ucsLinkButton
 	--button-size: auto
 
@@ -168,5 +189,5 @@
 	cursor: pointer
 
 
-.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.ucsIconButtonHighlighted):not(.ucsLinkButton):not(.ucsMenuButton):not(.umcCategoryButton)
+.ucsButton:not(.ucsNormalButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.ucsIconButtonHighlighted):not(.ucsLinkButton):not(.ucsMenuButton):not(.umcCategoryButton):not(.ucsFillButton)
 	@extends .ucsNormalButton

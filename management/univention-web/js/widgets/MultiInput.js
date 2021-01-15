@@ -80,6 +80,8 @@ define([
 		// force the rows to not have labels. Used for the the policies MultiInput
 		noRowLabels: false,
 
+		removeButtonClass: 'ucsIconButton ucsButton--textfieldAligned',
+
 		_widgets: null,
 
 		_nRenderedElements: 0,
@@ -581,9 +583,10 @@ define([
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
 				}),
-				'class': 'umcMultiInputRemoveButton ucsIconButton ucsButton--textfieldAligned',
+				'class': 'umcMultiInputRemoveButton',
 				description: _('Remove entry')
 			});
+			domClass.add(button.domNode, this.removeButtonClass);
 			rowContainer.addChild(new LabelPane({
 				content: button
 			}));

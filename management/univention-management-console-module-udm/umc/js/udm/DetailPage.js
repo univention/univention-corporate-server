@@ -678,6 +678,10 @@ define([
 					};
 				}
 
+				if (iprop.id === 'anonymousEmpty') {
+					iprop.removeButtonClass = 'ucsFillButton';
+				}
+
 				// handle size classes for MultiInputs that are defined at the
 				// object property and that overwrite the syntax default
 				if (iprop.size instanceof Array && iprop.subtypes instanceof Array && iprop.size.length == iprop.subtypes.length) {

@@ -315,12 +315,8 @@
 	padding-right: 1em;
 }
 
-.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcMultiInputRemoveButton {
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcLabelPane-dijitButton {
 	grid-area: delete;
 	padding-left: 0;
 	padding-right: 0;
-}
-
-.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcMultiInputRemoveButton .dijitButtonNode {
-	height: 100%;
 }
