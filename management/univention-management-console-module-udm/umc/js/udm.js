@@ -1095,7 +1095,7 @@ define([
 						showLabel: false,
 						label: _('Toggle visual presentation'),
 						iconClass: 'grid',
-						'class': 'umcSearchFormChangeViewButton ucsIconButtonHighlighted',
+						'class': 'ucsIconButtonHighlighted',
 						callback: lang.hitch(this, '_toggleGridView')
 					});
 					layout.push({

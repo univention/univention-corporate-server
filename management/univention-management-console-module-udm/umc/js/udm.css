@@ -1,16 +1,13 @@
-/* umcSearchFormChangeViewButton */
-.umc .umcUDMSearchForm .umcLayoutRow--umcSearchFormChangeViewButton {
+.umc .umcLayoutRow.umcLayoutRow--umcSearchFormChangeViewButton {
 	display: flex;
 	justify-content: flex-end;
 	margin: 0;
 }
-.umc .umcUDMSearchForm .umcSearchFormChangeViewButton {
-	position: relative /* needed so that we can hover without the element above blocking (if extended search is activated) */
-}
+
+
 .umcSearchFormToggleSearchButton--advanced {
 	color: var(--color-primary);
 }
-/* umcSearchFormChangeViewButton END */
 
 
 .umc .umcUDMUsersModule__jpegPhoto {
