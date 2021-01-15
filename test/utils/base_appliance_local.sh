@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2018 Univention GmbH
+# Copyright 2018-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
