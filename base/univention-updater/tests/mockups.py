@@ -1,28 +1,33 @@
-#!/usr/bin/python3
+#!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
+"""Replacements to test updater in stable local environment."""
 from __future__ import print_function
+# pylint: disable-msg=C0301,R0903,R0913
 
+import sys
+import os.path
+import errno
+import httplib
 import json
 import logging
-import os.path
-import sys
 from itertools import groupby
 from operator import itemgetter
-
-try:
-    from typing import Dict, Iterable, List, Sequence, Tuple  # noqa F401
-except ImportError:
-    pass
-
 import six
-from six.moves import http_client as httplib
-
 import univention
 univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ignore
 import univention.updater.tools as U  # noqa: E402
 import univention.updater.mirror as M  # noqa: E402
 import univention.config_registry as C  # noqa: E402
+try:
+    from typing import Dict, Iterable, List, Sequence, Tuple  # noqa F401
+except ImportError:
+    pass
 
+__all__ = [
+    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'ERRAT', 'PART', 'ARCH',
+    'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
+    'verbose',
+]
 
 MAJOR = 3
 MINOR = 0
@@ -30,6 +35,28 @@ PATCH = 1
 ERRAT = 3
 PART = 'part'
 ARCH = 'amd64'
+
+
+class MockConfigRegistry(C.ConfigRegistry):
+
+    """Mockup for ConfigRegistry."""
+    _ORIG = C.ConfigRegistry
+    _DEFAULT = {
+        'version/version': '%d.%d' % (MAJOR, MINOR),
+        'version/patchlevel': '%d' % (PATCH,),
+        'version/erratalevel': '%d' % (ERRAT,),
+    }
+    _EXTRA = {}  # type: Dict[str, str]
+
+    def __init__(self):
+        MockConfigRegistry._ORIG.__init__(self, filename=os.path.devnull)
+
+    def load(self):
+        """Load UCR variables."""
+        for key, value in MockConfigRegistry._DEFAULT.items():
+            self[key] = value
+        for key, value in MockConfigRegistry._EXTRA.items():
+            self[key] = value
 
 
 class MockUCSHttpServer(U.UCSLocalServer):
@@ -205,3 +232,8 @@ def verbose(verbose_mode=True):
         level=logging.DEBUG,
         format="%(levelname)s %(filename)s:%(lineno)d#%(funcName)s: %(message)s",
     )
+
+
+sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry  # type: ignore
+sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer  # type: ignore
+sys.modules['subprocess'].Popen = MockPopen  # type: ignore

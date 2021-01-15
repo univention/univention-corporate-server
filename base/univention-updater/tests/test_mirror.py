@@ -1,57 +1,70 @@
 #!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
-# pylint: disable-msg=C0301,W0212,C0103,R0904
-
 """Unit test for univention.updater.mirror"""
-
+# pylint: disable-msg=C0301,W0212,C0103,R0904
+import os
+import unittest
+from tempfile import mkdtemp
+from shutil import rmtree
 import json
 from copy import deepcopy
-from os.path import dirname, join
-
-import pytest
-from lazy_object_proxy import Proxy
-
-from mockups import ARCH, MAJOR, MINOR, PATCH, M, MockFile, U, gen_releases
 from univention.lib.ucs import UCS_Version
-
-try:
-    import builtins as builtins
-except ImportError:
-    import __builtin__ as builtins  # type: ignore
+from mockups import (
+    U, M, MAJOR, MINOR, PATCH, ARCH,
+    MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
+    gen_releases, verbose,
+)
 
 UM = M.UniventionMirror
 DATA = 'x' * U.MIN_GZIP
 
 
-@pytest.fixture
-def m(tmpdir, ucr, http):
-    ucr({
-        'repository/mirror/basepath': str(tmpdir / 'repo'),
-        # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
-        # 'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
-        'repository/mirror/verify': 'no',
-    })
-    http({
-        # 'univention-repository/': '',
-        '': b'',
-        '/': b'',
-        '/releases.json': b'{"releases":[]}',
-    })
-    return Proxy(M.UniventionMirror)
-
-
-@pytest.fixture(autouse=True)
-def log(mockopen):
-    mockopen.write("/var/log/univention/repository.log", b"")
-
-
-class TestUniventionMirror(object):
+class TestUniventionMirror(unittest.TestCase):
 
     """Unit test for univention.updater.mirror"""
 
-    def test_config_repository(self, ucr, m):
+    def setUp(self):
+        """Create Mirror mockup."""
+        self._uri({
+            # 'univention-repository/': '',
+            '': b'',
+            '/': b'',
+            'releases.json': b'{"releases":[]}',
+        })
+        self.base_dir = mkdtemp()
+        self.mock_file = MockFile(os.path.join(self.base_dir, 'mock'))
+        __builtins__.open = self.mock_file
+        MockConfigRegistry._EXTRA = {
+            'repository/mirror/basepath': os.path.join(self.base_dir, 'repo'),
+            # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
+            # 'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
+            'repository/mirror/verify': 'no',
+        }
+        self.m = M.UniventionMirror()
+
+    def _ucr(self, variables):
+        """Fill UCR mockup."""
+        for key, value in variables.items():
+            self.m.configRegistry[key] = value
+
+    def _uri(self, uris):
+        """Fill URI mockup."""
+        for key, value in uris.items():
+            MockUCSHttpServer.mock_add(key, value)
+
+    def tearDown(self):
+        """Clean up Mirror mockup."""
+        __builtins__.open = MockFile._ORIG
+        rmtree(self.base_dir, ignore_errors=True)
+        del self.base_dir
+        del self.m
+        MockConfigRegistry._EXTRA = {}
+        MockUCSHttpServer.mock_reset()
+        MockPopen.mock_reset()
+
+    def test_config_repository(self):
         """Test setup from UCR repository/mirror."""
-        ucr({
+        self._ucr({
             'repository/mirror': 'no',
             'repository/mirror/server': 'example.net',
             'repository/mirror/port': '1234',
@@ -60,29 +73,32 @@ class TestUniventionMirror(object):
             'repository/mirror/httpmethod': 'POST',
             'repository/mirror/verify': 'yes',
         })
-        m.config_repository()
-        assert not m.online_repository
-        assert m.repourl.hostname == 'example.net'
-        assert m.repourl.port == 1234
-        assert m.repourl.path == '/prefix/'
-        assert m.sources
-        assert m.http_method == 'POST'
-        assert m.script_verify
+        self.m.config_repository()
+        self.assertFalse(self.m.online_repository)
+        self.assertEqual(self.m.repourl.hostname, 'example.net')
+        self.assertEqual(self.m.repourl.port, 1234)
+        self.assertEqual(self.m.repourl.path, '/prefix/')
+        self.assertTrue(self.m.sources)
+        self.assertEqual(self.m.http_method, 'POST')
+        self.assertTrue(self.m.script_verify)
 
     # TODO: Copy over test_updater
 
-    def test_mirror_repositories(self, tmpdir, mocker, m):
+    def test_mirror_repositories(self):
         """Test mirror structure and apt-mirror called."""
-        popen = mocker.patch("subprocess.Popen")
-        m.mirror_repositories()
-        assert (tmpdir / "repo" / "var").check(dir=1)
-        assert (tmpdir / "repo" / "skel").check(dir=1)
-        assert (tmpdir / "repo" / "mirror").check(dir=1)
-        assert (tmpdir / "repo" / "mirror" / "univention-repository").check(link=1)
-        assert "apt-mirror" in popen.call_args_list[0][0][0][0]
+        self.m.mirror_repositories()
+        self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'var')))
+        self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'skel')))
+        self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'mirror')))
+        self.assertTrue(os.path.islink(os.path.join(self.base_dir, 'repo', 'mirror', 'univention-repository')))
+        cmds = MockPopen.mock_get()
+        cmd = cmds[0]
+        if isinstance(cmd, (list, tuple)):
+            cmd = cmd[0]
+        self.assertTrue('apt-mirror' in cmd)
 
-    def test_mirror_update_scripts(self, tmpdir, ucr, http, m):
-        ucr({
+    def test_mirror_update_scripts(self):
+        self._ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/b': 'yes',
             'repository/online/component/b/layout': 'flat',
@@ -90,88 +106,92 @@ class TestUniventionMirror(object):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
-            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
-            '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
-            '/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
-            '/%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
-            '/%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_post',
-            '/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
-            '/%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
-            '/%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
-            '/%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
-            '/releases.json': gen_releases([(MAJOR, MINOR, 0), ])
+            'dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
+            'dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            'dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
+            '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
+            '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_post',
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
+            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
+            '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
+            '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
+            'releases.json': gen_releases([(MAJOR, MINOR, 0), ])
         }
-        http(uris)
-        m._get_releases()
-        del uris['/releases.json']
-        m.mirror_update_scripts()
+        self._uri(uris)
+        self.m._get_releases()
+        del uris['releases.json']
+        self.m.mirror_update_scripts()
         for key, value in uris.items():
             if value == DATA:
                 continue
             # "base_dir+mock" for the mock_open redirector
             # "base_dir+repo+mirror" as the configured repository_root
             # "mock+key" from the remote host prefix and struct
-            filename = tmpdir / "repo" / 'mirror' / key
-            assert filename.read_binary() == value
+            filename = os.path.join(self.base_dir, 'mock', self.base_dir.lstrip('/'), 'repo', 'mirror', 'mock', key)
+            with open(filename, 'rb') as fd_script:
+                script = fd_script.read()
+            self.assertEqual(script, value)
 
-    def test_write_releases_json(self, tmpdir, http, m):
-        releases = gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])
-        http({'/releases.json': releases})
-        m.write_releases_json()
-        releases_json = tmpdir / 'repo' / 'mirror' / 'releases.json'
-        assert json.loads(releases_json.read()) == json.loads(releases)
+    def test_write_releases_json(self):
+        self._uri({'releases.json': gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])})
+        expected = '{"releases": [{"major": 3, "minors": [{"patchlevels": [{"status": "maintained", "patchlevel": 0}, {"status": "maintained", "patchlevel": 1}], "minor": 0}]}]}'
+        self.m.write_releases_json()
+        releases_json_path = os.path.join(self.base_dir, 'mock', self.m.repository_path.lstrip('/'), 'mirror', 'releases.json')
+        with open(releases_json_path, 'r') as releases_json:
+            self.assertEqual(expected, releases_json.read())
 
-    def test_run(self, mocker, m):
+    def test_run(self):
         """Test full mirror run."""
-        mirror_repositories = mocker.patch.object(M.UniventionMirror, "mirror_repositories")
-        mirror_update_scripts = mocker.patch.object(M.UniventionMirror, "mirror_update_scripts")
-        write_releases_json = mocker.patch.object(M.UniventionMirror, "write_releases_json")
-        m.run()
-        mirror_repositories.assert_called_once_with()
-        mirror_update_scripts.assert_called_once_with()
-        write_releases_json.assert_called_once_with()
+        pass  # TODO
 
 
-class TestFilter(object):
+class TestFilter(unittest.TestCase):
 
     """Unit test for univention.updater.mirror.filter_releases_json"""
 
     RELEASES = json.loads(gen_releases([(5, 0, 0), (5, 0, 1), (5, 0, 2)]))
     VER4, VER5, VER6 = (UCS_Version((major, 0, 0)) for major in [4, 5, 6])
 
-    def test_filter_releases_json(self):
-        base = dirname(__file__)
-        with open(join(base, 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
-            upstream_releases = json.load(upstream_releases_fp)
-        with open(join(base, 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
-            expected_mirror_releases = json.load(mirror_releases_fp)
+    def setUp(self):
+        self.maxDiff = None
 
+    def test_filter_releases_json(self):
+        base = os.path.dirname(__file__)
+        with open(os.path.join(base, 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
+            upstream_releases = json.load(upstream_releases_fp)
+        with open(os.path.join(base, 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
+            expected_mirror_releases = json.load(mirror_releases_fp)
         mirrored_releases = deepcopy(upstream_releases)
         M.filter_releases_json(mirrored_releases, start=UCS_Version((3, 1, 1)), end=UCS_Version((4, 1, 0)))
-        assert mirrored_releases == expected_mirror_releases
+        self.assertEqual(mirrored_releases, expected_mirror_releases)
 
     def test_unchanged(self):
         data = deepcopy(self.RELEASES)
         M.filter_releases_json(data, start=self.VER4, end=self.VER6)
-        assert data == self.RELEASES
+        self.assertEqual(data, self.RELEASES)
 
     def test_same(self):
         data = deepcopy(self.RELEASES)
         M.filter_releases_json(data, start=self.VER5, end=UCS_Version((5, 0, 2)))
-        assert data == self.RELEASES
+        self.assertEqual(data, self.RELEASES)
 
     def test_before(self):
         data = deepcopy(self.RELEASES)
         M.filter_releases_json(data, start=self.VER4, end=self.VER4)
-        assert data == {"releases": []}
+        self.assertEqual(data, {"releases": []})
 
     def test_after(self):
         data = deepcopy(self.RELEASES)
         M.filter_releases_json(data, start=self.VER6, end=self.VER6)
-        assert data == {"releases": []}
+        self.assertEqual(data, {"releases": []})
 
     def test_empty(self):
         data = deepcopy(self.RELEASES)
         M.filter_releases_json(data, start=UCS_Version((5, 0, 3)), end=self.VER6)
-        assert data == {"releases": []}
+        self.assertEqual(data, {"releases": []})
+
+
+if __name__ == '__main__':
+    verbose()
+    unittest.main()
