@@ -175,7 +175,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 	if object['dn'] is not None:
 		if 'sAMAccountName' in object['attributes']:
-			samaccountname = object['attributes']['sAMAccountName'][0].decode('UTF-8')
+			samaccountname_utf8 = object['attributes']['sAMAccountName'][0]
+			samaccountname = samaccountname_utf8.decode('UTF-8')
 		if dn_attr:
 			try:
 				dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
@@ -215,22 +216,22 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				break
 
 			exploded_dn = str2dn(dn)
-			(_fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
-			value = fst_rdn_value_utf8
+			(_fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in AD to get corresponding DN, if not found create new
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an UCS-Object")
 
 				if connector.property[propertyname].mapping_table and propertyattrib in connector.property[propertyname].mapping_table.keys():
+					fst_rdn_value_utf8 = fst_rdn_value.encode('UTF-8')
 					for ucsval, conval in connector.property[propertyname].mapping_table[propertyattrib]:
-						if value.lower() == ucsval.lower():
-							value = conval
-							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme regarding to mapping-table")
+						if fst_rdn_value_utf8.lower() == ucsval.lower():
+							fst_rdn_value = conval.decode('UTF-8')
+							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 							continue
 
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % value)
-				search_filter = format_escaped('(&(objectclass={0!e})(samaccountname={1!e}))', ocad, value)
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % fst_rdn_value)
+				search_filter = format_escaped('(&(objectclass={0!e})(samaccountname={1!e}))', ocad, fst_rdn_value)
 				result = connector.lo_ad.search(filter=search_filter)
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
@@ -241,7 +242,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						# with the AD LDAP base at a later stage, see Bug #48440
 						newdn = ldap.dn.dn2str([str2dn(result[0][0])[0]] + exploded_dn[1:])
 				else:
-					newdn = ldap.dn.dn2str([[('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]] + exploded_dn[1:])  # new object, don't need to change
+					newdn = ldap.dn.dn2str([[('cn', fst_rdn_value, ldap.AVA_STRING)]] + exploded_dn[1:])  # new object, don't need to change
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in AD and use it as name
@@ -249,7 +250,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an AD-Object")
 				i = 0
 
-				while (not samaccountname):  # in case of olddn this is already set
+				while not samaccountname:  # in case of olddn this is already set
 					i = i + 1
 					search_dn = dn
 					if 'deleted_dn' in object:
@@ -257,7 +258,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					try:
 						samaccountname_filter = format_escaped('(objectClass={0!e})', ocad)
 						samaccountname_search_result = connector.ad_search_ext_s(search_dn, ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName'])
-						samaccountname = samaccountname_search_result[0][1]['sAMAccountName'][0].decode('UTF-8')
+						samaccountname_utf8 = samaccountname_search_result[0][1]['sAMAccountName'][0]
+						samaccountname = samaccountname_utf8.decode('UTF-8')
 						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
 					except ldap.NO_SUCH_OBJECT:  # AD may need time
 						if i > 5:
@@ -266,8 +268,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 				if connector.property[propertyname].mapping_table and propertyattrib in connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in connector.property[propertyname].mapping_table[propertyattrib]:
-						if samaccountname.lower() == conval.lower():
-							samaccountname = ucsval
+						if samaccountname_utf8.lower() == conval.lower():
+							samaccountname = ucsval.decode('UTF-8')
 							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 							continue
 						else:
