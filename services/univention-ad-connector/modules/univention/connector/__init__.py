@@ -1688,6 +1688,7 @@ class ucs(object):
 						else:
 							object_out['attributes'][post_attributes.con_attribute] = values
 
+		ud.debug(ud.LDAP, ud.ALL, "_object_mapping_ucs: object_out : %r" % object_out)
 		return object_out
 
 	def _object_mapping_con(self, key, old_object):
@@ -1773,6 +1774,7 @@ class ucs(object):
 						else:
 							object_out['attributes'][post_attributes.ldap_attribute] = values
 
+		ud.debug(ud.LDAP, ud.ALL, "_object_mapping_con: object_out : %r" % object_out)
 		return object_out
 
 	def identify_udm_object(self, dn, attrs):
