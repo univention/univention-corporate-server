@@ -598,6 +598,9 @@ class ad(univention.connector.ucs):
 				for attr_key, attr in conn_attributes.items():
 					if not getattr(attr, 'con_other_attribute') and attr.con_attribute in self.single_valued_ad_attributes:
 						attr.single_value = True
+					elif attr.con_attribute == 'description' and mapping_key in ('user', 'group', 'windowscomputer'):
+						# For SAM managed objects the description attribute is single-valued
+						attr.single_value = True
 
 		# Mark mailPrimaryAddress as dependent on changes of AD "mail"
 		for mapping_key, mapping_property in self.property.items():
