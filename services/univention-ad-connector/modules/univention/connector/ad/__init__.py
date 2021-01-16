@@ -227,8 +227,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					for ucsval, conval in connector.property[propertyname].mapping_table[propertyattrib]:
 						if fst_rdn_value_utf8.lower() == ucsval.lower():
 							fst_rdn_value = conval.decode('UTF-8')
-							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
-							continue
+							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map %s according to mapping-table" % propertyattrib)
+							break
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: %s not in mapping-table" % propertyattrib)
 
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % fst_rdn_value)
 				search_filter = format_escaped('(&(objectclass={0!e})(samaccountname={1!e}))', ocad, fst_rdn_value)
@@ -271,9 +273,9 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						if samaccountname_utf8.lower() == conval.lower():
 							samaccountname = ucsval.decode('UTF-8')
 							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
-							continue
-						else:
-							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
+							break
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
 
 				# search for object with this dn in ucs, needed if it lies in a different container
 				ucsdn = ''
