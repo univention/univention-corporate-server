@@ -1673,8 +1673,12 @@ class ucs(object):
 
 								if ucsval_lower in objectval_lower:
 									object_out['attributes'][attributes.con_attribute][objectval_lower.index(ucsval_lower)] = conval
+									if len(objectval_lower) == 1:
+										break  # No point in trying additional translation
 								elif ucsval_lower == objectval_lower:
 									object_out['attributes'][attributes.con_attribute] = conval
+									if len(objectval_lower) == 1:
+										break  # No point in trying additional translation
 
 			for post_attributes in (MAPPING.post_attributes or {}).values():
 				if attribute.lower() == post_attributes.ldap_attribute.lower():
@@ -1760,8 +1764,12 @@ class ucs(object):
 
 								if conval_lower in objectval_lower:
 									object_out['attributes'][attributes.ldap_attribute][objectval_lower.index(conval_lower)] = ucsval
+									if len(objectval_lower) == 1:
+										break  # No point in trying additional translation
 								elif conval_lower == objectval_lower:
 									object_out['attributes'][attributes.ldap_attribute] = ucsval
+									if len(objectval_lower) == 1:
+										break  # No point in trying additional translation
 
 			for post_attributes in (MAPPING.post_attributes or {}).values():
 				if attribute.lower() == post_attributes.con_attribute.lower():

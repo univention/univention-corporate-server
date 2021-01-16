@@ -333,13 +333,9 @@ ad_mapping = {
 		mapping_table={
 			'cn': [
 				(b'Domain Users', u'Domänen-Benutzer'.encode('UTF-8')),
-				(b'Domain Users', b'Domain Users'),
 				(b'Domain Admins', u'Domänen-Admins'.encode('UTF-8')),
-				(b'Domain Admins', b'Domain Admins'),
 				(b'Windows Hosts', u'Domänencomputer'.encode('UTF-8')),
-				(b'Windows Hosts', b'Windows Hosts'),
 				(b'Domain Guests', u'Domänen-Gäste'.encode('UTF-8')),
-				(b'Domain Guests', b'Domain Guests')
 			]
 		},
 	),
