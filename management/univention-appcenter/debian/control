@@ -38,6 +38,8 @@ Depends:
  ${python3:Depends},
 Replaces:
  univention-management-console-module-packages (<< 2.0.55-1),
+Provides:
+ ${python3:Provides},
 Breaks:
  univention-management-console-module-packages (<< 2.0.55-1),
 Description: UMC module for software management
@@ -256,6 +258,8 @@ Depends:
  univention-management-console-module-appcenter (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
+Provides:
+ ${python3:Provides},
 Description: UMC module for application overview
  This package contains the overview page for every installed
  Univention App.

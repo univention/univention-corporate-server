@@ -365,7 +365,7 @@ class Instance(umcm.Base, ProgressMixin):
 			if not self._test_for_docker_service():
 				raise umcm.UMC_Error(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 		info = domain.to_dict(apps)
-		with open(query_cache_file, 'wb') as fd:
+		with open(query_cache_file, 'w') as fd:
 			json.dump(info, fd)
 		return info
 

@@ -55,6 +55,7 @@ override_dh_auto_install:
 	python setup_docker.py build --force -b build/python-univention-appcenter-docker install --force --root=debian/python-univention-appcenter-docker --install-layout=deb
 	python3 setup_docker.py build --force -b build/python3-univention-appcenter-docker install --force --root=debian/python3-univention-appcenter-docker --install-layout=deb
 	python setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
+	python3 setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
 
 override_dh_auto_test:
