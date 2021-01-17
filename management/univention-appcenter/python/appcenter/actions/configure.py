@@ -117,7 +117,7 @@ class Configure(UniventionAppAction):
 
 	def _run_configure_script(self, app, action):
 		ext = 'configure_host'
-		with NamedTemporaryFile('r+b') as error_file:
+		with NamedTemporaryFile('r') as error_file:
 			kwargs = {}
 			kwargs['version'] = app.version
 			kwargs['error_file'] = error_file.name

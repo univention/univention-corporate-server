@@ -182,7 +182,7 @@ class Register(CredentialsAction):
 				if ext == 'schema':
 					schema = get_schema(app)
 					if schema:
-						with open(app.get_share_file(ext), 'wb') as fd:
+						with open(app.get_share_file(ext), 'w') as fd:
 							fd.write(schema)
 
 	def _unregister_files(self, app):
@@ -392,7 +392,7 @@ class AppListener(AppListener):
 		ucr_save({app.ucr_hostdn_key: obj.dn})
 		# save password on docker host
 		if password:
-			with open(app.secret_on_host, 'w+b') as f:
+			with open(app.secret_on_host, 'w') as f:
 				os.chmod(app.secret_on_host, 0o600)
 				f.write(password)
 		return obj.dn, password

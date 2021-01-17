@@ -96,7 +96,7 @@ def docker_bridge_network_conflict():
 
 def app_is_running(app):
 	from univention.appcenter.app_cache import Apps
-	if isinstance(app, basestring):
+	if isinstance(app, string_types):
 		app = Apps().find(app)
 	if app:
 		if not app.docker:
@@ -207,13 +207,14 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 	if cwd:
 		logger.debug('Running in %s:' % cwd)
 	logger.info('Running command: {0}'.format(' '.join(str_cmd)))
-	out = str()
+	out = ""
 	ret = 0
 	try:
 		p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env, cwd=cwd)
 		while p.poll() is None:
 			stdout = p.stdout.readline()
 			if stdout:
+				stdout = stdout.decode('utf-8')
 				out += stdout
 				if logger:
 					logger.info(stdout.strip())
@@ -236,6 +237,7 @@ def call_process(args, logger=None, env=None, cwd=None):
 
 		def _handle_output(out, handler):
 			for line in iter(out.readline, b''):
+				line = line.decode('utf-8')
 				if line.endswith('\n'):
 					line = line[:-1]
 				line = remove_ansi_escape_sequence_regex.sub(' ', line)
@@ -330,19 +332,23 @@ urlopen._opener_installed = False
 
 def get_md5(content):
 	m = md5()
-	m.update(str(content))
+	if isinstance(content, string_types):
+		content = content.encode('utf-8')
+	m.update(content)
 	return m.hexdigest()
 
 
 def get_md5_from_file(filename):
 	if os.path.exists(filename):
-		with open(filename, 'r') as f:
+		with open(filename, 'rb') as f:
 			return get_md5(f.read())
 
 
 def get_sha256(content):
 	m = sha256()
-	m.update(str(content))
+	if isinstance(content, string_types):
+		content = content.encode('utf-8')
+	m.update(content)
 	return m.hexdigest()
 
 
@@ -496,7 +502,7 @@ def send_information(action, app=None, status=200, value=None):
 		values['system-uuid'] = system_uuid
 	utils_logger.debug('tracking information: %s' % str(values))
 	try:
-		request_data = urlencode(values)
+		request_data = urlencode(values).encode('utf-8')
 		request = urllib_request.Request(url, request_data)
 		urlopen(request)
 	except Exception as exc:

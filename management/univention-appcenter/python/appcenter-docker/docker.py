@@ -71,6 +71,7 @@ class DockerImageVerificationFailedChecksum(Exception):
 
 def inspect(name):
 	out = check_output(['docker', 'inspect', str(name)])
+	out = out.decode('utf-8')
 	return loads(out)[0]
 
 
@@ -111,7 +112,8 @@ def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
 	if not only_running:
 		args.append('--all')
-	return check_output(args)
+	out = check_output(args)
+	return out.decode('utf-8')
 
 
 def execute_with_output(container, args, tty=None):
@@ -121,7 +123,8 @@ def execute_with_output(container, args, tty=None):
 	if tty:
 		docker_exec.append('-it')
 	args = docker_exec + [container] + args
-	return check_output(args)
+	out = check_output(args)
+	return out.decode('utf-8')
 
 
 def execute_with_process(container, args, logger=None, tty=None):
@@ -170,7 +173,9 @@ def stop(container):
 
 
 def commit(container, new_base_image):
-	return check_output(['docker', 'commit', container, new_base_image])
+	args = ['docker', 'commit', container, new_base_image]
+	out = check_output(args)
+	return out.decode('utf-8')
 
 
 def docker_logs(container, logger=None):
@@ -478,7 +483,7 @@ class MultiDocker(Docker):
 		with open(template_file) as fd:
 			template = fd.read()
 			content = ucr_run_filter(template, env)
-		with open(yml_file, 'wb') as fd:
+		with open(yml_file, 'w') as fd:
 			os.chmod(yml_file, 0o600)
 			fd.write(content)
 		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
@@ -505,7 +510,7 @@ class MultiDocker(Docker):
 				}
 				ucr_save({self.app.ucr_ip_key: str(network)})
 				ip_addresses = network.hosts()  # iterator!
-				ip_addresses.next()  # first one for docker gateway
+				next(ip_addresses)  # first one for docker gateway
 		for service_name, service in content['services'].items():
 			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))
 			used_ports[service_name] = {}
@@ -525,7 +530,7 @@ class MultiDocker(Docker):
 					if prot:
 						prots[_port] = prot
 			if ip_addresses and not service.get('networks') and service.get('network_mode') != 'bridge':
-				service['networks'] = {'appcenter_net': {'ipv4_address': str(ip_addresses.next())}}
+				service['networks'] = {'appcenter_net': {'ipv4_address': str(next(ip_addresses))}}
 		if 'environment' not in container_def:
 			container_def['environment'] = {}
 		if isinstance(container_def['environment'], list):
@@ -563,7 +568,7 @@ class MultiDocker(Docker):
 					else:
 						service['env_file'] = list()
 						service['env_file'].append(self.env_file_created)
-		with open(yml_file, 'wb') as fd:
+		with open(yml_file, 'w') as fd:
 			yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
 		shutil.copy2(yml_file, yml_run_file)  # "backup"
 
@@ -604,6 +609,7 @@ class MultiDocker(Docker):
 					_logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
 					time.sleep(5)
 			for line in ps.splitlines():
+				line = line.decode('utf-8')
 				c_name = line.split(' ', 1)[0]
 				if '_{}_'.format(self.app.docker_main_service) in c_name:
 					name = c_name

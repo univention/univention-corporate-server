@@ -220,7 +220,7 @@ class AppCache(_AppCache):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
-				with open(cache_file, 'wb') as fd:
+				with open(cache_file, 'w') as fd:
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
 				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
@@ -242,7 +242,7 @@ class AppCache(_AppCache):
 				if _cmp_mtimes(cache_modified, master_file_modified) == -1:
 					cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
 					return None
-			with open(cache_file, 'rb') as fd:
+			with open(cache_file, 'r') as fd:
 				cache = load(fd)
 			self._cache_modified_mtime = cache_modified
 		except (EnvironmentError, ValueError, TypeError):

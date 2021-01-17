@@ -76,7 +76,7 @@ class CredentialsAction(UniventionAppAction):
 			return args.username
 		if not args.noninteractive:
 			try:
-				username = raw_input('Username [Administrator]: ') or 'Administrator'
+				username = input('Username [Administrator]: ') or 'Administrator'
 			except (EOFError, KeyboardInterrupt):
 				raise CredentialsNoUsernameError()
 			self._username = username
@@ -110,7 +110,7 @@ class CredentialsAction(UniventionAppAction):
 		if not password:
 			yield None
 		else:
-			with NamedTemporaryFile('w+b') as password_file:
+			with NamedTemporaryFile('w') as password_file:
 				password_file.write(password)
 				password_file.flush()
 				yield password_file.name

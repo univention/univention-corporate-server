@@ -80,7 +80,7 @@ class Setting(TypedIniSectionObject):
 			value = ucr_get(self.name)
 			if value is not None:
 				return self.sanitize_value(app, value)
-		if isinstance(self.initial_value, basestring):
+		if isinstance(self.initial_value, string_types):
 			return ucr_run_filter(self.initial_value)
 		return self.initial_value
 
@@ -208,7 +208,7 @@ class FileSetting(Setting):
 			if content:
 				settings_logger.debug('Writing to %s' % filename)
 				self._touch_file(filename)
-				with open(filename, 'wb') as fd:
+				with open(filename, 'w') as fd:
 					fd.write(content)
 			else:
 				settings_logger.debug('Deleting %s' % filename)

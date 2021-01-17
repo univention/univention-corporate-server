@@ -55,7 +55,7 @@ class _PackageManagerLogHandler(Handler):
 
 	def emit(self, record):
 		if record.name.startswith('packagemanager.dpkg'):
-			if isinstance(record.msg, basestring):
+			if isinstance(record.msg, string_types):
 				record.msg = record.msg.rstrip() + '\r'
 			if record.name.startswith('packagemanager.dpkg.percentage'):
 				record.levelname = 'DEBUG'

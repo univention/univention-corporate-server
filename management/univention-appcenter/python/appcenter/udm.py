@@ -179,8 +179,9 @@ class ApplicationLDAPObject(object):
 		self._pos = pos
 		self._reload(app, create_if_not_exists)
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return self._udm_obj is not None
+	__nonzero__ = __bool__  # py2 compat
 
 	@property
 	def dn(self):
@@ -201,7 +202,7 @@ class ApplicationLDAPObject(object):
 		icon_file = app.get_cache_file('logo')
 		if os.path.exists(icon_file):
 			try:
-				with open(icon_file) as f:
+				with open(icon_file, 'rb') as f:
 					base64icon = base64.b64encode(f.read())
 			except IOError:
 				pass

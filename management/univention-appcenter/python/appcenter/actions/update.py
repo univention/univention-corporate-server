@@ -123,7 +123,7 @@ class Update(UniventionAppAction):
 	def _get_etags(self, etags_file):
 		ret = {}
 		try:
-			with open(etags_file, 'rb') as f:
+			with open(etags_file, 'r') as f:
 				for line in f:
 					try:
 						fname, etag = line.split('\t')
@@ -137,7 +137,7 @@ class Update(UniventionAppAction):
 
 	def _save_etags(self, cache, etags):
 		etags_file = os.path.join(cache.get_cache_dir(), '.etags')
-		with open(etags_file, 'wb') as f:
+		with open(etags_file, 'w') as f:
 			for fname, etag in etags.items():
 				f.write('%s\t%s\n' % (fname, etag))
 
@@ -255,7 +255,7 @@ class Update(UniventionAppAction):
 
 	def _uncompress_archive(self, app_cache, local_archive):
 		try:
-			with gzip_open(local_archive) as zipped_file:
+			with gzip_open(local_archive, 'rb') as zipped_file:
 				archive_content = zipped_file.read()
 				with open(os.path.join(app_cache.get_cache_dir(), '.all.tar'), 'wb') as extracted_file:
 					extracted_file.write(archive_content)

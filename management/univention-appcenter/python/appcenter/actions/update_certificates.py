@@ -62,7 +62,7 @@ class UpdateCertificates(UniventionAppAction):
 
 	def _run_update_certificates_script(self, app):
 		ext = 'update_certificates'
-		with NamedTemporaryFile('r+b') as error_file:
+		with NamedTemporaryFile('r') as error_file:
 			kwargs = {}
 			kwargs['version'] = app.version
 			kwargs['error_file'] = error_file.name

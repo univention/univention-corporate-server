@@ -171,7 +171,7 @@ class DatabaseConnector(object):
 	def _write_password(self, password):
 		db_password_file = self.get_db_password_file()
 		try:
-			with open(db_password_file, 'wb') as f:
+			with open(db_password_file, 'w') as f:
 				os.chmod(f.name, 0o600)
 				f.write(password)
 		except EnvironmentError as exc:
@@ -181,7 +181,7 @@ class DatabaseConnector(object):
 
 	def _read_password(self):
 		try:
-			with open(self.get_db_password_file(), 'rb') as f:
+			with open(self.get_db_password_file(), 'r') as f:
 				return f.read().rstrip('\n')
 		except (EnvironmentError, TypeError):
 			return None
@@ -306,10 +306,10 @@ class MySQL(DatabaseConnector):
 			self._cursor = self.get_root_connection().cursor()
 		return self._cursor
 
-	def execute(self, query):
+	def execute(self, query, *args):
 		try:
 			cursor = self.get_cursor()
-			cursor.execute(query)
+			cursor.execute(query, args)
 		except mysql.Error as exc:
 			raise DatabaseError(str(exc))
 		else:
@@ -317,19 +317,21 @@ class MySQL(DatabaseConnector):
 
 	def db_exists(self):
 		database_logger.info('Checking if database %s exists (mysql implementation)' % self.get_db_name())
-		cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = '%s')" % self.escape(self.get_db_name()))
+		cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s)", self.get_db_name())
 		return cursor.fetchone()[0]
 
 	def db_user_exists(self):
-		cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = '%s')" % self.escape(self.get_db_user()))
+		cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = %s)", self.get_db_user())
 		return cursor.fetchone()[0]
 
 	def escape(self, value):
-		return self.get_root_connection().escape(unicode(value))
+		print(repr(value))
+		print(repr(text_type(value)))
+		return self.get_root_connection().escape(text_type(value))
 
 	def create_db_and_user(self, password):
-		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.escape(self.get_db_name()))
-		self.execute("GRANT ALL ON `%s`.* TO '%s'@'%%' IDENTIFIED BY '%s'" % (self.escape(self.get_db_name()), self.escape(self.get_db_user()), password))
+		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.get_db_name())
+		self.execute("GRANT ALL ON `%s`.* TO %%s@'%%%%' IDENTIFIED BY %%s" % self.get_db_name(), self.get_db_user(), password)
 
 	def __del__(self):
 		if self._connection:

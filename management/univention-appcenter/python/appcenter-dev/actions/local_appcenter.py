@@ -739,7 +739,7 @@ class DevSet(UniventionAppAction):
 	def set_file_content(self, app, attr, value):
 		if value:
 			self.log('Writing %s' % attr)
-			with open(app.get_cache_file(attr), 'wb') as fd:
+			with open(app.get_cache_file(attr), 'w') as fd:
 				fd.write(value)
 		else:
 			self.log('Removing %s' % attr)
@@ -767,7 +767,7 @@ class DevSet(UniventionAppAction):
 			attribute = args.app.get_attr(underscore(attr))
 			self.process(args.app, attribute, section, camelcase(attr), value, parser)
 		self.log('Rewriting %s' % ini_file)
-		with NamedTemporaryFile('w+b') as tmp_ini_file:
+		with NamedTemporaryFile('w') as tmp_ini_file:
 			parser.write(tmp_ini_file)
 			tmp_ini_file.flush()
 			if not args.meta:

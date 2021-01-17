@@ -185,7 +185,7 @@ class InstallRemoveUpgrade(Register):
 		if args.send_info:
 			try:
 				# do not send more than 500 char of status_details
-				if isinstance(status_details, basestring):
+				if isinstance(status_details, string_types):
 					status_details = status_details[-5000:]
 				self._send_information(app, status, status_details)
 			except NetworkError:
@@ -291,7 +291,7 @@ class InstallRemoveUpgrade(Register):
 				if args.noninteractive:
 					return True
 				try:
-					aggreed = raw_input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
+					aggreed = input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
 				except (KeyboardInterrupt, EOFError):
 					return False
 				else:
@@ -309,7 +309,7 @@ class InstallRemoveUpgrade(Register):
 		if not os.path.exists(script):
 			self.debug('%s does not exist' % script)
 			return True
-		with NamedTemporaryFile('r+b') as error_file:
+		with NamedTemporaryFile('r') as error_file:
 			with self._get_password_file(args) as pwdfile:
 				if not pwdfile:
 					self.warn('Could not get password')
@@ -359,10 +359,10 @@ class InstallRemoveUpgrade(Register):
 		if not args.noninteractive:
 			try:
 				if agree:
-					aggreed = raw_input('Do you agree [y/N]? ')
+					aggreed = input('Do you agree [y/N]? ')
 					return aggreed.lower()[:1] in ['y', 'j']
 				elif confirm:
-					raw_input('Press [ENTER] to continue')
+					input('Press [ENTER] to continue')
 					return True
 			except (KeyboardInterrupt, EOFError):
 				return False

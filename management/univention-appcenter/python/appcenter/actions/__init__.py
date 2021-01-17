@@ -229,7 +229,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 	def _subprocess(self, args, logger=None, env=None):
 		if logger is None:
 			logger = self.logger
-		elif isinstance(logger, basestring):
+		elif isinstance(logger, string_types):
 			logger = self.logger.getChild(logger)
 		return call_process(args, logger, env)
 

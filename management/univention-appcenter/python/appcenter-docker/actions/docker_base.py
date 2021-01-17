@@ -131,7 +131,7 @@ class DockerActionMixin(object):
 					cmd_kwargs['_logger'] = logger
 				process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
 				if process.returncode != 0:
-					with open(error_file.name, 'r+b') as error_handle:
+					with open(error_file.name, 'r') as error_handle:
 						for line in error_handle:
 							self.fatal(line)
 				if output:
@@ -246,12 +246,12 @@ docker inspect:
 			f_dir = os.path.dirname(f_name)
 			# if the container start takes a little longer the f_dir may not exist yet
 			# so wait max 60s
-			for i in xrange(0, 12):
+			for i in range(0, 12):
 				if os.path.isdir(f_dir):
 					break
 				time.sleep(5)
 			try:
-				with open(f_name, 'w+b') as f:
+				with open(f_name, 'w') as f:
 					os.chmod(f_name, 0o600)
 					f.write(password)
 			except Exception as exc:
