@@ -35,6 +35,8 @@
 import os
 import os.path
 
+from six import string_types
+
 from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter

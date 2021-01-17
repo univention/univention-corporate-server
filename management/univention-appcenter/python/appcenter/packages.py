@@ -39,6 +39,8 @@ import re
 from logging import Handler
 from contextlib import contextmanager
 
+from six import string_types
+
 from univention.lib.package_manager import PackageManager, LockError  # LockError is actually imported from other files!
 
 from univention.appcenter.log import get_base_logger, LogCatcher

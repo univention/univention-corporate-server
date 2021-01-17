@@ -41,6 +41,7 @@ import ssl
 from functools import wraps
 
 from six.moves import urllib_error, http_client
+from six import string_types
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger

@@ -51,6 +51,7 @@ from locale import getlocale
 from six.moves.configparser import RawConfigParser, ParsingError
 from six.moves import urllib_request, http_client
 from six.moves.urllib_parse import urlencode
+from six import string_types
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape

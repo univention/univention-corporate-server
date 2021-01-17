@@ -40,6 +40,7 @@ from copy import deepcopy
 import time
 
 import ldap
+from six.moves import input
 
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.exceptions import CredentialsNoUsernameError, CredentialsNoPasswordError, ConnectionFailed, ConnectionFailedSecretFile, ConnectionFailedInvalidUserCredentials, ConnectionFailedInvalidMachineCredentials, ConnectionFailedServerDown, ConnectionFailedInvalidAdminCredentials, ConnectionFailedConnectError
