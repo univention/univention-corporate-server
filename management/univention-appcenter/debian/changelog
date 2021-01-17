@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-12) unstable; urgency=medium
+
+  * Bug #51598: Python3 version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 17 Jan 2021 03:51:33 +0100
+
 univention-appcenter (9.0.1-11) unstable; urgency=medium
 
   * Bug #52453: Don't show ImageGallery where there are no images
