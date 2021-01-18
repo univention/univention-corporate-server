@@ -3,21 +3,18 @@
 # pylint: disable-msg=C0301,R0903,R0913
 from __future__ import print_function
 
-import errno
 import os.path
 import sys
 from io import StringIO, BytesIO
+import subprocess
 
-import six
-from six.moves import http_client as httplib
 from six.moves import urllib_parse
 from six.moves import urllib_response
 import pytest
 
 import univention.updater.tools as U  # noqa: E402
-import univention.updater.mirror as M  # noqa: E402
 from univention.config_registry import ConfigRegistry
-from mockups import MAJOR, MINOR, PATCH, ERRAT, MockUCSHttpServer, MockPopen
+from mockups import MAJOR, MINOR, PATCH, ERRAT, MockPopen
 
 try:
     from typing import Any, Dict, IO, List, Sequence, Union  # noqa F401
@@ -56,6 +53,8 @@ def http(mocker):
     ressources = {}
 
     def extra(uris={}, **kwargs):
+        uris.update(kwargs)
+        uris = {os.path.join('/', key): value for key, value in uris.items()}
         ressources.update(uris)
         ressources.update(kwargs)
 
@@ -149,3 +148,10 @@ def mockopen(monkeypatch, tmpdir):
     manager = MockFileManager(tmpdir)
     monkeypatch.setattr(builtins, "open", manager.open)
     return manager
+
+
+@pytest.fixture
+def mockpopen(monkeypatch):
+    monkeypatch.setattr(subprocess, 'Popen', MockPopen)
+    yield MockPopen
+    MockPopen.mock_reset()

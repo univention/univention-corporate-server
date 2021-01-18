@@ -11,13 +11,10 @@ from os.path import dirname, join
 import pytest
 from lazy_object_proxy import Proxy
 
-from mockups import ARCH, MAJOR, MINOR, PATCH, M, MockFile, U, gen_releases
+from mockups import ARCH, MAJOR, MINOR, gen_releases
+import univention.updater.mirror as M
+import univention.updater.tools as U 
 from univention.lib.ucs import UCS_Version
-
-try:
-    import builtins as builtins
-except ImportError:
-    import __builtin__ as builtins  # type: ignore
 
 UM = M.UniventionMirror
 DATA = 'x' * U.MIN_GZIP
