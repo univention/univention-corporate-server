@@ -41,13 +41,14 @@ define([
 	"dijit/PopupMenuItem",
 	"dijit/MenuSeparator",
 	"umc/tools",
+	"dojox/html/entities",
 	"umc/menu/MenuItem",
 	"umc/menu/SubMenuItem",
 	"umc/menu/_Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!"
-], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
+], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, entities, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
 
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -62,8 +63,8 @@ define([
 		login.onLogin(function() {
 			// user has logged in -> set username and host in menu header
 			mobileMenuDeferred.then(function(menu) {
-				menu.informationHeader.username.set('content', tools.status('username'));
-				menu.informationHeader.host.set('content', lang.replace('@{0}', [tools.status('hostname')]));
+				menu.informationHeader.username.set('content', entities.encode(tools.status('username')));
+				menu.informationHeader.host.set('content', lang.replace('@{0}', [entities.encode(tools.status('hostname'))]));
 			});
 		});
 
