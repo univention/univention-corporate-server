@@ -44,6 +44,7 @@ define([
 	"dijit/PopupMenuItem",
 	"dijit/MenuSeparator",
 	"umc/tools",
+	"dojox/html/entities",
 	"umc/menu/MenuItem",
 	"umc/menu/SubMenuItem",
 	"umc/widgets/ContainerWidget",
@@ -52,7 +53,7 @@ define([
 	"umc/i18n!"
 ], function(
 		declare, lang, array, on, Deferred, topic, tap, domClass, _WidgetBase, _TemplatedMixin,
-		_WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem,
+		_WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, entities, MenuItem, SubMenuItem,
 		ContainerWidget, Text, Button, _
 ) {
 	// require umc/menu here in order to avoid circular dependencies
@@ -71,15 +72,15 @@ define([
 	loginDeferred.then(function(login) {
 		// react to login/logout events
 		login.onLogin(function() {
-			// user has logged in -> set username and host in menu header
+			// user has logged in -> set username in menu header
 			mobileMenuDeferred.then(function(menu) {
 				menu.loginHeader.set('loggedIn', true);
-				menu.loginHeader.set('username', tools.status('username'));
+				menu.loginHeader.set('username', entities.encode(tools.status('username')));
 			});
 		});
 
 		login.onLogout(function() {
-			// user has logged out -> unset username and host in menu header
+			// user has logged out -> unset username in menu header
 			mobileMenuDeferred.then(function(menu) {
 				menu.loginHeader.set('loggedIn', false);
 			});

@@ -1,3 +1,9 @@
+univention-web (4.0.1-1) unstable; urgency=medium
+
+  * Bug #52665: fix XSS vulnerability in Menu
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jan 2021 13:32:57 +0100
+
 univention-web (4.0.0-12) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design:
