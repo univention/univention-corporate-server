@@ -39,86 +39,91 @@ import univention.portal.config as config
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
 
+
 class PortalHandler(tornado.web.RequestHandler):
-    def initialize(self, portals):
-        self.portals = portals
+	def initialize(self, portals):
+		self.portals = portals
 
-    def write_error(self, status_code, **kwargs):
-        if "exc_info" in kwargs:
-            get_logger("server").exception("Error during service")
-        return super(JsonHandler, self).write_error(status_code, **kwargs)
+	def write_error(self, status_code, **kwargs):
+		if "exc_info" in kwargs:
+			get_logger("server").exception("Error during service")
+		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
-    def find_portal(self):
-        best_score = 0
-        best_portal = None
-        for name, portal in self.portals.items():
-            score = portal.score(self.request)
-            if score > best_score:
-                best_portal = portal
-        return best_portal
+	def find_portal(self):
+		best_score = 0
+		best_portal = None
+		for name, portal in self.portals.items():
+			score = portal.score(self.request)
+			if score > best_score:
+				best_portal = portal
+		return best_portal
 
 
 class LoginHandler(PortalHandler):
-    def post(self):
-        portal = self.find_portal()
-        portal.login_user(self)
+	def post(self):
+		portal = self.find_portal()
+		portal.login_user(self)
 
-    def get(self):
-        portal = self.find_portal()
-        portal.login_request(self)
+	def get(self):
+		portal = self.find_portal()
+		portal.login_request(self)
 
 
 class JsonHandler(PortalHandler):
-    def get(self):
-        portal = self.find_portal()
-        if not portal:
-            raise tornado.web.HTTPError(404)
-        user = portal.get_user(self)
-        admin_mode = False
-        if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
-            get_logger("admin").info("Admin mode requested")
-            admin_mode = user and user.is_admin
-            if admin_mode:
-                get_logger("admin").info("Admin mode granted")
-            else:
-                get_logger("admin").info("Admin mode rejected")
-        answer = {}
+	def get(self):
+		portal = self.find_portal()
+		if not portal:
+			raise tornado.web.HTTPError(404)
+		user = portal.get_user(self)
+		admin_mode = False
+		if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
+			get_logger("admin").info("Admin mode requested")
+			admin_mode = user and user.is_admin
+			if admin_mode:
+				get_logger("admin").info("Admin mode granted")
+			else:
+				get_logger("admin").info("Admin mode rejected")
+		answer = {}
 
-        visible_content = portal.get_visible_content(user, admin_mode)
-        answer["user_links"] = portal.get_user_links(user, admin_mode)
-        answer["menu_links"] = portal.get_menu_links(user, admin_mode)
-        answer["entries"] = portal.get_entries(visible_content)
-        answer["folders"] = portal.get_folders(visible_content)
-        answer["categories"] = portal.get_categories(visible_content)
-        answer["portal"] = portal.get_meta(visible_content, answer["categories"])
-        answer["filtered"] = not admin_mode
-        answer["may_edit_portal"] = user and user.is_admin
-        answer["login_url"] = "https://{}/univention/portal/portal/login/".format(self.request.host)  # FIXME
-        self.write(answer)
+		visible_content = portal.get_visible_content(user, admin_mode)
+		answer["user_links"] = portal.get_user_links(user, admin_mode)
+		answer["menu_links"] = portal.get_menu_links(user, admin_mode)
+		answer["entries"] = portal.get_entries(visible_content)
+		answer["folders"] = portal.get_folders(visible_content)
+		answer["categories"] = portal.get_categories(visible_content)
+		answer["portal"] = portal.get_meta(visible_content, answer["categories"])
+		answer["filtered"] = not admin_mode
+		answer["may_edit_portal"] = user and user.is_admin
+		answer["login_url"] = "https://{}/univention/portal/portal/login/".format(
+			self.request.host
+		)  # FIXME
+		self.write(answer)
 
 
 def get_portals():
-    ret = {}
-    with open("/usr/share/univention-portal/portals.json") as fd:
-        portal_definitions = json.load(fd)
-    for name, portal_definition in portal_definitions.items():
-        get_logger("server").info("Building portal {}".format(name))
-        ret[name] = make_portal(portal_definition)
-    return ret
+	ret = {}
+	with open("/usr/share/univention-portal/portals.json") as fd:
+		portal_definitions = json.load(fd)
+	for name, portal_definition in portal_definitions.items():
+		get_logger("server").info("Building portal {}".format(name))
+		ret[name] = make_portal(portal_definition)
+	return ret
 
 
 def make_app():
-    portals = get_portals()
-    return tornado.web.Application([
-        (r"/.+/login/", LoginHandler, {"portals": portals}),
-        (r"/.+/portal.json", JsonHandler, {"portals": portals}),
-    ])
+	portals = get_portals()
+	return tornado.web.Application(
+		[
+			(r"/.+/login/", LoginHandler, {"portals": portals}),
+			(r"/.+/portal.json", JsonHandler, {"portals": portals}),
+		]
+	)
 
 
 if __name__ == "__main__":
-    setup_logger()
-    app = make_app()
-    port = config.fetch("port")
-    get_logger("server").info("firing up portal server at port %s" % port)
-    app.listen(port)
-    tornado.ioloop.IOLoop.current().start()
+	setup_logger()
+	app = make_app()
+	port = config.fetch("port")
+	get_logger("server").info("firing up portal server at port %s" % port)
+	app.listen(port)
+	tornado.ioloop.IOLoop.current().start()
