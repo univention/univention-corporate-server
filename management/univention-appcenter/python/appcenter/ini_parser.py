@@ -33,7 +33,7 @@
 #
 
 
-from six.moves.configparser import RawConfigParser, ParsingError, NoSectionError, NoOptionError
+from six.moves.configparser import RawConfigParser, DuplicateSectionError, ParsingError, NoSectionError, NoOptionError
 import re
 from copy import deepcopy
 import codecs
@@ -75,7 +75,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 		pass
 	except EnvironmentError:
 		pass
-	except ParsingError as exc:
+	except (DuplicateSectionError, ParsingError) as exc:
 		ini_logger.warn('Could not parse %s' % filename)
 		ini_logger.warn(str(exc))
 	else:
