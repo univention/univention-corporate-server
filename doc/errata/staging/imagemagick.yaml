@@ -1,0 +1,36 @@
+product: ucs
+release: "4.4"
+version: [6, 7]
+scope: ucs_4.4-0-errata4.4-7
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u11
+desc: |
+ This update addresses the following issues:
+ * Use-after-free in the TIFFSetProfiles function (CVE-2017-14528)
+ * Stack buffer overflow in XPM coder could result in a crash (CVE-2020-19667)
+ * heap-based buffer overflow in WritePALMImage in coders/palm.c
+   (CVE-2020-25665)
+ * heap-based buffer overflow in WriteOnePNGImage in coders/png.c
+   (CVE-2020-25674)
+ * division by zero in OptimizeLayerFrames function in MagickCore/layer.c
+   (CVE-2020-27560)
+ * division by zero in MagickCore/colorspace-private.h (CVE-2020-27750)
+ * division by zero at MagickCore/enhance.c (CVE-2020-27760)
+ * division by zero at MagickCore/resize.c (CVE-2020-27763)
+ * division by zero at MagickCore/segment.c (CVE-2020-27765)
+ * division by zero at MagickCore/gem-private.h (CVE-2020-27773)
+ * Shell injection via PDF password could result in arbitrary code execution
+   (CVE-2020-29599)
+bug: [52664]
+cve:
+- CVE-2017-14528
+- CVE-2020-19667
+- CVE-2020-25665
+- CVE-2020-25674
+- CVE-2020-27560
+- CVE-2020-27750
+- CVE-2020-27760
+- CVE-2020-27763
+- CVE-2020-27765
+- CVE-2020-27773
+- CVE-2020-29599
