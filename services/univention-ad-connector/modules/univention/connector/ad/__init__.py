@@ -159,7 +159,6 @@ def ad2samba_time(ltime):
 		return ltime
 	d = 116444736000000000  # difference between 1601 and 1970
 	return int(((ltime - d)) / 10000000)
-# mapping funtions
 
 
 def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr=None):
@@ -361,7 +360,7 @@ class LDAPEscapeFormatter(string.Formatter):
 
 def format_escaped(format_string, *args, **kwargs):
 	"""
-	Convenience-wrapper arround `LDAPEscapeFormatter`.
+	Convenience-wrapper around `LDAPEscapeFormatter`.
 
 	Use `!e` do denote format-field that should be escaped using
 	`ldap.filter.escape_filter_chars()`'
@@ -479,7 +478,7 @@ class ad(univention.connector.ucs):
 		self.group_mapping_cache_con = {}
 
 		# Save the old members of a group
-		# The connector is object base, a least in the way AD/S4 to LDAP because we don't
+		# The connector is object based, at least in the direction AD/AD to LDAP, because we don't
 		# have a local cache. group_members_cache_ucs and group_members_cache_con help to
 		# determine if the group membership was already saved. For example, one group and
 		# five users are created on UCS side. After two users have been synced to AD/S4,
@@ -488,9 +487,17 @@ class ad(univention.connector.ucs):
 		# from the group. For this we remove only members who are in the local cache.
 
 		# UCS groups and UCS members
+		# * initialized during start
+		# * entry updated in group_members_sync_from_ucs and object_memberships_sync_from_ucs
+		# * entry flushed for group object in sync_to_ucs / add_in_ucs
+		# * entry used for decision in group_members_sync_to_ucs
 		self.group_members_cache_ucs = {}
 
-		# S4 groups and S4 members
+		# AD groups and AD members
+		# * initialized during start
+		# * entry updated in group_members_sync_to_ucs and object_memberships_sync_to_ucs
+		# * entry flushed for group object in sync_from_ucs / ADD
+		# * entry used for decision in group_members_sync_from_ucs
 		self.group_members_cache_con = {}
 
 		if init_group_cache:
@@ -764,8 +771,7 @@ class ad(univention.connector.ucs):
 	def _remove_GUID(self, GUID):
 		self._remove_config_option('AD GUID', self.__encode_GUID(GUID))
 
-# handle rejected Objects
-
+	# handle rejected Objects
 	def _save_rejected(self, id, dn):
 		try:
 			self._set_config_option('AD rejected', str(id), encode_attrib(dn))
@@ -861,6 +867,7 @@ class ad(univention.connector.ucs):
 		return ad_members
 
 	def get_object(self, dn, attrlist=None):
+		"""Get an object from AD-LDAP"""
 		try:
 			ad_object = self.lo_ad.get(compatible_modstring(dn), attr=attrlist)
 			try:
@@ -892,6 +899,7 @@ class ad(univention.connector.ucs):
 		'''
 		search ad
 		'''
+
 		if not base:
 			base = self.lo_ad.base
 
@@ -955,8 +963,8 @@ class ad(univention.connector.ucs):
 
 			return self.__search_ad(filter=usnFilter, show_deleted=show_deleted)
 
-		# search fpr objects with uSNCreated and uSNChanged in the known range
 
+		# search for objects with uSNCreated and uSNChanged in the known range
 		returnObjects = []
 		try:
 			if lastUSN > 0:
@@ -972,7 +980,7 @@ class ad(univention.connector.ucs):
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
-			# The LDAP control page results was not sucessful. Without this control
+			# The LDAP control page results was not successful. Without this control
 			# AD does not return more than 1000 results. We are going to split the
 			# search.
 			highestCommittedUSN = self.__get_highestCommittedUSN()
@@ -1025,8 +1033,11 @@ class ad(univention.connector.ucs):
 
 	def __object_from_element(self, element):
 		"""
-		gets an object from an LDAP-element, implements necessary mapping
+		gets an object from an AD LDAP-element, implements necessary mapping
 
+		:param element:
+			(dn, attributes) tuple from a search in AD-LDAP
+		:ptype element: tuple
 		"""
 		if element[0] == 'None' or element[0] is None:
 			return None  # referrals
@@ -1071,6 +1082,7 @@ class ad(univention.connector.ucs):
 		return object
 
 	def __identify(self, object):
+		"""Identify the type of the specified AD object"""
 		if not object or 'attributes' not in object:
 			return None
 		for key in self.property.keys():
@@ -1171,7 +1183,7 @@ class ad(univention.connector.ucs):
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
-		# - proove that the user is member of this group, so: at first we need the ad_object for this element
+		# - prove that the user is member of this group, so: at first we need the ad_object for this element
 		# this means we need to map the user to get it's AD-DN which would call this function recursively
 
 		if "primaryGroupID" in ldap_object_ad and ldap_object_ad["primaryGroupID"][0] == rid:
@@ -1424,6 +1436,7 @@ class ad(univention.connector.ucs):
 					if prim_dn.lower() in ad_members_from_ucs:
 						ad_members_from_ucs.remove(prim_dn.lower())
 					elif prim_dn in ad_members_from_ucs:
+						# Code review comment: Obsolete? ad_members_from_ucs should be all lowercase at this point
 						ad_members_from_ucs.remove(prim_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: ad_members_from_ucs without members with this as their primary group: %s" % ad_members_from_ucs)
@@ -2082,6 +2095,7 @@ class ad(univention.connector.ucs):
 				self.group_members_cache_ucs[group].add(add_ucs_dn)
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
+		# NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
 		# object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
@@ -2092,8 +2106,8 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
 
+		# check for move, if old_object exists, set modtype move
 		pre_mapped_ucs_old_dn = old_dn
-
 		if old_dn:
 			ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
 			if hasattr(self.property[property_type], 'dn_mapping_function'):

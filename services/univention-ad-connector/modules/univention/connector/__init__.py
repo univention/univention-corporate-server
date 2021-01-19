@@ -67,8 +67,8 @@ except AttributeError:
 	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
 
-# util functions defined during mapping
 
+# util functions defined during mapping
 def make_lower(mlValue):
 	'''
 	lower string cases for mlValue which can be string or a list of values which can be given to mlValue
@@ -273,17 +273,49 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 
+class attribute(object):
+	"""A mapping attribute description
 
+		:param ucs_attribute:
+			The property name of the object in UDM
+		:type ucs_attribute: str
 
+		:param ldap_attribute:
+			The LDAP attribute name of the object in UCS LDAP
+		:type ldap_attribute: str
 
+		:param con_attribute:
+			The LDAP attribute name of the object in AD LDAP
+		:type con_attribute: str
 
+		:param con_other_attribute:
+			Further LDAP attribute name of the object in AD LDAP.
+		:type con_other_attribute: str
 
+		:param required:
+			unused
+		:type required: bool
 
+		:param single_value:
+			Whether the attribute is single_value in the AD LDAP.
+		:type single_value: bool
 
+		:param compare_function:
+			A comparision function which compares raw ldap attribute values.
+		:type compare_function: callable
 
+		:param mapping:
+			Mapping functions for (sync_to_ad, sync_to_ucs)
+		:ptype mapping: tuple
 
+		:param reverse_attribute_check:
+			Make a reverse check of this mapping, if the mapping is not 1:1.
+		:ptype reverse_attribute_check: bool
 
-class attribute:
+		:param sync_mode:
+			The syncronization direction (read, write, sync)
+		:ptype sync_mode: str
+	"""
 
 	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends=''):
 		self.ucs_attribute = ucs_attribute
@@ -296,7 +328,7 @@ class attribute:
 		self.con_value_merge_function = con_value_merge_function
 		if mapping:
 			self.mapping = mapping
-		# Make a reverse check of this mapping. This is necassary if the attribute is
+		# Make a reverse check of this mapping. This is neccessary if the attribute is
 		# available in UCS and in AD but the mapping is not 1:1.
 		# For example the homeDirectory attribute is in UCS and in AD, but the mapping is
 		# from homeDirectory in AD to sambaHomePath in UCS. The homeDirectory in UCS is not
@@ -338,6 +370,9 @@ class property:
 		self.con_default_dn = con_default_dn
 
 		self.ucs_module = ucs_module
+		# allow a 1:n mapping, for example a Windows client
+		# could be a computers/windows or a computers/memberserver
+		# object
 		self.ucs_module_others = ucs_module_others
 		self.sync_mode = sync_mode
 
@@ -402,9 +437,10 @@ class ucs(object):
 		self.close_debug()
 
 	def dn_mapped_to_base(self, dn, base):
+		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
-		elif dn.lower().endswith(base.lower()):
+		elif dn.lower().endswith(base.lower()):  # FIXME
 			return ''.join((dn[:-len(base)], base))
 		else:
 			return dn
@@ -896,7 +932,6 @@ class ucs(object):
 						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
 
-
 					# If the list contains more than one file, the DN will be synced later
 					# but if the object was added or removed, the synchonization is required
 					for i in [0, 1]:  # do it twice if the LDAP connection was closed
@@ -943,7 +978,6 @@ class ucs(object):
 	def __set_values(self, property_type, object, ucs_object, modtype='modify'):
 		if not modtype == 'add':
 			ucs_object.open()
-
 		ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
 
 		def set_values(attributes):
@@ -1116,6 +1150,7 @@ class ucs(object):
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
+		"""Removes an AD object in UCS-LDAP"""
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		if object['attributes'].get('objectGUID'):
@@ -1161,7 +1196,24 @@ class ucs(object):
 				raise
 
 	def sync_to_ucs(self, property_type, object, premapped_ad_dn, original_object, retry=True):
-		# this function gets an object from the ad class, which should be converted into a ucs modul
+		"""
+		Synchronize an object from AD-LDAP to UCS Open-LDAP.
+
+		:param property_type:
+			the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
+		:param object:
+			A dictionary describing the AD object.
+			modtype: A modification type ("add", "modify", "move", "delete")
+			dn: The DN of the object in the UCS-LDAP
+			olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
+		:ptype object: dict
+		:param pre_mapped_ad_dn:
+			pass
+		:param original_object:
+			pass
+		"""
+		# NOTE: pre_mapped_ad_dn means: original ad_dn (i.e. before _object_mapping)
+		# this function gets an object from the ad class, which should be converted into a ucs module
 
 		# if sync is write (sync to AD) or none, there is nothing to do
 		if self.property[property_type].sync_mode in ['write', 'none']:
@@ -1282,7 +1334,7 @@ class ucs(object):
 			return False
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
-		# dummy
+		# dummy: implemented in ad/__init__.py
 		return False
 
 	# internal functions
@@ -1304,7 +1356,7 @@ class ucs(object):
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
 	def _filter_match(self, filter, attributes):
 		'''
-		versucht eine liste von attributen auf einen LDAP-Filter zu matchen
+		versucht eine Liste von Attributen auf einen LDAP-Filter zu matchen
 		Besonderheiten des Filters:
 		- immer case-sensitive
 		- nur * als Wildcard
@@ -1435,6 +1487,9 @@ class ucs(object):
 	def _ignore_object(self, key, object):
 		'''
 		parse if object should be ignored because of ignore_subtree or ignore_filter
+
+		:param key: the property_type from the mapping
+		:param object: a mapped or unmapped AD or UCS object
 		'''
 		if 'dn' not in object:
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
@@ -1457,24 +1512,31 @@ class ucs(object):
 		return False
 
 	def _object_mapping(self, key, old_object, object_type='con'):
+		"""Create a mapped object from AD or UCS object definition.
+
+		:param key:
+			the mapping key
+		:param old_object:
+			the object definition in univention directory listener style
+		:ptype old_object: dict
+		:param object_type:
+			"con" if `old_object` is a AD object.
+			"ucs" if `old_object` is a UCS object.
+		:ptype object_type: str
+		"""
 		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
+		# ingoing object format:
 		object = copy.deepcopy(old_object)
-		# Eingehendes Format object:
 		#	'dn': dn
 		#	'modtype': 'add', 'delete', 'modify', 'move'
 		#	'attributes': { attr: [values] }
-		#       'olddn' : dn (nur bei move)
-		# Ausgehendes Format object_out:
+		#       'olddn' : dn (only on move)
+		# outgoing object format:
 		#	'dn': dn
 		#	'modtype':  'add', 'delete', 'modify', 'move'
 		#	'attributes': { attr: [values] }
-		#       'olddn' : dn (nur bei move)
+		#       'olddn' : dn (only on move)
 
-		# sync mode
-		# dn mapping
-		# ignore_filter
-		# attributes
-		# post_attributes
 		object_out = {}
 		object_out['attributes'] = {}
 		if object and 'modtype' in object:
