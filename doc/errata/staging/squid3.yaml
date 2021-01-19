@@ -1,11 +1,11 @@
 product: ucs
 release: "4.4"
-version: [6,7]
+version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: squid3
 fix: 3.5.23-5+deb9u5A~4.4.0.202012171304
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Request smuggling and poisoning attack against the HTTP cache
    (CVE-2020-15049)
  * HTTP Request Smuggling could result in cache poisoning
