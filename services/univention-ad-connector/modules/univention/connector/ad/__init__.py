@@ -62,17 +62,19 @@ import samba.dcerpc.samr
 from tempfile import NamedTemporaryFile
 
 
-class kerberosAuthenticationFailed(Exception):
-	pass
+LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
+
+# page results
+PAGE_SIZE = 1000
 
 
 class netbiosDomainnameNotFound(Exception):
 	pass
 
-LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
-# page results
-PAGE_SIZE = 1000
+class kerberosAuthenticationFailed(Exception):
+	pass
 
 
 def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
@@ -909,8 +911,7 @@ class ad(univention.connector.ucs):
 		]
 
 		if show_deleted:
-			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-			ctrls.append(LDAPControl('1.2.840.113556.1.4.417', criticality=1))
+			ctrls.append(LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1))
 
 		ud.debug(ud.LDAP, ud.INFO, "Search AD with filter: %s" % filter)
 		msgid = self.lo_ad.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
