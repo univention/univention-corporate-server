@@ -734,6 +734,7 @@ class ad(univention.connector.ucs):
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
+		self.ad_ldap_partitions = (self.ad_ldap_base,)
 
 	def _get_lastUSN(self):
 		return max(self.__lastUSN, int(self._get_config_option('AD', 'lastUSN')))
@@ -863,20 +864,25 @@ class ad(univention.connector.ucs):
 		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
-	def __get_change_usn(self, object):
+	def __get_change_usn(self, ad_object):
 		'''
-		get change usn as max(uSNCreated,uSNChanged)
+		get change USN as max(uSNCreated, uSNChanged)
 		'''
-		if not object:
+		if not ad_object:
 			return 0
-		usnchanged = 0
-		usncreated = 0
-		if 'uSNCreated' in object['attributes']:
-			usncreated = int(object['attributes']['uSNCreated'][0])
-		if 'uSNChanged' in object['attributes']:
-			usnchanged = int(object['attributes']['uSNChanged'][0])
-
+		usncreated = int(ad_object['attributes'].get('uSNCreated', [b'0'])[0])
+		usnchanged = int(ad_object['attributes'].get('uSNChanged', [b'0'])[0])
 		return max(usnchanged, usncreated)
+
+	def __search_ad_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
+		'''
+		search ad across all partitions listed in self.ad_ldap_partitions
+		'''
+		res = []
+		for base in self.ad_ldap_partitions:
+			res += self.__search_ad(base, scope, filter, attrlist, show_deleted)
+
+		return res
 
 	def __search_ad(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
 		'''
@@ -932,33 +938,35 @@ class ad(univention.connector.ucs):
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
 
-		def search_ad_changes_by_attribute(attribute, lowerUSN, higherUSN=''):
+		def _ad_changes_filter(attribute, lowerUSN, higherUSN=''):
 			if higherUSN:
 				usn_filter_format = '(&({attribute}>={lower_usn!e})({attribute}<={higher_usn!e}))'
 			else:
 				usn_filter_format = '({attribute}>={lower_usn!e})'
 
-			usnFilter = format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
+			return format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
 
+		def search_ad_changes_by_attribute(usnFilter, last_usn):
 			if filter != '':
 				usnFilter = '(&(%s)(%s))' % (filter, usnFilter)
 
-			return self.__search_ad(filter=usnFilter, show_deleted=show_deleted)
+			res = self.__search_ad_partitions(filter=usnFilter, show_deleted=show_deleted)
 
+			def _sortkey(element):
+				usn_changed = int(element[1]['uSNChanged'][0])
+				usn_created = int(element[1]['uSNCreated'][0])
+				if last_usn <= 0:
+					return usn_created
+				return usn_created if usn_created > last_usn else usn_changed
+			return sorted(res, key=_sortkey)
 
 		# search for objects with uSNCreated and uSNChanged in the known range
-		returnObjects = []
 		try:
+			usn_filter = _ad_changes_filter('uSNCreated', lastUSN + 1)
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
-				# but we need to sync the objects only once
-				returnObjects = search_ad_changes_by_attribute('uSNCreated', lastUSN + 1)
-				for changedObject in search_ad_changes_by_attribute('uSNChanged', lastUSN + 1):
-					if changedObject not in returnObjects:
-						returnObjects.append(changedObject)
-			else:
-				# Every object has got a uSNCreated
-				returnObjects = search_ad_changes_by_attribute('uSNCreated', lastUSN + 1)
+				usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', lastUSN + 1), usn_filter)
+			return search_ad_changes_by_attribute(usn_filter, lastUSN)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
@@ -968,6 +976,7 @@ class ad(univention.connector.ucs):
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 			tmpUSN = lastUSN
 			ud.debug(ud.LDAP, ud.PROCESS, "Need to split results. highest USN is %s, lastUSN is %s" % (highestCommittedUSN, lastUSN))
+			returnObjects = []
 			while (tmpUSN != highestCommittedUSN):
 				lastUSN = tmpUSN
 				tmpUSN += 999
@@ -976,25 +985,24 @@ class ad(univention.connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "__search_ad_changes: search between USNs %s and %s" % (lastUSN + 1, tmpUSN))
 
+				usn_filter = _ad_changes_filter('uSNCreated', lastUSN + 1, tmpUSN)
 				if lastUSN > 0:
-					returnObjects += search_ad_changes_by_attribute('uSNCreated', lastUSN + 1, tmpUSN)
-					for changedObject in search_ad_changes_by_attribute('uSNChanged', lastUSN + 1, tmpUSN):
-						if changedObject not in returnObjects:
-							returnObjects.append(changedObject)
-				else:
-					# Every object has got a uSNCreated
-					returnObjects += search_ad_changes_by_attribute('uSNCreated', lastUSN + 1, tmpUSN)
+					# During the init phase we have to search for created and changed objects
+					usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', lastUSN + 1, tmpUSN), usn_filter)
+				returnObjects += search_ad_changes_by_attribute(usn_filter, lastUSN)
 
-		return returnObjects
+			return returnObjects
 
 	def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
 		'''
 		search ad for change with id
 		'''
-		search_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
+
+		usn_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
 		if filter != '':
-			search_filter = '(&({}){})'.format(filter, search_filter)
-		return self.__search_ad(filter=search_filter, show_deleted=show_deleted)
+			usn_filter = '(&({}){})'.format(filter, usn_filter)
+
+		return self.__search_ad_partitions(filter=usn_filter, show_deleted=show_deleted)
 
 	def __dn_from_deleted_object(self, object):
 		'''
@@ -1072,26 +1080,17 @@ class ad(univention.connector.ucs):
 		if self.__get_change_usn(object) > self._get_lastUSN():
 			self._set_lastUSN(self.__get_change_usn(object))
 
-	def _get_from_root_dse(self, attributes=[]):
-		'''
-		Get attributes from the `rootDSE` from AD.
-		'''
-		# This will search for the `rootDSE` object. `uldap.get{Attr}()`
-		# are not usable, as they don't permit emtpy DNs.
-		result = self.lo_ad.lo.search_s('', ldap.SCOPE_BASE, '(objectClass=*)', attributes)
-		if result:
-			(_dn, attr) = result[0]
-			return attr
-		return None
-
 	def __get_highestCommittedUSN(self):
 		'''
 		get highestCommittedUSN stored in AD
 		'''
 		try:
-			result = self._get_from_root_dse(['highestCommittedUSN'])
-			usn = result['highestCommittedUSN'][0]
-			return int(usn)
+			return int(self.ad_search_ext_s(
+				'',  # base
+				ldap.SCOPE_BASE,
+				'objectclass=*',  # filter
+				['highestCommittedUSN'],
+			)[0][1]['highestCommittedUSN'][0].decode('ASCII'))
 		except ldap.LDAPError:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
 			print("ERROR: initial search in AD failed, check network and configuration")
