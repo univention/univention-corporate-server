@@ -1656,12 +1656,12 @@ class s4(univention.s4connector.ucs):
 						cache[member_dn] = ucs_object_attr
 					ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': ucs_object_attr}
 
-					if not self._ignore_object('user', ucs_object) and not self._ignore_object('group', ucs_object):
-						for k in self.property.keys():
-							# identify if DN is a user or a group (will be ignored it is a host)
-							if self.modules[k].identify(member_dn, ucs_object['attributes']):
+					for k in self.property.keys():
+						# identify if DN is a user or a group (will be ignored it is a host)
+						if self.modules[k].identify(member_dn, ucs_object['attributes']):
+							if not self._ignore_object(k, ucs_object):
 								del_members[k].append(member_dn)
-								break
+							break
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in UCS group member cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
 
