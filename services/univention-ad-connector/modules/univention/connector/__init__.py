@@ -371,7 +371,6 @@ class property:
 class ucs(object):
 
 	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
-		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate;binary']
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
@@ -599,20 +598,8 @@ class ucs(object):
 			return True
 
 		def recode_attribs(attribs):
-			nattribs = {}
-			for key in attribs.keys():
-				if key in self.ucs_no_recode:
-					nattribs[key] = attribs[key]
-				else:
-					try:
-						nvals = []
-						for val in attribs[key]:
-							nvals.append(unicode(val, 'utf8'))
-						nattribs[unicode(key, 'utf8')] = nvals
-					except UnicodeDecodeError:
-						nattribs[key] = attribs[key]
+			return dict((key.decode('UTF-8') if isinstance(key, bytes) else key, value) for key, value in attribs.items())
 
-			return nattribs
 		new = recode_attribs(new)
 		old = recode_attribs(old)
 
