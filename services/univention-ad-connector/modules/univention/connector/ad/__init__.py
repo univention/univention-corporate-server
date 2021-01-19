@@ -36,7 +36,6 @@ from __future__ import print_function
 import string
 import ldap
 import sys
-import base64
 import os
 import copy
 import types
@@ -45,6 +44,7 @@ import array
 import ldap.sasl
 import time
 import calendar
+import base64
 import subprocess
 import univention.uldap
 import univention.connector
@@ -750,36 +750,21 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "_set_lastUSN: new lastUSN is: %s" % lastUSN)
 		self.__lastUSN = lastUSN
 
-	# save ID's
-	def __check_base64(self, string):
-		# check if base64 encoded string string has correct length
-		if not len(string) & 3 == 0:
-			string = string + "=" * (4 - len(string) & 3)
-		return string
-
 	def __encode_GUID(self, GUID):
-		# GUID may be unicode
-		if isinstance(GUID, type(u'')):
-			return GUID.encode('ISO-8859-1').encode('base64')
-		else:
-			return unicode(GUID, 'latin').encode('ISO-8859-1').encode('base64')
+		return base64.b64encode(GUID).decode('ASCII')
 
 	def _get_DN_for_GUID(self, GUID):
-		return self._decode_dn_from_config_option(self._get_config_option('AD GUID', self.__encode_GUID(GUID)))
+		return self._get_config_option('AD GUID', self.__encode_GUID(GUID))
 
 	def _set_DN_for_GUID(self, GUID, DN):
-		self._set_config_option('AD GUID', self.__encode_GUID(GUID), self._encode_dn_as_config_option(DN))
+		self._set_config_option('AD GUID', self.__encode_GUID(GUID), DN)
 
 	def _remove_GUID(self, GUID):
 		self._remove_config_option('AD GUID', self.__encode_GUID(GUID))
 
 	# handle rejected Objects
 	def _save_rejected(self, id, dn):
-		try:
-			self._set_config_option('AD rejected', str(id), encode_attrib(dn))
-		except UnicodeEncodeError:
-			self._set_config_option('AD rejected', str(id), 'unknown')
-			self._debug_traceback(ud.WARN, "failed to set dn in configfile (AD rejected)")
+		self._set_config_option('AD rejected', str(id), dn)
 
 	def _get_rejected(self, id):
 		return self._get_config_option('AD rejected', str(id))
@@ -788,10 +773,8 @@ class ad(univention.connector.ucs):
 		self._remove_config_option('AD rejected', str(id))
 
 	def _list_rejected(self):
-		result = []
-		for i in self._get_config_items('AD rejected'):
-			result.append(i)
-		return result
+		"""Returns rejected AD-objects"""
+		return self._get_config_items('AD rejected')[:]
 
 	def list_rejected(self):
 		return self._list_rejected()

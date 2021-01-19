@@ -504,38 +504,32 @@ class ucs(object):
 	def _get_config_items(self, section):
 		return self.config.items(section)
 
-	def _save_rejected_ucs(self, filename, dn):
+	def _save_rejected_ucs(self, filename, dn, resync=True, reason=''):
+		if not resync:
+			# Note that unescaped <> are invalid in DNs. See also:
+			# `_list_rejected_ucs()`.
+			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '', os.path.basename(filename), dn)
 		self._set_config_option('UCS rejected', filename, dn)
 
 	def _remove_rejected_ucs(self, filename):
 		self._remove_config_option('UCS rejected', filename)
 
+	def list_rejected_ucs(self, filter_noresync=False):
+		rejected = self._get_config_items('UCS rejected')
+		if filter_noresync:
+			no_resync = re.compile('^<NORESYNC(=.*?)?>;')
+			return [(fn, dn) for (fn, dn) in rejected if no_resync.match(dn) is None]
+		return rejected
+
 	def _list_rejected_ucs(self):
-		result = []
-		for i in self._get_config_items('UCS rejected'):
-			result.append(i)
-		return result
+		return self.list_rejected_ucs(filter_noresync=True)
 
 	def _list_rejected_filenames_ucs(self):
-		result = []
-		for filename, dn in self._get_config_items('UCS rejected'):
-			result.append(filename)
-		return result
-
-	def list_rejected_ucs(self):
-		return self._get_config_items('UCS rejected')
-
-	def _encode_dn_as_config_option(self, dn):
-		return dn
-
-	def _decode_dn_from_config_option(self, dn):
-		if dn:
-			return dn
-		return ''
+		return [fn for (fn, dn) in self.list_rejected_ucs()]
 
 	def _set_dn_mapping(self, dn_ucs, dn_con):
-		self._set_config_option('DN Mapping UCS', self._encode_dn_as_config_option(dn_ucs.lower()), self._encode_dn_as_config_option(dn_con.lower()))
-		self._set_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower()), self._encode_dn_as_config_option(dn_ucs.lower()))
+		self._set_config_option('DN Mapping UCS', dn_ucs.lower(), dn_con.lower())
+		self._set_config_option('DN Mapping CON', dn_con.lower(), dn_ucs.lower())
 
 	def _remove_dn_mapping(self, dn_ucs, dn_con):
 		# delete all if mapping failed in the past
@@ -546,12 +540,12 @@ class ucs(object):
 
 		for ucs, con in [(dn_ucs, dn_con), (dn_ucs_mapped, dn_con_mapped), (dn_ucs_re_mapped, dn_con_re_mapped)]:
 			if con:
-				self._remove_config_option('DN Mapping CON', self._encode_dn_as_config_option(con.lower()))
+				self._remove_config_option('DN Mapping CON', con.lower())
 			if ucs:
-				self._remove_config_option('DN Mapping UCS', self._encode_dn_as_config_option(ucs.lower()))
+				self._remove_config_option('DN Mapping UCS', ucs.lower())
 
 	def _get_dn_by_ucs(self, dn_ucs):
-		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping UCS', self._encode_dn_as_config_option(dn_ucs.lower())))
+		return self._get_config_option('DN Mapping UCS', dn_ucs.lower())
 
 	def get_dn_by_ucs(self, dn_ucs):
 		if not dn_ucs:
@@ -562,7 +556,7 @@ class ucs(object):
 	def _get_dn_by_con(self, dn_con):
 		if not dn_con:
 			return dn_con
-		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower())))
+		return self._get_config_option('DN Mapping CON', dn_con.lower())
 
 	def get_dn_by_con(self, dn_con):
 		dn = self._get_dn_by_con(dn_con)
@@ -575,29 +569,6 @@ class ucs(object):
 			self._remove_dn_mapping(dn_ucs.lower(), dn_con_mapped.lower())
 			self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
-
-	def _list_dn_mappings(self, config_space):
-		ret = []
-		for d1, d2 in self._get_config_items(config_space):
-			return_update = False
-			count = 0
-			while not return_update and count < 3:
-				try:
-					ret.append((self._decode_dn_from_config_option(d1), self._decode_dn_from_config_option(self._get_config_option(config_space, d1))))
-					return_update = True
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except:  # FIXME: which exception is to be caught?
-					count = count + 1
-					d1 = d1 + " ="
-			ret.append(("failed", self._decode_dn_from_config_option(d1)))
-		return ret
-
-	def list_dn_mappings_by_con(self):
-		return self._list_dn_mappings('DN Mapping CON')
-
-	def list_dn_mappings_by_ucs(self):
-		return self._list_dn_mappings('DN Mapping UCS')
 
 	def _debug_traceback(self, level, text):
 		'''
