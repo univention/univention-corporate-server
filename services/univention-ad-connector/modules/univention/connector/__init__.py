@@ -76,7 +76,7 @@ def make_lower(mlValue):
 	'''
 	if hasattr(mlValue, 'lower'):
 		return mlValue.lower()
-	if isinstance(mlValue, type([])):
+	if isinstance(mlValue, list):
 		return [make_lower(x) for x in mlValue]
 	return mlValue
 
@@ -85,7 +85,7 @@ password_charsets = [
 	'abcdefghijklmnopqrstuvwxyz',
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	'0123456789',
-	'^!\$%&/()=?{[]}+~#-_.:,;<>|\\',
+	r'^!\$%&/()=?{[]}+~#-_.:,;<>|\\',
 ]
 
 
@@ -109,7 +109,7 @@ def check_ucs_lastname_user(connector, key, ucs_object):
 	'''
 	check if required values for lastname are set
 	'''
-	if 'lastname' not in ucs_object or not ucs_object['lastname']:
+	if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
 		ucs_object['lastname'] = ucs_object.get('username')
 
 
@@ -124,25 +124,23 @@ def set_primary_group_user(connector, key, ucs_object):
 # helper
 
 
-def dictonary_lowercase(dict):
-	if isinstance(dict, type({})):
+def dictonary_lowercase(dict_):
+	if isinstance(dict_, dict):
 		ndict = {}
-		for key in dict.keys():
+		for key in dict_.keys():
 			ndict[key] = []
-			for val in dict[key]:
+			for val in dict_[key]:
 				ndict[key].append(val.lower())
 		return ndict
-	elif isinstance(dict, type([])):
+	elif isinstance(dict_, list):
 		nlist = []
-		for d in dict:
+		for d in dict_:
 			nlist.append(d.lower())
 		return nlist
 	else:
 		try:  # should be string
-			return dict.lower()
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
+			return dict_.lower()
+		except Exception:  # FIXME: which exception is to be caught?
 			pass
 
 
@@ -628,7 +626,7 @@ class ucs(object):
 			change_type = "delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
 		else:
-			entryUUID = new.get('entryUUID', [None])[0]
+			entryUUID = new.get('entryUUID', [b''])[0].decode('ASCII')
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
 					if self._get_entryUUID(dn) == entryUUID:
@@ -741,30 +739,35 @@ class ucs(object):
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: No mapping was found for dn: %s" % dn)
 			return True
 
-	def get_ucs_ldap_object(self, dn):
-
-		if isinstance(dn, type(u'')):
-			searchdn = dn
-		else:
-			searchdn = unicode(dn)
+	def get_ucs_ldap_object_dn(self, dn):
 		try:
-			return self.lo.get(searchdn, required=1)
+			return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
 		except ldap.NO_SUCH_OBJECT:
+			return
+		except ldap.INVALID_DN_SYNTAX:
+			return None
+		except ldap.INVALID_SYNTAX:
+			return None
+
+	def get_ucs_ldap_object(self, dn):
+		try:
+			return self.lo.get(dn, required=True)
+		except ldap.NO_SUCH_OBJECT:
+			return None
+		except ldap.INVALID_DN_SYNTAX:
 			return None
 		except ldap.INVALID_SYNTAX:
 			return None
 
 	def get_ucs_object(self, property_type, dn):
 		ucs_object = None
-		if isinstance(dn, unicode):
-			searchdn = dn
-		else:
-			searchdn = unicode(dn)
+		searchdn = dn
 		try:
 			attr = self.get_ucs_ldap_object(searchdn)
 			if not attr:
 				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
+
 			module = self.modules[property_type]  # default, determined by mapping filter
 			if not module.identify(searchdn, attr):
 				for m in self.modules_others.get(property_type, []):
@@ -962,7 +965,7 @@ class ucs(object):
 					value = object['attributes'][attributes.ldap_attribute]
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
 
-					if isinstance(value, type(types.ListType())) and len(value) == 1:
+					if isinstance(value, list) and len(value) == 1:
 						value = value[0]
 					equal = False
 
@@ -1061,12 +1064,10 @@ class ucs(object):
 
 	def add_in_ucs(self, property_type, object, module, position):
 		ucs_object = module.object(None, self.lo, position=position)
+		ucs_object.open()
 		if property_type == 'group':
-			ucs_object.open()
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
 			self.group_members_cache_ucs[object['dn'].lower()] = set()
-		else:
-			ucs_object.open()
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for ucs_create_function in self.property[property_type].ucs_create_functions:
 			ud.debug(ud.LDAP, ud.INFO, "Call ucs_create_functions: %s" % ucs_create_function)
@@ -1100,13 +1101,13 @@ class ucs(object):
 	def _get_entryUUID(self, dn):
 		try:
 			result = self.search_ucs(base=dn, scope='base', attr=['entryUUID'], unique=True)
+			if result:
+				return result[0][1].get('entryUUID')[0].decode('ASCII')
+			else:
+				return None
 		except univention.admin.uexceptions.noObject:
 			return None
 
-		if result:
-			(_dn, attributes) = result[0]
-			return attributes.get('entryUUID')[0]
-		return None
 
 	def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
 		if entryUUID:
@@ -1222,7 +1223,7 @@ class ucs(object):
 						ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
 						return True
 				else:
-					object['changed_attributes'] = original_attributes.keys()
+					object['changed_attributes'] = list(original_attributes.keys())
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
 
 			result = False
@@ -1317,15 +1318,15 @@ class ucs(object):
 	def _subtree_match(self, dn, subtree):
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
 			return True
 		return False
 
 	def _subtree_replace(self, dn, subtree, subtreereplace):  # FIXME: may raise an exception if called with umlauts
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
-			return dn[:len(dn) - len(subtree)] + subtreereplace
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
+			return dn[:-len(subtree)] + subtreereplace
 		return dn
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
@@ -1341,7 +1342,7 @@ class ucs(object):
 		filter_connectors = ['!', '&', '|']
 
 		def list_lower(elements):
-			if isinstance(elements, type([])):
+			if isinstance(elements, list):
 				retlist = []
 				for l in elements:
 					retlist.append(l.lower())
@@ -1349,14 +1350,14 @@ class ucs(object):
 			else:
 				return elements
 
-		def dict_lower(dict):
-			if isinstance(dict, type({})):
+		def dict_lower(dict_):
+			if isinstance(dict_, dict):
 				retdict = {}
-				for key in dict:
-					retdict[key.lower()] = dict[key]
+				for key in dict_:
+					retdict[key.lower()] = dict_[key]
 				return retdict
 			else:
-				return dict
+				return dict_
 
 		def attribute_filter(filter, attributes):
 			attributes = dict_lower(attributes)
@@ -1375,7 +1376,7 @@ class ucs(object):
 				attribute_value = attributes.get(attribute_name)
 				if attribute_value:
 					try:
-						if isinstance(attribute_value, type([])):
+						if isinstance(attribute_value, list):
 							attribute_value = int(attribute_value[0])
 						int_value = int(value)
 						if ((attribute_value & int_value) == int_value):
@@ -1391,7 +1392,7 @@ class ucs(object):
 			if value == '*':
 				return attribute in list_lower(attributes.keys())
 			elif attribute in attributes:
-				return value.lower() in list_lower(attributes[attribute])
+				return value.lower().encode('UTF-8') in list_lower(attributes[attribute])
 			else:
 				return False
 
