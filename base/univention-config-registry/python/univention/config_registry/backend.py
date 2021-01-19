@@ -639,6 +639,7 @@ class _ConfigRegistry(dict):
 		"""Un-lock sub registry file."""
 		assert self.lock_file
 		self.lock_file.close()
+		self.lock_file = None
 
 	def __setitem__(self, key, value):
 		"""

@@ -1,3 +1,9 @@
+univention-config-registry (15.0.5-2) unstable; urgency=medium
+
+  * Bug #51598: Allow deepcopy of ucr after a ucr_update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jan 2021 13:09:37 +0100
+
 univention-config-registry (15.0.5-1) unstable; urgency=medium
 
   * Bug #51524: fix parsing of /proc/*/stat in service_info.py
