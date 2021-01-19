@@ -641,8 +641,8 @@ class UCSHttpServer(_UCSServer):
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
-        if self.baseurl.username:
-            UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
+        if self.baseurl.username and self.baseurl.password:
+            UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
 
         def get_host():
