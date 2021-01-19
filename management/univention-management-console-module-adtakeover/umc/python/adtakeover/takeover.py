@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD takeover script
@@ -40,7 +40,7 @@ import shutil
 import logging
 import traceback
 import subprocess
-import ConfigParser
+import configparser
 from datetime import datetime, timedelta
 
 import ldb
@@ -551,7 +551,7 @@ class UCS_License_detection(object):
 		num = [mylen(obj) for obj in objs]
 		self._license.checkObjectCounts(max, num)
 		result = []
-		for i in types.keys():
+		for i in list(types.keys()):
 			types[i]
 			m = max[i]
 			n = num[i]
@@ -735,7 +735,7 @@ class AD_Connection(object):
 			# identify well known names, abstracting from locale
 			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 			sambaRID = sambaSID[len(self.domain_sid) + 1:]
-			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+			for (_rid, _name) in list(univention.lib.s4.well_known_domain_rids.items()):
 				if _rid == sambaRID:
 					log.debug("Found account %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
 					sAMAccountName = _name
@@ -759,7 +759,7 @@ class AD_Connection(object):
 			# identify well known names, abstracting from locale
 			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 			sambaRID = sambaSID[len(self.domain_sid) + 1:]
-			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+			for (_rid, _name) in list(univention.lib.s4.well_known_domain_rids.items()):
 				if _rid == sambaRID:
 					log.debug("Found group %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
 					sAMAccountName = _name
@@ -778,7 +778,7 @@ class AD_Connection(object):
 			# identify well known names, abstracting from locale
 			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 			sambaRID = sambaSID[len(self.domain_sid) + 1:]
-			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+			for (_rid, _name) in list(univention.lib.s4.well_known_domain_rids.items()):
 				if _rid == sambaRID:
 					log.debug("Found computer %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
 					sAMAccountName = _name
@@ -1205,14 +1205,14 @@ class AD_Takeover(object):
 
 		# Identify and rename UCS group names to match Samba4 (localized) group names
 		AD_well_known_sids = {}
-		for (rid, name) in univention.lib.s4.well_known_domain_rids.items():
+		for (rid, name) in list(univention.lib.s4.well_known_domain_rids.items()):
 			AD_well_known_sids["%s-%s" % (self.ad_domainsid, rid)] = name
 		AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
 		groupRenameHandler = GroupRenameHandler(self.lo)
 		userRenameHandler = UserRenameHandler(self.lo)
 
-		for (sid, canonical_name) in AD_well_known_sids.items():
+		for (sid, canonical_name) in list(AD_well_known_sids.items()):
 
 			msgs = self.samdb.search(
 				base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
@@ -1697,7 +1697,7 @@ class AD_Takeover_Finalize(object):
 		# from ucr interfaces
 		ipv4_interfaces = list()
 		ipv6_interfaces = list()
-		for k in self.ucr.keys():
+		for k in list(self.ucr.keys()):
 			m = re.match('interfaces/([^/]+)/address', k)
 			if m:
 				ipv4_interfaces.append(m.group(1))
@@ -1915,7 +1915,7 @@ def check_gpo_presence():
 
 		if "versionNumber" in obj:
 			gpcversion = obj["versionNumber"][0]
-			config = ConfigParser.ConfigParser()
+			config = configparser.ConfigParser()
 			try:
 				with open(os.path.join(gpo_path, 'GPT.INI')) as f:
 					try:
@@ -1927,7 +1927,7 @@ def check_gpo_presence():
 						if fileversion != gpcversion:
 							log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
 							# TODO: Imrpove error reporting
-					except ConfigParser.Error as ex:
+					except configparser.Error as ex:
 						log.error(ex.args[0])
 			except IOError as ex:
 				log.error(ex.args[0])
@@ -1961,9 +1961,9 @@ class Timer(object):
 			delta = t - ti
 			if not delta:
 				continue
-			percent.append((label, 100 * (t - t0) / total))
+			percent.append((label, 100 * (t - t0) // total))
 			log.debug("%s: %s%%" % percent[-1])
-			fraction.append((label, 100 * delta / total))
+			fraction.append((label, 100 * delta // total))
 			ti = t
 
 		log.debug("============ timing fractions: ===================")

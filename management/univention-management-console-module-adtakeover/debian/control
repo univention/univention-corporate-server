@@ -20,6 +20,9 @@ Depends:
  univention-s4-connector,
  ${python3:Depends},
  ${python:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: UMC module for taking over an AD
  .
  It is part of Univention Corporate Server (UCS), an
