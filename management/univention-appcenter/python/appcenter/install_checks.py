@@ -33,13 +33,13 @@
 #
 
 
-from distutils.version import LooseVersion
 import re
 import os
 import platform
 
 from six import with_metaclass
 
+from univention.appcenter.app import LooseVersion
 from univention.appcenter.meta import UniventionMetaClass
 from univention.appcenter.ucr import ucr_get, ucr_load, ucr_is_true
 from univention.appcenter.app_cache import Apps

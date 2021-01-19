@@ -40,12 +40,11 @@ from contextlib import contextmanager
 from time import sleep
 from glob import glob
 from json import dump, load
-from distutils.version import LooseVersion
 
 from six.moves.configparser import NoSectionError
 from six.moves.urllib_parse import urlsplit
 
-from univention.appcenter.app import App
+from univention.appcenter.app import App, LooseVersion
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import mkdir, get_locale
 from univention.appcenter.ini_parser import read_ini_file, IniSectionListAttribute, IniSectionAttribute, IniSectionObject

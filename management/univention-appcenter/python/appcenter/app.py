@@ -40,6 +40,7 @@ from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
 from weakref import ref
+from itertools import zip_longest
 
 from six.moves.urllib_parse import urlsplit
 from six.moves.configparser import RawConfigParser, NoOptionError, NoSectionError
@@ -62,6 +63,21 @@ DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
+
+
+class LooseVersion(LooseVersion):
+	def _cmp(self, other):
+		for i, j in zip_longest(self.version, other.version, fillvalue=''):
+			if type(i) != type(j):
+				i = str(i)
+				j = str(j)
+			if i == j:
+				continue
+			elif i < j:
+				return -1
+			else:  # i > j
+				return 1
+		return 0
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -479,7 +495,7 @@ class App(with_metaclass(AppMetaClass, object)):
 		name: The displayed name of the App.
 		version: Version of the App. Needs to be unique together with
 			with the *id*. Versions are compared against each other
-			using Python's LooseVersion (distutils).
+			using a very loose version comparison.
 		install_permissions: Whether a license needs to be bought in order
 			to install the App.
 		install_permissions_message: A message displayed to the user

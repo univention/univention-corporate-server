@@ -44,14 +44,13 @@ from datetime import date
 import gzip
 import tarfile
 from tempfile import mkdtemp
-from distutils.version import LooseVersion
 
 from six.moves.configparser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 from six.moves.urllib_parse import urljoin
 
 from univention.config_registry.interfaces import Interfaces
 
-from univention.appcenter.app import App, AppFileAttribute, CaseSensitiveConfigParser
+from univention.appcenter.app import App, AppFileAttribute, CaseSensitiveConfigParser, LooseVersion
 from univention.appcenter.app_cache import Apps, default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError

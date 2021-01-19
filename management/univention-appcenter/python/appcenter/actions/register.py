@@ -39,10 +39,10 @@ import re
 from optparse import Values
 
 from ldap.dn import str2dn, dn2str
-from distutils.version import LooseVersion
 
 from univention.lib.ldap_extension import UniventionLDAPSchema, get_handler_message
 
+from univention.appcenter.app import LooseVersion
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
