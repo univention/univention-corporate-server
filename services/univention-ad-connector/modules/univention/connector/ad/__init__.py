@@ -2105,8 +2105,8 @@ class ad(univention.connector.ucs):
 			if hasattr(self.property[property_type], 'dn_mapping_function'):
 				tmp_object = copy.deepcopy(object)
 				tmp_object['dn'] = old_dn
-				for function in self.property[property_type].dn_mapping_function:
-					tmp_object = function(self, tmp_object, [], isUCSobject=True)
+				for dn_mapping_function in self.property[property_type].dn_mapping_function:
+					tmp_object = dn_mapping_function(self, tmp_object, [], isUCSobject=True)
 				old_dn = tmp_object['dn']
 			if hasattr(self.property[property_type], 'position_mapping'):
 				for mapping in self.property[property_type].position_mapping:
@@ -2202,8 +2202,9 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: {}" % (object['dn'].lower()))
 
 			if hasattr(self.property[property_type], "post_con_create_functions"):
-				for f in self.property[property_type].post_con_create_functions:
-					f(self, property_type, object)
+				for post_con_create_function in self.property[property_type].post_con_create_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_create_functions: %s" % post_con_create_function)
+					post_con_create_function(self, property_type, object)
 
 			ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
 			if modlist:
@@ -2216,10 +2217,10 @@ class ad(univention.connector.ucs):
 					raise
 
 			if hasattr(self.property[property_type], "post_con_modify_functions"):
-				for f in self.property[property_type].post_con_modify_functions:
-					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
-					f(self, property_type, object)
-					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
+				for post_con_modify_function in self.property[property_type].post_con_modify_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % post_con_modify_function)
+					post_con_modify_function(self, property_type, object)
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % post_con_modify_function)
 
 		#
 		# MODIFY
@@ -2371,10 +2372,10 @@ class ad(univention.connector.ucs):
 					raise
 
 			if hasattr(self.property[property_type], "post_con_modify_functions"):
-				for f in self.property[property_type].post_con_modify_functions:
-					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
-					f(self, property_type, object)
-					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
+				for post_con_modify_function in self.property[property_type].post_con_modify_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % post_con_modify_function)
+					post_con_modify_function(self, property_type, object)
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % post_con_modify_function)
 		#
 		# DELETE
 		#
