@@ -1,0 +1,10 @@
+[Unit]
+Description=Restarting stunnel4 if it hangs (Bug 52196)
+
+[Service]
+ExecStart=/etc/init.d/univention-stunnel4-watchdog start
+
+[Install]
+WantedBy=multi-user.target
+
+

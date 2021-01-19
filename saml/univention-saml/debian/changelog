@@ -1,3 +1,11 @@
+univention-saml (6.0.3-3) unstable; urgency=medium
+
+  * Bug #52196: Add a service which regularly connects via the stunnel4, do
+    detect if it is not responsive any more. If it does not respond and its
+    systemd status is "active", kill it to restart it
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 19 Jan 2021 22:19:42 +0100
+
 univention-saml (6.0.3-1) unstable; urgency=medium
 
   * Bug #52371: Version bump to ensure package update will

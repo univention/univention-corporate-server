@@ -4,6 +4,18 @@ Description[en]=Defines the fqdn of the identity provider of this UCS domain.
 Type=str
 Categories=management
 
+[ucs/server/sso/cert]
+Description[de]=Definiert den Pfad zum Zertifikat des Identity Provider dieser UCS Domäne. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem)
+Description[en]=Defines the path to the certificate of the identity provider of this UCS domain. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem)
+Type=str
+Categories=management
+
+[ucs/server/sso/key]
+Description[de]=Definiert den Pfad zum privaten Schlüssel des Identity Provider dieser UCS Domäne. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/private.key)
+Description[en]=Defines the path to the private key of the identity provider of this UCS domain. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/private.key)
+Type=str
+Categories=management
+
 [ucs/server/sso/virtualhost]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird ein Virtual Host Eintrag für den FQDN des Identity Provider erstellt. (default: true)
 Description[en]=If this variable is set to 'true', a virtual host entry for the fqdn of the identity provider is generated. (default: true)

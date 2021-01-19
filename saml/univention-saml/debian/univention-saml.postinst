@@ -93,6 +93,7 @@ configure)
 	chmod 640 /var/log/stunnel4/stunnel.log
 
 	deb-systemd-invoke restart stunnel4.service
+	deb-systemd-invoke restart univention-stunnel4-watchdog.service
 
 	a2ensite univention-saml
 	a2enmod headers
