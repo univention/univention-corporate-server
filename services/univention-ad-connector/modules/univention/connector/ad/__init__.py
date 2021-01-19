@@ -122,6 +122,22 @@ def disable_user_to_ucs(connector, key, object):
 	return connector.disable_user_to_ucs(key, object)
 
 
+def fix_dn_in_search(result):
+	return [(fix_dn(dn), attrs) for dn, attrs in result]
+
+
+def fix_dn(dn):
+	# Samba LDAP returns broken DN, which cannot be parsed: ldap.dn.str2dn('cn=foo\\?,dc=base')
+	return dn.replace('\\?', '?') if dn is not None else dn
+
+
+def str2dn(dn):
+	try:
+		return ldap.dn.str2dn(dn)
+	except ldap.DECODING_ERROR:
+		return ldap.dn.str2dn(fix_dn(dn))
+
+
 def unix2ad_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
 	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
@@ -888,6 +904,9 @@ class ad(univention.connector.ucs):
 		if p1.returncode != 0:
 			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout))
 
+	def ad_search_ext_s(self, *args, **kwargs):
+		return fix_dn_in_search(self.lo_ad.lo.search_ext_s(*args, **kwargs))
+
 	def open_ad(self):
 		tls_mode = 2 if self.configRegistry.is_true('%s/ad/ldap/ssl' % self.CONFIGBASENAME, True) else 0
 		ldaps = self.configRegistry.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
@@ -1126,7 +1145,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.WARN, "AD ignores PAGE_RESULTS")
 				break
 
-		return encode_ad_resultlist(res)
+		return fix_dn_in_search(res)
 
 	def __search_ad_changes(self, show_deleted=False, filter=''):
 		'''
@@ -1604,9 +1623,7 @@ class ad(univention.connector.ucs):
 
 		# need to remove users from ad_members which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
-			object_dn = compatible_modstring(object['dn'])
-			object_sid = self.lo_ad.getAttr(object_dn, 'objectSid')[0]
-			group_rid = decode_sid(object_sid).split('-')[-1]
+			group_rid = decode_sid(fix_dn_in_search(self.lo_ad.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid']))[0][1]['objectSid'][0]).rsplit('-', 1)[-1]
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = None
 
@@ -1914,7 +1931,7 @@ class ad(univention.connector.ucs):
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
-				(_attr, uid, _flags) = ldap.dn.str2dn(member)[0][0]
+				(_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
 				memberUid_add.append(uid)
 			for member in add_members['unknown'] + add_members['windowscomputer']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
@@ -1922,7 +1939,7 @@ class ad(univention.connector.ucs):
 				if uid:
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
-				(_attr, uid, _flags) = ldap.dn.str2dn(member)[0][0]
+				(_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
 				memberUid_del.append(uid)
 			for member in del_members['windowscomputer']:
 				ucs_object_attr = self.lo.get(member)
