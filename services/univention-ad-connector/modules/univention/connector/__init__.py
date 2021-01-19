@@ -46,6 +46,7 @@ import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+import univention.debug as ud_c
 from univention.connector.adcache import ADCache
 import univention.debug2 as ud
 from samba.ndr import ndr_unpack
@@ -410,6 +411,8 @@ class ucs(object):
 		self.configRegistry = configRegistry
 		self.property = _property  # this is the mapping!
 
+		self._logfile = logfilename or '/var/log/univention/%s.log' % self.CONFIGBASENAME
+		self._debug_level = debug_level or int(self.configRegistry.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
 		self.init_debug()
 
 		self.listener_dir = listener_dir
@@ -473,21 +476,25 @@ class ucs(object):
 				raise search_exception
 
 	def init_debug(self):
-		if '%s/debug/function' % self.CONFIGBASENAME in self.baseConfig:
-			try:
-				function_level = int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
-			except (ldap.SERVER_DOWN, SystemExit):
-				raise
-			except:  # FIXME: which exception is to be caught?
-				function_level = 0
-		else:
-			function_level = 0
-		ud.init('/var/log/univention/%s.log' % self.CONFIGBASENAME, 1, function_level)
-		if '%s/debug/level' % self.CONFIGBASENAME in self.baseConfig:
-			debug_level = self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
-		else:
-			debug_level = 2
-		ud.set_level(ud.LDAP, int(debug_level))
+		try:
+			function_level = int(self.configRegistry.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
+		except ValueError:
+			function_level = ud.NO_FUNCTION
+		ud.init(self._logfile, ud.WARN, function_level)
+		ud.set_level(ud.LDAP, self._debug_level)
+
+		try:
+			udm_function_level = int(self.configRegistry.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
+		except ValueError:
+			udm_function_level = ud.NO_FUNCTION
+		ud_c.init(self._logfile, ud.WARN, udm_function_level)
+
+		try:
+			udm_debug_level = int(self.configRegistry.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
+		except ValueError:
+			udm_debug_level = ud.WARN
+		for category in (ud.ADMIN, ud.LDAP):
+			ud_c.set_level(category, udm_debug_level)
 
 	def close_debug(self):
 		ud.debug(ud.LDAP, ud.INFO, "close debug")
