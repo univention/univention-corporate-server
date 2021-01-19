@@ -1086,16 +1086,11 @@ class ucs(object):
 		return bool(ucs_object.modify())
 
 	def move_in_ucs(self, property_type, object, module, position):
-		try:
-			if object['olddn'].lower() == object['dn'].lower():
-				ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same ( %s to %s)" % (object['olddn'], object['dn']))
-				return True
-			else:
-				ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object from %s to %s" % (object['olddn'], object['dn']))
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object in UCS")
+		if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
+			ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same (%r to %r)" % (object['olddn'], object['dn']))
+			return True
+
+		ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object from %r to %r" % (object['olddn'], object['dn']))
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
 		ucs_object.open()
 		ucs_object.move(object['dn'])
