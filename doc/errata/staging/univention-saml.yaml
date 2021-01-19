@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-saml
+fix: 6.0.3-3A~4.4.0.202101192328
+desc: |
+ This update addresses the following issue:
+ * A watchdog service "univention-stunnel4-watchdog" has
+   been added, which restarts the stunnel4 service, if it
+   does not respond any more, but is marked as active.
+bug: [52196]
