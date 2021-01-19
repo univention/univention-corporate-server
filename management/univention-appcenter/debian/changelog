@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-13) unstable; urgency=medium
+
+  * Bug #51598: Python3 debian/control fixes + apps UMC module with py3
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jan 2021 13:03:33 +0100
+
 univention-appcenter (9.0.1-12) unstable; urgency=medium
 
   * Bug #51598: Python3 version
