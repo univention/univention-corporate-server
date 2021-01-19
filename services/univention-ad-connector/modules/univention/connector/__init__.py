@@ -33,8 +33,8 @@
 
 from __future__ import print_function
 import sys
+from six.moves import cPickle as pickle
 import os
-import cPickle
 import types
 import collections
 import random
@@ -577,12 +577,23 @@ class ucs(object):
 		'''
 		sync changes from UCS stored in given file
 		'''
-		try:
-			f = file(filename, 'r')
-		except IOError:  # file not found so there's nothing to sync
-			return True
 
-		dn, new, old, old_dn = cPickle.load(f)
+		try:
+			with open(filename, 'rb') as fob:
+				(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+				# With the Python 2 listener pickle files we got bytes here, otherwise already string
+				if isinstance(dn, bytes):
+					dn = dn.decode('utf-8')
+				if isinstance(old_dn, bytes):
+					old_dn = old_dn.decode('utf-8')
+		except IOError:
+			return True  # file not found so there's nothing to sync
+		except (pickle.UnpicklingError, EOFError) as e:
+			message = 'file emtpy' if isinstance(e, EOFError) else e.message
+			ud.debug(ud.LDAP, ud.ERROR, '__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
+			# ignore corrupted pickle file, but save as rejected to not try again
+			self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
+			return False
 
 		if dn == 'cn=Subschema':
 			return True
@@ -641,8 +652,8 @@ class ucs(object):
 				if old_dn and not old_dn == dn:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was moved")
 					# object was moved
-					new_object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
-					old_object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					new_object = {'dn': dn, 'modtype': change_type, 'attributes': new}
+					old_object = {'dn': old_dn, 'modtype': change_type, 'attributes': old}
 					if self._ignore_object(key, new_object):
 						# moved into ignored subtree, delete:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
@@ -655,7 +666,7 @@ class ucs(object):
 						change_type = 'add'
 
 			else:
-				object = {'dn': unicode(dn, 'utf8'), 'modtype': 'modify', 'attributes': new}
+				object = {'dn': dn, 'modtype': 'modify', 'attributes': new}
 				try:
 					if self._ignore_object(key, object):
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
@@ -681,14 +692,14 @@ class ucs(object):
 		if key:
 			if change_type == 'delete':
 				if old_dn:
-					object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': old_dn, 'modtype': change_type, 'attributes': old}
 				else:
-					object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': dn, 'modtype': change_type, 'attributes': old}
 			else:
-				object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
+				object = {'dn': dn, 'modtype': change_type, 'attributes': new}
 
 			if change_type == 'modify' and old_dn:
-				object['olddn'] = unicode(old_dn, 'utf8')  # needed for correct samaccount-mapping
+				object['olddn'] = old_dn  # needed for correct samaccount-mapping
 
 			if not self._ignore_object(key, object) or ignore_subtree_match:
 				premapped_ucs_dn = object['dn']
@@ -877,14 +888,24 @@ class ucs(object):
 			if os.path.isfile(filename):
 				if filename not in self.rejected_files:
 					try:
-						f = file(filename, 'r')
-					except IOError:  # file not found so there's nothing to sync
+						with open(filename, 'rb') as fob:
+							(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+							if isinstance(dn, bytes):
+								dn = dn.decode('utf-8')
+							if isinstance(old_dn, bytes):
+								old_dn = old_dn.decode('utf-8')
+					except IOError:
+						continue  # file not found so there's nothing to sync
+					except (pickle.UnpicklingError, EOFError) as e:
+						message = 'file emtpy' if isinstance(e, EOFError) else e.message
+						ud.debug(ud.LDAP, ud.ERROR, 'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
+						# ignore corrupted pickle file, but save as rejected to not try again
+						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
 
-					dn, new, old, old_dn = cPickle.load(f)
 
-					# If the list contains more then one file, the DN will be synced later
-					# But if the object was added or remoed, the synchonization is required
+					# If the list contains more than one file, the DN will be synced later
+					# but if the object was added or removed, the synchonization is required
 					for i in [0, 1]:  # do it twice if the LDAP connection was closed
 						try:
 							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
