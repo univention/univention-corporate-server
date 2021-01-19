@@ -42,6 +42,8 @@ import traceback
 import copy
 import time
 import ldap
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
@@ -49,8 +51,6 @@ import univention.admin.objects
 import univention.debug as ud_c
 from univention.connector.adcache import ADCache
 import univention.debug2 as ud
-from samba.ndr import ndr_unpack
-from samba.dcerpc import misc
 from signal import signal, SIGTERM, SIG_DFL
 
 import sqlite3 as lite
@@ -67,6 +67,9 @@ try:
 except AttributeError:
 	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
+
+def decode_guid(value):
+	return str(ndr_unpack(misc.GUID, value))
 
 
 # util functions defined during mapping
@@ -1108,31 +1111,37 @@ class ucs(object):
 		except univention.admin.uexceptions.noObject:
 			return None
 
-
 	def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
-		if entryUUID:
-			if objectGUID:
-				objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
-			else:
-				# use a dummy value
-				objectGUID_str = 'objectGUID'
-			ud.debug(ud.LDAP, ud.INFO, ("update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s") % (entryUUID, objectGUID_str))
-			self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
+		if not entryUUID:
+			return
+		if not objectGUID:
+			objectGUID = 'objectGUID'  # use a dummy value
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %r as deleted to UCS deleted cache. ObjectGUUID: %r" % (entryUUID, objectGUID))
+		self._set_config_option('UCS deleted', entryUUID, objectGUID)
 
 	def was_entryUUID_deleted(self, entryUUID):
 		objectGUID = self.config.get('UCS deleted', entryUUID)
 		if objectGUID:
 			return True
+		else:
+			return False
+
+	def was_objectGUID_deleted_by_ucs(self, objectGUID):
+		try:
+			entryUUID = self.config.get_by_value('UCS deleted', objectGUID)
+			if entryUUID:
+				return True
+		except Exception as err:
+			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_deleted_by_ucs: failed to look for objectGUID %r in 'UCS deleted': %s" % (objectGUID, err))
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
 		"""Removes an AD object in UCS-LDAP"""
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
-		if object['attributes'].get('objectGUID'):
-			objectGUID = object['attributes'].get('objectGUID')[0]
-		else:
-			objectGUID = None
+		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
+		if objectGUID:
+			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
 		try:
 			ucs_object.open()
@@ -1201,8 +1210,7 @@ class ucs(object):
 			return True
 
 		try:
-			guid_blob = original_object.get('attributes').get('objectGUID')[0]
-			guid = str(ndr_unpack(misc.GUID, guid_blob))
+			guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
 
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:

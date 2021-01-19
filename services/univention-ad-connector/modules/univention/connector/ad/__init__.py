@@ -2372,11 +2372,12 @@ class ad(univention.connector.ucs):
 		return True  # FIXME: return correct False if sync fails
 
 	def _get_objectGUID(self, dn):
-		ad_object = self.get_object(dn, ['objectGUID'])
-		if not ad_object:
+		try:
+			ad_object = self.get_object(dn)
+			return univention.connector.decode_guid(ad_object['objectGUID'][0])
+		except (KeyError, Exception):  # FIXME: catch only necessary exceptions
 			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
 			return ''
-		return ad_object.get('objectGUID')[0]
 
 	def delete_in_ad(self, object):
 		try:
