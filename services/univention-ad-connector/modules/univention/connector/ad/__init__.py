@@ -523,7 +523,7 @@ class ad(univention.connector.ucs):
 			try:
 				result = self.lo_ad.search(base=self.lo_ad.binddn, scope='base')
 				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0]
-			except Exception as msg:
+			except ldap.LDAPError as msg:
 				print("Failed to get SID from AD: %s" % msg)
 				sys.exit(1)
 		else:
@@ -706,8 +706,8 @@ class ad(univention.connector.ucs):
 				use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
 			default_naming_context = self._get_from_root_dse(['defaultNamingContext'])
 			self.ad_ldap_base = default_naming_context['defaultNamingContext'][0]
-		except Exception as ex:
-			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
+		except Exception:  # FIXME: which exception is to be caught
+			self._debug_traceback(ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value.')
 
 		if self.configRegistry.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
 			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
@@ -865,12 +865,12 @@ class ad(univention.connector.ucs):
 			ad_object = self.lo_ad.get(compatible_modstring(dn), attr=attrlist)
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: <print failed>")
 			return ad_object
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
 	def __get_change_usn(self, object):
@@ -1104,7 +1104,7 @@ class ad(univention.connector.ucs):
 			result = self._get_from_root_dse(['highestCommittedUSN'])
 			usn = result['highestCommittedUSN'][0]
 			return int(usn)
-		except Exception:
+		except ldap.LDAPError:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
 			print("ERROR: initial search in AD failed, check network and configuration")
 			return 0
@@ -1376,10 +1376,10 @@ class ad(univention.connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Adding %s to UCS group member cache, value: %s" % (member_dn.lower(), ad_dn))
 						self.group_mapping_cache_ucs[member_dn.lower()] = ad_dn
 						self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
+				except Exception:  # FIXME: which exception is to be caught?
+					self._debug_traceback(ud.PROCESS, "group_members_sync_from_ucs: failed to get AD dn for UCS group member %s, assume object doesn't exist" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in ad_members_from_ucs %s" % ad_members_from_ucs)
 
@@ -1397,10 +1397,10 @@ class ad(univention.connector.ucs):
 					elif self._ignore_object(key, {'dn': member_dn, 'attributes': ad_object}):
 						ad_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in AD [%s], key = [%s]" % (ucs_dn, key))
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad which is groupmember")
+				except Exception:  # FIXME: which exception is to be caught?
+					self._debug_traceback(ud.PROCESS, "group_members_sync_from_ucs: failed to get UCS dn for AD group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-and AD-members in ad_members_from_ucs %s" % ad_members_from_ucs)
 
@@ -1632,10 +1632,10 @@ class ad(univention.connector.ucs):
 							self.__group_cache_con_append_member(ad_object['dn'], member_dn)
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:  # FIXME: which exception is to be caught?
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
+					except Exception:  # FIXME: which exception is to be caught?
+						self._debug_traceback(ud.PROCESS, "group_members_sync_to_ucs: failed to get UCS dn for AD group member %s, assume object doesn't exist" % member_dn)
 
 		# build an internal cache
 		cache = {}
@@ -1665,9 +1665,9 @@ class ad(univention.connector.ucs):
 								ucs_members_from_ad[k].append(member_dn.lower())
 							break
 
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.PROCESS, "group_members_sync_to_ucs: failed to get AD dn for UCS group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s" % (dn_mapping_ucs_member_to_ad))
@@ -1932,9 +1932,9 @@ class ad(univention.connector.ucs):
 		changes = []
 		try:
 			changes = self.__search_ad_changes(show_deleted=show_deleted)
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_ad_changes")
 
 		if self.profiling and changes:
@@ -2000,13 +2000,7 @@ class ad(univention.connector.ucs):
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except univention.admin.uexceptions.ldapError as msg:
-						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (2) %s" % msg)
-						if msg == "Can't contact LDAP server":
-							raise ldap.SERVER_DOWN
-						else:
-							self._debug_traceback(ud.WARN, "Exception during poll")
-					except:  # FIXME: which exception is to be caught?
+					except Exception:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
 					if not sync_successfull:
@@ -2019,9 +2013,9 @@ class ad(univention.connector.ucs):
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID, old_element[0])
-						except (ldap.SERVER_DOWN, SystemExit):
+						except ldap.SERVER_DOWN:
 							raise
-						except:  # FIXME: which exception is to be caught?
+						except Exception:  # FIXME: which exception is to be caught?
 							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
 
 					else:
@@ -2116,9 +2110,9 @@ class ad(univention.connector.ucs):
 			# the old object was moved in UCS, but does this object exist in AD?
 			try:
 				old_object = self.lo_ad.get(compatible_modstring(old_dn))
-			except (ldap.SERVER_DOWN, SystemExit):
+			except ldap.SERVER_DOWN:
 				raise
-			except:
+			except Exception:
 				old_object = None
 
 			if old_object:
@@ -2211,7 +2205,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 				try:
 					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-				except:
+				except Exception:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
 					raise
@@ -2366,7 +2360,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 				try:
 					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-				except:
+				except Exception:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
 					raise

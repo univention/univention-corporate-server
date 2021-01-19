@@ -151,9 +151,7 @@ def compare_lowercase(val1, val2):
 			return True
 		else:
 			return False
-	except (ldap.SERVER_DOWN, SystemExit):
-		raise
-	except:  # FIXME: which exception is to be caught?
+	except Exception:  # FIXME: which exception is to be caught?
 		return False
 
 # helper classes
@@ -670,7 +668,7 @@ class ucs(object):
 							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except:
+				except Exception:  # FIXME: which exception is to be caught?
 					# the ignore_object method might throw an exception if the subschema will be synced
 					change_type = "add"
 					old_dn = ''  # there may be an old_dn if object was moved from ignored container
@@ -711,9 +709,16 @@ class ucs(object):
 							return False
 						else:
 							return True
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:  # FIXME: which exception is to be caught?
+					except ldap.NO_SUCH_OBJECT:
+						self._save_rejected_ucs(filename, dn)
+						if traceback_level == ud.INFO:
+							self._debug_traceback(traceback_level, "The sync failed. This could be because the parent object does not exist. This object will be synced in next sync step.")
+						else:
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
+						return False
+					except Exception:
 						self._save_rejected_ucs(filename, dn)
 						self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
 						return False
@@ -761,9 +766,9 @@ class ucs(object):
 
 			ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object search failed: %s" % searchdn)
 			self._debug_traceback(ud.WARN, "get_ucs_object: failure was: \n\t")
 			return None
@@ -830,9 +835,9 @@ class ucs(object):
 							pass
 						self._remove_rejected_ucs(filename)
 						change_counter += 1
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN, "sync failed, saved as rejected \n\t%s" % filename)
 
@@ -903,7 +908,7 @@ class ucs(object):
 								self.open_ucs()
 								continue
 							raise
-						except:
+						except Exception:
 							self._save_rejected_ucs(filename, dn)
 							# We may dropped the parent object, so don't show this warning
 							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
@@ -1270,15 +1275,9 @@ class ucs(object):
 		except univention.admin.uexceptions.valueMayNotChange as msg:
 			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%r)" % (msg, object['dn']))
 			return False
-		except (ldap.SERVER_DOWN, SystemExit):
-			# LDAP idletimeout? try once again
-			if retry:
-				self.open_ucs()
-				return self.sync_to_ucs(property_type, object, premapped_ad_dn,
-					original_object, False)
-			else:
-				raise
-		except:  # FIXME: which exception is to be caught?
+		except ldap.SERVER_DOWN:
+			raise
+		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
@@ -1356,9 +1355,9 @@ class ucs(object):
 							return True
 						else:
 							return False
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:
+					except Exception:
 						ud.debug(ud.LDAP, ud.WARN, "attribute_filter: Failed to convert attributes for bitwise filter")
 						return False
 
