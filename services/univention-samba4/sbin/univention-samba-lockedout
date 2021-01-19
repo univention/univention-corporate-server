@@ -105,7 +105,7 @@ def get_lockout_duration():
 def parse_ldbsearch_entry(entry):
 	user = dict()
 	for line in entry.splitlines():
-		for (key, pattern) in _LDBSEARCH_PATTERNS.items():
+		for (key, pattern) in list(_LDBSEARCH_PATTERNS.items()):
 			match = pattern.search(line)
 			if match is None:
 				continue
@@ -117,7 +117,7 @@ def parse_ldbsearch_entry(entry):
 
 
 def nt_to_unix(nt_timestamp):
-	in_seconds = nt_timestamp / 10000000
+	in_seconds = nt_timestamp // 10000000
 	if in_seconds > 0:
 		return in_seconds - _NT_UNIX_DELTA
 	return in_seconds

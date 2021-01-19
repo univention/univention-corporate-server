@@ -3,6 +3,7 @@
 #
 # Univention Configuration Registry
 """Decode LDAP base64 encoded "key:: value" pairs read from standard input to standard output."""
+from __future__ import print_function
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -74,11 +75,11 @@ def decode_unicodePwd(value, kvno=0):
 	up_blob = binascii.a2b_base64(value)
 	keyblock = heimdal.keyblock_raw(krb5_context.ctx, 23, up_blob)
 	krb5key = heimdal.asn1_encode_key(keyblock, None, kvno)
-	print "# decoded:"
-	print "#\tsambaNTPassword:: %s" % binascii.b2a_hex(up_blob).upper().strip()
-	print "# unicodePwd recoded as krb5key:"
-	print "#\tkeytype: arcfour-hmac-md5"
-	print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+	print("# decoded:")
+	print("#\tsambaNTPassword:: %s" % binascii.b2a_hex(up_blob).upper().strip())
+	print("# unicodePwd recoded as krb5key:")
+	print("#\tkeytype: arcfour-hmac-md5")
+	print("#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip())
 
 
 def decode_krb5Key(value):
@@ -90,15 +91,15 @@ def decode_krb5Key(value):
 	enctype = keyblock.keytype()
 	enctype_id = enctype.toint()
 	if enctype_id not in krb5_context.etype_ids:
-		print "#\tSKIPPING ENC type %s, not support by this Heimdal version" % enctype_id
+		print("#\tSKIPPING ENC type %s, not support by this Heimdal version" % enctype_id)
 		return
-	print "#\tkrb5_keytype: %s (%d)" % (enctype, enctype_id)
+	print("#\tkrb5_keytype: %s (%d)" % (enctype, enctype_id))
 	key_data = keyblock.keyvalue()
-	print "#\tkeyblock: ", binascii.b2a_base64(key_data).strip()
+	print("#\tkeyblock: ", binascii.b2a_base64(key_data).strip())
 	if enctype_id == 23:
-		print "#\tas NThash:", binascii.b2a_hex(key_data).strip().upper()
+		print("#\tas NThash:", binascii.b2a_hex(key_data).strip().upper())
 	saltstring = salt.saltvalue()
-	print "#\tsaltstring: ", saltstring
+	print("#\tsaltstring: ", saltstring)
 
 
 def decode_supplementalCredentials(value, kvno=0):
@@ -106,94 +107,94 @@ def decode_supplementalCredentials(value, kvno=0):
 	if not krb5_context:
 		krb5_context = Krb5Context()
 	object_data = ndr_unpack(drsblobs.supplementalCredentialsBlob, binascii.a2b_base64(value))
-	print "# supplementalCredentials recoded as krb5key:"
+	print("# supplementalCredentials recoded as krb5key:")
 	# print "%s" % (ndr_print(object_data).strip(),)
-	print "# object_data.sub.num_packages:", object_data.sub.num_packages
+	print("# object_data.sub.num_packages:", object_data.sub.num_packages)
 	for p in object_data.sub.packages:
-		print "#\tsupplementalCredentials package name: ", p.name
+		print("#\tsupplementalCredentials package name: ", p.name)
 		krb_blob = binascii.unhexlify(p.data)
 		try:
 			krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-			print "#\tsupplementalCredentials package version: ", krb.version
-			print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
+			print("#\tsupplementalCredentials package version: ", krb.version)
+			print("#\tkrb5Salt: %s" % (krb.ctr.salt.string))
 			for k in krb.ctr.keys:
 				# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
 				keytype = keytypes.get(k.keytype, k.keytype)
-				print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
-				print "#\tkeyblock:",
+				print("#\tkeytype: %s (%d)" % (keytype, k.keytype))
+				print("#\tkeyblock:", end=' ')
 				keyblock = heimdal.keyblock_raw(krb5_context.ctx, k.keytype, k.value)
 				key_data = keyblock.keyvalue()
-				print binascii.b2a_base64(key_data).strip()
-				print "#\tkrb5SaltObject:",
+				print(binascii.b2a_base64(key_data).strip())
+				print("#\tkrb5SaltObject:", end=' ')
 				krb5SaltObject = heimdal.salt_raw(krb5_context.ctx, krb.ctr.salt.string)
-				print krb5SaltObject.saltvalue()
+				print(krb5SaltObject.saltvalue())
 				krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
-				print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+				print("#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip())
 		except:
-			print "### Exception during ndr_unpack"
+			print("### Exception during ndr_unpack")
 			for line in traceback.format_exc().split('\n'):
-				print "### %s" % line
+				print("### %s" % line)
 
 
 def decode_100nanosectimestamp(value):
 	offset = 116444736000000000  # difference between 1601 and 1970
-	return datetime.fromtimestamp((int(value) - offset) / 10000000).isoformat(' ')
+	return datetime.fromtimestamp((int(value) - offset) // 10000000).isoformat(' ')
 
 
 def decode_accountExpires(value):
-	print "# decoded (Note: timezone not converted to local time):"
-	if long(value) == 0x7FFFFFFFFFFFFFFF:
-		print "# accountExpires: never"
+	print("# decoded (Note: timezone not converted to local time):")
+	if int(value) == 0x7FFFFFFFFFFFFFFF:
+		print("# accountExpires: never")
 	else:
 		try:
-			print "# accountExpires: %s" % decode_100nanosectimestamp(value)
+			print("# accountExpires: %s" % decode_100nanosectimestamp(value))
 		except:
-			print "# traceback during decoding:"
+			print("# traceback during decoding:")
 			traceback.print_exc()
 
 
-class decode_lastDate():
+class decode_lastDate(object):
 
 	def __init__(self, attrname):
 		self.attrname = attrname
 
 	def __call__(self, value):
-		print "# decoded (Note: timezone not converted to local time):"
-		if long(value) == 0:
-			print "# %s: unknown" % self.attrname
+		print("# decoded (Note: timezone not converted to local time):")
+		if int(value) == 0:
+			print("# %s: unknown" % self.attrname)
 		else:
 			try:
-				print "# %s: %s" % (self.attrname, decode_100nanosectimestamp(value))
+				print("# %s: %s" % (self.attrname, decode_100nanosectimestamp(value)))
 			except:
-				print "# traceback during decoding:"
+				print("# traceback during decoding:")
 				traceback.print_exc()
 
 
 def decode_pwdLastSet(value):
-	print "# decoded (Note: timezone not converted to local time):"
-	if long(value) == -1:
-		print "# %s: Just set" % self.attrname
-	elif long(value) == 0:
-		print "# %s: Must change on next logon" % self.attrname
+	print("# decoded (Note: timezone not converted to local time):")
+	if int(value) == -1:
+		print("# %s: Just set" % self.attrname)
+	elif int(value) == 0:
+		print("# %s: Must change on next logon" % self.attrname)
 	else:
 		try:
-			print "# pwdLastSet: %s" % decode_100nanosectimestamp(value)
+			print("# pwdLastSet: %s" % decode_100nanosectimestamp(value))
 		except:
-			print "# traceback during decoding:"
+			print("# traceback during decoding:")
 			traceback.print_exc()
 
 
-class decode_drsblob():
+class decode_drsblob(object):
 
 	def __init__(self, blobtype):
 		self.blobtype = blobtype
 
 	def __call__(self, value):
 		object_data = ndr_unpack(self.blobtype, binascii.a2b_base64(value))
-		print "# decoded:"
+		print("# decoded:")
 		for line in ndr_print(object_data).split('\n'):
 			if line:
-				print "# %s" % line
+				print("# %s" % line)
 
 
 objecttypes = {
@@ -217,12 +218,12 @@ objecttypes = {
 def decode_line(line):
 	res = regEx.search(line)
 	if res:
-		print line,
+		print(line, end=' ')
 		attributeName = res.group(1)
 		if attributeName in objecttypes:
 			objecttypes[attributeName](res.group(2))
 	else:
-		print line,
+		print(line, end=' ')
 
 
 try:

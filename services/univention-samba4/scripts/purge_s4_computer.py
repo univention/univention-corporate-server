@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+from six.moves import input
 
 from argparse import ArgumentParser
 import sys
