@@ -46,9 +46,11 @@ import time
 import calendar
 import base64
 import subprocess
+
 import univention.uldap
 import univention.connector
 import univention.debug2 as ud
+import six
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
@@ -354,8 +356,10 @@ class LDAPEscapeFormatter(string.Formatter):
 	"""
 	def convert_field(self, value, conversion):
 		if conversion == 'e':
-			if isinstance(value, basestring):
+			if isinstance(value, six.string_types):
 				return escape_filter_chars(value)
+			if isinstance(value, bytes):
+				raise TypeError('Filter must be string, not bytes: %r' % (value,))
 			return escape_filter_chars(str(value))
 		return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
 
