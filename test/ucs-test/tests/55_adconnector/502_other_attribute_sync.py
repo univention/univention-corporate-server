@@ -66,7 +66,7 @@ def test_attribute_sync_from_udm_to_ad(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
 	primary_value = udm_user.basic.get(ucs_attribute)
-	all_values = (primary_value, random_number(), random_number())
+	all_values = (primary_value, random_number().encode('UTF-8'), random_number().encode('UTF-8'))
 	secondary_values = all_values[1:]
 
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
@@ -78,7 +78,7 @@ def test_attribute_sync_from_udm_to_ad(attribute, sync_mode):
 		print("\nModifying UDM user: {}={}\n".format(ucs_attribute, all_values))
 		udm.modify_object('users/user', dn=udm_user_dn, set={ucs_attribute: all_values})
 		adconnector.wait_for_sync()
-		AD.verify_object(ad_user_dn, {con_attribute: primary_value, con_other_attribute: secondary_values})
+		AD.verify_object(ad_user_dn, {con_attribute: [primary_value], con_other_attribute: secondary_values})
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: all_values})
 
 		# If we delete the first `phone` value via UDM, we want to duplicate
@@ -125,7 +125,7 @@ def test_attribute_sync_from_ad_to_udm(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
 	primary_value = udm_user.basic.get(ucs_attribute)
-	all_values = (primary_value, random_number(), random_number())
+	all_values = (primary_value, random_number().encode('UTF-8'), random_number().encode('UTF-8'))
 	secondary_values = all_values[1:]
 
 	with connector_setup(sync_mode):
@@ -134,10 +134,10 @@ def test_attribute_sync_from_ad_to_udm(attribute, sync_mode):
 
 		# Additional values in `otherTelephone` must be appended to `phone`.
 		print("\nModifying AD user: {}={}, {}={}\n".format(con_attribute, primary_value, con_other_attribute, secondary_values))
-		AD.set_attributes(ad_user_dn, **{con_attribute: primary_value, con_other_attribute: secondary_values})
+		AD.set_attributes(ad_user_dn, **{con_attribute: [primary_value], con_other_attribute: secondary_values})
 		adconnector.wait_for_sync()
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: all_values})
-		AD.verify_object(ad_user_dn, {con_attribute: primary_value, con_other_attribute: secondary_values})
+		AD.verify_object(ad_user_dn, {con_attribute: [primary_value], con_other_attribute: secondary_values})
 
 		if sync_mode == "sync":  # otherwise the connector can't write into AD
 			# If we delete the value of `telephoneNumber` from AD, we expect to get

@@ -63,7 +63,7 @@ def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
 
 		AD.verify_object(ad_user_dn, None)
 		ad_user_dn = ldap.dn.dn2str([
-			[("CN", udm_user.rename.get("username"), ldap.AVA_STRING)],
+			[("CN", udm_user.to_unicode(udm_user.rename).get("username"), ldap.AVA_STRING)],
 			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
 		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.rename))
 
@@ -87,7 +87,7 @@ def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
 		adconnector.wait_for_sync()
 		AD.verify_object(ad_user_dn, None)
 		ad_user_dn = ldap.dn.dn2str([
-			[("CN", udm_user.basic.get("username"), ldap.AVA_STRING)],
+			[("CN", udm_user.to_unicode(udm_user.basic).get("username"), ldap.AVA_STRING)],
 			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
 		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.basic))
 
@@ -121,14 +121,13 @@ def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
 		(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 
 		print("\nRename AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.rename.get("username")))
-		ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn,
-			name=udm_user.rename.get("username"))
+		ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, name=udm_user.to_unicode(udm_user.rename).get("username"))
 		AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename))
 		adconnector.wait_for_sync()
 
 		tcommon.verify_udm_object("users/user", udm_user_dn, None)
 		udm_user_dn = ldap.dn.dn2str([
-			[("uid", udm_user.rename.get("username"), ldap.AVA_STRING)],
+			[("uid", udm_user.to_unicode(udm_user.rename).get("username"), ldap.AVA_STRING)],
 			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
 
@@ -152,7 +151,7 @@ def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
 
 		tcommon.verify_udm_object("users/user", udm_user_dn, None)
 		udm_user_dn = ldap.dn.dn2str([
-			[("uid", udm_user.basic.get("username"), ldap.AVA_STRING)],
+			[("uid", udm_user.to_unicode(udm_user.basic).get("username"), ldap.AVA_STRING)],
 			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
 
