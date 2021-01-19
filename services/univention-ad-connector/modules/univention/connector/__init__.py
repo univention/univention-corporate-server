@@ -622,10 +622,7 @@ class ucs(object):
 		ignore_subtree_match = False
 
 		_attr = new or old
-		for k in self.property.keys():
-			if self.modules[k].identify(unicode(dn, 'utf8'), _attr):
-				key = k
-				break
+		key = self.identify_udm_object(dn, _attr)
 
 		if not new:
 			change_type = "delete"
@@ -1665,3 +1662,12 @@ class ucs(object):
 										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values
 
 		return object_out
+
+	def identify_udm_object(self, dn, attrs):
+		"""Get the type of the specified UCS object"""
+		for k in self.property.keys():
+			if self.modules[k].identify(dn, attrs):
+				return k
+			for m in self.modules_others.get(k, []):
+				if m and m.identify(dn, attrs):
+					return k
