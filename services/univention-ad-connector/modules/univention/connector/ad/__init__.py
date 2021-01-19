@@ -479,8 +479,16 @@ class ad(univention.connector.ucs):
 		self.creation_list = []
 
 		# Build an internal cache with AD as key and the UCS object as cache
-		self.group_mapping_cache_ucs = {}
-		self.group_mapping_cache_con = {}
+
+		# UCS group member DNs to AD group member DN
+		# * entry used and updated while reading in group_members_sync_from_ucs
+		# * entry flushed during delete+move at in sync_to_ucs and sync_from_ucs
+		self.group_member_mapping_cache_ucs = {}
+
+		# AD group member DNs to UCS group member DN
+		# * entry used and updated while reading in group_members_sync_to_ucs
+		# * entry flushed during delete+move at in sync_to_ucs and sync_from_ucs
+		self.group_member_mapping_cache_con = {}
 
 		# Save the old members of a group
 		# The connector is object based, at least in the direction AD/AD to LDAP, because we don't
@@ -1305,14 +1313,13 @@ class ad(univention.connector.ucs):
 		if not ldap_object_ad:
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The AD object (%s) was not found. The object was removed.' % object['dn'])
 			return
-
 		ad_members = set(self.get_ad_members(object['dn'], ldap_object_ad))
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: ad_members %s" % ad_members)
 
 		# map members from UCS to AD and check if they exist
 		ad_members_from_ucs = set()  # Code review comment: For some reason this is a list of lowercase DNs
 		for member_dn in ucs_members:
-			ad_dn = self.group_mapping_cache_ucs.get(member_dn.lower())
+			ad_dn = self.group_member_mapping_cache_ucs.get(member_dn.lower())
 			if ad_dn and self.lo_ad.get(ad_dn, attr=['cn']):
 				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs: %s" % (member_dn, ad_dn))
 				ad_members_from_ucs.add(ad_dn.lower())
@@ -1345,7 +1352,7 @@ class ad(univention.connector.ucs):
 					if self.lo_ad.get(ad_dn, attr=['cn']):  # search only for cn to suppress coding errors
 						ad_members_from_ucs.add(ad_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Adding %s to UCS group member cache, value: %s" % (member_dn.lower(), ad_dn))
-						self.group_mapping_cache_ucs[member_dn.lower()] = ad_dn
+						self.group_member_mapping_cache_ucs[member_dn.lower()] = ad_dn
 						self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)
 				except ldap.SERVER_DOWN:
 					raise
@@ -1578,7 +1585,7 @@ class ad(univention.connector.ucs):
 
 		# map members from AD to UCS and check if they exist
 		for member_dn in ad_members:
-			ucs_dn = self.group_mapping_cache_con.get(member_dn.lower())
+			ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
 			if ucs_dn:
 				ud.debug(ud.LDAP, ud.INFO, "Found %s in AD group member cache: DN: %s" % (member_dn, ucs_dn))
 				ucs_members_from_ad['unknown'].append(ucs_dn.lower())
@@ -1604,7 +1611,7 @@ class ad(univention.connector.ucs):
 					try:
 						if self.lo.get(ucs_dn):
 							ucs_members_from_ad['unknown'].append(ucs_dn.lower())
-							self.group_mapping_cache_con[member_dn.lower()] = ucs_dn
+							self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
 							self.__group_cache_con_append_member(ad_object['dn'], member_dn)
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
@@ -2032,16 +2039,16 @@ class ad(univention.connector.ucs):
 		if con_dn:
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Removing %s from AD group member mapping cache" % con_dn)
-				del self.group_mapping_cache_con[con_dn.lower()]
+				del self.group_member_mapping_cache_con[con_dn.lower()]
 			except KeyError:
-				ud.debug(ud.LDAP, ud.ALL, "_remove_dn_from_group_cache: %s was not present in CON group member mapping cache" % con_dn)
+				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: %s was not present in AD group member mapping cache" % con_dn)
 				pass
 		if ucs_dn:
 			try:
-				ud.debug(ud.LDAP, ud.INFO, "_remove_dn_from_group_cache: Removing %s from UCS group member mapping cache" % ucs_dn)
-				del self.group_mapping_cache_ucs[ucs_dn.lower()]
+				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Removing %s from UCS group member mapping cache" % ucs_dn)
+				del self.group_member_mapping_cache_ucs[ucs_dn.lower()]
 			except KeyError:
-				ud.debug(ud.LDAP, ud.ALL, "_remove_dn_from_group_cache: %s was not present in UCS group member mapping cache" % ucs_dn)
+				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: %s was not present in UCS group member mapping cache" % ucs_dn)
 				pass
 
 	def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
@@ -2111,8 +2118,8 @@ class ad(univention.connector.ucs):
 					remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
 					add_con_dn=object['dn'].lower(),
 					add_ucs_dn=pre_mapped_ucs_dn.lower())
-				self.group_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
-				self.group_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
+				self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
+				self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
 				self._set_DN_for_GUID(self.ad_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*')[0][1]['objectGUID'][0], object['dn'])
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
 				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
