@@ -1,6 +1,7 @@
 @%@UCRWARNING=# @%@
 @!@
 from distutils.spawn import find_executable
+from pipes import quote
 
 server_role = configRegistry.get('server/role', '')
 write_translog = server_role != 'domaincontroller_master' and find_executable('univention-directory-notifier')
@@ -10,9 +11,9 @@ if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
 	dn = 'cn=admin,{ldap/base}'.format(**configRegistry)
 	secret = '/etc/ldap.secret'
 else:
-	dn = configRegistry['ldap/hostdn']
+	dn = configRegistry.get('ldap/hostdn', '')
 	secret = '/etc/machine.secret'
-udl_opts = ' '.join(arg for args in [
+udl_opts = ' '.join(quote(arg) for args in [
 	() if debug_level is None else ('-d', debug_level),
 	('-b', configRegistry['ldap/base']),
 	('-m', '/usr/lib/univention-directory-listener/system'),
