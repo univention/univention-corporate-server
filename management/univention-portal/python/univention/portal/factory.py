@@ -36,21 +36,21 @@ import univention.portal.config as config
 
 
 def make_arg(arg_definition):
-	arg_type = arg_definition['type']
-	if arg_type == 'static':
-		return arg_definition['value']
-	elif arg_type == 'config':
-		return config.fetch(arg_definition['key'])
-	elif arg_type == 'class':
-		Klass = get_dynamic_classes(arg_definition['class'])
+	arg_type = arg_definition["type"]
+	if arg_type == "static":
+		return arg_definition["value"]
+	elif arg_type == "config":
+		return config.fetch(arg_definition["key"])
+	elif arg_type == "class":
+		Klass = get_dynamic_classes(arg_definition["class"])
 		args = []
 		kwargs = {}
-		for _arg_definition in arg_definition.get('args', []):
+		for _arg_definition in arg_definition.get("args", []):
 			args.append(make_arg(_arg_definition))
-		for name, _arg_definition in arg_definition.get('kwargs', {}).items():
+		for name, _arg_definition in arg_definition.get("kwargs", {}).items():
 			kwargs[name] = make_arg(_arg_definition)
 		return Klass(*args, **kwargs)
-	raise TypeError('Unknown arg_definition: {!r}'.format(arg_definition))
+	raise TypeError("Unknown arg_definition: {!r}".format(arg_definition))
 
 
 def make_portal(portal_definition):

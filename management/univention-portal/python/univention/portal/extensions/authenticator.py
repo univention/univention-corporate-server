@@ -88,16 +88,23 @@ class OpenIDAuthenticator(Authenticator):
 	portal_cookie_name:
 		Name of the Cookie the Authenticator sets and retrieves for the logged in user, default: "UniventionPortalSessionId"
 	"""
-	def __init__(self, authorization_endpoint, client_id, portal_cookie_name="UniventionPortalSessionId"):
+
+	def __init__(
+		self, authorization_endpoint, client_id, portal_cookie_name="UniventionPortalSessionId"
+	):
 		self.authorization_endpoint = authorization_endpoint
 		self.client_id = client_id
 		self.portal_cookie_name = portal_cookie_name
 		self.sessions = {}
 
 	def _redirect_to_authorization_endpoint(self, request, session_id, nonce):
-		redirect_uri = "https://{}/univention/portal/portal/login/".format(request.request.host)  # FIXME
+		redirect_uri = "https://{}/univention/portal/portal/login/".format(
+			request.request.host
+		)  # FIXME
 		get_logger("auth").info("Nonce used: {}".format(nonce))
-		url = "{}?client_id={}&redirect_uri={}&scope=openid&kc_idp_hint=ucsoidc&response_mode=form_post&response_type=id_token&state={}&nonce={}".format(self.authorization_endpoint, self.client_id, redirect_uri, session_id, nonce)
+		url = "{}?client_id={}&redirect_uri={}&scope=openid&kc_idp_hint=ucsoidc&response_mode=form_post&response_type=id_token&state={}&nonce={}".format(
+			self.authorization_endpoint, self.client_id, redirect_uri, session_id, nonce
+		)
 		request.set_status(302)
 		request.set_header("Location", url)
 		raise tornado.web.Finish()
@@ -164,6 +171,7 @@ class UMCAuthenticator(Authenticator):
 	group_cache:
 		As UMC does not return groups, we need a cache object that gets us the groups for the username.
 	"""
+
 	def __init__(self, umc_session_url, group_cache):
 		self.umc_session_url = umc_session_url
 		self.group_cache = group_cache
@@ -178,7 +186,7 @@ class UMCAuthenticator(Authenticator):
 		return User(username, groups=groups)
 
 	def _get_username(self, cookies):
-		if not any(cookie.startswith('UMCSessionId') for cookie in cookies):
+		if not any(cookie.startswith("UMCSessionId") for cookie in cookies):
 			get_logger("user").debug("no user given")
 			return None
 		get_logger("user").debug("searching user for cookies=%r" % cookies)

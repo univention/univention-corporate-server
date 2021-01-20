@@ -52,6 +52,7 @@ class Cache(with_metaclass(Plugin)):
 	reloader:
 		Class that handles the actual refresh
 	"""
+
 	def __init__(self, cache_file, reloader=None):
 		self._cache_file = cache_file
 		self._reloader = reloader
@@ -59,12 +60,12 @@ class Cache(with_metaclass(Plugin)):
 		self._load()
 
 	def _load(self):
-		get_logger('cache').info('loading cache file {}'.format(self._cache_file))
+		get_logger("cache").info("loading cache file {}".format(self._cache_file))
 		try:
 			with open(self._cache_file) as fd:
 				self._cache = json.load(fd)
 		except (EnvironmentError, ValueError):
-			get_logger('cache').exception('Error loading {}'.format(self._cache_file))
+			get_logger("cache").exception("Error loading {}".format(self._cache_file))
 
 	def get(self):
 		if self.refresh():
@@ -89,23 +90,24 @@ class PortalFileCache(Cache):
 	`get_categories`
 	`get_menu_links`
 	"""
+
 	def get_user_links(self):
-		return deepcopy(self.get()['user_links'])
+		return deepcopy(self.get()["user_links"])
 
 	def get_entries(self):
-		return deepcopy(self.get()['entries'])
+		return deepcopy(self.get()["entries"])
 
 	def get_folders(self):
-		return deepcopy(self.get()['folders'])
+		return deepcopy(self.get()["folders"])
 
 	def get_portal(self):
-		return deepcopy(self.get()['portal'])
+		return deepcopy(self.get()["portal"])
 
 	def get_categories(self):
-		return deepcopy(self.get()['categories'])
+		return deepcopy(self.get()["categories"])
 
 	def get_menu_links(self):
-		return deepcopy(self.get()['menu_links'])
+		return deepcopy(self.get()["menu_links"])
 
 
 class GroupFileCache(Cache):

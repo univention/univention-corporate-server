@@ -33,23 +33,23 @@
 import sys
 import logging
 
+
 class ShortNameFormatter(logging.Formatter):
-	shorten = 'univention.portal'
+	shorten = "univention.portal"
 
 	def format(self, record):
 		record.short_name = record.name
-		if record.short_name.startswith('%s.' % self.shorten):
-			record.short_name = record.short_name[len(self.shorten) + 1:]
+		if record.short_name.startswith("%s." % self.shorten):
+			record.short_name = record.short_name[len(self.shorten) + 1 :]
 		return super(ShortNameFormatter, self).format(record)
 
 
-def setup_logger(logfile='/var/log/univention/portal.log', stream=True):
-	logger = logging.getLogger('univention.portal')
+def setup_logger(logfile="/var/log/univention/portal.log", stream=True):
+	logger = logging.getLogger("univention.portal")
 	logger.setLevel(logging.DEBUG)
 	if logfile is not None:
-		log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: ' \
-			'%(message)s'
-		log_format_time = '%y-%m-%d %H:%M:%S'
+		log_format = "%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s"
+		log_format_time = "%y-%m-%d %H:%M:%S"
 		formatter = ShortNameFormatter(log_format, log_format_time)
 		handler = logging.FileHandler(logfile)
 		handler.setFormatter(formatter)
@@ -60,6 +60,6 @@ def setup_logger(logfile='/var/log/univention/portal.log', stream=True):
 
 
 def get_logger(name):
-	logger = logging.getLogger('univention.portal')
+	logger = logging.getLogger("univention.portal")
 	logger = logger.getChild(name)
 	return logger

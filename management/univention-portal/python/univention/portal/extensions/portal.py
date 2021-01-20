@@ -73,6 +73,7 @@ class Portal(with_metaclass(Plugin)):
 	authenticator:
 		Object that does the whole auth thing. Meant to the a `Authenticator` object
 	"""
+
 	def __init__(self, scorer, portal_cache, authenticator):
 		self.scorer = scorer
 		self.portal_cache = portal_cache
@@ -93,73 +94,93 @@ class Portal(with_metaclass(Plugin)):
 		categories = self.portal_cache.get_categories()
 		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode)
 		visible_folder_dns = [
-			folder_dn for folder_dn in folders.keys()
-			if admin_mode or len(
+			folder_dn
+			for folder_dn in folders.keys()
+			if admin_mode
+			or len(
 				[
-					entry_dn for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
+					entry_dn
+					for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
 					if entry_dn in visible_entry_dns
 				]
-			) > 0
+			)
+			> 0
 		]
 		visible_category_dns = [
-			category_dn for category_dn in categories.keys()
-			if admin_mode or len(
+			category_dn
+			for category_dn in categories.keys()
+			if admin_mode
+			or len(
 				[
-					entry_dn for entry_dn in categories[category_dn]['entries']
+					entry_dn
+					for entry_dn in categories[category_dn]["entries"]
 					if entry_dn in visible_entry_dns or entry_dn in visible_folder_dns
 				]
-			) > 0
+			)
+			> 0
 		]
 		return {
-			'entry_dns': visible_entry_dns,
-			'folder_dns': visible_folder_dns,
-			'category_dns': visible_category_dns,
+			"entry_dns": visible_entry_dns,
+			"folder_dns": visible_folder_dns,
+			"category_dns": visible_category_dns,
 		}
 
 	def get_user_links(self, user, admin_mode):
 		if user is None:
 			return []
 		links = self.portal_cache.get_user_links()
-		links_dict = dict((link['dn'], link) for link in links)
-		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)]
+		links_dict = dict((link["dn"], link) for link in links)
+		entry_dns = [link["dn"] for link in links]
+		return [
+			links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+		]
 
 	def get_menu_links(self, user, admin_mode):
 		links = self.portal_cache.get_menu_links()
-		links_dict = dict((link['dn'], link) for link in links)
-		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)]
+		links_dict = dict((link["dn"], link) for link in links)
+		entry_dns = [link["dn"] for link in links]
+		return [
+			links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+		]
 
 	def get_entries(self, content):
 		entries = self.portal_cache.get_entries()
-		return {entry_dn: entries[entry_dn] for entry_dn in content['entry_dns']}
+		return {entry_dn: entries[entry_dn] for entry_dn in content["entry_dns"]}
 
 	def get_folders(self, content):
 		folders = self.portal_cache.get_folders()
-		folders = {folder_dn: folders[folder_dn] for folder_dn in content['folder_dns']}
+		folders = {folder_dn: folders[folder_dn] for folder_dn in content["folder_dns"]}
 		for folder in folders.values():
-			folder['entries'] = [
-				entry_dn for entry_dn in folder['entries']
-				if entry_dn in content['entry_dns'] or entry_dn in content['folder_dns']
+			folder["entries"] = [
+				entry_dn
+				for entry_dn in folder["entries"]
+				if entry_dn in content["entry_dns"] or entry_dn in content["folder_dns"]
 			]
 		return folders
 
 	def get_categories(self, content):
 		categories = self.portal_cache.get_categories()
-		categories = {category_dn: categories[category_dn] for category_dn in content['category_dns']}
+		categories = {
+			category_dn: categories[category_dn] for category_dn in content["category_dns"]
+		}
 		for category in categories.values():
-			category['entries'] = [
-				entry_dn for entry_dn in category['entries']
-				if entry_dn in content['entry_dns'] or entry_dn in content['folder_dns']
+			category["entries"] = [
+				entry_dn
+				for entry_dn in category["entries"]
+				if entry_dn in content["entry_dns"] or entry_dn in content["folder_dns"]
 			]
 		return categories
 
 	def get_meta(self, content, categories):
 		portal = self.portal_cache.get_portal()
-		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in content['category_dns']]
-		portal['content'] = [
-			[category_dn, categories[category_dn]['entries']]
-			for category_dn in portal['categories']
+		portal["categories"] = [
+			category_dn
+			for category_dn in portal["categories"]
+			if category_dn in content["category_dns"]
+		]
+		portal["content"] = [
+			[category_dn, categories[category_dn]["entries"]]
+			for category_dn in portal["categories"]
 		]
 		return portal
 
@@ -170,12 +191,12 @@ class Portal(with_metaclass(Plugin)):
 			if entry is None:
 				continue
 			if not admin_mode:
-				if not entry['activated']:
+				if not entry["activated"]:
 					continue
-				if entry['anonymous'] and user.username:
+				if entry["anonymous"] and user.username:
 					continue
-				if entry['allowedGroups']:
-					for group_dn in entry['allowedGroups']:
+				if entry["allowedGroups"]:
+					for group_dn in entry["allowedGroups"]:
 						if user and group_dn in user.groups:
 							break
 					else:
@@ -185,7 +206,7 @@ class Portal(with_metaclass(Plugin)):
 
 	def _get_all_entries_of_folder(self, folder_dn, folders, entries):
 		def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
-			for entry_dn in folders[folder_dn]['entries']:
+			for entry_dn in folders[folder_dn]["entries"]:
 				if entry_dn in entries:
 					if entry_dn not in ret:
 						ret.append(entry_dn)

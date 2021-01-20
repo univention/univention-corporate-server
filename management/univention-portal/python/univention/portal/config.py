@@ -36,6 +36,7 @@ from glob import glob
 _CONF = "/usr/lib/univention-portal/config/*.json"
 _DB = {}
 
+
 def load():
 	_DB.clear()
 	try:
@@ -46,7 +47,10 @@ def load():
 		pass
 	else:
 		load.never_loaded = False
+
+
 load.never_loaded = True
+
 
 def fetch(key):
 	if load.never_loaded:

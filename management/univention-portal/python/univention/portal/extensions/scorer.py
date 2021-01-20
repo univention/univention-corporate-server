@@ -44,6 +44,7 @@ class Scorer(with_metaclass(Plugin)):
 
 	`score`: Gets a Tornado request and returns a number. The highest score wins.
 	"""
+
 	def __init__(self):
 		pass
 
@@ -59,6 +60,7 @@ class DomainScorer(Scorer):
 	domain:
 		Name of the domain, e.g. "myportal2.fqdn.com"
 	"""
+
 	def __init__(self, domain):
 		self.domain = domain
 
@@ -78,6 +80,7 @@ class PathScorer(Scorer):
 		The path. Does not have to match exactly, but the request's path needs to start
 		with this value, e.g. "/portal2".
 	"""
+
 	def __init__(self, path):
 		self.path = path
 

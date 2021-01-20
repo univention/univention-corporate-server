@@ -39,6 +39,7 @@ class Plugin(type):
 	"""
 	Meta class for plugins.
 	"""
+
 	def __new__(mcs, name, bases, attrs):
 		new_cls = super(Plugin, mcs).__new__(mcs, name, bases, attrs)
 		Plugins.add_plugin(new_cls)
@@ -88,15 +89,15 @@ class Plugins(object):
 			return
 		base_module = importlib.import_module(self.python_path)
 		base_module_dir = os.path.dirname(base_module.__file__)
-		path = os.path.join(base_module_dir, '*.py')
+		path = os.path.join(base_module_dir, "*.py")
 		for pymodule in sorted(glob(path)):
 			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-			importlib.import_module('{}.{}'.format(self.python_path, pymodule_name))
+			importlib.import_module("{}.{}".format(self.python_path, pymodule_name))
 		self._imported[self.python_path] = True
 
 
 def get_all_dynamic_classes():
-	for extension in Plugins('univention.portal.extensions'):
+	for extension in Plugins("univention.portal.extensions"):
 		yield extension
 
 
