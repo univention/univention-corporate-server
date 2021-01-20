@@ -30,9 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.portal import Plugin
-
 from six import with_metaclass
+from univention.portal import Plugin
 
 
 class Portal(with_metaclass(Plugin)):

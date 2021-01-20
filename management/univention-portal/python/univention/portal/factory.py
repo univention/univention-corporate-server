@@ -31,8 +31,8 @@
 #
 
 
-from univention.portal import get_dynamic_classes
 import univention.portal.config as config
+from univention.portal import get_dynamic_classes
 
 
 def make_arg(arg_definition):

@@ -30,8 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from os import path
 from imp import reload
+from os import path
 
 import pytest
 

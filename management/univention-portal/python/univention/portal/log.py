@@ -30,8 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
 import logging
+import sys
 
 
 class ShortNameFormatter(logging.Formatter):

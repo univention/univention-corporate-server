@@ -30,8 +30,9 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import pytest
 from imp import reload
+
+import pytest
 
 
 @pytest.fixture
