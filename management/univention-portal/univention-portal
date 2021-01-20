@@ -96,9 +96,7 @@ def add_default(update):
 									"binddn": {"key": "hostdn", "type": "config"},
 									"cache_file": {
 										"type": "static",
-										"value": (
-											"/var/cache/univention-portal/groups.json"
-										),
+										"value": "/var/cache/univention-portal/groups.json",
 									},
 									"ldap_base": {"key": "ldap_base", "type": "config"},
 									"ldap_uri": {"key": "ldap_uri", "type": "config"},
@@ -179,15 +177,12 @@ def ask_value(name, klass_default=None, value_default=None):
 	choice = click.prompt(
 		"Choose the value of {}".format(name),
 		default=klass_default,
-		type=click.Choice(
-			[klass + "()" for klass in possible_classes] + ["value", "config"]
-		),
+		type=click.Choice([klass + "()" for klass in possible_classes] + ["value", "config"]),
 	)
 	if choice == "value":
 		while True:
 			value = click.prompt(
-				'Choose a native value (e.g, None, True, 10, "name")',
-				default=value_default,
+				'Choose a native value (e.g, None, True, 10, "name")', default=value_default,
 			)
 			print(value_default)
 			print(value)
@@ -196,9 +191,7 @@ def ask_value(name, klass_default=None, value_default=None):
 			except SyntaxError:
 				click.echo(click.style("Cannot parse {}".format(value), fg="yellow"))
 	elif choice == "config":
-		value = click.prompt(
-			"Choose a config key from /usr/share/univention-portal/config.json"
-		)
+		value = click.prompt("Choose a config key from /usr/share/univention-portal/config.json")
 		return {"type": "config", "key": value}
 	else:
 		klass_name = choice[:-2]
@@ -213,9 +206,7 @@ def ask_value(name, klass_default=None, value_default=None):
 		else:
 			click.echo(
 				"A {} takes {} arguments ({})".format(
-					klass_name,
-					len(spec.args) - 1,
-					", ".join(repr(arg) for arg in spec.args[1:]),
+					klass_name, len(spec.args) - 1, ", ".join(repr(arg) for arg in spec.args[1:]),
 				)
 			)
 			if spec.defaults:
@@ -300,9 +291,7 @@ def push(name):
 	try:
 		obj = data.get("cn={},{}".format(name, base))
 	except NoObject:
-		obj = data.new(
-			superordinate="cn=univention,{}".format(config.fetch("ldap_base"))
-		)
+		obj = data.new(superordinate="cn=univention,{}".format(config.fetch("ldap_base")))
 		obj.position = base
 		obj.props.name = name
 		obj.props.data_type = "portals/config"
