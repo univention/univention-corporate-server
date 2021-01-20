@@ -44,12 +44,7 @@ def mocked_portal_config(portal_config, get_file_path):
 def test_load_config_success(mocked_portal_config):
 	# Set up
 	mocked_portal_config._DB = {"old": "value"}
-	expected_config = {
-			"port": 8090,
-			"fqdn": "dataport.ucs",
-			"url": "http://127.0.0.1:8090",
-			"test": True
-		}
+	expected_config = {"port": 8090, "fqdn": "dataport.ucs", "url": "http://127.0.0.1:8090", "test": True}
 	# Execute
 	assert mocked_portal_config.load.never_loaded == True
 	mocked_portal_config.load()
@@ -73,12 +68,10 @@ def test_fetch_key(mocker, mocked_portal_config):
 	# Set up
 	def config_loaded():
 		mocked_portal_config.load.never_loaded = False
-	load_mock = mocker.patch.object(mocked_portal_config, 'load', side_effect=config_loaded)
+
+	load_mock = mocker.patch.object(mocked_portal_config, "load", side_effect=config_loaded)
 	mocked_portal_config.load.never_loaded == True
-	mocked_portal_config._DB = {
-		"port": 443,
-		"fqdn": "dataport.ucs"
-	}
+	mocked_portal_config._DB = {"port": 443, "fqdn": "dataport.ucs"}
 	# Execute
 	assert mocked_portal_config.fetch("port") == 443
 	assert mocked_portal_config.load.never_loaded == False

@@ -42,22 +42,22 @@ def pytest_addoption(parser):
 
 @pytest.fixture
 def portal_config(request):
-	use_installed = request.config.getoption('--installed-portal')
-	module = import_module('univention.portal.config', 'python/', 'univention.portal.config', use_installed=use_installed)
+	use_installed = request.config.getoption("--installed-portal")
+	module = import_module("univention.portal.config", "python/", "univention.portal.config", use_installed=use_installed)
 	return module
 
 
 @pytest.fixture
 def portal_factory(request):
-	use_installed = request.config.getoption('--installed-portal')
-	module = import_module('univention.portal.factory', 'python/', 'univention.portal.factory', use_installed=use_installed)
+	use_installed = request.config.getoption("--installed-portal")
+	module = import_module("univention.portal.factory", "python/", "univention.portal.factory", use_installed=use_installed)
 	return module
 
 
 @pytest.fixture
 def portal_lib(request):
-	use_installed = request.config.getoption('--installed-portal')
-	module = import_module('univention.portal', 'python/', 'univention.portal', use_installed=use_installed)
+	use_installed = request.config.getoption("--installed-portal")
+	module = import_module("univention.portal", "python/", "univention.portal", use_installed=use_installed)
 	return module
 
 
@@ -68,11 +68,14 @@ def dynamic_class(portal_lib):
 
 # Helper function fixtures
 
+
 @pytest.fixture
 def patch_object_module(mocker):
 	""" Helper to patch module level library imports of an object or class """
+
 	def _(obj, module_name):
 		return mocker.patch("{}.{}".format(obj.__module__, module_name))
+
 	return _
 
 
@@ -81,7 +84,8 @@ def get_file_path(request):
 	""" Helper to get the absolute path of test files in the unittests directory """
 	unittest_path = request.fspath.dirname
 	files_directory = "files"
-	def _(file_name):		
+
+	def _(file_name):
 		return path.join(unittest_path, files_directory, file_name)
+
 	return _
-		

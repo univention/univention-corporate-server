@@ -45,10 +45,10 @@ def mocked_portal_config(portal_config, request):
 
 
 def test_imports(dynamic_class):
-	assert dynamic_class('Reloader')
-	assert dynamic_class('MtimeBasedLazyFileReloader')
-	assert dynamic_class('PortalReloaderUDM')
-	assert dynamic_class('GroupsReloaderLDAP')
+	assert dynamic_class("Reloader")
+	assert dynamic_class("MtimeBasedLazyFileReloader")
+	assert dynamic_class("PortalReloaderUDM")
+	assert dynamic_class("GroupsReloaderLDAP")
 
 
 class TestMtimeBasedLazyFileReloader:
@@ -69,29 +69,25 @@ class TestMtimeBasedLazyFileReloader:
 		self._os = mocked_os
 		self._shutil = mocked_shutil
 
-
 	@pytest.fixture
 	def mocked_reloader(self, dynamic_class, patch_object_module):
-		Reloader = dynamic_class('MtimeBasedLazyFileReloader')
+		Reloader = dynamic_class("MtimeBasedLazyFileReloader")
 		self.patch_reloader_modules(Reloader, patch_object_module)
 		reloader = Reloader(self._cache_file)
 		return reloader
 
-	
 	def test_init_error(self, dynamic_class, patch_object_module):
-		Reloader = dynamic_class('MtimeBasedLazyFileReloader')
+		Reloader = dynamic_class("MtimeBasedLazyFileReloader")
 		mocked_os = patch_object_module(Reloader, "os")
 		mocked_os.stat.side_effect = IOError
 		reloader = Reloader(self._cache_file)
 		assert reloader._cache_file == self._cache_file
 		assert reloader._mtime == 0
 
-	
 	def test_init_success(self, mocked_reloader):
 		self._os.stat.assert_called_once()
 		assert mocked_reloader._cache_file == self._cache_file
 		assert mocked_reloader._mtime == self._mtime
-
 
 	def test_refresh_default(self, mocked_reloader):
 		refreshed = mocked_reloader.refresh()
@@ -100,12 +96,11 @@ class TestMtimeBasedLazyFileReloader:
 		refreshed = mocked_reloader.refresh()
 		assert refreshed
 
-	
 	def test_refresh_with_reason(self, mocked_reloader, patch_object_module, mocker):
 		# Set up
 		mocked_reloader._refresh = mocker.Mock()  # Mock _refresh because not implemented in base class
 		mocked_reloader._refresh.return_value.name = "fd"
-		mocked_reloader._get_mtime = mocker.Mock(return_value = self._rtime)
+		mocked_reloader._get_mtime = mocker.Mock(return_value=self._rtime)
 		# Execute
 		mocked_reloader.refresh("unknown_reason")
 		mocked_reloader._refresh.assert_not_called()
@@ -120,25 +115,22 @@ class TestPortalReloaderUDM(TestMtimeBasedLazyFileReloader):
 
 	@pytest.fixture
 	def mocked_portal_reloader(self, dynamic_class, patch_object_module, mocker):
-		Reloader = dynamic_class('PortalReloaderUDM')
+		Reloader = dynamic_class("PortalReloaderUDM")
 		self.patch_reloader_modules(Reloader, patch_object_module)
 		reloader = Reloader(self._portal_dn, self._cache_file)
 		reloader.udm_udm = mocker.Mock()
 		reloader.udm_modules = mocker.Mock()
 		return reloader
 
-
 	def generate_mocked_portal(self, mocker):
 		# ToDo Generate sample portal object for reloader
 		return mocker.Mock()
-
 
 	def test_default_init(self, mocked_portal_reloader):
 		self._os.stat.assert_called_once()
 		assert mocked_portal_reloader._cache_file == self._cache_file
 		assert mocked_portal_reloader._mtime == self._mtime
 		assert mocked_portal_reloader._portal_dn == self._portal_dn
-
 
 	def test_refresh(self, mocked_portal_reloader, mocker):
 		mocked_udm = mocked_portal_reloader.udm_udm.UDM.machine.return_value.version.return_value
@@ -156,11 +148,10 @@ class TestGroupsReloaderLDAP(TestMtimeBasedLazyFileReloader):
 
 	@pytest.fixture
 	def mocked_portal_reloader(self, dynamic_class, patch_object_module):
-		Reloader = dynamic_class('GroupsReloaderLDAP')
+		Reloader = dynamic_class("GroupsReloaderLDAP")
 		self.patch_reloader_modules(Reloader, patch_object_module)
 		reloader = Reloader(self._ldap_uri, self._bind_dn, self._password_file, self._ldap_base, self._cache_file)
 		return reloader
-
 
 	def test_default_init(self, mocked_portal_reloader):
 		self._os.stat.assert_called_once()
@@ -168,10 +159,9 @@ class TestGroupsReloaderLDAP(TestMtimeBasedLazyFileReloader):
 		assert mocked_portal_reloader._mtime == self._mtime
 		assert mocked_portal_reloader._ldap_uri == self._ldap_uri
 		assert mocked_portal_reloader._password_file == self._password_file
-		assert mocked_portal_reloader._bind_dn  == self._bind_dn
+		assert mocked_portal_reloader._bind_dn == self._bind_dn
 		assert mocked_portal_reloader._ldap_base == self._ldap_base
 		assert mocked_portal_reloader._cache_file == self._cache_file
-
 
 	def test_refresh(self, mocked_portal_reloader):
 		refreshed = mocked_portal_reloader.refresh()
