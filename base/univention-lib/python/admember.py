@@ -55,6 +55,8 @@ if not six.PY2:
 	from samba.ndr import ndr_unpack
 	from samba.net import Net
 	from samba.param import LoadParm
+else:
+	from collections import namedtuple
 
 import univention.config_registry
 import univention.uldap
@@ -723,6 +725,72 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 	return True
 
 
+SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES = {
+'Forest': 'forest',
+'Domain': 'dns_domain',
+'Netbios domain': 'domain_name',
+'DC name': 'pdc_dns_name',
+'DC netbios name': 'pdc_name',
+'Server site': 'server_site',
+'Client site': 'client_site'
+}
+
+
+def cldap_finddc(ip, use_samba_lib=six.PY3):
+	if use_samba_lib:
+		lp = LoadParm()
+		lp.load('/dev/null')
+		net = Net(creds=None, lp=lp)
+		cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+	else:
+		cmd = ['samba-tool', 'domain', 'info', ip]
+		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		output, _ = p1.communicate()
+		if not output:
+			raise RuntimeError("No output from command: %s" % " ".join(cmd))
+		res = {}
+		for line in output.decode('UTF-8').split('\n'):
+			try:
+				fieldname, value = line.split(':', 1)
+			except ValueError as exc:
+				raise RuntimeError("Parsing samba-tool output failed: %s\nfull output:%s" % (line, output))
+			fieldname = fieldname.rstrip()
+			try:
+				res[SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES[fieldname]] = value
+			except KeyError:
+				pass  ## Unknown field, output may have changed
+
+		for fieldname, key in list(SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES.items()):
+			if key not in res:
+				raise RuntimeError("Missing field in samba-tool output: %s\nfull output:%s" % (fieldname, output))
+		CLDAP_RES = namedtuple('CLDAP_RES', SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES.values())
+		cldap_res = CLDAP_RES(**res)
+	return cldap_res
+
+
+def get_defaultNamingContext(ad_server_ip, use_samba_lib=six.PY3):
+	if use_samba_lib:
+		try:
+			remote_ldb = ldb.Ldb()
+			remote_ldb.connect(url="ldap://%s" % ad_server_ip)
+			return str(remote_ldb.get_default_basedn())
+		except ldb.LdbError as exc:
+			raise RuntimeError(exc)
+	else:
+		cmd = ['ldapsearch', '-xLLL', '-h', ad_server_ip, '-s', 'base', '-b', '', 'defaultNamingContext']
+		try:
+			p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			output, _ = p1.communicate()
+		except OSError as exc:
+			raise RuntimeError("Command failed: %s (%s)" % (" ".join(cmd), exc))
+		lines = output.decode('UTF-8').split('\n')
+		if len(lines) < 2:
+			raise RuntimeError("No output from command: %s" % " ".join(cmd))
+		if not lines[1].startswith('defaultNamingContext: '):
+			raise RuntimeError("defaultNamingContext not found on %s" % (ad_server_ip,))
+		return lines[1][22:]
+
+
 def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 	'''CLDAP lookup'''
 
@@ -730,8 +798,6 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 
 	ad_domain_info = {}
 	ips = []
-	lp = LoadParm()
-	lp.load('/dev/null')
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
@@ -775,8 +841,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 	check_results = []
 	for ip in ips:
 		try:  # check cldap
-			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			cldap_res = cldap_finddc(ip)
 		except RuntimeError as ex:
 			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
 			check_results.append("CLDAP: %s" % ex.args[0])
@@ -803,11 +868,9 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 		raise failedADConnect(["Connection to AD Server %s failed (%s)" % (ad_server, ",".join(check_results))])
 
 	ad_ldap_base = None
-	remote_ldb = ldb.Ldb()
 	try:
-		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
-		ad_ldap_base = str(remote_ldb.get_default_basedn())
-	except ldb.LdbError as ex:
+		ad_ldap_base = get_defaultNamingContext(ad_server_ip)
+	except RuntimeError as ex:
 		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server_ip, ex.args[1])])
 
 	ad_domain_info = {
