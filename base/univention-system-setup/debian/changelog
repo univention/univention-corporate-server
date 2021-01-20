@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-8) unstable; urgency=medium
+
+  * Bug #51598: univention-appcenter should be used as Python3
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jan 2021 12:24:05 +0100
+
 univention-system-setup (13.0.3-7) unstable; urgency=low
 
   * Bug #43687: Fix UDN and UDL restart
