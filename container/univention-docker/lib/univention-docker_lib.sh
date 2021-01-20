@@ -202,7 +202,7 @@ containers_running() {
 }
 
 docker_bridge_network_conflict() {
-	python -c "
+	python3 -c "
 import sys
 try:
 	from univention.appcenter.utils import docker_bridge_network_conflict
