@@ -54,22 +54,4 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-# Bug #50295: Try to get the containers in a state in which they were before we changed the docker0 interface
-if [ -z "$(ucr get repository/online/component/4.4-1-errata)" ]; then  # only if new installation
-	if dpkg --compare-versions "$2" lt-nl 4.0.1-1; then  # only if not installed from fixed dvd images. last broken version was 4.0.0-1
-		systemctl daemon-reload
-		systemctl restart docker.service
-		python -c "
-from univention.appcenter.log import log_to_stream
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import get_action
-log_to_stream()
-apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker]  # single container apps and multi container apps alike
-restart = get_action('restart')
-for app in apps:
-	restart.call(app=app)"
-	fi
-fi
-
-
 exit 0

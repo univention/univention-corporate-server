@@ -1,3 +1,9 @@
+univention-docker (5.0.0-2) unstable; urgency=medium
+
+  * Bug #51598: univention-appcenter should be used as Python3
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jan 2021 12:15:37 +0100
+
 univention-docker (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
