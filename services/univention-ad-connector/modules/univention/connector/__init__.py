@@ -159,11 +159,26 @@ def compare_lowercase(val1, val2):
 # helper classes
 
 
-class configdb:
+class configdb(object):
 
 	def __init__(self, filename):
 		self.filename = filename
 		self._dbcon = lite.connect(self.filename)
+
+	def get_by_value(self, section, option):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
+				rows = cur.fetchall()
+				cur.close()
+				if rows:
+					return rows[0][0]
+				return ''
+			except lite.Error:
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
 
 	def get(self, section, option):
 		for i in [1, 2]:
@@ -184,15 +199,12 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("""
-		INSERT OR REPLACE INTO '%s' (key,value)
-			VALUES (  ?, ?
-		);""" % section, [option, value])
+				cur.execute("INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % section, [option, value])
 				self._dbcon.commit()
 				cur.close()
 				return
 			except lite.Error as e:
-				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				ud.debug(ud.LDAP, ud.ERROR, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -229,8 +241,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
-				self._dbcon.commit()
+				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
 				rows = cur.fetchone()
 				cur.close()
 				if rows:
@@ -247,7 +258,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("CREATE TABLE IF NOT EXISTS '%s'(Key TEXT PRIMARY KEY, Value TEXT)" % section)
+				cur.execute("CREATE TABLE IF NOT EXISTS '%s' (Key TEXT PRIMARY KEY, Value TEXT)" % section)
 				self._dbcon.commit()
 				cur.close()
 				return
@@ -421,8 +432,7 @@ class ucs(object):
 		configdbfile = '/etc/univention/%s/internal.sqlite' % self.CONFIGBASENAME
 		self.config = configdb(configdbfile)
 
-
-		adcachedbfile='/etc/univention/%s/adcache.sqlite' % self.CONFIGBASENAME
+		adcachedbfile = '/etc/univention/%s/adcache.sqlite' % self.CONFIGBASENAME
 		self.adcache = ADCache(adcachedbfile)
 
 
