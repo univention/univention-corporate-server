@@ -1,3 +1,9 @@
+univention-portal (4.0.4-3) unstable; urgency=medium
+
+  * Bug #52512: Flake8 findings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jan 2021 12:10:40 +0100
+
 univention-portal (4.0.4-2) unstable; urgency=medium
 
   * Bug #52453: adjust MultiInput styling
