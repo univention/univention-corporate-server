@@ -1605,7 +1605,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	def shall_have_enough_free_disk_space(self):
 		'''The application requires %(minimum)d MB of free disk space but only
 		%(current)d MB are available.'''
-		required_free_disk_space = self.min_free_disk_space
+		required_free_disk_space = self.min_free_disk_space or 0
 		if required_free_disk_space <= 0:
 			return True
 		current_free_disk_space = get_free_disk_space()
