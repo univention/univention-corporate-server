@@ -40,8 +40,8 @@ from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
 from weakref import ref
-from itertools import zip_longest
 
+import six
 from six.moves.urllib_parse import urlsplit
 from six.moves.configparser import RawConfigParser, NoOptionError, NoSectionError
 
@@ -65,19 +65,23 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
-class LooseVersion(LooseVersion):
-	def _cmp(self, other):
-		for i, j in zip_longest(self.version, other.version, fillvalue=''):
-			if type(i) != type(j):
-				i = str(i)
-				j = str(j)
-			if i == j:
-				continue
-			elif i < j:
-				return -1
-			else:  # i > j
-				return 1
-		return 0
+if six.PY3:
+	# LooseVersion changed the internal order function that may now raise
+	# TypeError on LooseVersion("1.0.1") < LooseVersion("1.0-1")
+	from itertools import zip_longest
+	class LooseVersion(LooseVersion):
+		def _cmp(self, other):
+			for i, j in zip_longest(self.version, other.version, fillvalue=''):
+				if type(i) != type(j):
+					i = str(i)
+					j = str(j)
+				if i == j:
+					continue
+				elif i < j:
+					return -1
+				else:  # i > j
+					return 1
+			return 0
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
