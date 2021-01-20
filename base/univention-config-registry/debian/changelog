@@ -1,3 +1,9 @@
+univention-config-registry (15.0.6-1) unstable; urgency=medium
+
+  * Bug #51524: fix univention.service_info.pidof()
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jan 2021 00:32:38 +0100
+
 univention-config-registry (15.0.5-2) unstable; urgency=medium
 
   * Bug #51598: Allow deepcopy of ucr after a ucr_update

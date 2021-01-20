@@ -153,8 +153,8 @@ def pidof(name, docker='/var/run/docker.pid'):
 			continue
 		cmdline = os.path.join('/proc', proc, 'cmdline')
 		try:
-			with open(cmdline, 'r') as fd:
-				commandline = fd.read().rstrip('\x00')
+			with open(cmdline, 'rb') as fd:
+				commandline = fd.read().rstrip(b'\x00').decode('UTF-8', 'replace')
 			link = os.readlink(os.path.join('/proc', proc, 'exe'))
 		except EnvironmentError:
 			continue
@@ -166,9 +166,9 @@ def pidof(name, docker='/var/run/docker.pid'):
 			stat = os.path.join('/proc', proc, 'stat')
 			status = None
 			try:
-				with open(stat, 'r') as fd:
+				with open(stat, 'rb') as fd:
 					status = fd.readline()
-				ppid = int(status.split(')', 1)[-1].split()[1], 10)
+				ppid = int(status[status.rfind(b')') + 2:].split()[1], 10)
 				children.setdefault(ppid, []).append(pid)
 			except (EnvironmentError, ValueError) as ex:
 				log.error('Failed getting parent: %s: %r', ex, status)
