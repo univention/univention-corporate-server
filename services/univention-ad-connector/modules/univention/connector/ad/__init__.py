@@ -1137,7 +1137,7 @@ class ad(univention.connector.ucs):
 				return None
 		return object
 
-	def __identify(self, object):
+	def __identify_ad_type(self, object):
 		"""Identify the type of the specified AD object"""
 		if not object or 'attributes' not in object:
 			return None
@@ -1430,17 +1430,17 @@ class ad(univention.connector.ucs):
 				try:
 					ad_object = self.get_object(member_dn)
 
-					key = self.__identify({'dn': member_dn, 'attributes': ad_object})
-					ucs_dn = self._object_mapping(key, {'dn': member_dn, 'attributes': ad_object})['dn']
+					mo_key = self.__identify_ad_type({'dn': member_dn, 'attributes': ad_object})
+					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': ad_object})['dn']
 					if not self.lo.get(ucs_dn, attr=['cn']):
 						# Leave the following line commented out, as we don't want to keep the member in AD if it's not present in OpenLDAP
 						# Note: in this case the membership gets removed even if the object itself is ignored for synchronization
 						# ad_members_from_ucs.add(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object exists only in AD [%s]" % ucs_dn)
-					elif self._ignore_object(key, {'dn': member_dn, 'attributes': ad_object}):
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in AD [%s], key = [%s]" % (ucs_dn, key))
+					elif self._ignore_object(mo_key, {'dn': member_dn, 'attributes': ad_object}):
 						# Keep the member in AD if it's also present in OpenLDAP but ignored in synchronization?
 						ad_members_from_ucs.add(member_dn.lower())
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in AD [%s], key = [%s]" % (ucs_dn, mo_key))
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?
@@ -1658,7 +1658,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in AD group member cache" % member_dn)
 				member_object = self.get_object(member_dn)
 				if member_object:
-					mo_key = self.__identify({'dn': member_dn, 'attributes': member_object})
+					mo_key = self.__identify_ad_type({'dn': member_dn, 'attributes': member_object})
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of AD group member, ignore membership: %s" % member_dn)
 						continue  # member is an object which will not be synced
@@ -1941,7 +1941,7 @@ class ad(univention.connector.ucs):
 					ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % change_usn)
 				else:
 					ad_object = self.__object_from_element(elements[0])
-					property_key = self.__identify(ad_object)
+					property_key = self.__identify_ad_type(ad_object)
 					if not property_key:  # TODO: still needed? (removed in s4)
 						ud.debug(ud.LDAP, ud.INFO, "sync to ucs: Dropping reject for unidentified object %s" % (dn,))
 						self._remove_rejected(id)
@@ -2017,7 +2017,7 @@ class ad(univention.connector.ucs):
 				print_progress(True)
 				continue
 
-			property_key = self.__identify(ad_object)
+			property_key = self.__identify_ad_type(ad_object)
 			if not property_key:
 				ud.debug(ud.LDAP, ud.INFO, "ignoring not identified object dn: %r" % (ad_object['dn'],))
 				newUSN = max(self.__get_change_usn(ad_object), newUSN)
@@ -2487,7 +2487,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
 
 			subobject_ad = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
-			key = self.__identify(subobject_ad)
+			key = self.__identify_ad_type(subobject_ad)
 			back_mapped_subobject = self._object_mapping(key, subobject_ad)
 			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
 
