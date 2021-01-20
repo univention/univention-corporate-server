@@ -1,4 +1,4 @@
-univention-saml (6.0.3-6) unstable; urgency=medium
+univention-saml (6.0.3-7) unstable; urgency=medium
 
   * Bug #52196: Add a service which regularly connects via the stunnel4, do
     detect if it is not responsive any more. If it does not respond and its
