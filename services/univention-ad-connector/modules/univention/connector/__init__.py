@@ -43,6 +43,7 @@ import pprint
 import copy
 import time
 import ldap
+from ldap.controls.readentry import PostReadControl
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
 import univention.uldap
@@ -448,7 +449,7 @@ class ucs(object):
 
 		self.open_ucs()
 
-		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted']:
+		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
@@ -571,6 +572,34 @@ class ucs(object):
 				self._remove_config_option('DN Mapping CON', con.lower())
 			if ucs:
 				self._remove_config_option('DN Mapping UCS', ucs.lower())
+
+	def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
+		"""Remember the entryCSN of a change committed by the AD-Connector itself"""
+		value = self._get_config_option('UCS entryCSN', entryUUID)
+		if value:
+			entryCSN_set = set(value.split(','))
+			entryCSN_set.add(entryCSN)
+			value = ','.join(entryCSN_set)
+		else:
+			value = entryCSN
+		self._set_config_option('UCS entryCSN', entryUUID, value)
+
+	def _forget_entryCSN(self, entryUUID, entryCSN):
+		value = self._get_config_option('UCS entryCSN', entryUUID)
+		if not value:
+			return False
+
+		entryCSN_set = set(value.split(','))
+		if entryCSN not in entryCSN_set:
+			return False
+
+		entryCSN_set.remove(entryCSN)
+		if entryCSN_set:
+			value = ','.join(entryCSN_set)
+			self._set_config_option('UCS entryCSN', entryUUID, value)
+		else:
+			self._remove_config_option('UCS entryCSN', entryUUID)
+		return True
 
 	def _get_dn_by_ucs(self, dn_ucs):
 		return self._get_config_option('DN Mapping UCS', dn_ucs.lower())
@@ -1086,11 +1115,25 @@ class ucs(object):
 		if property_type == 'group':
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
 			self.group_members_cache_ucs[object['dn'].lower()] = set()
+
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for ucs_create_function in self.property[property_type].ucs_create_functions:
 			ud.debug(ud.LDAP, ud.INFO, "Call ucs_create_functions: %s" % ucs_create_function)
 			ucs_create_function(self, property_type, ucs_object)
-		return bool(ucs_object.create())
+
+		serverctrls = []
+		response = {}
+		if property_type == 'msGPO':
+			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+		res = ucs_object.create(serverctrls=serverctrls, response=response)
+		if res:
+			for c in response.get('ctrls', []):
+				if c.controlType == PostReadControl.controlType:
+					entryUUID = c.entry['entryUUID'][0]
+					entryCSN = c.entry['entryCSN'][0]
+					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
+			res = True
+		return res
 
 	def modify_in_ucs(self, property_type, object, module, position):
 
@@ -1098,7 +1141,19 @@ class ucs(object):
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type, object, ucs_object)
 
-		return bool(ucs_object.modify())
+		serverctrls = []
+		response = {}
+		if property_type == 'msGPO':
+			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+		res = ucs_object.modify(serverctrls=serverctrls, response=response)
+		if res:
+			for c in response.get('ctrls', []):
+				if c.controlType == PostReadControl.controlType:  # If the modify actually did something
+					entryUUID = c.entry['entryUUID'][0]
+					entryCSN = c.entry['entryCSN'][0]
+					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
+			res = True
+		return res
 
 	def move_in_ucs(self, property_type, object, module, position):
 		if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):

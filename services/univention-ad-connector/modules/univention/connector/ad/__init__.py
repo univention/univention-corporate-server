@@ -473,6 +473,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'AD GUID'")
 			self.config.add_section('AD GUID')
 
+		self.serverctrls_for_add_and_modify = []
 		# Save a list of objects just created, this is needed to
 		# prevent the back sync of a password if it was changed just
 		# after the creation
@@ -2153,6 +2154,9 @@ class ad(univention.connector.ucs):
 			if self.property[property_type].con_create_attributes:
 				addlist += self.property[property_type].con_create_attributes
 
+			# Copy the LDAP controls, because they may be modified
+			# in an ucs_create_extensions
+			ctrls = copy.deepcopy(self.serverctrls_for_add_and_modify)
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes is not None:
 				for attr, value in object['attributes'].items():
 					for attr_key in self.property[property_type].attributes.keys():
@@ -2174,7 +2178,12 @@ class ad(univention.connector.ucs):
 
 			ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
 			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
-			self.lo_ad.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist))  # FIXME encoding
+			try:
+				self.lo_ad.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
+			except Exception:
+				ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
+				ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
+				raise
 
 			if property_type == 'group':
 				self.group_members_cache_con[object['dn'].lower()] = set()
@@ -2189,7 +2198,7 @@ class ad(univention.connector.ucs):
 			if modlist:
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 				try:
-					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+					self.lo_ad.lo.modify_ext_s(object['dn'], modlist, serverctrls=ctrls)
 				except Exception:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
@@ -2343,7 +2352,7 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 				try:
-					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+					self.lo_ad.lo.modify_ext_s(object['dn'], modlist, serverctrls=self.serverctrls_for_add_and_modify)
 				except Exception:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
