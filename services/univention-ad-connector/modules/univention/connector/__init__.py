@@ -363,7 +363,7 @@ class attribute(object):
 		return 'univention.connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
-class property:
+class property(object):
 
 	def __init__(
 		self,
@@ -387,13 +387,15 @@ class property:
 		post_ucs_modify_functions=[],
 		post_attributes=None,
 		mapping_table=None,
-		position_mapping=[]):
+		position_mapping=[],
+		con_subtree_delete_objects=[]):
 
 		self.ucs_default_dn = ucs_default_dn
 
 		self.con_default_dn = con_default_dn
 
 		self.ucs_module = ucs_module
+
 		# allow a 1:n mapping, for example a Windows client
 		# could be a computers/windows or a computers/memberserver
 		# object
@@ -422,7 +424,10 @@ class property:
 		self.mapping_table = mapping_table
 		self.position_mapping = position_mapping
 
+		self.con_subtree_delete_objects = con_subtree_delete_objects
 
+	def __repr__(self):
+		return 'univention.connector.property(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
 class ucs(object):
@@ -1202,48 +1207,58 @@ class ucs(object):
 
 	def delete_in_ucs(self, property_type, object, module, position):
 		"""Removes an AD object in UCS-LDAP"""
-		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
 		if objectGUID:
 			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
-		try:
-			ucs_object.open()
-			ucs_object.remove()
-			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
-			return True
-		except Exception as e:
-			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
-			if str(e) == "Operation not allowed on non-leaf":  # need to delete subtree
-				ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
-				for result in self.search_ucs(base=object['dn']):
-					if compare_lowercase(result[0], object['dn']):
-						continue
-					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-					subobject = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-					key = None
-					for k in self.property.keys():
-						if self.modules[k].identify(result[0], result[1]):
-							key = k
-							break
-					object_mapping = self._object_mapping(key, subobject, 'ucs')
-					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
-					if not self._ignore_object(key, object_mapping):
-						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
-							try:
-								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
-							except (ldap.SERVER_DOWN, SystemExit):
-								raise
-							except:  # FIXME: which exception is to be caught?
-								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
-							return False
 
-				return delete_in_ucs(property_type, object, module, position)
-			elif str(e) == "noObject":  # already deleted #TODO: check if it's really match
+		if property_type in ['ou', 'container']:
+			if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+				ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
 				return True
-			else:
+		try:
+			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+		except univention.admin.uexceptions.noObject:
+			raise  # object is already removed... TODO: enable if wanted!
+			return True
+
+		ucs_object.open()
+
+		try:
+			try:
+				ucs_object.remove()
+				self.update_deleted_cache_after_removal(entryUUID, objectGUID)
+				return True
+			except univention.admin.uexceptions.ldapError as exc:
+				if isinstance(exc.original_exception, ldap.NOT_ALLOWED_ON_NONLEAF):
+					raise exc.original_exception
 				raise
+		except ldap.NOT_ALLOWED_ON_NONLEAF:
+			ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
+			if self._remove_subtree_in_ucs(object):
+				# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
+				return self.delete_in_ucs(property_type, object, module, position)
+			return False
+
+	def _remove_subtree_in_ucs(self, parent_ucs_object):
+		for subdn, subattr in self.search_ucs(base=parent_ucs_object['dn'], attr=['*', '+']):
+			if self.lo.compare_dn(subdn.lower(), parent_ucs_object['dn'].lower()):  # TODO: search with scope=children and remove this check
+				continue
+
+			ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
+
+			key = self.identify_udm_object(subdn, subattr)
+			subobject_ucs = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
+			back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
+			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
+
+			if not self._ignore_object(key, back_mapped_subobject):
+				# FIXME: this call is wrong!: sync_to_ucs() must be called with a samba_object not with a ucs_object!
+				if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], parent_ucs_object):
+					ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
+					return False
+		return True
 
 	def sync_to_ucs(self, property_type, object, pre_mapped_ad_dn, original_object):
 		"""

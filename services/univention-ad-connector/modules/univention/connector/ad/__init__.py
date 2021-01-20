@@ -2367,7 +2367,7 @@ class ad(univention.connector.ucs):
 		# DELETE
 		#
 		elif object['modtype'] == 'delete':
-			self.delete_in_ad(object)
+			self.delete_in_ad(object, property_type)
 			# update group cache
 			self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
 			self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
@@ -2388,7 +2388,9 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
 			return ''
 
-	def delete_in_ad(self, object):
+	def delete_in_ad(self, object, property_type):
+		ud.debug(ud.LDAP, ud.ALL, "delete: %s" % object['dn'])
+		ud.debug(ud.LDAP, ud.ALL, "delete_in_ad: %s" % object)
 		try:
 			objectGUID = self._get_objectGUID(object['dn'])
 			self.lo_ad.lo.delete_s(object['dn'])
@@ -2396,33 +2398,41 @@ class ad(univention.connector.ucs):
 			pass  # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
 			ud.debug(ud.LDAP, ud.INFO, "remove object from AD failed, need to delete subtree")
-			object_dn = compatible_modstring(object['dn'])
-			for result in self.lo_ad.search(base=object_dn):
-				if univention.connector.compare_lowercase(result[0], object['dn']):
+			if self._remove_subtree_in_ad(object, property_type):
+				# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
+				return self.delete_in_ad(object, property_type)
+			return False
 
 		entryUUID = object.get('attributes').get('entryUUID', [b''])[0].decode('ASCII')
 		if entryUUID:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "delete_in_ad: Object without entryUUID: %s" % (object['dn'],))
-					continue
-				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-				subobject = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-				key = None
-				for k in self.property.keys():
-					if self.modules[k].identify(result[0], result[1]):
-						key = k
-						break
-				object_mapping = self._object_mapping(key, subobject)
-				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
-				if not self._ignore_object(key, object_mapping):
-					if not self.sync_from_ucs(key, subobject, object_mapping['dn']):
-						try:
-							ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise
-						except:  # FIXME: which exception is to be caught?
-							ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
-						return False
 
-			return self.delete_in_ad(object)
+	def _remove_subtree_in_ad(self, parent_ad_object, property_type):
+		if self.property[property_type].con_subtree_delete_objects:
+			_l = ["(%s)" % x for x in self.property[property_type].con_subtree_delete_objects]
+			allow_delete_filter = "(|%s)" % ''.join(_l)
+			for sub_dn, _ in self.ad_search_ext_s(parent_ad_object['dn'], ldap.SCOPE_SUBTREE, allow_delete_filter):
+				if self.lo.compare_dn(sub_dn.lower(), parent_ad_object['dn'].lower()):  # FIXME: remove and search with scope=children instead
+					continue
+				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (sub_dn,))
+				self.lo_ad.lo.delete_s(sub_dn)
+
+		for subdn, subattr in self.ad_search_ext_s(parent_ad_object['dn'], ldap.SCOPE_SUBTREE, 'objectClass=*'):
+			if self.lo.compare_dn(subdn.lower(), parent_ad_object['dn'].lower()):  # FIXME: remove and search with scope=children instead
+				continue
+			ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
+
+			subobject_ad = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
+			key = self.__identify(subobject_ad)
+			back_mapped_subobject = self._object_mapping(key, subobject_ad)
+			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
+
+			if not self._ignore_object(key, back_mapped_subobject):
+				# FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
+				if not self.sync_from_ucs(key, subobject_ad, back_mapped_subobject['dn']):
+					ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
+					return False
+
+		return True
