@@ -193,7 +193,7 @@ def test_group_sync_from_ad_to_udm_with_nested_user(group_class, nested_class, s
 
 		print("\nModifying AD group\n")
 		(nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_user(AD, nested_user, adconnector.wait_for_sync)
-		AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn])
+		AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn.encode('UTF-8')])
 		adconnector.wait_for_sync()
 		udm_attributes = {"users": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)
@@ -239,7 +239,7 @@ def test_group_sync_from_ad_to_udm_with_nested_group(group_class, nested_class, 
 
 		print("\nModifying AD group\n")
 		(nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_group(AD, nested_group, adconnector.wait_for_sync)
-		AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn])
+		AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn.encode('UTF-8')])
 		adconnector.wait_for_sync()
 		udm_attributes = {"nestedGroup": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)
