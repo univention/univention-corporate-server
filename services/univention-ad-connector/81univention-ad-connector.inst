@@ -41,6 +41,8 @@ SERVICE="AD Connector"
 
 eval "$(ucr shell)"
 
+[ -e "/etc/univention/connector/ad/mapping" ] || univention-config-registry filter --encode-utf8 > /etc/univention/connector/ad/mapping.py < /etc/univention/connector/ad/mapping
+
 . /usr/share/univention-lib/ldap.sh
 ucs_addServiceToLocalhost "$SERVICE" "$@"
 
