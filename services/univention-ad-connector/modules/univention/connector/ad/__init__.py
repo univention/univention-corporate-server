@@ -1173,18 +1173,16 @@ class ad(univention.connector.ucs):
 		check if correct primary group is set to a fresh UCS-User
 		'''
 
-		search_filter = format_escaped('(samaccountname={0!e})', compatible_modstring(object_ucs['username']))
-		ad_group_rid_resultlist = self.__search_ad(filter=search_filter, attrlist=['dn', 'primaryGroupID'])
+		rid_filter = format_escaped("(samaccountname={0!e})", object_ucs['username'])
+		ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
-		if ad_group_rid_resultlist and not ad_group_rid_resultlist[0][0] in ['None', '', None]:
+		if not ad_group_rid_resultlist[0][0] in [b'None', b'', None]:
 
 			ad_group_rid = ad_group_rid_resultlist[0][1]['primaryGroupID'][0].decode('UTF-8')
 
-			ud.debug(ud.LDAP, ud.INFO, "set_primary_group_to_ucs_user: AD rid: %s" % ad_group_rid)
-			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
-
-			search_filter = format_escaped('(objectSid={0!e})', object_sid_string)
-			ldap_group_ad = self.__search_ad(filter=search_filter)
+			ud.debug(ud.LDAP, ud.INFO, "set_primary_group_to_ucs_user: AD rid: %r" % ad_group_rid)
+			ldap_group_filter = format_escaped("(objectSid={0!e}-{1!e})", self.ad_sid, ad_group_rid)
+			ldap_group_ad = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=ldap_group_filter)
 
 			if not ldap_group_ad[0][0]:
 				ud.debug(ud.LDAP, ud.ERROR, "ad.set_primary_group_to_ucs_user: Primary Group in AD not found (not enough rights?), sync of this object will fail!")
