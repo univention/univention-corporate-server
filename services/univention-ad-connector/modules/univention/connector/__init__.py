@@ -709,8 +709,9 @@ class ucs(object):
 				object['olddn'] = old_dn  # needed for correct samaccount-mapping
 
 			if not self._ignore_object(key, object) or ignore_subtree_match:
-				premapped_ucs_dn = object['dn']
-				object = self._object_mapping(key, object, 'ucs')
+				pre_mapped_ucs_dn = object['dn']
+				# NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
+				mapped_object = self._object_mapping(key, object, 'ucs')
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 
@@ -725,8 +726,7 @@ class ucs(object):
 						object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': {}}  # Dummy
 
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), object_old))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, object_old))):
+						if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, object_old):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1185,7 +1185,7 @@ class ucs(object):
 			else:
 				raise
 
-	def sync_to_ucs(self, property_type, object, premapped_ad_dn, original_object, retry=True):
+	def sync_to_ucs(self, property_type, object, pre_mapped_ad_dn, original_object):
 		"""
 		Synchronize an object from AD-LDAP to UCS Open-LDAP.
 
@@ -1206,8 +1206,11 @@ class ucs(object):
 		# this function gets an object from the ad class, which should be converted into a ucs module
 
 		# if sync is write (sync to AD) or none, there is nothing to do
-		if self.property[property_type].sync_mode in ['write', 'none']:
-			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+		if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
+			if property_type:
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
 			return True
 
 		if object['dn'].find('\\0ACNF:') > 0:
@@ -1277,7 +1280,7 @@ class ucs(object):
 
 			if object['modtype'] == 'add':
 				result = self.add_in_ucs(property_type, object, module, position)
-				self._check_dn_mapping(object['dn'], premapped_ad_dn)
+				self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
 				self.adcache.add_entry(guid, original_object.get('attributes'))
 			if object['modtype'] == 'delete':
 				if not old_object:
@@ -1285,16 +1288,16 @@ class ucs(object):
 					result = True
 				else:
 					result = self.delete_in_ucs(property_type, object, module, position)
-				self._remove_dn_mapping(object['dn'], premapped_ad_dn)
+				self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
 				self.adcache.remove_entry(guid)
 			if object['modtype'] == 'move':
 				result = self.move_in_ucs(property_type, object, module, position)
 				self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
-				self._check_dn_mapping(object['dn'], premapped_ad_dn)
+				self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
 
 			if object['modtype'] == 'modify':
 				result = self.modify_in_ucs(property_type, object, module, position)
-				self._check_dn_mapping(object['dn'], premapped_ad_dn)
+				self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
 				self.adcache.add_entry(guid, original_object.get('attributes'))
 
 			if not result:
