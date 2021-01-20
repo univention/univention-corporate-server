@@ -32,12 +32,8 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
-
-# unset old default value
-if [ "512" -eq "$(ucr get umc/server/upload/max)" ]; then
-	univention-config-registry unset umc/server/upload/max
-fi
 
 # set default UCR settings
 univention-config-registry set \
