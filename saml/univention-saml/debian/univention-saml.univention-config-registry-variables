@@ -4,6 +4,12 @@ Description[en]=Defines the fqdn of the identity provider of this UCS domain.
 Type=str
 Categories=management
 
+[ucs/server/sso/stunnel4/watchdog/timeout]
+Description[de]=Definiert wie oft der Service univention-stunnel4-watchdog den Status des stunnel4 prüft. Angegeben in Sekunden. (default = 30)
+Description[en]=Defines how often the service univention-stunnel4-watchdog checks the state of the stunnel4. This is defined in seconds. (default = 30)
+Type=int
+Categories=management
+
 [ucs/server/sso/cert]
 Description[de]=Definiert den Pfad zum Zertifikat des Identity Provider dieser UCS Domäne. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem)
 Description[en]=Defines the path to the certificate of the identity provider of this UCS domain. (default /etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem)

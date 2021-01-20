@@ -32,25 +32,34 @@
 # <https://www.gnu.org/licenses/>.
 
 
-while true; do
+check_stunnel () {
+	echo "stats" | openssl s_client -connect "${ucs_server_sso_fqdn}:11212" -cert "${ucs_server_sso_cert}" -key "${ucs_server_sso_key}" 2>/dev/null |  grep -q "STAT pid"
+	return $?
+}
 
+export -f check_stunnel
+
+while true; do
 	eval "$(ucr shell)"
 	[ -z ${ucs_server_sso_fqdn} ] || ucs_server_sso_fqdn="ucs-sso.${domainname}"
 	[ -z ${ucs_server_sso_cert} ] && ucs_server_sso_cert="/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem"
-	[ -z ${ucs_server_sso_key} ] && ucs_server_sso_key="/etc/univention/ssl/${ucs_server_sso_fqdn}/secret.key"
+	[ -z ${ucs_server_sso_key} ] && ucs_server_sso_key="/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key"
+	[ -z ${ucs_server_sso_stunnel4_watchdog_timeout} ] && ucs_server_sso_stunnel4_watchdog_timeout=30
+	
+	export ucs_server_sso_fqdn
+	export ucs_server_sso_cert
+	export ucs_server_sso_key
 
-
-	timeout 5 bash -c "while read -r fn; do echo "$fn" >/dev/null 2>&1;done <    <(echo "stats" | openssl s_client -connect "${ucs_server_sso_fqdn}:11212" -cert "$cert_path" -key "$key_path" >/dev/null 2>&1)"
-
-	ret="$?"
-	# command ran into timeout
-	if [ $ret == 124 ]; then
-		systemctl is-active --quiet "stunnel4.service"
-		if [ "$?" == 0 ]; then
-			# stunnel4 is running but doesn't answer. Kill and restart
-			echo "Killing stunnel4 to restart, it seems to be hanging. See https://forge.univention.org/bugzilla/show_bug.cgi?id=52196"
-			kill -9 "$(pidof -x stunnel4)"
-		fi
+	systemctl is-active --quiet "stunnel4.service"
+	# only check stunnel4 if active
+	if [ "$?" == 0 ]; then
+		timeout 5 bash -c check_stunnel
+		ret="$?"
+		# command was not successful. kill stunnel4 to restart ist
+		if [ "$ret" != "0" ]; then
+				echo "Killing stunnel4 to restart, it seems to be hanging. See https://forge.univention.org/bugzilla/show_bug.cgi?id=52196"
+				kill -9 "$(pidof -x stunnel4)"
+			fi
 	fi
-	sleep 30
+	sleep "${ucs_server_sso_stunnel4_watchdog_timeout}"
 done
