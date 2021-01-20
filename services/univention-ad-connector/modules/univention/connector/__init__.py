@@ -452,9 +452,6 @@ class ucs(object):
 		adcachedbfile = '/etc/univention/%s/adcache.sqlite' % self.CONFIGBASENAME
 		self.adcache = ADCache(adcachedbfile)
 
-
-		self.open_ucs()
-
 		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
@@ -462,9 +459,13 @@ class ucs(object):
 		irrelevant_attributes = self.configRegistry.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
 		self.irrelevant_attributes = set(irrelevant_attributes.split(','))
 
-		ud.debug(ud.LDAP, ud.INFO, "init finished")
+	def init_ldap_connections(self):
+		self.open_ucs()
 
-	def __del__(self):
+	def __enter__(self):
+		return self
+
+	def __exit__(self, etype=None, exc=None, etraceback=None):
 		self.close_debug()
 
 	def dn_mapped_to_base(self, dn, base):
