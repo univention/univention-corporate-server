@@ -39,6 +39,7 @@ import types
 import collections
 import random
 import traceback
+import pprint
 import copy
 import time
 import ldap
@@ -145,6 +146,10 @@ def dictonary_lowercase(dict_):
 			return dict_.lower()
 		except Exception:  # FIXME: which exception is to be caught?
 			pass
+
+
+def compare_normal(val1, val2):
+	return val1 == val2
 
 
 def compare_lowercase(val1, val2):
@@ -330,14 +335,16 @@ class attribute(object):
 		:ptype sync_mode: str
 	"""
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends=''):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends='', con_attribute_encoding='UTF-8'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
+		self.con_attribute_encoding = con_attribute_encoding
 		self.con_other_attribute = con_other_attribute
 		self.con_depends = con_depends
 		self.required = required
-		self.compare_function = compare_function
+		# If no compare_function is given, we default to `compare_normal()`
+		self.compare_function = compare_function or compare_normal
 		self.con_value_merge_function = con_value_merge_function
 		if mapping:
 			self.mapping = mapping
@@ -350,6 +357,9 @@ class attribute(object):
 		self.reverse_attribute_check = reverse_attribute_check
 		self.sync_mode = sync_mode
 		self.single_value = single_value
+
+	def __repr__(self):
+		return 'univention.connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
 class property:
@@ -981,30 +991,24 @@ class ucs(object):
 
 					if isinstance(value, list) and len(value) == 1:
 						value = value[0]
-					equal = False
+
+					if attributes.con_attribute_encoding:
+						value = [x.decode(attributes.con_attribute_encoding) for x in value] if isinstance(value, list) else value.decode(attributes.con_attribute_encoding)
 
 					# set encoding
 					compare = [ucs_object[ucs_key], value]
-					for i in [0, 1]:
-						if isinstance(compare[i], type([])):
-							compare[i] = univention.connector.ad.compatible_list(compare[i])
-						else:
-							compare[i] = univention.connector.ad.compatible_modstring(compare[i])
-
-					if attributes.compare_function != '':
-						equal = attributes.compare_function(compare[0], compare[1])
-					else:
-						equal = compare[0] == compare[1]
-					if not equal:
-						# This is deduplication of LDAP attribute values for S4 -> UCS.
+					if not attributes.compare_function(compare[0], compare[1]):
+						# This is deduplication of LDAP attribute values for AD -> UCS.
 						# It preserves ordering of the attribute values which is
 						# important for the handling of `con_other_attribute`.
+						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object %s to value: %r" % (ucs_key, value))
+						if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object:
+							ucs_object.options.extend(ucs_object.descriptions[ucs_key].options)
 						if isinstance(value, list):
 							ucs_object[ucs_key] = list(collections.OrderedDict.fromkeys(value))
 						else:
 							ucs_object[ucs_key] = value
-
-						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
+						ud.debug(ud.LDAP, ud.INFO, "result key in ucs-object %s: %r" % (ucs_key, ucs_object[ucs_key]))
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
@@ -1014,7 +1018,7 @@ class ucs(object):
 				mandatory_attrs = ['lastname']
 
 				ucs_key = attributes.ucs_attribute
-				if ucs_key in ucs_object:
+				if ucs_object.has_property(ucs_key):
 					# Special handling for con other attributes, see Bug #20599
 					if attributes.con_other_attribute:
 						if object['attributes'].get(attributes.con_other_attribute):
