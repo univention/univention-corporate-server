@@ -101,16 +101,16 @@ class TestUMCAuthenticator:
 		request_mock.get_cookie.assert_called_once_with(self._portal_cookie_name)
 		mocked_authenticator._get_username.assert_called_once_with(cookie)
 		assert isinstance(user, user_module.User)
-		assert user.username == None
+		assert user.username is None
 		assert user.groups == []
 
 	def test_get_username(self, mocked_authenticator, mocker):
 		mocked_authenticator._ask_umc = mocker.Mock()
 		mocked_authenticator._ask_umc.return_value = self._username
 		assert mocked_authenticator._get_username("test_session") == self._username.lower()
-		assert mocked_authenticator._get_username(None) == None
+		assert mocked_authenticator._get_username(None) is None
 		mocked_authenticator._ask_umc.return_value = None
-		assert mocked_authenticator._get_username("test_session") == None
+		assert mocked_authenticator._get_username("test_session") is None
 
 	def test_ask_umc_request_success(self, mocked_authenticator, mocker):
 		def _side_effect(url, cookies={}):
@@ -132,7 +132,7 @@ class TestUMCAuthenticator:
 		assert mocked_authenticator._ask_umc(test_session) == self._username
 		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies={self._umc_cookie_name: test_session})
 		# Execute with unknown session expecting username to be None due to KeyError
-		assert mocked_authenticator._ask_umc("") == None
+		assert mocked_authenticator._ask_umc("") is None
 		assert mocked_authenticator.requests_get.call_count == 2
 
 	def test_ask_umc_request_error(self, mocked_authenticator, mocker):
@@ -148,12 +148,12 @@ class TestUMCAuthenticator:
 		mocked_authenticator.requests_get.side_effect = _side_effect
 		test_session = "test_session"
 		# Execute while expecting a catched internal ValueError
-		assert mocked_authenticator._ask_umc(test_session) == None
+		assert mocked_authenticator._ask_umc(test_session) is None
 		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies={self._umc_cookie_name: test_session})
 		# Execute while expecting catched internal RequestException
 		mocked_authenticator.requests_get.side_effect = [requests.exceptions.ConnectionError, requests.exceptions.MissingSchema]
-		assert mocked_authenticator._ask_umc(test_session) == None
-		assert mocked_authenticator._ask_umc(test_session) == None
+		assert mocked_authenticator._ask_umc(test_session) is None
+		assert mocked_authenticator._ask_umc(test_session) is None
 		assert mocked_authenticator.requests_get.call_count == 3
 
 

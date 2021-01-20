@@ -31,7 +31,6 @@
 #
 
 
-import pytest
 from univentionunittests import import_module
 
 

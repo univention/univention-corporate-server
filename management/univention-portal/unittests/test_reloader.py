@@ -31,9 +31,9 @@
 #
 
 from os import path
+from imp import reload
 
 import pytest
-from univentionunittests import import_module
 
 
 @pytest.fixture
@@ -134,7 +134,7 @@ class TestPortalReloaderUDM(TestMtimeBasedLazyFileReloader):
 
 	def test_refresh(self, mocked_portal_reloader, mocker):
 		mocked_udm = mocked_portal_reloader.udm_udm.UDM.machine.return_value.version.return_value
-		mocked_portal = mocked_udm.get.return_value.get.return_value = self.generate_mocked_portal(mocker)
+		mocked_udm.get.return_value.get.return_value = self.generate_mocked_portal(mocker)
 		refreshed = mocked_portal_reloader.refresh(reason=self._reason)
 		mocked_udm.get.return_value.get.assert_called_once_with(self._portal_dn)
 		assert not refreshed
