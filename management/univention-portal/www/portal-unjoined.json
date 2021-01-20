@@ -23,6 +23,7 @@
     "entries": {
         "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%": {
             "activated": true,
+            "anonymous": false,
             "allowedGroups": [],
             "description": {
                 "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung der UCS-Dom\u00e4ne und des lokalen Systems",
@@ -43,6 +44,7 @@
         },
         "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%": {
             "activated": true,
+            "anonymous": false,
             "allowedGroups": [],
             "description": {
                 "de_DE": "News, Tipps und Best Practices",
