@@ -929,21 +929,20 @@ class ucs(object):
 		# check for changes from ucs ldap directory
 
 		change_counter = 0
+		MAX_SYNC_IN_ONE_INTERVAL = 50000
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
-		files = os.listdir(self.listener_dir)
-		num_changes = len(files) - 1
-		if self.profiling and num_changes:
-			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM UCS: Incomming %s" % (num_changes,))
-
-
 		print("--------------------------------------")
-		print("try to sync %s changes from UCS" % (num_changes,))
+		print("try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir)) - 1, MAX_SYNC_IN_ONE_INTERVAL)))
 		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
-		files = sorted(files)
+		files = sorted(os.listdir(self.listener_dir))
+
+		# Only synchronize the first MAX_SYNC_IN_ONE_INTERVAL changes otherwise
+		# the change list is too long and it took too much time
+		files = files[:MAX_SYNC_IN_ONE_INTERVAL]
 
 		# We may dropped the parent object, so don't show the traceback in any case
 		traceback_level = ud.WARN

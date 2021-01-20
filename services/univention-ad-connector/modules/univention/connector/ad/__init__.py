@@ -1913,7 +1913,6 @@ class ad(univention.connector.ucs):
 		poll for changes in AD
 		'''
 		# search from last_usn for changes
-
 		change_count = 0
 		changes = []
 		try:
@@ -1930,92 +1929,94 @@ class ad(univention.connector.ucs):
 		print("try to sync %s changes from AD" % len(changes))
 		print("done:", end=' ')
 		sys.stdout.flush()
-		done_counter = 0
-		object = None
+		done = {'counter': 0}
+		ad_object = None
 		lastUSN = self._get_lastUSN()
 		newUSN = lastUSN
 
-		for element in changes:
-			try:
-				if element[0] == 'None':  # referrals
-					continue
-				old_element = copy.deepcopy(element)
-				object = self.__object_from_element(element)
-			except:  # FIXME: which exception is to be caught?
-				# ud.debug(ud.LDAP, ud.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
-				# ud.debug(ud.LDAP, ud.ERROR, "This object will not be synced again!")
-				# debug-trace may lead to a segfault here :(
-				self._debug_traceback(ud.ERROR, "Exception during poll/object-mapping, object will not be synced again!")
-
-			if object:
-				property_key = self.__identify(object)
-				if property_key:
-
-					if self._ignore_object(property_key, object):
-						if object['modtype'] == 'move':
-							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an AD object into a ignored tree: dn: %s" % object['dn'])
-							object['deleted_dn'] = object['olddn']
-							object['dn'] = object['olddn']
-							object['modtype'] = 'delete'
-							# check the move target
-						else:
-							self.__update_lastUSN(object)
-							done_counter += 1
-							print("%s" % done_counter, end=' ')
-							continue
-
-					if object['dn'].find('\\0ACNF:') > 0:
-						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
-						self.__update_lastUSN(object)
-						done_counter += 1
-						print("%s" % done_counter, end=' ')
-						continue
-
-					sync_successfull = False
-					try:
-						mapped_object = self._object_mapping(property_key, object)
-						if not self._ignore_object(property_key, mapped_object):
-							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'], object)
-						else:
-							sync_successfull = True
-					except (ldap.SERVER_DOWN, SystemExit):
-						raise
-					except univention.admin.uexceptions.ldapError as msg:
-						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
-						if msg == "Can't contact LDAP server":
-							raise ldap.SERVER_DOWN
-						else:
-							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except Exception:  # FIXME: which exception is to be caught?
-						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-
-					if not sync_successfull:
-						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successfull, save rejected")
-						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % object['dn'])
-
-					if sync_successfull:
-						change_count += 1
-						newUSN = max(self.__get_change_usn(object), newUSN)
-						try:
-							GUID = old_element[1]['objectGUID'][0]
-							self._set_DN_for_GUID(GUID, old_element[0])
-						except ldap.SERVER_DOWN:
-							raise
-						except Exception:  # FIXME: which exception is to be caught?
-							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
-
-					else:
-						self.save_rejected(object)
-						self.__update_lastUSN(object)
-				else:
-					newUSN = max(self.__get_change_usn(object), newUSN)
-
-				done_counter += 1
-				print("%s" % done_counter, end=' ')
-			else:
-				done_counter += 1
-				print("(%s)" % done_counter, end=' ')
+		def print_progress(ignore=False):
+			done['counter'] += 1
+			message = '(%s)' if ignore else '%s'
+			print(message % (done['counter'],), end=' ')
 			sys.stdout.flush()
+
+		# Check if the connection to UCS ldap exists. Otherwise re-create the session.
+		try:
+			self.search_ucs(scope=ldap.SCOPE_BASE)
+		except ldap.SERVER_DOWN:
+			ud.debug(ud.LDAP, ud.INFO, "UCS LDAP connection was closed, re-open the connection.")
+			self.open_ucs()
+
+		for element in changes:
+			old_element = copy.deepcopy(element)
+			ad_object = self.__object_from_element(element)
+
+			if not ad_object:
+				print_progress(True)
+				continue
+
+			property_key = self.__identify(ad_object)
+			if not property_key:
+				ud.debug(ud.LDAP, ud.INFO, "ignoring not identified object dn: %r" % (ad_object['dn'],))
+				newUSN = max(self.__get_change_usn(ad_object), newUSN)
+				print_progress(True)
+				continue
+
+			if self._ignore_object(property_key, ad_object):
+				if ad_object['modtype'] == 'move':
+					ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an AD object into a ignored tree: dn: %s" % ad_object['dn'])
+					ad_object['deleted_dn'] = ad_object['olddn']
+					ad_object['dn'] = ad_object['olddn']
+					ad_object['modtype'] = 'delete'
+					# check the move target
+				else:
+					self.__update_lastUSN(ad_object)
+					print_progress()
+					continue
+
+			if ad_object['dn'].find('\\0ACNF:') > 0:
+				ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % ad_object['dn'])
+				self.__update_lastUSN(ad_object)
+				print_progress()
+				continue
+
+			sync_successfull = False
+			try:
+				try:
+					mapped_object = self._object_mapping(property_key, ad_object)
+					if not self._ignore_object(property_key, mapped_object):
+						sync_successfull = self.sync_to_ucs(property_key, mapped_object, ad_object['dn'], ad_object)
+					else:
+						sync_successfull = True
+				except univention.admin.uexceptions.ldapError as msg:
+					if isinstance(msg.original_exception, ldap.SERVER_DOWN):
+						raise msg.original_exception
+					raise
+			except ldap.SERVER_DOWN:
+				ud.debug(ud.LDAP, ud.ERROR, "Got server down during sync, re-open the connection to UCS and AD")
+				time.sleep(1)
+				self.open_ucs()
+				self.open_ad()
+			except Exception:  # FIXME: which exception is to be caught?
+				self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
+
+			if sync_successfull:
+				change_count += 1
+				newUSN = max(self.__get_change_usn(ad_object), newUSN)
+				try:
+					GUID = old_element[1]['objectGUID'][0]
+					self._set_DN_for_GUID(GUID, old_element[0])
+				except ldap.SERVER_DOWN:
+					raise
+				except Exception:  # FIXME: which exception is to be caught?
+					self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
+			else:
+				ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
+				ud.debug(ud.LDAP, ud.WARN, "object was: %s" % ad_object['dn'])
+				self.save_rejected(ad_object)
+				self.__update_lastUSN(ad_object)
+
+			print_progress()
 
 		print("")
 
