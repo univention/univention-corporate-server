@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-while(true); do
+while true; do
 
 	eval "$(ucr shell)"
 	[ -z ${ucs_server_sso_fqdn} ] || ucs_server_sso_fqdn="ucs-sso.${domainname}"
