@@ -811,19 +811,20 @@ class ucs(object):
 		self.modules = {}
 		self.modules_others = {}
 		position = univention.admin.uldap.position(self.lo.base)
-		for key in self.property.keys():
-			if self.property[key].ucs_module:
-				self.modules[key] = univention.admin.modules.get(self.property[key].ucs_module)
-				if hasattr(self.property[key], 'identify'):
+
+		for key, mapping in self.property.items():
+			if mapping.ucs_module:
+				self.modules[key] = univention.admin.modules.get(mapping.ucs_module)
+				if hasattr(mapping, 'identify'):
 					ud.debug(ud.LDAP, ud.INFO, "Override identify function for %s" % key)
-					self.modules[key].identify = self.property[key].identify
+					self.modules[key].identify = mapping.identify
 			else:
 				self.modules[key] = None
 			univention.admin.modules.init(self.lo, position, self.modules[key])
 
 			self.modules_others[key] = []
-			if self.property[key].ucs_module_others:
-				for m in self.property[key].ucs_module_others:
+			if mapping.ucs_module_others:
+				for m in mapping.ucs_module_others:
 					if m:
 						self.modules_others[key].append(univention.admin.modules.get(m))
 				for m in self.modules_others[key]:
@@ -1032,48 +1033,48 @@ class ucs(object):
 						else:
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 
-		for attribute in self.property[property_type].attributes.values():
-			if attribute.sync_mode in ['read', 'sync']:
-				changed_attributes = object.get('changed_attributes', [])
-				changed = not changed_attributes or \
-					attribute.con_attribute in changed_attributes or \
-					attribute.con_other_attribute in changed_attributes or \
-					attribute.con_depends in changed_attributes
+		MAPPING = self.property[property_type]
+		for attributes in MAPPING.attributes.values():
+			if attributes.sync_mode not in ['read', 'sync']:
+				continue
 
-				if changed or modtype == 'add':
-					ud.debug(ud.LDAP, ud.INFO,
-						'__set_values: Set: %s' % attribute.con_attribute)
-					set_values(attribute)
-				else:
-					ud.debug(ud.LDAP, ud.INFO,
-						'__set_values: Skip: %s' % attribute.con_attribute)
+			con_attribute = attributes.con_attribute
+			con_other_attribute = attributes.con_other_attribute
+
+			changed_attributes = object.get('changed_attributes')
+			changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or attributes.con_depends in changed_attributes
+
+			if changed or modtype == 'add':
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+				set_values(attributes)
+			else:
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 		# post-values
-		if not self.property[property_type].post_attributes:
+		if not MAPPING.post_attributes:
 			return
-		for attribute in self.property[property_type].post_attributes.values():
-			if attribute.sync_mode in ['read', 'sync']:
-				ud.debug(ud.LDAP, ud.INFO,
-					'__set_values: mapping for attribute: %s' % attribute)
-				changed_attributes = object.get('changed_attributes', [])
-				changed = not changed_attributes or \
-					attribute.con_attribute in changed_attributes or \
-					attribute.con_other_attribute in changed_attributes or \
-					attribute.con_depends in changed_attributes
+		for attr_key, post_attributes in MAPPING.post_attributes.items():
+			ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
+			if post_attributes.sync_mode not in ['read', 'sync']:
+				continue
 
-				if changed or modtype == 'add':
-					ud.debug(ud.LDAP, ud.INFO,
-						'__set_values: Set: %s' % attribute.con_attribute)
-					if attribute.reverse_attribute_check:
-						if object['attributes'].get(attribute.ldap_attribute):
-							set_values(attribute)
-						else:
-							ucs_object[attribute.ucs_attribute] = ''
+			con_attribute = post_attributes.con_attribute
+			con_other_attribute = post_attributes.con_other_attribute
+
+			changed_attributes = object.get('changed_attributes')
+
+			changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or attributes.con_depends in changed_attributes
+			if changed or modtype == 'add':
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+				if post_attributes.reverse_attribute_check:
+					if object['attributes'].get(post_attributes.ldap_attribute):
+						set_values(post_attributes)
 					else:
-						set_values(attribute)
+						ucs_object[post_attributes.ucs_attribute] = ''
 				else:
-					ud.debug(ud.LDAP, ud.INFO,
-						'__set_values: Skip: %s' % attribute.con_attribute)
+					set_values(post_attributes)
+			else:
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 	def add_in_ucs(self, property_type, object, module, position):
 		ucs_object = module.object(None, self.lo, position=position)
