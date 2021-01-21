@@ -43,9 +43,7 @@
 	display: flex
 	align-items: flex-start
 	flex-wrap: wrap
-
-.umcModuleHeaderLeft
-	align-self: center
+	grid-gap: var(--layout-spacing-unit) 0
 
 .umcModuleHeaderRight
 	flex: 1 1 auto
@@ -54,6 +52,14 @@
 
 .umcModuleTitle
 	@extends h1
+	display: flex
+	align-items: center
+
+.umcModuleTitleBreadCrumb
+	color: var(--font-color-contrast-low)
+
+.umcModuleTitleBreadCrumbSeperator
+	margin: 0 var(--layout-spacing-unit-small)
 
 .umcModuleSubTitle
 	font-size: var(--font-size-small)

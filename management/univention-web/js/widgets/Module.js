@@ -45,8 +45,10 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/Icon",
 	"umc/i18n!"
-], function(declare, lang, array, topic, aspect, domClass, domGeom, win, on, StackContainer, entities, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
+], function(declare, lang, array, topic, aspect, domClass, domGeom, win, on, StackContainer, entities, render,
+		_ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, Icon, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.
@@ -94,13 +96,11 @@ define([
 			}
 		},
 
-		_setTitleDetailAttr: function(detail) {
-			var title = this.defaultTitle;
-			if (detail) {
-				title += ': ' + entities.encode(detail);
+		_setTitleDetailAttr: function(titleDetail) {
+			if (this._top) {
+				this._top.set('titleDetail', titleDetail);
 			}
-			this.set('title', title);
-			this._set('titleDetail', detail);
+			this._set('titleDetail', titleDetail);
 		},
 
 		subTitle: '',
