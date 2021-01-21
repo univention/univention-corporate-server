@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-saml
-fix: 6.0.3-9A~4.4.0.202101201617
+fix: 6.0.3-10A~4.4.0.202101211314
 desc: |
  This update addresses the following issue:
  * A watchdog service "univention-stunnel4-watchdog" has
