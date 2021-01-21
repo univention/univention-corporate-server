@@ -730,12 +730,6 @@ class ad(univention.connector.ucs):
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
-	# encode string to unicode
-	def encode(self, string):
-		try:
-			return unicode(string)
-		except:  # FIXME: which exception is to be caught?
-			return unicode(string, 'Latin-1')
 
 	def _get_lastUSN(self):
 		return max(self.__lastUSN, int(self._get_config_option('AD', 'lastUSN')))
@@ -998,7 +992,7 @@ class ad(univention.connector.ucs):
 			search_filter = '(&({}){})'.format(filter, search_filter)
 		return self.__search_ad(filter=search_filter, show_deleted=show_deleted)
 
-	def __dn_from_deleted_object(self, object, GUID):
+	def __dn_from_deleted_object(self, object):
 		'''
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
 		'''
@@ -1026,9 +1020,8 @@ class ad(univention.connector.ucs):
 		if element[0] == 'None' or element[0] is None:
 			return None  # referrals
 		object = {}
-		object['dn'] = self.encode(element[0])
+		object['dn'] = element[0]
 		deleted_object = False
-		GUID = element[1]['objectGUID'][0]  # don't send this GUID to univention-debug
 
 		# modtype
 		if 'isDeleted' in element[1] and element[1]['isDeleted'][0] == 'TRUE':
@@ -1037,29 +1030,24 @@ class ad(univention.connector.ucs):
 
 		else:
 			# check if is moved
-			olddn = self.encode(self._get_DN_for_GUID(GUID))
+			olddn = self._get_DN_for_GUID(element[1]['objectGUID'][0])
 			ud.debug(ud.LDAP, ud.INFO, "object_from_element: olddn: %s" % olddn)
-			if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower() and ldap.explode_rdn(compatible_modstring(olddn).lower()) == ldap.explode_rdn(compatible_modstring(self.encode(element[0])).lower()):
+			if olddn and not olddn.lower() == element[0].lower() and ldap.explode_rdn(olddn.lower()) == ldap.explode_rdn(element[0].lower()):
 				object['modtype'] = 'move'
 				object['olddn'] = olddn
 				ud.debug(ud.LDAP, ud.INFO, "object_from_element: detected move of AD-Object")
 			else:
 				object['modtype'] = 'modify'
-				if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower():  # modrdn
+				if olddn and not olddn.lower() == element[0].lower():  # modrdn
 					object['olddn'] = olddn
 
 		object['attributes'] = element[1]
-		for key in object['attributes'].keys():
-			vals = object['attributes'][key][:]
-			if key not in BINARY_ATTRIBUTES:
-				vals = [self.encode(value) for value in vals]
-			object['attributes'][key] = vals
 
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
-			object['dn'] = self.__dn_from_deleted_object(object, GUID)
-			# self._remove_GUID(GUID) # cache is not needed anymore?
+			object['dn'] = self.__dn_from_deleted_object(object)
 			ud.debug(ud.LDAP, ud.PROCESS, "object_from_element: DN of removed object: %r" % (object['dn'],))
+			# self._remove_GUID(element[1]['objectGUID'][0]) # cache is not needed anymore?
 
 			if not object['dn']:
 				return None
