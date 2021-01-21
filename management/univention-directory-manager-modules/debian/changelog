@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.6-2) unstable; urgency=medium
+
+  * Bug #52453: adjust users/user and users/contact layout
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Jan 2021 11:23:24 +0100
+
 univention-directory-manager-modules (15.0.6-1) unstable; urgency=medium
 
   * Bug #52576: fix removing options on UDM CLI create

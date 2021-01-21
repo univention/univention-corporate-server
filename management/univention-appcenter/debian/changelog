@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-14) unstable; urgency=medium
+
+  * Bug #52453: adjust SearchBox styling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Jan 2021 11:22:56 +0100
+
 univention-appcenter (9.0.1-13) unstable; urgency=medium
 
   * Bug #51598: Python3 debian/control fixes + apps UMC module with py3

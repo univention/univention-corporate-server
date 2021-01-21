@@ -1,3 +1,9 @@
+univention-web (4.0.1-2) unstable; urgency=medium
+
+  * Bug #52453: adjust udm styling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Jan 2021 11:21:49 +0100
+
 univention-web (4.0.1-1) unstable; urgency=medium
 
   * Bug #52665: fix XSS vulnerability in Menu
