@@ -49,7 +49,7 @@ define([
 
 		searchLabel: _('Search term'),
 
-		baseClass: 'umcLiveSearchSidebar',
+		baseClass: 'appLiveSearchSidebar',
 
 		// searchableAttributes: String[]
 		//		Array of strings that shall be searched.
@@ -70,6 +70,7 @@ define([
 			this.inherited(arguments);
 
 			this._searchTextBox = new SearchBox({
+				'class': 'umcTextBoxDark',
 				inlineLabel: this.searchLabel
 			});
 			this.addChild(this._searchTextBox);
