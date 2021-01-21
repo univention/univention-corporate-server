@@ -71,14 +71,13 @@ define([
 
 		disabled: false,
 
-		displayLabel: false,
+		displayLabel: true,
+
+		label: '',
 
 		newEntryButtonLabel: _('New entry'),
 
 		newEntryButtonIconClass: 'plus',
-
-		// force the rows to not have labels. Used for the the policies MultiInput
-		noRowLabels: false,
 
 		removeButtonClass: 'ucsIconButton ucsButton--textfieldAligned',
 
@@ -106,8 +105,18 @@ define([
 
 		_blockChangeEvents: false,
 
-		_labelPaneLabel: '',
-		_hasSubtypeLabel: false,
+		// rowLabelsVisibility: string
+		// 		'firstRow' | 'allRows' | 'noRows'
+		rowLabelsVisibility: 'firstRow',
+		_setRowLabelsVisibilityAttr: function(rowLabelsVisibility) {
+			domClass.remove(this.domNode, 'umcMultiInput--noRowLabels umcMultiInput--onlyFirstRowLabels');
+			if (rowLabelsVisibility === 'firstRow') {
+				domClass.add(this.domNode, 'umcMultiInput--onlyFirstRowLabels');
+			} else if (rowLabelsVisibility === 'noRows') {
+				domClass.add(this.domNode, 'umcMultiInput--noRowLabels');
+			}
+			this._set('rowLabelsVisibility', rowLabelsVisibility);
+		},
 
 		_createHandler: function(ifunc) {
 			// This handler will be called by all subwidgets of the MultiInput widget.
@@ -154,18 +163,15 @@ define([
 			tools.assert(this.subtypes instanceof Array,
 					'umc/widgets/ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
 
-			this._labelPaneLabel = this.label;
-			this._hasSubtypeLabel = array.some(this.subtypes, function(iwidget) {
-				return iwidget.label;
-			});
 
-			// overwrite label with subtypes label
-			if (this._hasSubtypeLabel) {
-				this.label = [];
-				array.forEach(this.subtypes, function(itype, i) {
-					this.label.push(itype.label || '&nbsp;');
-				}, this);
+			// determine rowLabelsVisibility
+			var shouldShowRowLabels = array.some(this.subtypes, function(subtype) {
+				return subtype.label && subtype.label !== this.label;
+			});
+			if (!shouldShowRowLabels) {
+				this.rowLabelsVisibility = 'noRows';
 			}
+
 
 			// initiate other properties
 			this._rowContainers = [];
@@ -207,23 +213,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._rowsContainer = new ContainerWidget({});
-			var labelPane = new LabelPane({
-				class: 'umcMultiInputRowsLabelPane',
-				content: this._rowsContainer,
-				label: this._labelPaneLabel,
-				description: this.description,
-			});
-			this.addChild(labelPane);
 			this._renderNewEntryButton();
 			this._appendRows(); // empty row
-
-			if (this.subtypes.length === 1) {
-				domClass.add(this.domNode, 'umcMultiInput--singleWidgetInRows');
-			}
-			if (this.noRowLabels) {
-				domClass.add(this.domNode, 'umcMultiInput--noRowLabels');
-			}
 		},
 
 		_loadValues: function(depends) {
@@ -306,33 +297,8 @@ define([
 			this._setAllValues(vals);
 		},
 
-		_setLabelAttr: function(_label) {
-			// make sure label is treated as an array
-			var label = _label;
-			if (!(label instanceof Array)) {
-				label = [];
-				array.forEach(this.subtypes, function(itype, i) {
-					label.push(i === 0 && _label ? _label : '&nbsp;');
-				}, this);
-			}
-
-			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
-				// prepare an array with labels for all widgets
-				var allLabels = [];
-				var i, j;
-				for (i = 0; i < this._widgets.length; ++i) {
-					allLabels.push(label);
-				}
-
-				// set all labels at once
-				this._setAllLabels(allLabels);
-
-				// notify observers
-				this._set('label', _label);
-			}));
-		},
-
-		_setAllLabels: function(labels) {
+		overwriteRowLabels: function(labels) {
+			this.set('rowLabelsVisibility', 'allRows');
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
 				var i, j, jwidget, label;
 				for (i = 0; i < this._widgets.length; ++i) {
@@ -601,7 +567,7 @@ define([
 			this._widgets[irow] = visibleWidgets;
 			this._rowContainers[irow] = rowContainer;
 			this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
-			this._rowsContainer.addChild(rowContainer, irow);
+			this.addChild(rowContainer, irow);
 
 			// call the _loadValues method by hand
 			array.forEach(order, function(iname) {

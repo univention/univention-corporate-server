@@ -1,31 +1,30 @@
 @import "../variables"
 
-.umc
-	.umcMultiInput
-		margin-bottom: 1.5em
+.umc .umcMultiInput
+	// reduce spacing between rows
+	.umcMultiInputContainer .umcLabelPane
+		padding-bottom: var(--layout-spacing-unit)
 
-		.umcMultiInputContainer
-			position: relative
 
-		/* add a padding to the last element of a row */
-		.umcMultiInputContainer .umcMultiInputLastRowEntry
-			$layoutrow--make-space-for-buttons(1)
+	// align add row button to row indention
+	.umcMultiInputAddButton
+		margin: 0 0 0 $labelpane-padding-left
 
-		.umcMultiInputAddButton
-			margin: 0 0 0 $labelpane-padding-left
 
-	.umcMultiInputRowsLabelPane
-		display: block
-		padding-bottom: 0 !important
-
-	.umcMultiInputContainer:not(:first-child) .umcLabelPane .umcLabelPaneLabelNode
-		display: none
-	.umcMultiInput--singleWidgetInRows,
-	.umcMultiInput--noRowLabels
+	// hide all labels or all but the first row's labels
+	&.umcMultiInput--onlyFirstRowLabels
+		.umcMultiInputContainer:not(:first-child) .umcLabelPane .umcLabelPaneLabelNode
+			display: none
+	&.umcMultiInput--noRowLabels
 		.umcMultiInputContainer .umcLabelPane .umcLabelPaneLabelNode
 			display: none
 
-	// TODO check what this does
-	.umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry
-		padding-right: 0
 
+	/* add a padding to the last element of a row */
+	/* and remove the padding when MultiInput is disabled */
+	.umcMultiInputContainer .umcMultiInputLastRowEntry
+		$layoutrow--make-space-for-buttons(1)
+
+	&Disabled
+		.umcMultiInputContainer .umcMultiInputLastRowEntry
+			padding-right: 0

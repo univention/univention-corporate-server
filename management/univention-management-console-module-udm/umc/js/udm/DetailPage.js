@@ -76,7 +76,6 @@ define([
 	});
 
 	var FixedMultiInput = declare([MultiInput], {
-		noRowLabels: true,
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._resetValue = [];
@@ -559,13 +558,8 @@ define([
 							// store the original label (we will modify it)
 							jprop.$orgLabel$ = jprop.label;
 							if (jprop.subtypes instanceof Array) {
-								// in case we have subtypes (e.g. for MultiInput),
-								// prefer their labels over the widget's one
-								jprop.$orgLabel$ = [];
-								array.forEach(jprop.subtypes, function(itype, i) {
-									// set the subtype label
-									var subTypeLabel = itype.label || (i === 0 && jprop.label ? jprop.label : '&nbsp;');
-									jprop.$orgLabel$.push(subTypeLabel);
+								jprop.$orgRowLabels$ = array.map(jprop.subtypes, function(subtype) {
+									return subtype.label || '';
 								});
 							}
 
@@ -1516,18 +1510,16 @@ define([
 						});
 					};
 
-					var _getLabel = function(labelFunc, dn) {
-						var label = '';
-						if (iwidget.$orgLabel$ instanceof Array) {
-							label = array.map(iwidget.$orgLabel$, function(ilabel, i) {
+					var _getLabel = function(label, labelFunc, dn) {
+						if (label instanceof Array) {
+							return array.map(label, function(ilabel, i) {
 								// only add the edit link to the first entry
 								return i === 0 ? labelFunc(ilabel, dn) : ilabel;
 							});
 						}
 						else {
-							label = labelFunc(iwidget.$orgLabel$, dn);
+							return labelFunc(label, dn);
 						}
-						return label;
 					};
 
 					// set the value and label
@@ -1535,11 +1527,11 @@ define([
 					if (!iinfo) {
 						// no policy values are inherited
 						iwidget.set('value', ''); // also sets CheckBox to false
-						iwidget.set('label', _getLabel(_undefinedLabelFunc));
+						iwidget.set('label', _getLabel(iwidget.$orgLabel$, _undefinedLabelFunc));
 					} else if (!(iinfo instanceof Array)) {
 						// standard policy
 						iwidget.set('value', iinfo.value);
-						iwidget.set('label', _getLabel(_editLabelFunc, iinfo.policy));
+						iwidget.set('label', _getLabel(iwidget.$orgLabel$, _editLabelFunc, iinfo.policy));
 					} else if (iinfo instanceof Array && iwidget.isInstanceOf(MultiInput)) {
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
@@ -1552,14 +1544,14 @@ define([
 							var labels = array.map(iinfo, function(jinfo, j) {
 								if (iwidget._rowContainers.length < j) {
 									// default to the original label
-									return iwidget.$orgLabel$;
+									return iwidget.$orgRowLabels$;
 								}
-								return _getLabel(_editLabelFunc, jinfo.policy);
+								return _getLabel(iwidget.$orgRowLabels$, _editLabelFunc, jinfo.policy);
 							}, this);
 							if (!labels.length) {
-								labels.push(iwidget.$orgLabel$);
+								labels.push(iwidget.$orgRowLabels$);
 							}
-							iwidget._setAllLabels(labels);
+							iwidget.overwriteRowLabels(labels);
 						}));
 					} else {
 						// fallback
