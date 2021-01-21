@@ -1,3 +1,9 @@
+univention-config-registry (15.0.6-2) unstable; urgency=medium
+
+  * Bug #51598: Fix using ConfigRegistry in nested with statements twice
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Jan 2021 11:12:43 +0100
+
 univention-config-registry (15.0.6-1) unstable; urgency=medium
 
   * Bug #51524: fix univention.service_info.pidof()
