@@ -79,7 +79,11 @@ define([
 				//   (like going backwards). Used in App Center; Bug #32649
 				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
 				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
-				this._percentageNode.innerHTML = newValue === Infinity ? "&nbsp;" : Math.round(newValue) + "%";
+				// We sometimes get "Infinity" as string from the backend
+				// "Infinity" ==  Infinity // true
+				// "Infinity" === Infinity // false
+				// Dont't use triple equal for this
+				this._percentageNode.innerHTML = newValue == Infinity ? "&nbsp;" : Math.round(newValue) + "%";
 			}));
 
 			this.reset();
