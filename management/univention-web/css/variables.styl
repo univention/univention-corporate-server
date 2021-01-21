@@ -112,18 +112,6 @@ $button-pressed-background-color ?= rgba(0, 0, 0, 0.16)		// Background color for
 $button-checked-background-color ?= rgba(0, 0, 0, 0.16)		// Background color for checked toggle buttons
 $button-border-radius ?= 2px								// Rounded corner radius for buttons (except in toolbar)
 
-// Buttons in LayoutRow
-// the exact space the Button takes up (padding included)
-$_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
-$layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
-	if not amount-of-visual-buttons
-		amount-of-visual-buttons = amount-of-physical-buttons
-
-	// Make physical space. With only this the button and the element before the button will overlap. Need to make visual space too
-	margin-right:  "calc( -1 * (%s * (%s)))" % (amount-of-physical-buttons $_layoutrow-button-width)
-
-	// Make visual space.
-	padding-right: "calc(  1 * (%s * (%s)))" % (amount-of-visual-buttons $_layoutrow-button-width)
 
 // Input widgets
 $focused-border-color ?= $base-border-color								// Focused textbox, editor, select, etc.
@@ -283,6 +271,17 @@ $labelpane-padding-right  ?= 0.5rem
 $labelpane-padding-bottom ?= 1rem
 $labelpane-padding-left   ?= 0.5rem
 $labelpane-padding        ?= $labelpane-padding-top $labelpane-padding-right $labelpane-padding-bottom $labelpane-padding-left
+
+// Buttons in LayoutRow
+// the exact space the Button takes up (padding included)
+$_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
+$layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
+	if not amount-of-visual-buttons
+		amount-of-visual-buttons = amount-of-physical-buttons
+	// Make physical space. With only this the button and the element before the button will overlap. Need to make visual space too
+	margin-right:  "calc( -1 * (%s * (%s)))" % (amount-of-physical-buttons $_layoutrow-button-width)
+	// Make visual space.
+	padding-right: "calc(  1 * (%s * (%s)))" % (amount-of-visual-buttons $_layoutrow-button-width)
 
 //// Mixins
 
