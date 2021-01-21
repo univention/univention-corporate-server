@@ -33,36 +33,35 @@
 
 
 from __future__ import print_function
-import string
-import ldap
-import sys
+
 import os
 import copy
-import types
 import re
-import array
-import ldap.sasl
+import sys
 import time
 import calendar
+import pprint
+import string
 import base64
 import subprocess
 
-import univention.uldap
-import univention.connector
-import univention.debug2 as ud
 import six
+import ldap
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
-from samba.dcerpc import nbt
+from samba.dcerpc import security, nbt, drsuapi, lsa
+from samba.ndr import ndr_unpack
 from samba.param import LoadParm
 from samba.net import Net
 from samba.credentials import Credentials, DONT_USE_KERBEROS
 from samba import drs_utils
-from samba.dcerpc import drsuapi, lsa, security
 import samba.dcerpc.samr
-from tempfile import NamedTemporaryFile
 
+from univention.config_registry import ConfigRegistry
+import univention.uldap
+import univention.connector
+import univention.debug2 as ud
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
