@@ -129,7 +129,7 @@ define([
 					this.showApp(app);
 				} else {
 					if (this._appCenterPage && state[0] === 'category') {
-						this.set('title', 'App Center');
+						this.set('titleDetail', '');
 						this.selectChild(this._appCenterPage);
 					}
 				}
@@ -210,7 +210,10 @@ define([
 			fromSuggestionCategory = fromSuggestionCategory || false;
 			this._cleanUpLastShowApp();
 			var scroll = this._scroll();
-			this.set('title', entities.encode(app.name) || 'App Center');
+			var appName = entities.encode(app.name);
+			if (appName) {
+				this.set('titleDetail', appName);
+			}
 
 			if (fromSuggestionCategory) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'showFromSuggestion');
@@ -250,7 +253,7 @@ define([
 			appDetailsPage.own(
 				appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 					if (newVal) {
-						this.set('title', entities.encode(newVal));
+						this.set('titleDetail', entities.encode(newVal));
 					}
 				})),
 				appDetailsPage.watch('app', lang.hitch(this, function(){
@@ -262,7 +265,7 @@ define([
 				installDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				appDetailsPage.on('back', lang.hitch(this, function() {
-					this.set('title', 'App Center');
+					this.set('titleDetail', '');
 					this.selectChild(this._appCenterPage);
 					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
 				})),
