@@ -75,11 +75,18 @@ define([
 		navContentClass: 'umcUDMNavContent'
 	});
 
-	var FixedMultiInput = declare([MultiInput], {
+	var PolicyInput = declare([MultiInput], {
+		max: 1,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._resetValue = [];
 			this.watch('max', lang.hitch(this, '_updateMax'));
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcPolicyInput');
 		},
 
 		setInitialValue: function(value) {
@@ -587,8 +594,7 @@ define([
 					// for the policy group, we need a ComboBox that allows to link an object
 					// to a particular policy
 					newProperties.push({
-						type: FixedMultiInput,
-						max: 1,
+						type: PolicyInput,
 						name: '$policy$',
 						label: _('Select policy configuration'),
 						description: _('Select policies that should be directly linked to the current LDAP object'),
@@ -620,6 +626,7 @@ define([
 					var buttonsConf = [{
 						type: Button,
 						name: '$addPolicy$',
+						iconClass: 'plus',
 						'class': 'umcMultiInputAddButton ucsTextButton',
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)

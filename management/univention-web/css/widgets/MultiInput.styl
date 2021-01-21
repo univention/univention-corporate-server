@@ -1,4 +1,4 @@
-@import "../variables"
+@require "../variables"
 
 .umc .umcMultiInput
 	// reduce spacing between rows
@@ -28,3 +28,7 @@
 	&Disabled
 		.umcMultiInputContainer .umcMultiInputLastRowEntry
 			padding-right: 0
+
+.umc .umcPolicyInput
+	margin-left: -($labelpane-padding-left)
+	margin-right: -($labelpane-padding-right)
