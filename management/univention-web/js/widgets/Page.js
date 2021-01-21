@@ -97,6 +97,7 @@ define([
 		_nav: null,
 		_navContent: null,
 		_main: null,
+		_mainContent: null,
 		_footer: null,
 		_helpTextPane: null,
 		_headerTextPane: null,
@@ -196,6 +197,10 @@ define([
 				baseClass: 'umcPageMain',
 				'class': this._initialBootstrapClasses
 			});
+			this._mainContent = new ContainerWidget({
+				baseClass: 'umcPageMainContent'
+			});
+			this._main.addChild(this._mainContent);
 			ContainerWidget.prototype.addChild.apply(this, [this._nav]);
 			ContainerWidget.prototype.addChild.apply(this, [this._main]);
 
@@ -256,7 +261,7 @@ define([
 			} else if (widget.region == 'footer') {
 				this._footer.addChild.apply(this._footer, arguments);
 			} else {
-				this._main.addChild.apply(this._main, arguments);
+				this._mainContent.addChild.apply(this._mainContent, arguments);
 			}
 			if (this._started) {
 				this._adjustSizes();

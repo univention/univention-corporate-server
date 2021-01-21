@@ -77,22 +77,25 @@
 	margin-bottom: 1.5em
 	font-size: var(--font-size-small)
 
-.umc .umcPageHeader h1
-	font-size: $font-size-title
-	font-weight: 500
-
 .umc .umcPageNav
 	margin-bottom: 2.5em
-
-	.positionText
-		margin: 1em 0
-		font-size: $font-size-caption
-		color: var(--font-color-contrast-middle)
-
-.umc .umcPageNav .umcPageHeader:first-child h1
-	margin-top: 0
 
 .umc .dijitDialogPaneContent .umcButtonRow:last-child,
 .umc .umcPageFooter
 	margin-top: 0.75em
 	clear: both
+
+.umc .umcUDMDetailPage
+	.umcPageMainContent
+		background-color: var(--bgc-content-container)
+		border-radius: var(--border-radius-container)
+
+	.umcPageHeader
+		padding: spacing(4) spacing(4) spacing(3)
+	.umcPageHelpText
+		padding: 0 spacing(4) spacing(3)
+
+	.dijitTitlePane
+		border-radius: 0
+		border-top: 2px solid var(--color-grey8)
+		margin-bottom: 0

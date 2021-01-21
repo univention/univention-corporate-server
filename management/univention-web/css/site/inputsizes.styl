@@ -74,7 +74,6 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
 .umc .umcLayoutRow .umcLabelPane
 	padding: $labelpane-padding-top $labelpane-padding-right $labelpane-padding-bottom $labelpane-padding-left
 
-
 .umc .umcLayoutRow
 	.umcLabelPane-umcPasswordInputBox
 		padding-left: 0
@@ -85,6 +84,8 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
 	.umcLabelPane-umcComplexInput
 		display: block
 
+	&:last-child .umcLabelPane
+		padding-bottom: 0
 
 
 .umc .umcLayoutRow

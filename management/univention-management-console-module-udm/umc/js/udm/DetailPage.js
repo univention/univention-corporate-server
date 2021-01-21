@@ -449,7 +449,9 @@ define([
 					title: _('Policies'),
 					noFooter: true,
 					headerText: _('Properties inherited from policies'),
-					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
+					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.'),
+					headerTextRegion: 'main',
+					helpTextRegion: 'main'
 				});
 				this._addSubTab(this._policiesTab);
 				this._policiesTab.watch('selected', lang.hitch(this, function(name, oldVal, newVal) {
@@ -1016,7 +1018,8 @@ define([
 					noFooter: true,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
 					helpText: ilayout.help_text || (idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''),
-					helpTextAllowHTML: true
+					helpTextAllowHTML: true,
+					headerTextRegion: 'main'
 				});
 
 				// add user photo into 'nav' area and adjust some properties
@@ -1199,8 +1202,7 @@ define([
 				widgets: widgets,
 				content: container,
 				moduleStore: this.moduleStore,
-				onSubmit: lang.hitch(this, 'save'),
-				style: 'margin: 0'
+				onSubmit: lang.hitch(this, 'save')
 			});
 			this.own(this._form);
 			this._addReferencesToWidgets();
