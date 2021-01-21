@@ -268,6 +268,18 @@ define([
 			}
 		},
 
+		getChildren: function(region) {
+			if (!region) {
+				return this.inherited(arguments);
+			} else if (region === 'nav') {
+				return this._navContent.getChildren();
+			} else if (region === 'main') {
+				return this._mainContent.getChildren();
+			} else if (region === 'footer') {
+				return this._footer.getChildren();
+			}
+		},
+
 		addNote: function(message) {
 			// summary:
 			//		Show a notification. This is a deprecated method, use dialog.notify(),

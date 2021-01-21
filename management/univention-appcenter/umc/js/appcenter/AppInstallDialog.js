@@ -72,7 +72,7 @@ define([
 		},
 
 		_removeAllChildren: function() {
-			array.forEach(this._main.getChildren(), lang.hitch(this, function(child) {
+			array.forEach(this.getChildren('main'), lang.hitch(this, function(child) {
 				this.removeChild(child);
 				child.destroyRecursive();
 			}));
