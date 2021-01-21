@@ -343,9 +343,9 @@ define([
 						ldapName = lang.replace('{0},{1}', [tools.explodeDn(this.ldapName)[0], this.newObjectOptions.container]);
 					}
 					var path = tools.ldapDn2Path(ldapName, this.ldapBase);
-					var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
-					var position = _('Position: <i>%(path)s</i>', { path: path });
-					var positionText = lang.replace('<span class="umcUDMUserType">{0}</span><span>{1}</span>', [objecttype, position]);
+					var objecttype = _('<b>Type</b>: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
+					var position = _('<b>Position</b>: <i>%(path)s</i>', { path: path });
+					var positionText = lang.replace('<span class="umcUDMUserType">{0}</span><br><span>{1}</span>', [objecttype, position]);
 					this.moduleWidget.set('subTitle', positionText);
 				}
 
