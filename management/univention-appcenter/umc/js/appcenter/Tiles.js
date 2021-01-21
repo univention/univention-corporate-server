@@ -47,10 +47,10 @@ define([
 			</div>
 		`,
 		_setTilesAttr: function(tiles) {
-			array.forEach(this.tiles, function(tile) {
+			array.forEach(this.tiles, lang.hitch(this, function(tile) {
 				this.removeChild(tile);
 				tile.destroy();
-			});
+			}));
 			tiles = array.filter(tiles, lang.hitch(this, function(tile) {
 				return this.query(tile.obj);
 			}));
