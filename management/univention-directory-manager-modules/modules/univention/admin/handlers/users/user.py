@@ -777,7 +777,8 @@ layout = [
 			'e-mail',
 			'phone',
 			['roomNumber', 'departmentNumber'],
-			['street', 'postcode', 'city', 'country'],
+			['street', 'postcode', 'city'],
+			['country']
 		]),
 		Group(_('Private'), layout=[
 			'homeTelephoneNumber',
