@@ -281,10 +281,12 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 								if ucsval == "Printer-Admins":  # Also look for the original name (Bug #42675#c1)
 									alternative_samaccountnames.append(ucsval)
 								value = conval
-								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
-								continue
+								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map %s according to mapping-table" % (propertyattrib,))
+								break
 						except UnicodeDecodeError:
 							pass  # values are not the same codec
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: %s not in mapping-table" % (propertyattrib,))
 
 				if len(alternative_samaccountnames) == 0:
 					filter_parts_ad.append(format_escaped('(samaccountname={0!e})', value))
@@ -337,9 +339,9 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						if samaccountname.lower() == conval.lower():
 							samaccountname = ucsval
 							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
-							continue
-						else:
-							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
+							break
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
 
 				# search for object with this dn in ucs, needed if it lies in a different container
 				ucsdn = ''
