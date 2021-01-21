@@ -1898,62 +1898,61 @@ class s4(univention.s4connector.ucs):
 				print_progress(True)
 				continue
 
-			if True:
-					if self._ignore_object(property_key, ad_object):
-						if ad_object['modtype'] == 'move':
-							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s" % ad_object['dn'])
-							ad_object['deleted_dn'] = ad_object['olddn']
-							ad_object['dn'] = ad_object['olddn']
-							ad_object['modtype'] = 'delete'
-							# check the move target
-						else:
-							self.__update_lastUSN(ad_object)
-							print_progress()
-							continue
-
-					if ad_object['dn'].find('\\0ACNF:') > 0:
-						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % ad_object['dn'])
-						self.__update_lastUSN(ad_object)
-						print_progress()
-						continue
-
-					sync_successfull = False
-					try:
-						try:
-							mapped_object = self._object_mapping(property_key, ad_object)
-							if not self._ignore_object(property_key, mapped_object):
-								sync_successfull = self.sync_to_ucs(property_key, mapped_object, ad_object['dn'], ad_object)
-							else:
-								sync_successfull = True
-						except univention.admin.uexceptions.ldapError as msg:
-							if isinstance(msg.original_exception, ldap.SERVER_DOWN):
-								raise msg.original_exception
-							raise
-					except ldap.SERVER_DOWN:
-						ud.debug(ud.LDAP, ud.ERROR, "Got server down during sync, re-open the connection to UCS and S4")
-						time.sleep(1)
-						self.open_ucs()
-						self.open_s4()
-					except Exception:  # FIXME: which exception is to be caught?
-						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-
-					if sync_successfull:
-						change_count += 1
-						newUSN = max(self.__get_change_usn(ad_object), newUSN)
-						try:
-							GUID = old_element[1]['objectGUID'][0]
-							self._set_DN_for_GUID(GUID, old_element[0])
-						except ldap.SERVER_DOWN:
-							raise
-						except Exception:  # FIXME: which exception is to be caught?
-							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
-					else:
-						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
-						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % ad_object['dn'])
-						self.save_rejected(ad_object)
-						self.__update_lastUSN(ad_object)
-
+			if self._ignore_object(property_key, ad_object):
+				if ad_object['modtype'] == 'move':
+					ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s" % ad_object['dn'])
+					ad_object['deleted_dn'] = ad_object['olddn']
+					ad_object['dn'] = ad_object['olddn']
+					ad_object['modtype'] = 'delete'
+					# check the move target
+				else:
+					self.__update_lastUSN(ad_object)
 					print_progress()
+					continue
+
+			if ad_object['dn'].find('\\0ACNF:') > 0:
+				ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % ad_object['dn'])
+				self.__update_lastUSN(ad_object)
+				print_progress()
+				continue
+
+			sync_successfull = False
+			try:
+				try:
+					mapped_object = self._object_mapping(property_key, ad_object)
+					if not self._ignore_object(property_key, mapped_object):
+						sync_successfull = self.sync_to_ucs(property_key, mapped_object, ad_object['dn'], ad_object)
+					else:
+						sync_successfull = True
+				except univention.admin.uexceptions.ldapError as msg:
+					if isinstance(msg.original_exception, ldap.SERVER_DOWN):
+						raise msg.original_exception
+					raise
+			except ldap.SERVER_DOWN:
+				ud.debug(ud.LDAP, ud.ERROR, "Got server down during sync, re-open the connection to UCS and S4")
+				time.sleep(1)
+				self.open_ucs()
+				self.open_s4()
+			except Exception:  # FIXME: which exception is to be caught?
+				self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
+
+			if sync_successfull:
+				change_count += 1
+				newUSN = max(self.__get_change_usn(ad_object), newUSN)
+				try:
+					GUID = old_element[1]['objectGUID'][0]
+					self._set_DN_for_GUID(GUID, old_element[0])
+				except ldap.SERVER_DOWN:
+					raise
+				except Exception:  # FIXME: which exception is to be caught?
+					self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
+			else:
+				ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
+				ud.debug(ud.LDAP, ud.WARN, "object was: %s" % ad_object['dn'])
+				self.save_rejected(ad_object)
+				self.__update_lastUSN(ad_object)
+
+			print_progress()
 
 		print("")
 
