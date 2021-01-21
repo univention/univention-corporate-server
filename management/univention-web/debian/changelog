@@ -1,3 +1,9 @@
+univention-web (4.0.1-3) unstable; urgency=medium
+
+  * Bug #52453: fix ProgressBar Infinity handling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Jan 2021 12:33:18 +0100
+
 univention-web (4.0.1-2) unstable; urgency=medium
 
   * Bug #52453: adjust udm styling
