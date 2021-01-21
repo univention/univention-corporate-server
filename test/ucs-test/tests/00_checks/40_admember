@@ -9,9 +9,9 @@
 
 is_ucr_true ad/member || exit 137
 
-if ! univention-connector-list-rejected | grep -q 'last synced USN:'
+if ! univention-adconnector-list-rejected | grep -q 'last synced USN:'
 then
-	univention-connector-list-rejected
+	univention-adconnector-list-rejected
 	fail_fast 1 "last synced USN not found"
 fi
 

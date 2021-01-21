@@ -1,7 +1,7 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2015-2017 Univention GmbH
+# Copyright 2015-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -28,9 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from optparse import OptionParser
+from __future__ import print_function
+
+from argparse import ArgumentParser
 from sys import exit
-from ldap.dn import escape_dn_chars
+from ldap.dn import escape_dn_chars, dn2str, str2dn
 
 from univention.lib.umc import Client
 
@@ -39,16 +41,16 @@ from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 client = None
 
-parser = OptionParser()
-parser.add_option('-H', '--host', dest='host', default='localhost', help='host to connect to', metavar='HOST')
-parser.add_option('-u', '--user', dest='username', help='username', metavar='UID', default='administrator')
-parser.add_option('-p', '--password', dest='password', default='univention', help='password', metavar='PASSWORD')
-parser.add_option('-D', '--domain_host', dest='domain_host', default=None, help='domain controller to connect to', metavar='DOMAIN_HOST')
-parser.add_option('-A', '--domain_admin', dest='domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
-parser.add_option('-P', '--domain_password', dest='domain_password', default='Univention@99', help='domain admin password', metavar='DOMAIN_PASSWORD')
-parser.add_option('-S', '--sync_mode', dest='sync_mode', action="store_true", default=False, help='join in synchronization mode (instead of read by default)', metavar='SYNC_MODE')
+parser = ArgumentParser()
+parser.add_argument('-H', '--host', default='localhost', help='host to connect to', metavar='HOST')
+parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='administrator')
+parser.add_argument('-p', '--password', default='univention', help='password', metavar='PASSWORD')
+parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', metavar='DOMAIN_HOST')
+parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
+parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password', metavar='DOMAIN_PASSWORD')
+parser.add_argument('-S', '--sync_mode', action="store_true", default=False, help='join in synchronization mode (instead of read by default)')
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 
 if not options.domain_host:
 	parser.error('Please specify an AD DC host address!')
@@ -58,7 +60,7 @@ def join_sync_mode():
 	""" Join in bi-directional sync mode via UMC requests """
 
 	# check domain / get configuration:
-	print '=== AD-JOIN STARTED ==='
+	print('=== AD-JOIN STARTED ===')
 	request_options = {
 		"ad_server_address": options.domain_host,
 		"username": options.domain_admin,
@@ -68,13 +70,13 @@ def join_sync_mode():
 	result = client.umc_command("adconnector/check_domain", request_options).result
 
 	# configure / save options:
-	print '=== AD-JOIN CONFIGURATION ==='
+	print('=== AD-JOIN CONFIGURATION ===')
 	try:
 		kerberos_domain = result['Domain']
 		ad_ldap_base = result['LDAP_Base']
 		ad_dc_name = result['DC_DNS_Name']
 	except KeyError as exc:
-		print "\nAn Error while reading the AD Domain configuration: %r" % exc
+		print("\nAn Error while reading the AD Domain configuration: %r" % exc)
 		exit(1)
 
 	request_options = {
@@ -89,17 +91,17 @@ def join_sync_mode():
 
 	conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
 	if not conf_result['success']:
-		print "\nThe AD Connector configuration was not saved successfully: %s" % conf_result
+		print("\nThe AD Connector configuration was not saved successfully: %s" % conf_result)
 		exit(1)
 
 	# start AD connector:
-	print '=== AD-JOIN STARTING CONNECTOR ==='
+	print('=== AD-JOIN STARTING CONNECTOR ===')
 	start_result = client.umc_command("adconnector/service", {'action': "start"}).result
 	if not start_result['success']:
-		print "\nThe AD Connector was not started successfully: %s" % start_result
+		print("\nThe AD Connector was not started successfully: %s" % start_result)
 		exit(1)
 
-	print '=== AD-JOIN FINISHED ==='
+	print('=== AD-JOIN FINISHED ===')
 
 
 def join_read_mode():
@@ -114,27 +116,27 @@ def join_read_mode():
 	result = client.umc_command("adconnector/admember/join", send_data).result
 
 	if not result:
-		print 'ERROR: Failed to join ad domain!'
+		print('ERROR: Failed to join ad domain!')
 		exit(1)
 
 	progress_id = result['id']
 	progress_data = {'progress_id': progress_id}
 
-	print '=== AD-JOIN STARTED ==='
+	print('=== AD-JOIN STARTED ===')
 	status = {'finished': False}
 	while not status['finished']:
 		# FIXME: this might loop forever?
 		status = client.umc_command('adconnector/admember/progress', progress_data).result
 		percentage = status['percentage']
-		print percentage
+		print(percentage)
 		sleep(2)
 
 	if not status['result']['success']:
-		print status['result']['error']
-		print '=== AD-JOIN FINISHED WITH ERROR ==='
+		print(status['result']['error'])
+		print('=== AD-JOIN FINISHED WITH ERROR ===')
 		exit(1)
 
-	print '=== AD-JOIN FINISHED ==='
+	print('=== AD-JOIN FINISHED ===')
 
 
 def join_ad():
@@ -145,11 +147,11 @@ def join_ad():
 
 	if options.sync_mode:
 		# join in sync mode:
-		print '=== AD-JOIN SYNC MODE SELECTED ==='
+		print('=== AD-JOIN SYNC MODE SELECTED ===')
 		join_sync_mode()
 	else:
 		# join in read mode:
-		print '=== AD-JOIN READ MODE SELECTED ==='
+		print('=== AD-JOIN READ MODE SELECTED ===')
 		join_read_mode()
 
 
@@ -157,7 +159,7 @@ def check_correct_passwords():
 	"""Check domain password saved for ucs-test and
 	correct if needed"""
 
-	print '=== Checking / Correcting ucs-test passwords ==='
+	print('=== Checking / Correcting ucs-test passwords ===')
 
 	ucr.load()
 	ucr_domain_pw = ucr['tests/domainadmin/pwd']
@@ -177,25 +179,18 @@ def check_correct_domain_admin():
 	"""Check domain administrator saved for ucs-test and
 	correct if needed"""
 
-	print '=== Checking / Correcting ucs-test domain administrator ==='
+	print('=== Checking / Correcting ucs-test domain administrator ===')
 
 	ucr.load()
 	ucr_domain_admin = ucr['tests/domainadmin/account']
 	if ucr_domain_admin:
-		# FIXME: https://hutten.knut.univention.de/mediawiki/index.php/Sicherheits-Richtlinien#LDAP_DN.27s_Escapen
-		ucr_domain_admin_parts = ucr_domain_admin.split(',')
-		if ucr_domain_admin_parts[0].split('=')[1] != options.domain_admin:
-			ucr_domain_admin_parts[0] = 'uid=%s' % options.domain_admin
-			ucr['tests/domainadmin/account'] = ','.join(ucr_domain_admin_parts)
+		ucr_domain_admin_parts = str2dn(ucr_domain_admin)
+		if ucr_domain_admin_parts[0][0][1] != options.domain_admin:
+			ucr_domain_admin_parts[0][0] = ('uid', options.domain_admin, ucr_domain_admin_parts[0][0][2])
+			ucr['tests/domainadmin/account'] = dn2str(ucr_domain_admin_parts)
 	else:
-		print "=== tests/domainadmin/account is not set, trying to create it ==="
-		ucr_domain_name = ucr['domainname']
-		if ucr_domain_name:
-			ucr_domain_parts = ucr_domain_name.split('.')
-			ucr_domain_admin_parts = ['uid=%s' % options.domain_admin, 'cn=users']
-			for part in ucr_domain_parts:
-				ucr_domain_admin_parts.append('dc=%s' % part)
-			ucr['tests/domainadmin/account'] = ','.join(ucr_domain_admin_parts)
+		print("=== tests/domainadmin/account is not set, trying to create it ===")
+		ucr['tests/domainadmin/account'] = 'uid=%s,cn=users,%s' % (escape_dn_chars(options.domain_admin), ucr['ldap/base'])
 
 	ucr.save()
 

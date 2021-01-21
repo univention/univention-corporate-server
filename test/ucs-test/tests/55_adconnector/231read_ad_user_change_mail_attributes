@@ -66,7 +66,7 @@ udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddres
 udm_modify "users/user" "" "" "" "" \
 		   --set e-mail="$UDM_users_user_mail" || fail_test 110
 
-output=$(univention-connector-list-rejected 2>&1)
+output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_fast 110 ""
@@ -93,7 +93,7 @@ udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 ## Don't overwrite UDM/OpenLDAP:"mail", which is only informative
 udm_verify_udm_attribute "e-mail" "$UDM_users_user_mail" "users/user"; fail_bool 0 110
 
-output=$(univention-connector-list-rejected 2>&1)
+output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_fast 110 ""
@@ -123,7 +123,7 @@ udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 ## Don't overwrite UDM/OpenLDAP:"mail", which is only informative
 udm_verify_udm_attribute "e-mail" "$UDM_users_user_mail" "users/user"; fail_bool 0 110
 
-output=$(univention-connector-list-rejected 2>&1)
+output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_fast 110 ""
@@ -170,7 +170,7 @@ udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 ## Don't overwrite UDM/OpenLDAP:"mail", which is only informative
 udm_verify_udm_attribute "e-mail" "$UDM_users_user_mail" "users/user"; fail_bool 0 110
 
-output=$(univention-connector-list-rejected 2>&1)
+output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_fast 110 ""

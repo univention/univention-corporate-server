@@ -35,8 +35,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-ad.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-ad.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
 Type=int
 Categories=service-adcon
 

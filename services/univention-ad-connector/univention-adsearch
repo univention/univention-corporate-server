@@ -1,8 +1,4 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
-#
-# Univention AD Connector
-#  comfortable search the Active Directory LDAP interface
+#!/bin/bash
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -31,209 +27,114 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/ucr.sh
 
-from __future__ import print_function
-import sys
-import os
-import re
-import univention.config_registry
-import ldap
-import ldap.sasl
-import subprocess
-import base64
+CONFIGBASENAME="connector"
 
-from ldap.controls import LDAPControl
-from ldap.controls import SimplePagedResultsControl
-from univention.connector.ad import decode_sid
-from samba.ndr import ndr_unpack
-from samba.dcerpc import misc
+## check for option -U to avoid letting --simple-bind-dn taking precedence
+optspec=":-:c:d:U:A:P"
+while getopts "$optspec" option; do
+	case "${option}" in
+		c) CONFIGBASENAME="${OPTARG}"; shift 2;;
+		d) debug=true; shift;;
+		U|A|P) credentials_given=true;;
+		-)
+			case "${OPTARG}" in
+				authentication-file|authentication-file=*)
+					credentials_given=true;;
+				machine-pass|machine-pass=*)
+					credentials_given=true;;
+				password|password=*)
+					credentials_given=true;;
+				simple-bind-dn|simple-bind-dn=*)
+					credentials_given=true;;
+				user|user=*)
+					credentials_given=true;;
+			esac;;
+	esac
+done
 
-objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
+eval "$(univention-config-registry shell "$CONFIGBASENAME/ad/ldap/.*")"
 
-
-class kerberosAuthenticationFailed(Exception):
-	pass
-
-
-def usage():
-	print("")
-	print("This is univention-adsearch")
-	print("")
-	print("Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server.")
-	print("")
-	print("Usage:")
-	print("univention-adsearch [-c configbase] filter <attributes>")
-	print("")
-	print("The default configbase is \"connector\".")
-
-
-if len(sys.argv) < 2 or sys.argv[1] in ["-h", "-?", "--help"]:
-	usage()
-	sys.exit(1)
-
-CONFIGBASENAME = "connector"
-oiterator = 1
-if sys.argv[oiterator] == "-c":
-	if len(sys.argv) < oiterator + 1:
-		print("ERROR: need argument for option -c")
-		usage()
-		sys.exit(1)
-	else:
-		CONFIGBASENAME = sys.argv[oiterator + 1]
-		oiterator = oiterator + 2
-
-if len(sys.argv) < oiterator + 1:
-	print("ERROR: no filter given")
-	usage()
-	sys.exit(1)
-
-filter = sys.argv[oiterator]
-
-filter_attributes = list()
-for attr in sys.argv[oiterator + 1:]:
-	filter_attributes += attr.split(',')
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
-if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/port' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/binddn' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/bindpw' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/base' % CONFIGBASENAME in configRegistry):
-	print("")
-	print("This is univention-adsearch")
-	print("")
-	print("Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server.")
-	print("")
-	print("The Settings are not complete, please check the following univention-config-registry Values:")
-	print("%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME))
-	print("%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME))
-	print("%s/ad/ldap/base" % (CONFIGBASENAME))
-	sys.exit(1)
+binddn_env="${CONFIGBASENAME}_ad_ldap_binddn"
+binddn_ucr="${CONFIGBASENAME}/ad/ldap/binddn"
+bindpw_env="${CONFIGBASENAME}_ad_ldap_bindpw"
+bindpw_ucr="${CONFIGBASENAME}/ad/ldap/bindpw"
+host_env="${CONFIGBASENAME}_ad_ldap_host"
+port_env="${CONFIGBASENAME}_ad_ldap_port"
+base_env="${CONFIGBASENAME}_ad_ldap_base"
+ldaps_ucr="${CONFIGBASENAME}/ad/ldap/ldaps"
+kerberos_ucr="${CONFIGBASENAME}/ad/ldap/kerberos"
 
 
-protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
-ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME], int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
-
-login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
-pw_file = configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]
-fp = open(pw_file, 'r')
-login_pw = fp.readline()
-if login_pw[-1] == '\n':
-	login_pw = login_pw[:-1]
-
-certificate_chain_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
-start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
-if start_tls > 0 or protocol == 'ldaps':
-	ad_cert_filename = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
-	if ad_cert_filename:
-		if not os.path.exists(certificate_chain_filename):
-			# create a new CAcert file, which contains the UCS CA and the AD CA,
-			# see Bug #17768 for details
-			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
-			with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca_file:
-				ca_cert = ''.join(ca_file.readlines())
-
-			with open(ad_cert_filename, 'r') as ad_cert_file:
-				ad_cert = ''.join(ad_cert_file.readlines())
-
-			with open(certificate_chain_filename, 'w') as certificate_chain_file:
-				certificate_chain_file.write(ca_cert)
-				certificate_chain_file.write(ad_cert)
-		ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, certificate_chain_filename)
-	else:
-		ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-
-lo = ldap.initialize(ldapuri)
-
-if start_tls > 0:
-	lo.start_tls_s()
+cleanup() {
+	if [ -n "$authentication_file" ]; then
+		rm -f "$authentication_file"
+	fi
+}
 
 
-def get_kerberos_ticket():
-	p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
-	p1.wait()
-	cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]]
-	p1 = subprocess.Popen(cmd_block, close_fds=True)
-	stdout, stderr = p1.communicate()
-	if p1.returncode != 0:
-		raise kerberosAuthenticationFailed('The following command failed: "%s"' % ' '.join(cmd_block))
+options=()
+if ! [ "$credentials_given" = 'true' ]; then
+	if ! is_ucr_true "$kerberos_ucr"; then
+		if [ -n "${!binddn_env}" ]; then
+			options+=("--simple-bind-dn=${!binddn_env}")
+		else
+			echo "UCR variable $binddn_ucr not set and no ldbsearch credential options given"
+			exit 1
+		fi
+		if [ -r "${!bindpw_env}" ]; then
+			trap cleanup EXIT
+			authentication_file=$(mktemp)
+			chmod 600 "$authentication_file"
+			cat > "$authentication_file" <<-%EOF
+			password = $(<"${!bindpw_env}")
+			%EOF
+			options+=("--authentication-file=$authentication_file")
+		else
+			echo "File ${!bindpw_env} not found given in UCR variable $bindpw_ucr"
+			exit 1
+		fi
+	else
+		if [ -z "${!binddn_env}" ]; then
+			echo "UCR variable $binddn_ucr not set"
+			exit 1
+		fi
+		if [ -z "${!bindpw_env}" ]; then
+			echo "UCR variable $bindpw_ucr not set"
+			exit 1
+		elif ! [ -r "${!bindpw_env}" ]; then
+			echo "File ${!bindpw_env} not found given in UCR variable $bindpw_ucr"
+			exit 1
+		fi
+		kdestroy
+		kinit --no-addresses --password-file="${!bindpw_env}" "${!binddn_env}"
+		options+=("--kerberos=yes")
+	fi
+fi
 
 
-lo.set_option(ldap.OPT_REFERRALS, 0)
+if is_ucr_true "$ldaps_ucr"; then
+	protocol='ldaps'
+else
+	protocol='ldap'
+fi
 
-if configRegistry.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
-	os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc.search'
-	get_kerberos_ticket()
-	auth = ldap.sasl.gssapi("")
-	lo.sasl_interactive_bind_s("", auth)
-else:
-	lo.simple_bind_s(login_dn, login_pw)
 
-# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-lc1 = LDAPControl('1.2.840.113556.1.4.417', criticality=1)
-page_size = 1000
+ldap_server_name="${!host_env}"
+if [ -n "${!port_env}" ]; then
+	ldap_server_name="${ldap_server_name}:${!port_env}"
+fi
+if [ -n "${!base_env}" ]; then
+	options+=("--basedn=${!base_env}")
+fi
 
-lc2 = SimplePagedResultsControl(True, page_size, '')
 
-if filter_attributes:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
-else:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
+ldbsearch --debug-stderr --debug-stderr --show-deleted -H "$protocol://$ldap_server_name" "${options[@]}" "$@"
+rc=$?
 
-res = []
-while True:
-	rtype, rdata, rmsgid, serverctrls = lo.result3(msgid)
-	res += rdata
-	pctrls = [
-		c
-		for c in serverctrls
-		if c.controlType == SimplePagedResultsControl.controlType
-	]
-	if pctrls:
-		cookie = pctrls[0].cookie
-		if cookie:
-			lc2.controlValue = (page_size, cookie)
-			lc2.cookie = cookie
-			if filter_attributes:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
-			else:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
-		else:
-			break
-	else:
-		break
+if [ "$debug" = 'true' ]; then
+	echo "### Output of: ldbsearch --debug-stderr --show-deleted -H $protocol://$ldap_server_name ${options[@]} $@"
+fi
 
-n_results = len(res)
-n_referrals = 0
-
-print("#")
-print("# univention-adsearch")
-print("# filter: %s" % filter)
-print("#")
-for r in res:
-	if r[0] is None or r[0] == 'None':
-		n_referrals += 1
-		continue
-	print("")
-	print("DN: %s" % r[0])
-	for key in r[1]:
-		for val in r[1][key]:
-			sep = ':'
-			if key in ["objectSid"]:
-				val = decode_sid(val)
-			elif key in ['objectGUID']:
-				val = str(ndr_unpack(misc.GUID, val))
-			elif key in ['dnsRecord', 'auditingPolicy']:
-				val = base64.b64encode(val)
-				sep = '::'
-			else:
-				try:
-					val = unicode(val)
-				except UnicodeDecodeError:
-					val = base64.b64encode(val)
-					sep = '::'
-			print("{0}{1} {2}".format(key, sep, val))
-print("")
-print("#")
-print("# results: %s" % (n_results - n_referrals))
-print("#")
-print("")
-lo.unbind()
+exit $rc

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -32,10 +32,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import os
-import sqlite3
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
+
+import univention.connector
+import univention.uldap
 
 
 class ObjectNotFound(BaseException):
@@ -43,40 +46,34 @@ class ObjectNotFound(BaseException):
 
 
 def remove_ad_rejected(ad_dn):
-	cache_db = sqlite3.connect('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
-	c = cache_db.cursor()
-	c.execute("SELECT key FROM 'AD rejected' WHERE value=?", [unicode(ad_dn)])
-	key = c.fetchone()
-	if not key:
-		raise ObjectNotFound
-	c.execute("DELETE FROM 'AD rejected' WHERE value=?", [unicode(ad_dn)])
-	cache_db.commit()
-	cache_db.close()
+	config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
+	found = False
+	for usn, rejected_dn in config.items('AD rejected'):
+		if univention.uldap.access.compare_dn(ad_dn, rejected_dn):
+			config.remove_option('AD rejected', usn)
+			found = True
+
+	if not found:
+		raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='remove_ad_rejected.py dn')
-	parser.add_option("-c", "--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("-c", "--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('dn')
+	options = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
 	state_directory = '/etc/univention/%s' % CONFIGBASENAME
 	if not os.path.exists(state_directory):
-		print("Invalid configbasename, directory %s does not exist" % state_directory)
-		sys.exit(1)
+		parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
 
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	ad_dn = args[0]
+	ad_dn = options.dn
 
 	try:
 		remove_ad_rejected(ad_dn)
 	except ObjectNotFound:
-		print('ERROR: The object %s was not found.' % ad_dn)
+		print('ERROR: The object %s was not found.' % (ad_dn,))
 		sys.exit(1)
 
-	print('The rejected AD object %s has been removed.' % ad_dn)
-
-	sys.exit(0)
+	print('The rejected AD object %s has been removed.' % (ad_dn,))

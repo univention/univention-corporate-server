@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -32,10 +32,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import os
-import sqlite3
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
+
+import univention.connector
+import univention.uldap
 
 
 class ObjectNotFound(BaseException):
@@ -43,37 +46,31 @@ class ObjectNotFound(BaseException):
 
 
 def remove_ucs_rejected(ucs_dn):
-	cache_db = sqlite3.connect('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
-	c = cache_db.cursor()
-	c.execute("SELECT key FROM 'UCS rejected' WHERE value=?", [unicode(ucs_dn)])
-	filenames = c.fetchall()
-	if not filenames:
-		raise ObjectNotFound
-	for filename in filenames:
-		if filename:
-			if os.path.exists(filename[0]):
-				os.remove(filename[0])
-	c.execute("DELETE FROM 'UCS rejected' WHERE value=?", [unicode(ucs_dn)])
-	cache_db.commit()
-	cache_db.close()
+	config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
+	found = False
+	for filename, rejected_dn in config.items('UCS rejected'):
+		if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
+			if os.path.exists(filename):
+				os.remove(filename)
+			config.remove_option('UCS rejected', filename)
+			found = True
+
+	if not found:
+		raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='remove_ucs_rejected.py dn')
-	parser.add_option("-c", "--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
+	options = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
 	state_directory = '/etc/univention/%s' % CONFIGBASENAME
 	if not os.path.exists(state_directory):
-		print("Invalid configbasename, directory %s does not exist" % state_directory)
+		parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
 		sys.exit(1)
 
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	ucs_dn = args[0]
+	ucs_dn = options.dn
 
 	try:
 		remove_ucs_rejected(ucs_dn)
@@ -82,5 +79,3 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	print('The rejected UCS object %s has been removed.' % ucs_dn)
-
-	sys.exit(0)

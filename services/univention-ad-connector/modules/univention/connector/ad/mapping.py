@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -35,8 +35,8 @@ from univention.config_registry import ConfigRegistry
 
 from univention.connector.ad import format_escaped
 
-baseConfig = ConfigRegistry()
-baseConfig.load()
+configRegistry = ConfigRegistry()
+configRegistry.load()
 
 
 def ignore_filter_from_tmpl(template, ucr_key, default=''):
@@ -52,7 +52,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
 	... 'one,two,three')
 	'(|(cn=one)(cn=two)(cn=three))'
 	"""
-	variables = [v for v in baseConfig.get(ucr_key, default).split(',') if v]
+	variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
 	filter_parts = [format_escaped(template, v) for v in variables]
 	if filter_parts:
 		return '(|{})'.format(''.join(filter_parts))
@@ -72,56 +72,3 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 	"""
 	template = '({}={{0!e}})'.format(attribute)
 	return ignore_filter_from_tmpl(template, ucr_key, default)
-
-
-def ucs2ad_sid(connector, key, object):
-	pass
-
-
-def ad2ucs_sid(connector, key, object):
-	return univention.connector.ad.decode_sid(object['objectSid'])
-
-
-def ucs2ad_givenName(connector, key, object):
-	if 'firstname' in object and 'lastname' in object:
-		return '%s %s' % (object['firstname'], object['lastname'])
-	elif 'firstname' in object:
-		return object['firstname']
-	elif 'lastname' in object:
-		return object['lastname']
-
-
-def ad2ucs_givenName(connector, key, object):
-	pass
-
-
-def ucs2ad_dn_string(dn):
-	return dn.replace(baseConfig['ldap/base'], baseConfig['connector/ad/ldap/base'])
-
-
-def ucs2ad_dn(connector, key, object):
-	return ucs2ad_dn_string(object.dn)
-
-
-def ad2ucs_dn_string(dn):
-	return dn.replace(baseConfig['connector/ad/ldap/base'], baseConfig['ldap/base'])
-
-
-def ad2ucs_dn(connector, key, object):
-	return ad2ucs_dn_string(object.dn)
-
-
-def ucs2ad_user_dn(connector, key, object):
-	return ucs2ad_dn(connector, key, object).replace("uid=", "cn=")
-
-
-def ad2ucs_user_dn(connector, key, object):
-	return ad2ucs_dn(connector, key, object).replace("cn=", "uid=")
-
-
-def ucs2ad_sambaGroupType(connector, key, object):
-	return "-2147483644"
-
-
-def ad2ucs_sambaGroupType(connector, key, object):
-	pass

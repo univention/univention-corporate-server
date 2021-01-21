@@ -1,6 +1,6 @@
 univention-ad-connector usr/sbin/
 univention-adsearch usr/sbin/
-univention-connector-list-rejected usr/sbin/
+univention-adconnector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 scripts/well-known-sid-object-rename usr/share/univention-ad-connector/scripts
 scripts/make-deleted-objects-readable-for-this-machine usr/share/univention-ad-connector/scripts

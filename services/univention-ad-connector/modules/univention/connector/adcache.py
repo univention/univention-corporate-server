@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -6,7 +6,7 @@
 #
 # Copyright 2014-2021 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -29,18 +29,16 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from base64 import b64decode, b64encode
-import inspect
-import sqlite3
-
 import univention.debug2 as ud
+import sqlite3
+import base64
 
 
-def func_name():
-	return inspect.currentframe().f_back.f_code.co_name
+def _encode_base64(val):
+	return base64.b64encode(val).decode('ASCII')
 
 
 class EntryDiff(object):
@@ -83,7 +81,6 @@ class ADCache(object):
 		self.__create_tables()
 
 	def add_entry(self, guid, entry):
-
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
 		else:
@@ -91,7 +88,6 @@ class ADCache(object):
 		self.adcache[guid] = entry
 
 	def diff_entry(self, old_entry, new_entry):
-
 		result = {'added': None, 'removed': None, 'changed': None}
 
 		diff = EntryDiff(old_entry, new_entry)
@@ -103,7 +99,6 @@ class ADCache(object):
 		return result
 
 	def get_entry(self, guid):
-
 		entry = {}
 
 		guid_id = self._get_guid_id(guid)
@@ -113,7 +108,7 @@ class ADCache(object):
 
 		# The SQLite python module should do the escaping, that's
 		# the reason why we use the tuple ? syntax.
-		# I've choosen the str call because I want to make sure
+		# I've chosen the str call because I want to make sure
 		# that we use the same SQL value as before switching
 		# to the tuple ? syntax
 		sql_commands = [
@@ -129,12 +124,11 @@ class ADCache(object):
 		for line in rows:
 			if not entry.get(line[0]):
 				entry[str(line[0])] = []
-			entry[line[0]].append(b64decode(line[1]))
+			entry[line[0]].append(base64.b64decode(line[1]))
 
 		return entry
 
 	def remove_entry(self, guid):
-
 		guid_id = self._get_guid_id(guid)
 
 		if not guid_id:
@@ -173,7 +167,6 @@ class ADCache(object):
 				self._dbcon = sqlite3.connect(self.filename)
 
 	def __create_tables(self):
-
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
 			"CREATE TABLE IF NOT EXISTS ATTRIBUTES (id INTEGER PRIMARY KEY, attribute TEXT);",
@@ -186,11 +179,9 @@ class ADCache(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _guid_exists(self, guid):
-
 		return self._get_guid_id(guid.strip()) is not None
 
 	def _get_guid_id(self, guid):
-
 		sql_commands = [
 			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
 		]
@@ -203,7 +194,6 @@ class ADCache(object):
 		return None
 
 	def _append_guid(self, guid):
-
 		sql_commands = [
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
 		]
@@ -211,7 +201,6 @@ class ADCache(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id(self, attr):
-
 		sql_commands = [
 			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
 		]
@@ -224,11 +213,9 @@ class ADCache(object):
 		return None
 
 	def _attr_exists(self, guid):
-
 		return self._get_attr_id(guid) is not None
 
 	def _create_attr(self, attr):
-
 		sql_commands = [
 			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
 		]
@@ -244,7 +231,6 @@ class ADCache(object):
 		return attr_id
 
 	def _add_entry(self, guid, entry):
-
 		guid = guid.strip()
 
 		self._append_guid(guid)
@@ -256,7 +242,7 @@ class ADCache(object):
 			for value in entry[attr]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 
@@ -264,7 +250,6 @@ class ADCache(object):
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _update_entry(self, guid, entry):
-
 		guid = guid.strip()
 		guid_id = self._get_guid_id(guid)
 		old_entry = self.get_entry(guid)
@@ -285,7 +270,7 @@ class ADCache(object):
 			for value in entry[attribute]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 		for attribute in diff['changed']:
@@ -296,13 +281,13 @@ class ADCache(object):
 						"DELETE FROM data WHERE data.id IN (\
 							SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
 							where attributes.id=? and guid_id = ? and value = ? \
-						);", (str(attr_id), str(guid_id), b64encode(value))
+						);", (str(attr_id), str(guid_id), _encode_base64(value))
 					)
 				)
 			for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 
@@ -318,8 +303,8 @@ if __name__ == '__main__':
 	guid = '1234'
 
 	entry = {
-		'attr1': ['foobar'],
-		'attr2': ['val1', 'val2', 'val3']
+		'attr1': [b'foobar'],
+		'attr2': [b'val1', b'val2', b'val3']
 	}
 
 	adcache.add_entry(guid, entry)
@@ -329,8 +314,8 @@ if __name__ == '__main__':
 		raise Exception('Test 1 failed: %s' % diff_entry)
 	print('.', end=' ')
 
-	entry['attr3'] = ['val2']
-	entry['attr2'] = ['val1', 'val3']
+	entry['attr3'] = [b'val2']
+	entry['attr2'] = [b'val1', b'val3']
 
 	diff_entry = adcache.diff_entry(entry_old, entry)
 	if diff_entry.get('changed') != set(['attr2']) or diff_entry.get('removed') or diff_entry.get('added') != set(['attr3']):

@@ -1346,7 +1346,7 @@ univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
 
-<section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
+<section id="ad-connector:univention-adconnector-list-rejected"><title><command>univention-adconnector-list-rejected</command></title>
 <para>
 Dieses Tool führt die DNs nicht synchronisierter Objekte auf. Zusätzlich wird,
 sofern zwischengespeichert, die korrespondierende DN im jeweils anderen LDAP-Verzeichnis
@@ -1361,7 +1361,7 @@ Zur Fehlersuche bei Synchronisationsproblemen finden sich
 entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
 </para>
 <programlisting>
-/var/log/univention/connector.log
+/var/log/univention/connector-ad.log
 /var/log/univention/connector-status.log
 </programlisting>
 </section>

@@ -1,0 +1,118 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention AD Connector
+#  List all rejected objects
+#
+# Copyright 2004-2021 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+
+from __future__ import print_function
+import sys
+
+import ldap
+import univention
+import univention.connector
+import univention.connector.ad
+
+import univention.config_registry
+
+CONFIGBASENAME = "connector"
+
+
+def usage():
+	print("")
+	print("This is univention-adconnector-list-rejected")
+	print("")
+	print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
+	print("")
+	print("Usage:")
+	print("univention-adconnector-list-rejected [-c configbase]")
+	print("")
+	print("The default configbase is \"connector\".")
+
+
+if len(sys.argv) > 1:
+	if sys.argv[1] in ['-h', '--help', '-?']:
+		usage()
+		sys.exit(0)
+	if sys.argv[1] == '-c':
+		if len(sys.argv) != 3:
+			print("ERROR: option \"-c\" needs an argument!")
+			usage()
+			sys.exit(1)
+		else:
+			CONFIGBASENAME = sys.argv[2]
+			print("use configbase %s" % CONFIGBASENAME)
+
+
+def main():
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+	ad = univention.connector.ad.ad.main(configRegistry, CONFIGBASENAME)
+	try:
+		ad.init_ldap_connections()
+	except ldap.SERVER_DOWN as exc:
+		print('WARNING: LDAP server could not be reached: %s' % (exc,), file=sys.stderr)
+		sys.exit(1)
+
+	found_rejected = False
+	i = 1
+	print("\nUCS rejected\n")
+	for filename, dn in ad.list_rejected_ucs():
+		found_rejected = True
+		print("%5d:   UCS DN: %s" % (i, dn))
+		ad_dn = ad.get_dn_by_ucs(dn)
+		if ad_dn:
+			print("          AD DN: %s" % ad_dn)
+		else:
+			print("          AD DN: <not found>")
+		print("         Filename: %s\n" % filename)
+		i += 1
+
+	i = 1
+	print("\nAD rejected\n")
+	for id, dn in ad.list_rejected():
+		found_rejected = True
+		print("%5d:    AD DN: %s" % (i, dn))
+		ucs_dn = ad.get_dn_by_con(dn)
+		if ucs_dn:
+			print("         UCS DN: %s" % ucs_dn)
+		else:
+			print("         UCS DN: <not found>")
+		i += 1
+
+	if not found_rejected:
+		print("\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n")
+
+	print("\n\tlast synced USN: %s" % ad.get_lastUSN())
+
+
+if __name__ == "__main__":
+	main()
