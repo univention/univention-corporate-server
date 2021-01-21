@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-15) unstable; urgency=medium
+
+  * Bug #52453: fix App Center install dialog
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Jan 2021 16:08:12 +0100
+
 univention-appcenter (9.0.1-14) unstable; urgency=medium
 
   * Bug #52453: adjust SearchBox styling
