@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-management-console
+fix: 11.0.6-5A~4.4.0.202101221939
+desc: |
+ This update addresses the following issue(s):
+ * A cross site scripting vulnerability has been fixed.
+bug: [52665]
