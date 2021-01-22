@@ -54,12 +54,13 @@ define([
 
 		_getPartitionInfo: function() {
 			this.standbyDuring(tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice})).then(lang.hitch(this, function(data) {
-				this._partitionInfo.set('content', lang.replace('<p>' +
-						_('Mount point: ') + '{mountPoint} ' +
-						_('Filesystem: ') + '{filesystem} ' +
-						_('Options: ') + ' {options}' +
-					'</p>', data.result
-				));
+				var helpText = lang.replace(
+					_('Mount point: ') + '{mountPoint} ' +
+					_('Filesystem: ') + '{filesystem} ' +
+					_('Options: ') + ' {options}',
+					data.result
+				);
+				this.set('helpText', helpText);
 			}));
 		},
 
@@ -70,17 +71,13 @@ define([
 				label: _('Back to overview'),
 				callback: lang.hitch(this, 'onShowOverview')
 			}];
+			this.helpText = _('loading...');
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.renderGrid();
-			this._partitionInfo = new Text({
-				region: 'nav',
-				content: '<p>' + _('loading...') + '</p>'
-			});
 			this._getPartitionInfo();
-			this.addChild(this._partitionInfo);
 			this.addChild(this._searchForm);
 			this.addChild(this._grid);
 		},

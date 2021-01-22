@@ -34,12 +34,13 @@ define([
 	"dojo/_base/array",
 	"umc/dialog",
 	"umc/tools",
+	"umc/widgets/ContainerWidget",
 	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"umc/widgets/Page",
 	"umc/widgets/NumberSpinner",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, dialog, tools, Form, TextBox,  Page, NumberSpinner, _) {
+], function(declare, lang, array, dialog, tools, ContainerWidget, Form, TextBox,  Page, NumberSpinner, _) {
 
 	return declare("umc.modules.quota.DetailPage", [ Page ], {
 
@@ -52,7 +53,11 @@ define([
 			this.inherited(arguments);
 			this.renderForm();
 
-			this.addChild(this._form);
+			var card = new ContainerWidget({
+				'class': 'umcCard2'
+			});
+			card.addChild(this._form);
+			this.addChild(card);
 		},
 
 		postMixInProperties: function() {
@@ -82,20 +87,17 @@ define([
 		renderForm: function() {
 			var widgets = [{
 				type: TextBox,
-				'class': 'umcTextBoxDark',
 				name: 'user',
 				label: _('User'),
 				required: true
 			}, {
 				type: TextBox,
-				'class': 'umcTextBoxDark',
 				name: 'partitionDevice',
 				label: _('Partition'),
 				value: this.partitionDevice,
 				disabled: true
 			}, {
 				type: NumberSpinner,
-				'class': 'umcTextBoxDark',
 				name: 'sizeLimitSoft',
 				label: _('Data size soft limit (MB)'),
 				value: 0,
@@ -106,7 +108,6 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
-				'class': 'umcTextBoxDark',
 				name: 'sizeLimitHard',
 				label: _('Data size hard limit (MB)'),
 				value: 0,
@@ -117,7 +118,6 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
-				'class': 'umcTextBoxDark',
 				name: 'fileLimitSoft',
 				label: _('Files soft limit'),
 				value: 0,
@@ -128,7 +128,6 @@ define([
 				}
 			}, {
 				type: NumberSpinner,
-				'class': 'umcTextBoxDark',
 				name: 'fileLimitHard',
 				label: _('Files hard limit'),
 				value: 0,
