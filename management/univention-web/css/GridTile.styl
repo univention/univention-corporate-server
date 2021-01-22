@@ -1,8 +1,10 @@
 @require "variables.styl"
 
+$gridItemPadding = spacing(1)
 .umcGridTile .dgrid
 	clear: both
 	border: none
+	margin: 0 s('calc(-1 * (%s))', $gridItemPadding)
 
 .umcGridTile .dgrid-scroller
 	max-height: inherit
@@ -31,7 +33,7 @@
 			display: none
 
 	.umcGridTileWrapperItem
-		padding: var(--layout-spacing-unit)
+		padding: $gridItemPadding
 		&.dgrid-selected
 			background-color: transparent
 
