@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (4.0.0-5) unstable; urgency=medium
+
+  * Bug #52665: fix XSS vulnerability
+
+ -- Florian Best <best@univention.de>  Fri, 22 Jan 2021 19:36:37 +0100
+
 univention-management-console-module-passwordchange (4.0.0-4) unstable; urgency=medium
 
   * Bug #51181: add 'Change password' menu entry to new menu
