@@ -5,14 +5,14 @@ Type=str
 Categories=management
 
 [ucs/server/sso/stunnel4/watchdog/timeout]
-Description[de]=Definiert wie oft der Service univention-stunnel4-watchdog den Status des stunnel4 prüft. Angegeben in Sekunden. (default = 30)
-Description[en]=Defines how often the service univention-stunnel4-watchdog checks the state of the stunnel4. This is defined in seconds. (default = 30)
+Description[de]=Definiert wie oft der Service univention-stunnel4-watchdog den Status des stunnel4 prüft. Nachdem die Variable gesetzt wurde, muss der Service neu gestartet werden. Angegeben in Sekunden. (default = 30)
+Description[en]=Defines how often the service univention-stunnel4-watchdog checks the state of the stunnel4. After setting this variable, the service has to be restarted. This is defined in seconds. (default = 30)
 Type=int
 Categories=management
 
 [ucs/server/sso/stunnel4/watchdog/active]
-Description[de]=Definiert ob der univention-stunnel4-watchdog aktiv ist. (default : false)
-Description[en]=Defines if univention-stunnel4-watchdog is active (default : false)
+Description[de]=Definiert ob der univention-stunnel4-watchdog aktiv ist. Nachdem die Variable gesetzt wurde, muss der service neu gestartet werden. (default : false)
+Description[en]=Defines if univention-stunnel4-watchdog is active. After setting this variable, the service has to be restarted. (default : false)
 Type=bool
 Categories=management
 
