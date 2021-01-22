@@ -1,3 +1,11 @@
+univention-saml (6.0.3-12) unstable; urgency=medium
+
+  * Bug #52196: Do not remove memcached.socket after killing the stunnel4
+    via watchdog. An error will be logged afterwards, like 
+    connect localhost:/var/run/univention-saml/memcached.socket: No such file or directory (2)
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 22 Jan 2021 12:32:46 +0100
+
 univention-saml (6.0.3-11) unstable; urgency=medium
 
   * Bug #52196: Add a service which regularly connects via the stunnel4, do
