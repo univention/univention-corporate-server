@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check App-Center Operation failures with broken apps (exit 1 in {pre,post}{inst,rm}) via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]

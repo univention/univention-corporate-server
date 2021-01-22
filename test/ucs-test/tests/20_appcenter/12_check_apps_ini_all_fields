@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Checks Apps .ini field values, description length, optional values.
 ## roles-not: [basesystem]
 ## tags: [basic, apptest]
@@ -8,17 +8,14 @@
 ## exposure: safe
 
 from __future__ import print_function
-import os
 import re
-from sys import stderr, exit
+from sys import stderr
 from optparse import OptionParser
 from re import compile as regex_compile
-from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
+from configparser import RawConfigParser, NoOptionError, NoSectionError
 
 import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
 
-from univention.appcenter.app import App
 from univention.appcenter.app_cache import Apps
 
 failures = 0
@@ -47,9 +44,9 @@ class AppCheck(object):
         """
         print("\nChecking file '%s':" % self.pname)
         try:
-                appid = self.config.get('Application', 'ID')
-        except NoSectionError, NoOptionError:
-                raise Error('No [Application] ID given...')
+            appid = self.config.get('Application', 'ID')
+        except (NoSectionError, NoOptionError):
+            raise Error('No [Application] ID given...')
         for section in self.config.sections():
             with Section(self, section, appid) as sec:
                 if section == 'Application':
@@ -150,7 +147,7 @@ class Value(object):
 
     def is_arch(self):
         ALLOWED = set(('amd64', 'i386'))
-        if set(re.split('\s*,\s*', self.value)) - ALLOWED:
+        if set(re.split(r'\s*,\s*', self.value)) - ALLOWED:
             raise Error('Invalid architectures: "%s"' % self.value)
 
     def is_capacity(self):
@@ -160,8 +157,8 @@ class Value(object):
 
     def deprecated_master_packages(self):
         if self.value:
-                if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm zarafa self-service'.split():
-                        raise Error('Should not have DefaultPackagesMaster!!')
+            if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm zarafa self-service'.split():
+                raise Error('Should not have DefaultPackagesMaster!!')
 
     def is_category(self):
         ALLOWED = set(('admin', 'service', 'False'))
@@ -231,7 +228,7 @@ class Section(object):
         self.config = check.config
         self.section = section
         self.log = check.log
-	self.appid = appid
+        self.appid = appid
 
     def __enter__(self):
         return self
@@ -244,7 +241,7 @@ class Section(object):
             self.log('[%s] missing', self.section)
 
     def check_all(self, options):
-        for option, checks in options.iteritems():
+        for option, checks in options.items():
             self.check(option, *checks)
             self.config.remove_option(self.section, option)
 

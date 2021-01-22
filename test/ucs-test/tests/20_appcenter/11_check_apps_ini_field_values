@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if App .ini has values in settings that are present.
 ## roles-not: [basesystem]
 ## tags: [basic, apptest]
@@ -10,7 +10,7 @@
 from __future__ import print_function
 from os import path
 from glob import glob
-from ConfigParser import RawConfigParser, Error
+from configparser import RawConfigParser, Error
 
 import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3
 ## desc: App Settings
 ## tags: [basic, coverage, skip_admember]
 ## packages:
@@ -61,7 +61,7 @@ def fresh_settings(content, app, num):
 
 def docker_shell(app, command):
 	container = ucr_get(app.ucr_container_key)
-	return subprocess.check_output(['docker', 'exec', container, '/bin/bash', '-c', command], stderr=subprocess.STDOUT)
+	return subprocess.check_output(['docker', 'exec', container, '/bin/bash', '-c', command], stderr=subprocess.STDOUT, text=True)
 
 
 @contextmanager
@@ -96,9 +96,9 @@ Version = 1.0
 License = free
 WithoutRepository = True
 DefaultPackages = libcurl4-doc'''
-	with open('/tmp/app.ini', 'wb') as fd:
+	with open('/tmp/app.ini', 'w') as fd:
 		fd.write(ini_file)
-	with open('/tmp/app.logo', 'wb') as fd:
+	with open('/tmp/app.logo', 'w') as fd:
 		fd.write('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="10" y="10" height="100" width="100" style="stroke:#ff0000; fill: #0000ff"/></svg>')
 	populate = get_action('dev-populate-appcenter')
 	populate.call(new=True, ini='/tmp/app.ini', logo='/tmp/app.logo')
@@ -127,7 +127,7 @@ WebInterfacePortHTTP = 8080
 WebInterfacePortHTTPS = 0
 AutoModProxy = False
 UCSOverviewCategory = False'''
-	with open('/tmp/app.ini', 'wb') as fd:
+	with open('/tmp/app.ini', 'w') as fd:
 		fd.write(ini_file)
 	populate = get_action('dev-populate-appcenter')
 	populate.call(new=True, ini='/tmp/app.ini')
@@ -142,7 +142,7 @@ def installed_apache_docker_app(apache_docker_app):
 
 def get_settings(content, app):
 	fname = '/tmp/app.settings'
-	with open(fname, 'wb') as fd:
+	with open(fname, 'w') as fd:
 		fd.write(content)
 	populate = get_action('dev-populate-appcenter')
 	populate.call(component_id=app.component_id, ini=app.get_ini_file(), settings='/tmp/app.settings')
@@ -162,7 +162,7 @@ InitialValue = Default: @%@ldap/base@%@
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "StringSetting(name=u'test/setting')"
+	assert repr(setting) == "StringSetting(name='test/setting')"
 
 	assert setting.is_inside(app) is False
 	assert setting.is_outside(app) is True
@@ -190,7 +190,7 @@ Scope = inside, outside
 
 	app, settings = fresh_settings(content, installed_apache_docker_app, 1)
 	setting, = settings
-	assert repr(setting) == "StringSetting(name=u'test/setting')"
+	assert repr(setting) == "StringSetting(name='test/setting')"
 
 	assert setting.is_inside(app) is True
 	assert setting.is_outside(app) is True
@@ -225,7 +225,7 @@ Required = Yes
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "IntSetting(name=u'test/setting2')"
+	assert repr(setting) == "IntSetting(name='test/setting2')"
 
 	# FIXME: This should be int(123), right?
 	assert setting.get_initial_value(app) == '123'
@@ -263,9 +263,9 @@ Description = My Description 4.2
 
 	app, settings = fresh_settings(content, installed_component_app, 3)
 	status_setting, file_setting, file_setting2 = settings
-	assert repr(status_setting) == "StatusSetting(name=u'test/setting3')"
-	assert repr(file_setting) == "FileSetting(name=u'test/setting4')"
-	assert repr(file_setting2) == "FileSetting(name=u'test/setting4/2')"
+	assert repr(status_setting) == "StatusSetting(name='test/setting3')"
+	assert repr(file_setting) == "FileSetting(name='test/setting4')"
+	assert repr(file_setting2) == "FileSetting(name='test/setting4/2')"
 
 	try:
 		with Configuring(app, revert='ucr') as config:
@@ -278,7 +278,7 @@ Description = My Description 4.2
 
 			assert status_setting.get_value(app) == 'My Status'
 			assert os.path.exists(file_setting.filename)
-			assert open(file_setting.filename, 'rb').read() == 'File content'
+			assert open(file_setting.filename, 'r').read() == 'File content'
 			assert file_setting.get_value(app) == 'File content'
 
 			config.set({file_setting.name: None})
@@ -304,7 +304,7 @@ Description = My Description 4
 
 	app, settings = fresh_settings(content, installed_apache_docker_app, 1)
 	setting, = settings
-	assert repr(setting) == "FileSetting(name=u'test/setting4')"
+	assert repr(setting) == "FileSetting(name='test/setting4')"
 
 	docker_file = Docker(app).path(setting.filename)
 
@@ -315,7 +315,7 @@ Description = My Description 4
 
 			config.set({setting.name: 'Docker file content'})
 			assert os.path.exists(docker_file)
-			assert open(docker_file, 'rb').read() == 'Docker file content'
+			assert open(docker_file, 'r').read() == 'Docker file content'
 			assert setting.get_value(app) == 'Docker file content'
 
 			config.set({setting.name: None})
@@ -340,8 +340,8 @@ Filename = /tmp/settingdir/setting6.password
 	app, settings = fresh_settings(content, installed_component_app, 2)
 	password_setting, password_file_setting = settings
 
-	assert repr(password_setting) == "PasswordSetting(name=u'test/setting5')"
-	assert repr(password_file_setting) == "PasswordFileSetting(name=u'test/setting6')"
+	assert repr(password_setting) == "PasswordSetting(name='test/setting5')"
+	assert repr(password_file_setting) == "PasswordFileSetting(name='test/setting6')"
 
 	assert password_setting.should_go_into_image_configuration(app) is False
 	assert password_file_setting.should_go_into_image_configuration(app) is False
@@ -355,8 +355,8 @@ Filename = /tmp/settingdir/setting6.password
 
 			assert password_setting.get_value(app) == 'MyPassword'
 			assert os.path.exists(password_file_setting.filename)
-			assert open(password_file_setting.filename, 'rb').read() == 'FilePassword'
-			assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0600
+			assert open(password_file_setting.filename, 'r').read() == 'FilePassword'
+			assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0o600
 	finally:
 		try:
 			os.unlink(password_file_setting.filename)
@@ -376,8 +376,8 @@ Filename = /tmp/settingdir/setting6.password
 	app, settings = fresh_settings(content, installed_apache_docker_app, 2)
 	password_setting, password_file_setting = settings
 
-	assert repr(password_setting) == "PasswordSetting(name=u'test/setting5')"
-	assert repr(password_file_setting) == "PasswordFileSetting(name=u'test/setting6')"
+	assert repr(password_setting) == "PasswordSetting(name='test/setting5')"
+	assert repr(password_file_setting) == "PasswordFileSetting(name='test/setting6')"
 
 	assert password_setting.should_go_into_image_configuration(app) is False
 	assert password_file_setting.should_go_into_image_configuration(app) is False
@@ -394,8 +394,8 @@ Filename = /tmp/settingdir/setting6.password
 
 		assert password_setting.get_value(app) == 'MyPassword'
 		assert os.path.exists(password_file)
-		assert open(password_file, 'rb').read() == 'FilePassword'
-		assert stat.S_IMODE(os.stat(password_file).st_mode) == 0600
+		assert open(password_file, 'r').read() == 'FilePassword'
+		assert stat.S_IMODE(os.stat(password_file).st_mode) == 0o600
 
 		stop = get_action('stop')
 		stop.call(app=app)
@@ -406,7 +406,7 @@ Filename = /tmp/settingdir/setting6.password
 		start = get_action('start')
 		start.call(app=app)
 		assert password_setting.get_value(app) == 'MyPassword'
-		assert open(password_file, 'rb').read() == 'FilePassword'
+		assert open(password_file, 'r').read() == 'FilePassword'
 
 
 def test_bool_setting(installed_component_app):
@@ -418,7 +418,7 @@ InitialValue = False
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "BoolSetting(name=u'test/setting7')"
+	assert repr(setting) == "BoolSetting(name='test/setting7')"
 
 	# FIXME: This should be bool(False), right?
 	assert setting.get_initial_value(app) == 'False'
@@ -437,13 +437,13 @@ def test_list_setting(installed_component_app):
 	content = '''[test/setting8]
 Type = List
 Values = v1, v2, v3
-Labels = Label 1, Label 2\, among others, Label 3
+Labels = Label 1, Label 2\\, among others, Label 3
 Description = My Description 8
 '''
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "ListSetting(name=u'test/setting8')"
+	assert repr(setting) == "ListSetting(name='test/setting8')"
 
 	with Configuring(app, revert='ucr') as config:
 		with pytest.raises(Abort):

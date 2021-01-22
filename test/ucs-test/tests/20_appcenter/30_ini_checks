@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Checks if inis have meaningful/non-conflicting values
 ## tags: [basic,apptest]
 ## roles: [domaincontroller_master]
@@ -7,7 +7,7 @@
 from __future__ import print_function
 import sys
 import subprocess
-from ConfigParser import NoSectionError, NoOptionError
+from configparser import NoSectionError, NoOptionError
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ini_parser import read_ini_file

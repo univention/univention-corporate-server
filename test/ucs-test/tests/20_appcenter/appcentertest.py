@@ -71,10 +71,10 @@ def get_requested_apps():
 					ret.append(app)
 				else:
 					pass
-					#utils.fail('Error finding %s' % (line,))
+					# utils.fail('Error finding %s' % (line,))
 	except EnvironmentError:
 		pass
-		#utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
+		# utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
 	return ret
 
 
@@ -359,7 +359,7 @@ class CheckOperations(object):
 
 	def _dpkg_status(self, package):
 		cmd = ["dpkg-query", "-f='${db:Status-Abbrev}xx'", "--show", package]
-		output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+		output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, text=True)
 		(expected_char, current_char) = output[:2]
 		expected = {"u": "unknown", "i": "install", "h": "hold", "r": "remove", "p": "purge"}.get(expected_char, "unknown")
 		current = {"n": "not-installed", "c": "config-files", "U": "unpacked", "H": "half-installed", "F": "half-configured", "W": "triggers-awaited", "t": "tritters-pending", "i": "installed"}.get(current_char, "unknown")
@@ -416,7 +416,7 @@ class CheckOperations(object):
 
 	def _check_files_exist(self):
 		for package in self._packages():
-			output = subprocess.check_output(["dpkg", "--listfiles", package])
+			output = subprocess.check_output(["dpkg", "--listfiles", package], text=True)
 			for path in output.splitlines():
 				if not os.path.exists(path):
 					msg = "{} from {} does not exist in filesystem"
@@ -481,7 +481,7 @@ class CheckOperations(object):
 		if all((interface, port_http, port_https)) and \
 			self._check_url("http", port_http, interface) and \
 			self._check_url("https", port_https, interface):
-				print("OK - Webinterface reachable after installation.")
+			print("OK - Webinterface reachable after installation.")
 		return True
 
 

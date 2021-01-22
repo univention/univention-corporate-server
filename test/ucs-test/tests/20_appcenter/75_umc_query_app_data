@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check the UMC query command with a custom INI file.
 ## roles-not: [basesystem]
@@ -68,7 +68,7 @@ def test_ini_data(umc_data, lang):
 		'license': 'freemium',
 		'description': 'Test App [%s]' % lang,
 	}
-	for ikey, ival in expected_data.iteritems():
+	for ikey, ival in expected_data.items():
 		expected_val = expected_data[ikey]
 		assert umc_data[ikey] == ival, 'Entry %s=%s does not match expected value %s!' % (ikey, ival, expected_val)
 	print('SUCCESS')

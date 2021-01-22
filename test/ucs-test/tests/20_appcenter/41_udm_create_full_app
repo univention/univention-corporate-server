@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a valid full appcenter/app object
 ## tags: [SKIP-UCSSCHOOL,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		website = [uts.random_name(), uts.random_name()]
 		websiteVendor = [uts.random_name(), uts.random_name()]
 		websiteMaintainer = [uts.random_name(), uts.random_name()]
-		icon = base64.encodestring(uts.random_name())
+		icon = base64.encodebytes(uts.random_name().encode('utf-8')).decode('ascii')
 		category = uts.random_name()
 		webInterface = uts.random_name()
 		webInterfaceName = uts.random_name()
@@ -96,11 +96,6 @@ if __name__ == '__main__':
 		})
 
 		udm.remove_object('appcenter/app', dn=app)
-		try:
-			utils.verify_ldap_object(app, {
-				'univentionAppName': [name]
-			})
-		except utils.LDAPObjectNotFound:
-			pass
-		else:
-			utils.fail('appcenter/app object was found although it had been removed')
+		utils.verify_ldap_object(app, {
+			'univentionAppName': [name]
+		}, should_exist=False)

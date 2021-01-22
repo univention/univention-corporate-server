@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check App version registration in LDAP
 ## tags: [SKIP-UCSSCHOOL, basic, apptest]
 ## bugs: [35896]

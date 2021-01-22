@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3
 ## desc: Ini Parser
 ## tags: [basic, coverage]
 ## exposure: safe
@@ -21,7 +21,7 @@ def valid_ini_file():
 AKey = A Value
 ABool = Yes
 ADefault = Overwritten
-AList = v1, v2, v3\, or something else
+AList = v1, v2, v3\\, or something else
 
 [Another section]
 AKey = Another Value
@@ -37,7 +37,7 @@ ABool = False
 AKey = A 4th Value
 ABool = Something else'''
 	fname = '/tmp/test.ini'
-	with open(fname, 'wb') as fd:
+	with open(fname, 'w') as fd:
 		fd.write(content)
 	yield fname
 	os.unlink(fname)
@@ -57,7 +57,7 @@ def missing_ini_file():
 def invalid_ini_file(valid_ini_file):
 	with open(valid_ini_file) as fd:
 		content = fd.read()
-	with open(valid_ini_file, 'wb') as fd:
+	with open(valid_ini_file, 'w') as fd:
 		fd.write(content[1:])
 	return valid_ini_file
 
@@ -65,7 +65,7 @@ def invalid_ini_file(valid_ini_file):
 @pytest.fixture
 def list_ini_file(valid_ini_file):
 	content = '''[A section]
-AList = v1, v2, v3\, or something else
+AList = v1, v2, v3\\, or something else
 AnotherList = v1, v2
 
 [Another section]
@@ -74,7 +74,7 @@ AnotherList = v1
 [A third section]
 AList = X
 AnotherList = X'''
-	with open(valid_ini_file, 'wb') as fd:
+	with open(valid_ini_file, 'w') as fd:
 		fd.write(content)
 	return valid_ini_file
 
@@ -93,7 +93,7 @@ Type = TypedObject3
 
 [fourth/item]
 MyKey = 4th Value'''
-	with open(valid_ini_file, 'wb') as fd:
+	with open(valid_ini_file, 'w') as fd:
 		fd.write(content)
 	return valid_ini_file
 
@@ -105,7 +105,7 @@ Klass = TypedObjectWithDefault1
 
 [second/item]
 Unknown = Irrelevant'''
-	with open(valid_ini_file, 'wb') as fd:
+	with open(valid_ini_file, 'w') as fd:
 		fd.write(content)
 	return valid_ini_file
 
@@ -129,14 +129,14 @@ def test_invalid_ini_file(invalid_ini_file):
 	assert len(parser.sections()) == 0
 
 
-class TestSectionObject(IniSectionObject):
+class IniSectionObjectTest(IniSectionObject):
 	a_key = IniSectionAttribute()
 	a_bool = IniSectionBooleanAttribute()
 	a_default = IniSectionAttribute(default='The default')
 
 
 def test_section_object(valid_ini_file):
-	objs = TestSectionObject.all_from_file(valid_ini_file)
+	objs = IniSectionObjectTest.all_from_file(valid_ini_file)
 	assert len(objs) == 3
 	obj1, obj2, obj3 = objs
 
@@ -147,16 +147,16 @@ def test_section_object(valid_ini_file):
 	assert obj2.to_dict() == {'a_key': 'Another Value', 'a_bool': False, 'a_default': 'The default', 'name': 'Another section'}
 
 	assert obj3.a_key is None
-	assert repr(obj3) == 'TestSectionObject(name=u\'A third section\')'
+	assert repr(obj3) == 'IniSectionObjectTest(name=\'A third section\')'
 
 
-class AdvancedTestSectionObject(TestSectionObject):
+class AdvancedIniSectionObjectTest(IniSectionObjectTest):
 	a_key = IniSectionAttribute(required=True, localisable=True)
 	a_list = IniSectionListAttribute()
 
 
 def test_localisable_attribute(valid_ini_file):
-	objs = AdvancedTestSectionObject.all_from_file(valid_ini_file)
+	objs = AdvancedIniSectionObjectTest.all_from_file(valid_ini_file)
 	assert len(objs) == 2
 	obj1, obj2 = objs
 
@@ -196,14 +196,14 @@ def test_choices(valid_ini_file):
 def test_no_value_error(valid_ini_file):
 	parser = read_ini_file(valid_ini_file)
 	with pytest.raises(NoValueError) as exc:
-		AdvancedTestSectionObject.from_parser(parser, 'A third section', 'en')
+		AdvancedIniSectionObjectTest.from_parser(parser, 'A third section', 'en')
 	assert str(exc.value) == 'Missing a_key in A third section'
 
 
 def test_parse_error(valid_ini_file):
 	parser = read_ini_file(valid_ini_file)
 	with pytest.raises(ParseError) as exc:
-		TestSectionObject.from_parser(parser, 'A fourth section', 'en')
+		IniSectionObjectTest.from_parser(parser, 'A fourth section', 'en')
 	assert str(exc.value) == 'Cannot parse abool in A fourth section: Not a Boolean'
 
 

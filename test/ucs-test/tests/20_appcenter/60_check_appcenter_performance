@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check the performance for requests against the UMC appcenter.
 ## bugs: [38545, 39632]

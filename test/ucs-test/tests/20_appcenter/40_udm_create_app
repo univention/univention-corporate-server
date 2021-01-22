@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a valid appcenter/app object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -23,11 +23,6 @@ if __name__ == '__main__':
 		})
 
 		udm.remove_object('appcenter/app', dn=app)
-		try:
-			utils.verify_ldap_object(app, {
-				'univentionAppName': [name]
-			})
-		except utils.LDAPObjectNotFound:
-			pass
-		else:
-			utils.fail('appcenter/app object was found although it had been removed')
+		utils.verify_ldap_object(app, {
+			'univentionAppName': [name]
+		}, should_exist=False)

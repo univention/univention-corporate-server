@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Checks if apps are installable (except for apps/packages conflicting with installed apps)
 ## tags: [basic, apptest, SKIP-UCSSCHOOL]
 ## roles-not: [basesystem]
@@ -17,7 +17,6 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from appcentertest import get_requested_apps
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile
 
