@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (5.0.1-1) unstable; urgency=medium
+
+  * Bug #52665: fix XSS vulnerability
+
+ -- Florian Best <best@univention.de>  Fri, 22 Jan 2021 19:40:43 +0100
+
 univention-management-console-module-passwordchange (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

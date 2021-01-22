@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/topic",
+	"dojox/html/entities",
 	"login",
 	"umc/menu",
 	"umc/tools",
@@ -40,7 +41,7 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/PasswordInputBox",
 	"umc/i18n!umc/hooks/passwordchange"
-], function(declare, lang, topic, login, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
+], function(declare, lang, topic, entities, login, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
 
 	var setPassword = function(values) {
 		tools.umcpCommand('set', {
@@ -62,7 +63,7 @@ define([
 			widgets: [{
 				type: Text,
 				name: 'text',
-				content: _('Change the password of user "%s":', tools.status('username'))
+				content: _('Change the password of user "%s":', entities.encode(tools.status('username')))
 			}, {
 				name: 'password',
 				type: PasswordBox,
