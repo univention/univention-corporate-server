@@ -392,7 +392,9 @@ define([
 						ibutton.$isRendered$ = true;
 					}
 				});
-				globalContainer.addChild(buttonContainer);
+				if (buttonContainer.hasChildren()) {
+					globalContainer.addChild(buttonContainer);
+				}
 			}
 
 			// return the container
