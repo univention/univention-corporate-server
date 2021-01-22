@@ -1366,7 +1366,7 @@ define([
 			this.setupGui();
 
 			if (!launchableModules.length) {
-				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
+				dialog.alert(_('There is no module available for the authenticated user %s.', entities.encode(tools.status('username'))));
 			}
 		},
 
