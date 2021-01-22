@@ -147,7 +147,7 @@ define([
 			}
 			// hide header if empty string
 			domClass.toggle(this._headerTextPane.domNode, 'dijitDisplayNone', !newVal);
-			this._headerTextPane.set('content', '<h1>' + (this.headerTextAllowHTML ? newVal : entities.encode(newVal)) + '</h1>');
+			this._headerTextPane.set('content', '<h2>' + (this.headerTextAllowHTML ? newVal : entities.encode(newVal)) + '</h2>');
 			this._set('headerText', newVal);
 		},
 

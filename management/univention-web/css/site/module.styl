@@ -27,23 +27,25 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-@require "../variables"
+@require "../variables.styl"
 
+// seperation line between module header and content when scrolling
 .umcModuleHeader
 	transition: border-color 0.2s
-	border-bottom: 1px solid transparent
-
+	--local-border-color: transparent
+	border-bottom: 1px solid var(--local-border-color)
 .umcModule--scrolled .umcModuleHeader
-	border-bottom-color: $grey-medium
+	--local-border-color: var(--color-grey25)
+
 
 .umcModuleHeaderOuterContainer
-	padding: material-grid(2) 0
+	padding: spacing(3) 0
 
 .umcModuleHeaderWrapper
 	display: flex
 	align-items: flex-start
 	flex-wrap: wrap
-	grid-gap: var(--layout-spacing-unit) 0
+	grid-gap: spacing(1) 0
 
 .umcModuleHeaderRight
 	flex: 1 1 auto
@@ -59,40 +61,43 @@
 	color: var(--font-color-contrast-low)
 
 .umcModuleTitleBreadCrumbSeperator
-	margin: 0 var(--layout-spacing-unit-small)
+	margin: 0 spacing(1, true)
 
 .umcModuleSubTitle
 	font-size: var(--font-size-small)
-	margin-top: var(--layout-spacing-unit)
+	margin-top: spacing(1)
 
-.umc .umcModule
-	.umcModuleWrapper
-		margin: 0 auto
-		padding: 0
+.umc .umcModuleWrapper
+	margin: 0 auto
+	padding: 0
 
-		.umcModuleContent .umcModuleContentChildWrapper.dijitHidden
-			display: none !important
 
+// helpText font-size
 .umc .umcPageHelpText
-	margin-bottom: 1.5em
 	font-size: var(--font-size-small)
 
-.umc .umcPageNav
-	margin-bottom: 2.5em
 
-.umc .dijitDialogPaneContent .umcButtonRow:last-child,
-.umc .umcPageFooter
-	margin-top: 0.75em
-	clear: both
+// headerText/helpText spacing
+.umc .umcPageHeader + .umcPageHelpText
+	margin-top: spacing(1)
+.umc .umcPageHelpText:not(:last-child)
+	margin-bottom: spacing(3)
+.umc .umcPageNavContent:last-child
+	margin-bottom: spacing(3)
 
+
+// UDM module spacing
 .umc .umcUDMDetailPage
 	.umcPageMainContent
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
 
+	.umcPageHeader h2
+		@extends h1
 	.umcPageHeader
-		padding: spacing(4) spacing(4) spacing(3)
+		padding: spacing(4)
 	.umcPageHelpText
+		margin: 0
 		padding: 0 spacing(4) spacing(3)
 
 	.dijitTitlePane
