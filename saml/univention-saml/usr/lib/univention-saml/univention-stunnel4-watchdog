@@ -30,10 +30,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+. /usr/share/univention-lib/all.sh
 
 
 check_stunnel () {
-	echo "Q" |  openssl s_client -connect "localhost:11212" 2>/dev/null >/dev/null
+	echo "Q" | openssl s_client -connect "localhost:11212" -cert $saml_idp_certificate_certificate -key $saml_idp_certificate_privatekey 2>/dev/null 1>/dev/null
 	return $?
 }
 
@@ -43,16 +44,20 @@ while true; do
 	eval "$(ucr shell)"
 	[ -z ${ucs_server_sso_stunnel4_watchdog_timeout} ] && ucs_server_sso_stunnel4_watchdog_timeout=30
 
-	systemctl is-active --quiet "stunnel4.service"
-	# only check stunnel4 if active
-	if [ "$?" == 0 ]; then
-		timeout 5 bash -c check_stunnel
-		# command was not successful. kill stunnel4 to restart ist
-		if [ "$?" == "124" ]; then
-				echo "Killing stunnel4 to restart, it seems to be hanging. See https://forge.univention.org/bugzilla/show_bug.cgi?id=52196"
-				kill -9 "$(pidof -x stunnel4)"
-				rm /var/run/univention-saml/*.socket
-			fi
+	export saml_idp_certificate_certificate
+	export saml_idp_certificate_privatekey
+	if is_ucr_true "ucs/server/sso/stunnel4/watchdog/active"; then
+		systemctl is-active --quiet "stunnel4.service"
+		# only check stunnel4 if active
+		if [ "$?" == 0 ]; then
+			timeout 5 bash -c check_stunnel
+			# command was not successful. kill stunnel4 to restart ist
+			if [ "$?" == "124" ]; then
+					echo "Killing stunnel4 to restart, it seems to be hanging. See https://forge.univention.org/bugzilla/show_bug.cgi?id=52196"
+					kill -9 "$(pidof -x stunnel4)"
+					ls -d /var/run/univention-saml/* | grep ".socket$" | grep -v "memcached.socket$" | xargs rm 2>/dev/null 1>/dev/null
+				fi
+		fi
 	fi
 	sleep "${ucs_server_sso_stunnel4_watchdog_timeout}"
 done

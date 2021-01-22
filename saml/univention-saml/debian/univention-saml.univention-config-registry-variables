@@ -10,6 +10,12 @@ Description[en]=Defines how often the service univention-stunnel4-watchdog check
 Type=int
 Categories=management
 
+[ucs/server/sso/stunnel4/watchdog/active]
+Description[de]=Definiert ob der univention-stunnel4-watchdog aktiv ist. (default : false)
+Description[en]=Defines if univention-stunnel4-watchdog is active (default : false)
+Type=bool
+Categories=management
+
 [ucs/server/sso/virtualhost]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird ein Virtual Host Eintrag für den FQDN des Identity Provider erstellt. (default: true)
 Description[en]=If this variable is set to 'true', a virtual host entry for the fqdn of the identity provider is generated. (default: true)
