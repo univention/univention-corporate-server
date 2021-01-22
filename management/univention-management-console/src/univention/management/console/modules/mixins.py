@@ -99,7 +99,7 @@ class Progress(object):
 	def poll(self):
 		if self.exc_info:
 			self.finish()
-			six.reraise(self.exc_info[1], None, self.exc_info[2])
+			six.reraise(*self.exc_info)
 		ret = {
 			'title': self.title,
 			'finished': self.finished,
