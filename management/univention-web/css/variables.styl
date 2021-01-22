@@ -18,7 +18,10 @@ spacing(multiplicant, small=false)
 	spacing = $spacing-normal
 	if small
 		spacing = $spacing-small
-	s('calc(%s * %s)', multiplicant, spacing)
+	if multiplicant == 1
+		spacing
+	else
+		s('calc(%s * %s)', multiplicant, spacing)
 
 
 
