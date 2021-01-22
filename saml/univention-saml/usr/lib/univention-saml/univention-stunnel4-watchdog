@@ -55,7 +55,7 @@ while true; do
 			if [ "$?" == "124" ]; then
 					echo "Killing stunnel4 to restart, it seems to be hanging. See https://forge.univention.org/bugzilla/show_bug.cgi?id=52196"
 					kill -9 "$(pidof -x stunnel4)"
-					ls -d /var/run/univention-saml/* | grep ".socket$" | grep -v "memcached.socket$" | xargs rm
+					ls -d /var/run/univention-saml/* | grep "\.socket$" | grep -v "memcached\.socket$" | xargs rm
 				fi
 		fi
 	fi
