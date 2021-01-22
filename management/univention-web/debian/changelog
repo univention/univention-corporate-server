@@ -1,3 +1,9 @@
+univention-web (4.0.1-5) unstable; urgency=medium
+
+  * Bug #52453: miscellaneous styling changes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 22 Jan 2021 12:46:44 +0100
+
 univention-web (4.0.1-4) unstable; urgency=medium
 
   * Bug #52453: fix App Center install dialog
