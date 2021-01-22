@@ -44,10 +44,11 @@ CRON_D = '/etc/cron.d/univention-repository-sync'
 def write_cron_job(cron: str) -> None:
     with open(CRON_D, 'w') as cron_file:
         cron_file.write('# cron job for syncing repository\n')
+        cron_file.write("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n")
         if cron == '* * * * * ':
             return
 
-        cron_file.write('%s root /usr/sbin/univention-repository-update net\n' % cron)
+        cron_file.write('%s root /usr/sbin/univention-repository-update net >>/var/log/univention/repository.log\n' % cron)
 
 
 def one(results: Dict[str, List[str]], key: str) -> str:
