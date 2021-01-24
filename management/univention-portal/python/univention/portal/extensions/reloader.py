@@ -38,7 +38,7 @@ import tempfile
 from imghdr import what
 
 import ldap
-from ldap.dn import explode_dn
+from ldap.dn import str2dn
 from six import BytesIO, with_metaclass
 from six.moves.urllib.parse import quote
 from univention.portal import Plugin
@@ -468,7 +468,7 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 					usernames.append(member.lower())
 			for member in unique_members:
 				if member.startswith("cn="):
-					member_uid = explode_dn(member, True)[0].lower()
+					member_uid = str2dn(member)[0][0][1]
 					if "{}$".format(member_uid) not in member_uids:
 						groups.append(member)
 			ldap_content[dn.lower()] = {"usernames": usernames, "groups": groups}
