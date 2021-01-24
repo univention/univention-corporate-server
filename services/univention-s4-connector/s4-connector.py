@@ -118,7 +118,7 @@ def _restart_connector():
 	try:
 		if not subprocess.call(['pgrep', '-f', 'python.*s4connector.s4.main']):
 			ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...")
-			subprocess.call(('service', 'univention-s4-connector', 'restart'))
+			subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
 			ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done")
 	finally:
 		listener.unsetuid()
@@ -138,7 +138,7 @@ def handler(dn, new, old, command):
 	if b'univentionUDMProperty' in new.get('objectClass', []) or b'univentionUDMProperty' in old.get('objectClass', []):
 		connector_needs_restart = True
 	else:
-		if connector_needs_restart is True:
+		if connector_needs_restart and not s4_init_mode:
 			_restart_connector()
 			connector_needs_restart = False
 
@@ -217,7 +217,7 @@ def postrun():
 		finally:
 			listener.unsetuid()
 
-	if connector_needs_restart is True:
+	if connector_needs_restart:
 		_restart_connector()
 		connector_needs_restart = False
 
