@@ -41,8 +41,8 @@ description = 'Package-Database'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer))'
 attributes = ['uid']
 
-hostname = listener.baseConfig['hostname']
-domainname = listener.baseConfig['domainname']
+hostname = listener.configRegistry['hostname']
+domainname = listener.configRegistry['domainname']
 
 ADD_DIR = '/var/lib/univention-pkgdb/add'
 DELETE_DIR = '/var/lib/univention-pkgdb/delete'

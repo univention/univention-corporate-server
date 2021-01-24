@@ -142,7 +142,7 @@ def handler(dn, new, old):
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
 
-	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	fqdn = '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
 	fqdn = fqdn.encode('UTF-8')
 
 	if old and not new:

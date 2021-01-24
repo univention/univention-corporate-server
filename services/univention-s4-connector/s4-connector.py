@@ -109,7 +109,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
 def _is_module_disabled():
 	# type: () -> bool
-	return listener.baseConfig.is_true('connector/s4/listener/disabled', False)
+	return listener.configRegistry.is_true('connector/s4/listener/disabled', False)
 
 
 def _restart_connector():

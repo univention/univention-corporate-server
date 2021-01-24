@@ -49,7 +49,7 @@ from univention.config_registry.interfaces import Interfaces
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 
-domainname = listener.baseConfig['domainname']
+domainname = listener.configRegistry['domainname']
 
 name = 'samba-shares'
 description = 'Create configuration for Samba shares'
