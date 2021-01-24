@@ -1,3 +1,10 @@
+univention-pam (13.0.3-1) unstable; urgency=medium
+
+  * Bug #52682: Avoid long delays during AD-Takeover due to
+    repeated ucr commits to slapd.conf in well-known-sid-name-mapping.py
+
+ -- Arvid <requate@univention.de>  Sun, 24 Jan 2021 20:35:14 +0100
+
 univention-pam (13.0.2-2) unstable; urgency=low
 
   * Bug #43211: reanimate univention-skel for bash-completion

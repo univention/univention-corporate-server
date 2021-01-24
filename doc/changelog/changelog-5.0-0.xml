@@ -972,6 +972,9 @@
 				<listitem><simpara>
 					The listener module <filename>s4-connector</filename> has been adjusted to avoid repeated restarts of the <application>univention-s4-connector</application> in quick succession during module initialization (<u:bug>52681</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The listener module <filename>well-known-sid-name-mapping</filename> has been adjusted to avoid long delays during AD-Takeover due to repeated ucr commits to slapd.conf (<u:bug>52682</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
