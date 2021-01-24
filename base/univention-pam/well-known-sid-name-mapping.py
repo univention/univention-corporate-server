@@ -53,6 +53,8 @@ modrdn = '1'
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 modified_default_names = []
+set_ucr_key__value_list = []
+unset_ucr_key_list = []
 
 
 def sidToName(sid):
@@ -65,6 +67,9 @@ def sidToName(sid):
 
 
 def checkAndSet(new, old):
+	global set_ucr_key__value_list
+	global unset_ucr_key_list
+
 	obj = new or old
 	if not obj:
 		return
@@ -115,22 +120,14 @@ def checkAndSet(new, old):
 		ucr.load()
 		ucr_value = ucr.get(unset_ucr_key)
 		if ucr_value:
-			ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
-			listener.setuid(0)
-			try:
-				univention.config_registry.handler_unset([unset_ucr_key])
-				return default_name
-			finally:
-				listener.unsetuid()
+			unset_ucr_key_list.append(unset_ucr_key)
+			modified_default_names.append(default_name)
+			ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
 	else:
 		ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
-		ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr set %s" % (name, ucr_key_value))
-		listener.setuid(0)
-		try:
-			univention.config_registry.handler_set([ucr_key_value])
-			return default_name
-		finally:
-			listener.unsetuid()
+		modified_default_names.append(default_name)
+		ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr set %s" % (name, ucr_key_value))
+		set_ucr_key__value_list.append(ucr_key_value)
 
 
 def no_relevant_change(new, old):
@@ -157,8 +154,6 @@ def no_relevant_change(new, old):
 
 def handler(dn, new, old, command):
 	# type: (str, dict, dict, str) -> None
-	global modified_default_names
-
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
 		ud.debug(ud.LISTENER, ud.INFO, '%s: deactivated by listener/module/wellknownsidnamemapping' % (name,))
 		return
@@ -209,30 +204,39 @@ def handler(dn, new, old, command):
 	if new:
 		if not old:  # add
 			ud.debug(ud.LISTENER, ud.INFO, "%s: new %r" % (name, new.get("sambaSID")))
-			changed_default_name = checkAndSet(new, old)
-			if changed_default_name:
-				modified_default_names.append(changed_default_name)
+			checkAndSet(new, old)
 
 		else:  # modify
 			if no_relevant_change(new, old):
 				return
-
-			changed_default_name = checkAndSet(new, old)
-			if changed_default_name:
-				modified_default_names.append(changed_default_name)
+			checkAndSet(new, old)
 
 	elif old:  # delete
 		ud.debug(ud.LISTENER, ud.INFO, "%s: del %r" % (name, old.get("sambaSID")))
-		changed_default_name = checkAndSet(new, old)
-		if changed_default_name:
-			modified_default_names.append(changed_default_name)
+		checkAndSet(new, old)
 
 
 def postrun():
 	# type: () -> None
 	global modified_default_names
+	global set_ucr_key__value_list
+	global unset_ucr_key_list
+
 	if not modified_default_names:
 		return
+
+	listener.setuid(0)
+	try:
+		if unset_ucr_key_list:
+			ud.debug(ud.LISTENER, ud.INFO, "%s: Running ucs unset %s" % (name, unset_ucr_key_list))
+			univention.config_registry.handler_unset(unset_ucr_key_list)
+			unset_ucr_key_list = []
+		if set_ucr_key__value_list:
+			ud.debug(ud.LISTENER, ud.INFO, "%s: Running ucs set %s" % (name, set_ucr_key__value_list))
+			univention.config_registry.handler_set(set_ucr_key__value_list)
+			set_ucr_key__value_list = []
+	finally:
+		listener.unsetuid()
 
 	hook_dir = '/usr/lib/univention-pam/well-known-sid-name-mapping.d'
 	if not os.path.isdir(hook_dir):
