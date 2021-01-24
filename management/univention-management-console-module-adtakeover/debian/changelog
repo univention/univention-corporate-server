@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.2-1) unstable; urgency=medium
+
+  * Bug #51324: Migrate to Python 3
+
+ -- Arvid <requate@univention.de>  Sun, 24 Jan 2021 20:26:30 +0100
+
 univention-management-console-module-adtakeover (7.0.1-1) unstable; urgency=medium
 
   * Bug #43686: use systemctl to start, stop or restart univention-directory-listener
