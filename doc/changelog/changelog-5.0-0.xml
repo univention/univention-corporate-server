@@ -958,7 +958,7 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 AD Takover now runs with  Python 3 (<u:bug>51324</u:bug>)
+					AD Takover now runs with  Python 3 (<u:bug>51324</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -968,6 +968,9 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The <application>univention-s4-connector</application> is now running with Python 3 (<u:bug>52043</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The listener module <filename>s4-connector</filename> has been adjusted to avoid repeated restarts of the <application>univention-s4-connector</application> in quick succession during module initialization (<u:bug>52681</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

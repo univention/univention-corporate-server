@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.5-1) unstable; urgency=medium
+
+  * Bug #52681: Avoid restarting the S4-Connector repeatedly in short
+    succession during initialization of the s4-connector Listener module
+
+ -- Arvid <requate@univention.de>  Sun, 24 Jan 2021 20:29:53 +0100
+
 univention-s4-connector (14.0.4-2) unstable; urgency=medium
 
   * Bug #52364: update group member cache after move
