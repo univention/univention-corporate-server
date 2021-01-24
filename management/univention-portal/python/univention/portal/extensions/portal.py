@@ -42,7 +42,7 @@ class Portal(with_metaclass(Plugin)):
 
 	`get_user`: Get the user for the current request
 	`login_user`: New login for a user
-	`login_request`: A anonymous user wants to login
+	`login_request`: An anonymous user wants to login
 	`get_visible_content`: The content that the frontend shall present.
 		Should be filtered by the "user". Also gets "admin_mode", a
 		boolean indicating whether the user requested all the content
@@ -192,11 +192,11 @@ class Portal(with_metaclass(Plugin)):
 			if not admin_mode:
 				if not entry["activated"]:
 					continue
-				if entry["anonymous"] and user.username:
+				if entry["anonymous"] and not user.is_anonymous():
 					continue
 				if entry["allowedGroups"]:
-					for group_dn in entry["allowedGroups"]:
-						if user and group_dn in user.groups:
+					for group in entry["allowedGroups"]:
+						if user.is_member_of(group):
 							break
 					else:
 						continue

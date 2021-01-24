@@ -34,5 +34,15 @@ class User(object):
 	def __init__(self, username, groups):
 		self.username = username
 		self.groups = groups
-		admin_groups = [group.lower() for group in config.fetch("admin_groups")]
-		self.is_admin = any(group in admin_groups for group in self.groups)
+
+	def is_admin(self):
+		if self.is_anonymous():
+			return False
+		admin_groups = config.fetch("admin_groups")
+		return any(self.is_member_of(group) for group in admin_groups)
+
+	def is_anonymous(self):
+		return self.username is None
+
+	def is_member_of(self, group):
+		return group.lower() in self.groups

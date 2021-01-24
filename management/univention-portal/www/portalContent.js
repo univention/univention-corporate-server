@@ -69,7 +69,7 @@ define([
 				}
 
 				setTimeout(() => {
-					json.load('/univention/portal/portal.json', require, result => {
+					json.load('./portal/portal.json', require, result => {
 						if (result && result.portal && result.entries && result.categories) {
 							if (wait_for_listener && tools.isEqual(result, previousPortalJson)) {
 								_load();
