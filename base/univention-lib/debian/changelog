@@ -1,3 +1,9 @@
+univention-lib (9.0.10-1) unstable; urgency=medium
+
+  * Bug #51324: Make admember code work for Python2 and Python3
+
+ -- Arvid <requate@univention.de>  Sun, 24 Jan 2021 21:56:16 +0100
+
 univention-lib (9.0.9-10) unstable; urgency=medium
 
   * Bug #43686: use systemctl calls for UDL

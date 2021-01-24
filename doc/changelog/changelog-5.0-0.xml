@@ -984,6 +984,9 @@
 				<listitem><simpara>
 					The &ucsUMC; module now runs with Python 3 (<u:bug>51336</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The <filename>admember</filename> code now runs with Python 2 as well as with Python 3 (<u:bug>51324</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
