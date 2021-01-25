@@ -4917,6 +4917,25 @@ class optionsUsersUser(select):
 __register_choice_update_function(optionsUsersUser.update_choices)
 
 
+class allModuleOptions(combobox):
+	"""
+	Syntax to select options for |UDM| modules.
+	"""
+
+	@classmethod
+	def update_choices(cls):
+		modules = univention.admin.modules.modules.values()
+		cls.choices = [
+			(key, opt.short_description)
+			for module in modules
+			for key, opt in getattr(module, 'options', {}).items()
+			if key != 'default'
+		]
+
+
+__register_choice_update_function(allModuleOptions.update_choices)
+
+
 class nagiosHostsEnabledDn(UDM_Objects):
 	"""
 	Syntax to select Nagios enabled hosts from |LDAP|.

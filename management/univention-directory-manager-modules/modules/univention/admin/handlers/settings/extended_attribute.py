@@ -229,7 +229,7 @@ property_descriptions = {
 	'options': univention.admin.property(
 		short_description=_('Required options'),
 		long_description=_('This extended attribute is only used when at least one of these options is enabled, e.g. "posix" or "samba"'),
-		syntax=univention.admin.syntax.string_numbers_letters_dots,
+		syntax=getattr(univention.admin.syntax, "allModuleOptions", univention.admin.syntax.string_numbers_letters_dots),
 		multivalue=True,
 	),
 	'doNotSearch': univention.admin.property(
