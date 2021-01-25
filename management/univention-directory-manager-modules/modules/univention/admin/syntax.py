@@ -56,6 +56,7 @@ import ldap
 import PIL
 import pytz
 from ldap.filter import filter_format, escape_filter_chars
+from ldap.schema import ObjectClass, AttributeType
 
 import univention.admin.modules
 import univention.admin.uexceptions
@@ -64,9 +65,10 @@ import univention.debug as ud
 from univention.admin import localization
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
+from univention.uldap import getMachineConnection
 
 try:
-	from typing import Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
+	from typing import Any, Callable, Iterable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa F401
 	from univention.admin.uldap import access  # noqa F401
 except ImportError:
 	pass
@@ -2636,22 +2638,56 @@ class ldapDnOrNone(simple):
 		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
 
-class ldapObjectClass(simple):
+class ldapObjectClass(combobox):
 	"""
 	Syntax to enter a |LDAP| objectClass name.
 	"""
+	choices = [('top', 'top')]
+
 	@classmethod
-	def parse(self, text):
-		return text  # FIXME: allows anything
+	def fill_choices(cls, ocs):  # type: (Iterable[str]) -> None
+		cls.choices = [(oc, oc) for oc in sorted(ocs, key=lambda oc: oc.lower())]
 
 
-class ldapAttribute(simple):
+class ldapAttribute(combobox):
 	"""
 	Syntax to enter a |LDAP| attribute name.
 	"""
+	choices = []  # type: List[Tuple[str, str]]
+
 	@classmethod
-	def parse(self, text):
-		return text  # FIXME: allows anything
+	def fill_choices(cls, attrs):  # type: (Iterable[str]) -> None
+		cls.choices = [(attr, attr) for attr in sorted(attrs, key=lambda oc: oc.lower())]
+
+
+def _update_schema():
+	"""
+	Fetch LDAP schema to update list of objectClasses and attributes.
+	"""
+	try:
+		conn = getMachineConnection()
+		try:
+			subschema = conn.get_schema()
+
+			def lookup(clazz):  # type: (str) -> Set[str]
+				names = set()  # type: Set[str]
+				for oid in subschema.listall(clazz):
+					obj = subschema.get_obj(clazz, oid)
+					if obj:
+						names.update(obj.names)
+
+				return names
+
+			ldapObjectClass.fill_choices(lookup(ObjectClass))
+			ldapAttribute.fill_choices(lookup(AttributeType))
+		finally:
+			conn.unbind()
+	except ldap.LDAPError:
+		pass
+
+
+__register_choice_update_function(_update_schema)
+
 
 
 class ldapFilter(simple):
