@@ -33,42 +33,41 @@
 
 from __future__ import absolute_import
 
-import re
-import ldap
-import operator
-import ipaddress
-import inspect
-import time
-import pytz
-import datetime
-import dateutil
 import base64
-import zlib
 import bz2
 import copy
-import json
-import sys
-import os
-import shlex
+import datetime
 import imghdr
-import PIL
-import traceback
+import inspect
 import io
+import ipaddress
+import json
+import operator
+import os
+import re
+import shlex
+import sys
+import time
+import traceback
+import zlib
 from io import BytesIO
 from operator import itemgetter
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
 
+import dateutil
+import ldap
+import PIL
+import pytz
 import six
+from ldap.filter import filter_format, escape_filter_chars
 
-import univention.debug as ud
 import univention.admin.modules
-import univention.admin.uexceptions
 import univention.admin.types
+import univention.admin.uexceptions
+import univention.debug as ud
 from univention.admin import localization
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
-
-from ldap.filter import filter_format, escape_filter_chars
 
 if TYPE_CHECKING:
 	from univention.admin.uldap import access  # noqa F401
