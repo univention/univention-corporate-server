@@ -60,7 +60,6 @@ def requiredObjectClassesProperty(**kwargs):
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)
@@ -74,7 +73,6 @@ def prohibitedObjectClassesProperty(**kwargs):
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)
@@ -87,7 +85,6 @@ def fixedAttributesProperty(**kwargs):
 		short_description=_('Fixed attribute'),
 		long_description='',
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)
@@ -100,7 +97,6 @@ def emptyAttributesProperty(**kwargs):
 		short_description=_('Empty attribute'),
 		long_description='',
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)
@@ -113,7 +109,6 @@ def ldapFilterProperty(**kwargs):
 		short_description=_('LDAP filter'),
 		long_description=_('This policy applies only to objects which matches this LDAP filter.'),
 		syntax=univention.admin.syntax.ldapFilter,
-		required=False,
 		may_change=True,
 		identifies=False
 	)
