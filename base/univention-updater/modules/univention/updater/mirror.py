@@ -34,7 +34,6 @@ from __future__ import absolute_import
 import os
 import errno
 import subprocess
-import itertools
 import logging
 import json
 
@@ -169,16 +168,8 @@ class UniventionMirror(UniventionUpdater):
         """
         Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts.
         """
-        start = self.version_start
-        end = self.version_end
-
-        repos = self._iterate_version_repositories(start, end)  # returns generator
-
-        components = self.get_components(only_localmirror_enabled=True)
-        comp = self._iterate_component_repositories(components, start, end, for_mirror_list=True)  # returns generator
-
-        all_repos = itertools.chain(repos, comp)  # concatenate all generators into a single one
-        for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos, self.script_verify):
+        scripts = self.get_sh_files(self.version_start, self.version_end)
+        for server, struct, phase, path, script in scripts:
             self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
             assert script is not None, 'No script'
 

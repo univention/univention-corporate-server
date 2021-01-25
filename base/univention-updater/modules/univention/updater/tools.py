@@ -1227,6 +1227,7 @@ class UniventionUpdater(object):
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
         self.sources = self.configRegistry.is_true('repository/online/sources', False)
         self.timeout = float(self.configRegistry.get('repository/online/timeout', 30))
+        self.script_verify = self.configRegistry.is_true('repository/online/verify', True)
         UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
     def ucr_reinit(self):
@@ -1544,43 +1545,6 @@ class UniventionUpdater(object):
         with open("/var/log/univention/updater.log", "a") as log:
             return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log)
 
-    def _iterate_version_repositories(self, start, end):
-        # type: (UCS_Version, UCS_Version) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
-        """
-        Iterate over all UCS releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :returns: A iterator returning 2-tuples (server, ver).
-        """
-        self.log.info('Searching releases [%s..%s)', start, end)
-        releases = sorted(ver for ver, _data in self.get_releases(start, end))
-        for release in releases:
-            yield self.server, UCSRepoPool5(release=release, prefix=self.server)
-
-    def _iterate_component_repositories(self, components, start, end, for_mirror_list=False):
-        # type: (Iterable[Component], UCS_Version, UCS_Version, bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
-        """
-        Iterate over all components and return (server, version).
-
-        :param components: List of components.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param bool for_mirror_list: Use the settings for mirroring.
-        :returns: A iterator returning 2-tuples (server, ver).
-        """
-        self.log.info('Searching components %r [%s..%s)', components, start, end)
-        for comp in components:
-            for server, struct in comp.versions(start, end, for_mirror_list):
-                struct.arch = "all"
-                self.log.info('Component %s from %s versions %r', comp.name, server, struct)
-                try:
-                    assert server.access(struct, 'Packages.gz')
-                    yield server, struct
-                except (ConfigurationError, ProxyError):
-                    if comp.current:
-                        raise
-
     def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
         # type: (bool, Optional[UCS_Version], Optional[UCS_Version], bool) -> str
         """
@@ -1635,13 +1599,9 @@ class UniventionUpdater(object):
         Get pre- and postup.sh files and call them in the right order::
 
             u = UniventionUpdater()
-            ver = u.current_version
-            rel = u._iterate_version_repositories(ver, ver)
-            com = u._iterate_component_repositories([u.component('ucd')], ver, ver)
-            repos = itertools.chain(rel, com)
-            scripts = u.get_sh_files(repos)
-            next_ver = u.get_next_version(u.current_version)
-            for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
+            ver = u.get_next_version(u.current_version)
+            scripts = u.get_sh_files(ver, ver)
+            for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', ver):
               if (phase, order) == ('update', 'main'):
                 pass
 
@@ -1740,20 +1700,34 @@ class UniventionUpdater(object):
         # clean up
         yield "update", "post"
 
-    @staticmethod
-    def get_sh_files(repositories, verify=False):
-        # type: (Iterable[Tuple[_UCSServer, _UCSRepo]], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]]
+    def get_sh_files(self, start, end, mirror=False):
+        # type: (UCS_Version, UCS_Version, bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]]
         """
         Return all preup- and postup-scripts of repositories.
 
-        :param repositories: iteratable (server, struct)s
-        :param bool verify: Verify the PGP signature of the downloaded scripts.
+        :param UCS_Version start: The UCS release to start from.
+        :param UCS_Version end: The UCS release where to stop.
+        :param bool mirror: Use the settings for mirroring.
         :returns: iteratable (server, struct, phase, path, script)
         :raises VerificationError: if the PGP signature is invalid.
 
         See :py:meth:`call_sh_files` for an example.
         """
-        for server, struct in repositories:
+        def all_repos():
+            # type: () -> Iterator[Tuple[_UCSServer, _UCSRepo, bool]]
+            self.log.info('Searching releases [%s..%s]', start, end)
+            for ver, _data in self.get_releases(start, end):
+                yield self.server, UCSRepoPool5(release=ver, prefix=self.server), True
+
+            self.log.info('Searching components [%s..%s]', start, end)
+            components = self.get_components(only_localmirror_enabled=mirror)
+            for comp in components:
+                for server, struct in comp.versions(start, end, mirror):
+                    struct.arch = "all"
+                    self.log.info('Component %s from %s versions %r', comp.name, server, struct)
+                    yield server, struct, comp.current
+
+        for server, struct, critical in all_repos():
             uses_proxy = hasattr(server, "proxy_handler") and server.proxy_handler.proxies  # type: ignore
             for phase in ('preup', 'postup'):
                 name = '%s.sh' % phase
@@ -1765,7 +1739,7 @@ class UniventionUpdater(object):
                     if not script.startswith(b'#!') and uses_proxy:
                         uri = server.join(path)
                         raise ProxyError(uri, "download blocked by proxy?")
-                    if verify and struct >= UCS_Version((3, 2, 0)):
+                    if self.script_verify and struct >= UCS_Version((3, 2, 0)):
                         name_gpg = name + '.gpg'
                         path_gpg = struct.path(name_gpg)
                         try:
@@ -1782,6 +1756,9 @@ class UniventionUpdater(object):
                     yield server, struct, phase, path, script
                 except DownloadError as e:
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                except ConfigurationError:
+                    if critical:
+                        raise
 
 
 class LocalUpdater(UniventionUpdater):

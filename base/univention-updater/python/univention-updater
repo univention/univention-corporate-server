@@ -57,7 +57,6 @@ import time
 import getopt
 import subprocess
 import datetime
-import itertools
 from textwrap import dedent, wrap
 from errno import ENOENT
 
@@ -561,14 +560,7 @@ def main():
         phase = 'preup'
         update_status(phase='PREUP')
 
-        rel = updater._iterate_version_repositories(new_version, new_version)
-
-        components = updater.get_components()
-        # components = filter(lambda c: 'current' in ucr.get('repository/online/component/%s/version' % c, '').split(','), components)
-        com = updater._iterate_component_repositories(components, new_version, new_version)
-
-        repos = itertools.chain(rel, com)
-        scripts = updater.get_sh_files(repos, ucr.is_true('repository/online/verify', True))
+        scripts = updater.get_sh_files(new_version, new_version)
         for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
             # do not switch back and forth between PRE and UPDATE phase resp. UPDATE and POST phase.
             if (phase, order) not in (

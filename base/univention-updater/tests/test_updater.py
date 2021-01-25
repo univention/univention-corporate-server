@@ -51,6 +51,7 @@ class TestUniventionUpdater(object):
             'repository/online/prefix': 'prefix',
             'repository/online/sources': 'yes',
             'repository/online/httpmethod': 'POST',
+            'repository/online/verify': 'yes',
         })
         u.config_repository()
         assert not u.online_repository
@@ -59,6 +60,7 @@ class TestUniventionUpdater(object):
         assert u.repourl.path == '/prefix/'
         assert u.sources
         assert U.UCSHttpServer.http_method == 'POST'
+        assert u.script_verify
 
     def test_ucs_reinit(self, u):
         """Test reinitialization."""
@@ -266,17 +268,19 @@ class TestUniventionUpdater(object):
             postup_path: b'#!postup_content',
             RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
         })
-        repo = ((u.server, struct),)
-
-        gen = U.UniventionUpdater.get_sh_files(repo)
+        gen = u.get_sh_files(u.current_version, u.current_version)
 
         assert (u.server, struct, 'preup', preup_path, b'#!preup_content') == next(gen)
         assert (u.server, struct, 'postup', postup_path, b'#!postup_content') == next(gen)
         with pytest.raises(StopIteration):
             next(gen)
 
-    def test_get_sh_files_bug27149(self, u, http):
+    def test_get_sh_files_bug27149(self, ucr, u, http):
         """Test preup.sh / postup.sh download for non-architecture component."""
+        ucr({
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/layout': 'flat',
+        })
         struct = U.UCSRepoPoolNoArch(major=MAJOR, minor=MINOR, part='maintained/component', patch='a')
         preup_path = struct.path('preup.sh')
         postup_path = struct.path('postup.sh')
@@ -285,9 +289,7 @@ class TestUniventionUpdater(object):
             postup_path: b'#!postup_content',
             RJSON: gen_releases([(MAJOR, MINOR, PATCH)]),
         })
-        repo = ((u.server, struct),)
-
-        gen = U.UniventionUpdater.get_sh_files(repo)
+        gen = u.get_sh_files(u.current_version, u.current_version)
 
         assert (u.server, struct, 'preup', preup_path, b'#!preup_content') == next(gen)
         assert (u.server, struct, 'postup', postup_path, b'#!postup_content') == next(gen)
