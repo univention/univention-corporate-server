@@ -1,6 +1,7 @@
 univention-directory-manager-modules (14.0.20-19) unstable; urgency=low
 
   * Bug #52683: Add syntax class to select syntax class for EA
+  * Bug #25054: Make options in extended attributes selectable
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 21 Sep 2021 17:20:44 +0200
 
