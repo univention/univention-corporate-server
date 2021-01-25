@@ -373,8 +373,8 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		raise connectionFailed(msg)
 
 	user_sid = decode_sid(res[0][1]["objectSid"][0])
-	admin_sid = u"%s-%d" % (domain_sid, security.DOMAIN_RID_ADMINISTRATOR)
-	admins_sid = "%s-%d" % (domain_sid, security.DOMAIN_RID_ADMINS)
+	admin_sid = u"%s-%d" % (domain_sid, DOMAIN_RID_ADMINISTRATOR)
+	admins_sid = "%s-%d" % (domain_sid, DOMAIN_RID_ADMINS)
 	if six.PY3:
 		admin_sid = security.dom_sid(admin_sid)
 		admins_sid = security.dom_sid(admins_sid)
