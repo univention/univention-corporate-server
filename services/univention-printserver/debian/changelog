@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-2) unstable; urgency=medium
+
+  * Bug #52453: adjust styling of module
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 25 Jan 2021 11:39:14 +0100
+
 univention-printserver (13.0.2-1) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.0-11) unstable; urgency=medium
+
+  * Bug #52453: adjust layout styling
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 25 Jan 2021 11:37:45 +0100
+
 univention-management-console-module-udm (10.0.0-10) unstable; urgency=medium
 
   * Bug #52453: adjust udm styling
