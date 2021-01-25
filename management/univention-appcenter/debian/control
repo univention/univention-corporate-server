@@ -23,11 +23,11 @@ Depends:
  python3-univention-appcenter (= ${source:Version}),
  python3-univention-directory-manager,
  python3-univention-lib,
+ python3-univention-updater,
  shell-univention-lib,
  univention-config,
  univention-management-console-module-lib,
  univention-management-console-server (>= 11.0.4-37),
- univention-updater,
  ${misc:Depends},
  ${python3:Depends},
 Provides:
