@@ -164,3 +164,10 @@
 	padding-left: 0;
 	padding-right: 0;
 }
+
+
+/* module specific layout */
+.umcTopContainer--layout-udm-dhcp-dhcp-searchpage .umcUDMSearchForm,
+.umcTopContainer--layout-udm-dns-dns-searchpage .umcUDMSearchForm {
+	margin-bottom: calc(3 * var(--layout-spacing-unit));
+}
