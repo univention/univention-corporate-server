@@ -1,3 +1,9 @@
+ucs-test (10.0.2-2) unstable; urgency=medium
+
+  * Bug #52484: also check apps readme files
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jan 2021 12:10:42 +0100
+
 ucs-test (10.0.2-1) unstable; urgency=medium
 
   * Bug #52044: fix 169sync_custom_mapping_nonstandard_attribs
