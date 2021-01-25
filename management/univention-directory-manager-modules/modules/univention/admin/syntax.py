@@ -4559,20 +4559,11 @@ class nfsMounts(complex):
 	all_required = True
 
 
-class languageCode(string):
+class languageCode(combobox):
 	"""
 	Syntax for a language, e.g. `language_COUNTRY`.
 	"""
-	min_length = 5
-	max_length = 5
-	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) is not None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError(_('Language code must be in format "xx_XX"!'))
+	choices = [(key, val) for (key, val) in language.choices if re.match(r"^[a-z][a-z]_[A-Z][A-Z]$", key)]
 
 
 class translationTuple(complex):
