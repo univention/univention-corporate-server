@@ -5086,7 +5086,7 @@ class nfsMounts(complex):
 	all_required = True
 
 
-class languageCode(string):
+class languageCode(combobox):
 	"""
 	Syntax for a language, e.g. `language_COUNTRY`.
 	>>> languageCode.parse("de_DE")
@@ -5102,9 +5102,8 @@ class languageCode(string):
 	...
 	valueError:
 	"""
-	min_length = 5
-	max_length = 5
-	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
+	_re = re.compile(r'^[a-z][a-z]_[A-Z][A-Z]$')
+	choices = (lambda m: [kv for kv in language.choices if m(kv[0])])(_re.match)
 
 	@classmethod
 	def parse(self, text):
