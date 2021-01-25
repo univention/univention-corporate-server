@@ -117,7 +117,6 @@ def ldapFilterProperty(**kwargs):
 		short_description=_('LDAP filter'),
 		long_description=_('This policy applies only to objects which matches this LDAP filter.'),
 		syntax=univention.admin.syntax.ldapFilter,
-		multivalue=False,
 		options=[],
 		required=False,
 		may_change=True,
