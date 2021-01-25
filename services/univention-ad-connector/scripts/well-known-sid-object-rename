@@ -193,7 +193,7 @@ class UserRenameHandler:
 
 	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
 		userdns = self.lo.searchDn(
-			filter="(&(objectClass=sambaSamAccount)(uid=%s))" % (ucsldap_object_name, ),
+			filter=filter_format("(&(objectClass=sambaSamAccount)(uid=%s))", (ucsldap_object_name, )),
 			base=self.lo.base)
 
 		if len(userdns) > 1:

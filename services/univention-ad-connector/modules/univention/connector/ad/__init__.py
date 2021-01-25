@@ -44,6 +44,7 @@ import pprint
 import string
 import base64
 import subprocess
+from tempfile import NamedTemporaryFile
 
 import six
 import ldap
@@ -332,10 +333,6 @@ def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCS
 
 def decode_sid(value):
 	return str(ndr_unpack(security.dom_sid, value))
-
-
-
-
 
 
 class LDAPEscapeFormatter(string.Formatter):
@@ -712,9 +709,12 @@ class ad(univention.connector.ucs):
 	def get_kerberos_ticket(self):
 		p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 		p1.wait()
-		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.configRegistry['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.configRegistry['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
-		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-		stdout, stderr = p1.communicate()
+		with NamedTemporaryFile('w') as fd:
+			fd.write(self.ad_ldap_bindpw)
+			fd.flush()
+			cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), self.ad_ldap_binddn]
+			p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+			stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))
 
