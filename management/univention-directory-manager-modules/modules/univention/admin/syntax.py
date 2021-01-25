@@ -42,7 +42,6 @@ import inspect
 import io
 import ipaddress
 import json
-import operator
 import os
 import re
 import shlex
@@ -4891,24 +4890,19 @@ class univentionAdminModules(select):
 				return text
 		raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not a Univention Admin Module.') % text)
 
-# Unfortunately, Python doesn't seem to support (static) class methods;
-# however, (static) class variables such as "choices" seem to work;
-# so, we'll modify "choices" using this global method
+	@classmethod
+	def update_choices(cls):
+		"""
+		Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
+		"""
+		cls.choices = sorted((
+			(name, univention.admin.modules.short_description(mod))
+			for name, mod in univention.admin.modules.modules.items()
+			if not univention.admin.modules.virtual(mod)
+		), key=itemgetter(1))
 
 
-def univentionAdminModules_update():
-	"""
-	Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
-	"""
-	temp = []
-	for name, mod in univention.admin.modules.modules.items():
-		if not univention.admin.modules.virtual(mod):
-			temp.append((name, univention.admin.modules.short_description(mod)))
-
-	univentionAdminModules.choices = sorted(temp, key=operator.itemgetter(1))
-
-
-__register_choice_update_function(univentionAdminModules_update)
+__register_choice_update_function(univentionAdminModules.update_choices)
 
 
 class UDM_PropertySelect(complex):
