@@ -5860,3 +5860,23 @@ class ActivationDateTimeTimezone(DateTimeTimezone):
 
 __register_choice_update_function(Country.update_choices)
 Country.update_choices()
+
+
+class UDM_Syntax(combobox):
+	"""
+	Syntax class for Extended Attributes.
+	"""
+	choices = []  # type: List[Tuple[str, str]]
+	empty_value = True
+
+	@classmethod
+	def update_choices(cls):
+		mod = sys.modules[__name__]
+		cls.choices = sorted(
+			(sym, sym)
+			for sym, obj in ((sym, getattr(mod, sym)) for sym in dir(mod))
+			if isinstance(obj, type) and issubclass(obj, ISyntax)
+		)
+
+
+__register_choice_update_function(UDM_Syntax.update_choices)

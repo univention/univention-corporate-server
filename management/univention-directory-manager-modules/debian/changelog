@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-23) unstable; urgency=low
+
+  * Bug #52683: Add syntax class to select syntax class for EA
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Sep 2021 16:34:27 +0200
+
 univention-directory-manager-modules (15.0.11-22) unstable; urgency=medium
 
   * Bug #53833: Fix problem with previous build

@@ -110,7 +110,7 @@ property_descriptions = {
 	'syntax': univention.admin.property(
 		short_description=_('Syntax class'),
 		long_description=_("When values are entered, the UMC performs a syntax check. Apart from standard syntax definitions (string) and (integer), there are three possibilities for expressing a binary condition. The syntax TrueFalse is represented at LDAP level using the strings true and false, the syntax TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and the syntax boolean does not save any value or the string 1"),
-		syntax=univention.admin.syntax.string_numbers_letters_dots,
+		syntax=getattr(univention.admin.syntax, "UDM_Syntax", univention.admin.syntax.string_numbers_letters_dots),
 	),
 	'hook': univention.admin.property(
 		short_description=_('Hook class'),
