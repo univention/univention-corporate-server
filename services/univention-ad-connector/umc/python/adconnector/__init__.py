@@ -41,8 +41,8 @@ from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
 
 from contextlib import contextmanager
-import fnmatch
 import os.path
+import re
 import subprocess
 import traceback
 import time
@@ -362,17 +362,18 @@ class Instance(Base, ProgressMixin):
 		self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
 		self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
 		self.status_certificate = bool(fn and os.path.exists(fn))
-		self.status_running = self.__is_process_running('*python*univention/connector/ad/main.py*')
+		self.status_running = self.__is_process_running('^([^ ]+)?python.*univention.connector.ad.main(.py)?$')
 		self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
 		self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
 
-	def __is_process_running(self, command):
+	def __is_process_running(self, command_pattern):
+		pattern = re.compile(command_pattern)
 		for proc in psutil.process_iter():
 			try:
 				cmdline = proc.cmdline() if callable(proc.cmdline) else proc.cmdline
 			except psutil.NoSuchProcess:
 				continue
-			if cmdline and fnmatch.fnmatch(' '.join(cmdline), command):
+			if cmdline and pattern.match(' '.join(cmdline)):
 				return True
 		return False
 
