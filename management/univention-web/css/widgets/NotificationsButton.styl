@@ -1,3 +1,6 @@
+@require "../HTMLElements.styl"
+
+
 .ucsNotificationsButton.dijitChecked
 	color: var(--color-primary)
 
@@ -38,9 +41,8 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 
 	&--warning
 		background: var(--color-error)
-		a:hover,
-		a:focus
-			color: inherit
+		a
+			@extends a.sameColorInStates
 		.ucsNotification__closeButton
 			--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
 			--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.16)
