@@ -46,9 +46,6 @@ import univention.admin.handlers.users.user
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.computers.windows
 
-# update choices-lists which are defined in LDAP
-univention.admin.syntax.update_choices()
-
 
 def status(msg):
 	out = ''
