@@ -72,7 +72,7 @@ define([
 		Anchor = A;
 	});
 	var _StandbyPage = declare([Page, StandbyMixin], {
-		navContentClass: 'umcUDMNavContent'
+		navContentClass: 'umcUDMNavContent umcCard2'
 	});
 
 	var PolicyInput = declare([MultiInput], {
@@ -1012,7 +1012,7 @@ define([
 			return tools.forEachAsync(layout, function(ilayout, idx) {
 				// create a new page, i.e., subtab
 				var subTab = new Page({
-					navContentClass: 'umcUDMNavContent',
+					navContentClass: 'umcUDMNavContent umcCard2',
 					title: entities.encode(ilayout.label || ilayout.name).replace(/ /g, '&nbsp;'), //TODO: 'name' should not be necessary
 					titleAllowHTML: true,
 					noFooter: true,

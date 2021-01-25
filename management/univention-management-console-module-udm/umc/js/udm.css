@@ -134,19 +134,11 @@
 
 
 /* Page Nav */
-.umcUDMNavContent {
-	background-color: var(--bgc-content-container);
-	padding: calc(4 * var(--layout-spacing-unit));
-	border-radius: var(--border-radius-container)
-}
 .umcUDMNavContent .dijitTab {
 	color: var(--font-color-contrast-low)
 }
 .umcUDMNavContent .dijitTabChecked {
 	color: var(--font-color-contrast-high)
-}
-.umcUDMNavContent .umcPageHeader{
-	margin-top: calc(2 * var(--layout-spacing-unit))
 }
 
 
