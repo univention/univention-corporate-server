@@ -216,8 +216,10 @@ class TestUniventionUpdater(object):
             'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR, 'a', ARCH),
         } == set(tmp.splitlines())
 
-    def test_call_sh_files(self, u, http, mockpopen):
+    def test_call_sh_files(self, u, http, mockpopen, mocker):
         """Test calling preup.sh / postup.sh scripts."""
+        mocker.patch("os.fchmod")
+
         def structs():
             """Mockups for called scripts."""
             struct_r = U.UCSRepoPool5(major=MAJOR, minor=MINOR, patchlevel=PATCH)

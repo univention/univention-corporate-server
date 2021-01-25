@@ -8,6 +8,7 @@ Build-Depends:
  debhelper,
  dh-python,
  python-all,
+ python-backports.tempfile,
  python-lazy-object-proxy,
  python-monotonic,
  python-pytest,
@@ -71,6 +72,7 @@ Breaks:
 Provides:
  ${python:Provides},
 Depends:
+ python-backports.tempfile,
  python-monotonic,
  python-six,
  python-univention-config-registry,

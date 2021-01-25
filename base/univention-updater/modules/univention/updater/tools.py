@@ -68,9 +68,7 @@ from six.moves import urllib_request as urllib2, urllib_error
 import json
 import subprocess
 import tempfile
-import shutil
 import logging
-import atexit
 import functools
 import six
 import base64
@@ -83,6 +81,9 @@ except ImportError:
 
 if six.PY2:
     from new import instancemethod
+    from backports.tempfile import TemporaryDirectory
+else:
+    from tempfile import TemporaryDirectory
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -1610,9 +1611,6 @@ class UniventionUpdater(object):
         :param args: Additional arguments to pass through to the scripts.
         :returns: A generator returning 2-tuples (phase, part)
         """
-        # create temporary directory for scripts
-        tempdir = tempfile.mkdtemp()
-        atexit.register(shutil.rmtree, tempdir, ignore_errors=True)
 
         def call(*cmd):
             # type: (*str) -> int
@@ -1638,64 +1636,63 @@ class UniventionUpdater(object):
         main = {'preup': [], 'postup': []}  # type: Dict[str, List[Tuple[str, str]]]
         comp = {'preup': [], 'postup': []}  # type: Dict[str, List[Tuple[str, str]]]
         # save scripts to temporary files
-        for server, struct, phase, path, data in scripts:
-            if phase is None:
-                continue
-            assert data is not None
-            uri = server.join(path)
-            fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
-            try:
-                size = os.write(fd, data)
-                os.chmod(name, 0o744)
-                if size == len(data):
-                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
-                    if hasattr(struct, 'part') and struct.part.endswith('/component'):
-                        comp[phase].append((name, str(struct.patch)))
-                    else:
-                        main[phase].append((name, str(struct.patch)))
+        with TemporaryDirectory() as tempdir:
+            for server, struct, phase, path, data in scripts:
+                if phase is None:
                     continue
-            finally:
-                os.close(fd)
-            ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s" % (uri, name))
+                assert data is not None
+                uri = server.join(path)
+                name = os.path.join(tempdir, uri.replace("/", "_"))
+                try:
+                    with open(name, "wb") as fd:
+                        fd.write(data)
+                        os.fchmod(fd.fileno(), 0o744)
 
-        # call component/preup.sh pre $args
-        yield "preup", "pre"
-        for (script, patch) in comp['preup']:
-            if call(script, 'pre', *args) != 0:
-                raise PreconditionError('preup', 'pre', patch, script)
+                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
+                    is_component = hasattr(struct, 'part') and struct.part.endswith('/component')
+                    memo = comp if is_component else main
+                    memo[phase].append((name, str(struct.patch)))
+                except EnvironmentError as ex:
+                    ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex))
 
-        # call $next_version/preup.sh
-        yield "preup", "main"
-        for (script, patch) in main['preup']:
-            if call(script, *args) != 0:
-                raise PreconditionError('preup', 'main', patch, script)
+            # call component/preup.sh pre $args
+            yield "preup", "pre"
+            for (script, patch) in comp['preup']:
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('preup', 'pre', patch, script)
 
-        # call component/preup.sh post $args
-        yield "preup", "post"
-        for (script, patch) in comp['preup']:
-            if call(script, 'post', *args) != 0:
-                raise PreconditionError('preup', 'post', patch, script)
+            # call $next_version/preup.sh
+            yield "preup", "main"
+            for (script, patch) in main['preup']:
+                if call(script, *args) != 0:
+                    raise PreconditionError('preup', 'main', patch, script)
 
-        # call $update/commands/distupgrade or $update/commands/upgrade
-        yield "update", "main"
+            # call component/preup.sh post $args
+            yield "preup", "post"
+            for (script, patch) in comp['preup']:
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('preup', 'post', patch, script)
 
-        # call component/postup.sh pos $args
-        yield "postup", "pre"
-        for (script, patch) in comp['postup']:
-            if call(script, 'pre', *args) != 0:
-                raise PreconditionError('postup', 'pre', patch, script)
+            # call $update/commands/distupgrade or $update/commands/upgrade
+            yield "update", "main"
 
-        # call $next_version/postup.sh
-        yield "postup", "main"
-        for (script, patch) in main['postup']:
-            if call(script, *args) != 0:
-                raise PreconditionError('postup', 'main', patch, script)
+            # call component/postup.sh pos $args
+            yield "postup", "pre"
+            for (script, patch) in comp['postup']:
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('postup', 'pre', patch, script)
 
-        # call component/postup.sh post $args
-        yield "postup", "post"
-        for (script, patch) in comp['postup']:
-            if call(script, 'post', *args) != 0:
-                raise PreconditionError('postup', 'post', patch, script)
+            # call $next_version/postup.sh
+            yield "postup", "main"
+            for (script, patch) in main['postup']:
+                if call(script, *args) != 0:
+                    raise PreconditionError('postup', 'main', patch, script)
+
+            # call component/postup.sh post $args
+            yield "postup", "post"
+            for (script, patch) in comp['postup']:
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('postup', 'post', patch, script)
 
         # clean up
         yield "update", "post"
