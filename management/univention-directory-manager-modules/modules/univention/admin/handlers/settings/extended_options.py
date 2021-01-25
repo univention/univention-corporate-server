@@ -115,7 +115,7 @@ property_descriptions = {
 	'objectClass': univention.admin.property(
 		short_description=_('LDAP object class'),
 		long_description=_('Mapping to LDAP objectClasses'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.ldapObjectClass,
 		multivalue=True,
 	),
 	'isApp': univention.admin.property(

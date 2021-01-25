@@ -176,7 +176,7 @@ property_descriptions = {
 	'ldapMapping': univention.admin.property(
 		short_description=_('LDAP attribute'),
 		long_description=_('Univention Corporate Server provides its own LDAP scheme for customer extensions. The LDAP object class univentionFreeAttributes can be used for extended attributes without restrictions. It offers 20 freely usable attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can be used in connection with any LDAP object (e.g., a user object)'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.ldapAttribute,
 		required=True,
 	),
 	'mayChange': univention.admin.property(
@@ -198,7 +198,7 @@ property_descriptions = {
 	'objectClass': univention.admin.property(
 		short_description=_('LDAP object class'),
 		long_description=_('Univention Corporate Server provides its own LDAP scheme for customer extensions. The LDAP object class univentionFreeAttributes can be used for extended attributes without restrictions. It offers 20 freely usable attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can be used in connection with any LDAP object (e.g., a user object)'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.ldapObjectClass,
 		required=True,
 	),
 	'deleteObjectClass': univention.admin.property(
