@@ -63,9 +63,6 @@ term_signal_caught = False
 
 univention.admin.modules.update()
 
-# update choices-lists which are defined in LDAP
-univention.admin.syntax.update_choices()
-
 try:
 	univention.admin.handlers.disable_ad_restrictions(disable=False)
 except AttributeError:

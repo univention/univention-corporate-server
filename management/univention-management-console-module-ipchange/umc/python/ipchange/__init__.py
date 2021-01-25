@@ -48,9 +48,6 @@ from univention.management.console.modules.decorators import simple_response
 
 univention.admin.modules.update()
 
-# update choices-lists which are defined in LDAP
-univention.admin.syntax.update_choices()
-
 
 class Instance(Base):
 

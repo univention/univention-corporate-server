@@ -64,9 +64,6 @@ term_signal_caught = False
 
 univention.admin.modules.update()
 
-# update choices-lists which are defined in LDAP
-univention.admin.syntax.update_choices()
-
 
 def decode_guid(value):
 	return str(ndr_unpack(misc.GUID, value))
