@@ -1212,7 +1212,8 @@ define([
 				return;
 			}
 			Object.keys(module.selectablePagesToLayoutMapping).forEach(lang.hitch(this, function(page) {
-				if (module.selectedChildWidget === module[page]) {
+				var _pageWidget = lang.getObject(page, false, module);
+				if (module.selectedChildWidget === _pageWidget) {
 					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
 					var cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{pageName}', {
 						moduleID: module.moduleID,
@@ -1229,6 +1230,7 @@ define([
 						this._topContainerModuleSpecificCSSClasses.push(cssClass);
 					}
 
+					// not sure why we need to check this here since we iterate over module.selectablePagesToLayoutMapping
 					if (module.selectablePagesToLayoutMapping[page]) {
 						cssClass = lang.replace('umcTopContainer--generic-layout-{layout}', {
 							layout: module.selectablePagesToLayoutMapping[page]

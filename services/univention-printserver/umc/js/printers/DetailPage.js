@@ -42,6 +42,7 @@ define([
 	"umc/i18n!umc/modules/printers"
 ], function(declare, lang, domClass, dialog, tools, store, Page, Grid, Form, Text, _) {
 	return declare("umc.modules.printers.DetailPage", [ Page ], {
+		navContentClass: 'umcCard2',
 
 		_printer_id: '',
 
@@ -53,6 +54,7 @@ define([
 
 			this.inherited(arguments);
 		},
+
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -193,9 +195,7 @@ define([
 				// containing a <p>..</p> and a <table>.
 				var res = data.result;
 				// styles
-				var st_h = 'font-size:115%;text-decoration:underline;';	// header line
-				var st_l = 'text-align:right;padding-left:1em;';		// left column
-				var st_r = 'padding-left:.5em;';						// right column
+				var st_r = 'padding-left: var(--layout-spacing-unit);';						// right column
 
 				// status text must be translated in our official wording...
 				var status = _("unknown");
@@ -204,12 +204,12 @@ define([
 					case 'disabled':status = _("inactive"); break;
 				}
 
-				var txt = "<p style='" + st_h + "'>" + lang.replace(_("Details for printer <b>{printer}</b>"),res) + '</p>';
-				txt += "<table>\n";
-				txt += "<tr><td style='" + st_l + "'>" + _("Server")		+ ":</td><td style='" + st_r + "'>" + res['server']			+ "</td></tr>\n";
-				txt += "<tr><td style='" + st_l + "'>" + _("Status")		+ ":</td><td style='" + st_r + "'>" + status				+ "</td></tr>\n";
-				txt += "<tr><td style='" + st_l + "'>" + _("Location")		+ ":</td><td style='" + st_r + "'>" + res['location']		+ "</td></tr>\n";
-				txt += "<tr><td style='" + st_l + "'>" + _("Description")	+ ":</td><td style='" + st_r + "'>" + res['description']	+ "</td></tr>\n";
+				var txt = "";
+				txt += "<table style='font-size: var(--font-size-small);'>\n";
+				txt += "<tr><td>" + _("Server")       + ":</td><td style='" + st_r + "'>" + res['server']      + "</td></tr>\n";
+				txt += "<tr><td>" + _("Status")       + ":</td><td style='" + st_r + "'>" + status             + "</td></tr>\n";
+				txt += "<tr><td>" + _("Location")     + ":</td><td style='" + st_r + "'>" + res['location']    + "</td></tr>\n";
+				txt += "<tr><td>" + _("Description")  + ":</td><td style='" + st_r + "'>" + res['description'] + "</td></tr>\n";
 				txt += "</table>\n";
 
 				this._head.getWidget('message').set('content',txt);
@@ -218,6 +218,7 @@ define([
 
 				this._show_button('activate',res['status'] == 'disabled');
 				this._show_button('deactivate',res['status'] == 'enabled');
+				this.onPrinterLoaded(res.printer);
 			}), lang.hitch(this, function(data) {
 				this._grid.filter();		// clears stale grid data
 			}));
@@ -254,5 +255,9 @@ define([
 			this._head.getWidget('message').set('content','<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;');		// six empty lines
 			this._grid.filter();
 		},
+
+		onPrinterLoaded: function(printer) {
+			// stub
+		}
 	});
 });

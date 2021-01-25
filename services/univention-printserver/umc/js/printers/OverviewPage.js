@@ -53,6 +53,8 @@ define([
 			this.inherited(arguments);
 		},
 
+		fullWidth: true,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -61,6 +63,7 @@ define([
 				hideSubmitButton: true,
 				widgets: [{
 					name: 'key',
+					'class': 'umcTextBoxDark',
 					type: ComboBox,
 					label: _("Search for"),
 					staticValues: [
@@ -72,6 +75,7 @@ define([
 				}, {
 					name: 'pattern',
 					type: SearchBox,
+					'class': 'umcTextBoxDark',
 					inlineLabel: _('Search...'),
 					value: '',
 					onSearch: lang.hitch(this, function() {

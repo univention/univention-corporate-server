@@ -32,22 +32,31 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/aspect",
+	"dojo/on",
 	"umc/tools",
 	"umc/widgets/Module",
 	"umc/modules/printers/OverviewPage",
 	"umc/modules/printers/DetailPage",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, aspect, tools, Module, OverviewPage, DetailPage, _) {
+], function(declare, lang, aspect, on, tools, Module, OverviewPage, DetailPage, _) {
 
 	return declare("umc.modules.printers",  [ Module ], {
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.selectablePagesToLayoutMapping = {
+				'_pages.overview': 'searchpage-grid'
+			};
+		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			this._pages = {
-				'overview':		new OverviewPage(),
-				'detail':		new DetailPage(),
+				'overview':		new OverviewPage({}),
+				'detail':		new DetailPage({}),
 			};
+
 
 			// forIn behaves like forEach just for dicts :) ... important it checks for hasOwnProperty!
 			tools.forIn(this._pages, function(iname, ipage) {
@@ -62,7 +71,14 @@ define([
 
 			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
 				this._switch_page('overview',args);
+				this.set('titleDetail', '');
 			}),true));
+
+
+			// ------------- Listen to onPrinterLoaded to set module title
+			this.own(on(this._pages.detail, 'printerLoaded', lang.hitch(this, function(printer) {
+				this.set('titleDetail', printer);
+			})));
 
 			// ------------- work events: printer management ---------------
 
