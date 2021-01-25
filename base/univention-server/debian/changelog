@@ -1,3 +1,10 @@
+univention-server (15.0.3-1) unstable; urgency=medium
+
+  * Bug #52122: The server packages don't recommend
+    univention-nagios-client any longer
+
+ -- Arvid <requate@univention.de>  Mon, 25 Jan 2021 21:15:07 +0100
+
 univention-server (15.0.2-2) unstable; urgency=medium
 
   * Bug #43686: use systemctl calls for UDL

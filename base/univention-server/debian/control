@@ -16,7 +16,6 @@ Pre-Depends:
 Recommends:
  openssh-server,
  python-univention-license,
- univention-nagios-client,
  univention-saml,
  univention-server-overview,
 Depends:
@@ -48,7 +47,6 @@ Recommends:
  openssh-server,
  python-univention-license,
  univention-bind,
- univention-nagios-client,
  univention-saml,
  univention-server-overview,
 Pre-Depends:
@@ -87,7 +85,6 @@ Recommends:
  openssh-server,
  univention-bind,
  univention-management-console,
- univention-nagios-client,
 Depends:
  nscd,
  python-univention-lib (>= 3.0.1-1),
@@ -113,7 +110,6 @@ Architecture: all
 Recommends:
  openssh-server,
  univention-management-console,
- univention-nagios-client,
 Depends:
  python-univention-lib (>= 3.0.1-1),
  shell-univention-lib (>= 3.0.1-1),
