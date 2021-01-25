@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/store/DataStore",
@@ -42,7 +43,7 @@ define([
 	"umc/widgets/MultiSelect",
 	"umc/widgets/LabelPane",
 	"umc/i18n!"
-], function(declare, lang, array, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
+], function(declare, lang, array, domClass, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
 
 	// lazy defining of the dialog in order to avoid circular dependencies with umc/render
 	var DetailDialog = declare(null, {});
@@ -133,6 +134,8 @@ define([
 			buildRendering: function() {
 				this.inherited(arguments);
 
+				domClass.add(this.domNode, 'umcMultiObjectSelect__detailDialog');
+
 				// create a container for all widgets
 				this._container = new ContainerWidget({});
 				this.addChild(this._container);
@@ -163,7 +166,7 @@ define([
 				});
 				this._container.addChild(new LabelPane({
 					content: this._multiSelect,
-					style: 'display: block;' // do not allow for floating
+					style: 'display: block; margin-t' // do not allow for floating
 				}));
 
 				// put focus to last widget in the SearchForm
