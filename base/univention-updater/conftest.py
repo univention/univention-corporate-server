@@ -25,7 +25,7 @@ if sys.version_info >= (3,):
 else:
     import __builtin__ as builtins
     FileNotFoundError = IOError
-    collect_ignore = ["umc/python/updater/__init__.py"]
+    collect_ignore = ["modules/univention/updater/scripts", "umc/python/updater/__init__.py"]
 
 
 # from tests/mockups.py

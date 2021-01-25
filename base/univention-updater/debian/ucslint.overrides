@@ -1,3 +1,6 @@
+# No copyright
+0010-2:setup.py
+0010-2:conftest.py
 0010-2:tests/*.py
 0010-2:tests/test_umc-commands.sh
 0010-2:modules/univention/__init__.py

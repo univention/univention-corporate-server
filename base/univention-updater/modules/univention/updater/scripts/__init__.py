@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
-#
-# Univention Updater
-#  rules file for the debian package
-#
-# Copyright 2004-2021 Univention GmbH
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,23 +26,3 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
-
-export DH_VERBOSE=1
-
-override_dh_install:
-	dh_install --fail-missing
-	sed '/^###CHECKS###/r script/check.sh' script/preup.sh >debian/univention-updater/usr/share/univention-updater/preup.sh
-
-override_dh_installinit:
-	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
-
-override_dh_python2:
-	dh_python2 --skip-private
-
-override_dh_python3:
-	dh_python3 --skip-private
-
-%:
-	dh $@ --with python2,python3,umc,ucr,bash_completion --buildsystem=pybuild

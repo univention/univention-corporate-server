@@ -1,1 +1,2 @@
-modules/univention/updater/*.py usr/lib/python3/dist-packages/univention/updater/
+usr/lib/python3*/dist-packages/univention/updater/
+usr/lib/python3*/dist-packages/*.egg-info/

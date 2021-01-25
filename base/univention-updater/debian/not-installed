@@ -1,0 +1,10 @@
+usr/lib/python*/dist-packages/.pytest_cache/
+usr/lib/python*/dist-packages/pytest/
+usr/lib/python*/dist-packages/pytest.xml
+usr/lib/python*/dist-packages/coverage.xml
+usr/lib/python*/dist-packages/.coverage
+usr/lib/python*/dist-packages/univention/__init__.py*
+usr/lib/python*/dist-packages/__pycache__/
+usr/lib/python*/dist-packages/univention/__pycache__/
+usr/lib/python*/dist-packages/univention/updater/__pycache__/
+usr/lib/python*/dist-packages/univention/updater/scripts/__pycache__/
