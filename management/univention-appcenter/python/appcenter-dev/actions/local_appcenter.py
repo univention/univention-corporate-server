@@ -333,7 +333,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						apps[app.name] = app.to_index()
 						for filename_in_directory, filename_in_archive in app.tar_files():
 							archive.add(filename_in_directory, filename_in_archive)
-				index_json.write(dumps(apps, sort_keys=True, indent=4))
+				index_json.write(dumps(apps, sort_keys=True, indent=4).encode('utf-8'))
 		if appcenter_host.startswith('https'):
 			appcenter_host = 'http://%s' % appcenter_host[8:]
 		if not appcenter_host.startswith('http://'):
@@ -398,7 +398,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		if args.new:
 			component_id, app_id = self._create_new_repo(args)
 		meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
-		if LooseVersion(args.ucs_version) >= '4.1':
+		if LooseVersion(args.ucs_version) >= LooseVersion('4.1'):
 			if app_id is None:
 				if args.ini:
 					ini_file = args.ini
@@ -488,7 +488,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		if not app_en or not app_de:
 			raise LocalAppCenterError('Cannot continue with flawed ini file')
 		if args.logo:
-			if LooseVersion(args.ucs_version) >= '4.1':
+			if LooseVersion(args.ucs_version) >= LooseVersion('4.1'):
 				parser = ConfigParser()
 				parser.read(ini_file)
 				try:
@@ -575,9 +575,9 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		try:
 			for pkg in args.packages:
 				try:
-					output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture'])
+					output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture'], text=True)
 				except subprocess.CalledProcessError:
-					self.debug('%s is not a package' % pkg)
+					self.warn('%s is not a package' % pkg)
 				else:
 					pkg_name = pkg_version = pkg_arch = None
 					__, ext = os.path.splitext(pkg)
@@ -636,8 +636,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			filename = os.path.join(repo_dir, arch, 'Packages')
 			for fname in glob('%s*' % filename):
 				os.unlink(fname)
-			with open(filename, 'wb') as packages:
-				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
+			with open(filename, 'w') as packages:
+				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE, text=True)
 				stdout, stderr = process.communicate()
 				for line in stdout.splitlines():
 					if line.startswith('Filename:'):

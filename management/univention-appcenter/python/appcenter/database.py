@@ -33,6 +33,7 @@
 #
 
 import os
+import six
 
 import MySQLdb as mysql
 from ipaddress import IPv4Network, IPv4Address, AddressValueError
@@ -326,8 +327,8 @@ class MySQL(DatabaseConnector):
 
 	def escape(self, value):
 		print(repr(value))
-		print(repr(text_type(value)))
-		return self.get_root_connection().escape(text_type(value))
+		print(repr(six.text_type(value)))
+		return self.get_root_connection().escape(six.text_type(value))
 
 	def create_db_and_user(self, password):
 		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.get_db_name())

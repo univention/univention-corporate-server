@@ -70,14 +70,14 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 	parser = parser_class()
 	try:
 		with codecs.open(filename, 'r', 'utf-8') as f:
-			parser.readfp(f)
+			parser.read_file(f)
 	except TypeError:
 		pass
 	except EnvironmentError:
 		pass
 	except (DuplicateSectionError, ParsingError) as exc:
-		ini_logger.warn('Could not parse %s' % filename)
-		ini_logger.warn(str(exc))
+		ini_logger.warning('Could not parse %s' % filename)
+		ini_logger.warning(str(exc))
 	else:
 		return parser
 	# in case of error return empty parser
@@ -194,7 +194,7 @@ class IniSectionObject(with_metaclass(UniventionMetaClass, object)):
 			try:
 				obj = cls.from_parser(parser, section, locale)
 			except (NoValueError, ParseError) as exc:
-				ini_logger.warn('%s: %s' % (fname, exc))
+				ini_logger.warning('%s: %s' % (fname, exc))
 			else:
 				ret.append(obj)
 		return ret

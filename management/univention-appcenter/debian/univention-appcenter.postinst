@@ -56,44 +56,4 @@ then
 	fi
 fi
 
-if dpkg --compare-versions "$2" lt-nl 5.0.19-7; then
-	univention-app register --noninteractive --component
-fi
-
-if dpkg --compare-versions "$2" lt-nl 5.0.20-37; then
-	univention-app register --noninteractive --files
-fi
-
-if dpkg --compare-versions "$2" lt-nl 5.0.20-44; then
-	chown root:root /var/cache/univention-appcenter/*
-	chmod 664 /var/cache/univention-appcenter/*
-fi
-
-if dpkg --compare-versions "$2" lt-nl 6.0.8-20; then
-	univention-app update || true
-fi
-
-if dpkg --compare-versions "$2" lt-nl 5.0.23-15; then
-	univention-app update  # in case the system updated from 4.0-5 -> 4.1-4 in (kind of) one step
-	python -c '
-from univention.appcenter.app_cache import Apps; from univention.appcenter.ucr import ucr_save;
-for app in Apps():
-  if not app.docker:
-    ucr_save({"appcenter/prudence/docker/%s" % app.id: "yes"})
-'
-fi
-
-if dpkg --compare-versions "$2" lt-nl 6.0.1-9; then
-	python -c '
-from univention.appcenter.app_cache import Apps; from univention.appcenter.ucr import ucr_save, ucr_get; from univention.appcenter.utils import container_mode
-for app in Apps().get_all_apps():
-  if app.is_installed():
-    ucr_save({app.ucr_ucs_version_key: app.get_ucs_version()})
-'
-fi
-
-if dpkg --compare-versions "$2" lt-nl 7.0.1-29; then
-	univention-app register --app
-fi
-
 exit 0
