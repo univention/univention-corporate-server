@@ -166,7 +166,7 @@ define([
 				});
 				this._container.addChild(new LabelPane({
 					content: this._multiSelect,
-					style: 'display: block; margin-t' // do not allow for floating
+					style: 'display: block;' // do not allow for floating
 				}));
 
 				// put focus to last widget in the SearchForm
