@@ -1054,10 +1054,10 @@ setup_ec2 ()
 	mv /usr/share/initramfs-tools/scripts/local-bottom/growroot /usr/share/initramfs-tools/scripts/init-premount/
 	###### cp growroot.patch
 	cat > /root/growroot.patch <<__EOF__
---- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig  2017-09-06 11:21:31.340000000 -0400
-+++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2017-09-06 11:21:51.044000000 -0400
-@@ -73,10 +73,6 @@
- 	*) msg "exited '\$ret'" "\${out}"; exit 1;;
+--- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig	2019-03-09 18:46:31.000000000 +0100
++++ /usr/share/initramfs-tools/scripts/init-premount/growroot	2021-01-26 08:15:24.968000000 +0100
+@@ -67,10 +67,6 @@
+	*) exit 0;;
  esac
 
 -# There was something to do, unmount and resize
@@ -1067,16 +1067,16 @@ setup_ec2 ()
  # Wait for any of the initial udev events to finish
  # This is to avoid any other processes using the block device that the
  # root partition is on, which would cause the sfdisk 'BLKRRPART' to fail.
-@@ -98,19 +94,4 @@
+@@ -92,19 +88,4 @@
  # so that the root partition is available when we try and mount it.
  udevadm settle --timeout \${ROOTDELAY:-30}
 
 -# this is taken from 'mountroot' function
 -#   see /usr/share/initramfs-tools/scripts/local
 -if [ -z "\${ROOTFSTYPE}" ]; then
--	FSTYPE=\$(get_fstype "\${ROOT}")
+-    FSTYPE=\$(get_fstype "\${ROOT}")
 -else
--	FSTYPE=\${ROOTFSTYPE}
+-    FSTYPE=\${ROOTFSTYPE}
 -fi
 -roflag="-r"
 -[ "\${readonly}" = "y" ] || roflag="-w"
