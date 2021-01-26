@@ -48,36 +48,36 @@
 
 .umc .umcProgressBar,
 .umc .umcProgressInfo
-	width: 400px
+	width: 460px
 	min-height: 150px
 	> *
 		width: 100%
 
 .umc .umcProgressDetails
-	display: flex
-	align-items: baseline
+	display: grid
+	grid-template-columns: auto 4ch
+	margin-top: spacing(2)
 
 	.umcProgressPercentage
 		color: var(--color-grey62);
 		font-size: var(--font-size-small);
-		margin-left: auto
+		justify-self: flex-end
 
 .umc .umcProgressBar
 	background-color: var(--color-grey0);
 	border-radius: var(--border-radius-container);
-	padding: 0 12px;
+	padding: spacing(4)
 	overflow: visible
 
 	.umcProgressBarComponent
-		min-height: 60px
+		min-height: calc(2 * 1em * var(--font-lineheight-normal))
 		font-size: var(--font-size-header2);
 		font-weight: 600
-		margin-bottom: 24px
+		margin-bottom: spacing(2)
 		display: flex
 		align-items: end
 
 	.umcProgressBarMessage
-		min-height: 80px
+		min-height: calc(3 * 1em * var(--font-lineheight-normal))
 		font-size: var(--font-size-small);
-		margin-top: 12px;
 		color: var(--color-grey62);
