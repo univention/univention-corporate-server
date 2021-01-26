@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/widgets/Page",
@@ -40,7 +41,7 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/widgets/MultiObjectSelect",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, tools, i18nTools, Page, Form, TextBox, ComboBox, MultiObjectSelect, _) {
+], function(declare, lang, array, domClass, tools, i18nTools, Page, Form, TextBox, ComboBox, MultiObjectSelect, _) {
 
 	return declare("umc.modules.setup.LanguagePage", [ Page ], {
 		// summary:
@@ -62,6 +63,8 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcSetupLanguagePage');
+
 			this._localesDeferred = this.umcpCommand('setup/lang/locales', { pattern: "*" }).then(function(data) {
 				var result = {};
 				array.forEach(data.result, function(ientry) {

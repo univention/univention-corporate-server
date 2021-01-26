@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojo/string",
 	"umc/tools",
 	"umc/dialog",
@@ -46,7 +47,7 @@ define([
 	'umc/widgets/ProgressBar',
 	"./types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, Text, MultiSelect, CheckBox, NumberSpinner, ProgressBar, types, _) {
+], function(declare, lang, array, domClass, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, Text, MultiSelect, CheckBox, NumberSpinner, ProgressBar, types, _) {
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
@@ -249,6 +250,7 @@ define([
 					}]
 				}, {
 					name: 'network',
+					'class': 'umcSetupInterfaceWizard__networkPage',
 					headerText: _('Network interface configuration'),
 					helpText: _('Configuration of IPv4 and IPv6 addresses'),
 					widgets: [{
@@ -468,6 +470,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcSetupInterfaceWizard');
 
 			this.own(this.getWidget('ip4').watch('value', lang.hitch(this, function(attr, oldMultiValue, newMultiValue) {
 				// auto-set netmask to 255.255.255.0

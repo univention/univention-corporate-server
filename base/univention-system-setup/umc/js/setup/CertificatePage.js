@@ -32,13 +32,14 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, tools, Page, Form, TextBox, ComboBox, _) {
+], function(declare, lang, array, domClass, tools, Page, Form, TextBox, ComboBox, _) {
 	return declare("umc.modules.setup.CertificatePage", [ Page ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -65,6 +66,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcSetupCertificatePage');
 
 			var widgets = [{
 				type: TextBox,
