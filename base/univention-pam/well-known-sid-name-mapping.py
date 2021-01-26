@@ -72,7 +72,7 @@ def schedule_ucr_set(ucr_key, value):
 
 	ucr_key_value = "%s=%s" % (ucr_key, value)
 	ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr set %s" % (name, ucr_key_value))
-	set_ucr_key__value_list = [x for x in set_ucr_key__value_list if not x.startswith(ucr_key)]
+	set_ucr_key__value_list = [x for x in set_ucr_key__value_list if not x.startswith("%s=" % ucr_key)]
 	set_ucr_key__value_list.append(ucr_key_value)
 	unset_ucr_key_list = [x for x in unset_ucr_key_list if not x.startswith(ucr_key)]
 
