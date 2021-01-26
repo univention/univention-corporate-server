@@ -963,7 +963,7 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					AD Takover now runs with  Python 3 (<u:bug>51324</u:bug>)
+					AD-Takeover now runs with Python 3 (<u:bug>51324</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
