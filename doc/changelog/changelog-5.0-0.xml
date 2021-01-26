@@ -195,6 +195,11 @@
 					<listitem><simpara>
 						The Listener has been migrated to Python 3. All listener modules are now executed with Python 3.7 (<u:bug>52256</u:bug>, <u:bug>45888</u:bug>)
 					</simpara></listitem>
+					<listitem><simpara>
+							A new API for switching the effective user ID in Listener modules has been added.
+							The new <literal>listener.SetUID()</literal> can be used as a Python context manager and function decorator.
+							The old API using <literal>listener.setuid()</literal> and <literal>listener.unsettuid()</literal> is deprecated and should no longer be used (<u:bug>52447</u:bug>)
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 		</section>
