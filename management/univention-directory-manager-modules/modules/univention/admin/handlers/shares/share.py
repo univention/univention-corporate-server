@@ -120,7 +120,8 @@ property_descriptions = {
 		long_description=_('Access rights to the exported root directory'),
 		syntax=univention.admin.syntax.UNIX_AccessRight_extended,
 		dontsearch=True,
-		default="00755"
+		default="00755",
+		size='OneAndHalf',
 	),
 	'writeable': univention.admin.property(
 		short_description=_('NFS write access'),
