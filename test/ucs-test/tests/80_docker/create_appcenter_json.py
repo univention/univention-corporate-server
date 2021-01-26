@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Create JSON app center index file
@@ -35,15 +35,15 @@ import gzip
 import tarfile
 import os
 import os.path
-import urllib2
-import base64
 import socket
+import urllib
 from hashlib import md5, sha256
 from optparse import OptionParser
 from json import dumps
 from difflib import unified_diff
 from glob import glob
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
+import requests
 
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',
@@ -57,7 +57,7 @@ class FileInfo(object):
 		self.name = name
 		self.url = url
 		self.filename = filename
-		self.md5 = md5sum(filename)
+		self.md5 = md5sum(filename.encode('utf-8'))
 		self.sha256 = sha256sum(filename)
 		self.archive_filename = '%s.%s' % (app.name, name)
 
@@ -67,7 +67,7 @@ class DockerImageInfo(object):
 	def __init__(self, name, url, content):
 		self.name = name
 		self.url = url
-		self.sha256 = sha256(content).hexdigest()
+		self.sha256 = sha256(content.encode('utf-8')).hexdigest()
 
 
 class App(object):
@@ -88,10 +88,10 @@ class App(object):
 		return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)
 
 	def _meta_url(self, filename):
-		return urllib2.urlparse.urljoin(self.get_metainf_url(), filename)
+		return urllib.parse.urljoin(self.get_metainf_url(), filename)
 
 	def _repository_url(self, filename):
-		return urllib2.urlparse.urljoin(self.get_repository_url(), filename)
+		return urllib.parse.urljoin(self.get_repository_url(), filename)
 
 	def _components_dir(self, filename):
 		return os.path.join(self.components_dir, self.name, filename)
@@ -205,19 +205,16 @@ class App(object):
 					docker_image_tag = 'latest'
 
 				docker_url = 'https://%s/v2/%s/manifests/%s' % (registry, docker_image_repo, docker_image_tag)
-				request = urllib2.Request(docker_url)
-				base64string = base64.b64encode(DOCKER_READ_USER_CRED['username'] + ':' + DOCKER_READ_USER_CRED['password'])
-				request.add_header("Authorization", "Basic %s" % base64string)
 				try:
-					response = urllib2.urlopen(request)
-				except (urllib2.HTTPError, urllib2.URLError) as exc:
-					print >> sys.stderr, 'Error fetching DockerImage manifest for %s' % (self.name,)
-					print >> sys.stderr, 'from %s' % (docker_url,)
-					print >> sys.stderr, str(exc)
+					response = requests.get(docker_url, auth=(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']))
+				except (requests.exceptions.HTTPError, requests.exceptions.URLError) as exc:
+					print('Error fetching DockerImage manifest for %s' % (self.name,), file=sys.stderr)
+					print('from %s' % (docker_url,), file=sys.stderr)
+					print(str(exc), file=sys.stderr)
 					sys.exit(1)
 
 				name = 'DockerImageManifestV2S1'
-				docker_image_manifest = response.read()
+				docker_image_manifest = response.text
 				yield self.docker_image_info(name, docker_url, docker_image_manifest)
 
 	def tar_files(self):
@@ -252,14 +249,14 @@ def check_ini_file(filename):
 
 def md5sum(filename):
 	m = md5()
-	with open(filename, 'r') as f:
+	with open(filename, 'rb') as f:
 		m.update(f.read())
 		return m.hexdigest()
 
 
 def sha256sum(filename):
 	m = sha256()
-	with open(filename, 'r') as f:
+	with open(filename, 'rb') as f:
 		m.update(f.read())
 		return m.hexdigest()
 
@@ -317,14 +314,14 @@ if __name__ == '__main__':
 			if old_format != out_format:
 				for line in unified_diff(old_format, out_format, fromfile=options.output, tofile='NEW'):
 					sys.stdout.write(line)
-				yes = raw_input('Overwrite [y/N]? ')
+				yes = input('Overwrite [y/N]? ')
 			else:
 				yes = 'y'
 		else:
 			yes = 'y'
 		if yes and yes[0].lower() == 'y':
 			f = gzip.open(options.output, 'wb')
-			f.write(out)
+			f.write(out.encode('utf-8'))
 			f.close()
 	else:
-		print out
+		print(out)

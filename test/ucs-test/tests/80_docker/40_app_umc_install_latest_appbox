@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and install a simple app with latest appbox image
 ## tags: [docker, SKIP]
 ## bugs: [51847]

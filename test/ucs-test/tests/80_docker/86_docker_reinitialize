@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test univention-app reinitialize
 ## tags: [docker]
 ## exposure: dangerous
@@ -6,12 +6,8 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
-from univention.testing.utils import is_port_open
-import pytest
-import os
+from dockertest import Appcenter, App, get_app_name
 import subprocess
-import ruamel.yaml as yaml
 
 DOCKER_COMPOSE = '''
 version: '2.0'
@@ -70,10 +66,10 @@ fi
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
-			env = subprocess.check_output('univention-app shell %s env' % name, shell=True)
+			env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
 			assert 'TEST_KEY=1' in env, env
 			subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
-			env = subprocess.check_output('univention-app shell %s env' % name, shell=True)
+			env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
 			assert 'TEST_KEY=2' in env, env
 			assert 'EMPTY_KEY' not in env, env
 		finally:

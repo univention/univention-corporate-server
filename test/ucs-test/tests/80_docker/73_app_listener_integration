@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*-
 ## desc: Test appcenter listener/converter
 ## tags: [docker]
@@ -29,7 +29,7 @@ def dump_db():
 def obj_exists(obj_type, dn):
 	found = False
 	db = dump_db()
-	for obj_id, obj in db[obj_type].iteritems():
+	for obj_id, obj in db[obj_type].items():
 		if dn.lower() == obj.get('dn').lower():
 			found = True
 	return found
@@ -45,7 +45,7 @@ def group_exists(dn):
 
 def get_attr(obj_type, dn, attr):
 	db = dump_db()
-	for obj_id, obj in db[obj_type].iteritems():
+	for obj_id, obj in db[obj_type].items():
 		if dn.lower() == obj.get('dn').lower():
 			return obj['obj'].get(attr)
 
@@ -82,7 +82,7 @@ def test_listener():
 		assert get_attr('users/user', u1[0], 'lastname')
 		assert get_attr('users/user', u1[0], 'sambaRID')
 		assert get_attr('groups/group', g1[0], 'description') == 'lkjalkhlÄÖ#üäööäö'
-		assert get_attr('groups/group', g2[0], 'users') == [unicode(u1[0])]
+		assert get_attr('groups/group', g2[0], 'users') == [u1[0]]
 		assert get_attr('groups/group', g2[0], 'users')
 		assert get_attr('groups/group', g2[0], 'gidNumber')
 		assert get_attr('groups/group', g2[0], 'name')
@@ -104,7 +104,7 @@ def test_listener():
 
 
 def get_pid_for_name(name):
-	o = subprocess.check_output(['ps', 'aux'])
+	o = subprocess.check_output(['ps', 'aux'], text=True)
 	for line in o.split('\n'):
 		if name in line:
 			return line.split()[1]
@@ -115,7 +115,7 @@ def systemd_service_active(service):
 	active = False
 	cmd = ['systemctl', 'status', service]
 	try:
-		out = subprocess.check_output(cmd)
+		out = subprocess.check_output(cmd, text=True)
 	except subprocess.CalledProcessError:
 		out = ''
 	if 'Active: active (running' in out:
@@ -126,7 +126,7 @@ def systemd_service_active(service):
 def systemd_service_enabled(service):
 	cmd = ['systemctl', 'is-enabled', service]
 	try:
-		out = subprocess.check_output(cmd)
+		out = subprocess.check_output(cmd, text=True)
 	except subprocess.CalledProcessError:
 		out = ''
 	return 'enabled' in out
@@ -207,7 +207,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		app.install()
 		appcenter.apps.append(app)
 		app.verify(joined=False)
-		images = subprocess.check_output(['docker', 'images'])
+		images = subprocess.check_output(['docker', 'images'], text=True)
 		assert 'stable' in images, images
 		time.sleep(10)
 		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
@@ -235,7 +235,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		app.upgrade()
 		app.verify(joined=False)
 
-		images = subprocess.check_output(['docker', 'images'])
+		images = subprocess.check_output(['docker', 'images'], text=True)
 		assert 'stable' not in images, images
 
 		li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')

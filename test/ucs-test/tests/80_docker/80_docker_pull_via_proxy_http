@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check the App installation if the next free port is already used
 ## tags: [docker]
 ## exposure: dangerous

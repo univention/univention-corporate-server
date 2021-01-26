@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test repository/app_center/installed with Docker/NonDocker Apps
 ## tags: [docker]
 ## exposure: dangerous

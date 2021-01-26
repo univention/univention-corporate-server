@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test in-container updates
 ## tags: [docker, SKIP]
 ## bugs: [51847]

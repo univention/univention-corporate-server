@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test Database integration of Docker Apps
 ## tags: [docker]
 ## bugs: [42690]
@@ -10,8 +10,7 @@ from __future__ import print_function
 from subprocess import check_output
 from textwrap import dedent
 
-from dockertest import Appcenter, get_app_name, get_app_version, App, get_docker_appbox_image, tiny_app
-from univention.config_registry import ConfigRegistry
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 from univention.testing.utils import restart_firewall
 
 
@@ -38,14 +37,14 @@ if __name__ == '__main__':
 				for i in [1, 2]:
 					app.install()
 					if database == 'mysql':
-						output = check_output(['mysql', '-u', 'root', '-p%s' % (open('/etc/mysql.secret').read().strip()), 'INFORMATION_SCHEMA', '-e', "SELECT SCHEMA_NAME FROM SCHEMATA WHERE SCHEMA_NAME = '%s'" % app_name])
+						output = check_output(['mysql', '-u', 'root', '-p%s' % (open('/etc/mysql.secret').read().strip()), 'INFORMATION_SCHEMA', '-e', "SELECT SCHEMA_NAME FROM SCHEMATA WHERE SCHEMA_NAME = '%s'" % app_name], text=True)
 					elif database == 'postgresql':
-						output = check_output(['su', 'postgres', '-c', 'psql -l'])
+						output = check_output(['su', 'postgres', '-c', 'psql -l'], text=True)
 					print(output)
 					assert app_name in output, 'No %s database named %s found in run #%d' % (database, app_name, i)
 					app.uninstall()
 				app.remove()
-		except:
+		except Exception:
 			app.uninstall()
 			app.remove()
 			raise

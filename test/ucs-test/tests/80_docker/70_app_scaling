@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and install multiple Docker Apps at once
 ## tags: [WIP,docker]
 ## timeout: 7200

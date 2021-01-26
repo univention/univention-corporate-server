@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check the preinst script
 ## tags: [docker]
 ## exposure: dangerous
@@ -37,7 +37,7 @@ exit %(exit_code)d
 				if fail_in_preinst:
 					raise ValueError('Should not have been installed!')
 				else:
-					output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True)
+					output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True, text=True)
 					if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
 						raise ValueError('Setting docker/params does not work')
 

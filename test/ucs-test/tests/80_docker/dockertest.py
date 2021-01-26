@@ -38,7 +38,6 @@ from univention.testing import umc
 import os
 import shutil
 import subprocess
-import urllib2
 import threading
 import requests
 import json
@@ -224,7 +223,7 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	''' % {'version': ucs_version, 'app': app_directory}
 	print('Creating packages in local repository:')
 	print(command)
-	print(subprocess.check_output(command, shell=True))
+	print(subprocess.check_output(command, shell=True, text=True))
 
 
 class App(object):
@@ -290,7 +289,7 @@ class App(object):
 		return '%s(app_name=%r, app_version=%r)' % (super(App, self).__repr__(), self.app_name, self.app_version)
 
 	def set_ini_parameter(self, **kwargs):
-		for key, value in kwargs.iteritems():
+		for key, value in kwargs.items():
 			print('set_ini_parameter(%s=%s)' % (key, value))
 			self.ini[key] = value
 
@@ -301,7 +300,7 @@ class App(object):
 		self._dump_scripts()
 
 	def add_script(self, **kwargs):
-		for key, value in kwargs.iteritems():
+		for key, value in kwargs.items():
 			self.scripts[key] = value
 
 	def install(self):
@@ -327,13 +326,13 @@ class App(object):
 	def file(self, fname):
 		if fname.startswith('/'):
 			fname = fname[1:]
-		dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id]).strip()
+		dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id], text=True).strip()
 		return os.path.join(dirname, fname)
 
 	def configure(self, args):
 		set_vars = []
 		unset_vars = []
-		for key, value in args.iteritems():
+		for key, value in args.items():
 			if value is None:
 				unset_vars.append(key)
 			else:
@@ -431,7 +430,7 @@ class App(object):
 
 		if self.package:
 			try:
-				output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True)
+				output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True, text=True)
 				expected_output1 = '%s\t%s\r\n' % (self.package_name, self.package_version)
 				expected_output2 = '%s\t%s\n' % (self.package_name, self.package_version)
 				if output not in [expected_output1, expected_output2]:
@@ -456,7 +455,7 @@ class App(object):
 
 	def execute_command_in_container(self, cmd):
 		print('Execute: %s' % cmd)
-		return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True)
+		return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True, text=True)
 
 	def remove(self):
 		print('App.remove()')
@@ -525,74 +524,29 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 		self.execute_command_in_container('/bin/sh -c "echo TEST-%s > /web/html/%s/index.txt"' % (self.app_name, self.app_name))
 
 	def verify_basic_modproxy_settings_tinyapp(self, http=True, https=True):
+		return self.verify_basic_modproxy_settings(http=http, https=https, verify=False)
+
+	def verify_basic_modproxy_settings(self, http=True, https=True, verify='/etc/univention/ssl/ucsCA/CAcert.pem'):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		test_string = 'TEST-%s\n' % self.app_name
-		if http is not None:
+		protocols = {'http': http, 'https': https}
+		for protocol, should_succeed in protocols.items():
+			response = requests.get(f'{protocol}://{fqdn}/{self.app_name}/index.txt', verify=verify)
 			try:
-				response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
-			except urllib2.HTTPError:
-				if http:
+				response.raise_for_status()
+			except requests.exceptions.HTTPError:
+				if should_succeed:
 					raise
-			else:
-				html = response.read()
-				if http:
-					correct = html == test_string
-				else:
-					correct = html != test_string
-				if not correct:
-					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, http))
 
-		if https is not None:
-			try:
-				ctx = ssl.create_default_context()
-				ctx.check_hostname = False
-				ctx.verify_mode = ssl.CERT_NONE
-				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), context=ctx)
-			except urllib2.HTTPError:
-				if https:
-					raise
+			html = response.text
+			if should_succeed:
+				correct = html == test_string
 			else:
-				html = response.read()
-				if https:
-					correct = html == test_string
-				else:
-					correct = html != test_string
-				if not correct:
-					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, https))
-
-	def verify_basic_modproxy_settings(self, http=True, https=True):
-		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
-		test_string = 'TEST-%s\n' % self.app_name
-
-		if http is not None:
-			try:
-				response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
-			except urllib2.HTTPError:
-				if http:
-					raise
-			else:
-				html = response.read()
-				if http:
-					correct = html == test_string
-				else:
-					correct = html != test_string
-				if not correct:
-					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, http))
-
-		if https is not None:
-			try:
-				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), cafile='/etc/univention/ssl/ucsCA/CAcert.pem')
-			except urllib2.HTTPError:
-				if https:
-					raise
-			else:
-				html = response.read()
-				if https:
-					correct = html == test_string
-				else:
-					correct = html != test_string
-				if not correct:
-					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, https))
+				correct = html != test_string
+			if not correct:
+				raise UCSTest_DockerApp_ModProxyFailed(
+					f'Got: {html}\nTested against: {test_string}\nProtocol: {protocol}\nTested equality: {should_succeed}'
+				)
 
 
 class Appcenter(object):
@@ -697,11 +651,11 @@ Virtualization=Virtualisierung''')
 			if not os.path.isdir(directory):
 				continue
 			print('create_appcenter_json.py for %s' % vv)
-			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' %
+			subprocess.check_call('./create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
-			subprocess.call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
+			subprocess.check_call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
-		subprocess.call('univention-app update', shell=True)
+		subprocess.check_call('univention-app update', shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:

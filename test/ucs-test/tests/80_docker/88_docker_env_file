@@ -1,17 +1,13 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test docker compose - with env file
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_app_name
-from univention.testing.utils import is_port_open
+from dockertest import Appcenter, App, get_app_name
 from univention.config_registry import ConfigRegistry
-import pytest
-import os
 import subprocess
-import ruamel.yaml as yaml
 
 DOCKER_COMPOSE = '''
 version: '2.0'
@@ -60,7 +56,7 @@ if __name__ == '__main__':
 			ucr = ConfigRegistry()
 			ucr.load()
 			assert ('TEST_HOSTNAME=%s' % ucr.get('hostname')) in env_content, env_content
-			env_container = subprocess.check_output(['univention-app', 'shell', name, 'env'])
+			env_container = subprocess.check_output(['univention-app', 'shell', name, 'env'], text=True)
 			assert ('TEST_HOSTNAME=%s' % ucr.get('hostname')) in env_container, env_container
 		finally:
 			app.uninstall()

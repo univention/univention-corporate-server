@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test docker compose
 ## tags: [docker]
 ## exposure: dangerous
@@ -65,7 +65,7 @@ if __name__ == '__main__':
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
-			images = subprocess.check_output(['docker', 'images'])
+			images = subprocess.check_output(['docker', 'images'], text=True)
 			assert '94627dfbdf19' in images, images
 			app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 
@@ -80,10 +80,10 @@ if __name__ == '__main__':
 			appcenter.update()
 			app.upgrade()
 			app.verify(joined=False)
-			images = subprocess.check_output(['docker', 'images'])
+			images = subprocess.check_output(['docker', 'images'], text=True)
 			assert '94627dfbdf19' not in images, images
 			app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
-			image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}']).strip()
+			image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
 			assert image == 'docker-test.software-univention.de/alpine:3.7'
 			from univention.config_registry import ConfigRegistry
 			ucr = ConfigRegistry()

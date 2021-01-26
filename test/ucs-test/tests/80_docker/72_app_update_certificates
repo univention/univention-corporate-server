@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test update-certificates
 ## tags: [docker]
 ## exposure: dangerous
@@ -73,10 +73,10 @@ exit 0
 			app.verify(joined=False)
 			verify_certs(app)
 			cleanup(app)
-			subprocess.check_output(['univention-app', 'update-certificates', name])
+			subprocess.check_output(['univention-app', 'update-certificates', name], text=True)
 			verify_certs(app)
 			cleanup(app)
-			subprocess.check_output(['univention-app', 'update-certificates'])
+			subprocess.check_output(['univention-app', 'update-certificates'], text=True)
 			verify_certs(app)
 			cleanup(app)
 
