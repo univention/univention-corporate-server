@@ -90,7 +90,7 @@
 .umc .umcLabelPane .udmAppLabel {
 	display: inline-grid;
 	grid-gap: 6px 8px;
-	grid-template-columns: 12px 3.5em auto;
+	grid-template-columns: 1rem 3.5em auto;
 	grid-template-rows: auto auto;
 	grid-template-areas: "checkbox icon label" "overwrite overwrite overwrite";
 	align-items: center;
