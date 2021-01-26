@@ -294,3 +294,9 @@ Description[de]=Definiert, ob eine LDAP-Server Richtlinie automatisch während d
 Description[en]=Defines, whether an ldap server policy is automatically created during the installation.
 Type=bool
 Categories=service-ldap
+
+[ldap/pw-bcrypt]
+Description[de]=Aktiviert/Deaktiviert das Passwort-Modul bcrypt, standardmäßig deaktiviert.
+Description[en]=To enable/disable the bcrypt passwd scheme module. Disabled by default.
+Type=str
+Categories=service-ldap

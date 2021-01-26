@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.7-3) unstable; urgency=medium
+
+  * Bug #52693: added bcrypt support
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Feb 2021 22:19:37 +0100
+
 univention-directory-manager-modules (15.0.7-2) unstable; urgency=medium
 
   * Bug #52453: adjust widget layout for shares module
