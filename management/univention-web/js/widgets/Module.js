@@ -96,11 +96,13 @@ define([
 			}
 		},
 
-		_setTitleDetailAttr: function(titleDetail) {
-			if (this._top) {
-				this._top.set('titleDetail', titleDetail);
-			}
-			this._set('titleDetail', titleDetail);
+		addBreadCrumb: function(name) {
+			var title = lang.replace('<span class="umcModuleTitleBreadCrumb">{0}</span>{1}<span>{2}</span>', [
+				this.title,
+				Icon.asHTMLString('chevron-right', 'umcModuleTitleBreadCrumbSeperator umcModuleTitleBreadCrumb'),
+				name
+			]);
+			this.set('title', title);
 		},
 
 		subTitle: '',

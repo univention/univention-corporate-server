@@ -129,7 +129,7 @@ define([
 					this.showApp(app);
 				} else {
 					if (this._appCenterPage && state[0] === 'category') {
-						this.set('titleDetail', '');
+						this.resetTitle();
 						this.selectChild(this._appCenterPage);
 					}
 				}
@@ -212,7 +212,7 @@ define([
 			var scroll = this._scroll();
 			var appName = entities.encode(app.name);
 			if (appName) {
-				this.set('titleDetail', appName);
+				this.addBreadCrumb(appName);
 			}
 
 			if (fromSuggestionCategory) {
@@ -253,7 +253,7 @@ define([
 			appDetailsPage.own(
 				appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 					if (newVal) {
-						this.set('titleDetail', entities.encode(newVal));
+						this.addBreadCrumb(entities.encode(newVal));
 					}
 				})),
 				appDetailsPage.watch('app', lang.hitch(this, function(){
@@ -265,7 +265,7 @@ define([
 				installDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				appDetailsPage.on('back', lang.hitch(this, function() {
-					this.set('titleDetail', '');
+					this.resetTitle();
 					this.selectChild(this._appCenterPage);
 					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
 				})),

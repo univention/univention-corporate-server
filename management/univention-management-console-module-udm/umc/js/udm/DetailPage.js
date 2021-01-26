@@ -997,7 +997,7 @@ define([
 						// watch value and modify title (escaped)
 						this.own(widget.watch('value', lang.hitch(this, function(attr, oldValue, _value) {
 							var value = _value instanceof Array ? _value.join(" ") : _value;
-							this.moduleWidget.set('titleDetail', entities.encode(value));
+							this.moduleWidget.addBreadCrumb(entities.encode(value));
 						})));
 						return false; // break out of forIn
 					}

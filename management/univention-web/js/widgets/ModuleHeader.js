@@ -53,28 +53,12 @@ define([
 			this._set('title', title);
 		},
 
-		titleDetail: '',
-		_setTitleDetailAttr: function(titleDetail) {
-			if (titleDetail) {
-				var title = lang.replace('<span class="umcModuleTitleBreadCrumb">{0}</span>{1}<span>{2}</span>', [this.title, Icon.asHTMLString('chevron-right', ' umcModuleTitleBreadCrumbSeperator umcModuleTitleBreadCrumb'), titleDetail]);
-				this.set('title', title);
-			} else {
-				this.set('title', this._origTitle);
-			}
-			this._set('titleDetail', titleDetail);
-		},
-
 		_subTitle: null, // Text
 		subTitle: '',
 		_setSubTitleAttr: function(subTitle) {
 			tools.toggleVisibility(this._subTitle, !!subTitle);
 			this._subTitle.set('content', subTitle);
 			this._set('subTitle', subTitle);
-		},
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this._origTitle = this.title;
 		},
 
 		buildRendering: function() {

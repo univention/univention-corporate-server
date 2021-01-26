@@ -71,13 +71,13 @@ define([
 
 			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
 				this._switch_page('overview',args);
-				this.set('titleDetail', '');
+				this.resetTitle();
 			}),true));
 
 
 			// ------------- Listen to onPrinterLoaded to set module title
 			this.own(on(this._pages.detail, 'printerLoaded', lang.hitch(this, function(printer) {
-				this.set('titleDetail', printer);
+				this.addBreadCrumb(printer);
 			})));
 
 			// ------------- work events: printer management ---------------
