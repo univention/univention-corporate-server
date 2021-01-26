@@ -153,6 +153,9 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
+		self.client.waitForText(self._['finish_installation'], timeout=self.timeout + 900)
+		self.client.keyPress('enter')
+		time.sleep(10)
 
 	def network_setup(self):
 		time.sleep(60)
@@ -295,13 +298,10 @@ class UCSInstallation(object):
 			self.client.keyDown('ctrl')
 			self.client.keyPress('q')
 			self.client.keyUp('ctrl')
-			time.sleep(300)
-			self.client.waitForText(self._['appliance_modus'], timeout=self.timeout)
-			self.click(self._['continue'])
 			time.sleep(60)
 			sys.exit(0)
 		else:
-			raise NotImplemented
+			raise NotImplementedError
 
 	def hostname(self):
 		# name hostname
@@ -331,6 +331,8 @@ class UCSInstallation(object):
 			else:
 				self.client.waitForText(self._['software_configuration_non_master'], timeout=self.timeout)
 			self.select_components()
+			# TODO, works only for installation with no components
+			self.client.keyPress('down')
 			self.click(self._['next'])
 		time.sleep(5)
 		self.client.keyPress('enter')
@@ -370,7 +372,7 @@ class UCSInstallation(object):
 			elif self.args.school_dep == 'central':
 				self.click(self._['school_central'])
 			else:
-				raise NotImplemented()
+				raise NotImplementedError()
 			self.click(self._['next'])
 
 	def bootmenu(self):

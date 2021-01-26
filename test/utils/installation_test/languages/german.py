@@ -32,6 +32,7 @@ strings = {
 	'boot_flag': 'Boot-Flag',
 	'finish_create_partition': 'Anlegen der Partition beenden',
 	'no': 'Nein',
+	'finish_installation': 'Installation abschließen',
 
 	'domain_setup': 'Domäneneinstellungen',
 	'new_domain': 'Erstellen einer neuen UCS-Domäne',
