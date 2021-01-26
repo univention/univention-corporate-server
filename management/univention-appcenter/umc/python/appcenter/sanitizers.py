@@ -87,7 +87,7 @@ class AppSanitizer(Sanitizer):
 class NoDoubleNameSanitizer(StringSanitizer):
 
 	def _sanitize(self, value, name, further_arguments):
-		from constants import COMPONENT_BASE
+		from .constants import COMPONENT_BASE
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 		if '%s/%s' % (COMPONENT_BASE, value) in ucr:
