@@ -1,3 +1,9 @@
+univention-ldap (15.0.3-2) unstable; urgency=medium
+
+  * Bug #52693: added ldap/pw-bcrypt for bcrypt module
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Jan 2021 15:58:20 +0100
+
 univention-ldap (15.0.3-1) unstable; urgency=medium
 
   * Bug #45205: increase changlog version twice
