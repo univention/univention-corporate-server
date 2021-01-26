@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -575,7 +575,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		try:
 			for pkg in args.packages:
 				try:
-					output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture'], text=True)
+					output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture']).decode('utf-8')
 				except subprocess.CalledProcessError:
 					self.warn('%s is not a package' % pkg)
 				else:
@@ -637,12 +637,12 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			for fname in glob('%s*' % filename):
 				os.unlink(fname)
 			with open(filename, 'w') as packages:
-				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE, text=True)
+				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
 				stdout, stderr = process.communicate()
-				for line in stdout.splitlines():
-					if line.startswith('Filename:'):
+				for line in stdout.decode('utf-8').splitlines():
+					if line.startswith(u'Filename:'):
 						path = line[len(os.path.dirname(repo_dir)) + 11:]  # -"Filename: /var/www/.../maintained/component/"
-						line = 'Filename: %s' % path
+						line = u'Filename: %s' % path
 					packages.write('%s\n' % line)
 			if compress:
 				with open('%s.gz' % filename, 'wb') as gz:

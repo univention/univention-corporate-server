@@ -70,7 +70,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 	parser = parser_class()
 	try:
 		with codecs.open(filename, 'r', 'utf-8') as f:
-			parser.read_file(f)
+			parser.readfp(f)
 	except TypeError:
 		pass
 	except EnvironmentError:
