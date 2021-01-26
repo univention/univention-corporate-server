@@ -247,6 +247,7 @@ def clean():
 
 def postrun():
 	# type: () -> None
+	listener.setuid(0)
 	lo = None
 	try:
 		for dn in os.listdir(SHARE_CACHE_TODO_DIR):
