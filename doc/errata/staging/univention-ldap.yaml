@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-ldap
+fix: 15.0.3-2A~4.4.0.202101261606
+desc: |
+ This update addresses the following issue(s):
+ * The UCR variable ldap/pw-bcrypt has been added to
+   activate the bcrypt module in openldap. 
+bug: [52693]
