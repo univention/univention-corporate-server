@@ -719,13 +719,13 @@ define([
 
 					this._updateMoreTabsVisibility();
 
-					aspectHandlesMap[module.id] = aspect.after(module, '_setTitleAttr', lang.hitch(this, function(label) {
+					aspectHandlesMap[module.id] = module.watch('title', lang.hitch(this, function(_name, _oldVal, newVal) {
 						var menuItemToUpdate = array.filter(this._moreTabsDropDownButton.dropDown.getChildren(), function(menuItem) {
 							return menuItem.correspondingModuleID === module.id;
 						})[0];
-						menuItemToUpdate.set('label', label);
+						menuItemToUpdate.set('label', newVal);
 						this._updateMoreTabsVisibility();
-					}), true);
+					}));
 				}
 			}));
 			this._tabController.on('removeChild', lang.hitch(this, function(module) {
