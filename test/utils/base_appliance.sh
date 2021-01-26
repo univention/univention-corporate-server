@@ -91,7 +91,7 @@ download_packages ()
 app_get_ini ()
 {
 	local app=$1
-	python -c "from univention.appcenter.app_cache import Apps
+	python3 -c "from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
 print app.get_ini_file()"
 }
@@ -99,7 +99,7 @@ print app.get_ini_file()"
 app_appliance_hook ()
 {
 	local app=$1
-	python -c "from univention.appcenter.app_cache import Apps
+	python3 -c "from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
 print app.get_cache_file('appliance_hook')"
 }
@@ -131,33 +131,33 @@ get_app_attr ()
 app_get_database_packages_for_docker_host ()
 {
 	local app=$1
-	python -c "
+	python3 -c "
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.database import DatabaseConnector
 
 app=Apps().find('$app')
 d = DatabaseConnector.get_connector(app)
 if d:
-	print ' '.join(d._get_software_packages())"
+	print(' '.join(d._get_software_packages()))"
 }
 
 app_get_component ()
 {
 	local app=$1
-	python -c "
+	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
-print app.component_id"
+print(app.component_id)"
 }
 
 app_get_appliance_hook_download_link ()
 {
 	local app=$1
 	local server="$(ucr get repository/app_center/server)"
-	python -c "
+	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
-print 'https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id)"
+print('https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id))"
 }
 
 app_download_appliance_hook ()
@@ -170,10 +170,10 @@ app_download_appliance_hook ()
 app_get_compose_file ()
 {
 	local app=$1
-	python -c "
+	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
-print app.get_cache_file('compose')"
+print(app.get_cache_file('compose'))"
 }
 
 app_appliance_is_software_blacklisted ()
@@ -421,7 +421,7 @@ USER="\$(custom_username Administrator)"
 
 # install app, without index verification (needs internet)
 ucr set --force appcenter/index/verify=false
-python -c "from univention.appcenter.app_cache import Apps
+python3 -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.utils import mkdir
