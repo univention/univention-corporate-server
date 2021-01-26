@@ -66,10 +66,28 @@ def sidToName(sid):
 	return None
 
 
-def checkAndSet(new, old):
+def schedule_ucr_set(ucr_key, value):
 	global set_ucr_key__value_list
 	global unset_ucr_key_list
 
+	ucr_key_value = "%s=%s" % (ucr_key, value)
+	ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr set %s" % (name, ucr_key_value))
+	set_ucr_key__value_list = [x for x in set_ucr_key__value_list if not x.startswith(ucr_key)]
+	set_ucr_key__value_list.append(ucr_key_value)
+	unset_ucr_key_list = [x for x in unset_ucr_key_list if not x.startswith(ucr_key)]
+
+
+def schedule_ucr_unset(ucr_key):
+	global set_ucr_key__value_list
+	global unset_ucr_key_list
+
+	ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr unset %s" % (name, ucr_key))
+	if ucr_key not in unset_ucr_key_list:
+		unset_ucr_key_list.append(ucr_key)
+	set_ucr_key__value_list = [x for x in set_ucr_key__value_list if not x.startswith(ucr_key)]
+
+
+def checkAndSet(new, old):
 	obj = new or old
 	if not obj:
 		return
@@ -120,14 +138,12 @@ def checkAndSet(new, old):
 		ucr.load()
 		ucr_value = ucr.get(unset_ucr_key)
 		if ucr_value:
-			unset_ucr_key_list.append(unset_ucr_key)
+			schedule_ucr_unset(unset_ucr_key)
 			modified_default_names.append(default_name)
-			ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
 	else:
-		ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
+		ucr_key = "%s/%s" % (ucr_base, default_name_lower)
+		schedule_ucr_set(ucr_key, obj_name)
 		modified_default_names.append(default_name)
-		ud.debug(ud.LISTENER, ud.PROCESS, "%s: scheduling ucr set %s" % (name, ucr_key_value))
-		set_ucr_key__value_list.append(ucr_key_value)
 
 
 def no_relevant_change(new, old):
