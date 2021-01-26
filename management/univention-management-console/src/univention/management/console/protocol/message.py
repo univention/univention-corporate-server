@@ -230,7 +230,7 @@ class Message(object):
 		try:
 			header = _header.decode('utf-8')
 		except ValueError:
-			PARSER.error('Error decoding UMCP message header: %r' % (header[:100],))
+			PARSER.error('Error decoding UMCP message header: %r' % (_header[:100],))
 			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Invalid message header encoding.'))
 
 		# is the format of the header line valid?
