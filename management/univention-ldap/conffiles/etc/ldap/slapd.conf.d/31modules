@@ -17,6 +17,8 @@ if configRegistry.is_true('ldap/shadowbind', True):
 	print('moduleload\tshadowbind.so')
 if configRegistry.is_true('ldap/overlay/lastbind', False):
 	print('moduleload\tlastbind.la')
+if configRegistry.is_true('ldap/pw-bcrypt', False):
+	print('moduleload\tpw-bcrypt.so')
 @!@
 moduleload	constraint.so
 moduleload	accesslog.so

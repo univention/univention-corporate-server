@@ -1,0 +1,54 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if logon with an bcrypt hash works
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-ldap-server
+## exposure: dangerous
+## bugs: [52693]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+eval "$(ucr shell ldap/pw-bcrypt)"
+
+skip_with_these_packages="univention-ad-connector univention-s4-connector univention-samba"
+for pkg in $skip_with_these_packages; do
+	if checkpkg "$pkg"; then
+		exit 77
+	fi
+done
+
+revert_bcrypt () {
+	if [ -n "$ldap_pw_bcrypt" ]; then
+		ucr set ldap/pw-bcrypt="$ldap_pw_bcrypt"
+	else
+		ucr unset ldap/pw-bcrypt
+	fi
+	service slapd restart
+}
+
+ucr set ldap/pw-bcrypt=true
+service slapd restart
+undo revert_bcrypt
+
+test_username=$(user_randomname)
+user_create "$test_username" && undo user_remove "$test_username" || fail_fast 140 "cannot create user $test_username"
+dn="$(user_dn "$test_username")"
+
+wait_for_replication_and_postrun
+
+# update password hash
+# {BCRYPT}$2b$08$s8k7t6cvdHLLMz75emGZMeP.d0c3Xl/.to3FntmYUxabPlpEa/bjW -> randompassword
+ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR
+dn: $dn
+changetype: modify
+replace: userPassword
+userPassword: {BCRYPT}\$2b\$08\$s8k7t6cvdHLLMz75emGZMeP.d0c3Xl/.to3FntmYUxabPlpEa/bjW
+%EOR
+
+univention-ldapsearch -D "$dn" -x -w randompassword uid="$test_username" || fail_fast 140 "cannot logon with bcrypt hash"
+
+exit "$RETVAL"

@@ -111,3 +111,21 @@ Description[de]=Ist diese Option deaktiviert oder die Variable nicht gesetzt, wi
 Description[en]=If this option is deactivated or the variable unset, the UDM attribute mailForwardCopyToSelf will be set as before: If the mailPrimaryAddress is present in the LDAP attribute mailForwardAddress. Setting the variable maps the value of mailForwardCopyToSelf to an LDAP attribute with the same name (please visit <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, see also mail/postfix/activate_unionmap_in_virtual_alias_maps and mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps) (Default: no)
 Type=bool
 Categories=management-udm
+
+[password/hashing/bcrypt]
+Description[de]=Ist diese Option aktiviert, verwendet UDM bcrypt als Hashing Methode für Benutzerpasswörter.
+Description[en]=If this option is activated bcrypt is used for user password hashes in UDM.
+Type=bool
+Categories=management-udm
+
+[password/hashing/bcrypt/prefix]
+Description[de]=bcrypt-Variante (default: 2b)
+Description[en]=bcrypt variant (default: 2b)
+Type=string
+Categories=management-udm
+
+[password/hashing/bcrypt/cost_factor]
+Description[de]=Der bcrypt-Kostenfaktor (integer( erhöht die Sicherheit, indem er das Hashing verlangsamt (default: 12).
+Description[en]=The bcrypt cost factor (integer) increases security by slowing down the hashing (default: 12).
+Type=int
+Categories=management-udm

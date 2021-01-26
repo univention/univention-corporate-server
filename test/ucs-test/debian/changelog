@@ -1,3 +1,10 @@
+ucs-test (10.0.3-4) unstable; urgency=medium
+
+  * Bug #52693: added 61_udm-users/53_udm_users_user_bcrypt_password
+    and 10_ldap/57bcrypt_hash
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Feb 2021 22:20:56 +0100
+
 ucs-test (10.0.3-3) unstable; urgency=medium
 
   * Fixup for Bug #52241

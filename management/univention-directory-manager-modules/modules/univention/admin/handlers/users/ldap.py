@@ -241,10 +241,10 @@ class object(univention.admin.handlers.simpleLdap):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
-			password_crypt = univention.admin.password.lock_password(password)
+			password_hash = univention.admin.password.lock_password(password)
 			if self['disabled'] != u'1':
-				password_crypt = univention.admin.password.unlock_password(password_crypt)
-			ml.append(('userPassword', old_password.encode('ASCII'), password_crypt.encode('ASCII')))
+				password_hash = univention.admin.password.unlock_password(password_hash)
+			ml.append(('userPassword', old_password.encode('ASCII'), password_hash.encode('ASCII')))
 		return ml
 
 	def _modlist_lastname(self, ml):
@@ -282,7 +282,7 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.pwalreadyused()
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
-			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+			newPWHistory = univention.admin.password.get_password_history(self['password'], pwhistory, pwhistoryPolicy.pwhistoryLength)
 			ml.append(('pwhistory', self.oldattr.get('pwhistory', [b''])[0], newPWHistory.encode('ASCII')))
 
 		return ml
