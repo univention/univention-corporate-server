@@ -453,8 +453,9 @@ class RequestOptionsIterator(object):
 		self.max = len(self.everything)
 		self.current = 0
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return self.current < self.max
+	__nonzero__ = __bool__
 
 	def __iter__(self):
 		self.current = 0
