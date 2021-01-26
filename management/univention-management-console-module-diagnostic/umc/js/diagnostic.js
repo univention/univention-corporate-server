@@ -280,10 +280,11 @@ define([
 				region: 'nav'
 			});
 			this.own(this._progressBar);
-			this._progressBar.setInfo(_('Running full diagnosis...'), undefined, Infinity);
+			var component = _('Running full diagnosis...');
+			this._progressBar.setInfo(component, undefined, Infinity);
 
 			var deferred = new Deferred();
-			this._progressBar.feedFromDeferred(deferred);
+			this._progressBar.feedFromDeferred(deferred, component);
 
 			return this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
 				if (!plugin.id) {
