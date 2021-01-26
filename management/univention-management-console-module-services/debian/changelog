@@ -1,3 +1,9 @@
+univention-management-console-module-services (9.0.0-3) unstable; urgency=medium
+
+  * Bug #52453: adjust design of services module
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Jan 2021 09:29:10 +0100
+
 univention-management-console-module-services (9.0.0-2) unstable; urgency=medium
 
   * Bug #51333: Python3 Migration. Dropped python 2 specific functionality

@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-3) unstable; urgency=medium
+
+  * Bug #52453: adjust design of printer modules
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Jan 2021 09:27:12 +0100
+
 univention-printserver (13.0.2-2) unstable; urgency=medium
 
   * Bug #52453: adjust styling of module

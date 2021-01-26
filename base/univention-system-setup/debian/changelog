@@ -1,3 +1,10 @@
+univention-system-setup (13.0.3-9) unstable; urgency=medium
+
+  * Bug #52453: adjust design of 'Certificate settings', 'Language settings'
+  	and 'Network settings' module
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Jan 2021 09:31:59 +0100
+
 univention-system-setup (13.0.3-8) unstable; urgency=medium
 
   * Bug #51598: univention-appcenter should be used as Python3

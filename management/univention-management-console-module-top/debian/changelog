@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-4) unstable; urgency=medium
+
+  * Bug #52453: adjust design of top module
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Jan 2021 09:28:50 +0100
+
 univention-management-console-module-top (9.0.0-3) unstable; urgency=medium
 
   * Bug #51323: Dependencies for Python 3
