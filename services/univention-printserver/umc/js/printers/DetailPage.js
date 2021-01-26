@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-class",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/store",
@@ -40,7 +41,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, domClass, dialog, tools, store, Page, Grid, Form, Text, _) {
+], function(declare, lang, domClass, entities, dialog, tools, store, Page, Grid, Form, Text, _) {
 	return declare("umc.modules.printers.DetailPage", [ Page ], {
 		navContentClass: 'umcCard2',
 
@@ -206,10 +207,10 @@ define([
 
 				var txt = "";
 				txt += "<table style='font-size: var(--font-size-small);'>\n";
-				txt += "<tr><td>" + _("Server")       + ":</td><td style='" + st_r + "'>" + res['server']      + "</td></tr>\n";
-				txt += "<tr><td>" + _("Status")       + ":</td><td style='" + st_r + "'>" + status             + "</td></tr>\n";
-				txt += "<tr><td>" + _("Location")     + ":</td><td style='" + st_r + "'>" + res['location']    + "</td></tr>\n";
-				txt += "<tr><td>" + _("Description")  + ":</td><td style='" + st_r + "'>" + res['description'] + "</td></tr>\n";
+				txt += "<tr><td>" + _("Server")       + ":</td><td style='" + st_r + "'>" + entities.encode(res['server'])      + "</td></tr>\n";
+				txt += "<tr><td>" + _("Status")       + ":</td><td style='" + st_r + "'>" + entities.encode(status)             + "</td></tr>\n";
+				txt += "<tr><td>" + _("Location")     + ":</td><td style='" + st_r + "'>" + entities.encode(res['location'])    + "</td></tr>\n";
+				txt += "<tr><td>" + _("Description")  + ":</td><td style='" + st_r + "'>" + entities.encode(res['description']) + "</td></tr>\n";
 				txt += "</table>\n";
 
 				this._head.getWidget('message').set('content',txt);
