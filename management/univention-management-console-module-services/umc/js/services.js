@@ -200,7 +200,8 @@ define([
 				inlineLabel: _('Search...'),
 				onSearch: lang.hitch(this, function() {
 					this._searchWidget.submit();
-				})
+				}),
+				'class': 'umcTextBoxDark'
 			}];
 
 			this._searchWidget = new SearchForm({
