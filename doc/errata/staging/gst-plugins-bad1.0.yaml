@@ -1,15 +1,11 @@
 product: ucs
 release: "4.4"
-version: [6, 7]
+version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: gst-plugins-bad1.0
 fix: 1.10.4-1+deb9u1
 desc: |
  This update addresses the following issue:
-
- * 1.10.4-1+deb9u1 (Tue, 19 Jan 2021 00:31:10 +0530) * Non-maintainer upload
-   by the ELTS team. * Add patch to guard against ref_pic_markings overflow.
-   (Fixes: TEMP-0000000-FAEBC0)
  * buffer overflow in gst_h264_slice_parse_dec_ref_pic_marking (CVE-2021-3185)
 bug: [52685]
 cve:
