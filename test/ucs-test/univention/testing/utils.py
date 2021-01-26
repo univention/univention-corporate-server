@@ -617,9 +617,9 @@ def is_udp_port_open(port, ip=None):
 	try:
 		udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		udp_sock.connect((ip, int(port)))
-		os.write(udp_sock.fileno(), 'X')
-		os.write(udp_sock.fileno(), 'X')
-		os.write(udp_sock.fileno(), 'X')
+		os.write(udp_sock.fileno(), b'X')
+		os.write(udp_sock.fileno(), b'X')
+		os.write(udp_sock.fileno(), b'X')
 		return True
 	except OSError as ex:
 		print('is_udp_port_open({0}) failed: {1}'.format(port, ex))
