@@ -66,6 +66,7 @@ define([
 		navButtons: null,
 
 		navContentClass: '',
+		mainContentClass: '',
 
 		// title: String
 		//		Title of the page. This option is necessary for tab pages.
@@ -198,7 +199,8 @@ define([
 				'class': this._initialBootstrapClasses
 			});
 			this._mainContent = new ContainerWidget({
-				baseClass: 'umcPageMainContent'
+				baseClass: 'umcPageMainContent',
+				'class': this.mainContentClass
 			});
 			this._main.addChild(this._mainContent);
 			ContainerWidget.prototype.addChild.apply(this, [this._nav]);

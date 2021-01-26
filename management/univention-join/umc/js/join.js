@@ -135,6 +135,8 @@ define([
 		_logtext: null, // text widget that holds log
 
 		headerText: _("Join log"),
+		navContentClass: 'umcCard2',
+		mainContentClass: 'umcCard2',
 		fullWidth: true,
 
 		postMixInProperties: function() {
