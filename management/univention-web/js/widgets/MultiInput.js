@@ -107,7 +107,9 @@ define([
 
 		// rowLabelsVisibility: string
 		// 		'firstRow' | 'allRows' | 'noRows'
-		rowLabelsVisibility: 'firstRow',
+		// 		If no rowLabelsVisibility is specified when creating an instance of this widget
+		// 		then it is determined based on the content of this.subtypes
+		rowLabelsVisibility: '',
 		_setRowLabelsVisibilityAttr: function(rowLabelsVisibility) {
 			domClass.remove(this.domNode, 'umcMultiInput--noRowLabels umcMultiInput--onlyFirstRowLabels');
 			if (rowLabelsVisibility === 'firstRow') {
@@ -165,11 +167,15 @@ define([
 
 
 			// determine rowLabelsVisibility
-			var shouldShowRowLabels = array.some(this.subtypes, function(subtype) {
-				return subtype.label && subtype.label !== this.label;
-			});
-			if (!shouldShowRowLabels) {
-				this.rowLabelsVisibility = 'noRows';
+			if (!this.rowLabelsVisibility) {
+				var shouldShowRowLabels = array.some(this.subtypes, function(subtype) {
+					return subtype.label && subtype.label !== this.label;
+				});
+				if (shouldShowRowLabels) {
+					this.rowLabelsVisibility = 'firstRow';
+				} else {
+					this.rowLabelsVisibility = 'noRows';
+				}
 			}
 
 

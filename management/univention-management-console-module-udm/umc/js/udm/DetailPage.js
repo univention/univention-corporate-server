@@ -681,6 +681,7 @@ define([
 
 				if (iprop.id === 'anonymousEmpty') {
 					iprop.removeButtonClass = 'ucsFillButton';
+					iprop.rowLabelsVisibility = 'allRows';
 				}
 
 				// handle size classes for MultiInputs that are defined at the
