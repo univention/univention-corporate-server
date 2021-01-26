@@ -1049,7 +1049,7 @@ setup_ec2 ()
 	rm -f /boot/grub/menu.lst # This still is evaluated by AWS-EC2 if it exists!
 	update-grub
 
-	apt-get purge -y univention-firewall univention-ifplugd univention-basesystem ifplugd libdaemon0
+	apt-get purge -y univention-firewall ifplugd
 	univention-install -y cloud-initramfs-growroot patch gdisk
 	mv /usr/share/initramfs-tools/scripts/local-bottom/growroot /usr/share/initramfs-tools/scripts/init-premount/
 	###### cp growroot.patch
