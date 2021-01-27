@@ -1,3 +1,9 @@
+ucs-test (9.0.7-15) unstable; urgency=medium
+
+  * Bug #52693: added 61_udm-users/53_udm_users_user_bcrypt_password
+
+ -- Felix Botner <botner@univention.de>  Wed, 27 Jan 2021 17:54:54 +0100
+
 ucs-test (9.0.7-14) unstable; urgency=medium
 
   * Bug #52693: added 61_udm-users/53_udm_users_user_bcrypt_password
