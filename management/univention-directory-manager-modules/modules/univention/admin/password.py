@@ -93,7 +93,7 @@ def crypt(password, method_id=None, salt=None):
 
 
 def bcrypt_hash(password, salt=None):
-	# type: (str, Optional[str], Optional[str]) -> str
+	# type: (str, Optional[str]) -> str
 	"""
 	Return bcrypt hash.
 
@@ -103,7 +103,7 @@ def bcrypt_hash(password, salt=None):
 	"""
 	if salt is None:
 		cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
-		prefix = configRegistry.get('password/hashing/prefix', '2b')
+		prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b')
 		salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
 	return bcrypt.hashpw(password.encode('utf-8'), salt)
 
