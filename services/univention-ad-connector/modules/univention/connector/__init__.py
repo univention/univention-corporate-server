@@ -337,7 +337,7 @@ class attribute(object):
 		:ptype sync_mode: str
 	"""
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends='', con_attribute_encoding='UTF-8'):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends='', con_attribute_encoding='UTF-8'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
@@ -347,7 +347,6 @@ class attribute(object):
 		self.required = required
 		# If no compare_function is given, we default to `compare_normal()`
 		self.compare_function = compare_function or compare_normal
-		self.con_value_merge_function = con_value_merge_function
 		if mapping:
 			self.mapping = mapping
 		# Make a reverse check of this mapping. This is neccessary if the attribute is

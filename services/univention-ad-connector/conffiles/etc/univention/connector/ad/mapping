@@ -167,7 +167,6 @@ ad_mapping = {
 					proxyAddresses.to_mailPrimaryAddress
 				),
 				compare_function=proxyAddresses.equal,
-				con_value_merge_function=proxyAddresses.merge_ucs2con,
 			),
 			'mailPrimaryAddress_to_mail': univention.connector.attribute(
 				sync_mode='write',
@@ -305,7 +304,6 @@ ad_mapping = {
 					proxyAddresses.to_mailPrimaryAddress
 				),
 				compare_function=proxyAddresses.equal,
-				con_value_merge_function=proxyAddresses.merge_ucs2con,
 			),
 			'mailPrimaryAddress_to_mail': univention.connector.attribute(
 				sync_mode='write',

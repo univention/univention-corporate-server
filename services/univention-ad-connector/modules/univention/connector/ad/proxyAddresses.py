@@ -97,25 +97,3 @@ def to_mailAlternativeAddress(s4connector, key, object):
 		if value.startswith(b'smtp:'):
 			new_ucs_values.append(value[5:])
 	return new_ucs_values
-
-
-def merge_ucs2con(mapped_ucs_values, old_con_values=None):
-	new_con_values = []
-	if not old_con_values:
-		old_con_values = []
-
-	# first preserve all non-smtp addresses (x500, fax, whatever)
-	# and all smtp-Addresses we also have in UCS
-	for con_value in old_con_values:
-		if con_value.lower().startswith(b'smtp:'):
-			if con_value in mapped_ucs_values:
-				new_con_values.append(con_value)
-		else:
-			new_con_values.append(con_value)
-
-	# Then add the ones we currently only have in UCS
-	for mapped_ucs_value in mapped_ucs_values:
-		if mapped_ucs_value not in new_con_values:
-			new_con_values.append(mapped_ucs_value)
-
-	return new_con_values
