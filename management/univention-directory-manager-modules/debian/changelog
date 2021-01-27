@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-3) unstable; urgency=medium
+
+  * Bug #52693: added bcrypt support
+
+ -- Felix Botner <botner@univention.de>  Wed, 27 Jan 2021 15:16:44 +0100
+
 univention-directory-manager-modules (14.0.20-2) unstable; urgency=medium
 
   * Bug #51777: revert

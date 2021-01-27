@@ -32,6 +32,7 @@
 from __future__ import absolute_import
 
 import re
+import bcrypt
 import hashlib
 import heimdal
 import smbpasswd
@@ -89,6 +90,22 @@ def crypt(password, method_id=None, salt=None):
 
 	import crypt
 	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+
+
+def bcrypt_hash(password, salt=None):
+	# type: (str, Optional[str]) -> str
+	"""
+	Return bcrypt hash.
+
+	:param password: password string.
+	:param salt: salt for randomize the hashing.
+	:returns: the hashed password string.
+	"""
+	if salt is None:
+		cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
+		prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b')
+		salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
+	return bcrypt.hashpw(password.encode('utf-8'), salt)
 
 
 def ntlm(password):
@@ -203,6 +220,8 @@ def lock_password(password):
 	"""
 	# cleartext password?
 	if not RE_PASSWORD_SCHEME.match(password):
+		if configRegistry.is_true('password/hashing/bcrypt'):
+			return "{BCRYPT}!%s" % (univention.admin.password.bcrypt_hash(password))
 		return "{crypt}!%s" % (univention.admin.password.crypt(password))
 
 	if not is_locked(password):
@@ -222,16 +241,22 @@ def password_is_auth_saslpassthrough(password):
 	return password.startswith('{SASL}') and configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
 
 
-def get_password_history(newpwhash, pwhistory, pwhlen):
+def get_password_history(password, pwhistory, pwhlen):
 	# type: (str, str, int) -> str
 	"""
-	Append the given password hash to the history of password hashed
+	Append the given password as hash to the history of password hashed
 
-	:param newpwhash: new password hash.
+	:param password: the new password.
 	:param pwhistory: history of previous password hashes.
 	:param pwhlen: length of the password history.
 	:returns: modified password hash history.
 	"""
+	# create hash
+	if configRegistry.is_true('password/hashing/bcrypt'):
+		newpwhash = "{BCRYPT}%s" % (univention.admin.password.bcrypt_hash(password))
+	else:
+		newpwhash = univention.admin.password.crypt(password)
+
 	# split the history
 	if len(string.strip(pwhistory)):
 		pwlist = string.split(pwhistory, ' ')
@@ -274,8 +299,14 @@ def password_already_used(password, pwhistory):
 	for line in pwhistory.split(" "):
 		linesplit = line.split("$")  # $method_id$salt$password_hash
 		try:
-			password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
-			ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
+			if linesplit[0] == '{BCRYPT}':
+				password_hash = line[len('{BCRYPT}'):]
+				if bcrypt.checkpw(password, password_hash):
+					ud.debug(ud.ADMIN, ud.ERROR, '\nbcrypt.checkpw() == [%s]' % (line))
+					return True
+			else:
+				password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+				ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")
 			hash_algorithm.update(password.encode("utf-8"))
