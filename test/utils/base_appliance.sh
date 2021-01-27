@@ -867,7 +867,7 @@ __EOF__
 	apt-get update
 
 	# Activate DHCP
-	ucr set interfaces/ens3/type=dhcp dhclient/options/timeout=12
+	ucr set interfaces/eth0/type=dhcp interfaces/ens3/type=dhcp dhclient/options/timeout=12
 	ucr unset gateway
 
 	# Set a default nameserver and remove all local configured nameserver
