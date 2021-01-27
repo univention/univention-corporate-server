@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * This is a new upstream version of stunnel4.
 bug: [52196]
+erratum: 876
+announced: 2021-01-27
