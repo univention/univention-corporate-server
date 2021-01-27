@@ -8,6 +8,10 @@ desc: |
  This update addresses the following issue:
  * The --remove-option argument of the UDM CLI `create` command has been
    repaired.
- * Support for bcrypt password hashes for user accounts has been added
-   to the UDM. To activate ...
+ * Support for bcrypt user password hashes has been added
+   to the UDM. bcrypt can be activated with the UCR variable
+   `password/hashing/bcrypt` (default false). The bcrypt cost factor
+   and variant can be configured with the UCR variables
+   `password/hashing/bcrypt/cost_factor` (default 12) and
+   `password/hashing/bcrypt/prefix` (default 2b).
 bug: [52576, 52693]
