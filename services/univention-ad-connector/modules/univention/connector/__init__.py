@@ -1739,7 +1739,7 @@ class ucs(object):
 		if object['dn'] is None:
 			return object_out
 
-		for attribute, values in list(object['attributes'].items()):
+		for attribute, values in sorted(object['attributes'].items()):
 			for attr_key, attributes in (MAPPING.attributes or {}).items():
 				if attribute.lower() == attributes.con_attribute.lower():
 					# mapping function
