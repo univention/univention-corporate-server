@@ -77,7 +77,8 @@ class ADConnection(ldap_glue.LDAPConnection):
 	def set_attributes(self, dn, **attributes):
 		old_attributes = self.get(dn, attr=attributes.keys())
 		ldif = modlist.modifyModlist(old_attributes, attributes)
-		self.lo.modify_ext_s(dn, ldif)
+		if ldif:
+			self.lo.modify_ext_s(dn, ldif)
 
 	def add_to_group(self, group_dn, member_dn):
 		self.append_to_attribute(group_dn, 'member', member_dn)
