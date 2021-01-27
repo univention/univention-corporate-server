@@ -147,17 +147,17 @@ class S4Cache(object):
 				cur = self._dbcon.cursor()
 				for sql_command in sql_commands:
 					if isinstance(sql_command, tuple):
-						ud.debug(ud.LDAP, ud.INFO, "S4Cache: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
+						ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
 						cur.execute(sql_command[0], sql_command[1])
 					else:
-						ud.debug(ud.LDAP, ud.INFO, "S4Cache: Execute SQL command: '%s'" % sql_command)
+						ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s'" % sql_command)
 						cur.execute(sql_command)
 				self._dbcon.commit()
 				if fetch_result:
 					rows = cur.fetchall()
 				cur.close()
 				if fetch_result:
-					ud.debug(ud.LDAP, ud.INFO, "S4Cache: Return SQL result: '%s'" % rows)
+					ud.debug(ud.LDAP, ud.ALL, "S4Cache: Return SQL result: '%s'" % rows)
 					return rows
 				return None
 			except sqlite3.Error as exp:
