@@ -13,3 +13,5 @@ desc: |
    "ucs/server/sso/stunnel4/watchdog/active=true"
    and restarting the service "univention-stunnel4-watchdog".
 bug: [52196]
+erratum: 877
+announced: 2021-01-27
