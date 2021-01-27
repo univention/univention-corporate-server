@@ -93,8 +93,6 @@ class UCSInstallation(object):
 			time.sleep(3)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
-			self.click(self._['finish_partition'])
-			self.client.keyPress('enter')
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
