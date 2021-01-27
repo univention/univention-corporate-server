@@ -1102,7 +1102,7 @@ class ucs(object):
 
 			changed_attributes = object.get('changed_attributes')
 
-			changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or attributes.con_depends in changed_attributes
+			changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or post_attributes.con_depends in changed_attributes
 			if changed or modtype == 'add':
 				ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
 				if post_attributes.reverse_attribute_check:
