@@ -602,7 +602,7 @@ download_system_setup_packages ()
 		install_cmd="$(univention-config-registry get update/commands/install)"
 
 		# server role packages
-		packages="univention-server-master univention-server-backup univention-server-slave univention-server-member univention-basesystem"
+		packages="univention-server-master univention-server-backup univention-server-slave univention-server-member"
 
 		# ad member mode
 		packages="$packages univention-ad-connector univention-samba"
@@ -614,9 +614,9 @@ download_system_setup_packages ()
 		packages="$packages firefox-esr-l10n-de"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages univention-management-console-module-adtakeover univention-printserver univention-printquota univention-dhcp
+			packages="$packages univention-management-console-module-adtakeover univention-printserver univention-dhcp
 				univention-fetchmail univention-radius univention-mail-server
-				univention-nagios-server univention-pkgdb univention-samba4 univention-s4-connector univention-squid
+				univention-pkgdb univention-samba4 univention-s4-connector univention-squid
 				univention-self-service univention-self-service-passwordreset-umc
 				univention-self-service-master"
 		fi
@@ -642,14 +642,14 @@ appliance_preinstall_common_role ()
 appliance_preinstall_non_univention_packages ()
 {
 	local packages="
-		libblas-common libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
-		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgfortran3 libgnutls-dane0
-		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libirs141 libjbig2dec0 libkdc2-heimdal
-		liblinear3 liblqr-1-0 libltdl7 liblua5.1-0 liblua5.3-0 libm17n-0 libmagickcore-6.q16-3 libmagickwand-6.q16-3
+		libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
+		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgnutls-dane0
+		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libjbig2dec0 libkdc2-heimdal
+		liblinear3 liblqr-1-0 libltdl7 liblua5.1-0 liblua5.3-0 libm17n-0
 		libmcrypt4 libnet-snmp-perl libnetpbm10 libnfsidmap2 libnl-3-200 libnl-genl-3-200 libnss-extrausers libnss-ldap
 		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-cracklib libpam-heimdal libpam-ldap libpaper-utils
 		libpaper1 libpcap0.8 libpq5 libquadmath0 libradcli4 libsnmp-base libsnmp-session-perl libsnmp30 libsocket6-perl
-		libtirpc1 libtre5 libunbound2 libyaml-0-2 bind9 emacs24 ifplugd ntp sudo vim zip"
+		libtre5 libyaml-0-2 bind9 emacs24 ifplugd sudo vim zip"
 	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $packages
 }
 
@@ -683,8 +683,8 @@ uninstall_packages ()
 	fi
 
 	# Old kernels
-	for kernel in "linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed linux-image-4.9.0-ucs104-amd64 linux-image-4.9.0-ucs104-amd64-signed"; do
-		DEBIAN_FRONTEND=noninteractive apt-get purge -y --force-yes ${kernel}
+	for kernel in linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed linux-image-4.9.0-ucs104-amd64 linux-image-4.9.0-ucs104-amd64-signed; do
+		DEBIAN_FRONTEND=noninteractive apt-get purge -y --force-yes ${kernel} || true
 	done
 }
 
@@ -763,7 +763,8 @@ __EOF__
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
-	killall -9 firefox-esr
+	# TODO is this necessary with UCS 5
+	killall -9 firefox-esr || true
 
 	# allow X11 login as normal user
 	ucr set "auth/gdm/group/Domain Users"=yes
@@ -866,7 +867,7 @@ __EOF__
 	apt-get update
 
 	# Activate DHCP
-	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
+	ucr set interfaces/ens3/type=dhcp dhclient/options/timeout=12
 	ucr unset gateway
 	 
 	# Set a default nameserver and remove all local configured nameserver
@@ -882,7 +883,7 @@ __EOF__
 
 	ucr unset interfaces/primary
 
-    ucr set update/secure_apt=yes
+	ucr set update/secure_apt=yes
 	# Manual cleanup
 	rm -rf /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
