@@ -11,5 +11,5 @@ desc: |
    does not respond any more, but is marked as active. This
    can be activated by setting the ucr variable
    "ucs/server/sso/stunnel4/watchdog/active=true"
-   and restarting the service.
+   and restarting the service "univention-stunnel4-watchdog".
 bug: [52196]
