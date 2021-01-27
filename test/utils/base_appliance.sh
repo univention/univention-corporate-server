@@ -869,7 +869,7 @@ __EOF__
 	# Activate DHCP
 	ucr set interfaces/ens3/type=dhcp dhclient/options/timeout=12
 	ucr unset gateway
-	 
+
 	# Set a default nameserver and remove all local configured nameserver
 	ucr set nameserver1=208.67.222.222
 	ucr unset nameserver2 nameserver3
@@ -878,8 +878,7 @@ __EOF__
 	ucr unset interfaces/ens3/address \
 			interfaces/ens3/broadcast \
 			interfaces/ens3/netmask \
-			interfaces/ens3/network \
-			interfaces/ens3/type
+			interfaces/ens3/network
 
 	ucr unset interfaces/primary
 
@@ -900,7 +899,7 @@ __EOF__
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
-	 
+
 	ucr set system/setup/boot/start=true
 }
 
