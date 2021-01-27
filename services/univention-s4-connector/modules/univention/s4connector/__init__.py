@@ -1467,25 +1467,17 @@ class ucs(object):
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
-		# dummy: implemented in s4/__init__.py
-		return False
+	@staticmethod
+	def _subtree_match(dn, subtree):
+		x = ldap.dn.str2dn(subtree.lower())
+		return ldap.dn.str2dn(dn.lower())[-len(x):] == x
 
-	# internal functions
-
-	def _subtree_match(self, dn, subtree):
-		if len(subtree) > len(dn):
-			return False
-		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
-			return True
-		return False
-
-	def _subtree_replace(self, dn, subtree, subtreereplace):  # FIXME: may raise an exception if called with umlauts
-		if len(subtree) > len(dn):
+	@staticmethod
+	def _subtree_replace(dn, subtree, subtreereplace):
+		x = ldap.dn.str2dn(subtree.lower())
+		if ldap.dn.str2dn(dn.lower())[-len(x):] != x:
 			return dn
-		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
-			return dn[:-len(subtree)] + subtreereplace
-		return dn
+		return ldap.dn.dn2str(ldap.dn.str2dn(dn)[:len(x)] + ldap.dn.str2dn(subtreereplace))
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
 	def _filter_match(self, filter, attributes):
