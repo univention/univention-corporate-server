@@ -12,6 +12,8 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
 
+eval "$(ucr shell ldap/pw-bcrypt)"
+
 skip_with_these_packages="univention-ad-connector univention-s4-connector univention-samba"
 for pkg in $skip_with_these_packages; do
 	if checkpkg "$pkg"; then
@@ -20,10 +22,17 @@ for pkg in $skip_with_these_packages; do
 done
 
 revert_bcrypt () {
-	ucr unset ldap/pw-bcrypt; service slapd restart	
+	if [ -n "$ldap_pw_bcrypt" ]; then
+		ucr set ldap/pw-bcrypt="$ldap_pw_bcrypt"
+	else
+		ucr unset ldap/pw-bcrypt
+	fi
+	service slapd restart
 }
 
-ucr set ldap/pw-bcrypt=true; service slapd restart; undo revert_bcrypt
+ucr set ldap/pw-bcrypt=true
+service slapd restart
+undo revert_bcrypt
 
 test_username=$(user_randomname)
 user_create "$test_username" && undo user_remove "$test_username" || fail_fast 140 "cannot create user $test_username"
