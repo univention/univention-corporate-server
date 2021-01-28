@@ -1,3 +1,9 @@
+univention-management-console (11.0.6-7) unstable; urgency=medium
+
+  * Bug #25197: fix broken evaluation of disallowing option pattern
+
+ -- Florian Best <best@univention.de>  Thu, 28 Jan 2021 21:42:27 +0100
+
 univention-management-console (11.0.6-6) unstable; urgency=medium
 
   * Bug #52699: fix crashing of UMC-Server on malicious requests

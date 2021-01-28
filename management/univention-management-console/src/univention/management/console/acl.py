@@ -214,7 +214,7 @@ class ACLs(object):
 		match = ACLs.MATCH_FULL
 		for key, value in opt_pattern.items():
 			# a key starting with ! means it may not be available
-			if key.startswith('!') and key in opts:
+			if key.startswith('!') and key[1:] in opts:
 				return ACLs.MATCH_NONE
 			# else if key not in opts no rule available -> OK
 			if key not in opts:
