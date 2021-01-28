@@ -811,6 +811,9 @@
 				<listitem><simpara>
 						The packages <package>univention-snmp</package> and <package>univention-snmpd</package> have been removed (<u:bug>52121</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-directory-logger</package> has been migrated to Python 3 (<u:bug>52301</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>

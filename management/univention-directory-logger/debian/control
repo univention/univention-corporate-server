@@ -10,8 +10,8 @@ Build-Depends:
 Package: univention-directory-logger
 Architecture: all
 Depends:
- python-univention,
- python-univention-lib (>= 1.0.25-1),
+ python3-univention,
+ python3-univention-lib (>= 1.0.25-1),
  slapd (>= 2.2.30-2),
  univention-directory-listener,
  ${misc:Depends},

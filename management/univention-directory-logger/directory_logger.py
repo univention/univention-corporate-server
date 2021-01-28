@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import
 
-import listener
+from listener import SetUID, configRegistry
 import time
 import syslog
 import re
@@ -50,7 +50,7 @@ filter = '(objectClass=*)'  # log all objects by default
 attributes = []
 
 logname = '/var/log/univention/directory-logger.log'
-excludeKeyPattern = re.compile('ldap/logging/exclude\d+')
+excludeKeyPattern = re.compile(r'ldap/logging/exclude\d+')
 cachename = '/var/lib/univention-directory-logger/cache'
 notifier_id = '/var/lib/univention-directory-listener/notifier_id'
 
@@ -65,18 +65,19 @@ preferedGroup = "adm"
 gidNumber = 0  # fallback
 filemode = '0640'
 cleanupDellog = True  # remove missed dellog entries (after reporting about them)
-digest = listener.configRegistry.get('ldap/logging/hash', 'md5')
+digest = configRegistry.get('ldap/logging/hash', 'md5')
 
-SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$')
+SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$'.encode('ASCII'))
 
 
 def ldapEntry2string(entry):
 	# type: (dict) -> str
+	# TODO: we don't know the encoding of the attribute, therefore every non-ASCII value must be base64
 	return ''.join(
-		'%s:: %s\n' % (key, base64.standard_b64encode(value))
-		if SAFE_STRING_RE.search(value) else
-		'%s: %s\n' % (key, value)
-		for key, values in entry.iteritems()
+		'%s:: %s\n' % (key, base64.standard_b64encode(value).decode('ASCII'))
+		if not value.isascii() or SAFE_STRING_RE.search(value) else
+		'%s: %s\n' % (key, value.decode('ASCII'))
+		for key, values in entry.items()
 		for value in values
 	)
 
@@ -112,7 +113,7 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 
 
 def process_dellog(dn):
-	dellog = listener.configRegistry['ldap/logging/dellogdir']
+	dellog = configRegistry['ldap/logging/dellogdir']
 
 	dellist = sorted(os.listdir(dellog))
 	for filename in dellist:
@@ -139,22 +140,21 @@ def process_dellog(dn):
 
 
 def prefix_record(record, identifier):
-	if not listener.configRegistry.is_true('ldap/logging/id-prefix', False):
+	if not configRegistry.is_true('ldap/logging/id-prefix', False):
 		return record
 	return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines()) + '\n'
 
 
 def handler(dn, new_copy, old_copy):
 	# type: (str, dict, dict) -> None
-	if not listener.configRegistry.is_true('ldap/logging'):
+	if not configRegistry.is_true('ldap/logging'):
 		return
 
-	listener.setuid(0)
-	try:
+	with SetUID(0):
 		# check for exclusion
 		if any(
 			value in dn
-			for key, value in listener.configRegistry.items()
+			for key, value in configRegistry.items()
 			if excludeKeyPattern.match(key)
 		):
 			if not new_copy:  # there should be a dellog entry to remove
@@ -183,11 +183,11 @@ def handler(dn, new_copy, old_copy):
 		# 2. generate log record
 		if new_copy:
 			try:
-				modifier = new_copy['modifiersName'][0]
+				modifier = new_copy['modifiersName'][0].decode('UTF-8')
 			except LookupError:
 				modifier = '<unknown>'
 			try:
-				timestamp = ldapTime2string(new_copy['modifyTimestamp'][0])
+				timestamp = ldapTime2string(new_copy['modifyTimestamp'][0].decode('ASCII'))
 			except LookupError:
 				timestamp = '<unknown>'
 
@@ -225,8 +225,6 @@ def handler(dn, new_copy, old_copy):
 		syslog.openlog(name, 0, syslog.LOG_DAEMON)
 		syslog.syslog(syslog.LOG_INFO, logmsgfmt % (dn, id, modifier, timestamp, nexthash))
 		syslog.closelog()
-	finally:
-		listener.unsetuid()
 
 
 def createFile(filename):
@@ -236,7 +234,7 @@ def createFile(filename):
 	if gidNumber == 0:
 		try:
 			gidNumber = int(grp.getgrnam(preferedGroup)[2])
-		except:
+		except Exception:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
 			gidNumber = 0
 
@@ -257,8 +255,7 @@ def initialize():
 	timestamp = time.strftime(timestampfmt, time.gmtime())
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init %s' % name)
 
-	listener.setuid(0)
-	try:
+	with SetUID(0):
 		if not os.path.exists(logname):
 			createFile(logname)
 
@@ -291,17 +288,12 @@ def initialize():
 		syslog.openlog(name, 0, syslog.LOG_DAEMON)
 		syslog.syslog(syslog.LOG_INFO, '%s\nTimestamp=%s\nNew Hash=%s' % (action, timestamp, nexthash))
 		syslog.closelog()
-	finally:
-		listener.unsetuid()
 
 
 # --- initialize on load:
-listener.setuid(0)
-try:
+with SetUID(0):
 	if not os.path.exists(logname):
 		createFile(logname)
 	if not os.path.exists(cachename):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s vanished, creating it' % (name, cachename))
 		createFile(cachename)
-finally:
-	listener.unsetuid()
