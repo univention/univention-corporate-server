@@ -286,7 +286,8 @@ class Instance(Base, ProgressMixin):
 	@file_upload
 	def upload_certificate(self, request):
 		def _return(pid, status, bufstdout, bufstderr, request, fn):
-			bufstdout, bufstderr = bufstdout.decode('UTF-8', 'replace'), bufstderr.decode('UTF-8', 'replace')
+			bufstdout = [ x.decode('UTF-8', 'replace') for x in bufstdout ]
+			bufstderr = [ x.decode('UTF-8', 'replace') for x in bufstderr ]
 			success = True
 			if status == 0:
 				message = _('Certificate has been uploaded successfully.')

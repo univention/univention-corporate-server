@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.3-2) unstable; urgency=medium
+
+  * Bug #51336: Fix decoding traceback while parsing openssl output
+
+ -- Arvid <requate@univention.de>  Thu, 28 Jan 2021 15:32:28 +0100
+
 univention-ad-connector (14.0.3-1) unstable; urgency=medium
 
   * Bug #51336 ADC: Fix process detection in umc module
