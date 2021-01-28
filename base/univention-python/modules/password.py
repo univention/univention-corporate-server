@@ -31,11 +31,16 @@ import cracklib
 import os
 import re
 import univention.uldap
+import univention.debug as ud
 import univention.config_registry as ucr
 from ldap.filter import filter_format
-import six
-if not six.PY2:
+
+try:
 	from samba import check_password_quality as samba_check_password_quality
+except ImportError:
+	def samba_check_password_quality(*args, **kwargs):
+		ud.debug(ud.LDAP, ud.ERROR, 'samba_check_password_quality() is not available in Python 2. Not checking password quality.')
+		return True  # not available, use Python 3
 
 
 class CheckFailed(Exception):
