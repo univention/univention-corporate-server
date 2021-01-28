@@ -84,13 +84,13 @@ then
 		LDAP_SECRET="not_found"
 	fi
 	if [ -z "$LDAP_SECRET" ]; then
-		pw_crypt=$(mkpasswd --hash=md5 -s < /etc/ldap.secret)
+		pw_crypt=$(mkpasswd --hash=sha-512 --stdin < /etc/ldap.secret)
 	else
 		#if no ldap.secret is available, replication.py removes the ldap entries
 		pw_crypt="univention"
 	fi
 
-	backup_crypt=$(mkpasswd --hash=md5 -s < /etc/ldap-backup.secret)
+	backup_crypt=$(mkpasswd --hash=sha-512 --stdin < /etc/ldap-backup.secret)
 	firstdc="$(echo "$ldap_base" | sed -e 's|,.*||g;s|.*=||')"
 	if [ -z "$windows_domain" ]; then
 		sambadomain=${domainname%%.*}
