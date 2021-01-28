@@ -95,28 +95,24 @@ class Portal(with_metaclass(Plugin)):
 		visible_folder_dns = [
 			folder_dn
 			for folder_dn in folders.keys()
-			if admin_mode
-			or len(
+			if admin_mode or len(
 				[
 					entry_dn
 					for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
 					if entry_dn in visible_entry_dns
 				]
-			)
-			> 0
+			) > 0
 		]
 		visible_category_dns = [
 			category_dn
 			for category_dn in categories.keys()
-			if admin_mode
-			or len(
+			if admin_mode or len(
 				[
 					entry_dn
 					for entry_dn in categories[category_dn]["entries"]
 					if entry_dn in visible_entry_dns or entry_dn in visible_folder_dns
 				]
-			)
-			> 0
+			) > 0
 		]
 		return {
 			"entry_dns": visible_entry_dns,

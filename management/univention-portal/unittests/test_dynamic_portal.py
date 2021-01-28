@@ -44,7 +44,7 @@ def test_arg_kwargs(portal_factory, mocker):
 	import datetime
 
 	mocker.patch.object(portal_factory, "get_dynamic_classes", return_value=datetime.timedelta)
-	delta_def = {"type": "class", "class": "timedelta", "args": [{"type": "static", "value": 0}, {"type": "static", "value": 10},], "kwargs": {"microseconds": {"type": "static", "value": 500},}}
+	delta_def = {"type": "class", "class": "timedelta", "args": [{"type": "static", "value": 0}, {"type": "static", "value": 10}], "kwargs": {"microseconds": {"type": "static", "value": 500}}}
 	delta = portal_factory.make_arg(delta_def)
 	assert delta.days == 0
 	assert delta.seconds == 10

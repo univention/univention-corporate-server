@@ -1,3 +1,9 @@
+univention-portal (4.0.4-5) unstable; urgency=medium
+
+  * Bug #52512: Some improvements from QA (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Jan 2021 11:11:32 +0100
+
 univention-portal (4.0.4-4) unstable; urgency=medium
 
   * Bug #52512: Some improvements from QA

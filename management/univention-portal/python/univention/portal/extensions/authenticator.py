@@ -29,11 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import base64
-import uuid
-
 import requests
-import tornado
 from six import with_metaclass
 from univention.portal import Plugin
 from univention.portal.log import get_logger
