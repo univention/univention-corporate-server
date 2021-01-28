@@ -1,3 +1,9 @@
+univention-ldap (15.0.3-3) unstable; urgency=medium
+
+  * Bug #52696: sha512 hashes for cn=admin and backup
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Jan 2021 12:48:36 +0100
+
 univention-ldap (15.0.3-2) unstable; urgency=medium
 
   * Bug #52693: added ldap/pw-bcrypt for bcrypt module
