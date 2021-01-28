@@ -329,7 +329,7 @@ class Instance(Base):
 		if process.returncode == 0:
 			return list(files.values())
 
-		for line in stdout.splitlines():
+		for line in stdout.decode('UTF-8', 'replace').splitlines():
 			# is there a general error?
 			match = RE_ERROR.match(line)
 			if match and not line.startswith('Error: Not all install files configured'):
