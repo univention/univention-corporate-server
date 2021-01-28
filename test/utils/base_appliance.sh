@@ -630,6 +630,8 @@ download_system_setup_packages ()
 
 		apt-ftparchive packages . >Packages
 		check_returnvalue $? "Failed to create ftparchive directory"
+		xz -z Packages
+		check_returnvalue $? "Failed to xz compress Packages file"
 	)
 }
 
@@ -875,6 +877,9 @@ __EOF__
 	ucr unset nameserver2 nameserver3
 	ucr unset dns/forwarder2 dns/forwarder3
 
+	# do not restart network interfaces / reset UCR variables
+	ucr set interfaces/restart/auto=false
+
 	ucr unset interfaces/ens3/address \
 			interfaces/ens3/broadcast \
 			interfaces/ens3/netmask \
@@ -900,6 +905,7 @@ __EOF__
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
 
+	ucr unset interfaces/restart/auto
 	ucr set system/setup/boot/start=true
 }
 
