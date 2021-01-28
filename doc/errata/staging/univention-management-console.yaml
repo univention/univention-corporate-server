@@ -3,9 +3,11 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-management-console
-fix: 11.0.6-6A~4.4.0.202101261612
+fix: 11.0.6-7A~4.4.0.202101282144
 desc: |
  This update addresses the following issue(s):
  * A cross site scripting vulnerability has been fixed.
  * A crash of the UMC-Server has been fixed.
-bug: [52665, 52699]
+ * The evaluation of disallow option pattern (!) in the ACL definitions has
+   been repaired.
+bug: [52665, 52699, 25197]
