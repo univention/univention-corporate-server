@@ -1474,10 +1474,16 @@ class ucs(object):
 
 	@staticmethod
 	def _subtree_replace(dn, subtree, subtreereplace):
-		x = ldap.dn.str2dn(subtree.lower())
-		if ldap.dn.str2dn(dn.lower())[-len(x):] != x:
+		extra = ''
+		if subtree.startswith(',') and subtreereplace.startswith(','):
+			subtreereplace = subtreereplace[1:]
+			subtree = subtree[1:]
+			extra = ','
+		_dn = ldap.dn.str2dn(dn.lower())
+		_subtree = ldap.dn.str2dn(subtree.lower())
+		if _dn[-len(_subtree):] != _subtree or (extra and _dn == _subtree):
 			return dn
-		return ldap.dn.dn2str(ldap.dn.str2dn(dn)[:len(x)] + ldap.dn.str2dn(subtreereplace))
+		return ldap.dn.dn2str(ldap.dn.str2dn(dn)[:-len(_subtree)] + ldap.dn.str2dn(subtreereplace))
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
 	def _filter_match(self, filter, attributes):

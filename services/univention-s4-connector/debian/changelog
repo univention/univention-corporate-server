@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.6-1) unstable; urgency=medium
+
+  * Bug #52043: respect leading "," in position mapping DN's
+
+ -- Florian Best <best@univention.de>  Sat, 30 Jan 2021 09:03:44 +0100
+
 univention-s4-connector (14.0.5-1) unstable; urgency=medium
 
   * Bug #52681: Avoid restarting the S4-Connector repeatedly in short
