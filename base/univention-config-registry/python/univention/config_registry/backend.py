@@ -38,6 +38,7 @@ import fcntl
 import re
 import errno
 import time
+from stat import S_ISREG
 try:
 	from collections.abc import MutableMapping  # Python 3.3+
 except ImportError:
@@ -584,6 +585,8 @@ class _ConfigRegistry(dict):
 		try:
 			try:
 				file_stat = os.stat(filename)
+				if not S_ISREG(file_stat.st_mode):
+					return
 			except EnvironmentError:
 				file_stat = os.stat_result((0o0644, -1, -1, -1, 0, 0, -1, -1, -1, -1))
 

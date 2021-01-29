@@ -423,6 +423,12 @@ class TestInternal(object):
 		with pytest.raises(backend.StrictModeException):
 			ucr["key"] = b"\xff"
 
+	def test_devnull(self):
+		ucr = backend._ConfigRegistry(os.path.devnull)
+		ucr.save()
+		assert os.path.exists(os.path.devnull)
+		assert not os.path.isfile(os.path.devnull)
+
 
 class TestDefault(object):
 	def test_default(self, ucr0, tmpdir):
