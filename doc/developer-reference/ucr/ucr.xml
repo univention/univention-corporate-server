@@ -189,6 +189,76 @@ print(ucr.get('variable/name', '<not set>'))
 				]]></programlisting>
 			</example>
 			<para>
+				Since UCS 5.0 several new APIs are provided to simplify reading <acronym>UCR</acronym> settings:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><varname>ucr</varname></term>
+					<listitem>
+						<simpara>
+							This is a lazy-loaded shared instance, which only allows reading values.
+							It is implemented as a singleton, so all modules using it share the same instance (per process).
+							It can be refreshed by invoking <methodname>load()</methodname>.
+						</simpara>
+						<example id="ucr:python:ucr">
+							<title>Reading a &ucsUCRV; in Python</title>
+							<programlisting><![CDATA[
+from univention.config_registry import ucr
+print(ucr["ldap/base"])
+							]]></programlisting>
+						</example>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><varname>ucr_live</varname></term>
+					<listitem>
+						<simpara>
+							In contrast to <varname>ucr</varname> this shared singleton instance automatically reloads the settings.
+							This is done on each access, but only happens if the files on disk actually changed.
+						</simpara>
+						<example id="ucr:python:ucr_live">
+							<title>Reading a &ucsUCRV; in Python</title>
+							<programlisting><![CDATA[
+from univention.config_registry import ucr_live
+print(ucr_live["version/erratalevel"])
+							]]></programlisting>
+						</example>
+						<simpara>
+							Repeated reads of the same key may return different values due to the live character.
+							Reading multiple keys in sequence is not atomic as other processes might update <acronym>UCR</acronym> in between.
+							Reading many keys is slower due to the extra check for updated files.
+							To mitigate this a frozen view (a read-only snapshot with auto reload disabled) is created when this instance is used as a Python context manager:
+						</simpara>
+						<example id="ucr:python:ucr_view">
+							<title>Reading a &ucsUCRV; in Python</title>
+							<programlisting><![CDATA[
+from univention.config_registry import ucr_live
+with ucr_live as view:
+	for key, value in view.items():
+		print(key, value)
+							]]></programlisting>
+						</example>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><function>ucr_factory</function></term>
+					<listitem>
+						<simpara>
+							This function can be used to create a new private instance.
+							All values are already loaded.
+						</simpara>
+						<example id="ucr:python:ucr_factory">
+							<title>Reading a &ucsUCRV; in Python</title>
+							<programlisting><![CDATA[
+from univention.config_registry import ucr_factory
+ucr = ucr_factory()
+print(ucr["version/erratalevel"])
+							]]></programlisting>
+						</example>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
 				For variables containing boolean values the methods <methodname>is_true()</methodname> and <methodname>is_false()</methodname> should be used.
 				The former returns <literal>True</literal> for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, while the later one returns <literal>True</literal> for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 				Both methods accept an optional argument <option>default</option>, which is returned as-is when the variable is not set.
@@ -222,7 +292,7 @@ ucr_update(ucr, {
 				]]></programlisting>
 			</example>
 			<para>
-				The function <function>ucr_update()</function> requires an instance of <classname>ConfigRegistry</classname> as its first argument.
+				The function <function>ucr_update()</function> requires an instance of <classname>ConfigRegistry</classname> (returned by <function>ucr_factory()</function>) as its first argument.
 				The method is guaranteed to be atomic and internally uses file locking to prevent race conditions.
 			</para>
 			<para>
