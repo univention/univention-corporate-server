@@ -53,14 +53,3 @@ Description: Library for Univention Portal
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-Package: univention-portal-test
-Architecture: all
-Depends:
- univention-portal,
- ${misc:Depends},
-Description: Univention Portal - JavaScript unit tests
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
