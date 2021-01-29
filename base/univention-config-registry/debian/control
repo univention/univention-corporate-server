@@ -11,6 +11,7 @@ Build-Depends:
  libunivention-debug-dev (>= 5.0.6-1),
  python-all,
  python-ipaddress,
+ python-lazy-object-proxy,
  python-mock,
  python-pytest,
  python-pytest-cov,
@@ -20,6 +21,7 @@ Build-Depends:
  python-univention-debhelper,
  python3 (>= 3.6) | python3-mock,
  python3-all,
+ python3-lazy-object-proxy,
  python3-mock,
  python3-pytest,
  python3-pytest-cov,
@@ -122,6 +124,7 @@ Architecture: all
 Depends:
  ifupdown,
  python-ipaddress,
+ python-lazy-object-proxy,
  python-six,
  python-univention-debhelper,
  python-univention-namespace,
@@ -142,6 +145,7 @@ Package: python3-univention-config-registry
 Architecture: all
 Depends:
  ifupdown,
+ python3-lazy-object-proxy,
  python3-six,
  python3-univention-debhelper,
  ${misc:Depends},
