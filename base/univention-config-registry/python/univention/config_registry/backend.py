@@ -671,7 +671,10 @@ class _ConfigRegistry(dict):
 	def __str__(self):
 		# type: () -> str
 		"""Return sub registry content as string."""
-		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for key, val in sorted(self.items())])
+		return '\n'.join(
+			'%s: %s' % (key, self.remove_invalid_chars(val))
+			for key, val in sorted(self.items())
+		)
 
 	def __unicode__(self):
 		data = self.__str__()
