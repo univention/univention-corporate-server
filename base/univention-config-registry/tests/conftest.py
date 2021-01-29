@@ -32,3 +32,10 @@ def ucrf(ucr0):
 	ucr.save()
 	ucr0.load()
 	return ucr0
+
+
+@pytest.fixture
+def tmpucr(monkeypatch, tmpdir):
+	fname = tmpdir / 'custom.conf'
+	monkeypatch.setenv('UNIVENTION_BASECONF', str(fname))
+	return fname

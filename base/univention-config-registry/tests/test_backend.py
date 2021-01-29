@@ -49,14 +49,11 @@ class TestConfigRegistry(object):
 
 		assert fname.exists()
 
-	def test_custom_through_env(self, monkeypatch, tmpdir):
+	def test_custom_through_env(self, tmpucr):
 		"""Create CUSTOM registry through environment variable."""
-		fname = tmpdir / 'custom.conf'
-		monkeypatch.setenv('UNIVENTION_BASECONF', str(fname))
+		_ucr = ConfigRegistry(str(tmpucr))  # noqa F841
 
-		_ucr = ConfigRegistry()  # noqa F841
-
-		assert fname.exists()
+		assert tmpucr.exists()
 
 	def test_create_error(self, tmpdir):
 		with pytest.raises(SystemExit):
