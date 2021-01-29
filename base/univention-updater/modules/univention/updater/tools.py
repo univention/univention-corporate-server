@@ -1665,7 +1665,7 @@ class UniventionUpdater(object):
             :rtype: int
             """
             commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
-            ud.debug(ud.PROCESS, ud.INFO, "Calling %s" % commandline)
+            ud.debug(ud.NETWORK, ud.INFO, "Calling %s" % commandline)
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
             # Order is important! See bug #16454
@@ -1758,7 +1758,7 @@ class UniventionUpdater(object):
             for phase in ('preup', 'postup'):
                 name = '%s.sh' % phase
                 path = struct.path(name)
-                ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
+                ud.debug(ud.NETWORK, ud.ALL, "Accessing %s" % path)
                 try:
                     _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content

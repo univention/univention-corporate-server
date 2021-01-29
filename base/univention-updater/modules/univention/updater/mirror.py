@@ -196,7 +196,7 @@ class UniventionMirror(UniventionUpdater):
             makedirs(os.path.dirname(filename))
             with open(filename, "wb") as fd:
                 fd.write(script)
-                ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored: %s" % filename)
+                ud.debug(ud.NETWORK, ud.INFO, "Successfully mirrored: %s" % filename)
 
     def write_releases_json(self):
         """

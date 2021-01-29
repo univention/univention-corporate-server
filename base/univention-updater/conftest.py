@@ -40,8 +40,6 @@ def ucslog():
     """
     U.ud.init("stderr", U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
     U.ud.set_level(U.ud.NETWORK, U.ud.ALL)
-    U.ud.set_level(U.ud.ADMIN, U.ud.ALL)
-    U.ud.set_level(U.ud.PROCESS, U.ud.ALL)
 
 
 @pytest.fixture(autouse=True)
