@@ -584,13 +584,9 @@ class _ConfigRegistry(dict):
 		try:
 			try:
 				file_stat = os.stat(filename)
-				mode = file_stat.st_mode
-				user = file_stat.st_uid
-				group = file_stat.st_gid
 			except EnvironmentError:
-				mode = 0o0644
-				user = 0
-				group = 0
+				file_stat = os.stat_result((0o0644, -1, -1, -1, 0, 0, -1, -1, -1, -1))
+
 			# open temporary file for writing
 			with open(temp_filename, 'w', encoding='utf-8') as reg_file:
 				# write data to file
@@ -601,8 +597,8 @@ class _ConfigRegistry(dict):
 				os.fsync(reg_file.fileno())
 
 			try:
-				os.chmod(temp_filename, mode)
-				os.chown(temp_filename, user, group)
+				os.chmod(temp_filename, file_stat.st_mode)
+				os.chown(temp_filename, file_stat.st_uid, file_stat.st_gid)
 				os.rename(temp_filename, filename)
 			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
