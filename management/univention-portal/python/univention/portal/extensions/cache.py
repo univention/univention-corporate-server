@@ -57,7 +57,7 @@ class Cache(with_metaclass(Plugin)):
 		self._cache_file = cache_file
 		self._reloader = reloader
 		self._cache = {}
-		self._load()
+		self._loaded = False
 
 	def _load(self):
 		get_logger("cache").info("loading cache file {}".format(self._cache_file))
@@ -66,9 +66,11 @@ class Cache(with_metaclass(Plugin)):
 				self._cache = json.load(fd)
 		except (EnvironmentError, ValueError):
 			get_logger("cache").exception("Error loading {}".format(self._cache_file))
+		else:
+			self._loaded = True
 
 	def get(self):
-		if self.refresh():
+		if not self._loaded or self.refresh():
 			self._load()
 		return self._cache
 
