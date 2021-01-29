@@ -90,7 +90,67 @@ else:
 	MM = MutableMapping
 
 
-class ConfigRegistry(MM):
+class BooleanConfigRegistry(object):
+	"""
+	Mixin class for boolean operations.
+	"""
+
+	def is_true(self, key=None, default=False, value=None):
+		# type: (Optional[str], bool, Optional[str]) -> bool
+		"""
+		Return if the strings value of key is considered as true.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaluate instead of looking up the key.
+		:returns: `True` when the value is one of `yes`, `true`, `1`, `enable`, `enabled`, `on`.
+
+		>>> ucr = ConfigRegistry('/dev/null')
+		>>> ucr['key'] = 'yes'
+		>>> ucr.is_true('key')
+		True
+		>>> ucr.is_true('other')
+		False
+		>>> ucr.is_true('other', True)
+		True
+		>>> ucr.is_true(value='1')
+		True
+		"""
+		if value is None:
+			value = self.get(key)  # type: ignore
+			if value is None:
+				return default
+		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
+
+	def is_false(self, key=None, default=False, value=None):
+		# type: (Optional[str], bool, Optional[str]) -> bool
+		"""
+		Return if the strings value of key is considered as false.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaulate instead of looking up the key.
+		:returns: `True` when the value is one of `no`, `false`, `0`, `disable`, `disabled`, `off`.
+
+		>>> ucr = ConfigRegistry('/dev/null')
+		>>> ucr['key'] = 'no'
+		>>> ucr.is_false('key')
+		True
+		>>> ucr.is_false('other')
+		False
+		>>> ucr.is_false('other', True)
+		True
+		>>> ucr.is_false(value='0')
+		True
+		"""
+		if value is None:
+			value = self.get(key)  # type: ignore
+			if value is None:
+				return default
+		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
+
+
+class ConfigRegistry(MM, BooleanConfigRegistry):
 	"""
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
@@ -374,59 +434,6 @@ class ConfigRegistry(MM):
 		merge = self._merge()
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
-	def is_true(self, key=None, default=False, value=None):
-		# type: (str, bool, Optional[str]) -> bool
-		"""
-		Return if the strings value of key is considered as true.
-
-		:param key: UCR variable name.
-		:param default: Default value to return, if UCR variable is not set.
-		:param value: text string to directly evaulate instead of looking up the key.
-		:returns: `True` when the value is one of `yes`, `true`, `1`, `enable`, `enabled`, `on`.
-
-		>>> ucr = ConfigRegistry('/dev/null')
-		>>> ucr['key'] = 'yes'
-		>>> ucr.is_true('key')
-		True
-		>>> ucr.is_true('other')
-		False
-		>>> ucr.is_true('other', True)
-		True
-		>>> ucr.is_true(value='1')
-		True
-		"""
-		if value is None:
-			value = self.get(key)  # type: ignore
-			if value is None:
-				return default
-		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
-
-	def is_false(self, key=None, default=False, value=None):
-		# type: (str, bool, Optional[str]) -> bool
-		"""
-		Return if the strings value of key is considered as false.
-
-		:param key: UCR variable name.
-		:param default: Default value to return, if UCR variable is not set.
-		:param value: text string to directly evaulate instead of looking up the key.
-		:returns: `True` when the value is one of `no`, `false`, `0`, `disable`, `disabled`, `off`.
-
-		>>> ucr = ConfigRegistry('/dev/null')
-		>>> ucr['key'] = 'no'
-		>>> ucr.is_false('key')
-		True
-		>>> ucr.is_false('other')
-		False
-		>>> ucr.is_false('other', True)
-		True
-		>>> ucr.is_false(value='0')
-		True
-		"""
-		if value is None:
-			value = self.get(key)  # type: ignore
-			if value is None:
-				return default
-		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
 	def update(self, changes):  # type: ignore
 		# type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]
