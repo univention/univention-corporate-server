@@ -43,6 +43,8 @@ try:
 except ImportError:
 	from collections import MutableMapping
 import six
+if six.PY2:
+	from io import open
 
 from univention.config_registry.handler import run_filter
 
@@ -57,10 +59,6 @@ except ImportError:  # pragma: no cover
 __all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
 MYPY = False
 INVALID_VALUE_CHARS = '\r\n'
-
-encoding = {}
-if six.PY3:
-	encoding['encoding'] = 'UTF-8'  # make sure we open files in UTF-8, even if the locale is "C"
 
 
 class StrictModeException(Exception):
@@ -534,7 +532,7 @@ class _ConfigRegistry(dict):
 		for fn in (self.file, self.backup_file):
 			new = {}
 			try:
-				with open(fn, 'r', **encoding) as reg_file:
+				with open(fn, 'r', encoding='utf-8') as reg_file:
 					if reg_file.readline() == '' or reg_file.readline() == '':
 						continue
 
@@ -594,9 +592,9 @@ class _ConfigRegistry(dict):
 				user = 0
 				group = 0
 			# open temporary file for writing
-			with open(temp_filename, 'w', **encoding) as reg_file:
+			with open(temp_filename, 'w', encoding='utf-8') as reg_file:
 				# write data to file
-				reg_file.write('# univention_ base.conf\n\n')
+				reg_file.write(u'# univention_ base.conf\n\n')
 				reg_file.write(self.__unicode__())
 				# flush (meta)data
 				reg_file.flush()
@@ -608,16 +606,16 @@ class _ConfigRegistry(dict):
 				os.rename(temp_filename, filename)
 			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
-					with open(filename, 'w+', **encoding) as fd:
-						fd.write(open(temp_filename, 'r', **encoding).read())
+					with open(filename, 'w+', encoding='utf-8') as fd:
+						fd.write(open(temp_filename, 'r', encoding='utf-8').read())
 					os.unlink(temp_filename)
 				else:
 					# In this case the temp file created above in this
 					# function was already moved by a concurrent UCR
 					# operation. Dump the current state to a backup file
 					temp_filename = '%s.concurrent_%s' % (filename, time.time())
-					with open(temp_filename, 'w', **encoding) as reg_file:
-						reg_file.write('# univention_ base.conf\n\n')
+					with open(temp_filename, 'w', encoding='utf-8') as reg_file:
+						reg_file.write(u'# univention_ base.conf\n\n')
 						reg_file.write(self.__unicode__())
 		except EnvironmentError as ex:
 			# suppress certain errors
@@ -633,7 +631,7 @@ class _ConfigRegistry(dict):
 	def lock(self):
 		# type: () -> None
 		"""Lock sub registry file."""
-		self.lock_file = lock = open(self.lock_filename, "a+", **encoding)
+		self.lock_file = lock = open(self.lock_filename, "a+", encoding='utf-8')
 		fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
 
 	def unlock(self):
