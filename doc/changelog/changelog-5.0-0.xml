@@ -79,6 +79,10 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A new API has been introduced to simplify accessing UCR from Python.
+					It is based on the singleton pattern and optionally provides an auto-updating view  (<u:bug>51126</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 						Document &ucsUCRV; <envar>interfaces/.*/hosts</envar> (<u:bug>33743</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
