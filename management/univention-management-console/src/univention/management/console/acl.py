@@ -403,11 +403,10 @@ class LDAP_ACLs(ACLs):
 					self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value.decode('UTF-8')))
 
 		# make the ACLs unique
-		getvals = operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')
-		self.acls.sort(key=getvals)
+		self.acls.sort(key=operator.itemgetter('fromUser', 'host', 'command', 'flavor'))
 
 		result = []
-		for k, g in itertools.groupby(self.acls, getvals):
+		for k, g in itertools.groupby(self.acls, operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')):
 			result.append(next(g))
 
 		self.acls[:] = result
