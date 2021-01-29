@@ -36,15 +36,6 @@ override_dh_install:
 	dh_install
 	sed '/^###CHECKS###/r script/check.sh' script/preup.sh >debian/univention-updater/usr/share/univention-updater/preup.sh
 
-override_dh_fixperms:
-	dh_fixperms
-	chmod 755 debian/univention-updater/usr/share/univention-updater/enable-apache2-umc
-	chmod 755 debian/univention-updater/usr/share/univention-updater/disable-apache2-umc
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-check
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-dist-upgrade
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-univention-install
-	chmod 755 debian/univention-updater/usr/lib/univention-system-setup/appliance-hooks.d/updater
-
 override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
 
