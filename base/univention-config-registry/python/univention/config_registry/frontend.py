@@ -40,6 +40,8 @@ import re
 import time
 
 import six
+if six.PY2:
+	from io import open
 
 from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
@@ -73,10 +75,6 @@ __all__ = [
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
 _SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT = (1 << _ for _ in range(5))
-
-encoding = {}
-if six.PY3:
-	encoding['encoding'] = 'UTF-8'  # make sure we open files in UTF-8, even if the locale is "C"
 
 
 class UnknownKeyException(Exception):
@@ -123,7 +121,7 @@ def replog(ucr, var, old_value, value=None):
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
 
-			with open(REPLOG_FILE, "a+", **encoding) as logfile:
+			with open(REPLOG_FILE, "a+", encoding='utf-8') as logfile:
 				logfile.write(log)
 		except EnvironmentError as ex:
 			print(("E: exception occurred while writing to replication log: %s" % (ex,)), file=sys.stderr)
