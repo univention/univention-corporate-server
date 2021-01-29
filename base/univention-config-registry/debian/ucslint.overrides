@@ -48,6 +48,8 @@
 0010-2:tests/unwrap/unwrap.sed
 0010-2:tests/unwrap/unwrap.sed2
 0013-2:tests/multifile.sh
+0009-2:tests/test_ucr.py
+0010-2:tests/test_ucr.py
 # Broken ucslint Bug 42294
 0010-2: compile
 0010-2: tests/clib

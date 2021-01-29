@@ -43,4 +43,13 @@ from univention.config_registry.frontend import (  # noqa F401
 )
 from univention.debhelper import parseRfc822  # noqa F401
 
+
+def ucr_factory():  # type: () -> ConfigRegistry
+	"""
+	Factory method to return private loaded UCR instance.
+
+	:returns: A private UCR instance.
+	"""
+	return ConfigRegistry().load()
+
 # vim:set sw=4 ts=4 noet:
