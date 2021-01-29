@@ -122,6 +122,17 @@ class ConfigRegistry(MM):
 			else:
 				self._registry[reg] = _ConfigRegistry(os.devnull if custom else os.path.join(self.PREFIX, self.BASES[reg]))
 
+	def _walk(self):
+		# type: () -> Iterator[Tuple[int, Union[_ConfigRegistry, Dict[str, str]]]]
+		"""
+		Iterator over layers.
+
+		:returns: Iterator of 2-tuple (layers-mumber, layer)
+		"""
+		for reg in self.LAYER_PRIORITIES:
+			registry = self._registry[reg]
+			yield (reg, registry)
+
 	def load(self):
 		# type: () -> None
 		"""Load registry from file."""
@@ -224,11 +235,7 @@ class ConfigRegistry(MM):
 		:param key: UCR variable name.
 		:returns: `True` is set, `False` otherwise.
 		"""
-		for reg in self.LAYER_PRIORITIES:
-			registry = self._registry[reg]
-			if key in registry:
-				return True
-		return False
+		return any(key in registry for _reg, registry in self._walk())
 
 	def __iter__(self):
 		# type: () -> Iterator[str]
@@ -271,9 +278,8 @@ class ConfigRegistry(MM):
 		:param getscope: `True` makes the method return the scope level in addition to the value itself.
 		:returns: the value or a 2-tuple (level, value) or the default.
 		"""
-		for reg in self.LAYER_PRIORITIES:
+		for reg, registry in self._walk():
 			try:
-				registry = self._registry[reg]
 				value = registry[key]  # type: str
 			except KeyError:
 				continue
@@ -315,8 +321,7 @@ class ConfigRegistry(MM):
 		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
 		"""
 		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
-		for reg in self.LAYER_PRIORITIES:
-			registry = self._registry[reg]
+		for reg, registry in self._walk():
 			for key, value in registry.items():
 				if key not in merge:
 					if reg == ConfigRegistry.DEFAULTS:

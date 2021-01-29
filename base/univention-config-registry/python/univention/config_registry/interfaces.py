@@ -225,9 +225,8 @@ class VengefulConfigRegistry(ConfigRegistry):
 		:returns: the value.
 		:raises: KeyError when the value is not found.
 		"""
-		for reg in ConfigRegistry.LAYER_PRIORITIES:
+		for _reg, registry in self._walk():
 			try:
-				registry = self._registry[reg]
 				value = registry[key]
 				return value
 			except KeyError:
