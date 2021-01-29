@@ -43,6 +43,9 @@ import pickle
 import errno
 
 import six
+if six.PY2:
+	from io import open
+
 from pwd import getpwnam
 from grp import getgrnam
 
@@ -79,10 +82,6 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
 
 '''  # noqa: E101
-
-encoding = {}
-if six.PY3:
-	encoding['encoding'] = 'UTF-8'  # noqa: E101 # make sure we open files in UTF-8, even if the locale is "C"
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
@@ -315,7 +314,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		:param cmd: List of command with arguments.
 		:returns: Process exit code.
 		"""
-		with open(os.path.devnull, 'w', **encoding) as null:
+		with open(os.path.devnull, 'w', encoding='utf-8') as null:
 			# tell possibly wrapped dpkg-divert to really do the work
 			env = dict(os.environ)
 			env['DPKG_MAINTSCRIPT_PACKAGE'] = 'univention-config'
@@ -434,7 +433,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 				for from_file in sorted(self.from_files, key=os.path.basename):
 					try:
-						with open(from_file, 'r', **encoding) as from_fp:
+						with open(from_file, 'r', encoding='utf-8') as from_fp:
 							to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
 					except EnvironmentError:
 						continue
@@ -443,8 +442,8 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 				os.rename(tmp_to_file, self.to_file)
 			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
-					with open(self.to_file, 'w+', **encoding) as fd:
-						fd.write(open(tmp_to_file, 'r', **encoding).read())
+					with open(self.to_file, 'w+', encoding='utf-8') as fd:
+						fd.write(open(tmp_to_file, 'r', encoding='utf-8').read())
 					os.unlink(tmp_to_file)
 		except Exception:
 			if os.path.exists(tmp_to_file):
@@ -519,7 +518,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		try:
 			filter_opts = {}  # type: Dict[str, Any]
 
-			with open(self.from_file, 'r', **encoding) as from_fp, open(tmp_to_file, 'wb') as to_fp:
+			with open(self.from_file, 'r', encoding='utf-8') as from_fp, open(tmp_to_file, 'wb') as to_fp:
 				self._set_perm(stat, tmp_to_file)
 
 				to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
@@ -528,8 +527,8 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 				os.rename(tmp_to_file, self.to_file)
 			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
-					with open(self.to_file, 'w+', **encoding) as fd:
-						fd.write(open(tmp_to_file, 'r', **encoding).read())
+					with open(self.to_file, 'w+', encoding='utf-8') as fd:
+						fd.write(open(tmp_to_file, 'r', encoding='utf-8').read())
 					os.unlink(tmp_to_file)
 		except Exception:
 			if os.path.exists(tmp_to_file):
@@ -777,7 +776,7 @@ class ConfigHandlers:
 		from_path = os.path.join(FILE_DIR, name)
 		handler = ConfigHandlerFile(from_path, name)
 		if os.path.exists(from_path):
-			handler.variables = grep_variables(open(from_path, 'r', **encoding).read())
+			handler.variables = grep_variables(open(from_path, 'r', encoding='utf-8').read())
 
 		self._parse_common_file_handler(handler, entry)
 
@@ -864,7 +863,7 @@ class ConfigHandlers:
 		variables = set(entry.get('Variables', set()))
 		name = os.path.join(FILE_DIR, subfile)
 		try:
-			with open(name, 'r', **encoding) as temp_file:
+			with open(name, 'r', encoding='utf-8') as temp_file:
 				variables |= grep_variables(temp_file.read())
 		except EnvironmentError:
 			print("Failed to process Subfile %s" % (name,), file=sys.stderr)
@@ -895,7 +894,7 @@ class ConfigHandlers:
 		for info in directory_files(INFO_DIR):
 			if not info.endswith('.info'):
 				continue
-			for section in parseRfc822(open(info, 'r', **encoding).read()):
+			for section in parseRfc822(open(info, 'r', encoding='utf-8').read()):
 				handler = self.get_handler(section)
 				if handler:
 					handlers.add(handler)
@@ -917,7 +916,7 @@ class ConfigHandlers:
 		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()  # type: Set[str]
 		# Scan for diversions done by UCR
-		with open('/var/lib/dpkg/diversions', 'r', **encoding) as div_file:
+		with open('/var/lib/dpkg/diversions', 'r', encoding='utf-8') as div_file:
 			# from \n to \n package \n
 			try:
 				while True:
@@ -969,7 +968,7 @@ class ConfigHandlers:
 		"""
 		handlers = set()  # type: Set[ConfigHandler]
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
-		for section in parseRfc822(open(fname, 'r', **encoding).read()):
+		for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
 			handler = self.get_handler(section)
 			if handler:
 				handlers.add(handler)
@@ -1007,7 +1006,7 @@ class ConfigHandlers:
 		obsolete_handlers = set()  # type: Set[ConfigHandler]
 		mf_handlers = set()  # type: Set[ConfigHandlerMultifile] # Remaining Multifile handlers
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
-		for section in parseRfc822(open(fname, 'r', **encoding).read()):
+		for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
 			try:
 				typ = section['Type'][0]
 			except LookupError:
@@ -1093,7 +1092,7 @@ class ConfigHandlers:
 		for fname in directory_files(INFO_DIR):
 			if not fname.endswith('.info'):
 				continue
-			for section in parseRfc822(open(fname, 'r', **encoding).read()):
+			for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
 				if not section.get('Type'):
 					continue
 				handler = None
