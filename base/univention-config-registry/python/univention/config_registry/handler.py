@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-"""Univention Configuration Registry handlers."""
 #  main configuration registry classes
 #
 # Copyright 2004-2021 Univention GmbH
@@ -33,7 +32,11 @@
 # API stability :pylint: disable-msg=R0201,W0613,R0903
 # Too pedantic  :pylint: disable-msg=W0704
 # Rewrite       :pylint: disable-msg=R0912
+
+"""Univention Configuration Registry handlers."""
+
 from __future__ import print_function
+
 import sys
 import os
 import random

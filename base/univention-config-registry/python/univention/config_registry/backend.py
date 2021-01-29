@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-"""Univention Configuration Registry backend for data storage."""
 #  main configuration registry classes
 #
 # Copyright 2004-2021 Univention GmbH
@@ -30,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Configuration Registry backend for data storage."""
+
 from __future__ import print_function
 
 import sys
@@ -43,6 +44,7 @@ try:
 	from collections.abc import MutableMapping  # Python 3.3+
 except ImportError:
 	from collections import MutableMapping
+
 import six
 if six.PY2:
 	from io import open
