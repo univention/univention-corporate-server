@@ -132,6 +132,8 @@ class ConfigRegistry(MM):
 		for reg in self._registry.values():
 			reg.strict_encoding = strict
 
+		return self
+
 	def save(self):
 		# type: () -> None
 		"""Save registry to file."""

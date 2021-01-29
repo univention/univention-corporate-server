@@ -59,6 +59,10 @@ class TestConfigRegistry(object):
 		with pytest.raises(SystemExit):
 			ConfigRegistry("/")
 
+	def test_load(self, ucr0):
+		"""Load is fluent"""
+		assert ucr0.load() is ucr0
+
 	def test_save_load(self, ucr0):
 		"""Save and re-load UCR."""
 		ucr0['foo'] = 'bar'
