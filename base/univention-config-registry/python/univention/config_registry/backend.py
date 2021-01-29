@@ -128,10 +128,7 @@ class ConfigRegistry(MM):
 		for reg in self._registry.values():
 			reg.load()
 
-		if six.PY3:
-			return  # Python 3 uses Unicode internally and uses UTF-8 for serialization; no need to check it.
-
-		strict = self.is_true('ucr/encoding/strict')
+		strict = six.PY2 and self.is_true('ucr/encoding/strict')
 		for reg in self._registry.values():
 			reg.strict_encoding = strict
 
