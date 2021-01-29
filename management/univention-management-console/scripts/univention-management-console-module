@@ -68,7 +68,7 @@ if __name__ == '__main__':
 	options = parser.parse_args()
 
 	if not options.foreground:
-		daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0o077)
+		daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0o077, files_preserve=[x.stream.fileno() for x in nflog.instance.handlers])
 		daemon.signal_map = {
 			signal.SIGHUP: lambda signal, frame: log_reopen(),
 		}
@@ -84,8 +84,10 @@ if __name__ == '__main__':
 
 	# init logging
 	debug_fd = log_init(options.logfile % {'module': options.module}, options.debug)
+
 	# no notifier logging
-	nflog.instance.handlers = []
+	for handler in nflog.instance.handlers[:]:
+		nflog.instance.removeHandler(handler)
 	# to activate notifier logging
 	# nflog.set_level(nflog.DEBUG)
 	# nflog.open()
