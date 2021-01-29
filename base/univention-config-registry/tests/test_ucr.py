@@ -27,11 +27,36 @@ def test_ro(ucrf):
 		del UCR.ucr["foo"]
 
 
-def test_ro_stale(ucr0):
+@pytest.mark.parametrize("autoload,before,after", [
+	pytest.param(lambda: UCR.ConfigRegistry(), None, None, id="Manual"),
+	pytest.param(lambda: UCR.ucr, "BEFORE", "BEFORE", id="Once"),
+	pytest.param(lambda: UCR.ucr_live, "BEFORE", "AFTER", id="Always"),
+	pytest.param(lambda: UCR.ucr_live.__enter__(), "BEFORE", "BEFORE", id="View"),
+])
+def test_autoload(autoload, before, after, ucr0):
 	reload(UCR)
+
 	ucr0["baz"] = "BEFORE"
 	ucr0.save()
-	assert UCR.ucr["baz"] == "BEFORE"
+
+	ucr = autoload()
+	assert ucr["baz"] == before
+
 	ucr0["baz"] = "AFTER"
 	ucr0.save()
-	assert UCR.ucr["baz"] == "BEFORE"
+
+	assert ucr["baz"] == after
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("autoload", [
+	pytest.param(lambda ucr: ucr.load(), id="Default"),
+	pytest.param(lambda ucr: ucr.load(autoload=UCR.Load.ALWAYS), id="Always"),
+	pytest.param(lambda ucr: ucr.load(autoload=UCR.Load.ALWAYS).__enter__(), id="View"),
+])
+def test_benchmark_autoload(autoload, benchmark, ucr0):
+	ucr0["foo"] = "value"
+	ucr0.save()
+
+	ucr = autoload(UCR.ConfigRegistry())
+	benchmark(ucr.get, "foo")

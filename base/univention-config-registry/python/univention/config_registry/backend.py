@@ -39,6 +39,7 @@ import fcntl
 import re
 import errno
 import time
+from enum import IntEnum
 from stat import S_ISREG
 try:
 	from collections.abc import Mapping, MutableMapping  # Python 3.3+
@@ -55,6 +56,7 @@ try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa F401
 	from typing_extension import Literal  # noqa F401
+	_T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
 	_VT = TypeVar('_VT')
 except ImportError:  # pragma: no cover
 	def overload(f):
@@ -82,6 +84,12 @@ def exception_occured(out=sys.stderr):
 
 
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom', 'default']
+
+
+class Load(IntEnum):
+	MANUAL = 0
+	ONCE = 1
+	ALWAYS = 2
 
 
 if MYPY:  # pragma: no cover
@@ -155,6 +163,28 @@ class BooleanConfigRegistry(object):
 		return value.lower() in self.FALSE
 
 
+class ViewConfigRegistry(_M, BooleanConfigRegistry):
+	"""
+	Immutable view of UCR.
+	"""
+
+	def __init__(self, ucr):
+		# type: (Mapping[str, str]) -> None
+		self.ucr = ucr
+
+	def __getitem__(self, key):
+		# type: (str) -> str
+		return self.ucr.__getitem__(key)
+
+	def __iter__(self):
+		# type: () -> Iterator[str]
+		return self.ucr.__iter__()
+
+	def __len__(self):
+		# type: () -> int
+		return self.ucr.__len__()
+
+
 class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 	"""
 	Merged persistent read-only value store.
@@ -177,6 +207,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 		# type: (str) -> None
 		super(ReadOnlyConfigRegistry, self).__init__()
 		custom = os.getenv('UNIVENTION_BASECONF') or filename
+		self.autoload = Load.MANUAL
 
 		self._registry = {}  # type: Dict[int, _ConfigRegistry]
 		for reg in self.LAYER_PRIORITIES:
@@ -192,21 +223,51 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
 		:returns: Iterator of 2-tuple (layers-mumber, layer)
 		"""
+		if self.autoload:
+			self.load(Load.MANUAL if self.autoload == Load.ONCE else self.autoload)
+
 		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			yield (reg, registry)
 
-	def load(self):
-		# type: () -> None
-		"""Load registry from file."""
+	def load(self, autoload=Load.MANUAL):
+		# type: (_T, Load) -> _T
+		"""
+		Load registry from file.
+
+		:param autoload: Automatically reload changed files.
+		"""
 		for reg in self._registry.values():
 			reg.load()
 
+		self.autoload = Load.MANUAL  # prevent recursion!
 		strict = six.PY2 and self.is_true('ucr/encoding/strict')
+		self.autoload = autoload
+
 		for reg in self._registry.values():
 			reg.strict_encoding = strict
 
 		return self
+
+	def __enter__(self):
+		# type: () -> ViewConfigRegistry
+		"""
+		Return immutable view despite `autoload`.
+
+		:returns: A frozen registry.
+
+		> ucr_live = ConfigRegistry().load(autoload=Load.ALWAYS)
+		> with ucr_live as ucr_frozen:
+		>   for key, value in ucr_frozen.items():
+		>     print(key, value)
+		"""
+		return ViewConfigRegistry(self._merge())
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+		"""
+		Release registry view.
+		"""
 
 	def __getitem__(self, key):  # type: ignore
 		# type: (str) -> Optional[str]
@@ -400,7 +461,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 		registry = self._registry[self.scope]
 		registry.unlock()
 
-	def __enter__(self):
+	def __enter__(self):  # type: ignore
 		# type: () -> ConfigRegistry
 		"""
 		Lock Config Registry for read-modify-write cycle.
@@ -527,6 +588,7 @@ class _ConfigRegistry(dict):
 		# only accept valid UTF-8
 		self.strict_encoding = False
 		self.lock_file = None  # type: Optional[IO]
+		self.mtime = 0.0
 
 	def load(self):
 		# type: () -> None
@@ -534,6 +596,10 @@ class _ConfigRegistry(dict):
 		for fn in (self.file, self.backup_file):
 			new = {}
 			try:
+				file_stat = os.stat(fn)
+				if file_stat.st_mtime <= self.mtime and fn == self.file:
+					return
+
 				with open(fn, 'r', encoding='utf-8') as reg_file:
 					if reg_file.readline() == '' or reg_file.readline() == '':
 						continue
@@ -555,6 +621,7 @@ class _ConfigRegistry(dict):
 		else:
 			return
 
+		self.mtime = file_stat.st_mtime
 		self.update(new)
 		for key in set(self.keys()) - set(new.keys()):
 			self.pop(key, None)
