@@ -1,17 +1,18 @@
-{
-	"port": @%@portal/port@%@,
-	"admin_groups": @!@
+@!@
 import json
 from univention.lib.misc import custom_groupname
 default_admin_groups = "cn=" + custom_groupname("Domain Admins", configRegistry) + ",cn=groups," + configRegistry.get("ldap/base")
 admin_groups = configRegistry.get("portal/admin-groups", default_admin_groups).split(", ")
 admin_groups = [group.strip() for group in admin_groups]
-print(json.dumps(admin_groups), end="")
-	@!@,
-	"fqdn": "@%@hostname@%@.@%@domainname@%@",
-	"hostdn": "@%@ldap/hostdn@%@",
-	"ldap_base": "@%@ldap/base@%@",
-	"ldap_uri": "ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@",
+config = {
+	"port": configRegistry.get("portal/port"),
+	"admin_groups": admin_groups,
+	"fqdn": "%s.%s" % (configRegistry.get("hostname"), configRegistry.get("domainname")),
+	"hostdn": configRegistry.get("ldap/hostdn"),
+	"ldap_base": configRegistry.get("ldap/base"),
+	"ldap_uri": "ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port")),
 	"umc_session_url": "http://localhost/univention/get/session-info",
-	"default_domain_dn": "cn=domain,cn=portal,cn=portals,cn=univention,@%@ldap/base@%@"
+	"default_domain_dn": "cn=domain,cn=portal,cn=portals,cn=univention,%s" % configRegistry.get("ldap/base"),
 }
+print(json.dumps(config, sort_keys=True, indent=2))
+@!@

@@ -17,6 +17,7 @@
         "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
             "activated": true, 
             "allowedGroups": [], 
+            "anonymous": true,
             "description": {
                 "de_DE": "Zeigt eine \u00dcbersicht aller UCS Server in der Dom\u00e4ne", 
                 "en_US": "Provide an overview of all UCS server in the domain", 
@@ -37,6 +38,7 @@
         "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
             "activated": true, 
             "allowedGroups": [], 
+            "anonymous": true,
             "description": {
                 "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung der UCS-Dom\u00e4ne und des lokalen Systems", 
                 "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the UCS domain and the local system", 
@@ -60,6 +62,7 @@
                 "cn=g1,cn=groups,dc=intranet,dc=example,dc=de", 
                 "cn=g2,cn=groups,dc=intranet,dc=example,dc=de"
             ], 
+            "anonymous": true,
             "description": {
                 "de_DE": "News, Tipps und Best Practices", 
                 "en_US": "News, tips and best practices", 

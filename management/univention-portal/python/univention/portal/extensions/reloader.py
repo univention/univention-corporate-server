@@ -173,12 +173,11 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return False
 
 	def _refresh(self):
-		udm_udm = importlib.import_module("univention.udm.udm")
-		UDM = udm_udm.UDM
-		udm = UDM.machine().version(2)
+		udm_lib = importlib.import_module("univention.udm")
+		udm = udm_lib.UDM.machine().version(2)
 		try:
 			portal = udm.get("portals/portal").get(self._portal_dn)
-		except UDM.NoObject:
+		except udm_lib.NoObject:
 			raise ValueError("No Portal defined")  # default portal?
 		content = {}
 		content["portal"] = self._extract_portal(portal)

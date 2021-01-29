@@ -78,7 +78,7 @@ class TestPortal:
 		content = standard_portal.get_visible_content(mocked_user, False)
 		expected_content = {
 			"category_dns": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
-			"entry_dns": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+			"entry_dns": ["cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
 			"folder_dns": [],
 		}
 		assert content == expected_content
@@ -102,6 +102,7 @@ class TestPortal:
 			"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
 				"activated": True,
 				"allowedGroups": [],
+				"anonymous": True,
 				"description": {
 					"de_DE": u"Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne",
 					"en_US": u"Provide an overview of all UCS server in the domain",
@@ -116,6 +117,7 @@ class TestPortal:
 			"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
 				"activated": True,
 				"allowedGroups": [],
+				"anonymous": True,
 				"description": {
 					"de_DE": u"Univention Management Console zur Ver\xadwal\xadtung der UCS-Dom\xe4ne und des lokalen Systems",
 					"en_US": u"Univention Management Console for admin\xadis\xadtra\xadting the UCS domain and the local system",
@@ -126,6 +128,30 @@ class TestPortal:
 				"links": ["/univention/management/"],
 				"logo_name": "/univention/portal/icons/entries/umc-domain.svg",
 				"name": {"de_DE": u"System- und Dom\xe4neneinstellungen", "en_US": u"System and domain settings", "fr_FR": u"R\xe9glages du syst\xe8me et du domaine"},
+			},
+			"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+				"activated": True,
+				"allowedGroups": [
+					"cn=g1,cn=groups,dc=intranet,dc=example,dc=de",
+					"cn=g2,cn=groups,dc=intranet,dc=example,dc=de"
+				],
+				"anonymous": True,
+				"description": {
+					"de_DE": "News, Tipps und Best Practices",
+					"en_US": "News, tips and best practices",
+					"fr_FR": "Nouvelles, conseils et bonne pratique"
+				},
+				"dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+				"linkTarget": "newwindow",
+				"links": [
+				"https://www.univention.com/news/blog-en/"
+				],
+				"logo_name": "/univention/portal/icons/entries/univentionblog.png",
+				"name": {
+					"de_DE": "Univention Blog",
+					"en_US": "Univention Blog",
+					"fr_FR": "Univention Blog"
+				}
 			},
 		}
 		assert content == expected_content
@@ -143,7 +169,7 @@ class TestPortal:
 			u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
 				"display_name": {"de_DE": u"Verwaltung", "en_US": u"Administration"},
 				"dn": u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-				"entries": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+				"entries": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
 			}
 		}
 		assert content == expected_content
@@ -159,7 +185,7 @@ class TestPortal:
 			"content": [
 				[
 					u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-					[u"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+					[u"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
 				]
 			],
 			"defaultLinkTarget": u"embedded",

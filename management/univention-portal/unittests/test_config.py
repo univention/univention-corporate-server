@@ -71,7 +71,6 @@ def test_fetch_key(mocker, mocked_portal_config):
 		mocked_portal_config.load.never_loaded = False
 
 	load_mock = mocker.patch.object(mocked_portal_config, "load", side_effect=config_loaded)
-	assert mocked_portal_config.load.never_loaded is True
 	mocked_portal_config._DB = {"port": 443, "fqdn": "dataport.ucs"}
 	# Execute
 	assert mocked_portal_config.fetch("port") == 443

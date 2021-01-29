@@ -43,15 +43,12 @@ def user_module(request):
 
 def test_imports(dynamic_class):
 	assert dynamic_class("Authenticator")
-	assert dynamic_class("OpenIDAuthenticator")
 	assert dynamic_class("UMCAuthenticator")
 
 
 class TestUMCAuthenticator:
 	_umc_session_url = "umc_session_url"
-	_portal_cookie_name = "portal_cookie_name"
-	_umc_cookie_name = "umc_cookie_name"
-	_default_cookie_name = "UMCSessionId"
+	_umc_cookie_name = "UMCSessionId"
 	_username = "TestUser"
 	_groups = ["TestGroup"]
 
@@ -60,7 +57,7 @@ class TestUMCAuthenticator:
 		Authenticator = dynamic_class("UMCAuthenticator")
 		mocked_group_cache = mocker.Mock()
 		mocked_group_cache.get.return_value = {self._username: self._groups}
-		authenticator = Authenticator(self._umc_session_url, mocked_group_cache, self._portal_cookie_name, self._umc_cookie_name)
+		authenticator = Authenticator(self._umc_session_url, mocked_group_cache)
 		authenticator.requests_get = patch_object_module(authenticator, "requests.get")
 		return authenticator
 
@@ -69,8 +66,6 @@ class TestUMCAuthenticator:
 		default_authenticator = Authenticator(self._umc_session_url, group_cache={})
 		assert default_authenticator.umc_session_url == self._umc_session_url
 		assert default_authenticator.group_cache == {}
-		assert default_authenticator.portal_cookie_name == self._default_cookie_name
-		assert default_authenticator.umc_cookie_name == self._default_cookie_name
 
 	def test_refresh(self, mocked_authenticator, mocker):
 		mocked_authenticator.refresh("reason")
@@ -80,12 +75,13 @@ class TestUMCAuthenticator:
 		# Set up
 		cookie = "session_cookie"
 		request_mock = mocker.Mock()
-		request_mock.get_cookie.return_value = cookie
+		cookie_mock = mocker.Mock()
+		cookie_mock.value = cookie
+		request_mock.cookies = {self._umc_cookie_name: cookie_mock}
 		mocked_authenticator._get_username = mocker.Mock(return_value=self._username)
 		# Execute
 		user = mocked_authenticator.get_user(request_mock)
-		request_mock.get_cookie.assert_called_once_with(self._portal_cookie_name)
-		mocked_authenticator._get_username.assert_called_once_with(cookie)
+		mocked_authenticator._get_username.assert_called_once_with({self._umc_cookie_name: cookie})
 		assert isinstance(user, user_module.User)
 		assert user.username == self._username
 		assert user.groups == self._groups
@@ -94,23 +90,25 @@ class TestUMCAuthenticator:
 		# Set up
 		cookie = "session_cookie"
 		request_mock = mocker.Mock()
-		request_mock.get_cookie.return_value = cookie
+		cookie_mock = mocker.Mock()
+		cookie_mock.value = cookie
+		request_mock.cookies = {self._umc_cookie_name: cookie_mock}
 		mocked_authenticator._get_username = mocker.Mock(return_value=None)
 		# Execute
 		user = mocked_authenticator.get_user(request_mock)
-		request_mock.get_cookie.assert_called_once_with(self._portal_cookie_name)
-		mocked_authenticator._get_username.assert_called_once_with(cookie)
+		mocked_authenticator._get_username.assert_called_once_with({self._umc_cookie_name: cookie})
 		assert isinstance(user, user_module.User)
+		assert user.is_anonymous()
 		assert user.username is None
 		assert user.groups == []
 
 	def test_get_username(self, mocked_authenticator, mocker):
 		mocked_authenticator._ask_umc = mocker.Mock()
 		mocked_authenticator._ask_umc.return_value = self._username
-		assert mocked_authenticator._get_username("test_session") == self._username.lower()
-		assert mocked_authenticator._get_username(None) is None
+		assert mocked_authenticator._get_username({self._umc_cookie_name: "test_session"}) == self._username.lower()
+		assert mocked_authenticator._get_username({}) is None
 		mocked_authenticator._ask_umc.return_value = None
-		assert mocked_authenticator._get_username("test_session") is None
+		assert mocked_authenticator._get_username({self._umc_cookie_name: "test_session"}) is None
 
 	def test_ask_umc_request_success(self, mocked_authenticator, mocker):
 		def _side_effect(url, cookies={}):
@@ -127,12 +125,12 @@ class TestUMCAuthenticator:
 			return response_mock
 
 		mocked_authenticator.requests_get.side_effect = _side_effect
-		test_session = "test_session"
+		test_session = {self._umc_cookie_name: "test_session"}
 		# Execute with valid session expecting username to be returned
 		assert mocked_authenticator._ask_umc(test_session) == self._username
-		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies={self._umc_cookie_name: test_session})
+		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies=test_session)
 		# Execute with unknown session expecting username to be None due to KeyError
-		assert mocked_authenticator._ask_umc("") is None
+		assert mocked_authenticator._ask_umc({self._umc_cookie_name: ""}) is None
 		assert mocked_authenticator.requests_get.call_count == 2
 
 	def test_ask_umc_request_error(self, mocked_authenticator, mocker):
@@ -146,22 +144,12 @@ class TestUMCAuthenticator:
 			return response_mock
 
 		mocked_authenticator.requests_get.side_effect = _side_effect
-		test_session = "test_session"
+		test_session = {self._umc_cookie_name: "test_session"}
 		# Execute while expecting a catched internal ValueError
 		assert mocked_authenticator._ask_umc(test_session) is None
-		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies={self._umc_cookie_name: test_session})
+		mocked_authenticator.requests_get.assert_called_once_with(self._umc_session_url, cookies=test_session)
 		# Execute while expecting catched internal RequestException
 		mocked_authenticator.requests_get.side_effect = [requests.exceptions.ConnectionError, requests.exceptions.MissingSchema]
 		assert mocked_authenticator._ask_umc(test_session) is None
 		assert mocked_authenticator._ask_umc(test_session) is None
 		assert mocked_authenticator.requests_get.call_count == 3
-
-
-class TestOpenIDAuthenticator:
-	def test_default_init(self, dynamic_class):
-		OpenIDAuthenticator = dynamic_class("OpenIDAuthenticator")
-		default_openid_authenticator = OpenIDAuthenticator("authorization_endpoint", "client_id")
-		assert default_openid_authenticator.authorization_endpoint == "authorization_endpoint"
-		assert default_openid_authenticator.client_id == "client_id"
-		assert default_openid_authenticator.portal_cookie_name == "UniventionPortalSessionId"
-		assert default_openid_authenticator.sessions == {}
