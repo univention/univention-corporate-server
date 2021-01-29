@@ -559,7 +559,7 @@ class _ConfigRegistry(dict):
 			self.pop(key, None)
 
 		if fn != self.file:
-			self.__save_file(self.file)
+			self._save_file(self.file)
 
 	def __create_base_conf(self):
 		# type: () -> None
@@ -573,7 +573,7 @@ class _ConfigRegistry(dict):
 				print(msg % (self.file,), file=sys.stderr)
 				exception_occured()
 
-	def __save_file(self, filename):
+	def _save_file(self, filename):
 		# type: (str) -> None
 		"""
 		Save sub registry to file.
@@ -591,14 +591,7 @@ class _ConfigRegistry(dict):
 				file_stat = os.stat_result((0o0644, -1, -1, -1, 0, 0, -1, -1, -1, -1))
 
 			# open temporary file for writing
-			with open(temp_filename, 'w', encoding='utf-8') as reg_file:
-				# write data to file
-				reg_file.write(u'# univention_ base.conf\n\n')
-				reg_file.write(self.__unicode__())
-				# flush (meta)data
-				reg_file.flush()
-				os.fsync(reg_file.fileno())
-
+			self._save_to(temp_filename)
 			try:
 				os.chmod(temp_filename, file_stat.st_mode)
 				os.chown(temp_filename, file_stat.st_uid, file_stat.st_gid)
@@ -613,19 +606,32 @@ class _ConfigRegistry(dict):
 					# function was already moved by a concurrent UCR
 					# operation. Dump the current state to a backup file
 					temp_filename = '%s.concurrent_%s' % (filename, time.time())
-					with open(temp_filename, 'w', encoding='utf-8') as reg_file:
-						reg_file.write(u'# univention_ base.conf\n\n')
-						reg_file.write(self.__unicode__())
+					self._save_to(temp_filename)
 		except EnvironmentError as ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:
 				raise
 
+	def _save_to(self, filename):
+		# type: (str) -> None
+		"""
+		Serialize sub registry to file.
+
+		:param filename: File name for saving.
+		"""
+		with open(filename, 'w', encoding='utf-8') as fd:
+			# write data to file
+			fd.write(u'# univention_ base.conf\n\n')
+			fd.write(self.__unicode__())
+			# flush (meta)data
+			fd.flush()
+			os.fsync(fd.fileno())
+
 	def save(self):
 		# type: () -> None
 		"""Save sub registry to file."""
 		for filename in (self.backup_file, self.file):
-			self.__save_file(filename)
+			self._save_file(filename)
 
 	def lock(self):
 		# type: () -> None
