@@ -112,50 +112,43 @@ class ConfigRegistry(MM):
 		custom = os.getenv('UNIVENTION_BASECONF') or filename
 		self.scope = ConfigRegistry.CUSTOM if custom else write_registry
 
-		self._registry = {}  # type: Dict[int, Union[_ConfigRegistry, Dict[str, str]]]
+		self._registry = {}  # type: Dict[int, _ConfigRegistry]
 		for reg in self.LAYER_PRIORITIES:
-			if self.file and reg != ConfigRegistry.CUSTOM:
-				self._registry[reg] = {}
-			elif not self.file and reg == ConfigRegistry.CUSTOM:
-				self._registry[reg] = {}
+			if reg == ConfigRegistry.CUSTOM:
+				self._registry[reg] = _ConfigRegistry(custom if custom else os.devnull)
 			else:
-				self._registry[reg] = {} if custom else _ConfigRegistry(os.path.join(self.PREFIX, self.BASES[reg]))
+				self._registry[reg] = _ConfigRegistry(os.devnull if custom else os.path.join(self.PREFIX, self.BASES[reg]))
 
 	def load(self):
 		# type: () -> None
 		"""Load registry from file."""
 		for reg in self._registry.values():
-			if isinstance(reg, _ConfigRegistry):
-				reg.load()
+			reg.load()
 
 		if six.PY3:
 			return  # Python 3 uses Unicode internally and uses UTF-8 for serialization; no need to check it.
 
 		strict = self.is_true('ucr/encoding/strict')
 		for reg in self._registry.values():
-			if isinstance(reg, _ConfigRegistry):
-				reg.strict_encoding = strict
+			reg.strict_encoding = strict
 
 	def save(self):
 		# type: () -> None
 		"""Save registry to file."""
 		registry = self._registry[self.scope]
-		if isinstance(registry, _ConfigRegistry):
-			registry.save()
+		registry.save()
 
 	def lock(self):
 		# type: () -> None
 		"""Lock registry file."""
 		registry = self._registry[self.scope]
-		if isinstance(registry, _ConfigRegistry):
-			registry.lock()
+		registry.lock()
 
 	def unlock(self):
 		# type: () -> None
 		"""Un-lock registry file."""
 		registry = self._registry[self.scope]
-		if isinstance(registry, _ConfigRegistry):
-			registry.unlock()
+		registry.unlock()
 
 	def __enter__(self):
 		# type: () -> ConfigRegistry
@@ -327,8 +320,6 @@ class ConfigRegistry(MM):
 		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
 		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
-			if not isinstance(registry, _ConfigRegistry):
-				continue
 			for key, value in registry.items():
 				if key not in merge:
 					if reg == ConfigRegistry.DEFAULTS:
