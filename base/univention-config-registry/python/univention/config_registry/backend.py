@@ -41,9 +41,9 @@ import errno
 import time
 from stat import S_ISREG
 try:
-	from collections.abc import MutableMapping  # Python 3.3+
+	from collections.abc import Mapping, MutableMapping  # Python 3.3+
 except ImportError:
-	from collections import MutableMapping
+	from collections import Mapping, MutableMapping
 
 import six
 if six.PY2:
@@ -85,9 +85,11 @@ SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom', 'default']
 
 
 if MYPY:  # pragma: no cover
-	MM = MutableMapping[str, str]
+	_M = Mapping[str, str]
+	_MM = MutableMapping[str, str]
 else:
-	MM = MutableMapping
+	_M = Mapping
+	_MM = MutableMapping
 
 
 class BooleanConfigRegistry(object):
@@ -153,13 +155,12 @@ class BooleanConfigRegistry(object):
 		return value.lower() in self.FALSE
 
 
-class ConfigRegistry(MM, BooleanConfigRegistry):
+class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 	"""
-	Merged persistent value store.
+	Merged persistent read-only value store.
 	This is a merged view of several sub-registries.
 
 	:param filename: File name for custom layer text database file.
-	:param write_registry: The UCR level used for writing.
 	"""
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, DEFAULTS = range(6)
 	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM, DEFAULTS)
@@ -172,15 +173,14 @@ class ConfigRegistry(MM, BooleanConfigRegistry):
 		DEFAULTS: 'base-defaults.conf',
 	}
 
-	def __init__(self, filename="", write_registry=NORMAL):
-		# type: (str, int) -> None
-		super(ConfigRegistry, self).__init__()
+	def __init__(self, filename=""):
+		# type: (str) -> None
+		super(ReadOnlyConfigRegistry, self).__init__()
 		custom = os.getenv('UNIVENTION_BASECONF') or filename
-		self.scope = ConfigRegistry.CUSTOM if custom else write_registry
 
 		self._registry = {}  # type: Dict[int, _ConfigRegistry]
 		for reg in self.LAYER_PRIORITIES:
-			if reg == ConfigRegistry.CUSTOM:
+			if reg == self.CUSTOM:
 				self._registry[reg] = _ConfigRegistry(custom if custom else os.devnull)
 			else:
 				self._registry[reg] = _ConfigRegistry(os.devnull if custom else os.path.join(self.PREFIX, self.BASES[reg]))
@@ -207,6 +207,180 @@ class ConfigRegistry(MM, BooleanConfigRegistry):
 			reg.strict_encoding = strict
 
 		return self
+
+	def __getitem__(self, key):  # type: ignore
+		# type: (str) -> Optional[str]
+		"""
+		Return registry value.
+
+		:param key: UCR variable name.
+		:returns: the value or `None`.
+
+		Bug #28276: ucr[key] returns None instead of raising KeyError - it would break many UCR templates!
+		"""
+		return self.get(key)
+
+	def __contains__(self, key):  # type: ignore
+		# type: (str) -> bool
+		"""
+		Check if registry key is set.
+
+		:param key: UCR variable name.
+		:returns: `True` is set, `False` otherwise.
+		"""
+		return any(key in registry for _reg, registry in self._walk())
+
+	def __iter__(self):
+		# type: () -> Iterator[str]
+		"""
+		Iterate over all registry keys.
+
+		:returns: Iterator over all UCR variable names.
+		"""
+		merge = self._merge()
+		for key in merge:
+			yield key
+
+	def __len__(self):
+		# type: () -> int
+		"""
+		Return length.
+
+		:returns: Number of UCR variables set.
+		"""
+		merge = self._merge()
+		return len(merge)
+
+	@overload  # type: ignore
+	def get(self, key, default, getscope):  # pragma: no cover
+		# type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default=None):  # pragma: no cover
+		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
+		pass
+
+	def get(self, key, default=None, getscope=False):  # noqa F811
+		# type: (str, Optional[_VT], bool) -> Union[str, Tuple[int, str], _VT, None]
+		"""
+		Return registry value (including optional scope).
+
+		:param key: UCR variable name.
+		:param default: Default value when the UCR variable is not set.
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: the value or a 2-tuple (level, value) or the default.
+		"""
+		for reg, registry in self._walk():
+			try:
+				value = registry[key]  # type: str
+			except KeyError:
+				continue
+			if reg == self.DEFAULTS:
+				value = self._eval_default(value)
+			return (reg, value) if getscope else value
+		return default
+
+	def has_key(self, key):
+		# type: (str) -> bool
+		"""
+		Check if registry key is set.
+
+		.. deprecated:: 3.1
+			Use `in`.
+		"""
+		return key in self
+
+	@overload
+	def _merge(self):  # pragma: no cover
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def _merge(self, getscope):  # pragma: no cover
+		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def _merge(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+		"""
+		Merge sub registry.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
+		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
+		for reg, registry in self._walk():
+			for key, value in registry.items():
+				if key not in merge:
+					if reg == self.DEFAULTS:
+						value = self._eval_default(value)
+					merge[key] = (reg, value) if getscope else value
+
+		return merge  # type: ignore
+
+	def _eval_default(self, default):
+		# type: (str) -> str
+		"""
+		Recursively evaluate default value.
+
+		:param default: Default value.
+		:returns: Substituted value.
+		"""
+		try:
+			value = run_filter(default, self, opts={'disallow-execution': True})
+		except RuntimeError:  # maximum recursion depth exceeded
+			value = b''
+
+		if six.PY2:
+			return value
+		return value.decode("UTF-8")
+
+	@overload  # type: ignore
+	def items(self):  # pragma: no cover
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def items(self, getscope):  # pragma: no cover
+		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def items(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+		"""
+		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
+		merge = self._merge(getscope=getscope)
+		return merge.items()  # type: ignore
+
+	def __str__(self):
+		# type: () -> str
+		"""Return registry content as string."""
+		merge = self._merge()
+		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
+
+
+class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
+	"""
+	Merged persistent value store.
+	This is a merged view of several sub-registries.
+
+	:param filename: File name for custom layer text database file.
+	:param write_registry: The UCR level used for writing.
+	"""
+
+	def __init__(self, filename="", write_registry=ReadOnlyConfigRegistry.NORMAL):
+		# type: (str, int) -> None
+		super(ConfigRegistry, self).__init__(filename)
+		custom = os.getenv('UNIVENTION_BASECONF') or filename
+		self.scope = self.CUSTOM if custom else write_registry
+		for reg in self.LAYER_PRIORITIES:
+			registry = self._registry[reg]
+			registry._create_base_conf()
 
 	def save(self):
 		# type: () -> None
@@ -267,18 +441,6 @@ class ConfigRegistry(MM, BooleanConfigRegistry):
 		registry = self._registry[self.scope]
 		del registry[key]
 
-	def __getitem__(self, key):  # type: ignore
-		# type: (str) -> Optional[str]
-		"""
-		Return registry value.
-
-		:param key: UCR variable name.
-		:returns: the value or `None`.
-
-		Bug #28276: ucr[key] returns None instead of raising KeyError - it would break many UCR templates!
-		"""
-		return self.get(key)
-
 	def __setitem__(self, key, value):
 		# type: (str, str) -> None
 		"""
@@ -289,67 +451,6 @@ class ConfigRegistry(MM, BooleanConfigRegistry):
 		"""
 		registry = self._registry[self.scope]
 		registry[key] = value
-
-	def __contains__(self, key):  # type: ignore
-		# type: (str) -> bool
-		"""
-		Check if registry key is set.
-
-		:param key: UCR variable name.
-		:returns: `True` is set, `False` otherwise.
-		"""
-		return any(key in registry for _reg, registry in self._walk())
-
-	def __iter__(self):
-		# type: () -> Iterator[str]
-		"""
-		Iterate over all registry keys.
-
-		:returns: Iterator over all UCR variable names.
-		"""
-		merge = self._merge()
-		for key in merge:
-			yield key
-
-	def __len__(self):
-		# type: () -> int
-		"""
-		Return length.
-
-		:returns: Number of UCR variables set.
-		"""
-		merge = self._merge()
-		return len(merge)
-
-	@overload  # type: ignore
-	def get(self, key, default, getscope):  # pragma: no cover
-		# type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
-		pass
-
-	@overload  # noqa F811
-	def get(self, key, default=None):  # pragma: no cover
-		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
-		pass
-
-	def get(self, key, default=None, getscope=False):  # noqa F811
-		# type: (str, Optional[_VT], bool) -> Union[str, Tuple[int, str], _VT, None]
-		"""
-		Return registry value (including optional scope).
-
-		:param key: UCR variable name.
-		:param default: Default value when the UCR variable is not set.
-		:param getscope: `True` makes the method return the scope level in addition to the value itself.
-		:returns: the value or a 2-tuple (level, value) or the default.
-		"""
-		for reg, registry in self._walk():
-			try:
-				value = registry[key]  # type: str
-			except KeyError:
-				continue
-			if reg == ConfigRegistry.DEFAULTS:
-				value = self._eval_default(value)
-			return (reg, value) if getscope else value
-		return default
 
 	def has_key(self, key, write_registry_only=False):
 		# type: (str, bool) -> bool
@@ -364,79 +465,6 @@ class ConfigRegistry(MM, BooleanConfigRegistry):
 			return key in registry
 		else:
 			return key in self
-
-	@overload
-	def _merge(self):  # pragma: no cover
-		# type: () -> Dict[str, str]
-		pass
-
-	@overload  # noqa F811
-	def _merge(self, getscope):  # pragma: no cover
-		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
-		pass
-
-	def _merge(self, getscope=False):  # noqa F811
-		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
-		"""
-		Merge sub registry.
-
-		:param getscope: `True` makes the method return the scope level in addition to the value itself.
-		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
-		"""
-		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
-		for reg, registry in self._walk():
-			for key, value in registry.items():
-				if key not in merge:
-					if reg == ConfigRegistry.DEFAULTS:
-						value = self._eval_default(value)
-					merge[key] = (reg, value) if getscope else value
-
-		return merge  # type: ignore
-
-	def _eval_default(self, default):
-		# type: (str) -> str
-		"""
-		Recursively evaluate default value.
-
-		:param default: Default value.
-		:returns: Substituted value.
-		"""
-		try:
-			value = run_filter(default, self, opts={'disallow-execution': True})
-		except RuntimeError:  # maximum recursion depth exceeded
-			value = b''
-
-		if six.PY2:
-			return value
-		return value.decode("UTF-8")
-
-	@overload  # type: ignore
-	def items(self):  # pragma: no cover
-		# type: () -> Dict[str, str]
-		pass
-
-	@overload  # noqa F811
-	def items(self, getscope):  # pragma: no cover
-		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
-		pass
-
-	def items(self, getscope=False):  # noqa F811
-		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
-		"""
-		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
-
-		:param getscope: `True` makes the method return the scope level in addition to the value itself.
-		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
-		"""
-		merge = self._merge(getscope=getscope)
-		return merge.items()  # type: ignore
-
-	def __str__(self):
-		# type: () -> str
-		"""Return registry content as string."""
-		merge = self._merge()
-		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
-
 
 	def update(self, changes):  # type: ignore
 		# type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]
@@ -492,7 +520,6 @@ class _ConfigRegistry(dict):
 		# type: (str) -> None
 		dict.__init__(self)
 		self.file = filename
-		self.__create_base_conf()
 		self.backup_file = self.file + '.bak'
 		self.lock_filename = self.file + '.lock'
 		# will be set by <ConfigRegistry> for each <_ConfigRegistry> - <True>
@@ -535,7 +562,7 @@ class _ConfigRegistry(dict):
 		if fn != self.file:
 			self._save_file(self.file)
 
-	def __create_base_conf(self):
+	def _create_base_conf(self):
 		# type: () -> None
 		"""Create sub registry file."""
 		try:

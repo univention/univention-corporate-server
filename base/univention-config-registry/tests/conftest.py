@@ -13,7 +13,7 @@ def ucr0(tmpdir, monkeypatch, request):
 	"""
 	Return an empty UCR instance.
 	"""
-	monkeypatch.setattr(be.ConfigRegistry, "PREFIX", str(tmpdir))
+	monkeypatch.setattr(be.ReadOnlyConfigRegistry, "PREFIX", str(tmpdir))
 	marker = request.node.get_closest_marker("ucr_layer")
 	if marker is None:
 		ucr = be.ConfigRegistry()
