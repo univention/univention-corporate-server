@@ -42,6 +42,7 @@ prepare ucslint:
 
 push ucslint:
   stage: lint
+  interruptible: no
   extends: .docker
   variables:
     GIT_STRATEGY: none

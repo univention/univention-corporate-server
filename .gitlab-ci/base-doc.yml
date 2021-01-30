@@ -23,6 +23,7 @@ webframe:
 
 pages:
   stage: deploy
+  interruptible: no
   variables:
     GIT_STRATEGY: none
   script:

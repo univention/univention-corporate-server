@@ -1,6 +1,14 @@
 default:
   artifacts:
     expire_in: 1 day
+  interruptible: yes
+  retry:
+    max: 2
+    when:
+      - script_failure
+      - api_failure
+      - stuck_or_timeout_failure
+      - runner_system_failure
 
 variables:
   ucs: 500
