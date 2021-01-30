@@ -3,6 +3,8 @@
 # pylint: disable-msg=C0103,E0611,R0904
 from threading import Thread, Lock
 
+import pytest
+
 from univention.config_registry.backend import ConfigRegistry  # noqa E402
 
 
@@ -15,6 +17,7 @@ class DummyLock(object):
 		pass
 
 
+@pytest.mark.slow
 class TestConfigRegistry(object):
 
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
