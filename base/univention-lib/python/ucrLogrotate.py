@@ -30,6 +30,10 @@ Univention common Python library for :command:`logrotate` configuration files.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Dict  # noqa F401
+
+from univention.config_registry import ConfigRegistry  # noqa F401
+
 
 def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
 	# type: (str, str, Dict[str, str], ConfigRegistry) -> None

@@ -33,13 +33,9 @@ Internationalization (i18n) utilities.
 import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
+from typing import Optional, Text  # noqa F401
 
 import six
-
-try:
-	from typing import Optional  # noqa F401
-except ImportError:
-	pass
 
 
 class I18N_Error(Exception):
@@ -189,7 +185,7 @@ class NullTranslation(object):
 	locale = property(fget=_get_locale, fset=_set_locale)
 
 	def translate(self, message):
-		# type: (str) -> unicode
+		# type: (str) -> Text
 		"""
 		Translate message.
 

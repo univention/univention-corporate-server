@@ -32,10 +32,7 @@
 
 import re
 import six
-try:
-	from typing import List, Tuple, Union  # noqa: F401
-except ImportError:  # pragma: no cover
-	pass
+from typing import List, Tuple, Union  # noqa: F401
 
 
 class UCS_Version(object):

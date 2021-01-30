@@ -36,11 +36,15 @@ import sys
 import fnmatch
 import shutil
 from functools import reduce
+from typing import Dict, List, Optional  # noqa F401
 
 if sys.version_info >= (3,):
 	from subprocess import getstatusoutput
 else:
 	from commands import getstatusoutput
+
+from univention.config_registry import ConfigRegistry
+
 
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
 DIR_BLACKLIST = []
@@ -274,6 +278,7 @@ def createOrRename(old, new, cr):
 
 
 def is_blacklisted(path, ucr):
+	# type: (str, ConfigRegistry) -> bool
 	"""
 
 	>>> is_blacklisted('/home/', {})

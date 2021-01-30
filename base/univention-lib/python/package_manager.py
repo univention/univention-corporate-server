@@ -31,15 +31,19 @@ package management (info/install/progress...)
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import logging  # noqa F401
 import sys
 import os
 import re
+import signal
 from errno import ENOSPC, ENOENT
 import subprocess
 from contextlib import contextmanager
 import threading
 from logging import getLogger, DEBUG, Handler
 from time import sleep
+from types import TracebackType  # noqa F401
+from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 
 import six
 
@@ -248,7 +252,6 @@ class FetchProgress(apt.progress.text.AcquireProgress):
 		Start collection progress information.
 		"""
 		super(apt.progress.text.AcquireProgress, self).start()
-		import signal
 		self._signal = signal.SIG_IGN
 
 	# force defaults
@@ -313,7 +316,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		return p
 
 	def check_pipe(self, pipe_read):
-		# type: (file) -> None
+		# type: (IO) -> None
 		"""
 		Internal function for reading the pipe and updating the progress status.
 
@@ -423,7 +426,7 @@ class PackageManager(object):
 	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
 		# type: (bool, Optional[Callable[[Any], None]], Optional[Callable[[Any], None]], Optional[Callable[[Any], None]], bool) -> None
 		self.lock_fd = None  # type: Optional[IO]
-		self.apt_lock_fd = -1  # type: Optional[int]
+		self.apt_lock_fd = -1  # type: int
 		# parent logger, public. should be extended by adding a handler
 		self.logger = getLogger('packagemanager')
 		self.logger.setLevel(DEBUG)
@@ -499,7 +502,7 @@ class PackageManager(object):
 		"""
 		if self.apt_lock_fd >= 0:
 			os.close(self.apt_lock_fd)
-			self.apt_lock_fd = None
+			self.apt_lock_fd = -1
 		if self.lock_fd is not None:
 			release_lock(self.lock_fd)
 			self.lock_fd = None
@@ -657,7 +660,7 @@ class PackageManager(object):
 
 	@contextmanager
 	def noninteractive(self):
-		# type: () -> Iterator
+		# type: () -> Iterator[None]
 		"""
 		Configure package manager to never ask for user input.
 		"""
@@ -1011,7 +1014,6 @@ class PackageManager(object):
 		:param BaseException exc: Exception instance.
 		:param etraceback: Exception traceback.
 		"""
-		message = [_('Could not initialize package manager.')]
 		message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
 		six.reraise(etype, etype(message), etraceback)
 
@@ -1046,8 +1048,8 @@ class PackageManager(object):
 					continue
 				match = re.search(r' - (write|open|rename) \((\d+): .*\)', msg)
 				if match:
-					type_, errno = match.groups()
-					errno = int(errno)
+					type_, errno_ = match.groups()
+					errno = int(errno_)
 					if errno == ENOSPC:
 						no_space_left = True
 						continue
@@ -1081,13 +1083,13 @@ class PackageManager(object):
 				_('The sources.list entries could be repaired by executing the following commands as root on this server:'),
 				'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
 		if further:
-			further = list(further)
-			message.append('\n%s\n%s' % (_('Further information regarding this error:'), further[0]))
-			message.extend(further[1:])
+			further_ = list(further)
+			message.append('\n%s\n%s' % (_('Further information regarding this error:'), further_[0]))
+			message.extend(further_[1:])
 		return message
 
 	def autoremove(self):
-		# type: () -> None
+		# type: () -> Optional[bool]
 		"""
 		Remove all packages which are no longer required.
 

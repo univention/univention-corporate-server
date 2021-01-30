@@ -36,6 +36,7 @@ import zlib
 from PIL import Image
 import io
 import magic
+from typing import Any, Callable, Optional, Tuple  # noqa F401
 
 MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
 MIME_TYPE.load()
