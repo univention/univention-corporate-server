@@ -1,5 +1,17 @@
 tests/unwrap/unwrap
+tests/unwrap/*.pyc
 python/univention/*.pyc
 python/univention/config_registry/*.pyc
 tests/base.conf
+tests/unwrap/__pycache__/
+tests/__pycache__/
+python/univention/__pycache__/
+python/univention/config_registry/__pycache__/
 compile
+.benchmarks/
+.coverage
+.mypy_cache/
+.pytest_cache/
+coverage.xml
+pytest.xml
+pytest/
