@@ -1,3 +1,9 @@
+ucslint (8.0.0-21) unstable; urgency=low
+
+  * Bug #51316: Ignore more files
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Nov 2021 20:59:20 +0100
+
 ucslint (8.0.0-20) unstable; urgency=low
 
   * Bug #51375 ucslint: Check for uldap.searchDn()
