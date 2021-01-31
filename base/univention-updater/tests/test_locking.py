@@ -156,3 +156,20 @@ def test_error_taken(lock):
             assert lock.check(file=1)
             lock.remove()
             lock.mkdir()
+
+
+@pytest.fixture
+def apt_lock(tmpdir, monkeypatch):
+    """
+    Mock APT locking file
+    """
+    lock = tmpdir / "lock"
+    monkeypatch.setattr(L, "FN_LOCK_APT", str(lock))
+    return lock
+
+
+@pytest.mark.timeout(timeout=5)
+def test_apt_lock(apt_lock, capsys):
+    with L.apt_lock(1):
+        assert apt_lock.exists()
+    assert not apt_lock.exists()

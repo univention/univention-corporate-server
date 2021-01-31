@@ -35,6 +35,7 @@ from __future__ import print_function
 
 import os
 import sys
+from contextlib import contextmanager
 from time import sleep
 try:
     from time import monotonic  # type: ignore
@@ -45,6 +46,7 @@ from .errors import UpdaterException
 
 
 FN_LOCK_UP = '/var/lock/univention-updater'
+FN_LOCK_APT = "/var/run/apt-get.lock"
 
 
 class LockingError(UpdaterException):
@@ -173,3 +175,26 @@ class UpdaterLock(object):
                 return False
             else:
                 raise
+
+
+@contextmanager
+def apt_lock(timeout=300, out=sys.stdout):
+    """
+    Acquire and release lock for APT.
+
+    :param timeout: Time to wait.
+    :param out: Output stream for progress and error messages.
+    """
+    for count in range(timeout, 0, -1):
+        if not os.path.exists(FN_LOCK_APT):
+            break
+        print("\r%3d Waiting for updater lock %s ..." % (count, FN_LOCK_APT), end="", file=out)
+        sleep(1)
+    else:
+        print("Updater is still locked: %s" % (FN_LOCK_APT,), file=out)
+        # FIXME: Abort?
+
+    open(FN_LOCK_APT, "w").close()
+    yield None
+    if os.path.exists(FN_LOCK_APT):
+        os.unlink(FN_LOCK_APT)

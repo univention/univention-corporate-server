@@ -60,7 +60,7 @@ from univention.updater.commands import (
     cmd_upgrade,
     cmd_upgrade_sim,
 )
-from univention.updater.locking import UpdaterLock
+from univention.updater.locking import UpdaterLock, apt_lock
 
 LOGNAME = '/var/log/univention/actualise.log'
 
@@ -115,33 +115,13 @@ def usage(fd=sys.stdout):
     fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 
-def waitForLock():
-    # Wait for /var/run/apt-get.lock to vanish
-    count = 0
-    while os.path.exists('/var/run/apt-get.lock') and count < 300:
-        print("Waiting for /var/run/apt-get.lock to vanish...")
-        time.sleep(1)
-        count = count + 1
-
-
-def createLock():
-    try:
-        open('/var/run/apt-get.lock', 'w').close()
-    except EnvironmentError:
-        pass
-
-
 def getUpdate(configRegistry):
     # Small function waiting for apt lockfile to vanish then starts apt-get update
 
     print("Running apt-get update")
-    waitForLock()
-    createLock()
-    with open(LOGNAME, 'a') as logfile:
+    with apt_lock(), open(LOGNAME, 'a') as logfile:
         res = subprocess.call(shlex.split(cmd_update), stdout=logfile, stderr=logfile)
 
-    if os.path.exists('/var/run/apt-get.lock'):
-        os.unlink('/var/run/apt-get.lock')
     if res != 0:
         print("E: failed to update", file=sys.stderr)
         sys.exit(res)
@@ -183,11 +163,8 @@ def check(configRegistry, dist_upgrade=False):
     else:
         cmd = cmd_upgrade_sim
 
-    waitForLock()
-    createLock()
-    res = commands.getoutput('%s | egrep ".*[0-9] upgraded, [0-9].*"' % (cmd))
-    if os.path.exists('/var/run/apt-get.lock'):
-        os.unlink('/var/run/apt-get.lock')
+    with apt_lock():
+        res = commands.getoutput('%s | egrep ".*[0-9] upgraded, [0-9].*"' % (cmd))
     sres = res.split()
 
     # These ones are nicer to read
@@ -303,48 +280,41 @@ def main():
 
             rem_packages = getPackageList(configRegistry, 'remove')
             for package in rem_packages:
-                waitForLock()
-
                 # check if the package exists
-                res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
+                with apt_lock():
+                    res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Removing packages: %s" % package)
-                    createLock()
                     os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-                    res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
+                    with apt_lock():
+                        res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                     if not res:
                         res = subprocess.call(shlex.split(cmd_remove) + [package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0
-                if os.path.exists('/var/run/apt-get.lock'):
-                    os.unlink('/var/run/apt-get.lock')
                 if res != 0:
                     print("E: failed to remove %s" % package, file=sys.stderr)
                     sys.exit(res)
 
             add_packages = getPackageList(configRegistry, 'add')
             for package in add_packages:
-                waitForLock()
-                res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
+                with apt_lock():
+                    res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Installing packages: %s" % package)
-                    createLock()
                     os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-                    res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
+                    with apt_lock():
+                        res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                     if not res:
                         res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0
 
-                if os.path.exists('/var/run/apt-get.lock'):
-                    os.unlink('/var/run/apt-get.lock')
                 if res != 0:
                     print("E: failed to install %s" % package, file=sys.stderr)
                     sys.exit(res)
-
-            waitForLock()
 
         else:
             # ldap/hostdn is not set
@@ -361,10 +331,10 @@ def main():
         print(msg)
         # TODO: use mkstemp and close directly the file descriptor
 
-        createLock()
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-        tee = Tee([LOGNAME], stdout=not silent)
-        res = tee.call(shlex.split(cmd_config))
+        with apt_lock():
+            tee = Tee([LOGNAME], stdout=not silent)
+            res = tee.call(shlex.split(cmd_config))
         if res != 0:
             print("E: failed to configure packets, see %s for details." % LOGNAME, file=sys.stderr)
         else:
@@ -372,9 +342,6 @@ def main():
             res = tee.call(cmd.split(' '))
             if res != 0:
                 print("E: failed to upgrade, see %s for details." % LOGNAME, file=sys.stderr)
-
-        if os.path.exists('/var/run/apt-get.lock'):
-            os.unlink('/var/run/apt-get.lock')
 
         sys.exit(res)
 

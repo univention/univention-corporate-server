@@ -74,7 +74,7 @@ from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.tools import UniventionUpdater, LocalUpdater
-from univention.updater.locking import UpdaterLock
+from univention.updater.locking import UpdaterLock, apt_lock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 
 
@@ -583,34 +583,21 @@ def main():
             elif (phase, order) == ('preup', 'pre'):
                 log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
             elif (phase, order) == ('update', 'main'):
-                count = 300
-                while os.path.exists('/var/run/apt-get.lock') and count > 0:
-                    time.sleep(1)
-                    count -= 1
-
-                # TODO: should we really exit if the 'apt-get update' process failed?
-                resultCode = os.system('touch /var/run/apt-get.lock && %s >>%s 2>&1' % (cmd_update, LOGNAME))
-                if os.path.exists('/var/run/apt-get.lock'):
-                    os.unlink('/var/run/apt-get.lock')
+                with apt_lock():
+                    # TODO: should we really exit if the 'apt-get update' process failed?
+                    resultCode = os.system('%s >>%s 2>&1' % (cmd_update, LOGNAME))
                 if resultCode != 0:
                     raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
 
                 # Execute the dist-upgrade!
-                count = 300
-                while os.path.exists('/var/run/apt-get.lock') and count > 0:
-                    time.sleep(1)
-                    count -= 1
-
                 detailed_status = FN_STATUS + '.details'
                 context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
                 if context_id:
                     os.environ['ADMINDIARY_CONTEXT'] = context_id
-                with open(detailed_status, 'w+b') as detailed_status_fd:
-                    resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
+                with apt_lock(), open(detailed_status, 'w+b') as detailed_status_fd:
+                    resultCode = os.system('DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
                     if os.path.exists(detailed_status):
                         os.unlink(detailed_status)
-                    if os.path.exists('/var/run/apt-get.lock'):
-                        os.unlink('/var/run/apt-get.lock')
                     if resultCode != 0:
                         raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
             elif (phase, order) == ('postup', 'main'):
