@@ -1179,6 +1179,12 @@ define([
 					iwidget.$refOverwrite$ = this.own(new OverwriteLabel({}))[0];
 					construct.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
 				}
+				if (iwidget.$refLabel$ && iwidget.disabled) {
+					var spacer = this.own(new OverwriteLabel({
+						style: 'visibility: hidden'
+					}))[0];
+					construct.place(spacer.domNode, iwidget.$refLabel$.domNode);
+				}
 			});
 
 			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget

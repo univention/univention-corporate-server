@@ -60,6 +60,10 @@ define([
 
 		_getValueAttr: function() {
 			return this.content.get('value');
+		},
+
+		addBetweenNonCheckBoxesClass: function() {
+			return false;
 		}
 	});
 });

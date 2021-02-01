@@ -85,6 +85,7 @@
 .umc .udmOverwriteLabel {
 	width: 100% !important;
 	font-style: italic;
+	padding-top: var(--layout-spacing-unit) !important;
 }
 
 .umc .umcLabelPane .udmAppLabel {

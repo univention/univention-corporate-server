@@ -368,7 +368,7 @@ define([
 				// add extra CSS classes based on the content type
 				var labelClasses = [this._orgClass];
 
-				var addBetweenNonCheckBoxesClass = this.betweenNonCheckBoxes && this.content.isInstanceOf(CheckBox);
+				var addBetweenNonCheckBoxesClass = this.addBetweenNonCheckBoxesClass();
 				var contentClasses = this.content.baseClass.split(/\s+/);
 				array.forEach(contentClasses, function(iclass) {
 					labelClasses.push(this.baseClass + '-' + iclass);
@@ -386,6 +386,10 @@ define([
 			}
 
 			this.set('disabled', this.disabled);
+		},
+
+		addBetweenNonCheckBoxesClass: function() {
+			return this.betweenNonCheckBoxes && this.content.isInstanceOf(CheckBox);
 		},
 
 		_setDisabledAttr: function(value) {
