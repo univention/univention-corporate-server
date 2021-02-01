@@ -36,6 +36,7 @@ from json import dumps
 
 from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.app import LooseVersion
 from univention.appcenter.ucr import ucr_get
 
 
@@ -71,7 +72,7 @@ class Info(UniventionAppAction):
 
 	@classmethod
 	def is_compatible(cls, other_version, function=None):
-		return True
+		return LooseVersion(other_version) >= LooseVersion("5.0-0")
 
 	@classmethod
 	def get_compatibility(cls):

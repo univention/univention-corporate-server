@@ -49,8 +49,7 @@
 		<command name="appcenter/invoke_dry_run" function="invoke_dry_run" />
 		<!-- ATTENTION: progress comes from ProgressMixin -->
 		<command name="appcenter/docker/progress" function="progress"/>
-		<!-- ATTENTION: custom progress; same progress function as in packages -->
-		<command name="appcenter/progress" function="custom_progress"/>
+		<command name="appcenter/progress" function="progress"/>
 		<command name="appcenter/keep_alive" function="keep_alive"/>
 		<command name="appcenter/ping" function="ping"/>
 		<command name="appcenter/buy" function="buy"/>

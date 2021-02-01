@@ -704,7 +704,7 @@ define([
 		uninstallApp: function(host) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('uninstall', host).then(
+				this.callInstaller('remove', host).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
@@ -743,7 +743,7 @@ define([
 		upgradeApp: function(host) {
 			// before installing, user must read update readme
 			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('update', host).then(
+				this.callInstaller('upgrade', host).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
@@ -823,7 +823,7 @@ define([
 					progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
 				}
 				break;
-			case 'uninstall':
+			case 'remove':
 				actionLabel = _('Uninstall');
 				actionWarningLabel = _('Uninstall anyway');
 				title = _('Removal of %s', this.app.name);
@@ -834,7 +834,7 @@ define([
 					progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
 				}
 				break;
-			case 'update':
+			case 'upgrade':
 				actionLabel = _('Upgrade');
 				actionWarningLabel = _('Upgrade anyway');
 				title = _('Upgrade of %s', this.app.name);
@@ -858,23 +858,16 @@ define([
 				}
 			}
 
-			var command = 'appcenter/invoke';
-			if (!force) {
-				command = 'appcenter/invoke_dry_run';
-			}
-			if (this.app.installsAsDocker()) {
-				command = 'appcenter/docker/invoke';
-				if (isRemoteAction) {
-					command = 'appcenter/docker/remote/invoke';
-				}
-			}
+			var command = 'appcenter/run';
 			var commandArguments = {
-				'function': func,
-				'application': this.app.id,
-				'app': this.app.id,
-				'host': host || '',
-				'force': force === true,
-				'values': values || {}
+				'action': func,
+				'auto_installed': [],
+				'apps': [this.app.id],
+				'hosts': {[this.app.id]: host || tools.status("fqdn")},
+				'settings': {
+					[this.app.id]: values
+				},
+				'dry_run': !force
 			};
 
 			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
