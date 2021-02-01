@@ -59,7 +59,8 @@ define([
 							sortDynamicValues: false,
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
-							})
+							}),
+							'class': 'umcTextBoxDark'
 						},
 						{
 							name: 'key',
@@ -73,7 +74,8 @@ define([
 							sortStaticValues: false,
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
-							})
+							}),
+							'class': 'umcTextBoxDark'
 						},
 						{
 							name: 'pattern',
@@ -85,7 +87,8 @@ define([
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
 							}),
-							onSearch: lang.hitch(this, 'submit')
+							onSearch: lang.hitch(this, 'submit'),
+							'class': 'umcTextBoxDark'
 						}
 					],
 					layout:
