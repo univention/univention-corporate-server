@@ -8,5 +8,4 @@ WantedBy=multi-user.target
 [Service]
 Type=simple
 ExecStart=/usr/sbin/univention-portal-server
-ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
