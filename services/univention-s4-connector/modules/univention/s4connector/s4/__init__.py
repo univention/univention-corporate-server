@@ -2121,11 +2121,11 @@ class s4(univention.s4connector.ucs):
 				try:
 					self.lo_s4.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
 				except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
-					sAMAccountName = object['attributes'].get('sAMAccountName', [None])[0]
-					sambaSID = object['attributes'].get('sambaSID', [None])[0]
+					sAMAccountName = object['attributes'].get('sAMAccountName', [b''])[0]
+					sambaSID = object['attributes'].get('sambaSID', [b''])[0]
 					if not (sAMAccountName and sambaSID):
 						raise  # unknown situation, raise original traceback
-					filter_s4 = format_escaped(u'(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName, sambaSID)
+					filter_s4 = format_escaped(u'(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName.decode('UTF-8'), sambaSID.decode('UTF-8'))
 					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: error during add, searching for conflicting deleted object in S4")
 					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: search filter: %s" % filter_s4)
 					result = self.s4_search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(
@@ -2136,7 +2136,7 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: reanimating conflicting object: %s" % result[0][0])
 					reanimate_modlist = [
 						(ldap.MOD_DELETE, 'isDeleted', None),
-						(ldap.MOD_REPLACE, 'distinguishedName', object['dn'])
+						(ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8'))
 					]
 					self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), ])
 					# and try the sync again
