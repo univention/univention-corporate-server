@@ -98,18 +98,18 @@ test_single_server () {
 		--computergpo 'Default Domain Policy' \
 		--computergpo 'NewMachineGPO'
 
-	# * Drucker einrichten
-	python shared-utils/ucs-winrm.py setup-printer --printername printer1  --server "$UCS"
-	sleep 15
-	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
-	# * Zugriff auf Drucker
-	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate \
-		--run-as-user Administrator
-	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
-	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate \
-		--run-as-user newuser01 --run-as-password "Univention.99"
-	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
-	# TODO printer via gpo
+	## * Drucker einrichten
+	#python shared-utils/ucs-winrm.py setup-printer --printername printer1  --server "$UCS"
+	#sleep 15
+	#rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
+	## * Zugriff auf Drucker
+	#python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate \
+	#	--run-as-user Administrator
+	#stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	#python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate \
+	#	--run-as-user newuser01 --run-as-password "Univention.99"
+	#stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
+	## TODO printer via gpo
 
 	# host $windows_client muss die IPv4-Adresse liefern.
 	nslookup "$winclient_name" | grep "$WINRM_CLIENT"
