@@ -185,33 +185,10 @@ def is_domain_in_admember_mode(ucr=None):
 
 def _get_kerberos_ticket(principal, password, ucr=None):
     # type: (str, str, Optional[ConfigRegistry]) -> None
-    ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
-    if not ucr:
-        ucr = ConfigRegistry()
-        ucr.load()
-
-    # We need to remove the target credential cache first,
-    # otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
-    cmd1 = ("/usr/bin/kdestroy",)
-    p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, _ = p1.communicate()
-    if p1.returncode:
-        ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout.decode('UTF-8', 'replace'))
-
-    with tempfile.NamedTemporaryFile('w+') as f:
-        os.fchmod(f.fileno(), 0o600)
-        f.write(password)
-        f.flush()
-
-        cmd2 = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
-        p1 = subprocess.Popen(cmd2, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, _ = p1.communicate()
-        if p1.returncode:
-            msg = "kinit failed:\n%s" % (stdout.decode('UTF-8', 'replace'),)
-            ud.debug(ud.MODULE, ud.ERROR, msg)
-            raise connectionFailed(msg)
-        if stdout:
-            ud.debug(ud.MODULE, ud.WARN, "kinit output:\n%s" % stdout.decode('UTF-8', 'replace'))
+    try:
+        return univention.uldap.access.get_kerberos_ticket(principal, password)
+    except ldap.LOCAL_ERROR as exc:
+        raise connectionFailed(str(exc))
 
 
 def check_connection(ad_domain_info, username, password):

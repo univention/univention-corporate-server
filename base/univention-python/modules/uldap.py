@@ -33,9 +33,12 @@
 # <https://www.gnu.org/licenses/>.
 
 import logging
+import os
 import random
 import re
+import subprocess
 from functools import wraps
+from tempfile import NamedTemporaryFile
 
 import ldap
 import ldap.sasl
@@ -335,6 +338,44 @@ class access:
         self.lo.sasl_interactive_bind_s('', oauth)
         self.binddn = self.whoami()
         log.debug('OAUTHBEARER bind binddn=%r', self.binddn)
+
+    @_fix_reconnect_handling
+    def bind_sasl_gssapi(self, binddn, bindpw, credentials_cache=None):
+        # type: (str, str, Optional[str]) -> None
+        if credentials_cache:
+            os.environ['KRB5CCNAME'] = credentials_cache
+
+        self.get_kerberos_ticket()
+        self.lo.sasl_interactive_bind_s("", ldap.sasl.gssapi(""))
+
+    @staticmethod
+    def get_kerberos_ticket(principal, password):
+        # type: (str, str) -> None
+        ud = univention.debug
+        ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
+
+        # We need to remove the target credential cache first,
+        # otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
+        cmd1 = ("/usr/bin/kdestroy",)
+        p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        stdout, _stderr = p1.communicate()
+        if p1.returncode != 0:
+            ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout.decode('UTF-8', 'replace'))
+
+        with NamedTemporaryFile('w+') as f:
+            os.fchmod(f.fileno(), 0o600)
+            f.write(password)
+            f.flush()
+
+            cmd2 = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
+            p1 = subprocess.Popen(cmd2, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+            stdout, _stderr = p1.communicate()
+            if p1.returncode != 0:
+                msg = "kinit failed:\n%s" % (stdout.decode('UTF-8', 'replace'),)
+                ud.debug(ud.MODULE, ud.ERROR, msg)
+                raise ldap.LOCAL_ERROR(msg)
+            if stdout:
+                ud.debug(ud.MODULE, ud.WARN, "kinit output:\n%s" % stdout.decode('UTF-8', 'replace'))
 
     def unbind(self):
         # type: () -> None

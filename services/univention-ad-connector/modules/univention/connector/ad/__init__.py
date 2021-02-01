@@ -36,13 +36,10 @@
 import base64
 import calendar
 import copy
-import os
 import re
 import string
-import subprocess
 import sys
 import time
-from tempfile import NamedTemporaryFile
 
 import ldap
 import samba.dcerpc.samr
@@ -659,18 +656,6 @@ class ad(univention.connector.ucs):
         sid = self.samr.LookupDomain(handle, sam_domain)
         self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
-    def get_kerberos_ticket(self):
-        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
-        p1.wait()
-        with NamedTemporaryFile('w') as fd:
-            fd.write(self.ad_ldap_bindpw)
-            fd.flush()
-            cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), self.ad_ldap_binddn]
-            p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            stdout, _stderr = p1.communicate()
-        if p1.returncode != 0:
-            raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))
-
     def ad_search_ext_s(self, *args, **kwargs):
         return fix_dn_in_search(self.lo_ad.lo.search_ext_s(*args, **kwargs))
 
@@ -690,15 +675,20 @@ class ad(univention.connector.ucs):
         except Exception:  # FIXME: which exception is to be caught
             self._debug_traceback(ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value.')
 
+        self.lo_ad = univention.uldap.access(
+            host=self.ad_ldap_host, port=int(self.ad_ldap_port),
+            base=self.ad_ldap_base, binddn=None, bindpw=None,
+            start_tls=tls_mode, use_ldaps=ldaps,
+            ca_certfile=self.ad_ldap_certificate,
+        )
+
         if self.configRegistry.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
-            os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
-            self.get_kerberos_ticket()
-            auth = ldap.sasl.gssapi("")
-            self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
-            self.get_kerberos_ticket()
-            self.lo_ad.lo.sasl_interactive_bind_s("", auth)
+            try:
+                self.lo_ad.bind_sasl_gssapi(self.ad_ldap_binddn, self.ad_ldap_bindpw, '/var/cache/univention-ad-connector/krb5.cc')
+            except ldap.LOCAL_ERROR as exc:
+                raise kerberosAuthenticationFailed(str(exc))
         else:
-            self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
+            self.lo_ad.bind(self.ad_ldap_binddn, self.ad_ldap_bindpw)
 
         self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 

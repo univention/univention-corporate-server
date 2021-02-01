@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
-import subprocess
 import sys
 
 import ldap
@@ -14,6 +13,7 @@ from ldap import modlist
 from ldap.controls import LDAPControl
 
 import univention.testing.connector_common as tcommon
+import univention.uldap
 from univention.config_registry import ConfigRegistry
 
 
@@ -105,7 +105,7 @@ class LDAPConnection:
         try:
             if self.kerberos:
                 os.environ['KRB5CCNAME'] = '/tmp/ucs-test-ldap-glue.cc'
-                self.get_kerberos_ticket()
+                univention.uldap.access.get_kerberos_ticket(self.principal, open(self.pw_file).read().strip())
                 auth = ldap.sasl.gssapi("")
                 self.lo.sasl_interactive_bind_s("", auth)
             elif login_pw:
@@ -118,15 +118,6 @@ class LDAPConnection:
             ex = f'LDAP Bind as {cred_msg} failed over connection to "{self.host}:{self.port}" (TLS: {not no_starttls}, Certificate: {self.ca_file})\n'
             import traceback
             raise Exception(ex + traceback.format_exc())
-
-    def get_kerberos_ticket(self):
-        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
-        p1.wait()
-        cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.principal]
-        p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, _stderr = p1.communicate()
-        if p1.returncode != 0:
-            raise Exception('The following command failed: "%s" (%s): %s' % (''.join(cmd_block), p1.returncode, stdout.decode('UTF-8')))
 
     def exists(self, dn):
         try:
