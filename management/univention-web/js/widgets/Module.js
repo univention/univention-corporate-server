@@ -100,7 +100,7 @@ define([
 			var title = lang.replace('<span class="umcModuleTitleBreadCrumb">{0}</span>{1}<span>{2}</span>', [
 				this.title,
 				Icon.asHTMLString('chevron-right', 'umcModuleTitleBreadCrumbSeperator umcModuleTitleBreadCrumb'),
-				name
+				entities.encode(name)
 			]);
 			this.set('title', title);
 		},
