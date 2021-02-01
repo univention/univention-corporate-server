@@ -623,6 +623,31 @@ class s4(univention.s4connector.ucs):
         for prop in self.property.values():
             prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_s4.base)
 
+        # Lookup list of single value attributes from AD DC Schema
+        schema_base = "CN=Schema,CN=Configuration,%s" % self.s4_ldap_base
+        try:
+            result = self.__search_s4(filter='(isSingleValued=TRUE)', base=schema_base, attrlist=['lDAPDisplayName'])
+        except ldap.LDAPError as msg:
+            error_msg = "Failed to lookup attribute Schema from AD: %s" % msg
+            ud.debug(ud.LDAP, ud.ERROR, error_msg)
+            print(error_msg)
+            sys.exit(1)
+
+        self.single_valued_ad_attributes = [record[1]['lDAPDisplayName'][0].decode('UTF-8') for record in result]
+
+        # Flag single value attributes as such in the connector mapping
+        for mapping_key, mapping_property in self.property.items():
+            for attr_type in ('attributes', 'post_attributes'):
+                conn_attributes = getattr(mapping_property, attr_type)
+                if not conn_attributes:
+                    continue
+                for _attr_key, attr in conn_attributes.items():
+                    if not attr.con_other_attribute and attr.con_attribute in self.single_valued_ad_attributes:
+                        attr.single_value = True
+                    elif attr.con_attribute == 'description' and mapping_key in ('user', 'group', 'windowscomputer'):
+                        # For SAM managed objects the description attribute is single-valued
+                        attr.single_value = True
+
     def init_group_cache(self):
         ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
         s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
