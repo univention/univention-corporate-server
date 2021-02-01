@@ -630,8 +630,9 @@ download_system_setup_packages ()
 
 		apt-ftparchive packages . >Packages
 		check_returnvalue $? "Failed to create ftparchive directory"
-		xz -z Packages
-		check_returnvalue $? "Failed to xz compress Packages file"
+		xz -k Packages
+		gzip -k Packages
+		chmod a+r Packages Packages.xz Packages.gz
 	)
 }
 
