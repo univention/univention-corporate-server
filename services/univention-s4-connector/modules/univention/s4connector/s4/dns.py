@@ -182,15 +182,11 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						else:
 							raise  # can't determine relativeDomainName
 
-				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
-					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
-						try:
-							if relativeDomainName.lower() == ucsval.lower():
-								relativeDomainName = conval
-								ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: map relativeDomainName according to mapping-table")
-								continue
-						except UnicodeDecodeError:
-							pass  # values are not the same codec
+				for ucsval, conval in s4connector.property[propertyname].mapping_table.get(propertyattrib, []):
+					if relativeDomainName.lower() == ucsval.lower():
+						relativeDomainName = conval
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: map relativeDomainName according to mapping-table")
+						continue
 
 				try:
 					ol_zone_name = obj['attributes']['zoneName'][0].decode('UTF-8')
@@ -296,7 +292,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got an S4-Object")
 				i = 0
 
-				while (not s4_RR_val):  # in case of olddn this is already set
+				while not s4_RR_val:  # in case of olddn this is already set
 					i = i + 1
 					search_base_dn = obj.get('deleted_dn', dn)
 					try:
@@ -311,14 +307,11 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						s4_RR_val = search_result_attributes[s4_RR_attr.lower()][0].decode('UTF-8')
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 
-				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
-					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
-						if s4_RR_val.lower() == conval.lower():
-							s4_RR_val = ucsval
-							ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: map %s according to mapping-table" % s4_RR_attr)
-							continue
-						else:
-							ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: %s not in mapping-table" % s4_RR_attr)
+				for ucsval, conval in s4connector.property[propertyname].mapping_table.get(propertyattrib, []):
+					if s4_RR_val.lower() == conval.lower():
+						s4_RR_val = ucsval
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: map %s according to mapping-table" % s4_RR_attr)
+						continue
 
 				# search for object with this dn in ucs, needed if it is located in a different container
 				try:

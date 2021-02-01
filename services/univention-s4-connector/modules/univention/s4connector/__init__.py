@@ -71,18 +71,6 @@ def decode_guid(value):
 	return str(ndr_unpack(misc.GUID, value))
 
 
-# util functions defined during mapping
-def make_lower(mlValue):
-	'''
-	lower string cases for mlValue which can be string or a list of values which can be given to mlValue
-	'''
-	if hasattr(mlValue, 'lower'):
-		return mlValue.lower()
-	if isinstance(mlValue, list):
-		return [make_lower(x) for x in mlValue]
-	return mlValue
-
-
 password_charsets = [
 	'abcdefghijklmnopqrstuvwxyz',
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -422,7 +410,7 @@ class property(object):
 		self.post_ucs_modify_functions = post_ucs_modify_functions
 
 		self.post_attributes = post_attributes
-		self.mapping_table = mapping_table
+		self.mapping_table = mapping_table or {}
 		self.position_mapping = position_mapping
 
 		if con_sync_function:
@@ -1730,21 +1718,13 @@ class ucs(object):
 							object_out['attributes'][attributes.con_attribute] = values
 
 					# mapping_table
-					if MAPPING.mapping_table and attr_key in MAPPING.mapping_table.keys():
-						for ucsval, conval in MAPPING.mapping_table[attr_key]:
-							if isinstance(object_out['attributes'][attributes.con_attribute], list):
-
-								ucsval_lower = make_lower(ucsval)
-								objectval_lower = make_lower(object_out['attributes'][attributes.con_attribute])
-
-								if ucsval_lower in objectval_lower:
-									object_out['attributes'][attributes.con_attribute][objectval_lower.index(ucsval_lower)] = conval
-									if len(objectval_lower) == 1:
-										break  # No point in trying additional translation
-								elif ucsval_lower == objectval_lower:
-									object_out['attributes'][attributes.con_attribute] = conval
-									if len(objectval_lower) == 1:
-										break  # No point in trying additional translation
+					for ucsval, conval in MAPPING.mapping_table.get(attr_key, []):
+						if isinstance(object_out['attributes'][attributes.con_attribute], list):
+							encoding = attributes.con_attribute_encoding or 'UTF-8'
+							object_out['attributes'][attributes.con_attribute] = [
+								conval.encode(encoding) if x.lower() == ucsval.encode(encoding).lower() else x
+								for x in object_out['attributes'][attributes.con_attribute]
+							]
 
 			for post_attributes in (MAPPING.post_attributes or {}).values():
 				if attribute.lower() == post_attributes.ldap_attribute.lower():
@@ -1817,21 +1797,13 @@ class ucs(object):
 							object_out['attributes'][attributes.ldap_attribute] = values
 
 					# mapping_table
-					if MAPPING.mapping_table and attr_key in MAPPING.mapping_table.keys():
-						for ucsval, conval in MAPPING.mapping_table[attr_key]:
-							if isinstance(object_out['attributes'][attributes.con_attribute], list):
-
-								conval_lower = make_lower(conval)
-								objectval_lower = make_lower(object_out['attributes'][attributes.ldap_attribute])
-
-								if conval_lower in objectval_lower:
-									object_out['attributes'][attributes.ldap_attribute][objectval_lower.index(conval_lower)] = ucsval
-									if len(objectval_lower) == 1:
-										break  # No point in trying additional translation
-								elif conval_lower == objectval_lower:
-									object_out['attributes'][attributes.ldap_attribute] = ucsval
-									if len(objectval_lower) == 1:
-										break  # No point in trying additional translation
+					for ucsval, conval in MAPPING.mapping_table.get(attr_key, []):
+						if isinstance(object_out['attributes'][attributes.ldap_attribute], list):
+							encoding = attributes.con_attribute_encoding or 'UTF-8'
+							object_out['attributes'][attributes.ldap_attribute] = [
+								ucsval.encode(encoding) if x.lower() == conval.encode(encoding).lower() else x
+								for x in object_out['attributes'][attributes.ldap_attribute]
+							]
 
 			for post_attributes in (MAPPING.post_attributes or {}).values():
 				if attribute.lower() == post_attributes.con_attribute.lower():

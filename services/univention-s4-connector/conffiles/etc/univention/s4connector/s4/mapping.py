@@ -46,8 +46,6 @@ import univention.s4connector.s4.user
 
 from univention.s4connector.s4.mapping import ignore_filter_from_tmpl, ignore_filter_from_attr, configRegistry
 
-from six import text_type as _text_type
-
 global_ignore_subtree = [
 	'cn=univention,@%@ldap/base@%@',
 	'cn=policies,@%@ldap/base@%@',
@@ -105,7 +103,11 @@ if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 
 key_prefix = "connector/s4/mapping/group/table/"
 group_mapping_table = {
-	'cn': [(_text_type(key[len(key_prefix):]), _text_type(value)) for key, value in configRegistry.items() if key.startswith(key_prefix)]
+	'cn': [
+		(key[len(key_prefix):], value)
+		for key, value in configRegistry.items()
+		if key.startswith(key_prefix)
+	]
 }
 if not group_mapping_table['cn']:
 	group_mapping_table = {}
