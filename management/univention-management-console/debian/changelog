@@ -1,3 +1,9 @@
+univention-management-console (12.0.7-2) unstable; urgency=medium
+
+  * Bug #52453: revert cleanup
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 01 Feb 2021 08:41:43 +0100
+
 univention-management-console (12.0.7-1) unstable; urgency=medium
 
   * Bug #52686: fix logging of univention-debug
