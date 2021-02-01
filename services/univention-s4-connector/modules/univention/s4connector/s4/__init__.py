@@ -2096,12 +2096,13 @@ class s4(univention.s4connector.ucs):
 					addlist += self.property[property_type].con_create_attributes
 
 				# Copy the LDAP controls, because they may be modified
-				# in an ucs_create_extenstions
+				# in an ucs_create_extensions
 				ctrls = copy.deepcopy(self.serverctrls_for_add_and_modify)
 				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes is not None:
 					for attr, value in object['attributes'].items():
-						for attribute in self.property[property_type].attributes.keys():
-							if attr in (self.property[property_type].attributes[attribute].con_attribute, self.property[property_type].attributes[attribute].con_other_attribute):
+						for attr_key in self.property[property_type].attributes.keys():
+							attribute = self.property[property_type].attributes[attr_key]
+							if attr in (attribute.con_attribute, attribute.con_other_attribute):
 								addlist.append((attr, value))
 				if hasattr(self.property[property_type], 'con_create_extensions') and self.property[property_type].con_create_extensions is not None:
 					for con_create_extension in self.property[property_type].con_create_extensions:
@@ -2109,16 +2110,16 @@ class s4(univention.s4connector.ucs):
 						con_create_extension(self, property_type, object, addlist, ctrls)
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
 					for attr, value in object['attributes'].items():
-						for attribute in self.property[property_type].post_attributes.keys():
-							if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
-								if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
+						for attr_key in self.property[property_type].post_attributes.keys():
+							post_attribute = self.property[property_type].post_attributes[attr_key]
+							if post_attribute.reverse_attribute_check:
+								if not object['attributes'].get(post_attribute.ldap_attribute):
 									continue
-							if self.property[property_type].post_attributes[attribute].con_attribute == attr:
-								if value:
-									modlist.append((ldap.MOD_REPLACE, attr, value))
-							if self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
-								if value:
-									modlist.append((ldap.MOD_REPLACE, attr, value))
+							if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
+								continue
+
+							if value:
+								modlist.append((ldap.MOD_REPLACE, attr, value))
 
 				ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
@@ -2206,7 +2207,7 @@ class s4(univention.s4connector.ucs):
 								s4_attribute = attribute_type[attribute].con_attribute
 								s4_other_attribute = attribute_type[attribute].con_other_attribute
 
-								if not attribute_type[attribute].sync_mode in ['write', 'sync']:
+								if attribute_type[attribute].sync_mode not in ['write', 'sync']:
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attribute)
 									continue
 
