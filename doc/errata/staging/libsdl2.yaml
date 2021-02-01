@@ -1,0 +1,37 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: libsdl2
+fix: 2.0.5+dfsg1-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Heap based buffer overflow in function MS_ADPCM_decode in audio/SDL_wave.c
+   (CVE-2019-7575)
+ * Buffer over-read in function SDL_LoadWAV_RW in audio/SDL_wave.c
+   (CVE-2019-7577)
+ * heap-based buffer over-read in InitIMA_ADPCM in audio/SDL_wave.c
+   (CVE-2019-7578)
+ * heap-based buffer over-read in Blit1to4 in video/SDL_blit_1.c
+   (CVE-2019-7635)
+ * heap-based buffer over-read in SDL_GetRGB in video/SDL_pixels.c
+   (CVE-2019-7636)
+ * heap-based buffer over-read in Map1toN in video/SDL_pixels.c
+   (CVE-2019-7638)
+ * heap-based buffer overflow in SDL blit functions in video/SDL_blit*.c
+   (CVE-2019-13616)
+ * Integer overflow in SDL_BlitCopy in video/SDL_blit_copy.c via a crafted
+   .BMP file (CVE-2020-14409)
+ * Heap-based buffer over-read in Blit_3or4_to_3or4__inversed_rgb in
+   video/SDL_blit_N.c via a crafted .BMP file (CVE-2020-14410)
+bug: [52728]
+cve:
+- CVE-2019-7575
+- CVE-2019-7577
+- CVE-2019-7578
+- CVE-2019-7635
+- CVE-2019-7636
+- CVE-2019-7638
+- CVE-2019-13616
+- CVE-2020-14409
+- CVE-2020-14410
