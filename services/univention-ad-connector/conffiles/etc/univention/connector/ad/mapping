@@ -330,10 +330,10 @@ ad_mapping = {
 		},
 		mapping_table={
 			'cn': [
-				(b'Domain Users', u'Domänen-Benutzer'.encode('UTF-8')),
-				(b'Domain Admins', u'Domänen-Admins'.encode('UTF-8')),
-				(b'Windows Hosts', u'Domänencomputer'.encode('UTF-8')),
-				(b'Domain Guests', u'Domänen-Gäste'.encode('UTF-8')),
+				(u'Domain Users', u'Domänen-Benutzer'),
+				(u'Domain Admins', u'Domänen-Admins'),
+				(u'Windows Hosts', u'Domänencomputer'),
+				(u'Domain Guests', u'Domänen-Gäste'),
 			]
 		},
 	),
