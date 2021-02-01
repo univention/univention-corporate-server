@@ -151,6 +151,12 @@
 .ucsIconButtonHighlighted
 	@extends .ucsIconButton
 	--bgc: var(--button-icon-highlighted-bgc)
+	&.dijit
+		&Hover,
+		&Focused,
+		&Active,
+		&Disabled
+			--bgc: transparent
 
 
 .ucsFillButton
