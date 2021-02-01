@@ -520,10 +520,7 @@ class ucs(object):
 		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
-		elif dn.lower().endswith(base.lower()):  # FIXME
-			return ''.join((dn[:-len(base)], base))
-		else:
-			return dn
+		return self._subtree_replace(dn, base.lower(), base)
 
 	def open_ucs(self):
 		bindpw_file = self.configRegistry.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
