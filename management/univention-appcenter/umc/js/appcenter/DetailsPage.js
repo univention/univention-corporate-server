@@ -31,18 +31,20 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, entities, Page, Form, CheckBox, TextBox, _) {
+], function(declare, lang, domClass, entities, Page, Form, CheckBox, TextBox, _) {
 	return declare("umc.modules.appcenter.DetailsPage", [ Page ], {
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		headerTextAllowHTML: false,
 		helpTextAllowHTML: false,
+		navContentClass: 'umcCard2',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -71,8 +73,8 @@ define([
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAppCenterRepositoryDetailsPage');
 
 			var widgets = [
 				{

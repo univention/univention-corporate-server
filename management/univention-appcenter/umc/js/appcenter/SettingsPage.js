@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
@@ -41,7 +42,7 @@ define([
 	"umc/widgets/Form",
 	"umc/store",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, dialog, tools, Page, Grid, TitlePane, Form, store, _) {
+], function(declare, lang, array, domClass, entities, dialog, tools, Page, Grid, TitlePane, Form, store, _) {
 	return declare("umc.modules.appcenter.SettingsPage", [ Page ], {
 
 		moduleStore: null,
@@ -54,8 +55,8 @@ define([
 		fullWidth: true,
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAppCenterRepositorySettingsPage');
 
 
 			var formWidgets = [{
