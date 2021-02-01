@@ -166,6 +166,17 @@
 }
 
 
+/* ReferencingObjects widget */
+.umc .umcReferencingObjects {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 1rem;
+    justify-items: flex-start;
+
+    padding: 0 2rem 2rem;
+}
+
+
 /* module specific layout */
 .umcTopContainer--layout-udm-dhcp-dhcp-searchpage .umcUDMSearchForm,
 .umcTopContainer--layout-udm-dns-dns-searchpage .umcUDMSearchForm {

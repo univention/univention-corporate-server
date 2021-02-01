@@ -49,7 +49,7 @@ define([
 		disabled: false,
 
 		// the widget's class name as CSS class
-		baseClass: 'umcLinkList',
+		baseClass: 'umcReferencingObjects',
 
 		_setValueAttr: function(value) {
 			if (value instanceof Object) {
@@ -91,7 +91,7 @@ define([
 			var btn = new Button({
 				name: 'close',
 				label: item.label,
-				iconClass: tools.getIconClass(item.icon, 20, null, "background-size: contain"),
+				// iconClass: tools.getIconClass(item.icon, 20, null, "background-size: contain"),
 				callback: function() {
 					// open referenced UDM object
 					if (app.getModule(moduleProps.module, moduleProps.flavor)) {
