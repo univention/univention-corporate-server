@@ -2485,7 +2485,7 @@ def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
 	)
 	if msg:
 		obj = msg[0]
-		if "krb5Keytab" not in obj or "/etc/krb5.keytab" not in obj["krb5Keytab"]:
+		if "krb5Keytab" not in obj or b"/etc/krb5.keytab" not in obj["krb5Keytab"]:
 			delta = ldb.Message()
 			delta.dn = obj.dn
 			delta["krb5Keytab"] = ldb.MessageElement("/etc/krb5.keytab", ldb.FLAG_MOD_ADD, "krb5Keytab")
