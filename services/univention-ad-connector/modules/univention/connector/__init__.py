@@ -76,18 +76,6 @@ def decode_guid(value):
 	return str(ndr_unpack(misc.GUID, value))
 
 
-# util functions defined during mapping
-def make_lower(mlValue):
-	'''
-	lower string cases for mlValue which can be string or a list of values which can be given to mlValue
-	'''
-	if hasattr(mlValue, 'lower'):
-		return mlValue.lower()
-	if isinstance(mlValue, list):
-		return [make_lower(x) for x in mlValue]
-	return mlValue
-
-
 password_charsets = [
 	'abcdefghijklmnopqrstuvwxyz',
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
