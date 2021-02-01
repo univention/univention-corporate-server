@@ -1077,8 +1077,11 @@ class ucs(object):
 				if ucs_object.has_property(ucs_key):
 					# Special handling for con other attributes, see Bug #20599
 					if attributes.con_other_attribute:
-						if object['attributes'].get(attributes.con_other_attribute):
-							ucs_object[ucs_key] = object['attributes'].get(attributes.con_other_attribute)
+						value = object['attributes'].get(attributes.con_other_attribute)
+						if value:
+							if attributes.con_attribute_encoding:
+								value = [x.decode(attributes.con_attribute_encoding) for x in value] if isinstance(value, list) else value.decode(attributes.con_attribute_encoding)
+							ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we set the key %r in the ucs-object to con_other_attribute %r' % (object['dn'], ucs_key, attributes.con_other_attribute))
 						elif ucs_key not in mandatory_attrs:
 							ucs_object[ucs_key] = []
