@@ -73,7 +73,7 @@ def query_ec2(key):
 	socket.setdefaulttimeout(2)
 	try:
 		result = urlopen(url)
-		value = result.read().strip()
+		value = result.read().decode('UTF-8').strip()
 		return value
 	except URLError:
 		pass

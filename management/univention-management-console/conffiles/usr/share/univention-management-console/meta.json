@@ -25,7 +25,7 @@ def query_ec2(key):
 	url = 'http://169.254.169.254/latest/meta-data/' + key
 	try:
 		result = urlopen(url, timeout=2)
-		value = result.read().strip()
+		value = result.read().decode('UTF-8').strip()
 		return value
 	except (URLError, socket.error, socket.timeout) as ex:
 		logging.error('Could not query EC2 info via %s: %s', url, ex)
