@@ -133,15 +133,6 @@
 }
 
 
-/* Page Nav */
-.umcUDMNavContent .dijitTab {
-	color: var(--font-color-contrast-low)
-}
-.umcUDMNavContent .dijitTabChecked {
-	color: var(--font-color-contrast-high)
-}
-
-
 /* Portal: anonymousEmpty */
 .umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer {
 	display: grid;

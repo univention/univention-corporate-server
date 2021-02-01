@@ -65,7 +65,8 @@ define([
 					onDynamicValuesLoaded: lang.hitch(this, function() {
 						this._set_selection_to_first_element('key');
 						this._set_query_pending('key', false);
-					})
+					}),
+					'class': 'umcTextBoxDark'
 				}, {
 					type: ComboBox,
 					name: 'pattern_list',
@@ -78,11 +79,13 @@ define([
 					onDynamicValuesLoaded: lang.hitch(this, function(values) {
 						this._handle_proposals(values);
 						this._set_query_pending('proposal', false);
-					})
+					}),
+					'class': 'umcTextBoxDark'
 				}, {
 					type: TextBox,
 					name: 'pattern_text',
 					label: _("Pattern"),
+					'class': 'umcTextBoxDark',
 					// inherits from dijit.form.ValidationTextBox, so we can use its
 					// validation abilities
 					regExp: '^[A-Za-z0-9_.*?-]+$'  // [: alnum: ] and these:  _ - . * ?
@@ -90,7 +93,9 @@ define([
 				layout:  [['key', 'pattern_text', 'pattern_list', 'submit']],
 				buttons:  [{
 					name: 'submit',
-					label: _("Search")
+					// label: _("Search")
+					'class': 'ucsIconButtonHighlighted ucsButton--textfieldAligned',
+					iconClass: 'search'
 				}]
 			});
 

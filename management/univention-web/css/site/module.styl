@@ -28,6 +28,7 @@
  */
 
 @require "../variables.styl"
+@require "../document.styl"
 
 // seperation line between module header and content when scrolling
 .umcModuleHeader
@@ -132,6 +133,13 @@
 
 		.dijitTitlePane
 			border-top: 0
+
+.umc .umcPKGDBPage
+	.umcPageNavContent
+		@extends .umcCard2
+
+	.umcGrid
+		margin-top: spacing(4)
 
 .umc .umcSetupInterfaceWizard
 	border-radius: var(--border-radius-container)

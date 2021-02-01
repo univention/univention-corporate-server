@@ -45,6 +45,8 @@ define([
 		// subtabs should be displayed as nested tabs
 		nested: true,
 
+		pageClass: '',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -58,7 +60,10 @@ define([
 				region: 'nav',
 				containerId: this._tabs.id
 			});
-			var ctn = new Page({noFooter: true});
+			var ctn = new Page({
+				'class': this.pageClass,
+				noFooter: true
+			});
 			ctn.addChild(this._tabController);
 			ctn.addChild(this._tabs);
 			this.addChild(ctn);

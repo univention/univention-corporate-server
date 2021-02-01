@@ -38,6 +38,8 @@ define([
 ], function(declare, lang, Page, TabbedModule, StandbyMixin, _) {
 	return declare("umc.modules.pkgdb", [ TabbedModule, StandbyMixin ], {
 
+		pageClass: 'umcPKGDBPage',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
