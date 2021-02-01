@@ -38,13 +38,18 @@
 }
 
 .umc .umcUpdaterWarningText {
-	background-image: url("../../js/dijit/themes/umc/form/images/error.svg");
-	background-repeat: no-repeat;
-	background-position: left center;
-	background-size: 30px 30px;
-	padding-left: 40px;
-	margin-bottom: 20px;
 	min-height: 30px;
+	padding: calc(4 * var(--layout-spacing-unit));
+	padding-left: calc(8 * var(--layout-spacing-unit));
+	position: relative;
+}
+
+.umc .umcUpdaterWarningTextIcon {
+	position: absolute;
+	top: calc(50% - 0.5em);
+	left: calc(4 * var(--layout-spacing-unit));
+	color: var(--color-error);
+	font-size: 1.3rem;
 }
 
 .umc .umcUpdaterLogViewer {

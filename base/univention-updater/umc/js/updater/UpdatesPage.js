@@ -43,6 +43,7 @@ define([
 	"umc/dialog",
 	"umc/store",
 	"umc/modules/lib/server",
+	"umc/widgets/Icon",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Text",
 	"umc/widgets/HiddenInput",
@@ -50,7 +51,7 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, Deferred, dijitRegistry, sprintf, UMCApplication, tools, dialog, store, server, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, dijitRegistry, sprintf, UMCApplication, tools, dialog, store, server, Icon, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
 	var _getParentWidget = function(widget) {
 		try {
 			return dijitRegistry.getEnclosingWidget(widget.domNode.parentNode);
@@ -64,6 +65,7 @@ define([
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		navContentClass: 'umcCard2',
 
 		postMixInProperties: function() {
 
@@ -93,6 +95,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcUpdatesPage');
 
 			var widgets = [{ // --------------------- Reboot pane -----------------------------
 					type: HiddenInput,
@@ -270,7 +273,6 @@ define([
 					label: '',
 					name: 'ucs_version_text',
 					content: _("... loading data ..."),
-					style: 'margin-bottom:1em',
 					size: 'One'
 				}, {
 					type: Text,
@@ -319,7 +321,6 @@ define([
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
 				}),
 				visible: false,
-				style: 'margin:0',
 				size: 'One'
 			}, {
 				name: 'run_packages_update',
@@ -331,7 +332,6 @@ define([
 					}
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
 				}),
-				style: 'margin:0',
 				size: 'One'
 			}, {
 				name: 'reboot',
@@ -340,7 +340,6 @@ define([
 					server.askReboot();
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
 				}),
-				style: 'margin:0',
 				size: 'One'
 			}, {
 				name: 'view_log_file',
@@ -349,7 +348,6 @@ define([
 					this.onViewLog();
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'view-log');
 				}),
-				style: 'margin:0',
 				size: 'One'
 			}];
 
@@ -614,6 +612,7 @@ define([
 						msg = baseMsg;
 					}
 				}
+				msg = Icon.asHTMLString('alert-circle', 'umcUpdaterWarningTextIcon') + msg;
 
 				// display out of maintenance message
 				var outOfMaintenanceWidget = this._form.getWidget('version_out_of_maintenance_text');
