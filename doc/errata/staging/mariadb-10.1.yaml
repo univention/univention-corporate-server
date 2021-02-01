@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: mariadb-10.1
+fix: 10.1.48-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Server: FTS unspecified vulnerability (CPU Oct 2020) (CVE-2020-14765)
+ * Server: Locking unspecified vulnerability (CPU Oct 2020) (CVE-2020-14812)
+bug: [52729]
+cve:
+- CVE-2020-14765
+- CVE-2020-14812
