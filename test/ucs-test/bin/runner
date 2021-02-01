@@ -3,6 +3,7 @@
 #
 """UCS Testrunner - run UCS test in sane environment."""
 #
+import os
 import sys
 from optparse import OptionParser
 from univention.testing.internal import setup_environment, setup_debug
@@ -17,6 +18,13 @@ def main():
 	parser.add_option("-v", "--verbose", dest="verbose", action="count", help="Increase verbosity")
 	parser.add_option("-f", "--force", dest="force", action="store_true", help="Disable pre-condition check")
 	parser.add_option("-F", "--format", dest="format", action="store", choices=univention.testing.format.FORMATS, default='text', help="Select output format [%default]")
+	parser.add_option(
+		"-i", "--interactive",
+		dest="interactive",
+		action="store_true",
+		help="Execute commands in an interactive shell",
+		default=(os.isatty(1) and os.isatty(2))
+	)  # The new default is there to fix `Failed to open /dev/tty [...]` in tests
 	(options, args) = parser.parse_args()
 	setup_environment()
 	setup_debug(options.verbose)
@@ -30,7 +38,7 @@ def main():
 
 	formatter = getattr(univention.testing.format, 'format_%s' % (options.format,))
 	format = formatter()
-	test_env = TestEnvironment(interactive=True)
+	test_env = TestEnvironment(interactive=options.interactive)
 	if options.force:
 		test_env.set_exposure('dangerous')
 	test_case = TestCase().load(filename)
@@ -44,3 +52,5 @@ if __name__ == '__main__':
 		sys.exit(main())
 	except KeyboardInterrupt:
 		sys.exit(1)
+
+# vim: noexpandtab
