@@ -1,11 +1,11 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python
 
 import argparse
 import json
 import os
 from itertools import groupby
 from operator import itemgetter
-from univention.updater.tools import UCS_Version
+from univention.lib.ucs import UCS_Version
 try:
     from typing import List, Tuple  # noqa F401
 except ImportError:

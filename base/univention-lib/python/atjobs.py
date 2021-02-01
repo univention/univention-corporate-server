@@ -41,6 +41,7 @@ import datetime
 import subprocess
 import re
 import locale
+from typing import Dict, List, Mapping, Optional, Union  # noqa F401
 
 __all__ = ['add', 'list', 'load', 'remove', 'reschedule', 'AtJob']
 
@@ -57,7 +58,7 @@ COMMENT_PREFIX = '# Comment: '
 
 
 def add(cmd, execTime=None, comments={}):
-	# type: (str, Union[None, int, float, datetime.datetime], Optional[Dict[str, str]]) -> Optional[AtJob]
+	# type: (str, Union[None, int, float, datetime.datetime], Optional[Mapping[str, str]]) -> Optional[AtJob]
 	"""
 	Add a new command to the job queue given a time
 	at which the job will be executed.
@@ -111,6 +112,7 @@ def add(cmd, execTime=None, comments={}):
 
 
 def reschedule(nr, execTime=None):
+	# type: (int, Optional[float]) -> Optional[AtJob]
 	"""
 	Re-schedules the at job with the given number for the specified time.
 
@@ -148,7 +150,7 @@ def list(extended=False):
 	for line in out:
 		ijob = _parseJob(line)
 		if ijob:
-			jobs.append(_parseJob(line))
+			jobs.append(ijob)
 
 	if extended:
 		for job in jobs:
@@ -174,15 +176,16 @@ def load(nr, extended=False):
 
 
 def remove(nr):
-	# type: (int) -> None
+	# type: (int) -> Optional[int]
 	"""
 	Removes the at job with the given number.
 
 	:param int nr: Job number.
 	"""
-	result = [p for p in list() if p.nr == nr]
-	if len(result):
-		return result[0].rm()
+	for job in list():
+		if job.nr == nr:
+			return job.rm()
+	return None
 
 
 def _parseScript(job):
@@ -268,15 +271,18 @@ class AtJob(object):
 		self.comments = {}  # type: Dict[str, str]
 
 	def __str__(self):
+		# type: () -> str
 		t = self.execTime.strftime(_dateTimeFormatWrite)
 		if self.isRunning:
 			t = 'running'
 		return 'Job #%d (%s)' % (self.nr, t)
 
 	def __repr__(self):
+		# type: () -> str
 		return self.__str__()
 
 	def rm(self):
+		# type: () -> int
 		"""
 		Remove the job from the queue.
 		"""

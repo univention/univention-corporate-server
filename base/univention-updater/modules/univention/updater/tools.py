@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Update tools.
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,13 +26,16 @@ Univention Update tools.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Update tools.
+"""
 
 from __future__ import absolute_import
 from __future__ import print_function
 try:
     import univention.debug as ud
 except ImportError:
-    import univention.debug2 as ud
+    import univention.debug2 as ud  # type: ignore
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
 from .commands import (
@@ -68,19 +68,22 @@ from six.moves import urllib_request as urllib2, urllib_error
 import json
 import subprocess
 import tempfile
-import shutil
 import logging
-import atexit
 import functools
 import six
 import base64
 try:
-    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
+    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union  # noqa F401
+    from typing_extensions import Literal  # noqa F401
+    _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
     pass
 
 if six.PY2:
     from new import instancemethod
+    from backports.tempfile import TemporaryDirectory
+else:
+    from tempfile import TemporaryDirectory
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -92,7 +95,7 @@ UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 
 def verify_script(script, signature):
-    # type: (str, str) -> Optional[str]
+    # type: (bytes, bytes) -> Optional[bytes]
     """
     Verify detached signature of script:
 
@@ -129,12 +132,12 @@ class _UCSRepo(UCS_Version):
     Super class to build URLs for APT repositories.
     """
 
+    ARCHS = {'all', 'amd64'}
+
     def __init__(self, release=None, **kwargs):
         # type: (Optional[UCS_Version], **Any) -> None
         if release:
             super(_UCSRepo, self).__init__(release)
-        kwargs.setdefault('patchlevel_reset', 0)
-        kwargs.setdefault('patchlevel_max', 99)
         for (k, v) in kwargs.items():
             if isinstance(v, str) and '%(' in v:
                 self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
@@ -144,6 +147,14 @@ class _UCSRepo(UCS_Version):
     def __repr__(self):
         # type: () -> str
         return '%s(**%r)' % (self.__class__.__name__, self.__dict__)
+
+    def __eq__(self, other):
+        # type: (object) -> bool
+        return isinstance(other, _UCSRepo) and self.path() == other.path()
+
+    def __ne__(self, other):
+        # type: (object) -> bool
+        return not isinstance(other, _UCSRepo) or self.path() != other.path()
 
     def _format(self, format):
         # type: (str) -> str
@@ -318,9 +329,9 @@ class UCSRepoPool(_UCSRepo):
         :returns: The APT repository stanza.
         :rtype: str
 
-        >>> r=UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
+        >>> r=UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='amd64')
         >>> r.deb('https://updates.software-univention.de/')
-        'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/i386/'
+        'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/amd64/'
         """
         fmt = "%(version)s/%(part)s/ %(patch)s/%(arch)s/"
         return "%s %s%s" % (type, server, super(UCSRepoPool, self)._format(fmt))
@@ -340,8 +351,8 @@ class UCSRepoPool(_UCSRepo):
         '2.3/maintained/'
         >>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained').path()
         '2.3/maintained/2.3-1/'
-        >>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='i386').path()
-        '2.3/maintained/2.3-1/i386/Packages.gz'
+        >>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='amd64').path()
+        '2.3/maintained/2.3-1/amd64/Packages.gz'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + (filename or 'Packages.gz')
         return super(UCSRepoPool, self)._format(fmt)
@@ -363,6 +374,8 @@ class UCSRepoPoolNoArch(_UCSRepo):
     """
     Flat Debian APT repository without explicit architecture subdirectory.
     """
+
+    ARCHS = {''}
 
     def __init__(self, **kw):
         # type: (**Any) -> None
@@ -421,62 +434,6 @@ class UCSRepoPoolNoArch(_UCSRepo):
         return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
-class UCSRepoDist(_UCSRepo):
-    """
-    Debian APT repository using 'suites'.
-
-    .. attention::
-       UCS-2.x used a different and broken layout!
-    """
-
-    def __init__(self, **kw):
-        # type: (**Any) -> None
-        kw.setdefault('version', UCS_Version.FORMAT)
-        kw.setdefault('patch', UCS_Version.FULLFORMAT)
-        kw.setdefault('suite', 'ucs%(major)d%(minor)d%(patchlevel)d')
-        kw.setdefault('component', 'main')
-        kw.setdefault('components', 'main/debian-installer')
-        super(UCSRepoDist, self).__init__(**kw)
-
-    def deb(self, server, type="deb"):
-        # type: (_UCSServer, str) -> str
-        """
-        Format for :file:`/etc/apt/sources.list`.
-
-        :param str server: The URL of the repository server.
-        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
-        :returns: The APT repository stanza.
-        :rtype: str
-
-        >>> r=UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained')
-        >>> r.deb('https://updates.software-univention.de/')
-        'deb https://updates.software-univention.de/4.3/maintained/4.3-1/ ucs431 main main/debian-installer'
-        """
-        fmt = "%(version)s/%(part)s/%(patch)s/ %(suite)s %(component)s %(components)s"
-        return "%s %s%s" % (type, server, super(UCSRepoDist, self)._format(fmt))
-
-    def path(self, filename=None):
-        # type: (str) -> str
-        """
-        Format dist for directory/file access.
-
-        :param filename: The name of a file in the repository.
-        :returns: relative path.
-        :rtype: str
-
-        >>> UCSRepoDist(major=4,minor=3).path()
-        '4.3/'
-        >>> UCSRepoDist(major=4,minor=3,part='maintained').path()
-        '4.3/maintained/'
-        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained').path()
-        '4.3/maintained/4.3-1/dists/ucs431/main/'
-        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained',arch='i386').path()
-        '4.3/maintained/4.3-1/dists/ucs431/main/binary-i386/Packages.gz'
-        """
-        fmt = "%(version)s/%(part)s/%(patch)s/dists/%(suite)s/%(component)s/binary-%(arch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoDist, self)._format(fmt)
-
-
 class _UCSServer(object):
     """
     Abstrace base class to access UCS compatible update server.
@@ -504,7 +461,7 @@ class _UCSServer(object):
         raise NotImplementedError()
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, str]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -512,13 +469,37 @@ class _UCSServer(object):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content) or None on errors.
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
         :raises ProxyError: if the HTTP proxy returned an error.
         """
         raise NotImplementedError()
+
+    def __add__(self, rel):
+        # type: (_TS, str) -> _TS
+        """
+        Append relative path component.
+
+        :param str rel: Relative path.
+        :return: A clone of this instance using the new base path.
+        :rtype: UCSHttpServer
+        """
+        raise NotImplementedError()
+
+    @property
+    def prefix(self):
+        # type: () -> str
+        raise NotImplementedError()
+
+    def __eq__(self, other):
+        # type: (object) -> bool
+        return isinstance(other, _UCSServer) and self.prefix == other.prefix
+
+    def __ne__(self, other):
+        # type: (object) -> bool
+        return not isinstance(other, _UCSServer) or self.prefix != other.prefix
 
 
 class UCSHttpServer(_UCSServer):
@@ -656,7 +637,7 @@ class UCSHttpServer(_UCSServer):
         return (self.baseurl + rel).public()
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, AnyStr]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -664,7 +645,7 @@ class UCSHttpServer(_UCSServer):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
@@ -675,12 +656,14 @@ class UCSHttpServer(_UCSServer):
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
-        if self.baseurl.username:
-            UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
+        if self.baseurl.username and self.baseurl.password:
+            UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
 
         def get_host():
-            return req.host if six.PY3 else req.get_host()
+            # type: () -> str
+            return req.host if six.PY3 else req.get_host()  # type: ignore
+
         if get_host() in self.failed_hosts:
             self.log.error('Already failed %s', get_host())
             raise DownloadError(uri, -1)
@@ -761,7 +744,8 @@ class UCSHttpServer(_UCSServer):
                         reason = 'port is blocked'
                     elif e.reason.args[0] == errno.ECONNREFUSED:  # 111
                         reason = 'port is closed'
-            selector = req.get_selector() if six.PY2 else req.selector
+
+            selector = req.selector if six.PY3 else req.get_selector()  # type: ignore
             if selector.startswith('/'):  # direct
                 self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, reason)
@@ -787,10 +771,12 @@ class UCSLocalServer(_UCSServer):
         self.log = logging.getLogger('updater.UCSFile')
         self.log.addHandler(logging.NullHandler())
         prefix = str(prefix).strip('/')
-        if prefix:
-            self.prefix = '%s/' % prefix
-        else:
-            self.prefix = ''
+        self._prefix = '%s/' % prefix if prefix else ''
+
+    @property
+    def prefix(self):
+        # type: () -> str
+        return self._prefix
 
     def __str__(self):
         # type: () -> str
@@ -816,7 +802,7 @@ class UCSLocalServer(_UCSServer):
         :rtype: UCSLocalServer
         """
         uri = copy.copy(self)
-        uri.prefix += str(rel).lstrip('/')
+        uri._prefix += str(rel).lstrip('/')
         return uri
 
     def join(self, rel):
@@ -833,7 +819,7 @@ class UCSLocalServer(_UCSServer):
         return uri
 
     def access(self, repo, filename=None, get=False):
-        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, str]
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
 
@@ -841,7 +827,7 @@ class UCSLocalServer(_UCSServer):
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
-        :rtype: tuple(int, int, str)
+        :rtype: tuple(int, int, bytes)
         :raises DownloadError: if the server is unreachable.
         :raises ValueError: if the credentials use an invalid encoding.
         :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
@@ -857,481 +843,84 @@ class UCSLocalServer(_UCSServer):
         if os.path.exists(path):
             if os.path.isdir(path):
                 self.log.info("Got %s", path)
-                return (httplib.OK, 0, '')  # 200
+                return (httplib.OK, 0, b'')  # 200
             elif os.path.isfile(path):
-                f = open(path, 'r')
-                try:
+                with open(path, 'rb') as f:
                     data = f.read()
-                finally:
-                    f.close()
                 self.log.info("Got %s: %d", path, len(data))
                 return (httplib.OK, len(data), data)  # 200
         self.log.error("Failed %s", path)
         raise DownloadError(uri, -1)
 
 
-class UniventionUpdater(object):
-    """
-    Handle UCS package repositories.
-    """
+class Component(object):
+    FN_APTSOURCES = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+    UCRV = "repository/online/component/{}/{}"
+    AVAILABLE = 'available'
+    NOT_FOUND = 'not_found'
+    DISABLED = 'disabled'
+    UNKNOWN = 'unknown'
+    PERMISSION_DENIED = 'permission_denied'
 
-    COMPONENT_AVAILABLE = 'available'
-    COMPONENT_NOT_FOUND = 'not_found'
-    COMPONENT_DISABLED = 'disabled'
-    COMPONENT_UNKNOWN = 'unknown'
-    COMPONENT_PERMISSION_DENIED = 'permission_denied'
-    FN_UPDATER_APTSOURCES_COMPONENT = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+    def __init__(self, updater, name):
+        # type: (UniventionUpdater, str) -> None
+        self.updater = updater
+        self.name = name
 
-    def __init__(self, check_access=True):
-        # type: (bool) -> None
-        """
-        Create new updater with settings from UCR.
+    def __str__(self):
+        # type: () -> str
+        return "Component({0.name})".format(self)
 
-        :param bool check_access: Check if repository server is reachable on init.
-        :raises ConfigurationError: if configured server is not available immediately.
-        """
-        self.log = logging.getLogger('updater.Updater')
-        self.log.addHandler(logging.NullHandler())
-        self.check_access = check_access
-        self.connection = None
-        self.architectures = [os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]]
+    def ucrv(self, key=""):
+        # type: (str) -> str
+        return "/".join(filter(None, ("repository", "online", "component", self.name, key)))
 
-        self.ucr_reinit()
+    def __getitem__(self, key):
+        # type: (str) -> str
+        return self.updater.configRegistry.get(self.ucrv(key)) or ""
 
-    def config_repository(self):
-        # type: () -> None
-        """
-        Retrieve configuration to access repository. Overridden by :py:class:`univention.updater.UniventionMirror`.
-        """
-        self.online_repository = self.configRegistry.is_true('repository/online', True)
-        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
-        self.sources = self.configRegistry.is_true('repository/online/sources', False)
-        self.timeout = float(self.configRegistry.get('repository/online/timeout', 30))
-        UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
+    def __bool__(self):
+        # type: () -> bool
+        return self.updater.configRegistry.is_true(self.ucrv())
 
-    def ucr_reinit(self):
-        # type: () -> None
-        """
-        Re-initialize settings.
-        """
-        self.configRegistry = ConfigRegistry()
-        self.configRegistry.load()
+    __nonzero__ = __bool__
 
-        self.is_repository_server = self.configRegistry.is_true('local/repository', False)
-
-        reinitUCSHttpServer = False
-        if 'proxy/http' in self.configRegistry and self.configRegistry['proxy/http']:
-            os.environ['http_proxy'] = self.configRegistry['proxy/http']
-            os.environ['https_proxy'] = self.configRegistry['proxy/http']
-            reinitUCSHttpServer = True
-        if 'proxy/https' in self.configRegistry and self.configRegistry['proxy/https']:
-            os.environ['https_proxy'] = self.configRegistry['proxy/https']
-            reinitUCSHttpServer = True
-        if 'proxy/no_proxy' in self.configRegistry and self.configRegistry['proxy/no_proxy']:
-            os.environ['no_proxy'] = self.configRegistry['proxy/no_proxy']
-            reinitUCSHttpServer = True
-        if reinitUCSHttpServer:
-            UCSHttpServer.reinit()
-
-        # check for maintained and unmaintained
-        self.parts = ['maintained']
-        if self.configRegistry.is_true('repository/online/unmaintained', False):
-            self.parts.append('unmaintained')
-
-        # UCS version
-        self.ucs_version = self.configRegistry['version/version']
-        self.patchlevel = int(self.configRegistry['version/patchlevel'])
-        self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
-        self.version_major, self.version_minor = map(int, self.ucs_version.split('.', 1))
-
-        # override automatically detected architecture by UCR variable repository/online/architectures (comma or space separated)
-        archlist = self.configRegistry.get('repository/online/architectures', '')
-        if archlist:
-            self.architectures = RE_SPLIT_MULTI.split(archlist)
-
-        # UniventionMirror needs to provide its own settings
-        self.config_repository()
-
-        if not self.online_repository:
-            self.log.info('Disabled')
-            self.server = UCSLocalServer('')  # type: _UCSServer
-            return
-
-        # generate user agent string
-        user_agent = self._get_user_agent_string()
-        UCSHttpServer.load_credentials(self.configRegistry)
-
-        # Auto-detect prefix
-        self.server = UCSHttpServer(
-            baseurl=self.repourl,
-            user_agent=user_agent,
-            timeout=self.timeout,
-        )
-        try:
-            if not self.repourl.path:
-                try:
-                    assert self.server.access(None, '/univention-repository/')
-                    self.server += '/univention-repository/'
-                    self.log.info('Using detected prefix /univention-repository/')
-                except DownloadError as e:
-                    self.log.info('No prefix /univention-repository/ detected, using /')
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                return  # already validated or implicit /
-            # Validate server settings
-            try:
-                assert self.server.access(None, '')
-                self.log.info('Using configured prefix %s', self.repourl.path)
-            except DownloadError as e:
-                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
-                uri, code = e.args
-                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
-        except ConfigurationError as e:
-            if self.check_access:
-                self.log.fatal('Failed server detection: %s', e, exc_info=True)
-                raise
-
-    @staticmethod
-    def get_releases(server):
-        # type: (_UCSServer) -> Iterator[UCS_Version]
-        try:
-            _code, _size, data = server.access(None, 'releases.json', get=True)
-        except DownloadError as e:
-            ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-            return
-        try:
-            releases = json.loads(data)['releases']
-        except (ValueError, KeyError) as exc:
-            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
-            if isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
-                ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
-            return
-        for major_release in releases:
-            for minor_release in major_release['minors']:
-                for patchlevel_release in minor_release['patchlevels']:
-                    yield UCS_Version((
-                        major_release['major'],
-                        minor_release['minor'],
-                        patchlevel_release['patchlevel']
-                    ))
-
-    def get_next_version(self, version, components=[], errorsto='stderr'):
-        # type: (UCS_Version, Iterable[str], str) -> Optional[str]
-        """
-        Check if a new patchlevel, minor or major release is available for the given version.
-        Components must be available for the same major.minor version.
-
-        :param UCS_Version version: A UCS release version.
-        :param components: A list of component names, which must be available for the next release.
-        :type components: list[str]
-        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
-        :returns: The next UCS release or None.
-        :rtype: str or None
-        :raises RequiredComponentError: if a required component is missing
-        """
-        debug = (errorsto == 'stderr')
-        releases = list(self.get_releases(self.server))
-
-        def versions(major, minor, patchlevel):
-            # type: (int, int, int) -> Iterator[Dict[str, int]]
-            """
-            Generate next valid version numbers as hash.
-
-            :param int major: Major release version number.
-            :param int minor: Minor release version number.
-            :param int patchlevel: Patch-level release version number.
-            :returns: A generator returning the possible next patch-level, minor or major release as a mapping.
-            :rtype: hash(str, int)
-            """
-            if patchlevel < 99:
-                yield {'major': major, 'minor': minor, 'patchlevel': patchlevel + 1}
-            if minor < 99:
-                yield {'major': major, 'minor': minor + 1, 'patchlevel': 0}
-            if major < 99:
-                yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
-
-        for ver in versions(version.major, version.minor, version.patchlevel):
-            self.log.info('Checking for version %s', ver)
-            if UCS_Version((ver['major'], ver['minor'], ver['patchlevel'])) not in releases:
-                continue
-            self.log.info('Found version %s', ver)
-
-            failed = set()
-            for component in components:
-                self.log.info('Checking for component %s', component)
-                mm_version = UCS_Version.FORMAT % ver
-                if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
-                    self.log.error('Missing component %s', component)
-                    failed.add(component)
-            if failed:
-                ex = RequiredComponentError(mm_version, failed)
-                if errorsto == 'exception':
-                    raise ex
-                elif errorsto == 'stderr':
-                    print(ex, file=sys.stderr)
-                return None
-            else:
-                self.log.info('Going for version %s', ver)
-                return UCS_Version.FULLFORMAT % ver
-        return None
-
-    def get_all_available_release_updates(self, ucs_version=None):
-        # type: (Optional[UCS_Version]) -> Tuple[List[str], Optional[str]]
-        """
-        Returns a list of all available release updates - the function takes required components into account
-        and stops if a required component is missing
-
-        :param ucs_version: starts travelling through available version from version.
-        :type ucs_version: UCS_Version or None
-        :returns: a list of 2-tuple `(versions, blocking_component)`, where `versions` is a list of UCS release and `blocking_component` is the first missing component blocking the update.
-        :rtype: tuple(list[str], str or None)
-        """
-
-        if not ucs_version:
-            ucs_version = self.current_version
-
-        components = self.get_current_components()
-
-        result = []  # type: List[str]
-        while ucs_version:
-            try:
-                ver = self.get_next_version(ucs_version, components, errorsto='exception')
-            except RequiredComponentError as ex:
-                self.log.warn('Update blocked by components %s', ', '.join(ex.components))
-                # ex.components blocks update to next version ==> return current list and blocking component
-                return result, ex.components
-
-            if not ver:
-                break
-            result.append(ver)
-            ucs_version = UCS_Version(ver)
-        self.log.info('Found release updates %r', result)
-        return result, None
-
-    def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        # type: (Optional[UCS_Version], str) -> Optional[str]
-        """
-        Check if an update is available for the `ucs_version`.
-
-        :param str ucs_version: The UCS release to check.
-        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
-        :returns: The next UCS release or None.
-        :rtype: str or None
-        """
-        if not ucs_version:
-            ucs_version = self.current_version
-
-        components = self.get_current_components()
-
-        return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
-
-    def release_update_temporary_sources_list(self, version, components=None):
-        # type: (str, Iterable[str]) -> List[str]
-        """
-        Return list of Debian repository statements for the release update including all enabled components.
-
-        :param str version: The UCS release.
-        :param components: A list of required component names or None.
-        :type components: list or None
-        :returns: A list of Debian APT `sources.list` lines.
-        :rtype: list[str]
-        """
-        if components is None:
-            components = self.get_components()
-
-        mmp_version = UCS_Version(version)
-        current_components = self.get_current_components()
-
-        result = [UCSRepoPool5(
-            major=mmp_version['major'],
-            minor=mmp_version['minor'],
-            patchlevel=mmp_version['patchlevel']
-        ).deb(self.server)]
-        for component in components:
-            repos = []  # type: List[str]
-            try:
-                repos = self.get_component_repositories(component, [mmp_version], False)
-            except (ConfigurationError, ProxyError):
-                # if component is marked as required (UCR variable "version" contains "current")
-                # then raise error, otherwise ignore it
-                if component in current_components:
-                    raise
-            if not repos and component in current_components:
-                server = self._get_component_server(component)
-                uri = server.join('%s/component/%s/' % (version, component))
-                raise ConfigurationError(uri, 'component not found')
-            result += repos
-        return result
+    def _versions(self, start=None, end=None):
+        # type: (Optional[UCS_Version], Optional[UCS_Version]) -> Set[UCS_Version]
+        version = self["version"]
+        versions = set(RE_SPLIT_MULTI.split(version))
+        return {
+            UCS_Version(ver.mm + (0,))
+            for ver, _data in self.updater.get_releases(start, end)
+            if {ver.FORMAT % ver, "current", ""} & versions
+        }
 
     @property
-    def current_version(self):
-        # type: () -> UCS_Version
-        """
-        Return current (major.minor-patchlevel) version.
+    def current(self):
+        # type: () -> bool
+        version = self["version"]
+        versions = set(RE_SPLIT_MULTI.split(version))
+        return bool(versions & {"current"})
 
-        :returns: The current UCS release.
-        :rtype: UCS_Version
-        """
-        return UCS_Version((self.version_major, self.version_minor, self.patchlevel))
-
-    def get_ucs_version(self):
-        # type: () -> str
-        """
-        Return current (major.minor-patchlevel) version as string.
-
-        :returns: The current UCS release.
-        :rtype: str
-        """
-        return str(self.current_version)
-
-    def get_components(self, only_localmirror_enabled=False):
-        # type: (bool) -> Set[str]
-        """
-        Retrieve all enabled components from registry as set().
-        By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
-
-        :param bool only_localmirror_enabled:
-            Only the components enabled for local mirroring.
-            If only_`localmirror`_enabled is `True`, then all components with `repository/online/component/%s/localmirror=$TRUE` will be returned.
-            If `repository/online/component/%s/localmirror` is not set, then the value of `repository/online/component/%s` is used for backward compatibility.
-        :returns: The set of enabled components.
-        :rtype: set(str)
-        """
-        components = set()
-        for key, value in self.configRegistry.items():
-            match = RE_COMPONENT.match(key)
-            if not match:
-                continue
-            component, = match.groups()
-            enabled = self.configRegistry.is_true(value=value)
-            if only_localmirror_enabled:
-                enabled = self.configRegistry.is_true(key + '/localmirror', enabled)
-            if enabled:
-                components.add(component)
-        return components
-
-    def get_current_components(self):
+    @property
+    def default_packages(self):
         # type: () -> Set[str]
-        """
-        Return set() of all components marked as current.
-
-        :returns: Set of component names marked as current.
-        :rtype: set(str)
-        """
-        all_components = self.get_components()
-        components = set()
-        for component in all_components:
-            key = 'repository/online/component/%s/version' % component
-            value = self.configRegistry.get(key, '')
-            versions = RE_SPLIT_MULTI.split(value)
-            if 'current' in versions:
-                components.add(component)
-        return components
-
-    def get_all_components(self):
-        # type: () -> Set[str]
-        """
-        Retrieve all configured components from registry as set().
-
-        :returns: Set of component names.
-        :rtype: set(str)
-        """
-        components = set()
-        for key in self.configRegistry.keys():
-            if key.startswith('repository/online/component/'):
-                component_part = key[len('repository/online/component/'):]
-                if component_part.find('/') == -1:
-                    components.add(component_part)
-        return components
-
-    def get_component(self, name):
-        # type: (str) -> Dict[str, str]
-        """
-        Retrieve named component from registry as hash.
-
-        :param str name: The name of the component.
-        :return: A dictionary containsing the component specific settions.
-        :rtype: dict(str, str)
-        """
-        component = {
-            'name': name,
-            'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
-        }
-        PREFIX = 'repository/online/component/%s/' % (name,)
-        for key, value in self.configRegistry.items():
-            if key.startswith(PREFIX):
-                var = key[len(PREFIX):]
-                component[var] = value
-        return component
-
-    def get_current_component_status(self, name):
-        # type: (str) -> str
-        """
-        Returns the current status of specified component based on `/etc/apt/sources.list.d/20_ucs-online-component.list`
-
-        :param str name: The name of the component.
-        :returns: One of the strings:
-
-            :py:const:`COMPONENT_DISABLED`
-                component has been disabled via UCR
-            :py:const:`COMPONENT_AVAILABLE`
-                component is enabled and at least one valid repo string has been found in .list file
-            :py:const:`COMPONENT_NOT_FOUND`
-                component is enabled but no valid repo string has been found in .list file
-            :py:const:`COMPONENT_PERMISSION_DENIED`
-                component is enabled but authentication failed
-            :py:const:`COMPONENT_UNKNOWN`
-                component's status is unknown
-
-        :rtype: str
-        """
-        if name not in self.get_components():
-            return self.COMPONENT_DISABLED
-
-        try:
-            comp_file = open(self.FN_UPDATER_APTSOURCES_COMPONENT, 'r')
-        except IOError:
-            return self.COMPONENT_UNKNOWN
-        rePath = re.compile('(un)?maintained/component/ ?%s/' % name)
-        reDenied = re.compile('credentials not accepted: %s$' % name)
-        try:
-            # default: file contains no valid repo entry
-            result = self.COMPONENT_NOT_FOUND
-            for line in comp_file:
-                if line.startswith('deb ') and rePath.search(line):
-                    # at least one repo has been found
-                    result = self.COMPONENT_AVAILABLE
-                elif reDenied.search(line):
-                    # stop immediately if at least one repo has authentication problems
-                    return self.COMPONENT_PERMISSION_DENIED
-            # return result
-            return result
-        finally:
-            comp_file.close()
-
-    def get_component_defaultpackage(self, componentname):
-        # type: (str) -> Set[str]
         """
         Returns a set of (meta) package names to be installed for this component.
 
-        :param str componentname: The name of the component.
         :returns: a set of package names.
-        :rtype: set(str)
         """
-        lst = set()  # type: Set[str]
-        for var in ('defaultpackages', 'defaultpackage'):
-            if componentname and self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var)):
-                val = self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var), '')
-                # split at " " and "," and remove empty items
-                lst |= set(RE_SPLIT_MULTI.split(val))
-        lst.discard('')
-        return lst
+        return set((
+            pkg
+            for var in ('defaultpackages', 'defaultpackage')
+            for pkg in RE_SPLIT_MULTI.split(self[var])
+        )) - {""}
 
-    def is_component_defaultpackage_installed(self, componentname, ignore_invalid_package_names=True):
-        # type: (str, bool) -> Optional[bool]
+    def defaultpackage_installed(self, ignore_invalid_package_names=True):
+        # type: (bool) -> Optional[bool]
         """
         Returns installation status of component's default packages
 
-        :param str componentname: The name of the component.
         :param bool ignore_invalid_package_names: Ignore invalid package names.
         :returns: On of the values:
 
@@ -1345,7 +934,7 @@ class UniventionUpdater(object):
         :rtype: None or bool
         :raises ValueError: if UCR variable contains invalid package names if ignore_invalid_package_names=False
         """
-        pkglist = self.get_component_defaultpackage(componentname)
+        pkglist = self.default_packages
         if not pkglist:
             return None
 
@@ -1360,235 +949,17 @@ class UniventionUpdater(object):
         cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
         cmd.extend(pkglist)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in p.communicate())
         # count number of "Status: install ok installed" lines
-        installed_correctly = len([x for x in stdout.splitlines() if x.endswith(' ok installed')])
+        installed_correctly = [x for x in stdout.splitlines() if x.endswith(' ok installed')]
         # if pkg count and number of counted lines match, all packages are installed
-        return len(pkglist) == installed_correctly
+        return len(pkglist) == len(installed_correctly)
 
-    def component_update_available(self):
-        # type: () -> bool
-        """
-        Check if any component has new or upgradeable packages available.
-
-        :returns: True if updates are pending, False otherwise.
-        :rtype: bool
-        """
-        new, upgrade, removed = self.component_update_get_packages()
-        return any((new, upgrade, removed))
-
-    def component_update_get_packages(self):
-        # type: () -> Tuple[List[Tuple[str, str]], List[Tuple[str, str, str]], List[Tuple[str, str]]]
-        """
-        Return tuple with list of (new, upgradeable, removed) packages.
-
-        :return: A 3-tuple (new, upgraded, removed).
-        :rtype: tuple(list[str], list[str], list[str])
-        """
-        p1 = subprocess.Popen(
-            ['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        (stdout, stderr) = p1.communicate()
-        ud.debug(ud.NETWORK, ud.PROCESS, 'check for updates with "dist-upgrade -s", the returncode is %d' % p1.returncode)
-
-        if p1.returncode == 100:
-            raise UnmetDependencyError(stderr)
-
-        ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
-        ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
-
-        new_packages = []  # type: List[Tuple[str, str]]
-        upgraded_packages = []  # type: List[Tuple[str, str, str]]
-        removed_packages = []  # type: List[Tuple[str, str]]
-        for line in stdout.splitlines():
-            line_split = line.split(' ')
-            if line.startswith('Inst '):
-                # upgrade:
-                #    Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
-                # inst:
-                #    Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
-                if len(line_split) > 3:
-                    if line_split[2].startswith('[') and line_split[2].endswith(']'):
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
-                        upgraded_packages.append((line_split[1], line_split[2].replace('[', '').replace(']', ''), line_split[3].replace('(', '')))
-                    else:
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
-                        new_packages.append((line_split[1], line_split[2].replace('(', '')))
-                else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
-                    continue
-            elif line.startswith('Remv '):
-                if len(line_split) > 3:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
-                    removed_packages.append((line_split[1], line_split[2].replace('(', '')))
-                elif len(line_split) > 2:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
-                    removed_packages.append((line_split[1], 'unknown'))
-                else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
-                    continue
-
-        return (new_packages, upgraded_packages, removed_packages)
-
-    def run_dist_upgrade(self):
-        # type: () -> Tuple[int, str, str]
-        """
-        Run `apt-get dist-upgrade` command.
-
-        :returns: a 3-tuple (return_code, stdout, stderr)
-        :rtype: tuple(int, str, str)
-        """
-        cmd = 'export DEBIAN_FRONTEND=noninteractive;%s >>/var/log/univention/updater.log 2>&1' % cmd_dist_upgrade
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        stdout, stderr = p.communicate()
-        return p.returncode, stdout, stderr
-
-    def _iterate_release(self, ver, start, end):
-        # type: (_UCSRepo, UCS_Version, UCS_Version) -> Generator[_UCSRepo, bool, None]
-        """
-        Iterate through all versions of repositories between start and end.
-
-        :param UCSRepo ver: An instance of :py:class:`UCS_Version` used for iteration.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        """
-        MAX_MINOR = 99
-        for ver.major in range(start.major, end.major + 1):
-            for ver.minor in range(start.minor if ver.major == start.major else 0, (end.minor if ver.major == end.major else MAX_MINOR) + 1):
-                if isinstance(ver.patch, six.string_types):  # patchlevel not used
-                    failed = (yield ver)
-                else:
-                    for ver.patchlevel in range(start.patchlevel if ver.mm == start.mm else ver.patchlevel_reset, (end.patchlevel if ver.mm == end.mm else ver.patchlevel_max) + 1):
-                        failed = (yield ver)
-                        if failed and ver.mm < end.mm:
-                            break
-                if failed and ver.major < end.major:
-                    break
-
-    def _iterate_versions(self, ver, start, end, parts, archs, server):
-        # type: (_UCSRepo, UCS_Version, UCS_Version, List[str], List[str], _UCSServer) -> Iterator
-        """
-        Iterate through all versions of repositories between start and end.
-
-        :param UCSRepo ver: An instance of :py:class:`UCS_Version` used for iteration.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param UCSHttpServer server: The UCS repository server to use.
-        :returns: A iterator through all UCS releases between `start` and `end` returning `ver`.
-        :raises ProxyError: if the repository server is blocked by the proxy.
-        """
-        self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
-        (ver.major, ver.minor, ver.patchlevel) = (start.major, start.minor, start.patchlevel)
-
-        # Workaround version of start << first available repository version,
-        # e.g. repository starts at 2.3-0, but called with start=2.0-0
-        it = self._iterate_release(ver, start, end)
-        try:
-            ver = next(it)
-            while True:
-                self.log.info('Checking version %s', ver)
-                success = False
-                for ver.part in parts:  # part
-                    try:
-                        self.log.info('Checking version %s', ver.path())
-                        assert server.access(ver)  # patchlevel
-                        for ver.arch in archs:  # architecture
-                            try:
-                                code, size, content = server.access(ver)
-                                self.log.info('Found content: code=%d size=%d', code, size)
-                                if size >= MIN_GZIP:
-                                    success = True
-                                    yield ver
-                                elif size == 0 and isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
-                                    uri = server.join(ver.path())
-                                    raise ProxyError(uri, "download blocked by proxy?")
-                            except DownloadError as e:
-                                ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                            finally:
-                                del ver.arch
-                    except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                    finally:
-                        del ver.part
-                ver = it.send(not success)
-        except StopIteration:
-            pass
-
-    def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
-        # type: (UCS_Version, UCS_Version, List[str], List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
-        """
-        Iterate over all UCS releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures without `all`.
-        :type archs: list[str]
-        :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
-        :returns: A iterator returning 2-tuples (server, ver).
-        """
-        self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
-        releases = sorted(r for r in self.get_releases(self.server) if r >= start and r <= end)
-        for release in releases:
-            yield self.server, UCSRepoPool5(
-                major=release['major'],
-                minor=release['minor'],
-                patchlevel=release['patchlevel'],
-                prefix=self.server
-            )
-
-    def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
-        # type: (List[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
-        """
-        Iterate over all components and return (server, version).
-
-        :para components: List of component names.
-        :type components: list[str]
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param archs: List of architectures without `all`.
-        :type archs: list[str]
-        :param bool for_mirror_list: Use the settings for mirroring.
-        :returns: A iterator returning 2-tuples (server, ver).
-        """
-        self.log.info('Searching components %r [%s..%s)', components, start, end)
-        # Components are ... different:
-        for component in components:
-            # server, port, prefix
-            server = self._get_component_server(component, for_mirror_list=for_mirror_list)
-            # parts
-            parts_unique = set(self.parts)
-            if self.configRegistry.is_true('repository/online/component/%s/unmaintained' % (component)):
-                parts_unique.add("unmaintained")
-            parts = ['%s/component' % (part,) for part in parts_unique]
-            # versions
-            versions = {start} if start == end else self._get_component_versions(component, start, end)
-
-            self.log.info('Component %s from %s versions %r', component, server, versions)
-            for version in versions:
-                try:
-                    repos = [(UCSRepoPool, archs), (UCSRepoPoolNoArch, [])]  # type: List[Tuple[Type[_UCSRepo], List[str]]]
-                    for (UCSRepoPoolVariant, subarchs) in repos:
-                        struct = UCSRepoPoolVariant(prefix=server, patch=component)
-                        for ver in self._iterate_versions(struct, version, version, parts, ['all'] + subarchs, server):
-                            yield server, ver
-                except (ConfigurationError, ProxyError):
-                    # if component is marked as required (UCR variable "version" contains "current")
-                    # then raise error, otherwise ignore it
-                    if component in self.get_current_components():
-                        raise
-
-    def _get_component_baseurl(self, component, for_mirror_list=False):
-        # type: (str, bool) -> UcsRepoUrl
-        """
+    def baseurl(self, for_mirror_list=False):
+        # type: (bool) -> UcsRepoUrl
+        r"""
         Calculate the base URL for a component.
 
-        :param str component: Name of the component.
         :param bool for_mirror_list: Use external or local repository.
 
         CS (component server)
@@ -1637,47 +1008,46 @@ class UniventionUpdater(object):
         .. [1] if `repository/online/component/%s/localmirror` is unset, then the value of `repository/online/component/%s` will be used to achieve backward compatibility.
         """
 
-        c_prefix = 'repository/online/component/%s' % component
-        if self.is_repository_server:
-            m_url = UcsRepoUrl(self.configRegistry, 'repository/mirror')
-            c_enabled = self.configRegistry.is_true('repository/online/component/%s' % component, False)
-            c_localmirror = self.configRegistry.is_true('repository/online/component/%s/localmirror' % component, c_enabled)
+        c_prefix = self.ucrv()
+        if self.updater.is_repository_server:
+            m_url = UcsRepoUrl(self.updater.configRegistry, 'repository/mirror')
+            c_enabled = bool(self)
+            c_localmirror = self.updater.configRegistry.is_true(self.ucrv("localmirror"), c_enabled)
 
             if for_mirror_list:  # mirror.list
                 if c_localmirror:
-                    return UcsRepoUrl(self.configRegistry, c_prefix, m_url)
+                    return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url)
             else:  # sources.list
                 if c_enabled:
                     if c_localmirror:
-                        return self.repourl
+                        return self.updater.repourl
                     else:
-                        return UcsRepoUrl(self.configRegistry, c_prefix, m_url)
+                        return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url)
         else:
-            return UcsRepoUrl(self.configRegistry, c_prefix, self.repourl)
+            return UcsRepoUrl(self.updater.configRegistry, c_prefix, self.updater.repourl)
 
-        raise CannotResolveComponentServerError(component, for_mirror_list)
+        raise CannotResolveComponentServerError(self.name, for_mirror_list)
 
-    def _get_component_server(self, component, for_mirror_list=False):
-        # type: (str, bool) -> UCSHttpServer
+    def server(self, for_mirror_list=False):
+        # type: (bool) -> UCSHttpServer
         """
         Return :py:class:`UCSHttpServer` for component as configures via UCR.
 
-        :param str component: Name of the component.
         :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
         :returns: The repository server for the component.
         :rtype: UCSHttpServer
         :raises ConfigurationError: if the configured server is not usable.
         """
-        c_url = copy.copy(self._get_component_baseurl(component, for_mirror_list))
+        c_url = copy.copy(self.baseurl(for_mirror_list))
         c_url.path = ''
-        prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
+        prefix = self["prefix"]
 
-        user_agent = self._get_user_agent_string()
+        user_agent = self.updater._get_user_agent_string()
 
         server = UCSHttpServer(
             baseurl=c_url,
             user_agent=user_agent,
-            timeout=self.timeout,
+            timeout=self.updater.timeout,
         )
         try:
             # if prefix.lower() == 'none' ==> use no prefix
@@ -1686,11 +1056,12 @@ class UniventionUpdater(object):
                     assert server.access(None, '')
                 except DownloadError as e:
                     uri, code = e.args
-                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (component, uri))
+                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (self.name, uri))
             else:
+                # FIXME: PMH stop iterating
                 for testserver in [
                     server + '/univention-repository/',
-                    server + self.repourl.path if self.repourl.path else None,
+                    server + self.updater.repourl.path if self.updater.repourl.path else None,
                     server,
                 ]:
                     if not testserver:
@@ -1706,130 +1077,474 @@ class UniventionUpdater(object):
                 raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
 
         except ConfigurationError:
-            if self.check_access:
+            if self.updater.check_access:
                 raise
         return server
 
-    def _get_component_versions(self, component, start, end):
-        # type: (str, Optional[UCS_Version], Optional[UCS_Version]) -> Set[UCS_Version]
+    def versions(self, start, end, for_mirror_list=False):
+        # type: (UCS_Version, UCS_Version, bool) -> Iterator[Tuple[UCSHttpServer, _UCSRepo]]
         """
-        Return configured versions for component.
+        Iterate component versions.
 
-        :param str component: Name of the component.
-        :param UCS_Version start: smallest version that shall be returned.
-        :param UCS_Version end: largest version that shall be returned.
-        :returns: A set of UCR release versions for which the component is enabled.
-        :rtype: set(UCS_Version)
-
-        For each component the UCR variable `repository/online/component/%s/version`
-        is evaluated, which can be a space/comma separated combination of the following values:
-
-            current
-                required component; must exist for requested version.
-            /empty/
-                optional component; used when exists for requested version.
-            /major.minor/
-                use exactly this version.
+        :param start: Minimum requried version.
+        :param end: Maximum allowed version.
+        :param bool clean: Add additional `clean` statements for `apt-mirror`.
+        :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
+        :returns: A iterator returning 2-tuples (server, ver).
         """
-        ver = self.configRegistry.get('repository/online/component/%s/version' % component, '')
-        versions = set()  # type: Set[UCS_Version]
-        mm_versions = None  # type: Optional[List[UCS_Version]]
-        for version in RE_SPLIT_MULTI.split(ver):
-            if version in ('current', ''):  # all from start to end, defaults to same major
-                # Cache releases because it is network expensive
-                if mm_versions is None:
-                    mm_versions = self._releases_in_range(start, end, component=component)
-                versions |= set(mm_versions)
-            else:
-                version = UCS_Version(version if '-' in version else '%s-0' % version)
-                if start and version < start:
-                    continue
-                if end and version > end:
-                    continue
-                versions.add(version)
+        server = self.server(for_mirror_list=for_mirror_list)
+        struct = self.layout(prefix=server, patch=self.name)
+        versions = self._versions(start, end)
+        parts = self._parts
 
-        return versions
+        for ver in sorted(versions):
+            struct.mmp = ver.mmp
+            for struct.part in parts:
+                yield server, struct
 
-    def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False):
-        # type: (str, Iterable[Union[UCS_Version, str]], bool, bool, bool) -> List[str]
+    def repositories(self, start, end, clean=False, for_mirror_list=False, failed=None):
+        # type: (UCS_Version, UCS_Version, bool, bool, Optional[Set[Tuple[Component, str]]]) -> Iterator[str]
         """
         Return list of Debian repository statements for requested component.
 
-        :param str component: The name of the component.
-        :param versions: A list of UCS releases.
-        :type versions: list[str] or list[UCS_Version].
+        :param start: Minimum requried version.
+        :param end: Maximum allowed version.
         :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param bool debug: UNUSED.
         :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
+        :param failed: A set to recive the failed component names.
         :returns: A list of strings with APT statements.
-        :rtype: list(str)
         """
-        result = []  # type: List[str]
+        for server, struct in self.versions(start, end, for_mirror_list):
+            try:
+                for struct.arch in struct.ARCHS:
+                    assert server.access(struct, "Packages.gz")
+                    yield struct.deb(server)
 
-        # Sanitize versions: UCS_Version() and Major.Minor
-        versions_mmp = set()  # type: Set[UCS_Version]
-        for version in versions:
-            if isinstance(version, six.string_types):
-                version = UCS_Version(version if '-' in version else '%s-0' % version)
-            elif isinstance(version, UCS_Version):
-                version = copy.copy(version)
-            else:
-                raise TypeError('Not a UCS Version', version)
-            version.patchlevel = 0  # component don't use the patchlevel
-            versions_mmp.add(version)
+                if clean:
+                    yield struct.clean(server)
 
-        for version in versions_mmp:
-            for server, ver in self._iterate_component_repositories([component], version, version, self.architectures, for_mirror_list=for_mirror_list):
-                result.append(ver.deb(server))
-                if ver.arch == self.architectures[-1]:  # after architectures but before next patch(level)
-                    if clean:
-                        result.append(ver.clean(server))
-                    if self.sources:
-                        ver.arch = "source"
-                        try:
-                            code, size, content = server.access(ver, "Sources.gz")
-                            if size >= MIN_GZIP:
-                                result.append(ver.deb(server, "deb-src"))
-                        except DownloadError as e:
-                            ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                if self.updater.sources:
+                    struct.arch = "source"
+                    assert server.access(struct, "Sources.gz")
+                    yield struct.deb(server, "deb-src")
+            except DownloadError as ex:
+                if failed is not None:
+                    failed.add((self, str(ex)))
+                else:
+                    raise
 
-        return result
-
-    def _releases_in_range(self, start=None, end=None, component=None):
-        # type: (Optional[UCS_Version], Optional[UCS_Version], Optional[str]) -> List[UCS_Version]
+    def status(self):
+        # type: () -> str
         """
-        Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.
+        Returns the current status of specified component based on :file:`/etc/apt/sources.list.d/20_ucs-online-component.list`
 
-        :param UCS_Version start: The start UCS release.
-        :param UCS_Version end: The last UCS release.
-        :param str component: Optional name of required component.
-        :returns: A list of available UCS releases between `start` and `end`.
-        :rtype: list[UCS_Version]
+        :returns: One of the strings:
+
+            :py:const:`DISABLED`
+                component has been disabled via UCR
+            :py:const:`AVAILABLE`
+                component is enabled and at least one valid repo string has been found in .list file
+            :py:const:`NOT_FOUND`
+                component is enabled but no valid repo string has been found in .list file
+            :py:const:`PERMISSION_DENIED`
+                component is enabled but authentication failed
+            :py:const:`UNKNOWN`
+                component's status is unknown
+
+        :rtype: str
         """
-        if not start:
-            start = UCS_Version((self.version_major, 0, 0))
+        if not bool(self):
+            return self.DISABLED
 
-        if not end:
-            end = self.current_version
+        try:
+            comp_file = open(self.FN_APTSOURCES, 'r')
+        except IOError:
+            return self.UNKNOWN
+        rePath = re.compile('(un)?maintained/component/ ?%s/' % self.name)
+        reDenied = re.compile('credentials not accepted: %s$' % self.name)
+        try:
+            # default: file contains no valid repo entry
+            result = self.NOT_FOUND
+            for line in comp_file:
+                if line.startswith('deb ') and rePath.search(line):
+                    # at least one repo has been found
+                    result = self.AVAILABLE
+                elif reDenied.search(line):
+                    # stop immediately if at least one repo has authentication problems
+                    return self.PERMISSION_DENIED
+            # return result
+            return result
+        finally:
+            comp_file.close()
 
-        result = [
-            version
-            for version in self.get_releases(self.server)
-            if start <= version <= end
-        ]
+    @property
+    def layout(self):
+        # type: () -> Type[_UCSRepo]
+        value = self["layout"]
+        layouts = {
+            "": UCSRepoPool,
+            "arch": UCSRepoPool,
+            "flat": UCSRepoPoolNoArch,
+        }  # type: Dict[str, Type[_UCSRepo]]
+        try:
+            return layouts[value]
+        except LookupError:
+            raise ValueError(value)
 
-        if component:
-            server = self._get_component_server(component)
-            pool = UCSRepoPool(prefix=server)
-            for version in result:
-                pool.mmp = version.mmp
+    @property
+    def _parts(self):
+        # type: () -> List[str]
+        parts = ["maintained"] + ["unmaintained"][:self.updater.configRegistry.is_true(self.ucrv('unmaintained'))]
+        return ['%s/component' % (part,) for part in parts]
+
+
+class UniventionUpdater(object):
+    """
+    Handle UCS package repositories.
+    """
+
+    def __init__(self, check_access=True):
+        # type: (bool) -> None
+        """
+        Create new updater with settings from UCR.
+
+        :param bool check_access: Check if repository server is reachable on init.
+        :raises ConfigurationError: if configured server is not available immediately.
+        """
+        self.log = logging.getLogger('updater.Updater')
+        self.log.addHandler(logging.NullHandler())
+        self.check_access = check_access
+        self.connection = None
+
+        self.configRegistry = ConfigRegistry()
+        self.ucr_reinit()
+
+    def config_repository(self):
+        # type: () -> None
+        """
+        Retrieve configuration to access repository. Overridden by :py:class:`univention.updater.UniventionMirror`.
+        """
+        self.online_repository = self.configRegistry.is_true('repository/online', True)
+        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
+        self.sources = self.configRegistry.is_true('repository/online/sources', False)
+        self.timeout = float(self.configRegistry.get('repository/online/timeout', 30))
+        self.script_verify = self.configRegistry.is_true('repository/online/verify', True)
+        UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
+
+    def ucr_reinit(self):
+        # type: () -> None
+        """
+        Re-initialize settings.
+        """
+        self.configRegistry.load()
+
+        self.is_repository_server = self.configRegistry.is_true('local/repository', False)
+
+        reinitUCSHttpServer = False
+        if 'proxy/http' in self.configRegistry and self.configRegistry['proxy/http']:
+            os.environ['http_proxy'] = self.configRegistry['proxy/http']
+            os.environ['https_proxy'] = self.configRegistry['proxy/http']
+            reinitUCSHttpServer = True
+        if 'proxy/https' in self.configRegistry and self.configRegistry['proxy/https']:
+            os.environ['https_proxy'] = self.configRegistry['proxy/https']
+            reinitUCSHttpServer = True
+        if 'proxy/no_proxy' in self.configRegistry and self.configRegistry['proxy/no_proxy']:
+            os.environ['no_proxy'] = self.configRegistry['proxy/no_proxy']
+            reinitUCSHttpServer = True
+        if reinitUCSHttpServer:
+            UCSHttpServer.reinit()
+
+        # UCS version
+        self.current_version = UCS_Version("%(version/version)s-%(version/patchlevel)s" % self.configRegistry)
+        self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
+
+        # UniventionMirror needs to provide its own settings
+        self.config_repository()
+
+        if not self.online_repository:
+            self.log.info('Disabled')
+            self.server = UCSLocalServer('')  # type: _UCSServer
+            return
+
+        # generate user agent string
+        user_agent = self._get_user_agent_string()
+        UCSHttpServer.load_credentials(self.configRegistry)
+
+        self.server = UCSHttpServer(
+            baseurl=self.repourl,
+            user_agent=user_agent,
+            timeout=self.timeout,
+        )
+        self._get_releases()
+
+    def _get_releases(self):
+        # type: () -> None
+        """
+        Detect server prefix and download `releases.json` file.
+        """
+        try:
+            if not self.repourl.path:
                 try:
-                    assert server.access(pool)
-                except DownloadError:
-                    result.remove(version)
+                    _code, _size, data = self.server.access(None, '/univention-repository/releases.json', get=True)
+                    self.server += '/univention-repository/'
+                    self.log.info('Using detected prefix /univention-repository/')
+                    self.releases = json.loads(data)
+                except DownloadError as e:
+                    self.log.info('No prefix /univention-repository/ detected, using /')
+                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+            # Validate server settings
+            try:
+                _code, _size, data = self.server.access(None, 'releases.json', get=True)
+                self.log.info('Using configured prefix %s', self.repourl.path)
+                self.releases = json.loads(data)
+            except DownloadError as e:
+                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
+                uri, code = e.args
+                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
+        except ConfigurationError as e:
+            if self.check_access:
+                self.log.fatal('Failed server detection: %s', e, exc_info=True)
+                raise
+            self.releases = {"error": str(e)}
+        except (ValueError, LookupError) as exc:
+            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            self.releases = {"error": str(exc)}
 
-        self.log.info('Releases [%s..%s) are %r', start, end, result)
+    def get_releases(self, start=None, end=None):
+        # type: (Optional[UCS_Version], Optional[UCS_Version]) -> Iterator[Tuple[UCS_Version, Dict[str, Any]]]
+        """
+        Return UCS releases in range.
+
+        :param start: Minimum requried version.
+        :param end: Maximum allowed version.
+        :returns: Iterator of 2-tuples (UCS_Version, data).
+        """
+        for major_release in self.releases.get('releases', []):
+            for minor_release in major_release['minors']:
+                for patchlevel_release in minor_release['patchlevels']:
+                    ver = UCS_Version((
+                        major_release['major'],
+                        minor_release['minor'],
+                        patchlevel_release['patchlevel']
+                    ))
+                    if start and ver < start:
+                        continue
+                    if end and ver > end:
+                        continue
+                    yield (ver, dict(patchlevel_release, major=major_release['major'], minor=minor_release['minor']))
+
+    def get_next_version(self, version, components=[], errorsto='stderr'):
+        # type: (UCS_Version, Iterable[Component], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
+        """
+        Check if a new patchlevel, minor or major release is available for the given version.
+        Components must be available for the same major.minor version.
+
+        :param UCS_Version version: A UCS release version.
+        :param components: A list of components, which must be available for the next release.
+        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
+        :returns: The next UCS release or None.
+        :rtype: UCS_Version or None
+        :raises RequiredComponentError: if a required component is missing
+        """
+        try:
+            ver = min(ver for ver, _data in self.get_releases() if ver > version)
+        except ValueError:
+            return None
+
+        self.log.info('Found version %s', ver)
+
+        failed = set()  # type: Set[Tuple[Component, str]]
+        for component in components:
+            self.log.info('Checking for component %s', component.name)
+            any(component.repositories(ver, ver, failed=failed if component.current else set()))
+
+        if failed:
+            ex = RequiredComponentError(str(ver), {comp.name for comp, ex in failed})
+            if errorsto == 'exception':
+                raise ex
+            elif errorsto == 'stderr':
+                print(ex, file=sys.stderr)
+            return None
+
+        self.log.info('Going for version %s', ver)
+        return ver
+
+    def get_all_available_release_updates(self, ucs_version=None):
+        # type: (Optional[UCS_Version]) -> Tuple[List[UCS_Version], Optional[Set[str]]]
+        """
+        Returns a list of all available release updates - the function takes required components into account
+        and stops if a required component is missing
+
+        :param ucs_version: starts travelling through available version from version.
+        :type ucs_version: UCS_Version or None
+        :returns: a list of 2-tuple `(versions, blocking_component)`, where `versions` is a list of UCS release and `blocking_component` is the first missing component blocking the update.
+        :rtype: tuple(list[str], str or None)
+        """
+        ucs_version = ucs_version or self.current_version
+        components = self.get_components(only_current=True)
+
+        result = []  # type: List[UCS_Version]
+        while ucs_version:
+            try:
+                ucs_version = self.get_next_version(ucs_version, components, errorsto='exception')
+            except RequiredComponentError as ex:
+                self.log.warning('Update blocked by components %s', ', '.join(ex.components))
+                # ex.components blocks update to next version ==> return current list and blocking component
+                return result, ex.components
+
+            if not ucs_version:
+                break
+            result.append(ucs_version)
+        self.log.info('Found release updates %r', result)
+        return result, None
+
+    def release_update_available(self, ucs_version=None, errorsto='stderr'):
+        # type: (Optional[UCS_Version], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
+        """
+        Check if an update is available for the `ucs_version`.
+
+        :param str ucs_version: The UCS release to check.
+        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
+        :returns: The next UCS release or None.
+        :rtype: str or None
+        """
+        ucs_version = ucs_version or self.current_version
+        components = self.get_components(only_current=True)
+        return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
+
+    def release_update_temporary_sources_list(self, version):
+        # type: (UCS_Version) -> List[str]
+        """
+        Return list of Debian repository statements for the release update including all enabled components.
+
+        :param version: The UCS release.
+        :returns: A list of Debian APT `sources.list` lines.
+        :rtype: list[str]
+        """
+        result = [UCSRepoPool5(version).deb(self.server)]
+        for comp in self.get_components():
+            try:
+                result += list(comp.repositories(version, version, failed=set()))
+            except (ConfigurationError, ProxyError):
+                if comp.current:
+                    raise
+
         return result
+
+    def component(self, name):
+        # type: (str) -> Component
+        return Component(self, name)
+
+    def get_components(self, only_localmirror_enabled=False, all=False, only_current=False):
+        # type: (bool, bool, bool) -> Set[Component]
+        """
+        Retrieve all (enabled) components from registry as set().
+        By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
+
+        :param bool only_localmirror_enabled:
+            Only the components enabled for local mirroring.
+            If only_`localmirror`_enabled is `True`, then all components with `repository/online/component/%s/localmirror=$TRUE` will be returned.
+            If `repository/online/component/%s/localmirror` is not set, then the value of `repository/online/component/%s` is used for backward compatibility.
+        :param bool all: Also return not enabled components.
+        :param bool only_current: Only return components marked as "current".
+        :returns: The set of (enabled) components.
+        """
+        components = set()
+        for key in self.configRegistry:
+            match = RE_COMPONENT.match(key)
+            if not match:
+                continue
+            component, = match.groups()
+            comp = self.component(component)
+            enabled = bool(comp)
+            if only_localmirror_enabled:
+                enabled = self.configRegistry.is_true(comp.ucrv("localmirror"), enabled)
+            if only_current and not comp.current:
+                continue
+            if all or enabled:
+                components.add(comp)
+        return components
+
+    def component_update_get_packages(self):
+        # type: () -> Tuple[List[Tuple[Text, Text]], List[Tuple[Text, Text, Text]], List[Tuple[Text, Text]]]
+        """
+        Return tuple with list of (new, upgradeable, removed) packages.
+
+        :return: A 3-tuple (new, upgraded, removed).
+        :rtype: tuple(list[str], list[str], list[str])
+        """
+        env = dict(os.environ, LC_ALL="C.UTF-8")
+
+        proc = subprocess.Popen(("univention-config-registry", "commit", Component.FN_APTSOURCES), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+        # FIXME: error handling
+
+        proc = subprocess.Popen(cmd_update, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+        # FIXME: error handling
+
+        proc = subprocess.Popen(cmd_dist_upgrade_sim, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+
+        if proc.returncode == 100:
+            raise UnmetDependencyError(stderr)
+
+        new_packages = []  # type: List[Tuple[Text, Text]]
+        upgraded_packages = []  # type: List[Tuple[Text, Text, Text]]
+        removed_packages = []  # type: List[Tuple[Text, Text]]
+        for line in stdout.splitlines():
+            line_split = line.split(' ')
+            if line.startswith('Inst '):
+                # upgrade:
+                #    Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
+                # inst:
+                #    Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
+                if len(line_split) > 3:
+                    if line_split[2].startswith('[') and line_split[2].endswith(']'):
+                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
+                        upgraded_packages.append((line_split[1], line_split[2].replace('[', '').replace(']', ''), line_split[3].replace('(', '')))
+                    else:
+                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
+                        new_packages.append((line_split[1], line_split[2].replace('(', '')))
+                else:
+                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+                    continue
+            elif line.startswith('Remv '):
+                if len(line_split) > 3:
+                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+                    removed_packages.append((line_split[1], line_split[2].replace('(', '')))
+                elif len(line_split) > 2:
+                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+                    removed_packages.append((line_split[1], 'unknown'))
+                else:
+                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+                    continue
+
+        return (new_packages, upgraded_packages, removed_packages)
+
+    def run_dist_upgrade(self):
+        # type: () -> int
+        """
+        Run `apt-get dist-upgrade` command.
+
+        :returns: a 3-tuple (return_code, stdout, stderr)
+        :rtype: tuple(int, str, str)
+        """
+        env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
+        with open("/var/log/univention/updater.log", "a") as log:
+            return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log)
 
     def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
         # type: (bool, Optional[UCS_Version], Optional[UCS_Version], bool) -> str
@@ -1850,19 +1565,11 @@ class UniventionUpdater(object):
             clean = self.configRegistry.is_true('online/repository/clean', False)
 
         result = []  # type: List[str]
-        for component in self.get_components(only_localmirror_enabled=for_mirror_list):
-            try:
-                versions = self._get_component_versions(component, start, end)
-                repos = self.get_component_repositories(component, versions, clean, for_mirror_list=for_mirror_list)
-                if versions and not repos:
-                    server = self._get_component_server(component)
-                    version = ','.join(map(str, versions))
-                    uri = server.join('%s/component/%s/' % (version, component))
-                    raise ConfigurationError(uri, 'component not found')
-                result += repos
-            except ConfigurationError as e:
-                # just log configuration errors and continue
-                result.append('# %s: %s' % (e, component))
+        failed = set()  # type: Set[Tuple[Component, str]]
+        for comp in self.get_components(only_localmirror_enabled=for_mirror_list):
+            result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed)
+        result += ["# Component %s: %s" % (comp.name, ex) for comp, ex in failed]
+
         return '\n'.join(result)
 
     def _get_user_agent_string(self):
@@ -1888,18 +1595,14 @@ class UniventionUpdater(object):
 
     @staticmethod
     def call_sh_files(scripts, logname, *args):
-        # type: (Iterable[Tuple[UCSHttpServer, _UCSRepo, Optional[str], str, str]], str, *str) -> Iterator[Tuple[str, str]]
+        # type: (Iterable[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]], str, *str) -> Iterator[Tuple[str, str]]
         """
         Get pre- and postup.sh files and call them in the right order::
 
             u = UniventionUpdater()
-            ver = u.current_version
-            rel = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
-            com = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
-            repos = itertools.chain(rel, com)
-            scripts = u.get_sh_files(repos)
-            next_ver = u.get_next_version(u.current_version)
-            for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
+            ver = u.get_next_version(u.current_version)
+            scripts = u.get_sh_files(ver, ver)
+            for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', ver):
               if (phase, order) == ('update', 'main'):
                 pass
 
@@ -1908,9 +1611,6 @@ class UniventionUpdater(object):
         :param args: Additional arguments to pass through to the scripts.
         :returns: A generator returning 2-tuples (phase, part)
         """
-        # create temporary directory for scripts
-        tempdir = tempfile.mkdtemp()
-        atexit.register(shutil.rmtree, tempdir, ignore_errors=True)
 
         def call(*cmd):
             # type: (*str) -> int
@@ -1923,8 +1623,8 @@ class UniventionUpdater(object):
             :rtype: int
             """
             commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
-            ud.debug(ud.PROCESS, ud.INFO, "Calling %s" % commandline)
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+            ud.debug(ud.NETWORK, ud.INFO, "Calling %s" % commandline)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
             # Order is important! See bug #16454
             tee.wait()
@@ -1936,109 +1636,126 @@ class UniventionUpdater(object):
         main = {'preup': [], 'postup': []}  # type: Dict[str, List[Tuple[str, str]]]
         comp = {'preup': [], 'postup': []}  # type: Dict[str, List[Tuple[str, str]]]
         # save scripts to temporary files
-        for server, struct, phase, path, script in scripts:
-            if phase is None:
-                continue
-            assert script is not None
-            uri = server.join(path)
-            fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
-            try:
-                size = os.write(fd, script)
-                os.chmod(name, 0o744)
-                if size == len(script):
-                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
-                    if hasattr(struct, 'part') and struct.part.endswith('/component'):
-                        comp[phase].append((name, str(struct.patch)))
-                    else:
-                        main[phase].append((name, str(struct.patch)))
+        with TemporaryDirectory() as tempdir:
+            for server, struct, phase, path, data in scripts:
+                if phase is None:
                     continue
-            finally:
-                os.close(fd)
-            ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s" % (uri, name))
+                assert data is not None
+                uri = server.join(path)
+                name = os.path.join(tempdir, uri.replace("/", "_"))
+                try:
+                    with open(name, "wb") as fd:
+                        fd.write(data)
+                        os.fchmod(fd.fileno(), 0o744)
 
-        # call component/preup.sh pre $args
-        yield "preup", "pre"
-        for (script, patch) in comp['preup']:
-            if call(script, 'pre', *args) != 0:
-                raise PreconditionError('preup', 'pre', patch, script)
+                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
+                    is_component = hasattr(struct, 'part') and struct.part.endswith('/component')
+                    memo = comp if is_component else main
+                    memo[phase].append((name, str(struct.patch)))
+                except EnvironmentError as ex:
+                    ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex))
 
-        # call $next_version/preup.sh
-        yield "preup", "main"
-        for (script, patch) in main['preup']:
-            if call(script, *args) != 0:
-                raise PreconditionError('preup', 'main', patch, script)
+            # call component/preup.sh pre $args
+            yield "preup", "pre"
+            for (script, patch) in comp['preup']:
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('preup', 'pre', patch, script)
 
-        # call component/preup.sh post $args
-        yield "preup", "post"
-        for (script, patch) in comp['preup']:
-            if call(script, 'post', *args) != 0:
-                raise PreconditionError('preup', 'post', patch, script)
+            # call $next_version/preup.sh
+            yield "preup", "main"
+            for (script, patch) in main['preup']:
+                if call(script, *args) != 0:
+                    raise PreconditionError('preup', 'main', patch, script)
 
-        # call $update/commands/distupgrade or $update/commands/upgrade
-        yield "update", "main"
+            # call component/preup.sh post $args
+            yield "preup", "post"
+            for (script, patch) in comp['preup']:
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('preup', 'post', patch, script)
 
-        # call component/postup.sh pos $args
-        yield "postup", "pre"
-        for (script, patch) in comp['postup']:
-            if call(script, 'pre', *args) != 0:
-                raise PreconditionError('postup', 'pre', patch, script)
+            # call $update/commands/distupgrade or $update/commands/upgrade
+            yield "update", "main"
 
-        # call $next_version/postup.sh
-        yield "postup", "main"
-        for (script, patch) in main['postup']:
-            if call(script, *args) != 0:
-                raise PreconditionError('postup', 'main', patch, script)
+            # call component/postup.sh pos $args
+            yield "postup", "pre"
+            for (script, patch) in comp['postup']:
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('postup', 'pre', patch, script)
 
-        # call component/postup.sh post $args
-        yield "postup", "post"
-        for (script, patch) in comp['postup']:
-            if call(script, 'post', *args) != 0:
-                raise PreconditionError('postup', 'post', patch, script)
+            # call $next_version/postup.sh
+            yield "postup", "main"
+            for (script, patch) in main['postup']:
+                if call(script, *args) != 0:
+                    raise PreconditionError('postup', 'main', patch, script)
+
+            # call component/postup.sh post $args
+            yield "postup", "post"
+            for (script, patch) in comp['postup']:
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('postup', 'post', patch, script)
 
         # clean up
         yield "update", "post"
 
-    @staticmethod
-    def get_sh_files(repositories, verify=False):
-        # type: (Iterable[Tuple[UCSHttpServer, _UCSRepo]], bool) -> Iterator[Tuple]
+    def get_sh_files(self, start, end, mirror=False):
+        # type: (UCS_Version, UCS_Version, bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]]
         """
         Return all preup- and postup-scripts of repositories.
 
-        :param repositories: iteratable (server, struct)s
-        :param bool verify: Verify the PGP signature of the downloaded scripts.
+        :param UCS_Version start: The UCS release to start from.
+        :param UCS_Version end: The UCS release where to stop.
+        :param bool mirror: Use the settings for mirroring.
         :returns: iteratable (server, struct, phase, path, script)
         :raises VerificationError: if the PGP signature is invalid.
 
         See :py:meth:`call_sh_files` for an example.
         """
-        for server, struct in repositories:
+        def all_repos():
+            # type: () -> Iterator[Tuple[_UCSServer, _UCSRepo, bool]]
+            self.log.info('Searching releases [%s..%s]', start, end)
+            for ver, _data in self.get_releases(start, end):
+                yield self.server, UCSRepoPool5(release=ver, prefix=self.server), True
+
+            self.log.info('Searching components [%s..%s]', start, end)
+            components = self.get_components(only_localmirror_enabled=mirror)
+            for comp in components:
+                for server, struct in comp.versions(start, end, mirror):
+                    struct.arch = "all"
+                    self.log.info('Component %s from %s versions %r', comp.name, server, struct)
+                    yield server, struct, comp.current
+
+        for server, struct, critical in all_repos():
+            uses_proxy = hasattr(server, "proxy_handler") and server.proxy_handler.proxies  # type: ignore
             for phase in ('preup', 'postup'):
                 name = '%s.sh' % phase
                 path = struct.path(name)
-                ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
+                ud.debug(ud.NETWORK, ud.ALL, "Accessing %s" % path)
                 try:
                     _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
-                    if not script.startswith('#!') and server.proxy_handler.proxies:
+                    if not script.startswith(b'#!') and uses_proxy:
                         uri = server.join(path)
                         raise ProxyError(uri, "download blocked by proxy?")
-                    if verify and struct >= UCS_Version((3, 2, 0)):
+                    if self.script_verify and struct >= UCS_Version((3, 2, 0)):
                         name_gpg = name + '.gpg'
                         path_gpg = struct.path(name_gpg)
                         try:
                             _code, _size, signature = server.access(struct, name_gpg, get=True)
-                            if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and server.proxy_handler.proxies:
+                            if not signature.startswith(b"-----BEGIN PGP SIGNATURE-----") and uses_proxy:
                                 uri = server.join(path_gpg)
                                 raise ProxyError(uri, "download blocked by proxy?")
                         except DownloadError:
                             raise VerificationError(path_gpg, "Signature download failed")
                         error = verify_script(script, signature)
                         if error is not None:
-                            raise VerificationError(path, "Invalid signature: %s" % error)
+                            raise VerificationError(path, "Invalid signature: %r" % error)
                         yield server, struct, None, path_gpg, signature
                     yield server, struct, phase, path, script
                 except DownloadError as e:
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                except ConfigurationError:
+                    if critical:
+                        raise
 
 
 class LocalUpdater(UniventionUpdater):
@@ -2053,8 +1770,3 @@ class LocalUpdater(UniventionUpdater):
         self.log.addHandler(logging.NullHandler())
         repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
         self.server = UCSLocalServer("%s/mirror/" % repository_path)  # type: _UCSServer
-
-
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])

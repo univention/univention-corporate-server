@@ -1,4 +1,0 @@
-_uniinstall () {
-    COMPREPLY=($( apt-cache pkgnames ${COMP_WORDS[COMP_CWORD]} 2> /dev/null ));
-}
-complete -F _uniinstall univention-install

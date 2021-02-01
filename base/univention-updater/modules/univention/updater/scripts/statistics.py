@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Updater
 #  collect statistics
@@ -30,30 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.admin.license
-import univention.admin.uldap
+from typing import Any, Callable, List, NoReturn, Optional, Tuple
+
+from univention.admin.license import _license
+from univention.admin.uldap import access, getAdminConnection, position
 from univention.config_registry import ConfigRegistry
-import univention.config_registry.frontend
+from univention.config_registry.frontend import ucr_update
 
 
-def encode_number(number, significant_digits=3):
-	number = int(number)
-	if number < 0:
-		raise ValueError('number must be positive, not %r' % (number, ))
-	if number > int('9' * 26):
-		raise ValueError('number must be smaller than 1e26, not %r' % (number, ))
-	significant_digits = int(significant_digits)
-	if significant_digits < 1:
-		raise ValueError('significant_digits must be greater than 0, not %r' % (significant_digits, ))
-	string = '%d' % (number,)
+def encode_number(number: int, significant_digits: int = 3) -> str:
+	assert 0 <= number <= int('9' * 26)
+	assert 1 < significant_digits
+	string = str(number)
 	return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
 
 
-def encode_users(users):
+def encode_users(users: int) -> str:
 	return encode_number(users)
 
 
-def encode_role(role):
+def encode_role(role: str) -> str:
 	if role == 'domaincontroller_master':
 		return 'M'
 	if role == 'domaincontroller_backup':
@@ -67,40 +63,41 @@ def encode_role(role):
 	raise ValueError('Invalid role %r' % (role, ))
 
 
-def encode_additional_info(users=None, role=None):
-	parts = []
-	for key, encoder, datum in (
+def encode_additional_info(users: Optional[int] = None, role: Optional[str] = None) -> str:
+	data: List[Tuple[str, Callable[[Any], str], Any]] = [
 		('U', encode_users, users),
 		('R', encode_role, role),
-	):
-		if datum is not None:
-			parts.append(key + ':' + encoder(datum))
-	return ','.join(parts)
+	]
+	return ",".join(
+		"%s:%s" % (key, encoder(datum))
+		for key, encoder, datum in data
+		if datum is not None
+	)
 
 
-def getReadonlyAdminConnection():
-	def do_nothing(*a, **kw):
+def getReadonlyAdminConnection() -> Tuple[access, position]:
+	def do_nothing(*a: Any, **kw: Any) -> NoReturn:
 		raise AssertionError('readonly connection')
 
-	lo, position = univention.admin.uldap.getAdminConnection()
+	lo, position = getAdminConnection()
 	lo.add = lo.modify = lo.rename = lo.delete = do_nothing
 	return lo, position
 
 
-def main():
-	def get_role():
+def main() -> None:
+	def get_role() -> Optional[str]:
 		return configRegistry.get('server/role', None)
 
-	def get_users():
+	def get_users() -> Optional[int]:
 		if get_role() != 'domaincontroller_master':
 			return None
 		lo, _ = getReadonlyAdminConnection()
-		filter = univention.admin.license._license.filters['2'][univention.admin.license._license.USERS]
+		filter = _license.filters['2'][_license.USERS]
 		return len(lo.searchDn(filter=filter))
 
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
-	univention.config_registry.frontend.ucr_update(
+	ucr_update(
 		configRegistry,
 		{
 			'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),

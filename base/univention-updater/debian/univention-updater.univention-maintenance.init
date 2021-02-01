@@ -37,15 +37,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /lib/lsb/init-functions
 LOG="/var/log/univention/updater.log"
 
 check_policy () {
-	eval "$(univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_hostdn")"
+	eval "$(univention_policy_result -D "${ldap_hostdn:?}" -y /etc/machine.secret -s "${ldap_hostdn:?}")"
 	case "$1" in
-	stop) [ "$univentionInstallationShutdown" = 1 ] ;;
-	start) [ "$univentionInstallationStartup" = 1 ] ;;
-	restart) [ "$univentionInstallationShutdown" = 1 -o "$univentionInstallationStartup" = 1 ] ;;
+	stop) [ "${univentionInstallationShutdown:-}" = 1 ] ;;
+	start) [ "${univentionInstallationStartup:-}" = 1 ] ;;
+	restart) [ "${univentionInstallationShutdown:-}" = 1 ] || [ "${univentionInstallationStartup:-}" = 1 ] ;;
 	*) return 2 ;;
 	esac
 }
@@ -59,37 +60,41 @@ case "$1" in
 		eval "$(univention-config-registry shell)"
 
 		# clean up updater settings
-		if [ -n "$update_reboot_required" ]; then
+		if [ -n "${update_reboot_required:-}" ]; then
 			univention-config-registry unset update/reboot/required >/dev/null 2>&1
 		fi
 
-		log_action_cont_msg "ldap[$ldap_server_name]"
-		ldap_server_port=${ldap_server_port:-7389}
-		if ! netcat -q0 -w4 "$ldap_server_name" $ldap_server_port </dev/null >/dev/null 2>&1
+		log_action_cont_msg "ldap[${ldap_server_name:-}]"
+		if ! netcat -q0 -w4 "${ldap_server_name:-}" "${ldap_server_port:=7389}" </dev/null >/dev/null 2>&1
 		then
 			log_action_end_msg 1
 			exit 1
 		fi
+		if ! check_policy "$1"
+		then
+			log_action_end_msg 0
+			exit 0
+		fi
 
 		# determine protocol of main repository server
+		# shellcheck disable=SC2154
 		repository_protocol="${repository_online_server%://*}"
 		# use HTTP if no protocol is specified
 		[ "$repository_protocol" = "$repository_online_server" ] && repository_protocol="http"
 		# use proxy/http as fallback if proxy/https is not specified
-		[ -z "$proxy_https" -a -n "$proxy_http" ] && proxy_https="$proxy_http"
+		[ -z "${proxy_https:-}" ] && [ -n "${proxy_http:-}" ] && proxy_https="$proxy_http"
 
 		msg_prefix="proxy"
-		if [ -n "$proxy_http" -a "$repository_protocol" = "http" ] ; then
+		if [ -n "$proxy_http" ] && [ "$repository_protocol" = "http" ] ; then
 			repository_server="${proxy_http}"
-		elif [ -n "$proxy_https" -a "$repository_protocol" = "https" ] ; then
+		elif [ -n "$proxy_https" ] && [ "$repository_protocol" = "https" ] ; then
 			repository_server="${proxy_https}"
 		else
 			repository_server="$repository_online_server"
 			msg_prefix="repository"
 		fi
 		# get hostname from URL and strip off everything else
-		repository_server="${repository_server#http://}"
-		repository_server="${repository_server#https://}"
+		repository_server="${repository_server#*://}"
 		repository_server="${repository_server%:*}" # strip port
 		repository_server="${repository_server##*@}" # strip login information
 		repository_server="${repository_server%/*}" # strip path
@@ -102,128 +107,111 @@ case "$1" in
 		fi
 		log_action_end_msg 0
 
-		check_policy "$1" || exit 0
-
-		colourstart=""
-		colourend=""
-		if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
-			colourstart="\033[31;1m"
-			colourend="\033[0m"
+		if echo "${update_warning_coloured:-}" | grep -E -q -i 'yes|true'
+		then
+			cred='\033[31;1m'  # red bold
+			cgreen='\033[32;1m'  # green bold
+			cend='\033[0m'  # reset
+		else
+			cred='' cgreen='' cend=''
 		fi
-		down="\033[5B"
-		clear="\033[2J"
+		down='\033[5B'  # 'CU'rsort 'D'own '5 rows'
 
-
-		function issue_warning () {
-			ttyname="$1"
-			warning_message=""
-			warning_message="$warning_message\n\r"
-			warning_message="$warning_message$colourstart"
-			if echo $update_warning_lang | egrep -i '^de$|^ger' > /dev/null 2>&1; then
-				warning_message="$warning_message!!!!!!!!!! Achtung\n\r"
-				warning_message="$warning_message!!!!!!!!!! die Aktualisierung des Systems kann je nach\n\r"
-				warning_message="$warning_message!!!!!!!!!! Umfang der Pakete eine lange Zeit in Anspruch\n\r"
-				warning_message="$warning_message!!!!!!!!!! nehmen.\n\r"
-				warning_message="$warning_message!!!!!!!!!!\n\r"
-				if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! Das System setzt den Startvorgang nach\n\r"
-					warning_message="$warning_message!!!!!!!!!! der Aktualisierung fort.\n\r"
-				elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! Schalten Sie das System erst aus, wenn die\n\r"
-					warning_message="$warning_message!!!!!!!!!! Ausgabe \"System halted!\" erscheint.\n\r"
-					warning_message="$warning_message!!!!!!!!!! Die meisten Systeme schalten sich\n\r"
-					warning_message="$warning_message!!!!!!!!!! selbstständig aus.\n\r"
-				elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! Das System wird nach der Aktualisierung\n\r"
-					warning_message="$warning_message!!!!!!!!!! automatisch neu gestartet.\n\r"
-				fi
-			else
-				warning_message="$warning_message!!!!!!!!!! Warning\n\r"
-				warning_message="$warning_message!!!!!!!!!! The update process might take a\n\r"
-				warning_message="$warning_message!!!!!!!!!! considerable amount of time depending on the\n\r"
-				warning_message="$warning_message!!!!!!!!!! number and size of installed packages.\n\r"
-				warning_message="$warning_message!!!!!!!!!!\n\r"
-				warning_message="$warning_message!!!!!!!!!! Do not switch off the system before\n\r"
-				warning_message="$warning_message!!!!!!!!!! update is completely finished.\n\r"
-				if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! System boot will continue after\n\r"
-					warning_message="$warning_message!!!!!!!!!! update is finished.\n\r"
-				elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! System can be safely switched off when\n\r"
-					warning_message="$warning_message!!!!!!!!!! \"System halted!\" is displayed.\n\r"
-					warning_message="$warning_message!!!!!!!!!! Most modern systems switch off\n\r"
-					warning_message="$warning_message!!!!!!!!!! automatically.\n\r"
-				elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
-					warning_message="$warning_message!!!!!!!!!! System will reboot automatically\n\r"
-					warning_message="$warning_message!!!!!!!!!! after update finished.\n\r"
-
-				fi
+		warning_message="$down"
+		warning_message+="\\n\\r"
+		warning_message+="$cred"
+		if echo "${update_warning_lang:-}" | grep -E -q -i '^de$|^ger'
+		then
+			warning_message+='!!!!!!!!!! Achtung\n\r'
+			warning_message+='!!!!!!!!!! die Aktualisierung des Systems kann je nach\n\r'
+			warning_message+='!!!!!!!!!! Umfang der Pakete eine lange Zeit in Anspruch\n\r'
+			warning_message+='!!!!!!!!!! nehmen.\n\r'
+			warning_message+='!!!!!!!!!!\n\r'
+			if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! Das System setzt den Startvorgang nach\n\r'
+				warning_message+='!!!!!!!!!! der Aktualisierung fort.\n\r'
+			elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! Schalten Sie das System erst aus, wenn die\n\r'
+				warning_message+='!!!!!!!!!! Ausgabe \"System halted!\" erscheint.\n\r'
+				warning_message+='!!!!!!!!!! Die meisten Systeme schalten sich\n\r'
+				warning_message+='!!!!!!!!!! selbstständig aus.\n\r'
+			elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! Das System wird nach der Aktualisierung\n\r'
+				warning_message+='!!!!!!!!!! automatisch neu gestartet.\n\r'
 			fi
-			warning_message="$warning_message$colourend"
-			warning_message="$warning_message\n\r"
+		else
+			warning_message+='!!!!!!!!!! Warning\n\r'
+			warning_message+='!!!!!!!!!! The update process might take a\n\r'
+			warning_message+='!!!!!!!!!! considerable amount of time depending on the\n\r'
+			warning_message+='!!!!!!!!!! number and size of installed packages.\n\r'
+			warning_message+='!!!!!!!!!!\n\r'
+			warning_message+='!!!!!!!!!! Do not switch off the system before\n\r'
+			warning_message+='!!!!!!!!!! update is completely finished.\n\r'
+			if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! System boot will continue after\n\r'
+				warning_message+='!!!!!!!!!! update is finished.\n\r'
+			elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! System can be safely switched off when\n\r'
+				warning_message+='!!!!!!!!!! \"System halted!\" is displayed.\n\r'
+				warning_message+='!!!!!!!!!! Most modern systems switch off\n\r'
+				warning_message+='!!!!!!!!!! automatically.\n\r'
+			elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
+				warning_message+='!!!!!!!!!! System will reboot automatically\n\r'
+				warning_message+='!!!!!!!!!! after update finished.\n\r'
+			fi
+		fi
+		warning_message+="$cend"
+		warning_message+='\n\r'
 
-			echo -e "$down" > "$ttyname"
-			echo -e "$warning_message" > "$ttyname"
-		}
-
-		if [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
+		upd_local=0
+		if [ "${local_repository:-}" = "yes" ] || [ "${local_repository:-}" = "true" ]; then
 			mode="local"
-			/usr/share/univention-updater/univention-updater local --silent --check >/dev/null 2>&1
-			upd_local=$?
+			/usr/share/univention-updater/univention-updater local --silent --check >/dev/null 2>&1 ||
+				upd_local=$?
 		else
 			mode="net"
-			upd_local=0
 		fi
-		if [ "$univentionUpdateActivate" = "TRUE" ]
+		upd_net=0
+		if [ "${univentionUpdateActivate:-}" = "TRUE" ]
 		then
-			/usr/share/univention-updater/univention-updater net --silent --check >/dev/null 2>&1
-			upd_net=$?
-		else
-			upd_net=0
+			/usr/share/univention-updater/univention-updater net --silent --check >/dev/null 2>&1 ||
+				upd_net=$?
 		fi
-		/usr/share/univention-updater/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1
-		actualise=$?
+		actualise=0
+		/usr/share/univention-updater/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1 ||
+			actualise=$?
 
 		if [ "$upd_local$upd_net$actualise" = 000 ]; then
-			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
-				echo -e "\033[32;1mNothing to do for Univention Updater.\033[0m"
-			else
-				echo "Nothing to do for Univention Updater."
-			fi
+			echo -e "${cgreen}Nothing to do for Univention Updater.${cend}"
 			exit 0
 		fi
 
 		LOCKFILE="/var/lock/univention-maintenance_$RANDOM"
 
-		if echo $update_warning | egrep -i 'yes|true' >/dev/null 2>&1; then
-			if [ -n "$update_warning_tty" ]; then
+		if echo "${update_warning:-}" | grep -E -q -i 'yes|true'
+		then
+			if [ -n "${update_warning_tty:-}" ]; then
 				touch "$LOCKFILE"
 				while [ -f "$LOCKFILE" ]; do
-					for tty in $update_warning_tty
+					for tty in $update_warning_tty  # IFS
 					do
-						if [ -c "$tty" ]; then
-							issue_warning "$tty"
-						fi
+						[ -c "$tty" ] &&
+							echo -e "$warning_message" >"$tty"
 					done
 					sleep 2
 				done &
 				sleep 4
 			fi
 
-			if [ -c "$SSH_TTY" ]; then
-				issue_warning "$SSH_TTY"
-			fi
+			[ -c "$SSH_TTY" ] &&
+				echo -e "$warning_message" >"$SSH_TTY"
 		else
-			if echo $update_warning_coloured | egrep -qi 'yes|true'; then
-				echo -e "\033[31;1m""Univention Updater is updating the system.\033[0m"
-			else
-				echo "Univention Updater is updating the system."
-			fi
+			echo -e "${cred}Univention Updater is updating the system.${cend}"
 		fi
 
 				if [ "$univentionUpdateActivate" = "TRUE" ]
 				then
-					if [ -n "$univentionUpdateVersion" ]
+					if [ -n "${univentionUpdateVersion:-}" ]
 					then
 						log_action_msg "Starting Univention Updater [$univentionUpdateVersion]"
 						/usr/share/univention-updater/univention-updater "$mode" --noninteractive --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
@@ -238,9 +226,7 @@ case "$1" in
 
 				/usr/share/univention-updater/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
 
-		if [ -f "$LOCKFILE" ]; then
-			rm "$LOCKFILE"
-		fi
+		rm -f "$LOCKFILE"
 
 		log_action_end_msg 0
 		dmesg -n 8

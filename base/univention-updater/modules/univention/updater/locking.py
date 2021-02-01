@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Updater locking
-"""
 # Copyright 2008-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,15 +26,51 @@ Univention Updater locking
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Univention Updater locking
+"""
 
 from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-from sys import (exit, stderr)
-from time import (time, sleep)
-from errno import (EEXIST, ESRCH, ENOENT)
-from .errors import LockingError
+import sys
+from contextlib import contextmanager
+from time import sleep
+try:
+    from time import monotonic  # type: ignore
+except ImportError:
+    from monotonic import monotonic  # type: ignore
+from errno import EEXIST, ESRCH, ENOENT
+try:
+    from typing import Optional, Type  # noqa F401
+    from types import TracebackType  # noqa F401
+except ImportError:
+    pass
+from .errors import UpdaterException
+
+
+FN_LOCK_UP = '/var/lock/univention-updater'
+FN_LOCK_APT = "/var/run/apt-get.lock"
+
+
+class LockingError(UpdaterException):
+    """
+    Signal other updater process running.
+
+    >>> raise LockingError(1, "Invalid PID")  # doctest: +ELLIPSIS,+IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    univention.updater.locking.LockingError: Another updater process 1 is currently running according to ...: Invalid PID
+    """
+
+    def __str__(self):
+        # type: () -> str
+        return "Another updater process %s is currently running according to %s: %s" % (
+            self.args[0],
+            FN_LOCK_UP,
+            self.args[1],
+        )
 
 
 class UpdaterLock(object):
@@ -45,97 +78,96 @@ class UpdaterLock(object):
     Context wrapper for updater-lock :file:`/var/lock/univention-updater`.
     """
 
-    __UPDATER_LOCK_FILE_NAME = '/var/lock/univention-updater'
-
     def __init__(self, timeout=0):
+        # type: (int) -> None
         self.timeout = timeout
         self.lock = 0
 
     def __enter__(self):
+        # type: () -> UpdaterLock
         try:
             self.lock = self.updater_lock_acquire()
+            return self
         except LockingError as ex:
-            print(ex, file=stderr)
-            exit(5)
+            print(ex, file=sys.stderr)
+            sys.exit(5)
 
     def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         if not self.updater_lock_release():
-            print('WARNING: updater-lock already released!', file=stderr)
+            print('WARNING: updater-lock already released!', file=sys.stderr)
 
     def updater_lock_acquire(self):
+        # type: () -> int
         '''
         Acquire the updater-lock.
 
         :returns: 0 if it could be acquired within <timeout> seconds, >= 1 if locked by parent.
         :rtype: int
-        :raises LockingError: otherwise.
+        :raises EnvironmentError: on file system access errors.
+        :raises LockingError: on invalid PID or timeout.
         '''
-        deadline = time() + self.timeout
-        my_pid = "%d\n" % os.getpid()
-        parent_pid = "%d\n" % os.getppid()
+        deadline = monotonic() + self.timeout
+        lock_pid = 0
         while True:
             try:
-                lock_fd = os.open(
-                    self.__UPDATER_LOCK_FILE_NAME,
-                    os.O_WRONLY | os.O_CREAT | os.O_EXCL,
-                    0o644)
+                lock_fd = os.open(FN_LOCK_UP, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+                my_pid = b"%d\n" % os.getpid()
                 bytes_written = os.write(lock_fd, my_pid)
                 assert bytes_written == len(my_pid)
                 os.close(lock_fd)
                 return 0
-            except OSError as ex:
+            except EnvironmentError as ex:
                 if ex.errno != EEXIST:
                     raise
+
+            try:
+                lock_fd = os.open(FN_LOCK_UP, os.O_RDONLY | os.O_EXCL)
                 try:
-                    lock_fd = os.open(
-                        self.__UPDATER_LOCK_FILE_NAME,
-                        os.O_RDONLY | os.O_EXCL)
-                    try:
-                        lock_pid = os.read(
-                            lock_fd, 11)  # sizeof(s32) + len('\n')
-                    finally:
-                        os.close(lock_fd)
-                    if my_pid == lock_pid:
-                        return 0
-                    if parent_pid == lock_pid:  # u-repository-* called from u-updater
-                        return 1
-                    try:
-                        lock_pid = lock_pid.strip() or '?'
-                        lock_pid = int(lock_pid)
-                        os.kill(lock_pid, 0)
-                    except ValueError:
-                        msg = 'Invalid PID %s in lockfile %s.' % (
-                            lock_pid,
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                        raise LockingError(msg)
-                    except OSError as ex:
-                        if ex.errno == ESRCH:
-                            print('Stale PID %s in lockfile %s, removing.' % (
-                                lock_pid,
-                                self.__UPDATER_LOCK_FILE_NAME,
-                            ), file=stderr)
-                            os.remove(self.__UPDATER_LOCK_FILE_NAME)
-                            continue  # redo acquire
-                    # PID is valid and process is still alive...
-                except OSError:
-                    pass
-                if time() > deadline:
-                    if self.timeout > 0:
-                        msg = 'Timeout: still locked by PID %s. Check lockfile %s' % (
-                            lock_pid,
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                    else:
-                        msg = 'Locked by PID %s. Check lockfile %s' % (
-                            lock_pid or '?',
-                            self.__UPDATER_LOCK_FILE_NAME,
-                        )
-                    raise LockingError(msg)
-                else:
-                    sleep(1)
+                    lock_pid_b = os.read(lock_fd, 11)  # sizeof(s32) + len('\n')
+                finally:
+                    os.close(lock_fd)
+            except EnvironmentError as ex:
+                if ex.errno != ENOENT:
+                    raise
+            else:
+                try:
+                    lock_pid_s = lock_pid_b.decode('ASCII').strip()
+                except UnicodeDecodeError:
+                    raise LockingError(lock_pid_b, "Invalid PID")
+
+                if not lock_pid_s:
+                    print('Empty lockfile %s, removing.' % (FN_LOCK_UP,), file=sys.stderr)
+                    os.remove(FN_LOCK_UP)
+                    continue  # redo acquire
+
+                try:
+                    lock_pid = int(lock_pid_s)
+                except ValueError:
+                    raise LockingError(lock_pid_s, "Invalid PID")
+
+                if lock_pid == os.getpid():
+                    return 0
+
+                if lock_pid == os.getppid():  # u-repository-* called from u-updater
+                    return 1
+
+                try:
+                    os.kill(lock_pid, 0)
+                except EnvironmentError as ex:
+                    if ex.errno == ESRCH:
+                        print('Stale PID %d in lockfile %s, removing.' % (lock_pid, FN_LOCK_UP), file=sys.stderr)
+                        os.remove(FN_LOCK_UP)
+                        continue  # redo acquire
+                # PID is valid and process is still alive...
+
+            if monotonic() > deadline:
+                raise LockingError(lock_pid, "Check lockfile")
+            else:
+                sleep(1)
 
     def updater_lock_release(self):
+        # type: () -> bool
         '''
         Release the updater-lock.
 
@@ -146,15 +178,33 @@ class UpdaterLock(object):
             # parent process still owns the lock, do nothing and just return success
             return True
         try:
-            os.remove(self.__UPDATER_LOCK_FILE_NAME)
+            os.remove(FN_LOCK_UP)
             return True
-        except OSError as error:
+        except EnvironmentError as error:
             if error.errno == ENOENT:
                 return False
             else:
                 raise
 
 
-if __name__ == '__main__':
-    import doctest
-    exit(doctest.testmod()[0])
+@contextmanager
+def apt_lock(timeout=300, out=sys.stdout):
+    """
+    Acquire and release lock for APT.
+
+    :param timeout: Time to wait.
+    :param out: Output stream for progress and error messages.
+    """
+    for count in range(timeout, 0, -1):
+        if not os.path.exists(FN_LOCK_APT):
+            break
+        print("\r%3d Waiting for updater lock %s ..." % (count, FN_LOCK_APT), end="", file=out)
+        sleep(1)
+    else:
+        print("Updater is still locked: %s" % (FN_LOCK_APT,), file=out)
+        # FIXME: Abort?
+
+    open(FN_LOCK_APT, "w").close()
+    yield None
+    if os.path.exists(FN_LOCK_APT):
+        os.unlink(FN_LOCK_APT)

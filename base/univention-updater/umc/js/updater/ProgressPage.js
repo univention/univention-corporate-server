@@ -308,7 +308,6 @@ define([
 		// internal function that switches any heading variables of
 		// our current page, according to the retrieved job status
 		_switch_headings: function(status) {
-
 			// avoid doing that repeatedly
 			if (status === this._last_heading_status) {
 				return;
@@ -317,28 +316,27 @@ define([
 			this._last_heading_status = status;
 
 			var headings = {
- 				'running': {
+				'running': {
 					headerText: _('UCS is being updated'),
 					helpText: '<p>' + _('The update is being executed.') +
 						' ' + _('<b>Leave the system up and running</b> at any moment during the update!') + '</p>' +
 						'<p>' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</p>'
- 				},
- 				'success': {
+				},
+				'success': {
 					headerText: _('UCS update successful'),
 					helpText: _('The update has been successfully finished. Press the "back" button to close this view.')
- 				},
- 				'failed': {
+				},
+				'failed': {
 					headerText: _('UCS update failed'),
 					helpText: _('The update failed, please examine the log file for the exact cause. Press the "back" button to close this view.')
- 				}
+				}
 			};
 
 			var info = headings[status];
-			for (var v in info) {
+			info.forEach(function(v) {
 				this.set(v, info[v]);
-			}
+			});
 			// this.layout();
-
 		},
 
 		updateStatus: function(values) {

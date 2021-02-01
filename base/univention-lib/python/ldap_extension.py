@@ -48,6 +48,7 @@ import datetime
 from optparse import OptionParser, OptionGroup, Option, OptionValueError, Values  # noqa F401
 from copy import copy
 from abc import ABCMeta, abstractproperty, abstractmethod
+from typing import Dict, List, Optional, Tuple  # noqa F401
 
 import six
 import apt
@@ -62,10 +63,6 @@ from univention.admin import modules as udm_modules
 from univention.admin import uexceptions as udm_errors
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import MIME_DESCRIPTION
-try:
-	from typing import Dict, List, Optional, Tuple  # noqa F401
-except ImportError:
-	pass
 
 
 class BaseDirRestriction(Exception):
@@ -83,6 +80,7 @@ def safe_path_join(basedir, filename):
 
 
 def _verify_handler_message_container(lo, position):
+	# type: (udm_uldap.access, udm_uldap.position) -> None
 	position_dn = 'cn=univention,{}'.format(listener.configRegistry.get('ldap/base'))
 	udm_modules.update()
 	cn_module = udm_modules.get('container/cn')
@@ -98,6 +96,7 @@ def _verify_handler_message_container(lo, position):
 
 
 def _get_handler_message_object(lo, position, handler_name, create=False):
+	# type: (udm_uldap.access, udm_uldap.position, str, bool) -> None
 	position_dn = 'cn=handler_messages,cn=univention,{}'.format(listener.configRegistry.get('ldap/base'))
 	udm_modules.update()
 	data_module = udm_modules.get('settings/data')

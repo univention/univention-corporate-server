@@ -82,21 +82,9 @@ Description[en]=The apt installation sources are generated based on the reposito
 Type=bool
 Categories=service-software-management
 
-[repository/online/unmaintained]
-Description[de]=Das Univention-Repository und andere Repository-Komponenten unterscheiden zwischen zwei Bestandteilen: Der von der Maintenance abgedeckte Standard-Paketumfang von UCS befindet sich im maintained-Bereich. Unter unmaintained finden sich die weiteren Pakete, z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch Sicherheits-Updates oder anderweitige Maintenance abgedeckt. Ist diese Option aktiviert, werden die Pakete aus unmaintained bereitgestellt.
-Description[en]=The Univention repository and repository components differentiate between two component parts: The UCS standard package scope covered by the maintenance can be found in the maintained area. Additional packages, e.g., other mail servers than Postfix can be found under unmaintained. These packages are not covered by security updates or ulterior maintenance. If this option is activated, the packages from unmaintained are provided.
-Type=bool
-Categories=service-software-management
-
 [repository/online/httpmethod]
 Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
 Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
-Type=str
-Categories=service-software-management
-
-[repository/online/architectures]
-Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Server. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
-Description[en]=In the default setting the local repository only contains the architecture of the repository server. If this variable is set to 'i386 amd64', both architectures are mirrored.
 Type=str
 Categories=service-software-management
 
@@ -104,6 +92,12 @@ Categories=service-software-management
 Description[de]=Ergänzend zum Standard-Repository können weitere Komponenten eingebunden werden. Zusätzliche Komponenten werden in der Regel durch das Univention App Center eingebunden, können aber auch manuell in Univention Configuration Registry konfiguriert werden. Zur Einbindung einer Komponente wird die Option 'repository/online/component/KOMPONENTENNAME' aktiviert. Zusätzliche Parameter können nach dem Schema 'repository/online/component/KOMPONENTENNAME/OPTION=WERT' gesetzt werden.
 Description[en]=In addition to the standard repository additional components can be included. While such components are usually included through the Univention App Center, they can also be configured manually in Univention Configuration Registry. To include a component the option 'repository/online/component/COMPONENTNAME' must be activated. Additional parameters can be set following the scheme 'repository/online/component/COMPONENTNAME/OPTION=VALUE'.
 Type=bool
+Categories=service-software-management
+
+[repository/online/component/.*/defaultpackages?]
+Description[de]=Ein Liste von Paketnamen der Komponente, die standardmäßig installiert werden sollen.
+Description[en]=A list of package names from the component, which should be installed by default.
+Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/description]
@@ -139,6 +133,12 @@ Categories=service-software-management
 [repository/online/component/.*/prefix]
 Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad für die Komponente konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
 Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a path for the component. If the variable is unset, no prefix is used.
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/layout]
+Description[de]=Das Layout der Paketstruktur der Komponente. Standard ist "arch", alternative ist "flat".
+Description[en]=The layout of the package repository of the component. Default is "arch", alternative is "flat".
 Type=str
 Categories=service-software-management
 
@@ -194,12 +194,6 @@ Categories=service-software-management
 Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror') und diese Option aktiviert, werden auch Quellcodepakete gespiegelt.
 Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror') and this option is activated, source code packages are mirrored as well.
 Type=bool
-Categories=service-software-management
-
-[repository/mirror/architectures]
-Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Servers. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
-Description[en]=In the default setting the local repository only contains the architecture of the repository server. If this variable is set to 'i386 amd64', both architectures are mirrored.
-Type=str
 Categories=service-software-management
 
 [repository/mirror/basepath]

@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-export DH_ALWAYS_EXCLUDE=.svn
 PACKAGES := $(shell sed -rne '/^Provides:/,/^\S/{/\sucs-test-module(\s|,|$$)/{g;p}};s/Package: //;T;h' debian/control)
 BLANK :=
 SPACE := $(BLANK) $(BLANK)

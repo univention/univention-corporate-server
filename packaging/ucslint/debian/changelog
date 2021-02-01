@@ -1,3 +1,9 @@
+ucslint (9.0.1-2) unstable; urgency=low
+
+  * Bug #51316: Ignore more files
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Feb 2021 17:42:07 +0100
+
 ucslint (9.0.1-1) unstable; urgency=medium
 
   * Bug #43686: use systemctl to start, stop or restart UDL

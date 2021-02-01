@@ -2,13 +2,20 @@
 
 @!@
 import traceback
+from univention.updater.errors import UpdaterException
 from univention.updater.tools import UniventionUpdater
 
 try:
 	updater = UniventionUpdater()
 
 	if updater.online_repository:
-		print(updater.print_component_repositories())
+		ver = updater.current_version
+		for comp in updater.get_components():
+			try:
+				for repo in comp.repositories(ver, ver):
+					print(repo)
+			except UpdaterException as ex:
+				print("# Component %s: %s" % (comp.name, ex))
 	else:
 		print('# The online repository is disabled and can be enabled with:')
 		print('#   univention-config-registry set repository/online=true')

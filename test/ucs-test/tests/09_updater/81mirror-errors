@@ -96,7 +96,7 @@ run_tests () { # execute all updater programs
 	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password"
 
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
-	grep -F "Configuration error: component not found" /etc/apt/mirror.list
+	grep -F "Component ${compname}DUMMY: Error downloading" /etc/apt/mirror.list
 	univention-repository-update net 2>&1
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
 

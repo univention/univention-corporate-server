@@ -31,12 +31,11 @@ try:
 		print('#   univention-config-registry set repository/mirror=true')
 		print('')
 	else:
-		for rel in mirror.get_releases(mirror.server):
-			if mirror.version_start <= rel <= mirror.version_end:
-				pool = UCSRepoPool5(rel)
-				for pool.errata in (False, True):
-					for typ in ["deb"] + ["deb-src"][:mirror.sources]:
-						print(pool.deb(mirror.server, typ, mirror=True))
+		for rel, _data in mirror.get_releases(mirror.version_start, mirror.version_end):
+			pool = UCSRepoPool5(rel)
+			for pool.errata in (False, True):
+				for typ in ["deb"] + ["deb-src"][:mirror.sources]:
+					print(pool.deb(mirror.server, typ, mirror=True))
 
 		print("clean %s" % (mirror.server.baseurl.public(),))
 

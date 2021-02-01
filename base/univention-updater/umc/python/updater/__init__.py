@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -31,21 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import re
+import importlib.util
 import os
-import imp
+import pipes
+import psutil
+from datetime import datetime
+from hashlib import md5
 from os import stat, getpid
 from time import time
-from hashlib import md5
-import subprocess
-import psutil
-import pipes
-import json
-import requests
-from datetime import datetime
-from urlparse import urljoin
+from types import ModuleType  # noqa F401
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa F401
 
 import notifier.threads
+from apt import Cache
 
 from univention.lib.i18n import Translation
 from univention.lib import atjobs
@@ -54,44 +52,32 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer, ListSanitizer
+from univention.management.console.protocol.message import Request
 
 from univention.updater.tools import UniventionUpdater
-from univention.updater.repo_url import UcsRepoUrl
 from univention.updater.errors import RequiredComponentError, UpdaterException
-
-try:
-	from typing import Any, Dict, Iterable, List  # noqa F401
-except ImportError:
-	pass
 
 _ = Translation('univention-management-console-module-updater').translate
 
 # the file whose file time is used as the 'serial' value for the 'Components' grid.
 COMPONENTS_SERIAL_FILE = '/etc/apt/sources.list.d/20_ucs-online-component.list'
 
-# serial files for the 'Updates' page. Whenever only one of these
-# files have changed we have to refresh all elements of the
-# 'Updates' page.
-UPDATE_SERIAL_FILES = [
-	'/etc/apt/mirror.list',
-	'/etc/apt/sources.list.d/15_ucs-online-version.list',
-	'/etc/apt/sources.list.d/18_ucs-online-errata.list',
-	'/etc/apt/sources.list.d/20_ucs-online-component.list'
-]
-
-HOOK_DIRECTORY_LEGACY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
 HOOK_DIRECTORY = '/usr/share/univention-updater/hooks'
 
 INSTALLERS = {
 	'release': {
 		'purpose': _("Release update to version %s"),
 		'command': "/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
+		'prejob': 'ucr set updater/maintenance=true',
+		'postjob': 'ucr set updater/maintenance=false',
 		'logfile': '/var/log/univention/updater.log',
 		'statusfile': '/var/lib/univention-updater/univention-updater.status',
 	},
 	'distupgrade': {
 		'purpose': _("Package update"),
 		'command': "/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
+		'prejob': '/usr/share/univention-updater/disable-apache2-umc',
+		'postjob': '/usr/share/univention-updater/enable-apache2-umc --no-restart',
 		'logfile': '/var/log/univention/updater.log',
 		'statusfile': '/var/lib/univention-updater/umc-dist-upgrade.status',
 	}
@@ -105,8 +91,8 @@ class Watched_File(object):
 	rather basic 'stat' calls, monitoring mtime and size.
 	"""
 
-	def __init__(self, file, count=2):  # type: (str, int) -> None
-		self._file = file
+	def __init__(self, path: str, count: int = 2) -> None:
+		self._file = path
 		self._count = count
 
 		self._last_returned_stamp = 0  # the last result we returned to the caller. will be returned as long as there are not enough changes.
@@ -117,7 +103,7 @@ class Watched_File(object):
 		self._last_size = 0  # last size we've seen
 		self._last_md5 = ''
 
-	def timestamp(self):  # type: () -> int
+	def timestamp(self) -> int:
 		"""
 		Main function. returns the current timestamp whenever size or mtime
 		have changed. Defers returning the new value until changes have
@@ -163,45 +149,33 @@ class Watched_Files(object):
 	""" Convenience class to monitor more than one file at a time.
 	"""
 
-	def __init__(self, files, count=2):  # type: (Iterable[str], int) -> None
+	def __init__(self, files: Iterable[str], count: int = 2) -> None:
 		self._count = count
-		self._files = []
-
+		self._files = [Watched_File(f, 0) for f in files]
 		self._last_returned_stamp = 0  # the last result we returned to the caller. will be returned as long as there are not enough changes.
-
 		self._unchanged_count = 0  # incremented if size and timestamp didn't change
-
 		self._last_stamp = 0  # last timestamp we've seen
 
-		for f in files:
-			self._files.append(Watched_File(f, 0))
-
-	def timestamp(self):  # type: () -> int
-		max = 0
-		for f in self._files:
-			stamp = f.timestamp()
-			if stamp > max:
-				max = stamp
-
-		if max == self._last_stamp:
+	def timestamp(self) -> int:
+		latest = max(f.timestamp() for f in self._files)
+		if latest == self._last_stamp:
 			self._unchanged_count += 1
 			if self._unchanged_count >= self._count:
-				self._last_returned_stamp = max
+				self._last_returned_stamp = latest
 		else:
 			self._unchanged_count = 0
-			self._last_stamp = max
+			self._last_stamp = latest
 
 		return self._last_returned_stamp
 
 
 class Instance(Base):
 
-	def init(self):  # type: () -> None
+	def init(self) -> None:
 		MODULE.info("Initializing 'updater' module (PID = %d)" % (getpid(),))
 		self._current_job = ''
 		self._logfile_start_line = 0
 		self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
-		self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
 		try:
 			self.uu = UniventionUpdater(False)
 		except Exception as exc:  # FIXME: let it raise
@@ -209,12 +183,12 @@ class Instance(Base):
 			MODULE.error("init() ERROR: %s" % (exc,))
 
 	@simple_response
-	def query_maintenance_information(self):  # type: () -> Dict[str, Any]
+	def query_maintenance_information(self) -> Dict[str, Any]:
 		ret = self._maintenance_information()
 		ret.update(self._last_update())
 		return ret
 
-	def _last_update(self):  # type: () -> Dict[str, Any]
+	def _last_update(self) -> Dict[str, Any]:
 		status_file = '/var/lib/univention-updater/univention-updater.status'
 		ret = {'last_update_failed': False, 'last_update_version': None}  # type: Dict[str, Any]
 		try:
@@ -238,62 +212,33 @@ class Instance(Base):
 
 		return ret
 
-	def _maintenance_information(self):  # type: () -> Dict[str, Any]
-		ucr.load()
-		releases = {}
+	def _maintenance_information(self) -> Dict[str, Any]:
 		default = {'show_warning': False}
-		if ucr.is_true('license/extended_maintenance/disable_warning') or not self.uu:
+		if not self.uu:
+			return default
+
+		ucr.load()
+		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return default
 
 		version = self.uu.current_version
-		url = urljoin(UcsRepoUrl(ucr, 'repository/online').private(), 'releases.json')
-		try:
-			if url.startswith('file://'):
-				with open(url, 'r') as releases_fd:
-					releases = json.load(releases_fd)
-			else:
-				response = requests.get(url, timeout=10)
-				if not response.ok:
-					response.raise_for_status()
-				releases = response.json()
-		except (requests.exceptions.RequestException, EnvironmentError) as exc:
-			MODULE.error("Querying maintenance information failed: %s" % (exc,))
-		except ValueError as exc:
-			MODULE.error('The JSON format is malformed: %s' % (exc,))
-		try:
-			for majors in releases['releases']:
-				if majors['major'] != version.major:
-					continue
-				for minors in majors["minors"]:
-					if minors['minor'] != version.minor:
-						continue
-					for patchlevel in minors["patchlevels"]:
-						if patchlevel['patchlevel'] != version.patchlevel:
-							continue
+		for _ver, data in self.uu.get_releases(version, version):
+			status = data.get('status', 'unmaintained')
 
-						_maintained_status = patchlevel.get('status', 'unmaintained')
-						maintenance_extended = _maintained_status == 'extended'
-						show_warning = maintenance_extended or _maintained_status != 'maintained'
+			maintenance_extended = status == 'extended'
+			show_warning = maintenance_extended or status != 'maintained'
 
-						return {
-							'ucs_version': str(version),
-							'show_warning': show_warning,
-							'maintenance_extended': maintenance_extended,
-							'base_dn': ucr.get('license/base')
-						}
-					break
-				break
-		except KeyError as exc:
-			MODULE.error('The JSON format is missing keys: %s' % (exc,))
+			return {
+				'ucs_version': str(version),
+				'show_warning': show_warning,
+				'maintenance_extended': maintenance_extended,
+				'base_dn': ucr.get('license/base'),
+			}
 
 		return default
 
 	@simple_response
-	def poll(self):  # type: () -> bool
-		return True
-
-	@simple_response
-	def query_releases(self):  # type: () -> List[Dict[str, str]]
+	def query_releases(self) -> List[Dict[str, str]]:
 		"""
 		Returns a list of system releases suitable for the
 		corresponding ComboBox
@@ -306,7 +251,7 @@ class Instance(Base):
 		appliance_mode = ucr.is_true('server/appliance')
 
 		available_versions, blocking_components = self.uu.get_all_available_release_updates()
-		result = [{'id': rel, 'label': 'UCS %s' % (rel,)} for rel in available_versions]
+		result = [{'id': str(rel), 'label': 'UCS %s' % (rel,)} for rel in available_versions]
 		#
 		# appliance_mode=no ; blocking_comp=no  → add "latest version"
 		# appliance_mode=no ; blocking_comp=yes →  no "latest version"
@@ -324,12 +269,12 @@ class Instance(Base):
 	@sanitize(
 		hooks=ListSanitizer(StringSanitizer(minimum=1), required=True)
 	)
-	def call_hooks(self, request):
+	def call_hooks(self, request: Request) -> None:
 		"""
 		Calls the specified hooks and returns data given back by each hook
 		"""
 
-		def _thread(request):
+		def _thread(request: Request) -> Dict[str, Any]:
 			result = {}
 			hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
 
@@ -346,56 +291,27 @@ class Instance(Base):
 		thread.run()
 
 	@simple_response
-	def updates_serial(self):
-		"""
-		Watches the three `sources.list` snippets for changes
-		"""
-		result = self._updates_serial.timestamp()
-		MODULE.info(" -> Serial for UPDATES is '%s'" % result)
-		return result
-
-	@simple_response
-	def updates_check(self):
+	def updates_check(self) -> Dict[str, List[Tuple[str, str]]]:
 		"""
 		Returns the list of packages to be updated/installed
 		by a dist-upgrade.
 		"""
-		p0 = subprocess.Popen(['LC_ALL=C apt-get update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout, stderr) = p0.communicate()
-
-		p1 = subprocess.Popen(['LC_ALL=C apt-get -u dist-upgrade -s'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout, stderr) = p1.communicate()
-
 		install = []
 		update = []
 		remove = []
-		for line in stdout.split('\n'):
-			# upgrade:
-			#   Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
-			# inst:
-			#   Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
-			#
-			# *** FIX ***   the above example lines ignore the fact that there's
-			#               some extra text (occasionally) after the last closing
-			#               parenthesis. Until now, I've seen only a pair of empty
-			#               brackets [], but who knows...
-			match = re.search(r'^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)', line)
-			if match:
-				pkg = match.group(1)
-				old = match.group(2)
-				ver = match.group(3)
-				if old:
-					update.append([pkg, ver])
-				else:
-					install.append([pkg, ver])
-			elif line.startswith('Remv '):
-				ll = line.split(' ')
-				pkg = ll[1]
-				# i18n: The package version is unknown.
-				ver = _('unknown')
-				if len(ll) > 2:
-					ver = ll[2].replace('[', '').replace(']', '')
-				remove.append([pkg, ver])
+
+		apt = Cache(memonly=True)
+		apt.update()
+		apt.open()
+		apt.clear()
+		apt.upgrade(dist_upgrade=True)
+		for pkg in apt.get_changes():
+			if pkg.marked_install:
+				install.append((pkg.name, pkg.candidate.version))
+			if pkg.marked_upgrade:
+				update.append((pkg.name, pkg.candidate.version))
+			if pkg.marked_delete:
+				remove.append((pkg.name, pkg.installed.version))
 
 		return dict(
 			update=sorted(update),
@@ -404,7 +320,7 @@ class Instance(Base):
 		)
 
 	@simple_response
-	def updates_available(self):
+	def updates_available(self) -> bool:
 		"""
 		Asks if there are package updates available. (don't get confused
 		by the name of the UniventionUpdater function that is called here.)
@@ -418,17 +334,18 @@ class Instance(Base):
 			self.uu.ucr_reinit()
 
 			what = 'checking update availability'
-			return self.uu.component_update_available()
+			new, upgrade, removed = self.uu.component_update_get_packages()
+			return any((new, upgrade, removed))
 		except Exception as ex:
 			typ = str(type(ex)).strip('<>')
 			msg = '[while %s] [%s] %s' % (what, typ, str(ex))
 			MODULE.error(msg)
 		return False
 
-	def status(self, request):  # TODO: remove unneeded things
+	def status(self, request: Request) -> None:  # TODO: remove unneeded things
 		"""One call for all single-value variables."""
 
-		result = {}
+		result = {}  # type: Dict[str, Any]
 		ucr.load()
 
 		try:
@@ -446,16 +363,15 @@ class Instance(Base):
 			self.uu.ucr_reinit()
 
 			what = 'getting UCS version'
-			result['ucs_version'] = self.uu.get_ucs_version()
+			result['ucs_version'] = str(self.uu.current_version)
 
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'
 			try:
-				result['release_update_available'] = self.uu.release_update_available(errorsto='exception')
+				ver = self.uu.release_update_available(errorsto='exception')
+				result['release_update_available'] = '' if ver is None else str(ver)
 			except RequiredComponentError as exc:
 				result['release_update_available'] = exc.version
-			if result['release_update_available'] is None:
-				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
 			try:
@@ -468,14 +384,9 @@ class Instance(Base):
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"
-			c_count = 0
-			e_count = 0
-			for comp in self.uu.get_all_components():
-				c_count = c_count + 1
-				if ucr.is_true('repository/online/component/%s' % (comp,), False):
-					e_count = e_count + 1
-			result['components'] = c_count
-			result['enabled'] = e_count
+			components = [bool(comp) for comp in self.uu.get_components(all=True)]
+			result['components'] = len(components)
+			result['enabled'] = sum(components)
 
 			# HACK: the 'Updates' form polls on the serial file
 			#       to refresh itself. Including the serial value
@@ -494,17 +405,7 @@ class Instance(Base):
 		self.finished(request.id, [result])
 
 	@simple_response
-	def reboot(self):
-		"""
-		Reboots the computer. Simply invokes /sbin/reboot in the background
-		and returns success to the caller. The caller is prepared for
-		connection loss.
-		"""
-		subprocess.call(['/sbin/reboot'])
-		return True
-
-	@simple_response
-	def running(self):
+	def running(self) -> str:
 		"""
 		Returns the id (key into INSTALLERS) of a currently
 		running job, or the empty string if nothing is running.
@@ -512,15 +413,16 @@ class Instance(Base):
 		return self.__which_job_is_running()
 
 	@sanitize(
-		job=ChoicesSanitizer(INSTALLERS.keys() + [''], required=True),
+		job=ChoicesSanitizer(list(INSTALLERS) + [''], required=True),
 		count=IntegerSanitizer(default=0),
 	)
 	@simple_response
-	def updater_log_file(self, job, count):
+	def updater_log_file(self, job: str, count: int) -> Union[None, float, List[str]]:
 		"""
 		returns the content of the log file associated with
 		the job.
 
+		:param job: Job name.
 		:param count: has the same meaning as already known:
 			<0 ...... return timestamp of file (for polling)
 			0 ....... return whole file as a string list
@@ -535,12 +437,12 @@ class Instance(Base):
 		job = self._current_job or job
 
 		if not job:
-			return
+			return None
 
 		fname = INSTALLERS[job]['logfile']
 		if count < 0:
 			try:
-				return stat(fname)[9]
+				return stat(fname).st_ctime
 			except EnvironmentError:
 				return 0
 
@@ -548,7 +450,7 @@ class Instance(Base):
 		count += self._logfile_start_line
 		return self._logview(fname, -count)
 
-	def _logview(self, fname, count):
+	def _logview(self, fname: str, count: int) -> List[str]:
 		"""
 		Contains all functions needed to view or 'tail' an arbitrary text file.
 
@@ -572,14 +474,14 @@ class Instance(Base):
 		return lines
 
 	@sanitize(
-		job=ChoicesSanitizer(INSTALLERS.keys(), required=True),
+		job=ChoicesSanitizer(INSTALLERS, required=True),
 	)
 	@simple_response
-	def updater_job_status(self, job):  # TODO: remove this completely
+	def updater_job_status(self, job: str) -> Dict[str, Any]:  # TODO: remove this completely
 		"""Returns the status of the current/last update even if the job is not running anymore."""
-		result = {}
+		result = {}  # type: Dict[str, Any]
 		try:
-			with open(INSTALLERS[job]['statusfile'], 'rb') as fd:
+			with open(INSTALLERS[job]['statusfile'], 'r') as fd:
 				for line in fd:
 					fields = line.strip().split('=')
 					if len(fields) == 2:
@@ -591,52 +493,48 @@ class Instance(Base):
 		return result
 
 	@sanitize(
-		job=ChoicesSanitizer(INSTALLERS.keys(), required=True),
+		job=ChoicesSanitizer(INSTALLERS, required=True),
 		detail=StringSanitizer(r'^[A-Za-z0-9\.\- ]*$'),
 	)
 	@simple_response
-	def run_installer(self, job, detail=''):
+	def run_installer(self, job: str, detail: str = '') -> Dict[str, int]:
 		"""
 		This is the function that invokes any kind of installer. Arguments accepted:
-		job ..... the main thing to do. can be one of:
+
+		:param job: ..... the main thing to do. can be one of:
 			'release' ...... perform a release update
 			'distupgrade' .. update all currently installed packages (distupgrade)
-			'check' ........ check what would be done for 'update' ... do we need this?
-		detail ....... an argument that specifies the subject of the installer:
+
+		:param detail: ....... an argument that specifies the subject of the installer:
 			for 'release' .... the target release number,
 			for all other subjects: detail has no meaning.
 		"""
 
 		MODULE.info("Starting function %r" % (job,))
 		self._current_job = job
+		spec = INSTALLERS[job]
 
 		# remember initial lines of logfile before starting update to not show it in the frontend
-		logfile = INSTALLERS[job]['logfile']
+		logfile = spec['logfile']
 		try:
 			with open(logfile, 'rb') as fd:
 				self._logfile_start_line = sum(1 for line in fd)
 		except EnvironmentError:
 			pass
 
-		command = INSTALLERS[job]['command']
+		command = spec['command']
 		if '%' in command:
-			command = command % (pipes.quote(detail).replace('\n', '').replace('\r', '').replace('\x00', ''),)
-
-		prejob = '/usr/share/univention-updater/disable-apache2-umc'
-		postjob = '/usr/share/univention-updater/enable-apache2-umc --no-restart'
-		if job == 'release':
-			prejob = 'ucr set updater/maintenance=true'
-			postjob = 'ucr set updater/maintenance=false'
+			command = command % (pipes.quote(detail).translate({0: None, 10: None, 13: None}),)
 		MODULE.info("Creating job: %r" % (command,))
 		command = '''
 %s
 %s < /dev/null
-%s''' % (prejob, command, postjob)
+%s''' % (spec["prejob"], command, spec["postjob"])
 		atjobs.add(command, comments=dict(lines=self._logfile_start_line))
 
 		return {'status': 0}
 
-	def __which_job_is_running(self):  # type: () -> str
+	def __which_job_is_running(self) -> str:
 		# first check running at jobs
 		for atjob in atjobs.list(True):
 			for job, inst in INSTALLERS.items():
@@ -678,17 +576,17 @@ class HookManager:
 
 	Simple hook file example::
 
-		def my_test_hook(*args, **kwargs):
-			print('TEST_HOOK:', args, kwargs)
-			return ['Mein', 'Result', 123]
+		def test_hook(*args, **kwargs):
+			print('1ST_TEST_HOOK:', args, kwargs)
+			return ('Result', 1)
 
 		def other_hook(*args, **kwargs):
-			print('MY_SECOND_TEST_HOOK:', args, kwargs)
-			return ['Mein', 'Result', 123]
+			print('OTHER_HOOK:', args, kwargs)
+			return 'Other result'
 
 		def register_hooks():
 			return [
-				('test_hook', my_test_hook),
+				('test_hook', test_hook),
 				('pre_hook', other_hook),
 			]
 
@@ -705,31 +603,31 @@ class HookManager:
 
 	How to use HookManager::
 
-	>>> hm = HookManager('./test')
-	>>> hm.get_hook_list()
+	>>> hm = HookManager(TESTDIR)
+	>>> list(hm.get_hook_list())
 	['test_hook', 'pre_hook']
-	>>> hm.call_hook('test_hook', 'abc', 123, x=1, y='B')
-	TEST_HOOK: ('abc', 123) {'y': 'B', 'x': 1}                                <=== OUTPUT OF FIRST TESTHOOK
-	MY_SECOND_TEST_HOOK: ('abc', 123) {'y': 'B', 'x': 1}                      <=== OUTPUT OF SECOND TESTHOOK
-	[['First-Hook', 'Result', 123], ['Result', 'of', 'second', 'testhook']]   <=== RESULT OF call_hook()
+	>>> result = hm.call_hook('test_hook', 'abc', 123, x=1)
+	1ST_TEST_HOOK: ('abc', 123) {'x': 1}
+	2ND_TEST_HOOK: ('abc', 123) {'x': 1}
+	>>> result
+	[('Result', 1), ('Result', 2)]
 	>>> hm.call_hook('unknown_hook')
 	[]
-	>>>
 	"""
 
-	def __init__(self, module_dir, raise_exceptions=True):
+	def __init__(self, module_dir: str, raise_exceptions: bool = True) -> None:
 		"""
 		:param module_dir:				path to directory that contains python modules with hook functions
 		:param raise_exceptions:		if `False`, all exceptions while loading python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
 		"""
-		self.__loaded_modules = {}
-		self.__registered_hooks = {}
+		self.__loaded_modules = {}  # type: Dict[str, ModuleType]
+		self.__registered_hooks = {}  # type: Dict[str, List[Callable[..., Any]]]
 		self.__module_dir = module_dir
 		self.__raise_exceptions = raise_exceptions
 		self.__load_hooks()
 		self.__register_hooks()
 
-	def __load_hooks(self):
+	def __load_hooks(self) -> None:
 		"""
 		loads all python modules in specified module dir
 		"""
@@ -737,33 +635,29 @@ class HookManager:
 			for f in os.listdir(self.__module_dir):
 				if f.endswith('.py') and len(f) > 3:
 					modname = f[0:-3]
-					fd = open(os.path.join(self.__module_dir, f))
-					module = imp.new_module(modname)
 					try:
-						exec(fd, module.__dict__)
+						spec = importlib.util.spec_from_file_location(modname, os.path.join(self.__module_dir, f))
+						module = importlib.util.module_from_spec(spec)
+						spec.loader.exec_module(module)  # type: ignore
 						self.__loaded_modules[modname] = module
 					except Exception:
 						if self.__raise_exceptions:
 							raise
 
-	def __register_hooks(self):
+	def __register_hooks(self) -> None:
 		for module in self.__loaded_modules.values():
 			try:
-				hooklist = module.register_hooks()
+				hooklist = module.register_hooks()  # type: ignore
 				for hookname, func in hooklist:
 					# if returned function is not callable then continue
 					if not callable(func):
 						continue
-					# append function to corresponding hook queue
-					if hookname in self.__registered_hooks:
-						self.__registered_hooks[hookname].append(func)
-					else:
-						self.__registered_hooks[hookname] = [func]
+					self.__registered_hooks.setdefault(hookname, []).append(func)
 			except Exception:
 				if self.__raise_exceptions:
 					raise
 
-	def set_raise_exceptions(self, val):
+	def set_raise_exceptions(self, val: bool) -> None:
 		"""
 		Enable or disable raising exceptions.
 
@@ -774,13 +668,13 @@ class HookManager:
 		else:
 			raise ValueError('boolean value required')
 
-	def get_hook_list(self):
+	def get_hook_list(self) -> Iterable[str]:
 		"""
 		returns a list of hook names that have been defined by loaded python modules
 		"""
 		return self.__registered_hooks.keys()
 
-	def call_hook(self, name, *args, **kwargs):
+	def call_hook(self, name: str, *args: Any, **kwargs: Any) -> List[Any]:
 		"""
 		All additional arguments are passed to hook methods.
 		If `self.__raise_exceptions` is `False`, all exceptions while calling hooks will be caught and returned in result list.

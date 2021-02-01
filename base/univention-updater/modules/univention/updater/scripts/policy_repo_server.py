@@ -30,42 +30,33 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-import os
 import sys
-import subprocess
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from univention.config_registry import ConfigRegistry, handler_set
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
-def query_policy(update: str, ldap_hostdn: str) -> Tuple[str, str]:
+def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
     """
     Retrieve updateServer and version from policy.
     """
-    cmd = (
-        'univention_policy_result',
-        '-D', ldap_hostdn,
-        '-y', '/etc/machine.secret',
-        '-s',
-        ldap_hostdn,
-    )
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    assert p1.stdout
+    try:
+        results, _policies = policy_result(ldap_hostdn)
+    except PolicyResultFailed as ex:
+        sys.exit("failed to execute univention_policy_result: %s" % ex)
 
-    server = ''
-
-    for line in p1.stdout:
-        key, value = line.decode('utf-8').split('=', 1)
-        value = value.strip('"')
-        if key == 'univentionRepositoryServer':
-            server = value
-        elif key == 'univentionUpdateVersion':
-            update = value
-
-    if p1.wait():
-        raise SystemExit("failed to execute `univention_policy_result'")
+    server = one(results, "univentionRepositoryServer")  # univentionPolicyRepositorySync
+    update = one(results, "univentionUpdateVersion")  # univentionPolicyUpdate
 
     return (server, update)
+
+
+def one(results: Dict[str, List[str]], key: str) -> str:
+    try:
+        return results[key][0]
+    except LookupError:
+        return ""
 
 
 def main() -> None:
@@ -83,11 +74,13 @@ def main() -> None:
     online_server = ucr.get('repository/online/server')
     mirror_server = ucr.get('repository/mirror/server')
     fqdn = '%(hostname)s.%(domainname)s' % ucr
-    update = '%(version/version)s-%(version/patchlevel)s' % ucr
+    self_update = '%(version/version)s-%(version/patchlevel)s' % ucr
 
     ucr_variables = []  # type: List[str]
 
-    new_server, update = query_policy(update, hostdn)
+    new_server, policy_update = query_policy(hostdn)
+    update = policy_update or self_update  # FIXME: not used - should be pass to `univention-repository-update --updateto=`
+
     if ucr.is_true('local/repository'):
         # on a repository server
         if not new_server:

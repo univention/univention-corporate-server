@@ -19,7 +19,7 @@ setup_apache --port "${port}" "${repoprefix}"
 
 # NOTE: ${comp}/version must specified because no release exists for autodetection
 
-mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 

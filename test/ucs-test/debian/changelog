@@ -1,3 +1,9 @@
+ucs-test (10.0.3-1) unstable; urgency=low
+
+  * Bug #51316: Adapt updater tests for UCS-5 layout and Python 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Feb 2021 17:39:43 +0100
+
 ucs-test (10.0.2-2) unstable; urgency=medium
 
   * Bug #52484: also check apps readme files

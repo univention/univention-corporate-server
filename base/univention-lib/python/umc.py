@@ -45,9 +45,12 @@ import ssl
 import json
 import locale
 import base64
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa F401
+_T = TypeVar("_T")
 
 from six.moves.http_cookies import SimpleCookie
 from six.moves.http_client import HTTPSConnection, HTTPException
+from six.moves import http_client as httplib  # noqa F401
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
@@ -137,9 +140,11 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
 		self.response = response
 
 	def __repr__(self):
+		# type: () -> str
 		return '<HTTPError %s>' % (self,)
 
 	def __str__(self):
+		# type: () -> str
 		traceback = ''
 		data = self.response.data
 		if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), six.string_types) and 'Traceback (most recent call last)' in self.response.data['traceback']:
@@ -234,14 +239,14 @@ class Request(object):
 	"""
 
 	def __init__(self, method, path, data=None, headers=None):
-		# type: (str, str, str, Optional[Dict[str, str]]) -> None
+		# type: (str, str, Optional[bytes], Optional[Dict[str, str]]) -> None
 		self.method = method
 		self.path = path
 		self.data = data
 		self.headers = headers or {}
 
 	def get_body(self):
-		# type: () -> Union[bytes, None]
+		# type: () -> Optional[bytes]
 		"""
 		Return the request data.
 
@@ -287,7 +292,7 @@ class Response(object):
 			return self.data.get('message')
 
 	def __init__(self, status, reason, body, headers, _response):
-		# type: (int, str, str, List[Tuple[str, str]], httplib.HTTPResponse) -> None
+		# type: (int, str, bytes, List[Tuple[str, str]], httplib.HTTPResponse) -> None
 		self.status = status
 		self.reason = reason
 		self.body = body
@@ -308,7 +313,7 @@ class Response(object):
 		return self._response.getheader(name, default)
 
 	def decode_body(self):
-		# type: () -> Union[str, dict]
+		# type: () -> Union[bytes, dict]
 		"""
 		Decode |HTTP| response and return |JSON| data as dictionary.
 
@@ -365,12 +370,13 @@ class Client(object):
 		self._raise_errors = True
 		self._automatic_reauthentication = automatic_reauthentication
 		self.cookies = {}  # type: Dict[str, str]
-		self.username = username
-		self.password = password
+		self.username = username or ''
+		self.password = password or ''
 		if username:
-			self.authenticate(username, password)
+			self.authenticate(self.username, self.password)
 
 	def authenticate(self, username, password):
+		# type: (str, str) -> Response
 		"""
 		Authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
@@ -384,7 +390,7 @@ class Client(object):
 		return self.umc_auth(username, password)
 
 	def reauthenticate(self):
-		# type: () -> None
+		# type: () -> Response
 		"""
 		Re-authenticate using the stored username and password.
 		"""
@@ -602,7 +608,7 @@ class Client(object):
 		return self.ConnectionType(self.hostname, timeout=self._timeout)
 
 	def __build_data(self, data, flavor=None):
-		# type: (Optional[dict], Optional[str]) -> Dict[str, Any]
+		# type: (Optional[Dict[str, Any]], Optional[str]) -> Dict[str, Any]
 		"""
 		Create a dictionary as expected by the |UMC| Server.
 

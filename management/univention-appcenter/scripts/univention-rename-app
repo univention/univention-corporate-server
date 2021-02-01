@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -33,7 +33,7 @@
 #
 
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 from univention.lib.package_manager import PackageManager
 from univention.updater.tools import UniventionUpdater
@@ -45,25 +45,23 @@ ucr.load()
 
 
 def main():
-	usage = '%prog OLD_ID NEW_ID'
+	# type: () -> None
 	description = '%prog changes the internal ID of an application. This means:' \
 		'(1) unregister OLD_ID, remove from LDAP' \
 		'(2) register NEW_ID, add to LDAP'
-	parser = OptionParser(usage=usage, description=description)
-	args = parser.parse_args()[1]
-	try:
-		old_id, new_id = args
-	except ValueError:
-		parser.print_usage()
-		sys.exit(1)
+	parser = ArgumentParser(description=description)
+	parser.add_argument("old_id")
+	parser.add_argument("new_id")
+	args = parser.parse_args()
+
 	try:
 		install_opener(ucr)
 		uu = UniventionUpdater(False)
 		component_manager = ComponentManager(ucr, uu)
 		package_manager = PackageManager(lock=False)
-		rename_app(old_id, new_id, component_manager, package_manager)
+		rename_app(args.old_id, args.new_id, component_manager, package_manager)
 	except Exception:
-		sys.stderr.write('ERROR: univention-rename-app "%s" "%s" did not succeed. Maybe a network error? In this case, just repeat the command.\n' % (old_id, new_id))
+		sys.stderr.write('ERROR: univention-rename-app "%s" "%s" did not succeed. Maybe a network error? In this case, just repeat the command.\n' % (args.old_id, args.new_id))
 		sys.exit(1)
 	else:
 		sys.stdout.write('Rename done.\n')

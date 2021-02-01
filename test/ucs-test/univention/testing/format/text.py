@@ -145,14 +145,14 @@ class Raw(Text):
 		super(Text, self).begin_test(case, prefix)
 		title = prefix + case.uid
 
-		cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 1
+		cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 2
 		if cols < 1:
 			cols = self.term.COLS
 		while len(title) > cols:
 			print(title[:cols], file=self.stream)
 			title = title[cols:]
 		ruler = '.' * (cols - len(title))
-		print('%s%s' % (title, ruler), end=' ', file=self.stream)
+		print('%s %s' % (title, ruler), end=' ', file=self.stream)
 		self.stream.flush()
 
 

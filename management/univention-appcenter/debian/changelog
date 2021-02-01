@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-1) unstable; urgency=low
+
+  * Bug #51316: Fix package dependencies for UCS updater
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Feb 2021 17:36:56 +0100
+
 univention-appcenter (9.0.1-17) unstable; urgency=medium
 
   * Bug #52453: adjust styling for 'Package Management' and 'Repository Settings' modules

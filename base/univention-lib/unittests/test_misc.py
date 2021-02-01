@@ -38,12 +38,20 @@ misc = import_lib_module('misc')
 @pytest.fixture
 def lib_ucr(mocker, ucr):
 	mock_config_registry = mocker.Mock(return_value=ucr)
-	mocker.patch.object(misc.univention.config_registry, 'ConfigRegistry', mock_config_registry)
+	mocker.patch.object(misc, 'ConfigRegistry', mock_config_registry)
 	return ucr
 
 
-def test_username():
-	assert misc.custom_username('domain admin') == 'domain admin'
+@pytest.fixture
+def ucr0():
+	"""
+	Non-empty fake UCR.
+	"""
+	return {"key": "value"}
+
+
+def test_username(ucr0):
+	assert misc.custom_username('domain admin', ucr0) == 'domain admin'
 
 
 def test_username_empty():
@@ -57,8 +65,8 @@ def test_username_custom(lib_ucr):
 	assert misc.custom_username('domain admin') == 'new_name'
 
 
-def test_groupname():
-	assert misc.custom_groupname('domain admins') == 'domain admins'
+def test_groupname(ucr0):
+	assert misc.custom_groupname('domain admins', ucr0) == 'domain admins'
 
 
 def test_groupname_empty():

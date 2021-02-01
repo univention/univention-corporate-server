@@ -1,4 +1,6 @@
-# Copyright (C) 2011-2021 Univention GmbH
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -24,38 +26,3 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-import os
-import shutil
-
-CUR = '/etc/apt/sources.list.d/20_ucs-online-component.list'
-BAK = CUR + '.old'
-
-
-def preinst(ucr, changes):
-    if os.path.exists(BAK):
-        os.remove(BAK)
-
-    if os.path.exists(CUR):
-        shutil.copy2(CUR, BAK)
-
-
-def postinst(ucr, changes):
-    if not os.path.exists(CUR):
-        return
-
-    for key in ucr.keys():
-        if key.startswith('repository/online/component/'):
-            component_part = '/'.join(key.split('/')[:4])
-            if ucr.is_true(key):
-                break
-    else:
-        return
-
-    res = open(CUR, 'r').readlines()
-    if len(res) <= 1:
-        if os.path.exists(BAK):
-            os.rename(BAK, CUR)
-
-    if os.path.exists(BAK):
-        os.remove(BAK)

@@ -33,6 +33,7 @@
 #REPOSITORY="https://updates.software-univention.de/"
 REPOSITORY="https://updates-test.software-univention.de/"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -56,7 +57,6 @@ if [ "$1" = "configure" ]; then
 		update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
 		repository/online?no \
 		repository/online/server?"${REPOSITORY}" \
-		repository/online/unmaintained?no \
 		repository/mirror?no \
 		repository/mirror/threads?10 \
 		repository/mirror/basepath?/var/lib/univention-repository \
@@ -68,10 +68,10 @@ if [ "$1" = "configure" ]; then
 		update/commands/remove?"apt-get --assume-yes remove" \
 		update/commands/remove/interactive?"apt-get remove" \
 		update/commands/configure?"dpkg --configure -a" \
-		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade" \
-		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u dist-upgrade" \
-		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us upgrade" \
-		update/commands/upgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u upgrade" \
+		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s dist-upgrade" \
+		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 dist-upgrade" \
+		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s upgrade" \
+		update/commands/upgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 upgrade" \
 		update/check/cron/enabled?yes \
 		update/check/cron/debug?no \
 		update/check/cron/entry"?5 * * * *" \

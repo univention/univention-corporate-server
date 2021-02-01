@@ -33,10 +33,11 @@ from __future__ import print_function
 
 import fcntl
 import os
+from typing import IO, Optional, Text  # noqa F401
 
 
 def get_lock(name, nonblocking=False):
-	# type: (str, bool) -> Optional[IO]
+	# type: (str, bool) -> Optional[IO[Text]]
 	"""
 	Get a exclusive lock.
 
@@ -77,7 +78,7 @@ def get_lock(name, nonblocking=False):
 
 
 def release_lock(fd):
-	# type: (IO) -> None
+	# type: (IO[Text]) -> None
 	"""
 	Releases the previously gained lock.
 

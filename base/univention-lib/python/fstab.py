@@ -36,6 +36,7 @@ from __future__ import print_function
 
 import os
 import re
+from typing import Container, List, Optional, Union  # noqa F401
 
 
 class InvalidEntry(Exception):
@@ -92,7 +93,7 @@ class File(list):
 		return None
 
 	def get(self, filesystem=[], ignore_root=True):
-		# type: (List[str], bool) -> List[Entry]
+		# type: (Container[str], bool) -> List[Entry]
 		"""
 		Return list of entries matching a list of file system types.
 
@@ -122,7 +123,7 @@ class File(list):
 				fd.write('%s\n' % (line,))
 
 	def __parse(self, line):
-		# type: (str) -> Entry
+		# type: (str) -> Union[Entry, str]
 		"""
 		Parse file system table line.
 
@@ -147,7 +148,8 @@ class File(list):
 		if len(fields) < 4:
 			return line
 
-		return Entry(*fields, comment=has_comment + comment if has_comment or fields[-1].endswith('\t') else None)
+		rem = has_comment + comment if has_comment or fields[-1].endswith('\t') else None
+		return Entry(*fields, comment=rem)  # type: ignore
 
 
 class Entry(object):
@@ -166,8 +168,11 @@ class Entry(object):
 	:ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
 	"""
 
+	_quote_dict = dict([(c, r'\%s' % oct(ord(c))) for c in ' \t\n\r\\'])
+	_quote_re = re.compile(r'\\0([0-7]+)')
+
 	def __init__(self, spec, mount_point, type, options, dump=None, passno=None, comment=None):
-		# type: (str, str, str, str, int, int, str) -> None
+		# type: (str, str, str, str, str, str, str) -> None
 		self.spec = self.unquote(spec.strip())
 		if self.spec.startswith('UUID='):
 			self.uuid = self.spec[5:]  # type: Optional[str]
@@ -179,11 +184,12 @@ class Entry(object):
 		self.mount_point = self.unquote(mount_point.strip())
 		self.type = self.unquote(type.strip())
 		self.options = self.unquote(options).split(',') if not isinstance(options, list) else options
-		self.dump = int(dump) if dump else dump
-		self.passno = int(passno) if passno else passno
+		self.dump = int(dump) if dump else None
+		self.passno = int(passno) if passno else None
 		self.comment = comment
 
 	def __str__(self, delim='\t'):
+		# type: (str) -> str
 		"""
 		Return the canonical string representation of the object.
 		>>> str(Entry('proc', '/proc', 'proc', 'defaults', 0, 0))
@@ -207,6 +213,7 @@ class Entry(object):
 		return delim.join(h)
 
 	def __repr__(self):
+		# type: () -> str
 		"""
 		>>> Entry('proc', '/proc', 'proc', 'defaults', 0, 0)
 		univention.lib.fstab.Entry('proc', '/proc', 'proc', options='defaults', freq=0, passno=0)
@@ -225,33 +232,31 @@ class Entry(object):
 
 	@classmethod
 	def quote(cls, s):
+		# type: (str) -> str
 		"""
 		Quote string to octal.
+
 		>>> Entry.quote('a b')
 		'a\\\\040b'
 		"""
-		try:
-			t = cls.__quote_dict
-		except AttributeError:
-			t = cls.__quote_dict = dict([(c, '\\%s' % oct(ord(c))) for c in ' \t\n\r\\'])
-		return ''.join([t.get(c, c) for c in s])
+		return ''.join([cls._quote_dict.get(c, c) for c in s])
 
 	@classmethod
 	def unquote(cls, s):
+		# type: (str) -> str
 		"""
 		Unquote octal to string.
+
 		>>> Entry.unquote('a\\040b')
 		'a b'
 		"""
-		try:
-			r = cls.__quote_re
-		except AttributeError:
-			r = cls.__quote_re = re.compile('\\\\0([0-7]+)')
-		return r.sub(lambda m: chr(int(m.group(1), 8)), s)
+		return cls._quote_re.sub(lambda m: chr(int(m.group(1), 8)), s)
 
 	def hasopt(self, opt):
+		# type: (str) -> List[str]
 		"""
 		Search for an option matching OPT.
+
 		>>> Entry('/dev/sda', '/', 'ext3', 'default,ro,user_xattr,acl', 0, 0).hasopt('user')
 		['user_xattr']
 		"""

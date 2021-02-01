@@ -31,31 +31,27 @@ Prune no longer required Linux kernel packages.
 """
 
 from argparse import ArgumentParser, Namespace
+from typing import List, Optional
 from os import uname
 
 from apt import Cache
 
-try:
-    from typing import List  # noqa F401
-except ImportError:
-    pass
-
 PREFIX = "linux-image-"
 
 
-def main():  # type: () -> None
+def main() -> None:
     opt = parse_args()
     prune(opt)
 
 
-def parse_args(argv=None):  # type: (List[str]) -> Namespace
+def parse_args(argv: Optional[List[str]] = None) -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
     parser.add_argument("--dry-run", "-n", action="store_true", help="Only show what would be done")
     return parser.parse_args(argv)
 
 
-def prune(opt):  # type: (Namespace) -> None
+def prune(opt: Namespace) -> None:
     cache = Cache()
 
     cur = {PREFIX + uname()[2] + suffix for suffix in {"", "-signed"}}

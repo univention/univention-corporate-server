@@ -1,3 +1,9 @@
+univention-lib (9.0.11-1) unstable; urgency=medium
+
+  * Bug #46600: Fix UCS_Version comparison
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Feb 2021 17:34:51 +0100
+
 univention-lib (9.0.10-1) unstable; urgency=medium
 
   * Bug #51324: Make admember code work for Python2 and Python3

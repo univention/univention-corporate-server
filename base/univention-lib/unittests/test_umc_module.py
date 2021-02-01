@@ -91,9 +91,9 @@ def test_imagedimensions_of_buffer():
 
 
 @pytest.mark.parametrize('buf,result', [
-	(PNG, ('image/png', 'application/x-bzip2', '1x1')),
-	(JPG, ('image/jpeg', 'application/x-bzip2', '1x1')),
-	pytest.param(ICON, ('image/x-icon', 'application/x-bzip2', '1x1'), marks=pytest.mark.xfail(reason='valueError: Not a supported image format: image/x-icon')),
+	pytest.param(PNG, ('image/png', 'application/x-bzip2', '1x1'), id="PNG"),
+	pytest.param(JPG, ('image/jpeg', 'application/x-bzip2', '1x1'), id="JPG"),
+	pytest.param(ICON, ('image/x-icon', 'application/x-bzip2', '1x1'), marks=pytest.mark.xfail(reason='valueError: Not a supported image format: image/x-icon'), id="ICON"),
 ])
 def test_imagecategory_of_buffer(buf, result):
 	assert umc_module.imagecategory_of_buffer(bz2.compress(buf)) == result

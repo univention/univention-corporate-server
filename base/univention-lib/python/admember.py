@@ -47,6 +47,7 @@ import ipaddress
 import time
 from datetime import datetime, timedelta
 import pipes
+from typing import Optional  # noqa F401
 
 import six
 if not six.PY2:
@@ -61,7 +62,7 @@ else:
 	DOMAIN_RID_ADMINS = 512
 	DOMAIN_RID_ADMINISTRATOR = 500
 
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
@@ -73,6 +74,7 @@ import dns.resolver
 
 # Ensure univention debug is initialized
 def initialize_debug():
+	# type: () -> None
 	# Use a little hack to determine if univention.debug has been initialized
 	# get_level(..) returns always ud.ERROR if univention.debug is not initialized
 	oldLevel = ud.get_level(ud.MODULE)
@@ -175,15 +177,18 @@ class failedToGetUcrVariable(Exception):
 
 
 def is_localhost_in_admember_mode(ucr=None):
+	# type: (Optional[ConfigRegistry]) -> bool
 	if not ucr:
-		ucr = univention.config_registry.ConfigRegistry()
+		ucr = ConfigRegistry()
 		ucr.load()
+
 	return ucr.is_true('ad/member', False)
 
 
 def is_localhost_in_adconnector_mode(ucr=None):
+	# type: (Optional[ConfigRegistry]) -> bool
 	if not ucr:
-		ucr = univention.config_registry.ConfigRegistry()
+		ucr = ConfigRegistry()
 		ucr.load()
 
 	if ucr.is_false('ad/member', True) and ucr.get('connector/ad/ldap/host'):
@@ -192,9 +197,11 @@ def is_localhost_in_adconnector_mode(ucr=None):
 
 
 def is_domain_in_admember_mode(ucr=None):
+	# type: (Optional[ConfigRegistry]) -> bool
 	if not ucr:
-		ucr = univention.config_registry.ConfigRegistry()
+		ucr = ConfigRegistry()
 		ucr.load()
+
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(base=ucr.get('ldap/base'), filter='(&(univentionServerRole=master)(univentionService=AD Member))')
 	if res:
@@ -203,27 +210,27 @@ def is_domain_in_admember_mode(ucr=None):
 
 
 def _get_kerberos_ticket(principal, password, ucr=None):
+	# type: (str, str, Optional[ConfigRegistry]) -> None
 	ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
 	if not ucr:
-		ucr = univention.config_registry.ConfigRegistry()
+		ucr = ConfigRegistry()
 		ucr.load()
 
 	# We need to remove the target credential cache first,
 	# otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
-	cmd = ("/usr/bin/kdestroy",)
-	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+	cmd1 = ("/usr/bin/kdestroy",)
+	p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
 		ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout.decode('UTF-8', 'replace'))
 
-	f = tempfile.NamedTemporaryFile('w+', delete=False)
-	try:
-		os.chmod(f.name, 0o600)
+	with tempfile.NamedTemporaryFile('w+') as f:
+		os.fchmod(f.fileno(), 0o600)
 		f.write(password)
-		f.close()
+		f.flush()
 
-		cmd = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
-		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		cmd2 = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
+		p1 = subprocess.Popen(cmd2, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 			msg = "kinit failed:\n%s" % (stdout.decode('UTF-8', 'replace'),)
@@ -231,9 +238,6 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 			raise connectionFailed(msg)
 		if stdout:
 			ud.debug(ud.MODULE, ud.WARN, "kinit output:\n%s" % stdout.decode('UTF-8', 'replace'))
-	finally:
-		if os.path.exists(f.name):
-			os.unlink(f.name)
 
 
 def check_connection(ad_domain_info, username, password):
@@ -248,10 +252,10 @@ def check_connection(ad_domain_info, username, password):
 
 
 def flush_nscd_hosts_cache():
+	# type: () -> None
 	if os.path.exists("/usr/sbin/nscd"):
 		cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
-		p1 = subprocess.Popen(cmd, close_fds=True)
-		p1.communicate()
+		subprocess.call(cmd)
 
 
 def decode_sid(value):
@@ -1619,6 +1623,7 @@ def configure_ad_member(ad_server_ip, username, password):
 
 
 def configure_backup_as_ad_member():
+	# type: () -> None
 	# TODO something else?
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
@@ -1626,6 +1631,7 @@ def configure_backup_as_ad_member():
 
 
 def configure_slave_as_ad_member():
+	# type: () -> None
 	# TODO something else?
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
@@ -1633,6 +1639,7 @@ def configure_slave_as_ad_member():
 
 
 def configure_member_as_ad_member():
+	# type: () -> None
 	# TODO something else?
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
@@ -1640,26 +1647,31 @@ def configure_member_as_ad_member():
 
 
 def configure_container_as_ad_member():
+	# type: () -> None
 	prepare_ucr_settings()
 
 
 def revert_backup_ad_member():
+	# type: () -> None
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
 
 
 def revert_slave_ad_member():
+	# type: () -> None
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
 
 
 def revert_member_ad_member():
+	# type: () -> None
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
 
 
 def revert_container_ad_member():
+	# type: () -> None
 	revert_ucr_settings()

@@ -4,15 +4,30 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
+ bash-completion,
  debhelper,
  dh-python,
  python-all,
- python-apt,
- python-debian,
+ python-backports.tempfile,
+ python-lazy-object-proxy,
+ python-monotonic,
+ python-pytest,
+ python-pytest-cov,
+ python-pytest-mock,
+ python-pytest-timeout,
+ python-setuptools,
  python-six,
  python-univention-debug,
  python-univention-lib (>= 8.0.1-33),
  python3-all,
+ python3-lazy-object-proxy,
+ python3-pytest,
+ python3-pytest-cov,
+ python3-pytest-mock,
+ python3-pytest-timeout,
+ python3-setuptools,
+ python3-univention-debug,
+ python3-univention-lib,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
 
@@ -22,19 +37,18 @@ Depends:
  at,
  ca-certificates,
  netcat-traditional,
- python-apt,
- python-debian,
- python-univention (>> 5.0.6),
- python-univention-config-registry,
- python-univention-directory-manager,
- python-univention-lib (>= 8.0.1-33),
- python-univention-updater (= ${source:Version}),
+ python3-apt,
+ python3-univention-config-registry,
+ python3-univention-directory-manager,
+ python3-univention-lib (>= 8.0.1-33),
+ python3-univention-updater (= ${source:Version}),
  python3-univention-updater (= ${source:Version}),
  shell-univention-lib,
  univention-admin-diary-client (>= 1.0.0-29),
  univention-config,
  univention-directory-policy,
  univention-errata-level,
+ univention-policy-tools,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
@@ -59,18 +73,10 @@ Breaks:
 Provides:
  ${python:Provides},
 Depends:
- apt-transport-https,
- ca-certificates,
- python-apt,
- python-debian,
+ python-backports.tempfile,
+ python-monotonic,
  python-six,
- python-univention (>> 5.0.6),
  python-univention-config-registry,
- python-univention-directory-manager,
- python-univention-lib (>= 1.0.25-1),
- shell-univention-lib,
- univention-admin-diary-client (>= 1.0.0-29),
- univention-errata-level,
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Updater Python modules
@@ -83,18 +89,8 @@ Description: UCS Updater Python modules
 Package: python3-univention-updater
 Architecture: all
 Depends:
- apt-transport-https,
- ca-certificates,
- python-apt,
- python-debian,
  python3-six,
- python-univention-config-registry,
- python-univention-directory-manager,
- python-univention-lib,
- python3-univention,
- shell-univention-lib,
- univention-admin-diary-client,
- univention-errata-level,
+ python3-univention-config-registry,
  ${misc:Depends},
  ${python3:Depends},
 Description: UCS Updater Python 3 modules
@@ -107,9 +103,8 @@ Description: UCS Updater Python 3 modules
 Package: univention-management-console-module-updater
 Architecture: all
 Depends:
- python-psutil,
- python-requests,
- python-yaml,
+ python3-apt,
+ python3-psutil,
  univention-directory-manager-tools (>> 7.0.147),
  univention-maintenance-mode,
  univention-management-console-module-lib,
@@ -117,7 +112,8 @@ Depends:
  univention-updater (= ${source:Version}),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
+Provides:
+ ${python3:Provides},
 Description: UMC module for UCS updater
  This package contains the UMC module for the UCS updater.
  .

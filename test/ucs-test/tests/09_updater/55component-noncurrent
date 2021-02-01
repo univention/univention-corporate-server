@@ -23,20 +23,24 @@ password="pass${RANDOM}"
 setup_apache "${repoprefix}"
 htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
-mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkpdir "${_version_version}-0" maintained "${ARCH}"  # 0 1
 # 0:dists/ucs500/main/binary-amd64/
 # 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-mkpdir "${_version_version}-1" maintained "${ARCH}"
+declare -a BDIR=("${DIRS[@]}")
+
+mkpdir "${_version_version}-1" maintained "${ARCH}"  # 2 3
 # 2:dists/ucs501/main/binary-amd64/
 # 3:dists/errata501/main/binary-amd64/
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
+dirs_except "${BDIR[@]}" && declare -a CDIR=("${result[@]}")
 
-mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
-# 4:5.0/maintained/component/test00000/all
+mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 4 5
+# 4:5.0/maintained/component/test00000/all/
+# 5:5.0/maintained/component/test00000/amd64/
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -61,12 +65,12 @@ config_repo \
 
 (
 	set -e
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	/usr/share/univention-updater/univention-updater net
-	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${CDIR[@]}"
 	msg="Configuration error: " # credentials not accepted | component not found
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"

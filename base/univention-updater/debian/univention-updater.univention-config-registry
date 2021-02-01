@@ -1,28 +1,22 @@
 Type: file
 File: etc/apt/sources.list.d/15_ucs-online-version.list
-Preinst: 15_ucs-online-version.py
-Postinst: 15_ucs-online-version.py
 Variables: version/version
 Variables: version/patchlevel
 Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/sources
 Variables: repository/online/httpmethod
 
 Type: file
 File: etc/apt/sources.list.d/20_ucs-online-component.list
-Preinst: 20_ucs-online-component.py
-Postinst: 20_ucs-online-component.py
 Variables: local/repository
 Variables: version/version
 Variables: version/patchlevel
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/component/.*
 Variables: repository/online/sources
 Variables: repository/online/httpmethod
@@ -37,7 +31,6 @@ Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
-Variables: repository/online/unmaintained
 Variables: repository/online/component/.*
 Variables: repository/mirror
 Variables: repository/mirror/server
@@ -45,7 +38,6 @@ Variables: repository/mirror/port
 Variables: repository/mirror/cron
 Variables: repository/mirror/basepath
 Variables: repository/mirror/threads
-Variables: repository/mirror/architectures
 Variables: repository/mirror/version/.*
 Variables: online/repository/clean
 Variables: repository/mirror/sources

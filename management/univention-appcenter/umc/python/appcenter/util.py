@@ -321,21 +321,20 @@ class ComponentManager(object):
 	def component(self, component_id):
 		"""Returns a dict of properties for the component with this id.
 		"""
-		entry = {}
-		entry['name'] = component_id
-		# ensure a proper bool
-		entry['enabled'] = self.ucr.is_true('%s/%s' % (COMPONENT_BASE, component_id), False)
+		comp = self.uu.component(component_id)
+		entry = {
+			'name': component_id,
+			'enabled': bool(comp),
+			'defaultpackages': list(comp.defaultpackages),
+			# Explicitly enable unmaintained component
+			'unmaintained': self.ucr.is_true(self.ucrv("unmaintained"), False),
+			# Component status as a symbolic string
+			'status': comp.status(),
+			'installed': comp.defaultpackage_installed(),
+		}
 		# Most values that can be fetched unchanged
 		for attr in COMP_PARAMS:
-			regstr = '%s/%s/%s' % (COMPONENT_BASE, component_id, attr)
-			entry[attr] = self.ucr.get(regstr, '')
-		# Get default packages (can be named either defaultpackage or defaultpackages)
-		entry['defaultpackages'] = list(self.uu.get_component_defaultpackage(component_id))  # method returns a set
-		# Explicitly enable unmaintained component
-		entry['unmaintained'] = self.ucr.is_true('%s/%s/unmaintained' % (COMPONENT_BASE, component_id), False)
-		# Component status as a symbolic string
-		entry['status'] = self.uu.get_current_component_status(component_id)
-		entry['installed'] = self.uu.is_component_defaultpackage_installed(component_id)
+			entry[attr] = self.ucr.get(comp.ucrv(attr), '')
 
 		# correct the status to 'installed' if (1) status is 'available' and (2) installed is true
 		if entry['status'] == 'available' and entry['installed']:

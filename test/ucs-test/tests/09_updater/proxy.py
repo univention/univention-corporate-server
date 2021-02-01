@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Simple HTTP Proxy for ucs-test."""
 # Inspired by <http://effbot.org/librarybook/simplehttpserver.htm>
+from __future__ import print_function
 from six.moves import BaseHTTPServer
 import urllib2
 import urlparse

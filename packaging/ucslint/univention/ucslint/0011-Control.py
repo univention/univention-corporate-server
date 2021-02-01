@@ -189,6 +189,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'debhelper-build-stamp',  # dh
 		'files',  # dh_builddeb
 		'NEWS',  # dh_installchangelogs default
+		'not-installed',  # dh_install
+		'pybuild.testfiles',  # pybuild
+		'pybuild_python2.testfiles',  # pybuild
+		'pybuild_python2.7.testfiles',  # pybuild
+		'pybuild_python3.testfiles',  # pybuild
+		'pybuild_python3.5.testfiles',  # pybuild
+		'pybuild_python3.7.testfiles',  # pybuild
 		'pydist-overrides',  # dh_python2
 		'py3dist-overrides',  # dh_python3
 		'rules',

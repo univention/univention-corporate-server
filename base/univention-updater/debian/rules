@@ -32,35 +32,14 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-override_dh_install:
-	dh_install
-	sed '/^###CHECKS###/r script/check.sh' script/preup.sh >debian/univention-updater/usr/share/univention-updater/preup.sh
+export DH_VERBOSE=1
 
-override_dh_fixperms:
-	dh_fixperms
-	chmod 755 debian/univention-updater/usr/lib/univention-directory-policy/univention-policy-maintenance
-	chmod 755 debian/univention-updater/usr/lib/univention-directory-policy/univention-policy-set-repository-server
-	chmod 755 debian/univention-updater/usr/share/univention-updater/enable-apache2-umc
-	chmod 755 debian/univention-updater/usr/share/univention-updater/disable-apache2-umc
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-check
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-dist-upgrade
-	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-univention-install
-	chmod 755 debian/univention-updater/usr/lib/univention-system-setup/appliance-hooks.d/updater
+override_dh_install:
+	dh_install --fail-missing
+	sed '/^###CHECKS###/r script/check.sh' script/preup.sh >debian/univention-updater/usr/share/univention-updater/preup.sh
 
 override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
-
-override_dh_auto_test:
-	# doctest
-	PYTHONPATH=modules python2.7 -m univention.updater.locking -v
-	PYTHONPATH=modules python2.7 -m univention.updater.repo_url -v
-	PYTHONPATH=modules python2.7 -m univention.updater.tools -v
-	PYTHONPATH=modules python2.7 -m univention.updater.mirror -v
-	PYTHONPATH=modules python2.7 -m univention.updater.errors -v
-	# unittest
-	PYTHONPATH=modules python2.7 tests/test_updater.py -v
-	PYTHONPATH=modules python2.7 tests/test_mirror.py -v
-	PYTHONPATH=modules python2.7 tests/test_toools.py -v
 
 override_dh_python2:
 	dh_python2 --skip-private
@@ -69,4 +48,4 @@ override_dh_python3:
 	dh_python3 --skip-private
 
 %:
-	dh $@ --with python2,python3,umc,ucr
+	dh $@ --with python2,python3,umc,ucr,bash_completion --buildsystem=pybuild

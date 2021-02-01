@@ -2,10 +2,12 @@
 #
 # Lint tests
 #
-set -u
+set -e -u
 
-tmp=$(mktemp)
-trap "rm -f '$tmp'" EXIT
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+
+cd "${0%/*}" || exit $?
 
 rc=0
 issue () {
@@ -22,32 +24,34 @@ issue () {
 	fi
 }
 
-find -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp"
+find . -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp" || :
 issue "Unknown ucs-test tag"
 
-find -type f ! -name '*.py' -exec grep '^source\>' {} + >"$tmp"
+find . -type f ! -name '*.py' ! -name '*.pyc' -exec grep '^source\>' {} + >"$tmp" || :
 issue "BASHism 'source'"
 
-find tests -name .svn -prune -o -type f \( \
+find tests -type f \( \
 	\( -name \*.inst -prune \) -o \
 	\( -name \*create_appcenter_json.py -prune \) -o \
 	\( -perm -0755 -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \
 	\( -not -perm /0111 -not -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \
-	-ls \) >"$tmp"
+	-ls \) >"$tmp" || :
 issue "Executable bits"
 
+# shellcheck disable=SC2016,SC2038
 find tests -type f -exec grep -F -l '"$TESTLIBPATH/ucr.sh"' {} + |
-	xargs grep -F -L "ucr_restore" >"$tmp"
+	xargs grep -F -L "ucr_restore" >"$tmp" || :
 issue "Use of 'ucr.sh' without call to 'ucr_restore'."
 
-find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp"
+find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp" || :
 issue "Missing reason for fail_test"
 
-UCS_TESTS=tests python -c '
-import sys
-sys.path.remove("")
-import univention
-univention.__path__.insert(0, "univention")
+export UCS_TESTS="tests"
+export PYTHONPATH=".${PYTHONPATH:+:$PYTHONPATH}"
+
+# shellcheck disable=SC2016
+python -c '
+from __future__ import print_function
 from univention.testing.internal import get_sections, get_tests
 from os.path import basename, splitext
 sections = get_sections()
@@ -59,19 +63,14 @@ for tests in tests.itervalues():
             continue
         line = open(fname).readline()
         if ext != ".py" or ("py.test" not in line and "pytest" not in line):
-            print ext, line
-            print fname
+            print(ext, line)
+            print(fname)
 ' >"$tmp" 2>&1 ||
 	issue "Failed to find tests" '/^Traceback/,$p'
 issue "Wrong file name"
 
-UCS_TESTS=tests python -c '
-import sys
-sys.path.remove("")
-import univention
-univention.__path__.insert(0, "univention")
-execfile("bin/ucs-test")
-' --dry-run --count >"$tmp" 2>&1 ||
+# shellcheck disable=SC2016
+bin/ucs-test --dry-run --count >"$tmp" 2>&1 ||
 	issue "Failed to run ucs-test" '/^Traceback/,$p'
 issue "Broken tests" '/^CRITICAL/p'
 

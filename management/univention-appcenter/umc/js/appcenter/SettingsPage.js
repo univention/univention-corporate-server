@@ -216,7 +216,7 @@ define([
 							return key;
 						})
 				},
-				// trying to translate the result of get_current_component_status(component). This
+				// trying to translate the result of component(component).status(). This
 				// summarizes all status variables.
 				// *** NOTE *** The knowledge about internal logic is kept in the Python module,
 				//				especially the 'installed' state that is combined from different
