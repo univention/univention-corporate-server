@@ -92,9 +92,11 @@ define([
 			this.inherited(arguments);
 
 			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
-			this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
-				this.showApp(app, suggested);
-			}));
+			if (this.moduleFlavor === 'appcenter') {
+				this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
+					this.showApp(app, suggested);
+				}));
+			}
 		},
 
 		_updateModuleState: function() {
