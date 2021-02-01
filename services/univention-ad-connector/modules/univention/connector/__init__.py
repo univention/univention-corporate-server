@@ -1693,7 +1693,7 @@ class ucs(object):
 					else:
 						dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
 				# write the correct upper and lower case back to the DN
-				object[dntype] = dn_mapped.replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+				object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
 
 		object_out = object
 
@@ -1780,7 +1780,7 @@ class ucs(object):
 					else:
 						dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
 				# write the correct upper and lower case back to the DN
-				object[dntype] = dn_mapped.replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+				object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
 
 		object_out = object
 
