@@ -41,10 +41,10 @@ def main():
 					)
 					mails.append(usermail)
 					users.append(userdn)
-				default_shared_permissions = {'anyone': 'lrswipkxtecda'}
+				default_shared_permissions = {'#anyone': 'lrswipkxtecda'}
 				permissions = 'lrswipkxtecda'
 				shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
-					udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('#anyone', 'all')])
+					udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
 				test_cases = itertools.product(mails[0:2], permissions)
 				for i in range(len(mails[0:2]) * len(permissions)):
