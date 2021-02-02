@@ -54,6 +54,9 @@
 					UCS 5 is based on Debian 10 Buster.
 			</para></listitem>
 			<listitem><para>
+					In the area of cryptography this raises the minimal TLS protocol version to 1.2.
+			</para></listitem>
+			<listitem><para>
 					Many components of UCS have already been converted to run with Python 3.7.
 					Python 2.7 is still supported with UCS 5.0, but will be removed with UCS 5.1.
 			</para></listitem>

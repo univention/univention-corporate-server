@@ -51,7 +51,10 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS 5 basiert auf Debian 10 <wordasword>Buster.</wordasword>
+					UCS 5 basiert auf Debian 10 <wordasword>Buster</wordasword>.
+			</para></listitem>
+			<listitem><para>
+					Im Bereich Kryptographie erhöht sich dadurch die minimale TLS-Protokollversion auf 1.2.
 			</para></listitem>
 			<listitem><para>
 					Mehrere Komponenten wurden entfernen: &ucsUVMM;, Nagios, Desktop, …
