@@ -105,9 +105,9 @@ if [ -n "${update_custom_preup:-}" ]; then
 fi
 
 update_check_kernel () {
-	local var="update$VERSION/pruneoldkernel"
-	is_ucr_true "update${VERSION}/pruneoldkernel" &&
+	if is_ucr_true "update${VERSION}/pruneoldkernel"; then
 		univention-prune-kernels
+	fi
 }
 
 checks

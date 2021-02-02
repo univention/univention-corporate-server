@@ -1,3 +1,9 @@
+univention-updater (15.0.3-2) unstable; urgency=medium
+
+  * Bug #52740: preup.sh: fix update_check_kernel()
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 02 Feb 2021 23:44:06 +0100
+
 univention-updater (15.0.3-1) unstable; urgency=low
 
   * Bug #51316: Convert Update to Python 3
