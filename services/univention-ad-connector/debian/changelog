@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.5-1) unstable; urgency=medium
+
+  * Bug #52044: migrate univention-s4-connector to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 02 Feb 2021 22:32:48 +0100
+
 univention-ad-connector (14.0.4-1) unstable; urgency=medium
 
   * Bug #52044: make sure scripts run with latest mapping
