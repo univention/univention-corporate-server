@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.1-2) unstable; urgency=medium
+
+  * Bug #52724: Deleted ucr variable mail/dovecot/auth/allowplaintext
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 02 Feb 2021 13:57:22 +0100
+
 univention-mail-dovecot (6.0.1-1) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL
