@@ -148,7 +148,8 @@ class BaseMailClient(object):
 			for who in expected_acls.get(mailbox):
 				permissions = expected_acls.get(mailbox).get(who)
 				set1 = set(''.join([permissions_map[x] for x in permissions]))
-				set2 = set(current.get(mailbox).get(who))
+				set2 = current.get(mailbox).get(who)
+				set2 = set() if set2 is None else set(set2)
 
 				if not (who in current.get(mailbox).keys() or set1 == set2):
 					raise WrongAcls('\nExpected = %s\nCurrent = %s\n' % (

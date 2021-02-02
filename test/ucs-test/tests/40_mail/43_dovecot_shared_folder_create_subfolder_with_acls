@@ -65,12 +65,12 @@ def main():
 				utils.fail('Maildir {!r} for shared folder does not exist!'.format(folder_path))
 			print('*** OK: shared folder created in {!r}.'.format(folder_path))
 
-			imap = ImapMail()
-			imap.get_connection('localhost', user_addr1, 'univention')
+			imap1 = ImapMail()
+			imap1.get_connection('localhost', user_addr1, 'univention')
 			retry = TIMEOUT_MAIL
 			while True:
 				try:
-					imap.copy('1', 'INBOX', folder_name)
+					imap1.copy('1', 'INBOX', folder_name)
 					break
 				except AssertionError as exc:
 					if retry > 0:
@@ -79,7 +79,7 @@ def main():
 						retry -= 5
 					else:
 						raise
-			imap.connection.logout()
+			#imap1.connection.logout()
 
 			print('*** OK: user1 can write to shared folder')
 
@@ -92,13 +92,11 @@ def main():
 				print('*** OK: user2 cannot write to shared folder')
 			imap.connection.logout()
 
-			imap = ImapMail()
-			imap.get_connection('localhost', user_addr1, 'univention')
-			subfolder_name1 = imap.create_subfolder(folder_name, uts.random_name())
+			subfolder_name1 = imap1.create_subfolder(folder_name, uts.random_name())
 			print('*** OK: user1 can create subfolder')
-			imap.copy('1', 'INBOX', subfolder_name1)
+			imap1.copy('1', 'INBOX', subfolder_name1)
 			print('*** OK: user1 can write to subfolder')
-			imap.connection.logout()
+			imap1.connection.logout()
 
 			imap = ImapMail()
 			imap.get_connection('localhost', user_addr2, 'univention')

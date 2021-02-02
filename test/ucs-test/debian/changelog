@@ -1,3 +1,11 @@
+ucs-test (10.0.3-2) unstable; urgency=medium
+
+  * Bug #52241: Fixed failed mail tests
+  + Bug #52724: deleted test 28_plain_text_passwords_over_nonTLS
+    dovecot dropped non-TLS/SSL plaintext support
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 02 Feb 2021 13:51:00 +0100
+
 ucs-test (10.0.3-1) unstable; urgency=low
 
   * Bug #51316: Adapt updater tests for UCS-5 layout and Python 3
