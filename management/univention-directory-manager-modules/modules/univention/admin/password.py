@@ -92,19 +92,17 @@ def crypt(password, method_id=None, salt=None):
 	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
 
 
-def bcrypt_hash(password, salt=None):
+def bcrypt_hash(password):
 	# type: (str, Optional[str]) -> str
 	"""
 	Return bcrypt hash.
 
 	:param password: password string.
-	:param salt: salt for randomize the hashing.
 	:returns: the hashed password string.
 	"""
-	if salt is None:
-		cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
-		prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b')
-		salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
+	cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
+	prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b')
+	salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
 	return bcrypt.hashpw(password.encode('utf-8'), salt)
 
 
