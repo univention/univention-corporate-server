@@ -51,6 +51,7 @@ define([
 		host: null,
 		appDetailsPage: null,
 		//
+		full: true,
 		showWarnings: true,
 		showNonWarnings: true,
 

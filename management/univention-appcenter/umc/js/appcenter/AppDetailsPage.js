@@ -154,7 +154,7 @@ define([
 		_configureDialogs: function(app) {
 			this.detailsDialog.set('app', app);
 			this.configDialog.set('app', app);
-			this.installDialog.set('app', app);
+			// this.installDialog.set('app', app);
 		},
 
 		_setModuleTitleAttr: function(name) {
@@ -721,16 +721,19 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
 			}
 
-			this.installDialog.startInstallation(this)
+			this.installDialog.startInstallation([this.app.id], this)
 				.then(lang.hitch(this, function(values) {
-					this.installApp(values.host, values.appSettings);
+					this.installApps(values.apps, values.hosts, values.appSettings);
 				}), lang.hitch(this, function() {
 					this.markupErrors('install');
 				}));
 		},
 
-		installApp: function(host, appSettings) {
-			this.callInstaller('install', host, true, null, appSettings)
+		installApps: function(apps, hosts, appSettings) {
+			console.log('installing apps');
+			console.log(apps, hosts, appSettings);
+			return; // TODO
+			this.callInstaller('install', apps, hosts, true, null, appSettings)
 				.then(lang.hitch(this, function() {
 					// put dedicated module of this app into favorites
 					UMCApplication.addFavoriteModule('apps', this.app.id);
@@ -801,7 +804,8 @@ define([
 			return this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Close'), null);
 		},
 
-		callInstaller: function(func, host, force, deferred, values) {
+		callInstaller: function(func, apps, hosts, force, deferred, values) {
+			// TODO
 			var isRemoteAction = host && tools.status('hostname') != host;
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
@@ -862,11 +866,9 @@ define([
 			var commandArguments = {
 				'action': func,
 				'auto_installed': [],
-				'apps': [this.app.id],
-				'hosts': {[this.app.id]: host || tools.status("fqdn")},
-				'settings': {
-					[this.app.id]: values
-				},
+				'apps': apps,
+				'hosts': hosts,
+				'settings': values,
 				'dry_run': !force
 			};
 

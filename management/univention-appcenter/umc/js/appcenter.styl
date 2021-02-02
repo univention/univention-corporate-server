@@ -114,34 +114,6 @@ $app-detailspane-background-color = var(--color-grey0)
 	.umcAppSidebarButton
 		width: 100%
 
-.categoryButton, .categorySpan
-	background-color: transparent
-	border: 0
-	border-right: 1px solid lightgrey
-	padding: 0 0.4em 0 0
-	margin-right: 0.4em
-
-	&:first-child
-		padding-left: 0
-
-	&:last-child
-		border-right: 0
-
-.categoryButton
-	text-decoration: underline
-	opacity: 0.66
-
-	&:hover
-		opacity: 1
-
-.umcGalleryButton
-	margin-top: 1em
-	padding-bottom: 1em
-	border-bottom: 1px solid #b4b4b4
-
-	&:last-child
-		border-bottom: 0
-
 .umc .dijitTitlePane.appDetailsPane
 	.dijitTitlePaneTitle
 		color: #a9a9a9
@@ -177,15 +149,43 @@ $app-detailspane-background-color = var(--color-grey0)
 	border-radius: var(--border-radius-container)
 	margin-bottom: 2em
 
-	h2
-		padding: 1em
-		border-bottom: thin solid var(--font-color-contrast-low)
+.umcTiles__header,
+.umcTiles__actionBar
+	display: flex
+	align-items: center
+	padding: calc(2 * var(--layout-spacing-unit))
+	border-bottom: 2px solid var(--bgc-content-body)
 
-	.collection
-		display: grid
-		grid-template-columns: repeat(auto-fill, 6rem)
-		grid-gap: calc(5 * var(--layout-spacing-unit))
-		padding: 1em
+.umcTiles__header
+	h2
+		flex: 1 0 auto
+
+	.umcTiles__selectionToggleButton
+		flex: 0 0 auto
+
+.umcTiles__selectionToggleButton
+	&.dijitChecked
+		color: var(--color-primary)
+
+.umcTiles__actionBar__buttons
+	flex: 1 1 auto
+	display: flex
+	flex-wrap: wrap
+	grid-gap: var(--layout-spacing-unit)
+
+.umcTiles__actionBar__text
+	flex: 0 0 auto
+	margin-left: var(--layout-spacing-unit)
+	font-size: var(--font-size-small)
+	color: var(--font-color-contrast-middle)
+
+.umcTiles__collection
+	display: grid
+	grid-template-columns: repeat(auto-fill, 6rem)
+	grid-gap: calc(3 * var(--layout-spacing-unit))
+	padding: calc(2 * var(--layout-spacing-unit))
+	justify-content: space-between
+
 
 .umcTile
 	width: 6rem
@@ -207,31 +207,68 @@ $app-detailspane-background-color = var(--color-grey0)
 	display: block
 	margin-bottom: 1em
 
-.umcTile, .umcAppInfo
+.umcAppText
+	display: flex
+
+	.umcTile__box
+		margin: 0
+		border-radius: var(--border-radius-container)
+		display: flex
+		align-items: center
+		justify-content: center
+		height: var(--inputfield-size)
+		width: @height
+		flex: 0 0 auto
+		background: var(--color-grey40)
+
+	.umcTile__logo
+		width: 80%
+
+	.umcTile__name
+		margin-left: var(--layout-spacing-unit)
+		display: flex
+		align-items: center
+
+
+.umcTile__inner, .umcAppInfo
 	display: flex
 	flex-direction: column
 	align-items: center
 	border-radius: calc(2 * var(--border-radius-container))
 
-	.tile__box
+.umcTile__box
+	position: relative
+	border-radius: calc(2 * var(--border-radius-container))
+	display: flex
+	align-items: center
+	justify-content: center
+	background: var(--color-grey40)
+	width: 6rem
+	height: 6rem
+	margin-bottom: var(--layout-spacing-unit)
+
+	.umcTile__logo
+		width: 80%
+
+.umcTile__name
+	overflow: hidden
+	text-overflow: ellipsis
+	font-size: var(--font-size-small)
+	text-align: center
+
+.umcTiles__selectionMode .umcTile.selected
+	.umcTile__inner
 		position: relative
-		border-radius: calc(2 * var(--border-radius-container))
-		display: flex
-		align-items: center
-		justify-content: center
-		background: var(--color-grey40)
-		width: 6rem
-		height: 6rem
-		margin-bottom: var(--layout-spacing-unit)
 
-		.tile__logo
-			width: 80%
-
-	.tile__name
-		overflow: hidden
-		text-overflow: ellipsis
-		font-size: var(--font-size-small)
-		text-align: center
+	.umcTile__selectionBox
+		position: absolute
+		width: 100%
+		height: 100%
+		box-sizing: content-box
+		padding: var(--layout-spacing-unit)
+		margin: s('calc(-1 * var(--layout-spacing-unit))')
+		border-radius: 32px
+		background-color: rgba(255, 255, 255, 0.08)
 
 .appcenterMetaCategory
 	background-color: var(--bgc-content-container)
@@ -280,6 +317,9 @@ $app-detailspane-background-color = var(--color-grey0)
 .umcAppChooseHostWizard
 	border-radius: var(--border-radius-container)
 
+.umcAppChooseHostWizard__removeExplanation
+	margin-bottom: var(--layout-spacing-unit)
+
 .umc .umcAppCenterDialog
 	.dijitDefaultButton
 		float: right
@@ -313,7 +353,7 @@ $app-detailspane-background-color = var(--color-grey0)
 		.navContainer
 			display: inline-block
 			width: 100%
-			border-top: 1px solid #c8c8c8
+			border-top: 2px solid var(--bgc-content-body)
 			padding: 0.8em 0
 
 			.umcText
@@ -421,10 +461,6 @@ $app-detailspane-background-color = var(--color-grey0)
 	.usage
 		margin-bottom: 3em
 
-	.carouselWrapper
-		border-top: 1px solid #c8c8c8
-		padding: 3em 0 1em 0
-
 	.descriptionContainer
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
@@ -438,7 +474,7 @@ $app-detailspane-background-color = var(--color-grey0)
 			&:not(:first-child)
 				margin-top: 1.4rem
 				padding-top: 1.4rem
-				border-top: thin solid var(--color-grey8)
+				border-top: 2px solid var(--bgc-content-body)
 		ul, ol
 			margin-bottom: 0.7rem
 			padding-left: 15px
@@ -510,7 +546,7 @@ $app-detailspane-background-color = var(--color-grey0)
 
 		.appLiveSearchSidebarElement + .appLiveSearchSidebarElement
 			border-radius: 0
-			border-top: thin solid var(--font-color-contrast-low)
+			border-top: 2px solid var(--bgc-content-body)
 
 		.appLiveSearchSidebarElement:last-child
 			border-bottom-left-radius: var(--border-radius-container)
@@ -795,5 +831,3 @@ $app-detailspane-background-color = var(--color-grey0)
 	background-color: rgba(255, 255, 255, 1)
 	left: calc(1.5rem * var(--local-idx))
 	transition: left 250ms
-
-
