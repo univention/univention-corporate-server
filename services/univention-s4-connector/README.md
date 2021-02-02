@@ -6,13 +6,7 @@
   and Samba/AD to keep all objects in sync, neither during start up nor periodically.
 * The S4-Connector only synchronizes a subset of all attributes, objects and OUs/containers. This subset is
   defined by the mapping.
-* During startup, the script `/usr/sbin/univention-s4-connector` converts the mapping UCR template file
-  `/etc/univention/connector/s4/mapping` to a `mapping.py` in the same directory.
-* If customers adjust the file `mapping.py`, it will get overwriten during the next service restart.
-* If customers adjust the UCR template file `mapping`, the change will be very persistent, even over updates
-  of the Debian package, e.g. during errata updates. dpkg will write the updated `mapping` to a file
-  `mapping.dpkg-new`.
-* Customers should not adjust the `mapping` manually and should instead create a `localmapping.py`.
+* Customers must not adjust the `mapping.py` manually anymore (since UCS 5.0) and should instead create a `localmapping.py`.
 * When the S4-Connector starts, it first syncs from UDM/OpenLDAP to Samba/AD. But it doesn't re-sync everything at that
   point, it just waits for changes.
 * Changes from the OpenLDAP site are communicated by the Listener module to S4-Connector via Python `pickle` files
@@ -33,15 +27,6 @@
 ### Extending S4-Connector to synchronize additional attributes
 
 Udpates need special attention when extending S4C to synchronize additional attributes:
-
-#### Mapping adjustments vs customer customizations
-
-* Customer Admins may have customized attributes in Samba/AD, these must not be overwritten during update.
-* In some cases customers have adjusted the UCR template file `mapping`. Since there is a Debian config file diversion
-  configured for this file, changes will not automatically get activated during errata updates in this case.
-  This severely contrains the possibilities to adjust the mapping. If something like that is absolutely necessary,
-  the change should not be released as an errata update, but rather as part of a UCS release. The release notes
-  must inform the customer about the change and recommend to run `univention-check-templates`.
 
 #### Active reconciliation for newly added attributes
 

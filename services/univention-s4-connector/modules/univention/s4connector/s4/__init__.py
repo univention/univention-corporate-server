@@ -370,7 +370,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 def user_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
 	'''
 	map dn of given user using the samaccountname/uid
-	connector is an instance of univention.connector.s4, given_object an object-dict,
+	connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', u'user')
@@ -500,15 +500,10 @@ class s4(univention.s4connector.ucs):
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
-		MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % configbasename
-		if six.PY2:
-			import imp
-			mapping = imp.load_source('mapping', MAPPING_FILENAME)
-		else:
-			import importlib.util
-			spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-			mapping = importlib.util.module_from_spec(spec)
-			spec.loader.exec_module(mapping)
+
+		import univention.s4connector.s4.mapping
+		MAPPING_FILENAME = '/etc/univention/%s/s4/localmapping.py' % configbasename
+		s4_mapping = univention.s4connector.s4.mapping.load_localmapping(MAPPING_FILENAME)
 
 		_ucr = dict(ucr)
 		try:
@@ -530,7 +525,7 @@ class s4(univention.s4connector.ucs):
 
 		return cls(
 			configbasename,
-			mapping.s4_mapping,
+			s4_mapping,
 			ucr,
 			ad_ldap_host,
 			ad_ldap_port,

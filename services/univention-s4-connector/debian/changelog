@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.6-7) unstable; urgency=medium
+
+  * Bug #52043: replace UCR filter based mapping with a real python
+    module
+
+ -- Florian Best <best@univention.de>  Wed, 24 Mar 2021 22:02:24 +0100
+
 univention-s4-connector (14.0.6-6) unstable; urgency=medium
 
   * Bug #50766: Sync gidNumber also for groups,set sync_mode of gidNumber to write
