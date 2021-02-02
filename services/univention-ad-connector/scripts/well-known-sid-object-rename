@@ -295,6 +295,7 @@ if __name__ == "__main__":
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
+	subprocess.call('univention-config-registry filter --encode-utf8 > /etc/univention/connector/ad/mapping.py < /etc/univention/connector/ad/mapping', shell=True)
 	ad = Well_Known_SID_object_renamer(ucr, options.binddn, options.bindpwd)
 	ad.rewrite_sambaSIDs_in_OpenLDAP()
 	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])
