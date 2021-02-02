@@ -29,18 +29,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""Univention Configuration Registry module."""
+"""Univention Configuration Registry."""
 
-from univention.config_registry.backend import StrictModeException, SCOPE, ConfigRegistry  # noqa F401
-from univention.config_registry.handler import run_filter as filter, ConfigHandlers as configHandlers  # noqa F401
-from univention.config_registry.misc import key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars  # noqa F401
-from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort  # noqa F401
-from univention.config_registry.frontend import (  # noqa F401
-	REPLOG_FILE, UnknownKeyException, main,
-	handler_set, handler_unset, handler_commit, handler_filter,
-	handler_get, handler_dump, handler_search,
-	handler_register, handler_unregister, handler_update,
-)
-from univention.debhelper import parseRfc822  # noqa F401
+from __future__ import print_function
+
+import sys
+
+from univention.config_registry.backend import StrictModeException
+from univention.config_registry.frontend import main
+
+if __name__ == '__main__':
+	try:
+		main(sys.argv[1:])
+	except StrictModeException as ex2:
+		print(('E: UCR is running in strict mode and thus cannot accept the given input:'), file=sys.stderr)
+		print(ex2, file=sys.stderr)
+		sys.exit(1)
 
 # vim:set sw=4 ts=4 noet:
