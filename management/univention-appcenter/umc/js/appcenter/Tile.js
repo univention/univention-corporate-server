@@ -36,29 +36,32 @@ define([
 	"dojo/_base/event",
 	"dijit/Tooltip",
 	"dojo/on",
-	"dojo/topic",
 	"umc/tools",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, kernel, array, domClass, dojoEvent, Tooltip, on, topic, tools, _WidgetBase, _TemplatedMixin, _) {
+], function(declare, kernel, array, domClass, dojoEvent, Tooltip, on, tools, _WidgetBase, _TemplatedMixin, _) {
 	return declare("umc.modules.appcenter.Tile", [_WidgetBase, _TemplatedMixin], {
 		baseClass: 'umcTile',
+		clickCallback: null,
 		templateString: `
-			<div data-dojo-attach-event="onclick:_onClick">
-				<div
-					class="tile__box"
-					style="background: \${bgc}"
-				>
-					<img 
-						class="tile__logo"
-						src="\${logo}"
-						alt="\${name} logo"
-						onerror="this.src='/univention/management/modules/appcenter/icons/logo_fallback.svg'"
+			<div>
+				<div class="umcTile__inner">
+					<div class="umcTile__selectionBox"></div>
+					<div
+						class="umcTile__box"
+						style="background: \${bgc}"
 					>
-					<div class="appStatusIcon" data-dojo-attach-point="statusNode" data-dojo-attach-event="onclick: _tooltip"></div>
+						<img 
+							class="umcTile__logo"
+							src="\${logo}"
+							alt="\${name} logo"
+							onerror="this.src='/univention/management/modules/appcenter/icons/logo_fallback.svg'"
+						>
+						<div class="appStatusIcon" data-dojo-attach-point="statusNode" data-dojo-attach-event="onclick: _tooltip"></div>
+					</div>
+					<span class="umcTile__name">\${name}</span>
 				</div>
-				<span class="tile__name">\${name}</span>
 			</div>
 		`,
 		_tooltip: function(evt) {
@@ -157,11 +160,6 @@ define([
 				domClass.add(this.statusNode, statusIconClass);
 			} else {
 				domClass.add(this.statusNode, 'dijitDisplayNone');
-			}
-		},
-		_onClick: function() {
-			if (this.obj) {
-				topic.publish('/appcenter/open', this.obj, this.suggested);
 			}
 		},
 		_setVisibleAttr: function(newVal) {

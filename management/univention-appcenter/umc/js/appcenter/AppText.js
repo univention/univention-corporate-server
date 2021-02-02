@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Univention GmbH
+ * Copyright 2021 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -30,36 +30,35 @@
 
 define([
 	"dojo/_base/declare",
-	"umc/widgets/Text",
-	"./AppText",
-	"umc/i18n!umc/modules/appcenter"
-], function(declare, Text, AppText, _) {
-	return {
-		getPageConf: function(app) {
-			if (!app.readmeInstall) {
-				return null;
-			}
-
-			return {
-				name: `readmeInstall_${app.id}`,
-				headerText: '',
-				helpText: _('Install information'),
-				widgets: [{
-					type: AppText,
-					app: AppText.appFromApp(app),
-					name: 'appText'
-				}, {
-					type: Text,
-					'class': 'appInstallDialog__readme',
-					name: `readmeInstall_readmeInstall_${app.id}`,
-					content: app.readmeInstall
-				}]
-			};
-		}
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin",
+], function(declare, _WidgetBase, _TemplatedMixin) {
+	const AppText = declare("umc.modules.appcenter.AppText", [_WidgetBase, _TemplatedMixin], {
+		baseClass: 'umcAppText',
+		templateString: `
+			<div>
+				<div
+					class="umcTile__box"
+					style="background: \${app.bgc}"
+				>
+					<img 
+						class="umcTile__logo"
+						src="\${app.logo}"
+						alt="\${app.name} logo"
+						onerror="this.src='/univention/management/modules/appcenter/icons/logo_fallback.svg'"
+					>
+				</div>
+				<span class="umcTile__name">\${app.name}</span>
+			</div>
+		`
+	});
+	AppText.appFromApp = function(app) {
+		return {
+			bgc: app.backgroundColor || "",
+			logo: "/univention/js/dijit/themes/umc/icons/scalable/" + app.logoName,
+			name: app.name,
+		};
 	};
+	return AppText;
 });
-
-
-
-
 

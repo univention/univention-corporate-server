@@ -36,12 +36,15 @@ define([
 	"dojo/on",
 	"dijit/layout/ContentPane",
 	"umc/widgets/Wizard",
+	"umc/widgets/Text",
 	"./AppDetailsContainer",
 	"./AppInstallWizardLicenseAgreementPage",
 	"./AppInstallWizardReadmeInstallPage",
 	"./AppInstallWizardAppSettingsPage",
+	"put-selector/put",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, domClass, on, ContentPane, Wizard, AppDetailsContainer, LicenseAgreementPage, ReadmeInstallPage, AppSettingsPage, _) {
+], function(declare, array, lang, domClass, on, ContentPane, Wizard, Text, AppDetailsContainer, LicenseAgreementPage,
+		ReadmeInstallPage, AppSettingsPage, put, _) {
 	return declare('umc.modules.appcenter.AppInstallWizard', [Wizard], {
 		pageMainBootstrapClasses: 'col-xs-12',
 		pageNavBootstrapClasses: 'col-xs-12',
@@ -49,10 +52,10 @@ define([
 		_appDetailsContainer: null,
 
 		// these properties have to be provided
-		host: null,
-		app: null,
-		appSettingsFormConf: null,
-		dryRunResults: null,
+		hosts: null,
+		apps: null,
+		appSettings: null,
+		// dryRunResults: null,
 		appDetailsPage: null,
 		//
 
@@ -70,11 +73,11 @@ define([
 		},
 
 		_addPages: function() {
-			this._addDetailsPage('warnings', '');
-			this._addLicenseAgreementPage();
-			this._addReadmeInstallPage();
-			this._addDetailsPage('details', _('Package changes'));
-			this._addAppSettingsPage();
+			// this._addDetailsPage('warnings', '');
+			this._addLicenseAgreementPages();
+			this._addReadmeInstallPages();
+			// this._addDetailsPage('details', _('Package changes'));
+			this._addAppSettingsPages();
 		},
 
 		_addDetailsPage: function(name, helpText) {
@@ -109,51 +112,87 @@ define([
 			this.getPage(name).set('visible', detailsContainer.doesShowSomething);
 		},
 
-		_addLicenseAgreementPage: function() {
-			var pageConf = LicenseAgreementPage.getPageConf(this.app);
-			if (pageConf) {
-				this.pages.push(pageConf);
+		_addLicenseAgreementPages: function() {
+			for (const app of this.apps) {
+				const pageConf = LicenseAgreementPage.getPageConf(app);
+				if (pageConf) {
+					this.pages.push(pageConf);
+				}
 			}
 		},
 
-		_addReadmeInstallPage: function() {
-			var pageConf = ReadmeInstallPage.getPageConf(this.app);
-			if (pageConf) {
-				this.pages.push(pageConf);
+		_addReadmeInstallPages: function() {
+			for (const app of this.apps) {
+				const pageConf = ReadmeInstallPage.getPageConf(app);
+				if (pageConf) {
+					this.pages.push(pageConf);
+				}
 			}
 		},
 
-		_addAppSettingsPage: function() {
-			var pageConf = AppSettingsPage.getPageConf(this.app, this.appSettingsFormConf);
-			if (pageConf) {
-				this.pages.push(pageConf);
+		_addAppSettingsPages: function() {
+			for (const app of this.apps) {
+				const pageConf = AppSettingsPage.getPageConf(app, this.appSettings[app.id]);
+				if (pageConf) {
+					this.pages.push(pageConf);
+				}
 			}
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this._hidrateDetailPage('warnings', true, false);
-			this._hidrateDetailPage('details', false, true);
+			// this._hidrateDetailPage('warnings', true, false);
+			// this._hidrateDetailPage('details', false, true);
 
-			var visiblePages = this.pages.filter(lang.hitch(this, function(page) {
-				return this.isPageVisible(page.name);
-			})).map(lang.hitch(this, function(page) {
-				return this.getPage(page.name);
-			}));
+			const visiblePages = this.pages
+				.filter(page => this.isPageVisible(page.name))
+				.map(page => this.getPage(page.name));
 			this.needsToBeShown = !!visiblePages.length;
 
-			var headerText = _('Installation of %s', this.app.name);
-			if (visiblePages.length === 1 || this.dryRunResults.serious_problems /* we can't get past the warnings page when serious_problems so no numbered headers*/) {
+			var headerText = this.apps.length === 1
+				? _('Installation of %s', this.apps[0].name)
+				: _('Installation of multiple apps');
+			// TODO
+			// if (visiblePages.length === 1 || this.dryRunResults.serious_problems /* we can't get past the warnings page when serious_problems so no numbered headers */) {
+			/*
+			if (false) {
 				visiblePages.forEach(function(page) {
 					page.set('headerText', headerText);
 				});
 			} else {
-				for (var x = 0; x < visiblePages.length; x++) {
-					var page = visiblePages[x];
+				const licenseAgreementPages = visiblePages.filter(page => page.name.startsWith('licenseAgreement_'));
+				for (let x = 0; x < licenseAgreementPages.length; x++) {
+					const page = licenseAgreementPages[x];
+					page.set('helpText', `${page.helpText} (${x+1}/${licenseAgreementPages.length})`);
+				}
+				const readmeInstallPages = visiblePages.filter(page => page.name.startsWith('readmeInstall_'));
+				for (let x = 0; x < readmeInstallPages.length; x++) {
+					const page = readmeInstallPages[x];
+					page.set('helpText', `${page.helpText} (${x+1}/${readmeInstallPages.length})`);
+				}
+				const appSettingsPages = visiblePages.filter(page => page.name.startsWith('appSettings_'));
+				for (let x = 0; x < appSettingsPages.length; x++) {
+					const page = appSettingsPages[x];
+					page.set('helpText', `${page.helpText} (${x+1}/${appSettingsPages.length})`);
+				}
+				const hideAppText = this.apps.length === 1;
+				for (let x = 0; x < visiblePages.length; x++) {
+					const page = visiblePages[x];
 					page.set('headerText', lang.replace('{0} ({1}/{2})', [headerText, x+1, visiblePages.length]));
+					if (hideAppText) {
+						const appText = this.getWidget(page.name, 'appText');
+						if (appText) {
+							appText.set('visible', false);
+						}
+
+					}
 				}
 			}
+			*/
+
+			// TODO
+			/*
 			if (this.isPageVisible('warnings')) {
 				if (this.dryRunResults.serious_problems) {
 					this.getPage('warnings').set('helpText', _('The installation cannot be performed. Please refer to the information below to solve the problem and try again.'));
@@ -161,9 +200,11 @@ define([
 					this.getPage('warnings').set('helpText', _('We detected some problems that may lead to a faulty installation. Please consider the information below before continuing with the installation.'));
 				}
 			}
+			*/
 		},
 
 		isPageVisible: function(pageName) {
+			// TODO startswith
 			switch (pageName) {
 				case 'warnings':
 				case 'details':
@@ -175,6 +216,7 @@ define([
 
 		next: function(pageName) {
 			var next = this.inherited(arguments);
+			// TODO startsWith
 			switch (pageName) {
 				case 'appSettings':
 					var appSettingsForm = this.getWidget('appSettings', 'appSettings_appSettings');
@@ -198,7 +240,7 @@ define([
 						button.label = _('Install anyway');
 					}
 				});
-			} else if (pageName === 'licenseAgreement') {
+			} else if (pageName.startsWith('licenseAgreement_')) {
 				array.forEach(buttons, function(button) {
 					if (button.name === 'next') {
 						button.label = _('Accept license');

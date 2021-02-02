@@ -122,7 +122,7 @@ define([
 			return groups;
 		},
 
-		_getFormConf: function(app, values, phase, smallHeaders) {
+		getFormConf: function(app, values, phase, smallHeaders) {
 			var widgets = this.getWidgets(app, values, phase);
 			if (widgets.length === 0) {
 				return null;
@@ -153,13 +153,13 @@ define([
 		},
 
 		getForm: function(app, values, phase, smallHeaders) {
-			var formConf = this._getFormConf(app, values, phase, smallHeaders);
+			var formConf = this.getFormConf(app, values, phase, smallHeaders);
 			return formConf ? new AppSettingsForm(formConf) : null;
 		},
 
 		getFormConfDeferred: function(app, phase, smallHeaders) {
 			return tools.umcpCommand('appcenter/config', {app: app.id, phase: phase}).then(lang.hitch(this, function(data) {
-				return this._getFormConf(app, data.result.values, phase, smallHeaders);
+				return this.getFormConf(app, data.result.values, phase, smallHeaders);
 			}));
 		},
 

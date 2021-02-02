@@ -48,7 +48,7 @@ define([
 	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, array, on, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, Tiles, Tile, _) {
 
-	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
+	return declare('umc.modules.appcenter.AppCenterPage', [ Page ], {
 
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		// class name of the widget as CSS class
@@ -63,7 +63,7 @@ define([
 		appQuery: null,
 		_sendSearchStringDeferred: null,
 
-		title: _("App management"),
+		title: _('App management'),
 		headerTextAllowHTML: false,
 		helpTextAllowHTML: false,
 		//helpText: _("Install or remove applications on this or another UCS system."),
@@ -317,13 +317,13 @@ define([
 					array.forEach(this.metaCategories, function(metaCategory) {
 						var tiles = array.map(applications, function(app) {
 							return new Tile({
-								bgc: app.background_color || "",
-								logo: "/univention/js/dijit/themes/umc/icons/scalable/" + app.logo_name,
+								bgc: app.background_color || '',
+								logo: '/univention/js/dijit/themes/umc/icons/scalable/' + app.logo_name,
 								name: app.name,
 								obj: app
 							});
 						});
-						metaCategory.set("tiles", tiles);
+						metaCategory.set('tiles', tiles);
 					});
 
 					if (this.liveSearch) {

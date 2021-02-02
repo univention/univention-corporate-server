@@ -31,90 +31,225 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojox/html/entities",
-	"umc/widgets/Wizard",
-	"umc/widgets/Text",
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin",
 	"umc/widgets/ComboBox",
+	"umc/widgets/Text",
+	"umc/widgets/Wizard",
+	"./AppText",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, entities, Wizard, Text, ComboBox, _) {
+], function(declare, array, domClass, entities, _WidgetBase, _TemplatedMixin, ComboBox, Text, Wizard, AppText, _) {
 	return declare('umc.modules.appcenter.AppChooseHostWizard', [Wizard], {
 		pageMainBootstrapClasses: 'col-xs-12',
 		pageNavBootstrapClasses: 'col-xs-12',
 
-		app: null,
+		// TODO this does not work
+		autoHeight: true,
+
+
+		// these need to be provided
+		apps: null,
+		autoinstalled: null,
+		// these need to be provided
+
 
 		needsToBeShown: null,
+		// TODO when coming from the AppCenterPage while selecting multiple apps (not from the AppDetailsPage)
+		// we probably shouls always show the to be installed apps regardless of 'autoinstalled' or the length of
+		// 'apps'
+		_autoInstalledNoticeNeedsToBeShown: null,
+		_chooseHostsNeedsToBeShown: null,
 
 		postMixInProperties: function() {
-			this.baseClass += ' umcAppChooseHostWizard';
 			this.inherited(arguments);
 			this.pages = this._getPages();
 		},
 
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAppChooseHostWizard');
+		},
+
 		_getPages: function() {
-			var hosts = [];
-			var removedDueToInstalled = [];
-			var removedDueToRole = [];
-			if (this.app.installationData) {
-				array.forEach(this.app.installationData, function(item) {
-					if (item.canInstall()) {
-						if (item.isLocal()) {
-							hosts.unshift({
-								label: item.displayName,
-								id: item.fqdn
-							});
-						} else {
-							hosts.push({
-								label: item.displayName,
-								id: item.fqdn
-							});
-						}
+			const pages = [];
+
+			const headerText = this.apps.length === 1
+				? _('Installation of %s', this.apps[0].name)
+				: _('Installation of multiple apps');
+
+			if (this.autoinstalled.length) {
+				let infoText = '';
+				if (this.apps.length === 1) {
+					if (this.autoinstalled.length === 1) {
+						infoText = _('The following app will be automatically installed because it is a required dependency for %s.', app.name);
 					} else {
-						if (item.isInstalled) {
-							removedDueToInstalled.push(item.displayName);
-						} else if (!item.hasFittingRole()) {
-							removedDueToRole.push(item.displayName);
+						infoText = _('The following apps will be automatically installed because they are required dependencies for %s.', app.name);
+					}
+				} else {
+					if (this.autoinstalled.length === 1) {
+						infoText = _('The following app will be automatically installed because it is a required dependency for the selected apps.');
+					} else {
+						infoText = _('The following apps will be automatically installed because they are required dependencies for the selected apps.');
+					}
+				}
+				const page = {
+					name: 'autoinstalledNotice',
+					headerText: headerText,
+					widgets: [{
+						type: Text,
+						name: 'autoinstalledNotice_text',
+						content: infoText
+					}],
+					layout: [
+						'autoinstalledNotice_text'
+					]
+				};
+				pages.push(page);
+				page.layout.push([]);
+				for (const appId of this.autoinstalled) {
+					const app = this.apps.find(app => app.id === appId);
+					const name = `autoinstalledNotice_appText_${app.id}`;
+					page.widgets.push({
+						type: AppText,
+						app: AppText.appFromApp(app),
+						name,
+						size: 'One',
+					});
+					const layout = page.layout[page.layout.length - 1];
+					if (layout.length < 2) {
+						layout.push(name);
+					} else {
+						page.layout.push([name]);
+					}
+				}
+				const selectedApps = this.apps.filter(app => !this.autoinstalled.includes(app.id));
+				if (selectedApps.length) {
+					page.widgets.push({
+						type: Text,
+						name: 'autoinstalledNotice_text2',
+						content: _('The following apps where initially selected.'),
+					});
+					page.layout.push('autoinstalledNotice_text2');
+					page.layout.push([]);
+					for (const app of selectedApps) {
+						const name = `autoinstalledNotice_appText_${app.id}`;
+						page.widgets.push({
+							type: AppText,
+							app: AppText.appFromApp(app),
+							name,
+							size: 'One',
+						});
+						const layout = page.layout[page.layout.length - 1];
+						if (layout.length < 2) {
+							layout.push(name);
+						} else {
+							page.layout.push([name]);
 						}
 					}
-				});
+				}
+				this._autoInstalledNoticeNeedsToBeShown = true;
+			} else {
+				this._autoInstalledNoticeNeedsToBeShown = false;
 			}
 
-			var removeExplanation = '';
-			if (removedDueToInstalled.length === 1) {
-				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
-			} else if (removedDueToInstalled.length > 1) {
-				removeExplanation += '<p>' + _('%d hosts were removed from the list because the application is installed there.', removedDueToInstalled.length) + '</p>';
-			}
-			if (removedDueToRole.length === 1) {
-				removeExplanation += '<p>' + _('%s was removed from the list because the application requires a different server role than the one this host has.', entities.encode(removedDueToRole[0])) + '</p>';
-			} else if (removedDueToRole.length > 1) {
-				removeExplanation += '<p>' + _('%d hosts were removed from the list because the application requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
-			}
-			if (removeExplanation) {
-				removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
-			}
 
-			this.needsToBeShown = hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length;
-			return  [{
-				name: 'chooseHost',
-				headerText: _('Installation of %s', this.app.name),
+			var infoText = this.apps.length === 1
+				? _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.apps[0].name)
+				: _('In order to proceed with the installation, please select the hosts on which the applications are going to be installed.');
+			var page = {
+				name: 'chooseHosts',
+				headerText: headerText,
 				widgets: [{
 					type: Text,
-					name: 'infoText',
-					content: _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.app.name)
-				}, {
+					name: 'chooseHosts_infoText',
+					content: infoText
+				}],
+				layout: [
+					'chooseHosts_infoText'
+				]
+			};
+			pages.push(page);
+			for (const app of this.apps) {
+				var hosts = [];
+				var removedDueToInstalled = [];
+				var removedDueToRole = [];
+				if (app.installationData) {
+					array.forEach(app.installationData, function(item) {
+						if (item.canInstall()) {
+							if (item.isLocal()) {
+								hosts.unshift({
+									label: item.displayName,
+									id: item.fqdn
+								});
+							} else {
+								hosts.push({
+									label: item.displayName,
+									id: item.fqdn
+								});
+							}
+						} else {
+							if (item.isInstalled) {
+								removedDueToInstalled.push(item.displayName);
+							} else if (!item.hasFittingRole()) {
+								removedDueToRole.push(item.displayName);
+							}
+						}
+					});
+				}
+
+				var removeExplanation = '';
+				if (removedDueToInstalled.length === 1) {
+					removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
+				} else if (removedDueToInstalled.length > 1) {
+					removeExplanation += '<p>' + _('%d hosts were removed from the list because the application is installed there.', removedDueToInstalled.length) + '</p>';
+				}
+				if (removedDueToRole.length === 1) {
+					removeExplanation += '<p>' + _('%s was removed from the list because the application requires a different server role than the one this host has.', entities.encode(removedDueToRole[0])) + '</p>';
+				} else if (removedDueToRole.length > 1) {
+					removeExplanation += '<p>' + _('%d hosts were removed from the list because the application requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
+				}
+				if (removeExplanation) {
+					removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
+				}
+
+				page.widgets.push({
+					type: AppText,
+					app: AppText.appFromApp(app),
+					size: 'One',
+					name: `chooseHosts_appText_${app.id}`,
+				});
+				page.widgets.push({
 					type: ComboBox,
-					label: _('Host for installation of application'),
-					name: 'host',
+					label: this.apps.length === 1 ? _('Host for installation of application') : _('Host for installation of %s', app.name), // TODO do we want this?
+					name: app.id,
 					required: true,
-					size: 'Two',
+					size: 'One',
 					staticValues: hosts
-				}, {
-					type: Text,
-					name: 'removeExplanation',
-					content: removeExplanation
-				}]
-			}];
+				});
+				page.layout.push([`chooseHosts_appText_${app.id}`, app.id]);
+				if (removeExplanation) {
+					page.widgets.push({
+						type: Text,
+						name: `chooseHosts_removeExplanation_${app.id}`,
+						content: removeExplanation,
+						'class': 'umcAppChooseHostWizard__removeExplanation'
+					});
+					page.layout.push(`removeExplanation_${app.id}`);
+				}
+
+				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown 
+					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length);
+			}
+			this.needsToBeShown = this._autoInstalledNoticeNeedsToBeShown || this._chooseHostsNeedsToBeShown;
+			return pages;
+		},
+
+		hasNext: function(pageName) {
+			// since we only have two pages the next page is gonna 'chooseHosts'
+			// so we can ignore pageName
+			return this._chooseHostsNeedsToBeShown;
 		},
 
 		getFooterButtons: function() {

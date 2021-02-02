@@ -31,8 +31,9 @@
 define([
 	"dojo/_base/declare",
 	"umc/widgets/Text",
+	"./AppText",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, Text, _) {
+], function(declare, Text, AppText, _) {
 	return {
 		getPageConf: function(app) {
 			if (!app.licenseAgreement) {
@@ -40,13 +41,17 @@ define([
 			}
 
 			return {
-				name: 'licenseAgreement',
+				name: `licenseAgreement_${app.id}`,
 				headerText: '',
-				helpText: _('License agreement'),
+				helpText: _('License agreements'),
 				widgets: [{
+					type: AppText,
+					app: AppText.appFromApp(app),
+					name: 'appText'
+				}, {
 					type: Text,
 					'class': 'appInstallDialog__readme',
-					name: 'licenseAgreement_licenseAgreement',
+					name: `licenseAgreement_licenseAgreement_${app.id}`,
 					content: app.licenseAgreement
 				}]
 			};
