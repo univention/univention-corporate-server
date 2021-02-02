@@ -25,10 +25,7 @@ def get_certificate_from_ssl_connection(fqdn, servername, port):
 
 
 def check_if_correct_cert_is_served(fqdn, servername, port, must_fail=False):
-	try:
-		cert = get_certificate_from_ssl_connection(fqdn, servername, port)
-	except Exception as e:
-		utils.fail('Error retrieving certificate from %s: %s' % (fqdn, e))
+	cert = get_certificate_from_ssl_connection(fqdn, servername, port)
 	if not cert:
 		utils.fail('Empty certificate from %s:%s with servername %s' % (fqdn, port, servername))
 
@@ -56,11 +53,8 @@ if __name__ == '__main__':
 		])
 		subprocess.call(['service', 'dovecot', 'restart'])
 
-		# wait for a short period to let the service be started again
-    time.sleep(0.2)
-
 		print('\nTest if host %s returns a certificate for %s' % (fqdn, fqdn))
-		check_if_correct_cert_is_served(fqdn, fqdn, 993)
+		utils.retry_on_error(check_if_correct_cert_is_served(fqdn, fqdn, 993), exception=(Exception, ), retry=5)
 		check_if_correct_cert_is_served(fqdn, fqdn, 995)
 		print('Test if host %s returns a certificate for ucs-sso.%s' % (fqdn, domain))
 		check_if_correct_cert_is_served(fqdn, 'ucs-sso.%s' % domain, 993)
