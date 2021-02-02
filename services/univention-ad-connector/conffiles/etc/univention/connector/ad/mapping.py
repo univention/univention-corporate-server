@@ -46,26 +46,26 @@ import univention.connector.ad.password
 import univention.connector.ad.proxyAddresses as proxyAddresses
 
 global_ignore_subtree = [
-	'cn=univention,@%@ldap/base@%@',
-	'cn=policies,@%@ldap/base@%@',
-	'cn=shares,@%@ldap/base@%@',
-	'cn=printers,@%@ldap/base@%@',
-	'cn=networks,@%@ldap/base@%@',
-	'cn=kerberos,@%@ldap/base@%@',
-	'cn=dhcp,@%@ldap/base@%@',
-	'cn=dns,@%@ldap/base@%@',
-	'cn=mail,@%@ldap/base@%@',
-	'cn=samba,@%@ldap/base@%@',
-	'cn=nagios,@%@ldap/base@%@',
-	'cn=System,@%@connector/ad/ldap/base@%@',
-	'ou=Grp Policy Users,@%@connector/ad/ldap/base@%@',
-	'cn=Builtin,@%@connector/ad/ldap/base@%@',
-	'cn=ForeignSecurityPrincipals,@%@connector/ad/ldap/base@%@',
-	'ou=Domain Controllers,@%@connector/ad/ldap/base@%@',
-	'cn=Program Data,@%@connector/ad/ldap/base@%@',
-	'cn=Configuration,@%@connector/ad/ldap/base@%@',
-	'cn=opsi,@%@ldap/base@%@',
-	'cn=Microsoft Exchange System Objects,@%@connector/ad/ldap/base@%@'
+	'cn=univention,%(ldap/base)s' % configRegistry,
+	'cn=policies,%(ldap/base)s' % configRegistry,
+	'cn=shares,%(ldap/base)s' % configRegistry,
+	'cn=printers,%(ldap/base)s' % configRegistry,
+	'cn=networks,%(ldap/base)s' % configRegistry,
+	'cn=kerberos,%(ldap/base)s' % configRegistry,
+	'cn=dhcp,%(ldap/base)s' % configRegistry,
+	'cn=dns,%(ldap/base)s' % configRegistry,
+	'cn=mail,%(ldap/base)s' % configRegistry,
+	'cn=samba,%(ldap/base)s' % configRegistry,
+	'cn=nagios,%(ldap/base)s' % configRegistry,
+	'cn=System,%(connector/ad/ldap/base)s' % configRegistry,
+	'ou=Grp Policy Users,%(connector/ad/ldap/base)s' % configRegistry,
+	'cn=Builtin,%(connector/ad/ldap/base)s' % configRegistry,
+	'cn=ForeignSecurityPrincipals,%(connector/ad/ldap/base)s' % configRegistry,
+	'ou=Domain Controllers,%(connector/ad/ldap/base)s' % configRegistry,
+	'cn=Program Data,%(connector/ad/ldap/base)s' % configRegistry,
+	'cn=Configuration,%(connector/ad/ldap/base)s' % configRegistry,
+	'cn=opsi,%(ldap/base)s' % configRegistry,
+	'cn=Microsoft Exchange System Objects,%(connector/ad/ldap/base)s' % configRegistry
 ]
 
 for k in configRegistry.keys():
@@ -86,8 +86,8 @@ group_ignore_filter = '(|{})'.format(ignore_filter_parts)
 
 ad_mapping = {
 	'user': univention.connector.property(
-		ucs_default_dn='cn=users,@%@ldap/base@%@',
-		con_default_dn='cn=users,@%@connector/ad/ldap/base@%@',
+		ucs_default_dn='cn=users,%(ldap/base)s' % configRegistry,
+		con_default_dn='cn=users,%(connector/ad/ldap/base)s' % configRegistry,
 		ucs_module='users/user',
 		# read, write, sync, none
 		sync_mode=configRegistry.get('connector/ad/mapping/user/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
@@ -257,8 +257,8 @@ ad_mapping = {
 		},
 	),
 	'group': univention.connector.property(
-		ucs_default_dn='cn=groups,@%@ldap/base@%@',
-		con_default_dn='cn=Users,@%@connector/ad/ldap/base@%@',
+		ucs_default_dn='cn=groups,%(ldap/base)s' % configRegistry,
+		con_default_dn='cn=Users,%(connector/ad/ldap/base)s' % configRegistry,
 		ucs_module='groups/group',
 		sync_mode=configRegistry.get('connector/ad/mapping/group/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
 		scope='sub',
@@ -338,8 +338,8 @@ ad_mapping = {
 		},
 	),
 	'windowscomputer': univention.connector.property(
-		ucs_default_dn='cn=computers,@%@ldap/base@%@',
-		con_default_dn='cn=computers,@%@connector/ad/ldap/base@%@',
+		ucs_default_dn='cn=computers,%(ldap/base)s' % configRegistry,
+		con_default_dn='cn=computers,%(connector/ad/ldap/base)s' % configRegistry,
 		ucs_module='computers/windows',
 		ucs_module_others=['computers/memberserver', 'computers/linux', 'computers/ubuntu', 'computers/macos'],
 		sync_mode=configRegistry.get('connector/ad/mapping/computer/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),

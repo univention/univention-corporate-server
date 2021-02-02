@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.5-5) unstable; urgency=medium
+
+  * Bug #52044: Transfer mapping from UCR template to real Python script
+
+ -- Florian Best <best@univention.de>  Tue, 02 Mar 2021 18:29:24 +0100
+
 univention-ad-connector (14.0.5-4) unstable; urgency=medium
 
   * Bug #52358: Use LDAP post read control to prevent synchronization

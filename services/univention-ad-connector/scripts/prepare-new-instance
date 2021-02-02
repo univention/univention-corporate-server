@@ -141,13 +141,12 @@ then
     
     echo "-- copy mapping"
     mkdir -p /etc/univention/"$CONFIGBASENAME"/ad
-    cp -a /etc/univention/connector/ad/mapping /etc/univention/"$CONFIGBASENAME"/ad/
-	sed -i "s|@%@connector/ad/|@%@$CONFIGBASENAME/ad/|g;s|'connector/ad/|'$CONFIGBASENAME/ad/|g" /etc/univention/"$CONFIGBASENAME"/ad/mapping
+    cp -a /etc/univention/connector/ad/mapping.py /etc/univention/"$CONFIGBASENAME"/ad/
+	sed -i "s|@%@connector/ad/|@%@$CONFIGBASENAME/ad/|g;s|'connector/ad/|'$CONFIGBASENAME/ad/|g" /etc/univention/"$CONFIGBASENAME"/ad/mapping.py
     
     echo "-- copy startup script"
     cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
     sed -i "s|/usr/bin/python3 -W ignore -m univention.connector.ad.main.*|/usr/bin/python3 -W ignore -m univention.connector.ad.main --configbase \"$CONFIGBASENAME\" \"\$@\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
-    sed -i "s|/etc/univention/connector/ad/mapping|/etc/univention/$CONFIGBASENAME/ad/mapping|g" /usr/sbin/univention-ad-"$CONFIGBASENAME"
     
     
     echo "-- copy init script"

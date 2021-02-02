@@ -165,6 +165,5 @@ if __name__ == "__main__":
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
-	subprocess.call('univention-config-registry filter --encode-utf8 > /etc/univention/connector/ad/mapping.py < /etc/univention/connector/ad/mapping', shell=True)
 	ad = AD_DSACL_modifier(ucr, options.binddn, options.bindpwd)
 	ad.grant_DSACL_LCRP_to_local_system()
