@@ -1,7 +1,13 @@
+univention-directory-manager-rest (9.0.16-12) unstable; urgency=low
+
+  * Bug #52723: return HTTP 200 when an object creation template was requested
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2021 15:35:59 +0100
+
 univention-directory-manager-rest (9.0.16-11) unstable; urgency=low
 
-  * Bug #52725: add HTTP 201 as possible response code for modify operation
-    (when moving)
+  * Bug #52725: add HTTP 201 as possible response code for modify operation to
+    OpenAPI schema (when moving)
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2021 15:26:50 +0100
 
