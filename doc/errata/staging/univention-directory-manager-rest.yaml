@@ -7,7 +7,7 @@ fix: 9.0.16-12A~4.4.0.202102031538
 desc: |
  This update addresses the following issue(s):
  * The OpenAPI schema of the UDM REST API now returns "200" as status
-   code for the retrieval of object ceration templates.
+   code for the retrieval of object creation templates.
  * The OpenAPI schema of the UDM REST API now contains "201" as
    additional possible status code for modify operations. It is returned
    in case an object was moved.
