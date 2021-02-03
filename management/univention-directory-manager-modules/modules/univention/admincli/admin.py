@@ -243,15 +243,6 @@ def module_information(module, identifies_only=0):
 	return information
 
 
-def _2utf8(text):
-	if six.PY3:
-		return text
-	try:
-		return text.encode('utf-8')
-	except:
-		return text.decode('iso-8859-1')
-
-
 def object_input(module, object, input, append=None, remove=None):
 	out = []
 	if append:
@@ -481,7 +472,7 @@ def _doit(arglist):
 	policy_dereference = []
 	for opt, val in opts:
 		if opt == '--position':
-			position_dn = _2utf8(val)
+			position_dn = val
 		elif opt == '--logfile':
 			logfile = val
 		elif opt == '--policies':
@@ -501,7 +492,7 @@ def _doit(arglist):
 			except IOError as exc:
 				raise OperationFailed(out, 'E: could not read bindpwd from file (%s)' % (exc,))
 		elif opt == '--dn':
-			dn = _2utf8(val)
+			dn = val
 		elif opt == '--tls':
 			tls = val
 		elif opt == '--ignore_exists':
@@ -615,7 +606,6 @@ def _doit(arglist):
 	for opt, val in opts:
 		if opt == '--set':
 			name, delim, value = val.partition('=')
-			value = _2utf8(value)
 
 			for mod, (properties, options) in information.items():
 				if name in properties:
@@ -630,7 +620,6 @@ def _doit(arglist):
 				out.append("WARNING: No attribute with name '%s' in this module, value not set." % name)
 		elif opt == '--append':
 			name, delim, value = val.partition('=')
-			value = _2utf8(value)
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
@@ -644,7 +633,7 @@ def _doit(arglist):
 
 		elif opt == '--remove':
 			name, delim, value = val.partition('=')
-			value = _2utf8(value) or None
+			value = value or None
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
@@ -806,7 +795,7 @@ class CLI(object):
 			else:
 				out.append('Object exists')
 		elif created:
-			out.append('Object created: %s' % _2utf8(dn))
+			out.append('Object created: %s' % dn)
 
 		return out
 
@@ -854,9 +843,9 @@ class CLI(object):
 				raise OperationFailed(out, str(msg))
 
 		if object_modified > 0:
-			out.append('Object modified: %s' % _2utf8(dn))
+			out.append('Object modified: %s' % dn)
 		else:
-			out.append('No modification: %s' % _2utf8(dn))
+			out.append('No modification: %s' % dn)
 
 		return out
 
@@ -911,9 +900,9 @@ class CLI(object):
 					raise OperationFailed(out, 'E: Invalid Syntax: %s' % e)
 
 		if object_modified > 0:
-			out.append('Object modified: %s' % _2utf8(dn))
+			out.append('Object modified: %s' % dn)
 		else:
-			out.append('No modification: %s' % _2utf8(dn))
+			out.append('No modification: %s' % dn)
 
 		return out
 
@@ -933,7 +922,7 @@ class CLI(object):
 				raise OperationFailed(out, 'E: dn or filter needed')
 		except (univention.admin.uexceptions.noObject, IndexError):
 			if ignore_not_exists:
-				out.append('Object not found: %s' % _2utf8(dn or filter))
+				out.append('Object not found: %s' % (dn or filter,))
 				return out
 			raise OperationFailed(out, 'E: object not found')
 
@@ -952,7 +941,7 @@ class CLI(object):
 				object.remove()
 			except univention.admin.uexceptions.primaryGroupUsed:
 				raise OperationFailed(out, 'E: object in use')
-		out.append('Object removed: %s' % _2utf8(dn or object.dn))
+		out.append('Object removed: %s' % (dn or object.dn,))
 
 		return out
 
@@ -961,11 +950,11 @@ class CLI(object):
 		if not univention.admin.modules.supports(module_name, 'search'):
 			raise OperationFailed(out, 'Search %s not allowed' % module_name)
 
-		out.append(_2utf8(filter))
+		out.append(filter)
 
 		try:
 			for object in univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
-				out.append('DN: %s' % _2utf8(univention.admin.objects.dn(object)))
+				out.append('DN: %s' % univention.admin.objects.dn(object))
 
 				if not univention.admin.modules.virtual(module_name):
 					object.open()
@@ -978,24 +967,23 @@ class CLI(object):
 						if module.property_descriptions[key].multivalue:
 							for v in value:
 								if s.tostring(v):
-									out.append('  %s: %s' % (_2utf8(key), _2utf8(s.tostring(v))))
+									out.append('  %s: %s' % (key, s.tostring(v)))
 								else:
-									out.append('  %s: %s' % (_2utf8(key), None))
+									out.append('  %s: %s' % (key, None))
 						else:
 							if s.tostring(value):
 								if module.module == 'settings/portal' and key == 'content':
-									out.append('  %s:\n  %s' % (_2utf8(key), _2utf8(s.tostring(value).replace('\n', '\n  '))))
+									out.append('  %s:\n  %s' % (key, s.tostring(value).replace('\n', '\n  ')))
 								else:
-									out.append('  %s: %s' % (_2utf8(key), _2utf8(s.tostring(value))))
+									out.append('  %s: %s' % (key, s.tostring(value)))
 							else:
-								out.append('  %s: %s' % (_2utf8(key), None))
+								out.append('  %s: %s' % (key, None))
 
 					for el in object.policies:
-						out.append('  %s: %s' % ('univentionPolicyReference', _2utf8(el)))
+						out.append('  %s: %s' % ('univentionPolicyReference', el))
 
 				if list_policies:
-					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
-					policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_objectdn], close_fds=True).decode('utf-8').split(u'\n')
+					policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [univention.admin.objects.dn(object)], close_fds=True).decode('utf-8').split(u'\n')
 
 					out.append("  Policy-based Settings:")
 					policy = ''
@@ -1038,8 +1026,7 @@ class CLI(object):
 							ip_ = IPv4Address(u"%s" % (ip,))
 							for subnet in univention.admin.modules.lookup(subnet_module, None, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
 								if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
-									utf8_subnet_dn = _2utf8(subnet.dn)
-									policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], close_fds=True).decode('utf-8').split(u'\n')
+									policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [subnet.dn], close_fds=True).decode('utf-8').split(u'\n')
 									out.append("  Subnet-based Settings:")
 									ddict = {}
 									policy = ''
