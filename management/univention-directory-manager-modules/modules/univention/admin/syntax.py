@@ -4591,9 +4591,20 @@ class SambaLogonHours(MultiSelect):
 	def parse(self, value):
 		# required for UDM CLI: in this case the keys MUST be of type int
 		if isinstance(value, six.string_types):
-			value = list(map(lambda x: int(x), shlex.split(value)))
+			if len(value) == 42 and not value.strip('abcdef0123456789'):
+				from univention.admin.handlers.users.user import logonHoursUnmap
+				value = logonHoursUnmap([value.encode('ASCII')])
+			else:
+				value = list(map(lambda x: int(x), shlex.split(value)))
 
 		return super(SambaLogonHours, self).parse(value)
+
+	@classmethod
+	def tostring(self, value):
+		# type: (list) -> str
+		# better show the bit string. See Bug #33703
+		from univention.admin.handlers.users.user import logonHoursMap
+		return logonHoursMap(value).decode('ASCII')
 
 
 class SambaPrivileges(select):

@@ -959,10 +959,6 @@ class CLI(object):
 				if not univention.admin.modules.virtual(module_name):
 					object.open()
 					for key, value in sorted(object.items()):
-						if key == 'sambaLogonHours':
-							# returns a list, which breaks things here
-							# better show the bit string. See Bug #33703
-							value = module.mapping.mapValue(key, value)
 						s = module.property_descriptions[key].syntax
 						if module.property_descriptions[key].multivalue:
 							for v in value:
