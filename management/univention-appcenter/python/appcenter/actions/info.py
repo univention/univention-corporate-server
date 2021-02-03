@@ -72,6 +72,8 @@ class Info(UniventionAppAction):
 
 	@classmethod
 	def is_compatible(cls, other_version, function=None):
+		if other_version is None:
+			return False
 		return LooseVersion(other_version) >= LooseVersion("5.0-0")
 
 	@classmethod
