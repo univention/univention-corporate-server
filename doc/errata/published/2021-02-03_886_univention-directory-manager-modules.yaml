@@ -15,3 +15,5 @@ desc: |
    `password/hashing/bcrypt/cost_factor` (default 12) and
    `password/hashing/bcrypt/prefix` (default 2b).
 bug: [52576, 52693]
+erratum: 886
+announced: 2021-02-03
