@@ -11,3 +11,5 @@ desc: |
  * The evaluation of disallow option pattern in the ACL definitions has
    been repaired.
 bug: [52665, 52699, 25197]
+erratum: 883
+announced: 2021-02-03
