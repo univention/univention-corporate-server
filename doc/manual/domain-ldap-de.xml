@@ -1322,7 +1322,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<para>
-		Alternativ dazu bietet &ucsUCS; ab Version 4.4-7 errata 887 die Möglichkeit <wordasword>bcrypt</wordasword>
+		Alternativ dazu bietet &ucsUCS; ab Version 4.4-7 Errata-Update 887 die Möglichkeit <wordasword>bcrypt</wordasword>
 		als Hash-Funktion für Benutzerkonten zu verwenden. Dafür muss zunächst auf allen LDAP-Servern die &ucsUCRV;
 		<envar>ldap/pw-bcrypt=true</envar> gesetzt werden um das nötige Modul für OpenLDAP zu aktivieren.
 		Andernfalls ist eine Anmeldung am LDAP-Server mit einem <wordasword>bcrypt</wordasword> Hash nicht möglich.
