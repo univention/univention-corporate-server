@@ -1287,9 +1287,9 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<para>
-		As an alternative &ucsUCS; (from version 4.4-7 errata887 on) offers the option of using <wordasword>bcrypt</wordasword>
-		as hashing method for passwords of user accounts. To activate <wordasword>bcrypt</wordasword> support for the LDAP
-		server the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all servers. Otherwise it is not possible
+		As an alternative &ucsUCS; (from version 4.4-7 errata 887 on) offers the option of using <wordasword>bcrypt</wordasword>
+		as hashing method for passwords of user accounts. To activate <wordasword>bcrypt</wordasword> support in OpenLDAP
+		the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all LDAP servers. Otherwise it is not possible
 		authenticate with an <wordasword>bcrypt</wordasword> hash as password hash. Additionally the &ucsUCRV;
 		<envar>password/hashing/bcrypt=true</envar> has to be set, again on all servers, to activate
 		<wordasword>bcrypt</wordasword> as hashing method for setting or changing user password.
