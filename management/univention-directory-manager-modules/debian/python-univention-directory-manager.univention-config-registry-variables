@@ -125,7 +125,7 @@ Type=string
 Categories=management-udm
 
 [password/hashing/bcrypt/cost_factor]
-Description[de]=Der bcrypt-Kostenfaktor (integer( erhöht die Sicherheit, indem er das Hashing verlangsamt (default: 12).
+Description[de]=Der bcrypt-Kostenfaktor (integer) erhöht die Sicherheit, indem er das Hashing verlangsamt (default: 12).
 Description[en]=The bcrypt cost factor (integer) increases security by slowing down the hashing (default: 12).
 Type=int
 Categories=management-udm
