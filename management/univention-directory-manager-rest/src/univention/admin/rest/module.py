@@ -1389,6 +1389,11 @@ class OpenAPI(Resource):
 							"content": content_schema(),
 							"headers": global_response_headers(),
 						},
+						"201": {
+							"description": "Success (on move and rename)",
+							"content": content_schema(),
+							"headers": global_response_headers(),
+						},
 						"404": {
 							"description": "Object not found",
 							"headers": global_response_headers(),
