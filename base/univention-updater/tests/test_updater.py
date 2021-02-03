@@ -7,6 +7,7 @@ from tempfile import NamedTemporaryFile
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockConfigRegistry, MockUCSHttpServer, MockPopen,
+    MAJOR_UCS5, gen_releases,
 )
 
 UU = U.UniventionUpdater
@@ -114,6 +115,47 @@ class TestUniventionUpdater(unittest.TestCase):
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual('%d.%d-%d' % (MAJOR + 1, 0, 0), ver)
 
+    def test_get_next_version_MAJOR_to_UCS5(self):
+        """Test next major version UCS 5."""
+        self._uri({
+            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR_UCS5, 0, MAJOR_UCS5, 0, 0): '',
+        })
+        ver = self.u.get_next_version(version=U.UCS_Version((4, 99, 99)))
+        self.assertEqual('%d.%d-%d' % (MAJOR_UCS5, 0, 0), ver)
+
+    def test_release_update_available_to_UCS5_missing_component(self):
+        """Test update to UCS 5 blocks because of missing current component."""
+        NEXT = '%d.%d-%d' % (MAJOR_UCS5, 0, 0)
+        self._uri({
+            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+        })
+        MockConfigRegistry._EXTRA = {
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/version': 'current',
+            'version/version': '4.99',
+            'version/patchlevel': '99',
+        }
+        self.u.ucr_reinit()
+        self.assertRaises(U.RequiredComponentError, self.u.release_update_available, errorsto='exception')
+
+    def test_release_update_available_to_UCS5_with_component(self):
+        """Test update to UCS 5 is available with an existing current component."""
+        NEXT = '%d.%d-%d' % (MAJOR_UCS5, 0, 0)
+        self._uri({
+            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+            '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR_UCS5, 0, 'a'): DATA,
+        })
+        MockConfigRegistry._EXTRA = {
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/version': 'current',
+            'version/version': '4.99',
+            'version/patchlevel': '99',
+        }
+        self.u.ucr_reinit()
+        next = self.u.release_update_available()
+        self.assertEqual(NEXT, next)
+
     def test_get_next_version_MAJOR99(self):
         """Test next major version after 99."""
         self._uri({
@@ -204,6 +246,25 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0, ARCH),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
+        )), set(tmp))
+
+    def test_release_update_temporary_sources_list_UCS5(self):
+        """Test temporary sources list for update to UCS 5 with one enabled component."""
+        self._ucr({
+            'repository/online/component/a': 'yes',
+            'repository/online/component/b': 'no',
+        })
+        self._uri({
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR_UCS5, 0, 'a', 'all'): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR_UCS5, 0, 'a', ARCH): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR_UCS5, 0, 'b', 'all'): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR_UCS5, 0, 'b', ARCH): DATA,
+        })
+        tmp = self.u.release_update_temporary_sources_list('%d.%d-%d' % (MAJOR_UCS5, 0, 0))
+        self.assertEqual(set((
+            'deb file:///mock/ ucs%d%d%d main' % (MAJOR_UCS5, 0, 0, ),
+            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR_UCS5, 0, 'a', 'all'),
+            'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR_UCS5, 0, 'a', ARCH),
         )), set(tmp))
 
     def test_current_version(self):
@@ -772,6 +833,22 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
         self.assertRaises(StopIteration, gen.next)
 
+    def test_get_sh_files_UCS5(self):
+        """Test preup.sh / postup.sh download."""
+        server = MockUCSHttpServer('server')
+        struct = U.UCSRepoPool5(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
+        preup_path = struct.path('preup.sh')
+        server.mock_add(preup_path, '#!preup_content')
+        postup_path = struct.path('postup.sh')
+        server.mock_add(postup_path, '#!postup_content')
+        repo = ((server, struct),)
+
+        gen = U.UniventionUpdater.get_sh_files(repo)
+
+        self.assertEqual((server, struct, 'preup', preup_path, '#!preup_content'), gen.next())
+        self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
+        self.assertRaises(StopIteration, gen.next)
+
     def test_get_sh_files_bug27149(self):
         """Test preup.sh / postup.sh download for non-architecture component."""
         server = MockUCSHttpServer('server')
@@ -790,11 +867,11 @@ class TestUniventionUpdater(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    if False:
+    if True:
         import univention.debug as ud
         ud.init('stderr', ud.NO_FUNCTION, ud.NO_FLUSH)
         ud.set_level(ud.NETWORK, ud.ALL + 1)
-    if False:
+    if True:
         import logging
         logging.basicConfig(
             level=logging.DEBUG,
