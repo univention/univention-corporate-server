@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-modules
 fix: 14.0.20-4A~4.4.0.202102021528
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The --remove-option argument of the UDM CLI `create` command has been
    repaired.
  * Support for bcrypt user password hashes has been added

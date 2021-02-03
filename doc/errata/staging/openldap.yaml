@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-7
 src:  openldap
 fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202101261238
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Support for the bcrypt password scheme has been added.
 bug: [52693]
