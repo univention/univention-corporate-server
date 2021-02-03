@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * A cross site scripting vulnerability in the Menu has been fixed.
 bug: [52665]
+erratum: 881
+announced: 2021-02-03
