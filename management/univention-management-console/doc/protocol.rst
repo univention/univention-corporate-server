@@ -28,9 +28,9 @@ implementing the UMC service.
 
 .. _figure-core-structure:
 
-.. figure:: core-structure.png
+.. figure:: core-structure.svg
 
-	core structure of the UMC implementation
+	Core structure of the UMC implementation
 
 Messages
 ========

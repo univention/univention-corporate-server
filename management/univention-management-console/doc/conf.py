@@ -15,7 +15,9 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
+import os.path
+import sys
+sys.path.insert(0, os.path.abspath('../src'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -40,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Univention Management Console'
-copyright = u'2012, Univention GmbH'
+copyright = u'2012-2021, Univention GmbH'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -119,7 +121,7 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -220,7 +222,7 @@ man_pages = [
 epub_title = u'Univention Management Console'
 epub_author = u'Univention GmbH'
 epub_publisher = u'Univention GmbH'
-epub_copyright = u'2012-2020, Univention GmbH'
+epub_copyright = u'2012-2021, Univention GmbH'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
@@ -257,3 +259,7 @@ epub_copyright = u'2012-2020, Univention GmbH'
 
 # keep sort order as defined by source code
 autodoc_member_order = 'bysource'
+
+autodoc_mock_imports = [
+	'tornado',  # python-tornado
+]

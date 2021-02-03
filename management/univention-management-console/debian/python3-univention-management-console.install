@@ -1,1 +1,2 @@
-usr/lib/python2.7/dist-packages usr/lib/python3.5
+usr/lib/python2.7/dist-packages/univention/management	usr/lib/python3.5/dist-packages/univention/
+usr/lib/python2.7/dist-packages/univention_management_console-*.egg-info	usr/lib/python3.5/dist-packages/

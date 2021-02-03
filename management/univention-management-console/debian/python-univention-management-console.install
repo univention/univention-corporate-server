@@ -1,2 +1,3 @@
-usr/lib/python2.7
+usr/lib/python2.7/dist-packages/univention/management
+usr/lib/python2.7/dist-packages/univention_management_console-*.egg-info
 usr/lib/python2.7/dist-packages/univention/management/console/modules/__init__.py /usr/share/pyshared/univention/management/console/modules

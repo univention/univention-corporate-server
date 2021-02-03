@@ -12,10 +12,24 @@ modules for management tasks will differ.
 In the following the technical details of the architecture and the
 python API for modules are described.
 
-.. toctree::
-   :maxdepth: 3
+.. only:: internal
 
-   umc/architecture
-   umc/protocol
-   umc/http
-   umc/packaging
+   .. toctree::
+      :maxdepth: 3
+
+      architecture
+      protocol
+      core_api
+      module_api
+      http
+      packaging
+
+.. only:: (not internal)
+
+   .. toctree::
+      :maxdepth: 3
+
+      architecture
+      protocol
+      http
+      packaging
