@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package has been added to the maintained repository.
 bug: [52693]
+erratum: 884
+announced: 2021-02-03
