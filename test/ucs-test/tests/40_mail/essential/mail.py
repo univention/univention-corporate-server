@@ -459,7 +459,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	else:
 		conn = imaplib.IMAP4(host=server)
 	assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
-	timeout = 60
+	timeout = 120
 	while True:
 		try:
 			assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)

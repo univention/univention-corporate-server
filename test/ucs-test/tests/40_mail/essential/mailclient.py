@@ -106,6 +106,12 @@ class BaseMailClient(object):
 		:returns: string, acl strign or permission denied
 		"""
 		code, acls = self.getacl(mailbox)
+		if "anyone" in acls[0]:
+			acls[0] = acls[0].replace("#anyone", 'anyone')
+
+		if "all" in acls[0]:
+			acls[0] = acls[0].replace("#all", 'all')
+
 		if code != 'OK':
 			raise ReadFail('Unable to read ACL for %r: %r %r' % (mailbox, code, acls))
 		acl = acls[0].split()
