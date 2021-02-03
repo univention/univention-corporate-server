@@ -1,3 +1,9 @@
+ucs-test (10.0.3-4) unstable; urgency=medium
+
+  * Fixup for Bug #52241
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 03 Feb 2021 10:46:27 +0100
+
 ucs-test (10.0.3-3) unstable; urgency=medium
 
   * Fixup for Bug #52241

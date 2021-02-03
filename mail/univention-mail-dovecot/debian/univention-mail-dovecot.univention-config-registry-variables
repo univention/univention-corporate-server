@@ -17,12 +17,6 @@ Description[en]=If this variables value is "true", the POP3 server will be start
 Type=bool
 Categories=service-mail
 
-[mail/dovecot/auth/allowplaintext]
-Description[de]=Ist diese Variable auf "true" gesetzt, erlaubt Dovecot die Authentifikation mit Klartextpasswörtern über unverschlüsselte Verbindungen. Standard ist "no".
-Description[en]=If this variable is set to "true", Dovecot allows authenticating with plain text passwords over unencrypted connections. Default is "no".
-Type=bool
-Categories=service-mail
-
 [mail/dovecot/auth/cache_size]
 Description[de]=Größe des Authentifikations-Caches (z.B. "50k" oder "10M"). "0" bedeutet, dass Caching deaktiviert ist. Ein typischer Cache-Eintrag für passdb und userdb ist etwa 250 byte groß. Standard ist "100k".
 Description[en]=Authentication cache size (e.g. "50k" or "10M"). "0" means caching is disabled. A typical passdb plus userdb cache entry is around 250 bytes. Default is "100k".
