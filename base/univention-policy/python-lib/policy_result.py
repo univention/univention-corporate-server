@@ -73,7 +73,7 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8'):
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
 			if current_attribute.startswith('univentionRegistry;entry-hex-'):
-				current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex')
+				current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex').decode(encoding)
 			policies[current_attribute] = policy
 			current_values = results.setdefault(current_attribute, [])
 		elif line.startswith('Value: '):
