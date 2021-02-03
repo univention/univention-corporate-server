@@ -72,6 +72,10 @@ class insufficientInformation(base):
 	message = _('Information provided is not sufficient.')
 
 
+class noSuperordinate(insufficientInformation):
+	pass
+
+
 class noProperty(base):
 	message = _('No such property.')
 

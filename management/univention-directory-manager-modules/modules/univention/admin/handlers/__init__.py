@@ -984,6 +984,8 @@ class simpleLdap(object):
 			It is ensured that the object lies underneath of the superordinate position.
 
 			:raises: :class:`univention.admin.uexceptions.insufficientInformation`
+
+			:raises: :class:`univention.admin.uexceptions.noSuperordinate`
 		"""
 		superordinate_names = set(univention.admin.modules.superordinate_names(self.module))
 		if not superordinate_names:
@@ -1002,7 +1004,7 @@ class simpleLdap(object):
 				return   # settings/cn might be misued as superordinate, don't risk currently
 			if not must_exists:
 				return
-			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given'))
+			raise univention.admin.uexceptions.noSuperordinate(_('No superordinate object given'))
 
 		# check if the superordinate is of the correct object type
 		if not set([self.superordinate.module]) & superordinate_names:

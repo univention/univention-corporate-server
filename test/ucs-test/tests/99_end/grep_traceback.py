@@ -156,7 +156,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^AttributeError: __exit__', ['with Server']),  # Bug #50583
 	(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
-	(r'^(univention\.admin\.uexceptions\.)?insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
+	(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate): No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 	('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups']),  # Bug #46932, Bug #48943
 	(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups']),  # Bug #48943
