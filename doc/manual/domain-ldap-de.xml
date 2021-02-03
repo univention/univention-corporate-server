@@ -1337,8 +1337,10 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<caution>
-		<wordasword>bcrypt</wordasword> ist auf maximal 72 Zeichen begrenzt. Für die Generierung der Hashes werden also nur
-		die ersten 72 Zeichen des Kennwort verwendet.
+		<para>
+			<wordasword>bcrypt</wordasword> ist auf maximal 72 Zeichen begrenzt. Für die Generierung der Hashes werden also nur
+			die ersten 72 Zeichen des Kennwort verwendet.
+		</para>
 	</caution>
 </section>
 

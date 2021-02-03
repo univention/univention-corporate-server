@@ -1303,8 +1303,10 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<caution>
-		<wordasword>bcrypt</wordasword> is limited to a maximum of 72 characters. So only the first 72
-		characters of the password are used to generate the hashes.
+		<para>
+			<wordasword>bcrypt</wordasword> is limited to a maximum of 72 characters. So only the first 72
+			characters of the password are used to generate the hashes.
+		</para>
 	</caution>
 </section>
 
