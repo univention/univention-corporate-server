@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-directory-manager-rest
+fix: 9.0.16-11A~4.4.0.202102031530
+desc: |
+ This update addresses the following issue(s):
+ * The OpenAPI schema of the UDM REST API now returns "201" as
+   additional possible status code for modify operations. It is returned
+   in case an object was moved.
+bug: [52725]
