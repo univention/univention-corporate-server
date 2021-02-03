@@ -1,3 +1,10 @@
+univention-directory-manager-rest (9.0.16-11) unstable; urgency=low
+
+  * Bug #52725: add HTTP 201 as possible response code for modify operation
+    (when moving)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2021 15:26:50 +0100
+
 univention-directory-manager-rest (9.0.16-10) unstable; urgency=medium
 
   * Bug #51685: fix references to objects with umlauts in the DN
