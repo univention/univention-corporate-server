@@ -958,9 +958,8 @@ class CLI(object):
 
 	def _list(self, module_name, module, dn, lo, position, superordinate, list_policies, filter, superordinate_dn, policyOptions, policies_with_DN):
 		out = []
-		if hasattr(module, 'operations') and module.operations:
-			if 'search' not in module.operations:
-				raise OperationFailed(out, 'Search %s not allowed' % module_name)
+		if not univention.admin.modules.supports(module_name, 'search'):
+			raise OperationFailed(out, 'Search %s not allowed' % module_name)
 
 		out.append(_2utf8(filter))
 
@@ -968,7 +967,7 @@ class CLI(object):
 			for object in univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
 				out.append('DN: %s' % _2utf8(univention.admin.objects.dn(object)))
 
-				if (hasattr(module, 'virtual') and not module.virtual) or not hasattr(module, 'virtual'):
+				if not univention.admin.modules.virtual(module_name):
 					object.open()
 					for key, value in sorted(object.items()):
 						if key == 'sambaLogonHours':
@@ -991,11 +990,11 @@ class CLI(object):
 							else:
 								out.append('  %s: %s' % (_2utf8(key), None))
 
-					if 'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object), ['objectClass'])['objectClass']:
+					if b'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object), ['objectClass']).get('objectClass', {}):
 						references = lo.get(_2utf8(univention.admin.objects.dn(object)), ['univentionPolicyReference'])
 						if references:
 							for el in references['univentionPolicyReference']:
-								out.append('  %s: %s' % ('univentionPolicyReference', _2utf8(s.tostring(el))))
+								out.append('  %s: %s' % ('univentionPolicyReference', _2utf8(el.decode('UTF-8'))))
 
 				if list_policies:
 					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
