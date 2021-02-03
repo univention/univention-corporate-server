@@ -990,11 +990,8 @@ class CLI(object):
 							else:
 								out.append('  %s: %s' % (_2utf8(key), None))
 
-					if b'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object), ['objectClass']).get('objectClass', {}):
-						references = lo.get(_2utf8(univention.admin.objects.dn(object)), ['univentionPolicyReference'])
-						if references:
-							for el in references['univentionPolicyReference']:
-								out.append('  %s: %s' % ('univentionPolicyReference', _2utf8(el.decode('UTF-8'))))
+					for el in object.policies:
+						out.append('  %s: %s' % ('univentionPolicyReference', _2utf8(el)))
 
 				if list_policies:
 					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
