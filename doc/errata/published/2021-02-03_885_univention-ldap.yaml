@@ -11,3 +11,5 @@ desc: |
  * From now on sha-512 hashes are used for the LDAP
    service accounts `admin` and `backup`.
 bug: [52693, 52696]
+erratum: 885
+announced: 2021-02-03
