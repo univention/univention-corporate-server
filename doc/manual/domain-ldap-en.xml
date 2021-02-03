@@ -1276,6 +1276,38 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+<section id="domain:password_hashes">
+	<title>Password hashes in the directory service</title>
+
+	<para>
+		User password hashes are stored in the directory service in the <wordasword>userPassword</wordasword> attribute.
+		The <wordasword>crypt</wordasword> library function is used to hash passwords.
+		The actual hashing method can be configured via the &ucsUCRV; <envar>password/hashing/method</envar>,
+		<wordasword>SHA-512</wordasword> is used by default.
+	</para>
+
+	<para>
+		As an alternative &ucsUCS; (from version 4.4-7 errata887 on) offers the option of using <wordasword>bcrypt</wordasword>
+		as hashing method for passwords of user accounts. To activate <wordasword>bcrypt</wordasword> support for the LDAP
+		server the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all servers. Otherwise it is not possible
+		authenticate with an <wordasword>bcrypt</wordasword> hash as password hash. Additionally the &ucsUCRV;
+		<envar>password/hashing/bcrypt=true</envar> has to be set, again on all servers, to activate
+		<wordasword>bcrypt</wordasword> as hashing method for setting or changing user password.
+	</para>
+
+	<para>
+		In addition, the <wordasword>bcrypt</wordasword> cost factor and the <wordasword>bcrypt</wordasword>
+		variant can be configured via the &ucsUCRV;s
+		<envar>password/hashing/bcrypt/cost_factor</envar> (default 12) and
+		<envar>password/hashing /bcrypt/prefix</envar> (default 2b).
+	</para>
+
+	<caution>
+		<wordasword>bcrypt</wordasword> is limited to a maximum of 72 characters. So only the first 72
+		characters of the password are used to generate the hashes.
+	</caution>
+</section>
+
 <section id="domain:saml">
 	<title>SAML identity provider</title>
 	<para>

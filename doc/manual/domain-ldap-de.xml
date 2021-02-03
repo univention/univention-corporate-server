@@ -1311,6 +1311,37 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+<section id="domain:password_hashes">
+	<title>Passwort-Hashes im Verzeichnisdienst</title>
+
+	<para>
+		Passwort-Hashes von Benutzern werden u.a. im Attribut <wordasword>userPassword</wordasword> im Verzeichnisdienst gespeichert.
+		Zum Hashing der Passwörter wird auf die <wordasword>crypt</wordasword> Bibliotheksfunktion zurückgegriffen. Die eigentlich
+		Hashing-Methode kann über die &ucsUCRV; <envar>password/hashing/method</envar> definiert werden,
+		standardmäßig wird <wordasword>SHA-512</wordasword> verwendet.
+	</para>
+
+	<para>
+		Alternativ dazu bietet &ucsUCS; ab Version 4.4-7 errata887 die Möglichkeit <wordasword>bcrypt</wordasword>
+		als Hashing-Methode für Benutzerkonten zu verwenden. Dafür muss zunächst auf allen LDAP-Server die &ucsUCRV;
+		<envar>ldap/pw-bcrypt=true</envar> gesetzt werden um das nötige Modul im LDAP-Server zu aktivieren.
+		Anderfalls ist eine Anmeldung am LDAP-Server mit einem <wordasword>bcrypt</wordasword> Hash nicht möglich.
+		Damit beim Ändern von Passwörtern nun <wordasword>bcrypt</wordasword> Hashes generiert werden,
+		muss ebenfalls auf allen Servern die &ucsUCRV; <envar>password/hashing/bcrypt=true</envar> gesetzt werden.
+	</para>
+
+	<para>
+		Zusätzlich können der <wordasword>bcrypt Cost Factor</wordasword> und die <wordasword>bcrypt</wordasword>
+		Variante über die &ucsUCRV;n <envar>password/hashing/bcrypt/cost_factor</envar> (12) und
+		<envar>password/hashing/bcrypt/prefix</envar> (2b) angepasst werden.
+	</para>
+
+	<caution>
+		<wordasword>bcrypt</wordasword> ist auf maximal 72 Zeichen begrenzt. Für die Generierung der Hashes werden also nur
+		die ersten 72 Zeichen des Kennwort verwendet.
+	</caution>
+</section>
+
 <section id="domain:saml">
 	<title>SAML Identity Provider</title>
 	<para>
