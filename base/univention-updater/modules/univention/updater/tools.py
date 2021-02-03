@@ -32,6 +32,7 @@ Univention Update tools.
 
 from __future__ import absolute_import
 from __future__ import print_function
+
 try:
     import univention.debug as ud
 except ImportError:
@@ -71,6 +72,7 @@ import tempfile
 import shutil
 import logging
 import atexit
+import json
 try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
@@ -123,8 +125,10 @@ class _UCSRepo(UCS_Version):
     Super class to build URLs for APT repositories.
     """
 
-    def __init__(self, **kw):
-        # type: (**Any) -> None
+    def __init__(self, release=None, **kw):
+        # type: (Optional[UCS_Version], **Any) -> None
+        if release:
+            super(_UCSRepo, self).__init__(release)
         kw.setdefault('patchlevel_reset', 0)
         kw.setdefault('patchlevel_max', 99)
         for (k, v) in kw.items():
@@ -293,6 +297,73 @@ class UCSRepoPool(_UCSRepo):
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
         return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
+
+
+class UCSRepoPool5(_UCSRepo):
+    """
+    APT repository using the debian pool structure (ucs5 and above).
+    """
+
+    def __init__(self, release=None, **kwargs):
+        # type: (UCS_Version, **Any) -> None
+        kwargs.setdefault('version', UCS_Version.FORMAT)
+        kwargs.setdefault('patch', UCS_Version.FULLFORMAT)
+        kwargs.setdefault('errata', False)
+        super(UCSRepoPool5, self).__init__(release, **kwargs)
+
+    @property
+    def _suite(self):  # type: () -> str
+        """
+        Format suite.
+
+        :returns: UCS suite name.
+        :rtype: str
+
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0)._suite
+        'ucs510'
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True)._suite
+        'errata510'
+        """
+        return "{1}{0.major}{0.minor}{0.patchlevel}".format(self, "errata" if self.errata else "ucs")
+
+    def deb(self, server, type="deb", mirror=False):
+        # type: (_UCSServer, str, bool) -> str
+        """
+        Format for :file:`/etc/apt/sources.list`.
+
+        :param str server: The URL of the repository server.
+        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
+        :param bool mirror: Also mirror files for Debian installer.
+        :returns: The APT repository stanza.
+        :rtype: str
+
+        >>> r=UCSRepoPool5(major=5, minor=1, patchlevel=0)
+        >>> r.deb('https://updates.software-univention.de/')
+        'deb https://updates.software-univention.de/ ucs510 main'
+        >>> r.deb('https://updates.software-univention.de/', mirror=True)
+        'deb https://updates.software-univention.de/ ucs510 main main/debian-installer'
+        >>> r=UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True)
+        >>> r.deb('https://updates.software-univention.de/')
+        'deb https://updates.software-univention.de/ errata510 main'
+        """
+        components = "main main/debian-installer" if mirror and not self.errata and type == "deb" else "main"
+        return "%s %s %s %s" % (type, server, self._suite, components)
+
+    def path(self, filename=None):
+        # type: (str) -> str
+        """
+        Format pool for directory/file access.
+
+        :param filename: The name of a file in the repository.
+        :returns: relative path.
+        :rtype: str
+
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0).path()
+        'dists/ucs510/InRelease'
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True).path()
+        'dists/errata510/InRelease'
+        """
+        return "dists/{}/{}".format(self._suite, filename or 'InRelease')
 
 
 class UCSRepoPoolNoArch(_UCSRepo):
@@ -922,6 +993,30 @@ class UniventionUpdater(object):
                 self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
 
+    @staticmethod
+    def get_releases(server):
+        # type: (_UCSServer) -> Iterator[UCS_Version]
+        try:
+            _code, _size, data = server.access(None, 'releases.json', get=True)
+        except DownloadError as e:
+            ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+            return
+        try:
+            releases = json.loads(data)['releases']
+        except (ValueError, KeyError) as exc:
+            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            if isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
+                ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
+            return
+        for major_release in releases:
+            for minor_release in major_release['minors']:
+                for patchlevel_release in minor_release['patchlevels']:
+                    yield UCS_Version((
+                        major_release['major'],
+                        minor_release['minor'],
+                        patchlevel_release['patchlevel']
+                    ))
+
     def get_next_version(self, version, components=[], errorsto='stderr'):
         # type: (UCS_Version, Iterable[str], str) -> Optional[str]
         """
@@ -937,6 +1032,7 @@ class UniventionUpdater(object):
         :raises RequiredComponentError: if a required component is missing
         """
         debug = (errorsto == 'stderr')
+        releases = list(self.get_releases(self.server))
 
         def versions(major, minor, patchlevel):
             # type: (int, int, int) -> Iterator[Dict[str, int]]
@@ -957,11 +1053,17 @@ class UniventionUpdater(object):
                 yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
 
         for ver in versions(version.major, version.minor, version.patchlevel):
-            repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
-            self.log.info('Checking for version %s', repo)
             try:
-                assert self.server.access(repo)
-                self.log.info('Found version %s', repo.path())
+                if ver['major'] >= 5:
+                    if UCS_Version((ver['major'], ver['minor'], ver['patchlevel'])) not in releases:
+                        continue
+                    self.log.info('Found version %s', ver)
+                else:
+                    repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
+                    self.log.info('Checking for version %s', repo)
+                    assert self.server.access(repo)
+                    self.log.info('Found version %s', repo.path())
+
                 failed = set()
                 for component in components:
                     self.log.info('Checking for component %s', component)
@@ -1050,10 +1152,18 @@ class UniventionUpdater(object):
         mmp_version = UCS_Version(version)
         current_components = self.get_current_components()
 
-        result = [
-            ver.deb(server)
-            for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
-        ]
+        result = []
+        if mmp_version['major'] >= 5:
+            result += [UCSRepoPool5(
+                major=mmp_version['major'],
+                minor=mmp_version['minor'],
+                patchlevel=mmp_version['patchlevel']
+            ).deb(self.server)]
+        else:
+            result += [
+                ver.deb(server)
+                for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
+            ]
         for component in components:
             repos = []  # type: List[str]
             try:
@@ -1447,8 +1557,12 @@ class UniventionUpdater(object):
             for ver in self._iterate_versions(struct_dist, start, end, ['maintained'], archs, server):
                 yield server, ver
         struct_pool = UCSRepoPool(prefix=self.server)
-        for ver in self._iterate_versions(struct_pool, start, end, parts, ['all'] + archs, server):
+        for ver in self._iterate_versions(struct_pool, start, UCS_Version((4, 99, 99)), parts, ['all'] + archs, server):
             yield server, ver
+        if end >= UCS_Version((5, 0, 0)):
+            struct_pool5 = UCSRepoPool5(prefix=self.server)
+            for ver in self._iterate_versions(struct_pool5, UCS_Version((5, 0, 0)), end, parts, ['all'] + archs, server):
+                yield server, ver
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
         # type: (List[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
