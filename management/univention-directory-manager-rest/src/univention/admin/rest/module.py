@@ -1307,7 +1307,7 @@ class OpenAPI(Resource):
 					"summary": "Get a template for creating an object. Contains all properties and their default values.",
 					"parameters": [] + global_parameters,
 					"responses": global_responses({
-						201: {
+						200: {
 							"description": "Success",
 							"content": content_schema(),
 							"headers": global_response_headers(),
