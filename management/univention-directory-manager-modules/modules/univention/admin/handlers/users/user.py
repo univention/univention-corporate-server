@@ -919,7 +919,7 @@ def logonHoursUnmap(logontimes):
 		newtime += "".join(bitlist)
 
 	# convert bit-string to list
-	return filter(lambda i: newtime[i] == '1', range(168))
+	return [i for i in range(168) if newtime[i] == '1']
 
 
 def intToBinary(val):
