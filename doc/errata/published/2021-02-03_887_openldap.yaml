@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Support for the bcrypt password scheme has been added.
 bug: [52693]
+erratum: 887
+announced: 2021-02-03
