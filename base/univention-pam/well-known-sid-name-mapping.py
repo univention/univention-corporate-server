@@ -270,8 +270,8 @@ def postrun():
 				else:
 					import importlib.util
 					spec = importlib.util.spec_from_file_location(filename_parts[0], hook_filepath)
-					mapping = importlib.util.module_from_spec(spec)
-					spec.loader.exec_module(mapping)
+					hook_module = importlib.util.module_from_spec(spec)
+					spec.loader.exec_module(hook_module)
 				if hasattr(hook_module, 'postrun'):
 					hook_module.postrun(modified_default_names)
 	finally:
