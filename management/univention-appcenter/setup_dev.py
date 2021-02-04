@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -34,7 +34,8 @@
 
 from packaging import setup
 
-setup(name='univention-appcenter-dev',
+setup(
+	name='univention-appcenter-dev',
 	packages=[
 		'univention.appcenter.actions',
 	],

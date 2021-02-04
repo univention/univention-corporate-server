@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -251,7 +251,7 @@ class Changes(object):
 		enabled = ['disabled', 'enabled']
 		# enable = ['disable', 'enable']
 		onoff = ['off', 'on']
-		# onezero = ['0', '1']		# strings here! UCR doesn't know about integers
+		# onezero = ['0', '1']  # strings here! UCR doesn't know about integers
 
 		# array of strings to match against the variable name, associated with the
 		# corresponding bool representation to use. The first match is used.
@@ -264,7 +264,7 @@ class Changes(object):
 			['repository/online', onoff]
 		]
 
-		intval = int(bool(value))			# speak C:  intval = value ? 1 : 0;
+		intval = int(bool(value))  # speak C:  intval = value ? 1 : 0;
 
 		for s in setup:
 			if s[0] in variable:

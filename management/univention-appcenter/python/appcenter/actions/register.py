@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -287,7 +287,7 @@ class Register(CredentialsAction):
 			dump_dir = os.path.join('/var/lib/univention-appcenter/listener/', app.id)  # this is appcenter.listener.LISTENER_DUMP_DIR, but save the import for just that
 			output_dir = os.path.join(app.get_data_dir(), 'listener')
 			with open(listener_file, 'w') as fd:
-				fd.write('''#!/usr/bin/python2.7
+				fd.write('''#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 

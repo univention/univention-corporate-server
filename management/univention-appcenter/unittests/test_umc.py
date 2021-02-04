@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020-2021 Univention GmbH
@@ -29,14 +29,16 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import pytest
+
 ANYTHING = object()
 
-import pytest
 
 @pytest.fixture
 def custom_apps_umc(custom_apps):
 	custom_apps.load('unittests/inis/umc/')
 	return custom_apps
+
 
 def assert_called_with(mock, *argss):
 	assert mock.call_count == len(argss)
@@ -69,7 +71,6 @@ class TestRiot(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-
 	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}.{domainname}'.format(**mocked_ucr)
 		settings = {'riot/default/base_url': '/riot', 'riot/default/server_name': host}
@@ -81,7 +82,6 @@ class TestRiot(object):
 		appcenter_umc_instance.run(umc_request)
 		umc_request.progress(appcenter_umc_instance.progress)
 		assert_called_with(mock, [(custom_apps_umc.find('riot'), 'install', settings, ANYTHING), {}])
-
 
 	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}.{domainname}'.format(**mocked_ucr)
@@ -110,7 +110,6 @@ class TestKopano(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-
 	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr)
 		localhost = '{hostname}.{domainname}'.format(**mocked_ucr)
@@ -123,7 +122,6 @@ class TestKopano(object):
 		umc_request.progress(appcenter_umc_instance.progress)
 		assert_called_with(mock1, [(custom_apps_umc.find('kopano-webapp'), 'install', {}, ANYTHING), {}])
 		assert_called_with(mock2, [(host, custom_apps_umc.find('kopano-core'), 'install', True, {}, ANYTHING), {}])
-
 
 	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr)
@@ -153,7 +151,6 @@ class TestUCSSchool(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-
 	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}.{domainname}'.format(**mocked_ucr)
 		settings_ucsschool = {'ucsschool/join/create_demo': False}
@@ -165,11 +162,11 @@ class TestUCSSchool(object):
 		mocker.patch.object(appcenter_umc_instance, '_run_remote')
 		appcenter_umc_instance.run(umc_request)
 		umc_request.progress(appcenter_umc_instance.progress)
-		assert_called_with(mock,
+		assert_called_with(
+			mock,
 			[(custom_apps_umc.find('ucsschool'), 'install', settings_ucsschool, ANYTHING), {}],
 			[(custom_apps_umc.find('ucsschool-kelvin-rest-api'), 'install', settings_kelvin, ANYTHING), {}],
-			)
-
+		)
 
 	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
 		host = '{hostname}.{domainname}'.format(**mocked_ucr)
@@ -182,7 +179,8 @@ class TestUCSSchool(object):
 		mocker.patch.object(appcenter_umc_instance, '_run_remote')
 		appcenter_umc_instance.run(umc_request)
 		umc_request.progress(appcenter_umc_instance.progress)
-		assert_called_with(mock,
+		assert_called_with(
+			mock,
 			[(custom_apps_umc.find('ucsschool'), 'install', settings_ucsschool, ANYTHING), {}],
 			[(custom_apps_umc.find('ucsschool-kelvin-rest-api'), 'install', settings_kelvin, ANYTHING), {}],
-			)
+		)

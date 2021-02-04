@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -109,16 +109,14 @@ advanced_components_sanitizer = DictSanitizer({
 	'prefix': StringSanitizer(),
 	'unmaintained': BooleanSanitizer(),
 	'enabled': BooleanSanitizer(required=True),
-	'name': StringSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
+	'name': StringSanitizer(required=True, regex_pattern=r'^[A-Za-z0-9\-\_\.]+$'),
 	'description': StringSanitizer(),
 	'username': StringSanitizer(),
 	'password': StringSanitizer(),
 	'version': StringSanitizer(regex_pattern='^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$')
-}
-)
+})
 
 
 add_components_sanitizer = advanced_components_sanitizer + DictSanitizer({
-	'name': NoDoubleNameSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
-}
-)
+	'name': NoDoubleNameSanitizer(required=True, regex_pattern=r'^[A-Za-z0-9\-\_\.]+$'),
+})
