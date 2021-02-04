@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Manager
@@ -54,11 +54,10 @@ def main(args):
 		if not attr["mailPrimaryAddress"]:
 			continue
 		ml = []
-		old_mail_forward_copy_to_self = attr.get("mailForwardCopyToSelf", None)
 		if attr["mailPrimaryAddress"][0] in attr["mailForwardAddress"]:
 			old_mail_forward_address = attr["mailForwardAddress"][:]
 			attr["mailForwardAddress"].remove(attr["mailPrimaryAddress"][0])
-			ml.append(("mailForwardCopyToSelf", old_mail_forward_copy_to_self, ["1"]))
+			ml.append(("mailForwardCopyToSelf", attr.get("mailForwardCopyToSelf", []), [b"1"]))
 			ml.append(("mailForwardAddress", old_mail_forward_address, attr["mailForwardAddress"]))
 
 		if ml:
@@ -80,7 +79,7 @@ def main(args):
 		print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
 		print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")
 		print("$ ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes")
-		print("$ /etc/init.d/postfix reload && /etc/init.d/postfix restart")
+		print("$ systemctl restart postfix.service")
 
 
 if __name__ == "__main__":
