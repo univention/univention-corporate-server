@@ -1287,7 +1287,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<para>
-		As an alternative &ucsUCS; (from version 4.4-7 errata 887 on) offers the option of using <function>bcrypt</function>
+		As an alternative &ucsUCS; (from version <u:erratum release="4.4-7">887</u:erratum> on) offers the option of using <function>bcrypt</function>
 		as hashing method for passwords of user accounts. To activate <function>bcrypt</function> support in OpenLDAP
 		the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all LDAP servers. Otherwise it is not possible
 		authenticate with a <function>bcrypt</function> hash as password hash. Additionally the &ucsUCRV;
