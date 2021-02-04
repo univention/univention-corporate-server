@@ -472,6 +472,8 @@ class _ConfigRegistry(dict):
 	:param filename: File name for text database file.
 	"""
 
+	RE_COMMENT = re.compile(r'^[^:]*#.*$')
+
 	def __init__(self, filename):
 		# type: (str) -> None
 		dict.__init__(self)
@@ -497,7 +499,7 @@ class _ConfigRegistry(dict):
 
 					reg_file.seek(0)
 					for line in reg_file:
-						line = re.sub(r'^[^:]*#.*$', "", line)
+						line = self.RE_COMMENT.sub("", line)
 						if line == '':
 							continue
 						if line.find(': ') == -1:
