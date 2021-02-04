@@ -4602,6 +4602,8 @@ class SambaLogonHours(MultiSelect):
 	@classmethod
 	def tostring(self, value):
 		# type: (list) -> str
+		if value is None:
+			return value
 		# better show the bit string. See Bug #33703
 		from univention.admin.handlers.users.user import logonHoursMap
 		return logonHoursMap(value).decode('ASCII')
