@@ -43,7 +43,7 @@ if sys.version_info >= (3,):
 else:
 	from commands import getstatusoutput
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry  # noqa: E402,F401
 
 
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"

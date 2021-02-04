@@ -50,6 +50,16 @@ import pipes
 from typing import Optional  # noqa F401
 
 import six
+
+from univention.config_registry import ConfigRegistry
+import univention.uldap
+import univention.lib.package_manager
+from univention.lib.misc import custom_groupname
+import univention.debug as ud
+from univention.config_registry.interfaces import Interfaces
+
+import dns.resolver
+
 if not six.PY2:
 	import ldb
 	from samba.dcerpc import nbt, security
@@ -61,15 +71,6 @@ else:
 	from collections import namedtuple
 	DOMAIN_RID_ADMINS = 512
 	DOMAIN_RID_ADMINISTRATOR = 500
-
-from univention.config_registry import ConfigRegistry
-import univention.uldap
-import univention.lib.package_manager
-from univention.lib.misc import custom_groupname
-import univention.debug as ud
-from univention.config_registry.interfaces import Interfaces
-
-import dns.resolver
 
 
 # Ensure univention debug is initialized

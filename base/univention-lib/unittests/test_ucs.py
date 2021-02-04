@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020-2021 Univention GmbH
@@ -39,6 +39,7 @@ import pytest
 from .conftest import import_lib_module
 
 ucs = import_lib_module('ucs')
+
 
 @pytest.fixture
 def v():

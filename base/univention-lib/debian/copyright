@@ -27,8 +27,3 @@ License: AGPL-3.0-only
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
  <https://www.gnu.org/licenses/>.
-
-Files: python/urllib2_ssl.py
-Copyright: 2001-2018 Python Software Foundation
-   2013-2019 Univention GmbH
-License: Python

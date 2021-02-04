@@ -33,5 +33,7 @@
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
-from univention.lib.locking import *
-from univention.lib.i18n import *
+__all__ = ('get_lock', 'release_lock', 'Translation', 'NullTranslation', 'Locale', 'I18N_Error')
+
+from univention.lib.locking import get_lock, release_lock
+from univention.lib.i18n import Translation, NullTranslation, Locale, I18N_Error

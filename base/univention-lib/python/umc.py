@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 Univention common Python library to manage
@@ -45,14 +45,16 @@ import ssl
 import json
 import locale
 import base64
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa F401
-_T = TypeVar("_T")
 
 from six.moves.http_cookies import SimpleCookie
 from six.moves.http_client import HTTPSConnection, HTTPException
 from six.moves import http_client as httplib  # noqa F401
 
 from univention.config_registry import ConfigRegistry
+
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa F401
+_T = TypeVar("_T")
+
 ucr = ConfigRegistry()
 ucr.load()
 
