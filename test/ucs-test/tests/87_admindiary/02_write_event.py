@@ -26,8 +26,10 @@ def test_write_event():
 			'args': {'username': username, 'module': 'users/user'},
 			'comments': False
 		}
-		entries = client.query(d, event='UDM_USERS_USER_CREATED', username=username)
-		x = entries[-1]
+		entries = client.query(d, event='UDM_USERS_USER_CREATED')
+		# It is not possible to filter by args in query so we use list comprehension
+		x = [entry for entry in entries if entry.get('args', {}).get('username') == username][0]
+		assert x is not None
 		expected['id'] = x['id']
 		expected['date'] = x['date']
 		expected['context_id'] = x['context_id']
