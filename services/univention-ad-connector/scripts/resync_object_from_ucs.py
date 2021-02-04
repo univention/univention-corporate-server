@@ -52,7 +52,7 @@ class UCSResync(object):
 		self.lo = univention.uldap.getMachineConnection()
 
 	def _get_listener_dir(self):
-		return self.configRegistry.get('%s/ad/listener/dir' % CONFIGBASENAME, '/var/lib/univention-connector/ad')
+		return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
 
 	def _generate_filename(self):
 		directory = self._get_listener_dir()
