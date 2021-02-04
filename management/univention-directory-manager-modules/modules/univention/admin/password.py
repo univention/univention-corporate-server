@@ -99,9 +99,9 @@ def bcrypt_hash(password):
 	:returns: the hashed password string.
 	"""
 	cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
-	prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b')
+	prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b').encode('utf8')
 	salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
-	return bcrypt.hashpw(password, salt)
+	return bcrypt.hashpw(password.encode('utf-8'), salt).decode('ASCII')
 
 
 def ntlm(password):
@@ -293,7 +293,7 @@ def password_already_used(password, pwhistory):
 		try:
 			if linesplit[0] == '{BCRYPT}':
 				password_hash = line[len('{BCRYPT}'):]
-				if bcrypt.checkpw(password, password_hash):
+				if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII')):
 					ud.debug(ud.ADMIN, ud.ERROR, '\nbcrypt.checkpw() == [%s]' % (line))
 					return True
 			else:
