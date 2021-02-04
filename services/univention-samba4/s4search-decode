@@ -130,7 +130,7 @@ def decode_supplementalCredentials(value, kvno=0):
 				print(krb5SaltObject.saltvalue())
 				krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
 				print("#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip())
-		except:
+		except Exception:
 			print("### Exception during ndr_unpack")
 			for line in traceback.format_exc().split('\n'):
 				print("### %s" % line)
@@ -148,7 +148,7 @@ def decode_accountExpires(value):
 	else:
 		try:
 			print("# accountExpires: %s" % decode_100nanosectimestamp(value))
-		except:
+		except Exception:
 			print("# traceback during decoding:")
 			traceback.print_exc()
 
@@ -165,7 +165,7 @@ class decode_lastDate(object):
 		else:
 			try:
 				print("# %s: %s" % (self.attrname, decode_100nanosectimestamp(value)))
-			except:
+			except Exception:
 				print("# traceback during decoding:")
 				traceback.print_exc()
 
@@ -173,13 +173,13 @@ class decode_lastDate(object):
 def decode_pwdLastSet(value):
 	print("# decoded (Note: timezone not converted to local time):")
 	if int(value) == -1:
-		print("# %s: Just set" % self.attrname)
+		print("# pwdLastSet: Just set")
 	elif int(value) == 0:
-		print("# %s: Must change on next logon" % self.attrname)
+		print("# pwdLastSet: Must change on next logon")
 	else:
 		try:
 			print("# pwdLastSet: %s" % decode_100nanosectimestamp(value))
-		except:
+		except Exception:
 			print("# traceback during decoding:")
 			traceback.print_exc()
 
@@ -235,6 +235,6 @@ try:
 		else:
 			decode_line(line)
 			line = line2
-except:
+except Exception:
 	traceback.print_exc()
 	sys.stdout.flush()
