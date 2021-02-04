@@ -1280,31 +1280,31 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Password hashes in the directory service</title>
 
 	<para>
-		User password hashes are stored in the directory service in the <wordasword>userPassword</wordasword> attribute.
-		The <wordasword>crypt</wordasword> library function is used to hash passwords.
+		User password hashes are stored in the directory service in the <property>userPassword</property> attribute.
+		The <function>crypt</function> library function is used to hash passwords.
 		The actual hashing method can be configured via the &ucsUCRV; <envar>password/hashing/method</envar>,
-		<wordasword>SHA-512</wordasword> is used by default.
+		<function>SHA-512</function> is used by default.
 	</para>
 
 	<para>
-		As an alternative &ucsUCS; (from version 4.4-7 errata 887 on) offers the option of using <wordasword>bcrypt</wordasword>
-		as hashing method for passwords of user accounts. To activate <wordasword>bcrypt</wordasword> support in OpenLDAP
+		As an alternative &ucsUCS; (from version 4.4-7 errata 887 on) offers the option of using <function>bcrypt</function>
+		as hashing method for passwords of user accounts. To activate <function>bcrypt</function> support in OpenLDAP
 		the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all LDAP servers. Otherwise it is not possible
-		authenticate with an <wordasword>bcrypt</wordasword> hash as password hash. Additionally the &ucsUCRV;
+		authenticate with an <function>bcrypt</function> hash as password hash. Additionally the &ucsUCRV;
 		<envar>password/hashing/bcrypt=true</envar> has to be set, again on all servers, to activate
-		<wordasword>bcrypt</wordasword> as hashing method for setting or changing user password.
+		<function>bcrypt</function> as hashing method for setting or changing user password.
 	</para>
 
 	<para>
-		In addition, the <wordasword>bcrypt</wordasword> cost factor and the <wordasword>bcrypt</wordasword>
+		In addition, the <function>bcrypt</function> cost factor and the <function>bcrypt</function>
 		variant can be configured via the &ucsUCRV;s
-		<envar>password/hashing/bcrypt/cost_factor</envar> (default 12) and
-		<envar>password/hashing /bcrypt/prefix</envar> (default 2b).
+		<envar>password/hashing/bcrypt/cost_factor</envar> (default <literal>12</literal>) and
+		<envar>password/hashing /bcrypt/prefix</envar> (default <literal>2b</literal>).
 	</para>
 
 	<caution>
 		<para>
-			<wordasword>bcrypt</wordasword> is limited to a maximum of 72 characters. So only the first 72
+			<function>bcrypt</function> is limited to a maximum of 72 characters. So only the first 72
 			characters of the password are used to generate the hashes.
 		</para>
 	</caution>
