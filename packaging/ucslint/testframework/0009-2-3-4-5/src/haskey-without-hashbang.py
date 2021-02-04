@@ -1,6 +1,7 @@
 import foo
 import bar
 
+
 def main():
 	x = {}
 	if y.has_key ( 'foo ' ):

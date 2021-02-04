@@ -1,9 +1,9 @@
-S:0009-7: none.py:4:2: fragile comparison with None
+S:0009-7: none.py:5:2: fragile comparison with None
 	        if x == None: pass
 	        ^^^^^^^^^^^^^
-S:0009-7: none.py:6:2: fragile comparison with None
+S:0009-7: none.py:7:2: fragile comparison with None
 	        if x!= None: pass
 	        ^^^^^^^^^^^^
-S:0009-7: none.py:8:2: fragile comparison with None
-	        while x!=None: break
+S:0009-7: none.py:9:2: fragile comparison with None
+	        while x!=None: break  # noqa
 	        ^^^^^^^^^^^^^^

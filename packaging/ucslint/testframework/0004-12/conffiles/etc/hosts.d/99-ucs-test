@@ -31,17 +31,17 @@ print baseConfig.has_key('in/info/file/registered/baseconfigD3')
 print baseConfig.is_true('in/info/file/registered/baseconfigD4',False)
 print baseConfig.is_false('in/info/file/registered/baseconfigD5',True)
 
-print configRegistry[ 'in/info/file/registered/configregistryE1' ]
-print configRegistry.get( 'in/info/file/registered/configregistryE2' ,'YES' )
-print configRegistry.has_key( 'in/info/file/registered/configregistryE3' )
-print configRegistry.is_true( 'in/info/file/registered/configregistryE4', False)
-print configRegistry.is_false( 'in/info/file/registered/configregistryE5' , True )
+print configRegistry['in/info/file/registered/configregistryE1']
+print configRegistry.get('in/info/file/registered/configregistryE2' ,'YES')
+print configRegistry.has_key('in/info/file/registered/configregistryE3')
+print configRegistry.is_true('in/info/file/registered/configregistryE4', False)
+print configRegistry.is_false('in/info/file/registered/configregistryE5' , True)
 
-print baseConfig[ 'in/info/file/registered/baseconfigF1' ]
-print baseConfig.get( 'in/info/file/registered/baseconfigF2' ,'YES')
-print baseConfig.has_key( 'in/info/file/registered/baseconfigF3' )
-print baseConfig.is_true( 'in/info/file/registered/baseconfigF4' , False)
-print baseConfig.is_false( 'in/info/file/registered/baseconfigF5', True )
+print baseConfig['in/info/file/registered/baseconfigF1']
+print baseConfig.get('in/info/file/registered/baseconfigF2' ,'YES')
+print baseConfig.has_key('in/info/file/registered/baseconfigF3')
+print baseConfig.is_true('in/info/file/registered/baseconfigF4' , False)
+print baseConfig.is_false('in/info/file/registered/baseconfigF5', True)
 
 
 
@@ -69,15 +69,15 @@ print baseConfig.has_key('not/in/info/file/registered/baseconfigD3')
 print baseConfig.is_true('not/in/info/file/registered/baseconfigD4',False)
 print baseConfig.is_false('not/in/info/file/registered/baseconfigD5',True)
 
-print configRegistry[ 'not/in/info/file/registered/configregistryE1' ]
-print configRegistry.get( 'not/in/info/file/registered/configregistryE2' ,'YES' )
-print configRegistry.has_key( 'not/in/info/file/registered/configregistryE3' )
-print configRegistry.is_true( 'not/in/info/file/registered/configregistryE4', False)
-print configRegistry.is_false( 'not/in/info/file/registered/configregistryE5' , True )
+print configRegistry['not/in/info/file/registered/configregistryE1']
+print configRegistry.get('not/in/info/file/registered/configregistryE2' ,'YES')
+print configRegistry.has_key('not/in/info/file/registered/configregistryE3')
+print configRegistry.is_true('not/in/info/file/registered/configregistryE4', False)
+print configRegistry.is_false('not/in/info/file/registered/configregistryE5' , True)
 
-print baseConfig[ 'not/in/info/file/registered/baseconfigF1' ]
-print baseConfig.get( 'not/in/info/file/registered/baseconfigF2' ,'YES')
-print baseConfig.has_key( 'not/in/info/file/registered/baseconfigF3' )
-print baseConfig.is_true( 'not/in/info/file/registered/baseconfigF4' , False)
-print baseConfig.is_false( 'not/in/info/file/registered/baseconfigF5', True )
+print baseConfig['not/in/info/file/registered/baseconfigF1']
+print baseConfig.get('not/in/info/file/registered/baseconfigF2' ,'YES')
+print baseConfig.has_key('not/in/info/file/registered/baseconfigF3')
+print baseConfig.is_true('not/in/info/file/registered/baseconfigF4' , False)
+print baseConfig.is_false('not/in/info/file/registered/baseconfigF5', True)
 @!@

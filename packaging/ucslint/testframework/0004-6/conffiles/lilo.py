@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0
 # Copyright (C) 2004-2021   Univention GmbH
 
-import os, time
+import os
+import time
 
 lockfile = '/var/lock/univention-lilo'
+
 
 def lock():
 	if os.path.exists(lockfile):
@@ -11,12 +13,15 @@ def lock():
 	os.system('touch %s' % lockfile)
 	return True
 
+
 def lilo():
 	time.sleep(2)
 	os.system('/sbin/lilo')
 
+
 def unlock():
 	os.remove(lockfile)
+
 
 def handler(baseConfig, changes):
 	rc = lock()

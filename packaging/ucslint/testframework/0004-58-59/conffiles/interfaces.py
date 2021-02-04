@@ -1,2 +1,4 @@
-def preinst(ucr, changes): pass
-def postinst(ucr, changes): pass
+def preinst(ucr, changes): pass  # noqa: E704
+
+
+def postinst(ucr, changes): pass  # noqa: E704

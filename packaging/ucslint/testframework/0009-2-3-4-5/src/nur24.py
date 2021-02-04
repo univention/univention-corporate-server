@@ -2,6 +2,7 @@
 import foo
 import bar
 
+
 def main():
 	print 'Boing'
 	print _('Dieser Test ist ok')
