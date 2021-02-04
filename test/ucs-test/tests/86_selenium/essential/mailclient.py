@@ -2,13 +2,11 @@
 .. module:: mailclient
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
-from pexpect import spawn, EOF
+from __future__ import print_function
 import email
 import imaplib
-import sys
 import time
 import univention.testing.strings as uts
-import univention.config_registry
 
 try:
 	from itertools import izip as zip
@@ -59,7 +57,7 @@ class BaseMailClient(object):
 			self.login(usermail, password)
 			self.owner = usermail
 		except Exception as ex:
-			print "Login Failed with exception:%r" % ex
+			print("Login Failed with exception:%r" % ex)
 			raise
 
 	def login_ok(self, usermail, password, expected_to_succeed=True):
@@ -75,7 +73,7 @@ class BaseMailClient(object):
 			self.logout()
 		except Exception as ex:
 			if expected_to_succeed:
-				print "Login Failed with exception:%r" % ex
+				print("Login Failed with exception:%r" % ex)
 				return 1
 		return 0
 
@@ -145,7 +143,7 @@ class BaseMailClient(object):
 		}
 		for mailbox in expected_acls:
 			current = self.get_acl(mailbox)
-			print 'Current = ', current
+			print('Current = ', current)
 			for who in expected_acls.get(mailbox):
 				permissions = expected_acls.get(mailbox).get(who)
 				set1 = set(''.join([permissions_map[x] for x in permissions]))
@@ -164,7 +162,7 @@ class BaseMailClient(object):
 			if mailbox_owner != self.owner:
 				mailbox = self.mail_folder(mailbox_owner, mailbox)
 			data = self.getMailBoxes()
-			print 'Lookup :', mailbox, data
+			print('Lookup :', mailbox, data)
 			if (mailbox in data) != retcode:
 				raise LookupFail('Un-expected result for listing the mailbox %s' % mailbox)
 
@@ -178,7 +176,7 @@ class BaseMailClient(object):
 				mailbox = self.mail_folder(mailbox_owner, mailbox)
 			self.select(mailbox)
 			typ, data = self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
-			print 'Read Retcode:', typ, data
+			print('Read Retcode:', typ, data)
 			if (typ == 'OK') != retcode:
 				raise ReadFail('Unexpected read result for the inbox %s' % mailbox)
 			if 'OK' in typ:
@@ -202,7 +200,7 @@ class BaseMailClient(object):
 				imaplib.Time2Internaldate(time.time()),
 				str(email.message_from_string('TEST %s' % mailbox))
 			)
-			print 'Append Retcode:', typ, data
+			print('Append Retcode:', typ, data)
 			if (typ == 'OK') != retcode:
 				raise AppendFail('Unexpected append result to inbox %s' % mailbox)
 			if 'OK' in typ:
@@ -220,12 +218,12 @@ class BaseMailClient(object):
 				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
 			subname = uts.random_name()
 			typ, data = self.create('%s/%s' % (mailbox, subname))
-			print 'Create Retcode:', typ, data
+			print('Create Retcode:', typ, data)
 			if (typ == 'OK') != retcode:
 				raise WriteFail('Unexpected create sub result mailbox in %s' % mailbox)
 			if 'OK' in typ:
 				typ, data = self.delete('%s/%s' % (mailbox, subname))
-				print 'Delete Retcode:', typ, data
+				print('Delete Retcode:', typ, data)
 				if (typ == 'OK') != retcode:
 					raise WriteFail('Unexpected delete sub result mailbox in %s' % mailbox)
 

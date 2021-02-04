@@ -2,6 +2,8 @@
 """
 Find errors in tests/
 """
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -44,7 +46,7 @@ class Lint(object):
 				if match:
 					func = match.group(1)
 					if func in self.functions:
-						print "'%s' re-defined from '%s' in '%s'" % (func, self.functions[func], path)
+						print("'%s' re-defined from '%s' in '%s'" % (func, self.functions[func], path))
 					else:
 						self.functions[func] = path
 					continue
@@ -101,7 +103,7 @@ class Lint(object):
 					func = match.group(0)
 					lib = self.functions[func]
 					if lib not in libs:
-						print '%s:%d:%s %s' % (path, nr, func, line)
+						print('%s:%d:%s %s' % (path, nr, func, line))
 
 
 if __name__ == '__main__':

@@ -34,7 +34,7 @@ import sys
 import subprocess
 import time
 try:
-	from typing import TextIO, List, Optional, Text
+	from typing import List, Optional  # noqa: F401
 except ImportError:
 	pass
 
@@ -46,7 +46,7 @@ from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.udm import NoObject, UDM
-from univention.udm.base import BaseModule, BaseObject
+from univention.udm.base import BaseModule, BaseObject  # noqa: F401
 
 _forward_zones = None
 _ucr = None
@@ -181,6 +181,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 				click.echo(click.style("$ nscd -i hosts", bold=True))
 				click.echo(click.style("$ service bind9 reload", bold=True))
 
+
 def resolve_host(hostname, timeout):
 	resolver = Resolver()
 	resolver.lifetime = timeout
@@ -222,7 +223,7 @@ def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
 	global _forward_zones
 	if not _forward_zones:
 		dns_forward_zone_mod = udm.get("dns/forward_zone")  # type: BaseModule
-		cmp23 = lambda x, y: (x > y) - (x < y)  # py2/3 compatibility
+		cmp23 = lambda x, y: (x > y) - (x < y)  # py2/3 compatibility  # noqa: E731
 		_forward_zones = sorted(
 			dns_forward_zone_mod.search(),
 			cmp=lambda x, y: cmp23(len(x.props.zone), len(y.props.zone)),

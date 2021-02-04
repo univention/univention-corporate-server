@@ -112,7 +112,7 @@ class I18N(object):
 			self.mofile = polib.mofile(filename)
 		except (ValueError, MemoryError) as exc:
 			LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
-		except (KeyboardInterrupt, SystemExit, SyntaxError) as exc:
+		except (KeyboardInterrupt, SystemExit, SyntaxError):
 			raise
 		except Exception as exc:
 			LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))

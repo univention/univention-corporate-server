@@ -38,6 +38,7 @@ import json
 import os
 import re
 
+
 def main():
 	global options
 	options = parse_args()

@@ -45,9 +45,9 @@ def main():
 				mail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-					'mailHomeServer': '%s.%s' % (host, domain),
-					'mailPrimaryAddress': mail,
-				}
+						'mailHomeServer': '%s.%s' % (host, domain),
+						'mailPrimaryAddress': mail,
+					}
 				)
 				token = str(time.time())
 				delivery_OK = False

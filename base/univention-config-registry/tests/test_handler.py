@@ -205,8 +205,8 @@ def test_ConfigHandlerMultifile(mocker):
 
 	return  # TODO
 
-	run_module = mocker.patch("univention.config_registry.handler.run_module")
-	run_script = mocker.patch("univention.config_registry.handler.run_script")
+	mocker.patch("univention.config_registry.handler.run_module")
+	mocker.patch("univention.config_registry.handler.run_script")
 	mocker.patch("os.makedirs")
 	mocker.patch("os.stat")
 	mocker.patch("os.rename")
@@ -221,8 +221,8 @@ def test_ConfigHandlerFile(mocker):
 
 	return  # TODO
 
-	run_module = mocker.patch("univention.config_registry.handler.run_module")
-	run_script = mocker.patch("univention.config_registry.handler.run_script")
+	mocker.patch("univention.config_registry.handler.run_module")
+	mocker.patch("univention.config_registry.handler.run_script")
 	mocker.patch("os.makedirs")
 	mocker.patch("os.stat")
 	mocker.patch("os.rename")

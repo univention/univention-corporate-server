@@ -21,6 +21,7 @@ class ScreenShooter(BaseScreenShooter):
 		# made here, since it is undoable with selenium or JavaScript. Ask
 		# ulmer@univention.de if you don't want to believe.
 
+
 if __name__ == '__main__':
 	with ScreenShooter(translator) as screen_shooter:
 		screen_shooter.take_screenshots()

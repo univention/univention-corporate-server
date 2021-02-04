@@ -49,8 +49,6 @@ import copy
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
 
-ConfigRegistry = univention.config_registry.ConfigRegistry
-
 
 class UCSTestConfigRegistry(ConfigRegistry):
 

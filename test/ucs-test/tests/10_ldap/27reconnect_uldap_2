@@ -79,7 +79,7 @@ def main():
 						res = lo.search(filter=filter_s)[0][0]
 						assert res == account.binddn
 						count += 1
-					except UNAVAILABLE as exc:
+					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
 						# python-ldap reconnect does not handle this situation
 						print('ignore UNAVAILABLE')
@@ -107,7 +107,7 @@ def main():
 						assert res == user_dn
 						old_description = new_description
 						count += 1
-					except UNAVAILABLE as exc:
+					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
 						# python-ldap reconnect does not handle this situation
 						pass

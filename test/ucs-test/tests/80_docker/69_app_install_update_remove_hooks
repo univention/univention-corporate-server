@@ -9,13 +9,8 @@ import os
 import sys
 import stat
 
-from dockertest import (
-	Appcenter,
-	App,
-	get_app_name,
-	UCSTest_Docker_Exception,
-	tiny_app
-)
+from dockertest import Appcenter, get_app_name, tiny_app
+
 
 class AssertionFailed(Exception):
 	pass
@@ -52,10 +47,7 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
 		# return a separator, if we cannot determine the position.
 		return((color_start + prefix + "%-*s" + color_stop) % (
 			line_length - len(prefix),
-			sys._getframe(depth).f_code.co_filename + ":"
-			+ str(sys._getframe(depth).f_lineno) + ' ['
-			+ sys._getframe(depth).f_code.co_name + ']')).replace(
-			'  ', fill_char + fill_char)
+			sys._getframe(depth).f_code.co_filename + ":" + str(sys._getframe(depth).f_lineno) + ' [' + sys._getframe(depth).f_code.co_name + ']')).replace('  ', fill_char + fill_char)
 	else:
 		return color_start + ("%80s" % '').replace(' ', '=') + color_stop
 
@@ -151,6 +143,7 @@ def app_remove(app):
 
 	app.uninstall()
 	app.remove()
+
 
 def verify_test_results_and_exit():
 	"""

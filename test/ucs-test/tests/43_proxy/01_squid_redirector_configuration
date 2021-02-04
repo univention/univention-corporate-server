@@ -15,7 +15,7 @@ def main():
 	squid_guard_path = '/usr/bin/squidGuard'
 	squid = SimpleSquid()
 
-	with ucr_test.UCSTestConfigRegistry() as ucr:
+	with ucr_test.UCSTestConfigRegistry():
 		redirector = "pyredir"
 		handler_set(['squid/redirect=%s' % redirector])
 		squid.redirector_is(redirector)

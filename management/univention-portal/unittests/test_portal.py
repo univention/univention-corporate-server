@@ -144,7 +144,7 @@ class TestPortal:
 				"dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
 				"linkTarget": "newwindow",
 				"links": [
-				"https://www.univention.com/news/blog-en/"
+					"https://www.univention.com/news/blog-en/"
 				],
 				"logo_name": "/univention/portal/icons/entries/univentionblog.png",
 				"name": {

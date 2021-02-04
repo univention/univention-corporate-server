@@ -180,9 +180,9 @@ if __name__ == '__main__':
 			# 'userGroupsPreset': properties['groups'],  # TODO
 			'mailPrimaryAddress': ['%s.%s@%s' % (user_properties['firstname'], user_properties['lastname'], MAIL_DOMAIN)],
 			'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (user_properties['lastname'], MAIL_DOMAIN)],
-	#		'krb5PrincipalName': [],
-	#		'krb5PasswordEnd': [],
-	#		'krb5Key': [],
+			# 'krb5PrincipalName': [],
+			# 'krb5PasswordEnd': [],
+			# 'krb5Key': [],
 			'krb5MaxRenew': ['604800'],
 			'krb5KDCFlags': ['254'],
 			'krb5KeyVersionNumber': ['1'],

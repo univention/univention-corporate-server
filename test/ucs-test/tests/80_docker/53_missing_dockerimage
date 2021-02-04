@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, get_app_name, get_app_version, App
 from univention.testing.utils import fail, package_installed
 
 if __name__ == '__main__':

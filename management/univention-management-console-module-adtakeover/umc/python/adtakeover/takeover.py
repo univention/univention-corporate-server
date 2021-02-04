@@ -834,7 +834,7 @@ class AD_Takeover(object):
 		try:
 			locale.setlocale(locale.LC_TIME, (None, None))  # 'C' as env['LC_ALL'] some lines earlier
 			remote_datetime = datetime.strptime(time_string, TIME_FORMAT)
-		except ValueError as ex:
+		except ValueError:
 			raise TimeSynchronizationFailed(_("AD Server did not return proper time string: %s.") % (time_string,))
 		finally:
 			locale.setlocale(locale.LC_TIME, old_locale)
@@ -2038,7 +2038,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 		try:
 			ipaddress.ip_address(u'%s' % (hostname_or_ip,))
 			ip_address = hostname_or_ip
-		except ValueError as ex:
+		except ValueError:
 			pass
 
 		try:
@@ -2052,7 +2052,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(domain=realm, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 			hostname_or_ip = cldap_res.pdc_dns_name
-		except RuntimeError as ex:
+		except RuntimeError:
 			raise TakeoverError(_("The automatic search for an Active Directory server for realm %s did not yield any results.") % (realm,))
 
 	if not ip_address:

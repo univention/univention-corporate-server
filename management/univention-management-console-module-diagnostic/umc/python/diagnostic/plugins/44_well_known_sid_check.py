@@ -156,7 +156,7 @@ def check_existence_and_consistency():
 			yield SIDNotFound(error.message, mapped_name)
 			try:
 				actual_sid = ldap_connection.get_by_name(mapped_name)
-			except KeyError as error:
+			except KeyError:
 				pass
 			else:
 				# We don't need an explicit `sid != actual_sid` here, as no

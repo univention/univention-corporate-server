@@ -22,7 +22,8 @@ if __name__ == '__main__':
 			package = uts.random_name(),
 			appidentifier = '%s' % uts.random_name(),
 
-			schema = udm.create_object('settings/ldapschema',
+			schema = udm.create_object(
+				'settings/ldapschema',
 				position=udm.UNIVENTION_CONTAINER,
 				name=schema_name,
 				data=base64.encodestring(bz2.compress(data)),

@@ -14,7 +14,8 @@ import ldap
 import pytest
 
 from univention.testing.udm import UCSTestUDM
-from univention.testing.connector_common import (Utf8User, SpecialUser,
+from univention.testing.connector_common import (
+	Utf8User, SpecialUser,
 	NormalGroup, Utf8Group, SpecialGroup, create_udm_group, delete_udm_group,
 	create_con_group, delete_con_group, create_udm_user, delete_udm_user,
 	create_con_user, delete_con_user)
@@ -30,8 +31,7 @@ NESTED_GROUPS = [Utf8Group, SpecialGroup]
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_udm_to_s4(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -41,8 +41,7 @@ def test_group_sync_from_udm_to_s4(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -53,8 +52,7 @@ def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.rename)
 		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
 		if old_udm_dn == udm_group_dn:
-			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)]] +
-				ldap.dn.str2dn(udm_group_dn)[1:])
+			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)]] + ldap.dn.str2dn(udm_group_dn)[1:])
 			if old_udm_dn in udm._cleanup.get('groups/group', []):
 				udm._cleanup.setdefault('groups/group', []).append(udm_group_dn)
 				udm._cleanup['groups/group'].remove(old_udm_dn)
@@ -72,8 +70,7 @@ def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -81,8 +78,7 @@ def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 
 		print("\nMove UDM group\n")
 		udm_container_dn = udm.create_object('container/cn', name=udm_group.container)
-		udm_group_dn = udm.move_object('groups/group', dn=udm_group_dn,
-			position=udm_container_dn)
+		udm_group_dn = udm.move_object('groups/group', dn=udm_group_dn, position=udm_container_dn)
 
 		s4connector.wait_for_sync()
 		s4.verify_object(s4_group_dn, None)
@@ -96,8 +92,7 @@ def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_s4_to_udm(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
@@ -107,16 +102,14 @@ def test_group_sync_from_s4_to_udm(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
 		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nRename S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.rename.get("name")))
-		s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn,
-			name=udm_group.rename.get("name"))
+		s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn, name=udm_group.rename.get("name"))
 		s4.set_attributes(s4_group_dn, **tcommon.map_udm_group_to_con(udm_group.rename))
 		s4connector.wait_for_sync()
 
@@ -131,8 +124,7 @@ def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
@@ -156,8 +148,7 @@ def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_udm_to_s4_with_nested_user(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -179,8 +170,7 @@ def test_group_sync_from_udm_to_s4_with_nested_user(group_class, nested_class, s
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_s4_to_udm_with_nested_user(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
@@ -202,8 +192,7 @@ def test_group_sync_from_s4_to_udm_with_nested_user(group_class, nested_class, s
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_udm_to_s4_with_nested_group(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -225,8 +214,7 @@ def test_group_sync_from_udm_to_s4_with_nested_group(group_class, nested_class, 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_group_sync_from_s4_to_udm_with_nested_group(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()

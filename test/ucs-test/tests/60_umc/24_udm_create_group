@@ -8,11 +8,12 @@
 
 from __future__ import print_function
 import sys
-sys.path.insert(0, '.')
-from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
+
+sys.path.insert(0, '.')
+from umc import UMCBase  # noqa: E402
 
 
 class TestUMCGroupsCreation(UMCBase):
@@ -27,16 +28,16 @@ class TestUMCGroupsCreation(UMCBase):
         Creates a group with a provided 'groupname' and provided
         'policynames' if any for the test by making a UMC-request 'udm/add'.
         """
-        options = [{"object": {
-                               "sambaGroupType": "2",
-                               "name": groupname,
-                               "adGroupType": "-2147483646",
-                               "$options$": {"samba": True,
-                                             "posix": True},
-                               "$policies$": policynames},
-                               "options": {"container": "cn=groups," +
-                                                         self.ldap_base,
-                                           "objectType": "groups/group"}}]
+        options = [{
+            "object": {
+                "sambaGroupType": "2",
+                "name": groupname,
+                "adGroupType": "-2147483646",
+                "$options$": {"samba": True, "posix": True},
+                "$policies$": policynames
+            },
+            "options": {"container": "cn=groups," + self.ldap_base, "objectType": "groups/group"}}
+        ]
 
         try:
             request_result = self.client.umc_command('udm/add', options, 'groups/group').result
@@ -55,26 +56,15 @@ class TestUMCGroupsCreation(UMCBase):
         Adds the provided 'policyname' to the provided 'groupname'
         by making a UMC 'udm/put' request with respective options.
         """
-        options = [{"object": {"$policies$":
-                                {"policies/umc": ["cn=" + policyname +
-                                                  ",cn=UMC,cn=policies," +
-                                                  self.ldap_base]},
-                                 "$dn$": "cn=" + groupname + ",cn=groups," +
-                                          self.ldap_base},
-                                 "options": {}}]
+        options = [{"object": {"$policies$": {"policies/umc": ["cn=" + policyname + ",cn=UMC,cn=policies," + self.ldap_base]}, "$dn$": "cn=" + groupname + ",cn=groups," + self.ldap_base}, "options": {}}]
         try:
             request_result = self.client.umc_command('udm/put', options, 'groups/group').result
             if not request_result:
-                utils.fail("Request 'udm/put' to add policy to a group "
-                           "with options '%s' failed, hostname %s"
-                           % (options, self.hostname))
+                utils.fail("Request 'udm/put' to add policy to a group with options '%s' failed, hostname %s" % (options, self.hostname))
             if not request_result[0].get('success'):
-                utils.fail("Request 'udm/put' to add policy to a group "
-                           "with options '%s' failed, no success = True in "
-                           "response, hostname %s" % (options, self.hostname))
+                utils.fail("Request 'udm/put' to add policy to a group with options '%s' failed, no success = True in response, hostname %s" % (options, self.hostname))
         except Exception as exc:
-            utils.fail("Exception while making 'udm/put' request: %s" %
-                       exc)
+            utils.fail("Exception while making 'udm/put' request: %s" % exc)
 
     def get_group_by_name(self, groupname):
         """
@@ -85,12 +75,10 @@ class TestUMCGroupsCreation(UMCBase):
         try:
             request_result = self.client.umc_command('udm/get', options, 'groups/group').result
             if not request_result:
-                utils.fail("Request 'udm/get' with options '%s' failed, "
-                           "hostname '%s'" % (options, self.hostname))
+                utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
             return request_result
         except Exception as exc:
-            utils.fail("Exception while making 'udm/get' request: %s" %
-                       exc)
+            utils.fail("Exception while making 'udm/get' request: %s" % exc)
 
     def main(self):
         """
@@ -106,33 +94,21 @@ class TestUMCGroupsCreation(UMCBase):
             print("Creating a test group with a name '%s'" % test_groupname)
             self.create_group(test_groupname)
             if not self.check_obj_exists(test_groupname, "groups/group"):
-                utils.fail("Failed to query the newly created group '%s'"
-                           % test_groupname)
+                utils.fail("Failed to query the newly created group '%s'" % test_groupname)
 
-            print("Adding a '%s' policy to a test group '%s'"
-                  % (policyname, test_groupname))
+            print("Adding a '%s' policy to a test group '%s'" % (policyname, test_groupname))
             self.add_group_policy(test_groupname, policyname)
 
-            print("Checking test group '%s' policies for '%s'"
-                  % (test_groupname, policyname))
-            group_policies = self.get_group_by_name(test_groupname)[0].get(
-                '$policies$')
+            print("Checking test group '%s' policies for '%s'" % (test_groupname, policyname))
+            group_policies = self.get_group_by_name(test_groupname)[0].get('$policies$')
             if not group_policies:
-                utils.fail("The group policies for '%s' are empty or not "
-                           "present after '%s' policy was applied to group"
-                           % (test_groupname, policyname))
+                utils.fail("The group policies for '%s' are empty or not present after '%s' policy was applied to group" % (test_groupname, policyname))
 
             group_policies = group_policies.get('policies/umc')
             if not group_policies:
-                utils.fail("The group 'policies/umc' field for '%s' is empty "
-                           "or not present after '%s' policy was applied "
-                           "to group" % (test_groupname, policyname))
-            if not ('cn=' + policyname + ',cn=UMC,cn=policies,' +
-                     self.ldap_base in group_policies):
-                utils.fail("The policy '%s' is not in a group '%s' policies "
-                           "'%s'" % (policyname,
-                                     test_groupname,
-                                     group_policies))
+                utils.fail("The group 'policies/umc' field for '%s' is empty or not present after '%s' policy was applied to group" % (test_groupname, policyname))
+            if not ('cn=' + policyname + ',cn=UMC,cn=policies,' + self.ldap_base in group_policies):
+                utils.fail("The policy '%s' is not in a group '%s' policies '%s'" % (policyname, test_groupname, group_policies))
         finally:
             print("Removing created test group if it exists")
             if self.check_obj_exists(test_groupname, "groups/group"):

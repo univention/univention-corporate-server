@@ -36,8 +36,6 @@ def run():
 		def create_users(date_diff):
 			current_time = datetime.utcnow()
 			chosen_time = current_time + timedelta(days=date_diff)
-			epoch = datetime.utcfromtimestamp(0)
-			epoch_date = (chosen_time - epoch).days
 
 			expiry_date = chosen_time.strftime("%Y-%m-%d")
 			passwd = uts.random_string()
@@ -59,8 +57,7 @@ def run():
 				print('Should be found: [(username, expirydate)] = [(\'%s\', \'%s\')]' % (username, date))
 				print('Found in LDAP:   [(username, expirydate)] = %r' % ldap_found)
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
-					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" %
-						(date - 1, date + 1))
+					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % (date - 1, date + 1))
 
 
 def main():

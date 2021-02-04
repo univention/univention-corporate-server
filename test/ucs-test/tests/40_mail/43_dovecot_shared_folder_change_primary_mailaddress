@@ -38,10 +38,7 @@ def main():
 		print('Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46190')
 		sys.exit(137)
 
-	with utils.AutomaticListenerRestart() as alr, \
-			udm_test.UCSTestUDM() as udm, \
-			ucr_test.UCSTestConfigRegistry() as ucr, \
-			utils.FollowLogfile(logfiles=logfiles) as flf:
+	with utils.AutomaticListenerRestart(), udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr, utils.FollowLogfile(logfiles=logfiles):
 		syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 		user_addr = random_email()
@@ -64,7 +61,8 @@ def main():
 		# test changing mail primary address with all flag combinations
 		#
 		new_address = folder.mail_address
-		for i, flag_rename, flag_delete in [(0, 'no', 'no'),
+		for i, flag_rename, flag_delete in [
+			(0, 'no', 'no'),
 			(1, 'no', 'yes'),
 			(2, 'yes', 'no'),
 			(3, 'yes', 'yes'),

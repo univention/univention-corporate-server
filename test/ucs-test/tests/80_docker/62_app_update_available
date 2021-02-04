@@ -8,7 +8,7 @@
 # skipped until we have 4.3-4 or 4.4-1 appbox
 
 from __future__ import print_function
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, get_docker_appbox_ucs, get_docker_appbox_image, copy_package_to_appcenter
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import get_ldap_connection, fail, UCSTestDomainAdminCredentials
 from univention.config_registry import ConfigRegistry

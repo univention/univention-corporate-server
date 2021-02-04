@@ -53,7 +53,6 @@ from univention.updater.commands import (
     cmd_upgrade_sim,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
-from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 try:
     from typing_extensions import Literal  # noqa F401

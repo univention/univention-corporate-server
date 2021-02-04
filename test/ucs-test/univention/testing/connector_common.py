@@ -33,11 +33,11 @@ def random_bytestring(length=10, alpha=False, numeric=False, charset=None):
 
 
 def normalize_dn(dn):
-	"""
+	r"""
 	Normalize a given dn. This removes some escaping of special chars in the
 	DNs. Note: The CON-LDAP returns DNs with escaping chars, OpenLDAP does not.
 
-	>>> normalize_dn("cn=peter\#,cn=groups")
+	>>> normalize_dn(r"cn=peter\#,cn=groups")
 	'cn=peter#,cn=groups'
 	"""
 	return ldap.dn.dn2str(ldap.dn.str2dn(dn))

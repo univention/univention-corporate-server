@@ -94,16 +94,16 @@ class SimpleCurl(object):
 			self.curl.setopt(pycurl.HTTPPOST, postData)
 		buf = StringIO.StringIO()
 		self.curl.setopt(pycurl.WRITEFUNCTION, buf.write)
-		print 'getting page:', url
+		print('getting page:', url)
 		for i in range(60):
 			try:
 				self.curl.perform()
 				break
 			except pycurl.error:
-				print '.'
+				print('.')
 				time.sleep(1)
 		else:
-			print 'Requested page could not be fetched'
+			print('Requested page could not be fetched')
 			raise
 		page = buf.getvalue()
 		# print page[1:400]

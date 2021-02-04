@@ -8,6 +8,10 @@ import contextlib
 import six
 import sqlite3
 import ldap
+
+from univention.testing.utils import package_installed
+import univention.config_registry as config_registry
+
 if not six.PY2:
 	import ldb
 	from samba.auth import system_session
@@ -19,9 +23,6 @@ else:
 		SCOPE_SUBTREE = 2
 		ERR_NO_SUCH_OBJECT = 32
 		ERR_INVALID_DN_SYNTAX = 34
-
-from univention.testing.utils import package_installed
-import univention.config_registry as config_registry
 
 
 class DRSReplicationFailed(Exception):

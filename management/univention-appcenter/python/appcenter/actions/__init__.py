@@ -250,6 +250,7 @@ def all_actions():
 	for action_name in sorted(_ACTIONS):
 		yield action_name, _ACTIONS[action_name]
 
+
 def _import():
 	if _ACTIONS:
 		return

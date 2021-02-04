@@ -6,12 +6,11 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import *
+from dockertest import get_app_name, get_app_version, App, Appcenter
 from univention.testing.utils import get_ldap_connection
 
 
 if __name__ == '__main__':
-
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()

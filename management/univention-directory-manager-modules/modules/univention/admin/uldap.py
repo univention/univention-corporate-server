@@ -863,7 +863,7 @@ class access(object):
 		if exceptions:
 			try:
 				return self.lo.delete(dn)
-			except ldap.INSUFFICIENT_ACCESS as msg:
+			except ldap.INSUFFICIENT_ACCESS:
 				raise univention.admin.uexceptions.permissionDenied()
 		ud.debug(ud.LDAP, ud.ALL, 'del dn=%s' % (dn,))
 		try:

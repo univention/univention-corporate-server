@@ -62,7 +62,7 @@ for posix_account, _ in res_pA:
 		lo.modify_s(posix_account, modlist)
 		count_changes = count_changes + 1
 		print("Modified %s" % posix_account)
-	except Exception as exc:
+	except Exception:
 		print("Warning: failed to modify Host %s: " % posix_account)
 		warning = warning + 1
 

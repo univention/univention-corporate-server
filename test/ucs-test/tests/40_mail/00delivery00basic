@@ -136,6 +136,7 @@ class Tester(object):
 			if not found:
 				utils.fail('Mail sent with token = %r, to %s was not delivered (TLS used)' % (token, user))
 
+
 if __name__ == '__main__':
 	with Tester() as tester:
 		tester.test()

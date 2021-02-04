@@ -11,10 +11,9 @@
 
 from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_int
 from univention.testing.utils import fail
 from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import *
+from ldap_extension_utils import call_unjoin_script, call_join_script, get_package_name, get_schema_name, get_schema_attribute_id, fetch_schema_from_ldap_master
 from time import sleep
 
 ucr = ConfigRegistry()
@@ -68,18 +67,18 @@ exit 0
 
 schema_buffer = '''
 attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s'
-	DESC ' unused custom attribute %(attribute_id)s '
-	EQUALITY caseExactMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+    DESC ' unused custom attribute %(attribute_id)s '
+    EQUALITY caseExactMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 ''' % {'attribute_id': attribute_id}
 
 schema_buffer2 = '''
 attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s'
-	DESC ' unused custom attribute %(attribute_id)s '
-	EQUALITY caseExactMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+    DESC ' unused custom attribute %(attribute_id)s '
+    EQUALITY caseExactMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 ''' % {'attribute_id': attribute_id_update}
 
 
@@ -129,6 +128,6 @@ finally:
     package.uninstall()
 
 # Wait 10 seconds, in some AD member scenarios it takes some time
-time.sleep(10)
+sleep(10)
 
 # vim: set ft=python :

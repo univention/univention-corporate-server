@@ -15,7 +15,8 @@ import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
 
-def checkAuths(host, passwd, url, (basic, ntlm), expect_wrong_password):
+def checkAuths(host, passwd, url, basic_ntlm, expect_wrong_password):
+	basic, ntlm = basic_ntlm
 	# in case all auth are disabled, all return 200
 	http_basic, http_ntlm = (200, 200, )
 	if basic or ntlm:
@@ -41,8 +42,9 @@ def checkNTLM(host, passwd, url, http_code):
 		utils.fail('NTLM proxy auth check failed, http_code = %r, expected = %r' % (result, http_code))
 
 
-def setAuthVariables(squid, (basic, ntlm)):
+def setAuthVariables(squid, basic_ntlm):
 	"""set ucr variables according to the auth states, and reconfigure Squid"""
+	basic, ntlm = basic_ntlm
 	if basic:
 		handler_set(['squid/basicauth=yes'])
 	else:

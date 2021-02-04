@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -69,19 +71,19 @@ def capture_mails(timeout=5):
 			self.data = []
 
 		def process_message(self, peer, mailfrom, rcpttos, data):
-			print 'receiving email with length=', len(data)
+			print(('receiving email with length=', len(data)))
 			self.data.append(data)
 
 	class MailServer(object):
 
 		def __init__(self):
-			print 'Starting mail server'
+			print('Starting mail server')
 			self.smtp = Mail(('', 25), '')
 			self.thread = Thread(target=asyncore.loop, kwargs={'timeout': timeout})
 			self.thread.start()
 
 		def stop(self):
-			print 'Stopping mail server'
+			print('Stopping mail server')
 			self.smtp.close()
 			self.thread.join()
 
@@ -94,9 +96,9 @@ def capture_mails(timeout=5):
 		finally:
 			try:
 				server.smtp.close()
-			except:
-				print 'Warn: Could not close SMTP socket'
+			except Exception:
+				print('Warn: Could not close SMTP socket')
 			server.stop()
 	finally:
-		print '(re)starting postfix'
+		print('(re)starting postfix')
 		subprocess.call(['invoke-rc.d', 'postfix', 'start'], close_fds=True)

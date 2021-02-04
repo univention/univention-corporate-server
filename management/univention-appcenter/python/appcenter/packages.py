@@ -73,6 +73,8 @@ def get_package_manager():
 		package_manager.logger.addHandler(log_filter)
 		get_package_manager._package_manager = package_manager
 	return get_package_manager._package_manager
+
+
 get_package_manager._package_manager = None
 
 
@@ -149,10 +151,10 @@ def wait_for_dpkg_lock(timeout=120):
 	return False
 
 
-
 def _apt_args(dry_run=False):
 	apt_args = ['-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove']
 	return apt_args
+
 
 def _apt_get(action, pkgs):
 	env = os.environ.copy()
@@ -161,6 +163,7 @@ def _apt_get(action, pkgs):
 	ret = call_process(['/usr/bin/apt-get'] + apt_args + [action] + pkgs, logger=package_logger, env=env).returncode == 0
 	reload_package_manager()
 	return ret
+
 
 def _apt_get_dry_run(action, pkgs):
 	apt_args = _apt_args()

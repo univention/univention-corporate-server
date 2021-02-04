@@ -55,7 +55,7 @@ class Password(object):
 
 	@classmethod
 	def cracklib_toosystematic(cls, username=None):
-		return cls.upperLowerDigitOther() + 10*"a"
+		return cls.upperLowerDigitOther() + 10 * "a"
 
 	@staticmethod
 	def cracklib_socialsecuritynumberformat(username=None):
@@ -63,7 +63,7 @@ class Password(object):
 
 	@staticmethod
 	def cracklib_whitespace(username=None):
-		return 10*" "
+		return 10 * " "
 
 	@classmethod
 	def palindrome(cls, username=None):
@@ -82,7 +82,7 @@ class Password(object):
 
 class PasswordType(object):
 	'''Just a namespace for PasswordType providers
-	   to avoid collision with parameter fixture names.
+	to avoid collision with parameter fixture names.
 	'''
 
 	@staticmethod
@@ -137,7 +137,7 @@ class PasswordType(object):
 		return cls.password_not_conforming_to_mspolicy_with_username() + cls.password_not_conforming_to_cracklib()
 
 
-## I want the udm user to live on module scope here
+# I want the udm user to live on module scope here
 @pytest.fixture(scope="module")
 def udm():
 	with _udm.UCSTestUDM() as udm:
@@ -148,10 +148,10 @@ def udm():
 def existing_username(udm):
 	dn, username = udm.create_user()
 	yield username
-	## No explicit teardown required
+	# No explicit teardown required
 
 
-## I want the ucr to live on class scope here
+# I want the ucr to live on class scope here
 @pytest.fixture(scope="class")
 def ucr():
 	with _ucr.UCSTestConfigRegistry() as ucr:
@@ -169,7 +169,7 @@ def pwc_default(ucr, existing_username):
 def pwc_with_mspolicy(ucr, existing_username):
 	univention.config_registry.handler_set(["password/quality/mspolicy=yes"])
 	univention.config_registry.handler_set(["password/quality/length/min=8"])
-	## Set the UCS defaults, just to be safe
+	# Set the UCS defaults, just to be safe
 	univention.config_registry.handler_unset([
 		"password/quality/credit/digits", "password/quality/credit/upper", "password/quality/credit/lower", "password/quality/credit/other",
 		"password/quality/forbidden/chars", "password/quality/required/chars"
@@ -184,7 +184,7 @@ def pwc_with_mspolicy(ucr, existing_username):
 def pwc_with_mspolicy_only(ucr, existing_username):
 	univention.config_registry.handler_set(["password/quality/mspolicy=sufficient"])
 	univention.config_registry.handler_set(["password/quality/length/min=8"])
-	## Set these variables, but they must get ingored
+	# Set these variables, but they must get ingored
 	univention.config_registry.handler_set([
 		"password/quality/credit/digits=1", "password/quality/credit/upper=1", "password/quality/credit/lower=1", "password/quality/credit/other=1"
 	])
@@ -208,8 +208,8 @@ def pwc_with_cracklib_mandatory_character_classes(ucr, existing_username):
 	yield pwc
 
 
-## Ugly, each parameter has to have a fixture of the same name
-## We dispatch to the passwort provider method passed as request.param
+# Ugly, each parameter has to have a fixture of the same name
+# We dispatch to the passwort provider method passed as request.param
 @pytest.fixture(scope="module")
 def password_conforming_to_mspolicy(request, existing_username):
 	return request.param(existing_username)
@@ -248,7 +248,7 @@ def password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther(requ
 PASSWORD_TYPE_PROVIDERS = [f for f in dir(PasswordType) if callable(getattr(PasswordType, f))]
 
 
-## This parameterizes the password_* arguments with the result of the corresponding methods at setup time
+# This parameterizes the password_* arguments with the result of the corresponding methods at setup time
 def pytest_generate_tests(metafunc):
 	for parameter in PASSWORD_TYPE_PROVIDERS:
 		if parameter in metafunc.fixturenames:

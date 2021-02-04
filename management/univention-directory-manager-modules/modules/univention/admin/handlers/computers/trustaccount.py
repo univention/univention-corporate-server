@@ -40,8 +40,6 @@ import univention.admin.uldap
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 
-import univention.debug as ud
-
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
 

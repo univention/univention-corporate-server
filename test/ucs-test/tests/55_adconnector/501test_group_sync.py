@@ -20,13 +20,14 @@ from adconnector import (connector_running_on_this_host, connector_setup)
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
-from univention.testing.udm import UCSTestUDM
+from univention.testing.udm import UCSTestUDM  # noqa: E402
 
-from univention.testing.connector_common import (Utf8User, SpecialUser,
+from univention.testing.connector_common import (
+	Utf8User, SpecialUser,
 	NormalGroup, Utf8Group, SpecialGroup, create_udm_group, delete_udm_group,
 	create_con_group, delete_con_group, create_udm_user, delete_udm_user,
-	create_con_user, delete_con_user)
-import univention.testing.connector_common as tcommon
+	create_con_user, delete_con_user)  # noqa: E402
+import univention.testing.connector_common as tcommon  # noqa: E402
 
 
 TEST_GROUPS = [NormalGroup, Utf8Group, SpecialGroup]
@@ -36,8 +37,7 @@ NESTED_GROUPS = [Utf8Group, SpecialGroup]
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_udm_to_ad(group_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -47,8 +47,7 @@ def test_group_sync_from_udm_to_ad(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -59,8 +58,7 @@ def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.to_unicode(udm_group.rename))
 		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
 		if old_udm_dn == udm_group_dn:
-			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.to_unicode(udm_group.rename).get("name"), ldap.AVA_STRING)]] +
-				ldap.dn.str2dn(udm_group_dn)[1:])
+			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.to_unicode(udm_group.rename).get("name"), ldap.AVA_STRING)]] + ldap.dn.str2dn(udm_group_dn)[1:])
 			if old_udm_dn in udm._cleanup.get('groups/group', []):
 				udm._cleanup.setdefault('groups/group', []).append(udm_group_dn)
 				udm._cleanup['groups/group'].remove(old_udm_dn)
@@ -78,8 +76,7 @@ def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_udm_to_ad_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -101,8 +98,7 @@ def test_group_sync_from_udm_to_ad_with_move(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_ad_to_udm(group_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_group = group_class()
@@ -112,8 +108,7 @@ def test_group_sync_from_ad_to_udm(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_ad_to_udm_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_group = group_class()
@@ -135,8 +130,7 @@ def test_group_sync_from_ad_to_udm_with_rename(group_class, sync_mode):
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_ad_to_udm_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_group = group_class()
@@ -160,8 +154,7 @@ def test_group_sync_from_ad_to_udm_with_move(group_class, sync_mode):
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_udm_to_ad_with_nested_user(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -183,8 +176,7 @@ def test_group_sync_from_udm_to_ad_with_nested_user(group_class, nested_class, s
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_ad_to_udm_with_nested_user(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_group = group_class()
@@ -206,8 +198,7 @@ def test_group_sync_from_ad_to_udm_with_nested_user(group_class, nested_class, s
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_udm_to_ad_with_nested_group(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_group = group_class()
@@ -229,8 +220,7 @@ def test_group_sync_from_udm_to_ad_with_nested_group(group_class, nested_class, 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
 @pytest.mark.parametrize("nested_class", NESTED_GROUPS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_group_sync_from_ad_to_udm_with_nested_group(group_class, nested_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_group = group_class()

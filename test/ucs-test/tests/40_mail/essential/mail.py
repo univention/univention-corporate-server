@@ -632,7 +632,8 @@ def create_random_msgid():
 	return '%s.%s' % (uuid.uuid1(), random_email())
 
 
-def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
+def send_mail(
+	recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
 	gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
 	debuglevel=1, messageid=None, ssl=False):
 	"""

@@ -139,6 +139,6 @@ if __name__ == "__main__":
 	for lo in [univention.uldap.getMachineConnection(ldap_master=True)]:
 		try:
 			hacking(lo)
-		except Hacked as exc:
+		except Hacked:
 			raise
 # vim: set ft=python :

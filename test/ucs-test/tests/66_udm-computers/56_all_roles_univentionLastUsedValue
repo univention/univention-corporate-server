@@ -14,7 +14,6 @@ Since UCS 4.3-2erratumX this is no longer the case and univentionLastUsedValue
 is never changed.
 '''
 
-import random
 import time
 import univention.uldap
 import univention.testing.udm as udm_test

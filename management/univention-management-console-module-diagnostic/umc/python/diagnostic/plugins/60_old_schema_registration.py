@@ -50,6 +50,7 @@ SCHEMA_FILES = {
 	},
 }
 
+
 def udm_schema_obj_exists(name):
 	name = os.path.splitext(os.path.basename(name))[0]
 	udm = UDM.admin().version(1)
@@ -60,8 +61,10 @@ def udm_schema_obj_exists(name):
 	else:
 		return True
 
+
 def create_udm_schema_obj(pname, pversion, fname):
 	subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename "%s" --packageversion "%s" --schema "%s"' % (pname, pversion, fname)])
+
 
 def run(_umc_instance):
 	if ucr.get('server/role') != 'domaincontroller_master':

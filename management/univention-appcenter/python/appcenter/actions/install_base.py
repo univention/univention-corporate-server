@@ -109,7 +109,6 @@ class InstallRemoveUpgrade(Register):
 		better comprehend what is done behind the scenes and test their script
 		folders manually using that tool.
 		"""
-		from os import path
 		if os.path.isdir(directory):
 			(retval, output) = call_process2(["run-parts", directory])
 			# self.log(output) is unnecessary, because call_process2 logs its

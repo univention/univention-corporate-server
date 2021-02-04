@@ -128,7 +128,6 @@ def main():
 		new_object_data = bz2.decompress(compressed_data)
 
 		hookname = udm_object['name']
-		filename = "-".join([args.hooktype, hookname])
 		(filepath_fd, filepath) = tempfile.mkstemp(dir=tempdir)
 		metadata = udm_object['meta']
 		if "disabled" in metadata:

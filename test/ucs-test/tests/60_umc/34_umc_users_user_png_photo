@@ -7,16 +7,15 @@
 ## exposure: dangerous
 
 import sys
-sys.path.insert(0, '.')
-from umc import UMCBase
-
 import subprocess
 from tempfile import NamedTemporaryFile
 
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.testing.umc import Client
+
+sys.path.insert(0, '.')
+from umc import UMCBase  # noqa: E402
 
 
 class TestUMCUserAuthentication(UMCBase):

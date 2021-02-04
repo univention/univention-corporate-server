@@ -20,12 +20,15 @@ from adconnector import (connector_running_on_this_host, connector_setup)
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
-from univention.testing.udm import UCSTestUDM
 
-from univention.testing.connector_common import (NormalUser, Utf8User,
+from univention.testing.udm import UCSTestUDM  # noqa: E402
+
+from univention.testing.connector_common import (
+	NormalUser, Utf8User,
 	SpecialUser, create_udm_user, delete_udm_user, create_con_user,
-	delete_con_user)
-import univention.testing.connector_common as tcommon
+	delete_con_user)  # noqa: E402
+
+import univention.testing.connector_common as tcommon  # noqa: E402
 
 
 TEST_USERS = [NormalUser, Utf8User, SpecialUser]
@@ -33,8 +36,7 @@ TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_udm_to_ad(user_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -50,8 +52,7 @@ def test_user_sync_from_udm_to_ad(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -72,8 +73,7 @@ def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
 	with connector_setup(sync_mode), UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -81,8 +81,7 @@ def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
 
 		print("\nMove UDM user\n")
 		udm_container_dn = udm.create_object('container/cn', name=udm_user.container)
-		udm_user_dn = udm.move_object('users/user', dn=udm_user_dn,
-			position=udm_container_dn)
+		udm_user_dn = udm.move_object('users/user', dn=udm_user_dn, position=udm_container_dn)
 
 		adconnector.wait_for_sync()
 		AD.verify_object(ad_user_dn, None)
@@ -96,8 +95,7 @@ def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_ad_to_udm(user_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_user = user_class()
@@ -113,8 +111,7 @@ def test_user_sync_from_ad_to_udm(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_user = user_class()
@@ -136,8 +133,7 @@ def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
 	with connector_setup(sync_mode):
 		udm_user = user_class()

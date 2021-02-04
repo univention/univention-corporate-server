@@ -11,8 +11,8 @@ import univention.testing.utils as utils
 
 # UCS syntax (primaryEmailAddressValidDomain) and OX app syntax checks
 EXPECTED_ERROR_MSGS = (
-  "The domain part of the primary mail address is not in list of configured mail domains",
-  "The mail address' domain does not match any mail domain object."
+	"The domain part of the primary mail address is not in list of configured mail domains",
+	"The mail address' domain does not match any mail domain object."
 )
 
 
@@ -29,10 +29,7 @@ def main():
 					'mailPrimaryAddress': mail_address
 				}
 			)
-			utils.fail(
-			  'UDM accepted domain {!r}, which is not in the list of configured mail'
-			  ' domains.'.format(test_domain)
-      )
+			utils.fail('UDM accepted domain {!r}, which is not in the list of configured mail domains.'.format(test_domain))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
 			if any(error_msg in str(exc) for error_msg in EXPECTED_ERROR_MSGS):
 				print("OK: expected error happened: {}".format(exc))

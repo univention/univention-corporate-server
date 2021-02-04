@@ -106,7 +106,7 @@ if __name__ == '__main__':
 		try:
 			udm.modify_object('users/user', dn=user_dn, **userargs)
 			fail('Syntax is not in use')
-		except udm_test.UCSTestUDM_ModifyUDMObjectFailed, ex:
+		except udm_test.UCSTestUDM_ModifyUDMObjectFailed as ex:
 			if 'Wrong value given for ucs-test-syntax' not in str(ex):
 				raise
 

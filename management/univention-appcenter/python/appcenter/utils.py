@@ -383,7 +383,7 @@ def get_free_disk_space():
 		bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
 		mb_free = bytes_free * 1e-6
 		return mb_free
-	except Exception as exc:
+	except Exception:
 		utils_logger.debug('Free disk space could not be determined.')
 	finally:
 		try:

@@ -69,6 +69,7 @@ if six.PY3:
 	# LooseVersion changed the internal order function that may now raise
 	# TypeError on LooseVersion("1.0.1") < LooseVersion("1.0-1")
 	from itertools import zip_longest
+
 	class LooseVersion(LooseVersion):
 		def _cmp(self, other):
 			for i, j in zip_longest(self.version, other.version, fillvalue=''):

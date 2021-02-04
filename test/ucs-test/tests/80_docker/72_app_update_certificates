@@ -6,9 +6,7 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
-from univention.testing.utils import is_port_open
-import pytest
+from dockertest import Appcenter, App, get_app_name
 import os
 import subprocess
 
@@ -30,6 +28,7 @@ def verify_certs(app):
 		print('looking for %s in container' % i)
 		assert os.path.isfile(app.file(i)) is True
 		print('%s exists' % i)
+
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

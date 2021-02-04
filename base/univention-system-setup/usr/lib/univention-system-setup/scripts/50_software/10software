@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
-import univention.config_registry
 
 
 class SoftwareScript(AptScript):

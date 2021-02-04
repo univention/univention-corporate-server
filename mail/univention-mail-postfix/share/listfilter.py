@@ -134,9 +134,7 @@ def listfilter(attrib):
 						debug("user_dn=%r", user_dn)
 
 						# check userdn in univentionAllowedEmailUsers
-						if allowed_user_dns and \
-								user_dn and \
-								user_dn in allowed_user_dns:
+						if allowed_user_dns and user_dn and user_dn in allowed_user_dns:
 							return "DUNNO allowed per user dn"
 
 						ldap_filter = filter_format('(uniqueMember=%s)', (user_dn,))
@@ -169,6 +167,7 @@ def listfilter(attrib):
 		except Exception:
 			return "WARN Error with sender={} recipient={} attrib={}, check_sasl_username={}, traceback={}".format(
 				sender, recipient, attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
+
 
 # main
 attr = {}

@@ -51,6 +51,7 @@ def main():
 	test_umc(ucr)
 	test_cmdline(ucr)
 
+
 if __name__ == '__main__':
 	main()
 

@@ -17,7 +17,7 @@ import univention.testing.utils as utils
 
 def restart_umc():
 	subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
-	time.sleep(3)  # Wait for the umc to be ready to answer requests. 
+	time.sleep(3)  # Wait for the umc to be ready to answer requests.
 
 
 class move_idp_metadata(object):

@@ -65,7 +65,8 @@ def main():
 			#
 			# test changing mail primary address with all flag combinations
 			#
-			for i, flag_rename, flag_delete in [(0, 'no', 'no'),
+			for i, flag_rename, flag_delete in [
+				(0, 'no', 'no'),
 				(1, 'no', 'yes'),
 				(2, 'yes', 'no'),
 				(3, 'yes', 'yes')]:

@@ -89,13 +89,13 @@ def run(_umc_instance):
 		try:
 			client.connect(fqdn, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, banner_timeout=2, allow_agent=False)
 			client.close()
-		except paramiko.BadHostKeyException as err:
+		except paramiko.BadHostKeyException:
 			bad[fqdn] = key_msg + '!'
 			key_failed = True
-		except paramiko.BadAuthenticationType as err:
+		except paramiko.BadAuthenticationType:
 			bad[fqdn] = auth_msg + '!'
 			auth_failed = True
-		except (paramiko.SSHException, socket.timeout) as err:
+		except (paramiko.SSHException, socket.timeout):
 			# ignore if host is not reachable and other ssh errors
 			pass
 		except Exception as err:

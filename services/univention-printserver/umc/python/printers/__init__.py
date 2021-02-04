@@ -33,16 +33,13 @@
 
 import re
 import subprocess
-import lxml.html
 
 from univention.lib.i18n import Translation
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.management.console.base import Base
-from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.decorators import simple_response, log, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
 

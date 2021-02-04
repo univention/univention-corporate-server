@@ -36,7 +36,7 @@ import subprocess
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.exceptions import ShellAppNotRunning
+
 
 class Logs(UniventionAppAction, DockerActionMixin):
 

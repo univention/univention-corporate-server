@@ -34,15 +34,11 @@ class Jenkins(TestFormatInterface):
 		except KeyError:
 			pass
 		else:
-			print('<log encoding="hexBinary">%s</log>' %
-				(encode(content, 'hex'),), file=self.stream)
+			print('<log encoding="hexBinary">%s</log>' % (encode(content, 'hex'),), file=self.stream)
 		print('<result>%d</result>' % (result.result,), file=self.stream)
-		print('<duration>%d</duration>' %
-			(result.duration or -1,), file=self.stream)
-		print('<displayName>%s</displayName>' %
-			(escape_xml(result.case.uid),), file=self.stream)
-		print('<description>%s</description>' %
-			(escape_xml(result.case.description or ''),), file=self.stream)
+		print('<duration>%d</duration>' % (result.duration or -1,), file=self.stream)
+		print('<displayName>%s</displayName>' % (escape_xml(result.case.uid),), file=self.stream)
+		print('<description>%s</description>' % (escape_xml(result.case.description or ''),), file=self.stream)
 		print('</run>', file=self.stream)
 		super(Jenkins, self).end_test(result)
 

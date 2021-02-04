@@ -52,6 +52,7 @@ def selfservice_ucr(mocker, ucr):
 	from univention.config_registry import ConfigRegistry
 	selfservice = import_umc_module('passwordreset')
 	mocker.patch.object(selfservice, 'ucr', ucr)
+
 	def inject_fake_ucr(self):
 		self.clear()
 		self.update(ucr.items)

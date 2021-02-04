@@ -6,7 +6,8 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image
+from univention.testing.utils import fail
 import subprocess
 import time
 

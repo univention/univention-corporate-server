@@ -38,7 +38,7 @@ for app in Apps(locale='en').get_every_single_app():
 			'ApplianceBootsplashLogo',
 			'ApplianceUmcHeaderLogo',
 			'ApplianceWelcomeScreenLogo',
-			]:
+		]:
 			try:
 				logo_name = ini_parser.get('Application', logo_attr)
 			except (NoSectionError, NoOptionError):

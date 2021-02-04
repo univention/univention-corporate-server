@@ -7,8 +7,10 @@
 ## bugs:
 ##  - 42200
 
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, get_app_version, copy_package_to_appcenter
 from univention.testing.utils import package_installed
+from univention.testing.debian_package import DebianPackage
+from univention.config_registry import ConfigRegistry
 
 
 class UCSTest_AppCenter_PackageIsNotInstalled(Exception):
@@ -20,7 +22,6 @@ class UCSTest_AppCenter_PackageIsInstalled(Exception):
 
 
 def create_app():
-
 		ucr = ConfigRegistry()
 		ucr.load()
 

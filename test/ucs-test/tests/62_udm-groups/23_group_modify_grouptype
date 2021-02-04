@@ -65,7 +65,7 @@ def _test_domain_local_group_change():
 		group4 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL)[0]
 		group5 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL, nestedGroup=group4)[0]
 		group6 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL)[0]
-		group7 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL, nestedGroup=group6)[0]
+		udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL, nestedGroup=group6)[0]
 
 		group8 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL)[0]
 		group9 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL, nestedGroup=group8)[0]
@@ -119,7 +119,7 @@ def _test_global_group_change():
 		group4 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL)[0]
 		group5 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL, nestedGroup=group4)[0]
 		group6 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL)[0]
-		group7 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL, nestedGroup=group6)[0]
+		udm.create_group(adGroupType=GROUP_TYPE_GLOBAL, nestedGroup=group6)[0]
 
 		group8 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL)[0]
 		group9 = udm.create_group(adGroupType=GROUP_TYPE_GLOBAL, nestedGroup=group8)[0]
@@ -173,7 +173,7 @@ def _test_universal_group_change():
 		group4 = udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL)[0]
 		group5 = udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL, nestedGroup=group4)[0]
 		group6 = udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL)[0]
-		group7 = udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL, nestedGroup=group6)[0]
+		udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL, nestedGroup=group6)[0]
 
 		group8 = udm.create_group(adGroupType=GROUP_TYPE_DOMAIN_LOCAL)[0]
 		group9 = udm.create_group(adGroupType=GROUP_TYPE_UNIVERSAL, nestedGroup=group8)[0]

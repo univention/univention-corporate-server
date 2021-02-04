@@ -55,7 +55,7 @@ def _create_user(udm):
 		jpegPhoto='/9j/4AAQSkZJRgABAQAAAQABAAD/4QBiRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAEAAAITAAMAAAABAAEAAAAAAAAAAAABAAAAAQAAAAEAAAAB/9sAQwADAgICAgIDAgICAwMDAwQGBAQEBAQIBgYFBgkICgoJCAkJCgwPDAoLDgsJCQ0RDQ4PEBAREAoMEhMSEBMPEBAQ/9sAQwEDAwMEAwQIBAQIEAsJCxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ/8AAEQgAAQABAwERAAIRAQMRAf/EABQAAQAAAAAAAAAAAAAAAAAAAAX/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAACP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ADBHP1//2Q==',
 		unixhome='/home/username',
 		userCertificate="MIICEjCCAXsCAg36MA0GCSqGSIb3DQEBBQUAMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRkZC5jb20wHhcNMTIwODIyMDUyNjU0WhcNMTcwODIxMDUyNjU0WjBKMQswCQYDVQQGEwJKUDEOMAwGA1UECAwFVG9reW8xETAPBgNVBAoMCEZyYW5rNEREMRgwFgYDVQQDDA93d3cuZXhhbXBsZS5jb20wXDANBgkqhkiG9w0BAQEFAANLADBIAkEAm/xmkHmEQrurE/0re/jeFRLl8ZPjBop7uLHhnia7lQG/5zDtZIUC3RVpqDSwBuw/NTweGyuP+o8AG98HxqxTBwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBABS2TLuBeTPmcaTaUW/LCB2NYOy8GMdzR1mx8iBIu2H6/E2tiY3RIevV2OW61qY2/XRQg7YPxx3ffeUugX9F4J/iPnnu1zAxxyBy2VguKv4SWjRFoRkIfIlHX0qVviMhSlNy2ioFLy7JcPZb+v3ftDGywUqcBiVDoea0Hn+GmxZACg==",
-)
+	)
 	return _dn, _username
 
 
@@ -91,7 +91,7 @@ def _umc_logon(selenium, username, pw, fqdn):
 				(By.XPATH, '//*[@id="umcLoginButton_label"]')
 			)
 		).click()
-	except BaseException as exc:
+	except Exception:
 		selenium.save_screenshot()
 	finally:
 		print("UMC Logon with {} done".format(username))
@@ -104,14 +104,14 @@ def _copy_user(selenium, fqdn, orig_dn, orig_username, copied_name):
 
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.XPATH, '//*[@id="dgrid_1-row-%s"]' % (orig_dn,))
+			(By.XPATH, '//*[@id="dgrid_1-row-%s"]' % (orig_dn,))
 		)
 	).click()
 
 	# open dropdown
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.XPATH, '//*[@id="dijit_form_DropDownButton_4_label"]')
+			(By.XPATH, '//*[@id="dijit_form_DropDownButton_4_label"]')
 		)
 	).click()
 
@@ -126,20 +126,20 @@ def _copy_user(selenium, fqdn, orig_dn, orig_username, copied_name):
 		# select template
 		WebDriverWait(selenium.driver, 30).until(
 			expected_conditions.element_to_be_clickable(
-			(By.XPATH, '//*[@id="widget_umc_widgets_ComboBox_9"]/div[1]/input')
+				(By.XPATH, '//*[@id="widget_umc_widgets_ComboBox_9"]/div[1]/input')
 			)
 		).click()
 
 		# submit selection of template
 		WebDriverWait(selenium.driver, 30).until(
 			expected_conditions.element_to_be_clickable(
-			(By.XPATH, '//*[@id="umc_widgets_ComboBox_9_popup1"]')
+				(By.XPATH, '//*[@id="umc_widgets_ComboBox_9_popup1"]')
 			)
 		).click()
 
 		WebDriverWait(selenium.driver, 30).until(
 			expected_conditions.element_to_be_clickable(
-			(By.XPATH, '//*[@id="umc_widgets_Button_66_label"]')
+				(By.XPATH, '//*[@id="umc_widgets_Button_66_label"]')
 			)
 		).click()
 	except BaseException:
@@ -147,35 +147,35 @@ def _copy_user(selenium, fqdn, orig_dn, orig_username, copied_name):
 	# username
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.NAME, 'username')
+			(By.NAME, 'username')
 		)
 	).send_keys(copied_name)
 
 	# lastname
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.NAME, 'lastname')
+			(By.NAME, 'lastname')
 		)
 	).send_keys('testuser')
 
 	# password
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.XPATH, '//*[@id="umc_widgets_PasswordBox_2"]')
+			(By.XPATH, '//*[@id="umc_widgets_PasswordBox_2"]')
 		)
 	).send_keys('univention')
 
 	# password 2
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.XPATH, '//*[@id="umc_widgets_PasswordBox_3"]')
+			(By.XPATH, '//*[@id="umc_widgets_PasswordBox_3"]')
 		)
 	).send_keys('univention')
 
 	# submit
 	WebDriverWait(selenium.driver, 30).until(
 		expected_conditions.element_to_be_clickable(
-		(By.XPATH, '//*[@id="umc_widgets_SubmitButton_5_label"]')
+			(By.XPATH, '//*[@id="umc_widgets_SubmitButton_5_label"]')
 		)
 	).click()
 

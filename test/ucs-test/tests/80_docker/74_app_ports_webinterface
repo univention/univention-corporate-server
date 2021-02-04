@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, tiny_app, get_app_name, get_app_version
 from univention.config_registry import ConfigRegistry
 
 

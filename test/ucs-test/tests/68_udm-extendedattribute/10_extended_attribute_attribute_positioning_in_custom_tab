@@ -37,7 +37,7 @@ if __name__ == '__main__':
 		for line in module_help_text:
 			try:
 				cli_name = line.strip().split()[0]
-			except:
+			except Exception:
 				continue
 
 			if cli_name in extended_attributes:

@@ -52,5 +52,5 @@ if __name__ == '__main__':
 						active='FALSE'
 					)
 					fail('Extension %s has been created with invalid UCS version (ucsversionstart=%r ucsversionend=%r)' % (extension_type, version_start, version_end))
-				except udm_test.UCSTestUDM_CreateUDMObjectFailed, ex:
+				except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 					pass

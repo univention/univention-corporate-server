@@ -35,7 +35,7 @@ Debian Helper sequence to install UCS join and un-join scripts.
 from __future__ import print_function
 
 from argparse import ArgumentParser
-from os import environ, listdir
+from os import listdir
 from os.path import join
 from pipes import quote
 
@@ -190,7 +190,7 @@ def main():
 	Run Debian helper sequence.
 	"""
 	parser = ArgumentParser(description=__doc__)
-	options = parser_dh_sequence(parser)
+	parser_dh_sequence(parser)
 
 	for package in binary_packages():
 		JoinDebhelper(package).dh_install()

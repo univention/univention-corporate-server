@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from contextlib import contextmanager
 from functools import wraps
 from pwd import getpwnam
 from six import string_types

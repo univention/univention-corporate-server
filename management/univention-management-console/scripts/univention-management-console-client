@@ -315,7 +315,7 @@ def main():  # type: () -> None
 			arguments.password = getpass('Password:')
 
 	try:
-		client = CLI_Client(arguments)
+		CLI_Client(arguments)
 	except Exception as exc:
 		print('An fatal error occurred: %s' % (exc,), file=sys.stderr)
 		sys.exit(1)

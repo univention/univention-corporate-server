@@ -294,9 +294,7 @@ def parse_args():
     The App Center's 'CACHE_DIR' will be used by default.
     To use args run interactively via: python filename ...
     """
-    parser = OptionParser(description=("Check Apps .ini files "
-                          "(Optional values, description length, "
-                          "allowed values, allowed chars)"))
+    parser = OptionParser(description=("Check Apps .ini files (Optional values, description length, allowed values, allowed chars)"))
 
     parser.add_option("-q", "--quiet",
                       default=False,

@@ -47,8 +47,7 @@ def univention_ldapsearch(fail_on_success):
     """
     A wrapper for 'univention-ldapsearch'
     """
-    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'),
-                  stdout=PIPE, stderr=PIPE, shell=False)
+    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE, shell=False)
 
     stdout, stderr = proc.communicate()
     if stderr:
@@ -160,8 +159,7 @@ def main():
         set_ucr_retry_count(1)
         print_test_header("Case 2: Stop and start slapd with 5 secs "
                           "delay. Perform search. Retry count is 1.")
-        print("Expecting that search case won't work, as retry count is 1 "
-             "and start delay is 5.")
+        print("Expecting that search case won't work, as retry count is 1 and start delay is 5.")
         stop_slapd()
         start_with_delay(5)
         perform_univention_ldapsearch(True)  # fail on success

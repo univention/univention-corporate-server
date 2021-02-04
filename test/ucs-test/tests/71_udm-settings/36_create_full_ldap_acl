@@ -24,7 +24,8 @@ if __name__ == '__main__':
 			ucsversionstart = '1.2-0'
 			ucsversionend = '1.3-99'
 
-			acl = udm.create_object('settings/ldapacl',
+			acl = udm.create_object(
+				'settings/ldapacl',
 				position=udm.UNIVENTION_CONTAINER,
 				name=acl_name,
 				data=base64.encodestring(bz2.compress(data)),

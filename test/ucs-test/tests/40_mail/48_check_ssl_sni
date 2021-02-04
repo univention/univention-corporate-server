@@ -13,7 +13,6 @@ import univention.config_registry
 import socket
 import ssl
 import subprocess
-import time
 
 
 def get_certificate_from_ssl_connection(fqdn, servername, port):
@@ -47,9 +46,9 @@ if __name__ == '__main__':
 
 		check_if_correct_cert_is_served(fqdn, 'ucs-sso.%s' % domain, 993, must_fail=True)
 
-		univention.config_registry.handler_set(
-			['mail/dovecot/ssl/sni/ucs-sso.%(domain)s/certificate=/etc/univention/ssl/ucs-sso.%(domain)s/cert.pem' % {'domain': domain},
-				'mail/dovecot/ssl/sni/ucs-sso.%(domain)s/key=/etc/univention/ssl/ucs-sso.%(domain)s/private.key' % {'domain': domain}
+		univention.config_registry.handler_set([
+			'mail/dovecot/ssl/sni/ucs-sso.%(domain)s/certificate=/etc/univention/ssl/ucs-sso.%(domain)s/cert.pem' % {'domain': domain},
+			'mail/dovecot/ssl/sni/ucs-sso.%(domain)s/key=/etc/univention/ssl/ucs-sso.%(domain)s/private.key' % {'domain': domain}
 		])
 		subprocess.call(['service', 'dovecot', 'restart'])
 

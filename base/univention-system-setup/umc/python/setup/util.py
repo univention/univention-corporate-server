@@ -764,11 +764,11 @@ def dhclient(interface, timeout=None):
 		os.kill(dhclientpid, 15)
 		time.sleep(1.0)  # sleep 1s
 		os.kill(dhclientpid, 9)
-	except:
+	except Exception:
 		pass
 	try:
 		os.unlink(pidfilename)
-	except:
+	except Exception:
 		pass
 
 	dhcp_dict = {}
@@ -927,11 +927,11 @@ is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', '
 # new defined methods
 
 
-def is_ascii(str):
+def is_ascii(string):
 	try:
-		str.decode("ascii")
+		string.decode("ascii")
 		return True
-	except:
+	except Exception:
 		return False
 
 
@@ -960,7 +960,7 @@ def get_ucs_domaincontroller_master_query(nameserver, domain):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
-	except dns.exception.DNSException as exc:
+	except dns.exception.DNSException:
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 
 
@@ -1026,7 +1026,7 @@ def get_fqdn(nameserver):
 		MODULE.warn('Lookup for nameserver %s failed: %s %s' % (nameserver, type(exc).__name__, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
-	except dns.exception.DNSException as exc:
+	except dns.exception.DNSException:
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 	return None
 
@@ -1036,7 +1036,7 @@ def get_available_locales(pattern, category='language_en'):
 	try:
 		fsupported = open('/usr/share/i18n/SUPPORTED')
 		flanguages = open('/usr/share/univention-system-setup/locale/languagelist')
-	except:
+	except Exception:
 		MODULE.error('Cannot find locale data for languages in /usr/share/univention-system-setup/locale')
 		return
 

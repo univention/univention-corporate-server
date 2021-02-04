@@ -51,10 +51,10 @@ exit 0
 
 schema_buffer = '''
 attributetype ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s NAME 'univentionTestAttribute%(attribute_id)s'
-	DESC ' unused custom attribute %(attribute_id)s '
-	EQUALITY caseExactMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+    DESC ' unused custom attribute %(attribute_id)s '
+    EQUALITY caseExactMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 objectclass ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s
     NAME 'univentionTestAttributes%(attribute_id)s'
@@ -68,13 +68,15 @@ objectclass ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s
 
 udm = udm_test.UCSTestUDM()
 properties = {
-	'name': random_name(),
-	'shortDescription': random_string(),
-	'CLIName': random_name(),
-	'module': 'container/cn',
-	'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
-	'ldapMapping': 'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id,
-	'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER}
+    'name': random_name(),
+    'shortDescription': random_string(),
+    'CLIName': random_name(),
+    'module': 'container/cn',
+    'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
+    'ldapMapping': 'univentionTestAttribute%(attribute_id)s' % {
+        'attribute_id': attribute_id,
+        'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER
+    }
 }
 extended_attribute = udm.create_object('settings/extended_attribute', **properties)
 
@@ -105,7 +107,7 @@ try:
     lo = univention.uldap.getMachineConnection()
     try:
         lo.search(base=container)
-    except:
+    except Exception:
         fail()
 finally:
     call_unjoin_script(unjoin_script_name)

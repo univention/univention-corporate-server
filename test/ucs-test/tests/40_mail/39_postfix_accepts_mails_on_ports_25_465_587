@@ -16,7 +16,7 @@ import univention.testing.udm as udm_test
 
 def main():
 	logfiles = ['/var/log/mail.log']
-	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles) as flf:
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles):
 		domain = ucr.get('domainname')
 		mail1 = '%s@%s' % (uts.random_name(), domain)
 		password = 'univention'

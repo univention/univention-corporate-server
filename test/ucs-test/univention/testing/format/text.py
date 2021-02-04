@@ -68,8 +68,7 @@ class Text(TestFormatInterface):
 		"""Called before first test."""
 		super(Text, self).begin_run(environment, count)
 		now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-		print("Starting %s ucs-test at %s to %s" %
-			(count, now, environment.log.name), file=self.stream)
+		print("Starting %s ucs-test at %s to %s" % (count, now, environment.log.name), file=self.stream)
 		try:
 			ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework'])
 		except subprocess.CalledProcessError:

@@ -258,6 +258,7 @@ def get_logfile_logger(name):
 	mylogger.setLevel(logging.DEBUG)
 	return mylogger
 
+
 def log_to_logfile():
 	'''Call this function to log to /var/log/univention/appcenter.log
 	Needs rights to write to it (i.e. should be root)

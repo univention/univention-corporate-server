@@ -4,4 +4,4 @@
 class HelloWorld(object):
 
 	def __init__(self):
-		print 'Hello World'
+		print('Hello World')

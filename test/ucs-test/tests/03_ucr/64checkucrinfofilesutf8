@@ -7,10 +7,11 @@
 ## exposure: safe
 
 from __future__ import print_function
-exit_code = 100
 
 import os
 import sys
+
+exit_code = 100
 
 
 def visit(arg, dirname, names):
@@ -23,7 +24,7 @@ def visit(arg, dirname, names):
 				for (i, line) in enumerate(f):
 					try:
 						line.decode('utf8')
-					except UnicodeDecodeError, E:
+					except UnicodeDecodeError as E:
 						print('Error. Invalid UTF-8-character in file %s, line %s, at position %s' % (filename, i, E.end), file=sys.stderr)
 						exit_code = 111
 						break

@@ -31,7 +31,7 @@ class Errors(LogMessage):
 		'Installation finished. No error.* reported',
 		'Not updating .*',
 		'Error: There are no (?:services|hosts|host groups|contacts|contact groups) defined!',
-		'Total Errors:\s+\d+',
+		r'Total Errors:\s+\d+',
 		'Cannot find nagios object .*',
 		'invoke-rc.d: initscript udev, action "reload" failed.',  # Bug 19227
 		'yes: write error',
@@ -75,19 +75,19 @@ class Errors(LogMessage):
 		r'.*MODULE *\( *ERROR *\) *: *$',     # Bug 45406
 		'Further information regarding this error:',  # Bug 45406
 		'Error: Unable to correct problems, you have held broken packages.',  # Bug 45406
-		'.*MODULE      \( ERROR   \) : univention-samba: Failed to install',  # Bug 45406
-		'.*MODULE      \( PROCESS \) : Installation of univention-samba failed. Try to re-create sources.list and try again.',  # Bug 45406
+		r'.*MODULE      \( ERROR   \) : univention-samba: Failed to install',  # Bug 45406
+		r'.*MODULE      \( PROCESS \) : Installation of univention-samba failed. Try to re-create sources.list and try again.',  # Bug 45406
 		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
 		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
-		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*',  # Bug #39123
+		r'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', r'.*open: error=2 \(No such file or directory\).*',  # Bug #39123
 		'DNS Update for .* failed: ERROR_DNS_UPDATE_FAILED',  # Bug #39622
 		'DNS update failed: NT_STATUS_UNSUCCESSFUL',  # Bug #39622
 		'rndc: connect failed: 127.0.0.1#953: connection refused',  # Bug #39691
 		'.*Ignoring import error: No module named ucs_version',  # Bug #39692
-		'\[!\] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib',  # Bug #39646
-		'\[!\] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib',  # Bug #39646
-		'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory',  # Bug #39646
-		'\[!\] Service \[memcached\]: Failed to initialize SSL context',  # Bug #39646
+		r'\[!\] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib',  # Bug #39646
+		r'\[!\] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib',  # Bug #39646
+		r'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory',  # Bug #39646
+		r'\[!\] Service \[memcached\]: Failed to initialize SSL context',  # Bug #39646
 		'failed',  # Bug #39646
 		'Failed to process Subfile /etc/univention/templates/files/etc/postgresql/.*/main/pg_hba.conf.d/.*-pg_.*.conf',  # 39595
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.',  # Bug #38911
@@ -135,14 +135,14 @@ class Warnings(LogMessage):
 		'.*dpkg: warning: unable to delete old directory .* Directory not empty.*',
 		'WARNING: cannot append .* to .*, value exists',
 		'Warning: The config registry variable .*? does not exist',
-		'Total Warnings:\s+\d+',
+		r'Total Warnings:\s+\d+',
 		'sys:1: DeprecationWarning: Non-ASCII character.*but no encoding declared; see http://www.python.org/peps/pep-0263.html for details',
 		'warning: commands will be executed using /bin/.*',
 		'Not updating .*',
 		'Warning: The home dir .* you specified already exists.',
 		'WARNING!',
-		'.*WARNING: All config files need \.conf: /etc/modprobe\.d/.+, it will be ignored in a future release\.',
-		'update-rc\.d: warning: .* (?:start|stop) runlevel arguments \([^)]+\) do not match LSB Default-(?:Start|Stop) values [^)]+',
+		r'.*WARNING: All config files need \.conf: /etc/modprobe\.d/.+, it will be ignored in a future release\.',
+		r'update-rc\.d: warning: .* (?:start|stop) runlevel arguments \([^)]+\) do not match LSB Default-(?:Start|Stop) values [^)]+',
 		'.*warning: rule .* already exists.*',
 		'.*Not starting .*: no services enabled.*',
 		'.*Running /etc/init.d/.* is deprecated.*',

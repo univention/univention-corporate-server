@@ -38,7 +38,7 @@ InitialValue = 1
 Type = String
 Show = Install, Settings
 Description = Shall not have a value, especially not "None"
-InitialValue = 
+InitialValue =
 '''
 
 if __name__ == '__main__':

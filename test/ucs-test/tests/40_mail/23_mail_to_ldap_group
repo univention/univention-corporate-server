@@ -17,17 +17,17 @@ import univention.testing.utils as utils
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		if ucr.is_true('mail/dovecot'):
-			univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
+			univention.config_registry.handler_set([
+				'mail/dovecot/logging/auth_debug=yes',
 				'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
 				'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
-			logfiles = ['/var/log/mail.log', '/var/log/auth.log', '/var/log/univention/listener.log',
-				'/var/log/dovecot.log']
+			logfiles = ['/var/log/mail.log', '/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
 			autocallcmd = ['doveadm', 'log', 'reopen']
 		else:
 			logfiles = ['/var/log/mail.log', '/var/log/auth.log', '/var/log/univention/listener.log']
 			autocallcmd = ['true']
-		with utils.FollowLogfile(logfiles=logfiles) as flf:
-			with utils.AutoCallCommand(enter_cmd=autocallcmd, exit_cmd=autocallcmd) as acc:
+		with utils.FollowLogfile(logfiles=logfiles):
+			with utils.AutoCallCommand(enter_cmd=autocallcmd, exit_cmd=autocallcmd):
 				with udm_test.UCSTestUDM() as udm:
 					domain = ucr.get('domainname')
 					password = 'univention'

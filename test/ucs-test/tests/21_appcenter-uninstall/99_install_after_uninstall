@@ -17,7 +17,7 @@ import univention.config_registry
 import univention.uldap as uldap
 from univention.appcenter.actions import get_action
 from appcenteruninstalltest import get_requested_apps
-from univention.appcenter.log import log_to_logfile, log_to_stream
+from univention.appcenter.log import log_to_stream
 
 log_to_stream()
 ucr = univention.config_registry.ConfigRegistry()

@@ -421,7 +421,7 @@ class Docker(object):
 			ip = ucr_get(_app.ucr_ip_key)
 			try:
 				app_network = IPv4Network(u'%s' % (ip,), False)
-			except ValueError as exc:
+			except ValueError:
 				continue
 			else:
 				used_docker_networks.append(app_network)

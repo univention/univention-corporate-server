@@ -30,7 +30,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import json
-import grp
 
 import tornado.ioloop
 import tornado.web

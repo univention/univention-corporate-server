@@ -211,7 +211,7 @@ def ask_value(name, klass_default=None, value_default=None):
 			)
 			if spec.defaults:
 				defaults = dict(
-					zip(spec.args[len(spec.args) - len(spec.defaults) :], spec.defaults)
+					zip(spec.args[len(spec.args) - len(spec.defaults):], spec.defaults)
 				)
 			else:
 				defaults = {}

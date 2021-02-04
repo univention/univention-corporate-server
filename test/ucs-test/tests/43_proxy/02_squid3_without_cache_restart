@@ -14,7 +14,7 @@ import univention.testing.utils as utils
 def main():
 	fail = False
 	squid = SimpleSquid()
-	with ucr_test.UCSTestConfigRegistry() as ucr:
+	with ucr_test.UCSTestConfigRegistry():
 		handler_set(['squid/cache=false'])
 		squid.restart()
 		fail = not squid.is_running(30)

@@ -42,7 +42,7 @@ def main():
 		print("### Test 1 ###")
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User in group with network access nested in group with network access could not authenticate!")
 
 		# outer group net access = 1, inner group net access = 0
@@ -56,7 +56,7 @@ def main():
 		)
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User in group with network access nested in group without network access could not authenticate!")
 
 		# outer group net access = 0, inner group net access = 0
@@ -86,7 +86,7 @@ def main():
 		)
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User in group without network access nested in group with network access could not authenticate!")
 
 

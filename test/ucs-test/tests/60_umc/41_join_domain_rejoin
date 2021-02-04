@@ -12,9 +12,10 @@ from __future__ import print_function
 import sys
 from os import path
 
-sys.path.insert(0, '.')
-from umc import JoinModule
 import univention.testing.utils as utils
+
+sys.path.insert(0, '.')
+from umc import JoinModule  # noqa: E402
 
 
 class TestUMCDomainRejoin(JoinModule):
@@ -29,11 +30,9 @@ class TestUMCDomainRejoin(JoinModule):
             if path.exists(file_path):
                 File = open(file_path, 'w')
             else:
-                utils.fail("Could not find the status file at the provided"
-                           " file_path '%s'" % file_path)
+                utils.fail("Could not find the status file at the provided file_path '%s'" % file_path)
         except (IOError, OSError) as exc:
-            utils.fail("An exception while clearing the status file at '%s': "
-                       "'%s'" % (file_path, exc))
+            utils.fail("An exception while clearing the status file at '%s': '%s'" % (file_path, exc))
         finally:
             if File:
                 File.close()
@@ -46,28 +45,22 @@ class TestUMCDomainRejoin(JoinModule):
         join_status_file = '/var/univention-join/status'
 
         try:
-            print("Saving a backup of initial join status file '%s'"
-                  % join_status_file)
+            print("Saving a backup of initial join status file '%s'" % join_status_file)
             self.copy_file(join_status_file, join_status_file + '.bak')
 
             # clean the status file and perform a complete rejoin
-            print("Clearing the status file and making a rejoin request."
-                  " (This operation may take up to 20 minutes)")
+            print("Clearing the status file and making a rejoin request. (This operation may take up to 20 minutes)")
             self.clear_status_file(join_status_file)
             # check that no scripts are 'configured'==True with clean status
             for result in self.query_joinscripts():
                 if result.get('configured'):
-                    utils.fail("The following join script '%s' was "
-                               "'configured'==True while should not be"
-                               % result)
+                    utils.fail("The following join script '%s' was 'configured'==True while should not be" % result)
             self.join(hostname=self.ucr.get('ldap/master'))
             self.wait_rejoin_to_complete(120)
             # check that all scripts are 'configured'==True after rejoin
             for result in self.query_joinscripts():
                 if not result.get('configured'):
-                    utils.fail("The following join script '%s' was "
-                               "'configured'==False while should be"
-                               " True" % result)
+                    utils.fail("The following join script '%s' was 'configured'==False while should be True" % result)
         finally:
             print("\nRestoring join status file from backup '.bak'")
             # Overwriting status file from backup and removing backup:

@@ -27,7 +27,7 @@ timeout = 10
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		cmd = ['/etc/init.d/dovecot', 'restart']
-		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
+		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				univention.config_registry.handler_set(['mail/dovecot/auth/cache_size=0'])
 				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
@@ -37,9 +37,12 @@ def main():
 				mail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					password=pw,
-					set={"mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
+					set={
+						"mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
 						"mailPrimaryAddress": mail,
-						"mailUserQuota": str(quota01)})
+						"mailUserQuota": str(quota01)
+					}
+				)
 
 				#
 				# quota set with UDM should be reflected by IMAP4.getquota()

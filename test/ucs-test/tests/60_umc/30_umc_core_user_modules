@@ -5,13 +5,14 @@
 
 from __future__ import print_function
 import sys
-sys.path.insert(0, '.')
-from umc import UMCBase
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
 from univention.testing.umc import Client
+
+sys.path.insert(0, '.')
+from umc import UMCBase  # noqa: E402
 
 
 class TestUMCUserModules(UMCBase):
@@ -40,11 +41,11 @@ class TestUMCUserModules(UMCBase):
 			# should be available to the user:
 			print("Checking if user '%s' has no access to umc modules" % test_username)
 			user_modules = self.list_umc_modules(test_username, test_password)
-			assert len(user_modules) == 0, "The newly created test user '%s' in test " "group '%s' has access to the following modules " "'%s', when should not have access to any" % (test_username, test_groupname, user_modules)
+			assert len(user_modules) == 0, "The newly created test user '%s' in test group '%s' has access to the following modules '%s', when should not have access to any" % (test_username, test_groupname, user_modules)
 
 			# case 2: create custom policy and add it to the test group,
 			# check available modules for the user:
-			print("Checking if user '%s' has access to only one module " "with custom test policy '%s' applied to group '%s'" % (test_username, test_policyname, test_groupname))
+			print("Checking if user '%s' has access to only one module with custom test policy '%s' applied to group '%s'" % (test_username, test_policyname, test_groupname))
 			test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set)
 			utils.verify_ldap_object(test_policy_dn)
 

@@ -49,4 +49,3 @@ class attributeMapping(univention.admin.syntax.complex):
 	subsyntax_key_value = True
 	all_required = 0
 	min_elements = 1
-

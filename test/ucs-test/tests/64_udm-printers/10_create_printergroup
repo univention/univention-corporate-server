@@ -19,22 +19,22 @@ import univention.testing.ucr
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import random
-import time
-import subprocess
 
-PRINTER_PROTOCOLS = [ 'usb://', 'ipp://', 'socket://', 'parallel://', 'http://' ]
+PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
 printquota_installed = utils.package_installed("univention-printquota")
 
+
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
+
 
 if __name__ == '__main__':
 	with univention.testing.ucr.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		ucr.load()
 
 		spoolHost = random_fqdn(ucr)
-		## if setQuota=1 and target host doesn't have univention-printquota, then lpadmin fails in cups-printers listener
+		# if setQuota=1 and target host doesn't have univention-printquota, then lpadmin fails in cups-printers listener
 		setQuota = random.choice(['0', '1']) if printquota_installed else '0'
 
 		printer_properties1 = {
@@ -52,7 +52,6 @@ if __name__ == '__main__':
 			position='cn=printers,%s' % (ucr['ldap/base'],),
 			**printer_properties1)
 
-
 		printer_properties2 = {
 			'name': uts.random_name(),
 			'spoolHost': spoolHost,
@@ -67,7 +66,6 @@ if __name__ == '__main__':
 			'shares/printer',
 			position='cn=printers,%s' % (ucr['ldap/base'],),
 			**printer_properties2)
-
 
 		printergroup_properties = {
 			'name': uts.random_name(),

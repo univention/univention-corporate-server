@@ -9,7 +9,7 @@
 ## exposure: safe
 
 from __future__ import print_function
-import locale
+
 from os import path
 from glob import glob
 
