@@ -73,6 +73,7 @@ import shutil
 import logging
 import atexit
 import json
+from copy import deepcopy
 try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
@@ -1551,17 +1552,18 @@ class UniventionUpdater(object):
         :returns: A iterator returning 2-tuples (server, ver).
         """
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
+        end_copy = deepcopy(end)
         server = self.server
         if dists and 'maintained' in parts:
             struct_dist = UCSRepoDist(prefix=self.server)
             for ver in self._iterate_versions(struct_dist, start, end, ['maintained'], archs, server):
                 yield server, ver
         struct_pool = UCSRepoPool(prefix=self.server)
-        for ver in self._iterate_versions(struct_pool, start, UCS_Version((4, 99, 99)), parts, ['all'] + archs, server):
+        for ver in self._iterate_versions(struct_pool, start, end, parts, ['all'] + archs, server):
             yield server, ver
-        if end >= UCS_Version((5, 0, 0)):
+        if end_copy >= UCS_Version((5, 0, 0)):
             struct_pool5 = UCSRepoPool5(prefix=self.server)
-            for ver in self._iterate_versions(struct_pool5, UCS_Version((5, 0, 0)), end, parts, ['all'] + archs, server):
+            for ver in self._iterate_versions(struct_pool5, UCS_Version((5, 0, 0)), end_copy, parts, ['all'] + archs, server):
                 yield server, ver
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
