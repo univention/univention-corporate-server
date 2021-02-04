@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # vim: set fileencoding=utf-8 backupcopy=auto sw=4 ts=4:
 
 import univention.debug as ud

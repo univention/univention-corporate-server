@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Debug
@@ -133,7 +133,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
 			_debug.begin('%s(%s): ...' % (fname, _args))
 			try:
 				ret = f(*args, **kwargs)
-			except:
+			except BaseException:
 				try:
 					(exctype, value) = sys.exc_info()[:2]
 					_debug.end('%s(...): %s(%s)' % (fname, exctype, value))
