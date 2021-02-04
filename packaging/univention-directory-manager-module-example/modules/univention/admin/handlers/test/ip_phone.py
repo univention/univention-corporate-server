@@ -29,27 +29,26 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
-import copy
-import univention.admin.filter  # Definiert Filterausdruck-Objekt für 'lookup' Funktion unten
 import univention.admin.handlers  # Enthält simpleLdap, die Basisklasse für 'object' unten
 import univention.admin.syntax  # Liefert standard Syntax-Definitionen für die UDM 'property_descriptions' unten
+import univention.admin.localization
+from univention.admin.layout import Tab
 
 # Für das Einbinden von Übersetzungskatalogen für verschiedene Sprachen
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
 
+
 # <Syntax definitions>
-
-
 class SynVoIP_Protocols(univention.admin.syntax.select):
 
 	"""Diese Klasse definiert einen neue Syntax für eine Auswahlliste von VoIP-Protokollen"""
 	# der Text, der in dem Web-Frontend vor die Auswahlliste geschrieben werden soll
-	name = _(u'VoIP_Protocol')
+	name = _('VoIP_Protocol')
 
 	# die Liste der Auswahlmöglichkeiten: Jedes der Elemente enthält einen eindeutigen Schlüssel
 	# und den anzuzeigenden Text
-	choices = [('sip', u'SIP'), ('h323', u'H.323'), ('skype', u'Skype')]
+	choices = [('sip', 'SIP'), ('h323', 'H.323'), ('skype', 'Skype')]
 
 
 class SynVoIP_Address(univention.admin.syntax.simple):
@@ -66,7 +65,7 @@ class SynVoIP_Address(univention.admin.syntax.simple):
 	def parse(self, text):
 		if self._re.match(text) is not None:
 			return text
-		raise univention.admin.uexceptions.valueError(_(u'Not a valid VoIP Address'))
+		raise univention.admin.uexceptions.valueError(_('Not a valid VoIP Address'))
 
 
 # </Syntax definitions>
@@ -76,11 +75,11 @@ class SynVoIP_Address(univention.admin.syntax.simple):
 # interner Name des Moduls, verwendet auch im Kommandozeilen-Client
 module = 'test/ip_phone'
 # dieses Objekt kann keine Unterobjekte enthalten
-childs = 0
+childs = False
 # ein sprechender Name für das Web-Frontend
-short_description = _(u'IP-Phone')
+short_description = _('IP-Phone')
 # eine ausführliche Beschreibung
-long_description = _(u'An example module for the Univention Directory Manager')
+long_description = _('An example module for the Univention Directory Manager')
 # die LDAP Operationen, die auf diesem Objekt ausgeführt werden können
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
@@ -88,15 +87,21 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 # Um einen eigenen Wizard zu erstellen, der im UDM-Web links in der Navigationsleiste erscheint:
 # usewizard = 1
 # wizardmenustring = "VoIP"
-# wizarddescription =  _(u"Add, delete and search VoIP objects"
-# wizardoperations = { 'add' : [_(u"add"), _(u"Add an VoIP object")],
-# 'find' : [_(u"Search"), _(u"Search VoIP objects"]) }
+# wizarddescription =  _("Add, delete and search VoIP objects"
+# wizardoperations = { 'add' : [_("add"), _("Add an VoIP object")],
+# 'find' : [_("Search"), _("Search VoIP objects"]) }
 # wizardpath = "univentionUsersObject"
 
 # <UDM module options>
 # Liste der Optionen für dieses Modul, bzw. für den behandelten Objekttyp
 options = {
 	# durch 'options' werden optionale Eigenschaften eines Objekts definiert
+	# die 'default' Option enthält die Pflicht-Objektklassen
+	'default': univention.admin.option(
+		short_description=short_description,
+		default=True,
+		objectClasses=['top', 'testPhone'],
+	),
 	'redirection': univention.admin.option(
 		short_description=_('Call redirect option'),
 		default=True,
@@ -111,8 +116,8 @@ options = {
 property_descriptions = {
 	# der eindeutige Name eines IP-Telefons
 	'name': univention.admin.property(
-		short_description=_(u'Name'),
-		long_description=_(u'ID of the IP-phone'),
+		short_description=_('Name'),
+		long_description=_('ID of the IP-phone'),
 		syntax=univention.admin.syntax.hostName,  # Eigenschaft muss der Syntax eines Rechnernamens entsprechen, Def. in syntax.py
 		multivalue=False,
 		options=[],
@@ -121,8 +126,8 @@ property_descriptions = {
 		identifies=True,  # Eigenschaft muss eindeutig sein
 	),
 	'active': univention.admin.property(
-		short_description=_(u'active'),
-		long_description=_(u'The IP-phone can be deactivated'),
+		short_description=_('active'),
+		long_description=_('The IP-phone can be deactivated'),
 		syntax=univention.admin.syntax.TrueFalseUp,  # Definition in syntax.py, kompatibel zur LDAP Boolean Syntax
 		multivalue=False,
 		options=[],
@@ -132,8 +137,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'protocol': univention.admin.property(
-		short_description=_(u'Protocol'),
-		long_description=_(u'Supported VoIP protocols'),
+		short_description=_('Protocol'),
+		long_description=_('Supported VoIP protocols'),
 		syntax=SynVoIP_Protocols,  # nutzt die selbst definierte Auswahlliste als Syntax
 		multivalue=False,
 		options=[],
@@ -143,8 +148,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'ip': univention.admin.property(
-		short_description=_(u'IP-Address'),
-		long_description=_(u'IP-Address of the IP-phone'),
+		short_description=_('IP-Address'),
+		long_description=_('IP-Address of the IP-phone'),
 		syntax=univention.admin.syntax.ipAddress,  # muss der Syntax einer IP (Version 4) Adresse entsprechen
 		multivalue=False,
 		options=[],
@@ -153,8 +158,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'priuser': univention.admin.property(
-		short_description=_(u'Primary User'),
-		long_description=_(u'The primary user of this IP-phone'),
+		short_description=_('Primary User'),
+		long_description=_('The primary user of this IP-phone'),
 		syntax=SynVoIP_Address,  # muss der Syntax einer VoIP Adresse entsprechen
 		multivalue=False,
 		options=[],
@@ -163,8 +168,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'users': univention.admin.property(
-		short_description=_(u'Additional Users'),
-		long_description=_(u'Users, that may register with this phone'),
+		short_description=_('Additional Users'),
+		long_description=_('Users, that may register with this phone'),
 		syntax=SynVoIP_Address,  # jeder Eintrag muss der Syntax einer VoIP Adresse entsprechen
 		multivalue=True,  # Dies ist eine Liste von Adressen
 		options=[],
@@ -173,8 +178,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'redirect_user': univention.admin.property(
-		short_description=_(u'Redirection User'),
-		long_description=_(u'Address for call redirection'),
+		short_description=_('Redirection User'),
+		long_description=_('Address for call redirection'),
 		syntax=SynVoIP_Address,
 		multivalue=False,
 		options=['redirection'],  # Ist nur da, wenn die Option gesetzt ist
@@ -187,23 +192,23 @@ property_descriptions = {
 # <UDM module layout>
 
 # Das 'layout' definiert die Anordung der Felder im Web-Frontend.
-# Jeder 'univention.admin.tab' entspricht einem Reiter:
+# Jeder 'Tab' entspricht einem Reiter:
 # * Der erste Parameter ist der Name des Reiters und der zweite Parameter
 # ist eine Beschreibung der Einstellungsmöglich für diesen Reiter
 # * Die folgende Liste definiert die Anordnung der einzelnen Eigenschaftsfelder.
 # * Per advanced=True wird der Reiter nur angezeigt, wenn das Anzeigen der
 # erweiterten Einstellungen aktiviert ist.
 layout = [
-	univention.admin.tab(_(u'General'), _(u'Basic Settings'), [
-		[univention.admin.field("name"), univention.admin.field("active")],
-		[univention.admin.field("ip"), univention.admin.field("protocol")],
-		[univention.admin.field("priuser")],
+	Tab(_('General'), _('Basic Settings'), [
+		["name", "active"],
+		["ip", "protocol"],
+		["priuser"],
 	]),
-	univention.admin.tab(_(u'Advanced'), _(u'Advanced Settings'), [
-		[univention.admin.field("users")],
+	Tab(_('Advanced'), _('Advanced Settings'), [
+		["users"],
 	], advanced=True),
-	univention.admin.tab(_(u'Redirect'), _(u'Redirect Option'), [
-		[univention.admin.field("redirect_user")],
+	Tab(_('Redirect'), _('Redirect Option'), [
+		["redirect_user"],
 	], advanced=True),
 ]
 
@@ -226,7 +231,7 @@ mapping.register('redirect_user', 'testPhoneRedirectUser', None, univention.admi
 
 class object(univention.admin.handlers.simpleLdap):
 
-	u"""Dieses Objekt unterstützt den Univention Directory Manager bei LDAP-Operationen,
+	"""Dieses Objekt unterstützt den Univention Directory Manager bei LDAP-Operationen,
 	die sich auf dieses Modul beziehen.
 	Die Basisklasse univention.admin.handlers.simpleLdap implementiert die komplette Kommunikation über LDAP,
 	so dass hier nur die Anpassungen für dieses spezielle LDAP-Objekt implementiert werden müssen.
@@ -237,60 +242,10 @@ class object(univention.admin.handlers.simpleLdap):
 	# den Modulnamen als Attribute der Klasse übernehmen (oben definiert als module='test/ip-phone')
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
-		u"""Initialisierung des Objektes. Hier müssen die oben definierten globalen Variablen 'mapping'
-		und 'property_descriptions' übernommen werden"""
-		global options
-		global mapping
-		global property_descriptions
-
-		self.co = co
-		self.lo = lo
-		self.dn = dn
-		self.position = position
-		self._exists = 0
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		# Initialisierungsfunktion der Basisobjektklasse simpleLdap in univention.admin.handlers
-		# * liest die Objekt Attribute für den 'dn' aus dem LDAP ud stellt sie als self.oldattr bereit.
-		# * stellt die per 'mapping' übersetzten LDAP-Attributnamen und Werte als
-		# UDM Objekt-Variablennamen ('property_descriptions') und -Werte bereit:
-		# - per Konvention wird in self.oldinfo der bisherige Objekt-Zustand bereitgestellt
-		# - über self.info wird der vom Benutzer (CLI oder Web) aktualisierte Objekt-Zustand
-		# bereitgestellt
-		# An diesem Punkt sind beide noch identisch.
-		# * falls Richtlinien mit diesem Objekt verknüpft sind, werden sie ebenso als self.oldpolicies
-		# und self.policies bereitgestellt:
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-
-		# Über den Vergleich von self.oldattr['objectClass'] mit den 'objectClasses' der oben definierten
-		# 'options' lässt sich ermitteln, welche Optionen an dem Objekt aktiviert sind. Die so ermittelte
-		# Auswahl sollte als # self.options an diesem Objekt notiert werden, damit darauf basierend
-		# weitere Entscheidungen getroffen werden können.
-		self.options = []
-		if 'objectClass' in self.oldattr:
-			# Das Objekt existiert bereits im LDAP und wurde von dort geladen
-			ocs = set(self.oldattr['objectClass'])
-			for opt in ('redirection', ):
-				if options[opt].matches(ocs):
-					self.options.append(opt)
-			self.old_options = copy.deepcopy(self.options)
-		else:
-			# Das Objekt existiert nocht nicht im LDAP und wird neu angelegt.
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '%s: reset options to default by _define_options' % module)
-			self._define_options(options)
-			self.old_options = []
-
-	def exists(self):
-		u"""Von SimpleLdap intern verwendete Methode, um zu entscheiden, ob ein
-		Objekt neu angelegt werden muß oder ein vorhandenes editiert wird."""
-		return self._exists
-
 	def open(self):
-		u"""Öffnen des LDAP-Objekts."""
+		"""Öffnen des LDAP-Objekts."""
 
-		univention.admin.handlers.simpleLdap.open(self)
+		super(object, self).open()
 		# In dieser Methode können die Eigenschaften des Objekts in self.info dynamisch vor-initialisiert werden.
 		# Das self.info Dictionary kann indirekt angesprochen werden, d.h. z.B. durch self['active'] = 1
 		# Da der Basistyp von 'simpleLdap' (und damit von 'object') die Klasse 'base' ist, verhält sich
@@ -304,102 +259,38 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_pre_create(self):
-		u"""Wird vor dem Anlegen des LDAP Objektes aufgerufen."""
-		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		"""Wird vor dem Anlegen des LDAP Objektes aufgerufen."""
+		return super(object, self)._ldap_pre_create()
 
 	def _ldap_post_create(self):
-		u"""Wird nach dem Anlegen des Objektes aufgerufen."""
+		"""Wird nach dem Anlegen des Objektes aufgerufen."""
+		return super(object, self)._ldap_post_create()
 
 	def _ldap_pre_modify(self):
-		u"""Wird vor dem Modifizieren des Objektes aufgerufen."""
+		"""Wird vor dem Modifizieren des Objektes aufgerufen."""
+		return super(object, self)._ldap_pre_modify()
 
 	def _ldap_post_modify(self):
-		u"""Wird nach dem Modifizieren des Objektes aufgerufen."""
+		"""Wird nach dem Modifizieren des Objektes aufgerufen."""
+		return super(object, self)._ldap_post_modify()
 
 	def _ldap_pre_remove(self):
-		u"""Wird vor dem Löschen des Objektes aufgerufen."""
+		"""Wird vor dem Löschen des Objektes aufgerufen."""
+		return super(object, self)._ldap_pre_remove()
 
 	def _ldap_post_remove(self):
-		u"""Wird nach dem Löschen des Objektes aufgerufen."""
-
-	def _update_policies(self):
-		u""""Wird bim Anlegen und Modifizieren des Objekts aufgerufen, um ggf.
-		aktivierte Policies auf das Objekt anzuwenden."""
-
-	def _ldap_addlist(self):
-		u"""Diese Funktion muss definiert werden, weil sie von 'create' verwendet wird.
-		Sie sollte die nur zum Anlegen notwendigen LDAP-Attribute zurückgeben, d.h. mindestens die
-		'objectClass' Definition. Nach dieser Methode ruft 'create' _ldap_modlist auf, um weitere
-		Modifikationen an Eigenschaften festzustellen."""
-
-		al = [('objectClass', ['top', 'testPhone'])]
-		return al
-
-	def _remove_attr(self, ml, attr):
-		u"""Hilfmethode zum Entfernen das Attribut 'attr' aus der Liste der zu
-		modifizierenden Attribute 'ml'."""
-		for m in ml:
-			if m[0] == attr:
-				ml.remove(m)
-		if self.oldattr.get(attr, []):
-			ml.insert(0, (attr, self.oldattr.get(attr, []), ''))
-		return ml
+		"""Wird nach dem Löschen des Objektes aufgerufen."""
+		return super(object, self)._ldap_post_remove()
 
 	def _ldap_modlist(self):
-		u"""Diese Funktion kann definiert werden. Die gleichnamige ererbte Methode von 'simpleLdap'
+		"""Diese Funktion kann definiert werden. Die gleichnamige ererbte Methode von 'simpleLdap'
 		erstellt eine LDAP-modlist aus der Differenz zwischen self.oldinfo und self.info."""
 
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-		# hier sind weitere Anpassungen der modlist möglich, z.B. die Reaktion
-		# auf Veränderungen an der Optionenauswahl:
-		if self.options != self.old_options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
-			if 'redirection' in self.options and 'redirection' not in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added redirection option')
-				ocs = self.oldattr.get('objectClass', [])
-				if 'testPhoneCallRedirect' not in ocs:
-					ml.insert(0, ('objectClass', '', 'testPhoneCallRedirect'))
-			if 'redirection' not in self.options and 'redirection' in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove redirection option')
-				ocs = self.oldattr.get('objectClass', [])
-				if 'testPhoneCallRedirect' in ocs:
-					ml.insert(0, ('objectClass', 'testPhoneCallRedirect', ''))
-
-				for key in ['testPhoneRedirectUser', ]:
-					ml = self._remove_attr(ml, key)
+		ml = super(object, self)._ldap_modlist()
+		# hier sind weitere Anpassungen der modlist möglich
 		return ml
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	u"""Diese Function sucht nach Objekten, die dem in diesem Modul verwalteten Typ (objectClass)
-	die den angegebenen Suchkriterien entsprechen. Der Rückgabewert dieser Funktion ist ein Liste
-	der gefunden Objekte."""
-
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'testPhone'),
-	])
-
-	if filter_s:
-		# Vom Benutzer übergebene Zeichenkette in ein Filterausdruck-Objekt übersetzten:
-		filter_p = univention.admin.filter.parse(filter_s)
-		# Übersetzung der UDM Objekt-Variablennamen ('property_descriptions') und -Werte im Filterausdruck
-		# auf LDAP-Attributnamen und -Werte, wie durch 'mapping' oben definiert:
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		# Oben definierten Objektklassenfilter ergänzen um den vom Benutzer übergebenen Filterausdruck:
-		filter.expressions.append(filter_p)
-
-	res = []
-	# LDAP-Suche öber das LDAP-Connection-Objekt 'lo' unter Verwendung des unicode-Encodings,
-	# das Python intern verwendet:
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		# Ergebnisliste aufbauen
-		res.append(object(co, lo, None, dn))
-	return res
-
-
-def identify(dn, attr, canonical=False):
-	u"""Prüft ob die verwaltete Objektklasse diese Moduls in der übergebenen Liste enthalten ist,
-	d.h. ob dieses Modul für die Handhabung des Objekts zuständig ist."""
-
-	return b'testPhone' in attr.get('objectClass', [])
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify
