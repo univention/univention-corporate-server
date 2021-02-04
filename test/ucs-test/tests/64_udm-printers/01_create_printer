@@ -20,13 +20,13 @@ import univention.testing.ucr
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import random
-import time
-import subprocess
 
-PRINTER_PROTOCOLS = [ 'usb://', 'ipp://', 'socket://', 'parallel://', 'http://' ]
+PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
+
 
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
+
 
 if __name__ == '__main__':
 	with univention.testing.ucr.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:

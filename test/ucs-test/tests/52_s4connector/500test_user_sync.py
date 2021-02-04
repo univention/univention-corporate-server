@@ -13,7 +13,8 @@ import ldap
 import pytest
 
 from univention.testing.udm import UCSTestUDM
-from univention.testing.connector_common import (NormalUser, Utf8User,
+from univention.testing.connector_common import (
+	NormalUser, Utf8User,
 	SpecialUser, create_udm_user, delete_udm_user, create_con_user,
 	delete_con_user)
 import univention.testing.connector_common as tcommon
@@ -27,8 +28,7 @@ TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_udm_to_s4(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -44,8 +44,7 @@ def test_user_sync_from_udm_to_s4(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_udm_to_s4_with_rename(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -66,8 +65,7 @@ def test_user_sync_from_udm_to_s4_with_rename(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_udm_to_s4_with_move(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_user = user_class()
@@ -75,8 +73,7 @@ def test_user_sync_from_udm_to_s4_with_move(user_class, sync_mode):
 
 		print("\nMove UDM user\n")
 		udm_container_dn = udm.create_object('container/cn', name=udm_user.container)
-		udm_user_dn = udm.move_object('users/user', dn=udm_user_dn,
-			position=udm_container_dn)
+		udm_user_dn = udm.move_object('users/user', dn=udm_user_dn, position=udm_container_dn)
 
 		s4connector.wait_for_sync()
 		s4.verify_object(s4_user_dn, None)
@@ -90,8 +87,7 @@ def test_user_sync_from_udm_to_s4_with_move(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_s4_to_udm(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_user = user_class()
@@ -107,16 +103,14 @@ def test_user_sync_from_s4_to_udm(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_user = user_class()
 		(basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
 		print("\nRename S4 user {!r} to {!r}\n".format(s4_user_dn, udm_user.rename.get("username")))
-		s4_user_dn = s4.rename_or_move_user_or_group(s4_user_dn,
-			name=udm_user.rename.get("username"))
+		s4_user_dn = s4.rename_or_move_user_or_group(s4_user_dn, name=udm_user.rename.get("username"))
 		s4.set_attributes(s4_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename))
 		s4connector.wait_for_sync()
 
@@ -131,8 +125,7 @@ def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
 
 @pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_s4_to_udm_with_move(user_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_user = user_class()

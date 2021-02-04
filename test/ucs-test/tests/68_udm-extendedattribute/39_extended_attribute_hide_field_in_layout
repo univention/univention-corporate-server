@@ -23,8 +23,10 @@ def flatten(layout):
 				_parse(y)
 			elif isinstance(y, dict):
 				_parse(y.get('layout', []))
-			elif isinstance(y, basestring):
+			elif isinstance(y, str):
 				result.add(y)
+			else:
+				raise TypeError(y)
 	_parse(layout)
 	return result
 

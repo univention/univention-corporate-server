@@ -16,7 +16,7 @@ from sys import exit
 from time import sleep
 from pwd import getpwnam
 from subprocess import Popen
-from socket import (socket, create_connection, error as socket_error)
+from socket import create_connection, error as socket_error
 
 from univention.config_registry.frontend import handler_set
 

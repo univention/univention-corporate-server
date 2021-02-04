@@ -18,7 +18,7 @@ from univention.config_registry import handler_set
 
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
+	with ucr_test.UCSTestConfigRegistry():
 		handler_set(["umc/self-service/passwordreset/limit/per_user/minute=120"])
 		try:
 			mail = '%s@%s' % (uts.random_username(), uts.random_username())

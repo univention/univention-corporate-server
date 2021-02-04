@@ -32,10 +32,10 @@ class ScreenShooter(BaseScreenShooter):
 			"umc-users-add_dialog",
 			xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
 		)
-		#self.selenium.click_button(_("Next"))
-		#self.selenium.wait_for_text(_("Password *"))
-		#self.selenium.enter_input("password_1", "univention")
-		#self.selenium.enter_input("password_2", "univention")
+		# self.selenium.click_button(_("Next"))
+		# self.selenium.wait_for_text(_("Password *"))
+		# self.selenium.enter_input("password_1", "univention")
+		# self.selenium.enter_input("password_2", "univention")
 		self.selenium.click_button(_("Cancel"))
 		self.selenium.wait_until_all_dialogues_closed()
 
@@ -57,6 +57,7 @@ class ScreenShooter(BaseScreenShooter):
 		self.selenium.wait_for_text(_("password history"))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 		self.selenium.save_screenshot("umc-users-details")
+
 
 # This is a base64 encoded jpeg image of an user portrait.
 portraitPhoto = """

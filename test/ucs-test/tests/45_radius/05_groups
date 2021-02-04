@@ -38,7 +38,7 @@ def main():
 		print("### Test 1 ###")
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User with network access in group with network access could not authenticate!")
 
 		# user net access = 1, group net access = 0
@@ -52,7 +52,7 @@ def main():
 		)
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User with network access in group without network access could not authenticate!")
 
 		# user net access = 0, group net access = 0
@@ -82,7 +82,7 @@ def main():
 		)
 		try:
 			radtest(username)
-		except:
+		except Exception:
 			utils.fail("User without network access in group with network access could not authenticate!")
 
 

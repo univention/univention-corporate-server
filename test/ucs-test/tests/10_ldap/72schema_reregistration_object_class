@@ -10,10 +10,9 @@
 ## exposure: dangerous
 
 from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_int
 from univention.testing.utils import verify_ldap_object
 from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import *
+from ldap_extension_utils import call_unjoin_script, call_join_script, get_package_name, get_schema_name
 from time import sleep
 
 ucr = ConfigRegistry()

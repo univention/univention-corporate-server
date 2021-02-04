@@ -26,9 +26,10 @@ def main():
 		host = '%s.%s' % (ucr_tmp.get('hostname'), domain)
 
 		cmd = ['/etc/init.d/dovecot', 'restart']
-		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
-			with ucr_test.UCSTestConfigRegistry() as ucr:
-				univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes',
+		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+			with ucr_test.UCSTestConfigRegistry():
+				univention.config_registry.handler_set([
+					'mail/dovecot/mailbox/delete=yes',
 					'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
 					'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
 					'mail/dovecot/logging/mail_debug=yes'])
@@ -37,9 +38,9 @@ def main():
 				logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
 
 				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-				with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1) as acc1:
-					with utils.FollowLogfile(logfiles=logfiles) as flf:
-						with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
+				with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1):
+					with utils.FollowLogfile(logfiles=logfiles):
+						with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2):
 							password = 'univention'
 							mails = []
 							users = []
@@ -55,8 +56,7 @@ def main():
 								mails.append(usermail)
 								users.append(userdn)
 							token = str(time.time())
-							send_mail(recipients=mails, msg=token, port=587, tls=True,
-								username=usermail, password=password, debuglevel=0)
+							send_mail(recipients=mails, msg=token, port=587, tls=True, username=usermail, password=password, debuglevel=0)
 							check_delivery(token, mails[0], True)
 							group_mail = '%s@%s' % (uts.random_name(), domain)
 							groupdn, groupname = udm.create_group(
@@ -74,10 +74,8 @@ def main():
 								'all': 'lrspiwcda',
 							}
 
-							create_shared_mailfolder(udm, host, mailAddress=False,
-								user_permission=['"%s" "%s"' % ('anyone', 'none')])
-							create_shared_mailfolder(udm, host, mailAddress=True,
-								user_permission=['"%s" "%s"' % ('anyone', 'none')])
+							create_shared_mailfolder(udm, host, mailAddress=False, user_permission=['"%s" "%s"' % ('anyone', 'none')])
+							create_shared_mailfolder(udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'none')])
 							utils.wait_for_replication()
 
 							owner_user = mails[0]

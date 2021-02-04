@@ -42,7 +42,6 @@ import urllib2
 import threading
 import requests
 import json
-import ssl
 
 
 class UCSTest_Docker_Exception(Exception):
@@ -513,7 +512,7 @@ class App(object):
 				f.write(self.scripts[script])
 
 	def create_basic_modproxy_settings(self):
-		self.add_script(setup='''#!/bin/bash
+		self.add_script(setup=r'''#!/bin/bash
 set -x -e
 eval "$(ucr shell)"
 if [ "$version_version" = 4.0 ]; then

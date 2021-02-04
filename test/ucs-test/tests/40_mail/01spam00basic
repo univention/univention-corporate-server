@@ -37,9 +37,9 @@ def main():
 				mail = 'spam%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
 					set={
-					'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-					'mailPrimaryAddress': mail,
-				}
+						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+						'mailPrimaryAddress': mail,
+					}
 				)
 
 				activate_spam_detection()

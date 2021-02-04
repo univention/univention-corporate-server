@@ -3,13 +3,13 @@
 ## bugs: [34445]
 ## exposure: safe
 
-import sys
-sys.path.insert(0, '.')
-
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
 
-from umc import ServiceModule
+import sys
+sys.path.insert(0, '.')
+
+from umc import ServiceModule  # noqa: E402
 
 
 class TestUMCServiceList(ServiceModule):

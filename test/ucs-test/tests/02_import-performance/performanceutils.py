@@ -1,3 +1,4 @@
+from __future__ import print_function
 import subprocess
 import time
 import re
@@ -7,9 +8,7 @@ from ucsschool.importer.mass_import import user_import
 
 import sqlite3
 
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
-import univention.testing.strings as uts
 
 import univention.uldap
 
@@ -62,8 +61,6 @@ def wait_for_s4connector():
 	c = conn.cursor()
 
 	static_count = 0
-	cache_S4_rejects = None
-	t_last_feedback = t_1 = t_0 = time.time()
 
 	highestCommittedUSN = -1
 	lastUSN = -1
@@ -84,15 +81,15 @@ def wait_for_s4connector():
 				highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
 				break
 
-		print highestCommittedUSN
+		print(highestCommittedUSN)
 
 		previous_lastUSN = lastUSN
 		try:
 			c.execute('select value from S4 where key=="lastUSN"')
 		except sqlite3.OperationalError as e:
 			static_count = 0
-			print 'Reset counter: sqlite3.OperationalError: %s' % e
-			print 'Counter: %d' % static_count
+			print('Reset counter: sqlite3.OperationalError: %s' % e)
+			print('Counter: %d' % static_count)
 			continue
 
 		conn.commit()
@@ -100,10 +97,10 @@ def wait_for_s4connector():
 
 		if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
 			static_count = 0
-			print 'Reset counter'
+			print('Reset counter')
 		else:
 			static_count = static_count + 1
-		print 'Counter: %d' % static_count
+		print('Counter: %d' % static_count)
 
 	conn.close()
 	return 0
@@ -158,7 +155,7 @@ def get_user_dn_list_new(CSV_IMPORT_FILE):
 	config['input']['filename'] = CSV_IMPORT_FILE
 	with open(os.path.expanduser('~/.import_shell_config'), 'wb') as fp:
 		json.dump(config, fp)
-	from ucsschool.importer.utils.shell import logger  # this will setup a complete import system configuration
+	from ucsschool.importer.utils.shell import logger  # this will setup a complete import system configuration  # noqa: F401
 	up = user_import.UserImport()
 	imported_users = up.read_input()
 	user_dns = list()
@@ -186,20 +183,20 @@ def create_test_user():
 
 
 def execute_timing(description, allowedTime, callback, *args):
-	print 'Starting %s' % description
+	print('Starting %s' % description)
 
 	startTime = _start_time()
 	result = callback(*args)
 	duration = _stop_time(startTime)
 
-	print 'INFO: %s took %ld seconds (allowed time: %ld seconds)' % (description, duration, allowedTime)
+	print('INFO: %s took %ld seconds (allowed time: %ld seconds)' % (description, duration, allowedTime))
 
 	if result != 0:
-		print 'Error: callback returned: %d' % result
+		print('Error: callback returned: %d' % result)
 		return False
 
 	if duration > allowedTime:
-		print 'ERROR: %s took too long' % description
+		print('ERROR: %s took too long' % description)
 		return False
 
 	return True
@@ -210,7 +207,7 @@ def count_ldap_users():
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
 	res = lo.search('(&(uid=*)(!(uid=*$))(objectClass=sambaSamAccount))', attr=['dn'])
-	print 'INFO: Found %d OpenLDAP users' % len(res)
+	print('INFO: Found %d OpenLDAP users' % len(res))
 
 	return len(res)
 
@@ -225,7 +222,7 @@ def count_samba4_users():
 		if line.startswith('dn: '):
 			count += 1
 
-	print 'INFO: Found %d Samba4 users' % count
+	print('INFO: Found %d Samba4 users' % count)
 
 	return count
 
@@ -233,12 +230,12 @@ def count_samba4_users():
 def count_users(needed):
 	users = count_ldap_users()
 	if users < needed:
-		print 'ERROR: Not all users were found in OpenLDAP'
+		print('ERROR: Not all users were found in OpenLDAP')
 		returnCode = False
 
 	users = count_samba4_users()
 	if users < needed:
-		print 'ERROR: Not all users were found in Samba4'
+		print('ERROR: Not all users were found in Samba4')
 		returnCode = False
 
 	return True

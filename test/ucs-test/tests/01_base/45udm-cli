@@ -51,8 +51,7 @@ def test_ldap_connection(ucr, user_dn, password):
 	if ucr.get('server/role').startswith('domaincontroller_'):
 		access = uldap.access(binddn=user_dn, bindpw=password)
 	else:
-		access = uldap.access(ucr.get('ldap/master'), base=ucr.get('ldap/base'),
-			binddn=user_dn, bindpw=password)
+		access = uldap.access(ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=user_dn, bindpw=password)
 	for (key, value) in access.get(user_dn, required=True).items():
 		print("{} = {}".format(key, value))
 

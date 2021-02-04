@@ -30,7 +30,7 @@ def main():
 			if (EXPECTED_ERROR_MSG in str(exc)):
 				is_test_failed = False
 		if is_test_failed:
-			utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mailAddress))
+			utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mail_address))
 
 
 if __name__ == '__main__':

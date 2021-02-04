@@ -152,7 +152,7 @@ try:
 	lo = univention.uldap.getMachineConnection()
 	try:
 		lo.search(base=container)
-	except:
+	except Exception:
 		fail()
 finally:
 	call_unjoin_script(unjoin_script_name)

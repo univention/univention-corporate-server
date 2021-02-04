@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create and remove shared folders with different settings of mail/dovecot/mailbox/delete
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server
@@ -28,18 +28,18 @@ class Bunch(object):
 
 
 def main():
-	with utils.AutomaticListenerRestart() as alr:
+	with utils.AutomaticListenerRestart():
 		with udm_test.UCSTestUDM() as udm:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
-				handler_set(['mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
+				handler_set([
+					'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
 					'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
 					'mail/dovecot/logging/mail_debug=yes'])
 				fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 				user_addr = random_email()
 				logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
-				with utils.FollowLogfile(logfiles=logfiles) as flf:
-					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log',
-						'reopen']) as acc2:
+				with utils.FollowLogfile(logfiles=logfiles):
+					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
 						user_dn, user_name = udm.create_user(
 							set={
 								'mailHomeServer': fqdn,
@@ -66,8 +66,7 @@ def main():
 							utils.wait_for_replication()
 
 							# create folder
-							dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress,
-								user_permission=['"%s" "%s"' % (user_addr, 'all')])
+							dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress, user_permission=['"%s" "%s"' % (user_addr, 'all')])
 							folder = Bunch(dn=dn, name=name, mail_address=address)
 
 							print(folder)
@@ -75,18 +74,15 @@ def main():
 							# check folder with mail address
 							path = get_dovecot_shared_folder_maildir(folder.name)
 							if not os.path.exists(path):
-								utils.fail('Test %d: maildir %r for shared folder does not exist! %r' % (i, path,
-									folder))
+								utils.fail('Test %d: maildir %r for shared folder does not exist! %r' % (i, path, folder))
 
 							udm.remove_object('mail/folder', dn=folder.dn)
 
 							# check folder removal
 							if os.path.exists(path) and flag_delete == 'yes':
-								utils.fail('Test %d: maildir %r for shared folder has not been removed! %r' % (i, path,
-									folder))
+								utils.fail('Test %d: maildir %r for shared folder has not been removed! %r' % (i, path, folder))
 							elif not os.path.exists(path) and flag_delete == 'no':
-								utils.fail('Test %d: maildir %r for shared folder has been removed! %r' % (i, path,
-									folder))
+								utils.fail('Test %d: maildir %r for shared folder has been removed! %r' % (i, path, folder))
 
 
 if __name__ == '__main__':

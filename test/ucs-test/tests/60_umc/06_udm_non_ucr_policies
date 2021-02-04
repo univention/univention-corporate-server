@@ -7,14 +7,16 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 from sys import exit
-import sys
-sys.path.insert(0, '.')
-from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
+
+import sys
+sys.path.insert(0, '.')
+from umc import UMCBase  # noqa: E402
 
 
 class TestUMCnonUCRpolicies(UMCBase):
@@ -88,8 +90,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		print("\nCreating a policy for the 'intermediate_test_container':\n")
 		self.intermediate_policy_dn = self.UDM.create_object(
 			'policies/pwhistory',
-			position="cn=policies," +
-			self.ldap_base,
+			position="cn=policies," + self.ldap_base,
 			name='umc_test_policy_intermediate',
 			**{
 				"length": "4",
@@ -129,8 +130,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		print("\nCreating a second test user with samba and without user policy applied inside the 'intermediate_test_container':\n")
 		self.test_user_2_dn = self.UDM.create_user(
 			position=self.intermediate_container_dn,
-			username='umc_test_user_' +
-			random_username()
+			username='umc_test_user_' + random_username()
 		)[0]
 
 	def check_single_and_multiple_policies(self):

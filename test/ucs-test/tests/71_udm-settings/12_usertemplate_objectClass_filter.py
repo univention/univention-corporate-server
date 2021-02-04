@@ -19,10 +19,12 @@ def udm():
 	with udm_test.UCSTestUDM() as udm:
 		yield udm
 
+
 @pytest.fixture(scope="module")
 def ucr():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		yield ucr
+
 
 def _create_and_verify_extended_attribute(udm, ucr):
 	properties = {
@@ -38,7 +40,7 @@ def _create_and_verify_extended_attribute(udm, ucr):
 		'longDescription': 'Mail Attribut',
 		'mayChange': '1',
 		'module': 'users/user',
-		'module': 'settings/usertemplate',
+		# 'module': 'settings/usertemplate',
 		'name': 'mail',
 		'objectClass': 'inetOrgPerson',
 		'overwritePosition': 'None',
@@ -49,13 +51,15 @@ def _create_and_verify_extended_attribute(udm, ucr):
 		'tabName': 'General',
 		'tabPosition': '11',
 		'valueRequired': '0'
-		}
+	}
 	extended_attribute = udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % (ucr.get('ldap/base')), **properties)
 	utils.verify_ldap_object(extended_attribute, should_exist=True)
+
 
 def _create_and_verify_usertemplate(udm):
 	template = udm.create_object('settings/usertemplate', name=uts.random_name(), mail='<username>@example.com')
 	utils.verify_ldap_object(template, {'mail': ['<username>@example.com'], 'objectClass': ['top', 'univentionUserTemplate', 'univentionObject']}, strict=True, should_exist=True)
+
 
 def test_usertemplate_filter(udm, ucr):
 	_create_and_verify_extended_attribute(udm, ucr)

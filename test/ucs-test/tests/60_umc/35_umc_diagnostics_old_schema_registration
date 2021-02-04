@@ -103,7 +103,7 @@ def test():
 		# cleanup
 		try:
 			ucs_unregister_ldap_extension(schema_name)
-		except Exception as exc:
+		except Exception:
 			print('couldnt unregister')
 			traceback.print_exc()
 		try:

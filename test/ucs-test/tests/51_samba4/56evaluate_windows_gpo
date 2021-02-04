@@ -430,11 +430,11 @@ def windows_remove_test_gpo(gpo_name, server=""):
 	try:
 		ret_code, stdout, stderr = Win.remove_gpo(gpo_name, server)
 		if ret_code != 0:
-			print ("The removal of the GPO on the Windows host returned "
+			print("The removal of the GPO on the Windows host returned "
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
 				"%s" % (ret_code, stdout, stderr))
 	except (univention.winexe.WinExeFailed, NameError) as exc:
-		print ("An Error occurred while removing GPO remotely: %r" % exc)
+		print("An Error occurred while removing GPO remotely: %r" % exc)
 
 
 if __name__ == '__main__':
@@ -506,7 +506,7 @@ if __name__ == '__main__':
 
 		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
-			"HKCU\Software\Policies\Microsoft\UCSTestKey",
+			r"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo",
 			"String")
@@ -514,7 +514,7 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		sysvol_sync()
 		sysvol_check_gpo_registry_value(gpo_name,
-			"HKCU\Software\Policies\Microsoft\UCSTestKey",
+			r"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo")
 
@@ -546,7 +546,7 @@ if __name__ == '__main__':
 
 		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
-			"HKLM\Software\Policies\Microsoft\UCSTestKey",
+			r"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar",
 			"String")
@@ -554,7 +554,7 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		sysvol_sync()
 		sysvol_check_gpo_registry_value(gpo_name,
-			"HKLM\Software\Policies\Microsoft\UCSTestKey",
+			r"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar")
 

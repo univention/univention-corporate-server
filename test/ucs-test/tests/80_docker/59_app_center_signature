@@ -7,9 +7,10 @@
 
 from __future__ import print_function
 import os
-from dockertest import *
+from dockertest import Appcenter
 from subprocess import call
 from univention.testing.utils import fail
+from univention.config_registry import handler_set, ConfigRegistry
 
 
 class SyncedAppcenter(Appcenter):
@@ -81,7 +82,8 @@ class SyncedAppcenter(Appcenter):
 		ucr = ConfigRegistry()
 		ucr.load()
 		f = '/var/www/meta-inf/%s' % self.vv
-		call('gunzip %(f)s/index.json.gz; echo "foo" >>%(f)s/index.json; gzip %(f)s/index.json' % {'f': f}, shell=True)  # this just so that all.tar gets newly synced. index.json.gz is now irrelevant except for docker image hashes
+		# this just so that all.tar gets newly synced. index.json.gz is now irrelevant except for docker image hashes
+		call('gunzip %(f)s/index.json.gz; echo "foo" >>%(f)s/index.json; gzip %(f)s/index.json' % {'f': f}, shell=True)
 		call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
 		call('zsyncmake -z -u %(server)s/meta-inf/%(vv)s/all.tar.gz %(f)s/all.tar -o %(f)s/all.tar.zsync' % {'server': ucr.get('repository/app_center/server'), 'vv': self.vv, 'f': f}, shell=True)
 		res = call('univention-app update', shell=True)
@@ -97,7 +99,7 @@ class SyncedAppcenter(Appcenter):
 		self.remove_from_cache(filename)
 		self.download('univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext))
 		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext), shell=True)
-		res = call('univention-app update', shell=True)
+		call('univention-app update', shell=True)
 		# Check only if the file was removed from the local cache
 		if self.file_exists_in_cache(filename):
 			fail('_test_modify_inst failed')

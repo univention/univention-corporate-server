@@ -50,8 +50,7 @@ def check_pfs_cipher():
 			print("\nCipher '%s' was found.\n" % possible_cipher)
 			return
 
-	utils.fail("None of the possible ciphers were found in the output "
-			   "from TLS client. Probably TLS/PFS does not work.")
+	utils.fail("None of the possible ciphers were found in the output from TLS client. Probably TLS/PFS does not work.")
 
 
 def run_openssl():
@@ -59,8 +58,7 @@ def run_openssl():
 	Runs the openssl s_client (TLS) and returns the output grep'ed for cipher.
 	"""
 	# reconnect used to avoid waiting for a timeout:
-	cmd = ('openssl', 's_client', '-starttls', 'smtp',
-		   '-crlf', '-connect', '127.0.0.1:25', '-reconnect')
+	cmd = ('openssl', 's_client', '-starttls', 'smtp', '-crlf', '-connect', '127.0.0.1:25', '-reconnect')
 
 	# run the openssl client:
 	proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
@@ -78,11 +76,9 @@ def run_openssl():
 	grep_stdout, stderr = proc.communicate(stdout)
 
 	if stderr:
-		print(("The following message(s) appeared in STDERR while grep'ing "
-			  "for 'cipher':\n", stderr))
+		print(("The following message(s) appeared in STDERR while grep'ing for 'cipher':\n", stderr))
 	if not grep_stdout:
-		utils.fail("No 'cipher' string was found in the output from "
-				   "openssl client. Probably TLS/PFS does not work.")
+		utils.fail("No 'cipher' string was found in the output from openssl client. Probably TLS/PFS does not work.")
 
 	return grep_stdout
 

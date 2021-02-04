@@ -29,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
 
 APPCENTER_FILE = "/var/cache/appcenter-uninstalled.txt"
@@ -45,8 +44,8 @@ def get_requested_apps():
 					ret.append(app)
 				else:
 					pass
-					#utils.fail('Error finding %s' % (line,))
+					# utils.fail('Error finding %s' % (line,))
 	except EnvironmentError:
 		pass
-		#utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
+		# utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
 	return ret

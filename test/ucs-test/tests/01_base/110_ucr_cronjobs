@@ -52,7 +52,6 @@ def main():
 	print('restart postfix')
 	subprocess.call(('systemctl', 'restart', 'postfix'))
 
-
 	# find next minute at least 30s from now
 	now = datetime.datetime.now()
 	for somemore in range(30, 80, 10):

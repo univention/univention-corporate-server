@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import sys
 import shutil
@@ -35,7 +37,7 @@ class UMCBase(object):
 			self.client = Client.get_test_connection()
 		except (HTTPError, ConnectionError) as exc:
 			print("An error while trying to authenticate to UMC: %r" % exc)
-			print "Waiting 5 seconds and making another attempt"
+			print("Waiting 5 seconds and making another attempt")
 			sleep(5)
 			self.client = Client.get_test_connection()
 		self.username = self.client.username
@@ -87,7 +89,7 @@ class UMCBase(object):
 		Supported types are: users, groups, policies, extended attributes,
 		networks and computers.
 		"""
-		print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
+		print("Deleting test object '%s' with a name: '%s'" % (obj_type, name))
 
 		if obj_type in ('users', 'users/user', 'users/ldap'):
 			obj_type = 'users'
@@ -185,7 +187,7 @@ class JoinModule(UMCBase):
 				utils.fail("No response on UMC 'join/running' request")
 			elif request_result is False:
 				return
-			print "Waiting 10 seconds before next poll request..."
+			print("Waiting 10 seconds before next poll request...")
 			sleep(10)
 		utils.fail("Failed to wait for join script(-s) to finish")
 
@@ -199,7 +201,7 @@ class JoinModule(UMCBase):
 				if not os.path.exists(dst):
 					utils.fail("The 'shutil' did not copy file '%s' to '%s'" % (src, dst))
 			else:
-				utils.fail("Failed to find the file at the provided " "path '%s'" % src)
+				utils.fail("Failed to find the file at the provided path '%s'" % src)
 		except (OSError, shutil.Error) as exc:
 			utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
 

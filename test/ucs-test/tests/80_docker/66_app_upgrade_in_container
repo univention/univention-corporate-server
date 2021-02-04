@@ -6,8 +6,8 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import *
-from univention.testing.utils import get_ldap_connection, fail
+from dockertest import Appcenter, App, get_app_name, get_latest_docker_appbox_image
+from univention.testing.utils import fail
 from univention.config_registry import ConfigRegistry
 import subprocess
 

@@ -19,7 +19,6 @@ from __future__ import print_function
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener, restart_listener
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 import univention.uldap as uldap
 from univention.config_registry import ConfigRegistry
 import os

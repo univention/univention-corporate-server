@@ -40,9 +40,9 @@ def main():
 				mail = 'virus%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
 					set={
-					'mailHomeServer': '%s.%s' % (host, domain),
-					'mailPrimaryAddress': mail,
-				}
+						'mailHomeServer': '%s.%s' % (host, domain),
+						'mailPrimaryAddress': mail,
+					}
 				)
 
 				token1 = str(time.time())
@@ -58,8 +58,7 @@ def main():
 				while TIMEOUT > 0:
 					print('Waiting up to %d seconds' % (TIMEOUT,))
 					TIMEOUT -= 1
-					if all([virus_detected_and_quarantined(token1, mail_address=mail),
-							virus_detected_and_quarantined(token2, mail_address=mail)]):
+					if all([virus_detected_and_quarantined(token1, mail_address=mail), virus_detected_and_quarantined(token2, mail_address=mail)]):
 						break
 					time.sleep(1)
 

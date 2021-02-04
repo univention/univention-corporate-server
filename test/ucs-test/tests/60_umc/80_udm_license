@@ -8,8 +8,6 @@
 
 from __future__ import print_function
 import sys
-sys.path.insert(0, '.')
-from umc import UDMModule
 
 from os import path
 from shutil import rmtree, copy as file_copy
@@ -24,6 +22,9 @@ import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 from univention.testing.license_client import TestLicenseClient, CredentialsMissing
+
+sys.path.insert(0, '.')
+from umc import UDMModule  # noqa: E402
 
 
 class TestUMCLicenseManagement(UDMModule):
@@ -325,8 +326,7 @@ class TestUMCLicenseManagement(UDMModule):
         Uploads a valid license, creates 10 computers and users with it
         """
         print("\nUploading a valid license 'ValidTest.license' for the test")
-        self.import_new_license(self.temp_license_folder +
-                                '/ValidTest.license')
+        self.import_new_license(self.temp_license_folder + '/ValidTest.license')
 
         print("\nAttempting to create 10 computers with a valid license")
         self.valid_license_limits_check('computer')
@@ -425,8 +425,7 @@ class TestUMCLicenseManagement(UDMModule):
         end_date -= 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
 
-        expired_license_file = (self.temp_license_folder +
-                                '/ExpiredTest.license')
+        expired_license_file = (self.temp_license_folder + '/ExpiredTest.license')
         try:
             self.LicenseClient.main(base_dn=self.ldap_base,
                                     end_date=end_date,

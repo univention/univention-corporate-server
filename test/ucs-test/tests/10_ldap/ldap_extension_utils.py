@@ -28,6 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_int
 import ldap
@@ -41,7 +43,7 @@ WAIT_FOR_LDAP_TIME = 30  # seconds
 
 
 def wait_for_ldap():
-	print "\n** Waiting for slapd"
+	print("\n** Waiting for slapd")
 	for count in range(WAIT_FOR_LDAP_TIME):
 		try:
 			pinfo = [proc.name() for proc in psutil.process_iter() if proc.name() == 'slapd' and proc.ppid() == 1]
@@ -49,11 +51,11 @@ def wait_for_ldap():
 			pass
 		else:
 			if pinfo:
-				print "(%s) process is running now.\n" % pinfo[0]
+				print("(%s) process is running now.\n" % pinfo[0])
 				break
 			else:
 				time.sleep(1)
-				print count
+				print(count)
 
 
 def get_package_name():
@@ -77,7 +79,7 @@ def get_schema_attribute_id():
 
 
 def call_join_script(join_script_name):
-	print 'call_join_script(%r)' % (join_script_name,)
+	print('call_join_script(%r)' % (join_script_name,))
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -87,7 +89,7 @@ def call_join_script(join_script_name):
 
 
 def call_unjoin_script(unjoin_script_name):
-	print 'call_unjoin_script(%r)' % (unjoin_script_name,)
+	print('call_unjoin_script(%r)' % (unjoin_script_name,))
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -139,6 +141,6 @@ def get_ldap_master_connection(user_dn):
 
 
 def set_container_description(user_dn, container):
-	print 'set_container_description(%r, %r)' % (user_dn, container)
+	print('set_container_description(%r, %r)' % (user_dn, container))
 	lo = get_ldap_master_connection(user_dn)
 	lo.modify(container, [('description', '', random_name())])

@@ -6,10 +6,9 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image
 from univention.testing.utils import fail, get_ldap_connection
 import os
-import subprocess
 
 
 def fail_if_file_exists(f):
@@ -51,7 +50,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 			app.uninstall()
 			app.remove()
 
-		#fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
+		# fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
 		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/test123' % app.app_name)
 		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/base.conf' % app.app_name)
 

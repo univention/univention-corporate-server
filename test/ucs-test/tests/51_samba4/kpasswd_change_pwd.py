@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import pexpect
 import sys
 import univention.config_registry
@@ -34,7 +35,7 @@ if __name__ == "__main__":
 	kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
 	status = kpasswd.expect([pexpect.TIMEOUT, "%s@%s's Password: " % (authusername, ucr['kerberos/realm']), ])
 	if status == 0:  # timeout
-		print 'kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,)
+		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,))
 		sys.exit(120)
 
 	assert (status == 1), "password prompt"
@@ -43,10 +44,10 @@ if __name__ == "__main__":
 
 	status = kpasswd.expect([pexpect.TIMEOUT, 'New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), "kpasswd: krb5_get_init_creds: Preauthentication failed", ])
 	if status == 0:  # timeout
-		print 'kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,)
+		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,))
 		sys.exit(120)
 	elif status == 2:  # timeout
-		print 'Preauthentication failed!'
+		print('Preauthentication failed!')
 		sys.exit(120)
 	kpasswd.sendline(opts.newpassword)
 	status = kpasswd.expect([pexpect.TIMEOUT, 'Verify password - New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), ])
@@ -55,4 +56,4 @@ if __name__ == "__main__":
 	if status != 0:
 		sys.exit(1)
 	else:
-		print 'Password changed for %s to %s' % (opts.username, opts.newpassword)
+		print('Password changed for %s to %s' % (opts.username, opts.newpassword))

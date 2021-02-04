@@ -148,7 +148,7 @@ try:
 
 	print('OK - finished')
 	sys.exit(0)
-except Exception as e:
+except Exception:
 	print(traceback.format_exc())
 
 # wait until finished

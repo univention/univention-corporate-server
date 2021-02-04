@@ -77,9 +77,7 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
 	"""
 	Sets the lockout settings to a given values.
 	"""
-	print("\nSetting account lockout settings to the following values "
-		"(lockout duration = %s min; attempts before lockout = %s):"
-		% (lock_duration, lock_threshold))
+	print("\nSetting account lockout settings to the following values (lockout duration = %s min; attempts before lockout = %s):" % (lock_duration, lock_threshold))
 
 	cmd = (
 		"samba-tool", "domain", "passwordsettings", "set",
@@ -91,9 +89,7 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
-		utils.fail("An error/warning occurred while trying to set/reset "
-			"account lockout settings via samba-tool command '%s':\n%r"
-			% (" ".join(cmd), stderr))
+		utils.fail("An error/warning occurred while trying to set/reset account lockout settings via samba-tool command '%s':\n%r" % (" ".join(cmd), stderr))
 	if stdout:
 		print(stdout)
 
@@ -110,17 +106,13 @@ def create_delete_test_user(should_exist):
 		print("\nDeleting a test user with a username '%s'" % test_username)
 		cmd = ("samba-tool", "user", 'delete', test_username)
 	else:
-		utils.fail("The given 'should_exist'='%s' value is not supported. Pass"
-			" 'True' to create a user or 'False' to delete."
-			% should_exist)
+		utils.fail("The given 'should_exist'='%s' value is not supported. Pass 'True' to create a user or 'False' to delete." % should_exist)
 
 	cmd += ("-U", admin_username + '%' + admin_password, "--debuglevel=1")
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
-		utils.fail("An error/warning occurred while trying to create or remove "
-			"a user with a username '%s' via command: %s'."
-			"\nSTDERR: '%s'." % (test_username, " ".join(cmd), stderr))
+		utils.fail("An error/warning occurred while trying to create or remove a user with a username '%s' via command: %s'.\nSTDERR: '%s'." % (test_username, " ".join(cmd), stderr))
 	if stdout:
 		print(stdout)
 
@@ -133,14 +125,10 @@ def check_no_errors_present_in_output(stdout, stderr):
 	complete_output = (stdout + stderr)
 
 	if 'NT_STATUS_ACCOUNT_LOCKED_OUT' in complete_output:
-		utils.fail("\nThe 'NT_STATUS_ACCOUNT_LOCKED_OUT' error was found in "
-			"the output.\nSTDOUT: '%s'. STDERR: '%s'."
-			% (stdout, stderr))
+		utils.fail("\nThe 'NT_STATUS_ACCOUNT_LOCKED_OUT' error was found in the output.\nSTDOUT: '%s'. STDERR: '%s'." % (stdout, stderr))
 
 	elif 'NT_STATUS_LOGON_FAILURE' in complete_output:
-		utils.fail("\nThe 'NT_STATUS_LOGON_FAILURE' error was found in "
-			"the output.\nSTDOUT: '%s'. STDERR: '%s'."
-			% (stdout, stderr))
+		utils.fail("\nThe 'NT_STATUS_LOGON_FAILURE' error was found in the output.\nSTDOUT: '%s'. STDERR: '%s'." % (stdout, stderr))
 
 	elif 'NT_STATUS_OK' in complete_output:
 		# the (only one possible) success status was found
@@ -158,10 +146,7 @@ def check_error_present_in_output(stdout, stderr):
 	the given stdout or stderr.
 	"""
 	if 'NT_STATUS_ACCOUNT_LOCKED_OUT' not in (stdout + stderr):
-		utils.fail("The 'NT_STATUS_ACCOUNT_LOCKED_OUT' error could "
-			"not be found in the STDOUT: '%s' or STDERR: '%s'. "
-			"The account lockout may not work."
-			% (stdout, stderr))
+		utils.fail("The 'NT_STATUS_ACCOUNT_LOCKED_OUT' error could not be found in the STDOUT: '%s' or STDERR: '%s'. The account lockout may not work." % (stdout, stderr))
 
 
 if __name__ == '__main__':
@@ -173,8 +158,7 @@ if __name__ == '__main__':
 	hostname = UCR.get('ldap/server/name')
 
 	if not all((admin_username, admin_password, hostname)):
-		print("Failed to obtain Administrator credentials or a hostname "
-			"for the test from UCR. Skipping the test.")
+		print("Failed to obtain Administrator credentials or a hostname for the test from UCR. Skipping the test.")
 		exit(TestCodes.REASON_INSTALL)
 
 	# extract the 'Administrator' username:
@@ -191,35 +175,27 @@ if __name__ == '__main__':
 		sleep(30)  # wait a bit
 
 		# try to authenticate the test user with a valid password
-		print("\nTrying to authenticate '%s' user with a correct password '%s'"
-			% (test_username, TEST_USER_PASS))
+		print("\nTrying to authenticate '%s' user with a correct password '%s'" % (test_username, TEST_USER_PASS))
 		stdout, stderr = try_to_authenticate(TEST_USER_PASS)
 		check_no_errors_present_in_output(stdout, stderr)
 
 		# try to lock the test user out with a random password
-		print("\nTrying to lock the '%s' user out attempting to authenticate "
-			"with a random password %d times:"
-			% (test_username, LOCKOUT_THRESHOLD + 1))
+		print("\nTrying to lock the '%s' user out attempting to authenticate with a random password %d times:" % (test_username, LOCKOUT_THRESHOLD + 1))
 		for attempt in range(LOCKOUT_THRESHOLD + 1):
 			stdout, stderr = try_to_authenticate("Foo" + random_username() + "123")
 		check_error_present_in_output(stdout, stderr)
 
 		# check that user is locked and that even a correct password won't work
-		print("\nTrying to authenticate '%s' user with a correct password '%s'"
-			" on a locked out account:" % (test_username, TEST_USER_PASS))
+		print("\nTrying to authenticate '%s' user with a correct password '%s' on a locked out account:" % (test_username, TEST_USER_PASS))
 		stdout, stderr = try_to_authenticate(TEST_USER_PASS)
 		check_error_present_in_output(stdout, stderr)
 
 		# wait for unlocking
-		print("\nWaiting for '%s' user account to be unlocked after the "
-			"lock out timeout (%d min) expires:"
-			% (test_username, LOCKOUT_DURATION))
+		print("\nWaiting for '%s' user account to be unlocked after the lock out timeout (%d min) expires:" % (test_username, LOCKOUT_DURATION))
 		sleep(LOCKOUT_DURATION * 60 + 30)  # convert to seconds + some extra
 
 		# try to authenticate again (should be no errors)
-		print("\nTrying to authenticate '%s' user with a correct password '%s'"
-			" after the lock time has expired"
-			% (test_username, TEST_USER_PASS))
+		print("\nTrying to authenticate '%s' user with a correct password '%s' after the lock time has expired" % (test_username, TEST_USER_PASS))
 		stdout, stderr = try_to_authenticate(TEST_USER_PASS)
 		check_no_errors_present_in_output(stdout, stderr)
 	finally:

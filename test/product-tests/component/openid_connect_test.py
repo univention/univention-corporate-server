@@ -36,7 +36,6 @@ import time
 import sys
 import random
 import string
-import zipfile
 
 
 # Good to know when further developing these tests
@@ -60,7 +59,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 
 
 # helper functions -------------------------------------------------------------
@@ -238,6 +236,7 @@ def test_owncloud_with_portal_login(chrome, users):
 		assert "LOGOUT" \
 			== chrome.driver.find_element_by_id('umcLoginButton_label').text
 
+
 def test_owncloud_with_openid_login(chrome, users):
 	"""
 	what this test does:
@@ -397,7 +396,8 @@ try:
 	ucs_test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
 	test_lib = importlib.import_module(ucs_test_lib)
 except ImportError:
-	print("Could not import `{}`. Either try to set $UCS_TEST_LIB to the path "\
+	print(
+		"Could not import `{}`. Either try to set $UCS_TEST_LIB to the path "
 		"of `apptest` or copy apptest into `PYTHONPATH`.".format(test_lib))
 	sys.exit(1)
 

@@ -23,7 +23,6 @@ from __future__ import print_function
 import pexpect
 import tempfile
 import sys
-import atexit
 import univention.config_registry
 import random
 import subprocess
@@ -40,7 +39,7 @@ def get_unique_username():
 		# this equivalent to
 		# univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
 		udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
-		sed = subprocess.Popen(["sed", "-rne", "s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
+		sed = subprocess.Popen(["sed", "-rne", r"s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
 		stdout, stderr = sed.communicate()
 		for username in stdout:
 			if randomname == username.strip():  # collision
@@ -61,7 +60,7 @@ def create_ssh_session(username, password):
 		raise Exception('ssh behaved unexpectedly! Output:\n\t%r' % (shell.before,))
 	assert status == 1, "password prompt"
 	shell.sendline(password)
-	status = shell.expect([pexpect.TIMEOUT, 'Permission denied', ':~\$'])
+	status = shell.expect([pexpect.TIMEOUT, 'Permission denied', r':~\$'])
 	if status == 0:  # timeout
 		raise Exception('No shell prompt found! Output:\n\t%r' % (shell.before,))
 	if status == 1:  # permission denied
@@ -74,14 +73,14 @@ if __name__ == "__main__":
 	with udm_test.UCSTestUDM() as udm:
 		password = '%010x' % (random.getrandbits(40),)
 		(user_dn, username) = udm.create_user(
-									password=password,
-									primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
-									wait_for=True
-									)
+			password=password,
+			primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
+			wait_for=True
+		)
 
 		try:
 			shell = create_ssh_session(username, password)
-		except Exception, e:
+		except Exception as e:
 			print(e)  # print error
 			sys.exit(120)
 
@@ -102,12 +101,12 @@ if __name__ == "__main__":
 		try:
 			create_ssh_session(username, password)
 			accepted_old_pwd = True
-		except Exception, e:
+		except Exception:
 			accepted_old_pwd = False
 		try:
 			create_ssh_session(username, newpassword)
 			accepted_new_pwd = True
-		except Exception, e:
+		except Exception:
 			accepted_new_pwd = False
 		if accepted_old_pwd == accepted_new_pwd:
 			print('ERROR: Both passwords were', end=' ')

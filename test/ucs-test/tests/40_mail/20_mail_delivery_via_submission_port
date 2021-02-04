@@ -18,10 +18,11 @@ def main():
 		with udm_test.UCSTestUDM() as udm:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
-				univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
+				univention.config_registry.handler_set([
+					'mail/dovecot/logging/auth_debug=yes',
 					'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
 					'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
-				with utils.FollowLogfile(logfiles=['/var/log/auth.log', '/var/log/mail.log']) as flf:
+				with utils.FollowLogfile(logfiles=['/var/log/auth.log', '/var/log/mail.log']):
 					recipient_email = '%s@%s' % (uts.random_name(), domain)
 					password = 'univention'
 					userdn, username = udm.create_user(

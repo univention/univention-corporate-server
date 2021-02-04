@@ -83,8 +83,7 @@ class CheckLogFiles(object):
         if (definition.ignore_extra(previous_line) and definition.ignore_extra(pre_previous_line)):
             return True
 
-    def check_line(self, line, previous_line, pre_previous_line,
-                         definition, result, msg):
+    def check_line(self, line, previous_line, pre_previous_line, definition, result, msg):
         """
         Checks a single 'line' against patterns from 'definition' and
         adds message 'msg' to list 'result' if pattern is in 'wanted'.

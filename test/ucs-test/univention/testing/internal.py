@@ -168,7 +168,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 	>>> UCSVersion(1) > UCSVersion(1)
 	False
 	"""
-	RE_VERSION = re.compile("^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
+	RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 	_CONVERTER = {
 		None: lambda _: None,
 		'': lambda _: None,

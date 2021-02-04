@@ -5,10 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_app_name
-from univention.testing.utils import is_port_open
-import pytest
-import os
+from dockertest import Appcenter, App, get_app_name
 import subprocess
 import ruamel.yaml as yaml
 

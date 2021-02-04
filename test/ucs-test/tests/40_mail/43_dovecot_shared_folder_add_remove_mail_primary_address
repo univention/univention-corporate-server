@@ -27,7 +27,7 @@ class Bunch(object):
 
 
 def main():
-	with utils.AutomaticListenerRestart() as alr:
+	with utils.AutomaticListenerRestart():
 		with udm_test.UCSTestUDM() as udm:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))

@@ -36,6 +36,7 @@ import pwd
 import subprocess
 import sys
 
+
 class MailSinkGuard(object):
 	"""
 	This class is a simple context manager that stops all attached mail sinks

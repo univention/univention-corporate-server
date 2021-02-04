@@ -4,6 +4,8 @@
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
+from __future__ import print_function
+
 import os
 from subprocess import call
 import time
@@ -29,7 +31,7 @@ class SimpleSquid(object):
 
 	def restart(self):
 		"""Trying to restart"""
-		print 'Restarting squid'
+		print('Restarting squid')
 		return call([self.path, "restart"])
 
 	def reconfigure(self):

@@ -62,8 +62,7 @@ def check_user_in_groups():
 
     for group in test_groups:
         if test_username not in get_members_in_group(group):
-            print ("\nFAIL: the '%s' user is not a member of the '%s' group.\n"
-                   % (test_username, group))
+            print("\nFAIL: the '%s' user is not a member of the '%s' group.\n" % (test_username, group))
             increase_errors_counter()
 
 
@@ -143,7 +142,7 @@ def get_members_in_group(group_name):
 
     stdout = stdout.strip()
     if not stdout:
-        print ("\nNo stdout from 'getent' for a '%s' group." % group_name)
+        print("\nNo stdout from 'getent' for a '%s' group." % group_name)
         return list()
 
     # remove the group name, password, gid and separate members by commas:

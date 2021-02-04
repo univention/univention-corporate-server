@@ -79,6 +79,7 @@ def _print_test_header(header):
 def _give_systemd_some_time():
 	sleep(5)
 
+
 old_retry_count = ucr.get('ldap/client/retry/count')
 
 _set_retry_count(10)

@@ -20,7 +20,8 @@ import pytest
 
 from univention.testing.udm import UCSTestUDM
 import univention.testing.connector_common as tcommon
-from univention.testing.connector_common import (NormalUser, create_udm_user,
+from univention.testing.connector_common import (
+	NormalUser, create_udm_user,
 	delete_udm_user, create_con_user, delete_con_user)
 
 import s4connector
@@ -63,8 +64,7 @@ def random_number():
 
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
@@ -81,8 +81,7 @@ def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 		print("\nModifying UDM user: {}={}\n".format(ucs_attribute, all_values))
 		udm.modify_object('users/user', dn=udm_user_dn, set={ucs_attribute: all_values})
 		s4connector.wait_for_sync()
-		s4.verify_object(s4_user_dn,
-			{con_attribute: primary_value, con_other_attribute: secondary_values})
+		s4.verify_object(s4_user_dn, {con_attribute: primary_value, con_other_attribute: secondary_values})
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: all_values})
 
 		# If we delete the first `phone` value via UDM, we want to duplicate
@@ -91,8 +90,7 @@ def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 		print("\nModifying UDM user: {}={}\n".format(ucs_attribute, secondary_values))
 		udm.modify_object('users/user', dn=udm_user_dn, set={ucs_attribute: secondary_values})
 		s4connector.wait_for_sync()
-		s4.verify_object(s4_user_dn,
-			{con_attribute: new_primary, con_other_attribute: secondary_values})
+		s4.verify_object(s4_user_dn, {con_attribute: new_primary, con_other_attribute: secondary_values})
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: secondary_values})
 
 		# If we delete a `phone` value via UDM that is duplicated in AD, we want
@@ -100,8 +98,7 @@ def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 		print("\nModifying UDM user: {}={}\n".format(ucs_attribute, next_primary))
 		udm.modify_object('users/user', dn=udm_user_dn, set={ucs_attribute: next_primary})
 		s4connector.wait_for_sync()
-		s4.verify_object(s4_user_dn,
-			{con_attribute: next_primary, con_other_attribute: next_primary})
+		s4.verify_object(s4_user_dn, {con_attribute: next_primary, con_other_attribute: next_primary})
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: next_primary})
 
 		# Setting a completely new `phone` value via UDM, this must be synced
@@ -126,8 +123,7 @@ def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
@@ -137,18 +133,14 @@ def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 
 	with connector_setup(sync_mode) as s4:
 		# A single `telephoneNumber` must be synced to `phone` in UDM.
-		(basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4,
-			udm_user, s4connector.wait_for_sync)
+		(basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
 		# Additional values in `otherTelephone` must be appended to `phone`.
-		print("\nModifying S4 user: {}={}, {}={}\n".format(con_attribute,
-			primary_value, con_other_attribute, secondary_values))
-		s4.set_attributes(s4_user_dn,
-			**{con_attribute: primary_value, con_other_attribute: secondary_values})
+		print("\nModifying S4 user: {}={}, {}={}\n".format(con_attribute, primary_value, con_other_attribute, secondary_values))
+		s4.set_attributes(s4_user_dn, **{con_attribute: primary_value, con_other_attribute: secondary_values})
 		s4connector.wait_for_sync()
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: all_values})
-		s4.verify_object(s4_user_dn,
-			{con_attribute: primary_value, con_other_attribute: secondary_values})
+		s4.verify_object(s4_user_dn, {con_attribute: primary_value, con_other_attribute: secondary_values})
 
 		if sync_mode == "sync":  # otherwise the connector can't write into AD
 			# If we delete the value of `telephoneNumber` from AD, we expect to get
@@ -159,8 +151,7 @@ def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 			s4.set_attributes(s4_user_dn, **{con_attribute: []})
 			s4connector.wait_for_sync()
 			tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: secondary_values})
-			s4.verify_object(s4_user_dn,
-				{con_attribute: new_primary, con_other_attribute: secondary_values})
+			s4.verify_object(s4_user_dn, {con_attribute: new_primary, con_other_attribute: secondary_values})
 
 			# Deleting the duplicate from `otherTelephone` must retain the value of
 			# `telephoneNumber` and `phone` in UDM.
@@ -168,8 +159,7 @@ def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 			s4.set_attributes(s4_user_dn, **{con_other_attribute: []})
 			s4connector.wait_for_sync()
 			tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: new_primary})
-			s4.verify_object(s4_user_dn,
-				{con_attribute: new_primary, con_other_attribute: []})
+			s4.verify_object(s4_user_dn, {con_attribute: new_primary, con_other_attribute: []})
 
 		# Setting a new `telephoneNumber` and no `otherTelephone` in AD must
 		# result in a single new value in `phone`.
@@ -178,8 +168,7 @@ def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 		s4.set_attributes(s4_user_dn, **{con_attribute: new_phone_who_dis, con_other_attribute: []})
 		s4connector.wait_for_sync()
 		tcommon.verify_udm_object("users/user", udm_user_dn, {ucs_attribute: new_phone_who_dis})
-		s4.verify_object(s4_user_dn,
-			{con_attribute: new_phone_who_dis, con_other_attribute: []})
+		s4.verify_object(s4_user_dn, {con_attribute: new_phone_who_dis, con_other_attribute: []})
 
 		# Setting no `telephoneNumber` and no `otherTelephone` in AD must
 		# result in no value in `phone`.

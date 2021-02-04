@@ -94,23 +94,14 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
 	parser = OptionParser()
-	parser.add_option('-p', '--port', action='store', dest='port', type='int',
-			default=PORT, help='TCP port number')
-	parser.add_option('-a', '--authorization', action='store_true',
-			dest='authorization', default=False, help='Require authorization')
-	parser.add_option('-u', '--username', action='store', dest='username',
-			default='username', help='User name for HTTP Proxy authorization, unquoted')
-	parser.add_option('-w', '--password', action='store', dest='password',
-			default='password', help='Password for HTTP Proxy authorization, unquoted')
-	parser.add_option('-r', '--realm', action='store', dest='realm',
-			default='realm', help='Realm for HTTP Proxy authorization')
-	parser.add_option('-t', '--translate', action='store', dest='translate',
-			metavar='HOSTNAME',
-			help='Translate requests for this host name to localhost')
-	parser.add_option('-f', '--fork', action='store_true',
-			dest='fork', default=False, help='Fork daemon process')
-	parser.add_option('-v', '--verbose', action='store_true',
-			dest='verbose', default=False, help='Output verbose informations')
+	parser.add_option('-p', '--port', action='store', dest='port', type='int', default=PORT, help='TCP port number')
+	parser.add_option('-a', '--authorization', action='store_true', dest='authorization', default=False, help='Require authorization')
+	parser.add_option('-u', '--username', action='store', dest='username', default='username', help='User name for HTTP Proxy authorization, unquoted')
+	parser.add_option('-w', '--password', action='store', dest='password', default='password', help='Password for HTTP Proxy authorization, unquoted')
+	parser.add_option('-r', '--realm', action='store', dest='realm', default='realm', help='Realm for HTTP Proxy authorization')
+	parser.add_option('-t', '--translate', action='store', dest='translate', metavar='HOSTNAME', help='Translate requests for this host name to localhost')
+	parser.add_option('-f', '--fork', action='store_true', dest='fork', default=False, help='Fork daemon process')
+	parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False, help='Output verbose informations')
 	(options, arguments) = parser.parse_args()
 
 	httpd = BaseHTTPServer.HTTPServer(('', int(options.port)), Proxy)

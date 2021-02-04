@@ -106,5 +106,5 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 		for dn in dns:
 			try:
 				lo.delete(dn)
-			except:
+			except Exception:
 				print(traceback.format_exc())
