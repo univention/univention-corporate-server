@@ -401,7 +401,7 @@ class property:
 			try:
 				self.syntax.parse(default)
 				return True
-			except:
+			except Exception:
 				return False
 		defaults = self.default(object)
 		if isinstance(defaults, list):

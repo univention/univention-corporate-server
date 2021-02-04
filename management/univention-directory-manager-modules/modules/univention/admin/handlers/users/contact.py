@@ -419,7 +419,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
 			self._move_in_subordinates(olddn)
 			self._ldap_post_move(olddn)
-		except:
+		except BaseException:
 			# move back
 			ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
 			self.lo.rename(self.dn, olddn)

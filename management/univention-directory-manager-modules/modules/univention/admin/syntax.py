@@ -797,11 +797,11 @@ class Base64GzipText(TextArea):
 	def parse(self, text):
 		try:
 			gziped_data = base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
 			zlib.decompress(gziped_data)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Value must be gzip compressed and Base64 encoded: %s') % str(text))
 		return text
 
@@ -833,11 +833,11 @@ class Base64Bzip2Text(TextArea):
 	def parse(self, text):
 		try:
 			compressed_data = base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
 			bz2.decompress(compressed_data)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % str(text))
 		return text
 
@@ -862,7 +862,7 @@ class Base64Upload(Upload):
 	def parse(self, text):
 		try:
 			base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		else:
 			return text
@@ -885,7 +885,7 @@ class Base64BaseUpload(Base64Upload):
 	def parse(self, text):
 		try:
 			base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		else:
 			return text
@@ -990,11 +990,11 @@ class Base64Bzip2XML(TextArea):
 	def parse(self, text):
 		try:
 			compressed_data = base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % (text,))
 		try:
 			data = bz2.decompress(compressed_data)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % (text,))
 		if get_mime_type(data) not in ('application/xml', 'text/xml'):
 			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded XML data: %s') % (text,))
@@ -1021,7 +1021,7 @@ class Base64UMCIcon(TextArea):
 	def parse(self, text):
 		try:
 			data = base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		image_mime_type_of_buffer(data)  # exact return value irrelevant, only exceptions matter at this point
 		return text
@@ -1051,7 +1051,7 @@ class GNUMessageCatalog(TextArea):
 	def parse(self, text):
 		try:
 			data = base64.b64decode(text)
-		except:
+		except Exception:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		if not get_mime_description(data).startswith('GNU message catalog'):
 			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded GNU message catalog (.mo) data: %s') % str(text))
@@ -4987,7 +4987,7 @@ class LDAP_Search(select):
 		try:
 			filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax])
 			dn, attrs = lo.search(filter=filter)[0]
-		except:
+		except Exception:
 			return
 
 		if dn:

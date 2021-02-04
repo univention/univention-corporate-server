@@ -107,7 +107,7 @@ for computer in computers:
 				print("Multiple DNSZones for Host %s:" % dn)
 				for dns_zone in computer_zones[computer]:
 					print("DNSZone: %s" % dns_zone.decode('UTF-8'))
-	except:
+	except Exception:
 		pass  # no zone for host - nothing to do
 
 if options.auto_add:

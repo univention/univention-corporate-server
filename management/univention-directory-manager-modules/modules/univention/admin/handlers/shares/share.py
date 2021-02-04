@@ -637,7 +637,7 @@ class object(univention.admin.handlers.simpleLdap):
 				#   If you change printablename here you probably want to change
 				#   nfsShare.label, too.
 				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
-			except:
+			except Exception:
 				pass
 
 		self.save()

@@ -398,7 +398,7 @@ def update_extended_attributes(lo, module, position):
 		# value may change
 		try:
 			mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0])
-		except:
+		except ValueError:
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
 			mayChange = 0
 
@@ -413,7 +413,7 @@ def update_extended_attributes(lo, module, position):
 		# value not available for searching
 		try:
 			doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0])
-		except:
+		except ValueError:
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
 			doNotSearch = 0
 

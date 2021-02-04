@@ -78,7 +78,7 @@ def lock(userdn, lock_timestamp):
 
 	try:
 		lo, pos = univention.admin.uldap.getAdminConnection()
-	except:
+	except Exception:
 		lo, pos = univention.admin.uldap.getMachineConnection()
 
 	module = univention.admin.modules.get('users/user')

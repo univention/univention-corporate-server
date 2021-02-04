@@ -318,20 +318,20 @@ class object(univention.admin.handlers.simpleLdap):
 		if subelements:
 			try:
 				self.lo.add(tmpdn, al)
-			except:
+			except Exception:
 				# real errors will be caught later
 				pass
 			try:
 				moved = dict(self.move_subelements(olddn, tmpdn, subelements, ignore_license))
 				subelements = [(moved[subdn], subattrs) for (subdn, subattrs) in subelements]
-			except:
+			except Exception:
 				# subelements couldn't be moved to temporary position
 				# subelements were already moved back to self
 				# stop moving and reraise
 				raise
 		try:
 			dn = super(object, self)._move(newdn, modify_childs, ignore_license)
-		except:
+		except Exception:
 			# self couldn't be moved
 			# move back subelements and reraise
 			self.move_subelements(tmpdn, olddn, subelements, ignore_license)
@@ -340,7 +340,7 @@ class object(univention.admin.handlers.simpleLdap):
 			try:
 				moved = dict(self.move_subelements(tmpdn, newdn, subelements, ignore_license))
 				subelements = [(moved[subdn], subattrs) for (subdn, subattrs) in subelements]
-			except:
+			except Exception:
 				# subelements couldn't be moved to self
 				# subelements were already moved back to temporary position
 				# move back self, move back subelements to self and reraise

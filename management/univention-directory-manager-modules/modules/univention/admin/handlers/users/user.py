@@ -1289,9 +1289,9 @@ class object(univention.admin.handlers.simpleLdap):
 						primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
 						try:
 							primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0].decode('UTF-8')
-						except:
+						except Exception:
 							primaryGroup = None
-					except:
+					except Exception:
 						primaryGroup = None
 
 					ud.debug(ud.ADMIN, ud.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)

@@ -546,7 +546,7 @@ class simpleLdap(object):
 			self.ready()
 
 			dn = self._create(response=response, serverctrls=serverctrls)
-		except:
+		except Exception:
 			self._safe_cancel()
 			raise
 
@@ -639,7 +639,7 @@ class simpleLdap(object):
 			self.ready()
 
 			dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
-		except:
+		except Exception:
 			self._safe_cancel()
 			raise
 
@@ -836,7 +836,7 @@ class simpleLdap(object):
 					subobject._move(subnewdn)
 					moved.append((subolddn, subnewdn))
 					return moved
-			except:
+			except Exception:
 				ud.debug(ud.ADMIN, ud.ERROR, 'move: subtree move failed, try to move back')
 				for subolddn, subnewdn in moved:
 					submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
@@ -1243,20 +1243,20 @@ class simpleLdap(object):
 			self.lo.add(self.dn, al, serverctrls=serverctrls, response=response)
 			self._exists = True
 			self._ldap_post_create()
-		except:
+		except Exception:
 			# ensure that there is no lock left
 			exc = sys.exc_info()
 			ud.debug(ud.ADMIN, ud.PROCESS, "Creating %r failed: %r" % (self.dn, exc[1]))
 			try:
 				self.cancel()
-			except:
+			except Exception:
 				ud.debug(ud.ADMIN, ud.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
 			try:
 				if self._exists:  # add succeeded but _ldap_post_create failed!
 					obj = univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, self.position, self.dn)
 					obj.open()
 					obj.remove()
-			except:
+			except Exception:
 				ud.debug(ud.ADMIN, ud.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
 			six.reraise(exc[0], exc[1], exc[2])
 
@@ -1477,7 +1477,7 @@ class simpleLdap(object):
 			self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
 			self._move_in_subordinates(olddn)
 			self._ldap_post_move(olddn)
-		except:
+		except Exception:
 			# move back
 			ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
 			self.lo.rename(self.dn, olddn)
@@ -1566,7 +1566,7 @@ class simpleLdap(object):
 				prefix = univention.admin.modules.policyPositionDnPrefix(policy_module)
 				self.lo.searchDn(base=u"%s,%s" % (prefix, policy_path), scope='base')
 				policy_position.setDn(u"%s,%s" % (prefix, policy_path))
-			except:
+			except Exception:
 				policy_position.setDn(policy_path)
 
 		for dn in self.policies:
@@ -2705,7 +2705,7 @@ class simpleComputer(simpleLdap):
 						try:
 							dn = self.lo.parentDn(dn)
 							self.__modify_dhcp_object(dn, mac, ip=single_ip)
-						except:
+						except Exception:
 							pass
 				else:
 					# remove the dns objects
