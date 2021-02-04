@@ -46,6 +46,7 @@ from __future__ import print_function
 
 import copy
 import univention.config_registry
+from univention.config_registry import ConfigRegistry
 
 
 class UCSTestConfigRegistry(ConfigRegistry):
