@@ -1289,6 +1289,35 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+<section id="domain:password_hashes">
+	<title>Passwort-Hashes im Verzeichnisdienst</title>
+	<para>
+		Passwort-Hashes von Benutzern werden u.a. im Attribut <property>userPassword</property> im Verzeichnisdienst gespeichert.
+		Für die Generierung der Passwort-Hashes wird auf die <function>crypt</function> Bibliotheksfunktion zurückgegriffen. Die eigentliche
+		Hash-Funktion kann über die &ucsUCRV; <envar>password/hashing/method</envar> definiert werden,
+		standardmäßig wird <function>SHA-512</function> verwendet.
+	</para>
+	<para>
+		Alternativ dazu bietet &ucsUCS; ab <u:erratum release="4.4-7">887</u:erratum> die Möglichkeit <function>bcrypt</function>
+		als Hash-Funktion für Benutzerkonten zu verwenden. Dafür muss zunächst auf allen LDAP-Servern die &ucsUCRV;
+		<envar>ldap/pw-bcrypt=true</envar> gesetzt werden um das nötige Modul für OpenLDAP zu aktivieren.
+		Andernfalls ist eine Anmeldung am LDAP-Server mit einem <function>bcrypt</function> Hash nicht möglich.
+		Damit beim Ändern von Passwörtern nun <function>bcrypt</function> Hashes generiert werden,
+		muss ebenfalls auf allen Servern die &ucsUCRV; <envar>password/hashing/bcrypt=true</envar> gesetzt werden.
+	</para>
+	<para>
+		Zusätzlich können der <foreignphrase>bcrypt Cost Factor</foreignphrase> und die <function>bcrypt</function>
+		Variante über die &ucsUCRV;n <envar>password/hashing/bcrypt/cost_factor</envar> (<literal>12</literal>) und
+		<envar>password/hashing/bcrypt/prefix</envar> (<literal>2b</literal>) angepasst werden.
+	</para>
+	<caution>
+		<para>
+			<function>bcrypt</function> ist auf maximal 72 Zeichen begrenzt. Für die Generierung der Hashes werden also nur
+			die ersten 72 Zeichen des Kennwort verwendet.
+		</para>
+	</caution>
+</section>
+
 <section id="domain:saml">
 	<title>SAML Identity Provider</title>
 	<para>

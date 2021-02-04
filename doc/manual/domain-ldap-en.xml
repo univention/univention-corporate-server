@@ -1255,6 +1255,36 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+<section id="domain:password_hashes">
+	<title>Password hashes in the directory service</title>
+	<para>
+		User password hashes are stored in the directory service in the <property>userPassword</property> attribute.
+		The <function>crypt</function> library function is used to hash passwords.
+		The actual hashing method can be configured via the &ucsUCRV; <envar>password/hashing/method</envar>,
+		<function>SHA-512</function> is used by default.
+	</para>
+	<para>
+		As an alternative &ucsUCS; (from version <u:erratum release="4.4-7">887</u:erratum> on) offers the option of using <function>bcrypt</function>
+		as hashing method for passwords of user accounts. To activate <function>bcrypt</function> support in OpenLDAP
+		the &ucsUCRV; <envar>ldap/pw-bcrypt=true</envar> has to bet set on all LDAP servers. Otherwise it is not possible
+		authenticate with a <function>bcrypt</function> hash as password hash. Additionally the &ucsUCRV;
+		<envar>password/hashing/bcrypt=true</envar> has to be set, again on all servers, to activate
+		<function>bcrypt</function> as the hashing method for setting or changing user password.
+	</para>
+	<para>
+		In addition, the <function>bcrypt</function> cost factor and the <function>bcrypt</function>
+		variant can be configured via the &ucsUCRV;s
+		<envar>password/hashing/bcrypt/cost_factor</envar> (default <literal>12</literal>) and
+		<envar>password/hashing /bcrypt/prefix</envar> (default <literal>2b</literal>).
+	</para>
+	<caution>
+		<para>
+			<function>bcrypt</function> is limited to a maximum of 72 characters. So only the first 72
+			characters of the password are used to generate the hashes.
+		</para>
+	</caution>
+</section>
+
 <section id="domain:saml">
 	<title>SAML identity provider</title>
 	<para>
