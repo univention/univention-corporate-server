@@ -33,6 +33,11 @@
 import univention.admin.modules
 import univention.admin.syntax
 
+import univention.admin.localization
+
+translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
+_ = translation.translate
+
 
 class samlserviceprovider(univention.admin.syntax.UDM_Objects):
 	udm_modules = ('saml/serviceprovider', )

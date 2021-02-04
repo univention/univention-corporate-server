@@ -30,6 +30,7 @@
 from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.syntax
+import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
 _ = translation.translate
