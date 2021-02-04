@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Debug
 #  view debug log files
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
 
 import sys
 import getopt
@@ -65,7 +67,7 @@ for opt, val in opts:
 # level
 skip = True
 levels = ['^']
-msg_pattern = re.compile('^([^ ]+) *\( ([^ ]+) +\) : (.+)$')
+msg_pattern = re.compile(r'^([^ ]+) *\( ([^ ]+) +\) : (.+)$')
 
 
 def suspended(levels):
@@ -107,9 +109,9 @@ while True:
 	line = line[0:-1]
 	if line.startswith('DEBUG_INIT'):
 		if not breakline:
-			print '-' * 80
+			print('-' * 80)
 		else:
-			print '-' * breakline
+			print('-' * breakline)
 		skip = False
 	elif skip:
 		pass
@@ -124,12 +126,12 @@ while True:
 				c = 1
 				for i in split(function, sl):
 					if c:
-						print s, '+', i
+						print(s, '+', i)
 						c = 0
 					else:
-						print s, ' ', i
+						print(s, ' ', i)
 			else:
-				print spacing(len(levels) - 1), '+', function
+				print(spacing(len(levels) - 1), '+', function)
 
 	elif line.startswith('UNIVENTION_DEBUG_END    : '):
 		function = line[line.find(':') + 2:]
@@ -145,4 +147,4 @@ while True:
 					for regexp in regexps:
 						if not regexp.match(msg):
 							continue
-				print spacing(len(levels)), msg
+				print(spacing(len(levels)), msg)

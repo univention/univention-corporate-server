@@ -45,7 +45,7 @@ Package: univention-debug-tools
 Architecture: all
 Depends:
  ${misc:Depends},
- ${python:Depends},
+ ${python3:Depends},
 Description: UCS - tools for debugging and logging data
  This package contains the univention-viewlog tool to
  filter and view log files from the UCS debugging
