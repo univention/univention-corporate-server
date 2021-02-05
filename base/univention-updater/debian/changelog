@@ -1,3 +1,9 @@
+univention-updater (14.0.3-7) unstable; urgency=medium
+
+  * Bug #51865: UCS 4 updater finds updates to UCS 5
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 05 Feb 2021 11:55:51 +0100
+
 univention-updater (14.0.3-6) unstable; urgency=medium
 
   * Bug #52376: Adapt links and components for 4.4-7
