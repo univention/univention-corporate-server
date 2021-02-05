@@ -1,3 +1,9 @@
+ucs-test (10.0.3-9) unstable; urgency=low
+
+  * Bug #51316: Rewrite 03_ucr/37check-ucr-templates
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Feb 2021 15:44:01 +0100
+
 ucs-test (10.0.3-8) unstable; urgency=medium
 
   * Fixup for Bug #52241
