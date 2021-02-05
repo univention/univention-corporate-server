@@ -869,26 +869,33 @@ __EOF__
 	apt-get clean
 	apt-get update
 
-	# Activate DHCP
-	ucr set interfaces/eth0/type=dhcp interfaces/ens3/type=dhcp dhclient/options/timeout=12
-	ucr unset gateway
-
-	# Set a default nameserver and remove all local configured nameserver
-	ucr set nameserver1=208.67.222.222
-	ucr unset nameserver2 nameserver3
-	ucr unset dns/forwarder2 dns/forwarder3
-
 	# do not restart network interfaces / reset UCR variables
 	ucr set interfaces/restart/auto=false
 
-	ucr unset interfaces/ens3/address \
-			interfaces/ens3/broadcast \
-			interfaces/ens3/netmask \
-			interfaces/ens3/network
+	# Set a default nameserver and remove all local configured nameserver
+	# Activate DHCP for eth0
+	# in ec2 we use net.ifnames=0 so that the interface is always eth0
+	ucr set \
+		nameserver1=208.67.222.222 \
+		interfaces/eth0/type=dhcp \
+		dhclient/options/timeout=12
 
-	ucr unset interfaces/primary
+	# unset currenty network config, we only need eth0=dhcp in ec2
+	ucr unset \
+		interfaces/ens3/address \
+		interfaces/ens3/broadcast \
+		interfaces/ens3/netmask \
+		interfaces/ens3/network \
+		interfaces/ens3/type \
+		gateway \
+		nameserver2 \
+		nameserver3 \
+		dns/forwarder2 \
+		dns/forwarder3 \
+		interfaces/primary
 
 	ucr set update/secure_apt=yes
+
 	# Manual cleanup
 	rm -rf /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
