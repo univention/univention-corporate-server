@@ -42,6 +42,7 @@ import urllib2
 import threading
 import requests
 import json
+import ssl
 
 
 class UCSTest_Docker_Exception(Exception):
