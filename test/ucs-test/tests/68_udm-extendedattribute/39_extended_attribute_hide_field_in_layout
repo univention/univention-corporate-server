@@ -23,7 +23,7 @@ def flatten(layout):
 				_parse(y)
 			elif isinstance(y, dict):
 				_parse(y.get('layout', []))
-			elif isinstance(y, str):
+			elif isinstance(y, (str, unicode)):
 				result.add(y)
 			else:
 				raise TypeError(y)
