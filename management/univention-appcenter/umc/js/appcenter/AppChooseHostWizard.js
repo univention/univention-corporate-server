@@ -53,6 +53,8 @@ define([
 		apps: null,
 		autoinstalled: null,
 		// these need to be provided
+		//
+		selectedApps: null,
 
 
 		needsToBeShown: null,
@@ -64,6 +66,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this.selectedApps = this.apps.filter(app => !this.autoinstalled.includes(app.id));
 			this.pages = this._getPages();
 		},
 
@@ -75,23 +78,23 @@ define([
 		_getPages: function() {
 			const pages = [];
 
-			const headerText = this.apps.length === 1
-				? _('Installation of %s', this.apps[0].name)
+			const headerText = this.selectedApps.length === 1
+				? _('Installation of %s', this.selectedApps[0].name)
 				: _('Installation of multiple apps');
 
 			if (this.autoinstalled.length) {
 				let infoText = '';
-				if (this.apps.length === 1) {
+				if (this.selectedApps.length === 1) {
 					if (this.autoinstalled.length === 1) {
-						infoText = _('The following app will be automatically installed because it is a required dependency for %s.', app.name);
+						infoText = _('The following app will be additionally installed because it is a required dependency for %s.', this.selectedApps[0].name);
 					} else {
-						infoText = _('The following apps will be automatically installed because they are required dependencies for %s.', app.name);
+						infoText = _('The following apps will be additionally installed because they are required dependencies for %s.', this.selectedApps[0].name);
 					}
 				} else {
 					if (this.autoinstalled.length === 1) {
-						infoText = _('The following app will be automatically installed because it is a required dependency for the selected apps.');
+						infoText = _('The following app will be additionally installed because it is a required dependency for the selected apps.');
 					} else {
-						infoText = _('The following apps will be automatically installed because they are required dependencies for the selected apps.');
+						infoText = _('The following apps will be additionally installed because they are required dependencies for the selected apps.');
 					}
 				}
 				const page = {
@@ -124,8 +127,8 @@ define([
 						page.layout.push([name]);
 					}
 				}
-				const selectedApps = this.apps.filter(app => !this.autoinstalled.includes(app.id));
-				if (selectedApps.length) {
+
+				if (this.selectedApps.length > 1) {
 					page.widgets.push({
 						type: Text,
 						name: 'autoinstalledNotice_text2',
@@ -133,7 +136,7 @@ define([
 					});
 					page.layout.push('autoinstalledNotice_text2');
 					page.layout.push([]);
-					for (const app of selectedApps) {
+					for (const app of this.selectedApps) {
 						const name = `autoinstalledNotice_appText_${app.id}`;
 						page.widgets.push({
 							type: AppText,
@@ -155,8 +158,8 @@ define([
 			}
 
 
-			var infoText = this.apps.length === 1
-				? _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.apps[0].name)
+			var infoText = this.selectedApps.length === 1
+				? _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.selectedApps[0].name)
 				: _('In order to proceed with the installation, please select the hosts on which the applications are going to be installed.');
 			var page = {
 				name: 'chooseHosts',
@@ -222,7 +225,7 @@ define([
 				});
 				page.widgets.push({
 					type: ComboBox,
-					label: this.apps.length === 1 ? _('Host for installation of application') : _('Host for installation of %s', app.name), // TODO do we want this?
+					label: this.selectedApps.length === 1 ? _('Host for installation of application') : _('Host for installation of %s', app.name), // TODO do we want this?
 					name: app.id,
 					required: true,
 					size: 'One',
@@ -247,9 +250,10 @@ define([
 		},
 
 		hasNext: function(pageName) {
-			// since we only have two pages the next page is gonna 'chooseHosts'
-			// so we can ignore pageName
-			return this._chooseHostsNeedsToBeShown;
+			if (pageName === 'autoinstalledNotice') {
+				return this._chooseHostsNeedsToBeShown;
+			}
+			return this.inherited(arguments);
 		},
 
 		getFooterButtons: function() {

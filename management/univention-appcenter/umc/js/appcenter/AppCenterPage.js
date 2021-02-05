@@ -175,6 +175,7 @@ define([
 			return [
 			{
 				label: _('Installed'),
+				hasSelectionMode: false,
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -188,6 +189,7 @@ define([
 			},
 			{
 				label: _('Installed in domain'),
+				hasSelectionMode: false,
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -201,6 +203,7 @@ define([
 			},
 			{
 				label: _('Suggestions based on installed apps'),
+				hasSelectionMode: true,
 				query: function(app) {
 					return app.$isSuggested;
 				},
@@ -209,6 +212,7 @@ define([
 			},
 			{
 				label: _('Available'),
+				hasSelectionMode: true,
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}

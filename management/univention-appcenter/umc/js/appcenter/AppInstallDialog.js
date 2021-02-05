@@ -51,7 +51,7 @@ define([
 	return declare("umc.modules.appcenter.AppInstallDialog", [ Page, _AppDialogMixin ], {
 
 		_installationDeferred: null,
-		_hasSeriousProblems: false,
+		// _hasSeriousProblems: false,
 
 		constructor: function() {
 			this.headerButtons = [{
@@ -128,8 +128,8 @@ define([
 			return deferred;
 		},
 
-		_getInstallInfo: function(backpack) {
-			var progressBarContext = backpack.appDetailsPage;
+		_performDryRun: function(backpack) {
+			const progressBarContext = backpack.appDetailsPage;
 			// if (backpack.chooseHostWizardWasVisible) {
 				// progressBarContext = new Page({
 					// headerText: 'Installation of foo',
@@ -142,55 +142,86 @@ define([
 				// this.addChild(progressBarContext);
 			// }
 			
-			var progressBar = new ProgressBar({});
+			const progressBar = new ProgressBar({});
 			progressBar.reset();
 			progressBar.setInfo(_('Running tests'), '', Infinity);
-			// TODO what do i need here for dry_run
-			var settings = {};
+			const settings = {};
 			for (const app of backpack.apps) {
-				settings[app.id] = null;
+				settings[app.id] = {};
 			}
-			var command = tools.umcpProgressCommand(progressBar, 'appcenter/run', {
+			const command = tools.umcpProgressCommand(progressBar, 'appcenter/run', {
 				apps: backpack.apps.map(app => app.id),
 				auto_installed: backpack.autoinstalled, // TODO synch names
 				action: 'install',
 				hosts: backpack.hosts,
-				// settings: {}, // TODO should here be the answer from appcenter/resolve?
-				// settings: backpack.settings,
 				settings: settings,
 				dry_run: true
-			}).then(function(a) {
-				console.log('aaa');
-				console.log(a);
+			}).then(function(results) {
+				const dryRunResults = {};
+				function getAppResults(appId, host) {
+					const app = backpack.apps.find(app => app.id === appId) || {
+						id: appId,
+					};
+					const key = `${appId}$$${host}`;
+					dryRunResults[key] = dryRunResults[key] || {
+						software_changes_computed: false,
+						broken: [],
+						install: [],
+						remove: [],
+						hosts_info: {},
+						invokation_forbidden_details: {},
+						invokation_warning_details: {},
+						host,
+						app, 
+					};
+					return dryRunResults[key];
+				}
+				for (const host of Object.keys(results)) {
+					if (host === '__unreachable__') {
+						// TODO
+						continue;
+					}
+					const hostResults = results[host];
+					for (const [appId, packageChanges] of Object.entries(hostResults.packages)) {
+						const appResults = getAppResults(appId, host);
+						appResults.broken = packageChanges.broken;
+						appResults.install = packageChanges.install;
+						appResults.remove = packageChanges.remove;
+						appResults.software_changes_computed = !!packageChanges.broken.length
+							|| !!packageChanges.install.length
+							|| !!packageChanges.remove.length;
+					}
+					for (const [errorId, errors] of Object.entries(hostResults.errors)) {
+						for (const [appId, details] of Object.entries(errors)) {
+							const appResults = getAppResults(appId, host);
+							appResults.invokation_forbidden_details[errorId] = details;
+						}
+					}
+					for (const [warningId, warnings] of Object.entries(hostResults.warnings)) {
+						for (const [appId, details] of Object.entries(warnings)) {
+							const appResults = getAppResults(appId, host);
+							appResults.invokation_warning_details[warningId] = details;
+						}
+					}
+				}
+				backpack.dryRunResults = dryRunResults;
 				return backpack;
-			}, function(b) {
-				console.log('bbb');
-				console.log(b);
-			}, lang.hitch(this, function(result) {
-				console.log('ccc');
-				console.log(result);
-			}));
+			});
 				
-				// .then(lang.hitch(this, function(values) {
-				// console.log(values);
-				// return;
-				// this._hasSeriousProblems = values.dryRunResults.serious_problems;
-				// if (this._hasSeriousProblems) {
-					// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, backpack.app.id, 'cannot-continue');
-				// }
-				// return lang.mixin(backpack, values);
-			// }));
+			// this._hasSeriousProblems = values.dryRunResults.serious_problems;
+			// if (this._hasSeriousProblems) {
+				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, backpack.app.id, 'cannot-continue');
+			// }
 			return progressBarContext.standbyDuring(command, progressBar);
 		},
 
 		_showInstallWizard: function(backpack) {
 			var deferred = new Deferred();
 			var installWizard = new AppInstallWizard({
-				hosts: backpack.hosts,
+				// hosts: backpack.hosts,
 				apps: backpack.apps,
 				appSettings: backpack.settings,
-				// TODO
-				// dryRunResults: backpack.dryRunResults,
+				dryRunResults: backpack.dryRunResults,
 				appDetailsPage: backpack.appDetailsPage
 			});
 			if (!installWizard.needsToBeShown) {
@@ -219,7 +250,7 @@ define([
 			const hosts = backpack.hosts;
 			const appSettings = {};
 			for (const app of apps) {
-				appSettings[app.id] = null;
+				appSettings[app.id] = {};
 				const _appSettings = backpack[`appSettings_appSettings_${app.id}`];
 				if (_appSettings) {
 					appSettings[app.id] = _appSettings;
@@ -236,7 +267,7 @@ define([
 
 		startInstallation: function(apps, appDetailsPage) {
 			this._installationDeferred = new Deferred();
-			this._hasSeriousProblems = false;
+			// this._hasSeriousProblems = false;
 
 			var backpack = {
 				appDetailsPage: appDetailsPage,
@@ -244,7 +275,7 @@ define([
 			};
 			this._resolveApps(backpack)
 				.then(lang.hitch(this, '_getHosts'))
-				.then(lang.hitch(this, '_getInstallInfo'))
+				.then(lang.hitch(this, '_performDryRun'))
 				.then(lang.hitch(this, '_showInstallWizard'))
 				.then(lang.hitch(this, '_resolveBackpack'))
 				.otherwise(lang.hitch(this, '_cancelInstallation'));
@@ -252,10 +283,9 @@ define([
 		},
 
 		_cancelInstallation: function() {
-			if (!this._hasSeriousProblems) {
-				// TODO
+			// if (!this._hasSeriousProblems) {
 				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
-			}
+			// }
 			this.onBack();
 		},
 

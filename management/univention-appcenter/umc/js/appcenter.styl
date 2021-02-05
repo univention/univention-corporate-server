@@ -71,20 +71,15 @@ $app-detailspane-background-color = var(--color-grey0)
 	border-radius: var(--border-radius-container)
 	display: flex
 	align-items: center
-	padding: 8px
-	margin-bottom: 16px
+	padding: var(--layout-spacing-unit)
+	margin-bottom: calc(2 * var(--layout-spacing-unit))
 
-	&:before
-		content: ''
-		display: inline-block
+	.featherIcon
 		flex: 0 0 auto
-		background-size: contain
-		width: 20px
-		height: 20px
-		margin-right: 8px
+		margin-right: var(--layout-spacing-unit)
 
 	.dijitButton
-		margin: 16px 0 8px 8px
+		margin-top: var(--layout-spacing-unit)
 
 .AppDetailsDialog__warning--hard
 	background-color: rgba(219, 6, 46, 0.3)
@@ -97,6 +92,40 @@ $app-detailspane-background-color = var(--color-grey0)
 
 	&:before
 		background-image: url(appcenter/icons/warning.svg)
+
+
+.umcAppDetailsContainerCard
+	background: var(--bgc-content-body)
+	&:not(:last-child)
+		margin-bottom: calc(2 * var(--layout-spacing-unit))
+
+.umcAppDetailsContainerCard__header
+	display: flex
+	align-items: center
+	margin-bottom: calc(2 * var(--layout-spacing-unit))
+
+.umcAppDetailsContainerCard__header__main,
+.umcAppDetailsContainerCard__header__secondary
+	flex: 1 0 auto
+
+.umcAppDetailsContainerCard__header__main
+	margin-right: var(--layout-spacing-unit)
+
+.umcAppDetailsContainerCard__header__secondary
+	display: flex
+	justify-content: flex-end
+
+.umcAppDetailsContainerCard__header__host
+	font-size: var(--font-size-small)
+
+	&.umcAppDetailsContainerCard__header__main
+		font-weight: 600
+		font-size: var(--font-size-normal)
+
+
+.umcAppDetailsContainerCard .umcAppMoreTitlePane
+	margin-top: var(--layout-spacing-unit)
+
 
 .umcAppDetailsPage
 	.umcAppButton
@@ -301,18 +330,27 @@ $app-detailspane-background-color = var(--color-grey0)
 	.umcPageNav
 		margin-bottom: 0
 
-	.umcAppMoreTitlePane
-		font-size: var(--font-size-small)
+.umcAppMoreTitlePane
+	background-color: transparent
+	border-radius: 0
+	font-size: var(--font-size-small)
 
-		.dijitTitlePaneTitle
-			font-weight: normal
-			text-decoration: underline
-			border: none
-			font-size: var(--font-size-normal)
-			padding: 0.5em 0 0.5em 8px
+	.dijitTitlePaneTitle
+		padding: 0
 
-		svg
-			display: none
+	.dijitTitlePaneTitleFocus
+		outline: none
+		padding: 0
+
+	.dijitTitlePaneTextNode
+		text-decoration: underline
+		margin: 0
+
+	.umcTitlePaneTitleFocus__arrowIcon
+		display: none
+
+	.dijitTitlePaneContentInner
+		padding: var(--layout-spacing-unit) 0 0 0
 
 .umcAppChooseHostWizard
 	border-radius: var(--border-radius-container)

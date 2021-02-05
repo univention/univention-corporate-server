@@ -42,8 +42,10 @@ define([
 				return null;
 			}
 
+			const appSettingsFormName = `appSettings_appSettings_${app.id}`;
 			return {
 				name: `appSettings_${app.id}`,
+				$appSettingsFormName: appSettingsFormName,
 				headerText: '',
 				helpText: _('App settings'),
 				widgets: [{
@@ -52,7 +54,7 @@ define([
 					name: 'appText'
 				}, {
 					type: AppSettingsForm,
-					name: `appSettings_appSettings_${app.id}`,
+					name: appSettingsFormName,
 					size: 'Two',
 					widgets: formConf.widgets,
 					layout: formConf.layout

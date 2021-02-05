@@ -57,32 +57,23 @@ define([
 				<div class="umcTiles__header">
 					<h2>\${header}</h2>
 					<button
-						class="ucsTextButton umcTiles__selectionToggleButton"
+						class="ucsTextButton umcTiles__selectionToggleButton dijitDisplayNone"
 						data-dojo-type="umc/widgets/ToggleButton"
 						data-dojo-attach-point="_selectionModeToggleButton"
 						data-dojo-props="
-							checked: this._isInSelectionMode,
 							label: this._selectionModeToggleButtonLabel,
 							iconClass: 'check-square'
 						"
 					></button>
 				</div>
-				<div data-dojo-attach-point="actionBarNode" class="umcTiles__actionBar dijitDisplayNone">
+				<div data-dojo-attach-point="_actionBarNode" class="umcTiles__actionBar dijitDisplayNone">
 					<div class="umcTiles__actionBar__buttons">
-						<!-- TODO this is dummy content to test styling -->
 						<button
+							data-dojo-attach-point="_installButton"
 							data-dojo-type="umc/widgets/Button"
 							data-dojo-props="
-								label: 'Update',
-								iconClass: 'rotate-cw'
-							"
-							class="ucsTextButton"
-						></button>
-						<button
-							data-dojo-type="umc/widgets/Button"
-							data-dojo-props="
-								label: 'Uninstall',
-								iconClass: 'trash'
+								disabled: true,
+								label: this._installButtonLabel,
 							"
 							class="ucsTextButton"
 						></button>
@@ -117,13 +108,19 @@ define([
 
 			this._set('tiles', tiles);
 			this._updateSelectionNote();
+			this._updateButtons();
 			this.set('visible', !!tiles.length);
 		},
 
+		hasSelectionMode: true,
 		_selectionModeToggleButtonLabel: _('Choose'),
 		_selection: null,
 		_updateSelectionNote: function() {
 			this.selectedNode.innerHTML = _('%s of %s Apps selected', this._selection.length, this.tiles.length);
+		},
+		_installButtonLabel: _('Install'),
+		_updateButtons: function() {
+			this._installButton.set('disabled', this._selection.length === 0);
 		},
 		_isInSelectionMode: false,
 
@@ -139,6 +136,7 @@ define([
 					domClass.toggle(tile.domNode, 'selected', false);
 				}
 				this._updateSelectionNote();
+				this._updateButtons();
 			} else {
 				topic.publish('/appcenter/open', tile.obj, this.isSuggestionCategory);
 			}
@@ -167,11 +165,16 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this._selectionModeToggleButton.watch('checked', (_attr, _oldVal, newVal) => {
-				this.set('_isInSelectionMode', newVal);
-				tools.toggleVisibility(this.actionBarNode, newVal);
-				domClass.toggle(this.domNode, this.baseClass + '__selectionMode', newVal);
-			});
+			tools.toggleVisibility(this._selectionModeToggleButton, this.hasSelectionMode);
+			if (this.hasSelectionMode) {
+				this._selectionModeToggleButton.watch('checked', (_attr, _oldVal, newVal) => {
+					this.set('_isInSelectionMode', newVal);
+					tools.toggleVisibility(this._actionBarNode, newVal);
+					domClass.toggle(this.domNode, this.baseClass + '__selectionMode', newVal);
+				});
+				// do this here and not in the props for the togglebutton to trigger _actionBarNode visibility
+				this._selectionModeToggleButton.set('checked', this._isInSelectionMode);
+			}
 		}
 	});
 });

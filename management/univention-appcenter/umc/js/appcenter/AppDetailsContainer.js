@@ -36,12 +36,13 @@ define([
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Icon",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"./requirements",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, entities, tools, ContainerWidget, TitlePane, Text, Button, requirements, _) {
+], function(declare, lang, array, when, entities, tools, ContainerWidget, Icon, TitlePane, Text, Button, requirements, _) {
 	return declare("umc.modules.appcenter.AppDetailsContainer", [ ContainerWidget ], {
 		// these properties have to be provided
 		funcName: '',
@@ -61,8 +62,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var showUnreachableHint = this.details.software_changes_computed && this.details.unreachable.length;
-			var unreachableHintIsHard = showUnreachableHint && this.details.master_unreachable;
+			// var showUnreachableHint = this.details.software_changes_computed && this.details.unreachable.length;
+			// var unreachableHintIsHard = showUnreachableHint && this.details.master_unreachable;
 			var showErrataHint = this.details.software_changes_computed && this.funcName === 'update';
 			var packageChanges = [];
 			if (this.details.software_changes_computed) {
@@ -93,17 +94,17 @@ define([
 			if (this.showWarnings) {
 				// hard warnings
 				this.showHardRequirements(this.details.invokation_forbidden_details, this.appDetailsPage);
-				if (showUnreachableHint && unreachableHintIsHard) {
-					this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
-				}
+				// if (showUnreachableHint && unreachableHintIsHard) {
+					// this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
+				// }
 				array.forEach(brokenPackageChanges, lang.hitch(this, function(changes) {
 					this.showPackageChanges(changes.install, changes.remove, changes.broken, changes.incompatible, changes.host);
 				}));
 
 				// soft warnings
-				if (showUnreachableHint && !unreachableHintIsHard) {
-					this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
-				}
+				// if (showUnreachableHint && !unreachableHintIsHard) {
+					// this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
+				// }
 				this.showSoftRequirements(this.details.invokation_warning_details, this.appDetailsPage);
 				if (showErrataHint) {
 					this.showErrataHint();
@@ -281,6 +282,12 @@ define([
 			var outer = new ContainerWidget({
 				'class': _class
 			});
+			if (isWarning) {
+				var icon = new Icon({
+					iconName: isHardWarning ? 'alert-circle' : 'alert-triangle'
+				});
+				outer.addChild(icon);
+			}
 			var inner = new ContainerWidget({});
 
 			array.forEach(content, function(c) {

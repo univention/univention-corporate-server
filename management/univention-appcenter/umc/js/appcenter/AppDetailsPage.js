@@ -730,9 +730,6 @@ define([
 		},
 
 		installApps: function(apps, hosts, appSettings) {
-			console.log('installing apps');
-			console.log(apps, hosts, appSettings);
-			return; // TODO
 			this.callInstaller('install', apps, hosts, true, null, appSettings)
 				.then(lang.hitch(this, function() {
 					// put dedicated module of this app into favorites
