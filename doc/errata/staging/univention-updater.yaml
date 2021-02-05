@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-updater
+fix: 14.0.3-7A~4.4.0.202102051158
+desc: |
+ This update addresses the following issue:
+ * The univention-updater now supports updating to UCS 5,
+   once it is released.
+bug: [51865]
