@@ -4606,7 +4606,10 @@ class SambaLogonHours(MultiSelect):
 			return value
 		# better show the bit string. See Bug #33703
 		from univention.admin.handlers.users.user import logonHoursMap
-		return logonHoursMap(value).decode('ASCII')
+		value = logonHoursMap(value)
+		if value is not None:
+			value = value.decode('ASCII')
+		return value
 
 
 class SambaPrivileges(select):
