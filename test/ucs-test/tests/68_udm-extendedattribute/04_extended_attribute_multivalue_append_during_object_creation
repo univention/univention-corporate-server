@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Append multivalue settings/extended_attribute values to object
 ## tags: [udm]
 ## roles: [domaincontroller_master]

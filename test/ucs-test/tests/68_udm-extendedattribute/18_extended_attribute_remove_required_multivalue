@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Remove required settings/extended_attribute multi value
 ## tags: [udm]
 ## roles: [domaincontroller_master]

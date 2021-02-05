@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Override default tab with settings/extended_attribute
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -30,7 +30,7 @@ def main():
 
 		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
-		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].splitlines()
+		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').splitlines()
 
 		for i in range(0, len(module_help_text)):
 			if module_help_text[i] == '  %s:' % properties['tabName']:

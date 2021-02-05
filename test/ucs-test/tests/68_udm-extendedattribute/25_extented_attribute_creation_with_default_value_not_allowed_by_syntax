@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create settings/extented_attribute with a value for it's default which is not valid for it's syntax value
 ## tags: [udm]
 ## roles: [domaincontroller_master]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Find settings/extended_attribute tabName in module help
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -27,6 +27,6 @@ if __name__ == '__main__':
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
-		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0]
+		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8')
 		if not properties['tabName'] in module_help_text:
 			utils.fail('Could not find tab name of created settings/extended_attribute in module help')

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Positioning in custom tabs
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 			udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 			extended_attributes[properties['CLIName']] = i
 
-		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].splitlines()
+		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').splitlines()
 		tab_position = 1
 		for line in module_help_text:
 			try:

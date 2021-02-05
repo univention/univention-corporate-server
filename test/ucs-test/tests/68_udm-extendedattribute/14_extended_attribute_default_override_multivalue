@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Default value of multi value settings/extended_attribute is overridden by explicitly given values
 ## tags: [udm]
 ## roles: [domaincontroller_master]

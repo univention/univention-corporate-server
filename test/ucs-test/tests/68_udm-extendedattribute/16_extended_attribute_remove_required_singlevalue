@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check that required=True is enforced for singlevalue extended attributes
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
