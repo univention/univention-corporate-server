@@ -772,7 +772,7 @@
 					Fix LDAP filter syntax in &ucsUDL; module <filename>faillog.py</filename> (<u:bug>28645</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyru</package> (<u:bug>00000</u:bug>)
+					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyrus</package> (<u:bug>51981</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
