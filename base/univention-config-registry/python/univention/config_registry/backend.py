@@ -95,6 +95,9 @@ class BooleanConfigRegistry(object):
 	Mixin class for boolean operations.
 	"""
 
+	TRUE = frozenset({'yes', 'true', '1', 'enable', 'enabled', 'on'})
+	FALSE = frozenset({'no', 'false', '0', 'disable', 'disabled', 'off'})
+
 	def is_true(self, key=None, default=False, value=None):
 		# type: (Optional[str], bool, Optional[str]) -> bool
 		"""
@@ -120,7 +123,7 @@ class BooleanConfigRegistry(object):
 			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
-		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
+		return value.lower() in self.TRUE
 
 	def is_false(self, key=None, default=False, value=None):
 		# type: (Optional[str], bool, Optional[str]) -> bool
@@ -147,7 +150,7 @@ class BooleanConfigRegistry(object):
 			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
-		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
+		return value.lower() in self.FALSE
 
 
 class ConfigRegistry(MM, BooleanConfigRegistry):
