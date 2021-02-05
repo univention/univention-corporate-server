@@ -57,7 +57,7 @@ class DNNotFound(BaseException):
 class ad(univention.connector.ad.ad):
 
 	def _remove_cache_entries(self, guid):
-		cache_filename = '/etc/univention/%s/cache.sqlite' % CONFIGBASENAME
+		cache_filename = '/etc/univention/%s/adcache.sqlite' % CONFIGBASENAME
 		if not os.path.exists(cache_filename):
 			return
 		cache_db = sqlite3.connect(cache_filename)
