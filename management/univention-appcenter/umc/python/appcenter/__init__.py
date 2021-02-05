@@ -288,7 +288,9 @@ class Instance(umcm.Base, ProgressMixin):
 
 	def _run_local_dry_run(self, app, action, settings, progress):
 		progress.title = _('%s: Running tests') % app.name
+		localhost = '{hostname}.{domainname}'.format(**self.ucr)
 		ret = {}
+		ret['host'] = localhost
 		ret['errors'], ret['warnings'] = check([app], action)
 		ret['errors'].pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
 		action = get_action(action)()
@@ -337,7 +339,7 @@ class Instance(umcm.Base, ProgressMixin):
 		opts = {'apps': [str(app)], 'auto_installed': auto_installed, 'action': action, 'hosts': {app.id: host}, 'settings': {app.id: settings}, 'dry_run': dry_run}
 		progress_id = client.umc_command('appcenter/run', opts).result['id']
 		while True:
-			result = client.umc_command('appcenter/docker/progress', {'progress_id': progress_id}).result
+			result = client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
 			if result['finished']:
 				return result['result'][app.id]
 			progress.title = result['title']
