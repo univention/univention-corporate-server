@@ -31,7 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
+
+from listener import SetUID
 import univention.config_registry as ucr
 import univention.pkgdb
 import univention.debug as ud
@@ -47,16 +48,14 @@ ldap_info = {}
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	if new and b'Software Monitor' in new.get('univentionService', ()):
-		listener.setuid(0)
-		ucr.handler_set(('pkgdb/scan=yes', ))
-		listener.unsetuid()
+		with SetUID(0):
+			ucr.handler_set(('pkgdb/scan=yes', ))
 	elif old and b'Software Monitor' in old.get('univentionService', ()):
 		if not ldap_info['lo']:
 			ldap_reconnect()
 		if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService']):
-			listener.setuid(0)
-			ucr.handler_set(('pkgdb/scan=no', ))
-			listener.unsetuid()
+			with SetUID(0):
+				ucr.handler_set(('pkgdb/scan=no', ))
 
 
 def ldap_reconnect():

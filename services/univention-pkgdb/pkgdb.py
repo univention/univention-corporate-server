@@ -31,8 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
 import os
-import listener
+from listener import configRegistry, SetUID
 import subprocess
 import univention.debug as ud
 
@@ -40,9 +41,6 @@ name = 'pkgdb'
 description = 'Package-Database'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer))'
 attributes = ['uid']
-
-hostname = listener.configRegistry['hostname']
-domainname = listener.configRegistry['domainname']
 
 ADD_DIR = '/var/lib/univention-pkgdb/add'
 DELETE_DIR = '/var/lib/univention-pkgdb/delete'
@@ -52,13 +50,10 @@ def exec_pkgdb(args):
 	# type: (list) -> int
 	ud.debug(ud.LISTENER, ud.INFO, "exec_pkgdb args=%s" % args)
 
-	listener.setuid(0)
-	try:
-		cmd = ['univention-pkgdb-scan', '--db-server=%s.%s' % (hostname, domainname, ), ]
+	with SetUID(0):
+		cmd = ['univention-pkgdb-scan', '--db-server=%(hostname)s.%(domainname)s' % configRegistry]
 		cmd += args
 		retcode = subprocess.call(cmd)
-	finally:
-		listener.unsetuid()
 
 	ud.debug(ud.LISTENER, ud.INFO, "pkgdb: return code %d" % retcode)
 	return retcode
@@ -93,21 +88,17 @@ def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
 
-	try:
+	with SetUID(0):
 		if old and not new:
 			if 'uid' in old:
-				if del_system(old['uid'][0]) != 0:
-					listener.setuid(0)
-					file = open(os.path.join(DELETE_DIR, old['uid'][0]), 'w')
-					file.write(old['uid'][0] + '\n')
-					file.close()
+				uid = old['uid'][0].decode('UTF-8')
+				if del_system(uid) != 0:
+					with open(os.path.join(DELETE_DIR, uid), 'w') as fd:
+						fd.write(uid + '\n')
 
 		elif new and not old:
 			if 'uid' in new:
-				if (add_system(new['uid'][0])) != 0:
-					listener.setuid(0)
-					file = open(os.path.join(ADD_DIR, new['uid'][0]), 'w')
-					file.write(new['uid'][0] + '\n')
-					file.close()
-	finally:
-		listener.unsetuid()
+				uid = new['uid'][0].decode('UTF-8')
+				if add_system(uid) != 0:
+					with open(os.path.join(ADD_DIR, uid), 'w') as fd:
+						fd.write(uid + '\n')
