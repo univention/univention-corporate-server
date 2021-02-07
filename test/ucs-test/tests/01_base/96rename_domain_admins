@@ -114,6 +114,8 @@ def test_rename_domain_users():
 			if not success:
 				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (old_group_name, new_group_name))
 
+			# in ucs5 the time between setting the ucr var and the change being committed to the configuration files is longer than expected:
+			time.sleep(5)
 			# Search templates
 			print('\n##################################################################')
 			print('Search templates for old and new name of default domainadmins group')
