@@ -49,7 +49,7 @@ gid = grp.getgrnam("samlcgi").gr_gid
 
 
 def handler(dn, new, old):
-		# type: (str, dict, dict) -> None
+	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 
 	try:
