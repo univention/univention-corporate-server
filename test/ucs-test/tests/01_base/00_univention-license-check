@@ -12,7 +12,8 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
-
+from univention.testing.utils import package_installed
+import time
 
 def get_license_count(key):
 	for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].split('\n'):
@@ -75,3 +76,6 @@ if __name__ == '__main__':
 						utils.fail('License count for %r did not raise from %s to %s after creating a object of type %s' % (asset, license_count, license_count + 1, module))
 
 					license_count = new_license_count
+		if package_installed('univention-samba4') or package_installed('univention-samba'):
+			print('Waiting a little before cleaning up to decrease chances of an s4connector loop. See Bug #52358')
+			time.sleep(20)
