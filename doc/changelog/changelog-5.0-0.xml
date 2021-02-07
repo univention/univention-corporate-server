@@ -539,6 +539,54 @@
 		</section>
 	</section>
 
+	<section id="changlog:updater">
+		<title>Univention Updater</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The old <literal>dists/</literal> repository layout, which was used
+				with UCS 2.X, is no longer supported. Instead a new repository layout is provided below
+				<literal>dists/</literal> within the repository (<u:bug>51316</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Starting with UCS 5.0 the UCS repository is no longer divided into the 2 sections
+				<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>. Instead, all packages
+				are kept in one section and the maintenance status of the packages is technically defined in
+				a different way. Therefore, the UCR variable <envar>repository/online/unmaintained</envar>
+				is no longer in use as of UCS 5.0. However, the UCR variables for components
+				(<envar>repository/online/component/$comp/parts</envar>) are still in use (<u:bug>51316</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Up to UCS 4.4, the Univention Updater automatically detected for component repositories whether
+				the required package files were stored within the architecture directories (<literal>i386</literal>,
+				<literal>amd64</literal>, <literal>all</literal>) or in the directory level above (flat repository).
+				Starting with UCS 5.0, the new UCR variable <envar>repository/online/component/$comp/layout</envar>
+				must be used to define whether a flat repository (value <literal>flat</literal>) is to be used. If
+				the variable is not set, the other possible value <literal>arch</literal> is assumed, where the
+				packages files are searched in the architecture directories (<u:bug>51316</u:bug>).
+			</simpara></listitem>
+			<listitem>
+				<simpara>
+					The semantics of the UCR variable <envar>repository/online/component/$comp/version</envar> has changed.
+					The values <literal>current</literal> and an unset variable now have the same meaning:
+					The component directory is <emphasis>always</emphasis> included and must exists; an update is blocked if it does not and
+					APT resp. Univention Updater will error out if it does not.
+				</simpara>
+				<simpara>
+					As an alternative a fixed list of <literal>$major.$minor</literal> releases can be used to include the
+					component only for a sub-set of releases: such a component is only used locally if the listed component
+					versions include the current version, e.g. a <literal>5.0 5.1 5.2</literal> component will not be used
+					on a <literal>5.4</literal> system.
+				</simpara>
+				<simpara>
+					As a consequence the packages (or at least the <literal>Packages</literal>) files have to be copied for
+					a new release if (and only if) the component should also be available for the new release. This is cheap
+					if the <literal>pool/</literal>-layout is used as then only the <literal>Packages</literal> file must be
+					copied, which then references the same packages from the <literal>pool/</literal> directory (Hint: using
+					relative links with <literal>../</literal> is also okay) (<u:bug>51316</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
