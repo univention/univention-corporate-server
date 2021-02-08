@@ -100,9 +100,9 @@ define([
 			this.addChild(this._container);
 
 			if (this.app.isDocker) {
-				var statusMessage = _('The application is currently not running.') + ' <strong>' + _('It can only be configured while it is running.') + '</strong>';
+				var statusMessage = _('The App is currently not running.') + ' <strong>' + _('It can only be configured while it is running.') + '</strong>';
 				if (result.is_running) {
-					statusMessage = _('The application is currently running.');
+					statusMessage = _('The App is currently running.');
 				}
 				var widgets = [{
 					name: 'status',
@@ -129,7 +129,7 @@ define([
 					name: 'start',
 					'class': 'umcFlatButton',
 					visible: !result.is_running,
-					label: _('Start the application'),
+					label: _('Start the App'),
 					callback: lang.hitch(this, function() {
 						this.startStop('start');
 					})
@@ -137,7 +137,7 @@ define([
 					name: 'stop',
 					'class': 'umcFlatButton',
 					visible: result.is_running,
-					label: _('Stop the application'),
+					label: _('Stop the App'),
 					callback: lang.hitch(this, function() {
 						this.startStop('stop');
 					})

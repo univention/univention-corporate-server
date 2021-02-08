@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-01-11 12:32+0100\n"
+"POT-Creation-Date: 2021-02-08 22:56+0100\n"
 "PO-Revision-Date: 2020-09-05 16:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -14,18 +14,18 @@ msgstr ""
 #: umc/js/appcenter/requirements.js:211
 msgid ""
 "%(name)s cannot be installed on the current server role (%(current_role)s). "
-"In order to install the application, one of the following roles is "
-"necessary: %(allowed_roles)s"
+"In order to install the App, one of the following roles is necessary: "
+"%(allowed_roles)s"
 msgstr ""
 "%(name)s kann nicht für die aktuelle Serverrolle (%(current_role)s) "
-"installiert werden. Um die Applikation zu installieren, ist eine der "
-"folgenden Serverrollen notwendig: %(allowed_roles)s"
+"installiert werden. Um die App zu installieren, ist eine der folgenden "
+"Serverrollen notwendig: %(allowed_roles)s"
 
 #: umc/js/appcenter/requirements.js:191
 msgid "%(name)s only supports %(supported)s as architecture. %(msg)s"
 msgstr "%(name)s unterstützt nur die Architektur %(supported)s. %(msg)s"
 
-#: umc/js/appcenter/AppDetailsPage.js:1125 umc/js/appcenter/requirements.js:307
+#: umc/js/appcenter/AppDetailsPage.js:1068 umc/js/appcenter/requirements.js:307
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
 msgstr ""
@@ -36,45 +36,48 @@ msgstr ""
 msgid "%(verb)s %(ids)s"
 msgstr "%(verb)s %(ids)s"
 
-#: umc/js/appcenter/AppChooseHostWizard.js:85
+#: umc/js/appcenter/AppChooseHostWizard.js:209
 #, javascript-format
-msgid ""
-"%d hosts were removed from the list because the application is installed "
-"there."
+msgid "%d hosts were removed from the list because the App is installed there."
 msgstr ""
-"%d Rechner wurden aus der Auswahl ausgeschlossen, weil die Applikation dort "
+"%d Rechner wurden aus der Auswahl ausgeschlossen, weil die App dort "
 "installiert ist."
 
-#: umc/js/appcenter/AppChooseHostWizard.js:90
+#: umc/js/appcenter/AppChooseHostWizard.js:214
 #, javascript-format
 msgid ""
-"%d hosts were removed from the list because the application requires a "
-"different server role than these hosts have."
+"%d hosts were removed from the list because the App requires a different "
+"server role than these hosts have."
 msgstr ""
-"%d Rechner wurden aus der Auswahl ausgeschlossen, weil die Applikation eine "
-"andere Serverrolle voraussetzt, als diese Rechner haben."
+"%d Rechner wurden aus der Auswahl ausgeschlossen, weil die App eine andere "
+"Serverrolle voraussetzt, als diese Rechner haben."
+
+#: umc/js/appcenter/AppDetailsPage.js:815
+#: umc/js/appcenter/AppDetailsPage.js:818
+#, javascript-format
+msgid "%s Apps"
+msgstr "%s Apps"
 
 #: umc/js/appcenter/requirements.js:176
 #, javascript-format
 msgid ""
-"%s cannot be updated. The application is either not installed or no newer "
-"version is available."
+"%s cannot be updated. The App is either not installed or no newer version is "
+"available."
 msgstr ""
-"%s kann nicht aktualisiert werden. Die Applikation ist entweder nicht "
-"installiert oder es existiert keine neuere Version."
+"%s kann nicht aktualisiert werden. Die App ist entweder nicht installiert "
+"oder es existiert keine neuere Version."
 
 #: umc/js/appcenter/requirements.js:253
 #, javascript-format
-msgid "%s conflicts with the following applications."
-msgstr ""
-"%s kann nicht gleichzeitig mit den folgenden Applikationen installiert sein."
+msgid "%s conflicts with the following Apps."
+msgstr "%s kann nicht gleichzeitig mit den folgenden Apps installiert sein."
 
 #: umc/js/appcenter/requirements.js:243
 #, javascript-format
 msgid "%s conflicts with the following packages."
 msgstr "%s kann nicht gleichzeitig mit den folgenden Paketen installiert sein."
 
-#: umc/js/appcenter/App.js:413 umc/js/appcenter/App.js:434
+#: umc/js/appcenter/App.js:409 umc/js/appcenter/App.js:430
 #, javascript-format
 msgid "%s installed"
 msgstr "%s installiert"
@@ -86,35 +89,37 @@ msgstr "%s ist bereits installiert."
 
 #: umc/js/appcenter/requirements.js:275
 #, javascript-format
-msgid "%s is required for the following applications to work."
-msgstr "%s wird benötigt, damit die folgenden Applikationen funktionieren."
+msgid "%s is required for the following Apps to work."
+msgstr "%s wird benötigt, damit die folgenden Apps funktionieren."
+
+#: umc/js/appcenter/Tiles.js:119
+#, javascript-format
+msgid "%s of %s Apps selected"
+msgstr "%s von %s Apps ausgewählt"
 
 #: umc/js/appcenter/requirements.js:216
 #, javascript-format
-msgid "%s requires the following applications."
-msgstr "%s benötigt die folgenden Applikationen."
+msgid "%s requires the following Apps."
+msgstr "%s benötigt die folgenden Apps."
 
 #: umc/js/appcenter/requirements.js:186
 #, javascript-format
 msgid "%s was discontinued and may not be installed anymore."
 msgstr "%s ist abgekündigt und kann nicht mehr installiert werden."
 
-#: umc/js/appcenter/AppChooseHostWizard.js:83
+#: umc/js/appcenter/AppChooseHostWizard.js:207
 #, javascript-format
-msgid ""
-"%s was removed from the list because the application is installed on this "
-"host."
+msgid "%s was removed from the list because the App is installed on this host."
 msgstr ""
-"%s wurde aus der Auswahl ausgeschlossen, weil die Applikation dort "
-"installiert ist."
+"%s wurde aus der Auswahl ausgeschlossen, weil die App dort installiert ist."
 
-#: umc/js/appcenter/AppChooseHostWizard.js:88
+#: umc/js/appcenter/AppChooseHostWizard.js:212
 #, javascript-format
 msgid ""
-"%s was removed from the list because the application requires a different "
-"server role than the one this host has."
+"%s was removed from the list because the App requires a different server "
+"role than the one this host has."
 msgstr ""
-"%s wurde aus der Auswahl ausgeschlossen, weil die Applikation eine andere "
+"%s wurde aus der Auswahl ausgeschlossen, weil die App eine andere "
 "Serverrolle voraussetzt, als dieser Rechner hat."
 
 #: umc/js/appcenter/AppConfigDialog.js:175
@@ -122,8 +127,8 @@ msgstr ""
 msgid "%s: Configuring"
 msgstr "%s: Konfiguriere"
 
-#: umc/js/appcenter/AppDetailsPage.js:917
-#: umc/js/appcenter/AppDetailsPage.js:1277
+#: umc/js/appcenter/AppDetailsPage.js:865
+#: umc/js/appcenter/AppDetailsPage.js:1220
 #, javascript-format
 msgid "%s: Performing software tests on involved systems"
 msgstr "%s: Führe Softwaretests auf den beteiligten Systemen durch"
@@ -137,26 +142,26 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/appcenter/AppDetailsContainer.js:242
+#: umc/js/appcenter/AppDetailsContainer.js:244
 msgid "1 package is erroneous"
 msgstr "1 Paket ist fehlerhaft"
 
-#: umc/js/appcenter/AppDetailsContainer.js:240
+#: umc/js/appcenter/AppDetailsContainer.js:242
 msgid "1 package will be installed / upgraded"
 msgstr "1 Paket wird installiert / aktualisiert"
 
-#: umc/js/appcenter/AppDetailsContainer.js:241
+#: umc/js/appcenter/AppDetailsContainer.js:243
 msgid "1 package will be removed"
 msgstr "1 Paket wird deinstalliert"
 
-#: umc/js/appcenter/AppDetailsPage.js:106
+#: umc/js/appcenter/AppDetailsPage.js:105
 msgid ""
 "<p><b>Note:</b> This information has been updated. Please read it again.</p>"
 msgstr ""
 "<p><b>Hinweis:</b> Diese Informationen wurden aktualisiert. Bitte lesen Sie "
 "sie erneut.</p>"
 
-#: umc/js/appcenter/AppDetailsPage.js:105
+#: umc/js/appcenter/AppDetailsPage.js:104
 msgid ""
 "<p>Univention App Center is designed for easy and comfortable administration "
 "of Apps. It uses online services provided by Univention, for example, for "
@@ -191,7 +196,7 @@ msgstr ""
 msgid "A file is present."
 msgstr "Eine Datei ist vorhanden."
 
-#: umc/js/appcenter/AppDetailsPage.js:1118
+#: umc/js/appcenter/AppDetailsPage.js:1061
 #, javascript-format
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
@@ -200,11 +205,11 @@ msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 msgid "A version without a container technology is or was installed."
 msgstr "Eine Version ohne Container-Technologie ist oder war installiert."
 
-#: umc/js/appcenter/AppInstallWizard.js:204
+#: umc/js/appcenter/AppInstallWizard.js:240
 msgid "Accept license"
 msgstr "Lizenz akzeptieren"
 
-#: umc/js/appcenter/AppInstallWizard.js:207
+#: umc/js/appcenter/AppInstallWizard.js:243
 msgid "Accept license and install app"
 msgstr "Lizenz akzeptieren"
 
@@ -220,27 +225,27 @@ msgstr ""
 "Aktivierung is nicht möglich. Bitte als Administrator auf dem Primary "
 "Directory Node einloggen."
 
-#: umc/js/appcenter/AppDetailsPage.js:1000
+#: umc/js/appcenter/AppDetailsPage.js:943
 msgid "Activation of UCS"
 msgstr "UCS-Aktivierung"
 
-#: umc/js/appcenter/SettingsPage.js:121
+#: umc/js/appcenter/SettingsPage.js:122
 msgid "Add"
 msgstr "Neu"
 
-#: umc/js/appcenter/DetailsPage.js:183
+#: umc/js/appcenter/DetailsPage.js:185
 msgid "Add a new component"
 msgstr "Neue Komponente hinzufügen"
 
-#: umc/js/appcenter/SettingsPage.js:122
+#: umc/js/appcenter/SettingsPage.js:123
 msgid "Add a new component definition"
 msgstr "Neue Komponentendefinition hinzufügen"
 
-#: umc/js/appcenter/SettingsPage.js:253
+#: umc/js/appcenter/SettingsPage.js:254
 msgid "Additional repositories"
 msgstr "Zusätzliche Repositories"
 
-#: umc/js/appcenter/DetailsPage.js:138
+#: umc/js/appcenter/DetailsPage.js:140
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
@@ -252,16 +257,16 @@ msgstr "Nach dem Speichern wird die Datei gelöscht werden."
 msgid "After saving, the new file will be uploaded."
 msgstr "Nach dem Speichern wird die neue Datei hochgeladen werden."
 
-#: umc/js/appcenter/AppDetailsPage.js:1004
+#: umc/js/appcenter/AppDetailsPage.js:947
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: umc/js/appcenter/SettingsPage.js:347
+#: umc/js/appcenter/SettingsPage.js:348
 #, javascript-format
 msgid "An unknown error with code %d occurred."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: umc/js/appcenter/AppDetailsPage.js:1022 umc/js/appcenter/requirements.js:86
+#: umc/js/appcenter/AppDetailsPage.js:965 umc/js/appcenter/requirements.js:86
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
@@ -269,42 +274,41 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 msgid "App Center Badges"
 msgstr "App Center Badges"
 
-#: umc/js/appcenter/AppLiveSearchSidebar.js:132
+#: umc/js/appcenter/AppLiveSearchSidebar.js:133
 msgid "App License"
 msgstr "App Lizenz"
 
 #: umc/js/appcenter/AppDetailsDialog.js:54
-#: umc/js/appcenter/AppDetailsPage.js:91 umc/js/appcenter/AppConfigDialog.js:51
+#: umc/js/appcenter/AppDetailsPage.js:90 umc/js/appcenter/AppConfigDialog.js:51
 #: umc/js/appcenter/AppCenterPage.js:66
 msgid "App management"
 msgstr "App-Verwaltung"
 
-#: umc/js/appcenter/AppDetailsPage.js:309
-#: umc/js/appcenter/AppDetailsPage.js:639
-#: umc/js/appcenter/AppInstallWizardAppSettingsPage.js:45
+#: umc/js/appcenter/AppDetailsPage.js:308
+#: umc/js/appcenter/AppDetailsPage.js:602
+#: umc/js/appcenter/AppInstallWizardAppSettingsPage.js:50
 msgid "App settings"
 msgstr "App-Einstellungen"
 
-#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/SettingsPage.js:93
+#: umc/js/appcenter/DetailsPage.js:67 umc/js/appcenter/SettingsPage.js:94
 #: umc/js/appcenter/AppConfigDialog.js:73
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/appcenter/SettingsPage.js:298
+#: umc/js/appcenter/SettingsPage.js:299
 msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
-#: umc/js/appcenter/AppDetailsContainer.js:195
+#: umc/js/appcenter/AppDetailsContainer.js:197
 msgid "Attention!"
 msgstr "Achtung!"
 
 #: umc/js/appcenter/requirements.js:311
 msgid ""
-"Automatically migrating the Application and data (where required) is not "
-"supported; however, a document exists, which guides through the manual steps "
-"to do so."
+"Automatically migrating the App and data (where required) is not supported; "
+"however, a document exists, which guides through the manual steps to do so."
 msgstr ""
-"Eine automatische Migration der Applikation und (ggf.) der Daten wird nicht "
+"Eine automatische Migration der App und (ggf.) der Daten wird nicht "
 "unterstützt. Allerdings existiert ein Dokument, das die händisch "
 "auszuführenden Schritte beschreibt."
 
@@ -312,40 +316,40 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autostart"
 
-#: umc/js/appcenter/AppDetailsPage.js:698 umc/js/appcenter/SettingsPage.js:234
-#: umc/js/appcenter/AppCenterPage.js:211
+#: umc/js/appcenter/AppDetailsPage.js:661 umc/js/appcenter/SettingsPage.js:235
+#: umc/js/appcenter/AppCenterPage.js:215
 msgid "Available"
 msgstr "Verfügbar"
 
-#: umc/js/appcenter/AppDetailsPage.js:1188
+#: umc/js/appcenter/AppDetailsPage.js:1131
 msgid "Available support options"
 msgstr "Verfügbare Supportoptionen"
 
-#: umc/js/appcenter/DetailsPage.js:54 umc/js/appcenter/AppDetailsPage.js:98
+#: umc/js/appcenter/DetailsPage.js:56 umc/js/appcenter/AppDetailsPage.js:97
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/js/appcenter/AppLiveSearchSidebar.js:128
+#: umc/js/appcenter/AppLiveSearchSidebar.js:129
 msgid "Badges"
 msgstr "Badges"
 
-#: umc/js/appcenter/DetailsPage.js:129
+#: umc/js/appcenter/DetailsPage.js:131
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/appcenter/AppDetailsContainer.js:195
+#: umc/js/appcenter/AppDetailsContainer.js:197
 msgid ""
 "Be sure to execute the following command as root on all of these Backup "
-"Nodes <em>after</em> installing the application."
+"Nodes <em>after</em> installing the App."
 msgstr ""
 "Führen Sie den folgenden Befehl als root auf den diesen Backup Nodes aus, "
-"<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
+"<em>nachdem</em> Sie die App auf diesem System installiert haben."
 
-#: umc/js/appcenter/AppDetailsPage.js:215 umc/js/appcenter/requirements.js:106
+#: umc/js/appcenter/AppDetailsPage.js:214 umc/js/appcenter/requirements.js:106
 msgid "Buy"
 msgstr "Kaufen"
 
-#: umc/js/appcenter/AppDetailsPage.js:678
+#: umc/js/appcenter/AppDetailsPage.js:641
 msgid "Buy %(appName)s to install version %(candidateVersion)s."
 msgstr ""
 "Kaufen Sie %(appName)s, um Version %(candidateVersion)s zu installieren."
@@ -363,8 +367,8 @@ msgid "Buy the App before the installation."
 msgstr "Kaufen Sie die App vor der Installation."
 
 #: umc/js/appcenter/AppDetailsDialog.js:60 umc/js/appcenter/PackagesPage.js:418
-#: umc/js/appcenter/PackagesPage.js:427 umc/js/appcenter/AppDetailsPage.js:796
-#: umc/js/appcenter/SettingsPage.js:304
+#: umc/js/appcenter/PackagesPage.js:427 umc/js/appcenter/AppDetailsPage.js:759
+#: umc/js/appcenter/SettingsPage.js:305
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -373,7 +377,7 @@ msgid "Cancel configuration"
 msgstr "Konfiguration abbrechen"
 
 #: umc/js/appcenter/AppDetailsDialog.js:95
-#: umc/js/appcenter/AppInstallDialog.js:57
+#: umc/js/appcenter/AppInstallDialog.js:59
 msgid "Cancel installation"
 msgstr "Installation abbrechen"
 
@@ -381,27 +385,27 @@ msgstr "Installation abbrechen"
 msgid "Candidate version"
 msgstr "Verfügbare Version"
 
-#: umc/js/appcenter/AppLiveSearchSidebar.js:124
+#: umc/js/appcenter/AppLiveSearchSidebar.js:125
 msgid "Category"
 msgstr "Kategorie"
 
-#: umc/js/appcenter/AppDetailsPage.js:1240
+#: umc/js/appcenter/AppDetailsPage.js:1183
 msgid ""
-"Click on \"%(button)s\" if you want to continue running this application at "
-"your own risk."
+"Click on \"%(button)s\" if you want to continue running this App at your own "
+"risk."
 msgstr ""
-"Klicken Sie auf \"%(button)s\", falls Sie die Applikation weiterhin auf "
-"eigenes Risiko verwenden möchten."
+"Klicken Sie auf \"%(button)s\", falls Sie die App weiterhin auf eigenes "
+"Risiko verwenden möchten."
 
-#: umc/js/appcenter/PackagesPage.js:235 umc/js/appcenter/AppDetailsPage.js:838
+#: umc/js/appcenter/PackagesPage.js:235 umc/js/appcenter/AppDetailsPage.js:801
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/appcenter/DetailsPage.js:86 umc/js/appcenter/SettingsPage.js:203
+#: umc/js/appcenter/DetailsPage.js:88 umc/js/appcenter/SettingsPage.js:204
 msgid "Component name"
 msgstr "Name der Komponente"
 
-#: umc/js/appcenter/DetailsPage.js:51
+#: umc/js/appcenter/DetailsPage.js:53
 msgid "Components"
 msgstr "Komponenten"
 
@@ -410,27 +414,27 @@ msgstr "Komponenten"
 msgid "Configure %s"
 msgstr "Konfiguriere %s"
 
-#: umc/js/appcenter/AppDetailsPage.js:694
+#: umc/js/appcenter/AppDetailsPage.js:657
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/appcenter/AppDetailsPage.js:819
-#: umc/js/appcenter/AppChooseHostWizard.js:123
+#: umc/js/appcenter/AppDetailsPage.js:782
+#: umc/js/appcenter/AppChooseHostWizard.js:263
 #: umc/js/appcenter/AppCenterPage.js:144
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: umc/js/appcenter/AppInstallWizard.js:195
+#: umc/js/appcenter/AppInstallWizard.js:231
 msgid "Continue anyway"
 msgstr "Trotzdem fortfahren"
 
-#: umc/js/appcenter/AppDetailsPage.js:293
-#: umc/js/appcenter/AppDetailsPage.js:629
-#: umc/js/appcenter/AppDetailsPage.js:1240
+#: umc/js/appcenter/AppDetailsPage.js:292
+#: umc/js/appcenter/AppDetailsPage.js:592
+#: umc/js/appcenter/AppDetailsPage.js:1183
 msgid "Continue using"
 msgstr "Weiterhin nutzen"
 
-#: umc/js/appcenter/SettingsPage.js:188 umc/js/appcenter/SettingsPage.js:307
+#: umc/js/appcenter/SettingsPage.js:189 umc/js/appcenter/SettingsPage.js:308
 msgid "Delete"
 msgstr "Löschen"
 
@@ -438,15 +442,15 @@ msgstr "Löschen"
 msgid "Delete file"
 msgstr "Datei löschen"
 
-#: umc/js/appcenter/SettingsPage.js:189
+#: umc/js/appcenter/SettingsPage.js:190
 msgid "Delete the selected component definition"
 msgstr "Diese Komponente löschen"
 
-#: umc/js/appcenter/DetailsPage.js:91 umc/js/appcenter/PackagesPage.js:316
+#: umc/js/appcenter/DetailsPage.js:93 umc/js/appcenter/PackagesPage.js:316
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/appcenter/AppDetailsPage.js:518
+#: umc/js/appcenter/AppDetailsPage.js:499
 msgid "Details"
 msgstr "Details"
 
@@ -454,19 +458,19 @@ msgstr "Details"
 msgid "Details for package '%(package)s'"
 msgstr "Details zum Paket '%(package)s'"
 
-#: umc/js/appcenter/App.js:425
+#: umc/js/appcenter/App.js:421
 msgid "Different UCS Version. Limited manageability"
 msgstr "Unterschiedliche UCS-Version. Eingeschränkte Funktionen"
 
-#: umc/js/appcenter/SettingsPage.js:153
+#: umc/js/appcenter/SettingsPage.js:154
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: umc/js/appcenter/SettingsPage.js:152
+#: umc/js/appcenter/SettingsPage.js:153
 msgid "Disable this component"
 msgstr "Diese Komponente deaktivieren"
 
-#: umc/js/appcenter/SettingsPage.js:233
+#: umc/js/appcenter/SettingsPage.js:234
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -478,31 +482,31 @@ msgstr "Diese Nachricht nicht wieder anzeigen"
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
-#: umc/js/appcenter/AppDetailsPage.js:1110
+#: umc/js/appcenter/AppDetailsPage.js:1053
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
-#: umc/js/appcenter/SettingsPage.js:178
+#: umc/js/appcenter/SettingsPage.js:179
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/appcenter/DetailsPage.js:196
+#: umc/js/appcenter/DetailsPage.js:198
 msgid "Edit component details [{component}]"
 msgstr "Komponenten-Details [{component}] bearbeiten"
 
-#: umc/js/appcenter/SettingsPage.js:179
+#: umc/js/appcenter/SettingsPage.js:180
 msgid "Edit the detail information about this component"
 msgstr "Detailinformation über diese Komponente bearbeiten"
 
-#: umc/js/appcenter/SettingsPage.js:142
+#: umc/js/appcenter/SettingsPage.js:143
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: umc/js/appcenter/DetailsPage.js:81 umc/js/appcenter/SettingsPage.js:141
+#: umc/js/appcenter/DetailsPage.js:83 umc/js/appcenter/SettingsPage.js:142
 msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
 
-#: umc/js/appcenter/AppDetailsPage.js:952
+#: umc/js/appcenter/AppDetailsPage.js:895
 msgid "Error performing the action"
 msgstr "Ein Fehler trat während der Aktion auf"
 
@@ -511,21 +515,21 @@ msgstr "Ein Fehler trat während der Aktion auf"
 msgid "File will be uploaded to %s."
 msgstr "Datei wird nach %s hochgeladen."
 
-#: umc/js/appcenter/AppDetailsPage.js:455
+#: umc/js/appcenter/AppDetailsPage.js:436
 msgid "First steps"
 msgstr "Erste Schritte"
 
 #: umc/js/appcenter/requirements.js:162
 msgid ""
-"For the installation of this application, a UCS license key with a key "
+"For the installation of this App, a UCS license key with a key "
 "identification (Key ID) is required."
 msgstr ""
-"Für die Installation dieser Applikation ist ein UCS-Lizenzschlüssel mit "
+"Für die Installation dieser App ist ein UCS-Lizenzschlüssel mit "
 "Schlüsselidentifikation (Key-ID) notwendig."
 
-#: umc/js/appcenter/AppDetailsPage.js:1054
-#: umc/js/appcenter/AppDetailsPage.js:1063
-#: umc/js/appcenter/AppDetailsPage.js:1068
+#: umc/js/appcenter/AppDetailsPage.js:997
+#: umc/js/appcenter/AppDetailsPage.js:1006
+#: umc/js/appcenter/AppDetailsPage.js:1011
 #, javascript-format
 msgid ""
 "Further information can be found in the following log file on each of the "
@@ -534,15 +538,15 @@ msgstr ""
 "Weitere Hinweise finden Sie in der folgenden Logdatei auf den beteiligten "
 "Systemen: %s"
 
-#: umc/js/appcenter/SettingsPage.js:111
+#: umc/js/appcenter/SettingsPage.js:112
 msgid "General repository settings"
 msgstr "Allgemeine Repository-Einstellungen"
 
-#: umc/js/appcenter/AppChooseHostWizard.js:106
-msgid "Host for installation of application"
-msgstr "Rechner für die Installation der Applikation"
+#: umc/js/appcenter/AppChooseHostWizard.js:228
+msgid "Host for installation of App"
+msgstr "Rechner für die Installation der App"
 
-#: umc/js/appcenter/AppDetailsPage.js:1052
+#: umc/js/appcenter/AppDetailsPage.js:995
 #, javascript-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
@@ -551,43 +555,51 @@ msgstr ""
 "Wenn keine weiteren Fehler auftraten und dies nur ein temporäres "
 "Netzwerkproblem ist, sollten Sie %s als root auf dem Backup Node ausführen."
 
-#: umc/js/appcenter/AppChooseHostWizard.js:103
+#: umc/js/appcenter/AppChooseHostWizard.js:162
 #, javascript-format
 msgid ""
 "In order to proceed with the installation of %s, please select the host on "
-"which the application is going to be installed."
+"which the App is going to be installed."
 msgstr ""
-"Um mit der installation von %s fortfahren zu können, muss der Rechner für "
-"die Installation der Applikation ausgewählt werden."
+"Um mit der Installation von %s fortfahren zu können, muss der Rechner für "
+"die Installation der App ausgewählt werden."
 
-#: umc/js/appcenter/PackagesPage.js:86 umc/js/appcenter/PackagesPage.js:241
-#: umc/js/appcenter/AppDetailsPage.js:206
-#: umc/js/appcenter/AppDetailsPage.js:264
-#: umc/js/appcenter/AppDetailsPage.js:574
-#: umc/js/appcenter/AppDetailsPage.js:585
-#: umc/js/appcenter/AppDetailsPage.js:853 umc/js/appcenter/SettingsPage.js:163
-#: umc/js/appcenter/AppInstallWizard.js:99
+#: umc/js/appcenter/AppChooseHostWizard.js:163
+msgid ""
+"In order to proceed with the installation, please select the hosts on which "
+"the Apps are going to be installed."
+msgstr ""
+"Um mit der Installation fortfahren zu können, muss der Rechner für die "
+"Installation der Apps ausgewählt werden."
+
+#: umc/js/appcenter/Tiles.js:121 umc/js/appcenter/PackagesPage.js:86
+#: umc/js/appcenter/PackagesPage.js:241 umc/js/appcenter/AppDetailsPage.js:205
+#: umc/js/appcenter/AppDetailsPage.js:263
+#: umc/js/appcenter/AppDetailsPage.js:537
+#: umc/js/appcenter/AppDetailsPage.js:548
+#: umc/js/appcenter/AppDetailsPage.js:822 umc/js/appcenter/SettingsPage.js:164
+#: umc/js/appcenter/AppInstallWizard.js:116
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/appcenter/AppDetailsPage.js:774
+#: umc/js/appcenter/AppDetailsPage.js:737
 msgid "Install Information"
 msgstr "Informationen zur Installation"
 
-#: umc/js/appcenter/AppDetailsPage.js:854
-#: umc/js/appcenter/AppInstallWizard.js:198
+#: umc/js/appcenter/AppDetailsPage.js:823
+#: umc/js/appcenter/AppInstallWizard.js:234
 msgid "Install anyway"
 msgstr "Trotzdem installieren"
 
-#: umc/js/appcenter/AppInstallWizard.js:213
+#: umc/js/appcenter/AppInstallWizard.js:249
 msgid "Install app"
 msgstr "App Installieren"
 
-#: umc/js/appcenter/AppInstallWizardReadmeInstallPage.js:45
+#: umc/js/appcenter/AppInstallWizardReadmeInstallPage.js:46
 msgid "Install information"
 msgstr "Informationen zur Installation"
 
-#: umc/js/appcenter/SettingsPage.js:164
+#: umc/js/appcenter/SettingsPage.js:165
 msgid "Install the component's default package(s)"
 msgstr "Die Standardpakete dieser Komponente installieren"
 
@@ -595,22 +607,27 @@ msgstr "Die Standardpakete dieser Komponente installieren"
 msgid "Install them first."
 msgstr "Installieren Sie diese zuerst."
 
-#: umc/js/appcenter/AppDetailsPage.js:855
-#: umc/js/appcenter/AppChooseHostWizard.js:99
-#: umc/js/appcenter/AppInstallWizard.js:146
+#: umc/js/appcenter/AppDetailsPage.js:824
+#: umc/js/appcenter/AppChooseHostWizard.js:82
+#: umc/js/appcenter/AppInstallWizard.js:191
 #, javascript-format
 msgid "Installation of %s"
 msgstr "Installation von %s"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:83
+#: umc/js/appcenter/AppInstallWizard.js:192
+msgid "Installation of multiple apps"
+msgstr "Installation mehrerer Apps"
 
 #: umc/js/appcenter/PackagesPage.js:143
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: umc/js/appcenter/SettingsPage.js:238 umc/js/appcenter/AppCenterPage.js:177
+#: umc/js/appcenter/SettingsPage.js:239 umc/js/appcenter/AppCenterPage.js:178
 msgid "Installed"
 msgstr "Installiert"
 
-#: umc/js/appcenter/AppCenterPage.js:190
+#: umc/js/appcenter/AppCenterPage.js:192
 msgid "Installed in domain"
 msgstr "Installiert in der Domäne"
 
@@ -622,16 +639,12 @@ msgstr "Installierte Version"
 msgid "Installing"
 msgstr "Installiere"
 
-#: umc/js/appcenter/AppDetailsPage.js:860
-msgid "Installing %(name)s on host %(host)s"
-msgstr "Installiere %(name)s auf Rechner %(host)s"
-
-#: umc/js/appcenter/AppDetailsPage.js:857
+#: umc/js/appcenter/AppDetailsPage.js:826
 #, javascript-format
-msgid "Installing %s on this host"
-msgstr "Installiere %s auf diesem Rechner"
+msgid "Installing %s"
+msgstr "Installiere %s"
 
-#: umc/js/appcenter/AppDetailsPage.js:1050
+#: umc/js/appcenter/AppDetailsPage.js:993
 #, javascript-format
 msgid "Installing the extension of the LDAP schema on %s seems to have failed."
 msgstr ""
@@ -648,7 +661,7 @@ msgstr "Aktualisierbar"
 
 #: umc/js/appcenter/AppConfigDialog.js:103
 msgid "It can only be configured while it is running."
-msgstr "Die Konfiguration ist nur möglich, während die Applikation läuft."
+msgstr "Die Konfiguration ist nur möglich, während die App läuft."
 
 #: umc/js/appcenter/requirements.js:270
 #, javascript-format
@@ -659,11 +672,11 @@ msgstr ""
 "Momentan ist es nicht möglich, ein Plugin zu deinstallieren. Entfernen Sie "
 "stattdessen %s."
 
-#: umc/js/appcenter/AppDetailsContainer.js:169
+#: umc/js/appcenter/AppDetailsContainer.js:171
 msgid "It is not possible to continue"
 msgstr "Fortfahren nicht möglich"
 
-#: umc/js/appcenter/AppDetailsContainer.js:173
+#: umc/js/appcenter/AppDetailsContainer.js:175
 msgid "It is not recommended to continue"
 msgstr "Fortfahren nicht empfohlen"
 
@@ -672,30 +685,33 @@ msgid "Less"
 msgstr "Weniger"
 
 #: umc/js/appcenter/AppCenterPage.js:96
-msgid "Let us know if you you miss any application in Univention App Center!"
+msgid "Let us know if you you miss any App in Univention App Center!"
 msgstr ""
 "Teilen Sie uns mit, welche Anwendung Sie im Univention App Center vermissen!"
 
-#: umc/js/appcenter/AppDetailsPage.js:695
+#: umc/js/appcenter/AppDetailsPage.js:658
 msgid "License"
 msgstr "Lizenz"
 
-#: umc/js/appcenter/AppDetailsPage.js:838
-#: umc/js/appcenter/AppInstallWizardLicenseAgreementPage.js:45
+#: umc/js/appcenter/AppDetailsPage.js:801
 msgid "License agreement"
 msgstr "Lizenzbestimmungen"
 
-#: umc/js/appcenter/AppDetailsPage.js:577
-#: umc/js/appcenter/AppDetailsPage.js:658
+#: umc/js/appcenter/AppInstallWizardLicenseAgreementPage.js:46
+msgid "License agreements"
+msgstr "Lizenzbestimmungen"
+
+#: umc/js/appcenter/AppDetailsPage.js:540
+#: umc/js/appcenter/AppDetailsPage.js:621
 msgid "Manage installation"
 msgstr "Installation verwalten"
 
-#: umc/js/appcenter/Badges.js:48 umc/js/appcenter/AppDetailsPage.js:582
-#: umc/js/appcenter/AppDetailsPage.js:664
+#: umc/js/appcenter/Badges.js:48 umc/js/appcenter/AppDetailsPage.js:545
+#: umc/js/appcenter/AppDetailsPage.js:627
 msgid "Manage installations"
 msgstr "Installationen verwalten"
 
-#: umc/js/appcenter/AppDetailsPage.js:475
+#: umc/js/appcenter/AppDetailsPage.js:456
 msgid "Manage local installation"
 msgstr "Installation lokal verwalten"
 
@@ -709,11 +725,11 @@ msgstr "Mehr"
 msgid "More information"
 msgstr "Weitere Informationen"
 
-#: umc/js/appcenter/AppDetailsContainer.js:261
+#: umc/js/appcenter/AppDetailsContainer.js:263
 msgid "More information..."
 msgstr "Weitere Informationen..."
 
-#: umc/js/appcenter/AppDetailsPage.js:249
+#: umc/js/appcenter/AppDetailsPage.js:248
 msgid "Next app"
 msgstr "Nächste App"
 
@@ -725,28 +741,28 @@ msgstr "Nein"
 msgid "No file was uploaded yet."
 msgstr "Es wurde noch keine Datei hochgeladen."
 
-#: umc/js/appcenter/AppDetailsContainer.js:257
+#: umc/js/appcenter/AppDetailsContainer.js:259
 msgid "No software changes necessary."
 msgstr "Es sind keine Software-Änderungen notwendig."
 
-#: umc/js/appcenter/AppDetailsContainer.js:244
+#: umc/js/appcenter/AppDetailsContainer.js:246
 #, javascript-format
 msgid "No software changes on %s necessary."
 msgstr "Es sind keine Software-Änderungen auf %s notwendig."
 
-#: umc/js/appcenter/AppDetailsPage.js:1186
+#: umc/js/appcenter/AppDetailsPage.js:1129
 msgid "No support option provided"
 msgstr "Keine Supportoption verfügbar"
 
-#: umc/js/appcenter/AppChooseHostWizard.js:93
+#: umc/js/appcenter/AppChooseHostWizard.js:217
 msgid "Not all hosts are listed above"
 msgstr "Nicht alle Rechner sind in der Auswahl zugelassen"
 
-#: umc/js/appcenter/SettingsPage.js:235
+#: umc/js/appcenter/SettingsPage.js:236
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: umc/js/appcenter/AppDetailsPage.js:703
+#: umc/js/appcenter/AppDetailsPage.js:666
 msgid "Notification"
 msgstr "Benach­richtigung"
 
@@ -760,7 +776,7 @@ msgstr ""
 "aktualisieren."
 
 #: umc/js/appcenter/AppCenterMetaCategory.js:108
-#: umc/js/appcenter/AppDetailsPage.js:619 umc/js/appcenter/App.js:398
+#: umc/js/appcenter/AppDetailsPage.js:582 umc/js/appcenter/App.js:394
 msgid "Open"
 msgstr "Öffnen"
 
@@ -790,11 +806,11 @@ msgstr "Migrationsleitfaden öffnen"
 msgid "Package categories"
 msgstr "Kategorien"
 
-#: umc/js/appcenter/AppInstallWizard.js:76
+#: umc/js/appcenter/AppInstallWizard.js:83
 msgid "Package changes"
 msgstr "Paketänderungen"
 
-#: umc/js/appcenter/PackagesPage.js:138 umc/js/appcenter/SearchForm.js:71
+#: umc/js/appcenter/PackagesPage.js:138 umc/js/appcenter/SearchForm.js:72
 msgid "Package description"
 msgstr "Paketbeschreibung"
 
@@ -803,7 +819,7 @@ msgid "Package details"
 msgstr "Paketdetails"
 
 #: umc/js/appcenter/PackagesPage.js:128 umc/js/appcenter/PackagesPage.js:313
-#: umc/js/appcenter/SearchForm.js:70
+#: umc/js/appcenter/SearchForm.js:71
 msgid "Package name"
 msgstr "Paketname"
 
@@ -815,15 +831,19 @@ msgstr "Paketgröße"
 msgid "Packages not found: "
 msgstr "Pakete wurden nicht gefunden: "
 
-#: umc/js/appcenter/DetailsPage.js:116
+#: umc/js/appcenter/DetailsPage.js:118
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/appcenter/SettingsPage.js:236
+#: umc/js/appcenter/AppInstallDialog.js:88
+msgid "Performing dependency checks"
+msgstr "Löse Abhängigkeiten auf"
+
+#: umc/js/appcenter/SettingsPage.js:237
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: umc/js/appcenter/AppDetailsPage.js:1064
+#: umc/js/appcenter/AppDetailsPage.js:1007
 #, javascript-format
 msgid ""
 "Please also have a look at %s for more App upgrade troubleshooting "
@@ -832,58 +852,34 @@ msgstr ""
 "Weitere Informationen zur Fehlerbehebung bei App-Upgrades finden Sie unter "
 "%s."
 
-#: umc/js/appcenter/AppDetailsPage.js:859
-msgid "Please confirm to install the application %(name)s on host %(host)s."
-msgstr ""
-"Bitte bestätigen Sie die Installation der Applikation %(name)s auf Rechner "
-"%(host)s"
-
-#: umc/js/appcenter/AppDetailsPage.js:856
+#: umc/js/appcenter/AppDetailsPage.js:825
 #, javascript-format
-msgid "Please confirm to install the application %s on this host."
-msgstr ""
-"Bitte bestätigen Sie die Installation der Applikation %s auf diesem Rechner."
+msgid "Please confirm to install %s."
+msgstr "Bitte bestätigen Sie die Installation von %s."
 
-#: umc/js/appcenter/AppDetailsPage.js:870
-msgid ""
-"Please confirm to uninstall the application %(name)s from host %(host)s."
-msgstr ""
-"Bitte bestätigen Sie die Deinstallation der Applikation %(name)s auf Rechner "
-"%(host)s."
-
-#: umc/js/appcenter/AppDetailsPage.js:867
+#: umc/js/appcenter/AppDetailsPage.js:832
 #, javascript-format
-msgid "Please confirm to uninstall the application %s on this host."
-msgstr ""
-"Bitte bestätigen Sie die Deinstallation der Applikation %s auf diesem "
-"Rechner."
+msgid "Please confirm to uninstall %s."
+msgstr "Bitte bestätigen Sie die Deinstallation von %s."
 
-#: umc/js/appcenter/AppDetailsPage.js:881
-msgid "Please confirm to upgrade the application %(name)s on host %(host)s."
-msgstr ""
-"Bitte bestätigen Sie die Aktualisierung der Applikation %(name)s auf Rechner "
-"%(host)s."
-
-#: umc/js/appcenter/AppDetailsPage.js:878
+#: umc/js/appcenter/AppDetailsPage.js:839
 #, javascript-format
-msgid "Please confirm to upgrade the application %s on this host."
-msgstr ""
-"Bitte bestätigen Sie die Aktualisierung der Applikation %s auf diesem "
-"Rechner."
+msgid "Please confirm to upgrade %s."
+msgstr "Bitte bestätigen Sie die Aktualisierung von %s."
 
-#: umc/js/appcenter/AppDetailsPage.js:1190
-msgid "Please contact the provider of the application"
-msgstr "Bitte kontaktieren Sie den Anbieter der Applikation"
+#: umc/js/appcenter/AppDetailsPage.js:1133
+msgid "Please contact the provider of the App"
+msgstr "Bitte kontaktieren Sie den Anbieter der App"
 
-#: umc/js/appcenter/SettingsPage.js:349
+#: umc/js/appcenter/SettingsPage.js:350
 msgid "Please correct the corresponding input fields."
 msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
 
-#: umc/js/appcenter/DetailsPage.js:184
+#: umc/js/appcenter/DetailsPage.js:186
 msgid "Please enter the details for the new component."
 msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 
-#: umc/js/appcenter/AppDetailsPage.js:242
+#: umc/js/appcenter/AppDetailsPage.js:241
 msgid "Previous app"
 msgstr "Vorherige App"
 
@@ -891,16 +887,16 @@ msgstr "Vorherige App"
 msgid "Priority"
 msgstr "Priorität"
 
-#: umc/js/appcenter/AppDetailsPage.js:693
+#: umc/js/appcenter/AppDetailsPage.js:656
 msgid "Provider"
 msgstr "Anbieter"
 
-#: umc/js/appcenter/AppDetailsPage.js:180
+#: umc/js/appcenter/AppDetailsPage.js:179
 msgid "Quick and easy – your ballot has been cast."
 msgstr "So fix geht's – schon zählt Ihre Stimme."
 
-#: umc/js/appcenter/AppDetailsPage.js:1158
-#: umc/js/appcenter/AppDetailsPage.js:1164
+#: umc/js/appcenter/AppDetailsPage.js:1101
+#: umc/js/appcenter/AppDetailsPage.js:1107
 msgid "Read license agreement"
 msgstr "Lizenzbestimmungen lesen"
 
@@ -908,46 +904,49 @@ msgstr "Lizenzbestimmungen lesen"
 msgid "Reboot now"
 msgstr "Jetzt neustarten"
 
-#: umc/js/appcenter/SettingsPage.js:131
+#: umc/js/appcenter/SettingsPage.js:132
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: umc/js/appcenter/SettingsPage.js:132
+#: umc/js/appcenter/SettingsPage.js:133
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:257
+#: umc/js/appcenter/AppCenterPage.js:262
 msgid ""
-"Registration of the applications in the domain failed. It will be retried "
-"when opening this module again. This may also cause problems when installing "
-"applications."
+"Registration of the Apps in the domain failed. It will be retried when "
+"opening this module again. This may also cause problems when installing Apps."
 msgstr ""
-"Die Registrierung der Applikationen in der Domäne ist fehlgeschlagen. Sie "
-"wird beim nächsten Öffnen des Moduls wiederholt werden. Es kann zu Problemen "
-"bei der Installation von Applikationen kommen."
+"Die Registrierung der Apps in der Domäne ist fehlgeschlagen. Sie wird beim "
+"nächsten Öffnen des Moduls wiederholt werden. Es kann zu Problemen bei der "
+"Installation von Apps kommen."
 
-#: umc/js/appcenter/AppDetailsPage.js:866
+#: umc/js/appcenter/AppDetailsPage.js:831
 #, javascript-format
 msgid "Removal of %s"
 msgstr "Deinstallation von %s"
 
-#: umc/js/appcenter/AppDetailsContainer.js:177
+#: umc/js/appcenter/AppDetailsContainer.js:179
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
-#: umc/js/appcenter/DetailsPage.js:101 umc/js/appcenter/SettingsPage.js:68
+#: umc/js/appcenter/DetailsPage.js:103 umc/js/appcenter/SettingsPage.js:69
 msgid "Repository prefix"
 msgstr "Repository-Präfix"
 
-#: umc/js/appcenter/DetailsPage.js:96 umc/js/appcenter/SettingsPage.js:64
+#: umc/js/appcenter/DetailsPage.js:98 umc/js/appcenter/SettingsPage.js:65
 msgid "Repository server"
 msgstr "Repository-Server"
+
+#: umc/js/appcenter/AppInstallDialog.js:147
+msgid "Running tests"
+msgstr "Führe Tests durch"
 
 #: umc/js/appcenter/AppCenterPage.js:83
 msgid "Search Apps"
 msgstr "Apps suchen"
 
-#: umc/js/appcenter/SearchForm.js:66
+#: umc/js/appcenter/SearchForm.js:67
 msgid "Search key"
 msgstr "Suche nach"
 
@@ -955,7 +954,7 @@ msgstr "Suche nach"
 msgid "Search term"
 msgstr "Suchbegriff"
 
-#: umc/js/appcenter/SearchForm.js:80
+#: umc/js/appcenter/SearchForm.js:82
 msgid "Search..."
 msgstr "Suche..."
 
@@ -963,7 +962,11 @@ msgstr "Suche..."
 msgid "Section"
 msgstr "Kategorie"
 
-#: umc/js/appcenter/AppDetailsPage.js:496
+#: umc/js/appcenter/Tiles.js:116
+msgid "Select"
+msgstr "Auswählen"
+
+#: umc/js/appcenter/AppDetailsPage.js:477
 msgid "Server"
 msgstr "Server"
 
@@ -980,8 +983,8 @@ msgid "Show progress"
 msgstr "Fortschritt anzeigen"
 
 #: umc/js/appcenter/AppConfigDialog.js:132
-msgid "Start the application"
-msgstr "Applikation starten"
+msgid "Start the App"
+msgstr "App starten"
 
 #: umc/js/appcenter/AppConfigDialog.js:119
 msgid "Started automatically"
@@ -995,19 +998,19 @@ msgstr "Manuell gestartet"
 msgid "Starting is prevented"
 msgstr "Start wird verhindert"
 
-#: umc/js/appcenter/AppDetailsPage.js:499 umc/js/appcenter/SettingsPage.js:225
+#: umc/js/appcenter/AppDetailsPage.js:480 umc/js/appcenter/SettingsPage.js:226
 msgid "Status"
 msgstr "Status"
 
 #: umc/js/appcenter/AppConfigDialog.js:140
-msgid "Stop the application"
-msgstr "Applikation stoppen"
+msgid "Stop the App"
+msgstr "App stoppen"
 
 #: umc/js/appcenter/AppCenterPage.js:97
 msgid "Suggest new app"
 msgstr "Neue App vorschlagen"
 
-#: umc/js/appcenter/AppCenterPage.js:203
+#: umc/js/appcenter/AppCenterPage.js:206
 msgid "Suggestions based on installed apps"
 msgstr "Vorschläge basierend auf installierten Apps"
 
@@ -1015,7 +1018,7 @@ msgstr "Vorschläge basierend auf installierten Apps"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/appcenter/AppDetailsPage.js:702
+#: umc/js/appcenter/AppDetailsPage.js:665
 msgid "Support"
 msgstr "Support"
 
@@ -1023,7 +1026,7 @@ msgstr "Support"
 msgid "Support Docker Apps"
 msgstr "Docker Apps unterstützen"
 
-#: umc/js/appcenter/AppDetailsPage.js:1168
+#: umc/js/appcenter/AppDetailsPage.js:1111
 msgid ""
 "The App does not provide any information about the license. Please contact "
 "the App provider for further details."
@@ -1031,86 +1034,120 @@ msgstr ""
 "Die App stellt keine Informationen zur Lizenz bereit. Bitte kontaktieren Sie "
 "den App-Anbieter für weitere Einzelheiten."
 
-#: umc/js/appcenter/AppDetailsPage.js:1060
-msgid "The App update has failed!"
-msgstr "Das App Update ist fehlgeschlagen!"
-
-#: umc/js/appcenter/AppDetailsPage.js:1122
-#, javascript-format
-msgid "The app provides a web interface: %s."
-msgstr "Die App bietet ein Webinterface: %s."
-
 #: umc/js/appcenter/AppConfigDialog.js:103
-msgid "The application is currently not running."
-msgstr "Die Applikation läuft momentan nicht."
+msgid "The App is currently not running."
+msgstr "Die App läuft momentan nicht."
 
 #: umc/js/appcenter/AppConfigDialog.js:105
-msgid "The application is currently running."
-msgstr "Die Applikation läuft momentan."
+msgid "The App is currently running."
+msgstr "Die App läuft momentan."
 
 #: umc/js/appcenter/requirements.js:332
 msgid ""
-"The application requires %(minimum)d MB of free RAM but only %(current)d MB "
-"are available."
+"The App requires %(minimum)d MB of free RAM but only %(current)d MB are "
+"available."
 msgstr ""
 "Die Anwendung erfordert %(minimum)d MB freien Arbeitsspeicher, es sind aber "
 "nur %(current)d MB verfügbar."
 
 #: umc/js/appcenter/requirements.js:337
 msgid ""
-"The application requires %(minimum)d MB of free disk space but only "
-"%(current)d MB are available."
+"The App requires %(minimum)d MB of free disk space but only %(current)d MB "
+"are available."
 msgstr ""
 "Die Anwendung erfordert %(minimum)d MB freien Festplattenplatz, es sind aber "
 "nur %(current)d MB verfügbar."
 
 #: umc/js/appcenter/requirements.js:115
-msgid "The application requires UCS version %(required_version)s or later."
-msgstr "Die Applikation erfordert mindestens UCS-Version %(required_version)s."
+msgid "The App requires UCS version %(required_version)s or later."
+msgstr "Die App erfordert mindestens UCS-Version %(required_version)s."
 
 #: umc/js/appcenter/requirements.js:129
 msgid ""
-"The application requires a newer kernel than your system is currently using "
-"(at least kernel 4.9 is required)."
+"The App requires a newer kernel than your system is currently using (at "
+"least kernel 4.9 is required)."
 msgstr ""
-"Die Applikation benötigt einen neueren Kernel als Ihr System momentan "
-"benutzt (mindestens Kernel 4.9 wird benötigt)."
+"Die App benötigt einen neueren Kernel als Ihr System momentan benutzt "
+"(mindestens Kernel 4.9 wird benötigt)."
 
 #: umc/js/appcenter/requirements.js:293
 msgid ""
-"The application requires the password service to be set up on the Active "
-"Directory domain controller server."
+"The App requires the password service to be set up on the Active Directory "
+"domain controller server."
 msgstr ""
-"Die Applikation setzt voraus, dass der Passwort-Dienst auf dem Active "
-"Directory Domänencontroller eingerichtet wurde."
+"Die App setzt voraus, dass der Passwort-Dienst auf dem Active Directory "
+"Domänencontroller eingerichtet wurde."
+
+#: umc/js/appcenter/AppDetailsPage.js:1003
+msgid "The App update has failed!"
+msgstr "Das App Update ist fehlgeschlagen!"
 
 #: umc/js/appcenter/requirements.js:143
 msgid ""
-"The application uses a container technology while the App Center is "
-"configured to not not support it."
+"The App uses a container technology while the App Center is configured to "
+"not not support it."
 msgstr ""
-"Die Applikation nutzt eine Container-Technologie, aber das App Center ist so "
+"Die App nutzt eine Container-Technologie, aber das App Center ist so "
 "eingestellt, diese Technologie nicht zu unterstützen."
 
 #: umc/js/appcenter/requirements.js:157
 msgid ""
-"The application uses a container technology while the system itself runs in "
-"a container. Using the application is not supported on this host."
+"The App uses a container technology while the system itself runs in a "
+"container. Using the App is not supported on this host."
 msgstr ""
-"Die Applikation nutzt eine Container-Technologie, aber das System selbst ist "
-"in einem Container installiert. Die Applikation zu benutzen ist nicht "
-"unterstützt."
+"Die App nutzt eine Container-Technologie, aber das System selbst ist in "
+"einem Container installiert. Die App zu benutzen ist nicht unterstützt."
 
-#: umc/js/appcenter/SettingsPage.js:352
+#: umc/js/appcenter/AppDetailsPage.js:1065
+#, javascript-format
+msgid "The app provides a web interface: %s."
+msgstr "Die App bietet ein Webinterface: %s."
+
+#: umc/js/appcenter/SettingsPage.js:353
 msgid "The data you entered could not be saved correctly."
 msgstr ""
 "Die von Ihnen eingegebenen Daten konnten nicht korrekt gespeichert werden."
 
-#: umc/js/appcenter/AppDetailsPage.js:1062
+#: umc/js/appcenter/AppDetailsPage.js:1005
 msgid "The error message was:"
 msgstr "Die Fehlermeldung lautet:"
 
-#: umc/js/appcenter/AppDetailsContainer.js:189
+#: umc/js/appcenter/AppChooseHostWizard.js:89
+#, javascript-format
+msgid ""
+"The following App will be additionally installed because it is a required "
+"dependency for %s."
+msgstr "Die folgende App wird zusätzlich installiert, weil %s davon abhängt."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:95
+msgid ""
+"The following App will be additionally installed because it is a required "
+"dependency for the selected Apps."
+msgstr ""
+"Die folgende App wird zusätzlich installiert, weil die ausgewählten Apps "
+"davon abhängen."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:135
+msgid "The following Apps where initially selected."
+msgstr "Folgende Apps wurden anfangs ausgewählt."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:91
+#, javascript-format
+msgid ""
+"The following Apps will be additionally installed because they are required "
+"dependencies for %s."
+msgstr ""
+"Die folgenden Apps werden zusätzlich installiert, weil %s davon abhängt."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:97
+msgid ""
+"The following Apps will be additionally installed because they are required "
+"dependencies for the selected Apps."
+msgstr ""
+"Die folgenden Apps werden zusätzlich installiert, weil die ausgewählten Apps "
+"davon abhängen."
+
+#: umc/js/appcenter/AppDetailsContainer.js:191
 msgid ""
 "The following hosts cannot be reached or do not have access to the App "
 "Center server:"
@@ -1119,21 +1156,21 @@ msgstr ""
 "Zugriff auf den App Center-Server:"
 
 #: umc/js/appcenter/PackagesPage.js:399
-#: umc/js/appcenter/AppDetailsContainer.js:253
+#: umc/js/appcenter/AppDetailsContainer.js:255
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
 #: umc/js/appcenter/PackagesPage.js:403
-#: umc/js/appcenter/AppDetailsContainer.js:254
+#: umc/js/appcenter/AppDetailsContainer.js:256
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
-#: umc/js/appcenter/AppDetailsContainer.js:246
+#: umc/js/appcenter/AppDetailsContainer.js:248
 #, javascript-format
 msgid "The following software changes on %s will be applied: "
 msgstr "Die folgenden Software-Änderungen werden auf %s angewendet: "
 
-#: umc/js/appcenter/AppInstallWizard.js:159
+#: umc/js/appcenter/AppInstallWizard.js:196
 msgid ""
 "The installation cannot be performed. Please refer to the information below "
 "to solve the problem and try again."
@@ -1146,7 +1183,7 @@ msgstr ""
 msgid "The installation of version %(version)s is not permitted."
 msgstr "Die Installation von Version %(version)s ist nicht erlaubt."
 
-#: umc/js/appcenter/AppDetailsPage.js:953
+#: umc/js/appcenter/AppDetailsPage.js:896
 msgid ""
 "The requested action cannot be carried out. Please consider the information "
 "listed below in order to resolve the problem and try again."
@@ -1155,7 +1192,7 @@ msgstr ""
 "berücksichtigen Sie die Informationen, die unten angegeben sind, um das "
 "Problem zu beheben und es erneut zu versuchen."
 
-#: umc/js/appcenter/AppDetailsContainer.js:189
+#: umc/js/appcenter/AppDetailsContainer.js:191
 msgid "The server tried to connect to the involved systems."
 msgstr ""
 "Der Server hat versucht, sich mit den beteiligten Systemen zu verbinden."
@@ -1173,13 +1210,12 @@ msgid "The system has to be updated."
 msgstr "Das System muss aktualisiert werden."
 
 #: umc/js/appcenter/requirements.js:199
-msgid ""
-"The system has to join a domain before the application can be installed!"
+msgid "The system has to join a domain before the App can be installed!"
 msgstr ""
-"Das System muss einer Domäne beigetreten sein, bevor die Applikation "
-"installiert werden kann!"
+"Das System muss einer Domäne beigetreten sein, bevor die App installiert "
+"werden kann!"
 
-#: umc/js/appcenter/AppDetailsContainer.js:235
+#: umc/js/appcenter/AppDetailsContainer.js:237
 msgid ""
 "The version of the remote App Center is <strong>incompatible</strong> with "
 "the local one. Please update your hosts."
@@ -1187,7 +1223,7 @@ msgstr ""
 "Die Version des entfernten App Center ist zu der des lokalen "
 "<strong>inkompatibel</strong>. Bitte aktualisieren Sie Ihre Hosts."
 
-#: umc/js/appcenter/AppDetailsContainer.js:179
+#: umc/js/appcenter/AppDetailsContainer.js:181
 #, javascript-format
 msgid ""
 "These changes contain <strong>all package upgrades available</strong> and "
@@ -1202,38 +1238,37 @@ msgstr ""
 "deaktiviert werden."
 
 #: umc/js/appcenter/requirements.js:196
-#: umc/js/appcenter/AppDetailsContainer.js:195
-msgid "This application requires an extension of the LDAP schema."
-msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
+#: umc/js/appcenter/AppDetailsContainer.js:197
+msgid "This App requires an extension of the LDAP schema."
+msgstr "Diese App erfordert eine Erweiterung des LDAP Schemas."
 
-#: umc/js/appcenter/AppDetailsPage.js:1230
+#: umc/js/appcenter/AppDetailsPage.js:1173
 msgid ""
-"This application will inform the App provider about an (un)installation. The "
-"app provider may contact you."
+"This App will inform the App provider about an (un)installation. The app "
+"provider may contact you."
 msgstr ""
-"Diese Applikation setzt den App-Anbieter über eine (De)Installation in "
-"Kenntnis. Der App-Anbieter wird Sie ggf. kontaktieren."
+"Diese App setzt den App-Anbieter über eine (De)Installation in Kenntnis. Der "
+"App-Anbieter wird Sie ggf. kontaktieren."
 
-#: umc/js/appcenter/AppCenterGallery.js:114 umc/js/appcenter/Tile.js:74
-msgid "This application will not get any further updates."
-msgstr "Diese Applikation wird keine weiteren Aktualisierungen erhalten."
+#: umc/js/appcenter/AppCenterGallery.js:114
+msgid "This App will not get any further updates."
+msgstr "Diese App wird keine weiteren Aktualisierungen erhalten."
 
-#: umc/js/appcenter/AppDetailsPage.js:1238
-#: umc/js/appcenter/AppCenterGallery.js:112 umc/js/appcenter/Tile.js:72
+#: umc/js/appcenter/AppDetailsPage.js:1181
+#: umc/js/appcenter/AppCenterGallery.js:112
 msgid ""
-"This application will not get any further updates. We suggest to uninstall "
-"%(app)s and search for an alternative application."
+"This App will not get any further updates. We suggest to uninstall %(app)s "
+"and search for an alternative App."
 msgstr ""
-"Diese Applikation wird keine weiteren Aktualisierungen erhalten. Wir "
-"empfehlen, %(app)s zu deinstallieren und alternative Software zu suchen."
+"Diese App wird keine weiteren Aktualisierungen erhalten. Wir empfehlen, "
+"%(app)s zu deinstallieren und alternative Software zu suchen."
 
-#: umc/js/appcenter/AppDetailsPage.js:1232
+#: umc/js/appcenter/AppDetailsPage.js:1175
 msgid ""
-"This application will not inform the App provider about an (un)installation "
-"directly."
+"This App will not inform the App provider about an (un)installation directly."
 msgstr ""
-"Diese Applikation setzt den App-Anbieter nicht direkt über eine "
-"(De)Installation in Kenntnis."
+"Diese App setzt den App-Anbieter nicht direkt über eine (De)Installation in "
+"Kenntnis."
 
 #: umc/js/appcenter/requirements.js:132
 msgid ""
@@ -1244,14 +1279,14 @@ msgstr ""
 "Aktualisierung. Ein Neustart kann dazu führen, dass ein neuerer Kernel "
 "verwendet wird."
 
-#: umc/js/appcenter/SettingsPage.js:53
+#: umc/js/appcenter/SettingsPage.js:54
 msgid "This module shows all repositories settings defined for this system."
 msgstr ""
 "Diese Modul zeigt alle Repository-Einstellungen, die für dieses System "
 "definiert sind."
 
 #: umc/js/appcenter/PackagesPage.js:407
-#: umc/js/appcenter/AppDetailsContainer.js:255
+#: umc/js/appcenter/AppDetailsContainer.js:257
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -1259,7 +1294,7 @@ msgstr ""
 "Die Aktion führt bei folgenden Paketen zu nicht automatisch behebbaren "
 "Problemen:"
 
-#: umc/js/appcenter/AppDetailsPage.js:992
+#: umc/js/appcenter/AppDetailsPage.js:935
 #, javascript-format
 msgid ""
 "To do this please log in as %s and repeat the steps taken until this dialog. "
@@ -1268,7 +1303,7 @@ msgstr ""
 "Melden Sie sich dazu bitte als %s an und wiederholen Sie alle Schritte bis "
 "zu diesem Dialog. Sie werden durch die Installation geführt werden."
 
-#: umc/js/appcenter/AppDetailsPage.js:1003
+#: umc/js/appcenter/AppDetailsPage.js:946
 msgid ""
 "To do this please log in on %(host)s as an administrator. Open the menu in "
 "the top right corner of the screen and choose \"License\" > \"%(dialogName)s"
@@ -1280,19 +1315,19 @@ msgstr ""
 "anfordern."
 
 #: umc/js/appcenter/PackagesPage.js:99 umc/js/appcenter/PackagesPage.js:250
-#: umc/js/appcenter/AppDetailsPage.js:330
-#: umc/js/appcenter/AppDetailsPage.js:649
-#: umc/js/appcenter/AppDetailsPage.js:743
-#: umc/js/appcenter/AppDetailsPage.js:864
+#: umc/js/appcenter/AppDetailsPage.js:329
+#: umc/js/appcenter/AppDetailsPage.js:612
+#: umc/js/appcenter/AppDetailsPage.js:706
+#: umc/js/appcenter/AppDetailsPage.js:829
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: umc/js/appcenter/AppDetailsPage.js:743
-#: umc/js/appcenter/AppDetailsPage.js:746
+#: umc/js/appcenter/AppDetailsPage.js:706
+#: umc/js/appcenter/AppDetailsPage.js:709
 msgid "Uninstall Information"
 msgstr "Informationen zur Deinstallation"
 
-#: umc/js/appcenter/AppDetailsPage.js:865
+#: umc/js/appcenter/AppDetailsPage.js:830
 msgid "Uninstall anyway"
 msgstr "Trotzdem deinstallieren"
 
@@ -1305,14 +1340,10 @@ msgstr "Deinstallieren Sie diese zuerst."
 msgid "Uninstalling"
 msgstr "Deinstalliere"
 
-#: umc/js/appcenter/AppDetailsPage.js:871
-msgid "Uninstalling %(name)s from host %(host)s"
-msgstr "Deinstalliere %(name)s von Rechner %(host)s"
-
-#: umc/js/appcenter/AppDetailsPage.js:868
+#: umc/js/appcenter/AppDetailsPage.js:833
 #, javascript-format
-msgid "Uninstalling %s from this host"
-msgstr "Deinstalliere %s von diesem Rechner"
+msgid "Uninstalling %s"
+msgstr "Deinstalliere %s"
 
 #: umc/js/appcenter/requirements.js:325
 #, javascript-format
@@ -1323,42 +1354,42 @@ msgstr "Die Deinstallation von %s entfernt auch die folgenden Plugins:"
 msgid "Univention App Center"
 msgstr "Univention App Center"
 
-#: umc/js/appcenter/SettingsPage.js:237
-#: umc/js/appcenter/AppDetailsContainer.js:210
+#: umc/js/appcenter/SettingsPage.js:238
+#: umc/js/appcenter/AppDetailsContainer.js:212
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/appcenter/AppCenterGallery.js:117 umc/js/appcenter/Tile.js:77
+#: umc/js/appcenter/AppCenterGallery.js:117
 msgid "Update available"
 msgstr "Aktualisierung verfügbar"
 
-#: umc/js/appcenter/PackagesPage.js:487 umc/js/appcenter/AppDetailsPage.js:1099
+#: umc/js/appcenter/PackagesPage.js:487 umc/js/appcenter/AppDetailsPage.js:1042
 msgid "Updating session and module data..."
 msgstr "Aktualisiere Sitzungs- und Moduldaten..."
 
 #: umc/js/appcenter/PackagesPage.js:112 umc/js/appcenter/PackagesPage.js:259
-#: umc/js/appcenter/AppDetailsPage.js:347
-#: umc/js/appcenter/AppDetailsPage.js:604
-#: umc/js/appcenter/AppDetailsPage.js:782
-#: umc/js/appcenter/AppDetailsPage.js:875
+#: umc/js/appcenter/AppDetailsPage.js:346
+#: umc/js/appcenter/AppDetailsPage.js:567
+#: umc/js/appcenter/AppDetailsPage.js:745
+#: umc/js/appcenter/AppDetailsPage.js:836
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: umc/js/appcenter/AppDetailsPage.js:782
-#: umc/js/appcenter/AppDetailsPage.js:785
+#: umc/js/appcenter/AppDetailsPage.js:745
+#: umc/js/appcenter/AppDetailsPage.js:748
 msgid "Upgrade Information"
 msgstr "Informationen zur Aktualisierung"
 
-#: umc/js/appcenter/AppDetailsPage.js:876
+#: umc/js/appcenter/AppDetailsPage.js:837
 msgid "Upgrade anyway"
 msgstr "Trotzdem aktualisieren"
 
-#: umc/js/appcenter/AppDetailsPage.js:877
+#: umc/js/appcenter/AppDetailsPage.js:838
 #, javascript-format
 msgid "Upgrade of %s"
 msgstr "Aktualisierung von %s"
 
-#: umc/js/appcenter/App.js:415 umc/js/appcenter/App.js:436
+#: umc/js/appcenter/App.js:411 umc/js/appcenter/App.js:432
 #, javascript-format
 msgid "Upgrade to %s available"
 msgstr "Aktualisierung auf %s verfügbar"
@@ -1367,33 +1398,29 @@ msgstr "Aktualisierung auf %s verfügbar"
 msgid "Upgrading"
 msgstr "Aktualisiere"
 
-#: umc/js/appcenter/AppDetailsPage.js:882
-msgid "Upgrading %(name)s on host %(host)s"
-msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
-
-#: umc/js/appcenter/AppDetailsPage.js:879
+#: umc/js/appcenter/AppDetailsPage.js:840
 #, javascript-format
-msgid "Upgrading %s on this host"
-msgstr "Aktualisiere %s auf diesem Rechner"
+msgid "Upgrading %s"
+msgstr "Aktualisiere %s"
 
 #: umc/js/appcenter/AppSettingsFileUploader.js:41
 msgid "Upload file"
 msgstr "Datei hochladen"
 
-#: umc/js/appcenter/DetailsPage.js:106 umc/js/appcenter/SettingsPage.js:72
+#: umc/js/appcenter/DetailsPage.js:108 umc/js/appcenter/SettingsPage.js:73
 msgid "Use unmaintained repositories"
 msgstr "'Unmaintained' Repositories benutzen"
 
-#: umc/js/appcenter/DetailsPage.js:111
+#: umc/js/appcenter/DetailsPage.js:113
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/appcenter/AppDetailsPage.js:1114
+#: umc/js/appcenter/AppDetailsPage.js:1057
 #, javascript-format
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
 
-#: umc/js/appcenter/SettingsPage.js:354
+#: umc/js/appcenter/SettingsPage.js:355
 msgid ""
 "Using the data you entered, no valid repository could be found.<br/>Since "
 "this may be a temporary server problem as well, your data was saved though."
@@ -1403,24 +1430,24 @@ msgstr ""
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
 
-#: umc/js/appcenter/AppDetailsPage.js:692
+#: umc/js/appcenter/AppDetailsPage.js:655
 msgid "Vendor"
 msgstr "Hersteller"
 
-#: umc/js/appcenter/DetailsPage.js:121 umc/js/appcenter/AppDetailsPage.js:697
-#: umc/js/appcenter/AppDetailsPage.js:700
+#: umc/js/appcenter/DetailsPage.js:123 umc/js/appcenter/AppDetailsPage.js:660
+#: umc/js/appcenter/AppDetailsPage.js:663
 msgid "Version"
 msgstr "Version"
 
-#: umc/js/appcenter/AppLiveSearchSidebar.js:140
+#: umc/js/appcenter/AppLiveSearchSidebar.js:141
 msgid "Vote Apps"
 msgstr "Vote Apps"
 
-#: umc/js/appcenter/Vote.js:41 umc/js/appcenter/AppDetailsPage.js:180
+#: umc/js/appcenter/Vote.js:41 umc/js/appcenter/AppDetailsPage.js:179
 msgid "Vote for App"
 msgstr "Vote for App"
 
-#: umc/js/appcenter/AppCenterGallery.js:119 umc/js/appcenter/Tile.js:79
+#: umc/js/appcenter/AppCenterGallery.js:119
 msgid ""
 "Vote for this app now and bring your favorite faster to the Univention App "
 "Center"
@@ -1446,11 +1473,11 @@ msgstr ""
 "Stimmen Sie jetzt ab und zeigen Sie uns, wie relevant die Verfügbarkeit "
 "dieser App für Sie ist."
 
-#: umc/js/appcenter/AppDetailsPage.js:1061
+#: umc/js/appcenter/AppDetailsPage.js:1004
 msgid "We are sorry for the inconvenience."
 msgstr "Wir entschuldigen uns für die Unannehmlichkeiten."
 
-#: umc/js/appcenter/AppInstallWizard.js:161
+#: umc/js/appcenter/AppInstallWizard.js:198
 msgid ""
 "We detected some problems that may lead to a faulty installation. Please "
 "consider the information below before continuing with the installation."
@@ -1459,7 +1486,7 @@ msgstr ""
 "führen können. Bitte beachten Sie die folgenden Informationen, bevor Sie mit "
 "der Installation fortfahren."
 
-#: umc/js/appcenter/SettingsPage.js:356
+#: umc/js/appcenter/SettingsPage.js:357
 msgid ""
 "With the current (already changed) settings, the following problem was "
 "encountered:"
@@ -1483,8 +1510,8 @@ msgstr ""
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
-#: umc/js/appcenter/AppDetailsPage.js:991
-#: umc/js/appcenter/AppDetailsPage.js:1002
+#: umc/js/appcenter/AppDetailsPage.js:934
+#: umc/js/appcenter/AppDetailsPage.js:945
 msgid ""
 "You need to request and install a new license in order to use the Univention "
 "App Center."
@@ -1500,11 +1527,11 @@ msgstr ""
 "Sie erhalten einen solchen Lizenzschlüssel nach der kostenlosen Aktivierung "
 "innerhalb weniger Minuten per E-Mail."
 
-#: umc/js/appcenter/DetailsPage.js:197
+#: umc/js/appcenter/DetailsPage.js:199
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
-#: umc/js/appcenter/AppDetailsContainer.js:221
+#: umc/js/appcenter/AppDetailsContainer.js:223
 msgid "an unknown amount of"
 msgstr "eine unbekannte Anzahl"
 
@@ -1530,23 +1557,21 @@ msgid "install"
 msgstr "installieren"
 
 #: umc/js/appcenter/requirements.js:221
-msgid "this application may be installed on any computer in the domain"
+msgid "this App may be installed on any computer in the domain"
 msgstr ""
-"diese Applikation kann auf einem beliebigen Rechner in der Domäne "
-"installiert werden"
+"diese App kann auf einem beliebigen Rechner in der Domäne installiert werden"
 
 #: umc/js/appcenter/requirements.js:223
-msgid "this application must be installed on another computer in the domain"
+msgid "this App must be installed on another computer in the domain"
 msgstr ""
-"diese Applikation muss auf einem anderen Rechner in der Domäne installiert "
-"werden"
+"diese App muss auf einem anderen Rechner in der Domäne installiert werden"
 
 #: umc/js/appcenter/App.js:50
 msgid "this computer"
 msgstr "dieser Rechner"
 
-#: umc/js/appcenter/AppDetailsContainer.js:244
 #: umc/js/appcenter/AppDetailsContainer.js:246
+#: umc/js/appcenter/AppDetailsContainer.js:248
 msgid "this host"
 msgstr "diesem Rechner"
 
@@ -1558,15 +1583,15 @@ msgstr "deinstallieren"
 msgid "upgrade"
 msgstr "aktualisieren"
 
-#: umc/js/appcenter/AppDetailsContainer.js:242
+#: umc/js/appcenter/AppDetailsContainer.js:244
 msgid "{0} packages are erroneous"
 msgstr "{0} Pakete sind fehlerhaft"
 
-#: umc/js/appcenter/AppDetailsContainer.js:240
+#: umc/js/appcenter/AppDetailsContainer.js:242
 msgid "{0} packages will be installed / upgraded"
 msgstr "{0} Pakete werden installiert / aktualisiert"
 
-#: umc/js/appcenter/AppDetailsContainer.js:241
+#: umc/js/appcenter/AppDetailsContainer.js:243
 msgid "{0} packages will be removed"
 msgstr "{0} Pakete werden deinstalliert"
 
@@ -1648,6 +1673,9 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ "Hier können Sie die die Applikation konfigurieren, sowie sie starten und "
 #~ "stoppen."
 
+#~ msgid "Host for installation of application"
+#~ msgstr "Rechner für die Installation der Applikation"
+
 #~ msgid ""
 #~ "If your UCS environment does not have such a key at it's disposal (e.g. "
 #~ "UCS Core Edition) and the vendor requires a Key ID, you will be asked to "
@@ -1677,6 +1705,12 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ msgid "Installed on any UCS server in the domain"
 #~ msgstr "Installiert auf einem UCS-Server in der Domäne"
 
+#~ msgid "Installing %(name)s on host %(host)s"
+#~ msgstr "Installiere %(name)s auf Rechner %(host)s"
+
+#~ msgid "Installing %s on this host"
+#~ msgstr "Installiere %s auf diesem Rechner"
+
 #~ msgid "Manage domain wide installations"
 #~ msgstr "Installationen in der Domäne verwalten"
 
@@ -1688,6 +1722,21 @@ msgstr "{0} Pakete werden deinstalliert"
 
 #~ msgid "Pattern"
 #~ msgstr "Suchbegriff"
+
+#~ msgid "Please confirm to install the App %(name)s on host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Installation der App %(name)s auf Rechner "
+#~ "%(host)s"
+
+#~ msgid "Please confirm to uninstall the App %(name)s from host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Deinstallation der App %(name)s auf Rechner "
+#~ "%(host)s."
+
+#~ msgid "Please confirm to upgrade the App %(name)s on host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Aktualisierung der App %(name)s auf Rechner "
+#~ "%(host)s."
 
 #~ msgid "Registered email address"
 #~ msgstr "Registrierte E-Mail-Adresse"
@@ -1733,6 +1782,12 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ msgid "Try to uninstall the app"
 #~ msgstr "Versuchen Sie, die App zu deinstallieren"
 
+#~ msgid "Uninstalling %(name)s from host %(host)s"
+#~ msgstr "Deinstalliere %(name)s von Rechner %(host)s"
+
+#~ msgid "Uninstalling %s from this host"
+#~ msgstr "Deinstalliere %s von diesem Rechner"
+
 #~ msgid ""
 #~ "Univention App Center is the simplest method to install or uninstall "
 #~ "applications on Univention Corporate Server."
@@ -1750,6 +1805,12 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ "App Center erhält Univention zu statistischen Zwecken immer eine "
 #~ "anonymisierte Benachrichtigung, die nur bei Univention zur "
 #~ "Datenverarbeitung gespeichert und nicht an Dritte weiter gegeben wird."
+
+#~ msgid "Upgrading %(name)s on host %(host)s"
+#~ msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
+
+#~ msgid "Upgrading %s on this host"
+#~ msgstr "Aktualisiere %s auf diesem Rechner"
 
 #~ msgid "Use this App"
 #~ msgstr "Die App verwenden"

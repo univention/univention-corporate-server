@@ -112,7 +112,7 @@ define([
 		}),
 		must_have_fitting_ucs_version: new Requirement({
 			reasonDescription: function(details) {
-				return _('The application requires UCS version %(required_version)s or later.', details);
+				return _('The App requires UCS version %(required_version)s or later.', details);
 			},
 			solutionDescription: function() {
 				return _('The system has to be updated.');
@@ -126,7 +126,7 @@ define([
 		}),
 		must_have_fitting_kernel_version: new Requirement({
 			reasonDescription: function(details) {
-				return _('The application requires a newer kernel than your system is currently using (at least kernel 4.9 is required).');
+				return _('The App requires a newer kernel than your system is currently using (at least kernel 4.9 is required).');
 			},
 			solutionDescription: function() {
 				return _('This is probably due to a missing reboot after an UCS upgrade. After a reboot, a newer kernel may be used.');
@@ -140,7 +140,7 @@ define([
 		}),
 		must_not_be_docker_if_docker_is_disabled: new Requirement({
 			reasonDescription: function() {
-				return _('The application uses a container technology while the App Center is configured to not not support it.');
+				return _('The App uses a container technology while the App Center is configured to not not support it.');
 			},
 			solutionDescription: function() {
 				return _('You can configure the App Center to support it now. The service "docker" will be started.');
@@ -154,12 +154,12 @@ define([
 		}),
 		must_not_be_docker_in_docker: new Requirement({
 			reasonDescription: function() {
-				return _('The application uses a container technology while the system itself runs in a container. Using the application is not supported on this host.');
+				return _('The App uses a container technology while the system itself runs in a container. Using the App is not supported on this host.');
 			}
 		}),
 		must_have_valid_license: new Requirement({
 			reasonDescription: function() {
-				return _('For the installation of this application, a UCS license key with a key identification (Key ID) is required.');
+				return _('For the installation of this App, a UCS license key with a key identification (Key ID) is required.');
 			},
 			solutionDescription: function() {
 				return _('You receive such a license key within a couple of minutes via email after a free activation.');
@@ -173,7 +173,7 @@ define([
 		}),
 		must_have_candidate: new Requirement({
 			reasonDescription: function(details) {
-				return _('%s cannot be updated. The application is either not installed or no newer version is available.', entities.encode(details.name));
+				return _('%s cannot be updated. The App is either not installed or no newer version is available.', entities.encode(details.name));
 			}
 		}),
 		must_not_be_installed: new Requirement({
@@ -193,10 +193,10 @@ define([
 		}),
 		must_be_joined_if_master_packages: new Requirement({
 			reasonDescription: function() {
-				return _('This application requires an extension of the LDAP schema.');
+				return _('This App requires an extension of the LDAP schema.');
 			},
 			solutionDescription: function() {
-				return _('The system has to join a domain before the application can be installed!');
+				return _('The system has to join a domain before the App can be installed!');
 			},
 			solutionLabel: function() {
 				return _('Open "Domain join" module');
@@ -208,19 +208,19 @@ define([
 		must_have_correct_server_role: new Requirement({
 			reasonDescription: function(details) {
 				details = {name: entities.encode(details.name), current_role: entities.encode(details.current_role), allowed_roles: entities.encode(details.allowed_roles)};
-				return _('%(name)s cannot be installed on the current server role (%(current_role)s). In order to install the application, one of the following roles is necessary: %(allowed_roles)s', details);
+				return _('%(name)s cannot be installed on the current server role (%(current_role)s). In order to install the App, one of the following roles is necessary: %(allowed_roles)s', details);
 			}
 		}),
 		must_have_no_unmet_dependencies: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s requires the following applications.', entities.encode(details.name));
+				var txt = _('%s requires the following Apps.', entities.encode(details.name));
 				txt += '<ul><li>' + array.map(details.detail, function(app) {
 					var appTxt = entities.encode(app.name);
 					if (app.in_domain) {
 						if (app.local_allowed) {
-							appTxt += ' (' + _('this application may be installed on any computer in the domain') + ')';
+							appTxt += ' (' + _('this App may be installed on any computer in the domain') + ')';
 						} else {
-							appTxt += ' (' + _('this application must be installed on another computer in the domain') + ')';
+							appTxt += ' (' + _('this App must be installed on another computer in the domain') + ')';
 						}
 					}
 					return appTxt;
@@ -250,7 +250,7 @@ define([
 		}),
 		must_have_no_conflicts_apps: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s conflicts with the following applications.', entities.encode(details.name));
+				var txt = _('%s conflicts with the following Apps.', entities.encode(details.name));
 				txt += '<ul><li>' + array.map(details.detail, function(app) { return entities.encode(app.name); }).join('</li><li>') + '</li></ul>';
 				return txt;
 			},
@@ -272,7 +272,7 @@ define([
 		}),
 		must_not_be_depended_on: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s is required for the following applications to work.', entities.encode(details.name));
+				var txt = _('%s is required for the following Apps to work.', entities.encode(details.name));
 				txt += '<ul><li>' + array.map(details.detail, function(app) { return entities.encode(app.name); }).join('</li><li>') + '</li></ul>';
 				return txt;
 			},
@@ -290,7 +290,7 @@ define([
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
 			stayAfterSolution: true,
 			reasonDescription: function() {
-				return _('The application requires the password service to be set up on the Active Directory domain controller server.');
+				return _('The App requires the password service to be set up on the Active Directory domain controller server.');
 			},
 			solutionDescription: function() {
 				return _('The steps how to install the service on that machine are described in the online documentation.');
@@ -308,7 +308,7 @@ define([
 			},
 			solutionDescription: function(details) {
 				if (details.migration_link) {
-					return _('Automatically migrating the Application and data (where required) is not supported; however, a document exists, which guides through the manual steps to do so.');
+					return _('Automatically migrating the App and data (where required) is not supported; however, a document exists, which guides through the manual steps to do so.');
 				}
 			},
 			solutionLabel: function(details) {
@@ -329,12 +329,12 @@ define([
 		}),
 		shall_have_enough_ram: new Requirement({
 			reasonDescription: function(details) {
-				return _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.', details);
+				return _('The App requires %(minimum)d MB of free RAM but only %(current)d MB are available.', details);
 			}
 		}),
 		shall_have_enough_free_disk_space: new Requirement({
 			reasonDescription: function(details) {
-				return _('The application requires %(minimum)d MB of free disk space but only %(current)d MB are available.', details);
+				return _('The App requires %(minimum)d MB of free disk space but only %(current)d MB are available.', details);
 			}
 		})
 	};

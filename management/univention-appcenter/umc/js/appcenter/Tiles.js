@@ -113,7 +113,7 @@ define([
 		},
 
 		hasSelectionMode: true,
-		_selectionModeToggleButtonLabel: _('Choose'),
+		_selectionModeToggleButtonLabel: _('Select'),
 		_selection: null,
 		_updateSelectionNote: function() {
 			this.selectedNode.innerHTML = _('%s of %s Apps selected', this._selection.length, this.tiles.length);

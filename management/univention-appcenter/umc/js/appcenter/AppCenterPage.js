@@ -93,7 +93,7 @@ define([
 					href: _('https://www.univention.com/products/univention-app-center/vote-for-app/'),
 					target: '_blank',
 					style: {color: '#414142'},
-					title: _('Let us know if you you miss any application in Univention App Center!'),
+					title: _('Let us know if you you miss any App in Univention App Center!'),
 					innerHTML: _('Suggest new app')
 				});
 				this.addChild(new Text({
@@ -163,6 +163,7 @@ define([
 				var metaCategory = new Tiles({
 					header: metaObj.label,
 					query: metaObj.query,
+					hasSelectionMode: !!metaObj.hasSelectionMode,
 					isSuggestionCategory: !!metaObj.isSuggestionCategory,
 					visible: false
 				});
@@ -258,7 +259,7 @@ define([
 									this.addWarning(err.message);
 									return;
 								}
-								this.addWarning(_('Registration of the applications in the domain failed. It will be retried when opening this module again. This may also cause problems when installing applications.'));
+								this.addWarning(_('Registration of the Apps in the domain failed. It will be retried when opening this module again. This may also cause problems when installing Apps.'));
 							})
 						);
 					}

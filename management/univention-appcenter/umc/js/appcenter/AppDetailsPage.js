@@ -701,10 +701,10 @@ define([
 			this.configDialog.showUp();
 		},
 
-		uninstallApp: function(host) {
+		uninstallApps: function(apps, hosts) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('remove', host).then(
+				this.callInstaller('remove', apps, hosts).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
@@ -740,10 +740,10 @@ define([
 				}));
 		},
 
-		upgradeApp: function(host) {
+		upgradeApps: function(apps, hosts) {
 			// before installing, user must read update readme
 			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('upgrade', host).then(
+				this.callInstaller('upgrade', apps, hosts).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
@@ -802,8 +802,6 @@ define([
 		},
 
 		callInstaller: function(func, apps, hosts, force, deferred, values) {
-			// TODO
-			var isRemoteAction = host && tools.status('hostname') != host;
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
 			deferred.then(lang.hitch(nonInteractive, 'resolve'));
@@ -812,39 +810,34 @@ define([
 			var progressMessage = '';
 			var title = '';
 			var text = '';
+			var appNameText = '';
+			if (apps.length === 1) {
+				appNameText = _('%s Apps', apps.length); // FIXME
+				//appNameText = apps[0].name;
+			} else {
+				appNameText = _('%s Apps', apps.length);
+			}
 			switch(func) {
 			case 'install':
 				actionLabel = _('Install');
 				actionWarningLabel = _('Install anyway');
-				title = _('Installation of %s', this.app.name);
-				text = _('Please confirm to install the application %s on this host.', this.app.name);
-				progressMessage = _('Installing %s on this host', this.app.name);
-				if (isRemoteAction) {
-					text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-					progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
-				}
+				title = _('Installation of %s', appNameText);
+				text = _('Please confirm to install %s.', appNameText);
+				progressMessage = _('Installing %s', appNameText);
 				break;
 			case 'remove':
 				actionLabel = _('Uninstall');
 				actionWarningLabel = _('Uninstall anyway');
-				title = _('Removal of %s', this.app.name);
-				text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
-				progressMessage = _('Uninstalling %s from this host', this.app.name);
-				if (isRemoteAction) {
-					text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
-					progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
-				}
+				title = _('Removal of %s', appNameText);
+				text = _('Please confirm to uninstall %s.', appNameText);
+				progressMessage = _('Uninstalling %s', appNameText);
 				break;
 			case 'upgrade':
 				actionLabel = _('Upgrade');
 				actionWarningLabel = _('Upgrade anyway');
-				title = _('Upgrade of %s', this.app.name);
-				text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
-				progressMessage = _('Upgrading %s on this host', this.app.name);
-				if (isRemoteAction) {
-					text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-					progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
-				}
+				title = _('Upgrade of %s', appNameText);
+				text = _('Please confirm to upgrade %s.', appNameText);
+				progressMessage = _('Upgrading %s', appNameText);
 				break;
 			default:
 				console.warn(func, 'is not a known function');
@@ -869,25 +862,20 @@ define([
 				'dry_run': !force
 			};
 
-			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
+			this._progressBar.reset(_('%s: Performing software tests on involved systems', appNameText));
 			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-			var invokation;
-			if (this.app.installsAsDocker()) {
-				invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
-						undefined,
-						undefined,
-						lang.hitch(this, function(result) {
-							var errors = array.map(result.intermediate, function(res) {
-								if (res.level == 'ERROR' || res.level == 'CRITICAL') {
-									return res.message;
-								}
-							});
-							this._progressBar._addErrors(errors);
-						})
-				);
-			} else {
-				invokation = tools.umcpCommand(command, commandArguments);
-			}
+			var invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
+					undefined,
+					undefined,
+					lang.hitch(this, function(result) {
+						var errors = array.map(result.intermediate, function(res) {
+							if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+								return res.message;
+							}
+						});
+						this._progressBar._addErrors(errors);
+					})
+			);
 			invokation = invokation.then(lang.hitch(this, function(data) {
 				if (!('result' in data)) {
 					data = {'result': data};
@@ -911,7 +899,7 @@ define([
 					nonInteractive.reject();
 					this.detailsDialog.showUp().then(
 						lang.hitch(this, function(values) {
-							this.callInstaller(func, host, true, deferred, values);
+							this.callInstaller(func, apps, hosts, true, deferred, values);
 						}),
 						function() {
 							deferred.reject();
@@ -1142,7 +1130,7 @@ define([
 				}
 				return '<a href="' + entities.encode(supportURL) + '" target="_blank">' + _('Available support options') + '</a>';
 			} else {
-				return _('Please contact the provider of the application');
+				return _('Please contact the provider of the App');
 			}
 		},
 
@@ -1182,17 +1170,17 @@ define([
 				return null;
 			}
 			if (this.app.notifyVendor) {
-				return _('This application will inform the App provider about an (un)installation. The app provider may contact you.');
+				return _('This App will inform the App provider about an (un)installation. The app provider may contact you.');
 			} else {
-				return _('This application will not inform the App provider about an (un)installation directly.');
+				return _('This App will not inform the App provider about an (un)installation directly.');
 			}
 		},
 
 		_detailFieldCustomEndOfLife: function() {
 			if (this.app.endOfLife) {
-				var warning = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(this.app.name)});
+				var warning = _('This App will not get any further updates. We suggest to uninstall %(app)s and search for an alternative App.', {app: entities.encode(this.app.name)});
 				if (this.app.isCurrent) {
-					warning += ' ' + _('Click on "%(button)s" if you want to continue running this application at your own risk.', {button: _('Continue using')});
+					warning += ' ' + _('Click on "%(button)s" if you want to continue running this App at your own risk.', {button: _('Continue using')});
 				}
 				return warning;
 			}

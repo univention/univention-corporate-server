@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-01-11 12:32+0100\n"
+"POT-Creation-Date: 2021-02-08 22:56+0100\n"
 "PO-Revision-Date: 2020-09-05 16:26+0200\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: python/appcenter/utils.py:271
+#: python/appcenter/utils.py:274
 #, python-format
 msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
@@ -38,11 +38,11 @@ msgstr ""
 "Zertifikat des LDAP-Servers liegen. Bitte prüfen Sie auch die Proxy- und "
 "Firewall-Einstellungen, sofern vorhanden."
 
-#: python/appcenter/settings.py:252
+#: python/appcenter/settings.py:254
 msgid "Password"
 msgstr ""
 
-#: python/appcenter/app.py:1416 python/appcenter/install_checks.py:354
+#: python/appcenter/app.py:1437 python/appcenter/install_checks.py:354
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -55,12 +55,12 @@ msgstr ""
 msgid "The docker container could not be started!"
 msgstr "Der Docker Container konnte nicht gestartet werden!"
 
-#: python/appcenter/utils.py:276 python/appcenter/utils.py:293
+#: python/appcenter/utils.py:279 python/appcenter/utils.py:296
 #, python-format
 msgid "There is a problem with the certificate of the App Center server %s."
 msgstr "Es gibt ein Problem mit dem Zertifikat des App Center Servers %s."
 
-#: python/appcenter/utils.py:295
+#: python/appcenter/utils.py:298
 msgid ""
 "There was a problem with the HTTP response of the server (BadStatusLine). "
 "Please try again later."
@@ -68,13 +68,13 @@ msgstr ""
 "Es gab ein Problem mit der HTTP-Antwort des Servers (BadStatusLine). Bitte "
 "versuchen Sie es später noch einmal."
 
-#: python/appcenter/utils.py:273
+#: python/appcenter/utils.py:276
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
 "Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später"
 " noch einmal."
 
-#: python/appcenter/utils.py:289
+#: python/appcenter/utils.py:292
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -83,7 +83,7 @@ msgstr ""
 "Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
 "Hilfe unter %s."
 
-#: python/appcenter/utils.py:286
+#: python/appcenter/utils.py:289
 #, python-format
 msgid ""
 "This may be a problem with the firewall or proxy of your system. You may "
@@ -101,7 +101,7 @@ msgstr ""
 "App Center und die Apps zu verbessern, indem Sie uns die unten stehenden "
 "Informationen senden."
 
-#: python/appcenter/utils.py:285
+#: python/appcenter/utils.py:288
 #, python-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ip-"
@@ -110,7 +110,7 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ip-config:Web-"
 "Proxy_fuer_Caching_und_Policy_Management_Virenscan"
 
-#: python/appcenter/utils.py:288
+#: python/appcenter/utils.py:291
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"

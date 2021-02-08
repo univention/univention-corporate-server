@@ -158,13 +158,9 @@ define([
 					return roleA - roleB;
 				});
 			}
-			var installHost = null;
-			if (!this.isLocal()) {
-				installHost = this.fqdn;
-			}
 			this.install = lang.hitch(page, 'installAppDialog');
-			this.upgrade = lang.hitch(page, 'upgradeApp', installHost);
-			this.uninstall = lang.hitch(page, 'uninstallApp', installHost);
+			this.upgrade = lang.hitch(page, 'upgradeApps', [this.id], {[this.id]: this.fqdn});
+			this.uninstall = lang.hitch(page, 'uninstallApps', [this.id], {[this.id]: this.fqdn});
 		},
 
 		isLocal: function() {

@@ -107,7 +107,7 @@ define([
 			const keys = Object.keys(this.dryRunResults);
 			const final = [];
 			for (const appId of order) {
-				final.push(...keys.filter(key => key.startsWith(appId)));
+				final.push(...keys.filter(key => key.startsWith(appId + '$$')));
 			}
 			for (const key of final) {
 				const details = this.dryRunResults[key];

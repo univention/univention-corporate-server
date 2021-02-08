@@ -86,15 +86,15 @@ define([
 				let infoText = '';
 				if (this.selectedApps.length === 1) {
 					if (this.autoinstalled.length === 1) {
-						infoText = _('The following app will be additionally installed because it is a required dependency for %s.', this.selectedApps[0].name);
+						infoText = _('The following App will be additionally installed because it is a required dependency for %s.', this.selectedApps[0].name);
 					} else {
-						infoText = _('The following apps will be additionally installed because they are required dependencies for %s.', this.selectedApps[0].name);
+						infoText = _('The following Apps will be additionally installed because they are required dependencies for %s.', this.selectedApps[0].name);
 					}
 				} else {
 					if (this.autoinstalled.length === 1) {
-						infoText = _('The following app will be additionally installed because it is a required dependency for the selected apps.');
+						infoText = _('The following App will be additionally installed because it is a required dependency for the selected Apps.');
 					} else {
-						infoText = _('The following apps will be additionally installed because they are required dependencies for the selected apps.');
+						infoText = _('The following Apps will be additionally installed because they are required dependencies for the selected Apps.');
 					}
 				}
 				const page = {
@@ -132,7 +132,7 @@ define([
 					page.widgets.push({
 						type: Text,
 						name: 'autoinstalledNotice_text2',
-						content: _('The following apps where initially selected.'),
+						content: _('The following Apps where initially selected.'),
 					});
 					page.layout.push('autoinstalledNotice_text2');
 					page.layout.push([]);
@@ -159,8 +159,8 @@ define([
 
 
 			var infoText = this.selectedApps.length === 1
-				? _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.selectedApps[0].name)
-				: _('In order to proceed with the installation, please select the hosts on which the applications are going to be installed.');
+				? _('In order to proceed with the installation of %s, please select the host on which the App is going to be installed.', this.selectedApps[0].name)
+				: _('In order to proceed with the installation, please select the hosts on which the Apps are going to be installed.');
 			var page = {
 				name: 'chooseHosts',
 				headerText: headerText,
@@ -204,14 +204,14 @@ define([
 
 				var removeExplanation = '';
 				if (removedDueToInstalled.length === 1) {
-					removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
+					removeExplanation += '<p>' + _('%s was removed from the list because the App is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
 				} else if (removedDueToInstalled.length > 1) {
-					removeExplanation += '<p>' + _('%d hosts were removed from the list because the application is installed there.', removedDueToInstalled.length) + '</p>';
+					removeExplanation += '<p>' + _('%d hosts were removed from the list because the App is installed there.', removedDueToInstalled.length) + '</p>';
 				}
 				if (removedDueToRole.length === 1) {
-					removeExplanation += '<p>' + _('%s was removed from the list because the application requires a different server role than the one this host has.', entities.encode(removedDueToRole[0])) + '</p>';
+					removeExplanation += '<p>' + _('%s was removed from the list because the App requires a different server role than the one this host has.', entities.encode(removedDueToRole[0])) + '</p>';
 				} else if (removedDueToRole.length > 1) {
-					removeExplanation += '<p>' + _('%d hosts were removed from the list because the application requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
+					removeExplanation += '<p>' + _('%d hosts were removed from the list because the App requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
 				}
 				if (removeExplanation) {
 					removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
@@ -225,7 +225,7 @@ define([
 				});
 				page.widgets.push({
 					type: ComboBox,
-					label: this.selectedApps.length === 1 ? _('Host for installation of application') : _('Host for installation of %s', app.name), // TODO do we want this?
+					label: _('Host for installation of App'),
 					name: app.id,
 					required: true,
 					size: 'One',
