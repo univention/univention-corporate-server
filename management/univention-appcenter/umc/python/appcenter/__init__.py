@@ -49,7 +49,7 @@ import json
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
-from univention.lib.umc import Client, ConnectionError, HTTPError, Forbidden
+from univention.lib.umc import Client, ConnectionError, BadRequest, HTTPError, Forbidden
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
@@ -267,42 +267,51 @@ class Instance(umcm.Base, ProgressMixin):
 	def run(self, progress, apps, auto_installed, action, hosts, settings, dry_run):
 		localhost = '{hostname}.{domainname}'.format(**self.ucr)
 		ret = {}
-		for app in apps:
-			host = hosts[app.id]
-			_settings = settings[app.id]
-			_auto_installed = app.id in auto_installed
-			if host == localhost:
-				if dry_run:
-					ret[app.id] = self._run_local_dry_run(app, action, _settings, progress)
+		if dry_run:
+			for host in sorted(hosts.values()):
+				_apps = [app for app in apps if hosts[app.id] == host]
+				if host == localhost:
+					ret[host] = self._run_local_dry_run(_apps, action, {}, progress)
 				else:
-					ret[app.id] = self._run_local(app, action, _settings, progress)
-			else:
-				if dry_run:
-					ret[app.id] = self._run_remote_dry_run(host, app, action, _auto_installed, _settings, progress)
+					try:
+						ret[host] = self._run_remote_dry_run(host, _apps, action, auto_installed, {}, progress)
+					except umcm.UMC_Error as exc:
+						ret[host] = {'unreachable': [app.id for app in _apps]}
+		else:
+			for app in apps:
+				host = hosts[app.id]
+				host_result = ret.get(host, {})
+				ret[host] = host_result
+				_settings = {app.id: settings[app.id]}
+				if host == localhost:
+					host_result[app.id] = self._run_local(app, action, _settings, autoinstalled, progress)
 				else:
-					ret[app.id] = self._run_remote(host, app, action, _auto_installed, _settings, progress)
-			if not dry_run:
-				if not ret[app.id]['success']:
+					host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)
+				if not host_result[app.id]['success']:
 					break
 		return ret
 
-	def _run_local_dry_run(self, app, action, settings, progress):
-		progress.title = _('%s: Running tests') % app.name
-		localhost = '{hostname}.{domainname}'.format(**self.ucr)
+	def _run_local_dry_run(self, apps, action, settings, progress):
+		if len(apps) == 1:
+			progress.title = _('%s: Running tests') % apps[0].name
+		else:
+			progress.title = _('%d Apps: Running tests') % len(apps)
 		ret = {}
-		ret['host'] = localhost
-		ret['errors'], ret['warnings'] = check([app], action)
+		ret['errors'], ret['warnings'] = check(apps, action)
 		ret['errors'].pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
 		action = get_action(action)()
-		args = action._build_namespace(app=app, dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
-		result = action.dry_run(app, args)
-		if result is not None:
-			ret.update(result)
+		ret['packages'] = {}
+		for app in apps:
+			args = action._build_namespace(app=[app], dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
+			result = action.dry_run(app, args)
+			if result is not None:
+				ret['packages'][app.id] = result
 		return ret
 
-	def _run_local(self, app, action, settings, progress):
+	def _run_local(self, app, action, settings, autoinstalled, progress):
 		kwargs = {
 			'noninteractive': True,
+			'autoinstalled': autoinstalled,
 			'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'],
 			'set_vars': settings,
 		}
@@ -326,17 +335,19 @@ class Instance(umcm.Base, ProgressMixin):
 		finally:
 			action.logger.removeHandler(handler)
 
-	def _run_remote_dry_run(self, host, app, action, auto_installed, settings, progress):
-		return self._run_remote_logic(host, app, action, auto_installed, settings, progress, dry_run=True)
+	def _run_remote_dry_run(self, host, apps, action, auto_installed, settings, progress):
+		return self._run_remote_logic(host, apps, action, auto_installed, settings, progress, dry_run=True)
 
 	def _run_remote(self, host, app, action, auto_installed, settings, progress):
-		return self._run_remote_logic(host, app, action, auto_installed, settings, progress, dry_run=False)
+		return self._run_remote_logic(host, [app], action, auto_installed, settings, progress, dry_run=False)
 
-	def _run_remote_logic(self, host, app, action, auto_installed, settings, progress, dry_run):
-		progress.title = _('%s: Connecting to %s') % (app.name, host)
+	def _run_remote_logic(self, host, apps, action, auto_installed, settings, progress, dry_run):
+		if len(apps) == 1:
+			progress.title = _('%s: Connecting to %s') % (apps[0].name, host)
+		else:
+			progress.title = _('%d Apps: Connecting to %s') % (len(apps), host)
 		client = self._remote_appcenter(host, function='appcenter/run')
-		auto_installed = [app.id] if auto_installed else []
-		opts = {'apps': [str(app)], 'auto_installed': auto_installed, 'action': action, 'hosts': {app.id: host}, 'settings': {app.id: settings}, 'dry_run': dry_run}
+		opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {app.id: host for app in apps}, 'settings': settings, 'dry_run': dry_run}
 		progress_id = client.umc_command('appcenter/run', opts).result['id']
 		while True:
 			result = client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
