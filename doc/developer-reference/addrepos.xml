@@ -96,12 +96,12 @@
 	<para>
 	  The following &ucsUCR; variables can be used to register a repository
 	  component. It is also possible to activate further functions here which cannot
-	  be configured via the UMC module. <emphasis>NAME</emphasis> stands for the
+	  be configured via the UMC module. <emphasis><replaceable>NAME</replaceable></emphasis> stands for the
 	  component's name:
 	</para>
 	<variablelist>
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/server</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/server</envar></term>
 		<listitem>
 		  <simpara>
 			The repository server on which the components are available.
@@ -112,7 +112,7 @@
 		</listitem>
 	  </varlistentry>
 	  <varlistentry>
-		<term><command>repository/online/component/NAME</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable></envar></term>
 		<listitem>
 		  <simpara>
 			This
@@ -122,12 +122,12 @@
 		</listitem>
 	  </varlistentry>
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/localmirror</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/localmirror</envar></term>
 		<listitem>
 		  <simpara>
 			This variable can be used to configure whether the component is mirrored locally.
 			In combination with the &ucsUCRV;
-			<envar>repository/online/component/NAME/server</envar>, a configuration
+			<envar>repository/online/component/<replaceable>NAME</replaceable>/server</envar>, a configuration
 			can be set up so that the component is mirrored, but not activated, or that it
 			is activated, but not mirrored.
 		  </simpara>
@@ -135,7 +135,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/description</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/description</envar></term>
 		<listitem>
 		  <simpara>
 			A descriptive name for the repository.
@@ -144,7 +144,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/prefix</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/prefix</envar></term>
 		<listitem>
 		  <simpara>
 			Defines the URL prefix which is used on the repository server.
@@ -154,7 +154,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/layout</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/layout</envar></term>
 		<listitem>
 		  <simpara>
 			  Defines the type of the repository: <literal>arch</literal> (default) or <literal>flat</literal>.
@@ -168,7 +168,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/username</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/username</envar></term>
 		<listitem>
 		  <simpara>
 			If the
@@ -179,7 +179,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/password</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/password</envar></term>
 		<listitem>
 		  <simpara>
 			If the
@@ -191,7 +191,7 @@
 
 	  <varlistentry>
 		<term>
-		  <command>repository/online/component/NAME/version</command>
+		  <envar>repository/online/component/<replaceable>NAME</replaceable>/version</envar>
 		</term>
 		<listitem>
 		  <simpara>
@@ -202,7 +202,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-		<term><command>repository/online/component/NAME/defaultpackages</command></term>
+		<term><envar>repository/online/component/<replaceable>NAME</replaceable>/defaultpackages</envar></term>
 		<listitem>
 		  <simpara>
 			A list of package names separated by blanks.

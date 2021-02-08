@@ -552,14 +552,14 @@
 				<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>. Instead, all packages
 				are kept in one section and the maintenance status of the packages is technically defined in
 				a different way. Therefore, the &ucsUCRV; <envar>repository/online/unmaintained</envar>
-				is no longer in use as of UCS 5.0. However, the UCR variables for components
+				is no longer in use as of UCS 5.0. However, the &ucsUCRV; for components
 				(<envar>repository/online/component/<replaceable>$comp</replaceable>/parts</envar>) are still in use (<u:bug>51316</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Up to UCS 4.4, the Univention Updater automatically detected for component repositories whether
 				the required package files were stored within the architecture directories (<filename class="directory">i386/</filename>,
 				<filename class="directory">amd64/</filename>, <filename class="directory">all/</filename>) or in the directory level above (flat repository).
-				Starting with UCS 5.0, the new UCR variable <envar>repository/online/component/<replaceable>$comp</replaceable>/layout</envar>
+				Starting with UCS 5.0, the new &ucsUCRV; <envar>repository/online/component/<replaceable>$comp</replaceable>/layout</envar>
 				must be used to define whether a flat repository (value <literal>flat</literal>) is to be used. If
 				the variable is not set, the other possible value <literal>arch</literal> is assumed, where the
 				packages files are searched in the architecture directories (<u:bug>51316</u:bug>).
