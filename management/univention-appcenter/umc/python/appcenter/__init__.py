@@ -242,7 +242,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def resolve(self, apps, action):
 		ret = {}
 		ret['apps'] = resolve_dependencies(apps, action)
-		ret['autoinstalled'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
+		ret['auto_installed'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
 		apps = ret['apps']
 		ret['errors'], ret['warnings'] = check(apps, action)
 		domain = get_action('domain')
@@ -284,7 +284,7 @@ class Instance(umcm.Base, ProgressMixin):
 				ret[host] = host_result
 				_settings = {app.id: settings[app.id]}
 				if host == localhost:
-					host_result[app.id] = self._run_local(app, action, _settings, autoinstalled, progress)
+					host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
 				else:
 					host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)
 				if not host_result[app.id]['success']:
@@ -308,10 +308,10 @@ class Instance(umcm.Base, ProgressMixin):
 				ret['packages'][app.id] = result
 		return ret
 
-	def _run_local(self, app, action, settings, autoinstalled, progress):
+	def _run_local(self, app, action, settings, auto_installed, progress):
 		kwargs = {
 			'noninteractive': True,
-			'autoinstalled': autoinstalled,
+			'auto_installed': auto_installed,
 			'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'],
 			'set_vars': settings,
 		}

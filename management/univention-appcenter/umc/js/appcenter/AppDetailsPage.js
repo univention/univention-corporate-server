@@ -701,10 +701,10 @@ define([
 			this.configDialog.showUp();
 		},
 
-		uninstallApps: function(apps, hosts) {
+		uninstallApps: function(apps, hosts, appSettings) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('remove', apps, hosts).then(
+				this.callInstaller('remove', apps, hosts, true, null, appSettings).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
@@ -740,10 +740,10 @@ define([
 				}));
 		},
 
-		upgradeApps: function(apps, hosts) {
+		upgradeApps: function(apps, hosts, appSettings) {
 			// before installing, user must read update readme
 			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('upgrade', apps, hosts).then(
+				this.callInstaller('upgrade', apps, hosts, true, null, appSettings).then(
 					lang.hitch(this, function() {
 						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {

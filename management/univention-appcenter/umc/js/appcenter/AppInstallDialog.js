@@ -93,7 +93,7 @@ define([
 			}).then(function(data) {
 				// TODO error handling
 				backpack.apps = data.result.apps.map(app => new App(app, backpack.appDetailsPage));
-				backpack.autoinstalled = data.result.autoinstalled;
+				backpack.auto_installed = data.result.auto_installed;
 				backpack.settings = data.result.settings;
 				deferred.resolve(backpack);
 			});
@@ -106,7 +106,7 @@ define([
 			var deferred = new Deferred();
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
-				autoinstalled: backpack.autoinstalled,
+				auto_installed: backpack.auto_installed,
 			});
 			// lang.mixin(backpack, {
 				// chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
@@ -151,7 +151,7 @@ define([
 			}
 			const command = tools.umcpProgressCommand(progressBar, 'appcenter/run', {
 				apps: backpack.apps.map(app => app.id),
-				auto_installed: backpack.autoinstalled, // TODO synch names
+				auto_installed: backpack.auto_installed,
 				action: 'install',
 				hosts: backpack.hosts,
 				settings: settings,

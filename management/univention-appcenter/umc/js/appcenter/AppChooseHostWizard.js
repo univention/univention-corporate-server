@@ -51,7 +51,7 @@ define([
 
 		// these need to be provided
 		apps: null,
-		autoinstalled: null,
+		auto_installed: null,
 		// these need to be provided
 		//
 		selectedApps: null,
@@ -59,14 +59,14 @@ define([
 
 		needsToBeShown: null,
 		// TODO when coming from the AppCenterPage while selecting multiple apps (not from the AppDetailsPage)
-		// we probably shouls always show the to be installed apps regardless of 'autoinstalled' or the length of
+		// we probably shouls always show the to be installed apps regardless of 'auto_installed' or the length of
 		// 'apps'
 		_autoInstalledNoticeNeedsToBeShown: null,
 		_chooseHostsNeedsToBeShown: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.selectedApps = this.apps.filter(app => !this.autoinstalled.includes(app.id));
+			this.selectedApps = this.apps.filter(app => !this.auto_installed.includes(app.id));
 			this.pages = this._getPages();
 		},
 
@@ -82,16 +82,16 @@ define([
 				? _('Installation of %s', this.selectedApps[0].name)
 				: _('Installation of multiple apps');
 
-			if (this.autoinstalled.length) {
+			if (this.auto_installed.length) {
 				let infoText = '';
 				if (this.selectedApps.length === 1) {
-					if (this.autoinstalled.length === 1) {
+					if (this.auto_installed.length === 1) {
 						infoText = _('The following App will be additionally installed because it is a required dependency for %s.', this.selectedApps[0].name);
 					} else {
 						infoText = _('The following Apps will be additionally installed because they are required dependencies for %s.', this.selectedApps[0].name);
 					}
 				} else {
-					if (this.autoinstalled.length === 1) {
+					if (this.auto_installed.length === 1) {
 						infoText = _('The following App will be additionally installed because it is a required dependency for the selected Apps.');
 					} else {
 						infoText = _('The following Apps will be additionally installed because they are required dependencies for the selected Apps.');
@@ -111,7 +111,7 @@ define([
 				};
 				pages.push(page);
 				page.layout.push([]);
-				for (const appId of this.autoinstalled) {
+				for (const appId of this.auto_installed) {
 					const app = this.apps.find(app => app.id === appId);
 					const name = `autoinstalledNotice_appText_${app.id}`;
 					page.widgets.push({
