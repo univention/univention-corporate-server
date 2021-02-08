@@ -1,3 +1,9 @@
+univention-updater (15.0.3-3) unstable; urgency=low
+
+  * Bug #51316: Re-add dependency on Python 2 modules for UCS-5.0
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 08 Feb 2021 07:44:48 +0100
+
 univention-updater (15.0.3-2) unstable; urgency=medium
 
   * Bug #52740: preup.sh: fix update_check_kernel()

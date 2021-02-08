@@ -42,7 +42,6 @@ Depends:
  python3-univention-directory-manager,
  python3-univention-lib (>= 8.0.1-33),
  python3-univention-updater (= ${source:Version}),
- python3-univention-updater (= ${source:Version}),
  shell-univention-lib,
  univention-admin-diary-client (>= 1.0.0-29),
  univention-config,
@@ -54,6 +53,7 @@ Depends:
  ${python:Depends},
 Recommends:
  screen,
+ python-univention-updater (= ${source:Version}),
 Suggests:
  apt-mirror,
 Description: UCS - system upgrading tool

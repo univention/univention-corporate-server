@@ -9,6 +9,7 @@ import subprocess
 import json
 import glob
 from difflib import unified_diff
+from typing import Dict, Set  # noqa F401
 
 import pytest
 import py.path
@@ -34,12 +35,7 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
 ] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*') + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 IGNORE = {
-	# python-univention-updater is Python 3 only
-	'/etc/univention/templates/files/etc/apt/apt.conf.d/55user_agent': {2},
-	'/etc/univention/templates/files/etc/apt/mirror.list': {2},
-	'/etc/univention/templates/files/etc/apt/sources.list.d/15_ucs-online-version.list': {2},
-	'/etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list': {2},
-}
+}  # type: Dict[str, Set[int]]
 
 SCRIPT = r'''#!/bin/sh
 cat >{1[tmp]}
