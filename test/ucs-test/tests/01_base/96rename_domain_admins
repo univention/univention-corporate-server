@@ -38,7 +38,8 @@ def search_templates(old_group_name, new_group_name, server_role):
 	# A list of templates which are referencing the defaultdomainadmins group. The new name must be found in them
 	should_contain_admin = [
 		'/etc/security/access-rlogin.conf', '/etc/security/access-ftp.conf', '/etc/security/access-screen.conf', '/etc/security/access-gdm.conf', '/etc/security/access-login.conf',
-		'/etc/security/access-other.conf', '/etc/security/access-kdm.conf', '/etc/security/access-ppp.conf', '/etc/security/access-sshd.conf']
+		'/etc/security/access-other.conf', '/etc/security/access-kdm.conf', '/etc/security/access-sshd.conf']
+	ignore = ['/etc/security/access-ppp.conf', '/etc/sudoers.d/univention']
 	if server_role == 'memberserver':
 		should_contain_admin.append('/etc/ldap/slapd.conf')
 		should_contain_admin.remove('/etc/security/access-sshd.conf')
@@ -48,16 +49,14 @@ def search_templates(old_group_name, new_group_name, server_role):
 		if os.path.isfile(file):
 			print('Checking template %s' % (file,))
 			with open(file, 'r') as content_file:
-				# /etc/sudoers.d/univention contains a comment about Domain Admins which we will ignore.
-				# But it must contain the new name of the default domainadmins group
 				content = content_file.read()
-				if file == "/etc/sudoers.d/univention":
-					if new_group_name not in content:
-						print(content_file.read())
-						utils.fail('FAIL: New group name %s not in file %s' % (new_group_name, file))
-				elif file in should_contain_admin:
+				# contains a comment about the group
+				if file in should_contain_admin:
 					if new_group_name not in content:
 						utils.fail('FAIL: New group name %s not in %s' % (new_group_name, file))
+				# Contain comments or something about the group
+				elif file in ignore:
+					pass
 				else:
 					if old_group_name in content:
 						lines_containing = [l for l in content.splitlines() if old_group_name in l]
@@ -115,7 +114,7 @@ def test_rename_domain_users():
 				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (old_group_name, new_group_name))
 
 			# in ucs5 the time between setting the ucr var and the change being committed to the configuration files is longer than expected:
-			time.sleep(5)
+			time.sleep(10)
 			# Search templates
 			print('\n##################################################################')
 			print('Search templates for old and new name of default domainadmins group')
