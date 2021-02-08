@@ -1,3 +1,9 @@
+univention-updater (15.0.3-18) unstable; urgency=low
+
+  * Bug #51316: Re-add dependency on Python 2 modules for UCS-5.0
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Feb 2021 12:42:30 +0100
+
 univention-updater (15.0.3-17) unstable; urgency=medium
 
   * Bug #51655: postup.sh: wait for listener postrun

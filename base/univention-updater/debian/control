@@ -37,6 +37,7 @@ Depends:
  at,
  ca-certificates,
  netcat-traditional,
+ python-univention-updater (= ${source:Version}),
  python3-apt,
  python3-univention-config-registry,
  python3-univention-directory-manager,
@@ -53,7 +54,6 @@ Depends:
  ${python:Depends},
 Recommends:
  screen,
- python-univention-updater (= ${source:Version}),
 Suggests:
  apt-mirror,
 Description: UCS - system upgrading tool
