@@ -721,7 +721,11 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
 			}
 
-			this.installDialog.startInstallation([this.app.id], this)
+			this.startInstallation([this.app.id]);
+		},
+
+		startInstallation: function(apps) {
+			this.installDialog.startInstallation(apps, this)
 				.then(lang.hitch(this, function(values) {
 					this.installApps(values.apps, values.hosts, values.appSettings);
 				}), lang.hitch(this, function() {

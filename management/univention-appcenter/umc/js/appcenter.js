@@ -96,6 +96,12 @@ define([
 				this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
 					this.showApp(app, suggested);
 				}));
+				this.own(topic.subscribe('/appcenter/run/install', (apps, suggested) => {
+					var firstApp = apps[0];
+					this.showApp(firstApp, suggested).then(function(page) {
+						page.startInstallation(apps.map(app => app.id));
+					});
+				}));
 			}
 		},
 
@@ -296,9 +302,10 @@ define([
 			this.addChild(appDetailsPage);
 			this._appPages.push(detailsDialog, configDialog, installDialog, appDetailsPage);
 
-			this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+			return this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 				this.selectChild(appDetailsPage);
 				this._scrollTo(0, 0, 0);
+				return appDetailsPage;
 			}));
 		},
 

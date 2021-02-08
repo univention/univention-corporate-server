@@ -69,6 +69,7 @@ define([
 				<div data-dojo-attach-point="_actionBarNode" class="umcTiles__actionBar dijitDisplayNone">
 					<div class="umcTiles__actionBar__buttons">
 						<button
+							data-dojo-attach-event="click:_clickInstall"
 							data-dojo-attach-point="_installButton"
 							data-dojo-type="umc/widgets/Button"
 							data-dojo-props="
@@ -140,6 +141,14 @@ define([
 			} else {
 				topic.publish('/appcenter/open', tile.obj, this.isSuggestionCategory);
 			}
+		},
+
+		_clickInstall: function() {
+			topic.publish('/appcenter/run/install',
+				this._selection.map(appId => {
+					return this.tiles.find(tile => tile.obj.id === appId).obj;
+				}),
+				this.isSuggestionCategory);
 		},
 
 		filter: function(filterF) {

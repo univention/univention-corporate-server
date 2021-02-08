@@ -66,7 +66,10 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this._hasErrors = Object.values(this.dryRunResults).some(details => !!Object.keys(details.invokation_forbidden_details).length);
+			this._hasErrors = Object.values(this.dryRunResults).some(details =>
+				!!Object.keys(details.invokation_forbidden_details).length ||
+					!!Object.keys(details.broken).length
+			);
 			this.pages = [];
 			this._addPages();
 		},
