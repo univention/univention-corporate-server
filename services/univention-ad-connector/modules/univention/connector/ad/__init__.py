@@ -531,7 +531,7 @@ class ad(univention.connector.ucs):
 			if ucs_group[1]:
 				for member in ucs_group[1].get('uniqueMember'):
 					self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
-		ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
+		ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
 		ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
 	def init_ldap_connections(self):
