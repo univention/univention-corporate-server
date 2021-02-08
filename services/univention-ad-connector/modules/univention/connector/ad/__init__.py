@@ -1327,7 +1327,7 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in ad_members_from_ucs %s" % ad_members_from_ucs)
 
 		# check if members in AD don't exist in UCS, if true they need to be added in AD
-		for member_dn in ad_members_from_ucs:
+		for member_dn in ad_members:
 			if not member_dn.lower() in ad_members_from_ucs:
 				try:
 					ad_object = self.get_object(member_dn)
@@ -1335,12 +1335,13 @@ class ad(univention.connector.ucs):
 					mo_key = self.__identify_ad_type({'dn': member_dn, 'attributes': ad_object})
 					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': ad_object})['dn']
 					if not self.lo.get(ucs_dn, attr=['cn']):
-						# Leave the following line commented out, as we don't want to keep the member in AD if it's not present in OpenLDAP
-						# Note: in this case the membership gets removed even if the object itself is ignored for synchronization
+						# Note: With the following line commented out we don't keep the member in AD if it's not present in OpenLDAP.
+						#       In this case the membership gets removed even if the object itself is ignored for synchronization.
+						# FIXME: Is this what we want?
 						# ad_members_from_ucs.add(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object exists only in AD [%s]" % ucs_dn)
 					elif self._ignore_object(mo_key, {'dn': member_dn, 'attributes': ad_object}):
-						# Keep the member in AD if it's also present in OpenLDAP but ignored in synchronization?
+						# Keep the member in AD if it's also present in OpenLDAP but ignored in synchronization
 						ad_members_from_ucs.add(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in AD [%s], key = [%s]" % (ucs_dn, mo_key))
 				except ldap.SERVER_DOWN:
