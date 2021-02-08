@@ -49,9 +49,9 @@ install_vmware_packages ()
 
 install_virtualbox_packages ()
 {
-	ucr set repository/online/unmaintained=yes
+	ucr set repository/online/unmaintained="yes"
 	univention-install -y --force-yes virtualbox-guest-x11
-	ucr set repository/online/unmaintained=no
+	ucr set repository/online/unmaintained="no"
 }
 
 install_activation_packages ()
@@ -658,10 +658,9 @@ appliance_preinstall_non_univention_packages ()
 
 install_haveged ()
 {
-    _unmaintained_setting=$(ucr get repository/online/unmaintained)
     ucr set repository/online/unmaintained="yes"
     univention-install -y haveged
-    ucr set repository/online/unmaintained="$_unmaintained_setting"
+    ucr set repository/online/unmaintained="no"
 }
 
 backup_current_local_packagecache ()
