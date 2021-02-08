@@ -96,9 +96,9 @@ esac
 							<title>Use of <command>is_ucr_true</command></title>
 							<programlisting><![CDATA[
 . /usr/share/univention-lib/ucr.sh
-if is_ucr_true repository/online/unmaintained
+if is_ucr_true update/secure_apt
 then
-	echo "Unmaintained is enabled"
+	echo "The signature check for UCS packages is enabled."
 fi
 								]]></programlisting>
 						</example>
@@ -196,14 +196,14 @@ print ucr.get('variable/name', '<not set>')
 			<example id="ucr:python:bool">
 				<title>Reading boolean &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
-if ucr.is_true('repository/online/unmaintained'):
-	print "unmaintained is explicitly enabled"
-if ucr.is_true('repository/online/unmaintained', True):
-	print "unmaintained is enabled"
-if ucr.is_false('repository/online/unmaintained'):
-	print "unmaintained is explicitly disabled"
-if ucr.is_false('repository/online/unmaintained', True):
-	print "unmaintained is disabled"
+if ucr.is_true('update/secure_apt'):
+	print "package signature check is explicitly enabled"
+if ucr.is_true('update/secure_apt', True):
+	print "package signature check is enabled"
+if ucr.is_false('update/secure_apt'):
+	print "package signature check is explicitly disabled"
+if ucr.is_false('update/secure_apt', True):
+	print "package signature check is disabled"
 				]]></programlisting>
 			</example>
 			<para>

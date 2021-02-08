@@ -40,7 +40,10 @@
 		</para>
 		<para>
 			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="ucs-5.0" targetptr="computers::softwaremanagement::repoadd"/> manual.
-			Setting the variable <envar>…/version=current</envar> can be used to mark a component as required, which blocks an upgrade until the component is available for the new release.
+			Setting the variable <envar>…/version</envar> can be used to mark a component as required (for certain UCS versions), which blocks an upgrade until the component is available for the specific release(es).
+			If configured and enabled, components are considered required if the variable <envar>…/version</envar> is set to <literal>current</literal> or is unset. As an alternative a fixed list of
+			<literal>$major.$minor</literal> releases can be used to include the component only for a sub-set of releases: such a component is only used locally if the listed component versions include the current
+			version, e.g. a <literal>5.0 5.1 5.2</literal> component will not be used on a <literal>5.4</literal> system.
 		</para>
 	</section>
 

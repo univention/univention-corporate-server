@@ -80,10 +80,9 @@ cd univention-corporate-server/base/univention-ssh
 						<para>Fetch the source code from the Univention Repository server</para>
 						<substeps>
 							<step>
-								<para>Enable unmaintained and source repository once</para>
+								<para>Enable the source repository once</para>
 								<programlisting><![CDATA[
-sudo ucr set repository/online/unmaintained=yes \
-             repository/online/sources=yes
+sudo ucr set repository/online/sources=yes
 sudo apt-get update
 									]]></programlisting>
 							</step>
