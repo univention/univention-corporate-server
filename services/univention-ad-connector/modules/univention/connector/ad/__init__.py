@@ -543,7 +543,7 @@ class ad(univention.connector.ucs):
 		if self.lo_ad.binddn:
 			try:
 				result = self.lo_ad.search(base=self.lo_ad.binddn, scope='base')
-				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0].decode('ASCII')
+				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0].decode('UTF-8')
 			except ldap.LDAPError as msg:
 				print("Failed to get SID from AD: %s" % msg)
 				sys.exit(1)
