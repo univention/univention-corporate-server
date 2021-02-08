@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python-django
+fix: 1:1.10.7-2+deb9u10
+desc: |
+ This update addresses the following issue:
+ * Potential directory-traversal via archive.extract() (CVE-2021-3281)
+bug: [52753]
+cve:
+- CVE-2021-3281
