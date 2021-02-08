@@ -53,7 +53,7 @@ if __name__ == '__main__':
 		subprocess.call(['service', 'dovecot', 'restart'])
 
 		print('\nTest if host %s returns a certificate for %s' % (fqdn, fqdn))
-		utils.retry_on_error((lambda: check_if_correct_cert_is_served(fqdn, fqdn, 993)), exceptions=(Exception, ), retry=5)
+		utils.retry_on_error((lambda: check_if_correct_cert_is_served(fqdn, fqdn, 993)), exceptions=(Exception, ), retry_count=5)
 		check_if_correct_cert_is_served(fqdn, fqdn, 995)
 		print('Test if host %s returns a certificate for ucs-sso.%s' % (fqdn, domain))
 		check_if_correct_cert_is_served(fqdn, 'ucs-sso.%s' % domain, 993)
