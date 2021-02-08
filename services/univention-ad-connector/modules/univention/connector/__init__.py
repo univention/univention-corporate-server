@@ -1245,7 +1245,7 @@ class ucs(object):
 	def delete_in_ucs(self, property_type, object, module, position):
 		"""Removes an AD object in UCS-LDAP"""
 
-		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
+		objectGUID = object['attributes'].get('objectGUID', [None])[0]
 		if objectGUID:
 			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
