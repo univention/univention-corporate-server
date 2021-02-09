@@ -79,7 +79,7 @@ class LDAPConnection(object):
 				self.lo.simple_bind_s(self.login_dn, login_pw)
 		except Exception:
 			if self.kerberos:
-				cred_msg = '"%s" with Kerberos password "%s"' (self.principal, login_pw)
+				cred_msg = '"%s" with Kerberos password "%s"' % (self.principal, login_pw)
 			else:
 				cred_msg = '"%s" with simplebind password "%s"' % (self.login_dn, login_pw)
 			ex = 'LDAP Bind as %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (self.login_dn, cred_msg, self.host, self.port, not no_starttls, self.ca_file)
