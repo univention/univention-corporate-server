@@ -7,6 +7,8 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-ad-connector
+## tags:
+##  - skip_admember
 
 from __future__ import print_function
 from univention.testing.connector_common import NormalUser, create_udm_user
