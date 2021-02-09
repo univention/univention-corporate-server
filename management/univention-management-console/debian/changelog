@@ -1,3 +1,10 @@
+univention-management-console (11.0.6-8) unstable; urgency=medium
+
+  * Bug #52535: prevent KeyError when session timer has already been
+    removed
+
+ -- Florian Best <best@univention.de>  Tue, 09 Feb 2021 12:29:31 +0100
+
 univention-management-console (11.0.6-7) unstable; urgency=medium
 
   * Bug #25197: fix broken evaluation of disallowing option pattern
