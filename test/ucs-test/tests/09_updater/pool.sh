@@ -105,11 +105,14 @@ cleanup () { # Undo all changes
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
+    rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
 
-	rm -rf "${BASEDIR}"
+	# rm -rf "${BASEDIR}"
 	echo "=== RESULT: ${RETVAL} ==="
+	echo "${BASEDIR}"
 	return "$rv"
 }
 trap cleanup EXIT
@@ -604,3 +607,283 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 		done
 	done </etc/apt/mirror.list
 }
+
+
+
+#### UCS 5 specific
+declare -a COMPRESS=('xz=.xz' 'gzip=.gz')  # 'bzip2=.bz2'
+# BUG: univention.updater.tools.UCSRepoPool et al. still has hard-coded `.gz`!
+
+wait_for_updater_lock () {
+	# wait up to 60 seconds
+	declare -i i
+	for ((i=0; i<60; i++))
+	do
+		[ -f /var/lock/univention-updater ] ||
+			return 0
+		sleep 1
+	done
+	echo "ERROR: wait_for_updater_lock ran into a timeout!"
+	ps axfwww
+	grep -Hr . /var/lock/univention-updater || :
+}
+
+declare -a DIRS
+mkpdir_ucs5 () { # Create package directory ${dir}
+	declare -a versions component_versions parts archs
+	local dir suite='ucs'
+	while [ $# -ge 1 ]
+	do
+		case "${1}" in
+			[1-9]*.[0-9]*-[0-9]*)
+				versions+=("${1%--*}")
+				;;
+			[1-9]*.[0-9]*--errata[0-9]*)
+				versions+=("${1%--*}")
+				suite='errata'
+				;;
+			[1-9]*.[0-9]*--component/*)
+				versions+=("${1%--*}-0")
+				component_versions+=("${1}")
+			;;
+			maintained|unmaintained) parts+=("${1}") ;;
+			all|i386|amd64) archs+=("${1}") ;;
+			extern|*--sec*) echo "Deprecated ${1}" >&2 ; return 2 ;;
+			*) echo "Unknown ${1}" >&2 ; return 2 ;;
+		esac
+		shift
+	done
+
+	DIR_POOL="${REPODIR}/pool/main"
+	mkdir -p "${DIR_POOL}"
+
+	local version arch release_type version_stripped
+	for version in "${versions[@]}"
+	do
+		echo "Creating for $version"
+		for release_type in 'ucs' 'errata'
+		do
+			version_stripped="${version%--*}"
+			version_stripped="${version_stripped//[^0-9]/}"
+			for arch in "${archs[@]}"
+			do
+				# `all` packages are listed within the `binary-$ARCH` section unless
+				# 'Release.Architectures' explicitly includes 'all'
+				[ "$arch" = 'all' ] &&
+					continue
+				dir="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
+				[ "$release_type" = "$suite" ] &&
+					DIR="${dir}"
+				# shellcheck disable=SC2076
+				if [[ ! " ${DIRS[*]} " =~ " $dir " ]]
+				then
+					DIRS+=("${dir}")
+					mkdir -p "${dir}"
+					mkpkg "${dir}" "${DIR_POOL}"
+				fi
+			done
+		done
+	done
+	for version in "${component_versions[@]}"
+	do
+		echo "Creating for $version"
+		for part in "${parts[@]}"
+		do
+			for arch in "${archs[@]}"
+			do
+				DIR="${REPODIR}/${version%%-*}/${part}/${version#*--}/${arch}"
+				DIRS+=("${DIR}")
+				mkdir -p "${DIR}"
+				touch "${DIR}/Packages"
+				compress "${DIR}/Packages"
+			done
+		done
+	done
+}
+
+dirs_except () {  # Array substract: elements... -- remove...
+	result=("${DIRS[@]}")
+	local i
+	while [ $# -ge 1 ]
+	do
+		for i in "${!result[@]}"
+		do
+			[ "$1" = "${result[i]}" ] && unset result["$i"]
+		done
+		shift
+	done
+}
+
+mkdeb_ucs5 () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
+	local name="${1:-test}"
+	local version="${2:-1}"
+	local arch="${3:-all}"
+	local dir="${4:-${DIR_POOL}}"
+	mkdir -p "${BASEDIR}/${name}-${version}/DEBIAN"
+	cat <<-EOF >"${BASEDIR}/${name}-${version}/DEBIAN/control"
+	Package: ${name}
+	Version: ${version}
+	Architecture: ${arch}
+	Maintainer: UCS Test <test@univention.de>
+	Installed-Size: 1
+	Section: unknown
+	Priority: optional
+	Description: test $0
+	EOF
+	cat <<-EOF >"${BASEDIR}/${name}-${version}/DEBIAN/postinst"
+	#!/bin/sh
+	echo "${name}-${version}" >>"${BASEDIR}/install.log"
+	echo "${name}-${version}.postinst \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\\n" ' ')" >>"${BASEDIR}/install-status.log"
+	${5}
+	EOF
+	chmod 755 "${BASEDIR}/${name}-${version}/DEBIAN/postinst"
+	DEB="${BASEDIR}/${name}_${version}_${arch}.deb"
+	dpkg-deb -b "${BASEDIR}/${name}-${version}" "${DEB}" >&3 2>&3 || return $?
+
+	case "$dir" in
+	'') ;;
+	*/pool/*) install -m 644 -t "${dir}/${name:0:1}/" -D "${DEB}" ;;
+	*) install -m 644 -t "${dir}/" -D "${DEB}" ;;
+	esac
+}
+
+mkdsc_ucs5 () { # Create dummy source package: [name [version [arch [dir]]]]
+	local name="${1:-test}"
+	local version="${2:-1}"
+	local arch="${3:-all}"
+	local dir="${4:-${DIR}}"
+	mkdir -p "${BASEDIR}/${name}-${version}/debian"
+	cat <<-EOF >"${BASEDIR}/${name}-${version}/debian/changelog"
+	${pkgname} (${version}) unstable; urgency=low
+
+	  * ucs-test $0
+
+	 -- Univention GmbH <packages@univention.de>  $(date -R)
+	EOF
+	cat <<-EOF >"${BASEDIR}/${name}-${version}/debian/control"
+	Source: ${pkgname}
+	Maintainer: Univention GmbH <packages@univention.de>
+	Standards-Version: 3.6.1
+
+	Package: ${pkgname}
+	Architecture: ${ARCH}
+	EOF
+	cat <<-EOF >"${BASEDIR}/${name}-${version}/debian/rules"
+	#!/usr/bin/make -f
+	clean build binary-indep binary-arch binary: true
+	EOF
+	: >"${BASEDIR}/${name}-${version}/debian/copyright"
+	(cd "${BASEDIR}" && dpkg-source -b "${pkgname}-${version}") >&3 2>&3
+	TGZ="${BASEDIR}/${name}_${version}.tar.gz"
+	DSC="${BASEDIR}/${name}_${version}.dsc"
+	if mkgpg
+	then
+		gpgsign "${DSC}"
+	fi
+
+	case "$dir" in
+	'') ;;
+	*/pool/*) install -m 644 -t "${dir}/${name:0:1}/" -D "${DSC}" "${TGZ}" ;;
+	*) install -m 644 -t "${dir}/" -D "${DSC}" "${TGZ}" ;;
+	esac
+}
+
+mkpkg_ucs5 () { # Create Package files in ${1} for packages in ${2}. Optional arguments go to dpkg-scanpackages.
+	local dir="${1:-${DIR}}"
+	shift
+	local dir_pool="${1:-${DIR_POOL}}"
+	shift
+	local rel_pool_dir="${dir_pool#${REPODIR}/}"
+	rel_pool_dir="${rel_pool_dir#*/component/}"
+	cd "${dir_pool%${rel_pool_dir}}" || return $?
+	dpkg-scanpackages "${@}" "${rel_pool_dir}" > "${dir}/Packages" 2>&3 # || return $?
+	compress "${dir}/Packages"
+	cd "${OLDPWD}" || return $?
+
+	mkgpg
+	cd "${dir%/main/binary-*}" || return $?
+	rm -f Release Release.tmp Release.gpg
+	local codename=${dir#${REPODIR}/}
+	codename="${codename#dists/}"
+	codename="${codename%/main/binary-*}"
+	apt-ftparchive \
+		-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
+		-o "APT::FTPArchive::Release::Origin=Univention" \
+		-o "APT::FTPArchive::Release::Label=Univention Corporate Server" \
+		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
+		-o "APT::FTPArchive::Release::Codename=${codename}" \
+		release . >Release.tmp 2>&3
+	mv Release.tmp Release
+
+	gpgsign InRelease
+	gpgsign Release
+	cd "${OLDPWD}" || return $?
+
+	for destname in "main" "non-free" "contrib"
+	do
+		local targetdir="${dir%/main/binary-*}/$destname/binary-${ARCH}"
+		[ ! -e "$targetdir" ] && continue
+		cd "$targetdir" || return $?
+		codename="$destname/binary-${ARCH}"
+		apt-ftparchive \
+			-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
+			-o "APT::FTPArchive::Release::Origin=Univention" \
+			-o "APT::FTPArchive::Release::Label=Univention Corporate Server" \
+			-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
+			-o "APT::FTPArchive::Release::Codename=${codename}" \
+			-o "APT::FTPArchive::Release::Components=main non-free contrib" \
+			release . >Release.tmp 2>&3
+		mv Release.tmp Release
+		gpgsign Release
+		cd "${OLDPWD}" || return $?
+	done
+
+	python ./create_releases_json.py "$REPODIR"
+}
+
+compress () { # compress file: <Packages|Sources>
+	local comp
+	for comp in "${COMPRESS[@]}"
+	do
+		"${comp%=*}" --keep --force "$1"
+	done
+}
+
+
+checkapt_ucs5 () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/path] [http*] [(ucs|errata)XXX] [[un]maintained] [X.Y-(Z|--errataZ|--component/Z]
+	local files='/etc/apt/sources.list.d/*.list'
+	local prefix=deb
+	local pattern
+	while [ $# -ge 1 ]
+	do
+		case "${1}" in
+			--mirror) files=/etc/apt/mirror.list && shift ; continue ;;
+			--source|source) prefix=deb-src && shift ; continue ;;
+			http*) pattern="^${prefix} ${1}" ;;
+			ucs[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
+			errata[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
+			[1-9]*.[0-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
+			[1-9]*.[0-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
+			[1-9]*.[0-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
+			maintained|unmaintained) pattern="^${prefix} .*/${1}/\\(component/\\?\\)\\? .*/.*/" ;;
+			all|${ARCH}|extern) pattern="^${prefix} .*/\\(component/\\?\\)\\? .*/${1}/" ;;
+			i386|amd64) shift ; continue ;;
+			binary-i386|binary-amd64) shift ; continue ;;
+			main) shift ; continue ;;
+			/*) # shellcheck disable=SC2046
+				set -- "$@" $(python ./split_repo_path.py "${REPODIR}" "${1}") && shift  # IFS
+				continue
+				;;
+			*) echo "Unknown ${1}" >&2 ; cat $files; return 2 ;;
+		esac
+		if ! grep -q "${pattern}" ${files}
+		then
+			echo "Failed '${pattern}'" >&2
+			grep -v '^#\|^[[:space:]]*$' ${files} >&2
+			grep 'error' ${files} >&2
+			return 1
+		fi
+		shift
+	done
+}
+
