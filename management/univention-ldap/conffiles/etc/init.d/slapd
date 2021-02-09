@@ -1,37 +1,18 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
-# pidfile: /var/run/slapd/slapd.pid
 ### BEGIN INIT INFO
-# Provides:			 slapd
-# Required-Start:	 $remote_fs $network $syslog
-# Required-Stop:	 $remote_fs $network $syslog
-# Default-Start:	 2 3 4 5
-# Default-Stop:		 0 1 6
+# Provides:          slapd
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: OpenLDAP standalone server (Lightweight Directory Access Protocol)
 ### END INIT INFO
-#
-# Written by Miquel van Smoorenburg <miquels@drinkel.ow.org>.
-# Modified for Debian GNU/Linux by Ian Murdock <imurdock@gnu.ai.mit.edu>.
-# Modified for Debian by Christoph Lameter <clameter@debian.org>
-# Modified for OpenLDAP by Ben Collins <bcollins@debian.org>
-# Modified for UCS by Univention <packages@univention.de>
 
-
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
-DAEMON=/usr/sbin/slapd
-SLAPDCONF=/etc/ldap/slapd.conf
+# Specify path variable
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 . /lib/lsb/init-functions
-
-exit_if_start_is_running ()
-{
-	local pid
-	pid=$(pgrep -cf "^/bin/sh /etc/init.d/slapd start$")
-	if [ -n "$pid" ] && [ "$pid" -gt 1 ]; then
-		log_action_msg "WARNING: Another /etc/init.d/slapd start is already in progress."
-		exit 1
-	fi
-}
 
 bdbrecover ()
 {
@@ -162,74 +143,168 @@ check_replog_file ()
 		touch /var/lib/univention-ldap/replog/replog.lock
 }
 
+# Kill me on all errors
+set -e
 
-if [ -f "$SLAPDCONF" ]; then
-	pidfile=`grep ^pidfile $SLAPDCONF | awk '{print $2}'`
-	if [ -z "$pidfile" ]; then
-		pidfile="/var/run/slapd/slapd.pid"
-	fi
-	pidfiledir="$(dirname $pidfile)"
-	test ! -e "$pidfiledir" && mkdir -p "$pidfiledir"
-else
-	exit 0
+# Set the paths to slapd as a variable so that someone who really
+# wants to can override the path in /etc/default/slapd.
+SLAPD=/usr/sbin/slapd
+
+# Stop processing if slapd is not there
+[ -x $SLAPD ] || exit 0
+
+# debconf may have this file descriptor open and it makes things work a bit
+# more reliably if we redirect it as a matter of course.  db_stop will take
+# care of this, but this won't hurt.
+exec 3>/dev/null
+
+# Source the init script configuration
+if [ -f "/etc/default/slapd" ]; then
+	. /etc/default/slapd
 fi
 
-test -f $DAEMON || exit 0
+# Load the default location of the slapd config file
+if [ -z "$SLAPD_CONF" ]; then
+	# UCS: We use slapd.d but not cn=config as configuration format
+	#if [ -e /etc/ldap/slapd.d ]; then
+	#	SLAPD_CONF=/etc/ldap/slapd.d
+	#else
+		SLAPD_CONF=/etc/ldap/slapd.conf
+	#fi
+fi
 
-case "$1" in
-  start)
+# Stop processing if the config file is not there
+if [ ! -r "$SLAPD_CONF" ]; then
+  log_warning_msg "No configuration file was found for slapd at $SLAPD_CONF."
+  # if there is no config at all, we should assume slapd is not running
+  # and exit 0 on stop so that unconfigured packages can be removed.
+  [ "x$1" = xstop ] && exit 0 || exit 1
+fi
+
+# extend options depending on config type
+if [ -f "$SLAPD_CONF" ]; then
+	SLAPD_OPTIONS="-f $SLAPD_CONF $SLAPD_OPTIONS"
+elif [ -d "$SLAPD_CONF" ] ; then
+	SLAPD_OPTIONS="-F $SLAPD_CONF $SLAPD_OPTIONS"
+fi
+
+# Find out the name of slapd's pid file
+if [ -z "$SLAPD_PIDFILE" ]; then
+	# If using old one-file configuration scheme
+	if [ -f "$SLAPD_CONF" ] ; then
+		SLAPD_PIDFILE=`sed -ne 's/^pidfile[[:space:]]\+\(.\+\)/\1/p' \
+			"$SLAPD_CONF"`
+	# Else, if using new directory configuration scheme
+	elif [ -d "$SLAPD_CONF" ] ; then
+		SLAPD_PIDFILE=`sed -ne \
+			's/^olcPidFile:[[:space:]]\+\(.\+\)[[:space:]]*/\1/p' \
+			"$SLAPD_CONF"/'cn=config.ldif'`
+	fi
+fi
+
+# XXX: Breaks upgrading if there is no pidfile (invoke-rc.d stop will fail)
+# -- Torsten
+if [ -z "$SLAPD_PIDFILE" ]; then
+	log_failure_msg "The pidfile for slapd has not been specified"
+	exit 1
+fi
+
+# Pass the user and group to run under to slapd
+if [ "$SLAPD_USER" ]; then
+	SLAPD_OPTIONS="-u $SLAPD_USER $SLAPD_OPTIONS"
+fi
+
+if [ "$SLAPD_GROUP" ]; then
+	SLAPD_OPTIONS="-g $SLAPD_GROUP $SLAPD_OPTIONS"
+fi
+
+# Check whether we were configured to not start the services.
+check_for_no_start() {
+	if [ -n "$SLAPD_NO_START" ]; then
+		echo 'Not starting slapd: SLAPD_NO_START set in /etc/default/slapd' >&2
+		exit 0
+	fi
+	if [ -n "$SLAPD_SENTINEL_FILE" ] && [ -e "$SLAPD_SENTINEL_FILE" ]; then
+		echo "Not starting slapd: $SLAPD_SENTINEL_FILE exists" >&2
+		exit 0
+	fi
+}
+
+# Tell the user that something went wrong and give some hints for
+# resolving the problem.
+report_failure() {
+	log_end_msg 1
+	if [ -n "$reason" ]; then
+		log_failure_msg "$reason"
+	else
+		log_failure_msg "The operation failed but no output was produced."
+
+		if [ -n "$SLAPD_OPTIONS" -o \
+		     -n "$SLAPD_SERVICES" ]; then
+			if [ -z "$SLAPD_SERVICES" ]; then
+				if [ -n "$SLAPD_OPTIONS" ]; then
+					log_failure_msg "Command line used: slapd $SLAPD_OPTIONS"
+				fi
+			else
+				log_failure_msg "Command line used: slapd -h '$SLAPD_SERVICES' $SLAPD_OPTIONS"
+			fi
+		fi
+	fi
+}
+
+# Start the slapd daemon and capture the error message if any to 
+# $reason.
+start_slapd() {
+	# Make sure /var/run/slapd exists with correct permissions
+	if [ ! -d /var/run/slapd ]; then
+		mkdir -p /var/run/slapd
+		[ -z "$SLAPD_USER" ] || chown -R "$SLAPD_USER" /var/run/slapd
+		[ -z "$SLAPD_GROUP" ] || chgrp -R "$SLAPD_GROUP" /var/run/slapd
+	fi
+
+	# Make sure the pidfile directory exists with correct permissions
+	piddir=`dirname "$SLAPD_PIDFILE"`
+	if [ ! -d "$piddir" ]; then
+		mkdir -p "$piddir"
+		[ -z "$SLAPD_USER" ] || chown -R "$SLAPD_USER" "$piddir"
+		[ -z "$SLAPD_GROUP" ] || chgrp -R "$SLAPD_GROUP" "$piddir"
+	fi
+
 	# check ucr autostart setting
 	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 		. "/usr/share/univention-config-registry/init-autostart.lib"
 		check_autostart ldap ldap/autostart
 	fi
+
 	# check that no slapd is running
-	if ! start-stop-daemon --start --quiet --exec $DAEMON --test > /dev/null; then
-		log_action_msg "LDAP server already running"
-		exit 0
-	fi
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
+	#if ! start-stop-daemon --start --quiet --exec $DAEMON --test > /dev/null; then
+	#	log_action_msg "LDAP server already running"
+	#	exit 0
+	#fi
 @!@
 if configRegistry['ldap/database/type'] == 'bdb':
-	print '\t# check backend database'
-	print '\tbdbrecover'
+        print '\t# check backend database'
+        print '\tbdbrecover'
 if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
-	print '\tcheck_replog_file'
+        print '\tcheck_replog_file'
 @!@
-
-	log_action_begin_msg "Starting ldap server(s): slapd "
-
+	# UCS: SLAPD_SERVICE is always defined via UCR variables
+	# slapd/port and slapd/port/ldaps hence 'else' always applies.
+	if [ -z "$SLAPD_SERVICES" ]; then
+		reason="`start-stop-daemon --start --quiet --oknodo \
+			--pidfile "$SLAPD_PIDFILE" \
+			--exec $SLAPD -- $SLAPD_OPTIONS 2>&1`"
+	else
+		# TODO: Maybe solve this differently today? See:
+		# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=660917
+		# https://ral-arturo.org/2017/02/14/about-process-limits.html
 @!@
-uris=['ldapi:///']
-for p in configRegistry.get('slapd/port', '7389').split(','):
-	uris.append('ldap://:%s/' % p)
-for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):
-	uris.append('ldaps://:%s/' % p)
-print '\turis="%s"' % ' '.join(uris)
 if configRegistry.get('ldap/maxopenfiles'):
-	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
-@!@		start-stop-daemon --start --quiet \
-			--exec $DAEMON -- -h "${uris}"
-	rvalue=$?
-	fail_msg=""
-	# Bug #33993
-	if [ "i686" = "$(uname -m)" ]; then
-		for i in $(seq 1 3); do
-			[ $rvalue -eq 0 ] && break
-			sleep 1
-			start-stop-daemon --start --quiet --exec $DAEMON -- -h "${uris}"
-			rvalue=$?
-		done
-		[ $rvalue -ne 0 ] && fail_msg="slapd start failed, check if ldap/database/mdb/maxsize is supported on this architecture"
+        print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
+@!@		reason="`start-stop-daemon --start --quiet --oknodo \
+			--pidfile "$SLAPD_PIDFILE" \
+			--exec $SLAPD -- -h "$SLAPD_SERVICES" $SLAPD_OPTIONS 2>&1`"
 	fi
-	log_action_end_msg $rvalue "$fail_msg"
-	if [ $rvalue != 0 ]; then
-		exit_if_start_is_running
-		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema 2>&1)
-		exit $rvalue
-	fi
-
-	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 
 @!@
 if configRegistry['ldap/server/type']=="master":
@@ -237,9 +312,8 @@ if configRegistry['ldap/server/type']=="master":
 	print '\tcheck_subschema 2>&1'
 	print '\tlog_action_end_msg 0'
 @!@
-
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-		log_action_begin_msg "Found failed.ldif. Importing "
+		log_action_begin_msg "Found /var/lib/univention-directory-replication/failed.ldif. Importing "
 		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
 		if [ $? = 0 ]; then
 			log_action_end_msg 0
@@ -250,83 +324,65 @@ if configRegistry['ldap/server/type']=="master":
 		fi
 	fi
 
-	;;
+	# Backward compatibility with OpenLDAP 2.1 client libraries.
+	if [ ! -h /var/run/ldapi ] && [ ! -e /var/run/ldapi ] ; then
+		ln -s slapd/ldapi /var/run/ldapi
+	fi
+}
+
+# Stop the slapd daemon and capture the error message (if any) to
+# $reason.
+stop_slapd() {
+	reason="`start-stop-daemon --stop --quiet --oknodo --retry TERM/10 \
+		--pidfile "$SLAPD_PIDFILE" \
+		--exec $SLAPD 2>&1`"
+}
+
+# Start the OpenLDAP daemons
+start_ldap() {
+	trap 'report_failure' 0
+	log_daemon_msg "Starting OpenLDAP" "slapd"
+	start_slapd
+	trap "-" 0
+	log_end_msg 0
+}
+
+# Stop the OpenLDAP daemons
+stop_ldap() {
+	trap 'report_failure' 0
+	log_daemon_msg "Stopping OpenLDAP" "slapd"
+	stop_slapd
+	trap "-" 0
+	log_end_msg 0
+}
+
+case "$1" in
+  start)
+	check_for_no_start
+  	start_ldap ;;
   stop)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	log_action_begin_msg "Stopping ldap server(s): slapd "
-	## first try with pidfile
-	start-stop-daemon --stop --quiet --oknodo --retry 10 \
-		--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-		| while read line; do log_action_cont_msg "$line"; done
-	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -f "^$DAEMON")
-	if [ -n "$pid" ]; then
-		log_action_end_msg 1
-		## try via executable name
-		log_action_begin_msg "Slapd still running ($pid), terminating via executable name"
-		start-stop-daemon --stop --quiet --oknodo --retry 10 \
-			--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-			| while read line; do log_action_cont_msg "$line"; done
-		rm -f "$pidfile"
-	fi
-	log_action_end_msg 0
-	;;
+  	stop_ldap ;;
   restart|force-reload)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	log_action_msg "Restarting ldap server(s)"
-	$0 stop
-	$0 start
-	;;
-  force-stop)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	log_action_begin_msg "Stopping ldap servers (forced) "
-	start-stop-daemon --stop --quiet --oknodo --retry forever/KILL \
-		--exec $DAEMON
-	rm -f "$pidfile"
-	log_action_end_msg 0
-	;;
-  crestart)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	if pidof slapd > /dev/null 2>&1
-	then
-		$0 restart
-	else
-		log_action_msg "No slapd process found, no restart needed"
-	fi
+	check_for_no_start
+  	stop_ldap
+	start_ldap
 	;;
   graceful-stop)
-	$0 stop
-	# logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	# log_action_begin_msg "Sending HUP to ldap server(s): slapd "
-	# signal_plan="HUP/10/TERM/5/KILL/1"
-	# ## first try with pidfile
-	# start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-	# 	--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-	# 	| while read line; do log_action_cont_msg "$line"; done
-	# ## check process (instead of [ $? -eq 2 ])
-	# pid=$(pgrep -f "^$DAEMON")
-	# if [ -n "$pid" ]; then
-	# 	log_action_end_msg 1
-	# 	## try via executable name
-	# 	log_action_begin_msg "Slapd still running ($pid), sending HUP via executable name"
-	# 	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-	# 		--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-	# 		| while read line; do log_action_cont_msg "$line"; done
-	# 	rm -f "$pidfile"
-	# fi
-	# log_action_end_msg 0
-	;;
+        $0 stop
+        # UCS: In previous versions of this init script all graceful-stop did, was calling stop,
+	# nothing special otherwise. Possibly other code relies on graceful-stop to be available.
+        ;;
   graceful-restart)
-	$0 restart
-	# logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	# log_action_msg "Initiating graceful reload of ldap server(s)"
-	# $0 graceful-stop
-	# $0 start
+        $0 restart
+        # UCS: In previous versions of this init script all graceful-restart did, was calling restart,
+	# nothing special otherwise. Possibly other code relies on graceful-restart to be available.
+        ;;
+
+  status)
+	status_of_proc -p $SLAPD_PIDFILE $SLAPD slapd
 	;;
   *)
-	echo "Usage: $0 {start|stop|restart|force-stop|crestart|graceful-stop|graceful-restart}"
+	echo "Usage: $0 {start|stop|restart|force-reload|status|graceful-stop|graceful-restart}"
 	exit 1
 	;;
 esac
-
-exit 0
