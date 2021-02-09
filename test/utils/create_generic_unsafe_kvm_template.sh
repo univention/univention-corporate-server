@@ -55,6 +55,6 @@ mssh "echo '$xml' > $TEMPLATE_BUILD/${xmlfile}"
 mssh "cd $TEMPLATE_BUILD && tar -cvzf $archive $hd $xmlfile"
 mssh "mv $TEMPLATE_BUILD/$archive $TEMPLATE_TARGET/$archive"
 mssh "rm -f $TEMPLATE_BUILD/$hd"
-mssh "rm -f $TEMPLATE_BUILD/$xml"
+mssh "rm -f $TEMPLATE_BUILD/$xmlfile"
 
 exit 0
