@@ -10,6 +10,18 @@
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
+## versions:
+##  4.4-7: skip
+
+# SKIPPED with UCS 4.4-7: u-updater now supports updating to UCS 5,
+# which has a new sources.list file format. This test checks if the
+# 15-sources.list is created correctly for a major UCS update, but
+# in UCS 4 we do not support the new format in the templates. It is
+# only used in
+# /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+# A test for minor release updates is available in `22minor`
+
+
 
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
@@ -29,26 +41,24 @@ mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 
-major+=1
-mkpdir "${major}.0-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-
 config_repo version/patchlevel=0 version/erratalevel=0
 
+
 (
-	set -e
+	set -x -e
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	/usr/share/univention-updater/univention-updater net
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[3]}"
-	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	4"
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[2]}"
+	dpkg-query -W "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
 	test "${major}.0" = "$(ucr get version/version)"
 	test 0 = "$(ucr get version/patchlevel)"
 	test -n "$(ucr get update/available)"  # make sure update/available has been updated
-	checkdeb "${pkgname}" 1 2 3 4
+	checkdeb "${pkgname}" 1 2 3
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3

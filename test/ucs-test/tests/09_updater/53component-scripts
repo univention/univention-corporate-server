@@ -52,30 +52,38 @@ ${DIRS[3]}/postup.sh [0-9]\+ post ${major}.${minor}-0
 __SH__
 
 major+=1
-mkpdir "${major}.0-0" maintained all
-mkdeb "${pkgname}" 3 all "${DIR}"
-mkpkg "${DIR}"
-mksh "${DIR}" preup postup
+mkpdir_ucs5 "${major}.0-0" maintained "${ARCH}"  # 8 9
+# 8:dists/ucs600/main/binary-amd64/
+# 9:dists/errata600/main/binary-amd64/
+rdir="${DIR%/main/binary-*}"
+mkdeb_ucs5 "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg_ucs5 "${DIR}" "${DIR_POOL}"
+mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.0--component/${compname}" maintained all
-mkdeb "${pkgname}c" 3 all "${DIR}"
-mkpkg "${DIR}"
+mkpdir_ucs5 "${major}.0--component/${compname}" maintained "${ARCH}" all  # 10 11
+# 10:6.0/maintained/component/test00000/amd64/
+# 11:6.0/maintained/component/test00000/all/
+cdir="${DIR}"
+mkdeb_ucs5 "${pkgname}c" 3 "${ARCH}" "${DIR}"
+mkpkg_ucs5 "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
 cat >>"${SH_LOG}" <<__SH__
-${DIRS[5]}/preup.sh [0-9]\+ pre ${major}.0-0
-${DIRS[4]}/preup.sh [0-9]\+ ${major}.0-0
-${DIRS[5]}/preup.sh [0-9]\+ post ${major}.0-0
-${DIRS[5]}/postup.sh [0-9]\+ pre ${major}.0-0
-${DIRS[4]}/postup.sh [0-9]\+ ${major}.0-0
-${DIRS[5]}/postup.sh [0-9]\+ post ${major}.0-0
+${cdir}/preup.sh [0-9]\\+ pre ${major}.0-0
+${rdir}/preup.sh [0-9]\\+ ${major}.0-0
+${cdir}/preup.sh [0-9]\\+ post ${major}.0-0
+${cdir}/postup.sh [0-9]\\+ pre ${major}.0-0
+${rdir}/postup.sh [0-9]\\+ ${major}.0-0
+${cdir}/postup.sh [0-9]\\+ post ${major}.0-0
 __SH__
+
+python2.7 create_releases_json.py "${REPODIR}" "${major}.0-0"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${_version_version},${major}.${minor}"
 
 (
-	set -e
+	set -x -e
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}" "${pkgname}c"

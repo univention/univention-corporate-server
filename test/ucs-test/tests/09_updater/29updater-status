@@ -33,10 +33,13 @@ mksh "${DIR}" preup postup
 
 major+=1
 version3="${major}.0-0"
-mkpdir "$version3" maintained all
-mkdeb "${pkgname}" 4 all "${DIR}"
-mkpkg "${DIR}"
+#mkpdir_ucs5 "$version3" maintained all
+mkpdir_ucs5 "$version3" maintained "${ARCH}"
+mkdeb_ucs5 "${pkgname}" 4 all "${DIR_POOL}"
+mkpkg_ucs5 "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
+
+python2.7 create_releases_json.py "${REPODIR}" "${major}.0-0"
 
 config_repo version/patchlevel=0 version/erratalevel=0
 

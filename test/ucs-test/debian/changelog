@@ -1,3 +1,9 @@
+ucs-test (9.0.7-17) unstable; urgency=medium
+
+  * Bug #51865: Adjust 09_updater tests for UCS 5 compatibility
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 09 Feb 2021 21:32:48 +0100
+
 ucs-test (9.0.7-16) unstable; urgency=medium
 
   * Bug #31771: fixed 80_docker/dockertest.py
