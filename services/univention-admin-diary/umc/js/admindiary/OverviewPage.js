@@ -145,20 +145,23 @@ define([
 			var widgets = [{
 				type: DateBox,
 				label: _("From"),
+				'class': 'umcTextBoxDark',
 				value: new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000),
-				sizeClass: 'OneThird',
+				sizeClass: 'Half',
 				onChange: lang.hitch(this, 'autoSearch'),
 				name: 'time_from'
 			}, {
 				type: DateBox,
 				label: _("Until"),
+				'class': 'umcTextBoxDark',
 				value: new Date(),
-				sizeClass: 'OneThird',
+				sizeClass: 'Half',
 				onChange: lang.hitch(this, 'autoSearch'),
 				name: 'time_until'
 			}, {
 				type: ComboBox,
 				label: _("Tags"),
+				'class': 'umcTextBoxDark',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.tags, this.ALL_ID),
 				value: this.ALL_ID,
@@ -168,6 +171,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Event"),
+				'class': 'umcTextBoxDark',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.events, this.ALL_ID),
 				value: this.ALL_ID,
@@ -177,6 +181,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Author"),
+				'class': 'umcTextBoxDark',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.authors, this.ALL_ID),
 				value: this.ALL_ID,
@@ -186,6 +191,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Source"),
+				'class': 'umcTextBoxDark',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.sources, this.ALL_ID),
 				value: this.ALL_ID,
@@ -195,6 +201,7 @@ define([
 			}, {
 				type: SearchBox,
 				name: 'message',
+				'class': 'umcTextBoxDark',
 				value: '',
 				sizeClass: 'TwoThirds',
 				inlineLabel: _('Search...'),
@@ -209,8 +216,9 @@ define([
 				labelConf: {
 					'class': 'umcSearchFormSubmitButton'
 				},
-				iconClass: 'umcDoubleRightIcon',
-				label: _('Advanced Search'),
+				iconClass: 'filter',
+				'class': 'ucsIconButtonHighlighted ucsButton--textfieldAligned',
+				title: _('Advanced Search'),
 				callback: lang.hitch(this, 'toggleSearch')
 			}];
 			this._searchForm = new SearchForm({
@@ -298,11 +306,9 @@ define([
 			}));
 			var button = this._searchForm.getButton('toggleSearch');
 			if (this._advancedSearch) {
-				button.set('label', _('Simple Search'));
-				button.set('iconClass', 'umcDoubleLeftIcon');
+				button.set('title', _('Simple Search'));
 			} else {
-				button.set('label', _('Advanced Search'));
-				button.set('iconClass', 'umcDoubleRightIcon');
+				button.set('title', _('Advanced Search'));
 			}
 		},
 

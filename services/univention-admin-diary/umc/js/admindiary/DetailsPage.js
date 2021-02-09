@@ -69,7 +69,9 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			this._container = new ContainerWidget({});
+			this._container = new ContainerWidget({
+				'class': 'umcCard2'
+			});
 			this.addChild(this._container);
 		},
 
@@ -77,7 +79,9 @@ define([
 			this.set('helpText', lang.replace(_('All entries with context {context_id}'), {context_id: '<strong>' + entities.encode(contextId) + '</strong>'}));
 			this._contextId = contextId;
 			this._container.destroyRecursive();
-			this._container = new ContainerWidget({});
+			this._container = new ContainerWidget({
+				'class': 'umcCard2'
+			});
 			this.addChild(this._container);
 			array.forEach(items, lang.hitch(this, function(item) {
 				var node = put(this._container.domNode, 'article.admindiary');

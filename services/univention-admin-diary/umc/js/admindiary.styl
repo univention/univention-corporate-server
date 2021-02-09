@@ -44,11 +44,14 @@ article.admindiary
 	margin-bottom: 8ex
 
 	blockquote
-		font-size: large
+		font-size: var(--font-size-normal)
 		margin-bottom: 0
-		padding-left: 3em
+		padding: 1rem 0 1rem 3rem
 		background-position: left
 		background-repeat: no-repeat
+		border: none
+		border-top: 2px solid var(--bgc-content-body)
+		border-bottom: 2px solid var(--bgc-content-body)
 	blockquote.software
 		background-image: url("admindiary/icons/software.svg")
 	blockquote.devices
@@ -63,9 +66,12 @@ article.admindiary
 		background-image: url("admindiary/icons/comment.svg")
 	address
 		text-align: right
-		font-size: italic
-		margin-bottom: 0
+		font-size: var(--font-size-small)
+		line-height: var(--lineheight-normal)
+		margin: var(--layout-spacing-unit) 0 0 0
 		float: right
+	span
+		margin: var(--layout-spacing-unit) 0 0 0
 
 .umcTopContainer--layout-admindiary-overviewpage
 	.umcPage .umcPageFooter
@@ -79,3 +85,8 @@ article.admindiary
 
 	.umcGrid--filtering .dgrid
 		max-height: 56px !important // kinda hacky
+
+.umc .umcGrid .dgrid-cell:first-child
+	padding-left: 1rem
+.umc .umcGrid .dgrid-cell:last-child
+	padding-right: 1eem
