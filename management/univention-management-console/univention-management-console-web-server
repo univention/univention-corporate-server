@@ -395,7 +395,11 @@ class User(object):
 		self._timeout_id = notifier.timer_add(int(self.session_end_time - monotonic()) * 1000, self._session_timeout_timer)
 
 	def disconnect_timer(self):
-		notifier.timer_remove(self._timeout_id)
+		try:
+			notifier.timer_remove(self._timeout_id)
+		except KeyError:
+			# timer has already been removed, Bug #52535
+			CORE.warn('Session timer has already been removed for %r.' % (self,))
 
 	def timed_out(self, now):
 		return self.session_end_time < now
