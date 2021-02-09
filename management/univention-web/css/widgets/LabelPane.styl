@@ -5,7 +5,7 @@
 	display: inline-block
 	vertical-align: bottom
 
-	.umcLabelPaneLabelNode
+	> .umcLabelPaneLabelNode
 		--local-color-normal: var(--font-color-contrast-middle)
 		--local-color: var(--local-color-normal)
 		display: inline-flex
@@ -21,13 +21,14 @@
 		&Bottom
 			margin-top: 0.5rem
 
-	&Error .umcLabelPaneLabelNode
+	&Error > .umcLabelPaneLabelNode
 		--local-color: var(--color-error)
 	&Disabled
-		.umcLabelPaneLabelNode
+		> .umcLabelPaneLabelNode
 			--local-color: var(--font-color-contrast-low)
-		.umcDescriptionIcon
-			opacity: 0.4
+
+			> .umcDescriptionIcon
+				opacity: 0.4
 
 // TODO what is this
 .umcLabelPane .umcToolTip
