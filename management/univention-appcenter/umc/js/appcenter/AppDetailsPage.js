@@ -721,11 +721,11 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
 			}
 
-			this.startInstallation([this.app.id]);
+			this.startInstallation([this.app.id], false);
 		},
 
-		startInstallation: function(apps) {
-			this.installDialog.startInstallation(apps, this)
+		startInstallation: function(apps, fromGallery) {
+			this.installDialog.startInstallation(apps, this, fromGallery)
 				.then(lang.hitch(this, function(values) {
 					this.installApps(values.apps, values.hosts, values.appSettings);
 				}), lang.hitch(this, function() {
@@ -806,6 +806,8 @@ define([
 		},
 
 		callInstaller: function(func, apps, hosts, force, deferred, values) {
+			console.log(func, apps, hosts, force, deferred, values);
+			return;
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
 			deferred.then(lang.hitch(nonInteractive, 'resolve'));

@@ -96,10 +96,10 @@ define([
 				this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
 					this.showApp(app, suggested);
 				}));
-				this.own(topic.subscribe('/appcenter/run/install', (apps, suggested) => {
+				this.own(topic.subscribe('/appcenter/run/install', (apps, suggested, fromGallery) => {
 					var firstApp = apps[0];
-					this.showApp(firstApp, suggested).then(function(page) {
-						page.startInstallation(apps.map(app => app.id));
+					this.showApp(firstApp, suggested, true).then(function(page) {
+						page.startInstallation(apps.map(app => app.id), fromGallery);
 					});
 				}));
 			}
@@ -214,7 +214,7 @@ define([
 			}
 		},
 
-		showApp: function(app, fromSuggestionCategory) {
+		showApp: function(app, fromSuggestionCategory, hidden) {
 			fromSuggestionCategory = fromSuggestionCategory || false;
 			this._cleanUpLastShowApp();
 			var scroll = this._scroll();
@@ -258,6 +258,12 @@ define([
 				fromSuggestionCategory: fromSuggestionCategory
 			});
 
+			var backToGallery = lang.hitch(this, function() {
+				this.resetTitle();
+				this.selectChild(this._appCenterPage);
+				this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
+			});
+
 			appDetailsPage.own(
 				appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 					if (newVal) {
@@ -270,12 +276,16 @@ define([
 				installDialog.on('showUp', lang.hitch(this, 'selectChild', installDialog)),
 				detailsDialog.on('showUp', lang.hitch(this, 'selectChild', detailsDialog)),
 				configDialog.on('showUp', lang.hitch(this, 'selectChild', configDialog)),
-				installDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
+				installDialog.on('back', lang.hitch(this, function() {
+					if (hidden) {
+						backToGallery();
+					} else {
+						this.selectChild(appDetailsPage);
+					}
+				})),
 				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				appDetailsPage.on('back', lang.hitch(this, function() {
-					this.resetTitle();
-					this.selectChild(this._appCenterPage);
-					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
+					backToGallery();
 				})),
 				configDialog.on('back', lang.hitch(this, function(applied) {
 					var loadPage = true;
@@ -303,7 +313,9 @@ define([
 			this._appPages.push(detailsDialog, configDialog, installDialog, appDetailsPage);
 
 			return this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
-				this.selectChild(appDetailsPage);
+				if (!hidden) {
+					this.selectChild(appDetailsPage);
+				}
 				this._scrollTo(0, 0, 0);
 				return appDetailsPage;
 			}));

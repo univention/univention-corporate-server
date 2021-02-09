@@ -57,11 +57,8 @@ define([
 		selectedApps: null,
 
 
+		fromGallery: false,
 		needsToBeShown: null,
-		// TODO when coming from the AppCenterPage while selecting multiple apps (not from the AppDetailsPage)
-		// we probably shouls always show the to be installed apps regardless of 'auto_installed' or the length of
-		// 'apps'
-		_autoInstalledNoticeNeedsToBeShown: null,
 		_chooseHostsNeedsToBeShown: null,
 
 		postMixInProperties: function() {
@@ -75,13 +72,13 @@ define([
 			domClass.add(this.domNode, 'umcAppChooseHostWizard');
 		},
 
-		_getPages: function() {
-			const pages = [];
-
-			const headerText = this.selectedApps.length === 1
-				? _('Installation of %s', this.selectedApps[0].name)
-				: _('Installation of multiple apps');
-
+		_getAppsPage: function(headerText) {
+			const page = {
+				name: 'appsOverview',
+				headerText: headerText,
+				widgets: [],
+				layout: [],
+			};
 			if (this.auto_installed.length) {
 				let infoText = '';
 				if (this.selectedApps.length === 1) {
@@ -97,23 +94,16 @@ define([
 						infoText = _('The following Apps will be additionally installed because they are required dependencies for the selected Apps.');
 					}
 				}
-				const page = {
-					name: 'autoinstalledNotice',
-					headerText: headerText,
-					widgets: [{
-						type: Text,
-						name: 'autoinstalledNotice_text',
-						content: infoText
-					}],
-					layout: [
-						'autoinstalledNotice_text'
-					]
-				};
-				pages.push(page);
+				page.widgets.push({
+					type: Text,
+					name: 'appsOverview_text',
+					content: infoText
+				});
+				page.layout.push('appsOverview_text');
 				page.layout.push([]);
 				for (const appId of this.auto_installed) {
 					const app = this.apps.find(app => app.id === appId);
-					const name = `autoinstalledNotice_appText_${app.id}`;
+					const name = `appOverview_appText_${app.id}`;
 					page.widgets.push({
 						type: AppText,
 						app: AppText.appFromApp(app),
@@ -127,41 +117,46 @@ define([
 						page.layout.push([name]);
 					}
 				}
-
-				if (this.selectedApps.length > 1) {
-					page.widgets.push({
-						type: Text,
-						name: 'autoinstalledNotice_text2',
-						content: _('The following Apps where initially selected.'),
-					});
-					page.layout.push('autoinstalledNotice_text2');
-					page.layout.push([]);
-					for (const app of this.selectedApps) {
-						const name = `autoinstalledNotice_appText_${app.id}`;
-						page.widgets.push({
-							type: AppText,
-							app: AppText.appFromApp(app),
-							name,
-							size: 'One',
-						});
-						const layout = page.layout[page.layout.length - 1];
-						if (layout.length < 2) {
-							layout.push(name);
-						} else {
-							page.layout.push([name]);
-						}
-					}
-				}
-				this._autoInstalledNoticeNeedsToBeShown = true;
-			} else {
-				this._autoInstalledNoticeNeedsToBeShown = false;
 			}
 
+			if (this.fromGallery || this.selectedApps.length > 1) {
+				let infoText = '';
+				if (!this.auto_installed.length) {
+					infoText = _('The following Apps are going to be installed.');
+				} else {
+					infoText = _('The following Apps where initially selected.');
+				}
+				page.widgets.push({
+					type: Text,
+					name: 'appsOverview_text2',
+					content: infoText,
+				});
+				page.layout.push('appsOverview_text2');
+				page.layout.push([]);
+				for (const app of this.selectedApps) {
+					const name = `appOverview_appText_${app.id}`;
+					page.widgets.push({
+						type: AppText,
+						app: AppText.appFromApp(app),
+						name,
+						size: 'One',
+					});
+					const layout = page.layout[page.layout.length - 1];
+					if (layout.length < 2) {
+						layout.push(name);
+					} else {
+						page.layout.push([name]);
+					}
+				}
+			}
+			return page;
+		},
 
-			var infoText = this.selectedApps.length === 1
+		_getChooseHostPage: function(headerText) {
+			const infoText = this.selectedApps.length === 1
 				? _('In order to proceed with the installation of %s, please select the host on which the App is going to be installed.', this.selectedApps[0].name)
 				: _('In order to proceed with the installation, please select the hosts on which the Apps are going to be installed.');
-			var page = {
+			const page = {
 				name: 'chooseHosts',
 				headerText: headerText,
 				widgets: [{
@@ -173,7 +168,6 @@ define([
 					'chooseHosts_infoText'
 				]
 			};
-			pages.push(page);
 			for (const app of this.apps) {
 				var hosts = [];
 				var removedDueToInstalled = [];
@@ -245,15 +239,32 @@ define([
 				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown 
 					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length);
 			}
-			this.needsToBeShown = this._autoInstalledNoticeNeedsToBeShown || this._chooseHostsNeedsToBeShown;
+			return page;
+		},
+
+		_getPages: function() {
+			const pages = [];
+			const headerText = this.selectedApps.length === 1
+				? _('Installation of %s', this.selectedApps[0].name)
+				: _('Installation of multiple apps');
+			pages.push(this._getAppsPage(headerText));
+			pages.push(this._getChooseHostPage(headerText));
+			this._showToBeInstalledApps = !!this.auto_installed.length || this.fromGallery;
+			this.needsToBeShown = this._showToBeInstalledApps || this._chooseHostsNeedsToBeShown;
 			return pages;
 		},
 
-		hasNext: function(pageName) {
-			if (pageName === 'autoinstalledNotice') {
-				return this._chooseHostsNeedsToBeShown;
+		isPageVisible: function(pageName) {
+			switch (pageName) {
+				case 'appsOverview':
+					return this._showToBeInstalledApps;
+					break;
+				case 'chooseHosts':
+					return this._chooseHostsNeedsToBeShown;
+					break;
+				default:
+					return true;
 			}
-			return this.inherited(arguments);
 		},
 
 		getFooterButtons: function() {

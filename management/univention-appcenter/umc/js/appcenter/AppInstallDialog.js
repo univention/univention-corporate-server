@@ -107,6 +107,7 @@ define([
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
 				auto_installed: backpack.auto_installed,
+				fromGallery: backpack.fromGallery,
 			});
 			// lang.mixin(backpack, {
 				// chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
@@ -265,13 +266,14 @@ define([
 			this.onBack();
 		},
 
-		startInstallation: function(apps, appDetailsPage) {
+		startInstallation: function(apps, appDetailsPage, fromGallery) {
 			this._installationDeferred = new Deferred();
 			// this._hasSeriousProblems = false;
 
 			var backpack = {
-				appDetailsPage: appDetailsPage,
-				apps: apps,
+				appDetailsPage,
+				apps,
+				fromGallery,
 			};
 			this._resolveApps(backpack)
 				.then(lang.hitch(this, '_getHosts'))

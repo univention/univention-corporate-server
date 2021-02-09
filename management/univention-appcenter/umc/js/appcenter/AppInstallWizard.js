@@ -55,7 +55,6 @@ define([
 		_appDetailsContainer: null,
 
 		// these properties have to be provided
-		// hosts: null,
 		apps: null,
 		appSettings: null,
 		dryRunResults: null,
@@ -190,9 +189,12 @@ define([
 				.map(page => this.getPage(page.name));
 			this.needsToBeShown = !!visiblePages.length;
 
-			var headerText = this.apps.length === 1
+			const headerText = this.apps.length === 1
 				? _('Installation of %s', this.apps[0].name)
 				: _('Installation of multiple apps');
+			visiblePages.forEach(function(page) {
+				page.set('headerText', headerText);
+			});
 
 			if (this.isPageVisible('warnings')) {
 				if (this._hasErrors) {
@@ -214,7 +216,7 @@ define([
 		},
 
 		next: function(pageName) {
-			var next = this.inherited(arguments);
+			let next = this.inherited(arguments);
 			if (pageName && pageName.startsWith('appSettings_')) {
 				const page = this.getPage(pageName);
 				const appSettingsForm = this.getWidget(pageName, page.$appSettingsFormName);
@@ -227,7 +229,7 @@ define([
 		},
 
 		getFooterButtons: function(pageName) {
-			var buttons = this.inherited(arguments);
+			const buttons = this.inherited(arguments);
 			if (pageName === 'warnings') {
 				array.forEach(buttons, function(button) {
 					if (button.name === 'next') {
@@ -243,13 +245,21 @@ define([
 						button.label = _('Accept license');
 					}
 					if (button.name === 'finish') {
-						button.label = _('Accept license and install app');
+						if (this.apps.length === 1) {
+							button.label = _('Accept license and install app');
+						} else {
+							button.label = _('Accept license and install apps');
+						}
 					}
 				});
 			} else {
 				array.forEach(buttons, lang.hitch(this, function(button) {
 					if (button.name === 'finish') {
-						button.label = _('Install app');
+						if (this.apps.length === 1) {
+							button.label = _('Install app');
+						} else {
+							button.label = _('Install apps');
+						}
 					}
 				}));
 			}
@@ -259,7 +269,7 @@ define([
 		_updateButtons: function(pageName) {
 			this.inherited(arguments);
 			if (pageName === 'warnings') {
-				var buttons = this._pages[pageName]._footerButtons;
+				const buttons = this._pages[pageName]._footerButtons;
 				if (this._hasErrors) {
 					if (buttons.next) {
 						domClass.add(buttons.next.domNode, 'dijitDisplayNone');

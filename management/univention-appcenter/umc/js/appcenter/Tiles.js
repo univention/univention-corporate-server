@@ -148,7 +148,9 @@ define([
 				this._selection.map(appId => {
 					return this.tiles.find(tile => tile.obj.id === appId).obj;
 				}),
-				this.isSuggestionCategory);
+				this.isSuggestionCategory,
+				true
+			);
 		},
 
 		filter: function(filterF) {
