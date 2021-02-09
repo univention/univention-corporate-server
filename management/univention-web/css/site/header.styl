@@ -117,18 +117,6 @@ headerHeight = 48px
 	.umcMainTabController
 		height: 100%
 
-	.umcMoreTabsDropDownButton
-		width: 30px
-		height: 100%
-		margin: 0
-
-		.dijitIcon
-			icon-image(-300, -20, '../', '-white')
-			margin: ((headerHeight - 20px) / 2) 5px
-
-		.dijitArrowButtonInner
-			display: none
-
 	.umcMoreTabsDropDownButton--invisible
 		visibility: hidden
 
@@ -151,34 +139,6 @@ headerHeight = 48px
 
 	.umcLoginButton
 		--button-size: var(--layout-height-header)
-
-/* more tabs drop down menu */
-.umc .umcMoreTabsMenuPopupWrapper
-	margin: 3px 0 0 3px
-
-.umc .umcMoreTabsDropDownMenuContent
-	margin: 0
-	background-color: #fff
-	padding: material-grid(1) 0
-
-	.dijitMenuItem
-		transition-property: background-color, color
-		transition-duration: 0.2s
-		text-transform: uppercase
-
-		.dijitMenuItemLabel
-			text-align: center
-			line-height: 32px
-			padding: 0 material-grid(3)
-
-		.dijitMenuItemIconCell,
-		.dijitMenuArrowCell
-			display: none
-
-		&.dijitMenuItemSelected td,
-		&.dijitMenuItemHover td
-			background-color: inherit
-/* more tabs drop down menu  END */
 
 
 /* special stylings depending on device class */
@@ -205,7 +165,73 @@ headerHeight = 48px
 
 .umc .umcHeader--umc
 	.umcMainTabController
-		background: inherit
+		display: flex
+		flex: 1 1 auto
+	.umcHeaderStretch
+		flex: 1 1 auto
+	.umcHeaderRight
+		position: relative
+		flex: 0 0 auto
+
+.umc
+	.umcMobileTabsToggleButton
+		display: flex
+		align-items: center
+		justify-content: center
+	.umcMobileTabsToggleButton__counter
+		position: absolute
+		font-size: 12px
+
+	.umcMobileTabsToggleButton.dijitChecked
+		color: var(--color-primary)
+	.umcMobileTabs
+		position: fixed
+		top: var(--layout-height-header)
+		bottom: 0
+		left: 0
+		right: 0
+		border: 0px solid var(--color-grey8)
+		border-top-width: var(--layout-spacing-unit-small)
+		background-color: var(--color-grey0)
+		// z-index: 30
+		display: flex
+		flex-direction: column
+		align-items: center
+		background: s('rgba(var(--color-grey8-rgb), 0.8)')
+		backdrop-filter: blur(8px)
+
+	.umcMobileTab
+		flex: 0 0 auto
+		outline: 0
+		cursor: pointer
+		display: flex
+		align-items: center
+		min-height: spacing(7)
+		width: 90%
+		max-width: spacing(50)
+		border-radius: var(--border-radius-container)
+		background: var(--color-grey0)
+		padding: spacing(2)
+		margin-bottom: spacing(3)
+		transition: background-color 250ms, color 250ms
+		&:first-child
+			margin-top: spacing(3)
+
+	.umcMobileTab__label
+		flex: 1 1 auto
+		display: flex
+		align-items: center
+
+		.umcModuleTitleBreadCrumb
+			color: inherit
+	.umcMobileTab__closeButton
+		--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
+		--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.08)
+		flex: 0 0 auto
+		margin-left: spacing(1)
+		.featherIcon
+			transition: none
+
 
 
 // module search

@@ -35,6 +35,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/window",
+	"dojo/on/debounce",
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/touch",
@@ -80,6 +81,7 @@ define([
 	"umc/widgets/LiveSearch",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Icon",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/Button",
@@ -90,11 +92,11 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
+], function(declare, lang, kernel, array, baseWin, win, onDebounce, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, style, put, dojoHash, styles, entities, gfx, registry, tools, login, dialog, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton, i18nTools, _
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Icon, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton, i18nTools, _
 ) {
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
@@ -645,6 +647,12 @@ define([
 		showAmbassadorNotification();
 	});
 
+	var MobileTabsToggleButton = declare([ToggleButton], {
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.counterNode = put(this.domNode, 'div.umcMobileTabsToggleButton__counter');
+		}
+	});
 	var UmcHeader = declare([ContainerWidget], {
 
 		// top tap bar (handed over upon instantiation)
@@ -655,20 +663,7 @@ define([
 		_hostInfo: null,
 		_hostMenu: null,
 
-		_resizeDeferred: null,
-		_handleWindowResize: function() {
-			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
-				this._resizeDeferred.cancel();
-			}
-
-			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
-				this.__updateHeaderAfterResize();
-			}), 200);
-
-			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
-		},
-
-		__updateHeaderAfterResize: function() {
+		_resize: function() {
 			if (_overviewVisible) {
 				this._updateMoreTabsVisibility();
 			}
@@ -680,50 +675,92 @@ define([
 			this.setupHelpMenu();
 			this.setupPiwikMenu();
 
-			on(window, 'resize', lang.hitch(this, function() {
-				this._handleWindowResize();
+			on(window, onDebounce('resize', 200), lang.hitch(this, function() {
+				this._resize();
 			}));
 		},
 
 		setupHeader: function() {
+			this._headerRight = new ContainerWidget({
+				'class': 'umcHeaderRight'
+			});
+
 			if (_overviewVisible) {
 				this.setupBackToOverview();
 				this._setupModuleTabs();
 			}
-			this._setupRightHeader();
+
+
+			this.addChild(this._headerRight);
+			if (_overviewVisible) {
+				this.setupSearchField();
+			}
+			this._headerRight.addChild(new NotificationsButton({}));
+			if (_menuVisible) {
+				this._setupMenu();
+			}
+		},
+
+		mobileTabsView: false,
+		_setMobileTabsViewAttr: function(isTrue) {
+			tools.toggleVisibility(this._tabController, !isTrue);
+			tools.toggleVisibility(this._headerStretch, isTrue);
+			tools.toggleVisibility(this._mobileTabsButton, isTrue);
+			this._set('mobileTabsView', isTrue);
 		},
 
 		_setupModuleTabs: function() {
-			this._moreTabsDropDownButton = new DropDownButton({
-				'class': 'umcMoreTabsDropDownButton umcFlatButton umcMoreTabsDropDownButton--invisible',
-				iconClass: '', // prevent 'dijitNoIcon' to be set
-				dropDown: new Menu({
-					'class': 'umcMoreTabsDropDownMenuContent'
-				})
+			this._mobileTabsButton = new MobileTabsToggleButton({
+				iconClass: 'square',
+				'class': 'umcMobileTabsToggleButton ucsIconButton dijitDisplayNone'
 			});
-			aspect.after(this._moreTabsDropDownButton, 'openDropDown', lang.hitch(this, function(ret) {
-				domClass.add(this._moreTabsDropDownButton.dropDown._popupWrapper, 'umcMoreTabsMenuPopupWrapper');
-				return ret;
+			this._headerRight.addChild(this._mobileTabsButton);
+			this._mobileTabsContainer = put('div.umcMobileTabs.dijitDisplayNone');
+			dojo.body().appendChild(this._mobileTabsContainer);
+
+			var bodyClickHandler = on.pausable(dojo.body(), 'click', lang.hitch(this, function() {
+				this._mobileTabsButton.set('checked', false);
 			}));
+			bodyClickHandler.pause();
+			this._mobileTabsButton.watch('checked', lang.hitch(this, function(attr, oldVal, newVal) {
+				if (newVal) {
+					bodyClickHandler.resume();
+				} else {
+					bodyClickHandler.pause();
+				}
+				tools.toggleVisibility(this._mobileTabsContainer, newVal);
+			}));
+			on(this._mobileTabsButton, 'click', function(evt) {
+				// prevent bodyClickHandler from getting the click event when
+				// the toggle button is clicked directly
+				evt.stopImmediatePropagation();
+			});
 
 			var aspectHandlesMap = {};
 			this._tabController.on('addChild', lang.hitch(this, function(module) {
 				if (!module.isOverview) {
-					var menuItem = new MenuItem({
-						'class': 'dijitDisplayNone',
-						correspondingModuleID: module.id,
-						label: module.title,
-						onClick: lang.hitch(this._tabContainer, 'selectChild', module)
-					});
-					this._moreTabsDropDownButton.dropDown.addChild(menuItem);
+					var closeButton = Button.simpleIconButtonNode('x', 'umcMobileTab__closeButton');
+					on(closeButton, 'click', lang.hitch(this, function(evt) {
+						evt.stopImmediatePropagation();
+						module.closeModule();
+						if (this._mobileTabsContainer.children.length === 0) {
+							this._mobileTabsButton.set('checked', false);
+						}
+					}));
+
+					var tab = put(`div.umcMobileTab#umcMobileTab_${module.id}`);
+					on(tab, 'click', lang.hitch(this, function(evt) {
+						evt.stopImmediatePropagation();
+						this._tabContainer.selectChild(module);
+					}));
+					var labelNode = put(tab, 'div.umcMobileTab__label', module.title);
+					put(tab, closeButton);
+					put(this._mobileTabsContainer, tab);
 
 					this._updateMoreTabsVisibility();
 
 					aspectHandlesMap[module.id] = aspect.after(module, '_setTitleAttr', lang.hitch(this, function(label) {
-						var menuItemToUpdate = array.filter(this._moreTabsDropDownButton.dropDown.getChildren(), function(menuItem) {
-							return menuItem.correspondingModuleID === module.id;
-						})[0];
-						menuItemToUpdate.set('label', label);
+						labelNode.innerHTML = label;
 						this._updateMoreTabsVisibility();
 					}), true);
 				}
@@ -732,77 +769,25 @@ define([
 				aspectHandlesMap[module.id].remove();
 				delete aspectHandlesMap[module.id];
 
-				var menuItemToRemove = array.filter(this._moreTabsDropDownButton.dropDown.getChildren(), function(menuItem) {
-					return menuItem.correspondingModuleID === module.id;
-				})[0];
-				this._moreTabsDropDownButton.dropDown.removeChild(menuItemToRemove);
+				var node = document.getElementById(`umcMobileTab_${module.id}`);
+				if (node) {
+					node.remove();
+				}
 				this._updateMoreTabsVisibility();
 			}));
 
 			this.addChild(this._tabController);
-			this.addChild(this._moreTabsDropDownButton);
+			this._headerStretch = put(this.domNode, 'div.umcHeaderStretch.dijitDisplayNone');
 
-			domClass.toggle(this._tabController.domNode, 'dijitDisplayNone', tools.isTrue(tools.status('mobileView')));
-			domClass.toggle(this._moreTabsDropDownButton.domNode, 'dijitDisplayNone', tools.isTrue(tools.status('mobileView')));
+			this.set('mobileTabsView', true);
 		},
 
 		_updateMoreTabsVisibility: function() {
-			this._resetMoreTabsVisibility();
-
-			// get available width for tabs and the width the tabs currently occupy
-			var headerWidth = domGeometry.getContentBox(this.domNode).w;
-			var moreTabsWidth = domGeometry.getMarginBox(this._moreTabsDropDownButton.domNode).w;
-			var backToOverviewWidth = domGeometry.getMarginBox(this._backToOverviewButton.domNode).w;
-			var headerRightWidth = domGeometry.getMarginBox(this._headerRight.domNode).w;
-			var extraPadding = 10;
-			var availableWidthForTabs = headerWidth - (headerRightWidth + backToOverviewWidth + moreTabsWidth + extraPadding);
-			var tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
-
-			// If tabs occupy more space than available hide one tab after another until
-			// they occupy less space than available.
-			// Also show a drop down button that opens a menu with all hidden tabs.
-			var tabIndexOffset = 0;
-			var tabs = this._tabController.getChildren();
-			tabs.shift(); // remove the overview tab
-			var extraTabs = this._moreTabsDropDownButton.dropDown.getChildren();
-			var numOfTabs = extraTabs.length;
-			while (tabsWidth > availableWidthForTabs && tabIndexOffset < numOfTabs) {
-				tabIndexOffset++;
-				domClass.add(tabs[numOfTabs - tabIndexOffset].domNode, 'dijitDisplayNone');
-				domClass.remove(extraTabs[numOfTabs - tabIndexOffset].domNode, 'dijitDisplayNone');
-				tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
-			}
-			if (tabIndexOffset > 0) {
-				domClass.remove(this._moreTabsDropDownButton.domNode, 'umcMoreTabsDropDownButton--invisible');
-			}
-		},
-
-		_resetMoreTabsVisibility: function() {
-			var tabs = this._tabController.getChildren();
-			tabs.shift(); // remove the overview tab
-			array.forEach(tabs, function(tab) {
-				domClass.remove(tab.domNode, 'dijitDisplayNone');
-			});
-			var extraTabs = this._moreTabsDropDownButton.dropDown.getChildren();
-			array.forEach(extraTabs, function(tab) {
-				domClass.add(tab.domNode, 'dijitDisplayNone');
-			});
-			domClass.add(this._moreTabsDropDownButton.domNode, 'umcMoreTabsDropDownButton--invisible');
-		},
-
-		_setupRightHeader: function() {
-			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight'
-			});
-			this.addChild(this._headerRight);
-
-			if (_overviewVisible) {
-				this.setupSearchField();
-			}
-			this._headerRight.addChild(new NotificationsButton({}));
-			if (_menuVisible) {
-				this._setupMenu();
-			}
+			this._mobileTabsButton.counterNode.innerHTML = this._tabContainer.getChildren().length - 1; // -1 for hidden overview tab
+			this.set('mobileTabsView', false);
+			window.requestAnimationFrame(lang.hitch(this, function() {
+				this.set('mobileTabsView', this._tabController.domNode.scrollWidth > this._tabController.domNode.clientWidth);
+			}));
 		},
 
 		setupSearchField: function() {
@@ -1022,11 +1007,6 @@ define([
 				_menuVisible = tools.isTrue(props.menu);
 			}
 
-			// check for mobile view
-			if (win.getBox().w <= 550 || has('touch')) {
-				tools.status('mobileView', true);
-			}
-
 			login.onInitialLogin(lang.hitch(this, '_authenticated'));
 		},
 
@@ -1076,7 +1056,7 @@ define([
 
 			// the tab bar
 			this._tabController = new TabController({
-				'class': 'umcMainTabController dijitDisplayNone',
+				'class': 'umcMainTabController',
 				containerId: this._tabContainer.id,
 				buttonWidget: TabButton,
 				buttonWidgetCloseClass: 'umcModuleTab__closeButton'
@@ -1136,11 +1116,21 @@ define([
 				var overviewShown = (newModule === this._overviewPage);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
-				if (!tools.status('mobileView')) {
-					domClass.toggle(this._tabController.domNode, 'dijitDisplayNone', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
-				}
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
 					newModule.selectedChildWidget._onShow();
+				}
+
+				if (oldModule) {
+					var mobileTab = dojo.byId(`umcMobileTab_${oldModule.id}`);
+					if (mobileTab) {
+						domClass.remove(mobileTab, 'umcMobileTab--selected');
+					}
+				}
+				if (newModule) {
+					var mobileTab = dojo.byId(`umcMobileTab_${newModule.id}`);
+					if (mobileTab) {
+						domClass.add(mobileTab, 'umcMobileTab--selected');
+					}
 				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
@@ -1705,7 +1695,7 @@ define([
 
 				// create a new tab
 				var tab = null; // will be the module
-				if (BaseClass.prototype.unique || tools.status('mobileView')) {
+				if (BaseClass.prototype.unique) {
 					var sameModules = array.filter(this._tabContainer.getChildren(), function(i) {
 						return i.moduleID === module.id && i.moduleFlavor == module.flavor;
 					});
@@ -1754,12 +1744,9 @@ define([
 
 			domClass.add(tab.domNode, lang.replace('color-{0}', [tab.categoryColor]));
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
-			var moreTabsDropDown = lang.getObject('_header._moreTabsDropDownButton.dropDown', false, this);
-			if (moreTabsDropDown) {
-				var menuTab = array.filter(moreTabsDropDown.getChildren(), function(menuItem) {
-					return menuItem.correspondingModuleID === tab.id;
-				})[0];
-				domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
+			var mobileTab = dojo.byId(`umcMobileTab_${tab.id}`);
+			if (mobileTab) {
+				domClass.add(mobileTab, lang.replace('color-{0}', [module_flavor_css]));
 			}
 
 			var color = this.__getModuleColor(module);
@@ -1780,13 +1767,13 @@ define([
 
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
 			styles.insertCssRule(
-				lang.replace('.umc .dijitMenuItemHover.color-{0}, .umc .dijitMenuItemSelected.color-{0}', [module_flavor_css]),
+				lang.replace('.umc .umcMobileTab--selected.color-{0}, .umc .umcMobileTab.color-{0}:hover', [module_flavor_css]),
 				lang.replace('background-color: {0}', [color])
 			);
 			if (contrastDark > contrastLight) {
 				styles.insertCssRule(
-					lang.replace('.umc .dijitMenuItemHover.color-{0}, .umc .dijitMenuItemSelected.color-{0}, .umc .dijitMenuItemHover.color-{0} td, .umc .dijitMenuItemSelected.color-{0} td', [module_flavor_css]),
-					'color: rgba(0, 0, 0, 0.87)'
+					lang.replace('.umc .umcMobileTab--selected.color-{0}, .umc .umcMobileTab.color-{0}:hover', [module_flavor_css]),
+					'color: rgba(0, 0, 0, 0.87) !important'
 				);
 			}
 
