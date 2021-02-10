@@ -11,3 +11,5 @@ bug: [52743]
 ignore:
    - version.scope
    - release+scope.consistent
+erratum: 889
+announced: 2021-02-10
