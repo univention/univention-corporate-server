@@ -45,7 +45,7 @@ try:
 except ImportError:
 	pass
 
-RE_PASSWORD_SCHEME = re.compile('^{(\w+)}(!?)(.*)', re.I)
+RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 
 
 def crypt(password, method_id=None, salt=None):
@@ -262,34 +262,17 @@ def get_password_history(password, pwhistory, pwhlen):
 	else:
 		newpwhash = crypt(password)
 
-	# split the history
-	if len(pwhistory.strip()):
-		pwlist = pwhistory.split(' ')
-	else:
-		pwlist = []
-
 	# this preserves a temporary disabled history
 	if pwhlen > 0:
-		if len(pwlist) < pwhlen:
-			pwlist.append(newpwhash)
-		else:
-			# calc entries to cut out
-			cut = 1 + len(pwlist) - pwhlen
-			pwlist[0:cut] = []
-			if pwhlen > 1:
-				# and append to shortened history
-				pwlist.append(newpwhash)
-			else:
-				# or replace the history completely
-				if len(pwlist) > 0:
-					pwlist[0] = newpwhash
-					# just to be sure...
-					pwlist[1:] = []
-				else:
-					pwlist.append(newpwhash)
-	# and build the new history
-	res = " ".join(pwlist)
-	return res
+		# split the history
+		pwlist = pwhistory.strip().split(' ')
+		# append new hash
+		pwlist.append(newpwhash)
+		# strip old hashes
+		pwlist = pwlist[-pwhlen:]
+		# build history
+		pwhistory = ' '.join(pwlist)
+	return pwhistory
 
 
 def password_already_used(password, pwhistory):
@@ -329,7 +312,7 @@ def password_already_used(password, pwhistory):
 	return False
 
 
-class PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
+class PasswortHistoryPolicy(object):
 	"""
 	Policy for handling history of password hashes.
 	"""

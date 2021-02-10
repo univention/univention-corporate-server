@@ -33,12 +33,11 @@
 from __future__ import absolute_import
 
 import hashlib
-import io
+import codecs
 import os
 import re
 import copy
 import time
-import struct
 import calendar
 import base64
 
@@ -1805,7 +1804,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
 			smbpwhistory = self.oldattr.get('sambaPasswordHistory', [b''])[0].decode('ASCII')
-			newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, pwhistoryPolicy.pwhistoryLength)
+			newsmbPWHistory = self._get_samba_password_history(password_nt, smbpwhistory, pwhistoryPolicy.pwhistoryLength)
 			ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [b''])[0], newsmbPWHistory.encode('ASCII')))
 		return ml
 
@@ -2154,72 +2153,42 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return dn
 
-	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
-		"""Get history of previously used passwords."""
-		def _get_salt_2():
-			# Get salt for python2
-			salt = ''
-			urandom = io.open('/dev/urandom', 'rb')
-			# get 16 bytes from urandom for salting our hash
-			rand = urandom.read(16)
-			for i in range(0, len(rand)):
-				salt = salt + '%.2X' % ord(rand[i])
-			return salt
+	@classmethod
+	def _get_samba_password_history(cls, newpassword, smbpwhistory, smbpwhlen):
+		"""Get history of previously used passwords.
 
-		def _get_salt_3():
-			# Get salt for python3
-			# get 16 bytes from urandom for salting our hash
-			rand = os.urandom(16)
-			# Encode same way as python2
-			return rand.hex().upper()
-
-		def _get_salt():
-			if six.PY2:
-				return _get_salt_2()
-			return _get_salt_3()
-
-		# split the history
-		if len(smbpwhistory.strip()):
-			pwlist = smbpwhistory.split(' ')
-		else:
-			pwlist = []
+#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 0)
+#		...
+#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', '', 1)
+#		...
+#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 1)
+#		...
+#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 2)
+#		...
+		"""
 
 		# calculate the password hash & salt
-		salt = _get_salt()
-		# we have to have that in hex
-		hexsalt = salt
-		# and binary for calculating the md5
-		salt = self.getbytes(salt)
+		# in binary for calculating the md5:
+		salt = os.urandom(16)
+		# we have to have that in hex:
+		hexsalt = codecs.encode(salt, 'hex').upper().decode('ASCII')
 		# we need the ntpwd binary data to
-		pwd = self.getbytes(newpassword)
+		pwd = codecs.decode(newpassword, 'hex')
 		# calculating hash. stored as a 32byte hex in sambaPasswordHistory,
 		# syntax like that: [Salt][MD5(Salt+Hash)]
 		#	First 16bytes ^		^ last 16bytes.
 		pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
 		smbpwhash = hexsalt + pwdhash
 
-		if len(pwlist) < smbpwhlen:
-			# just append
-			pwlist.append(smbpwhash)
-		else:
-			# calc entries to cut out
-			cut = 1 + len(pwlist) - smbpwhlen
-			pwlist[0:cut] = []
-			if smbpwhlen > 1:
-				# and append to shortened history
-				pwlist.append(smbpwhash)
-			else:
-				# or replace the history completely
-				if len(pwlist) > 0:
-					pwlist[0] = smbpwhash
-					# just to be sure...
-					pwlist[1:] = []
-				else:
-					pwlist.append(smbpwhash)
-
-		# and build the new history
-		res = ''.join(pwlist)
-		return res
+		# split the history
+		pwlist = smbpwhistory.strip().split(' ')
+		# append new hash
+		pwlist.append(smbpwhash)
+		# strip old hashes
+		pwlist = pwlist[-smbpwhlen:]
+		# build history
+		smbpwhistory = ''.join(pwlist)
+		return smbpwhistory
 
 	def __allocate_rid(self, rid):
 		searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
@@ -2247,11 +2216,6 @@ class object(univention.admin.handlers.simpleLdap):
 				return self.request_lock('sid+user', uidNum)
 			except univention.admin.uexceptions.noLock:
 				uidNum = str(int(uidNum) + 1)
-
-	def getbytes(self, string):
-		# return byte values of a string (for smbPWHistory)
-		bytes = [int(string[i:i + 2], 16) for i in range(0, len(string), 2)]
-		return struct.pack("%iB" % len(bytes), *bytes)
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
