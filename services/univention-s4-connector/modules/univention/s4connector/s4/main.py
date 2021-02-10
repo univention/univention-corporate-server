@@ -42,7 +42,7 @@ import fcntl
 import traceback
 import contextlib
 
-import inotifyx
+import pyinotify
 import ldap
 
 import univention
@@ -155,8 +155,9 @@ def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 
 	retry_rejected = 0
 	connected = True
-	inotify_fd = inotifyx.init()
-	inotifyx.add_watch(inotify_fd, s4.listener_dir, inotifyx.IN_MOVED_TO)
+	wm = pyinotify.WatchManager()
+	notifier = pyinotify.Notifier(wm)
+	wm.add_watch(s4.listener_dir, pyinotify.IN_MOVED_TO)
 	while connected:
 		print(time.ctime())
 		# Aenderungen pollen
@@ -210,10 +211,11 @@ def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 
 		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
-		events = inotifyx.get_events(inotify_fd, poll_sleep)
+		events = notifier.check_events(poll_sleep)
 		if events:
+			notifier.read_events()
 			print('- Inotify reported changes from UCS')
-		os.close(inotify_fd)
+		notifier.stop()
 
 
 @contextlib.contextmanager
