@@ -211,7 +211,7 @@ def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 
 		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
-		events = notifier.check_events(poll_sleep)
+		events = notifier.check_events(poll_sleep * 1000)
 		if events:
 			notifier.read_events()
 			print('- Inotify reported changes from UCS')
