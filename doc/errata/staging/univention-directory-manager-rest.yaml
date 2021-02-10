@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-rest
 fix: 9.0.16-12A~4.4.0.202102031538
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The OpenAPI schema of the UDM REST API now returns "200" as status
    code for the retrieval of object creation templates.
  * The OpenAPI schema of the UDM REST API now contains "201" as

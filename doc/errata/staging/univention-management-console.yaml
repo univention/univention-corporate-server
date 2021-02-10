@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-management-console
 fix: 11.0.6-8A~4.4.0.202102091236
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A `KeyError` is prevented when a session timer has already been removed.
 bug: [52535]
