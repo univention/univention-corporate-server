@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * A `KeyError` is prevented when a session timer has already been removed.
 bug: [52535]
+erratum: 893
+announced: 2021-02-10
