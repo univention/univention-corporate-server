@@ -76,10 +76,10 @@ def test_run_module(arg, funcname, mocker):
 
 
 @pytest.mark.parametrize("prefix,srcfiles,ascii,expected", [
-	("# ", set(), False, "# Warning: "),
-	(";", set(), False, ";Warnung: "),
-	("// ", {"tmpl"}, False, "// \ttmpl\n"),
-	(";", {u"Dom\u00e4ne"}, True, b";\tDom?ne\n"),
+	pytest.param("# ", set(), False, "# Warning: ", id="#"),
+	pytest.param(";", set(), False, ";Warnung: ", id=";"),
+	pytest.param("// ", {"tmpl"}, False, "// \ttmpl\n", id="//"),
+	pytest.param(";", {u"Dom\u00e4ne"}, True, b";\tDom?ne\n", id="unicode"),
 ])
 def test_warning_string(prefix, srcfiles, ascii, expected):
 	if ascii and sys.version_info >= (3,):
