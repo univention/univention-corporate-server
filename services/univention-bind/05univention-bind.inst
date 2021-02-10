@@ -90,6 +90,10 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$hostname.$domainname." || die
 
 	univention-config-registry set dns/master/address=127.0.0.1
+	# touch config files just in case the listener module bind.py has not created them yet
+	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
+	# start the bind service
+	systemctl restart bind9.service
 
 	# Append local server as DNS server to the zones, except if disabled by UCR
 	if ! is_ucr_false dns/nameserver/registration/forward_zone; then
