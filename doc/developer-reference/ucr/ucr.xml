@@ -184,8 +184,8 @@ esac
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
-print ucr['variable/name']
-print ucr.get('variable/name', '<not set>')
+print(ucr['variable/name'])
+print(ucr.get('variable/name', '<not set>'))
 				]]></programlisting>
 			</example>
 			<para>
@@ -197,13 +197,13 @@ print ucr.get('variable/name', '<not set>')
 				<title>Reading boolean &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 if ucr.is_true('update/secure_apt'):
-	print "package signature check is explicitly enabled"
+	print("package signature check is explicitly enabled")
 if ucr.is_true('update/secure_apt', True):
-	print "package signature check is enabled"
+	print("package signature check is enabled")
 if ucr.is_false('update/secure_apt'):
-	print "package signature check is explicitly disabled"
+	print("package signature check is explicitly disabled")
 if ucr.is_false('update/secure_apt', True):
-	print "package signature check is disabled"
+	print("package signature check is disabled")
 				]]></programlisting>
 			</example>
 			<para>
@@ -218,7 +218,7 @@ ucr_update(ucr, {
 	'foo': 'bar',
 	'baz': '42',
 	'bar': None,
-	})
+})
 				]]></programlisting>
 			</example>
 			<para>
@@ -615,6 +615,7 @@ def handler(config_registry, changes):
 Description[en]=<description>
 Description[<language>]=<description>
 Type=<type>
+Default=<default value>
 ReadOnly=<yes|no>
 Categories=<category,...>]]></programlisting>
 			<variablelist>
@@ -648,6 +649,16 @@ Categories=<category,...>]]></programlisting>
 							The syntax type for the value.
 							This is unused in UCS-3.1, but future versions might use this for validating the input.
 							Valid values include <literal>str</literal> for strings, <literal>bool</literal> for boolean values, and <literal>int</literal> for integers.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Default</literal> (optional)</term>
+					<listitem>
+						<simpara>
+							The default value of the UCR variable which is applied if the variable is not set.
+							This has been added in UCS 5.0.
+							The default value might be a UCR pattern referencing other variables (e.g. <literal>Default: @%@another/variable@%@ example</literal>).
 						</simpara>
 					</listitem>
 				</varlistentry>
