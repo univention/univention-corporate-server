@@ -1,3 +1,10 @@
+ucs-test (10.0.3-15) unstable; urgency=medium
+
+  * Bug #52358: Increase waiting time before cleanup in tests which trigger
+    an S4-Connector loop
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 10 Feb 2021 17:11:47 +0100
+
 ucs-test (10.0.3-14) unstable; urgency=medium
 
   * Bug #52358: translate 95rename_administrator test to python
