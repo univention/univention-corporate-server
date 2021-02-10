@@ -77,7 +77,7 @@ modrdn = "1"
 		]]></programlisting>
 		<variablelist>
 			<varlistentry>
-				<term><varname>name</varname> (required)</term>
+				<term><varname>name</varname> (<type>str</type>, required)</term>
 				<listitem>
 					<para>
 						This name is used to uniquely identify the module.
@@ -87,7 +87,7 @@ modrdn = "1"
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><varname>description</varname> (required)</term>
+				<term><varname>description</varname> (<type>str</type>, required)</term>
 				<listitem>
 					<para>
 						A short description.
@@ -96,7 +96,7 @@ modrdn = "1"
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><varname>filter</varname> (required)</term>
+				<term><varname>filter</varname> (<type>str</type>, required)</term>
 				<listitem>
 					<para>
 						Defines a LDAP filter which is used to match the objects the listener is interested in.
@@ -115,7 +115,7 @@ modrdn = "1"
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><varname>attributes</varname> (optional)</term>
+				<term><varname>attributes</varname> (<type>List[str]</type>, optional)</term>
 				<listitem>
 					<para>
 						A Python list of LDAP attribute names which further narrows down the condition under which the listener module gets called.
@@ -125,7 +125,7 @@ modrdn = "1"
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><varname>modrdn</varname> (optional)</term>
+				<term><varname>modrdn</varname> (<type>str</type>, optional)</term>
 				<listitem>
 					<para>
 						Setting this variable to the string <literal>1</literal> changes the signature of the function <function>handler()</function>.
@@ -134,7 +134,7 @@ modrdn = "1"
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><varname>handle_every_delete</varname> (optional)</term>
+				<term><varname>handle_every_delete</varname> (<type>bool</type>, optional)</term>
 				<listitem>
 					<para>
 						The Listener uses its <link linkend="listener:details:cache">cache</link> to keep track of objects, especially their previous values and which modules handles which objects.
@@ -694,6 +694,64 @@ univention-directory-listener-verify \
 					</para>
 				</step>
 			</procedure>
+		</section>
+		<section id="listener:python-migration">
+			<title>Python 3 Migration
+				<indexterm><primary>Python 3</primary><secondary>Migration</secondary></indexterm>
+			</title>
+			<para>
+				As of UCS 5.0 the &ucsUDL; uses Python 3 to execute listener modules.
+		</para>
+		<para>
+
+				For a successful migration all functions must be migrated to work with Python 3.
+				There is no change in the module variables (<varname>name</varname>, <varname>description</varname>, <varname>filter</varname>, ...) necessary.
+
+		</para>
+		<para>
+				The data structure of the arguments <varname>new</varname> and <varname>old</varname> given to the <function>handler()</function> function now explicitly differentiates between byte strings (<type>bytes</type>) and unicode strings (<type>str</type>).
+				The dictionary keys are strings while the LDAP attribute values are list of byte strings:
+				<programlisting language="python"><![CDATA[
+{
+  'associatedDomain': [b'example.net'],
+  'krb5RealmName': [b'EXAMPLE.NET'],
+  'dc': [b'example'],
+  'nisDomain': [b'example.net'],
+  'objectClass': [
+    b'top',
+    b'krb5Realm',
+    b'univentionPolicyReference',
+    b'nisDomainObject',
+    b'domainRelatedObject',
+    b'domain',
+    b'univentionBase',
+    b'univentionObject'
+  ],
+  'univentionObjectType': [b'container/dc'],
+}
+				]]></programlisting>
+
+		</para>
+		<para>
+				While in UCS 4 <function>handler()</function> typically looked like:
+				<programlisting language="python"><![CDATA[
+def handler(dn, new, old):
+    if 'myObjectClass' in new.get('objectClass', []):
+        value = new['myAttribute'][0]
+        ...
+				]]></programlisting>
+
+		</para>
+		<para>
+			In UCS 5 it would look like:
+			<programlisting language="python"><![CDATA[
+def handler(dn, new, old):  # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]]) -> None
+    if b'myObjectClass' in new.get('objectClass', []):
+        value = new['myAttribute'][0].decode('UTF-8')
+        ...
+			]]></programlisting>
+
+			</para>
 		</section>
 	</section>
 
