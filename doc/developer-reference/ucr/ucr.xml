@@ -1182,6 +1182,44 @@ Depends: ..., ${misc:Depends}, ...
 		</section>
 	</section>
 
+	<section id="ucr:python-migration"><title>Python 3 Migration</title>
+		<para>
+			In UCS 5.0 all UCR templates and UCR modules must be Python 2 and Python 3 compatible.
+			This must also be the case for UCS 4.4 and newer, because during the upgrade to UCS 5.0 UCR templates can be evaluated with either Python version.
+		</para>
+		<para>
+			Most templates simply use the Python 2 print statement:
+			<programlisting language="python"><![CDATA[
+print configRegistry.get('my/variable')
+			]]></programlisting>
+
+			Parenthesis have to be added:
+			<programlisting language="python"><![CDATA[
+print(configRegistry.get('my/variable'))
+			]]></programlisting>
+
+			Please note that is is not possible yet to use Python 3 only syntax (as in Python 2 <function>print</function> is a statement), such as:
+			<programlisting language="python"><![CDATA[
+print(configRegistry.get('my/variable'), file=sys.stderr)
+			]]></programlisting>
+
+			It is also not possible to use <programlisting language="python"><![CDATA[ from __future__ import print_function ]]></programlisting> as &ucsUCR; executes Python code before the template is imported.
+		</para>
+		<para>
+			The deprecated variable <varname>baseConfig</varname> has been removed in UCS 5.0 but <varname>configRegistry</varname> remains for using.
+		</para>
+		<para>
+			The API of <type>ConfigRegistry</type> works with <type>str</type>.
+			For Python 2 this equals <type>bytes</type>, while for Python 3 this is a unicode sting.
+		</para>
+		<para>
+			The test case <filename>/usr/share/ucs-test/03_ucr/37check-ucr-templates-py3-migration-status.py</filename> from the package <package>ucs-test-ucr</package> can be used to check if the UCR template output works with both Python versions and is idempotent.
+		</para>
+		<para>
+			UCR modules and scripts have no API changes. They simply need to be migrated to be Python 3 compatible.
+		</para>
+	</section>
+
 	<!--
 	<section id="ucr:intern"><title>Internals</title>
 		<remark>SG: is this right here?</remark>
