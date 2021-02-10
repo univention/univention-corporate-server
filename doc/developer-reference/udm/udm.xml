@@ -2133,6 +2133,282 @@ curl -X DELETE http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/
 		</section>
 	</section>
 
+	<section id="udm:python-migration">
+		<title>UCS 5.0: Python 3 Migration of modules and extensions
+			<indexterm><primary>Python 3</primary><secondary>Migration</secondary></indexterm>
+		</title>
+		<para>
+			UCS 5.0 switched from Python 2 to Python 3.
+			This also affects &ucsUDM;.
+			Starting with UCS 5.0 the modules and extensions like syntax classes and hooks must be compatible with both Python versions to ensure easier transition.
+			Python 2 will be removed completely with UCS 5.1.
+			This chapter describes important aspects of the migration as well as changes to the API.
+		</para>
+
+		<section id="udm:python-migration:compatibility"><title>Compatibility with UCS 4.4</title>
+			<para>
+				Most changes proposed in this chapter are compatible with UCS 4.4.
+				One exception is the registration of the mapping encoding.
+				The changes suggested here should already be included in the UDM modules for UCS 4.4 to make the update easier.
+				The changes suggested here should already be included for UCS 4.4.
+				Otherwise the update to UCS 5.0 may be problematic.
+				Apps that still install UDM modules under UCS 4.4, while the Primary Node may already be UCS 5, must also contain the customizations in the UDM modules or
+				register 2 different variants, otherwise the app will not be displayed on the Primary Node in &ucsUMC; / &ucsUDM;, for example.
+			</para>
+			<para>
+				For the registration of UDM extensions the parameters to specify the compatible starting and end UCS version are now mandatory.
+				While a Join script looked like:
+				<programlisting language="bash"><![CDATA[
+. /usr/share/univention-lib/ldap.sh
+
+ucs_registerLDAPExtension "$@" \
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
+				]]></programlisting>
+
+				it may now specify the compatible UCS versions:
+				<programlisting language="bash"><![CDATA[
+. /usr/share/univention-lib/ldap.sh
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
+				]]></programlisting>
+
+				or registers two separate versions compatible for each UCS version:
+				<programlisting language="bash"><![CDATA[
+. /usr/share/univention-lib/ldap.sh
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "4.99-0" \
+	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/foo/bar.py
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "5.0-0" --ucsversionend "5.99-0" \
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
+				]]></programlisting>
+			</para>
+		</section>
+
+		<section id="udm:python-migration:default-option"><title>Default option</title>
+			<para>
+				If not already present the module should define a <literal>default</literal> &ucsUDM; option:
+				<programlisting language="python"><![CDATA[
+options = {
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'objectClassName'],
+    )
+}
+class object(...):
+    ...
+				]]></programlisting>
+
+				This enables generic functionality like automatic creation of search filters, automatic identification of objects and obsoletes the need to create the add-list manually.
+			</para>
+		</section>
+
+		<section id="udm:python-migration:mapping-functions"><title>Mapping functions</title>
+			<para>
+				The <function>unmap</function> functions must decode the given list of byte strings (<type>bytes</type>) into unicode strings (<type>str</type>).
+				The <function>map</function> functions must encode the result of the <function>unmap</function> functions (e.g. unicode strings <type>str</type>) into a list of byte strings (<type>bytes</type>).
+				Both functions have a new optional parameter <parameter>encoding</parameter>, which is a tuple consisting of the encoding (defaulting to <literal>UTF-8</literal>) and the error handling in case de/encoding fails (defaulting to <literal>strict</literal>).
+			</para>
+			<para>
+				Old UCS 4 code most often looked like:
+				<programlisting language="python"><![CDATA[
+def map_function(value):
+    return [value]
+
+
+def unmap_function(value):
+    return value[0]
+
+
+mapping.register('property', 'attribute', map_function, unmap_function)
+				]]></programlisting>
+
+				In UCS 5.0 the code has to look like:
+				<programlisting language="python"><![CDATA[
+def map_function(value, encoding=None):  # type: (Union[Text, Sequence[Text]], Optional[Tuple[str, str]]) -> List[bytes]
+    return [value.encode(*encoding)]
+
+
+def unmap_function(value, encoding=None):  # type: (Sequence[bytes], Optional[Tuple[str, str]]) -> Text
+    return value[0].decode(*encoding)
+
+
+mapping.register('property', 'attribute', map_function, unmap_function)
+				]]></programlisting>
+			</para>
+		</section>
+		<section id="udm:python-migration:mapping-encoding"><title>Mapping Encoding</title>
+			<warning><para>
+				Specifying the mapping encoding is incompatible with UCS 4.4.
+			</para></warning>
+
+			<para>
+				The registration of the mapping of LDAP attributes to &ucsUDM; properties now has to specify the correct encoding explicitly.
+				The default encoding used is <literal>UTF-8</literal>.
+				As most LDAP data is stored in <literal>UTF-8</literal> the encoding parameter can be left out for most properties.
+			</para>
+			<para>
+				The encoding can simply be specified in the registration of a mapping:
+				<programlisting language="python"><![CDATA[
+mapping.register('property', 'attribute', map_function, unmap_function, encoding='ASCII')
+				]]></programlisting>
+			</para>
+			<para>
+				The encoding depends on the LDAP syntax of the corresponding LDAP attribute.
+				Syntaxes storing binary data should either be specified as <literal>ISO8859-1</literal> or
+				preferably should be decoded to an <literal>ASCII</literal> representation of <literal>base64</literal>
+				via <function>univention.admin.mapping.mapBase64</function> and <function>univention.admin.mapping.unmapBase64</function>.
+
+				The attributes of the following syntaxes e.g. should be set to <literal>ASCII</literal> as they consist of ASCII only characters or a subset of ASCII (e.g. numbers).
+				<itemizedlist>
+					<listitem><para>IA5 String (1.3.6.1.4.1.1466.115.121.1.26)</para></listitem>
+					<listitem><para>Integer (1.3.6.1.4.1.1466.115.121.1.27)</para></listitem>
+					<listitem><para>Printable String (1.3.6.1.4.1.1466.115.121.1.44)</para></listitem>
+					<listitem><para>Boolean (1.3.6.1.4.1.1466.115.121.1.7)</para></listitem>
+					<listitem><para>Numeric String (1.3.6.1.4.1.1466.115.121.1.36)</para></listitem>
+					<listitem><para>Generalized Time (1.3.6.1.4.1.1466.115.121.1.24)</para></listitem>
+					<listitem><para>Telephone Number (1.3.6.1.4.1.1466.115.121.1.50)</para></listitem>
+					<listitem><para>UUID (1.3.6.1.1.16.1)</para></listitem>
+					<listitem><para>Authentication Password (1.3.6.1.4.1.4203.1.1.2)</para></listitem>
+				</itemizedlist>
+
+				To find out the syntax of an LDAP attribute programmatically e.g. for the attribute <literal>gecos</literal>:
+				<programlisting language="bash">
+python -c '
+from univention.uldap import getMachineConnection
+from ldap.schema import AttributeType
+conn = getMachineConnection()
+schema = conn.get_schema()
+attr = schema.get_obj(AttributeType, "gecos")
+print(atttr.syntax)'
+				</programlisting>
+			</para>
+		</section>
+
+		<section id="udm:python-migration:open"><title><function>object.open()</function> / <function>object._post_unmap()</function></title>
+			<para>
+				LDAP attributes contained in <varname>self.oldattr</varname> are usually transformed into property values (in <varname>self.info</varname>) by the mapping functions.
+				In some cases this cannot be done automatically.
+				Instead this is done manually in the methods <function>open()</function> or <function>_post_unmap()</function>.
+				These functions must consider transforming byte strings (<type>bytes</type> in <varname>self.oldattr</varname>) into unicode strings (<type>str</type> in <varname>self.info</varname>).
+			</para>
+		</section>
+
+		<section id="udm:python-migration:haskey"><title><function>object.has_key()</function></title>
+			<para>
+				The method <function>has_key()</function> has been renamed into <function>has_property()</function>.
+				The method <function>has_property()</function> is already present in UCS 4.4.
+			</para>
+		</section>
+
+		<section id="udm:python-migration:identify"><title><function>identify()</function></title>
+			<para>
+				The <function>identify()</function> function must now consider that the given attribute values are byte strings.
+
+				The code prior looked like:
+				<programlisting language="python"><![CDATA[
+def identify(dn, attr, canonical=False):
+    return 'objectClassName' in attr.get('objectClass', [])
+				]]></programlisting>
+
+				In UCS 5.0 the code have to look like:
+				<programlisting language="python"><![CDATA[
+class object(...):
+    ...
+    @classmethod
+    def identify(cls, dn, attr, canonical=False):
+        return b'objectClassName' in attr.get('objectClass', [])
+
+
+identify = object.identify
+				]]></programlisting>
+
+				In most cases the <function>identify()</function> function only checks for the existence of a specific LDAP <classname>objectClass</classname>.
+				The generic implementation can be used instead, which requires the  <literal>default</literal> UDM option to be set:
+				<programlisting language="python"><![CDATA[
+options = {
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'objectClassName'],
+    )
+}
+class object(...):
+    ...
+
+
+identify = object.identify
+				]]></programlisting>
+			</para>
+		</section>
+
+		<section id="udm:python-migration:modlist"><title><function>_ldap_modlist()</function></title>
+			<para>
+				The methods <function>_ldap_modlist()</function> and <function>_ldap_addlist()</function> now must insert byte strings into the add/modlist.
+
+				The code prior looked like:
+				<programlisting language="python"><![CDATA[
+class object(...):
+    ...
+    def _ldap_addlist(al):
+        al = super(object, self)._ldap_addlist(al)
+        al.append(('objectClass', ['top', 'objectClassName']))
+        return al
+
+    def _ldap_modlist(ml):
+        ml = super(object, self)._ldap_modlist(ml)
+        value = ...
+        new = [value]
+        ml.append(('attribute', self.oldattr.get('attribute', []), new))
+        return ml
+				]]></programlisting>
+
+				In UCS 5.0 the code have to look like:
+				<programlisting language="python"><![CDATA[
+class object(...):
+    ...
+    def _ldap_addlist(al):
+        al = super(object, self)._ldap_addlist(al)
+        al.append(('objectClass', [b'top', b'objectClassName']))
+        return al
+
+    def _ldap_modlist(ml):
+        ml = super(object, self)._ldap_modlist(ml)
+        value = ...
+        new = [value.encode('UTF-8')]
+        ml.append(('attribute', self.oldattr.get('attribute', []), new))
+        return ml
+				]]></programlisting>
+
+			The <function>_ldap_addlist()</function> is mostly not needed and should be replaced by specifying a default option (see above).
+			</para>
+		</section>
+
+		<section id="udm:python-migration:lookup"><title>lookup()</title>
+			<para>
+				The <function>lookup()</function> should be replaced by specifying a default option as described above.
+				The class method <function>rewrite_filter()</function> can be used to add additional filter rules.
+			</para>
+		</section>
+
+		<section id="udm:python-migration:syntax"><title>Syntax classes</title>
+			<para>
+				Syntax classes now must ensure to return unicode strings.
+			</para>
+		</section>
+
+		<section id="udm:python-migration:hooks"><title>Hooks</title>
+			<para>
+				For hooks the same rules as in <function>_ldap_modlist()</function> apply.
+			</para>
+		</section>
+	</section>
+
 	<!-- <section id="udm:acl"> -->
 	<!-- 	<title>LDAP Access Control Lists -->
 	<!-- 		<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm> -->
@@ -2154,4 +2430,4 @@ curl -X DELETE http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/
 	<!-- </section> -->
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set noet ft=docbk:-->
