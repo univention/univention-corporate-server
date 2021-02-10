@@ -1036,6 +1036,9 @@
 				<listitem><simpara>
 					The listener module <filename>well-known-sid-name-mapping</filename> has been adjusted to avoid long delays during AD-Takeover due to repeated ucr commits to <filename>slapd.conf</filename> (<u:bug>52682</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The idle time between checking for changes on UCS side has been decreased so that changes are processed immediately (<u:bug>49442</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

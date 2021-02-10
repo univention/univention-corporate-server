@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.6-2) unstable; urgency=medium
+
+  * Bug #49442: Make S4-Connector wake up when changes are incoming from
+    UCS
+
+ -- Florian Best <best@univention.de>  Wed, 10 Feb 2021 20:29:14 +0100
+
 univention-s4-connector (14.0.6-1) unstable; urgency=medium
 
   * Bug #52043: respect leading "," in position mapping DN's
