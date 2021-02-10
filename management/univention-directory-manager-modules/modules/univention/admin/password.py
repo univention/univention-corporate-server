@@ -184,6 +184,8 @@ def unlock_password(password):
 	'{SASL}'
 	>>> unlock_password('{KINIT}!')
 	'{KINIT}'
+	>>> unlock_password('{BCRYPT}!')
+	'{BCRYPT}'
 	"""
 	if is_locked(password):
 		match = RE_PASSWORD_SCHEME.match(password).groups()
@@ -207,6 +209,8 @@ def lock_password(password):
 	'{SASL}!'
 	>>> lock_password('{KINIT}')
 	'{KINIT}!'
+	>>> lock_password('{BCRYPT}')
+	'{BCRYPT}!'
 	>>> lock_password('foo').startswith('{crypt}!$')
 	True
 	"""
@@ -236,12 +240,21 @@ def password_is_auth_saslpassthrough(password):
 def get_password_history(password, pwhistory, pwhlen):
 	# type: (str, str, int) -> str
 	"""
-	Append the given password as hash to the history of password hashed
+	Append the given password as hash to the history of password hashes
 
 	:param password: the new password.
 	:param pwhistory: history of previous password hashes.
 	:param pwhlen: length of the password history.
 	:returns: modified password hash history.
+
+	>>> get_password_history("a", "b", 0)
+	'b'
+	>>> len(get_password_history("a", "", 1).split(' '))
+	1
+	>>> len(get_password_history("a", "b", 1).split(' '))
+	1
+	>>> len(get_password_history("a", "b", 2).split(' '))
+	2
 	"""
 	# create hash
 	if configRegistry.is_true('password/hashing/bcrypt'):
@@ -287,6 +300,14 @@ def password_already_used(password, pwhistory):
 	:param password: new password hash.
 	:param pwhistory: history of previous password hashes.
 	:returns: `True` when already used, `False` otherwise,
+
+
+	>>> password_already_used('a', '')
+	False
+	>>> password_already_used('a', 'b')
+	False
+	>>> password_already_used('a', 'b ' + crypt('a'))
+	True
 	"""
 	for line in pwhistory.split(" "):
 		linesplit = line.split("$")  # $method_id$salt$password_hash

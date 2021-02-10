@@ -853,7 +853,7 @@ def sambaWorkstationsUnmap(workstations, encoding=()):
 
 
 def logonHoursMap(logontimes):
-	"converts the bitfield 001110010110...100 to the respective string"
+	"converts the bitfield 001110010110...100 to the respective hex string"
 
 	# convert list of bit numbers to bit-string
 	# bitstring = '0' * 168
@@ -870,10 +870,10 @@ def logonHoursMap(logontimes):
 	logontimes = bitstring
 
 	# the order of the bits of each byte has to be reversed. The reason for this is that
-	# consecutive bytes mean consecutive 8-hrs-intervals, but the leftmost bit stands for
-	# the last hour in that interval, the 2nd but leftmost bit for the second-but-last
+	# consecutive bytes mean consecutive 8-hrs-intervals, but the MSB stands for
+	# the last hour in that interval, the 2nd but leftmost bit for the second-to-last
 	# hour and so on. We want to hide this from anybody using this feature.
-	# See http://ma.ph-freiburg.de/tng/tng-technical/2003-04/msg00015.html for details.
+	# See <http://ma.ph-freiburg.de/tng/tng-technical/2003-04/msg00015.html> for details.
 
 	newtimes = ""
 	for i in range(0, 21):
@@ -901,7 +901,7 @@ def logonHoursMap(logontimes):
 
 
 def logonHoursUnmap(logontimes):
-	"converts the string to a bit array"
+	"""Converts hex-string to an array of bits set."""
 
 	times = logontimes[0][:42]
 	while len(times) < 42:
@@ -987,6 +987,11 @@ load_certificate.ATTR = {
 
 
 def mapHomePostalAddress(old, encoding=()):
+	"""Map address to LDAP encoding.
+
+	>>> mapHomePostalAddress([["a", "b", "c"]])
+	[b'a$b$c']
+	"""
 	new = []
 	for i in old:
 		new.append(u'$'.join(i).encode(*encoding))
@@ -994,6 +999,12 @@ def mapHomePostalAddress(old, encoding=()):
 
 
 def unmapHomePostalAddress(old, encoding=()):
+	"""Expand LDAP encoded address.
+	>>> unmapHomePostalAddress([b'foo'])
+	[['foo', ' ', ' ']]
+	>>> unmapHomePostalAddress([b'foo$bar$baz'])
+	[['foo', 'bar', 'baz']]
+	"""
 	new = []
 	for i in old:
 		if b'$' in i:
@@ -1135,10 +1146,18 @@ def unmapSambaRid(oldattr):
 
 
 def mapKeyAndValue(old, encoding=()):
+	"""Map (key, value) list to key=value list.
+	>>> mapKeyAndValue([("a", "b")])
+	[b'a=b']
+	"""
 	return [u'='.join(entry).encode(*encoding) for entry in old]
 
 
 def unmapKeyAndValue(old, encoding=()):
+	"""Map (key=value) list to (key, value) list.
+	>>> unmapKeyAndValue([b"a=b"])
+	[['a', 'b']]
+	"""
 	return [entry.decode(*encoding).split(u'=', 1) for entry in old]
 
 
@@ -2136,6 +2155,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return dn
 
 	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
+		"""Get history of previously used passwords."""
 		def _get_salt_2():
 			# Get salt for python2
 			salt = ''
@@ -2172,7 +2192,7 @@ class object(univention.admin.handlers.simpleLdap):
 		salt = self.getbytes(salt)
 		# we need the ntpwd binary data to
 		pwd = self.getbytes(newpassword)
-		# calculating hash. sored as a 32byte hex in sambePasswordHistory,
+		# calculating hash. stored as a 32byte hex in sambaPasswordHistory,
 		# syntax like that: [Salt][MD5(Salt+Hash)]
 		#	First 16bytes ^		^ last 16bytes.
 		pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
