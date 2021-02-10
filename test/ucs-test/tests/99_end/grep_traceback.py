@@ -104,7 +104,6 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^permissionDenied$', ['_create']),
 	(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	('^ldapError: No such object', ['in _create']),
-	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),
 	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
 	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
 	('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
@@ -122,7 +121,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ConfigurationError: Configuration error: port is closed', None),
 	('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*', None),
 	('ConfigurationError: Configuration error: timeout in network connection', None),
-	('DownloadError: Error downloading http://localhost/DUMMY/: 403', None),
+	('DownloadError: Error downloading http://localhost/DUMMY/.*: 403', None),
 	('ProxyError: Proxy configuration error: credentials not accepted', None),
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
@@ -139,6 +138,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'gaierror: \[Errno -5\] No address associated with hostname', None),
 	('.*moduleCreationFailed: Target directory.*not below.*', None),
 	# Tracebacks caused by specific bugs:
+	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
 	(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
 	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
