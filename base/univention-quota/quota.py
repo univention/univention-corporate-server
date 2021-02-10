@@ -177,7 +177,7 @@ def _is_share_used_on_this_server(new, old):
 def _add_all_shares_below_this_container_to_dn_list(container_dn):
 	# type: (str) -> None
 	lo = _get_ldap_connection()
-	for dn in lo.searchDn(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn()):
+	for dn in lo.searchDn(base=container_dn, filter=filter_format('(&(objectClass=univentionShare)(univentionShareHost=%s))', [_get_fqdn()])):
 		_add_share_to_dn_list(dn)
 	lo.lo.unbind()
 
