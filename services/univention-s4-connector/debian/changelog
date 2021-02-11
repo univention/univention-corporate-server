@@ -1,3 +1,13 @@
+univention-s4-connector (14.0.6-2) unstable; urgency=medium
+
+  * Bug #52358: User LDAP post read control for all objects, not just msGPO.
+    By doing this, we can get the entryCSN of UCS object at addition.
+    With this information, we can detect a pingback of an add_by_ucs,
+    and skip the following add_by_s4.
+    This prevents our S4C-Loop from happening.
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 11 Feb 2021 18:02:18 +0100
+
 univention-s4-connector (14.0.6-1) unstable; urgency=medium
 
   * Bug #52043: respect leading "," in position mapping DN's
