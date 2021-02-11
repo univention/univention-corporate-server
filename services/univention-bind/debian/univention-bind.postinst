@@ -106,6 +106,8 @@ if [ "$1" = "configure" ]; then
 		systemctl --system daemon-reload
 		service bind9 start
 	}
+	# touch config files just in case the listener module bind.py has not created them yet
+	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
 	if [ -n "$2" ]; then
 		systemctl try-restart bind9 || service bind9 restart
 	else
