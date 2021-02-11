@@ -36,7 +36,7 @@ from tempfile import mkdtemp
 from argparse import Action
 
 from univention.lib.ucs import UCS_Version
-from univention.appcenter.log import catch_stdout
+from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.ucr import ucr_get
@@ -110,8 +110,8 @@ class UpdateCheck(UniventionAppAction):
 
 		# first, update the local cache and get current apps
 		update = get_action('update')
-		with catch_stdout(cls.logger):
-			update.call()
+		update.logger = get_logfile_logger('update-check')
+		update.call()
 		current_cache = Apps(locale='en')
 
 		# get apps in next version
