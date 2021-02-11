@@ -1,3 +1,9 @@
+univention-updater (15.0.3-4) unstable; urgency=low
+
+  * Bug #51316: Initialize releases when offline
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Feb 2021 07:27:04 +0100
+
 univention-updater (15.0.3-3) unstable; urgency=low
 
   * Bug #51316: Re-add dependency on Python 2 modules for UCS-5.0

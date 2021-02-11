@@ -1264,6 +1264,7 @@ class UniventionUpdater(object):
         if not self.online_repository:
             self.log.info('Disabled')
             self.server = UCSLocalServer('')  # type: _UCSServer
+            self.releases = {"error": "offline"}
             return
 
         # generate user agent string

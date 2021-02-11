@@ -67,6 +67,15 @@ class TestUniventionUpdater(object):
         assert not u.is_repository_server
         assert ERRAT == u.erratalevel
 
+    def test_ucs_reinit_offline(self, ucr, u):
+        ucr({
+            'repository/online': 'no',
+        })
+        u.ucr_reinit()
+        assert not u.online_repository
+        assert isinstance(u.server, U.UCSLocalServer)
+        assert u.releases["error"]
+
     def test_get_releases(self, u, http):
         http({
             RJSON: gen_releases([(MAJOR, minor, patch) for minor in range(3) for patch in range(3)]),
