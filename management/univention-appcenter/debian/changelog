@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-140) unstable; urgency=medium
+
+  * Bug #52771: added update-check, return component_id
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Feb 2021 15:35:58 +0100
+
 univention-appcenter (8.0.11-139) unstable; urgency=medium
 
   * Bug #52771: added update-check

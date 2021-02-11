@@ -111,7 +111,7 @@ class UpdateCheck(UniventionAppAction):
 		# first, update the local cache and get current apps
 		update = get_action('update')
 		with catch_stdout(cls.logger):
-			update.call(just_get_cache=True)
+			update.call()
 		current_cache = Apps(locale='en')
 
 		# get apps in next version
@@ -128,7 +128,7 @@ class UpdateCheck(UniventionAppAction):
 		for app in current_cache.get_all_locally_installed_apps():
 			if not cls.app_can_update(app, next_version, next_apps):
 				cls.debug('app %s is not available for %s' % (app.id, next_version))
-				blocking_apps[app.name] = app.id
+				blocking_apps[app.component_id] = app.name
 			else:
 				cls.debug('app %s is available for %s' % (app.id, next_version))
 		return blocking_apps
@@ -138,6 +138,6 @@ class UpdateCheck(UniventionAppAction):
 		if blocking_apps:
 			self.log('The update to %s is currently not possible,' % (args.ucs_version))
 			self.log('because the following Apps are not available for UCS %s:' % (args.ucs_version))
-			for app in blocking_apps:
+			for app in blocking_apps.values():
 				self.log(' * %s' % app)
 			return 1
