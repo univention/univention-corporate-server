@@ -67,7 +67,7 @@ check_capabilities () {
 		quit=true
 		msg="welcome screen disabled, exiting"
 	fi
-	if [ "ucs" != "$bootsplash_theme" -a "ucs-appliance-dark" != "$bootsplash_theme" -a "ucs-appliance-light" != "$bootsplash_theme" ]; then
+	if [ "ucs" != "$bootsplash_theme" -a "ucs-light" != "$bootsplash_theme" -a "ucs-appliance-dark" != "$bootsplash_theme" -a "ucs-appliance-light" != "$bootsplash_theme" ]; then
 		quit=true
 		msg="theme does not support welcome screen, exiting"
 	fi
@@ -99,7 +99,7 @@ show_welcome_screen () {
 	else
 		header="Univention Corporate Server"
 	fi
-	console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
+	console="$(gettext -d univention-welcome-screen "Press any key to open text console")"
 	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
 	message2="$(gettext -d univention-welcome-screen "Navigate to the following address:")"
 	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"

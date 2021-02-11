@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="SvgjsSvg167939"
+   width="220"
+   height="40"
+   version="1.1"
+   viewBox="400 360 220 40"
+   sodipodi:docname="Gruppe 163.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata26">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1684"
+     inkscape:window-height="860"
+     id="namedview24"
+     showgrid="false"
+     inkscape:zoom="4.9136364"
+     inkscape:cx="92.693481"
+     inkscape:cy="20"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="SvgjsSvg167939" />
+  <svg
+     id="SvgjsSvg167941"
+     width="220"
+     height="40"
+     version="1.1"
+     fill="#5F5F5C"
+     opacity="1"
+     x="400"
+     y="360">
+    <svg
+       width="220"
+       height="40"
+       version="1.1"
+       id="svg6">
+      <path
+         paint-order="stroke fill markers"
+         fill-rule="evenodd"
+         d="M5 0h210c2.765 0 5 2.235 5 5v30c0 2.765-2.235 5-5 5H5c-2.765 0-5-2.235-5-5V5c0-2.765 2.235-5 5-5z"
+         id="path4" />
+    </svg>
+  </svg>
+  <svg
+     id="SvgjsSvg167951"
+     width="15"
+     height="17"
+     version="1.1"
+     viewBox="417 370 15 17"
+     x="417"
+     y="370">
+    <svg
+       id="SvgjsSvg167953"
+       width="15"
+       height="9"
+       version="1.1"
+       fill="#bdbdbb"
+       stroke-dashoffset="0"
+       stroke-miterlimit="100"
+       stroke-linejoin="miter"
+       stroke-linecap="round"
+       stroke-opacity="1"
+       stroke="#bdbdbb"
+       stroke-width="2"
+       opacity="1"
+       x="417"
+       y="378">
+      <svg
+         width="15"
+         height="9"
+         version="1.1"
+         id="svg14">
+        <path
+           paint-order="stroke fill markers"
+           fill-rule="evenodd"
+           d="M1 .2h12.4a1 1 0 0 1 1 1V8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1.2a1 1 0 0 1 1-1z"
+           id="path12" />
+      </svg>
+    </svg>
+    <svg
+       id="SvgjsSvg167957"
+       width="9"
+       height="9"
+       version="1.1"
+       fill="none"
+       stroke-dashoffset="0"
+       stroke-miterlimit="100"
+       stroke-linejoin="miter"
+       stroke-linecap="round"
+       stroke-opacity="1"
+       stroke="#bdbdbb"
+       stroke-width="2"
+       opacity="1"
+       x="420"
+       y="370">
+      <svg
+         width="9"
+         height="9"
+         version="1.1"
+         id="svg19">
+        <path
+           paint-order="stroke fill markers"
+           fill-rule="evenodd"
+           d="M.2 8.2V5a4 4 0 1 1 8 0v3.2h-8"
+           id="path17" />
+      </svg>
+    </svg>
+  </svg>
+</svg>

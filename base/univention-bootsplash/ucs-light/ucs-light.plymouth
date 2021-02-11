@@ -1,0 +1,19 @@
+[Plymouth Theme]
+Name=Univention light
+Description=Light univention bootsplash.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ucs-light
+ScriptFile=/usr/share/plymouth/themes/ucs/ucs.script
+
+[script-env-vars]
+setting_text_color_red=0.117
+setting_text_color_green=0.117
+setting_text_color_blue=0.113
+setting_text_color_light_red=0.371
+setting_text_color_light_green=0.371
+setting_text_color_light_blue=0.359
+setting_background_color_red=0.930
+setting_background_color_green=0.930
+setting_background_color_blue=0.930

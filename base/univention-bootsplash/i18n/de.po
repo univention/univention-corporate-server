@@ -14,8 +14,8 @@ msgstr ""
 msgid "Welcome to "
 msgstr "Willkommen auf "
 
-msgid "[ Press any key to open text console ]"
-msgstr "[ Drücken Sie eine beliebige Taste, um eine Text-Konsole zu öffnen ]"
+msgid "Press any key to open text console"
+msgstr "Drücken Sie eine beliebige Taste, um eine Text-Konsole zu öffnen"
 
 msgid "Open a browser window"
 msgstr "Öffnen Sie ein Browser-Fenster"

@@ -1,3 +1,9 @@
+univention-bootsplash (11.0.0-2) unstable; urgency=medium
+
+  * Bug #52798: Adjust theme to new design
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 15 Feb 2021 11:50:00 +0100
+
 univention-bootsplash (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
