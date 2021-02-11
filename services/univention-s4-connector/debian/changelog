@@ -1,4 +1,4 @@
-univention-s4-connector (14.0.6-2) unstable; urgency=medium
+univention-s4-connector (14.0.6-4) unstable; urgency=medium
 
   * Bug #52358: User LDAP post read control for all objects, not just msGPO.
     By doing this, we can get the entryCSN of UCS object at addition.
