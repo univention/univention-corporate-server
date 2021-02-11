@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-appcenter
+fix: 8.0.11-139A~4.4.0.202102111349
+desc: |
+ This update addresses the following issue(s):
+ * The new subcommand update-check has been added to
+   univention-app to check whether an UCS update with
+   the currently installed Apps is possible.
+bug: [52771]
