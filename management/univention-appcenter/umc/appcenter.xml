@@ -29,6 +29,7 @@
 		<command name="appcenter/version" function="version" />
 		<command name="appcenter/version2" function="version2" />
 		<command name="appcenter/get_by_component_id" function="get_by_component_id" />
+		<command name="appcenter/get_blocking_apps" function="get_blocking_apps" />
 		<command name="appcenter/app_updates" function="app_updates" />
 		<command name="appcenter/sync_ldap" function="sync_ldap" />
 		<command name="appcenter/query" function="query" />

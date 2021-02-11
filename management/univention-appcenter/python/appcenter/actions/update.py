@@ -63,6 +63,7 @@ class Update(UniventionAppAction):
 		parser.add_argument('--ucs-version', help=SUPPRESS)
 		parser.add_argument('--appcenter-server', help=SUPPRESS)
 		parser.add_argument('--cache-dir', help=SUPPRESS)
+		parser.add_argument('--just-get-cache', action='store_true', default=False, help=SUPPRESS)
 
 	def main(self, args):
 		something_changed = False
@@ -86,7 +87,7 @@ class Update(UniventionAppAction):
 			if self._download_apps(app_cache):
 				app_cache.clear_cache()
 				something_changed = True
-		if something_changed:
+		if something_changed and not args.just_get_cache:
 			apps_cache = Apps()
 			for app in apps_cache.get_all_locally_installed_apps():
 				newest_app = apps_cache.find_candidate(app) or app

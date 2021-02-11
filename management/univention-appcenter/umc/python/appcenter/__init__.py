@@ -310,6 +310,13 @@ class Instance(umcm.Base, ProgressMixin):
 		register = get_action('register')
 		register.call(username=self.username, password=self.password)
 
+	# maybe used in updater-umc
+	@simple_response
+	def get_blocking_apps(self, ucs_version):
+		update_check = get_action('update-check')
+		blocking_apps = update_check.get_blocking_apps(ucs_version=ucs_version)
+		return dict(blocking_apps=blocking_apps)
+
 	# used in updater-umc
 	@simple_response
 	def get_by_component_id(self, component_id):
