@@ -126,9 +126,11 @@ def get_login_links():
 	base = 'umc/login/links/'
 	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
 
+
 def get_login_texts():
 	base = 'umc/login/texts/'
 	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
+
 
 def get_cookie_banner():
 	base = 'umc/cookie-banner/'
