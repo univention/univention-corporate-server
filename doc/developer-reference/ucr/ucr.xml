@@ -790,7 +790,9 @@ init_scipt=<init.name>]]></programlisting>
 							Specifies the name of the <acronym>UCR</acronym> variable, which controls if the service should be started automatically.
 							It is recommended to use the shell library <filename>/usr/share/univention-config-registry/init-autostart.lib</filename> to evaluate the setting from the init-script of the service.
 							If the variable is set to <literal>false</literal> or <literal>no</literal>, the service should never be started.
-							If the variable is set to <literal>manually</literal>, the service should not be started automatically, but invoking the init-script directly with <option>start</option> should still start the service.
+							If the variable is set to <literal>manually</literal>, the service is explicitly not started during system boot. The service
+							can still be started manually. It should be noted that if other services are started that have a dependency on a service marked
+							as <literal>manually</literal>, the service marked as <literal>manually</literal> will also be started.
 						</simpara>
 					</listitem>
 				</varlistentry>
