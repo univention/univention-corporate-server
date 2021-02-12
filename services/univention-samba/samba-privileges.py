@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import
 
-import listener
+from listener import SetUID
 import univention.debug as ud
 import tdb
 
@@ -101,9 +101,7 @@ def handler(dn, new, old):
 
 def addPrivileges(sambaSID, privileges):
 	# type: (bytes, list) -> None
-	listener.setuid(0)
-
-	try:
+	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
@@ -115,24 +113,18 @@ def addPrivileges(sambaSID, privileges):
 			if SAMBA_PRIVILEGES.get(privilege):
 				index = SAMBA_PRIVILEGES[privilege]["index"]
 				number = SAMBA_PRIVILEGES[privilege]["number"]
-				if (ord(privs[index]) & number) == 0:
-					new = chr(ord(privs[index]) + number)
-					if not isinstance(new, bytes):  # Py 2
-						new = new.encode('ISO8859-1')
+				if (privs[index] & number) == 0:
+					new = chr(privs[index] + number).encode('ISO8859-1')
 					privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 
 		tdbFile[tdbKey] = privs
 		tdbFile.unlock_all()
 		tdbFile.close()
-	finally:
-		listener.unsetuid()
 
 
 def removePrivileges(sambaSID, privileges):
 	# type: (bytes, list) -> None
-	listener.setuid(0)
-
-	try:
+	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
@@ -143,10 +135,8 @@ def removePrivileges(sambaSID, privileges):
 				if SAMBA_PRIVILEGES.get(privilege):
 					index = SAMBA_PRIVILEGES[privilege]["index"]
 					number = SAMBA_PRIVILEGES[privilege]["number"]
-					if ord(privs[index]) & number:
-						new = chr(ord(privs[index]) - number)
-						if not isinstance(new, bytes):  # Py 2
-							new = new.encode('ISO8859-1')
+					if privs[index] & number:
+						new = chr(privs[index] - number).encode('ISO8859-1')
 						privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 						tdbFile[tdbKey] = privs
 
@@ -156,5 +146,3 @@ def removePrivileges(sambaSID, privileges):
 
 		tdbFile.unlock_all()
 		tdbFile.close()
-	finally:
-		listener.unsetuid()
