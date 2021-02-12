@@ -566,6 +566,7 @@ Depends:
  python-pytest,
  python-requests,
  python3-pip,
+ python-mock,
  python3-univention-config-registry,
  ucs-test-libs (= ${source:Version}),
  univention-appcenter-dev,
