@@ -194,9 +194,8 @@ class LocalizedDictionary(__LD):
 	def __ne__(self, other):
 		return not self.__eq__(other)
 
+
 # my config parser
-
-
 class UnicodeConfig(configparser.ConfigParser):
 
 	def __init__(self):
@@ -204,6 +203,12 @@ class UnicodeConfig(configparser.ConfigParser):
 			configparser.ConfigParser.__init__(self, strict=False, interpolation=None)
 		else:
 			configparser.ConfigParser.__init__(self)
+
+	def read(self, filename, encoding='UTF-8'):
+		kwargs = {}
+		if six.PY3:
+			kwargs['encoding'] = encoding
+		return super(UnicodeConfig, self).read(filename, **kwargs)
 
 	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
