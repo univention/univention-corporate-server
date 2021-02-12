@@ -242,6 +242,34 @@
 		</section>
 	</chapter>
 
+	 <chapter id="relnotes:localrepo">
+        <title>Local package repository</title>.
+
+        <para>
+            This section is relevant for environments where a <ulink url="https://docs.software-univention.de/handbuch-4.4.html#software::createrepo">local repository</ulink> is set up.
+            The installed (major) version of UCS determines which packages a local repository provides.
+			A repository running on a UCS server with version 4.x will only provide packages up to UCS 4.x, a repository server running on UCS 5 will only provide packages for UCS 5 and newer versions.
+			To upgrade systems to UCS 5 in an environment with a local repository, the following are some of the options.
+            First, a local UCS 5 repository server must be set up.
+            <itemizedlist>
+                <listitem>
+					<para>A new UCS 5 system is installed as a &ucsPrimaryDN; from the DVD or from a virtualized base image.
+						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">a local repository is set up on this system as described in the UCS 5 manual</ulink>.</para>.
+                </listitem>
+                <listitem>
+					<para>
+						A new UCS 5 system is installed as a system role &ucsBackupDN;, &ucsReplicaDN; or &ucsManagedNode; from the DVD or from a virtualized base image.
+						In system setup, select that the system will not join a domain.
+						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">set up a local repository on this system as described in the UCS 5 manual</ulink>.
+						After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.</para>.
+                </listitem>
+            </itemizedlist>
+            To upgrade a system in the domain to UCS 5, the server should first be upgraded to the latest package level available for UCS 4.x.
+            Then, the repository server used by the system is switched to the local UCS 5 repository by changing the &ucsUCRV; <envar>repository/online/server</envar>.
+            The system can now be upgraded to UCS 5 via the &ucsUMC; or via the command line.
+        </para>
+    </chapter>
+
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
 

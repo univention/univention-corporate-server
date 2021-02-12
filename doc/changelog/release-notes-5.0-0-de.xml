@@ -104,6 +104,35 @@
 
 	</chapter>
 
+	<chapter id="relnotes:localrepo">
+		<title>Lokales Repository</title>
+
+		<para>
+			Dieser Abschnitt ist für Umgebungen relevant, in denen ein <ulink url="https://docs.software-univention.de/handbuch-4.4.html#software::createrepo">lokales Repository</ulink> eingerichtet ist. 
+			Die installierte (Major-)Version von UCS bestimmt welche Pakete ein lokales Repository bereitstellt.
+			Ein Repository das auf einem UCS Server in Version 4.x betrieben wird stellt nur Pakete bis zur Version UCS 4.x bereit, ein Repository auf einem UCS 5 Server stellt nur Pakete für UCS 5 und neuere Versionen bereit.
+			Um in einer Umgebung mit lokalem Repository Systeme auf UCS 5 zu aktualisieren bestehen unter anderem die folgenden Möglichkeiten.
+			Zunächst muss ein lokaler UCS 5 Repository Server aufgesetzt werden.
+			<itemizedlist>
+				<listitem>
+					<para>
+						Ein neues UCS 5 System wird als &ucsPrimaryDN; von der DVD oder aus einem virtualisiertem Basisimage installiert.
+						Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.</para>
+				</listitem>
+				<listitem>
+					<para>
+						Ein neues UCS 5 System wird als Systemrolle &ucsBackupDN;, &ucsReplicaDN; oder &ucsManagedNode; von der DVD oder aus einem virtualisiertem Basisimage installiert.
+						Im System-Setup ist auszuwählen, dass das System keiner Domäne beitritt.
+						Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.
+						Nachdem der in der Domäne verwendet &ucsPrimaryDN; auf UCS 5 aktualisiert wurde, kann der UCS 5 Repository Server der Domäne über <command>univention-join</command> beitreten.</para>
+				</listitem>
+			</itemizedlist>
+			Um ein System in der Domäne auf UCS 5 zu aktualisieren, sollte der Server zunächst auf den aktuellsten Paketstand unter UCS 4.x aktualisiert werden.
+			Anschließend wird der vom System verwendete Repository Server durch das Ändern der &ucsUCRV; <envar>repository/online/server</envar> auf das lokale UCS 5 Repository umgeschwenkt.
+			Das System kann nun über die &ucsUMC; oder über die Kommandozeile auf UCS 5 aktualisiert werden.
+		</para>
+	</chapter>
+
 	<chapter id="relnotes:prepare">
 		<title>Vorbereitung des Updates</title>
 
