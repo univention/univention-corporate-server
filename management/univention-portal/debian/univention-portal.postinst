@@ -32,7 +32,6 @@
 
 #DEBHELPER#
 
-ucr set portal/port?8095
 ucr set groups/default/domainadmins?"Domain Admins"
 a2ensite univention-portal.conf
 

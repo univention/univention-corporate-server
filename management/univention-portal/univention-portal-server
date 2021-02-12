@@ -93,9 +93,6 @@ class JsonHandler(PortalHandler):
 		answer["portal"] = portal.get_meta(visible_content, answer["categories"])
 		answer["filtered"] = not admin_mode
 		answer["may_edit_portal"] = user.is_admin()
-		answer["login_url"] = "https://{}/univention/portal/portal/login/".format(
-			self.request.host
-		)  # FIXME
 		self.write(answer)
 
 

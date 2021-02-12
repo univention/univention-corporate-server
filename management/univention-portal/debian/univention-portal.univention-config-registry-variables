@@ -7,6 +7,14 @@ Categories=portal
 [portal/port]
 Description[de]=Der Port, auf der der Univention Portal Server läuft.
 Description[en]=The port used by the Univention Portal server.
+Default=8095
+Type=int
+Categories=portal
+
+[portal/paths]
+Description[de]=Pfade, unter denen das Portal erreichbar sein soll. Getrennt durch Kommata.
+Description[en]=Paths, which shall be served by the portal. Comma separated.
+Default=/univention/portal/
 Type=int
 Categories=portal
 

@@ -35,7 +35,7 @@
             "links": [
                 "/univention/management/"
             ],
-            "logo_name": "/univention/portal/icons/entries/umc-domain.svg",
+            "logo_name": "./icons/entries/umc-domain.svg",
             "name": {
                 "de_DE": "System- und Dom\u00e4neneinstellungen",
                 "en_US": "System and domain settings",
@@ -56,7 +56,7 @@
             "links": [
                 "https://www.univention.com/news/blog-en/"
             ],
-            "logo_name": "/univention/portal/icons/entries/univentionblog.png",
+            "logo_name": "./icons/entries/univentionblog.png",
             "name": {
                 "de_DE": "Univention Blog",
                 "en_US": "Univention Blog",

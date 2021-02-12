@@ -57,7 +57,7 @@ for app in Apps().get_all_locally_installed_apps():
 	links = _get_links(app)
 	if not links:
 		continue
-	logo_name = '/univention/portal/icons/entries/%s' % app.id
+	logo_name = './icons/entries/%s' % app.id
 	shutil.copy2(app.get_cache_file('logo'), '/usr/share/univention-portal/icons/entries/%s.svg' % app.id)
 	entry = {
 		'id': app.id,

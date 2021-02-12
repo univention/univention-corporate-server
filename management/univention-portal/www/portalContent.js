@@ -122,7 +122,7 @@ define([
 				description: entry.description[locale] || entry.description.en_US,
 				href: portalLinks.getBestLinkAndHostname(entry.links).link,
 				bgc: entry.backgroundColor || '',
-				logo: entry.logo_name || '/univention/portal/questionMark.svg',
+				logo: entry.logo_name || './questionMark.svg',
 				linkTarget: entry.linkTarget === 'useportaldefault'
 					? this._portalJson.portal.defaultLinkTarget
 					: entry.linkTarget,
@@ -165,7 +165,7 @@ define([
 				name: link.name[locale] || link.name.en_US,
 				description: link.description[locale] || link.description.en_US,
 				href: portalLinks.getBestLinkAndHostname(link.links).link,
-				logo: link.logo_name || '/univention/portal/questionMark.svg',
+				logo: link.logo_name || './questionMark.svg',
 				linkTarget: link.linkTarget === 'useportaldefault'
 					? this._portalJson.portal.defaultLinkTarget
 					: link.linkTarget,

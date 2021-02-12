@@ -513,9 +513,10 @@ define([
 		_loginIframe: null,
 		showLoginIframe: function(saml) {
 			if (!this._loginIframe) {
+				var currentPath = window.location.pathname;
 				var target = saml ? '/univention/saml/' : '/univention/login/';
 				var url = target + '?' + ioQuery.objectToQuery({
-					'location': '/univention/portal/loggedin/',
+					'location': currentPath + 'loggedin/',
 					username: tools.status('username'),
 					lang: i18nTools.defaultLang()
 				});
@@ -529,7 +530,7 @@ define([
 				this._loginIframe.iframeNode.addEventListener('load', () => {
 					var pathname = lang.getObject('contentWindow.location.pathname', false,
 							this._loginIframe.iframeNode);
-					if (pathname === '/univention/portal/loggedin/') {
+					if (pathname === currentPath + 'loggedin/') {
 						login.start(null, null, true).then(() => {
 							this._setupEditModeIfAuthorized();
 							this._refresh(true);

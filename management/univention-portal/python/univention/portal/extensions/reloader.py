@@ -382,7 +382,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			css_code = "/* no styling defined via UDM portal object */\n"
 
 		# write CSS file
-		fname = "/var/www/univention/portal/portal.css"
+		fname = "/usr/share/univention-portal/portal.css"
 		get_logger("css").info("Writing CSS file %s" % fname)
 		try:
 			with open(fname, "w") as fd:
@@ -403,7 +403,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		except (EnvironmentError, TypeError, IOError):
 			get_logger("img").exception("Error saving image for %s" % name)
 		else:
-			return "/univention/portal/icons/%s/%s.%s" % (
+			return "./icons/%s/%s.%s" % (
 				quote(dirname),
 				quote(name),
 				quote(suffix),

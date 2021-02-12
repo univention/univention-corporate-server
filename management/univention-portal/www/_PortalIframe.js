@@ -109,8 +109,9 @@ define([
 
 				// try to get the pathname of the iframe location.
 				// This will not always work if the portal and iframe are not of same origin
+				const myPathname = window.location.pathname;
 				const pathname = lang.getObject('contentWindow.location.pathname', false, this.iframeNode);
-				if (pathname === '/univention/portal' || pathname === '/univention/portal/') {
+				if (pathname === myPathname || pathname === myPathname + '/') {
 					topic.publish('/portal/iframes/remove', id);
 				}
 
