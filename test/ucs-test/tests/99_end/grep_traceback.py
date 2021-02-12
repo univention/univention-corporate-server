@@ -79,7 +79,7 @@ def main(filenames, ignore_exceptions={}):
 		for ignore_exc, ignore_traceback in ignore_exceptions.items():
 			ignore = any(ignore_exc.search(exc) for exc in exceptions) and (not ignore_traceback or any(tb_pattern.search(traceback) for tb_pattern in ignore_traceback))
 			if ignore:
-				print('\nIgnoring %s\n' % (ignore_exc.pattern,))
+				print('\nIgnoring %s\n ' % (ignore_exc.pattern,))
 				break
 		if ignore:
 			continue
@@ -92,7 +92,7 @@ def main(filenames, ignore_exceptions={}):
 		print(traceback, end='')
 		for exc in exceptions:
 			print(exc.strip())
-		print('\n')
+		print('\n ')
 	return not found
 
 
@@ -117,17 +117,21 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 
 	# updater test cases:
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
+	('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
+	('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
 	('ConfigurationError: Configuration error: host is unresolvable', None),
 	('ConfigurationError: Configuration error: port is closed', None),
 	('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*', None),
 	('ConfigurationError: Configuration error: timeout in network connection', None),
-	('DownloadError: Error downloading http://localhost/DUMMY/.*: 403', None),
+	('(univention.updater.errors.)?DownloadError: Error downloading http://localhost/DUMMY/.*: 403', None),
 	('ProxyError: Proxy configuration error: credentials not accepted', None),
+	('socket.timeout: timed out', None),
+	(r'socket.gaierror: \[Errno \-2\] Name or service not known', None),
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
 	# various test cases:
 	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
-	('^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
+	(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 	(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
 	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
 	('univention.lib.umc.ConnectionError:.*machine.secret.*', None),
@@ -172,7 +176,17 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs']),  # Bug #50279
 	(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), []),  # Bug #45787
 	(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan']),  # Bug #50937
+	('pg.InternalError: FATAL:.*kein pg_hba.conf-Eintrag für Host', ['univention-pkgdb-scan']),  # 52790
+	('pg.InternalError: FATAL:.*Datenbank .*pkgdb.* existiert nicht', ['univention-pkgdb-scan']),  # 52791
 	("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist']),  # Bug #47440
+	("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs']),  # Bug #52788, Bug #51809
+	(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string']),  # Bug #52789
+	('dbm.error: db type could not be determined', ['univention-management-console-web-server']),  # Bug #52764
+
+	# temporary
+	("univention.udm.exceptions.UnknownModuleType: UDM module 'portals/portal' does not exist.", ['refresh']),  # Bug #52512
+	("univention.udm.exceptions.ConnectionError: Could not read secret file", ['reloader.py.* in refresh']),  # Bug #52512
+	("AttributeError: 'NoneType' object has no attribute 'module'", ['create_portal_entries.py']),  # Bug #52512
 ])
 
 

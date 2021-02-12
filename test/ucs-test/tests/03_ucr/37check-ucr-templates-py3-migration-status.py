@@ -145,6 +145,7 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
 		'package': dpkg.get(ucr_config_file, ""),
 		'diff': diff,
 	}
+	print(diff)
 
 	ignore = IGNORE.get(ucr_config_file, set())
 	assert all(res['success'] for pyver, res in python.items() if pyver not in ignore), details
