@@ -2,7 +2,6 @@
 Description=BIND Domain Name Server with LDAP backend
 Documentation=man:named(8)
 After=network.target slapd.service
-Requires=slapd.service
 Before=bind9.service
 PartOf=bind9.service
 ConditionPathExists=/var/lib/univention-bind/ldap

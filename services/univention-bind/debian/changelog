@@ -1,3 +1,12 @@
+univention-bind (14.0.0-13) unstable; urgency=low
+
+  * Bug #52763: The dependency to slapd is removed, so the
+    univention-bind-ldap service is not shut down if the slapd is shut
+    down and a shut down slapd won't start  automatically if the
+    bind9/univention-bind-ldap service is started.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 12 Feb 2021 12:10:31 +0100
+
 univention-bind (14.0.0-12) unstable; urgency=low
 
   * Bug #52763: In postinst phase touch missing config files here too,
