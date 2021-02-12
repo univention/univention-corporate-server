@@ -47,6 +47,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/window",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/window",
 	"dojox/html/entities",
@@ -54,10 +55,8 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, win, array, geometry, dojoWindow, entities, tools, Text, ContainerWidget, _) {
+], function(declare, lang, win, array, domClass, geometry, dojoWindow, entities, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
-		'class': 'umcUpdaterLogViewer',
-
 		_oldScrollPosition: 0,
 		_goToBottom: true,
 		_last_stamp: 0,
@@ -68,8 +67,8 @@ define([
 		_all_lines: [], // hold all past _max_number_of_lines lines
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcUpdaterLogViewer umcCard2');
 
 			this._text = new Text({
 				'class': 'umcDynamicMaxHeight',
@@ -173,22 +172,21 @@ define([
 		// 3 cases we want to scroll to the bottom
 		// (1) module has been just loaded --> this._goToBottom
 		// (2) someone tells us to do so --> forceScrollToBottom
-		// (3) the user scrolls to a defined position --> isAtBottom()
+		// (3) the user scrolls to a defined position --> _isAtBottom()
 		scrollToBottom: function(forceScrollToBottom) {
-			var body_node = win.body();
 			if (forceScrollToBottom === true) {
 				this._goToBottom = true;
 			}
-			this.hasUserMovedScrollbar(this._oldScrollPosition, geometry.docScroll().y);
-			this.isAtBottom(body_node);
+			this._hasUserMovedScrollbar(this._oldScrollPosition, this.scrollNode.scrollTop);
+			this._isAtBottom();
 			if (this._goToBottom){
-				window.scrollTo(0, geometry.position(body_node).h);
+				this.scrollNode.scrollTop = this.scrollNode.scrollHeight;
 			}
-			this._oldScrollPosition = geometry.docScroll().y;
+			this._oldScrollPosition = this.scrollNode.scrollTop;
 		},
 
 		// if the old scrollbar position isn't the new one, the user has changed it
-		hasUserMovedScrollbar: function(oldPos, newPos){
+		_hasUserMovedScrollbar: function(oldPos, newPos){
 			if (oldPos !== newPos){
 				this._goToBottom = false;
 			}
@@ -197,15 +195,8 @@ define([
 		// if the user scrolls to a defined position of the scrollbar, we are guessing
 		// that the user wants the scrollbar to auto-scroll again
 		// this point is defined at a ratio of 75%
-		isAtBottom: function(body_node){
-			var viewPortHeight = dojoWindow.getBox().h;
-			var content_height = geometry.position(body_node).h; // the overall height of the text inside the view
-			if (content_height === 0) {
-				return;
-			}
-
-			var scroll_position = geometry.docScroll().y; //  current position auf the scrollbar
-			var ratio = (scroll_position + viewPortHeight) / content_height; 
+		_isAtBottom: function() {
+			var ratio = (Math.abs(this.scrollNode.scrollTop) + this.scrollNode.clientHeight) / this.scrollNode.scrollHeight;
 			if (ratio >= 0.75) {
 				this._goToBottom = true;
 			}

@@ -53,9 +53,7 @@
 }
 
 .umc .umcUpdaterLogViewer {
-	border: 1px solid #d0d0d0;
-	background-color: #f8f8f8;
-	padding: 0.3em;
+	margin-bottom: calc(4 * var(--layout-spacing-unit));
 }
 
 .umc .umcUpdaterLogViewer .umcText {

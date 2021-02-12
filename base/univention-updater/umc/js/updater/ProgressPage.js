@@ -50,9 +50,10 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
+	"umc/tools",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
+], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, tools, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -80,7 +81,6 @@ define([
 				helpText: ' ',
 				headerButtons: [{
 					name: 'close',
-					iconClass: 'umcCloseIconWhite',
 					label: _('Back'),
 					callback: lang.hitch(this, '_closeLogView')
 				}],
@@ -93,6 +93,7 @@ define([
 			this.inherited(arguments);
 
 			this._log = new _LogViewer({
+				scrollNode: this.scrollNode,
 				region: 'main',
 				query: 'updater/installer/logfile'
 			});
@@ -249,7 +250,7 @@ define([
 		},
 
 		_alertUserOfStatusChange: function(status) {
-			dialog.confirm(this.headerText, [{
+			dialog.confirm('', [{
 				label: _("Investigate log further"),
 				'default': status === 'failed'
 			},
@@ -257,7 +258,7 @@ define([
 				label: _("Finish updates"),
 				'default': status === 'success',
 				callback: lang.hitch(this, '_closeLogView')
-			}], ' ');
+			}], this.headerText);
 		},
 
 		// gives a means to restart polling after reauthentication
@@ -333,9 +334,9 @@ define([
 			};
 
 			var info = headings[status];
-			info.forEach(function(v) {
-				this.set(v, info[v]);
-			});
+			tools.forIn(info, lang.hitch(this, function(key, value) {
+				this.set(key, value);
+			}));
 			// this.layout();
 		},
 

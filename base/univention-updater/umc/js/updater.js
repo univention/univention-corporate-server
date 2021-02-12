@@ -113,7 +113,9 @@ define([
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this.addChild(this._updates);
-			this._progress = new ProgressPage({});
+			this._progress = new ProgressPage({
+				scrollNode: this._bottom.domNode
+			});
 
 			this.addChild(this._progress);
 
