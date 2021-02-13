@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: openjpeg2
+fix: 2.1.2-1.1+deb9u6
+desc: |
+ This update addresses the following issues:
+ * Heap-buffer-overflow in lib/openjp2/mqc.c could result in DoS
+   (CVE-2020-27814)
+ * Heap-buffer-overflow write in lib-openjp2 (CVE-2020-27823)
+ * global-buffer-overflow read in lib-openjp2 (CVE-2020-27824)
+ * heap-based buffer overflows in lib/openjp2/pi.c (CVE-2020-27841)
+ * heap-based buffer overflow in opj_t2_encode_packet function in openjp2/t2.c
+   (CVE-2020-27844)
+ * heap-based buffer overflow in functions opj_pi_next_rlcp, opj_pi_next_rpcl
+   and opj_pi_next_lrcp in openjp2/pi.c (CVE-2020-27845)
+bug: [52794]
+cve:
+- CVE-2020-27814
+- CVE-2020-27823
+- CVE-2020-27824
+- CVE-2020-27841
+- CVE-2020-27844
+- CVE-2020-27845
