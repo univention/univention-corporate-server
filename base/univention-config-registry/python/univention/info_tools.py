@@ -208,7 +208,7 @@ class UnicodeConfig(configparser.ConfigParser):
 		kwargs = {}
 		if six.PY3:
 			kwargs['encoding'] = encoding
-		return super(UnicodeConfig, self).read(filename, **kwargs)
+		return configparser.ConfigParser.read(self, filename, **kwargs)
 
 	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
