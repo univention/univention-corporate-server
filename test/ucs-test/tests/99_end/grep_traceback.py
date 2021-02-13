@@ -178,6 +178,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan']),  # Bug #50937
 	('pg.InternalError: FATAL:.*kein pg_hba.conf-Eintrag für Host', ['univention-pkgdb-scan']),  # 52790
 	('pg.InternalError: FATAL:.*Datenbank .*pkgdb.* existiert nicht', ['univention-pkgdb-scan']),  # 52791
+	('pg.InternalError: could not connect to server: No such file or directory', ['univention-pkgdb-scan']),  # 52795
 	("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist']),  # Bug #47440
 	("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs']),  # Bug #52788, Bug #51809
 	(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string']),  # Bug #52789
@@ -187,6 +188,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("univention.udm.exceptions.UnknownModuleType: UDM module 'portals/portal' does not exist.", ['refresh']),  # Bug #52512
 	("univention.udm.exceptions.ConnectionError: Could not read secret file", ['reloader.py.* in refresh']),  # Bug #52512
 	("AttributeError: 'NoneType' object has no attribute 'module'", ['create_portal_entries.py']),  # Bug #52512
+	('Exception: Creating blog entry failed: 3: unknown module portals/entry.', ['license_uuid.py']),  # Bug # 51197
+	("FileNotFoundError: [Errno 2] No such file or directory: '/etc/machine.secret'", ['reloader.py.* in refresh']),  # Bug #52512
 ])
 
 
