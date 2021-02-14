@@ -189,7 +189,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("univention.udm.exceptions.ConnectionError: Could not read secret file", ['reloader.py.* in refresh']),  # Bug #52512
 	("AttributeError: 'NoneType' object has no attribute 'module'", ['create_portal_entries.py']),  # Bug #52512
 	('Exception: Creating blog entry failed: 3: unknown module portals/entry.', ['license_uuid.py']),  # Bug # 51197
-	("FileNotFoundError: [Errno 2] No such file or directory: '/etc/machine.secret'", ['reloader.py.* in refresh']),  # Bug #52512
+	(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['reloader.py.* in refresh']),  # Bug #52512
 ])
 
 
