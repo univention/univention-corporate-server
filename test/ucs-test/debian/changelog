@@ -1,4 +1,4 @@
-ucs-test (10.0.3-16) unstable; urgency=medium
+ucs-test (10.0.3-17) unstable; urgency=medium
 
   * Bug #52358: Add s4connector loop test
 
