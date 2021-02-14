@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.6-5) unstable; urgency=medium
+
+  * Bug #52358: Restore ordering of S4 changes to prevent S4C-Loops.
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 14 Feb 2021 21:49:43 +0100
+
 univention-s4-connector (14.0.6-4) unstable; urgency=medium
 
   * Bug #52358: User LDAP post read control for all objects, not just msGPO.

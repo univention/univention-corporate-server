@@ -932,13 +932,20 @@ class s4(univention.s4connector.ucs):
 
 			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
 
-			def _sortkey(element):
-				usn_changed = int(element[1]['uSNChanged'][0])
-				usn_created = int(element[1]['uSNCreated'][0])
-				if last_usn <= 0:
-					return usn_created
-				return usn_created if usn_created > last_usn else usn_changed
-			return sorted(res, key=_sortkey)
+			def _sortkey_ascending_usncreated(element):
+				return int(element[1]['uSNCreated'][0])
+
+			def _sortkey_ascending_usnchanged(element):
+				return int(element[1]['uSNChanged'][0])
+
+			def _sortkey_created_since_last(element):
+				return 0 if int(element[1]['uSNCreated'][0]) > last_usn else 1
+
+			if last_usn <= 0:
+				return sorted(res, key=_sortkey_ascending_usncreated)
+			else:
+				res_ascending_usnchanged = sorted(res, key=_sortkey_ascending_usnchanged)
+				return sorted(res_ascending_usnchanged, key=_sortkey_created_since_last)
 
 		# search for objects with uSNCreated and uSNChanged in the known range
 		try:
