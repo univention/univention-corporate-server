@@ -1,3 +1,9 @@
+ucs-test (10.0.3-16) unstable; urgency=medium
+
+  * Bug #52358: Add s4connector loop test
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 14 Feb 2021 18:20:18 +0100
+
 ucs-test (10.0.3-15) unstable; urgency=medium
 
   * Bug #52358: Increase waiting time before cleanup in tests which trigger
