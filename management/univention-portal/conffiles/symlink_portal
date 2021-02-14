@@ -1,0 +1,63 @@
+#!/usr/bin/python3
+#
+# Univention Portal
+#
+# Copyright 2021 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import os
+import os.path
+import fileinput
+
+portal_path = "/usr/share/univention-portal"
+
+for line in fileinput.input([]):
+	line = line.strip()
+	key, old, new = line.split("@%@", 2)
+	if key != "portal/paths":
+		continue
+	old = old.split(",")
+	new = new.split(",")
+	for path in old:
+		if path in new:
+			continue
+		path = os.path.normpath("/var/www" + path.strip())
+		if not os.path.islink(path) or os.path.realpath(path) != portal_path:
+			print(f"{path} does not link to the portal contents. Skipping...")
+		else:
+			print(f"Removing portal link to {path}...")
+			os.unlink(path)
+	for path in new:
+		if path in old:
+			continue
+		path = os.path.normpath("/var/www" + path.strip())
+		if os.path.islink(path):
+			link_target = os.path.realpath(path)
+			print(f"{path} already links (to {link_target}). Skipping...")
+		else:
+			print(f"Linking {path} to portal content...")
+			os.symlink(portal_path, path)
