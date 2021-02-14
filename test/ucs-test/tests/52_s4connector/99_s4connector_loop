@@ -4,7 +4,7 @@
 ## roles:
 ##  - domaincontroller_master
 ## packages:
-##  - univention-s4connector
+##  - univention-s4-connector
 ##  - univention-directory-manager-tools
 ## bugs:
 ##  - 52358
@@ -31,7 +31,7 @@ object_names = []
 udm = udm_test.UCSTestUDM()
 
 
-def check_if_looping(error_message):
+def check_if_looping():
 	try:
 		wait_for_replication_and_postrun()
 	except LDAPReplicationFailed:
@@ -52,7 +52,7 @@ def check_if_looping(error_message):
 			fail('Moving objects to s4 ignorelist helped, which means that the previous tests created a loop')
 
 
-def create_and_delete_computer(rounds=10):
+def create_and_delete_computer(rounds=20):
 	for i in range(rounds):
 		computername = strings.random_string()
 		memberserver = udm.create_object(
