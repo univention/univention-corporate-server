@@ -664,6 +664,31 @@ class TestComponents(object):
             'deb https://updates.software-univention.de/%d.%d/maintained/component/a/ ./' % (MAJOR, MINOR),
         } == set(a_repo)
 
+    def test_cmp(u):
+        a, b, bb = (U.Component(u, c) for c in "abb")
+        assert a < b
+        assert a <= b
+        assert b <= b
+        assert b <= bb
+        assert b == b
+        assert b == bb
+        assert a != b
+        assert b >= bb
+        assert b >= b
+        assert b >= a
+        assert b > a
+        assert a.__lt__(None) is NotImplementedError
+        assert a.__le__(None) is NotImplementedError
+        assert a.__eq__(None) is False
+        assert a.__ne__(None) is True
+        assert a.__ge__(None) is NotImplementedError
+        assert a.__gt__(None) is NotImplementedError
+
+    def test_hash(u):
+        a, b, bb = (U.Component(u, c) for c in "abb")
+        assert hash(a) != hash(b)
+        assert hash(b) == hash(bb)
+
 
 @pytest.mark.parametrize('prefix', ["", "/p"])
 def test_UCSHttpServer(prefix):

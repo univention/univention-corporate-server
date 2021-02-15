@@ -10,7 +10,7 @@ try:
 
 	if updater.online_repository:
 		ver = updater.current_version
-		for comp in updater.get_components():
+		for comp in sorted(updater.get_components()):
 			try:
 				for repo in comp.repositories(ver, ver):
 					print(repo)

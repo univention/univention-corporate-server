@@ -867,6 +867,27 @@ class Component(object):
         self.updater = updater
         self.name = name
 
+    def __lt__(self, other):
+        return self.name < other.name if isinstance(other, Component) else NotImplementedError
+
+    def __le__(self, other):
+        return self.name <= other.name if isinstance(other, Component) else NotImplementedError
+
+    def __eq__(self, other):
+        return isinstance(other, Component) and self.name == other.name
+
+    def __ne__(self, other):
+        return not isinstance(other, Component) or self.name != other.name
+
+    def __ge__(self, other):
+        return self.name >= other.name if isinstance(other, Component) else NotImplementedError
+
+    def __gt__(self, other):
+        return self.name > other.name if isinstance(other, Component) else NotImplementedError
+
+    def __hash__(self):
+        return hash(self.name)
+
     def __str__(self):
         # type: () -> str
         return "Component({0.name})".format(self)
@@ -1116,7 +1137,7 @@ class Component(object):
         """
         for server, struct in self.versions(start, end, for_mirror_list):
             try:
-                for struct.arch in struct.ARCHS:
+                for struct.arch in sorted(struct.ARCHS):
                     assert server.access(struct, "Packages.gz")
                     yield struct.deb(server)
 
@@ -1567,7 +1588,7 @@ class UniventionUpdater(object):
 
         result = []  # type: List[str]
         failed = set()  # type: Set[Tuple[Component, str]]
-        for comp in self.get_components(only_localmirror_enabled=for_mirror_list):
+        for comp in sorted(self.get_components(only_localmirror_enabled=for_mirror_list)):
             result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed)
         result += ["# Component %s: %s" % (comp.name, ex) for comp, ex in failed]
 

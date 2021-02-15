@@ -1,3 +1,9 @@
+univention-updater (15.0.3-5) unstable; urgency=low
+
+  * Bug #51316: Generate stable output
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Feb 2021 10:20:13 +0100
+
 univention-updater (15.0.3-4) unstable; urgency=low
 
   * Bug #51316: Initialize releases when offline
