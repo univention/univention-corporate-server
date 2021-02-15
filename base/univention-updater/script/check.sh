@@ -416,6 +416,14 @@ update_check_package_status () {
 	return 1
 }
 
+# Bug #52771: check if apps are available
+update_check_blocking_apps () {
+	local var="update$VERSION/ignore_blocking_apps"
+	ignore_check "$var" && return 100
+	[ -f /var/univention-join/joined ] || return 0
+	univention-app update-check --ucs-version "${VERSION_NAME}"
+}
+
 # check for Primary Directory Node UCS version
 update_check_master_version () {
 	local master_version ATTR=univentionOperatingSystemVersion var="update$VERSION/ignore_version"

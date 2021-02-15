@@ -380,6 +380,20 @@ class Instance(Base):
 				msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
 				msg += ' ' + _('This is the error message:') + ' ' + str(exc)
 				raise UMC_Error(msg)
+			# check apps
+			if result['release_update_available']:
+				try:
+					from univention.appcenter.actions import get_action
+					update_check = get_action('update-check')
+					if update_check:
+						blocking_apps = update_check.get_blocking_apps(ucs_version=result['release_update_available'])
+						if blocking_apps:
+							blocking_components.update(set(blocking_apps))
+				except (ImportError, ValueError):
+					# the new univention.appcenter package is not installed.
+					# Cannot be a dependency as the app center depends on updater...
+					raise UMC_Error(_('Error checking if installed apps are available for next UCS version.'))
+
 			result['release_update_blocking_components'] = ' '.join(blocking_components or [])
 
 			# Component counts are now part of the general 'status' data.

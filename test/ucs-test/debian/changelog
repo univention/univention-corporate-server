@@ -1,3 +1,28 @@
+ucs-test (10.0.4-57) unstable; urgency=medium
+
+  * Bug #52771: added 20_appcenter/90_update_check
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Apr 2021 14:57:33 +0200
+
+ucs-test (10.0.4-57) unstable; urgency=medium
+
+  * Bug #52358: Increase waiting time before cleanup in tests which trigger
+    an S4-Connector loop
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 14 Apr 2021 14:57:33 +0200
+
+ucs-test (10.0.4-57) unstable; urgency=medium
+
+  * Bug #52358: translate 95rename_administrator test to python
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 14 Apr 2021 14:57:33 +0200
+
+ucs-test (10.0.4-57) unstable; urgency=medium
+
+  * Fixup for Bug #52241
+
+ -- Jan Luttermann <luttermann@unvention.de>  Wed, 14 Apr 2021 14:57:33 +0200
+
 ucs-test (10.0.4-56) unstable; urgency=medium
 
   * Bug #52953: fixed xpath for selenium test 180_portal_entries
