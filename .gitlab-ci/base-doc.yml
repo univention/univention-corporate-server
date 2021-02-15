@@ -1,6 +1,8 @@
 stages:
   - build
-  - deploy
+  - review
+  - staging
+  - production
 
 .doc:
   stage: build
@@ -16,21 +18,60 @@ webframe:
   stage: build
   image: $DOC
   script:
-    - cp -rTu /DocBook//webframe public
+    - cp -rTu /DocBook/webframe public
   artifacts:
     paths:
       - public
 
-pages:
-  stage: deploy
-  interruptible: no
+.publish:
   variables:
     GIT_STRATEGY: none
+  tags:
+    - omar
+
+review:
+  stage: review
+  extends: .publish
   script:
-    - cd public
-    - echo '<html><head><title>Documentation</title></head><body><ul>' >index.html
-    - ls -1 *.html | sed 's,.*,<li><a href="&">&</a></li>,' >>index.html
-    - echo '</ul></body></html>' >>index.html
-  artifacts:
-    paths:
-      - public
+    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
+    on_stop: stop_review
+  only:
+    - branches
+  except:
+    - master
+
+stop_review:
+  stage: staging
+  extends: .publish
+  script:
+    - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+  when: manual
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    action: stop
+
+staging:
+  stage: staging
+  extends: .publish
+  script:
+    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
+  environment:
+    name: staging
+    url: http://apt.knut.univention.de/download/docs/
+  only:
+    - master
+
+production:
+  stage: production
+  extends: .publish
+  script:
+    - rsync -av public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
+  environment:
+    name: production
+    url: http://updates.knut.univention.de/download/docs/
+  when: manual
+  only:
+    - master
