@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: xterm
+fix: 327-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * crash when processing combining characters (CVE-2021-27135)
+bug: [52796]
+cve:
+- CVE-2021-27135
