@@ -175,7 +175,7 @@
 				<title>LDAP schema changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The performance of creating <filename>/etc/ldap/slapd.conf</filename> has been improoved (<u:bug>34003</u:bug>)
+						The performance of creating <filename>/etc/ldap/slapd.conf</filename> has been improved (<u:bug>34003</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
