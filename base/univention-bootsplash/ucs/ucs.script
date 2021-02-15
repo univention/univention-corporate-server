@@ -231,15 +231,12 @@ logo.sprite.SetX(box.sprite.GetX());
 logo.sprite.SetY(box.sprite.GetY());
 logo.count = 0;
 logo.index = 0;
-logo.text_sprite = Sprite();
-if (Plymouth.GetMode() == "shutdown" || Plymouth.GetMode() == "suspend") {
-	logo.text_image = text_to_image("Stopping Univention Management\nConsole Server");
-} else {
-	logo.text_image = text_to_image("Starting Univention Management\nConsole Server");
-}
-logo.text_sprite.SetPosition(logo.sprite.GetX() + (logo[0].image.GetWidth() - logo.text_image.GetWidth()) / 2, logo.sprite.GetY() + 218, 100);
-logo.text_sprite.SetImage(logo.text_image);
-
+logo.text.sprite = Sprite();
+logo.text.setText = fun (string) {
+	logo.text.image = text_to_image(textWrapToSize(string, logo[0].image.GetWidth() - 100, text_font));
+	logo.text.sprite.SetPosition(logo.sprite.GetX() + (logo[0].image.GetWidth() - logo.text.image.GetWidth()) / 2, logo.sprite.GetY() + 218, 100);
+	logo.text.sprite.SetImage(logo.text.image);
+};
 
 # univention logo
 univention.image = Image("powered-by-univention.png");
@@ -373,7 +370,7 @@ fun ask_opacity(opacity) {
 
 fun normal_opacity(opacity) {
 	global.logo.sprite.SetOpacity(opacity);
-	global.logo.text_sprite.SetOpacity(opacity);
+	global.logo.text.sprite.SetOpacity(opacity);
 	global.message.sprite.SetOpacity(opacity);
 	global.message_action.sprite.SetOpacity(opacity);
 	global.statusmsg.sprite.SetOpacity(opacity);
@@ -674,6 +671,11 @@ fun update_status_callback (text) {
 			global.welcome.console.setText(text.SubString(27, StringLength(text)));
 		} else if (stringStartsWith(text, "univention-welcome:addresses:")) {
 			global.welcome.addresses.setText(text.SubString(29, StringLength(text)));
+		}
+	}
+	else if (stringStartsWith(text, "univention-splash")) {
+		if (stringStartsWith(text, "univention-splash:status:")) {
+			global.logo.text.setText(text.SubString(25, StringLength(text)));
 		}
 	}
 	else if (text == "normal") {

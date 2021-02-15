@@ -94,15 +94,16 @@ show_welcome_screen () {
 		export LC_ALL="$lang"
 	fi
 	export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
+	export TEXTDOMAIN="univention-welcome-screen"
 	if [ "$bootsplash_theme" != "ucs" -a -n "$umc_web_appliance_name" ]; then
 		header="$umc_web_appliance_name Appliance"
 	else
 		header="Univention Corporate Server"
 	fi
-	console="$(gettext -d univention-welcome-screen "Press any key to open text console")"
-	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
-	message2="$(gettext -d univention-welcome-screen "Navigate to the following address:")"
-	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
+	console="$(gettext "Press any key to open text console")"
+	message1="$(gettext "Open a browser window")"
+	message2="$(gettext "Navigate to the following address:")"
+	message3="$(gettext "Open the web management interface")"
 	address="https://$(get_default_ip_address)"
 	addresses="https://$(get_all_ip_addresses)"
 	# show welcome screen

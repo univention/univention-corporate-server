@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"ucs/set-translated-status-text.sh"
+		],
+		"po_subdir": "i18n/univention-bootsplash",
+		"target_type": "mo",
+		"destination": "usr/share/plymouth/themes/ucs/{lang}/LC_MESSAGES/univention-bootsplash.mo"
+	}
+]
