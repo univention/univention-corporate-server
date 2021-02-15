@@ -45,7 +45,7 @@ from univention.appcenter.ucr import ucr_get
 class checkUCSVersion(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
 		try:
-			UCS_Version(value)
+			UCS_Version(value + '-0')
 		except ValueError as e:
 			parser.error('--ucs-version ' + str(e))
 		setattr(namespace, self.dest, value)
@@ -67,7 +67,7 @@ class UpdateCheck(UniventionAppAction):
 			'--ucs-version',
 			action=checkUCSVersion,
 			required=True,
-			help="the next ucs version, check if update with locally installed apps is possible",
+			help="the next ucs version (MAJOR.MINOR), check if update with locally installed apps is possible",
 		)
 
 	@classmethod
@@ -98,7 +98,7 @@ class UpdateCheck(UniventionAppAction):
 	@classmethod
 	def get_blocking_apps(cls, ucs_version):
 		''' checks if update is possible for this app '''
-		ucs_version = UCS_Version(ucs_version)
+		ucs_version = UCS_Version(ucs_version + '-0')
 		next_minor = '%(major)d.%(minor)d' % ucs_version
 		next_version = '%(major)d.%(minor)d-%(patchlevel)d' % ucs_version
 		current_version = UCS_Version(ucr_get('version/version') + '-0')
