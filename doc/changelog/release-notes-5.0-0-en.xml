@@ -263,7 +263,8 @@
 						A new UCS 5 system is installed with the system role &ucsBackupDN;, &ucsReplicaDN; or &ucsManagedNode; from the DVD or from a virtualized base image.
 						In system setup, select that the system will not join a domain.
 						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">set up a local repository on this system as described in the UCS 5 manual</ulink>.
-						After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.</para>.
+						After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.
+					</para>
                 </listitem>
             </itemizedlist>
             To upgrade a system in the domain to UCS 5, the server should first be upgraded to the latest package level available for UCS 4.x.
