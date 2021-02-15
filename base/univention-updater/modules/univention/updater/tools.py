@@ -868,10 +868,10 @@ class Component(object):
         self.name = name
 
     def __lt__(self, other):
-        return self.name < other.name if isinstance(other, Component) else NotImplementedError
+        return self.name < other.name if isinstance(other, Component) else NotImplemented
 
     def __le__(self, other):
-        return self.name <= other.name if isinstance(other, Component) else NotImplementedError
+        return self.name <= other.name if isinstance(other, Component) else NotImplemented
 
     def __eq__(self, other):
         return isinstance(other, Component) and self.name == other.name
@@ -880,10 +880,10 @@ class Component(object):
         return not isinstance(other, Component) or self.name != other.name
 
     def __ge__(self, other):
-        return self.name >= other.name if isinstance(other, Component) else NotImplementedError
+        return self.name >= other.name if isinstance(other, Component) else NotImplemented
 
     def __gt__(self, other):
-        return self.name > other.name if isinstance(other, Component) else NotImplementedError
+        return self.name > other.name if isinstance(other, Component) else NotImplemented
 
     def __hash__(self):
         return hash(self.name)
