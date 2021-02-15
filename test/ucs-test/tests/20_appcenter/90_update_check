@@ -91,15 +91,15 @@ def test_update_check(a, b, c):
 	update_check = get_action('update-check')
 	with mock.patch.object(univention.appcenter.actions.umc_update.Update, 'main', return_value=None):
 		# check apps
-		a = update_check.get_blocking_apps(ucs_version='5.0-0')
+		a = update_check.get_blocking_apps(ucs_version='5.0')
 		assert set(['package_no', 'component_no', 'docker_no']) == set(a.keys()), set(a.keys())
 		# no check if "new" version is "older"
-		a = update_check.get_blocking_apps(ucs_version='3.0-0')
+		a = update_check.get_blocking_apps(ucs_version='3.0')
 		assert bool(a) is False, a
-		a = update_check.get_blocking_apps(ucs_version='4.4-99')
+		a = update_check.get_blocking_apps(ucs_version='4.4')
 		assert bool(a) is False, a
 		# check for newer minor version
-		a = update_check.get_blocking_apps(ucs_version='4.5-1')
+		a = update_check.get_blocking_apps(ucs_version='4.5')
 		assert bool(a) is True, a
 
 

@@ -1,3 +1,9 @@
+ucs-test (9.0.7-20) unstable; urgency=medium
+
+  * Bug #52771: 20_appcenter/90_update_check
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Feb 2021 10:36:34 +0100
+
 ucs-test (9.0.7-19) unstable; urgency=medium
 
   * Bug #52771: added python-mock
