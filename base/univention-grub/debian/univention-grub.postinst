@@ -38,14 +38,14 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/ucr.sh
 
-# update to 4.0
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.2-1; then
-	ucr unset grub/vga
-	ucr set \
-		grub/color/normal="black/black" \
-		grub/color/highlight="white/green" \
-		grub/menu/color/normal="black/black" \
-		grub/menu/color/highlight="white/green"
+# update to 5.0
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.0-4; then
+	if [ "$(ucr get grub/color/normal)" = "black/black" ] && \
+		[ "$(ucr get grub/color/highlight)" = "white/green" ] && \
+		[ "$(ucr get grub/menu/color/normal)" = "black/black" ] && \
+		[ "$(ucr get grub/menu/color/highlight)" = "white/green" ]; then
+		ucr unset grub/color/normal grub/color/highlight grub/menu/color/normal grub/menu/color/highlight
+	fi
 fi
 
 gfxmode="800x600@16"
@@ -61,11 +61,7 @@ univention-config-registry set grub/timeout?5 \
 	grub/loglevel?"0" \
 	grub/gfxmode?"$gfxmode" \
 	grub/gfxpayload?"800x600@24,800x600@16,800x600" \
-	grub/backgroundimage?"/boot/grub/uniboot.png" \
-	grub/color/normal?"black/black" \
-	grub/color/highlight?"white/green" \
-	grub/menu/color/normal?"black/black" \
-	grub/menu/color/highlight?"white/green"
+	grub/backgroundimage?"/boot/grub/uniboot.png"
 
 # grub needs to read the file unicode.pf2 for gfxmode,
 # /usr/share/grub/unicode.pf2 is the default, but /
@@ -74,12 +70,6 @@ univention-config-registry set grub/timeout?5 \
 if [ ! -f /boot/grub/unicode.pf2 -a -f /usr/share/grub/unicode.pf2 ]; then
 	cp /usr/share/grub/unicode.pf2 /boot/grub/unicode.pf2
 fi
-
-# Bug #33123:
-# dpkg tries to use symlinks during package extraction which fails usually on FAT32.
-# /boot/grub may be FAT32, so the following files are extracted somewhere else and
-# copied back to /boot/grub.
-cp -f /usr/share/univention-grub/uniboot.png /boot/grub/
 
 # Install grub on new installation
 if [ "$1" = configure -a -z "$2" ];  then

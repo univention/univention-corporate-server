@@ -1,9 +1,10 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Grub
-#  baseconfig module for the grub update
+#  set colors for grub theme
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,14 +31,35 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import shutil
+from univention.config_registry import ConfigRegistry
 
 
-def postinst(baseConfig, changes):
-	light_theme = baseConfig.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
-	backgroundimage_target = '/boot/grub/uniboot.png'
-	backgroundimage_source = os.path.join('/usr/share/univention-grub/', 'light-background.png' if light_theme else 'dark-background.png')
-	if baseConfig.get('grub/backgroundimage') == backgroundimage_target:
-		shutil.copy(backgroundimage_source, backgroundimage_target)
-	os.system('update-grub')
+def get_colors():
+	ucr = ConfigRegistry()
+	ucr.load()
+	light_theme = ucr.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
+	if light_theme:
+		colors = {
+			'color_normal': ucr.get('grub/color/normal', 'dark-gray/black'),
+			'color_highlight': ucr.get('grub/color/highlight', 'dark-gray/green'),
+			'menu_color_normal': ucr.get('grub/menu/color/normal', 'dark-gray/white'),
+			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'dark-gray/green'),
+		}
+	else:
+		colors = {
+			'color_normal': ucr.get('grub/color/normal', 'white/black'),
+			'color_highlight': ucr.get('grub/color/highlight', 'white/green'),
+			'menu_color_normal': ucr.get('grub/menu/color/normal', 'white/dark-gray'),
+			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'white/green'),
+		}
+	return colors
+
+
+def main():
+	colors = get_colors()
+	for position, color in colors.items():
+		print('set {}={}'.format(position, color))
+
+
+if __name__ == '__main__':
+	main()

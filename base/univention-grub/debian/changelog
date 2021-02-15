@@ -1,3 +1,9 @@
+univention-grub (13.0.0-4) unstable; urgency=medium
+
+  * Bug #52798: Adjust theme to new design
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 15 Feb 2021 10:11:30 +0100
+
 univention-grub (13.0.0-3) unstable; urgency=medium
 
   * Bug #51786: Disable apparmor

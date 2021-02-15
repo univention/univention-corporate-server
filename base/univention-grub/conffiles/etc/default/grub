@@ -67,19 +67,14 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 # the Linux kernel
 GRUB_GFXPAYLOAD_LINUX=@%@grub/gfxpayload@%@
 
-# Background image and menu color
+# Background image
 @!@
 if configRegistry.get('grub/backgroundimage', ''):
 	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])
-if configRegistry.get('grub/color/normal', ''):
-	print('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"])
-if configRegistry.get('grub/color/highlight', ''):
-	print('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"])
-if configRegistry.get('grub/menu/color/normal', ''):
-	print('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"])
-if configRegistry.get('grub/menu/color/highlight', ''):
-	print('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"])
 @!@
+
+# Use full UCS title for boot entry
+GRUB_DISTRIBUTOR="Univention Corporate Server"
 
 # Uncomment to get a beep at grub start
 #GRUB_INIT_TUNE="480 440 1"

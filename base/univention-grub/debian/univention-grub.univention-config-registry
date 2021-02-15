@@ -19,3 +19,4 @@ Variables: grub/default
 Variables: grub/savedefault
 Variables: grub/terminal
 Variables: grub/serialcommand
+Variables: bootsplash/theme
