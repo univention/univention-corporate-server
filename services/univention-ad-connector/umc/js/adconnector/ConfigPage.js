@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/when",
+	"dojo/dom-class",
 	"umc/dialog",
 	"umc/tools",
 	"umc/render",
@@ -41,7 +42,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/InfoUploader",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, when, dialog, tools, render, Page, StandbyMixin, Text, InfoUploader,  _) {
+], function(declare, lang, array, when, domClass, dialog, tools, render, Page, StandbyMixin, Text, InfoUploader,  _) {
 
 	var makeParagraphs = function(sentences) {
 		return array.map(sentences, function(para) {
@@ -57,6 +58,8 @@ define([
 		_widgets: null,
 
 		_buttons: null,
+
+		navContentClass: 'umcCard2',
 
 		postCreate: function() {
 			this.inherited(arguments);
@@ -75,6 +78,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAdconnectorConfigPage');
 
 			var widgets = [{
 				name: 'running',
