@@ -110,7 +110,7 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export TEST_SECTIONS="${sections}"
 
-declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "$CFG_FILE")
+declare -a cmd=("ucs-kvm-create" "-c" "$CFG_FILE")
 "$HALT" && cmd+=("-t")
 "${cmd[@]}"
 test -e "./COMMAND_SUCCESS"

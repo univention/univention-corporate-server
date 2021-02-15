@@ -1,7 +1,3 @@
-[submodule "test/ucs-ec2-tools"]
-	path = test/ucs-ec2-tools
-	url = ../ucs-ec2-tools/
-	branch = master
 [submodule "doc/doc-common"]
 	path = doc/doc-common
 	url = ../doc-common

@@ -290,9 +290,6 @@ if "$docker"; then
 	cmd+=(
 		"$image"
 	)
-else
-	# shellcheck disable=SC2123
-	PATH="./ucs-ec2-tools${PATH:+:$PATH}"
 fi
 cmd+=("$exe" -c "$CFG")
 
