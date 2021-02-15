@@ -1,3 +1,9 @@
+univention-updater (14.0.3-8) unstable; urgency=medium
+
+  * Bug #52771: check apps before release update
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Feb 2021 13:02:23 +0100
+
 univention-updater (14.0.3-7) unstable; urgency=medium
 
   * Bug #51865: UCS 4 updater finds updates to UCS 5
