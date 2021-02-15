@@ -38,6 +38,7 @@ review:
     name: review/$CI_BUILD_REF_NAME
     url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
     on_stop: stop_review
+    auto_stop_in: 1 week
   only:
     - branches
   except:
