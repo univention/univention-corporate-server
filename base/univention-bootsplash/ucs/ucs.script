@@ -211,8 +211,8 @@ background_color.green = StringToFloat(setting_background_color_green);
 background_color.blue = StringToFloat(setting_background_color_blue);
 
 # set background color
-Window.SetBackgroundTopColor(background_color.red, background_color.blue, background_color.green);
-Window.SetBackgroundBottomColor(background_color.red, background_color.blue, background_color.green);
+Window.SetBackgroundTopColor(background_color.red, background_color.green, background_color.blue);
+Window.SetBackgroundBottomColor(background_color.red, background_color.green, background_color.blue);
 
 # box image
 box.image = Image("logo-box.png").Scale(320, 320);
