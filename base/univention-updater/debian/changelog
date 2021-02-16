@@ -1,3 +1,9 @@
+univention-updater (15.0.3-7) unstable; urgency=medium
+
+  * Bug #52453: adjust styling of ProgressPage
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 16 Feb 2021 13:19:33 +0100
+
 univention-updater (15.0.3-6) unstable; urgency=low
 
   * Bug #51316: Change NotImlemented{Error() -> }

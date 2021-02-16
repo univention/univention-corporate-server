@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-3) unstable; urgency=medium
+
+  * Bug #52453: adjust styling of AppDetailsPage
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 16 Feb 2021 13:19:10 +0100
+
 univention-appcenter (9.0.2-2) unstable; urgency=medium
 
   * Bug #51819: Enable installation of multiple Apps at once

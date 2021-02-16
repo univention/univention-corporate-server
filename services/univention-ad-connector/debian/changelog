@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.5-2) unstable; urgency=medium
+
+  * Bug #52453: Adjust design of module for UCS 5
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 16 Feb 2021 13:17:20 +0100
+
 univention-ad-connector (14.0.5-1) unstable; urgency=medium
 
   * Bug #52044: migrate univention-s4-connector to Python 3
