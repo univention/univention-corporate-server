@@ -30,12 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-. /usr/share/debconf/confmodule.sh
+db_get () {
+	RET=$(debconf-communicate <<<"get $1")
+	RET="${RET#0 }"
+}
+db_set () {
+	debconf-communicate <<<"set $1 $2"
+}
 
 #DEBHELPER#
 
 eval "$(univention-config-registry shell)"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 # update to 5.0
@@ -64,14 +71,14 @@ univention-config-registry set grub/timeout?5 \
 
 # grub needs to read the file unicode.pf2 for gfxmode,
 # /usr/share/grub/unicode.pf2 is the default, but /
-# can be on a fs grub can't read (cryptsetup), so 
+# can be on a fs grub can't read (cryptsetup), so
 # /boot/grub/unicode.pf2 is better
-if [ ! -f /boot/grub/unicode.pf2 -a -f /usr/share/grub/unicode.pf2 ]; then
+if [ ! -f /boot/grub/unicode.pf2 ] && [ -f /usr/share/grub/unicode.pf2 ]; then
 	cp /usr/share/grub/unicode.pf2 /boot/grub/unicode.pf2
 fi
 
 # Install grub on new installation
-if [ "$1" = configure -a -z "$2" ];  then
+if [ "$1" = configure ] && [ -z "$2" ];  then
 	# invoke grub-mkdevicemap (required for KVM machines)
 	grub-mkdevicemap
 
@@ -81,15 +88,15 @@ fi
 if [ "$1" = configure ] && dpkg-query -W -f '${Status}' grub-pc | grep -qs '^install'
 then # Bug 40654
 	mountpoint_to_disk_device () {
-		devicemajor="$(mountpoint -d "$1" | cut -d':' -f1)"
-		devicemajor_hex="$(printf '%x' "$devicemajor")"
-		deviceminor="$(mountpoint -d "$1" | cut -d':' -f2)"
-		deviceminor_hex="$(printf '%x' "$deviceminor")"
+		local device major minor low16
+		device="$(mountpoint -d "$1")"
+		major="$(printf '%x' "${device%:*}")"
+		minor="$(printf '%02x' "${device#*:}")"
 		# disc device is partition device AND 0xf0
-		deviceminor_low16_hex="$(echo "$deviceminor_hex" | sed 's/.$/0/')"
-		find /dev -mindepth 1 -maxdepth 1 -type b -exec stat -c '%n %t %T' {} \; \
-			| grep "^.* $devicemajor_hex $deviceminor_low16_hex$" \
-			| cut -d' ' -f 1
+		low16="${minor%?}"
+		find /dev -mindepth 1 -maxdepth 1 -type b -exec stat -c '%n %t %T' {} + |
+			grep "^.* $major $low16$" |
+			cut -d' ' -f 1
 	}
 
 	echo "Checking grub-pc/install_devices for errors..."
@@ -111,8 +118,9 @@ then # Bug 40654
 	boot_device_missing=1 # is the $boot_device in grub-pc/install_devices?
 	db_get "grub-pc/install_devices"
 	echo "Currently grub-pc/install_devices is set to '$RET'"
-	for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
-	    real_device="$(readlink -f "$i")"         # from grub-pc.postinst
+	for i in ${RET//, / }
+	do
+		real_device="$(readlink -f "$i")"
 		echo "Checking '$real_device'..."
 		if [ "$real_device" = "$boot_device" ]
 		then
@@ -187,7 +195,8 @@ then # Bug 40654
 			db_set "grub-pc/install_devices" "$output_devices"
 			db_get "grub-pc/install_devices"
 			echo "Currently grub-pc/install_devices is set to '$RET'"
-			for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
+			for i in ${RET//, / }
+			do
 				real_device="$(readlink -f "$i")"         # from grub-pc.postinst
 				echo "Running grub-install on '$real_device'"
 				grub-install "$real_device"
@@ -196,19 +205,15 @@ then # Bug 40654
 	fi
 	echo "Done checking grub-pc/install_devices for errors."
 fi
-grepcnt=$(grep -c "^dm-mod$" /etc/initramfs-tools/modules)
-if [ "$grepcnt" = "0" ] ; then
+if ! grep -Fxq dm-mod /etc/initramfs-tools/modules
+then
 	echo "LVM kernel module 'dm-mod' is missing in initrd - recreating initrd"
-	echo "dm-mod" >> /etc/initramfs-tools/modules
-	echo "dm-mirror" >> /etc/initramfs-tools/modules
-	echo "dm-snapshot" >> /etc/initramfs-tools/modules
-	filelist=$(ls -1 /boot/initrd.img-* 2>/dev/null)
-	if [ -n "$filelist" ] ; then
-		for fn in $filelist ; do
-			kernelversion=${fn/\/boot\/initrd.img-}
-			update-initramfs -u -t -k "$kernelversion"
-		done
-	fi
+	{
+		echo "dm-mod"
+		echo "dm-mirror"
+		echo "dm-snapshot"
+	} >> /etc/initramfs-tools/modules
+	update-initramfs -u -t -k all
 fi
 
 exit 0
