@@ -39,10 +39,10 @@ eval "$(univention-config-registry shell)"
 . /usr/share/univention-lib/ucr.sh
 
 # update to 5.0
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.0-4; then
-	if [ "$(ucr get grub/color/normal)" = "black/black" ] && \
-		[ "$(ucr get grub/color/highlight)" = "white/green" ] && \
-		[ "$(ucr get grub/menu/color/normal)" = "black/black" ] && \
+if [ "$1" = configure ] && dpkg --compare-versions "${2:-}" lt-nl 13.0.0-4; then
+	if [ "$(ucr get grub/color/normal)" = "black/black" ] &&
+		[ "$(ucr get grub/color/highlight)" = "white/green" ] &&
+		[ "$(ucr get grub/menu/color/normal)" = "black/black" ] &&
 		[ "$(ucr get grub/menu/color/highlight)" = "white/green" ]; then
 		ucr unset grub/color/normal grub/color/highlight grub/menu/color/normal grub/menu/color/highlight
 	fi
