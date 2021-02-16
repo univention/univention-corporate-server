@@ -84,6 +84,7 @@ class PathScorer(Scorer):
 		self.path = path
 
 	def score(self, request):
-		if request.path.startswith(self.path):
+		request_path = "/{}".format(request.path.lstrip("/"))
+		if request_path.startswith(self.path):
 			return 10
 		return 0

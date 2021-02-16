@@ -14,7 +14,7 @@ Categories=portal
 [portal/paths]
 Description[de]=Pfade, unter denen das Portal erreichbar sein soll. Getrennt durch Kommata.
 Description[en]=Paths, which shall be served by the portal. Comma separated.
-Default=/univention/portal/
+Default=/univention/portal/, /univention/umc/
 Type=int
 Categories=portal
 

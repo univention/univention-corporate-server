@@ -69,14 +69,41 @@ def cli():
 @cli.command("add-default")
 @click.option("--update/--dont-update", default=False)
 def add_default(update):
-	name = "default"
+	changed = False
 	json_content = read_portals_json()
-	if name in json_content:
+
+	# /univention/portal/
+	default_name = "default"
+	if default_name in json_content:
 		if update:
-			warn("Overwriting existing {}".format(name))
+			warn("Overwriting existing {}".format(default_name))
+			_add_default(default_name, json_content)
+			changed = True
 		else:
-			info("{} already exists".format(name))
-			return
+			info("{} already exists".format(default_name))
+	else:
+			_add_default(default_name, json_content)
+			changed = True
+
+	# /univention/umc/
+	umc_name = "umc"
+	if umc_name in json_content:
+		if update:
+			warn("Overwriting existing {}".format(umc_name))
+			_add_umc(umc_name, json_content)
+			changed = True
+		else:
+			info("{} already exists".format(umc_name))
+	else:
+			_add_umc(umc_name, json_content)
+			changed = True
+
+	if changed:
+		write_portals_json(json_content)
+		success("{} written".format(portals_json))
+
+
+def _add_default(name, json_content):
 	portal_def = {
 		"class": "Portal",
 		"kwargs": {
@@ -140,8 +167,56 @@ def add_default(update):
 		"type": "class",
 	}
 	json_content[name] = portal_def
-	write_portals_json(json_content)
-	success("{} written".format(portals_json))
+
+
+def _add_umc(name, json_content):
+	portal_def = {
+		"class": "UMCPortal",
+		"kwargs": {
+			"authenticator": {
+				"class": "UMCAuthenticator",
+				"kwargs": {
+					"group_cache": {
+						"class": "GroupFileCache",
+						"kwargs": {
+							"cache_file": {
+								"type": "static",
+								"value": "/var/cache/univention-portal/groups.json",
+							},
+							"reloader": {
+								"class": "GroupsReloaderLDAP",
+								"kwargs": {
+									"binddn": {"key": "hostdn", "type": "config"},
+									"cache_file": {
+										"type": "static",
+										"value": "/var/cache/univention-portal/groups.json",
+									},
+									"ldap_base": {"key": "ldap_base", "type": "config"},
+									"ldap_uri": {"key": "ldap_uri", "type": "config"},
+									"password_file": {
+										"type": "static",
+										"value": "/etc/machine.secret",
+									},
+								},
+								"type": "class",
+							},
+						},
+						"type": "class",
+					},
+					"umc_session_url": {"key": "umc_session_url", "type": "config"},
+				},
+				"type": "class",
+			},
+			"scorer": {
+				"class": "PathScorer",
+				"kwargs": {
+					"path": {"value": "/univention/umc", "type": "static"},
+				},
+				"type": "class"},
+		},
+		"type": "class",
+	}
+	json_content[name] = portal_def
 
 
 @cli.command()
@@ -421,7 +496,7 @@ def make_obj(obj_def):
 
 
 def warn(msg):
-	get_logger("cli").warn(msg)
+	get_logger("cli").warning(msg)
 	click.echo(click.style(msg, fg="yellow"))
 
 

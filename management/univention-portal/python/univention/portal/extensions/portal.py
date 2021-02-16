@@ -31,6 +31,8 @@
 #
 
 from six import with_metaclass
+import requests
+
 from univention.portal import Plugin
 
 
@@ -57,6 +59,7 @@ class Portal(with_metaclass(Plugin)):
 		return value of `get_visible_content`
 	`get_categories`: Get all categories of "content", which in turn was the
 		return value of `get_visible_content`
+	`may_be_edited`: Whether a "user" may edit this portal
 	`get_meta`: Get some information about the portal itself, given
 		"content" and "categories". Those were return values of
 		`get_visible_content` and `get_categories`.
@@ -166,6 +169,9 @@ class Portal(with_metaclass(Plugin)):
 			]
 		return categories
 
+	def may_be_edited(self, user):
+		return user.is_admin()
+
 	def get_meta(self, content, categories):
 		portal = self.portal_cache.get_portal()
 		portal["categories"] = [
@@ -221,3 +227,96 @@ class Portal(with_metaclass(Plugin)):
 
 	def score(self, request):
 		return self.scorer.score(request)
+
+
+class UMCPortal(Portal):
+	def __init__(self, scorer, authenticator):
+		self.scorer = scorer
+		self.authenticator = authenticator
+
+	def may_be_edited(self, user):
+		return False
+
+	def get_visible_content(self, user, admin_mode):
+		from univention.lib.umc import Client
+		client = Client(None, "Administrator", "univention")
+		categories = client.umc_get("categories").data["categories"]
+		modules = client.umc_get("modules").data["modules"]
+		return {
+			"categories": categories,
+			"modules": modules,
+		}
+
+	def get_user_links(self, user, admin_mode):
+		return []
+
+	def get_menu_links(self, user, admin_mode):
+		return []
+
+	def get_entries(self, content):
+		entries = {}
+		for module in content["modules"]:
+			entries[self._entry_id(module)] = {
+				"dn": self._entry_id(module),
+				"name": {
+					"en_US": module["name"],
+					"de_DE": module["name"],
+				},
+				"description": {
+					"en_US": module["description"],
+					"de_DE": module["description"],
+				},
+				"linkTarget": "useportaldefault",
+				"links": ["https://www.univention.com"],
+			}
+		return entries
+
+	def _entry_id(self, module):
+		if module.get("flavor"):
+			return "{}:{}".format(module["id"], module["flavor"])
+		else:
+			return module["id"]
+
+	def get_folders(self, content):
+		folders = {}
+		for category in content["categories"]:
+			entries = [self._entry_id(module) for module in content["modules"] if category["id"] in module["categories"]]
+			folders[category["id"]] = {
+				"name": {
+					"en_US": category["name"],
+					"de_DE": category["name"],
+				},
+				"dn": category["id"],
+				"entries": entries,
+			}
+		return folders
+
+	def get_categories(self, content):
+		entries = content["categories"]
+		umc_category = {
+			"display_name": {
+				"en_US": "UMC",
+				"de_DE": "UMC",
+			},
+			"dn": "umc",
+			"entries": [cat["id"] for cat in entries]
+		}
+		return {"umc": umc_category}
+
+	def get_meta(self, content, categories):
+		return {
+			"name": {
+				"de_DE": "Univention Management Console",
+				"en_US": "Univention Management Console",
+			},
+			"defaultLinkTarget": "embedded",
+			"categories": list(categories),
+			"content": [
+				[category_dn, categories[category_dn]["entries"]]
+				for category_dn in categories
+			],
+		}
+		return portal
+
+	def refresh(self, reason=None):
+		pass
