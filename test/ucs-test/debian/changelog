@@ -1,3 +1,9 @@
+ucs-test (10.0.3-20) unstable; urgency=medium
+
+  * Bug #42374: Adjust test case to wording change in tool output
+
+ -- Arvid <requate@univention.de>  Tue, 16 Feb 2021 14:34:06 +0100
+
 ucs-test (10.0.3-19) unstable; urgency=medium
 
   * Bug #49898: Adjust test case to Samba 4.13:

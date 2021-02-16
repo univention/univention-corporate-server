@@ -38,7 +38,7 @@ def test_resync_missing_object():
 			'--filter',
 			user_filter,
 		])
-		if fail_update != 'resync from master: {}\n  ==> object does not exist, can not update\n'.format(user_dn):
+		if fail_update != 'resync from Primary: {}\n  ==> object does not exist, can not update\n'.format(user_dn):
 			utils.fail('Updating a nonexisting object should not work: {}'.format(fail_update))
 		simulation = subprocess.check_output([
 			'/usr/share/univention-directory-listener/resync-objects.py',
@@ -46,7 +46,7 @@ def test_resync_missing_object():
 			'--filter',
 			user_filter,
 		])
-		if simulation != 'resync from master: {}\n  ==> adding object\n'.format(user_dn):
+		if simulation != 'resync from Primary: {}\n  ==> adding object\n'.format(user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.searchDn(user_filter):
 			utils.fail('Simulation changed local ldap')
@@ -77,7 +77,7 @@ def test_resync_updating_object():
 			'--filter',
 			user_filter,
 		])
-		if fail_create != 'resync from master: {}\n  ==> object does exist, can not create\n'.format(user_dn):
+		if fail_create != 'resync from Primary: {}\n  ==> object does exist, can not create\n'.format(user_dn):
 			utils.fail('Creating an existing object should not work: {}'.format(fail_create))
 		simulation = subprocess.check_output([
 			'/usr/share/univention-directory-listener/resync-objects.py',
@@ -86,7 +86,7 @@ def test_resync_updating_object():
 			'--filter',
 			user_filter,
 		])
-		if simulation != 'resync from master: {}\n  ==> modifying object\n'.format(user_dn):
+		if simulation != 'resync from Primary: {}\n  ==> modifying object\n'.format(user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
 			utils.fail('Simulation changed local ldap')
@@ -120,7 +120,7 @@ def test_resync_recreate_object():
 			'--filter',
 			user_filter,
 		])
-		if simulation != 'remove from local: {}\nresync from master: {}\n  ==> adding object\n'.format(user_dn, user_dn):
+		if simulation != 'remove from local: {}\nresync from Primary: {}\n  ==> adding object\n'.format(user_dn, user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
 			utils.fail('Simulation changed local ldap')
@@ -148,7 +148,7 @@ def test_resync_remove_object():
 		'--filter',
 		container_filter,
 	])
-	if fail_remove != 'object does not exist local\nobject does not exist on master\n':
+	if fail_remove != 'object does not exist local\nobject does not exist on Primary\n':
 		utils.fail('Script should not have done anything: {}'.format(fail_remove))
 	local_lo.add(container_dn, [('objectClass', 'organizationalRole'), ('cn', container_name)])
 	try:
@@ -161,7 +161,7 @@ def test_resync_remove_object():
 			'--filter',
 			container_filter,
 		])
-		if simulation != 'remove from local: {}\nobject does not exist on master\n'.format(container_dn):
+		if simulation != 'remove from local: {}\nobject does not exist on Primary\n'.format(container_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if not local_lo.searchDn(container_filter):
 			utils.fail('Simulation changed local ldap')
