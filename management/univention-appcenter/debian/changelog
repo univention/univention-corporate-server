@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-4) unstable; urgency=medium
+
+  * Bug #52453: remove debug code
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 16 Feb 2021 14:04:28 +0100
+
 univention-appcenter (9.0.2-3) unstable; urgency=medium
 
   * Bug #52453: adjust styling of AppDetailsPage
