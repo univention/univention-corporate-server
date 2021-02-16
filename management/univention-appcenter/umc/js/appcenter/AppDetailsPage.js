@@ -81,7 +81,6 @@ define([
 	var AppDetailsPage = declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
-		'class': 'umcAppDetailsPage',
 		standby: null,
 
 		headerTextAllowHTML: false,
@@ -112,6 +111,11 @@ define([
 			this.own(this._progressBar);
 			this._grid = new AppCenterGallery({});
 			this.own(this._grid);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAppDetailsPage');
 		},
 
 		// The parameter "track" can be specified by adding an additional parameter
@@ -145,7 +149,7 @@ define([
 				var app = new App(loadedApp, this);
 				this._set('app', app);
 				this._configureDialogs(app);
-				this.renderPage();
+				this._renderPage();
 				this.set('moduleTitle', app.name);
 				this.appLoadingDeferred.resolve();
 			}));
@@ -355,7 +359,7 @@ define([
 			return buttons;
 		},
 
-		renderPage: function() {
+		_renderPage: function() {
 			this.set('headerButtons', this.getHeaderButtons());
 			this._renderMainContainer();
 		},
@@ -366,64 +370,47 @@ define([
 				this._mainRegionContainer.destroyRecursive();
 				this._mainRegionContainer = null;
 			}
-			this._mainRegionContainer = new ContainerWidget({});
+			this._mainRegionContainer = new ContainerWidget({
+				'class': 'umcAppDetailsPage__content'
+			});
 			this.addChild(this._mainRegionContainer);
-			this.own(this._mainRegionContainer);
 
 			var isAppInstalled = this.app.isInstalled || this.app.getHosts().length > 0;
-			this._renderDetailsPane(isAppInstalled);
-
-			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
+			this._renderContent(isAppInstalled);
 		},
 
-		_renderDetailsPane: function(isAppInstalled) {
-			var content = new ContainerWidget({
-				'class': 'container AppDetailsPage__content'
-			});
-
-			var mainContainer = new ContainerWidget({
-				'class': 'col-xs-12 col-md-8'
-			});
-			var imageGallery = null;
+		_renderImageGallery: function(parentContainer) {
 			if (this.app.thumbnails.length) {
-				imageGallery = new ImageGallery({
+				parentContainer.addChild(new ImageGallery({
+					'class': 'umcAppDetailsPage__content__imageGallery',
 					srcs: this.app.thumbnails
-				});
+				}));
 			}
+		},
+
+		_renderMainInfo: function(parentContainer, isAppInstalled) {
 			var detailsContainer = new ContainerWidget({
-				'class': 'descriptionContainer'
+				'class': 'umcAppDetailsPage__content__mainInfo'
 			});
 			if (isAppInstalled) {
 				this._renderAppUsage(detailsContainer);
-				// this._renderInstallationManagement(detailsContainer);
 			}
 			this._renderDescription(detailsContainer, isAppInstalled);
+			parentContainer.addChild(detailsContainer);
+		},
 
-			var sidebarContainer = ContainerWidget({
-				'class': 'col-xs-12 col-md-4'
-			});
-			this._renderSidebar(sidebarContainer);
-
-			content.addChild(mainContainer);
-			if (imageGallery) {
-				mainContainer.addChild(imageGallery);
-			}
-			mainContainer.addChild(detailsContainer);
-			content.addChild(sidebarContainer);
-
-			var detailsPane = new ContentPane({
-				content: content,
-				'class': 'appDetailsPane'
-			});
-			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
+		_renderContent: function(isAppInstalled) {
+			var parentContainer = this._mainRegionContainer;
+			this._renderCallToAction(parentContainer);
+			this._renderImageGallery(parentContainer);
+			this._renderMainInfo(parentContainer, isAppInstalled);
+			this._renderSupplementaryInfo(parentContainer);
 		},
 
 		_renderAppUsage: function(parentContainer) {
 			var appUsageContainer = ContainerWidget({
 				'style': 'margin-bottom: 2em'
 			});
-			parentContainer.addChild(appUsageContainer);
-			parentContainer.own(appUsageContainer);
 
 			var usage = this.app.readme;
 			if (usage) {
@@ -442,6 +429,8 @@ define([
 					content: usage,
 				});
 				appUsageContainer.addChild(usagePane);
+
+				parentContainer.addChild(appUsageContainer);
 			}
 		},
 
@@ -510,25 +499,28 @@ define([
 
 		},
 
-		_renderSidebar: function(parentContainer) {
-			this._renderAppInfo(parentContainer);
+		_renderSupplementaryInfo: function(parentContainer) {
+			var container = new ContainerWidget({
+				'class': 'umcAppDetailsPage__content__supplementaryInfo'
+			});
 			if (this.app.canVote()) {
-				this._renderAppVote(parentContainer);
+				this._renderAppVote(container);
 			} else {
 				if (this.app.useShop) {
-					parentContainer.addChild(new Buy({
+					container.addChild(new Buy({
 						callback: lang.hitch(this, 'openShop')
 					}));
 				}
-				this._renderAppDetails(parentContainer);
+				this._renderAppDetails(container);
 			}
 			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
 			if (hasRating) {
-				this._renderAppBadges(parentContainer);
+				this._renderAppBadges(container);
 			}
+			parentContainer.addChild(container);
 		},
 
-		_renderAppInfo: function(parentContainer) {
+		_renderCallToAction: function(parentContainer) {
 			var isSingleServerDomain = this.app.installationData.length === 1;
 			var buttonLabel = "";
 			var callback;
@@ -555,7 +547,8 @@ define([
 				name: this.app.name,
 				description: this.app.description,
 				buttonLabel: buttonLabel,
-				callback: callback
+				callback: callback,
+				'class': 'umcAppDetailsPage__content__callToAction'
 			});
 			parentContainer.addChild(info);
 		},

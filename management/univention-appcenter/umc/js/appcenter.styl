@@ -27,13 +27,6 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-column-count(count)
-	column-count: count
-	-webkit-column-count: count
-	-moz-column-count: count
-
-$app-detailspane-background-color = var(--color-grey0)
-
 .appStatusIcon
 	background-image: url("appcenter/statusIcons.svg")
 	position: absolute
@@ -143,32 +136,6 @@ $app-detailspane-background-color = var(--color-grey0)
 
 	.umcAppSidebarButton
 		width: 100%
-
-.umc .dijitTitlePane.appDetailsPane
-	.dijitTitlePaneTitle
-		color: #a9a9a9
-		border-top: 0
-		padding: 0.5em 0 0.5em 0
-
-		.dijitTitlePaneTextNode
-			vertical-align: middle
-
-		.dijitArrowNode
-			opacity: 0.66
-
-	.dijitTitlePaneTitleClosed .dijitArrowNode
-		background-position: -80px 0
-
-	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
-		background-position: -100px 0
-		opacity: 0.66
-
-	.dijitTitlePaneTitleOpen .dijitArrowNode
-		background-position: 0px 0
-
-	.dijitTitlePaneTitleOpen.dijitTitlePaneTitleHover .dijitArrowNode
-		background-position: -20px 0
-		opacity: 0.66
 
 .umcAppMoreInfo
 	table
@@ -375,9 +342,6 @@ $app-detailspane-background-color = var(--color-grey0)
 		margin-bottom: 0.5em
 
 .umc .umcAppDetailsPage
-	&__content
-		padding: 0
-
 	.umcPageNav
 		.icon
 			margin-bottom: 1em
@@ -501,12 +465,11 @@ $app-detailspane-background-color = var(--color-grey0)
 	.usage
 		margin-bottom: 3em
 
-	.descriptionContainer
+	.umcAppDetailsPage__content__mainInfo
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
 		font-size: var(--font-size-small)
 		padding: 40px
-		margin-bottom: 3em
 
 		h1, h2, h3
 			margin-bottom: 0.7rem
@@ -523,16 +486,10 @@ $app-detailspane-background-color = var(--color-grey0)
 				color: var(--color-grey40)
 
 
-	.appDetailsPane
-		margin: 0 -1000px
-		padding: 1.5em 1000px
-
-
 	.appDetailsSidebarElement
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
 		font-size: var(--font-size-small)
-		margin-bottom: 30px
 		padding: 1.7em
 		color: var(--font-color-contrast-high)
 
@@ -554,20 +511,10 @@ $app-detailspane-background-color = var(--color-grey0)
 	.umcAppDetailsPage
 		.umcPageMain
 			margin-bottom: 2.25em
-		.umcPageFooter
-			margin-bottom: 7em
-		@media (max-width 768px) 
-			.umcPageFooter
-				margin-bottom: 5em
-
 
 	.umcAppCenter .appcenterMetaCategory
 		.dijitButton.hiddenButton
 			visibility: hidden
-
-		.umcAppCenterGallery
-			/*height: 175px;*/
-			height: auto
 
 	.umcAppCenter .appLiveSearchSidebar
 		border-radius: var(--border-radius-container)
@@ -610,160 +557,6 @@ $app-detailspane-background-color = var(--color-grey0)
 		@media screen and (max-width: 549px)
 			width: 100%
 
-	.umcThumbnailGallery
-		position: relative
-		line-height: 0
-
-		.galleryLoadingOverlay
-			position: absolute
-			width: 100%
-			height: 100%
-			z-index: 1
-			background-image: url(../../js/dijit/themes/umc/images/standbyAnimation.svg)
-			background-repeat: no-repeat
-			background-position: center center
-			background-color: $app-detailspane-background-color
-			opacity: 1
-
-			&.loaded
-				opacity: 0
-				pointer-events: none
-
-		.galleryOuterContainer
-			position: relative
-
-			.contentSliderWrapper
-				display: inline-block
-				white-space: nowrap
-				overflow: hidden
-				width: 100%
-				padding: 5px 0 // some space for box-shadow of galleryThumbs
-
-				.contentSlider
-					display: inline-block
-					transform: translate3d(0, 0, 0)
-					transition-property: transform
-
-					&.noTransition
-						transition: none
-
-					.galleryThumb
-						display: inline-block
-						vertical-align: middle
-						transition-property: width, height
-						box-shadow: 0 1px 6px rgba(1,0,0,0.117647), 0 1px 4px rgba(0,1,0,0.117647) // taken from univention-web/css/variables.styl
-
-						&.galleryImgThumb
-							background-size: contain
-							background-position: center center
-							background-repeat: no-repeat
-							cursor: pointer
-
-						&.brokenImg
-							width: 150px
-							box-shadow: inset 0px 0px 6px #5a5a5a
-							background: url("appcenter/thumbnailError.svg") no-repeat, #e6e6e6
-							background-position: center center
-							background-size: 30% auto
-
-						&.verticalAlignHelper
-							margin: 0 !important
-							height: 0
-
-					.galleryVideoThumb
-						position: relative
-
-						.galleryVideo
-							width: 100%
-							height: 100%
-							background-color: black
-
-						.galleryVideoThumbnailWrapper
-								width: 100%
-								height: 100%
-
-							.galleryVideoThumbnail
-								width: 100%
-								height: 100%
-								background-size: cover
-								background-position: center center
-								background-repeat: no-repeat
-								cursor: pointer
-
-							.galleryVideoPlayButtonIcon
-								width: 100%
-								height: 100%
-								background: url("appcenter/videoPlayButton.svg") no-repeat;
-								background-size: auto 30%
-								background-position: center center
-								position: absolute
-								top: 0
-
-						&:after
-							content: ''
-							height: 100%
-							display: inline-block
-							vertical-align: middle
-
-		.galleryNavButton
-			cursor: pointer
-			width: 40px
-			opacity: 1
-			transition-property: opacity, height
-			position: absolute
-			z-index: 1
-			background-color: $app-detailspane-background-color
-			padding: 5px 0
-			box-sizing: content-box
-
-			&.disabled
-				opacity: 0
-				cursor: default
-				pointer-events: none
-				height: 0
-
-			.galleryNavButtonImage
-				background-image: url("appcenter/carouselArrowRight.svg")
-				background-size: contain
-				background-repeat: no-repeat
-				background-position: 0 50%
-				height: 100%
-				opacity: 0.4
-				transition: opacity 0.3s
-
-				&:hover
-					opacity: 1
-
-			&.rightGalleryNavButton
-				margin-left: 5px
-				right: 0
-				top: 0
-
-			&.leftGalleryNavButton
-				margin-right: 5px
-
-				.galleryNavButtonImage
-					transform: rotateY(180deg)
-					-webkit-transform: rotateY(180deg)
-
-		.scaleButton
-			cursor: pointer
-			width: 40px
-			height: 40px
-			background-image: url("appcenter/maximize.svg")
-			background-size: 100% 100%
-			position: absolute
-			right: 0
-			top: 0
-			z-index: 1
-			opacity: 0.4
-
-			&.minimize
-				background-image: url("appcenter/minimize.svg")
-
-			&:hover
-				opacity: 1
-
 .umc .appInstallWizard__dryRunPage
 	.umcPageMain
 		min-height: 150px
@@ -790,7 +583,6 @@ $app-detailspane-background-color = var(--color-grey0)
 
 .imageGallery
 	--local-idx: 0
-	padding-bottom: 30px // TODO this is the sum of the left and right padding of the bootstrap container
 
 .imageGallery__aspectRatio
 	width: 100%
@@ -871,3 +663,36 @@ $app-detailspane-background-color = var(--color-grey0)
 	background-color: rgba(255, 255, 255, 1)
 	left: calc(1.5rem * var(--local-idx))
 	transition: left 250ms
+
+
+.umcAppDetailsPage__content
+	display: grid
+	grid-template-columns: 8fr 4fr
+	grid-template-rows: auto auto
+	grid-template-areas: "imageGallery callToAction" "mainInfo supplementaryInfo"
+	grid-gap: 2rem
+	align-items: flex-start
+
+.umcAppDetailsPage__content__callToAction
+	grid-area: callToAction
+
+.umcAppDetailsPage__content__imageGallery
+	grid-area: imageGallery
+
+.umcAppDetailsPage__content__mainInfo
+	grid-column: mainInfo
+	grid-row: imageGallery / mainInfo
+.umcAppDetailsPage__content__imageGallery + .umcAppDetailsPage__content__mainInfo
+	grid-row: mainInfo
+
+.umcAppDetailsPage__content__supplementaryInfo
+	grid-area: supplementaryInfo
+	display: grid
+	grid-gap: 2rem
+
+@media (max-width: 991px)
+	.umcAppDetailsPage__content
+		display: flex
+		flex-direction: column
+		align-items: stretch
+
