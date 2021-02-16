@@ -1628,7 +1628,7 @@ class simpleLdap(object):
 		"""Release all temporary done locks"""
 		while self.alloc:
 			name, value = self.alloc.pop()[0:2]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'release_lock(%s): %r' % (name, value))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'release_lock(%s): %r' % (name, value))
 			univention.admin.allocators.release(self.lo, self.position, name, value)
 
 	def _confirm_locks(self):  # type: () -> None
