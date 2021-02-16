@@ -31,7 +31,6 @@
 #
 
 from six import with_metaclass
-import requests
 
 from univention.portal import Plugin
 
@@ -316,7 +315,6 @@ class UMCPortal(Portal):
 				for category_dn in categories
 			],
 		}
-		return portal
 
 	def refresh(self, reason=None):
 		pass
