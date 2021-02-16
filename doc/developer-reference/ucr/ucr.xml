@@ -657,8 +657,8 @@ Categories=<category,...>]]></programlisting>
 					<listitem>
 						<simpara>
 							The default value of the UCR variable which is applied if the variable is not set.
-							This has been added in UCS 5.0.
-							The default value might be a UCR pattern referencing other variables (e.g. <literal>Default: @%@another/variable@%@ example</literal>).
+							This has been added with UCS 5.0.
+							The default value might be a UCR pattern referencing other variables, e.g. <literal>Default=@%@another/variable@%@ example</literal>.
 						</simpara>
 					</listitem>
 				</varlistentry>
