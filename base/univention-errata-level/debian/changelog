@@ -1,3 +1,9 @@
+univention-errata-level (5.0.0-1) unstable; urgency=medium
+
+  * Bug #52715: Added "univention-maintained-packages.txt"
+
+ -- Christian Castens <castens@univention.de>  Fri, 19 Feb 2021 10:22:57 +0100
+
 univention-errata-level (5.0.0-0) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

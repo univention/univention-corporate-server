@@ -1,3 +1,9 @@
+univention-updater (15.0.3-9) unstable; urgency=medium
+
+  * Bug #52715: Add script "list_installed_unmaintained_packages.py"
+
+ -- Christian Castens <castens@univention.de>  Fri, 19 Feb 2021 10:24:20 +0100
+
 univention-updater (15.0.3-8) unstable; urgency=low
 
   * Bug #51655: Handle errors in update_check_legacy_objects

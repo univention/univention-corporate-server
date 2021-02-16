@@ -3,6 +3,7 @@ usr/bin/univention-updater usr/share/univention-updater/
 usr/bin/univention-actualise usr/share/univention-updater/
 usr/bin/univention-repository-create usr/sbin/
 usr/bin/univention-repository-update usr/sbin/
+usr/bin/univention-list-installed-unmaintained-packages usr/sbin/
 
 usr/bin/univention-policy-set-repository-server usr/lib/univention-directory-policy/
 usr/bin/univention-policy-repository-sync usr/lib/univention-directory-policy/
