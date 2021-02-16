@@ -41,6 +41,9 @@ VERSION="50"
 VERSION_NAME="5.0"
 MIN_VERSION="4.4-7"
 
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+
 echo
 echo "Starting $0 ($(date)):"
 
@@ -316,12 +319,18 @@ declare -a legacy_ocs_auxiliary=(
 update_check_legacy_objects () {
 	local var="update$VERSION/ignore_legacy_objects"
 	ignore_check "$var" && return 100
+	[ -f /var/univention-join/joined ] || return 0
+
 	declare -a found_structural=() found_auxiliary=()
 	local IFS=''
+
 	local filter="(|${legacy_ocs_structural[*]})"
-	IFS=$'\n' read -d '' -r -a found_structural <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_structural <<<"$(grep '^dn:' "$tmp")"
+
 	local filter="(|${legacy_ocs_auxiliary[*]})"
-	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(grep '^dn:' "$tmp")"
 
 	# shellcheck disable=SC2128
 	[ -z "$found_structural" ] && [ -z "$found_auxiliary" ] && return 0

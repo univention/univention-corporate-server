@@ -1,3 +1,9 @@
+univention-updater (15.0.3-8) unstable; urgency=low
+
+  * Bug #51655: Handle errors in update_check_legacy_objects
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Feb 2021 18:12:31 +0100
+
 univention-updater (15.0.3-7) unstable; urgency=medium
 
   * Bug #52453: adjust styling of ProgressPage
