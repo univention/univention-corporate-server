@@ -196,6 +196,7 @@ fun text_to_image(text, color, font, alignment) {
 # Settings
 text_font = "Open Sans, 11";
 text_font_heading = "Open Sans Light, 26";
+text_font_ip = "Open Sans Semibold, 11";
 text_alignment = "center";
 
 # set these colors in the coresponding *.plymouth file under [script-env-vars]
@@ -394,7 +395,6 @@ fun welcome_screen_opacity(opacity) {
 	global.welcome.header.sprite.SetOpacity(opacity);
 	global.welcome.hostname.sprite.SetOpacity(opacity);
 	global.welcome.logo1.sprite.SetOpacity(opacity);
-	global.welcome.logo1.shadow.sprite.SetOpacity(opacity);
 	global.welcome.logo2.sprite.SetOpacity(opacity);
 	global.welcome.logo3.sprite.SetOpacity(opacity);
 	global.welcome.number1.sprite.SetOpacity(opacity);
@@ -437,7 +437,7 @@ fun welcome_screen_setup() {
 	message2.sprite = Sprite();
 	message2.sprite.SetY(height_percent(50) + 97);
 	message2.setText = fun (string) {
-		global.welcome.message2.image = text_to_image(textWrapToSize(string, global.welcome.logo2.image.GetWidth(), text_font));
+		global.welcome.message2.image = text_to_image(textWrapToSize(string, global.welcome.logo2.image.GetWidth(), text_font_ip), text_color, text_font_ip);
 		global.welcome.message2.sprite.SetX(global.welcome.logo2.sprite.GetX() + (global.welcome.logo2.image.GetWidth() - global.welcome.message2.image.GetWidth()) / 2);
 		global.welcome.message2.sprite.SetImage(global.welcome.message2.image);
 	};
@@ -451,10 +451,6 @@ fun welcome_screen_setup() {
 	logo1.sprite.SetY(logo2.sprite.GetY() - logo1.image.GetHeight() / 2 + logo2.image.GetHeight() / 2);
 	logo1.sprite.SetZ(1);
 	global.welcome.logo1 = logo1;
-	logo1.shadow.image = Image("logo-step1-shadow.png");
-	logo1.shadow.sprite = Sprite(logo1.shadow.image);
-	logo1.shadow.sprite.SetX(logo1.sprite.GetX() - 20);
-	logo1.shadow.sprite.SetY(logo1.sprite.GetY() + 20);
 
 	# number step1
 	number1.image = Image("number1.png");
@@ -489,7 +485,7 @@ fun welcome_screen_setup() {
 	addresses.sprite.SetX(logo2.sprite.GetX());
 	addresses.setText = fun (string) {
 		global.welcome.addresses.sprite.SetY(global.welcome.message2.sprite.GetY() + global.welcome.message2.image.GetHeight());
-		global.welcome.addresses.image = text_to_image(textWrapToSize(string, 1, text_font));
+		global.welcome.addresses.image = text_to_image(textWrapToSize(string, 1, text_font_ip), text_color, text_font_ip);
 		global.welcome.addresses.sprite.SetX(global.welcome.message2.sprite.GetX() + (global.welcome.message2.image.GetWidth() - global.welcome.addresses.image.GetWidth()) / 2);
 		global.welcome.addresses.sprite.SetImage(global.welcome.addresses.image);
 	};
@@ -566,7 +562,7 @@ fun welcome_screen_setup() {
 	# address - relative to logo
 	address.sprite = Sprite();
 	address.setText = fun (string) {
-		global.welcome.address.image = text_to_image(string);
+		global.welcome.address.image = text_to_image(string, text_color, text_font_ip);
 		global.welcome.address.sprite.SetX(width_percent(50) - global.welcome.address.image.GetWidth() / 2 + 12);
 		global.welcome.address.sprite.SetY(
 			global.welcome.logo2.sprite.GetY() + global.welcome.logo2.image.GetHeight() /2 - global.welcome.address.image.GetHeight() / 2);
