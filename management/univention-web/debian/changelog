@@ -1,3 +1,9 @@
+univention-web (4.0.1-11) unstable; urgency=medium
+
+  * Bug #52453: adjust styling for Grid
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 16 Feb 2021 15:33:32 +0100
+
 univention-web (4.0.1-10) unstable; urgency=medium
 
   * Bug #52453: adjust module and dialog styling
