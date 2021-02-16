@@ -40,8 +40,20 @@ RE_BROKEN = re.compile(r'^File "[^"]+", line \d+, in .*')
 """Match broken setup.log traceback:
 Traceback (most recent call last):
 File "<stdin>", line 8, in <module>
+File "xyz", line 8, in bar
+foo = bar
 IOError: [Errno 2] No such file or directory: '/etc/machine.secret'
 """  # Bug #51834
+
+RE_APPCENTER = re.compile(r'^(\s+\d+ .*[\d \-:]+ \[(    INFO| WARNING|   DEBUG|   ERROR)\]:)')
+"""Match appcenter.log
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]: Traceback (most recent call last):
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:     univention.pkgdb.main()
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:     cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]: Exception: foo
+"""
 
 
 class Tracebacks(set):
@@ -62,10 +74,20 @@ def main(filenames, ignore_exceptions={}):
 				line = fd.readline()
 				if line.endswith('Traceback (most recent call last):\n'):
 					lines = []
-					line = ' '
-					while line.startswith(' ') or RE_BROKEN.match(line):
+					line = '  '
+					while line.startswith('  ') or RE_BROKEN.match(line) or (RE_APPCENTER.match(line) and 'appcenter' in filename):
 						line = fd.readline()
-						lines.append(line)
+						if 'appcenter' in filename and RE_APPCENTER.match(line):
+							line = RE_APPCENTER.sub('', line)
+							lines.append(line[1:])
+							if RE_BROKEN.match(line.strip()):
+								lines.append(RE_APPCENTER.sub('', fd.readline())[1:])
+						elif RE_BROKEN.match(line):
+							lines.append('  ' + line)
+							if 'File "<stdin>"' not in line:
+								lines.append('    ' + fd.readline())
+						else:
+							lines.append(line)
 					d = Tracebacks()
 					tb = tracebacks.setdefault(''.join(lines[:-1]), d)
 					tb.add(lines[-1])
