@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-1) unstable; urgency=low
+
+  * Bug #32509: Remove /etc/kernel-img.conf
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Feb 2021 14:44:43 +0100
+
 univention-base-files (9.0.2-2) unstable; urgency=low
 
   * Bug #51493: Temporary work-around for time skew.

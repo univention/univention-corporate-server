@@ -274,11 +274,6 @@ Variables: xorg/keyboard/options/XkbVariant
 Variables: xorg/keyboard/options/XkbOptions
 
 Type: file
-File: etc/kernel-img.conf
-Variables: kernel/ramdisk
-Variables: kernel/postinst_hook
-
-Type: file
 File: etc/default/locale
 Variables: locale/default
 

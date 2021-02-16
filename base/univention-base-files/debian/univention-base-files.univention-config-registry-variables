@@ -625,12 +625,6 @@ Description[en]=The required drivers (kernel modules) are automatically detected
 Type=str
 Categories=system-kernel
 
-[kernel/postinst_hook]
-Description[de]=Diese Variable erlaubt die Konfiguration eines zusätzlichen Konfigurations-Skripts, siehe 'postinst_hook' unter http://manpages.debian.net/cgi-bin/man.cgi?query=kernel-img.conf.
-Description[en]=This variables allows to configure an additional configuration script, see 'postinst_hook' under http://manpages.debian.net/cgi-bin/man.cgi?query=kernel-img.conf.
-Type=str
-Categories=system-kernel
-
 [kernel/fs/inotify/max_user_instances]
 Description[de]=Die Obergrenze an Inotify-Diensten pro Benutzer-ID.
 Description[en]=The upper limit of Inotify services per user ID.

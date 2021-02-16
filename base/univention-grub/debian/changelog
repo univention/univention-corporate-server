@@ -1,3 +1,9 @@
+univention-grub (13.0.0-5) unstable; urgency=low
+
+  * Bug #32509 grub: Remove postinst_hook
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Feb 2021 14:47:28 +0100
+
 univention-grub (13.0.0-4) unstable; urgency=medium
 
   * Bug #52798: Adjust theme to new design
