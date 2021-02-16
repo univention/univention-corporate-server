@@ -114,6 +114,9 @@ do
 	done
 
 	wait_for_replication
+	# Delay the next batch of changes a bit for the S4-Connector to catch up
+	# Otherwise sometimes it seems to happen that the S4-C overwrites the new value with an old one.
+	sleep 20
 
 	ldapsearch -x -LLL \
 		-h "$ldap_master" \

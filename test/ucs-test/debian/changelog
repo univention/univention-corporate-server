@@ -1,3 +1,10 @@
+ucs-test (10.0.3-21) unstable; urgency=medium
+
+  * Bug #52043: Add delay to 10_ldap/44replication_binary to
+    avoid race with S4C
+
+ -- Arvid <requate@univention.de>  Tue, 16 Feb 2021 21:16:00 +0100
+
 ucs-test (10.0.3-20) unstable; urgency=medium
 
   * Bug #42374: Adjust test case to wording change in tool output
