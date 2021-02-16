@@ -799,8 +799,6 @@ define([
 		},
 
 		callInstaller: function(func, apps, hosts, force, deferred, values) {
-			console.log(func, apps, hosts, force, deferred, values);
-			return;
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
 			deferred.then(lang.hitch(nonInteractive, 'resolve'));
