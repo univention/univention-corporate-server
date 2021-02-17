@@ -265,15 +265,15 @@ layout = [
 ]
 
 
-def list2str(lst):
+def list2str(lst, encoding=()):
 	"""Convert list to comma separated string."""
-	return ','.join(lst)
+	return ','.join(lst).encode(*encoding)
 
 
-def str2list(value):
+def str2list(value, encoding=()):
 	"""Split comma separated string into list."""
 	if value:
-		return value[0].split(',')
+		return value[0].decode(*encoding).split(',')
 	return []
 
 

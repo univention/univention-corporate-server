@@ -117,16 +117,15 @@ layout = [
 ]
 
 
-def mapKeyAndValue(old):
-	return ['='.join(entry) for entry in old]
+def mapKeyAndValue(old, encoding=()):
+	return ['='.join(entry).encode(*encoding) for entry in old]
 
 
-def unmapKeyAndValue(old):
-	return [entry.split('=', 1) for entry in old]
+def unmapKeyAndValue(old, encoding=()):
+	return [entry.decode(*encoding).split('=', 1) for entry in old]
+
 
 # Mapping between UDM properties and LDAP attributes
-
-
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('type', 'univentionVirtualMachineCloudConnectionTypeRef', None, udm_mapping.ListToString)
