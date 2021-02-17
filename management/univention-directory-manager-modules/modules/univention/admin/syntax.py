@@ -4924,7 +4924,7 @@ class LDAP_Search(select):
 	>>> syntax = LDAP_Search('mysyntax', '(univentionObjectType=users/user)', ['uid'])
 	>>> syntax._load(lo)
 	>>> syntax._prepare(lo)
-	>>> any(dn.startswith('uid=' + custom_username(Administrator')) for dn, value, attrs in syntax.values)
+	>>> any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.values)
 	True
 	>>> syntax = LDAP_Search('mysyntax2', '(univentionObjectType=fantasy)', ['cn'])
 	>>> syntax._prepare(lo)
