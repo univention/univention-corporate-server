@@ -153,7 +153,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 ### [KVM Templates](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/KVM%20Templates/)
 
-* [test/utils/create_generic_unsafe_kvm_template.sh](test/utils/create_generic_unsafe_kvm_template.sh): (`/mnt/omar/vmwares/kvm/` `ucs-appliance/UCS-$mmp-KVM-Image.qcow2` → `single/UCS/$mmp_generic-unsafe_amd64.tar.gz`)
+* [scenarios/appliances/generic-kvm-template.cfg](scenarios/appliances/generic-kvm-template.cfg): Create generiv ucs-kt-get template
 * [scenarios/appliances/joined-kvm-templates.cfg](scenarios/appliances/joined-kvm-templates.cfg): Create ucs-kt-get templates for joined ucs roles
 * [scenarios/appliances/role-kvm-templates.cfg](scenarios/appliances/role-kvm-templates.cfg): Create ucs-kt-get templates for ucs roles
 
