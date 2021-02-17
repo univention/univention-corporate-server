@@ -62,7 +62,6 @@ def main() -> None:
 
 def parse_args() -> Namespace:
 	parser = ArgumentParser(description=__doc__)
-	group = parser.add_mutually_exclusive_group()
 	parser.add_argument("--binddn", metavar="DN", help="LDAP simple BIND DN")
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("--bindpwd", metavar="PW", help="LDAP simple BIND password")
