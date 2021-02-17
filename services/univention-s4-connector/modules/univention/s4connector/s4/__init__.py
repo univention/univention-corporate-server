@@ -1319,8 +1319,8 @@ class s4(univention.s4connector.ucs):
 					# can't sync them if users have no posix-account
 					continue
 
-				mo_key = self.identify_udm_object(member_dn, member_object['attributes'])
-				if mo_key is None:
+				_mod, mo_key = self.identify_udm_object(member_dn, member_object['attributes'])
+				if not mo_key:
 					ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to identify object type of ucs member, ignore membership: %s" % member_dn)
 					continue  # member is an object which will not be synced
 
@@ -1614,8 +1614,8 @@ class s4(univention.s4connector.ucs):
 					if self._ignore_object(key, object):
 						continue
 
-					for k in self.property.keys():
-						if self.modules[k].identify(member_dn, ucs_object['attributes']):
+					_mod, k = self.identify_udm_object(member_dn, ucs_object['attributes'])
+					if k and _mod.module in ('users/user', 'groups/group', 'computers/windows_domaincontroller', 'computers/windows'):
 							s4_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
 
 							if not dn_mapping_ucs_member_to_s4.get(member_dn_lower):
@@ -1627,7 +1627,6 @@ class s4(univention.s4connector.ucs):
 								# member does not exist in S4 but should
 								# stay a member in UCS
 								ucs_members_from_s4[k].append(member_dn_lower)
-							break
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?
@@ -1660,12 +1659,11 @@ class s4(univention.s4connector.ucs):
 						cache[member_dn] = ucs_object_attr
 					ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': ucs_object_attr}
 
-					for k in self.property.keys():
-						# identify if DN is a user or a group (will be ignored it is a host)
-						if self.modules[k].identify(member_dn, ucs_object['attributes']):
-							if not self._ignore_object(k, ucs_object):
-								del_members[k].append(member_dn)
-							break
+					_mod, k = self.identify_udm_object(member_dn, ucs_object['attributes'])
+					if k and _mod.module in ('users/user', 'groups/group', 'computers/windows_domaincontroller', 'computers/windows'):
+						# identify if DN is a user or a group (will be ignored if it is a host)
+						if not self._ignore_object(k, ucs_object):
+							del_members[k].append(member_dn)
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in UCS group member cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
 
