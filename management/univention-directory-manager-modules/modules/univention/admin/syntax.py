@@ -4919,11 +4919,12 @@ class LDAP_Search(select):
 
 		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
 	>>> from univention.admin.uldap import getMachineConnection
+	>>> from univention.lib.misc import custom_username
 	>>> lo, pos = getMachineConnection()
 	>>> syntax = LDAP_Search('mysyntax', '(univentionObjectType=users/user)', ['uid'])
 	>>> syntax._load(lo)
 	>>> syntax._prepare(lo)
-	>>> any(dn.startswith('uid=Administrator') for dn, value, attrs in syntax.values)
+	>>> any(dn.startswith('uid=' + custom_username(Administrator')) for dn, value, attrs in syntax.values)
 	True
 	>>> syntax = LDAP_Search('mysyntax2', '(univentionObjectType=fantasy)', ['cn'])
 	>>> syntax._prepare(lo)
