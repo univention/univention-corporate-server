@@ -312,9 +312,10 @@ def handler_register(args, opts=dict()):
 	# incorporated. Calling register for multifiles will increment the
 	# def_count a second time, which is not nice, but uncritical, since the
 	# diversion is (re-)done when >= 1.
+
+	_register_variable_default_values(ucr)
 	handlers.register(args[0], ucr)
 	# handlers.commit((ucr, {}))
-	_register_variable_default_values(ucr)
 
 
 def handler_unregister(args, opts=dict()):
