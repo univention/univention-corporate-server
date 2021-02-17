@@ -35,17 +35,29 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="679"
-     inkscape:window-height="480"
+     inkscape:window-width="1920"
+     inkscape:window-height="1031"
      id="namedview17"
      showgrid="false"
      inkscape:zoom="13.216667"
-     inkscape:cx="29.999884"
+     inkscape:cx="30.075546"
      inkscape:cy="28.515343"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="SvgjsSvg468541" />
+     inkscape:window-maximized="1"
+     inkscape:current-layer="SvgjsSvg468547"
+     inkscape:document-rotation="0"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="-3.3686626,29.936692"
+       orientation="0,-1"
+       id="guide839" />
+    <sodipodi:guide
+       position="29.962168,17.704919"
+       orientation="1,0"
+       id="guide841" />
+  </sodipodi:namedview>
   <defs
      id="SvgjsDefs468542">
     <style
@@ -101,10 +113,12 @@
        fill="#ffffff"
        family="OpenSans-Semibold"
        size="28"
-       svgjs:data="{&quot;leading&quot;:&quot;1&quot;}"><tspan
+       svgjs:data="{&quot;leading&quot;:&quot;1&quot;}"
+       x="-2.2054687"
+       y="3.0882812"><tspan
          id="SvgjsTspan468552"
          dy="28"
-         x="0"
+         x="-2.2054687"
          svgjs:data="{&quot;newLined&quot;:true}"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold'">1</tspan></text>
   </svg>

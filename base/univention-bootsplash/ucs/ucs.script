@@ -437,7 +437,7 @@ fun welcome_screen_setup() {
 	message2.sprite = Sprite();
 	message2.sprite.SetY(height_percent(50) + 97);
 	message2.setText = fun (string) {
-		global.welcome.message2.image = text_to_image(textWrapToSize(string, global.welcome.logo2.image.GetWidth(), text_font_ip), text_color, text_font_ip);
+		global.welcome.message2.image = text_to_image(textWrapToSize(string, global.welcome.logo2.image.GetWidth()));
 		global.welcome.message2.sprite.SetX(global.welcome.logo2.sprite.GetX() + (global.welcome.logo2.image.GetWidth() - global.welcome.message2.image.GetWidth()) / 2);
 		global.welcome.message2.sprite.SetImage(global.welcome.message2.image);
 	};
