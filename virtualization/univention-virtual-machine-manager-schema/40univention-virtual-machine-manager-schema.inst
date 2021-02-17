@@ -43,9 +43,24 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 ucs_registerLDAPExtension "$@" \
-    --schema /usr/share/univention-virtual-machine-manager-schema/univention-virtual-machine-manager.schema \
-    --acl /usr/share/univention-virtual-machine-manager-schema/66univention-ldap-server_acl-master-uvmm.acl || die
+	--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
+    --schema /usr/share/univention-virtual-machine-manager-schema/univention-virtual-machine-manager.schema || die
 
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
+    --acl /usr/share/univention-virtual-machine-manager-schema/66univention-ldap-server_acl-master-uvmm.acl \
+	--udm_syntax /usr/share/univention-virtual-machine-manager-schema/syntax.d/univention-virtual-machine-manager-schema.py || die
+
+	for udm_module in /usr/share/univention-virtual-machine-manager-schema/handlers/uvmm/*py; do
+		ucs_registerLDAPExtension "$@" \
+			--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
+			--udm_module "${udm_module}" || die
+	done
+
+	# FIXME: --udm_module_messagecatalog seems to be broken.
+	#ucs_registerLDAPExtension "$@" \
+	#	--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
+	#	--udm_module_messagecatalog /usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-uvmm.mo || die
 
 # create required containers if necessary
 univention-directory-manager container/cn create "$@" \

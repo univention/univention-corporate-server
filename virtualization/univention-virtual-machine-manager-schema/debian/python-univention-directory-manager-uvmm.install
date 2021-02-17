@@ -1,2 +1,2 @@
-modules/univention/admin/handlers/uvmm/*.py usr/lib/python2.7/dist-packages/univention/admin/handlers/uvmm/
-modules/univention/admin/syntax.d/*.py usr/lib/python2.7/dist-packages/univention/admin/syntax.d/
+modules/univention/admin/handlers/uvmm/*.py usr/share/univention-virtual-machine-manager-schema/handlers/uvmm/
+modules/univention/admin/syntax.d/*.py usr/share/univention-virtual-machine-manager-schema/syntax.d/
