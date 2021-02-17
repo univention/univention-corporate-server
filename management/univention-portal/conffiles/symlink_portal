@@ -60,4 +60,13 @@ for line in fileinput.input([]):
 			print(f"{path} already links (to {link_target}). Skipping...")
 		else:
 			print(f"Linking {path} to portal content...")
-			os.symlink(portal_path, path)
+			try:
+				dirname = os.path.dirname(path)
+				os.makedirs(dirname, exist_ok=True)
+			except OSError as exc:
+				print(f"Error creating {dirname}: {exc}!")
+			else:
+				try:
+					os.symlink(portal_path, path)
+				except OSError as exc:
+					print(f"Error creating a link from {path} to {portal_path}: {exc}!")

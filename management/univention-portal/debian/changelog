@@ -1,3 +1,9 @@
+univention-portal (4.0.4-8) unstable; urgency=medium
+
+  * Bug #52792: Fix error handling when symlinking
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Feb 2021 17:32:33 +0100
+
 univention-portal (4.0.4-7) unstable; urgency=medium
 
   * Bug #52792: Allow multiple paths for univention-portal frontend
