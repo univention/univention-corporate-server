@@ -113,7 +113,7 @@ layout = [
 def unmapMX(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(i.decode(*encoding).split(u' '))
+		new.append(i.decode(*encoding).split(u' ', 1))
 	return new
 
 
@@ -124,11 +124,21 @@ def mapMX(old, encoding=()):
 	return new
 
 
+def unmapIPAddresses(values, encoding=()):
+	records = []
+	if 'aRecord' in values:
+		records.extend([x.decode(*encoding) for x in values['aRecord']])
+	if 'aAAARecord' in values:
+		records.extend([ipaddress.IPv6Address(x.decode(*encoding)).exploded for x in values['aAAARecord']])
+	return records
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
 mapping.register('txt', 'tXTRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.registerUnmapping('a', unmapIPAddresses, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -142,14 +152,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-	def _post_unmap(self, info, values):
-		info['a'] = []
-		if 'aRecord' in values:
-			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
-		if 'aAAARecord' in values:
-			info['a'].extend([ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
-		return info
 
 	def _ldap_addlist(self):
 		return [

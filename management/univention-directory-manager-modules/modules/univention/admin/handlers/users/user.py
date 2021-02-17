@@ -1733,10 +1733,10 @@ class object(univention.admin.handlers.simpleLdap):
 			old_gecos = self.oldattr.get('gecos', [b''])[0]
 			gecos = prop._replace(prop.base_default, self)
 			if old_gecos:
-				current_gecos = prop._replace(prop.base_default, self.oldinfo)  # TODO: prop._replac() must return unicode
+				current_gecos = prop._replace(prop.base_default, self.oldinfo)
 				current_gecos = current_gecos.encode('utf-8')
 				if current_gecos == old_gecos:
-					ml.append(('gecos', old_gecos, gecos.encode('utf-8')))
+					ml.append(('gecos', old_gecos, [gecos.encode('utf-8')]))
 		return ml
 
 	def _modlist_display_name(self, ml):
