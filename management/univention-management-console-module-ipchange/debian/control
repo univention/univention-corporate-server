@@ -11,8 +11,6 @@ Standards-Version: 3.5.2
 
 Package: univention-management-console-module-ipchange
 Architecture: all
-Depends:
- python-ipaddress,
 Provides:
  ${python3:Provides},
 Recommends:
