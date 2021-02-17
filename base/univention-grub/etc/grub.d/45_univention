@@ -41,16 +41,16 @@ def get_colors():
 	if light_theme:
 		colors = {
 			'color_normal': ucr.get('grub/color/normal', 'black/black'),
-			'color_highlight': ucr.get('grub/color/highlight', 'white/dark-gray'),
+			'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
 			'menu_color_normal': ucr.get('grub/menu/color/normal', 'black/black'),
-			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'white/dark-gray'),
+			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
 		}
 	else:
 		colors = {
 			'color_normal': ucr.get('grub/color/normal', 'light-gray/black'),
-			'color_highlight': ucr.get('grub/color/highlight', 'black/light-gray'),
+			'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
 			'menu_color_normal': ucr.get('grub/menu/color/normal', 'light-gray/black'),
-			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/light-gray'),
+			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
 		}
 	return colors
 
