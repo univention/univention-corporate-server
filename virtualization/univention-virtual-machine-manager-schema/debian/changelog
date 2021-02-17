@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-10) unstable; urgency=medium
+
+  * Bug #51955: Register uvmm.schema in LDAP, remove conffiles
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 16 Feb 2021 17:36:45 +0100
+
 univention-virtual-machine-manager-schema (9.0.2-9) unstable; urgency=medium
 
   * Bug #51215: make UCR templates compatible to python3

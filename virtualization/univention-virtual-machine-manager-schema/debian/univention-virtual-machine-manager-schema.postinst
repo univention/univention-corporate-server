@@ -31,6 +31,10 @@
 
 eval "$(univention-config-registry shell)"
 
+if dpkg --compare-versions "$2" lt-nl 9.0.2-10; then
+	ucr commit /etc/ldap/slapd.conf
+fi
+
 if [ -x /etc/init.d/slapd ]; then
 	invoke-rc.d slapd crestart
 fi
