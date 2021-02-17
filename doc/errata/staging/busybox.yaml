@@ -9,9 +9,9 @@ desc: |
  * Path traversal via crafted tar file containing symlink (CVE-2011-5325)
  * Segmentation fault when unzipping specially crafted zip file
    (CVE-2015-9261)
- * out of bounds write (heap) due to integer underflow in udhcpc
+ * Out of bounds write (heap) due to integer underflow in udhcpc
    (CVE-2016-2147)
- * heap-based buffer overflow in OPTION_6RD parsing (CVE-2016-2148)
+ * Heap-based buffer overflow in OPTION_6RD parsing (CVE-2016-2148)
  * Integer overflow in the get_next_block function (CVE-2017-15873)
  * Insufficient sanitization of filenames when autocompleting (CVE-2017-16544)
  * wget: Heap-based buffer overflow in the retrieve_file_data() function
