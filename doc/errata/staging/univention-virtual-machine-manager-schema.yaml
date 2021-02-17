@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-virtual-machine-manager-schema
+fix: 9.0.2-12A~4.4.0.202102171922
+desc: |
+ This update addresses the following issue:
+ * Register files from package univention-virtual-machine-manager-schema
+   in LDAP in preparation for UCS 5
+bug: [51955]
