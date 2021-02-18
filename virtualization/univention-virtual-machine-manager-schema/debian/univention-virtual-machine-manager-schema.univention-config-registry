@@ -1,0 +1,6 @@
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/13univention-virtual-machine-manager_schema
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: uvmm/ldap/schema/registered-by-ucr-template

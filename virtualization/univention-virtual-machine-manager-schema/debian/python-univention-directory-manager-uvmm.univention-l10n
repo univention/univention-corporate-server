@@ -5,6 +5,6 @@
 		],
 		"po_subdir": "modules/univention/admin/handlers/uvmm",
 		"target_type": "mo",
-		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-uvmm.mo"
+		"destination": "usr/share/univention-virtual-machine-manager-schema/de.mo"
 	}
 ]

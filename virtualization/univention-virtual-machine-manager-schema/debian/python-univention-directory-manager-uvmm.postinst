@@ -35,6 +35,13 @@
 
 case "$1" in
 	configure)
+		if dpkg --compare-versions "$2" lt-nl 9.0.2-10; then
+			cp /usr/share/univention-virtual-machine-manager-schema/syntax.d/univention-virtual-machine-manager-schema.py /usr/lib/python2.7/dist-packages/univention/admin/syntax.d/
+			install -d -m 0755 -o root -g root /usr/lib/python2.7/dist-packages/univention/admin/handlers/uvmm/
+			touch /usr/lib/python2.7/dist-packages/univention/admin/handlers/uvmm/__init__.py
+			cp /usr/share/univention-virtual-machine-manager-schema/handlers/uvmm/* /usr/lib/python2.7/dist-packages/univention/admin/handlers/uvmm/
+		fi
+
 		. /usr/share/univention-lib/base.sh && stop_udm_cli_server || true
  	;;
 
