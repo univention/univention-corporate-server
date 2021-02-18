@@ -178,7 +178,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
         include_in_default_search=True,
         readonly_when_synced=True,
         copyable=True,
@@ -594,10 +595,10 @@ layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('User account'), layout=[
             ['title', 'firstname', 'lastname'],
-            ['username', 'description'],
+            ['username', 'mailPrimaryAddress'],
+            'description',
             'password',
             ['overridePWHistory', 'overridePWLength'],
-            'mailPrimaryAddress',
         ]),
         Group(_('Personal information'), layout=[
             'displayName',

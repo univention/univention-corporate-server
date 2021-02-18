@@ -65,7 +65,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
     ),
     'ms-net-ieee-80211-GP-PolicyReserved': univention.admin.property(
         short_description=_('Policy Reserved'),

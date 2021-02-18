@@ -65,7 +65,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
     ),
     'msieee80211-ID': univention.admin.property(
         short_description=_('ID'),

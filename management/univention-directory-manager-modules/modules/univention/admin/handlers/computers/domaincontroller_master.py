@@ -89,7 +89,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
         include_in_default_search=True,
     ),
     'operatingSystem': univention.admin.property(
@@ -245,7 +246,7 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Computer account'), layout=[
-            ['name', 'description'],
+            'name', 'description',
             'inventoryNumber',
         ]),
         Group(_('Network settings '), layout=[

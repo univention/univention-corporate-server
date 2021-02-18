@@ -68,7 +68,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description=_('The description'),
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
     ),
     'filename': univention.admin.property(
         short_description=_('File name of file to store data in.'),

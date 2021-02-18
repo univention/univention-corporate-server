@@ -72,7 +72,8 @@ property_descriptions = {
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=udm_syntax.string,
+        syntax=udm_syntax.TextArea,
+        size='Two',
         include_in_default_search=True,
         dontsearch=True,
         required=True,
