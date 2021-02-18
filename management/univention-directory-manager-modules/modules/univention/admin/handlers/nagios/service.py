@@ -51,7 +51,7 @@ _ = translation.translate
 module = 'nagios/service'
 default_containers = ['cn=nagios']
 
-childs = 0
+childs = False
 short_description = _('Nagios service')
 object_name = _('Nagios service')
 object_name_plural = _('Nagios services')
@@ -233,17 +233,17 @@ class object(univention.admin.handlers.simpleLdap):
 		'notificationOptionRecovered': b'r',
 	}
 
+	def _post_unmap(self, info, values):
+		value = values.get('univentionNagiosNotificationOptions', [b''])[0]
+		if value:
+			options = value.split(b',')  # type: List[bytes]
+			for key, value in self.OPTION_BITS.items():
+				info[key] = '1' if value in options else '0'
+
+		return info
+
 	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		if self.exists():
-			value = self.oldattr.get('univentionNagiosNotificationOptions', [b''])[0]
-			if value:
-				options = value.split(b',')  # type: List[bytes]
-				for key, value in self.OPTION_BITS.items():
-					self[key] = '1' if value in options else '0'
-
-		_re = re.compile('^([^.]+)\.(.+?)$')
-
+		_re = re.compile(r'^([^.]+)\.(.+?)$')
 		# convert host FQDN to host DN
 		hostlist = []
 		hosts = self.oldattr.get('univentionNagiosHostname', [])

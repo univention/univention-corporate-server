@@ -47,7 +47,7 @@ _ = translation.translate
 module = 'nagios/timeperiod'
 default_containers = ['cn=nagios']
 
-childs = 0
+childs = False
 short_description = _('Nagios time period')
 object_name = _('Nagios time period')
 object_name_plural = _('Nagios time periods')
@@ -57,7 +57,7 @@ operations = ['search', 'edit', 'add', 'remove']
 
 class syntax_timeperiod(univention.admin.syntax.simple):
 	name = 'timeperiod'
-	_re = re.compile('^([0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9](,[0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9])*)?$')
+	_re = re.compile(r'^([0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9](,[0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9])*)?$')
 
 	@classmethod
 	def parse(self, text):
@@ -161,41 +161,24 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		if self.exists():
-			value = self.oldattr.get('univentionNagiosTimeperiod', [b''])[0].decode('ASCII')
-			if value:
-				periods = value.split('#')
-				self['periodMonday'] = periods[0]
-				self['periodTuesday'] = periods[1]
-				self['periodWednesday'] = periods[2]
-				self['periodThursday'] = periods[3]
-				self['periodFriday'] = periods[4]
-				self['periodSaturday'] = periods[5]
-				self['periodSunday'] = periods[6]
-		self.save()
-
-	def _ldap_post_create(self):
-		pass
-
-	def _ldap_pre_modify(self):
-		pass
-
-	def _ldap_post_modify(self):
-		pass
+	def _post_unmap(self, info, values):
+		value = values.get('univentionNagiosTimeperiod', [b''])[0].decode('ASCII')
+		if value:
+			periods = value.split('#', 6)
+			info['periodMonday'] = periods[0]
+			info['periodTuesday'] = periods[1]
+			info['periodWednesday'] = periods[2]
+			info['periodThursday'] = periods[3]
+			info['periodFriday'] = periods[4]
+			info['periodSaturday'] = periods[5]
+			info['periodSunday'] = periods[6]
+		return info
 
 	def _ldap_pre_remove(self):
 		# refuse deletion if there is still a reference
-		searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']]), scope='sub')
-		if searchResult:
-			raise univention.admin.uexceptions.nagiosTimeperiodUsed
-
-	def _ldap_post_remove(self):
-		pass
-
-	def _update_policies(self):
-		pass
+		period_filter = filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']])
+		if self.lo.searchDn(base=self.position.getDomain(), filter=period_filter, scope='sub'):
+			raise univention.admin.uexceptions.nagiosTimeperiodUsed()
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -208,7 +191,7 @@ class object(univention.admin.handlers.simpleLdap):
 				periodslist[i] = ''
 		newperiods = '#'.join(periodslist)
 
-		ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), newperiods.encode('ASCII')))
+		ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), [newperiods.encode('ASCII')]))
 
 		return ml
 
