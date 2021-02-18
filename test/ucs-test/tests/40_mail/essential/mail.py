@@ -459,6 +459,8 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	else:
 		conn = imaplib.IMAP4(host=server)
 	assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
+	print("List of known Mailboxes:")
+	print(conn.list())
 	timeout = 120
 	while True:
 		try:
@@ -467,6 +469,87 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 		except AssertionError as exc:
 			if timeout > 0:
 				print("Failed reading folder {!r}. Retrying in 10s. AssertionError: {!s}".format(imap_folder, exc))
+				timeout -= 10
+				time.sleep(10)
+			else:
+				print("Failed reading folder {!r} for 60s. AssertionError: {!s}".format(imap_folder, exc))
+				raise
+
+	foundcnt = 0
+	if messageid:
+		status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,))
+		assert status == 'OK', (status, result)
+		result = result[0]
+		if result:
+			result = result.split()
+			print('Found %d messages matching msg id %r' % (len(result), messageid))
+			foundcnt += len(result)
+
+	if token:
+		status, result = conn.search(None, 'ALL')
+		assert status == 'OK', (status, result)
+		if result:
+			msgids = result.split()
+			print('Folder contains %d messages' % (len(msgids),))
+			for msgid in msgids:
+				typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
+				for response_part in msg_data:
+					if isinstance(response_part, tuple):
+						if token in response_part[1]:
+							print('Found token %r in msg %r' % (token, msgid))
+							foundcnt += 1
+
+	if not token and not messageid:
+		status, result = conn.search(None, 'ALL')
+		assert status == 'OK', (status, result)
+		if result:
+			msgids = result.split()
+			foundcnt = len(msgids)
+			print('Found %d messages in folder' % (foundcnt,))
+
+	return foundcnt
+
+
+def imap_search_mail_debug(token=None, messageid=None, server=None, imap_user=None, imap_password=None, imap_folder=None, use_ssl=True):
+	"""
+	Check if a mail with the specified token or message ID has been delivered to a specific mail folder.
+	A "token" is a string, that should occur in the mail body. The message ID is looked up in the
+	mail header.
+	The search is performed via IMAP protocol, so at least server, username and folder have to be specified.
+
+	:param token: string: this string is searched in the body of each mail in folder; please note that this is a slow and simple search and MIME parts are not decoded etc.
+	:param messageid: string: this message id is searched in the mail header of each mail (faster than token search)
+	:param server: string: fqdn or IP address of IMAP server
+	:param imap_user: string: IMAP user
+	:param imap_password: string: password for IMAP user; if not specified, 'univention' is used
+	:param imap_folder: string: IMAP folder that is selected during search (no recursive search!)
+	:param use_ssl: boolean: use SSL encryption for IMAP connection
+	:return: integer: returns the number of matching mails (if neither token nor messageid is specified, the number of mails in folder is returned)
+	"""
+
+	assert token or messageid, "imap_search_mail: token or messageid have not been specified"
+	server = server or '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	assert imap_user, "imap_search_mail: imap_user has not been specified"
+	imap_password = imap_password or "univention"
+	imap_folder = imap_folder or ""
+	assert isinstance(imap_folder, six.string_types), "imap_search_mail: imap_folder is no string"
+
+	if use_ssl:
+		conn = imaplib.IMAP4_SSL(host=server)
+	else:
+		conn = imaplib.IMAP4(host=server)
+	timeout = 120
+	while True:
+		try:
+			assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
+			print("List of known Mailboxes [Debug]:")
+			print(conn.list())
+			assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
+			break
+		except AssertionError as exc:
+			if timeout > 0:
+				print("Failed reading folder {!r}. Retrying in 10s. AssertionError: {!s}".format(imap_folder, exc))
+				conn.logout()
 				timeout -= 10
 				time.sleep(10)
 			else:

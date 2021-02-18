@@ -1,3 +1,10 @@
+ucs-test (10.0.3-22) unstable; urgency=medium
+
+  * Bug #52241: adding Debug output for Mail-Test
+    47_mailForwardAddress_corner_cases
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 18 Feb 2021 18:20:15 +0100
+
 ucs-test (10.0.3-21) unstable; urgency=medium
 
   * Bug #52043: Add delay to 10_ldap/44replication_binary to
@@ -25,14 +32,20 @@ ucs-test (10.0.3-18) unstable; urgency=medium
 
  -- Julia Bremer <bremer@univention.de>  Sun, 14 Feb 2021 18:20:18 +0100
 
-ucs-test (10.0.3-15) unstable; urgency=medium
+ucs-test (10.0.3-14) unstable; urgency=medium
 
   * Bug #52358: Increase waiting time before cleanup in tests which trigger
     an S4-Connector loop
 
  -- Julia Bremer <bremer@univention.de>  Wed, 10 Feb 2021 17:11:47 +0100
 
-ucs-test (10.0.3-14) unstable; urgency=medium
+ucs-test (10.0.3-13) unstable; urgency=medium
+
+  * Bug #52241: fixup for mail-tests
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 08 Feb 2021 17:27:32 +0100
+
+ucs-test (10.0.3-12) unstable; urgency=medium
 
   * Bug #52358: translate 95rename_administrator test to python
 

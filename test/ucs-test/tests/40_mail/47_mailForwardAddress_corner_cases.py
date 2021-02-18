@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest -l -v
+#!/usr/share/ucs-test/runner /usr/bin/pytest -l -v -s
 ## desc: Test unionmap
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -17,7 +17,11 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
+from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail_debug, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
+
+import time
+import os.path as opath
+from os import listdir
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	DOMAIN = ucr.get("domainname").lower()
@@ -175,7 +179,34 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 			udm, FQDN, mailAddress=shared_folder_mail,
 			user_permission=['"%s" "%s"' % ("anyone", "all")]
 		)
+		print("#### Checking if shared folder exists.")
+		timeout = 60
+		success = False
+		while timeout > 0:
+			if opath.isdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0]):
+				print("##### Shared folder %s has been created." % folder_name)
+				success = True
+				break
+			time.sleep(20)
+			timeout -= 20
+
+		if not success:
+			print("##### Shared folder was not created after %i seconds" % timeout)
+
 		send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
+		print("#### Checking if Mail has been send to shared folder.")
+		timeout = 60
+		success = False
+		while timeout > 0:
+			if listdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0] + "/Maildir/new/") > 0:
+				print("##### Mail was send successfully" + ", ".join(listdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0] + "/Maildir/new/")))
+				success = True
+				break
+			time.sleep(20)
+			timeout -= 20
+
+		if not success:
+			print("##### Mail was not successfully delivered after %i seconds" % timeout)
 		check_delivery(token, user.mailPrimaryAddress, True)
 		found = imap_search_mail(
 			messageid=msgid, server=FQDN,
@@ -185,6 +216,54 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 		if not found:
 			utils.fail("Mail sent with token = %r to %s un-expectedly".format(token, folder_name))
 
+def test_user_mail_alt_equals_shared_folder_mail_address_debug():
+	print("### A user has mail@shared_folder as mail_alternative_address address")
+	with udm_test.UCSTestUDM() as udm:
+		folder_name = uts.random_name()
+		shared_folder_mail = "%s@%s" % (folder_name, DOMAIN)
+		user = random_mail_user(udm=udm, mail_alternative_address=shared_folder_mail)
+		token = make_token()
+		msgid = uts.random_name()
+		folder_dn, folder_name, folder_mailaddress = create_shared_mailfolder(
+			udm, FQDN, mailAddress=shared_folder_mail,
+			user_permission=['"%s" "%s"' % ("anyone", "all")]
+		)
+		print("#### Checking if shared folder exists. [Debug]")
+		timeout = 60
+		success = False
+		while timeout > 0:
+			if opath.isdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0]):
+				print("##### Shared folder %s has been created." % folder_name)
+				success = True
+				break
+			time.sleep(20)
+			timeout -= 20
+
+		if not success:
+			print("##### Shared folder was not created after %i seconds" % timeout)
+
+		send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
+		print("#### Checking if Mail has been send to shared folder. [Debug]")
+		timeout = 60
+		success = False
+		while timeout > 0:
+			if listdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0] + "/Maildir/new/") > 0:
+				print("##### Mail was send successfully" + ", ".join(listdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0] + "/Maildir/new/")))
+				success = True
+				break
+			time.sleep(20)
+			timeout -= 20
+
+		if not success:
+			print("##### Mail was not successfully delivered after %i seconds" % timeout)
+		check_delivery(token, user.mailPrimaryAddress, True)
+		found = imap_search_mail_debug(
+			messageid=msgid, server=FQDN,
+			imap_user=user.mailPrimaryAddress,
+			imap_folder=folder_name, use_ssl=True
+		)
+		if not found:
+			utils.fail("Mail sent with token = %r to %s un-expectedly".format(token, folder_name))
 
 def test_group_mail_in_mailing_list():
 	with udm_test.UCSTestUDM() as udm:
