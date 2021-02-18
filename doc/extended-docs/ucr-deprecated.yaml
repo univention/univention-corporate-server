@@ -139,6 +139,7 @@
   desc: univention-network-manager
   vars:
     - interfaces/handler
+    - networkmanager/action/mount
 
 - git: 505ff787e5e5e052a850e98dc8d89c628ec4e4dc
   desc: univention-base-files
@@ -166,22 +167,11 @@
   vars:
     - mrtg/cron
 
-- git: c4197654ca01e574f71e722a4339e1f95f818af8
-  desc: univention-network-manager
-  vars:
-    - networkmanager/action/mount
-
 - git: 2c28e5a9602b7164933d9a916ea85b666ef47626
   desc: univention-postgresql
   vars:
     - postgres8/autostart
-    - postgres8/listenaddress
-    - postgres8/maxconnections
     - postgres9.6/autostart
-    - postgres9/listenaddress
-    - postgres9/listenaddress
-    - postgres9/maxconnections
-    - postgres9/maxconnections
     - postgres9/pg_hba/config/.*
     - security/packetfilter/package/univention-postgresql-9.6/tcp/5432/all
     - security/packetfilter/package/univention-postgresql-9.6/tcp/5432/all/en
@@ -341,11 +331,6 @@
   vars:
     - dhcpd/ldap/debug/file
 
-- git: c6eca30b9b0d1aaa08881aec3ca2fe6c692b97c6
-  desc: univention-postgresql
-  vars:
-    - postgres8/autostart
-
 - git: da6ca83991497d91ecddc3d3e2c0e68f59091339
   desc: univention-radius
   vars:
@@ -489,10 +474,9 @@
   vars:
     - logcollector/debug/level
     - logcollector/loghost
-    - logcollector/targetdir
     - logcollector/logrotation/keepcount
     - logcollector/logrotation/maxsize
-    - logcollector/debug/level
+    - logcollector/targetdir
 
 - git: 94118d88008470b679f73f5c7da6c325c070c11e
   desc: ucs-overview
