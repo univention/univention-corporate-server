@@ -1,0 +1,43 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202102180954
+desc: |
+ This update addresses the following issue(s):
+ * Denial of Service due to integer underflow leading to slapd
+   crashes in the Certificate Exact Assertion processing
+   (CVE-2020-36221)
+ * Denial of Service due to an assertion failure in slapd in the
+   saslAuthzTo validation (CVE-2020-36222)
+ * Denial of Service due to slapd crash in the Values Return
+   Filter control handling (CVE-2020-36223)
+ * Denial of Service due to invalid pointer free and slapd crash
+   in the saslAuthzTo processing (CVE-2020-36224)
+ * Denial of Service due to double free and slapd crash in the
+   saslAuthzTo processing (CVE-2020-36225)
+ * Denial of Service due to a memch->bv_len miscalculation and
+   slapd crash in the saslAuthzTo processing (CVE-2020-36226)
+ * Denial of Service due to an infinite loop in slapd with the
+   cancel_extop Cancel operation (CVE-2020-36227)
+ * Denial of Service due to an integer underflow leading to a
+   slapd crash in the Certificate List Exact Assertion processing
+   (CVE-2020-36228)
+ * Denial of Service due to flaw in ldap_X509dn2bv leading to a
+   slapd crash in the X.509 DN parsing in ad_keystring
+   (CVE-2020-36229)
+ * Denial of Service due to assertion failure in slapd in the
+   X.509 DN parsing in decode.c ber_next_element (CVE-2020-36230)
+bug: [52747]
+cve:
+ - CVE-2020-36221
+ - CVE-2020-36222
+ - CVE-2020-36223
+ - CVE-2020-36224
+ - CVE-2020-36225
+ - CVE-2020-36226
+ - CVE-2020-36227
+ - CVE-2020-36228
+ - CVE-2020-36229
+ - CVE-2020-36230
