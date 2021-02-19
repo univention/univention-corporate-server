@@ -43,7 +43,7 @@ def ctl(cmd, service):
 	out, err = proc.communicate()
 	rv = proc.wait()
 	if rv:
-		log.error('Failed %d (%s)[%s]', rv, out, err)
+		log.error('Failed %d (%s)[%s]', rv, out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace'))
 
 
 def handler(configRegistry, changes):
