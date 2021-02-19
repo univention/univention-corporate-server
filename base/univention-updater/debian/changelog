@@ -1,3 +1,9 @@
+univention-updater (15.0.3-10) unstable; urgency=medium
+
+  * Bug #52715: fixed list path
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Feb 2021 13:36:08 +0100
+
 univention-updater (15.0.3-9) unstable; urgency=medium
 
   * Bug #52715: Add script "list_installed_unmaintained_packages.py"

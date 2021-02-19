@@ -37,7 +37,7 @@ import sys
 import textwrap
 import argparse
 
-MAINTAINED_PACKAGES = '/usr/share/univention-errata/univention-maintained-packages.txt'
+MAINTAINED_PACKAGES = '/usr/share/univention-errata-level/univention-maintained-packages.txt'
 
 
 def get_installed_packages():
