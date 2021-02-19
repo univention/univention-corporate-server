@@ -15,8 +15,6 @@ Depends:
  shell-univention-lib (>= 1.0.16-2),
  ${misc:Depends},
  ${python:Depends},
-Breaks:
- grub2-common (<< 2.02+dfsg1-20+deb10u3),
 Description: UCS - meta package for the Grub2 configuration
  This package contains the configuration for the Grub2 boot loader.
  .
