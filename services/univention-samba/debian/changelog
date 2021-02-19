@@ -1,3 +1,9 @@
+univention-samba (14.0.3-2) unstable; urgency=low
+
+  * Bug #52045: Depend on UDL for listener.SetUID
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Feb 2021 11:40:45 +0100
+
 univention-samba (14.0.3-1) unstable; urgency=medium
 
   * Bug #51336: Abort joinscript for NT style DC setup,

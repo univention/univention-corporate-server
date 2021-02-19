@@ -24,7 +24,7 @@ Depends:
  smbclient,
  univention-base-files,
  univention-config (>= 8.0.2),
- univention-directory-listener,
+ univention-directory-listener (>= 14.0.5),
  univention-directory-manager-tools,
  univention-ldap-client (>= 1.4),
  univention-samba-local-config,
