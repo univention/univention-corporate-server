@@ -13,7 +13,7 @@ Depends:
  python3-univention,
  python3-univention-lib (>= 1.0.25-1),
  slapd (>= 2.2.30-2),
- univention-directory-listener,
+ univention-directory-listener (>= 14.0.5),
  ${misc:Depends},
 Description: UCS - Directory Logger
  UCS Directory Logger is a module for the UCS Directory Listener
