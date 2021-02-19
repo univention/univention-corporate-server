@@ -34,10 +34,10 @@ import os
 import shutil
 
 
-def postinst(baseConfig, changes):
-	light_theme = baseConfig.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
+def postinst(configRegistry, changes):
+	light_theme = configRegistry.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
 	backgroundimage_target = '/boot/grub/uniboot.png'
 	backgroundimage_source = os.path.join('/usr/share/univention-grub/', 'light-background.png' if light_theme else 'dark-background.png')
-	if baseConfig.get('grub/backgroundimage') == backgroundimage_target:
+	if configRegistry.get('grub/backgroundimage') == backgroundimage_target:
 		shutil.copy(backgroundimage_source, backgroundimage_target)
 	os.system('update-grub')
