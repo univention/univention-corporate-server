@@ -12,7 +12,9 @@ savedefault = configRegistry.is_true('grub/savedefault', False)
 print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))
 @!@
 GRUB_TIMEOUT=@%@grub/timeout@%@
-GRUB_DISTRIBUTOR=Univention
+
+# Use full UCS title for boot entry
+GRUB_DISTRIBUTOR="Univention Corporate Server"
 
 @!@
 defoptions=''
@@ -73,8 +75,8 @@ if configRegistry.get('grub/backgroundimage', ''):
 	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])
 @!@
 
-# Use full UCS title for boot entry
-GRUB_DISTRIBUTOR="Univention Corporate Server"
+# This is a workaround to avoid syntax errors during the UCS 4.4 to UCS 5.0 upgrade, it can be removed with UCS 5.1
+GRUB_MENU_COLOR_HIGHLIGHT="black/black"
 
 # Uncomment to get a beep at grub start
 #GRUB_INIT_TUNE="480 440 1"
