@@ -125,6 +125,8 @@ class Migration(object):
 			has_shadow = ocs & {'shadowAccount', }
 			has_samba = ocs & {'sambaSamAccount', }
 			has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry', }
+			has_kerberos_principal = ocs & {'krb5Principal', }
+			has_kerberos_kdcentry = ocs & {'krb5KDCEntry', }
 			has_mail = ocs & {'univentionMail', }
 			has_org_person = ocs & {'organizationalPerson', }
 			has_inet_org_person = ocs & {'inetOrgPerson', }
@@ -257,10 +259,12 @@ class Migration(object):
 			if ocs_to_add & {u'inetOrgPerson', u'organizationalPerson'}:
 				serverctrls = [ldap.controls.simple.RelaxRulesControl()]
 
-			if not has_kerberos:
+			if not has_kerberos_principal and not has_kerberos_kdcentry:
+				ml.append(('krb5PrincipalName', [], [b'%s@%s' % (user['uid'][0], realm.encode('UTF-8'))]))
+
+			if not has_kerberos_kdcentry:
 				flags = b'254' if disabled else b'126'
 				ml.extend([
-					('krb5PrincipalName', [], [b'%s@%s' % (user['uid'][0], realm.encode('UTF-8'))]),
 					('krb5KeyVersionNumber', [], [b'1']),
 					('krb5KDCFlags', [], [flags]),
 					('krb5MaxLife', [], [b'86400']),
