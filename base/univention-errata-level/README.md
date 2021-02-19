@@ -1,0 +1,1 @@
+Before every release the file `univention-maintained-packages.txt` has to be updated by replacing its content with the latest list of maintained packages that can be found in `omar:/var/univention/buildsystem2/cd-contents/ucs_$VERSION_amd64.maintained`.
