@@ -10,4 +10,6 @@ desc: |
    once it is released.
  * The univention-updater now checks if the locally installed
    apps are available for the next UCS version.
-bug: [51865, 52771]
+ * The univention-updater UCR templates now have valid Python 3 syntax
+   for compatibility with the UCS 5.0 update.
+bug: [51865, 52771, 52813]

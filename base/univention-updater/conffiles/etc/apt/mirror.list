@@ -18,9 +18,9 @@ from univention.updater.mirror import UniventionMirror
 try:
 	mirror = UniventionMirror()
 	if not mirror.online_repository:
-		print '# The mirror mode is disabled and can be enabled with:'
-		print '#   univention-config-registry set repository/mirror=true'
-		print ''
+		print('# The mirror mode is disabled and can be enabled with:')
+		print('#   univention-config-registry set repository/mirror=true')
+		print('')
 	else:
 		start = configRegistry.get('repository/mirror/version/start', '%s.0-0' % mirror.version_major)
 		end = configRegistry.get('repository/mirror/version/end', None)
@@ -28,16 +28,16 @@ try:
 			start = UCS_Version(start)
 		if end:
 			end = UCS_Version(end)
-		print mirror.print_version_repositories(clean=True, dists=True, start=start, end=end)
-		print mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)
+		print(mirror.print_version_repositories(clean=True, dists=True, start=start, end=end))
+		print(mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True))
 except Exception:
-	print '# An error occurred during the repository check. The error message:'
+	print('# An error occurred during the repository check. The error message:')
 	for line in traceback.format_exc().splitlines():
-		print '#   %s' % line
-	print '#'
-	print ''
-	print '# After fixing this issue, you should rewrite this file with the following command:'
-	print '#   univention-config-registry commit /etc/apt/mirror.list'
-	print '#'
-	print ''
+		print('#   %s' % line)
+	print('#')
+	print('')
+	print('# After fixing this issue, you should rewrite this file with the following command:')
+	print('#   univention-config-registry commit /etc/apt/mirror.list')
+	print('#')
+	print('')
 @!@

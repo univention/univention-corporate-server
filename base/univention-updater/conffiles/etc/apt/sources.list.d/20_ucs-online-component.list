@@ -9,19 +9,19 @@ try:
 	updater = UniventionUpdater()
 
 	if updater.online_repository:
-		print updater.print_component_repositories()
+		print(updater.print_component_repositories())
 	else:
-		print '# The online repository is disabled and can be enabled with:'
-		print '#   univention-config-registry set repository/online=true'
-		print ''
+		print('# The online repository is disabled and can be enabled with:')
+		print('#   univention-config-registry set repository/online=true')
+		print('')
 except Exception:
-	print '# An error occurred during the repository check. The error message:'
+	print('# An error occurred during the repository check. The error message:')
 	for line in traceback.format_exc().splitlines():
-		print '#   %s' % line
-	print '#'
-	print ''
-	print '# After fixing this issue, you should rewrite this file with the following command:'
-	print '#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list'
-	print '#'
-	print ''
+		print('#   %s' % line)
+	print('#')
+	print('')
+	print('# After fixing this issue, you should rewrite this file with the following command:')
+	print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
+	print('#')
+	print('')
 @!@
