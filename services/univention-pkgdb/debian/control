@@ -22,6 +22,7 @@ Depends:
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.1-1),
  univention-config,
+ univention-directory-listener (>= 14.0.5),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-module-pkgdb,
  univention-pkgdb-tools,
@@ -80,6 +81,7 @@ Depends:
  python-univention-pkgdb,
  python3-univention-pkgdb,
  univention-config,
+ univention-directory-listener (>= 14.0.5),
  ${misc:Depends},
 Recommends:
  postgresql-client,
