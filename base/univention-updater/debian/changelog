@@ -1,3 +1,9 @@
+univention-updater (15.0.3-12) unstable; urgency=medium
+
+  * Bug #52715: fixed output
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Feb 2021 14:06:39 +0100
+
 univention-updater (15.0.3-11) unstable; urgency=medium
 
   * Bug #52715: fixed output

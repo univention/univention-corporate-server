@@ -54,7 +54,7 @@ def main():
 	args = parse_args()
 	columns = 80
 	if sys.stdout.isatty():
-		size = os.get_terminal_size().columns
+		columns = os.get_terminal_size().columns
 	try:
 		with open(MAINTAINED_PACKAGES) as fd:
 			installed_unmaintained_packages = list(set(get_installed_packages()) - set(fd.read().splitlines()))
