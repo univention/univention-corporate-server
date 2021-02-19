@@ -52,14 +52,16 @@ def parse_args():
 
 def main():
 	args = parse_args()
-	size = os.get_terminal_size()
+	columns = 80
+	if sys.stdout.isatty():
+		size = os.get_terminal_size().columns
 	try:
 		with open(MAINTAINED_PACKAGES) as fd:
 			installed_unmaintained_packages = list(set(get_installed_packages()) - set(fd.read().splitlines()))
 			if installed_unmaintained_packages:
 				print('The following packages are unmaintained:')
 				text = ' '.join(installed_unmaintained_packages)
-				for line in textwrap.wrap(text, width=int(size.columns - 20), break_long_words=False, break_on_hyphens=False):
+				for line in textwrap.wrap(text, width=int(columns - 20), break_long_words=False, break_on_hyphens=False):
 					print('  ' + line)
 				sys.exit(1)
 			else:
