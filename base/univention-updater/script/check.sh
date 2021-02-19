@@ -288,13 +288,6 @@ update_check_old_packages () {
 
 # Bug #51497 #51973 #31048 #51655 #51955 #51982
 declare -a legacy_ocs_structural=(
-	'(structuralObjectClass=univentionAdminUserSettings)'
-	# UCS TCS:
-	'(structuralObjectClass=univentionPolicyAutoStart)'
-	'(structuralObjectClass=univentionPolicyThinClient)'
-	'(structuralObjectClass=univentionThinClient)'
-	'(structuralObjectClass=univentionMobileClient)'
-	'(structuralObjectClass=univentionFatClient)'
 	# UCC:
 	'(structuralObjectClass=univentionCorporateClient)'
 	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
@@ -309,6 +302,16 @@ declare -a legacy_ocs_structural=(
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
 )
+declare -a obsolete_ocs_structural=(
+	'(structuralObjectClass=univentionAdminUserSettings)'
+	# UCS TCS:
+	'(structuralObjectClass=univentionPolicyAutoStart)'
+	'(structuralObjectClass=univentionPolicyThinClient)'
+	'(structuralObjectClass=univentionThinClient)'
+	'(structuralObjectClass=univentionMobileClient)'
+	'(structuralObjectClass=univentionFatClient)'
+)
+
 update_check_legacy_objects () {
 	local var="update$VERSION/ignore_legacy_objects"
 	ignore_check "$var" && return 100
@@ -382,6 +385,24 @@ delete_legacy_objects () {
 			ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
 	done
 	rm -f "$ldif"
+}
+delete_obsolete_objects () {
+	local filter ldif oc
+	local backupfile="${updateLogDir}/removed_with_ucs5.ldif"
+	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
+
+	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
+	echo "> An LDIF file of removed objects is available: ${backupfile}"
+	install -b -m 400 /dev/null "${backupfile}"
+	echo "> Removing structural objects"
+	for filter in "${obsolete_ocs_structural[@]}"
+	do
+		echo ">> $filter"
+		univention-ldapsearch -LLL "$filter" "*" + |
+			tee "${backupfile}" |
+			sed -ne 's/^dn: //p' |
+			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+	done
 }
 
 # check that no apache configuration files are manually adjusted; Bug #43520

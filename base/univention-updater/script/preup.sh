@@ -33,6 +33,12 @@ UPDATE_NEXT_VERSION="$1"
 UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
 
+updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
+if [ ! -d "$updateLogDir" ]; then
+	mkdir -p "$updateLogDir"
+fi
+
+
 ###CHECKS###
 
 readcontinue () {
@@ -113,10 +119,6 @@ update_check_kernel () {
 checks
 
 # save ucr settings
-updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
-if [ ! -d "$updateLogDir" ]; then
-	mkdir -p "$updateLogDir"
-fi
 cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
 
