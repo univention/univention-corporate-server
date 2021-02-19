@@ -3,10 +3,12 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-appcenter
-fix: 8.0.11-142A~4.4.0.202102151031
+fix: 8.0.11-143A~4.4.0.202102192057
 desc: |
- This update addresses the following issue:
+ This update addresses the following issue(s):
  * The new subcommand update-check has been added to
    univention-app to check whether an UCS update with
    the currently installed Apps is possible.
-bug: [52771]
+ * The LDAP ACL UCR templates now have valid Python 3 syntax
+   for compatibility with the UCS 5.0 update.
+bug: [52771, 52815]
