@@ -58,7 +58,8 @@ eval "$(ucr shell server/role)"
 			--command 'services/*' \
 			--command 'sysinfo/*' \
 			--command 'updater/*' \
-			--command 'lib/*'
+			--command 'lib/*'  \
+			--command 'join/*'
 
 /usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor "*" \
 			--command 'setup/*'
