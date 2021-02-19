@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-updater
 fix: 14.0.3-8A~4.4.0.202102151311
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The univention-updater now supports updating to UCS 5,
    once it is released.
  * The univention-updater now checks if the locally installed
