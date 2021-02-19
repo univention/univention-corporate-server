@@ -305,16 +305,9 @@ declare -a legacy_ocs_structural=(
 	'(structuralObjectClass=univentionPolicyCorporateClientDesktop)'
 	'(structuralObjectClass=univentionPolicySoftwareupdates)'
 	'(structuralObjectClass=univentionPolicyCorporateClient)'
-	# UVMM:
-	'(structuralObjectClass=univentionVirtualMachineCloudConnection)'
-	'(structuralObjectClass=univentionVirtualMachineCloudType)'
-	'(structuralObjectClass=univentionVirtualMachine)'
-	'(structuralObjectClass=univentionVirtualMachineProfile)'
 )
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
-	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
-	'(objectClass=univentionVirtualMachineHostOC)'  # EA
 )
 update_check_legacy_objects () {
 	local var="update$VERSION/ignore_legacy_objects"
