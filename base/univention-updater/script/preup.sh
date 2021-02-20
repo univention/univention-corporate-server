@@ -144,6 +144,8 @@ Package: *
 Pin: release l=Univention Corporate Server, v=5.0.0
 Pin-Priority: 1001
 __PREF__
+[ -f /etc/apt/apt.conf.d/99ucs500 ] ||
+	echo 'APT::Get::Allow-Downgrades "true";' >/etc/apt/apt.conf.d/99ucs500
 
 # Pre-upgrade
 preups=""

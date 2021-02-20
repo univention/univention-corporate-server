@@ -1,3 +1,9 @@
+univention-updater (15.0.3-13) unstable; urgency=low
+
+  * Bug #51690: Allow package downgrade on upgrade to UCS-5.0
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 20 Feb 2021 10:32:19 +0100
+
 univention-updater (15.0.3-12) unstable; urgency=medium
 
   * Bug #52715: fixed output
