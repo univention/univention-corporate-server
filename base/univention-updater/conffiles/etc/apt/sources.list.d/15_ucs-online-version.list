@@ -6,15 +6,15 @@ from univention.updater.tools import UniventionUpdater, UCSRepoPool5
 
 try:
 	updater = UniventionUpdater()
-	if updater.online_repository:
+	if not updater.online_repository:
+		print('# The online repository is disabled and can be enabled with:')
+		print('#   univention-config-registry set repository/online=true')
+		print('')
+	elif updater.current_version.major >= 5:
 		pool = UCSRepoPool5(updater.current_version)
 		for pool.errata in (False, True):
 			for typ in ["deb"] + ["deb-src"][:updater.sources]:
 				print(pool.deb(updater.server, typ))
-	else:
-		print('# The online repository is disabled and can be enabled with:')
-		print('#   univention-config-registry set repository/online=true')
-		print('')
 except Exception:
 	print('# An error occurred during the repository check. The error message:')
 	for line in traceback.format_exc().splitlines():
