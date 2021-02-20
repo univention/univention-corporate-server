@@ -3,6 +3,7 @@ Code layout
 
 * [overview](doc/code.md)
 * [status file](doc/status.md)
+* [UMC hooks](doc/hooks.md)
 
 Repository layout
 =================
