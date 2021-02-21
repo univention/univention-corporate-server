@@ -19,13 +19,13 @@ import appcentertest as app_test
 
 def _test_app_installation_fails(test):
 	try:
-		with test.test_install_safe(test_installed=False) as dpkg_errors:
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
-			else:
-				app_test.fail("Install of broken app did not produce dpkg errors.")
-			if test.app_center.is_installed(test.application):
-				app_test.fail("Broken application remained on the system.")
+		with test.test_install_safe(test_installed=False):
+			pass
+	except app_test.AppCenterCheckError:
+		if test.app_center.is_installed(test.application):
+			app_test.fail("Broken application remained on the system.")
+	else:
+		app_test.fail("Install of broken app did not produce dpkg errors.")
 	finally:
 		cleanup(test.application)
 
@@ -33,9 +33,10 @@ def _test_app_installation_fails(test):
 def _test_app_uninstallation_fails(test):
 	try:
 		with test.test_install_safe():
-			dpkg_errors = test.test_uninstall(test_uninstalled=False)
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
+			try:
+				test.test_remove(test_uninstalled=True)
+			except app_test.AppCenterCheckError:
+				pass
 			else:
 				app_test.fail("Uninstall of broken app did not produce dpkg errors.")
 	finally:

@@ -44,6 +44,7 @@ import contextlib
 import time
 
 from univention.appcenter.app_cache import Apps, AppCenterCache
+from univention.appcenter.utils import get_local_fqdn
 import univention.appcenter.log as app_logger
 from univention.appcenter.actions import get_action
 from univention.config_registry import ConfigRegistry
@@ -114,53 +115,78 @@ class AppCenterOperations(object):
 		data = {"application": application}
 		return self.client.umc_command("appcenter/get", data).result
 
-	def invoke(self, callback=None, **options):
-		"""Call the UMC command `appcenter/invoke` with the given options.
-
-		Valiy options are: `function`, `application`, `force`, `host`, `only_dry_run`
+	def run(self, args):
+		"""Call the UMC command `appcenter/run` with the given options.
 
 		This will request a progress update every 3 seconds via
 		`appcenter/progress` und call `callback(info, steps)` if a callback
 		function was given and `info` or `steps` changed"""
-		def _thread(event, options):
-			try:
-				self.client.umc_command("appcenter/keep_alive")
-			finally:
-				event.set()
-
 		self._renew_connection()
-		result = self.client.umc_command("appcenter/invoke", options).result
-		if not result.get("serious_problems", True):
-			event = threading.Event()
-			threading.Thread(target=_thread, args=(event, options)).start()
+		dry_run = args["dry_run"]
+		progress_id = self.client.umc_command("appcenter/run", args).result["id"]
 
-			errors = list()
-			finished = False
-			(last_info, last_steps) = ("", 0)
+		last_title = None
 
-			while not (event.wait(3) and finished):
-				progress = self.client.umc_command("appcenter/progress", print_request_data=False, print_response=False).result
-				info = progress.get("info") or last_info
-				steps = progress.get("steps") or last_steps
-				changed = (info, steps) != (last_info, last_steps)
-				if changed and callback:
-					callback(info, steps)
+		while True:
+			progress = self.client.umc_command("appcenter/progress", {"progress_id": progress_id}, print_request_data=False, print_response=False).result
+			info = progress.get("title")
+			if last_title != progress["title"]:
+				last_title = progress["title"]
+				print(last_title)
 
-				finished = progress.get("finished", False)
-				if finished:
-					errors = progress.get("errors", [])
+			for msg in progress["intermediate"]:
+				print("", msg)
+			finished = progress.get("finished", False)
+			if finished:
+				return progress["result"]
+			print(progress)
+			time.sleep(3)
 
-			return (result, errors)
-		return (result, [])
+	def _make_run_args(self, apps, host=None):
+		# missing: dry_run: True / False and action: "install"/"upgrade"/"remove"
+		host = host or get_local_fqdn()
+		return {
+			"apps": apps,
+			"auto_installed": [],
+			"hosts": {app: host for app in apps},
+			"settings": {app: {} for app in apps},
+		}
 
-	def install(self, application, callback=None, **options):
-		return self.invoke(callback=callback, function="install", application=application, **options)
+	def install_dry_run(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "install"
+		args["dry_run"] = True
+		return self.run(args)
 
-	def update(self, application, callback=None, **options):
-		return self.invoke(callback=callback, function="update", application=application, **options)
+	def install(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "install"
+		args["dry_run"] = False
+		return self.run(args)
 
-	def uninstall(self, application, callback=None, **options):
-		return self.invoke(callback=callback, function="uninstall", application=application, **options)
+	def upgrade_dry_run(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "upgrade"
+		args["dry_run"] = True
+		return self.run(args)
+
+	def upgrade(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "upgrade"
+		args["dry_run"] = False
+		return self.run(args)
+
+	def remove_dry_run(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "remove"
+		args["dry_run"] = True
+		return self.run(args)
+
+	def remove(self, apps, host=None):
+		args = self._make_run_args(apps, host)
+		args["action"] = "remove"
+		args["dry_run"] = False
+		return self.run(args)
 
 	def is_installed(self, application, info=None, msg=None):
 		if info is None:
@@ -491,12 +517,23 @@ class TestOperations(object):
 		self.app_center = app_center
 		self.application = application
 
-	def operation_successfull(self, result, msg=None):
-		problems = ("master_unreachable", "problems_with_hosts", "serious_problems", "serious_problems_with_hosts")
-		no_problems = not any(result.get(p, True) for p in problems)
-		if msg and not no_problems:
-			raise AppCenterCheckError(msg.format(self.application))
-		return no_problems
+	def dry_run_successful(self, dry_run_result):
+		print("Checking dry-run", dry_run_result)
+		for host in dry_run_result:
+			if dry_run_result[host]["errors"]:
+				return False
+			for app in dry_run_result[host]["packages"]:
+				if dry_run_result[host]["packages"][app].get("broken"):
+					return False
+		return True
+
+	def operation_successfull(self, result):
+		print("Checking result", result)
+		for host in result:
+			for app in result[host]:
+				if not result[host][app]["success"]:
+					return False
+		return True
 
 	def operations_equal(self, expected, actual, msg=None):
 		simple_equal = ("invokation_forbidden_details", "invokation_warning_details")
@@ -514,76 +551,63 @@ class TestOperations(object):
 		return result
 
 	def test_install(self, test_installed=True):
-		(install_dry, errors_dry) = self.app_center.install(self.application, only_dry_run=True)
+		dry_run = self.app_center.install_dry_run([self.application])
+		if not self.dry_run_successful(dry_run):
+			raise AppCenterCheckError("Dry-install of {} failed.".format(self.application))
 
-		self.operation_successfull(install_dry, msg="Dry-install of {} failed.")
-
-		(install, errors) = self.app_center.install(self.application, force=True)
-		self.operation_successfull(install, msg="install of {} failed.")
-		self.operations_equal(install_dry, install, msg="Install result differs from dry-run for {}.")
+		install = self.app_center.install([self.application])
+		if not self.operation_successfull(install):
+			raise AppCenterCheckError("install of {} failed.".format(self.application))
 
 		post_installed_info = self.app_center.get(self.application)
 		if test_installed:
-			if errors:
-				msg = "The installation returned following dpkg errors: "
-				raise AppCenterCheckError(msg + ", ".join(errors))
-
 			self.app_center.is_installed(self.application, info=post_installed_info, msg="{} is not installed")
 
 			if not CheckOperations.installed(self.application, post_installed_info):
 				msg = "{} is not installed correctly."
 				raise AppCenterCheckError(msg.format(self.application))
-		return errors
 
 	@contextlib.contextmanager
 	def test_install_safe(self, test_installed=True):
 		try:
-			errors = self.test_install(test_installed=test_installed)
-			yield errors
+			self.test_install(test_installed=test_installed)
+			yield
 		except (AppCenterCheckError, AppCenterOperationError, AppCenterTestFailure):
 			if self.app_center.is_installed(self.application):
-				self.app_center.uninstall(self.application, force=True)
+				self.app_center.remove([self.application])
 			raise
 
 	def test_upgrade(self, test_installed=True):
 		# FIXME: This is needed to find the upgrade (updates the AppCenters caches)
 		self.app_center.query()
 
-		(upgrade_dry, errors_dry) = self.app_center.update(self.application, only_dry_run=True)
+		dry_run = self.app_center.upgrade_dry_run([self.application])
+		if not self.dry_run_successful(dry_run):
+			raise AppCenterCheckError("Dry-upgrade of {} failed.".format(self.application))
 
-		self.operation_successfull(upgrade_dry, msg="Dry-upgrade of {} failed.")
-
-		(upgrade, errors) = self.app_center.update(self.application, force=True)
-		self.operation_successfull(upgrade, msg="upgrade of {} failed.")
-		self.operations_equal(upgrade_dry, upgrade, msg="Upgrade result differs from dry-run for {}.")
+		upgrade = self.app_center.upgrade([self.application])
+		if not self.operation_successfull(upgrade):
+			raise AppCenterCheckError("upgrade of {} failed.".format(self.application))
 
 		post_upgraded_info = self.app_center.get(self.application)
 		if test_installed:
-			if errors:
-				msg = "The upgrade returned following dpkg errors: "
-				raise AppCenterCheckError(msg + ", ".join(errors))
-
 			self.app_center.is_installed(self.application, info=post_upgraded_info, msg="{} is not installed")
 
 			if not CheckOperations.installed(self.application, post_upgraded_info):
 				msg = "{} is not upgraded correctly."
 				raise AppCenterCheckError(msg.format(self.application))
-		return errors
 
-	def test_uninstall(self, test_uninstalled=True):
-		(uninstall_dry, errors_dry) = self.app_center.uninstall(self.application, only_dry_run=True)
-		self.operation_successfull(uninstall_dry, msg="Dry-uninstall of {} failed.")
-		(uninstall, errors) = self.app_center.uninstall(self.application, force=True)
-		self.operation_successfull(uninstall, msg="Uninstall of {} failed.")
-		# we skip a `operations_equal()` check at this point, as
-		# `uninstall_dry` and `uninstall` are different by design.
+	def test_remove(self, test_uninstalled=True):
+		dry_run = self.app_center.remove_dry_run([self.application])
+		if not self.dry_run_successful(dry_run):
+			raise AppCenterCheckError("Dry-remove of {} failed.".format(self.application))
+
+		remove = self.app_center.remove([self.application])
+		if not self.operation_successfull(remove):
+			raise AppCenterCheckError("remove of {} failed.".format(self.application))
 
 		post_uninstalled_info = self.app_center.get(self.application)
 		if test_uninstalled:
-			if errors:
-				msg = "The uninstallation returned following dpkg errors: "
-				raise AppCenterCheckError(msg + ", ".join(errors))
-
 			if self.app_center.is_installed(self.application, info=post_uninstalled_info):
 				msg = "{} is still installed"
 				raise AppCenterCheckError(msg.format(self.application))
@@ -591,21 +615,20 @@ class TestOperations(object):
 			if not CheckOperations.uninstalled(self.application, post_uninstalled_info):
 				msg = "{} is not uninstalled correctly."
 				raise AppCenterCheckError(msg.format(self.application))
-		return errors
 
 	def test_install_remove_cycle(self):
 		info = self.app_center.get(self.application)
 		if self.app_center.is_docker(self.application, info=info):
 			msg = "{} is a docker application - skipping tests.."
 			print(msg.format(self.application))
-			return ([], [])
+			return
 
 		if self.app_center.is_installed(self.application, info=info):
 			msg = "{} already installed"
 			raise AppCenterCheckError(msg.format(self.application))
 
-		with self.test_install_safe() as install_errors:
-			return (install_errors, self.test_uninstall())
+		with self.test_install_safe():
+			self.test_remove()
 
 
 @contextlib.contextmanager
@@ -618,8 +641,6 @@ def local_appcenter():
 		setup_local_appcenter.call(ucs_version=ucs_version)
 	try:
 		yield
-	except Exception:
-		raise
 	finally:
 		print("Reverting local app-center.")
 		setup_local_appcenter.call(revert=True)

@@ -1,3 +1,9 @@
+ucs-test (10.0.3-24) unstable; urgency=medium
+
+  * Bug #52818: Fix appcentertest lib (UMC commands changed in UCS 5)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 21 Feb 2021 12:48:33 +0100
+
 ucs-test (10.0.3-23) unstable; urgency=medium
 
   * Bug #52241: adding Debug level to dovecot-listener

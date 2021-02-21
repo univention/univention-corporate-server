@@ -24,12 +24,6 @@ class DebianMockPackage(object):
 		return self.name
 
 
-def must_have_no_conflicts_apps(result):
-	"""Checks if invokation_forbidden_details.must_have_no_conflicts_apps is
-	empty. Returns True if the check is not violated"""
-	return len(result.get("invokation_forbidden_details", {}).get("must_have_no_conflicts_apps", [])) == 0
-
-
 @app_test.test_case
 def test_install_missing_depends(app_center, application):
 	"""
@@ -56,7 +50,7 @@ def test_install_missing_depends(app_center, application):
 		if app_center.is_installed(app.app_id, info=info):
 			error += " And is marked as installed."
 			#  lets try to be safe and remove the broken app
-			app_center.uninstall(app.app_id, force=True)
+			app_center.remove([app.app_id])
 
 		app_test.fail(error.strip())
 
@@ -110,8 +104,8 @@ def test_install_breaking_packages_dry_run(app_center, application):
 	test_ok = app_test.TestOperations(app_center, app_ok.app_id)
 	with test_ok.test_install_safe():
 		test_break = app_test.TestOperations(app_center, app_break.app_id)
-		(result, errors) = app_center.install(app_break.app_id, only_dry_run=True)
-		if test_break.operation_successfull(result) or must_have_no_conflicts_apps(result):
+		result = app_center.install_dry_run([app_break.app_id])
+		if test_break.dry_run_successful(result):
 			msg = "Dry-Install of app with breaking app installed did not fail."
 			app_test.fail(msg)
 
@@ -136,10 +130,10 @@ def test_install_breaking_packages(app_center, application):
 	test_ok = app_test.TestOperations(app_center, app_ok.app_id)
 	with test_ok.test_install_safe():
 		test_break = app_test.TestOperations(app_center, app_break.app_id)
-		(result, errors) = app_center.install(app_break.app_id, force=True)
-		if test_break.operation_successfull(result) or must_have_no_conflicts_apps(result):
+		result = app_center.install([app_break.app_id])
+		if test_break.operation_successfull(result):
 			if app_center.is_installed(app_break.app_id):
-				app_center.uninstall(app_break.app_id, force=True)
+				app_center.remove([app_break.app_id])
 			app_test.fail("Install of app with breaking app installed did not fail.")
 
 
@@ -163,8 +157,8 @@ def test_install_conflicting_packages_dry_run(app_center, application):
 	test_ok = app_test.TestOperations(app_center, app_ok.app_id)
 	with test_ok.test_install_safe():
 		test_conflict = app_test.TestOperations(app_center, app_conflict.app_id)
-		(result, errors) = app_center.install(app_conflict.app_id, only_dry_run=True)
-		if test_conflict.operation_successfull(result) or must_have_no_conflicts_apps(result):
+		result = app_center.install_dry_run([app_conflict.app_id])
+		if test_conflict.dry_run_successful(result):
 			msg = "Dry-Install of app with conflicting app installed did not fail."
 			app_test.fail(msg)
 
@@ -189,10 +183,10 @@ def test_install_conflicting_packages(app_center, application):
 	test_ok = app_test.TestOperations(app_center, app_ok.app_id)
 	with test_ok.test_install_safe():
 		test_conflict = app_test.TestOperations(app_center, app_conflict.app_id)
-		(result, errors) = app_center.install(app_conflict.app_id, force=True)
-		if test_conflict.operation_successfull(result) or must_have_no_conflicts_apps(result):
+		result = app_center.install([app_conflict.app_id])
+		if test_conflict.operation_successfull(result):
 			if app_center.is_installed(app_conflict.app_id):
-				app_center.uninstall(app_conflict.app_id, force=True)
+				app_center.remove([app_conflict.app_id])
 			app_test.fail("Install of app with conflicting app installed did not fail.")
 
 
