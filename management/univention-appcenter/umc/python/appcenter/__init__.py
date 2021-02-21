@@ -296,6 +296,8 @@ class Instance(umcm.Base, ProgressMixin):
 		return ret
 
 	def _run_local_dry_run(self, apps, action, settings, progress):
+		if action == 'upgrade':
+			apps = [Apps().find_candidate(app) or app for app in apps]
 		if len(apps) == 1:
 			progress.title = _('%s: Running tests') % apps[0].name
 		else:

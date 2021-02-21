@@ -206,7 +206,7 @@ class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
 
 
 class MustHaveCandidate(SingleRequirement, HardRequirement):
-	'''The application is either not installed or a newer version is avaible'''
+	'''The application is either not installed or no newer version is available'''
 	def test_upgrade(self, app):
 		_app = Apps().find(app.id)
 		if not _app.is_installed() or _app >= app:
