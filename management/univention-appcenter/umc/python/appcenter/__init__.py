@@ -211,6 +211,10 @@ class Instance(umcm.Base, ProgressMixin):
 		return {'compatible': info.is_compatible(version, function=function), 'version': info.get_ucs_version()}
 
 	def _remote_appcenter(self, host, function=None):
+		if host is None:
+			raise ValueError('Cannot connect to None')
+		if not host.endswith('.%s' % self.ucr.get('domainname')):
+			raise ValueError('Only connect to FQDNs within the domain')
 		info = get_action('info')
 		opts = {'version': info.get_ucs_version()}
 		if function is not None:
@@ -265,7 +269,7 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response(with_progress=True)
 	def run(self, progress, apps, auto_installed, action, hosts, settings, dry_run):
-		localhost = '{hostname}.{domainname}'.format(**self.ucr)
+		localhost = get_local_fqdn()
 		ret = {}
 		if dry_run:
 			for host in sorted(hosts.values()):

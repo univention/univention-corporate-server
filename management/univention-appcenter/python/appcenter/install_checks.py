@@ -205,6 +205,13 @@ class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
 	test_upgrade = test_install
 
 
+class MustHaveCandidate(SingleRequirement, HardRequirement):
+	'''The application is either not installed or a newer version is avaible'''
+	def test_upgrade(self, app):
+		_app = Apps().find(app.id)
+		if not _app.is_installed() or _app >= app:
+			return False
+
 class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
 	'''The application requires UCS version %(required_version)s.'''
 	def test_install(self, app):
