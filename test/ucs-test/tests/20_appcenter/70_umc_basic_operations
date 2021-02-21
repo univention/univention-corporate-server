@@ -75,8 +75,9 @@ def test_install_upgrade_remove(app_center, application):
 	with test.test_install_safe():
 		new.build_and_publish()
 		new.remove_tempdir()
+		app_test.restart_umc()
 		test.test_upgrade()
-		test.test_uninstall()
+		test.test_remove()
 
 
 @app_test.test_case
@@ -103,7 +104,7 @@ def test_install_upgrade_remove_dependencies(app_center, application):
 		new.build_and_publish()
 		new.remove_tempdir()
 		test.test_upgrade()
-		test.test_uninstall()
+		test.test_remove()
 
 
 def main():

@@ -135,11 +135,12 @@ class AppCenterOperations(object):
 				print(last_title)
 
 			for msg in progress["intermediate"]:
-				print("", msg)
+				print("", msg["message"])
 			finished = progress.get("finished", False)
 			if finished:
+				print("*** RESULT ***")
+				print(progress["result"])
 				return progress["result"]
-			print(progress)
 			time.sleep(3)
 
 	def _make_run_args(self, apps, host=None):
@@ -572,10 +573,9 @@ class TestOperations(object):
 		try:
 			self.test_install(test_installed=test_installed)
 			yield
-		except (AppCenterCheckError, AppCenterOperationError, AppCenterTestFailure):
+		finally:
 			if self.app_center.is_installed(self.application):
 				self.app_center.remove([self.application])
-			raise
 
 	def test_upgrade(self, test_installed=True):
 		# FIXME: This is needed to find the upgrade (updates the AppCenters caches)
