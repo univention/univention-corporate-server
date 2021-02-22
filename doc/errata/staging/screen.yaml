@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: screen
+fix: 4.5.0-6+deb9u1
+desc: |
+ This update addresses the following issue:
+ * crash when processing combining chars (CVE-2021-26937)
+bug: [52825]
+cve:
+- CVE-2021-26937
