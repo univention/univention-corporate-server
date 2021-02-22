@@ -1280,7 +1280,6 @@ univention-system-setup-boot uss/server/role string memberserver
 			<para>
 				The command will download all previous UCS minor and patch-level releases of the same major branch.
 				Each minor release requires several gigabytes of storage space in <filename class="directory">/var/lib/univention-repository/</filename>.
-				Even more space is required if the section <emphasis>unmaintained</emphasis> is enabled!
 			</para>
 			<para>
 				Verify the &ucsUCRV; <envar>repository/mirror/recreate_packages</envar> is set to <literal>no</literal>.
