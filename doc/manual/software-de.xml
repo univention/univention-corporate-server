@@ -476,29 +476,30 @@
 	</para>
 
 	<para>
-	  Das Univention-Repository und andere Repository-Komponenten unterscheiden
-	  zwischen zwei Bestandteilen:
+		Das Univention Repository enthält alle von Univention und Debian bereitgestellten Pakete.
+		Dabei wird zwischen maintained und unmaintained Paketen unterschieden.
 	</para>
 
 	<itemizedlist>
-	  <listitem><simpara>
-		Der von der Maintenance abgedeckte Standard-Paketumfang von UCS
-		befindet sich im <emphasis>maintained</emphasis>-Bereich. Standardmäßig ist nur der
-		Zugriff auf diese Pakete aktiviert. Sicherheits-Updates werden zeitnah
-		nur für Pakete aus <emphasis>maintained</emphasis> bereitgestellt.
-	  </simpara></listitem>
+		<listitem><simpara>
+			Alle Pakete im Standard-Paketumfang befinden sich im Status <emphasis>maintained</emphasis>.
+			Sicherheits-Updates werden zeitnah nur für <emphasis>maintained</emphasis> Pakete bereitgestellt.
+			Die Liste der <emphasis>maintained</emphasis> Pakete ist auf einem UCS System unter <filename>/usr/share/univention-errata-level/univention-maintained-packages.txt</filename> einsehbar.
+		</simpara></listitem>
 
 	  <listitem><simpara>
-		Unter <emphasis>unmaintained</emphasis> finden sich die weiteren Pakete,
-		z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch
-		Sicherheits-Updates oder anderweitige Maintenance
-		abgedeckt. <emphasis>unmaintained</emphasis> ist standardmäßig nicht eingebunden
+			<emphasis>unmaintained</emphasis> Pakete sind nicht durch Sicherheits-Updates oder anderweitige Maintenance	abgedeckt.
+			Um zu prüfen ob <emphasis>unmaintained</emphasis> Pakete installiert sind, kann das Kommando <command>univention-list-installed-unmaintained-packages</command> ausgeführt werden.
 	  </simpara></listitem>
 	</itemizedlist>
 
 	<para>
-	  Ein lokales Repository kann - gerade bei Einbindung des
-	  unmaintained-Zweiges - viel Plattenplatz in Anspruch nehmen.
+		Für zusätzliche eingebundene Repositories ist die Installation von <emphasis>unmaintained</emphasis> Paketen standardmäßig nicht möglich.
+		Um die Installation zu ermöglichen, muss die	&ucsUCRV; <envar>repository/online/component/.*/unmaintained</envar> auf <literal>yes</literal> gesetzt werden.
+	</para>
+
+	<para>
+	  Ein lokales Repository kann viel Plattenplatz in Anspruch nehmen.
 	</para>
 
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
@@ -516,12 +517,6 @@
 		Der zu verwendende Repository-Server wird in die
 		&ucsUCRV; <envar>repository/online/server</envar> eingetragen und ist bei einer
 		Neuinstallation auf <uri>updates.software-univention.de</uri> voreingestellt.
-	  </para>
-
-	  <para>
-		Das unmaintained-Repository kann durch Setzen der
-		&ucsUCRV; <envar>repository/online/unmaintained</envar> auf <literal>yes</literal> integriert
-		werden.
 	  </para>
 	</section>
 

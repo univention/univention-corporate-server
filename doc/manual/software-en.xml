@@ -468,33 +468,31 @@ univention-app shell demo-docker-app
 	  In the default setting, the Univention repository
 	  <uri>updates.software-univention.de</uri> is used for a new installation.
 	</para>
+  <para>
+    The Univention repository contains all packages provided by Univention and Debian.
+    A distinction is made between maintained and unmaintained packages.
+  </para>
 
-	<para>
-	  The Univention repository and repository components differentiate between two
-	  component parts:
-	</para>
+  <itemizedlist>
+    <listitem><simpara>
+      All packages in the standard package scope are in <emphasis>maintained</emphasis> status.
+      Security updates are provided in a timely manner only for <emphasis>maintained</emphasis> packages.
+      The list of <emphasis>maintained</emphasis> packages can be viewed on a UCS system in <filename>/usr/share/univention-errata-level/univention-maintained-packages.txt</filename>.
+    </simpara></listitem>                                   
+  
+    <listitem><simpara>                                     
+      <emphasis>unmaintained</emphasis> packages are not covered by security updates or other maintenance.
+      To check if <emphasis>unmaintained</emphasis> packages are installed, the command <command>univention-list-installed-unmaintained-packages</command> can be executed.
+    </simpara></listitem>                                   
+  </itemizedlist>
+  
+  <para>
+    For additional repositories the installation of <emphasis>unmaintained</emphasis> packages is not possible by default.
+    To enable installation, the &ucsUCRV; <envar>repository/online/component/.*/unmaintained</envar> must be set to <literal>yes</literal>.
+  </para>
 
-	<itemizedlist>
-	  <listitem><simpara>
-		The UCS standard package scope covered by maintenance can be found in
-		the <emphasis>maintained</emphasis> area. In the default setting, only access
-		to these packages is activated. Security updates are only provided for
-		<emphasis>maintained</emphasis> packages.
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Additional packages can be found under <emphasis>unmaintained</emphasis>,
-		e.g., other mail servers than Postfix. These packages are not covered by
-		security updates or ulterior maintenance. In the default setting,
-		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
-		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
-		<literal>yes</literal>.
-	  </simpara></listitem>
-	</itemizedlist>
-
-	<para>
-	  A local repository can require a lot of disk space - particularly if the
-	  unmaintained branch is activated.
+  <para>
+	  A local repository can require a lot of disk space.
 	</para>
 
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
