@@ -1,0 +1,28 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u13A~4.4.7.202102220936
+desc: |
+ This update addresses the following issues:
+ * MMIO ops null pointer dereference may lead to DoS (CVE-2020-15469)
+ * net: e1000e: use-after-free while sending packets (CVE-2020-15859)
+ * usb: use-after-free issue while setting up packet (CVE-2020-25084)
+ * e1000e: infinite loop scenario in case of null packet descriptor
+   (CVE-2020-28916)
+ * slirp: out-of-bounds access while processing ARP/NCSI packets
+   (CVE-2020-29130)
+ * ide: atapi: OOB access while processing read commands (CVE-2020-29443)
+ * 9pfs: TOCTOU privilege escalation vulnerability (CVE-2021-20181)
+ * out-of-bound heap buffer access via an interrupt ID field (CVE-2021-20221)
+bug: [52820]
+cve:
+- CVE-2020-15469
+- CVE-2020-15859
+- CVE-2020-25084
+- CVE-2020-28916
+- CVE-2020-29130
+- CVE-2020-29443
+- CVE-2021-20181
+- CVE-2021-20221
