@@ -1114,7 +1114,7 @@ transfer_docker_image () {
 		sleep $(( $RANDOM % 60 ))
 	done
 	ssh root@$docker_host univention-app update || return 1
-cat <<-EOF | ssh root@$docker_host python3
+cat <<-EOF | ssh root@$docker_host python
 # only whitespaces here, no tabs!
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import UniventionAppAction, get_action
