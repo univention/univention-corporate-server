@@ -115,6 +115,12 @@ class AppCenterOperations(object):
 		data = {"application": application}
 		return self.client.umc_command("appcenter/get", data).result
 
+	def resolve(self, action, apps):
+		"""Call the UMC command `appcenter/resolve` with the given arguments."""
+		self._renew_connection()
+		data = {"action": action, "apps": apps}
+		return self.client.umc_command("appcenter/resolve", data).result
+
 	def run(self, args):
 		"""Call the UMC command `appcenter/run` with the given options.
 
@@ -122,7 +128,6 @@ class AppCenterOperations(object):
 		`appcenter/progress` und call `callback(info, steps)` if a callback
 		function was given and `info` or `steps` changed"""
 		self._renew_connection()
-		dry_run = args["dry_run"]
 		progress_id = self.client.umc_command("appcenter/run", args).result["id"]
 
 		last_title = None
@@ -308,7 +313,7 @@ class AppPackage(object):
 		return "\n".join(lines())
 
 	@classmethod
-	def from_package(cls, package, app_id=None, app_name=None, app_version="3.14", app_code=None, app_conflicted_apps=None):
+	def from_package(cls, package, app_id=None, app_name=None, app_version="3.14", app_code=None, app_conflicted_apps=None, app_required_apps=None):
 		my_app_id = app_id or package.name
 		ini_items = {
 			"ID": my_app_id,
@@ -317,6 +322,9 @@ class AppPackage(object):
 			"Name": app_name or my_app_id,
 			"DefaultPackages": package.name,
 		}
+		if app_required_apps:
+			conflicted = ",".join(a.app_id for a in app_required_apps)
+			ini_items["RequiredApps"] = conflicted
 		if app_conflicted_apps:
 			conflicted = ",".join(a.app_id for a in app_conflicted_apps)
 			ini_items["ConflictedApps"] = conflicted
