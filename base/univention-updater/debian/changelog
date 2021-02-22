@@ -1,3 +1,10 @@
+univention-updater (15.0.3-14) unstable; urgency=medium
+
+  * Bug #51655: preup.sh: delete obsolete LDAP objects during update
+    to UCS 5.0
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Feb 2021 18:51:03 +0100
+
 univention-updater (15.0.3-13) unstable; urgency=low
 
   * Bug #51690: Allow package downgrade on upgrade to UCS-5.0

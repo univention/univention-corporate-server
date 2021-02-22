@@ -118,6 +118,9 @@ update_check_kernel () {
 
 checks
 
+# Several LDAP objects are no longer supported with UCS 5 and are removed automatically.
+delete_obsolete_objects
+
 # save ucr settings
 cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
