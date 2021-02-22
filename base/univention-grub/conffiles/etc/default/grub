@@ -12,7 +12,9 @@ savedefault = configRegistry.is_true('grub/savedefault', False)
 print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))
 @!@
 GRUB_TIMEOUT=@%@grub/timeout@%@
-GRUB_DISTRIBUTOR=Univention
+
+# Use full UCS title for boot entry
+GRUB_DISTRIBUTOR="Univention Corporate Server"
 
 @!@
 defoptions=''
@@ -72,9 +74,6 @@ GRUB_GFXPAYLOAD_LINUX=@%@grub/gfxpayload@%@
 if configRegistry.get('grub/backgroundimage', ''):
 	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])
 @!@
-
-# Use full UCS title for boot entry
-GRUB_DISTRIBUTOR="Univention Corporate Server"
 
 # Uncomment to get a beep at grub start
 #GRUB_INIT_TUNE="480 440 1"
