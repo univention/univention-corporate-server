@@ -19,6 +19,8 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail_debug, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
 
+from univention.admin.uldap import getAdminConnection
+
 import time
 import os.path as opath
 from os import listdir
@@ -61,7 +63,7 @@ def random_mail_user(udm, mail_alternative_address=None):
 	})
 	return user
 
-"""
+
 def test_user_b_mail_alt_equal_user_a_mail_primary():
 	print("### user_b's mail_alternative_address is equal to user_a's primary mail address")
 	with udm_test.UCSTestUDM() as udm:
@@ -167,7 +169,6 @@ def test_mail_list_equal_user_mail_alt():
 		check_delivery(token, user_a.mailPrimaryAddress, True)
 		check_delivery(token, user_b.mailPrimaryAddress, True)
 
-"""
 
 def test_user_mail_alt_equals_shared_folder_mail_address_reload_listener():
 	print("### A user has mail@shared_folder as mail_alternative_address address")
@@ -186,8 +187,15 @@ def test_user_mail_alt_equals_shared_folder_mail_address_reload_listener():
 			udm, FQDN, mailAddress=shared_folder_mail,
 			user_permission=['"%s" "%s"' % ("anyone", "all")]
 		)
+
+		lo, po = getAdminConnection()
+
+		print("#####################################")
+		print("udm objekt:")
+		print(folder_dn)
+		print(lo.get(folder_dn))
 		print("#### Checking if shared folder exists.")
-		timeout = 60
+		timeout = 120
 		success = False
 		while timeout > 0:
 			if opath.isdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0]):
@@ -198,7 +206,7 @@ def test_user_mail_alt_equals_shared_folder_mail_address_reload_listener():
 			timeout -= 20
 
 		if not success:
-			print("##### Shared folder was not created after %i seconds" % timeout)
+			print("##### Shared folder was not created after 120 seconds")
 
 		send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
 		print("#### Checking if Mail has been send to shared folder.")
@@ -215,19 +223,21 @@ def test_user_mail_alt_equals_shared_folder_mail_address_reload_listener():
 				timeout -= 20
 
 		if not success:
-			print("##### Mail was not successfully delivered after %i seconds" % timeout)
+			print("##### Mail was not successfully delivered after 60 seconds")
 		check_delivery(token, user.mailPrimaryAddress, True)
-		found = imap_search_mail(
-			messageid=msgid, server=FQDN,
-			imap_user=user.mailPrimaryAddress,
-			imap_folder=folder_name, use_ssl=True
-		)
+		try:
+			found = imap_search_mail(
+				messageid=msgid, server=FQDN,
+				imap_user=user.mailPrimaryAddress,
+				imap_folder=folder_name, use_ssl=True
+			)
+		finally:
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
 		if not found:
 			utils.fail("Mail sent with token = %r to %s un-expectedly".format(token, folder_name))
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
 
 
 def test_user_mail_alt_equals_shared_folder_mail_address():
@@ -246,8 +256,15 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 			udm, FQDN, mailAddress=shared_folder_mail,
 			user_permission=['"%s" "%s"' % ("anyone", "all")]
 		)
+
+		lo, po = getAdminConnection()
+
+		print("#####################################")
+		print("udm objekt:")
+		print(folder_dn)
+		print(lo.get(folder_dn))
 		print("#### Checking if shared folder exists.")
-		timeout = 60
+		timeout = 120
 		success = False
 		while timeout > 0:
 			if opath.isdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0]):
@@ -258,7 +275,7 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 			timeout -= 20
 
 		if not success:
-			print("##### Shared folder was not created after %i seconds" % timeout)
+			print("##### Shared folder was not created after 120 seconds")
 
 		send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
 		print("#### Checking if Mail has been send to shared folder.")
@@ -275,20 +292,23 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 				timeout -= 20
 
 		if not success:
-			print("##### Mail was not successfully delivered after %i seconds" % timeout)
+			print("##### Mail was not successfully delivered after 60 seconds")
 		check_delivery(token, user.mailPrimaryAddress, True)
-		found = imap_search_mail(
-			messageid=msgid, server=FQDN,
-			imap_user=user.mailPrimaryAddress,
-			imap_folder=folder_name, use_ssl=True
-		)
+		try:
+			found = imap_search_mail(
+				messageid=msgid, server=FQDN,
+				imap_user=user.mailPrimaryAddress,
+				imap_folder=folder_name, use_ssl=True
+			)
+		finally:
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"],
+							 stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"],
+							 stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
 		if not found:
 			utils.fail("Mail sent with token = %r to %s un-expectedly".format(token, folder_name))
-
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
 
 
 def test_user_mail_alt_equals_shared_folder_mail_address_debug():
@@ -307,8 +327,15 @@ def test_user_mail_alt_equals_shared_folder_mail_address_debug():
 			udm, FQDN, mailAddress=shared_folder_mail,
 			user_permission=['"%s" "%s"' % ("anyone", "all")]
 		)
+
+		lo, po = getAdminConnection()
+
+		print("#####################################")
+		print("udm objekt:")
+		print(folder_dn)
+		print(lo.get(folder_dn))
 		print("#### Checking if shared folder exists. [Debug]")
-		timeout = 60
+		timeout = 120
 		success = False
 		while timeout > 0:
 			if opath.isdir("/var/spool/dovecot/private/" + DOMAIN + "/" + shared_folder_mail.split("@")[0]):
@@ -319,7 +346,7 @@ def test_user_mail_alt_equals_shared_folder_mail_address_debug():
 			timeout -= 20
 
 		if not success:
-			print("##### Shared folder was not created after 60 seconds")
+			print("##### Shared folder was not created after 120 seconds")
 
 		send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
 		print("#### Checking if Mail has been send to shared folder. [Debug]")
@@ -338,18 +365,22 @@ def test_user_mail_alt_equals_shared_folder_mail_address_debug():
 		if not success:
 			print("##### Mail was not successfully delivered after 60 seconds")
 		check_delivery(token, user.mailPrimaryAddress, True)
-		found = imap_search_mail_debug(
-			messageid=msgid, server=FQDN,
-			imap_user=user.mailPrimaryAddress,
-			imap_folder=folder_name, use_ssl=True
-		)
+		try:
+			found = imap_search_mail_debug(
+				messageid=msgid, server=FQDN,
+				imap_user=user.mailPrimaryAddress,
+				imap_folder=folder_name, use_ssl=True
+			)
+		finally:
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"],
+							 stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
+			subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"],
+							 stdout=subprocess.PIPE,
+							 stderr=subprocess.PIPE, shell=False)
 		if not found:
 			utils.fail("Mail sent with token = %r to %s un-expectedly".format(token, folder_name))
 
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
-	subprocess.Popen(["pkill", "-USR2", "-f", "/usr/sbin/univention-directory-listener"], stdout=subprocess.PIPE,
-					 stderr=subprocess.PIPE, shell=False)
 
 def test_group_mail_in_mailing_list():
 	with udm_test.UCSTestUDM() as udm:
