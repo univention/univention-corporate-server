@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: wpa
+fix: 2:2.4-1+deb9u8A~4.4.7.202102220936
+desc: |
+ This update addresses the following issue:
+ * P2P group information processing vulnerability (CVE-2021-0326)
+bug: [52821]
+cve:
+- CVE-2021-0326
