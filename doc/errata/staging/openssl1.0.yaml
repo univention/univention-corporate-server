@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: openssl1.0
+fix: 1.0.2u-1~deb9u4
+desc: |
+ This update addresses the following issues:
+ * integer overflow in CipherUpdate (CVE-2021-23840)
+ * NULL pointer dereference in X509_issuer_and_serial_hash() (CVE-2021-23841)
+bug: [52823]
+cve:
+- CVE-2021-23840
+- CVE-2021-23841
