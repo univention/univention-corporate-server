@@ -1,3 +1,9 @@
+ucs-test (10.0.3-29) unstable; urgency=medium
+
+  * Bug #52122: remove nagios test 01_base/09services_other_running
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 22 Feb 2021 22:56:47 +0100
+
 ucs-test (10.0.3-28) unstable; urgency=medium
 
   * Bug #52818: Maybe changing the image helps to pass 85_docker_compose

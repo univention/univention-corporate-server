@@ -33,8 +33,6 @@ nscd	/usr/sbin/nscd
 bind9	/usr/sbin/named
 isc-dhcp-server	/usr/sbin/dhcpd
 univention-management-console	/usr/sbin/univention-management-console-server
-nagios2	/usr/sbin/nagios2
-nagios3	/usr/sbin/nagios3
 __LIST__
 exit $returnCode
 
