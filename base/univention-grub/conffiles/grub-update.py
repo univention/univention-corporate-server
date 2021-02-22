@@ -32,6 +32,18 @@
 
 import os
 import shutil
+import hashlib
+
+
+def is_conf_compatible():
+	# This is a workaround to avoid syntax errors
+	# during the UCS 4.4 to UCS 5.0 upgrade, it can be removed with UCS 5.1
+	conf_file = '/etc/grub.d/05_debian_theme'
+	broken_md5 = '1b68d93d4dd2dacf7b62a7d0937baa74'
+	if os.path.isfile(conf_file) and os.path.isfile(conf_file + '.dpkg-new'):
+		with open(conf_file, 'rb') as conf_file_fd:
+			return hashlib.md5(conf_file_fd.read()).hexdigest() == broken_md5
+	return True
 
 
 def postinst(configRegistry, changes):
@@ -40,4 +52,5 @@ def postinst(configRegistry, changes):
 	backgroundimage_source = os.path.join('/usr/share/univention-grub/', 'light-background.png' if light_theme else 'dark-background.png')
 	if configRegistry.get('grub/backgroundimage') == backgroundimage_target:
 		shutil.copy(backgroundimage_source, backgroundimage_target)
-	os.system('update-grub')
+	if is_conf_compatible():
+		os.system('update-grub')
