@@ -1,3 +1,9 @@
+ucs-test (10.0.3-27) unstable; urgency=medium
+
+  * Bug #52818: Bump appbox version to 4.4-7 (hopefully able to join)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Feb 2021 19:44:28 +0100
+
 ucs-test (10.0.3-26) unstable; urgency=medium
 
   * Fixup Bug #52241: extend debug output for Mail-Test
