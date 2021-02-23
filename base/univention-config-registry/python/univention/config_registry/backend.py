@@ -106,14 +106,11 @@ class ConfigRegistry(MM):
 		DEFAULTS: 'base-defaults.conf',
 	}
 
-	def __init__(self, filename=None, write_registry=NORMAL):
+	def __init__(self, filename="", write_registry=NORMAL):
 		# type: (str, int) -> None
 		super(ConfigRegistry, self).__init__()
-		self.file = os.getenv('UNIVENTION_BASECONF') or filename or None
-		if self.file:
-			self.scope = ConfigRegistry.CUSTOM
-		else:
-			self.scope = write_registry
+		custom = os.getenv('UNIVENTION_BASECONF') or filename
+		self.scope = ConfigRegistry.CUSTOM if custom else write_registry
 
 		self._registry = {}  # type: Dict[int, Union[_ConfigRegistry, Dict[str, str]]]
 		for reg in self.LAYER_PRIORITIES:
@@ -122,23 +119,7 @@ class ConfigRegistry(MM):
 			elif not self.file and reg == ConfigRegistry.CUSTOM:
 				self._registry[reg] = {}
 			else:
-				self._registry[reg] = self._create_registry(reg)
-
-	def _create_registry(self, reg):
-		# type: (int) -> _ConfigRegistry
-		"""
-		Create internal sub registry.
-
-		:param reg: UCR level.
-		:returns: UCR instance.
-		"""
-		if reg == ConfigRegistry.CUSTOM:
-			filename = self.file
-		else:
-			filename = os.path.join(ConfigRegistry.PREFIX, ConfigRegistry.BASES[reg])
-		if reg == ConfigRegistry.DEFAULTS:
-			return _DefaultConfigRegistry(self, filename=filename)
-		return _ConfigRegistry(filename=filename)
+				self._registry[reg] = {} if custom else _ConfigRegistry(os.path.join(self.PREFIX, self.BASES[reg]))
 
 	def load(self):
 		# type: () -> None
@@ -306,6 +287,8 @@ class ConfigRegistry(MM):
 				value = registry[key]  # type: str
 			except KeyError:
 				continue
+			if reg == ConfigRegistry.DEFAULTS:
+				value = self._eval_default(value)
 			return (reg, value) if getscope else value
 		return default
 
@@ -348,9 +331,28 @@ class ConfigRegistry(MM):
 				continue
 			for key, value in registry.items():
 				if key not in merge:
+					if reg == ConfigRegistry.DEFAULTS:
+						value = self._eval_default(value)
 					merge[key] = (reg, value) if getscope else value
 
 		return merge  # type: ignore
+
+	def _eval_default(self, default):
+		# type: (str) -> str
+		"""
+		Recursively evaluate default value.
+
+		:param default: Default value.
+		:returns: Substituted value.
+		"""
+		try:
+			value = run_filter(default, self, opts={'disallow-execution': True})
+		except RuntimeError:  # maximum recursion depth exceeded
+			value = b''
+
+		if six.PY2:
+			return value
+		return value.decode("UTF-8")
 
 	@overload  # type: ignore
 	def items(self):  # pragma: no cover
@@ -511,13 +513,10 @@ class _ConfigRegistry(dict):
 	:param filename: File name for text database file.
 	"""
 
-	def __init__(self, filename=None):
+	def __init__(self, filename):
 		# type: (str) -> None
 		dict.__init__(self)
-		if filename:
-			self.file = filename
-		else:
-			self.file = '/etc/univention/base.conf'
+		self.file = filename
 		self.__create_base_conf()
 		self.backup_file = self.file + '.bak'
 		self.lock_filename = self.file + '.lock'
@@ -690,45 +689,6 @@ class _ConfigRegistry(dict):
 		if isinstance(data, bytes):
 			data = data.decode('UTF-8')
 		return data
-
-
-class _DefaultConfigRegistry(_ConfigRegistry):
-
-	def __init__(self, parent, filename=None):
-		# type: (ConfigRegistry, Optional[str]) -> None
-		super(_DefaultConfigRegistry, self).__init__(filename)
-		self.parent = parent
-
-	def __getitem__(self, key):  # type: ignore
-		# type: (str) -> str
-		value = super(_DefaultConfigRegistry, self).__getitem__(key)
-		try:
-			value = run_filter(value, self.parent, opts={'disallow-execution': True})
-		except RuntimeError:  # maximum recursion depth exceeded
-			value = b''
-		if six.PY2:
-			return value
-		return value.decode('UTF-8')
-
-	def get(self, key, default=None):
-		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
-		try:
-			return self[key]
-		except KeyError:
-			return default
-
-	def items(self):
-		return dict((key, self[key]) for key in self).items()
-
-	def values(self):
-		return dict((key, self[key]) for key in self).values()
-
-	if six.PY2:
-		def iteritems(self):
-			return dict((key, self[key]) for key in self).iteritems()
-
-		def itervalues(self):
-			return dict((key, self[key]) for key in self).itervalues()
 
 
 # vim:set sw=4 ts=4 noet:

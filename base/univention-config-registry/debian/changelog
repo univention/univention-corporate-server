@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-2) unstable; urgency=low
+
+  * Bug #38938 UCR: Re-implement default layer
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Feb 2021 10:57:05 +0100
+
 univention-config-registry (15.0.7-1) unstable; urgency=medium
 
   * Bug #38938 UCR: fix calling UCR handlers on (un)registration of new
