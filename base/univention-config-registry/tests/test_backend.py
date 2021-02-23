@@ -59,7 +59,6 @@ class TestConfigRegistry(object):
 		assert fname.exists()
 
 	def test_create_error(self, tmpdir):
-		fname = tmpdir / "sub" / 'custom.conf'
 		with pytest.raises(SystemExit):
 			ConfigRegistry("/")
 
@@ -388,7 +387,7 @@ class TestInternal(object):
 		tmpdir.mkdir("test.conf.temp")
 
 		ucr = backend._ConfigRegistry(str(tmp))
-		with pytest.raises(EnvironmentError) as exc_info:
+		with pytest.raises(EnvironmentError):
 			ucr._save_file(str(tmp))
 
 	@pytest.mark.parametrize("text,data", [
