@@ -1,3 +1,9 @@
+univention-management-console (12.0.8-5) unstable; urgency=medium
+
+  * Bug #52453: adjust module search behaviour
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Feb 2021 09:53:24 +0100
+
 univention-management-console (12.0.8-4) unstable; urgency=medium
 
   * Bug #52764: delete old saml session cache during the upgrade to UCS 5.0
