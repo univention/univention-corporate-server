@@ -627,6 +627,7 @@ def _get_config_registry_info():
 
 
 def _register_variable_default_values(ucr):
+	# type: (ConfigRegistry) -> None
 	"""Create base-default.conf layer containig all default values"""
 	info = _get_config_registry_info()
 	defaults = _DefaultConfigRegistry(ucr, '/etc/univention/base-defaults.conf')
