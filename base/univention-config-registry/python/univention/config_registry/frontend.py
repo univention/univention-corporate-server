@@ -41,7 +41,7 @@ import time
 
 import six
 
-from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry, _DefaultConfigRegistry
+from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
@@ -630,7 +630,7 @@ def _register_variable_default_values(ucr):
 	# type: (ConfigRegistry) -> None
 	"""Create base-default.conf layer containig all default values"""
 	info = _get_config_registry_info()
-	defaults = _DefaultConfigRegistry(ucr, '/etc/univention/base-defaults.conf')
+	defaults = ucr._registry[ucr.DEFAULTS]
 	for key, variable in info.get_variables().items():
 		value = variable.get('Default')
 		if value:

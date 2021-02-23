@@ -35,7 +35,6 @@ class TestConfigRegistry(object):
 		ConfigRegistry.LDAP,
 		ConfigRegistry.SCHEDULE,
 		ConfigRegistry.FORCED,
-		ConfigRegistry.DEFAULTS,
 	])
 	def test_levels(self, level, ucr0, tmpdir):
 		"""Create level registry."""
