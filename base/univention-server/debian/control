@@ -141,7 +141,7 @@ Depends:
  univention-home-mounter,
  univention-network-common,
  univention-ldap-client,
- univention-mail-postfix | mail-transport-agent,
+ univention-mail-postfix,
  univention-maintenance,
  univention-nfs-server,
  univention-quota,
@@ -168,7 +168,7 @@ Depends:
  univention-directory-manager-tools,
  univention-network-common,
  univention-ldap-client,
- univention-mail-postfix | mail-transport-agent,
+ univention-mail-postfix,
  ${misc:Depends},
 Conflicts:
  univention-role-server-common (>= 12.0.0-10),
