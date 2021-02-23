@@ -32,6 +32,7 @@
 from __future__ import absolute_import
 
 import re
+import six
 import bcrypt
 import hashlib
 import heimdal
@@ -299,6 +300,8 @@ def password_already_used(password, pwhistory):
 		try:
 			if linesplit[0] == '{BCRYPT}':
 				password_hash = line[len('{BCRYPT}'):]
+				if isinstance(password, six.text_type):
+					password = password.encode('utf-8')
 				if bcrypt.checkpw(password, password_hash):
 					ud.debug(ud.ADMIN, ud.ERROR, '\nbcrypt.checkpw() == [%s]' % (line))
 					return True
