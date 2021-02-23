@@ -1,3 +1,9 @@
+ucs-test (10.0.3-30) unstable; urgency=medium
+
+  * Bug #52831: fix some selenium tests
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Feb 2021 09:53:45 +0100
+
 ucs-test (10.0.3-29) unstable; urgency=medium
 
   * Bug #52122: remove nagios test 01_base/09services_other_running
