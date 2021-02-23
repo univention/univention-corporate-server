@@ -631,8 +631,8 @@ class _ConfigRegistry(dict):
 	def lock(self):
 		# type: () -> None
 		"""Lock sub registry file."""
-		self.lock_file = open(self.lock_filename, "a+", **encoding)
-		fcntl.flock(self.lock_file.fileno(), fcntl.LOCK_EX)
+		self.lock_file = lock = open(self.lock_filename, "a+", **encoding)
+		fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
 
 	def unlock(self):
 		# type: () -> None
