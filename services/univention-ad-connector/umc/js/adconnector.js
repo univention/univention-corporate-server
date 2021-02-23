@@ -60,7 +60,7 @@ define([
 			this.inherited(arguments);
 			this.standbyDuring(tools.umcpCommand('adconnector/state')).then(lang.hitch(this, function(response) {
 				var state = response.result;
-				if (state.configured) {
+				if (!state.configured) {
 					this.wizard = new SetupWizard({});
 					this.addChild(this.wizard);
 					this.wizard.on('Finished', lang.hitch(this, function() {
