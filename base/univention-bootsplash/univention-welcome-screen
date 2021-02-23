@@ -37,14 +37,14 @@ eval "$(ucr shell)"
 
 
 get_all_ip_addresses () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
 }
 
 remove_welcome_screen () {
 	# plymouth quit --retain-splash lets the terminal stay in graphics mode.
 	# The terminal needs to be set into text mode again.
 	# See also "man console_ioctl" keyword: KDSETMODE.
-	python -c "from fcntl import ioctl; fd = open('/dev/tty0', 'r'); ioctl(fd, 0x4B3A, 0x00);"
+	python3 -c "from fcntl import ioctl; fd = open('/dev/tty0', 'r'); ioctl(fd, 0x4B3A, 0x00);"
 	chvt 1
 }
 
