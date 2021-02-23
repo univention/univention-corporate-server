@@ -554,6 +554,8 @@
 				a different way. Therefore, the &ucsUCRV; <envar>repository/online/unmaintained</envar>
 				is no longer in use as of UCS 5.0. However, the &ucsUCRV; for components
 				(<envar>repository/online/component/<replaceable>$comp</replaceable>/parts</envar>) are still in use (<u:bug>51316</u:bug>).
+				To check if <emphasis>unmaintained</emphasis> packages are installed, the command
+				<command>univention-list-installed-unmaintained-packages</command> can be executed (<u:bug>52715</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Up to UCS 4.4, the Univention Updater automatically detected for component repositories whether
