@@ -137,6 +137,18 @@ service univention-firewall restart >&3 2>&3
 
 # Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
 /usr/sbin/univention-directory-listener-ctrl resync udm_extension ldap_extension
+# Wait for listener module resync to finish
+wait_period=0
+while [ "$wait_period" -lt "300" ]; do
+	if [ -f "/var/lib/univention-directory-listener/handlers/ldap_extension" ]; then
+		state=$(</var/lib/univention-directory-listener/handlers/ldap_extension)
+		if [ "$state" == 3 ]; then
+			break
+		fi
+	fi
+	sleep 1
+	wait_period=$(($wait_period+1))
+done
 
 rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
 
