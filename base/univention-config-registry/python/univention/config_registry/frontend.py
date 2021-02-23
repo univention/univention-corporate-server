@@ -629,10 +629,15 @@ def _register_variable_default_values(ucr):
 	_ucr = ConfigRegistry(write_registry=ConfigRegistry.DEFAULTS)
 	_ucr.load()
 	defaults = {}
-	for key, variable in info.get_variables().items():
+	default_variables = info.get_variables()
+	for key, variable in default_variables.items():
 		value = variable.get('Default')
 		if value:
 			defaults[key] = value
+	for key in _ucr:
+		if key not in default_variables:
+			defaults[key] = None
+
 	changed = dict((key, (old, new)) for key, (old, new) in _ucr.update(defaults).items() if old != new)
 	_ucr.save()
 	ucr.load()
