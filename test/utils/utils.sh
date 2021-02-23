@@ -768,7 +768,7 @@ monkeypatch () {
 	# this function can be used to monkeypatch all UCS@school systems before running the tests
 
 	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
-	[ -e /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py
+	[ -e /usr/lib/python3/dist-packages/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/lib/python3/dist-packages/univention/management/console/protocol/session.py
 	systemctl restart univention-management-console-server
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
