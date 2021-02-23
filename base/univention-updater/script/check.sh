@@ -391,13 +391,13 @@ delete_obsolete_objects () {
 	local backupfile="${updateLogDir}/removed_with_ucs5.ldif"
 	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
 
-	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
-	echo "> An LDIF file of removed objects is available: ${backupfile}"
+	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically." >&3 2>&3
+	echo "> An LDIF file of removed objects is available: ${backupfile}" >&3 2>&3
 	install -b -m 400 /dev/null "${backupfile}"
-	echo "> Removing structural objects"
+	echo "> Removing structural objects" >&3 2>&3
 	for filter in "${obsolete_ocs_structural[@]}"
 	do
-		echo ">> $filter"
+		echo ">> $filter" >&3 2>&3
 		univention-ldapsearch -LLL "$filter" "*" + |
 			tee "${backupfile}" |
 			sed -ne 's/^dn: //p' |
