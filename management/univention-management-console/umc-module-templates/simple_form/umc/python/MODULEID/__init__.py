@@ -32,6 +32,8 @@
 
 import notifier
 import smtplib
+import email.charset
+from email.mime.nonmultipart import MIMENonMultipart
 
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
@@ -70,19 +72,17 @@ class Instance(Base):
 		def _send_thread(sender, recipient, subject, message):
 			MODULE.info('sending mail: thread running')
 
-			# FIXME: contains header injection
-			msg = u'From: ' + sender + u'\r\n'
-			msg += u'To: ' + recipient + u'\r\n'
-			msg += u'Subject: %s\r\n' % subject
-			msg += u'\r\n'
-			msg += message + u'\r\n'
-			msg += u'\r\n'
-
-			msg = msg.encode('latin1')
+			msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+			cs = email.charset.Charset("utf-8")
+			cs.body_encoding = email.charset.QP
+			msg["Subject"] = subject
+			msg["From"] = sender
+			msg["To"] = recipient
+			msg.set_payload(message, charset=cs)
 
 			server = smtplib.SMTP('localhost')
 			server.set_debuglevel(0)
-			server.sendmail(sender, recipient, msg)
+			server.sendmail(sender, recipient, msg.as_string())
 			server.quit()
 			return True
 

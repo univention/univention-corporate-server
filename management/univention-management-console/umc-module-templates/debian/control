@@ -16,6 +16,9 @@ Depends:
  ${python3:Depends},
  ${misc:Depends},
  univention-management-console-server (>= 11.0.4-37),
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: MODULEDESC
  MODULEDESC
  .

@@ -43,8 +43,9 @@ _ = Translation('PACKAGENAME').translate
 
 
 class Instance(Base):
+
 	# list of dummy entries
-	entries = map(lambda x: {'id': str(uuid.uuid4()), 'name': x[0], 'color': x[1]}, [
+	entries = [{'id': str(uuid.uuid4()), 'name': x[0], 'color': x[1]} for x in [
 		['Zackary Cavaco', 'Blue'],
 		['Shon Hodermarsky', 'Green'],
 		['Jude Nachtrieb', 'Green'],
@@ -65,7 +66,7 @@ class Instance(Base):
 		['Colopy', 'Blue'],
 		['Vivan Noggles', 'Green'],
 		['Shawnda Hamalak', 'Blue'],
-	])
+	]]
 
 	def init(self):
 		# this initialization method is called when the module process is created
@@ -73,39 +74,39 @@ class Instance(Base):
 
 	def colors(self, request):
 		"""Returns a list of all existing colors."""
-		MODULE.info('MODULEID.colors: options: %s' % str(request.options))
-		allColors = set(map(lambda x: x['color'], Instance.entries))
-		allColors = map(lambda x: {'id': x, 'label': x}, allColors)
+		MODULE.info('MODULEID.colors: options: %r' % (request.options,))
+		allColors = set(x['color'] for x in Instance.entries)
+		allColors = [{'id': x, 'label': x} for x in allColors]
 		allColors.append({'id': 'None', 'label': _('All colors')})
-		MODULE.info('MODULEID.colors: result: %s' % str(allColors))
+		MODULE.info('MODULEID.colors: result: %r' % (allColors,))
 		self.finished(request.id, allColors)
 
 	def query(self, request):
 		"""Searches for entries in a dummy list
 
-		requests.options = {}
+		request.options = {}
 		'name' -- search pattern for name (default: '')
 		'color' -- color to match, 'None' for all colors (default: 'None')
 
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""
-		MODULE.info('MODULEID.query: options: %s' % str(request.options))
+		MODULE.info('MODULEID.query: options: %r' % (request.options,))
 		color = request.options.get('color', 'None')
 		pattern = request.options.get('name', '')
-		result = filter(lambda x: (color == 'None' or color == x['color']) and x['name'].find(pattern) >= 0, Instance.entries)
-		MODULE.info('MODULEID.query: results: %s' % str(result))
+		result = [x for x in Instance.entries if (color == 'None' or color == x['color']) and x['name'].find(pattern) >= 0]
+		MODULE.info('MODULEID.query: results: %r' % (result,))
 		self.finished(request.id, result)
 
 	@sanitize(StringSanitizer())
 	def get(self, request):
 		"""Returns the objects for the given IDs
 
-		requests.options = [ <ID>, ... ]
+		request.options = [ <ID>, ... ]
 
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""
-		MODULE.info('MODULEID.get: options: %s' % str(request.options))
+		MODULE.info('MODULEID.get: options: %r' % (request.options,))
 		ids = set(request.options)
-		result = filter(lambda x: x['id'] in ids, Instance.entries)
-		MODULE.info('MODULEID.get: results: %s' % str(result))
+		result = [x for x in Instance.entries if x['id'] in ids]
+		MODULE.info('MODULEID.get: results: %r' % (result,))
 		self.finished(request.id, result)
