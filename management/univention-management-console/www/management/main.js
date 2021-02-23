@@ -807,12 +807,13 @@ define([
 					searchToggleButton.set('checked', false);
 					setTimeout(function() {
 						searchToggleButton.focus();
-					});
+					}, 0);
 				}
 			}));
 			searchToggleButton.watch('checked', lang.hitch(this, function(_attr, _oldChecked, checked) {
 				domClass.toggle(this._search.domNode, 'umcModuleSearch--open', checked);
 				if (checked) {
+					this.switchToOverview();
 					setTimeout(lang.hitch(this, function() {
 						this._search.focus();
 					}, 0));
@@ -1067,7 +1068,8 @@ define([
 				id: 'umcHeader',
 				'class': 'umcHeader umcHeader--umc',
 				_tabController: this._tabController,
-				_tabContainer: this._tabContainer
+				_tabContainer: this._tabContainer,
+				switchToOverview: lang.hitch(this, 'switchToOverview')
 			});
 
 			this.registerTabSwitchHandling();
@@ -1609,7 +1611,6 @@ define([
 				return;
 			}
 			this._header._search.on('search', lang.hitch(this, function() {
-				this.switchToOverview();
 				this._updateQuery(null);
 			}));
 		},
