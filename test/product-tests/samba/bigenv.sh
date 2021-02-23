@@ -55,10 +55,10 @@ lDAPAdminLimits: MaxConnIdleTime=9000" | ldbmodify -H /var/lib/samba/private/sam
 }
 
 clone_copy_samdb () {
-	cp /usr/lib/python2.7/dist-packages/samba/join.py /usr/lib/python2.7/dist-packages/samba/join.py.bak
-	sed -i 's/    ctx.do_join()/    ctx.plaintext_secrets=True\n    ctx.do_join()/' /usr/lib/python2.7/dist-packages/samba/join.py
+	cp /usr/lib/python3/dist-packages/samba/join.py /usr/lib/python3/dist-packages/samba/join.py.bak
+	sed -i 's/    ctx.do_join()/    ctx.plaintext_secrets = True\n    ctx.do_join()/' /usr/lib/python3/dist-packages/samba/join.py
 	samba-tool drs clone-dc-database "$(dnsdomainname)" --server=master -UAdministrator%univention --targetdir /var/tmp/master --include-secrets
-	sed -i 's/    ctx.plaintext_secrets=True//' /usr/lib/python2.7/dist-packages/samba/join.py
+	sed -i '/^    ctx.plaintext_secrets = True/d' /usr/lib/python3/dist-packages/samba/join.py
 	echo univention > /tmp/pw
 	univention-ssh-rsync /tmp/pw -a /var/tmp/master/ master:/var/tmp/master/
 }
