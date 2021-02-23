@@ -1,3 +1,10 @@
+univention-updater (15.0.3-15) unstable; urgency=medium
+
+  * Bug #51655: redirect check.sh output to logfile
+  * Bug #51531: wait up to 300 seconds for listener module resync
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 23 Feb 2021 18:37:45 +0100
+
 univention-updater (15.0.3-14) unstable; urgency=medium
 
   * Bug #51655: preup.sh: delete obsolete LDAP objects during update
