@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 ## desc: Test the management/univention-ldap/scripts/univention_lastbind.py script
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
@@ -117,7 +117,7 @@ def bind_for_timestamp(dn, host=None):
 	if host:
 		args.insert(1, "%s:7389" % host)
 		args.insert(1, '-h')
-	out = subprocess.check_output(args)
+	out = subprocess.check_output(args).decode('UTF-8', 'replace')
 	timestamp = [line.split()[1] for line in out.splitlines() if 'authTimestamp' in line]
 	timestamp = timestamp[0] if len(timestamp) else None
 	return timestamp

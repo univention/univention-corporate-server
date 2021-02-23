@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention LDAP
@@ -30,8 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
-import optparse
+import argparse
+
 import univention.uldap
 import univention.config_registry
 
@@ -43,7 +46,6 @@ def run():
 	ucr.load()
 
 	searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'])
-
 	for dn, attr in searchResult:
 		ml = []
 		oldval = attr['univentionMailSharedFolderDeliveryAddress']
@@ -51,20 +53,18 @@ def run():
 		if oldval != newval:
 			ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
 			try:
-				print 'Updating %s' % dn
+				print('Updating %s' % dn)
 				lo.modify(dn, ml)
 			except Exception:
-				print >> sys.stderr, 'E: Failed to modify %s' % dn
+				print('E: Failed to modify %s' % dn, file=sys.stderr)
 
-	print 'done'
+	print('done')
 
 
-usage = '''convert_univentionMailSharedFolderDeliveryAddress.py
-
-This script converts LDAP attribute univentionMailSharedFolderDeliveryAddress of
+description = '''This script converts LDAP attribute univentionMailSharedFolderDeliveryAddress of
 all shared folder LDAP objects to lower case. This script should be called on
 UCS Primary Directory Node only.'''
 
-parser = optparse.OptionParser(usage=usage)
-(options, args) = parser.parse_args()
+parser = argparse.ArgumentParser(description=description)
+args = parser.parse_args()
 run()

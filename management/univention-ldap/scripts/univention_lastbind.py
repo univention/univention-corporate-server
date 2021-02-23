@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention LDAP
@@ -89,7 +89,7 @@ def get_users(binddn=None, bindpwdfile=None, only_this_user=None):
 
 def get_youngest_timestamp(user, connections):
 	# type: (univention.udm.modules.users_user.UsersUserObject, List[univention.admin.uldap.access]) -> Optional[str]
-	timestamps = [timestamp for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
+	timestamps = [timestamp.decode('ASCII') for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
 	timestamps = sorted(timestamps)
 	return timestamps[-1] if len(timestamps) else None
 

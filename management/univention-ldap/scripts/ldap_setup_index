@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # vim: set ts=4 sw=4 et fileencoding=UTF-8:
 """
 Add and remove LDAP attributes to index.
@@ -142,11 +142,11 @@ class LdapIndex(object):
     def add_defaults(self):
         if self.args.add_defaults or self.args.force_defaults:
             LOG.debug('Adding defaults...')
-            for typ, attributes in self.index.iteritems():
+            for typ, attributes in self.index.items():
                 attributes |= RECOMMENDED_LDAP_INDEX[typ]  # noqa
 
     def modify_index(self):
-        for typ, attributes in self.index.iteritems():
+        for typ, attributes in self.index.items():
             to_add = getattr(self.args, 'add_%s' % (typ,))
             if to_add:
                 LOG.debug('Adding %s to %s', to_add, typ)
@@ -158,7 +158,7 @@ class LdapIndex(object):
 
     def save_ucr(self, ucr):
         changes = {}
-        for (typ, attributes) in self.index.iteritems():
+        for (typ, attributes) in self.index.items():
             oldv = self.split_ucr(ucr, typ)
             if oldv == attributes:
                 continue
@@ -178,7 +178,7 @@ class LdapIndex(object):
             _stdout, stderr = proc.communicate()
             if proc.wait() == 0:
                 return
-            self.fix_unknown(stderr)
+            self.fix_unknown(stderr.decode('UTF-8', 'replace'))
             self.save_ucr(ucr)
 
     def fix_unknown(self, stderr):
@@ -187,7 +187,7 @@ class LdapIndex(object):
             if match:
                 attr = match.group(1)
                 LOG.info('Removing attribute %s from all indexes...', attr)
-                for attributes in self.index.itervalues():
+                for attributes in self.index.values():
                     attributes.discard(attr)
                 return
         LOG.fatal('Error in OpenLDAP configuration:\n%s', stderr)

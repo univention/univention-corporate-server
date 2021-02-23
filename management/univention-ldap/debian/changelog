@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-1) unstable; urgency=medium
+
+  * Bug #52280: migrate scripts to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 23 Feb 2021 13:04:41 +0100
+
 univention-ldap (16.0.6-1) unstable; urgency=medium
 
   * Bug #34003: fix performance of 25univention-ldap-server_local-schema

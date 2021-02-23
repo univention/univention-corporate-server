@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention LDAP
@@ -36,23 +36,23 @@ from univention.config_registry import ConfigRegistry
 
 lo = univention.uldap.getAdminConnection()
 
-baseConfig = ConfigRegistry()
-baseConfig.load()
+ucr = ConfigRegistry()
+ucr.load()
 
-searchResult = lo.search(base=baseConfig['ldap/base'], filter='(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr=['shadowLastChange', 'shadowMax'])
+searchResult = lo.search(base=ucr['ldap/base'], filter='(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr=['shadowLastChange', 'shadowMax'])
 
 for dn, attributes in searchResult:
 	ml = []
 	if 'shadowLastChange' in attributes and 'shadowMax' in attributes:
 		try:
 			lastChange = int(attributes['shadowLastChange'][0])
-			max = int(attributes['shadowMax'][0])
-			if max >= lastChange:
-				new_max = max - lastChange
+			maximum = int(attributes['shadowMax'][0])
+			if maximum >= lastChange:
+				new_max = maximum - lastChange
 				if new_max == 0:
 					ml.append(('shadowMax', attributes['shadowMax'], []))
 				else:
-					ml.append(('shadowMax', attributes['shadowMax'], [str(new_max)]))
+					ml.append(('shadowMax', attributes['shadowMax'], [str(new_max).encode('ASCII')]))
 				lo.modify(dn, ml)
-		except:
+		except Exception:
 			pass
