@@ -41,7 +41,7 @@ import time
 
 import six
 
-from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry, _DefaultConfigRegistry
+from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
@@ -215,7 +215,7 @@ def ucr_update(ucr, changes):
 def _run_changed(ucr, changed, msg=None):
 	# type: (ConfigRegistry, Dict[str, Tuple[Optional[str], Optional[str]]], str) -> None
 	"""
-	Run handlers for changes UCR variables.
+	Run handlers for changed UCR variables.
 
 	:param ucr: UCR instance.
 	:param changed: Mapping from UCR variable name to 2-tuple (old-value, new-value).
@@ -626,12 +626,17 @@ def _get_config_registry_info():
 def _register_variable_default_values(ucr):
 	"""Create base-default.conf layer containig all default values"""
 	info = _get_config_registry_info()
-	defaults = _DefaultConfigRegistry(ucr, '/etc/univention/base-defaults.conf')
+	_ucr = ConfigRegistry(write_registry=ConfigRegistry.DEFAULTS)
+	_ucr.load()
+	defaults = {}
 	for key, variable in info.get_variables().items():
 		value = variable.get('Default')
 		if value:
 			defaults[key] = value
-	defaults.save()
+	changed = dict((key, (old, new)) for key, (old, new) in _ucr.update(defaults).items() if old != new)
+	_ucr.save()
+	ucr.load()
+	_run_changed(ucr, changed, 'I: %s will be set in scope "%s"')
 
 
 HANDLERS = {
