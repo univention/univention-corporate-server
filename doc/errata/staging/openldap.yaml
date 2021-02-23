@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: openldap
-fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202102180954
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202102221450
 desc: |
  This update addresses the following issue(s):
  * Denial of Service due to integer underflow leading to slapd
@@ -29,6 +29,10 @@ desc: |
    (CVE-2020-36229)
  * Denial of Service due to assertion failure in slapd in the
    X.509 DN parsing in decode.c ber_next_element (CVE-2020-36230)
+ * An assertion failure in slapd can occur in the
+   issuerAndThisUpdateCheck function via a crafted packet,
+   resulting in a denial of service (daemon exit) via a short
+   timestamp. (CVE-2021-27212)
 bug: [52747]
 cve:
  - CVE-2020-36221
@@ -41,3 +45,4 @@ cve:
  - CVE-2020-36228
  - CVE-2020-36229
  - CVE-2020-36230
+ - CVE-2021-27212
