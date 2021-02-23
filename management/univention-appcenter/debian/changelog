@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-6) unstable; urgency=medium
+
+  * Bug #52839: make DockerScriptInit configurable via UCR
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Feb 2021 13:54:07 +0100
+
 univention-appcenter (9.0.2-5) unstable; urgency=medium
 
   * Bug #52818: Add check for upgrades; fix remote connection recursion
