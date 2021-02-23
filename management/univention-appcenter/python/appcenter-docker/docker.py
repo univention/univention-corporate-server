@@ -348,7 +348,7 @@ class Docker(object):
 		env_file = self.ucr_filter_env_file(env)
 		command = None
 		if self.app.docker_script_init:
-			command = shlex.split(self.app.docker_script_init)
+			command = shlex.split(ucr_run_filter(self.app.docker_script_init))
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                                 # systemd
 			args.extend(["--tmpfs", tmpfs])
