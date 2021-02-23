@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -93,7 +93,7 @@ class Instance(Base):
 		raise UMC_Error("This is an UMC Error")
 
 	def traceback_as_thread_result(self, request):
-		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		# UVMM uses this to pass-through traceback from internal umc calls to the frontend
 		result = None
 		try:
 			raise ThreadedError()
@@ -104,7 +104,7 @@ class Instance(Base):
 		self.thread_finished_callback(thread, result, request)
 
 	def umc_error_as_thread_result(self, request):
-		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		# UVMM uses this to pass-through traceback from internal umc calls to the frontend
 		result = None
 		try:
 			raise UMC_Error("This is an UMC Error")

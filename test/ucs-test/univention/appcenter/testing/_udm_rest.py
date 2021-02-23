@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -342,7 +342,7 @@ class Module(Client):
 
 	def get_by_entry_uuid(self, uuid):
 		# TODO: use a link relation instead of a search
-		#return self.udm.get_by_uuid(uuid)
+		# return self.udm.get_by_uuid(uuid)
 		for obj in self.search(filter={'entryUUID': uuid}, scope='base'):
 			return obj.open()
 
@@ -420,7 +420,7 @@ class Object(Client):
 	@property
 	def module(self):
 		# FIXME: use "type" relation link
-		#object_type = self.udm.get_relation(self.hal, 'type')['href']
+		# object_type = self.udm.get_relation(self.hal, 'type')['href']
 		return self.udm.get(self.object_type)
 
 	@property

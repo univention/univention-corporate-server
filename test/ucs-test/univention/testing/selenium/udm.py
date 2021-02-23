@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Selenium Tests
@@ -247,10 +247,10 @@ class Policies(UDMBase):
 		return policyname
 
 	# fails in 4.4-0, Bug #48998
-	#def open_details(self, objectname):
-	#	self.search(self._get_search_value(objectname))
-	#	self.selenium.click_grid_entry(self._get_grid_value(objectname))
-	#	self.selenium.wait_for_text(_('Advanced settings'))
+	# def open_details(self, objectname):
+	# 	self.search(self._get_search_value(objectname))
+	# 	self.selenium.click_grid_entry(self._get_grid_value(objectname))
+	# 	self.selenium.wait_for_text(_('Advanced settings'))
 
 
 class Users(UDMBase):

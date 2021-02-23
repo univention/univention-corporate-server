@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-        <module id="udm" version="1.0">
+        <module id="udm" version="1.0" python="2">
                 <name>Univention Directory Manager</name>
                 <description>Manages all UDM modules</description>
                 <keywords></keywords>
@@ -9,5 +9,5 @@
                         <description>Creation, removal and management of domain users</description>
                         <keywords>users</keywords>
                 </flavor>
-		</module>
+        </module>
 </umc>
