@@ -278,6 +278,9 @@ def handler_update(args, opts=dict()):
 	cur = handlers.update()
 	handlers.update_divert(cur)
 
+	ucr = ConfigRegistry()
+	_register_variable_default_values(ucr)
+
 
 def handler_commit(args, opts=dict()):
 	# type: (List[str], Dict[str, Any]) -> None
