@@ -1,11 +1,16 @@
 #!/usr/bin/python
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
+
 import os
 import six
 import time
+from io import StringIO
+
 import pytest
-from univention.config_registry.backend import ConfigRegistry  # noqa E402
+
+import univention.config_registry.backend as backend
+from univention.config_registry.backend import ConfigRegistry
 
 py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
 
@@ -17,29 +22,25 @@ FALSE_INVALID = ('no ', ' no', '')
 
 class TestConfigRegistry(object):
 
-	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
+	"""
+	Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`
+	"""
 
 	def test_normal(self, ucr0, tmpdir):
-		"""Create NORMAL registry."""
+		"""Create default registry."""
 		assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.NORMAL]).exists()
 
-	def test_ldap(self, ucr0, tmpdir):
-		"""Create LDAP registry."""
-		_ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)  # noqa F841
-
-		assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.LDAP]).exists()
-
-	def test_schedule(self, ucr0, tmpdir):
-		"""Create SCHEDULE registry."""
-		_ucr = ConfigRegistry(write_registry=ConfigRegistry.SCHEDULE)  # noqa F841
-
-		assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.SCHEDULE]).exists()
-
-	def test_forced(self, ucr0, tmpdir):
-		"""Create FORCED registry."""
-		_ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)  # noqa F841
-
-		assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.FORCED]).exists()
+	@pytest.mark.parametrize("level", [
+		ConfigRegistry.NORMAL,
+		ConfigRegistry.LDAP,
+		ConfigRegistry.SCHEDULE,
+		ConfigRegistry.FORCED,
+		ConfigRegistry.DEFAULTS,
+	])
+	def test_levels(self, level, ucr0, tmpdir):
+		"""Create level registry."""
+		_ucr = ConfigRegistry(write_registry=level)  # noqa F841
+		assert (tmpdir / ConfigRegistry.BASES[level]).exists()
 
 	def test_custom(self, ucr0, tmpdir):
 		"""Create CUSTOM registry."""
@@ -54,9 +55,14 @@ class TestConfigRegistry(object):
 		fname = tmpdir / 'custom.conf'
 		monkeypatch.setenv('UNIVENTION_BASECONF', str(fname))
 
-		_ucr = ConfigRegistry(str(fname))  # noqa F841
+		_ucr = ConfigRegistry()  # noqa F841
 
 		assert fname.exists()
+
+	def test_create_error(self, tmpdir):
+		fname = tmpdir / "sub" / 'custom.conf'
+		with pytest.raises(SystemExit):
+			ConfigRegistry("/")
 
 	def test_save_load(self, ucr0):
 		"""Save and re-load UCR."""
@@ -269,14 +275,20 @@ class TestConfigRegistry(object):
 		"""Test update()."""
 		ucr0['foo'] = 'foo'
 		ucr0['bar'] = 'bar'
-		ucr0.update({
+		assert ucr0.update({
 			'foo': None,
 			'bar': 'baz',
 			'baz': 'bar',
-		})
+			'bam': None,
+		}) == {
+			"foo": ("foo", None),
+			"bar": ("bar", "baz"),
+			"baz": (None, "bar"),
+		}
 		assert ucr0.get('foo') is None
 		assert ucr0.get('bar') == 'baz'
 		assert ucr0.get('baz') == 'bar'
+		assert ucr0.get('bam') is None
 
 	def test_locking(self, ucr0):
 		"""Test inter-process-locking."""
@@ -322,3 +334,108 @@ class TestConfigRegistry(object):
 				self.fail('Unknown child status: %d, %x' % (pid, status))
 		else:
 			self.fail('Timeout')
+
+	def test_context(self, ucr0):
+		with ucr0:
+			ucr0["foo"] = "bar"
+
+		ucr = ConfigRegistry()
+		ucr.load()
+		assert ucr['foo'] == 'bar'
+
+	def test_context_error(self, ucr0):
+		ex = ValueError()
+		with pytest.raises(ValueError) as exc_info, ucr0:
+			ucr0["foo"] = "bar"
+			raise ex
+
+		assert exc_info.value is ex
+		ucr = ConfigRegistry()
+		ucr.load()
+		assert ucr['foo'] is None
+
+	def test_exception(self):
+		io = StringIO()
+		with pytest.raises(SystemExit) as exc_info:
+			backend.exception_occured(io)
+
+		assert exc_info.value.code != 0
+		assert io.getvalue() > ""
+
+	def test_str(self, ucr0):
+		ucr0["foo"] = "bar"
+		assert str(ucr0) == "foo: bar"
+
+
+class TestInternal(object):
+
+	"""
+	Unit test for py:class:`univention.config_registry.backend._ConfigRegistry`
+	"""
+
+	def test_load_backup(self, tmpdir):
+		tmp = tmpdir / "test.conf"
+		tmp.write("")
+		bak = tmpdir / "test.conf.bak"
+		bak.write("#\nfoo: bar")
+
+		ucr = backend._ConfigRegistry(str(tmp))
+		ucr.load()
+		assert ucr["foo"] == "bar"
+		assert tmp.size() > 0
+
+	def test_busy(self, tmpdir):
+		tmp = tmpdir / "test.conf"
+		tmpdir.mkdir("test.conf.temp")
+
+		ucr = backend._ConfigRegistry(str(tmp))
+		with pytest.raises(EnvironmentError) as exc_info:
+			ucr._save_file(str(tmp))
+
+	@pytest.mark.parametrize("text,data", [
+		("", {}),
+		("\n", {}),
+		("foo # bar", {}),
+		("bar", {}),
+		("a:b", {}),
+		("key: #value", {"key": "#value"}),
+		("key:  # value ", {"key": "# value"}),
+	])
+	def test_load_unusual(self, text, data, tmpdir):
+		tmp = tmpdir / "test.conf"
+		tmp.write("# univention_ base.conf\n" + text)
+
+		ucr = backend._ConfigRegistry(str(tmp))
+		ucr.load()
+		assert ucr.items() == data.items()
+
+	@py2_only
+	def test_strict_key(self):
+		ucr = backend._ConfigRegistry(os.path.devnull)
+		ucr.strict_encoding = True
+		with pytest.raises(backend.StrictModeException):
+			ucr[b'\xff'] = "val"
+
+	@py2_only
+	def test_strict_value(self):
+		ucr = backend._ConfigRegistry(os.path.devnull)
+		ucr.strict_encoding = True
+		with pytest.raises(backend.StrictModeException):
+			ucr["key"] = b"\xff"
+
+
+class TestDefault(object):
+	def test_default(self, ucr0, tmpdir):
+		ucr0._registry[ucr0.DEFAULTS]["key"] = "val"
+		assert ucr0["key"] == "val"
+		assert ucr0.items() == {"key": "val"}.items()
+
+	def test_subst(self, ucr0, tmpdir):
+		ucr0["ref"] = "val"
+		ucr0._registry[ucr0.DEFAULTS]["key"] = "@%@ref@%@"
+		assert ucr0["key"] == "val"
+
+	@pytest.mark.timeout(timeout=3)
+	def test_recusrion(self, ucr0, tmpdir):
+		ucr0._registry[ucr0.DEFAULTS]["key"] = "@%@key@%@"
+		assert ucr0["key"] == ""
