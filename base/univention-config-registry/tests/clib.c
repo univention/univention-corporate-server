@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static char ucr_bin[] = "/usr/sbin/univention-config-registry";
+static const char ucr_bin[] = "/usr/sbin/univention-config-registry";
 static char ucr_name[] = "univention-config-registry";
 static char key[] = "test/clib";
 static char *LAYER[] = {
@@ -15,6 +15,7 @@ static char *LAYER[] = {
 	"--force",
 	NULL,
 };
+#define ARRAY_SIZE(A) (sizeof (A) / sizeof ((A)[0]))
 
 int fork_exec(char *const *argv) {
 	pid_t pid;
@@ -75,19 +76,45 @@ void test_layer(void) {
 
 int main(void) {
 	char value[] = "42";
-	int r;
+	int i, r;
 
 	r = univention_config_set_string(key, value);
 	fprintf(stderr, "set %s=%s [%d]\n", key, value, r);
 	assert(r == 0);
 
-	char *c = univention_config_get_string(key);
-	fprintf(stderr, "get_str %s=%s\n", key, c);
-	assert(c != NULL);
-	assert(strcmp(c, value) == 0);
-	free(c);
+	struct { char *key; char *val; } tests[] = {
+		{key, value},
+#if 0
+		{"test/key", "val"},
+		{"test/ref", "1val2"},
+#endif
+	};
+		/*
+		 * /etc/univention/registry.info/variables/test.cfg
+[test/key]
+Description[de]=Teste es
+Description[en]=Test it
+Type=str
+Default=val
+Categories=test
 
-	int i = univention_config_get_int(key);
+[test/ref]
+Description[de]=Teste es indirect
+Description[en]=Test it indirectly
+Type=str
+Default=1@%test/@key@%@2
+Categories=test
+		 * ucr update
+		 */
+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+		char *c = univention_config_get_string(tests[i].key);
+		fprintf(stderr, "get_str %s=%s\n", tests[i].key, c);
+		assert(c != NULL);
+		assert(strcmp(c, tests[i].val) == 0);
+		free(c);
+	}
+
+	i = univention_config_get_int(key);
 	fprintf(stderr, "get_int %s=%d\n", key, i);
 	assert(i == atoi(value));
 

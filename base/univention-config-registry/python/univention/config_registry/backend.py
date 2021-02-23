@@ -29,7 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
+
 import sys
 import os
 import fcntl
@@ -48,7 +50,7 @@ try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa
 	_VT = TypeVar('_VT')
-except ImportError:
+except ImportError:  # pragma: no cover
 	def overload(f):
 		pass
 
@@ -72,15 +74,15 @@ def exception_occured(out=sys.stderr):
 
 	:param out: Output stream for message.
 	"""
-	print('E: your request could not be fulfilled', file=out)
-	print('try `univention-config-registry --help` for more information', file=out)
+	print(u'E: your request could not be fulfilled', file=out)
+	print(u'try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
 
 
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom', 'default']
 
 
-if MYPY:
+if MYPY:  # pragma: no cover
 	MM = MutableMapping[str, str]
 else:
 	MM = MutableMapping
@@ -91,7 +93,7 @@ class ConfigRegistry(MM):
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
 
-	:param filename: File name for text database file.
+	:param filename: File name for custom layer text database file.
 	:param write_registry: The UCR level used for writing.
 	"""
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, DEFAULTS = range(6)
@@ -275,17 +277,17 @@ class ConfigRegistry(MM):
 		return len(merge)
 
 	@overload  # type: ignore
-	def get(self, key):
+	def get(self, key):  # pragma: no cover
 		# type: (str) -> Optional[str]
 		pass
 
 	@overload  # noqa F811
-	def get(self, key, default):
+	def get(self, key, default):  # pragma: no cover
 		# type: (str, _VT) -> Union[str, _VT]
 		pass
 
 	@overload  # noqa F811
-	def get(self, key, default, getscope):
+	def get(self, key, default, getscope):  # pragma: no cover
 		# type: (str, _VT, bool) -> Tuple[int, Union[None, str, _VT]]
 		pass
 
@@ -323,12 +325,12 @@ class ConfigRegistry(MM):
 			return key in self
 
 	@overload
-	def _merge(self):
+	def _merge(self):  # pragma: no cover
 		# type: () -> Dict[str, str]
 		pass
 
 	@overload  # noqa F811
-	def _merge(self, getscope):
+	def _merge(self, getscope):  # pragma: no cover
 		# type: (bool) -> Dict[str, Tuple[int, str]]
 		pass
 
@@ -352,12 +354,12 @@ class ConfigRegistry(MM):
 		return merge  # type: ignore
 
 	@overload  # type: ignore
-	def items(self):
+	def items(self):  # pragma: no cover
 		# type: () -> Dict[str, str]
 		pass
 
 	@overload  # noqa F811
-	def items(self, getscope):
+	def items(self, getscope):  # pragma: no cover
 		# type: (bool) -> Dict[str, Tuple[int, str]]
 		pass
 
@@ -379,17 +381,17 @@ class ConfigRegistry(MM):
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
 	@overload
-	def is_true(self, key):
+	def is_true(self, key):  # pragma: no cover
 		# type: (str) -> bool
 		pass
 
 	@overload  # noqa F811
-	def is_true(self, key, default):
+	def is_true(self, key, default):  # pragma: no cover
 		# type: (str, bool) -> bool
 		pass
 
 	@overload  # noqa F811
-	def is_true(self, key, default, value):
+	def is_true(self, key, default, value):  # pragma: no cover
 		# type: (str, bool, Optional[str]) -> bool
 		pass
 
@@ -421,17 +423,17 @@ class ConfigRegistry(MM):
 		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
 	@overload
-	def is_false(self, key):
+	def is_false(self, key):  # pragma: no cover
 		# type: (str) -> bool
 		pass
 
 	@overload  # noqa F811
-	def is_false(self, key, default):
+	def is_false(self, key, default):  # pragma: no cover
 		# type: (str, bool) -> bool
 		pass
 
 	@overload  # noqa F811
-	def is_false(self, key=None, default=False, value=None):
+	def is_false(self, key=None, default=False, value=None):  # pragma: no cover
 		# type: (str, bool, Optional[str]) -> bool
 		pass
 
@@ -687,10 +689,12 @@ class _ConfigRegistry(dict):
 class _DefaultConfigRegistry(_ConfigRegistry):
 
 	def __init__(self, parent, filename=None):
+		# type: (ConfigRegistry, Optional[str]) -> None
 		super(_DefaultConfigRegistry, self).__init__(filename)
 		self.parent = parent
 
 	def __getitem__(self, key):  # type: ignore
+		# type: (str) -> str
 		value = super(_DefaultConfigRegistry, self).__getitem__(key)
 		try:
 			value = run_filter(value, self.parent, opts={'disallow-execution': True})
@@ -701,6 +705,7 @@ class _DefaultConfigRegistry(_ConfigRegistry):
 		return value.decode('UTF-8')
 
 	def get(self, key, default=None):
+		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
 		try:
 			return self[key]
 		except KeyError:
