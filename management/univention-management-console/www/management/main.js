@@ -778,8 +778,6 @@ define([
 
 			this.addChild(this._tabController);
 			this._headerStretch = put(this.domNode, 'div.umcHeaderStretch.dijitDisplayNone');
-
-			this.set('mobileTabsView', true);
 		},
 
 		_updateMoreTabsVisibility: function() {
