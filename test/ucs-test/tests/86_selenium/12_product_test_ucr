@@ -14,6 +14,7 @@ import subprocess
 import tempfile
 import time
 from univention.testing import selenium
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -57,29 +58,29 @@ SEARCHES = [
 
 def create_testing_ucr_variables(ucr_variable_file):
 	ucr_variable_file.write(
-		"[umc_test/foo_tmpKey]\n"
-		"Description[de]=This is a test-description. foo_tmpDesc\n"
-		"Description[en]=This is a test-description. foo_tmpDesc\n"
-		"Type=string\n"
-		"Categories=system-base\n"
-		"\n"
-		"[umc_test/tmpKey_foo]\n"
-		"Description[de]=This is a test-description. tmpDesc_foo\n"
-		"Description[en]=This is a test-description. tmpDesc_foo\n"
-		"Type=string\n"
-		"Categories=system-base\n"
-		"\n"
-		"[umc_test/foo_tmpKey_bar]\n"
-		"Description[de]=This is a test-description. foo_tmpDesc_bar\n"
-		"Description[en]=This is a test-description. foo_tmpDesc_bar\n"
-		"Type=string\n"
-		"Categories=service-software-management\n"
-		"\n"
-		"[umc_test/tmpKey]\n"
-		"Description[de]=This is a test-description. tmpDesc\n"
-		"Description[en]=This is a test-description. tmpDesc\n"
-		"Type=string\n"
-		"Categories=management-umc\n"
+		b"[umc_test/foo_tmpKey]\n"
+		b"Description[de]=This is a test-description. foo_tmpDesc\n"
+		b"Description[en]=This is a test-description. foo_tmpDesc\n"
+		b"Type=string\n"
+		b"Categories=system-base\n"
+		b"\n"
+		b"[umc_test/tmpKey_foo]\n"
+		b"Description[de]=This is a test-description. tmpDesc_foo\n"
+		b"Description[en]=This is a test-description. tmpDesc_foo\n"
+		b"Type=string\n"
+		b"Categories=system-base\n"
+		b"\n"
+		b"[umc_test/foo_tmpKey_bar]\n"
+		b"Description[de]=This is a test-description. foo_tmpDesc_bar\n"
+		b"Description[en]=This is a test-description. foo_tmpDesc_bar\n"
+		b"Type=string\n"
+		b"Categories=service-software-management\n"
+		b"\n"
+		b"[umc_test/tmpKey]\n"
+		b"Description[de]=This is a test-description. tmpDesc\n"
+		b"Description[en]=This is a test-description. tmpDesc\n"
+		b"Type=string\n"
+		b"Categories=management-umc\n"
 	)
 	ucr_variable_file.flush()
 
@@ -140,16 +141,7 @@ class UMCTester(object):
 			)
 
 	def test_category_filter(self):
-		self.selenium.click_element(
-			'//input[@name="category"]/../../div[contains(concat(" ", '
-			'normalize-space(@class), " "), " dijitDownArrowButton ")]/input'
-		)
-		self.selenium.click_element(
-			'//div[contains(concat(" ", normalize-space(@class), " "), '
-			'" dijitMenuItem ")][@role="option"][contains(text(), "%s")]'
-			% (_('Base Settings'),)
-		)
-
+		self.selenium.enter_input_combobox('category', _('Base Settings'))
 		result_count = len(self.get_umc_search_results('tmpKey'))
 		expected_result_count = 2
 		if result_count != expected_result_count:
@@ -180,8 +172,7 @@ class UMCTester(object):
 	def get_umc_search_results(self, pattern):
 		self.selenium.enter_input('pattern', pattern)
 		self.selenium.submit_input('pattern')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.force_full_grid_load()
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
 		grid_rows = self.selenium.driver.find_elements_by_xpath(
 			'//*[contains(concat(" ", normalize-space(@class), " "), '
 			'" dgrid-row ")][@role="row"]'

@@ -43,7 +43,7 @@ class UMCTester(object):
 			self.test_deleting_object(module, added_object)
 
 	def test_adding_object(self, module):
-		print '*** test adding object'
+		print('*** test adding object')
 		added_object = module.add()
 		if not module.exists(added_object):
 			raise UmcUdmError(
@@ -53,14 +53,14 @@ class UMCTester(object):
 		return added_object
 
 	def test_modifying_object(self, module, added_object):
-		print '*** test modifying object'
+		print('*** test modifying object')
 		module.open_details(added_object)
 		module.edit_some_property_of_the_open_object()
 		self.selenium.click_button(_('Save'))
 		module.wait_for_main_grid_load()
 
 	def test_deleting_object(self, module, added_object):
-		print '*** test removing object'
+		print('*** test removing object')
 		module.delete(added_object)
 		if module.exists(added_object):
 			raise UmcUdmError(

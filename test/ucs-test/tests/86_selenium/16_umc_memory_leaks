@@ -47,7 +47,7 @@ class UMCTester(object):
 		print("Difference between last and initial dijit registry map")
 		pp.pprint(json.loads(d))
 
-		for k, v in json.loads(d).iteritems():
+		for k, v in json.loads(d).items():
 			if v != 0:
 				utils.fail("There were extra widgets in the registry")
 

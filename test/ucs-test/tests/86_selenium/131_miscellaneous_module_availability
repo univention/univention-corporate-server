@@ -190,13 +190,13 @@ class UMCTester(object):
 
 	def determine_ucs_role(self):
 		server_role = subprocess.check_output(['ucr', 'get', 'server/role']).strip()
-		if server_role == 'domaincontroller_master':
+		if server_role == b'domaincontroller_master':
 			return MASTER
-		elif server_role == 'domaincontroller_backup':
+		elif server_role == b'domaincontroller_backup':
 			return BACKUP
-		elif server_role == 'domaincontroller_slave':
+		elif server_role == b'domaincontroller_slave':
 			return SLAVE
-		elif server_role == 'memberserver':
+		elif server_role == b'memberserver':
 			return MEMBER
 		else:
 			raise UmcError('Test is run on invalid server-role %r.' % (server_role,))

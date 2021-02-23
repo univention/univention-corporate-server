@@ -136,11 +136,11 @@ class Interactions(object):
 		)
 
 	def open_side_menu(self):
-		self.click_element(expand_path('//*[@containsClass="umcHeader"]//*[@containsClass="umcMobileMenuToggleButton"]'))
+		self.click_element(expand_path('//*[@containsClass="umcMenuButton"]'))
 		time.sleep(0.5)
 
 	def close_side_menu(self):
-		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="umcMobileMenuToggleButton"]'))
+		self.click_element(expand_path('//*[@containsClass="umcMenuButton"]'))
 		time.sleep(0.5)
 
 	def click_side_menu_entry(self, text):
@@ -151,7 +151,7 @@ class Interactions(object):
 		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
 		time.sleep(0.5)
 
-	def click_element(self, xpath, scroll_into_view=False, timeout=60):
+	def click_element(self, xpath, scroll_into_view=False, timeout=6):  # TODO timeout=60
 		"""
 		Click on the element which is found by the given xpath.
 
@@ -213,17 +213,6 @@ class Interactions(object):
 		# named 'submit'.
 		elem.send_keys(Keys.RETURN)
 
-	def force_full_grid_load(self):
-		elem = self.driver.find_element_by_xpath(
-			'//*[contains(concat(" ", normalize-space(@class), " "), '
-			'" dgrid-grid ")]'
-		)
-		self.driver.execute_script(
-			'arguments[0].style.maxHeight=""; '
-			'dijit.byNode(arguments[0]).resize()',
-			elem
-		)
-
 	def get_input(self, inputname):
 		"""
 		Get an input-element with the tag inputname.
@@ -250,35 +239,13 @@ class Interactions(object):
 			pass
 		return False
 
-	def scroll_down(self):
-		"""
-		This function scrolls the page down until the end of the page is reached.
-		"""
-		SCROLL_PAUSE_TIME = 0.5
-
-		# Get scroll height
-		last_height = self.driver.execute_script("return document.body.scrollHeight")
-
-		while True:
-			# Scroll down to bottom
-			self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-			# Wait to load page
-			time.sleep(SCROLL_PAUSE_TIME)
-
-			# Calculate new scroll height and compare with last scroll height
-			new_height = self.driver.execute_script("return document.body.scrollHeight")
-			if new_height == last_height:
-				break
-			last_height = new_height
-
-	def upload_image(self, img_path, timeout=60, xpath_prefix=''):
+	def upload_image(self, img_path, button_label='Upload', timeout=60, xpath_prefix=''):
 		"""
 		Get an ImageUploader widget on screen and upload the given img_path.
 		Which ImageUploader widget is found can be isolated by specifying 'xpath_prefix'
 		which would be an xpath pointing to a specific container/section etc.
 		"""
-		uploader_button_xpath = '//*[contains(@id, "_ImageUploader_")]//*[text()="Upload new image"]'
+		uploader_button_xpath = '//*[contains(@id, "_ImageUploader_")]//*[text()="%s"]' % (button_label,)
 		self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 		uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
 		logger.info("Getting the uploader with xpath: %s" % xpath_prefix + uploader_xpath)

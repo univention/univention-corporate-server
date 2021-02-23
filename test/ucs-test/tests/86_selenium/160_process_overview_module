@@ -34,11 +34,9 @@ class UMCTester(object):
 		self.selenium.open_module(_('Process overview'))
 
 		self.search('', _('All'))
-		self.selenium.scroll_down()
 		self.check_for_malformed_entries()
 
 		self.search('root', _('User'))
-		self.selenium.scroll_down()
 		self.check_user_filter()
 
 		p = subprocess.Popen(['sleep', '5000'])
@@ -93,17 +91,10 @@ class UMCTester(object):
 			self.choose_category(category)
 		self.selenium.enter_input('pattern', str(search_value))
 		self.selenium.submit_input('pattern')
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def choose_category(self, category):
-		button_xpath = expand_path('//label[text() = "%s"]/ancestor::div[@containsClass="umcLabelPane-dijitComboBox"]//div[@containsClass="dijitArrowButton"]' % _('Category'))
-		button = self.selenium.driver.find_element_by_xpath(button_xpath)
-		button.click()
-
-		choice_xpath = expand_path('//div[@containsClass="dijitComboBoxMenuPopup"]//div[text() = "%s"]' % category)
-		self.selenium.wait_until_element_visible(choice_xpath)
-		choice = self.selenium.driver.find_element_by_xpath(choice_xpath)
-		choice.click()
+		self.selenium.enter_input_combobox('category', category)
 
 	def _pid_xpath(self, pid):
 		return expand_path('//td[@containsClass="field-pid"]/descendant-or-self::*[text() = "%s"]' % pid)

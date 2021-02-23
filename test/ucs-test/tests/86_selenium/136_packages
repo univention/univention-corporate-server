@@ -49,7 +49,6 @@ class UMCTester(object):
 	def test_umc(self):
 		self.selenium.do_login()
 		self.selenium.open_module('Package Management')
-		self.selenium.wait_until_all_standby_animations_disappeared()
 
 		package_name = self.get_small_package_name()
 
@@ -69,7 +68,7 @@ class UMCTester(object):
 			self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % button_for_action))
 			self.selenium.wait_until_all_dialogues_closed()
 			self.selenium.wait_until_progress_bar_finishes()
-			self.selenium.wait_until_all_standby_animations_disappeared()
+			self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 			installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
 			installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text

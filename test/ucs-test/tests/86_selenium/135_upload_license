@@ -39,7 +39,7 @@ class UMCTester(object):
 		"""
 		time.sleep(5)
 		self.selenium.end_umc_session()
-		print "\nRestarting the UMC Server to release active connections"
+		print("\nRestarting the UMC Server to release active connections")
 		check_call(("service", "univention-management-console-server", "restart"))
 		time.sleep(10)  # wait while server is restarting
 		self.selenium.do_login()
@@ -135,7 +135,7 @@ class UMCTester(object):
 		launched 'univention-ldapsearch' with self.license_dn argument
 		If done without errors, sets 'self.license_dump_successful'=True
 		"""
-		print "\nSaving initial license to file: '%s'" % license_file
+		print("\nSaving initial license to file: '%s'" % license_file)
 		try:
 			with open(license_file, 'w') as license:
 				proc = Popen(("univention-ldapsearch",
@@ -161,7 +161,7 @@ class UMCTester(object):
 		Modifies the 'FreeForPersonalUseTest.license' to have a correct
 		BaseDN. Skipps the test if Free license template was not found.
 		"""
-		print "\nModifing the Free license template for the test"
+		print("\nModifing the Free license template for the test")
 		if not path.exists('FreeForPersonalUseTest.license'):
 			print("Cannot find the 'FreeForPersonalUseTest.license' file, "
 				  "skipping the test...")

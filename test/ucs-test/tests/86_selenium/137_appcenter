@@ -18,9 +18,9 @@ class UMCTester(object):
 
 	def test_umc(self):
 		self.selenium.do_login()
-		self.appcenter.install_app('dudle')
+		self.appcenter.install_app('Admin Diary Backend')
 		time.sleep(5)
-		self.appcenter.uninstall_app('dudle')
+		self.appcenter.uninstall_app('Admin Diary Backend')
 
 
 if __name__ == '__main__':

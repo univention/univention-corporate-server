@@ -81,14 +81,14 @@ class ChecksAndWaits(object):
 
 	def wait_until_all_standby_animations_disappeared(self, timeout=60):
 		logger.info("Waiting for all standby animations to disappear.")
-		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
+		xpath = '//*[contains(@id, "_Standby_")]/img'
 		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 			self.elements_invisible, 'wait_until_all_standby_animations_disappeared(timeout=%r)' % (timeout,)
 		)
 
 	def wait_until_standby_animation_appears(self, timeout=5):
 		logger.info("Waiting for standby animation to appear.")
-		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
+		xpath = '//*[contains(@id, "_Standby_")]/img'
 		try:
 			webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 				self.elements_visible, 'wait_until_standby_animation_appears(timeout=%r)' % (timeout,)
@@ -160,3 +160,15 @@ class ChecksAndWaits(object):
 		except selenium_exceptions.StaleElementReferenceException:
 			pass
 		return False
+
+	def wait_for_element_by_css_selector(self, css_selector, message='', timeout=60):
+		return webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
+			expected_conditions.presence_of_element_located((webdriver.common.by.By.CSS_SELECTOR, css_selector)),
+			message
+		)
+
+	def wait_for_elements_by_css_selector(self, css_selector, message='', timeout=60):
+		return webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
+			expected_conditions.presence_of_element_located((webdriver.common.by.By.CSS_SELECTOR, css_selector)),
+			message
+		)

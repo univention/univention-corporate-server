@@ -76,7 +76,7 @@ class UMCTester(object):
 	def create_diagnostic_plugin(self):
 		print("write test code into: %s" % (self.plugin_path))
 		plugin = '''
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from univention.management.console.modules.diagnostic import Critical
@@ -95,7 +95,7 @@ def run(_umc_instance):
 		}}])
 
 def test_action(_umc_instance):
-	print 'test'
+	print('test')
 
 
 actions = {{

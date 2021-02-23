@@ -35,6 +35,7 @@ from time import sleep
 
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+from univention.testing.selenium.utils import expand_path
 from univention.admin import localization
 
 translator = localization.translation('ucs-test-framework')
@@ -46,9 +47,9 @@ class AppCenter(object):
 	def __init__(self, selenium):
 		self.selenium = selenium
 
-	def install_app(self, app):
+	def install_app(self, app_name):
 		# TODO: Make sure the license is activated!
-		self.open_app(app)
+		self.open_app(app_name)
 
 		self.selenium.click_button(_('Install'))
 
@@ -114,8 +115,8 @@ class AppCenter(object):
 			pass
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
-	def uninstall_app(self, app):
-		self.open_app(app)
+	def uninstall_app(self, app_name):
+		self.open_app(app_name)
 
 		try:
 			self.selenium.driver.find_element_by_xpath('//*[text() = "Manage domain wide installations"]')
@@ -178,8 +179,8 @@ class AppCenter(object):
 		)
 		sleep(2)
 
-	def click_app_tile(self, appid):
-		self.selenium.click_element('//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryWrapperItem ")][@moduleid="%s"]' % appid)
+	def click_app_tile(self, app_name):
+		self.selenium.click_element(expand_path('//*[@containsClass="umcTile__name"][text() = "%s"]' % (app_name,)))
 
 	def open(self, do_reload=True):
 		# TODO: check if appcenter is already opened with the overview site
@@ -187,10 +188,10 @@ class AppCenter(object):
 		self.close_info_dialog_if_visisble()
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-	def open_app(self, app):
+	def open_app(self, app_name):
 		# TODO: check if appcenter is already opened with the app page
 		self.open()
-		self.click_app_tile(app)
+		self.click_app_tile(app_name)
 		self.selenium.wait_for_text(_('More information'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 

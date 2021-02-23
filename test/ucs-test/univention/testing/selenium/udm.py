@@ -155,11 +155,7 @@ class UDMBase(object):
 			pass
 
 		if template is not None:
-			template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
-				'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
-			)
-			template_selection_dropdown_button.click()
-			self.selenium.click_text(template)
+			self.selenium.enter_input_combobox('objectTemplate', template)
 
 		if click_next:
 			self.selenium.click_button(_('Next'))

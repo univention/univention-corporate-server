@@ -70,7 +70,6 @@ class UMCTester(object):
 		webdriver.support.ui.WebDriverWait(xpaths, 60).until(
 			self.selenium.get_all_visible_elements, 'Waited 60s for grid load.'
 		)
-		self.selenium.force_full_grid_load()
 		self.selenium.wait_for_text('99univention-test-join-script')
 		self.selenium.wait_until_all_standby_animations_disappeared()
 

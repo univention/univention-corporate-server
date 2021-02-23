@@ -35,8 +35,8 @@ class UMCTester(object):
 		lo = get_ldap_connection()
 		user_object = lo.get(userdn)
 		user = {}
-		user['username'] = user_object['uid'][0]
-		user['lastname'] = user_object['sn'][0]
+		user['username'] = user_object['uid'][0].decode('utf-8')
+		user['lastname'] = user_object['sn'][0].decode('utf-8')
 
 		self.selenium.do_login()
 		self.selenium.open_module(self.users.name)
@@ -46,7 +46,7 @@ class UMCTester(object):
 		self.test_user_templates()
 
 	def move_user_into_containers_and_out_again(self, user):
-		print '*** move user into different container'
+		print('*** move user into different container')
 		position = self.ucr.get('ldap/base')
 		cn_name = uts.random_string()
 		self.udm.create_object('container/cn', position=position, name=cn_name)
@@ -58,7 +58,7 @@ class UMCTester(object):
 		self.move_user(user, 'users')
 
 	def test_user_templates(self):
-		print '*** testing user templates'
+		print('*** testing user templates')
 		self.test_description_template()
 		self.test_group_template()
 
@@ -121,7 +121,7 @@ class UMCTester(object):
 
 	# container_name has to be a direct child of the LDAP-base.
 	def move_user(self, user, container_name):
-		print '*** moving user %s into %s' % (user['username'], container_name)
+		print('*** moving user %s into %s' % (user['username'], container_name))
 		self.selenium.click_checkbox_of_grid_entry(self.users._get_grid_value(user))
 		self.selenium.click_text(_('more'))
 		self.selenium.click_text(_('Move to...'))

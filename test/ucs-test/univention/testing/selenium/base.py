@@ -227,7 +227,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# Wait for the animation to run.
 		time.sleep(1)
 
-	def do_login(self, username=None, password=None):
+	def do_login(self, username=None, password=None, without_navigation=False):
 		if username is None:
 			username = self.umcLoginUsername
 		if password is None:
@@ -237,7 +237,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		#for year in set([2020, datetime.date.today().year, datetime.date.today().year + 1, datetime.date.today().year - 1]):
 		#	self.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
 		#	self.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
-		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+		if not without_navigation:
+			self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
@@ -283,13 +284,10 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if do_reload:
 			self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		input_field_xpath = expand_path('//*[@containsClass="umcLiveSearch"]//input[@containsClass="dijitInputInner"]')
-		self.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, input_field_xpath)
-			)
-		)
-		input_field = self.driver.find_element_by_xpath(input_field_xpath)
+		#  input_field = self.driver.find_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
+		input_field = self.wait_for_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
+		if not input_field.is_displayed():
+			self.click_element(expand_path('//*[@containsClass="umcModuleSearchToggleButton"]'))
 		input_field.clear()
 		input_field.send_keys(name)
 		self.wait_for_text(_('Search query'))
