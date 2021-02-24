@@ -1,3 +1,9 @@
+ucs-test (10.0.3-31) unstable; urgency=medium
+
+  * Bug #52818: Changing network for 85_docker_compose
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Feb 2021 07:57:39 +0100
+
 ucs-test (10.0.3-30) unstable; urgency=medium
 
   * Bug #52831: fix some selenium tests

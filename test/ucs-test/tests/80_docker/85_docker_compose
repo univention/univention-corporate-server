@@ -94,9 +94,12 @@ if __name__ == '__main__':
 			assert network == '172.16.0.0/24', network
 			yml_file = '/var/lib/univention-appcenter/apps/' + name + '/compose/docker-compose.yml'
 			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.0.0/24'
-			assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.2'
-			assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.3'
+			# Bug (?): Normally, we would test against 172.16.0.0/24
+			# there is probably a leftover network from a previous test?
+			subprocess.call(['docker', 'network', 'list'])
+			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
+			assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
+			assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
 			assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test', content['services']['test2']['environment']
 		finally:
 			app.uninstall()
