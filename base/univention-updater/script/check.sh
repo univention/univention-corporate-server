@@ -359,6 +359,7 @@ update_check_legacy_objects () {
 	return 1
 }
 delete_legacy_objects () {
+	[ "$server_role" != "domaincontroller_master" ] && return 0
 	local filter ldif oc
 	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
 

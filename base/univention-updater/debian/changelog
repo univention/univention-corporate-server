@@ -1,3 +1,9 @@
+univention-updater (15.0.3-16) unstable; urgency=medium
+
+  * Bug #51655: preup.sh: Delete obsolete LDAP only on primary dc
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 24 Feb 2021 18:49:03 +0100
+
 univention-updater (15.0.3-15) unstable; urgency=medium
 
   * Bug #51655: redirect check.sh output to logfile
