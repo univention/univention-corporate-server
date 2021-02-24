@@ -179,16 +179,16 @@ class UCSSetup(UCSInstallation):
 		self.screenshot('finished-setup.png')
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
-		## except welcome screen
-		#found = False
-		#try:
-		#	self.client.waitForText('www', timeout=self.timeout)
-		#	found = True
-		#except VNCDoException:
-		#	self.connect()
-		#if not found:
-		#	self.client.waitForText('press any key', timeout=self.timeout)
-		#self.screenshot('welcome-screen.png')
+		# except welcome screen
+		found = False
+		try:
+			self.client.waitForText('www', timeout=self.timeout)
+			found = True
+		except VNCDoException:
+			self.connect()
+		if not found:
+			self.client.waitForText('press any key', timeout=self.timeout)
+		self.screenshot('welcome-screen.png')
 
 	def connect(self):
 		self.conn = VNCConnection(self.args.vnc)
