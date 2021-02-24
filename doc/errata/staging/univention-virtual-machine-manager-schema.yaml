@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-virtual-machine-manager-schema
-fix: 9.0.2-12A~4.4.0.202102171922
+fix: 9.0.2-14A~4.4.0.202102241254
 desc: |
  This update addresses the following issue:
  * Register files from package univention-virtual-machine-manager-schema
