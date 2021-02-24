@@ -5,7 +5,6 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-modules
 fix: 14.0.20-5A~4.4.0.202102231156
 desc: |
- This update addresses the following issue(s):
- * Changing the user password via UMC if bcrypt is
-   activated is now possible.
+ This update addresses the following issue:
+ * Changing the user password via UMC if bcrypt is activated is now possible.
 bug: [52832]

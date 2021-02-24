@@ -6,7 +6,7 @@ src: openssl
 fix: 1.1.0l-1~deb9u3
 desc: |
  This update addresses the following issues:
- * integer overflow in CipherUpdate (CVE-2021-23840)
+ * Integer overflow in CipherUpdate (CVE-2021-23840)
  * NULL pointer dereference in X509_issuer_and_serial_hash() (CVE-2021-23841)
 bug: [52826]
 cve:
