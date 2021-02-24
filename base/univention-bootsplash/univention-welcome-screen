@@ -82,12 +82,28 @@ check_capabilities () {
 	fi
 }
 
-show_welcome_screen () {
+start_plymouthd () {
 	plymouthd
 	if ! plymouth --ping; then
 		echo "plymouthd not running. Do nothing and exit."
 		exit 1
 	fi
+
+	# wait three minutes for plymouth startup
+	for _ in $(seq 320); do
+		plymouth --has-active-vt && break
+		sleep 0.5
+	done
+
+	if ! plymouth --has-active-vt; then
+		echo "plymouth could not paint on active vt? Do nothing and exit."
+		plymouth quit
+		exit 1
+	fi
+}
+
+show_welcome_screen () {
+	start_plymouthd
 	echo "going to plymouth welcome screen mode..."
 	lang="${locale_default%%:*}"
 	if [ -n "$lang" ]; then

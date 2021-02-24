@@ -1,3 +1,9 @@
+univention-bootsplash (11.0.0-3) unstable; urgency=medium
+
+  * Bug #52454: fix univention-welcome-screen is not shown after system setup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 24 Feb 2021 11:40:39 +0100
+
 univention-bootsplash (11.0.0-2) unstable; urgency=medium
 
   * Bug #52798: Adjust theme to new design
