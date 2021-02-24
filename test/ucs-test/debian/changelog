@@ -1,3 +1,9 @@
+ucs-test (10.0.3-34) unstable; urgency=medium
+
+  * Bug #52818: Changing network for 85_docker_compose - last occurrence
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Feb 2021 21:30:05 +0100
+
 ucs-test (10.0.3-33) unstable; urgency=medium
 
   * Bug #47734: modified path for plugin_dir for python2
