@@ -1,3 +1,10 @@
+univention-mail-postfix (14.0.0-3) unstable; urgency=low
+
+  * Bug #52842: add user listfilter first to prevent errors
+  * Bug #52842: create main.cf file before first use
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 24 Feb 2021 12:51:36 +0100
+
 univention-mail-postfix (14.0.0-2) unstable; urgency=low
 
   * Bug #45205: readd unionmap support
