@@ -47,7 +47,8 @@ from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
 try:
 	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa F401
-except ImportError:
+	import univention.config_registry_info as cri  # noqa F$01
+except ImportError:  # pragma: no cover
 	pass
 
 __all__ = [
@@ -345,7 +346,7 @@ def handler_filter(args, opts=dict()):
 	"""Run filter on STDIN to STDOUT."""
 	ucr = ConfigRegistry()
 	ucr.load()
-	stdout = sys.stdout if six.PY2 else sys.stdout.buffer
+	stdout = sys.stdout if six.PY2 else sys.stdout.buffer  # type: IO[bytes] # type: ignore
 	stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
@@ -443,7 +444,7 @@ def handler_get(args, opts=dict()):
 
 
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
-	# type: (str, Optional[str], Any, int, int) -> str
+	# type: (str, Optional[str], cri.Variable, Optional[int], int) -> str
 	"""
 	Format UCR variable key, value, description, scope, categories and default value.
 
@@ -537,7 +538,7 @@ def handler_help(args, opts=dict(), out=sys.stdout):
 	:param args: Command line arguments.
 	:param opts: Command line options.
 	"""
-	print('''
+	print(u'''
 univention-config-registry: base configuration for UCS
 copyright (c) 2001-2021 Univention GmbH, Germany
 
@@ -620,6 +621,7 @@ def missing_parameter(action):
 
 
 def _get_config_registry_info():
+	# type: () -> cri.ConfigRegistryInfo
 	# Import located here, because on module level, a circular import would be
 	# created
 	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
@@ -636,7 +638,7 @@ def _register_variable_default_values(ucr):
 	defaults = {}
 	default_variables = info.get_variables()
 	for key, variable in default_variables.items():
-		value = variable.get('Default')
+		value = variable.get('default')
 		if value:
 			defaults[key] = value
 	for key in _ucr:
