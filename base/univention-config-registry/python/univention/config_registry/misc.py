@@ -39,7 +39,7 @@ import string  # pylint: disable-msg=W0402
 from pipes import quote as escape_value
 try:
 	from typing import Dict, IO, List, Text  # noqa F401
-except ImportError:
+except ImportError:  # pragma: no cover
 	pass
 
 __all__ = [
@@ -156,10 +156,5 @@ def directory_files(directory):
 			if os.path.isfile(filename):
 				result.append(filename)
 	return result
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
 
 # vim:set sw=4 ts=4 noet:
