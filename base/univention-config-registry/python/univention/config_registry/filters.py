@@ -33,7 +33,7 @@
 from univention.config_registry.misc import key_shell_escape, escape_value
 try:
 	from typing import Any, Iterable  # noqa F401
-except ImportError:
+except ImportError:  # pragma: no cover
 	pass
 
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']

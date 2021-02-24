@@ -26,6 +26,8 @@
 0009-2:tests/test_cli.py
 0009-5:tests/test_cli.py
 0010-2:tests/test_cli.py
+0009-2:tests/test_filters.py
+0010-2:tests/test_filters.py
 0010-2:tests/test_handler.py
 0010-2:tests/test_info.py
 0009-2:tests/test_handler.py
