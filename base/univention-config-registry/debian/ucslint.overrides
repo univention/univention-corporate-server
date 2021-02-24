@@ -13,32 +13,34 @@
 0009-2: scripts/ldapsearch-wrapper
 0009-2: scripts/ldapsearch-decode64
 # Internal unit tests: no copyright, has_key, #!python
-0009-2:tests/unwrap/unwrap.py
-0009-2:tests/test_info_tools.py
-0009-5:tests/test_info_tools.py
-0010-2:tests/test_info_tools.py
 0009-2:tests/test_backend.py
-0009-5:tests/test_backend.py
-0010-2:tests/test_backend.py
 0009-2:tests/test_backend_threading.py
-0009-5:tests/test_backend_threading.py
-0010-2:tests/test_backend_threading.py
 0009-2:tests/test_cli.py
-0009-5:tests/test_cli.py
-0010-2:tests/test_cli.py
-0010-2:tests/test_handler.py
-0010-2:tests/test_info.py
+0009-2:tests/test_filters.py
 0009-2:tests/test_handler.py
 0009-2:tests/test_info.py
+0009-2:tests/test_info_tools.py
 0009-2:tests/test_interfaces.py
+0009-2:tests/unwrap/unwrap.py
+0009-5:tests/test_backend.py
+0009-5:tests/test_backend_threading.py
+0009-5:tests/test_cli.py
+0009-5:tests/test_info_tools.py
 0009-5:tests/test_interfaces.py
-0010-2:tests/test_interfaces.py
 0010-2:tests/multifile.sh
+0010-2:tests/test_backend.py
+0010-2:tests/test_backend_threading.py
+0010-2:tests/test_cli.py
 0010-2:tests/test_cli.sh
-0010-2:tests/unwrap/unwrap.sh
+0010-2:tests/test_filters.py
+0010-2:tests/test_handler.py
+0010-2:tests/test_info.py
+0010-2:tests/test_info_tools.py
+0010-2:tests/test_interfaces.py
 0010-2:tests/unwrap/test.sh
 0010-2:tests/unwrap/unwrap.sed
 0010-2:tests/unwrap/unwrap.sed2
+0010-2:tests/unwrap/unwrap.sh
 0013-2:tests/multifile.sh
 # Broken ucslint Bug 42294
 0010-2: compile
