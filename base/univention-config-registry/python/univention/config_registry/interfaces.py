@@ -44,7 +44,7 @@ from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 try:
 	from typing import Any, Callable, Dict, Iterator, Optional, Union, Tuple, Type  # noqa F401
 	from ipaddress import _IPAddressBase  # noqa F401
-except ImportError:
+except ImportError:  # pragma: no cover
 	pass
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']

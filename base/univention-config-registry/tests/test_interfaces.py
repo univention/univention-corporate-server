@@ -1,9 +1,13 @@
 #!/usr/bin/python
 """Unit test for univention.config_registry.interfaces."""
 # pylint: disable-msg=C0103,E0611,R0904
-import pytest
+
 from os.path import devnull
+
+import pytest
 from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
+
+import univention.config_registry.interfaces as ucri
 from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa E402
 
 
@@ -13,6 +17,15 @@ def tmpucr(monkeypatch):
 	Setup UCR instance using `dev/null` for all tests.
 	"""
 	monkeypatch.setenv('UNIVENTION_BASECONF', devnull)
+
+
+def test_VengefulConfigRegistry():
+	ucr = ucri.VengefulConfigRegistry(ucri.ConfigRegistry())
+	with pytest.raises(KeyError):
+		ucr["key"]
+
+	ucr["key"] = "value"
+	assert ucr["key"] == "value"
 
 
 class Test_Iface(object):
@@ -98,8 +111,7 @@ class TestInterfaces(object):
 
 	def test_empty(self):
 		"""Test no interface."""
-		t = Interfaces(ucr={
-		})
+		t = Interfaces()
 		assert 'eth0' == t.primary
 		assert t.ipv4_gateway is None
 		assert t.ipv6_gateway is None
@@ -145,6 +157,20 @@ class TestInterfaces(object):
 		assert t.get_default_ip_address() is None
 		assert t.get_default_ipv4_address() is None
 		assert t.get_default_ipv6_address() is None
+
+	def test_invalid(self):
+		"""Test invalid gateways."""
+		t = Interfaces(ucr={
+			"gateway": "invalid",
+			"ipv6/gateway": "invalid",
+		})
+		assert t.ipv4_gateway is False
+		assert t.ipv6_gateway is False
+		assert t.ipv6_gateway_zone_index is None
+
+	@pytest.mark.parametrize("value", [None, ""])
+	def test_non_values(self, value):
+		assert Interfaces(ucr={"key": value})
 
 	def test_ipv4_multi(self):
 		"""Test multiple IPv4 interfaces."""
