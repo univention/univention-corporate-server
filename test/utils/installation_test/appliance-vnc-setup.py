@@ -44,6 +44,11 @@ class UCSSetup(UCSInstallation):
 
 	next = __next__  # Python 2
 
+	def tab_to_next_and_enter(self, tabs):
+		for i in range(tabs):
+			self.client.keyPress('tab')
+		self.client.keyPress('enter')
+
 	def language(self, language):
 		if self.text_is_visible('Notification', timeout=self.timeout):
 			self.screenshot('notification.png')
@@ -53,9 +58,11 @@ class UCSSetup(UCSInstallation):
 		except VNCDoException:
 			self.connect()
 		self.screenshot('language-setup.png')
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(2)
 		self.client.waitForText('Default system locale', timeout=self.timeout)
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(4)
 
 	def network(self):
 		try:
@@ -67,7 +74,8 @@ class UCSSetup(UCSInstallation):
 		if self.args.role in ['admember', 'slave']:
 			self.click('Preferred DNS')
 			self.client.enterText(self.args.dns)
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(6)
 		time.sleep(60)
 		# check APIPA warning (automatic private address for eth0 if no dhcp answer)
 		try:
@@ -131,7 +139,8 @@ class UCSSetup(UCSInstallation):
 		self.client.enterText(password)
 		self.client.keyPress('tab')
 		self.client.enterText(password)
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(2)
 
 	def hostname(self, hostname):
 		self.client.waitForText('Host settings', timeout=self.timeout)
@@ -148,12 +157,15 @@ class UCSSetup(UCSInstallation):
 			self.client.enterText(self.args.password)
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.password)
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(2)
 
 	def start(self):
 		self.client.waitForText('confirm configuration', timeout=self.timeout)
 		self.screenshot('start-setup.png')
 		found = False
+		for i in range(3):
+			self.client.keyPress('down')
 		try:
 			self.client.mouseClickOnText('configuresystem')
 			found = True
@@ -163,7 +175,7 @@ class UCSSetup(UCSInstallation):
 			self.client.mouseClickOnText('configure system')
 
 	def finish(self):
-		self.client.waitForText('Setup successful', timeout=3600, prevent_screen_saver=True)
+		self.client.waitForText('successfully set up', timeout=3600, prevent_screen_saver=True)
 		self.screenshot('finished-setup.png')
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
@@ -194,7 +206,8 @@ class UCSSetup(UCSInstallation):
 				self.hostname(self.args.fqdn)
 			try:
 				self.client.waitForText('Software configuration', timeout=self.timeout)
-				self.next()
+				#self.next()
+				self.tab_to_next_and_enter(13)
 			except VNCDoException:
 				self.connect()
 			self.start()
