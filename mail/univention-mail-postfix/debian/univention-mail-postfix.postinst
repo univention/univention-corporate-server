@@ -31,16 +31,21 @@
 
 . /usr/share/univention-lib/all.sh
 
+# create dummy main.cf to prevent error messages
+[ -e /etc/postfix/main.cf ] || touch /etc/postfix/main.cf
+# create empty local files for our customers
+[ -e /etc/postfix/main.cf.local ] || touch /etc/postfix/main.cf.local
+[ -e /etc/postfix/master.cf.local ] || touch /etc/postfix/master.cf.local
+
+adduser --quiet --system --home /var/lib/listfilter --disabled-password listfilter
+adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
+newaliases
+adduser postfix sasl
+
 #DEBHELPER#
 
 eval "$(univention-config-registry shell)"
 
-if ! [ -e /etc/postfix/main.cf.local ]; then
-	touch /etc/postfix/main.cf.local
-fi
-if ! [ -e /etc/postfix/master.cf.local ]; then
-	touch /etc/postfix/master.cf.local
-fi
 
 univention-config-registry set \
 	postfix/autostart?yes \
@@ -113,11 +118,6 @@ for file in transport virtual canonical access relocated; do
   postmap /etc/postfix/$file
 done
 
-
-adduser --quiet --system --home /var/lib/listfilter --disabled-password listfilter
-adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
-newaliases
-adduser postfix sasl
 
 univention-config-registry commit /etc/mailname
 univention-config-registry commit /etc/listfilter.secret
