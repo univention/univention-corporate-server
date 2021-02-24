@@ -13,8 +13,6 @@ import pytest
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-from univention.testing.utils import package_installed
-import time
 
 
 def main():
@@ -33,10 +31,6 @@ def main():
 		utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]})
 		join_member_with_preexisting_acc(memberserver1, udm)
 		join_member_with_conflicting_mac(memberserver2)
-
-		if package_installed('univention-samba4') or package_installed('univention-samba'):
-			print('Waiting a little before cleaning up to decrease chances of an s4connector loop. See Bug #52358')
-			time.sleep(10)
 
 
 def join_member_with_preexisting_acc(memberserver, udm):

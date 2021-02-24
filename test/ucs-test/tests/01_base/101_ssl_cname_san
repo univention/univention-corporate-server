@@ -8,8 +8,6 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.strings as strings
 import univention.testing.utils as utils
-from univention.testing.utils import package_installed
-import time
 from M2Crypto import X509
 
 
@@ -37,9 +35,6 @@ def test_san():
 
 		if 'www.' + domainname not in san:
 			utils.fail('SANs in cert not correct in default network')
-		if package_installed('univention-samba4') or package_installed('univention-samba'):
-			print('Waiting a little before cleaning up to decrease chances of an s4connector loop. See Bug #52358')
-			time.sleep(10)
 
 
 def test_san_different_network():
@@ -72,9 +67,6 @@ def test_san_different_network():
 
 		if 'www.' + zonename not in san:
 			utils.fail('SANs in cert not correct in non-default network')
-		if package_installed('univention-samba4') or package_installed('univention-samba'):
-			print('Waiting a little before cleaning up to decrease chances of an s4connector loop. See Bug #52358')
-			time.sleep(10)
 
 
 def main():
