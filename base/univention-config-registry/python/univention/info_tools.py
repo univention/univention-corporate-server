@@ -45,7 +45,7 @@ _locale = 'de'
 MYPY = False
 
 
-if MYPY:
+if MYPY:  # pragma: no cover
 	__LVD = Dict[str, str]
 else:
 	__LVD = dict
@@ -87,7 +87,7 @@ class LocalizedValue(__LVD):
 		return self.__default
 
 
-if MYPY:
+if MYPY:  # pragma: no cover
 	__LD = Dict[str, str]
 else:
 	__LD = dict
@@ -128,12 +128,12 @@ class LocalizedDictionary(__LD):
 		return dict.__getitem__(self, key).get(lang)  # type: ignore
 
 	@overload
-	def get(self, key):
+	def get(self, key):  # pragma: no cover
 		# type: (str) -> Optional[str]
 		pass
 
 	@overload  # noqa F811
-	def get(self, key, default):
+	def get(self, key, default):  # pragma: no cover
 		# type: (str, _VT) -> Union[str, _VT]
 		pass
 

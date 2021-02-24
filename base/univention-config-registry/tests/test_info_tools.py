@@ -1,7 +1,9 @@
 #!/usr/bin/python
 """Unit test for univention.into_tools."""
 # pylint: disable-msg=C0103,E0611,R0904
+
 import pytest
+
 import univention.info_tools as uit  # noqa E402
 
 
@@ -23,6 +25,7 @@ class TestLocalizedValue(object):
 		"""set() and get() without locale."""
 		lval0.set('foo')
 		assert 'foo' == lval0.get()
+		assert "LocalizedValue({'fr': 'foo'}, __default='')" == repr(lval0)
 
 	def test_explicit_language(self, lval0):
 		"""set() and get() with locale."""
@@ -126,6 +129,9 @@ class TestLocalizedDictionary(object):
 		norm = ldict0.normalize('foo')
 		assert norm == reference
 
+	def test_normalize_unset(self, ldict0):
+		assert ldict0.normalize("key") == {}
+
 	def test_get_dict(self, ldict0):
 		"""get_dict()."""
 		reference = {
@@ -139,6 +145,9 @@ class TestLocalizedDictionary(object):
 		assert 'bar' == var['fr']
 		assert 'baz' == var['en']
 
+	def test_get_dict_unset(self, ldict0):
+		assert ldict0.get_dict("key") == {}
+
 	def test_eq(self, ldict0):
 		"""__eq__ and __neq__."""
 		obj = uit.LocalizedDictionary()
@@ -150,6 +159,9 @@ class TestLocalizedDictionary(object):
 		obj['foo'] = 'bar'
 		assert ldict0 == obj
 		assert obj == ldict0
+
+	def test_eq_other(self, ldict0):
+		assert not ldict0 == ()
 
 
 @pytest.fixture
@@ -194,3 +206,27 @@ class TestSetLanguage(object):
 		uit.set_language('fr')
 		assert 'baz' == lval.get()
 		assert 'baz' == ldict['val']
+
+
+class TestUnicodeConfig(object):
+
+	@pytest.fixture
+	def cfg(self):
+		"""Return UnicodeConfig instance."""
+		return uit.UnicodeConfig()
+
+	def test_read(self, cfg, tmpdir):
+		tmp = tmpdir / "ini"
+		tmp.write("[section]\nkey = value\n")
+		cfg.read(str(tmp))
+		assert cfg.sections() == ["section"]
+		assert cfg.get("section", "key") == "value"
+
+	def test_write(self, cfg, tmpdir):
+		cfg.add_section("section")
+		cfg.set("section", "key", "value")
+		cfg.set("DEFAULT", "key", "value")
+		tmp = tmpdir / "ini"
+		with tmp.open("w") as fd:
+			cfg.write(fd)
+		assert tmp.check(file=1)
