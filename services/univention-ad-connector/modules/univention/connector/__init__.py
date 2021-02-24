@@ -717,6 +717,9 @@ class ucs(object):
 		if not new:
 			change_type = "delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
+			entryUUID = old.get('entryUUID', [b''])[0].decode('ASCII')
+			entryCSN = old.get('entryCSN', [b''])[0].decode('ASCII')
+			self._forget_entryCSN(entryUUID, entryCSN)
 		else:
 			entryUUID = new.get('entryUUID', [b''])[0].decode('ASCII')
 			if entryUUID:
@@ -729,6 +732,12 @@ class ucs(object):
 			else:
 				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s" % (dn,))
 				return False
+
+			entryCSN = new.get('entryCSN', [b''])[0].decode('ASCII')
+			if self._forget_entryCSN(entryUUID, entryCSN):
+				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: Skipping back-sync of %s %s" % (key, dn))
+				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: because entryCSN %s was written by sync_to_ucs" % (entryCSN,))
+				return True
 
 			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
@@ -1165,8 +1174,8 @@ class ucs(object):
 
 		serverctrls = []
 		response = {}
-		if property_type == 'msGPO':
-			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+
+		serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
 		res = ucs_object.create(serverctrls=serverctrls, response=response)
 		if res:
 			for c in response.get('ctrls', []):
@@ -1185,8 +1194,8 @@ class ucs(object):
 
 		serverctrls = []
 		response = {}
-		if property_type == 'msGPO':
-			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+
+		serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
 		res = ucs_object.modify(serverctrls=serverctrls, response=response)
 		if res:
 			for c in response.get('ctrls', []):
