@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-schema (9.0.2-14) unstable; urgency=medium
+
+  * Bug #51955: prevent AttributeError when syntax class is not
+    registered yet
+
+ -- Florian Best <best@univention.de>  Wed, 24 Feb 2021 12:48:53 +0100
+
 univention-virtual-machine-manager-schema (9.0.2-13) unstable; urgency=medium
 
   * Bug #51955: Register uvmm.schema in LDAP

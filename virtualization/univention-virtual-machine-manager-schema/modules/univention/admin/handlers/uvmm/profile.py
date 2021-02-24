@@ -57,6 +57,8 @@ options = {
 	)
 }
 
+UvmmCapacity = getattr(udm_syntax, 'UvmmCapacity', udm_syntax.string)
+
 
 class BootDevice(udm_syntax.select):
 
@@ -150,12 +152,12 @@ property_descriptions = {
 	'ram': univention.admin.property(
 		short_description=_('Memory'),
 		long_description=_('Amount of memory'),
-		syntax=udm_syntax.UvmmCapacity,
+		syntax=UvmmCapacity,
 	),
 	'diskspace': univention.admin.property(
 		short_description=_('Disk space'),
 		long_description=_('Amount of disk space'),
-		syntax=udm_syntax.UvmmCapacity,
+		syntax=UvmmCapacity,
 	),
 	'drivercache': univention.admin.property(
 		short_description=_('Disk cache'),

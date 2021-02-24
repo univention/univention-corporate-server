@@ -85,7 +85,7 @@ property_descriptions = {
 	'profile': univention.admin.property(
 		short_description=_('Profile'),
 		long_description=_('Reference to the profile used for defining this VM'),
-		syntax=udm_syntax.UvmmProfiles,
+		syntax=getattr(udm_syntax, 'UvmmProfiles', udm_syntax.string),
 	),
 }
 

@@ -70,7 +70,7 @@ property_descriptions = {
 	'type': univention.admin.property(
 		short_description=_('Cloud Type'),
 		long_description=_('Reference to the type of the cloud connection'),
-		syntax=udm_syntax.UvmmCloudType,
+		syntax=getattr(udm_syntax, 'UvmmCloudType', udm_syntax.string),
 		required=True,
 	),
 	'searchPattern': univention.admin.property(
