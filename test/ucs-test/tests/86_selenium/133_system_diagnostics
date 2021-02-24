@@ -28,7 +28,10 @@ class UmcError(Exception):
 
 
 class UMCTester(object):
-	PLUGIN_DIR = os.path.dirname(plugins.__file__)
+	PLUGIN_DIR =  os.path.dirname(plugins.__file__).split(os.path.sep)
+	PLUGIN_DIR[3] = "python3"
+	PLUGIN_DIR = os.path.sep.join(PLUGIN_DIR)
+
 
 	def init(self):
 		self.plugin_path = self.get_plugin_path()
