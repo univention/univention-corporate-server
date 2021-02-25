@@ -1,6 +1,3 @@
-etc/network/ucs-network-tools etc/network/
-etc/network/if-up.d/[0-9]* etc/network/if-up.d/
-etc/network/if-down.d/[0-9]* etc/network/if-down.d/
-etc/network/if-pre-up.d/[0-9]* etc/network/if-pre-up.d/
-etc/dhcp/* etc/dhcp/
+etc/network
+etc/dhcp
 univention-register-network-address usr/sbin
