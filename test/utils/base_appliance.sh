@@ -809,6 +809,20 @@ setup_appliance ()
 	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
 }
 
+clear_dhcp_hostname ()
+{
+	# reset hostname and domainname in case it was set through dhcp
+	local default_hostname="unassigned-hostname"
+	local default_domainname="unassigned-domain"
+	if [ "$(ucr get hostname)" != "$default_hostname" ] || [ "$(ucr get domainname)" != "$default_domainname" ]; then
+		rm -f "/etc/univention/ssl/$(ucr get hostname)"
+		rm -rf "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)"
+		ucr set hostname="$default_hostname" domainname="$default_domainname"
+		univention-certificate new -name "$default_hostname.$default_domainname"
+		ln -s "/etc/univention/ssl/$default_hostname.$default_domainname" "/etc/univention/ssl/$default_hostname"
+	fi
+}
+
 appliance_cleanup ()
 {
 	# after system setup is finished, boot in 1024x768 (not 800x600)
@@ -835,6 +849,8 @@ __EOF__
 
 	# set initial values for UCR ssl variables
 	/usr/sbin/univention-certificate-check-validity
+
+	clear_dhcp_hostname
 
 	# Set official update server, deactivate online repository until system setup script 90_postjoin/20upgrade
 	ucr set repository/online=false \
@@ -898,8 +914,6 @@ __EOF__
 	ucr unset interfaces/restart/auto
 	ucr set system/setup/boot/start=true
 }
-
-
 
 appliance_basesettings ()
 {
