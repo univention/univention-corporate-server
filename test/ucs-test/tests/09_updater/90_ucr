@@ -13,6 +13,7 @@
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
+grep -v "^version/" /etc/univention/base.conf > "$tmp"
 UNIVENTION_BASECONF="$tmp" dpkg-reconfigure univention-updater || :
 dpkg-reconfigure univention-updater
 

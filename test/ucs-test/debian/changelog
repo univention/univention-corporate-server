@@ -1,3 +1,10 @@
+ucs-test (10.0.4-1) unstable; urgency=medium
+
+  * Bug #52850: 09_updater/90_ucr ensure dpkg-reconfiguration does not
+    break slapd.conf
+
+ -- Florian Best <best@univention.de>  Thu, 25 Feb 2021 13:33:16 +0100
+
 ucs-test (10.0.3-35) unstable; urgency=medium
 
   * Bug #52831:
