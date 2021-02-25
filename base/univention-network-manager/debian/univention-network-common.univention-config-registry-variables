@@ -35,7 +35,7 @@ Type=bool
 Categories=system-base
 
 [nameserver/external]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird der/die per DHCP bezogene DNS-Server als 'dns/forwarderX' verwendet.
-Description[en]=If this option is activated or the variable unset, the nameserver(s) retrieved via DHCP is/are used as 'dns/forwarderX'.
+Description[de]=Ist diese Option deaktiviert oder die Variable nicht gesetzt, wird der/die per DHCP bezogene DNS-Server als 'dns/forwarderX' bzw. 'nameserverX' verwendet.
+Description[en]=If this option is deactivated or the variable unset, the nameserver(s) retrieved via DHCP is/are used as 'dns/forwarderX' resp. 'nameserverX'.
 Type=bool
 Categories=system-base
