@@ -207,8 +207,9 @@ class UCSSetup(UCSInstallation):
 				self.hostname(self.args.fqdn)
 			try:
 				self.client.waitForText('Software configuration', timeout=self.timeout)
-				#self.next()
-				self.tab_to_next_and_enter(13)
+				self.client.keyPress('down')
+				self.client.mouseMove(900, 730)
+				self.client.mousePress(1)
 			except VNCDoException:
 				self.connect()
 			self.start()
