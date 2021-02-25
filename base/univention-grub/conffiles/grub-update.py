@@ -51,7 +51,10 @@ def postinst(configRegistry, changes):
 	backgroundimage_target = '/boot/grub/uniboot.png'
 	backgroundimage_source = os.path.join('/usr/share/univention-grub/', 'light-background.png' if light_theme else 'dark-background.png')
 	if configRegistry.get('grub/backgroundimage') == backgroundimage_target:
-		os.makedirs(os.path.dirname(backgroundimage_target), mode=0o755, exist_ok=True)
+		try:
+			os.makedirs(os.path.dirname(backgroundimage_target), mode=0o755)
+		except OSError:
+			pass
 		shutil.copy(backgroundimage_source, backgroundimage_target)
 	if is_conf_compatible():
 		os.system('update-grub')
