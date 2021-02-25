@@ -335,7 +335,7 @@ def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr
 
 	update(UCR_VARS_FWD, forwarders, 'forwarders')
 	update(UCR_VARS_DNS, nameservers, 'nameservers')
-	log.debug('Updating %r', new_ucr_settings)
+	log.info('Updating %r', new_ucr_settings)
 
 	if not options.no_act:
 		for (key, val) in sorted(new_ucr_settings.iteritems()):
