@@ -29,6 +29,8 @@ Configure UCS-domain and forward DNS servers.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 from os import environ
 from sys import modules, stderr, exit
 from collections import OrderedDict
@@ -40,8 +42,14 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
 from DNS import DnsRequest, SocketError, TimeoutError
-from ipaddress import ip_address
+from ipaddress import ip_address, IPv4Address, IPv6Address
 
+try:
+	from typing import Union, Dict, Optional
+	IPAddress = Union[IPv4Address, IPv6Address]
+	DictAddr2Str = Dict[IPAddress, Optional[str]]
+except ImportError:  # pragma: no cover
+	pass
 
 UCR_VARS_FWD = ['dns/forwarder%d' % (i,) for i in range(1, 4)]
 UCR_VARS_DNS = ['nameserver%d' % (i,) for i in range(1, 4)]
@@ -51,7 +59,7 @@ LOCAL = '127.0.0.1'  # or ::1 for IPv6
 options = Values()
 
 
-def main():
+def main():  # type: () -> None
 	global options
 	options = parse_args()
 	setup_logging()
@@ -66,7 +74,8 @@ def main():
 		log.fatal('Using external DNS - aborting')
 		exit(0)
 
-	nameservers, forwarders = OrderedDict(), OrderedDict()
+	nameservers = OrderedDict()  # type: DictAddr2Str
+	forwarders = OrderedDict()  # type: DictAddr2Str
 	need_fixing = get_forwarders(forwarders, ucr)
 	need_fixing |= get_nameservers(nameservers, ucr)
 	need_fixing |= validate_servers(nameservers, forwarders, ucr['domainname'])
@@ -87,7 +96,7 @@ def main():
 	update_ucr(ucr, nameservers, forwarders)
 
 
-def parse_args():
+def parse_args():  # type: () -> Values
 	usage = '%prog [options]'
 	description = modules[__name__].__doc__
 	parser = OptionParser(usage=usage, description=description)
@@ -142,7 +151,7 @@ def parse_args():
 	return options
 
 
-def setup_logging():
+def setup_logging():  # type: () -> None
 	FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
 	LEVELS = [ERROR, WARNING, INFO, DEBUG]
 	try:
@@ -152,16 +161,16 @@ def setup_logging():
 	basicConfig(format=FORMAT, level=level, stream=stderr)
 
 
-def get_forwarders(forwarders, ucr):
+def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
 	log = getLogger(__name__).getChild('ucr/fwd')
 	log.debug('Reading external DNS forwarders from UCR...')
 
 	need_fixing = False
 	for var in UCR_VARS_FWD:
-		fwd = ucr.get(var, '').strip()
-		if not fwd:
+		fwd_str = ucr.get(var, '').strip()
+		if not fwd_str:
 			continue
-		fwd = ip_address(u'%s' % (fwd,))
+		fwd = ip_address(u'%s' % (fwd_str,))
 		if is_self(fwd):
 			log.error("Dropping local address %s from UCRV %s", fwd, var)
 			need_fixing = True
@@ -172,23 +181,23 @@ def get_forwarders(forwarders, ucr):
 	return need_fixing
 
 
-def get_nameservers(nameservers, ucr):
+def get_nameservers(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
 	log = getLogger(__name__).getChild('ucr/ns')
 	log.debug('Reading UCS domain servers from UCR...')
 
 	need_fixing = False
 	for var in UCR_VARS_DNS:
-		dns = ucr.get(var, '').strip()
-		if not dns:
+		value = ucr.get(var, '').strip()
+		if not value:
 			continue
-		dns = ip_address(u'%s' % (dns,))
+		dns = ip_address(u'%s' % (value,))
 		log.info('Found server %s from UCRV %s', dns, var)
 		nameservers[dns] = None
 
 	return need_fixing
 
 
-def validate_servers(nameservers, forwarders, domain):
+def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, DictAddr2Str, str) -> bool
 	log = getLogger(__name__).getChild('val')
 	if options.no_validation:
 		log.info('Skip validation of DNS servers')
@@ -212,7 +221,7 @@ def validate_servers(nameservers, forwarders, domain):
 	return need_fixing
 
 
-def either_or(nameservers, forwarders):
+def either_or(nameservers, forwarders):  # type: (DictAddr2Str, DictAddr2Str) -> bool
 	log = getLogger(__name__).getChild('xor')
 	if not options.xor:
 		log.info('Skip removing nameservers from forwarders')
@@ -229,7 +238,7 @@ def either_or(nameservers, forwarders):
 	return need_fixing
 
 
-def add_self(nameservers, ucr):
+def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
 	log = getLogger(__name__).getChild('ucr/self')
 	if options.no_self:
 		log.info('Skip adding self')
@@ -257,7 +266,7 @@ def add_self(nameservers, ucr):
 	nameservers.update(old)
 
 
-def add_nameservers(nameservers, domain):
+def add_nameservers(nameservers, domain):  # type: (DictAddr2Str, str) -> None
 	log = getLogger(__name__).getChild('ns')
 	if not options.add_nameservers:
 		log.info('Skip adding NS')
@@ -285,7 +294,7 @@ def add_nameservers(nameservers, domain):
 		log.error('DNS lookup of NS records in %s against %s failed', domain, LOCAL)
 
 
-def add_master(nameservers, master):
+def add_master(nameservers, master):  # type: (DictAddr2Str, str) -> None
 	log = getLogger(__name__).getChild('ldap')
 	if not options.add_master:
 		log.info('Skip adding Primary Directory Node')
@@ -310,13 +319,13 @@ def add_master(nameservers, master):
 		log.error('DNS lookup of %s against %s failed', master, LOCAL)
 
 
-def update_ucr(ucr, nameservers, forwarders):
+def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr2Str, DictAddr2Str) -> None
 	log = getLogger(__name__).getChild('ucr')
 	new_ucr_settings = {}
 
-	def update(names, values, typ):
-		log.debug('%s=%r', typ, values)
-		values = ['%s' % (val,) for val in values]
+	def update(names, input_values, typ):  # type: (List[str], DictAddr2Str, str) -> None
+		log.debug('%s=%r', typ, input_values)
+		values = ['%s' % (val,) for val in input_values]  # type: List[Optional[str]]
 		diff = len(names) - len(values)
 		if diff > 0:
 			values += [None] * diff
@@ -340,7 +349,7 @@ def update_ucr(ucr, nameservers, forwarders):
 		check_call(('rndc', 'reconfig'))
 
 
-def query_master_src_record(domain, server):
+def query_master_src_record(domain, server):  # type: (str, IPAddress) -> Union[bool, str]
 	log = getLogger(__name__).getChild('dns/srv')
 
 	rec = '_domaincontroller_master._tcp.%s.' % (domain.rstrip('.'),)
@@ -350,10 +359,10 @@ def query_master_src_record(domain, server):
 	res = req.req()
 	log.debug('header=%r', res.header)
 
-	return res.header['status'] == 'NOERROR' and res.header['aa']
+	return res.header['status'] == 'NOERROR' and res.header['aa']  # type: ignore
 
 
-def get_ip(rr):
+def get_ip(rr):  # type: (Dict[str, str]) -> IPAddress
 	r"""
 	>>> get_ip({'typename': 'A', 'data': '127.0.0.1'})
 	IPv4Address('127.0.0.1')
@@ -362,18 +371,18 @@ def get_ip(rr):
 	"""
 	typ, data = rr['typename'], rr['data']
 	if typ == 'A':
-		return ip_address(u'%s' % (data,))
+		return ip_address(u'%s' % (data,))  # type: ignore
 	elif typ == 'AAAA':
 		# Work-around bug in python-pydns, which does not unpack IPv6 addresses
 		assert len(data) == 16
 		if not isinstance(data, bytes):
 			data = bytes(data, 'charmap')
-		return ip_address(data)
+		return ip_address(data)  # type: ignore
 	else:
 		raise TypeError(typ)
 
 
-def is_self(addr):
+def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
 	"""
 	>>> is_self('127.0.0.1')
 	True
@@ -398,7 +407,7 @@ def is_self(addr):
 		return False
 
 
-def run_tests():
+def run_tests():  # type: () -> None
 	import doctest
 	doctest.testmod()
 
