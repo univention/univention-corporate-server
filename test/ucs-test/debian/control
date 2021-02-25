@@ -553,8 +553,10 @@ Architecture: all
 Depends:
  chromium,
  chromium-driver,
+ python-pytest,
  python-selenium,
  python-xvfbwrapper,
+ python3-pytest,
  python3-selenium,
  python3-xvfbwrapper,
  xvfb,
