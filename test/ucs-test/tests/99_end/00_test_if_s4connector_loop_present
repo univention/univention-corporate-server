@@ -40,7 +40,7 @@ def count_connector_log_lines():
 	with open('/var/log/univention/connector-s4.log') as f:
 		for i, l in enumerate(f):
 			pass
-	return i+1
+	return i + 1
 
 
 def looping_objects(log):
@@ -89,10 +89,9 @@ def check_if_looping():
 
 
 def main():
-		check_if_looping()
+	check_if_looping()
 
 
 if __name__ == '__main__':
 	main()
-
 # vim: set ft=python :
