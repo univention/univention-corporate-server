@@ -29,11 +29,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
+
 import sys
 import os
 import re
 import string  # pylint: disable-msg=W0402
+from pipes import quote as escape_value
 try:
 	from typing import Dict, IO, List, Text  # noqa F401
 except ImportError:
@@ -68,29 +71,6 @@ def replace_umlaut(line):
 	return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
 
-try:
-	from pipes import quote as escape_value
-except ImportError:
-	_safechars = frozenset(string.ascii_letters + string.digits + '@%_-+=:,./')
-
-	def escape_value(text):  # type: ignore
-		# type: (str) -> str
-		"""
-		Return a shell-escaped version of the file string.
-
-		:param text: Shell command argument.
-		:returns: Escaped argument string.
-		"""
-		for c in text:
-			if c not in _safechars:
-				break
-		else:
-			if not text:
-				return "''"
-			return text
-		# use single quotes, and put single quotes into double quotes
-		# the string $'b is then quoted as '$'"'"'b'
-		return "'" + text.replace("'", "'\"'\"'") + "'"
 
 
 UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
