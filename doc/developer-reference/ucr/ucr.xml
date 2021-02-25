@@ -419,10 +419,10 @@ def postinst(config_registry, changes):
 						</listitem>
 					</varlistentry>
 				</variablelist>
-				<para>
+				<para id="ucr:file:script">
 					If a script <filename>/etc/univention/templates/scripts/<replaceable>full-path-to-file</replaceable></filename> exists, it will be called after the file is committed.
 					The script is called with the argument <option>postinst</option>.
-					It receives the list of changed variables as documented in <xref linkend="ucr:script"/>.
+					It receives the same list of changed variables as documented in <xref linkend="ucr:script"/>.
 				</para>
 			</section>
 
@@ -540,6 +540,12 @@ Variables: <variable1>]]></programlisting>
 						</listitem>
 					</varlistentry>
 				</variablelist>
+				<warning>
+					<para>
+						There is <emphasis>no</emphasis> guarantee that <literal>Script</literal> is executed <emphasis>after</emphasis> a file has been committed.
+						If this is required for e.g. restarting a service place the script instead at the location mentioned at the end of <xref linkend="ucr:file:script"/>.
+					</para>
+				</warning>
 			</section>
 
 			<section id="ucr:module">
@@ -590,6 +596,12 @@ def handler(config_registry, changes):
 						</listitem>
 					</varlistentry>
 				</variablelist>
+				<warning>
+					<para>
+						There is <emphasis>no</emphasis> guarantee that <literal>Module</literal> is executed <emphasis>after</emphasis> a file has been committed.
+						If this is required for e.g. restarting a service use <literal>Preinst</literal> or <literal>Postinst</literal> as mentioned in  <xref linkend="ucr:file:script"/> instead.
+					</para>
+				</warning>
 			</section>
 		</section>
 
