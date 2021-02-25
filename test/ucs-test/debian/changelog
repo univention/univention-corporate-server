@@ -1,3 +1,9 @@
+ucs-test (10.0.4-3) unstable; urgency=medium
+
+  * Bug #47734: added Delay to selenium test 132
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 25 Feb 2021 15:56:52 +0100
+
 ucs-test (10.0.4-2) unstable; urgency=medium
 
   * Bug #52358: Add tests to detect and create loops in s4/ad connector

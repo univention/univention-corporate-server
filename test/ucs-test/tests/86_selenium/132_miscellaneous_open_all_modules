@@ -11,6 +11,8 @@
 
 import logging
 
+import time
+
 from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
@@ -35,6 +37,7 @@ class UMCTester(object):
 			self.selenium.open_module(module, True, False)
 			if module == _('App Center'):
 				self.appcenter.close_info_dialog_if_visisble()
+				time.sleep(2)
 			self.selenium.click_button(_('Close'))
 
 	def get_available_modules(self):
