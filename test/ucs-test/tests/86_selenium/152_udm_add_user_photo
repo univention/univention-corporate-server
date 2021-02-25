@@ -75,7 +75,7 @@ class UMCTester(object):
 
 	def test_clear_image(self, user):
 		self.users.open_details(user)
-		self.selenium.click_button('Remove')
+		self.selenium.click_button('Remove', xpath_prefix='//*[@containsClass="umcUDMUsersModule__jpegPhoto"]')
 		if self.get_uploaded_src():
 			raise UmcUdmError('There is still an img tag in the Image widget after "Remove" has been pressed')
 		self.users.save_details()

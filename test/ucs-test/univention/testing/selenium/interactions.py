@@ -84,11 +84,12 @@ class Interactions(object):
 			**kwargs
 		)
 
-	def click_button(self, button_text, **kwargs):
+	def click_button(self, button_text, xpath_prefix='', **kwargs):
 		logger.info("Clicking the button %r", button_text)
+		xpath = '//*[@containsClass="dijitButtonText"][text() = "%s"]' % (button_text,)
+		xpath = expand_path(xpath_prefix + xpath)
 		self.click_element(
-			expand_path('//*[@containsClass="dijitButtonText"][text() = "%s"]')
-			% (button_text,),
+			xpath,
 			**kwargs
 		)
 
