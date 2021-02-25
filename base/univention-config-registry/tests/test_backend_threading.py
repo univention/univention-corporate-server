@@ -19,7 +19,7 @@ class TestConfigRegistry(object):
 
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
 
-	def test_threading(self, tmpdir):
+	def test_threading(self):
 		"""Multiple threads accessing same registry."""
 		DO_LOCKING = True
 		THREADS = 10
@@ -28,7 +28,6 @@ class TestConfigRegistry(object):
 		KEY = 'x' * PRIME
 
 		SKEY, SVALUE = 'always', 'there'
-		ConfigRegistry.PREFIX = str(tmpdir)
 		ucr = ConfigRegistry()
 		ucr[SKEY] = SVALUE
 		ucr.save()

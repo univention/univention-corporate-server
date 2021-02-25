@@ -26,7 +26,7 @@ class TestConfigRegistry(object):
 	Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`
 	"""
 
-	def test_normal(self, ucr0, tmpdir):
+	def test_normal(self, tmpdir):
 		"""Create default registry."""
 		assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.NORMAL]).exists()
 
@@ -36,12 +36,12 @@ class TestConfigRegistry(object):
 		ConfigRegistry.SCHEDULE,
 		ConfigRegistry.FORCED,
 	])
-	def test_levels(self, level, ucr0, tmpdir):
+	def test_levels(self, level, tmpdir):
 		"""Create level registry."""
 		_ucr = ConfigRegistry(write_registry=level)  # noqa F841
 		assert (tmpdir / ConfigRegistry.BASES[level]).exists()
 
-	def test_custom(self, ucr0, tmpdir):
+	def test_custom(self, tmpdir):
 		"""Create CUSTOM registry."""
 		fname = tmpdir / 'custom.conf'
 
@@ -68,7 +68,7 @@ class TestConfigRegistry(object):
 		ucr.load()
 		assert ucr['foo'] == 'bar'
 
-	def test_unset_getitem(self, ucr0):
+	def test_unset_getitem(self):
 		"""Test unset ucr[key]."""
 		ucr = ConfigRegistry()
 		assert ucr['foo'] is None
@@ -105,19 +105,19 @@ class TestConfigRegistry(object):
 		ucr0['foo'] = 'bar'
 		assert ucr0.get('foo', getscope=True) == (ConfigRegistry.NORMAL, 'bar')
 
-	def test_scope_get_ldap(self, ucr0):
+	def test_scope_get_ldap(self):
 		"""Test LDAP ucr.get(key, default)."""
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 		ucr['foo'] = 'bar'
 		assert ucr.get('foo', getscope=True) == (ConfigRegistry.LDAP, 'bar')
 
-	def test_scope_get_schedule(self, ucr0):
+	def test_scope_get_schedule(self):
 		"""Test SCHEDULE ucr.get(key, default)."""
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.SCHEDULE)
 		ucr['foo'] = 'bar'
 		assert ucr.get('foo', getscope=True) == (ConfigRegistry.SCHEDULE, 'bar')
 
-	def test_scope_get_forced(self, ucr0):
+	def test_scope_get_forced(self):
 		"""Test FORCED ucr.get(key, default)."""
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
 		ucr['foo'] = 'bar'
@@ -132,14 +132,14 @@ class TestConfigRegistry(object):
 		ucr0['foo'] = 'bar'
 		assert ucr0.has_key('foo')  # noqa W601
 
-	def test_has_key_write_unset(self, ucr0):
+	def test_has_key_write_unset(self):
 		"""Test unset ucr.has_key(key, True)."""
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
 		ucr['foo'] = 'bar'
 		ucr = ConfigRegistry()
 		assert not ucr.has_key('foo', write_registry_only=True)  # noqa W601
 
-	def test_has_key_write_set(self, ucr0):
+	def test_has_key_write_set(self):
 		"""Test set ucr.has_key(key, True)."""
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
 		ucr = ConfigRegistry()

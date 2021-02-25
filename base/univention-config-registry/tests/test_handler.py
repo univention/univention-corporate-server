@@ -280,11 +280,10 @@ def handler0(mocker):
 
 
 @pytest.fixture
-def handlers(mocker, tmpdir):
+def handlers(tmpcache):
 	"""
 	Return :py:class:`ConfigHandlers` instance with private cache directory.
 	"""
-	mocker.patch.object(ucrh.ConfigHandlers, "CACHE_FILE", str(tmpdir / "cache"))
 	handlers = ucrh.ConfigHandlers()
 	return handlers
 
