@@ -359,7 +359,6 @@ update_check_legacy_objects () {
 	return 1
 }
 delete_legacy_objects () {
-	[ "$server_role" != "domaincontroller_master" ] && return 0
 	local filter ldif oc
 	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
 
@@ -388,6 +387,7 @@ delete_legacy_objects () {
 	rm -f "$ldif"
 }
 delete_obsolete_objects () {
+	[ "$server_role" != "domaincontroller_master" ] && return 0
 	local filter ldif oc
 	local backupfile="${updateLogDir}/removed_with_ucs5.ldif"
 	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"

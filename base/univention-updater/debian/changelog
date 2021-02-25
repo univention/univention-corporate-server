@@ -1,3 +1,10 @@
+univention-updater (15.0.3-17) unstable; urgency=medium
+
+  * Bug #51655: postup.sh: wait for listener postrun
+  * fix check for server role, move to correct function
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 25 Feb 2021 10:30:49 +0100
+
 univention-updater (15.0.3-16) unstable; urgency=medium
 
   * Bug #51655: preup.sh: Delete obsolete LDAP only on primary dc
