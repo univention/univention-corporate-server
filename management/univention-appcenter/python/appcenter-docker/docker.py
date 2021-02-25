@@ -46,7 +46,7 @@ from base64 import encodestring
 from ipaddress import IPv4Network, IPv4Address
 import time
 
-from six.moves import urllib_request, http_client
+from six.moves import urllib_request, http_client, urllib_error
 import ruamel.yaml as yaml
 
 from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
@@ -97,12 +97,12 @@ def access(image):
 	request = urllib_request.Request(url, headers={'Authorization': 'Basic %s' % auth})
 	try:
 		urlopen(request)
-	except urllib_request.HTTPError as exc:
+	except urllib_error.HTTPError as exc:
 		if exc.getcode() == 401:
 			return False
 		else:
 			return False  # TODO
-	except (urllib_request.URLError, ssl.CertificateError, http_client.BadStatusLine):
+	except (urllib_error.URLError, ssl.CertificateError, http_client.BadStatusLine):
 		return False  # TODO
 	else:
 		return True
