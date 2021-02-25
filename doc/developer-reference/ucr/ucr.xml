@@ -546,6 +546,12 @@ Variables: <variable1>]]></programlisting>
 						If this is required for e.g. restarting a service place the script instead at the location mentioned at the end of <xref linkend="ucr:file:script"/>.
 					</para>
 				</warning>
+				<note>
+					<para>
+						The script interface is quiet limited for historical reasons.
+						Consider it deprecated in favor of <link linkend="ucr:module">Module</link>.
+					</para>
+				</note>
 			</section>
 
 			<section id="ucr:module">
