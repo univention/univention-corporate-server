@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*
 ## desc: Fast add and delete an object, see if this creates an adconnector loop
 ## roles:
