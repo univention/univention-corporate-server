@@ -69,10 +69,9 @@ def create_and_delete_computer(rounds=20):
 
 
 def main():
-		create_and_delete_computer()
+	create_and_delete_computer()
 
 
 if __name__ == '__main__':
 	main()
-
 # vim: set ft=python :
