@@ -1,3 +1,9 @@
+ucs-test (10.0.4-2) unstable; urgency=medium
+
+  * Bug #52358: Add tests to detect and create loops in s4/ad connector
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 25 Feb 2021 13:49:29 +0100
+
 ucs-test (10.0.4-1) unstable; urgency=medium
 
   * Bug #52850: 09_updater/90_ucr ensure dpkg-reconfiguration does not
