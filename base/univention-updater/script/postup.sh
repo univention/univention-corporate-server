@@ -150,7 +150,7 @@ while [ "$wait_period" -lt "300" ]; do
 	sleep 1
 	wait_period=$(($wait_period+1))
 done
-# Wait another 30 seconds for listener postrun, as ldap_extention restarts slapd
+# Wait another 30 seconds for listener postrun, as ldap_extension restarts slapd
 sleep 30
 
 rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
