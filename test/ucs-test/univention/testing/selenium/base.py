@@ -284,7 +284,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if do_reload:
 			self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		# input_field = self.driver.find_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
 		input_field = self.wait_for_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
 		if not input_field.is_displayed():
 			self.click_element(expand_path('//*[@containsClass="umcModuleSearchToggleButton"]'))

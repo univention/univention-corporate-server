@@ -166,9 +166,3 @@ class ChecksAndWaits(object):
 			expected_conditions.presence_of_element_located((webdriver.common.by.By.CSS_SELECTOR, css_selector)),
 			message
 		)
-
-	def wait_for_elements_by_css_selector(self, css_selector, message='', timeout=60):
-		return webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
-			expected_conditions.presence_of_element_located((webdriver.common.by.By.CSS_SELECTOR, css_selector)),
-			message
-		)

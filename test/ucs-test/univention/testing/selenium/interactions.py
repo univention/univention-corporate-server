@@ -151,7 +151,7 @@ class Interactions(object):
 		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
 		time.sleep(0.5)
 
-	def click_element(self, xpath, scroll_into_view=False, timeout=6):  # TODO timeout=60
+	def click_element(self, xpath, scroll_into_view=False, timeout=60):
 		"""
 		Click on the element which is found by the given xpath.
 
