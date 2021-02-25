@@ -1,3 +1,12 @@
+ucs-test (10.0.3-35) unstable; urgency=medium
+
+  * Bug #52831:
+    - run selenium tests with python3
+    - add dependency
+    - fix some tests
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 25 Feb 2021 12:09:53 +0100
+
 ucs-test (10.0.3-34) unstable; urgency=medium
 
   * Bug #52818: Changing network for 85_docker_compose - last occurrence
