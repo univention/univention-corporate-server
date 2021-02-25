@@ -32,7 +32,7 @@ Configure UCS-domain and forward DNS servers.
 from __future__ import absolute_import
 
 from os import environ
-from sys import modules, stderr, exit
+from sys import stderr, exit
 from collections import OrderedDict
 from subprocess import check_output, check_call, CalledProcessError
 from optparse import OptionParser, SUPPRESS_HELP, Values
@@ -76,8 +76,9 @@ def main():  # type: () -> None
 
 	nameservers = OrderedDict()  # type: DictAddr2Str
 	forwarders = OrderedDict()  # type: DictAddr2Str
-	need_fixing = get_forwarders(forwarders, ucr)
-	need_fixing |= get_nameservers(nameservers, ucr)
+	need_fixing = get_nameservers_cli(nameservers)
+	need_fixing |= get_forwarders(forwarders, ucr)
+	need_fixing |= get_nameservers_ucr(nameservers, ucr)
 	need_fixing |= validate_servers(nameservers, forwarders, ucr['domainname'])
 	need_fixing |= either_or(nameservers, forwarders)
 	need_fixing |= not nameservers
@@ -98,7 +99,7 @@ def main():  # type: () -> None
 
 def parse_args():  # type: () -> Values
 	usage = '%prog [options]'
-	description = modules[__name__].__doc__
+	description = __doc__
 	parser = OptionParser(usage=usage, description=description)
 	parser.add_option(
 		'--verbose', '-v',
@@ -140,6 +141,17 @@ def parse_args():  # type: () -> Values
 		'--run-tests',
 		action='store_true',
 		help=SUPPRESS_HELP)
+	parser.add_option(
+		'--no-ucr',
+		action='store_true',
+		help='Do not load nameservers and forwarders from UCR variables')
+	parser.add_option(
+		'--dnsserver',
+		action="append",
+		dest="dnsservers",
+		type="str",
+		default=[],
+		help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.')
 
 	options, args = parser.parse_args()
 	if args:
@@ -161,8 +173,23 @@ def setup_logging():  # type: () -> None
 	basicConfig(format=FORMAT, level=level, stream=stderr)
 
 
+def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
+	log = getLogger(__name__).getChild('cli/ns')
+	log.debug('Reading UCS domain servers from CLI...')
+
+	need_fixing = False
+	for ns in options.dnsservers:
+		dns = ip_address(u'%s' % (ns,))
+		log.info('Added server %s via CLI argument', dns)
+		nameservers[dns] = None
+
+	return need_fixing
+
 def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
 	log = getLogger(__name__).getChild('ucr/fwd')
+	if options.no_ucr:
+		log.info('Skip reading forwarders from UCR')
+		return False
 	log.debug('Reading external DNS forwarders from UCR...')
 
 	need_fixing = False
@@ -181,16 +208,19 @@ def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> 
 	return need_fixing
 
 
-def get_nameservers(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
+def get_nameservers_ucr(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
 	log = getLogger(__name__).getChild('ucr/ns')
+	if options.no_ucr:
+		log.info('Skip reading nameservers from UCR')
+		return False
 	log.debug('Reading UCS domain servers from UCR...')
 
 	need_fixing = False
 	for var in UCR_VARS_DNS:
-		value = ucr.get(var, '').strip()
-		if not value:
+		ns = ucr.get(var, '').strip()
+		if not ns:
 			continue
-		dns = ip_address(u'%s' % (value,))
+		dns = ip_address(u'%s' % (ns,))
 		log.info('Found server %s from UCRV %s', dns, var)
 		nameservers[dns] = None
 
