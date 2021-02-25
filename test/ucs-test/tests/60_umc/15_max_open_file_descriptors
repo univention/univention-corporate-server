@@ -12,9 +12,9 @@
 max_open_files=$(ucr get umc/http/max-open-file-descriptors)
 
 cleanup() {
-ucr set umc/http/max-open-file-descriptors="$max_open_files"
-service univention-management-console-web-server restart
-sleep 5
+	ucr set umc/http/max-open-file-descriptors="$max_open_files"
+	service univention-management-console-web-server restart
+	sleep 5
 }
 
 trap cleanup EXIT

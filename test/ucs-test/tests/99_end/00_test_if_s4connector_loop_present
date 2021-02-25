@@ -72,20 +72,24 @@ def check_if_looping():
 
 		print('ERROR: postrun never ran, ldap replication failed, most likely because of an s4con loop. Stopping the loop')
 		# setting syncmode to read to stop the loop
-		ucr_set(['connector/s4/mapping/syncmode=read'])
-		subprocess.check_call(["service", "univention-s4-connector", "restart"])
-		# wait a bit to calm down the connector ..
-		time.sleep(5)
-		ucr_set(['connector/s4/mapping/syncmode=read'])
-		subprocess.check_call(["service", "univention-s4-connector", "restart"])
-		print('Trying to wait for postrun again, see if a loop was the reason for failure')
-		# wait a bit for things to settle..
+		sync_mode = ucr.get('connector/s4/mapping/syncmode', 'sync')
+
 		try:
-			wait_for_replication_and_postrun()
-		except LDAPReplicationFailed:
-			fail('Test failed likely to different reason than an s4con-loop')
-		else:
-			fail('Stopping S4-Connector helped, which means probably means that the previous tests created a loop')
+			ucr_set(['connector/s4/mapping/syncmode=read'])
+			subprocess.check_call(["service", "univention-s4-connector", "restart"])
+			# wait a bit to calm down the connector ..
+			time.sleep(5)
+		finally:
+			ucr_set(['connector/s4/mapping/syncmode=%s' % sync_mode])
+			subprocess.check_call(["service", "univention-s4-connector", "restart"])
+			print('Trying to wait for postrun again, see if a loop was the reason for failure')
+			# wait a bit for things to settle..
+			try:
+				wait_for_replication_and_postrun()
+			except LDAPReplicationFailed:
+				fail('Test failed likely to different reason than an s4con-loop')
+			else:
+				fail('Stopping S4-Connector synchronization helped, which means a loop was created')
 
 
 def main():
