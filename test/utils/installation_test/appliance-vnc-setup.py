@@ -120,14 +120,16 @@ class UCSSetup(UCSInstallation):
 			self.client.enterText(self.args.join_user)
 			self.click('Password')
 			self.client.enterText(self.args.join_password)
-			self.next()
+			#self.next()
+			self.tab_to_next_and_enter(2)
 		if role == 'admember':
 			self.client.waitForText('Active Directory join', timeout=self.timeout)
 			self.click('Username')
 			self.client.enterText(self.args.join_user)
 			self.click('Password')
 			self.client.enterText(self.args.join_password)
-			self.next()
+			#self.next()
+			self.tab_to_next_and_enter(2)
 
 	def orga(self, orga, password):
 		self.client.waitForText('Account information', timeout=self.timeout)
@@ -153,7 +155,6 @@ class UCSSetup(UCSInstallation):
 		self.client.enterText(hostname)
 		self.client.keyPress('tab')
 		if self.args.role in ['admember', 'slave']:
-			self.client.keyPress('tab')
 			self.client.enterText(self.args.password)
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.password)
