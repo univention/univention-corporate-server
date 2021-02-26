@@ -1,3 +1,9 @@
+univention-portal (4.0.4-9) unstable; urgency=medium
+
+  * Bug #52792: Replace UCR script with UCR module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Feb 2021 09:17:27 +0100
+
 univention-portal (4.0.4-8) unstable; urgency=medium
 
   * Bug #52792: Fix error handling when symlinking
