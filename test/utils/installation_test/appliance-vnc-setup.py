@@ -208,9 +208,12 @@ class UCSSetup(UCSInstallation):
 			try:
 				self.client.waitForText('Software configuration', timeout=self.timeout)
 				self.client.mousePress(1)
+				time.sleep(1)
 				self.client.keyPress('down')
 				self.client.keyPress('down')
+				time.sleep(1)
 				self.client.mouseMove(900, 730)
+				time.sleep(1)
 				self.client.mousePress(1)
 			except VNCDoException:
 				self.connect()
