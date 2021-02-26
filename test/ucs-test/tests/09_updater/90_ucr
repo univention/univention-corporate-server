@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
-##  Check UCR setting
+##  Check version/{version,patchlevel} is set correctly by univention-updater.postinst
 ## bugs: [41165]
 ## versions:
 ##  4.1-1: found
@@ -12,7 +12,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 tmp="$(mktemp)"
-trap 'rm -f "$tmp"' EXIT
+trap 'rm -f "$tmp"; ucr commit /etc/ldap/slapd.conf; systemctl restart slapd.service' EXIT
 grep -v "^version/" /etc/univention/base.conf > "$tmp"
 UNIVENTION_BASECONF="$tmp" dpkg-reconfigure univention-updater || :
 dpkg-reconfigure univention-updater
