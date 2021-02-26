@@ -378,7 +378,7 @@ class object(univention.admin.handlers.simpleLdap):
 			except ldap.INSUFFICIENT_ACCESS:
 				raise univention.admin.uexceptions.permissionDenied()
 			except ldap.LDAPError as msg:
-				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
+				raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
 
 		# return True if object has been modified
 		return bool(ml)
@@ -408,7 +408,7 @@ class object(univention.admin.handlers.simpleLdap):
 			except ldap.INSUFFICIENT_ACCESS:
 				raise univention.admin.uexceptions.permissionDenied()
 			except ldap.LDAPError as msg:
-				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
+				raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
 
 		# return True if object has been modified
 		return bool(ml)
