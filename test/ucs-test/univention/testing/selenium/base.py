@@ -287,7 +287,19 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		input_field = self.wait_for_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
 		if not input_field.is_displayed():
 			self.click_element(expand_path('//*[@containsClass="umcModuleSearchToggleButton"]'))
-		input_field.clear()
+		limit = 60
+		while limit > 0:
+			try:
+				input_field.clear()
+				break
+			except selenium_exceptions.ElementNotInteractableException:
+				if limit > 1:
+					logger.info("Item was not interactable, retrying after one second")
+					time.sleep(1)
+					limit -= 1
+				else:
+					logger.info("Item was not interactable after 60 seconds.")
+					raise
 		input_field.send_keys(name)
 		self.wait_for_text(_('Search query'))
 

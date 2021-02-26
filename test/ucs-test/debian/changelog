@@ -1,3 +1,10 @@
+ucs-test (10.0.4-8) unstable; urgency=medium
+
+  * Bug #47734: added AppCenter object to test and 
+    caught time delay in UMCSeleniumTest method
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 26 Feb 2021 17:39:09 +0100
+
 ucs-test (10.0.4-7) unstable; urgency=medium
 
   * Bug #52831: fix wait for standby functions
