@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Univention Portal
 #
@@ -31,42 +32,50 @@
 
 import os
 import os.path
-import fileinput
+from errno import EEXIST
 
 portal_path = "/usr/share/univention-portal"
 
-for line in fileinput.input([]):
-	line = line.strip()
-	key, old, new = line.split("@%@", 2)
-	if key != "portal/paths":
-		continue
-	old = old.split(",")
-	new = new.split(",")
+
+def handler(config_registry, changes):
+	old, new = changes['portal/paths']
+	if old:
+		old = [o.strip() for o in old.split(",")]
+	else:
+		old = []
+	if new:
+		new = [n.strip() for n in new.split(",")]
+	else:
+		new = []
 	for path in old:
 		if path in new:
 			continue
-		path = os.path.normpath("/var/www" + path.strip())
+		path = os.path.normpath("/var/www" + path)
 		if not os.path.islink(path) or os.path.realpath(path) != portal_path:
-			print(f"{path} does not link to the portal contents. Skipping...")
+			print("{} does not link to the portal contents. Skipping...".format(path))
 		else:
-			print(f"Removing portal link to {path}...")
+			print("Removing portal link to {}...".format(path))
 			os.unlink(path)
 	for path in new:
 		if path in old:
 			continue
-		path = os.path.normpath("/var/www" + path.strip())
+		path = os.path.normpath("/var/www" + path)
 		if os.path.islink(path):
 			link_target = os.path.realpath(path)
-			print(f"{path} already links (to {link_target}). Skipping...")
+			print("{} already links (to {}). Skipping...".format(path, link_target))
 		else:
-			print(f"Linking {path} to portal content...")
+			print("Linking {} to portal content...".format(path))
 			try:
 				dirname = os.path.dirname(path)
-				os.makedirs(dirname, exist_ok=True)
+				try:
+					os.makedirs(dirname)
+				except OSError as exc:
+					if exc.errno != EEXIST:
+						raise
 			except OSError as exc:
-				print(f"Error creating {dirname}: {exc}!")
+				print("Error creating {}: {}!".format(dirname, exc))
 			else:
 				try:
 					os.symlink(portal_path, path)
 				except OSError as exc:
-					print(f"Error creating a link from {path} to {portal_path}: {exc}!")
+					print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc))

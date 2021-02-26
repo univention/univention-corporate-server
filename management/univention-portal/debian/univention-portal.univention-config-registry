@@ -14,8 +14,8 @@ File: usr/share/univention-portal/apps.json
 Variables: appcenter/apps/.*/status
 Variables: appcenter/apps/.*/version
 
-Type: script
-Script: symlink_portal
+Type: module
+Module: symlink_portal.py
 Variables: portal/paths
 
 Type: module
