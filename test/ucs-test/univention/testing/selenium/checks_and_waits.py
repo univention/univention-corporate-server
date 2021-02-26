@@ -81,14 +81,14 @@ class ChecksAndWaits(object):
 
 	def wait_until_all_standby_animations_disappeared(self, timeout=60):
 		logger.info("Waiting for all standby animations to disappear.")
-		xpath = '//*[contains(@id, "_Standby_")]/img'
+		xpath = expand_path('//*[contains(@id, "_Standby_")]//*[@containsClass="umcStandbySvgWrapper"]')
 		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 			self.elements_invisible, 'wait_until_all_standby_animations_disappeared(timeout=%r)' % (timeout,)
 		)
 
 	def wait_until_standby_animation_appears(self, timeout=5):
 		logger.info("Waiting for standby animation to appear.")
-		xpath = '//*[contains(@id, "_Standby_")]/img'
+		xpath = expand_path('//*[contains(@id, "_Standby_")]//*[@containsClass="umcStandbySvgWrapper"]')
 		try:
 			webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 				self.elements_visible, 'wait_until_standby_animation_appears(timeout=%r)' % (timeout,)
