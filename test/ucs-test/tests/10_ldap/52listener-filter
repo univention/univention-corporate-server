@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Test filter mechanism for Listener cache
 ## bugs: [38823]
@@ -140,11 +140,11 @@ class Listener(object):
 		try:
 			sock = create_connection((hostname, 6669), 60.0)
 
-			sock.send('Version: 3\nCapabilities: \n\n')
+			sock.send(b'Version: 3\nCapabilities: \n\n')
 			sock.recv(100)
 
-			sock.send('MSGID: 1\nGET_ID\n\n')
-			result = sock.recv(100)
+			sock.send(b'MSGID: 1\nGET_ID\n\n')
+			result = sock.recv(100).decode('ASCII')
 
 			sock.close()
 		except socket_error as ex:
