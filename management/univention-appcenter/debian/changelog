@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-7) unstable; urgency=medium
+
+  * Bug #52756: Adjust to Updater API change
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Feb 2021 11:18:56 +0100
+
 univention-appcenter (9.0.2-6) unstable; urgency=medium
 
   * Bug #52839: make DockerScriptInit configurable via UCR

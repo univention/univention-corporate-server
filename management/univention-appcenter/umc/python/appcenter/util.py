@@ -325,7 +325,7 @@ class ComponentManager(object):
 		entry = {
 			'name': component_id,
 			'enabled': bool(comp),
-			'defaultpackages': list(comp.defaultpackages),
+			'defaultpackages': list(comp.default_packages),
 			# Explicitly enable unmaintained component
 			'unmaintained': self.ucr.is_true(self.ucrv("unmaintained"), False),
 			# Component status as a symbolic string
