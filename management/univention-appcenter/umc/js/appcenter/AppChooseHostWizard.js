@@ -57,7 +57,6 @@ define([
 		selectedApps: null,
 
 
-		fromGallery: false,
 		needsToBeShown: null,
 		_chooseHostsNeedsToBeShown: null,
 
@@ -119,7 +118,7 @@ define([
 				}
 			}
 
-			if (this.fromGallery || this.selectedApps.length > 1) {
+			if (this.selectedApps.length > 1) {
 				let infoText = '';
 				if (!this.auto_installed.length) {
 					infoText = _('The following Apps are going to be installed.');
@@ -249,7 +248,7 @@ define([
 				: _('Installation of multiple apps');
 			pages.push(this._getAppsPage(headerText));
 			pages.push(this._getChooseHostPage(headerText));
-			this._showToBeInstalledApps = !!this.auto_installed.length || this.fromGallery;
+			this._showToBeInstalledApps = !!this.auto_installed.length;
 			this.needsToBeShown = this._showToBeInstalledApps || this._chooseHostsNeedsToBeShown;
 			return pages;
 		},

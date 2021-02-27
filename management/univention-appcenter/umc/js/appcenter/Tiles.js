@@ -144,13 +144,7 @@ define([
 		},
 
 		_clickInstall: function() {
-			topic.publish('/appcenter/run/install',
-				this._selection.map(appId => {
-					return this.tiles.find(tile => tile.obj.id === appId).obj;
-				}),
-				this.isSuggestionCategory,
-				true
-			);
+			this.onStartAction('install', this._selection);
 		},
 
 		filter: function(filterF) {
@@ -186,6 +180,9 @@ define([
 				// do this here and not in the props for the togglebutton to trigger _actionBarNode visibility
 				this._selectionModeToggleButton.set('checked', this._isInSelectionMode);
 			}
+		},
+
+		onStartAction: function(action, apps) {
 		}
 	});
 });

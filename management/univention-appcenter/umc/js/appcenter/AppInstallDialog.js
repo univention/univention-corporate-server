@@ -43,21 +43,19 @@ define([
 	"./App",
 	"./AppChooseHostWizard",
 	"./AppInstallWizard",
-	"./AppSettings",
-	"./AppDetailsPage",
 	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, domClass, topic, on, Deferred, all, tools, Page, ProgressBar, App, AppChooseHostWizard, AppInstallWizard, AppSettings, AppDetailsPage, _AppDialogMixin, _) {
+], function(declare, lang, array, domClass, topic, on, Deferred, all, tools, Page, ProgressBar, App, AppChooseHostWizard, AppInstallWizard, _AppDialogMixin, _) {
 	return declare("umc.modules.appcenter.AppInstallDialog", [ Page, _AppDialogMixin ], {
 
-		_installationDeferred: null,
+		_actionDeferred: null,
 		// _hasSeriousProblems: false,
 
 		constructor: function() {
 			this.headerButtons = [{
 				name: 'close',
-				label: _('Cancel installation'),
-				callback: lang.hitch(this, '_cancelInstallation')
+				label: _('Cancel'),
+				callback: lang.hitch(this, '_cancelAction')
 			}];
 		},
 
@@ -70,7 +68,6 @@ define([
 		_show: function(widget) {
 			this._removeAllChildren();
 			this.addChild(widget);
-			this.onShowUp();
 		},
 
 		_removeAllChildren: function() {
@@ -89,16 +86,16 @@ define([
 
 			var command = tools.umcpCommand('appcenter/resolve', {
 				apps: backpack.apps,
-				action: 'install'
+				action: backpack.action,
 			}).then(function(data) {
 				// TODO error handling
-				backpack.apps = data.result.apps.map(app => new App(app, backpack.appDetailsPage));
+				backpack.apps = data.result.apps.map(app => new App(app));
 				backpack.auto_installed = data.result.auto_installed;
 				backpack.settings = data.result.settings;
 				deferred.resolve(backpack);
 			});
 
-			backpack.appDetailsPage.standbyDuring(command, progressBar);
+			this.standbyDuring(command, progressBar);
 			return deferred;
 		},
 
@@ -107,7 +104,6 @@ define([
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
 				auto_installed: backpack.auto_installed,
-				fromGallery: backpack.fromGallery,
 			});
 			// lang.mixin(backpack, {
 				// chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
@@ -130,7 +126,6 @@ define([
 		},
 
 		_performDryRun: function(backpack) {
-			const progressBarContext = backpack.appDetailsPage;
 			// if (backpack.chooseHostWizardWasVisible) {
 				// progressBarContext = new Page({
 					// headerText: 'Installation of foo',
@@ -138,7 +133,7 @@ define([
 					// noFooter: true,
 					// _initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
 					// headerTextRegion: 'main',
-					// standbyDuring: lang.hitch(backpack.appDetailsPage.standbyDuring)
+					// standbyDuring: lang.hitch(backpack.page.standbyDuring)
 				// });
 				// this.addChild(progressBarContext);
 			// }
@@ -153,7 +148,7 @@ define([
 			const command = tools.umcpProgressCommand(progressBar, 'appcenter/run', {
 				apps: backpack.apps.map(app => app.id),
 				auto_installed: backpack.auto_installed,
-				action: 'install',
+				action: backpack.action,
 				hosts: backpack.hosts,
 				settings: settings,
 				dry_run: true
@@ -213,7 +208,7 @@ define([
 			// if (this._hasSeriousProblems) {
 				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, backpack.app.id, 'cannot-continue');
 			// }
-			return progressBarContext.standbyDuring(command, progressBar);
+			return this.standbyDuring(command, progressBar);
 		},
 
 		_showInstallWizard: function(backpack) {
@@ -223,7 +218,6 @@ define([
 				apps: backpack.apps,
 				appSettings: backpack.settings,
 				dryRunResults: backpack.dryRunResults,
-				appDetailsPage: backpack.appDetailsPage
 			});
 			if (!installWizard.needsToBeShown) {
 				deferred.resolve(backpack);
@@ -262,29 +256,29 @@ define([
 				hosts,
 				appSettings
 			};
-			this._installationDeferred.resolve(values);
+			this._actionDeferred.resolve(values);
 			this.onBack();
 		},
 
-		startInstallation: function(apps, appDetailsPage, fromGallery) {
-			this._installationDeferred = new Deferred();
+		startAction: function(action, apps) {
+			this._actionDeferred = new Deferred();
 			// this._hasSeriousProblems = false;
 
 			var backpack = {
-				appDetailsPage,
+				action,
 				apps,
-				fromGallery,
 			};
+			
 			this._resolveApps(backpack)
 				.then(lang.hitch(this, '_getHosts'))
 				.then(lang.hitch(this, '_performDryRun'))
 				.then(lang.hitch(this, '_showInstallWizard'))
 				.then(lang.hitch(this, '_resolveBackpack'))
-				.otherwise(lang.hitch(this, '_cancelInstallation'));
-			return this._installationDeferred;
+				.otherwise(lang.hitch(this, '_cancelAction'));
+			return this._actionDeferred;
 		},
 
-		_cancelInstallation: function() {
+		_cancelAction: function() {
 			// if (!this._hasSeriousProblems) {
 				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
 			// }
@@ -292,8 +286,8 @@ define([
 		},
 
 		onBack: function() {
-			if (this._installationDeferred && !this._installationDeferred.isFulfilled()) {
-				this._installationDeferred.reject();
+			if (this._actionDeferred && !this._actionDeferred.isFulfilled()) {
+				this._actionDeferred.reject();
 			}
 		}
 	});

@@ -158,9 +158,6 @@ define([
 					return roleA - roleB;
 				});
 			}
-			this.install = lang.hitch(page, 'installAppDialog');
-			this.upgrade = lang.hitch(page, 'upgradeApps', [this.id], {[this.id]: this.fqdn}, {[this.id]: {}});
-			this.uninstall = lang.hitch(page, 'uninstallApps', [this.id], {[this.id]: this.fqdn}, {[this.id]: {}});
 		},
 
 		isLocal: function() {

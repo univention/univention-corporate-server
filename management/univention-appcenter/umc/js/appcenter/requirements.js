@@ -85,15 +85,6 @@ define([
 			reasonDescription: function() {
 				return _('Another package operation is in progress.');
 			},
-			solutionDescription: function() {
-				return _('Wait for that operation to finish.');
-			},
-			solutionLabel: function() {
-				return _('Show progress');
-			},
-			solution: function(opts) {
-				opts.appDetailsPage.standbyDuring(opts.appDetailsPage.switchToProgressBar(), opts.appDetailsPage._progressBar);
-			}
 		}),
 		must_have_install_permissions: new Requirement({
 			reasonDescription: function(details) {
@@ -168,7 +159,8 @@ define([
 				return _('Activate UCS now');
 			},
 			solution: function(opts) {
-				opts.appDetailsPage.showLicenseRequest(opts.action);
+				// FIXME: what to do on non-primary?
+				topic.publish('/umc/license/activation');
 			}
 		}),
 		must_have_candidate: new Requirement({
@@ -234,8 +226,7 @@ define([
 				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
-				opts.appDetailsPage.set('app', details[0]);
-				return opts.appDetailsPage.appLoadingDeferred;
+				topic.publish('/appcenter/open', details[0]);
 			}
 		}),
 		must_have_no_conflicts_packages: new Requirement({
@@ -261,8 +252,7 @@ define([
 				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
-				opts.appDetailsPage.set('app', details[0]);
-				return opts.appDetailsPage.appLoadingDeferred;
+				topic.publish('/appcenter/open', details[0]);
 			}
 		}),
 		must_not_remove_plugin: new Requirement({
@@ -283,8 +273,7 @@ define([
 				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
-				opts.appDetailsPage.set('app', details[0]);
-				return opts.appDetailsPage.appLoadingDeferred;
+				topic.publish('/appcenter/open', details[0]);
 			}
 		}),
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
@@ -329,12 +318,12 @@ define([
 		}),
 		shall_have_enough_ram: new Requirement({
 			reasonDescription: function(details) {
-				return _('The App requires %(minimum)d MB of free RAM but only %(current)d MB are available.', details);
+				return _('%(minimum)d MB of free RAM are required but only %(current)d MB are available.', details);
 			}
 		}),
 		shall_have_enough_free_disk_space: new Requirement({
 			reasonDescription: function(details) {
-				return _('The App requires %(minimum)d MB of free disk space but only %(current)d MB are available.', details);
+				return _('%(minimum)d MB of free disk space are required but only %(current)d MB are available.', details);
 			}
 		})
 	};

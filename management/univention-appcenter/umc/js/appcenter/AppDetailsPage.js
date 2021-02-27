@@ -208,7 +208,7 @@ define([
 					name: 'install',
 					label: _('Install'),
 					'class': 'umcAppButton',
-					callback: lang.hitch(this.app, 'install')
+					callback: lang.hitch(this, 'installAppDialog')
 				});
 			}
 
@@ -324,14 +324,15 @@ define([
 			}
 			var callback;
 			if (this.app.canUninstallInDomain()) {
-				callback = lang.hitch(this, function(host, app) {
+				callback = lang.hitch(this, function(host, apps) {
 					additionalCallback();
-					app[0].data.uninstall();
+					topic.publish('/appcenter/run/remove', apps.map((app) => app.data.id), null, this);
 				});
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
 					isContextAction: true,
+					isMultiAction: true,
 					isStandardAction: false,
 					'class': 'umcAppButton umcActionButton',
 					canExecute: lang.hitch(this, function(app) {
@@ -343,12 +344,13 @@ define([
 			if (this.app.canUpgradeInDomain()) {
 				callback = lang.hitch(this, function(host, app) {
 					additionalCallback();
-					app[0].data.upgrade();
+					topic.publish('/appcenter/run/upgrade', apps.map((app) => app.data.id), null, this);
 				});
 				buttons.push({
 					name: 'update',
 					label: _('Upgrade'),
 					isContextAction: true,
+					isMultiAction: true,
 					isStandardAction: false,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canUpgrade();
@@ -527,7 +529,7 @@ define([
 			if (isSingleServerDomain) {
 				if (this.app.canInstall()) {
 					buttonLabel = _("Install");
-					callback = lang.hitch(this.app, 'install')
+					callback = lang.hitch(this, 'installAppDialog')
 				} else if (this.app.isInstalled) {
 					buttonLabel = _("Manage installation");
 					callback = lang.hitch(this, '_openManageDialog');
@@ -538,7 +540,7 @@ define([
 					callback = lang.hitch(this, '_openManageGridDialog');
 				} else if (this.app.canInstallInDomain()) {
 					buttonLabel = _("Install");
-					callback = lang.hitch(this.app, 'install');
+					callback = lang.hitch(this, 'installAppDialog');
 				}
 			}
 			var info = new AppInfo({
@@ -561,7 +563,7 @@ define([
 					"class": "umcManageInstallationButton ucsPrimaryButton",
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
-						this.app.upgrade();
+						topic.publish('/appcenter/run/upgrade', [this.app.id], null, this);
 					})
 				}));
 			}
@@ -606,7 +608,7 @@ define([
 					"class": "umcManageInstallationButton",
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
-						this.app.uninstall();
+						topic.publish('/appcenter/run/remove', [this.app.id], null, this);
 					})
 				}));
 			}
@@ -714,11 +716,11 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
 			}
 
-			this.startInstallation([this.app.id], false);
+			topic.publish('/appcenter/run/install', [this.app.id], this.fromSuggestionCategory, this);
 		},
 
-		startInstallation: function(apps, fromGallery) {
-			this.installDialog.startInstallation(apps, this, fromGallery)
+		startAction: function(action, apps, fromGallery) {
+			this.installDialog.startAction(action, apps, this, fromGallery)
 				.then(lang.hitch(this, function(values) {
 					this.installApps(values.apps, values.hosts, values.appSettings);
 				}), lang.hitch(this, function() {
@@ -914,37 +916,6 @@ define([
 			}));
 			this.standbyDuring(all([invokation, deferred, nonInteractive]), this._progressBar);
 			return deferred;
-		},
-
-		showLicenseRequest: function(action) {
-			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'request-license');
-			if (this.udmAccessible) {
-				topic.publish('/umc/license/activation');
-			} else {
-				// UDM is not present. Either because this is
-				// not the Primary Directory Node or because the user is no
-				// Administrator
-				var msg;
-				if (this.app.isMaster) {
-					var loginAsAdminTag = '<a href="javascript:void(0)" onclick="require(\'login\').relogin(\'Administrator\')">Administrator</a>';
-					msg =
-						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
-						'<p>' + _('To do this please log in as %s and repeat the steps taken until this dialog. You will be guided through the installation.', loginAsAdminTag) + '</p>';
-				} else {
-					var hostLink;
-					if (tools.status('username') == 'Administrator') {
-						hostLink = '<a href="javascript:void(0)" onclick="require(\'umc/tools\').openRemoteSession(' + json.stringify(this.app.hostMaster) + ')">' + entities.encode(this.app.hostMaster) + '</a>';
-					} else {
-						hostLink = '<a target="_blank" href="https://' + entities.encode(this.app.hostMaster) + '/univention-management-console">' + entities.encode(this.app.hostMaster) + '</a>';
-					}
-					var dialogName = _('Activation of UCS');
-					msg =
-						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
-						'<p>' + _('To do this please log in on %(host)s as an administrator. Open the menu in the top right corner of the screen and choose "License" > "%(dialogName)s". There you can request the new license.', {host: hostLink, dialogName: dialogName}) + '</p>' +
-						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: entities.encode(this.app.name)}) + '</p>';  // TODO: html escape action?
-				}
-				dialog.alert(msg);
-			}
 		},
 
 		switchToProgressBar: function(msg, keepAlive) {

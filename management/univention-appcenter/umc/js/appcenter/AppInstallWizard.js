@@ -58,8 +58,6 @@ define([
 		apps: null,
 		appSettings: null,
 		dryRunResults: null,
-		appDetailsPage: null,
-		//
 
 		needsToBeShown: null,
 
@@ -119,7 +117,6 @@ define([
 					app: details.app,
 					details,
 					host: details.host,
-					appDetailsPage: this.appDetailsPage,
 					showWarnings: isWarning,
 					showNonWarnings: !isWarning,
 				});
@@ -240,7 +237,7 @@ define([
 					}
 				});
 			} else if (pageName.startsWith('licenseAgreement_')) {
-				array.forEach(buttons, function(button) {
+				buttons.forEach((button) => {
 					if (button.name === 'next') {
 						button.label = _('Accept license');
 					}

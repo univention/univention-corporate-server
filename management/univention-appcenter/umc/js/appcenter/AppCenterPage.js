@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/topic",
 	"dojo/on/debounce",
 	"dojo/when",
 	"dojo/dom-construct",
@@ -46,7 +47,7 @@ define([
 	"umc/modules/appcenter/Tiles",
 	"umc/modules/appcenter/Tile",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, on, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, Tiles, Tile, _) {
+], function(declare, lang, array, on, topic, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, Tiles, Tile, _) {
 
 	return declare('umc.modules.appcenter.AppCenterPage', [ Page ], {
 
@@ -167,6 +168,9 @@ define([
 					isSuggestionCategory: !!metaObj.isSuggestionCategory,
 					visible: false
 				});
+				metaCategory.on('startAction', lang.hitch(this, function(action, apps) {
+					topic.publish('/appcenter/run/install', apps, !!metaObj.isSuggestionCategory, this);
+				}));
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
 			}));
