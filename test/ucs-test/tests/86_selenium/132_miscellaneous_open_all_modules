@@ -33,10 +33,10 @@ class UMCTester(object):
 		for module in available_modules:
 			logger.info('opening module: %s' % (module,))
 			if module == _('App Center'):
-			  AppCenter(self.selenium).open()
+				AppCenter(self.selenium).open()
 			else:
-  			self.selenium.open_module(module, True, False)
-			self.selenium.click_button(_('Close'))
+				self.selenium.open_module(module, True, False)
+				self.selenium.click_button(_('Close'))
 
 	def get_available_modules(self):
 		self.selenium.search_module('*')
