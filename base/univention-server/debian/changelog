@@ -1,3 +1,9 @@
+univention-server (15.0.3-1) unstable; urgency=low
+
+  * Bug #44462: add new options --no-ucr and --dnsserver to univention-fix-ucr-dns
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 01 Mar 2021 21:54:53 +0100
+
 univention-server (15.0.2-3) unstable; urgency=low
 
   * Bug #52807: remove dependency alternative to mail-transport-agent
