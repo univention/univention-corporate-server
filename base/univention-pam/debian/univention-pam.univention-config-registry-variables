@@ -178,6 +178,12 @@ Description[en]=This option causes some PAM modules to ignore the user if the us
 Type=int
 Categories=system-base
 
+[pam/krb5/ticket_after_pwchange]
+Description[de]=In UCS hat sich das Verhalten des krb5 PAM Moduls geändert. Es wird nach einem Passwort-Wechsel nicht mehr versucht ein neues Ticket zu holen. Der Standard kann wiederhergestellt werden, in dem diese Variable auf true gesetzt wird.
+Description[en]=In UCS the behavior of the krb5 PAM module has been changed. After a password change the module does not request a new ticket. The default behavior of pam_krb5 can be restored by setting this variable to true.
+Type=bool
+Categories=system-base
+
 [pam/session/systemd]
 Description[de]=Aktiviert die Verwendung des PAM Modules 'systemd'. Standardmäßig deaktiviert.
 Description[en]=Enables using the PAM mdoule 'systemd'. Disabled by default.
