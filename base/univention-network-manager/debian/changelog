@@ -1,3 +1,11 @@
+univention-network-manager (12.0.2-1) unstable; urgency=low
+
+  * Bug #44462: add new dhclient-enter-hook and remove existing
+    dhclient-exit-hook to improve the DHCP handling of the DNS
+    configuration
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 01 Mar 2021 22:13:56 +0100
+
 univention-network-manager (12.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by
