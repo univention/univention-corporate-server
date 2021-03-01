@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: libpam-krb5
-fix: 4.7-4+deb9u1A~4.4.0.202103011417
+fix: 4.7-4+deb9u1A~4.4.7.202103011446
 desc: |
  This update addresses the following issue(s):
  * The behaviour of the pam krb5 module has been changed.
