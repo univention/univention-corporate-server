@@ -132,8 +132,8 @@ def handler(dn, new, old):
 	# ignore object, if this local system is not affected
 
 	if not (
-			(fqdn == new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()) or
-			(fqdn == old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower())
+		(fqdn == new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()) or
+		(fqdn == old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower())
 	):
 		return
 
