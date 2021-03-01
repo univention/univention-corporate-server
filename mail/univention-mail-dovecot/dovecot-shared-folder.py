@@ -119,19 +119,23 @@ from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 
 
 listener.configRegistry.load()
-hostname = listener.configRegistry['hostname']
-domainname = listener.configRegistry['domainname']
+fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower())
 
 name = 'dovecot-shared-folder'
 description = 'Create shared folders for Dovecot'
-filter = '(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))' % (hostname, domainname)
+filter = '(objectClass=univentionMailSharedFolder)'
 
 
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
-	global hostname, domainname
-	hostname = hostname.lower()
-	domainname = domainname.lower()
+
+	# ignore object, if this local system is not affected
+
+	if not (
+			(fqdn == new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()) or
+			(fqdn == old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower())
+	):
+		return
 
 	listener.configRegistry.load()
 	dl = DovecotSharedFolderListener(listener, name)
@@ -144,7 +148,7 @@ def handler(dn, new, old):
 		or (
 			'univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and
 			new['univentionMailHomeServer'][0].lower() != old['univentionMailHomeServer'][0].lower() and
-			new['univentionMailHomeServer'][0].decode('UTF-8').lower() in [hostname, '%s.%s' % (hostname, domainname)]):
+			new['univentionMailHomeServer'][0].decode('UTF-8').lower() == fqdn):
 		dl.add_shared_folder(new)
 		return
 
@@ -153,7 +157,7 @@ def handler(dn, new, old):
 	#
 	if (old and not new) \
 		or ("univentionMailHomeServer" not in new) \
-		or (not new["univentionMailHomeServer"][0].decode('UTF-8').lower() in [hostname, "%s.%s" % (hostname, domainname)]):
+		or (not new["univentionMailHomeServer"][0].decode('UTF-8').lower() == fqdn):
 		dl.del_shared_folder(old)
 		return
 
