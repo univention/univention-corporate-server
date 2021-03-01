@@ -37,7 +37,7 @@ import re
 import univention.config_registry as ucr
 import univention.info_tools as uit
 try:
-	from typing import Dict, List, Optional, Tuple  # noqa F401
+	from typing import Dict, Iterable, List, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
 
@@ -111,14 +111,14 @@ class ConfigRegistryInfo(object):
 		"""
 		self.categories = {}  # type: Dict[str, Category]
 		self.variables = {}  # type: Dict[str, Variable]
-		self.__patterns = {}  # type: Dict[str, List[Tuple[str, str]]]
+		self._patterns = {}  # type: Dict[str, List[Tuple[str, str]]]
 		if not install_mode:
-			self.__configRegistry = ucr.ConfigRegistry()  # type: Optional[ucr.ConfigRegistry]
-			self.__configRegistry.load()
+			self._configRegistry = ucr.ConfigRegistry()  # type: Optional[ucr.ConfigRegistry]
+			self._configRegistry.load()
 			self.load_categories()
-			self.__load_variables(registered_only, load_customized)
+			self._load_variables(registered_only, load_customized)
 		else:
-			self.__configRegistry = None
+			self._configRegistry = None
 
 	def check_categories(self):
 		# type: () -> Dict[str, List[str]]
@@ -176,7 +176,7 @@ class ConfigRegistryInfo(object):
 				self.read_categories(os.path.join(path, filename))
 
 	@staticmethod
-	def __pattern_sorter(args):
+	def _pattern_sorter(args):
 		# type: (Tuple) -> Tuple[Tuple[int, str], str]
 		"""Sort more specific (longer) regular expressions first."""
 		pattern, data = args
@@ -188,14 +188,14 @@ class ConfigRegistryInfo(object):
 		Match descriptions agains currently defined UCR variables.
 		"""
 		# in install mode
-		if self.__configRegistry is None:
+		if self._configRegistry is None:
 			return
 		# Try more specific (longer) regular expressions first
-		for pattern, data in sorted(self.__patterns.items(), key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
+		for pattern, data in sorted(self._patterns.items(), key=ConfigRegistryInfo._pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
-			for key, value in self.__configRegistry.items():
+			for key, value in self._configRegistry.items():
 				if key in self.variables:
 					continue
 				if not regex.match(key):
@@ -220,7 +220,7 @@ class ConfigRegistryInfo(object):
 		:returns: Dictionary mapping variable pattern to Variable info blocks.
 		"""
 		patterns = {}  # type: Dict[str, Variable]
-		for pattern, data in sorted(self.__patterns.items(), key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
+		for pattern, data in sorted(self._patterns.items(), key=ConfigRegistryInfo._pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			match = regex.search(term)
 			if not match:
@@ -238,9 +238,9 @@ class ConfigRegistryInfo(object):
 		# type: () -> None
 		"""Persist the customized variable descriptions."""
 		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, ConfigRegistryInfo.CUSTOMIZED)
-		self.__write_variables(filename)
+		self._write_variables(filename)
 
-	def __write_variables(self, filename=None, package=None):
+	def _write_variables(self, filename=None, package=None):
 		# type: (str, str) -> bool
 		"""
 		Persist the variable descriptions into a file.
@@ -301,7 +301,7 @@ class ConfigRegistryInfo(object):
 		for sec in cfg.sections():
 			# is a pattern?
 			if sec.find('.*') != -1:
-				self.__patterns[sec] = cfg.items(sec)
+				self._patterns[sec] = cfg.items(sec)
 				continue
 			# variable already known?
 			if not override and sec in self.variables:
@@ -310,11 +310,11 @@ class ConfigRegistryInfo(object):
 			for name, value in cfg.items(sec):
 				var[name] = value
 			# get current value
-			if self.__configRegistry is not None:
-				var.value = self.__configRegistry.get(sec, None)
+			if self._configRegistry is not None:
+				var.value = self._configRegistry.get(sec, None)
 			self.variables[sec] = var
 
-	def __load_variables(self, registered_only=True, load_customized=True):
+	def _load_variables(self, registered_only=True, load_customized=True):
 		# type: (bool, bool) -> None
 		"""
 		Read default and customized variable descriptions.
@@ -329,8 +329,8 @@ class ConfigRegistryInfo(object):
 				if os.path.isfile(cfgfile) and cfgfile.endswith(ConfigRegistryInfo.FILE_SUFFIX) and entry != ConfigRegistryInfo.CUSTOMIZED:
 					self.read_variables(cfgfile)
 			self.check_patterns()
-			if not registered_only and self.__configRegistry is not None:
-				for key, value in self.__configRegistry.items():
+			if not registered_only and self._configRegistry is not None:
+				for key, value in self._configRegistry.items():
 					if key in self.variables:
 						continue
 					var = Variable(registered=False)
@@ -341,7 +341,7 @@ class ConfigRegistryInfo(object):
 				self.read_customized()
 
 	def get_categories(self):
-		# type: () -> List[str]
+		# type: () -> Iterable[str]
 		"""
 		Return a list of category names.
 
