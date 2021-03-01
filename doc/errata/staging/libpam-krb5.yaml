@@ -10,6 +10,8 @@ desc: |
    From now on the module no longer tries to obtain a new
    ticket after a password change (as this is error prone
    due to timing issues in the password synchronization)
-   The old behaviour can be restored with the
-   `ticket_after_pwchange` flag in the pam configuration.
+   The old behaviour can be restored by setting the UCR
+   variable `pam/krb5/ticket_after_pwchange=true`
+   (sets the `ticket_after_pwchange` flag in the pam
+   configuration).
 bug: [52188]
