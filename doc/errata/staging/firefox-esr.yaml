@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: firefox-esr
+fix: 78.8.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Content Security Policy violation report could have contained the
+   destination of a redirect (CVE-2021-23968)
+ * Content Security Policy violation report could have contained the
+   destination of a redirect (CVE-2021-23969)
+ * MediaError message property could have leaked information about
+   cross-origin resources (CVE-2021-23973)
+ * Memory safety bugs fixed in Firefox 86 and Firefox ESR 78.8
+   (CVE-2021-23978)
+bug: [52858]
+cve:
+- CVE-2021-23968
+- CVE-2021-23969
+- CVE-2021-23973
+- CVE-2021-23978
