@@ -204,7 +204,7 @@ def ucr_update(ucr, changes):
 	"""
 	Set or unset the given config registry variables.
 
-	:param args: Command line arguments.
+	:param ucr: UCR instance.
 	:param changes: Changed UCR variables.
 	"""
 	with ucr:
@@ -219,6 +219,7 @@ def _run_changed(ucr, changed, msg=None):
 
 	:param ucr: UCR instance.
 	:param changed: Mapping from UCR variable name to 2-tuple (old-value, new-value).
+	:param msg: Message to be printed when change is shadowed by higher layer. Must contain 2 `%s` placeholders for `key` and `scope-name`.
 	"""
 	for key, (old_value, new_value) in changed.items():
 		replog(ucr, key, old_value, new_value)
