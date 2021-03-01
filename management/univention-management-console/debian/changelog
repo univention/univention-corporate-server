@@ -1,3 +1,9 @@
+univention-management-console (12.0.8-6) unstable; urgency=medium
+
+  * Bug #52188: added pam/krb5/ticket_after_pwchange
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Mar 2021 09:48:18 +0100
+
 univention-management-console (12.0.8-5) unstable; urgency=medium
 
   * Bug #52453: adjust module search behaviour
