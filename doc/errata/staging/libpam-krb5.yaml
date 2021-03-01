@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: libpam-krb5
+fix: 4.7-4+deb9u1A~4.4.0.202103011417
+desc: |
+ This update addresses the following issue(s):
+ * The behaviour of the pam krb5 module has been changed.
+   From now on the module no longer tries to obtain a new
+   ticket after a password change (as this is error prone
+   due to timing issues in the password synchronization)
+   The old behaviour can be restored with the
+   `ticket_after_pwchange` flag in the pam configuration.
+bug: [52188]
