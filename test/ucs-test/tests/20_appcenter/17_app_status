@@ -28,7 +28,7 @@ def check_status(app):
 		print('    Checking running Docker Container')
 		assert ucr_get('appcenter/apps/%s/status' % app.id) == 'installed'
 		container = ucr_get('appcenter/apps/%s/container' % app.id)
-		output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).rstrip('\n')
+		output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).decode().rstrip('\n')
 		if output != 'true':
 			utils.fail('ERROR: Container not running!')
 		if app.docker_image and app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):

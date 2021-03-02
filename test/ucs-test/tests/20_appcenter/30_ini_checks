@@ -45,7 +45,7 @@ for app in Apps(locale='en').get_every_single_app():
 				continue
 			url = '%s/meta-inf/%s/%s/%s' % (app.get_server(), app.get_ucs_version(), app.id, logo_name)
 			stdout = subprocess.check_output(['curl', '-Is', url])
-			if 'HTTP/1.1 200 OK' not in stdout.splitlines():
+			if b'HTTP/1.1 200 OK' not in stdout.splitlines():
 				print('FAIL: Could not find %s' % url)
 				returncode = 1
 
