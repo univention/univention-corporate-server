@@ -35,7 +35,7 @@ from os import environ
 from sys import stderr, exit
 from collections import OrderedDict
 from subprocess import check_output, check_call, CalledProcessError
-from optparse import OptionParser, SUPPRESS_HELP, Values
+from argparse import ArgumentParser, SUPPRESS, Namespace
 from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
 
 from univention.config_registry import ConfigRegistry
@@ -53,7 +53,7 @@ UCR_VARS_DNS = ['nameserver%d' % (i,) for i in range(1, 4)]
 LOCAL = '127.0.0.1'  # or ::1 for IPv6
 
 
-options = Values()
+options = Namespace()
 
 
 def main():  # type: () -> None
@@ -94,68 +94,61 @@ def main():  # type: () -> None
 	update_ucr(ucr, nameservers, forwarders)
 
 
-def parse_args():  # type: () -> Values
-	usage = '%prog [options]'
-	description = __doc__
-	parser = OptionParser(usage=usage, description=description)
-	parser.add_option(
+def parse_args():  # type: () -> Namespace
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument(
 		'--verbose', '-v',
 		action='count', default=2,
 		help='Increase verbosity')
-	parser.add_option(
+	parser.add_argument(
 		'--no-act', '-d',
 		action='store_true',
 		help='Enable dry-run mode')
-	parser.add_option(
+	parser.add_argument(
 		'--ipv6', '-6',
 		action='store_const', const=('A', 'AAAA'), default=('A',), dest='rrtyp',
 		help='Also add IPv6 addresses')
-	parser.add_option(
+	self_group = parser.add_mutually_exclusive_group()
+	self_group.add_argument(
 		'--no-self', '-S',
 		action='store_true',
 		help='Do not add self as name-server')
-	parser.add_option(
+	self_group.add_argument(
 		'--force-self', '-f',
-		action='store_true', default=False,
+		action='store_true',
 		help='Force adding self as name-server')
-	parser.add_option(
+	parser.add_argument(
 		'--add-master', '-m',
 		action='store_true',
 		help='Add domaincontroller_master as name-server')
-	parser.add_option(
+	parser.add_argument(
 		'--add-nameservers', '-n',
 		action='store_true',
 		help='Add other name-servers')
-	parser.add_option(
+	parser.add_argument(
 		'--no-validation', '-V',
 		action='store_true',
 		help='Do not validate DNS servers')
-	parser.add_option(
+	parser.add_argument(
 		'--xor', '-x',
 		action='store_true',
 		help='Remove name-servers from forwarders')
-	parser.add_option(
+	parser.add_argument(
 		'--run-tests',
 		action='store_true',
-		help=SUPPRESS_HELP)
-	parser.add_option(
+		help=SUPPRESS)
+	parser.add_argument(
 		'--no-ucr',
 		action='store_true',
 		help='Do not load nameservers and forwarders from UCR variables')
-	parser.add_option(
+	parser.add_argument(
 		'--dnsserver',
 		action="append",
 		dest="dnsservers",
-		type="str",
 		default=[],
 		help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.')
 
-	options, args = parser.parse_args()
-	if args:
-		parser.error('No argument expected')
-
-	if options.no_self and options.force_self:
-		parser.error('--no-self and --force-self are mutually exclusive.')
+	options = parser.parse_args()
 
 	return options
 
