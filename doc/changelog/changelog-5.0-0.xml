@@ -1058,7 +1058,7 @@
 					The <application>univention-ad-connector</application> is now running with Python 3 (<u:bug>52044</u:bug>).
 					The logfile <filename>/var/log/univention/connector.log</filename> has been renamed to <filename>/var/log/univention/connector-ad.log</filename>.
 					The script <command>univention-connector-list-rejected</command> has been renamed to <command>univention-adconnector-list-rejected</command>.
-					The obselete dependency on <filename>pysqlite2</filename> has been removed (<u:bug>51484</u:bug>).
+					The obsolete dependency on <filename>pysqlite2</filename> has been removed (<u:bug>51484</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The &ucsUMC; module now runs with Python 3 (<u:bug>51336</u:bug>)
