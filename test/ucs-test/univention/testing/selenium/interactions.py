@@ -171,8 +171,16 @@ class Interactions(object):
 
 		if scroll_into_view:
 			self.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
-
-		elems[0].click()
+		limit = timeout
+		while True:
+			try:
+				elems[0].click()
+				break
+			except selenium_exceptions.ElementClickInterceptedException:
+				limit -= 1
+				if limit == 0:
+					raise
+				time.sleep(1)
 
 	def enter_input(self, inputname, inputvalue):
 		"""
