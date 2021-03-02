@@ -270,7 +270,7 @@
 						The UMC API documentation is now available <ulink url="https://docs.software-univention.de/ucs-python-api/"/> (<u:bug>51487</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 The &ucsUMC; is now running with Python 3 (<u:bug>51508</u:bug>, <u:bug>52764</u:bug>)
+					The &ucsUMC; is now running with Python 3 (<u:bug>51508</u:bug>, <u:bug>52764</u:bug>, <u:bug>49392</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
