@@ -231,12 +231,12 @@ def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, D
 			if query_master_src_record(domain, server):
 				log.info('Validated UCS domain server: %s', server)
 			else:
-				log.warn('UCS Primary Directory Node SRV record is unknown at %s, converting into forwarder', server)
+				log.warning('UCS Primary Directory Node SRV record is unknown at %s, converting into forwarder', server)
 				need_fixing = True
 				del nameservers[server]
 				forwarders[server] = None
 		except (SocketError, TimeoutError) as exc:
-			log.warn('Connection check to %s (%s) failed, maybe down?!', server, exc.args[0])
+			log.warning('Connection check to %s (%s) failed, maybe down?!', server, exc.args[0])
 			log.info('Leaving it configured as nameserver anyway')
 
 	return need_fixing
@@ -276,10 +276,10 @@ def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
 
 	domain = ucr['domainname']
 	if not options.force_self and not query_master_src_record(domain, myself):
-		log.warn('Failed to query local server %s for %s', myself, domain)
+		log.warning('Failed to query local server %s for %s', myself, domain)
 		if nameservers:
 			return
-		log.warn('Adding anyway as no other nameserer remains.')
+		log.warning('Adding anyway as no other nameserer remains.')
 
 	old = list(nameservers.items())
 	nameservers.clear()
@@ -351,7 +351,7 @@ def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr
 		if diff > 0:
 			values += [None] * diff
 		elif diff < 0:
-			log.warn('Skipping extra %s: %r', typ, values[len(names):])
+			log.warning('Skipping extra %s: %r', typ, values[len(names):])
 		new_ucr_settings.update(dict(zip(names, values)))
 
 	update(UCR_VARS_FWD, forwarders, 'forwarders')
@@ -424,7 +424,7 @@ def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
 		out = check_output(cmd, env=env).decode('UTF-8')
 		return out.startswith('local ')
 	except CalledProcessError as ex:
-		log.warn('Failed to determine route: %s', ex)
+		log.warning('Failed to determine route: %s', ex)
 		return False
 
 
