@@ -1,3 +1,9 @@
+ucs-test (10.0.4-11) unstable; urgency=medium
+
+  * Bug #52241: Reverting debug output from testcase
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 02 Mar 2021 11:30:06 +0100
+
 ucs-test (10.0.4-10) unstable; urgency=medium
 
   * Fixup Bug #47734: caught time delay in Interactions click_element
