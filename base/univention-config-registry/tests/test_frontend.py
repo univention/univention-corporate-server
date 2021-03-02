@@ -187,6 +187,9 @@ class TestHandler(object):
 	def test_run_changed(self, ucrf, mocker, capsys, handlers):
 		replog = mocker.patch("univention.config_registry.frontend.replog")
 
+		changed = ucrf.update(self.CHANGES)
+		assert changed == self.CHANGED
+
 		ucrfe._run_changed(ucrf, self.CHANGED, "%s %s")
 
 		for (key, (old, new)) in self.VISIBLE.items():
@@ -205,7 +208,8 @@ class TestHandler(object):
 		("baz", None, {"baz": ("NORMAL", None)}),
 	])
 	def test_run_changed_normal(self, key, val, visible, ucrf, mocker, handlers):
-		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		changed = ucrf.update({key: val})
+		ucrfe._run_changed(ucrf, changed)
 		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
 
 	@pytest.mark.ucr_layer(ucrfe.ConfigRegistry.LDAP)
@@ -213,25 +217,27 @@ class TestHandler(object):
 		("foo", "val", {"foo": ("LDAP", "val")}),
 		("foo", None, {"foo": ("LDAP", None)}),
 		("bar", "val", {"bar": ("LDAP", "val")}),
-		("bar", None, {"bar": ("LDAP", None)}),
+		("bar", None, {"bar": ("LDAP", "NORMAL")}),
 		("baz", "val", {"baz": ("NORMAL", "val")}),
-		("baz", None, {"baz": ("NORMAL", None)}),
+		("baz", None, {}),
 	])
 	def test_run_changed_ldap(self, key, val, visible, ucrf, mocker, handlers):
-		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		changed = ucrf.update({key: val})
+		ucrfe._run_changed(ucrf, changed)
 		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
 
 	@pytest.mark.ucr_layer(ucrfe.ConfigRegistry.FORCED)
 	@pytest.mark.parametrize("key,val,visible", [
 		("foo", "val", {"foo": ("LDAP", "val")}),
-		("foo", None, {"foo": ("LDAP", None)}),
+		("foo", None, {}),
 		("bar", "val", {"bar": ("LDAP", "val")}),
-		("bar", None, {"bar": ("LDAP", None)}),
+		("bar", None, {}),
 		("baz", "val", {"baz": ("NORMAL", "val")}),
-		("baz", None, {"baz": ("NORMAL", None)}),
+		("baz", None, {}),
 	])
 	def test_run_changed_forced(self, key, val, visible, ucrf, mocker, handlers):
-		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		changed = ucrf.update({key: val})
+		ucrfe._run_changed(ucrf, changed)
 		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
 
 	def test_handler_dump(self):

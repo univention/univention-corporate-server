@@ -223,12 +223,18 @@ def _run_changed(ucr, changed, msg=""):
 	visible = {}  # type: Dict[str, Tuple[Optional[str], Optional[str]]]
 	for key, (old_value, new_value) in changed.items():
 		replog(ucr, key, old_value, new_value)
-		scope, vis_value = ucr.get(key, (0, None), getscope=True)
-		if scope > ucr.scope:
+
+		reg = ucr.scope
+		while old_value is None and reg > 0:
+			reg -= 1
+			old_value = ucr._registry[reg].get(key)
+
+		reg, new_value = ucr.get(key, (0, None), getscope=True)
+		if reg > ucr.scope:
 			if msg:
-				print(msg % (key, SCOPE[scope]), file=sys.stderr)
+				print(msg % (key, SCOPE[reg]), file=sys.stderr)
 		else:
-			visible[key] = (vis_value, new_value)
+			visible[key] = (old_value, new_value)
 
 	handlers = ConfigHandlers()
 	handlers.load()
