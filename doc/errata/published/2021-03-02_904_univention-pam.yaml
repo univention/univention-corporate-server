@@ -10,3 +10,5 @@ desc: |
    added to restore the default behavior of the PAM krb5 module.
    See https://help.univention.com/t/17403 for more information.
 bug: [52188]
+erratum: 904
+announced: 2021-03-02
