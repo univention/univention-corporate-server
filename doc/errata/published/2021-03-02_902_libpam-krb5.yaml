@@ -16,3 +16,5 @@ desc: |
    configuration).
    See https://help.univention.com/t/17403 for more information.
 bug: [52188]
+erratum: 902
+announced: 2021-03-02
