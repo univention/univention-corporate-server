@@ -710,6 +710,10 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Error messages during initial installation of <package>univention-mail-postfix</package>
+					are now prevented by reordering of the internal installation steps (<u:bug>52842</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
