@@ -1,3 +1,12 @@
+ucs-test (10.0.4-15) unstable; urgency=medium
+
+  * Bug #52251: Skip 52_s4connector/515test_group_cache_after_move on
+    DC backups that are not actually running the S4-Connector
+  * improve s4connector.sh function connector_running_on_this_host
+
+
+ -- Arvid <requate@univention.de>  Tue, 02 Mar 2021 19:17:06 +0100
+
 ucs-test (10.0.4-14) unstable; urgency=medium
 
   * Bug #47734: fixed login call for selenium test 130_miscellaneous

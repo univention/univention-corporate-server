@@ -642,8 +642,26 @@ function ad_set_retry_rejected ()
 
 function connector_running_on_this_host ()
 {
+	local ldap_hostdn="${ldap_hostdn:-$(ucr get ldap/hostdn)}"
+	local ldif
+	local autostart_expected
+	ldif=$(univention-ldapsearch -LLL -b "$ldap_hostdn" -s base univentionService)
+	if [ -n "$ldif" ]; then
+		# The LDAP Server responded
+		if echo "$ldif" | grep "^univentionService: S4 Connector\$"; then
+			autostart_expected=1
+		else
+			return 1
+		fi
+	fi
+
+	local rc
 	is_ucr_true connector/s4/autostart
-	return $?
+	rc=$?
+	if [ "$rc" != 0 ] && [ "$autostart_expected" = 1 ]; then
+		echo 'WARNING: UCR connector/s4/autostart is not active, but the host advertises univentionService="S4 Connector"' >&2
+	fi
+	return $rc
 }
 
 function ad_connector_start ()
