@@ -194,6 +194,44 @@ class TestHandler(object):
 		handlers.return_value.load.assert_called_once_with()
 		handlers.return_value.assert_called_once_with(list(self.VISIBLE), (mocker.ANY, self.VISIBLE))
 
+	@pytest.mark.parametrize("key,val,visible", [
+		("foo", "val", {}),
+		("foo", None, {}),
+		("bar", "val", {}),
+		("bar", None, {}),
+		("baz", "val", {"baz": ("NORMAL", "val")}),
+		("baz", None, {"baz": ("NORMAL", None)}),
+	])
+	def test_run_changed_normal(self, key, val, visible, ucrf, mocker, handlers):
+		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
+
+	@pytest.mark.ucr_layer(ucrfe.ConfigRegistry.LDAP)
+	@pytest.mark.parametrize("key,val,visible", [
+		("foo", "val", {"foo": ("LDAP", "val")}),
+		("foo", None, {"foo": ("LDAP", None)}),
+		("bar", "val", {"bar": ("LDAP", "val")}),
+		("bar", None, {"bar": ("LDAP", None)}),
+		("baz", "val", {"baz": ("NORMAL", "val")}),
+		("baz", None, {"baz": ("NORMAL", None)}),
+	])
+	def test_run_changed_ldap(self, key, val, visible, ucrf, mocker, handlers):
+		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
+
+	@pytest.mark.ucr_layer(ucrfe.ConfigRegistry.FORCED)
+	@pytest.mark.parametrize("key,val,visible", [
+		("foo", "val", {"foo": ("LDAP", "val")}),
+		("foo", None, {"foo": ("LDAP", None)}),
+		("bar", "val", {"bar": ("LDAP", "val")}),
+		("bar", None, {"bar": ("LDAP", None)}),
+		("baz", "val", {"baz": ("NORMAL", "val")}),
+		("baz", None, {"baz": ("NORMAL", None)}),
+	])
+	def test_run_changed_forced(self, key, val, visible, ucrf, mocker, handlers):
+		ucrfe._run_changed(ucrf, {key: ("OLD", val)})
+		handlers.return_value.assert_called_once_with(list(visible), (mocker.ANY, visible))
+
 	def test_handler_dump(self):
 		assert set(ucrfe.handler_dump([])) == {"foo: LDAP", "bar: LDAP", "baz: NORMAL"}
 
