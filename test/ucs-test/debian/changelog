@@ -1,3 +1,9 @@
+ucs-test (9.0.7-22) unstable; urgency=medium
+
+  * Bug #52188: ignore samba setups in 01_base/91_pwchange_without_password_synchronization
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Mar 2021 08:47:39 +0100
+
 ucs-test (9.0.7-21) unstable; urgency=medium
 
   * Bug #52188: added 01_base/91_pwchange_without_password_synchronization
