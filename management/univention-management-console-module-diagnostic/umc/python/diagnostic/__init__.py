@@ -282,7 +282,7 @@ class Plugin(object):
 					errors.update(result)
 			except Problem:
 				raise
-			except:
+			except Exception:
 				raise Problem(traceback.format_exc())
 		except Problem as exc:
 			success = False

@@ -230,9 +230,10 @@ def run(_umc_instance):
 		return
 
 	differences = list(all_differences(acl_class))
-	ed = [
-		_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.') + ' ' +
-		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')]
+	ed = ' '.join([
+		_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.'),
+		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')
+	])
 
 	modules = list()
 	for (folder, group) in it.groupby(differences, lambda x: x[0]):

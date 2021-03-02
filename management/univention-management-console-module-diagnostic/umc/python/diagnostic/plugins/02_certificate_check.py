@@ -128,8 +128,8 @@ class CertificateVerifier(object):
 		# Difference between local and UTC times. ``YYYYMMDDHH[MM[SS[.fff]]]+-HHMM''.
 
 		generalized_time = generalized_time.decode('ASCII')
-		sans_mircoseconds = re.sub('\.\d{3}', '', generalized_time)
-		sans_difference = re.sub('[+-]\d{4}', '', sans_mircoseconds)
+		sans_mircoseconds = re.sub(r'\.\d{3}', '', generalized_time)
+		sans_difference = re.sub(r'[+-]\d{4}', '', sans_mircoseconds)
 		date_format = {
 			10: '%Y%m%d%H', 12: '%Y%m%d%H%M', 14: '%Y%m%d%H%M%S',
 			11: '%Y%m%d%HZ', 13: '%Y%m%d%H%MZ', 15: '%Y%m%d%H%M%SZ',
@@ -139,7 +139,7 @@ class CertificateVerifier(object):
 			raise ValueError('Unparsable generalized_time {!r}'.format(generalized_time))
 
 		date = datetime.datetime.strptime(sans_mircoseconds, date_format)
-		utc_difference = re.search('([+-])(\d{2})(\d{2})', sans_mircoseconds)
+		utc_difference = re.search(r'([+-])(\d{2})(\d{2})', sans_mircoseconds)
 
 		if sans_mircoseconds.endswith('Z'):
 			return date.replace(tzinfo=dateutil.tz.tzutc())
@@ -187,7 +187,8 @@ class CertificateVerifier(object):
 		# unfortunately only version 0.14 is available in debian.
 		cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path, '-CRLfile', self.crl_path, '-crl_check', path)
 		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-		stdout, _ = verify.communicate()
+		stdout, stderr = verify.communicate()
+		stdout = stdout.decode('UTF-8', 'replace')
 		if verify.poll() != 0:
 			# `openssl` can not cope with both `-CAfile` and `-CApath` at the
 			# same time, so we need a second call. If omitted, `openssl` will
@@ -195,7 +196,7 @@ class CertificateVerifier(object):
 			verify_sys = subprocess.Popen(('openssl', 'verify', path), stdout=subprocess.PIPE)
 			verify_sys.communicate()
 			if verify_sys.poll() != 0:
-				yield CertificateInvalid(path, stdout.decode('UTF-8', 'replace'))
+				yield CertificateInvalid(path, stdout)
 
 	def verify_root(self):
 		for error in self.verify(self.root_cert_path):
