@@ -9,12 +9,16 @@ import univention.config_registry.handler as h  # noqa E402
 
 
 @pytest.fixture(autouse=True)
-def ucr0(tmpdir, monkeypatch):
+def ucr0(tmpdir, monkeypatch, request):
 	"""
 	Return an empty UCR instance.
 	"""
 	monkeypatch.setattr(be.ConfigRegistry, "PREFIX", str(tmpdir))
-	ucr = be.ConfigRegistry()
+	marker = request.node.get_closest_marker("ucr_layer")
+	if marker is None:
+		ucr = be.ConfigRegistry()
+	else:
+		ucr = be.ConfigRegistry(write_registry=marker.args[0])
 	return ucr
 
 
