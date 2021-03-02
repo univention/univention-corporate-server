@@ -195,7 +195,7 @@ class TestHandler(object):
 		handlers.return_value.assert_called_once_with(list(self.VISIBLE), (mocker.ANY, self.VISIBLE))
 
 	def test_handler_dump(self):
-		assert set(ucrfe.handler_dump([])) == {"foo: FORCED", "bar: FORCED", "baz: NORMAL"}
+		assert set(ucrfe.handler_dump([])) == {"foo: LDAP", "bar: LDAP", "baz: NORMAL"}
 
 	def test_handler_update(self, handlers, defaults):
 		ucrfe.handler_update([])
@@ -231,13 +231,13 @@ class TestHandler(object):
 			stdout.write.assert_called_once()
 
 	@pytest.mark.parametrize("args,opts,output", [
-		(["foo"], {}, ["foo: FORCED\n"]),
-		(["foo"], {"key": True}, ["foo: FORCED\n"]),
+		(["foo"], {}, ["foo: LDAP\n"]),
+		(["foo"], {"key": True}, ["foo: LDAP\n"]),
 		(["foo"], {"value": True}, []),
-		(["foo"], {"all": True}, ["foo: FORCED\n"]),
-		(["foo"], {"non-empty": True}, ["foo: FORCED\n"]),
-		(["foo"], {"brief": True}, ["foo: FORCED"]),
-		(["foo"], {"verbose": True}, ["foo: FORCED\n"]),
+		(["foo"], {"all": True}, ["foo: LDAP\n"]),
+		(["foo"], {"non-empty": True}, ["foo: LDAP\n"]),
+		(["foo"], {"brief": True}, ["foo: LDAP"]),
+		(["foo"], {"verbose": True}, ["foo: LDAP\n"]),
 	])
 	def test_handler_search(self, args, opts, output, rinfo):
 		assert list(ucrfe.handler_search(args, opts)) == output
@@ -245,7 +245,7 @@ class TestHandler(object):
 	def test_handler_search_scope(self, ucr1, rinfo):
 		ucr1["ucr/output/scope"] = "true"
 		ucr1.save()
-		assert list(ucrfe.handler_search(["foo"], {})) == ["foo: FORCED\n"]
+		assert list(ucrfe.handler_search(["foo"], {})) == ["foo: LDAP\n"]
 
 	def test_handler_search_pattern(self, ucr1, rinfo):
 		rinfo.return_value.describe_search_term.return_value = {"key/.*": rinfo.return_value.get_variable.return_value}
@@ -267,7 +267,7 @@ class TestHandler(object):
 
 	@pytest.mark.parametrize("key,val", [
 		("key", []),
-		("foo", ["FORCED"]),
+		("foo", ["LDAP"]),
 		("baz", ["NORMAL"]),
 	])
 	def test_handler_get(self, key, val):

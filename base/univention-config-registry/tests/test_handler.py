@@ -19,8 +19,8 @@ import univention.config_registry.handler as ucrh
 @pytest.mark.parametrize("tmpl,out", [
 	("", ""),
 	("txt", "txt"),
-	("@%@foo@%@", "FORCED"),
-	("@%@bar@%@", "FORCED"),
+	("@%@foo@%@", "LDAP"),
+	("@%@bar@%@", "LDAP"),
 	("@%@baz@%@", "NORMAL"),
 	("@%@other@%@", ""),
 	("1@%@baz@%@2@%@baz@%@3", "1NORMAL2NORMAL3"),

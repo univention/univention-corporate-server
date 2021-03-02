@@ -134,14 +134,14 @@ class TestConfigRegistry(object):
 
 	def test_has_key_write_unset(self):
 		"""Test unset ucr.has_key(key, True)."""
-		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
+		ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 		ucr['foo'] = 'bar'
 		ucr = ConfigRegistry()
 		assert not ucr.has_key('foo', write_registry_only=True)  # noqa W601
 
 	def test_has_key_write_set(self):
 		"""Test set ucr.has_key(key, True)."""
-		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
+		ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 		ucr = ConfigRegistry()
 		ucr['foo'] = 'bar'
 		assert ucr.has_key('foo', write_registry_only=True)  # noqa W601
@@ -163,20 +163,20 @@ class TestConfigRegistry(object):
 
 	def test_dict(self, ucrf):
 		"""Test merged items."""
-		assert dict(ucrf) == dict([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+		assert dict(ucrf) == dict([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
 
 	def test_items(self, ucrf):
 		"""Test merged items."""
-		assert sorted(ucrf.items()) == sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+		assert sorted(ucrf.items()) == sorted([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
 
 	def test_items_scopes(self, ucrf):
 		"""Test merged items."""
-		assert sorted(ucrf.items(getscope=True)) == sorted([('foo', (ConfigRegistry.FORCED, 'FORCED')), ('bar', (ConfigRegistry.FORCED, 'FORCED')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
+		assert sorted(ucrf.items(getscope=True)) == sorted([('foo', (ConfigRegistry.LDAP, 'LDAP')), ('bar', (ConfigRegistry.LDAP, 'LDAP')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
 
 	@py2_only
 	def test_iteritems(self, ucrf):
 		"""Test merged items."""
-		assert sorted(ucrf.iteritems()) == sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+		assert sorted(ucrf.iteritems()) == sorted([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
 
 	def test_keys(self, ucrf):
 		"""Test merged keys."""
@@ -189,18 +189,18 @@ class TestConfigRegistry(object):
 
 	def test_values(self, ucrf):
 		"""Test merged values."""
-		assert sorted(ucrf.values()) == sorted(['FORCED', 'FORCED', 'NORMAL'])
+		assert sorted(ucrf.values()) == sorted(['LDAP', 'LDAP', 'NORMAL'])
 
 	@py2_only
 	def test_itervalues(self, ucrf):
 		"""Test merged items."""
-		assert sorted(ucrf.itervalues()) == sorted(['FORCED', 'FORCED', 'NORMAL'])
+		assert sorted(ucrf.itervalues()) == sorted(['LDAP', 'LDAP', 'NORMAL'])
 
 	def test_clear(self, ucrf):
 		"""Test set ucr.clear()."""
 		ucrf.clear()
-		assert ucrf.get('foo', getscope=True) == (ConfigRegistry.FORCED, 'FORCED')
-		assert ucrf.get('bar', getscope=True) == (ConfigRegistry.FORCED, 'FORCED')
+		assert ucrf.get('foo', getscope=True) == (ConfigRegistry.LDAP, 'LDAP')
+		assert ucrf.get('bar', getscope=True) == (ConfigRegistry.LDAP, 'LDAP')
 		assert ucrf.get('baz', getscope=True) is None
 
 	def test_is_true_unset(self, ucr0):

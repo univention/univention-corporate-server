@@ -27,9 +27,9 @@ def ucrf(ucr0):
 	"""
 	Return a pre-initialized UCR instance.
 	"""
-	ucr = be.ConfigRegistry(write_registry=be.ConfigRegistry.FORCED)
-	ucr['foo'] = 'FORCED'
-	ucr['bar'] = 'FORCED'
+	ucr = be.ConfigRegistry(write_registry=be.ConfigRegistry.LDAP)
+	ucr['foo'] = 'LDAP'
+	ucr['bar'] = 'LDAP'
 	ucr.save()
 	ucr = be.ConfigRegistry()
 	ucr['bar'] = 'NORMAL'
