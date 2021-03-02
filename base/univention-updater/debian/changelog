@@ -1,3 +1,9 @@
+univention-updater (15.0.3-19) unstable; urgency=medium
+
+  * Bug #51655: Fix warning
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 02 Mar 2021 10:21:42 +0100
+
 univention-updater (15.0.3-18) unstable; urgency=low
 
   * Bug #51316: Re-add dependency on Python 2 modules for UCS-5.0

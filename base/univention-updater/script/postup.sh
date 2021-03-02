@@ -141,8 +141,8 @@ service univention-firewall restart >&3 2>&3
 wait_period=0
 while [ "$wait_period" -lt "300" ]; do
 	if [ -f "/var/lib/univention-directory-listener/handlers/ldap_extension" ]; then
-		local ldap_ext_state=$(</var/lib/univention-directory-listener/handlers/ldap_extension)
-		local udm_ext_state=$(</var/lib/univention-directory-listener/handlers/udm_extension)
+		ldap_ext_state=$(</var/lib/univention-directory-listener/handlers/ldap_extension)
+		udm_ext_state=$(</var/lib/univention-directory-listener/handlers/udm_extension)
 		if [ "$ldap_ext_state" == 3 -a "$udm_ext_state" == 3 ]; then
 			break
 		fi
