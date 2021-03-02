@@ -698,7 +698,7 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					All scripts of <package>univention-saml</package> have been migrated to Python 3 (<u:bug>51315</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
