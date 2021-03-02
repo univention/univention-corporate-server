@@ -1,3 +1,9 @@
+ucs-test (10.0.4-9) unstable; urgency=medium
+
+  * Bug #52188: added 01_base/91_pwchange_without_password_synchronization
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Mar 2021 10:12:28 +0100
+
 ucs-test (10.0.4-8) unstable; urgency=medium
 
   * Bug #47734: added AppCenter object to test and 
