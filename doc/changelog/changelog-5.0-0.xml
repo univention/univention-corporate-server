@@ -139,7 +139,7 @@
 					This change has been implemented with UCS 4.4-6 but becomes now active (<u:bug>51624</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Apparmor is deactivated by default, because <package>cups</package> and <package>bind9</package> with <package>samba</package> are not configured for it yet (<u:bug>51786</u:bug>).
+					AppArmor is deactivated by default, because <package>cups</package> and <package>bind9</package> with <package>samba</package> are not configured for it yet (<u:bug>51786</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
