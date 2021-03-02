@@ -211,7 +211,7 @@ def ucr_update(ucr, changes):
 	_run_changed(ucr, changed)
 
 
-def _run_changed(ucr, changed, msg=None):
+def _run_changed(ucr, changed, msg=""):
 	# type: (ConfigRegistry, Dict[str, Tuple[Optional[str], Optional[str]]], str) -> None
 	"""
 	Run handlers for changed UCR variables.
@@ -220,16 +220,19 @@ def _run_changed(ucr, changed, msg=None):
 	:param changed: Mapping from UCR variable name to 2-tuple (old-value, new-value).
 	:param msg: Message to be printed when change is shadowed by higher layer. Must contain 2 `%s` placeholders for `key` and `scope-name`.
 	"""
+	visible = {}  # type: Dict[str, Tuple[Optional[str], Optional[str]]]
 	for key, (old_value, new_value) in changed.items():
 		replog(ucr, key, old_value, new_value)
-		if msg:
-			scope, _value = ucr.get(key, (0, None), getscope=True)
-			if scope > ucr.scope:
+		scope, value = ucr.get(key, (0, None), getscope=True)
+		if scope > ucr.scope:
+			if msg:
 				print(msg % (key, SCOPE[scope]), file=sys.stderr)
+		else:
+			visible[key] = (old_value, new_value)
 
 	handlers = ConfigHandlers()
 	handlers.load()
-	handlers(list(changed.keys()), (ucr, changed))
+	handlers(list(visible), (ucr, visible))
 
 
 def _ucr_from_opts(opts):

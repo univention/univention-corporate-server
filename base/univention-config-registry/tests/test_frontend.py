@@ -127,6 +127,10 @@ class TestHandler(object):
 		"bar": ("NORMAL", "bar"),
 		"baz": ("NORMAL", None),
 	}
+	VISIBLE = {
+		"new": (None, "val"),
+		"baz": ("NORMAL", None),
+	}
 
 	@pytest.fixture(autouse=True)
 	def ucr1(self, ucrf, mocker):
@@ -179,12 +183,12 @@ class TestHandler(object):
 
 		ucrfe._run_changed(ucrf, self.CHANGED, "%s %s")
 
-		for (key, (old, new)) in self.CHANGED.items():
+		for (key, (old, new)) in self.VISIBLE.items():
 			replog.assert_any_call(mocker.ANY, key, old, new)
 
 		handlers.assert_called_once_with()
 		handlers.return_value.load.assert_called_once_with()
-		handlers.return_value.assert_called_once_with(list(self.CHANGED), (mocker.ANY, self.CHANGED))
+		handlers.return_value.assert_called_once_with(list(self.VISIBLE), (mocker.ANY, self.VISIBLE))
 
 	def test_handler_dump(self):
 		assert set(ucrfe.handler_dump([])) == {"foo: FORCED", "bar: FORCED", "baz: NORMAL"}

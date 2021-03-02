@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-3) unstable; urgency=low
+
+  * Bug #52847: Call handlers only for changed variables
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Mar 2021 13:05:48 +0100
+
 univention-config-registry (15.0.7-2) unstable; urgency=low
 
   * Bug #38938 UCR: Re-implement default layer
