@@ -164,7 +164,7 @@
 					The container <uri>cn=admin-settings,cn=users,cn=policies</uri> is no longer created (<u:bug>47949</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The scripts in <package>univention-ldap</package> has been migrated to Python 3 (<u:bug>52280</u:bug>)
+					The scripts in <package>univention-ldap</package> have been migrated to Python 3 (<u:bug>52280</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 
