@@ -1,3 +1,9 @@
+ucs-test (10.0.4-14) unstable; urgency=medium
+
+  * Bug #47734: fixed login call for selenium test 130_miscellaneous
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 02 Mar 2021 15:16:27 +0100
+
 ucs-test (10.0.4-13) unstable; urgency=medium
 
   * Bug #52862: 73_udm-rest/01_openapi_validation fails

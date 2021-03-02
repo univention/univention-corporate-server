@@ -227,7 +227,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# Wait for the animation to run.
 		time.sleep(1)
 
-	def do_login(self, username=None, password=None, without_navigation=False):
+	def do_login(self, username=None, password=None, without_navigation=False, language=None):
 		if username is None:
 			username = self.umcLoginUsername
 		if password is None:
@@ -238,7 +238,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# 	self.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
 		# 	self.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
 		if not without_navigation:
-			self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+			self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language if not language else language,))
 
 		self.wait_until(
 			expected_conditions.presence_of_element_located(

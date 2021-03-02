@@ -170,7 +170,7 @@ class UMCTester(object):
 		translator.set_language(target_language_code)
 
 		self.selenium.end_umc_session()
-		self.selenium.do_login(without_navigation=True)
+		self.selenium.do_login(language=target_language_code)
 
 	def get_available_modules(self):
 		self.selenium.search_module('*')
