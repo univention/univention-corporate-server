@@ -9,7 +9,7 @@ univention-directory-manager-rest (10.0.1-1) unstable; urgency=low
   * Bug #52725: add HTTP 201 as possible response code for modify operation to
     OpenAPI schema (when moving)
 
--- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2021 15:26:50 +0100
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2021 15:26:50 +0100
 
 univention-directory-manager-rest (10.0.1-0) unstable; urgency=medium
 

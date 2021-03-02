@@ -28,5 +28,5 @@ License: AGPL-3.0-only
  /usr/share/common-licenses/AGPL-3; if not, see
  <https://www.gnu.org/licenses/>.
 
- Files: var/www/univention/udm/swaggerui/*
- License: MIT License (MIT)
+Files: var/www/univention/udm/swaggerui/*
+License: MIT License (MIT)
