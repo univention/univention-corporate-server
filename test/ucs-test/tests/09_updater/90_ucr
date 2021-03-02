@@ -11,10 +11,16 @@
 # shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
-tmp="$(mktemp)"
-trap 'rm -f "$tmp"; ucr commit /etc/ldap/slapd.conf; systemctl restart slapd.service' EXIT
-grep -v "^version/" /etc/univention/base.conf > "$tmp"
-UNIVENTION_BASECONF="$tmp" dpkg-reconfigure univention-updater || :
+tmp_base_conf="$(mktemp)"
+tmp_templates_info="$(mktemp -d)"
+trap 'rm -f "$tmp_base_conf"; rm -rf "$tmp_templates_info"' EXIT
+grep -v "^version/" /etc/univention/base.conf > "$tmp_base_conf"
+touch "$tmp_templates_info"/univention-updater.info
+unshare -m bash -c "
+	mount -B $tmp_templates_info /etc/univention/templates/info
+	UNIVENTION_BASECONF=$tmp_base_conf dpkg-reconfigure univention-updater || :
+	umount /etc/univention/templates/info
+"
 dpkg-reconfigure univention-updater
 
 result=0
@@ -22,7 +28,7 @@ for var in version patchlevel # erratalevel
 do
 	var="version/$var"
 	cur="$(ucr get "$var")"
-	new="$(UNIVENTION_BASECONF="$tmp" ucr get "$var")"
+	new="$(UNIVENTION_BASECONF="$tmp_base_conf" ucr get "$var")"
 	verify_value "$var" "$new" "$cur" || result=$?
 done
 exit $result
