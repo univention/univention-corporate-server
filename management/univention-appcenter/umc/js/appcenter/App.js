@@ -42,7 +42,7 @@ define([
 	"umc/i18n!umc/modules/appcenter"
 ], function(declare, array, kernel, lang, topic, json, entities, UMCApplication, tools, _) {
 	var App = declare('umc.modules.appcenter.App', null, {
-		constructor: function(props, page, host) {
+		constructor: function(props, host) {
 			props = lang.clone(props);
 			this.hostName = host || tools.status('hostname');
 			this.fqdn = this.hostName + '.' + tools.status('domainname');
@@ -140,7 +140,7 @@ define([
 					newProps.ip_address = info.ip[0];
 					newProps.is_installed = !!info.version;
 					newProps.update_available = info.update_available;
-					var installation = new App(newProps, page, hostName);
+					var installation = new App(newProps, hostName);
 					this.installationData.push(installation);
 				}));
 				this.installationData.sort(function(a, b) {

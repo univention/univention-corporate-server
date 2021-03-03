@@ -60,7 +60,6 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
 	"umc/widgets/Icon",
-	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppInfo",
 	"umc/modules/appcenter/AppMoreInfo",
 	"umc/modules/appcenter/Buy",
@@ -69,7 +68,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ImageGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppCenterGallery, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -109,8 +108,6 @@ define([
 			this.appLoadingDeferred = new Deferred();
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
-			this._grid = new AppCenterGallery({});
-			this.own(this._grid);
 		},
 
 		buildRendering: function() {
@@ -146,7 +143,7 @@ define([
 				} else {
 					tools.umcpCommand('appcenter/ping');
 				}
-				var app = new App(loadedApp, this);
+				var app = new App(loadedApp);
 				this._set('app', app);
 				this._configureDialogs(app);
 				this._renderPage();
@@ -270,7 +267,7 @@ define([
 					isContextAction: false,
 					callback: lang.hitch(this, function() {
 						additionalCallback();
-						this.app.install();
+						topic.publish('/appcenter/run/install', [this.app.id], null, this.fromSuggestionCategory, this);
 					})
 				});
 			}
@@ -324,9 +321,9 @@ define([
 			}
 			var callback;
 			if (this.app.canUninstallInDomain()) {
-				callback = lang.hitch(this, function(host, apps) {
+				callback = lang.hitch(this, function(host, rows) {
 					additionalCallback();
-					topic.publish('/appcenter/run/remove', apps.map((app) => app.data.id), null, this);
+					topic.publish('/appcenter/run/remove', [this.app.id], Object.fromEntries(rows.map((row) => [row.id, [row.data.id]])), null, this);
 				});
 				buttons.push({
 					name: 'uninstall',
@@ -342,9 +339,9 @@ define([
 				});
 			}
 			if (this.app.canUpgradeInDomain()) {
-				callback = lang.hitch(this, function(host, app) {
+				callback = lang.hitch(this, function(host, rows) {
 					additionalCallback();
-					topic.publish('/appcenter/run/upgrade', apps.map((app) => app.data.id), null, this);
+					topic.publish('/appcenter/run/upgrade', [this.app.id], Object.fromEntries(rows.map((row) => [row.id, [row.data.id]])), null, this);
 				});
 				buttons.push({
 					name: 'update',
@@ -563,7 +560,8 @@ define([
 					"class": "umcManageInstallationButton ucsPrimaryButton",
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
-						topic.publish('/appcenter/run/upgrade', [this.app.id], null, this);
+						const localhost = tools.status("fqdn");
+						topic.publish('/appcenter/run/upgrade', [this.app.id], { [localhost]: [this.app.id] }, null, this);
 					})
 				}));
 			}
@@ -602,13 +600,14 @@ define([
 					})
 				}));
 			}
-			if (this.app.canUninstall) {
+			if (this.app.canUninstall()) {
 				container.addChild(new Button({
 					label: _("Uninstall"),
 					"class": "umcManageInstallationButton",
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
-						topic.publish('/appcenter/run/remove', [this.app.id], null, this);
+						const localhost = tools.status("fqdn");
+						topic.publish('/appcenter/run/remove', [this.app.id], { [localhost]: [this.app.id] }, null, this);
 					})
 				}));
 			}
@@ -716,7 +715,7 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
 			}
 
-			topic.publish('/appcenter/run/install', [this.app.id], this.fromSuggestionCategory, this);
+			topic.publish('/appcenter/run/install', [this.app.id], null, this.fromSuggestionCategory, this);
 		},
 
 		startAction: function(action, apps, fromGallery) {

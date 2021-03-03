@@ -42,6 +42,7 @@ define([
 	"umc/dialog",
 	"umc/store",
 	"umc/widgets/Module",
+	"umc/widgets/ProgressBar",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
@@ -52,7 +53,7 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, ProgressBar, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -96,19 +97,19 @@ define([
 				this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
 					this.showApp(app, suggested);
 				}));
-				this.own(topic.subscribe('/appcenter/run/install', (apps, suggested, page) => {
-					this._run('install', apps, page);
+				this.own(topic.subscribe('/appcenter/run/install', (apps, hosts, suggested, page) => {
+					this._run('install', apps, hosts, page);
 				}));
-				this.own(topic.subscribe('/appcenter/run/upgrade', (apps, suggested, page) => {
-					this._run('upgrade', apps, page);
+				this.own(topic.subscribe('/appcenter/run/upgrade', (apps, hosts, suggested, page) => {
+					this._run('upgrade', apps, hosts, page);
 				}));
-				this.own(topic.subscribe('/appcenter/run/remove', (apps, suggested, page) => {
-					this._run('remove', apps, page);
+				this.own(topic.subscribe('/appcenter/run/remove', (apps, hosts, suggested, page) => {
+					this._run('remove', apps, hosts, page);
 				}));
 			}
 		},
 
-		_run: function(action, apps, page) {
+		_run: function(action, apps, hosts, page) {
 			var installDialog = new AppInstallDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
@@ -116,10 +117,34 @@ define([
 			});
 			this.addChild(installDialog);
 			this.selectChild(installDialog);
-			when(installDialog.startAction(action, apps)).always(() => {
-				this.selectChild(page);
-				this.removeChild(installDialog);
-			});
+			installDialog.startAction(action, apps, hosts).then(
+				() => {
+					// update the list of apps
+					var deferred = tools.renewSession().then(() => {
+						var reloadPage = this._appCenterPage.updateApplications().then(() => {
+							if ('reloadPage' in page) {
+								return page.reloadPage();
+							}
+						});
+						var reloadModules = app.reloadModules();
+						return all([reloadPage, reloadModules]).then(function() {
+							tools.checkReloadRequired();
+						});
+					});
+
+					// show standby animation
+					var progressBar = new ProgressBar({});
+					progressBar.reset();
+					progressBar.setInfo(_('Updating session and module data...'), '', Infinity);
+					this.standbyDuring(deferred, progressBar).then(() => {
+						this.selectChild(page);
+						this.removeChild(installDialog);
+					});
+				}, () => {
+					this.selectChild(page);
+					this.removeChild(installDialog);
+				}
+			);
 		},
 
 		_updateModuleState: function() {

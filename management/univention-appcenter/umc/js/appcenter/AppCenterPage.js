@@ -164,12 +164,23 @@ define([
 				var metaCategory = new Tiles({
 					header: metaObj.label,
 					query: metaObj.query,
-					hasSelectionMode: !!metaObj.hasSelectionMode,
+					selectionModes: metaObj.selectionModes,
 					isSuggestionCategory: !!metaObj.isSuggestionCategory,
 					visible: false
 				});
 				metaCategory.on('startAction', lang.hitch(this, function(action, apps) {
-					topic.publish('/appcenter/run/install', apps, !!metaObj.isSuggestionCategory, this);
+					if (action === 'install') {
+						topic.publish('/appcenter/run/install', apps, null, !!metaObj.isSuggestionCategory, this);
+					} else if (action === 'upgrade') {
+						const hosts = { [tools.status('fqdn')]: apps };
+						topic.publish('/appcenter/run/upgrade', apps, hosts, false, this);
+					} else if (action === 'upgradeDomain') {
+						const hosts = {};
+						topic.publish('/appcenter/run/upgrade', apps, hosts, false, this);
+					} else if (action === 'remove') {
+						const hosts = { [tools.status('fqdn')]: apps };
+						topic.publish('/appcenter/run/remove', apps, hosts, false, this);
+					}
 				}));
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
@@ -180,7 +191,7 @@ define([
 			return [
 			{
 				label: _('Installed'),
-				hasSelectionMode: false,
+				selectionModes: ['upgrade', 'remove'],
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -194,7 +205,7 @@ define([
 			},
 			{
 				label: _('Installed in domain'),
-				hasSelectionMode: false,
+				selectionModes: ['upgradeDomain'],
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -208,7 +219,7 @@ define([
 			},
 			{
 				label: _('Suggestions based on installed apps'),
-				hasSelectionMode: true,
+				selectionModes: ['install'],
 				query: function(app) {
 					return app.$isSuggested;
 				},
@@ -217,7 +228,7 @@ define([
 			},
 			{
 				label: _('Available'),
-				hasSelectionMode: true,
+				selectionModes: ['install'],
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}

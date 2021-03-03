@@ -239,6 +239,12 @@ define([
 				return _('Uninstall them first.');
 			}
 		}),
+		must_be_reachable: new Requirement({
+			// frontend only requirement!
+			reasonDescription: function(details) {
+				return _('The server did not respond properly. Please make sure it is reachable and updated.');
+			},
+		}),
 		must_have_no_conflicts_apps: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s conflicts with the following Apps.', entities.encode(details.name));

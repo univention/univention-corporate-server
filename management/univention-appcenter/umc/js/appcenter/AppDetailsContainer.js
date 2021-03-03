@@ -63,7 +63,7 @@ define([
 
 			// var showUnreachableHint = this.details.software_changes_computed && this.details.unreachable.length;
 			// var unreachableHintIsHard = showUnreachableHint && this.details.master_unreachable;
-			var showErrataHint = this.details.software_changes_computed && this.funcName === 'update';
+			var showErrataHint = this.details.software_changes_computed && this.funcName === 'upgrade';
 			var packageChanges = [];
 			if (this.details.software_changes_computed) {
 				packageChanges.push({

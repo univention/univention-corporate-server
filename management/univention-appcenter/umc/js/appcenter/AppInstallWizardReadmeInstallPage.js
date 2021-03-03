@@ -35,15 +35,15 @@ define([
 	"umc/i18n!umc/modules/appcenter"
 ], function(declare, Text, AppText, _) {
 	return {
-		getPageConf: function(app) {
-			if (!app.readmeInstall) {
+		getPageConf: function(app, readme) {
+			if (!app[readme]) {
 				return null;
 			}
 
 			return {
-				name: `readmeInstall_${app.id}`,
+				name: `readme_${app.id}`,
 				headerText: '',
-				helpText: _('Install information'),
+				helpText: _('Information'),
 				widgets: [{
 					type: AppText,
 					app: AppText.appFromApp(app),
@@ -51,8 +51,8 @@ define([
 				}, {
 					type: Text,
 					'class': 'appInstallDialog__readme',
-					name: `readmeInstall_readmeInstall_${app.id}`,
-					content: app.readmeInstall
+					name: `readmeInstall_readme_${app.id}`,
+					content: app[readme]
 				}]
 			};
 		}

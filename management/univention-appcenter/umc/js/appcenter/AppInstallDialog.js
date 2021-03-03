@@ -43,13 +43,12 @@ define([
 	"./App",
 	"./AppChooseHostWizard",
 	"./AppInstallWizard",
+	"./AppPostInstallWizard",
 	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, domClass, topic, on, Deferred, all, tools, Page, ProgressBar, App, AppChooseHostWizard, AppInstallWizard, _AppDialogMixin, _) {
+], function(declare, lang, array, domClass, topic, on, Deferred, all, tools, Page, ProgressBar, App, AppChooseHostWizard, AppInstallWizard, AppPostInstallWizard, _AppDialogMixin, _) {
 	return declare("umc.modules.appcenter.AppInstallDialog", [ Page, _AppDialogMixin ], {
-
 		_actionDeferred: null,
-		// _hasSeriousProblems: false,
 
 		constructor: function() {
 			this.headerButtons = [{
@@ -101,6 +100,10 @@ define([
 
 		_getHosts: function(backpack) {
 			var deferred = new Deferred();
+			if (backpack.hosts) {
+				deferred.resolve(backpack);
+				return deferred;
+			}
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
 				auto_installed: backpack.auto_installed,
@@ -110,14 +113,24 @@ define([
 			// });
 			appChooseHostWizard.startup(); // is normally called by addChild but we need it for getValues
 			if (!appChooseHostWizard.needsToBeShown) {
-				backpack.hosts = appChooseHostWizard.getValues();
+				backpack.hosts = {};
+				for (const [appId, host] of Object.entries(appChooseHostWizard.getValues())) {
+					const apps = backpack.hosts[host] || [];
+					apps.push(appId);
+					backpack.hosts[host] = apps;
+				}
 				deferred.resolve(backpack);
 			} else {
 				on(appChooseHostWizard, 'cancel', function() {
 					deferred.reject();
 				});
 				on(appChooseHostWizard, 'finished', function(values) {
-					backpack.hosts = values;
+					backpack.hosts = {};
+					for (const [appId, host] of Object.entries(values)) {
+						const apps = backpack.hosts[host] || [];
+						apps.push(appId);
+						backpack.hosts[host] = apps;
+					}
 					deferred.resolve(backpack);
 				});
 				this._show(appChooseHostWizard);
@@ -173,11 +186,14 @@ define([
 					return dryRunResults[key];
 				}
 				for (const host of Object.keys(results)) {
-					if (host === '__unreachable__') {
-						// TODO
+					const hostResults = results[host];
+					if ('unreachable' in hostResults) {
+						for (appId of hostResults.unreachable) {
+							const appResults = getAppResults(appId, host);
+							appResults.invokation_forbidden_details['must_be_reachable'] = false;
+						}
 						continue;
 					}
-					const hostResults = results[host];
 					for (const [appId, packageChanges] of Object.entries(hostResults.packages)) {
 						const appResults = getAppResults(appId, host);
 						appResults.broken = packageChanges.broken;
@@ -218,6 +234,7 @@ define([
 				apps: backpack.apps,
 				appSettings: backpack.settings,
 				dryRunResults: backpack.dryRunResults,
+				action: backpack.action,
 			});
 			if (!installWizard.needsToBeShown) {
 				deferred.resolve(backpack);
@@ -241,8 +258,9 @@ define([
 
 		_resolveBackpack: function(backpack) {
 			const apps = backpack.apps;
-			const appIds = apps.map(app => app.id);
+			const autoInstalled = backpack.auto_installed;
 			const hosts = backpack.hosts;
+			const action = backpack.action;
 			const appSettings = {};
 			for (const app of apps) {
 				appSettings[app.id] = {};
@@ -252,43 +270,78 @@ define([
 				}
 			}
 			var values = {
-				apps: appIds,
+				apps,
 				hosts,
-				appSettings
+				autoInstalled,
+				appSettings,
+				action,
 			};
-			this._actionDeferred.resolve(values);
-			this.onBack();
+			const deferred = new Deferred();
+			deferred.resolve(values);
+			return deferred;
 		},
 
-		startAction: function(action, apps) {
-			this._actionDeferred = new Deferred();
-			// this._hasSeriousProblems = false;
+		_run: function(backpack) {
+			const progressBar = new ProgressBar({});
+			progressBar.reset();
+			progressBar.setInfo(_('Validating input...'), '', Infinity);
+			const command = tools.umcpProgressCommand(progressBar, 'appcenter/run', {
+				apps: backpack.apps.map(app => app.id),
+				auto_installed: backpack.autoInstalled,
+				action: backpack.action,
+				hosts: backpack.hosts,
+				settings: backpack.appSettings,
+				dry_run: false
+			}).then(function(results) {
+				backpack.result = results;
+				backpack.errors = progressBar.getErrors().errors;
+				return backpack;
+			});
+			this.standbyDuring(command, progressBar);
+			return command;
+		},
 
+		_afterMath: function(backpack) {
+			const successfulApps = [];
+			const deferred = new Deferred();
+			var installWizard = new AppPostInstallWizard({
+				apps: backpack.apps,
+				action: backpack.action,
+				result: backpack.result,
+				errorMessages: backpack.errors,
+			});
+			if (!installWizard.needsToBeShown) {
+				deferred.resolve(backpack);
+				return deferred;
+			} else {
+				on(installWizard, 'finished', function() {
+					deferred.resolve(backpack);
+				});
+				this._show(installWizard);
+			}
+			return deferred;
+		},
+
+		startAction: function(action, apps, hosts) {
 			var backpack = {
 				action,
 				apps,
+				hosts,
 			};
-			
-			this._resolveApps(backpack)
+
+			this._actionDeferred = this._resolveApps(backpack)
 				.then(lang.hitch(this, '_getHosts'))
 				.then(lang.hitch(this, '_performDryRun'))
 				.then(lang.hitch(this, '_showInstallWizard'))
 				.then(lang.hitch(this, '_resolveBackpack'))
+				.then(lang.hitch(this, '_run'))
+				.then(lang.hitch(this, '_afterMath'))
 				.otherwise(lang.hitch(this, '_cancelAction'));
 			return this._actionDeferred;
 		},
 
 		_cancelAction: function() {
-			// if (!this._hasSeriousProblems) {
-				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
-			// }
-			this.onBack();
-		},
-
-		onBack: function() {
-			if (this._actionDeferred && !this._actionDeferred.isFulfilled()) {
-				this._actionDeferred.reject();
-			}
+			this._actionDeferred.cancel();
 		}
 	});
 });
