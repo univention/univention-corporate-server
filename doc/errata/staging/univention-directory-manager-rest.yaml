@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-directory-manager-rest
-fix: 9.0.16-13A~4.4.0.202103031329
+fix: 9.0.16-14A~4.4.0.202103031456
 desc: |
  This update addresses the following issue:
  * The OpenAPI schema has been adjusted to be compliant: The "example"
