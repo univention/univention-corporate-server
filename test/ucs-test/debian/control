@@ -613,6 +613,7 @@ Recommends:
 Depends:
  chromium (>= 71.0.3578.80-1~deb9u1),
  chromium-driver (>= 71.0.3578.80-1~deb9u1),
+ libnss3-tools,
  ffmpeg,
  python-cssselect,
  python-lxml,
