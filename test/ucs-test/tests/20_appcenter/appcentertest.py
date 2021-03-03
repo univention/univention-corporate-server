@@ -154,7 +154,7 @@ class AppCenterOperations(object):
 		return {
 			"apps": apps,
 			"auto_installed": [],
-			"hosts": {app: host for app in apps},
+			"hosts": {host: apps},
 			"settings": {app: {} for app in apps},
 		}
 

@@ -1,3 +1,9 @@
+ucs-test (10.0.4-17) unstable; urgency=medium
+
+  * Bug #52863: Slight adjustment to appcenter tests (new backend request)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 03 Mar 2021 02:00:01 +0100
+
 ucs-test (10.0.4-16) unstable; urgency=medium
 
   * Bug #51574: Fix 23_apache/22_ssl-order for TLS 1.3
