@@ -53,7 +53,7 @@ def main():
 		sys.exit(0)
 	check_user(raw)  # maybe it just works
 
-	if basic_ldap_auth.after == 'ERR Success\r\n':
+	if basic_ldap_auth.after == 'BH Success\r\n':
 		raw_unquoted = urllib.unquote(raw)
 		try:
 			# "auth_param basic utf8 off" default -> decode is needed for IE
@@ -61,7 +61,7 @@ def main():
 			check_user(decoded)
 		except UnicodeDecodeError:
 			pass
-	if basic_ldap_auth.after == 'ERR Success\r\n':
+	if basic_ldap_auth.after == 'BH Success\r\n':
 		try:
 			# "auth_param basic utf8 on" -> encode is needed for Chrome/Firefox
 			encoded = raw_unquoted.encode('iso-8859-1')

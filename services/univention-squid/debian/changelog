@@ -1,3 +1,10 @@
+univention-squid (13.0.2-1) unstable; urgency=medium
+
+  * Bug #51817: Since Squid 4.6 basic_ldap_auth returns "BH Success"
+    instead of "ERR Success" in case of LDAP bind errors
+
+ -- Arvid <requate@univention.de>  Wed, 03 Mar 2021 20:17:39 +0100
+
 univention-squid (13.0.1-1) unstable; urgency=medium
 
   * Bug #52017: ipaddr → ipaddress
