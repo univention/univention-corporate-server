@@ -1514,7 +1514,6 @@ class OpenAPI(Resource):
 						"name": "filter",
 						"schema": {"type": "string", "default": ""},
 						"description": "A ldap filter which may contain `UDM` property names instead of `LDAP` attribute names.",
-						"example": "(objectClass=*)",
 						"examples": {
 							"any-object": {
 								"value": "(objectClass=*)",
