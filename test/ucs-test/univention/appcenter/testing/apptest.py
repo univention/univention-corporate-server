@@ -85,6 +85,18 @@ class Session(object):
 		self.base_url = base_url
 		self.screenshot_path = screenshot_path
 		self.driver = driver
+		self.add_ucs_root_ca_to_chrome_cert_store()
+
+	def add_ucs_root_ca_to_chrome_cert_store(self):
+		# add ucs root ca to chromiums cert store
+		# certutil -L -d sql:.pki/nssdb/
+		# certutil -A -n "UCS root CA" -t "TCu,Cu,Tu" -i /etc/univention/ssl/ucsCA/CAcert.pem -d sql:.pki/nssd
+		cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb')
+		ucs_root_ca = '/etc/univention/ssl/ucsCA/CAcert.pem'
+		if not os.path.isdir(cert_store):
+			os.makedirs(cert_store)
+		import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', ucs_root_ca, '-d', 'sql:{}'.format(cert_store)]
+		subprocess.check_output(import_cert)
 
 	def __enter__(self):
 		yield self
@@ -117,7 +129,7 @@ class Session(object):
 		time.sleep(3)
 		if self.find_first('span.umcApplianceReadmeCloseButton'):
 			self.click_element('span.umcApplianceReadmeCloseButton')
-		self.wait_until_clickable_and_click('#umc_menu_Button_0')
+		self.wait_until_clickable_and_click('#umc_widgets_ToggleButton_1')
 		self.wait_until_clickable_and_click('#umcMenuLanguage')
 		for element in self.find_all('#umcMenuLanguage__slide .menuItem'):
 			if element.text == 'English':
@@ -126,10 +138,12 @@ class Session(object):
 				break
 
 	def click_portal_tile(self, name):
-		elements = self.find_all('.umcGalleryNameContent')
+		elements = self.find_all('.tile__name')
 		for element in elements:
 			if element.text == name:
 				self.driver.execute_script("arguments[0].click();", element)
+				time.sleep(2)
+				self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portalIframe__iframe"]'))
 				break
 		else:
 			raise RuntimeError('Could not find {}'.format(name))
@@ -441,6 +455,17 @@ else:
 		user_id_cache = {'X': 1}  # very elegant...
 
 		def _users(user_id=None, attrs={}):
+			# create mail domain
+			if 'mailPrimaryAddress' in attrs:
+				my_domain = attrs['mailPrimaryAddress'].split('@', 1)[1]
+				mail_domain_mod = udm.get('mail/domain')
+				for mail_domain in mail_domain_mod.search(opened=True):
+					if mail_domain.properties['name'] == my_domain:
+						break
+				else:
+					md = mail_domain_mod.new()
+					md.properties['name'] = my_domain
+					md.save()
 			username = attrs.get('username')
 			if username is None:
 				if user_id is None:
