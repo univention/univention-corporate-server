@@ -58,8 +58,8 @@ def search_templates(old_group_name, new_group_name, server_role):
 			continue
 
 		print('Checking template %s' % (filename,))
-		with open(filename, 'r') as content_file:
-			content = content_file.read()
+		with open(filename, 'rb') as content_file:
+			content = content_file.read().decode('UTF-8', 'replace')
 
 		# contains a comment about the group
 		if filename in should_contain_admin and new_group_name not in content:
