@@ -977,7 +977,7 @@ class ConfigHandlers:
 			if isinstance(handler, ConfigHandlerDiverting):
 				handler.install_divert()
 
-			values = {}  # type: Dict[str, Optional[str]]
+			values = {}  # type: Dict[str, Tuple[None, Optional[str]]]
 			for variable in handler.variables:
 				v2h = self._handlers.setdefault(variable, set())
 				v2h.add(handler)
