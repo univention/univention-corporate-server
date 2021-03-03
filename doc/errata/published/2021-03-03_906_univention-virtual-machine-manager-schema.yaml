@@ -9,3 +9,5 @@ desc: |
  * Register files from package univention-virtual-machine-manager-schema
    in LDAP in preparation for UCS 5
 bug: [51955]
+erratum: 906
+announced: 2021-03-03
