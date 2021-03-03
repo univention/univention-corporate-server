@@ -1,4 +1,4 @@
-univention-directory-manager-rest (9.0.16-13) unstable; urgency=medium
+univention-directory-manager-rest (9.0.16-14) unstable; urgency=medium
 
   * Bug #52862: fix OpenAPI schema: remove mutual exclusive "example"
     and "examples"
