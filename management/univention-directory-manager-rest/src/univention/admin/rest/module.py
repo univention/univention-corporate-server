@@ -78,6 +78,7 @@ import xml.etree.cElementTree as ET
 import xml.dom.minidom
 from genshi import XML
 from genshi.output import HTMLSerializer
+import requests
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -356,6 +357,19 @@ class NotFound(HTTPError):
 
 	def __init__(self, object_type=None, dn=None):
 		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
+
+
+def evaluate_policy(data):
+	try:
+		response = requests.post('http://127.0.0.1:8181/v1/data/univention/udm/', json=data)
+	except requests.exceptions.ConnectionError:
+		raise HTTPError(502, 'Open Policy Agent not available')
+	if response.status_code != 200:
+		raise HTTPError(502, 'Open Policy Agent not available')
+	result = response.json().get("result", False)
+	if result is False:
+		raise HTTPError(403, 'Open Policy Agent violation')
+	return result
 
 
 def superordinate_names(module):
@@ -2982,6 +2996,27 @@ class Object(FormBase, Resource):
 			UDM_Error(exc).reraise()
 
 	def set_properties(self, module, obj):
+		opa_input = {
+			'request': {
+				'method': self.request.method,
+				'path': self.request.path_decoded,
+				'uri': self.request.full_url()
+			},
+			'user': {
+				'dn': self.request.user_dn,
+				'username': self.request.username,
+				'groups': '',
+			},
+			'current': {
+				'object_type': obj.module,
+				'position': univention.admin.uldap.access.parentDn(obj.dn) if obj.dn else obj.position.getDn(),
+				'properties': copy.deepcopy(obj.info),
+				'options': copy.deepcopy(obj.options),
+				'policies': copy.deepcopy(obj.policies),
+				'dn': copy.deepcopy(obj.dn),
+			}
+		}
+
 		options = self.request.body_arguments['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
 		options_enable = set(opt for opt, enabled in options.items() if enabled)
 		options_disable = set(opt for opt, enabled in options.items() if enabled is False)  # ignore None!
@@ -2989,6 +3024,14 @@ class Object(FormBase, Resource):
 		if self.request.body_arguments['policies']:
 			obj.policies = functools.reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
 		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
+
+		opa_input['target'] = {
+			'properties': copy.deepcopy(obj.info),
+			'options': copy.deepcopy(obj.options),
+			'policies': copy.deepcopy(obj.policies),
+			'dn': copy.deepcopy(obj.dn),
+		}
+		evaluate_policy(opa_input)
 
 	@tornado.gen.coroutine
 	def move(self, module, dn, position):
