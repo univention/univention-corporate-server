@@ -1501,13 +1501,12 @@ class OpenAPI(Resource):
 							"type": "string",
 							"default": "sub",
 						},
-						"example": "sub",
 						"description": "The `LDAP` search scope (sub, base, one).",
 						"examples": {
 							"sub": {"value": "sub", "summary": "sub-scope"},
 							"base": {"value": "base", "summary": "base-scope"},
 							"one": {"value": "one", "summary": "one-scope"},
-						}
+						},
 					},
 					'search.filter': {
 						"in": "query",
@@ -1516,9 +1515,12 @@ class OpenAPI(Resource):
 						"description": "A ldap filter which may contain `UDM` property names instead of `LDAP` attribute names.",
 						"example": "(objectClass=*)",
 						"examples": {
-							"users-user": {
+							"any-object": {
+								"value": "(objectClass=*)",
+							},
+							"admin-user": {
 								"value": "(|(username=Administrator)(username=Admin*))",
-							}
+							},
 						},
 					},
 					'search.query': {
