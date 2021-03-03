@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-02-08 18:57+0100\n"
+"POT-Creation-Date: 2021-03-02 00:43+0100\n"
 "PO-Revision-Date: 2020-09-15 14:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -11,12 +11,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:348
+#: umc/python/appcenter/__init__.py:356
 #, python-format
 msgid "%d Apps: Connecting to %s"
 msgstr "%d Apps: Verbinde zu %s"
 
-#: umc/python/appcenter/__init__.py:298
+#: umc/python/appcenter/__init__.py:306
 #, python-format
 msgid "%d Apps: Running tests"
 msgstr "%d Apps: Starte Tests"
@@ -30,17 +30,17 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: umc/python/appcenter/__init__.py:346
+#: umc/python/appcenter/__init__.py:354
 #, python-format
 msgid "%s: Connecting to %s"
 msgstr "%s: Verbinde zu %s"
 
-#: umc/python/appcenter/__init__.py:296 umc/python/appcenter/__init__.py:571
+#: umc/python/appcenter/__init__.py:304 umc/python/appcenter/__init__.py:579
 #, python-format
 msgid "%s: Running tests"
 msgstr "%s: Starte Tests"
 
-#: umc/python/appcenter/__init__.py:398
+#: umc/python/appcenter/__init__.py:406
 msgid ""
 "A conflict between the system network settings and the docker bridge default "
 "network has been detected."
@@ -48,7 +48,7 @@ msgstr ""
 "Es wurde ein Konflikt zwischen den Netzwerkeinstellungen des Systems und der "
 "Docker Bridge entdeckt."
 
-#: umc/python/appcenter/__init__.py:629 umc/python/appcenter/__init__.py:1119
+#: umc/python/appcenter/__init__.py:637 umc/python/appcenter/__init__.py:1127
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -57,27 +57,27 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/appcenter/__init__.py:450 umc/python/appcenter/__init__.py:471
-#: umc/python/appcenter/__init__.py:666
+#: umc/python/appcenter/__init__.py:458 umc/python/appcenter/__init__.py:479
+#: umc/python/appcenter/__init__.py:674
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/__init__.py:417
+#: umc/python/appcenter/__init__.py:425
 msgid "Could not load suggestions."
 msgstr "Konnte App-Vorschläge nicht laden."
 
-#: umc/python/appcenter/__init__.py:319 umc/python/appcenter/__init__.py:602
+#: umc/python/appcenter/__init__.py:327 umc/python/appcenter/__init__.py:610
 #, python-format
 msgid "Installing %s"
 msgstr "Installiere %s"
 
-#: umc/python/appcenter/__init__.py:816
+#: umc/python/appcenter/__init__.py:824
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/__init__.py:379 umc/python/appcenter/__init__.py:429
+#: umc/python/appcenter/__init__.py:387 umc/python/appcenter/__init__.py:437
 msgid ""
 "Make sure docker.io is installed, try starting the service with \"service "
 "docker start\"."
@@ -102,7 +102,7 @@ msgstr "Paket wurde in keinem Repository gefunden"
 msgid "Please check the join state of the machine."
 msgstr "Bitte überprüfen Sie den Status des Domänenbeitritts."
 
-#: umc/python/appcenter/__init__.py:399
+#: umc/python/appcenter/__init__.py:407
 msgid ""
 "Please either configure a different network for the docker bridge by setting "
 "the UCR variable docker/daemon/default/opts/bip to a different network and "
@@ -111,16 +111,16 @@ msgstr ""
 "Bitte konfigurieren Sie ein anderes Netzwerk für die Docker Bridge durch die "
 "UCR Variable docker/daemon/default/opts/bip und ein Neustart des Systems,"
 
-#: umc/python/appcenter/__init__.py:222
+#: umc/python/appcenter/__init__.py:226
 #, python-brace-format
 msgid "Problems connecting to {0} ({1}). Please update {0}!"
 msgstr ""
 
-#: umc/python/appcenter/__init__.py:224
+#: umc/python/appcenter/__init__.py:228
 msgid "Problems connecting to {} ({})."
 msgstr ""
 
-#: umc/python/appcenter/__init__.py:225
+#: umc/python/appcenter/__init__.py:229
 msgid ""
 "The App Center version of the this host ({}) is not compatible with the "
 "version of {} ({})"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "The credentials provided were not accepted."
 msgstr "Die Zugangsdaten wurden nicht akzeptiert."
 
-#: umc/python/appcenter/__init__.py:379
+#: umc/python/appcenter/__init__.py:387
 msgid ""
 "The docker service is not running! The App Center will not work properly."
 msgstr ""
@@ -145,7 +145,7 @@ msgstr "Dem Rechner scheint eine korrekte Passwortdatei zu fehlen."
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:1325
+#: umc/python/appcenter/__init__.py:1333
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -183,20 +183,20 @@ msgstr ""
 "Das Problem kann vielleicht bereits durch ein Aus- und erneutes Einloggen "
 "gelöst werden."
 
-#: umc/python/appcenter/__init__.py:429
+#: umc/python/appcenter/__init__.py:437
 msgid "Unable to start the docker service!"
 msgstr "Der Docker-Dienst konnte nicht gestartet werden!"
 
-#: umc/python/appcenter/__init__.py:422
+#: umc/python/appcenter/__init__.py:430
 msgid "Unexpected suggestions data."
 msgstr "Unerwartete Daten für App-Vorschläge."
 
-#: umc/python/appcenter/__init__.py:321 umc/python/appcenter/__init__.py:604
+#: umc/python/appcenter/__init__.py:329 umc/python/appcenter/__init__.py:612
 #, python-format
 msgid "Uninstalling %s"
 msgstr "Deinstalliere %s"
 
-#: umc/python/appcenter/__init__.py:323 umc/python/appcenter/__init__.py:606
+#: umc/python/appcenter/__init__.py:331 umc/python/appcenter/__init__.py:614
 #, python-format
 msgid "Upgrading %s"
 msgstr "Aktualisiere %s"
@@ -215,15 +215,15 @@ msgstr ""
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/appcenter/__init__.py:1171
+#: umc/python/appcenter/__init__.py:1179
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:1173
+#: umc/python/appcenter/__init__.py:1181
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:400
+#: umc/python/appcenter/__init__.py:408
 msgid ""
 "or disable the docker support in the AppCenter by setting appcenter/docker "
 "to false."
@@ -231,7 +231,7 @@ msgstr ""
 "oder deaktivieren Sie die Unterstützung für Docker im AppCenter indem die "
 "UCR Variable appcenter/docker auf false gesetzt wird."
 
-#: umc/python/appcenter/__init__.py:1169
+#: umc/python/appcenter/__init__.py:1177
 msgid "upgradable"
 msgstr "aktualisierbar"
 

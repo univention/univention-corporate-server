@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-02-08 22:56+0100\n"
+"POT-Creation-Date: 2021-03-03 01:48+0100\n"
 "PO-Revision-Date: 2020-09-05 16:26+0200\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: python/appcenter/app.py:1437 python/appcenter/install_checks.py:354
+#: python/appcenter/app.py:1437 python/appcenter/install_checks.py:361
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "

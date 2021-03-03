@@ -50,7 +50,6 @@ define([
 		app: null,
 		details: null,
 		host: null,
-		appDetailsPage: null,
 		//
 		full: true,
 		showWarnings: true,
@@ -64,7 +63,7 @@ define([
 
 			// var showUnreachableHint = this.details.software_changes_computed && this.details.unreachable.length;
 			// var unreachableHintIsHard = showUnreachableHint && this.details.master_unreachable;
-			var showErrataHint = this.details.software_changes_computed && this.funcName === 'update';
+			var showErrataHint = this.details.software_changes_computed && this.funcName === 'upgrade';
 			var packageChanges = [];
 			if (this.details.software_changes_computed) {
 				packageChanges.push({
@@ -93,7 +92,7 @@ define([
 
 			if (this.showWarnings) {
 				// hard warnings
-				this.showHardRequirements(this.details.invokation_forbidden_details, this.appDetailsPage);
+				this.showHardRequirements(this.details.invokation_forbidden_details);
 				// if (showUnreachableHint && unreachableHintIsHard) {
 					// this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
 				// }
@@ -105,7 +104,7 @@ define([
 				// if (showUnreachableHint && !unreachableHintIsHard) {
 					// this.showUnreachableHint(this.details.unreachable, this.details.master_unreachable);
 				// }
-				this.showSoftRequirements(this.details.invokation_warning_details, this.appDetailsPage);
+				this.showSoftRequirements(this.details.invokation_warning_details);
 				if (showErrataHint) {
 					this.showErrataHint();
 				}
@@ -124,10 +123,7 @@ define([
 			this.inherited(arguments);
 		},
 
-		showRequirements: function(label, stressedRequirements, appDetailsPage, isHardRequirement) {
-			var opts = {
-				appDetailsPage: appDetailsPage
-			};
+		showRequirements: function(label, stressedRequirements, isHardRequirement) {
 			var foundRequirements = [];
 			tools.forIn(stressedRequirements, lang.hitch(this, function(name, details) {
 				var requirement = requirements[name];
@@ -151,7 +147,7 @@ define([
 								name: 'solution' + i,
 								label: label,
 								callback: lang.hitch(this, function() {
-									opts.action = this.funcLabel;
+									const opts = { action: this.funcLabel };
 									var deferred = foundRequirement.solution(opts, details);
 									when(deferred).always(lang.hitch(this, 'onSolutionClicked', foundRequirement.stayAfterSolution));
 								})
@@ -167,12 +163,12 @@ define([
 			}
 		},
 
-		showHardRequirements: function(hardRequirements, appDetailsPage) {
-			this.showRequirements(_("It is not possible to continue"), hardRequirements, appDetailsPage, true);
+		showHardRequirements: function(hardRequirements) {
+			this.showRequirements(_("It is not possible to continue"), hardRequirements, true);
 		},
 
-		showSoftRequirements: function(softRequirements, appDetailsPage) {
-			this.showRequirements(_("It is not recommended to continue"), softRequirements, appDetailsPage, false);
+		showSoftRequirements: function(softRequirements) {
+			this.showRequirements(_("It is not recommended to continue"), softRequirements, false);
 		},
 
 		showErrataHint: function() {

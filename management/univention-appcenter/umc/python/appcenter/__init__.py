@@ -272,8 +272,8 @@ class Instance(umcm.Base, ProgressMixin):
 		localhost = get_local_fqdn()
 		ret = {}
 		if dry_run:
-			for host in sorted(hosts.values()):
-				_apps = [app for app in apps if hosts[app.id] == host]
+			for host in hosts:
+				_apps = [next(app for app in apps if app.id == _app) for _app in hosts[host]]
 				if host == localhost:
 					ret[host] = self._run_local_dry_run(_apps, action, {}, progress)
 				else:
@@ -283,16 +283,18 @@ class Instance(umcm.Base, ProgressMixin):
 						ret[host] = {'unreachable': [app.id for app in _apps]}
 		else:
 			for app in apps:
-				host = hosts[app.id]
-				host_result = ret.get(host, {})
-				ret[host] = host_result
-				_settings = {app.id: settings[app.id]}
-				if host == localhost:
-					host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
-				else:
-					host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)
-				if not host_result[app.id]['success']:
-					break
+				for host in hosts:
+					if app.id not in hosts[host]:
+						continue
+					host_result = ret.get(host, {})
+					ret[host] = host_result
+					_settings = {app.id: settings[app.id]}
+					if host == localhost:
+						host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
+					else:
+						host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)
+					if not host_result[app.id]['success']:
+						break
 		return ret
 
 	def _run_local_dry_run(self, apps, action, settings, progress):

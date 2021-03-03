@@ -42,6 +42,7 @@ define([
 	"umc/dialog",
 	"umc/store",
 	"umc/widgets/Module",
+	"umc/widgets/ProgressBar",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
@@ -52,7 +53,7 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, ProgressBar, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -96,13 +97,54 @@ define([
 				this.own(topic.subscribe('/appcenter/open', (app, suggested) => {
 					this.showApp(app, suggested);
 				}));
-				this.own(topic.subscribe('/appcenter/run/install', (apps, suggested, fromGallery) => {
-					var firstApp = apps[0];
-					this.showApp(firstApp, suggested, true).then(function(page) {
-						page.startInstallation(apps.map(app => app.id), fromGallery);
-					});
+				this.own(topic.subscribe('/appcenter/run/install', (apps, hosts, suggested, page) => {
+					this._run('install', apps, hosts, page);
+				}));
+				this.own(topic.subscribe('/appcenter/run/upgrade', (apps, hosts, suggested, page) => {
+					this._run('upgrade', apps, hosts, page);
+				}));
+				this.own(topic.subscribe('/appcenter/run/remove', (apps, hosts, suggested, page) => {
+					this._run('remove', apps, hosts, page);
 				}));
 			}
+		},
+
+		_run: function(action, apps, hosts, page) {
+			var installDialog = new AppInstallDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(installDialog);
+			this.selectChild(installDialog);
+			installDialog.startAction(action, apps, hosts).then(
+				() => {
+					// update the list of apps
+					var deferred = tools.renewSession().then(() => {
+						var reloadPage = this._appCenterPage.updateApplications().then(() => {
+							if ('reloadPage' in page) {
+								return page.reloadPage();
+							}
+						});
+						var reloadModules = app.reloadModules();
+						return all([reloadPage, reloadModules]).then(function() {
+							tools.checkReloadRequired();
+						});
+					});
+
+					// show standby animation
+					var progressBar = new ProgressBar({});
+					progressBar.reset();
+					progressBar.setInfo(_('Updating session and module data...'), '', Infinity);
+					this.standbyDuring(deferred, progressBar).then(() => {
+						this.selectChild(page);
+						this.removeChild(installDialog);
+					});
+				}, () => {
+					this.selectChild(page);
+					this.removeChild(installDialog);
+				}
+			);
 		},
 
 		_updateModuleState: function() {
@@ -239,11 +281,6 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			var installDialog = new AppInstallDialog({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
 			var appDetailsPage = new AppDetailsPage({
 				app: app,
 				moduleID: this.moduleID,
@@ -251,7 +288,6 @@ define([
 				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
 				detailsDialog: detailsDialog,
 				configDialog: configDialog,
-				installDialog: installDialog,
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
@@ -273,16 +309,8 @@ define([
 				appDetailsPage.watch('app', lang.hitch(this, function(){
 					this._scrollTo(0, 0, 0);
 				})),
-				installDialog.on('showUp', lang.hitch(this, 'selectChild', installDialog)),
 				detailsDialog.on('showUp', lang.hitch(this, 'selectChild', detailsDialog)),
 				configDialog.on('showUp', lang.hitch(this, 'selectChild', configDialog)),
-				installDialog.on('back', lang.hitch(this, function() {
-					if (hidden) {
-						backToGallery();
-					} else {
-						this.selectChild(appDetailsPage);
-					}
-				})),
 				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				appDetailsPage.on('back', lang.hitch(this, function() {
 					backToGallery();
@@ -308,9 +336,8 @@ define([
 
 			this.addChild(detailsDialog);
 			this.addChild(configDialog);
-			this.addChild(installDialog);
 			this.addChild(appDetailsPage);
-			this._appPages.push(detailsDialog, configDialog, installDialog, appDetailsPage);
+			this._appPages.push(detailsDialog, configDialog, appDetailsPage);
 
 			return this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 				if (!hidden) {

@@ -58,8 +58,7 @@ define([
 		apps: null,
 		appSettings: null,
 		dryRunResults: null,
-		appDetailsPage: null,
-		//
+		action: null,
 
 		needsToBeShown: null,
 
@@ -114,12 +113,11 @@ define([
 			for (const key of final) {
 				const details = this.dryRunResults[key];
 				const detailsContainer = new AppDetailsContainer({
-					funcName: 'install',
-					funcLabel: _('Install'),
+					funcName: this.action,
+					funcLabel: _('Start'),
 					app: details.app,
 					details,
 					host: details.host,
-					appDetailsPage: this.appDetailsPage,
 					showWarnings: isWarning,
 					showNonWarnings: !isWarning,
 				});
@@ -162,7 +160,15 @@ define([
 
 		_addReadmeInstallPages: function() {
 			for (const app of this.apps) {
-				const pageConf = ReadmeInstallPage.getPageConf(app);
+				let readmeAttr;
+				if (this.action === 'upgrade') {
+					readmeAttr = 'candidateReadmeUpdate';
+				} else if (this.action === 'remove') {
+					readmeAttr = 'readmeUninstall';
+				} else {
+					readmeAttr = 'readmeInstall';
+				}
+				const pageConf = ReadmeInstallPage.getPageConf(app, readmeAttr);
 				if (pageConf) {
 					this.pages.push(pageConf);
 				}
@@ -189,18 +195,34 @@ define([
 				.map(page => this.getPage(page.name));
 			this.needsToBeShown = !!visiblePages.length;
 
-			const headerText = this.apps.length === 1
-				? _('Installation of %s', this.apps[0].name)
-				: _('Installation of multiple apps');
-			visiblePages.forEach(function(page) {
-				page.set('headerText', headerText);
-			});
+			if (this.action === 'install') {
+				const headerText = this.apps.length === 1
+					? _('Installation of %s', this.apps[0].name)
+					: _('Installation of multiple apps');
+				visiblePages.forEach(function(page) {
+					page.set('headerText', headerText);
+				});
+			} else if (this.action === 'upgrade') {
+				const headerText = this.apps.length === 1
+					? _('Upgrade of %s', this.apps[0].name)
+					: _('Upgrade of multiple apps');
+				visiblePages.forEach(function(page) {
+					page.set('headerText', headerText);
+				});
+			} else {
+				const headerText = this.apps.length === 1
+					? _('Removal of %s', this.apps[0].name)
+					: _('Removal of multiple apps');
+				visiblePages.forEach(function(page) {
+					page.set('headerText', headerText);
+				});
+			}
 
 			if (this.isPageVisible('warnings')) {
 				if (this._hasErrors) {
-					this.getPage('warnings').set('helpText', _('The installation cannot be performed. Please refer to the information below to solve the problem and try again.'));
+					this.getPage('warnings').set('helpText', _('We cannot continue. Please refer to the information below to solve the problem and try again.'));
 				} else {
-					this.getPage('warnings').set('helpText', _('We detected some problems that may lead to a faulty installation. Please consider the information below before continuing with the installation.'));
+					this.getPage('warnings').set('helpText', _('We detected some problems that may lead to a errors later. Please consider the information below before continuing.'));
 				}
 			}
 		},
@@ -236,30 +258,22 @@ define([
 						button.label = _('Continue anyway');
 					}
 					if (button.name === 'finish') {
-						button.label = _('Install anyway');
+						button.label = _('Start anyway');
 					}
 				});
 			} else if (pageName.startsWith('licenseAgreement_')) {
-				array.forEach(buttons, function(button) {
+				buttons.forEach((button) => {
 					if (button.name === 'next') {
 						button.label = _('Accept license');
 					}
 					if (button.name === 'finish') {
-						if (this.apps.length === 1) {
-							button.label = _('Accept license and install app');
-						} else {
-							button.label = _('Accept license and install apps');
-						}
+						button.label = _('Accept license and start');
 					}
 				});
 			} else {
 				array.forEach(buttons, lang.hitch(this, function(button) {
 					if (button.name === 'finish') {
-						if (this.apps.length === 1) {
-							button.label = _('Install app');
-						} else {
-							button.label = _('Install apps');
-						}
+						button.label = _('Start');
 					}
 				}));
 			}

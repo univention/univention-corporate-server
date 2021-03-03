@@ -42,10 +42,11 @@ define([
 	"umc/tools",
 	"umc/widgets/ToggleButton",
 	"umc/widgets/Button",
+	"umc/modules/appcenter/App",
 	"umc/i18n!umc/modules/appcenter"
 ], function(
 	declare, lang, array, domClass, on, topic, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin,
-	tools, ToggleButton, Button, _
+	tools, ToggleButton, Button, App, _
 ) {
 	return declare('umc.modules.appcenter.Tiles', [
 		_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin
@@ -75,6 +76,36 @@ define([
 							data-dojo-props="
 								disabled: true,
 								label: this._installButtonLabel,
+							"
+							class="ucsTextButton"
+						></button>
+						<button
+							data-dojo-attach-event="click:_clickUpgrade"
+							data-dojo-attach-point="_upgradeButton"
+							data-dojo-type="umc/widgets/Button"
+							data-dojo-props="
+								disabled: true,
+								label: this._upgradeButtonLabel,
+							"
+							class="ucsTextButton"
+						></button>
+						<button
+							data-dojo-attach-event="click:_clickUpgradeDomain"
+							data-dojo-attach-point="_upgradeDomainButton"
+							data-dojo-type="umc/widgets/Button"
+							data-dojo-props="
+								disabled: true,
+								label: this._upgradeButtonLabel,
+							"
+							class="ucsTextButton"
+						></button>
+						<button
+							data-dojo-attach-event="click:_clickRemove"
+							data-dojo-attach-point="_removeButton"
+							data-dojo-type="umc/widgets/Button"
+							data-dojo-props="
+								disabled: true,
+								label: this._removeButtonLabel,
 							"
 							class="ucsTextButton"
 						></button>
@@ -110,18 +141,50 @@ define([
 			this._set('tiles', tiles);
 			this._updateSelectionNote();
 			this._updateButtons();
+			this._updateSelectionMode();
 			this.set('visible', !!tiles.length);
 		},
 
-		hasSelectionMode: true,
 		_selectionModeToggleButtonLabel: _('Select'),
 		_selection: null,
 		_updateSelectionNote: function() {
 			this.selectedNode.innerHTML = _('%s of %s Apps selected', this._selection.length, this.tiles.length);
 		},
 		_installButtonLabel: _('Install'),
+		_upgradeButtonLabel: _('Upgrade'),
+		_removeButtonLabel: _('Remove'),
 		_updateButtons: function() {
-			this._installButton.set('disabled', this._selection.length === 0);
+			this._installButton.set('visible', this.selectionModes.includes('install'));
+			this._upgradeButton.set('visible', this.selectionModes.includes('upgrade'));
+			this._upgradeDomainButton.set('visible', this.selectionModes.includes('upgradeDomain'));
+			this._removeButton.set('visible', this.selectionModes.includes('remove'));
+			if (this._selection.length > 0) {
+				this._installButton.set('disabled', this._selection.some((appId) => {
+					const tile = this.tiles.find((tile) => tile.obj.id === appId);
+					const app = new App(tile.obj);
+					return !app.canInstall();
+				}));
+				this._upgradeButton.set('disabled', this._selection.some((appId) => {
+					const tile = this.tiles.find((tile) => tile.obj.id === appId);
+					const app = new App(tile.obj);
+					return !app.canUpgrade();
+				}));
+				this._upgradeDomainButton.set('disabled', this._selection.some((appId) => {
+					const tile = this.tiles.find((tile) => tile.obj.id === appId);
+					const app = new App(tile.obj);
+					return !app.canUpgradeInDomain();
+				}));
+				this._removeButton.set('disabled', this._selection.some((appId) => {
+					const tile = this.tiles.find((tile) => tile.obj.id === appId);
+					const app = new App(tile.obj);
+					return !app.canUninstall();
+				}));
+			} else {
+				this._installButton.set('disabled', true);
+				this._upgradeButton.set('disabled', true);
+				this._upgradeDomainButton.set('disabled', true);
+				this._removeButton.set('disabled', true);
+			}
 		},
 		_isInSelectionMode: false,
 
@@ -144,13 +207,19 @@ define([
 		},
 
 		_clickInstall: function() {
-			topic.publish('/appcenter/run/install',
-				this._selection.map(appId => {
-					return this.tiles.find(tile => tile.obj.id === appId).obj;
-				}),
-				this.isSuggestionCategory,
-				true
-			);
+			this.onStartAction('install', this._selection);
+		},
+
+		_clickUpgrade: function() {
+			this.onStartAction('upgrade', this._selection);
+		},
+
+		_clickUpgradeDomain: function() {
+			this.onStartAction('upgradeDomain', this._selection);
+		},
+
+		_clickRemove: function() {
+			this.onStartAction('remove', this._selection);
 		},
 
 		filter: function(filterF) {
@@ -176,16 +245,49 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			tools.toggleVisibility(this._selectionModeToggleButton, this.hasSelectionMode);
-			if (this.hasSelectionMode) {
-				this._selectionModeToggleButton.watch('checked', (_attr, _oldVal, newVal) => {
-					this.set('_isInSelectionMode', newVal);
-					tools.toggleVisibility(this._actionBarNode, newVal);
-					domClass.toggle(this.domNode, this.baseClass + '__selectionMode', newVal);
-				});
+			this._selectionModeToggleButton.watch('checked', (_attr, _oldVal, newVal) => {
+				this.set('_isInSelectionMode', newVal);
+				tools.toggleVisibility(this._actionBarNode, newVal);
+				domClass.toggle(this.domNode, this.baseClass + '__selectionMode', newVal);
+			});
+		},
+
+		_updateSelectionMode: function() {
+			const hasSelectionMode = this.tiles.some((tile) => {
+				if (!tile.get('visible')) {
+					return false;
+				}
+				var app = new App(tile.obj);
+				if (this.selectionModes.includes('install')) {
+					if (app.canInstall()) {
+						return true;
+					}
+				}
+				if (this.selectionModes.includes('upgrade')) {
+					if (app.canUpgrade()) {
+						return true;
+					}
+				}
+				if (this.selectionModes.includes('upgradeDomain')) {
+					if (app.canUpgradeInDomain()) {
+						return true;
+					}
+				}
+				if (this.selectionModes.includes('remove')) {
+					if (app.canUninstall()) {
+						return true;
+					}
+				}
+				return false;
+			});
+			tools.toggleVisibility(this._selectionModeToggleButton, hasSelectionMode);
+			if (hasSelectionMode) {
 				// do this here and not in the props for the togglebutton to trigger _actionBarNode visibility
 				this._selectionModeToggleButton.set('checked', this._isInSelectionMode);
 			}
+		},
+
+		onStartAction: function(action, apps) {
 		}
 	});
 });
