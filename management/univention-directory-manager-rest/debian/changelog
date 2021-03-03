@@ -1,3 +1,10 @@
+univention-directory-manager-rest (10.0.1-3) unstable; urgency=medium
+
+  * Bug #52862: fix OpenAPI schema: remove mutual exclusive "example"
+    and "examples"
+
+ -- Florian Best <best@univention.de>  Wed, 03 Mar 2021 13:27:16 +0100
+
 univention-directory-manager-rest (10.0.1-2) unstable; urgency=low
 
   * Bug #52723: return HTTP 200 when an object creation template was requested
