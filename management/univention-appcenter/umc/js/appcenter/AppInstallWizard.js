@@ -150,6 +150,9 @@ define([
 		},
 
 		_addLicenseAgreementPages: function() {
+			if (this.action !== 'install') {
+				return;
+			}
 			for (const app of this.apps) {
 				const pageConf = LicenseAgreementPage.getPageConf(app);
 				if (pageConf) {

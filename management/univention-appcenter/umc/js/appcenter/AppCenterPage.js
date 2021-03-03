@@ -175,7 +175,17 @@ define([
 						const hosts = { [tools.status('fqdn')]: apps };
 						topic.publish('/appcenter/run/upgrade', apps, hosts, false, this);
 					} else if (action === 'upgradeDomain') {
+						const actualApps = apps.map((app) => this._applications.find((_app) => app === _app.id));
 						const hosts = {};
+						actualApps.forEach((app) => {
+							Object.entries(app.installations).forEach(([host, installation]) => {
+								if (installation.update_available) {
+									hostInfo = hosts[host + '.' + tools.status('domainname')] || [];
+									hostInfo.push(app.id);
+									hosts[host + '.' + tools.status('domainname')] = hostInfo;
+								}
+							});
+						});
 						topic.publish('/appcenter/run/upgrade', apps, hosts, false, this);
 					} else if (action === 'remove') {
 						const hosts = { [tools.status('fqdn')]: apps };

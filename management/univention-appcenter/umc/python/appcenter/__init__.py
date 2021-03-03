@@ -292,7 +292,7 @@ class Instance(umcm.Base, ProgressMixin):
 					if host == localhost:
 						host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
 					else:
-						host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)
+						host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)[app.id]
 					if not host_result[app.id]['success']:
 						break
 		return ret
@@ -355,12 +355,12 @@ class Instance(umcm.Base, ProgressMixin):
 		else:
 			progress.title = _('%d Apps: Connecting to %s') % (len(apps), host)
 		client = self._remote_appcenter(host, function='appcenter/run')
-		opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {app.id: host for app in apps}, 'settings': settings, 'dry_run': dry_run}
+		opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {host: [app.id for app in apps]}, 'settings': settings, 'dry_run': dry_run}
 		progress_id = client.umc_command('appcenter/run', opts).result['id']
 		while True:
 			result = client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
 			if result['finished']:
-				return result['result'][app.id]
+				return result['result'][host]
 			progress.title = result['title']
 			progress.intermediate.extend(result['intermediate'])
 			progress.message = result['message']
