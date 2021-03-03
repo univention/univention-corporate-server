@@ -157,6 +157,7 @@ dpkg-statoverride --update --add root root 0640 /var/log/dpkg.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/bootstrap.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/lastlog || true
 dpkg-statoverride --update --add root root 0640 /var/log/faillog || true
+chmod 0640 /var/log/lastlog || true
 
 if test -x /etc/init.d/ssh; then
     invoke-rc.d ssh reload

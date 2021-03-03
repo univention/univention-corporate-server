@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-2) unstable; urgency=medium
+
+  * Bug #51579: Deny world read access to /var/log/lastlog
+
+ -- Arvid <requate@univention.de>  Wed, 03 Mar 2021 11:49:45 +0100
+
 univention-base-files (9.0.3-1) unstable; urgency=low
 
   * Bug #32509: Remove /etc/kernel-img.conf
