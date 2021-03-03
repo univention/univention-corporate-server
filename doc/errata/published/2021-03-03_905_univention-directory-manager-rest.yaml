@@ -9,3 +9,5 @@ desc: |
  * The OpenAPI schema has been adjusted to be compliant: The "example"
    property of parameters has been removed as it conflicts with "examples".
 bug: [52862]
+erratum: 905
+announced: 2021-03-03
