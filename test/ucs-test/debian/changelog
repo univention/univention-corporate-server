@@ -1,3 +1,9 @@
+ucs-test (10.0.4-21) unstable; urgency=medium
+
+  * Bug #52868: prevented DublicateOptionError in 80_docker/68_extended_attributes
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 04 Mar 2021 16:06:21 +0100
+
 ucs-test (10.0.4-20) unstable; urgency=medium
 
   * Bug #52864: added libnss3-tools

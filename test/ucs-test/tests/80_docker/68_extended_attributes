@@ -147,8 +147,6 @@ Module=users/user
 Syntax=String
 Description=This is my attribute
 DescriptionDe=Das ist mein Attribut
-Description=This is my attribute. And it rocks!
-DescriptionDe=Das ist mein Attribut. Und es ist dufte!
 """ % (activation_name, additional_name)
 				app.add_script(attributes=attributes_content)
 				attribute_dn = 'cn=%s,cn=custom attributes,cn=univention,%s' % (activation_name, ucr.get('ldap/base'))

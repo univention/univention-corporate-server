@@ -70,7 +70,7 @@ utils_logger = get_base_logger().getChild('utils')
 def read_ini_file(filename, parser_class=RawConfigParser):
 	parser = parser_class()
 	try:
-		with open(filename, 'rb') as f:
+		with open(filename, 'r') as f:
 			parser.readfp(f)
 	except TypeError:
 		pass

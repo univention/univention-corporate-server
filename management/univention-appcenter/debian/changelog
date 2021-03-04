@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-10) unstable; urgency=medium
+
+  * Bug #52868: fixed python3 compatibility
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 04 Mar 2021 16:05:11 +0100
+
 univention-appcenter (9.0.2-9) unstable; urgency=medium
 
   * Bug #52863: Distinguish between upgrade available locally and globally
