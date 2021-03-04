@@ -206,7 +206,7 @@ define([
 				}
 
 				var txt = "";
-				txt += "<table style='font-size: var(--font-size-small);'>\n";
+				txt += "<table style='font-size: var(--font-size-4);'>\n";
 				txt += "<tr><td>" + _("Server")       + ":</td><td style='" + st_r + "'>" + entities.encode(res['server'])      + "</td></tr>\n";
 				txt += "<tr><td>" + _("Status")       + ":</td><td style='" + st_r + "'>" + entities.encode(status)             + "</td></tr>\n";
 				txt += "<tr><td>" + _("Location")     + ":</td><td style='" + st_r + "'>" + entities.encode(res['location'])    + "</td></tr>\n";

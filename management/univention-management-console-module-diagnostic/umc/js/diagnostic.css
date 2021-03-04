@@ -15,7 +15,7 @@
 }
 
 .umc-diagnostic-content {
-	font-size: var(--font-size-small);
+	font-size: var(--font-size-4);
 }
 .umc-diagnostic-description {
 	white-space: pre-wrap;

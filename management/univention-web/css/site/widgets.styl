@@ -56,28 +56,32 @@
 .umc .umcProgressDetails
 	display: grid
 	grid-template-columns: auto 4ch
+	grid-gap: 0 spacing(1, true)
 	margin-top: spacing(2)
 
 	.umcProgressPercentage
-		color: var(--color-grey62);
-		font-size: var(--font-size-small);
+		color: var(--font-color-contrast-middle)
+		font-size: var(--font-size-4);
 		justify-self: flex-end
 
 .umc .umcProgressBar
-	background-color: var(--color-grey0);
+	background-color: var(--bgc-content-container)
 	border-radius: var(--border-radius-container);
-	padding: spacing(4)
+	padding: spacing(2)
 	overflow: visible
 
 	.umcProgressBarComponent
-		min-height: calc(2 * 1em * var(--font-lineheight-normal))
-		font-size: var(--font-size-header2);
-		font-weight: 600
-		margin-bottom: spacing(2)
+		height: calc(2 * 1em * var(--font-lineheight-normal))
 		display: flex
-		align-items: end
+		align-items: flex-end
+		font-size: var(--font-size-2);
+		font-weight: var(--font-weigt-bold)
+		margin-bottom: spacing(2)
+
+	.umcProgressBarComponentContent
+		min-height: 100%
 
 	.umcProgressBarMessage
-		min-height: calc(3 * 1em * var(--font-lineheight-normal))
-		font-size: var(--font-size-small);
-		color: var(--color-grey62);
+		height: calc(3 * 1em * var(--font-lineheight-normal))
+		font-size: var(--font-size-4);
+		color: var(--font-color-contrast-middle)

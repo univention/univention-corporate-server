@@ -214,9 +214,6 @@ define([
 
 		_gridView: null,
 
-		// set the opacity for the standby to 100%
-		standbyOpacity: 1,
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 

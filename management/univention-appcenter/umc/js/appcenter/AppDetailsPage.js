@@ -542,7 +542,7 @@ define([
 			}
 			var info = new AppInfo({
 				bgc: this.app.backgroundColor || "",
-				logo: "/univention/js/dijit/themes/umc/icons/scalable/" + this.app.logoName,
+				logo: '/univention/js/dijit/themes/umc/icons/scalable/' + this.app.logoName,
 				name: this.app.name,
 				description: this.app.description,
 				buttonLabel: buttonLabel,
@@ -553,27 +553,29 @@ define([
 		},
 
 		_openManageDialog: function() {
-			var container = new ContainerWidget({});
+			var container = new ContainerWidget({
+				'class': 'umcManageAppInstallationsDialogButtons'
+			});
 			if (this.app.canUpgrade()) {
 				container.addChild(new Button({
-					label: _("Upgrade"),
-					"class": "umcManageInstallationButton ucsPrimaryButton",
+					label: _('Upgrade'),
+					'class': 'ucsPrimaryButton',
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
-						const localhost = tools.status("fqdn");
+						const localhost = tools.status('fqdn');
 						topic.publish('/appcenter/run/upgrade', [this.app.id], { [localhost]: [this.app.id] }, null, this);
 					})
 				}));
 			}
 			if (this.app.canOpen()) {
 				if (this.canUpgrade) {
-					classes = "umcManageInstallationButton";
+					classes = '';
 				} else {
-					classes = "umcManageInstallationButton ucsPrimaryButton";
+					classes = 'ucsPrimaryButton';
 				}
 				container.addChild(new Button({
-					label: _("Open"),
-					"class": classes,
+					label: _('Open'),
+					'class': classes,
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
 						this.app.open();
@@ -582,8 +584,7 @@ define([
 			}
 			if (this.app.canDisable()) {
 				container.addChild(new Button({
-					label: _("Continue using"),
-					"class": "umcManageInstallationButton",
+					label: _('Continue using'),
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
 						this.disableApp();
@@ -592,8 +593,7 @@ define([
 			}
 			if (this.app.hasConfiguration()) {
 				container.addChild(new Button({
-					label: _("App settings"),
-					"class": "umcManageInstallationButton",
+					label: _('App settings'),
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
 						this.configureApp();
@@ -602,8 +602,7 @@ define([
 			}
 			if (this.app.canUninstall()) {
 				container.addChild(new Button({
-					label: _("Uninstall"),
-					"class": "umcManageInstallationButton",
+					label: _('Uninstall'),
 					callback: lang.hitch(this, function() {
 						deferred.dialog.onConfirm();
 						const localhost = tools.status("fqdn");

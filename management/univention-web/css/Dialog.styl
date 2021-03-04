@@ -30,11 +30,20 @@
  */
 
 @require "variables.styl"
+@require "HTMLElements.styl"
+
+
+.umc .dijitDialogUnderlayWrapper
+	backdrop-filter: blur(8px)
+.umc .dijitDialogUnderlay
+	background: var(--bgc-content-body)
+	opacity: 0.8
 
 .umc .dijitDialog
-	material-shadow(5)
+	box-shadow: var(--box-shadow)
 	max-width: $dialog-max-width
 	border-radius: var(--border-radius-container)
+	background-color: var(--bgc-content-container)
 
 	@media (max-width: $dialog-max-width)
 		max-width: 100%
@@ -47,118 +56,39 @@
 		@media (min-width: ($dialog-max-width / $dialog-large-width))
 			width: (100%*$dialog-large-width)
 
-	.umcPageFooter,
-	.umcButtonRow
-		padding-top: 24px
-		margin-top: 0 !important
-
-		.dijitButton
-			material-flat-button()
-			margin: 0
-			&:not(:first-child)
-				margin-left: 8px
-
-			.dijitButtonNode
-				min-width: 64px
-
-		.dijitDefaultButton .dijitButtonText
-			color: $ucs-green
-
-	.umcButtonRow
-		margin-right: -16px
-		text-align: right
-	
-	.dijitContainer
-		overflow: visible
-
-	.umcWizard
-		overflow: visible
-
-		.umcPage
-			&:after
-				content: ''
-				display: block
-				clear: both
-
-			.umcPageFooter
-				left: -16px
-				width: calc(100% + 32px)
-
-.umc .dijitDialogPaneContent
-	background: black
-	/* have 1px padding on top to capture overflowing margins */
-	padding: 1px 24px 8px 24px
-	position: relative
-
-.umc .dijitDialogPaneContent,
-.umc .dijitDialogTitleBar
-	width: 100%
-	max-width: none
-
-
-.umc .dijitDialogPaneContentArea
-	/* trick to get action bar (gray bar at bottom with OK/cancel buttons) to span from
-	 * left to right but still indent dialog content
-	 */
-	margin: -10px -8px
-	padding: 10px 8px
-
-.umc .dijitDialogPaneActionBar
-	/* gray bar at bottom of dialog with OK/Cancel buttons */
-	//background-color: $bar-background-color
-	padding: 3px 5px 2px 7px
-	text-align: right
-	border-top: 1px solid $minor-border-color
-	margin: 10px -8px -10px
-
-.umc .dijitDialogPaneActionBar .dijitButton
-	float: none
-
-
-.dijitDialog
-	.umcDialogActionBar, .umcPageFooter
-		background-color: var(--color-grey0)
-		display: flex
-		justify-content: space-between
-		grid-gap: spacing(1)
-		border-top: thin solid var(--color-grey8)
-		padding: 8px 24px
-
-
 .umc .dijitDialogTitleBar
 	/* outer container for the titlebar of the dialog */
-	background-color: var(--color-grey0)
-	font-size: var(--font-size-header2)
-	padding: 24px 24px 19px 24px
+	padding: spacing(2)
 	display: flex
 	align-items: center
-
-	.dijitDialogCloseIcon
-		margin-left: auto
-
-
-.umc .dijitDialog
-	.dijitDialogPaneContent, .umcPageMain
-		background-color: var(--color-grey0)
-		font-size: var(--font-size-small)
-
-
+	grid-gap: 0 1rem
+.umc .dijitDialogCloseIcon
+	margin-left: auto
 .umc .dijitDialogTitle
-	/* typography and styling of the dialog title */
-	font-size: $font-size-title
-	font-weight: 600
-	line-height: 28px
-	color: var(--font-color-contrast-high)
+	@extends h2
 
-.umc .dijitDialogUnderlay
-	background: $dialog-underlay-color
+.umc .dijitDialogPaneContent
+	padding: 0 spacing(2) spacing(2)
+
+.umc .umcDialogActionBar
+	display: flex
+	justify-content: space-between
+	grid-gap: spacing(1)
+	border-top: thin solid var(--bgc-content-body)
+	padding: spacing(1) spacing(2)
+
+.umc .dijitDialog .umcPageFooter
+	border-top: thin solid var(--bgc-content-body)
+	padding-top: spacing(2)
 
 
+// TODO
 .umc .dijitDialog .umcPage > *
 	padding-left: 0
 	padding-right: 0
 
 
+// TODO
 .umc .umcServerErrorMessage
 	color: $text-color-lightest
 	overflow: auto
@@ -167,7 +97,6 @@
 
 /** inline dialogs **/
 /* inline wizards */
-.umc .umcWizard.umcInlineDialog,
 .umc .umcModule .umcWizard
 	background-color: var(--bgc-content-container)
 	margin: 7px 15px
@@ -180,11 +109,6 @@
 			content: ''
 			display: block
 			clear: both
-
-		.umcPageNav
-			.umcPageHeader h1
-				line-height: 28px
-				margin-bottom: 20px
 
 		.umcPageFooter
 			padding: 0
@@ -203,16 +127,6 @@
 				.dijitButtonText
 					color: $ucs-green
 
-.umc .umcWizard.umcInlineDialog
-	margin: 48px auto
-
-
-/* Help Dialogs from Menu */
-/* Help, About UMC, Usage Statistics */
-.umc .umcAppDialog
-	.umcPageFooter
-		display: none
-
 /* App Center inline dialogs */
 .umc .umcAppCenterDialog
 	margin: 7px 15px
@@ -228,7 +142,7 @@
 		border-radius: var(--border-radius-container)
 
 		.umcText
-			font-size: var(--font-size-small)
+			font-size: var(--font-size-4)
 
 		.ucsButton
 			margin-bottom: 1em
@@ -246,6 +160,3 @@
 				margin: 0
 				&:not(:first-child)
 					margin-left: 8px
-
-	.umcPageFooter
-		display: none

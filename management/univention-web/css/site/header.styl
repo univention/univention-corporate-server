@@ -37,6 +37,7 @@ headerHeight = 48px
 		--tabColor: transparent
 		--seperatorColor: var(--color-grey8)
 		z-index: 1
+		padding-top: 0.3rem
 		&.contrastDark
 			&.dijitTabChecked,
 			&.dijitTabActive,
@@ -70,8 +71,7 @@ headerHeight = 48px
 			outline: none
 
 	.umcModuleTab__closeButton
-		--button-size: 1.2rem
-		--button-iconSize: 0.9rem
+		--button-size: 1.3em
 		--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
 		--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.08)
 		margin: 0 0.3rem 0 0.5rem
@@ -105,7 +105,8 @@ headerHeight = 48px
 
 	.umcModuleTab .tabLabel
 		margin: 0 0 0 0.5rem
-		font-size: var(--font-size-small)
+		font-size: var(--font-size-4)
+		line-height: 1
 		max-width: 264px
 		overflow: hidden
 		text-overflow: ellipsis

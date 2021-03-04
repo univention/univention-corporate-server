@@ -37,15 +37,9 @@
 	.dgrid
 		border: none
 
-	.dgrid-cell
-		border: none
-		padding: 0.25em 0
-		// word-break: break-all
-		text-overflow: ellipsis
-		white-space: nowrap
-
 	.dgrid-row
-		// line-height: 32px
+		line-height: 1
+		font-size: var(--font-size-4)
 		box-sizing: content-box
 		transition: background-color 0.2s
 
@@ -53,16 +47,23 @@
 		&.dgrid-selected
 			background-color: rgba(255, 255, 255, 0.04)
 
+	.dgrid-cell
+		border: none
+		padding: spacing(1) 0
+		text-overflow: ellipsis
+		white-space: nowrap
+
+
 	.dgrid-expando-icon
 		height: 1em
 		width: @height
-		padding: 0.25em
+		padding: 0 spacing(1)
 		position: relative
 		box-sizing: content-box
 		float: left
 		display: flex
 		margin-left: calc(var(--level) * 1.2em)
-		pointer: cursor
+		cursor: pointer
 
 		.featherIcon
 			transition: transform 250ms
@@ -84,9 +85,6 @@
 		display: none
 
 
-.umc .dijitTreeNode
-    zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */
-
 .umc .dijitTreeIsRoot
     background-image: none
 
@@ -94,9 +92,7 @@
  * Also use this styling when dropping between items on the tree (in other words, don't
  * use hover effect)
  */
-.umc .dijitTreeRow,
-.umc .dijitTreeNode .dojoDndItemBefore,
-.umc .dijitTreeNode .dojoDndItemAfter
+.umc .dijitTreeRow
 	/* so insert line shows up on IE when dropping after a target element */
 	padding: 4px 0 2px 0
 
@@ -167,17 +163,6 @@
 
 .umc .dijitTreeExpandoLoading
 	background-image: url($image-loading-animation)
-
-/* Drag and Drop on TreeNodes
- * Put insert line on dijitTreeContent node so it's aligned w/
- * (ie, indented equally with) target element, even
- * though dijitTreeRowNode is the actual "drag object"
- */
-.umc .dijitTreeNode .dojoDndItemBefore .dijitTreeContent
-	border-top: 2px solid $dnd-dropseparator-color		// TODO: normal separator is just 1px, why is this 2px?
-
-.umc .dijitTreeNode .dojoDndItemAfter .dijitTreeContent
-	border-bottom: 2px solid $dnd-dropseparator-color	// TODO: normal separator is just 1px, why is this 2px?
 
 .umc .dgrid-row-table .dgrid-tree-icon
 	margin-right: 5px

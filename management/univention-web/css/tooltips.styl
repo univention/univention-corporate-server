@@ -1,21 +1,24 @@
+@require "variables.styl"
+
+
 .dijitTooltipContainer
 	max-width: 400px
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-4)
 	color: var(--color-grey8) // why not contrast-*
 	border-radius: var(--border-radius-tooltip)
 	border: none
-	padding: 0.6em 0.9em
+	padding: spacing(1)
 	background: rgba(255, 255, 255, 0.6)
 	backdrop-filter: blur(20px)
 
 .dijitTooltipAbove
-	padding-bottom: 0.5rem
+	padding-bottom: spacing(1)
 
 .dijitTooltipBelow
-	padding-top: 0.5rem
+	padding-top: spacing(1)
 
 .dijitTooltipLeft
-	padding-right: 0.5rem
+	padding-right: spacing(1)
 
 .dijitTooltipRight
-	padding-right: 0.5rem
+	padding-right: spacing(1)

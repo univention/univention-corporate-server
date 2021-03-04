@@ -98,7 +98,7 @@ define([
 
 		addBreadCrumb: function(name) {
 			var title = lang.replace('<span class="umcModuleTitleBreadCrumb">{0}</span>{1}<span>{2}</span>', [
-				this.title,
+				this.defaultTitle,
 				Icon.asHTMLString('chevron-right', 'umcModuleTitleBreadCrumbSeperator umcModuleTitleBreadCrumb'),
 				entities.encode(name)
 			]);

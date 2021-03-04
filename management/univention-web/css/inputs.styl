@@ -11,6 +11,7 @@
 	height: var(--inputfield-size)
 	width: 100%
 	color: var(--color)
+	font-size: var(--font-size-3)
 	background-color: var(--bgc)
 	border: 1px solid var(--border-color)
 	border-radius: var(--border-radius-interactable)
@@ -31,9 +32,13 @@
 .dijitSpinnerButtonContainer
 	color: var(--local-icon-color)
 
+.dijitTextBox,
+.dijitSelect
+	> .ucsIconButton
+		--button-size: 1.6em
+
 .umcTextBox__downArrowButton
-	--button-size: 1.5em
-	margin-right: 0.5rem
+	margin-right: spacing(1)
 
 	.dijitButtonContents
 		outline: none
@@ -66,7 +71,7 @@
 		.dijitPlaceHolder
 			height: 100%
 			text-overflow: ellipsis
-			padding: 0 1rem !important
+			padding: 0 spacing(3, true) !important
 
 		.umcInlineLabel,
 		.dijitPlaceHolder
@@ -93,7 +98,7 @@
 
 //// textarea
 .dijitTextArea
-	padding: 0.5rem
+	padding: spacing(1)
 	height: 110px
 //// textarea end
 
@@ -104,9 +109,9 @@
 
 .dijitTextBox
 	.umcTextBox__validationIcon
-		margin-right: 1rem
+		margin-right: spacing(2)
 
 .dijitComboBox
 	.umcTextBox__validationIcon
-		margin-right: 0.5rem
+		margin-right: spacing(1)
 //// validation icon end

@@ -44,9 +44,12 @@
 
 .umcModuleHeaderWrapper
 	display: flex
-	align-items: flex-start
+	align-items: center
 	flex-wrap: wrap
 	grid-gap: spacing(1) 0
+
+.umcModuleHeader--withSubTitle .umcModuleHeaderWrapper
+	align-items: flex-start
 
 .umcModuleHeaderRight
 	flex: 1 1 auto
@@ -65,7 +68,7 @@
 	margin: 0 spacing(1, true)
 
 .umcModuleSubTitle
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-5)
 	margin-top: spacing(1)
 
 .umc .umcModuleWrapper
@@ -73,18 +76,17 @@
 	padding: 0
 
 
-// helpText font-size
 .umc .umcPageHelpText
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-4)
 
 
 // headerText/helpText spacing
 .umc .umcPageHeader + .umcPageHelpText
 	margin-top: spacing(1)
 .umc .umcPageHelpText:not(:last-child)
-	margin-bottom: spacing(3)
+	margin-bottom: spacing(2)
 .umc .umcPageNavContent:last-child
-	margin-bottom: spacing(3)
+	margin-bottom: spacing(2)
 
 
 // UDM module spacing
@@ -101,7 +103,7 @@
 	.umcPageHeader h2
 		@extends h1
 	.umcPageHeader
-		padding: spacing(4)
+		padding: spacing(2)
 	.umcPageHelpText
 		margin: 0
 		padding: 0 spacing(4) spacing(3)

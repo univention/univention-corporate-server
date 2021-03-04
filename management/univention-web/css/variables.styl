@@ -170,7 +170,6 @@ $slider-button-pressed-background-color ?= $minor-selected-color				// Backgroun
 // Select, ComboBox
 $select-dropdownitem-background-color ?= $container-background-color			// Background color for items in the drop down list of a ComboBox/Select
 $select-dropdownitem-hovered-background-color ?= $pressed-background-color	// Background color for the hovered item in the drop down list of a ComboBox/Select
-$select-matchedtext-background-color ?= $minor-selected-color				// Background color of text in ComboBox drop down that matches typed in phrase
 
 // Menus
 $menu-background-color ?= $popup-background-color
@@ -277,7 +276,7 @@ $labelpane-padding        ?= $labelpane-padding-top $labelpane-padding-right $la
 
 // Buttons in LayoutRow
 // the exact space the Button takes up (padding included)
-$_layoutrow-button-width = "var(--g-button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
+$_layoutrow-button-width = "var(--button-size) + %s + %s" % ($labelpane-padding-left $labelpane-padding-right)
 $layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
 	if not amount-of-visual-buttons
 		amount-of-visual-buttons = amount-of-physical-buttons

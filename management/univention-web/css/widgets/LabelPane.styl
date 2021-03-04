@@ -10,16 +10,16 @@
 		--local-color: var(--local-color-normal)
 		display: inline-flex
 		align-items: center
-		font-size: var(--font-size-small)
+		font-size: var(--font-size-4)
 		color: var(--local-color)
 		transition: color 250ms
 
 		&Top
-			margin-bottom: 0.5rem
+			margin-bottom: spacing(1, true)
 		&Right
-			margin-left: 0.5rem
+			margin-left: spacing(1)
 		&Bottom
-			margin-top: 0.5rem
+			margin-top: spacing(1, true)
 
 	&Error > .umcLabelPaneLabelNode
 		--local-color: var(--color-error)
@@ -45,7 +45,7 @@
 	flex: 0 0 auto
 	height: 1em
 	width: @height
-	margin-left: 0.5rem
+	margin-left: spacing(1)
 	transition: opacity 250ms
 	cursor: pointer
 

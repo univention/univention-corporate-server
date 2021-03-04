@@ -41,27 +41,6 @@ define([
 	"umc/widgets/Page"
 ], function(declare, lang, array, Page) {
 	return declare("umc.modules.updater.Page", [ Page ] , {
-		buildRendering: function() {
-
-			this.inherited(arguments);
-
-			// helpText and headerText changeable
-			this.own(this.watch('headerText', lang.hitch(this, function(name, oldval, newval) {
-				var children = this.getChildren();
-				// the header text element is (currently) not a member variable,
-				// so I have to search for the one element that has region='nav'
-				array.forEach(children, function(child) {
-					if (child.get('region') == 'nav') {
-						child.set('content', '<h1>' + newval + '</h1>');
-						return;
-					}
-				});
-			})));
-			this.own(this.watch('helpText', lang.hitch(this, function(name, oldval, newval) {
-				this._helpTextPane.set('content', newval);
-			})));
-		},
-
 		// should be overloaded by subclasses that need an entry point
 		// that should reload/refresh changed data and update the display
 		refreshPage: function() {

@@ -97,7 +97,7 @@ define([
 			this._criticalError = false;
 			this._errors = [];
 
-			this._component.set('content', '<span>' + entities.encode(this._initialComponent) + '</span>');
+			this._component.set('content', '<span class="umcProgressBarComponentContent">' + entities.encode(this._initialComponent) + '</span>');
 
 			// make sure that at least a not breakable space is printed
 			// ... this avoids vertical jumping of widgets
@@ -108,7 +108,7 @@ define([
 
 		setInfo: function(component, message, percentage, errors, critical) {
 			if (component) {
-				this._component.set('content', '<span>' + entities.encode(component) + '</span>');
+				this._component.set('content', '<span class="umcProgressBarComponentContent">' + entities.encode(component) + '</span>');
 			}
 			if (percentage) {
 				this._progressBar.set('value', percentage);

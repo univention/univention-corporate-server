@@ -21,7 +21,8 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-right: 10px;
+	margin-right: 1rem;
+	margin-top: 2rem;
 }
 
 .umc .umcAppDialogPage-welcome .umcPageIcon {

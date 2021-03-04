@@ -273,13 +273,13 @@ define([
 					label: '',
 					name: 'ucs_version_text',
 					content: _("... loading data ..."),
-					size: 'One'
+					size: 'Two'
 				}, {
 					type: Text,
 					label: '',
 					name: 'ucs_updates_text',
 					content: _("There are no release updates available."),
-					size: 'One'
+					size: 'Two'
 				}, { // ---------------------- Errata updates -----------------------
 					type: 'HiddenInput',
 					name: 'erratalevel'

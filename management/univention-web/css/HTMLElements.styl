@@ -22,12 +22,12 @@ p
 	margin-bottom: 0.7rem
 
 h1
-	font-size: var(--font-size-header1)
-	line-height: var(--font-lineheight-header1)
+	font-size: var(--font-size-1)
+	line-height: var(--font-lineheight-header)
 	font-weight: 600
 
 h2, h3, h4, h5, h6
-	font-size: var(--font-size-header2)
+	font-size: var(--font-size-2)
 	line-height: var(--font-lineheight-normal)
 	font-weight: 600
 
@@ -36,3 +36,18 @@ ul
 	margin-bottom: spacing(1)
 	list-style-type: disc
 	list-style-position: outside
+li::marker
+	color: var(--font-color-contrast-low)
+
+
+pre,
+code
+	padding: 0.8em 0.5em
+	margin: 0
+	font-size: var(--font-size-4)
+	line-height: var(--font-lineheight-compact)
+	word-wrap: normal
+	color: inherit
+	background-color: var(--bgc-content-body)
+	border: none
+	border-radius: var(--border-radius-container)

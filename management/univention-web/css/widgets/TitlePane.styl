@@ -28,33 +28,34 @@
 	border-radius: var(--border-radius-container)
 
 .dijitTitlePane:not(:last-child)
-	margin-bottom: 3em
+	margin-bottom: spacing(6)
 
 
 // TitlePane title
 .dijitTitlePaneTitle
-	padding: 1.5rem
+	padding: spacing(1)
 	transition: background-color 250ms
 
 	&Hover
 		background-color: rgba(255, 255, 255, 0.04)
 
 .dijitTitlePaneTitleFocus
-	padding: 0.5rem
+	padding: spacing(1)
 	display: flex
 	align-items: center
 
 	.dijitArrowNode
 		display: none
 
-	.dijitTitlePaneTextNode
-		@extends h2
-		flex: 1 1 auto
-		margin-right: spacing(1)
+.dijitTitlePaneTextNode
+	@extends h2
+	flex: 1 1 auto
+	margin-right: spacing(1)
 
 .umcTitlePaneTitleFocus__arrowIcon
 	flex: 0 0 auto
 	transition: transform 250ms
+	font-size: var(--font-size-3)
 .dijitTitlePaneTitleOpen
 	.umcTitlePaneTitleFocus__arrowIcon
 		transform: rotate(180deg)
@@ -67,7 +68,7 @@
 
 // TitlePane content
 .dijitTitlePaneContentInner
-	padding: 0.5rem 2rem 2rem // add padding to inner element so the wipeIn/wipeOut does not jump
+	padding: spacing(1) spacing(2) spacing(2) // add padding to inner element so the wipeIn/wipeOut does not jump
 // TitlePane content (end)
 
 

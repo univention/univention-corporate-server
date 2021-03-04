@@ -30,13 +30,12 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
+	"dojo/dom-class",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/widgets/Icon",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, ContainerWidget, Text, Icon, tools, _) {
+], function(declare, domClass, ContainerWidget, Text, tools, _) {
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 		baseClass: 'umcModuleHeader',
 
@@ -58,6 +57,7 @@ define([
 		_setSubTitleAttr: function(subTitle) {
 			tools.toggleVisibility(this._subTitle, !!subTitle);
 			this._subTitle.set('content', subTitle);
+			domClass.toggle(this.domNode, this.baseClass + '--withSubTitle', !!subTitle);
 			this._set('subTitle', subTitle);
 		},
 

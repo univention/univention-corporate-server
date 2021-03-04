@@ -1,9 +1,8 @@
 @require "variables.styl"
 @require "icons.styl"
 
-$umcGrid-edge-padding = 24px
 .umc .umcGrid
-	background-color: var(--color-grey0)
+	background-color: var(--bgc-content-container)
 	border-radius: var(--border-radius-container)
 	overflow: hidden // clip the scrollbar
 
@@ -11,10 +10,10 @@ $umcGrid-edge-padding = 24px
 		flex: 0 0 auto
 		display: flex
 		flex-wrap: wrap
-		padding: 1rem
+		padding: spacing(1)
 
 	.umcGridHeader .dijitButton
-		margin-right: 0.5rem
+		margin-right: spacing(1)
 
 	.umcGrid__contextWrapper
 		max-width: 100%
@@ -26,9 +25,9 @@ $umcGrid-edge-padding = 24px
 		flex: 0 1 auto
 		display: flex
 		align-items: center
-		font-size: var(--font-size-small)
+		font-size: var(--font-size-5)
 		color: var(--font-color-contrast-middle)
-		padding-right: 2rem
+		padding: spacing(1)
 		overflow: hidden
 
 	.umcGridStatus
@@ -41,23 +40,22 @@ $umcGrid-edge-padding = 24px
 
 	.umcGridRowIcon
 		margin-right: 0.5em
-		margin-bottom: 0.1em
 
 	.dgrid-cell
 		border: none
 		vertical-align: middle
-		padding: 0.75em 0
+		padding: spacing(3, true) 0
 		white-space: nowrap
 		text-overflow: ellipsis
 
 		&.dgrid-selector
-			width: 3rem
-			padding-right: 1rem
+			width: spacing(6)
+			padding-right: spacing(2)
 
 		&:first-child
-			padding-left: 1rem
+			padding-left: spacing(2)
 		&:last-child
-			padding-right: 1rem
+			padding-right: spacing(2)
 
 	.dgrid-cell:not(.dgrid-selector) *
 		display: inline
@@ -71,19 +69,23 @@ $umcGrid-edge-padding = 24px
 		border: none
 		border-top: 1px solid var(--color-grey8)
 
-	.dgrid-header
-		background-color: inherit
-		border-bottom: 1px solid var(--color-grey8)
-
 	.dgrid-row
+		font-size: var(--font-size-4)
+		line-height: 1
 		transition: background-color 250ms
-		border-top: 1px solid var(--color-grey8)
+		border-top: 1px solid var(--bgc-content-body)
 		&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
 			border-top: none
 
 		&:hover,
 		&.dgrid-selected
 			background-color: rgba(255, 255, 255, 0.04)
+
+	.dgrid-header
+		font-size: var(--font-size-3)
+		line-height: 1
+		background-color: inherit
+		border-bottom: 1px solid var(--color-grey8)
 
 	.umcGridRowSelectorCheckBox
 		display: block // center the checkbox in the row

@@ -52,8 +52,8 @@ define([
 						name: '\${name}'
 					"
 				></div>
-				<div class="description">\${description}</div>
-				<div class="buttonWrapper" data-dojo-attach-point="buttonNode">
+				<div class="umcAppInfo__description">\${description}</div>
+				<div class="umcAppInfo__buttonWrapper" data-dojo-attach-point="buttonNode">
 					<div class="umcAppSidebarButton ucsPrimaryButton"
 						data-dojo-type="umc/widgets/Button"
 						data-dojo-attach-event="click:_onClick"

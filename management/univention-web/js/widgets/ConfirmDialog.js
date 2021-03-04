@@ -110,7 +110,7 @@ define([
 		//		'name' property of the button.
 		options: null,
 
-		actionBarTemplate: '<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBar" class="umcDialogActionBar"></div>',
+		actionBarTemplate: '<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBar" class="umcDialogActionBar dijitDisplayNone"></div>',
 
 		closable: true,
 
@@ -129,13 +129,11 @@ define([
 			if (typeof this.message == "string") {
 				var widget = new Text({
 					content: message,
-					'class': 'umcConfirmDialogText'
 				});
 				this._container.addChild(widget, 0);
 			}
 			if (typeof this.message == "object" && 'declaredClass' in this.message) {
 				// message is a widget
-				domClass.add(this.message.domNode, 'umcConfirmDialogText');
 				var widgets = [this.message]; // fallback: check self
 				if (this.containerNode) {
 					widgets = query("[widgetId]", this.message.containerNode).map(registry.byNode);
@@ -160,7 +158,6 @@ define([
 
 		constructor: function() {
 			this.options = [];
-			this.baseClass += ' umcConfirmDialog';
 		},
 
 		_setOptionsAttr: function() {
@@ -187,6 +184,7 @@ define([
 
 				this.actionBar.addChild(new Button(props));
 			}));
+			domClass.toggle(this.actionBar.domNode, 'dijitDisplayNone', !this.options.length);
 
 			// make sure that the default button is focused
 			// var defaultButton = array.filter(this.actionBar.getChildren(), function(button) {

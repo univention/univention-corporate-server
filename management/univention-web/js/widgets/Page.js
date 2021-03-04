@@ -35,11 +35,12 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojox/html/entities",
+	"umc/tools",
 	"../dialog",
 	"../render",
 	"./Text",
 	"./ContainerWidget"
-], function(declare, kernel, lang, array, domClass, entities, dialog, render, Text, ContainerWidget) {
+], function(declare, kernel, lang, array, domClass, entities, tools, dialog, render, Text, ContainerWidget) {
 	return declare("umc.widgets.Page", [ContainerWidget], {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -211,6 +212,7 @@ define([
 				baseClass: 'umcPageFooter',
 				'class': this._initialBootstrapClasses
 			});
+			tools.toggleVisibility(this._footer, false);
 			ContainerWidget.prototype.addChild.apply(this, [this._footer]);
 
 			// add the header
@@ -223,18 +225,19 @@ define([
 			}
 
 			if (!this.noFooter) {
-				// create the footer container(s)
-				var footerLeft = new ContainerWidget({
-					style: 'float: left'
-				});
-				this._footer.addChild(footerLeft);
-				var footerRight = new ContainerWidget({
-					style: 'float: right'
-				});
-				this._footer.addChild(footerRight);
-
 				// render all buttons and add them to the footer
 				if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
+					tools.toggleVisibility(this._footer, true);
+					// create the footer container(s)
+					var footerLeft = new ContainerWidget({
+						'class': 'umcPageFooterLeft'
+					});
+					this._footer.addChild(footerLeft);
+					var footerRight = new ContainerWidget({
+						'class': 'umcPageFooterRight'
+					});
+					this._footer.addChild(footerRight);
+
 					this._footerButtons = render.buttons(this.footerButtons);
 					array.forEach(this._footerButtons.$order$, function(ibutton) {
 						if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {

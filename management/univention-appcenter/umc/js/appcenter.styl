@@ -88,7 +88,7 @@
 
 
 .umcAppDetailsContainerCard
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-4)
 	background: var(--bgc-content-body)
 	&:not(:last-child)
 		margin-bottom: calc(2 * var(--layout-spacing-unit))
@@ -110,11 +110,11 @@
 	justify-content: flex-end
 
 .umcAppDetailsContainerCard__header__host
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-5)
 
 	&.umcAppDetailsContainerCard__header__main
-		font-weight: 600
-		font-size: var(--font-size-normal)
+		font-weight: var(--font-weigt-bold)
+		font-size: var(--font-size-3)
 
 
 .umcAppDetailsContainerCard .umcAppMoreTitlePane
@@ -175,7 +175,7 @@
 .umcTiles__actionBar__text
 	flex: 0 0 auto
 	margin-left: var(--layout-spacing-unit)
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-4)
 	color: var(--font-color-contrast-middle)
 
 .umcTiles__collection
@@ -190,21 +190,19 @@
 	width: 6rem
 	cursor: pointer
 
-.umcAppInfo
-	.umcTile
-		cursor: default
+.umcAppInfo .umcTile
+	cursor: default
+.umcAppInfo__description
+	margin: calc(4 * var(--layout-spacing-unit)) 0
+	font-size: var(--font-size-4)
+	text-align: center
+.umcAppInfo__buttonWrapper
+	width: 100%
 
-	.description
-		margin: 2em 0
-		font-size: var(--font-size-small)
-		text-align: center
-
-	.buttonWrapper
-		width: 100%
-
-.umcManageInstallationButton
-	display: block
-	margin-bottom: 1em
+.umcManageAppInstallationsDialogButtons
+	display: flex
+	flex-direction: column
+	grid-gap: calc(2 * var(--layout-spacing-unit)) 0
 
 .umcAppText
 	display: flex
@@ -222,6 +220,8 @@
 
 	.umcTile__logo
 		width: 80%
+		height: 80%
+		object-fit: contain
 
 	.umcTile__name
 		margin-left: var(--layout-spacing-unit)
@@ -248,11 +248,13 @@
 
 	.umcTile__logo
 		width: 80%
+		height: 80%
+		object-fit: contain
 
 .umcTile__name
 	overflow: hidden
 	text-overflow: ellipsis
-	font-size: var(--font-size-small)
+	font-size: var(--font-size-4)
 	text-align: center
 
 .umcTiles__selectionMode .umcTile.selected
@@ -269,40 +271,12 @@
 		border-radius: 32px
 		background-color: rgba(255, 255, 255, 0.08)
 
-.appcenterMetaCategory
-	background-color: var(--bgc-content-container)
-	border-radius: var(--border-radius-container)
-
-	margin-bottom: 5em
-	padding: 0.5em
-
-	.umcText
-		font-size: var(--font-size-normal)
-		font-weight: 600
-		padding-top: 0.4em
-		padding-bottom: 1em
-		padding-left: 1em
-
-	.dijitButton
-		float: right
-
 .appDetailsPageActions
 	margin-bottom: 3em
-
-.umc .umcAppCenterDialog
-	.umcPageHelpText
-		font-size: var(--font-size-normal)
-
-	.umcText
-		font-size: var(--font-size-small)
-
-	.umcPageNav
-		margin-bottom: 0
 
 .umcAppMoreTitlePane
 	background-color: transparent
 	border-radius: 0
-	font-size: var(--font-size-small)
 
 	.dijitTitlePaneTitle
 		padding: 0
@@ -312,6 +286,7 @@
 		padding: 0
 
 	.dijitTitlePaneTextNode
+		font-size: var(--font-size-4)
 		text-decoration: underline
 		margin: 0
 
@@ -327,10 +302,6 @@
 .umcAppChooseHostWizard__removeExplanation
 	margin-bottom: var(--layout-spacing-unit)
 
-.umc .umcAppCenterDialog
-	.dijitDefaultButton
-		float: right
-
 .umc .umcModule .umcAppCenterInstallWizard
 	margin: 7px 0 !important
 	background-color: var(--color-grey0)
@@ -338,7 +309,8 @@
 
 .umcAppCenterInstallDialog
 	.umcPageHelpText
-		font-weight: bold
+		font-size: var(--font-size-3)
+		font-weight: var(--font-weigt-bold)
 		margin-bottom: 0.5em
 
 .umc .umcAppDetailsPage
@@ -408,17 +380,13 @@
 		margin-bottom: 0.3em
 
 	.mainHeader
-		display: block
-		font-size: 20px
-		font-weight: 500
-		margin-bottom: 24px
+		display: flex
+		align-items: center
+		font-size: var(--font-size-2)
+		margin-bottom: calc(2 * var(--layout-spacing-unit))
 
-		svg
-			position: relative
-			top: 0.2ex
-		span
-			padding-left: 0.5em
-			vertical-align: text-bottom
+		.featherIcon
+			margin-right: var(--layout-spacing-unit)
 
 	.iconHeaderOpen
 		background: transparent url("appcenter/icons/open.svg") repeat scroll
@@ -468,8 +436,7 @@
 	.umcAppDetailsPage__content__mainInfo
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
-		font-size: var(--font-size-small)
-		padding: 40px
+		padding: calc(4 * var(--layout-spacing-unit))
 
 		h1, h2, h3
 			margin-bottom: 0.7rem
@@ -480,17 +447,12 @@
 				border-top: 2px solid var(--bgc-content-body)
 		ul, ol
 			margin-bottom: 0.7rem
-			padding-left: 15px
-
-			li::marker
-				color: var(--color-grey40)
 
 
 	.appDetailsSidebarElement
 		background-color: var(--bgc-content-container)
 		border-radius: var(--border-radius-container)
-		font-size: var(--font-size-small)
-		padding: 1.7em
+		padding: calc(3 * var(--layout-spacing-unit))
 		color: var(--font-color-contrast-high)
 
 		table
@@ -512,24 +474,17 @@
 		.umcPageMain
 			margin-bottom: 2.25em
 
-	.umcAppCenter .appcenterMetaCategory
-		.dijitButton.hiddenButton
-			visibility: hidden
-
 	.umcAppCenter .appLiveSearchSidebar
 		border-radius: var(--border-radius-container)
 
 		.umcSearchBox
-			margin-bottom: 40px
+			margin-bottom: calc(4 * var(--layout-spacing-unit))
 
 		.appLiveSearchSidebarElement
 			border-top-left-radius: var(--border-radius-container)
 			border-top-right-radius: var(--border-radius-container)
 			background-color: var(--bgc-content-container)
-			padding: 10px
-
-			.umcLayoutRow
-				margin-bottom: 0.5em
+			padding: calc(2 * var(--layout-spacing-unit))
 
 		.appLiveSearchSidebarElement + .appLiveSearchSidebarElement
 			border-radius: 0
@@ -541,17 +496,12 @@
 
 		.mainHeader
 			display: block
-			font-size: var(--font-size-small)
-			font-weight: 600
-			margin-bottom: 20px
-
-		.searchFilterSingle
-			font-size: 17px
-			font-weight: 500
+			font-size: var(--font-size-4)
+			font-weight: var(--font-weigt-bold)
+			margin-bottom: calc(2 * var(--layout-spacing-unit))
 
 		.umcLabelPane
-			display: flex
-			padding-bottom: 0
+			padding-bottom: var(--layout-spacing-unit-small)
 
 	.umcPage.umcAppCenter .umcSize-TwoThirds
 		@media screen and (max-width: 549px)
@@ -566,7 +516,7 @@
 		padding: 0
 
 .umc .appInstallDialog__readmeTitle
-	font-weight: bold
+	font-weight: var(--font-weigt-bold)
 
 .umc .appInstallDialog__readme
 	max-height: 350px
