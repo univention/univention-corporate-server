@@ -61,6 +61,7 @@ class Portal(with_metaclass(Plugin)):
 		return value of `get_visible_content`
 	`get_categories`: Get all categories of "content", which in turn was the
 		return value of `get_visible_content`
+	`may_login_via_saml`: Whether a sso login is possible given a "request"
 	`may_be_edited`: Whether a "user" may edit this portal
 	`get_meta`: Get some information about the portal itself, given
 		"content" and "categories". Those were return values of
@@ -132,7 +133,7 @@ class Portal(with_metaclass(Plugin)):
 		links_dict = dict((link["dn"], link) for link in links)
 		entry_dns = [link["dn"] for link in links]
 		return [
-			links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+			dn for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
 		]
 
 	def get_menu_links(self, user, admin_mode):
@@ -140,17 +141,17 @@ class Portal(with_metaclass(Plugin)):
 		links_dict = dict((link["dn"], link) for link in links)
 		entry_dns = [link["dn"] for link in links]
 		return [
-			links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+			dn for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
 		]
 
 	def get_entries(self, content):
 		entries = self.portal_cache.get_entries()
-		return {entry_dn: entries[entry_dn] for entry_dn in content["entry_dns"]}
+		return [entries[entry_dn] for entry_dn in content["entry_dns"]]
 
 	def get_folders(self, content):
 		folders = self.portal_cache.get_folders()
-		folders = {folder_dn: folders[folder_dn] for folder_dn in content["folder_dns"]}
-		for folder in folders.values():
+		folders = [folders[folder_dn] for folder_dn in content["folder_dns"]]
+		for folder in folders:
 			folder["entries"] = [
 				entry_dn
 				for entry_dn in folder["entries"]
@@ -160,16 +161,17 @@ class Portal(with_metaclass(Plugin)):
 
 	def get_categories(self, content):
 		categories = self.portal_cache.get_categories()
-		categories = {
-			category_dn: categories[category_dn] for category_dn in content["category_dns"]
-		}
-		for category in categories.values():
+		categories = [categories[category_dn] for category_dn in content["category_dns"]]
+		for category in categories:
 			category["entries"] = [
 				entry_dn
 				for entry_dn in category["entries"]
 				if entry_dn in content["entry_dns"] or entry_dn in content["folder_dns"]
 			]
 		return categories
+
+	def may_login_via_saml(self, request):
+		return self.authenticator.may_login_via_saml(request)
 
 	def may_be_edited(self, user):
 		return user.is_admin()
@@ -182,7 +184,7 @@ class Portal(with_metaclass(Plugin)):
 			if category_dn in content["category_dns"]
 		]
 		portal["content"] = [
-			[category_dn, categories[category_dn]["entries"]]
+			[category_dn, next(category for category in categories if category["dn"] == category_dn)["entries"]]
 			for category_dn in portal["categories"]
 		]
 		return portal
@@ -235,6 +237,9 @@ class UMCPortal(Portal):
 	def __init__(self, scorer, authenticator):
 		self.scorer = scorer
 		self.authenticator = authenticator
+
+	def may_login_via_saml(self, request):
+		return False
 
 	def may_be_edited(self, user):
 		return False

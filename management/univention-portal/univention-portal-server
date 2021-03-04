@@ -92,6 +92,9 @@ class JsonHandler(PortalHandler):
 		answer["categories"] = portal.get_categories(visible_content)
 		answer["portal"] = portal.get_meta(visible_content, answer["categories"])
 		answer["filtered"] = not admin_mode
+		answer["username"] = user.username
+		answer["user_displayname"] = user.display_name
+		answer["may_login_via_saml"] = portal.may_login_via_saml(self)
 		answer["may_edit_portal"] = portal.may_be_edited(user)
 		self.write(answer)
 

@@ -34,6 +34,7 @@ from six import with_metaclass
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 from univention.portal.user import User
+import univention.portal.config as config
 
 
 class Session(object):
@@ -53,9 +54,10 @@ class Authenticator(with_metaclass(Plugin)):
 	The idea is that this class handles the following
 	methods from the Portal:
 	`login_request`: A user GETs to the login action
+	`login_request`: A user GETs to the login action
 	`login_user`: Credentials are POSTed to this action
 	`get_user`: While gathering the portal data, the caller wants
-	to get a `User` object
+	`may_login_via_saml`: Whether this authenticator works with a SAML SSO login
 
 	This base class does nothing...
 	"""
@@ -67,7 +69,10 @@ class Authenticator(with_metaclass(Plugin)):
 		pass
 
 	def get_user(self, request):  # pragma: no cover
-		return User(username=None, groups=[], headers={})
+		return User(username=None, display_name=None, groups=[], headers={})
+
+	def may_login_via_saml(self, request):
+		return config.fetch("saml_enabled")
 
 	def refresh(self, reason=None):  # pragma: no cover
 		pass
@@ -93,21 +98,22 @@ class UMCAuthenticator(Authenticator):
 
 	def get_user(self, request):
 		cookies = dict((key, morsel.value) for key, morsel in request.cookies.items())
-		username = self._get_username(cookies)
+		username, display_name = self._get_username(cookies)
 		groups = self.group_cache.get().get(username, [])
-		return User(username, groups=groups, headers=dict(request.request.headers))
+		return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))
 
 	def _get_username(self, cookies):
 		if not any(cookie.startswith("UMCSessionId") for cookie in cookies):
 			get_logger("user").debug("no user given")
-			return None
+			return None, None
 		get_logger("user").debug("searching user for cookies=%r" % cookies)
 		username = self._ask_umc(cookies)
 		if username is None:
 			get_logger("user").debug("no user found")
+			return None, None
 		else:
 			get_logger("user").debug("found %s" % username)
-			return username.lower()
+			return username.lower(), username
 
 	def _ask_umc(self, cookies):
 		try:

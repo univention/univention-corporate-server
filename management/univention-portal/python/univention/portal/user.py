@@ -31,8 +31,9 @@ import univention.portal.config as config
 
 
 class User(object):
-	def __init__(self, username, groups, headers):
+	def __init__(self, username, display_name, groups, headers):
 		self.username = username
+		self.display_name = display_name
 		self.groups = groups
 		self.headers = headers
 
