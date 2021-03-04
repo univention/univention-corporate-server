@@ -1,3 +1,9 @@
+univention-portal (4.0.5-1) unstable; urgency=medium
+
+  * Bug #52869: Preparations for new Vue.js frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Mar 2021 17:08:39 +0100
+
 univention-portal (4.0.4-9) unstable; urgency=medium
 
   * Bug #52792: Replace UCR script with UCR module
