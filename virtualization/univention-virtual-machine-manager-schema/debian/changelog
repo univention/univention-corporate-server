@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-schema (9.0.2-15) unstable; urgency=medium
+
+  * Bug #52867: Restore schema filesystem path to
+    /usr/share/univention-ldap/schema/
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 04 Mar 2021 13:42:56 +0100
+
 univention-virtual-machine-manager-schema (9.0.2-14) unstable; urgency=medium
 
   * Bug #51955: prevent AttributeError when syntax class is not

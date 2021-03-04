@@ -46,7 +46,7 @@ ucr set uvmm/ldap/schema/registered-by-ucr-template=no
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
-    --schema /usr/share/univention-virtual-machine-manager-schema/univention-virtual-machine-manager.schema || die
+    --schema /usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema || die
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.0-99" \
