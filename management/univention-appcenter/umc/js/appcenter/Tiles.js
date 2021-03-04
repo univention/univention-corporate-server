@@ -42,11 +42,10 @@ define([
 	"umc/tools",
 	"umc/widgets/ToggleButton",
 	"umc/widgets/Button",
-	"umc/modules/appcenter/App",
 	"umc/i18n!umc/modules/appcenter"
 ], function(
 	declare, lang, array, domClass, on, topic, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin,
-	tools, ToggleButton, Button, App, _
+	tools, ToggleButton, Button, _
 ) {
 	return declare('umc.modules.appcenter.Tiles', [
 		_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin
@@ -161,23 +160,19 @@ define([
 			if (this._selection.length > 0) {
 				this._installButton.set('disabled', this._selection.some((appId) => {
 					const tile = this.tiles.find((tile) => tile.obj.id === appId);
-					const app = new App(tile.obj);
-					return !app.canInstall();
+					return !tile.obj.canInstall();
 				}));
 				this._upgradeButton.set('disabled', this._selection.some((appId) => {
 					const tile = this.tiles.find((tile) => tile.obj.id === appId);
-					const app = new App(tile.obj);
-					return !app.canUpgrade();
+					return !tile.obj.canUpgrade();
 				}));
 				this._upgradeDomainButton.set('disabled', this._selection.some((appId) => {
 					const tile = this.tiles.find((tile) => tile.obj.id === appId);
-					const app = new App(tile.obj);
-					return !app.canUpgradeInDomain();
+					return !tile.obj.canUpgradeInDomain();
 				}));
 				this._removeButton.set('disabled', this._selection.some((appId) => {
 					const tile = this.tiles.find((tile) => tile.obj.id === appId);
-					const app = new App(tile.obj);
-					return !app.canUninstall();
+					return !tile.obj.canUninstall();
 				}));
 			} else {
 				this._installButton.set('disabled', true);
@@ -257,24 +252,23 @@ define([
 				if (!tile.get('visible')) {
 					return false;
 				}
-				var app = new App(tile.obj);
 				if (this.selectionModes.includes('install')) {
-					if (app.canInstall()) {
+					if (tile.obj.canInstall()) {
 						return true;
 					}
 				}
 				if (this.selectionModes.includes('upgrade')) {
-					if (app.canUpgrade()) {
+					if (tile.obj.canUpgrade()) {
 						return true;
 					}
 				}
 				if (this.selectionModes.includes('upgradeDomain')) {
-					if (app.canUpgradeInDomain()) {
+					if (tile.obj.canUpgradeInDomain()) {
 						return true;
 					}
 				}
 				if (this.selectionModes.includes('remove')) {
-					if (app.canUninstall()) {
+					if (tile.obj.canUninstall()) {
 						return true;
 					}
 				}

@@ -53,6 +53,7 @@ define([
 			}
 			this.id = props.id;
 			this.name = props.name;
+			this.appCategories = props.app_categories;
 			this.voteForApp = props.vote_for_app;
 			this.backgroundColor = props.background_color;
 			this.logoName = props.logo_name;
@@ -61,6 +62,7 @@ define([
 			this.candidateVersion = props.candidate_version;
 			this.candidateHasNoInstallPermissions = props.candidate_needs_install_permissions;
 			this.candidateInstallPermissionMessage = props.candidate_install_permissions_message;
+			this.license = props.license;
 			this.licenseDescription = props.license_description;
 			this.categories = props.categories;
 			this.website = props.website;

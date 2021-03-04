@@ -43,11 +43,12 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
+	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/Tiles",
 	"umc/modules/appcenter/Tile",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, on, topic, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, Tiles, Tile, _) {
+], function(declare, lang, array, on, topic, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, App, AppLiveSearchSidebar, Tiles, Tile, _) {
 
 	return declare('umc.modules.appcenter.AppCenterPage', [ Page ], {
 
@@ -82,7 +83,7 @@ define([
 				this._searchSidebar = new AppLiveSearchSidebar({
 					region: 'nav',
 					searchLabel: _('Search Apps'),
-					searchableAttributes: ['name', 'description', 'long_description', 'categories', 'vendor', 'maintainer']
+					searchableAttributes: ['name', 'description', 'longDescription', 'categories', 'vendor', 'maintainer']
 				});
 				this.addChild(this._searchSidebar);
 				this.own(on(this._searchSidebar, 'search', lang.hitch(this, 'filterApplications')));
@@ -166,6 +167,7 @@ define([
 					query: metaObj.query,
 					selectionModes: metaObj.selectionModes,
 					isSuggestionCategory: !!metaObj.isSuggestionCategory,
+					domainWide: metaObj.domainWide,
 					visible: false
 				});
 				metaCategory.on('startAction', lang.hitch(this, function(action, apps) {
@@ -202,6 +204,7 @@ define([
 			{
 				label: _('Installed'),
 				selectionModes: ['upgrade', 'remove'],
+				domainWide: false,
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -216,6 +219,7 @@ define([
 			{
 				label: _('Installed in domain'),
 				selectionModes: ['upgradeDomain'],
+				domainWide: true,
 				query: function(app) {
 					var considerInstalled = false;
 					tools.forIn(app.installations, function(host, installation) {
@@ -230,6 +234,7 @@ define([
 			{
 				label: _('Suggestions based on installed apps'),
 				selectionModes: ['install'],
+				domainWide: false,
 				query: function(app) {
 					return app.$isSuggested;
 				},
@@ -239,6 +244,7 @@ define([
 			{
 				label: _('Available'),
 				selectionModes: ['install'],
+				domainWide: false,
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}
@@ -350,7 +356,8 @@ define([
 								bgc: app.background_color || '',
 								logo: '/univention/js/dijit/themes/umc/icons/scalable/' + app.logo_name,
 								name: app.name,
-								obj: app
+								domainWide: metaCategory.domainWide,
+								obj: new App(app),
 							});
 						});
 						metaCategory.set('tiles', tiles);
@@ -449,7 +456,7 @@ define([
 			var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
 
 			var categoryMatches = false;
-			array.forEach(app.app_categories, function(appsCategory) {
+			array.forEach(app.appCategories, function(appsCategory) {
 				if(array.indexOf(selectedCategories, appsCategory) >= 0) {
 					categoryMatches = true;
 				}
@@ -467,7 +474,7 @@ define([
 				licenseMatches = true;
 			}
 
-			var voteForAppsMatches = app.vote_for_app || !voteForApps;
+			var voteForAppsMatches = app.voteForApp || !voteForApps;
 
 			return matchesSearchPattern &&
 				(selectedCategories.length == 0 || categoryMatches) &&

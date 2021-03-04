@@ -70,6 +70,8 @@ class AppSanitizer(Sanitizer):
 
 	def _sanitize(self, value, name, further_args):
 		app = Apps.find_by_string(value)
+		if not app:
+			self.raise_validation_error(_("Could not find an application for %s") % (value, ))
 		app_version = app.version
 		if not app.is_installed() and not app.install_permissions_exist():
 			apps = Apps().get_all_apps_with_id(app.id)

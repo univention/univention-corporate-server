@@ -71,7 +71,7 @@ define([
 			}
 			var tooltipMessage;
 			if (statusIconClass.indexOf("EndOfLife") !== -1) {
-				if (this.obj.is_installed) {
+				if (this.obj.isInstalled) {
 					tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: this.obj.name});
 				} else {
 					tooltipMessage = _("This application will not get any further updates.");
@@ -110,28 +110,24 @@ define([
 				dojoEvent.stop(evt);
 			});
 		},
-		_updateAvailableInDomain() {
-			var updates_available_in_domain = false;
-			if (this.obj.installations) {
-				tools.forIn(this.obj.installations, function(server, info) {
-					if (info.update_available) {
-						updates_available_in_domain = true;
-					}
-				});
+		_upgradeAvaiable() {
+			var updateAvailable = this.obj.canUpgrade();
+			if (this.domainWide) {
+				updateAvailable = updateAvailable || this.obj.canUpgradeInDomain();
 			}
-			return updates_available_in_domain;
+			return updateAvailable;
 		},
 		_getStatusIconClass: function() {
 			if (! this.obj) {
 				return null;
 			}
 			var iconClass;
-			if (this.obj.end_of_life) {
+			if (this.obj.endOfLife) {
 				iconClass = 'appEndOfLifeIcon';
-			} else if (this.obj.vote_for_app) {
+			} else if (this.obj.voteForApp) {
 				iconClass = 'appVoteForApp';
-			} else if (this.obj.update_available || this._updateAvailableInDomain()) {
-				if (this.obj.candidate_needs_install_permissions) {
+			} else if (this._upgradeAvaiable()) {
+				if (this.obj.candidateHasNoInstallPermissions) {
 					iconClass = 'appUpdatePermissionsIcon';
 				} else {
 					iconClass = 'appUpdateIcon';
