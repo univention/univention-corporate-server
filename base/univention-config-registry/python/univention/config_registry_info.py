@@ -34,7 +34,6 @@
 import os
 import re
 
-import univention.config_registry as ucr
 import univention.info_tools as uit
 try:
 	from typing import Dict, Iterable, List, Optional, Tuple  # noqa F401
@@ -113,6 +112,7 @@ class ConfigRegistryInfo(object):
 		self.variables = {}  # type: Dict[str, Variable]
 		self._patterns = {}  # type: Dict[str, List[Tuple[str, str]]]
 		if not install_mode:
+			import univention.config_registry as ucr  # circular import
 			self._configRegistry = ucr.ConfigRegistry()  # type: Optional[ucr.ConfigRegistry]
 			self._configRegistry.load()
 			self.load_categories()

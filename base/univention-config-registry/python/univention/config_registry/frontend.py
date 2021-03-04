@@ -43,13 +43,13 @@ import six
 if six.PY2:
 	from io import open
 
+import univention.config_registry_info as cri
 from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
 try:
 	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa F401
-	import univention.config_registry_info as cri  # noqa F$01
 except ImportError:  # pragma: no cover
 	pass
 
@@ -623,9 +623,6 @@ def missing_parameter(action):
 
 def _get_config_registry_info():
 	# type: () -> cri.ConfigRegistryInfo
-	# Import located here, because on module level, a circular import would be
-	# created
-	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
 	cri.set_language('en')
 	return cri.ConfigRegistryInfo(install_mode=False)
 
