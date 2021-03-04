@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-146) unstable; urgency=medium
+
+  * Bug #52852: Fix traceback when using App Center once App ini file with install
+    permissions is present in cache
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 04 Mar 2021 11:26:58 +0100
+
 univention-appcenter (8.0.11-145) unstable; urgency=medium
 
   * Bug #52839: make DockerScriptInit configurable via UCR
