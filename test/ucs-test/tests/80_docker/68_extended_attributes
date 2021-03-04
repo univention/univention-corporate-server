@@ -86,14 +86,14 @@ objectclass ( 1.3.6.1.4.1.10176.5000.7.7.7.2.1
 	MAY ( %s-active )
 	SUP top
 	)""" % (app.app_name, app.app_name, app.app_name)
-			app.add_script(schema=schema_content)
-			attributes_content = """[%s]
+				app.add_script(schema=schema_content)
+				attributes_content = """[%s]
 Type=ExtendedAttribute
 Syntax=Boolean
 Description=This is my custom activation
 BelongsTo=%s-user""" % (activation_name, app.app_name)
-			app.add_script(attributes=attributes_content)
-			test_app(appcenter, app, udm, activation_name, attribute_description='This is my custom activation')
+				app.add_script(attributes=attributes_content)
+				test_app(appcenter, app, udm, activation_name, attribute_description='This is my custom activation')
 
 
 def attributes_file_without_attribute():

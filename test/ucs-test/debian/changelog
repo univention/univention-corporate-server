@@ -1,3 +1,9 @@
+ucs-test (10.0.4-22) unstable; urgency=medium
+
+  * Bug #52868: Fix indentation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Mar 2021 22:29:08 +0100
+
 ucs-test (10.0.4-21) unstable; urgency=medium
 
   * Bug #52868: prevented DublicateOptionError in 80_docker/68_extended_attributes
