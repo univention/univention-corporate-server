@@ -1,20 +1,23 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
 from __future__ import print_function
+
 import pexpect
 import sys
 import univention.config_registry
-from optparse import OptionParser
+from argparse import ArgumentParser
+
 
 if __name__ == "__main__":
-	parser = OptionParser()
-	parser.add_option("-u", "--username", dest="username")
-	parser.add_option("-p", "--password", dest="password")
-	parser.add_option("-n", "--newpassword", dest="newpassword")
-	parser.add_option("-a", "--adminname", dest="adminname")
-	parser.add_option("-m", "--adminpassword", dest="adminpassword")
+	parser = ArgumentParser()
+	parser.add_argument("-u", "--username")
+	parser.add_argument("-p", "--password")
+	parser.add_argument("-n", "--newpassword")
+	parser.add_argument("-a", "--adminname")
+	parser.add_argument("-m", "--adminpassword")
 
-	(opts, args) = parser.parse_args()
+	opts = parser.parse_args()
 	if not opts.username or not opts.password or not opts.newpassword:
 		parser.print_help()
 		sys.exit(1)
@@ -33,26 +36,26 @@ if __name__ == "__main__":
 	cmd += ' %s' % (opts.username,)
 
 	kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
-	status = kpasswd.expect([pexpect.TIMEOUT, "%s@%s's Password: " % (authusername, ucr['kerberos/realm']), ])
+	status = kpasswd.expect([pexpect.TIMEOUT, b"%s@%s's Password: " % (authusername.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), ])
 	if status == 0:  # timeout
-		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,))
+		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
 		sys.exit(120)
 
 	assert (status == 1), "password prompt"
 
-	kpasswd.sendline(authpassword)
+	kpasswd.sendline(authpassword.encode('UTF-8'))
 
-	status = kpasswd.expect([pexpect.TIMEOUT, 'New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), "kpasswd: krb5_get_init_creds: Preauthentication failed", ])
+	status = kpasswd.expect([pexpect.TIMEOUT, b'New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), "kpasswd: krb5_get_init_creds: Preauthentication failed", ])
 	if status == 0:  # timeout
-		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,))
+		print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
 		sys.exit(120)
 	elif status == 2:  # timeout
 		print('Preauthentication failed!')
 		sys.exit(120)
-	kpasswd.sendline(opts.newpassword)
-	status = kpasswd.expect([pexpect.TIMEOUT, 'Verify password - New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), ])
-	kpasswd.sendline(opts.newpassword)
-	status = kpasswd.expect(['Success : Password changed', pexpect.TIMEOUT, ])
+	kpasswd.sendline(opts.newpassword.encode('UTF-8'))
+	status = kpasswd.expect([pexpect.TIMEOUT, b'Verify password - New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), ])
+	kpasswd.sendline(opts.newpassword.encode('UTF-8'))
+	status = kpasswd.expect([b'Success : Password changed', pexpect.TIMEOUT, ])
 	if status != 0:
 		sys.exit(1)
 	else:
