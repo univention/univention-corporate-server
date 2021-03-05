@@ -116,7 +116,7 @@ def replog(ucr, var, old_value, value=None):
 		if old_value is None:
 			old_value = "[Previously undefined]"
 
-		log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
+		log = u'%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
 		try:
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
@@ -124,7 +124,7 @@ def replog(ucr, var, old_value, value=None):
 			with open(REPLOG_FILE, "a+", encoding='utf-8') as logfile:
 				logfile.write(log)
 		except EnvironmentError as ex:
-			print(("E: exception occurred while writing to replication log: %s" % (ex,)), file=sys.stderr)
+			print("E: exception occurred while writing to replication log: %s" % (ex,), file=sys.stderr)
 			exception_occured()
 
 

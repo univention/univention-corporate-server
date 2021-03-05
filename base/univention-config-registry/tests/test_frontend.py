@@ -105,6 +105,10 @@ class TestReplog(object):
 
 		assert exc_info.value.code != 0
 
+	def test_replog_bytes(self, replog, ucrr):
+		ucrfe.replog(ucrr, "key", "old", "new")
+		assert u": set key=new old:old\n" in replog.read()
+
 
 @pytest.mark.parametrize("opt,scope", [
 	("ldap-policy", "LDAP"),
