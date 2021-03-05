@@ -43,6 +43,9 @@
 			<listitem><simpara>
 				The selection on locales has been fixed in <package>univention-directory-reports</package>, <package>univention-appcenter</package>, <package>univention-system-setup</package>  and <package>univention-management-console</package> (<u:bug>52194</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The command <command>lastlog</command> can now be called by non-root users, showing the timestamp when users have logged on to the local machine. This command reads the information maintained in the file <filename>/var/log/lastlog</filename>. Before UCS 5.0 this file was only readable by root. Debian and systemd have this file world readable be default. UCS decided to follow this upstream policy, because the information is accessible via getent passwd anyway (<u:bug>51579</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

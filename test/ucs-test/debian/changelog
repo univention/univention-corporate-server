@@ -1,3 +1,11 @@
+ucs-test (10.0.4-23) unstable; urgency=medium
+
+  * Bug #51579: ignore permissions of /var/log/lastlog in
+    01_base/26check_logfiles_general, it's 664 by default in the
+    Debian package base-files and systemd-tmpfiles also enforces that.
+
+ -- Arvid <requate@univention.de>  Fri, 05 Mar 2021 12:30:38 +0100
+
 ucs-test (10.0.4-22) unstable; urgency=medium
 
   * Bug #52868: Fix indentation

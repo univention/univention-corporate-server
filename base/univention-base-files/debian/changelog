@@ -1,3 +1,11 @@
+univention-base-files (9.0.3-3) unstable; urgency=medium
+
+  * Bug #51579: Remove dpkg-statoverride for /var/log/lastlog,
+    it's 664 by default in the Debian package base-files and
+    systemd-tmpfiles also enforces that.
+
+ -- Arvid <requate@univention.de>  Fri, 05 Mar 2021 12:32:17 +0100
+
 univention-base-files (9.0.3-2) unstable; urgency=medium
 
   * Bug #51579: Deny world read access to /var/log/lastlog
