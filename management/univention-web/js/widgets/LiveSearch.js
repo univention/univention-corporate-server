@@ -42,7 +42,10 @@ define([
 		//		Offers a text box for live searching.
 		//		This class is used in the UMC overview and the App Center.
 
-		searchLabel: null,
+		searchLabel: _('Search termn'),
+		_setSearchLabelAttr: function(searchLabel) {
+			this._searchTextBox.set('inlineLabel', searchLabel);
+		},
 
 		// searchableAttributes: String[]
 		//		Array of strings that shall be searched.
@@ -61,7 +64,7 @@ define([
 			this.inherited(arguments);
 
 			this._searchTextBox = new SearchBox({
-				inlineLabel: this.searchLabel || _('Search term')
+				inlineLabel: this.searchLabel
 			});
 			this.addChild(this._searchTextBox);
 		},

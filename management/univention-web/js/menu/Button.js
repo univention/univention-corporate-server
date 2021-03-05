@@ -30,12 +30,13 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/Deferred",
 	"umc/widgets/ToggleButton",
 	"umc/i18n!"
-], function(declare, domClass, topic, Deferred, ToggleButton, _) {
+], function(declare, lang, domClass, topic, Deferred, ToggleButton, _) {
 
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -49,6 +50,9 @@ define([
 		//// overwrites
 		iconClass: 'menu',
 
+		//// self
+		// forward to Menu.js via menu.createMenu()
+		showLoginHeader: true,
 
 		//// lifecycle
 		buildRendering: function() {
@@ -76,9 +80,11 @@ define([
 				}
 			});
 
-			menuDeferred.then(function(menu) {
-				menu.createMenu();
-			});
+			menuDeferred.then(lang.hitch(this, function(menu) {
+				menu.createMenu({
+					showLoginHeader: this.showLoginHeader
+				});
+			}));
 			menuButtonDeferred.resolve(this);
 		}
 	});

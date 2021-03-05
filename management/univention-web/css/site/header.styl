@@ -16,7 +16,7 @@
 
 headerHeight = 48px
 .umc .umcHeader
-	background-color: var(--color-grey0)
+	background-color: var(--bgc-content-header)
 	height: var(--layout-height-header)
 	position: relative
 	padding: 0
@@ -69,7 +69,6 @@ headerHeight = 48px
 
 		.tabLabel
 			outline: none
-
 	.umcModuleTab__closeButton
 		--button-size: 1.3em
 		--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
@@ -77,7 +76,6 @@ headerHeight = 48px
 		margin: 0 0.3rem 0 0.5rem
 		.featherIcon
 			transition: none
-
 	.umcModuleTab__background__svg
 		position: absolute
 		bottom: 0
@@ -91,7 +89,6 @@ headerHeight = 48px
 			left: -@width
 		&--right
 			right: -@width
-
 	.umcModuleTab__background
 		transition: background-color $moduleTabBGCTransitionDur
 		position: absolute
@@ -102,7 +99,6 @@ headerHeight = 48px
 		border-radius: 8px 8px 0 0
 		background-color: var(--tabColor)
 		z-index: -1
-
 	.umcModuleTab .tabLabel
 		margin: 0 0 0 0.5rem
 		font-size: var(--font-size-4)
@@ -114,33 +110,28 @@ headerHeight = 48px
 		.umcModuleTitleBreadCrumb
 			color: inherit
 			transition: none
-
-
 	.umcMainTabController
 		height: 100%
 
-	.umcMoreTabsDropDownButton--invisible
-		visibility: hidden
-
+	// (optiona) left part of header with logo and name
 	.umcHeaderLeft
-		position: absolute
-		left: 0
-		top: 0
+		display: flex
+		align-items: center
+		margin-left: spacing(2)
 
+		img
+			width: 24px
+			margin-right: spacing(1)
+
+	// (optional) right part of header with buttons
 	.umcHeaderRight
 		display: flex
 		align-items: center
-		height: var(--layout-height-header)
 		margin-right: spacing(2)
-		position: absolute
-		right: 0
-		top: 0
+		margin-left: auto
 
 		.ucsButton
 			margin: 0 spacing(1, true)
-
-	.umcLoginButton
-		--button-size: var(--layout-height-header)
 
 
 /* special stylings depending on device class */
