@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-8) unstable; urgency=medium
+
+  * Bug #52453: adjust font size
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 07:42:47 +0100
+
 univention-management-console-module-diagnostic (6.0.0-7) unstable; urgency=medium
 
   * Bug #52453: adjust design of diagnostic module

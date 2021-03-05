@@ -1,3 +1,9 @@
+univention-management-console (12.0.8-7) unstable; urgency=medium
+
+  * Bug #52453: adjust styling of StartupDialog
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 07:44:31 +0100
+
 univention-management-console (12.0.8-6) unstable; urgency=medium
 
   * Bug #52188: added pam/krb5/ticket_after_pwchange

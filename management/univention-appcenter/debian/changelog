@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-11) unstable; urgency=medium
+
+  * Bug #52453: adjust font sizes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 11:03:06 +0100
+
 univention-appcenter (9.0.2-10) unstable; urgency=medium
 
   * Bug #52868: fixed python3 compatibility

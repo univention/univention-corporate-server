@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-10) unstable; urgency=medium
+
+  * Bug #52453: adjust font-size
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 04 Mar 2021 11:55:41 +0100
+
 univention-system-setup (13.0.3-9) unstable; urgency=medium
 
   * Bug #52453: adjust design of 'Certificate settings', 'Language settings'

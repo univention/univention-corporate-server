@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.2-3) unstable; urgency=medium
+
+  * Bug #52453: adjust font size
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 07:45:13 +0100
+
 univention-admin-diary (2.0.2-2) unstable; urgency=medium
 
   * Bug #52453: adjust styling for UCS 5 Design

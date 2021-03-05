@@ -1,3 +1,9 @@
+univention-web (4.0.1-12) unstable; urgency=medium
+
+  * Bug #52453: adjust font size, spacing and unused styles
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 07:46:55 +0100
+
 univention-web (4.0.1-11) unstable; urgency=medium
 
   * Bug #52453: adjust styling for Grid
