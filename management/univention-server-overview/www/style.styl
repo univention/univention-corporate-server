@@ -30,31 +30,9 @@
 $theme-color = rgb(20, 110, 220)
 
 .umc
-	min-height: 100%
-
-	.umcHeader
-		background-color: $theme-color
-		box-sizing: content-box
-		overflow: visible
-
-		.umcHeaderLeft
-			float: left
-			height: 100%
-
-
-		.umcHeaderRight
-			float: right
-			height: 100%
-			margin-right: 0
-
-		.umcLiveSearch .dijitTextBox
-				&:before,
-				&:after,
-				&
-					border-color: #282828
-
 	.umcLiveSearch
-		padding: 10px
+		padding: 0 var(--layout-spacing-unit)
+		margin-bottom: calc(3 * var(--layout-spacing-unit))
 
 	.umcGalleryPane
 		clear: both
@@ -62,42 +40,39 @@ $theme-color = rgb(20, 110, 220)
 		.umcGalleryWrapperItem
 			a
 				text-decoration: none
+				&:hover
+					color: inherit
 
 			@media (max-width: 549px)
-				padding: 10px
+				padding: var(--layout-spacing-unit)
 
 		.umcGalleryItem
-			height: 60px
-
 			&:hover
 				background-color: $theme-color
 
-				.umcGalleryDescription,
-				.umcGalleryVersion
-					color: #ffffff
-
-			.umcGalleryDescription,
-			.umcGalleryVersion
-				min-height: 25px
-				color: #787878
-
-			.umcGalleryDescription,
-			.umcGalleryVersion
-				transition-property: color
-				transition-duration: inherit
-
 	#content
-		opacity: 1
-		transition: opacity 0.75s
-
-		h1
+		h2
 			text-align: left
-			padding: 10px
-			margin-bottom: 0.5em
+			margin: calc(3 * var(--layout-spacing-unit)) var(--layout-spacing-unit) calc(2 * var(--layout-spacing-unit))
 
-	&.standby
-		background: no-repeat center url('/univention/js/dijit/themes/umc/images/standbyAnimation.svg')
-
-		#content
-			opacity: 0
-
+	#standby
+		position: fixed
+		top: var(--layout-height-header)
+		left: 0
+		right: 0
+		bottom: 0
+		display: flex
+		align-items: center
+		justify-content: center
+		opacity: 0
+		transition: opacity 250ms
+		&.standbyShown
+			opacity: 1
+	#standbyBackground
+		position: absolute
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		background-color: var(--bgc-content-body)
+		opacity: 0.8

@@ -20,18 +20,29 @@
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc umcOverviewNotShown standby">
-		<div id="umcHeader" class="umcHeader">
-			<div class="umcHeaderRight" id="umcHeaderRight">
-				<div data-dojo-type="umc/widgets/LoginButton"></div>
+	<body class="umc">
+		<div class="umcHeader">
+			<div class="umcHeaderLeft">
+				<img src="/univention/js/dijit/themes/umc/images/univention_u-white.svg" />
+				<h2>UCS</h2>
+			</div>
+			<div class="umcHeaderRight">
 				<div data-dojo-type="umc/menu/Button"></div>
-				<div class="univentionLogo"></div>
 			</div>
 		</div>
 		<div id="content" class="container">
-			<h1 id="title"></h1>
-			<div id="liveSearch" data-dojo-type="umc/widgets/LiveSearch" class="col-xxs-12 col-xs-6"></div>
+			<h2 id="title"></h2>
+			<div id="liveSearch" data-dojo-type="umc/widgets/LiveSearch" class="col-xxs-12 col-xs-6 umcLiveSearchDark"></div>
 			<div id="gallery" data-dojo-type="server-overview/GalleryPane"></div>
+			<div id="standby" class="standbyShown">
+				<div id="standbyBackground"></div>
+				<!-- copy pasted from umc/widgets/StandbyCircle.js -->
+				<div class="umcStandbySvgWrapper">
+					<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+						<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>
+					</svg>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

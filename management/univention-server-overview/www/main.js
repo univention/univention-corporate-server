@@ -47,10 +47,21 @@ define([
 
 	return {
 		standby: function(standby) {
-			domClass.toggle(window.document.body, 'standby', standby);
+			if (standby) {
+				tools.toggleVisibility(this._standbyNode, true);
+				setTimeout(lang.hitch(this, function() {
+					domClass.add(this._standbyNode, 'standbyShown');
+				}), 0);
+			} else {
+				domClass.remove(this._standbyNode, 'standbyShown');
+				setTimeout(lang.hitch(this, function() {
+					tools.toggleVisibility(this._standbyNode, false);
+				}), 300); // FIXME hardcoded value for transition duration in css
+			}
 		},
 
 		start: function() {
+			this._standbyNode = dom.byId('standby');
 			this.initLabels();
 			login.onInitialLogin(lang.hitch(this, 'init'));
 		},
@@ -68,7 +79,8 @@ define([
 			dom.byId('title').innerHTML = title;
 
 			this.liveSearch = registry.byId('liveSearch');
-			this.liveSearch._searchTextBox.set('inlineLabel', _('Search servers'));
+			this.liveSearch.set('searchLabel', _('Search servers'));
+			// this.liveSearch._searchTextBox.set('inlineLabel', _('Search servers'));
 		},
 
 		initLiveSearch: function() {
