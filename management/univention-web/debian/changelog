@@ -1,3 +1,10 @@
+univention-web (4.0.1-13) unstable; urgency=medium
+
+  * Bug #52453: adjust header styling, LiveSearch dark and
+    allow login header in menu be hideable vie menu/Button
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 05 Mar 2021 10:58:03 +0100
+
 univention-web (4.0.1-12) unstable; urgency=medium
 
   * Bug #52453: adjust font size, spacing and unused styles
