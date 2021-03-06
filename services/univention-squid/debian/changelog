@@ -1,3 +1,9 @@
+univention-squid (12.0.2-2) unstable; urgency=medium
+
+  * Bug #52814: make UCR template compatible with UCS 5.0/Python 3
+
+ -- Florian Best <best@univention.de>  Sat, 06 Mar 2021 11:41:27 +0100
+
 univention-squid (12.0.2-1) unstable; urgency=medium
 
   * Bug #51133: make UCR templates compatible to python3
