@@ -10,3 +10,5 @@ desc: |
    prevent a possible error when updating the package simultaneously
    on multiple systems
 bug: [52867]
+erratum: 907
+announced: 2021-03-08
