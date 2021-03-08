@@ -223,6 +223,15 @@
 			<title>DNS server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					UCS systems are able to automatically use nameservers that are
+					transmitted to the UCS system via DHCP. Starting with UCS 5.0 the mechanism has been simplified
+					considerably. UCS systems that obtain their IP address via DHCP now also enter the nameservers
+					supplied via DHCP in the &ucsUCRV;s <envar>nameserver1..3</envar> and <envar>dns/forwarder1..3</envar>.
+					The nameserver type (external forwarder vs. domain nameserver) is detected based on heuristics.
+					This change prevents overwriting of the DNS configuration if the UCR template for the file
+					<filename>/etc/resolv.conf</filename> is reevaluated (<u:bug>44462</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 						&ucsUCRV; <envar>dns/master/port</envar> has been removed (<u:bug>32188</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
