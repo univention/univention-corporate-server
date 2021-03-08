@@ -172,6 +172,7 @@ def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
 		dns = ip_address(u'%s' % (ns,))
 		log.info('Added server %s via CLI argument', dns)
 		nameservers[dns] = None
+		need_fixing = True
 
 	return need_fixing
 
