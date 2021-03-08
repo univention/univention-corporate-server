@@ -77,7 +77,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _open called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _open called'.format(self.type))
 
 	def hook_ldap_pre_create(self, obj):
 		"""
@@ -86,7 +86,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_pre_create called'.format(self.type))
 
 	def hook_ldap_addlist(self, obj, al=[]):
 		"""
@@ -98,7 +98,7 @@ class simpleHook(object):
 		:param al: A list of two-tuples (ldap-attribute-name, list-of-values) which will be used to create the LDAP object.
 		:returns: The (modified) add-list.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_addlist called'.format(self.type))
 		return al
 
 	def hook_ldap_post_create(self, obj):
@@ -107,7 +107,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_post_create called'.format(self.type))
 
 	def hook_ldap_pre_modify(self, obj):
 		"""
@@ -116,7 +116,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_pre_modify called'.format(self.type))
 
 	def hook_ldap_modlist(self, obj, ml=[]):
 		"""
@@ -126,7 +126,7 @@ class simpleHook(object):
 		:param ml: A list of tuples, which are either two-tuples (ldap-attribute-name, list-of-new-values) or three-tuples (ldap-attribute-name, list-of-old-values, list-of-new-values). It will be used to create or modify the |LDAP| object.
 		:returns: The (modified) modification-list.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_modlist called'.format(self.type))
 		return ml
 
 	def hook_ldap_post_modify(self, obj):
@@ -135,7 +135,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_post_modify called'.format(self.type))
 
 	def hook_ldap_pre_remove(self, obj):
 		"""
@@ -143,7 +143,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_pre_remove called'.format(self.type))
 
 	def hook_ldap_post_remove(self, obj):
 		"""
@@ -151,7 +151,7 @@ class simpleHook(object):
 
 		:param obj: The |UDM| object instance.
 		"""
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
+		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_post_remove called'.format(self.type))
 
 
 class AttributeHook(simpleHook):
