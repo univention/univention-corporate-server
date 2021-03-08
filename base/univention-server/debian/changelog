@@ -1,3 +1,10 @@
+univention-server (15.0.3-2) unstable; urgency=low
+
+  * Bug #44462: always set nameservers passed via CLI
+  * Bug #44462: do not update UCR/reload BIND if nothing changed
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 08 Mar 2021 11:13:18 +0100
+
 univention-server (15.0.3-1) unstable; urgency=low
 
   * Bug #44462: add new options --no-ucr and --dnsserver to univention-fix-ucr-dns
