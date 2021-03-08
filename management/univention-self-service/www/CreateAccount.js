@@ -85,7 +85,6 @@ define([
 							widgets: widgetDescriptions,
 							layout: data.layout,
 							buttons: [{
-								'class': 'createaccount__submitbutton umcFlatButton',
 								label: _('Create account'),
 								name: 'submit'
 							}],

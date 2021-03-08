@@ -1,23 +1,17 @@
-.tab {
-	position: absolute;
-	opacity: 1;
-	visibility: visible;
-	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+#content {
+	display: flex;
+	justify-content: center;
+	margin-top: calc(4 * var(--layout-spacing-unit));
 }
 
-.hide-tab {
-	visibility:hidden;
-	opacity: 0;
-	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
-}
-
-div.PasswordServiceContent {
+.PasswordServiceContent {
 	max-width: 500px;
+	flex-grow: 1;
 }
 
 .stepLabel {
 	display: inline-block;
-	margin-bottom: 0.5em;
+	margin-bottom: var(--layout-spacing-unit)
 }
 
 ol.PasswordOl {
@@ -30,85 +24,24 @@ ol.PasswordOl {
 		counter-increment: step-counter;
 	}
 
-	li.step::before {
+	.stepLabel::before {
 		content: counter(step-counter);
 		margin-right: 5px;
 		font-size: 80%;
-		background-color: #FAC800;
-		color: white;
-		font-weight: bold;
+		background-color: var(--bgc-content-body);
+		font-weight: var(--font-weight-bold);
 		padding: 3px 8px;
 		border-radius: 3px;
 	}
-
-	.buttonRow {
-		text-align: right;
-
-		.dijitButton {
-			margin: 24px 0 0 !important; 
-
-			&:not(:first-child) {
-				margin-left: 8px !important;
-			}
-		}
+	
+	.dijitTextBox,
+	.umcContainerWidget {
+		margin-bottom: calc(3 * var(--layout-spacing-unit));
 	}
-
-	.dijitTextBox {
-		margin-bottom: 1.5em;
-	}
-
-	li:last-of-type .dijitTextBox:last-child {
-		margin-bottom: 0;
-	}
-
-	&#PasswordForgottenSteps {
-		li:last-of-type .dijitTextBox {
-			margin-bottom: 0;
-		}
-	}
-}
-
-ol#PasswordForgottenSteps li.step::before {
-	background-color: #FAC800;
-}
-
-ol#PasswordProtectSteps li.step::before {
-	background-color: #FAC800;
-}
-
-div.stepContent {
-	margin-top: 1.5em;
-}
-
-div.step {
-	margin-bottom: 30px;
-	overflow: hidden;
-	opacity: 1;
-	visibility: visible;
-	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
-
-	a {
-		cursor: pointer;
-	}
-}
-
-div.step.hide-step {
-	opacity: 0;
-	display: none;
-	visibility: hidden;
-	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
-}
-
-div.step .dijitButton {
-	margin-top: 9px;
-}
-
-.umcHeader {
-	background-color: rgb(250, 200, 0);
 }
 
 .umcHeaderPage {
-	font-size: 12px;
+	font-size: var(--font-size-5);
 	text-align: center;
 	
 	a,
@@ -117,16 +50,16 @@ div.step .dijitButton {
 	}
 
 	a {
-		color: #FAC800;
-	}
+		color: var(--font-color-contrast-low);
 
-	span {
-		color: #787878;
+		&:hover {
+			color: var(--color-primary);
+		}
 	}
 
 	* {
 		padding: 0 7px;
-		border-left: solid 1px #787878;
+		border-left: solid 1px var(--bgc-content-body);
 
 		&:first-child {
 			border: none;
@@ -134,12 +67,8 @@ div.step .dijitButton {
 	}
 }
 
-.createaccount__submitbutton {
-	float: right;
-}
-
 .contentDesc {
-	margin-bottom: 2em;
+	margin-bottom: calc(3 * var(--layout-spacing-unit));
 }
 
 .error {
@@ -156,17 +85,8 @@ div.step .dijitButton {
 	background-color: rgb(20, 240, 10);
 }
 
-div.PasswordServiceContent
-	padding: 24px 24px 8px !important
-	padding: 0 !important
-
+.PasswordServiceContent
 	.PasswordServiceContentChild
-		padding: 24px 24px 8px
 		overflow: visible
-
 		h2
-			line-height: 28px
-			margin: 20px 0
-		
-		.PasswordOl .buttonRow
-			margin: 0 -16px
+			margin: calc(2 * var(--layout-spacing-unit)) 0 var(--layout-spacing-unit)

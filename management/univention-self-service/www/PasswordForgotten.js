@@ -35,17 +35,17 @@ define([
 	"dojo/on",
 	"dojo/keys",
 	"dojo/io-query",
-	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"./TextBox",
 	"umc/widgets/RadioButton",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(hash, lang, array, on, keys, ioQuery, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, i18nTools, _) {
+], function(hash, lang, array, on, keys, ioQuery, put, tools, dialog, Button, ContainerWidget, LabelPane, TextBox, RadioButton, i18nTools, _) {
 
 	return {
 		hash: 'passwordreset',
@@ -134,7 +134,7 @@ define([
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getResetMethods')
 			});
-			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
+			var buttonRow = put(step, 'div.umcPageFooter div.umcPageFooterRight');
 			put(buttonRow, this._usernameButton.domNode);
 			put(this.steps, step);
 		},
@@ -171,16 +171,16 @@ define([
 		 * @param {array} options - List of password renew options.
 		 * */
 		_createRenewOptions: function(options) {
-			var step = put('li.step.hide-step');
+			var step = put('li.step');
 			var label = put('div.stepLabel', _('Please choose an option to renew your password.'));
 			put(step, label);
 			var renewOptions = this._renderRenewOptions(options);
-			put(label, renewOptions);
+			put(step, renewOptions);
 			this._requestTokenButton = new Button({
 				label: _('Next'),
 				onClick: lang.hitch(this, '_requestToken')
 			});
-			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
+			var buttonRow = put(step, 'div.umcPageFooter div.umcPageFooterRight');
 			put(buttonRow, this._requestTokenButton.domNode);
 			put(this.steps, step);
 			var firstRenewOptions = renewOptions.firstChild.children[2].firstChild;

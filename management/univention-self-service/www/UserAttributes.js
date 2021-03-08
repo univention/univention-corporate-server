@@ -171,7 +171,7 @@ define([
 				label: _('Next'),
 				callback: lang.hitch(this, '_getUserAttributes')
 			});
-			put(this.steps, 'div.buttonRow.umcPageFooter', this._getUserAttributesButton.domNode);
+			put(this.steps, 'div.umcPageFooter div.umcPageFooterRight', this._getUserAttributesButton.domNode);
 		},
 
 		/**
@@ -249,12 +249,14 @@ define([
 					});
 
 					put(this._userAttributesStep, this._form.domNode);
-					var buttonRow = put(this._userAttributesStep, 'div.buttonRow.umcPageFooter');
-					put(buttonRow, this._cancelButton.domNode);
+					var buttonRow = put(this._userAttributesStep, 'div.umcPageFooter');
+					var buttonsLeft = put(buttonRow, 'div.umcPageFooterLeft');
+					var buttonsRight= put(buttonRow, 'div.umcPageFooterRight');
+					put(buttonsLeft, this._cancelButton.domNode);
 					if (this._deleteAccountButton) {
-						put(buttonRow, this._deleteAccountButton.domNode);
+						put(buttonsRight, this._deleteAccountButton.domNode);
 					}
-					put(buttonRow, this._saveButton.domNode);
+					put(buttonsRight, this._saveButton.domNode);
 
 					on(this._form, 'valuesInitialized', lang.hitch(this, function() {
 						this._form.setFormValues(data.values);

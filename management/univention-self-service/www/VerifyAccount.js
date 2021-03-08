@@ -34,16 +34,16 @@ define([
 	"dojo/hash",
 	"dojo/io-query",
 	"dojo/dom-construct",
-	"dijit/form/Button",
 	"put-selector/put",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Button",
 	"dompurify/purify",
 	"./TextBox",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, keys, dojoHash, ioQuery, domConstruct, Button, put, entities, tools, dialog, dompurify, TextBox, i18nTools, _) {
+], function(lang, keys, dojoHash, ioQuery, domConstruct, put, entities, tools, dialog, Button, dompurify, TextBox, i18nTools, _) {
 
 	return {
 		hash: 'verifyaccount',
@@ -150,20 +150,21 @@ define([
 		},
 		
 		_createButtons: function() {
-			var buttonRow = put(this._steps, 'div.buttonRow.umcPageFooter');
+			var buttonRow = put(this._steps, 'div.umcPageFooter');
+			var buttonsRight = put(buttonRow, 'div.umcPageFooterRight');
 
 			this._requestNewTokenButton = new Button({
 				label: _('Request new token'),
 				onClick: lang.hitch(this, '_requestNewToken')
 			});
-			put(buttonRow, this._requestNewTokenButton.domNode);
+			put(buttonsRight, this._requestNewTokenButton.domNode);
 
 			this._verifyAccountButton = new Button({
 				'class': 'dijitDefaultButton',
 				label: _('Verify account'),
 				onClick: lang.hitch(this, '_verifyAccount', false)
 			});
-			put(buttonRow, this._verifyAccountButton.domNode);
+			put(buttonsRight, this._verifyAccountButton.domNode);
 		},
 
 		_showVerificationMessage: function(res) {

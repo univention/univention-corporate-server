@@ -32,17 +32,17 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/keys",
-	"dijit/form/Button",
 	"put-selector/put",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Button",
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, on, keys, Button, put, entities, tools, dialog, TextBox, PasswordBox, lib, i18nTools, _) {
+], function(lang, on, keys, put, entities, tools, dialog, Button, TextBox, PasswordBox, lib, i18nTools, _) {
 
 	return {
 		hash: 'newpassword',
@@ -243,12 +243,13 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmitNewPassword: function() {
-			var step = put('div.buttonRow.umcPageFooter');
+			var step = put('div.umcPageFooter');
+			var buttonsRight = put(step, 'div.umcPageFooterRight');
 			this._setPasswordButton = new Button({
 				label: _('Change password'),
 				onClick: lang.hitch(this, '_setPassword')
 			});
-			put(step, this._setPasswordButton.domNode);
+			put(buttonsRight, this._setPasswordButton.domNode);
 			put(this.steps, step);
 		},
 

@@ -36,18 +36,18 @@ define([
 	"dojo/json",
 	"dojo/Deferred",
 	"dojo/request/xhr",
-	"dijit/form/Button",
 	"dojox/html/entities",
 	"put-selector/put",
 	"login",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Button",
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, on, keys, dom, json, Deferred, xhr, Button, entities, put, login, tools, dialog, TextBox, PasswordBox, lib, i18nTools, _) {
+], function(lang, on, keys, dom, json, Deferred, xhr, entities, put, login, tools, dialog, Button, TextBox, PasswordBox, lib, i18nTools, _) {
 
 	return {
 		hash: 'passwordchange',
@@ -192,12 +192,13 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmit: function() {
-			var step = put('div.buttonRow.umcPageFooter');
+			var step = put('div.umcPageFooter');
+			var buttonsRight = put(step, 'div.umcPageFooterRight');
 			this._submitButton = new Button({
 				label: _('Change password'),
 				onClick: lang.hitch(this, '_setPassword')
 			});
-			put(step, '>', this._submitButton.domNode);
+			put(buttonsRight, this._submitButton.domNode);
 
 			// let the user submit the form by pressing ENTER
 			on(document, "keyup", lang.hitch(this, function(evt) {

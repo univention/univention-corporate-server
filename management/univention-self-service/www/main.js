@@ -96,7 +96,7 @@ define([
 
 		_initContainer : function() {
 			this.content_container = new _Container({
-				"class" : "PasswordServiceContent umcCard",
+				"class" : "PasswordServiceContent umcCard2",
 				id: "contentContainer",
 				doLayout: false
 			});

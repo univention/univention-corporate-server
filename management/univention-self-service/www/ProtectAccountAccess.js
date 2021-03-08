@@ -33,17 +33,17 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/keys",
-	"dijit/form/Button",
 	"put-selector/put",
 	"login",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Button",
 	"./lib",
 	"./PasswordBox",
 	"./TextBox",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, i18nTools, _) {
+], function(lang, array, on, keys, put, login, tools, dialog, Button, lib, PasswordBox, TextBox, i18nTools, _) {
 
 	return {
 		hash: 'setcontactinformation',
@@ -164,12 +164,13 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmit: function() {
-			var step = put('div.buttonRow.umcPageFooter');
+			var step = put('div.umcPageFooter');
+			var buttonRow = put(step, 'div.umcPageFooterRight');
 			this._showContactInformationButton = new Button({
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getContactInformation')
 			});
-			put(step, this._showContactInformationButton.domNode);
+			put(buttonRow, this._showContactInformationButton.domNode);
 			put(this.steps, step);
 		},
 
@@ -273,9 +274,11 @@ define([
 				label: _('Cancel'),
 				onClick: lang.hitch(this, '_deleteRenewOptions')
 			});
-			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
-			put(buttonRow, this._cancelButton.domNode);
-			put(buttonRow, this._saveButton.domNode);
+			var buttonRow = put(step, 'div.umcPageFooter');
+			var buttonRowLeft = put(buttonRow, 'div.umcPageFooterLeft');
+			put(buttonRowLeft, this._cancelButton.domNode);
+			var buttonRowRight = put(buttonRow, 'div.umcPageFooterRight');
+			put(buttonRowRight, this._saveButton.domNode);
 			put(this.steps, step);
 			this._renewInputs[0].focusInput();
 		},
