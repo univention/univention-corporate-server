@@ -745,9 +745,9 @@
 					<package>mail-transport-agent</package> is no longer sufficient (<u:bug>52807</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					 No longer needed UCR varible "mail/dovecot/auth/allowplaintext" was dropped from the package
+					 No longer needed &ucsUCRV; <envar>mail/dovecot/auth/allowplaintext</envar> was dropped from the package
 					 <package>univention-mail-dovecot</package> because of dovecot no longer allowing to login
-					 with plaintext passwords while using TLS/SSL. (<u:bug>52724</u:bug>)
+					 with plaintext passwords while using TLS/SSL (<u:bug>52724</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
