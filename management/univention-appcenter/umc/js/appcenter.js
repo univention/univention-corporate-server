@@ -260,10 +260,6 @@ define([
 			fromSuggestionCategory = fromSuggestionCategory || false;
 			this._cleanUpLastShowApp();
 			var scroll = this._scroll();
-			var appName = app.name;
-			if (appName) {
-				this.addBreadCrumb(appName);
-			}
 
 			if (fromSuggestionCategory) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'showFromSuggestion');
