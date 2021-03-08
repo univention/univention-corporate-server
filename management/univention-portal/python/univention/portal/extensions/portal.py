@@ -126,22 +126,16 @@ class Portal(with_metaclass(Plugin)):
 			"category_dns": visible_category_dns,
 		}
 
-	def get_user_links(self, user, admin_mode):
-		if user is None:
-			return []
+	def get_user_links(self, content):
 		links = self.portal_cache.get_user_links()
-		links_dict = dict((link["dn"], link) for link in links)
-		entry_dns = [link["dn"] for link in links]
 		return [
-			dn for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+			dn for dn in links if dn in content["entry_dns"] or dn in content["folder_dns"]
 		]
 
-	def get_menu_links(self, user, admin_mode):
+	def get_menu_links(self, content):
 		links = self.portal_cache.get_menu_links()
-		links_dict = dict((link["dn"], link) for link in links)
-		entry_dns = [link["dn"] for link in links]
 		return [
-			dn for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)
+			dn for dn in links if dn in content["entry_dns"] or dn in content["folder_dns"]
 		]
 
 	def get_entries(self, content):
