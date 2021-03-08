@@ -260,7 +260,7 @@ define([
 			fromSuggestionCategory = fromSuggestionCategory || false;
 			this._cleanUpLastShowApp();
 			var scroll = this._scroll();
-			var appName = entities.encode(app.name);
+			var appName = app.name;
 			if (appName) {
 				this.addBreadCrumb(appName);
 			}
@@ -303,7 +303,7 @@ define([
 			appDetailsPage.own(
 				appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 					if (newVal) {
-						this.addBreadCrumb(entities.encode(newVal));
+						this.addBreadCrumb(newVal);
 					}
 				})),
 				appDetailsPage.watch('app', lang.hitch(this, function(){
