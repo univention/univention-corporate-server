@@ -15,7 +15,7 @@
 
 import pytest
 import email
-from urlparse import urlparse, parse_qs
+from six.moves.urllib_parse import urlparse, parse_qs
 from selenium.common.exceptions import NoSuchElementException
 
 from univention.config_registry import handler_set as hs
