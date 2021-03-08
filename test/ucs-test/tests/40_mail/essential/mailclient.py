@@ -106,6 +106,7 @@ class BaseMailClient(object):
 		:returns: string, acl strign or permission denied
 		"""
 		code, acls = self.getacl(mailbox)
+		# Bug #51629: TODO: if global ACLs for other users are used, we may have to replace this workaround
 		if "anyone" in acls[0]:
 			acls[0] = acls[0].replace("#anyone", 'anyone')
 
