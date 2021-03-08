@@ -726,6 +726,11 @@
 					are now prevented by reordering of the internal installation steps (<u:bug>52842</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					Starting with UCS 5.0 the package <package>univention-mail-postfix</package> is now
+					mandatory installed on every UCS system. The sole installation of the virtual package
+					<package>mail-transport-agent</package> is no longer sufficient (<u:bug>52807</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
