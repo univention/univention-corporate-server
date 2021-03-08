@@ -134,7 +134,7 @@ define([
 				} )
 			}, */{
 				name: 'submit',
-				iconClass: 'tool',
+				iconClass: 'save',
 				label: _( 'Apply changes' ),
 				callback: lang.hitch(this, function() {
 					this.save();
