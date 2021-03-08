@@ -223,6 +223,11 @@
 			<title>DNS server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The package <package>univention-bind</package> now makes sure, that the nameserver BIND is able
+					to start early in the system-setup phase of UCS installation, so the DNS service is available
+					during install/configuration of UCS components (<u:bug>44462</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					UCS systems are able to automatically use nameservers that are
 					transmitted to the UCS system via DHCP. Starting with UCS 5.0 the mechanism has been simplified
 					considerably. UCS systems that obtain their IP address via DHCP now also enter the nameservers
