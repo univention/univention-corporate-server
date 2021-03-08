@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-3) unstable; urgency=medium
+
+  * Bug #52453: adjust styling of self service
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 08 Mar 2021 18:50:15 +0100
+
 univention-self-service (5.0.1-2) unstable; urgency=medium
 
   * bug #52453: adjust header styling
