@@ -77,7 +77,7 @@ define([
 		}
 	});
 
-	var AppDetailsPage = declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
+	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standby: null,
@@ -694,19 +694,6 @@ define([
 			this.configDialog.showUp();
 		},
 
-		uninstallApps: function(apps, hosts, appSettings) {
-			// before installing, user must read uninstall readme
-			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('remove', apps, hosts, true, null, appSettings).then(
-					lang.hitch(this, function() {
-						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
-					}), lang.hitch(this, function() {
-						this.markupErrors('uninstall');
-					})
-				);
-			}));
-		},
-
 		installAppDialog: function() {
 			if (this.fromSuggestionCategory) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `installFromSuggestion`);
@@ -715,39 +702,6 @@ define([
 			}
 
 			topic.publish('/appcenter/run/install', [this.app.id], null, this.fromSuggestionCategory, this);
-		},
-
-		startAction: function(action, apps, fromGallery) {
-			this.installDialog.startAction(action, apps, this, fromGallery)
-				.then(lang.hitch(this, function(values) {
-					this.installApps(values.apps, values.hosts, values.appSettings);
-				}), lang.hitch(this, function() {
-					this.markupErrors('install');
-				}));
-		},
-
-		installApps: function(apps, hosts, appSettings) {
-			this.callInstaller('install', apps, hosts, true, null, appSettings)
-				.then(lang.hitch(this, function() {
-					// put dedicated module of this app into favorites
-					UMCApplication.addFavoriteModule('apps', this.app.id);
-					this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
-				}), lang.hitch(this, function() {
-					this.markupErrors('install');
-				}));
-		},
-
-		upgradeApps: function(apps, hosts, appSettings) {
-			// before installing, user must read update readme
-			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('upgrade', apps, hosts, true, null, appSettings).then(
-					lang.hitch(this, function() {
-						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
-					}), lang.hitch(this, function() {
-						this.markupErrors('update');
-					})
-				);
-			}));
 		},
 
 		showReadme: function(readme, title, acceptButtonLabel, cancelButtonLabel) {
@@ -798,217 +752,11 @@ define([
 			return this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Close'), null);
 		},
 
-		callInstaller: function(func, apps, hosts, force, deferred, values) {
-			deferred = deferred || new Deferred();
-			var nonInteractive = new Deferred();
-			deferred.then(lang.hitch(nonInteractive, 'resolve'));
-			var actionLabel = '';
-			var actionWarningLabel = '';
-			var progressMessage = '';
-			var title = '';
-			var text = '';
-			var appNameText = '';
-			if (apps.length === 1) {
-				appNameText = _('%s Apps', apps.length); // FIXME
-				//appNameText = apps[0].name;
-			} else {
-				appNameText = _('%s Apps', apps.length);
-			}
-			switch(func) {
-			case 'install':
-				actionLabel = _('Install');
-				actionWarningLabel = _('Install anyway');
-				title = _('Installation of %s', appNameText);
-				text = _('Please confirm to install %s.', appNameText);
-				progressMessage = _('Installing %s', appNameText);
-				break;
-			case 'remove':
-				actionLabel = _('Uninstall');
-				actionWarningLabel = _('Uninstall anyway');
-				title = _('Removal of %s', appNameText);
-				text = _('Please confirm to uninstall %s.', appNameText);
-				progressMessage = _('Uninstalling %s', appNameText);
-				break;
-			case 'upgrade':
-				actionLabel = _('Upgrade');
-				actionWarningLabel = _('Upgrade anyway');
-				title = _('Upgrade of %s', appNameText);
-				text = _('Please confirm to upgrade %s.', appNameText);
-				progressMessage = _('Upgrading %s', appNameText);
-				break;
-			default:
-				console.warn(func, 'is not a known function');
-				break;
-			}
-
-			if (!force) {
-				if (this.fromSuggestionCategory) {
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `${func}FromSuggestion`);
-				} else {
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
-				}
-			}
-
-			var command = 'appcenter/run';
-			var commandArguments = {
-				'action': func,
-				'auto_installed': [],
-				'apps': apps,
-				'hosts': hosts,
-				'settings': values,
-				'dry_run': !force
-			};
-
-			this._progressBar.reset(_('%s: Performing software tests on involved systems', appNameText));
-			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-			var invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
-					undefined,
-					undefined,
-					lang.hitch(this, function(result) {
-						var errors = array.map(result.intermediate, function(res) {
-							if (res.level == 'ERROR' || res.level == 'CRITICAL') {
-								return res.message;
-							}
-						});
-						this._progressBar._addErrors(errors);
-					})
-			);
-			invokation = invokation.then(lang.hitch(this, function(data) {
-				if (!('result' in data)) {
-					data = {'result': data};
-				}
-				var result = data.result;
-
-				if ('success' in result) {
-					if (result.success) {
-						deferred.resolve();
-					} else {
-						deferred.reject();
-					}
-				} else if (!result.can_continue) {
-					var mayContinue = !result.serious_problems;
-					if (!mayContinue) {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
-						title = _('Error performing the action');
-						text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
-					}
-					this.detailsDialog.reset(func, actionLabel, actionWarningLabel, result, host, this, mayContinue, title, text);
-					nonInteractive.reject();
-					this.detailsDialog.showUp().then(
-						lang.hitch(this, function(values) {
-							this.callInstaller(func, apps, hosts, true, deferred, values);
-						}),
-						function() {
-							deferred.reject();
-						}
-					);
-				} else {
-					this.switchToProgressBar(progressMessage).then(
-						function() {
-							deferred.resolve();
-						}, function() {
-							deferred.reject();
-						}
-					);
-				}
-			}));
-			this.standbyDuring(all([invokation, deferred, nonInteractive]), this._progressBar);
-			return deferred;
-		},
-
-		switchToProgressBar: function(msg, keepAlive) {
-			var deferred = new Deferred();
-			// One request needs to be active otherwise
-			// module might be killed if user logs out
-			// during installation: dpkg will be in a
-			// broken state, Bug #30611.
-			// don't handle any errors. a timeout is not
-			// important. this command is just for the module
-			// to stay alive
-			if (keepAlive !== false) {
-				tools.umcpCommand('appcenter/keep_alive', {}, false);
-			}
-			msg = msg || _('Another package operation is in progress.');
-			var callback = lang.hitch(this, function() {
-				if (this._progressBar.getErrors().errors.length) {
-					deferred.reject();
-				} else {
-					deferred.resolve();
-				}
-			});
-			this._progressBar.reset(msg);
-			this._progressBar.auto('appcenter/progress',
-				{},
-				callback,
-				undefined,
-				undefined,
-				true
-			);
-			return deferred;
-		},
-
-		markupErrors: function(action) {
-			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (Primary Directory Node|Backup Directory Node) (.+)/);
-			var logHintGiven = false;
-			var errors = array.map(this._progressBar._errors, lang.hitch(this, function(error) {
-				var match = installMasterPackagesOnHostFailedRegex.exec(error);
-				if (match) {
-					var component = match[1];
-					var role = match[2];
-					var host = match[3];
-					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + entities.encode(host) + '</strong>') + '</p>';
-					if (role === 'DC Backup') {
-						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that Backup Node.', '<pre>univention-app install ' + entities.encode(this.app.id) + ' --only-master-packages</pre>') + '</p>';
-					}
-					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
-				} else {
-					error = entities.encode(error);
-					if (! logHintGiven) {
-						if (action == 'update' && this.app.isDocker) {
-							var sdbLink = '<a target="_blank" href="https://help.univention.com/t/12430">help.univention.com</a>';
-							var error_msg = '<p><b>' + _('The App update has failed!') + '</b></p>';
-							error_msg += '<p>' + _('We are sorry for the inconvenience.') + ' ';
-							error_msg += _('The error message was:') + '<pre>' + error + '</pre>';
-							error_msg +=  _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
-							error_msg += '<p>' + _('Please also have a look at %s for more App upgrade troubleshooting information.', sdbLink) + '</p>';
-							error = error_msg;
-						}
-						else {
-							error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
-						}
-						logHintGiven = true;
-					}
-				}
-				return error;
-			}));
-			this._progressBar._errors = errors;
-			this._progressBar.allowHTMLErrors = true;
-			this._progressBar.stop(lang.hitch(this, 'restartOrReload'), undefined, true);
-		},
-
 		updateApplications: function() {
 			// Is overwritten with AppCenterPage.updateApplications
 			var deferred = new Deferred();
 			deferred.resolve();
 			return deferred;
-		},
-
-		restartOrReload: function() {
-			tools.defer(lang.hitch(this, function() {
-				// update the list of apps
-				var deferred = tools.renewSession().then(lang.hitch(this, function() {
-					var reloadPage = this.updateApplications().then(lang.hitch(this, 'reloadPage'));
-					var reloadModules = UMCApplication.reloadModules();
-					return all([reloadPage, reloadModules]).then(function() {
-						tools.checkReloadRequired();
-					});
-				}));
-
-				// show standby animation
-				this._progressBar.reset(_('Updating session and module data...'));
-				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-				this.standbyDuring(deferred, this._progressBar);
-			}), 100);
 		},
 
 		_detailFieldCustomUsage: function() {
@@ -1162,52 +910,5 @@ define([
 		onBack: function() {
 		}
 	});
-
-	AppDetailsPage.performDryRun = function(host, app, progressBar) {
-		// TODO copy pasted from callInstaller
-		//
-		var command = 'appcenter/invoke_dry_run';
-		if (app.installsAsDocker()) {
-			command = 'appcenter/docker/invoke';
-			var isRemoteAction = host && tools.status('hostname') != host;
-			if (isRemoteAction) {
-				command = 'appcenter/docker/remote/invoke';
-			}
-		}
-		var commandArguments = {
-			'function': 'install',
-			'application': app.id,
-			'app': app.id,
-			'host': host,
-			'force': false,
-			'values': {}
-		};
-
-		progressBar.reset(_('%s: Performing software tests on involved systems', app.name));
-		progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-		var invokation;
-		if (app.installsAsDocker()) {
-			invokation = tools.umcpProgressCommand(progressBar, command, commandArguments).then(
-					undefined,
-					undefined,
-					function(result) {
-						var errors = array.map(result.intermediate, function(res) {
-							if (res.level == 'ERROR' || res.level == 'CRITICAL') {
-								return res.message;
-							}
-						});
-						progressBar._addErrors(errors);
-					}
-			);
-		} else {
-			invokation = tools.umcpCommand(command, commandArguments);
-		}
-
-		return invokation.then(function(data) {
-			return ('result' in data) ? data.result : data;
-		});
-	};
-
-	return AppDetailsPage;
 });
 

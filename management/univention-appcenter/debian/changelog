@@ -1,7 +1,13 @@
+univention-appcenter (9.0.2-13) unstable; urgency=medium
+
+  * Bug #52863: Remove unnecessary code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Mar 2021 14:47:30 +0100
+
 univention-appcenter (9.0.2-12) unstable; urgency=medium
 
   * Bug #52453: remove double encode + adjust timing for when module title is
-  	updated
+    updated
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 08 Mar 2021 13:11:38 +0100
 
