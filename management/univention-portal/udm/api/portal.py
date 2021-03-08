@@ -50,8 +50,8 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
 		'autoLayoutCategories': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'background': Base64BinaryPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
-		'userLinks': dn_list_property_encoder_for("portals/entry"),
-		'menuLinks': dn_list_property_encoder_for("portals/entry"),
+		'userLinks': dn_list_property_encoder_for("auto"),
+		'menuLinks': dn_list_property_encoder_for("auto"),
 		'categories': dn_list_property_encoder_for("portals/category"),
 	}
 

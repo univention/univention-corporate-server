@@ -85,8 +85,8 @@ class JsonHandler(PortalHandler):
 		answer = {}
 
 		visible_content = portal.get_visible_content(user, admin_mode)
-		answer["user_links"] = portal.get_user_links(user, admin_mode)
-		answer["menu_links"] = portal.get_menu_links(user, admin_mode)
+		answer["user_links"] = portal.get_user_links(visible_content)
+		answer["menu_links"] = portal.get_menu_links(visible_content)
 		answer["entries"] = portal.get_entries(visible_content)
 		answer["folders"] = portal.get_folders(visible_content)
 		answer["categories"] = portal.get_categories(visible_content)

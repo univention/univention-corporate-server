@@ -181,11 +181,11 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			raise ValueError("No Portal defined")  # default portal?
 		content = {}
 		content["portal"] = self._extract_portal(portal)
+		content["categories"] = categories = self._extract_categories(portal)
+		content["folders"] = folders = self._extract_folders(udm, portal, list(categories.values()))
+		content["entries"] = self._extract_entries(udm, portal, list(categories.values()), list(folders.values()))
 		content["user_links"] = self._extract_user_links(portal)
 		content["menu_links"] = self._extract_menu_links(portal)
-		content["categories"] = self._extract_categories(portal)
-		content["entries"] = self._extract_entries(portal)
-		content["folders"] = self._extract_folders(portal)
 		with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
 			json.dump(content, fd, sort_keys=True, indent=4)
 		return fd
@@ -215,50 +215,10 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_user_links(self, portal):
-		ret = []
-		for (idx, entry) in enumerate(portal.props.userLinks.objs):
-			ret.append(
-				{
-					"dn": entry.dn,
-					"name": entry.props.displayName,
-					"description": entry.props.description,
-					"logo_name": self._save_image(portal, entry),
-					"activated": entry.props.activated,
-					"anonymous": entry.props.anonymous,
-					"allowedGroups": entry.props.allowedGroups,
-					"links": entry.props.link,
-					"linkTarget": entry.props.linkTarget,
-					"$priority": idx,
-				}
-			)
-		return ret
+		return portal.props.userLinks
 
 	def _extract_menu_links(self, portal):
-		ret = []
-		for (idx, entry) in enumerate(portal.props.menuLinks.objs):
-			ret.append(
-				{
-					"dn": entry.dn,
-					"name": entry.props.displayName,
-					"description": entry.props.description,
-					"logo_name": self._save_image(portal, entry),
-					"activated": entry.props.activated,
-					"anonymous": entry.props.anonymous,
-					"allowedGroups": entry.props.allowedGroups,
-					"links": entry.props.link,
-					"linkTarget": entry.props.linkTarget,
-					"$priority": idx,
-					# this is supposed to be the (ordered) idx of the unfiltered (no removed links due to allowdGroups etc)
-					# portal.props.menuLinks, so that the frontend can display the menu links in the correct e.g.:
-					# menuLinks = [
-					# 	{dn: A, allowdGroups: foo, $priority: 0},
-					# 	{dn: B,                    $priority: 1},
-					# ]
-					# visiting portal anonymously -> menu link B is rendered
-					# user of group 'foo' logs in -> menu link A is rendered above B
-				}
-			)
-		return ret
+		return portal.props.menuLinks
 
 	def _extract_categories(self, portal):
 		ret = {}
@@ -270,12 +230,10 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			}
 		return ret
 
-	def _extract_entries(self, portal):
-		udm_modules = importlib.import_module("univention.udm.modules.portal")
-		PortalsPortalEntryObject = udm_modules.PortalsPortalEntryObject
-		PortalsPortalFolderObject = udm_modules.PortalsPortalFolderObject
+	def _extract_entries(self, udm, portal, categories, folders):
+		ret = {}
 
-		def _add(entry, ret):
+		def add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
 					"dn": entry.dn,
@@ -290,49 +248,43 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 					"backgroundColor": entry.props.backgroundColor,
 				}
 
-		def _add_entry(entry, ret, already_unpacked_folder_dns):
-			if isinstance(entry, PortalsPortalFolderObject):
-				if entry.dn not in already_unpacked_folder_dns:
-					already_unpacked_folder_dns.append(entry.dn)
-					for entry in entry.props.entries.objs:
-						_add_entry(entry, ret, already_unpacked_folder_dns)
-			elif isinstance(entry, PortalsPortalEntryObject):
-				_add(entry, ret)
-			else:
-				pass  # TODO raise error?
+		for obj in udm.get("portals/entry").search():
+			if obj.dn in portal.props.menuLinks:
+				add(obj, ret)
+				continue
+			if obj.dn in portal.props.userLinks:
+				add(obj, ret)
+				continue
+			if any(obj.dn in category["entries"] for category in categories):
+				add(obj, ret)
+				continue
+			if any(obj.dn in folder["entries"] for folder in folders):
+				add(obj, ret)
+				continue
 
-		ret = {}
-		already_unpacked_folder_dns = []
-		for category in portal.props.categories.objs:
-			for entry in category.props.entries.objs:
-				_add_entry(entry, ret, already_unpacked_folder_dns)
 		return ret
 
-	def _extract_folders(self, portal):
-		udm_modules = importlib.import_module("univention.udm.modules.portal")
-		PortalsPortalFolderObject = udm_modules.PortalsPortalFolderObject
-
-		def _add(entry, ret):
-			if entry.dn not in ret:
-				ret[entry.dn] = {
-					"dn": entry.dn,
-					"name": entry.props.displayName,
-					"entries": entry.props.entries,
-				}
-
-		def _add_entry(entry, ret, already_unpacked_folder_dns):
-			if isinstance(entry, PortalsPortalFolderObject):
-				if entry.dn not in already_unpacked_folder_dns:
-					already_unpacked_folder_dns.append(entry.dn)
-					_add(entry, ret)
-					for entry in entry.props.entries.objs:
-						_add_entry(entry, ret, already_unpacked_folder_dns)
-
+	def _extract_folders(self, udm, portal, categories):
 		ret = {}
-		already_unpacked_folder_dns = []
-		for category in portal.props.categories.objs:
-			for entry in category.props.entries.objs:
-				_add_entry(entry, ret, already_unpacked_folder_dns)
+
+		def add(folder, ret):
+			ret[folder.dn] = {
+				"dn": folder.dn,
+				"name": folder.props.displayName,
+				"entries": folder.props.entries,
+			}
+
+		for obj in udm.get("portals/folder").search():
+			if obj.dn in portal.props.menuLinks:
+				add(obj, ret)
+				continue
+			if obj.dn in portal.props.userLinks:
+				add(obj, ret)
+				continue
+			if any(obj.dn in category["entries"] for category in categories):
+				add(obj, ret)
+				continue
+
 		return ret
 
 	def _write_css(self, portal):
