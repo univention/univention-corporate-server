@@ -58,7 +58,7 @@ LOCAL = '127.0.0.1'  # or ::1 for IPv6
 options = Namespace()
 
 
-def main():  # type: () -> None
+def main() -> None:
 	"""
 	Fix name server setting in Univention Configuration Registry
 	"""
@@ -76,8 +76,8 @@ def main():  # type: () -> None
 		log.fatal('Using external DNS - aborting')
 		exit(0)
 
-	nameservers = OrderedDict()  # type: DictAddr2Str
-	forwarders = OrderedDict()  # type: DictAddr2Str
+	nameservers: DictAddr2Str = OrderedDict()
+	forwarders: DictAddr2Str = OrderedDict()
 	need_fixing = get_nameservers_cli(nameservers)
 	need_fixing |= get_forwarders(forwarders, ucr)
 	need_fixing |= get_nameservers_ucr(nameservers, ucr)
@@ -99,7 +99,7 @@ def main():  # type: () -> None
 	update_ucr(ucr, nameservers, forwarders)
 
 
-def parse_args():  # type: () -> Namespace
+def parse_args() -> Namespace:
 	"""
 	Parse command line arguments
 
@@ -163,7 +163,7 @@ def parse_args():  # type: () -> Namespace
 	return options
 
 
-def setup_logging():  # type: () -> None
+def setup_logging() -> None:
 	"""
 	Setup logging output.
 	"""
@@ -176,7 +176,7 @@ def setup_logging():  # type: () -> None
 	basicConfig(format=FORMAT, level=level, stream=stderr)
 
 
-def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
+def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
 	"""
 	Get DNS servers from command line arguments.
 
@@ -195,7 +195,7 @@ def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
 	return need_fixing
 
 
-def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
+def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
 	"""
 	Get currently configured externnal DNS servers from UCR.
 
@@ -225,7 +225,7 @@ def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> 
 	return need_fixing
 
 
-def get_nameservers_ucr(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
+def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> bool:
 	"""
 	Get currently configured internal DNS servers from UCR.
 
@@ -251,7 +251,7 @@ def get_nameservers_ucr(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str
 	return need_fixing
 
 
-def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, DictAddr2Str, str) -> bool
+def validate_servers(nameservers: DictAddr2Str, forwarders: DictAddr2Str, domain: str) -> bool:
 	"""
 	Check DNS servers being internal or external and re-categorize.
 
@@ -283,7 +283,7 @@ def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, D
 	return need_fixing
 
 
-def either_or(nameservers, forwarders):  # type: (DictAddr2Str, DictAddr2Str) -> bool
+def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
 	"""
 	Remove forwarders which are also internal DNS servers.
 
@@ -307,7 +307,7 @@ def either_or(nameservers, forwarders):  # type: (DictAddr2Str, DictAddr2Str) ->
 	return need_fixing
 
 
-def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
+def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> None:
 	"""
 	Add self as internal DNS server (on DCs).
 
@@ -341,7 +341,7 @@ def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
 	nameservers.update(old)
 
 
-def add_nameservers(nameservers, domain):  # type: (DictAddr2Str, str) -> None
+def add_nameservers(nameservers: DictAddr2Str, domain: str) -> None:
 	"""
 	Add DNS servers from zone as internal DNS servers.
 
@@ -375,7 +375,7 @@ def add_nameservers(nameservers, domain):  # type: (DictAddr2Str, str) -> None
 		log.error('DNS lookup of NS records in %s against %s failed', domain, LOCAL)
 
 
-def add_master(nameservers, master):  # type: (DictAddr2Str, str) -> None
+def add_master(nameservers: DictAddr2Str, master: str) -> None:
 	"""
 	Add Primary DC as internal DNS server.
 
@@ -406,7 +406,7 @@ def add_master(nameservers, master):  # type: (DictAddr2Str, str) -> None
 		log.error('DNS lookup of %s against %s failed', master, LOCAL)
 
 
-def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr2Str, DictAddr2Str) -> None
+def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> None:
 	"""
 	Update internal and external DNS servers in UCR settings.
 
@@ -417,9 +417,9 @@ def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr
 	log = getLogger(__name__).getChild('ucr')
 	new_ucr_settings = {}
 
-	def update(names, input_values, typ):  # type: (List[str], DictAddr2Str, str) -> None
+	def update(names: List[str], input_values: DictAddr2Str, typ: str) -> None:
 		log.debug('%s=%r', typ, input_values)
-		values = ['%s' % (val,) for val in input_values]  # type: List[Optional[str]]
+		values: List[Optional[str]] = ['%s' % (val,) for val in input_values]
 		diff = len(names) - len(values)
 		if diff > 0:
 			values += [None] * diff
@@ -445,7 +445,7 @@ def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr
 			check_call(('rndc', 'reconfig'))
 
 
-def query_master_src_record(domain, server):  # type: (str, IPAddress) -> Union[bool, str]
+def query_master_src_record(domain: str, server: IPAddress) -> Union[bool, str]:
 	"""
 	Lookup Primary DC entry in DNS zone.
 
@@ -465,7 +465,7 @@ def query_master_src_record(domain, server):  # type: (str, IPAddress) -> Union[
 	return res.header['status'] == 'NOERROR' and res.header['aa']  # type: ignore
 
 
-def get_ip(rr):  # type: (Dict[str, str]) -> IPAddress
+def get_ip(rr: Dict[str, str]) -> IPAddress:
 	r"""
 	Resolve DNS Resource Record to IP address.
 
@@ -491,7 +491,7 @@ def get_ip(rr):  # type: (Dict[str, str]) -> IPAddress
 		raise TypeError(typ)
 
 
-def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
+def is_self(addr: Union[str, IPv4Address, IPv6Address]) -> bool:
 	"""
 	Check if given address is associated with the local host.
 
@@ -521,7 +521,7 @@ def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
 		return False
 
 
-def run_tests():  # type: () -> None
+def run_tests() -> None:
 	"""
 	Run internal test suite.
 	"""
