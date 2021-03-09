@@ -183,10 +183,10 @@ class AttributeHook(object):
 		:param obj: The |UDM| object instance.
 		"""
 		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
+		ud.debug(ud.ADMIN, ud.INFO, 'hook %s: Mapping %s (LDAP) -> %s (UDM)' % (self.type, self.ldap_attribute_name, self.udm_attribute_name))
 		old_value = obj[self.udm_attribute_name]
 		new_value = self.map_attribute_value_to_udm(old_value)
-		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))
+		ud.debug(ud.ADMIN, ud.INFO, 'hook %s: Setting UDM value from %r to %r' % (self.type, old_value, new_value))
 		obj[self.udm_attribute_name] = new_value
 
 	def hook_ldap_addlist(self, obj, al):
@@ -215,10 +215,10 @@ class AttributeHook(object):
 			else:
 				key, old_value, new_value = ml_value
 			if key == self.ldap_attribute_name:
-				ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
+				ud.debug(ud.ADMIN, ud.INFO, 'hook %s: Mapping %s (UDM) -> %s (LDAP)' % (self.type, self.udm_attribute_name, self.ldap_attribute_name))
 				old_value = self.map_attribute_value_to_ldap(old_value)
 				new_new_value = self.map_attribute_value_to_ldap(new_value)
-				ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))
+				ud.debug(ud.ADMIN, ud.INFO, 'hook %s: Setting LDAP value from %r to %r' % (self.type, new_value, new_new_value))
 				new_value = new_new_value
 			new_ml.append((key, old_value, new_value))
 		return new_ml
