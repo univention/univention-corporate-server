@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test various functions in the UDM REST API
 ## tags: [udm,apptest]
@@ -88,7 +88,8 @@ def test_etag_last_modified(udm):
 def test_create_modify_move_remove(random_string, suffix, ucr):
 	if suffix:
 		handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
-		subprocess.call(['service', 'univention-directory-manager-rest', 'restart'])
+		subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest'])
+		time.sleep(1)
 
 	with UDM() as udm:
 		username = random_string() + suffix
