@@ -91,6 +91,7 @@ def main() -> None:
 	add_self(nameservers, ucr)
 	add_nameservers(nameservers, ucr['domainname'])
 	add_master(nameservers, ucr['ldap/master'])
+	move_nameservers(forwarders, nameservers)
 
 	if not nameservers:
 		log.fatal('No nameserver remains - aborting')
@@ -404,6 +405,23 @@ def add_master(nameservers: DictAddr2Str, master: str) -> None:
 				break
 	else:
 		log.error('DNS lookup of %s against %s failed', master, LOCAL)
+
+
+def move_nameservers(forwarders: DictAddr2Str, nameservers: DictAddr2Str) -> None:
+	"""
+	Move all forwarders to nameservers.
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param forwarders: Mapping of external DNS servers.
+	"""
+	log = getLogger(__name__).getChild('move')
+	if not options.no_self:
+		log.info('Skip moving forwarders to nameservers')
+		return
+	log.info('Moving forwarders %s to nameservers %s ...', forwarders, nameservers)
+
+	nameservers.update(forwarders)
+	forwarders.clear()
 
 
 def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> None:
