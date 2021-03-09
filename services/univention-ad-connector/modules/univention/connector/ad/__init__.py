@@ -932,14 +932,12 @@ class ad(univention.connector.ucs):
 			def _sortkey_ascending_usnchanged(element):
 				return int(element[1]['uSNChanged'][0])
 
-			def _sortkey_created_since_last(element):
-				return 0 if int(element[1]['uSNCreated'][0]) > last_usn else 1
-
 			if last_usn <= 0:
 				return sorted(res, key=_sortkey_ascending_usncreated)
 			else:
-				res_ascending_usnchanged = sorted(res, key=_sortkey_ascending_usnchanged)
-				return sorted(res_ascending_usnchanged, key=_sortkey_created_since_last)
+				created_since_last = [x for x in res if int(x[1]['uSNCreated'][0]) > last_usn]
+				changed_since_last = [x for x in res if int(x[1]['uSNChanged'][0]) > last_usn and x not in created_since_last]
+				return sorted(created_since_last, key=_sortkey_ascending_usncreated) + sorted(changed_since_last, key=_sortkey_ascending_usnchanged)
 
 		# search for objects with uSNCreated and uSNChanged in the known range
 		try:
