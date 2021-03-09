@@ -957,18 +957,18 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, "Need to split results. highest USN is %s, lastUSN is %s" % (highestCommittedUSN, lastUSN))
 			returnObjects = []
 			while (tmpUSN != highestCommittedUSN):
-				lastUSN = tmpUSN
+				tmp_lastUSN = tmpUSN
 				tmpUSN += 999
 				if tmpUSN > highestCommittedUSN:
 					tmpUSN = highestCommittedUSN
 
-				ud.debug(ud.LDAP, ud.INFO, "__search_ad_changes: search between USNs %s and %s" % (lastUSN + 1, tmpUSN))
+				ud.debug(ud.LDAP, ud.INFO, "__search_ad_changes: search between USNs %s and %s" % (tmp_lastUSN + 1, tmpUSN))
 
-				usn_filter = _ad_changes_filter('uSNCreated', lastUSN + 1, tmpUSN)
-				if lastUSN > 0:
+				usn_filter = _ad_changes_filter('uSNCreated', tmp_lastUSN + 1, tmpUSN)
+				if tmp_lastUSN > 0:
 					# During the init phase we have to search for created and changed objects
-					usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', lastUSN + 1, tmpUSN), usn_filter)
-				returnObjects += search_ad_changes_by_attribute(usn_filter, lastUSN)
+					usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', tmp_lastUSN + 1, tmpUSN), usn_filter)
+				returnObjects += search_ad_changes_by_attribute(usn_filter, tmp_lastUSN)
 
 			return returnObjects
 
