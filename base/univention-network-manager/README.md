@@ -33,3 +33,16 @@ The IP address of the local system is NOT automatically added to the list of nam
 
 At the start of this evaluation, all DNS servers already configured via UCR (`nameserverX` and
 `dns/forwarderX`) are ignored and discarded, regardless of join status and system role.
+
+
+    IN CASE OF DHCP, THE EXISTING  | Add self to    Add ns to       Add ns to
+    UCR CONFIG IS NEVER USED!      | resolv.conf    nameserverX     dns/forwarderX
+    -------------------------------|-----------------------------------------------
+    Primary Domain Node (joined)   |     X          X (heuristic)   X (heuristic)
+    Backup Domain Node (joined)    |     X          X (heuristic)   X (heuristic)
+    Replica Domain Node (joined)   |     X          X (heuristic)   X (heuristic)
+    Managed Node (joined)          |     -          X               -
+    Primary Domain Node (unjoined) |     -          X               -
+    Backup Domain Node (unjoined)  |     -          X               -
+    Replica Domain Node (unjoined) |     -          X               -
+    Managed Node (unjoined)        |     -          X               -
