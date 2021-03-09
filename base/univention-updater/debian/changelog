@@ -1,3 +1,9 @@
+univention-updater (15.0.3-22) unstable; urgency=low
+
+  * Bug #51972: Block update for i386
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Mar 2021 14:42:43 +0100
+
 univention-updater (15.0.3-21) unstable; urgency=medium
 
   * Bug #51655: delete_obsolete_objects

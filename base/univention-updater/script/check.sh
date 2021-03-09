@@ -572,6 +572,18 @@ if blocking_computers or blocking_objects:
     exit(1)'
 }
 
+update_check_architecture () {  # Bug #51972
+	local arch
+	arch="$(dpkg --print-architecture)"
+	case "$arch" in
+	amd64) return 0 ;;
+	esac
+
+	echo "	The architecture '$arch' is no longer supported."
+	echo "	Please setup a new system with an architecture 'amd64'."
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

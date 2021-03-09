@@ -373,6 +373,9 @@
 				<listitem><simpara>
 					The deprecated command <command>univention-add-app</command> has been removed in favor of the command <command>univention-app</command> (<u:bug>46474</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Architecture i386 is no longer supported and cannot be updated to UCS 5 (<u:bug>51972</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

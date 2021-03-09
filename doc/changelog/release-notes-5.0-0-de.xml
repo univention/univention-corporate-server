@@ -52,6 +52,8 @@
 		<itemizedlist>
 			<listitem><para>
 					UCS 5 basiert auf Debian 10 <wordasword>Buster</wordasword>.
+					Unterstützt wird nur noch die Architektur amd64.
+					Die Architektur i386 wird nicht mehr unterstützt.
 			</para></listitem>
 			<listitem><para>
 					Im Bereich Kryptographie erhöht sich dadurch die minimale TLS Protokollversion auf 1.2.
