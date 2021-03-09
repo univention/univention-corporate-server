@@ -158,8 +158,10 @@ class AttributeHook(object):
 	"""
 	Convenience Hook that essentially implements a mapping
 	between |UDM| and |LDAP| for your extended attributes.
-	Derive from this class, set :py:attr:`attribute_name` to the name of
-	the |UDM| attribute and implement :py:meth:`map_attribute_value_to_udm`
+	Derive from this class, set :py:attr:`udm_attribute_name` to the name of
+	the |UDM| attribute, set :py:attr:`ldap_attribute_name` to the name of
+	the |LDAP| attribute, set :py:attr:`type` to a custom hook name and
+	implement :py:meth:`map_attribute_value_to_udm`
 	and :py:meth:`map_attribute_value_to_ldap`.
 
 	.. warning::
