@@ -244,8 +244,6 @@ class UCSInstallation(object):
 			self.click(self._['join_domain'])
 			self.click(self._['next'])
 			self.client.waitForText(self._['no_dc_dns'])
-			#self.click(self._['no_dc_dns_adapt'])
-			self.client.keyPress('tab')
 			self.client.keyPress('enter')
 			self.click(self._['preferred_dns'])
 			self.client.enterText(self.args.dns)
@@ -319,7 +317,8 @@ class UCSInstallation(object):
 		for i in range(1, 200):
 			self.client.keyPress('bsp')
 		self.client.enterText(self.args.fqdn)
-		self.client.keyPress('tab')
+		if self.args.role == 'master':
+			self.client.keyPress('tab')
 		#self.click(self._['next'])
 		self.tab_to_next_and_enter(2)
 
@@ -339,7 +338,6 @@ class UCSInstallation(object):
 			else:
 				self.client.waitForText(self._['software_configuration_non_master'], timeout=self.timeout)
 			self.select_components()
-			# TODO, works only for installation with no components
 			self.client.keyPress('down')
 			self.click(self._['next'])
 		time.sleep(5)
