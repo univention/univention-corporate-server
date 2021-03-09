@@ -584,6 +584,21 @@ update_check_architecture () {  # Bug #51972
 	return 1
 }
 
+update_check_samba_server_schannel () {  # Bug #49898
+	server_schannel=$(testparm -sv 2>/dev/null | sed -n "s/\t*server schannel = //p")
+	if [ "$server_schannel" != "Yes" ]; then
+		echo "WARNING: Samba is configured with \"server schannel = ${server_schannel,,}\","
+		echo "         This is extremely dangerous, see https://www.samba.org/samba/security/CVE-2020-1472.html"
+		echo "         Please take care to change this back to \"yes\" before updating."
+
+		if is_ucr_true update50/ignore_server_schannel; then
+			echo "WARNING: update50/ignore_server_schannel is set to true. Continue as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
