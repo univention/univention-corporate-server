@@ -449,20 +449,27 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
 	update(UCR_VARS_DNS, nameservers, 'nameservers')
 	log.info('Updating %r', new_ucr_settings)
 
-	if not options.no_act:
-		changes_found = False
-		for (key, val) in sorted(new_ucr_settings.items()):
-			old = ucr.get(key)
-			if old != val:
-				log.info('Updating %r: %r -> %r', key, old, val)
-				changes_found = True
+	if options.no_act:
+		return
 
-		if changes_found:
-			ucr_update(ucr, new_ucr_settings)
-			if not options.no_self:
-				# we assume no BIND is running on an unjoined DC or MemberServer
-				log.info('Reloading BIND')
-				check_call(('rndc', 'reconfig'))
+	changes_found = False
+	for (key, val) in sorted(new_ucr_settings.items()):
+		old = ucr.get(key)
+		if old != val:
+			log.info('Updating %r: %r -> %r', key, old, val)
+			changes_found = True
+
+	if not changes_found:
+		return
+
+	ucr_update(ucr, new_ucr_settings)
+
+	if options.no_self:
+		# we assume no BIND is running on an unjoined DC or MemberServer
+		return
+
+	log.info('Reloading BIND')
+	check_call(('rndc', 'reconfig'))
 
 
 def query_master_src_record(domain: str, server: IPAddress) -> Union[bool, str]:
