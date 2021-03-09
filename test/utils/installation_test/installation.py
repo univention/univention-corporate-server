@@ -27,6 +27,7 @@ class UCSInstallation(object):
 		self.config = OCRConfig()
 		self.config.update(lang=self.args.language)
 		self.timeout = 60
+		self.setup_finish_sleep = 1800
 		self.connect()
 
 	def screenshot(self, filename):
@@ -51,6 +52,11 @@ class UCSInstallation(object):
 		except VNCDoException:
 			self.connect()
 			return False
+
+	def tab_to_next_and_enter(self, tabs):
+		for i in range(tabs):
+			self.client.keyPress('tab')
+		self.client.keyPress('enter')
 
 	def installer(self):
 		# language
@@ -151,7 +157,8 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
-		self.client.waitForText(self._['finish_installation'], timeout=self.timeout + 900)
+		time.sleep(900)
+		self.client.waitForText(self._['finish_installation'], timeout=900)
 		self.client.keyPress('enter')
 		time.sleep(10)
 
@@ -231,7 +238,8 @@ class UCSInstallation(object):
 			self.click(self._['next'])
 			self.client.waitForText(self._['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(4)
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
 			self.click(self._['next'])
@@ -312,14 +320,16 @@ class UCSInstallation(object):
 			self.client.keyPress('bsp')
 		self.client.enterText(self.args.fqdn)
 		self.client.keyPress('tab')
-		self.click(self._['next'])
+		#self.click(self._['next'])
+		self.tab_to_next_and_enter(2)
 
 	def finish(self):
-		self.client.waitForText(self._['setup_successful'], timeout=3200)
-		#self.click(self._['finish'])
+		time.sleep(self.setup_finish_sleep)
+		self.client.waitForText(self._['setup_successful'], timeout=1800)
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
-		time.sleep(200)
+		time.sleep(10)
+		self.client.waitForText('www', timeout=self.timeout)
 
 	def software_configuration(self):
 		# software configuration
@@ -337,12 +347,15 @@ class UCSInstallation(object):
 
 	def select_components(self):
 		# this is needed to make the down button work
+		self.client.mousePress(1)
 		if 'all' in self.args.components:
-			self.client.mouseMove(325, 200)
+			self.client.mouseMove(400, 200)
 			self.client.mousePress(1)
+			# wait a bit longer for installation with all components
+			self.setup_finish_sleep += 300
 		else:
 			print('move mouse')
-			self.client.mouseMove(325, 300)
+			self.client.mouseMove(400, 300)
 			self.client.mousePress(1)
 			time.sleep(1)
 			self.client.mousePress(1)
