@@ -154,7 +154,7 @@ class simpleHook(object):
 		ud.debug(ud.ADMIN, ud.INFO, 'hook {!r}: _ldap_post_remove called'.format(self.type))
 
 
-class AttributeHook(simpleHook):
+class AttributeHook(object):
 	"""
 	Convenience Hook that essentially implements a mapping
 	between |UDM| and |LDAP| for your extended attributes.
