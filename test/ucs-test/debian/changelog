@@ -1,3 +1,10 @@
+ucs-test (10.0.4-24) unstable; urgency=medium
+
+  * Bug #52877: 01_base/91_pwchange_without_password_synchronization
+    wait for synchronization
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Mar 2021 14:22:18 +0100
+
 ucs-test (10.0.4-23) unstable; urgency=medium
 
   * Bug #51579: ignore permissions of /var/log/lastlog in
