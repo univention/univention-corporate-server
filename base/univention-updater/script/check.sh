@@ -388,21 +388,22 @@ delete_legacy_objects () {
 }
 delete_obsolete_objects () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
+	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
+	[ -z "$updateLogDir" ] && die "ERROR: updateLogDir not set"
+	local backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
 	local filter ldif oc
-	local backupfile="${updateLogDir}/removed_with_ucs5.ldif"
-	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
 
-	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically." >&3 2>&3
-	echo "> An LDIF file of removed objects is available: ${backupfile}" >&3 2>&3
+	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
+	echo "> An LDIF file of removed objects is available: ${backupfile}"
 	install -b -m 400 /dev/null "${backupfile}"
-	echo "> Removing structural objects" >&3 2>&3
+	echo "> Removing obsolete structural objects"
 	for filter in "${obsolete_ocs_structural[@]}"
 	do
-		echo ">> $filter" >&3 2>&3
+		echo ">> $filter"
 		univention-ldapsearch -LLL "$filter" "*" + |
-			tee "${backupfile}" |
+			tee -a "${backupfile}" |
 			sed -ne 's/^dn: //p' |
-			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c || die 'ERROR: could not remove obsolete objects'
 	done
 }
 
