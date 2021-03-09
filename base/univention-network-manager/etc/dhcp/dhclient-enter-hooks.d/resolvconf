@@ -31,8 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 # Bug #37689: this script is "sourced", not forked; Do not "exit" the process!
-test -n "$interface" || return 0
-[ "$(ucr get interfaces/${interface}/type)" = dhcp ] || return 0
+test -n "${interface:-}" || return 0
+[ "$(ucr get "interfaces/${interface}/type")" = dhcp ] || return 0
 
 # Copy original function from /sbin/dhclient-script
 eval "$(echo -n 'ucs_orig_';declare -f make_resolv_conf)"
@@ -40,6 +40,7 @@ make_resolv_conf () {
 	local ns
 	eval "$(ucr shell '^nameserver[123]$')"
 
+	# shellcheck source=/dev/null
 	if ( . /usr/share/univention-lib/ucr.sh ; is_ucr_true "nameserver/external" ); then
 		return 0  # do not touch /etc/resolv.conf at all
 	fi
@@ -49,6 +50,7 @@ make_resolv_conf () {
 		return 0
 
 	# IPv4
+	# shellcheck disable=SC2086
 	set -- ${new_domain_name_servers:-}  # IFS
 	# IPv6
 	for ns in ${new_dhcp6_name_servers:-}  # IFS
@@ -70,6 +72,7 @@ make_resolv_conf () {
 	# On a joined UCS system with local DNS server, the DHCP nameserver are automatically
 	# converted to nameserver[123] resp. dns/forwarder[123] and the local system is also
 	# added to nameserver[123] if not already present (Bug #44462).
+	# shellcheck source=/dev/null
 	if	[ -e /var/univention-join/joined ] &&
 		( . /usr/share/univention-lib/base.sh ; is_domain_controller )
 	then
