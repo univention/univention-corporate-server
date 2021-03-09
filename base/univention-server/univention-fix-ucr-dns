@@ -459,8 +459,10 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
 
 		if changes_found:
 			ucr_update(ucr, new_ucr_settings)
-			log.info('Reloading BIND')
-			check_call(('rndc', 'reconfig'))
+			if not options.no_self:
+				# we assume no BIND is running on an unjoined DC or MemberServer
+				log.info('Reloading BIND')
+				check_call(('rndc', 'reconfig'))
 
 
 def query_master_src_record(domain: str, server: IPAddress) -> Union[bool, str]:
