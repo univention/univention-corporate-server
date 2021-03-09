@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-"""
-Configure UCS-domain and forward DNS servers.
-"""
 # Copyright 2016-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -28,6 +25,10 @@ Configure UCS-domain and forward DNS servers.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Configure UCS-domain and forward DNS servers.
+"""
 
 from __future__ import absolute_import
 
@@ -57,6 +58,9 @@ options = Namespace()
 
 
 def main():  # type: () -> None
+	"""
+	Fix name server setting in Univention Configuration Registry
+	"""
 	global options
 	options = parse_args()
 	setup_logging()
@@ -95,6 +99,11 @@ def main():  # type: () -> None
 
 
 def parse_args():  # type: () -> Namespace
+	"""
+	Parse command line arguments
+
+	:returns: parsed arguments.
+	"""
 	parser = ArgumentParser(description=__doc__)
 	parser.add_argument(
 		'--verbose', '-v',
@@ -154,6 +163,9 @@ def parse_args():  # type: () -> Namespace
 
 
 def setup_logging():  # type: () -> None
+	"""
+	Setup logging output.
+	"""
 	FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
 	LEVELS = [ERROR, WARNING, INFO, DEBUG]
 	try:
@@ -164,6 +176,11 @@ def setup_logging():  # type: () -> None
 
 
 def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
+	"""
+	Get DNS servers from command line arguments.
+
+	:returns: `True` if any server is given.
+	"""
 	log = getLogger(__name__).getChild('cli/ns')
 	log.debug('Reading UCS domain servers from CLI...')
 
@@ -178,6 +195,13 @@ def get_nameservers_cli(nameservers):  # type: (DictAddr2Str) -> bool
 
 
 def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
+	"""
+	Get currently configured externnal DNS servers from UCR.
+
+	:param forwarders: Dictionary receiving mapping IP address to `None`.
+	:param ucr: UCR instance.
+	:returns: `True` if self is configured as forwarder.
+	"""
 	log = getLogger(__name__).getChild('ucr/fwd')
 	if options.no_ucr:
 		log.info('Skip reading forwarders from UCR')
@@ -201,6 +225,13 @@ def get_forwarders(forwarders, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> 
 
 
 def get_nameservers_ucr(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> bool
+	"""
+	Get currently configured internal DNS servers from UCR.
+
+	:param nameservers: Dictionary receiving mapping IP address to `None`.
+	:param ucr: UCR instance.
+	:returns: `False`.
+	"""
 	log = getLogger(__name__).getChild('ucr/ns')
 	if options.no_ucr:
 		log.info('Skip reading nameservers from UCR')
@@ -220,6 +251,14 @@ def get_nameservers_ucr(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str
 
 
 def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, DictAddr2Str, str) -> bool
+	"""
+	Check DNS servers being internal or external and re-categorize.
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param forwarders: Mapping of external DNS servers.
+	:param domain: DNS domain name.
+	:returns: `True` if any DNS server is re-categorized.
+	"""
 	log = getLogger(__name__).getChild('val')
 	if options.no_validation:
 		log.info('Skip validation of DNS servers')
@@ -244,6 +283,13 @@ def validate_servers(nameservers, forwarders, domain):  # type: (DictAddr2Str, D
 
 
 def either_or(nameservers, forwarders):  # type: (DictAddr2Str, DictAddr2Str) -> bool
+	"""
+	Remove forwarders which are also internal DNS servers.
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param forwarders: Mapping of external DNS servers.
+	:returns: `True` if any DNS forwarder was removed.
+	"""
 	log = getLogger(__name__).getChild('xor')
 	if not options.xor:
 		log.info('Skip removing nameservers from forwarders')
@@ -261,6 +307,12 @@ def either_or(nameservers, forwarders):  # type: (DictAddr2Str, DictAddr2Str) ->
 
 
 def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
+	"""
+	Add self as internal DNS server (on DCs).
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param ucr: UCR instance.
+	"""
 	log = getLogger(__name__).getChild('ucr/self')
 	if options.no_self:
 		log.info('Skip adding self')
@@ -289,6 +341,12 @@ def add_self(nameservers, ucr):  # type: (DictAddr2Str, Dict[str, str]) -> None
 
 
 def add_nameservers(nameservers, domain):  # type: (DictAddr2Str, str) -> None
+	"""
+	Add DNS servers from zone as internal DNS servers.
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param domain: DNS domain name.
+	"""
 	log = getLogger(__name__).getChild('ns')
 	if not options.add_nameservers:
 		log.info('Skip adding NS')
@@ -317,6 +375,12 @@ def add_nameservers(nameservers, domain):  # type: (DictAddr2Str, str) -> None
 
 
 def add_master(nameservers, master):  # type: (DictAddr2Str, str) -> None
+	"""
+	Add Primary DC as internal DNS server.
+
+	:param nameservers: Mapping of internal DNS servers.
+	:param master: Fully qualified host name of Primary Directory Node.
+	"""
 	log = getLogger(__name__).getChild('ldap')
 	if not options.add_master:
 		log.info('Skip adding Primary Directory Node')
@@ -342,6 +406,13 @@ def add_master(nameservers, master):  # type: (DictAddr2Str, str) -> None
 
 
 def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr2Str, DictAddr2Str) -> None
+	"""
+	Update internal and external DNS servers in UCR settings.
+
+	:param ucr: UCR instance.
+	:param nameservers: Mapping of internal DNS servers.
+	:param forwarders: Mapping of external DNS servers.
+	"""
 	log = getLogger(__name__).getChild('ucr')
 	new_ucr_settings = {}
 
@@ -374,6 +445,13 @@ def update_ucr(ucr, nameservers, forwarders):  # type: (Dict[str, str], DictAddr
 
 
 def query_master_src_record(domain, server):  # type: (str, IPAddress) -> Union[bool, str]
+	"""
+	Lookup Primary DC entry in DNS zone.
+
+	:param domain: DNS domain name.
+	:param server: DNS server to query.
+	:returns: `False` or the SRV RR.
+	"""
 	log = getLogger(__name__).getChild('dns/srv')
 
 	rec = '_domaincontroller_master._tcp.%s.' % (domain.rstrip('.'),)
@@ -388,6 +466,12 @@ def query_master_src_record(domain, server):  # type: (str, IPAddress) -> Union[
 
 def get_ip(rr):  # type: (Dict[str, str]) -> IPAddress
 	r"""
+	Resolve DNS Resource Record to IP address.
+
+	:param rr: DNS RR.
+	:returns: resolved IP address.
+	:raises TypeError: if the RR is neither an `A` nor `AAAA` record.
+
 	>>> get_ip({'typename': 'A', 'data': '127.0.0.1'})
 	IPv4Address('127.0.0.1')
 	>>> get_ip({'typename': 'AAAA', 'data': '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01'})
@@ -408,6 +492,11 @@ def get_ip(rr):  # type: (Dict[str, str]) -> IPAddress
 
 def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
 	"""
+	Check if given address is associated with the local host.
+
+	:param addr: An IP address or domain name.
+	:returns: `True` if the address is local.
+
 	>>> is_self('127.0.0.1')
 	True
 	>>> is_self('::1')
@@ -432,6 +521,9 @@ def is_self(addr):  # type: (Union[str, IPv4Address, IPv6Address]) -> bool
 
 
 def run_tests():  # type: () -> None
+	"""
+	Run internal test suite.
+	"""
 	import doctest
 	doctest.testmod()
 
