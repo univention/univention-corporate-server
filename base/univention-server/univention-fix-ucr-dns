@@ -32,19 +32,20 @@ Configure UCS-domain and forward DNS servers.
 
 from __future__ import absolute_import
 
-from os import environ
-from sys import stderr, exit
+from argparse import SUPPRESS, ArgumentParser, Namespace
 from collections import OrderedDict
-from subprocess import check_output, check_call, CalledProcessError
-from argparse import ArgumentParser, SUPPRESS, Namespace
-from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
+from ipaddress import IPv4Address, IPv6Address, ip_address
+from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
+from os import environ
+from subprocess import CalledProcessError, check_call, check_output
+from sys import exit, stderr
+from typing import Dict, List, Optional, Union
+
+from DNS import DnsRequest, SocketError, TimeoutError
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
-from DNS import DnsRequest, SocketError, TimeoutError
-from ipaddress import ip_address, IPv4Address, IPv6Address
-from typing import Union, Dict, List, Optional
 
 IPAddress = Union[IPv4Address, IPv6Address]
 DictAddr2Str = Dict[IPAddress, Optional[str]]
