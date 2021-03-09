@@ -920,12 +920,13 @@ class ad(univention.connector.ucs):
 
 			return format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
 
-		def search_ad_changes_by_attribute(usnFilter, last_usn):
+		def search_ad_changes_by_attribute(usnFilter):
 			if filter != '':
 				usnFilter = '(&(%s)(%s))' % (filter, usnFilter)
 
-			res = self.__search_ad_partitions(filter=usnFilter, show_deleted=show_deleted)
+			return self.__search_ad_partitions(filter=usnFilter, show_deleted=show_deleted)
 
+		def sort_ad_changes(res, last_usn):
 			def _sortkey_ascending_usncreated(element):
 				return int(element[1]['uSNCreated'][0])
 
@@ -945,7 +946,7 @@ class ad(univention.connector.ucs):
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
 				usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', lastUSN + 1), usn_filter)
-			return search_ad_changes_by_attribute(usn_filter, lastUSN)
+			return sort_ad_changes(search_ad_changes_by_attribute(usn_filter), lastUSN)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
@@ -968,9 +969,9 @@ class ad(univention.connector.ucs):
 				if tmp_lastUSN > 0:
 					# During the init phase we have to search for created and changed objects
 					usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', tmp_lastUSN + 1, tmpUSN), usn_filter)
-				returnObjects += search_ad_changes_by_attribute(usn_filter, tmp_lastUSN)
+				returnObjects += search_ad_changes_by_attribute(usn_filter)
 
-			return returnObjects
+			return sort_ad_changes(returnObjects, lastUSN)
 
 	def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
 		'''
