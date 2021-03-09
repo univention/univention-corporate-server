@@ -169,6 +169,8 @@ class AttributeHook(object):
 		Otherwise you will get errors when you are distributing your new
 		hook via `ucs_registerLDAPExtension --udm_hook`
 	"""
+	type = 'AttributeHook'
+
 	udm_attribute_name = None
 	ldap_attribute_name = None
 
