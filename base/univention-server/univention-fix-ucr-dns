@@ -418,7 +418,7 @@ def move_nameservers(forwarders: DictAddr2Str, nameservers: DictAddr2Str) -> Non
 	if not options.no_self:
 		log.info('Skip moving forwarders to nameservers')
 		return
-	log.info('Moving forwarders %s to nameservers %s ...', forwarders, nameservers)
+	log.info('Moving forwarders %s to nameservers %s ...', list(forwarders), list(nameservers))
 
 	nameservers.update(forwarders)
 	forwarders.clear()
@@ -436,7 +436,7 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
 	new_ucr_settings = {}
 
 	def update(names: List[str], input_values: DictAddr2Str, typ: str) -> None:
-		log.debug('%s=%r', typ, input_values)
+		log.debug('%s=%r', typ, list(input_values))
 		values: List[Optional[str]] = ['%s' % (val,) for val in input_values]
 		diff = len(names) - len(values)
 		if diff > 0:
