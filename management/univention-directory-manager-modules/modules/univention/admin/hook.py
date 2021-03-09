@@ -187,7 +187,9 @@ class AttributeHook(object):
 		old_value = obj[self.udm_attribute_name]
 		new_value = self.map_attribute_value_to_udm(old_value)
 		ud.debug(ud.ADMIN, ud.INFO, 'hook %s: Setting UDM value from %r to %r' % (self.type, old_value, new_value))
-		obj[self.udm_attribute_name] = new_value
+		if new_value:
+			# only set the UDM property if new_value contains an entry, otherwise the syntax check will throw an exception
+			obj[self.udm_attribute_name] = new_value
 
 	def hook_ldap_addlist(self, obj, al):
 		"""
