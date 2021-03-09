@@ -2879,6 +2879,9 @@ class UMC_CommandPattern(complex):
 class LDAP_Server(UDM_Objects):
 	"""
 	Syntax to select a |LDAP| server.
+
+	.. deprecated:: 4.4-0
+		Use :py:class:`DomainController`.
 	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	udm_filter = '!(univentionObjectFlag=docker)'
