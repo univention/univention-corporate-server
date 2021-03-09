@@ -582,7 +582,7 @@
 			<listitem><simpara>
 				The old <literal>dists/</literal> repository layout, which was used between UCS 2.X and 4.x, is no longer supported.
 				Instead the new <filename class="directory">pool/</filename>-layout uses package index files below
-				<filename class="directory">dists/</filename>, which reference files from <filename class="directory">pool/</filename> (<u:bug>51316</u:bug>).
+				<filename class="directory">dists/</filename>, which reference files from <filename class="directory">pool/</filename> (<u:bug>51316</u:bug>, <u:bug>51588</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Starting with UCS 5.0 the UCS repository is no longer divided into the 2 sections
