@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.0-4) unstable; urgency=low
+
+  * Bug #52842: ldap_tables: "search_timeout" has been renamed to "timeout"
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 10 Mar 2021 12:28:27 +0100
+
 univention-mail-postfix (14.0.0-3) unstable; urgency=low
 
   * Bug #52842: add user listfilter first to prevent errors

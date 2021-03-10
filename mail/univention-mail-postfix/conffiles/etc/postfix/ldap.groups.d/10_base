@@ -8,6 +8,7 @@ query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
 result_attribute = mailPrimaryAddress
 leaf_result_attribute = mailPrimaryAddress
 special_result_attribute = uniqueMember
+timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
 version = 3
 bind_dn = @%@ldap/hostdn@%@

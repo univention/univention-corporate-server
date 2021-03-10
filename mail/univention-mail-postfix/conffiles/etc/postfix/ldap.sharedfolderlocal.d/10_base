@@ -10,7 +10,7 @@ print("query_filter = (&(objectClass=univentionMailSharedFolder)(mailPrimaryAddr
 print("result_attribute = mailPrimaryAddress")
 @!@
 result_format = %s
-search_timeout = @%@mail/postfix/ldap/timeout@%@
+timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
 version = 3
 bind_dn = @%@ldap/hostdn@%@
