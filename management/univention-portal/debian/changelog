@@ -1,3 +1,9 @@
+univention-portal (4.0.5-2) unstable; urgency=medium
+
+  * Bug #52869: Better JSON response
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Mar 2021 01:43:17 +0100
+
 univention-portal (4.0.5-1) unstable; urgency=medium
 
   * Bug #52869: Preparations for new Vue.js frontend
