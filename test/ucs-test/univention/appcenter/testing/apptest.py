@@ -127,6 +127,14 @@ class Session(object):
 		self.wait_until_clickable(css)
 		self.click_element(css)
 
+	def language_menu_clicked(self):
+		for element in self.find_all('#umcMenuLanguage__slide .menuItem'):
+			if element.text == 'English':
+				element.click()
+				time.sleep(2)
+				return True
+		return False
+
 	def goto_portal(self):
 		self.get('/univention/portal')
 		time.sleep(3)
@@ -134,12 +142,13 @@ class Session(object):
 			self.click_element('span.umcApplianceReadmeCloseButton')
 		self.wait_until_clickable_and_click('#umc_widgets_ToggleButton_1')
 		self.wait_until_clickable_and_click('#umcMenuLanguage')
-		self.wait_until_clickable('#umc_menu_MenuItem_3')
-		for element in self.find_all('#umcMenuLanguage__slide .menuItem'):
-			if element.text == 'English':
-				element.click()
-				time.sleep(2)
+		# css is too dynamic, just sleep and try
+		for _ in range(5):
+			time.sleep(3)
+			if self.language_menu_clicked():
 				break
+		else:
+			raise RuntimeError('Could not find language menu')
 
 	def click_portal_tile(self, name):
 		elements = self.find_all('.tile__name')
