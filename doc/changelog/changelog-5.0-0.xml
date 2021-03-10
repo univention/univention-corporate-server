@@ -522,7 +522,7 @@
 			<title>Filesystem quota module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The listener module <filename>quota.py</filename> has been migrated to Python 3 (<u:bug>52310</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
