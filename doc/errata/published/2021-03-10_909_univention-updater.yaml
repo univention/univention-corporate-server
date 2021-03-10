@@ -13,3 +13,5 @@ desc: |
  * The univention-updater UCR templates now have valid Python 3 syntax
    for compatibility with the UCS 5.0 update.
 bug: [51865, 52771, 52813]
+erratum: 909
+announced: 2021-03-10
