@@ -182,7 +182,7 @@ define([
 						actualApps.forEach((app) => {
 							Object.entries(app.installations).forEach(([host, installation]) => {
 								if (installation.update_available) {
-									hostInfo = hosts[host + '.' + tools.status('domainname')] || [];
+									const hostInfo = hosts[host + '.' + tools.status('domainname')] || [];
 									hostInfo.push(app.id);
 									hosts[host + '.' + tools.status('domainname')] = hostInfo;
 								}

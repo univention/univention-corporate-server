@@ -54,7 +54,7 @@ define([
 
 		// these properties have to be provided
 		apps: null,
-		results: null,
+		result: null,
 		errorMessages: null,
 		action: null,
 
@@ -156,19 +156,6 @@ define([
 
 		canCancel: function() {
 			return false;
-		},
-
-		next: function(pageName) {
-			let next = this.inherited(arguments);
-			if (pageName && pageName.startsWith('appSettings_')) {
-				const page = this.getPage(pageName);
-				const appSettingsForm = this.getWidget(pageName, page.$appSettingsFormName);
-				if (!appSettingsForm.validate()) {
-					appSettingsForm.focusFirstInvalidWidget();
-					next = pageName;
-				}
-			}
-			return next;
 		},
 	});
 });

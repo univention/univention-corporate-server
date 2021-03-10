@@ -187,7 +187,7 @@ define([
 				}
 				for (const host of Object.keys(results)) {
 					const hostResults = results[host];
-					if ('unreachable' in hostResults) {
+					if (hostResults.hasOwnProperty('unreachable')) {
 						for (appId of hostResults.unreachable) {
 							const appResults = getAppResults(appId, host);
 							appResults.invokation_forbidden_details['must_be_reachable'] = false;
