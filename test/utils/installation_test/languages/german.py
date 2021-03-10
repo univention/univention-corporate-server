@@ -66,7 +66,7 @@ strings = {
 	'adconnector': 'Active Directory-Verbindung',
 	'kde': 'Desktop-Umgebung',
 	'dhcpserver': 'DHCP-Server',
-	'cups': 'Druckserver (CUPS)',
+	'cups': 'Druck',
 	'printquota': 'Druckserver Quota',
 	'kvm': 'KVM Virtualisierungsserver',
 	'mailserver': 'Mailserver',

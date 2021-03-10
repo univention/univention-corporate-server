@@ -368,7 +368,7 @@ class UCSInstallation(object):
 						print('go down')
 						self.client.keyPress('down')
 						time.sleep(0.2)
-					self.click(self._[name])
+					self.client.mouseClickOnText(self._[name])
 
 	def ucsschool(self):
 		# ucs@school role
