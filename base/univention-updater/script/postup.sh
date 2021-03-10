@@ -95,6 +95,12 @@ if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 fi
 
+# removing the atd service conf file that is setting the KillMode attribute
+if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
+	rm -f /etc/systemd/system/atd.service.d/update500.conf
+	systemctl daemon-reload
+fi
+
 # executes custom postup script (always required)
 if [ -n "${update_custom_postup:-}" ]; then
 	if [ -f "$update_custom_postup" ]; then

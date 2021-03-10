@@ -132,6 +132,12 @@ if [ ! -d "$initrd_backup" ]; then
 fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
+# set KillMode of atd service to process to save the children from getting killed
+# up to this point the updater process is a child of atd as well
+mkdir -p /etc/systemd/system/atd.service.d
+echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update500.conf
+systemctl daemon-reload
+
 # ensure that en_US is included in list of available locales (Bug #44150)
 case "${locale:-}" in
 	*en_US*) ;;
