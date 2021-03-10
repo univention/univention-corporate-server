@@ -16,3 +16,5 @@ desc: |
  * Fix traceback when using App Center once App ini file with
    install permissions is present in cache
 bug: [52771, 52815, 52839, 52852]
+erratum: 910
+announced: 2021-03-10
