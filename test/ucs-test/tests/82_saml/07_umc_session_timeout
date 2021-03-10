@@ -19,7 +19,8 @@ from univention.config_registry import handler_set
 def main():
 	session_timeout = 10
 	with ucr_test.UCSTestConfigRegistry():
-		handler_set(['umc/saml/assertion-lifetime={}'.format(session_timeout)])
+		handler_set(['umc/saml/assertion-lifetime={}'.format(session_timeout), 'umc/saml/grace_time=1'])
+		subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
 		subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
 		utils.wait_for_listener_replication()
 		account = utils.UCSTestDomainAdminCredentials()
@@ -29,16 +30,19 @@ def main():
 			SamlSession.test_login()
 			SamlSession.test_slapd()
 			print('Waiting for session timeout')
+			subprocess.check_call(['systemctl', 'restart', 'slapd.service'])  # close ldap connections
 			time.sleep(session_timeout + 10)
-			try:
-				SamlSession.test_login()
-			except samltest.SamlError:
-				if SamlSession.page.status_code == 401:
-					pass
+			for test_method in (SamlSession.test_login, SamlSession.test_slapd):
+				try:
+					print('testing {}'.format(test_method))
+					test_method()
+				except samltest.SamlError:
+					if SamlSession.page.status_code == 401:
+						print('OK: session timeout error for {}'.format(test_method))
+					else:
+						raise
 				else:
-					raise
-			else:
-				utils.fail('No session timeout error')
+					utils.fail('No session timeout error for {}'.format(test_method))
 			SamlSession.login_with_existing_session_at_IdP()
 			SamlSession.test_login()
 			SamlSession.test_slapd()
@@ -53,6 +57,7 @@ if __name__ == '__main__':
 	try:
 		main()
 	finally:
+		subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
 		subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
 		utils.wait_for_listener_replication()
 	print("####Success: SSO login is working####")

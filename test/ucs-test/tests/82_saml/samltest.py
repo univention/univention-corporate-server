@@ -244,10 +244,10 @@ class SamlTest(object):
 
 	def test_slapd(self):
 		"""Test ldap login with saml"""
-		url = "https://%s/univention/command/udm/meta_info" % self.target_sp_hostname
+		url = "https://%s/univention/command/udm/query" % self.target_sp_hostname
 		print("Test ldap login @ %s" % url)
 		self.position = "testing ldap login"
-		self._request('POST', url, 200, data={"objectType": "dns/dns"})
+		self._request('POST', url, 200, data={"objectType": "users/user", "objectProperty": "None", "objectPropertyValue": ""})
 		print("LDAP login success")
 
 	def test_logout(self):

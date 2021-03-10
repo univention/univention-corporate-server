@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner python
+## desc: SSO Login at UMC and use saml ticket to login at ldap
+## tags: [saml]
+## join: true
+## exposure: safe
+## packages:
+##   - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+import subprocess
+import samltest
+import univention.testing.utils as utils
+
+
+def main():
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	try:
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
+		SamlSession.test_slapd()
+		subprocess.check_call(['systemctl', 'stop', 'slapd'])
+		try:
+			# Ensure test_slapd opens an ldap connection
+			SamlSession.test_slapd()
+		except samltest.SamlError:
+			if SamlSession.page.status_code == 503:
+				pass
+			else:
+				raise
+		else:
+			utils.fail('test_slapd() should not work without slapd running')
+		subprocess.check_call(['systemctl', 'start', 'slapd'])
+		SamlSession.test_slapd()
+		SamlSession.logout_at_IdP()
+		SamlSession.test_logout_at_IdP()
+		SamlSession.test_logout()
+	except samltest.SamlError as exc:
+		utils.fail(exc.message)
+
+
+if __name__ == '__main__':
+	try:
+		main()
+	finally:
+		subprocess.check_call(['systemctl', 'start', 'slapd'])
+	print("####Success: SSO login is working####")
