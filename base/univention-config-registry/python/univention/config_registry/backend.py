@@ -51,7 +51,8 @@ from univention.config_registry.handler import run_filter
 
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
-	from types import TracebackType  # noqa
+	from types import TracebackType  # noqa F401
+	from typing_extension import Literal  # noqa F401
 	_VT = TypeVar('_VT')
 except ImportError:  # pragma: no cover
 	def overload(f):
@@ -250,22 +251,17 @@ class ConfigRegistry(MM):
 		return len(merge)
 
 	@overload  # type: ignore
-	def get(self, key):  # pragma: no cover
-		# type: (str) -> Optional[str]
-		pass
-
-	@overload  # noqa F811
-	def get(self, key, default):  # pragma: no cover
-		# type: (str, _VT) -> Union[str, _VT]
-		pass
-
-	@overload  # noqa F811
 	def get(self, key, default, getscope):  # pragma: no cover
-		# type: (str, _VT, bool) -> Tuple[int, Union[None, str, _VT]]
+		# type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default=None):  # pragma: no cover
+		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
 		pass
 
 	def get(self, key, default=None, getscope=False):  # noqa F811
-		# type: (str, _VT, bool) -> Union[None, str, _VT, Tuple[int, Union[None, str, _VT]]]
+		# type: (str, Optional[_VT], bool) -> Union[str, Tuple[int, str], _VT, None]
 		"""
 		Return registry value (including optional scope).
 
@@ -306,7 +302,7 @@ class ConfigRegistry(MM):
 
 	@overload  # noqa F811
 	def _merge(self, getscope):  # pragma: no cover
-		# type: (bool) -> Dict[str, Tuple[int, str]]
+		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
 		pass
 
 	def _merge(self, getscope=False):  # noqa F811
@@ -352,7 +348,7 @@ class ConfigRegistry(MM):
 
 	@overload  # noqa F811
 	def items(self, getscope):  # pragma: no cover
-		# type: (bool) -> Dict[str, Tuple[int, str]]
+		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
 		pass
 
 	def items(self, getscope=False):  # noqa F811
@@ -372,22 +368,7 @@ class ConfigRegistry(MM):
 		merge = self._merge()
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
-	@overload
-	def is_true(self, key):  # pragma: no cover
-		# type: (str) -> bool
-		pass
-
-	@overload  # noqa F811
-	def is_true(self, key, default):  # pragma: no cover
-		# type: (str, bool) -> bool
-		pass
-
-	@overload  # noqa F811
-	def is_true(self, key, default, value):  # pragma: no cover
-		# type: (str, bool, Optional[str]) -> bool
-		pass
-
-	def is_true(self, key=None, default=False, value=None):  # noqa F811
+	def is_true(self, key=None, default=False, value=None):
 		# type: (str, bool, Optional[str]) -> bool
 		"""
 		Return if the strings value of key is considered as true.
@@ -414,22 +395,7 @@ class ConfigRegistry(MM):
 				return default
 		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
-	@overload
-	def is_false(self, key):  # pragma: no cover
-		# type: (str) -> bool
-		pass
-
-	@overload  # noqa F811
-	def is_false(self, key, default):  # pragma: no cover
-		# type: (str, bool) -> bool
-		pass
-
-	@overload  # noqa F811
-	def is_false(self, key=None, default=False, value=None):  # pragma: no cover
-		# type: (str, bool, Optional[str]) -> bool
-		pass
-
-	def is_false(self, key=None, default=False, value=None):  # noqa F811
+	def is_false(self, key=None, default=False, value=None):
 		# type: (str, bool, Optional[str]) -> bool
 		"""
 		Return if the strings value of key is considered as false.

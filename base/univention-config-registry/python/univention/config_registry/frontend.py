@@ -172,7 +172,7 @@ def handler_set(args, opts=dict(), quiet=False):
 						print('Not setting %s' % key)
 		changed = ucr.update(changes)
 
-	_run_changed(ucr, changed, None if quiet else 'W: %s is overridden by scope "%s"')
+	_run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
 
 
 def handler_unset(args, opts=dict()):
@@ -445,7 +445,7 @@ def handler_get(args, opts=dict()):
 
 
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
-	# type: (str, Optional[str], cri.Variable, Optional[int], int) -> str
+	# type: (str, Optional[str], Optional[cri.Variable], Optional[int], int) -> str
 	"""
 	Format UCR variable key, value, description, scope, categories and default value.
 
@@ -633,7 +633,7 @@ def _register_variable_default_values(ucr):
 	info = _get_config_registry_info()
 	_ucr = ConfigRegistry(write_registry=ConfigRegistry.DEFAULTS)
 	_ucr.load()
-	defaults = {}
+	defaults = {}  # type: Dict[str, Optional[str]]
 	default_variables = info.get_variables()
 	for key, variable in default_variables.items():
 		value = variable.get('default')

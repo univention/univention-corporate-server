@@ -418,7 +418,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			os.makedirs(to_dir, 0o755)
 
 		if os.path.isfile(self.dummy_from_file):
-			stat = os.stat(self.dummy_from_file)
+			stat = os.stat(self.dummy_from_file)  # type: Optional[os.stat_result]
 		elif os.path.isfile(self.to_file):
 			stat = os.stat(self.to_file)
 		else:
@@ -1004,7 +1004,7 @@ class ConfigHandlers:
 		:returns: Set of (then obsolete) handlers.
 		"""
 		obsolete_handlers = set()  # type: Set[ConfigHandler]
-		mf_handlers = set()  # type: Set[ConfigHandlerMultifile] # Remaining Multifile handlers
+		mf_handlers = set()  # type: Set[ConfigHandler] # Remaining Multifile handlers
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
 		for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
 			try:
