@@ -243,18 +243,18 @@ class UCSInstallation(object):
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
 			self.click(self._['next'])
-			self.client.waitForText(self._['no_dc_dns'])
-			self.client.keyPress('enter')
-			self.click(self._['preferred_dns'])
-			self.client.enterText(self.args.dns)
-			self.client.keyPress('enter')
-			time.sleep(120)
-			if self.text_is_visible(self._['repositories_not_reachable']):
+			if self.text_is_visible(self._['no_dc_dns']):
 				self.client.keyPress('enter')
-				time.sleep(30)
-			self.click(self._['join_domain'])
-			self.click(self._['next'])
-			time.sleep(10)
+				self.click(self._['preferred_dns'])
+				self.client.enterText(self.args.dns)
+				self.client.keyPress('enter')
+				time.sleep(120)
+				if self.text_is_visible(self._['repositories_not_reachable']):
+					self.client.keyPress('enter')
+					time.sleep(30)
+				self.click(self._['join_domain'])
+				self.click(self._['next'])
+			self.client.waitForText(self._['role'])
 			if self.args.role == 'backup':
 				self.click(self._['next'])
 			if self.args.role == 'slave':
@@ -328,7 +328,7 @@ class UCSInstallation(object):
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
 		time.sleep(10)
-		self.client.waitForText('www', timeout=self.timeout)
+		self.client.waitForText('univention', timeout=self.timeout)
 
 	def software_configuration(self):
 		# software configuration

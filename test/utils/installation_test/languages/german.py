@@ -55,6 +55,7 @@ strings = {
 	'confirm_config_non_maste': 'Bitte bestätigen Sie',
 	'setup_successful': 'UCS-Einrichtung erfolgreich',
 	'finish': 'Fertigstellen',
+	'role': 'Systemrolle',
 
 	'school_role': 'Serverrolle in der UCS@school',
 	'school_edu': 'Schulserver im Edukativnetz',
@@ -66,7 +67,7 @@ strings = {
 	'adconnector': 'Active Directory-Verbindung',
 	'kde': 'Desktop-Umgebung',
 	'dhcpserver': 'DHCP-Server',
-	'cups': 'Druck',
+	'cups': 'CUPS',
 	'printquota': 'Druckserver Quota',
 	'kvm': 'KVM Virtualisierungsserver',
 	'mailserver': 'Mailserver',
