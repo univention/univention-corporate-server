@@ -106,6 +106,9 @@
 				<listitem><simpara>
 					The detection of children process IDs in <command>univention.service_info</command> has been fixed (<u:bug>51524</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The old name <command>univention-baseconf</command> has beed removed (<u:bug>52016</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
