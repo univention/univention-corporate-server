@@ -38,12 +38,12 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 		--package univention-bind \
 		--divert /lib/systemd/system/bind9.service.debian \
 		--rename --remove /lib/systemd/system/bind9.service
-
-	if [ -f /etc/bind/rndc.key ]
-	then
-		chown root:bind /etc/bind/rndc.key
-		chmod 0640 /etc/bind/rndc.key
+	rm /etc/systemd/system/bind9.service.d/09-upgrade_workaround.conf
+	if [ "$(readlink --canonicalize /etc/systemd/system/bind9.service)" = "/lib/systemd/system/bind9.service.debian" ]; then
+		rm /etc/systemd/system/bind9.service
+		systemctl daemon-reload
 	fi
+
 	ucr unset dns/master/port
 fi
 

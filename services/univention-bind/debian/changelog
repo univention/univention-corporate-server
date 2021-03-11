@@ -1,3 +1,9 @@
+univention-bind (14.0.0-14) unstable; urgency=medium
+
+  * Bug #52885: Fix broken bind during package configuration phase
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 11 Mar 2021 14:17:17 +0100
+
 univention-bind (14.0.0-13) unstable; urgency=low
 
   * Bug #52763: The dependency to slapd is removed, so the
