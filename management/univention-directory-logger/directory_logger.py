@@ -63,7 +63,7 @@ timestampfmt = '''%d.%m.%Y %H:%M:%S'''
 uidNumber = 0
 preferedGroup = "adm"
 gidNumber = 0  # fallback
-filemode = '0640'
+filemode = 0o640
 cleanupDellog = True  # remove missed dellog entries (after reporting about them)
 digest = configRegistry.get('ldap/logging/hash', 'md5')
 
@@ -246,7 +246,7 @@ def createFile(filename):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s could not be created.' % (name, filename))
 		return 1
 	os.chown(filename, uidNumber, gidNumber)
-	os.chmod(filename, int(filemode, 0))
+	os.chmod(filename, filemode)
 	return 0
 
 
