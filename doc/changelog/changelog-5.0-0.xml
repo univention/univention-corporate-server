@@ -381,6 +381,9 @@
 				<listitem><simpara>
 					Architecture i386 is no longer supported and cannot be updated to UCS 5 (<u:bug>51972</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					<command>univention-remove</command> no longer updates the package cache before packages are removed (<u:bug>52847</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
