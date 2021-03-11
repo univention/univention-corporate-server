@@ -731,6 +731,9 @@
 				<listitem><simpara>
 					All scripts of <package>univention-saml</package> have been migrated to Python 3 (<u:bug>51315</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>crudesaml</package> was updated to version 1.9 (<u:bug>51489</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
