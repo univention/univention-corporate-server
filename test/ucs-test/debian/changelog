@@ -1,3 +1,9 @@
+ucs-test (10.0.4-27) unstable; urgency=medium
+
+  * Bug #52303: Do not check the new JSON file /var/www/univention/meta.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 15:43:36 +0100
+
 ucs-test (10.0.4-26) unstable; urgency=medium
 
   * Bug #52864: wait for language menu

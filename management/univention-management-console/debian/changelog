@@ -1,3 +1,11 @@
+univention-management-console (12.0.8-9) unstable; urgency=medium
+
+  * Bug #52897: meta.json needs to be publicly accessible so that it can be
+    fetched without involving UMC. UMC can still enrich it if needed (i.e. if
+    the user is logged in)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 15:41:03 +0100
+
 univention-management-console (12.0.8-8) unstable; urgency=medium
 
   * Bug #52453: adjust styling of login site

@@ -1,3 +1,9 @@
+univention-web (4.0.1-15) unstable; urgency=medium
+
+  * Bug #52303: Allow fetching meta.json directly without involving UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 15:42:26 +0100
+
 univention-web (4.0.1-14) unstable; urgency=medium
 
   * Bug #52453: adjust button row and ContentPane styling

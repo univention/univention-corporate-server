@@ -1,3 +1,9 @@
+univention-saml (7.0.4-3) unstable; urgency=medium
+
+  * Bug #52303: Do not involve UMC when getting the meta.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 15:43:03 +0100
+
 univention-saml (7.0.4-2) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adopt the new design for the login page

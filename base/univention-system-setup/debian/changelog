@@ -1,3 +1,10 @@
+univention-system-setup (13.0.3-12) unstable; urgency=medium
+
+  * Bug #52897: /usr/share/univention-management-console/meta.json has been
+    moved to /var/www/univention/meta.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 15:39:51 +0100
+
 univention-system-setup (13.0.3-11) unstable; urgency=medium
 
   * Bug #52453: change icon
