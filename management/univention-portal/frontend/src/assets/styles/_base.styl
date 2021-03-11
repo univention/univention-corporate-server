@@ -1,0 +1,34 @@
+html
+  font-size: $base-font-size
+
+body
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  line-height: var(--font-lineheight-normal);
+  font-size: var(--font-size-normal);
+  color: var(--font-color-contrast-high);
+  margin-top: var(--portal-header-height)
+  background-color: var(--bgc-content-body);
+  box-sizing: border-box;
+h2
+  font-size: var(--font-size-header2);
+  line-height: var(--font-lineheight-normal);
+  font-weight: 600;
+
+.portal-reset
+  line-height: inherit
+
+.portal
+  &__off-screen
+    position: absolute !important
+    left: -10000px !important
+    top: -10000px !important
+
+// animation
+.fade-enter-active,
+.fade-leave-active
+  transition: opacity .5s
+
+.fade-enter,
+.fade-leave-to
+  opacity: 0

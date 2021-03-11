@@ -1,0 +1,16 @@
+.dragdrop
+  &__draggable-item
+    margin-right: calc(6 * var(--layout-spacing-unit))
+
+  &__drop-zone
+    display: flex
+    flex-direction: row
+
+  &__placeholder
+
+    &--dotted
+      width: calc(20 * var(--layout-spacing-unit));
+      height: calc(20 * var(--layout-spacing-unit));
+      border-radius: 15%;
+      border: 3px dashed var(--color-grey40) !important;
+      display: none;

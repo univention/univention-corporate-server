@@ -1,0 +1,41 @@
+[{
+  "parent": {
+    "title": {
+      "de_DE": "Add entry",
+      "en_US": "Add entry"
+    },
+    "children": [{
+      "title": {
+        "de_DE": "Create new entry",
+        "en_US": "Create new entry"
+      },
+      "action": "createEntry"
+    }, {
+      "title": {
+        "de_DE": "Add existing entry",
+        "en_US": "Add existing entry"
+      },
+      "action": "addExistingEntry"
+    }]
+  }
+}, {
+  "parent": {
+    "title": {
+      "de_DE": "Add folder",
+      "en_US": "Add folder"
+    },
+    "children": [{
+      "title": {
+        "de_DE": "Create new folder",
+        "en_US": "Create new folder"
+      },
+      "action": "createEntry"
+    }, {
+      "title": {
+        "de_DE": "Add existing folder",
+        "en_US": "Add existing folder"
+      },
+      "action": "addExistingEntry"
+    }]
+  }
+}]
