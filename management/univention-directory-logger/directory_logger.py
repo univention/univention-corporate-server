@@ -173,11 +173,11 @@ def handler(dn, new_copy, old_copy):
 
 		# get ID
 		with open(notifier_id, 'r') as f:
-			id = int(f.read()) + 1
-		# matches notifier transaction id. Tested for UCS 1.3-2 and 2.0.
+			nid = int(f.readline()) + 1
+		# matches notifier transaction nid. Tested for UCS 1.3-2 and 2.0.
 		# Note about 1.3-2:
 		# For user removal this matches with ++last_id as seen by the dellog overlay,
-		# but for user create dellog sees id-1, i.e. last_id has already been incremented before
+		# but for user create dellog sees nid-1, i.e. last_id has already been incremented before
 		# we see it here
 
 		# 2. generate log record
@@ -192,13 +192,13 @@ def handler(dn, new_copy, old_copy):
 				timestamp = '<unknown>'
 
 			if not old_copy:  # create branch
-				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'add')
+				record = headerfmt % (previoushash, dn, nid, modifier, timestamp, 'add')
 				record += newtag
 				record += ldapEntry2string(new_copy)
 			else:  # modify branch
 				# filter out unchanged attributes
 				filterOutUnchangedAttributes(old_copy, new_copy)
-				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'modify')
+				record = headerfmt % (previoushash, dn, nid, modifier, timestamp, 'modify')
 				record += oldtag
 				record += ldapEntry2string(old_copy)
 				record += newtag
@@ -206,14 +206,14 @@ def handler(dn, new_copy, old_copy):
 		else:  # delete branch
 			(timestamp, dellog_id, modifier, action) = process_dellog(dn)
 
-			record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'delete')
+			record = headerfmt % (previoushash, dn, nid, modifier, timestamp, 'delete')
 			record += oldtag
 			record += ldapEntry2string(old_copy)
 		record += endtag
 
 		# 3. write log file record
 		with open(logname, 'a') as logfile:  # append
-			logfile.write(prefix_record(record, id))
+			logfile.write(prefix_record(record, nid))
 		# 4. calculate nexthash, omitting the final line break to make validation of the
 		#    record more intituive
 		nexthash = hashlib.new(digest, record[:-1].encode('UTF-8')).hexdigest()
@@ -223,7 +223,7 @@ def handler(dn, new_copy, old_copy):
 		cachefile.close()
 		# 6. send log message including nexthash
 		syslog.openlog(name, 0, syslog.LOG_DAEMON)
-		syslog.syslog(syslog.LOG_INFO, logmsgfmt % (dn, id, modifier, timestamp, nexthash))
+		syslog.syslog(syslog.LOG_INFO, logmsgfmt % (dn, nid, modifier, timestamp, nexthash))
 		syslog.closelog()
 
 
