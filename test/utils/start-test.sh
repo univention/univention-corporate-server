@@ -218,7 +218,7 @@ fi
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
 if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
-	BUILD_HOST='10.200.18.180'
+	BUILD_HOST='buildvm.knut.univention.de'
 	REPO_UCS='git@git.knut.univention.de:univention/ucs.git'
 	REPO_UCSSCHOOL='git@git.knut.univention.de:univention/ucsschool.git'
 	if echo "$UCSSCHOOL_BRANCH" | grep -Eq '^[0-9].[0-9]$' ; then
