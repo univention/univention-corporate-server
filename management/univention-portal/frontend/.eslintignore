@@ -1,0 +1,47 @@
+# This file tells ESLint which files and folders it should never lint.
+
+# Dependencies
+node_modules/
+
+# Compiled output
+dist
+
+# Runtime data
+database.sqlite
+
+# Test coverage
+coverage
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editors and IDEs
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Config files
+.git*
+babel.config.js
+jest.config.js
+vue.config.js
+
+# Misc
+.DS_Store
+public/
+docs/
+build/
+netfield-sdk-node/
+pts-sdk-node/
+src/assets/
+tools/
+src/constants/semanticUIIcons.js
+tests/
+lib/**/node_modules/
+lib/**/build/
+lib/

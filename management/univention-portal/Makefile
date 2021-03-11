@@ -29,13 +29,9 @@
 
 .PRECIOUS: build build-dev
 
-build: www/style.css
-
-build-dev: build
-	ln -fs /usr/share/univention-portal/icons/ /usr/share/univention-portal/apps.json /usr/share/univention-portal/portal.json /usr/share/univention-portal/portal.css www
-
-%.css: %.styl
-	stylus --hoist-atrules "$<"
-
-clean:
-	rm -f www/style.css www/portal.json www/apps.json www/portal.css
+build:
+	npm set prefix=$$HOME/.node
+	npm install -g npm@latest
+	$$HOME/.node/bin/npm install -g yarn
+	cd frontend && $$HOME/.node/bin/yarn install
+	cd frontend && $$HOME/.node/bin/yarn build

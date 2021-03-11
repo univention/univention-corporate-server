@@ -1,0 +1,41 @@
+before_script:
+  - mkdir -p ~/.ssh
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+cache:
+  key: "phoenix-yarn"
+  paths:
+    - node_modules
+    - "packages/*/node_modules"
+    - .eslint
+
+# every job starts a docker container, so an extra deploy and test stage slows stuff down significantly
+# we'll probably need to do this in the future but right now we can reap the benefits of going single stage
+build-test-deploy-job:
+  stage: build
+  only:
+    refs:
+      - main
+  image: docker-registry.knut.univention.de/phoenix/phoenixportalbuilder:latest
+  artifacts:
+    paths:
+      - phoenixportal*.deb
+    # maybe?
+    #public: true
+    when: on_success
+    # this seems to apply to all artifacts?
+    expire_in: 12hrs
+  script:
+    #- yarn --cwd=frontend
+    #- yarn --cwd=frontend build
+    #- yarn --cwd=frontend test:unit
+    - apt-get -q --assume-yes build-dep .
+    - dpkg-buildpackage -uc -us -b
+    - cp ../*.deb .
+    - scp ./phoenixportal_*.deb univention_ansible@sandbox-009.sx.openws.de:/tmp
+    - ssh univention_ansible@sandbox-009.sx.openws.de sudo dpkg --purge phoenixportal
+    - ssh univention_ansible@sandbox-009.sx.openws.de sudo apt install -y /tmp/phoenixportal_*_amd64.deb
+
