@@ -15,6 +15,15 @@ def out():
 	return StringIO()
 
 
+@pytest.mark.parametrize("text,out", [
+	("str", "str"),
+	(u"unicode", "unicode"),
+	(u"Tür", "T?r"),
+])
+def test_asciify(text, out):
+	assert ucrm.asciify(text) == out
+
+
 @pytest.mark.parametrize("line", list(string.ascii_letters))
 def test_key_shell_escape_letters(line):
 	assert ucrm.key_shell_escape(line) == line

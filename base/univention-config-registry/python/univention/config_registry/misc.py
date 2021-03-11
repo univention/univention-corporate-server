@@ -71,8 +71,6 @@ def replace_umlaut(line):
 	return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
 
-
-
 UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 	u'Ä': 'Ae',
 	u'ä': 'ae',
@@ -82,6 +80,17 @@ UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 	u'ü': 'ue',
 	u'ß': 'ss',
 }
+
+
+def asciify(text):
+	# type: (str) -> str
+	"""
+	Replace any non-ASCII characters.
+
+	:param text: Input text.
+	:returns: Replaced text.
+	"""
+	return text.encode('ascii', 'replace').decode("ascii")
 
 
 def key_shell_escape(line):
