@@ -49,7 +49,7 @@ if six.PY2:
 from pwd import getpwnam
 from grp import getgrnam
 
-from univention.config_registry.misc import replace_umlaut, directory_files
+from univention.config_registry.misc import asciify, directory_files
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 try:
 	from typing import Any, Dict, IO, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa F401
@@ -72,7 +72,7 @@ INFO_DIR = '/etc/univention/templates/info'
 FILE_DIR = '/etc/univention/templates/files'
 SCRIPT_DIR = '/etc/univention/templates/scripts'
 MODULE_DIR = '/etc/univention/templates/modules'
-# only ascii in the WARNING_TEXT !!!
+
 WARNING_TEXT = '''\
 Warning: This file is auto-generated and might be overwritten by
          univention-config-registry.
@@ -82,6 +82,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
 
 '''  # noqa: E101
+assert asciify(WARNING_TEXT) == WARNING_TEXT, "Only ASCII allowed in WARNING_TEXT"
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
@@ -128,10 +129,9 @@ def _replace_variables(template, directory, srcfiles):
 				match = WARNING_PATTERN.match(name)
 				if match:
 					mode, prefix = match.groups()
+					value = warning_string(prefix, srcfiles=srcfiles)
 					if mode == "UCRWARNING_ASCII":
-						value = warning_string(prefix, srcfiles=srcfiles, enforce_ascii=True)
-					else:
-						value = warning_string(prefix, srcfiles=srcfiles)
+						value = asciify(value)
 				else:
 					value = ''
 
@@ -222,29 +222,24 @@ def run_module(modpath, arg, ucr, changes):
 	del sys.path[0]
 
 
-def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
-	# type: (str, int, Iterable[str], bool) -> str
+def warning_string(prefix='# ', srcfiles=set()):
+	# type: (str, Iterable[str]) -> str
 	"""
 	Generate UCR warning text.
 
 	:param prefix: String to prepend before each line.
-	:param width: Maximum line length. UNUSED.
 	:param srcfiles: File names of source template.
-	:param enforce_ascii: Transliterate Umlauts.
 	:returns: A warning sting based on :py:const:`WARNING_TEXT`.
 	"""
-	res = []
-
-	for line in WARNING_TEXT.splitlines():
-		if enforce_ascii:
-			line = replace_umlaut(line).encode('ascii', 'replace')
-		res.append('%s%s' % (prefix, line))
-
-	for srcfile in sorted(srcfiles):
-		if enforce_ascii:
-			srcfile = srcfile.encode('ascii', 'replace')
-		res.append('%s\t%s' % (prefix, srcfile))
-	res.append(prefix)
+	res = [
+		'%s%s' % (prefix, line)
+		for line in WARNING_TEXT.splitlines()
+	] + [
+		'%s\t%s' % (prefix, srcfile)
+		for srcfile in sorted(srcfiles)
+	] + [
+		prefix
+	]
 
 	return "\n".join(res)
 

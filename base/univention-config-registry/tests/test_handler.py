@@ -75,16 +75,14 @@ def test_run_module(arg, funcname, mocker):
 	func.assert_called_once_with(ucr, changes)
 
 
-@pytest.mark.parametrize("prefix,srcfiles,ascii,expected", [
-	pytest.param("# ", set(), False, "# Warning: ", id="#"),
-	pytest.param(";", set(), False, ";Warnung: ", id=";"),
-	pytest.param("// ", {"tmpl"}, False, "// \ttmpl\n", id="//"),
-	pytest.param(";", {u"Dom\u00e4ne"}, True, b";\tDom?ne\n", id="unicode"),
+@pytest.mark.parametrize("prefix,srcfiles,expected", [
+	pytest.param("# ", set(), "# Warning: ", id="#"),
+	pytest.param(";", set(), ";Warnung: ", id=";"),
+	pytest.param("// ", {"tmpl"}, "// \ttmpl\n", id="//"),
+	pytest.param(";", {u"Dom\u00e4ne"}, u";\tDom\u00e4ne\n", id="unicode"),
 ])
-def test_warning_string(prefix, srcfiles, ascii, expected):
-	if ascii and sys.version_info >= (3,):
-		pytest.xfail("Python 3 returns bytes()")
-	assert expected in ucrh.warning_string(prefix, srcfiles=srcfiles, enforce_ascii=ascii)
+def test_warning_string(prefix, srcfiles, expected):
+	assert expected in ucrh.warning_string(prefix, srcfiles=srcfiles)
 
 
 def test_ConfigHandler():
