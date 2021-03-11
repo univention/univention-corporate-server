@@ -35,6 +35,18 @@
 # Ensure a working bind9.service exists betweeen unpacking and configuring
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 	ln -s /lib/systemd/system/bind9.service.debian /etc/systemd/system/bind9.service
+	cat << EOF > /etc/systemd/system/bind9.service.d/09-upgrade_workaround.conf
+[Service]
+Group=bind
+ExecStart=
+ExecReload=
+ExecStop=
+EOF
+	if [ -f /etc/bind/rndc.key ]
+	then
+		chown root:bind /etc/bind/rndc.key
+		chmod 0640 /etc/bind/rndc.key
+	fi
 	systemctl daemon-reload
 fi
 
