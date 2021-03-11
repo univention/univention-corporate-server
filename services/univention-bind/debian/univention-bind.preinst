@@ -37,6 +37,7 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 	ln -s /lib/systemd/system/bind9.service.debian /etc/systemd/system/bind9.service
 	cat << EOF > /etc/systemd/system/bind9.service.d/09-upgrade_workaround.conf
 [Service]
+Type=simple
 Group=bind
 ExecStart=
 ExecReload=
