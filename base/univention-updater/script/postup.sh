@@ -161,6 +161,12 @@ sleep 30
 
 rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
 
+# Bug #47192: Remove deprecated errata components
+ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9]+-errata' |
+  tee -a "$UPDATER_LOG" |
+  cut -d: -f1 |
+  xargs -r ucr unset
+
 echo "
 
 

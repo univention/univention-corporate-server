@@ -1,3 +1,9 @@
+univention-updater (15.0.3-25) unstable; urgency=low
+
+  * Bug #47192: Remove deprecated errata components
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Mar 2021 12:01:25 +0100
+
 univention-updater (15.0.3-24) unstable; urgency=medium
 
   * Bug #52886: modified the service settings for atd through the preup script

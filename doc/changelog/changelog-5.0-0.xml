@@ -591,6 +591,9 @@
 				<filename class="directory">dists/</filename>, which reference files from <filename class="directory">pool/</filename> (<u:bug>51316</u:bug>, <u:bug>51588</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				Due to the changed repository layout the deprecated &ucsUCRV;s <envar>repository/online/component/4.*-*-errata</envar> are purged after the update (<u:bug>47192</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara>
 				Starting with UCS 5.0 the UCS repository is no longer divided into the 2 sections
 				<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>. Instead, all packages
 				are kept in one section and the maintenance status of the packages is technically defined in
