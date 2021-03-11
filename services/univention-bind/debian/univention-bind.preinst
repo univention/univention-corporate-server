@@ -33,7 +33,7 @@
 #DEBHELPER#
 
 # Ensure a working bind9.service exists betweeen unpacking and configuring
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 	ln -s /lib/systemd/system/bind9.service.debian /etc/systemd/system/bind9.service
 	systemctl daemon-reload
 fi

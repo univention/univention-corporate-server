@@ -1,3 +1,9 @@
+univention-bind (14.0.0-15) unstable; urgency=medium
+
+  * Bug #00000: test bind with samba run2
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 11 Mar 2021 17:08:12 +0100
+
 univention-bind (14.0.0-14) unstable; urgency=medium
 
   * Bug #00000: test bind with samba run1
