@@ -3,7 +3,7 @@
   <actions/>
   <description>&lt;p&gt;Generic Branch Test for UCS Development. Will build all packages changed since forking a &quot;stable&quot; branch like 4.4-0. Packages will stay available after the tests finish:&#xd;
 &lt;pre&gt;&#xd;
-deb [trusted=yes] http://10.200.18.180/debian/ ${UCS_BRANCH} main&#xd;
+deb [trusted=yes] http://buildvm.knut.univention.de/debian/ ${UCS_BRANCH} main&#xd;
 &lt;/pre&gt;&#xd;
 (UCS_BRANCH will have slashes removed, e.g. dwiesentbug48343)&#xd;
 &lt;/p&gt;&#xd;
@@ -12,7 +12,7 @@ deb [trusted=yes] http://10.200.18.180/debian/ ${UCS_BRANCH} main&#xd;
 If a UCS@school branch other than the default UCS@school branch is specified, the packages are built from the UCS@school branch&#xd;
 and&#xd;
 &lt;pre&gt;&#xd;
-deb [trusted=yes] http://10.200.18.180/debian/ ${UCSSCHOOL_BRANCH} main&#xd;
+deb [trusted=yes] http://buildvm.knut.univention.de/debian/ ${UCSSCHOOL_BRANCH} main&#xd;
 &lt;/pre&gt;&#xd;
 is added instead.&#xd;
 &lt;/p&gt;</description>
@@ -52,7 +52,7 @@ is added instead.&#xd;
           <tagFilter>*</tagFilter>
           <branchFilter>origin/.*</branchFilter>
           <sortMode>DESCENDING_SMART</sortMode>
-          <defaultValue>origin/4.4-3</defaultValue>
+          <defaultValue>origin/4.4-7</defaultValue>
           <selectedValue>TOP</selectedValue>
           <useRepository>git@git.knut.univention.de:univention/ucs.git</useRepository>
           <quickFilterEnabled>true</quickFilterEnabled>
@@ -167,7 +167,7 @@ is added instead.&#xd;
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
     <browser class="hudson.plugins.git.browser.GitLab">
       <url>https://git.knut.univention.de/univention/ucs</url>
-      <version>12.8</version>
+      <version>13.8</version>
     </browser>
     <submoduleCfg class="list"/>
     <extensions>
@@ -195,10 +195,10 @@ is added instead.&#xd;
             <path>test/utils</path>
           </hudson.plugins.git.extensions.impl.SparseCheckoutPath>
           <hudson.plugins.git.extensions.impl.SparseCheckoutPath>
-            <path>.gitmodules</path>
+            <path>test/product-tests</path>
           </hudson.plugins.git.extensions.impl.SparseCheckoutPath>
           <hudson.plugins.git.extensions.impl.SparseCheckoutPath>
-            <path>test/product-tests</path>
+            <path>test/scenarios</path>
           </hudson.plugins.git.extensions.impl.SparseCheckoutPath>
         </sparseCheckoutPaths>
       </hudson.plugins.git.extensions.impl.SparseCheckoutPaths>
@@ -212,24 +212,7 @@ is added instead.&#xd;
   <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>#!/bin/bash
-set -x
-sections=&apos;&apos;
-parse_sections () {
-  local arg
-  local IFS=&quot; ,&quot;
-  for arg in $*  # IFS
-  do
-    case &quot;$arg&quot; in
-    -s|--section) continue ;;
-    *) sections=&quot;${sections:+$sections }-s $arg&quot; ;;
-    esac
-  done
-}
-parse_sections &quot;${TEST_SECTIONS:-}&quot;
-
-UCS_BRANCH=&quot;${UCS_BRANCH#origin/}&quot; \
-TEST_SECTIONS=&quot;$sections&quot; \
+      <command>UCS_BRANCH="${UCS_BRANCH#origin/}" \
 exec bash test/branch-tests/run.sh</command>
     </hudson.tasks.Shell>
   </builders>

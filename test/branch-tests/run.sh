@@ -56,7 +56,7 @@ export KVM_USER="build"
 REPO_UCS="$(getGitlabURL ucs)"
 REPO_UCSSCHOOL="$(getGitlabURL ucsschool)"
 GIT_DIR_UCSSCHOOL="ucsschool.git"
-BUILD_HOST="10.200.18.180"
+BUILD_HOST='buildvm.knut.univention.de'
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
 case "$UCSSCHOOL_BRANCH" in
