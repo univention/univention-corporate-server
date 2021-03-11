@@ -41,8 +41,8 @@ Package: univention-app-appliance
 Architecture: all
 Depends:
  phantomjs,
- python-requests,
- python-univention-app-appliance (= ${binary:Version}),
+ python3-requests,
+ python3-univention-app-appliance (= ${binary:Version}),
  univention-welcome-screen,
  ${misc:Depends},
  ${python3:Depends},

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Appliance
@@ -149,8 +149,8 @@ def configure_portal(app):
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
 		_download_resource(app, img_name, dest_path),
-		with open(dest_path) as fp:
-			base64_img = base64.encodestring(fp.read())
+		with open(dest_path, 'rb') as fp:
+			base64_img = base64.encodebytes(fp.read())
 		portal_obj.info['background'] = base64_img
 
 	# portal logo
@@ -160,8 +160,8 @@ def configure_portal(app):
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
 		_download_resource(app, img_name, dest_path),
-		with open(dest_path) as fp:
-			base64_img = base64.encodestring(fp.read())
+		with open(dest_path, 'rb') as fp:
+			base64_img = base64.encodebytes(fp.read())
 		portal_obj.info['logo'] = base64_img
 
 	if app_props.get('portal_css_background'):
