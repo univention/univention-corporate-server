@@ -216,7 +216,7 @@ def handler(dn, new_copy, old_copy):
 			logfile.write(prefix_record(record, id))
 		# 4. calculate nexthash, omitting the final line break to make validation of the
 		#    record more intituive
-		nexthash = hashlib.new(digest, record[:-1]).hexdigest()
+		nexthash = hashlib.new(digest, record[:-1].encode('UTF-8')).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
 		cachefile.seek(0)
 		cachefile.write(nexthash)
@@ -279,7 +279,7 @@ def initialize():
 		with open(logname, 'a') as logfile:  # append
 			logfile.write(prefix_record(record, 0))
 		# 4. calculate initial hash
-		nexthash = hashlib.new(digest, record).hexdigest()
+		nexthash = hashlib.new(digest, record.encode('UTF-8')).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
 		cachefile.seek(0)
 		cachefile.write(nexthash)
