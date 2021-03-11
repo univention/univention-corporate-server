@@ -95,6 +95,23 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	:param opts: Command line options.
 	:returns: The modified template with all UCR variables and sections replaced.
 	"""
+	template = _replace_variables(template, directory, srcfiles)
+
+	if six.PY3:
+		tmpl = template.encode('UTF-8')
+	else:
+		tmpl = template
+
+	if opts.get('disallow-execution', False):
+		return tmpl
+
+	tmpl = _replace_exec(tmpl)
+
+	return tmpl
+
+
+def _replace_variables(template, directory, srcfiles):
+	# type: (str, _UCR, Iterable[str]) -> str
 	while True:
 		i = VARIABLE_TOKEN.finditer(template)
 		try:
@@ -124,12 +141,11 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 		except StopIteration:
 			break
 
-	if six.PY3:
-		template = template.encode('UTF-8')
+	return template
 
-	if opts.get('disallow-execution', False):
-		return template
 
+def _replace_exec(template):
+	# type: (bytes) -> bytes
 	while True:
 		i = EXECUTE_TOKEN.finditer(template)
 		try:
