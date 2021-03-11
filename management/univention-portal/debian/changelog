@@ -1,3 +1,9 @@
+univention-portal (4.0.5-4) unstable; urgency=medium
+
+  * Bug #52869: Added missing build dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Mar 2021 02:24:57 +0100
+
 univention-portal (4.0.5-3) unstable; urgency=medium
 
   * Bug #52869: Include frontend
