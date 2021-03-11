@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
@@ -85,7 +85,7 @@ def run_trigger(app):
 			return
 		docker = Docker(app, logger)
 		script_name = '/tmp/univention-%s.listener_trigger' % app.id
-		open(docker.path(script_name), 'wb')
+		open(docker.path(script_name), 'w')
 		process = docker.execute('chmod', '0755', script_name)
 		shutil.copyfile(cached_script, docker.path(script_name))
 		process = docker.execute(script_name)
@@ -123,7 +123,7 @@ def convert(app, dumped, filename, lo, pos):
 	base = os.path.basename(filename)
 	dst = os.path.join(dst_dir, base)
 	tmp = dst + '.converting.tmp'
-	with open(tmp, 'wb') as fd:
+	with open(tmp, 'w') as fd:
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
