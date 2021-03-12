@@ -14,8 +14,11 @@
 ##   - univention-printserver
 
 from __future__ import print_function
+
 import os
 import sys
+import shlex
+import subprocess
 import univention.testing.utils as utils
 
 
@@ -27,19 +30,22 @@ if __name__ == '__main__':
 	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
 			printerModel = printerModel.decode('UTF-8')
-			try:
-				model = printerModel.split('"')[1].split('/')[-1]
-				desc = printerModel.split('"')[3]
-				if desc.startswith('deprecated (only available'):
-					continue
-				if model.endswith('.ppd') or model.endswith('.ppd.gz'):
-					ldap_printer.append(model)
-			except IndexError:
-				pass
+			model, desc = shlex.split(printerModel)
+			desc = printerModel.split('"')[3]
+			if desc.startswith('deprecated (only available'):
+				continue
+			if model.endswith('.ppd') or model.endswith('.ppd.gz'):
+				model = model.split('/')[-1]
+				ldap_printer.append(model)
+
 	for root, dirs, files in os.walk('/usr/share/ppd/'):
 		for file_ in files:
 			if file_.endswith('.ppd') or file_.endswith('ppd.gz'):
 				printer_files.append(file_)
+
+	for line in subprocess.check_output(['/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'list']).decode('UTF-8', 'replace').splitlines():
+		file_ = shlex.split(line)[0]
+		printer_files.append(file_.split('/')[-1])
 
 	# check if we found something
 	assert ldap_printer
