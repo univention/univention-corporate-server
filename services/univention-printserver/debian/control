@@ -21,6 +21,7 @@ Depends:
  hp-ppd,
  hpijs-ppds,
  openprinting-ppds,
+ printer-driver-all,
  python-ldap,
  python-pexpect,
  python-univention-lib (>= 1.0.25-1),
