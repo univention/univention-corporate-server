@@ -110,8 +110,8 @@ def get_registration_info(ucr):
 def _get_mail(mails, idx=-1):
 	assert mails.data, 'No mails have been captured in %s seconds' % (MAILS_TIMEOUT,)
 	assert idx < len(mails.data), 'Not enough mails have been captured to get mail of index: {}'.format(idx)
-	mail = email.message_from_string(mails.data[idx])
-	body = mail.get_payload(decode=True)
+	mail = email.message_from_string(mails.data[idx].decode("utf-8"))
+	body = mail.get_payload(decode=True).decode("utf-8")
 	verification_links = []
 	for line in body.split():
 		if line.startswith('https://'):
