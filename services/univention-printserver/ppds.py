@@ -118,7 +118,7 @@ def check_obsolete():
 			if not os.path.isfile(ppd_path):
 				obsolete.setdefault(cn, []).append(i)
 		for cn in obsolete:
-			print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --name %s \\' % (pipes.quote(cn),))
+			print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name %s \\' % (pipes.quote(cn),))
 			print('\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\'')
 
 
