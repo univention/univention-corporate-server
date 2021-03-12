@@ -190,6 +190,12 @@ export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
 export CFG="$1"
 
+# get image from cfg if not explicitly as env var
+if [ -z "$DIMAGE" ]; then
+	i="$(sed -n 's/^docker_image: //p' "$CFG")"
+	test -n "$i" && image="$i"
+fi
+
 # TODO, find a better way
 # special ip's for net-install tests, we can't use kvm_dhcp as we need
 # our own dhcp server for pxe, so create two ip adresses based on the
@@ -287,11 +293,17 @@ if "$docker"; then
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
-	cmd+=(
-		"$image"
-	)
+	# interactive mode for debug
+	$debug && cmd+=("-it")
+	# the image to start
+	cmd+=("$image")
 fi
-cmd+=("$exe" -c "$CFG")
+
+if $debug && $docker; then
+	cmd+=("bash")
+else
+	cmd+=("$exe" -c "$CFG")
+fi
 
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
@@ -304,8 +316,6 @@ for env_var in "${env_vars[@]}"
 do
 	echo "  $env_var=${!env_var}"
 done
-
-"$debug" && exit 0
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
