@@ -25,6 +25,7 @@ Depends:
  python-ldap,
  python-pexpect,
  python-univention-lib (>= 1.0.25-1),
+ python3-ldap,
  shell-univention-lib,
  univention-config (>= 15),
  univention-directory-listener,
@@ -34,6 +35,7 @@ Depends:
  univention-management-console-module-printers (= ${source:Version}),
  univention-printclient,
  ${misc:Depends},
+ ${python3:Depends},
  ${python:Depends},
 Conflicts:
  univention-management-console (<< 0.9.33-1),

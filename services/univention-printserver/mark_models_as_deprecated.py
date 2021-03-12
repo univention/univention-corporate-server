@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2017-2021 Univention GmbH
@@ -32,7 +32,9 @@ from __future__ import print_function
 
 import os
 import gzip
-import optparse
+import shlex
+import argparse
+import subprocess
 import ldap.filter
 
 import univention.config_registry
@@ -42,11 +44,11 @@ import univention.admin.uldap
 
 class UpdatePrinterModels(object):
 
-	def __init__(self, options, obsolete):
+	def __init__(self, options):
 		self.options = options
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
-		self.obsolete = obsolete
+		self.obsolete = options.models
 		if self.options.bindpwdfile:
 			with open(self.options.bindpwdfile) as f:
 				self.options.bindpwd = f.readline().strip()
@@ -68,39 +70,43 @@ class UpdatePrinterModels(object):
 		else:
 			self.lo, self.position = univention.admin.uldap.getAdminConnection()
 
-	def get_description_from_ppd(self, ppd):
-		ppd_path = os.path.join('/usr/share/ppd/', ppd)
-		nickname = manufacturer = None
-		if os.path.isfile(ppd_path):
-			if ppd_path.endswith('.ppd.gz'):
-				fh = gzip.open(ppd_path)
-			else:
-				fh = open(ppd_path)
-			for line in fh:
-				if line.startswith('*NickName:'):
-					nickname = line.split('"')[1]
-				if line.startswith('*Manufacturer:'):
-					manufacturer = line.split('"')[1].replace('(', '').replace(')', '').replace(' ', '')
-				if manufacturer and nickname:
-					break
-			fh.close()
-		return (manufacturer, nickname)
+	def get_nickname_from_ppd(self, ppd):
+		filename = os.path.join('/usr/share/ppd/', ppd)
+		if not os.path.isfile(filename):
+			if ':' in ppd:
+				try:
+					return self._get_nickname_from_ppd(subprocess.check_output([
+						'/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'cat', ppd
+					]).splitlines())
+				except subprocess.CalledProcessError:
+					pass
+			return
+		with (gzip.open(filename, 'rb') if filename.endswith('.ppd.gz') else open(filename, 'rb')) as fd:
+			return self._get_nickname_from_ppd(fd)
+
+	def _get_nickname_from_ppd(self, fd):
+		nickname = None
+		for line in fd:
+			if line.startswith(b'*NickName:'):
+				line = line.decode('UTF-8', 'replace').split(':', 1)[1]
+				nickname = shlex.split(line)[0]
+				return nickname
 
 	def check_duplicates(self):
 		for dn, attr in self.lo.search('(&(printermodel=*)(objectClass=univentionPrinterModels))'):
-			ldap_models = attr.get('printerModel', [])
-			new_ldap_models = list()
-			ppds = dict()
+			ldap_models = [_.decode('UTF-8') for _ in attr.get('printerModel', [])]
+			new_ldap_models = []
+			ppds = {}
 			for model in ldap_models:
-				ppd = model.split('"')[1]
+				ppd = shlex.split(model)[1]
 				if ppd in ppds:
 					ppds[ppd].append(model)
 				else:
 					ppds[ppd] = [model]
 			for ppd in ppds:
 				if len(ppds[ppd]) > 1:
-					_tmp, new_description = self.get_description_from_ppd(ppd)
-					new_ldap_models.append('"%s" "%s"' % (ppd, new_description))
+					new_description = str(self.get_nickname_from_ppd(ppd))
+					new_ldap_models.append('"%s" "%s"' % (ppd.replace('"', '\\"'), new_description.replace('"', '\\"')))
 				else:
 					new_ldap_models.append(ppds[ppd][0])
 			model_diff = set(ldap_models).difference(new_ldap_models)
@@ -109,7 +115,7 @@ class UpdatePrinterModels(object):
 					print('removing duplicate models for %s:' % dn)
 					print('\t' + '\n\t'.join(model_diff))
 				if not options.dry_run:
-					changes = [('printerModel', ldap_models, new_ldap_models)]
+					changes = [('printerModel', [_.encode('UTF-8') for _ in ldap_models], [_.encode('UTF-8') for _ in new_ldap_models])]
 					self.lo.modify(dn, changes)
 
 	def mark_as_obsolete(self):
@@ -119,8 +125,7 @@ class UpdatePrinterModels(object):
 			obj.open()
 			changed = False
 			for model in self.obsolete:
-				ppd = model.split('"')[1]
-				des = model.split('"')[3]
+				ppd, des = shlex.split(model)
 				model_item = [ppd, des]
 				if model_item in obj['printmodel']:
 					changed = True
@@ -139,22 +144,23 @@ class UpdatePrinterModels(object):
 
 
 if __name__ == '__main__':
-	usage = '%prog [options] [MODEL, MODEL, ...]'
-	parser = optparse.OptionParser(usage=usage)
-	parser.add_option('--dry-run', '-d', action='store_true', dest='dry_run', help='Do not modify objects')
-	parser.add_option('--verbose', '-v', action='store_true', dest='verbose', help='Enable verbose output')
-	parser.add_option('--check-duplicate', '-c', action='store_true', dest='check_duplicate', help='Check for duplicate models')
-	parser.add_option('--binddn', action='store', dest='binddn', help='LDAP bind dn for UDM CLI operation')
-	parser.add_option('--bindpwd', action='store', dest='bindpwd', help='LDAP bind password for bind dn')
-	parser.add_option('--bindpwdfile', action='store', dest='bindpwdfile', help='LDAP bind password file for bind dn')
-	parser.add_option('--name', action='store', dest='name', help='name of the settings/printermodel object to modify')
-	parser.add_option('--version', action='store', dest='version', help='only available in this version or older', default='4.2')
-	options, args = parser.parse_args()
-	if options.name and args:
-		upm = UpdatePrinterModels(options, args)
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--dry-run', '-d', action='store_true', help='Do not modify objects')
+	parser.add_argument('--verbose', '-v', action='store_true', help='Enable verbose output')
+	parser.add_argument('--check-duplicate', '-c', action='store_true', help='Check for duplicate models')
+	parser.add_argument('--binddn', help='LDAP bind dn for UDM CLI operation')
+	parser.add_argument('--bindpwd', help='LDAP bind password for bind dn')
+	parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
+	parser.add_argument('--name', help='name of the settings/printermodel object to modify')
+	parser.add_argument('--version', help='only available in this version or older', default='4.2')
+	parser.add_argument('models', nargs='*')
+	options = parser.parse_args()
+
+	if options.name and options.models:
+		upm = UpdatePrinterModels(options)
 		upm.mark_as_obsolete()
 	elif options.check_duplicate:
-		upm = UpdatePrinterModels(options, args)
+		upm = UpdatePrinterModels(options)
 		upm.check_duplicates()
 	else:
 		if options.verbose:
