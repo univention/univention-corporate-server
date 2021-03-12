@@ -32,6 +32,7 @@ strings = {
 	'boot_flag': '',
 	'finish_create_partition': 'Terminer le partitionnement',
 	'no': '',
+	'finish_installation': 'Terminer l\'installation',
 
 	'domain_setup': 'Veuillez sélectionner les réglages',
 	'new_domain': 'Créer un nouveau',

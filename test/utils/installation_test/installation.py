@@ -150,7 +150,7 @@ class UCSInstallation(object):
 			self.client.keyPress('enter')
 			time.sleep(3)
 			self.client.keyPress('enter')
-			self.click(self._['all_files_on_partition'])
+			time.sleep(3)
 			self.client.keyPress('enter')
 			self.click(self._['finish_partition'])
 			self.client.keyPress('enter')
@@ -160,7 +160,7 @@ class UCSInstallation(object):
 		time.sleep(900)
 		self.client.waitForText(self._['finish_installation'], timeout=900)
 		self.client.keyPress('enter')
-		time.sleep(10)
+		time.sleep(30)
 
 	def network_setup(self):
 		time.sleep(60)
@@ -235,7 +235,8 @@ class UCSInstallation(object):
 		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(1)
 			self.client.waitForText(self._['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
 			#self.click(self._['next'])
@@ -339,7 +340,12 @@ class UCSInstallation(object):
 				self.client.waitForText(self._['software_configuration_non_master'], timeout=self.timeout)
 			self.select_components()
 			self.client.keyPress('down')
-			self.click(self._['next'])
+			# damm, with eng we do not find the next button at this point
+			if self.args.language == 'eng':
+				self.client.mouseMove(940, 740)
+				self.client.mousePress(1)
+			else:
+				self.click(self._['next'])
 		time.sleep(5)
 		self.client.keyPress('enter')
 
