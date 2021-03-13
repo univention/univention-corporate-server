@@ -5843,17 +5843,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/HP-PhotoSmart_P230-gutenprint-ijs.5.2.ppd" "HP PhotoSmart P230 Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/HP-e-printer_e20-gutenprint-ijs-simplified.5.2.ppd" "HP e-printer e20 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/HP-e-printer_e20-gutenprint-ijs.5.2.ppd" "HP e-printer e20 Foomatic/gutenprint-ijs.5.2"' \
-	'"hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd" "HP 2500C Series PS3 Printer v3010.106"' \
-	'"hp-ppd/HP/HP_DeskJet_350C.ppd" "HP DeskJet 350C"' \
-	'"hp-ppd/HP/HP_DeskJet_600C_Photo_Series.ppd" "HP DeskJet 600C Series Photo, Foomatic + DJ6xxP"' \
-	'"hp-ppd/HP/HP_DeskJet_600C_Series.ppd" "HP DeskJet 600C Series, Foomatic + DJ6xx"' \
-	'"hp-ppd/HP/HP_DeskJet_630C.ppd" "HP DeskJet 630/632C, Foomatic + DJ630"' \
-	'"hp-ppd/HP/HP_DeskJet_800C_Series.ppd" "HP DeskJet 800C Series, Foomatic + DJ8xx"' \
-	'"hp-ppd/HP/HP_DeskJet_900C_Series.ppd" "HP DeskJet 900C Series, Foomatic + DJ9xx"' \
-	'"hp-ppd/HP/HP_DeskJet_990C.ppd" "HP DeskJet 990C, Foomatic + DJ9xxVIP"' \
-	'"hp-ppd/HP/HP_LaserJet_3200M.ppd" "HP LaserJet 3200 Series PS"' \
-	'"hp-ppd/HP/HP_LaserJet_5000_Series.ppd" "HP LaserJet 5000 Series PS"' \
-	'"hp-ppd/HP/HP_LaserJet_6P.ppd" "HP LaserJet 6P/6MP - PostScript"' \
 	'"hplip/HP/HP-Fax-hpcups.ppd.gz" "HP Fax hpcups"' \
 	'"hplip/HP/HP-Fax-hpijs.ppd.gz" "HP Fax hpijs"' \
 	'"hplip/HP/HP-Fax2-hpcups.ppd.gz" "HP Fax2 hpcups"' \
