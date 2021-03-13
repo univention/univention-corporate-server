@@ -63,7 +63,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 
 # adding all ppd in /usr/share/ppd
 
-# Manufacturer: HP Printers: 456
+# Manufacturer: HP Printers: 467
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=HP
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=HP,cn=cups,cn=univention,"$ldap_base" \
 	--append printmodel='"cupsfilters/HP-Color_LaserJet_CM3530_MFP-PDF.ppd" "HP Color LaserJet CM3530 MFP PDF"' \
@@ -514,6 +514,17 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/HP-PhotoSmart_P1215-pcl3.ppd" "HP PhotoSmart P1215 Foomatic/pcl3"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/HP-PhotoSmart_P1218-pcl3.ppd" "HP PhotoSmart P1218 Foomatic/pcl3"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/HP-PhotoSmart_P1315-pcl3.ppd" "HP PhotoSmart P1315 Foomatic/pcl3"' \
+	--append printmodel='"hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd" "HP 2500C Series PS3 Printer v3010.106"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_350C.ppd" "HP DeskJet 350C"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_600C_Photo_Series.ppd" "HP DeskJet 600C Series Photo, Foomatic + DJ6xxP"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_600C_Series.ppd" "HP DeskJet 600C Series, Foomatic + DJ6xx"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_630C.ppd" "HP DeskJet 630/632C, Foomatic + DJ630"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_800C_Series.ppd" "HP DeskJet 800C Series, Foomatic + DJ8xx"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_900C_Series.ppd" "HP DeskJet 900C Series, Foomatic + DJ9xx"' \
+	--append printmodel='"hp-ppd/HP/HP_DeskJet_990C.ppd" "HP DeskJet 990C, Foomatic + DJ9xxVIP"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_3200M.ppd" "HP LaserJet 3200 Series PS"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_5000_Series.ppd" "HP LaserJet 5000 Series PS"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_6P.ppd" "HP LaserJet 6P/6MP - PostScript"' \
 	--append printmodel='"hplip/HP/HP-Fax-hpcups.ppd.gz" "HP Fax hpcups"' \
 	--append printmodel='"hplip/HP/HP-Fax-hpijs.ppd.gz" "HP Fax hpijs"' \
 	--append printmodel='"hplip/HP/HP-Fax2-hpcups.ppd.gz" "HP Fax2 hpcups"' \
@@ -559,6 +570,13 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PCL_6_PCL_XL_Printer-pxlmono.ppd" "Generic PCL 6/PCL XL Printer Foomatic/pxlmono"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PostScript_Level_1_Printer-Postscript1.ppd" "Generic PostScript Level 1 Printer Foomatic/Postscript1 (recommended)"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PostScript_Printer-Postscript.ppd" "Generic PostScript Printer Foomatic/Postscript (recommended)"'
+
+# Manufacturer: None Printers: 3
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=None
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=None,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"hp-ppd/HP/HP_ColorLaserJet_5-5M.ppd" "HP ColorLaserJet 5/5M PS"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_5.ppd" "HP LaserJet 5/5M PostScript"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_5P.ppd" "HP LaserJet 5P/5MP PostScript"'
 
 # Manufacturer: FujiXerox Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=FujiXerox
@@ -9790,10 +9808,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/Apollo-P-2650-gutenprint-ijs-simplified.5.2.ppd" "Apollo P-2650 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/Apollo-P-2650-gutenprint-ijs.5.2.ppd" "Apollo P-2650 Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/Apollo-P-2650-hpijs-pcl3.ppd" "Apollo P-2650 Foomatic/hpijs-pcl3 (recommended)"'
-/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name None \
-	'"hp-ppd/HP/HP_ColorLaserJet_5-5M.ppd" "HP ColorLaserJet 5/5M PS"' \
-	'"hp-ppd/HP/HP_LaserJet_5.ppd" "HP LaserJet 5/5M PostScript"' \
-	'"hp-ppd/HP/HP_LaserJet_5P.ppd" "HP LaserJet 5P/5MP PostScript"'
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name Alps \
 	'"foomatic-rip/Alps-MD-1000-md2k.ppd" "Alps MD-1000 Foomatic/md2k"' \
 	'"foomatic-rip/Alps-MD-1300-md1xMono.ppd" "Alps MD-1300 Foomatic/md1xMono"' \
