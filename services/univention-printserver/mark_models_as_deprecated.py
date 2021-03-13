@@ -152,7 +152,7 @@ if __name__ == '__main__':
 	parser.add_argument('--bindpwd', help='LDAP bind password for bind dn')
 	parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
 	parser.add_argument('--name', help='name of the settings/printermodel object to modify')
-	parser.add_argument('--version', help='only available in this version or older', default='4.2')
+	parser.add_argument('--version', help='only available in this version or older', default='4.4')
 	parser.add_argument('models', nargs='*')
 	options = parser.parse_args()
 
