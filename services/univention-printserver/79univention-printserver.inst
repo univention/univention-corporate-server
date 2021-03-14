@@ -4659,7 +4659,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/PCPI-1030-gutenprint-ijs.5.2.ppd" "PCPI 1030 Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/PCPI-1030-laserjet.ppd" "PCPI 1030 Foomatic/laserjet (recommended)"'
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name Generic \
-	'"cupsfilters/Generic-PDF_Printer-PDF.ppd" "Generic PDF Printer"' \
 	'"foomatic-rip/Generic-ESC_P_Dot_Matrix_Printer-eps9high.ppd" "Generic ESC/P Dot Matrix Printer Foomatic/eps9high"' \
 	'"foomatic-rip/Generic-ESC_P_Dot_Matrix_Printer-eps9mid.ppd" "Generic ESC/P Dot Matrix Printer Foomatic/eps9mid"' \
 	'"foomatic-rip/Generic-ESC_P_Dot_Matrix_Printer-epson.ppd" "Generic ESC/P Dot Matrix Printer Foomatic/epson (recommended)"' \
@@ -4830,8 +4829,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name HP \
 	'"cupsfilters/HP-Color_LaserJet_CM3530_MFP-PDF.ppd" "HP Color LaserJet CM3530 MFP PDF"' \
 	'"cupsfilters/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd" "HP PhotoSmart Pro B8300 CUPS/pdftoijs/hpijs"' \
-	'"cupsfilters/pxlcolor.ppd" "HP Color LaserJet Series PCL 6 CUPS"' \
-	'"cupsfilters/pxlmono.ppd" "HP LaserJet Series PCL 6 CUPS"' \
 	'"foomatic-rip/HP-2000C-gutenprint-ijs-simplified.5.2.ppd" "HP 2000C Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/HP-2000C-gutenprint-ijs.5.2.ppd" "HP 2000C Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/HP-2000C-pcl3.ppd" "HP 2000C Foomatic/pcl3"' \
@@ -5843,14 +5840,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/HP-PhotoSmart_P230-gutenprint-ijs.5.2.ppd" "HP PhotoSmart P230 Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/HP-e-printer_e20-gutenprint-ijs-simplified.5.2.ppd" "HP e-printer e20 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/HP-e-printer_e20-gutenprint-ijs.5.2.ppd" "HP e-printer e20 Foomatic/gutenprint-ijs.5.2"' \
-	'"hplip/HP/HP-Fax-hpcups.ppd.gz" "HP Fax hpcups"' \
-	'"hplip/HP/HP-Fax-hpijs.ppd.gz" "HP Fax hpijs"' \
-	'"hplip/HP/HP-Fax2-hpcups.ppd.gz" "HP Fax2 hpcups"' \
-	'"hplip/HP/HP-Fax2-hpijs.ppd.gz" "HP Fax2 hpijs"' \
-	'"hplip/HP/HP-Fax3-hpcups.ppd.gz" "HP Fax3 hpcups"' \
-	'"hplip/HP/HP-Fax3-hpijs.ppd.gz" "HP Fax3 hpijs"' \
-	'"hplip/HP/HP-Fax4-hpcups.ppd.gz" "HP Fax4 hpcups"' \
-	'"hplip/HP/HP-Fax4-hpijs.ppd.gz" "HP Fax4 hpijs"' \
 	'"hplip/HP/hp-2000c-hpijs.ppd" "HP 2000c hpijs, 3.16.11"' \
 	'"hplip/HP/hp-2500c-hpijs.ppd" "HP 2500c hpijs, 3.16.11"' \
 	'"hplip/HP/hp-910-hpijs.ppd" "HP 910 hpijs, 3.16.11"' \
@@ -6654,7 +6643,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/Oce-3145PS-Postscript.ppd" "Oce 3145 Foomatic/Postscript"' \
 	'"foomatic-rip/Oce-3155PS-Postscript.ppd" "Oce 3155 Foomatic/Postscript"' \
 	'"foomatic-rip/Oce-3165-Postscript.ppd" "Oce 3165 Foomatic/Postscript"' \
-	'"foomatic-rip/Oce-3165PS-Postscript.ppd" "Oce 3165 Foomatic/Postscript"' \
 	'"foomatic-rip/Oce-8445PS-Postscript.ppd" "Oce 8445 Foomatic/Postscript"' \
 	'"foomatic-rip/Oce-8445PS-ljet3.ppd" "Oce 8445 Foomatic/ljet3"' \
 	'"foomatic-rip/Oce-8445PS-ljet3d.ppd" "Oce 8445 Foomatic/ljet3d"' \
@@ -6778,10 +6766,8 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/Fujifilm-Printpix-CX-550-gutenprint-ijs-simplified.5.2.ppd" "Fujifilm Printpix-CX-550 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/Fujifilm-Printpix-CX-550-gutenprint-ijs.5.2.ppd" "Fujifilm Printpix-CX-550 Foomatic/gutenprint-ijs.5.2"'
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name FujiXerox \
-	'"cupsfilters/Fuji_Xerox-DocuPrint_CM305_df-PDF.ppd" "Fuji Xerox DocuPrint CM305 df PDF"' \
 	'"foomatic-rip/Fuji_Xerox-DocuPrint_CM305_df-Postscript.ppd" "Fuji Xerox DocuPrint CM305 df Foomatic/Postscript (recommended)"'
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name Ricoh \
-	'"cupsfilters/Ricoh-PDF_Printer-PDF.ppd" "Ricoh PDF Printer"' \
 	'"foomatic-rip/Ricoh-4081-r4081.ppd" "Ricoh 4081 Foomatic/r4081 (recommended)"' \
 	'"foomatic-rip/Ricoh-4801-r4081.ppd" "Ricoh 4801 Foomatic/r4081 (recommended)"' \
 	'"foomatic-rip/Ricoh-6000-r4081.ppd" "Ricoh 6000 Foomatic/r4081 (recommended)"' \
