@@ -26,7 +26,7 @@ class UCSInstallation(object):
 		self.args = args
 		self.config = OCRConfig()
 		self.config.update(lang=self.args.language)
-		self.timeout = 60
+		self.timeout = 120
 		self.setup_finish_sleep = 1800
 		self.connect()
 
@@ -45,7 +45,7 @@ class UCSInstallation(object):
 		self.client = self.conn.__enter__()
 		self.client.updateOCRConfig(self.config)
 
-	def text_is_visible(self, text, timeout=30):
+	def text_is_visible(self, text, timeout=120):
 		try:
 			self.client.waitForText(text, timeout=timeout)
 			return True

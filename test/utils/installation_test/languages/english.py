@@ -16,7 +16,7 @@ strings = {
 	'not_using_dhcp': 'probably not using',
 	'manual_network_config': 'Configure the network',
 	'ip_address': 'The IP address is unique',
-	'netmask': 'The netmask is used to',
+	'netmask': 'The netmask',
 	'gateway': 'The gateway is an IP address',
 	'name_server': 'The name servers are used',
 	'user_and_password': 'You need to set a password',
