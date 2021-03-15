@@ -98,7 +98,7 @@ class UpdatePrinterModels(object):
 			new_ldap_models = []
 			ppds = {}
 			for model in ldap_models:
-				ppd = shlex.split(model)[1]
+				ppd = shlex.split(model)[0]
 				if ppd in ppds:
 					ppds[ppd].append(model)
 				else:
