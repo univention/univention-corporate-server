@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-15) unstable; urgency=medium
+
+  * Bug #52863: Include QA feedback
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 15 Mar 2021 21:46:45 +0100
+
 univention-appcenter (9.0.2-14) unstable; urgency=medium
 
   * Bug #51598: Migrate univention-appcenter-listener-converter to Python 3

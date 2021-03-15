@@ -317,6 +317,10 @@ define([
 				on(installWizard, 'finished', function() {
 					deferred.resolve(backpack);
 				});
+				on(installWizard, 'cancel', function() {
+					// resolve anyway. no need to cancel anything
+					deferred.resolve(backpack);
+				});
 				this._show(installWizard);
 			}
 			return deferred;

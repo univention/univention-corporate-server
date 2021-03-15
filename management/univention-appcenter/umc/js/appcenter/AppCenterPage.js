@@ -236,7 +236,7 @@ define([
 				selectionModes: ['install'],
 				domainWide: false,
 				query: function(app) {
-					return app.$isSuggested;
+					return app.isSuggested;
 				},
 				// For tracking of interaction with the "Suggestions based on installed apps" category
 				isSuggestionCategory: true
@@ -246,7 +246,7 @@ define([
 				selectionModes: ['install'],
 				domainWide: false,
 				query: function(app) {
-					return !app.is_installed_anywhere;
+					return !app.isInstalledInDomain();
 				}
 			}];
 		},
@@ -294,7 +294,7 @@ define([
 							})
 						);
 					}
-					this._applications = data.result;
+					this._applications = data.result.map((app) => new App(app));
 					return this._applications;
 				}));
 			}
@@ -303,12 +303,12 @@ define([
 
 		_markAppsAsSuggested: function(applications) {
 			return when(this._getAppSuggestions(), suggestions => {
-				let installedApps = applications.filter(app => app.is_installed_anywhere);
+				let installedApps = applications.filter(app => app.isInstalledInDomain());
 
 				this._getSuggestedAppIds(suggestions, installedApps).forEach(id => {
 					let app = applications.find(app => app.id === id);
 					if (app) {
-						app.$isSuggested = true;
+						app.isSuggested = true;
 					}
 				});
 			});
@@ -353,11 +353,11 @@ define([
 					array.forEach(this.metaCategories, function(metaCategory) {
 						var tiles = array.map(applications, function(app) {
 							return new Tile({
-								bgc: app.background_color || '',
-								logo: '/univention/js/dijit/themes/umc/icons/scalable/' + app.logo_name,
+								bgc: app.backgroundColor || '',
+								logo: '/univention/js/dijit/themes/umc/icons/scalable/' + app.logoName,
 								name: app.name,
 								domainWide: metaCategory.domainWide,
-								obj: new App(app),
+								obj: app,
 							});
 						});
 						metaCategory.set('tiles', tiles);
@@ -369,7 +369,7 @@ define([
 						var licenses = [];
 						var voteForApps = false;
 						array.forEach(applications, function(application) {
-							array.forEach(application.app_categories, function(category) {
+							array.forEach(application.appCategories, function(category) {
 								if (array.indexOf(categories.map(x => x.id), category) < 0) {
 									categories.push({
 										id: category,
@@ -391,10 +391,10 @@ define([
 							if (array.indexOf(licenses.map(x => x.id), application.license) < 0) {
 								licenses.push({
 									id: application.license,
-									description: application.license_description
+									description: application.licenseDescription
 								});
 							}
-							if (application.vote_for_app) {
+							if (application.voteForApps) {
 								voteForApps = true;
 							}
 						});

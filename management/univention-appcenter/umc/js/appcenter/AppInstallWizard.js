@@ -99,6 +99,39 @@ define([
 			this.pages.push(page);
 		},
 
+		_funcLabelStart() {
+			switch (this.action) {
+				case 'remove':
+					return _('Start removal');
+				case 'upgrade':
+					return _('Start upgrade');
+				default:
+					return _('Start installation');
+			}
+		},
+
+		_funcLabelStartAnyway() {
+			switch (this.action) {
+				case 'remove':
+					return _('Start removal anyway');
+				case 'upgrade':
+					return _('Start upgrade anyway');
+				default:
+					return _('Start installation anyway');
+			}
+		},
+
+		_funcLabelStartWithLicense() {
+			switch (this.action) {
+				case 'remove':
+					return _('Accept license and start removal');
+				case 'upgrade':
+					return _('Accept license and start upgrade');
+				default:
+					return _('Accept license and start installation');
+			}
+		},
+
 		_hidrateDetailPage: function(isWarning) {
 			const pageName = isWarning ? 'warnings' : 'details';
 			const containerName = isWarning ? 'warnings_container' : 'details_container';
@@ -114,7 +147,7 @@ define([
 				const details = this.dryRunResults[key];
 				const detailsContainer = new AppDetailsContainer({
 					funcName: this.action,
-					funcLabel: _('Start'),
+					funcLabel: this._funcLabelStart(),
 					app: details.app,
 					details,
 					host: details.host,
@@ -256,12 +289,12 @@ define([
 		getFooterButtons: function(pageName) {
 			const buttons = this.inherited(arguments);
 			if (pageName === 'warnings') {
-				array.forEach(buttons, function(button) {
+				array.forEach(buttons, (button) => {
 					if (button.name === 'next') {
 						button.label = _('Continue anyway');
 					}
 					if (button.name === 'finish') {
-						button.label = _('Start anyway');
+						button.label = this._funcLabelStartAnyway();
 					}
 				});
 			} else if (pageName.startsWith('licenseAgreement_')) {
@@ -270,15 +303,15 @@ define([
 						button.label = _('Accept license');
 					}
 					if (button.name === 'finish') {
-						button.label = _('Accept license and start');
+						button.label = this._funcLabelStartWithLicense();
 					}
 				});
 			} else {
-				array.forEach(buttons, lang.hitch(this, function(button) {
+				array.forEach(buttons, (button) => {
 					if (button.name === 'finish') {
-						button.label = _('Start');
+						button.label = this._funcLabelStart();
 					}
-				}));
+				});
 			}
 			return buttons;
 		},

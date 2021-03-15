@@ -63,6 +63,8 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.pages = [];
+			this._successApps = [];
+			this._hasErrors = false;
 			this._addPages();
 		},
 
@@ -88,6 +90,8 @@ define([
 				for (const [appId, successDetails] of Object.entries(appDetails)) {
 					if (!successDetails.success) {
 						brokenApps.push([hostname, appId]);
+					} else {
+						this._successApps.push(appId);
 					}
 				}
 			}
@@ -100,16 +104,22 @@ define([
 					helpText: _('We tried to do as requested but failed for %s', failedAppsText),
 					widgets: [{
 						type: Text,
+						style: 'display: block;',
+						'class': 'AppDetailsDialog__warning AppDetailsDialog__warning--hard',
 						name: 'failuresError',
 						content: _('These are the error messages from the server. More information might be available on the system\'s logfile <em>/var/log/univention/appcenter.log</em>') + '<ul><li>' + this.errorMessages.join('</li><li>') + '</li></ul>',
 					}]
 				};
 				this.pages.push(pageConf);
+				this._hasErrors = true;
 			}
 		},
 
 		_addReadmeInstallPages: function() {
 			for (const app of this.apps) {
+				if (!this._successApps.includes(app.id)) {
+					continue;
+				}
 				let readmeAttr;
 				if (this.action === 'upgrade') {
 					readmeAttr = 'candidateReadmePostUpdate';
@@ -154,8 +164,27 @@ define([
 			}
 		},
 
+		_updateButtons: function(pageName) {
+			this.inherited(arguments);
+			var buttons = this._pages[pageName]._footerButtons;
+			if (!this.canFinish()) {
+				if (buttons.finish) {
+					domClass.add(buttons.finish.domNode, 'dijitDisplayNone');
+				}
+			}
+			if (!this.canCancel()) {
+				if (buttons.cancel) {
+					domClass.add(buttons.cancel.domNode, 'dijitDisplayNone');
+				}
+			}
+		},
+
+		canFinish: function() {
+			return !this._hasErrors;
+		},
+
 		canCancel: function() {
-			return false;
+			return !this.canFinish();
 		},
 	});
 });

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-03-02 00:43+0100\n"
+"POT-Creation-Date: 2021-03-15 18:06+0100\n"
 "PO-Revision-Date: 2020-09-15 14:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -57,8 +57,8 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/appcenter/__init__.py:458 umc/python/appcenter/__init__.py:479
-#: umc/python/appcenter/__init__.py:674
+#: umc/python/appcenter/sanitizers.py:74 umc/python/appcenter/__init__.py:458
+#: umc/python/appcenter/__init__.py:479 umc/python/appcenter/__init__.py:674
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
@@ -141,7 +141,7 @@ msgstr ""
 msgid "The server seems to be lacking a proper password file."
 msgstr "Dem Rechner scheint eine korrekte Passwortdatei zu fehlen."
 
-#: umc/python/appcenter/sanitizers.py:94
+#: umc/python/appcenter/sanitizers.py:96
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
