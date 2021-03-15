@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: libcaca
+fix: 0.99.beta19-2.1~deb9u2
+desc: |
+ This update addresses the following issue:
+ * A flaw was found in libcaca v0.99.beta19. A buffer overflow issue in
+   caca_resize function in libcaca/caca/canvas.c may lead to local execution
+   of arbitrary code in the user context. (CVE-2021-3410)
+bug: [52908]
+cve:
+- CVE-2021-3410
