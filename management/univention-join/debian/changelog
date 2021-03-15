@@ -63,7 +63,7 @@ univention-join (12.0.0-8) unstable; urgency=low
     joinscripts is postponed depending on the phase read from the updater
     status file. This change is a preparation for the upcoming update.
 
- -- Sönke	 Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Oct 2020 17:48:59 +0200
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Oct 2020 17:48:59 +0200
 
 univention-join (12.0.0-7) unstable; urgency=low
 
