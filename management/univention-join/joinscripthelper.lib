@@ -261,16 +261,16 @@ joinscript_init() {
 		joinscript_abort "The server has not joined yet"
 	fi
 
-	# Do not execute join scripts during a running system update (only effective if update's target version is UCS 5.0-0 or higher)
-	if joinscript_is_update_running ; then
-		joinscript_abort "A system update is currently being performed. The execution of the join script $JS_SCRIPT_FULLNAME is therefore postponed."
-	fi
-
 	if [ -z "$JOIN_FORCE" ] && joinscript_check_already_executed; then
 		# This is the special case, where it would be nicer to have a different
 		# exit-code, but exit-code 1 is still returned in order not to break
 		# compatibility with join-scripts, that don't use this lib yet.
 		exit 1
+	fi
+
+	# Do not execute join scripts during a running system update (only effective if update's target version is UCS 5.0-0 or higher)
+	if joinscript_is_update_running ; then
+		joinscript_abort "A system update is currently being performed. The execution of the join script $JS_SCRIPT_FULLNAME is therefore postponed."
 	fi
 
 	if ! joinscript_get_last_executed_version; then
