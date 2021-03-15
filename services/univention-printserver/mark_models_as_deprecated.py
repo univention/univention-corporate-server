@@ -93,30 +93,28 @@ class UpdatePrinterModels(object):
 				return nickname
 
 	def check_duplicates(self):
-		for dn, attr in self.lo.search('(&(printermodel=*)(objectClass=univentionPrinterModels))'):
-			ldap_models = [_.decode('UTF-8') for _ in attr.get('printerModel', [])]
-			new_ldap_models = []
+		for obj in self.models.lookup(None, self.lo, ''):
 			ppds = {}
-			for model in ldap_models:
-				ppd = shlex.split(model)[0]
-				if ppd in ppds:
-					ppds[ppd].append(model)
-				else:
-					ppds[ppd] = [model]
-			for ppd in ppds:
-				if len(ppds[ppd]) > 1:
-					new_description = str(self.get_nickname_from_ppd(ppd))
-					new_ldap_models.append('"%s" "%s"' % (ppd.replace('"', '\\"'), new_description.replace('"', '\\"')))
-				else:
-					new_ldap_models.append(ppds[ppd][0])
-			model_diff = set(ldap_models).difference(new_ldap_models)
-			if model_diff:
+			for model in obj['printmodel']:
+				ppd = model[0]
+				ppds.setdefault(ppd, []).append(model)
+
+			duplicated_ppds = [ppd for ppd, model in ppds.items() if len(model) > 1]
+			replacement_ppds = [
+				[ppd, str(self.get_nickname_from_ppd(ppd))]
+				for ppd in duplicated_ppds
+			]
+
+			if duplicated_ppds:
 				if self.options.verbose:
-					print('removing duplicate models for %s:' % dn)
-					print('\t' + '\n\t'.join(model_diff))
+					print('removing duplicate models for %s:' % obj.dn)
+					print('replace:', [' '.join(ppd_model) for ppd_model in obj['printmodel'] if ppd_model[0] in duplicated_ppds])
+					print('with:', [' '.join(ppd_model) for ppd_model in replacement_ppds])
+
 				if not options.dry_run:
-					changes = [('printerModel', [_.encode('UTF-8') for _ in ldap_models], [_.encode('UTF-8') for _ in new_ldap_models])]
-					self.lo.modify(dn, changes)
+					obj.open()
+					obj['printmodel'] = [ppd_model for ppd_model in obj['printmodel'] if ppd_model[0] not in duplicated_ppds] + replacement_ppds
+					obj.modify()
 
 	def mark_as_obsolete(self):
 		obj = self.models.lookup(None, self.lo, ldap.filter.filter_format('name=%s', [options.name]))
