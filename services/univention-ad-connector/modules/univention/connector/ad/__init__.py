@@ -380,15 +380,9 @@ class ad(univention.connector.ucs):
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
-		MAPPING_FILENAME = '/etc/univention/%s/ad/mapping.py' % configbasename
-		if six.PY2:
-			import imp
-			mapping = imp.load_source('mapping', MAPPING_FILENAME)
-		else:
-			import importlib.util
-			spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-			mapping = importlib.util.module_from_spec(spec)
-			spec.loader.exec_module(mapping)
+		import univention.connector.ad.mapping
+		MAPPING_FILENAME = '/etc/univention/%s/ad/localmapping.py' % configbasename
+		ad_mapping = univention.connector.ad.mapping.load_localmapping(MAPPING_FILENAME)
 
 		_ucr = dict(ucr)
 		try:
@@ -426,7 +420,7 @@ class ad(univention.connector.ucs):
 
 		return cls(
 			configbasename,
-			mapping.ad_mapping,
+			ad_mapping,
 			ucr,
 			ad_ldap_host,
 			ad_ldap_port,

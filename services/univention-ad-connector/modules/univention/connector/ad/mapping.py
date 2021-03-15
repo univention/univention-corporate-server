@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
@@ -31,19 +32,54 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from univention.connector.ad.mapping import (
-	ignore_filter_from_attr,
-	ignore_filter_from_tmpl,
-	configRegistry,
-)
 
-import os
 import six
 
 import univention.connector.ad
-import univention.connector.ad.mapping
 import univention.connector.ad.password
 import univention.connector.ad.proxyAddresses as proxyAddresses
+from univention.connector.ad import format_escaped
+
+from univention.config_registry import ConfigRegistry
+
+configRegistry = ConfigRegistry()
+configRegistry.load()
+
+
+def ignore_filter_from_tmpl(template, ucr_key, default=''):
+	"""
+	Construct an `ignore_filter` from a `ucr_key`
+	(`connector/ad/mapping/*/ignorelist`, a comma delimited list of values), as
+	specified by `template` while correctly escaping the filter-expression.
+
+	`template` must be formatted as required by `format_escaped`.
+
+	>>> ignore_filter_from_tmpl('(cn={0!e})',
+	... 'connector/ad/mapping/nonexistend/ignorelist',
+	... 'one,two,three')
+	'(|(cn=one)(cn=two)(cn=three))'
+	"""
+	variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
+	filter_parts = [format_escaped(template, v) for v in variables]
+	if filter_parts:
+		return '(|{})'.format(''.join(filter_parts))
+	return ''
+
+
+def ignore_filter_from_attr(attribute, ucr_key, default=''):
+	"""
+	Convenience-wrapper around `ignore_filter_from_tmpl()`.
+
+	This expects a single `attribute` instead of a `template` argument.
+
+	>>> ignore_filter_from_attr('cn',
+	... 'connector/ad/mapping/nonexistend/ignorelist',
+	... 'one,two,three')
+	'(|(cn=one)(cn=two)(cn=three))'
+	"""
+	template = '({}={{0!e}})'.format(attribute)
+	return ignore_filter_from_tmpl(template, ucr_key, default)
+
 
 global_ignore_subtree = [
 	'cn=univention,%(ldap/base)s' % configRegistry,
@@ -465,17 +501,18 @@ if configRegistry.get('connector/ad/mapping/group/language') not in ['de', 'DE']
 	ad_mapping['group'].mapping_table.pop('cn')
 
 
-try:
-	if six.PY2:
-		import imp
-		mapping_hook = imp.load_source('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')).mapping_hook
+def load_localmapping(filename='/etc/univention/connector/ad/localmapping.py'):
+	try:
+		if six.PY2:
+			import imp
+			mapping_hook = imp.load_source('localmapping', filename).mapping_hook
+		else:
+			import importlib.util
+			spec = importlib.util.spec_from_file_location('localmapping', filename)
+			mapping = importlib.util.module_from_spec(spec)
+			spec.loader.exec_module(mapping)
+			mapping_hook = mapping.mapping_hook
+	except (IOError, AttributeError):
+		return ad_mapping
 	else:
-		import importlib.util
-		spec = importlib.util.spec_from_file_location('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py'))
-		mapping = importlib.util.module_from_spec(spec)
-		spec.loader.exec_module(mapping)
-		mapping_hook = mapping.mapping_hook
-except (IOError, AttributeError):
-	pass
-else:
-	ad_mapping = mapping_hook(ad_mapping)
+		return mapping_hook(ad_mapping)

@@ -9,8 +9,6 @@ scripts/resync_object_from_ad.py  usr/share/univention-ad-connector/
 scripts/remove_ucs_rejected.py usr/share/univention-ad-connector/
 scripts/remove_ad_rejected.py usr/share/univention-ad-connector/
 
-conffiles/etc/univention/connector/ad/mapping.py etc/univention/connector/ad/
-
 19univention-ad-connector.uinst usr/lib/univention-uninstall/
 81univention-ad-connector.inst usr/lib/univention-install/
 

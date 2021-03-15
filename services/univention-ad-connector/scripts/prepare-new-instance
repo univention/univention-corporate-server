@@ -141,8 +141,9 @@ then
     
     echo "-- copy mapping"
     mkdir -p /etc/univention/"$CONFIGBASENAME"/ad
-    cp -a /etc/univention/connector/ad/mapping.py /etc/univention/"$CONFIGBASENAME"/ad/
-	sed -i "s|@%@connector/ad/|@%@$CONFIGBASENAME/ad/|g;s|'connector/ad/|'$CONFIGBASENAME/ad/|g" /etc/univention/"$CONFIGBASENAME"/ad/mapping.py
+    cp -a /usr/lib/python3/dist-packages/univention/connector/ad/mapping.py /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
+    sed -i "s|@%@connector/ad/|@%@$CONFIGBASENAME/ad/|g;s|'connector/ad/|'$CONFIGBASENAME/ad/|g" /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
+    echo -e 'def mapping_hook(org_mapping):\n    return ad_mapping' >> /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
     
     echo "-- copy startup script"
     cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
