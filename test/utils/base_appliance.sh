@@ -910,11 +910,14 @@ appliance_basesettings ()
 	local main_app=$1
 
 	ucr set repository/online/unmaintained='yes'
+	cat /etc/apt/sources.list.d/*.list
+	apt-get -y update
 	ucr set umc/web/appliance/id?${main_app}
+	univention-install -y univention-app-appliance || true
 	univention-install -y univention-app-appliance
 	ucr set repository/online/unmaintained='no'
 	apt-get update
-	
+
 	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
 	ucr set grub/title="Start $main_app"
 
