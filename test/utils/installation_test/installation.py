@@ -22,6 +22,7 @@ import os
 class UCSInstallation(object):
 
 	def __init__(self, args):
+		os.environ['OMP_THREAD_LIMIT'] = '1'
 		init_logger('info')
 		self.args = args
 		self.config = OCRConfig()
