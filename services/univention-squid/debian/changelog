@@ -1,3 +1,9 @@
+univention-squid (12.0.2-3) unstable; urgency=medium
+
+  * Bug #52814: fix double netmask e.g. 1.2.3.4/24/24
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 15 Mar 2021 12:29:53 +0100
+
 univention-squid (12.0.2-2) unstable; urgency=medium
 
   * Bug #52814: make UCR template compatible with UCS 5.0/Python 3
