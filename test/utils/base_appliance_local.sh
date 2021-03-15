@@ -140,7 +140,7 @@ _set_global_vars () {
 	UCS_VERSION=$4
 	UCS_VERSION_INFO="$5"
 
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}-0.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
 	APPS_SERVER="omar.knut.univention.de"
 	IMAGE_SERVER="docker.knut.univention.de"
@@ -201,7 +201,7 @@ create_ucs_images () {
 	KVM_SERVER="$3"
 	UCS_VERSION="$4"
 
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance.qcow2"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance-0.qcow2"
 	APPS_SERVER="omar.knut.univention.de"
 	IMAGE_SERVER="docker.knut.univention.de"
 	TMP_DIR="/tmp/build-ucs-appliance"
@@ -245,7 +245,7 @@ create_ucs_images () {
 
 create_ec2_image () {
 	_set_global_vars "$@"
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}.qcow2"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}-0.qcow2"
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
@@ -268,7 +268,7 @@ create_internal_template () {
 	KVM_SERVER=$3
 	UCS_VERSION=$4
 	UCS_VERSION_INFO="$5"
-	QCOW_PATH="/var/lib/libvirt/images/${KVM_USER}_${SERVERROLE}.qcow2"
+	QCOW_PATH="/var/lib/libvirt/images/${KVM_USER}_${SERVERROLE}-0.qcow2"
 	TMP_DIR="/var/univention/buildsystem2/temp/build-branch-test-template"
 	KVM_SERVER_LOCAL_TMP_IMAGE="${SERVERROLE}-${UCS_VERSION}.qcow2"
 	KVM_TEMPLATE_NAME="${UCS_VERSION}+${UCS_VERSION_INFO}_${SERVERROLE}-joined_amd64.tar.gz"
