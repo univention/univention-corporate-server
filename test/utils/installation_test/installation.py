@@ -22,13 +22,14 @@ import os
 class UCSInstallation(object):
 
 	def __init__(self, args):
+		# see https://github.com/tesseract-ocr/tesseract/issues/2611
 		os.environ['OMP_THREAD_LIMIT'] = '1'
 		init_logger('info')
 		self.args = args
 		self.config = OCRConfig()
 		self.config.update(lang=self.args.language)
 		self.timeout = 120
-		self.setup_finish_sleep = 1800
+		self.setup_finish_sleep = 1500
 		self.connect()
 
 	def screenshot(self, filename):
@@ -158,8 +159,8 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
-		time.sleep(900)
-		self.client.waitForText(self._['finish_installation'], timeout=900)
+		time.sleep(700)
+		self.client.waitForText(self._['finish_installation'], timeout=1200)
 		self.client.keyPress('enter')
 		time.sleep(30)
 
@@ -289,6 +290,7 @@ class UCSInstallation(object):
 				self.client.keyPress('enter')
 				time.sleep(60)
 			self.click(self._['next'])
+			self.click(self._['next'])
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_user)
@@ -326,7 +328,7 @@ class UCSInstallation(object):
 
 	def finish(self):
 		time.sleep(self.setup_finish_sleep)
-		self.client.waitForText(self._['setup_successful'], timeout=1800)
+		self.client.waitForText(self._['setup_successful'], timeout=2100)
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
 		time.sleep(10)
