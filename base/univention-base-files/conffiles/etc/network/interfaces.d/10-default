@@ -106,7 +106,7 @@ def ipv6(interfaces):
 			print('# %s' % (name,))
 			if i == 0:  # first
 				print('\taddress %s' % (addr.ip,))
-				print('\tnetmask %s' % (addr.prefixlen,))
+				print('\tnetmask %s' % (addr.network.prefixlen,))
 			else:
 				print('\tup   ip -6 addr add %s dev %s' % (addr, iface.name))
 				print('\tdown ip -6 addr del %s dev %s' % (addr, iface.name))
