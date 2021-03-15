@@ -851,7 +851,7 @@ class s4(univention.s4connector.ucs):
 		usnchanged = int(ad_object['attributes'].get('uSNChanged', [b'0'])[0])
 		return max(usnchanged, usncreated)
 
-	def __search_s4_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
+	def __search_ad_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
 		'''
 		search s4 across all partitions listed in self.s4_ldap_partitions
 		'''
@@ -910,15 +910,15 @@ class s4(univention.s4connector.ucs):
 
 		return fix_dn_in_search(res)
 
-	def __search_s4_changes(self, show_deleted=False, filter=''):
+	def __search_ad_changes(self, show_deleted=False, filter=''):
 		'''
-		search s4 for changes since last update (changes greater lastUSN)
+		search AD for changes since last update (changes greater lastUSN)
 		'''
 		lastUSN = self._get_lastUSN()
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
 
-		def _s4_changes_filter(attribute, lowerUSN, higherUSN=''):
+		def _ad_changes_filter(attribute, lowerUSN, higherUSN=''):
 			if higherUSN:
 				usn_filter_format = '(&({attribute}>={lower_usn!e})({attribute}<={higher_usn!e}))'
 			else:
@@ -926,34 +926,33 @@ class s4(univention.s4connector.ucs):
 
 			return format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
 
-		def search_s4_changes_by_attribute(usnFilter, last_usn):
+		def search_ad_changes_by_attribute(usnFilter):
 			if filter != '':
 				usnFilter = '(&(%s)(%s))' % (filter, usnFilter)
 
-			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
+			return self.__search_ad_partitions(filter=usnFilter, show_deleted=show_deleted)
 
+		def sort_ad_changes(res, last_usn):
 			def _sortkey_ascending_usncreated(element):
 				return int(element[1]['uSNCreated'][0])
 
 			def _sortkey_ascending_usnchanged(element):
 				return int(element[1]['uSNChanged'][0])
 
-			def _sortkey_created_since_last(element):
-				return 0 if int(element[1]['uSNCreated'][0]) > last_usn else 1
-
 			if last_usn <= 0:
 				return sorted(res, key=_sortkey_ascending_usncreated)
 			else:
-				res_ascending_usnchanged = sorted(res, key=_sortkey_ascending_usnchanged)
-				return sorted(res_ascending_usnchanged, key=_sortkey_created_since_last)
+				created_since_last = [x for x in res if int(x[1]['uSNCreated'][0]) > last_usn]
+				changed_since_last = [x for x in res if int(x[1]['uSNChanged'][0]) > last_usn and x not in created_since_last]
+				return sorted(created_since_last, key=_sortkey_ascending_usncreated) + sorted(changed_since_last, key=_sortkey_ascending_usnchanged)
 
 		# search for objects with uSNCreated and uSNChanged in the known range
 		try:
-			usn_filter = _s4_changes_filter('uSNCreated', lastUSN + 1)
+			usn_filter = _ad_changes_filter('uSNCreated', lastUSN + 1)
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
-				usn_filter = '(|%s%s)' % (_s4_changes_filter('uSNChanged', lastUSN + 1), usn_filter)
-			return search_s4_changes_by_attribute(usn_filter, lastUSN)
+				usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', lastUSN + 1), usn_filter)
+			return sort_ad_changes(search_ad_changes_by_attribute(usn_filter), lastUSN)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
@@ -965,22 +964,22 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, "Need to split results. highest USN is %s, lastUSN is %s" % (highestCommittedUSN, lastUSN))
 			returnObjects = []
 			while (tmpUSN != highestCommittedUSN):
-				lastUSN = tmpUSN
+				tmp_lastUSN = tmpUSN
 				tmpUSN += 999
 				if tmpUSN > highestCommittedUSN:
 					tmpUSN = highestCommittedUSN
 
-				ud.debug(ud.LDAP, ud.INFO, "__search_s4_changes: search between USNs %s and %s" % (lastUSN + 1, tmpUSN))
+				ud.debug(ud.LDAP, ud.INFO, "__search_ad_changes: search between USNs %s and %s" % (tmp_lastUSN + 1, tmpUSN))
 
-				usn_filter = _s4_changes_filter('uSNCreated', lastUSN + 1, tmpUSN)
-				if lastUSN > 0:
+				usn_filter = _ad_changes_filter('uSNCreated', tmp_lastUSN + 1, tmpUSN)
+				if tmp_lastUSN > 0:
 					# During the init phase we have to search for created and changed objects
-					usn_filter = '(|%s%s)' % (_s4_changes_filter('uSNChanged', lastUSN + 1, tmpUSN), usn_filter)
-				returnObjects += search_s4_changes_by_attribute(usn_filter, lastUSN)
+					usn_filter = '(|%s%s)' % (_ad_changes_filter('uSNChanged', tmp_lastUSN + 1, tmpUSN), usn_filter)
+				returnObjects += search_ad_changes_by_attribute(usn_filter)
 
-			return returnObjects
+			return sort_ad_changes(returnObjects, lastUSN)
 
-	def __search_s4_changeUSN(self, changeUSN, show_deleted=True, filter=''):
+	def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
 		'''
 		search ad for change with id
 		'''
@@ -989,7 +988,7 @@ class s4(univention.s4connector.ucs):
 		if filter != '':
 			usn_filter = '(&({}){})'.format(filter, usn_filter)
 
-		return self.__search_s4_partitions(filter=usn_filter, show_deleted=show_deleted)
+		return self.__search_ad_partitions(filter=usn_filter, show_deleted=show_deleted)
 
 	def __dn_from_deleted_object(self, object):
 		'''
@@ -1818,7 +1817,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
 			try:
 				sync_successfull = False
-				elements = self.__search_s4_changeUSN(change_usn, show_deleted=True)
+				elements = self.__search_ad_changeUSN(change_usn, show_deleted=True)
 				if not elements or len(elements) < 1 or not elements[0][0]:
 					ud.debug(ud.LDAP, ud.INFO, "rejected change with id %s not found, don't need to sync" % change_usn)
 					self._remove_rejected(change_usn)
@@ -1859,7 +1858,7 @@ class s4(univention.s4connector.ucs):
 		change_count = 0
 		changes = []
 		try:
-			changes = self.__search_s4_changes(show_deleted=show_deleted)
+			changes = self.__search_ad_changes(show_deleted=show_deleted)
 		except ldap.SERVER_DOWN:
 			raise
 		except Exception:  # FIXME: which exception is to be caught?
