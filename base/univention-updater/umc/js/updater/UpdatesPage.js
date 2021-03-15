@@ -530,7 +530,7 @@ define([
 			} else {
 				return tools.umcpCommand('updater/updates/available').then(
 					lang.hitch(this, function(data) {
-						var values = this._form.gatherFormValues();
+						var values = this._form.get('value');
 						this._set_updates_button(data.result,
 							data.result ?
 								_("Package updates are available. %(link)s", {link: this._get_errata_link(values)}) :
