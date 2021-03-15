@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: libupnp
+fix: 1:1.6.19+git20160116-1.2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Portable UPnP SDK (aka libupnp) 1.12.1 and earlier allows remote attackers
+   to cause a denial of service (crash) via a crafted SSDP message due to a
+   NULL pointer dereference in the functions FindServiceControlURLPath and
+   FindServiceEventURLPath in genlib/service_table/service_table.c.
+   (CVE-2020-13848)
+bug: [52907]
+cve:
+- CVE-2020-13848
