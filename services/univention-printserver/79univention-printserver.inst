@@ -4827,7 +4827,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/NRG-MP_9000-gutenprint-ijs-simplified.5.2.ppd" "NRG MP 9000 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/NRG-MP_9000-gutenprint-ijs.5.2.ppd" "NRG MP 9000 Foomatic/gutenprint-ijs.5.2"'
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name HP \
-	'"cupsfilters/HP-Color_LaserJet_CM3530_MFP-PDF.ppd" "HP Color LaserJet CM3530 MFP PDF"' \
 	'"cupsfilters/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd" "HP PhotoSmart Pro B8300 CUPS/pdftoijs/hpijs"' \
 	'"foomatic-rip/HP-2000C-gutenprint-ijs-simplified.5.2.ppd" "HP 2000C Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/HP-2000C-gutenprint-ijs.5.2.ppd" "HP 2000C Foomatic/gutenprint-ijs.5.2"' \
