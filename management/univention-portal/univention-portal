@@ -35,6 +35,7 @@ import datetime
 import ast
 import inspect
 from textwrap import dedent
+from typing import Dict, Union
 
 from univention.portal import get_all_dynamic_classes, get_dynamic_classes
 from univention.portal.factory import make_portal
@@ -47,7 +48,7 @@ import click
 portals_json = "/usr/share/univention-portal/portals.json"
 
 
-def read_portals_json():
+def read_portals_json() -> Dict:
 	try:
 		with open(portals_json) as fd:
 			return json.load(fd)
@@ -55,7 +56,7 @@ def read_portals_json():
 		return {}
 
 
-def write_portals_json(content):
+def write_portals_json(content: Dict):
 	with open(portals_json, "w") as fd:
 		os.chmod(fd.name, 0o660)
 		json.dump(content, fd, sort_keys=True, indent=4)
@@ -68,7 +69,7 @@ def cli():
 
 @cli.command("add-default")
 @click.option("--update/--dont-update", default=False)
-def add_default(update):
+def add_default(update: bool):
 	changed = False
 	json_content = read_portals_json()
 
@@ -85,25 +86,33 @@ def add_default(update):
 			_add_default(default_name, json_content)
 			changed = True
 
+	if changed:
+		write_portals_json(json_content)
+		success("{} written".format(portals_json))
+
+
+@cli.command("add-umc-default")
+@click.option("--update/--dont-update", default=False)
+def add_umc_default(update: bool):
+	changed = False
+	json_content = read_portals_json()
+
 	# /univention/umc/
 	umc_name = "umc"
-	if umc_name in json_content:
-		if update:
+	if update:
+		if umc_name in json_content:
 			warn("Overwriting existing {}".format(umc_name))
-			_add_umc(umc_name, json_content)
-			changed = True
-		else:
-			info("{} already exists".format(umc_name))
+		_add_umc(umc_name, json_content)
+		changed = True
 	else:
-			_add_umc(umc_name, json_content)
-			changed = True
+		info("{} already exists".format(umc_name))
 
 	if changed:
 		write_portals_json(json_content)
 		success("{} written".format(portals_json))
 
 
-def _add_default(name, json_content):
+def _add_default(name: str, json_content: Dict):
 	portal_def = {
 		"class": "Portal",
 		"kwargs": {
@@ -169,7 +178,7 @@ def _add_default(name, json_content):
 	json_content[name] = portal_def
 
 
-def _add_umc(name, json_content):
+def _add_umc(name: str, json_content: Dict):
 	portal_def = {
 		"class": "UMCPortal",
 		"kwargs": {
@@ -222,7 +231,7 @@ def _add_umc(name, json_content):
 @cli.command()
 @click.argument("name")
 @click.option("--update/--dont-update", default=True)
-def add(name, update):
+def add(name: str, update: bool):
 	json_content = read_portals_json()
 	if name in json_content:
 		if update:
@@ -247,7 +256,7 @@ def add(name, update):
 	info("You may want to 'push {}' now".format(name))
 
 
-def ask_value(name, klass_default=None, value_default=None):
+def ask_value(name: str, klass_default: Union[str, None] = None, value_default: Union[str, None] = None) -> Dict:
 	possible_classes = [klass.__name__ for klass in get_all_dynamic_classes()]
 	choice = click.prompt(
 		"Choose the value of {}".format(name),
@@ -308,12 +317,12 @@ def ask_value(name, klass_default=None, value_default=None):
 		return ret
 
 
-def capfirst(value):
+def capfirst(value: str) -> Union[str, None]:
 	if value:
 		return value[0].upper() + value[1:]
 
 
-def camelcase(value):
+def camelcase(value: str) -> Union[str, None]:
 	if value:
 		return "".join(capfirst(part) for part in value.split("_"))
 
@@ -321,7 +330,7 @@ def camelcase(value):
 @cli.command()
 @click.argument("name")
 @click.option("--purge", default=False)
-def remove(name, purge):
+def remove(name: str, purge: bool):
 	json_content = read_portals_json()
 	if not json_content.pop(name, None):
 		warn("{} does not exist in config file".format(name))
@@ -351,7 +360,7 @@ def list_portals():
 
 @cli.command()
 @click.argument("name")
-def push(name):
+def push(name: str):
 	from univention.udm import UDM, NoObject
 	from univention.udm.encoders import Base64Bzip2BinaryProperty
 
@@ -380,7 +389,7 @@ def push(name):
 
 @cli.command()
 @click.argument("name")
-def pull(name):
+def pull(name: str):
 	obj = get_obj(name)
 	if not obj:
 		warn("{} does not exist in database".format(name))
@@ -395,7 +404,7 @@ def pull(name):
 		success("{} updated".format(obj.dn))
 
 
-def get_obj(name):
+def get_obj(name: str) -> Union[str, None]:
 	from univention.udm import UDM, NoObject
 
 	udm = UDM.machine().version(1)
@@ -408,7 +417,7 @@ def get_obj(name):
 		return None
 
 
-def add_localhost(obj):
+def add_localhost(obj) -> Union[bool, None]:
 	localhost = config.fetch("fqdn")
 	server_key = "server:{}".format(localhost)
 	if server_key not in obj.props.meta:
@@ -416,7 +425,7 @@ def add_localhost(obj):
 		return True
 
 
-def rm_localhost(obj):
+def rm_localhost(obj) -> Union[bool, None]:
 	localhost = config.fetch("fqdn")
 	server_key = "server:{}".format(localhost)
 	if server_key in obj.props.meta:
@@ -427,7 +436,7 @@ def rm_localhost(obj):
 @cli.command()
 @click.argument("name", nargs=-1)
 @click.option("--reason", default="force")
-def update(name, reason):
+def update(name: str, reason: str):
 	json_content = read_portals_json()
 	if not name:
 		name = json_content.keys()
@@ -461,12 +470,12 @@ def list_extensions():
 
 
 class SomeObj(object):
-	def __init__(self, klass_name, args, kwargs):
+	def __init__(self, klass_name: str, args, kwargs):
 		self.klass_name = klass_name
 		self.args = args
 		self.kwargs = kwargs
 
-	def all_args(self):
+	def all_args(self) -> str:
 		ret = []
 		for arg in self.args:
 			ret.append(repr(arg))
@@ -474,11 +483,11 @@ class SomeObj(object):
 			ret.append("{}={!r}".format(name, arg))
 		return ", ".join(ret)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return "{}({})".format(self.klass_name, self.all_args())
 
 
-def make_obj(obj_def):
+def make_obj(obj_def: Dict) -> Union[str, SomeObj]:
 	arg_type = obj_def["type"]
 	if arg_type == "static":
 		return obj_def["value"]
@@ -495,17 +504,17 @@ def make_obj(obj_def):
 	raise TypeError("Unknown obj_def: {!r}".format(obj_def))
 
 
-def warn(msg):
+def warn(msg: str):
 	get_logger("cli").warning(msg)
 	click.echo(click.style(msg, fg="yellow"))
 
 
-def info(msg):
+def info(msg: str):
 	get_logger("cli").info(msg)
 	click.echo(msg)
 
 
-def success(msg):
+def success(msg: str):
 	get_logger("cli").info(msg)
 	click.echo(click.style(msg, fg="green"))
 

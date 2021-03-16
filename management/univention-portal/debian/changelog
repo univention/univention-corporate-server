@@ -1,3 +1,9 @@
+univention-portal (4.0.4-10) unstable; urgency=medium
+
+  * Bug #52921: added add-umc-default functionality to univention-portal
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 16 Mar 2021 14:14:19 +0100
+
 univention-portal (4.0.4-9) unstable; urgency=medium
 
   * Bug #52792: Replace UCR script with UCR module
