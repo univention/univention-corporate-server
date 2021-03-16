@@ -110,7 +110,7 @@ def test_rename_domain_users():
 			search_templates(old_group_name, new_group_name)
 		finally:
 			try:
-				wait_for_drs_replication(filter_format('(sAMAccountName=%s)' % (new_group_name,)))
+				wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_group_name,)))
 			except Exception:
 				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
 				time.sleep(10)
