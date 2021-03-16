@@ -1077,8 +1077,9 @@ class ucs(object):
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 
 		MAPPING = self.property[property_type]
-		for attributes in MAPPING.attributes.values():
+		for attr_key, attributes in MAPPING.attributes.items():
 			if attributes.sync_mode not in ['read', 'sync']:
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip %s mode attribute %s ' % (attributes.sync_mode, attr_key))
 				continue
 
 			con_attribute = attributes.con_attribute
@@ -1096,6 +1097,7 @@ class ucs(object):
 		for attr_key, post_attributes in MAPPING.post_attributes.items():
 			ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
 			if post_attributes.sync_mode not in ['read', 'sync']:
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip %s mode attribute %s ' % (attributes.sync_mode, attr_key))
 				continue
 
 			con_attribute = post_attributes.con_attribute

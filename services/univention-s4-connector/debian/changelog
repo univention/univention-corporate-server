@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.6-6) unstable; urgency=medium
+
+  * Bug #50766: Sync gidNumber also for groups,set sync_mode of gidNumber to write
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 24 Mar 2021 16:02:43 +0100
+
 univention-s4-connector (14.0.6-5) unstable; urgency=medium
 
   * Bug #52358: Restore ordering of S4 changes to prevent S4C-Loops.
