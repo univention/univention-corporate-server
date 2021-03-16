@@ -1,3 +1,10 @@
+univention-updater (16.0.17) unstable; urgency=low
+
+  * Bug #57296: disable fetchmail during the update to prevent update
+    abortion if fetchmailrc contains no "poll" entries
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 17 May 2024 12:04:03 +0200
+
 univention-updater (16.0.16) unstable; urgency=medium
 
   * Bug #57114: use testing online repository
