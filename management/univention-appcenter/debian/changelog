@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-18) unstable; urgency=medium
+
+  * Bug #52863: Forgot a file...
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Mar 2021 21:26:39 +0100
+
 univention-appcenter (9.0.2-17) unstable; urgency=medium
 
   * Bug #52453: adjust variable names
