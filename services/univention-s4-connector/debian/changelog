@@ -1,4 +1,4 @@
-univention-s4-connector (13.0.2-84) unstable; urgency=medium
+univention-s4-connector (13.0.2-85) unstable; urgency=medium
 
   * Bug #50766: Synchronize gidNumber for groups. Set gidNumber to readmode
 

@@ -497,6 +497,9 @@ s4_mapping = {
 				reverse_attribute_check=True,
 				single_value=True,
 			),
+			'sid': get_sid_mapping(),
+		},
+		post_attributes={
 			'gidNumber': univention.s4connector.attribute(
 				sync_mode='write',
 				ucs_attribute='gidNumber',
@@ -504,7 +507,6 @@ s4_mapping = {
 				con_attribute='gidNumber',
 				single_value=True,
 			),
-			'sid': get_sid_mapping(),
 		},
 		mapping_table=group_mapping_table,
 	),
