@@ -267,13 +267,13 @@ class UCSInstallation(object):
 				self.click(self._['next'])
 			self.client.waitForText(self._['role'])
 			if self.args.role == 'backup':
+				self.click('Backup Directory Node')
 				self.click(self._['next'])
 			if self.args.role == 'slave':
-				self.client.keyPress('down')
+				self.click('Replica Directory Node')
 				self.click(self._['next'])
 			if self.args.role == 'member':
-				self.client.keyPress('down')
-				self.client.keyPress('down')
+				self.click('Managed Node')
 				self.click(self._['next'])
 			self.client.waitForText(self._['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
