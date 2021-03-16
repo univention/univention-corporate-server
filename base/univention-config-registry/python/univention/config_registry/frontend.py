@@ -435,13 +435,14 @@ def handler_get(args, opts=dict()):
 	"""
 	ucr = ConfigRegistry()
 	ucr.load()
-
-	if not args[0] in ucr:
+	key = args[0]
+	value = ucr.get(key)
+	if value is None:
 		return
-	if OPT_FILTERS['shell'][2]:
-		yield '%s: %s' % (args[0], ucr.get(args[0], ''))
+	elif OPT_FILTERS['shell'][2]:
+		yield '%s: %s' % (key, value)
 	else:
-		yield ucr.get(args[0], '')
+		yield value
 
 
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
