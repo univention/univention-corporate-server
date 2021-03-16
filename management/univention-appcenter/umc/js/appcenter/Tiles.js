@@ -238,6 +238,11 @@ define([
 			this._selection = [];
 		},
 
+		reset: function() {
+			this._selectionModeToggleButton.set('checked', false);
+			this._selection = [];
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
 			this._selectionModeToggleButton.watch('checked', (_attr, _oldVal, newVal) => {

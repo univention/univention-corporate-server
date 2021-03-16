@@ -415,6 +415,14 @@ define([
 			}));
 		},
 
+		reloadPage: function() {
+			return this.updateApplications().then(() => {
+				this.metaCategories.forEach((metaCategory) => {
+					metaCategory.reset();
+				});
+			});
+		},
+
 		_sortLicenses(licenses) {
 			var licenseIdsInOrder = ['free', 'freemium', 'trial', 'proprietary'];
 			licenses.sort(function(a, b) {
