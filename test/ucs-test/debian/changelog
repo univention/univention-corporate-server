@@ -1,3 +1,10 @@
+ucs-test (10.0.4-31) unstable; urgency=medium
+
+  * Bug #51819: appcenter/version will now fail without args. Switching to
+    appcenter/ping
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Mar 2021 14:10:19 +0100
+
 ucs-test (10.0.4-30) unstable; urgency=medium
 
   * Bug #47734: python compatibility for selenium test 17_self_service_registration

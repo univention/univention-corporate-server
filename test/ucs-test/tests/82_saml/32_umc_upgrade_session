@@ -58,8 +58,8 @@ def saml_check():
 
 
 def call_umc_action_that_does_not_require_password(session):
-	print('Testing appcenter/version')
-	url = "https://%s/univention/command/appcenter/version" % session.target_sp_hostname
+	print('Testing appcenter/ping')
+	url = "https://%s/univention/command/appcenter/ping" % session.target_sp_hostname
 	session._request('POST', url, 200)
 
 
