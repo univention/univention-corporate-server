@@ -96,8 +96,8 @@ class ConfigRegistry(MM):
 	:param filename: File name for custom layer text database file.
 	:param write_registry: The UCR level used for writing.
 	"""
-	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, DEFAULTS = range(6)
-	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM, DEFAULTS)
+	DEFAULTS, NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(6)
+	LAYER_PRIORITIES = (CUSTOM, FORCED, SCHEDULE, LDAP, NORMAL, DEFAULTS)
 	PREFIX = '/etc/univention'
 	BASES = {
 		NORMAL: 'base.conf',
