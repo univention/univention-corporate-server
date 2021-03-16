@@ -756,6 +756,10 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The fetchmail service will be disabled via the &ucsUCRV; <envar>fetchmail/autostart</envar>
+					for the time of the update to prevent restart issues during the update (<u:bug>52923</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					An internal change to the listener module for shared mail folders
 					(<filename>dovecot-shared-folder.py</filename>) has been made to prevent
 					problems with mixed upper and lowercase domain names (<u:bug>52241</u:bug>).
