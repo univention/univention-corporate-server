@@ -32,6 +32,13 @@ class UCSInstallation(object):
 		self.setup_finish_sleep = 1500
 		self.connect()
 
+	def _clear_input(self):
+		self.client.keyPress('end')
+		time.sleep(0.1)
+		for i in range(100):
+			self.client.keyPress('bsp')
+			time.sleep(0.1)
+
 	def screenshot(self, filename):
 		if not os.path.isdir(self.args.screenshot_dir):
 			os.mkdir(self.args.screenshot_dir)
@@ -58,6 +65,7 @@ class UCSInstallation(object):
 	def tab_to_next_and_enter(self, tabs):
 		for i in range(tabs):
 			self.client.keyPress('tab')
+			time.sleep(0.1)
 		self.client.keyPress('enter')
 
 	def installer(self):
@@ -292,9 +300,13 @@ class UCSInstallation(object):
 			self.click(self._['next'])
 			self.click(self._['next'])
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
-			self.client.keyPress('tab')
+			self.client.mouseMove(500, 300)
+			self.client.mousePress(1)
+			self._clear_input()
 			self.client.enterText(self.args.join_user)
-			self.client.keyPress('tab')
+			self.client.mouseMove(500, 380)
+			self.client.mousePress(1)
+			self._clear_input()
 			self.client.enterText(self.args.join_password)
 			self.click(self._['next'])
 		elif self.args.role == 'basesystem':
@@ -317,9 +329,7 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['host_settings'], timeout=self.timeout)
 		else:
 			self.client.waitForText(self._['system_name'])
-		self.client.keyPress('end')
-		for i in range(1, 200):
-			self.client.keyPress('bsp')
+		self._clear_input()
 		self.client.enterText(self.args.fqdn)
 		if self.args.role == 'master':
 			self.client.keyPress('tab')
