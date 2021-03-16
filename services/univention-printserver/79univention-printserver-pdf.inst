@@ -44,7 +44,7 @@ univention-directory-manager settings/printeruri modify "$@" \
 	--append printeruri="cups-pdf:/" || die
 
 # install the new PDF manufacturer
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=PDF
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=PDF || die
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=PDF,cn=cups,cn=univention,"$ldap_base" \
 	--append printmodel='"cups-pdf/CUPS-PDF_noopt.ppd" "Generic CUPS-PDF Printer (no options)"' \
 	--append printmodel='"cups-pdf/CUPS-PDF_opt.ppd" "Generic CUPS-PDF Printer (w/ options)"' \

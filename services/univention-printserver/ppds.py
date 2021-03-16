@@ -70,10 +70,10 @@ def get_ppd_infos(filename):
 def get_udm_command(manufacturer, models):
 	manufacturer = _sanitize_printer_manufacturer(manufacturer)
 	models.sort()
-	create = 'univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % (pipes.quote(manufacturer),)
+	create = 'univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s || rc=$?' % (pipes.quote(manufacturer),)
 	modify = 'univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn %s"$ldap_base"' % (pipes.quote('cn=%s,cn=cups,cn=univention,' % (ldap.dn.escape_dn_chars(manufacturer),)),)
 	rest = [modify] + ['--append printmodel=%s' % (pipes.quote('"%s" "%s"' % (path, name)),) for path, name in models]
-	return '# Manufacturer: %s Printers: %d\n' % (manufacturer, len(models)) + create + '\n' + ' \\\n\t'.join(rest)
+	return '# Manufacturer: %s Printers: %d\n' % (manufacturer, len(models)) + create + '\n' + ' \\\n\t'.join(rest) + ' || rc=$?'
 
 
 def check_dir(commands):
@@ -105,7 +105,7 @@ def check_obsolete():
 	# check old models
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
-	print('# mark old ppd\'s as obsolete\n')
+	print('\n# mark old ppd\'s as obsolete\n')
 	for dn, attr in res:
 		cn = attr['cn'][0].decode('UTF-8')
 		obsolete = {}
@@ -119,7 +119,7 @@ def check_obsolete():
 				obsolete.setdefault(cn, []).append(i)
 		for cn in obsolete:
 			print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name %s \\' % (pipes.quote(cn),))
-			print('\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\'')
+			print('\t' + ' \\\n\t'.join(map(pipes.quote, obsolete[cn])) + ' || rc=$?\n')
 
 
 def main():
