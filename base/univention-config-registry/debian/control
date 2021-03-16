@@ -10,9 +10,12 @@ Build-Depends:
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
  python-all,
+ python-enum34,
  python-ipaddress,
+ python-lazy-object-proxy,
  python-mock,
  python-pytest,
+ python-pytest-benchmark,
  python-pytest-cov,
  python-pytest-mock,
  python-pytest-timeout,
@@ -20,8 +23,10 @@ Build-Depends:
  python-univention-debhelper,
  python3 (>= 3.6) | python3-mock,
  python3-all,
+ python3-lazy-object-proxy,
  python3-mock,
  python3-pytest,
+ python3-pytest-benchmark,
  python3-pytest-cov,
  python3-pytest-mock,
  python3-pytest-timeout,
@@ -121,7 +126,9 @@ Package: python-univention-config-registry
 Architecture: all
 Depends:
  ifupdown,
+ python-enum34,
  python-ipaddress,
+ python-lazy-object-proxy,
  python-six,
  python-univention-debhelper,
  python-univention-namespace,
@@ -142,6 +149,7 @@ Package: python3-univention-config-registry
 Architecture: all
 Depends:
  ifupdown,
+ python3-lazy-object-proxy,
  python3-six,
  python3-univention-debhelper,
  ${misc:Depends},
