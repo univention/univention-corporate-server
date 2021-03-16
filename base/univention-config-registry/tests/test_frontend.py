@@ -156,7 +156,9 @@ class TestHandler(object):
 		("new?=1", {"new": (None, "=1")}, "Create new\n", ""),
 		("new=?1", {"new": (None, "?1")}, "Create new\n", ""),
 		("foo=1", {"foo": (None, "1")}, "Create foo\n", ""),
+		("foo?1", {"foo": (None, "1")}, "Create foo\n", ""),
 		("bar=1", {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
+		("bar?1", {}, "Not updating bar\n", ""),
 		("baz=1", {"baz": ("NORMAL", "1")}, "Setting baz\n", ""),
 		("baz?1", {}, "Not updating baz\n", ""),
 	])
