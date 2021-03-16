@@ -1,4 +1,11 @@
-univention-updater (15.0.3-26) UNRELEASED; urgency=medium
+univention-updater (15.0.3-27) unstable; urgency=low
+
+  * Bug #52923: disable fetchmail during the update to prevent update
+    abortion if fetchmailrc contains no "poll" entries
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 16 Mar 2021 16:39:08 +0100
+
+univention-updater (15.0.3-26) unstable; urgency=medium
 
   * Bug #52044: preup check for AD-Connector mapping modifications
 

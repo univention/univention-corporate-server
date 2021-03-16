@@ -167,6 +167,22 @@ ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9
   cut -d: -f1 |
   xargs -r ucr unset
 
+# Bug #52923: switch back to old fetchmail/autostart status
+if [ -n "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
+	eval "$(ucr shell fetchmail/autostart/update500)"
+	if [ -z "$fetchmail_autostart_update500" ] ; then
+		ucr unset fetchmail/autostart
+	else
+		ucr set fetchmail/autostart="$fetchmail_autostart_update500"
+	fi
+	ucr unset fetchmail/autostart/update500
+	echo "Please note:"
+	echo "The following fetchmail restart might fail if fetchmail is unconfigured."
+	echo "This is usually no error."
+	service fetchmail restart || :
+fi
+
+
 echo "
 
 
