@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Rename Administrator
 ## tags:
 ##  - basic
@@ -12,30 +12,32 @@
 ## exposure: dangerous
 
 
+import re
+import os
+import glob
+import time
 import subprocess
+from ldap.dn import escape_dn_chars
+from ldap.filter import filter_format
 from univention.testing.ucr import UCSTestConfigRegistry
 import univention.config_registry
 from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 from univention.testing.utils import package_installed
-import re
-import os
-import glob
-import time
 
 
 def search_templates(old_admin_name, new_admin_name, server_role):
 	templates = glob.glob('/etc/univention/templates/info/*.info')
 	file_content = []
-	match_filter = '^(Multifile: |File: )'
+	file_pattern = re.compile('^(Multifile: |File: )')
+
 	# find all template files by iterating over all referenced templates in the ucr *.info files
 	for template in templates:
 		with open(template, 'r') as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + re.sub(match_filter, '', l).strip() for l in content_file.readlines() if re.match(match_filter, l)]
+			file_content += ['/' + file_pattern.sub('', l).strip() for l in content_file.readlines() if file_pattern.match(l)]
 
-	print(templates)
 	# A list of templates which are referencing the Administrator. The new name must be found in them
 	should_contain_admin = [
 		'/etc/ldap/slapd.conf']
@@ -45,25 +47,27 @@ def search_templates(old_admin_name, new_admin_name, server_role):
 		'/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf']
 	if server_role != 'domaincontroller_master':
 		should_contain_admin.remove('/etc/ldap/slapd.conf')
+
 	# Check if the name was correctly updated in the templates
 	file_content = list(dict.fromkeys(file_content))
+
 	# Look for alle occurences of "Administrator", excluding "Administrators", which is a group name
 	for file in file_content:
-		if os.path.isfile(file):
-			print('Checking template %s' % (file,))
-			with open(file, 'r') as content_file:
-				content = content_file.read()
-				if file in should_contain_admin:
-					if new_admin_name not in content:
-						utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
-				elif file in ignore:
-					pass
-				else:
-					if old_admin_name in content:
-						lines_containing = [l for l in content.splitlines() if old_admin_name in l and 'Administrators' not in l]
-						if lines_containing:
-							print('\n'.join(lines_containing))
-							utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))
+		if not os.path.isfile(file) or file in ignore:
+			continue
+
+		print('Checking template %s' % (file,))
+		with open(file, 'rb') as content_file:
+			content = content_file.read().decode('UTF-8', 'replace')
+
+		if file in should_contain_admin and new_admin_name not in content:
+			utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
+
+		if old_admin_name in content:
+			lines_containing = [l for l in content.splitlines() if old_admin_name in l and 'Administrators' not in l]
+			if lines_containing:
+				print('\n'.join(lines_containing))
+				utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))
 
 
 def wait_for_ucr(iterations, admin_name, ucr_test):
@@ -89,19 +93,19 @@ def test_rename_domain_users():
 		server_role = ucr_test.get('server/role')
 		ldap_base = ucr_test.get('ldap/base')
 		old_admin_name = ucr_test.get('users/default/administrator', 'Administrator')
-		old_admin_dn = "uid=%s,cn=users,%s" % (old_admin_name, ldap_base)
+		old_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(old_admin_name), ldap_base)
 
 		new_admin_name = uts.random_name()
-		new_admin_dn = "uid=%s,cn=users,%s" % (new_admin_name, ldap_base)
+		new_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(new_admin_name), ldap_base)
 		try:
 			print('\n##################################################################')
 			print('Renaming default administrator %s to %s' % (old_admin_name, new_admin_name))
 			print('##################################################################\n')
 			print(old_admin_dn)
 			print(new_admin_name)
-			cmd = (['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)])
-			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
+			subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)])
 			utils.wait_for_replication_and_postrun()
+
 			# Check UCR Variable
 			print('\n##################################################################')
 			print('Checking if UCR Variable users/default/administrator is set to %s' % (new_admin_name,))
@@ -111,8 +115,6 @@ def test_rename_domain_users():
 			if not success:
 				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (old_admin_name, new_admin_name))
 
-			#in ucs5 the time between setting the ucr var and the change being committed to the configuration files is longer than expected:
-			time.sleep(10)
 			# Search templates
 			print('\n##################################################################')
 			print('Search templates for old and new name of default domainadmins group')
@@ -120,7 +122,7 @@ def test_rename_domain_users():
 			search_templates(old_admin_name, new_admin_name, server_role)
 		finally:
 			try:
-				wait_for_drs_replication('(sAMAccountName=%s)' % (new_admin_name,))
+				wait_for_drs_replication(filter_format('(sAMAccountName=%s)' % (new_admin_name,)))
 			except Exception:
 				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
 				time.sleep(10)
@@ -131,8 +133,7 @@ def test_rename_domain_users():
 			print('\n##################################################################')
 			print('Cleanup')
 			print('##################################################################\n')
-			cmd = (['udm-test', 'users/user', 'modify', '--dn=%s' % (new_admin_dn), '--set', 'username=%s' % (old_admin_name), '--binddn=%s' % (new_admin_dn), '--bindpwd=univention'])
-			subprocess.Popen(cmd, shell=False, close_fds=True)
+			subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (new_admin_dn), '--set', 'username=%s' % (old_admin_name), '--binddn=%s' % (new_admin_dn), '--bindpwd=univention'])
 
 			# wait until renaming and UCR Variable is set back again
 			utils.wait_for_replication_and_postrun()

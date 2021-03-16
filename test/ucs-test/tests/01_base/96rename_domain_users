@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Rename Domain Users
 ## tags:
 ##  - basic
@@ -12,48 +12,53 @@
 ## exposure: dangerous
 
 
-import subprocess
-from univention.testing.ucr import UCSTestConfigRegistry
-import univention.config_registry
-import univention.testing.utils as utils
-from univention.testing.ucs_samba import wait_for_drs_replication
-import univention.testing.strings as uts
-from univention.testing.utils import package_installed
 import re
 import os
 import glob
 import time
+import subprocess
+
+from ldap.dn import escape_dn_chars
+from ldap.filter import filter_format
+
+import univention.config_registry
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.ucs_samba import wait_for_drs_replication
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+from univention.testing.utils import package_installed
 
 
 def search_templates(old_group_name, new_group_name):
 	templates = glob.glob('/etc/univention/templates/info/*.info')
 	file_content = []
-	match_filter = '^(Multifile: |File: )'
+	filter_pattern = re.compile('^(Multifile: |File: )')
+
 	# find all template files by iterating over all referenced templates in the ucr *.info files
 	for template in templates:
 		with open(template, 'r') as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + re.sub(match_filter, '', l).strip() for l in content_file.readlines() if re.match(match_filter, l)]
+			file_content += ['/' + filter_pattern.sub('', l).strip() for l in content_file.readlines() if filter_pattern.match(l)]
 
 	file_content = list(dict.fromkeys(file_content))
 	for file in file_content:
-		if os.path.isfile(file):
-			print('Checking template %s' % (file,))
-			with open(file, 'r') as content_file:
-				# /etc/security/limits.conf contains a comment about Domain Users which we will ignore.
-				# But it must contain the new name of the default domainusers group
-				content = content_file.read()
-				if file == "/etc/security/limits.conf":
-					if new_group_name not in content:
-						print(content_file.read())
-						utils.fail('FAIL: New group name %s not in security conffiles' % (new_group_name,))
-				else:
-					if old_group_name in content:
-						print('\n'.join([l for l in content.splitlines() if old_group_name in l]))
-						utils.fail('FAIL: Domain Users still in template file %s' % (file,))
+		if not os.path.isfile(file):
+			continue
 
-		else:
-			print('template not found %s' % (file,))
+		print('Checking template %s' % (file,))
+		with open(file, 'rb') as content_file:
+			# /etc/security/limits.conf contains a comment about Domain Users which we will ignore.
+			# But it must contain the new name of the default domainusers group
+			content = content_file.read().decode('UTF-8', 'replace')
+			if file == "/etc/security/limits.conf":
+				if new_group_name not in content:
+					print(content_file.read())
+					utils.fail('FAIL: New group name %s not in security conffiles' % (new_group_name,))
+				continue
+			if old_group_name in content:
+				lines_containing = [l for l in content.splitlines() if old_group_name in l]
+				print('\n'.join(lines_containing))
+				utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
 
 def wait_for_ucr(iterations, group_name, ucr_test):
@@ -78,16 +83,15 @@ def test_rename_domain_users():
 
 		ldap_base = ucr_test.get('ldap/base')
 		old_group_name = ucr_test.get('groups/default/domainusers', 'Domain Users')
-		old_group_dn = "cn=%s,cn=groups,%s" % (old_group_name, ldap_base)
+		old_group_dn = "cn=%s,cn=groups,%s" % (escape_dn_chars(old_group_name), ldap_base)
 
 		new_group_name = uts.random_name()
-		new_group_dn = "cn=%s,cn=groups,%s" % (new_group_name, ldap_base)
+		new_group_dn = "cn=%s,cn=groups,%s" % (escape_dn_chars(new_group_name), ldap_base)
 		try:
 			print('\n##################################################################')
 			print('Renaming default domainusers group %s to %s' % (old_group_name, new_group_name))
 			print('##################################################################\n')
-			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
-			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
+			subprocess.call(['udm-test', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
 			utils.wait_for_replication_and_postrun()
 
 			# Check UCR Variable
@@ -106,7 +110,7 @@ def test_rename_domain_users():
 			search_templates(old_group_name, new_group_name)
 		finally:
 			try:
-				wait_for_drs_replication('(sAMAccountName=%s)' % (new_group_name,))
+				wait_for_drs_replication(filter_format('(sAMAccountName=%s)' % (new_group_name,)))
 			except Exception:
 				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
 				time.sleep(10)
@@ -116,8 +120,7 @@ def test_rename_domain_users():
 			print('\n##################################################################')
 			print('Cleanup')
 			print('##################################################################\n')
-			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
-			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
+			subprocess.call(['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
 
 			# wait until renaming is complete
 			utils.wait_for_replication_and_postrun()
