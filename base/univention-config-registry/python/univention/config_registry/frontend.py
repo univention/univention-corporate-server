@@ -400,7 +400,7 @@ def handler_search(args, opts=dict()):
 	if opts.get('verbose', False):
 		details |= _SHOW_CATEGORIES | _SHOW_DESCRIPTION
 
-	all_vars = {}  # type: Dict[str, Tuple[Optional[str], Optional[cri.Variable], Optional[str]]] # key: (value, vinfo, scope)
+	all_vars = {}  # type: Dict[str, Tuple[Optional[str], Optional[cri.Variable], Optional[int]]] # key: (value, vinfo, scope)
 	for key, var in info.get_variables(category).items():
 		all_vars[key] = (None, var, None)
 	for key, (scope, value) in ucr.items(getscope=True):

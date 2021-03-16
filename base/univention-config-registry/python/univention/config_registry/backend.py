@@ -50,7 +50,7 @@ if six.PY2:
 from univention.config_registry.handler import run_filter
 
 try:
-	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
+	from typing import overload, Any, Dict, IO, Iterator, List, ItemsView, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa F401
 	from typing_extension import Literal  # noqa F401
 	_VT = TypeVar('_VT')
@@ -257,7 +257,7 @@ class ConfigRegistry(MM):
 
 	@overload  # noqa F811
 	def get(self, key, default=None):  # pragma: no cover
-		# type: (str, Optional[_VT]) -> Union[str, _VT, None]
+		# type: (str, _VT) -> Union[str, _VT]
 		pass
 
 	def get(self, key, default=None, getscope=False):  # noqa F811
@@ -341,18 +341,18 @@ class ConfigRegistry(MM):
 			return value
 		return value.decode("UTF-8")
 
-	@overload  # type: ignore
+	@overload
 	def items(self):  # pragma: no cover
-		# type: () -> Dict[str, str]
+		# type: () -> ItemsView[str, str]
 		pass
 
 	@overload  # noqa F811
 	def items(self, getscope):  # pragma: no cover
-		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
+		# type: (Literal[True]) -> ItemsView[str, Tuple[int, str]]
 		pass
 
 	def items(self, getscope=False):  # noqa F811
-		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+		# type: (bool) -> Union[ItemsView[str, str], ItemsView[str, Tuple[int, str]]]
 		"""
 		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
 
