@@ -139,6 +139,11 @@
 		<title>Vorbereitung des Updates</title>
 
 		<para>
+			Manuell angepasster Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
+			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten. Angepasste AD-Connector-Mapping Templates sind ein Beispiel.
+			Unter https://docs.software-univention.de/developer-reference-4.4.html finden sich weitere Hinweise.
+		</para>
+		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
 			Eine Standard-Installation benötigt min. FIXME GB Speicherplatz.
 			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr FIXME GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
