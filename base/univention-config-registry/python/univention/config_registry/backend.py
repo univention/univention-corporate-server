@@ -217,7 +217,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 				self._registry[reg] = _ConfigRegistry(os.devnull if custom else os.path.join(self.PREFIX, self.BASES[reg]))
 
 	def _walk(self):
-		# type: () -> Iterator[Tuple[int, Union[_ConfigRegistry, Dict[str, str]]]]
+		# type: () -> Iterator[Tuple[int, _ConfigRegistry]]
 		"""
 		Iterator over layers.
 
