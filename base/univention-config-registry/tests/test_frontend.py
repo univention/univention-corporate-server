@@ -270,17 +270,24 @@ class TestHandler(object):
 		else:
 			stdout.write.assert_called_once()
 
-	@pytest.mark.parametrize("args,opts,output", [
-		(["foo"], {}, ["foo: LDAP\n"]),
-		(["foo"], {"key": True}, ["foo: LDAP\n"]),
-		(["foo"], {"value": True}, []),
-		(["foo"], {"all": True}, ["foo: LDAP\n"]),
-		(["foo"], {"non-empty": True}, ["foo: LDAP\n"]),
-		(["foo"], {"brief": True}, ["foo: LDAP"]),
-		(["foo"], {"verbose": True}, ["foo: LDAP\n"]),
+	@pytest.mark.parametrize("arg,opts,output", [
+		("foo", {}, ["foo: LDAP\n"]),
+		("foo", {"key": True}, ["foo: LDAP\n"]),
+		("foo", {"value": True}, []),
+		("NORMAL", {"value": True}, ["baz: NORMAL\n"]),
+		("NORMAL", {"brief": True, "value": True}, ["baz: NORMAL"]),
+		("foo", {"all": True}, ["foo: LDAP\n"]),
+		("foo", {"non-empty": True}, ["foo: LDAP\n"]),
+		("foo", {"brief": True}, ["foo: LDAP"]),
+		("foo", {"verbose": True}, ["foo: LDAP\n"]),
+		("foo", {"brief": True, "key": True}, ["foo: LDAP"]),
+		("fo{2}", {}, ["foo: LDAP\n"]),
+		("^fo{2}$", {}, ["foo: LDAP\n"]),
+		("^f[oO][oO]$", {}, ["foo: LDAP\n"]),
+		("^ba[rz]$", {"brief": True, "key": True}, ["bar: LDAP", "baz: NORMAL"]),
 	])
-	def test_handler_search(self, args, opts, output, rinfo):
-		assert list(ucrfe.handler_search(args, opts)) == output
+	def test_handler_search(self, arg, opts, output, rinfo):
+		assert list(ucrfe.handler_search([arg], opts)) == output
 
 	def test_handler_search_scope(self, ucr1, rinfo):
 		ucr1["ucr/output/scope"] = "true"
