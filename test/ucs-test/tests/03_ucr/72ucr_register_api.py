@@ -7,12 +7,13 @@
 ##   - univention-config
 
 from __future__ import print_function
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_version, random_string
-from univention.testing.ucr import UCSTestConfigRegistry
 
 import json
 import subprocess
+
+from univention.testing.debian_package import DebianPackage
+from univention.testing.strings import random_version, random_string
+from univention.testing.ucr import UCSTestConfigRegistry
 
 UCR_MODULE = '''
 import json
@@ -50,7 +51,6 @@ def test_ucr_register_api():
 			changes = json.loads(subprocess.check_output(['ucr', 'set', '%s/foo=blub' % (package_name,)]).split(b'####')[1])
 			expected = {'%s/foo' % (package_name,): ['bar', 'blub']}
 			assert changes == expected, changes
-
 	finally:
 		package.uninstall()
 		package.remove()

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test Univention Config Registry dump
 ## bugs: [16637]
 ## tags:
@@ -25,7 +26,7 @@ Diff () {
 
 ##### Beginning #####
 TMPDIR=$(mktemp -d) || (echo "Unable to create temporary directory"; exit 140)
-trap "rm -rf '${TMPDIR}'" EXIT
+trap 'rm -rf "${TMPDIR}"' EXIT
 
 ##### dump #####
 echo "Checking dump..."
@@ -50,11 +51,12 @@ then
 fi
 
 echo "Checking quoting..."
-"${UCR}" --keys-only search | while read key
+"${UCR}" --keys-only search | while read -r key
 do
 	case "$key" in *'.*'*) continue ;; esac
 	key_val="$("${UCR}" shell "^$key\$")"
 	eval "value=${key_val#*=}"
+	# shellcheck disable=SC2154
 	[ "${value}" = "$("${UCR}" get "$key")" ] || {
 		echo "$key=${value}" >&2
 		exit 1

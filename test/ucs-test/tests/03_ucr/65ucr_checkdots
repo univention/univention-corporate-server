@@ -1,7 +1,9 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Checking whether . are allowed in ucr keys
 ## exposure: careful
 
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/ucr.sh" || exit 137
 trap ucr_restore EXIT
 
@@ -32,6 +34,7 @@ ucr_management () {
 	fi
 }
 
+# shellcheck disable=SC2034
 for i in $(seq 1 10)
 do
 	ucr_management "$(randomchars)" "$(randomchars)"

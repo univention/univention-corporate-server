@@ -6,12 +6,14 @@
 ## exposure: safe
 
 from __future__ import print_function
+
 import os
 import re
+
 from univention.debhelper import parseRfc822
 
 BASE = '/etc/univention/templates/info'
-WHITELIST = {
+SKIPLIST = {
 	'/etc/default/capi4hylafax',
 	'/etc/default/hylafax',
 	'/etc/docker/seccomp-systemd.json',
@@ -81,7 +83,7 @@ for info in os.listdir(BASE):
 			continue
 		files.add(fn)
 
-files -= set(WHITELIST)
+files -= set(SKIPLIST)
 
 missing_header_files = False
 for fn in files:
@@ -101,4 +103,5 @@ if missing_header_files:
 else:
 	print("Info: All UCR files contain a warning.")
 	exit(100)
+
 # vim: set filetype=python :

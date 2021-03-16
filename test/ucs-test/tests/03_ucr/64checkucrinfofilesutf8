@@ -11,16 +11,14 @@ from __future__ import print_function
 import os
 import sys
 
+D_INFO = '/etc/univention/registry.info'
 exit_code = 100
 
-
-def visit(arg, dirname, names):
-	global exit_code
+for dirname, dirnames, names in os.walk(D_INFO):
 	for name in names:
 		filename = os.path.join(dirname, name)
 		if os.path.isfile(filename):
-			f = open(filename, 'rb')
-			try:
+			with open(filename, 'rb') as f:
 				for (i, line) in enumerate(f):
 					try:
 						line.decode('utf8')
@@ -30,11 +28,7 @@ def visit(arg, dirname, names):
 						break
 				else:
 					print("OK: %s" % (filename,))
-			finally:
-				f.close()
-
-
-os.path.walk('/etc/univention/registry.info', visit, None)
 
 sys.exit(exit_code)
+
 # vim: set filetype=python :

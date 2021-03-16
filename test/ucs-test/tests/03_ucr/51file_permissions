@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Check file permissions on generated files
 ##  1. explicit $mode has highest priority
@@ -266,8 +267,9 @@ verify_multi_file_template_with_dummy_file () {
 }
 verify () { # $1=name $2=mode $3=owner $4=group
 	local filename="$1" mode="$2" owner="$3" group="$4" IFS="	" fail=
+	# shellcheck disable=SC2046
 	set -- $(stat -c '%04a	%U	%G' "$filename") # IFS
-	[ $(($mode)) -eq $(($1)) ] || mode+="!=$1" fail=1
+	[ $((mode)) -eq $(($1)) ] || mode+="!=$1" fail=1
 	[ "$owner" = "$2" ] || owner+="!=$2" fail=1
 	[ "$group" = "$3" ] || group+="!=$3" fail=1
 	if [ -n "$fail" ]

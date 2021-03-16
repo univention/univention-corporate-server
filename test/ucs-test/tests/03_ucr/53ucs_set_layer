@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test Univention Config Registry conditional set
 ## bugs: [40728]
 ## tags:
@@ -6,6 +7,7 @@
 ##  - apptest
 ## exposure: careful
 
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 KEY="test/40728"
 
