@@ -14,10 +14,18 @@ from univention.config_registry.backend import ConfigRegistry
 
 py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
 
-TRUE_VALID = ('YES', 'yes', 'Yes', 'true', '1', 'enable', 'enabled', 'on')
-TRUE_INVALID = ('yes ', ' yes', '')
-FALSE_VALID = ('NO', 'no', 'No', 'false', '0', 'disable', 'disabled', 'off')
-FALSE_INVALID = ('no ', ' no', '')
+TRUE_VALID = sorted({
+	c
+	for v in {"Yes", "True", "1", "Enable", "Enabled", "On"}
+	for c in {v, v.upper(), v.lower()}
+})
+TRUE_INVALID = ('yes ', ' yes', '', "yes2", "On2", "Univention")
+FALSE_VALID = sorted({
+	c
+	for v in {'No', 'False', '0', 'Disable', 'Disabled', 'Off'}
+	for c in {v, v.upper(), v.lower()}
+})
+FALSE_INVALID = ('no ', ' no', '', "no2", "Off2", "Univention")
 
 
 class TestConfigRegistry(object):
