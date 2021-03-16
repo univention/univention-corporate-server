@@ -1,3 +1,9 @@
+ucs-test (10.0.4-32) unstable; urgency=medium
+
+  * Bug #52745: Code cleanup in 96rename*
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Mar 2021 17:46:02 +0100
+
 ucs-test (10.0.4-31) unstable; urgency=medium
 
   * Bug #51819: appcenter/version will now fail without args. Switching to
