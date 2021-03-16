@@ -41,6 +41,21 @@ class TestConfigRegistry(object):
 		_ucr = ConfigRegistry(write_registry=level)  # noqa F841
 		assert (tmpdir / ConfigRegistry.BASES[level]).exists()
 
+	@pytest.mark.parametrize("levels", range(1 << 4))
+	def test_layering(self, levels):
+		"""Check layer priorities 50layer-priority"""
+		msb = 0
+		for layer in range(4):
+			if levels & (1 << layer):
+				ucr = ConfigRegistry(write_registry=layer)
+				ucr["key"] = str(layer)
+				ucr.save()
+				msb = layer
+
+		ucr = ConfigRegistry()
+		ucr.load()
+		assert ucr["key"] == (str(msb) if levels else None)
+
 	def test_custom(self, tmpdir):
 		"""Create CUSTOM registry."""
 		fname = tmpdir / 'custom.conf'
