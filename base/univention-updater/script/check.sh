@@ -599,6 +599,26 @@ update_check_samba_server_schannel () {  # Bug #49898
 	fi
 }
 
+update_check_adc_mapping () {  # Bug #52044
+	local tmpoutput
+	local md5sum_expected
+	if [ "$(dpkg --verify univention-ad-connector 2>/dev/null | grep /etc/univention/connector/ad/mapping | cut -c 3)" = "5" ]; then
+		tmpoutput=$(dpkg-query -W -f='${Conffiles}\n' univention-ad-connector)
+		md5sum_expected=$(sed -n 's|^ /etc/univention/connector/ad/mapping \(.*\)$|\1|p' <<<"$tmpoutput")
+		echo "WARNING: The AD-Connector mapping UCR template file has been modified locally."
+		echo "         The file /etc/univention/connector/ad/mapping doesn't have the original md5 sum (expected: $md5sum_expected)."
+		echo "         It needs to be reverted to the original and the adjusted mapping should be converted into a python file"
+		echo "         named /etc/univention/connector/ad/localmapping.py which must define a function named \"mapping_hook\""
+		echo "         which receives the original ad_mapping as argument and must return a (possibly customized) ad_mapping"
+		echo "         (See also https://docs.software-univention.de/manual-4.4.html#windows:groups:CustomMappings)."
+		if is_ucr_true update50/ignore_adc_mapping; then
+			echo "WARNING: update50/ignore_adc_mapping is set to true. Continue as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
