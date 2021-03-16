@@ -1235,6 +1235,8 @@ class ucs:
 					set_values(self.property[property_type].attributes[attr_key])
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
+			else:
+				ud.debug(ud.LDAP, ud.PROCESS, '__set_values: Skip %s mode attribute %s ' % (self.property[property_type].attributes[attr_key].sync_mode, attr_key))
 
 		# post-values
 		if not self.property[property_type].post_attributes:
@@ -1257,6 +1259,8 @@ class ucs:
 						set_values(self.property[property_type].post_attributes[attr_key])
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
+			else:
+				ud.debug(ud.LDAP, ud.PROCESS, '__set_values: Skip %s mode attribute %s ' % (self.property[property_type].attributes[attr_key].sync_mode, attr_key))
 
 	def add_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.add_in_ucs')  # noqa: F841

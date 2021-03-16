@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-83) unstable; urgency=medium
+
+  * Bug #50766: Synchronize gidNumber for groups. Set gidNumber to readmode
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Mar 2021 17:03:50 +0100
+
 univention-s4-connector (13.0.2-82) unstable; urgency=medium
 
   * Bug #52428: As preparation to the UCS-5 release the UDM extensions,

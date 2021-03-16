@@ -366,6 +366,7 @@ s4_mapping = {
 				single_value=True,
 			),
 			'gidNumber': univention.s4connector.attribute(
+				sync_mode='write',
 				ucs_attribute='gidNumber',
 				ldap_attribute='gidNumber',
 				con_attribute='gidNumber',
@@ -494,6 +495,13 @@ s4_mapping = {
 				ldap_attribute='mailPrimaryAddress',
 				con_attribute='mail',
 				reverse_attribute_check=True,
+				single_value=True,
+			),
+			'gidNumber': univention.s4connector.attribute(
+				sync_mode='write',
+				ucs_attribute='gidNumber',
+				ldap_attribute='gidNumber',
+				con_attribute='gidNumber',
 				single_value=True,
 			),
 			'sid': get_sid_mapping(),

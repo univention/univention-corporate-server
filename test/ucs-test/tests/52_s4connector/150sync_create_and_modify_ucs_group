@@ -16,6 +16,7 @@ connector_running_on_this_host || exit 137
 
 UDM_groups_group_name="$(random_chars)"
 UDM_groups_group_description="$(random_chars)"
+UDM_groups_group_gidNumber="6999"
 AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -28,12 +29,14 @@ ad_wait_for_synchronization; fail_bool 0 110
 if [ "$connector_s4_windows_version" != "win2000" \
 	-o "$connector_s4_mapping_group_win2000_description" != "false" ]
 then
+	ad_verify_attribute	"$AD_DN" "gidNumber" "$UDM_groups_group_gidNumber"; fail_bool 0 110
 	ad_verify_attribute	"$AD_DN" "description" "$UDM_groups_group_description"; fail_bool 0 110
 fi
 
 udm_verify_udm_attribute "description" "$UDM_groups_group_description" "groups/group"; fail_bool 0 110
 
 UDM_groups_group_description="$(random_chars)"
+udm_verify_udm_attribute "gidNumber" "$UDM_groups_group_gidNumber" "groups/group"; fail_bool 0 110
 
 udm_modify "groups/group" "" "" "" "" \
 		   --set description="$UDM_groups_group_description" || fail_test 110
