@@ -308,7 +308,7 @@
 					The &ucsUMC; is now running with Python 3 (<u:bug>51508</u:bug>, <u:bug>52764</u:bug>, <u:bug>49392</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Sessions are not bound to IP addresses anymore if the request comes from localhost (<u:bug>52935</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
