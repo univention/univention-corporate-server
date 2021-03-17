@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The UCR templates are now compatible with Python 3 for the UCS 5.0 upgrade.
 bug: [52814]
+erratum: 923
+announced: 2021-03-17
