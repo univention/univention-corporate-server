@@ -1,3 +1,9 @@
+univention-base-files (8.0.1-2) unstable; urgency=medium
+
+  * Bug #52919: fix traceback in hosts.d/00-base with python3
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 17 Mar 2021 11:14:23 +0100
+
 univention-base-files (8.0.1-1) unstable; urgency=medium
 
   * Bug #51994: Version bump for 4.4-6
