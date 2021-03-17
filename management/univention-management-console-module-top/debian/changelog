@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-5) unstable; urgency=medium
+
+  * Bug #52941: readding umc-top icons from version 3.2
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 17 Mar 2021 15:18:39 +0100
+
 univention-management-console-module-top (9.0.0-4) unstable; urgency=medium
 
   * Bug #52453: adjust design of top module
