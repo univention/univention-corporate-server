@@ -264,6 +264,7 @@ update_check_old_packages () {
 		univention-debootstrap
 		univention-debootstrap-3
 		univention-check-printers
+		univention-samba-slave-pdc
 		univention-snmp
 		univention-snmpd
 		univention-remote-backup

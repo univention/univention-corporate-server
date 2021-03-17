@@ -4360,7 +4360,6 @@ univention-role-server-common
 univention-s4-connector
 univention-samba
 univention-samba-local-config
-univention-samba-slave-pdc
 univention-samba4
 univention-samba4-dbgsym
 univention-samba4-sysvol-sync

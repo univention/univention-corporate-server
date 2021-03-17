@@ -1,6 +1,7 @@
 univention-samba (14.0.4-1) unstable; urgency=low
 
   * Bug #43211: Create Windows profile directories
+  * Bug #52943: Remove univention-samba-slave-pdc
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 17 Mar 2021 17:52:06 +0100
 

@@ -43,20 +43,6 @@ Description: UCS - Samba Member Server
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-samba-slave-pdc
-Architecture: all
-Depends:
- univention-samba,
- ${misc:Depends},
-Description: UCS - Samba/NT domain controller (on Replica Directory Node)
- With this package, the Samba/NT domain controller is
- configured as a Replica Directory Node to the Primary Directory Node.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-samba-local-config
 Architecture: all
 Depends:

@@ -21,7 +21,6 @@
 * [scenarios/autotest-075-update-slave-s4.cfg](scenarios/autotest-075-update-slave-s4.cfg)
 * [scenarios/autotest-076-update-member-no-samba.cfg](scenarios/autotest-076-update-member-no-samba.cfg)
 * [scenarios/autotest-077-update-member-s4.cfg](scenarios/autotest-077-update-member-s4.cfg)
-* [scenarios/autotest-078-update-slave-samba-pdc.cfg](scenarios/autotest-078-update-slave-samba-pdc.cfg)
 
 #### [MultiEnv: AMI=5.0, errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoin/)
 #### [MultiEnv: AMI=5.0, only released errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoinReleased/)
@@ -40,7 +39,6 @@
 * [scenarios/autotest-095-slave-s4.cfg](scenarios/autotest-095-slave-s4.cfg)
 * [scenarios/autotest-096-member-no-samba.cfg](scenarios/autotest-096-member-no-samba.cfg)
 * [scenarios/autotest-097-member-s4.cfg](scenarios/autotest-097-member-s4.cfg)
-* [scenarios/autotest-098-slave-samba-pdc.cfg](scenarios/autotest-098-slave-samba-pdc.cfg)
 
 #### [Tests - AD Connector (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/ADConnectorMultiEnv/)
 
@@ -176,7 +174,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/setup-testing/member-s4.cfg](scenarios/setup-testing/member-s4.cfg)
 * [scenarios/setup-testing/slave-no-samba.cfg](scenarios/setup-testing/slave-no-samba.cfg)
 * [scenarios/setup-testing/slave-s4.cfg](scenarios/setup-testing/slave-s4.cfg)
-* [scenarios/setup-testing/slave-samba-pdc.cfg](scenarios/setup-testing/slave-samba-pdc.cfg)
 * [scenarios/windows/win2k16-de-client.cfg](scenarios/windows/win2k16-de-client.cfg)
 * [scenarios/windows/win2k8r2-ad-level-2003.cfg](scenarios/windows/win2k8r2-ad-level-2003.cfg)
 

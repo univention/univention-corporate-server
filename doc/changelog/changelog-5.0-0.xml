@@ -1094,6 +1094,9 @@
 				<listitem><simpara>
 					<package>univention-samba</package> has been adjusted to properly restart samba during package updates in case <application>smbd</application> was running (<u:bug>47367</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>bin:univention-samba-slave-pdc</package> has been removed (<u:bug>52943</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

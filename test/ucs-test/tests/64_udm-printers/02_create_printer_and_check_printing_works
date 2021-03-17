@@ -111,9 +111,8 @@ if __name__ == '__main__':
 			utils.fail("Printing to CUPS printer {} as {} failed".format(properties['name'], admin_name))
 
 		s4_dc_installed = utils.package_installed("univention-samba4")
-		s3_pdc_installed = utils.package_installed("univention-samba-slave-pdc")
 		s3_file_and_print_server_installed = utils.package_installed("univention-samba")
-		smb_server = s3_file_and_print_server_installed or s4_dc_installed or s3_pdc_installed
+		smb_server = s3_file_and_print_server_installed or s4_dc_installed
 		if smb_server:
 			delay = 1
 			time.sleep(delay)

@@ -69,9 +69,9 @@ def test_samba_connection(ucr, username, password):
 	if not kinit.check():
 		utils.fail("Failed to acquire kerberos ticket.")
 
-	s4_or_pdc_installed = utils.package_installed("univention-samba4") or utils.package_installed("univention-samba-slave-pdc")
-	if utils.package_installed("univention-samba") or s4_or_pdc_installed:
-		host = 'localhost' if s4_or_pdc_installed else ucr.get('ldap/master')
+	s4_installed = utils.package_installed("univention-samba4")
+	if utils.package_installed("univention-samba") or s4_installed:
+		host = 'localhost' if s4_installed else ucr.get('ldap/master')
 		print("Samba Logon with this new user against {}".format(host))
 
 		smbclient = cmd("smbclient", "-L", host, "-U", "{}%{}".format(username, password))
