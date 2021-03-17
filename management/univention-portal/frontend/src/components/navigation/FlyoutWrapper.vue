@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-@Options({
+export default defineComponent({
   name: 'FlyoutWrapper',
   props: {
     isVisible: {
@@ -18,8 +18,7 @@ import { Options, Vue } from 'vue-class-component';
       required: true,
     },
   },
-})
-export default class FlyoutWrapper extends Vue {}
+});
 </script>
 
 <style lang="stylus">

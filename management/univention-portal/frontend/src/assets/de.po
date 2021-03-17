@@ -3,46 +3,74 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-02-18 00:49+0100\n"
+"POT-Creation-Date: 2021-03-17 09:10+0000\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/i18n/translations.js:17
-msgid "Edit portal"
-msgstr "Portal bearbeiten"
-
-#: src/i18n/translations.js:15
-msgid "Login"
-msgstr "Anmelden"
-
-#: src/i18n/translations.js:16
-msgid "Logout"
-msgstr "Abmelden"
-
-#: src/i18n/translations.js:14
-msgid "Notifications"
-msgstr "Benachrichtigungen"
-
-#: src/i18n/translations.js:18
-msgid "Switch locale"
-msgstr "Sprache ändern"
-
-msgid "Cookie settings"
-msgstr "Cookie Einstellungen"
-
-msgid "Cookie description"
-msgstr "Wir verwenden Cookies, um Ihnen bestimmte Funktionen zur Verfügung zu stellen und einen uneingeschränkten Service zu gewährleisten. Durch Klicken auf \"Akzeptieren\" stimmen Sie der Erfassung von Informationen auf diesem Portal zu."
-
+#: src/assets/data/dictionary.js:17
 msgid "Accept"
 msgstr "Akzeptieren"
 
+#: src/assets/data/dictionary.js:21
+msgid "Add category"
+msgstr "Kategorie hinzufügen"
+
+#: src/assets/data/dictionary.js:22
+msgid "Cookie Settings"
+msgstr "Cookie-Einstellungen"
+
+#: src/assets/data/dictionary.js:19
+msgid "Dismiss notification"
+msgstr "Benachrichtigung schließen"
+
+#: src/assets/data/dictionary.js:14
+msgid "Edit portal"
+msgstr "Portal bearbeiten"
+
+#: src/assets/data/dictionary.js:12
+msgid "Login"
+msgstr "Anmelden"
+
+#: src/assets/data/dictionary.js:20
+msgid ""
+"Login <a class=\"notification-bubble__link\" href=\"#\">here</a> so that you"
+" can use the full range of functions of UCS."
+msgstr ""
+"Melden Sie sich <a class=\"notification-bubble__link\" href=\"#\">hier</a> "
+"an, um alle Funktionen von UCS nutzen zu können."
+
+#: src/assets/data/dictionary.js:13
+msgid "Logout"
+msgstr "Abmelden"
+
+#: src/assets/data/dictionary.js:11
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: src/assets/data/dictionary.js:15
+msgid "Stop edit portal"
+msgstr "Bearbeiten abbrechen"
+
+#: src/assets/data/dictionary.js:18
 msgid "Submit"
 msgstr "Abschicken"
 
-msgid "Add category"
-msgstr "Kategorie hinzufügen"
+#: src/assets/data/dictionary.js:16
+msgid "Switch locale"
+msgstr "Sprache ändern"
+
+#: src/assets/data/dictionary.js:23
+msgid ""
+"We use cookies in order to provide you with certain functions and to be able"
+" to guarantee an unrestricted service. By clicking on \"Accept\", you "
+"consent to the collection of information on this portal."
+msgstr ""
+"Wir verwenden Cookies, um Ihnen bestimmte Funktionen bereitzustellen und "
+"einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf"
+" \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
+"Portal ein."

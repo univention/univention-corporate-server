@@ -40,7 +40,7 @@
         <translate i18n-key="SWITCH_LOCALE" />
       </div>
       <div
-        v-for="(item, index) in getMenuLinks"
+        v-for="(item, index) in menuLinks"
         :key="index"
         :class="setFadeClass()"
         class="portal-sidenavigation__menu-item"
@@ -97,22 +97,34 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import MenuItem from '@/components/navigation/MenuItem.vue';
+import { login, logout } from '@/jsHelper/login';
 
 import Translate from '@/i18n/Translate.vue';
 
-@Options({
+interface SideNavigationData {
+  menuVisible: boolean,
+  subMenuVisible: boolean,
+  subMenuClass: string,
+  menuParent: number,
+  init: boolean,
+  fade: boolean,
+  fadeRightLeft: string,
+  fadeLeftRight: string,
+}
+
+export default defineComponent({
   name: 'SideNavigation',
   components: {
     PortalIcon,
     MenuItem,
     Translate,
   },
-  data() {
+  data(): SideNavigationData {
     return {
       menuVisible: true,
       subMenuVisible: false,
@@ -126,34 +138,30 @@ import Translate from '@/i18n/Translate.vue';
   },
   computed: {
     ...mapGetters({
-      getMenuLinks: 'menu/getMenu',
-      getLocale: 'locale/getLocale',
+      menuLinks: 'menu/getMenu',
       editMode: 'portalData/editMode',
       userState: 'user/userState',
+      locale: 'locale/getLocale',
     }),
   },
   methods: {
-    switchLocale() {
-      if (this.$store.state.locale.locale === 'en_US') {
-        this.$store.dispatch('locale/setLocale', { locale: 'de_DE' });
+    switchLocale(): void {
+      if (this.locale === 'en_US') {
+        this.$store.dispatch('locale/setLocale', 'de_DE');
       } else {
-        this.$store.dispatch('locale/setLocale', { locale: 'en_US' });
+        this.$store.dispatch('locale/setLocale', 'en_US');
       }
     },
-    login() {
-      if (this.userState.mayLoginViaSAML) {
-        window.location.href = `/univention/saml/?location=${window.location.pathname}`;
-      } else {
-        window.location.href = `/univention/login/?location=${window.location.pathname}`;
-      }
+    login(): void {
+      login(this.userState);
     },
-    logout() {
-      window.location.href = '/univention/logout';
+    logout(): void {
+      logout();
     },
-    closeNavigation() {
+    closeNavigation(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
     },
-    toggleMenu(index = -1) {
+    toggleMenu(index = -1): void {
       this.menuVisible = !this.menuVisible;
       this.menuParent = index;
       this.subMenuVisible = !this.subMenuVisible;
@@ -166,11 +174,11 @@ import Translate from '@/i18n/Translate.vue';
         this.subMenuClass = 'portal-sidenavigation__menu-item--hide';
       }
     },
-    toggleEditMode() {
+    toggleEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', !this.editMode);
       this.closeNavigation();
     },
-    setFadeClass() {
+    setFadeClass(): string {
       let ret = '';
       if (!this.init) {
         if (!this.fade) {
@@ -182,9 +190,7 @@ import Translate from '@/i18n/Translate.vue';
       return ret;
     },
   },
-})
-
-export default class SideNavigation extends Vue {}
+});
 </script>
 
 <style lang="stylus">

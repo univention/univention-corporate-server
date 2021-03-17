@@ -24,10 +24,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
+
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 
-@Options({
+export default defineComponent({
   name: 'HeaderButton',
   components: {
     PortalIcon,
@@ -50,8 +51,16 @@ import PortalIcon from '@/components/globals/PortalIcon.vue';
       default: '',
     },
   },
+  computed: {
+    isActiveButton(): boolean {
+      return this.$store.state.navigation.activeButton === this.icon;
+    },
+    setRef(): string {
+      return `${this.icon}Reference`;
+    },
+  },
   methods: {
-    toggleActiveButton() {
+    toggleActiveButton(): void {
       if (!this.noClick) {
         if (this.isActiveButton) {
           this.$store.dispatch('navigation/setActiveButton', '');
@@ -61,17 +70,7 @@ import PortalIcon from '@/components/globals/PortalIcon.vue';
       }
     },
   },
-
-  computed: {
-    isActiveButton() {
-      return this.$store.state.navigation.activeButton === this.icon;
-    },
-    setRef() {
-      return `${this.icon}Reference`;
-    },
-  },
-})
-export default class HeaderButton extends Vue {}
+});
 </script>
 
 <style lang="stylus">

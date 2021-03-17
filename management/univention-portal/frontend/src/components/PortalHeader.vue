@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
@@ -106,11 +106,11 @@ import PortalModal from '@/components/globals/PortalModal.vue';
 import NotificationBubble from '@/components/globals/NotificationBubble.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
+import notificationMixin from '@/mixins/notificationMixin';
+
 import Translate from '@/i18n/Translate.vue';
 
-import notificationMixin from '@/mixins/notificationMixin.vue';
-
-@Options({
+export default defineComponent({
   name: 'PortalHeader',
   components: {
     HeaderButton,
@@ -133,9 +133,6 @@ import notificationMixin from '@/mixins/notificationMixin.vue';
       activeTabIndex: 'tabs/activeTabIndex',
       tabs: 'tabs/allTabs',
     }),
-    setIconHeight(): string {
-      return this.iconHeight ? this.iconHeight : this.iconWidth;
-    },
     activeSearchButton(): boolean {
       return this.activeButton === 'search';
     },
@@ -145,29 +142,16 @@ import notificationMixin from '@/mixins/notificationMixin.vue';
     activeMenuButton(): boolean {
       return this.activeButton === 'menu';
     },
-    setActiveButton(buttonType) {
-      this.activeFlyoutContent = buttonType;
-    },
-    buttonIsClicked(buttonType): boolean {
-      return this.activeFlyoutContent === buttonType;
-    },
-    sameButtonClicked(buttonType): boolean {
-      return buttonType === this.activeFlyoutContent;
-    },
-    activeSearchBar(): number {
-      return this.activeSearchButton ? 1 : 0;
-    },
   },
   methods: {
-    closeModal() {
+    closeModal(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
     },
-    goHome() {
+    goHome(): void {
       this.$store.dispatch('tabs/setActiveTab', 0);
     },
   },
-})
-export default class PortalHeader extends Vue {}
+});
 </script>
 
 <style lang="stylus" scoped>

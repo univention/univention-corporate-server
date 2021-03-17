@@ -8,7 +8,10 @@
       class="notification-bubble__container"
       :class="`notification-bubble__container--${item.bubbleImportance}`"
     >
-      <div>
+      <div
+        :class="{'notification-bubble__clickable': clickable(item)}"
+        @click="onClick(item)"
+      >
         <div class="notification-bubble__header">
           <div
             class="notification-bubble__title"
@@ -40,14 +43,14 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import notificationMixin from '@/mixins/notificationMixin';
+
 import { catalog } from '@/i18n/translations';
 
-import notificationMixin from '@/mixins/notificationMixin.vue';
-
-@Options({
+export default defineComponent({
   name: 'NotificationBubbleSlot',
   components: {
     HeaderButton,
@@ -75,9 +78,18 @@ import notificationMixin from '@/mixins/notificationMixin.vue';
       return catalog.DISMISS_NOTIFICATION.translated.value;
     },
   },
-})
+  methods: {
+    clickable(item): boolean {
+      return item.onClick !== null;
+    },
+    onClick(item): void {
+      if (this.clickable(item)) {
+        item.onClick();
+      }
+    },
+  },
+});
 
-export default class NotificationBubbleSlot extends Vue {}
 </script>
 
 <style lang="stylus">
@@ -89,6 +101,9 @@ export default class NotificationBubbleSlot extends Vue {}
     right: 2rem
     top: 8rem
     z-index: 10
+
+  &__clickable
+    cursor: pointer
 
   &__embedded
     min-width: 32rem

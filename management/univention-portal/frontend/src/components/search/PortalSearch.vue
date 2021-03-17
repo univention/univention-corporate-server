@@ -10,43 +10,46 @@
     >
   </div>
 </template>
+
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-@Options({
+interface PortalSearchData {
+  portalSearch: string,
+}
+
+export default defineComponent({
   name: 'PortalSearch',
-  mounted() {
-    this.$nextTick(() => {
-      this.$refs.portalSearchInput.focus();
-    });
-  },
-  data() {
+  data(): PortalSearchData {
     return {
       portalSearch: '',
     };
   },
-  beforeUnmount() {
-    this.$store.dispatch('search/setSearchQuery', '');
-  },
   computed: {
     ...mapGetters({
-      originalArray: 'categories/categoryState',
+      originalArray: 'categories/getCategories',
       modalState: 'modal/modalState',
       searchQuery: 'search/searchQuery',
     }),
   },
+  mounted() {
+    this.$nextTick(() => {
+      (this.$refs.portalSearchInput as HTMLElement).focus();
+    });
+  },
+  beforeUnmount() {
+    this.$store.dispatch('search/setSearchQuery', '');
+  },
   methods: {
-    searchTiles() {
+    searchTiles(): void {
       this.$store.dispatch('search/setSearchQuery', this.portalSearch.toLowerCase());
     },
-    closeSearchInput() {
+    closeSearchInput(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
     },
   },
-})
-
-export default class PortalSearch extends Vue {}
+});
 </script>
 
 <style lang="stylus">

@@ -1,11 +1,12 @@
 import { updateLocale } from '@/i18n/translations';
-import { Module } from 'vuex';
+import { Locale } from '../models';
+import { PortalModule } from '../types';
 
-export interface State {
-  locale: string;
+export interface LocaleState {
+  locale: Locale;
 }
 
-const locale: Module<State, unknown> = {
+const locale: PortalModule<LocaleState> = {
   namespaced: true,
   state: {
     locale: 'en_US',
@@ -13,7 +14,7 @@ const locale: Module<State, unknown> = {
 
   mutations: {
     NEWLOCALE(state, payload) {
-      state.locale = payload.locale;
+      state.locale = payload;
     },
   },
 
@@ -22,9 +23,10 @@ const locale: Module<State, unknown> = {
   },
 
   actions: {
-    setLocale({ commit }, payload) {
+    setLocale({ commit }, payload: Locale) {
       commit('NEWLOCALE', payload);
-      return updateLocale(payload.locale);
+      const localePrefix = payload.slice(0, 2);
+      return updateLocale(localePrefix);
     },
   },
 };

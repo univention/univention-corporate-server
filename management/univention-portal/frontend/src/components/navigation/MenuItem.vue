@@ -31,12 +31,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import TileClick from '@/mixins/TileClick.vue';
 
-@Options({
+export default defineComponent({
   name: 'MenuItem',
   components: {
     PortalIcon,
@@ -63,9 +63,7 @@ import TileClick from '@/mixins/TileClick.vue';
       return this.link !== null;
     },
   },
-})
-
-export default class MenuItem extends Vue {}
+});
 </script>
 
 <style lang="stylus">

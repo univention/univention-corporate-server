@@ -6,9 +6,9 @@
       v-show="!activeTabIndex"
       class="portal-categories"
     >
-      <template v-if="portalCategories">
+      <template v-if="categories">
         <portal-category
-          v-for="(category, index) in portalCategories"
+          v-for="(category, index) in categories"
           :key="index"
           :title="category.title"
           :tiles="category.tiles"
@@ -56,7 +56,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import PortalIframe from 'components/PortalIframe.vue';
@@ -65,16 +66,20 @@ import PortalIcon from '@/components/globals/PortalIcon.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import PortalModal from '@/components/globals/PortalModal.vue';
-
 import PortalBackground from '@/components/PortalBackground.vue';
 import CookieBanner from '@/components/CookieBanner.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
-import notificationMixin from '@/mixins/notificationMixin.vue';
+import notificationMixin from '@/mixins/notificationMixin';
 
 import Translate from '@/i18n/Translate.vue';
 
-export default {
+interface HomeData {
+  buttonIcon: string,
+  ariaLabelButton: string,
+}
+
+export default defineComponent({
   name: 'Home',
   components: {
     PortalCategory,
@@ -89,16 +94,15 @@ export default {
     Translate,
   },
   mixins: [notificationMixin],
-  data() {
+  data(): HomeData {
     return {
-      categoryList: [],
       buttonIcon: 'plus',
       ariaLabelButton: 'Button for adding a new category',
     };
   },
   computed: {
     ...mapGetters({
-      originalArray: 'categories/categoryState',
+      categories: 'categories/getCategories',
       modalState: 'modal/modalState',
       modalComponent: 'modal/modalComponent',
       modalProps: 'modal/modalProps',
@@ -108,21 +112,19 @@ export default {
       editMode: 'portalData/editMode',
       // portalData: 'portalData/getPortal', // access portal data ;)
     }),
-    portalCategories() {
-      return this.originalArray ? this.originalArray : [];
-    },
   },
   methods: {
-    closeModal() {
+    closeModal(): void {
       if (!this.modalStubborn) {
         this.$store.dispatch('modal/setHideModal');
       }
     },
     addCategory() {
+      // TODO: Add category
       console.log('addCategory');
     },
   },
-};
+});
 </script>
 
 <style scoped lang="stylus">

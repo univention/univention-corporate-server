@@ -4,8 +4,10 @@
   </pre>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'DraggableDebugger',
   props: {
     items: {
@@ -13,7 +15,7 @@ export default {
       default: () => ({}),
     },
   },
-};
+});
 </script>
 
 <style lang="stylus" scoped>

@@ -1,10 +1,10 @@
-import { Module } from 'vuex';
+import { PortalModule } from '../types';
 
-export interface State {
+export interface SearchState {
   searchQuery: string,
 }
 
-const search: Module<State, unknown> = {
+const search: PortalModule<SearchState> = {
   namespaced: true,
   state: {
     searchQuery: '',

@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-@Options({
+export default defineComponent({
   name: 'PortalToolTip',
   props: {
     title: {
@@ -62,7 +62,7 @@ import { Options, Vue } from 'vue-class-component';
     },
   },
   computed: {
-    showTooltip() {
+    showTooltip(): boolean {
       let ret = true;
       if (
         (this.icon === '') ||
@@ -74,16 +74,7 @@ import { Options, Vue } from 'vue-class-component';
       return ret;
     },
   },
-})
-export default class PortalToolTip extends Vue {
-  title!: string;
-
-  link!: string;
-
-  icon!: string;
-
-  description!: string;
-}
+});
 </script>
 
 <style scoped lang="stylus">

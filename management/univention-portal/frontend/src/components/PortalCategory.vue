@@ -31,19 +31,21 @@
           class="dragdrop__drop-zone"
         >
           <template #item="{ item }">
-            <div class="dragdrop__draggable-item">
+            <div
+              v-if="tileMatchesQuery(item)"
+              class="dragdrop__draggable-item"
+            >
+              <portal-folder
+                v-if="item.isFolder"
+                v-bind="item"
+                :data-folder="$localized(item.title)"
+                :is-admin="true"
+              />
               <portal-tile
-                v-if="isTile(item)"
+                v-else
                 v-bind="item"
                 :data-tile="$localized(item.title)"
                 :title="item.title"
-                :is-admin="true"
-              />
-
-              <portal-folder
-                v-if="isFolder(item)"
-                v-bind="item"
-                :data-folder="$localized(item.title)"
                 :is-admin="true"
               />
             </div>
@@ -56,19 +58,19 @@
           v-for="(tile, index) in tiles"
         >
           <div
-            v-if="isTile(tile) || isFolder(tile)"
+            v-if="tileMatchesQuery(tile)"
             :id="index"
             :key="index"
           >
-            <portal-tile
-              v-if="isTile(tile)"
-              :ref="'tile' + index"
-              v-bind="tile"
-            />
             <portal-folder
-              v-if="isFolder(tile)"
+              v-if="tile.isFolder"
               v-bind="tile"
               :ref="'tile' + index"
+            />
+            <portal-tile
+              v-else
+              :ref="'tile' + index"
+              v-bind="tile"
             />
           </div>
         </template>
@@ -83,18 +85,25 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
 import PortalTile from '@/components/PortalTile.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
-
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
 import DraggableWrapper from '@/components/dragdrop/DraggableWrapper.vue';
 import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
 
-@Options({
+import { Title, Tile, FolderTile } from '@/store/models';
+
+interface PortalCategoryData {
+  vTiles: Tile[],
+  debug: boolean,
+  showCategoryHeadline: boolean,
+}
+
+export default defineComponent({
   name: 'PortalCategory',
   components: {
     PortalTile,
@@ -105,11 +114,11 @@ import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
   },
   props: {
     title: {
-      type: Object,
+      type: Object as PropType<Title>,
       required: true,
     },
     tiles: {
-      type: Array,
+      type: Array as PropType<Tile[]>,
       required: true,
     },
     dropZone: {
@@ -125,22 +134,18 @@ import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
       default: 'Tab Aria Label',
     },
   },
-  data() {
+  data(): PortalCategoryData {
     return {
       vTiles: this.tiles,
-      isActive: false,
       debug: false, // `true` enables the debugger for the tiles array(s) in admin mode
-      toolTip: {},
       showCategoryHeadline: false,
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.hasTiles();
-    });
-  },
-  updated() {
-    this.hasTiles(this.tiles);
+  computed: {
+    ...mapGetters({
+      editMode: 'portalData/editMode',
+      searchQuery: 'search/searchQuery',
+    }),
   },
   watch: {
     vTiles(val) {
@@ -149,33 +154,29 @@ import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
       console.log('val: ', val);
     },
   },
-  computed: {
-    ...mapGetters({
-      editMode: 'portalData/editMode',
-      searchQuery: 'search/searchQuery',
-    }),
+  mounted() {
+    this.$nextTick(() => {
+      this.hasTiles();
+    });
+  },
+  updated() {
+    this.hasTiles();
   },
   methods: {
-    isTile(obj: PortalTile | PortalFolder): boolean {
-      return 'linkTarget' in obj && this.tileMatchesQuery(obj);
-    },
-    isFolder(obj: PortalTile | PortalFolder): obj is PortalFolder {
-      return 'tiles' in obj && this.folderMatchesQuery(obj);
-    },
     changed() {
       console.log('changed');
     },
     editCategory() {
       console.log('editCategory');
     },
-    tileMatchesQuery(obj: PortalTile | PortalFolder): boolean {
-      return this.$localized(obj.title).toLowerCase()
+    titleMatchesQuery(title: Title): boolean {
+      return this.$localized(title).toLowerCase()
         .includes(this.searchQuery.toLowerCase());
     },
-    folderMatchesQuery(obj: PortalFolder): boolean {
-      return this.tileMatchesQuery(obj) ||
-        obj.tiles.some((tile) => this.$localized(tile.title).toLowerCase()
-          .includes(this.searchQuery.toLowerCase()));
+    tileMatchesQuery(tile: Tile): boolean {
+      const titleMatch = this.titleMatchesQuery(tile.title);
+      const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title));
+      return titleMatch || folderMatch;
     },
     hasTiles() {
       const refArray = Object.entries(this.$refs);
@@ -187,13 +188,7 @@ import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
       }
     },
   },
-})
-
-export default class PortalCategory extends Vue {
-  title!: Record<string, string>;
-
-  tiles!: Array<PortalTile>;
-}
+});
 </script>
 
 <style lang="stylus">

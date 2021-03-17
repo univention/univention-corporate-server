@@ -1,19 +1,7 @@
-import { Module } from 'vuex';
+import { FullNotification, Notification, WeightedNotification } from '../models';
+import { PortalModule } from '../types';
 
-interface Notification {
-  bubbleTitle: string;
-  bubbleDescription: string;
-}
-
-interface WeightedNotification extends Notification {
-  bubbleImportance: string;
-}
-
-interface FullNotification extends WeightedNotification {
-  bubbleToken: string;
-}
-
-export interface State {
+export interface NotificationBubbleState {
   visible: boolean;
   visibleStandalone: boolean;
   visibleNew: boolean;
@@ -21,7 +9,7 @@ export interface State {
   contentOfNewNotification: Array<FullNotification>;
 }
 
-const bubble: Module<State, unknown> = {
+const notificationBubble: PortalModule<NotificationBubbleState> = {
   namespaced: true,
   state: {
     visible: false,
@@ -35,7 +23,7 @@ const bubble: Module<State, unknown> = {
     WRITE_CONTENT(state, payload) {
       state.content = payload;
     },
-    ADD_CONTENT(state: State, notification: FullNotification) {
+    ADD_CONTENT(state, notification: FullNotification) {
       state.contentOfNewNotification = [];
       state.content.push(notification);
       state.contentOfNewNotification.push(notification);
@@ -69,7 +57,6 @@ const bubble: Module<State, unknown> = {
       state.contentOfNewNotification.splice(indexNewNotification, 1);
     },
   },
-
   getters: {
     bubbleState: (state) => state.visible,
     bubbleStateStandalone: (state) => state.visibleStandalone,
@@ -113,4 +100,4 @@ const bubble: Module<State, unknown> = {
   },
 };
 
-export default bubble;
+export default notificationBubble;

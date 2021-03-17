@@ -9,7 +9,15 @@
   </div>
 </template>
 
-<style scoped lang="stylus">
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'PortalStandby',
+});
+</script>
+
+<style lang="stylus" scoped>
 .portal-standby
   position: absolute
   top: 0

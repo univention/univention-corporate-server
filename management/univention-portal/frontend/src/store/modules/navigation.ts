@@ -1,10 +1,10 @@
-import { Module } from 'vuex';
+import { PortalModule } from '../types';
 
-export interface State {
+export interface NavigationState {
   activeButton: string;
 }
 
-const navigation: Module<State, unknown> = {
+const navigation: PortalModule<NavigationState> = {
   namespaced: true,
   state: {
     activeButton: '',

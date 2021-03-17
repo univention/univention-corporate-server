@@ -2,9 +2,13 @@
   <div class="tile-add__wrapper">
     <div
       class="tile-add"
-      style="background-image: url('plus_grey.svg');"
       @click="showMenu()"
-    />
+    >
+      <portal-icon
+        icon="plus"
+        icon-width="100%"
+      />
+    </div>
 
     <div
       v-if="popMenuShow"
@@ -46,19 +50,26 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
-import PortalIcon from '@/components/globals/PortalIcon.vue';
 
+import PortalIcon from '@/components/globals/PortalIcon.vue';
 // mocks
 import PopMenuData from '@/assets/data/popmenu.json';
+
+interface TileAddData {
+  popMenu: Record<string, unknown>[],
+  menuChildren: Record<string, unknown>[],
+  popMenuOffset: number,
+  popMenuShow: boolean,
+}
 
 export default defineComponent({
   name: 'TileAdd',
   components: {
     PortalIcon,
   },
-  data() {
+  data(): TileAddData {
     return {
       popMenu: PopMenuData,
       menuChildren: [],
@@ -79,18 +90,18 @@ export default defineComponent({
     });
   },
   methods: {
-    showMenu() {
+    showMenu(): void {
       this.popMenuShow = !this.popMenuShow;
 
       if (!this.popMenuShow) {
         this.menuChildren = [];
       }
     },
-    showChildren(children, index) {
+    showChildren(children: Record<string, unknown>[], index: number): void {
       this.menuChildren = children;
       this.popMenuOffset = index;
     },
-    hideMenu() {
+    hideMenu(): void {
       this.popMenuShow = false;
       this.menuChildren = [];
     },
@@ -111,6 +122,9 @@ export default defineComponent({
   background-size: 3em
   background-repeat: no-repeat
   cursor: pointer
+
+  svg
+    stroke: var(--color-grey40)
 
   &__wrapper
     position: relative
