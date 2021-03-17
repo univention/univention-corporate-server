@@ -594,7 +594,7 @@ update_check_samba_server_schannel () {  # Bug #49898
 		if is_ucr_true update50/ignore_server_schannel; then
 			echo "WARNING: update50/ignore_server_schannel is set to true. Continue as requested."
 		else
-			exit 1
+			return 1
 		fi
 	fi
 }
@@ -611,10 +611,13 @@ update_check_adc_mapping () {  # Bug #52044
 		echo "         named /etc/univention/connector/ad/localmapping.py which must define a function named \"mapping_hook\""
 		echo "         which receives the original ad_mapping as argument and must return a (possibly customized) ad_mapping"
 		echo "         (See also https://docs.software-univention.de/manual-4.4.html#windows:groups:CustomMappings)."
+		echo "         "
+		echo "         Please also note that the mapping code needs to be compatible with Python 3.7"
+		echo "         (See also https://docs.software-univention.de/developer-reference-5.0.html)."
 		if is_ucr_true update50/ignore_adc_mapping; then
 			echo "WARNING: update50/ignore_adc_mapping is set to true. Continue as requested."
 		else
-			exit 1
+			return 1
 		fi
 	fi
 }
