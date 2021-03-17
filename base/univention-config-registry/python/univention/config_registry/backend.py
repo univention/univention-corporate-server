@@ -342,16 +342,6 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 			return (reg, value) if getscope else value
 		return default
 
-	def has_key(self, key):
-		# type: (str) -> bool
-		"""
-		Check if registry key is set.
-
-		.. deprecated:: 3.1
-			Use `in`.
-		"""
-		return key in self
-
 	@overload
 	def _merge(self):  # pragma: no cover
 		# type: () -> Dict[str, str]
@@ -514,19 +504,6 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 		:param value: UCR variable value.
 		"""
 		self._layer[key] = value
-
-	def has_key(self, key, write_registry_only=False):
-		# type: (str, bool) -> bool
-		"""
-		Check if registry key is set.
-
-		.. deprecated:: 3.1
-			Use `in`.
-		"""
-		if write_registry_only:
-			return key in self._layer
-		else:
-			return key in self
 
 	def update(self, changes):  # type: ignore
 		# type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]

@@ -1,14 +1,10 @@
 0014-4:debian/univention-config-registry.preinst
 # Implementation for has_key
 0009-5:python/univention/info_tools.py:101
-0009-5:python/univention/config_registry/backend.py:181
 # Detect deprecated base config
 0016-3: python/univention-config-registry:62
 0016-3: python/univention-config-registry:63
 0016-5: tests/test_handler.py
-# Internal use of custom has_key
-0009-5: python/univention/config_registry/frontend.py:164
-0009-5: python/univention/config_registry/frontend.py:216
 # #!python, since they only use default modules
 0009-2: scripts/ldapsearch-wrapper
 0009-2: scripts/ldapsearch-decode64
@@ -18,13 +14,10 @@
 0009-5:tests/test_info_tools.py
 0010-2:tests/test_info_tools.py
 0009-2:tests/test_backend.py
-0009-5:tests/test_backend.py
 0010-2:tests/test_backend.py
 0009-2:tests/test_backend_threading.py
-0009-5:tests/test_backend_threading.py
 0010-2:tests/test_backend_threading.py
 0009-2:tests/test_cli.py
-0009-5:tests/test_cli.py
 0010-2:tests/test_cli.py
 0009-2:tests/test_filters.py
 0010-2:tests/test_filters.py
@@ -35,7 +28,6 @@
 0009-2:tests/test_handler.py
 0009-2:tests/test_info.py
 0009-2:tests/test_interfaces.py
-0009-5:tests/test_interfaces.py
 0010-2:tests/test_interfaces.py
 0009-2:tests/test_misc.py
 0010-2:tests/test_misc.py

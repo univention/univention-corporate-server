@@ -150,28 +150,14 @@ class TestConfigRegistry(object):
 		ucr['foo'] = 'bar'
 		assert ucr.get('foo', getscope=True) == (ConfigRegistry.FORCED, 'bar')
 
-	def test_has_key_unset(self, ucr0):
-		"""Test unset ucr.has_key(key)."""
-		assert not ucr0.has_key('foo')  # noqa W601
+	def test_contains_unset(self, ucr0):
+		"""Test unset key in ucr."""
+		assert 'foo' not in ucr0
 
-	def test_has_key_set(self, ucr0):
-		"""Test set ucr.has_key(key)."""
+	def test_contains_set(self, ucr0):
+		"""Test set key in ucr."""
 		ucr0['foo'] = 'bar'
-		assert ucr0.has_key('foo')  # noqa W601
-
-	def test_has_key_write_unset(self):
-		"""Test unset ucr.has_key(key, True)."""
-		ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
-		ucr['foo'] = 'bar'
-		ucr = ConfigRegistry()
-		assert not ucr.has_key('foo', write_registry_only=True)  # noqa W601
-
-	def test_has_key_write_set(self):
-		"""Test set ucr.has_key(key, True)."""
-		ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
-		ucr = ConfigRegistry()
-		ucr['foo'] = 'bar'
-		assert ucr.has_key('foo', write_registry_only=True)  # noqa W601
+		assert 'foo' in ucr0
 
 	def test_pop(self, ucr0):
 		"""Test set ucr.pop(key)."""
