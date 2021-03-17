@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-7
 src: univention-squid
 fix: 12.0.2-3A~4.4.0.202103151504
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The UCR templates are now compatible with Python 3 for the UCS 5.0 upgrade.
 bug: [52814]

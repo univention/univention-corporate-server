@@ -3,8 +3,8 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-printserver
-fix: 
+fix: 12.0.1-17A~4.4.0.202103061148
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The UCR templates are now compatible with Python 3 for the UCS 5.0 upgrade.
 bug: [52814]
