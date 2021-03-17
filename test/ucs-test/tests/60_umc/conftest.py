@@ -1,4 +1,6 @@
 import pytest
+import time
+import subprocess
 from univention.testing import ucr as _ucr, udm as _udm, utils, umc, strings
 import univention.lib.umc
 
@@ -88,3 +90,11 @@ def random_username():
 @pytest.fixture
 def wait_for_replication():
 	return utils.wait_for_replication
+
+
+@pytest.fixture
+def restart_umc_server():
+	def _restart_umc_server():
+		subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service'])
+		time.sleep(2)
+	return _restart_umc_server
