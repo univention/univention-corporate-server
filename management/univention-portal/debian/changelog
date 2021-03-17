@@ -1,3 +1,10 @@
+univention-portal (4.0.4-11) unstable; urgency=medium
+
+  * Bug #52932: Better ordering of UMC modules in /univention/umc/. Added
+    dedicated favorites
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Mar 2021 09:39:20 +0100
+
 univention-portal (4.0.4-10) unstable; urgency=medium
 
   * Bug #52921: added add-umc-default functionality to univention-portal

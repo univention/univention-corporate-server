@@ -67,7 +67,7 @@ class Authenticator(with_metaclass(Plugin)):
 		pass
 
 	def get_user(self, request):  # pragma: no cover
-		return User(username=None, groups=[])
+		return User(username=None, groups=[], session_id=None, lang=None)
 
 	def refresh(self, reason=None):  # pragma: no cover
 		pass
@@ -95,7 +95,9 @@ class UMCAuthenticator(Authenticator):
 		cookies = dict((key, morsel.value) for key, morsel in request.cookies.items())
 		username = self._get_username(cookies)
 		groups = self.group_cache.get().get(username, [])
-		return User(username, groups=groups)
+		session_id = cookies.get("UMCSessionId")
+		lang = cookies.get("UMCLang")
+		return User(username, groups=groups, session_id=session_id, lang=lang)
 
 	def _get_username(self, cookies):
 		if not any(cookie.startswith("UMCSessionId") for cookie in cookies):

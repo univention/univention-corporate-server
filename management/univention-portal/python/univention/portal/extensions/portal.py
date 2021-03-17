@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import requests
 from six import with_metaclass
 
 from univention.portal import Plugin
@@ -236,11 +237,27 @@ class UMCPortal(Portal):
 	def may_be_edited(self, user):
 		return False
 
-	def get_visible_content(self, user, admin_mode):
+	def _request_umc_get(self, get_path, umc_session_id, umc_lang):
+		#uri = 'http://127.0.0.1/univention/get/{}'.format(get_path)
+		#body = {"options": {}}
+		#headers = {
+		#	'Cookie': 'UMCSessionId={}'.format(umc_session_id),
+		#	'X-CSRF-Protection': umc_session_id,
+		#	'X-Requested-With': 'XMLHttpRequest',
+		#	'Accept-Language': umc_lang,
+		#}
+		#response = requests.post(uri, json=body, headers=headers)
+		#return response.json()[get_path]
 		from univention.lib.umc import Client
 		client = Client(None, "Administrator", "univention")
-		categories = client.umc_get("categories").data["categories"]
-		modules = client.umc_get("modules").data["modules"]
+		return client.umc_get(get_path).data[get_path]
+
+
+	def get_visible_content(self, user, admin_mode):
+		umc_session_id = user.session_id
+		umc_lang = user.lang
+		categories = self._request_umc_get("categories", umc_session_id, umc_lang)
+		modules = self._request_umc_get("modules", umc_session_id, umc_lang)
 		return {
 			"categories": categories,
 			"modules": modules,
@@ -266,41 +283,52 @@ class UMCPortal(Portal):
 					"de_DE": module["description"],
 				},
 				"linkTarget": "useportaldefault",
-				"links": ["https://www.univention.com"],
+				"links": ["/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))],
 			}
 		return entries
 
 	def _entry_id(self, module):
-		if module.get("flavor"):
-			return "{}:{}".format(module["id"], module["flavor"])
-		else:
-			return module["id"]
+		return "umc:module:{}:{}".format(module["id"], module.get("flavor", ""))
 
 	def get_folders(self, content):
 		folders = {}
 		for category in content["categories"]:
-			entries = [self._entry_id(module) for module in content["modules"] if category["id"] in module["categories"]]
+			if category["id"] == "_favorites_":
+				continue
+			entries = [[module["name"], self._entry_id(module)] for module in content["modules"] if category["id"] in module["categories"]]
+			entries = sorted(entries)
 			folders[category["id"]] = {
 				"name": {
 					"en_US": category["name"],
 					"de_DE": category["name"],
 				},
 				"dn": category["id"],
-				"entries": entries,
+				"entries": [entry[1] for entry in entries],
 			}
 		return folders
 
 	def get_categories(self, content):
+		modules = content["modules"]
+		modules = sorted(modules, key=lambda entry: entry["priority"], reverse=True)
+		favorite_category = {
+			"display_name": {
+				"en_US": "Favorites",
+				"de_DE": "Favoriten",
+			},
+			"dn": "umc:category:favorites",
+			"entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])]
+		}
 		entries = content["categories"]
+		entries = sorted(entries, key=lambda entry: entry["priority"], reverse=True)
 		umc_category = {
 			"display_name": {
 				"en_US": "UMC",
 				"de_DE": "UMC",
 			},
-			"dn": "umc",
-			"entries": [cat["id"] for cat in entries]
+			"dn": "umc:category:umc",
+			"entries": [cat["id"] for cat in entries if cat["id"] != "_favorites_"]
 		}
-		return {"umc": umc_category}
+		return {"umc": umc_category, "favorites": favorite_category}
 
 	def get_meta(self, content, categories):
 		return {
@@ -309,10 +337,10 @@ class UMCPortal(Portal):
 				"en_US": "Univention Management Console",
 			},
 			"defaultLinkTarget": "embedded",
-			"categories": list(categories),
+			"categories": ["favorites", "umc"],
 			"content": [
-				[category_dn, categories[category_dn]["entries"]]
-				for category_dn in categories
+				["favorites", categories["favorites"]["entries"]],
+				["umc", categories["umc"]["entries"]],
 			],
 		}
 
