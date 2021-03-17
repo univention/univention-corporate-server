@@ -38,4 +38,19 @@ if [ ! -e /etc/samba/local.config.conf ]; then
 	touch /etc/samba/local.config.conf
 fi
 
+case "$1" in
+configure)
+	if dpkg --compare-versions "$2" lt-nl 14.0.4~
+	then
+		skel='/etc/univention/skel/windows-profiles'
+		for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2 default.V3 default.V4 default.V5 default.V6 ''
+		do
+			path="$skel/$dname"
+			[ -d "$path" ] &&
+				rmdir -p --ignore-fail-on-non-empty "$path"
+		done
+	fi
+	;;
+esac
+
 exit 0

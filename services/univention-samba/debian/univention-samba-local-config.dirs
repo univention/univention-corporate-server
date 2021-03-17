@@ -1,2 +1,7 @@
 etc/samba/local.config.d
 etc/samba/shares.conf.d
+etc/skel/windows-profiles/default.V2
+etc/skel/windows-profiles/default.V3
+etc/skel/windows-profiles/default.V4
+etc/skel/windows-profiles/default.V5
+etc/skel/windows-profiles/default.V6
