@@ -94,6 +94,10 @@ usage () {
 	echo "  ???"
 	echo "    BUILD_BRANCH"
 	echo "    BUILD_REPO"
+	echo ""
+	echo "  apps"
+	echo "    APP_ID               - An app ID, wekan"
+	echo "    COMBINED_APP_ID      - ???"
 }
 
 die () {
@@ -168,6 +172,8 @@ declare -a env_vars=(
 	UCS_TEST_RUN
 	UCS_VERSION
 	USER
+	APP_ID
+	COMBINED_APP_ID
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
