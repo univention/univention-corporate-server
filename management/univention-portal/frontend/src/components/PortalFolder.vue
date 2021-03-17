@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="hasTiles"
     class="portal-folder"
     :class="{ 'portal-folder__in-modal': inModal }"
   >
@@ -90,6 +91,11 @@ export default defineComponent({
     ariaLabelButton: {
       type: String,
       default: 'Tab Aria Label',
+    },
+  },
+  computed: {
+    hasTiles(): boolean {
+      return this.tiles.length > 0;
     },
   },
   methods: {

@@ -1,6 +1,7 @@
 <template>
   <a
     v-is="isLink ? 'a' : 'div'"
+    v-if="isVisible"
     class="menu-item"
     :href="link"
     @click="tileClick"
@@ -59,8 +60,11 @@ export default defineComponent({
     },
   },
   computed: {
+    isVisible(): boolean {
+      return this.isLink || this.subItem || this.subMenu.length > 0;
+    },
     isLink(): boolean {
-      return this.link !== null;
+      return !!this.link;
     },
   },
 });
