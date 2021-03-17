@@ -220,7 +220,7 @@ function getLocalLinks(browserHostname, serverFQDN, links) {
 
 export default function main(links, fqdn) {
   if (links.length === 0) {
-    return null;
+    return '';
   }
   const browserHostname = getURIHostname(document.location.href);
   // get the best link to be displayed

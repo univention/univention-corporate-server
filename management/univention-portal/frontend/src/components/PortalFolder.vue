@@ -23,7 +23,7 @@
             :last-element="isLastElement(index, tiles)"
             :first-element="isFirstElement(index, tiles)"
             :no-edit="true"
-            @makeStuff="makeStuff"
+            @keepFocusInFolderModal="keepFocusInFolderModal"
             @clickAction="closeFolder"
           />
         </div>
@@ -44,25 +44,31 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent, PropType } from 'vue';
+
 import PortalTile from '@/components/PortalTile.vue';
 import PortalModal from '@/components/globals/PortalModal.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import { Title, Tile } from '@/store/models';
 
-@Options({
+export default defineComponent({
   name: 'PortalFolder',
   components: {
     PortalTile,
+    // TODO: Very strange behavior:
+    // PortalModal component is not being used here,
+    // but removing it moves the Sidebar to the middle
+    // eslint-disable-next-line vue/no-unused-components
     PortalModal,
     HeaderButton,
   },
   props: {
     title: {
-      type: Object,
+      type: Object as PropType<Title>,
       required: true,
     },
     tiles: {
-      type: Array,
+      type: Array as PropType<Tile[]>,
       required: true,
     },
     inModal: {
@@ -87,7 +93,7 @@ import HeaderButton from '@/components/navigation/HeaderButton.vue';
     },
   },
   methods: {
-    closeFolder() {
+    closeFolder(): void {
       this.$store.dispatch('modal/setHideModal');
     },
     openFolder() {
@@ -111,10 +117,11 @@ import HeaderButton from '@/components/navigation/HeaderButton.vue';
     getLastElement() {
       console.log('ELEMENT');
     },
-    makeStuff(focusElement) {
-      const firstElement = this.$refs.portalFolderChildren0.$el.children[0];
+    keepFocusInFolderModal(focusElement) {
+      // TODO: Following $refs are bad practice and do not have proper typescript support
+      const firstElement = (this.$refs.portalFolderChildren0 as HTMLFormElement).$el.children[0];
       const lastChild = `portalFolderChildren${this.tiles.length - 1}`;
-      const lastElement = this.$refs[lastChild].$el.children[0];
+      const lastElement = (this.$refs[lastChild] as HTMLFormElement).$el.children[0];
 
       if (focusElement === 'focusLast') {
         lastElement.focus();
@@ -126,15 +133,7 @@ import HeaderButton from '@/components/navigation/HeaderButton.vue';
       console.log('editFolder');
     },
   },
-})
-
-export default class PortalFolder extends Vue {
-  title!: Record<string, string>;
-
-  tiles!: Array<PortalTile>;
-
-  inModal!: boolean;
-}
+});
 </script>
 
 <style lang="stylus">

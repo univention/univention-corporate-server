@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-@Options({
+export default defineComponent({
   name: 'PortalIcon',
   props: {
     icon: {
@@ -36,9 +36,7 @@ import { Options, Vue } from 'vue-class-component';
       return this.iconHeight ? this.iconHeight : this.iconWidth;
     },
   },
-})
-
-export default class PortalIcon extends Vue {}
+});
 </script>
 
 <style lang="stylus">

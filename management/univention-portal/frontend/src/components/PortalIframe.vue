@@ -16,19 +16,21 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-@Options({
+export default defineComponent({
   name: 'PortalIframe',
   props: {
-    link: String,
+    link: {
+      type: String,
+      required: true,
+    },
     isActive: {
       type: Boolean,
       default: false,
     },
   },
-})
-export default class PortalTile extends Vue {}
+});
 </script>
 
 <style lang="stylus">

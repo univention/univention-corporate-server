@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-import { catalog } from '@/i18n/translations';
+import { catalog } from '@/assets/data/dictionary';
 
-@Options({
+export default defineComponent({
   name: 'Translate',
   props: {
     i18nKey: {
@@ -19,11 +19,9 @@ import { catalog } from '@/i18n/translations';
     },
   },
   computed: {
-    translated() {
+    translated(): string {
       return catalog[this.i18nKey].translated.value;
     },
   },
-})
-
-export default class Translate extends Vue {}
+});
 </script>

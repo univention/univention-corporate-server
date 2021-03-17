@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-@Options({
+export default defineComponent({
   name: 'NotificationBubble',
   computed: {
     ...mapGetters({
@@ -26,9 +26,7 @@ import { mapGetters } from 'vuex';
       bubbleStateNewBubble: 'notificationBubble/bubbleStateNewBubble',
     }),
   },
-})
-
-export default class NotificationBubble extends Vue {}
+});
 </script>
 
 <style lang="stylus">

@@ -34,12 +34,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import ImageComponent from '@/components/globals/ImageComponent.vue';
 
-@Options({
+export default defineComponent({
   name: 'HeaderTab',
   components: {
     HeaderButton,
@@ -66,18 +66,20 @@ import ImageComponent from '@/components/globals/ImageComponent.vue';
       type: Boolean,
       default: false,
     },
-    logo: String,
+    logo: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
-    focusTab() {
+    focusTab(): void {
       this.$store.dispatch('tabs/setActiveTab', this.tabIndex);
     },
-    closeTab() {
+    closeTab(): void {
       this.$store.dispatch('tabs/deleteTab', this.tabIndex);
     },
   },
-})
-export default class HeaderTab extends Vue {}
+});
 </script>
 
 <style lang="stylus">

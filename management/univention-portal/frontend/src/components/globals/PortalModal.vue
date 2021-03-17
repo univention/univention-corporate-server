@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-@Options({
+export default defineComponent({
   name: 'PortalModal',
   props: {
     isActive: {
@@ -22,18 +22,16 @@ import { Options, Vue } from 'vue-class-component';
     },
   },
 
-  // Todo: move to vuex store, avoid emits
+  // ToDo: move to vuex store, avoid emits
   emits: ['click'],
   methods: {
-    clickHandler(evt) {
+    clickHandler(evt): void {
       if (evt.target.classList.contains('portal-modal')) {
         this.$emit('click');
       }
     },
   },
-})
-
-export default class PortalModal extends Vue {}
+});
 </script>
 
 <style lang="stylus">

@@ -12,11 +12,11 @@
   </div>
 </template>
 
-<script>
-import { toRefs } from 'vue';
+<script lang="ts">
+import { toRefs, defineComponent } from 'vue';
 import { useDraggableItem } from '@/jsHelper/draggable';
 
-export default {
+export default defineComponent({
   name: 'DraggableItem',
   props: {
     item: {
@@ -58,7 +58,7 @@ export default {
       transitionEnd,
     };
   },
-};
+});
 </script>
 
 <style lang="stylus">

@@ -1,19 +1,12 @@
-import { Module } from 'vuex';
+import { Tab } from '../models';
+import { PortalModule } from '../types';
 
-export interface Tab {
-  tabLabel: string,
-  ariaLabel: string,
-  closeIcon: string,
-  logo: string,
-  iframeLink: string
-}
-
-export interface State {
+export interface TabState {
   activeTabIndex: number;
-  tabs: Array<Tab>;
+  tabs: Tab[];
 }
 
-const tabs: Module<State, unknown> = {
+const tabs: PortalModule<TabState> = {
   namespaced: true,
   state: {
     activeTabIndex: 0,
@@ -21,7 +14,7 @@ const tabs: Module<State, unknown> = {
   },
 
   mutations: {
-    ALL_TABS(state, payload: Array<Tab>) {
+    ALL_TABS(state, payload: Tab[]) {
       state.tabs = payload;
     },
     ACTIVE_TAB(state, index: number) {

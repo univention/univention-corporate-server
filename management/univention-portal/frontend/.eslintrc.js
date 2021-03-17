@@ -30,6 +30,7 @@ module.exports = {
     '@vue/typescript/recommended',
   ],
   rules: {
+    '@typescript-eslint/no-unused-vars': ['warn', { caughtErrors: 'none' }],
     'arrow-parens': ['error', 'always'],
     'comma-spacing': [
       'error',
@@ -57,7 +58,6 @@ module.exports = {
     'no-param-reassign': ['error', {
       props: false,
     }],
-    // 'no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-useless-escape': 'off',
     'object-curly-newline': ['error', {
       ImportDeclaration: 'never',
@@ -79,11 +79,11 @@ module.exports = {
     'space-in-parens': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'space-before-function-paren': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
 
-    // ToDo: Temporay rule settings that should be deleted when code issues are fixed!
-    'import/no-extraneous-dependencies': 'warn', // e.g. no use of 'require' -> Convert all .js to .ts files and use import!
-    '@typescript-eslint/explicit-module-boundary-types': 'off', // temporary disabled because of hundrets of warnings which should be fixed before
-    'no-unused-vars': 'warn', // Should be warn for development but error for production environments
+    // Disabled rules from ESLint core that don't work together with TypeScript code
+    'no-unused-vars': 'off',
 
+    // TODO: Temporay rule settings that should be deleted when code issues are fixed
+    'import/no-extraneous-dependencies': 'warn', // e.g. no use of 'require' -> Convert all .js to .ts files and use import!
   },
   overrides: [
     {

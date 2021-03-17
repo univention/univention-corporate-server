@@ -1,17 +1,11 @@
-import { Module } from 'vuex';
+import { User } from '../models';
+import { PortalModule } from '../types';
 
-interface User {
-  username: string;
-  displayName: string;
-  mayEditPortal: boolean;
-  mayLoginViaSAML: boolean;
-}
-
-export interface State {
+export interface UserState {
   user: User;
 }
 
-const user: Module<State, unknown> = {
+const user: PortalModule<UserState> = {
   namespaced: true,
   state: {
     user: {

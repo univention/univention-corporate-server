@@ -1,13 +1,13 @@
 import createMenuStructure from '@/jsHelper/createMenuStructure';
-import { Module } from 'vuex';
+import { PortalModule } from '../types';
 
-export interface State {
+export interface MenuState {
   menu: Record<string, unknown>;
   menuLinks: Array<unknown>,
   userLinks: Array<unknown>,
 }
 
-const menu: Module<State, unknown> = {
+const menu: PortalModule<MenuState> = {
   namespaced: true,
   state: {
     menu: {},

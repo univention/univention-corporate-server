@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="(Object.keys(metaData).length > 0 && metaData.cookieBanner.show) && getCookies"
+    v-if="showCookies"
     :class="fadeOutClass"
     class="cookie-banner"
   >
@@ -16,13 +16,13 @@
             role="heading"
             level="1"
           >
-            {{ $localized(metaData.cookieBanner.title) }}
+            {{ $localized(metaData.cookieBanner.title) || defaultCookieTitle }}
           </span>
         </div>
         <div class="cookie-banner__pane-content">
           <div class="cookie-banner__container-widget">
             <div class="cookie-banner__text">
-              {{ $localized(metaData.cookieBanner.text) }}
+              {{ $localized(metaData.cookieBanner.text) || defaultCookieText }}
             </div>
           </div>
         </div>
@@ -56,25 +56,29 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import { catalog } from '@/i18n/translations';
 
 import PortalButton from '@/components/globals/PortalButton.vue';
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
-import Translate from '@/i18n/Translate.vue';
+// import HeaderButton from '@/components/navigation/HeaderButton.vue';
+// import Translate from '@/i18n/Translate.vue';
 
 import { setCookie, getCookie } from '@/jsHelper/cookieHelper';
 
-@Options({
+interface CookieBannerData {
+  fadeOutClass: string,
+}
+
+export default defineComponent({
   name: 'CookieBanner',
   components: {
     PortalButton,
-    HeaderButton,
-    Translate,
+    // HeaderButton,
+    // Translate,
   },
-  data() {
+  data(): CookieBannerData {
     return {
-      showCookieBanner: false,
       fadeOutClass: '',
     };
   },
@@ -82,32 +86,30 @@ import { setCookie, getCookie } from '@/jsHelper/cookieHelper';
     ...mapGetters({
       metaData: 'meta/getMeta',
     }),
-    getCookies() {
-      if (getCookie(this.cookieName()) === '') {
-        this.showCookieBanner = true;
-      }
-      return this.showCookieBanner;
+    cookieName(): string {
+      return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
+    },
+    defaultCookieTitle(): string {
+      return catalog.COOKIE_TITLE.translated.value;
+    },
+    defaultCookieText(): string {
+      return catalog.COOKIE_TEXT.translated.value;
+    },
+    showCookies(): boolean {
+      return this.metaData.cookieBanner.show && getCookie(this.cookieName) === '';
     },
   },
   methods: {
-    cookieName() {
-      return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAcceptedxx';
-    },
-    setCookies() {
+    setCookies(): void {
       const cookieValue = 'do-not-change-me';
-
-      setCookie(this.cookieName(), cookieValue);
+      setCookie(this.cookieName, cookieValue);
       this.dismissCookieBanner();
     },
-    dismissCookieBanner() {
+    dismissCookieBanner(): void {
       this.fadeOutClass = 'cookie-banner__fade-out';
-      setTimeout(() => {
-        this.showCookieBanner = !this.showCookieBanner;
-      }, 600);
     },
   },
-})
-export default class CookieBanner extends Vue {}
+});
 </script>
 
 <style lang="stylus">

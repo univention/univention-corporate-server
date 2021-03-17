@@ -3,39 +3,37 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { store } from '@/store';
-import { catalog } from '@/i18n/translations';
+import { defineComponent } from 'vue';
+
 import Home from '@/views/Home.vue';
+import { login } from '@/jsHelper/login';
+import { catalog } from '@/i18n/translations';
+import { Locale } from './store/models';
 
 // get env vars
-const defaultPortalLocale = process.env.VUE_APP_LOCALE || 'en_US';
+const defaultPortalLocale: Locale = process.env.VUE_APP_LOCALE || 'en_US';
 
-@Options({
+export default defineComponent({
   name: 'App',
-
   components: {
     Home,
   },
   mounted() {
-    store.dispatch('locale/setLocale', { locale: defaultPortalLocale }).then(() => {
-      store.dispatch('loadPortal').then((PortalData) => {
+    this.$store.dispatch('locale/setLocale', defaultPortalLocale).then(() => {
+      this.$store.dispatch('loadPortal').then((PortalData) => {
         if (!PortalData.user) {
-          store.dispatch('notificationBubble/addNotification', {
+          this.$store.dispatch('notificationBubble/addNotification', {
             bubbleTitle: catalog.LOGIN.translated,
             bubbleDescription: catalog.LOGIN_REMINDER_DESCRIPTION.translated,
+            onClick: () => login(this.$store.getters['user/userState']),
           });
         }
         setTimeout(() => {
           // Hide notification bubble
-          store.dispatch('notificationBubble/setHideNewBubble');
+          this.$store.dispatch('notificationBubble/setHideNewBubble');
         }, 4000);
       });
     });
   },
-})
-
-export default class App extends Vue {
-  store: typeof store = store;
-}
+});
 </script>

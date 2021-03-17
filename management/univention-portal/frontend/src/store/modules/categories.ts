@@ -1,45 +1,37 @@
 import createCategories from '@/jsHelper/createCategories';
-import { Module } from 'vuex';
+import { Category } from '../models';
+import { PortalModule } from '../types';
 
-export interface State {
-  categories: Array<unknown>;
+export interface CategoryState {
+  categories: Category[];
 }
 
-const categories: Module<State, unknown> = {
+const categories: PortalModule<CategoryState> = {
   namespaced: true,
   state: {
     categories: [],
   },
-
   mutations: {
-    DEV_EMPTY(state) {
+    SET_EMPTY(state) {
       state.categories = [];
     },
-    REPLACE(state, payload) {
-      state.categories = payload.categories;
-    },
-    SAVE_ORIGINAL_ARRAY_ONCE(state, payload) {
-      const categoriesFromJSON = createCategories(payload);
-      state.categories = categoriesFromJSON;
+    SET_REPLACE(state, payload: Category[]) {
+      state.categories = payload;
     },
   },
-
   getters: {
-    categoryState: (state) => state.categories,
+    getCategories: (state) => state.categories,
   },
-
   actions: {
-    setDevEmpty({ commit }, payload) {
-      commit('DEV_EMPTY', payload);
+    setEmpty({ commit }) {
+      commit('SET_EMPTY');
     },
-    setReplace({ commit }, payload) {
-      commit('REPLACE', payload);
+    setReplace({ commit }, payload: Category[]) {
+      commit('SET_REPLACE', payload);
     },
-    setFromMock({ commit }, payload) {
-      commit('STANDARD', payload);
-    },
-    storeOriginalArray({ commit }, payload) {
-      commit('SAVE_ORIGINAL_ARRAY_ONCE', payload);
+    setOriginalArray({ commit }, payload) {
+      const categoriesFromJSON: Category[] = createCategories(payload);
+      commit('SET_REPLACE', categoriesFromJSON);
     },
   },
 };

@@ -1,13 +1,13 @@
-import { Module } from 'vuex';
+import { PortalModule } from '../types';
 
-export interface State {
+export interface ModalState {
   modalVisible: boolean;
   modalComponent: unknown;
   modalProps: unknown;
   modalStubborn: boolean;
 }
 
-const modal: Module<State, unknown> = {
+const modal: PortalModule<ModalState> = {
   namespaced: true,
   state: {
     modalVisible: false,

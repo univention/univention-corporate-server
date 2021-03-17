@@ -36,11 +36,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
+
 import PortalIcon from '@/components/globals/PortalIcon.vue';
+
 import Translate from '@/i18n/Translate.vue';
 
-@Options({
+export default defineComponent({
   name: 'PortalButton',
   components: {
     PortalIcon,
@@ -69,8 +71,7 @@ import Translate from '@/i18n/Translate.vue';
     },
   },
   methods: {},
-})
-export default class PortalButton extends Vue {}
+});
 </script>
 
 <style lang="stylus">

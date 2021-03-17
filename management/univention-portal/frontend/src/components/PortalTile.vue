@@ -56,15 +56,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent, PropType } from 'vue';
 
 import PortalToolTip from '@/components/PortalToolTip.vue';
 import TileClick from '@/mixins/TileClick.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
-import bestLink from '@/jsHelper/bestLink';
+import { Title, Description } from '@/store/models';
 
-@Options({
+interface PortalTileData {
+  isActive: boolean,
+}
+
+export default defineComponent({
   name: 'PortalTile',
   components: {
     PortalToolTip,
@@ -75,11 +79,11 @@ import bestLink from '@/jsHelper/bestLink';
   ],
   props: {
     title: {
-      type: Object,
+      type: Object as PropType<Title>,
       required: true,
     },
     description: {
-      type: Object,
+      type: Object as PropType<Description>,
       required: true,
     },
     pathToLogo: {
@@ -124,23 +128,15 @@ import bestLink from '@/jsHelper/bestLink';
       default: 'Tab Aria Label',
     },
   },
-  emits: ['makeStuff'],
-  data() {
+  emits: ['keepFocusInFolderModal'],
+  data(): PortalTileData {
     return {
       isActive: false,
     };
   },
-  mounted() {
-    if (this.hasFocus) {
-      this.$el.children[0].focus(); // sets focus to first Element in opened Folder
-    }
-  },
   computed: {
     wrapperTag(): string {
       return (this.inFolder || this.editMode) ? 'div' : 'a';
-    },
-    link(): string {
-      return this.links ? bestLink(this.links, this.metaData.fqdn) : '';
     },
     setLinkTarget(): string | null {
       if (this.editMode || this.linkTarget !== 'newwindow') {
@@ -148,6 +144,11 @@ import bestLink from '@/jsHelper/bestLink';
       }
       return '_blank';
     },
+  },
+  mounted() {
+    if (this.hasFocus) {
+      this.$el.children[0].focus(); // sets focus to first Element in opened Folder
+    }
   },
   methods: {
     hideTooltip(): void {
@@ -161,10 +162,10 @@ import bestLink from '@/jsHelper/bestLink';
     setFocus(event, direction): void {
       if (this.lastElement && direction === 'forward') {
         event.preventDefault();
-        this.$emit('makeStuff', 'focusFirst');
+        this.$emit('keepFocusInFolderModal', 'focusFirst');
       } else if (this.firstElement && direction === 'backward') {
         event.preventDefault();
-        this.$emit('makeStuff', 'focusLast');
+        this.$emit('keepFocusInFolderModal', 'focusLast');
       }
     },
     editTile() {
@@ -181,18 +182,18 @@ import bestLink from '@/jsHelper/bestLink';
       return `element-${this.$.uid}`;
     },
   },
-})
-export default class PortalTile extends Vue {
-  title!: Record<string, string>;
+});
+// export default class PortalTile extends Vue {
+//   title!: Record<string, string>;
 
-  description!: Record<string, string>;
+//   description!: Record<string, string>;
 
-  links!: string[];
+//   links!: string[];
 
-  pathToLogo?: string;
+//   pathToLogo?: string;
 
-  backgroundColor = 'var(--color-grey40)';
-}
+//   backgroundColor = 'var(--color-grey40)';
+// }
 </script>
 
 <style lang="stylus">

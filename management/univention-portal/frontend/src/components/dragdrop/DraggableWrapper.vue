@@ -29,13 +29,13 @@
   </div>
 </template>
 
-<script>
-import { toRefs } from 'vue';
+<script lang="ts">
+import { toRefs, defineComponent, ComputedRef, computed } from 'vue';
 import DraggableItem from '@/components/dragdrop/DraggableItem.vue';
 import TileAdd from '@/components/edit/TileAdd.vue';
 import { useDraggableContainer } from '@/jsHelper/draggable';
 
-export default {
+export default defineComponent({
   name: 'DraggableWrapper',
   components: {
     DraggableItem,
@@ -56,7 +56,7 @@ export default {
     },
   },
   setup(props, context) {
-    const { modelValue, dropZoneId } = toRefs(props);
+    const { modelValue, dropZoneId, transition } = toRefs(props);
 
     const {
       defaultItems,
@@ -72,19 +72,17 @@ export default {
 
     const placeholder = false;
 
+    const transitionStyle: ComputedRef<string> = computed((): string => `transform ${transition}ms`);
+
     return {
       defaultItems,
       onItemDragOver,
       containerDragOver,
       placeholder,
+      transitionStyle,
     };
   },
-  computed: {
-    transitionStyle() {
-      return `transform ${this.transition}ms`;
-    },
-  },
-};
+});
 </script>
 
 <style lang="stylus" scoped>

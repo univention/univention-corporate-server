@@ -5,6 +5,7 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
     return {
       id: entry.name.en_US,
       title: entry.name,
+      isFolder: false,
       description: entry.description,
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
@@ -16,6 +17,7 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
   return {
     id: entry.name.en_US,
     title: entry.name,
+    isFolder: true,
     tiles: entry.entries.map((folderEntryID) => makeEntry(folderEntryID, availableTiles, availableFolders, defaultLinkTarget)),
   };
 }
