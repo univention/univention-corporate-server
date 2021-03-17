@@ -280,8 +280,13 @@ class UMCP_Dispatcher(object):
 			callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 			client.client.signal_connect('closed', callback)
 
-		# bind session to IP
-		if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
+		# make sure a lost connection to the UMC-Server does not bind the session to ::1
+		if client.ip in ('127.0.0.1', '::1') and queuerequest.ip != client.ip:
+			CORE.warn('Switching session IP from=%r to=%r' % (client.ip, queuerequest.ip))
+			client.ip = queuerequest.ip
+
+		# bind session to IP (allow requests from localhost)
+		if queuerequest.ip not in (client.ip, '127.0.0.1', '::1'):
 			CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
 			response = Response(queuerequest.request)
 			response.status = UNAUTHORIZED
@@ -353,7 +358,6 @@ class QueueRequest(object):
 	:param request: ´univention.management.console.protocol.message.Request´
 	:param response_queue: ´Queue.Queue´
 	:param ip: str
-	:param timeout: int
 	"""
 
 	__slots__ = ('sessionid', 'request', 'response_queue', 'ip')

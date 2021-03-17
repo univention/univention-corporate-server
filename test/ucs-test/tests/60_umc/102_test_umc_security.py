@@ -80,16 +80,12 @@ class TestSecurityHeaders(object):
 		c2 = Client('localhost')
 		c2.ConnectionType = HTTPConnection  # workaround TLS hostname mismatch
 		c2.cookies = copy.deepcopy(client.cookies)
-		with pytest.raises(Unauthorized) as exc:
-			c2.umc_get('modules')
-		assert 'The current session is not valid with your IP address for security reasons.' in exc.value.message
+		assert any(x['id'] == 'top' for x in c2.umc_get('modules').data['modules'])
 
 		# check if the session is still bound after the internal connection to the UMC-Server was lost
 		restart_umc_server()
 		c2.cookies = copy.deepcopy(client.cookies)
-		with pytest.raises(Unauthorized) as exc:
-			c2.umc_get('modules')
-		assert 'The current session is not valid with your IP address for security reasons.' in exc.value.message
+		assert any(x['id'] == 'top' for x in c2.umc_get('modules').data['modules'])
 
 		# make sure any UMC module is present (the session is not dropped to anonymous)
 		assert any(x['id'] == 'top' for x in client.umc_get('modules').data['modules'])
