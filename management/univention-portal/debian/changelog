@@ -1,3 +1,9 @@
+univention-portal (4.0.5-5) unstable; urgency=medium
+
+  * Bug #52869: Certificates submenu
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Mar 2021 13:01:52 +0100
+
 univention-portal (4.0.5-4) unstable; urgency=medium
 
   * Bug #52869: Added missing build dependency
