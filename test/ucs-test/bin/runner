@@ -3,6 +3,7 @@
 #
 """UCS Testrunner - run UCS test in sane environment."""
 #
+import os
 import sys
 from argparse import ArgumentParser, FileType, Namespace, REMAINDER  # noqa F401
 try:
@@ -41,6 +42,12 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
 	parser.add_argument("interpreter", help="Command interpreter")
 	parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
 	parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
+	parser.add_argument(
+		"-i", "--interactive",
+		action="store_true",
+		help="Execute commands in an interactive shell",
+		default=(os.isatty(1) and os.isatty(2))
+	)  # The new default is there to fix `Failed to open /dev/tty [...]` in tests
 
 	options = parser.parse_args(args)
 	if options.args:
@@ -61,7 +68,7 @@ def main():  # type: () -> int
 
 	formatter = getattr(univention.testing.format, 'format_%s' % (options.format,))
 	format = formatter()
-	test_env = TestEnvironment(interactive=True)
+	test_env = TestEnvironment(interactive=options.interactive)
 	if options.force:
 		test_env.set_exposure('dangerous')
 	test_case = TestCase(options.test.name).load()
