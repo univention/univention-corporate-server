@@ -19,6 +19,5 @@ if configRegistry.is_true('homedir/create', True):
 			homeDirReq = "optional"
 		print('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq)
 	print('session    required   pam_mkhomedir.so skel=/etc/skel umask=0066')
-	print('session    optional   pam_runasroot.so user program=/usr/bin/univention-skel')
 @!@
 

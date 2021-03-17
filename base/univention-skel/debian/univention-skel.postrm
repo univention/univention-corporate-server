@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Skel
-#  postinst script
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,18 +29,11 @@
 
 #DEBHELPER#
 
-mkdir -p /etc/univention/skel
-
-if [ ! -e /etc/univention/skel/.bashrc ]; then
-	test -e /etc/skel/.bashrc && cp /etc/skel/.bashrc /etc/univention/skel
-fi
-
-if [ ! -e /etc/univention/skel/.profile ]; then
-	test -e /etc/skel/.profile && cp /etc/skel/.profile /etc/univention/skel
-fi
-
-univention-config-registry set skel/lock/retry?5 \
-					skel/permissions/directory?0700 \
-					skel/permissions/file?0600
+case "$1" in
+purge)
+univention-config-registry unset \
+	skel/lock/retry skel/permissions/directory skel/permissions/file
+rm -rf /etc/univention/skel /etc/univention/skel.meta
+esac
 
 exit 0

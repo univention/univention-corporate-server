@@ -1,3 +1,9 @@
+univention-skel (12.0.1-1) unstable; urgency=low
+
+  * Bug #43211: Deprecate univention-skel
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Mar 2021 17:29:47 +0100
+
 univention-skel (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
@@ -177,7 +183,3 @@ univention-skel (0.1.univention) unstable; urgency=low
   * Initial Release.
 
  -- Gerold Janssen <gerold@ds-work.office.univention.de>  Wed, 19 Nov 2003 15:21:10 +0100
-
-Local variables:
-mode: debian-changelog
-End:

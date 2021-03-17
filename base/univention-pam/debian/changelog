@@ -1,3 +1,9 @@
+univention-pam (13.0.3-3) unstable; urgency=low
+
+  * Bug #43211: Deprecate univention-skel
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Mar 2021 17:29:47 +0100
+
 univention-pam (13.0.3-2) unstable; urgency=medium
 
   * Bug #52188: added pam/krb5/ticket_after_pwchange
