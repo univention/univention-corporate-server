@@ -443,23 +443,28 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 			registry = self._registry[reg]
 			registry._create_base_conf()
 
+	@property
+	def _layer(self):
+		# type: () -> _ConfigRegistry
+		"""
+		Return selected layer.
+		"""
+		return self._registry[self.scope]
+
 	def save(self):
 		# type: () -> None
 		"""Save registry to file."""
-		registry = self._registry[self.scope]
-		registry.save()
+		self._layer.save()
 
 	def lock(self):
 		# type: () -> None
 		"""Lock registry file."""
-		registry = self._registry[self.scope]
-		registry.lock()
+		self._layer.lock()
 
 	def unlock(self):
 		# type: () -> None
 		"""Un-lock registry file."""
-		registry = self._registry[self.scope]
-		registry.unlock()
+		self._layer.unlock()
 
 	def __enter__(self):  # type: ignore
 		# type: () -> ConfigRegistry
@@ -489,8 +494,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 		"""
 		Clear all registry keys.
 		"""
-		registry = self._registry[self.scope]
-		registry.clear()
+		self._layer.clear()
 
 	def __delitem__(self, key):
 		# type: (str) -> None
@@ -499,8 +503,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 
 		:param key: UCR variable name.
 		"""
-		registry = self._registry[self.scope]
-		del registry[key]
+		del self._layer[key]
 
 	def __setitem__(self, key, value):
 		# type: (str, str) -> None
@@ -510,8 +513,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 		:param key: UCR variable name.
 		:param value: UCR variable value.
 		"""
-		registry = self._registry[self.scope]
-		registry[key] = value
+		self._layer[key] = value
 
 	def has_key(self, key, write_registry_only=False):
 		# type: (str, bool) -> bool
@@ -522,8 +524,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 			Use `in`.
 		"""
 		if write_registry_only:
-			registry = self._registry[self.scope]
-			return key in registry
+			return key in self._layer
 		else:
 			return key in self
 
@@ -535,7 +536,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 		:param changes: dictionary of ucr-variable-name: value-or-None.
 		:returns: A mapping from UCR variable name to a 2-tuple (old-value, new-value)
 		"""
-		registry = self._registry[self.scope]
+		registry = self._layer
 		changed = {}
 		for key, value in changes.items():
 			old_value = registry.get(key, None)
