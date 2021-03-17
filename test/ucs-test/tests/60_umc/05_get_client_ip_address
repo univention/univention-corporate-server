@@ -1,18 +1,14 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if UMC is able to return correct IP address
 ## exposure: dangerous
-## packages:
-##    - univention-management-console-web-server (>= 3.0.152)
+## packages: [univention-management-console-web-server]
 
 from __future__ import print_function
-from httplib import HTTPConnection
-
-import ldap
+from six.moves.http_client import HTTPConnection
 
 from univention.testing.umc import Client
-import univention.testing.utils as utils
-import univention.testing.network as network
-import univention.config_registry as configRegistry
+from univention.testing import utils, network
+from univention.config_registry import ConfigRegistry
 
 
 class Client(Client):
@@ -26,19 +22,17 @@ def get_ip_address(host, username, password):
 
 
 def main():
-	ucr = configRegistry.ConfigRegistry()
+	ucr = ConfigRegistry()
 	ucr.load()
 
-	password = ucr.get('tests/domainadmin/pwd', 'univention')
-	usernamd_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,dc=foo')
-	username = ldap.explode_rdn(usernamd_dn)[0].split('=', 1)[-1]
+	account = utils.UCSTestDomainAdminCredentials()
 
 	with network.NetworkRedirector() as nethelper:
 		print('*** Check with different remote addresses')
 		for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
 			nethelper.add_loop('1.2.3.4', addr2)
 
-			result = get_ip_address('1.2.3.4', username, password)
+			result = get_ip_address('1.2.3.4', account.username, account.bindpw)
 			print('Result: %r' % result)
 			if addr2 not in result:
 				utils.fail('UMC webserver is unable to determine correct UMCP client address (expected=%r result=%r)' % (addr2, result))
@@ -46,7 +40,7 @@ def main():
 			nethelper.remove_loop('1.2.3.4', addr2)
 
 		print('*** Check with localhost')
-		result = get_ip_address('localhost', username, password)
+		result = get_ip_address('localhost', account.username, account.bindpw)
 		if result:
 			utils.fails('Response is expected to be empty')
 
