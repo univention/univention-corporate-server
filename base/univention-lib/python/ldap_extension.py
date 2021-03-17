@@ -61,6 +61,7 @@ from univention.config_registry import configHandlers, ConfigRegistry
 from univention.admin import uldap as udm_uldap
 from univention.admin import modules as udm_modules
 from univention.admin import uexceptions as udm_errors
+import univention.admin as udm
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import MIME_DESCRIPTION
 
@@ -1022,18 +1023,26 @@ class UniventionDataExtension(UniventionLDAPExtension):
 
 class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
 
+	target_subdir = ''
+
+	@property
+	def target_filepath(self):
+		"""return the most likely path where the listener will write the file to"""
+		return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, self.target_filename.replace('/', '')))
+
 	def wait_for_activation(self, timeout=180):
 		# type: (int) -> bool
-		if not UniventionLDAPExtension.wait_for_activation(self, timeout):
+		if not super(UniventionUDMExtension, self).wait_for_activation(timeout):
 			return False
 
+		target_filepath = self.target_filepath
 		timeout = 60
-		print("Waiting for file %s:" % (self.filename,), end=' ')
+		print("Waiting for file %s:" % (target_filepath,), end=' ')
 		t0 = time.time()
-		while not os.path.exists(self.filename):
+		while not os.path.exists(target_filepath):
 			if time.time() - t0 > timeout:
 				print("ERROR")
-				print("ERROR: Timeout waiting for %s." % (self.filename,), file=sys.stderr)
+				print("ERROR: Timeout waiting for %s." % (target_filepath,), file=sys.stderr)
 				return False
 			sys.stdout.write(".")
 			sys.stdout.flush()
@@ -1047,6 +1056,14 @@ class UniventionUDMModule(UniventionUDMExtension):
 	udm_module_name = "settings/udm_module"
 	active_flag_attribute = "univentionUDMModuleActive"
 	filesuffix = ".py"
+	target_udm_module = None
+	target_subdir = 'handlers'
+
+	@property
+	def target_filepath(self):
+		"""return the most likely path where the listener will write the file to"""
+		module_dir, module_name = self.target_udm_module.split('/', 1)
+		return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, module_dir, '%s.py' % (module_name.replace('/', ''),)))
 
 	def register(self, filename, options, udm_passthrough_options, target_filename=None):
 		# type: (str, Values, List[str], Optional[str]) -> None
@@ -1064,7 +1081,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 				spec.loader.exec_module(mod)
 
 			try:
-				module_name = mod.module
+				self.target_udm_module = module_name = mod.module
 			except AttributeError:
 				print("ERROR: python variable 'module' undefined in given file:", filename)
 				sys.exit(1)
@@ -1073,12 +1090,31 @@ class UniventionUDMModule(UniventionUDMExtension):
 
 		UniventionUDMExtension.register(self, filename, options, udm_passthrough_options, target_filename=module_name + ".py")
 
+	def wait_for_activation(self, timeout=180):
+		if not super(UniventionUDMModule, self).wait_for_activation(timeout):
+			return False
+
+		timeout = 60
+		print("Waiting for UDM module %r to be present:" % (self.target_udm_module,), end=' ')
+		t0 = time.time()
+		while subprocess.call([sys.executable, '-c', 'import univention.admin.modules, sys; univention.admin.modules.update(); sys.exit(0 if univention.admin.modules.get(%r) is not None else 1)' % (self.target_udm_module,)]):
+			if time.time() - t0 > timeout:
+				print("ERROR")
+				print("ERROR: Timeout waiting for UDM module %s." % (self.target_udm_module,), file=sys.stderr)
+				return False
+			sys.stdout.write(".")
+			sys.stdout.flush()
+			time.sleep(3)
+		print("OK")
+		return True
+
 
 class UniventionUDMSyntax(UniventionUDMExtension):
 	target_container_name = "udm_syntax"
 	udm_module_name = "settings/udm_syntax"
 	active_flag_attribute = "univentionUDMSyntaxActive"
 	filesuffix = ".py"
+	target_subdir = 'syntax.d'
 
 
 class UniventionUDMHook(UniventionUDMExtension):
@@ -1086,6 +1122,7 @@ class UniventionUDMHook(UniventionUDMExtension):
 	udm_module_name = "settings/udm_hook"
 	active_flag_attribute = "univentionUDMHookActive"
 	filesuffix = ".py"
+	target_subdir = 'hooks.d'
 
 
 def option_validate_existing_filename(option, opt, value):
