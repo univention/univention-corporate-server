@@ -174,9 +174,11 @@ upgrade_to_latest () {
 }
 _upgrade_to_latest () {
 	declare -i remain=300 rv delay=30
+	declare -a upgrade_opts=("--noninteractive" "--ignoreterm" "--ignoressh")
 	while true
 	do
-		univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+		test "true" = "$DISABLE_APP_UPDATES" && upgrade_opts+=("--disable-app-updates")
+		univention-upgrade "${upgrade_opts[@]}" "$@"
 		rv="$?"
 		case "$rv" in
 		0) return 0 ;;  # success
