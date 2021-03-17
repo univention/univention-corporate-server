@@ -23,8 +23,8 @@ export default defineComponent({
       this.$store.dispatch('loadPortal').then((PortalData) => {
         if (!PortalData.user) {
           this.$store.dispatch('notificationBubble/addNotification', {
-            bubbleTitle: catalog.LOGIN.translated,
-            bubbleDescription: catalog.LOGIN_REMINDER_DESCRIPTION.translated,
+            bubbleTitle: catalog.LOGIN.translated.value,
+            bubbleDescription: catalog.LOGIN_REMINDER_DESCRIPTION.translated.value,
             onClick: () => login(this.$store.getters['user/userState']),
           });
         }

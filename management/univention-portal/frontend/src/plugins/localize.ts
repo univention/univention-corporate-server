@@ -9,7 +9,7 @@ export type Localized = (input: Record<Locale, string>) => string;
 
 // expects an object, returns a string
 const localize = {
-  install: (app: App) => {
+  install: (app: App): void => {
     const localized: Localized = (input: Record<Locale, string>) => {
       const curLocale = store.getters['locale/getLocale'];
       const shortLocale = curLocale.split('_')[0];

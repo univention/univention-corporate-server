@@ -218,13 +218,25 @@ function getLocalLinks(browserHostname, serverFQDN, links) {
   return localLinks;
 }
 
-export default function main(links, fqdn) {
+export default function main(links, fqdn, locale) {
   if (links.length === 0) {
     return '';
   }
+  const localizedLinks = {};
+  links.forEach((link) => {
+    const match = /(@[a-z]{2} )?(.*)/.exec(link);
+    let linkLocale = 'en';
+    if (match[1]) {
+      linkLocale = match[1].slice(1, 3);
+    }
+    const alreadyFoundLinks = localizedLinks[linkLocale] || [];
+    alreadyFoundLinks.push(match[2]);
+    localizedLinks[linkLocale] = alreadyFoundLinks;
+  });
+  const usedLinks = localizedLinks[locale] || localizedLinks.en;
   const browserHostname = getURIHostname(document.location.href);
   // get the best link to be displayed
-  const localLinks = getLocalLinks(browserHostname, fqdn, links).concat(links);
+  const localLinks = getLocalLinks(browserHostname, fqdn, usedLinks).concat(usedLinks);
   const bestLink = getHighestRankedLink(document.location.href, localLinks);
 
   // get the hostname to be displayed on the tile
