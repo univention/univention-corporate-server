@@ -92,7 +92,7 @@ univention-management-console-module-adtakeover
 
 univention-printserver
 /* FIXME # univention-printquota  # FIXME */
-/* FIXME # univention-nagios-cups  # FIXME */
+univention-nagios-cups
 printer-driver-all
 printer-driver-c2050
 printer-driver-c2esp
@@ -110,6 +110,7 @@ printer-driver-ptouch
 printer-driver-pxljr
 printer-driver-sag-gdi
 printer-driver-splix
+libsensors5
 
 univention-dhcp
 
