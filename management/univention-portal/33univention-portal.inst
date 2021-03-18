@@ -189,10 +189,10 @@ if [ "$role" = "domaincontroller_master" ]; then
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=univentionforum \
-		--append displayName="\"en_US" "Univention Forum (Help)\"" \
-		--append displayName="\"de_DE" "Univention Forum (Hilfe)\"" \
-		--append description="\"en_US" "Univention Forum (Help)\"" \
-		--append description="\"de_DE" "Univention Forum (Hilfe)\"" \
+		--append displayName="\"en_US\" \"Univention Forum (Help)\"" \
+		--append displayName="\"de_DE\" \"Univention Forum (Hilfe)\"" \
+		--append description="\"en_US\" \"Univention Forum (Help)\"" \
+		--append description="\"de_DE\" \"Univention Forum (Hilfe)\"" \
 		--append link="https://help.univention.com" \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
