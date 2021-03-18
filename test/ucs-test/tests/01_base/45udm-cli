@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a user via udm cli and authenticate via ldap and samba
 ## roles:
 ##  - domaincontroller_master
@@ -39,7 +39,7 @@ class cmd(object):
 		cmd = subprocess.Popen(self.args, stdin=subprocess.PIPE)
 
 		if self.input:
-			cmd.communicate(self.input)
+			cmd.communicate(self.input.encode('UTF-8'))
 		else:
 			cmd.wait()
 

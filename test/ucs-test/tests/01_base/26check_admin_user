@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if 'Administrator' is in the right Groups and respective SIDs
 ## roles-not: [basesystem]
 ## bugs: [37331]
@@ -39,7 +39,7 @@ def check_user_groups_sids():
                       "cn=" + test_groups[1]: "-513"}  # Domain Users
     # more on well-known-sids: http://support.microsoft.com/kb/243330/en-us
 
-    for key, sid_ending in sid_check_dict.iteritems():
+    for key, sid_ending in sid_check_dict.items():
         sid_in_ldap = get_sid_for_user_group(key)
         if not sid_in_ldap:
             utils.fail("The 'sambaSID' for '%s' is empty." % key)
@@ -88,24 +88,18 @@ def get_localized_translations():
 
     for num, val in enumerate(ucr_translations):
         # get a translation or pick a default English name:
-        translated_groups.append(UCR.get('groups/default/' + val,
-                                         default_english[num]))
+        translated_groups.append(UCR.get('groups/default/' + val, default_english[num]))
 
     return translated_username, translated_groups
 
 
-def create_and_run_process(cmd,
-                           stdin=None, std_input=None,
-                           shell=False, stdout=PIPE):
+def create_and_run_process(cmd, stdin=None, std_input=None, shell=False, stdout=PIPE):
     """
     Creates a process as a Popen instance with a given 'cmd'
     and executes it. When stdin is needed, it can be provided as kwarg.
     To write to a file an istance can be provided to stdout.
     """
-    proc = Popen(cmd,
-                 stdin=stdin, stdout=stdout, stderr=PIPE,
-                 shell=shell, close_fds=True)
-
+    proc = Popen(cmd, stdin=stdin, stdout=stdout, stderr=PIPE, shell=shell, close_fds=True)
     return proc.communicate(input=std_input)
 
 
@@ -114,19 +108,17 @@ def get_sid_for_user_group(name):
     Returns a SID for a given 'name'.
     Name should include the uid=... or cn=...
     """
-    cmd = ('univention-ldapsearch', name)
-    stdout, stderr = create_and_run_process(cmd)
+    stdout, stderr = create_and_run_process(('univention-ldapsearch', name))
 
     if stderr:
-        print("\nThe following message occurred in stderr:", stderr)
+        print("\nThe following message occurred in stderr:", stderr.decode('UTF-8', 'replace'))
 
-    sed_cmd = ("sed", "-n", "s/^sambaSID: //p")
-    sed_stdout, sed_stderr = create_and_run_process(sed_cmd, PIPE, stdout)
+    sed_stdout, sed_stderr = create_and_run_process(("sed", "-n", "s/^sambaSID: //p"), PIPE, stdout)
 
     if sed_stderr:
-        print("\nThe following message occurred in stderr:", stderr)
+        print("\nThe following message occurred in stderr:", sed_stderr.decode('UTF-8', 'replace'))
 
-    return sed_stdout.strip('\n')
+    return sed_stdout.decode('UTF-8').strip('\n')
 
 
 def get_members_in_group(group_name):
@@ -138,12 +130,12 @@ def get_members_in_group(group_name):
 
     if stderr:
         print("\nThe following message occurred in stderr while using 'getent':")
-        print(stderr)
+        print(stderr.decode('UTF-8', 'replace'))
 
-    stdout = stdout.strip()
+    stdout = stdout.strip().decode('UTF-8')
     if not stdout:
         print("\nNo stdout from 'getent' for a '%s' group." % group_name)
-        return list()
+        return []
 
     # remove the group name, password, gid and separate members by commas:
     members = stdout[(stdout.rfind(':') + 1):].split(',')
