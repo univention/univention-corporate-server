@@ -32,7 +32,9 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -65,7 +67,7 @@ univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--set description="check libvirtd status (option is the timeout)" || die
 
 # add host to service
-if [ ! "$nagios_client_autoregister" = "no" ] ; then
+if [ "$nagios_client_autoregister" != "no" ] ; then
 	univention-directory-manager nagios/service modify "$@" \
 		--dn "cn=UNIVENTION_LIBVIRTD_KVM,cn=nagios,$ldap_base" \
 		--append assignedHosts="${ldap_hostdn}" || die

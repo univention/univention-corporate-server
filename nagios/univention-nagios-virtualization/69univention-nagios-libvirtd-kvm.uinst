@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Copyright 2011-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -27,15 +27,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+## joinscript api: bindpwdfile
 
-if [ "$1" = "configure" ]
-then
-	rm -f /usr/lib/univention-install/69univention-nagios-libvirtd-kvm.uinst
+# shellcheck disable=SC2034
+VERSION="1"
+# shellcheck source=/dev/null
+. /usr/share/univention-join/joinscripthelper.lib
 
-	# shellcheck source=/dev/null
-	. /usr/share/univention-lib/base.sh
-	call_joinscript 31univention-nagios-libvirtd-kvm.inst
-fi
+eval "$(ucr shell ldap/base ldap/hostdn)"
+
+service="cn=UNIVENTION_LIBVIRTD_KVM,cn=nagios,${ldap_base:?}"
+udm nagios/service modify "$@" \
+	--dn "$service" \
+	--remove assignedHosts="${ldap_hostdn:?}"
+
+udm nagios/service list "$@" --position "$service" |
+	grep -Fq '  assignedHosts: ' ||
+	udm nagios/service remove "$@" --position "$service"
+
+joinscript_remove_script_from_status_file "$(basename "$0" .uinst | sed -re 's/^[0-9]+//')"
 
 exit 0

@@ -29,13 +29,11 @@
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ]
+if [ "$1" = "remove" ]
 then
-	rm -f /usr/lib/univention-install/69univention-nagios-libvirtd-kvm.uinst
-
-	# shellcheck source=/dev/null
-	. /usr/share/univention-lib/base.sh
-	call_joinscript 31univention-nagios-libvirtd-kvm.inst
+	cp \
+		/usr/lib/univention-uninstall/69univention-nagios-libvirtd-kvm.uinst \
+		/usr/lib/univention-install/69univention-nagios-libvirtd-kvm.uinst
 fi
 
 exit 0

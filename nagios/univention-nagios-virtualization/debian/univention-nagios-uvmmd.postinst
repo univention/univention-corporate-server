@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention uvmmd nagios plugin
-#  postinst file for the debian package
-#
 # Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,7 +29,13 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/base.sh
-call_joinscript 31univention-nagios-uvmmd.inst
+if [ "$1" = "configure" ]
+then
+	rm -f /usr/lib/univention-install/69univention-nagios-uvmmd.uinst
+
+	# shellcheck source=/dev/null
+	. /usr/share/univention-lib/base.sh
+	call_joinscript 31univention-nagios-uvmmd.inst
+fi
 
 exit 0
