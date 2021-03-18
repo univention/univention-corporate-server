@@ -197,7 +197,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
 	def __init__(self, ucr):
 		# type: (ConfigRegistry) -> None
-		self.target_container_dn = "cn=%s,cn=univention,%s" % (self.target_container_name, ucr["ldap/base"],)
+		self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"],)
 
 	@classmethod
 	def create_base_container(cls, ucr, udm_passthrough_options):
@@ -223,6 +223,15 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 		if m:
 			object_dn = m.group(1).decode('UTF-8')
 		return (p.returncode, object_dn)
+
+	def is_applicable_for_current_ucs_version(self, ucr):
+		# type (ConfigRegistry) -> bool
+		current_ucs_version = "%s-%s" % (ucr.get('version/version'), ucr.get('version/patchlevel'))
+		if self.options.ucsversionstart and UCS_Version(current_ucs_version) < UCS_Version(self.options.ucsversionstart):
+			return False
+		if self.options.ucsversionend and UCS_Version(current_ucs_version) > UCS_Version(self.options.ucsversionend):
+			return False
+		return True  # probably yes
 
 	def wait_for_activation(self, timeout=180):
 		# type: (int) -> bool
@@ -543,6 +552,10 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 	active_flag_attribute = "univentionLDAPSchemaActive"
 	filesuffix = ".schema"
 	basedir = '/var/lib/univention-ldap/local-schema'
+
+	def is_applicable_for_current_ucs_version(self, ucr):
+		# type (ConfigRegistry) -> bool
+		return True
 
 	def handler(self, dn, new, old, name=None):
 		# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
@@ -1439,7 +1452,9 @@ def ucs_registerLDAPExtension():
 			objects.append(univentionDataExtension)
 
 	for obj in objects:
-		if not obj.wait_for_activation():
+		if not obj.is_applicable_for_current_ucs_version(ucr):
+			print("%s: skip waiting for %s." % (functionname, obj.filename))
+		elif not obj.wait_for_activation():
 			print("%s: registraton of %s failed." % (functionname, obj.filename))
 			sys.exit(1)
 
