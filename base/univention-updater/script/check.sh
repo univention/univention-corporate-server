@@ -284,7 +284,7 @@ update_check_old_packages () {
 	echo "${found[*]}"
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
-	return 0
+	return 1
 }
 
 # Bug #51497 #51973 #31048 #51655 #51955 #51982
