@@ -1,3 +1,11 @@
+univention-updater (15.0.3-29) unstable; urgency=medium
+
+  * Bug #52790: Set postgresql11/autostart=no in preup.sh
+    if univention-postgresql is installed to avoid conflict with
+    postgresql9.6 (or 9.4) before migration
+
+ -- Arvid <requate@univention.de>  Thu, 18 Mar 2021 20:26:05 +0100
+
 univention-updater (15.0.3-28) unstable; urgency=low
 
   * Bug #52943: Remove univention-samba-slave-pdc

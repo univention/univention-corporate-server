@@ -141,6 +141,14 @@ if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
 	service fetchmail stop || :
 fi
 
+# Bug #52790: Don't let postgresql@11-main.service start before migration
+if dpkg -l univention-postgresql 2>&3 | grep ^ii  >&3 ; then
+	ucr set postgres11/autostart=no
+	#       ^^ doesn't do anything yet as service does not yet exist
+	ln -s /dev/null /etc/systemd/system/postgresql@11-main.service
+	systemctl daemon-reload
+fi
+
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 mkdir -p /etc/systemd/system/atd.service.d
