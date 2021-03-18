@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test password change via UMC (/univention/set) by the user itself.
 ## bugs: [35276, 36900]
 ## roles: [domaincontroller_master]

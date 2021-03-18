@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Logrotation should trigger UMC components to reopen their logfiles
 ## packages:
 ##  - univention-management-console

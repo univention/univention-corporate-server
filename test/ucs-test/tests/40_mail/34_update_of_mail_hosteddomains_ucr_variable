@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test update of mail/hosteddomains ucr variable
 ## tags: [apptest]
 ## exposure: dangerous

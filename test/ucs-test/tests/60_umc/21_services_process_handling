@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the UMC service module process handling
 ## bugs: [34505]
 ## exposure: dangerous

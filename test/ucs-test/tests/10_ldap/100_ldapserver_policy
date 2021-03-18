@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test creation/modification of LDAP server / UCR policy for LDAP server
 ## exposure: dangerous
 ## packages:

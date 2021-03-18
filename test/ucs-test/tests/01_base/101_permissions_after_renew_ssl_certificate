@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Permissions after renewing ssl certificate
 ## tags: [apptest]
 ## roles: [domaincontroller_master]
