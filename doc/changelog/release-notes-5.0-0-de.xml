@@ -113,6 +113,14 @@
 				Dieses Problem wird im Rahmen eines folgenden UCS 5-Erratums bzw. eines Updates für den Univention Domain Join Assistant behoben.
 			</para>
 		</section>
+
+		<section id="relnotes:joinscript-password">
+			<!-- Bug 31996 -->
+			<title>Hinweise zu Anmeldeinformationen, die an Join-Skripte übergeben werden</title>
+			<para>
+				Join-Skripte werden jetzt immer mit der sicheren Option <option>--bindpwdfile</option> ausgeführt, anstatt die Anmeldedaten direkt zu übergeben.
+			</para>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:localrepo">

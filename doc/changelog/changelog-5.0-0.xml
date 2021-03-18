@@ -54,6 +54,9 @@
 			<listitem><simpara>
 				The join scripts for <command>univention-s4-connector</command> and <command>univention-appcenter</command> now start <command>ucs_registerLDAPExtension</command> with the options <option>--ucsversionstart</option> and <option>--ucsversionstop</option> to signal compatibility with Python 3 (<u:bug>51763</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				Join scripts are not executed with the unsafe option <option>--bindpwd</option> anymore (<u:bug>31996</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

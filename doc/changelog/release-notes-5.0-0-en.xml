@@ -252,6 +252,14 @@
 				This issue will be fixed as part of a UCS 5 errata or via an update for the Univention Domain Join Assistant.
 			</para>
 		</section>
+
+		<section id="relnotes:joinscript-password">
+			<!-- Bug 31996 -->
+			<title>Notes about credentials passed to join scripts</title>
+			<para>
+				Join scripts are now always executed with the safe option <option>--bindpwdfile</option> instead of passing the credentials directly.
+			</para>
+		</section>
 	</chapter>
 
 	 <chapter id="relnotes:localrepo">
