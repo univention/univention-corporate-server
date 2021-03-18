@@ -182,7 +182,7 @@ if [ -n "$BINDDN" ]; then
 	ADMINOPTIONS+=(--binddn "$BINDDN")
 fi
 if [ -n "$BINDPWFILE" ]; then
-	ADMINOPTIONS+=(--bindpwd "$(<"$BINDPWFILE")")
+	ADMINOPTIONS+=(--bindpwdfile "$BINDPWFILE")
 fi
 
 

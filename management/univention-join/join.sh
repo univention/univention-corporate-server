@@ -72,7 +72,7 @@ _join_call () {  # <role-check> <joinscript> [<args>...]
 
 call_joinscript () {  # <joinscipt> [<args>...]
 	# calls the given joinscript
-	# e.g. call_joinscript 99my-custom-joinscript.inst --binddn ... --bindpwd ...
+	# e.g. call_joinscript 99my-custom-joinscript.inst --binddn ... --bindpwdfile ...
 	_join_call is_primary_or_backup "$@"
 }
 
@@ -107,14 +107,14 @@ remove_joinscript_status () {  # <name>
 
 call_unjoinscript () {  # <joinscript> [<args>...]
 	# calls the given unjoinscript
-	# e.g. call_unjoinscript 99my-custom-joinscript.uinst --binddn ... --bindpwd ...
+	# e.g. call_unjoinscript 99my-custom-joinscript.uinst --binddn ... --bindpwdfile ...
 	_join_call is_primary_or_backup "$@" &&
 		delete_unjoinscript "${1:?}"
 }
 
 call_joinscript_on_dcmaster () {  # <joinscript> [<args>...]
 	# calls the given joinscript ONLY on Primary Directory Node
-	# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwd ...
+	# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwdfile ...
 	_join_call is_primary "$@"
 }
 

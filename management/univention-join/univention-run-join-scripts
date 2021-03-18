@@ -272,12 +272,10 @@ then
 
 		if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 			args=()
-			if joinscript_check_api_bindpwdfile "$i"; then
-				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
-			elif joinscript_check_api_nocredentials "$i"; then
+			if joinscript_check_api_nocredentials "$i"; then
 				args=()
 			else
-				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")
+				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
 			fi
 			"$i" "${args[@]}" 3>&-
 		else

@@ -205,12 +205,10 @@ run_join_scripts () {
 			fi
 
 			local args=()
-			if joinscript_check_api_bindpwdfile "$i"; then
-				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
-			elif joinscript_check_api_nocredentials "$i"; then
+			if joinscript_check_api_nocredentials "$i"; then
 				args=()
 			else
-				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")
+				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
 			fi
 			$bashVerbose "$i" "${args[@]}" >>/var/log/univention/join.log 2>&1
 

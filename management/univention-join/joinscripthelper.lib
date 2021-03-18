@@ -325,14 +325,6 @@ joinscript_remove_credentialfiles () {
 	test -e /var/run/univention-join/binddn && rm /var/run/univention-join/binddn
 }
 
-# join script can be called with --bindpwdfile
-joinscript_check_api_bindpwdfile () {
-	if grep -q '^## joinscript api: bindpwdfile$' "$1"; then
-		return 0
-	fi
-	return 1
-}
-
 # join script does not require domain credentials to be passed
 joinscript_check_api_nocredentials () {
 	if grep -q '^## joinscript api: nocredentials$' "$1"; then

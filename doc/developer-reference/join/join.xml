@@ -174,16 +174,6 @@
 						</para>
 						<variablelist>
 							<varlistentry>
-								<term><literal>## joinscript api: bindpwdfile</literal></term>
-								<listitem>
-									<simpara>
-										This instructs <command>univention-join</command> and <command>univention-run-join-script</command> to pass the credential password via a file.
-										The name of the file is passed via the parameter <option>--bindpwdfile <replaceable>path</replaceable></option>.
-										The old parameter <option>--bindpwd <replaceable>secret</replaceable></option> will not be supplied in this case.
-									</simpara>
-								</listitem>
-							</varlistentry>
-							<varlistentry>
 								<term><literal>## joinscript api: nocredentials</literal></term>
 								<listitem>
 									<simpara>
@@ -453,20 +443,20 @@ VERSION="3"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>call_joinscript</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 								<arg><replaceable>XXjoin-script.inst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
 								This calls the join script called <filename>XXjoin-script.inst</filename> from the directory <filename class="directory">/usr/lib/univention-install/</filename>.
-								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> respective <option>filename</option> are passed on as-is.
+								The optional LDAP credentials <option>bind-dn</option> and <option>filename</option> are passed on as-is.
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>call_joinscript_on_dcmaster</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 								<arg><replaceable>XXjoin-script.inst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
@@ -491,7 +481,7 @@ VERSION="3"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>call_unjoinscript</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 								<arg><replaceable>XXunjoin-script.uinst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
@@ -537,7 +527,7 @@ VERSION="3"
 						<term><cmdsynopsis>
 								<command>ucs_addServiceToLocalhost</command>
 								<arg choice="plain"><replaceable>servicename</replaceable></arg>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
@@ -556,7 +546,7 @@ ucs_addServiceToLocalhost "MyService" "$@"
 						<term><cmdsynopsis>
 								<command>ucs_removeServiceFromLocalhost</command>
 								<arg choice="plain"><replaceable>servicename</replaceable></arg>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
@@ -575,7 +565,7 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 						<term><cmdsynopsis>
 								<command>ucs_isServiceUnused</command>
 								<arg choice="plain"><replaceable>servicename</replaceable></arg>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <group choice="req"><arg>--bindpwd <replaceable>bind-password</replaceable></arg><arg>--bindpwdfile <replaceable>filename</replaceable></arg></group></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> <arg>--bindpwdfile <replaceable>filename</replaceable></arg></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
@@ -596,10 +586,8 @@ fi
 						<term><cmdsynopsis>
 								<command>ucs_registerLDAPExtension</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable>
-									<group choice="req">
-										<arg choice="plain">--bindpwd <replaceable>bind-password</replaceable></arg>
 										<arg choice="plain">--bindpwdfile <replaceable>filename</replaceable></arg>
-								</group></arg>
+								</arg>
 								<sbr/>
 								<group choice="req">
 									<group choice="req" rep="repeat">
@@ -797,10 +785,8 @@ ucs_registerLDAPExtension "$@" \
 						<term><cmdsynopsis>
 								<command>ucs_unregisterLDAPExtension</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable>
-									<group choice="req">
-										<arg choice="plain">--bindpwd <replaceable>bind-password</replaceable></arg>
 										<arg choice="plain">--bindpwdfile <replaceable>filename</replaceable></arg>
-								</group></arg>
+								</arg>
 								<sbr/>
 								<group choice="req" rep="repeat">
 									<arg choice="plain">--schema <replaceable>objectname</replaceable></arg>
