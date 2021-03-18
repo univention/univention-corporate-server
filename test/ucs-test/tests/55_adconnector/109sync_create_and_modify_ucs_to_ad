@@ -18,6 +18,7 @@ test -n "$connector_ad_ldap_host" || exit 137
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 invoke-rc.d univention-ad-connector restart
+kdestroy  # to avoid smbclient failure (similar to Bug #52277)
 
 # Make some import rounds with an increasing sleep time before changing the password
 for i in 0 3 6 12; do

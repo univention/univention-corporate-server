@@ -1,3 +1,9 @@
+ucs-test (10.0.4-34) unstable; urgency=medium
+
+  * Bug #52044: Fix 55_adconnector/109sync_create_and_modify_ucs_to_ad
+
+ -- Arvid <requate@univention.de>  Thu, 18 Mar 2021 19:19:45 +0100
+
 ucs-test (10.0.4-33) unstable; urgency=medium
 
   * Bug #52745: Code cleanup in 96rename*
