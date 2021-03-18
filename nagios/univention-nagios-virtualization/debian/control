@@ -35,20 +35,6 @@ Description: nagios libvirtd plugin
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-nagios-libvirtd-xen
-Architecture: all
-Depends:
- univention-nagios-client,
- univention-nagios-libvirtd,
-Description: nagios libvirtd plugin
- This package installs a nagios plugin to monitor the
- libvirt daemon.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-nagios-uvmmd
 Architecture: any
 Depends:
