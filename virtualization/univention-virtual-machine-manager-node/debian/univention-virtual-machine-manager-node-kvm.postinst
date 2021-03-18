@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# UCS Virtual Machine Manager Node Common
-#  postinst script
-#
 # Copyright 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -54,7 +51,7 @@ setup_bridge () {
 }
 setup_bridge "$@"
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
+if [ "${server_role:-}" = "domaincontroller_master" ] || [ "${server_role:-}" = "domaincontroller_backup" ]
 then
 	/usr/lib/univention-install/44univention-virtual-machine-manager-node-kvm.inst || true
 fi

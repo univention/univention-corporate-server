@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# UCS Virtual Machine Manager Node
-#  un-join script
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -34,11 +31,13 @@
 
 set -e
 
+# shellcheck disable=SC2034
 VERSION="1"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ldap.sh
-die () { local ret=$?;echo "$*" >&2;exit $ret; }
 
 SERVICE="KVM Host"
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die "Service $SERVICE not registered"

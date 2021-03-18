@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# UCS Virtual Machine Manager Node
-#  join script
-#
 # Copyright 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,8 +29,10 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -42,12 +41,12 @@ SERVICE="KVM Host"
 
 univention-directory-manager container/cn      create "$@" --ignore_exists \
 	--set name=services \
-	--position             "cn=univention,$ldap_base" || die
+	--position             "cn=univention,${ldap_base:?}" || die
 univention-directory-manager  settings/service create "$@" --ignore_exists \
 	--set name="$SERVICE" \
 	--position "cn=services,cn=univention,$ldap_base" || die
-univention-directory-manager "computers/$server_role" modify "$@" \
-	--dn "$ldap_hostdn" \
+univention-directory-manager "computers/${server_role:?}" modify "$@" \
+	--dn "${ldap_hostdn:?}" \
 	--append service="$SERVICE" || die
 
 joinscript_save_current_version

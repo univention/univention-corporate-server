@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# UCS Virtual Machine Manager Node
-#  un-join script
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -34,16 +31,18 @@
 
 set -e
 
+# shellcheck disable=SC2034
 VERSION="1"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 die () { local ret=$?;echo "$*" >&2;exit $ret; }
 
 eval "$(univention-config-registry shell)"
 
 univention-directory-manager groups/group modify "$@" \
-	--dn "cn=UVMM Nodes,cn=groups,$ldap_base" \
-	--remove hosts="$ldap_hostdn" || die "Failed to remove host from UVMM group"
+	--dn "cn=UVMM Nodes,cn=groups,${ldap_base:?}" \
+	--remove hosts="${ldap_hostdn:?}" || die "Failed to remove host from UVMM group"
 
 if ! univention-directory-manager groups/group list "$@" \
 	--position "cn=UVMM Nodes,cn=groups,$ldap_base" |

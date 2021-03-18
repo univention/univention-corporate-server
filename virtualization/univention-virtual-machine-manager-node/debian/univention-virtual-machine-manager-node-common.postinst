@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# UCS Virtual Machine Manager Node Common
-#  postinst script
-#
 # Copyright 2010-2021 Univention GmbH
 #
 # <https://www.univention.de/>
@@ -48,7 +45,7 @@ configure)
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 	# Create UDM objects
-	case "$server_role" in
+	case "${server_role:-}" in
 	domaincontroller_master|domaincontroller_backup)
 		/usr/lib/univention-install/43univention-virtual-machine-manager-node-common.inst || true
 		;;
