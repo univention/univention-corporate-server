@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: schedule cronjobs via UCR
 ## bugs: [16541]
 ## tags: [basic]

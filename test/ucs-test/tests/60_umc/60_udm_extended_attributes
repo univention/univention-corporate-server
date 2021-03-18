@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the UMC extended attributes
 ## bugs: [34623]
 ## roles:

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the UMC group creation, modification and deletion
 ## bugs: [34792]
 ## roles:
