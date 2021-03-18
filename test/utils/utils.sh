@@ -70,7 +70,7 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
-	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no 'update50/ignore_legacy_objects=yes'
+	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no 'update50/ignore_legacy_objects=yes' 'update50/ignore_old_packages=yes'
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	# Update UCS@school instances always to latest patchlevel version
