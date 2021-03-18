@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import collections
 import logging
 import random
 import re
@@ -665,7 +666,7 @@ class access:
             vals = nal.setdefault(key, set())
             vals |= set(val)
 
-        nal = [(k, list(v)) for k, v in nal.items()]
+        nal = [(k, list(collections.OrderedDict.fromkeys(v))) for k, v in nal.items()]
 
         try:
             _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
@@ -717,7 +718,7 @@ class access:
                     val = None
             else:
                 continue
-            ml.append((op, key, val))
+            ml.append((op, key, list(collections.OrderedDict.fromkeys(val)) if isinstance(val, (list, tuple)) else val))
 
         # check if we need to rename the object
         new_dn, new_rdn = self.__get_new_dn(dn, ml)
