@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## -*- coding: utf-8 -*-
 ## desc: New listener module API test
 ## tags: []
@@ -75,7 +75,7 @@ def main():
 		lm_txt = fp.read()
 
 	for k, v in text_replacements.items():
-		lm_txt = lm_txt.replace('@@{}@@'.format(k), v)
+		lm_txt = lm_txt.replace('@@{}@@'.format(k).encode(), v.encode())
 
 	with open(lm_file, 'wb') as fp:
 		fp.write(lm_txt)
@@ -180,19 +180,19 @@ def main():
 		print(log_text)
 		print('*******************************************')
 
-	lines = (l.strip() for l in log_text.split('\n') if l.strip())
+	lines = (l.strip() for l in log_text.split(b'\n') if l.strip())
 	operations = ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run')
 	for operation in operations:
 		exp = '{} {}'.format(test_id, operation)
 		try:
-			line = lines.next()
+			line = next(lines)
 		except StopIteration:
 			if operation == 'post_run':
 				print('Ignoring missing "post_run" - probably to much going on...')
 				line = exp
 			else:
 				utils.fail('Missing operation(s). Expected: {!r}.'.format(operations))
-		if not line.startswith(exp):
+		if not line.startswith(exp.encode()):
 			if line.startswith('{} post_run'.format(test_id)):
 				# probably waited so long for s4c to catch up, that post_run happened,
 				# next line should be "pre_run" and then "remove"
