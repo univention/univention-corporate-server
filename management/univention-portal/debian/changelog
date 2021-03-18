@@ -1,3 +1,9 @@
+univention-portal (4.0.5-7) unstable; urgency=medium
+
+  * Bug #52869: Typos
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Mar 2021 01:47:53 +0100
+
 univention-portal (4.0.5-6) unstable; urgency=medium
 
   * Bug #52869: Help submenu
