@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
 ## tags: [skip_admember,reconnect]
@@ -17,7 +17,11 @@ import univention.testing.strings as uts
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.uexceptions
-from thread import start_new_thread
+import sys
+if sys.version[0] == '2':
+	from thread import start_new_thread
+else:
+	from _thread import start_new_thread
 import traceback
 import time
 import subprocess
@@ -99,10 +103,10 @@ def main():
 			start_new_thread(delayed_slapd_restart, ())
 			count = 0
 			try:
-				old_description = ''
+				old_description = b''
 				while not restart_finished:
 					try:
-						new_description = 'Foo bar %s' % (uts.random_string(5),)
+						new_description = 'Foo bar {0}'.format(uts.random_string(5)).encode()
 						res = lo.modify(user_dn, [['description', old_description, new_description]])
 						assert res == user_dn
 						old_description = new_description
