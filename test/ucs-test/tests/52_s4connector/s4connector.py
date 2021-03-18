@@ -255,6 +255,16 @@ def wait_for_sync(min_wait_time=0):
 	sleep(synctime)
 
 
+def stop():
+	print("Stopping S4-Connector")
+	subprocess.check_call(["service", "univention-s4-connector", "stop"])
+
+
+def start():
+	print("Starting S4-Connector")
+	subprocess.check_call(["service", "univention-s4-connector", "start"])
+
+
 def restart_s4connector():
 	print("Restarting S4-Connector")
 	subprocess.check_call(["service", "univention-s4-connector", "restart"])
