@@ -672,6 +672,9 @@
 			<listitem><simpara>
 				The <package>univention-python</package> library has been migrated to Python 3. Various modules have been removed (<u:bug>52063</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				<command>ucs_registerLDAPExtension</command> now waits correctly for the registered &ucsUDM; extension files to be replicated (<u:bug>52942</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
