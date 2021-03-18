@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
@@ -11,8 +11,13 @@
 
 from __future__ import print_function
 import psutil
+import sys
 from time import sleep
-from Queue import Empty, Full
+import sys
+if sys.version[0] == '2':
+    from Queue import Empty, Full
+else:
+    from queue import Empty, Full
 from subprocess import Popen, PIPE
 from multiprocessing import Process
 
@@ -55,11 +60,11 @@ def univention_ldapsearch(fail_on_success):
     if stdout:
         print("\n""univention-ldapsearch STDOUT:\n", stdout.strip())
 
-    if ((base_dn in stdout) and fail_on_success):
+    if ((base_dn.encode() in stdout) and fail_on_success):
         fail("\nThe 'univention-ldapsearch' worked when it is "
              "not expected to work.\n")
 
-    if ((base_dn not in stdout) and not fail_on_success):
+    if ((base_dn.encode() not in stdout) and not fail_on_success):
         fail("\nThe 'univention-ldapsearch' did not work in case it "
              "is expected to work.\n")
 
