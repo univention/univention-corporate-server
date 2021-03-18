@@ -1,9 +1,6 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# UCS Virtual Machine Manager Daemon
-#  postrm script
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -35,6 +32,7 @@
 
 case "$1" in
 	remove)
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 55univention-management-console-module-uvmm.uinst
 	;;

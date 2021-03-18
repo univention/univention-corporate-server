@@ -1,9 +1,6 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# UCS Virtual Machine Manager Daemon
-#  postinst script for univention-virtual-machine-manager-daemon
-#
 # Copyright 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -31,8 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
-
 
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
@@ -77,10 +74,8 @@ case "$1" in
 	;;
 esac
 
-uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-daemon.uinst
-[ -e "$uinst" ] && rm "$uinst"
+rm -f /usr/lib/univention-install/56univention-virtual-machine-manager-daemon.uinst
 
-. /usr/share/univention-lib/base.sh
 call_joinscript 44univention-virtual-machine-manager-daemon.inst || true
 
 error_restart () {

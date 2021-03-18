@@ -31,10 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-uinst=/usr/lib/univention-install/55univention-management-console-module-uvmm.uinst
-[ -e "$uinst" ] && rm "$uinst"
+rm -f /usr/lib/univention-install/55univention-management-console-module-uvmm.uinst
 
 #DEBHELPER#
+
 service univention-management-console-server restart
 
 exit 0

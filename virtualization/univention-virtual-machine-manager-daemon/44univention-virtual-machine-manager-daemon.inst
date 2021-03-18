@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# UCS Virtual Machine Manager Daemon
-#  join script
-#
 # Copyright 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -34,6 +31,7 @@
 
 VERSION="13"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -46,12 +44,12 @@ SERVICE="Virtual Machine Manager"
 # add service
 univention-directory-manager container/cn      create "$@" --ignore_exists \
 	--set name=services \
-	--position             "cn=univention,$ldap_base" || die
+	--position             "cn=univention,${ldap_base:?}" || die
 univention-directory-manager  settings/service create "$@" --ignore_exists \
 	--set name="$SERVICE" \
 	--position "cn=services,cn=univention,$ldap_base" || die
-univention-directory-manager "computers/$server_role" modify "$@" \
-	--dn "$ldap_hostdn" \
+univention-directory-manager "computers/${server_role:?}" modify "$@" \
+	--dn "${ldap_hostdn:?}" \
 	--append service="$SERVICE" || die
 
 # create containers for additional UVMM objects
@@ -71,9 +69,6 @@ univention-directory-manager container/cn create "$@" \
 	--set name=kvm || die
 
 # create machine profiles
-
-# determine kernel image
-kernel=$(readlink -e /vmlinuz)
 
 # Debian-installer does no longer set locale/keymap. Prepare locale_keymap out of locale_default (Bug 37551)
 locale_keymap=${locale_default,,}
@@ -96,7 +91,7 @@ do
 		locale_keymap=
 	fi
 done
-: ${locale_keymap:=en-us}
+: "${locale_keymap:=en-us}"
 
 create_hvm_profile() {
 	local cn="$1"
@@ -132,7 +127,7 @@ create_hvm_profile() {
 		--set pvcdrom="$pvcdrom" \
 		--set pvinterface="$pvif" || die
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
-		if [ "$uvmm_profile_autoupdate" != "false" ]; then
+		if [ "${uvmm_profile_autoupdate:-}" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
 				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
