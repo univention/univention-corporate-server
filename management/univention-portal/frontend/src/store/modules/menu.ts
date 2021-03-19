@@ -1,4 +1,5 @@
 import createMenuStructure from '@/jsHelper/createMenuStructure';
+import addLanguageTile from '@/jsHelper/addLanguageTile';
 import { PortalModule } from '../types';
 
 export interface MenuState {
@@ -17,7 +18,9 @@ const menu: PortalModule<MenuState> = {
 
   mutations: {
     MENU(state, payload) {
-      const menuStructure = createMenuStructure(payload);
+      const menuStructure = createMenuStructure(payload.portal);
+      const languageMenuLink = addLanguageTile(payload.availableLocales);
+      menuStructure.unshift(languageMenuLink);
       state.menu = menuStructure;
     },
     MENU_LINKS(state, payload) {

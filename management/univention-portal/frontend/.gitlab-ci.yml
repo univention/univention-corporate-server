@@ -31,11 +31,12 @@ build-test-deploy-job:
   script:
     #- yarn --cwd=frontend
     #- yarn --cwd=frontend build
-    #- yarn --cwd=frontend test:unit
+    - yarn --cwd=frontend test:unit
+    # das folgende ist Holzhammer auf Wegwerfmaschinen, nicht in prod nutzen...
     - apt-get -q --assume-yes build-dep .
     - dpkg-buildpackage -uc -us -b
     - cp ../*.deb .
-    - scp ./phoenixportal_*.deb univention_ansible@sandbox-009.sx.openws.de:/tmp
-    - ssh univention_ansible@sandbox-009.sx.openws.de sudo dpkg --purge phoenixportal
-    - ssh univention_ansible@sandbox-009.sx.openws.de sudo apt install -y /tmp/phoenixportal_*_amd64.deb
-
+    - ssh root@ucs5-p1.duckdns.org rm -f /tmp/phoenixportal*
+    - scp ./phoenixportal_*.deb root@ucs5-p1.duckdns.org:/tmp
+    - ssh root@ucs5-p1.duckdns.org dpkg --purge phoenixportal
+    - ssh root@ucs5-p1.duckdns.org apt install -y /tmp/phoenixportal_*_amd64.deb

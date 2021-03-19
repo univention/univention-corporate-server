@@ -84,7 +84,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      metaData: 'meta/getMeta',
+      metaData: 'metaData/getMeta',
     }),
     cookieName(): string {
       return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';

@@ -109,11 +109,14 @@ export default defineComponent({
     align-items: center
     justify-content: center
     background-color: transparent
+    border: 0.2rem solid rgba(0,0,0,0)
 
     &:hover,
     &:focus
       border-radius: 100%
-      background-color: var(--bgc-content-body)
+    &:focus
+      border: 0.2rem solid var(--color-primary)
+      outline: none
 
     &--success
       &:hover,

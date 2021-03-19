@@ -43,6 +43,8 @@
       />
     </div>
 
+    <!-- <portal-standby /> -->
+
     <portal-modal
       :is-active="modalState"
       @click="closeModal"
@@ -62,11 +64,12 @@ import { mapGetters } from 'vuex';
 
 import PortalIframe from 'components/PortalIframe.vue';
 import PortalCategory from 'components/PortalCategory.vue';
-import PortalIcon from '@/components/globals/PortalIcon.vue';
+// import PortalIcon from '@/components/globals/PortalIcon.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import PortalModal from '@/components/globals/PortalModal.vue';
 import PortalBackground from '@/components/PortalBackground.vue';
+import PortalStandby from '@/components/PortalStandby.vue';
 import CookieBanner from '@/components/CookieBanner.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
@@ -74,27 +77,28 @@ import notificationMixin from '@/mixins/notificationMixin';
 
 import Translate from '@/i18n/Translate.vue';
 
-interface HomeData {
+interface PortalViewData {
   buttonIcon: string,
   ariaLabelButton: string,
 }
 
 export default defineComponent({
-  name: 'Home',
+  name: 'Portal',
   components: {
     PortalCategory,
     PortalFolder,
     PortalHeader,
-    PortalIcon,
+    // PortalIcon,
     PortalIframe,
     PortalModal,
     PortalBackground,
+    PortalStandby,
     CookieBanner,
     HeaderButton,
     Translate,
   },
   mixins: [notificationMixin],
-  data(): HomeData {
+  data(): PortalViewData {
     return {
       buttonIcon: 'plus',
       ariaLabelButton: 'Button for adding a new category',
@@ -110,7 +114,6 @@ export default defineComponent({
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
-      // portalData: 'portalData/getPortal', // access portal data ;)
     }),
   },
   methods: {
@@ -127,7 +130,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="stylus">
+<style lang="stylus" scoped>
 .portal-categories
   position: relative;
   // z-index: 1;
@@ -163,4 +166,5 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   background-color: #fff;
+
 </style>

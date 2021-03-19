@@ -54,10 +54,6 @@ export default defineComponent({
       type: String,
       default: 'Nav Tab',
     },
-    ariaLabel: {
-      type: String,
-      default: 'Tab Aria Label',
-    },
     closeIcon: {
       type: String,
       default: 'x',
@@ -69,6 +65,11 @@ export default defineComponent({
     logo: {
       type: String,
       required: true,
+    },
+  },
+  computed: {
+    ariaLabel():string {
+      return `Close Application: ${this.tabLabel}`;
     },
   },
   methods: {

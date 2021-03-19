@@ -1,13 +1,15 @@
 <template>
   <a
     v-is="isLink ? 'a' : 'div'"
-    v-if="isVisible"
     class="menu-item"
-    :href="link"
-    @click="tileClick"
+    :href="link ? link : null"
+    tabindex="0"
+    @click="isInternalFunctionOrLink ? tileClick() : null"
+    @keydown.enter="isInternalFunctionOrLink ? tileClick() : null"
+    @keydown.esc="closeWithESC"
   >
     <portal-icon
-      v-if="subItem"
+      v-if="isSubItem"
       icon="chevron-left"
       icon-width="2rem"
       class="menu-item__arrow menu-item__arrow--left"
@@ -22,7 +24,7 @@
         {{ subMenu.length }}
       </div>
       <portal-icon
-        v-if="!subItem"
+        v-if="!isSubItem"
         icon="chevron-right"
         icon-width="2rem"
         class="menu-item__arrow menu-item__arrow--right"
@@ -32,10 +34,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import TileClick from '@/mixins/TileClick.vue';
+import { Locale } from '@/store/models';
 
 export default defineComponent({
   name: 'MenuItem',
@@ -47,24 +50,34 @@ export default defineComponent({
   ],
   props: {
     title: {
-      type: Object,
+      type: Object as PropType<Record<Locale, string>>,
       required: true,
     },
     subMenu: {
       type: Array,
       default: () => [],
     },
-    subItem: {
+    isSubItem: {
+      type: Boolean,
+      default: false,
+    },
+    handlesAppSettings: {
       type: Boolean,
       default: false,
     },
   },
+  emits: ['clickAction'],
   computed: {
-    isVisible(): boolean {
-      return this.isLink || this.subItem || this.subMenu.length > 0;
+    isInternalFunctionOrLink(): boolean {
+      return this.linkTarget === 'internalFunction' || this.isLink;
     },
     isLink(): boolean {
-      return !!this.link;
+      return this.link !== null && this.link !== '';
+    },
+  },
+  methods: {
+    closeWithESC() {
+      this.$emit('clickAction');
     },
   },
 });
@@ -79,10 +92,15 @@ export default defineComponent({
   padding: 2rem 0 2rem 2rem;
   color: #fff;
   text-decoration: none;
+  border: 0.2rem solid rgba(0,0,0,0);
 
   &:hover
     background-color: #272726;
     cursor: pointer;
+
+  &:focus
+    outline: 0;
+    border: 0.2rem solid var(--color-primary);
 
   &__counter
     position: absolute;

@@ -13,12 +13,14 @@
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
-          <div
+          <button
+            ref="loginButton"
             class="portal-sidenavigation__logout-link"
             @click="logout"
+            @keydown.esc="closeNavigation"
           >
             <translate i18n-key="LOGOUT" />
-          </div>
+          </button>
         </div>
       </div>
       <div
@@ -34,12 +36,6 @@
       class="portal-sidenavigation__menu"
     >
       <div
-        class="portal-sidenavigation__menu-item portal-sidenavigation__menu-item--locale"
-        @click="switchLocale"
-      >
-        <translate i18n-key="SWITCH_LOCALE" />
-      </div>
-      <div
         v-for="(item, index) in menuLinks"
         :key="index"
         :class="setFadeClass()"
@@ -47,21 +43,27 @@
       >
         <menu-item
           v-if="menuVisible"
+          :ref="'menuItem' + index"
           :links="[]"
-          link-target="samewindow"
           v-bind="item"
+          :aria-haspopup="hasSubmenu(item)"
           @click="toggleMenu(index)"
           @clickAction="closeNavigation"
+          @escButtonClick="closeNavigation"
+          @keydown.up.prevent="selectPrevious(index)"
+          @keydown.down.prevent="selectNext(index)"
+          @keydown.enter.prevent="toggleMenu(index)"
+          @keydown.right="focusOnChild(item, index)"
         />
         <template v-if="item.subMenu && item.subMenu.length > 0">
           <menu-item
             v-if="subMenuVisible & (menuParent === index)"
             :title="item.title"
-            :sub-item="true"
+            :is-sub-item="true"
             :links="[]"
-            link-target="samewindow"
             class="portal-sidenavigation__menu-subitem portal-sidenavigation__menu-subitem--parent"
             @click="toggleMenu()"
+            @keydown.enter.prevent="toggleMenu()"
           />
           <div
             v-for="(subitem, subindex) in item.subMenu"
@@ -70,6 +72,7 @@
           >
             <menu-item
               v-if="subMenuVisible & (menuParent === index)"
+              :ref="'subitem' + subindex"
               v-bind="subitem"
               class="portal-sidenavigation__menu-subitem"
               @clickAction="closeNavigation"
@@ -79,10 +82,11 @@
       </div>
     </div>
 
-    <div
+    <button
       v-if="userState.mayEditPortal"
       class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
       @click="toggleEditMode"
+      @keydown.esc="closeNavigation"
     >
       <translate
         v-if="editMode"
@@ -92,7 +96,7 @@
         v-else
         i18n-key="EDIT_PORTAL"
       />
-    </div>
+    </button>
   </nav>
 </template>
 
@@ -115,6 +119,7 @@ interface SideNavigationData {
   fade: boolean,
   fadeRightLeft: string,
   fadeLeftRight: string,
+  changeLanguageTranslation: unknown
 }
 
 export default defineComponent({
@@ -134,6 +139,10 @@ export default defineComponent({
       fade: false,
       fadeRightLeft: 'portal-sidenavigation__fade-right-left',
       fadeLeftRight: 'portal-sidenavigation__fade-left-right',
+      changeLanguageTranslation: {
+        de_DE: 'Sprache ändern',
+        en_US: 'change Language',
+      },
     };
   },
   computed: {
@@ -141,17 +150,13 @@ export default defineComponent({
       menuLinks: 'menu/getMenu',
       editMode: 'portalData/editMode',
       userState: 'user/userState',
-      locale: 'locale/getLocale',
+      meta: 'metaData/getMeta',
     }),
   },
+  mounted() {
+    (this.$refs.loginButton as HTMLElement).focus();
+  },
   methods: {
-    switchLocale(): void {
-      if (this.locale === 'en_US') {
-        this.$store.dispatch('locale/setLocale', 'de_DE');
-      } else {
-        this.$store.dispatch('locale/setLocale', 'en_US');
-      }
-    },
     login(): void {
       login(this.userState);
     },
@@ -189,6 +194,35 @@ export default defineComponent({
       }
       return ret;
     },
+    selectPrevious(index: number):void {
+      const currentElementIndex = `menuItem${index}`;
+      const currentElement = (this.$refs[currentElementIndex] as HTMLFormElement).$el;
+      if (index === 0) {
+        // select Last Element
+      } else {
+        const previousElement = currentElement.parentElement.previousElementSibling.children[0];
+        previousElement.focus();
+      }
+    },
+    selectNext(index: number):void {
+      const currentElementIndex = `menuItem${index}`;
+      const currentElement = (this.$refs[currentElementIndex] as HTMLFormElement).$el;
+      if (index === 99) {
+        // select Last Element
+      } else {
+        const nextElement = currentElement.parentElement.nextElementSibling.children[0];
+        nextElement.focus();
+      }
+    },
+    hasSubmenu(item) {
+      return item.subMenu && item.subMenu.length > 0;
+    },
+    focusOnChild(item, index) {
+      this.toggleMenu(index);
+      // const firstClickableChildElement = (this.$refs[`subitem${1}`] as HTMLFormElement).$el;
+      // console.log(firstClickableChildElement);
+      // firstClickableChildElement.focus();
+    },
   },
 });
 </script>
@@ -209,9 +243,13 @@ export default defineComponent({
     color: var(--font-color-contrast-high)
     font-weight: 600
     text-transform: uppercase
+    background-color: rgba(0,0,0,0)
+    border: 0.2rem solid rgba(0,0,0,0)
     &:hover
       background-color: #272726
-
+    &:focus
+      border: 0.2rem solid var(--color-primary);
+      outline: 0
   &__user-row
     display: flex
 
@@ -226,8 +264,16 @@ export default defineComponent({
   &__logout-link
     text-decoration: underline
     cursor: pointer
+    background-color: rgba(0,0,0,0)
+    color: var(--font-color-contrast-high)
+    font-size: var(--font-size-normal)
+    border: 0.2rem solid rgba(0,0,0,0);
+
     &:hover
       background-color: #272726
+    &:focus
+      border: 0.2rem solid var(--color-primary);
+      outline: 0
 
   &__login-header
     border-bottom: 4px solid var(--color-grey8)
@@ -239,12 +285,6 @@ export default defineComponent({
 
   &__menu-item
     margin-left: 0
-
-    &--locale
-      padding: 2rem 0 2rem 2rem;
-      &:hover
-        background-color: #272726
-        cursor: pointer
 
     &--show
       display: block

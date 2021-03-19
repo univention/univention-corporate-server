@@ -1,0 +1,97 @@
+{
+  "user_links": [],
+  "menu_links": [],
+  "entries": [
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung der UCS-Dom\u00e4ne und des lokalen Systems",
+        "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the UCS domain and the local system",
+        "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
+      },
+      "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org",
+      "linkTarget": "newwindow",
+      "links": [
+        "/univention/management/"
+      ],
+      "logo_name": "./icons/entries/umc-domain.svg",
+      "name": {
+        "de_DE": "System- und Dom\u00e4neneinstellungen",
+        "en_US": "System and domain settings",
+        "fr_FR": "R\u00e9glages du syst\u00e8me et du domaine"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "News, Tipps und Best Practices",
+        "en_US": "News, tips and best practices",
+        "fr_FR": "Nouvelles, conseils et bonne pratique"
+      },
+      "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org",
+      "linkTarget": "newwindow",
+      "links": [
+        "https://www.univention.com/news/blog-en/"
+      ],
+      "logo_name": "./icons/entries/univentionblog.png",
+      "name": {
+        "de_DE": "Univention Blog",
+        "en_US": "Univention Blog",
+        "fr_FR": "Univention Blog"
+      }
+    }
+  ],
+  "folders": [],
+  "categories": [
+    {
+      "display_name": {
+        "de_DE": "Verwaltung",
+        "en_US": "Administration"
+      },
+      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=duckdns,dc=org",
+      "entries": [
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org"
+      ]
+    }
+  ],
+  "portal": {
+    "anonymousEmpty": [],
+    "autoLayoutCategories": false,
+    "background": null,
+    "categories": [
+      "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=duckdns,dc=org"
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=duckdns,dc=org",
+    "ensureLogin": false,
+    "fontColor": "black",
+    "logo": null,
+    "name": {
+      "de_DE": "Univention Portal",
+      "en_US": "Univention Portal",
+      "fr_FR": "Portail Univention"
+    },
+    "showApps": false,
+    "content": [
+      [
+        "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=duckdns,dc=org",
+        [
+          "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org",
+          "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=duckdns,dc=org"
+        ]
+      ]
+    ]
+  },
+  "filtered": true,
+  "username": null,
+  "user_displayname": null,
+  "may_login_via_saml": true,
+  "may_edit_portal": false
+}
