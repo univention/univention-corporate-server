@@ -28,7 +28,7 @@ Architecture: any
 Depends:
  python-univention-lib (>= 1.0.25-1),
  python-univention-namespace,
- python-univention,
+ python-univention (>= 13),
  python-univention-debug,
  shell-univention-lib (>= 1.0.6),
  univention-base-files,

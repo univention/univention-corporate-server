@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.5-2) unstable; urgency=medium
+
+  * Bug #52956: fix dependency on python-univention
+
+ -- Florian Best <best@univention.de>  Fri, 19 Mar 2021 11:53:19 +0100
+
 univention-directory-listener (14.0.5-1) unstable; urgency=low
 
   * Bug #43686: Convert UDL from runit to systemd
