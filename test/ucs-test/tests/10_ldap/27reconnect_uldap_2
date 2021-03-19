@@ -17,11 +17,7 @@ import univention.testing.strings as uts
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.uexceptions
-import sys
-if sys.version[0] == '2':
-	from thread import start_new_thread
-else:
-	from _thread import start_new_thread
+from six.moves._thread import start_new_thread
 import traceback
 import time
 import subprocess
