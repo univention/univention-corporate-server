@@ -261,7 +261,9 @@ define([
 				widget.region = 'footer';
 			}
 
-			if (widget.region == 'nav') {
+			if (widget.region === 'out') {
+				this.inherited(arguments);
+			} else if (widget.region == 'nav') {
 				this._navContent.addChild.apply(this._navContent, arguments);
 			} else if (widget.region == 'footer') {
 				this._footer.addChild.apply(this._footer, arguments);

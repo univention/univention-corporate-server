@@ -65,7 +65,18 @@ define([
 		},
 
 		standby: function(standby) {
-			domClass.toggle(document.body, 'standby', standby);
+			var standbyNode = dom.byId('standby');
+			if (standby) {
+				tools.toggleVisibility(standbyNode, true);
+				setTimeout(function() {
+					domClass.add(standbyNode, 'standbyShown');
+				}, 0);
+			} else {
+				domClass.remove(standbyNode, 'standbyShown');
+				setTimeout(function() {
+					tools.toggleVisibility(standbyNode, false);
+				}, 300); // FIXME hardcoded value for transition duration in css
+			}
 		},
 
 		umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
@@ -79,8 +90,8 @@ define([
 		_initWizard: function() {
 			this.local_mode = tools.status('username') === '__systemsetup__';
 			var _Container = declare([ContainerWidget, Standby]);
-			this._container = new _Container({
-			}, 'content');
+			this._container = new _Container({}, 'content');
+			domClass.toggle(this._container.domNode, 'setupLocalMode', this.local_mode);
 
 			// load some ucr variables
 			var deferred_ucr = tools.ucr([

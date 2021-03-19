@@ -8,10 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="129.7798"
    height="129.55901"
-   id="svg3724">
+   id="svg3724"
+   sodipodi:docname="account.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview46"
+     showgrid="false"
+     inkscape:zoom="1.8215638"
+     inkscape:cx="-74.276235"
+     inkscape:cy="64.779503"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g606" />
   <defs
      id="defs3726">
     <linearGradient
@@ -167,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -181,13 +205,10 @@
          clip-path="url(#clipPath608)"
          id="g606">
         <path
-           d="m 524.21,688.334 -25.2,0 0,7.245 25.2,0 0,-7.245 z"
-           id="path650"
-           style="fill:url(#linearGradient3835);fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        <path
-           d="m 529.7062,710.0856 c -18.596,4.289 -35.907,8.045 -27.523,23.851 25.518,48.11 6.764,73.838 -20.183,73.838 -27.478,0 -45.77,-26.716 -20.182,-73.838 8.634,-15.902 -9.327,-19.654 -27.524,-23.851 -18.588,-4.287 -17.159,-14.088 -17.159,-31.87 l 129.729,0 c 0,17.783 1.43,27.583 -17.158,31.87 m -5.496,-21.752 -25.2,0 0,7.245 25.2,0 0,-7.245 z"
+           d="m 529.7062,710.08559 c -18.596,4.289 -35.907,8.045 -27.523,23.851 25.518,48.11 6.764,73.838 -20.183,73.838 -27.478,0 -45.77,-26.716 -20.182,-73.838 8.634,-15.902 -9.327,-19.654 -27.524,-23.851 -18.588,-4.287 -17.159,-14.088 -17.159,-31.87 h 129.729 c 0,17.783 1.43,27.583 -17.158,31.87 m -5.496,-21.752 h -25.2 v 7.245 h 25.2 z"
            id="path692"
-           style="fill:url(#linearGradient3827);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+           style="fill:#5f5f5c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           inkscape:connector-curvature="0" />
       </g>
     </g>
   </g>

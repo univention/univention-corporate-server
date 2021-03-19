@@ -29,13 +29,22 @@
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc standby">
+	<body class="umc">
 		<div class="umcHeader">
-			<div class="umcHeaderRight">
-				<div class="univentionLogo"></div>
+			<div class="umcHeaderLeft">
+				<img src="/univention/js/dijit/themes/umc/images/univention-white.svg" />
 			</div>
 		</div>
-		<div id="content" class="tab-content container"></div>
+		<div id="content" class="container"></div>
+		<div id="standby" class="standbyShown">
+			<div id="standbyBackground"></div>
+			<!-- copy pasted from umc/widgets/StandbyCircle.js -->
+			<div class="umcStandbySvgWrapper">
+				<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+					<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>
+				</svg>
+			</div>
+		</div>
 		<noscript>
 			<div>
 				<h1 class="no-js">Welcome to Univention Corporate Server</h1>

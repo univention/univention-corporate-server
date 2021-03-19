@@ -40,31 +40,35 @@ define([
 	"dojox/html/styles",
 	"dijit/form/ComboBox",
 	"umc/widgets/TextBox",
+	"umc/widgets/Button",
+	"umc/widgets/StandbyCircle",
 	"umc/i18n!setup"
-], function(declare, lang, dojoEvent, domConstruct, domClass, on, keys, topic, styles, DijitComboBox, TextBox, _) {
+], function(declare, lang, dojoEvent, domConstruct, domClass, on, keys, topic, styles, DijitComboBox, TextBox, Button, StandbyCircle, _) {
 	return declare('umc.modules.setup.LiveSearch', [DijitComboBox, TextBox], {
 		searchAttr: 'label',
 		hasDownArrow: false,
 		autoComplete: false,
 		highlightMatch: 'none',
-		'class': 'umcLiveSearch',
 		store: null,
+		_currentNode: null,
 		_searchNode: null,
 		_searchingNode: null,
-		_currentNode: null,
 		inlineLabel: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'setupCitySearch');
 
 			this._currentNode = this._buttonNode;
 
-			this._searchNode = lang.clone(this._buttonNode);
-			this._searchNode.style.display = '';
+			this._searchNode = Button.simpleIconButtonNode('search', 'setupCitySearch__searchIcon');
 			this.own(on(this._searchNode, 'click', lang.hitch(this, 'loadDropDown')));
 
-			this._searchingNode = lang.clone(this._searchNode);
-			domClass.add(this._searchingNode, 'umcLiveSearching');
+			var standbyCircle = new StandbyCircle({
+				'class': 'setupCitySearch__standbyCircle'
+			});
+			this.own(standbyCircle);
+			this._searchingNode = standbyCircle.domNode;
 
 			this._setState('search');
 		},
@@ -78,10 +82,9 @@ define([
 
 		_setState: function(state) {
 			var newNode = this._currentNode;
-			if (state == 'searching') {
+			if (state === 'searching') {
 				newNode = this._searchingNode;
-			}
-			else {
+			} else {
 				newNode = this._searchNode;
 			}
 			domConstruct.place(newNode, this._currentNode, 'replace');

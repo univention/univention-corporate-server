@@ -8,10 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="86.943939"
-   height="86.943939"
-   id="svg4090">
+   width="80"
+   height="80"
+   id="svg4090"
+   sodipodi:docname="error.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview93"
+     showgrid="false"
+     inkscape:zoom="2.7143928"
+     inkscape:cx="-30.761945"
+     inkscape:cy="52.682133"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4090" />
   <defs
      id="defs4092">
     <linearGradient
@@ -28,8 +52,9 @@
     <clipPath
        id="clipPath710">
       <path
-         d="m 0,0 1600,0 0,1200 L 0,1200 0,0 z"
-         id="path712" />
+         d="M 0,0 H 1600 V 1200 H 0 Z"
+         id="path712"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask728">
@@ -43,9 +68,10 @@
             <g
                id="g736">
               <path
-                 d="m -32734.7,32767 65501.7,0 0,-65275.5 -65501.7,0 0,65275.5 z"
+                 d="M -32734.7,32767 H 32767 v -65275.5 h -65501.7 z"
                  id="path738"
-                 style="fill:url(#linearGradient722);stroke:none" />
+                 style="fill:url(#linearGradient722);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -54,8 +80,9 @@
     <clipPath
        id="clipPath718">
       <path
-         d="m -32734.7,32767 65501.7,0 0,-65275.5 -65501.7,0 0,65275.5 z"
-         id="path720" />
+         d="M -32734.7,32767 H 32767 v -65275.5 h -65501.7 z"
+         id="path720"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -78,8 +105,9 @@
     <clipPath
        id="clipPath744">
       <path
-         d="m 450.424,694.206 86.831,0 0,-107.774 -86.831,0 0,107.774 z"
-         id="path746" />
+         d="m 450.424,694.206 h 86.831 V 586.432 h -86.831 z"
+         id="path746"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask770">
@@ -93,9 +121,10 @@
             <g
                id="g778">
               <path
-                 d="m -32649.8,32767 65416.8,0 0,-65186.3 -65416.8,0 0,65186.3 z"
+                 d="M -32649.8,32767 H 32767 v -65186.3 h -65416.8 z"
                  id="path780"
-                 style="fill:url(#linearGradient764);stroke:none" />
+                 style="fill:url(#linearGradient764);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -104,8 +133,9 @@
     <clipPath
        id="clipPath760">
       <path
-         d="m -32649.8,32767 65416.8,0 0,-65186.3 -65416.8,0 0,65186.3 z"
-         id="path762" />
+         d="M -32649.8,32767 H 32767 v -65186.3 h -65416.8 z"
+         id="path762"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -128,8 +158,9 @@
     <clipPath
        id="clipPath786">
       <path
-         d="m 473.446,803.414 44.105,0 0,-37.509 -44.105,0 0,37.509 z"
-         id="path788" />
+         d="m 473.446,803.414 h 44.105 v -37.509 h -44.105 z"
+         id="path788"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask812">
@@ -143,9 +174,10 @@
             <g
                id="g820">
               <path
-                 d="m -32653.8,32767 65420.8,0 0,-65186.3 -65420.8,0 0,65186.3 z"
+                 d="M -32653.8,32767 H 32767 v -65186.3 h -65420.8 z"
                  id="path822"
-                 style="fill:url(#linearGradient806);stroke:none" />
+                 style="fill:url(#linearGradient806);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -154,8 +186,9 @@
     <clipPath
        id="clipPath802">
       <path
-         d="m -32653.8,32767 65420.8,0 0,-65186.3 -65420.8,0 0,65186.3 z"
-         id="path804" />
+         d="M -32653.8,32767 H 32767 v -65186.3 h -65420.8 z"
+         id="path804"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -178,8 +211,9 @@
     <clipPath
        id="clipPath828">
       <path
-         d="m 438.551,779.299 41.862,0 0,-41.45 -41.862,0 0,41.45 z"
-         id="path830" />
+         d="m 438.551,779.299 h 41.862 v -41.45 h -41.862 z"
+         id="path830"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask854">
@@ -193,9 +227,10 @@
             <g
                id="g862">
               <path
-                 d="m -32734.7,32767 65501.7,0 0,-65275.5 -65501.7,0 0,65275.5 z"
+                 d="M -32734.7,32767 H 32767 v -65275.5 h -65501.7 z"
                  id="path864"
-                 style="fill:url(#linearGradient848);stroke:none" />
+                 style="fill:url(#linearGradient848);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -204,8 +239,9 @@
     <clipPath
        id="clipPath844">
       <path
-         d="m -32734.7,32767 65501.7,0 0,-65275.5 -65501.7,0 0,65275.5 z"
-         id="path846" />
+         d="M -32734.7,32767 H 32767 v -65275.5 h -65501.7 z"
+         id="path846"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -228,8 +264,9 @@
     <clipPath
        id="clipPath870">
       <path
-         d="m 426.745,690.314 21.596,0 0,-102.549 -21.596,0 0,102.549 z"
-         id="path872" />
+         d="m 426.745,690.314 h 21.596 V 587.765 h -21.596 z"
+         id="path872"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask896">
@@ -243,9 +280,10 @@
             <g
                id="g904">
               <path
-                 d="m -32736.1,32767 65503.1,0 0,-65281.6 -65503.1,0 0,65281.6 z"
+                 d="M -32736.1,32767 H 32767 v -65281.6 h -65503.1 z"
                  id="path906"
-                 style="fill:url(#linearGradient890);stroke:none" />
+                 style="fill:url(#linearGradient890);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -254,8 +292,9 @@
     <clipPath
        id="clipPath886">
       <path
-         d="m -32736.1,32767 65503.1,0 0,-65281.6 -65503.1,0 0,65281.6 z"
-         id="path888" />
+         d="M -32736.1,32767 H 32767 v -65281.6 h -65503.1 z"
+         id="path888"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -278,8 +317,9 @@
     <clipPath
        id="clipPath912">
       <path
-         d="m 463.745,730.432 55.772,0 0,-44.328 -55.772,0 0,44.328 z"
-         id="path914" />
+         d="m 463.745,730.432 h 55.772 v -44.328 h -55.772 z"
+         id="path914"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask938">
@@ -293,9 +333,10 @@
             <g
                id="g946">
               <path
-                 d="m -32760.8,32767 65527.8,0 0,-65276.5 -65527.8,0 0,65276.5 z"
+                 d="M -32760.8,32767 H 32767 v -65276.5 h -65527.8 z"
                  id="path948"
-                 style="fill:url(#linearGradient932);stroke:none" />
+                 style="fill:url(#linearGradient932);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -304,8 +345,9 @@
     <clipPath
        id="clipPath928">
       <path
-         d="m -32760.8,32767 65527.8,0 0,-65276.5 -65527.8,0 0,65276.5 z"
-         id="path930" />
+         d="M -32760.8,32767 H 32767 v -65276.5 h -65527.8 z"
+         id="path930"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -328,14 +370,16 @@
     <clipPath
        id="clipPath954">
       <path
-         d="m 439.024,735.598 55.772,0 0,-44.326 -55.772,0 0,44.326 z"
-         id="path956" />
+         d="m 439.024,735.598 h 55.772 v -44.326 h -55.772 z"
+         id="path956"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <clipPath
        id="clipPath726">
       <path
-         d="m 0,0 1600,0 0,1200 L 0,1200 0,0 z"
-         id="path728" />
+         d="M 0,0 H 1600 V 1200 H 0 Z"
+         id="path728"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="43.803555"
@@ -354,16 +398,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <path
-     d="m 2.1736173,43.47199 c 0,-22.809742 18.4886287,-41.2983706 41.2983707,-41.2983706 22.809742,0 41.29837,18.4886286 41.29837,41.2983706 0,22.809742 -18.488628,41.298371 -41.29837,41.298371 -22.809742,0 -41.2983707,-18.488629 -41.2983707,-41.298371"
-     id="path732"
-     style="fill:url(#linearGradient3869);fill-opacity:1;fill-rule:nonzero;stroke:none" />
-  <path
-     d="m 47.032342,18.462132 -7.120709,0 1.038981,35.242725 5.186205,0 0.895523,-35.242725 z M 46.836718,61.37766 c -0.656427,-0.630344 -1.795392,-0.947689 -3.416897,-0.947689 -1.551949,0 -2.656137,0.317345 -3.312564,0.947689 -0.656426,0.634691 -0.982466,1.664976 -0.982466,3.095204 0,1.265034 0.291262,2.251848 0.878134,2.951747 0.582524,0.704246 1.72149,1.056369 3.416896,1.056369 1.525866,0 2.638749,-0.291263 3.342995,-0.873787 0.704246,-0.586872 1.056369,-1.630199 1.056369,-3.134329 0,-1.430228 -0.32604,-2.460513 -0.982467,-3.095204"
-     id="path744-9"
-     style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#dd042d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.96856123"
+     d="M 40 0 C 17.907368 -4.7369516e-15 0 17.907369 0 40 C 4.7369516e-15 62.092632 17.907368 80 40 80 C 62.092631 80 80 62.092632 80 40 C 80 17.907369 62.092631 0 40 0 z M 36.439453 14.990234 L 43.560547 14.990234 L 42.664062 50.232422 L 37.478516 50.232422 L 36.439453 14.990234 z M 39.947266 56.958984 C 41.568771 56.958984 42.708807 57.275906 43.365234 57.90625 C 44.021661 58.540941 44.347656 59.571725 44.347656 61.001953 C 44.347656 62.506083 43.995262 63.547894 43.291016 64.134766 C 42.58677 64.71729 41.473132 65.009766 39.947266 65.009766 C 38.25186 65.009766 37.113774 64.657371 36.53125 63.953125 C 35.944378 63.253226 35.652344 62.266987 35.652344 61.001953 C 35.652344 59.571725 35.97834 58.540941 36.634766 57.90625 C 37.291193 57.275906 38.395317 56.958984 39.947266 56.958984 z "
+     id="path732" />
 </svg>

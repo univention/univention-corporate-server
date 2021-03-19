@@ -27,151 +27,129 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-$ucs-green ?= #7ab51d
-$text-color ?= #282828
-$header-color ?= #787878
-$header-height = 48px
-
 .umc
-	.umcHeader
-		background-color: var(--color-grey0)
-	.umcWizard.umcInlineDialog
-		background-color: var(--color-grey8)
+	#setupApplianceWizard
+		margin-top: calc(6 * var(--layout-spacing-unit))
 
-	#setup_ApplianceWizard_0
-		padding: 0px 24px 19px 24px
-
-		.umcPageHeader
-			font-size: 20px
-			font-weight: 600
-			line-height: 28px
-			color: var(--font-color-contrast-high)
-			position: unset
-			hyphens: auto
 		.umcPageHelpText
 			color: var(--font-color-contrast-middle)
-			margin-top: 24px
-		.umcPageMain
-			padding: 24px 24px 19px 24px
-			background-color: var(--color-grey0)
+
+		.umcChooseRoleBox
+			cursor: pointer
+			background-color: var(--bgc-content-body)
+			border: medium solid @background-color
 			border-radius: var(--border-radius-container)
-			min-height: 388px
-		.umcPageFooter
-			min-height: 40px
-
-			.dijitButton
-				margin-left: 25px
-
-		.umc-setup-page-role, .umc-setup-page-role-nonmaster-ad
-			.umcPageMain
-				background-color: var(--color-grey8)
-
-				.umcChooseRoleBox
-					&.selected
-						border-color: var(--color-primary)
-					cursor: pointer
-					background-color: var(--color-grey0)
-					border-radius: var(--border-radius-container)
-					border: medium solid var(--color-grey0)
-					padding: 24px
-					.title
-						line-height: var(--font-lineheight-normal);
-						font-weight: 600;
-						.tag
-							float: right
-					.content
-						padding-top: 12px
-						color: var(--color-grey62)
-
-	min-height: 100%
-
-	@media (min-width: 768px)
-		.container:not(.umcInlineDialog)
-			width: 100%;
-
-	/* standby animation */
-	#content
-		opacity: 1
-		transition: opacity 0.75s
-
-	&.standby
-		background: no-repeat center url('/univention/js/dijit/themes/umc/images/standbyAnimation.svg')
-
-		#content
-			opacity: 0
-
-	.umcWizard
-		.umcPage
-			margin-top: 61px
-			^[-1].umcInlineDialog ^[-1..-1]
-				margin-top: 41px
-
-			.umcPageNav .umcPageHeader
-				position: absolute
-				top: -45px
-
-				h1
-					font-size: 24px
-					font-weight: normal
-					width: 600px
-
-	.umcInlineDialog
-		/* the content is displayed as a Google Material Card in an external browser */
-		max-width: 970px
-
-		.dijitDefaultButton .dijitButtonText
-			color: $ucs-green
-
-	/* stylings of live citz search */
-	.umc-ucssetup-wizard-livesearch
-		margin-top: 0.75em
-
-	.umc-ucssetup-wizard-city-details
-		min-width: 50%
-
-	.umc-ucssetup-wizard-change-locale-button
-		margin-top: 0.5rem
-
+			transition: border-color 100ms
+			padding: calc(2 * var(--layout-spacing-unit))
+			&:not(.umcChooseRoleBox--selected):hover
+				border-color: s('rgba(var(--color-primary-rgb), 0.5)')
+		.umcChooseRoleBox--selected
+			border-color: var(--color-primary)
+		.umcChooseRoleBox__headline
+			font-weight: var(--font-weight-bold)
+			font-size: var(--font-size-3)
+			display: flex
+			align-items: center
+		.umcChooseRoleBox__tag
+			margin-left: auto
+			font-size: var(--font-size-4)
+		.umcChooseRoleBox__content
+			padding-top: var(--layout-spacing-unit)
+			color: var(--font-color-contrast-middle)
 
 	/* generic stylings for all setup pages */
 	.umc-setup-page
-		.umcLiveSearch
-			.dijitArrowButtonInner
-				background-position: -260px -40px
+		position: relative
+		.umcPageIcon
+			position: absolute
+			bottom: 0
+			left: 15px // bootstrap padding
+			height: 100px
+			width: 100px
+			background-repeat: no-repeat
+			background-size: contain
+			background-position: left bottom
 
-			.umcLiveSearching .dijitArrowButtonInner
-				background-position: center
-				background-image: url('../../dijit/themes/umc/form/images/loading.gif')
+	#content.setupLocalMode
+		@media (min-width: 768px)
+			width: 100%
+	#content:not(.setupLocalMode)
+		@media (min-width: 1200px)
+			width: 970px
+	@media (max-width: 767px)
+		.umc-setup-page .umcPageIcon
+			height: 80px
+			width: 80px
+		#setupApplianceWizard .umcPageFooter
+			margin-top: 80px
+
+
+	/* specific stylings for various setup pages */
+	.umc-setup-page-welcome
+		.umcPageIcon
+			background-image: url(welcome.svg)
+
+		.setupCitySearch__searchIcon
+			--button-size: 1.5rem
+			margin-right: calc(2 * var(--layout-spacing-unit))
+		.setupCitySearch__standbyCircle
+			width: 1.5rem
+			height: @width
+			margin-right: calc(2 * var(--layout-spacing-unit))
 
 		.city-match td
 			padding-right: 0.5em
 			padding-bottom: 0.25em
 
+		.umc-ucssetup-wizard-change-locale-button
+			margin-top: var(--layout-spacing-unit)
+
+	.umc-setup-page-locale .umcPageIcon
+		background-image: url(locale.svg)
+
+	.umc-setup-page-required_ram .umcPageIcon
+		background-image: url(warning.svg)
+
+	.umc-setup-page-license .umcPageIcon
+		background-image: url(license.svg)
+
+	.umc-setup-page-network
 		.umcPageIcon
-			background-repeat: no-repeat
-			height: 120px
-			background-size: contain
-			background-position: center bottom
+			background-image: url(network.svg)
 
-		.umcPageHelpText
-			min-height: 50px
+		@media (min-width: 768px) and (max-width: 991px)
+			.umcSize-One
+				width: 50%
 
-		@media (max-width: 767px)
-			.umcPageIcon
-				height: 100px
+	.umc-setup-page-role,
+	.umc-setup-page-role-nonmaster-ad 
+		.umcPageIcon
+			background-image: url(domain.svg)
 
-			.umcPageHelpText
-				min-height: 1px
+	.umc-setup-page-credentials-master
+		.umcAccountInfoText
+			margin-top: calc(2 * var(--layout-spacing-unit))
 
-			.umcPageMain
-				/* overwrite autoHeight property for small devices */
-				min-height: 0px !important
+		.umcPageIcon
+			background-image: url(account.svg)
 
+	.umc-setup-page-credentials-ad,
+	.umc-setup-page-credentials-nonmaster
+		.umcPageIcon
+			background-image: url(credentials.svg)
 
-	/* specific stylings for various setup pages */
-	.umc-setup-page-validation li,
-	.umc-setup-page-error li
-		padding-bottom: 0.75em
+	.umc-setup-page-fqdn-master,
+	.umc-setup-page-fqdn-nonmaster-all
+		.umcPageIcon
+			background-image: url(fqdn.svg)
+
+	.umc-setup-page-validation,
+	.umc-setup-page-error
+		.umcPageIcon
+			background-image: url(error.svg)
+
+		li
+			padding-bottom: 0.75em
 
 	.umc-setup-page-summary
 		ul
@@ -182,128 +160,6 @@ $header-height = 48px
 
 		.umcPageIcon
 			background-image: url(summary.svg)
-
-	.umc-setup-page-software
-		th .dojoxGridRowSelector
-			display: none
-
-		.umcPageIcon
-			height: 180px
-			background-image: url(software.svg)
-			@media (max-height: 799px)
-				height: 120px
-
-		.umcGrid.umcUCSSetupSoftwareGrid
-			.dgrid
-				max-height: 35em
-			@media (max-height: 799px) and (min-width: 768px)
-				.dgrid
-					height: calc(100vh - 250px)
-					max-height: none
-
-			.umcGridHeader
-				display: flex !important
-
-			.umcGrid__toolbar,
-			.umcGrid__contextActionsToolbar
-				display: none !important
-
-			.dgrid
-				.dgrid-row
-					height: auto
-					line-height: 1.5em
-
-				.dgrid-cell
-					// make sure that lines can wrap inside the grid
-					white-space: normal
-
-					.umcAppEntry,
-					.umcAppName,
-					.umcAppDescription,
-					.umcInfoIcon
-						display: block
-
-				.umcAppEntry
-					position: relative
-					padding: 5px 0
-					padding: 5px 0
-
-				.umcAppDescription
-					color: #818181
-
-				.umcAppDescription,
-				.umcAppName
-					margin-right: 40px
-
-				.umcInfoIcon
-					background: url(info-icon.png) no-repeat center
-					width: 40px
-					height: 40px
-					position: absolute
-					right: 0
-					top: 50%
-					margin-top: -20px
-					cursor: pointer
-
-
-	.umc-setup-page-role,
-	.umc-setup-page-role-nonmaster-ad,
-	.umc-setup-page-schooldomain-slave
-		.umcLabelPane
-			padding-bottom: 0.75em
-
-			.umcLabelPaneLabelNode label
-				font-size: 14px
-				font-weight: 500
-				margin-bottom: 0.25em
-
-	//.umc-setup-page-role-nonmaster-ad .umcLabelPane,
-	//.umc-setup-page-summary .umcLabelPane
-	//	padding-bottom: 0
-
-	.umc-setup-page-welcome .umcPageIcon
-		background-image: url(welcome.svg)
-
-	.umc-setup-page-locale .umcPageIcon
-		background-image: url(locale.svg)
-
-	.umc-setup-page-required_ram .umcPageIcon
-		background-image: url(warning.svg)
-		background-size: 140px
-
-	.umc-setup-page-license .umcPageIcon
-		background-image: url(license.svg)
-
-	.umc-setup-page-role .umcPageIcon,
-	.umc-setup-page-role-nonmaster-ad .umcPageIcon
-		background-image: url(domain.svg)
-
-	.umc-setup-page-network
-		.umcPageIcon
-			background-image: url(network.svg)
-
-		@media (min-width: 768px) and (max-width: 991px)
-			.umcSize-One
-				width: 50%
-
-	.umc-setup-page-credentials-master
-		.umcAccountInfoText
-			margin-top: 1em
-
-		.umcPageIcon
-			background-image: url(account.svg)
-
-	.umc-setup-page-credentials-nonmaster .umcPageIcon,
-	.umc-setup-page-credentials-ad .umcPageIcon
-		background-image: url(credentials.svg)
-
-	.umc-setup-page-fqdn-master .umcPageIcon,
-	.umc-setup-page-fqdn-nonmaster-all .umcPageIcon
-		background-image: url(fqdn.svg)
-
-	.umc-setup-page-validation .umcPageIcon,
-	.umc-setup-page-error .umcPageIcon
-		background-image: url(error.svg)
 
 	.umc-setup-page-done .umcPageIcon
 		background-image: url(done.svg)
@@ -316,55 +172,19 @@ $header-height = 48px
 		background-size: contain
 		width: 24px
 		height: 24px
-		float: right
-		margin: 2px 5px
-
+		margin-right: var(--layout-spacing-unit)
+		cursor: pointer
 	.umcKeyContainer
-		text-align: center
+		display: flex
+		justify-content: center
+		grid-gap: var(--layout-spacing-unit)
+		margin-top: var(--layout-spacing-unit-small)
 
-	.umcKeyboardKey
-		margin: 5px
-		height: 40px
-		width: 40px
-
-		&.dijitButton .dijitButtonNode
-			-webkit-border-radius: 5px
-			-moz-border-radius: 5px
-			border-radius: 5px
-			height: 33px
-			width: 33px
-			max-width: 33px
-			max-height: 33px
-
-	.umcKeyboardRow .umcKeyboardKey .dijitReset.dijitInline.dijitButtonText
-		-webkit-user-select: none
-		-moz-user-select: none
-		-ms-user-select: none
-		user-select: none
-		text-decoration: none
-		padding: 0
-
-
-	/* other stylings */
-	.dijitTooltipContainer
-		width: 100%
-		max-width: 800px
-
-	.umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label
-		padding-bottom: 0
-		margin-bottom: 0
-
-	.umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label
-		margin-top: 0
-
-	
-
-	.umc-ucssetup-wizard-indent
-		margin-left: 16px
 
 	.umcUCSSetupLicenseAgreement
 		overflow: auto
 		height: 350px !important
+
 
 	.privacyStatementOverlay
 		position: absolute
@@ -372,7 +192,7 @@ $header-height = 48px
 		left: 0
 		height: 100%
 		width: 100%
-		background: white
+		background: var(--bgc-content-container)
 		z-index: 1
 		display: flex
 		flex-flow: column
@@ -386,18 +206,18 @@ $header-height = 48px
 			pointer-events: none
 
 		&.privacyStatementOverlayLocalMode
-			top: $header-height
-			height: "calc(100% - %s)" % @top
+			top: var(--layout-height-header)
+			height: s("calc(100% - var(--layout-height-header))")
 
 		.privacyStatementOverlayTitle
-			padding: 24px 24px 19px 24px
-			font-size: 20px
-			font-weight: 500
+			padding: calc(3 * var(--layout-spacing-unit))
+			font-size: var(--font-size-2)
+			font-weight: var(--font-weight-bold)
 
 		.privacyStatementOverlayContent
 			flex-grow: 1
 			overflow: auto
-			padding: 0 24px
+			padding: 0 calc(3 * var(--layout-spacing-unit))
 
 			.privacyStatementOverlayTextWrapper
 				column-width: 35em
@@ -406,7 +226,26 @@ $header-height = 48px
 			text-align: right
 
 			.privacyStatementOverlayFooterButton
-				margin: 24px 8px 8px 8px
+				margin: calc(3 * var(--layout-spacing-unit))
 
-				.dijitButtonText
-					color: $ucs-green
+#standby
+	position: fixed
+	top: var(--layout-height-header)
+	left: 0
+	right: 0
+	bottom: 0
+	display: flex
+	align-items: center
+	justify-content: center
+	opacity: 0
+	transition: opacity 250ms
+	&.standbyShown
+		opacity: 1
+#standbyBackground
+	position: absolute
+	top: 0
+	left: 0
+	right: 0
+	bottom: 0
+	background-color: var(--bgc-content-body)
+	opacity: 1

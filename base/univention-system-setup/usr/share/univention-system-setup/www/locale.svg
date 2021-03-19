@@ -8,10 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="153.94"
-   height="131.0744"
-   id="svg3734">
+   width="80"
+   height="80"
+   id="svg3734"
+   sodipodi:docname="locale.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview41"
+     showgrid="false"
+     inkscape:zoom="7.2020165"
+     inkscape:cx="56.511103"
+     inkscape:cy="29.497391"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3734" />
   <defs
      id="defs3736">
     <linearGradient
@@ -48,9 +72,10 @@
             <g
                id="g394">
               <path
-                 d="m -32596,32767 65363,0 0,-64314.8 -65363,0 0,64314.8 z"
+                 d="M -32596,32767 H 32767 V -31547.8 H -32596 Z"
                  id="path396"
-                 style="fill:url(#linearGradient380);stroke:none" />
+                 style="fill:url(#linearGradient380);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -59,8 +84,9 @@
     <clipPath
        id="clipPath376">
       <path
-         d="m -32596,32767 65363,0 0,-64314.8 -65363,0 0,64314.8 z"
-         id="path378" />
+         d="M -32596,32767 H 32767 V -31547.8 H -32596 Z"
+         id="path378"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -83,8 +109,9 @@
     <clipPath
        id="clipPath402">
       <path
-         d="m 404.03,814.978 155.94,0 0,-63.579 -155.94,0 0,63.579 z"
-         id="path404" />
+         d="M 404.03,814.978 H 559.97 V 751.399 H 404.03 Z"
+         id="path404"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <mask
        id="mask428">
@@ -98,9 +125,10 @@
             <g
                id="g436">
               <path
-                 d="m -32603.8,32767 65370.8,0 0,-64308 -65370.8,0 0,64308 z"
+                 d="M -32603.8,32767 H 32767 v -64308 h -65370.8 z"
                  id="path438"
-                 style="fill:url(#linearGradient422);stroke:none" />
+                 style="fill:url(#linearGradient422);stroke:none"
+                 inkscape:connector-curvature="0" />
             </g>
           </g>
         </g>
@@ -109,8 +137,9 @@
     <clipPath
        id="clipPath418">
       <path
-         d="m -32603.8,32767 65370.8,0 0,-64308 -65370.8,0 0,64308 z"
-         id="path420" />
+         d="M -32603.8,32767 H 32767 v -64308 h -65370.8 z"
+         id="path420"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="0"
@@ -133,8 +162,9 @@
     <clipPath
        id="clipPath444">
       <path
-         d="m 451.245,884.473 61.51,0 0,-95.94 -61.51,0 0,95.94 z"
-         id="path446" />
+         d="m 451.245,884.473 h 61.51 v -95.94 h -61.51 z"
+         id="path446"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
        x1="76.645203"
@@ -143,7 +173,8 @@
        y2="72.478851"
        id="linearGradient3869"
        xlink:href="#linearGradient3863"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.51968299,0,0,0.51968299,0,11.882862)" />
     <linearGradient
        x1="75.622795"
        y1="89.763092"
@@ -151,7 +182,8 @@
        y2="2.5097113"
        id="linearGradient3877"
        xlink:href="#linearGradient3871"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.51968299,0,0,0.51968299,0,11.882862)" />
   </defs>
   <metadata
      id="metadata3739">
@@ -166,11 +198,13 @@
     </rdf:RDF>
   </metadata>
   <path
-     d="m 153.94,131.0744 -43.021,-15.415 -34.997,15.415 -34.748,-15.415 -41.174,15.415 25.244,-49.74 27.368,-11.336 5.683,9.708 -24.864,10.214 -10.508,20.706 17.349,-6.496 10.086,-17.822 -4.078,19.362 26.653,11.839 2.989,-13.344 3.363,13.467 26.777,-11.962 -4.094,-19.917 10.165,18.538 19.151,6.862 -10.755,-21.193 -24.202,-11.366 5.557,-9.099 26.812,11.839 25.244,49.74 z"
+     d="M 80,79.999998 57.642718,71.989085 39.455372,79.999998 21.397428,71.989085 0,79.999998 13.118877,54.150966 l 14.222685,-5.891127 2.953358,5.045083 -12.921398,5.308042 -5.460829,10.760556 9.015981,-3.375861 5.241522,-9.26179 -2.119267,10.062102 13.851111,6.152527 1.553332,-6.93465 1.747694,6.998571 13.915552,-6.216448 -2.127583,-10.350526 5.282578,9.633883 9.952449,3.566065 -5.58919,-11.013642 -12.577368,-5.906716 2.887878,-4.728596 13.933741,6.152527 z"
      id="path412"
-     style="fill:url(#linearGradient3869);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#5f5f5c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.519683"
+     inkscape:connector-curvature="0" />
   <path
-     d="m 76.9702,0 c -16.433,0 -29.755,13.322 -29.755,29.755 0,16.434 13.022,35.532 29.755,64.185 16.733,-28.653 29.755,-47.751 29.755,-64.185 C 106.7252,13.322 93.4042,0 76.9702,0 m 0,39.704 c -5.894,0 -10.671,-4.777 -10.671,-10.671 0,-5.893 4.777,-10.671 10.671,-10.671 5.894,0 10.671,4.778 10.671,10.671 0,5.894 -4.777,10.671 -10.671,10.671"
+     d="m 40.000104,11.882861 c -8.539951,0 -15.463168,6.923217 -15.463168,15.463168 0,8.54047 6.767312,18.465376 15.463168,33.355853 8.695855,-14.890477 15.463167,-24.815383 15.463167,-33.355853 0,-8.539951 -6.922697,-15.463168 -15.463167,-15.463168 m 0,20.633494 c -3.063012,0 -5.545537,-2.482526 -5.545537,-5.545537 0,-3.062492 2.482525,-5.545537 5.545537,-5.545537 3.063011,0 5.545537,2.483045 5.545537,5.545537 0,3.063011 -2.482526,5.545537 -5.545537,5.545537"
      id="path454"
-     style="fill:url(#linearGradient3877);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#5f5f5c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.519683"
+     inkscape:connector-curvature="0" />
 </svg>

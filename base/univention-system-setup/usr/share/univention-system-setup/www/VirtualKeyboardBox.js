@@ -70,7 +70,6 @@ define([
 			array.forEach(this.chars, lang.hitch(this, function(ichar, idx) {
 				var key = new Button({
 					label: ichar,
-					'class' : 'umcKeyboardKey',
 					onClick: lang.hitch(this, function() {
 						var oldVal = this.get('value');
 						var newVal = oldVal + ichar;

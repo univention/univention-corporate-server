@@ -8,10 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="129.274"
    height="145.62"
-   id="svg3724">
+   id="svg3724"
+   sodipodi:docname="fqdn.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview56"
+     showgrid="false"
+     inkscape:zoom="1.6206566"
+     inkscape:cx="-91.781087"
+     inkscape:cy="72.809998"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3724" />
   <defs
      id="defs3726">
     <linearGradient
@@ -217,16 +241,16 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <path
      d="m 129.274,119.585 -129.274,0 0,26.035 129.274,0 0,-26.035 z m -61.569,13.018 c 0,1.695 -1.373,3.068 -3.068,3.068 -1.695,0 -3.069,-1.373 -3.069,-3.068 0,-1.695 1.374,-3.069 3.069,-3.069 1.695,0 3.068,1.374 3.068,3.069 m 50.633,2.789 -39.672,0 0,-5.579 39.672,0 0,5.579 z m -36.434,-35.697 -34.535,0 -12.452,12.452 59.44,0 L 81.904,99.695 z M 0,92.334 l 129.274,0 L 129.274,0 0,0 0,92.334 z m 12.452,-79.881 104.369,-10e-4 0,67.43 -104.368,0 -10e-4,-67.429 z"
      id="path590"
-     style="fill:url(#linearGradient3944);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#5f5f5c;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <path
      d="m 84.507,45.467 6.283,0 0,-28.225 -6.283,0 0,28.225 z m -22.933,-15.935 6.283,0 0,-12.291 -6.283,0 0,12.291 z m -23.09,15.935 6.283,0 0,-28.225 -6.283,0 0,28.225 z m 52.3065,15.5809 6.204,0 0,-10.838 -18.692,0 0,10.838 6.205,0 0,14.625 6.283,0 0,-14.625 z m -22.933,-15.965 6.204,0 0,-10.838 -18.692,0 0,10.838 6.205,0 0,30.59 6.283,0 0,-30.59 z m -23.09,15.934 6.204,0 0,-10.838 -18.692,0 0,10.838 6.205,0 0,14.656 6.283,0 0,-14.656 z"
      id="path672"
-     style="fill:url(#linearGradient3936);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#5f5f5c;fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>

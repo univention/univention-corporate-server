@@ -96,37 +96,6 @@
 
 
 /** inline dialogs **/
-/* inline wizards */
-.umc .umcModule .umcWizard
-	background-color: var(--bgc-content-container)
-	margin: 7px 15px
-	padding: 24px 9px 8px
-	overflow: visible
-	border-radius: var(--border-radius-container)
-	
-	.umcPage
-		&:after
-			content: ''
-			display: block
-			clear: both
-
-		.umcPageFooter
-			padding: 0
-			margin-top: 24px
-			width: calc(100% + 2px)
-			left: -1px
-
-			.dijitButton
-				material-flat-button()
-				margin: 0
-				&:not(:first-child)
-					margin-left: 8px
-
-			.dijitDefaultButton,
-			.dijitUploader
-				.dijitButtonText
-					color: $ucs-green
-
 /* App Center inline dialogs */
 .umc .umcAppCenterDialog
 	margin: 7px 15px

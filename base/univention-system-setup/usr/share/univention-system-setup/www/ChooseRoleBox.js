@@ -39,11 +39,11 @@ define([
 		// summary:
 		//		Simple widget that displays a link.
 
-		templateString: '<div><div class="title">${title}<div class="tag">${tag}</div></div><div class="content">${content}</div></div>',
+		templateString: '<div><div class="umcChooseRoleBox__headline">${headline}<div class="umcChooseRoleBox__tag">${tag}</div></div><div class="umcChooseRoleBox__content">${content}</div></div>',
 
-		// title: String
+		// headline: String
 		//		String which contains the role text.
-		title: '',
+		headline: '',
 
 		// tag: String
 		//		Small hints regarding this role.
@@ -68,7 +68,7 @@ define([
 			this.inherited(arguments);
 
 			this.on('click', lang.hitch(this, function() {
-				this.set("value", !this.get("value"));
+				this.set('value', !this.get('value'));
 				if (this.callback) {
 					this.callback(this.name);
 				};
@@ -76,8 +76,8 @@ define([
 		},
 
 		_setValueAttr: function(newVal) {
-			domClass.toggle(this.domNode, 'selected', newVal);
-			this._set("value", newVal);
+			domClass.toggle(this.domNode, 'umcChooseRoleBox--selected', newVal);
+			this._set('value', newVal);
 		}
 	});
 });

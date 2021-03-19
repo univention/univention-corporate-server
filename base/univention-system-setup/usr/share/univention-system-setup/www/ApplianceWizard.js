@@ -265,6 +265,8 @@ define([
 	};
 
 	return declare('setup.ApplianceWizard', Wizard, {
+		id: 'setupApplianceWizard',
+
 		// __systemsetup__ user is logged in at local firefox session
 		local_mode: false,
 
@@ -585,31 +587,35 @@ define([
 				helpText: _('Please select your domain settings.'),
 				widgets: [{
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: "_choose_role_demo",
 					callback: lang.hitch(this, chooseRoleCallback, "role"),
-					title: _('Fast demo configuration'),
+					headline: _('Fast demo configuration'),
 					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
 					visible: showPreconfiguredSetupOption,
 					disabled: !showPreconfiguredSetupOption
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: "_choose_role_primary",
 					callback: lang.hitch(this, chooseRoleCallback, "role"),
-					title: creatDomainLabel,
+					headline: creatDomainLabel,
 					value: true,
 					tag: _("Recommended"),
 					content: createDomainHelpTextContent
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: "_choose_role_join",
 					callback: lang.hitch(this, chooseRoleCallback, "role"),
-					title: _('Join into an existing UCS domain'),
+					headline: _('Join into an existing UCS domain'),
 					content: _('Use this option if you already have one or more UCS systems.'),
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: "_choose_role_admember",
 					callback: lang.hitch(this, chooseRoleCallback, "role"),
-					title: _('Join into an existing Microsoft Active Directory domain'),
+					headline: _('Join into an existing Microsoft Active Directory domain'),
 					content: _('This system will become part of an existing non-UCS Active Directory domain.'),
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -618,22 +624,25 @@ define([
 				helpText: _('Specify the type of this system.'),
 				widgets: [{
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: "_roleBackup",
 					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
-					title: _('Backup Directory Node'),
+					headline: _('Backup Directory Node'),
 					content: _('A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over the role of the Primary Directory Node permanently. It is recommended to use at least one Backup Directory Node in the domain.')
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: '_roleSlave',
 					value: true,
 					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
-					title: _('Replica Directory Node'),
+					headline: _('Replica Directory Node'),
 					content: _('Replica Directory Node systems are ideal for site servers, they provide authentication services for the domain. Local services running on a Replica Directory Node can access the local LDAP database.')
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: '_roleMember',
 					callback: lang.hitch(this, chooseRoleCallback, "role-nonmaster-ad"),
-					title: _('Managed Node'),
+					headline: _('Managed Node'),
 					content: _('Managed Nodes should be used for services which do not need a local authentication database, for example for file or print servers.')
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -812,22 +821,25 @@ define([
 				helpText: _('Choose which role this server is supposed to take in your UCS@school domain.'),
 				widgets: [{
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: '_schoolRoleEducational',
 					value: true,
 					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
-					title: _('School server of the educational network'),
+					headline: _('School server of the educational network'),
 					content: _('The server will provide educational UCS@school services for a school, e.g. exam mode.')
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: '_schoolRoleAdministrative',
 					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
-					title: _('School server of the administrative network'),
+					headline: _('School server of the administrative network'),
 					content: _('The server will only provide domain services to a school\'s administrative network, not educational UCS@school services.')
 				}, {
 					type: ChooseRoleBox,
+					size: 'Two',
 					name: '_schoolRoleCentral',
 					callback: lang.hitch(this, chooseRoleCallback, "schooldomain-slave"),
-					title: _('Central server'),
+					headline: _('Central server'),
 					content: _('The server will not be assigned to a specific school and will not provide UCS@school services.')
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -902,7 +914,7 @@ define([
 			tools.forIn(this._pages, function(name, page) {
 				page.addChild(new Text({
 					'class': 'umcPageIcon',
-					region: 'nav'
+					region: 'out'
 				}));
 			});
 			// DO NOT set the widgets in appliance mode
@@ -1474,7 +1486,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			domClass.toggle(this.domNode, 'umcInlineDialog', !this.local_mode);
+			domClass.add(this.domNode, 'umcWizardCard');
 
 			this._initStatusCheck();
 
