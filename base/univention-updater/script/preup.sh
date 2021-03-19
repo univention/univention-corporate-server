@@ -175,6 +175,16 @@ __PREF__
 [ -f /etc/apt/apt.conf.d/99ucs500 ] ||
 	echo 'APT::Get::Allow-Downgrades "true";' >/etc/apt/apt.conf.d/99ucs500
 
+deactivate_old_package_sources () {
+	# disable UCS 4 package sources to avoid mixing stretch and buster packages during the upgrade
+	local sources_lists
+	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
+	for sources_list in "${sources_lists[@]}"; do
+		mv "$sources_list" "${sources_list}.upgrade500-backup"
+	done
+}
+deactivate_old_package_sources
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3

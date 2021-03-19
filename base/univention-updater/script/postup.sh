@@ -161,6 +161,9 @@ sleep 30
 
 rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
 
+rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade500-backup
+rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade500-backup
+
 # Bug #47192: Remove deprecated errata components
 ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9]+-errata' |
   tee -a "$UPDATER_LOG" |
