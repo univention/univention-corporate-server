@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: test all univention.uldap methods
 ## bugs: [40041]
 ## versions:
@@ -34,9 +34,9 @@ class FakeUcr(object):
 
     def __enter__(self):
         self.tmp = NamedTemporaryFile()
-        self.tmp.write('# univention_ base.conf\n\n')
-        for key, value in self.values.iteritems():
-            self.tmp.write('\n%s: %s' % (key, value))
+        self.tmp.write(b'# univention_ base.conf\n\n')
+        for key, value in self.values.items():
+            self.tmp.write('\n{}: {}'.format(key, value).encode('UTF-8'))
         self.tmp.flush()
         environ['UNIVENTION_BASECONF'] = self.tmp.name
 
@@ -235,11 +235,11 @@ class TestAccessUsage(TestCase):
 
     def testGet(self):
         result = self.uut.get('cn=Subschema', ['entryDN'], required=True)
-        self.assertEqual(result, {'entryDN': ['cn=Subschema']})
+        self.assertEqual(result, {'entryDN': [b'cn=Subschema']})
 
     def testGetAttr(self):
         result = self.uut.getAttr('cn=Subschema', 'entryDN', required=True)
-        self.assertEqual(result, ['cn=Subschema'])
+        self.assertEqual(result, [b'cn=Subschema'])
 
     def testSearch(self):
         result = self.uut.search(
@@ -249,7 +249,7 @@ class TestAccessUsage(TestCase):
             unique=True,
             required=True,
         )
-        self.assertEqual(result, [('', {'subschemaSubentry': ['cn=Subschema']})])
+        self.assertEqual(result, [('', {'subschemaSubentry': [b'cn=Subschema']})])
 
     def testSearchDn(self):
         result = self.uut.searchDn(
