@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
-src: linux
-fix: 4.9.258-1
+src: univention-kernel-image
+fix: 12.0.0-7A~4.4.0.202103182228
 desc: |
  This update addresses the following issues:
  * use-after-free in rwsem_down_write_slowpath in kernel/locking/rwsem.c
@@ -81,7 +81,7 @@ desc: |
    handling of grant mapping errors). A host OS denial of service may occur
    during misbehavior of a networking frontend driver. NOTE: this issue exists
    because of an incomplete fix for CVE-2021-26931. (CVE-2021-28038)
-note: This is the 1st of three related updates.
+note: This is the 2nd of three related updates.
 bug: [52905]
 cve:
 - CVE-2019-19318
