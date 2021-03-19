@@ -239,7 +239,6 @@ update_check_old_packages () {
 		univention-management-console-module-uvmm
 		univention-virtual-machine-manager-node-common
 		univention-virtual-machine-manager-node-kvm
-		univention-virtual-machine-manager-schema'=See <https://help.univention.com/t/6443>'
 		univention-nagios-libvirtd
 		univention-nagios-libvirtd-xen
 		univention-nagios-uvmmd
