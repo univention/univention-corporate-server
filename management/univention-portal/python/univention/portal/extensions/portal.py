@@ -30,6 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import os.path
+
 import requests
 from six import with_metaclass
 
@@ -237,27 +239,17 @@ class UMCPortal(Portal):
 	def may_be_edited(self, user):
 		return False
 
-	def _request_umc_get(self, get_path, umc_session_id, umc_lang):
-		#uri = 'http://127.0.0.1/univention/get/{}'.format(get_path)
-		#body = {"options": {}}
-		#headers = {
-		#	'Cookie': 'UMCSessionId={}'.format(umc_session_id),
-		#	'X-CSRF-Protection': umc_session_id,
-		#	'X-Requested-With': 'XMLHttpRequest',
-		#	'Accept-Language': umc_lang,
-		#}
-		#response = requests.post(uri, json=body, headers=headers)
-		#return response.json()[get_path]
-		from univention.lib.umc import Client
-		client = Client(None, "Administrator", "univention")
-		return client.umc_get(get_path).data[get_path]
+	def _request_umc_get(self, get_path, headers):
+		uri = 'http://127.0.0.1/univention/get/{}'.format(get_path)
+		body = {"options": {}}
+		response = requests.post(uri, json=body, headers=headers)
+		return response.json()[get_path]
 
 
 	def get_visible_content(self, user, admin_mode):
-		umc_session_id = user.session_id
-		umc_lang = user.lang
-		categories = self._request_umc_get("categories", umc_session_id, umc_lang)
-		modules = self._request_umc_get("modules", umc_session_id, umc_lang)
+		headers = user.headers
+		categories = self._request_umc_get("categories", headers)
+		modules = self._request_umc_get("modules", headers)
 		return {
 			"categories": categories,
 			"modules": modules,
@@ -272,17 +264,19 @@ class UMCPortal(Portal):
 	def get_entries(self, content):
 		entries = {}
 		for module in content["modules"]:
+			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["id"])
+			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
+				logo_name = None
 			entries[self._entry_id(module)] = {
 				"dn": self._entry_id(module),
 				"name": {
 					"en_US": module["name"],
-					"de_DE": module["name"],
 				},
 				"description": {
 					"en_US": module["description"],
-					"de_DE": module["description"],
 				},
 				"linkTarget": "useportaldefault",
+                                "logo_name": logo_name,
 				"links": ["/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))],
 			}
 		return entries
@@ -308,32 +302,41 @@ class UMCPortal(Portal):
 		return folders
 
 	def get_categories(self, content):
+		ret = {}
+		categories = content["categories"]
+		categories = sorted(categories, key=lambda entry: entry["priority"], reverse=True)
 		modules = content["modules"]
 		modules = sorted(modules, key=lambda entry: entry["priority"], reverse=True)
-		favorite_category = {
-			"display_name": {
-				"en_US": "Favorites",
-				"de_DE": "Favoriten",
-			},
-			"dn": "umc:category:favorites",
-			"entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])]
-		}
-		entries = content["categories"]
-		entries = sorted(entries, key=lambda entry: entry["priority"], reverse=True)
-		umc_category = {
+		fav_cat = [cat for cat in categories if cat["id"] == "_favorites_"]
+		if fav_cat:
+			fav_cat = fav_cat[0]
+			ret["favorites"] = {
+				"display_name": {
+					"en_US": fav_cat["name"],
+				},
+				"dn": "umc:category:favorites",
+				"entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])]
+			}
+		else:
+			ret["favorites"] = {
+				"display_name": {
+					"en_US": "Favorites",
+				},
+				"dn": "umc:category:favorites",
+				"entries": [],
+			}
+		ret["umc"] = {
 			"display_name": {
 				"en_US": "UMC",
-				"de_DE": "UMC",
 			},
 			"dn": "umc:category:umc",
-			"entries": [cat["id"] for cat in entries if cat["id"] != "_favorites_"]
+			"entries": [cat["id"] for cat in categories if cat["id"] != "_favorites_"]
 		}
-		return {"umc": umc_category, "favorites": favorite_category}
+		return ret
 
 	def get_meta(self, content, categories):
 		return {
 			"name": {
-				"de_DE": "Univention Management Console",
 				"en_US": "Univention Management Console",
 			},
 			"defaultLinkTarget": "embedded",

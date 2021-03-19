@@ -31,11 +31,10 @@ import univention.portal.config as config
 
 
 class User(object):
-	def __init__(self, username, groups, session_id, lang):
+	def __init__(self, username, groups, headers):
 		self.username = username
 		self.groups = groups
-		self.session_id = session_id
-		self.lang = lang
+		self.headers = headers
 
 	def is_admin(self):
 		if self.is_anonymous():
