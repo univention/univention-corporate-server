@@ -38,6 +38,8 @@ VERSION=1
 
 joinscript_init
 
+eval "$(univention-config-registry shell)"
+
 univention-directory-manager settings/extended_attribute remove "$@" --ignore_not_exists --dn "cn=samba4wins-netbiosName,cn=custom attributes,cn=univention,$ldap_base" || die
 univention-directory-manager settings/extended_attribute remove "$@" --ignore_not_exists --dn "cn=samba4wins-secondaryIp,cn=custom attributes,cn=univention,$ldap_base" || die
 
