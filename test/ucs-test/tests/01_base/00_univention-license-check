@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: univention-license-check
 ## roles: [domaincontroller_master]
 ## tags: [apptest]
@@ -15,7 +15,9 @@ import univention.testing.strings as uts
 
 
 def get_license_count(key):
-	for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].split('\n'):
+	for line in subprocess.Popen(
+			['univention-license-check'],
+			stdout=subprocess.PIPE).communicate()[0].decode().split('\n'):
 		if line.startswith('%s:' % key):
 			return int(line.split('of')[0].split()[-1])
 
@@ -63,7 +65,10 @@ if __name__ == '__main__':
 		}
 	}
 
-	license_version = utils.get_ldap_connection().search(base='cn=admin,cn=license,cn=univention,%s' % ucr['ldap/base'], attr=['univentionLicenseVersion'])[0][1].get('univentionLicenseVersion', ['1'])[0]
+	license_version = utils.get_ldap_connection().search(
+		base='cn=admin,cn=license,cn=univention,%s' % ucr['ldap/base'],
+		attr=['univentionLicenseVersion'])[0][1].get('univentionLicenseVersion',
+		['1'])[0].decode()
 	with udm_test.UCSTestUDM() as udm:
 		for asset, counting_object_types in license_mapping[license_version].items():
 			license_count = get_license_count(asset)
