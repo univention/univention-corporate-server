@@ -142,19 +142,34 @@ fi
 service univention-firewall restart >&3 2>&3
 
 # Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
-/usr/sbin/univention-directory-listener-ctrl resync udm_extension ldap_extension
+listener_modules="udm_extension"
+if [ "${server_role:-}" != "memberserver" ]; then
+	listener_modules="$listener_modules ldap_extension"
+fi
+# shellcheck disable=SC2086
+/usr/sbin/univention-directory-listener-ctrl resync $listener_modules
 # Wait for listener module resync to finish
 wait_period=0
 while [ "$wait_period" -lt "300" ]; do
-	if [ -f "/var/lib/univention-directory-listener/handlers/ldap_extension" ]; then
+	if [ -e "/var/lib/univention-directory-listener/handlers/ldap_extension" ]; then
 		ldap_ext_state=$(</var/lib/univention-directory-listener/handlers/ldap_extension)
+	elif [ "${server_role:-}" = "memberserver" ]; then
+		ldap_ext_state=3
+	else
+		ldap_ext_state=0
+	fi
+
+	if [ -e "/var/lib/univention-directory-listener/handlers/udm_extension" ]; then
 		udm_ext_state=$(</var/lib/univention-directory-listener/handlers/udm_extension)
-		if [ "$ldap_ext_state" == 3 -a "$udm_ext_state" == 3 ]; then
-			break
-		fi
+	else
+		udm_ext_state=0
+	fi
+
+	if [ "$ldap_ext_state" = "3" ] && [ "$udm_ext_state" = "3" ]; then
+		break
 	fi
 	sleep 1
-	wait_period=$(($wait_period+1))
+	wait_period=$((wait_period+1))
 done
 # Wait another 30 seconds for listener postrun, as ldap_extension restarts slapd
 sleep 30
