@@ -177,7 +177,7 @@ def main():
 		print('*******************************************')
 		print('    {}'.format(log_file))
 		print('----------')
-		print(log_text)
+		print(log_text.decode('UTF-8', 'replace'))
 		print('*******************************************')
 
 	lines = (l.strip() for l in log_text.split(b'\n') if l.strip())
