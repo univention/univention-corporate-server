@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-self-service
-fix: 
+fix: 4.0.3-50A~4.4.0.202103191337
 desc: |
  This update addresses the following issue(s):
  * Set ucsversionstart and ucsversionend on ldap ACL extension in preparation for UCS 5.
