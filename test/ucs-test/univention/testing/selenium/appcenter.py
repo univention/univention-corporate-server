@@ -63,7 +63,7 @@ class AppCenter(object):
 			self.selenium.wait_until_all_standby_animations_disappeared()
 
 		try:
-			self.selenium.wait_for_any_text_in_list([_('Accept license'), _('Next'), _('Continue anyway'), _('Install app'), _('Install anyway')], timeout=2)
+			self.selenium.wait_for_any_text_in_list([_('Accept license'), _('Next'), _('Continue anyway'), _('Install app'), _('Install anyway'), _('Start installation')], timeout=2)
 			install_clicked = False
 			x = 0
 			max_pages = 6
@@ -101,16 +101,23 @@ class AppCenter(object):
 					pass
 				else:
 					continue
+				try:
+					self.selenium.click_button(_('Start installation'), timeout=0)
+					install_clicked = True
+				except TimeoutException:
+					pass
+				else:
+					continue
 		except TimeoutException:
 			pass
 		finally:
 			# header of progress bar
 			self.selenium.wait_for_any_text_in_list([_('Installing'), 'Installiere'])
 
-		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations')], timeout=900)
+		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations'), _('Manage installations')], timeout=900)
 		# readme install
 		try:
-			self.selenium.click_button(_('Continue'), timeout=1)
+			self.selenium.click_button(_('Back to overview'), timeout=1)
 		except TimeoutException:
 			pass
 		self.selenium.wait_until_all_standby_animations_disappeared()
@@ -118,21 +125,15 @@ class AppCenter(object):
 	def uninstall_app(self, app_name):
 		self.open_app(app_name)
 
-		try:
-			self.selenium.driver.find_element_by_xpath('//*[text() = "Manage domain wide installations"]')
-		except NoSuchElementException:
-			pass
-		else:
-			self.selenium.click_text(_('(this computer)'))
-		self.selenium.click_button(_('Uninstall'))
-
-		self.selenium.wait_for_text(_('Please confirm to uninstall the application'))
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		sleep(2)  # there is still something in the way even with wait_until_all_standby_animations_disappeared
-		self.selenium.click_button(_('Uninstall'))
-
+		self.selenium.click_button(_('Manage installations'))
+		self.selenium.click_element("//*[contains(text(), 'this computer')]")
+		self.selenium.click_button(_('Actions'))
+		self.selenium.click_element('//td[contains(@class, "dijitMenuItemLabel")][text() = "Uninstall"]')
 		self.selenium.wait_for_text(_('Running tests'))
-		self.selenium.wait_until_element_visible('//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "Install"]', timeout=900)
+		self.selenium.wait_for_text(_('Start removal'))
+		self.selenium.click_button(_('Start removal'))
+
+		self.selenium.wait_for_text(_('Install'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def upgrade_app(self, app):

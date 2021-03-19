@@ -1,3 +1,9 @@
+ucs-test (10.0.4-36) unstable; urgency=medium
+
+  * Bug #52953: changed install and uninstall method of selenium to match the new format
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 19 Mar 2021 10:47:12 +0100
+
 ucs-test (10.0.4-35) unstable; urgency=medium
 
   * Bug #52043: Fix racy test 52_s4connector/175sync_create_dns_service_record
