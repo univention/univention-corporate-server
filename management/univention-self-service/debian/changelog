@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-50) unstable; urgency=medium
+
+  * Bug #52955: set ucsversionstart and ucsversionend for acl extension
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 19 Mar 2021 13:14:52 +0100
+
 univention-self-service (4.0.3-49) unstable; urgency=medium
 
   * Bug #52362: fix broken handling of unicode types
