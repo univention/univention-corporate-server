@@ -247,9 +247,6 @@ update_check_old_packages () {
 		univention-nagios-uvmmd
 		univention-pkgdb-lib
 		univention-bacula
-		univention-doc'=Now online at <https://docs.software-univention.de/ucs-python-api/>'
-		univention-mysql'=Switch to univention-mariadb'
-		univention-ftp
 		univention-management-console-module-mrtg
 		univention-kernel-image'=Use linux-image-amd64'
 		univention-kernel-headers'=Use linux-headers-amd64'
@@ -259,15 +256,8 @@ update_check_old_packages () {
 		univention-kdm
 		univention-mozilla-firefox
 		univention-x-core
-		univention-java'=Use default-jre or default-jdk'
-		univention-samba4wins
-		univention-debootstrap
 		univention-debootstrap-3
-		univention-check-printers
 		univention-samba-slave-pdc
-		univention-snmp
-		univention-snmpd
-		univention-remote-backup
 	)
 	for pkg in "${old[@]}"
 	do

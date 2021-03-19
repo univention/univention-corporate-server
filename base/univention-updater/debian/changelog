@@ -1,3 +1,10 @@
+univention-updater (15.0.3-30) unstable; urgency=medium
+
+  * Bug #52957: moved removed packages of ucs5 from the updater check to the
+    Breaks part in the univention-server control
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 19 Mar 2021 13:57:19 +0100
+
 univention-updater (15.0.3-29) unstable; urgency=medium
 
   * Bug #52790: Set postgresql11/autostart=no in preup.sh

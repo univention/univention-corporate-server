@@ -1,3 +1,10 @@
+univention-server (15.0.3-4) unstable; urgency=medium
+
+  * Bug #52957: moved removed packages of ucs5 from the check function of the
+    updater to the Breaks part of the univention-server control
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 19 Mar 2021 13:58:27 +0100
+
 univention-server (15.0.3-3) unstable; urgency=low
 
   * Bug #44462: Handle unjoined DCs in univention-fix-ucr-dns

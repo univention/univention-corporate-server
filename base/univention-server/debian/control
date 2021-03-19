@@ -214,6 +214,25 @@ Recommends:
  zip,
  memtest86+,
  lvm2,
+Breaks:
+ univention-mysql,
+ univention-java,
+ univention-passwd-store,
+ univention-passwd-cache,
+ univention-remote-backup,
+ univention-debootstrap,
+ univention-virtual-machine-manager-schema,
+ python-univention-directory-manager-uvmm,
+ univention-ftp,
+ univention-snmp,
+ univention-snmpd,
+ univention-check-printers,
+ univention-runit,
+ univention-printquota,
+ univention-doc,
+ univention-management-console-doc,
+ univention-samba4wins,
+ univention-dansguardian,
 Description: UCS system role common dependencies and files
  This package contains common files used by all system roles.
  .
