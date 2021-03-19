@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a user via udm cli and authenticate via ldap and samba
 ## roles:
 ##  - domaincontroller_master
@@ -39,7 +39,7 @@ class cmd(object):
 		cmd = subprocess.Popen(self.args, stdin=subprocess.PIPE)
 
 		if self.input:
-			cmd.communicate(self.input)
+			cmd.communicate(self.input.encode())
 		else:
 			cmd.wait()
 
@@ -69,9 +69,9 @@ def test_samba_connection(ucr, username, password):
 	if not kinit.check():
 		utils.fail("Failed to acquire kerberos ticket.")
 
-	s4_installed = utils.package_installed("univention-samba4")
-	if utils.package_installed("univention-samba") or s4_installed:
-		host = 'localhost' if s4_installed else ucr.get('ldap/master')
+	s4_or_pdc_installed = utils.package_installed("univention-samba4") or utils.package_installed("univention-samba-slave-pdc")
+	if utils.package_installed("univention-samba") or s4_or_pdc_installed:
+		host = 'localhost' if s4_or_pdc_installed else ucr.get('ldap/master')
 		print("Samba Logon with this new user against {}".format(host))
 
 		smbclient = cmd("smbclient", "-L", host, "-U", "{}%{}".format(username, password))
