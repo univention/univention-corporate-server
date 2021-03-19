@@ -45,7 +45,7 @@
       <header-button
         aria-label="Button for navigation"
         icon="menu"
-        @click="dismissBubble()"
+        @click="dismissBubble('menu')"
       />
     </div>
 
@@ -176,7 +176,11 @@ export default defineComponent({
     align-items: center;
     cursor: pointer;
     padding: 0px 10px
+    border: 0.2rem solid rgba(0,0,0,0)
 
+    &:focus
+      border: 0.2rem solid var(--color-primary)
+      outline: 0
     &-image
       display: none;
 

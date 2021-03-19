@@ -1,10 +1,10 @@
 import { PortalModule } from '../types';
 
-export interface ModuleState {
+export interface MetaDataState {
   meta: Record<string, unknown>;
 }
 
-const meta: PortalModule<ModuleState> = {
+const metaData: PortalModule<MetaDataState> = {
   namespaced: true,
   state: {
     meta: {
@@ -37,4 +37,4 @@ const meta: PortalModule<ModuleState> = {
   },
 };
 
-export default meta;
+export default metaData;

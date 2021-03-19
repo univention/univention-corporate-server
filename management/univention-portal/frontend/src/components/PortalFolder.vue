@@ -22,7 +22,7 @@
             :in-folder="!inModal"
             :has-focus="setFocus(index)"
             :last-element="isLastElement(index, tiles)"
-            :first-element="isFirstElement(index, tiles)"
+            :first-element="isFirstElement(index)"
             :no-edit="true"
             @keepFocusInFolderModal="keepFocusInFolderModal"
             @clickAction="closeFolder"

@@ -6,7 +6,7 @@ import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import categories from './modules/categories';
 import locale from './modules/locale';
 import menu from './modules/menu';
-import meta from './modules/meta';
+import metaData from './modules/metaData';
 import modal from './modules/modal';
 import navigation from './modules/navigation';
 import notificationBubble from './modules/notificationBubble';
@@ -18,8 +18,9 @@ import { RootState } from './types';
 
 // get env vars
 const portalUrl = process.env.VUE_APP_PORTAL_URL || '';
-const portalJson = process.env.VUE_APP_PORTAL_DATA || './portal.json';
-const portalMeta = process.env.VUE_APP_META_DATA || '/univention/meta.json';
+const languageJsonPath = process.env.VUE_APP_LANGUAGE_DATA || '/univention/languages.json';
+const portalJsonPath = process.env.VUE_APP_PORTAL_DATA || './portal.json';
+const portalMetaPath = process.env.VUE_APP_META_DATA || '/univention/meta.json';
 
 export const key: InjectionKey<Store<RootState>> = Symbol('');
 
@@ -27,15 +28,15 @@ export const store = createStore<RootState>({
   modules: {
     categories,
     locale,
+    menu,
+    metaData,
     modal,
     navigation,
     notificationBubble,
     portalData,
-    user,
-    menu,
-    tabs,
     search,
-    meta,
+    tabs,
+    user,
   },
   strict: process.env.NODE_ENV !== 'production',
   state: {
@@ -44,52 +45,34 @@ export const store = createStore<RootState>({
   },
   mutations: {},
   actions: {
-    loadPortal: () => {
-      store.dispatch('modal/setShowLoadingModal');
+    loadPortal: ({ dispatch }) => new Promise((resolve, reject) => {
+      console.log('Loading Portal...');
 
-      // display standalone notification bubbles
-      if (store.getters['notificationBubble/bubbleContent'].length > 0) {
-        store.dispatch('notificationBubble/setShowBubble');
-      }
+      const portalPromises = [
+        `${portalUrl}${portalMetaPath}`, // Get meta data
+        `${portalUrl}${portalJsonPath}`, // Get portal data
+        `${portalUrl}${languageJsonPath}`, // Get locale data
+      ].map((url) => axios.get(url));
 
-      return new Promise<unknown>((resolve) => {
-        // store portal data
-        console.log('Loading Portal');
-
-        // get meta data
-        axios.get(`${portalUrl}${portalMeta}`).then(
-          (response) => {
-            const metaData = response.data;
-            store.dispatch('meta/setMeta', metaData);
-          }, (error) => {
-            console.error(error);
+      axios.all(portalPromises).then(axios.spread((metaResponse, portalResponse, languageResponse) => {
+        const [meta, portal, availableLocales] = [metaResponse.data, portalResponse.data, languageResponse.data];
+        dispatch('metaData/setMeta', meta);
+        dispatch('menu/setMenu', { portal, availableLocales });
+        dispatch('portalData/setPortal', portal);
+        dispatch('categories/setOriginalArray', portal);
+        dispatch('user/setUser', {
+          user: {
+            username: portal.username,
+            displayName: portal.user_displayname,
+            mayEditPortal: portal.may_edit_portal,
+            mayLoginViaSAML: portal.may_login_via_saml,
           },
-        );
-
-        // get portal data
-        axios.get(`${portalUrl}${portalJson}`).then(
-          (response) => {
-            const PortalData = response.data;
-            store.dispatch('menu/setMenu', PortalData);
-            store.dispatch('portalData/setPortal', PortalData);
-            store.dispatch('categories/setOriginalArray', PortalData);
-            store.dispatch('user/setUser', {
-              user: {
-                username: PortalData.username,
-                displayName: PortalData.user_displayname,
-                mayEditPortal: PortalData.may_edit_portal,
-                mayLoginViaSAML: PortalData.may_login_via_saml,
-              },
-            });
-            store.dispatch('modal/setHideModal');
-            resolve(PortalData);
-          }, () => {
-            store.dispatch('modal/setHideModal');
-            resolve({});
-          },
-        );
+        });
+        resolve(portal);
+      }), (error) => {
+        reject(error);
       });
-    },
+    }),
   },
   getters: {},
 });

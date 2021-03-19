@@ -1,10 +1,10 @@
 <template>
   <div
-    :class="{'portal-category--empty': (!editMode && !hasTiles()) }"
+    :class="{'portal-category--empty': (!editMode && !hasTiles) }"
     class="portal-category"
   >
     <h2
-      v-if="editMode || hasTiles()"
+      v-if="editMode || hasTiles"
       class="portal-category__title"
       :class="!editMode || 'portal-category__title--edit'"
       @click.prevent="editMode ? editCategory() : ''"
@@ -144,6 +144,9 @@ export default defineComponent({
       editMode: 'portalData/editMode',
       searchQuery: 'search/searchQuery',
     }),
+    hasTiles(): boolean {
+      return this.tiles.some((tile) => this.tileMatchesQuery(tile));
+    },
   },
   watch: {
     vTiles(val) {
@@ -167,9 +170,6 @@ export default defineComponent({
       const titleMatch = this.titleMatchesQuery(tile.title);
       const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title));
       return titleMatch || folderMatch;
-    },
-    hasTiles(): boolean {
-      return this.tiles.some((tile) => this.tileMatchesQuery(tile));
     },
   },
 });
