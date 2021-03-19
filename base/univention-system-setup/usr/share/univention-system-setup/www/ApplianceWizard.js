@@ -2141,6 +2141,11 @@ define([
 		},
 
 		isPageVisible: function(pageName) {
+			// FIXME completely remove code for software page
+			if (pageName === 'software') {
+				return false;
+			}
+
 			if (!this._isPageForRole(pageName)) {
 				return false;
 			}
