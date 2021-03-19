@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if 'Administrator' is in the right Groups and respective SIDs
 ## roles-not: [basesystem]
 ## bugs: [37331]
@@ -39,7 +39,7 @@ def check_user_groups_sids():
                       "cn=" + test_groups[1]: "-513"}  # Domain Users
     # more on well-known-sids: http://support.microsoft.com/kb/243330/en-us
 
-    for key, sid_ending in sid_check_dict.iteritems():
+    for key, sid_ending in sid_check_dict.items():
         sid_in_ldap = get_sid_for_user_group(key)
         if not sid_in_ldap:
             utils.fail("The 'sambaSID' for '%s' is empty." % key)
@@ -126,7 +126,7 @@ def get_sid_for_user_group(name):
     if sed_stderr:
         print("\nThe following message occurred in stderr:", stderr)
 
-    return sed_stdout.strip('\n')
+    return sed_stdout.decode().strip('\n')
 
 
 def get_members_in_group(group_name):
@@ -140,7 +140,7 @@ def get_members_in_group(group_name):
         print("\nThe following message occurred in stderr while using 'getent':")
         print(stderr)
 
-    stdout = stdout.strip()
+    stdout = stdout.strip().decode()
     if not stdout:
         print("\nNo stdout from 'getent' for a '%s' group." % group_name)
         return list()
