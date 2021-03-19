@@ -231,7 +231,7 @@ update_check_old_packages () {
 	ignore_check "$var" && return 100
 	declare -a found=() old=(
 		univention-kvm-compat
-		univention-kvm-virtio
+		univention-kvm-virtio'=Mark libvirt as manually installed "apt-mark manual libvirt-daemon" to keep virtualisation capabilities'
 		univention-novnc
 		univention-virtual-machine-manager-daemon
 		python-univention-virtual-machine-manager
@@ -240,24 +240,18 @@ update_check_old_packages () {
 		univention-virtual-machine-manager-node-common
 		univention-virtual-machine-manager-node-kvm
 		univention-virtual-machine-manager-schema'=See <https://help.univention.com/t/6443>'
-		python-univention-directory-manager-uvmm
-		python3-univention-directory-manager-uvmm
 		univention-nagios-libvirtd
 		univention-nagios-libvirtd-xen
 		univention-nagios-uvmmd
-		univention-pkgdb-lib
 		univention-bacula
-		univention-management-console-module-mrtg
-		univention-kernel-image'=Use linux-image-amd64'
-		univention-kernel-headers'=Use linux-headers-amd64'
-		univention-kernel-source'=Use linux-source'
-		univention-kde
+		univention-kde'=Mark KDE as manually installed "apt-mark manual kde-standard" to keep KDE'
 		univention-kde-setdirs
 		univention-kdm
 		univention-mozilla-firefox
 		univention-x-core
-		univention-debootstrap-3
 		univention-samba-slave-pdc
+		univention-dansguardian
+		univention-printquota
 	)
 	for pkg in "${old[@]}"
 	do
@@ -272,6 +266,8 @@ update_check_old_packages () {
 	[ -n "$found" ] || return 0
 	echo "WARNING: The following packages from UCS-4 are still installed, which are no longer supported with UCS-5:"
 	echo "${found[*]}"
+	echo
+	echo "Use \"univention-remove --purge\" with the packages as following arguments to remove them"
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 	return 1

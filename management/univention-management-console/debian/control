@@ -36,6 +36,8 @@ Depends:
  ${misc:Depends},
 Recommends:
  univention-management-console-module-quota,
+Conflicts:
+ univention-management-console-module-mrtg,
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
