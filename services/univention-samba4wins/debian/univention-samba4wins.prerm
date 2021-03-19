@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Samba4WINS
-#  postinst file
+#  prerm file
 #
-# Copyright 2008-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,24 +32,8 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/10univention-samba4wins.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-# configure firewall
-ucr set security/packetfilter/package/univention-samba4wins/udp/137/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4wins/udp/137/all/en="netbios 137 (Samba)" \
-		security/packetfilter/package/univention-samba4wins/tcp/42/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4wins/tcp/42/all/en="wins replication (Samba)"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-call_joinscript 90univention-samba4wins.inst
-
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	/etc/init.d/univention-directory-listener restart
+if [ "$1" = "remove" ]; then
+	cp /usr/lib/univention-uninstall/10univention-samba4wins.uinst /usr/lib/univention-install/
 fi
 
 exit 0

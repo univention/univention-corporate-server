@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Samba4WINS
-#  postinst file
+#  unjoin script
 #
-# Copyright 2008-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,26 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+## joinscript api: bindpwdfile
 
-. /usr/share/univention-lib/all.sh
+VERSION=1
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/10univention-samba4wins.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
+. /usr/share/univention-join/joinscripthelper.lib
 
-# configure firewall
-ucr set security/packetfilter/package/univention-samba4wins/udp/137/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4wins/udp/137/all/en="netbios 137 (Samba)" \
-		security/packetfilter/package/univention-samba4wins/tcp/42/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4wins/tcp/42/all/en="wins replication (Samba)"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+joinscript_init
 
-call_joinscript 90univention-samba4wins.inst
+eval "$(univention-config-registry shell)"
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	/etc/init.d/univention-directory-listener restart
-fi
+univention-config-registry unset security/packetfilter/package/univention-samba4wins/udp/137/all \
+	security/packetfilter/package/univention-samba4wins/udp/137/all/en \
+	security/packetfilter/package/univention-samba4wins/tcp/42/all \
+	security/packetfilter/package/univention-samba4wins/tcp/42/all/en \
+	samba4wins/interface || die
+# add 'samba/interfaces' ?
+
+joinscript_remove_script_from_status_file univention-samba4wins
 
 exit 0

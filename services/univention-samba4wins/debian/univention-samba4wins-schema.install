@@ -1,2 +1,3 @@
 schema/univention-samba4wins.schema usr/share/univention-ldap/schema/
 89univention-samba4wins-schema.inst usr/lib/univention-install/
+11univention-samba4wins-schema.uinst usr/lib/univention-uninstall/

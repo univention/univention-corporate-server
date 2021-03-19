@@ -36,6 +36,11 @@
 
 . /usr/share/univention-lib/all.sh
 
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/11univention-samba4wins-schema.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
 call_joinscript 89univention-samba4wins-schema.inst
 
 test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
