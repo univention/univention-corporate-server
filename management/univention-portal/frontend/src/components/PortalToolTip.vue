@@ -36,7 +36,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     <div class="portal-tooltip__header">
       <div class="portal-tooltip__thumbnail">
         <img
-          :src="icon"
+          :src="icon || './questionMark.svg'"
           onerror="this.src='./questionMark.svg'"
           :alt="`${title} logo`"
           class="portal-tooltip__logo"

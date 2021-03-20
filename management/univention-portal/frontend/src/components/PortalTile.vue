@@ -51,7 +51,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         ]"
       >
         <img
-          :src="pathToLogo"
+          :src="pathToLogo || './questionMark.svg'"
           onerror="this.src='./questionMark.svg'"
           :alt="`Logo ${$localized(title)}`"
           class="portal-tile__img"
