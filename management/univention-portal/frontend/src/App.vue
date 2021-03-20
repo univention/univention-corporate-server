@@ -61,7 +61,7 @@ export default defineComponent({
 
     this.$store.dispatch('modal/setHideModal');
 
-    if (!portalData.user) {
+    if (!portalData.username) {
       // Display notification bubble with login reminder
       this.$store.dispatch('notificationBubble/addNotification', {
         bubbleTitle: catalog.LOGIN.translated.value,
