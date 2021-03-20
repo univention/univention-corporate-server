@@ -8,10 +8,12 @@ stages:
   stage: build
   image: $DOC
   script:
-    - make -C $base install DESTDIR=$CI_PROJECT_DIR/public
+    - make -C $base check install DESTDIR=$CI_PROJECT_DIR/public
   artifacts:
     paths:
       - public
+    reports:
+      codequality: $base/*.xml.codeclimate.json
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
