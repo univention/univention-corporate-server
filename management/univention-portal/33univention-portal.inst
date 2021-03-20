@@ -141,7 +141,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le domaine UCS et le système local\"" \
 		--append link='"en_US" "/univention/management/"' \
 		--set linkTarget=newwindow \
-		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" || die
+		--set icon="$(base64 /usr/share/univention-portal/univention-management-console.svg)" || die
 
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
@@ -275,7 +275,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le système local\"" \
 		--append link='"en_US" "/univention/management/"' \
 		--set linkTarget=newwindow \
-		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)"  || die
+		--set icon="$(base64 /usr/share/univention-portal/univention-management-console.svg)" || die
 
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
