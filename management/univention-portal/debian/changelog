@@ -1,3 +1,9 @@
+univention-portal (4.0.5-10) unstable; urgency=medium
+
+  * Bug #52932: Error handling and integration in default portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 23:40:03 +0100
+
 univention-portal (4.0.5-9) unstable; urgency=medium
 
   * Bug #52869: Fixes for new entry syntax

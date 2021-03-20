@@ -33,9 +33,11 @@
 import os.path
 
 import requests
+import requests.exceptions
 from six import with_metaclass
 
 from univention.portal import Plugin
+from univention.portal.log import get_logger
 
 
 class Portal(with_metaclass(Plugin)):
@@ -241,8 +243,16 @@ class UMCPortal(Portal):
 	def _request_umc_get(self, get_path, headers):
 		uri = 'http://127.0.0.1/univention/get/{}'.format(get_path)
 		body = {"options": {}}
-		response = requests.post(uri, json=body, headers=headers)
-		return response.json()[get_path]
+		try:
+			response = requests.post(uri, json=body, headers=headers)
+		except requests.exceptions.RequestException as exc:
+			get_logger("umc").warning("Exception while getting %s: %s", get_path, exc)
+			return []
+		else:
+			if response.status_code != 200:
+				get_logger("umc").debug("Status %r while getting %s", response.status_code, get_path)
+				return []
+			return response.json()[get_path]
 
 
 	def get_visible_content(self, user, admin_mode):
@@ -250,8 +260,8 @@ class UMCPortal(Portal):
 		categories = self._request_umc_get("categories", headers)
 		modules = self._request_umc_get("modules", headers)
 		return {
-			"categories": categories,
-			"modules": modules,
+			"umc_categories": categories,
+			"umc_modules": modules,
 		}
 
 	def get_user_links(self, user, admin_mode):
@@ -262,7 +272,7 @@ class UMCPortal(Portal):
 
 	def get_entries(self, content):
 		entries = {}
-		for module in content["modules"]:
+		for module in content["umc_modules"]:
 			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["id"])
 			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
 				logo_name = None
@@ -275,7 +285,7 @@ class UMCPortal(Portal):
 					"en_US": module["description"],
 				},
 				"linkTarget": "useportaldefault",
-                                "logo_name": logo_name,
+				"logo_name": logo_name,
 				"links": ["/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))],
 			}
 		return entries
@@ -285,10 +295,10 @@ class UMCPortal(Portal):
 
 	def get_folders(self, content):
 		folders = {}
-		for category in content["categories"]:
+		for category in content["umc_categories"]:
 			if category["id"] == "_favorites_":
 				continue
-			entries = [[module["name"], self._entry_id(module)] for module in content["modules"] if category["id"] in module["categories"]]
+			entries = [[module["name"], self._entry_id(module)] for module in content["umc_modules"] if category["id"] in module["categories"]]
 			entries = sorted(entries)
 			folders[category["id"]] = {
 				"name": {
@@ -302,9 +312,9 @@ class UMCPortal(Portal):
 
 	def get_categories(self, content):
 		ret = {}
-		categories = content["categories"]
+		categories = content["umc_categories"]
 		categories = sorted(categories, key=lambda entry: entry["priority"], reverse=True)
-		modules = content["modules"]
+		modules = content["umc_modules"]
 		modules = sorted(modules, key=lambda entry: entry["priority"], reverse=True)
 		fav_cat = [cat for cat in categories if cat["id"] == "_favorites_"]
 		if fav_cat:

@@ -84,7 +84,7 @@ class MtimeBasedLazyFileReloader(Reloader):
 		try:
 			return os.stat(self._cache_file).st_mtime
 		except (EnvironmentError, AttributeError) as exc:
-			get_logger("cache").warn("Unable to get mtime for {}".format(exc))
+			get_logger("cache").warning("Unable to get mtime for {}".format(exc))
 			return 0
 
 	def _file_was_updated(self):
@@ -195,6 +195,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		ret = {}
 		ret["dn"] = portal.dn
 		ret["showApps"] = portal.props.showApps
+		ret["showUmc"] = portal.props.showUmc
 		ret["fontColor"] = portal.props.fontColor
 		if portal.props.logo:
 			ret["logo"] = self._write_image(portal.props.name, portal.props.logo.raw, "logos")

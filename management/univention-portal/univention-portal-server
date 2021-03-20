@@ -91,6 +91,16 @@ class JsonHandler(PortalHandler):
 		answer["folders"] = portal.get_folders(visible_content)
 		answer["categories"] = portal.get_categories(visible_content)
 		answer["portal"] = portal.get_meta(visible_content, answer["categories"])
+		if not user.is_anonymous() and not admin_mode and answer["portal"].get("showUmc"):
+			# this is not how the portal-server is supposed to be working
+			# but we need it like that...
+			umc_portal = portal._get_umc_portal()
+			visible_content = portal.get_visible_content(user, admin_mode)
+			answer["entries"].extend(umc_portal.get_entries())
+			answer["folders"].extend(umc_portal.get_folders())
+			answer["categories"].extend(umc_portal.get_categories())
+			umc_meta = portal.get_meta(visible_content, answer["categories"])
+			answer["portal"]["content"].extend(umc_meta["content"])
 		answer["filtered"] = not admin_mode
 		answer["username"] = user.username
 		answer["user_displayname"] = user.display_name

@@ -114,6 +114,12 @@ attributetype ( univentionNewPortalAttributeType:14 NAME 'univentionNewPortalDef
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( univentionNewPortalAttributeType:15 NAME 'univentionNewPortalShowUMC'
+	DESC 'Portal show UMC modules'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
 objectclass ( univentionNewPortalObjectClass:1 NAME 'univentionNewPortal'
 	DESC 'Portal data'
 	SUP top
@@ -133,6 +139,7 @@ objectclass ( univentionNewPortalObjectClass:1 NAME 'univentionNewPortal'
 			$ univentionNewPortalMenuLinks
 			$ univentionNewPortalCategories
 			$ univentionNewPortalDefaultLinkTarget
+			$ univentionNewPortalShowUMC
 		)
 	)
 

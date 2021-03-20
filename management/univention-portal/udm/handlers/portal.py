@@ -73,6 +73,11 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
+	'showUmc': univention.admin.property(
+		short_description=_('Show UMC categories and modules'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='TRUE',
+	),
 	'background': univention.admin.property(
 		short_description=_('Background'),
 		long_description=_('Background image of the Portal'),
@@ -156,6 +161,7 @@ layout = [
 		Group(_('Categories'), layout=[
 			['categories'],
 			['showApps'],
+			['showUmc'],
 		]),
 		Group(_('Link behaviour'), layout=[
 			['defaultLinkTarget'],
@@ -211,6 +217,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'univentionNewPortalDisplayName', mapTranslationValue, unmapTranslationValue)
 mapping.register('showApps', 'univentionNewPortalShowApps', None, univention.admin.mapping.ListToString)
+mapping.register('showUmc', 'univentionNewPortalShowUMC', None, univention.admin.mapping.ListToString)
 mapping.register('portalComputers', 'univentionNewPortalComputers')
 mapping.register('ensureLogin', 'univentionNewPortalEnsureLogin', None, univention.admin.mapping.ListToString)
 mapping.register('anonymousEmpty', 'univentionNewPortalAnonymousEmpty', mapTranslationValue, unmapTranslationValue)
