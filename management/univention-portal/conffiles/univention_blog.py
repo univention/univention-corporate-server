@@ -33,6 +33,7 @@
 Create a portal entry for the Univention Blog for all Core Edition users.
 """
 
+import sys
 import base64
 import subprocess
 
@@ -59,4 +60,4 @@ def process(msg, cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout = process.communicate()[0].decode('UTF-8', 'replace')
 	if process.returncode:
-		raise Exception('%s: %d: %s %r' % (msg, process.returncode, stdout, cmd))
+		print('%s: %d: %s %r' % (msg, process.returncode, stdout, cmd), file=sys.stderr)
