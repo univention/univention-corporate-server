@@ -101,6 +101,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 		'anonymous': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'description': ListOfListOflTextToDictPropertyEncoder,
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
+		'link': ListOfListOflTextToDictPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,
 		'portal': dn_list_property_encoder_for('portals/portal'),
 		'allowedGroups': dn_list_property_encoder_for('groups/group'),

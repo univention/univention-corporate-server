@@ -108,3 +108,7 @@ class NewPortalEntryLinkTarget(select):
 		('newwindow', _portal('New tab')),
 		('embedded', _portal('Embedded')),
 	]
+
+
+class LocalizedLink(translationTuple):
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Link'), string)]
