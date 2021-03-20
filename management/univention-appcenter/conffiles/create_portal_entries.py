@@ -224,7 +224,7 @@ def _handler(ucr, changes):
 			continue
 		links = obj['link']
 		portal_logger.debug('Existing links: %r' % links)
-		links = [_link for _link in links if urlsplit(_link).hostname not in local_hosts]
+		links = [_link for _link in links if urlsplit(_link[1]).hostname not in local_hosts]
 		links.extend(my_links)
 		portal_logger.debug('New links: %r' % links)
 		if not links:
