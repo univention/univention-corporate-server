@@ -39,3 +39,4 @@ Variables: portal/port
 Variables: portal/admin-groups
 Variables: hostname
 Variables: domainname
+Variables: umc/web/sso/enabled

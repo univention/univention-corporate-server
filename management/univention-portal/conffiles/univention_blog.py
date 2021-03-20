@@ -34,7 +34,6 @@ Create a portal entry for the Univention Blog for all Core Edition users.
 """
 
 import sys
-import base64
 import subprocess
 
 
