@@ -59,7 +59,7 @@ if [ "$role" != "domaincontroller_master" ]; then
 		--append description='"en_US" "Provide an overview of all UCS server in the domain"' \
 		--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
 		--append description='"fr_FR" "Vue d'"'"'ensemble de tous les serveurs UCS du domaine"' \
-		--append link=/univention/server-overview/ \
+		--append link='"en_US" "/univention/server-overview/"' \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" || die
 
 	univention-directory-manager portals/category modify "$@" \

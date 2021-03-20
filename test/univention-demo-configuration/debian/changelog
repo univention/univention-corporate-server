@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-4) unstable; urgency=medium
+
+  * Bug #52869: Portal entries have to be created differently now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 01:55:11 +0100
+
 univention-demo-configuration (8.0.0-3) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL

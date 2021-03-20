@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-19) unstable; urgency=medium
+
+  * Bug #52869: Portal entries have to be created differently now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 01:50:09 +0100
+
 univention-appcenter (9.0.2-18) unstable; urgency=medium
 
   * Bug #52863: Forgot a file...

@@ -186,14 +186,14 @@ def _handler(ucr, changes):
 				elif link.protocol == 'https':
 					link.port = '443'
 			if link:
-				my_links.add(str(link))
+				my_links.add(('en_US', str(link)))
 			if not link.protocol:
 				link.protocol = 'http'
 				if link:
-					my_links.add(str(link))
+					my_links.add(('en_US', str(link)))
 				link.protocol = 'https'
 				if link:
-					my_links.add(str(link))
+					my_links.add(('en_US', str(link)))
 		my_links = list(my_links)
 		portal_logger.debug('Processing %s' % dn)
 		portal_logger.debug('Attrs: %r' % attrs)

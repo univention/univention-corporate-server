@@ -43,7 +43,7 @@ class UMCTester(object):
 			name=self.entry_a_1_dname,
 			displayName=['en_US ' + self.entry_a_1_dname],
 			description=['en_US foo'],
-			link=['foo'],
+			link=['en_US foo'],
 		)
 		self.entry_a_2_dname = "entry_a_2__{}".format(uts.random_string())
 		entry_a_2_dn = self.udm_test.create_object(
@@ -51,7 +51,7 @@ class UMCTester(object):
 			name=self.entry_a_2_dname,
 			displayName=['en_US ' + self.entry_a_2_dname],
 			description=['en_US foo'],
-			link=['foo'],
+			link=['en_US foo'],
 		)
 		self.cat_a_dname = "category_a__{}".format(uts.random_string())
 		cat_a_dn = self.udm_test.create_object(
@@ -66,7 +66,7 @@ class UMCTester(object):
 			name=self.entry_b_dname,
 			displayName=['en_US ' + self.entry_b_dname],
 			description=['en_US foo'],
-			link=['foo'],
+			link=['en_US foo'],
 		)
 		self.cat_b_dname = "category_b__{}".format(uts.random_string())
 		cat_b_dn = self.udm_test.create_object(

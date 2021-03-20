@@ -55,7 +55,7 @@ create_app_entry () {
 		--append description="\"en_US\" \"$description_en\"" \
 		--append displayName="\"de_DE\" \"$label\"" \
 		--append description="\"de_DE\" \"$description_de\"" \
-		--append link="$link" \
+		--append link='"en_US" "$link"' \
 		--set icon="$(base64 "$icon")"
 
 	udm portals/category modify \
@@ -117,7 +117,7 @@ create_admin_entry () {
 		--append description="\"en_US\" \"$description_en\"" \
 		--append displayName="\"de_DE\" \"$label\"" \
 		--append description="\"de_DE\" \"$description_de\"" \
-		--append link="$link" \
+		--append link='"en_US" "$link"' \
 		--set icon="$(base64 "$icon")"
 
 	udm portals/category modify \

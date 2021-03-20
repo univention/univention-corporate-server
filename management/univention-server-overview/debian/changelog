@@ -1,3 +1,9 @@
+univention-server-overview (3.0.0-6) unstable; urgency=medium
+
+  * Bug #52869: Portal entries have to be created differently now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 01:38:26 +0100
+
 univention-server-overview (3.0.0-5) unstable; urgency=medium
 
   * Bug #52453: adjust styling of server overview

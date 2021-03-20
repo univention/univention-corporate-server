@@ -78,8 +78,8 @@ udm portals/entry create --ignore_exists "$@" \
 	--append displayName="\"fr_FR\" \"Changer le mot de passe\"" \
 	--append displayName="\"en_US\" \"Change password\"" \
 	--append displayName="\"de_DE\" \"Passwort ändern\"" \
-	--append link="https://${IP}/univention/self-service/#page=passwordchange" \
-	--append link="https://${hostname}.${domainname}/univention/self-service/#page=passwordchange" \
+	--append link='"en_US" "https://${IP}/univention/self-service/#page=passwordchange"' \
+	--append link='"en_US" "https://${hostname}.${domainname}/univention/self-service/#page=passwordchange"' \
 	--append description="\"de_DE\" \"Self-Service-Module (Passwort ändern und zurücksetzen)\"" \
 	--append description="\"en_US\" \"Self Service modules (change and recover passwords)\"" \
 	--append description="\"fr_FR\" \"Module de libre-service (changer et réinitialiser des mots de passe)\"" || die
