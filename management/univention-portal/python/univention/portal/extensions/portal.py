@@ -225,6 +225,9 @@ class Portal(with_metaclass(Plugin)):
 		touched = self.authenticator.refresh(reason=reason) or touched
 		return touched
 
+	def _get_umc_portal(self):
+		return UMCPortal(self.scorer, self.authenticator)
+
 	def score(self, request):
 		return self.scorer.score(request)
 
@@ -271,12 +274,12 @@ class UMCPortal(Portal):
 		return []
 
 	def get_entries(self, content):
-		entries = {}
+		entries = []
 		for module in content["umc_modules"]:
 			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["id"])
 			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
 				logo_name = None
-			entries[self._entry_id(module)] = {
+			entries.append({
 				"dn": self._entry_id(module),
 				"name": {
 					"en_US": module["name"],
@@ -286,32 +289,35 @@ class UMCPortal(Portal):
 				},
 				"linkTarget": "useportaldefault",
 				"logo_name": logo_name,
-				"links": ["/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))],
-			}
+				"links": [{
+					"locale": "en_US",
+					"value": "/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))
+				}],
+			})
 		return entries
 
 	def _entry_id(self, module):
 		return "umc:module:{}:{}".format(module["id"], module.get("flavor", ""))
 
 	def get_folders(self, content):
-		folders = {}
+		folders = []
 		for category in content["umc_categories"]:
 			if category["id"] == "_favorites_":
 				continue
 			entries = [[module["name"], self._entry_id(module)] for module in content["umc_modules"] if category["id"] in module["categories"]]
 			entries = sorted(entries)
-			folders[category["id"]] = {
+			folders.append({
 				"name": {
 					"en_US": category["name"],
 					"de_DE": category["name"],
 				},
 				"dn": category["id"],
 				"entries": [entry[1] for entry in entries],
-			}
+			})
 		return folders
 
 	def get_categories(self, content):
-		ret = {}
+		ret = []
 		categories = content["umc_categories"]
 		categories = sorted(categories, key=lambda entry: entry["priority"], reverse=True)
 		modules = content["umc_modules"]
@@ -319,41 +325,43 @@ class UMCPortal(Portal):
 		fav_cat = [cat for cat in categories if cat["id"] == "_favorites_"]
 		if fav_cat:
 			fav_cat = fav_cat[0]
-			ret["favorites"] = {
+			ret.append({
 				"display_name": {
 					"en_US": fav_cat["name"],
 				},
 				"dn": "umc:category:favorites",
 				"entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])]
-			}
+			})
 		else:
-			ret["favorites"] = {
+			ret.append({
 				"display_name": {
 					"en_US": "Favorites",
 				},
 				"dn": "umc:category:favorites",
 				"entries": [],
-			}
-		ret["umc"] = {
+			})
+		ret.append({
 			"display_name": {
 				"en_US": "UMC",
 			},
 			"dn": "umc:category:umc",
 			"entries": [cat["id"] for cat in categories if cat["id"] != "_favorites_"]
-		}
+		})
 		return ret
 
 	def get_meta(self, content, categories):
+		category_dns = ["umc:category:favorites", "umc:category:umc"]
+		content = []
+		for category_dn in category_dns:
+			category = next(cat for cat in categories if cat["dn"] == category_dn)
+			content.append([category_dn, category["entries"]])
 		return {
 			"name": {
 				"en_US": "Univention Management Console",
 			},
 			"defaultLinkTarget": "embedded",
-			"categories": ["favorites", "umc"],
-			"content": [
-				["favorites", categories["favorites"]["entries"]],
-				["umc", categories["umc"]["entries"]],
-			],
+			"categories": category_dns,
+			"content": content
 		}
 
 	def refresh(self, reason=None):

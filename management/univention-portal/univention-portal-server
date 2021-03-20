@@ -95,11 +95,11 @@ class JsonHandler(PortalHandler):
 			# this is not how the portal-server is supposed to be working
 			# but we need it like that...
 			umc_portal = portal._get_umc_portal()
-			visible_content = portal.get_visible_content(user, admin_mode)
-			answer["entries"].extend(umc_portal.get_entries())
-			answer["folders"].extend(umc_portal.get_folders())
-			answer["categories"].extend(umc_portal.get_categories())
-			umc_meta = portal.get_meta(visible_content, answer["categories"])
+			umc_content = umc_portal.get_visible_content(user, admin_mode)
+			answer["entries"].extend(umc_portal.get_entries(umc_content))
+			answer["folders"].extend(umc_portal.get_folders(umc_content))
+			answer["categories"].extend(umc_portal.get_categories(umc_content))
+			umc_meta = umc_portal.get_meta(umc_content, answer["categories"])
 			answer["portal"]["content"].extend(umc_meta["content"])
 		answer["filtered"] = not admin_mode
 		answer["username"] = user.username
