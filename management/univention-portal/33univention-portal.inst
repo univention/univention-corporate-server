@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=15
+VERSION=16
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -134,7 +134,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Univention Management Console for admin­is­tra­ting the UCS domain and the local system\"" \
 		--append description="\"de_DE\" \"Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems\"" \
 		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le domaine UCS et le système local\"" \
-		--append link=/univention/management/ \
+		--append link='"en_US" "/univention/management/"' \
 		--set linkTarget=newwindow \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" || die
 
@@ -163,7 +163,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Root certificate\"" \
 		--append description="\"de_DE\" \"Wurzelzertifikat\"" \
 		--append description="\"fr_FR\" \"Certificat racine\"" \
-		--append link=/ucs-root-ca.crt \
+		--append link='"en_US" "/ucs-root-ca.crt"' \
 		--set linkTarget=samewindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -174,7 +174,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Certificate revocation list\"" \
 		--append description="\"de_DE\" \"Zertifikat-Sperrliste\"" \
 		--append description="\"fr_FR\" \"Liste de révocation de certificats\"" \
-		--append link=/ucsCA.crl \
+		--append link='"en_US" "/ucsCA.crl"' \
 		--set linkTarget=samewindow || die
 	univention-directory-manager portals/folder create "$@" --ignore_exists \
 		--position "cn=folder,cn=portals,cn=univention,$ldap_base" \
@@ -193,7 +193,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName="\"de_DE\" \"Univention Forum (Hilfe)\"" \
 		--append description="\"en_US\" \"Univention Forum (Help)\"" \
 		--append description="\"de_DE\" \"Univention Forum (Hilfe)\"" \
-		--append link="https://help.univention.com" \
+		--append link='"en_US" "https://help.univention.com"' \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -204,8 +204,8 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Feedback\"" \
 		--append description="\"de_DE\" \"Feedback\"" \
 		--append description="\"fr_FR\" \"Impressions\"" \
-		--append link="@en https://www.univention.com/feedback/?umc=portal" \
-		--append link="@de https://www.univention.de/produkt-feedback/?umc=portal" \
+		--append link='"en_US" "https://www.univention.com/feedback/?umc=portal"' \
+		--append link='"de_DE" "https://www.univention.de/produkt-feedback/?umc=portal"' \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -216,8 +216,8 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"News, tips and best practices\"" \
 		--append description="\"de_DE\" \"News, Tipps und Best Practices\"" \
 		--append description="\"fr_FR\" \"Nouvelles, conseils et bonne pratique\"" \
-		--append link="@en https://www.univention.com/news/blog-en" \
-		--append link="@de https://www.univention.de/news/blog-de" \
+		--append link='"en_US" "https://www.univention.com/news/blog-en"' \
+		--append link='"de_DE" "https://www.univention.de/news/blog-de"' \
 		--set icon="$(base64 /usr/share/univention-portal/univention-blog.png)" \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
@@ -229,8 +229,8 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Univention Website\"" \
 		--append description="\"de_DE\" \"Univention Webseite\"" \
 		--append description="\"fr_FR\" \"Site Internet Univention\"" \
-		--append link="@en https://www.univention.com" \
-		--append link="@de https://www.univention.de" \
+		--append link='"en_US" "https://www.univention.com"' \
+		--append link='"de_DE" "https://www.univention.de"' \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/folder create "$@" --ignore_exists \
 		--position "cn=folder,cn=portals,cn=univention,$ldap_base" \
@@ -268,7 +268,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Univention Management Console for admin­is­tra­ting the local system\"" \
 		--append description="\"de_DE\" \"Univention Management Console zur Ver­wal­tung des lokalen Systems\"" \
 		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le système local\"" \
-		--append link=/univention/management/ \
+		--append link='"en_US" "/univention/management/"' \
 		--set linkTarget=newwindow \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)"  || die
 
@@ -334,7 +334,7 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 		--append displayName="\"de_DE\" \"Mein Profil\"" \
 		--append description="\"en_US\" \"Manage profile\"" \
 		--append description="\"de_DE\" \"Profil verwalten\"" \
-		--append link="/univention/self-service/#page=profiledata" \
+		--append link='"en_US" "/univention/self-service/#page=profiledata"' \
 		--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
 
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
@@ -344,7 +344,7 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 		--append displayName="\"de_DE\" \"Kontozugang schützen\"" \
 		--append description="\"en_US\" \"Protect your account\"" \
 		--append description="\"de_DE\" \"Kontozugang schützen\"" \
-		--append link="/univention/self-service/#page=setcontactinformation" \
+		--append link='"en_US" "/univention/self-service/#page=setcontactinformation"' \
 		--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
 
 	univention-directory-manager "portals/portal" modify "$@" \

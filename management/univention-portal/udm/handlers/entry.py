@@ -75,9 +75,9 @@ property_descriptions = {
 		required=True,
 	),
 	'link': univention.admin.property(
-		short_description=_('Link'),
+		short_description=_('Links (best pick based on locale / protocol / hostname)'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.LocalizedLink,
 		multivalue=True,
 		required=True,
 	),
