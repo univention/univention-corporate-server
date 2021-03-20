@@ -115,6 +115,11 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"
+elif [ $JS_LAST_EXECUTED_VERSION -lt 16 ]; then
+	role="$(ucr get server/role)"
+	if [ "$role" = "domaincontroller_master" ]; then
+		/usr/lib/univention-portal/migrate-to-new-portal-during-5.0-dev
+	fi
 fi
 
 systemctl restart univention-portal-server

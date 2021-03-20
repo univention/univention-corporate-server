@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+from univention.admin.uldap import *
+lo, pos = getMachineConnection()
+entries = lo.search('univentionObjectType=portals/entry')
+
+for entry in entries:
+    dn = entry[0]
+    print('Migrating', dn)
+    attr = 'univentionNewPortalEntryLink'
+    old_values = entry[1][attr]
+    new_values = []
+    for value in old_values:
+        print(' ', value)
+        if value.startswith(b'en_US') or value.startswith(b'de_DE'):
+            print('   ', '... ignoring')
+        else:
+            value = b'en_US %s' % value
+        new_values.append(value)
+    print('Modifying...')
+    lo.modify(dn, [(attr, old_values, new_values)])

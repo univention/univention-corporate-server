@@ -1,3 +1,9 @@
+univention-portal (4.0.5-8) unstable; urgency=medium
+
+  * Bug #52869: Migration of entry objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 02:45:36 +0100
+
 univention-portal (4.0.5-7) unstable; urgency=medium
 
   * Bug #52869: Typos
