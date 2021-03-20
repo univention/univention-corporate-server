@@ -252,16 +252,11 @@ export default function main(links, fqdn, locale) {
   }
   const localizedLinks = {};
   links.forEach((link) => {
-    const match = /(@[a-z]{2} )?(.*)/.exec(link);
-    let linkLocale = 'en';
-    if (match[1]) {
-      linkLocale = match[1].slice(1, 3);
-    }
-    const alreadyFoundLinks = localizedLinks[linkLocale] || [];
-    alreadyFoundLinks.push(match[2]);
-    localizedLinks[linkLocale] = alreadyFoundLinks;
+    const alreadyFoundLinks = localizedLinks[link.locale] || [];
+    alreadyFoundLinks.push(link.value);
+    localizedLinks[link.locale] = alreadyFoundLinks;
   });
-  const usedLinks = localizedLinks[locale] || localizedLinks.en;
+  const usedLinks = localizedLinks[locale] || localizedLinks.en_US;
   const browserHostname = getURIHostname(document.location.href);
   // get the best link to be displayed
   const localLinks = getLocalLinks(browserHostname, fqdn, usedLinks).concat(usedLinks);

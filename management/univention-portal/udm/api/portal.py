@@ -33,9 +33,28 @@ Module and object specific for "portals/portal" UDM module.
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
 	dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-	ListOfListOflTextToDictPropertyEncoder,
+	ListOfListOflTextToDictPropertyEncoder, BaseEncoder
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
+
+
+class ListOfListOflTextToListofDictPropertyEncoder(BaseEncoder):
+	static = True
+
+	@staticmethod
+	def decode(value=None):
+		if value:
+			return [{'locale': v[0], 'value': v[1]} for v in value]
+		else:
+			return value
+
+	@staticmethod
+	def encode(value=None):
+		if value:
+			return [[v['locale'], v['value']] for v in value]
+		else:
+			return value
+
 
 
 class PortalsPortalObjectProperties(GenericObjectProperties):
@@ -101,7 +120,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 		'anonymous': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'description': ListOfListOflTextToDictPropertyEncoder,
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'link': ListOfListOflTextToDictPropertyEncoder,
+		'link': ListOfListOflTextToListofDictPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,
 		'portal': dn_list_property_encoder_for('portals/portal'),
 		'allowedGroups': dn_list_property_encoder_for('groups/group'),

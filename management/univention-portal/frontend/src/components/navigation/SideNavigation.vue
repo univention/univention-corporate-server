@@ -51,13 +51,14 @@ License with the Debian GNU/Linux or Univention distribution in file
           </button>
         </div>
       </div>
-      <div
+      <button
         v-else
+        ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
       >
         <translate i18n-key="LOGIN" />
-      </div>
+      </button>
     </div>
 
     <div
@@ -266,6 +267,7 @@ export default defineComponent({
     padding: 1em 0 1em 20px
     cursor: pointer
     height: auto
+    width: 100%
     justify-content: left
     font-size: var(--font-size-normal)
     color: var(--font-color-contrast-high)

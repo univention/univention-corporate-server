@@ -51,7 +51,7 @@ const tileClickMixin = {
       locale: 'locale/getLocale',
     }),
     link() {
-      return bestLink(this.links, this.metaData.fqdn, this.locale.split('_')[0]);
+      return bestLink(this.links, this.metaData.fqdn, this.locale);
     },
     anchorTarget() {
       if (this.editMode || this.linkTarget !== 'newwindow') {

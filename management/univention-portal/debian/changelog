@@ -1,3 +1,9 @@
+univention-portal (4.0.5-9) unstable; urgency=medium
+
+  * Bug #52869: Fixes for new entry syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 20 Mar 2021 13:38:13 +0100
+
 univention-portal (4.0.5-8) unstable; urgency=medium
 
   * Bug #52869: Migration of entry objects
