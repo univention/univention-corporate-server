@@ -20,6 +20,10 @@ ad_set_sync_mode "sync"
 invoke-rc.d univention-ad-connector restart
 kdestroy  # to avoid smbclient failure (similar to Bug #52277)
 
+domain=$(ucr get connector/ad/mapping/kerberosdomain)
+# use domainname in smbclient call, when samba4 is installed, smbclient seems to have trouble using the correct domain
+domain_upper=${domain^^}
+
 # Make some import rounds with an increasing sleep time before changing the password
 for i in 0 3 6 12; do
 	UDM_users_user_lastname="$(random_chars)"
@@ -54,7 +58,7 @@ for i in 0 3 6 12; do
 			echo "Password sync is disabled, skipping password sync check"
 		else
 			echo "Search in AD as user $b with the new password"
-			smbclient -U "$b%q1w2e3r4" //$(ucr get connector/ad/ldap/host)/sysvol -c ls || fail_test 110
+			smbclient -U "$domain_upper\\$b%q1w2e3r4" //$(ucr get connector/ad/ldap/host)/sysvol -c ls || fail_test 110
 		fi
 	done
 
