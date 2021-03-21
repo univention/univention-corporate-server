@@ -267,10 +267,10 @@ class UMCPortal(Portal):
 			"umc_modules": modules,
 		}
 
-	def get_user_links(self, user, admin_mode):
+	def get_user_links(self, content):
 		return []
 
-	def get_menu_links(self, user, admin_mode):
+	def get_menu_links(self, content):
 		return []
 
 	def get_entries(self, content):
