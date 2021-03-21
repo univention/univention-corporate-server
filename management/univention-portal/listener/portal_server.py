@@ -31,8 +31,10 @@
 from __future__ import absolute_import
 
 import subprocess
+from json import dump
 
 import univention.debug as ud
+from univention.config_registry import ConfigRegistry
 
 import listener
 
@@ -46,7 +48,7 @@ def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 	try:
-		if new is None:
+		if not new:
 			attrs = old
 		else:
 			attrs = new
@@ -56,7 +58,33 @@ def handler(dn, new, old):
 		else:
 			module = 'unknown'
 		reason = 'ldap:{}:{}'.format(module, dn)
-		ud.debug(ud.LISTENER, ud.INFO, "Updating portal. Reason: %s" % reason)
+		if module == 'portal':
+			# special case: if a portal is configured to be the new
+			# default portal for this computer. or unconfigured...
+			ucr = ConfigRegistry()
+			ucr.load()
+			hostdn = ucr.get('ldap/hostdn', '').encode('utf-8')
+			if old:
+				was_configured = hostdn in old.get('univentionNewPortalComputers', [])
+			else:
+				was_configured = False
+			if new:
+				is_configured = hostdn in new.get('univentionNewPortalComputers', [])
+			else:
+				is_configured = False
+			config_file = '/usr/lib/univention-portal/config/config.json.from-listener.json'
+			if is_configured and not was_configured:
+				content = {'default_domain_dn': dn}
+				with open(config_file, 'w') as fd:
+					dump(content, fd, indent=2)
+				reason = 'force'
+			if was_configured and not is_configured:
+				try:
+					os.unlink(config_file)
+				except EnvironmentError:
+					pass
+				reason = 'force'
+		ud.debug(ud.LISTENER, ud.PROCESS, "Updating portal. Reason: %s" % reason)
 		subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', reason], stdout=subprocess.PIPE)
 	finally:
 		listener.unsetuid()
