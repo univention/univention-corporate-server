@@ -46,9 +46,9 @@ class UMCTester(object):
 
 	def check_if_expected_entries_are_shown(self, expected_entries):
 		for entry in expected_entries:
-			self.selenium.wait_for_text(entry[1])
 			print("Looking under category '%s' for entry with name '%s'" % (entry[0], entry[1]))
-			self.selenium.driver.find_element_by_xpath('//*[@class = "portal__category"]/h2[text() = "%s"]/..//*[@class = "tile__name"][text() = "%s"]' % (entry[0], entry[1]))
+			self.selenium.wait_for_text(entry[1])
+			self.selenium.driver.find_element_by_xpath('//*[@class = "portal-category"]/h2[contains(text(), "%s")]/..//*[@class = "portal-tile__name"][text() = "%s"]' % (entry[0], entry[1]))
 
 	def go_to_portal(self, url):
 		print("Going to portal of: %s" % (url))
