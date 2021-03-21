@@ -1,3 +1,9 @@
+ucs-test (10.0.4-38) unstable; urgency=medium
+
+  * Bug #52869: Skip edit mode for now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 21 Mar 2021 17:37:05 +0100
+
 ucs-test (10.0.4-37) unstable; urgency=medium
 
   * Bug #52044: Use domainname in smbclient call in adconnector tests,
