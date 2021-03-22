@@ -64,7 +64,7 @@ define([
 			this.inherited(arguments);
 			this.pages = [];
 			this._successApps = [];
-			this._hasErrors = false;
+			this.hasErrors = false;
 			this._addPages();
 		},
 
@@ -106,7 +106,7 @@ define([
 					}]
 				};
 				this.pages.push(pageConf);
-				this._hasErrors = true;
+				this.hasErrors = true;
 			}
 		},
 
@@ -175,7 +175,7 @@ define([
 		},
 
 		canFinish: function() {
-			return !this._hasErrors;
+			return !this.hasErrors;
 		},
 
 		canCancel: function() {

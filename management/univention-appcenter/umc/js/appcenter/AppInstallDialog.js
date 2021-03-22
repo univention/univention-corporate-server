@@ -300,8 +300,7 @@ define([
 			return command;
 		},
 
-		_afterMath: function(backpack) {
-			const successfulApps = [];
+		_aftermath: function(backpack) {
 			const deferred = new Deferred();
 			var installWizard = new AppPostInstallWizard({
 				apps: backpack.apps,
@@ -311,13 +310,19 @@ define([
 			});
 			if (!installWizard.needsToBeShown) {
 				deferred.resolve(backpack);
-				return deferred;
 			} else {
+				this.set('headerButtons', [{
+					name: 'close',
+					label: installWizard.hasErrors ? _('Cancel') : _('Back'),
+					callback: function() {
+						deferred.resolve();
+					}
+				}]);
 				on(installWizard, 'finished', function() {
 					deferred.resolve(backpack);
 				});
 				on(installWizard, 'cancel', function() {
-					// resolve anyway. no need to cancel anything
+					// don't cancel the deferred so that appcenter/run.js::afterRun runs
 					deferred.resolve(backpack);
 				});
 				this._show(installWizard);
@@ -338,7 +343,7 @@ define([
 				.then(lang.hitch(this, '_showInstallWizard'))
 				.then(lang.hitch(this, '_resolveBackpack'))
 				.then(lang.hitch(this, '_run'))
-				.then(lang.hitch(this, '_afterMath'))
+				.then(lang.hitch(this, '_aftermath'))
 				.otherwise(lang.hitch(this, '_cancelAction'));
 			return this._actionDeferred;
 		},
