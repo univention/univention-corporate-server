@@ -13,7 +13,7 @@ stages:
     paths:
       - public
     reports:
-      codequality: $base/*.xml.codeclimate.json
+      codequality: $base/codeclimate.json
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
