@@ -1,3 +1,10 @@
+univention-portal (4.0.5-12) unstable; urgency=medium
+
+  * Bug #52869: Dont support SAML for now
+  * Bug #52932: UMC tile only for unauthorized users
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Mar 2021 21:25:44 +0100
+
 univention-portal (4.0.5-11) unstable; urgency=medium
 
   * Bug #52869: Minor code fixes
