@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: squid3
+fix: 3.5.23-5+deb9u6A~4.4.7.202103220941
+desc: |
+ This update addresses the following issue:
+ * improper input validation may allow a trusted client to perform HTTP
+   Request Smuggling (CVE-2020-25097)
+bug: [52966]
+cve:
+- CVE-2020-25097
