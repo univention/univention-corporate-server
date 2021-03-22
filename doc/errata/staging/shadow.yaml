@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: shadow
+fix: 1:4.4-4.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Buffer overflow via newusers tool (CVE-2017-12424)
+ * The Debian shadow package before 1:4.5-1 for Shadow incorrectly lists pts/0
+   and pts/1 as physical terminals in /etc/securetty. This allows local users
+   to login as password-less users even if they are connected by non-physical
+   means such as SSH (hence bypassing PAM's nullok_secure configuration). This
+   notably affects environments such as virtual machines automatically
+   generated with a default blank root password, allowing all local users to
+   escalate privileges. (CVE-2017-20002)
+bug: [52968]
+cve:
+- CVE-2017-12424
+- CVE-2017-20002
