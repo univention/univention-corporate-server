@@ -201,6 +201,28 @@ if [ -n "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
 	service fetchmail restart  >&3 2>&3 || :
 fi
 
+# Bug #52974: reenable libvirtd after update
+for service in libvirtd virtlogd ; do
+	state="$(ucr get "update/service/libvirt/${service:-}")"
+	if [ -n "${state:-}" ] ; then
+		if [ "${state:-}" = "masked" ] ; then
+			echo "${service:-}.service was masked prior to the update - doing nothing" >&3
+		else
+			echo "${service:-}.service was '$state' prior to the update" >&3
+			systemctl unmask "${service:-}.service" >&3 2>&3
+			if [ "${state:-}" = "disabled" ] ; then
+				systemctl disable "${service:-}.service" >&3 2>&3
+			elif [ "${state:-}" = "enabled" ] ; then
+				systemctl enable "${service:-}.service" >&3 2>&3
+				systemctl start "${service:-}.service" >&3 2>&3
+			else
+				echo "Unknown state of ${service:-}.service - doing nothing" >&3
+			fi
+		fi
+		ucr unset "^update/service/libvirt/${service:-}" >&3 2>&3
+	fi
+done
+
 
 echo "
 

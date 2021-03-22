@@ -140,6 +140,18 @@ if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
 	ucr set fetchmail/autostart=no >&3 2>&3
 	service fetchmail stop  >&3 2>&3 || :
 fi
+
+# Bug #52974: disable libvirtd during update to prevent aborting update
+if dpkg -l libvirt-daemon 2>&3 | grep ^ii  >&3 ; then
+	for service in libvirtd virtlogd ; do
+		if [ -z "$(ucr search "^update/service/libvirt/${service:-}")" ] ; then
+			state="$(systemctl show ${service:-}.service | sed -nre 's/^UnitFileState=(.*)$/\1/p')"
+			echo "Status of ${service:-}.service: ${state:-}" >&3
+			ucr set "update/service/libvirt/${service:-}=${state:-}"  >&3 2>&3
+			systemctl stop "${service:-}.service" >&3 2>&3
+			systemctl mask "${service:-}.service" >&3 2>&3
+		fi
+	done
 fi
 
 # Bug #52790: Don't let postgresql@11-main.service start before migration
