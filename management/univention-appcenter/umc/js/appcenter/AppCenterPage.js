@@ -411,12 +411,13 @@ define([
 
 					this.filterApplications();
 					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
+					return applications;
 				}));
 			}));
 		},
 
 		reloadPage: function() {
-			return this.updateApplications().then(() => {
+			return this.updateApplications(false).then(() => {
 				this.metaCategories.forEach((metaCategory) => {
 					metaCategory.reset();
 				});

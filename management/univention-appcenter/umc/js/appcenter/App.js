@@ -117,6 +117,7 @@ define([
 			this.installations = props.installations;
 			this.installationData = null;
 			this.isSuggested = false;
+			this.fullyLoaded = props.fully_loaded;
 			if (this.installations) {
 				this.installationData = [];
 				tools.forIn(this.installations, lang.hitch(this, function(hostName, info) {

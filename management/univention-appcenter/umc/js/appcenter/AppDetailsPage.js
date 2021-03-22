@@ -124,12 +124,12 @@ define([
 				this.appLoadingDeferred = new Deferred();
 			}
 			var appLoaded = app;
-			if (!app.fully_loaded) {
+			if (!app.fullyLoaded) {
 				// app is just {id: '...'}!
 				// we need to ask the server,
 				// it is not yet known!
 				appLoaded = tools.umcpCommand(this.getAppCommand, {'application': app.id}).then(function(data) {
-					return data.result;
+					return new App(data.result);
 				});
 			}
 			when(appLoaded).then(lang.hitch(this, function(loadedApp) {
@@ -138,16 +138,15 @@ define([
 					this.appLoadingDeferred.reject();
 					return;
 				}
-				if (track && !loadedApp.is_installed_anywhere) {
+				if (track && !loadedApp.isInstalledInDomain()) {
 					tools.umcpCommand('appcenter/track', {app: loadedApp.id, action: 'get'});
 				} else {
 					tools.umcpCommand('appcenter/ping');
 				}
-				var app = new App(loadedApp);
-				this._set('app', app);
-				this._configureDialogs(app);
+				this._set('app', loadedApp);
+				this._configureDialogs(loadedApp);
 				this._renderPage();
-				this.set('moduleTitle', app.name);
+				this.set('moduleTitle', loadedApp.name);
 				this.appLoadingDeferred.resolve();
 			}));
 		},
@@ -185,9 +184,12 @@ define([
 		},
 
 		reloadPage: function() {
-			// reset same app, but only pass the id => loads new from server
-			this.set('app', {id: this.app.id}, false);
-			return this.appLoadingDeferred;
+			when(this.updateApplications(false), (apps) => {
+				let app = {id: this.app.id}; // fallback: reset same app, but only pass the id => loads new from server
+				app = apps.find((_app) => _app.id == app.id) || app
+				this.set('app', app, false);
+				return this.appLoadingDeferred;
+			});
 		},
 
 		getButtons: function() {
@@ -755,7 +757,7 @@ define([
 		updateApplications: function() {
 			// Is overwritten with AppCenterPage.updateApplications
 			var deferred = new Deferred();
-			deferred.resolve();
+			deferred.resolve([]);
 			return deferred;
 		},
 
