@@ -166,14 +166,14 @@
 - [x] JOIN `20univention-printquota.uinst`
 - [x] UCR `/etc/pykota/**`
 - [x] UCR `/etc/postgresql/9.?/main/pg_hba.conf.d/`
-- [ ] ADDUSER `pykota`
-- [ ] UCRV `pykota/policy/debug`
-- [ ] DPKG-STAT `/usr/share/pykota/cupspykota`
-- [ ] POSTGRESQL
-- [ ] DIR `/etc/pykota`
+- [x] ADDUSER `pykota`
+- [x] UCRV `pykota/policy/debug`
+- [x] DPKG-STAT `/usr/share/pykota/cupspykota`
+- [x] POSTGRESQL
+- [x] DIR `/etc/pykota`
 - [x] FILE `/etc/pykota/pykota.secret`
-- [ ] UCRV `cups/quota/secret`
-- [ ] UCRV `cups/quota/server/access`
+- [x] UCRV `cups/quota/secret`
+- [x] UCRV `cups/quota/server/access`
 
 ## [services/univention-bacula/](services/univention-bacula/)
 - [x] UCR `/etc/postgresql/9.?/main/pg_hba.conf.d/`

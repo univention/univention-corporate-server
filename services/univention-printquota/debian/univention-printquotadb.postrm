@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,18 +30,14 @@
 #DEBHELPER#
 
 case "$1" in
-remove)
-	# shellcheck source=/dev/null
-	. /usr/share/univention-lib/all.sh
-	call_unjoinscript 20univention-printquota.uinst
-
-	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
-	;;
 purge)
-	univention-config-registry unset pykota/policy/debug cups/quota/server/name cups/quota/account cups/quota/inform cups/quota/admin/mail
-	dpkg-statoverride --remove /usr/share/pykota/cupspykota >/dev/null 2>&1 || :
-	deluser --quiet lp pykota || :
-	;;
+    rm -f /etc/pykota/pykota.secret
+    rm -rf /etc/pykota
+    ucr unset cups/quota/secret cups/quota/server/access
+    su - postgres -c 'psql --no-password -d template1 -c "DROP DATABASE pykota"'
+    su - postgres -c 'psql --no-password -d template1 -c "DROP USER pykotauser"'
+    su - postgres -c 'psql --no-password -d template1 -c "DROP USER pykotaadmin"'
+    ;;
 esac
 
 exit 0
