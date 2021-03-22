@@ -189,15 +189,15 @@ ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9
 if [ -n "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
 	eval "$(ucr shell fetchmail/autostart/update500)"
 	if [ -z "$fetchmail_autostart_update500" ] ; then
-		ucr unset fetchmail/autostart
+		ucr unset fetchmail/autostart >&3
 	else
-		ucr set fetchmail/autostart="$fetchmail_autostart_update500"
+		ucr set fetchmail/autostart="$fetchmail_autostart_update500" >&3
 	fi
-	ucr unset fetchmail/autostart/update500
-	echo "Please note:"
-	echo "The following fetchmail restart might fail if fetchmail is unconfigured."
-	echo "This is usually no error."
-	service fetchmail restart || :
+	ucr unset fetchmail/autostart/update500 >&3
+	echo "Please note:" >&3
+	echo "The following fetchmail restart might fail if fetchmail is unconfigured." >&3
+	echo "This is usually no error." >&3
+	service fetchmail restart  >&3 || :
 fi
 
 

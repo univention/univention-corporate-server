@@ -135,10 +135,11 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 # Bug #52923: disable fetchmail during update to prevent aborting update
 if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
 	if [ -z "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
-		ucr set fetchmail/autostart/update500="$(ucr get fetchmail/autostart)"
+		ucr set fetchmail/autostart/update500="$(ucr get fetchmail/autostart)" >&3
 	fi
-	ucr set fetchmail/autostart=no
-	service fetchmail stop || :
+	ucr set fetchmail/autostart=no >&3
+	service fetchmail stop  >&3 || :
+fi
 fi
 
 # Bug #52790: Don't let postgresql@11-main.service start before migration
