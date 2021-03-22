@@ -26,9 +26,10 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import axios from 'axios';
+
 // get default dictionary
 import { catalog } from '@/assets/data/dictionary';
-import axios from 'axios';
 
 // get env vars
 const portalUrl = process.env.VUE_APP_PORTAL_URL || '';

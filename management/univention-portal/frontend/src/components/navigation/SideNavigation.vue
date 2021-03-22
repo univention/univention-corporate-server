@@ -35,17 +35,18 @@ License with the Debian GNU/Linux or Univention distribution in file
       >
         <portal-icon
           icon="user"
-          icon-width="6rem"
         />
         <div>
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
           <button
+            id="loginButton"
             ref="loginButton"
             class="portal-sidenavigation__logout-link"
             @click="logout"
             @keydown.esc="closeNavigation"
+            @keydown.shift.tab="focusOnMenuButton($event)"
           >
             <translate i18n-key="LOGOUT" />
           </button>
@@ -53,6 +54,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       </div>
       <button
         v-else
+        id="loginButton"
         ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
@@ -79,32 +81,40 @@ License with the Debian GNU/Linux or Univention distribution in file
           @click="toggleMenu(index)"
           @clickAction="closeNavigation"
           @escButtonClick="closeNavigation"
-          @keydown.up.prevent="selectPrevious(index)"
-          @keydown.down.prevent="selectNext(index)"
-          @keydown.enter.prevent="toggleMenu(index)"
-          @keydown.right="focusOnChild(item, index)"
+          @keydown.up.prevent="selectPrevious( 'menuItem', index, menuLinks.length)"
+          @keydown.down.prevent="selectNext( 'menuItem', index, menuLinks.length)"
+          @keydown.enter="focusOnChild(index)"
+          @keydown.space.prevent="focusOnChild(index)"
+          @keydown.right="focusOnChild(index)"
         />
         <template v-if="item.subMenu && item.subMenu.length > 0">
           <menu-item
             v-if="subMenuVisible & (menuParent === index)"
+            ref="subItemParent"
             :title="item.title"
             :is-sub-item="true"
             :links="[]"
-            class="portal-sidenavigation__menu-subitem portal-sidenavigation__menu-subitem--parent"
+            class="portal-sidenavigation__menu-subItem portal-sidenavigation__menu-subItem--parent"
             @click="toggleMenu()"
-            @keydown.enter.prevent="toggleMenu()"
+            @keydown.enter.prevent="focusOnParent(index)"
+            @keydown.space.prevent="focusOnParent(index)"
+            @keydown.left="focusOnParent(index)"
+            @keydown.up.prevent="selectPrevious('subItemParent',index, item.subMenu.length)"
+            @keydown.down.prevent="selectNext('subItemParent', index)"
           />
           <div
-            v-for="(subitem, subindex) in item.subMenu"
+            v-for="(subItem, subindex) in item.subMenu"
             :key="subindex"
             :class="subMenuClass"
           >
             <menu-item
               v-if="subMenuVisible & (menuParent === index)"
-              :ref="'subitem' + subindex"
-              v-bind="subitem"
-              class="portal-sidenavigation__menu-subitem"
+              :ref="'subItem' + subindex"
+              v-bind="subItem"
+              class="portal-sidenavigation__menu-subItem"
               @clickAction="closeNavigation"
+              @keydown.up.prevent="selectPrevious( 'subItem', subindex, item.subMenu.length)"
+              @keydown.down.prevent="selectNext( 'subItem', subindex, item.subMenu.length)"
             />
           </div>
         </template>
@@ -223,34 +233,78 @@ export default defineComponent({
       }
       return ret;
     },
-    selectPrevious(index: number):void {
-      const currentElementIndex = `menuItem${index}`;
-      const currentElement = (this.$refs[currentElementIndex] as HTMLFormElement).$el;
-      if (index === 0) {
-        // select Last Element
-      } else {
-        const previousElement = currentElement.parentElement.previousElementSibling.children[0];
-        previousElement.focus();
+    selectPrevious(menuReference: string, index?: number, numberOfItems?: number): void {
+      if (menuReference === 'subItemParent') {
+        // If current is subitem Parent focus last item in list
+        this.$nextTick(() => {
+          const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
+          const firstSubItemChild = (this.$refs[`subItem${lastChildIndex}`] as HTMLFormElement).$el;
+          firstSubItemChild.focus();
+        });
+      } else if (menuReference === 'subItem' || menuReference === 'menuItem') {
+        if (index === 0) {
+          // If current is first submenu item set focus to subItemParent.
+          if (menuReference === 'subItem') {
+            this.focusOnSubItemParent();
+          } else {
+            const lastElementIndex = numberOfItems ? numberOfItems - 1 : null;
+            (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el.focus();
+          }
+        } else {
+          // normal previous behaviour
+          const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
+          const previousElement = currentElement.parentElement.previousElementSibling.children[0];
+          previousElement.focus();
+        }
       }
     },
-    selectNext(index: number):void {
-      const currentElementIndex = `menuItem${index}`;
-      const currentElement = (this.$refs[currentElementIndex] as HTMLFormElement).$el;
-      if (index === 99) {
-        // select Last Element
+    selectNext(menuReference: string, index?: number, numberOfItems?: number):void {
+      if (menuReference === 'subItemParent') {
+        this.$nextTick(() => {
+          const firstSubItemChild = (this.$refs.subItem0 as HTMLFormElement).$el;
+          firstSubItemChild.focus();
+        });
       } else {
-        const nextElement = currentElement.parentElement.nextElementSibling.children[0];
-        nextElement.focus();
+        const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
+        const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
+        if (index === lastChildIndex) {
+          if (menuReference === 'subItem') {
+            this.focusOnSubItemParent();
+          } else {
+            (this.$refs.menuItem0 as HTMLFormElement).$el.focus();
+          }
+        } else {
+          const nextElement = currentElement.parentElement.nextElementSibling.children[0];
+          nextElement.focus();
+        }
       }
     },
     hasSubmenu(item) {
       return item.subMenu && item.subMenu.length > 0;
     },
-    focusOnChild(item, index) {
+    focusOnChild(index) {
       this.toggleMenu(index);
-      // const firstClickableChildElement = (this.$refs[`subitem${1}`] as HTMLFormElement).$el;
-      // console.log(firstClickableChildElement);
-      // firstClickableChildElement.focus();
+      this.$nextTick(() => {
+        this.focusOnSubItemParent();
+      });
+    },
+    focusOnParent(index) {
+      this.toggleMenu(index);
+      this.$nextTick(() => {
+        const firstClickableChildElement = (this.$refs[`menuItem${index}`] as HTMLFormElement).$el;
+        console.log(firstClickableChildElement);
+        firstClickableChildElement.focus();
+      });
+    },
+    focusOnSubItemParent() {
+      (this.$refs.subItemParent as HTMLFormElement).$el.focus();
+    },
+    focusOnMenuButton(event) {
+      console.log('header-button-menu');
+      event.preventDefault();
+      const buttonElement = document.getElementById('header-button-menu') as HTMLFormElement;
+      console.log(buttonElement);
+      buttonElement.focus();
     },
   },
 });
@@ -269,7 +323,7 @@ export default defineComponent({
     height: auto
     width: 100%
     justify-content: left
-    font-size: var(--font-size-normal)
+    font-size: var(--font-size-4)
     color: var(--font-color-contrast-high)
     font-weight: 600
     text-transform: uppercase
@@ -285,9 +339,11 @@ export default defineComponent({
 
     svg
       fill: currentColor
+      height: 3rem
+      width: @height
       background-color: var(--color-grey40)
       margin: 0.5rem
-      border-radius: 50%
+      border-radius: var(--border-radius-circles)
     &> div
       margin: auto 0
 
@@ -296,7 +352,7 @@ export default defineComponent({
     cursor: pointer
     background-color: rgba(0,0,0,0)
     color: var(--font-color-contrast-high)
-    font-size: var(--font-size-normal)
+    font-size: var(--font-size-4)
     border: 0.2rem solid rgba(0,0,0,0);
 
     &:hover
@@ -322,9 +378,8 @@ export default defineComponent({
     &--hide
       display: none
 
-  &__menu-subitem
+  &__menu-subItem
     margin-left: 0
-    padding: 2rem 0 2rem 2rem;
     &--parent
       text-transform: uppercase;
       padding-left: 4rem;

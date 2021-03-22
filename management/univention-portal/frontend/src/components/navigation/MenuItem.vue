@@ -115,7 +115,7 @@ export default defineComponent({
   z-index: 15;
   display: flex;
   align-items: center;
-  padding: 2rem 0 2rem 2rem;
+  padding: 1em 0 1em 20px;
   color: #fff;
   text-decoration: none;
   border: 0.2rem solid rgba(0,0,0,0);

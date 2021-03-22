@@ -51,8 +51,8 @@ export default defineComponent({
 
 <style lang="stylus">
 .flyout-wrapper
-  width: 36rem
-  max-width: 36rem
+  width: 22rem
+  max-width: 22rem
   position: fixed
   top:  calc(var(--portal-header-height) + 0.5rem)
   right: 0
@@ -67,8 +67,8 @@ export default defineComponent({
     transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
 
   &__notification
-    width: 36rem
-    max-width: 36rem
+    width: 22rem
+    max-width: 22rem
     min-height: 100vh
 
   &__bubble

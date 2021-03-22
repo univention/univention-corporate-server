@@ -205,17 +205,6 @@ export default defineComponent({
     },
   },
 });
-// export default class PortalTile extends Vue {
-//   title!: Record<string, string>;
-
-//   description!: Record<string, string>;
-
-//   links!: string[];
-
-//   pathToLogo?: string;
-
-//   backgroundColor = 'var(--color-grey40)';
-// }
 </script>
 
 <style lang="stylus">

@@ -37,6 +37,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       role="presentation"
     >
       <button
+        :id="'header-button-' + icon"
         :ref="setRef"
         :aria-expanded="isActiveButton"
         :aria-label="ariaLabel"
@@ -44,7 +45,6 @@ License with the Debian GNU/Linux or Univention distribution in file
       >
         <portal-icon
           :icon="icon"
-          icon-width="2rem"
         />
       </button>
     </span>
@@ -103,7 +103,7 @@ export default defineComponent({
 
 <style lang="stylus">
 .header-button
-  --font-size-button-icon: var(--font-size-big)
+  --font-size-button-icon: var(--font-size-2)
   margin: 0 var(--layout-spacing-unit-small)
   --bgc: transparent
   --bgc-state: transparent
@@ -128,8 +128,6 @@ export default defineComponent({
     font-size: var(--button-font-size)
 
   &__button
-    width: 4rem
-    height: 4rem
     background: none
     border: none
     color: white
@@ -138,6 +136,8 @@ export default defineComponent({
     justify-content: center
     background-color: transparent
     border: 0.2rem solid rgba(0,0,0,0)
+    height: 3rem
+    width: @height
 
     &:hover,
     &:focus

@@ -82,7 +82,7 @@ let transitioning = false;
 
 const useDraggableContainer = ({ initialItems, dropZoneId }, context) => {
   const items = ref(initialItems.value);
-  console.log('ITEMS', items);
+  // console.log('ITEMS', items);
   // update model when dropped
   watch(draggingItem, () => {
     if (draggingItem.value.id) {
@@ -104,7 +104,7 @@ const useDraggableContainer = ({ initialItems, dropZoneId }, context) => {
       return;
     }
     items.value = changePosition(draggingItem.value, items.value, position);
-    console.log('items.value', items.value);
+    // console.log('items.value', items.value);
   };
 
   const containerDragOver = () => {
@@ -136,7 +136,7 @@ const useDraggableContainer = ({ initialItems, dropZoneId }, context) => {
 
 const useDraggableItem = ({ item, position, dropZoneId }, context) => {
   const draggable = ref(null);
-  console.log('draggable___', draggable);
+  // console.log('draggable___', draggable);
   const isDragging = ref(
     item.value.id === draggingItem.value.id,
   );
@@ -211,7 +211,7 @@ const useDraggableItem = ({ item, position, dropZoneId }, context) => {
   };
 
   watch(draggingItem, () => {
-    console.log('DRAGGINGITEM', draggingItem);
+    // console.log('DRAGGINGITEM', draggingItem);
     if (draggingItem.value.id) {
       return;
     }

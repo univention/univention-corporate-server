@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-03-22 16:13+0100\n"
+"POT-Creation-Date: 2021-03-17 09:10+0000\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,31 +12,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: frontend/src/assets/data/dictionary.js:45
+#: src/assets/data/dictionary.js:17
 msgid "Accept"
 msgstr "Akzeptieren"
 
-#: frontend/src/assets/data/dictionary.js:49
+#: src/assets/data/dictionary.js:21
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: frontend/src/assets/data/dictionary.js:50
+#: src/assets/data/dictionary.js:22
 msgid "Cookie Settings"
 msgstr "Cookie-Einstellungen"
 
-#: frontend/src/assets/data/dictionary.js:47
+#: src/assets/data/dictionary.js:19
 msgid "Dismiss notification"
 msgstr "Benachrichtigung schließen"
 
-#: frontend/src/assets/data/dictionary.js:42
+#: src/assets/data/dictionary.js:14
 msgid "Edit portal"
 msgstr "Portal bearbeiten"
 
-#: frontend/src/assets/data/dictionary.js:40
+#: src/assets/data/dictionary.js:12
 msgid "Login"
 msgstr "Anmelden"
 
-#: frontend/src/assets/data/dictionary.js:48
+#: src/assets/data/dictionary.js:20
 msgid ""
 "Login <a class=\"notification-bubble__link\" href=\"#\">here</a> so that you"
 " can use the full range of functions of UCS."
@@ -44,27 +44,68 @@ msgstr ""
 "Melden Sie sich <a class=\"notification-bubble__link\" href=\"#\">hier</a> "
 "an, um alle Funktionen von UCS nutzen zu können."
 
-#: frontend/src/assets/data/dictionary.js:41
+#: src/assets/data/dictionary.js:13
 msgid "Logout"
 msgstr "Abmelden"
 
-#: frontend/src/assets/data/dictionary.js:39
+#: src/assets/data/dictionary.js:11
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: frontend/src/assets/data/dictionary.js:43
+#: src/assets/data/dictionary.js:15
 msgid "Stop edit portal"
 msgstr "Bearbeiten abbrechen"
 
-#: frontend/src/assets/data/dictionary.js:46
+#: src/assets/data/dictionary.js:18
 msgid "Submit"
 msgstr "Abschicken"
 
-#: frontend/src/assets/data/dictionary.js:44
+msgid "Edit category"
+msgstr "Kategorie bearbeiten"
+
+msgid "Add entry"
+msgstr "Eintrag hinzufügen"
+
+msgid "Create new entry"
+msgstr "Neuen Eintrag hinzufügen"
+
+msgid "Add existing entry"
+msgstr "Bestehenden Eintrag hinzufügen"
+
+msgid "Add folder"
+msgstr "Ordner hinzufügen"
+
+msgid "Create new folder"
+msgstr "Neuen Ordner hinzufügen"
+
+msgid "Add existing folder"
+msgstr "Bestehenden Ordner hinzufügen"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Remove from this portal"
+msgstr "Aus diesem Portal entfernen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Internal name"
+msgstr "Interner Name"
+
+msgid "Display name"
+msgstr "Anzeigename"
+
+msgid "Language code (e.g. en_US)"
+msgstr "Sprachcode (z. B. en_US)"
+
+msgid "Display name of the category. At least one entry; strongly encouraged to have one for en_US"
+msgstr "Anzeigename der Kategorie. Mindestens ein Eintrag; dringend empfohlen, eine für en_US zu haben"
+#: src/assets/data/dictionary.js:16
 msgid "Switch locale"
 msgstr "Sprache ändern"
 
-#: frontend/src/assets/data/dictionary.js:51
+#: src/assets/data/dictionary.js:23
 msgid ""
 "We use cookies in order to provide you with certain functions and to be able"
 " to guarantee an unrestricted service. By clicking on \"Accept\", you "

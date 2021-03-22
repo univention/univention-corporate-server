@@ -60,7 +60,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <script lang="ts">
 import { toRefs, defineComponent, ComputedRef, computed } from 'vue';
 import DraggableItem from '@/components/dragdrop/DraggableItem.vue';
-import TileAdd from '@/components/edit/TileAdd.vue';
+import TileAdd from '@/components/admin/TileAdd.vue';
 import { useDraggableContainer } from '@/jsHelper/draggable';
 
 export default defineComponent({

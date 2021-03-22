@@ -74,7 +74,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
-import notificationMixin from '@/mixins/notificationMixin';
+import notificationMixin from '@/mixins/notificationMixin.vue';
 
 import { catalog } from '@/i18n/translations';
 
@@ -123,8 +123,6 @@ export default defineComponent({
 <style lang="stylus">
 .notification-bubble
   &__standalone
-    min-width: 32rem
-    max-width: 32rem
     position: absolute
     right: 2rem
     top: 8rem
@@ -134,19 +132,15 @@ export default defineComponent({
     cursor: pointer
 
   &__embedded
-    min-width: 32rem
-    max-width: 32rem
     position: relative
     right: 0
     top: 0
 
   &__container
-    max-width: 28.8rem
     backdrop-filter: blur(2rem)
     border-radius: var(--border-radius-notification)
-    padding: 1.6rem
-    font-size: 1.6rem
-    margin-bottom: 1.6rem
+    padding: var(--layout-spacing-unit)
+    margin-bottom: calc(2 * var(--layout-spacing-unit))
     background-color: rgba(0,0,0,0.4);
 
     &--default
@@ -164,7 +158,7 @@ export default defineComponent({
   &__header
     display: flex
     align-items: center
-    margin-bottom: 0.8rem
+    margin-bottom: var(--layout-spacing-unit)
 
   &__title
     flex: 1 1 auto

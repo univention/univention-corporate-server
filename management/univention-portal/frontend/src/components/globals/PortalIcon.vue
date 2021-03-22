@@ -29,8 +29,6 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <svg
     class="portal-icon"
-    :width="iconWidth"
-    :height="setIconHeight"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     aria-hidden="true"
@@ -49,20 +47,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    iconWidth: {
-      type: String,
-      required: true,
-    },
-    iconHeight: {
-      type: String,
-      default: '',
-      required: false,
-    },
-  },
-  computed: {
-    setIconHeight(): string {
-      return this.iconHeight ? this.iconHeight : this.iconWidth;
-    },
   },
 });
 </script>
@@ -70,6 +54,8 @@ export default defineComponent({
 <style lang="stylus">
 .portal-icon
   font-size: inherit;
+  height: var(--button-icon-size)
+  width: var(--button-icon-size)
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;

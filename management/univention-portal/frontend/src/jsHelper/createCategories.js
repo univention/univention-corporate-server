@@ -63,6 +63,7 @@ export default function createCategories(portalData) {
     const tiles = categoryEntries.map((entryID) => makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget));
     return {
       title: category.display_name,
+      dn: category.dn,
       tiles,
     };
   });

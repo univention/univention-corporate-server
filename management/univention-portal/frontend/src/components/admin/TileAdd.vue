@@ -168,7 +168,6 @@ export default defineComponent({
     position: absolute
 
   &__menu-container
-    min-width: var(--app-tile-side-length)
     position: relative
     order: 0;
     flex: 0 1 auto;

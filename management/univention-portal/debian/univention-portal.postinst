@@ -32,7 +32,6 @@
 
 #DEBHELPER#
 
-ucr set groups/default/domainadmins?"Domain Admins"
 a2ensite univention-portal.conf
 
 . /usr/share/univention-lib/all.sh

@@ -1,4 +1,4 @@
-/*
+<!--
  * Copyright 2021 Univention GmbH
  *
  * https://www.univention.de/
@@ -25,7 +25,8 @@
  * License with the Debian GNU/Linux or Univention distribution in file
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
- */
+-->
+<script>
 import { store } from '@/store';
 import { mapGetters } from 'vuex';
 
@@ -37,10 +38,11 @@ const notificationMixin = {
       bubbleStateNewBubble: 'notificationBubble/bubbleStateNewBubble',
       bubbleContent: 'notificationBubble/bubbleContent',
       bubbleContentNewNotification: 'notificationBubble/bubbleContentNewNotification',
+      getActiveButton: 'navigation/getActiveButton',
     }),
   },
   methods: {
-    dismissBubble(token): void {
+    dismissBubble(token) {
       if (token !== undefined) {
         // remove selected bubble content
         store.dispatch('notificationBubble/deleteSingleNotification', token);
@@ -49,8 +51,13 @@ const notificationMixin = {
         store.dispatch('notificationBubble/setHideBubble');
         store.dispatch('notificationBubble/showEmbedded');
       }
+      if (token === this.getActiveButton) {
+        if (document.getElementById('loginButton')) {
+          document.getElementById('loginButton').focus();
+        }
+      }
     },
-    showNewNotification(notificationContent): void {
+    showNewNotification(notificationContent) {
       // for new notifications only
 
       store.dispatch('notificationBubble/addContent', notificationContent);
@@ -59,7 +66,7 @@ const notificationMixin = {
         store.dispatch('notificationBubble/setHideNewBubble');
       }, 4000);
     },
-    bubbleClick(e): void {
+    bubbleClick(e) {
       if (e.target.matches('.notification-bubble__link, .notification-bubble__link *')) {
         store.dispatch('notificationBubble/hideAllNotifications');
         console.info('Bubble link clicked - TODO: add some action');
@@ -69,3 +76,4 @@ const notificationMixin = {
 };
 
 export default notificationMixin;
+</script>

@@ -83,15 +83,13 @@ export default defineComponent({
 <style lang="stylus">
 .portal-search {
   &__input {
-    height: 5.8rem;
     width: 100%;
     background-color: transparent;
     color: #fff;
     border: 1px solid white;
     border-radius: var(--border-radius-interactable);
     __border-radius: var(--border-radius-interactable);
-    font-size: 2rem;
-    padding-left: 2rem;
+    padding: var(--layout-spacing-unit) !important;
     box-sizing: border-box;
 
     &:focus {
