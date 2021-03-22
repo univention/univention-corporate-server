@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Nagios Plugin
-#  postinst file for the debian package
+# Univention Nagios Service Checks
+#  unjoin script
 #
-# Copyright 2008-2021 Univention GmbH
+# Copyright 2010-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,18 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+## joinscript api: bindpwdfile
 
-eval "$(univention-config-registry shell server/role)"
+VERSION=1
 
-if [ "$1" = "configure" ]; then
-       uinst=/usr/lib/univention-install/65univention-nagios-dansguardian.uinst
-       [ -e "$uinst" ] && rm "$uinst"
+. /usr/share/univention-join/joinscripthelper.lib
+
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+# remove nagios service for dansguardian if this is the last host using it
+if [ -z $(univention-directory-manager nagios/service list "$@" --position "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base" | sed -ne 's|  assignedHosts: ||p' | grep -v "$ldap_hostdn") ]; then
+	univention-directory-manager nagios/service remove "$@" --ignore_not_exists \
+		--dn "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base"
 fi
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	# run join script
-	/usr/lib/univention-install/35univention-nagios-dansguardian.inst
-fi
+joinscript_remove_script_from_status_file univention-nagios-dansguardian
 
 exit 0

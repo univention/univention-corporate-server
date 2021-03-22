@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Nagios Plugin
-#  postinst file for the debian package
+#  postrm file for the debian package
 #
-# Copyright 2008-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,16 +32,9 @@
 
 #DEBHELPER#
 
-eval "$(univention-config-registry shell server/role)"
-
-if [ "$1" = "configure" ]; then
-       uinst=/usr/lib/univention-install/65univention-nagios-dansguardian.uinst
-       [ -e "$uinst" ] && rm "$uinst"
-fi
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	# run join script
-	/usr/lib/univention-install/35univention-nagios-dansguardian.inst
+if [ "$1" = "remove" ]; then
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 65univention-nagios-dansguardian.uinst
 fi
 
 exit 0
