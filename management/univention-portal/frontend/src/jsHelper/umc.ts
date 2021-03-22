@@ -28,16 +28,7 @@
  */
 import axios, { AxiosResponse } from 'axios';
 
-function getCookie(name: string): string | undefined {
-  const cookies = {};
-  document.cookie.split('; ').forEach((cookieWithValue) => {
-    const idx = cookieWithValue.indexOf('=');
-    const cookieName = cookieWithValue.slice(0, idx);
-    const value = cookieWithValue.slice(idx + 1);
-    cookies[cookieName] = value;
-  });
-  return cookies[name];
-}
+import { getCookie } from '@/jsHelper/tools';
 
 function umc(path: string, options: any): Promise<AxiosResponse<any>> {
   const umcSessionId = getCookie('UMCSessionId');

@@ -45,7 +45,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       @blur="hideTooltip()"
     >
       <div
-        :style="`background: ${backgroundColor}`"
+        :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
         :class="[
           'portal-tile__box', { 'portal-tile__box--dragable': editMode }
         ]"

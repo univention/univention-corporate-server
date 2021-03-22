@@ -32,3 +32,32 @@ h2
 .fade-enter,
 .fade-leave-to
   opacity: 0
+
+input
+  padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
+  font-size: var(--font-size-3)
+  height: var(--inputfield-size)
+  width: 100%
+  background-color: var(--inputfield-bgc)
+  margin-bottom: var(--layout-spacing-unit)
+  transition: background-color, color, border
+  transition-duration: 250ms
+  border: 1px solid var(--inputfield-bgc)
+  color: var(--font-color-cotrast-high)
+
+  &:hover
+    transition: background-color, color, border
+    transition-duration: 250ms
+
+  &:focus
+    --border-color: var(--color-grey40)
+    outline-style: none
+    box-shadow: none
+
+  &[disabled]
+    cursor: var(--cursor-disabled)
+    color: var(--font-color-disabled)
+
+label
+  color: var(--color-grey62)
+  font-size: var(--font-size-4)

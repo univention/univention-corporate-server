@@ -35,11 +35,9 @@ import { defineComponent } from 'vue';
 
 import Portal from '@/views/Portal.vue';
 import { login } from '@/jsHelper/login';
+import { getCookie } from '@/jsHelper/tools';
 import { catalog } from '@/i18n/translations';
 import { mapGetters } from 'vuex';
-import { Locale } from './store/models';
-
-const defaultPortalLocale: Locale = process.env.VUE_APP_LOCALE || 'en_US';
 
 export default defineComponent({
   name: 'App',
@@ -56,7 +54,10 @@ export default defineComponent({
     this.$store.dispatch('modal/setShowLoadingModal');
 
     // Set locale and load portal data from backend
-    await this.$store.dispatch('locale/setLocale', defaultPortalLocale);
+    const umcLang = getCookie('UMCLang');
+    if (umcLang) {
+      await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
+    }
     const portalData = await this.$store.dispatch('loadPortal');
 
     this.$store.dispatch('modal/setHideModal');

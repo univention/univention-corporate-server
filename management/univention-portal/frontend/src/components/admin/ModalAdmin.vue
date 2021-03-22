@@ -33,7 +33,6 @@
         >
           <portal-icon
             icon="x"
-            icon-width="2rem"
           />
         </button>
       </span>
@@ -239,7 +238,7 @@ export default defineComponent({
 .modal-admin
   &__wrapper
     background: var(--color-grey0)
-    border-radius: 8px
+    border-radius: var(--border-radius-container)
     max-width: 650px
     box-shadow: var(--box-shadow)
     position: relative
@@ -317,17 +316,12 @@ export default defineComponent({
 
   &__hint-content
     max-width: 400px
-    font-size: 1.6rem
     color: var(--color-grey8)
     border-radius: var(--border-radius-tooltip)
     border: none
     padding: 0.6em 0.9em
     background: rgba(255,255,255,0.6)
     backdrop-filter: blur(20px)
-
-  &__label
-    color: var(--font-color-disabled)
-    font-size: 1.6rem
 
   &__button
     background: none
@@ -352,7 +346,6 @@ export default defineComponent({
       transition: var(--button-bgc-transition)
       background-color: var(--bgc-state)
       transition: opacity 250ms
-      font-size: 16px
       color: #fff
       text-transform: uppercase
       padding: 16px
@@ -361,53 +354,20 @@ export default defineComponent({
 
   &__wrapper
     width: 100%
-    min-width: 300px
-    max-width: 650px
-    padding: 0 0 3rem 0
     display: inline-block
 
   &__container
     width: 100%
-    height: 58px
 
   &--error
     border: 1px solid var(--color-error) !important
 
-  &--default
-    width: 100%
-    height: 100%
-    color: var(--color)
-    font-size: 2rem
-    --bgc: var(--inputfield-bgc)
-    background-color: var(--bgc)
-    border: 1px solid var(--border-color)
-    border-radius: var(--border-radius-interactable)
-    padding: 0 1rem !important
-    transition: background-color, color, border
-    transition-duration: 250ms
-    &:hover
-      transition: background-color, color, border
-      transition-duration: 250ms
-    &:focus
-      --border-color: var(--color-grey40)
-      outline-style: none
-      box-shadow: none
-    &[disabled]
-      cursor: var(--cursor-disabled)
-      --color: var(--font-color-disabled)
-
   &--text
-    height: 100%
     text-overflow: ellipsis
-
-  &__label
-    color: var(--font-color-disabled)
-    font-size: 1.6rem
-    &--error
-      color: var(--color-error);
 
   &__icon
     &--error
+      display: none
       color: var(--color-error);
       position: relative
       top: 50px

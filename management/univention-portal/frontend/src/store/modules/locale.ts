@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { setCookie } from '@/jsHelper/tools';
 import { updateLocale } from '@/i18n/translations';
 import { Locale } from '../models';
 import { PortalModule } from '../types';
@@ -53,6 +54,7 @@ const locale: PortalModule<LocaleState> = {
   actions: {
     setLocale({ commit }, payload: Locale) {
       commit('NEWLOCALE', payload);
+      setCookie('UMCLang', payload.replace('_', '-'));
       const localePrefix = payload.slice(0, 2);
       return updateLocale(localePrefix);
     },

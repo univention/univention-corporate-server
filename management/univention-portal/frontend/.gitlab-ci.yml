@@ -31,6 +31,7 @@ build-test-deploy-job:
   script:
     #- yarn --cwd=frontend
     #- yarn --cwd=frontend build
+    - yarn
     - yarn --cwd=frontend test:unit
     # das folgende ist Holzhammer auf Wegwerfmaschinen, nicht in prod nutzen...
     - apt-get -q --assume-yes build-dep .

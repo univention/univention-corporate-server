@@ -18,6 +18,7 @@ describe('General Tests', () => {
 
     cy.contains('Cookie-Einstellungen');
     cy.get('.cookie-banner__button-text').click();
+    // TODO: Check cookie is set
 
     cy.contains('h2', 'Verwaltung');
     // Tiles?
@@ -34,16 +35,17 @@ describe('General Tests', () => {
     cy.get('#ownCloud').trigger('mouseleave');
     cy.get('.portal-tooltip--shown').should('not.exist');
 
-    // Buttons
+    // Buttons, check if they become green
     const searchbutton = cy.get('[data-test="searchbutton"]');
     searchbutton.should('not.have.class', 'header-button--is-active');
     searchbutton.click();
     searchbutton.should('have.class', 'header-button--is-active');
-    //
+
     const bellbutton = cy.get('[data-test="bellbutton"]');
     bellbutton.should('not.have.class', 'header-button--is-active');
     bellbutton.click();
     bellbutton.should('have.class', 'header-button--is-active');
+
     // can't click the bell again bc it's hidden beneath the modal
     cy.get('.portal-modal--isVisible').click();
     bellbutton.should('not.have.class', 'header-button--is-active');
