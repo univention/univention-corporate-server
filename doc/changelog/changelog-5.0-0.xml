@@ -294,6 +294,9 @@
 				<listitem><simpara>
 					The portal is now modularized and can be generously configured (<u:bug>52512</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Links can now be localized, i.e. the tiles point to different URLs depending on the user's locale (<u:bug>45918</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
