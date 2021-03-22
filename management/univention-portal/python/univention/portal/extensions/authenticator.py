@@ -54,7 +54,6 @@ class Authenticator(with_metaclass(Plugin)):
 	The idea is that this class handles the following
 	methods from the Portal:
 	`login_request`: A user GETs to the login action
-	`login_request`: A user GETs to the login action
 	`login_user`: Credentials are POSTed to this action
 	`get_user`: While gathering the portal data, the caller wants
 	`may_login_via_saml`: Whether this authenticator works with a SAML SSO login

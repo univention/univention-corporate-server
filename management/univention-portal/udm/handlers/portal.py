@@ -136,7 +136,7 @@ property_descriptions = {
 	'menuLinks': univention.admin.property(
 		short_description=_('Entries in the menu'),
 		long_description=_('List of portal entries that are shown in the menu of the portal'),
-		syntax=univention.admin.syntax.NewPortalEntries,
+		syntax=univention.admin.syntax.NewPortalCategoryEntries,
 		multivalue=True,
 	),
 	'categories': univention.admin.property(
@@ -160,7 +160,7 @@ layout = [
 		]),
 		Group(_('Categories'), layout=[
 			['categories'],
-			['showApps'],
+			# ['showApps'],
 			['showUmc'],
 		]),
 		Group(_('Link behaviour'), layout=[
@@ -178,19 +178,19 @@ layout = [
 		Group(_('Appearance'), layout=[
 			['logo'],
 			['background'],
-			['cssBackground'],
-			['fontColor'],
-			['autoLayoutCategories'],
+			# ['cssBackground'],
+			# ['fontColor'],
+			# ['autoLayoutCategories'],
 		]),
 	]),
-	Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
-		Group(_('Login'), layout=[
-			['ensureLogin'],
-		]),
-		Group(_('Message when the portal is empty'), layout=[
-			['anonymousEmpty'],
-		]),
-	]),
+	# Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
+	# 	Group(_('Login'), layout=[
+	# 		['ensureLogin'],
+	# 	]),
+	# 	Group(_('Message when the portal is empty'), layout=[
+	# 		['anonymousEmpty'],
+	# 	]),
+	# ]),
 ]
 
 
