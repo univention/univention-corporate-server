@@ -4,10 +4,6 @@ from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 
 
-def log(msg):
-	with open("/tmp/phase.log", "a") as fd:
-		fd.write("%r\n" % msg)
-
 class PhaseLdapReferences(AddressMap, LdapChange):
 
 	"""
@@ -79,12 +75,8 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 			if old_values == new_values:
 				return
 			obj.info[udm_property] = new_values
-			log("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			if not self.changeset.no_act:
 				obj.modify()
 		except KeyError as exc:
-			log("KeyError: %s" % exc)
-		except Exception as exc:
-			log("Error: %s" % exc)
-			raise
+			pass
