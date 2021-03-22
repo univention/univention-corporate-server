@@ -4,13 +4,17 @@ from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 
 
+def log(msg):
+	with open("/tmp/phase.log", "a") as fd:
+		fd.write("%r\n" % msg)
+
 class PhaseLdapReferences(AddressMap, LdapChange):
 
 	"""
 	Rewrite IP configuration in LDAP object.
 	"""
 	priority = 42
-	_replace_type = {1: "complete_match"}
+	_replace_type = {1: "complete_match", 2: "link_replace"}
 	referers = (
 		("policies/ldapserver", "ldapServer", 1),
 		("policies/dhcp_boot", "boot_server", 1),
@@ -22,7 +26,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 		("shares/share", "host", 1),
 		("shares/printer", "spoolHost", 1),
 		("dns/forward_zone", "a", 1),
-		("portals/entry", "link", "//%s/"),
+		("portals/entry", "link", 2),
 	)
 
 	def __init__(self, changeset):
@@ -54,26 +58,33 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 	def _rewrite_object(self, obj, udm_property, replace_type):
 		obj.open()
 		try:
-			old_values = set(obj.info[udm_property])
-			if replace_type in self._replace_type and self._replace_type[replace_type] == "complete_match":
-				new_values = set((
+			old_values = obj.info[udm_property]
+			if self._replace_type[replace_type] == "complete_match":
+				new_values = [
 					self.ip_mapping.get(value, value)
 					for value in old_values
-				))
-			else:
-				# substring match and replace the value of replace_type
-				new_values = set()
-				for old_ip in self.ip_mapping.keys():
-					new_ip = self.ip_mapping.get(old_ip, old_ip)
-					for item in list(value.replace(replace_type % old_ip, replace_type % new_ip) for value in old_values):
-						new_values.add(item)
+				]
+			elif self._replace_type[replace_type] == "link_replace":
+				new_values = []
+				for old_value in old_values:
+					for old_ip in self.ip_mapping.keys():
+						new_ip = self.ip_mapping.get(old_ip, old_ip)
+						loc, link = old_value
+						link = link.replace("//%s/" % old_ip, "//%s/" % new_ip)
+						new_value = [loc, link]
+						if new_value not in new_values:
+							new_values.append(new_value)
 
-			new_values.discard(None)
+			new_values = [val for val in new_values if val is not None]
 			if old_values == new_values:
 				return
-			obj.info[udm_property] = list(new_values)
+			obj.info[udm_property] = new_values
+			log("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			if not self.changeset.no_act:
 				obj.modify()
-		except KeyError:
-			pass
+		except KeyError as exc:
+			log("KeyError: %s" % exc)
+		except Exception as exc:
+			log("Error: %s" % exc)
+			raise

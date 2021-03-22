@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-14) unstable; urgency=medium
+
+  * Bug #45918: New link syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Mar 2021 15:06:40 +0100
+
 univention-system-setup (13.0.3-13) unstable; urgency=medium
 
   * Bug #52453: adjust ApplianceWizard styling
