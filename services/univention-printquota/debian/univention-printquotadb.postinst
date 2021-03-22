@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# Univention Print Quota DB
-#  postinst script for the debian package
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/

@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Print Quota
-#  preinst script for the debian package
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -38,6 +35,6 @@ univention-config-registry set \
 	cups/quota/server/name?"localhost" \
 	cups/quota/account?"pykotaadmin" \
 	cups/quota/inform?"no" \
-	cups/quota/admin/mail?"root@"$domainname
+	cups/quota/admin/mail?"root@${domainname:-}"
 
 exit 0

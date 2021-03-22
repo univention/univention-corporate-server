@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Print Server
-#  join script
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,9 +29,12 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 joinscript_init
@@ -43,7 +43,7 @@ dest="/etc/pykota.secret"
 if [ ! -f "$dest" ] ; then
     cp /etc/machine.secret "$dest"
     chown pykota:root "$dest"
-    chmod 600  "$dest"
+    chmod 600 "$dest"
 fi
 
 ucs_addServiceToLocalhost 'PrintQuota' "$@"

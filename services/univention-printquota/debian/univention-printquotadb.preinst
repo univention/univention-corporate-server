@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Print Quota DB
-#  preinst script for the debian package
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -45,6 +42,7 @@ dpkg-maintscript-helper mv_conffile \
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 if [ -e /etc/pykota/pykota.secret ]; then

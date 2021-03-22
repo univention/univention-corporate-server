@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Print Quota
-#  postrm script for the debian package
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -33,7 +30,7 @@
 #DEBHELPER#
 
 if [ "$1" = "remove" ]; then
-
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 20univention-printquota.uinst
 
@@ -43,4 +40,3 @@ if [ "$1" = "remove" ]; then
 fi
 
 exit 0
-

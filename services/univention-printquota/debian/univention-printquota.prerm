@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention Print Quota
-#  prerm script for the debian package
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -37,4 +34,3 @@ if [ "$1" = "remove" ]; then
 fi
 
 exit 0
-

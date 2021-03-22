@@ -1,8 +1,5 @@
 #! /bin/sh
 #
-# Univention Printserver
-#  unjoin script
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,8 +29,10 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -41,10 +40,10 @@ SERVICE="PrintQuota"
 
 eval "$(ucr shell)"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
 joinscript_remove_script_from_status_file univention-printquota
 
 exit 0
-
