@@ -27,7 +27,6 @@ Depends:
  univention-nagios-client (= ${binary:Version}),
  univention-nagios-common (= ${binary:Version}),
  univention-nagios-cups,
- univention-nagios-dansguardian,
  univention-nagios-squid,
  ${misc:Depends},
  ${python:Depends},
