@@ -1,7 +1,6 @@
 [squid/httpport]
-Description[de]=Ist diese Variable nicht gesetzt, ist der Web-Proxy über den Port 3128 erreichbar. Die Variable erlaubt die Konfiguration eines abweichenden Ports. Bei Verwendung von Univention Firewall muss dann zusätzlich die Paketfilterkonfiguration angepasst werden. Wird Dansguardian eingesetzt, ist dieser an Stelle von Squid unter dem konfigurierten Port erreichbar. Squid belegt dann den nächsthöheren Port.
-Description[en]=If this variable is unset, the web proxy can be accessed via port 3128. This variable allows the configuration of a different port. If Univention Firewall is used, the packet filter configuration must also be adjusted. If Dansguardian is used, it is accessible at the configured port instead of Squid. Squid then occupies the next-higher port.
-Type=int
+Description[de]=Ist diese Variable nicht gesetzt, ist der Web-Proxy über den Port 3128 erreichbar. Die Variable erlaubt die Konfiguration eines abweichenden Ports. Bei Verwendung von Univention Firewall muss dann zusätzlich die Paketfilterkonfiguration angepasst werden.
+Description[en]=If this variable is unset, the web proxy can be accessed via port 3128. This variable allows the configuration of a different port. If Univention Firewall is used, the packet filter configuration must also be adjusted. Type=int
 Categories=service-webproxy
 
 [squid/debug/level]
@@ -19,18 +18,6 @@ Categories=service-webproxy
 [squid/cache]
 Description[de]=Squid ist ein Caching proxy, d.h. zuvor schon einmal angefragte Inhalte können aus einem Cache zur Verfügung gestellt werden ohne erneut vom jeweiligen Webserver geladen zu werden. Ist die Option deaktiviert, wird dieser Cache deaktiviert. Dies kann bei kaskadierten Proxys sinnvoll sein.
 Description[en]=Squid is a caching proxy, i.e., previously accessed contents can be provided from a cache without being reloaded from the respective web server. If this option is deactivated, this cache is disabled. This can be useful for cascading proxies.
-Type=bool
-Categories=service-webproxy
-
-[squid/virusscan]
-Description[de]=In der Grundeinstellung führt Dansguardian einen Virenscan über ClamAV durch. Mit dieser Option kann der Virenscan deaktiviert werden. Ist die Variable nicht gesetzt, wird eine Prüfung auf Viren durchgeführt.
-Description[en]=In the standard setting Dansguardian scans files for viruses using ClamAV. With this option the virus scan can be deactivated. If the variable is unset, a virus scan is performed.
-Type=bool
-Categories=service-webproxy
-
-[squid/contentscan]
-Description[de]=In der Grundeinstellung führt Dansguardian eine inhaltbasierte Prüfung durch (z.B. auf verbotene Dateitypen). Mit dieser Option kann diese Prüfung deaktiviert werden. Ist die Variable nicht gesetzt, wird eine inhaltliche Prüfung durchgeführt.
-Description[en]=In the standard setting Dansguardian performs a content scan (e.g. for banned file types). With this option the content scan can be deactivated. If the variable is unset, the content scan is enabled.
 Type=bool
 Categories=service-webproxy
 
