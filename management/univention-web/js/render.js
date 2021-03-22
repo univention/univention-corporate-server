@@ -289,12 +289,6 @@ define([
 				});
 				// for single String / Array
 				if (elList) {
-					// see how many buttons and how many widgets there are in this row
-					var nWidgetsWithLabel = 0;
-					array.forEach(elList, function(jel) {
-						nWidgetsWithLabel += jel in widgets && (widgets[jel].label ? 1 : 0);
-					});
-
 					// add current form widgets to layout
 					var elContainer = new ContainerWidget({
 						'class': 'umcLayoutRow'
@@ -329,7 +323,6 @@ define([
 								label: widget.label,
 								betweenNonCheckBoxes: betweenNonCheckBoxes,
 								content: widget,
-								// disabled: !!widget.disabled,
 								style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
 							});
 							widget.$refLabel$ = label;
@@ -338,27 +331,14 @@ define([
 							elContainer.addChild( label );
 							widget.$isRendered$ = true;
 						} else if (button) {
-							if (nWidgetsWithLabel) {
-								// if buttons are displayed along with widgets, we need to add a '&nbsp;'
-								// as label in order to display them on the same height
-								label = new LabelPane({
-									label: '&nbsp;',
-									content: button,
-									// disabled: !!button.disabled,
-									style: button.align ? 'float: ' + button.align : ''
-								});
-								button.$refLabel$ = label;
-								elContainer.addChild(label);
-							} else {
-								// if there are only buttons in the row, we do not need a label
-								if (button.align) {
-									button.set('style', 'float: ' + button.align);
-								}
-								// but then we should have show/hide methods to be consistent
-								button._setVisibleAttr(button.visible); // make sure that the button is set correctly
-								elContainer.addChild(button);
-							}
+							label = new LabelPane({
+								label: '&nbsp;',
+								content: button,
+								style: button.align ? 'float: ' + button.align : ''
+							});
+							button.$refLabel$ = label;
 							button.$isRendered$ = true;
+							elContainer.addChild(label);
 						}
 					}, this);
 					globalContainer.addChild(elContainer);
