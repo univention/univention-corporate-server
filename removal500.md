@@ -171,7 +171,7 @@
 - [ ] DPKG-STAT `/usr/share/pykota/cupspykota`
 - [ ] POSTGRESQL
 - [ ] DIR `/etc/pykota`
-- [ ] FILE `/etc/pykota/pykota.secret`
+- [x] FILE `/etc/pykota/pykota.secret`
 - [ ] UCRV `cups/quota/secret`
 - [ ] UCRV `cups/quota/server/access`
 
