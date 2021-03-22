@@ -61,7 +61,6 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'umcAppCenterInstallDialog');
-			domClass.remove(this.domNode, 'umcAppCenterDialog');
 		},
 
 		_show: function(widget) {

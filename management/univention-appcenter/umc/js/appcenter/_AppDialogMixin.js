@@ -41,11 +41,6 @@ define([
 		headerTextRegion: 'main',
 		helpTextRegion: 'main',
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcAppCenterDialog');
-		},
-
 		_clearWidget: function(attr) {
 			if (!this[attr]) {
 				// nothing to do

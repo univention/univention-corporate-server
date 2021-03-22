@@ -93,38 +93,3 @@
 	color: $text-color-lightest
 	overflow: auto
 	max-height: 200px
-
-
-/** inline dialogs **/
-/* App Center inline dialogs */
-.umc .umcAppCenterDialog
-	margin: 7px 15px
-	&:after
-		content: ''
-		display: block
-		clear: both
-
-	.umcPageMain
-		material-shadow(1)
-		padding: 24px 24px 8px
-		background-color: var(--color-grey0)
-		border-radius: var(--border-radius-container)
-
-		.umcText
-			font-size: var(--font-size-4)
-
-		.ucsButton
-			margin-bottom: 1em
-
-		.umcPageHeader h1
-			margin: 0 0 20px
-			line-height: 28px
-
-		.umcButtonRow
-			padding-top: spacing(4)
-
-			.dijitButton
-				material-flat-button()
-				margin: 0
-				&:not(:first-child)
-					margin-left: 8px

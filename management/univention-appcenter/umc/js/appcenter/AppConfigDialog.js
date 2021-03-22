@@ -49,6 +49,7 @@ define([
 		_container: null,
 		_appSettingsForm: null,
 		title: _('App management'),
+		mainContentClass: 'umcCard2',
 
 		showUp: function() {
 			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id, phase: 'Settings'}).then(lang.hitch(this, function(data) {
@@ -69,7 +70,7 @@ define([
 
 			this.set('headerButtons', [{
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'save',
 				label: _('Apply changes'),
 				callback: lang.hitch(this, function() {
 					var serviceValues = {};
@@ -91,7 +92,6 @@ define([
 				})
 			}, {
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Cancel configuration'),
 				callback: lang.hitch(this, 'onBack', false)
 			}]);

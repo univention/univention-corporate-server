@@ -72,11 +72,6 @@ define([
 			this._addPages();
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcAppCenterInstallWizard');
-		},
-
 		_addPages: function() {
 			this._addDetailsPage('warnings', '');
 			this._addLicenseAgreementPages();
