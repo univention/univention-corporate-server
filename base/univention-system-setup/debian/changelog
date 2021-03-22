@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-13) unstable; urgency=medium
+
+  * Bug #52453: adjust ApplianceWizard styling
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 22 Mar 2021 10:44:32 +0100
+
 univention-system-setup (13.0.3-12) unstable; urgency=medium
 
   * Bug #52897: /usr/share/univention-management-console/meta.json has been

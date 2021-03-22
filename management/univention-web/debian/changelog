@@ -1,3 +1,9 @@
+univention-web (4.0.1-17) unstable; urgency=medium
+
+  * Bug #52453: adjust Wizard styling + misc
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 22 Mar 2021 10:43:25 +0100
+
 univention-web (4.0.1-16) unstable; urgency=medium
 
   * Bug #52453: adjust variable names

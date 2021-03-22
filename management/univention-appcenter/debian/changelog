@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-20) unstable; urgency=medium
+
+  * Bug #52453: remove old styling
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 22 Mar 2021 10:43:48 +0100
+
 univention-appcenter (9.0.2-19) unstable; urgency=medium
 
   * Bug #52869: Portal entries have to be created differently now
