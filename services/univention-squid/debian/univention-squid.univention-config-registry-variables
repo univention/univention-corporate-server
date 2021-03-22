@@ -1,6 +1,7 @@
 [squid/httpport]
 Description[de]=Ist diese Variable nicht gesetzt, ist der Web-Proxy über den Port 3128 erreichbar. Die Variable erlaubt die Konfiguration eines abweichenden Ports. Bei Verwendung von Univention Firewall muss dann zusätzlich die Paketfilterkonfiguration angepasst werden.
-Description[en]=If this variable is unset, the web proxy can be accessed via port 3128. This variable allows the configuration of a different port. If Univention Firewall is used, the packet filter configuration must also be adjusted. Type=int
+Description[en]=If this variable is unset, the web proxy can be accessed via port 3128. This variable allows the configuration of a different port. If Univention Firewall is used, the packet filter configuration must also be adjusted. 
+Type=int
 Categories=service-webproxy
 
 [squid/debug/level]
