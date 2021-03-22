@@ -40,6 +40,21 @@ configure)
         su - postgres -c "PGOPTIONS='-c client_min_messages=ERROR ' psql -d template1 -f /usr/share/univention-printquotadb/pykota-postgresql.sql" > /dev/null
     fi
 
+    # shellcheck source=/dev/null
+    . /usr/share/univention-lib/all.sh
+
+    install -d -o pykota -g pykota -m 0750 /etc/pykota
+
+    # always create a new password
+    rm -f /etc/pykota/pykota.secret
+    touch /etc/pykota/pykota.secret
+    chmod ug=r,o= /etc/pykota/pykota.secret
+    create_machine_password > /etc/pykota/pykota.secret
+
+    univention-config-registry set \
+            cups/quota/secret?"/etc/pykota/pykota.secret" \
+            cups/quota/server/access?"local"
+
     eval "$(univention-config-registry shell cups/quota/secret)"
     secret=$(cat "${cups_quota_secret:-}")
     su - postgres -c "psql -d pykota -c \"ALTER USER pykotaadmin PASSWORD '$secret';\""

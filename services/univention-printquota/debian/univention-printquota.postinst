@@ -45,9 +45,16 @@ chmod -R g+rw /etc/pykota
 dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
 
 adduser lp pykota
-/etc/init.d/cups restart
 
-univention-config-registry set pykota/policy/debug?1
+    eval "$(univention-config-registry shell domainname)"
+    univention-config-registry set \
+        cups/quota/server/name?"localhost" \
+        cups/quota/account?"pykotaadmin" \
+        cups/quota/inform?"no" \
+        cups/quota/admin/mail?"root@${domainname:-}" \
+        pykota/policy/debug?1
+
+/etc/init.d/cups restart
 
 	test -x /etc/init.d/univention-directory-listener &&
         /etc/init.d/univention-directory-listener crestart
