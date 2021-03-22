@@ -56,7 +56,6 @@ class ListOfListOflTextToListofDictPropertyEncoder(BaseEncoder):
 			return value
 
 
-
 class PortalsPortalObjectProperties(GenericObjectProperties):
 	"""portals/portal UDM properties."""
 

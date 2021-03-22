@@ -1,3 +1,9 @@
+univention-portal (4.0.5-11) unstable; urgency=medium
+
+  * Bug #52869: Minor code fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Mar 2021 16:16:38 +0100
+
 univention-portal (4.0.5-10) unstable; urgency=medium
 
   * Bug #52932: Error handling and integration in default portal

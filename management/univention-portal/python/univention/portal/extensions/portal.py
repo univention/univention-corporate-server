@@ -257,7 +257,6 @@ class UMCPortal(Portal):
 				return []
 			return response.json()[get_path]
 
-
 	def get_visible_content(self, user, admin_mode):
 		headers = user.headers
 		categories = self._request_umc_get("categories", headers)

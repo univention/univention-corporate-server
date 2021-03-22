@@ -28,10 +28,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.admin.localization
-from univention.admin.syntax import select, UDM_Objects, translationTuple, string, languageCode, _
+from univention.admin.syntax import select, UDM_Objects, translationTuple, string, languageCode
 
 translation = univention.admin.localization.translation('univention.admin.handlers.portals.portal')
-_portal = translation.translate
+_ = translation.translate
 
 
 class NewPortalCategories(UDM_Objects):
@@ -88,25 +88,25 @@ class NewPortalFontColor(select):
 	Syntax to select the color of the font in the portal.
 	"""
 	choices = [
-		('white', _portal('White')),
-		('black', _portal('Black')),
+		('white', _('White')),
+		('black', _('Black')),
 	]
 
 
 class NewPortalDefaultLinkTarget(select):
 	choices = [
-		('samewindow', _portal('Same tab')),
-		('newwindow', _portal('New tab')),
-		('embedded', _portal('Embedded')),
+		('samewindow', _('Same tab')),
+		('newwindow', _('New tab')),
+		('embedded', _('Embedded')),
 	]
 
 
 class NewPortalEntryLinkTarget(select):
 	choices = [
-		('useportaldefault', _portal('Use default of portal')),
-		('samewindow', _portal('Same tab')),
-		('newwindow', _portal('New tab')),
-		('embedded', _portal('Embedded')),
+		('useportaldefault', _('Use default of portal')),
+		('samewindow', _('Same tab')),
+		('newwindow', _('New tab')),
+		('embedded', _('Embedded')),
 	]
 
 

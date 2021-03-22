@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-03-22 14:34+0100\n"
+"POT-Creation-Date: 2021-03-22 16:13+0100\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -39,6 +39,10 @@ msgstr "Hintergrundbild des Portals"
 #: udm/handlers/all.py:71
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
+
+#: udm/syntax/univention-portal.py:92
+msgid "Black"
+msgstr "Schwarz"
 
 #: udm/handlers/entry.py:109
 msgid "Browser tab when opening link"
@@ -94,6 +98,10 @@ msgid ""
 msgstr ""
 "Anzeigename der Kategorie. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
+
+#: udm/syntax/univention-portal.py:100 udm/syntax/univention-portal.py:109
+msgid "Embedded"
+msgstr "Eingebettet"
 
 #: udm/handlers/folder.py:89
 msgid "Entries"
@@ -224,6 +232,10 @@ msgstr "Menü"
 msgid "Name"
 msgstr "Name"
 
+#: udm/syntax/univention-portal.py:99 udm/syntax/univention-portal.py:108
+msgid "New tab"
+msgstr "Neuer Tab"
+
 #: udm/handlers/portal.py:47
 msgid "Object that feeds everything in https://fqdn/univention/portal"
 msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
@@ -327,6 +339,10 @@ msgstr "Anonyme Besucher zum Login umleiten"
 msgid "Restrict visibility to groups"
 msgstr "Sichtbarkeit auf Gruppen beschränken"
 
+#: udm/syntax/univention-portal.py:98 udm/syntax/univention-portal.py:107
+msgid "Same tab"
+msgstr "Gleicher Tab"
+
 #: udm/handlers/portal.py:77
 msgid "Show UMC categories and modules"
 msgstr "Zeige UMC-Kategorien und -Module"
@@ -357,6 +373,10 @@ msgstr ""
 msgid "This portal will be used as start site for the given servers"
 msgstr "Dieses Portal wird als Startseite der angegebenen Server dienen"
 
+#: udm/syntax/univention-portal.py:106
+msgid "Use default of portal"
+msgstr "Portal-Vorgabe nutzen"
+
 #: udm/handlers/portal.py:169
 msgid "User menu"
 msgstr "Benutzermenü"
@@ -364,6 +384,10 @@ msgstr "Benutzermenü"
 #: udm/handlers/portal.py:175
 msgid "Visibility"
 msgstr "Sichtbarkeit"
+
+#: udm/syntax/univention-portal.py:91
+msgid "White"
+msgstr "Weiß"
 
 #~ msgid "General Content"
 #~ msgstr "Allgemeiner Inhalt"

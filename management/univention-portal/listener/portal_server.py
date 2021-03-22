@@ -30,8 +30,10 @@
 
 from __future__ import absolute_import
 
+import os
 import subprocess
 from json import dump
+import shutil
 
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
@@ -75,8 +77,10 @@ def handler(dn, new, old):
 			config_file = '/usr/lib/univention-portal/config/config.json.from-listener.json'
 			if is_configured and not was_configured:
 				content = {'default_domain_dn': dn}
-				with open(config_file, 'w') as fd:
+				with open(config_file + '.tmp', 'w') as fd:
+					os.chmod(fd.name, 0o660)
 					dump(content, fd, indent=2)
+				shutil.move(config_file + '.tmp', config_file)
 				reason = 'force'
 			if was_configured and not is_configured:
 				try:
