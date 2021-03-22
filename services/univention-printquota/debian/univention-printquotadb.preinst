@@ -29,25 +29,23 @@
 
 #DEBHELPER#
 
-# shellcheck source=/dev/null
-. /usr/share/univention-lib/all.sh
+case "$1" in
+install|upgrade)
+    # shellcheck source=/dev/null
+    . /usr/share/univention-lib/all.sh
 
-if [ -e /etc/pykota/pykota.secret ]; then
-	# always create a new password
-	rm /etc/pykota/pykota.secret
-fi
+    install -d -o pykota -g pykota -m 0750 /etc/pykota
 
-if [ ! -d /etc/pykota ]; then
-	mkdir /etc/pykota
-fi
+    # always create a new password
+    rm -f /etc/pykota/pykota.secret
+    touch /etc/pykota/pykota.secret
+    chmod ug=r,o= /etc/pykota/pykota.secret
+    create_machine_password > /etc/pykota/pykota.secret
 
-create_machine_password > /etc/pykota/pykota.secret
-chmod ug=r,o= /etc/pykota/pykota.secret
-
-eval "$(univention-config-registry shell)"
-
-univention-config-registry set \
-	cups/quota/secret?"/etc/pykota/pykota.secret" \
-	cups/quota/server/access?"local"
+    univention-config-registry set \
+            cups/quota/secret?"/etc/pykota/pykota.secret" \
+            cups/quota/server/access?"local"
+    ;;
+esac
 
 exit 0

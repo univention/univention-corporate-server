@@ -29,6 +29,8 @@
 
 #DEBHELPER#
 
+case "$1" in
+configure)
 eval "$(univention-config-registry shell)"
 
 univention-config-registry set \
@@ -36,5 +38,7 @@ univention-config-registry set \
 	cups/quota/account?"pykotaadmin" \
 	cups/quota/inform?"no" \
 	cups/quota/admin/mail?"root@${domainname:-}"
+	;;
+esac
 
 exit 0

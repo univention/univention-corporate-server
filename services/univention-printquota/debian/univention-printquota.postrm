@@ -29,7 +29,8 @@
 
 #DEBHELPER#
 
-if [ "$1" = "remove" ]; then
+case "$1" in
+remove)
 	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 20univention-printquota.uinst
@@ -37,6 +38,7 @@ if [ "$1" = "remove" ]; then
 	univention-config-registry unset pykota/policy/debug
 
 	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
-fi
+	;;
+esac
 
 exit 0

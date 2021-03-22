@@ -29,28 +29,21 @@
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/postgresql ]; then
-	invoke-rc.d postgresql reload
-fi
+case "$1" in
+configure)
+    [ -x /etc/init.d/postgresql ] &&
+        invoke-rc.d postgresql reload
 
-if [ -x /etc/init.d/postgresql-7.4 ]; then
-	invoke-rc.d postgresql-7.4 reload
-fi
+    if ! su -c "psql --list" postgres | grep -Fq ' pykota '
+    then
+        # only, if database does not exist
+        su - postgres -c "PGOPTIONS='-c client_min_messages=ERROR ' psql -d template1 -f /usr/share/univention-printquotadb/pykota-postgresql.sql" > /dev/null
+    fi
 
-if [ -x /etc/init.d/postgresql-8.3 ]; then
-	invoke-rc.d postgresql-8.3 reload
-fi
-
-eval "$(univention-config-registry shell)"
-
-pykotadb=`su - postgres -c "psql --list"|awk '/ pykota /{print $1}'`
-if [ ! "$pykotadb" ] ;then
-	# only, if database does not exist
-	su - postgres -c "PGOPTIONS='-c client_min_messages=ERROR ' psql -d template1 -f /usr/share/univention-printquotadb/pykota-postgresql.sql" > /dev/null
-fi
-
-secret=`cat $cups_quota_secret`
-su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '$secret';\" |psql -d pykota"
-#su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '';\" |psql -d pykota"
+    eval "$(univention-config-registry shell cups/quota/secret)"
+    secret=$(cat "${cups_quota_secret:-}")
+    su - postgres -c "psql -d pykota -c \"ALTER USER pykotaadmin PASSWORD '$secret';\""
+;;
+esac
 
 exit 0
