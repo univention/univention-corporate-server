@@ -9,7 +9,6 @@ from vncautomate import init_logger, VNCConnection
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
 
-from components.components import components_with_steps as components
 from languages import english
 from languages import french
 from languages import german
@@ -29,7 +28,7 @@ class UCSInstallation(object):
 		self.config = OCRConfig()
 		self.config.update(lang=self.args.language)
 		self.timeout = 120
-		self.setup_finish_sleep = 1500
+		self.setup_finish_sleep = 900
 		self.connect()
 
 	def _clear_input(self):
@@ -337,57 +336,14 @@ class UCSInstallation(object):
 		self.tab_to_next_and_enter(2)
 
 	def finish(self):
+		self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
+		self.client.keyPress('enter')
 		time.sleep(self.setup_finish_sleep)
 		self.client.waitForText(self._['setup_successful'], timeout=2100)
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
 		time.sleep(10)
 		self.client.waitForText('univention', timeout=self.timeout)
-
-	def software_configuration(self):
-		# software configuration
-		if self.args.role != 'basesystem':
-			if self.args.role == 'master':
-				self.client.waitForText(self._['software_configuration'], timeout=self.timeout)
-			else:
-				self.client.waitForText(self._['software_configuration_non_master'], timeout=self.timeout)
-			self.select_components()
-			self.client.keyPress('down')
-			# damm, with eng we do not find the next button at this point
-			if self.args.language == 'eng':
-				self.client.mouseMove(940, 740)
-				self.client.mousePress(1)
-			else:
-				self.click(self._['next'])
-		time.sleep(5)
-		self.client.keyPress('enter')
-
-	def select_components(self):
-		# this is needed to make the down button work
-		self.client.mousePress(1)
-		if 'all' in self.args.components:
-			self.client.mouseMove(400, 200)
-			self.client.mousePress(1)
-			# wait a bit longer for installation with all components
-			self.setup_finish_sleep += 300
-		else:
-			print('move mouse')
-			self.client.mouseMove(400, 300)
-			self.client.mousePress(1)
-			time.sleep(1)
-			self.client.mousePress(1)
-			for name, steps in components.iteritems():
-				if name in self.args.components:
-					# go to the top
-					print('go up')
-					for step in range(1, 20):
-						self.client.keyPress('up')
-						time.sleep(0.2)
-					for step in range(1, steps):
-						print('go down')
-						self.client.keyPress('down')
-						time.sleep(0.2)
-					self.client.mouseClickOnText(self._[name])
 
 	def ucsschool(self):
 		# ucs@school role
@@ -423,7 +379,6 @@ class UCSInstallation(object):
 			self.setup()
 			self.hostname()
 			self.ucsschool()
-			self.software_configuration()
 			self.finish()
 			if not self.args.no_second_interface:
 				# TODO activate ens6 so that ucs-kvm-create can connect to instance

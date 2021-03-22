@@ -51,7 +51,7 @@ strings = {
 	'host_settings': 'Rechnereinstellungen',
 	'software_configuration': 'Software-Konfiguration',
 	'software_configuration_non_master': 'Wählen Sie UCS-Software',
-	'confirm_config': 'Bestätigen der Einstellungen',
+	'confirm_config': 'UCS-Konfiguration',
 	'confirm_config_non_maste': 'Bitte bestätigen Sie',
 	'setup_successful': 'UCS-Einrichtung erfolgreich',
 	'finish': 'Fertigstellen',
