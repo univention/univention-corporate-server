@@ -1,3 +1,9 @@
+univention-server-overview (3.0.0-7) unstable; urgency=medium
+
+  * Bug #52437: Increment joinscript version by 10 relative to 4.4-7
+
+ -- Arvid <requate@univention.de>  Mon, 22 Mar 2021 18:29:46 +0100
+
 univention-server-overview (3.0.0-6) unstable; urgency=medium
 
   * Bug #52869: Portal entries have to be created differently now

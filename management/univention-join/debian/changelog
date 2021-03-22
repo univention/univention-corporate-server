@@ -1,3 +1,9 @@
+univention-join (12.0.3-3) unstable; urgency=medium
+
+  * Bug #52437: Increment joinscript version by 10 relative to 4.4-7
+
+ -- Arvid <requate@univention.de>  Mon, 22 Mar 2021 18:08:41 +0100
+
 univention-join (12.0.3-2) unstable; urgency=low
 
   * Bug #51624: During the update from UCS 4.4 to UCS 5.0 the execution of

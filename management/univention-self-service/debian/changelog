@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-5) unstable; urgency=medium
+
+  * Bug #52437: Increment joinscript version by 10 relative to 4.4-7
+
+ -- Arvid <requate@univention.de>  Mon, 22 Mar 2021 18:29:20 +0100
+
 univention-self-service (5.0.1-4) unstable; urgency=medium
 
   * Bug #52869: Portal entries have to be created differently now
