@@ -167,7 +167,7 @@ class Session(object):
 	def request(self, method, uri, data=None, expect_json=False, **headers):
 		return self.make_request(method, uri, data, expect_json=expect_json, **headers).data
 
-	def make_request(self, method, uri, data=None, expect_json=False, **headers):
+	def make_request(self, method, uri, data=None, expect_json=False, allow_redirects=True, **headers):
 		if method in ('GET', 'HEAD'):
 			params = data
 			json = None
@@ -177,7 +177,7 @@ class Session(object):
 
 		def doit():
 			try:
-				response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
+				response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
 			except requests.exceptions.ConnectionError as exc:
 				raise ConnectionError(exc)
 			data = self.eval_response(response, expect_json=expect_json)
@@ -196,7 +196,7 @@ class Session(object):
 			return doit()
 
 	def eval_response(self, response, expect_json=False):
-		if response.status_code >= 299:
+		if response.status_code >= 399:
 			msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
 			try:
 				json = response.json()
@@ -518,16 +518,14 @@ class Object(Client):
 			'If-Match': self.etag,
 		}.items() if value)
 
-		response = self.client.make_request('PUT', self.uri, data=self.representation, **headers)
-		response = self._follow_redirection(response)  # move() causes multiple redirections!
-		self._reload_from_response(response, reload)
+		response = self.client.make_request('PUT', self.uri, data=self.representation, allow_redirects=False, **headers)
+		response = self._follow_redirection(response, reload)  # move() causes multiple redirections!
 		return response
 
 	def _create(self, reload=True):
 		uri = self.client.get_relation(self.hal, 'create')
-		response = self.client.make_request('POST', uri['href'], data=self.representation)
-		response = self._follow_redirection(response)
-		self._reload_from_response(response, reload)
+		response = self.client.make_request('POST', uri['href'], data=self.representation, allow_redirects=False)
+		response = self._follow_redirection(response, reload)
 		return response
 
 	def _reload_from_response(self, response, reload):
@@ -539,11 +537,25 @@ class Object(Client):
 		elif reload:
 			self.reload()
 
-	def _follow_redirection(self, response):
+	def _follow_redirection(self, response, reload=True):
+		location = None
+		# python-requests doesn't follow redirects for 201
+		if response.response.status_code == 201 and 'Location'in response.response.headers:
+			location = response.response.headers['Location']
+			response = self.client.make_request('GET', location, allow_redirects=False)
+
+		# prevent allow_redirects because it does not wait Retry-After time causing a break up after 30 fast redirections
 		while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
+			location = response.response.headers['Location']
 			if response.response.headers.get('Retry-After', '').isdigit():
-				time.sleep(min(30, max(0, int(response.response.headers['Retry-After']) - 1)))
-			response = self.client.make_request('GET', response.response.headers['Location'])
+				time.sleep(min(30, max(0, int(response.response.headers['Retry-After']))))
+			response = self.client.make_request('GET', location, allow_redirects=False)
+
+		if location and response.response.status_code == 200:
+			# the response already contains a new representation
+			self._copy_from_obj(Object.from_response(self.udm, response))
+		elif reload:
+			self._reload_from_response(response, reload)
 		return response
 
 	def _copy_from_obj(self, obj):
