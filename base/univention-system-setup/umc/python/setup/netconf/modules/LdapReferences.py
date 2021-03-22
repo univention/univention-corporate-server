@@ -78,5 +78,5 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			if not self.changeset.no_act:
 				obj.modify()
-		except KeyError as exc:
+		except KeyError:
 			pass
