@@ -76,6 +76,12 @@
     - security/packetfilter/package/univention-dansguardian/tcp/3128/all
     - security/packetfilter/package/univention-dansguardian/tcp/3128/all/en
 
+- git: 9d5891bb870705ea05ae976a1d21997756f46dcf
+  desc: univention-dansguardian use in squid
+  vars:
+    - squid/virusscan
+    - squid/contentscan
+
 - git: 7f0530a3bb82c2ac81b1ca9bc3d85ff03aa4d305
   desc: univention-check-printers
   vars:
