@@ -1754,7 +1754,7 @@ class Modules(Resource):
 		'nagios': 'nagios/nagios',
 		'policies': 'policies/policy',
 		'self': 'users/self',
-		'portal': 'settings/portal_all',
+		'portal': 'portals/all',
 		'saml': 'saml/serviceprovider',
 		'appcenter': 'appcenter/app',
 		'kerberos': 'kerberos/kdcentry',
