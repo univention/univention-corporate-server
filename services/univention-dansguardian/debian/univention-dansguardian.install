@@ -1,1 +1,2 @@
-79univention-dansguardian.inst /usr/lib/univention-install/
+79univention-dansguardian.inst usr/lib/univention-install/
+21univention-dansguardian.uinst usr/lib/univention-uninstall/

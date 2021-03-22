@@ -1,3 +1,9 @@
+univention-dansguardian (12.0.1-3) unstable; urgency=medium
+
+  * Bug #52962: add unjoin script
+
+ -- Florian Best <best@univention.de>  Mon, 22 Mar 2021 19:54:10 +0100
+
 univention-dansguardian (12.0.1-2) unstable; urgency=medium
 
   * Bug #51144: make UCR templates compatible to python3

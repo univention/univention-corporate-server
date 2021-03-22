@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 #
 # Univention Dansguardian
 #  postinst script for univention-dansguardian
@@ -62,6 +62,11 @@ fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.3-1; then
 	ucr set clamav/freshclam/autostart="$(ucr get mail/antivir/clamav-freshclam/autostart)"
 	ucr unset mail/antivir/clamav-freshclam/autostart
+fi
+
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/21univention-dansguardian.uinst
+	[ -e "$uinst" ] && rm "$uinst"
 fi
 
 call_joinscript 79univention-dansguardian.inst
