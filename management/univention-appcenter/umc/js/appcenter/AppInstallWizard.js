@@ -88,7 +88,8 @@ define([
 				helpText: helpText,
 				widgets: [{
 					type: ContainerWidget,
-					name: `${name}_container`
+					name: `${name}_container`,
+					size: 'Two',
 				}]
 		 	};
 			this.pages.push(page);
