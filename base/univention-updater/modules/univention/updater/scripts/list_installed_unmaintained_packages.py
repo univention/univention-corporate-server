@@ -31,45 +31,81 @@
 This script lists all currently installed packages that are not maintained by Univention.
 """
 
-import os
+from argparse import ArgumentParser, FileType, Namespace
+from os import get_terminal_size
+from sys import exit, stdout
+from textwrap import TextWrapper
+from typing import IO, Set
+
 import apt
-import sys
-import textwrap
-import argparse
 
-MAINTAINED_PACKAGES = '/usr/share/univention-errata-level/univention-maintained-packages.txt'
+MAINTAINED_PACKAGES = '/usr/share/univention-updater/maintained-packages.txt'
 
 
-def get_installed_packages():
-	cache = apt.Cache()
-	return [package.name for package in cache if cache[package.name].is_installed]
+def main() -> int:
+	args = parse_args()
+	installed_unmaintained_packages = get_unmaintained_packages(args.maintained)
+	print_packages(installed_unmaintained_packages)
+
+	return 1 if installed_unmaintained_packages else 0
 
 
-def parse_args():
-	parser = argparse.ArgumentParser(description=__doc__)
+def parse_args() -> Namespace:
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument(
+		"--maintained", "-m",
+		default=MAINTAINED_PACKAGES,
+		type=FileType("r"),
+		help="List of maintained packages [%(default)s]")
+
 	return parser.parse_args()
 
 
-def main():
-	args = parse_args()
-	columns = 80
-	if sys.stdout.isatty():
-		columns = os.get_terminal_size().columns
-	try:
-		with open(MAINTAINED_PACKAGES) as fd:
-			installed_unmaintained_packages = list(set(get_installed_packages()) - set(fd.read().splitlines()))
-			if installed_unmaintained_packages:
-				print('The following packages are unmaintained:')
-				text = ' '.join(installed_unmaintained_packages)
-				for line in textwrap.wrap(text, width=int(columns - 20), break_long_words=False, break_on_hyphens=False):
-					print('  ' + line)
-				sys.exit(1)
-			else:
-				print('No unmaintained packages installed.')
-	except FileNotFoundError:
-		print(f'{MAINTAINED_PACKAGES} does not exist.', file=sys.stderr)
-		sys.exit(1)
+def get_unmaintained_packages(maintained: IO[str]) -> Set[str]:
+	installed_packages = get_installed_packages()
+	maintained_packages = get_maintained_packages(maintained)
+	return installed_packages - maintained_packages
+
+
+def get_installed_packages() -> Set[str]:
+	cache = apt.Cache()
+	return {package.name for package in cache if cache[package.name].is_installed}
+
+
+def get_maintained_packages(maintained: IO[str]) -> Set[str]:
+	return set(line.strip() for line in maintained)
+
+
+def print_packages(packages: Set[str]) -> None:
+	if packages:
+		print_unmaintained_packages(packages)
+	else:
+		print_all_maintained()
+
+
+def print_unmaintained_packages(packages: Set[str]) -> None:
+	print('The following packages are unmaintained:')
+	print_wrapped(' '.join(sorted(packages)))
+
+
+def print_wrapped(text: str) -> None:
+	wrapper = TextWrapper(
+		width=get_columns() - 20,
+		initial_indent=' ',
+		subsequent_indent=' ',
+		break_long_words=False,
+		break_on_hyphens=False,
+	)
+	print('\n'.join(wrapper.wrap(text)))
+
+
+def get_columns() -> int:
+	return get_terminal_size().columns if stdout.isatty() else 80
+
+
+def print_all_maintained():
+	print('No unmaintained packages installed.')
 
 
 if __name__ == '__main__':
-	main()
+	exit(main())

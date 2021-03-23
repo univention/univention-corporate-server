@@ -1,3 +1,9 @@
+univention-updater (15.0.3-31) unstable; urgency=low
+
+  * Bug #52715: Move list of maintained packages here
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Mar 2021 12:27:45 +0100
+
 univention-updater (15.0.3-30) unstable; urgency=medium
 
   * Bug #52957: moved removed packages of ucs5 from the updater check to the
