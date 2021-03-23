@@ -1,3 +1,9 @@
+univention-ftp (10.0.0-2) unstable; urgency=medium
+
+  * Bug #52981: unset UCR variables of univention-ftp on removal
+
+ -- Florian Best <best@univention.de>  Tue, 23 Mar 2021 15:35:27 +0100
+
 univention-ftp (10.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
