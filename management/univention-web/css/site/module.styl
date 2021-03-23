@@ -29,6 +29,7 @@
 
 @require "../variables.styl"
 @require "../document.styl"
+@require "../Grid.styl"
 
 // seperation line between module header and content when scrolling
 .umcModuleHeader
@@ -121,7 +122,7 @@
 .umc .umcSetupNetworkPage,
 .umc .umcAppCenterRepositorySettingsPage
 	.umcGrid
-		background-color: var(--bgc-content-body)
+		@extends .umc .umcGridLight
 
 .umc .umcSetupNetworkPage,
 .umc .umcSetupCertificatePage,
