@@ -1236,7 +1236,7 @@ class ucs:
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 			else:
-				ud.debug(ud.LDAP, ud.PROCESS, '__set_values: Skip %s mode attribute %s ' % (self.property[property_type].attributes[attr_key].sync_mode, attr_key))
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip %s mode attribute %s ' % (self.property[property_type].attributes[attr_key].sync_mode, attr_key))
 
 		# post-values
 		if not self.property[property_type].post_attributes:
