@@ -1,3 +1,9 @@
+univention-snmp (9.0.0-2) unstable; urgency=medium
+
+  * Bug #52980: unset UCR variables of univention-snmp on removal
+
+ -- Florian Best <best@univention.de>  Tue, 23 Mar 2021 15:28:01 +0100
+
 univention-snmp (9.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
