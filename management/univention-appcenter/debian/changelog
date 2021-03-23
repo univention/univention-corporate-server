@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-25) unstable; urgency=medium
+
+  * Bug #52453: adjust Manage Installations grid styling
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Mar 2021 07:25:14 +0100
+
 univention-appcenter (9.0.2-24) unstable; urgency=medium
 
   * Bug #52453: adjust AppInstallWizard styling

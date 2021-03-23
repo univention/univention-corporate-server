@@ -1,3 +1,9 @@
+univention-web (4.0.1-18) unstable; urgency=medium
+
+  * Bug #52453: adjust Grid stylings
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Mar 2021 07:25:57 +0100
+
 univention-web (4.0.1-17) unstable; urgency=medium
 
   * Bug #52453: adjust Wizard styling + misc
