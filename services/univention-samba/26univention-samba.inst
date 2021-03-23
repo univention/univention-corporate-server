@@ -32,16 +32,19 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=8
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
-s4setup="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
+s4setup="$(ldapsearch -x -ZZ -D "${ldap_hostdn:?}" -y /etc/machine.secret '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
 if [ -n "$s4setup" ] && is_domain_controller; then
 	# Try to install a S3 DC in a S4 environment ...
 	echo "ERROR: It is not possible to install a samba 3 domaincontroller "
@@ -91,7 +94,7 @@ disable_local_winsserver ()
 
 configure_ldapmaster_as_winsserver ()
 {
-	univention-config-registry set windows/wins-support=no windows/wins-server="${ldap_master}"
+	univention-config-registry set windows/wins-support=no windows/wins-server="${ldap_master:?}"
 }
 
 ruler () {
@@ -151,9 +154,9 @@ configure_s4_dc_as_kdc() {
 ### Determine Samba join credentials
 extract_bind_credentials "$@"
 
-if [ -n "$dcaccount" -a -n "$bindpwdfile" ]; then
+if [ -n "$dcaccount" ] && [ -n "$bindpwdfile" ]; then
 	samba_account="$dcaccount"
-	samba_pwd="$(< $bindpwdfile)"
+	samba_pwd="$(<"$bindpwdfile")"
 else
 	if is_ucr_true ad/member; then
 		echo "INFO: Cannot run joinscript in memberserver mode without join credentials. Please run:"
@@ -171,17 +174,17 @@ configure_samba_role
 
 # configure profile/home settings
 if [ "$samba_role" = "domaincontroller" ]; then
-	if [ -n "$samba_netbios_name" ]; then
+	if [ -n "${samba_netbios_name:-}" ]; then
 		tmphostname=$samba_netbios_name
-	elif [ -n "$samba_ha_master" ]; then
+	elif [ -n "${samba_ha_master:-}" ]; then
 		tmphostname="$samba_ha_master"
 	else
-		tmphostname="$hostname"
+		tmphostname="$${hostname:?}"
 	fi
 	univention-config-registry set \
-		samba/profileserver?$tmphostname \
+		samba/profileserver?"$tmphostname" \
 		samba/profilepath?'%U\windows-profiles\%a' \
-		samba/homedirserver?$tmphostname \
+		samba/homedirserver?"$tmphostname" \
 		samba/homedirpath?%U \
 		samba/homedirletter?I
 fi
@@ -195,13 +198,13 @@ if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 	univention-config-registry set samba/domain/security=ads
 
 	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
-	if [ -z "$samba4_ntacl_backend" ]; then
+	if [ -z "${samba4_ntacl_backend:-}" ]; then
 		univention-config-registry set samba4/ntacl/backend='native'
 		systemctl restart univention-directory-listener
 	fi
 
 	## set samba/share/home=yes on a managed node, if it is a join into a samba4 domain and if it is the first join
-	if [ "$JS_LAST_EXECUTED_VERSION" = 0 -a "$samba_role" = "memberserver" ]; then
+	if [ "$JS_LAST_EXECUTED_VERSION" = 0 ] && [ "$samba_role" = "memberserver" ]; then
 		univention-config-registry set samba/share/home=yes
 	fi
 else
@@ -218,7 +221,7 @@ fi
 univention-config-registry set samba/autostart?yes
 
 # Stop the NFS Kernel Server
-nfsd_pid=`pidof nfsd`
+nfsd_pid=$(pidof nfsd)
 if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
 fi
@@ -232,16 +235,17 @@ if [ -x /etc/init.d/winbind ]; then
 	/etc/init.d/winbind stop
 fi
 
-if [ "$server_role" = "domaincontroller_slave" -o "$samba_role" = "memberserver" ]; then
+case "${server_role}" in
+domaincontroller_slave|memberserver)
 	univention-config-registry set	samba/user="$ldap_hostdn" \
 									samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w "$(< /etc/machine.secret)"
 
 	echo "setting idmap secret for '*' from /etc/machine.secret"
 	net idmap set secret '*' "$(< /etc/machine.secret)" 2>/dev/null
-
-else
-	univention-config-registry set	samba/user?"cn=admin,$ldap_base" \
+	;;
+*)
+	univention-config-registry set	samba/user?"cn=admin,${ldap_base:?}" \
 									samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
 
@@ -249,7 +253,8 @@ else
 
 	echo "setting idmap secret for '*' from /etc/ldap.secret"
 	net idmap set secret '*' "$(< /etc/ldap.secret)" 2>/dev/null
-fi
+	;;
+esac
 
 eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
 
@@ -260,14 +265,14 @@ sleep 3
 security="$(univention-config-registry get samba/domain/security)"
 if [ "$security" = "ads" ]; then
 	# Use the correct kerberos KDC
-	if is_ucr_true ad/member && [ -n "$samba_dc" ]; then
+	if is_ucr_true ad/member && [ -n "${samba_dc:-}" ]; then
 		univention-config-registry set \
 			kerberos/defaults/dns_lookup_kdc=false \
 			kerberos/kdc="$samba_dc" \
 			kerberos/kpasswdserver="$samba_dc"
 	else
 		# use dns for kerberos in member mode
-		if [ -z "$kerberos_kdc" ] && ! is_ucr_true ad/member; then
+		if [ -z "${kerberos_kdc:-}" ] && ! is_ucr_true ad/member; then
 			configure_s4_dc_as_kdc "$samba_dc"
 		fi
 	fi
@@ -279,10 +284,10 @@ fi
 # net ads join doesn't use the default smb.conf. Make it explicit.
 export SMB_CONF_PATH=/etc/samba/smb.conf
 
-if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
-	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
+if [ -n "$samba_account" ] && [ -n "$samba_pwd" ]; then
+	if [ "${JS_LAST_EXECUTED_VERSION:-0}" -le 5 ]; then
 		# set the samba option
-		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(< /etc/machine.secret)" || die
+		univention-directory-manager "computers/$server_role" modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(< /etc/machine.secret)" || die
 	fi
 
 	machine_secret="$(< /etc/machine.secret)"
@@ -312,7 +317,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 			exit 1
 		# try to join directly against the Primary
 		elif $JOIN_CMD -U"$samba_account"%"$samba_pwd" -S"$ldap_master" machinepass="$machine_secret"; then
-			if [ "${ldap_master}" = "${hostname}.${domainname}" ]; then
+			if [ "${ldap_master}" = "${hostname:-}.${domainname:-}" ]; then
 				configure_localhost_as_winsserver
 			else
 				configure_ldapmaster_as_winsserver
@@ -341,7 +346,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 else
 	# stop samba
 	restart=0
-	samba_pid=`pidof smbd`
+	samba_pid=$(pidof smbd)
 	if [ -n "$samba_pid" ]; then
 		/etc/init.d/samba stop >/dev/null 2>&1
 		killall smbd nmbd >/dev/null 2>&1
@@ -367,7 +372,7 @@ univention-directory-manager container/cn create "$@" --position "cn=shares,$lda
 univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die
 
 
-if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
+if [ "${create_home_share:-}" = "true" ]; then
 	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host="$hostname.$domainname" --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
