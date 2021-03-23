@@ -621,6 +621,7 @@ define([
 			var options = [];
 			var deferred = dialog.confirm(container, options, _("Manage installations"));
 			var actions = this._renderInstallationManagement(container, deferred.dialog.onConfirm);
+			deferred.dialog._position(); // FIXME use of private function. needed because content is added to dialog after creation
 		},
 
 		_renderAppVote: function(parentContainer) {
