@@ -160,7 +160,7 @@
 					The Admin Diary has been migrated to Python 3 (<u:bug>51334</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Since <package>squid</package> version <literal>4.6</literal> the authentication helper <command>basic_ldap_auth</command> returns <literal>BH Success</literal> instead of <literal>ERR Success</literal> in case of LDAP bind errors. The encoding wrapper has been adjusted accordingly (<u:bug>51334</u:bug>).
+					Since <package>squid</package> version <literal>4.6</literal> the authentication helper <command>basic_ldap_auth</command> returns <literal>BH Success</literal> instead of <literal>ERR Success</literal> in case of LDAP bind errors. The encoding wrapper has been adjusted accordingly (<u:bug>51817</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
