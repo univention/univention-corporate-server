@@ -98,6 +98,7 @@ fi
 # removing the atd service conf file that is setting the KillMode attribute
 if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
 	rm -f /etc/systemd/system/atd.service.d/update500.conf
+	rmdir --ignore-fail-on-non-empty /etc/systemd/system/atd.service.d/
 	systemctl daemon-reload
 fi
 
