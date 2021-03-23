@@ -1,3 +1,9 @@
+univention-web (4.0.1-19) unstable; urgency=medium
+
+  * Bug #52453: fix typo
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Mar 2021 08:16:21 +0100
+
 univention-web (4.0.1-18) unstable; urgency=medium
 
   * Bug #52453: adjust Grid stylings
