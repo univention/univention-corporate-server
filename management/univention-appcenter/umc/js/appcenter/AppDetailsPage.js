@@ -33,20 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
-	"dojo/_base/event",
-	"dojo/promise/all",
-	"dojo/json",
 	"dojo/when",
 	"dojo/io-query",
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dojo/dom-class",
-	"dojo/on",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"dijit/Tooltip",
-	"dijit/layout/ContentPane",
 	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
@@ -56,9 +50,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
-	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
-	"umc/widgets/Icon",
 	"umc/modules/appcenter/AppInfo",
 	"umc/modules/appcenter/AppMoreInfo",
 	"umc/modules/appcenter/Buy",
@@ -67,7 +59,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ImageGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
+], function(declare, lang, kernel, array, when, ioQuery, topic, Deferred, domConstruct, domClass, Memory, Observable, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, Grid, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
 
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
