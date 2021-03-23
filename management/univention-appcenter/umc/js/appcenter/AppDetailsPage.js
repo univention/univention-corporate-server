@@ -441,26 +441,6 @@ define([
 			return actions;
 		},
 
-		_renderSingleManagement: function(parentContainer, actions) {
-			var header = new Text({
-				content: _('Manage local installation'),
-				'class': 'mainHeader'
-			});
-			parentContainer.addChild(header);
-			parentContainer.own(header);
-
-			var actionButtonContainer = new ContainerWidget({
-				'class': 'appDetailsPageActions'
-			});
-			array.forEach(actions, function(action) {
-				var button = new Button(action);
-				actionButtonContainer.addChild(button);
-				actionButtonContainer.own(button);
-			});
-			parentContainer.addChild(actionButtonContainer);
-			parentContainer.own(actionButtonContainer);
-		},
-
 		_renderDomainwideManagement: function(parentContainer, actions) {
 			var columns = [{
 				name: 'server',
