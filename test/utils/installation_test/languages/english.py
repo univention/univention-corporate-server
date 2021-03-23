@@ -31,7 +31,7 @@ strings = {
 	'finish_installation': 'Finish the installation',
 
 	'domain_setup': 'Domain Setup',
-	'new_domain': 'can join the domain later',
+	'new_domain': 'Create a new UCS domain',
 	'ad_domain': 'into an existing Microsoft Active',
 	'no_domain': 'Do not use any domain',
 	'warning_no_domain': 'No domain',
@@ -44,7 +44,7 @@ strings = {
 	'system_name': 'Specify the name',
 	'account_information': 'Account information',
 	'ad_account_information': 'Active Directory join information',
-	'host_settings': 'Fully qualified domain name',
+	'host_settings': 'Specify the name',
 	'software_configuration': 'Software configuration',
 	'software_configuration_non_master': 'Select UCS software',
 	'confirm_config': 'Confirm configuration',

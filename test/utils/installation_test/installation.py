@@ -252,7 +252,8 @@ class UCSInstallation(object):
 			self.tab_to_next_and_enter(4)
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(1)
 			if self.text_is_visible(self._['no_dc_dns']):
 				self.client.keyPress('enter')
 				self.click(self._['preferred_dns'])
@@ -283,10 +284,12 @@ class UCSInstallation(object):
 			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
 			self.click(self._['ad_domain'])
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(1)
 			self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
 			self.client.keyPress('enter')
 			self.click(self._['preferred_dns'])
+			time.sleep(1)
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
 			time.sleep(120)
@@ -296,8 +299,8 @@ class UCSInstallation(object):
 			if self.text_is_visible('APIPA', timeout=self.timeout):
 				self.client.keyPress('enter')
 				time.sleep(60)
-			self.click(self._['next'])
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(2)
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
 			self.client.mouseMove(500, 300)
 			self.client.mousePress(1)
@@ -307,7 +310,8 @@ class UCSInstallation(object):
 			self.client.mousePress(1)
 			self._clear_input()
 			self.client.enterText(self.args.join_password)
-			self.click(self._['next'])
+			#self.click(self._['next'])
+			self.tab_to_next_and_enter(2)
 		elif self.args.role == 'basesystem':
 			self.click(self._['no_domain'])
 			self.click(self._['next'])
@@ -374,9 +378,9 @@ class UCSInstallation(object):
 			self._ = german.strings
 
 		try:
-			self.bootmenu()
-			self.installer()
-			self.setup()
+			#self.bootmenu()
+			#self.installer()
+			#self.setup()
 			self.hostname()
 			self.ucsschool()
 			self.finish()
