@@ -400,6 +400,9 @@
 				<listitem><simpara>
 					UCS 4 package sources will be disabled for the upgrade. A backup can be found under <filename>/etc/apt/sources.list.d/</filename> with the suffix <filename>upgrade500-backup</filename>. The backup will be removed after a successful upgrade (<u:bug>52954</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The <package>at</package> daemon service is configured not to kill any child processes when the service is stopped, which is needed for the upgrade to UCS 5 (<u:bug>52886</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
