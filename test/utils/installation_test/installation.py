@@ -378,9 +378,9 @@ class UCSInstallation(object):
 			self._ = german.strings
 
 		try:
-			#self.bootmenu()
-			#self.installer()
-			#self.setup()
+			self.bootmenu()
+			self.installer()
+			self.setup()
 			self.hostname()
 			self.ucsschool()
 			self.finish()
