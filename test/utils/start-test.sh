@@ -157,8 +157,6 @@ declare -a env_vars=(
 	KVM_TEMPLATE
 	KVM_UCSVERSION
 	KVM_USER
-	NETINSTALL_IP1
-	NETINSTALL_IP2
 	OLD_AMI
 	OLD_VERSION
 	RELEASE_UPDATE
@@ -201,13 +199,6 @@ if [ -z "$DIMAGE" ]; then
 	i="$(sed -n 's/^docker_image: //p' "$CFG")"
 	test -n "$i" && image="$i"
 fi
-
-# TODO, find a better way
-# special ip's for net-install tests, we can't use kvm_dhcp as we need
-# our own dhcp server for pxe, so create two ip adresses based on the
-# ucs patch level version
-export NETINSTALL_IP1=$(((${release##*-} + 3) * 2 ))
-export NETINSTALL_IP2=$((NETINSTALL_IP1 +1))
 
 # Jenkins defaults
 if [ "$USER" = "jenkins" ]; then
