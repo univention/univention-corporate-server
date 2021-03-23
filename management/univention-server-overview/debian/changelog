@@ -1,3 +1,9 @@
+univention-server-overview (3.0.1-1) unstable; urgency=medium
+
+  * Bug #51328: migrate module to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 23 Mar 2021 21:16:15 +0100
+
 univention-server-overview (3.0.0-7) unstable; urgency=medium
 
   * Bug #52437: Increment joinscript version by 10 relative to 4.4-7
