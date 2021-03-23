@@ -114,7 +114,7 @@ class AppCenter(object):
 			# header of progress bar
 			self.selenium.wait_for_any_text_in_list([_('Installing'), 'Installiere'])
 
-		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations'), _('Manage installations')], timeout=900)
+		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations'), _('Manage installations'), _('Manage installation')], timeout=900)
 		# readme install
 		try:
 			self.selenium.click_button(_('Back to overview'), timeout=1)
@@ -125,7 +125,14 @@ class AppCenter(object):
 	def uninstall_app(self, app_name):
 		self.open_app(app_name)
 
-		self.selenium.click_button(_('Manage installations'))
+		try:
+			self.selenium.click_button(_('Manage installations'))
+		except TimeoutException:
+			pass
+		try:
+			self.selenium.click_button(_('Manage installation'))
+		except TimeoutException:
+			pass
 		self.selenium.click_element("//*[contains(text(), 'this computer')]")
 		self.selenium.click_button(_('Actions'))
 		self.selenium.click_element('//td[contains(@class, "dijitMenuItemLabel")][text() = "Uninstall"]')
