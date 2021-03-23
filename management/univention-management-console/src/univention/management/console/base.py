@@ -132,21 +132,6 @@ from univention.management.console.error import UMC_Error, NotAcceptable, Passwo
 _ = Translation('univention.management.console').translate
 
 
-class UMC_OptionTypeError(UMC_Error):
-	"""deprecated, please use .sanitizers instead!"""
-	msg = _('An option has the wrong type.')
-
-
-class UMC_OptionMissing(UMC_Error):
-	"""deprecated, please use .sanitizers instead!"""
-	msg = _('One or more options are missing.')
-
-
-class UMC_CommandError(UMC_Error):
-	"""deprecated, please use .sanitizers instead!"""
-	msg = _('The command has failed.')
-
-
 class Base(signals.Provider, Translation):
 
 	'''The base class for UMC modules of version 2 or higher'''
@@ -441,16 +426,6 @@ class Base(signals.Provider, Translation):
 	def require_password(self):
 		if self.auth_type is not None:
 			raise PasswordRequired()
-
-	def required_options(self, request, *options):
-		"""Raises an UMC_OptionMissing exception if any of the given
-		options is not found in request.options
-
-		Deprecated. Please use univention.management.console.modules.sanitizers
-		"""
-		missing = [o for o in options if o not in request.options]
-		if missing:
-			raise UMC_OptionMissing('%s: %s' % (UMC_OptionMissing.msg, ', '.join(missing)))
 
 	def permitted(self, command, options, flavor=None):
 		if not self.__acls:
