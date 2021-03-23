@@ -711,13 +711,6 @@ END CATEGORY
 		</para>
 
 		<para>
-		  If the profile path is changed in &ucsUMC;, then a new profile directory will be
-		  created. The data in the old profile directory will be kept. These data can be manually
-		  copied or moved to the new profile directory. Finally, the old profile directory can be
-		  deleted.
-		</para>
-
-		<para>
 		  No roaming profiles are used in the default setting in Samba/AD.
 		</para>
 
@@ -725,6 +718,25 @@ END CATEGORY
 		  Roaming profiles can be configured via a group policy found under <guimenu>Computer
 		  configuration &ar; Policies &ar; Administrative templates &ar; System &ar; User profiles
 		  &ar; Set roaming profile path for all users logging onto this computer</guimenu>.
+		  If this is set to the UNC path
+		  <filename class="directory">%LOGONSERVER%\%USERNAME%\windows-profiles\default</filename>
+		  the profile data will get written to the directories <filename class="directory">windows-profiles\default.*</filename>
+		  in the home directory of the user located on the currently chosen logon server.
+		</para>
+
+		<para>
+		  Alternatively the profile path can be defined for individual user accounts.
+		  This is possible in the &ucsUMC; in the section <emphasis>Account</emphasis>
+		  of the user account by filling the field <emphasis>Windows profile directory</emphasis>.
+		  The corresponding UDM property is called <emphasis>profilepath</emphasis>.
+		  In the OpenLDAP backend this is stored in the LDAP attribute <emphasis>sambaProfilePath</emphasis>.
+		</para>
+
+		<para>
+		  If the profile path is changed in &ucsUMC;, then a new profile directory will be
+		  created. The data in the old profile directory will be kept. These data can be manually
+		  copied or moved to the new profile directory. Finally, the old profile directory can be
+		  deleted.
 		</para>
 
 		<note>

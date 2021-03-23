@@ -732,13 +732,6 @@ END CATEGORY
 		</para>
 
 		<para>
-		  Wird der Profilpfad in &ucsUMC; geändert, wird ein neues Profilverzeichnis
-		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
-		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
-		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
-		</para>
-
-		<para>
 		  In Samba-Domänen mit Active Directory-Support werden in der Voreinstellung keine
 		  serverseitigen Profile verwendet.
 		</para>
@@ -747,7 +740,25 @@ END CATEGORY
 		  Das Profilverzeichnis kann über eine Gruppenrichtlinie konfiguriert werden, die unter
 		  <guimenu>Computerkonfiguration &ar; Richtlinien &ar; Administrative Vorlagen &ar; System
 		  &ar; Benutzerprofile &ar; Pfad des servergespeicherten Profils für alle Benutzer
-		  festlegen</guimenu> zu finden ist.
+		  festlegen</guimenu> zu finden ist. Wenn hier z.B. der UNC-Pfad
+		  <filename class="directory">%LOGONSERVER%\%USERNAME%\windows-profiles\default</filename> eingetragen
+		  wird, dann werden die Verzeichnisse <filename class="directory">windows-profiles\default.*</filename>
+		  im Heimatverzeichnis des Benutzers auf dem jeweils gewählten Logonserver verwendet.
+		</para>
+
+		<para>
+		  Alternativ kann das Profilverzeichnis individuell für einzelne Benutzerkonten definiert werden.
+		  Das ist in der &ucsUMC; im Abschnitt <emphasis>Konto</emphasis> des Benutzerkontos über das Feld
+		  <emphasis>Profilverzeichnis</emphasis> möglich.
+		  Die entsprechende UDM-Property heißt <emphasis>profilepath</emphasis>.
+		  In OpenLDAP-Backend wird dies im LDAP-Attribut <emphasis>sambaProfilePath</emphasis> gespeichert.
+		</para>
+
+		<para>
+		  Wird der Profilpfad in &ucsUMC; geändert, wird ein neues Profilverzeichnis
+		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
+		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
+		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
 		</para>
 
 		<note>
