@@ -13,7 +13,7 @@
 KEY="samba/role"
 val="$(ucr get "$KEY")"
 case "$val" in
-domaincontroller) ;;
+domaincontroller) fail_test 110 'NT DCs are unsupported since UCS 4.3' ;;
 memberserver) ;;
 *) fail_test 110 "UCR variable $KEY='$val' does not contain value 'domaincontroller' or 'memberserver'" ;;
 esac
