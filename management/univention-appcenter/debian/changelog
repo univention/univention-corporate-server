@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-23) unstable; urgency=medium
+
+  * Bug #52863: add missing return statement
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 23 Mar 2021 05:20:52 +0100
+
 univention-appcenter (9.0.2-22) unstable; urgency=medium
 
   * Bug #52863: Better reloadPage behaviour
