@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-1) unstable; urgency=medium
+
+  * Bug #51329: Migrate UMC module to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 23 Mar 2021 19:02:35 +0100
+
 univention-management-console-module-udm (10.0.0-15) unstable; urgency=medium
 
   * Bug #52453: remove double encode

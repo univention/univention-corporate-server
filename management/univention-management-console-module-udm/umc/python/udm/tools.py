@@ -85,7 +85,7 @@ class LicenseImport(ldif.LDIFParser):
 			raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s).") % {'expected': base, 'found': self.base})
 
 	def handle(self, dn, entry):
-		"""This method is invoked bei LDIFParser.parse for each object
+		"""This method is invoked by LDIFParser.parse for each object
 		in the ldif file"""
 
 		if dn is None or dn == "":
@@ -95,7 +95,7 @@ class LicenseImport(ldif.LDIFParser):
 		self.dncount += 1
 
 		if 'univentionLicenseBaseDN' in entry:
-			self.base = str(entry['univentionLicenseBaseDN'][0])
+			self.base = entry['univentionLicenseBaseDN'][0].decode('UTF-8')
 		else:
 			return
 

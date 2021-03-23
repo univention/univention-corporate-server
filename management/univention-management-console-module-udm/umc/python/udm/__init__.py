@@ -325,7 +325,7 @@ class Instance(Base, ProgressMixin):
 			lic = lic.replace(u'\xa0', " ")
 
 			lic_file = tempfile.NamedTemporaryFile(delete=False)
-			lic_file.write(lic)
+			lic_file.write(lic.encode('UTF-8'))
 			lic_file.close()
 			filename = lic_file.name
 
@@ -348,7 +348,7 @@ class Instance(Base, ProgressMixin):
 			if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
 				_error(_('LDAP error: %s.') % exc.args[0].get('info'))
 			else:
-				_error()
+				_error(_('License import failed: malformed LDIF.'))
 			return
 		except LicenseError as exc:
 			MODULE.error('LicenseImport check failed: %r' % (exc, ))
@@ -548,7 +548,7 @@ class Instance(Base, ProgressMixin):
 						if pol_mod and pol_mod.name:
 							props['$policies$'].setdefault(pol_mod.name, []).append(policy)
 					props['$labelObjectType$'] = module.title
-					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
+					props['$flags$'] = [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])]
 					props['$operations$'] = module.operations
 					props['$references$'] = module.get_policy_references(ldap_dn)
 					result.append(props)
@@ -622,7 +622,7 @@ class Instance(Base, ProgressMixin):
 				entry = {
 					'$dn$': obj.dn,
 					'$childs$': module.childs,
-					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+					'$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
 					'$operations$': module.operations,
 					'objectType': module.name,
 					'labelObjectType': module.subtitle,
@@ -682,7 +682,7 @@ class Instance(Base, ProgressMixin):
 		path = '/usr/share/univention-management-console-module-udm/'
 		filename = os.path.join(path, os.path.basename(report))
 		try:
-			with open(filename) as fd:
+			with open(filename, 'rb') as fd:
 				self.finished(request.id, fd.read(), mimetype='text/csv' if report.endswith('.csv') else 'application/pdf')
 		except EnvironmentError:
 			raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404)
@@ -1056,7 +1056,7 @@ class Instance(Base, ProgressMixin):
 						'path': ldap_dn2path(item.dn),
 						'objectType': module.name,
 						'$operations$': module.operations,
-						'$flags$': item.oldattr.get('univentionObjectFlag', []),
+						'$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
 						'$childs$': module.childs,
 						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
 					})
@@ -1111,7 +1111,7 @@ class Instance(Base, ProgressMixin):
 					'labelObjectType': module.subtitle,
 					'name': udm_objects.description(obj),
 					'path': ldap_dn2path(obj.dn, include_rdn=False),
-					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+					'$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
 					'$operations$': module.operations,
 				})
 
@@ -1259,7 +1259,7 @@ class Instance(Base, ProgressMixin):
 		data = {}
 		data['email'] = email
 		data['licence'] = license
-		data = urlencode(data)
+		data = urlencode(data).encode('ASCII')
 		url = 'https://license.univention.de/keyid/conversion/submit'
 		request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
 		self._request_license(request)
@@ -1273,7 +1273,7 @@ class Instance(Base, ProgressMixin):
 		except (HTTPError, URLError, IOError) as exc:
 			strerror = ''
 			if hasattr(exc, 'read'):  # try to parse an html error
-				body = exc.read()
+				body = exc.read().decode('UTF-8', 'replace')
 				match = re.search('<span id="details">(?P<details>.*?)</span>', body, flags=re.DOTALL)
 				if match:
 					strerror = match.group(1).replace('\n', '')

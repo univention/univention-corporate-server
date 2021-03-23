@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-09-25 01:15+0200\n"
+"POT-Creation-Date: 2021-03-23 19:37+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -111,6 +111,10 @@ msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 msgid "LDAP object does not exist."
 msgstr "Das LDAP-Objekt ist nicht vorhanden."
 
+#: umc/python/udm/__init__.py:351
+msgid "License import failed: malformed LDIF."
+msgstr "Lizenzimport fehlgeschlagen: LDIF nicht wohlgeformt."
+
 #: umc/python/udm/tools.py:124
 msgid "License not found. During this session add and modify are disabled."
 msgstr ""
@@ -165,7 +169,7 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass "
 "ungenutzte IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:487 umc/python/udm/__init__.py:909
+#: umc/python/udm/__init__.py:909 umc/python/udm/udm_ldap.py:487
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
