@@ -184,7 +184,7 @@ define([
 		},
 
 		reloadPage: function() {
-			when(this.updateApplications(false), (apps) => {
+			return when(this.updateApplications(false), (apps) => {
 				let app = {id: this.app.id}; // fallback: reset same app, but only pass the id => loads new from server
 				app = apps.find((_app) => _app.id == app.id) || app
 				this.set('app', app, false);
