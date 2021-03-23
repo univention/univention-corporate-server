@@ -119,13 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</script>
 	</head>
 	<body class="umc umcLoginLoading">
-		<div class="umcLoginHeader">
-			<div class="umcLoginHeader__left">
-				<img src="/univention/login/univention_u_white.svg" />
+		<div class="umcHeader">
+			<div class="umcHeaderLeft">
+				<img src="/univention/js/dijit/themes/umc/images/univention_u-white.svg" />
 				<h2>UCS</h2>
 			</div>
-			<!-- <div class="umcHeaderRight"> -->
-			<!-- </div> -->
+			<div class="umcHeaderRight">
+				<div data-dojo-type="umc/menu/Button" data-dojo-props="showLoginHeader: false"></div>
+			</div>
 		</div>
 <?php
 if (!empty($this->data['htmlinject']['htmlContentPre'])) {
