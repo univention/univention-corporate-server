@@ -204,10 +204,10 @@ class License(object):
 			self.__selected = True
 
 	def isValidFor(self, module):
-		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: check license for module %s, %r' % (module, self.types))
 		if module in licenses.modules:
 			mlics = licenses.modules[module]
-			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: module license: %s' % str(mlics))
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: module license: %r' % (mlics,))
 			# empty list -> valid
 			return mlics.valid(self.types)
 		# unknown modules are always valid (e.g. customer modules)
@@ -219,13 +219,13 @@ class License(object):
 			if opts:
 				module = univention.admin.modules.modules[mod]
 				if module and hasattr(module, 'options'):
-					ud.debug(ud.ADMIN, ud.INFO, 'modifyOptions: %s' % str(opts))
+					ud.debug(ud.ADMIN, ud.INFO, 'modifyOptions: %r' % (opts,))
 					for opt, val in opts:
 						if callable(val):
 							val = val(self)
 						if isinstance(val, collections.Sequence):
 							module.options[opt].disabled, module.options[opt].default = val
-						ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
+						ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (opt, module.options[opt].disabled, module.options[opt].default))
 
 	def checkModules(self):
 		deleted_mods = []
@@ -256,6 +256,9 @@ class License(object):
 				if hasattr(mod, 'operations'):
 					try:
 						mod.operations.remove('add')
+					except Exception:
+						pass
+					try:
 						mod.operations.remove('edit')
 					except Exception:
 						pass
@@ -291,6 +294,8 @@ class License(object):
 		self.__countSysAccounts(lo)
 
 		if self.new_license:
+			lic = None
+			real = None
 			if self.version == '1':
 				self.__countObject(License.ACCOUNT, lo)
 				self.__countObject(License.CLIENT, lo)
@@ -384,31 +389,36 @@ class License(object):
 		return disable_add
 
 	def __countSysAccounts(self, lo):
-		if self.licenses[self.version][License.USERS] == 'unlimited':
+		version = self.version
+		if version not in self.licenses:
+			version = '2'
+		if self.licenses[version][License.USERS] == 'unlimited':
 			self.sysAccountsFound = 0
 			return
 
 		userfilter = [univention.admin.filter.expression('uid', account) for account in self.sysAccountNames]
 		filter = univention.admin.filter.conjunction('&', [
 			univention.admin.filter.conjunction('|', userfilter),
-			self.filters[self.version][License.USERS]])
+			self.filters[version][License.USERS]])
 		try:
-			searchResult = lo.searchDn(filter=str(filter))
-			self.sysAccountsFound = len(searchResult)
+			self.sysAccountsFound = len(lo.searchDn(filter=str(filter)))
 		except univention.admin.uexceptions.noObject:
 			pass
 		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention sysAccountsFound: %d' % (self.sysAccountsFound,))
 
 	def __countObject(self, obj, lo):
-		if self.licenses[self.version][obj] and not self.licenses[self.version][obj] == 'unlimited':
-			result = lo.searchDn(filter=self.filters[self.version][obj])
+		version = self.version
+		if version not in self.licenses:
+			version = '2'
+		if self.licenses[version][obj] and not self.licenses[version][obj] == 'unlimited':
+			result = lo.searchDn(filter=self.filters[version][obj])
 			if result is None:
-				self.real[self.version][obj] = 0
+				self.real[version][obj] = 0
 			else:
-				self.real[self.version][obj] = len(result)
-			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s real %d' % (self.names[self.version][obj], self.real[self.version][obj]))
+				self.real[version][obj] = len(result)
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s real %d' % (self.names[version][obj], self.real[version][obj]))
 		else:
-			self.real[self.version][obj] = 0
+			self.real[version][obj] = 0
 
 	def __raiseException(self):
 		if self.error != 0:
@@ -422,24 +432,23 @@ class License(object):
 				raise univention.admin.uexceptions.licenseInvalid()
 
 	def __getValue(self, key, default, name='', errormsg=''):
+		name = name or key
 		try:
 			value = univention.license.getValue(key)
 			self.new_license = True
-			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s allowed %s' % (name, str(value)))
-		except Exception:
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %r allowed %r' % (name, value))
+		except (KeyError, Exception):
 			if self.searchResult:
-				if isinstance(default, list):
-					value = [x.decode('ASCII') for x in self.searchResult[0][1].get(key, default)]
-				else:
-					value = self.searchResult[0][1].get(key, [default])[0]
-					if isinstance(value, bytes):
-						value = value.decode('ASCII')
+				value = self.searchResult[0][1].get(key, [default])
+				value = [x.decode('ASCII') if isinstance(x, bytes) else x for x in value]
+				if not isinstance(default, list):
+					value = value[0]
 				self.new_license = True
 			else:
-				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % (errormsg,))
+				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r: %s' % (name, errormsg,))
 				value = default
 
-		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s = %s' % (name, value))
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r = %r' % (name, value))
 		return value
 
 	def __readLicense(self):
@@ -450,7 +459,7 @@ class License(object):
 			self.licenses[self.version][License.DESKTOP] = self.__getValue(self.keys[self.version][License.DESKTOP], 2, 'Desktops', 'Univention Desktops not found')
 			self.licenses[self.version][License.GROUPWARE] = self.__getValue(self.keys[self.version][License.GROUPWARE], 2, 'Groupware Accounts', 'Groupware not found')
 			# if no type field is found it must be an old UCS license (<=1.3-0)
-			self.types = self.__getValue('univentionLicenseType', [b'UCS'], 'License Type', 'Type attribute not found')
+			self.types = self.__getValue('univentionLicenseType', ['UCS'], 'License Type', 'Type attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
@@ -462,7 +471,7 @@ class License(object):
 			self.licenses[self.version][License.SERVERS] = self.__getValue(self.keys[self.version][License.SERVERS], None, 'Servers', 'Servers not found')
 			self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found')
 			self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found')
-			self.types = self.__getValue('univentionLicenseProduct', [b'Univention Corporate Server'], 'License Product', 'Product attribute not found')
+			self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'], 'License Product', 'Product attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
