@@ -280,8 +280,10 @@ define([
 		_toolbar: null,
 
 		hideGlobalActionsOnSelection: false,
+		hideContextActionsWhenNoSelection: true,
 
 		updateActionsMenuVisibility: true,
+
 
 		_header: null,
 
@@ -1173,7 +1175,7 @@ define([
 				if (this.hideGlobalActionsOnSelection) {
 					domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', itemsSelected);
 				}
-				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected && this.hideContextActionsWhenNoSelection);
 			}
 		},
 

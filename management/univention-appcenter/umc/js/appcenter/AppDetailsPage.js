@@ -43,7 +43,6 @@ define([
 	"dojo/dom-construct",
 	"dojo/dom-class",
 	"dojo/on",
-	"dojo/dom-style",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Tooltip",
@@ -68,14 +67,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ImageGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
-
-	var adaptedGrid = declare([Grid], {
-		_updateContextActions: function() {
-			this.inherited(arguments);
-			domStyle.set(this._contextActionsToolbar.domNode, 'visibility', 'visible');
-		}
-	});
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, Icon, AppInfo, AppMoreInfo, Buy, Badges, Vote, App, ImageGallery, _) {
 
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
@@ -453,11 +445,12 @@ define([
 			var myStore = new Observable(new Memory({
 				data: this.app.getHosts()
 			}));
-			this._installedAppsGrid = new adaptedGrid({
-				'class': 'appDetailsPageActions',
+			this._installedAppsGrid = new Grid({
+				hideContextActionsWhenNoSelection: false,
 				actions: actions,
 				columns: columns,
-				moduleStore: myStore
+				moduleStore: myStore,
+				'class': 'umcGridLight',
 			});
 			parentContainer.addChild(this._installedAppsGrid);
 			parentContainer.own(this._installedAppsGrid);
