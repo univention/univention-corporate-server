@@ -50,7 +50,7 @@ import notifier.threads
 from ldap import LDAPError, INVALID_CREDENTIALS
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check, allow_get_request
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
@@ -228,7 +228,7 @@ class Instance(Base, ProgressMixin):
 		object type is given the request option 'objectType' is used. In
 		case none if this leads to a valid object type the request
 		flavor is chosen. Failing all this will raise in
-		UMC_OptionMissing exception. On success a UMC_Module object is
+		UMC_Error exception. On success a UMC_Module object is
 		returned."""
 		if object_type is None:
 			object_type = request.options.get('objectType')
@@ -238,7 +238,7 @@ class Instance(Base, ProgressMixin):
 			module_name = request.flavor
 
 		if not module_name or module_name == 'navigation':
-			raise UMC_OptionMissing(_('No flavor or valid UDM module name specified'))
+			raise UMC_Error(_('No flavor or valid UDM module name specified'))
 
 		return UDM_Module(module_name)
 
@@ -317,7 +317,7 @@ class Instance(Base, ProgressMixin):
 				self.finished(request.id, [{'success': False, 'message': 'invalid file path'}])
 				return
 		else:
-			self.required_options(request, 'license')
+			sanitize(license=StringSanitizer(required=True))(lambda self, request: None)(self, request)
 			lic = request.options['license']
 
 			# Replace non-breaking space with a normal space
@@ -906,7 +906,7 @@ class Instance(Base, ProgressMixin):
 				property_obj = module.get_property(property_name)
 
 				if property_obj is None:
-					raise UMC_OptionMissing(_('Property %s not found') % property_name)
+					raise UMC_Error(_('Property %s not found') % property_name)
 
 				# check each element if 'value' is a list
 				if isinstance(value, (tuple, list)) and property_obj.multivalue:
@@ -1141,7 +1141,7 @@ class Instance(Base, ProgressMixin):
 			def _get_object(_dn, _module):
 				'''Get existing UDM object and corresponding module. Verify user input.'''
 				if _module is None or _module.module is None:
-					raise UMC_OptionTypeError('The given object type is not valid')
+					raise UMC_Error('The given object type is not valid')
 				_obj = _module.get(_dn)
 				if _obj is None or (_dn and not _obj.exists()):
 					raise ObjectDoesNotExist(_dn)
@@ -1237,13 +1237,13 @@ class Instance(Base, ProgressMixin):
 		returned."""
 		object_type = request.options.get('objectType')
 		if not object_type:
-			raise UMC_OptionMissing('The object type is missing')
+			raise UMC_Error('The object type is missing')
 		object_dn = request.options.get('objectDN')
 
 		def _thread(object_type, object_dn):
 			module = UDM_Module(object_type)
 			if module.module is None:
-				raise UMC_OptionTypeError('The given object type is not valid')
+				raise UMC_Error('The given object type is not valid')
 
 			return module.get_option(object_dn)
 
@@ -1255,7 +1255,7 @@ class Instance(Base, ProgressMixin):
 	def request_new_license(self, email):
 		license = dump_license()
 		if license is None:
-			raise UMC_CommandError(_('Cannot parse License from LDAP'))
+			raise UMC_Error(_('Cannot parse License from LDAP'))
 		data = {}
 		data['email'] = email
 		data['licence'] = license

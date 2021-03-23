@@ -46,7 +46,7 @@ import six
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
-from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
+from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import user_connection, get_user_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -484,7 +484,7 @@ class UDM_Module(object):
 
 			property_obj = self.get_property(property_name)
 			if property_obj is None:
-				raise UMC_OptionMissing(_('Property %s not found') % property_name)
+				raise UMC_Error(_('Property %s not found') % property_name)
 
 			# check each element if 'value' is a list
 			if isinstance(value, (tuple, list)) and property_obj.multivalue:
@@ -498,7 +498,7 @@ class UDM_Module(object):
 					try:
 						subResults.append(property_obj.syntax.parse(ival))
 					except TypeError as exc:
-						raise UMC_OptionTypeError(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
+						raise UMC_Error(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
 				if subResults:  # empty list represents removing of the attribute (handlers/__init__.py def diff)
 					MODULE.info('Setting of property ignored (is empty)')
 					obj[property_name] = subResults
@@ -512,7 +512,7 @@ class UDM_Module(object):
 				try:
 					obj[property_name] = property_obj.syntax.parse(value)
 				except TypeError as exc:
-					raise UMC_OptionTypeError(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
+					raise UMC_Error(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
 
 		return obj
 
