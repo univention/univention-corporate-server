@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="2.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
@@ -50,6 +50,9 @@
 					Before UCS 5.0 this file was only readable by user <systemitem class="username">root</systemitem>.
 					Debian and <systemitem class="service">systemd</systemitem> have this file world readable be default.
 					UCS decided to follow this upstream policy, because a list of all users is accessible via <command>getent passwd</command> anyway (<u:bug>51579</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara>
+				The Joinscripts for <command>univention-s4-connector</command> and <command>univention-appcenter</command> now start <command>ucs_registerLDAPExtension</command> with the options <command>--ucsversionstart</command> and <command>--ucsversionstop</command> to signal compatibility with Python 3 (<u:bug>51763</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
