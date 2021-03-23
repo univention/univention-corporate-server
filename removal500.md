@@ -65,7 +65,7 @@
 - [ ] UCRV `cups/checkprinters/`
 
 ## [base/univention-skel/](base/univention-skel/)
-- [ ] UCRV `skel/**`
+- [x] UCRV `skel/**`
 
 ## [services/univention-snmp/](services/univention-snmp/)
 - [x] UCRV `security/packetfilter/package/univention-snmp/**`
