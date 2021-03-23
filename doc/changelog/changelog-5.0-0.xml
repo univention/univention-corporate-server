@@ -356,7 +356,7 @@
 					 The <package>apache</package> configuration for the &ucsUDM; REST API has been adjusted for the new <package>apache</package> version (<u:bug>51604</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The &ucsUDM; UMC module has been migrated to Python 3 (<u:bug>51329</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
