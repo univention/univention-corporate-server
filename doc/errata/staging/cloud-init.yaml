@@ -6,7 +6,7 @@ src: cloud-init
 fix: 0.7.9-2+deb9u1
 desc: |
  This update addresses the following issue:
- * cloud-init (CVE-2021-3429)
+ * Avoid logging generated passwords (CVE-2021-3429)
 bug: [52969]
 cve:
 - CVE-2021-3429
