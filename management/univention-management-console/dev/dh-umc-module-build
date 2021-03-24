@@ -75,6 +75,7 @@ def do_package(package, core):
 	for module in modules:
 		if not module.icons:
 			continue
+		root = os.path.abspath(os.curdir)
 		for path, directories, files in os.walk(os.path.join(module.icons, 'scalable')):
 			for filename in files:
 				name, ext = os.path.splitext(filename)
@@ -89,7 +90,7 @@ def do_package(package, core):
 					except EnvironmentError:
 						pass
 					print('I: Creating missing image %s' % (png_path,))
-					dh_ucs.doIt('convert', '-background', 'none', os.path.join(path, filename), '-resize', '%dx%d' % (size, size), png_path)
+					dh_ucs.doIt('convert', '-background', 'none', os.path.join(root, path, filename), '-resize', '%dx%d' % (size, size), os.path.join(root, png_path))
 
 
 def main():
