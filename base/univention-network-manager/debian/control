@@ -24,7 +24,7 @@ Architecture: all
 Depends:
  python3-netifaces,
  python3-univention-lib,
- univention-config (>= 8.0.2),
+ univention-config (>= 15.0.7),
  ${misc:Depends},
  ${python3:Depends},
 Recommends:
