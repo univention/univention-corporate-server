@@ -35,14 +35,15 @@ At the start of this evaluation, all DNS servers already configured via UCR (`na
 `dns/forwarderX`) are ignored and discarded, regardless of join status and system role.
 
 
-    IN CASE OF DHCP, THE EXISTING  | Add self to    Add ns to       Add ns to
-    UCR CONFIG IS NEVER USED!      | resolv.conf    nameserverX     dns/forwarderX
-    -------------------------------|-----------------------------------------------
-    Primary Domain Node (joined)   |     X          X (heuristic)   X (heuristic)
-    Backup Domain Node (joined)    |     X          X (heuristic)   X (heuristic)
-    Replica Domain Node (joined)   |     X          X (heuristic)   X (heuristic)
-    Managed Node (joined)          |     -          X               -
-    Primary Domain Node (unjoined) |     -          X               -
-    Backup Domain Node (unjoined)  |     -          X               -
-    Replica Domain Node (unjoined) |     -          X               -
-    Managed Node (unjoined)        |     -          X               -
+1. In case of DHCP the existing UCR configuration is never used!
+2. Unjoined systems always add servers to `nameserverX`.
+3. Joined managed nodes also always add servers to `nameserversX`.
+4. Join DCs always use themselves in `resolv.conf` and use the provided servers eiterh in `nameserversX` or `dns/forwarderX`.
+
+| joined | Server role           | Add self to resolv.conf | Add ns to nameserversX | Add ns to dns/forwarderX |
+|--------|-----------------------|-------------------------|------------------------|--------------------------|
+| -      | *                     | -                       | X                      | -                        |
+| x      | Managed Node          | -                       | X                      | -                        |
+| x      | Primary Domain Node   | X                       | X (heuristic)          | X (heuristic)            |
+| x      | Backup Domain Node    | X                       | X (heuristic)          | X (heuristic)            |
+| x      | Replica Domain Node   | X                       | X (heuristic)          | X (heuristic)            |
