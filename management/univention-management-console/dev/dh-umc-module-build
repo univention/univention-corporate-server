@@ -71,6 +71,26 @@ def do_package(package, core):
 				dh_umc.module_xml2po(module, po_file, lang)
 				dh_umc.create_mo_file(po_file)
 
+	# create missing images
+	for module in modules:
+		if not module.icons:
+			continue
+		for path, directories, files in os.walk(os.path.join(module.icons, 'scalable')):
+			for filename in files:
+				name, ext = os.path.splitext(filename)
+				if ext not in ('.svg', '.svgz'):
+					continue
+				for size in (16, 50):
+					png_path = os.path.join(module.icons, '%dx%d' % (size, size), '%s.png' % (name,))
+					if os.path.exists(png_path):
+						continue
+					try:
+						os.makedirs(os.path.dirname(png_path))
+					except EnvironmentError:
+						pass
+					print('I: Creating missing image %s' % (png_path,))
+					dh_ucs.doIt('convert', '-background', 'none', os.path.join(path, filename), '-resize', '%dx%d' % (size, size), png_path)
+
 
 def main():
 	# parse all options
