@@ -6,12 +6,11 @@ src: univention-s4-connector
 fix: 13.0.2-88A~4.4.0.202103231539
 desc: |
  This update addresses the following issues:
- * The gidNumber attribute on groups
-   is now synced from UCS to Samba4. The attribute is only set
-   if an UCS object is modified. If all objects shall be resynced,
-   the tool
+ * The gidNumber attribute on groups is now synced from UCS to Samba4.
+   The attribute is only set if an UCS object is modified. If all objects
+   shall be resynced, the tool
    `/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter`
-   can be used with a LDAP-filter to resync multiple objects at once.
+   can be used with an LDAP-filter to resync multiple objects at once.
  * The gidNumber attribute on users will be synchronized
    from UCS to Samba4 not from Samba4 to UCS.
 bug: [50766, 50278]
