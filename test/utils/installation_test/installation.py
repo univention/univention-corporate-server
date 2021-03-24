@@ -64,7 +64,7 @@ class UCSInstallation(object):
 	def tab_to_next_and_enter(self, tabs):
 		for i in range(tabs):
 			self.client.keyPress('tab')
-			time.sleep(0.1)
+			time.sleep(0.5)
 		self.client.keyPress('enter')
 
 	def installer(self):
@@ -253,7 +253,7 @@ class UCSInstallation(object):
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
 			#self.click(self._['next'])
-			self.tab_to_next_and_enter(2)
+			self.tab_to_next_and_enter(1)
 			if self.text_is_visible(self._['no_dc_dns']):
 				self.client.keyPress('enter')
 				self.click(self._['preferred_dns'])

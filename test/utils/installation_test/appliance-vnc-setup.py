@@ -47,6 +47,7 @@ class UCSSetup(UCSInstallation):
 	def tab_to_next_and_enter(self, tabs):
 		for i in range(tabs):
 			self.client.keyPress('tab')
+			time.sleep(0.5)
 		self.client.keyPress('enter')
 
 	def language(self, language):
