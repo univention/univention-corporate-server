@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix a Python 3 compatibility error in the /etc/hosts UCR template.
 bug: [52919]
+erratum: 934
+announced: 2021-03-24
