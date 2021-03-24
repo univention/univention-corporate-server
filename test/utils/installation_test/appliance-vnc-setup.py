@@ -111,7 +111,8 @@ class UCSSetup(UCSInstallation):
 		self.client.waitForText(text, timeout=self.timeout)
 		self.client.mouseClickOnText(text, timeout=self.timeout)
 		self.screenshot('domain-setup.png')
-		self.next()
+		#self.next()
+		self.tab_to_next_and_enter(2)
 		time.sleep(10)
 		if role == 'slave':
 			self.client.keyPress('down')
