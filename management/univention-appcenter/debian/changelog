@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-26) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:12:56 +0100
+
 univention-appcenter (9.0.2-25) unstable; urgency=medium
 
   * Bug #52453: adjust Manage Installations grid styling

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="appcenter" priority="50" version="1.0" python="3">
-		<flavor priority="50" id="appcenter">
+		<flavor priority="50" icon="app-center" id="appcenter">
 			<name>App Center</name>
 			<description>Install or remove applications</description>
 			<keywords>install,uninstall,software,update</keywords>
@@ -9,7 +9,7 @@
 				<category name="software"/>
 			</categories>
 		</flavor>
-		<flavor priority="50" id="packages">
+		<flavor priority="50" icon="package-management" id="packages">
 			<name>Package Management</name>
 			<description>Installation of software packages</description>
 			<keywords>update,install,uninstall</keywords>
@@ -17,7 +17,7 @@
 				<category name="software"/>
 			</categories>
 		</flavor>
-		<flavor priority="50" id="components">
+		<flavor priority="50" icon="repository-settings" id="components">
 			<name>Repository Settings</name>
 			<description>Repository server configuration</description>
 			<keywords/>

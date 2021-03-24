@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (9.0.0-4) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:16:51 +0100
+
 univention-management-console-module-ucr (9.0.0-3) unstable; urgency=medium
 
   * Bug #52453: adjust design of ucr module

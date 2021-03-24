@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-6) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:16:12 +0100
+
 univention-management-console-module-top (9.0.0-5) unstable; urgency=medium
 
   * Bug #52941: readding umc-top icons from version 3.2

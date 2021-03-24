@@ -1,3 +1,9 @@
+univention-portal (4.0.5-13) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:17:36 +0100
+
 univention-portal (4.0.5-12) unstable; urgency=medium
 
   * Bug #52869: Dont support SAML for now

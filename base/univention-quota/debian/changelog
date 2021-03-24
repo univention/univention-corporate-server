@@ -1,3 +1,9 @@
+univention-quota (14.0.1-5) unstable; urgency=medium
+
+  * Bug #52941: added module icons for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:06:33 +0100
+
 univention-quota (14.0.1-4) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adjust styling

@@ -275,7 +275,7 @@ class UMCPortal(Portal):
 	def get_entries(self, content):
 		entries = []
 		for module in content["umc_modules"]:
-			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["id"])
+			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
 			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
 				logo_name = None
 			entries.append({

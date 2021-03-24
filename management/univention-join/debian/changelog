@@ -1,3 +1,9 @@
+univention-join (12.0.3-4) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:14:00 +0100
+
 univention-join (12.0.3-3) unstable; urgency=medium
 
   * Bug #52437: Increment joinscript version by 10 relative to 4.4-7

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="setup" version="1.0">
+	<module id="setup" icon="language-settings" version="1.0">
 		<flavor priority="50" id="languages">
 			<name>Language settings</name>
 			<description>All language-related settings</description>
 			<keywords>timezone,locale,keyboard</keywords>
 		</flavor>
-		<flavor priority="50" id="network">
+		<flavor priority="50" icon="network-settings" id="network">
 			<name>Network settings</name>
 			<description>Specify IP addresses, name servers, gateways and HTTP proxies</description>
 			<keywords>ip,dhcp,dns,nameserver,forwarder,gateway,interface</keywords>
 		</flavor>
-		<flavor priority="50" id="certificate">
+		<flavor priority="50" icon="certificate-settings" id="certificate">
 			<name>Certificate settings</name>
 			<description>Create a new root certificate</description>
 			<keywords>SSL,organization</keywords>

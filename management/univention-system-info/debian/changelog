@@ -1,3 +1,9 @@
+univention-system-info (10.0.0-2) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:18:08 +0100
+
 univention-system-info (10.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

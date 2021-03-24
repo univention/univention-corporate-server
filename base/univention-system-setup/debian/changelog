@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-15) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:11:19 +0100
+
 univention-system-setup (13.0.3-14) unstable; urgency=medium
 
   * Bug #45918: New link syntax

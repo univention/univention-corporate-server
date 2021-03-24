@@ -4,7 +4,7 @@
 		<name>Univention Directory Manager</name>
 		<description>Manages all UDM modules</description>
 		<keywords></keywords>
-		<flavor priority="50" id="users/user">
+		<flavor priority="50" icon="users" id="users/user">
 			<name>Users</name>
 			<description>Management of domain users</description>
 			<keywords>users</keywords>
@@ -25,7 +25,7 @@
 				<requiredCommand name="udm/syntax/choices"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="users/contact">
+		<flavor priority="50" icon="contacts" id="users/contact">
 			<name>Contacts</name>
 			<description>Management of contacts</description>
 			<keywords>contacts</keywords>
@@ -44,7 +44,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="groups/group">
+		<flavor priority="50" icon="groups" id="groups/group">
 			<name>Groups</name>
 			<description>Management of user and computer groups in the domain</description>
 			<keywords>groups</keywords>
@@ -63,7 +63,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="computers/computer">
+		<flavor priority="50" icon="computers" iconsid="computers/computer">
 			<name>Computers</name>
 			<description>Management of computers in the domain</description>
 			<keywords>computers</keywords>
@@ -82,7 +82,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="networks/network">
+		<flavor priority="50" icon="networks" id="networks/network">
 			<name>Networks</name>
 			<description>Configuration of network settings in the domain</description>
 			<keywords>networks</keywords>
@@ -98,7 +98,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="dns/dns">
+		<flavor priority="50" icon="dns" id="dns/dns">
 			<name>DNS</name>
 			<description>Configuration of DNS settings in the domain</description>
 			<keywords>dns</keywords>
@@ -115,7 +115,7 @@
 				<requiredCommand name="udm/nav/container/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="dhcp/dhcp">
+		<flavor priority="50" icon="dhcp" id="dhcp/dhcp">
 			<name>DHCP</name>
 			<description>Configuration of DHCP settings in the domain</description>
 			<keywords>dhcp</keywords>
@@ -132,7 +132,7 @@
 				<requiredCommand name="udm/nav/container/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="shares/share">
+		<flavor priority="50" icon="shares" id="shares/share">
 			<name>Shares</name>
 			<description>Management of directory shares in the domain</description>
 			<keywords>shares</keywords>
@@ -148,7 +148,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="shares/print">
+		<flavor priority="50" icon="printers" id="shares/print">
 			<name>Printers</name>
 			<description>Management of printers and printer groups in the domain</description>
 			<keywords>printers</keywords>
@@ -167,7 +167,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="mail/mail">
+		<flavor priority="50" icon="mail" id="mail/mail">
 			<name>Mail</name>
 			<description>Management of mail domains and mailing lists</description>
 			<keywords>mail,e-mail,email</keywords>
@@ -183,7 +183,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="nagios/nagios">
+		<flavor priority="50" icon="nagios" id="nagios/nagios">
 			<name>Nagios</name>
 			<description>Configuration of Nagios settings in the domain</description>
 			<keywords>nagios</keywords>
@@ -202,7 +202,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="policies/policy">
+		<flavor priority="50" icon="policies" id="policies/policy">
 			<name>Policies</name>
 			<description>Management of domain wide policies</description>
 			<keywords>policy,policies</keywords>
@@ -218,7 +218,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="navigation">
+		<flavor priority="50" icon="ldap-directory" id="navigation">
 			<name>LDAP directory</name>
 			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>

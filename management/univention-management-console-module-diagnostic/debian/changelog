@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-9) unstable; urgency=medium
+
+  * Bug #52941: added module icon for portal
+
+ -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:15:04 +0100
+
 univention-management-console-module-diagnostic (6.0.0-8) unstable; urgency=medium
 
   * Bug #52453: adjust font size
