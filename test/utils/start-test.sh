@@ -7,8 +7,8 @@
 release='5.0-0'
 old_release='4.4-7'
 kvm_template_version='5.0-0'
-# AMI: Univention Corporate Server (UCS) 5.0 (testimage5)
-current_ami=ami-09d59f4759e7134e3
+# AMI: Univention Corporate Server (UCS) testimage6
+current_ami=ami-07a81bfa4e32dd37f
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 9 - ami-0810f599d8e0444b1
 old_ami=ami-0810f599d8e0444b1
 
@@ -250,6 +250,8 @@ exe='ucs-ec2-create'
 # start the test
 declare -a cmd=()
 if "$docker"; then
+	# get latest version of image
+	docker pull "$image"
 	# create env file
 	{
 		for env_var in "${env_vars[@]}"
