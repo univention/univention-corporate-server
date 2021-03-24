@@ -70,18 +70,69 @@
 			background-size: contain
 			background-position: left bottom
 
-	#content.setupLocalMode
-		@media (min-width: 768px)
-			width: 100%
-	#content:not(.setupLocalMode)
-		@media (min-width: 1200px)
+	// decrease width of container for wide screens
+	@media (min-width: 1200px)
+		#content
 			width: 970px
+	// adjustments for the icon in bottom left corner
 	@media (max-width: 767px)
 		.umc-setup-page .umcPageIcon
 			height: 80px
 			width: 80px
 		#setupApplianceWizard .umcPageFooter
-			margin-top: 80px
+			margin-top: 60px
+
+	// use full height for small screens
+	@media (max-height: 800px)
+		display: flex
+		flex-direction: column
+		max-height: 100vh
+
+		.umcHeader
+			flex: 0 0 auto
+		#content
+			flex: 1 1 auto
+			display: flex
+			min-height: 0%
+		#setupApplianceWizard
+			flex: 1 1 auto
+			margin-top: calc(4 * var(--layout-spacing-unit))
+			margin-bottom: @margin-top
+
+			.umcWizardChildWrapper
+				height: 100%
+			.umc-setup-page
+				height: 100%
+				display: grid
+				grid-template-columns: 1fr 2fr
+				grid-template-rows: 1fr auto
+				grid-template-areas: "nav main" "footer footer"
+
+				> .umcPageNav
+					width: 100%
+					grid-area: nav
+				> .umcPageMain
+					width: 100%
+					min-height: 0%
+					grid-area: main
+					overflow: auto
+				> .umcPageFooter
+					width: 100%
+					grid-area: footer
+	@media (max-height: 800px) and (max-width: 767px)
+		#setupApplianceWizard
+			.umc-setup-page
+				grid-template-columns: 1fr
+				grid-template-rows: auto 1fr auto
+				grid-template-areas: "nav" "main" "footer"
+	// use full width for small-ish screens
+	@media (max-width: 991px)
+		#content
+			width: 100%
+			padding: 0;
+		#setupApplianceWizard
+			margin-left: calc(4 * var(--layout-spacing-unit))
+			margin-right: @margin-left
 
 
 	/* specific stylings for various setup pages */
