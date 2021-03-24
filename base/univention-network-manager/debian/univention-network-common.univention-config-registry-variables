@@ -1,41 +1,48 @@
 [dhclient/options/timeout]
-Description[de]=Die maximale Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen. Ist die Variable nicht gesetzt, gelten 30 Sekunden.
-Description[en]=The maximum amount of time in seconds that the DHCP clients tries to get an IP configuration. If the variable is unset, 30 seconds apply.
+Description[de]=Die maximale Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen.
+Description[en]=The maximum amount of time in seconds that the DHCP clients tries to get an IP configuration.
 Type=int
+Default=40
 Categories=system-base
 
 [dhclient/options/retry]
-Description[de]=Die Zeit in Sekunden, die der DHCP-Client nach einer fehlgeschlagenen DHCP-Anfrage vor einem erneuten Versuch wartet. Ist die Variable nicht gesetzt, gelten 60 Sekunden.
-Description[en]=The amount of time in seconds that the DHCP clients waits before trying again after a failed DHCP request. If the variable is unset, 60 seconds apply.
+Description[de]=Die Zeit in Sekunden, die der DHCP-Client nach einer fehlgeschlagenen DHCP-Anfrage vor einem erneuten Versuch wartet.
+Description[en]=The amount of time in seconds that the DHCP clients waits before trying again after a failed DHCP request.
 Type=int
+Default=60
 Categories=system-base
 
 [dhclient/linklocal/fallback]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird eine 'Link Local' IP-Adresse (169.254.x.y) konfiguriert, wenn keine IP-Adresse per DHCP bezogen werden konnte.
-Description[en]=If this option is activated or the variable unset, a 'link local' address (169.254.x.y) is configured if no IP address could be retrieved via DHCP.
+Description[de]=Ist diese Option aktiviert, wird eine 'Link Local' IP-Adresse (169.254.x.y) konfiguriert, wenn keine IP-Adresse per DHCP bezogen werden konnte.
+Description[en]=If this option is activated, a 'link local' address (169.254.x.y) is configured if no IP address could be retrieved via DHCP.
 Type=bool
+default=true
 Categories=system-base
 
 [dhclient/options/ddns]
-Description[de]=Ist diese Option aktiviert, wird Dynamic DNS im Rahmen der DHCP-IP-Vergabe angefordert. Ist die Variable nicht gesetzt, wird kein DDNS verwendet.
-Description[en]=If this option is activated, Dynamic DNS is requested during DHCP IP assignment. If the variable is unset, DDNS is not used.
+Description[de]=Ist diese Option aktiviert, wird Dynamic DNS im Rahmen der DHCP-IP-Vergabe angefordert.
+Description[en]=If this option is activated, Dynamic DNS is requested during DHCP IP assignment.
 Type=bool
+default=false
 Categories=system-base
 
 [dhclient/options/ddns/zone]
 Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns'), kann mit dieser Variable die DNS-Forward-Zone konfiguriert werden, die für DDNS verwendet werden soll.
 Description[en]=If DDNS has been activated (see 'dhclient/options/ddns'), this variable allows to configure the DNS forward zone to use with DDNS.
 Type=str
+default=@%@domainname@%@
 Categories=system-base
 
 [dhclient/options/ddns/serverupdate]
-Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns') und diese Option aktiviert oder die Variable nicht gesetzt, aktualisiert der DHCP-Server den A-Record und PTR-Record des Clients. Ist die Option deaktiviert, wird nur der PTR-Record gesetzt.
-Description[en]=If DDNS has been activated (see 'dhclient/options/ddns') and this option is activated or the variable unset, the DHCP server updates both the A record and the PTR record of the client. If the option is deactivated, only the PTR record is set.
+Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns') und diese Option aktiviert, aktualisiert der DHCP-Server den A-Record und PTR-Record des Clients. Ist die Option deaktiviert, wird nur der PTR-Record gesetzt.
+Description[en]=If DDNS has been activated (see 'dhclient/options/ddns') and this option is activated, the DHCP server updates both the A record and the PTR record of the client. If the option is deactivated, only the PTR record is set.
 Type=bool
+default=true
 Categories=system-base
 
 [nameserver/external]
-Description[de]=Ist diese Option deaktiviert oder die Variable nicht gesetzt, wird der/die per DHCP bezogene DNS-Server als 'dns/forwarderX' bzw. 'nameserverX' verwendet.
-Description[en]=If this option is deactivated or the variable unset, the nameserver(s) retrieved via DHCP is/are used as 'dns/forwarderX' resp. 'nameserverX'.
+Description[de]=Ist diese Option deaktiviert, wird der/die per DHCP bezogene DNS-Server als 'dns/forwarderX' bzw. 'nameserverX' verwendet.
+Description[en]=If this option is deactivated, the nameserver(s) retrieved via DHCP is/are used as 'dns/forwarderX' resp. 'nameserverX'.
 Type=bool
+default=false
 Categories=system-base
