@@ -244,15 +244,12 @@ class UCSInstallation(object):
 		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(1)
 			self.client.waitForText(self._['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(4)
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(1)
 			if self.text_is_visible(self._['no_dc_dns']):
 				self.client.keyPress('enter')
@@ -264,18 +261,17 @@ class UCSInstallation(object):
 					self.client.keyPress('enter')
 					time.sleep(30)
 				self.click(self._['join_domain'])
-				#self.click(self._['next'])
 				self.tab_to_next_and_enter(2)
 			self.client.waitForText(self._['role'])
 			if self.args.role == 'backup':
 				self.click('Backup Directory Node')
-				self.click(self._['next'])
+				self.tab_to_next_and_enter(2)
 			if self.args.role == 'slave':
 				self.click('Replica Directory Node')
-				self.click(self._['next'])
+				self.tab_to_next_and_enter(2)
 			if self.args.role == 'member':
 				self.click('Managed Node')
-				self.click(self._['next'])
+				self.tab_to_next_and_enter(2)
 			self.client.waitForText(self._['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
@@ -285,7 +281,6 @@ class UCSInstallation(object):
 			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
 			self.click(self._['ad_domain'])
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(1)
 			self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
 			self.client.keyPress('enter')
@@ -300,7 +295,6 @@ class UCSInstallation(object):
 			if self.text_is_visible('APIPA', timeout=self.timeout):
 				self.client.keyPress('enter')
 				time.sleep(60)
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(2)
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
 			self.client.mouseMove(500, 300)
@@ -311,7 +305,6 @@ class UCSInstallation(object):
 			self.client.mousePress(1)
 			self._clear_input()
 			self.client.enterText(self.args.join_password)
-			#self.click(self._['next'])
 			self.tab_to_next_and_enter(2)
 		elif self.args.role == 'basesystem':
 			self.click(self._['no_domain'])
@@ -337,7 +330,6 @@ class UCSInstallation(object):
 		self.client.enterText(self.args.fqdn)
 		if self.args.role == 'master':
 			self.client.keyPress('tab')
-		#self.click(self._['next'])
 		self.tab_to_next_and_enter(2)
 
 	def finish(self):
