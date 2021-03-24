@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: 
+fix: univention-heimdal
+desc: |
+ This update addresses the following issue:
+ * Obsolete and confusing configuration lines in kdc.conf
+   have been removed
+bug: [52198]
