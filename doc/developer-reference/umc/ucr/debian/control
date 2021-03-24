@@ -5,11 +5,12 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  dh-python,
  univention-management-console-dev (>= 12.0.2),
- python-all
+ python3-all
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-ucr
 Architecture: all
 Depends: univention-management-console-server
+Provides: ${python3:Provides}
 Description: UMC module for UCR
  This package contains the UMC module for Univention Configuration Registry
