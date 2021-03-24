@@ -91,7 +91,6 @@ define([
 			this.local_mode = tools.status('username') === '__systemsetup__';
 			var _Container = declare([ContainerWidget, Standby]);
 			this._container = new _Container({}, 'content');
-			domClass.toggle(this._container.domNode, 'setupLocalMode', this.local_mode);
 
 			// load some ucr variables
 			var deferred_ucr = tools.ucr([
