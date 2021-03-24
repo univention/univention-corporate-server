@@ -1,3 +1,9 @@
+univention-web (4.0.1-20) unstable; urgency=medium
+
+  * Bug #52453: adjust button styling
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 24 Mar 2021 15:02:21 +0100
+
 univention-web (4.0.1-19) unstable; urgency=medium
 
   * Bug #52453: fix typo
