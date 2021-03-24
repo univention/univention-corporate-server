@@ -9,3 +9,5 @@ desc: |
  * ucsversionstart and ucsversionend is now set during registering of the
    LDAP ACL extension. This is required for the upgrade to UCS 5.
 bug: [52955]
+erratum: 936
+announced: 2021-03-24
