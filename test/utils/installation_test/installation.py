@@ -166,8 +166,8 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
-		time.sleep(700)
-		self.client.waitForText(self._['finish_installation'], timeout=1200)
+		time.sleep(600)
+		self.client.waitForText(self._['finish_installation'], timeout=1300)
 		self.client.keyPress('enter')
 		time.sleep(30)
 
