@@ -207,18 +207,6 @@ class UCSSetup(UCSInstallation):
 				self.orga(self.args.organisation, self.args.password)
 			if not self.args.role == 'fast':
 				self.hostname(self.args.fqdn)
-			try:
-				self.client.waitForText('Software configuration', timeout=self.timeout)
-				self.client.mousePress(1)
-				time.sleep(1)
-				self.client.keyPress('down')
-				self.client.keyPress('down')
-				time.sleep(1)
-				self.client.mouseMove(900, 730)
-				time.sleep(1)
-				self.client.mousePress(1)
-			except VNCDoException:
-				self.connect()
 			self.start()
 			self.finish()
 		except Exception:
