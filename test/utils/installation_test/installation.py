@@ -264,7 +264,8 @@ class UCSInstallation(object):
 					self.client.keyPress('enter')
 					time.sleep(30)
 				self.click(self._['join_domain'])
-				self.click(self._['next'])
+				#self.click(self._['next'])
+				self.tab_to_next_and_enter(2)
 			self.client.waitForText(self._['role'])
 			if self.args.role == 'backup':
 				self.click('Backup Directory Node')

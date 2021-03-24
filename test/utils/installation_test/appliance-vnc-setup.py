@@ -117,7 +117,8 @@ class UCSSetup(UCSInstallation):
 		time.sleep(10)
 		if role == 'slave':
 			self.client.keyPress('down')
-			self.next()
+			#self.next()
+			self.tab_to_next_and_enter(2)
 			self.click('Username')
 			self.client.enterText(self.args.join_user)
 			self.click('Password')
