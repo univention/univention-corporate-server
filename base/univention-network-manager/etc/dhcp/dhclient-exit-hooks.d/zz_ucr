@@ -1,0 +1,89 @@
+#!/bin/bash
+#
+# Copyright 2021 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+# this file is sourced by /sbin/dhclient-script, NEVER exit
+[ "$(ucr get "interfaces/${interface:?}/type")" = dhcp ] ||
+	return
+
+save_to_ucr () {
+	declare -a ucrvs=()
+
+	set_by_env address ip_address
+	set_by_env netmask subnet_mask
+	set_by_env broadcast broadcast_address
+
+	# gateway can be set via "routers" or "rfc3442_classless_static_routes"
+	set_if_changed gateway "$(ip route show 0/0 | cut -d' ' -f3)"
+
+	[ -n "${ucrvs[*]}" ] ||
+		return
+
+	set_if_changed "interfaces/${interface}/network" ''
+	apply_ucr "${ucrvs[@]}"
+}
+
+set_by_env () {  # ucrv env
+	local newenv="new_${2:?}"
+	set_if_changed "interfaces/${interface}/${1:?}" "${!newenv}"
+}
+
+set_if_changed () { # ucrv value
+	local ucrv="${1:?}" value="${2?}"
+	[ "$value" != "$(ucr get "$ucrv")" ] &&
+		ucrvs+=("$ucrv=$value")
+}
+
+apply_ucr () {
+	local old
+	old="$(ucr get interfaces/restart/auto)"
+	ucr set interfaces/restart/auto=false "${@}"
+	[ "$old" != false ] &&
+		ucr set interfaces/restart/auto="$old" >/dev/null
+}
+
+save_to_umc () {
+	[ -s /etc/machine.secret ] &&
+		have univention-register-network-address &&
+		netcat -q0 -w1 "$(ucr get ldap/master)" 443 </dev/null &&
+		timeout 10 univention-register-network-address --interface "$interface"
+}
+
+have () {
+	command -v "${1:?}" >/dev/null 2>&1
+}
+
+case "${reason:?}" in
+BOUND|RENEW|REBIND|REBOOT)
+	save_to_ucr
+	save_to_umc
+	# restart UMC on Primary as c7355c8e0e6f904f486109e084f03be4e5015e74 did?
+	;;
+esac
+
+:

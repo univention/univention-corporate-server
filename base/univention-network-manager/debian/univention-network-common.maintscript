@@ -1,3 +1,5 @@
 rm_conffile /etc/init.d/univention-network-common 12.0.0-2~
 rm_conffile /etc/dhcp/dhclient-exit-hooks.d/resolvconf 12.0.1-2~
 rm_conffile /etc/network/if-up.d/00_resolvconf 12.0.2-3~
+rm_conffile /etc/network/if-up.d/12_univention_config_registry 12.0.2-3~
+rm_conffile /etc/network/if-up.d/90_dns_update 12.0.2-3~
