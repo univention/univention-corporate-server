@@ -178,7 +178,8 @@ class UCSSetup(UCSInstallation):
 			self.client.mouseClickOnText('configure system')
 
 	def finish(self):
-		self.client.waitForText('successfully set up', timeout=3600, prevent_screen_saver=True)
+		time.sleep(600)
+		self.client.waitForText('UCS setup successful', timeout=3000, prevent_screen_saver=True)
 		self.screenshot('finished-setup.png')
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
@@ -226,7 +227,7 @@ def main():
 	parser.add_argument('--join-password')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
-	parser.add_argument('--screenshot-dir', default='../screenshots')
+	parser.add_argument('--screenshot-dir', default='./screenshots')
 	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'])
 	parser.add_argument('--ucs', help='ucs appliance', action='store_true')
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
