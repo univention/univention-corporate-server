@@ -1,5 +1,12 @@
 @!@
 from univention.lib.misc import custom_username, custom_groupname
+from ldap.dn import escape_dn_chars
+from six.moves.urllib.parse import quote as urlencode
+
+
+def escape(string):
+	return string.replace('\\', '\\\\').replace('"', '\\"')
+
 
 ldap_base = configRegistry['ldap/base']
 ldap_port = configRegistry['slapd/port']
@@ -10,7 +17,7 @@ users_default_administrator = custom_username('Administrator')
 
 print('authz-regexp')
 print('    uid=([^,]*),cn=(gssapi|saml),cn=auth')
-print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
+print('    ldap:///%s??sub?uid=$1' % (urlencode(ldap_base),))
 print('')
 
 print('access to attrs=uid value=root by * none stop')
@@ -20,7 +27,7 @@ print('    by anonymous auth')
 print('    by * none break')
 print('')
 
-print('access to dn="cn=admin,%s"' % (ldap_base))
+print('access to dn="cn=admin,%s"' % (escape(ldap_base),))
 print('    by self %s' % (usr))
 print('    by * none')
 print('')
@@ -28,37 +35,37 @@ print('')
 print('access to *')
 print('    by sockname="PATH=/var/run/slapd/ldapi" %s' % (usr))
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by dn.base="uid=%s,cn=users,%s" %s' % (users_default_administrator, ldap_base, usr))
+	print('    by dn.base="cn=admin,%s" %s' % (escape(ldap_base), usr))
+print('    by dn.base="uid=%s,cn=users,%s" %s' % (escape(escape_dn_chars(users_default_administrator)), escape(ldap_base), usr))
 print('    by * none break')
 print('')
 
-print('access to dn="uid=%s,cn=users,%s"' % (users_default_administrator, ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('access to dn="uid=%s,cn=users,%s"' % (escape(escape_dn_chars(users_default_administrator)), escape(ldap_base)))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape(escape_dn_chars(groups_default_domainadmins)), escape(ldap_base), usr))
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
+	print('    by dn.base="cn=admin,%s" %s' % (escape(ldap_base), usr))
 print('    by self %s' % (usr))
 print('    by * +0 break')
 print('')
 
-print('access to dn="uid=join-backup,cn=users,%s"' % (ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('access to dn="uid=join-backup,cn=users,%s"' % (escape(ldap_base),))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape(escape_dn_chars(groups_default_domainadmins)), escape(ldap_base), usr))
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
+	print('    by dn.base="cn=admin,%s" %s' % (escape(ldap_base), usr))
 print('    by self %s' % (usr))
 print('    by * +0 break')
 print('')
 
-print('access to dn="uid=join-slave,cn=users,%s"' % (ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('access to dn="uid=join-slave,cn=users,%s"' % (escape(ldap_base)))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape(escape_dn_chars(groups_default_domainadmins)), escape(ldap_base), usr))
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
+	print('    by dn.base="cn=admin,%s" %s' % (escape(ldap_base), usr))
 print('    by self %s' % (usr))
 print('    by * +0 break')
 print('')
 
 print('access to attrs=entry,objectClass,uniqueMember,ou,uid,loginShell,homeDirectory,uidNumber,gidNumber,sn,cn,gecos,description,memberUid')
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape(escape_dn_chars(groups_default_domainadmins)), escape(ldap_base), usr))
 if configRegistry['ldap/server/type'] == "slave":
 	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 print('    by * +0 break')

@@ -33,6 +33,8 @@ Univention Common Python Library
 import subprocess
 from typing import Optional  # noqa F401
 
+from six.moves.urllib.parse import quote
+
 from univention.config_registry import ConfigRegistry
 
 
@@ -82,7 +84,7 @@ def getLDAPURIs(ucr=None):
 	if ldap_server_addition:
 		ldaphosts.extend(ldap_server_addition.split())
 	if ldaphosts:
-		urilist = ["ldap://%s:%s" % (host, port) for host in ldaphosts]
+		urilist = ["ldap://%s:%s" % (quote(host), quote(port)) for host in ldaphosts]
 		uri_string = ' '.join(urilist)
 
 	return uri_string

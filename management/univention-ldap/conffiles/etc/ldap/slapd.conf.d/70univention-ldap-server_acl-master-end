@@ -1,5 +1,11 @@
 @!@
+import re
 from univention.lib.misc import custom_groupname
+
+
+def re_escape(string):
+	return re.escape(string).replace('\\', '\\\\')
+
 
 ldap_base = configRegistry['ldap/base']
 usr = 'write' if configRegistry.get('ldap/server/type') == "master" else 'read'
@@ -10,7 +16,7 @@ groups_default_windowshosts = custom_groupname('Windows Hosts')
 nestedGroups = configRegistry.is_true('ldap/acl/nestedgroups', True)
 
 if configRegistry.is_true('ldap/acl/slavepdc', True):
-	print('access to dn.regex="^cn=([^,]+),cn=([^,]+),cn=temporary,cn=univention,%s$" filter="objectClass=lock" attrs="entry,@univentionObject,@lock"' % ldap_base)
+	print('access to dn.regex="^cn=([^,]+),cn=([^,]+),cn=temporary,cn=univention,%s$" filter="objectClass=lock" attrs="entry,@univentionObject,@lock"' % re_escape(ldap_base)
 	if configRegistry['ldap/server/type'] == "slave":
 		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
@@ -20,7 +26,7 @@ if configRegistry.is_true('ldap/acl/slavepdc', True):
 	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 	print('   by * +0 break')
 
-	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=children,entry' % ldap_base)
+	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=children,entry' % re_escape(ldap_base))
 	if configRegistry['ldap/server/type'] == "slave":
 		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
@@ -30,7 +36,7 @@ if configRegistry.is_true('ldap/acl/slavepdc', True):
 	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 	print('   by * +0 break')
 
-	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=univentionLastUsedValue' % ldap_base)
+	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=univentionLastUsedValue' % re_escape(ldap_base))
 	if configRegistry['ldap/server/type'] == "slave":
 		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
@@ -92,7 +98,7 @@ if configRegistry.is_true('ldap/acl/slavepdc', True):
 	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 	print('   by * +0 break')
 
-print('access to dn.regex="^cn=.*,cn=dc,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base))
+print('access to dn.regex="^cn=.*,cn=dc,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % re_escape(ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
 	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
@@ -103,7 +109,7 @@ print('   by self %s' % (usr))
 print('   by dn.children="cn=dc,cn=computers,%s" read' % (ldap_base))
 print('   by * none')
 
-print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base))
+print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % re_escape(ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
 	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
@@ -114,7 +120,7 @@ print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 print('   by self %s' % (usr))
 print('   by * none')
 
-print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=objectClass,sambaSID,sambaPrimaryGroupSID,displayName,sambaAcctFlags' % (ldap_base))
+print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=objectClass,sambaSID,sambaPrimaryGroupSID,displayName,sambaAcctFlags' % re_escape(ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
 	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
