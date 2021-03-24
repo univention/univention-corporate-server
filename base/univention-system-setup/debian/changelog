@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-17) unstable; urgency=medium
+
+  * Bug #52453: remove unused css class
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 24 Mar 2021 14:30:52 +0100
+
 univention-system-setup (13.0.3-16) unstable; urgency=medium
 
   * Bug #52453: adjustments for small screens
