@@ -14,3 +14,5 @@ desc: |
  * The gidNumber attribute on users will be synchronized
    from UCS to Samba4 not from Samba4 to UCS.
 bug: [50766, 50278]
+erratum: 935
+announced: 2021-03-24
