@@ -109,6 +109,7 @@ def usage():
 	out.append('  --%-30s %s' % ('remove-option', 'Remove the module option'))
 	out.append('  --%-30s %s' % ('policy-reference', 'Reference to policy given by DN'))
 	out.append('  --%-30s %s' % ('policy-dereference', 'Remove reference to policy given by DN'))
+	out.append('  --%-30s   ' % ('ignore_not_exists'))
 	out.append('')
 	out.append('remove options:')
 	out.append('  --%-30s %s' % ('dn', 'Remove object with DN'))
@@ -656,7 +657,7 @@ def _doit(arglist):
 	if action == 'create' or action == 'new':
 		out.extend(cli.create(input, append, ignore_exists, parsed_options, parsed_append_options, parsed_remove_options, policy_reference))
 	elif action == 'modify' or action == 'edit':
-		out.extend(cli.modify(input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference))
+		out.extend(cli.modify(input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference, ignore_not_exists=ignore_not_exists))
 	elif action == 'move':
 		out.extend(cli.move(position_dn))
 	elif action == 'remove' or action == 'delete':
@@ -849,7 +850,7 @@ class CLI(object):
 
 		return out
 
-	def _modify(self, module_name, module, dn, lo, position, superordinate, input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference):
+	def _modify(self, module_name, module, dn, lo, position, superordinate, input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference, ignore_not_exists):
 		out = []
 		if not dn:
 			raise OperationFailed(out, 'E: DN is missing')
@@ -862,6 +863,9 @@ class CLI(object):
 		try:
 			object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
 		except univention.admin.uexceptions.noObject:
+			if ignore_not_exists:
+				out.append('Object not found: %s' % (dn or filter,))
+				return out
 			raise OperationFailed(out, 'E: object not found')
 
 		object.open()

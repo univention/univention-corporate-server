@@ -91,7 +91,14 @@ class CLIClient(object):
 	def modify_object(self, args):
 		module = self.get_module(args.object_type)
 		# TODO: re-execute if changed in between
-		obj = module.get(args.dn)
+		try:
+			obj = module.get(args.dn)
+		except (NotFound, UnprocessableEntity):
+			if args.ignore_not_exists:
+				self.print_line('Object not found', args.dn)
+				return
+			else:
+				raise
 		self.set_properties(obj, args)
 		self.save_object(obj)
 		self.print_line('Object modified', obj.dn)
@@ -100,9 +107,10 @@ class CLIClient(object):
 		module = self.get_module(args.object_type)
 		try:
 			obj = module.get(args.dn)
-		except NotFound:
-			if self.args.ignore_not_exists:
+		except (NotFound, UnprocessableEntity):
+			if args.ignore_not_exists:
 				self.print_line('Object not found', args.dn)
+				return
 			else:
 				raise
 		obj.delete(args.remove_referring)
@@ -420,6 +428,7 @@ def add_object_action_arguments(parser, client):
 	modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[], type=Unicode)
 	modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
 	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[], type=Unicode)
+	modify.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
 	remove = add_subparser(str('remove'), help='Remove an existing object', usage=argparse.SUPPRESS)
 	remove.set_defaults(func=client.remove_object)

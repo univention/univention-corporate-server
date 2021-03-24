@@ -113,11 +113,11 @@ Specify superordinate \fIdn\fP.
 .BI \-\-option\  option
 Use only given module \fIoptions\fP.
 .TP
-.B \-\-append\-option
-Append the module options to the standard options.
+.B \-\-append\-option\  option
+Append the module \fIoption\fP to the standard options.
 .TP
-.B \-\-remove\-option
-Remove the module options from the standard options.
+.B \-\-remove\-option\  option
+Remove the module \fIoption\fP from the standard options.
 .TP
 .BI \-\-policy\-reference\  policydn
 Reference to policy given by \fIpolicydn\fP
@@ -142,17 +142,20 @@ Remove value from variable, e.g. \fIkey\fP\fB=\fP\fIvalue\fP
 .BI \-\-option\  option
 Use only given module \fIoptions\fP.
 .TP
-.B \-\-append\-option
-Append the module options.
+.B \-\-append\-option\  option
+Append the module \fIoption\fP.
 .TP
-.B \-\-remove\-option
-Remove the module options.
+.B \-\-remove\-option\  option
+Remove the module \fIoption\fP.
 .TP
 .BI \-\-policy\-reference\  policydn
 Reference to policy given by \fIpolicydn\fP
 .TP
 .BI \-\-policy\-dereference\  policydn
 Remove reference to policy given by \fIpolicydn\fP
+.TP
+.B \-\-ignore_not_exists
+Don't report not existing entries as an error.
 
 .SS REMOVE options
 .TP
@@ -167,6 +170,9 @@ Remove all objects matching the filter, e.g. \fIkey\fP\fB=\fP\fIvalue\fP.
 .TP
 .B \-\-remove_referring
 Remove all referring objects as well.
+.TP
+.B \-\-ignore_not_exists
+Don't report not existing entries as an error.
 
 .SS LIST options
 .TP
@@ -176,8 +182,8 @@ Lookup all objects matching the filter, e.g. \fIkey\fP\fB=\fP\fIvalue\fP.
 .BR \-\-policies\ 0 | 1
 List policy-based settings: \fB0\fP:short, \fB1\fP:long (with policy-DN)
 .TP
-.B \-\-ignore_not_exists
-Don't report not existing entries as an error.
+.BI \-\-position\  basedn
+List only objects underneath of \fIbasedn\fP in LDAP tree.
 
 .SS MOVE options
 .TP

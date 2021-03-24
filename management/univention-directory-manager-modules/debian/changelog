@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.8-1) unstable; urgency=medium
+
+  * Bug #52984: UDM CLI: support modify --ignore_not_exists
+
+ -- Florian Best <best@univention.de>  Wed, 24 Mar 2021 10:26:03 +0100
+
 univention-directory-manager-modules (15.0.7-4) unstable; urgency=medium
 
   * Bug #52693: added bcrypt support, python3 changes

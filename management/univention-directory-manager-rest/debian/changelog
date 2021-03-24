@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-1) unstable; urgency=medium
+
+  * Bug #52984: UDM CLI: support modify --ignore-not-exists
+
+ -- Florian Best <best@univention.de>  Wed, 24 Mar 2021 10:26:10 +0100
+
 univention-directory-manager-rest (10.0.1-3) unstable; urgency=medium
 
   * Bug #52862: fix OpenAPI schema: remove mutual exclusive "example"
