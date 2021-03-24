@@ -131,13 +131,13 @@ def configure_portal(app):
 	# portal title
 	print('Setting portal title...')
 	if app_props.get('portal_title'):
-		portal_obj.info['displayName'] = [
+		portal_obj['displayName'] = [
 			['en_US', app_props.get('portal_title')],
 			['de_DE', app_props_de.get('portal_title', app_props.get('portal_title'))],
 		]
 	else:
 		# if not specified, use a reasonable fallback
-		portal_obj.info['displayName'] = [
+		portal_obj['displayName'] = [
 			['en_US', app.appliance_name or app.name],
 			['de_DE', app.appliance_name or app.name],
 		]
@@ -151,7 +151,7 @@ def configure_portal(app):
 		_download_resource(app, img_name, dest_path),
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.encodebytes(fp.read())
-		portal_obj.info['background'] = base64_img
+		portal_obj['background'] = base64_img
 
 	# portal logo
 	if app_props.get('portal_logo'):
@@ -162,15 +162,15 @@ def configure_portal(app):
 		_download_resource(app, img_name, dest_path),
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.encodebytes(fp.read())
-		portal_obj.info['logo'] = base64_img
+		portal_obj['logo'] = base64_img
 
 	if app_props.get('portal_css_background'):
 		print('Setting portal CSS background...')
-		portal_obj.info['cssBackground'] = app_props.get('css_background')
+		portal_obj['cssBackground'] = app_props.get('css_background')
 
 	if app_props.get('portal_font_color') and 'fontColor' in module.property_descriptions:
 		print('Setting portal font color')
-		portal_obj.info['fontColor'] = app_props.get('portal_font_color')
+		portal_obj['fontColor'] = app_props.get('portal_font_color')
 
 	print('Saving modifications to LDAP')
 	portal_obj.modify()
