@@ -1115,6 +1115,9 @@
 				<listitem><simpara>
 					The package <package>univention-samba-slave-pdc</package> has been removed (<u:bug>52943</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-samba4wins</package> has been removed (<u:bug>51497</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
