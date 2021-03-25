@@ -12,6 +12,7 @@ Architecture: all
 Depends:
  cgroupfs-mount (>= 1.1),
  docker.io (>= 1.12),
+ python-ipaddress,
  shell-univention-lib,
  univention-base-files,
  ${misc:Depends},
