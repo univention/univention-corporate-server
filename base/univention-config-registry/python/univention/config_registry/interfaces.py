@@ -36,7 +36,7 @@
 from sys import maxsize
 import re
 from functools import wraps
-from backend import ConfigRegistry
+from .backend import ConfigRegistry
 import six
 if six.PY3:
 	from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network

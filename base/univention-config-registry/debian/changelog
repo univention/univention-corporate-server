@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-12.1) unstable; urgency=low
+
+  * fix import
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 25 Mar 2021 12:44:40 +0100
+
 univention-config-registry (14.0.0-12) unstable; urgency=low
 
   * Bug #50098: Install debian/*.univention-service files again
