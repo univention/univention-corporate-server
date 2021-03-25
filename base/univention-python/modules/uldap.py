@@ -725,8 +725,6 @@ class access(object):
 					continue  # equal values
 				op = ldap.MOD_REPLACE
 				val = newvalue
-				if (key == 'krb5ValidEnd' or key == 'krb5PasswordEnd') and newvalue == '0':  # TODO: move into the specific handlers
-					val = 0
 			elif not oldvalue and newvalue:
 				op = ldap.MOD_ADD
 				val = newvalue

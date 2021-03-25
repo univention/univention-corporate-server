@@ -1969,7 +1969,7 @@ class object(univention.admin.handlers.simpleLdap):
 			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', [b''])[0]
 			if old_krb5ValidEnd != krb5ValidEnd:
 				if not self['userexpiry']:
-					ml.append(('krb5ValidEnd', old_krb5ValidEnd, b'0'))
+					ml.append(('krb5ValidEnd', old_krb5ValidEnd, None))
 				else:
 					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [b''])[0], krb5ValidEnd))
 		return ml
