@@ -1,3 +1,10 @@
+univention-lib (8.0.1-42) unstable; urgency=medium
+
+  * Bug #37720: touch all HTML/JS/CSS files in postinst via
+    umc_frontend_new_hash
+
+ -- Florian Best <best@univention.de>  Fri, 18 Jun 2021 14:53:19 +0200
+
 univention-lib (8.0.1-41) unstable; urgency=medium
 
   * Bug #52433: Add --name option to ucs_registerLDAPExtension
