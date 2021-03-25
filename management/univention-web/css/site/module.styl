@@ -53,9 +53,13 @@
 	align-items: flex-start
 
 .umcModuleHeaderRight
-	flex: 1 1 auto
-	min-width: 0%
-	text-align: right
+	margin-left: auto
+
+.umcModuleHeaderRight__buttons
+	display: flex
+	flex-wrap: wrap
+	grid-gap: spacing(2)
+	justify-content: flex-end
 
 .umcModuleTitle
 	@extends h1
