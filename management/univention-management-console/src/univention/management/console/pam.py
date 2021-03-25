@@ -194,13 +194,13 @@ class PamAuth(object):
 			'Password Too Young',
 			'Password change rejected, password changes may not be permitted on this account, or the minimum password age may not have elapsed.',
 		],
-		': The password does not meet the password complexity requirements.': [
+		'The password does not meet the password complexity requirements.': [
 			'Password does not meet the password complexity requirements.',
 		],
-		': The password contains user account name.': [
+		'The password contains user account name.': [
 			'Password contains user account name.',
 		],
-		': The password contains parts of the full user name.': [
+		'The password contains parts of the full user name.': [
 			'Password contains parts of the full user name.',
 		]
 	}  # type: Dict[str, List[Union[str, Pattern[str]]]]
