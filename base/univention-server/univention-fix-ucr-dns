@@ -53,6 +53,7 @@ DictAddr = Dict[IPAddress, None]
 UCR_VARS_FWD = ['dns/forwarder%d' % (i,) for i in range(1, 4)]
 UCR_VARS_DNS = ['nameserver%d' % (i,) for i in range(1, 4)]
 LOCAL = '127.0.0.1'  # or ::1 for IPv6
+MYSELF = IPv4Address(LOCAL)
 
 
 options = Namespace()
@@ -79,6 +80,7 @@ def main() -> None:
 	nameservers: DictAddr = OrderedDict()
 	forwarders: DictAddr = OrderedDict()
 	need_fixing = get_nameservers_cli(nameservers)
+	need_fixing |= replace_self(nameservers)
 	need_fixing |= get_forwarders(forwarders, ucr)
 	need_fixing |= get_nameservers_ucr(nameservers, ucr)
 	need_fixing |= validate_servers(nameservers, forwarders, ucr['domainname'])
@@ -92,6 +94,7 @@ def main() -> None:
 	add_nameservers(nameservers, ucr['domainname'])
 	add_master(nameservers, ucr['ldap/master'])
 	move_nameservers(forwarders, nameservers)
+	replace_self(nameservers)
 
 	if not nameservers:
 		log.fatal('No nameserver remains - aborting')
@@ -246,6 +249,10 @@ def get_nameservers_ucr(nameservers: DictAddr, ucr: Dict[str, str]) -> bool:
 		if not ns:
 			continue
 		dns = ip_address(u'%s' % (ns,))
+		if is_self(dns) and dns != MYSELF:
+			log.error("Replacing local address %s with %s", dns, MYSELF)
+			dns = MYSELF
+			need_fixing = True
 		log.info('Found server %s from UCRV %s', dns, var)
 		nameservers[dns] = None
 
@@ -276,7 +283,8 @@ def validate_servers(nameservers: DictAddr, forwarders: DictAddr, domain: str) -
 				log.warning('UCS Primary Directory Node SRV record is unknown at %s, converting into forwarder', server)
 				need_fixing = True
 				del nameservers[server]
-				forwarders[server] = None
+				if server != MYSELF:
+					forwarders[server] = None
 		except (SocketError, TimeoutError) as exc:
 			log.warning('Connection check to %s (%s) failed, maybe down?!', server, exc.args[0])
 			log.info('Leaving it configured as nameserver anyway')
@@ -308,6 +316,28 @@ def either_or(nameservers: DictAddr, forwarders: DictAddr) -> bool:
 	return need_fixing
 
 
+def replace_self(nameservers: DictAddr) -> bool:
+	"""
+	Replace own IP addresses with localhost.
+
+	:param nameservers: Mapping of DNS servers.
+	:returns: `True` if any IP address was replaced.
+	"""
+	log = getLogger(__name__).getChild('replace')
+	need_fixing = False
+
+	for addr in list(nameservers):
+		if addr != MYSELF and is_self(addr):
+			log.info("Replacing %s with %s", addr, MYSELF)
+			nameservers.pop(addr)
+			need_fixing = True
+
+	if need_fixing:
+		prepend_self(nameservers)
+
+	return need_fixing
+
+
 def add_self(nameservers: DictAddr, ucr: Dict[str, str]) -> None:
 	"""
 	Add self as internal DNS server (on DCs).
@@ -320,25 +350,29 @@ def add_self(nameservers: DictAddr, ucr: Dict[str, str]) -> None:
 		log.info('Skip adding self')
 		return
 
-	if any(is_self(addr) for addr in nameservers):
+	if MYSELF in nameservers:
 		log.info('Already using self')
 		return
 
-	iface = Interfaces(ucr)
-	mynet = iface.get_default_ip_address()
-	myself = mynet.ip
-	log.info('Default IP address configured in UCR: %s', myself)
-
 	domain = ucr['domainname']
-	if not options.force_self and not query_master_src_record(domain, myself):
-		log.warning('Failed to query local server %s for %s', myself, domain)
+	if not options.force_self and not query_master_src_record(domain, MYSELF):
+		log.warning('Failed to query local server %s for %s', MYSELF, domain)
 		if nameservers:
 			return
 		log.warning('Adding anyway as no other nameserer remains.')
 
+	prepend_self(nameservers)
+
+
+def prepend_self(nameservers: DictAddr):
+	"""
+	Insert self as first internal DNS server (on DCs).
+
+	:param nameservers: Mapping of internal DNS servers.
+	"""
 	old = list(nameservers.items())
 	nameservers.clear()
-	nameservers[myself] = None
+	nameservers[MYSELF] = None
 	nameservers.update(old)
 
 
@@ -409,7 +443,7 @@ def add_master(nameservers: DictAddr, master: str) -> None:
 
 def move_nameservers(forwarders: DictAddr, nameservers: DictAddr) -> None:
 	"""
-	Move all forwarders to nameservers.
+	Move all forwarders to nameservers if not an DNS server myself.
 
 	:param nameservers: Mapping of internal DNS servers.
 	:param forwarders: Mapping of external DNS servers.
