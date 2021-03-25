@@ -1865,6 +1865,8 @@ define([
 			}
 			msg += '</ul>';
 
+			// FIXME completely remove code for 'software' page
+			/*
 			// software components
 			var apps = this._gallery.getSelectedItems();
 			if (!apps.length) {
@@ -1876,8 +1878,9 @@ define([
 				array.forEach(apps, function(iapp) {
 					msg += '<li>' + iapp.name + '</li>';
 				});
+				msg += '</ul>';
 			}
-			msg += '</ul>';
+			*/
 
 			this.getWidget('summary', 'info').set('content', msg);
 		},
@@ -2144,7 +2147,7 @@ define([
 		},
 
 		isPageVisible: function(pageName) {
-			// FIXME completely remove code for software page
+			// FIXME completely remove code for 'software' page
 			if (pageName === 'software') {
 				return false;
 			}
