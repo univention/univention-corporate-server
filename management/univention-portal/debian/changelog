@@ -1,3 +1,12 @@
+univention-portal (4.0.5-14) unstable; urgency=medium
+
+  * Bug #52869: CSS Fixes and a first glimpse at change password
+  * Bug #51197: Soften up error message; also fix the position of the blog
+    (was menu, should be category)
+
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Mar 2021 09:18:26 +0100
+
 univention-portal (4.0.5-13) unstable; urgency=medium
 
   * Bug #52941: added module icon for portal
