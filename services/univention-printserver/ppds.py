@@ -94,10 +94,13 @@ def check_dir(commands):
 				commands.setdefault(manu, []).append((rel_path, nick))
 
 
-def check_compressed(commands):
+def get_compressed_driver():
 	lines = subprocess.check_output(['/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'list']).decode('UTF-8').splitlines()
-	lines = [shlex.split(line) for line in lines]
-	for driver, lang, manufacturer, nickname, comments in lines:
+	return [shlex.split(line) for line in lines]
+
+
+def check_compressed(commands):
+	for driver, lang, manufacturer, nickname, comments in get_compressed_driver():
 		commands.setdefault(manufacturer, []).append((driver, nickname))
 
 
@@ -106,6 +109,7 @@ def check_obsolete():
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
 	print('\n# mark old ppd\'s as obsolete\n')
+	compressed_ppds = [driver[0] for driver in get_compressed_driver()]
 	for dn, attr in res:
 		cn = attr['cn'][0].decode('UTF-8')
 		obsolete = {}
@@ -113,9 +117,9 @@ def check_obsolete():
 			i = i.decode('UTF-8')
 			if i in ['"None" "None"', '"smb" "smb"']:
 				continue
-			ppd = shlex.split(i)[1]
+			ppd = shlex.split(i)[0]
 			ppd_path = os.path.join('/usr/share/ppd/', ppd)
-			if not os.path.isfile(ppd_path):
+			if not os.path.isfile(ppd_path) and ppd not in compressed_ppds:
 				obsolete.setdefault(cn, []).append(i)
 		for cn in obsolete:
 			print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name %s \\' % (pipes.quote(cn),))
