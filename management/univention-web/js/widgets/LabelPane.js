@@ -283,7 +283,7 @@ define([
 
 			// if we have a widget which is required, add the string ' (*)' to the label
 			if (this._isContentAWidget() && this._isContentRequired()) {
-				label = label + ' *';
+				label = label + '&nbsp;*';
 			}
 			this.label = label;
 
