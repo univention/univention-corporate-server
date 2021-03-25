@@ -989,6 +989,11 @@
 			<listitem><simpara>
 				All packages related to running virtual machines on UCS have been removed (<u:bug>51982</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				In case the <package>libvirt-daemon</package> is still installed, the services <literal>libvirtd.service</literal>
+				resp. <literal>virtlogd.service</literal> are stopped and masked prior to the update to UCS 5.0. After the update,
+				both services are set to the old state (enabled, disabled, masked) (<u:bug>52974</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:virt:operation">
