@@ -1795,7 +1795,7 @@ define([
 
 			// localization settings
 			if (isFieldShown('locale')) {
-				msg += '<p><b>' + _('Localization settings') + '</b></p>';
+				msg += '<b>' + _('Localization settings') + '</b>';
 				msg += '<ul>';
 				array.forEach(['locale/default', 'timezone', 'xorg/keyboard/options/XkbLayout'], function(ikey) {
 					var iwidget = this.getWidget('locale', ikey);
@@ -1807,7 +1807,7 @@ define([
 
 			// administrator account
 			if (this._isRoleMaster() && (vals.hasOwnProperty('organization') || vals.hasOwnProperty('email_address'))) {
-				msg += '<p><b>' + _('Account information') + '</b></p>';
+				msg += '<b>' + _('Account information') + '</b>';
 				msg += '<ul>';
 				_append(_('Organization name'), vals.organization);
 				_append(_('E-mail address to activate UCS'), vals.email_address);
@@ -1815,7 +1815,7 @@ define([
 			}
 
 			// network settings
-			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
+			msg += '<b>' + _('Domain and host configuration') + '</b>';
 			msg += '<ul>';
 
 			var fqdn_msg = _vals._fqdn;
