@@ -1,7 +1,8 @@
 [docker/autostart]
-Description[de]=Die Variable konfiguriert den Startmodus des Docker-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden. Standard ist: "yes".
-Description[en]=This variable configures the start mode of the Docker service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point. Defaults to "yes".
+Description[de]=Die Variable konfiguriert den Startmodus des Docker-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Docker service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=bool
+Default=yes
 Categories=service-container
 
 [docker/daemon/default/json]
@@ -11,19 +12,47 @@ Type=str
 Categories=service-container
 
 [docker/daemon/default/opts/.*]
-Description[de]=Optionen für den Docker Daemon.
-Description[en]=Options for the docker daemon.
+Description[de]=Einzelwert-Optionen für den Docker Daemon. Der Wert wird übergeben. Beispiel: `docker/daemon/default/opts/bip=172.17.42.1/16`
+Description[en]=Single-value options for the docker daemon. The value will be passed on. Example: `docker/daemon/default/opts/bip=172.17.42.1/16`
 Type=str
 Categories=service-container
 
+[docker/daemon/default/opts/bip]
+Description[de]=IP-Adresse für die Netzwerk-Brücke.
+Description[en]=Specify network bridge IP.
+Type=str
+Default=172.17.42.1/16
+Categories=service-container
+
+[docker/daemon/default/opts/log-driver]
+Description[de]=Standard Treiber für die Container Logs.
+Description[en]=Default driver for container logs.
+Type=str
+Default=json-file
+Categories=service-container
+
+[docker/daemon/default/opts/max-file]
+Description[de]=Die maximale Anzahl von erlaubten Log-Dateien. Wenn durch den Wechsel mehr entstehen, wird die älteste Datei gelöscht. Nur aktiv wenn auch `max-size` gesetzt ist.
+Description[en]=The maximum number of log files that can be present. If rolling the logs creates excess files, the oldest file is removed. Only effective when `max-size` is also set.
+Type=int
+Default=4
+Categories=service-container
+
+[docker/daemon/default/opts/max-size]
+Description[de]=Die maximale Größe für Log-Dateien, bevor diese gewechselt wird. Eine positive Zahl mit einer Einheit (`k`, `m` oder `g`).
+Description[en]=The maximum size of the log before it is rolled. A positive integer plus a modifier representing the unit of measure (`k`, `m`, or `g`).
+Type=str
+Default=10m
+Categories=service-container
+
 [docker/daemon/default/opts/registry-mirrors]
-Description[de]=Option zum Setzen von benutzerdefinierten Registry-Mirrors für den Docker Daemon. Die Mirror-Adresse muss 'http://' bzw. 'https://' beinhalten. Bei Angabe mehrerer Mirrors müssen die Adressen kommasepariert übergeben werden.
+Description[de]=Option zum Setzen von benutzerdefinierten Registry-Mirrors für den Docker Daemon. Die Mirror-Adresse muss 'http://' bzw. 'https://' beinhalten. Bei Angabe mehrerer Mirrors müssen die Adressen Komma-separiert übergeben werden.
 Description[en]=Option for defining custom registry mirrors for the Docker daemon. The mirror address has to include 'http://' or 'https://'. Multiple addresses have to be comma-separated.
 Type=str
 Categories=service-container
 
 [docker/daemon/default/parameter/.*]
-Description[de]=Optionen für den Docker Daemon. Diese Parameter werden ohne einen Wert an den Docker Daemon übertragen.
-Description[en]=Options for the docker daemon. These parameters will be given to the docker without a value.
-Type=str
+Description[de]=Bool'sche Optionen für den Docker Daemon. Fall wahr wird der Parameter ohne einen Wert an den Docker Daemon übergeben. Beispiel: `docker/daemon/default/parameter/live-restore=yes`
+Description[en]=Boolean options for the docker daemon. If true the parameters will be given to the docker without a value. Example: `docker/daemon/default/parameter/live-restore=yes`
+Type=bool
 Categories=service-container
