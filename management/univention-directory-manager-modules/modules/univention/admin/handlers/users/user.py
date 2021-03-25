@@ -1369,7 +1369,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if 'automountInformation' not in self.oldattr:
 			return
 		try:
-			flags, unc = re.split(b' *', self.oldattr['automountInformation'][0], 1)
+			flags, unc = re.split(b' +', self.oldattr['automountInformation'][0], 1)
 			host, path = unc.split(b':', 1)
 		except ValueError:
 			return
