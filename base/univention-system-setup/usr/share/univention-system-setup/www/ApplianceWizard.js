@@ -1806,7 +1806,7 @@ define([
 			}
 
 			// administrator account
-			if (this._isRoleMaster()) {
+			if (this._isRoleMaster() && (vals.hasOwnProperty('organization') || vals.hasOwnProperty('email_address'))) {
 				msg += '<p><b>' + _('Account information') + '</b></p>';
 				msg += '<ul>';
 				_append(_('Organization name'), vals.organization);
