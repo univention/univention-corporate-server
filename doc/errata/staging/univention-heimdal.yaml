@@ -6,7 +6,7 @@ src: univention-heimdal
 fix: 12.0.1-6A~4.4.0.202103250916
 desc: |
  This update addresses the following issue:
- * Version number has been increased, to restart
+ * Version number has been increased to restart
    the heimdal-kdc. This is necessary to allow
    for the mspwdpolicy feature to work correctly.
 bug: [52198]
