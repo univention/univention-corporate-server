@@ -1,3 +1,9 @@
+univention-web (4.0.1-22) unstable; urgency=medium
+
+  * Bug #52453: adjust design
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 25 Mar 2021 17:20:28 +0100
+
 univention-web (4.0.1-21) unstable; urgency=medium
 
   * Bug #52453: use non breaking space before '*' in labels for required
