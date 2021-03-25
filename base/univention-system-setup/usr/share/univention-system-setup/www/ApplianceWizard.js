@@ -476,7 +476,8 @@ define([
 							// see whether DHCP is working
 							this.dhclient();
 						}
-					})
+					}),
+					size: 'Two'
 				}, {
 					type: TextBox,
 					name: '_ip0',
@@ -717,7 +718,8 @@ define([
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', !value || this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').get('value'));
 						this.getWidget('credentials-nonmaster', '_ucs_user').set('disabled', !value);
 						this.getWidget('credentials-nonmaster', '_ucs_password').set('disabled', !value);
-					})
+					}),
+					size: 'Two'
 				}, {
 					type: CheckBox,
 					name: '_ucs_autosearch_master',
@@ -725,7 +727,8 @@ define([
 					value: true,
 					onChange: lang.hitch(this, function(value) {
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', value);
-					})
+					}),
+					size: 'Two'
 				}, {
 					type: TextBox,
 					name: '_ucs_address',
