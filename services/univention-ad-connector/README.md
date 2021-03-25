@@ -6,7 +6,7 @@
   and Active Directory to keep all objects in sync, neither during start up nor periodically.
 * The AD-Connector only synchronizes a subset of all attributes, objects and OUs/containers. This subset is
   defined by the mapping.
-* Customers should not adjust the `mapping.py` manually and should instead create a `localmapping.py`.
+* Customers must not adjust the `mapping.py` manually anymore (since UCS 5.0) and should instead create a `localmapping.py`.
 * When the AD-Connector starts, it first syncs from UDM/OpenLDAP to Active Directory. But it doesn't re-sync everything
   at that point, it just waits for changes.
 * Changes from the OpenLDAP site are communicated by the Listener module to AD-Connector via Python `pickle` files
@@ -28,15 +28,6 @@
 ### Extending AD-Connector to synchronize additional attributes
 
 Updates need special attention when extending ADC to synchronize additional attributes:
-
-#### Mapping adjustments vs customer customizations
-
-* Customer Admins may have customized attributes in Active Directory, these must not be overwritten during update.
-* In some cases customers have adjusted the UCR template file `mapping.py`. Since there is a Debian config file diversion
-  configured for this file, changes will not automatically get activated during errata updates in this case.
-  This severely contrains the possibilities to adjust the mapping. If something like that is absolutely necessary,
-  the change should not be released as an errata update, but rather as part of a UCS release. The release notes
-  must inform the customer about the change and recommend to run `univention-check-templates`.
 
 #### Active reconciliation for newly added attributes
 

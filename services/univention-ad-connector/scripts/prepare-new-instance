@@ -53,7 +53,7 @@ usage() {
 CONFIGBASENAME=""
 createflag="0"
 deleteflag="0"
-force="0"
+forceflag="0"
 
 while getopts 'hfa:c:' OPTION
 do
@@ -124,7 +124,7 @@ fi
 
 if [ "$createflag" = "1" ]
 then
-    
+
     if [ -e /etc/univention/"$CONFIGBASENAME" ]
     then
 	if [ "$forceflag" = "1" ]
@@ -133,30 +133,30 @@ then
 	else
 	    echo "ERROR: given config base already created, if you want to recreate it use \"-f\""
 	    exit 2
-	fi    
+	fi
     fi
 
     echo "-- initialise UCR"
     univention-config-registry set "$CONFIGBASENAME"/ad/ldap/port?389 "$CONFIGBASENAME"/ad/ldap/ssl?yes "$CONFIGBASENAME"/ad/listener/dir?/var/lib/univention-"$CONFIGBASENAME"/ad "$CONFIGBASENAME"/ad/mapping/group/language?de "$CONFIGBASENAME"/ad/mapping/group/primarymail?false "$CONFIGBASENAME"/ad/mapping/syncmode?sync "$CONFIGBASENAME"/ad/mapping/user/primarymail?false "$CONFIGBASENAME"/ad/poll/sleep?5 "$CONFIGBASENAME"/ad/retryrejected?10 "$CONFIGBASENAME"/debug/function?0 "$CONFIGBASENAME"/debug/level?1 "$CONFIGBASENAME"/password/service/encoding?iso8859-15
-    
+
     echo "-- copy mapping"
     mkdir -p /etc/univention/"$CONFIGBASENAME"/ad
     cp -a /usr/lib/python3/dist-packages/univention/connector/ad/mapping.py /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
     sed -i "s|@%@connector/ad/|@%@$CONFIGBASENAME/ad/|g;s|'connector/ad/|'$CONFIGBASENAME/ad/|g" /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
     echo -e 'def mapping_hook(org_mapping):\n    return ad_mapping' >> /etc/univention/"$CONFIGBASENAME"/ad/localmapping.py
-    
+
     echo "-- copy startup script"
     cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
     sed -i "s|/usr/bin/python3 -W ignore -m univention.connector.ad.main.*|/usr/bin/python3 -W ignore -m univention.connector.ad.main --configbase \"$CONFIGBASENAME\" \"\$@\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
-    
-    
+
+
     echo "-- copy init script"
     cp /etc/init.d/univention-ad-connector /etc/init.d/univention-ad-"$CONFIGBASENAME"
     sed -i "s|univention-ad-connector|univention-ad-$CONFIGBASENAME|" /etc/init.d/univention-ad-"$CONFIGBASENAME"
-    
+
     echo "-- register initscript"
     update-rc.d univention-ad-"$CONFIGBASENAME" defaults 97
-    
+
     echo "-- prepare second listener-instance"
     mkdir -p /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
     chgrp nogroup /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
@@ -212,7 +212,7 @@ then
 
     echo "-- remove config-dir /etc/univention$CONFIGBASENAME"
     rm -r /etc/univention/"$CONFIGBASENAME"
-    
+
     echo "-- unregister second listener-instance"
     eval "$(univention-config-registry shell connector/listener/additionalbasenames)"
     univention-config-registry set connector/listener/additionalbasenames=`echo $connector_listener_additionalbasenames | sed "s| $CONFIGBASENAME||"`
