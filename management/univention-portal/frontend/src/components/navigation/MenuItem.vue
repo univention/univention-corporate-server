@@ -40,7 +40,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     <portal-icon
       v-if="isSubItem"
       icon="chevron-left"
-      icon-width="2rem"
       class="menu-item__arrow menu-item__arrow--left"
     />
     {{ $localized(title) }}
@@ -55,7 +54,6 @@ License with the Debian GNU/Linux or Univention distribution in file
       <portal-icon
         v-if="!isSubItem"
         icon="chevron-right"
-        icon-width="2rem"
         class="menu-item__arrow menu-item__arrow--right"
       />
     </template>
@@ -138,8 +136,8 @@ export default defineComponent({
     position: absolute;
     display: inline;
     font-size: inherit;
-    width: 2rem;
-    height: 2rem;
+    width: 1rem;
+    height: 1rem;
     stroke: currentColor;
     stroke-width: 2;
     stroke-linecap: round;

@@ -28,52 +28,37 @@
  */
 import createMenuStructure from '@/jsHelper/createMenuStructure';
 import addLanguageTile from '@/jsHelper/addLanguageTile';
+import createUserMenu from '@/jsHelper/createUserMenu';
 import { PortalModule } from '../types';
 
 export interface MenuState {
-  menu: Record<string, unknown>;
-  menuLinks: Array<unknown>,
-  userLinks: Array<unknown>,
+  menu: Array<unknown>;
 }
 
 const menu: PortalModule<MenuState> = {
   namespaced: true,
   state: {
-    menu: {},
-    menuLinks: [],
-    userLinks: [],
+    menu: [],
   },
 
   mutations: {
     MENU(state, payload) {
       const menuStructure = createMenuStructure(payload.portal);
       const languageMenuLink = addLanguageTile(payload.availableLocales);
+      const userLinks = createUserMenu(payload.portal);
       menuStructure.unshift(languageMenuLink);
+      menuStructure.unshift(userLinks);
       state.menu = menuStructure;
-    },
-    MENU_LINKS(state, payload) {
-      state.menuLinks = payload;
-    },
-    USER_LINKS(state, payload) {
-      state.userLinks = payload;
     },
   },
 
   getters: {
     getMenu: (state) => state.menu,
-    getMenuLinks: (state) => state.menuLinks,
-    getUserLinks: (state) => state.userLinks,
   },
 
   actions: {
     setMenu({ commit }, payload) {
       commit('MENU', payload);
-    },
-    setMenuLinks({ commit }, payload) {
-      commit('MENU_LINKS', payload);
-    },
-    setUserLinks({ commit }, payload) {
-      commit('USER_LINKS', payload);
     },
   },
 };

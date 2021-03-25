@@ -87,9 +87,17 @@ export interface Tab {
   iframeLink: string
 }
 
+export interface Tooltip {
+  title: string | null,
+  icon: string | null,
+  description: string,
+  ariaId: string,
+}
+
 export interface User {
   username: string;
   displayName: string;
   mayEditPortal: boolean;
   mayLoginViaSAML: boolean;
 }
+

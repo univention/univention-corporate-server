@@ -109,6 +109,8 @@ export default defineComponent({
   --bgc-state: transparent
   box-shadow: none
   border-radius: var(--button-icon-border-radius)
+  height: calc(4.5 * var(--layout-spacing-unit))
+  width: @height
 
   &--is-active
       z-index:1000
@@ -128,6 +130,7 @@ export default defineComponent({
     font-size: var(--button-font-size)
 
   &__button
+    font-size: var(--font-size-3)
     background: none
     border: none
     color: white
@@ -136,8 +139,7 @@ export default defineComponent({
     justify-content: center
     background-color: transparent
     border: 0.2rem solid rgba(0,0,0,0)
-    height: 3rem
-    width: @height
+    padding: var(--layout-spacing-unit)
 
     &:hover,
     &:focus

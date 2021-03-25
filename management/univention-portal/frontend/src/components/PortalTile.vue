@@ -27,7 +27,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div>
+  <div class="portal-tile__root-element">
     <component
       :is="wrapperTag"
       :href="link"
@@ -73,33 +73,20 @@ License with the Debian GNU/Linux or Univention distribution in file
         @click.prevent="editTile()"
       />
     </component>
-    <portal-tool-tip
-      :title="$localized(title)"
-      :icon="pathToLogo"
-      :description="$localized(description)"
-      :aria-id="createID()"
-      :is-displayed="isActive"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
-import PortalToolTip from '@/components/PortalToolTip.vue';
 import TileClick from '@/mixins/TileClick.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
 import { Title, Description } from '@/store/models';
 
-interface PortalTileData {
-  isActive: boolean,
-}
-
 export default defineComponent({
   name: 'PortalTile',
   components: {
-    PortalToolTip,
     HeaderButton,
   },
   mixins: [
@@ -157,11 +144,6 @@ export default defineComponent({
     },
   },
   emits: ['keepFocusInFolderModal'],
-  data(): PortalTileData {
-    return {
-      isActive: false,
-    };
-  },
   computed: {
     wrapperTag(): string {
       return (this.inFolder || this.editMode) ? 'div' : 'a';
@@ -174,11 +156,17 @@ export default defineComponent({
   },
   methods: {
     hideTooltip(): void {
-      this.isActive = false;
+      this.$store.dispatch('tooltip/unsetTooltip');
     },
     showTooltip(): void {
       if (!this.inFolder) {
-        this.isActive = true;
+        const tooltip = {
+          title: this.$localized(this.title),
+          icon: this.pathToLogo,
+          description: this.$localized(this.description),
+          ariaId: this.createID(),
+        };
+        this.$store.dispatch('tooltip/setTooltip', { tooltip });
       }
     },
     setFocus(event, direction): void {
@@ -192,13 +180,6 @@ export default defineComponent({
     },
     editTile() {
       console.log('editTile');
-    },
-    showToolTipIfFocused() {
-      if (this.isActive) {
-        this.hideTooltip();
-      } else {
-        this.showTooltip();
-      }
     },
     createID() {
       return `element-${this.$.uid}`;
@@ -222,7 +203,9 @@ export default defineComponent({
   &:hover
     color: var(--font-color-contrast-high)
     text-decoration: none
-
+  &__root-element
+    display:flex
+    justify-content: center
   &__box
     border-radius: 15%
     display: flex

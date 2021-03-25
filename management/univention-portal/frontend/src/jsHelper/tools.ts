@@ -60,7 +60,7 @@ const cookiePath = process.env.VUE_APP_COOKIE_PATH || '/univention/';
 function setCookie(name: string, value: string): void {
   const date = new Date();
   date.setTime(date.getTime() + (100 * 24 * 60 * 60 * 1000)); // 100 days
-  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=${cookiePath}`;
+  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=${cookiePath}; SameSite=Strict`;
 }
 
 export { isFQDN, isIPv6Address, isIPv4Address, getCookie, setCookie };

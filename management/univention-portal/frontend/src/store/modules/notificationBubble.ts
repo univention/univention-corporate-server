@@ -113,8 +113,14 @@ const notificationBubble: PortalModule<NotificationBubbleState> = {
       commit('ADD_CONTENT', { ...item, bubbleToken: Math.random() });
       commit('SHOW_NEW');
     },
+    addErrorNotification({ dispatch }, item: Notification) {
+      dispatch('addContent', { ...item, bubbleImportance: 'warning' });
+    },
+    addSuccessNotification({ dispatch }, item: Notification) {
+      dispatch('addContent', { ...item, bubbleImportance: 'success' });
+    },
     addNotification({ dispatch }, item: Notification) {
-      dispatch('addContent', { ...item, bubbleImportance: 'neutral' });
+      dispatch('addContent', { ...item, bubbleImportance: 'default' });
     },
     hideAllNotifications({ commit }, payload) {
       commit('HIDE_ALL_NOTIFICATIONS', payload);

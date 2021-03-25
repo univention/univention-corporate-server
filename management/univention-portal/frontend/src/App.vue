@@ -58,7 +58,7 @@ export default defineComponent({
     if (umcLang) {
       await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
     }
-    const portalData = await this.$store.dispatch('loadPortal');
+    const portalData = await this.$store.dispatch('loadPortal', { adminMode: false });
 
     this.$store.dispatch('modal/setHideModal');
 

@@ -65,6 +65,11 @@ const catalog = {
   MODAL_HINT_CATEGORIES: _('Display name of the category. At least one entry; strongly encouraged to have one for en_US'),
   COOKIE_TITLE: _('Cookie Settings'),
   COOKIE_TEXT: _('We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on "Accept", you consent to the collection of information on this portal.'),
+  OLD_PASSWORD: _('Old password'),
+  NEW_PASSWORD: _('New password'),
+  RETYPE: _('retype'),
+  CHANGE_PASSWORD: _('Change password'),
+  CHANGE_PASSWORD_SUCCESS: _('You have successfully updated your password'),
 };
 
 export { catalog };

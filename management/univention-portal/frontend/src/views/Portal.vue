@@ -94,6 +94,11 @@ License with the Debian GNU/Linux or Univention distribution in file
 
     <!-- <portal-standby /> -->
 
+    <portal-tool-tip
+      v-if="tooltip"
+      v-bind="tooltip"
+    />
+
     <portal-modal
       :is-active="modalState"
       @click="closeModal"
@@ -129,8 +134,10 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import PortalIframe from 'components/PortalIframe.vue';
-import PortalCategory from 'components/PortalCategory.vue';
+import PortalIframe from '@/components/PortalIframe.vue';
+import ChangePassword from '@/components/forms/ChangePassword.vue';
+import PortalToolTip from '@/components/PortalToolTip.vue';
+import PortalCategory from '@/components/PortalCategory.vue';
 // import PortalIcon from '@/components/globals/PortalIcon.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
@@ -163,8 +170,10 @@ export default defineComponent({
     PortalCategory,
     PortalFolder,
     PortalHeader,
+    ChangePassword,
     // PortalIcon,
     PortalIframe,
+    PortalToolTip,
     PortalModal,
     ModalAdmin,
     PortalBackground,
@@ -193,6 +202,7 @@ export default defineComponent({
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
+      tooltip: 'tooltip/tooltip',
     }),
   },
   methods: {
@@ -224,7 +234,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .portal-categories
   position: relative;
   padding: calc(7 * var(--layout-spacing-unit)) calc(6 * var(--layout-spacing-unit));

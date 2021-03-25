@@ -26,52 +26,37 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalData } from '../models';
+import { Tooltip } from '../models';
 import { PortalModule } from '../types';
 
-export interface PortalDataState {
-  portal: PortalData;
-  editMode: boolean;
+export interface TooltipState {
+  tooltip: Tooltip | null,
 }
 
-const portalData: PortalModule<PortalDataState> = {
+const tooltip: PortalModule<TooltipState> = {
   namespaced: true,
   state: {
-    portal: {
-      portal: {
-        name: {
-          en_US: 'Univention Portal',
-        },
-        background: null,
-      },
-    },
-    editMode: false,
+    tooltip: null,
   },
 
   mutations: {
-    PORTALDATA(state, payload) {
-      state.portal = payload;
-    },
-    EDITMODE(state, editMode) {
-      state.editMode = editMode;
+    SETTOOLTIP: (state: TooltipState, payload: TooltipState): void => {
+      state.tooltip = payload.tooltip;
     },
   },
 
   getters: {
-    getPortal: (state) => state.portal,
-    portalName: (state) => state.portal.portal.name,
-    editMode: (state) => state.editMode,
+    tooltip: (state) => state.tooltip,
   },
 
   actions: {
-    setPortal({ commit }, payload) {
-      commit('PORTALDATA', payload);
+    setTooltip({ commit }, payload: TooltipState): void {
+      commit('SETTOOLTIP', payload);
     },
-    async setEditMode({ dispatch, commit }, editMode) {
-      await dispatch('loadPortal', { adminMode: editMode }, { root: true });
-      commit('EDITMODE', editMode);
+    unsetTooltip({ commit }): void {
+      commit('SETTOOLTIP', { tooltip: null });
     },
   },
 };
 
-export default portalData;
+export default tooltip;

@@ -35,8 +35,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     :class="{ 'header-tab--active': isActive }"
     @click="focusTab"
   >
-    <div class="header-tab__background" />
-
     <image-component
       file-type="svg"
       file-path="./"
@@ -119,10 +117,10 @@ export default defineComponent({
   display: flex;
   align-items: center;
   min-width: calc(30 * var(--layout-spacing-unit));
-  height: 50px;
-  padding-top: 10px;
   position: relative
   z-index: 1
+  background-color: var(--tabColor)
+  transition: background-color 250ms;
 
   &:focus
     --tabColor: var(--color-grey8);
@@ -130,17 +128,6 @@ export default defineComponent({
 
   &:hover
     --tabColor: #272726;
-
-  &__background
-    transition: background-color 250ms;
-    position: absolute;
-    top: 10px;
-    right: -1px;
-    bottom: 0;
-    left: -1px;
-    border-radius: 8px 8px 0 0;
-    background-color: var(--tabColor)
-    z-index: -1;
 
   &__logo
     width: 20px;
@@ -158,7 +145,6 @@ export default defineComponent({
     white-space: nowrap;
 
   &__close-button
-    --button-icon-length: 1.3em;
     margin-left: 0.5em;
     position: relative
     z-index: 10

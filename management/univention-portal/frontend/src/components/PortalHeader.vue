@@ -189,7 +189,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .portal-header
   position: fixed
   top: 0

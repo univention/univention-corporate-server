@@ -45,16 +45,12 @@ function umc(path: string, options: any): Promise<AxiosResponse<any>> {
   return axios.post(`/univention/${path}`, { options }, { headers });
 }
 
-function changePassword(oldPassword: string, newPassword: string): Promise<void> {
+function changePassword(oldPassword: string, newPassword: string): Promise<AxiosResponse<any>> {
   return umc('set', {
     password: {
       password: oldPassword,
       new_password: newPassword,
     },
-  }).then(() => {
-    alert('The password has been changed successfully.');
-  }, (error) => {
-    alert(error);
   });
 }
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-03-22 20:01+0000\n"
+"POT-Creation-Date: 2021-03-25 09:16+0100\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,55 +12,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/assets/data/dictionary.js:47
+#: frontend/src/assets/data/dictionary.js:47
 msgid "Accept"
 msgstr "Akzeptieren"
 
-#: src/assets/data/dictionary.js:51
+#: frontend/src/assets/data/dictionary.js:51
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: src/assets/data/dictionary.js:53
+#: frontend/src/assets/data/dictionary.js:53
 msgid "Add entry"
 msgstr "Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:55
+#: frontend/src/assets/data/dictionary.js:55
 msgid "Add existing entry"
 msgstr "Bestehenden Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:58
+#: frontend/src/assets/data/dictionary.js:58
 msgid "Add existing folder"
 msgstr "Bestehenden Ordner hinzufügen"
 
-#: src/assets/data/dictionary.js:56
+#: frontend/src/assets/data/dictionary.js:56
 msgid "Add folder"
 msgstr "Ordner hinzufügen"
 
-#: src/assets/data/dictionary.js:59
+#: frontend/src/assets/data/dictionary.js:59
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/assets/data/dictionary.js:45 src/assets/data/dictionary.js:66
+#: frontend/src/assets/data/dictionary.js:71
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: frontend/src/assets/data/dictionary.js:45
+#: frontend/src/assets/data/dictionary.js:66
 msgid "Cookie Settings"
 msgstr "Cookie-Einstellungen"
 
-#: src/assets/data/dictionary.js:54
+#: frontend/src/assets/data/dictionary.js:54
 msgid "Create new entry"
 msgstr "Neuen Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:57
+#: frontend/src/assets/data/dictionary.js:57
 msgid "Create new folder"
 msgstr "Neuen Ordner hinzufügen"
 
-#: src/assets/data/dictionary.js:49
+#: frontend/src/assets/data/dictionary.js:49
 msgid "Dismiss notification"
 msgstr "Benachrichtigung schließen"
 
-#: src/assets/data/dictionary.js:63
+#: frontend/src/assets/data/dictionary.js:63
 msgid "Display name"
 msgstr "Anzeigename"
 
-#: src/assets/data/dictionary.js:65
+#: frontend/src/assets/data/dictionary.js:65
 msgid ""
 "Display name of the category. At least one entry; strongly encouraged to "
 "have one for en_US"
@@ -68,27 +73,27 @@ msgstr ""
 "Anzeigename der Kategorie. Mindestens ein Eintrag; dringend empfohlen, eine "
 "für en_US zu haben"
 
-#: src/assets/data/dictionary.js:52
+#: frontend/src/assets/data/dictionary.js:52
 msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
-#: src/assets/data/dictionary.js:42
+#: frontend/src/assets/data/dictionary.js:42
 msgid "Edit portal"
 msgstr "Portal bearbeiten"
 
-#: src/assets/data/dictionary.js:62
+#: frontend/src/assets/data/dictionary.js:62
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: src/assets/data/dictionary.js:64
+#: frontend/src/assets/data/dictionary.js:64
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z. B. en_US)"
 
-#: src/assets/data/dictionary.js:40
+#: frontend/src/assets/data/dictionary.js:40
 msgid "Login"
 msgstr "Anmelden"
 
-#: src/assets/data/dictionary.js:50
+#: frontend/src/assets/data/dictionary.js:50
 msgid ""
 "Login <a class=\"notification-bubble__link\" href=\"#\">here</a> so that you"
 " can use the full range of functions of UCS."
@@ -96,35 +101,44 @@ msgstr ""
 "Melden Sie sich <a class=\"notification-bubble__link\" href=\"#\">hier</a> "
 "an, um alle Funktionen von UCS nutzen zu können."
 
-#: src/assets/data/dictionary.js:41
+#: frontend/src/assets/data/dictionary.js:41
 msgid "Logout"
 msgstr "Abmelden"
 
-#: src/assets/data/dictionary.js:39
+#: frontend/src/assets/data/dictionary.js:69
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: frontend/src/assets/data/dictionary.js:39
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: src/assets/data/dictionary.js:61
+#: frontend/src/assets/data/dictionary.js:68
+msgid "Old password"
+msgstr "Altes Passwort"
+
+#: frontend/src/assets/data/dictionary.js:61
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: src/assets/data/dictionary.js:60
+#: frontend/src/assets/data/dictionary.js:60
 msgid "Save"
 msgstr "Speichern"
 
-#: src/assets/data/dictionary.js:43
+#: frontend/src/assets/data/dictionary.js:43
 msgid "Stop edit portal"
 msgstr "Bearbeiten abbrechen"
 
-#: src/assets/data/dictionary.js:48
+#: frontend/src/assets/data/dictionary.js:48
 msgid "Submit"
 msgstr "Abschicken"
 
-#: src/assets/data/dictionary.js:44
+#: frontend/src/assets/data/dictionary.js:44
 msgid "Switch locale"
 msgstr "Sprache ändern"
 
-#: src/assets/data/dictionary.js:46 src/assets/data/dictionary.js:67
+#: frontend/src/assets/data/dictionary.js:46
+#: frontend/src/assets/data/dictionary.js:67
 msgid ""
 "We use cookies in order to provide you with certain functions and to be able"
 " to guarantee an unrestricted service. By clicking on \"Accept\", you "
@@ -134,3 +148,11 @@ msgstr ""
 "einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf"
 " \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
+
+#: frontend/src/assets/data/dictionary.js:72
+msgid "You have successfully updated your password"
+msgstr "Das Passwort wurde erfolgreich aktualisiert"
+
+#: frontend/src/assets/data/dictionary.js:70
+msgid "retype"
+msgstr "Wiederholung"

@@ -33,6 +33,8 @@ export interface ModalState {
   modalComponent: unknown;
   modalProps: unknown;
   modalStubborn: boolean;
+  modalResolve: (any) => void;
+  modalReject: () => void;
 }
 
 const modal: PortalModule<ModalState> = {
@@ -42,6 +44,8 @@ const modal: PortalModule<ModalState> = {
     modalComponent: null,
     modalProps: {},
     modalStubborn: false,
+    modalResolve: (() => undefined),
+    modalReject: (() => undefined),
   },
 
   mutations: {
@@ -50,12 +54,18 @@ const modal: PortalModule<ModalState> = {
       state.modalComponent = payload.name;
       state.modalProps = payload.props || {};
       state.modalStubborn = payload.stubborn || false;
+      document.body.classList.add('body__has-modal');
+      state.modalResolve = payload.resolve || (() => undefined);
+      state.modalReject = payload.reject || (() => undefined);
     },
     HIDEMODAL(state) {
       state.modalVisible = false;
       state.modalComponent = null;
       state.modalProps = {};
       state.modalStubborn = false;
+      document.body.classList.remove('body__has-modal');
+      state.modalResolve = () => undefined;
+      state.modalReject = () => undefined;
     },
   },
 
@@ -73,8 +83,19 @@ const modal: PortalModule<ModalState> = {
     setShowModal({ commit }, payload) {
       commit('SHOWMODAL', payload);
     },
+    setShowModalPromise({ dispatch }, payload) {
+      return new Promise((resolve, reject) => {
+        dispatch('setShowModal', { ...payload, resolve, reject });
+      });
+    },
     setHideModal({ commit }) {
       commit('HIDEMODAL');
+    },
+    resolve({ state }, payload) {
+      state.modalResolve(payload);
+    },
+    reject({ state }) {
+      state.modalReject();
     },
   },
 };

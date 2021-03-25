@@ -39,7 +39,10 @@ License with the Debian GNU/Linux or Univention distribution in file
       @keypress.enter="openFolder"
       @keyup.esc.stop="closeFolder()"
     >
-      <div class="portal-folder__thumbnails">
+      <div
+        class="portal-folder__thumbnails"
+        :class="{ 'portal-folder__thumbnails--in-modal': inModal }"
+      >
         <div
           v-for="(tile, index) in tiles"
           :key="index"
@@ -178,6 +181,7 @@ export default defineComponent({
   flex-direction: column
   align-items: center
   cursor: pointer
+  border: 0.2rem solid transparent
 
   &__name
     text-align: center
@@ -189,45 +193,71 @@ export default defineComponent({
   &__in-modal
     cursor: default
 
-    .portal-tile
+    button
+      text-transform: none
+
+    .portal-folder__name
+      margin-top: calc(3 * var(--layout-spacing-unit))
+      font-size: var(--font-size-1)
+
+    > .portal-tile
       &__box
         width: calc(5 * var(--app-tile-side-length))
         height: @width
+        max-width: 100vw
+        margin-bottom: 0
 
         .portal-tile
           width: var(--app-tile-side-length)
           &__box
             width: var(--app-tile-side-length)
             height: @width
+    &__box
+      width: var(--app-tile-side-length)
+      height: var(--app-tile-side-length)
+
     .portal-folder__thumbnails .portal-tile__name
         display: block;
 
   &__thumbnails
-    width: 80%;
-    height: 80%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: calc(4 * var(--layout-spacing-unit))
-    grid-gap: var(--layout-spacing-unit)
+    width: 100%
+    height:100%
+    display: flex
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    padding: 0.3rem;
+    box-sizing: border-box;
+    > div
+      height: min-content
+      width: var(--portal-folder-tile-width)
+      max-width: 50%
+      margin-bottom: 0;
 
+    &--in-modal
+      max-height: 100vh
+      overflow: auto
+      box-sizing: border-box;
+      padding:  var(--portal-folder-padding)
+
+      > div
+        margin-bottom: 3rem
     .portal-tile
       width: calc(0.2 * var(--app-tile-side-length))
       &__box
         width: calc(0.2 * var(--app-tile-side-length))
         height: @width
         margin-bottom: var(--layout-spacing-unit)
+        padding:  calc(var(--layout-spacing-unit))
 
       &__name
         display: none;
 
   &__edit-button
     user-select: none
-
     position: absolute
     top: -0.75em
     right: -0.75em
-
     width: 2em
     height: 2em
     background-color: var(--color-grey0)
@@ -239,9 +269,9 @@ export default defineComponent({
 
   .portal-tile__box
     background: var(--color-grey0)
-    border: 0.2rem solid transparent
+    padding: 0
 
-    &:focus
-      border-color: var(--color-primary)
-      outline: none;
+&:focus
+  border-color: var(--color-primary)
+  outline: none;
 </style>

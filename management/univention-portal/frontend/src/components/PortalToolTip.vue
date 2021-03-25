@@ -28,12 +28,13 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <div
-    v-if="showTooltip"
     class="portal-tooltip"
-    :class="{'portal-tooltip--shown': isDisplayed}"
     role="tooltip"
   >
-    <div class="portal-tooltip__header">
+    <div
+      class="portal-tooltip__header"
+      data-test="portal-tooltip"
+    >
       <div class="portal-tooltip__thumbnail">
         <img
           :src="icon || './questionMark.svg'"
@@ -76,30 +77,9 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    link: {
-      type: String,
-      default: '',
-    },
     ariaId: {
       type: String,
       default: '',
-    },
-    isDisplayed: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    showTooltip(): boolean {
-      let ret = true;
-      if (
-        (this.icon === '') ||
-        (this.title === '') ||
-        (this.description === '')
-      ) {
-        ret = false;
-      }
-      return ret;
     },
   },
 });
@@ -119,11 +99,8 @@ export default defineComponent({
   pointer-events: none
   z-index: $zindex-3
   color: var(--color-white)
-  display: none;
+  display: block;
 
-  &--shown {
-    display: block;
-  }
   &__header
     display: flex
     align-items: center

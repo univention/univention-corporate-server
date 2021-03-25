@@ -1,7 +1,11 @@
 html
+  margin:0
+  padding: 0
   font-size: var(--font-size-html);
 
 body
+  margin:0
+  padding: 0
   font-family: 'Open Sans', sans-serif;
   font-weight: normal;
   line-height: var(--font-lineheight-normal);
@@ -10,6 +14,10 @@ body
   margin-top: var(--portal-header-height)
   background-color: var(--bgc-content-body);
   box-sizing: border-box;
+
+.body__has-modal
+  overflow: hidden
+
 h2
   font-size: var(--font-size-2);
   line-height: var(--font-lineheight-normal);
@@ -34,23 +42,20 @@ h2
   opacity: 0
 
 input
+  display: block
   padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
   font-size: var(--font-size-3)
   height: var(--inputfield-size)
-  width: 100%
   background-color: var(--inputfield-bgc)
   margin-bottom: var(--layout-spacing-unit)
   transition: background-color, color, border
   transition-duration: 250ms
   border: 1px solid var(--inputfield-bgc)
-  color: var(--font-color-cotrast-high)
+  border-radius: var(--border-radius-interactable)
+  color: var(--font-color-contrast-high)
 
-  &:hover
-    transition: background-color, color, border
-    transition-duration: 250ms
-
-  &:focus
-    --border-color: var(--color-grey40)
+  &:hover, &:focus
+    border-color: var(--color-grey40)
     outline-style: none
     box-shadow: none
 
@@ -61,3 +66,18 @@ input
 label
   color: var(--color-grey62)
   font-size: var(--font-size-4)
+
+button
+  border: none
+  font-size: var(--button-font-size)
+  color: var(--font-color-contrast-high)
+  border-radius: var(--button-border-radius)
+  height: var(--button-size)
+  background-color: var(--button-text-bgc)
+  padding: 0 calc(2 * var(--layout-spacing-unit))
+  text-transform: uppercase
+
+  &:hover,
+  &:focus
+    background-color: var(--bgc-content-body)
+    cursor: pointer

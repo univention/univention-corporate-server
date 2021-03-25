@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "serve:wait": "yarn serve & wait-on http://localhost:8080",
     "deploy:firebase": "yarn build && firebase deploy",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:updatesnapshots": "yarn test:unit --updateSnapshot",
     "test:unit:watch": "yarn test:unit --watch",
     "test:e2e": "NODE_ENV=development vue-cli-service test:e2e",
+    "test:e2e:run": "yarn cypress run",
     "lint": "vue-cli-service lint --no-fix",
     "lint:all": "yarn lint && stylelint \"{**/*.{scss,vue,styl}\"",
     "lint:fix": "vue-cli-service lint",
@@ -57,6 +59,7 @@
     "typescript": "~3.9.3",
     "vue-eslint-parser": "^7.6.0",
     "vue-jest": "^5.0.0-0",
+    "wait-on": "^5.3.0",
     "yarn": "^1.22.10"
   }
 }

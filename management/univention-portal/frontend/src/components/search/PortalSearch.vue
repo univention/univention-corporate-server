@@ -91,6 +91,7 @@ export default defineComponent({
     __border-radius: var(--border-radius-interactable);
     padding: var(--layout-spacing-unit) !important;
     box-sizing: border-box;
+    margin-bottom: 0
 
     &:focus {
       border-color: var(--color-primary);

@@ -85,4 +85,8 @@ async function updateLocale(locale) {
   );
 }
 
-export { catalog, updateLocale };
+function translate(key) {
+  return catalog[key].translated.value;
+}
+
+export { catalog, updateLocale, translate };

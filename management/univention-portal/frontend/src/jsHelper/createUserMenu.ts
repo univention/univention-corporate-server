@@ -27,6 +27,32 @@
  * <https://www.gnu.org/licenses/>.
  */
 import { changePassword } from '@/jsHelper/umc';
+import { translate } from '@/i18n/translations';
+
+function changePasswordCallback(tileClick) {
+  tileClick.$store.dispatch('navigation/setActiveButton', '');
+  tileClick.$store.dispatch('modal/setShowModalPromise', {
+    name: 'ChangePassword',
+    stubborn: true,
+  }).then((values) => {
+    changePassword(values.oldPassword, values.newPassword).then(() => {
+      tileClick.$store.dispatch('notificationBubble/addSuccessNotification', {
+        bubbleTitle: translate('CHANGE_PASSWORD'),
+        bubbleDescription: translate('CHANGE_PASSWORD_SUCCESS'),
+      });
+      tileClick.$store.dispatch('modal/setHideModal');
+    }, (error) => {
+      tileClick.$store.dispatch('notificationBubble/addErrorNotification', {
+        bubbleTitle: translate('CHANGE_PASSWORD'),
+        bubbleDescription: `${error}`,
+      });
+      tileClick.$store.dispatch('modal/setHideModal');
+      return changePasswordCallback(tileClick);
+    });
+  }, () => {
+    tileClick.$store.dispatch('modal/setHideModal');
+  });
+}
 
 export default function createUserMenu(portalData) {
   const menuTitle = {
@@ -41,9 +67,7 @@ export default function createUserMenu(portalData) {
       de_DE: 'Passwort ändern',
     },
     linkTarget: 'internalFunction',
-    internalFunction: (tileClick) => {
-      changePassword('univention', 'newUnivention');
-    },
+    internalFunction: changePasswordCallback,
     links: [],
   }];
 

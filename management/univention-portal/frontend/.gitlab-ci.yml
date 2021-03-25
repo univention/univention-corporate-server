@@ -21,11 +21,14 @@ build-test-deploy-job:
       - main
   image: docker-registry.knut.univention.de/phoenix/phoenixportalbuilder:latest
   artifacts:
+    # we need the cypress artifacts...
+    when: always
     paths:
       - phoenixportal*.deb
+      - tests/e2e/screenshots/*
+      - tests/e2e/videos/*
     # maybe?
     #public: true
-    when: on_success
     # this seems to apply to all artifacts?
     expire_in: 12hrs
   script:
@@ -33,6 +36,8 @@ build-test-deploy-job:
     #- yarn --cwd=frontend build
     - yarn
     - yarn --cwd=frontend test:unit
+    - yarn serve:wait
+    - yarn cypress run
     # das folgende ist Holzhammer auf Wegwerfmaschinen, nicht in prod nutzen...
     - apt-get -q --assume-yes build-dep .
     - dpkg-buildpackage -uc -us -b
