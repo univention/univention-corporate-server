@@ -53,7 +53,7 @@ ud.init('/dev/null', ud.FLUSH, ud.FUNCTION)
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-lo = univention.uldap.getAdminConnection(decode_ignorelist=['krb5Key'])
+lo = univention.uldap.getAdminConnection()
 krbbase = 'ou=krb5,' + configRegistry['ldap/base']
 realm = configRegistry['kerberos/realm']
 
