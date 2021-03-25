@@ -1,1 +1,2 @@
 rm_conffile /etc/univention/templates/files/etc/init.d/docker 2.0.0-8~
+rm_conffile /etc/default/docker 5.0.2-1~
