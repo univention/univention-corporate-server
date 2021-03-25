@@ -1,3 +1,10 @@
+univention-web (3.0.6-3) unstable; urgency=medium
+
+  * Bug #37720: replace Expire-caching with Cache-Control "must-
+    revalidate, max-age=..."
+
+ -- Florian Best <best@univention.de>  Fri, 18 Jun 2021 14:53:55 +0200
+
 univention-web (3.0.6-2) unstable; urgency=medium
 
   * Bug #52665: fix XSS vulnerability in Menu
