@@ -48,10 +48,10 @@ def handler(config_registry, changes):
 		new_val = changes['license/base']
 
 	if new_val in ("UCS Core Edition", "Free for personal use edition"):
-		cmd = ['univention-directory-manager', 'portals/folder', 'modify', '--dn', 'cn=help,cn=folder,cn=portals,cn=univention,%s' % (ldap_base,), '--append', 'entries=cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)]
+		cmd = ['univention-directory-manager', 'portals/category', 'modify', '--dn', 'cn=domain-admin,cn=category,cn=portals,cn=univention,%s' % (ldap_base,), '--ignore_not_exists', '--append', 'entries=cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)]
 		process('Adding blog entry failed', cmd)
 	else:
-		cmd = ['univention-directory-manager', 'portals/folder', 'modify', '--dn', 'cn=help,cn=folder,cn=portals,cn=univention,%s' % (ldap_base,), '--remove', 'entries=cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)]
+		cmd = ['univention-directory-manager', 'portals/category', 'modify', '--dn', 'cn=domain-admin,cn=category,cn=portals,cn=univention,%s' % (ldap_base,), '--ignore_not_exists', '--remove', 'entries=cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)]
 		process('Removing blog entry failed', cmd)
 
 
