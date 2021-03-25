@@ -1,3 +1,9 @@
+ucs-test (10.0.4-42) unstable; urgency=medium
+
+  * Bug #50492: 101sync_initial_membership_ad_to_ucs stop s4con
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 25 Mar 2021 15:44:02 +0100
+
 ucs-test (10.0.4-41) unstable; urgency=medium
 
   * Bug #52957: fixup for uninstall for empty domains

@@ -29,6 +29,7 @@ UDM_B1_DN="uid=$B1,cn=users,$ldap_base"
 UDM_B2_DN="uid=$B2,cn=users,$ldap_base"
 
 invoke-rc.d univention-ad-connector stop
+invoke-rc.d univention-s4-connector stop
 
 ad_group_create "$G1" || fail_test 110
 ad_createuser "$B1" || fail_test 110
@@ -49,6 +50,7 @@ ad_append_to_attribute "$AD_G2_DN" "member" "$AD_B2_DN" || fail_test 110
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 invoke-rc.d univention-ad-connector start
+invoke-rc.d univention-s4-connector start
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_G1_DN"; fail_bool 0 110
