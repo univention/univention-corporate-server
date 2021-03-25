@@ -1,3 +1,9 @@
+univention-portal (4.0.5-15) unstable; urgency=medium
+
+  * Bug #45918: Fix migration for 4.4 links
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Mar 2021 14:01:35 +0100
+
 univention-portal (4.0.5-14) unstable; urgency=medium
 
   * Bug #52869: CSS Fixes and a first glimpse at change password
