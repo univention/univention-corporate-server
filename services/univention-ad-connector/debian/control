@@ -61,6 +61,7 @@ Architecture: all
 Depends:
  python-univention,
  python-univention-connector (= ${binary:Version}),
+ python-univention-heimdal,
  ${misc:Depends},
  ${python:Depends},
 Pre-Depends:
@@ -81,6 +82,7 @@ Architecture: all
 Depends:
  python3-univention,
  python3-univention-connector (= ${binary:Version}),
+ python3-univention-heimdal,
  ${misc:Depends},
  ${python3:Depends},
 Pre-Depends:
