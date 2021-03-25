@@ -64,8 +64,11 @@ umc_udm () {
 }
 
 umc_frontend_new_hash () {
-	# remove deprecated symlink
-	rm -f /var/www/univention/js_* || true
+	if [ -n "$DPKG_MAINTSCRIPT_PACKAGE" ]; then
+		# touch all html, js, css files from the package to prevent the mtime to be the package build time.
+		# the mtime needs to be the package extraction time, so that apache serves correct caching information
+		find $(dpkg -L "$DPKG_MAINTSCRIPT_PACKAGE" | grep '^/') -maxdepth 0 -mindepth 0 -type f \( -name '*.js' -or -name '*.html' -or -name '*.css' \) -exec touch {} \;
+	fi
 
 	/usr/sbin/univention-config-registry set "umc/web/cache_bust=$(date +%s)"
 

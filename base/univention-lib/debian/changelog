@@ -1,3 +1,10 @@
+univention-lib (9.0.11-6) unstable; urgency=medium
+
+  * Bug #53465: touch all HTML/JS/CSS files in postinst via
+    umc_frontend_new_hash
+
+ -- Florian Best <best@univention.de>  Fri, 18 Jun 2021 14:53:19 +0200
+
 univention-lib (9.0.11-5) unstable; urgency=medium
 
   * Bug #53532: UMC translation file registration
