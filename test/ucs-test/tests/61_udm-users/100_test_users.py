@@ -1,13 +1,14 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test various things in users/user
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## timeout: 0
 
 from __future__ import print_function
 
+import sys
 import base64
 import pytest
 import time
@@ -45,7 +46,7 @@ class TestUsers(object):
 	"""
 
 	def utc_days_since_epoch():
-		return calendar.timegm(time.gmtime()) / 3600 / 24
+		return calendar.timegm(time.gmtime()) // 3600 // 24
 
 	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
 		('0', '', '1', []),
@@ -84,7 +85,7 @@ class TestUsers(object):
 		certificate_binary = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-'])
 		x509 = X509.load_cert_string(certificate_binary, X509.FORMAT_DER)
 		certificateSerial = x509.get_serial_number()
-		certificate = base64.b64encode(certificate_binary).encode('ASCII')
+		certificate = base64.b64encode(certificate_binary).decode('ASCII')
 		certificate_ldap = {
 			'userCertificate': certificate,
 			'certificateIssuerCommonName': ucr['ssl/common'],
@@ -126,7 +127,7 @@ class TestUsers(object):
 		pass
 
 	@pytest.mark.parametrize('samba_sid,samba_rid', [
-		('S-1-5-21-1290176872-3541151870-1783641248-14678', '14678'),
+		(b'S-1-5-21-1290176872-3541151870-1783641248-14678', '14678'),
 	])
 	def test_unmap_samba_rid(self, udm, lo, samba_sid, samba_rid):
 		user = udm.create_user()[0]
@@ -253,7 +254,7 @@ class TestUsers(object):
 	@pytest.mark.parametrize('props,gecos', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),  # FIXME: current result looks broken!
-		({'firstname': 'H\xc3\xa4\xc3\xa4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'Haeaelo Woeoerld'),  # FIXME: current result looks broken!
+		({'firstname': b'H\xc3\xa4\xc3\xa4lo'.decode('UTF-8'), 'lastname': b'W\xc3\xb6\xc3\xb6rld'.decode('UTF-8')}, 'Haeaelo Woeoerld'),  # FIXME: current result looks broken!
 	])
 	def test_modlist_gecos(self, udm, props, gecos):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:umlauts,strip>'
@@ -263,7 +264,7 @@ class TestUsers(object):
 	@pytest.mark.parametrize('props,displayName', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),
-		#({'firstname': ' H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld '}, 'Hlo W\xc3\xb6\xc3\xb6rld'),  # FIXME: pytest crashes!
+		# ({'firstname': ' H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld '}, 'Hlo W\xc3\xb6\xc3\xb6rld'),  # FIXME: pytest crashes!
 	])
 	def test_modlist_display_name(self, udm, props, displayName):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:strip>'
@@ -277,10 +278,10 @@ class TestUsers(object):
 		user = udm.create_user(password='univention')[0]
 		wait_for_connector_replication()
 		password = lo.getAttr(user, 'userPassword')[0]
-		assert password.startswith('{crypt}')
+		assert password.startswith(b'{crypt}')
 		udm.modify_object('users/user', dn=user, disabled='1')
 		wait_for_connector_replication()
-		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
+		udm.verify_ldap_object(user, {'userPassword': [password.replace(b'{crypt}', b'{crypt}!')]})
 		udm.modify_object('users/user', dn=user, disabled='0')
 		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password]})
@@ -291,7 +292,7 @@ class TestUsers(object):
 		password = lo.getAttr(user, 'userPassword')[0]
 		udm.modify_object('users/user', dn=user, disabled='1')
 		wait_for_connector_replication()
-		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
+		udm.verify_ldap_object(user, {'userPassword': [password.replace(b'{crypt}', b'{crypt}!')]})
 		udm.modify_object('users/user', dn=user, disabled='0')
 		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password]})
@@ -362,7 +363,7 @@ class TestUsers(object):
 		(7),
 	])
 	def test_modlist_shadow_max_and_last_change(self, expiry_interval, udm):
-		today = int(time.time()) / 3600 / 24
+		today = int(time.time()) // 3600 // 24
 		kw = dict(expiryInterval=expiry_interval) if expiry_interval is not None else {}
 		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
@@ -374,7 +375,7 @@ class TestUsers(object):
 
 		user2 = udm.create_user(position=cn, pwdChangeNextLogin='0')[0]
 		# FIXME?: the following was possible in UCS 4.2
-#		udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)]})
+		# udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)]})
 
 		user3 = udm.create_user(position=cn, pwdChangeNextLogin='1')[0]
 		udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1) if expiry_interval else str(today - 2)]})
@@ -387,7 +388,7 @@ class TestUsers(object):
 
 		# Bug #46067:
 		udm.modify_object('users/user', dn=user3, password='univention2', pwdChangeNextLogin='1')
-		#udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1)]})
+		# udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1)]})
 
 	def test_modlist_samba_pwd_last_set(self, udm, lo):
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'sambaPwdLastSet': ['0']})
@@ -404,7 +405,7 @@ class TestUsers(object):
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
 		expiry = int(time.time())
 		password_end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
-		#password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
+		# password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})
 		self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2'}, {'krb5PasswordEnd': []})
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1', 'position': cn}, {'krb5PasswordEnd': [password_end]})
@@ -414,18 +415,18 @@ class TestUsers(object):
 	def test_user_password_is_cryped(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
 		password = lo.getAttr(user, 'userPassword')[0]
-		assert password.startswith('{crypt}')
+		assert password.startswith(b'{crypt}')
 		udm.modify_object('users/user', dn=user, password='univention2')
 		password2 = lo.getAttr(user, 'userPassword')[0]
-		assert password2.startswith('{crypt}')
+		assert password2.startswith(b'{crypt}')
 		assert password2 != password
 
 	def test_modlist_samba_bad_pw_count(self, udm, lo):
 		user = udm.create_user()[0]
 		locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
 		old = lo.get(user)
-		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
-		lo.modify(user, [('sambaBadPasswordCount', '0', '20')])
+		subprocess.call([sys.executable, '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
+		lo.modify(user, [('sambaBadPasswordCount', b'0', b'20')])
 		new = lo.get(user)
 		print((locktime, old, new))
 		udm.modify_object('users/user', dn=user, locked='0')
