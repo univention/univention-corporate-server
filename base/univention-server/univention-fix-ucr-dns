@@ -48,7 +48,7 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
 
 IPAddress = Union[IPv4Address, IPv6Address]
-DictAddr2Str = Dict[IPAddress, Optional[str]]
+DictAddr = Dict[IPAddress, None]
 
 UCR_VARS_FWD = ['dns/forwarder%d' % (i,) for i in range(1, 4)]
 UCR_VARS_DNS = ['nameserver%d' % (i,) for i in range(1, 4)]
@@ -76,8 +76,8 @@ def main() -> None:
 		log.fatal('Using external DNS - aborting')
 		exit(0)
 
-	nameservers: DictAddr2Str = OrderedDict()
-	forwarders: DictAddr2Str = OrderedDict()
+	nameservers: DictAddr = OrderedDict()
+	forwarders: DictAddr = OrderedDict()
 	need_fixing = get_nameservers_cli(nameservers)
 	need_fixing |= get_forwarders(forwarders, ucr)
 	need_fixing |= get_nameservers_ucr(nameservers, ucr)
@@ -177,7 +177,7 @@ def setup_logging() -> None:
 	basicConfig(format=FORMAT, level=level, stream=stderr)
 
 
-def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
+def get_nameservers_cli(nameservers: DictAddr) -> bool:
 	"""
 	Get DNS servers from command line arguments.
 
@@ -196,7 +196,7 @@ def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
 	return need_fixing
 
 
-def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
+def get_forwarders(forwarders: DictAddr, ucr: Dict[str, str]) -> bool:
 	"""
 	Get currently configured externnal DNS servers from UCR.
 
@@ -226,7 +226,7 @@ def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
 	return need_fixing
 
 
-def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> bool:
+def get_nameservers_ucr(nameservers: DictAddr, ucr: Dict[str, str]) -> bool:
 	"""
 	Get currently configured internal DNS servers from UCR.
 
@@ -252,7 +252,7 @@ def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> bool:
 	return need_fixing
 
 
-def validate_servers(nameservers: DictAddr2Str, forwarders: DictAddr2Str, domain: str) -> bool:
+def validate_servers(nameservers: DictAddr, forwarders: DictAddr, domain: str) -> bool:
 	"""
 	Check DNS servers being internal or external and re-categorize.
 
@@ -284,7 +284,7 @@ def validate_servers(nameservers: DictAddr2Str, forwarders: DictAddr2Str, domain
 	return need_fixing
 
 
-def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
+def either_or(nameservers: DictAddr, forwarders: DictAddr) -> bool:
 	"""
 	Remove forwarders which are also internal DNS servers.
 
@@ -308,7 +308,7 @@ def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
 	return need_fixing
 
 
-def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> None:
+def add_self(nameservers: DictAddr, ucr: Dict[str, str]) -> None:
 	"""
 	Add self as internal DNS server (on DCs).
 
@@ -342,7 +342,7 @@ def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> None:
 	nameservers.update(old)
 
 
-def add_nameservers(nameservers: DictAddr2Str, domain: str) -> None:
+def add_nameservers(nameservers: DictAddr, domain: str) -> None:
 	"""
 	Add DNS servers from zone as internal DNS servers.
 
@@ -376,7 +376,7 @@ def add_nameservers(nameservers: DictAddr2Str, domain: str) -> None:
 		log.error('DNS lookup of NS records in %s against %s failed', domain, LOCAL)
 
 
-def add_master(nameservers: DictAddr2Str, master: str) -> None:
+def add_master(nameservers: DictAddr, master: str) -> None:
 	"""
 	Add Primary DC as internal DNS server.
 
@@ -407,7 +407,7 @@ def add_master(nameservers: DictAddr2Str, master: str) -> None:
 		log.error('DNS lookup of %s against %s failed', master, LOCAL)
 
 
-def move_nameservers(forwarders: DictAddr2Str, nameservers: DictAddr2Str) -> None:
+def move_nameservers(forwarders: DictAddr, nameservers: DictAddr) -> None:
 	"""
 	Move all forwarders to nameservers.
 
@@ -424,7 +424,7 @@ def move_nameservers(forwarders: DictAddr2Str, nameservers: DictAddr2Str) -> Non
 	forwarders.clear()
 
 
-def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> None:
+def update_ucr(ucr: Dict[str, str], nameservers: DictAddr, forwarders: DictAddr) -> None:
 	"""
 	Update internal and external DNS servers in UCR settings.
 
@@ -435,7 +435,7 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
 	log = getLogger(__name__).getChild('ucr')
 	new_ucr_settings = {}
 
-	def update(names: List[str], input_values: DictAddr2Str, typ: str) -> None:
+	def update(names: List[str], input_values: DictAddr, typ: str) -> None:
 		log.debug('%s=%r', typ, list(input_values))
 		values: List[Optional[str]] = ['%s' % (val,) for val in input_values]
 		diff = len(names) - len(values)
