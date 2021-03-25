@@ -32,150 +32,75 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
+import os
+import codecs
 import sys
 import getopt
-import subprocess
 import hashlib
-import struct
 from datetime import datetime
 
 import ldap
+from ldap.filter import filter_format
 
 import univention.config_registry
-import univention.debug
+import univention.debug as ud
 import univention.uldap
+import univention.lib.policy_result
 
-univention.debug.init('/dev/null', 1, 1)
+ud.init('/dev/null', ud.FLUSH, ud.FUNCTION)
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
 lo = univention.uldap.getAdminConnection(decode_ignorelist=['krb5Key'])
 krbbase = 'ou=krb5,' + configRegistry['ldap/base']
 realm = configRegistry['kerberos/realm']
 
-univentionPWExpiryInterval = 'univentionPWExpiryInterval'
 UNIXDAY = 3600 * 24
 
 
-def __getsmbPWHistory(newpassword, smbpwhistory, smbpwhlen):
-	# split the history
-	if smbpwhistory.strip():
-		pwlist = smbpwhistory.split(' ')
-	else:
-		pwlist = []
-		# calculate the password hash & salt
-	salt = ''
-	urandom = open('/dev/urandom', 'r')
-	# get 16 bytes from urandom for salting our hash
-	rand = urandom.read(16)
-	for i in range(0, len(rand)):
-		salt = salt + '%.2X' % ord(rand[i])
-	# we have to have that in hex
-	hexsalt = salt
-	# and binary for calculating the md5
-	salt = getbytes(salt)
+def _get_samba_password_history(newpassword, smbpwhistory, smbpwhlen):
+	# calculate the password hash & salt
+	# in binary for calculating the md5:
+	salt = os.urandom(16)
+	# we have to have that in hex:
+	hexsalt = codecs.encode(salt, 'hex').upper().decode('ASCII')
 	# we need the ntpwd binary data to
-	pwd = getbytes(newpassword)
-	# calculating hash. sored as a 32byte hex in sambePasswordHistory,
+	pwd = codecs.decode(newpassword, 'hex')
+	# calculating hash. stored as a 32byte hex in sambaPasswordHistory,
 	# syntax like that: [Salt][MD5(Salt+Hash)]
 	#	First 16bytes ^		^ last 16bytes.
 	pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
 	smbpwhash = hexsalt + pwdhash
-	if len(pwlist) < smbpwhlen:
-		# just append
-		pwlist.append(smbpwhash)
-	else:
-		# calc entries to cut out
-		cut = 1 + len(pwlist) - smbpwhlen
-		pwlist[0:cut] = []
-		if smbpwhlen > 1:
-			# and append to shortened history
-			pwlist.append(smbpwhash)
-		else:
-			# or replace the history completely
-			if len(pwlist) > 0:
-				pwlist[0] = smbpwhash
-				# just to be sure...
-				pwlist[1:] = []
-			else:
-				pwlist.append(smbpwhash)
-	# and build the new history
-	res = ''.join(pwlist)
-	return res
 
-
-def getbytes(string):
-	# return byte values of a string (for smbPWHistory)
-	bytes = [int(string[i:i + 2], 16) for i in range(0, len(string), 2)]
-	return struct.pack("%iB" % len(bytes), *bytes)
-
-
-def getPolicyResult(dn, attr):
-	# print 'DEBUG: Starting System call univention-policy-result'
-	policy = {}
-	p1 = subprocess.Popen(['univention-policy-result', '-D', configRegistry['ldap/hostdn'], '-y', '/etc/machine.secret', dn], stdout=subprocess.PIPE)
-	p2 = subprocess.Popen(['grep', '-A1', '^Attribute: ' + attr], stdin=p1.stdout, stdout=subprocess.PIPE)
-	result = p2.communicate()[0]
-	# if univention-policy-result fails then quit and do not parse output
-	if p1.wait() != 0:
-		print('ERROR: univention-policy-result failed - LDAP server may be down')
-		print('ERROR: no password set')
-		sys.exit(0)
-
-	result = result.strip('\n')
-	if result:
-		for record in result.split('\n--\n'):
-			record = record.strip('\t\n\r ')
-
-			lines = record.splitlines()
-			if len(lines) != 2:
-				print("WARN: cannot parse following lines:")
-				print("==> %s" % '\n==> '.join(lines))
-			else:
-				key = None
-				value = None
-				if lines[0].startswith('Attribute: ' + attr):
-					key = lines[0][len('Attribute: '):]
-				else:
-					print('WARN: cannot parse key line:', lines[0])
-
-				if lines[1].startswith('Value: '):
-					value = lines[1][len('Value: '):]
-				else:
-					print('WARN: cannot parse value line:', lines[1])
-
-				policy[key] = value
-	return policy
-
-
-def gen_samba_password_history(dn, password_nt):
-	smbpwhlen = int(getPolicyResult(dn, 'univentionPWHistoryLen').get('univentionPWHistoryLen', 0))
-	smbpwhistory = [''][0]
-	# print 'DEBUG: ntpwd: %s, smbpwhist: %s, smbpwhlen: %s' %(password_nt, smbpwhistory, smbpwhlen)
-	newsmbPWHistory = __getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
-	return newsmbPWHistory
+	# split the history
+	pwlist = smbpwhistory.strip().split(' ')
+	# append new hash
+	pwlist.append(smbpwhash)
+	# strip old hashes
+	pwlist = pwlist[-smbpwhlen:]
+	# build history
+	smbpwhistory = ''.join(pwlist)
+	return smbpwhistory
 
 
 def unixdayToKrb5Date(unixday):
-	# print 'DEBUG: Got unixday [',unixday,'] ...'
-	strFrmtTime = "%Y%m%d%H%M%S"
-	krb5Date = datetime.fromtimestamp(float(unixday)).strftime(strFrmtTime) + 'Z'
-	# print 'DEBUG: ... calucated to krb5 date results in: [',krb5Date,']'
-	return krb5Date
+	date = datetime.fromtimestamp(float(unixday.decode('ASCII'))).strftime("%Y%m%d%H%M%S") + 'Z'
+	return date.encode('ASCII')
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
-
 	# all arcfour-hmac-md5 keys begin this way
-	key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+	key = b'0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
 
 	for i in range(0, 16):
 		o = nt_password[2 * i:2 * i + 2]
-		key += chr(int(o, 16))
+		key += chr(int(o, 16)).encode('ISO8859-1')
 	return key
 
 
-if __name__ == '__main__':
+def main():
 	username = None
 	optlist, mail_user = getopt.getopt(sys.argv[1:], 'u:')
 	for option, value in optlist:
@@ -185,82 +110,63 @@ if __name__ == '__main__':
 	if not username:
 		sys.exit(0)
 
-	for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=%s)(!(objectClass=univentionWindows)))' % username, attr=['uid', 'krb5Key', 'sambaNTPassword', 'sambaLMPassword', 'sambaAcctFlags', 'objectClass', 'userPassword', 'krb5PasswordEnd', 'sambaPwdCanChange', 'sambaPwdMustChange', 'sambaPwdLastSet', 'krb5KDCFlags', 'shadowLastChange', 'sambaPasswordHistory', 'shadowMax']):
-		if 'univentionHost' in attrs['objectClass']:
+	ldap_attr = ['uid', 'krb5Key', 'sambaNTPassword', 'sambaLMPassword', 'sambaAcctFlags', 'objectClass', 'userPassword', 'krb5PasswordEnd', 'sambaPwdCanChange', 'sambaPwdMustChange', 'sambaPwdLastSet', 'krb5KDCFlags', 'shadowLastChange', 'sambaPasswordHistory', 'shadowMax']
+	for dn, attrs in lo.search(filter=filter_format('(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=%s)(!(objectClass=univentionWindows)))', [username]), attr=ldap_attr):
+		if b'univentionHost' in attrs['objectClass']:
 			continue
-		if not attrs['sambaNTPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
+		if attrs['sambaNTPassword'][0] != b"NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
 
-			if attrs['uid'][0] == 'root':
+			if attrs['uid'][0] == b'root':
 				print('Skipping user root ')
 				continue
 
 			# check if the user was disabled
-			disabled = False
-			sambaAcctFlags = attrs.get('sambaAcctFlags', '')
-			if len(sambaAcctFlags) > 0:
-				if 'D' in sambaAcctFlags[0]:
-					disabled = True
-
-			principal = attrs['uid'][0] + '@' + realm
+			sambaAcctFlags = attrs.get('sambaAcctFlags', [b''])[0]
+			disabled = b'D' in sambaAcctFlags
 
 			ocs = []
 			ml = []
-			if 'krb5Principal' not in attrs['objectClass']:
+			if b'krb5Principal' not in attrs['objectClass']:
 				ocs.append('krb5Principal')
+				principal = b'%s@%s' % (attrs['uid'][0], realm.encode('UTF-8'))
 				ml.append(('krb5PrincipalName', None, principal))
 
 			if disabled:
-				flag = '256'
+				flag = b'256'
 			else:
-				flag = '126'
+				flag = b'126'
 
 			if not sambaAcctFlags:
-				ml.append(('sambaAcctFlags', None, '[U          ]'))
+				ml.append(('sambaAcctFlags', None, b'[U          ]'))
 
+			policy_result = univention.lib.policy_result.policy_result(dn)[0]
 			if not attrs.get('sambaPasswordHistory', False):
-				ml.append(('sambaPasswordHistory', None, gen_samba_password_history(dn, attrs.get('sambaNTPassword', [''])[0])))
+				smbpwhlen = int(policy_result.get('univentionPWHistoryLen', [0])['0'])
+				ml.append(('sambaPasswordHistory', None, _get_samba_password_history(dn, attrs.get('sambaNTPassword', [b''])[0], '', smbpwhlen)))
 
 			if attrs.get('sambaPwdLastSet', False):
-				usersPWPolicy = getPolicyResult(dn, univentionPWExpiryInterval)
-				# print 'DEBUG: usersPWPolicy: ', usersPWPolicy
-				usersPWExpireInterval = int(usersPWPolicy.get(univentionPWExpiryInterval, 0))
-				# print 'DEBUG: usersPWExpireInterval: ', usersPWExpireInterval
+				usersPWExpireInterval = int(policy_result.get('univentionPWExpiryInterval', [0])['0'])
 
 				# if not 'krb5PasswordEnd' in attrs['objectClass']:
 				#	ocs.append('krb5PasswordEnd')
-				if attrs.get('krb5PasswordEnd', False):
-					oldkrb5PasswordEndValue = str(attrs['krb5PasswordEnd'][0])
-				else:
-					oldkrb5PasswordEndValue = None
+				oldkrb5PasswordEndValue = attrs.get('krb5PasswordEnd', [None])[0]
 				# if not 'sambaPwdCanChange' in attrs['objectClass']:
 				#	ocs.append('sambaPwdCanChange')
-				if attrs.get('sambaPwdCanChange', False):
-					oldsambaPwdCanChangeValue = str(attrs['sambaPwdCanChange'][0])
-				else:
-					oldsambaPwdCanChangeValue = None
+				oldsambaPwdCanChangeValue = attrs.get('sambaPwdCanChange', [None])[0]
 				# if not 'sambaPwdMustChange' in attrs['objectClass']:
 				#	ocs.append('sambaPwdMustChange')
-				if attrs.get('sambaPwdMustChange', False):
-					oldsambaPwdMustChangeValue = str(attrs['sambaPwdMustChange'][0])
-				else:
-					oldsambaPwdMustChangeValue = None
-				if attrs.get('shadowMax', False):
-					oldshadowMaxValue = str(attrs['shadowMax'][0])
-				else:
-					oldshadowMaxValue = None
-				if attrs.get('shadowLastChange', False):
-					oldshadowLastChangeValue = str(attrs['shadowLastChange'][0])
-				else:
-					oldshadowLastChangeValue = None
-				sambaPwdLastSetValue = int(attrs[('sambaPwdLastSet')][0])
+				oldsambaPwdMustChangeValue = attrs.get('sambaPwdMustChange', [None])[0]
+				oldshadowMaxValue = attrs.get('shadowMax', [None])[0]
+				oldshadowLastChangeValue = attrs.get('shadowLastChange', [None])[0]
+				sambaPwdLastSetValue = int(attrs[('sambaPwdLastSet')][0].decode('ASCII'))
 				# Debug # print 'SambaPwdLastSet "%d", "%d", "%d"' %(sambaPwdLastSetTimestamp, pwdlifetime, unixday)
-				shadowLastChangeValue = str(sambaPwdLastSetValue / UNIXDAY)
-				sambaPwdCanChangeValue = str(sambaPwdLastSetValue + UNIXDAY)
+				shadowLastChangeValue = str(sambaPwdLastSetValue // UNIXDAY).encode('ASCII')
+				sambaPwdCanChangeValue = str(sambaPwdLastSetValue + UNIXDAY).encode('ASCII')
 				if usersPWExpireInterval:
 					# print 'DEBUG: PWExpireInterval policy valid, calculating and setting expiring dates'
-					sambaPwdMustChangeValue = str(sambaPwdLastSetValue + int(usersPWExpireInterval * UNIXDAY))
-					krb5PasswordEndValue = str(unixdayToKrb5Date(sambaPwdMustChangeValue))
-					shadowMaxValue = str(usersPWExpireInterval)
+					sambaPwdMustChangeValue = str(sambaPwdLastSetValue + int(usersPWExpireInterval * UNIXDAY)).encode('ASCII')
+					krb5PasswordEndValue = str(unixdayToKrb5Date(sambaPwdMustChangeValue)).encode('ASCII')
+					shadowMaxValue = str(usersPWExpireInterval).encode('ASCII')
 				else:
 					# print 'DEBUG: PWExpireInterval policy not set, removing expire intervals and dates'
 					sambaPwdMustChangeValue = None
@@ -276,12 +182,12 @@ if __name__ == '__main__':
 			else:
 				print('Could not find attribute "sambaPwdLastSet". Skipping generating of "krb5PasswordEnd".')
 
-			if 'krb5KDCEntry' not in attrs['objectClass']:
+			if b'krb5KDCEntry' not in attrs['objectClass']:
 				ocs.append('krb5KDCEntry')
 				ml.extend([
-					('krb5MaxLife', None, '86400'),
-					('krb5MaxRenew', None, '604800'),
-					('krb5KeyVersionNumber', None, '1'),
+					('krb5MaxLife', None, b'86400'),
+					('krb5MaxRenew', None, b'604800'),
+					('krb5KeyVersionNumber', None, b'1'),
 				])
 
 			old_flag = attrs.get('krb5KDCFlags', [])
@@ -292,20 +198,20 @@ if __name__ == '__main__':
 				('krb5KDCFlags', old_flag, flag)
 			])
 
-			if attrs.get('sambaLMPassword') not in ["NO PASSWORDXXXXXXXXXXXXXXXXXXXXX", None]:
+			if attrs.get('sambaLMPassword', [None])[0] not in [b"NO PASSWORDXXXXXXXXXXXXXXXXXXXXX", None]:
 				old_password = attrs.get('userPassword', [])
 				if disabled:
 					ml.extend([
-						('userPassword', old_password, ['{LANMAN}!%s' % attrs['sambaLMPassword'][0]])
+						('userPassword', old_password, [b'{LANMAN}!%s' % attrs['sambaLMPassword'][0]])
 					])
 				else:
 					ml.extend([
-						('userPassword', old_password, ['{LANMAN}%s' % attrs['sambaLMPassword'][0]])
+						('userPassword', old_password, [b'{LANMAN}%s' % attrs['sambaLMPassword'][0]])
 					])
 
 			if ocs:
-				print('Adding Kerberos key for %s...' % repr(dn), end=' ')
-				ml.insert(0, ('objectClass', None, ocs))
+				print('Adding Kerberos key for %r...' % (dn,), end=' ')
+				ml.insert(0, ('objectClass', None, [x.encode('UTF-8') for x in ocs]))
 
 			try:
 				lo.modify(dn, ml)
@@ -317,3 +223,7 @@ if __name__ == '__main__':
 		else:
 			print('Can not add Kerberos key for %s...' % repr(dn), end=' ')
 			print('no password set')
+
+
+if __name__ == '__main__':
+	main()
