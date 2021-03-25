@@ -228,6 +228,7 @@ export default defineComponent({
     align-content: flex-start;
     padding: 0.3rem;
     box-sizing: border-box;
+    overflow: hidden
     > div
       height: min-content
       width: var(--portal-folder-tile-width)

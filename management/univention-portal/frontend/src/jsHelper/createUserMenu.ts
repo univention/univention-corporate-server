@@ -29,22 +29,33 @@
 import { changePassword } from '@/jsHelper/umc';
 import { translate } from '@/i18n/translations';
 
+function makeEntry(entryID, availableTiles, defaultLinkTarget) {
+  const entry = availableTiles.find((tile) => tile.dn === entryID);
+  return {
+    title: entry.name,
+    description: entry.description,
+    links: entry.links,
+    linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
+    pathToLogo: entry.logo_name,
+  };
+}
+
 function changePasswordCallback(tileClick) {
   tileClick.$store.dispatch('navigation/setActiveButton', '');
   tileClick.$store.dispatch('modal/setShowModalPromise', {
     name: 'ChangePassword',
     stubborn: true,
   }).then((values) => {
-    changePassword(values.oldPassword, values.newPassword).then(() => {
+    changePassword(values.oldPassword, values.newPassword).then((response) => {
       tileClick.$store.dispatch('notificationBubble/addSuccessNotification', {
         bubbleTitle: translate('CHANGE_PASSWORD'),
-        bubbleDescription: translate('CHANGE_PASSWORD_SUCCESS'),
+        bubbleDescription: response.data.message,
       });
       tileClick.$store.dispatch('modal/setHideModal');
     }, (error) => {
       tileClick.$store.dispatch('notificationBubble/addErrorNotification', {
         bubbleTitle: translate('CHANGE_PASSWORD'),
-        bubbleDescription: `${error}`,
+        bubbleDescription: error.response.data.message,
       });
       tileClick.$store.dispatch('modal/setHideModal');
       return changePasswordCallback(tileClick);
@@ -61,20 +72,30 @@ export default function createUserMenu(portalData) {
     fr_FR: 'Réglages utilisateur',
   };
 
-  const subMenuItems = [{
-    title: {
-      en_US: 'Change password',
-      de_DE: 'Passwort ändern',
-    },
-    linkTarget: 'internalFunction',
-    internalFunction: changePasswordCallback,
-    links: [],
-  }];
+  const userLinks = portalData.user_links;
+  const availableTiles = portalData.entries;
+  const { defaultLinkTarget } = portalData.portal;
+  const subMenuItems = userLinks.map((entryID) => makeEntry(entryID, availableTiles, defaultLinkTarget));
+
+  if (portalData.username) {
+    subMenuItems.unshift({
+      title: {
+        en_US: 'Change password',
+        de_DE: 'Passwort ändern',
+      },
+      linkTarget: 'internalFunction',
+      internalFunction: changePasswordCallback,
+      links: [],
+    });
+  }
 
   const menuElement = {
     title: menuTitle,
     linkTarget: 'samewindow',
     subMenu: subMenuItems,
   };
-  return menuElement;
+  if (subMenuItems.length) {
+    return menuElement;
+  }
+  return null;
 }

@@ -101,4 +101,7 @@ export default defineComponent({
 .dialog__header
   display: flex
   align-items: center
+
+  button
+    margin-left: auto
 </style>
