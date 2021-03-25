@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Create Keytab Script
@@ -34,18 +34,17 @@
 import heimdal
 from subprocess import call
 import binascii
-from optparse import OptionParser
+from argparse import ArgumentParser
 import tempfile
 import os
 
-parser = OptionParser()
-parser.add_option("-k", "--keytab", dest="keytab", help="write keytab to FILE", metavar="FILE")
-parser.add_option("-p", "--principal", dest="principal", help="create keys for PRINCIPAL", metavar="PRINCIPAL")
-parser.add_option("-a", "--alias", dest="service_principal_names", help="add alias", action="append")
-parser.add_option("-V", "--kvno", dest="kvno", help="key version number")
-parser.add_option("-w", "--password", dest="password", help="password")
-
-(options, args) = parser.parse_args()
+parser = ArgumentParser()
+parser.add_argument("-k", "--keytab", help="write keytab to FILE", metavar="FILE")
+parser.add_argument("-p", "--principal", help="create keys for PRINCIPAL", metavar="PRINCIPAL")
+parser.add_argument("-a", "--alias", dest="service_principal_names", help="add alias", action="append")
+parser.add_argument("-V", "--kvno", help="key version number")
+parser.add_argument("-w", "--password", help="password")
+options = parser.parse_args()
 
 if not options.keytab:
 	parser.error("keytab argument missing")

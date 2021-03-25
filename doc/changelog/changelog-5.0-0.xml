@@ -876,7 +876,10 @@
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 Heimdal is now compiled with <package>python3-univention-lib</package> (<u:bug>52249</u:bug>)
+					Heimdal is now compiled with <package>python3-univention-lib</package> (<u:bug>52249</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-heimdal</package> has been migrated to Python 3 (<u:bug>52257</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

@@ -14,14 +14,12 @@ Pre-Depends:
 Depends:
  heimdal-servers,
  libsasl2-modules-gssapi-heimdal,
- python-cracklib,
- python-ldap,
- python-univention,
- python-univention-heimdal,
- python-univention-lib (>= 1.0.25-1),
+ python3-cracklib,
  python3-ldap,
+ python3-six,
  python3-univention,
  python3-univention-lib,
+ python3-univention-heimdal,
  shell-univention-lib (>= 3.0.26-41),
  univention-base-files,
  univention-config,
@@ -46,7 +44,6 @@ Depends:
  heimdal-clients,
  heimdal-servers,
  libsasl2-modules-gssapi-heimdal,
- python-ldap,
  python3-ldap,
  univention-config,
  univention-directory-listener,
@@ -68,7 +65,7 @@ Package: univention-heimdal-common
 Architecture: all
 Depends:
  heimdal-clients,
- python-univention-heimdal,
+ python3-univention-heimdal,
  univention-config,
  ${misc:Depends},
 Breaks:
