@@ -295,7 +295,8 @@ class UCSInstallation(object):
 			if self.text_is_visible('APIPA', timeout=self.timeout):
 				self.client.keyPress('enter')
 				time.sleep(60)
-			self.tab_to_next_and_enter(2)
+			self.client.mouseMove(900, 700)
+			self.client.mousePress(1)
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
 			self.client.mouseMove(500, 300)
 			self.client.mousePress(1)
