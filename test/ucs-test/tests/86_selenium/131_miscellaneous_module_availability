@@ -222,7 +222,7 @@ class UMCTester(object):
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'
 		tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
 
-		return [tile_heading.text for tile_heading in tile_headings]
+		return [tile_heading.text if not tile_heading.get_attribute("title") else tile_heading.get_attribute("title") for tile_heading in tile_headings]
 
 
 if __name__ == '__main__':

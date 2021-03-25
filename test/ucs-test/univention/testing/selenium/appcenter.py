@@ -60,10 +60,10 @@ class AppCenter(object):
 			pass
 		else:
 			self.selenium.click_button(_('Continue'))
-			self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 		try:
-			self.selenium.wait_for_any_text_in_list([_('Accept license'), _('Next'), _('Continue anyway'), _('Install app'), _('Install anyway'), _('Start installation')], timeout=2)
+			self.selenium.wait_for_any_text_in_list([_('Accept license'), _('Next'), _('Continue anyway'), _('Install app'), _('Install anyway'), _('Start installation')], timeout=5)
 			install_clicked = False
 			x = 0
 			max_pages = 6

@@ -99,11 +99,18 @@ class Interactions(object):
 
 	def click_tile(self, tilename, **kwargs):
 		logger.info("Clicking the tile %r", tilename)
-		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]'
-			% (tilename,),
-			**kwargs
-		)
+		try:
+			self.click_element(
+				'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]'
+				% (tilename,),
+				**kwargs
+			)
+		except selenium_exceptions.TimeoutExceptions:
+			self.click_element(
+				'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "%s"]'
+				% (tilename,),
+				**kwargs
+			)
 
 	def click_tile_menu_icon(self, tilename, **kwargs):
 		logger.info("Clicking the menu icon of tile %r", tilename)
