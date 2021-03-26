@@ -4,19 +4,19 @@
 		<category priority="99999" id="_favorites_" icon="category-favorites.svg" color="#46bef0">
 			<name>Favorites</name>
 		</category>
-		<category priority="100" id="users" icon="category-users.svg" color="#fac800">
+		<category priority="100" id="users" icon="category-users.svg" color="#f6aa42">
 			<name>Users</name>
 		</category>
-		<category priority="80" id="devices" icon="category-devices.svg" color="#ff4632">
+		<category priority="80" id="devices" icon="category-devices.svg" color="#e85281">
 			<name>Devices</name>
 		</category>
-		<category priority="60" id="domain" icon="category-domain.svg" color="#146edc">
+		<category priority="60" id="domain" icon="category-domain.svg" color="#00acb6">
 			<name>Domain</name>
 		</category>
-		<category priority="40" id="system" icon="category-system.svg" color="#a05adc">
+		<category priority="40" id="system" icon="category-system.svg" color="#93608b">
 			<name>System</name>
 		</category>
-		<category priority="20" id="software" icon="category-software.svg" color="#50c80a">
+		<category priority="20" id="software" icon="category-software.svg" color="#7ab51d">
 			<name>Software</name>
 		</category>
 	</categories>
