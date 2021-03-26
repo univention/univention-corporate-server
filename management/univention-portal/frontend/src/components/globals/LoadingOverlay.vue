@@ -27,26 +27,36 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="portal-standby">
-    <div class="portal-standby__lds-ring">
-      <div class="portal-standby__ring-item" />
-      <div class="portal-standby__ring-item" />
-      <div class="portal-standby__ring-item" />
-      <div class="portal-standby__ring-item" />
+  <div
+    v-if="loadingState"
+    class="loading-overlay"
+  >
+    <div class="loading-overlay__lds-ring">
+      <div class="loading-overlay__ring-item" />
+      <div class="loading-overlay__ring-item" />
+      <div class="loading-overlay__ring-item" />
+      <div class="loading-overlay__ring-item" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
-  name: 'PortalStandby',
+  name: 'LoadingOverlay',
+  computed: {
+    ...mapGetters({
+      loadingState: 'getLoadingState',
+    }),
+  },
 });
 </script>
 
-<style lang="stylus" scoped>
-.portal-standby
+<style lang="stylus">
+// Info: Animations do not work with scope setting enabled
+.loading-overlay
   position: absolute
   top: 0
   left: 0
@@ -69,23 +79,23 @@ export default defineComponent({
     width: 64px
     height: 64px
     margin: 8px
-    border: 8px solid transparent
+    border: 8px solid
     border-radius: 50%
-    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite
     border-color: var(--color-grey40) transparent transparent transparent
+    animation: lds-ring 1s cubic-bezier(0.2, 0, 0.2, 1) infinite
 
     &:nth-child(1)
-      animation-delay: -0.45s
+      animation-delay: -0.1s
 
     &:nth-child(2)
-      animation-delay: -0.3s
+      animation-delay: -0.2s
 
     &:nth-child(3)
-      animation-delay: -0.15s
+      animation-delay: -0.3s
 
-@keyframes lds-ring
-  0%
-    transform: rotate(0deg)
-  100%
-    transform: rotate(360deg)
+  @keyframes lds-ring
+    0%
+      transform: rotate(0deg)
+    100%
+      transform: rotate(360deg)
 </style>

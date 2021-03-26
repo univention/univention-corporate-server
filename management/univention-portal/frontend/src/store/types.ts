@@ -29,6 +29,6 @@
 import { Module } from 'vuex';
 
 export interface RootState {
-  version: string;
+  isLoading: boolean;
 }
 export type PortalModule<S> = Module<S, RootState>;

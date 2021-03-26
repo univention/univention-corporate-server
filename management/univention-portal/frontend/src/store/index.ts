@@ -27,11 +27,10 @@
  * <https://www.gnu.org/licenses/>.
  */
 // vue
+// modules
 import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
-// modules
-import tooltip from '@/store/modules/tooltip';
 import categories from './modules/categories';
 import locale from './modules/locale';
 import menu from './modules/menu';
@@ -42,6 +41,7 @@ import notificationBubble from './modules/notificationBubble';
 import portalData from './modules/portalData';
 import search from './modules/search';
 import tabs from './modules/tabs';
+import tooltip from './modules/tooltip';
 import user from './modules/user';
 import { RootState } from './types';
 
@@ -70,11 +70,20 @@ export const store = createStore<RootState>({
   },
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    // Just a sample property, the RootState should not be empty
-    version: '1.0.0',
+    isLoading: true,
   },
-  mutations: {},
+  mutations: {
+    SET_LOADING_STATE(state, loadingState: boolean) {
+      state.isLoading = loadingState;
+    },
+  },
   actions: {
+    activateLoadingState({ commit }) {
+      commit('SET_LOADING_STATE', true);
+    },
+    deactivateLoadingState({ commit }) {
+      commit('SET_LOADING_STATE', false);
+    },
     loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
       console.log('Loading Portal...');
 
@@ -111,7 +120,9 @@ export const store = createStore<RootState>({
       });
     }),
   },
-  getters: {},
+  getters: {
+    getLoadingState: (state) => state.isLoading,
+  },
 });
 
 // Define your own `useStore` composition function

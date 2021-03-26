@@ -29,11 +29,11 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <teleport to="body">
     <div
-      class="portal-modal"
-      :class="{ 'portal-modal--isVisible': isActive }"
-      @click="clickHandler"
+      class="modal-wrapper"
+      :class="{ 'modal-wrapper--isVisible': isActive }"
+      @click.self="$emit('backgroundClick');"
     >
-      <slot ref="TEST" />
+      <slot />
     </div>
   </teleport>
 </template>
@@ -42,30 +42,21 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'PortalModal',
+  name: 'ModalWrapper',
   props: {
     isActive: {
       type: Boolean,
       required: true,
     },
   },
-
-  // ToDo: move to vuex store, avoid emits
-  emits: ['click'],
-  methods: {
-    clickHandler(evt): void {
-      if (evt.target.classList.contains('portal-modal')) {
-        this.$emit('click');
-      }
-    },
-  },
+  emits: ['backgroundClick'],
 });
 </script>
 
 <style lang="stylus">
-.portal-modal
-    width: 100%;
+.modal-wrapper
     position: fixed;
+    width: 100%;
     height: 100%;
     top: 0;
     right: 0;
@@ -74,7 +65,7 @@ export default defineComponent({
     z-index: -999
 
     &--isVisible
-      z-index: $zindex-1
+      z-index: $zindex-0
       background-color: rgba(51, 51, 49, 0.5);
       display: flex
       align-items: center

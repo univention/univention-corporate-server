@@ -27,11 +27,32 @@
  * <https://www.gnu.org/licenses/>.
  */
 const moveContentHelper = (moveableElement) => {
+  // check for possible datalist elements
+  const dataLists = document.querySelector('datalist');
+  let datalistId = '';
+
   let elem = '';
   let pos1 = 0;
   let pos2 = 0;
   let pos3 = 0;
   let pos4 = 0;
+
+  // store original datalist id if available
+  if (dataLists) {
+    datalistId = dataLists.id;
+  }
+
+  const enableDatalist = () => {
+    if (dataLists) {
+      dataLists.id = datalistId;
+    }
+  };
+
+  const disableDatalist = () => {
+    if (dataLists) {
+      dataLists.id = '';
+    }
+  };
 
   const closeDragElement = () => {
     // stop moving when mouse button is released
@@ -41,14 +62,22 @@ const moveContentHelper = (moveableElement) => {
 
   const elementDrag = (e) => {
     e.preventDefault();
+
+    // disable datalist element options while dragging
+    disableDatalist();
+
     // calculate the new cursor position
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
+
     // set the element's new position
     elem.style.top = `${elem.offsetTop - pos2}px`;
     elem.style.left = `${elem.offsetLeft - pos1}px`;
+
+    // enable datalist element options
+    enableDatalist();
   };
 
   const dragMouseDown = (e) => {
@@ -57,8 +86,14 @@ const moveContentHelper = (moveableElement) => {
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
+    // disable datalist element options while dragging
+    disableDatalist();
+
     // call a function whenever the cursor moves
     document.onmousemove = elementDrag;
+
+    // enable datalist element options
+    enableDatalist();
   };
 
   if (moveableElement && moveableElement.value) {

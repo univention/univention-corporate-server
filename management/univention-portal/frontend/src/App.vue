@@ -28,12 +28,18 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <portal />
+
+  <loading-overlay />
+  <cookie-banner />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import CookieBanner from '@/components/globals/CookieBanner.vue';
+import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 import Portal from '@/views/Portal.vue';
+
 import { login } from '@/jsHelper/login';
 import { getCookie } from '@/jsHelper/tools';
 import { catalog } from '@/i18n/translations';
@@ -42,6 +48,8 @@ import { mapGetters } from 'vuex';
 export default defineComponent({
   name: 'App',
   components: {
+    CookieBanner,
+    LoadingOverlay,
     Portal,
   },
   computed: {
@@ -51,16 +59,13 @@ export default defineComponent({
     }),
   },
   async mounted() {
-    this.$store.dispatch('modal/setShowLoadingModal');
-
     // Set locale and load portal data from backend
     const umcLang = getCookie('UMCLang');
     if (umcLang) {
       await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
     }
     const portalData = await this.$store.dispatch('loadPortal', { adminMode: false });
-
-    this.$store.dispatch('modal/setHideModal');
+    this.$store.dispatch('deactivateLoadingState');
 
     if (!portalData.username) {
       // Display notification bubble with login reminder

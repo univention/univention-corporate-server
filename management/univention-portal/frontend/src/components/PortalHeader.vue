@@ -64,20 +64,20 @@ License with the Debian GNU/Linux or Univention distribution in file
         data-test="searchbutton"
         aria-label="Button for Searchbar"
         icon="search"
-        @click="dismissBubble()"
+        @click="dismissBubble"
       />
       <header-button
         data-test="bellbutton"
         aria-label="Open notifications"
         icon="bell"
-        @click="dismissBubble()"
+        @click="dismissBubble"
       />
       <header-button
         data-test="navigationbutton"
         aria-label="Button for navigation"
         icon="menu"
-        @click="dismissBubble('menu')"
-        @keydown.tab.exact.prevent="activeMenuButton ? dismissBubble('menu') : focusIntoSideNavIfOpen()"
+        @click="dismissNotification('menu')"
+        @keydown.tab.exact.prevent="activeMenuButton ? dismissNotification('menu') : focusIntoSideNavIfOpen()"
       />
     </div>
 
@@ -87,42 +87,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       </template>
     </notification-bubble>
 
-    <flyout-wrapper :is-visible="activeSearchButton">
-      <!-- TODO Semantic headlines -->
-      <portal-search
-        v-if="activeSearchButton"
-        ref="searchInput"
-      />
-    </flyout-wrapper>
-
-    <portal-modal
-      :is-active="activeNotificationButton || activeMenuButton"
-      @click="closeModal"
-    >
-      <flyout-wrapper
-        :is-visible="activeNotificationButton || activeMenuButton"
-        class="flyout-wrapper__notification"
-      >
-        <!-- Notifications -->
-        <div
-          v-if="activeNotificationButton"
-          class="portal-header__title"
-        >
-          <translate i18n-key="NOTIFICATIONS" />
-        </div>
-        <notification-bubble
-          v-if="activeNotificationButton"
-          class="flyout-wrapper__bubble"
-        >
-          <template #bubble-embedded>
-            <notification-bubble-slot bubble-container="embedded" />
-          </template>
-        </notification-bubble>
-
-        <!-- Side navigation -->
-        <side-navigation v-if="activeMenuButton" />
-      </flyout-wrapper>
-    </portal-modal>
+    <portal-search />
   </header>
 </template>
 
@@ -132,27 +97,19 @@ import { mapGetters } from 'vuex';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import HeaderTab from '@/components/navigation/HeaderTab.vue';
-import FlyoutWrapper from '@/components/navigation/FlyoutWrapper.vue';
-import SideNavigation from '@/components/navigation/SideNavigation.vue';
-import PortalModal from '@/components/globals/PortalModal.vue';
 import NotificationBubble from '@/components/globals/NotificationBubble.vue';
-import PortalSearch from '@/components/search/PortalSearch.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
-import notificationMixin from '@/mixins/notificationMixin.vue';
+import PortalSearch from '@/components/search/PortalSearch.vue';
 
-import Translate from '@/i18n/Translate.vue';
+import notificationMixin from '@/mixins/notificationMixin.vue';
 
 export default defineComponent({
   name: 'PortalHeader',
   components: {
     HeaderButton,
     HeaderTab,
-    FlyoutWrapper,
-    SideNavigation,
-    PortalModal,
     NotificationBubble,
     NotificationBubbleSlot,
-    Translate,
     PortalSearch,
   },
   mixins: [
@@ -161,24 +118,11 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       portalName: 'portalData/portalName',
-      activeButton: 'navigation/getActiveButton',
       activeTabIndex: 'tabs/activeTabIndex',
       tabs: 'tabs/allTabs',
     }),
-    activeSearchButton(): boolean {
-      return this.activeButton === 'search';
-    },
-    activeNotificationButton(): boolean {
-      return this.activeButton === 'bell';
-    },
-    activeMenuButton(): boolean {
-      return this.activeButton === 'menu';
-    },
   },
   methods: {
-    closeModal(): void {
-      this.$store.dispatch('navigation/setActiveButton', '');
-    },
     goHome(): void {
       this.$store.dispatch('tabs/setActiveTab', 0);
     },
@@ -233,9 +177,4 @@ export default defineComponent({
 
   &__bubble-container
     width: 360px
-
-  &__title
-    margin: calc(2 * var(--layout-spacing-unit)) 0
-    margin-left: calc(2.5 * var(--layout-spacing-unit))
-    font-size: 20px
 </style>

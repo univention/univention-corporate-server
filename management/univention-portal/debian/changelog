@@ -1,3 +1,9 @@
+univention-portal (4.0.5-16) unstable; urgency=medium
+
+  * Bug #52941: Styling for UMC modules
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Mar 2021 13:12:36 +0100
+
 univention-portal (4.0.5-15) unstable; urgency=medium
 
   * Bug #45918: Fix migration for 4.4 links

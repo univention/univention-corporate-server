@@ -35,7 +35,10 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="portal-tooltip__header"
       data-test="portal-tooltip"
     >
-      <div class="portal-tooltip__thumbnail">
+      <div
+        class="portal-tooltip__thumbnail"
+        :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
+      >
         <img
           :src="icon || './questionMark.svg'"
           onerror="this.src='./questionMark.svg'"
@@ -71,7 +74,11 @@ export default defineComponent({
     },
     icon: {
       type: String,
-      default: '', // TODO: add fallback icon
+      default: './questionMark.svg',
+    },
+    backgroundColor: {
+      type: String,
+      default: 'var(--color-grey40)',
     },
     description: {
       type: String,
@@ -88,13 +95,13 @@ export default defineComponent({
 <style scoped lang="stylus">
 .portal-tooltip
   position: fixed
-  bottom: 1rem
-  right: 1rem
-  background-color: #1e1e1d
-  border-radius: var(--border-radius-tooltip)
+  bottom: calc(2 * var(--layout-spacing-unit))
+  right: calc(2 * var(--layout-spacing-unit))
+  background-color: var(--color-grey0)
+  border-radius: var(--border-radius-container)
   min-width: calc(20 * 1rem)
   max-width: calc(20 * 1rem)
-  padding: 1rem
+  padding: calc(2 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
   pointer-events: none
   z-index: $zindex-3
@@ -121,6 +128,7 @@ export default defineComponent({
 
   &__logo
     width: 80%
+    max-height: 80%
     vertical-align: middle
     border: 0
 </style>

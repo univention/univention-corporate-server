@@ -35,12 +35,12 @@ License with the Debian GNU/Linux or Univention distribution in file
     :class="{ 'header-tab--active': isActive }"
     @click="focusTab"
   >
-    <image-component
-      file-type="svg"
-      file-path="./"
-      :file-name="logo"
-      :alt-text="tabLabel + ' logo'"
-    />
+    <img
+      :src="logo"
+      onerror="this.src='./questionMark.svg'"
+      :alt="`${tabLabel} logo`"
+      class="header-tab__logo"
+    >
 
     <span
       class="header-tab__title"
@@ -63,13 +63,11 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
-import ImageComponent from '@/components/globals/ImageComponent.vue';
 
 export default defineComponent({
   name: 'HeaderTab',
   components: {
     HeaderButton,
-    ImageComponent,
   },
   props: {
     tabIndex: {

@@ -27,12 +27,12 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <section
+  <div
     :class="{ 'flyout-wrapper--isVisible': isVisible }"
     class="flyout-wrapper"
   >
     <slot />
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -65,12 +65,4 @@ export default defineComponent({
   &--isVisible
     transform: translate3d(0, 0, 0) scale(1, 1)
     transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
-
-  &__notification
-    width: 22rem
-    max-width: 22rem
-    min-height: 100vh
-
-  &__bubble
-    padding: 0 20px
 </style>

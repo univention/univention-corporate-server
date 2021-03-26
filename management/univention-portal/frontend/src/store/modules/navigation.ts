@@ -26,10 +26,11 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { NavigationButton } from '../models';
 import { PortalModule } from '../types';
 
 export interface NavigationState {
-  activeButton: string;
+  activeButton: NavigationButton;
 }
 
 const navigation: PortalModule<NavigationState> = {

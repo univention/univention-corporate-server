@@ -51,7 +51,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         v-if="showTitleButton"
         class="modal-admin__top-button--inner"
         role="presentation"
-        @click="resetModal(), $emit('closeModal')"
+        @click="resetModal('closeModal')"
       >
         <button
           ref="modal-title-button"
@@ -77,6 +77,7 @@ License with the Debian GNU/Linux or Univention distribution in file
             en: {{ categoryForm.title.en_US }}
           </pre>
         </template>
+
         <template v-if="modalType === 'addNewCategory'">
           <form-category-add-new
             v-model="categoryForm"
@@ -87,13 +88,23 @@ License with the Debian GNU/Linux or Univention distribution in file
             en: {{ categoryForm.title.en_US }}
           </pre>
         </template>
+
+        <template v-if="modalType === 'addExistingCategory'">
+          <form-category-add-existing
+            v-model="categoryForm"
+            :category-listing="categorieDn"
+          />
+          <pre v-if="modalDebugging">
+            dn: {{ categoryForm.internalName }}
+          </pre>
+        </template>
       </div>
 
       <div class="modal-admin__footer">
         <span class="modal-admin__button">
           <button
             class="modal-admin__button--inner"
-            @click="resetModal(), $emit('closeModal')"
+            @click="resetModal('closeModal')"
           >
             <translate i18n-key="CANCEL" />
           </button>
@@ -105,7 +116,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         >
           <button
             class="modal-admin__button--inner"
-            @click="resetModal(), $emit(removeAction)"
+            @click="resetModal(removeAction)"
           >
             <translate i18n-key="REMOVE_FROM_PORTAL" />
           </button>
@@ -114,7 +125,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         <span class="modal-admin__button">
           <button
             class="modal-admin__button--inner"
-            @click.prevent="resetModal(), saveForm()"
+            @click.prevent="resetModal('saveCategory')"
           >
             <translate i18n-key="SAVE" />
           </button>
@@ -133,6 +144,7 @@ import PortalIcon from '@/components/globals/PortalIcon.vue';
 // Forms
 import FormCategoryEdit from '@/components/admin/forms/FormCategoryEdit.vue';
 import FormCategoryAddNew from '@/components/admin/forms/FormCategoryAddNew.vue';
+import FormCategoryAddExisting from '@/components/admin/forms/FormCategoryAddExisting.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
@@ -144,6 +156,7 @@ export default defineComponent({
     PortalIcon,
     FormCategoryEdit,
     FormCategoryAddNew,
+    FormCategoryAddExisting,
     Translate,
   },
   props: {
@@ -197,17 +210,22 @@ export default defineComponent({
     const modal = ref(null);
     const isMoveable = true;
     const showHint = ref(false);
+    const categorieDn = [];
 
     let categoryTitleDe = '';
     let categoryTitleEn = '';
     let internalNameValue = '';
+    let getPortalCategories = '';
 
-    // get catgorie data for edit mode
-    if (props.modalType === 'editCategory') {
+    // get catgorie data
+    if ((props.modalType === 'editCategory') || (props.modalType === 'addExistingCategory')) {
       // TODO: keys have to be provided in the portal.json in parallel to the title
 
-      const getPortalCategories = computed(() => store.getters['categories/getCategories']);
+      getPortalCategories = computed(() => store.getters['categories/getCategories']);
+    }
 
+    // category edit mode
+    if ((props.modalType === 'editCategory') && getPortalCategories) {
       const categoryTitle = getPortalCategories.value[props.categoryIndex];
       categoryTitleDe = categoryTitle.title.de_DE;
       categoryTitleEn = categoryTitle.title.en_US;
@@ -217,6 +235,16 @@ export default defineComponent({
         dn.indexOf('cn=') + 3,
         dn.indexOf(','),
       );
+    }
+
+    // category existing mode
+    if ((props.modalType === 'addExistingCategory') && (getPortalCategories && getPortalCategories.value.length > 0)) {
+      getPortalCategories.value.forEach((category) => {
+        categorieDn.push(category.dn.substring(
+          category.dn.indexOf('cn=') + 3,
+          category.dn.indexOf(','),
+        ));
+      });
     }
 
     // v-model
@@ -239,24 +267,28 @@ export default defineComponent({
       }
     };
 
-    const resetModal = () => {
+    const resetModal = (action) => {
       modal.value.style.top = '0';
       modal.value.style.left = '0';
-    };
 
-    const saveForm = () => {
-      // console.log('saveForm: ', categoryForm);
-      emit('saveCategory', categoryForm);
+      if (action) {
+        if (action === 'saveCategory') {
+          emit('saveCategory', categoryForm);
+        } else {
+          emit(action);
+        }
+      }
     };
 
     return {
       modal,
       isMoveable,
       showHint,
+      getPortalCategories,
+      categorieDn,
       categoryForm,
       moveModal,
       resetModal,
-      saveForm,
     };
   },
 });
@@ -283,6 +315,7 @@ export default defineComponent({
 
   &__title
     flex: 1 0 auto
+    font-size: var(--font-size-1)
 
   &__top-button
     width: 4rem
@@ -315,13 +348,13 @@ export default defineComponent({
       font-size: var(--button-font-size)
 
   &__content
-    padding: 0 3em 1em 2em
+    padding: 0 calc(var(--layout-spacing-unit) * 4)
   &__footer
     background-color: var(--color-grey0)
     display: flex
     justify-content: space-between
     border-top: thin solid var(--color-grey8)
-    padding: 8px 24px
+    padding: var(--layout-spacing-unit) calc(var(--layout-spacing-unit) * 3)
     flex-wrap: wrap
 
   &__hint
@@ -329,12 +362,12 @@ export default defineComponent({
     z-index: $zindex-6
     display: block
     overflow: visible
-    padding-top: 0.5rem
-    right: 2rem
+    margin-top: calc(var(--layout-spacing-unit) * -1)
+    right: calc(var(--layout-spacing-unit) * 9)
 
   &__hint-icon
-    margin-left: 1rem
-    color: var(--font-color-disabled)
+    margin-left: var(--layout-spacing-unit)
+    color: var(--color-grey62)
     width: 1.6rem
     &:hover
       cursor: pointer
@@ -352,48 +385,47 @@ export default defineComponent({
     backdrop-filter: blur(20px)
 
   &__button
-    background: none
-    border: none
-    display: flex
-    align-items: center
-    justify-content: center
-    background-color: transparent
     &:first-of-type
-      margin-left: 16px
+      margin-left: calc(var(--layout-spacing-unit) * 2)
     &:last-of-type
-      margin-right: 16px
-
-    &:hover,
-    &:focus
-      background-color: var(--bgc-content-body)
-      cursor: pointer
+      margin-right: calc(var(--layout-spacing-unit) * 2)
 
     &--inner
-      cursor: pointer
-      border: none
-      transition: var(--button-bgc-transition)
-      background-color: var(--bgc-state)
-      transition: opacity 250ms
-      color: #fff
-      text-transform: uppercase
-      padding: 16px
+      padding: calc(var(--layout-spacing-unit) * 2)
+
+  &__label
+    &--error
+      color: var(--color-error);
 
 .form-input
 
   &__wrapper
     width: 100%
+    min-width: 300px
+    max-width: 650px
+    padding: 0 0 1rem 0
     display: inline-block
 
   &__container
-    width: 100%
+    width: 95%
+
+  &__label
+    color: var(--font-color-disabled)
 
   &--error
     border: 1px solid var(--color-error) !important
+
+  &--default
+    width: 100%
 
   &--text
     text-overflow: ellipsis
 
   &__icon
+    position: relative
+    top: 40px
+    left: 55%
+
     &--error
       display: none
       color: var(--color-error);
@@ -403,6 +435,6 @@ export default defineComponent({
 
   &__error-message
     position: relative
-    top: 1rem
+    top: calc(var(--layout-spacing-unit) * 2)
     color: var(--color-error);
 </style>

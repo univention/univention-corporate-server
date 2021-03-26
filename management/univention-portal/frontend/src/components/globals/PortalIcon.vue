@@ -53,14 +53,14 @@ export default defineComponent({
 
 <style lang="stylus">
 .portal-icon
-  font-size: inherit;
+  font-size: inherit
   height: var(--button-icon-size)
   width: var(--button-icon-size)
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  color: var(--font-color-contrast-high);
-  fill: none;
-  transition: color 250ms;
+  stroke: currentColor
+  stroke-width: 2
+  stroke-linecap: round
+  stroke-linejoin: round
+  color: var(--font-color-contrast-high)
+  fill: none
+  transition: color 250ms
 </style>

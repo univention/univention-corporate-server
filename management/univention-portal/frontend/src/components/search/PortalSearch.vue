@@ -27,15 +27,21 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="portal-search">
-    <input
-      ref="portalSearchInput"
-      v-model="portalSearch"
-      type="text"
-      class="portal-search__input"
-      @input="searchTiles"
-      @keyup.esc="closeSearchInput()"
-    >
+  <!-- TODO Semantic headlines -->
+  <div
+    ref="searchInput"
+    class="portal-search"
+  >
+    <flyout-wrapper :is-visible="activeButton === 'search'">
+      <input
+        ref="portalSearchInput"
+        v-model="portalSearch"
+        type="text"
+        class="portal-search__input"
+        @input="searchTiles"
+        @keyup.esc="closeSearchInput()"
+      >
+    </flyout-wrapper>
   </div>
 </template>
 
@@ -43,12 +49,17 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import FlyoutWrapper from '@/components/navigation/FlyoutWrapper.vue';
+
 interface PortalSearchData {
   portalSearch: string,
 }
 
 export default defineComponent({
   name: 'PortalSearch',
+  components: {
+    FlyoutWrapper,
+  },
   data(): PortalSearchData {
     return {
       portalSearch: '',
@@ -56,8 +67,9 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      originalArray: 'categories/getCategories',
+      activeButton: 'navigation/getActiveButton',
       modalState: 'modal/modalState',
+      originalArray: 'categories/getCategories',
       searchQuery: 'search/searchQuery',
     }),
   },

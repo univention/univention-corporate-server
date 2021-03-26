@@ -28,7 +28,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <div
-    v-if="showCookies"
+    v-if="showCookieBanner"
     :class="fadeOutClass"
     class="cookie-banner"
   >
@@ -86,12 +86,10 @@ License with the Debian GNU/Linux or Univention distribution in file
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
-import { catalog } from '@/i18n/translations';
 
 import PortalButton from '@/components/globals/PortalButton.vue';
-// import HeaderButton from '@/components/navigation/HeaderButton.vue';
-// import Translate from '@/i18n/Translate.vue';
 
+import { catalog } from '@/i18n/translations';
 import { setCookie, getCookie } from '@/jsHelper/cookieHelper';
 
 interface CookieBannerData {
@@ -102,8 +100,6 @@ export default defineComponent({
   name: 'CookieBanner',
   components: {
     PortalButton,
-    // HeaderButton,
-    // Translate,
   },
   data(): CookieBannerData {
     return {
@@ -123,7 +119,7 @@ export default defineComponent({
     defaultCookieText(): string {
       return catalog.COOKIE_TEXT.translated.value;
     },
-    showCookies(): boolean {
+    showCookieBanner(): boolean {
       return this.metaData.cookieBanner.show && getCookie(this.cookieName) === '';
     },
   },
@@ -153,13 +149,16 @@ export default defineComponent({
   box-shadow: 0px 14px 45px rgb(0 0 0 / 25%), 0px 10px 18px rgb(0 0 0 / 22%)
   border-radius: var(--border-radius-container)
   background-color: var(--color-grey0)
+
   &__title-bar
     padding: 30px 30px 5px 30px
     display: flex
     align-items: center
+
   &__pane-content
     padding: 5px 30px 40px 30px
     border-bottom: 1px solid rgba(255, 255, 255, 0.16)
+
   &__button
     box-shadow: var(--box-shadow)
     margin: 0
@@ -175,20 +174,24 @@ export default defineComponent({
       cursor: pointer
     &:active
       background-color: var(--button-text-bgc-overlay-active)
+
   &__button-close
     margin-left: auto
+
   &__button-text
     text-transform: uppercase
     color: var(--font-color-contrast-high)
     font-family: 'Open Sans', sans-serif
     font-size: 16px
     font-weight: 600
+
   &__action-bar
     background-color: var(--color-grey0)
     display: flex
     justify-content: space-between
     border-top: thin solid var(--color-grey8)
     padding: 8px 24px
+
   &__fade-out
     visibility: hidden;
     opacity: 0;
@@ -203,6 +206,7 @@ export default defineComponent({
     opacity: 0.5
     min-height: 100vh
     width: 100vw
+
   &__blackout-content
     display: block
 </style>

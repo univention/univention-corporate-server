@@ -143,10 +143,10 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import PortalIcon from '@/components/globals/PortalIcon.vue';
 import MenuItem from '@/components/navigation/MenuItem.vue';
-import { login, logout } from '@/jsHelper/login';
+import PortalIcon from '@/components/globals/PortalIcon.vue';
 
+import { login, logout } from '@/jsHelper/login';
 import Translate from '@/i18n/Translate.vue';
 
 interface SideNavigationData {

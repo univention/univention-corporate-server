@@ -79,8 +79,8 @@ License with the Debian GNU/Linux or Univention distribution in file
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
-import TileClick from '@/mixins/TileClick.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import TileClick from '@/mixins/TileClick.vue';
 
 import { Title, Description } from '@/store/models';
 
@@ -104,7 +104,7 @@ export default defineComponent({
     pathToLogo: {
       type: String,
       required: false,
-      default: 'questionMark.svg',
+      default: './questionMark.svg',
     },
     backgroundColor: {
       type: String,
@@ -162,6 +162,7 @@ export default defineComponent({
       if (!this.inFolder) {
         const tooltip = {
           title: this.$localized(this.title),
+          backgroundColor: this.backgroundColor,
           icon: this.pathToLogo,
           description: this.$localized(this.description),
           ariaId: this.createID(),
@@ -235,6 +236,7 @@ export default defineComponent({
 
   &__img
     width: 80%
+    max-height: 80%
 
   &__name
     text-align: center
@@ -244,20 +246,11 @@ export default defineComponent({
     white-space: nowrap
 
   &__edit-button
-    user-select: none
-
     position: absolute
     top: -0.75em
     right: -0.75em
 
-    width: 2em
-    height: 2em
-    background-color: var(--color-grey0)
-    background-size: 1em
-    background-repeat: no-repeat
-    background-position: center
-    border-radius: 50%
-    box-shadow: var(--box-shadow)
+    @extend .icon-button--admin
 
     &--in-modal
       position relative

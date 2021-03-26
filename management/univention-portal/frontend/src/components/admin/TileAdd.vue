@@ -34,7 +34,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     >
       <portal-icon
         icon="plus"
-        icon-width="100%"
+        class="tile-add__icon--add"
       />
     </div>
 
@@ -50,13 +50,13 @@ License with the Debian GNU/Linux or Univention distribution in file
           @mouseover="showChildren(item.parent.children, index)"
         >
           <span class="tile-add__title">
-            {{ item.parent.title.de_DE }}
+            {{ $localized(item.parent.title) }}
           </span>
 
           <portal-icon
             icon="chevron-right"
             icon-width="2rem"
-            class="tile-add__icon"
+            class="tile-add__icon--chevron"
           />
         </div>
       </div>
@@ -71,7 +71,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           :key="index"
           class="tile-add__menu-child"
         >
-          {{ child.title.de_DE }}
+          {{ $localized(child.title) }}
         </div>
       </div>
     </div>
@@ -151,37 +151,29 @@ export default defineComponent({
   background-repeat: no-repeat
   cursor: pointer
 
-  svg
-    stroke: var(--color-grey40)
-
   &__wrapper
     position: relative
 
   &__menu-wrapper
-    width: 100%
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    align-items: flex-start;
+    // width: auto
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    justify-content: flex-start
+    align-content: flex-start
+    align-items: flex-start
     position: absolute
 
   &__menu-container
     position: relative
-    order: 0;
-    flex: 0 1 auto;
-    align-self: auto;
-
-  &__icon
-    position: absolute
-    right: 15px
-    margin-top: 2px
+    order: 0
+    flex: 0 1 auto
+    align-self: auto
 
   &__menu-parent,
   &__menu-child
     background: var(--color-grey0)
-    padding: 0.3em 0.5em;
+    padding: 0.3em 0.5em
     min-width: var(--app-tile-side-length)
     font-size: 16px
 
@@ -191,10 +183,32 @@ export default defineComponent({
 
     &:first-of-type
       border-radius: 8px 8px 0 0
+
     &:last-of-type
       border-radius: 0 0 8px 8px
+
+  &__menu-parent
+    display: flex
 
   &__menu-child
     min-width: var(--app-tile-side-length)
     white-space: nowrap
+
+  &__icon
+    &--add
+      width: 100%
+      height: 100%
+
+    &--chevron
+      // position: absolute
+      // right: var(--layout-spacing-unit)
+      margin-top: var(--layout-spacing-unit-small)
+      margin-left: var(--layout-spacing-unit)
+
+  &__title
+    min-width: var(--app-tile-side-length)
+    white-space: nowrap
+
+  & svg
+    stroke: var(--color-grey40)
 </style>

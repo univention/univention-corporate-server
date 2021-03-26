@@ -1,27 +1,79 @@
 html
   margin:0
   padding: 0
-  font-size: var(--font-size-html);
+  font-size: var(--font-size-html)
 
 body
   margin:0
   padding: 0
-  font-family: 'Open Sans', sans-serif;
-  font-weight: normal;
-  line-height: var(--font-lineheight-normal);
-  font-size: var(--font-size-body);
-  color: var(--font-color-contrast-high);
+  font-family: 'Open Sans', sans-serif
+  font-weight: normal
+  line-height: var(--font-lineheight-normal)
+  // font-size: var(--font-size-normal)
+  font-size: var(--font-size-body)
+  color: var(--font-color-contrast-high)
   margin-top: var(--portal-header-height)
-  background-color: var(--bgc-content-body);
-  box-sizing: border-box;
+  background-color: var(--bgc-content-body)
+  box-sizing: border-box
 
-.body__has-modal
-  overflow: hidden
+button
+  padding: 0 calc(2 * var(--layout-spacing-unit))
+  color: var(--font-color-contrast-high)
+  font-size: var(--button-font-size)
+  text-transform: uppercase
+  border: none
+  border-radius: var(--button-border-radius)
+  background-color: var(--button-text-bgc)
+  transition: var(--button-bgc-transition)
+  transition: opacity 250ms
+
+  &:hover,
+  &:focus
+    background-color: var(--bgc-content-body)
+    cursor: pointer
 
 h2
-  font-size: var(--font-size-2);
-  line-height: var(--font-lineheight-normal);
-  font-weight: 600;
+  font-size: var(--font-size-2)
+  line-height: var(--font-lineheight-normal)
+  font-weight: 600
+
+input
+  width: var(--inputfield-width)
+  height: var(--inputfield-size)
+  display: block
+  padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
+  margin-bottom: var(--layout-spacing-unit)
+  font-size: var(--font-size-3)
+  color: var(--font-color-cotrast-high)
+  background-color: var(--inputfield-bgc)
+  border: 1px solid var(--inputfield-bgc)
+  border-radius: var(--border-radius-interactable)
+  transition: background-color, color, border
+  transition-duration: 250ms
+
+  &:hover,
+  &:focus
+    border-color: var(--color-grey40)
+    outline-style: none
+    box-shadow: none
+
+  &[invalid]
+    border-color: var(--color-error)
+
+  &[disabled]
+    cursor: var(--cursor-disabled)
+    color: var(--font-color-disabled)
+
+label
+  display: inline-block
+  color: var(--color-grey62)
+  font-size: var(--font-size-3)
+  padding-bottom: calc(var(--layout-spacing-unit) * 1.25)
+
+// --------------
+// global classes
+.body__has-modal
+  overflow: hidden
 
 .portal-reset
   line-height: inherit
@@ -41,44 +93,16 @@ h2
 .fade-leave-to
   opacity: 0
 
-input
-  display: block
-  padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
-  font-size: var(--font-size-3)
-  height: var(--inputfield-size)
-  background-color: var(--inputfield-bgc)
-  margin-bottom: var(--layout-spacing-unit)
-  transition: background-color, color, border
-  transition-duration: 250ms
-  border: 1px solid var(--inputfield-bgc)
-  border-radius: var(--border-radius-interactable)
-  color: var(--font-color-contrast-high)
-  width: var(--inputfield-width)
+.icon-button
+  &--admin
+    user-select: none
 
-  &:hover, &:focus
-    border-color: var(--color-grey40)
-    outline-style: none
-    box-shadow: none
+    display: inline-block
+    margin-right: var(--layout-spacing-unit)
 
-  &[disabled]
-    cursor: var(--cursor-disabled)
-    color: var(--font-color-disabled)
-
-label
-  color: var(--color-grey62)
-  font-size: var(--font-size-4)
-
-button
-  border: none
-  font-size: var(--button-font-size)
-  color: var(--font-color-contrast-high)
-  border-radius: var(--button-border-radius)
-  height: var(--button-size)
-  background-color: var(--button-text-bgc)
-  padding: 0 calc(2 * var(--layout-spacing-unit))
-  text-transform: uppercase
-
-  &:hover,
-  &:focus
-    background-color: var(--bgc-content-body)
-    cursor: pointer
+    background-color: var(--color-grey0)
+    background-size: 1em
+    background-repeat: no-repeat
+    background-position: center
+    border-radius: 50%
+    box-shadow: var(--box-shadow)

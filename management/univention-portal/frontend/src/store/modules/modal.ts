@@ -30,8 +30,8 @@ import { PortalModule } from '../types';
 
 export interface ModalState {
   modalVisible: boolean;
-  modalComponent: unknown;
-  modalProps: unknown;
+  modalComponent: string | null;
+  modalProps: Record<string, string>;
   modalStubborn: boolean;
   modalResolve: (any) => void;
   modalReject: () => void;
@@ -49,8 +49,7 @@ const modal: PortalModule<ModalState> = {
   },
 
   mutations: {
-    SHOWMODAL(state, payload) {
-      state.modalVisible = true;
+    SET_MODAL(state, payload) {
       state.modalComponent = payload.name;
       state.modalProps = payload.props || {};
       state.modalStubborn = payload.stubborn || false;
@@ -58,8 +57,7 @@ const modal: PortalModule<ModalState> = {
       state.modalResolve = payload.resolve || (() => undefined);
       state.modalReject = payload.reject || (() => undefined);
     },
-    HIDEMODAL(state) {
-      state.modalVisible = false;
+    CLEAR_MODAL(state) {
       state.modalComponent = null;
       state.modalProps = {};
       state.modalStubborn = false;
@@ -67,29 +65,37 @@ const modal: PortalModule<ModalState> = {
       state.modalResolve = () => undefined;
       state.modalReject = () => undefined;
     },
+    SHOW_MODAL(state) {
+      state.modalVisible = true;
+    },
+    HIDE_MODAL(state) {
+      state.modalVisible = false;
+    },
   },
 
   getters: {
-    modalState: (state) => state.modalVisible,
-    modalComponent: (state) => state.modalComponent,
-    modalProps: (state) => state.modalProps,
-    modalStubborn: (state) => state.modalStubborn,
+    getModalState: (state) => state.modalVisible,
+    getModalComponent: (state) => state.modalComponent,
+    getModalProps: (state) => state.modalProps,
+    getModalStubborn: (state) => state.modalStubborn,
   },
 
   actions: {
-    setShowLoadingModal({ commit }) {
-      commit('SHOWMODAL', { name: 'PortalStandby' });
+    setAndShowModal({ commit }, payload) {
+      commit('SET_MODAL', payload);
+      commit('SHOW_MODAL');
     },
-    setShowModal({ commit }, payload) {
-      commit('SHOWMODAL', payload);
+    showModal({ commit }) {
+      commit('SHOW_MODAL');
     },
     setShowModalPromise({ dispatch }, payload) {
       return new Promise((resolve, reject) => {
-        dispatch('setShowModal', { ...payload, resolve, reject });
+        dispatch('setAndShowModal', { ...payload, resolve, reject });
       });
     },
-    setHideModal({ commit }) {
-      commit('HIDEMODAL');
+    hideAndClearModal({ commit }) {
+      commit('HIDE_MODAL');
+      commit('CLEAR_MODAL');
     },
     resolve({ state }, payload) {
       state.modalResolve(payload);

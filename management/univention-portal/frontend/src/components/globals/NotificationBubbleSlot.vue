@@ -52,7 +52,7 @@ License with the Debian GNU/Linux or Univention distribution in file
             icon="x"
             :no-click="true"
             :hover-class="`header-button__button--${item.bubbleImportance}`"
-            @click.stop="dismissBubble(item.bubbleToken)"
+            @click.stop="dismissNotification(item.bubbleToken)"
           />
         </div>
 

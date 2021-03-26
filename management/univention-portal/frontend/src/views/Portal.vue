@@ -30,6 +30,7 @@ License with the Debian GNU/Linux or Univention distribution in file
   <div class="portal">
     <portal-background />
     <portal-header />
+
     <div
       v-show="!activeTabIndex"
       class="portal-categories"
@@ -92,24 +93,12 @@ License with the Debian GNU/Linux or Univention distribution in file
       />
     </div>
 
-    <!-- <portal-standby /> -->
-
     <portal-tool-tip
       v-if="tooltip"
       v-bind="tooltip"
     />
 
-    <portal-modal
-      :is-active="modalState"
-      @click="closeModal"
-    >
-      <component
-        :is="modalComponent"
-        v-bind="modalProps"
-      />
-    </portal-modal>
-
-    <portal-modal
+    <modal-wrapper
       v-if="showAdminModal"
       :is-active="showAdminModal"
     >
@@ -117,16 +106,18 @@ License with the Debian GNU/Linux or Univention distribution in file
         <modal-admin
           :show-title-button="false"
           :modal-debugging="true"
+          :modal-type="adminModalAction"
           modal-title="ADD_CATEGORY"
           variant="category"
-          modal-type="addNewCategory"
           save-action="saveCategory"
-          @closeModal="closeModal"
+          @closeModal="closeAdminModal"
           @saveCategory="saveCategory"
         />
       </div>
-    </portal-modal>
-    <cookie-banner />
+    </modal-wrapper>
+
+    <portal-sidebar />
+    <portal-modal />
   </div>
 </template>
 
@@ -134,52 +125,51 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import PortalIframe from '@/components/PortalIframe.vue';
-import ChangePassword from '@/components/forms/ChangePassword.vue';
-import PortalToolTip from '@/components/PortalToolTip.vue';
-import PortalCategory from '@/components/PortalCategory.vue';
-// import PortalIcon from '@/components/globals/PortalIcon.vue';
-import PortalHeader from '@/components/PortalHeader.vue';
-import PortalFolder from '@/components/PortalFolder.vue';
-import PortalModal from '@/components/globals/PortalModal.vue';
-import ModalAdmin from '@/components/admin/ModalAdmin.vue';
-
-import PortalBackground from '@/components/PortalBackground.vue';
-import PortalStandby from '@/components/PortalStandby.vue';
-import CookieBanner from '@/components/CookieBanner.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import ModalAdmin from '@/components/admin/ModalAdmin.vue';
+import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+import PortalBackground from '@/components/PortalBackground.vue';
+import PortalCategory from 'components/PortalCategory.vue';
+import PortalHeader from '@/components/PortalHeader.vue';
+import PortalIframe from 'components/PortalIframe.vue';
+import PortalModal from 'components/PortalModal.vue';
+import PortalSidebar from '@/components/PortalSidebar.vue';
+import PortalToolTip from 'components/PortalToolTip.vue';
 
 import notificationMixin from '@/mixins/notificationMixin.vue';
-
 import Translate from '@/i18n/Translate.vue';
 
 // mocks
 import PopMenuDataCategories from '@/assets/data/popmenuCategories.json';
 
+// Temp interface for menu data mock
+interface PopMenuCategory {
+  title: Record<string, string>,
+  action: string
+}
+
 interface PortalViewData {
   buttonIcon: string,
   ariaLabelButton: string,
   popMenuShow: boolean,
-  popMenuCategories: unknown,
+  popMenuCategories: Array<PopMenuCategory>,
   showAdminModal: boolean,
+  adminModalAction: string,
 }
 
 export default defineComponent({
   name: 'Portal',
   components: {
-    PortalCategory,
-    PortalFolder,
-    PortalHeader,
-    ChangePassword,
-    // PortalIcon,
-    PortalIframe,
-    PortalToolTip,
-    PortalModal,
-    ModalAdmin,
-    PortalBackground,
-    PortalStandby,
-    CookieBanner,
     HeaderButton,
+    ModalAdmin,
+    ModalWrapper,
+    PortalBackground,
+    PortalCategory,
+    PortalHeader,
+    PortalIframe,
+    PortalModal,
+    PortalSidebar,
+    PortalToolTip,
     Translate,
   },
   mixins: [notificationMixin],
@@ -190,15 +180,12 @@ export default defineComponent({
       popMenuShow: false,
       popMenuCategories: PopMenuDataCategories,
       showAdminModal: false,
+      adminModalAction: '',
     };
   },
   computed: {
     ...mapGetters({
       categories: 'categories/getCategories',
-      modalState: 'modal/modalState',
-      modalComponent: 'modal/modalComponent',
-      modalProps: 'modal/modalProps',
-      modalStubborn: 'modal/modalStubborn',
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
@@ -206,10 +193,7 @@ export default defineComponent({
     }),
   },
   methods: {
-    closeModal(): void {
-      if (!this.modalStubborn) {
-        this.$store.dispatch('modal/setHideModal');
-      }
+    closeAdminModal(): void {
       if (this.showAdminModal) {
         this.showAdminModal = false;
       }
@@ -222,13 +206,13 @@ export default defineComponent({
       console.log('openAdminModal: ', action);
       this.popMenuShow = false;
       this.showAdminModal = true;
+      this.adminModalAction = action;
       // open modal
     },
     saveCategory(value) {
       // save the changes
       console.log('save category: ', value);
-
-      this.closeModal();
+      this.closeAdminModal();
     },
   },
 });
@@ -243,19 +227,7 @@ export default defineComponent({
     margin-top: -50px;
 
   &__add-button
-    user-select: none
-
-    display: inline-block
-    margin-right: 1em
-
-    width: 2em
-    height: 2em
-    background-color: var(--color-grey0)
-    background-size: 1em
-    background-repeat: no-repeat
-    background-position: center
-    border-radius: 50%
-    box-shadow: var(--box-shadow)
+    @extend .icon-button--admin
 
   &__title
     cursor: pointer

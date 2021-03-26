@@ -63,4 +63,13 @@ function setCookie(name: string, value: string): void {
   document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=${cookiePath}; SameSite=Strict`;
 }
 
-export { isFQDN, isIPv6Address, isIPv4Address, getCookie, setCookie };
+function setInvalidity(element: any, name: string, invalid: boolean): void {
+  const el = element.$refs[name] as HTMLElement;
+  if (invalid) {
+    el.setAttribute('invalid', 'invalid');
+  } else {
+    el.removeAttribute('invalid');
+  }
+}
+
+export { isFQDN, isIPv6Address, isIPv4Address, getCookie, setCookie, setInvalidity };

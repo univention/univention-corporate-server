@@ -31,11 +31,14 @@ License with the Debian GNU/Linux or Univention distribution in file
     i18n-title-key="CHANGE_PASSWORD"
     @cancel="cancel"
   >
-    <form>
+    <form
+      @submit.prevent="finish"
+    >
       <label>
         <translate i18n-key="OLD_PASSWORD" />
       </label>
       <input
+        ref="oldPassword"
         v-model="oldPassword"
         name="old-password"
         type="password"
@@ -44,6 +47,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         <translate i18n-key="NEW_PASSWORD" />
       </label>
       <input
+        ref="newPassword"
         v-model="newPassword"
         name="new-password"
         type="password"
@@ -52,12 +56,14 @@ License with the Debian GNU/Linux or Univention distribution in file
         <translate i18n-key="NEW_PASSWORD" /> (<translate i18n-key="RETYPE" />)
       </label>
       <input
+        ref="newPassword2"
         v-model="newPassword2"
         name="new-password-retype"
         type="password"
       >
       <footer>
         <button
+          type="button"
           @click.prevent="cancel"
         >
           <translate i18n-key="CANCEL" />
@@ -73,11 +79,12 @@ License with the Debian GNU/Linux or Univention distribution in file
   </modal-dialog>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 
 import Translate from '@/i18n/Translate.vue';
 import ModalDialog from '@/components/ModalDialog.vue';
+import { setInvalidity } from '@/jsHelper/tools';
 
 export default defineComponent({
   name: 'ChangePassword',
@@ -94,6 +101,16 @@ export default defineComponent({
   },
   methods: {
     finish() {
+      const oldPasswordSet = !!this.oldPassword;
+      const newPasswordSet = !!this.newPassword;
+      const newPasswordsMatch = this.newPassword === this.newPassword2;
+      setInvalidity(this, 'oldPassword', !oldPasswordSet);
+      setInvalidity(this, 'newPassword', !newPasswordSet);
+      setInvalidity(this, 'newPassword2', !newPasswordsMatch);
+      const everythingIsCorrect = oldPasswordSet && newPasswordSet && newPasswordsMatch;
+      if (!everythingIsCorrect) {
+        return;
+      }
       this.$store.dispatch('modal/resolve', {
         oldPassword: this.oldPassword,
         newPassword: this.newPassword,

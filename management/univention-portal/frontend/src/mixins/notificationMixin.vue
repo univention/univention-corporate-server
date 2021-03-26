@@ -28,6 +28,7 @@
 -->
 <script>
 import { store } from '@/store';
+// import { WeightedNotification } from '@/store/models';
 import { mapGetters } from 'vuex';
 
 const notificationMixin = {
@@ -42,35 +43,30 @@ const notificationMixin = {
     }),
   },
   methods: {
-    dismissBubble(token) {
-      if (token !== undefined) {
-        // remove selected bubble content
-        store.dispatch('notificationBubble/deleteSingleNotification', token);
-      } else {
-        // store modal state
-        store.dispatch('notificationBubble/setHideBubble');
-        store.dispatch('notificationBubble/showEmbedded');
-      }
+    // dismissBubble(): void {
+    dismissBubble() {
+      // store modal state
+      store.dispatch('notificationBubble/setHideBubble');
+      store.dispatch('notificationBubble/showEmbedded');
+    },
+    // dismissNotification(token: string): void {
+    dismissNotification(token) {
+      // remove selected bubble content
+      store.dispatch('notificationBubble/deleteSingleNotification', token);
       if (token === this.getActiveButton) {
         if (document.getElementById('loginButton')) {
           document.getElementById('loginButton').focus();
         }
       }
     },
-    showNewNotification(notificationContent) {
+    // showNewNotification(content: WeightedNotification): void {
+    showNewNotification(content) {
       // for new notifications only
-
-      store.dispatch('notificationBubble/addContent', notificationContent);
-      store.dispatch('notificationBubble/setShowNewBubble', notificationContent);
+      store.dispatch('notificationBubble/addContent', content);
+      store.dispatch('notificationBubble/setShowNewBubble', content);
       setTimeout(() => {
         store.dispatch('notificationBubble/setHideNewBubble');
       }, 4000);
-    },
-    bubbleClick(e) {
-      if (e.target.matches('.notification-bubble__link, .notification-bubble__link *')) {
-        store.dispatch('notificationBubble/hideAllNotifications');
-        console.info('Bubble link clicked - TODO: add some action');
-      }
     },
   },
 };

@@ -26,8 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { changePassword } from '@/jsHelper/umc';
 import { translate } from '@/i18n/translations';
+import { changePassword } from '@/jsHelper/umc';
 
 function makeEntry(entryID, availableTiles, defaultLinkTarget) {
   const entry = availableTiles.find((tile) => tile.dn === entryID);
@@ -51,17 +51,17 @@ function changePasswordCallback(tileClick) {
         bubbleTitle: translate('CHANGE_PASSWORD'),
         bubbleDescription: response.data.message,
       });
-      tileClick.$store.dispatch('modal/setHideModal');
+      tileClick.$store.dispatch('modal/hideAndClearModal');
     }, (error) => {
       tileClick.$store.dispatch('notificationBubble/addErrorNotification', {
         bubbleTitle: translate('CHANGE_PASSWORD'),
         bubbleDescription: error.response.data.message,
       });
-      tileClick.$store.dispatch('modal/setHideModal');
+      tileClick.$store.dispatch('modal/hideAndClearModal');
       return changePasswordCallback(tileClick);
     });
   }, () => {
-    tileClick.$store.dispatch('modal/setHideModal');
+    tileClick.$store.dispatch('modal/hideAndClearModal');
   });
 }
 

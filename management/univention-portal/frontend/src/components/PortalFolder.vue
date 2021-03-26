@@ -79,7 +79,6 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent, PropType } from 'vue';
 
 import PortalTile from '@/components/PortalTile.vue';
-import PortalModal from '@/components/globals/PortalModal.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import { Title, Tile } from '@/store/models';
 
@@ -87,11 +86,6 @@ export default defineComponent({
   name: 'PortalFolder',
   components: {
     PortalTile,
-    // TODO: Very strange behavior:
-    // PortalModal component is not being used here,
-    // but removing it moves the Sidebar to the middle
-    // eslint-disable-next-line vue/no-unused-components
-    PortalModal,
     HeaderButton,
   },
   props: {
@@ -131,13 +125,13 @@ export default defineComponent({
   },
   methods: {
     closeFolder(): void {
-      this.$store.dispatch('modal/setHideModal');
+      this.$store.dispatch('modal/hideAndClearModal');
     },
     openFolder() {
       if (this.inModal) {
         return;
       }
-      this.$store.dispatch('modal/setShowModal', {
+      this.$store.dispatch('modal/setAndShowModal', {
         name: 'PortalFolder',
         props: { ...this.$props, inModal: true },
       });

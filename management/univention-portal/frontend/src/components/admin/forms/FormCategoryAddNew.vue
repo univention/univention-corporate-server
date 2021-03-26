@@ -41,7 +41,6 @@ License with the Debian GNU/Linux or Univention distribution in file
           v-if="formErrors.error.internalName.error"
           class="form-input__icon--error"
           icon="alert-circle"
-          icon-width="2rem"
         />
         <div
           class="form-input__container"

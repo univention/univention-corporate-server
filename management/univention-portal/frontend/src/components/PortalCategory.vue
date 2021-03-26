@@ -105,7 +105,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       </template>
     </div>
 
-    <portal-modal
+    <modal-wrapper
       v-if="categoryModal"
       :is-active="categoryModal"
     >
@@ -125,7 +125,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           @saveCategory="saveCategory"
         />
       </div>
-    </portal-modal>
+    </modal-wrapper>
 
     <draggable-debugger
       v-if="editMode && debug"
@@ -138,16 +138,13 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
-import PortalTile from '@/components/PortalTile.vue';
-import PortalFolder from '@/components/PortalFolder.vue';
-
-import PortalModal from '@/components/globals/PortalModal.vue';
-import ModalAdmin from '@/components/admin/ModalAdmin.vue';
-
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
-
 import DraggableWrapper from '@/components/dragdrop/DraggableWrapper.vue';
 import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
+import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import ModalAdmin from '@/components/admin/ModalAdmin.vue';
+import PortalFolder from '@/components/PortalFolder.vue';
+import PortalTile from '@/components/PortalTile.vue';
+import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 
 import { Title, Tile, FolderTile } from '@/store/models';
 
@@ -163,11 +160,11 @@ export default defineComponent({
   components: {
     PortalTile,
     PortalFolder,
-    PortalModal,
     ModalAdmin,
     HeaderButton,
     DraggableWrapper,
     DraggableDebugger,
+    ModalWrapper,
   },
   props: {
     title: {
@@ -286,19 +283,7 @@ export default defineComponent({
     border: 3px dashed var(--color-grey40) !important
 
   &__edit-button
-    user-select: none
-
-    display: inline-block
-    margin-right: 1em
-
-    width: 2em
-    height: 2em
-    background-color: var(--color-grey0)
-    background-size: 1em
-    background-repeat: no-repeat
-    background-position: center
-    border-radius: 50%
-    box-shadow: var(--box-shadow)
+    @extend .icon-button--admin
 
   &__title
     display: inline-block

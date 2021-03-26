@@ -274,10 +274,16 @@ class UMCPortal(Portal):
 
 	def get_entries(self, content):
 		entries = []
+		colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
 		for module in content["umc_modules"]:
 			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
 			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
 				logo_name = None
+			color = None
+			for cat in module["categories"]:
+				if cat in colors:
+					color = colors[cat]
+					break
 			entries.append({
 				"dn": self._entry_id(module),
 				"name": {
@@ -288,6 +294,7 @@ class UMCPortal(Portal):
 				},
 				"linkTarget": "useportaldefault",
 				"logo_name": logo_name,
+				"backgroundColor": color,
 				"links": [{
 					"locale": "en_US",
 					"value": "/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))

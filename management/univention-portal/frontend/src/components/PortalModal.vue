@@ -27,56 +27,56 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <img
-    :src="imagePath || './questionMark.svg'"
-    :class="defaultClass"
-    :alt="altText"
-    onerror="this.src='./questionMark.svg'"
-  >
+  <div class="portal-modal">
+    <modal-wrapper
+      :is-active="modalState"
+      @backgroundClick="closeModal"
+    >
+      <component
+        :is="modalComponent"
+        v-bind="modalProps"
+      />
+    </modal-wrapper>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
-interface ImageComponentData {
-  imagePath: string,
-}
+import ChangePassword from '@/components/forms/ChangePassword.vue';
+import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+import PortalFolder from '@/components/PortalFolder.vue';
 
 export default defineComponent({
-  name: 'ImageComponent',
+  name: 'PortalModal',
+  components: {
+  // Register and import all possible modal components here
+  // Otherwise they will not be displyed correctly
+  // (Maybe change PortalModal to not use the component tag anymore?)
+    ChangePassword,
+    ModalWrapper,
+    PortalFolder,
+  },
   props: {
-    filePath: {
-      type: String,
-      default: '/img',
-    },
-    fileName: {
-      type: String,
-      default: 'default_nav_tab_icon.jpg',
-    },
-    fileType: {
-      type: String,
-      default: 'jpg',
-    },
-    altText: {
-      type: String,
-      default: 'Alternative Text',
-    },
-    defaultClass: {
-      type: String,
-      default: 'header-tab__logo',
+    isActive: {
+      type: Boolean,
+      required: true,
     },
   },
-  data(): ImageComponentData {
-    return {
-      imagePath: '',
-    };
-  },
-  created() {
-    this.imageUrl();
+  computed: {
+    ...mapGetters({
+      modalState: 'modal/getModalState',
+      modalComponent: 'modal/getModalComponent',
+      modalProps: 'modal/getModalProps',
+      modalStubborn: 'modal/getModalStubborn',
+    }),
   },
   methods: {
-    imageUrl(): void {
-      this.imagePath = `./${this.filePath}/${this.fileName}`;
+    closeModal(): void {
+      if (!this.modalStubborn) {
+        this.$store.dispatch('modal/hideAndClearModal');
+      }
     },
   },
 });
