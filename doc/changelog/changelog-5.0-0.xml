@@ -848,6 +848,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The package <package>univention-nagios-raid</package> has been removed (<u:bug>52991</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>

@@ -282,11 +282,6 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				<package>univention-nagios-raid</package> Überwachung des Software-RAID-Status
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
 				<package>univention-nagios-smart</package> Prüfung des S.M.A.R.T.-Status von Festplatten
 				</simpara>
 			</listitem>
