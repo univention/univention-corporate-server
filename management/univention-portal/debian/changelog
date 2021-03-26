@@ -1,3 +1,15 @@
+univention-portal (4.0.5-18) unstable; urgency=medium
+
+  * Bug #52941: Remove Apps category
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Mar 2021 23:17:48 +0100
+
+univention-portal (4.0.5-17) unstable; urgency=medium
+
+  * Bug #52941: Colors UMC modules
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Mar 2021 22:59:05 +0100
+
 univention-portal (4.0.5-16) unstable; urgency=medium
 
   * Bug #52941: Styling for UMC modules

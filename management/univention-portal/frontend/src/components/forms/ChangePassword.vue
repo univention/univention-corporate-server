@@ -86,13 +86,19 @@ import Translate from '@/i18n/Translate.vue';
 import ModalDialog from '@/components/ModalDialog.vue';
 import { setInvalidity } from '@/jsHelper/tools';
 
+interface ChangePasswordData {
+    oldPassword: string,
+    newPassword: string,
+    newPassword2: string,
+}
+
 export default defineComponent({
   name: 'ChangePassword',
   components: {
     ModalDialog,
     Translate,
   },
-  data() {
+  data(): ChangePasswordData {
     return {
       oldPassword: '',
       newPassword: '',

@@ -351,6 +351,8 @@ export default defineComponent({
     &> div
       margin: auto 0
       padding-left: var(--layout-spacing-unit)
+  &--username
+    padding-left: 3px
 
   &__logout-link
     text-decoration: underline

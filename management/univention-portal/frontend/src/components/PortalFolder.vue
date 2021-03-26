@@ -193,6 +193,7 @@ export default defineComponent({
     .portal-folder__name
       margin-top: calc(3 * var(--layout-spacing-unit))
       font-size: var(--font-size-1)
+      width: unset
 
     > .portal-tile
       &__box

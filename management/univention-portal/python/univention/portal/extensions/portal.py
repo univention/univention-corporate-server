@@ -276,6 +276,8 @@ class UMCPortal(Portal):
 		entries = []
 		colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
 		for module in content["umc_modules"]:
+			if "apps" in module["categories"]:
+				continue
 			logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
 			if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
 				logo_name = None
@@ -308,6 +310,8 @@ class UMCPortal(Portal):
 	def get_folders(self, content):
 		folders = []
 		for category in content["umc_categories"]:
+			if category["id"] == "apps":
+				continue
 			if category["id"] == "_favorites_":
 				continue
 			entries = [[module["name"], self._entry_id(module)] for module in content["umc_modules"] if category["id"] in module["categories"]]
@@ -351,7 +355,7 @@ class UMCPortal(Portal):
 				"en_US": "UMC",
 			},
 			"dn": "umc:category:umc",
-			"entries": [cat["id"] for cat in categories if cat["id"] != "_favorites_"]
+			"entries": [cat["id"] for cat in categories if cat["id"] not in ["_favorites_", "apps"]]
 		})
 		return ret
 
