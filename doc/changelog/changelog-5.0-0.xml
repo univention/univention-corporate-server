@@ -319,18 +319,6 @@
 			</itemizedlist>
 		</section>
 
-		<section id="changelog:umc:serveroverview">
-			<title>Univention server overview</title>
-			<itemizedlist>
-				<listitem><simpara>
-					The package <package>univention-server-overview</package> has been migrated to Python 3 (<u:bug>51328</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
-				</simpara></listitem>
-			</itemizedlist>
-		</section>
-
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
 			<itemizedlist>
@@ -981,6 +969,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-directory-logger</package> has been migrated to Python 3 (<u:bug>52301</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-server-overview</package> has been migrated to Python 3 (<u:bug>51328</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
