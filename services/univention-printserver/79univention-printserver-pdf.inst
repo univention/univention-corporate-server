@@ -47,8 +47,10 @@ univention-directory-manager settings/printeruri modify "$@" \
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=PDF || die
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=PDF,cn=cups,cn=univention,"$ldap_base" \
 	--append printmodel='"cups-pdf/CUPS-PDF_noopt.ppd" "Generic CUPS-PDF Printer (no options)"' \
-	--append printmodel='"cups-pdf/CUPS-PDF_opt.ppd" "Generic CUPS-PDF Printer (w/ options)"' \
-	--append printmodel='"cups-pdf/CUPS-PDF.ppd" "Generic CUPS-PDF Printer"' || die
+	--append printmodel='"cups-pdf/CUPS-PDF_opt.ppd" "Generic CUPS-PDF Printer (w/ options)"' || die
+
+/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name PDF \
+	'"cups-pdf/CUPS-PDF.ppd" "Generic CUPS-PDF Printer"' || die
 
 # create cups pdf samba share
 univention-directory-manager shares/share create "$@" --ignore_exist \
