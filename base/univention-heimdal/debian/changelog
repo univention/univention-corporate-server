@@ -1,3 +1,9 @@
+univention-heimdal (13.0.3-2) unstable; urgency=medium
+
+  * Bug #50648: Catch univention.password.CheckFailed in check_cracklib.py
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 26 Mar 2021 15:20:56 +0100
+
 univention-heimdal (13.0.3-1) unstable; urgency=medium
 
   * Bug #52257: Migrate univention-heimdal to Python 3

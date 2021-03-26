@@ -58,7 +58,7 @@ def main():
 		try:
 			pwdCheck.check(params['new-password'])
 			print('APPROVED')
-		except ValueError as exc:
+		except univention.password.CheckFailed as exc:
 			print(str(exc))
 
 
