@@ -20,13 +20,13 @@ ucs-test (10.0.4-41) unstable; urgency=medium
 
   * Bug #52957: fixup for uninstall for empty domains
 
- -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 14:37:07 +0100
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 24 Mar 2021 14:37:07 +0100
 
 ucs-test (10.0.4-40) unstable; urgency=medium
 
   * Bug #52957: fixup for button name manage_installations
 
- -- Jan Luttermann <jluttermann@linux.fritz.box>  Tue, 23 Mar 2021 12:26:20 +0100
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 23 Mar 2021 12:26:20 +0100
 
 ucs-test (10.0.4-39) unstable; urgency=medium
 
