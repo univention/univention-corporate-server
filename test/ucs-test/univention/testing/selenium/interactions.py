@@ -105,7 +105,7 @@ class Interactions(object):
 				% (tilename,),
 				**kwargs
 			)
-		except selenium_exceptions.TimeoutExceptions:
+		except selenium_exceptions.TimeoutException:
 			self.click_element(
 				'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "%s"]'
 				% (tilename,),
