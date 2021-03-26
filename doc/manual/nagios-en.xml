@@ -273,11 +273,6 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				<package>univention-nagios-smart</package> Test of the S.M.A.R.T. status of hard drives
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
 				<package>univention-nagios-opsi</package> Test of software distribution opsi
 				</simpara>
 			</listitem>
