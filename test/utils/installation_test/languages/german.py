@@ -44,7 +44,7 @@ strings = {
 	'preferred_dns': 'Bevorzugter DNS-Server',
 	'repositories_not_reachable': 'nicht erreicht werden',
 	'join_domain': 'Einer bestehenden UCS-Domäne',
-	'start_join': 'Domänenbeitritt am Ende',
+	'start_join': 'Informationen zum',
 	'system_name': 'Eingabe des Namens',
 	'account_information': 'Kontoinformationen',
 	'ad_account_information': 'Active Directory-Kontoinformationen',
