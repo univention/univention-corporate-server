@@ -70,7 +70,7 @@ univention-container-role-common
 openssh-server
 openssh-blacklist
 python-univention-license
-/* FIXME # univention-nagios-client  # FIXME */
+univention-nagios-client
 univention-saml
 univention-sudo
 univention-portal
@@ -86,12 +86,11 @@ univention-management-console-module-quota
 /* usr/share/univention-system-setup/download-packages */
 
 univention-ad-connector
-/* FIXME # univention-nagios-ad-connector  # FIXME */
+univention-nagios-ad-connector
 
 univention-management-console-module-adtakeover
 
 univention-printserver
-/* FIXME # univention-printquota  # FIXME */
 univention-nagios-cups
 printer-driver-all
 printer-driver-c2050
@@ -136,12 +135,12 @@ univention-samba4
 cifs-utils
 
 univention-s4-connector
-/* FIXME # univention-nagios-s4-connector  # FIXME */
-/* FIXME # univention-nagios-samba  # FIXME */
+univention-nagios-s4-connector
+univention-nagios-samba
 sqlite3
 
 univention-squid
-/* FIXME # univention-nagios-squid  # FIXME */
+univention-nagios-squid
 univention-firewall
 
 univention-self-service

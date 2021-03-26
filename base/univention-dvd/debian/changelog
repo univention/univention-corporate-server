@@ -1,3 +1,9 @@
+univention-dvd (5.0.1-2) unstable; urgency=low
+
+  * Bug #52122: Re-add Nagios checks to DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Mar 2021 15:52:55 +0100
+
 univention-dvd (5.0.1-1) unstable; urgency=low
 
   * Bug #51316: Remove `.univention_install` file
