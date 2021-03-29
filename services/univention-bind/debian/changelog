@@ -1,3 +1,9 @@
+univention-bind (14.0.1-2) unstable; urgency=medium
+
+  * Bug #53064: fix wait time during setup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 13 Apr 2021 12:38:26 +0200
+
 univention-bind (14.0.1-1) unstable; urgency=medium
 
   * Bug #52260: migrate univention-bind to Python 3

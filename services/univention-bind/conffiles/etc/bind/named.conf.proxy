@@ -1,9 +1,11 @@
 @%@UCRWARNING=# @%@
 
-
 controls{
         inet 127.0.0.1
-        allow { @%@dns/master/address@%@; };
+@!@
+allowed_controllers = {configRegistry.get('dns/master/address', '127.0.0.1'), '127.0.0.1'}
+print('\t\tallow {{ {}; }};'.format('; '.join(sorted(allowed_controllers))))
+@!@
 };
 options {
     directory "/var/cache/bind";

@@ -17,6 +17,7 @@ Variables: dns/allow/query/cache
 Variables: dns/allow/transfer
 Variables: dns/fakeroot
 Variables: dns/ipv6
+Variables: dns/master/address
 
 Type: file
 File: etc/bind/named.conf.samba4

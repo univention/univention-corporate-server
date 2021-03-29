@@ -32,6 +32,11 @@
 
 . /usr/share/univention-lib/all.sh
 
+if [ "$1" = "configure" ]; then
+	# touch config files just in case the listener module bind.py has not created them yet
+	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
+fi
+
 # Remove service diversion before any service is restarted through debhelper
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 	dpkg-divert --quiet \
@@ -106,8 +111,6 @@ if [ "$1" = "configure" ]; then
 		systemctl --system daemon-reload
 		service bind9 start
 	}
-	# touch config files just in case the listener module bind.py has not created them yet
-	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
 	if [ -n "$2" ]; then
 		systemctl try-restart bind9 || service bind9 restart
 	else
