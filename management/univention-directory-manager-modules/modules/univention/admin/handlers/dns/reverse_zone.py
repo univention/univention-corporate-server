@@ -277,10 +277,6 @@ def identify(dn, attr):
 		(attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6))
 
 
-def quickDescription(rdn):
-	return unmapSubnet(rdn)
-
-
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

@@ -923,12 +923,6 @@ def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='b
 	return [item for item in tmpres if item]
 
 
-def quickDescription(module_name, dn):
-	module = get(module_name)
-	rdn = univention.admin.uldap.explodeDn(dn, 1)[0]
-	return getattr(module, 'quickDescription', rdn)
-
-
 def isSuperordinate(module):
 	"""
 	Check if the module is a |UDM| superordinate module.
