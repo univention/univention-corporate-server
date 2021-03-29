@@ -1298,7 +1298,7 @@ class simpleLdap(object):
 
 		return al
 
-	def _modify(self, modify_childs=True, ignore_license=0, response=None, serverctrls=None):
+	def _modify(self, modify_childs=True, ignore_license=False, response=None, serverctrls=None):
 		"""Modify the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.modify`."""
 		self.__prevent_ad_property_change()
 
@@ -3102,7 +3102,7 @@ class simpleComputer(simpleLdap):
 			else:
 				hosts.add(DN(self.dn))
 			groupObject['hosts'] = list(DN.values(hosts))
-			groupObject.modify(ignore_license=1)
+			groupObject.modify(ignore_license=True)
 
 	def primary_group(self):  # type: () -> None
 		if not self.hasChanged('primaryGroup'):

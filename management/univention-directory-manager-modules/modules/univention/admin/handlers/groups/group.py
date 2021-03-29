@@ -383,7 +383,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# return True if object has been modified
 		return bool(ml)
 
-	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=0):
+	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False):
 		ml = []
 		uids = set()
 		members = set()
