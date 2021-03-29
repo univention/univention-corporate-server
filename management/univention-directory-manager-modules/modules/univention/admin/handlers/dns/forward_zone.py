@@ -270,7 +270,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
 
-	def _ldap_pre_modify(self, modify_childs=1):
+	def _ldap_pre_modify(self, modify_childs=True):
 		# update SOA record
 		if not self.hasChanged('serial'):
 			self['serial'] = str(int(self['serial']) + 1)

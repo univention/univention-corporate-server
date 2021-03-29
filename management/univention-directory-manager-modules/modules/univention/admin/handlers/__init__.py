@@ -1298,7 +1298,7 @@ class simpleLdap(object):
 
 		return al
 
-	def _modify(self, modify_childs=1, ignore_license=0, response=None, serverctrls=None):
+	def _modify(self, modify_childs=True, ignore_license=0, response=None, serverctrls=None):
 		"""Modify the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.modify`."""
 		self.__prevent_ad_property_change()
 
