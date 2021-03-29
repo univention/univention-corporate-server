@@ -210,7 +210,7 @@ class TestUsers(object):
 		self._test_modlist(udm, {'sambaPrivileges': privileges}, {'univentionSambaPrivilegeList': privileges, 'objectClass': ['univentionSambaPrivileges']})
 
 	@pytest.mark.parametrize('privileges', [
-		pytest.mark.xfail(['SeMachineAccountPrivilege', 'foobar'], reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=46020'),
+		pytest.param(['SeMachineAccountPrivilege', 'foobar'], marks=pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=46020')),
 		['foobar'],
 	])
 	def test_modlist_samba_privileges_invalid(self, udm, privileges):
