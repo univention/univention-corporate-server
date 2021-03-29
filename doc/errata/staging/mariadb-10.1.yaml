@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: mariadb-10.1
+fix: 10.1.48-0+deb9u2
+desc: |
+ This update addresses the following issue:
+ * writable system variables allows a database user with SUPER privilege to
+   execute arbitrary code as the system mysql user (CVE-2021-27928)
+bug: [52996]
+cve:
+- CVE-2021-27928
