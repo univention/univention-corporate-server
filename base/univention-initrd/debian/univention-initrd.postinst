@@ -32,9 +32,11 @@
 
 #DEBHELPER#
 
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-3; then
-	# Bug #52993: update initramfs for all available kernels due to removed initramfs/init
-	update-initramfs -k all -u
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-4; then
+	# Bug #52993: recreate initramfs for all available kernels due to removed initramfs/init
+	echo "recreate initramfs for all available kernels due to changes in unvenition-initrd..."
+	update-initramfs -k all -c
+	echo "done"
 fi
 
 exit 0
