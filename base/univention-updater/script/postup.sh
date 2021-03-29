@@ -103,7 +103,7 @@ if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
 fi
 
 # Bug #52993: recreate initramfs for all available kernels due to removed initramfs/init
-echo "recreate initramfs for all available kernels due to changes in unvenition-initrd..." >&3 2>&3
+echo "recreate initramfs for all available kernels due to changes in univention-initrd..." >&3 2>&3
 /usr/sbin/update-initramfs -k all -c >&3 2>&3
 echo "done" >&3 2>&3
 
