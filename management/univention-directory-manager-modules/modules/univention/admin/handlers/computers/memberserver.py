@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'computers/memberserver'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Managed Node')
 object_name = _('Managed Node')

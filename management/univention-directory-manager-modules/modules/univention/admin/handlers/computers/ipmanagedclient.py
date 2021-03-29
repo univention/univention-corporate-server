@@ -47,7 +47,7 @@ _ = translation.translate
 
 module = 'computers/ipmanagedclient'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: IP client')
 object_name = _('IP client')

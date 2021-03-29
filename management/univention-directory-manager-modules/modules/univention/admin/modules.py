@@ -62,7 +62,7 @@ try:
 		property_descriptions = {}  # type: Dict[str, univention.admin.property]
 		policy_apply_to = []  # type: List[str]
 		policy_position_dn_prefix = ''  # type: str
-		docleanup = 0  # type: int
+		docleanup = False  # type: bool
 
 		@staticmethod
 		def identify(dn, attr):

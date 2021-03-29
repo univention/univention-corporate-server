@@ -45,7 +45,7 @@ _ = translation.translate
 
 module = 'computers/ubuntu'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Ubuntu')
 object_name = _('Ubuntu Computer')

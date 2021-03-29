@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'computers/macos'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Mac OS X Client')
 object_name = _('Mac OS X Client')

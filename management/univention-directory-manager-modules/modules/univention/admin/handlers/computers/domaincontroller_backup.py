@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'computers/domaincontroller_backup'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Backup Directory Node')
 object_name = _('Backup Directory Node')

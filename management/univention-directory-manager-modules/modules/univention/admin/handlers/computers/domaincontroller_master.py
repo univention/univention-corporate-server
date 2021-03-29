@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'computers/domaincontroller_master'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Primary Directory Node')
 object_name = _('Primary Directory Node')

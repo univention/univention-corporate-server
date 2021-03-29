@@ -44,7 +44,7 @@ _ = translation.translate
 
 module = 'computers/windows'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-docleanup = 1
+docleanup = True
 childs = False
 short_description = _('Computer: Windows Workstation/Server')
 object_name = _('Windows Workstation/Server')

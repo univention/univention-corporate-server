@@ -339,16 +339,16 @@ def restorePolicyReference(object, policy_type):
 
 
 def wantsCleanup(object):
-	# type: (univention.admin.handlers.simpleLdap) -> int
+	# type: (univention.admin.handlers.simpleLdap) -> bool
 	"""
 	Check if the given object wants to perform a cleanup (delete
 	other objects, etc.) before it is deleted itself.
 
 	:param object: parent object.
-	:returns: `1´ if a cleanup is requested, `0` otherwise.
+	:returns: `True´ if a cleanup is requested, `False` otherwise.
 	"""
 	# TODO make this a method of object
-	wantsCleanup = 0
+	wantsCleanup = False
 
 	object_module = module(object)
 	object_module = univention.admin.modules.get(object_module)
