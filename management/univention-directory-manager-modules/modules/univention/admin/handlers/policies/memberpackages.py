@@ -62,7 +62,7 @@ policy_oc = 'univentionPolicyPackagesMember'
 policy_apply_to = ["computers/memberserver"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
-childs = 0
+childs = False
 short_description = _('Policy: Packages for Managed Nodes')
 object_name = _('Managed Node packages policy')
 object_name_plural = _('Managed Node packages policies')

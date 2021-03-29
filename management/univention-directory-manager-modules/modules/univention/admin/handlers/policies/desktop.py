@@ -61,7 +61,7 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicyDesktop'
 policy_apply_to = ["users/user"]
 policy_position_dn_prefix = "cn=desktop"
-childs = 0
+childs = False
 short_description = _('Policy: Desktop')
 object_name = _('Desktop policy')
 object_name_plural = _('Desktop policies')

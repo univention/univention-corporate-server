@@ -43,7 +43,7 @@ module = 'settings/license'
 superordinate = 'settings/cn'
 operations = ['remove', 'search']
 
-childs = 0
+childs = False
 short_description = _('Settings: License')
 object_name = _('License')
 object_name_plural = _('Licenses')

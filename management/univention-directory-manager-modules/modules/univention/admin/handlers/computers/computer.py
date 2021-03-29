@@ -44,7 +44,7 @@ childmodules = []
 for computer in univention.admin.handlers.computers.computers:
 	childmodules.append(computer.module)
 
-childs = 0
+childs = False
 short_description = _('Computer')
 object_name = _('Computer')
 object_name_plural = _('Computers')

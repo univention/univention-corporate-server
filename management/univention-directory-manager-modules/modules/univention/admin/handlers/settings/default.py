@@ -40,7 +40,7 @@ _ = translation.translate
 
 module = 'settings/default'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 operations = ['search', 'edit']
 short_description = _('Preferences: Default')
 object_name = _('Default preference')

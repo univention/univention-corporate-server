@@ -45,7 +45,7 @@ _ = translation.translate
 
 module = 'container/ou'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
-childs = 1
+childs = True
 short_description = _('Container: Organisational Unit')
 object_name = _('Organisational Unit')
 object_name_plural = _('Organisational Units')

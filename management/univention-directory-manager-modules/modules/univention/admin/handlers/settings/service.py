@@ -41,7 +41,7 @@ _ = translation.translate
 
 module = 'settings/service'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Service')
 object_name = _('Service')

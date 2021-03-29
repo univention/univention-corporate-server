@@ -65,7 +65,7 @@ policy_oc = 'univentionPolicyShareUserQuota'
 policy_apply_to = ["shares/share"]
 policy_position_dn_prefix = "cn=userquota,cn=shares"
 
-childs = 0
+childs = False
 short_description = _('Policy: User quota')
 object_name = _('User quota policy')
 object_name_plural = _('User quota policies')

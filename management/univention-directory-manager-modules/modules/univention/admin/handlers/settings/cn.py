@@ -42,7 +42,7 @@ _ = translation.translate
 
 module = 'settings/cn'
 operations = ['search']
-childs = 1
+childs = True
 short_description = _('Univention Settings')
 object_name = _('Univention Setting')
 object_name_plural = _('Univention Settings')

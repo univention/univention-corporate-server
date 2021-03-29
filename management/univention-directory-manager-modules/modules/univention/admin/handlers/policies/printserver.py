@@ -60,7 +60,7 @@ policy_oc = 'univentionPolicyPrintServer'
 policy_apply_to = ["computers/memberserver", "computers/domaincontroller_backup", "computers/domaincontroller_master", "computers/domaincontroller_slave"]
 policy_position_dn_prefix = "cn=printservers"
 
-childs = 0
+childs = False
 short_description = _('Policy: Print server')
 object_name = _('Print server policy')
 object_name_plural = _('Print server policies')

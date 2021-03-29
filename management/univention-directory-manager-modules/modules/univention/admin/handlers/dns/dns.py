@@ -53,7 +53,7 @@ _ = translation.translate
 
 module = 'dns/dns'
 
-childs = 0
+childs = False
 short_description = _('All DNS zones')
 object_name = _('DNS zone')
 object_name_plural = _('DNS zones')

@@ -43,7 +43,7 @@ module = 'settings/printeruri'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: Printer URI List')
 object_name = _('Printer URI List')
 object_name_plural = _('Printer URI Lists')

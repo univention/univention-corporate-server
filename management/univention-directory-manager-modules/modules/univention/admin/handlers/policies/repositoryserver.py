@@ -61,7 +61,7 @@ policy_oc = 'univentionPolicyRepositoryServer'
 policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
 policy_position_dn_prefix = "cn=repository,cn=update"
 
-childs = 0
+childs = False
 short_description = _('Policy: Repository server')
 object_name = _('Repository server policy')
 object_name_plural = _('Repository server policies')

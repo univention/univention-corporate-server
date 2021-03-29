@@ -51,7 +51,7 @@ _ = translation.translate
 
 module = 'groups/group'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
-childs = 0
+childs = False
 short_description = _('Group')
 object_name = _('Group')
 object_name_plural = _('Groups')

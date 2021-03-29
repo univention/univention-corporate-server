@@ -61,7 +61,7 @@ policy_oc = 'univentionPolicyLDAPServer'
 policy_apply_to = ["computers/memberserver"]
 policy_position_dn_prefix = "cn=ldap"
 
-childs = 0
+childs = False
 short_description = _('Policy: LDAP server')
 object_name = _('LDAP server policy')
 object_name_plural = _('LDAP server policies')

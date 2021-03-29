@@ -43,7 +43,7 @@ module = 'settings/lock'
 operations = ['edit', 'remove', 'search']
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: Lock')
 object_name = _('Lock')
 object_name_plural = _('Locks')

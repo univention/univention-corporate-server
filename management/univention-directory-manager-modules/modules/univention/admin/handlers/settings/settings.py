@@ -45,7 +45,7 @@ _ = translation.translate
 
 module = 'settings/settings'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 short_description = _('Preferences')
 object_name = _('Preference')
 object_name_plural = _('Preferences')

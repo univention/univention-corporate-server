@@ -43,7 +43,7 @@ module = 'settings/prohibited_username'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: Prohibited user names')
 object_name = _('Prohibited user name')
 object_name_plural = _('Prohibited user names')

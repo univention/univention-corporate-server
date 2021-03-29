@@ -44,7 +44,7 @@ _ = translation.translate
 
 module = 'settings/xconfig_choices'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 width = "100"
 operations = ['search', 'edit']
 short_description = _('Preferences: X Configuration Choices')

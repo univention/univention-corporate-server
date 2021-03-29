@@ -66,7 +66,7 @@ policy_oc = 'univentionPolicySharePrintQuota'
 policy_apply_to = ["shares/printer", "shares/printergroup"]
 policy_position_dn_prefix = "cn=printquota,cn=shares"
 
-childs = 0
+childs = False
 short_description = _('Policy: Print quota')
 object_name = _('Print quota policy')
 object_name_plural = _('Print quota policies')

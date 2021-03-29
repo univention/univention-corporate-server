@@ -45,7 +45,7 @@ module = 'settings/umc_operationset'
 operations = ('add', 'edit', 'remove', 'search', 'move')
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: UMC operation set')
 object_name = _('UMC operation set')
 object_name_plural = _('UMC operation sets')

@@ -61,7 +61,7 @@ policy_oc = 'univentionPolicyNFSMounts'
 policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
 policy_position_dn_prefix = "cn=nfsmounts"
 
-childs = 0
+childs = False
 short_description = _('Policy: NFS mounts')
 object_name = _('NFS mounts policy')
 object_name_plural = _('NFS mounts policies')

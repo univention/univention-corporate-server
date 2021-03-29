@@ -45,7 +45,7 @@ _ = translation.translate
 
 module = 'mail/folder'
 operations = ['add', 'edit', 'remove', 'search']  # removed 'move' as a workaround for bug #11664
-childs = 0
+childs = False
 short_description = _('Mail folder (IMAP)')
 object_name = _('IMAP mail folder')
 object_name_plural = _('IMAP mail folders')

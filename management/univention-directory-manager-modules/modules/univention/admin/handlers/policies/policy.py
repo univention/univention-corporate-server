@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'policies/policy'
 
-childs = 0
+childs = False
 short_description = _('Policy')
 object_name = _('Policy')
 object_name_plural = _('Policies')

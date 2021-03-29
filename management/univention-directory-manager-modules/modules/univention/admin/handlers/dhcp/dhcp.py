@@ -50,7 +50,7 @@ _ = translation.translate
 
 module = 'dhcp/dhcp'
 
-childs = 0
+childs = False
 childmodules = ["dhcp/service"]
 short_description = _('All DHCP services')
 object_name = _('DHCP service')

@@ -46,7 +46,7 @@ module = 'users/passwd'
 operations = ['edit']
 uid_umlauts = 0
 
-childs = 0
+childs = False
 short_description = _('User: Password')
 object_name = _('Password')
 object_name_plural = _('Passwords')

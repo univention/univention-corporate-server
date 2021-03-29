@@ -47,7 +47,7 @@ default_containers = ['cn=nagios']
 
 childmodules = ['nagios/service', 'nagios/timeperiod']
 
-childs = 0
+childs = False
 short_description = _('Nagios object')
 object_name = _('Nagios object')
 object_name_plural = _('Nagios objects')

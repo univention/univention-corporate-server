@@ -41,7 +41,7 @@ _ = translation.translate
 
 module = 'settings/syntax'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Syntax Definition')
 object_name = _('Syntax Definition')

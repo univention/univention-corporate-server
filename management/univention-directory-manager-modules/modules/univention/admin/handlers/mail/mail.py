@@ -46,7 +46,7 @@ _ = translation.translate
 
 module = 'mail/mail'
 
-childs = 0
+childs = False
 short_description = _('Mail')
 object_name = _('Mail object')
 object_name_plural = _('Mail objects')

@@ -42,7 +42,7 @@ _ = translation.translate
 
 module = 'settings/udm_hook'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: UDM Hook')
 object_name = _('UDM Hook')

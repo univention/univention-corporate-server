@@ -60,7 +60,7 @@ policy_oc = 'univentionPolicyAdminContainerSettings'
 policy_apply_to = []
 policy_position_dn_prefix = "cn=container,cn=admin"
 
-childs = 0
+childs = False
 short_description = _('Policy: Univention Directory Manager container settings')
 object_name = _('Univention Directory Manager container settings policy')
 object_name_plural = _('Univention Directory Manager container settings policies')

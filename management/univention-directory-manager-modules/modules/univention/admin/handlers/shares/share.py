@@ -52,7 +52,7 @@ class cscPolicy(univention.admin.syntax.select):
 module = 'shares/share'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-childs = 0
+childs = False
 short_description = _('Share: Directory')
 object_name = _('Share directory')
 object_name_plural = _('Share directories')

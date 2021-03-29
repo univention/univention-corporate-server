@@ -61,7 +61,7 @@ def logonToChangePWUnmap(ldap_value):
 
 
 module = 'settings/sambaconfig'
-childs = 0
+childs = False
 # since samba 3.0.30 and UCS 2.1 the domain configuration for samba will be stored in the samba domain object
 operations = ['edit', 'remove', 'search', 'move']
 short_description = _('Settings: Samba Configuration')

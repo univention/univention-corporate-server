@@ -41,7 +41,7 @@ _ = translation.translate
 
 module = 'mail/lists'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-childs = 0
+childs = False
 short_description = _('Mailing list')
 object_name = _('Mailing list')
 object_name_plural = _('Mailing lists')

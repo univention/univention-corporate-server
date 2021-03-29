@@ -47,7 +47,7 @@ _ = translation.translate
 
 # Note: this is not a "objectClass: domain" container but only the ldap base!
 module = 'container/dc'
-childs = 1
+childs = True
 operations = ['search', 'edit']
 short_description = _('Container: Domain')
 object_name = _('Domain Container')

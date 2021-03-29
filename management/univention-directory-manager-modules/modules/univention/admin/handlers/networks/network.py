@@ -50,7 +50,7 @@ _ = translation.translate
 
 module = 'networks/network'
 operations = ['add', 'edit', 'remove', 'search']
-childs = 0
+childs = False
 short_description = _('Networks: Network')
 object_name = _('Network')
 object_name_plural = _('Networks')

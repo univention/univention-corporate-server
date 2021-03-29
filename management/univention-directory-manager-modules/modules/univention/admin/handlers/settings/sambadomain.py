@@ -64,7 +64,7 @@ def logonToChangePWUnmap(val):
 
 
 module = 'settings/sambadomain'
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Samba Domain')
 object_name = _('Samba Domain')

@@ -50,7 +50,7 @@ _ = translation.translate
 module = 'users/contact'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-childs = 0
+childs = False
 short_description = _('Contact')
 object_name = _('Contact')
 object_name_plural = _('Contact information')

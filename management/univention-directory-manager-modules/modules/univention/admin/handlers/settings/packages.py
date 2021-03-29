@@ -43,7 +43,7 @@ module = 'settings/packages'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: Package List')
 object_name = _('Package List')
 object_name_plural = _('Package Lists')

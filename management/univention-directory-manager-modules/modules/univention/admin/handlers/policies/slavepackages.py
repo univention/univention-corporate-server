@@ -62,7 +62,7 @@ policy_oc = 'univentionPolicyPackagesSlave'
 policy_apply_to = ["computers/domaincontroller_slave"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
-childs = 0
+childs = False
 short_description = _('Policy: Packages for Replica Nodes')
 object_name = _('Replica Node packages policy')
 object_name_plural = _('Replica Node packages policies')

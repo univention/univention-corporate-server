@@ -43,7 +43,7 @@ _ = translation.translate
 
 module = 'mail/domain'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-childs = 0
+childs = False
 short_description = _('Mail domain')
 object_name = _('Mail domain')
 object_name_plural = _('Mail domains')

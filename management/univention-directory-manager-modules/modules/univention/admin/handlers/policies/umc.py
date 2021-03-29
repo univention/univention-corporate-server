@@ -61,7 +61,7 @@ policy_oc = 'umcPolicy'
 policy_apply_to = ['users/user', 'users/ldap', 'groups/group']
 policy_position_dn_prefix = 'cn=UMC'
 
-childs = 0
+childs = False
 short_description = _('Policy: UMC')
 object_name = _('UMC policy')
 object_name_plural = _('UMC policies')

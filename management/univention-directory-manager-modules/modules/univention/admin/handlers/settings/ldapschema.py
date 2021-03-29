@@ -41,7 +41,7 @@ _ = translation.translate
 
 module = 'settings/ldapschema'
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: LDAP Schema Extension')
 object_name = _('LDAP Schema Extension')

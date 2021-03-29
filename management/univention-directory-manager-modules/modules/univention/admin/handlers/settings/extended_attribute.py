@@ -42,7 +42,7 @@ module = 'settings/extended_attribute'
 
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
-childs = 0
+childs = False
 short_description = _('Settings: Extended attribute')
 object_name = _('Extended attribute')
 object_name_plural = _('Extended attributes')

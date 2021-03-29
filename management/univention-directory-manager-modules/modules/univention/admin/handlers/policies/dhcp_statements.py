@@ -66,7 +66,7 @@ policy_oc = "univentionPolicyDhcpStatements"
 policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
 policy_position_dn_prefix = "cn=statements,cn=dhcp"
 policies_group = "dhcp"
-childs = 0
+childs = False
 short_description = _('Policy: DHCP statements')
 object_name = _('DHCP statements policy')
 object_name_plural = _('DHCP statements policies')

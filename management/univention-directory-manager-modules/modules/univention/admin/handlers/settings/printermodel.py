@@ -45,7 +45,7 @@ module = 'settings/printermodel'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
-childs = 0
+childs = False
 short_description = _('Settings: Printer Driver List')
 object_name = _('Printer Driver List')
 object_name_plural = _('Printer Driver Lists')

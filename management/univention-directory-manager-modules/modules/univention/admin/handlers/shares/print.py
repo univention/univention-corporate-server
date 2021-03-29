@@ -42,7 +42,7 @@ _ = translation.translate
 
 module = 'shares/print'
 childmodules = ['shares/printer', 'shares/printergroup']
-childs = 0
+childs = False
 short_description = _('Printer share')
 object_name = _('Printer share')
 object_name_plural = _('Printer shares')

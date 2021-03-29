@@ -42,7 +42,7 @@ _ = translation.translate
 
 module = 'dhcp/service'
 operations = ['add', 'edit', 'remove', 'search']
-childs = 1
+childs = True
 childmodules = ('dhcp/host', 'dhcp/server', 'dhcp/shared', 'dhcp/subnet')
 short_description = _('DHCP: Service')
 object_name = _('DHCP service')

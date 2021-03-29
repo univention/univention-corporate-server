@@ -61,7 +61,7 @@ help_link = _('https://docs.software-univention.de/manual-4.4.html#print::shares
 module = 'shares/printer'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-childs = 0
+childs = False
 short_description = _('Printer share: Printer')
 object_name = _('Printer')
 object_name_plural = _('Printers')

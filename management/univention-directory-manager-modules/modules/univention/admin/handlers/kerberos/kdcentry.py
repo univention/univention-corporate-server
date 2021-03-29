@@ -47,7 +47,7 @@ _ = translation.translate
 
 module = 'kerberos/kdcentry'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-childs = 0
+childs = False
 short_description = _('Kerberos: KDC Entry')
 object_name = _('KDC Entry')
 object_name_plural = _('KDC Entries')
