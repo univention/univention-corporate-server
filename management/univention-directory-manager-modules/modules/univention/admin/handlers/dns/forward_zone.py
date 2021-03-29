@@ -204,6 +204,7 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
 	def _post_unmap(self, info, values):
+		info = super(object, self)._post_unmap(info, values)
 		info['a'] = []
 		if 'aRecord' in values:
 			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
@@ -225,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_addlist(self):
-		return [
+		return super(object, self)._ldap_addlist() + [
 			('relativeDomainName', [b'@'])
 		]
 
@@ -270,7 +271,8 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
 
-	def _ldap_pre_modify(self, modify_childs=True):
+	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		# update SOA record
 		if not self.hasChanged('serial'):
 			self['serial'] = str(int(self['serial']) + 1)

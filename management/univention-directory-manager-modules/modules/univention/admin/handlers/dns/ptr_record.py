@@ -194,18 +194,21 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 	def _ldap_addlist(self):
-		return [
+		return super(object, self)._ldap_addlist() + [
 			(self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'])),
 		]
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		if self.hasChanged(self.descriptions.keys()):
 			self._updateZone()
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		self._updateZone()
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		self._updateZone()
 
 	@classmethod

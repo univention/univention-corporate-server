@@ -111,18 +111,21 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 	def _ldap_addlist(self):
-		return [
+		return super(object, self)._ldap_addlist() + [
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		self._updateZone()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		if self.hasChanged(self.descriptions.keys()):
 			self._updateZone()
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		self._updateZone()
 
 
@@ -150,7 +153,6 @@ def lookup_filter(filter_s=None, superordinate=None):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-
 	filter = lookup_filter(filter_s, superordinate)
 	res = []
 	for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):

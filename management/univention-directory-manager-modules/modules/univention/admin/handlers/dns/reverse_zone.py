@@ -236,13 +236,14 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
 		return ml
 
-	def _ldap_pre_modify(self, modify_childs=True):
+	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		# update SOA record
 		if not self.hasChanged('serial'):
 			self['serial'] = str(int(self['serial']) + 1)
 
 	def _ldap_addlist(self):
-		return [
+		return super(object, self)._ldap_addlist() + [
 			('relativeDomainName', [b'@'])
 		]
 
