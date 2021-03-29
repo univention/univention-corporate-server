@@ -53,7 +53,7 @@ object_name_plural = _('Mail objects')
 long_description = ''
 operations = ['search']
 childmodules = ["mail/folder", "mail/domain", "mail/lists"]
-virtual = 1
+virtual = True
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(

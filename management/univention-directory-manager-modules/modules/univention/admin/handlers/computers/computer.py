@@ -50,7 +50,7 @@ object_name = _('Computer')
 object_name_plural = _('Computers')
 long_description = ''
 operations = ['search']
-virtual = 1
+virtual = True
 options = {
 }
 property_descriptions = {

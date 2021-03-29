@@ -57,7 +57,7 @@ object_name = _('DHCP service')
 object_name_plural = _('DHCP services')
 long_description = _('Manage the Domain Host Configuration Protocol service.')
 operations = ['search']
-virtual = 1
+virtual = True
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(

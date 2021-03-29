@@ -53,7 +53,7 @@ object_name = _('Nagios object')
 object_name_plural = _('Nagios objects')
 long_description = ''
 operations = ['search']
-virtual = 1
+virtual = True
 options = {}
 
 property_descriptions = {

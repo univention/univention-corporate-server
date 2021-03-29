@@ -48,7 +48,7 @@ object_name = _('Printer share')
 object_name_plural = _('Printer shares')
 long_description = ''
 operations = ['search']
-virtual = 1
+virtual = True
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(

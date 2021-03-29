@@ -51,7 +51,7 @@ object_name = _('Preference')
 object_name_plural = _('Preferences')
 long_description = ''
 operations = ['search']
-virtual = 1
+virtual = True
 options = {}
 property_descriptions = {
 }

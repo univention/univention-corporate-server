@@ -60,7 +60,7 @@ object_name_plural = _('DNS zones')
 long_description = _('Manage the Domain Name System.')
 operations = ['search']
 childmodules = ['dns/forward_zone', 'dns/reverse_zone']
-virtual = 1
+virtual = True
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(
