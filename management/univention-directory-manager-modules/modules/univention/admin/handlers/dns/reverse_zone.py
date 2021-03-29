@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import ldap.dn
+
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry
 
@@ -234,7 +236,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
 		return ml
 
-	def _ldap_pre_modify(self, modify_childs=1):
+	def _ldap_pre_modify(self, modify_childs=True):
 		# update SOA record
 		if not self.hasChanged('serial'):
 			self['serial'] = str(int(self['serial']) + 1)
@@ -250,9 +252,8 @@ class object(univention.admin.handlers.simpleLdap):
 		if 0:  # open?
 			return self['subnet']
 		else:
-			rdn = self.lo.explodeDn(self.dn)[0]
-			rdn_value = rdn[rdn.find('=') + 1:]
-			return unmapSubnet(rdn_value)
+			rdn_value = ldap.dn.str2dn(self.dn)[0][0][1].encode('UTF-8')
+			return unmapSubnet([rdn_value])
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
