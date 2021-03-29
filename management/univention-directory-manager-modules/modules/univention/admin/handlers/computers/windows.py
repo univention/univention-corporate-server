@@ -34,6 +34,8 @@ from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.syntax
 import univention.admin.nagios as nagios
 from univention.admin.handlers.computers.__base import ComputerObject
 

@@ -32,11 +32,12 @@
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
-import univention.admin.config
 import univention.admin.handlers
 import univention.admin.password
 import univention.admin.localization
-import univention.admin.uldap
+import univention.admin.syntax
+import univention.admin.mapping
+import univention.admin.uexceptions
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 

@@ -33,9 +33,9 @@
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.password
-import univention.admin.allocators
 import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.syntax
 import univention.admin.uldap
 import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone

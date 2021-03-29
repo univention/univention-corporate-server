@@ -48,13 +48,15 @@ from ldap.filter import filter_format
 
 import univention.admin
 from univention.admin.layout import Tab, Group
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.groups.group
+import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.modules
 import univention.admin.password
 import univention.admin.samba
-import univention.admin.allocators
-import univention.admin.localization
+import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.handlers.settings.prohibited_username
@@ -1531,7 +1533,7 @@ class object(univention.admin.handlers.simpleLdap):
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_add([self.dn], [new_uid])
 
-		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
+		if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			ud.debug(ud.ADMIN, ud.INFO, 'users/user: check primaryGroup')
 			if not self.exists() and self.info.get('primaryGroup'):
 				grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
@@ -1558,7 +1560,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.hasChanged('primaryGroup'):
 			return
 
-		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
+		if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
 			group_mod = univention.admin.modules.get('groups/group')
 			grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
@@ -1717,7 +1719,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 	def _modlist_cn(self, ml):
-		cnAtts = univention.admin.configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
+		cnAtts = configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
 		old_cn = self.oldattr.get('cn', [b''])[0]
 		cn = prop._replace(cnAtts, self)  # TODO: prop._replace() must return unicode
