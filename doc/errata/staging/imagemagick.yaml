@@ -1,0 +1,75 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u12
+desc: |
+ This update addresses the following issues:
+ * outside the range of representable values of type int and signed integer
+   overflow in MagickCore/histogram.c (CVE-2020-25666)
+ * outside the range of representable values of type 'long' and integer
+   overflow at MagickCore/transform.c and MagickCore/image.c (CVE-2020-25675)
+ * outside the range of representable values of type 'long' and integer
+   overflow at MagickCore/pixel.c and MagickCore/cache.c (CVE-2020-25676)
+ * outside the range of representable values of type 'long' and signed integer
+   overflow at MagickCore/quantize.c (CVE-2020-27754)
+ * outside the range of representable values of type 'unsigned long long' at
+   MagickCore/quantum-private.h (CVE-2020-27757)
+ * outside the range of representable values of type 'unsigned long long' at
+   coders/txt.c (CVE-2020-27758)
+ * outside the range of representable values of type 'int' at
+   MagickCore/quantize.c (CVE-2020-27759)
+ * outside the range of representable values of type 'unsigned long' at
+   coders/palm.c (CVE-2020-27761)
+ * outside the range of representable values of type 'unsigned char' at
+   coders/hdr.c (CVE-2020-27762)
+ * outside the range of representable values of type 'unsigned long' at
+   MagickCore/statistic.c (CVE-2020-27764)
+ * outside the range of representable values of type 'unsigned long' at
+   MagickCore/statistic.c (CVE-2020-27766)
+ * outside the range of representable values of type 'float' at
+   MagickCore/quantum.h (CVE-2020-27767)
+ * outside the range of representable values of type 'unsigned int' at
+   MagickCore/quantum-private.h (CVE-2020-27768)
+ * outside the range of representable values of type 'float' at
+   MagickCore/quantize.c (CVE-2020-27769)
+ * unsigned offset overflowed at MagickCore/string.c (CVE-2020-27770)
+ * outside the range of representable values of type 'unsigned char' at
+   coders/pdf.c (CVE-2020-27771)
+ * outside the range of representable values of type 'unsigned int' at
+   coders/bmp.c (CVE-2020-27772)
+ * integer overflow at MagickCore/statistic.c (CVE-2020-27774)
+ * outside the range of representable values of type 'unsigned char' at
+   MagickCore/quantum.h (CVE-2020-27775)
+ * processing crafted file leads to division by zero (CVE-2021-20176)
+ * Division by zero in WriteJP2Image() in coders/jp2.c (CVE-2021-20241)
+ * Division by zero in ImplodeImage in MagickCore/visual-effects.c
+   (CVE-2021-20244)
+ * Division by zero in ScaleResampleFilter in MagickCore/resample.c
+   (CVE-2021-20246)
+bug: [52999]
+cve:
+- CVE-2020-25666
+- CVE-2020-25675
+- CVE-2020-25676
+- CVE-2020-27754
+- CVE-2020-27757
+- CVE-2020-27758
+- CVE-2020-27759
+- CVE-2020-27761
+- CVE-2020-27762
+- CVE-2020-27764
+- CVE-2020-27766
+- CVE-2020-27767
+- CVE-2020-27768
+- CVE-2020-27769
+- CVE-2020-27770
+- CVE-2020-27771
+- CVE-2020-27772
+- CVE-2020-27774
+- CVE-2020-27775
+- CVE-2021-20176
+- CVE-2021-20241
+- CVE-2021-20244
+- CVE-2021-20246
