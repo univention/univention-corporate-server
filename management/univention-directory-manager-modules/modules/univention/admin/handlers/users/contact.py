@@ -448,7 +448,7 @@ class object(univention.admin.handlers.simpleLdap):
 lookup = object.lookup
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	# FIXME is this if block needed? copy pasted from users/user
 	if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 		return False

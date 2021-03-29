@@ -271,5 +271,5 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	return b'organizationalRole' in attr.get('objectClass', []) and not attr.get('cn', []) == [b'univention'] and b'univentionBase' not in attr.get('objectClass', [])

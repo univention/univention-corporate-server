@@ -291,5 +291,5 @@ class object(univention.admin.handlers.simpleLdap):
 lookup = object.lookup
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	return b'sambaDomain' in attr.get('objectClass', []) and b'univentionDomain' not in attr.get('objectClass', [])

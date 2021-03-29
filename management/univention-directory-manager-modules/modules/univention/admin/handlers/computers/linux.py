@@ -290,5 +290,5 @@ class object(ComputerObject):
 lookup = object.lookup
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	return b'univentionHost' in attr.get('objectClass', []) and b'univentionLinuxClient' in attr.get('objectClass', []) and (b'posixAccount' in attr.get('objectClass', []) or (b'krb5KDCEntry' in attr.get('objectClass', []) and b'krb5Principal' in attr.get('objectClass', [])))

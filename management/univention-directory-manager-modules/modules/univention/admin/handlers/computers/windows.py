@@ -298,5 +298,5 @@ class object(ComputerObject):
 lookup = object.lookup
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	return b'univentionHost' in attr.get('objectClass', []) and b'univentionWindows' in attr.get('objectClass', []) and b'windows_domaincontroller' not in attr.get('univentionServerRole', [])

@@ -394,5 +394,5 @@ class object(univention.admin.handlers.simpleLdap):
 lookup = object.lookup
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	return b'univentionUDMProperty' in attr.get('objectClass', []) and attr.get('univentionUDMPropertyVersion', [b'0'])[0] == b'2'
