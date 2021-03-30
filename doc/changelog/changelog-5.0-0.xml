@@ -909,6 +909,9 @@
 					<package>OpenSSL</package> has been updated to version 1.1.1d.
 					This raises the minimal required TLS protocol version to TLS 1.2.
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-ssl</package> has been migrated to Python 3 (<u:bug>52281</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
