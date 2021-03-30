@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention SSL
@@ -47,7 +47,7 @@ def get_validity_date(certFile):
 	try:
 		x509 = X509.load_cert(certFile)
 		return str(x509.get_not_after())
-	except:
+	except Exception:
 		return None
 
 
@@ -57,13 +57,12 @@ def get_validity_days(certFile):
 	after = get_validity_date(certFile)
 	if after:
 		time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
-		return calendar.timegm(time_after) / 60 / 60 / 24
+		return calendar.timegm(time_after) // 60 // 60 // 24
 
 	return 0
 
 
 if __name__ == '__main__':
-
 	fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
 	caExpiry = False
 
