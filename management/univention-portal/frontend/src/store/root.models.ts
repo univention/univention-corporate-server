@@ -26,43 +26,15 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import createMenuStructure from '@/jsHelper/createMenuStructure';
-import addLanguageTile from '@/jsHelper/addLanguageTile';
-import createUserMenu from '@/jsHelper/createUserMenu';
-import { PortalModule } from '../types';
 
-export interface MenuState {
-  menu: Array<unknown>;
+import { Module } from 'vuex';
+
+export interface RootState {
+  isLoading: boolean;
 }
 
-const menu: PortalModule<MenuState> = {
-  namespaced: true,
-  state: {
-    menu: [],
-  },
+export type PortalModule<S> = Module<S, RootState>;
 
-  mutations: {
-    MENU(state, payload) {
-      const menuStructure = createMenuStructure(payload.portal);
-      const languageMenuLink = addLanguageTile(payload.availableLocales);
-      const userLinks = createUserMenu(payload.portal);
-      menuStructure.unshift(languageMenuLink);
-      if (userLinks) {
-        menuStructure.unshift(userLinks);
-      }
-      state.menu = menuStructure;
-    },
-  },
-
-  getters: {
-    getMenu: (state) => state.menu,
-  },
-
-  actions: {
-    setMenu({ commit }, payload) {
-      commit('MENU', payload);
-    },
-  },
+export const initialRootState: RootState = {
+  isLoading: true,
 };
-
-export default menu;

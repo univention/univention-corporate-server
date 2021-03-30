@@ -33,22 +33,32 @@ License with the Debian GNU/Linux or Univention distribution in file
       @backgroundClick="closeSidebar"
     >
       <flyout-wrapper
-        :is-visible="activeNotificationButton || activeMenuButton"
+        :is-visible="activeNotificationButton"
         class="portal-sidebar__flyout"
       >
         <!-- Side notifications -->
-        <div v-if="activeNotificationButton">
-          <div class="portal-sidebar__title">
-            <translate i18n-key="NOTIFICATIONS" />
-          </div>
-          <notification-bubble class="portal-sidebar__bubble">
-            <template #bubble-embedded>
-              <notification-bubble-slot bubble-container="embedded" />
-            </template>
-          </notification-bubble>
+        <div class="portal-sidebar__title">
+          <translate i18n-key="NOTIFICATIONS" />
         </div>
+        <notification-bubble class="portal-sidebar__bubble">
+          <template #bubble-embedded>
+            <notification-bubble-slot bubble-container="embedded" />
+          </template>
+        </notification-bubble>
+      </flyout-wrapper>
+      <flyout-wrapper
+        :is-visible="activeMenuButton"
+        class="portal-sidebar__flyout"
+      >
         <!-- Side navigation -->
-        <side-navigation v-if="activeMenuButton" />
+        <side-navigation />
+      </flyout-wrapper>
+      <flyout-wrapper
+        :is-visible="activeEditModeButton"
+        class="portal-sidebar__flyout"
+      >
+        <!-- Edit mode -->
+        <edit-mode-side-navigation v-if="activeEditModeButton" />
       </flyout-wrapper>
     </modal-wrapper>
   </div>
@@ -63,6 +73,7 @@ import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 import NotificationBubble from '@/components/globals/NotificationBubble.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
 import SideNavigation from '@/components/navigation/SideNavigation.vue';
+import EditModeSideNavigation from '@/components/navigation/EditModeSideNavigation.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
@@ -74,6 +85,7 @@ export default defineComponent({
     NotificationBubble,
     NotificationBubbleSlot,
     SideNavigation,
+    EditModeSideNavigation,
     Translate,
   },
   computed: {
@@ -88,6 +100,9 @@ export default defineComponent({
     },
     activeMenuButton(): boolean {
       return this.activeButton === 'menu';
+    },
+    activeEditModeButton(): boolean {
+      return this.activeButton === 'settings';
     },
   },
   methods: {
@@ -105,11 +120,6 @@ export default defineComponent({
     margin: calc(2 * var(--layout-spacing-unit)) 0
     margin-left: calc(2.5 * var(--layout-spacing-unit))
     font-size: 20px
-
-  &__flyout
-    width: 22rem
-    max-width: 22rem
-    min-height: 100vh
 
   &__bubble
     padding: 0 20px

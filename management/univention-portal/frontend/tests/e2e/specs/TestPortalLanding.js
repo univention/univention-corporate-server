@@ -25,9 +25,9 @@ describe('General Tests', () => {
     cy.get('.portal-tile__name').contains('span', 'Univention Blog');
     // Login notification?
     cy.get('.notification-bubble__title').contains('Anmelden');
-    cy.get('button[aria-label="Benachrichtigung schließen"]').click();
+    cy.get('button[aria-label="Benachrichtigung schließen"]').first().click();
+    cy.get('.notification-bubble__title').should('not.exist');
 
-    cy.contains('Anmelden').should('not.exist');
 
     // Mouseover tooltip?
     cy.get('#ownCloud').trigger('mouseover');
@@ -46,15 +46,11 @@ describe('General Tests', () => {
     bellbutton.click();
     bellbutton.should('have.class', 'header-button--is-active');
 
-    // can't click the bell again bc it's hidden beneath the modal
-    cy.get('.portal-modal--isVisible').click();
-    bellbutton.should('not.have.class', 'header-button--is-active');
-
     const menubutton = cy.get('[data-test="navigationbutton"]');
     menubutton.should('not.have.class', 'header-button--is-active');
     menubutton.click();
     menubutton.should('have.class', 'header-button--is-active');
-    cy.get('.portal-modal--isVisible').click();
+    cy.get('.modal-wrapper--isVisible').click();
 
     cy.get('[data-test="navigationbutton"]').click();
     cy.get('.portal-sidenavigation__link').contains('Anmelden');

@@ -26,8 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { Tooltip } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '../../root.models';
+import { Tooltip } from './tooltip.models';
 
 export interface TooltipState {
   tooltip: Tooltip | null,

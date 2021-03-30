@@ -53,6 +53,7 @@ export default defineComponent({
 .flyout-wrapper
   width: 22rem
   max-width: 22rem
+  min-height: 100vh
   position: fixed
   top:  calc(var(--portal-header-height) + 0.5rem)
   right: 0

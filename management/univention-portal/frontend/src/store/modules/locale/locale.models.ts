@@ -26,33 +26,5 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalModule } from '../types';
 
-export interface SearchState {
-  searchQuery: string,
-}
-
-const search: PortalModule<SearchState> = {
-  namespaced: true,
-  state: {
-    searchQuery: '',
-  },
-
-  mutations: {
-    SET_SEARCH_QUERY(state, payload) {
-      state.searchQuery = payload;
-    },
-  },
-
-  getters: {
-    searchQuery: (state) => state.searchQuery,
-  },
-
-  actions: {
-    setSearchQuery({ commit }, payload) {
-      commit('SET_SEARCH_QUERY', payload);
-    },
-  },
-};
-
-export default search;
+export type Locale = 'en' | 'en_US' | 'de_DE' | 'fr_FR';

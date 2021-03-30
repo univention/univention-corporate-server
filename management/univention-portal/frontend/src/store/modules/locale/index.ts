@@ -26,44 +26,39 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import axios, { AxiosResponse } from 'axios';
+import { updateLocale } from '@/i18n/translations';
+import { setCookie } from '@/jsHelper/tools';
+import { PortalModule } from '@/store/root.models';
+import { Locale } from './locale.models';
 
-import { getCookie } from '@/jsHelper/tools';
-
-function umc(path: string, options: any, flavor?: string): Promise<AxiosResponse<any>> {
-  const umcSessionId = getCookie('UMCSessionId');
-  const umcLang = getCookie('UMCLang');
-  const headers = {
-    'X-Requested-With': 'XMLHttpRequest',
-  };
-  if (umcLang) {
-    headers['Accept-Language'] = umcLang;
-  }
-  if (umcSessionId) {
-    headers['X-XSRF-Protection'] = umcSessionId;
-  }
-  const params: any = { options };
-  if (flavor) {
-    params.flavor = flavor;
-  }
-  return axios.post(`/univention/${path}`, params, { headers });
+export interface LocaleState {
+  locale: Locale;
 }
 
-function changePassword(oldPassword: string, newPassword: string): Promise<AxiosResponse<any>> {
-  return umc('set', {
-    password: {
-      password: oldPassword,
-      new_password: newPassword,
+const locale: PortalModule<LocaleState> = {
+  namespaced: true,
+  state: {
+    locale: 'en_US',
+  },
+
+  mutations: {
+    NEWLOCALE(state, payload) {
+      state.locale = payload;
     },
-  });
-}
+  },
 
-function udmPut(dn: string, attrs: any): Promise<AxiosResponse<any>> {
-  return umc('command/udm/put', [{
-    object: { ...attrs, $dn: dn },
-    options: null,
-  }],
-  'portals/all');
-}
+  getters: {
+    getLocale: (state) => state.locale,
+  },
 
-export { changePassword, umc, udmPut };
+  actions: {
+    setLocale({ commit }, payload: Locale) {
+      commit('NEWLOCALE', payload);
+      setCookie('UMCLang', payload.replace('_', '-'));
+      const localePrefix = payload.slice(0, 2);
+      return updateLocale(localePrefix);
+    },
+  },
+};
+
+export default locale;

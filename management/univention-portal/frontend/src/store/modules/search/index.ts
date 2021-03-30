@@ -26,34 +26,33 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { NavigationButton } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '@/store/root.models';
 
-export interface NavigationState {
-  activeButton: NavigationButton;
+export interface SearchState {
+  searchQuery: string,
 }
 
-const navigation: PortalModule<NavigationState> = {
+const search: PortalModule<SearchState> = {
   namespaced: true,
   state: {
-    activeButton: '',
+    searchQuery: '',
   },
 
   mutations: {
-    ACTIVEBUTTON(state, id) {
-      state.activeButton = id;
+    SET_SEARCH_QUERY(state, payload) {
+      state.searchQuery = payload;
     },
   },
 
   getters: {
-    getActiveButton: (state) => state.activeButton,
+    searchQuery: (state) => state.searchQuery,
   },
 
   actions: {
-    setActiveButton({ commit }, id) {
-      commit('ACTIVEBUTTON', id);
+    setSearchQuery({ commit }, payload) {
+      commit('SET_SEARCH_QUERY', payload);
     },
   },
 };
 
-export default navigation;
+export default search;

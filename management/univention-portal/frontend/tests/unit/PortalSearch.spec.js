@@ -1,6 +1,8 @@
-import {shallowMount} from '@vue/test-utils'
-import PortalSearch from '@/components/search/PortalSearch'
-import Vuex from 'vuex'
+import PortalSearch from '@/components/search/PortalSearch';
+import navigation from '@/store/modules/navigation';
+import { mount } from '@vue/test-utils';
+import Vuex from 'vuex';
+
 
 test('Test Portalsearch', async () => {
 
@@ -15,10 +17,27 @@ test('Test Portalsearch', async () => {
     The store should be tested separately
      */
 
-    const store = new Vuex.Store()
+    const state = {
+       activeButton: 'search'
+    }
+
+    const actions = {
+        setActiveButton: jest.fn()
+    }
+
+    const store = new Vuex.Store({
+        modules: {
+            navigation: {
+              state,
+              actions,
+              getters: navigation.getters,
+              namespaced: true
+            }
+          }
+    })
     store.dispatch = jest.fn()
 
-    const wrapper = await shallowMount(PortalSearch, {
+    const wrapper = await mount(PortalSearch, {
         global: {
             plugins: [store]
         },

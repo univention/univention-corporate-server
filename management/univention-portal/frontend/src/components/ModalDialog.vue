@@ -46,6 +46,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     <slot />
   </div>
 </template>
+
 <script>
 import { defineComponent } from 'vue';
 import Translate from '@/i18n/Translate.vue';
@@ -78,6 +79,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="stylus">
 .dialog
   padding: calc(2 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit))
@@ -98,10 +100,10 @@ export default defineComponent({
     button:last-of-type
       margin-left: auto
 
-.dialog__header
-  display: flex
-  align-items: center
+  &__header
+    display: flex
+    align-items: center
 
-  button
-    margin-left: auto
+    button
+      margin-left: auto
 </style>

@@ -139,6 +139,9 @@ import PortalToolTip from 'components/PortalToolTip.vue';
 import notificationMixin from '@/mixins/notificationMixin.vue';
 import Translate from '@/i18n/Translate.vue';
 
+import { Category } from '@/store/modules/portalData/portalData.models';
+import createCategories from '@/jsHelper/createCategories';
+
 // mocks
 import PopMenuDataCategories from '@/assets/data/popmenuCategories.json';
 
@@ -185,12 +188,19 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      categories: 'categories/getCategories',
+      portalContent: 'portalData/portalContent',
+      portalEntries: 'portalData/portalEntries',
+      portalFolders: 'portalData/portalFolders',
+      portalCategories: 'portalData/portalCategories',
+      portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
     }),
+    categories(): Category[] {
+      return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget);
+    },
   },
   methods: {
     closeAdminModal(): void {

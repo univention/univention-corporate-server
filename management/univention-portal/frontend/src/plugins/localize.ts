@@ -27,7 +27,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 // plugins/localize
-import { Locale } from '@/store/models';
+import { Locale } from '@/store/modules/locale/locale.models';
 import { App } from 'vue';
 import { store } from '../store';
 

@@ -221,14 +221,14 @@ export default defineComponent({
     if ((props.modalType === 'editCategory') || (props.modalType === 'addExistingCategory')) {
       // TODO: keys have to be provided in the portal.json in parallel to the title
 
-      getPortalCategories = computed(() => store.getters['categories/getCategories']);
+      getPortalCategories = computed(() => store.getters['portalData/portalCategories']);
     }
 
     // category edit mode
     if ((props.modalType === 'editCategory') && getPortalCategories) {
       const categoryTitle = getPortalCategories.value[props.categoryIndex];
-      categoryTitleDe = categoryTitle.title.de_DE;
-      categoryTitleEn = categoryTitle.title.en_US;
+      categoryTitleDe = categoryTitle.display_name.de_DE;
+      categoryTitleEn = categoryTitle.display_name.en_US;
 
       const dn = getPortalCategories.value[props.categoryIndex].dn;
       internalNameValue = dn.substring(
@@ -389,9 +389,6 @@ export default defineComponent({
       margin-left: calc(var(--layout-spacing-unit) * 2)
     &:last-of-type
       margin-right: calc(var(--layout-spacing-unit) * 2)
-
-    &--inner
-      padding: calc(var(--layout-spacing-unit) * 2)
 
   &__label
     &--error

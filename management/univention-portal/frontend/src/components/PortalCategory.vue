@@ -146,7 +146,7 @@ import PortalFolder from '@/components/PortalFolder.vue';
 import PortalTile from '@/components/PortalTile.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 
-import { Title, Tile, FolderTile } from '@/store/models';
+import { Title, Tile, FolderTile, Description, BaseTile } from '@/store/modules/portalData/portalData.models';
 
 interface PortalCategoryData {
   vTiles: Tile[],
@@ -240,10 +240,15 @@ export default defineComponent({
       return this.$localized(title).toLowerCase()
         .includes(this.searchQuery.toLowerCase());
     },
+    descriptionMatchesQuery(description: Description): boolean {
+      return this.$localized(description).toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    },
     tileMatchesQuery(tile: Tile): boolean {
       const titleMatch = this.titleMatchesQuery(tile.title);
+      const descriptionMatch = (tile as BaseTile).description ? this.descriptionMatchesQuery((tile as BaseTile).description as Description) : false;
       const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title));
-      return titleMatch || folderMatch;
+      return titleMatch || folderMatch || descriptionMatch;
     },
   },
 });

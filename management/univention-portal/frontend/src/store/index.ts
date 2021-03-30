@@ -31,7 +31,6 @@
 import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
-import categories from './modules/categories';
 import locale from './modules/locale';
 import menu from './modules/menu';
 import metaData from './modules/metaData';
@@ -43,7 +42,7 @@ import search from './modules/search';
 import tabs from './modules/tabs';
 import tooltip from './modules/tooltip';
 import user from './modules/user';
-import { RootState } from './types';
+import { initialRootState, RootState } from './root.models';
 
 // get env vars
 const portalUrl = process.env.VUE_APP_PORTAL_URL || '';
@@ -53,9 +52,66 @@ const portalMetaPath = process.env.VUE_APP_META_DATA || '/univention/meta.json';
 
 export const key: InjectionKey<Store<RootState>> = Symbol('');
 
+const getters = {
+  getLoadingState: (state) => state.isLoading,
+};
+
+const mutations = {
+  SET_LOADING_STATE(state, loadingState: boolean) {
+    state.isLoading = loadingState;
+  },
+};
+
+const actions = {
+  activateLoadingState({ commit }) {
+    commit('SET_LOADING_STATE', true);
+  },
+  deactivateLoadingState({ commit }) {
+    commit('SET_LOADING_STATE', false);
+  },
+  loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
+    console.log('Loading Portal...');
+
+    // Get portal data
+    const headers = {};
+    if (payload.adminMode) {
+      console.log('... in Admin mode');
+      headers['X-Univention-Portal-Admin-Mode'] = 'yes';
+    }
+    const portalRequest = axios.get(`${portalUrl}${portalJsonPath}`, { headers });
+    const portalPromises = [
+      `${portalUrl}${portalMetaPath}`, // Get meta data
+      `${portalUrl}${languageJsonPath}`, // Get locale data
+    ].map((url) => axios.get(url));
+    portalPromises.push(portalRequest);
+
+    axios.all(portalPromises).then(axios.spread((metaResponse, languageResponse, portalResponse) => {
+      const [meta, availableLocales, portal] = [metaResponse.data, languageResponse.data, portalResponse.data];
+      dispatch('metaData/setMeta', meta);
+      dispatch('menu/setMenu', { portal, availableLocales });
+      dispatch('portalData/setPortal', portal);
+      dispatch('user/setUser', {
+        user: {
+          username: portal.username,
+          displayName: portal.user_displayname,
+          mayEditPortal: portal.may_edit_portal,
+          mayLoginViaSAML: portal.may_login_via_saml,
+        },
+      });
+      resolve(portal);
+    }), (error) => {
+      reject(error);
+    });
+  }),
+};
+
 export const store = createStore<RootState>({
+  strict: process.env.NODE_ENV !== 'production',
+  state: initialRootState,
+  mutations,
+  actions,
+  getters,
   modules: {
-    categories,
     locale,
     menu,
     metaData,
@@ -67,61 +123,6 @@ export const store = createStore<RootState>({
     tabs,
     tooltip,
     user,
-  },
-  strict: process.env.NODE_ENV !== 'production',
-  state: {
-    isLoading: true,
-  },
-  mutations: {
-    SET_LOADING_STATE(state, loadingState: boolean) {
-      state.isLoading = loadingState;
-    },
-  },
-  actions: {
-    activateLoadingState({ commit }) {
-      commit('SET_LOADING_STATE', true);
-    },
-    deactivateLoadingState({ commit }) {
-      commit('SET_LOADING_STATE', false);
-    },
-    loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
-      console.log('Loading Portal...');
-
-      // Get portal data
-      const headers = {};
-      if (payload.adminMode) {
-        console.log('... in Admin mode');
-        headers['X-Univention-Portal-Admin-Mode'] = 'yes';
-      }
-      const portalRequest = axios.get(`${portalUrl}${portalJsonPath}`, { headers });
-      const portalPromises = [
-        `${portalUrl}${portalMetaPath}`, // Get meta data
-        `${portalUrl}${languageJsonPath}`, // Get locale data
-      ].map((url) => axios.get(url));
-      portalPromises.push(portalRequest);
-
-      axios.all(portalPromises).then(axios.spread((metaResponse, languageResponse, portalResponse) => {
-        const [meta, availableLocales, portal] = [metaResponse.data, languageResponse.data, portalResponse.data];
-        dispatch('metaData/setMeta', meta);
-        dispatch('menu/setMenu', { portal, availableLocales });
-        dispatch('portalData/setPortal', portal);
-        dispatch('categories/setOriginalArray', portal);
-        dispatch('user/setUser', {
-          user: {
-            username: portal.username,
-            displayName: portal.user_displayname,
-            mayEditPortal: portal.may_edit_portal,
-            mayLoginViaSAML: portal.may_login_via_saml,
-          },
-        });
-        resolve(portal);
-      }), (error) => {
-        reject(error);
-      });
-    }),
-  },
-  getters: {
-    getLoadingState: (state) => state.isLoading,
   },
 });
 

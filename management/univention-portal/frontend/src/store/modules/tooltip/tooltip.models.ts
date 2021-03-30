@@ -26,44 +26,11 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import axios, { AxiosResponse } from 'axios';
 
-import { getCookie } from '@/jsHelper/tools';
-
-function umc(path: string, options: any, flavor?: string): Promise<AxiosResponse<any>> {
-  const umcSessionId = getCookie('UMCSessionId');
-  const umcLang = getCookie('UMCLang');
-  const headers = {
-    'X-Requested-With': 'XMLHttpRequest',
-  };
-  if (umcLang) {
-    headers['Accept-Language'] = umcLang;
-  }
-  if (umcSessionId) {
-    headers['X-XSRF-Protection'] = umcSessionId;
-  }
-  const params: any = { options };
-  if (flavor) {
-    params.flavor = flavor;
-  }
-  return axios.post(`/univention/${path}`, params, { headers });
+export interface Tooltip {
+    title: string | null,
+    icon: string | null,
+    backgroundColor: string | null,
+    description: string,
+    ariaId: string,
 }
-
-function changePassword(oldPassword: string, newPassword: string): Promise<AxiosResponse<any>> {
-  return umc('set', {
-    password: {
-      password: oldPassword,
-      new_password: newPassword,
-    },
-  });
-}
-
-function udmPut(dn: string, attrs: any): Promise<AxiosResponse<any>> {
-  return umc('command/udm/put', [{
-    object: { ...attrs, $dn: dn },
-    options: null,
-  }],
-  'portals/all');
-}
-
-export { changePassword, umc, udmPut };

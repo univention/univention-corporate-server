@@ -26,52 +26,34 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalData } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '../../root.models';
+import { NavigationButton } from './navigation.models';
 
-export interface PortalDataState {
-  portal: PortalData;
-  editMode: boolean;
+export interface NavigationState {
+  activeButton: NavigationButton;
 }
 
-const portalData: PortalModule<PortalDataState> = {
+const navigation: PortalModule<NavigationState> = {
   namespaced: true,
   state: {
-    portal: {
-      portal: {
-        name: {
-          en_US: 'Univention Portal',
-        },
-        background: null,
-      },
-    },
-    editMode: false,
+    activeButton: '',
   },
 
   mutations: {
-    PORTALDATA(state, payload) {
-      state.portal = payload;
-    },
-    EDITMODE(state, editMode) {
-      state.editMode = editMode;
+    ACTIVEBUTTON(state, id) {
+      state.activeButton = id;
     },
   },
 
   getters: {
-    getPortal: (state) => state.portal,
-    portalName: (state) => state.portal.portal.name,
-    editMode: (state) => state.editMode,
+    getActiveButton: (state) => state.activeButton,
   },
 
   actions: {
-    setPortal({ commit }, payload) {
-      commit('PORTALDATA', payload);
-    },
-    async setEditMode({ dispatch, commit }, editMode) {
-      await dispatch('loadPortal', { adminMode: editMode }, { root: true });
-      commit('EDITMODE', editMode);
+    setActiveButton({ commit }, id) {
+      commit('ACTIVEBUTTON', id);
     },
   },
 };
 
-export default portalData;
+export default navigation;

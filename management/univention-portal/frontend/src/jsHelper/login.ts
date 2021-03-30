@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { User } from '@/store/models';
+import { User } from '@/store/modules/user/user.models';
 
 function login(user: User): void {
   if (user.mayLoginViaSAML) {

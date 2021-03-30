@@ -26,42 +26,43 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import createCategories from '@/jsHelper/createCategories';
-import { Category } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '@/store/root.models';
 
-export interface CategoryState {
-  categories: Category[];
+export interface MetaDataState {
+  meta: Record<string, unknown>;
 }
 
-const categories: PortalModule<CategoryState> = {
+const metaData: PortalModule<MetaDataState> = {
   namespaced: true,
   state: {
-    categories: [],
+    meta: {
+      cookieBanner: {
+        show: false,
+        title: {
+          en: '',
+        },
+        text: {
+          en: '',
+        },
+      },
+    },
   },
+
   mutations: {
-    SET_EMPTY(state) {
-      state.categories = [];
-    },
-    SET_REPLACE(state, payload: Category[]) {
-      state.categories = payload;
+    META(state, payload) {
+      state.meta = payload;
     },
   },
+
   getters: {
-    getCategories: (state) => state.categories,
+    getMeta: (state) => state.meta,
   },
+
   actions: {
-    setEmpty({ commit }) {
-      commit('SET_EMPTY');
-    },
-    setReplace({ commit }, payload: Category[]) {
-      commit('SET_REPLACE', payload);
-    },
-    setOriginalArray({ commit }, payload) {
-      const categoriesFromJSON: Category[] = createCategories(payload);
-      commit('SET_REPLACE', categoriesFromJSON);
+    setMeta({ commit }, payload) {
+      commit('META', payload);
     },
   },
 };
 
-export default categories;
+export default metaData;

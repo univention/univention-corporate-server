@@ -124,15 +124,10 @@ License with the Debian GNU/Linux or Univention distribution in file
     <button
       v-if="userState.mayEditPortal"
       class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
-      @click="toggleEditMode"
+      @click="startEditMode"
       @keydown.esc="closeNavigation"
     >
       <translate
-        v-if="editMode"
-        i18n-key="STOP_EDIT_PORTAL"
-      />
-      <translate
-        v-else
         i18n-key="EDIT_PORTAL"
       />
     </button>
@@ -219,9 +214,9 @@ export default defineComponent({
         this.subMenuClass = 'portal-sidenavigation__menu-item--hide';
       }
     },
-    toggleEditMode(): void {
-      this.$store.dispatch('portalData/setEditMode', !this.editMode);
-      this.closeNavigation();
+    startEditMode(): void {
+      this.$store.dispatch('portalData/setEditMode', true);
+      this.$store.dispatch('navigation/setActiveButton', 'settings');
     },
     setFadeClass(): string {
       let ret = '';

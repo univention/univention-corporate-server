@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalModule } from '../types';
+import { PortalModule } from '@/store/root.models';
 
 export interface ModalState {
   modalVisible: boolean;

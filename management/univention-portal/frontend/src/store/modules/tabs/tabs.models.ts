@@ -26,9 +26,11 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { Module } from 'vuex';
 
-export interface RootState {
-  isLoading: boolean;
+export interface Tab {
+    tabLabel: string,
+    ariaLabel: string,
+    closeIcon: string,
+    logo: string,
+    iframeLink: string
 }
-export type PortalModule<S> = Module<S, RootState>;

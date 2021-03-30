@@ -65,7 +65,8 @@ import { defineComponent, PropType } from 'vue';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import TileClick from '@/mixins/TileClick.vue';
-import { Locale } from '@/store/models';
+
+import { Locale } from '@/store/modules/locale/locale.models';
 
 export default defineComponent({
   name: 'MenuItem',

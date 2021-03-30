@@ -32,10 +32,14 @@ License with the Debian GNU/Linux or Univention distribution in file
     ref="searchInput"
     class="portal-search"
   >
-    <flyout-wrapper :is-visible="activeButton === 'search'">
+    <flyout-wrapper
+      :is-visible="activeButton === 'search'"
+      class="portal-search__wrapper"
+    >
       <input
         ref="portalSearchInput"
         v-model="portalSearch"
+        data-test="searchInput"
         type="text"
         class="portal-search__input"
         @input="searchTiles"
@@ -69,7 +73,6 @@ export default defineComponent({
     ...mapGetters({
       activeButton: 'navigation/getActiveButton',
       modalState: 'modal/modalState',
-      originalArray: 'categories/getCategories',
       searchQuery: 'search/searchQuery',
     }),
   },
@@ -93,22 +96,22 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-.portal-search {
-  &__input {
+.portal-search
+  &__input
     width: 100%;
     background-color: transparent;
     color: #fff;
-    border: 1px solid white;
+    border: 0.1rem solid white;
     border-radius: var(--border-radius-interactable);
+    background-color: var(--bgc-content-header)
     __border-radius: var(--border-radius-interactable);
     padding: var(--layout-spacing-unit) !important;
     box-sizing: border-box;
     margin-bottom: 0
 
-    &:focus {
+    &:focus
       border-color: var(--color-primary);
       outline: none;
-    }
-  }
-}
+  &__wrapper
+    background-color: rgba(0,0,0,0)
 </style>

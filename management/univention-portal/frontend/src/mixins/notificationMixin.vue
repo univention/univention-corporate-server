@@ -28,7 +28,6 @@
 -->
 <script>
 import { store } from '@/store';
-// import { WeightedNotification } from '@/store/models';
 import { mapGetters } from 'vuex';
 
 const notificationMixin = {

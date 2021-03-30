@@ -26,8 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { Tab } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '@/store/root.models';
+import { Tab } from './tabs.models';
 
 export interface TabState {
   activeTabIndex: number;

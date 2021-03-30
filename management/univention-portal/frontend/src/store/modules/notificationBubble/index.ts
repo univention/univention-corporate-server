@@ -26,8 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { FullNotification, Notification, WeightedNotification } from '../models';
-import { PortalModule } from '../types';
+import { PortalModule } from '../../root.models';
+import { FullNotification, Notification, WeightedNotification } from './notificationBubble.models';
 
 export interface NotificationBubbleState {
   visible: boolean;
