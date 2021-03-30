@@ -296,7 +296,7 @@ class Users(UDMBase):
 		self.selenium.enter_input("username", username)
 
 		self.selenium.click_button(_("Next"))
-		self.selenium.wait_for_text(_("Password *"))
+		self.selenium.wait_for_text(_("Password"))
 		self.selenium.enter_input("password_1", password)
 		self.selenium.enter_input("password_2", password)
 		self.selenium.click_button(_("Create user"))
