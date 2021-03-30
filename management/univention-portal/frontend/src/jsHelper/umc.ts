@@ -60,7 +60,7 @@ function changePassword(oldPassword: string, newPassword: string): Promise<Axios
 
 function udmPut(dn: string, attrs: any): Promise<AxiosResponse<any>> {
   return umc('command/udm/put', [{
-    object: { ...attrs, $dn: dn },
+    object: { ...attrs, $dn$: dn },
     options: null,
   }],
   'portals/all');
