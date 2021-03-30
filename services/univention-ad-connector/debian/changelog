@@ -1,3 +1,10 @@
+univention-ad-connector (14.0.6-2) unstable; urgency=medium
+
+  * Bug #53020: Put well-known group Console Logon which is created
+    by univention-samba4 on the ignorelist
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 30 Mar 2021 19:22:49 +0200
+
 univention-ad-connector (14.0.6-1) unstable; urgency=medium
 
   * Bug #52044: replace UCR filter based mapping with a real python
