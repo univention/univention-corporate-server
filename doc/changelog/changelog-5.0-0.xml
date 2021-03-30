@@ -230,6 +230,9 @@
 							The new <literal>listener.SetUID()</literal> can be used as a Python context manager and function decorator.
 							The old API using <literal>listener.setuid()</literal> and <literal>listener.unsettuid()</literal> is deprecated and should no longer be used (<u:bug>52447</u:bug>)
 					</simpara></listitem>
+					<listitem><simpara>
+						The package <package>univention-directory-replication</package> has been migrated to Python 3 (<u:bug>52300</u:bug>)
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 		</section>
