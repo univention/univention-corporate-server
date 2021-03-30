@@ -11,11 +11,6 @@ Package: univention-directory-replication
 Architecture: all
 Depends:
  pwgen,
- python-ldap,
- python-six,
- python-univention,
- python-univention-debug,
- python-univention-lib (>= 1.0.25-1),
  python3-ldap,
  python3-six,
  python3-univention,
