@@ -11,8 +11,6 @@ Package: univention-nfs-server
 Architecture: all
 Depends:
  nfs-kernel-server,
- python-six,
- python-univention-lib (>= 1.0.45),
  python3-six,
  python3-univention-lib,
  univention-base-files,
