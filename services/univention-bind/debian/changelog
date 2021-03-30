@@ -1,3 +1,9 @@
+univention-bind (14.0.1-1) unstable; urgency=medium
+
+  * Bug #52260: migrate univention-bind to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 30 Mar 2021 14:16:01 +0200
+
 univention-bind (14.0.0-14) unstable; urgency=medium
 
   * Bug #52885: Fix broken bind during package configuration phase
