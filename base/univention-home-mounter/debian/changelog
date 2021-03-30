@@ -1,3 +1,10 @@
+univention-home-mounter (11.0.1-1) unstable; urgency=medium
+
+  * Bug #43211: don't create homedir for users without
+    automountInformation
+
+ -- Florian Best <best@univention.de>  Tue, 30 Mar 2021 12:05:35 +0200
+
 univention-home-mounter (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

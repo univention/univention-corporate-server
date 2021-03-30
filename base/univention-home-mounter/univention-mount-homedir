@@ -143,7 +143,6 @@ def main():
 		sys.exit(0)
 	homeattr = get_homeattr(user.pw_name)
 	if not homeattr:
-		create_home(user)
 		sys.exit(0)
 	else:
 		(_, host, path, ) = parse_automount(homeattr)
