@@ -959,7 +959,7 @@
 			<title>NFS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>univention-nfs</package> has been migrated to Python 3 (<u:bug>52269</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
