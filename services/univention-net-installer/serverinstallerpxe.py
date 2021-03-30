@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #
 # Univention Server Installation
 #  listener module: creates PXE boot configurations

@@ -1,3 +1,9 @@
+univention-net-installer (13.0.2-1) unstable; urgency=medium
+
+  * Bug #52283: migrate univention-net-installer to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 30 Mar 2021 15:20:36 +0200
+
 univention-net-installer (13.0.1-2) unstable; urgency=low
 
   * Bug #52448: Remove univention-runit
