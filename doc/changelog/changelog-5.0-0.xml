@@ -807,7 +807,7 @@
 					with plain text passwords while using TLS/SSL (<u:bug>52724</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>univention-fetchmail</package> has been migrated to Python 3 (<u:bug>52282</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
