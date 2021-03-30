@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention RADIUS
@@ -36,7 +36,7 @@ from __future__ import print_function
 import shutil
 import os
 import tempfile
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 from univention.uldap import getMachineConnection
 
@@ -45,10 +45,10 @@ BASE_NAME = 'clients.univention.conf'
 
 
 def main():  # type: () -> None
-	parser = OptionParser()
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.parse_args()
 
-	with tempfile.NamedTemporaryFile(prefix='{}.tmp.'.format(BASE_NAME), dir=BASE_DIR, delete=False) as fd:
+	with tempfile.NamedTemporaryFile(mode='w', prefix='{}.tmp.'.format(BASE_NAME), dir=BASE_DIR, delete=False) as fd:
 		print('Updating clients.univention.conf')
 		fd.write('''# -*- text -*-
 #
@@ -65,11 +65,11 @@ def main():  # type: () -> None
 
 		lo = getMachineConnection(ldap_master=False)
 		for dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
-			hostname = attrs.get('cn', [None])[0]
-			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [None])[0]
-			ipaddr = attrs.get('aRecord', [None])[0] or attrs.get('aAAARecord', [None])[0]
-			nas_type = attrs.get('univentionRadiusClientType', ['other'])[0]
-			virtual_server = attrs.get('univentionRadiusClientVirtualServer', [None])[0]
+			hostname = attrs.get('cn', [b'None'])[0].decode('UTF-8')
+			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [b'None'])[0].decode('UTF-8')
+			ipaddr = attrs.get('aRecord', [b''])[0].decode('UTF-8') or attrs.get('aAAARecord', [b'None'])[0].decode('UTF-8')
+			nas_type = attrs.get('univentionRadiusClientType', [b'other'])[0].decode('UTF-8')
+			virtual_server = attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8')
 			if hostname and ipaddr and shared_secret:
 				print('Adding client {} ({})'.format(hostname, ipaddr))
 				fd.write('''client {} {{

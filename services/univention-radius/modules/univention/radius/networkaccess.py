@@ -32,8 +32,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+import codecs
 import logging
 
+import six
 from ldap.filter import filter_format
 import univention.uldap
 from ldap import SERVER_DOWN
@@ -45,10 +47,7 @@ DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_A
 
 
 def convert_network_access_attr(attributes):
-	access = attributes.get('univentionNetworkAccess')
-	if access == ['1']:
-		return True
-	return False
+	return b'1' in attributes.get('univentionNetworkAccess', [])
 
 
 def convert_ucs_debuglevel(ucs_debuglevel):
@@ -63,8 +62,8 @@ def decode_stationId(stationId):
 	# remove all non-hex characters, so different formats may be decoded
 	# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
 	stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
-	stationId = stationId.decode('hex')
-	return ':'.join([byte.encode('hex') for byte in stationId])
+	stationId = codecs.decode(stationId, 'hex')
+	return ':'.join(codecs.encode(six.int2byte(byte), 'hex').decode('ASCII') for byte in six.iterbytes(stationId))
 
 
 def parse_username(username):
@@ -79,14 +78,14 @@ def parse_username(username):
 def get_ldapConnection():
 	try:
 		# try ldap/server/name, then each of ldap/server/addition
-		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
+		return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
 	except SERVER_DOWN:
 		# then primary directory node
-		ldapConnection = univention.uldap.getMachineConnection()
-	return ldapConnection
+		return univention.uldap.getMachineConnection()
 
 
 class NetworkAccessError(Exception):
+
 	def __init__(self, msg):
 		self.msg = msg
 
@@ -228,10 +227,10 @@ class NetworkAccess(object):
 		self.logger.info('User is allowed to use RADIUS')
 		result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=['sambaNTPassword', 'sambaAcctFlags'])
 		try:
-			nt_password_hash = result[0][1]['sambaNTPassword'][0].decode('hex')
+			nt_password_hash = codecs.decode(result[0][1]['sambaNTPassword'][0], 'hex')
 		except (IndexError, KeyError, TypeError):
 			raise NoHashError('No valid NT-password-hash found. Check the "sambaNTPassword" attribute of the user.')
-		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0])
+		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0].decode('UTF-8'))
 		if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
 			raise UserDeactivatedError('Account is deactivated')
 		return nt_password_hash

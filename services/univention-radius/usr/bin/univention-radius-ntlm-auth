@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention RADIUS 802.1X
@@ -34,7 +34,8 @@
 
 from __future__ import print_function
 
-import optparse
+import codecs
+import argparse
 import sys
 
 from univention.radius import get_NetworkAccess
@@ -46,36 +47,24 @@ LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'
 
 
 def main():
-	parser = optparse.OptionParser()
-	parser.add_option('--request-nt-key', action='store_true', dest='requestNtKey')
-	parser.add_option('--username', dest='Username')
-	parser.add_option('--challenge', dest='Challenge')
-	parser.add_option('--nt-response', dest='Response')
-	parser.add_option('--station-id', dest='stationId')
-	(options, args, ) = parser.parse_args()
-	if not options.requestNtKey:
-		print('Missing required parameter --request-nt-key!')
-		return 1
-	if not options.Username:
-		print('Missing required parameter --username!')
-		return 1
-	if not options.Challenge:
-		print('Missing required parameter --challenge!')
-		return 1
-	if not options.Response:
-		print('Missing required parameter --nt-response!')
-		return 1
-	options.Challenge = options.Challenge.decode('hex')
-	options.Response = options.Response.decode('hex')
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--request-nt-key', action='store_true', required=True)
+	parser.add_argument('--username', required=True)
+	parser.add_argument('--challenge', required=True)
+	parser.add_argument('--nt-response', required=True)
+	parser.add_argument('--station-id')
+	options = parser.parse_args()
+	options.challenge = codecs.decode(options.challenge, 'hex')
+	options.nt_response = codecs.decode(options.nt_response, 'hex')
 	NetworkAccess = get_NetworkAccess()
-	networkAccess = NetworkAccess(options.Username, options.stationId, logfile=LOGFIILE)
+	networkAccess = NetworkAccess(options.username, options.station_id, logfile=LOGFIILE)
 	try:
 		PasswordHash = networkAccess.getNTPasswordHash()
 	except NetworkAccessError as exc:
 		PasswordHash = None
 		networkAccess.logger.warning(exc.msg)
-	if PasswordHash and pyMsChapV2.ChallengeResponse(options.Challenge, PasswordHash) == options.Response:
-		print('NT_KEY: %s' % (pyMsChapV2.HashNtPasswordHash(PasswordHash).encode('hex').upper(), ))
+	if PasswordHash and pyMsChapV2.ChallengeResponse(options.challenge, PasswordHash) == options.nt_response:
+		print('NT_KEY: %s' % (codecs.encode(pyMsChapV2.HashNtPasswordHash(PasswordHash), 'hex').decode('ASCII').upper(), ))
 		return 0
 	else:
 		print('Logon failure (0xc000006d)')

@@ -31,10 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-# ucs-school-radius-802.1x is still using pysupport
-__path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore
-
-
 def get_NetworkAccess():
 	try:
 		# Use the extended UCS@school network access check if installed

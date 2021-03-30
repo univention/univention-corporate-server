@@ -18,7 +18,7 @@ Depends:
  freeradius,
  freeradius-ldap,
  freeradius-utils,
- python-univention-radius,
+ python3-univention-radius,
  shell-univention-lib (>= 2.0.17-1),
  univention-config,
  univention-directory-listener (>= 13.0.0-2),
@@ -31,6 +31,7 @@ Description: freeradius 802.1X integration package for Univention Corporate Serv
 Package: python-univention-radius
 Architecture: any
 Depends:
+ python-ldap,
  python-passlib,
  python-univention (>= 12.0.0-5),
  ${misc:Depends},
@@ -43,6 +44,7 @@ Description:
 Package: python3-univention-radius
 Architecture: any
 Depends:
+ python3-ldap,
  python3-passlib,
  python3-univention,
  ${misc:Depends},

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention RADIUS 802.1X
@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import codecs
 import hashlib
 import passlib.crypto.des
 
@@ -46,23 +47,22 @@ def DesEncrypt(data, key):
 	return passlib.crypto.des.des_encrypt_block(key, data)
 
 
-def HashNtPasswordHash(PasswordHash):
-	PasswordHashHash = md4(PasswordHash)
-	return PasswordHashHash
+def HashNtPasswordHash(passwordhash):
+	return md4(passwordhash)
 
 
-def ChallengeResponse(Challenge, PasswordHash):
-	ZPasswordHash = PasswordHash.ljust(21, '\0')
-	Response = DesEncrypt(Challenge, ZPasswordHash[0:7])
-	Response += DesEncrypt(Challenge, ZPasswordHash[7:14])
-	Response += DesEncrypt(Challenge, ZPasswordHash[14:21])
-	return Response
+def ChallengeResponse(challenge, passwordhash):
+	z_password_hash = passwordhash.ljust(21, b'\0')
+	response = DesEncrypt(challenge, z_password_hash[0:7])
+	response += DesEncrypt(challenge, z_password_hash[7:14])
+	response += DesEncrypt(challenge, z_password_hash[14:21])
+	return response
 
 
 def executeTestVectors():
-	PasswordHash = '\x44\xEB\xBA\x8D\x53\x12\xB8\xD6\x11\x47\x44\x11\xF5\x69\x89\xAE'
-	PasswordHashHash = '\x41\xC0\x0C\x58\x4B\xD2\xD9\x1C\x40\x17\xA2\xA1\x2F\xA5\x9F\x3F'
-	assert HashNtPasswordHash(PasswordHash) == PasswordHashHash
+	password_hash = b'\x44\xEB\xBA\x8D\x53\x12\xB8\xD6\x11\x47\x44\x11\xF5\x69\x89\xAE'
+	password_hash_hash = b'\x41\xC0\x0C\x58\x4B\xD2\xD9\x1C\x40\x17\xA2\xA1\x2F\xA5\x9F\x3F'
+	assert HashNtPasswordHash(password_hash) == password_hash_hash
 
 	test_ntlm = [
 		# key, data, resp
@@ -79,8 +79,9 @@ def executeTestVectors():
 		('00563126f04f3875c417f789b00e72d2', '5355f4fc60c8888a', '9681672b365655d0592c3e4009547b9e11bc751b6e97943b'),
 	]
 
-	for key, data, resp in test_ntlm:
-		assert resp == ChallengeResponse(data.decode('hex'), key.decode('hex')).encode('hex')
+	for key, data, expected_resp in test_ntlm:
+		resp = codecs.encode(ChallengeResponse(codecs.decode(data, 'hex'), codecs.decode(key, 'hex')), 'hex').decode('ASCII')
+		assert expected_resp == resp, (resp, '!=', expected_resp)
 	print('ChallengeResponse tests: OK')
 
 
