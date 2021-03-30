@@ -879,7 +879,7 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>univention-radius</package> has been migrated to Python 3 (<u:bug>52286</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
