@@ -96,6 +96,4 @@ call_joinscript 81univention-ad-connector.inst
 
 #DEBHELPER#
 
-systemctl try-restart univention-management-console-server
-
 exit 0
