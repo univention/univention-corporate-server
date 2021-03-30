@@ -37,7 +37,7 @@ if [ "$1" = "remove" ]; then
 	call_unjoinscript 10univention-samba4wins.uinst
 fi
 if [ "$1" = "purge" ]; then
-	rm -f /etc/samba4wins/samba4wins.conf /etc/samba/smb.conf.d/62univention-samba_4wins
+	rm -f /etc/samba4wins/samba4wins.conf
 	rmdir /etc/samba4wins || true
 fi
 
