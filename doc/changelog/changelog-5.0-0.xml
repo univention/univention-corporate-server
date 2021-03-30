@@ -61,7 +61,7 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+				The package <package>univention-net-installer</package> has been migrated to Python 3 (<u:bug>52283</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
