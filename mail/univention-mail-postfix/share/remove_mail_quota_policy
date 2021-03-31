@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7 -u
+#!/usr/bin/python3 -u
 #
 # Univention mail server
 #  remove deprecated Cyrus mail quota policy objects
@@ -37,8 +37,9 @@ import sys
 import copy
 import logging
 from argparse import ArgumentParser
-from ldap import explode_dn
+
 from ldap.filter import filter_format
+
 from univention.admin import uldap
 from univention.config_registry import ConfigRegistry
 import univention.admin.modules
@@ -120,8 +121,8 @@ class QuotaRemoval(object):
 			self.logger.info('    none found.')
 			return self.mail_quota_ldap_objs
 		for dn, attr in self.mail_quota_ldap_objs:
-			self.logger.info('    %s', attr['cn'][0])
-			self.logger.info('        Quota: %s', attr['univentionMailQuotaMB'][0])
+			self.logger.info('    %s', attr['cn'][0].decode('UTF-8'))
+			self.logger.info('        Quota: %s', attr['univentionMailQuotaMB'][0].decode('UTF-8'))
 			self.logger.info('        DN: %r', dn)
 			attr['__referenced_by'] = self.lo.search(filter_format('univentionPolicyReference=%s', (dn,)))
 			for ref_dn, ref_attr in attr['__referenced_by']:
@@ -130,22 +131,20 @@ class QuotaRemoval(object):
 
 	def remove_policies(self):
 		for dn, attr in self.mail_quota_ldap_objs:
-			self.logger.info('* %s: removing policy references.', attr['cn'][0])
+			self.logger.info('* %s: removing policy references.', attr['cn'][0].decode('UTF-8'))
 			if not attr['__referenced_by']:
 				self.logger.info('    no policy references.')
 			for ref_dn, ref_attr in attr['__referenced_by']:
 				self.logger.info('    removing policy reference from %r.', ref_dn)
 				try:
-					module_name = ref_attr['univentionObjectType'][0]
+					module_name = ref_attr['univentionObjectType'][0].decode('UTF-8')
 					self.logger.debug('        univentionObjectType=%r', module_name)
 					mod = self.get_udm_module(module_name)
 				except (IndexError, KeyError):
 					mod = None
 				if mod:
 					self.logger.debug('        using UDM.')
-					filter_s = explode_dn(ref_dn, 0)[0]
-					base = ','.join(explode_dn(ref_dn, 0)[1:])
-					obj = mod.lookup(None, self.lo, filter_s, base=base)[0]
+					obj = mod.lookup(None, self.lo, '', base=ref_dn, scope='base')[0]
 					obj.open()
 					obj.policies.remove(dn)
 					if self.modify:
@@ -156,7 +155,7 @@ class QuotaRemoval(object):
 				else:
 					self.logger.debug('        no UDM module, removing directly from LDAP.')
 					pr_new = list(ref_attr['univentionPolicyReference'])
-					pr_new.remove(dn)
+					pr_new.remove(dn.encode('UTF-8'))
 					if self.modify:
 						self.lo.modify(
 							ref_dn,
@@ -166,13 +165,11 @@ class QuotaRemoval(object):
 					else:
 						self.logger.info('        skipping (dry-run).')
 
-			self.logger.info('* %s: removing policy (%r).', attr['cn'][0], dn)
+			self.logger.info('* %s: removing policy (%r).', attr['cn'][0].decode('UTF-8'), dn)
 			mod = self.get_udm_module('policies/mailquota')
 			if mod:
 				self.logger.debug('    using UDM')
-				filter_s = explode_dn(dn, 0)[0]
-				base = ','.join(explode_dn(dn, 0)[1:])
-				obj = mod.lookup(None, self.lo, filter_s, base=base)[0]
+				obj = mod.lookup(None, self.lo, '', base=dn, scope='base')[0]
 				if self.modify:
 					obj.remove()
 					self.logger.info('    done.')

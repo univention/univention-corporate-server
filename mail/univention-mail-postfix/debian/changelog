@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.1-1) unstable; urgency=medium
+
+  * Bug #52255: Migrate univention-mail-postfix to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 31 Mar 2021 11:54:43 +0200
+
 univention-mail-postfix (14.0.0-4) unstable; urgency=low
 
   * Bug #52842: ldap_tables: "search_timeout" has been renamed to "timeout"

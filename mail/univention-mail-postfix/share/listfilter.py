@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7 -u
+#!/usr/bin/python3 -u
 #
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
@@ -31,23 +31,24 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import univention.uldap
-import optparse
 import sys
 import re
 import traceback
+import argparse
 import syslog
+
 from ldap.filter import filter_format
+
+import univention.uldap
 from univention.config_registry import ConfigRegistry
 import univention.admin.modules
 
-usage = "help"
-parser = optparse.OptionParser(usage=usage)
-parser.add_option("-b", "--ldap_base", dest="ldap_base", help="ldap base")
-parser.add_option("-s", "--sender", dest="sender", help="sender address (for use with -t)")
-parser.add_option("-r", "--recipient", dest="recipient", help="sender address (for use with -t)")
-parser.add_option("-t", "--test", dest="test", help="test run", action="store_true", default=False)
-options, args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument("-b", "--ldap_base", help="ldap base")
+parser.add_argument("-s", "--sender", help="sender address (for use with -t)")
+parser.add_argument("-r", "--recipient", help="sender address (for use with -t)")
+parser.add_argument("-t", "--test", help="test run", action="store_true", default=False)
+options = parser.parse_args()
 
 syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
 ucr = ConfigRegistry()
@@ -103,9 +104,9 @@ def listfilter(attrib):
 			if result:
 				# get allowed user and group dns
 				for g in result[0][1].get("univentionAllowedEmailGroups", []):
-					allowed_group_dns.append(g)
+					allowed_group_dns.append(g.decode('UTF-8'))
 				for u in result[0][1].get("univentionAllowedEmailUsers", []):
-					allowed_user_dns.append(u)
+					allowed_user_dns.append(u.decode('UTF-8'))
 
 				# check if there are restrictions, check sender first
 				if allowed_user_dns or allowed_group_dns:
@@ -118,10 +119,7 @@ def listfilter(attrib):
 
 					# get dn and groups of sender
 					if check_sasl_username:
-						user_filter = filter_format(
-							'(uid=%s)',
-							(sender,)
-						)
+						user_filter = filter_format('(uid=%s)', (sender,))
 					else:
 						user_filter = filter_format(
 							'(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))',
@@ -156,7 +154,7 @@ def listfilter(attrib):
 								nested = ldap.getAttr(a, 'uniqueMember')
 								debug("nested=%r", nested)
 								for b in users_groups:
-									if b in nested:
+									if b.encode('UTF-8') in nested:
 										return "DUNNO allowed per nested group"
 
 					return "REJECT Access denied for %s to restricted list %s" % (sender, recipient)
