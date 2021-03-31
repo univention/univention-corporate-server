@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="setup" icon="language-settings" version="1.0">
-		<flavor priority="50" id="languages">
+	<module id="setup" version="1.0">
+		<flavor priority="50" icon="language-settings" id="languages">
 			<name>Language settings</name>
 			<description>All language-related settings</description>
 			<keywords>timezone,locale,keyboard</keywords>

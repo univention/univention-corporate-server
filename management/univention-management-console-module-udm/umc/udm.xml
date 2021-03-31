@@ -63,7 +63,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" icon="computers" iconsid="computers/computer">
+		<flavor priority="50" icon="computers" id="computers/computer">
 			<name>Computers</name>
 			<description>Management of computers in the domain</description>
 			<keywords>computers</keywords>
