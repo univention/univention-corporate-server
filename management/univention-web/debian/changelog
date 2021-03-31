@@ -1,3 +1,9 @@
+univention-web (4.0.1-23) unstable; urgency=medium
+
+  * Bug #52453: adjust style for ul and ol tags
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 31 Mar 2021 09:01:20 +0200
+
 univention-web (4.0.1-22) unstable; urgency=medium
 
   * Bug #52453: adjust design
