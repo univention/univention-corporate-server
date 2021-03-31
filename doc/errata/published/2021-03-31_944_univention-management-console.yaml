@@ -9,3 +9,5 @@ desc: |
  * Fix translation of a pwdQuality related error message
    which led to german/english mix in UMC
 bug: [52198]
+erratum: 944
+announced: 2021-03-31
