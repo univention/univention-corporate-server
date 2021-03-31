@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-nagios-servicechecks
-fix: 8.0.1-2A~4.4.0.202103222041
+fix: 8.0.1-2A~4.4.0.202103311837
 desc: |
  This update addresses the following issue(s):
  * A unjoinscript for univention-nagios-dansguardian has been added.
