@@ -544,7 +544,7 @@
 			<title>Mail</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>univention-mail-postfix</package> has been migrated to Python 3 (<u:bug>52255</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
