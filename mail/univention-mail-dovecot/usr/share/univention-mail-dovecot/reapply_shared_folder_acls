@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - reapply shared folder ACLs
@@ -31,7 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import optparse
+import argparse
+
+import ldap.filter
+
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 from univention.uldap import getMachineConnection
@@ -51,13 +54,10 @@ class ListenerMockup(object):
 
 
 def main():
-	usage = '''%prog [-v] [-n]
-
-Reapplies the ACLs to all shared IMAP folder on this system.'''
-	parser = optparse.OptionParser(usage=usage)
-	parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true", help="show verbose output additionally on stdout")
-	parser.add_option("-n", "--dry-run", dest="dryrun", default=False, action="store_true", help="perform dry run without changes")
-	(options, _) = parser.parse_args()
+	parser = argparse.ArgumentParser(description='Reapplies the ACLs to all shared IMAP folder on this system.')
+	parser.add_argument("-v", "--verbose", action="store_true", help="show verbose output additionally on stdout")
+	parser.add_argument("-n", "--dry-run", action="store_true", help="perform dry run without changes")
+	options = parser.parse_args()
 
 	# open log file
 	ud.init('/var/log/univention/reapply_shared_folder_acls.log', ud.NO_FLUSH, ud.NO_FUNCTION)
@@ -72,10 +72,10 @@ Reapplies the ACLs to all shared IMAP folder on this system.'''
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	ldapfilter = '(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))' % (
-		ucr.get('hostname'),
-		ucr.get('domainname'),
-	)
+	ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))', (
+		ucr['hostname'],
+		ucr['domainname'],
+	))
 
 	log(ud.INFO, 'Initialising reapply_shared_folder_acls...')
 	lm = ListenerMockup(ucr)
@@ -88,7 +88,7 @@ Reapplies the ACLs to all shared IMAP folder on this system.'''
 		log(ud.PROCESS, 'DN: %r' % (dn,))
 		attrs_old = copy.deepcopy(attrs_new)
 		attrs_old[dl.acl_key] = []
-		if not options.dryrun:
+		if not options.dry_run:
 			dl.mod_shared_folder(attrs_old, attrs_new)
 			log(ud.PROCESS, 'ACLs updated')
 		else:

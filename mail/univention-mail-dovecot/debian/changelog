@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.2-1) unstable; urgency=medium
+
+  * Bug #52254: Migrate univention-mail-dovecot to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 31 Mar 2021 12:24:42 +0200
+
 univention-mail-dovecot (6.0.1-4) unstable; urgency=medium
 
   * Bug #52241: added dovecot filter functionality to handler function

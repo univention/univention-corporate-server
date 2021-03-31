@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Univention Mail Dovecot
 # postlogin script to supply user groups information to dovecot

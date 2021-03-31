@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - listener module: add/edit/remove mailboxes

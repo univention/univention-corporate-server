@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - listener module: manages shared folders
@@ -131,10 +132,10 @@ def handler(dn, new, old):
 
 	# ignore object, if this local system is not affected
 
-	if not (
-		(fqdn == new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()) or
-		(fqdn == old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower())
-	):
+	new_mail_home_server = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+	old_mail_home_server = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+
+	if fqdn not in (new_mail_home_server, old_mail_home_server):
 		return
 
 	listener.configRegistry.load()
@@ -143,21 +144,14 @@ def handler(dn, new, old):
 	#
 	# Create a new shared folder
 	#
-	if (new and not old) \
-		or ('univentionMailHomeServer' not in old) \
-		or (
-			'univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and
-			new['univentionMailHomeServer'][0].lower() != old['univentionMailHomeServer'][0].lower() and
-			new['univentionMailHomeServer'][0].decode('UTF-8').lower() == fqdn):
+	if (new and not old) or (new_mail_home_server != old_mail_home_server and new_mail_home_server == fqdn):
 		dl.add_shared_folder(new)
 		return
 
 	#
 	# Delete existing shared folder
 	#
-	if (old and not new) \
-		or ("univentionMailHomeServer" not in new) \
-		or (not new["univentionMailHomeServer"][0].decode('UTF-8').lower() == fqdn):
+	if (old and not new) or new_mail_home_server != fqdn:
 		dl.del_shared_folder(old)
 		return
 
