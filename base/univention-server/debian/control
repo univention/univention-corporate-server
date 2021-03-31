@@ -141,6 +141,7 @@ Depends:
  univention-home-mounter,
  univention-network-common,
  univention-ldap-client,
+ univention-initrd,
  univention-mail-postfix,
  univention-maintenance,
  univention-nfs-server,

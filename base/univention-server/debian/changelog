@@ -1,3 +1,10 @@
+univention-server (15.0.3-5) unstable; urgency=low
+
+  * Bug #52993: add dependency to univention-initrd that was lost due to
+    removal of univention-kernel-image
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Mar 2021 11:08:01 +0200
+
 univention-server (15.0.3-4) unstable; urgency=medium
 
   * Bug #52957: moved removed packages of ucs5 from the check function of the
