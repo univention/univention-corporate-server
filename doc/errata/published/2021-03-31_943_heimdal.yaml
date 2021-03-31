@@ -9,3 +9,5 @@ desc: |
  * More specific error messages are passed through
    to the UMC in case of a failed pwdQuality check
 bug: [52198]
+erratum: 943
+announced: 2021-03-31
