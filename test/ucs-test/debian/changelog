@@ -1,3 +1,9 @@
+ucs-test (10.0.4-46) unstable; urgency=medium
+
+  * Bug #51195: skipp 00_checks/04_check_root_password on updated systems
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Mar 2021 11:58:32 +0200
+
 ucs-test (10.0.4-45) unstable; urgency=medium
 
   * Bug #52953: increased timeout for app install and changed wait for field
