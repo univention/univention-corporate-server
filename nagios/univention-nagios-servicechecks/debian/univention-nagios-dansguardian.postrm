@@ -37,4 +37,8 @@ if [ "$1" = "remove" ]; then
 	call_unjoinscript 65univention-nagios-dansguardian.uinst
 fi
 
+if [ "$1" = "purge" ]; then
+	rm -f /etc/nagios-plugins/config/univention-nagios-dansguardian.cfg
+fi
+
 exit 0
