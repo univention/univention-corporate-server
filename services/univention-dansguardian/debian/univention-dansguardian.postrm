@@ -37,4 +37,44 @@ if [ "$1" = "remove" ]; then
 	call_unjoinscript 21univention-dansguardian.uinst
 fi
 
+if [ "$1" = "purge" ]; then
+	rm -f \
+		/etc/dansguardian/dansguardian.conf \
+		/etc/dansguardian/dansguardianfX.conf \
+		/etc/dansguardian/dansguardianf[0-9]*.conf \
+		/etc/dansguardian/lists/exceptionfileurllist \
+		/etc/dansguardian/lists/bannedurllist \
+		/etc/dansguardian/lists/exceptionmimetypelist \
+		/etc/dansguardian/lists/exceptioniplist \
+		/etc/dansguardian/lists/bannedregexpheaderlist \
+		/etc/dansguardian/lists/exceptionphraselist \
+		/etc/dansguardian/lists/authplugins/ipgroups \
+		/etc/dansguardian/lists/logsitelist \
+		/etc/dansguardian/lists/exceptionurllist \
+		/etc/dansguardian/lists/headerregexplist \
+		/etc/dansguardian/lists/weightedphraselist \
+		/etc/dansguardian/lists/bannedmimetypelist \
+		/etc/dansguardian/lists/exceptionregexpurllist \
+		/etc/dansguardian/lists/bannedphraselist \
+		/etc/dansguardian/lists/greysitelist \
+		/etc/dansguardian/lists/contentregexplist \
+		/etc/dansguardian/lists/bannedregexpurllist \
+		/etc/dansguardian/lists/contentscanners/exceptionvirussitelist \
+		/etc/dansguardian/lists/contentscanners/exceptionvirusurllist \
+		/etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist \
+		/etc/dansguardian/lists/contentscanners/exceptionvirusmimetypelist \
+		/etc/dansguardian/lists/bannedextensionlist \
+		/etc/dansguardian/lists/logregexpurllist \
+		/etc/dansguardian/lists/filtergroupslist \
+		/etc/dansguardian/lists/logurllist \
+		/etc/dansguardian/lists/exceptionsitelist \
+		/etc/dansguardian/lists/urlregexplist \
+		/etc/dansguardian/lists/greyurllist \
+		/etc/dansguardian/lists/bannediplist \
+		/etc/dansguardian/lists/exceptionfilesitelist \
+		/etc/dansguardian/lists/exceptionextensionlist \
+		/etc/dansguardian/lists/bannedsitelist
+	find /etc/univention/templates/files/etc/dansguardian/lists/ -maxdepth 1 -type f -delete
+fi
+
 exit 0
