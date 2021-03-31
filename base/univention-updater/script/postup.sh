@@ -217,14 +217,14 @@ for service in libvirtd virtlogd ; do
 			systemctl unmask "${service:-}.service" >&3 2>&3
 			if [ "${state:-}" = "disabled" ] ; then
 				systemctl disable "${service:-}.service" >&3 2>&3
-			elif [ "${state:-}" = "enabled" ] ; then
+			elif [ "${state:-}" = "enabled" ] || [ "${state:-}" = "indirect" ] ; then
 				systemctl enable "${service:-}.service" >&3 2>&3
 				systemctl start "${service:-}.service" >&3 2>&3
 			else
-				echo "Unknown state of ${service:-}.service - doing nothing" >&3
+				echo "WARNING: unknown state of ${service:-}.service - doing nothing" >&3
 			fi
 		fi
-		ucr unset "^update/service/libvirt/${service:-}" >&3 2>&3
+		ucr unset "update/service/libvirt/${service:-}" >&3 2>&3
 	fi
 done
 
