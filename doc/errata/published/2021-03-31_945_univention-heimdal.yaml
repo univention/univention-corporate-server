@@ -10,3 +10,5 @@ desc: |
    the heimdal-kdc. This is necessary to allow
    for the mspwdpolicy feature to work correctly.
 bug: [52198]
+erratum: 945
+announced: 2021-03-31
