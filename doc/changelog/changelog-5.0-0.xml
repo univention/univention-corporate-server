@@ -301,7 +301,7 @@
 					The creation of the portal entry for the <ulink url="https://www.univention.com/news/blog-en/">Univention Blog</ulink> has been fixed when installing from DVD (<u:bug>45787</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The portal is now modularized and can be generously configured (<u:bug>52512</u:bug>)
+					The portal is now modularized and can be generously configured (<u:bug>52512</u:bug>, <u:bug>52125</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					Links can now be localized, i.e. the tiles point to different URLs depending on the user's locale (<u:bug>45918</u:bug>)
