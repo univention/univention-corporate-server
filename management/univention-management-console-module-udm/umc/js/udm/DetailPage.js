@@ -656,9 +656,6 @@ define([
 			var optionMap = {};
 			array.forEach(_properties, function(iprop) {
 				// ignore internal properties
-				if (iprop.id === '$references$') {
-					iprop.size = 'Two';
-				}
 				if (iprop.id.slice(0, 1) == '$' && iprop.id.slice(-1) == '$') {
 					properties.push(iprop);
 					return;

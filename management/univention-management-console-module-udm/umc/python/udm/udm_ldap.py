@@ -998,7 +998,7 @@ class UDM_Module(object):
 
 			props.append(item)
 		props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
-		props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True})
+		props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True, 'size': 'Two'})
 
 		return props
 
