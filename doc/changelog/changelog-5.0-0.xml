@@ -544,7 +544,7 @@
 			<title>Mail</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package <package>univention-mail-postfix</package> has been migrated to Python 3 (<u:bug>52255</u:bug>).
+					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -808,6 +808,12 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-fetchmail</package> has been migrated to Python 3 (<u:bug>52282</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-mail-postfix</package> has been migrated to Python 3 (<u:bug>52255</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-mail-dovecot</package> has been migrated to Python 3 (<u:bug>52254</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
