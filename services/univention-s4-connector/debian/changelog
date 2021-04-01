@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.6-8) unstable; urgency=medium
+
+  * Bug #53023: Fix typo in UCR variable name registration
+
+ -- Arvid <requate@univention.de>  Thu, 01 Apr 2021 11:24:54 +0200
+
 univention-s4-connector (14.0.6-7) unstable; urgency=medium
 
   * Bug #52043: replace UCR filter based mapping with a real python

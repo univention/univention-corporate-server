@@ -220,7 +220,7 @@ Description[en]=If this option is activated, a SID configured in UCS LDAP is syn
 Type=bool
 Categories=service-s4con
 
-[connector/s4/mapping/sid/sid_to_ucs]
+[connector/s4/mapping/sid_to_ucs]
 Description[de]=Ist diese Option aktiviert, wird eine im Samba 4-LDAP gesetzte SID in den UCS-Verzeichnisdienst synchronisiert. Ist die Variable nicht gesetzt, wird die SID synchronisiert.
 Description[en]=If this option is activated, a SID configured in Samba 4 LDAP is synchronised to the UCS LDAP directory. If the variable is unset the SID is synchronised.
 Type=bool
