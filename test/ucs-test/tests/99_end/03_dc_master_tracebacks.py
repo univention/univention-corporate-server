@@ -24,5 +24,9 @@ def test_fetch_logfiles_on_dc_master(testfile, ucr):
 		except subprocess.CalledProcessError as exc:
 			raise Exception(exc.output)
 
-		assert not subprocess.call("""univention-ssh %s root@%s '/usr/share/ucs-test/99_end/%s -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(testfile)), shell=True)
+		try:
+			subprocess.check_call("""univention-ssh %s root@%s '/usr/share/ucs-test/99_end/%s -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(testfile)), shell=True)
+		except subprocess.CalledProcessError as exc:
+			print(exc.output.decode('UTF-8', 'replace'))
+			assert not exc.returncode, exc.returncode
 		# TODO: detect skipped exit code
