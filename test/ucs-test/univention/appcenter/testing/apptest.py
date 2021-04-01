@@ -127,36 +127,39 @@ class Session(object):
 		self.wait_until_clickable(css)
 		self.click_element(css)
 
-	def language_menu_clicked(self):
-		for element in self.find_all('#umcMenuLanguage__slide .menuItem'):
-			if element.text == 'English':
-				element.click()
-				time.sleep(2)
-				return True
-		return False
-
 	def goto_portal(self):
 		self.get('/univention/portal')
 		time.sleep(3)
 		if self.find_first('span.umcApplianceReadmeCloseButton'):
 			self.click_element('span.umcApplianceReadmeCloseButton')
-		self.wait_until_clickable_and_click('#umc_widgets_ToggleButton_1')
-		self.wait_until_clickable_and_click('#umcMenuLanguage')
-		# css is too dynamic, just sleep and try
-		for _ in range(5):
-			time.sleep(3)
-			if self.language_menu_clicked():
+		self.wait_until_clickable_and_click('#header-button-menu')
+		# choose language
+		for elem in self.find_all('.portal-sidenavigation__menu'):
+			if elem.text == 'Change Language':
+				elem.click()
+				time.sleep(3)
 				break
 		else:
-			raise RuntimeError('Could not find language menu')
+			raise RuntimeError('Could not find "Change Language" in portal sidemenu')
+		# choose english
+		for elem in self.find_all('.portal-sidenavigation__menu-item--show'):
+			if elem.text == 'English':
+				elem.click()
+				time.sleep(3)
+				break
+		else:
+			raise RuntimeError('Could not find "English" in portal sidemenu')
+		# close side menu
+		self.wait_until_clickable_and_click('#header-button-menu')
 
 	def click_portal_tile(self, name):
-		elements = self.find_all('.tile__name')
+		elements = self.find_all('.portal-tile')
 		for element in elements:
+			print('-%s-' % element.text)
 			if element.text == name:
 				self.driver.execute_script("arguments[0].click();", element)
 				time.sleep(2)
-				self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portalIframe__iframe"]'))
+				self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portal-iframe__iframe"]'))
 				break
 		else:
 			raise RuntimeError('Could not find {}'.format(name))
