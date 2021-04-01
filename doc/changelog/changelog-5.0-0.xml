@@ -1145,6 +1145,9 @@
 					</warning>
 				</listitem>
 				<listitem><simpara>
+					Samba/AD now evaluates Active Directory ACLs for LDAP searches by default. Technically this was done by changing the default for the &ucsUCRV; <envar>samba/acl_search</envar> to <emphasis>yes</emphasis> (<u:bug>51522</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					The package <package>cifs-utils</package> is now installed by default (<u:bug>39259</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
