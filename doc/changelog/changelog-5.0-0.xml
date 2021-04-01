@@ -953,7 +953,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-skel</package> has been removed.
-					Newly created <filename class="directory">$HOME</filename> directories can be provisioned using the standard directory <filename class="directory">/etc/skel/</filename> (<u:bug>43211</u:bug>)
+					Newly created <filename class="directory">$HOME</filename> directories can now be provisioned using the standard directory <filename class="directory">/etc/skel/</filename>. Customers relying on files under <filename class="directory">/etc/univention/skel/</filename> should migrate the files to the new location (<u:bug>43211</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The packages <package>univention-passwd-cache</package> and <package>univention-passwd-store</package> have been removed (<u:bug>52056</u:bug>)
