@@ -133,6 +133,7 @@ class Session(object):
 		if self.find_first('span.umcApplianceReadmeCloseButton'):
 			self.click_element('span.umcApplianceReadmeCloseButton')
 		self.wait_until_clickable_and_click('#header-button-menu')
+		time.sleep(3)
 		# choose language
 		for elem in self.find_all('.portal-sidenavigation__menu'):
 			if elem.text == 'Change Language':
