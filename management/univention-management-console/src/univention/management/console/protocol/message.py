@@ -119,7 +119,11 @@ class Message(object):
 		if _type == Message.REQUEST:
 			type = b'REQUEST'
 		if mimetype == MIMETYPE_JSON:
-			data = json.dumps(body)
+			try:
+				data = json.dumps(body)
+			except TypeError:
+				PROTOCOL.error('Could not JSON serialize message: %r' % (body,))
+				raise
 			if not isinstance(data, bytes):  # Python 3
 				data = data.encode('utf-8')
 		else:
