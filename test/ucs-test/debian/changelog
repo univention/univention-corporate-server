@@ -1,3 +1,9 @@
+ucs-test (10.0.4-47) unstable; urgency=medium
+
+  * Bug #52953: fixed xpath for 17_self_service_registration
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 01 Apr 2021 08:52:31 +0200
+
 ucs-test (10.0.4-46) unstable; urgency=medium
 
   * Bug #51195: skipp 00_checks/04_check_root_password on updated systems
