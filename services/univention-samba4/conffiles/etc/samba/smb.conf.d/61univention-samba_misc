@@ -5,7 +5,7 @@ print('\tlarge readwrite = %s' % configRegistry.get('samba/large_readwrite', 'ye
 print('\tread raw = %s' % configRegistry.get('samba/read_raw', 'yes'))
 print('\twrite raw = %s' % configRegistry.get('samba/write_raw', 'yes'))
 print('\tmax xmit = %s' % configRegistry.get('samba/max_xmit', '65535'))
-print('\tacl:search = %s' % configRegistry.get('samba/acl_search', 'no'))
+print('\tacl:search = %s' % configRegistry.get('samba/acl_search', 'yes'))
 
 if configRegistry.is_true('samba/enable-msdfs'):
 	print('\thost msdfs = yes')

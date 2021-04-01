@@ -1,3 +1,9 @@
+univention-samba4 (9.0.5-2) unstable; urgency=medium
+
+  * Bug #51522: Change default for samba/acl_search to yes
+
+ -- Arvid <requate@univention.de>  Thu, 01 Apr 2021 11:26:36 +0200
+
 univention-samba4 (9.0.5-1) unstable; urgency=medium
 
   * Bug #52485: Depend on samba-dsdb-modules
