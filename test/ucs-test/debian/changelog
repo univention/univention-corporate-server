@@ -1,3 +1,10 @@
+ucs-test (10.0.4-50) unstable; urgency=medium
+
+  * Bug #52953: fixed getting available modules for selenium test
+    132_miscellaneous_open_all_modules
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 01 Apr 2021 17:43:18 +0200
+
 ucs-test (10.0.4-49) unstable; urgency=medium
 
   * Bug #52864: fix goto_portal
