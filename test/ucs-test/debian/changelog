@@ -1,3 +1,9 @@
+ucs-test (10.0.4-51) unstable; urgency=medium
+
+  * Bug #52953: increased time limit for install app in selenium Appcenter
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 02 Apr 2021 14:47:02 +0200
+
 ucs-test (10.0.4-50) unstable; urgency=medium
 
   * Bug #52953: fixed getting available modules for selenium test
