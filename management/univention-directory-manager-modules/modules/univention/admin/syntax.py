@@ -5000,7 +5000,7 @@ class LDAP_Search(select):
 		if dn:
 			self.__dn = dn  # needed?
 			self.filter = attrs['univentionSyntaxLDAPFilter'][0].decode('utf-8')
-			self.attributes = attrs['univentionSyntaxLDAPAttribute']
+			self.attributes = [x.decode('UTF-8') for x in attrs['univentionSyntaxLDAPAttribute']]
 			if 'univentionSyntaxLDAPBase' in attrs:
 				self.base = attrs['univentionSyntaxLDAPBase'][0].decode('utf-8')
 			else:
