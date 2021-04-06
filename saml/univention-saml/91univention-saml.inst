@@ -150,32 +150,28 @@ then
 		chmod 640 "$SECRETFILE"
 		printf '%s' "$PASSWORD" > "$SECRETFILE"
 		# written in python to ignore extended attributes with required fields
-		(python - "$PASSWORD" "$ldap_base" || die) <<- EOF
-# -*- coding: utf-8 -*-
-import sys
-import univention.admin.uldap
-import univention.admin.uexceptions
-import univention.admin.modules  # must be importet :(
-import univention.admin.objects  # must be importet :(
-import univention.admin.handlers.users.user
-univention.admin.modules.update()
-lo, po = univention.admin.uldap.getAdminConnection()
-po.setDn('cn=users,%s' % (sys.argv[2],))
-user = univention.admin.modules.get('users/ldap').object(None, lo, po)
+		python3 -c '
+from univention.admin.uldap import getAdminConnection
+from univention.admin.uexceptions import objectExists, uidAlreadyUsed
+from univention.admin.modules import get, update
+update()
+lo, po = getAdminConnection()
+po.setDn("cn=users")
+user = get("users/ldap").object(None, lo, po)
 user.open()
-user['username'] = 'sys-idp-user'
-user['password'] = sys.argv[1]
-user['lastname'] = 'idp-user'
-user['name'] = 'idp-user'
+user["username"] = "sys-idp-user"
+user["password"] = open("/etc/machine.secret", "r").read()
+user["lastname"] = "idp-user"
+user["name"] = "idp-user"
 try:
-  print('Creating SAML user')
+  print("Creating SAML user")
   dn = user.create()
-except (univention.admin.uexceptions.objectExists, univention.admin.uexceptions.uidAlreadyUsed):
-  print('SAML user already exists')
-  sys.exit(0)
-print('Make SAML user a system user')
-lo.modify(dn, [('univentionObjectFlag', None, ['functional', 'hidden'])])
-EOF
+except (objectExists, uidAlreadyUsed):
+  print("SAML user already exists")
+else:
+  print("Make SAML user a system user")
+  lo.modify(dn, [("univentionObjectFlag", None, ["functional", "hidden"])])
+' || die
 		ucr commit /etc/simplesamlphp/authsources.php
 	fi
 else
