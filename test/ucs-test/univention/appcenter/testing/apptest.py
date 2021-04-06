@@ -132,11 +132,12 @@ class Session(object):
 		time.sleep(3)
 		if self.find_first('span.umcApplianceReadmeCloseButton'):
 			self.click_element('span.umcApplianceReadmeCloseButton')
+		# open side menu
 		self.wait_until_clickable_and_click('#header-button-menu')
 		time.sleep(3)
 		# choose language
 		for elem in self.find_all('.portal-sidenavigation__menu'):
-			if elem.text == 'Change Language':
+			if 'change language' in elem.text.lower():
 				elem.click()
 				time.sleep(3)
 				break
@@ -144,7 +145,7 @@ class Session(object):
 			raise RuntimeError('Could not find "Change Language" in portal sidemenu')
 		# choose english
 		for elem in self.find_all('.portal-sidenavigation__menu-item--show'):
-			if elem.text == 'English':
+			if 'english' in elem.text.lower():
 				elem.click()
 				time.sleep(3)
 				break
