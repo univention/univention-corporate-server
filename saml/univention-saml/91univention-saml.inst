@@ -32,17 +32,20 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION="10"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
 eval "$(ucr shell)"
 
 spn_account_name="ucs-sso"
-servicePrincipalName="HTTP/$spn_account_name.$domainname"
-krb5PrincipalName="$servicePrincipalName@$kerberos_realm"
+servicePrincipalName="HTTP/${spn_account_name:?}.${domainname:?}"
+krb5PrincipalName="$servicePrincipalName@${kerberos_realm:?}"
 privateKeytab_filename="simplesamlphp.keytab"
 privateKeytab_path="/etc/$privateKeytab_filename"
 
@@ -65,9 +68,14 @@ extract_binddn_and_bindpwdfile_from_args() {
 	done
 }
 
+is_primary () {
+	[ "${server_role:-}" == "domaincontroller_master" ]
+}
+
 create_krb_apache2_user() {
 	# Create and manage ucs-sso user only on primary
-	if [ "$server_role" == "domaincontroller_master" ]; then
+	if is_primary
+	then
 		spn_account_name_password=$(create_machine_password)
 		# save password in file, samba joinscript needs it to set the password
 		touch /etc/simplesamlphp/ucs-sso-kerberos.secret
@@ -76,7 +84,7 @@ create_krb_apache2_user() {
 		echo -n "$spn_account_name_password" > /etc/simplesamlphp/ucs-sso-kerberos.secret
 
 		udm users/user create "$@" --ignore_exists \
-			--position "cn=users,$ldap_base" \
+			--position "cn=users,${ldap_base:?}" \
 			--set username="$spn_account_name" \
 			--set lastname="SSO" \
 			--set password="$spn_account_name_password" \
@@ -87,7 +95,7 @@ create_krb_apache2_user() {
 		test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
 
 		# modify attribute directly
-		ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile" <<%EOF
+		ldapmodify -x -h "${ldap_master:?}" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile" <<%EOF
 dn: uid=$spn_account_name,cn=users,$ldap_base
 changetype: modify
 replace: krb5PrincipalName
@@ -97,24 +105,25 @@ krb5PrincipalName: $krb5PrincipalName
 }
 
 create_sso_kerberos_keytab() {
-	if [ "$server_role" == "domaincontroller_master" ]; then
+	case "${server_role:-}" in
+	domaincontroller_master)
 		# extract keytab
 		kadmin -l ext --keytab="$privateKeytab_path" "$servicePrincipalName" || die
 		chown samlcgi:"DC Backup Hosts" "$privateKeytab_path" || die
 		chmod 660 "$privateKeytab_path" || die
-	fi
-
-	if [ "$server_role" == "domaincontroller_backup" ]; then
+		;;
+	domaincontroller_backup)
 		# get keytab from primary
 		HOSTPWD="/etc/machine.secret"
-		HOSTACCOUNT="$hostname\$"
+		HOSTACCOUNT="${hostname:?}\$"
 
 		touch "$privateKeytab_path" || die
 		chown samlcgi:"DC Backup Hosts" "$privateKeytab_path" || die
 		chmod 640 "$privateKeytab_path" || die
 		univention-scp $HOSTPWD "$HOSTACCOUNT@$ldap_master:$privateKeytab_path $privateKeytab_path" || die
 		echo "Successfully downloaded the ucs-sso keytab file"
-	fi
+		;;
+	esac
 }
 
 ucs_server_sso_fqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
@@ -130,10 +139,11 @@ SECRETFILE="/etc/idp-ldap-user.secret"
 HOSTPWD="/etc/machine.secret"
 HOSTACCOUNT="$hostname\$"
 
-if [ "$server_role" = "domaincontroller_master" ]; then
+if is_primary
+then
 	# Only set password if sys-idp-user does not exist
 	username=$(ucs_getAttrOfDN uid uid=sys-idp-user,cn=users,"$ldap_base" "$@" 2>/dev/null)
-	if [ ! "$username" = "sys-idp-user" ]; then
+	if [ "$username" != "sys-idp-user" ]; then
 		PASSWORD=$(makepasswd --chars=20)
 		touch "$SECRETFILE"
 		chown root:"DC Backup Hosts" "$SECRETFILE"
@@ -150,7 +160,7 @@ import univention.admin.objects  # must be importet :(
 import univention.admin.handlers.users.user
 univention.admin.modules.update()
 lo, po = univention.admin.uldap.getAdminConnection()
-po.setDn('cn=users,%s' % (sys.argv[2]))
+po.setDn('cn=users,%s' % (sys.argv[2],))
 user = univention.admin.modules.get('users/ldap').object(None, lo, po)
 user.open()
 user['username'] = 'sys-idp-user'
@@ -172,42 +182,40 @@ else
 	touch "$SECRETFILE"
 	chown root:"DC Backup Hosts" "$SECRETFILE" || die
 	chmod 640 "$SECRETFILE" || die
-	univention-scp $HOSTPWD "$HOSTACCOUNT@$ldap_master:$SECRETFILE $SECRETFILE" || die
+	univention-scp "$HOSTPWD" "$HOSTACCOUNT@$ldap_master:$SECRETFILE" "$SECRETFILE" || die
 	echo "Successfully downloaded the sys-idp-user credential file"
 	ucr commit /etc/simplesamlphp/authsources.php
 fi
 
 # check if we need to create a new certificate
-if [ ! -e "${saml_idp_certificate_certificate}" ]; then
+if [ ! -e "${saml_idp_certificate_certificate:-}" ]; then
 	create_or_download=false
-	if [ "$server_role" = "domaincontroller_master" ]; then
-		if [ -z "$ucs_server_sso_certificate_generation" ] || is_ucr_true ucs/server/sso/certificate/generation; then
+	if is_primary
+	then
+		if [ -z "${ucs_server_sso_certificate_generation:-}" ] || is_ucr_true ucs/server/sso/certificate/generation; then
 			univention-certificate new -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-1825}" || die
 			create_or_download=true
 		fi
 	else
-		if [ -z "$ucs_server_sso_certificate_download" ] || is_ucr_true ucs/server/sso/certificate/download; then
-			univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/${ucs_server_sso_fqdn}/ /etc/univention/ssl/" || die
+		if [ -z "${ucs_server_sso_certificate_download:-}" ] || is_ucr_true ucs/server/sso/certificate/download; then
+			univention-scp "$HOSTPWD" -r "$HOSTACCOUNT@$ldap_master:/etc/univention/ssl/${ucs_server_sso_fqdn}/" /etc/univention/ssl/ || die
 			create_or_download=true
 		fi
 	fi
 
 	if [ "$create_or_download" = true ]; then
-		cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate}" || die  # FIXME: copied because www-data cannot +rx the directory contents
-		cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey}" || die
-		chown root:samlcgi "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
-		chmod 644 "${saml_idp_certificate_certificate}" || die
-		chmod 640 "${saml_idp_certificate_privatekey}" || die
+		install -o root -g samlcgi -m 0644 "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate:?}" || die  # FIXME: copied because www-data cannot +rx the directory contents
+		install -o root -g samlcgi -m 0640 "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey:?}" || die
 	fi
 fi
 
 # Re-create Apache configuration after the certificate generation
 ucr commit /etc/apache2/sites-available/univention-saml.conf
 
-sso_hostname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 1)"
-sso_domainname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 2-)"
+sso_hostname="${ucs_server_sso_fqdn%%.*}"
+sso_domainname="${ucs_server_sso_fqdn#*.}"
 
-if [ -z "$ucs_server_sso_autoregistraton" ] || is_ucr_true ucs/server/sso/autoregistraton; then
+if [ -z "${ucs_server_sso_autoregistraton:-}" ] || is_ucr_true ucs/server/sso/autoregistraton; then
 	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists \
 		"$sso_domainname" add a "$sso_hostname" "$(get_default_ip_address)" || die
 	if is_localhost_in_admember_mode; then
@@ -220,7 +228,7 @@ if [ -z "$ucs_server_sso_autoregistraton" ] || is_ucr_true ucs/server/sso/autore
 fi
 
 # Create ucs-sso krb user for apache2
-create_krb_apache2_user
+create_krb_apache2_user "$@"
 create_sso_kerberos_keytab
 
 ucr set security/packetfilter/package/univention-saml/tcp/11212/all?ACCEPT \
@@ -277,13 +285,13 @@ udm settings/extended_attribute create "$@" \
 	--set mayChange=1 \
 	--set multivalue=1 || die
 
-if joinscript_check_version_in_range_executed "1" "4"; then
+if joinscript_check_version_in_range_executed 1 4; then
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=serviceprovider,cn=custom attributes,cn=univention,$ldap_base" \
 		--append module="settings/usertemplate"
 fi
 
-if joinscript_check_version_in_range_executed "1" "9"; then
+if joinscript_check_version_in_range_executed 1 9; then
 	udm saml/idpconfig modify "$@" \
 		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
 		--append LdapGetAttributes="memberOf" || die
@@ -328,37 +336,33 @@ udm saml/serviceprovider create "$@" \
 
 # Change unsupported NameIDFormat value to supported one
 if joinscript_check_version_in_range_executed 1 3; then
-	udm saml/serviceprovider list "$@" --filter NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+	udm saml/serviceprovider list "$@" --filter NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" | sed -ne 's|^DN: ||p' | while read -r dn; do
 		udm saml/serviceprovider modify "$@" --dn "$dn" --set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" || die
 	done
 fi
 
 # Change broken TRUE/FALSE value
 if joinscript_check_version_in_range_executed 1 7; then
-	if udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=google.com)(simplesamlAttributes=false))" | grep -q DN; then
+	udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=google.com)(simplesamlAttributes=false))" | grep -q ^DN: ||
 		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=google.com,cn=saml-serviceprovider,cn=univention,$ldap_base" \
 			--set simplesamlAttributes="FALSE"
-	fi
-	if udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=https://sp.testshib.org/shibboleth-sp)(simplesamlAttributes=false))" | grep -q DN; then
+	udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=https://sp.testshib.org/shibboleth-sp)(simplesamlAttributes=false))" | grep -q ^DN: ||
 		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=https://sp.testshib.org/shibboleth-sp,cn=saml-serviceprovider,cn=univention,$ldap_base" \
 			--set simplesamlAttributes="FALSE"
-	fi
-	if udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=https://saml.salesforce.com)(simplesamlAttributes=false))" | grep -q DN; then
+	udm saml/serviceprovider list "$@" --filter "(&(SAMLServiceProviderIdentifier=https://saml.salesforce.com)(simplesamlAttributes=false))" | grep -q ^DN: ||
 		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=https://saml.salesforce.com,cn=saml-serviceprovider,cn=univention,$ldap_base" \
 			--set simplesamlAttributes="FALSE"
-	fi
 fi
 
 # Create IdP config object
-idp_ldap_get_attributes="$saml_idp_ldap_get_attributes"
-
 udm saml/idpconfig create "$@" \
 	--ignore_exists \
 	--position="cn=univention,$ldap_base" \
 	--set id=default-saml-idp || die "Error creating object. Make sure the univention-saml package is up to date on the Primary Directory Node" # Remove when fixing Bug #47402
 
 # If the package gets installed on the primary directory node, configure default values
-if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontroller_master" ]; then
+if ! joinscript_check_any_version_executed && is_primary
+then
 	udm saml/idpconfig modify "$@" \
 		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
 		--append LdapGetAttributes="uid" \
@@ -370,23 +374,23 @@ fi
 # When updating, add migrate current values of UCR saml/idp/ldap/get_attributes to LDAP
 if joinscript_check_version_in_range_executed 1 6; then
 	# Parse old attribute list from UCR and append every value IdP config object
-	for attr in $(echo $idp_ldap_get_attributes | sed -e s"/[\',]//g"); do
+	oldIFS="$IFS" IFS=\ \"\',
+	for attr in ${saml_idp_ldap_get_attributes:-}
+	do
 		udm saml/idpconfig modify "$@" \
 			--dn="id=default-saml-idp,cn=univention,$ldap_base" \
 			--append LdapGetAttributes="$attr" || die
 	done
+	IFS="$oldIFS"
 fi
 
 if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 8; then
-	(
-	IFS=$'\n'
-	dn=($(udm saml/serviceprovider list "$@" | sed -n 's/^DN: //p'))
-	for name in "${dn[@]}"; do
-		echo "$name"
-		udm saml/serviceprovider modify "$@" --dn $name \
+	udm saml/serviceprovider list "$@" | sed -n 's/^DN: //p' |
+	while read -r dn
+	do
+		udm saml/serviceprovider modify "$@" --dn "$dn" \
 			--set signLogouts="TRUE"
 	done
-	)
 fi
 
 # Bug #39739: the listener will be installed and running before univention-saml has configured the 

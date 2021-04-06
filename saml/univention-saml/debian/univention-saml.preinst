@@ -29,13 +29,11 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-
-if ! grep "^samlcgi" /etc/passwd; then
+if ! getent passwd samlcgi >/dev/null; then
 	adduser --system --disabled-password --disabled-login --no-create-home samlcgi
 fi
 
-if ! grep "^samlcgi" /etc/group; then
+if ! getent group samlcgi >/dev/null; then
 	addgroup --system samlcgi
 	adduser samlcgi samlcgi
 fi

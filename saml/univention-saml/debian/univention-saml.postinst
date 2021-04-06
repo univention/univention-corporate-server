@@ -35,9 +35,7 @@
 case "$1" in
 configure)
 
-	if [ -e /usr/lib/univention-install/24univention-saml-uninstall.uinst ]; then
-		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
-	fi
+	rm -f /usr/lib/univention-install/24univention-saml-uninstall.uinst
 
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
@@ -57,8 +55,8 @@ configure)
 	for i in /var/www/saml /var/www/saml/php-cgi
 	do
 		# only do something when no setting exists
-		if ! dpkg-statoverride --list $i >/dev/null 2>&1; then
-			dpkg-statoverride --update --add samlcgi samlcgi 755 $i
+		if ! dpkg-statoverride --list "$i" >/dev/null 2>&1; then
+			dpkg-statoverride --update --add samlcgi samlcgi 755 "$i"
 		fi
 	done
 
@@ -98,7 +96,7 @@ configure)
 	a2enmod actions
 	a2enmod suexec
 	a2enmod cgi
-	invoke-rc.d apache2 reload
+	deb-systemd-invoke try-reload-or-restart apache2
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)
 	;;

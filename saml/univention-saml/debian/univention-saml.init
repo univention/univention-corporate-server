@@ -36,9 +36,12 @@
 # <https://www.gnu.org/licenses/>.
 
 # Inject systemd
+# shellcheck source=/dev/null
 . /lib/lsb/init-functions
 
+# shellcheck disable=SC2034
 NAME='univention-saml'
+# shellcheck disable=SC2034
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 # This file can be removed if commands like
@@ -46,4 +49,3 @@ DESC=$(get_lsb_header_val "$0" Short-Description)
 # have been replaced
 
 exit 0
-

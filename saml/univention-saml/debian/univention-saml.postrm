@@ -29,6 +29,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 case "$1" in
