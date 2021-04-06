@@ -1,3 +1,9 @@
+univention-saml (7.0.4-5) unstable; urgency=low
+
+  * Bug #52975: Restart stunnel4 after join
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Apr 2021 15:16:05 +0200
+
 univention-saml (7.0.4-4) unstable; urgency=medium
 
   * Bug #52453: adjust design of login page

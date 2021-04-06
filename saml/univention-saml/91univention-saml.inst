@@ -396,9 +396,7 @@ if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_
 	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
 fi
 
-/etc/init.d/univention-saml restart
-
-test -x /etc/init.d/apache2 && /etc/init.d/apache2 reload
+systemctl restart univention-saml apache2 stunnel4
 
 joinscript_save_current_version
 exit 0
