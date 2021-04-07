@@ -17,10 +17,10 @@ Architecture: all
 Depends:
  adduser,
  apache2-suexec-pristine,
- libapache2-mod-php (>= 2:7.3),
  memcached,
  openssl,
- php-cgi,
+ php-cgi (>= 2:7.3),
+ php-cli (>= 2:7.3),
  php-curl,
  php-krb5,
  php-ldap,
