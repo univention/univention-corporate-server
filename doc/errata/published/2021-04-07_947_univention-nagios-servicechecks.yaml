@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A unjoinscript for univention-nagios-dansguardian has been added.
 bug: [52962]
+erratum: 947
+announced: 2021-04-07
