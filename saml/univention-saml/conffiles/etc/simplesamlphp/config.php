@@ -18,20 +18,20 @@ print(');')
 
 $config = array (
 @!@
-saml20_enabled = 'false'
-if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
-	saml20_enabled = 'true'
-print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
+from univention.saml.php import php_bool, php_string
+fqhn = '%(hostname)s.%(domainname)s' % configRegistry
 
-print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
-print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
+print("	'enable.saml20-idp'	=> %s," % php_bool(configRegistry.is_true('saml/idp/enableSAML20-IdP')))
+
+print("	'timezone'		=> %s," % php_string(configRegistry.get('saml/idp/timezone', 'Europe/Berlin')))
+print("	'debug'		=> %s," % php_bool(configRegistry.is_true('saml/idp/log/debug/enabled', False)))
 print("	'logging.level'		=> SimpleSAML\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
-print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
-print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
-print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
-print("	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))))
-print("	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', '')))
-print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
+print("	'language.default'	=> %s," % php_string(configRegistry.get('locale/default', 'en')[:2]))
+print("	'theme.use'		=> %s," % php_string(configRegistry.get('saml/idp/lookandfeel/theme', 'default')))
+print("	'technicalcontact_name'		=> %s," % php_string(configRegistry.get('saml/idp/technicalcontactname', 'Administrator')))
+print("	'technicalcontact_email'	=> %s," % php_string(configRegistry.get('saml/idp/technicalcontactemail', 'root@%s' % fqhn)))
+print("	'hostfqdn'	=> %s," % php_string(fqhn))
+print("	'domainname'	=> %s," % php_string(configRegistry['domainname']))
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.
@@ -75,8 +75,9 @@ print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
 	//'debug' => FALSE,
 
 @!@
-print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE'))
-print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-error-reporting') else 'FALSE'))
+from univention.saml.php import php_bool
+print("	'showerrors'            =>	%s," % php_bool(configRegistry.is_true('saml/idp/show-errors')))
+print("	'errorreporting'            =>	%s," % php_bool(configRegistry.is_true('saml/idp/show-error-reporting')))
 @!@
 	/**
 	 * Custom error show function called from SimpleSAML_Error_Error::show.
@@ -573,7 +574,8 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * (This option replaces the old 'session.handler'-option.)
 	 */
 @!@
-print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', 'memcache'),))
+from univention.saml.php import php_string
+print("\t'store.type' => %s," % php_string(configRegistry.get('saml/idp/session-type', 'memcache')))
 @!@
 
 	/*
@@ -652,9 +654,9 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 			array('hostname' => 'unix:///var/run/univention-saml/memcached.socket'),
 		),
 @!@
-fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+fqhn = '%(hostname)s.%(domainname)s' % configRegistry
 for key, server in configRegistry.items():
-	if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
+	if not key.startswith('ucs/server/saml-idp-server/') or server == fqhn:
 		continue
 	print('''
 		array(

@@ -46,42 +46,31 @@ $config = array(
 
 
 @!@
-import re
 from univention.lib.misc import getLDAPURIs
-hostname = getLDAPURIs()
+from univention.saml.php import php_array, php_bool, php_string, split_attributes
 
-expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags', 'univentionRegisteredThroughSelfService', 'univentionPasswordRecoveryEmailVerified'"
+expiry_attributes = {'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags', 'univentionRegisteredThroughSelfService', 'univentionPasswordRecoveryEmailVerified'}
+config_attributes = split_attributes(configRegistry.get('saml/idp/ldap/get_attributes', 'uid'))
+search_attributes = split_attributes(configRegistry.get('saml/idp/ldap/search_attributes', 'uid'))
+attributes = config_attributes | expiry_attributes
 
-config_attributes = "'%s'" % "', '".join(filter(None, re.split('[ ,\'"]', configRegistry.get('saml/idp/ldap/get_attributes', 'uid'))))
-search_attributes = "'%s'" % "', '".join(filter(None, re.split('[ ,\'"]', configRegistry.get('saml/idp/ldap/search_attributes', 'uid'))))
-
-attributes = "%s, %s" % (config_attributes, expiry_attributes)
-
-
-print("	'hostname'		=> '%s'," % hostname)
-print("	'enable_tls'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE'))
-print("	'debug' 		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE'))
-print("	'attributes'		=> array(%s)," % attributes)
-print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
-print("	'search.attributes' 	=> array(%s)," % (search_attributes,))
+print("	'hostname'		=> %s," % php_string(getLDAPURIs()))
+print("	'enable_tls'		=> %s," % php_bool(configRegistry.is_true('saml/idp/ldap/enable_tls', True)))
+print("	'debug' 		=> %s," % php_bool(configRegistry.is_true('saml/idp/ldap/debug', False)))
+print("	'attributes'		=> %s," % php_array(attributes))
+print("	'search.base'		=> %s," % php_string(configRegistry.get('ldap/base', 'null')))
+print("	'search.attributes' 	=> %s," % php_array(search_attributes))
 print("	'search.filter' 	=> '(objectClass=person)',")
-print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
+print("	'selfservice.check_email_verification' 	=> %s," % php_bool(configRegistry.is_true('saml/idp/selfservice/check_email_verification', False)))
+print("	'search.username'	=> %s," % php_string(configRegistry.get('saml/idp/ldap/user') or 'uid=sys-idp-user,cn=users,%(ldap/base)s' % configRegistry))
 
-ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
-if configRegistry.get('saml/idp/ldap/user'):
-	ldap_user = configRegistry.get('saml/idp/ldap/user')
-
-print("	'search.username'	=> '%s'," % ldap_user)
-
-password = ''
 try:
 	with open('/etc/idp-ldap-user.secret', 'r') as fd:
 		password = fd.read().strip()
+	print("	'search.password'	=> %s," % php_string(password))
 except EnvironmentError:
 	import sys
 	sys.stderr.write('/etc/idp-ldap-user.secret could not be read!\n')
-
-print("	'search.password'	=> '%s'," % password)
 @!@
 
 

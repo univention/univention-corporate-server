@@ -31,63 +31,64 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
-import os
-import json
-import pwd
+
 import grp
-import shutil
+import json
+import os
+import pwd
+from typing import Dict, List, Set  # noqa F401
+
+import listener
 
 name = 'univention-saml-groups'
 description = 'Write SAML enabled groups to json file, to be read by the services metadata.php'
 filter = '(objectClass=univentionSAMLEnabledGroup)'
 attributes = ['enabledServiceProviderIdentifierGroup']
+
 path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json'
 tmp_path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json.tmp'
-uid = pwd.getpwnam("samlcgi").pw_uid
-gid = grp.getgrnam("samlcgi").gr_gid
+uid = None
+gid = None
 
 
+@listener.SetUID(0)
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
-	listener.setuid(0)
-
 	try:
-		if os.path.exists(path):
-			with open(path) as group_file:
-				data = json.load(group_file)
-		else:
-			data = {}
+		with open(path) as group_file:
+			groups = json.load(group_file)
+	except Exception:
+		groups = {}
 
-		new_sp = new.get('enabledServiceProviderIdentifierGroup', [])
-		old_sp = old.get('enabledServiceProviderIdentifierGroup', [])
-		sp_to_add = []
-		sp_to_rm = []
+	update_groups(groups, dn, get_group(old), get_group(new))
 
-		if new_sp != old_sp:
-			if len(new_sp) > len(old_sp):
-				for sp in list(set(new_sp) - set(old_sp)):
-					sp_to_add.append(sp)
-			else:
-				for sp in list(set(old_sp) - set(new_sp)):
-					sp_to_rm.append(sp)
+	global uid
+	global gid
+	if uid is None:
+		uid = pwd.getpwnam("samlcgi").pw_uid
+		gid = grp.getgrnam("samlcgi").gr_gid
 
-		for sp in sp_to_add:
-			sp = sp.decode('UTF-8')
-			data.setdefault(sp, [])
-			if dn not in data[sp]:
-				data[sp].append(dn)
-		for sp in sp_to_rm:
-			sp = sp.decode('UTF-8')
-			data.setdefault(sp, [])
-			if dn in data[sp]:
-				data[sp].remove(dn)
+	with open(tmp_path, 'w') as outfile:
+		os.fchmod(outfile.fileno(), 0o600)
+		os.fchown(outfile.fileno(), uid, gid)
+		json.dump(groups, outfile)
 
-		with open(tmp_path, 'w+') as outfile:
-			json.dump(data, outfile)
+	os.rename(tmp_path, path)
 
-		shutil.move(tmp_path, path)
-		os.chmod(path, 0o600)
-		os.chown(path, uid, gid)
-	finally:
-		listener.unsetuid()
+
+def get_group(data):
+	# type: (Dict[str, List[bytes]]) -> Set[str]
+	return {group.decode('UTF-8') for group in data.get("enabledServiceProviderIdentifierGroup", [])}
+
+
+def update_groups(groups, dn, old_sp, new_sp):
+	# type: (Dict[str, List[str]], str, Set[str], Set[str]) -> None
+	for sp in new_sp - old_sp:
+		group = groups.setdefault(sp, [])
+		if dn not in group:
+			group.append(dn)
+
+	for sp in old_sp - new_sp:
+		group = groups.setdefault(sp, [])
+		if dn in group:
+			group.remove(dn)

@@ -16,8 +16,11 @@ $idp_config = array(
 
 	/* X.509 key and certificate. Relative to the cert directory. */
 @!@
-print("	'privatekey'	=> '%s'," % configRegistry.get('saml/idp/certificate/privatekey', configRegistry.get('apache2/ssl/key', '/etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname')) )))
-print("	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certificate', configRegistry.get('apache2/ssl/certificate', '/etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname')) )))
+from univention.saml.php import php_string
+fqhn = '%(hostname)s.%(domainname)s' % configRegistry
+
+print("	'privatekey'	=> %s," % php_string(configRegistry.get('saml/idp/certificate/privatekey', configRegistry.get('apache2/ssl/key', '/etc/univention/ssl/%s/private.key' % fqhn))))
+print("	'certificate'	=> %s," % php_string(configRegistry.get('saml/idp/certificate/certificate', configRegistry.get('apache2/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqhn))))
 @!@
 	/*
 	 * Authentication source to use. Must be one that is configured in
@@ -25,7 +28,8 @@ print("	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certi
 	 */
 	//'auth' => 'example-userpass',
 @!@
-print("	'auth'	=> '%s'," % configRegistry.get('saml/idp/authsource', 'univention-negotiate'))
+from univention.saml.php import php_string
+print("	'auth'	=> %s," % php_string(configRegistry.get('saml/idp/authsource', 'univention-negotiate')))
 @!@
 
 	/* Uncomment the following to use the uri NameFormat on attributes. */
@@ -40,10 +44,11 @@ print("	'auth'	=> '%s'," % configRegistry.get('saml/idp/authsource', 'univention
 );
 @!@
 from univention.saml.lib import get_idps
+from univention.saml.php import php_string
 idps = get_idps(configRegistry)
 for idp in idps:
-	print("$metadata['{}'] = array_replace($idp_config, array('host' => '{}'));".format(
-		idp['entityID'],
-		idp['baseurl']
+	print("$metadata[{}] = array_replace($idp_config, array('host' => {}));".format(
+		php_string(idp['entityID']),
+		php_string(idp['baseurl'])
 	))
 @!@
