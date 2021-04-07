@@ -136,7 +136,8 @@ class Session(object):
 		self.wait_until_clickable_and_click('#header-button-menu')
 		time.sleep(3)
 		# choose language
-		for elem in self.find_all('.portal-sidenavigation__menu'):
+		for elem in self.find_all('.portal-sidenavigation__menu .menu-item'):
+			print('menu -%s-' % elem.text)
 			if 'change language' in elem.text.lower():
 				elem.click()
 				time.sleep(3)
@@ -145,6 +146,7 @@ class Session(object):
 			raise RuntimeError('Could not find "Change Language" in portal sidemenu')
 		# choose english
 		for elem in self.find_all('.portal-sidenavigation__menu-item--show'):
+			print('sub -%s-' % elem.text)
 			if 'english' in elem.text.lower():
 				elem.click()
 				time.sleep(3)
