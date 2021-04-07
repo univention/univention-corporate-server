@@ -37,7 +37,6 @@ import os
 import glob
 import os.path
 import xml.etree.ElementTree
-from tempfile import NamedTemporaryFile
 from subprocess import Popen, PIPE
 
 import univention.debug as ud
@@ -47,21 +46,7 @@ description = 'Manage simpleSAMLphp service providers'
 filter = '(objectClass=univentionSAMLServiceProvider)'
 
 # based on /usr/share/simplesamlphp/www/admin/metadata-converter.php
-raw_metadata_generator = r'''<?php
-set_error_handler(function($errno, $errstr, $errfile, $errline) {
-	throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-});
-
-$xmldata = file_get_contents("php://stdin");
-require_once('/usr/share/simplesamlphp/lib/_autoload.php');
-\SimpleSAML\Utils\XML::checkSAMLMessage($xmldata, 'saml-meta');
-$entities = SimpleSAML_Metadata_SAMLParser::parseDescriptorsString($xmldata);
-foreach ($entities as $entityId => &$entity) {
-	$entityMetadata = $entity->getMetadata20SP();
-	unset($entityMetadata['entityDescriptor']);
-	print('$metadata['.var_export($entityId, true).'] = ' . var_export($entityMetadata, true).";\n");
-}
-'''
+raw_metadata_generator = '/usr/share/univention-saml/metadata-converter.php'
 sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
@@ -175,14 +160,10 @@ def write_configuration_file(dn, new, filename):
 		fd.write("}\n")
 
 		if metadata:
-			with NamedTemporaryFile(mode='w+') as temp:
-				temp.write(raw_metadata_generator)
-				temp.flush()
-
-				process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
-				stdout, stderr = process.communicate(metadata)
-				if process.returncode != 0:
-					ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr.decode('UTF-8', 'replace'),))
+			process = Popen(['php', raw_metadata_generator, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
+			stdout, stderr = process.communicate(metadata)
+			if process.returncode:
+				ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr.decode('UTF-8', 'replace'),))
 			fd.write("$further = array(\n")
 		else:
 			fd.write('$metadata[%s] = array(\n' % php_string(entityid))

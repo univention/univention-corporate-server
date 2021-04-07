@@ -8,3 +8,4 @@ modules/univention/saml usr/lib/python3/dist-packages/univention/
 24univention-saml-uninstall.uinst usr/lib/univention-uninstall
 91univention-saml.inst usr/lib/univention-install
 scripts/php-cgi /var/www/saml
+scripts/metadata-converter.php	/usr/share/univention-saml/
