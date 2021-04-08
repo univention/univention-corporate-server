@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python3.5
+fix: 3.5.3-1+deb9u4
+desc: |
+ This update addresses the following issues:
+ * stack-based buffer overflow in PyCArg_repr in _ctypes/callproc.c
+   (CVE-2021-3177)
+ * information disclosure via pydoc (CVE-2021-3426)
+ * Web Cache Poisoning via urllib.parse.parse_qsl and urllib.parse.parse_qs by
+   using a semicolon in query parameters (CVE-2021-23336)
+bug: [53040]
+cve:
+- CVE-2021-3177
+- CVE-2021-3426
+- CVE-2021-23336
