@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: underscore
+fix: 1.8.3~dfsg-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Arbitrary code execution via the template function (CVE-2021-23358)
+bug: [53038]
+cve:
+- CVE-2021-23358
