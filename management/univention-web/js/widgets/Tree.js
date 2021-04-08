@@ -58,13 +58,13 @@ define([
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
 
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
-		'class': 'umcGridTree',
 		showRoot: true,
 		autoExpand: false,
 		selectRootOnLoad: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcGridTree');
 			this._gridTree = new GridTree(lang.mixin({
 				collection: null,
 				selectionMode: 'single',

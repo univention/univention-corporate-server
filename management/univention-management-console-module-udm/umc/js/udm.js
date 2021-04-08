@@ -1454,6 +1454,7 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			var tree = new Tree({
+				'class': 'umcGridTreeLight',
 				model: model,
 				persist: false,
 				style: 'width: 300px; height: 350px; margin-bottom: 20px;', // TODO does not work good on mobile
