@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: busybox
+fix: 1:1.22.0-19+deb9u2
+desc: |
+ This update addresses the following issue:
+ * invalid free or segmentation fault via malformed gzip data (CVE-2021-28831)
+bug: [53037]
+cve:
+- CVE-2021-28831
