@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: spamassassin
+fix: 3.4.2-1~deb9u4
+desc: |
+ This update addresses the following issue:
+
+ * 3.4.2-1~deb9u4 (Mon, 29 Mar 2021 17:52:36 +0530) * Non-maintainer upload by
+   the LTS team. * Import upstream fix for CVE-2020-1946: arbitrary code
+   execution via malicious rule files.
+
+ * 3.4.2-1~deb9u4 (Mon, 29 Mar 2021 17:52:36 +0530) * Non-maintainer upload by
+   the LTS team. * Import upstream fix for CVE-2020-1946: arbitrary code
+   execution via malicious rule files.
+
+ * 3.4.2-1~deb9u4 (Mon, 29 Mar 2021 17:52:36 +0530) * Non-maintainer upload by
+   the LTS team. * Import upstream fix for CVE-2020-1946: arbitrary code
+   execution via malicious rule files.
+bug: [53039]
+cve:
+- CVE-2020-1946
