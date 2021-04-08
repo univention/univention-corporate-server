@@ -199,7 +199,7 @@ msgid ""
 msgstr ""
 "Ein Backup Directory Node fungiert als Ersatzsystem für den Primary "
 "Directory Node und kann die Rolle des Primary Directory Nodes langfristig "
-"übernehmen. Es ist empfohlen, mindestens einen DC Backup in der Domäne zu "
+"übernehmen. Es ist empfohlen, mindestens einen Backup DN in der Domäne zu "
 "verwenden."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:334
@@ -818,7 +818,7 @@ msgid ""
 "Managed Nodes should be used for services which do not need a local "
 "authentication database, for example for file or print servers."
 msgstr ""
-"Managed Node sollten für Dienste genutzt werden, die keine lokale Datenbank "
+"Managed Nodes sollten für Dienste genutzt werden, die keine lokale Datenbank "
 "für die Authentifizierung benötigen, beispielsweise Datei- oder Druckserver."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1711

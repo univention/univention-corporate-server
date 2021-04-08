@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-19) unstable; urgency=medium
+
+  * Bug #42374: Typos
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Apr 2021 11:44:38 +0200
+
 univention-system-setup (13.0.3-18) unstable; urgency=medium
 
   * Bug #52453: qa feedback
