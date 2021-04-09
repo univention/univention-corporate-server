@@ -102,6 +102,10 @@ define([
 		// 		The class for the icon of the upload button.
 		buttonIconClass: 'upload',
 
+		// buttonClass: String
+		// 		The css class for the upload button.
+		buttonClass: '',
+
 		// showClearButton: Boolean
 		//		The clear button is shown only if this attribute is set to true.
 		showClearButton: true,
@@ -109,6 +113,10 @@ define([
 		// clearButtonLabel: String
 		//		The label that is displayed on the clear button.
 		clearButtonLabel: _('Remove'),
+
+		// clearButtonClass: String
+		// 		The css class for the clear button.
+		clearButtonClass: '',
 
 		// clearButtonIconClass: String
 		// 		The class for the icon of the clear button.
@@ -184,7 +192,7 @@ define([
 
 			// until Dojo2.0 "dojox.form.Uploader" must be used!
 			this._uploader = new _Uploader({
-				'class': 'ucsTextButton',
+				'class': this.buttonClass,
 				url: '/univention/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,
 				multiple: this.multiFile,
@@ -200,7 +208,7 @@ define([
 
 			if (this.showClearButton) {
 				this._clearButton = new Button({
-					'class': 'ucsTextButton',
+					'class': this.clearButtonClass,
 					label: this.clearButtonLabel,
 					iconClass: this.clearButtonIconClass,
 					callback: lang.hitch(this, function() {
