@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-03-25 09:16+0100\n"
+"POT-Creation-Date: 2021-04-10 00:29+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -117,6 +117,10 @@ msgstr "Benachrichtigungen"
 msgid "Old password"
 msgstr "Altes Passwort"
 
+#: frontend/src/assets/data/dictionary.js:73
+msgid "Remove"
+msgstr "Entfernen"
+
 #: frontend/src/assets/data/dictionary.js:61
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
@@ -124,6 +128,10 @@ msgstr "Aus diesem Portal entfernen"
 #: frontend/src/assets/data/dictionary.js:60
 msgid "Save"
 msgstr "Speichern"
+
+#: frontend/src/assets/data/dictionary.js:75
+msgid "Select file"
+msgstr "Datei wählen"
 
 #: frontend/src/assets/data/dictionary.js:43
 msgid "Stop edit portal"
@@ -136,6 +144,10 @@ msgstr "Abschicken"
 #: frontend/src/assets/data/dictionary.js:44
 msgid "Switch locale"
 msgstr "Sprache ändern"
+
+#: frontend/src/assets/data/dictionary.js:74
+msgid "Upload"
+msgstr "Hochladen"
 
 #: frontend/src/assets/data/dictionary.js:46
 #: frontend/src/assets/data/dictionary.js:67

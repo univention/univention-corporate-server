@@ -38,7 +38,6 @@ License with the Debian GNU/Linux or Univention distribution in file
         <translate i18n-key="OLD_PASSWORD" />
       </label>
       <input
-        ref="oldPassword"
         v-model="oldPassword"
         name="old-password"
         type="password"
@@ -47,7 +46,6 @@ License with the Debian GNU/Linux or Univention distribution in file
         <translate i18n-key="NEW_PASSWORD" />
       </label>
       <input
-        ref="newPassword"
         v-model="newPassword"
         name="new-password"
         type="password"
@@ -56,7 +54,6 @@ License with the Debian GNU/Linux or Univention distribution in file
         <translate i18n-key="NEW_PASSWORD" /> (<translate i18n-key="RETYPE" />)
       </label>
       <input
-        ref="newPassword2"
         v-model="newPassword2"
         name="new-password-retype"
         type="password"

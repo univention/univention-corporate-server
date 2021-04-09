@@ -67,6 +67,9 @@ const portalData: PortalModule<PortalDataState> = {
     PORTALNAME(state, name) {
       state.portal.portal.name = name;
     },
+    PORTALLOGO(state, data) {
+      state.portal.portal.logo = data;
+    },
     EDITMODE(state, editMode) {
       state.editMode = editMode;
     },
@@ -76,6 +79,7 @@ const portalData: PortalModule<PortalDataState> = {
     getPortal: (state) => state.portal,
     getPortalDn: (state) => state.portal.portal.dn,
     portalName: (state) => state.portal.portal.name,
+    portalLogo: (state) => state.portal.portal.logo,
     portalContent: (state) => state.portal.portal.content,
     portalEntries: (state) => state.portal.entries,
     portalFolders: (state) => state.portal.folders,
@@ -88,10 +92,13 @@ const portalData: PortalModule<PortalDataState> = {
     setPortal({ commit }, payload) {
       commit('PORTALDATA', payload);
     },
-    setPortalName({ commit }, name) {
+    setPortalName({ commit }, name: string) {
       commit('PORTALNAME', name);
     },
-    async setEditMode({ dispatch, commit }, editMode) {
+    setPortalLogo({ commit }, data: string) {
+      commit('PORTALLOGO', data);
+    },
+    async setEditMode({ dispatch, commit }, editMode: boolean) {
       await dispatch('loadPortal', { adminMode: editMode }, { root: true });
       commit('EDITMODE', editMode);
     },

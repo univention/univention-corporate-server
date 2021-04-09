@@ -32,18 +32,25 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="edit-mode-side-navigation__form"
       @submit.prevent="saveChanges"
     >
+      <image-upload
+        v-model="portalLogoData"
+        label="Portal logo"
+      />
       <div
         v-for="displayName in displayNames"
         :key="displayName.locale"
       >
         <label>
-          Name for {{ displayName.locale }}
+          Name ({{ displayName.locale }})
         </label>
         <input
           v-model="displayName.name"
         >
       </div>
-      <button>
+      <button class="primary">
+        <portal-icon
+          icon="save"
+        />
         <translate
           i18n-key="SAVE"
         />
@@ -58,6 +65,8 @@ import { mapGetters } from 'vuex';
 
 import { udmPut } from '@/jsHelper/umc';
 import Translate from '@/i18n/Translate.vue';
+import PortalIcon from '@/components/globals/PortalIcon.vue';
+import ImageUpload from '@/components/widgets/ImageUpload.vue';
 
 interface LocalizedName {
   locale: string,
@@ -65,6 +74,7 @@ interface LocalizedName {
 }
 
 interface EditModeSideNavigationData {
+  portalLogoData: string,
   displayNames: LocalizedName[],
 }
 
@@ -72,9 +82,12 @@ export default defineComponent({
   name: 'EditModeSideNavigation',
   components: {
     Translate,
+    PortalIcon,
+    ImageUpload,
   },
   data(): EditModeSideNavigationData {
     return {
+      portalLogoData: '',
       displayNames: [],
     };
   },
@@ -82,6 +95,7 @@ export default defineComponent({
     ...mapGetters({
       portalDn: 'portalData/getPortalDn',
       portalName: 'portalData/portalName',
+      portalLogo: 'portalData/portalLogo',
     }),
   },
   updated() {
@@ -90,8 +104,13 @@ export default defineComponent({
       name[displayName.locale] = displayName.name;
     });
     this.$store.dispatch('portalData/setPortalName', name);
+    this.$store.dispatch('portalData/setPortalLogo', this.portalLogoData);
   },
   mounted() {
+    // get initial logo data
+    this.portalLogoData = this.portalLogo || '';
+
+    // set up displayNames from locale data
     this.displayNames = Object.keys(this.portalName).map((locale) => ({
       locale,
       name: this.portalName[locale],
@@ -99,8 +118,19 @@ export default defineComponent({
   },
   methods: {
     saveChanges() {
+      let logo: string | null = null;
+      if (this.portalLogoData.startsWith('data:')) {
+        logo = this.portalLogoData.split(',')[1];
+      } else if (this.portalLogoData === '') {
+        logo = '';
+      }
       const displayName = this.displayNames.map((displName) => [displName.locale, displName.name]);
-      udmPut(this.portalDn, { displayName }).then(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const attrs: any = { displayName };
+      if (logo !== null) {
+        attrs.logo = logo;
+      }
+      udmPut(this.portalDn, attrs).then(() => {
         this.$store.dispatch('portalData/setEditMode', false);
         this.$store.dispatch('navigation/setActiveButton', '');
       }, (error) => {

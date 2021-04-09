@@ -29,10 +29,12 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <div class="portal-sidebar">
     <modal-wrapper
-      :is-active="activeNotificationButton || activeMenuButton"
+      v-if="activeNotificationButton || activeMenuButton || activeEditModeButton"
+      :is-active="activeNotificationButton || activeMenuButton || activeEditModeButton"
       @backgroundClick="closeSidebar"
     >
       <flyout-wrapper
+        v-if="activeNotificationButton"
         :is-visible="activeNotificationButton"
         class="portal-sidebar__flyout"
       >
@@ -47,6 +49,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         </notification-bubble>
       </flyout-wrapper>
       <flyout-wrapper
+        v-if="activeMenuButton"
         :is-visible="activeMenuButton"
         class="portal-sidebar__flyout"
       >

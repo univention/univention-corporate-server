@@ -40,7 +40,8 @@ License with the Debian GNU/Linux or Univention distribution in file
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
-          <a
+          <!-- as long as this link has no href, this needs to be a button to be focusable -->
+          <button
             id="loginButton"
             ref="loginButton"
             class="portal-sidenavigation__logout-link"
@@ -49,7 +50,7 @@ License with the Debian GNU/Linux or Univention distribution in file
             @keydown.shift.tab="focusOnMenuButton($event)"
           >
             <translate i18n-key="LOGOUT" />
-          </a>
+          </button>
         </div>
       </div>
       <button
@@ -58,6 +59,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
+        @keydown.esc="closeNavigation"
       >
         <translate i18n-key="LOGIN" />
       </button>
@@ -312,6 +314,7 @@ export default defineComponent({
   display: flex
   flex-direction: column
   align-item: flex-end
+  overflow: auto
 
   &__link
     padding: 1em 0 1em 20px

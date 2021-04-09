@@ -44,7 +44,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         :no-click="true"
         class="portal-category__edit-button"
       />
-      {{ $localized(title) }}
+      <span>{{ $localized(title) }}</span>
     </h2>
     <div
       class="portal-category__tiles dragdrop__container"
@@ -291,7 +291,9 @@ export default defineComponent({
     @extend .icon-button--admin
 
   &__title
-    display: inline-block
+    height: var(--button-size)
+    display: flex
+    align-items: center
     margin-top: 0
     margin-bottom: calc(6 * var(--layout-spacing-unit))
 

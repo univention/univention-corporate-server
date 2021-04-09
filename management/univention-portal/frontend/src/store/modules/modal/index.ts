@@ -67,9 +67,11 @@ const modal: PortalModule<ModalState> = {
     },
     SHOW_MODAL(state) {
       state.modalVisible = true;
+      document.body.classList.add('body__has-modal');
     },
     HIDE_MODAL(state) {
       state.modalVisible = false;
+      document.body.classList.remove('body__has-modal');
     },
   },
 

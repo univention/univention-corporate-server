@@ -70,6 +70,9 @@ const catalog = {
   RETYPE: _('retype'),
   CHANGE_PASSWORD: _('Change password'),
   CHANGE_PASSWORD_SUCCESS: _('You have successfully updated your password'),
+  REMOVE: _('Remove'),
+  UPLOAD: _('Upload'),
+  SELECT_FILE: _('Select file'),
 };
 
 export { catalog };

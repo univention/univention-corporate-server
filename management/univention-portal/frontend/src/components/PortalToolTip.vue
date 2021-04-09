@@ -30,10 +30,10 @@ License with the Debian GNU/Linux or Univention distribution in file
   <div
     class="portal-tooltip"
     role="tooltip"
+    data-test="portal-tooltip"
   >
     <div
       class="portal-tooltip__header"
-      data-test="portal-tooltip"
     >
       <div
         class="portal-tooltip__thumbnail"

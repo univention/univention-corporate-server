@@ -43,6 +43,7 @@ build-test-deploy-job:
     - dpkg-buildpackage -uc -us -b
     - cp ../*.deb .
     - ssh root@ucs5-p1.duckdns.org rm -f /tmp/phoenixportal*
-    - scp ./phoenixportal_*.deb root@ucs5-p1.duckdns.org:/tmp
+    # only scp the latest version
+    - find . -maxdepth 1 -type f -name "phoenixportal*" | sort -V | tail -1 | xargs -I '{}' scp {} root@ucs5-p1.duckdns.org:/tmp
     - ssh root@ucs5-p1.duckdns.org dpkg --purge phoenixportal
-    - ssh root@ucs5-p1.duckdns.org apt install -y /tmp/phoenixportal_*_amd64.deb
+    - ssh root@ucs5-p1.duckdns.org dpkg -i --force-overwrite /tmp/phoenixportal_*_amd64.deb

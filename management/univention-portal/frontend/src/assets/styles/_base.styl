@@ -27,11 +27,28 @@ button
   background-color: var(--button-text-bgc)
   transition: var(--button-bgc-transition)
   transition: opacity 250ms
+  display: flex
+  align-items: center
+
+  svg + span
+    padding-left: var(--layout-spacing-unit-small)
+
+  &[disabled]
+    background-color: var(--button-bgc-overlay-disabled)
 
   &:hover,
   &:focus
     background-color: var(--bgc-content-body)
     cursor: pointer
+
+  &.primary
+    background-color: unquote('rgba(var(--color-primary-rgb), 0.7)')
+
+    &:hover
+      background-color: unquote('rgba(var(--color-primary-rgb), 0.85)')
+
+    &:focus
+      background-color: unquote('rgba(var(--color-primary-rgb), 1)')
 
 h2
   font-size: var(--font-size-2)
@@ -45,7 +62,7 @@ input
   padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
   margin-bottom: var(--layout-spacing-unit)
   font-size: var(--font-size-3)
-  color: var(--font-color-cotrast-high)
+  color: var(--font-color-contrast-high)
   background-color: var(--inputfield-bgc)
   border: 1px solid var(--inputfield-bgc)
   border-radius: var(--border-radius-interactable)

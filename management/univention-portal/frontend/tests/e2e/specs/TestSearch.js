@@ -1,37 +1,42 @@
-// Iframes are inherently unsafe. Don't use them.
+beforeEach(() => {
+  cy.setCookie('UMCLang', 'de_DE');
+  // stuff selenium can't do #1: mock requests / responses
+  cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_out.json' });
+  // cy.intercept('GET', 'portal/portal.json', { fixture: 'portal_logged_in.json' });
+  cy.intercept('GET', 'meta.json', { fixture: 'meta.json' });
+  cy.intercept('GET', 'de.json', { fixture: 'de.json' });
+  cy.intercept('GET', 'languages.json', { fixture: 'languages.json' });
+  cy.visit('/');
+  cy.setCookie('univentionCookieSettingsAccepted', 'simpleCookieValue');
+});
 
 describe('General Tests', () => {
-  it('search shows results with "Blog"', () => {
-    cy.setCookie('UMCLang', 'de_DE');
-    // stuff selenium can't do #1: mock requests / responses
-    cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_out.json' });
-    // cy.intercept('GET', 'portal/portal.json', { fixture: 'portal_logged_in.json' });
-    cy.intercept('GET', 'meta.json', { fixture: 'meta.json' });
-    cy.intercept('GET', 'de.json', { fixture: 'de.json' });
-    cy.intercept('GET', 'languages.json', { fixture: 'languages.json' });
-    cy.visit('/');
-    cy.contains('Cookie-Einstellungen');
-    cy.get('.cookie-banner__button-text').click();
-    cy.getCookie('univentionCookieSettingsAccepted').should('exist');
+  it('Tile title in results should match with the String "Blog"', () => {
+    // make inputfield visible 
+    clickOnSearchButton();
 
-
-    const searchButton = cy.get('[data-test="searchbutton"]');
-    
-    searchButton.should('not.have.class', 'header-button--is-active');
-  
-    cy.get('[data-test="searchInput"]').should('not.be.visible'); // input exists after searchButton is clicked
-    
-    cy.get('[data-test="searchbutton"]').click();
-    searchButton.should('have.class', 'header-button--is-active');
-    cy.get('[data-test="searchInput"]').should('exist');
-    cy.get('[data-test="searchInput"]');
-
+    // test for tilename
     cy.contains('Handbuch');
     cy.get('[data-test="searchInput"]').type('Blog');
     cy.contains('Handbuch').should('not.exist');
     cy.contains('Blog');
   });
-  it('searches also for tile description', () => {
-      // how to write test for description? Tooltip is not redered. 
+
+
+  it('Searches also for tile description', () => {
+    // make inputfield visible 
+    clickOnSearchButton();
+
+    cy.get('.portal-tile').first().contains('ownCloud');
+    cy.get('[data-test="searchInput"]').type('Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems');
+    cy.get('.portal-tile').first().contains('System- und Domäneneinstellungen');
   });
 });
+
+const clickOnSearchButton = () => {
+  cy.get('[data-test="searchbutton"]').should('not.have.class', 'header-button--is-active');
+  cy.get('[data-test="searchInput"]').should('not.exist'); // input exists after searchButton is clicked
+  cy.get('[data-test="searchbutton"]').click();
+  cy.get('[data-test="searchbutton"]').should('have.class', 'header-button--is-active');
+  cy.get('[data-test="searchInput"]').should('exist');
+}
