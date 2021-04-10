@@ -6,9 +6,9 @@ src: python3.5
 fix: 3.5.3-1+deb9u4
 desc: |
  This update addresses the following issues:
- * stack-based buffer overflow in PyCArg_repr in _ctypes/callproc.c
+ * Stack-based buffer overflow in PyCArg_repr in _ctypes/callproc.c
    (CVE-2021-3177)
- * information disclosure via pydoc (CVE-2021-3426)
+ * Information disclosure via pydoc (CVE-2021-3426)
  * Web Cache Poisoning via urllib.parse.parse_qsl and urllib.parse.parse_qs by
    using a semicolon in query parameters (CVE-2021-23336)
 bug: [53040]
