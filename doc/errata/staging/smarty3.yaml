@@ -6,13 +6,14 @@ src: smarty3
 fix: 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u2
 desc: |
  This update addresses the following issues:
-
- * 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u2 (Sun, 04 Apr 2021 12:45:17
-   +0530) * Non-maintainer upload by the Debian LTS Team. * Fix
-   CVE-2018-13982, CVE-2021-26119, CVE-2021-26120
- * Smarty before 3.1.33-dev-4 allows attackers to bypass the trusted_dir
-   protection mechanism via a file:./../ substring in an include statement.
-   (CVE-2018-16831)
+ * Path traversal vulnerability due to insufficient template code sanitization
+   (CVE-2018-13982)
+ * Bypass of trusted_dir protection mechanism via a `file:./../` substring in
+   an include statement (CVE-2018-16831)
+ * Sandbox Escape because $smarty.template_object can be accessed in sandbox
+   mode (CVE-2021-26119)
+ * Code injection via an unexpected function name after a `{function name=`
+   substring (CVE-2021-26120)
 bug: [53041]
 cve:
 - CVE-2018-13982
