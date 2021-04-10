@@ -6,7 +6,7 @@ src: busybox
 fix: 1:1.22.0-19+deb9u2
 desc: |
  This update addresses the following issue:
- * invalid free or segmentation fault via malformed gzip data (CVE-2021-28831)
+ * Invalid free or segmentation fault via malformed gzip data (CVE-2021-28831)
 bug: [53037]
 cve:
 - CVE-2021-28831
