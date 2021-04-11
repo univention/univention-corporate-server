@@ -1,3 +1,9 @@
+univention-portal (4.0.5-21) unstable; urgency=medium
+
+  * Bug #52869: Edit Mode: Wait for change before leaving edit mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Apr 2021 00:34:08 +0200
+
 univention-portal (4.0.5-20) unstable; urgency=medium
 
   * Bug #52869: Edit Mode: Portal Logo

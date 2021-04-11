@@ -86,6 +86,9 @@ class Portal(with_metaclass(Plugin)):
 		self.portal_cache = portal_cache
 		self.authenticator = authenticator
 
+	def get_cache_id(self):
+		return self.portal_cache.get_id()
+
 	def get_user(self, request):
 		return self.authenticator.get_user(request)
 

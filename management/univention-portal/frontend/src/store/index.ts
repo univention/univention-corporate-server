@@ -69,16 +69,18 @@ const actions = {
   deactivateLoadingState({ commit }) {
     commit('SET_LOADING_STATE', false);
   },
-  loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
+  portalJsonRequest: (_, payload) => {
     console.log('Loading Portal...');
-
-    // Get portal data
     const headers = {};
     if (payload.adminMode) {
       console.log('... in Admin mode');
       headers['X-Univention-Portal-Admin-Mode'] = 'yes';
     }
-    const portalRequest = axios.get(`${portalUrl}${portalJsonPath}`, { headers });
+    return axios.get(`${portalUrl}${portalJsonPath}`, { headers });
+  },
+  loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
+    // Get portal data
+    const portalRequest = dispatch('portalJsonRequest', payload);
     const portalPromises = [
       `${portalUrl}${portalMetaPath}`, // Get meta data
       `${portalUrl}${languageJsonPath}`, // Get locale data

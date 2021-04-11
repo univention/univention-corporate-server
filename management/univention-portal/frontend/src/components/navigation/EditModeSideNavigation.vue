@@ -117,7 +117,7 @@ export default defineComponent({
     }));
   },
   methods: {
-    saveChanges() {
+    async saveChanges() {
       let logo: string | null = null;
       if (this.portalLogoData.startsWith('data:')) {
         logo = this.portalLogoData.split(',')[1];
@@ -130,15 +130,19 @@ export default defineComponent({
       if (logo !== null) {
         attrs.logo = logo;
       }
-      udmPut(this.portalDn, attrs).then(() => {
+      try {
+        this.$store.dispatch('activateLoadingState');
+        await udmPut(this.portalDn, attrs);
+        await this.$store.dispatch('portalData/waitForChange', 10);
         this.$store.dispatch('portalData/setEditMode', false);
         this.$store.dispatch('navigation/setActiveButton', '');
-      }, (error) => {
+      } catch (error) {
         this.$store.dispatch('notificationBubble/addErrorNotification', {
           bubbleTitle: 'Update failed',
           bubbleDescription: `'Saving the portal failed: ${error}'`,
         });
-      });
+      }
+      this.$store.dispatch('deactivateLoadingState');
     },
   },
 });

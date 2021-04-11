@@ -31,6 +31,7 @@
 #
 
 import json
+import os
 from copy import deepcopy
 
 from six import with_metaclass
@@ -58,6 +59,13 @@ class Cache(with_metaclass(Plugin)):
 		self._reloader = reloader
 		self._cache = {}
 		self._loaded = False
+
+	def get_id(self):
+		try:
+			stat = os.stat(self._cache_file)
+			return str(stat.st_mtime)
+		except (EnvironmentError):
+			return ""
 
 	def _load(self):
 		get_logger("cache").info("loading cache file {}".format(self._cache_file))
