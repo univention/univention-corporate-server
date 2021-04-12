@@ -52,16 +52,13 @@ configure)
 		umc/login/links/login_without_sso/text?"Login without Single Sign On" \
 		umc/login/links/login_without_sso/text/de?"Ohne Single Sign-On anmelden"
 
-	for i in /var/www/saml /var/www/saml/php-cgi
-	do
-		# only do something when no setting exists
-		if ! dpkg-statoverride --list "$i" >/dev/null 2>&1; then
-			dpkg-statoverride --update --add samlcgi samlcgi 755 "$i"
-		fi
-	done
-
 	if dpkg --compare-versions "$2" lt 6.0.2-56; then
 		dpkg-statoverride --remove /var/lib/simplesamlphp/secrets.inc.php
+	fi
+	if dpkg --compare-versions "$2" lt 7.0.4-5
+	then
+		dpkg-statoverride --quiet --remove /var/www/saml
+		dpkg-statoverride --quiet --remove /var/www/saml/php-cgi
 	fi
 
 	if ! dpkg-statoverride --list /var/lib/simplesamlphp/secrets.inc.php >/dev/null 2>&1; then
@@ -82,7 +79,8 @@ configure)
 
 	systemctl restart univention-directory-listener
 
-	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log; do
+	for file in /var/log/memcached.log /var/log/memcached-saml.log
+	do
 		touch "$file"
 		chown root:adm "$file"
 		chmod 640 "$file"
@@ -91,12 +89,14 @@ configure)
 
 	deb-systemd-invoke restart stunnel4.service
 
+	a2enmod headers proxy_fcgi setenvif
+	a2enconf php7.3-fpm
 	a2ensite univention-saml
 	a2enmod headers
 	a2enmod actions
 	a2enmod suexec
 	a2enmod cgi
-	deb-systemd-invoke try-reload-or-restart apache2
+	deb-systemd-invoke try-reload-or-restart apache2 php7.3-fpm
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)
 	;;

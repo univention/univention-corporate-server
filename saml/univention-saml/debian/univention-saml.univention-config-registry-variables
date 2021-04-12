@@ -231,3 +231,31 @@ Description[de]=Gibt eine lokalisierte Version von saml/idp/selfservice/account-
 Description[en]=Specifies a localized version of saml/idp/selfservice/account-verification/error-msg. E.g. saml/idp/selfservice/account-verification/error-descr/en="...".
 Type=str
 Categories=saml
+
+[saml/fpm/server/start]
+Description[de]=Anzahl der Server, die initial gestartet werden.
+Description[en]=Number of servers to start initially.
+Type=int
+Categories=saml
+Default=2
+
+[saml/fpm/server/max]
+Description[de]=Maximale Anzahl der Server.
+Description[en]=Maximum number of servers.
+Type=int
+Categories=saml
+Default=5
+
+[saml/fpm/spare/min]
+Description[de]=Anzahl der neuen Server, die mindestens vorgehalten werden.
+Description[en]=Minimum number of spare servers to keep.
+Type=int
+Categories=saml
+Default=1
+
+[saml/fpm/spare/max]
+Description[de]=Anzahl der neuen Server, die maximal vorgehalten werden.
+Description[en]=Maximum number of spare servers to keep.
+Type=int
+Categories=saml
+Default=3

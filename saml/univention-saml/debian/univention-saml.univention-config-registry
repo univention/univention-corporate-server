@@ -144,3 +144,6 @@ File: etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json
 Variables: umc/login/texts/title
 Variables: umc/login/texts/title/.*
 Variables: domainname
+
+Type: file
+File: etc/php/7.3/fpm/pool.d/samlcgi.conf

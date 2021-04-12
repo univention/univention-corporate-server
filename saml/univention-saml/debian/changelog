@@ -1,3 +1,9 @@
+univention-saml (7.0.4-14) unstable; urgency=low
+
+  * Bug #48042: Switch to php-fpm
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 04 May 2021 14:14:14 +0200
+
 univention-saml (7.0.4-13) unstable; urgency=medium
 
   * Bug #53198: fix color of error message

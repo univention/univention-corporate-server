@@ -16,11 +16,10 @@ Package: univention-saml
 Architecture: all
 Depends:
  adduser,
- apache2-suexec-pristine,
  memcached,
  openssl,
- php-cgi (>= 2:7.3),
  php-cli (>= 2:7.3),
+ php-fpm (>= 2:7.3),
  php-curl,
  php-krb5,
  php-ldap,
