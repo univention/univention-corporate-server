@@ -6,10 +6,10 @@ src: qemu
 fix: 1:2.8+dfsg-6+deb9u14A~4.4.7.202104120844
 desc: |
  This update addresses the following issues:
- * heap buffer overflow in sdhci_sdma_transfer_multi_blocks() in hw/sd/sdhci.c
+ * Heap buffer overflow in sdhci_sdma_transfer_multi_blocks() in hw/sd/sdhci.c
    (CVE-2020-17380)
- * scsi: mptsas: use-after-free while processing io requests (CVE-2021-3392)
- * sdhci: incomplete fix for CVE-2020-17380/CVE-2020-25085 (CVE-2021-3409)
+ * SCSI: mptsas: use-after-free while processing io requests (CVE-2021-3392)
+ * SDHCI: incomplete fix for CVE-2020-17380/CVE-2020-25085 (CVE-2021-3409)
  * net: infinite loop in loopback mode may lead to stack overflow
    (CVE-2021-3416)
  * Failed malloc in vmxnet3_activate_device() in hw/net/vmxnet3.c
