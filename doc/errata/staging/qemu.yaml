@@ -1,0 +1,29 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u14A~4.4.7.202104120844
+desc: |
+ This update addresses the following issues:
+ * heap buffer overflow in sdhci_sdma_transfer_multi_blocks() in hw/sd/sdhci.c
+   (CVE-2020-17380)
+ * scsi: mptsas: use-after-free while processing io requests (CVE-2021-3392)
+ * sdhci: incomplete fix for CVE-2020-17380/CVE-2020-25085 (CVE-2021-3409)
+ * net: infinite loop in loopback mode may lead to stack overflow
+   (CVE-2021-3416)
+ * Failed malloc in vmxnet3_activate_device() in hw/net/vmxnet3.c
+   (CVE-2021-20203)
+ * net: eepro100: stack overflow via infinite recursion (CVE-2021-20255)
+ * net: e1000: infinite loop while processing transmit descriptors
+   (CVE-2021-20257)
+bug: [53054]
+cve:
+- CVE-2020-17380
+- CVE-2021-3392
+- CVE-2021-3409
+- CVE-2021-3416
+- CVE-2021-20203
+- CVE-2021-20255
+- CVE-2021-20257
+- CVE-2020-25085
