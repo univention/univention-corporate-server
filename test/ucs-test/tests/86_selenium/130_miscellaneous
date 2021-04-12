@@ -50,7 +50,7 @@ class UMCTester(object):
 		self.selenium.open_side_menu()
 		self.selenium.click_text(_('Logout'))
 		self.selenium.wait_for_text(_('really want to logout'))
-		self.selenium.click_button(_('Logout'))
+		self.selenium.click_button(_('Logout'), xpath_prefix="//div[contains(@class, 'dijitDialog')]")
 
 		self.selenium.do_login(username=self.selenium.umcLoginUsername)
 
