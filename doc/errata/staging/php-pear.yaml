@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: php-pear
+fix: 1:1.10.1+submodules+notgz-9+deb9u3
+desc: |
+ This update addresses the following issue:
+ * directory traversal due to inadequate checking of symbolic links
+   (CVE-2020-36193)
+bug: [53056]
+cve:
+- CVE-2020-36193
