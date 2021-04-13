@@ -88,15 +88,7 @@ then # call self in xinit as nobody
 			system/setup/boot/fields/blacklist='password locale' \
 			system/setup/boot/pages/blacklist='locale welcome network'
 
-		# Start/Restart UMC and Webserver
-		systemctl restart univention-management-console-server
-		systemctl restart univention-management-console-web-server
-
-		# after installation an outdated apache process is running that cannot be killed via pid file
-		pkill -f apache2
-		systemctl stop apache2
-		sleep 2
-		systemctl start apache2
+		systemctl restart univention-management-console-server univention-management-console-web-server apache2
 	fi
 
 	# move old profile
