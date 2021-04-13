@@ -1,0 +1,11 @@
+[Unit]
+Description=Re-create missing SSL certificates for Univention System Setup on boot
+ConditionPathExists=!/etc/univention/ssl
+Before=apache2.service
+
+[Service]
+Type=oneshot
+ExecStart=dpkg-reconfigure univention-ssl
+
+[Install]
+WantedBy=apache2.service
