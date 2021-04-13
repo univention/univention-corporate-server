@@ -104,6 +104,15 @@
 			</para>
 		</section>
 
+		<section id="relnotes:ubuntuclient">
+			<!-- Bug 53025 -->
+			<title>Hinweis zum Univention Domain Join Assistant für Ubuntu-Clients</title>
+			<para>
+				Univention stellt den Univention Domain Join Assistant für die Integration von Ubuntu-Clients in eine UCS-Domäne bereit.
+				Zum Zeitpunkt des Releases von UCS 5.0-0 ist der Domain Join Assistant noch nicht mit UCS 5 kompatibel und ein Betritt wird fehlschlagen.
+				Dieses Problem wird im Rahmen eines folgenden UCS 5-Erratums bzw. eines Updates für den Univention Domain Join Assistant behoben.
+			</para>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:localrepo">
