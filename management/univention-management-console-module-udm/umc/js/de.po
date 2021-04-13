@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm 10.0.0-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-11 03:59+0200\n"
+"POT-Creation-Date: 2021-04-11 04:04+0200\n"
 "PO-Revision-Date: 2020-09-05 16:24+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -1095,6 +1095,10 @@ msgstr "Es wurden keine Portal-Objekte gefunden."
 #: umc/js/udm.js:639
 msgid "No printers could be found."
 msgstr "Es wurden keine Drucker gefunden."
+
+#: umc/js/udm/ReferencingObjects.js:65
+msgid "No referencing objects"
+msgstr "Keine zugehörigen Objekte"
 
 #: umc/js/udm.js:638
 msgid "No shares could be found."

@@ -34,10 +34,11 @@ define([
 	"dojo/_base/array",
 	"dojo/topic",
 	"umc/widgets/Button",
+	"umc/widgets/Text",
 	"umc/tools",
 	"umc/app",
 	"umc/widgets/ContainerWidget"
-], function(declare, lang, array, topic, Button, tools, app, ContainerWidget) {
+], function(declare, lang, array, topic, Button, Text, tools, app, ContainerWidget) {
 	return declare("umc.modules.udm.ReferencingObjects", [ ContainerWidget ], {
 		// summary:
 		//		Provides a list of buttons opening a given object
@@ -55,9 +56,17 @@ define([
 			if (value instanceof Object) {
 				this._set('value', value);
 				this.destroyDescendants();
-				array.forEach(value, lang.hitch(this, function(item) {
-					this._addReferencingObjectLink(item);
-				}));
+				if (Array.isArray(value)) {
+					if (value.length) {
+						array.forEach(value, lang.hitch(this, function(item) {
+							this._addReferencingObjectLink(item);
+						}));
+					} else {
+						this.addChild(new Text({
+							content: _('No referencing objects')
+						}));
+					}
+				}
 			} else {
 				console.log('ReferencingObjects: not an object');
 			}
