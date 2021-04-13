@@ -35,12 +35,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell system/setup/boot/start)"
-
 . /lib/lsb/init-functions
+# shellcheck disable=SC2034
 NAME='univention-system-setup-boot'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 case "$1" in
@@ -48,18 +48,14 @@ case "$1" in
 		log_action_msg "Starting $DESC"
 
 		# deconfigure temporary interfaces
-		ucr search --brief --value '^appliance-mode-temporary$'|cut -f1 -d:|grep -E '^interfaces/[^/]+_[^/]/type$' | while read
+		ucr search --brief --value '^appliance-mode-temporary$'|cut -f1 -d:|grep -E '^interfaces/[^/]+_[^/]/type$' | while read -r
 		do
 			echo "${REPLY%type}"{netmask,address,broadcast,network,type}
 		done |
 		xargs -r ucr unset
 
 		# Show correct EC2 server address in motd and meta.json
-		for i in /etc/motd.setup /var/www/univention/meta.json; do
-			if [ -e "$i" ]; then
-				ucr commit "$i" >/dev/null 2>&1
-			fi
-		done
+		ucr commit /etc/motd.setup /var/www/univention/meta.json >/dev/null 2>&1
 
 		# Add public ssh key if the system was started in EC2:
 		if is_ucr_true server/amazon; then
