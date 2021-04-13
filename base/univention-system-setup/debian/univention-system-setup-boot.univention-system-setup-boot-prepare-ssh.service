@@ -1,0 +1,11 @@
+[Unit]
+Description=Re-create missing SSH host keys for Univention System Setup on boot
+ConditionPathExists=/etc/ssh/sshd_config
+Before=ssh.service
+
+[Service]
+Type=oneshot
+ExecStart=sh -c 'awk "/^HostKey/{print \\$2}" /etc/ssh/sshd_config | while read -r fn; do [ -f "$fn" ] && continue; dpkg-reconfigure openssh-server; break; done'
+
+[Install]
+WantedBy=ssh.service
