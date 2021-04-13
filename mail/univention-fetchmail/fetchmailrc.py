@@ -106,7 +106,7 @@ def objdelete(dlist, old):
 def objappend(flist, new, password=None):
 	# type: (List[str], Dict[str, List[bytes]], Optional[str]) -> None
 	"""add new entry"""
-	passwd = password
+	passwd = password or ''
 	if details_complete(new):
 		passwd = new.get('univentionFetchmailPasswd', [passwd.encode('UTF-8')])[0].decode('UTF-8')
 		flag_ssl = 'ssl' if new.get('univentionFetchmailUseSSL', [b''])[0] == b'1' else ''

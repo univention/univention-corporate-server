@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.1-2) unstable; urgency=low
+
+  * Bug #52963: fix traceback in fetchmailrc.py (objappend)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Apr 2021 18:07:29 +0200
+
 univention-fetchmail (13.0.1-1) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL
