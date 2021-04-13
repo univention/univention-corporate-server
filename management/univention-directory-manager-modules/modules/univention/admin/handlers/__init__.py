@@ -3009,15 +3009,15 @@ class simpleComputer(simpleLdap):
 		self.update_groups()
 
 	def _ldap_post_remove(self):
-		super(simpleComputer, self)._ldap_post_remove()
 		if self['mac']:
 			for macAddress in self['mac']:
 				if macAddress:
-					univention.admin.allocators.release(self.lo, self.position, 'mac', macAddress)
+					self.alloc.append(('mac', macAddress))
 		if self['ip']:
 			for ipAddress in self['ip']:
 				if ipAddress:
-					univention.admin.allocators.release(self.lo, self.position, 'aRecord', ipAddress)
+					self.alloc.append(('aRecord', ipAddress))
+		super(simpleComputer, self)._ldap_post_remove()
 
 		# remove computer from groups
 		groups = copy.deepcopy(self['groups'])

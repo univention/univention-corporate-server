@@ -154,7 +154,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('name') and self['name']:
 			requested_uid = "%s$" % self['name']
 			try:
-				ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('ASCII')]))
+				ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('UTF-8')]))
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(requested_uid)
 
@@ -164,6 +164,13 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm.encode('ASCII')))
 
 		return ml
+
+	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
+		if self.oldattr.get('uid'):
+			self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
+		if self.oldattr.get('sambaSID'):
+			self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):

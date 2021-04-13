@@ -138,7 +138,7 @@ class Support(object):
 
 	def nagiosGetParentHosts(self):
 		# univentionNagiosParent
-		_re = re.compile('^([^.]+)\.(.+?)$')
+		_re = re.compile(r'^([^.]+)\.(.+?)$')
 
 		parentlist = []
 		parents = self.oldattr.get('univentionNagiosParent', [])

@@ -173,8 +173,8 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.open()
 		if 'posix' in self.old_options and self.oldattr.get('uidNumber'):
 			self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
-		# if 'samba' in self.old_options and self.oldattr.get('sambaSID'):
-		# 	self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
+		if 'samba' in self.old_options and self.oldattr.get('sambaSID'):
+			self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
 
 	def _ldap_post_remove(self):
 		super(ComputerObject, self)._ldap_post_remove()

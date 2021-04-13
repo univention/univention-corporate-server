@@ -127,12 +127,6 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
-		self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
-		self.save()
-
 	def _ldap_pre_ready(self):
 		if not self.exists() or self.hasChanged('mailAddress'):
 			try:
@@ -141,9 +135,10 @@ class object(univention.admin.handlers.simpleLdap):
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
-	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-		return ml
+	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
+		if self.oldattr.get('mailPrimaryAddress'):
+			self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 
 
 lookup = object.lookup

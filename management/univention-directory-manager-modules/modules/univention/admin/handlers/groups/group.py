@@ -565,6 +565,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [b''])[0].decode('ASCII'), self.groupSid)
 
 	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
 		self.open()
 		# is this group in mentioned in settings/default?
 		try:
@@ -590,11 +591,14 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('gidNumber', gidNum))
 		if groupSid:
 			self.alloc.append(('sid', groupSid))
+		self.alloc.append(('groupName', self.oldattr['cn'][0].decode('UTF-8')))
+		if self.oldattr.get('mailPrimaryAddress'):
+			self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 
 	def _ldap_post_remove(self):
 		super(object, self)._ldap_post_remove()
 		for group in self.info.get('memberOf', []):
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if not self.__case_insensitive_in_list(self.dn, members):

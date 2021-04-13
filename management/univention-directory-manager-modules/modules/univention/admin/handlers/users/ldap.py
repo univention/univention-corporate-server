@@ -181,10 +181,7 @@ mapping.registerUnmapping('locked', unmapLocked)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-		self.password_length = 8
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+	password_length = 8
 
 	def open(self):
 		super(object, self).open()
@@ -309,8 +306,8 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.pwQuality(str(exc))
 
 	def _ldap_post_remove(self):
+		self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
 		super(object, self)._ldap_post_remove()
-		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn

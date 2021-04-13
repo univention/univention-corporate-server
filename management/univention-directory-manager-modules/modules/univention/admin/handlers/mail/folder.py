@@ -252,6 +252,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
+	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
+		if self.oldattr.get('mailPrimaryAddress'):
+			self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
+
 
 lookup = object.lookup
 identify = object.identify
