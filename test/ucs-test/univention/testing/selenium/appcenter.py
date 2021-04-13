@@ -55,7 +55,7 @@ class AppCenter(object):
 
 		# ChooseHostWizard
 		try:
-			self.selenium.wait_for_text(_('In order to proceed with the installation'))
+			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=10)
 		except TimeoutException:
 			pass
 		else:
