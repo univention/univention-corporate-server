@@ -216,8 +216,8 @@ export default defineComponent({
         this.subMenuClass = 'portal-sidenavigation__menu-item--hide';
       }
     },
-    startEditMode(): void {
-      this.$store.dispatch('portalData/setEditMode', true);
+    async startEditMode(): Promise<void> {
+      await this.$store.dispatch('portalData/setEditMode', true);
       this.$store.dispatch('navigation/setActiveButton', 'settings');
     },
     setFadeClass(): string {

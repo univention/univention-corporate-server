@@ -1,30 +1,30 @@
 <!--
-Copyright 2021 Univention GmbH
+  Copyright 2021 Univention GmbH
 
-https://www.univention.de/
+  https://www.univention.de/
 
-All rights reserved.
+  All rights reserved.
 
-The source code of this program is made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
+  The source code of this program is made available
+  under the terms of the GNU Affero General Public License version 3
+  (GNU AGPL V3) as published by the Free Software Foundation.
 
-Binary versions of this program provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
+  Binary versions of this program provided by Univention to you as
+  well as other copyrighted, protected or trademarked materials like
+  Logos, graphics, fonts, specific documentations and configurations,
+  cryptographic keys etc. are subject to a license agreement between
+  you and Univention and not subject to the GNU AGPL V3.
 
-In the case you use this program under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
+  In the case you use this program under the terms of the GNU AGPL V3,
+  the program is provided in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<https://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU Affero General Public
+  License with the Debian GNU/Linux or Univention distribution in file
+  /usr/share/common-licenses/AGPL-3; if not, see
+  <https://www.gnu.org/licenses/>.
 -->
 <template>
   <div class="image-upload">
@@ -35,7 +35,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       @dragenter.prevent=""
       @dragover.prevent=""
       @drop.prevent="drop"
-      @click="start_upload"
+      @click="startUpload"
     >
       <img
         v-if="modelValue"
@@ -59,7 +59,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       >
       <button
         type="button"
-        @click.prevent="start_upload"
+        @click.prevent="startUpload"
       >
         <portal-icon
           icon="upload"
@@ -113,7 +113,7 @@ export default defineComponent({
         this.handleFiles(dt.files);
       }
     },
-    start_upload() {
+    startUpload() {
       (this.$refs.file_input as HTMLElement).click();
     },
     upload(evt: Event) {
@@ -128,6 +128,7 @@ export default defineComponent({
 
       reader.onload = (e) => {
         if (e.target) {
+          console.log('e.target: ', e.target);
           this.$emit('update:modelValue', e.target.result);
         }
       };
@@ -141,23 +142,27 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-.image-upload__canvas
-  height: 10rem
-  width: 10rem
-  cursor: pointer
-.image-upload__footer
-  margin: var(--layout-spacing-unit) 0
-  display: flex
-  button + button
-    margin-left: var(--layout-spacing-unit)
-.image-upload__file-input
-  visibility: hidden
-  position: absolute
-.image-upload__nofile
-  height: 100%
-  width: 100%
-  display: flex
-  background-color: var(--bgc-content-body)
-  span
-    margin: auto
+.image-upload
+  &__canvas
+    height: 10rem
+    width: 10rem
+    cursor: pointer
+    img
+      max-height: 10rem
+      max-width: auto
+  &__footer
+    margin: var(--layout-spacing-unit) 0
+    display: flex
+    button + button
+      margin-left: var(--layout-spacing-unit)
+  &__file-input
+    visibility: hidden
+    position: absolute
+  &__nofile
+    height: 100%
+    width: 100%
+    display: flex
+    background-color: var(--bgc-content-body)
+    span
+      margin: auto
 </style>

@@ -31,24 +31,35 @@ import { setCookie } from '@/jsHelper/tools';
 import { PortalModule } from '@/store/root.models';
 import { Locale } from './locale.models';
 
+interface LocaleDefinition {
+  id: string;
+  label: string;
+}
+
 export interface LocaleState {
   locale: Locale;
+  availableLocales: Locale[];
 }
 
 const locale: PortalModule<LocaleState> = {
   namespaced: true,
   state: {
     locale: 'en_US',
+    availableLocales: ['en_US'],
   },
 
   mutations: {
     NEWLOCALE(state, payload) {
       state.locale = payload;
     },
+    AVAILABLE_LOCALES(state, payload) {
+      state.availableLocales = payload;
+    },
   },
 
   getters: {
     getLocale: (state) => state.locale,
+    getAvailableLocales: (state) => state.availableLocales,
   },
 
   actions: {
@@ -57,6 +68,10 @@ const locale: PortalModule<LocaleState> = {
       setCookie('UMCLang', payload.replace('_', '-'));
       const localePrefix = payload.slice(0, 2);
       return updateLocale(localePrefix);
+    },
+    setAvailableLocale({ commit }, payload: LocaleDefinition[]) {
+      const locales = payload.map((loc) => loc.id.replace('-', '_'));
+      commit('AVAILABLE_LOCALES', locales);
     },
   },
 };

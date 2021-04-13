@@ -35,6 +35,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="portal-iframe__status"
     />
     <iframe
+      ref="iframe"
       :src="link"
       title="Embedded Page"
       class="portal-iframe__iframe"
@@ -57,6 +58,14 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+  mounted() {
+    (this.$refs.iframe as HTMLIFrameElement).contentWindow?.focus();
+  },
+  updated() {
+    if (this.isActive) {
+      (this.$refs.iframe as HTMLIFrameElement).contentWindow?.focus();
+    }
   },
 });
 </script>

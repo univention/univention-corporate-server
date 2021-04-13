@@ -40,7 +40,7 @@ const user: PortalModule<UserState> = {
       username: '',
       displayName: '',
       mayEditPortal: false,
-      mayLoginViaSAML: false,
+      authMode: 'ucs',
     },
   },
 

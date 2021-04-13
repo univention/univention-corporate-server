@@ -73,6 +73,9 @@ const portalData: PortalModule<PortalDataState> = {
     PORTALLOGO(state, data) {
       state.portal.portal.logo = data;
     },
+    PORTALBACKGROUND(state, data) {
+      state.portal.portal.background = data;
+    },
     EDITMODE(state, editMode) {
       state.editMode = editMode;
     },
@@ -83,6 +86,7 @@ const portalData: PortalModule<PortalDataState> = {
     getPortalDn: (state) => state.portal.portal.dn,
     portalName: (state) => state.portal.portal.name,
     portalLogo: (state) => state.portal.portal.logo,
+    portalBackground: (state) => state.portal.portal.background,
     portalContent: (state) => state.portal.portal.content,
     portalEntries: (state) => state.portal.entries,
     portalFolders: (state) => state.portal.folders,
@@ -96,11 +100,14 @@ const portalData: PortalModule<PortalDataState> = {
     setPortal({ commit }, payload) {
       commit('PORTALDATA', payload);
     },
-    setPortalName({ commit }, name: string) {
-      commit('PORTALNAME', name);
+    setPortalName({ commit }, name) {
+      commit('PORTALNAME', { ...name });
     },
     setPortalLogo({ commit }, data: string) {
       commit('PORTALLOGO', data);
+    },
+    setPortalBackground({ commit }, data: string) {
+      commit('PORTALBACKGROUND', data);
     },
     async waitForChange({ dispatch, getters }, retries: number) {
       if (retries <= 0) {

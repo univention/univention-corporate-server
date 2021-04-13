@@ -31,8 +31,9 @@ License with the Debian GNU/Linux or Univention distribution in file
     <portal-background />
     <portal-header />
 
-    <div
+    <main
       v-show="!activeTabIndex"
+      id="portalCategories"
       class="portal-categories"
     >
       <template v-if="categories">
@@ -79,7 +80,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <div
       v-show="activeTabIndex"

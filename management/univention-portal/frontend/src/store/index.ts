@@ -89,6 +89,7 @@ const actions = {
 
     axios.all(portalPromises).then(axios.spread((metaResponse, languageResponse, portalResponse) => {
       const [meta, availableLocales, portal] = [metaResponse.data, languageResponse.data, portalResponse.data];
+      dispatch('locale/setAvailableLocale', availableLocales);
       dispatch('metaData/setMeta', meta);
       dispatch('menu/setMenu', { portal, availableLocales });
       dispatch('portalData/setPortal', portal);
@@ -97,7 +98,7 @@ const actions = {
           username: portal.username,
           displayName: portal.user_displayname,
           mayEditPortal: portal.may_edit_portal,
-          mayLoginViaSAML: portal.may_login_via_saml,
+          authMode: portal.auth_mode,
         },
       });
       resolve(portal);

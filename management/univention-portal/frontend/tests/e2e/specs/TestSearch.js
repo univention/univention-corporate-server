@@ -1,8 +1,6 @@
 beforeEach(() => {
   cy.setCookie('UMCLang', 'de_DE');
-  // stuff selenium can't do #1: mock requests / responses
   cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_out.json' });
-  // cy.intercept('GET', 'portal/portal.json', { fixture: 'portal_logged_in.json' });
   cy.intercept('GET', 'meta.json', { fixture: 'meta.json' });
   cy.intercept('GET', 'de.json', { fixture: 'de.json' });
   cy.intercept('GET', 'languages.json', { fixture: 'languages.json' });
@@ -12,7 +10,7 @@ beforeEach(() => {
 
 describe('General Tests', () => {
   it('Tile title in results should match with the String "Blog"', () => {
-    // make inputfield visible 
+    // make inputfield visible
     clickOnSearchButton();
 
     // test for tilename
@@ -20,15 +18,20 @@ describe('General Tests', () => {
     cy.get('[data-test="searchInput"]').type('Blog');
     cy.contains('Handbuch').should('not.exist');
     cy.contains('Blog');
+
+    // TODO: Assert that folder containing Blog is there
   });
 
 
   it('Searches also for tile description', () => {
-    // make inputfield visible 
+    // make inputfield visible
     clickOnSearchButton();
 
-    cy.get('.portal-tile').first().contains('ownCloud');
+    // make sure the first tile is not our expected search result
+    cy.get('.portal-tile').first().contains('System- und Domäneneinstellungen').should("not.exist");
     cy.get('[data-test="searchInput"]').type('Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems');
+    // ensure that the first result is not by coincidence the search result
+    cy.get('.portal-tile').should('have.length', 1);
     cy.get('.portal-tile').first().contains('System- und Domäneneinstellungen');
   });
 });

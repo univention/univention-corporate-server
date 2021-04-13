@@ -31,5 +31,5 @@ export interface User {
     username: string;
     displayName: string;
     mayEditPortal: boolean;
-    mayLoginViaSAML: boolean;
+    authMode: string;
 }

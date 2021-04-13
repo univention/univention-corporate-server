@@ -36,6 +36,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="portal-header__left"
       tabindex="0"
       @click="goHome"
+      @keydown.enter="goHome"
     >
       <img
         v-if="portalLogo"
@@ -204,6 +205,8 @@ export default defineComponent({
     display: flex;
     flex: 1 1 auto;
     margin-left: calc(5 * var(--layout-spacing-unit));
+    width: 100%;
+    min-width: 2.4rem; /* maybe fix later to 1.2 */
 
   &__right
     display: flex;
