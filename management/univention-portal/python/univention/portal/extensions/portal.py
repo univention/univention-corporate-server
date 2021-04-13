@@ -63,7 +63,7 @@ class Portal(with_metaclass(Plugin)):
 		return value of `get_visible_content`
 	`get_categories`: Get all categories of "content", which in turn was the
 		return value of `get_visible_content`
-	`may_login_via_saml`: Whether a sso login is possible given a "request"
+	`auth_mode`: Mode for auth based on given "request"
 	`may_be_edited`: Whether a "user" may edit this portal
 	`get_meta`: Get some information about the portal itself, given
 		"content" and "categories". Those were return values of
@@ -169,8 +169,8 @@ class Portal(with_metaclass(Plugin)):
 			]
 		return categories
 
-	def may_login_via_saml(self, request):
-		return self.authenticator.may_login_via_saml(request)
+	def auth_mode(self, request):
+		return self.authenticator.get_auth_mode(request)
 
 	def may_be_edited(self, user):
 		return user.is_admin()
@@ -240,14 +240,14 @@ class UMCPortal(Portal):
 		self.scorer = scorer
 		self.authenticator = authenticator
 
-	def may_login_via_saml(self, request):
-		return False
+	def auth_mode(self, request):
+		return "ucs"
 
 	def may_be_edited(self, user):
 		return False
 
 	def _request_umc_get(self, get_path, headers):
-		uri = 'http://127.0.0.1/univention/get/{}'.format(get_path)
+		uri = "http://127.0.0.1/univention/get/{}".format(get_path)
 		body = {"options": {}}
 		try:
 			response = requests.post(uri, json=body, headers=headers)

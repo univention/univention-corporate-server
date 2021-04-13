@@ -37,6 +37,7 @@ Variables: umc/http/port
 Variables: groups/default/domainadmins
 Variables: portal/port
 Variables: portal/admin-groups
+Variables: portal/auth-mode
 Variables: hostname
 Variables: domainname
 Variables: umc/web/sso/enabled

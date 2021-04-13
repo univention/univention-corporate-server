@@ -1,3 +1,12 @@
+univention-portal (4.0.5-22) unstable; urgency=medium
+
+  * Bug #53010: Handle special case when portal is accessed via a non standard
+    port
+  * Bug #52869: Support auth_mode "ucs" and "saml" depending on new UCRV
+    portal/auth-mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Apr 2021 17:49:13 +0200
+
 univention-portal (4.0.5-21) unstable; urgency=medium
 
   * Bug #52869: Edit Mode: Wait for change before leaving edit mode

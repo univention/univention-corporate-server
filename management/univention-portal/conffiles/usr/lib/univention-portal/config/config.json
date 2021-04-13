@@ -11,7 +11,7 @@ config = {
 	"hostdn": configRegistry.get("ldap/hostdn"),
 	"ldap_base": configRegistry.get("ldap/base"),
 	"ldap_uri": "ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port")),
-	"saml_enabled": False,  # configRegistry.is_true("umc/web/sso/enabled"),
+	"auth_mode": configRegistry.get("portal/auth-mode"),
 	"umc_session_url": "http://localhost/univention/get/session-info",
 	"default_domain_dn": "cn=domain,cn=portal,cn=portals,cn=univention,%s" % configRegistry.get("ldap/base"),
 }

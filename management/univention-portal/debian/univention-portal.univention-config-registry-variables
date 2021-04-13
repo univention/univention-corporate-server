@@ -18,6 +18,13 @@ Default=/univention/portal/, /univention/umc/
 Type=int
 Categories=portal
 
+[portal/auth-mode]
+Description[de]=Bestimmt die Art, mit der sich die Benutzer am Portal anmelden sollen. Mögliche Werte sind "saml", "ucs". Für "saml" müssen die Clients den Namen des SSO-Systems auflösen können und ein vertrauenswürdiges Zertifikat bekommen.
+Description[en]=Determines the user's way to log in to the portal. Possible values are "saml", "ucs". For "saml", the clients have to resolve the name of the SSO server and get a trustworthy certificate.
+Default=ucs
+Type=str
+Categories=portal
+
 [portal/show-outdated-browser-warning]
 Description[de]=Wenn aktiviert, wird eine Warnung angezeigt, falls die benutze Browserversion zu alt ist.
 Description[en]=If activated, a warning is displayed if the browser version used is too old.

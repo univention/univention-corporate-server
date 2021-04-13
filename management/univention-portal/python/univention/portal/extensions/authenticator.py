@@ -56,10 +56,12 @@ class Authenticator(with_metaclass(Plugin)):
 	`login_request`: A user GETs to the login action
 	`login_user`: Credentials are POSTed to this action
 	`get_user`: While gathering the portal data, the caller wants
-	`may_login_via_saml`: Whether this authenticator works with a SAML SSO login
 
 	This base class does nothing...
 	"""
+
+	def get_auth_mode(self, request):  # pragma: no cover
+		return "ucs"
 
 	def login_request(self, request):  # pragma: no cover
 		pass
@@ -70,9 +72,6 @@ class Authenticator(with_metaclass(Plugin)):
 	def get_user(self, request):  # pragma: no cover
 		return User(username=None, display_name=None, groups=[], headers={})
 
-	def may_login_via_saml(self, request):
-		return config.fetch("saml_enabled")
-
 	def refresh(self, reason=None):  # pragma: no cover
 		pass
 
@@ -82,15 +81,21 @@ class UMCAuthenticator(Authenticator):
 	Specialized Authenticator that relies on a UMC that actually holds any session.
 	Asks UMC for every request if this session is known.
 
+	auth_mode:
+		The preferred mode for auth. The portal hands it over to the frontend.
 	umc_session_url:
 		The URL where to go to with the cookie. Expects a json answer with the username.
 	group_cache:
 		As UMC does not return groups, we need a cache object that gets us the groups for the username.
 	"""
 
-	def __init__(self, umc_session_url, group_cache):
+	def __init__(self, auth_mode, umc_session_url, group_cache):
+		self.auth_mode = auth_mode
 		self.umc_session_url = umc_session_url
 		self.group_cache = group_cache
+
+	def get_auth_mode(self, request):
+		return self.auth_mode
 
 	def refresh(self, reason=None):
 		return self.group_cache.refresh(reason=reason)
@@ -102,11 +107,19 @@ class UMCAuthenticator(Authenticator):
 		return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))
 
 	def _get_username(self, cookies):
-		if not any(cookie.startswith("UMCSessionId") for cookie in cookies):
+		for cookie in cookies:
+			if cookie.startswith("UMCSessionId"):
+				# UMCSessionId-1234 -> Host: localhost:1234
+				host_port = cookie[13:]
+				if host_port:
+					host_port = ":{}".format(host_port)
+				break
+		else:
 			get_logger("user").debug("no user given")
 			return None, None
+		headers = {"Host": "localhost" + host_port}
 		get_logger("user").debug("searching user for cookies=%r" % cookies)
-		username = self._ask_umc(cookies)
+		username = self._ask_umc(cookies, headers)
 		if username is None:
 			get_logger("user").debug("no user found")
 			return None, None
@@ -114,9 +127,9 @@ class UMCAuthenticator(Authenticator):
 			get_logger("user").debug("found %s" % username)
 			return username.lower(), username
 
-	def _ask_umc(self, cookies):
+	def _ask_umc(self, cookies, headers):
 		try:
-			response = requests.get(self.umc_session_url, cookies=cookies)
+			response = requests.get(self.umc_session_url, cookies=cookies, headers=headers)
 			data = response.json()
 			username = data["result"]["username"]
 		except requests.RequestException as e:
