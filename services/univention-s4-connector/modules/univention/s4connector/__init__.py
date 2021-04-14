@@ -42,6 +42,7 @@ import sys
 import traceback
 import pprint
 import collections
+from types import FunctionType
 
 import ldap
 from ldap.controls.readentry import PostReadControl
@@ -277,6 +278,22 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 
+class Mapping(object):
+
+	def __init__(self, mapping):
+		self.mapping = mapping
+
+	def __repr__(self):
+		mapping_lines = ['{']
+		indent = "\t"
+		for mapping_key, mapping_property in sorted(self.mapping.items()):
+			prop_repr = '\n'.join(indent + x for x in repr(mapping_property).splitlines()).lstrip('\t')
+			mapping_lines.append("%s%r: %s" % (indent, mapping_key, prop_repr))
+		mapping_lines.append("}")
+		return '\n'.join(mapping_lines)
+		return pprint.pformat(self.mapping, indent=4, width=250)
+
+
 class attribute(object):
 	"""A mapping attribute description
 
@@ -343,6 +360,18 @@ class attribute(object):
 		self.single_value = single_value
 
 	def __repr__(self):
+		mapping_lines = ["univention.s4connector.attribute("]
+		indent = "\t"
+		for attribute_member in sorted(vars(self)):
+			subsubobj = getattr(self, attribute_member)
+			if not subsubobj:
+				continue
+			if isinstance(subsubobj, FunctionType):
+				mapping_lines.append("%s%s = %s.%s,  # function" % (indent, attribute_member, subsubobj.__module__, subsubobj.__name__))
+			else:
+				mapping_lines.append("%s%s = %r," % (indent, attribute_member, subsubobj))
+		mapping_lines.append(")")
+		return '\n'.join(mapping_lines)
 		return 'univention.s4connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
@@ -427,6 +456,26 @@ class property(object):
 		self.disable_delete_in_ucs = disable_delete_in_ucs
 
 	def __repr__(self):
+		mapping_lines = ['univention.s4connector.property(']
+		indent = "\t"
+		for conn_attribute in sorted(vars(self)):
+			subobj = getattr(self, conn_attribute)
+			if not subobj:
+				continue
+			if isinstance(subobj, dict):
+				mapping_lines.append("%s%s = {" % (indent, conn_attribute))
+				for attr_key, mapping_attr in subobj.items():
+					attr_repr = '\n'.join(indent + indent + x for x in repr(mapping_attr).splitlines()).lstrip('\t')
+					mapping_lines.append("%s%r: %s," % (indent + indent, attr_key, attr_repr))
+				mapping_lines.append("%s}," % (indent,))
+			elif isinstance(subobj, list):
+				if subobj and isinstance(subobj[0], FunctionType):
+					subobj = ['<function %s.%s()>' % (x.__module__, x.__name__) for x in subobj]
+				mapping_lines.append("%s%s = %s," % (indent, conn_attribute, '\n'.join(indent + indent + x for x in pprint.pformat(subobj).splitlines()).lstrip(indent)))
+			else:
+				mapping_lines.append("%s%s = %r," % (indent, conn_attribute, subobj))
+		mapping_lines.append(")")
+		return '\n'.join(mapping_lines)
 		return 'univention.s4connector.property(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 

@@ -121,6 +121,10 @@ def connect(options):
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
+	# log the active mapping
+	with open('/var/log/univention/%s-s4-mapping.log' % options.configbasename, 'w+') as fd:
+		print(repr(univention.s4connector.Mapping(s4.property)), file=fd)
+
 	with s4 as s4:
 		_connect(s4, poll_sleep, ucr.get('%s/s4/retryrejected' % options.configbasename, 10))
 

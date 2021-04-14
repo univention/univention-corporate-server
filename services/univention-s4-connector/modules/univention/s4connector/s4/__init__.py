@@ -40,7 +40,6 @@ import re
 import sys
 import time
 import calendar
-import pprint
 import string
 import base64
 
@@ -620,8 +619,6 @@ class s4(univention.s4connector.ucs):
 
 	def init_ldap_connections(self):
 		super(s4, self).init_ldap_connections()
-		if self._debug_level >= 4:
-			ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %s' % (pprint.pformat(self.property, indent=4, width=250)))
 
 		self.open_s4()
 		self.s4_sid = decode_sid(self.s4_search_ext_s(self.s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])

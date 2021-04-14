@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.7-1) unstable; urgency=medium
+
+  * Bug #52043: Log mapping to /var/log/univention/connector-s4-
+    mapping.log
+
+ -- Florian Best <best@univention.de>  Wed, 14 Apr 2021 18:45:04 +0200
+
 univention-s4-connector (14.0.6-8) unstable; urgency=medium
 
   * Bug #53023: Fix typo in UCR variable name registration
