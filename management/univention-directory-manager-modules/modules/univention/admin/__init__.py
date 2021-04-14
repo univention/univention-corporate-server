@@ -38,6 +38,7 @@ import re
 import unicodedata
 
 from ldap.filter import filter_format
+import unidecode
 
 import univention.config_registry
 import univention.debug as ud
@@ -129,9 +130,7 @@ def pattern_replace(pattern, object):
 			elif iCmd == 'upper':
 				text = text.upper()
 			elif iCmd == 'umlauts':
-				for umlaut, code in property.UMLAUTS.items():
-					text = text.replace(umlaut, code)
-
+				text = unidecode.unidecode(text.decode('utf-8'))
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
@@ -187,70 +186,6 @@ def pattern_replace(pattern, object):
 
 
 class property:
-	UMLAUTS = {
-		'À': 'A',
-		'Á': 'A',
-		'Â': 'A',
-		'Ã': 'A',
-		'Ä': 'Ae',
-		'Å': 'A',
-		'Æ': 'AE',
-		'Ç': 'C',
-		'È': 'E',
-		'É': 'E',
-		'Ê': 'E',
-		'Ë': 'E',
-		'Ì': 'I',
-		'Í': 'I',
-		'Î': 'I',
-		'Ï': 'I',
-		'Ð': 'D',
-		'Ñ': 'N',
-		'Ò': 'O',
-		'Ó': 'O',
-		'Ô': 'O',
-		'Õ': 'O',
-		'Ö': 'Oe',
-		'Ø': 'O',
-		'Ù': 'U',
-		'Ú': 'U',
-		'Û': 'U',
-		'Ü': 'Ue',
-		'Ý': 'Y',
-		'Þ': 'P',
-		'ß': 'ss',
-		'à': 'a',
-		'á': 'a',
-		'â': 'a',
-		'ã': 'a',
-		'ä': 'ae',
-		'å': 'a',
-		'æ': 'ae',
-		'ç': 'c',
-		'è': 'e',
-		'é': 'e',
-		'ê': 'e',
-		'ë': 'e',
-		'ì': 'i',
-		'í': 'i',
-		'î': 'i',
-		'ï': 'i',
-		'ð': 'o',
-		'ñ': 'n',
-		'ò': 'o',
-		'ó': 'o',
-		'ô': 'o',
-		'õ': 'o',
-		'ö': 'oe',
-		'ø': 'o',
-		'ù': 'u',
-		'ú': 'u',
-		'û': 'u',
-		'ü': 'ue',
-		'ý': 'y',
-		'þ': 'p',
-		'ÿ': 'y'
-	}
 
 	def __init__(
 		self,
