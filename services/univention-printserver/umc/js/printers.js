@@ -53,8 +53,8 @@ define([
 			this.inherited(arguments);
 
 			this._pages = {
-				'overview':		new OverviewPage({}),
-				'detail':		new DetailPage({}),
+				'overview': new OverviewPage({}),
+				'detail': new DetailPage({})
 			};
 
 

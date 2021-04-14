@@ -49,7 +49,7 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this,{
-				helpText: _("You see the details of this printer and its print jobs. You can activate/deactivate the printer, and cancel print jobs."),
+				helpText: _("You see the details of this printer and its print jobs. You can activate/deactivate the printer and cancel print jobs."),
 				headerText: _("Printer details")
 			});
 
