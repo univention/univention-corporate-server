@@ -162,6 +162,12 @@ if dpkg -l univention-postgresql 2>&3 | grep ^ii  >&3 ; then
 	systemctl daemon-reload
 fi
 
+# Bug #53059: univention-mariadb is a dependency of univention-mysql
+# if univention-mysql was installed (e.g., App Center), it gets uninstalled
+# during the update to 5.0-0. This autoremoves univention-mariadb. But we need it
+# apt-mark manual always returns 0. even if not installed
+apt-mark manual univention-mariadb
+
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 mkdir -p /etc/systemd/system/atd.service.d
