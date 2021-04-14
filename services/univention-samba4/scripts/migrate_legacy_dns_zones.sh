@@ -85,7 +85,7 @@ log() {
 
 ns_record() {
 	rank="$1"
-	python <<%EOF
+	python3 <<%EOF
 from samba.provision.sambadns import NSRecord
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_pack
@@ -97,7 +97,7 @@ print base64.b64encode(ndr_pack(ns_record))
 
 soa_record() {
 	serial="$1"
-	python <<%EOF
+	python3 <<%EOF
 from samba.provision.sambadns import SOARecord
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_pack
@@ -111,7 +111,7 @@ get_samba4_soa_serial() {
 	local zone_dn
 	zone_dn="$1"
 	while read -r dnsRecord; do
-		python <<%EOF
+		python3 <<%EOF
 import base64
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_unpack
@@ -421,4 +421,4 @@ samba_dnsupdate
 echo "INFO: Migration finished"
 } 2>&1 | tee "$logfile"
 
-cp "$logfile" "$backup_dir/$logdir"
+[ -d "$backup_dir/$logdir" ] && cp "$logfile" "$backup_dir/$logdir"
