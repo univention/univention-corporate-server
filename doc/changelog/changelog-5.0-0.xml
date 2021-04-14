@@ -1174,6 +1174,9 @@
 				<listitem><simpara>
 					The package <package>univention-samba4wins</package> has been removed (<u:bug>51497</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-samba4</package> now installs <filename>/usr/share/univention-samba4/scripts/migrate_legacy_dns_zones.sh</filename> (<u:bug>53093</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
