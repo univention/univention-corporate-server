@@ -38,6 +38,7 @@ import re
 import unicodedata
 
 from ldap.filter import filter_format
+import unidecode
 
 import univention.config_registry
 import univention.debug as ud
@@ -129,9 +130,12 @@ def pattern_replace(pattern, object):
 			elif iCmd == 'upper':
 				text = text.upper()
 			elif iCmd == 'umlauts':
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
+				# We need this to handle german umlauts, e.g. ä -> ae
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
-
+				text = unidecode.unidecode(text)
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
