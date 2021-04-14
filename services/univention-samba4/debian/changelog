@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-1) unstable; urgency=medium
+
+  * Bug #53093: Provide script migrate_legacy_dns_zones.sh
+
+ -- Arvid <requate@univention.de>  Wed, 14 Apr 2021 12:03:49 +0200
+
 univention-samba4 (9.0.5-2) unstable; urgency=medium
 
   * Bug #51522: Change default for samba/acl_search to yes
