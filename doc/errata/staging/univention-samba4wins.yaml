@@ -3,8 +3,8 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: univention-samba4wins
-fix: 
+fix: 10.0.1-4A~4.4.0.202103301954
 desc: |
- This update addresses the following issue(s):
- * A unjoinscript has been added.
+ This update addresses the following issue:
+ * An unjoinscript has been added.
 bug: [52961]
