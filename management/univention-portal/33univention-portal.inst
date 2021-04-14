@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=18
+VERSION=19
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -325,11 +325,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 	univention-config-registry register univention-portal || true
 fi
 
-if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
-	default_portal="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base"
-else
-	default_portal="cn=local,cn=portal,cn=portals,cn=univention,$ldap_base"
-fi
+default_portal="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base"
 
 # add self service links to the portals
 # currently depends on local installation
@@ -361,7 +357,7 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 		--append userLinks="cn=self-service-protect-account,cn=entry,cn=portals,cn=univention,$ldap_base" || die
 fi
 
-set_portal="$(udm portals/portal list "$@" --filter=portalComputers="$ldap_hostdn" | grep DN:)"
+set_portal="$(udm portals/portal list "$@" --filter="(&("'!'"(name=local))(portalComputers=$ldap_hostdn))" | grep DN:)"
 if [ -z "$set_portal" ]; then
 	univention-directory-manager "portals/portal" modify "$@" \
 		--dn="$default_portal" \
