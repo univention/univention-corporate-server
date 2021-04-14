@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					All security updates issued for UCS <productnumber>4.4-7</productnumber> are included:
+				</para>
+				<itemizedlist id="_security">
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian Stretch <productnumber>9.13</productnumber> are included (<u:bug>52381</u:bug>):
+					<simplelist type="inline" id="_debian">
+					</simplelist>
+				</para>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->
