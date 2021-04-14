@@ -368,7 +368,7 @@
 					The &ucsUDM; UMC module has been migrated to Python 3 (<u:bug>51329</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The &ucsUDM; CLI comannd <command>modify</command> now supports the option <option>--ignore_not_exists</option> (<u:bug>52984</u:bug>)
+					The &ucsUDM; CLI command <command>modify</command> now supports the option <option>--ignore_not_exists</option> (<u:bug>52984</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
