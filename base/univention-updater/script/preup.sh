@@ -121,6 +121,9 @@ checks
 # Several LDAP objects are no longer supported with UCS 5 and are removed automatically.
 delete_obsolete_objects
 
+# Bug #53099: make sure upgrade does not break with univention-kde installed
+[ -e "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png" ] && rm -f "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png"
+
 # save ucr settings
 cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
