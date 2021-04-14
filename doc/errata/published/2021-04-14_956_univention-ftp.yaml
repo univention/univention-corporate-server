@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * UCR variables are now unset on package removal.
 bug: [52981]
+erratum: 956
+announced: 2021-04-14
