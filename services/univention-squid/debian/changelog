@@ -1,3 +1,10 @@
+univention-squid (13.0.3-1) unstable; urgency=medium
+
+  * Bug #53011: make sure squid starts when configured as transparent
+    proxy
+
+ -- Florian Best <best@univention.de>  Wed, 14 Apr 2021 18:00:11 +0200
+
 univention-squid (13.0.2-2) unstable; urgency=medium
 
   * Bug #51483: remove dansguardian support
