@@ -1,1 +1,72 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 350.02"><defs><style>.cls-1{fill:#868681;}</style></defs><title>Display-eye</title><path class="cls-1" d="M0,25V275H400V25ZM374.94,250H25V50h350ZM262.46,300h-125L125,350l-25,25H300l-25-25Z" transform="translate(0 -24.99)"/><path class="cls-1" d="M199.36,130a21.47,21.47,0,1,0,21.47,21.47A21.49,21.49,0,0,0,199.36,130Z" transform="translate(0 -24.99)"/><path class="cls-1" d="M199.42,110.9c-42.88.54-93.4,20.33-93.4,40.54s50.52,40,93.4,40.53c45,.56,97.6-20,97.6-40.53S244.43,110.4,199.42,110.9Zm-.06,70a29.48,29.48,0,1,1,29.47-29.48A29.51,29.51,0,0,1,199.36,180.91Z" transform="translate(0 -24.99)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Ebene_1"
+   data-name="Ebene 1"
+   viewBox="0 0 400 350.02"
+   version="1.1"
+   sodipodi:docname="pkgdb.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview15"
+     showgrid="false"
+     inkscape:zoom="0.67424721"
+     inkscape:cx="-175.97486"
+     inkscape:cy="175.00999"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Ebene_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#868681;}</style>
+  </defs>
+  <title
+     id="title6">Display-eye</title>
+  <path
+     class="cls-1"
+     d="M0,25V275H400V25ZM374.94,250H25V50h350ZM262.46,300h-125L125,350l-25,25H300l-25-25Z"
+     transform="translate(0 -24.99)"
+     id="path8"
+     style="fill:#ffffff;fill-opacity:1" />
+  <path
+     class="cls-1"
+     d="M199.36,130a21.47,21.47,0,1,0,21.47,21.47A21.49,21.49,0,0,0,199.36,130Z"
+     transform="translate(0 -24.99)"
+     id="path10"
+     style="fill:#ffffff;fill-opacity:1" />
+  <path
+     class="cls-1"
+     d="M199.42,110.9c-42.88.54-93.4,20.33-93.4,40.54s50.52,40,93.4,40.53c45,.56,97.6-20,97.6-40.53S244.43,110.4,199.42,110.9Zm-.06,70a29.48,29.48,0,1,1,29.47-29.48A29.51,29.51,0,0,1,199.36,180.91Z"
+     transform="translate(0 -24.99)"
+     id="path12"
+     style="fill:#ffffff;fill-opacity:1" />
+</svg>

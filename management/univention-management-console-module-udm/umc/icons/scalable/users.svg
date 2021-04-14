@@ -1,1 +1,66 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366.67 400"><defs><style>.cls-1{fill:#848580;}</style></defs><title>user-nutzer</title><path class="cls-1" d="M293.41,183.34c-8.84,0-41.14,36.2-93.23,36.2s-84.37-36.2-93.22-36.2c-76.31,0-90.11,90.36-90.11,149.21,0,42.2,27.86,67.45,69.53,67.45H314c41.66,0,69.53-25.25,69.53-67.45C383.52,273.7,369.72,183.34,293.41,183.34Z" transform="translate(-16.85)"/><path class="cls-1" d="M200.18,200a100,100,0,1,0-100-100A100,100,0,0,0,200.18,200Z" transform="translate(-16.85)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Ebene_1"
+   data-name="Ebene 1"
+   viewBox="0 0 366.67 400"
+   version="1.1"
+   sodipodi:docname="users.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata15">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview13"
+     showgrid="false"
+     inkscape:zoom="0.59"
+     inkscape:cx="-246.32601"
+     inkscape:cy="200"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Ebene_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#848580;}</style>
+  </defs>
+  <title
+     id="title6">user-nutzer</title>
+  <path
+     class="cls-1"
+     d="M293.41,183.34c-8.84,0-41.14,36.2-93.23,36.2s-84.37-36.2-93.22-36.2c-76.31,0-90.11,90.36-90.11,149.21,0,42.2,27.86,67.45,69.53,67.45H314c41.66,0,69.53-25.25,69.53-67.45C383.52,273.7,369.72,183.34,293.41,183.34Z"
+     transform="translate(-16.85)"
+     id="path8"
+     style="fill:#ffffff;fill-opacity:1" />
+  <path
+     class="cls-1"
+     d="M200.18,200a100,100,0,1,0-100-100A100,100,0,0,0,200.18,200Z"
+     transform="translate(-16.85)"
+     id="path10"
+     style="fill:#ffffff;fill-opacity:1" />
+</svg>

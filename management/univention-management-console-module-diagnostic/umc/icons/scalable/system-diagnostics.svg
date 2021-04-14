@@ -1,29 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 48 46" style="enable-background:new 0 0 48 46;" xml:space="preserve">
-<style type="text/css">
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Ebene_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 48 46"
+   style="enable-background:new 0 0 48 46;"
+   xml:space="preserve"
+   sodipodi:docname="system-diagnostics.svg"
+   inkscape:version="0.92.4 (unknown)"><metadata
+   id="metadata30"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs28">
+	
+	
+	
+	
+	
+</defs><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1916"
+   inkscape:window-height="1005"
+   id="namedview26"
+   showgrid="false"
+   inkscape:zoom="5.1304348"
+   inkscape:cx="-25.411017"
+   inkscape:cy="23"
+   inkscape:window-x="0"
+   inkscape:window-y="73"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Ebene_1" />
+<style
+   type="text/css"
+   id="style2">
 	.st0{clip-path:url(#SVGID_2_);fill:#878783;}
 	.st1{fill:#FFFFFF;}
 </style>
-<g id="Ebene_3">
-	<g>
-		<g>
-			<defs>
-				<rect id="SVGID_1_" x="3" y="2.9" width="41.1" height="41.1"/>
-			</defs>
-			<clipPath id="SVGID_2_">
-				<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-			</clipPath>
-			<path class="st0" d="M23.6,44c11.3,0,20.6-9.2,20.6-20.6S34.9,2.9,23.6,2.9S3,12.1,3,23.4S12.2,44,23.6,44"/>
-		</g>
-	</g>
-	<path class="st1" d="M21.2,29.2h11.5v2.3H21.2V29.2z M21.2,22.3h11.5v2.3H21.2V22.3z M21.2,15.4h11.5v2.3H21.2V15.4z"/>
-	<polygon class="st1" points="16.8,18.8 14.7,16.6 15.5,15.7 16.8,17 18.9,14.8 18.9,14.2 14.3,14.2 14.3,18.8 18.9,18.8 18.9,16.6 
-			"/>
-	<polygon class="st1" points="16.8,25.7 14.7,23.5 15.5,22.6 16.8,23.9 18.9,21.7 18.9,21.1 14.3,21.1 14.3,25.8 18.9,25.8 
-		18.9,23.5 	"/>
-	<polygon class="st1" points="16.8,32.6 14.7,30.4 15.5,29.6 16.8,30.8 18.9,28.6 18.9,28.1 14.3,28.1 14.3,32.7 18.9,32.7 
-		18.9,30.4 	"/>
-</g>
+<g
+   id="g859"
+   transform="matrix(1.4666307,0,0,1.4666307,-10.465822,-11.392488)"><path
+     class="st1"
+     d="m 19.600641,33.198397 h 19.496794 v 3.899358 H 19.600641 Z m 0,-11.698076 h 19.496794 v 3.899358 H 19.600641 Z m 0,-11.6980764 H 39.097435 V 13.701603 H 19.600641 Z"
+     id="path16"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;stroke-width:1.6953733" /><polygon
+     transform="matrix(1.6953733,0,0,1.6953733,-16.341273,-16.306505)"
+     class="st1"
+     points="14.3,18.8 18.9,18.8 18.9,16.6 16.8,18.8 14.7,16.6 15.5,15.7 16.8,17 18.9,14.8 18.9,14.2 14.3,14.2 "
+     id="polygon18"
+     style="fill:#ffffff" /><polygon
+     transform="matrix(1.6953733,0,0,1.6953733,-16.341273,-16.306505)"
+     class="st1"
+     points="14.3,25.8 18.9,25.8 18.9,23.5 16.8,25.7 14.7,23.5 15.5,22.6 16.8,23.9 18.9,21.7 18.9,21.1 14.3,21.1 "
+     id="polygon20"
+     style="fill:#ffffff" /><polygon
+     transform="matrix(1.6953733,0,0,1.6953733,-16.341273,-16.306505)"
+     class="st1"
+     points="14.3,32.7 18.9,32.7 18.9,30.4 16.8,32.6 14.7,30.4 15.5,29.6 16.8,30.8 18.9,28.6 18.9,28.1 14.3,28.1 "
+     id="polygon22"
+     style="fill:#ffffff" /></g>
 </svg>

@@ -1,22 +1,103 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 107.4 106" style="enable-background:new 0 0 107.4 106;" xml:space="preserve">
-<style type="text/css">
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Ebene_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 107.4 106"
+   style="enable-background:new 0 0 107.4 106;"
+   xml:space="preserve"
+   sodipodi:docname="shares.svg"
+   inkscape:version="0.92.4 (unknown)"><metadata
+   id="metadata29"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs27" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1916"
+   inkscape:window-height="1005"
+   id="namedview25"
+   showgrid="false"
+   inkscape:zoom="2.2264151"
+   inkscape:cx="-60.160169"
+   inkscape:cy="53"
+   inkscape:window-x="0"
+   inkscape:window-y="73"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Ebene_1" />
+<style
+   type="text/css"
+   id="style2">
 	.st0{fill:#868681;}
 </style>
-<title>Dateiaustausch</title>
-<g>
-	<path class="st0" d="M1.2,10h50.1l-3.1,31.7H4.3L1.2,10z M46.6,3.6l1.6,3.2H4.3l3.1-6.3h17.2l1.6,3.2L46.6,3.6z"/>
-	<path class="st0" d="M56.1,73.8h50.1l-3.1,31.7H59.3L56.1,73.8z M101.5,67.4l1.6,3.2H59.3l3.1-6.3h17.2l1.6,3.2H101.5z"/>
-	<g>
-		<ellipse class="st0" cx="45" cy="53" rx="2.6" ry="2.6"/>
-		<ellipse class="st0" cx="53.7" cy="53" rx="2.6" ry="2.6"/>
-		<ellipse class="st0" cx="62.5" cy="53" rx="2.6" ry="2.6"/>
+<title
+   id="title4">Dateiaustausch</title>
+<g
+   id="g22"
+   style="fill:#ffffff;fill-opacity:1">
+	<path
+   class="st0"
+   d="M1.2,10h50.1l-3.1,31.7H4.3L1.2,10z M46.6,3.6l1.6,3.2H4.3l3.1-6.3h17.2l1.6,3.2L46.6,3.6z"
+   id="path6"
+   style="fill:#ffffff;fill-opacity:1" />
+	<path
+   class="st0"
+   d="M56.1,73.8h50.1l-3.1,31.7H59.3L56.1,73.8z M101.5,67.4l1.6,3.2H59.3l3.1-6.3h17.2l1.6,3.2H101.5z"
+   id="path8"
+   style="fill:#ffffff;fill-opacity:1" />
+	<g
+   id="g16"
+   style="fill:#ffffff;fill-opacity:1">
+		<ellipse
+   class="st0"
+   cx="45"
+   cy="53"
+   rx="2.6"
+   ry="2.6"
+   id="ellipse10"
+   style="fill:#ffffff;fill-opacity:1" />
+		<ellipse
+   class="st0"
+   cx="53.7"
+   cy="53"
+   rx="2.6"
+   ry="2.6"
+   id="ellipse12"
+   style="fill:#ffffff;fill-opacity:1" />
+		<ellipse
+   class="st0"
+   cx="62.5"
+   cy="53"
+   rx="2.6"
+   ry="2.6"
+   id="ellipse14"
+   style="fill:#ffffff;fill-opacity:1" />
 	</g>
-	<path class="st0" d="M48.9,85c-13.3,0-24.5-11.3-24.6-25.3h0.4l9.9,0.1L21.3,46.2L8,59.6l10.4,0.1l0,0C18.4,77,32.3,91,49.4,91h2.9
-		l-0.5-5.9L48.9,85z"/>
-	<path class="st0" d="M58.5,21.5c13.8,0,25,11.3,25.1,25.3h-0.4h-9.9l13.2,13.5l13.3-13.4l-10.4-0.1l0,0
-		c-0.1-17.3-13.9-31.3-31-31.4h-2.1l-0.6,5.9H58.5z"/>
+	<path
+   class="st0"
+   d="M48.9,85c-13.3,0-24.5-11.3-24.6-25.3h0.4l9.9,0.1L21.3,46.2L8,59.6l10.4,0.1l0,0C18.4,77,32.3,91,49.4,91h2.9   l-0.5-5.9L48.9,85z"
+   id="path18"
+   style="fill:#ffffff;fill-opacity:1" />
+	<path
+   class="st0"
+   d="M58.5,21.5c13.8,0,25,11.3,25.1,25.3h-0.4h-9.9l13.2,13.5l13.3-13.4l-10.4-0.1l0,0   c-0.1-17.3-13.9-31.3-31-31.4h-2.1l-0.6,5.9H58.5z"
+   id="path20"
+   style="fill:#ffffff;fill-opacity:1" />
 </g>
 </svg>

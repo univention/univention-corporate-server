@@ -1,1 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.44 16"><defs><style>.cls-1{fill:#868681;}</style></defs><title>Element 2611</title><g id="Ebene_2" data-name="Ebene 2"><g id="_1607_Icons" data-name="1607 Icons"><path class="cls-1" d="M14.31,9.54a3.05,3.05,0,0,1,1.13-4.17L13.86,2.65a3,3,0,0,1-1.52.41A3.06,3.06,0,0,1,9.29,0H6.15a3.09,3.09,0,0,1-.41,1.54,3.06,3.06,0,0,1-4.17,1.1L0,5.36A3,3,0,0,1,1.12,6.48,3,3,0,0,1,0,10.64l1.58,2.72A3,3,0,0,1,3.1,13a3.06,3.06,0,0,1,3,3.05H9.28a3,3,0,0,1,.41-1.52,3,3,0,0,1,4.16-1.11l1.58-2.72A3.13,3.13,0,0,1,14.31,9.54Zm-6.59,1.7A3.24,3.24,0,1,1,11,8,3.24,3.24,0,0,1,7.72,11.24Z"/></g></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 15.44 16"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="ucr.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1916"
+     inkscape:window-height="1005"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="-9.4664409"
+     inkscape:cy="8"
+     inkscape:window-x="0"
+     inkscape:window-y="73"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg12" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#868681;}</style>
+  </defs>
+  <title
+     id="title6">Element 2611</title>
+  <g
+     id="Ebene_2"
+     data-name="Ebene 2"
+     transform="translate(-2.0980835e-7,-0.025)"
+     style="fill:#ffffff;fill-opacity:1">
+    <g
+       id="_1607_Icons"
+       data-name="1607 Icons"
+       style="fill:#ffffff;fill-opacity:1">
+      <path
+         class="cls-1"
+         d="M 14.31,9.54 A 3.05,3.05 0 0 1 15.44,5.37 L 13.86,2.65 A 3,3 0 0 1 12.34,3.06 3.06,3.06 0 0 1 9.29,0 H 6.15 A 3.09,3.09 0 0 1 5.74,1.54 3.06,3.06 0 0 1 1.57,2.64 L 0,5.36 A 3,3 0 0 1 1.12,6.48 3,3 0 0 1 0,10.64 l 1.58,2.72 A 3,3 0 0 1 3.1,13 a 3.06,3.06 0 0 1 3,3.05 h 3.18 a 3,3 0 0 1 0.41,-1.52 3,3 0 0 1 4.16,-1.11 L 15.43,10.7 A 3.13,3.13 0 0 1 14.31,9.54 Z m -6.59,1.7 A 3.24,3.24 0 1 1 11,8 3.24,3.24 0 0 1 7.72,11.24 Z"
+         id="path8"
+         inkscape:connector-curvature="0"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+  </g>
+</svg>
