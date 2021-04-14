@@ -334,8 +334,10 @@ class Instance(umcm.Base, ProgressMixin):
 		handler.setLevel(logging.INFO)
 		action.logger.addHandler(handler)
 		try:
-			success = action.call(app=[app], username=self.username, password=self.password, **kwargs)
-			return {'success': success}
+			package_manager = get_package_manager()
+			with package_manager.no_umc_restart(exclude_apache=True):
+				success = action.call(app=[app], username=self.username, password=self.password, **kwargs)
+				return {'success': success}
 		except AppCenterError as exc:
 			raise umcm.UMC_Error(str(exc), result=dict(
 				display_feedback=True,
