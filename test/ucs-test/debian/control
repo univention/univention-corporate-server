@@ -447,6 +447,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python3-unidecode,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
