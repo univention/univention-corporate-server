@@ -1,3 +1,12 @@
+univention-web (4.0.1-24) unstable; urgency=medium
+
+  * Bug #52453:
+    - adjust some error message color
+    - Tree background color on dark background
+    - Uploader button classes
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Apr 2021 09:55:15 +0200
+
 univention-web (4.0.1-23) unstable; urgency=medium
 
   * Bug #52453: adjust style for ul and ol tags
