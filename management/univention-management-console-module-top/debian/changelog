@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-7) unstable; urgency=medium
+
+  * Bug #52941: update module icon for portal
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Apr 2021 10:01:43 +0200
+
 univention-management-console-module-top (9.0.0-6) unstable; urgency=medium
 
   * Bug #52941: added module icon for portal

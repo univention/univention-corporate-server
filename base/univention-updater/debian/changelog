@@ -1,3 +1,9 @@
+univention-updater (15.0.3-36) unstable; urgency=medium
+
+  * Bug #52941: update module icon for portal
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Apr 2021 09:59:34 +0200
+
 univention-updater (15.0.3-35) unstable; urgency=low
 
   * Bug #52974: small fixes in postup.sh for restarting libvirt and

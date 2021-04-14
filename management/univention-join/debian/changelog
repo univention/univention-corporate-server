@@ -1,3 +1,9 @@
+univention-join (12.0.3-5) unstable; urgency=medium
+
+  * Bug #52941: update module icon for portal
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Apr 2021 09:59:02 +0200
+
 univention-join (12.0.3-4) unstable; urgency=medium
 
   * Bug #52941: added module icon for portal
