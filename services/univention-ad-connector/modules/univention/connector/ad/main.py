@@ -121,6 +121,10 @@ def connect(options):
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
+	# log the active mapping
+	with open('/var/log/univention/%s-ad-mapping.log' % options.configbasename, 'w+') as fd:
+		print(repr(univention.connector.Mapping(ad.property)), file=fd)
+
 	with ad as ad:
 		_connect(ad, poll_sleep, ucr.get('%s/ad/retryrejected' % options.configbasename, 10))
 

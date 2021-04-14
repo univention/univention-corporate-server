@@ -380,6 +380,7 @@ class ad(univention.connector.ucs):
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
+
 		import univention.connector.ad.mapping
 		MAPPING_FILENAME = '/etc/univention/%s/ad/localmapping.py' % configbasename
 		ad_mapping = univention.connector.ad.mapping.load_localmapping(MAPPING_FILENAME)
@@ -597,10 +598,6 @@ class ad(univention.connector.ucs):
 				for attr_key, attr in con_attributes.items():
 					if attr.ldap_attribute == 'mailPrimaryAddress':
 						attr.con_depends = 'mail'
-
-		# Log the active mapping
-		if ud.get_level(ud.LDAP) >= ud.ALL:
-			ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %r' % (univention.connector.Mapping(self.property)))
 
 		self.drs = None
 		self.samr = None

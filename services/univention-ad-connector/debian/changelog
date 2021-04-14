@@ -1,3 +1,10 @@
+univention-ad-connector (14.0.7-1) unstable; urgency=medium
+
+  * Bug #52044: Log mapping to /var/log/univention/connector-ad-
+    mapping.log
+
+ -- Florian Best <best@univention.de>  Wed, 14 Apr 2021 18:45:54 +0200
+
 univention-ad-connector (14.0.6-2) unstable; urgency=medium
 
   * Bug #53020: Put well-known group Console Logon which is created
