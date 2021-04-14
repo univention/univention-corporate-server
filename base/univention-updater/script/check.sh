@@ -242,6 +242,7 @@ update_check_old_packages () {
 		univention-nagios-libvirtd
 		univention-nagios-libvirtd-xen
 		univention-nagios-uvmmd
+		univention-nagios-server
 		univention-bacula
 		univention-kde'=Mark KDE as manually installed "apt-mark manual kde-standard" to keep KDE'
 		univention-kde-setdirs

@@ -33,7 +33,6 @@
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
-DS=$(CURDIR)/debian/univention-nagios-server
 DC=$(CURDIR)/debian/univention-nagios-client
 
 override_dh_fixperms:

@@ -14860,23 +14860,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 # check for duplicates
 /usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose -c
 
-# add CUPS to nagios' UNIVENTION_CUPS service check
-if [ ! "$nagios_client_autoregister" = "no" ] ; then
-
-	if ! univention-ldapsearch -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
-		echo "Cannot find nagios object cn=UNIVENTION_CUPS,cn=nagios,$ldap_base (ldapsearch error $?)"
-		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
-	else
-		if [ "$(univention-ldapsearch -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
-			univention-directory-manager nagios/service modify "$@" \
-				--dn "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" \
-				--append assignedHosts="${ldap_hostdn}"
-		else
-			echo "univentionNagiosEnabled is not set for $ldap_hostdn"
-		fi
-	fi
-fi
-
 ucs_addServiceToLocalhost 'Print' "$@"
 
 if [ -x "/etc/init.d/cups" ]; then

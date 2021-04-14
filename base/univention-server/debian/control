@@ -239,6 +239,7 @@ Conflicts:
  univention-kernel-image,
  univention-kernel-headers,
  univention-kernel-source,
+ univention-nagios-server,
  univention-pkgdb-lib,
 Description: UCS system role common dependencies and files
  This package contains common files used by all system roles.

@@ -47,23 +47,6 @@ chmod 600  "$dest"
 
 ucs_addServiceToLocalhost 'PROXY' "$@"
 
-# add squid to nagios' UNIVENTION_SQUID service check
-if [ ! "$nagios_client_autoregister" = "no" ] ; then
-
-	if ! univention-ldapsearch -LLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
-		echo "Cannot find nagios object cn=UNIVENTION_SQUID,cn=nagios,$ldap_base (ldapsearch error $?)"
-		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
-	else
-		if [ "$(univention-ldapsearch -LLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
-			univention-directory-manager nagios/service modify "$@" \
-				--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
-				--append assignedHosts="${ldap_hostdn}" || die
-		else
-			echo "univentionNagiosEnabled is not set for $ldap_hostdn"
-		fi
-	fi
-fi
-
 joinscript_save_current_version
 
 exit 0

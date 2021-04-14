@@ -1,7 +1,0 @@
-etc/nagios/conf.local.d
-etc/nagios/conf.univention.d/hosts
-etc/nagios/conf.univention.d/hostgrps
-etc/nagios/conf.univention.d/contacts
-etc/nagios/conf.univention.d/contactgrps
-etc/nagios/conf.univention.d/timeperiods
-etc/nagios/conf.univention.d/services

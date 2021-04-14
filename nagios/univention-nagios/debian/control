@@ -8,44 +8,6 @@ Build-Depends:
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.8.2
 
-Package: univention-nagios-server
-Architecture: any
-Depends:
- libapache2-mod-authnz-pam,
- monitoring-plugins,
- nagios,
- nagios-common,
- nagios-doc,
- nagios-images,
- nagios-nrpe-plugin,
- python-univention-lib (>= 3.0.26-14),
- shell-univention-lib,
- univention-base-files,
- univention-config (>= 9.0.5-2.443.201312091553),
- univention-directory-listener,
- univention-directory-manager-tools (>> 7.0.147),
- univention-nagios-client (= ${binary:Version}),
- univention-nagios-common (= ${binary:Version}),
- univention-nagios-cups,
- univention-nagios-squid,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- univention-nagios-group-access,
-Conflicts:
- nagios2 (<< 3.0),
- univention-nagios-group-access,
-Breaks:
- nagios2 (<< 3.0),
-Description: UCS: nagios server support
- This package installs required packages to allow monitoring
- clients by nagios.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-nagios-client
 Architecture: any
 Depends:
