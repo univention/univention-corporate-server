@@ -107,14 +107,15 @@ def create(opt: Namespace, ucr: ConfigRegistry, iface, lo: uldap.access, mod) ->
 	co = None
 
 	addr = iface.ipv4_address()
-	network = str(iface.network or addr.network)
+	net = addr.network
+	network = str(iface.network or net.network_address)
 	if mod.lookup(co, lo, filter_s=filter_format("cn=%s", [network]), base=ucr["ldap/base"]):
 		print("DHCP subnet %s already exists" % (network,))
 		return
 
 	obj = mod.object(co, lo, uldap.position(opt.service))
 	obj["subnet"] = network
-	obj["broadcastaddress"] = str(iface.broadcast or addr.broadcast)
+	obj["broadcastaddress"] = str(iface.broadcast or net.broadcast_address)
 	obj["subnetmask"] = str(addr.netmask)
 	obj.policies = opt.policy_reference
 	try:

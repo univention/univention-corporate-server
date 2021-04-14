@@ -1,3 +1,9 @@
+univention-dhcp (14.0.3-5) unstable; urgency=medium
+
+  * Bug #53074: Fix DHCP network creation
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 14 Apr 2021 08:42:15 +0200
+
 univention-dhcp (14.0.3-4) unstable; urgency=medium
 
   * Bug #52828: /var/lib/dhcp/dhcpd.leases needs to exists on startup
