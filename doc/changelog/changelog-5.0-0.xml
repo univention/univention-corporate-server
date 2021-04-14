@@ -927,6 +927,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:celery">
+			<title>Celery services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The package <package>univention-celery</package> has been removed (<u:bug>51486</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
