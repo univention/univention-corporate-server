@@ -91,7 +91,7 @@ from samba.dcerpc import dnsp
 from samba.ndr import ndr_pack
 import base64
 ns_record = NSRecord("$hostname.$domainname", rank=dnsp.$rank)
-print base64.b64encode(ndr_pack(ns_record))
+print(base64.b64encode(ndr_pack(ns_record)))
 %EOF
 }
 
@@ -103,22 +103,28 @@ from samba.dcerpc import dnsp
 from samba.ndr import ndr_pack
 import base64
 soa_record = SOARecord("$hostname.$domainname", "hostmaster.$domainname", serial=$serial)
-print base64.b64encode(ndr_pack(soa_record))
+print(base64.b64encode(ndr_pack(soa_record)))
 %EOF
 }
 
 get_samba4_soa_serial() {
 	local zone_dn
 	zone_dn="$1"
+	local serial
 	while read -r dnsRecord; do
-		python3 <<%EOF
+		serial=$(python3 <<%EOF
 import base64
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_unpack
 dnsRecord = base64.b64decode('$dnsRecord')
 ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
-if ndrRecord.wType == dnsp.DNS_TYPE_SOA: print ndrRecord.data.serial
+if ndrRecord.wType == dnsp.DNS_TYPE_SOA: print(ndrRecord.data.serial)
 %EOF
+		)
+		if [ -n "$serial" ]; then
+			echo "$serial"
+			break
+		fi
 	done < <(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$zone_dn" DC=@ dnsRecord \
 		| ldapsearch-wrapper | sed -n 's/^dnsRecord:: //p')
 }
