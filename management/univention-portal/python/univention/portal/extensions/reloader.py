@@ -177,8 +177,15 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		udm = udm_lib.UDM.machine().version(2)
 		try:
 			portal = udm.get("portals/portal").get(self._portal_dn)
+		except udm_lib.ConnectionError:
+			get_logger("cache").warning("Could not establish UDM connection. Is the LDAP server accessible?")
+			return None
+		except udm_lib.UnknownModuleType:
+			get_logger("cache").warning("UDM not up to date? Portal module not found.")
+			return None
 		except udm_lib.NoObject:
-			raise ValueError("No Portal defined")  # default portal?
+			get_logger("cache").warning("Portal %s not found", self._portal_dn)
+			return None
 		content = {}
 		content["portal"] = self._extract_portal(portal)
 		content["categories"] = categories = self._extract_categories(portal)
