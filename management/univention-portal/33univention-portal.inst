@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=19
+VERSION=20
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -115,14 +115,7 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"
-elif [ $JS_LAST_EXECUTED_VERSION -lt 16 ]; then
-	role="$(ucr get server/role)"
-	if [ "$role" = "domaincontroller_master" ]; then
-		/usr/lib/univention-portal/migrate-to-new-portal-during-5.0-dev
-	fi
 fi
-
-systemctl restart univention-portal-server
 
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
@@ -198,10 +191,11 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description="\"en_US\" \"Univention Management Console for admin­is­tra­ting the UCS domain and the local system\"" \
 		--append description="\"de_DE\" \"Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems\"" \
 		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le domaine UCS et le système local\"" \
-		--append link='"en_US" "/univention/management/"' \
+		--append link='"en_US" "/univention/umc/"' \
 		--set anonymous=TRUE \
 		--set linkTarget=newwindow \
 		--set icon="$(base64 /usr/share/univention-portal/univention-management-console.svg)" || die
+
 
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
@@ -262,6 +256,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName='"en_US" "Univention Portal"' \
 		--append displayName='"de_DE" "Univention Portal"' \
 		--append displayName='"fr_FR" "Portail Univention"' \
+		--set showUmc=TRUE \
 		--set showApps=FALSE || die
 
 
@@ -375,8 +370,27 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	done
 fi
 
+if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
+	# again, coming from ucs 4.4. migration happened earlier
+	# but some default behaviour has to be added
+	univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
+		--dn "cn=umc-domain,cn=entry,cn=portals,$ldap_base" \
+		--remove link='"en_US" "/univention/management/"' \
+		--append link='"en_US" "/univention/umc/"'
+		--set anonymous=TRUE || die
+	univention-directory-manager portals/portal modify "$@" --ignore_not_exists \
+		--dn "cn=domain,cn=portal,cn=portals,$ldap_base" \
+		--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
+		--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
+		--set showUmc=TRUE || die
+fi
+
+univention-portal update
+systemctl restart univention-portal-server
+
 # One time action: Copy example custom css file
-if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
+if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
+	[ -e /usr/share/univention-portal/custom.css ] && cp /usr/share/univention-portal/custom.css /usr/share/univention-portal/custom.css.bak
 	cp /usr/share/univention-portal/custom.css.example /usr/share/univention-portal/custom.css
 fi
 

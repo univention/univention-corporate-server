@@ -1,3 +1,9 @@
+univention-portal (4.0.5-24) unstable; urgency=medium
+
+  * Bug #52869: Fix portal entries after update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Apr 2021 21:26:27 +0200
+
 univention-portal (4.0.5-23) unstable; urgency=medium
 
   * Bug #53091: Portal "local" is not used anymore
