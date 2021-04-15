@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import copy
 import codecs
 
 from univention.admin.layout import Tab, Group
@@ -161,6 +162,7 @@ class object(univention.admin.handlers.simplePolicy):
 		values = {}
 		self.polinfo_more['registry'] = []
 		for attr_name, value_dict in self.policy_attrs.items():
+			value_dict = copy.deepcopy(value_dict)
 			values[attr_name] = value_dict['value'].copy()
 			value_dict['value'] = [x.decode('UTF-8') for x in value_dict['value']]
 			if attr_name.startswith('univentionRegistry;entry-hex-'):

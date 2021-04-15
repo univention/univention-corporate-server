@@ -3410,6 +3410,7 @@ class simplePolicy(simpleLdap):
 		else:
 			values = {}
 			for attr_name, value_dict in self.policy_attrs.items():
+				value_dict = copy.deepcopy(value_dict)
 				values[attr_name] = value_dict['value'].copy()
 				value_dict['value'] = [x.decode('UTF-8') for x in value_dict['value']]
 				self.polinfo_more[self.mapping.unmapName(attr_name)] = value_dict
