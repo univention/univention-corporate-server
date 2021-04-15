@@ -60,7 +60,7 @@ do
 	esac
 done
 
-for prog in univention-management-console-server univention-management-console-web-server
+for prog in univention-management-console-server univention-management-console-web-server apache2
 do
 	bin="/usr/sbin/$prog"
 	if [ -f "$bin" ] && [ ! -x "$bin" ]
