@@ -30,32 +30,59 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-NORESTART=""
+RESTART=true
 
-if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
-	echo "${0##*/} [--help] [--no-restart]"
+die () {
+	echo "${0##/*}: $*" >&2
 	exit 1
-fi
+}
+opt="$(getopt -o 'h' --longoptions 'no-restart,help' -- "$@")" ||
+	die 'Terminating...'
+eval set -- "$opt"
+while [ $# -ge 1 ]
+do
+	case "$1" in
+	-h|--help)
+		echo "${0##*/} [--help] [--no-restart]"
+		exit 0
+		;;
+	--no-restart)
+		RESTART=false
+		shift
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		die 'Internal error!'
+		;;
+	esac
+done
 
-if [ "$1" = "--no-restart" ] ; then
-	NORESTART="no-restart"
-fi
+for prog in univention-management-console-server univention-management-console-web-server
+do
+	bin="/usr/sbin/$prog"
+	if [ -f "$bin" ] && [ ! -x "$bin" ]
+	then
+		dpkg-statoverride --remove "$bin" 2>&1
+		chmod a+x "$bin"
+		[ "$RESTART" ] &&
+			systemctl restart "$prog"
+	fi
+done
 
-for prog in univention-management-console-server \
-			univention-management-console-web-server \
-			apache2 \
-            ; do
-	if [ -f "/usr/sbin/$prog" ] && [ ! -x "/usr/sbin/$prog" ]; then
-		/usr/bin/dpkg-statoverride --remove "/usr/sbin/$prog" 2>&1
-		/bin/chmod a+x "/usr/sbin/$prog"
-		[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart
-	fi		
-
+if [ -d /run/systemd/system ]
+then
 	# Try to reach a working state: Start all $prog services.
 	# The --no-restart parameter is there to avoid stopping
 	# existing connections and sessions. Simply trying to start
 	# an already running service should do no harm
-	service "$prog" start
-done
+	case "$(systemctl is-system-running)" in
+	running|degraded)
+		systemctl start univention-management-console-server univention-management-console-web-server
+		;;
+	esac
+fi
 
 exit 0

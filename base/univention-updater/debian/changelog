@@ -1,3 +1,9 @@
+univention-updater (15.0.3-40) unstable; urgency=low
+
+  * Bug #52977: Stop en-/disabling apache2.service
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Apr 2021 20:11:21 +0200
+
 univention-updater (15.0.3-39) unstable; urgency=medium
 
   * Bug #52715: removed maintained-packages.txt
