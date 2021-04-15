@@ -12,6 +12,8 @@ release, as this will break the above schema!
 
 Instead, do not change debian/changelog and force import the package into repo-ng for new releases.
 
+repo_admin.py -G git@git.knut.univention.de:univention/ucs.git -p univention-errata-level -b $BRANCH -P base/univention-errata-level -r $UCS_VERSION --force
+
 Maintained
 ==========
 Until UCS-4 maintained packages were in a separate repository.
