@@ -119,6 +119,9 @@
 				<listitem><simpara>
 					The old name <command>univention-baseconf</command> has been removed (<u:bug>52016</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Different layers of the registry are now taken into account when deciding if and how to run &ucsUCR; trigger mechanisms, meaning that the trigger will now be called with what is actually visible for &ucsUCR; (<u:bug>52847</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
