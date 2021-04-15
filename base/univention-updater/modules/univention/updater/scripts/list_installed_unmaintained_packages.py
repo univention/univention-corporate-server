@@ -39,7 +39,7 @@ from typing import IO, Set
 
 import apt
 
-MAINTAINED_PACKAGES = '/usr/share/univention-updater/maintained-packages.txt'
+MAINTAINED_PACKAGES = '/usr/share/univention-errata-level/maintained-packages.txt'
 
 
 def main() -> int:

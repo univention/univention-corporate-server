@@ -1,3 +1,9 @@
+univention-updater (15.0.3-39) unstable; urgency=medium
+
+  * Bug #52715: removed maintained-packages.txt
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Apr 2021 12:41:51 +0200
+
 univention-updater (15.0.3-38) unstable; urgency=medium
 
   * Bug #52771: check apps before release update (umc, checks)
