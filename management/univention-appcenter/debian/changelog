@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-30) unstable; urgency=medium
+
+  * Bug #51197: Prevent tracebacks, print warnings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Apr 2021 23:20:48 +0200
+
 univention-appcenter (9.0.2-29) unstable; urgency=medium
 
   * Bug #52771: added update-check

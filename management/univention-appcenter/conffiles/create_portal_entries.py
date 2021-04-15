@@ -200,6 +200,9 @@ def _handler(ucr, changes):
 		portal_logger.debug('Links: %r' % my_links)
 		try:
 			obj = init_object('portals/entry', lo, pos, dn)
+		except AttributeError:
+			portal_logger.error('The handler is not ready yet. Portal modules are not installed. You may have to set the variables again.')
+			return
 		except udm_errors.noObject:
 			portal_logger.debug('DN not found...')
 			if my_links:
