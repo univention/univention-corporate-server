@@ -67,7 +67,7 @@ do
 	then
 		dpkg-statoverride --remove "$bin" 2>&1
 		chmod a+x "$bin"
-		[ "$RESTART" ] &&
+		"$RESTART" &&
 			systemctl restart "$prog"
 	fi
 done
