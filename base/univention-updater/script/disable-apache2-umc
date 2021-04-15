@@ -30,24 +30,39 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
-	echo "${0##*/} [--help] [--exclude-apache]"
+die () {
+	echo "${0##/*}: $*" >&2
 	exit 1
-fi
+}
+opt="$(getopt -o 'h' --longoptions 'exclude-apache,help' -- "$@")" ||
+	die 'Terminating...'
+eval set -- "$opt"
+while [ $# -ge 1 ]
+do
+	case "$1" in
+	-h|--help)
+		echo "${0##*/} [--help] [--exclude-apache]"
+		exit 0
+		;;
+	--exclude-apache)
+		shift
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		die 'Internal error!'
+		;;
+	esac
+done
 
-if [ "$1" = "--exclude-apache" ] ; then
-	EXCLUDEAPACHE="exclude-apache"
-fi
-
-PROGS="univention-management-console-web-server univention-management-console-server"
-if [ -z "$EXCLUDEAPACHE" ]; then
-	PROGS="apache2 $PROGS"
-fi
-
-for prog in $PROGS; do
-	if [ -x "/usr/sbin/$prog" ]; then
-		/usr/bin/dpkg-statoverride --add root root 0644 "/usr/sbin/$prog" 2>&1
-		/bin/chmod a-x "/usr/sbin/$prog"
+for prog in univention-management-console-web-server univention-management-console-server
+do
+	bin="/usr/sbin/$prog"
+	if [ -x "$bin" ]
+	then
+		dpkg-statoverride --quiet --update --add root root 0644 "$bin" 2>&1
 	fi
 done
 
