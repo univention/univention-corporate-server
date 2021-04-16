@@ -535,8 +535,7 @@ class DovecotSharedFolderListener(DovecotListener):
 
 	@staticmethod
 	def _split_udm_imap_acl_imap(udm_imap_acl):  # type: (str) -> Tuple[str, str]
-		right = udm_imap_acl.split()[-1]
-		identifier = " ".join(udm_imap_acl.split()[:-1])
+		identifier, right = udm_imap_acl.rsplit(None, 1)
 		if "@" in identifier or identifier in ["anyone", "authenticated", "dovecotadmin"]:
 			pass
 		else:
