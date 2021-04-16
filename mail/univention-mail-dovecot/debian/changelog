@@ -1,3 +1,10 @@
+univention-mail-dovecot (6.0.3-1) unstable; urgency=low
+
+  * Bug #53111: fixed traceback during SETACL with groups with space in
+    name ("Domain Users")
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Apr 2021 13:23:46 +0200
+
 univention-mail-dovecot (6.0.2-1) unstable; urgency=medium
 
   * Bug #52254: Migrate univention-mail-dovecot to Python 3
