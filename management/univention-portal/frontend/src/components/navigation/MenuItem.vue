@@ -35,7 +35,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     tabindex="0"
     @click="tileClick"
     @keydown.enter="tileClick"
-    @keydown.esc="closeWithESC"
   >
     <portal-icon
       v-if="isSubItem"
@@ -94,15 +93,9 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['clickAction'],
   computed: {
     isLink(): boolean {
       return this.link !== null && this.link !== '';
-    },
-  },
-  methods: {
-    closeWithESC() {
-      this.$emit('clickAction');
     },
   },
 });

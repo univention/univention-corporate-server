@@ -65,6 +65,7 @@ const tileClickMixin = {
   ],
   methods: {
     tileClick(evt) {
+      this.$store.dispatch('tooltip/unsetTooltip');
       if (this.editMode) {
         evt.preventDefault();
 

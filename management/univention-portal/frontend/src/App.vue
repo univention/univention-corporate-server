@@ -40,9 +40,7 @@ import CookieBanner from '@/components/globals/CookieBanner.vue';
 import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 import Portal from '@/views/Portal.vue';
 
-import { login } from '@/jsHelper/login';
 import { getCookie } from '@/jsHelper/tools';
-import { catalog } from '@/i18n/translations';
 import { mapGetters } from 'vuex';
 
 export default defineComponent({
@@ -65,24 +63,11 @@ export default defineComponent({
       await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
     }
     this.$store.dispatch('activateLoadingState');
-    const portalData = await this.$store.dispatch('loadPortal', {
+    await this.$store.dispatch('loadPortal', {
       adminMode: false,
       waitForChange: true,
     });
     this.$store.dispatch('deactivateLoadingState');
-
-    if (!portalData.username) {
-      // Display notification bubble with login reminder
-      this.$store.dispatch('notificationBubble/addNotification', {
-        bubbleTitle: catalog.LOGIN.translated.value,
-        bubbleDescription: catalog.LOGIN_REMINDER_DESCRIPTION.translated.value,
-        onClick: () => login(this.userState),
-      });
-      setTimeout(() => {
-      // Hide notification bubble after 4 seconds
-        this.$store.dispatch('notificationBubble/setHideNewBubble');
-      }, 4000);
-    }
   },
 });
 </script>

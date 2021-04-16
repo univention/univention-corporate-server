@@ -45,6 +45,13 @@
         v-model="portalBackgroundData"
         label="Background"
       />
+      <label>
+        <input
+          v-model="portalShowUmcData"
+          type="checkbox"
+        >
+        <translate i18n-key="SHOW_UMC" />
+      </label>
       <button class="primary">
         <portal-icon
           icon="save"
@@ -71,6 +78,7 @@ interface EditModeSideNavigationData {
   portalLogoData: string,
   portalNameData: Record<string, string>,
   portalBackgroundData: string,
+  portalShowUmcData: boolean,
 }
 
 export default defineComponent({
@@ -86,6 +94,7 @@ export default defineComponent({
       portalLogoData: '',
       portalNameData: {},
       portalBackgroundData: '',
+      portalShowUmcData: false,
     };
   },
   computed: {
@@ -94,6 +103,7 @@ export default defineComponent({
       portalName: 'portalData/portalName',
       portalLogo: 'portalData/portalLogo',
       portalBackground: 'portalData/portalBackground',
+      portalShowUmc: 'portalData/portalShowUmc',
     }),
   },
   updated() {
@@ -104,6 +114,7 @@ export default defineComponent({
     this.portalLogoData = this.portalLogo || '';
     this.portalNameData = this.portalName;
     this.portalBackgroundData = this.portalBackground || '';
+    this.portalShowUmcData = this.portalShowUmc;
   },
   methods: {
     update() {
@@ -125,8 +136,9 @@ export default defineComponent({
         background = '';
       }
       const displayName = Object.entries(this.portalNameData);
+      const showUmc = this.portalShowUmcData;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const attrs: any = { displayName };
+      const attrs: any = { displayName, showUmc };
       if (logo !== null) {
         attrs.logo = logo;
       }
@@ -154,6 +166,8 @@ export default defineComponent({
 <style lang="stylus">
 .edit-mode-side-navigation
   &__form
+    height: auto
+    overflow: auto
     padding: calc(2 * var(--layout-spacing-unit))
     input
       width: 18rem

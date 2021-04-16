@@ -67,11 +67,17 @@ const locale: PortalModule<LocaleState> = {
       commit('NEWLOCALE', payload);
       setCookie('UMCLang', payload.replace('_', '-'));
       const localePrefix = payload.slice(0, 2);
+      // TODO create helper function
+      const html = document.documentElement;
+      html.setAttribute('lang', localePrefix);
       return updateLocale(localePrefix);
     },
     setAvailableLocale({ commit }, payload: LocaleDefinition[]) {
       const locales = payload.map((loc) => loc.id.replace('-', '_'));
       commit('AVAILABLE_LOCALES', locales);
+      // TODO create helper function
+      const html = document.documentElement;
+      html.setAttribute('lang', 'en'); // setting document lang to en, because it is also set in line 47, 48
     },
   },
 };

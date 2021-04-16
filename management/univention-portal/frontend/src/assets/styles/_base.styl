@@ -83,10 +83,36 @@ input
     color: var(--font-color-disabled)
 
 label
-  display: inline-block
+  display: inline-flex
   color: var(--color-grey62)
   font-size: var(--font-size-3)
   padding-bottom: calc(var(--layout-spacing-unit) * 1.25)
+  position: relative
+
+  input[type=checkbox]
+    height: var(--font-size-3)
+    width: var(--font-size-3)
+    padding: 0 !important
+    margin: 4px
+    margin-right: var(--layout-spacing-unit)
+    border: 2px solid var(--color-grey40)
+    border-radius: var(--border-radius-tooltip)
+    background-color: var(--color-grey0)
+    cursor: pointer
+    appearance: none
+    &:focus
+      background-color: var(--color-grey25)
+    &:hover
+      background-color: var(--color-grey8)
+    &:checked
+      border-color: var(--color-primary)
+      & + span::before
+        content: '\2713'
+        color: var(--color-primary)
+        position: absolute
+        left: calc(var(--font-size-3) / 2 - 2px)
+    & + span
+      cursor: pointer;
 
 // --------------
 // global classes

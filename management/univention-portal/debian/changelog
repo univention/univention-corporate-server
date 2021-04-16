@@ -1,3 +1,9 @@
+univention-portal (4.0.5-29) unstable; urgency=medium
+
+  * Bug #52869: Improved edit mode side navigation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Apr 2021 23:06:44 +0200
+
 univention-portal (4.0.5-28) unstable; urgency=medium
 
   * Bug #52869: Add login tile

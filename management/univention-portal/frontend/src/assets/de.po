@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-10 00:29+0200\n"
+"POT-Creation-Date: 2021-04-16 23:03+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -131,7 +131,11 @@ msgstr "Speichern"
 
 #: frontend/src/assets/data/dictionary.js:75
 msgid "Select file"
-msgstr "Datei wählen"
+msgstr "Datei auswählen"
+
+#: frontend/src/assets/data/dictionary.js:76
+msgid "Show local UMC modules"
+msgstr "UMC-Module anzeigen"
 
 #: frontend/src/assets/data/dictionary.js:43
 msgid "Stop edit portal"

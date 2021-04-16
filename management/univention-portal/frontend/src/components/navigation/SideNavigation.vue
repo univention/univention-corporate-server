@@ -46,8 +46,8 @@ License with the Debian GNU/Linux or Univention distribution in file
             ref="loginButton"
             class="portal-sidenavigation__logout-link"
             @click="logout"
+            @keydown.shift.tab.exact="focusOnLastItemInSideMenu($event)"
             @keydown.esc="closeNavigation"
-            @keydown.shift.tab="focusOnMenuButton($event)"
           >
             <translate i18n-key="LOGOUT" />
           </button>
@@ -59,6 +59,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
+        @keydown.shift.tab.exact="focusOnLastItemInSideMenu($event)"
         @keydown.esc="closeNavigation"
       >
         <translate i18n-key="LOGIN" />
@@ -81,13 +82,13 @@ License with the Debian GNU/Linux or Univention distribution in file
           v-bind="item"
           :aria-haspopup="hasSubmenu(item)"
           @click="toggleMenu(index)"
-          @clickAction="closeNavigation"
-          @escButtonClick="closeNavigation"
-          @keydown.up.prevent="selectPrevious( 'menuItem', index, menuLinks.length)"
-          @keydown.down.prevent="selectNext( 'menuItem', index, menuLinks.length)"
-          @keydown.enter="focusOnChild(index)"
-          @keydown.space.prevent="focusOnChild(index)"
-          @keydown.right="focusOnChild(index)"
+          @keydown.up.exact.prevent="selectPrevious( 'menuItem', index, menuLinks.length)"
+          @keydown.down.exact.prevent="selectNext( 'menuItem', index, menuLinks.length)"
+          @keydown.enter.exact="focusOnChild(index)"
+          @keydown.space.exact.prevent="focusOnChild(index)"
+          @keydown.right.exact="focusOnChild(index)"
+          @keydown.tab.exact="nextElementTab($event, index)"
+          @keydown.esc="closeNavigation"
         />
         <template v-if="item.subMenu && item.subMenu.length > 0">
           <menu-item
@@ -98,11 +99,12 @@ License with the Debian GNU/Linux or Univention distribution in file
             :links="[]"
             class="portal-sidenavigation__menu-subItem portal-sidenavigation__menu-subItem--parent"
             @click="toggleMenu()"
-            @keydown.enter.prevent="focusOnParent(index)"
-            @keydown.space.prevent="focusOnParent(index)"
-            @keydown.left="focusOnParent(index)"
-            @keydown.up.prevent="selectPrevious('subItemParent',index, item.subMenu.length)"
-            @keydown.down.prevent="selectNext('subItemParent', index)"
+            @keydown.enter.exact.prevent="focusOnParent(index)"
+            @keydown.space.exact.prevent="focusOnParent(index)"
+            @keydown.left.exact="focusOnParent(index)"
+            @keydown.up.exact.prevent="selectPrevious('subItemParent',index, item.subMenu.length)"
+            @keydown.down.exact.prevent="selectNext('subItemParent', index)"
+            @keydown.esc="closeNavigation"
           />
           <div
             v-for="(subItem, subindex) in item.subMenu"
@@ -117,6 +119,7 @@ License with the Debian GNU/Linux or Univention distribution in file
               @clickAction="closeNavigation"
               @keydown.up.prevent="selectPrevious('subItem', subindex, item.subMenu.length)"
               @keydown.down.prevent="selectNext('subItem', subindex, item.subMenu.length)"
+              @keydown.esc="closeNavigation"
             />
           </div>
         </template>
@@ -125,9 +128,11 @@ License with the Debian GNU/Linux or Univention distribution in file
 
     <button
       v-if="userState.mayEditPortal"
+      ref="editModeButton"
       class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
+      @keydown.tab.exact.prevent="focusOnLoginButton"
     >
       <translate
         i18n-key="EDIT_PORTAL"
@@ -191,7 +196,7 @@ export default defineComponent({
     }),
   },
   mounted() {
-    (this.$refs.loginButton as HTMLElement).focus();
+    this.focusOnLoginButton();
   },
   methods: {
     login(): void {
@@ -202,6 +207,7 @@ export default defineComponent({
     },
     closeNavigation(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
+      document.getElementById('header-button-menu')?.focus();
     },
     toggleMenu(index = -1): void {
       this.menuVisible = !this.menuVisible;
@@ -232,7 +238,9 @@ export default defineComponent({
       return ret;
     },
     selectPrevious(menuReference: string, index?: number, numberOfItems?: number): void {
+      // test
       if (menuReference === 'subItemParent') {
+        console.log('selectPrevious: in subMenu');
         // If current is subitem Parent focus last item in list
         this.$nextTick(() => {
           const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
@@ -240,15 +248,20 @@ export default defineComponent({
           firstSubItemChild.focus();
         });
       } else if (menuReference === 'subItem' || menuReference === 'menuItem') {
+        console.log('selectPrevious: in parentMenu');
         if (index === 0) {
+          console.log('selectPrevious: ?');
           // If current is first submenu item set focus to subItemParent.
           if (menuReference === 'subItem') {
+            console.log('selectPrevious: !');
             this.focusOnSubItemParent();
           } else {
+            console.log('selectPrevious: ?');
             const lastElementIndex = numberOfItems ? numberOfItems - 1 : null;
             (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el.focus();
           }
         } else {
+          console.log('selectPrevious: normal previous behaviour');
           // normal previous behaviour
           const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
           const previousElement = currentElement.parentElement.previousElementSibling.children[0];
@@ -256,7 +269,7 @@ export default defineComponent({
         }
       }
     },
-    selectNext(menuReference: string, index?: number, numberOfItems?: number):void {
+    selectNext(menuReference: string, index?: number, numberOfItems?: number): void {
       if (menuReference === 'subItemParent') {
         this.$nextTick(() => {
           const firstSubItemChild = (this.$refs.subItem0 as HTMLFormElement).$el;
@@ -277,32 +290,61 @@ export default defineComponent({
         }
       }
     },
-    hasSubmenu(item) {
+    hasSubmenu(item): boolean {
       return item.subMenu && item.subMenu.length > 0;
     },
-    focusOnChild(index) {
+    focusOnChild(index): void {
       this.toggleMenu(index);
       this.$nextTick(() => {
         this.focusOnSubItemParent();
       });
     },
-    focusOnParent(index) {
+    focusOnParent(index): void {
       this.toggleMenu(index);
       this.$nextTick(() => {
-        const firstClickableChildElement = (this.$refs[`menuItem${index}`] as HTMLFormElement).$el;
-        console.log(firstClickableChildElement);
-        firstClickableChildElement.focus();
+        const parentMenuItem = (this.$refs[`menuItem${index}`] as HTMLFormElement).$el;
+        parentMenuItem.focus();
       });
     },
-    focusOnSubItemParent() {
+    focusOnSubItemParent(): void {
       (this.$refs.subItemParent as HTMLFormElement).$el.focus();
     },
-    focusOnMenuButton(event) {
-      console.log('header-button-menu');
+    focusOnLastItemInSideMenu(event): void {
+      // call this to trap user in side navigation
       event.preventDefault();
-      const buttonElement = document.getElementById('header-button-menu') as HTMLFormElement;
-      console.log(buttonElement);
-      buttonElement.focus();
+      if (this.userState.mayEditPortal) {
+        this.focusOnEditModeButton();
+      } else {
+        const lastElementIndex = this.menuLinks.length - 1;
+        const lastMenuItem = (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement) ? (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el : null;
+        if (lastMenuItem) {
+          // focus to last element of menu
+          lastMenuItem.focus();
+        } else {
+          // if submenu is open the focus should go on last submenuitem
+          const subMenuItems = Object.keys(this.$refs).filter((refTitle) => refTitle.includes('subItem'));
+          const lastSubMenuItemReference = subMenuItems[subMenuItems.length - 1];
+          (this.$refs[lastSubMenuItemReference] as HTMLFormElement).$el.focus();
+        }
+      }
+    },
+    focusOnLoginButton(): void {
+      (this.$refs.loginButton as HTMLFormElement).focus();
+    },
+    focusOnEditModeButton(): void {
+      (this.$refs.editModeButton as HTMLFormElement).focus();
+    },
+    nextElementTab(event, index?: number): void {
+      // only call this on last Menu Item to trap user in side navigation
+      const lastElementIndex = this.menuLinks.length - 1;
+      if (index === lastElementIndex) {
+        event.preventDefault();
+        if (this.userState.mayEditPortal) {
+          this.focusOnEditModeButton();
+        } else {
+          this.focusOnLoginButton();
+        }
+      }
     },
   },
 });
@@ -314,7 +356,6 @@ export default defineComponent({
   display: flex
   flex-direction: column
   align-item: flex-end
-  overflow: auto
 
   &__link
     padding: 1em 0 1em 20px
