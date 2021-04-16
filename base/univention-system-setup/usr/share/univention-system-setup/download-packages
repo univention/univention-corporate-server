@@ -30,12 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-check_returnvalue () {
-	local rval="$1" errormessage="$2"
-	if [ "${rval}" != 0 ]; then
-		echo "${errormessage}" >&2
-		exit "${rval}"
-	fi
+die () {
+	local rc="$?"
+	echo "${0##*/}: $*" >&2
+	exit "$rc"
 }
 
 if [ -n "$1" ]; then
@@ -52,7 +50,6 @@ declare -a PACKAGES=(
 	univention-samba
 	univention-management-console-module-adtakeover
 	univention-printserver # TODO
-	# FIXME univention-printquota
 	univention-dhcp
 	univention-fetchmail
 	univention-radius
@@ -69,28 +66,26 @@ declare -a PACKAGES=(
 CACHE='/var/cache/univention-system-setup/packages'
 APT='/etc/apt/sources.list.d/05univention-system-setup.list'
 
-mkdir -p "$CACHE"
-chown "_apt" "$CACHE"
-(
-	cd "$CACHE" || exit $?
-	install_cmd="$(univention-config-registry get update/commands/install)"
+umask 0022
+install -m 0755 -o _apt -d "$CACHE"
+cd "$CACHE" ||
+	die "Failed to change directory to '$CACHE'"
 
-	for package in "${PACKAGES[@]}"
-	do
-		# shellcheck disable=SC2046
-		apt-get download -o Dir::Cache::Archives="$CACHE" $(LC_ALL=C.UTF-8 $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+install_cmd="$(univention-config-registry get update/commands/install)"
+for package in "${PACKAGES[@]}"
+do
+	# shellcheck disable=SC2046
+	apt-get download -o Dir::Cache::Archives="$CACHE" $(LC_ALL=C.UTF-8 $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p') ||
+		die "Failed to download required packages for ${package}"
+done
 
-		check_returnvalue $? "Failed to download required packages for ${package}"
-	done
+apt-ftparchive packages . >Packages ||
+	die "Failed to create $CACHE/Packages"
 
-	apt-ftparchive packages . >Packages
-	check_returnvalue $? "Failed to create ftparchive directory"
-	gzip -k Packages
-	xz -k Packages
-	chown _apt Packages InRelease Packages.xz Packages.gz
+chown _apt ./*
+chmod 0644 ./*
 
-	[ -e "$APT" ] ||
-		echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
-)
+[ -e "$APT" ] ||
+	echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
 
 exit 0
