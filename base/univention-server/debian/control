@@ -129,7 +129,7 @@ Description: UCS - Managed Node
  refer to: https://www.univention.de/
 
 Package: univention-role-server-common
-Architecture: all
+Architecture: any
 Depends:
  linux-image-amd64 [amd64],
  ntp | ntp-server,
