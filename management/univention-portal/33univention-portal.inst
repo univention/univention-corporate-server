@@ -197,10 +197,41 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set icon="$(base64 /usr/share/univention-portal/univention-management-console.svg)" || die
 
 
+	# create login tiles (one for umc login, one for saml login
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--set name=login-ucs \
+		--append displayName="\"en_US\" \"Login\"" \
+		--append displayName="\"de_DE\" \"Anmelden\"" \
+		--append displayName="\"fr_FR\" \"Connexion\"" \
+		--append description="\"en_US\" \"Log in to the portal\"" \
+		--append description="\"de_DE\" \"Am Portal anmelden\"" \
+		--append description="\"fr_FR\" \"Connectez-vous au portail\"" \
+		--append link='"en_US" "/univention/login/?location=/univention/portal/"' \
+		--set anonymous=TRUE \
+		--set linkTarget=samewindow \
+		--set icon="$(base64 /usr/share/univention-portal/login.svg)" || die
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--set name=login-saml \
+		--append displayName="\"en_US\" \"Login (Single sign-on)\"" \
+		--append displayName="\"de_DE\" \"Anmelden (Single Sign-on)\"" \
+		--append displayName="\"fr_FR\" \"Connexion (authentification unique)\"" \
+		--append description="\"en_US\" \"Log in to the portal\"" \
+		--append description="\"de_DE\" \"Am Portal anmelden\"" \
+		--append description="\"fr_FR\" \"Connectez-vous au portail\"" \
+		--append link='"en_US" "/univention/saml/?location=/univention/portal/"' \
+		--set anonymous=TRUE \
+		--set activated=FALSE \
+		--set linkTarget=samewindow \
+		--set icon="$(base64 /usr/share/univention-portal/login.svg)" || die
+
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
 		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain-service \
+		--append entries="cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--append entries="cn=login-saml,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Applications"' \
 		--append displayName='"de_DE" "Applikationen"' || die
 
@@ -258,36 +289,25 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName='"fr_FR" "Portail Univention"' \
 		--set showUmc=TRUE || die
 
-
-	# create link to UMC for portal object of local start sites
-	univention-directory-manager portals/entry create "$@" --ignore_exists \
-		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
-		--set name=umc-local \
-		--append displayName="\"en_US\" \"System settings\"" \
-		--append displayName="\"de_DE\" \"Systemeinstellungen\"" \
-		--append displayName="\"fr_FR\" \"Réglages du système\"" \
-		--append description="\"en_US\" \"Univention Management Console for admin­is­tra­ting the local system\"" \
-		--append description="\"de_DE\" \"Univention Management Console zur Ver­wal­tung des lokalen Systems\"" \
-		--append description="\"fr_FR\" \"Console de gestion Univention pour admin­is­trer le système local\"" \
-		--append link='"en_US" "/univention/management/"' \
-		--set anonymous=TRUE \
-		--set linkTarget=newwindow \
-		--set icon="$(base64 /usr/share/univention-portal/univention-management-console.svg)" || die
-
-	# create applications category
-	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
-		--set name=local-service \
-		--append displayName='"en_US" "Applications"' \
-		--append displayName='"de_DE" "Applikationen"' || die
-
-	# create admin category
-	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
-		--set name=local-admin \
-		--append entries="cn=umc-local,cn=entry,cn=portals,cn=univention,$ldap_base" \
-		--append displayName='"en_US" "Administration"' \
-		--append displayName='"de_DE" "Verwaltung"' || die
+	if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
+		# again, coming from ucs 4.4. migration happened earlier
+		# but some default behaviour has to be added
+		univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
+			--dn "cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
+			--remove link='en_US /univention/management/' \
+			--append link='"en_US" "/univention/umc/"' \
+			--set linkTarget=newwindow \
+			--set anonymous=TRUE || die
+		univention-directory-manager portals/category modify "$@" --ignore_not_exists \
+			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+			--append entries="cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
+			--append entries="cn=login-saml,cn=entry,cn=portals,cn=univention,$ldap_base" || die
+		univention-directory-manager portals/portal modify "$@" --ignore_not_exists \
+			--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
+			--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
+			--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
+			--set showUmc=TRUE || die
+	fi
 fi
 
 default_portal="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base"
@@ -333,28 +353,14 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	done
 fi
 
-if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
-	# again, coming from ucs 4.4. migration happened earlier
-	# but some default behaviour has to be added
-	univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
-		--dn "cn=umc-domain,cn=entry,cn=portals,$ldap_base" \
-		--remove link='"en_US" "/univention/management/"' \
-		--append link='"en_US" "/univention/umc/"' \
-		--set anonymous=TRUE || die
-	univention-directory-manager portals/portal modify "$@" --ignore_not_exists \
-		--dn "cn=domain,cn=portal,cn=portals,$ldap_base" \
-		--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
-		--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
-		--set showUmc=TRUE || die
-fi
-
 univention-portal update
 systemctl restart univention-portal-server
 
 # One time action: Copy example custom css file
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
+	# older custom.css are most definitely broken now
 	[ -e /usr/share/univention-portal/custom.css ] && cp /usr/share/univention-portal/custom.css /usr/share/univention-portal/custom.css.bak
-	cp /usr/share/univention-portal/custom.css.example /usr/share/univention-portal/custom.css
+	touch /usr/share/univention-portal/custom.css
 fi
 
 joinscript_save_current_version
