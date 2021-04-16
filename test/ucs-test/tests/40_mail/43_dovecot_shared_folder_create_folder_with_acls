@@ -1,0 +1,84 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and remove a shared folders with ACLs with whitespace-containing group names
+## tags: [apptest]
+## exposure: dangerous
+## packages:
+##  - univention-mail-server
+##  - univention-mail-dovecot
+##  - univention-directory-manager-tools
+
+from __future__ import print_function
+import os
+from univention.config_registry import handler_set
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+from essential.mailclient import MailClient_SSL
+from essential.mail import random_email, create_shared_mailfolder
+
+TIMEOUT_MAIL = 10
+
+
+def main():  # type: () -> None
+	with utils.AutomaticListenerRestart():
+		with udm_test.UCSTestUDM() as udm:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				handler_set([
+					'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
+					'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
+					'mail/dovecot/logging/mail_debug=yes', 'mail/dovecot/mailbox/rename=yes',
+					'mail/dovecot/mailbox/delete=yes'])
+				utils.restart_listener()
+				utils.wait_for_replication()
+				logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
+				with utils.FollowLogfile(logfiles=logfiles):
+					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
+						fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+						user_address = random_email()
+						user_password = 'univention'
+						user_dn, user_name = udm.create_user(
+							set={
+								'mailHomeServer': fqdn,
+								'mailPrimaryAddress': user_address,
+								'password': user_password,
+							})
+
+						# use some groups with space character within its name
+						group_acls = [
+							("Domain Admins", "all"),
+							("Domain Users", "read"),
+							("Computers", "append"),
+						]
+						user_acls = ['"%s" "%s"' % (user_address, 'all')]
+						# create folder
+						folder_dn, folder_name, folder_address = create_shared_mailfolder(
+							udm,
+							fqdn,
+							mailAddress=False,
+							user_permission=user_acls,
+							group_permission=['"{}" "{}"'.format(grpname, right) for grpname, right in group_acls]
+						)
+						utils.wait_for_replication()
+						print('*** Folder: {!r} --> {!r}'.format(folder_name, folder_dn))
+
+						# read folder's ACLs
+						imap = MailClient_SSL(fqdn)
+						imap.log_in(user_address, user_password)
+						mailbox_acls = imap.get_acl(folder_name)
+						imap.logout()
+						print(repr(mailbox_acls))
+						acls = mailbox_acls[folder_name]
+						print(repr(acls))
+
+						# verify that acls for groups are set
+						for grpname, right in group_acls:
+							assert '${}'.format(grpname) in acls, "'${}' not in ACL list".format(grpname)
+						assert user_address in acls, '{} not in ACL list'.format(user_address)
+
+						udm.remove_object('mail/folder', dn=folder_dn)
+
+if __name__ == '__main__':
+	global timeout
+	timeout = 1
+	main()
