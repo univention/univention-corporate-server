@@ -59,6 +59,7 @@ Package: python-univention-appcenter
 Architecture: all
 Depends:
  gnupg,
+ python-backports.tempfile,
  python-ipaddress,
  python-mysqldb,
  python-six,

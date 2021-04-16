@@ -31,14 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from tempfile import TemporaryDirectory
 from argparse import Action
+
+import six
 
 from univention.lib.ucs import UCS_Version
 from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.ucr import ucr_get
+
+if six.PY2:
+	from backports.tempfile import TemporaryDirectory
+else:
+	from tempfile import TemporaryDirectory
 
 
 class CheckUcsVersion(Action):
