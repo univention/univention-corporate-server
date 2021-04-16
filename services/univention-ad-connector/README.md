@@ -60,6 +60,86 @@ Caveats:
 ** git log --grep "Bug #18501: Fix handling of proxyAddresses mapping"
 ** git log --grep "Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'"
 
+Synchronization of mail attributes:
+===================================
+
+* MS-Exchange uses 'proxyAddresses' as attribute for one or more mail-addresses.
+* Standard Active Directory uses 'mail' as the default attribute, when filling in an address in the users E-Mail field.
+* UCS uses mailPrimaryAddress and mailAlternativeAddress for functional adresses and 'mail' as informational field,
+  which may be used for addressbooks
+
+We map them like this (since UCS 4.1-4 Errata Bug #43216):
+
+* UCS:(mailPrimaryAddress, mailAlternativeAddress) <-> AD:proxyAddresses
+* UCS:(mailPrimaryAddress, mailAlternativeAddress) |-> AD:mail
+
+The UCR variable connector/ad/mapping/user/primarymail may be used to influence this (TODO: Details).
+
+To make this work a sync_mode='read' hack for mailAlternativeAddress has been introduced
+to avoid duplicate ldap.MOD_REPLACE entries in sync_from_ucs modlist
+
+
+Since UCS 4.4-4 Errata Bug #18501:
+
+  Fix handling of proxyAddresses mapping in combination with the Diff-Mode code:
+
+  We need to compare mapped values in sync_from_ucs, because:
+
+  1. We must use mapped values in case a mapping function is defined,
+     not only for single_value attributes.
+
+  2. proxyAddresses is constructed from mailPrimaryAddress *and*
+     mailAlternativeAddress. The first is marked by capital "SMTP:"
+     prefix in AD, while the other is marked by lowercase "smtp:".
+
+  3. If only mailAlternativeAddress is changed, then still to_proxyAddresses
+     needs to be called to construct the new proxyAddresses value, but
+     that mapping function is only attached to mailPrimaryAddress.
+
+  Before Diff-Mode, the sync_from_ucs method iterated over attributes
+  of the mapped object. I think that makes sense, so we can deal only
+  with mapped values in sync_from_ucs. So I adjusted the method
+  to get the mapped object_old as argument, instead of the 'old' dict
+  from the listener. Then it also doesn't need the 'new' dict either,
+  making the code more readable.
+
+
+Since UCS 4.4-5 Bug #51647 we fixed a regression from UCS 4.4-4 Errata Bug #18501:
+
+  Synchronize AD:"mail" again to UDM:"mailPrimaryAddress"
+
+  There is a delicate interplay between the two post_attribute definitions
+  "mailPrimaryAddress_to_mail" and  "mailPrimaryAddress":
+
+  The post_attribute mapping "mailPrimaryAddress_to_mail"
+  causes _object_mapping to map AD "mail" to "primaryMailAddress"
+  during sync_to_ucs, even if the sync_mode of this post_attribute
+  mapping is "read".
+
+  As a result later, in __set_values, "primaryMailAddress" is present
+  in "object" and the other post_attribute mapping "mailPrimaryAddress"
+  finds this and sets in in UDM.
+
+  The change of Bug #18501 caused only those post_attribute to get
+  considered in __set_values, where the con_attribute/con_other_attribute
+  actually changed in AD. In only "mail" changed, but proxyAddress didn't,
+  then the "primaryMailAddress" post_attribute mapping doesn't get
+  called any longer and nothing is changed in UDM.
+
+  This change re-enables the UDM modification.
+
+  It's ugly and it still relies on the hidden handover from "mailPrimaryAddress_to_mail" to "mailPrimaryAddress".
+
+
+UCS 5.0 Bug #52044 required an adjustment for Python 3:
+
+  In Python 3 the order of dict keys changed, therefore 'proxyAddresses' was before 'mail'.
+  The mapping procedure is too complex and has a delicate interplay with the diffmode.
+  It should be revised, but that porbably implies improving the way _object_mapping works and
+  the way that unmapped and mapped attributes are passed to the sync_from/to_ucs methods
+  and the way we iterate over them. That's the point to clean up first, otherwise it's
+  just messing around.
+
 Improvement Suggestions:
 ========================
 * Rename "object" and seprate object["attributes"] into "ldap_obj_ol" and "ldap_obj_ad"
