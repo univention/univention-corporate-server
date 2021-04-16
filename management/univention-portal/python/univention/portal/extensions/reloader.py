@@ -198,12 +198,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return fd
 
 	def _extract_portal(self, portal):
-		self._write_css(portal)
 		ret = {}
 		ret["dn"] = portal.dn
-		ret["showApps"] = portal.props.showApps
 		ret["showUmc"] = portal.props.showUmc
-		ret["fontColor"] = portal.props.fontColor
 		if portal.props.logo:
 			ret["logo"] = self._write_image(portal.props.name, portal.props.logo.raw, "logos")
 		else:
@@ -215,9 +212,6 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		else:
 			ret["background"] = None
 		ret["name"] = portal.props.displayName
-		ret["ensureLogin"] = portal.props.ensureLogin
-		ret["anonymousEmpty"] = portal.props.anonymousEmpty
-		ret["autoLayoutCategories"] = portal.props.autoLayoutCategories
 		ret["defaultLinkTarget"] = portal.props.defaultLinkTarget
 		ret["categories"] = portal.props.categories
 		return ret
@@ -294,61 +288,6 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 				continue
 
 		return ret
-
-	def _write_css(self, portal):
-		# get CSS rule for body background
-		background = []
-		image = portal.props.background
-		bg_img = None
-		if image:
-			get_logger("css").info("Writing background image")
-			bg_img = self._write_image(portal.props.name, image.raw, "backgrounds")
-		if bg_img:
-			background.append('url("%s") no-repeat top center / cover' % (bg_img,))
-		css = portal.props.cssBackground
-		if css:
-			get_logger("css").info("Adding background CSS")
-			background.append(css)
-		background = ", ".join(background)
-
-		# get font color
-		font_color = portal.props.fontColor
-
-		# prepare CSS code
-		css_code = ""
-		if background:
-			css_code += """
-	body.umc.portal {
-		background: %s;
-	}
-	""" % (
-				background,
-			)
-
-		if font_color == "white":
-			get_logger("css").info("Adding White Header")
-			css_code += """
-	body.umc.portal .umcHeader .umcHeaderLeft h1 {
-		color: white;
-	}
-
-	body.umc.portal .portalCategory h2 {
-		color: white;
-	}
-	"""
-
-		get_logger("css").info("No CSS code available")
-		if not css_code:
-			css_code = "/* no styling defined via UDM portal object */\n"
-
-		# write CSS file
-		fname = "/usr/share/univention-portal/portal.css"
-		get_logger("css").info("Writing CSS file %s" % fname)
-		try:
-			with open(fname, "w") as fd:
-				fd.write(css_code)
-		except (EnvironmentError, IOError):
-			get_logger("css").exception("Failed to write CSS file %s" % fname)
 
 	def _write_image(self, name, img, dirname):
 		try:
