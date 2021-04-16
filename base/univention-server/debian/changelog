@@ -1,3 +1,9 @@
+univention-server (15.0.3-6) unstable; urgency=low
+
+  * Bug #51984: Depend on linux-image-amd64 instead of univention-kernel-image
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Apr 2021 15:34:47 +0200
+
 univention-server (15.0.3-5) unstable; urgency=low
 
   * Bug #52993: add dependency to univention-initrd that was lost due to
