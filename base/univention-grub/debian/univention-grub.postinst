@@ -219,7 +219,7 @@ fi
 # Bug #51984: update to 5.0 or new installation
 if [ "$1" = configure ] &&
 	dpkg --compare-versions "${2:-}" lt 13.0.0-6 &&
-	[ -s /boot/efi/EFI/univention/grub.cfg ] &&
+	mountpoint -q /boot/efi &&
 	[ ! -f /boot/efi/EFI/debian/grub.cfg ]
 then
 	install -d /boot/efi/EFI/debian
