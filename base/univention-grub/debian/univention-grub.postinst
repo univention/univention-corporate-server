@@ -216,4 +216,14 @@ then
 	update-initramfs -u -t -k all
 fi
 
+# Bug #51984: update to 5.0 or new installation
+if [ "$1" = configure ] &&
+	dpkg --compare-versions "${2:-}" lt 13.0.0-6 &&
+	[ -s /boot/efi/EFI/univention/grub.cfg ] &&
+	[ ! -f /boot/efi/EFI/debian/grub.cfg ]
+then
+	install -d /boot/efi/EFI/debian
+	echo 'configfile /efi/univention/grub.cfg' >/boot/efi/EFI/debian/grub.cfg
+fi
+
 exit 0

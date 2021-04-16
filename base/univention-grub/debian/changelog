@@ -1,3 +1,9 @@
+univention-grub (13.0.0-6) unstable; urgency=low
+
+  * Bug #51984: Close gap between Debian SHIM and Univention GRUB2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Apr 2021 17:30:56 +0200
+
 univention-grub (13.0.0-5) unstable; urgency=low
 
   * Bug #32509 grub: Remove postinst_hook
