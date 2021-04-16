@@ -57,6 +57,17 @@
 			</para></listitem>
 			<listitem><para>
 					Im Bereich Kryptographie erhöht sich dadurch die minimale TLS Protokollversion auf 1.2.
+					Für <literal>OpenSSL</literal> ist dies durch den Parameter <literal>MinProtocol</literal>
+					in <filename>/etc/ssl/openssl.cnf</filename> festgelegt.
+					Als Konsequenz sollten vor dem Update auf UCS 5.0 TLS-Verbindungen zu
+					externen Systemen auf TLS 1.2 Unterstützung geprüft werden, weil sie sonst danach fehlschlagen können.
+					Dies betrifft AD-Connector Setups, die UCS mit Microsoft Server Vesionen älter als
+					<literal>2012R2</literal> synchronisieren, falls sie dafür konfiguriert sind, eine verschlüsselte
+					Verbindung zu verwenden.
+					Zusätzlich ändert sich die Voreinstellung für den OpenSSL <literal>CipherString</literal>, der nun
+					auf `DEFAULT@SECLEVEL=2` angehoben ist.
+					Dies kann zusätzlich die nutzbaren Cipher einschränken. Z.B. unterstützt Windows Server 2012
+					in der Voreinstellung weniger Cipher als Windows Server 2012R2.
 			</para></listitem>
 			<listitem><para>
 					Mehrere Komponenten wurden entfernen: &ucsUVMM;, Nagios, Desktop, …

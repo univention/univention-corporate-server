@@ -57,6 +57,15 @@
 			</para></listitem>
 			<listitem><para>
 					In the area of cryptography this raises the minimal TLS protocol version to 1.2.
+					For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal>
+					in <filename>/etc/ssl/openssl.cnf</filename>. As a consequence, TLS connections to external systems
+					should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after
+					the update.
+					This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than
+					<literal>2012R2</literal>, if they are configured to use an encrypted connection.
+					Additionally the OpenSSL default <literal>CipherString</literal> configuration is `DEFAULT@SECLEVEL=2`
+					in UCS 5.0. This may additionally restrict the available ciphers for communication. E.g. Windows Server 2012
+					supports less ciphers that Windows Server 2012R2 by default.
 			</para></listitem>
 			<listitem><para>
 					Many components of UCS have already been converted to run with Python 3.7.
