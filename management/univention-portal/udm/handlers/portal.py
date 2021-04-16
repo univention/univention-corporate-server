@@ -68,11 +68,6 @@ property_descriptions = {
 		multivalue=True,
 		required=True,
 	),
-	'showApps': univention.admin.property(
-		short_description=_('Show a category with all installed apps'),
-		syntax=univention.admin.syntax.TrueFalseUp,
-		default='TRUE',
-	),
 	'showUmc': univention.admin.property(
 		short_description=_('Show UMC categories and modules'),
 		syntax=univention.admin.syntax.TrueFalseUp,
@@ -88,43 +83,6 @@ property_descriptions = {
 		short_description=_('Portal logo'),
 		long_description=_('Logo image for the portal.'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
-		dontsearch=True,
-	),
-	'cssBackground': univention.admin.property(
-		short_description=_('CSS background'),
-		long_description=_("Style definition for the CSS 'background' property which will be applied to the portal page, e.g. linear-gradient(black, white)"),
-		syntax=univention.admin.syntax.TwoString,
-		dontsearch=True,
-	),
-	'fontColor': univention.admin.property(
-		short_description=_('Font color'),
-		long_description=_('Defines the color which is used for the fonts on the portal page as well as the icons in the header.'),
-		syntax=univention.admin.syntax.NewPortalFontColor,
-		default='black',
-		dontsearch=True,
-	),
-	'portalComputers': univention.admin.property(
-		short_description=_('Show on server'),
-		long_description=_('This portal will be used as start site for the given servers'),
-		syntax=univention.admin.syntax.NewPortalComputer,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'ensureLogin': univention.admin.property(
-		short_description=_('Redirect anonymous visitors to the login'),
-		syntax=univention.admin.syntax.TrueFalseUp,
-		default='FALSE',
-		dontsearch=True,
-	),
-	'anonymousEmpty': univention.admin.property(
-		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'autoLayoutCategories': univention.admin.property(
-		short_description=_('The categories are displayed side by side if there is enough space'),
-		syntax=univention.admin.syntax.TrueFalseUp,
-		default='FALSE',
 		dontsearch=True,
 	),
 	'userLinks': univention.admin.property(
@@ -160,7 +118,6 @@ layout = [
 		]),
 		Group(_('Categories'), layout=[
 			['categories'],
-			# ['showApps'],
 			['showUmc'],
 		]),
 		Group(_('Link behaviour'), layout=[
@@ -172,25 +129,11 @@ layout = [
 		Group(_('Menu'), layout=[
 			['menuLinks'],
 		]),
-		Group(_('Visibility'), layout=[
-			['portalComputers'],
-		]),
 		Group(_('Appearance'), layout=[
 			['logo'],
 			['background'],
-			# ['cssBackground'],
-			# ['fontColor'],
-			# ['autoLayoutCategories'],
 		]),
 	]),
-	# Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
-	# 	Group(_('Login'), layout=[
-	# 		['ensureLogin'],
-	# 	]),
-	# 	Group(_('Message when the portal is empty'), layout=[
-	# 		['anonymousEmpty'],
-	# 	]),
-	# ]),
 ]
 
 
@@ -216,15 +159,8 @@ def unmapOrdered(udm_values, encoding=()):
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'univentionNewPortalDisplayName', mapTranslationValue, unmapTranslationValue)
-mapping.register('showApps', 'univentionNewPortalShowApps', None, univention.admin.mapping.ListToString)
 mapping.register('showUmc', 'univentionNewPortalShowUMC', None, univention.admin.mapping.ListToString)
-mapping.register('portalComputers', 'univentionNewPortalComputers')
-mapping.register('ensureLogin', 'univentionNewPortalEnsureLogin', None, univention.admin.mapping.ListToString)
-mapping.register('anonymousEmpty', 'univentionNewPortalAnonymousEmpty', mapTranslationValue, unmapTranslationValue)
-mapping.register('autoLayoutCategories', 'univentionNewPortalAutoLayoutCategories', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionNewPortalBackground', None, univention.admin.mapping.ListToString)
-mapping.register('cssBackground', 'univentionNewPortalCSSBackground', None, univention.admin.mapping.ListToString)
-mapping.register('fontColor', 'univentionNewPortalFontColor', None, univention.admin.mapping.ListToString)
 mapping.register('logo', 'univentionNewPortalLogo', None, univention.admin.mapping.ListToString)
 mapping.register('userLinks', 'univentionNewPortalUserLinks', mapOrdered, unmapOrdered)
 mapping.register('menuLinks', 'univentionNewPortalMenuLinks', mapOrdered, unmapOrdered)

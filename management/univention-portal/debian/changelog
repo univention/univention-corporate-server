@@ -1,3 +1,9 @@
+univention-portal (4.0.5-26) unstable; urgency=medium
+
+  * Bug #51197: Removed some now unneeded attributes from portals/portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Apr 2021 02:38:06 +0200
+
 univention-portal (4.0.5-25) unstable; urgency=medium
 
   * Bug #51197: Prevent tracebacks, print warnings
