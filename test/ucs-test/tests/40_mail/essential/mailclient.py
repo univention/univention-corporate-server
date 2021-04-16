@@ -106,24 +106,33 @@ class BaseMailClient(object):
 		:returns: string, acl strign or permission denied
 		"""
 		code, acls = self.getacl(mailbox)
-		# Bug #51629: TODO: if global ACLs for other users are used, we may have to replace this workaround
-		if "anyone" in acls[0]:
-			acls[0] = acls[0].replace("#anyone", 'anyone')
 
-		if "all" in acls[0]:
-			acls[0] = acls[0].replace("#all", 'all')
+		# parse string into tokens
+		tokens = []
+		merge = False
+		for token in acls[0].split():
+			if merge:
+				# append to last token
+				tokens[-1] = '{} {}'.format(tokens[-1], token)
+				if token.endswith('"'):
+					merge = False
+					tokens[-1] = tokens[-1].strip('"')
+			else:
+				tokens.append(token)
+				if token.startswith('"'):
+					merge = True
+			# Bug #51629: TODO: if global ACLs for other users are used, we may have to remove leading hashes
+			tokens[-1] = tokens[-1].lstrip('#')
 
-		if code != 'OK':
-			raise ReadFail('Unable to read ACL for %r: %r %r' % (mailbox, code, acls))
-		acl = acls[0].split()
-		if '"' in acl[0]:
-			x = acl[0].split('"', 1)[1]
-			y = acl[1].split('"', 1)[0]
-			acl[0] = "%s %s" % (x, y)
-			del(acl[1])
-		i = iter(acl[1:])
-		d = dict(zip(i, i))
-		return {acl[0]: d}
+		if tokens:
+			mailbox = tokens.pop(0)
+		acl_result = {}
+		while len(tokens) >= 2:
+			identifier = tokens.pop(0)
+			rights = tokens.pop(0)
+			acl_result[identifier] = rights
+
+		return {mailbox: acl_result}
 
 	def check_acls(self, expected_acls):
 		"""Check if the the correct acls are set
