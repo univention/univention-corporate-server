@@ -297,6 +297,15 @@
 				</itemizedlist>
 			</section>
 		</section>
+
+		<section id="changelog:basis:boot">
+			<title>Boot Loader</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The generated <filename>/boot/grub/grub.cfg</filename> is compatible with the upgrade to UCS 5 (<u:bug>53117</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 	</section>
 
 	<section id="changelog:domain">
