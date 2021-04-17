@@ -6,7 +6,7 @@ src: univention-virtual-machine-manager-schema
 fix: 9.0.2-15A~4.4.0.202103041346
 desc: |
  This update addresses the following issue:
- * Restore schema filesystem path to /usr/share/univention-ldap/schema/ to
+ * Restore schema file system path to /usr/share/univention-ldap/schema/ to
    prevent a possible error when updating the package simultaneously
    on multiple systems
 bug: [52867]
