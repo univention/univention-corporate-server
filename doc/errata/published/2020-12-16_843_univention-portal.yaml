@@ -7,7 +7,7 @@ fix: 3.0.3-1A~4.4.0.202012151822
 desc: |
  This update addresses the following issue:
  * Fetching of user information is now done against the Apache HTTP
-   interface instead of directly against the UMC-Webserver.
+   interface instead of directly against the UMC web server.
 bug: [52293]
 erratum: 843
 announced: 2020-12-16
