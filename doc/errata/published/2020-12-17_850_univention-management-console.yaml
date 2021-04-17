@@ -7,8 +7,8 @@ fix: 11.0.6-3A~4.4.0.202012161931
 desc: |
  This update addresses the following issue:
  * The fix addresses a memory leak in univention-management-console-server
-   which was introduced in the last erratum. In addition, a log message was
-   moved from the `process` to the `info` loglevel.
+   which was introduced in erratum 848. In addition, a log message was
+   moved from the `process` to the `info` log level.
 bug: [52508]
 erratum: 850
 announced: 2020-12-17
