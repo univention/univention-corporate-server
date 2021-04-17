@@ -9,7 +9,7 @@ desc: |
  * A watchdog service "univention-stunnel4-watchdog" has
    been added, which restarts the stunnel4 service, if it
    does not respond any more, but is marked as active. This
-   can be activated by setting the ucr variable
+   can be activated by setting the UCR variable
    "ucs/server/sso/stunnel4/watchdog/active=true"
    and restarting the service "univention-stunnel4-watchdog".
 bug: [52196]
