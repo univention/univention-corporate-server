@@ -3,7 +3,7 @@ release: "4.4"
 version: [7]
 scope: ucs_4.4-0-errata4.4-7
 src: smarty3
-fix: 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u2
+fix: 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u3
 desc: |
  Fix regression from erratum 953:
  * Path traversal vulnerability due to insufficient template code sanitization
