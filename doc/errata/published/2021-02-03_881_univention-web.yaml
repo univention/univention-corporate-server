@@ -6,7 +6,7 @@ src: univention-web
 fix: 3.0.6-2A~4.4.0.202101181322
 desc: |
  This update addresses the following issue:
- * A cross site scripting vulnerability in the Menu has been fixed.
+ * A cross site scripting vulnerability in the UMC menu has been fixed.
 bug: [52665]
 erratum: 881
 announced: 2021-02-03
