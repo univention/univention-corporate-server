@@ -47,8 +47,6 @@ if __name__ == '__main__':
 				displayName='"de_DE" "%s"' % (uts.random_name(),),
 				logo=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
 				background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
-				cssBackground=uts.random_name(),
-				fontColor='white',
 			)
 
 			kwargs = portal.__dict__.copy()
@@ -60,8 +58,6 @@ if __name__ == '__main__':
 				{
 					'cn': [portal.name],
 					'univentionNewPortalLogo': [portal.logo],
-					'univentionNewPortalCSSBackground': [portal.cssBackground],
 					'univentionNewPortalDisplayName': [portal.displayName.replace('"', '')],
-					'univentionNewPortalFontColor': [portal.fontColor],
 					'univentionNewPortalBackground': [portal.background],
 				})
