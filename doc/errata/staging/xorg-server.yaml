@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: xorg-server
+fix: 2:1.19.2-1+deb9u8
+desc: |
+ This update addresses the following issue:
+ * XChangeFeedbackControl integer underflow leads to privilege escalation
+   (CVE-2021-3472)
+bug: [53118]
+cve:
+- CVE-2021-3472
