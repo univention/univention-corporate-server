@@ -44,12 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-8, the eigth point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 4.4-8, the eighth point release of &ucsUCS; (UCS) 4.4 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
 		</itemizedlist>
 	</chapter>
 

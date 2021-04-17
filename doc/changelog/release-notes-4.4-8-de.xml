@@ -51,19 +51,19 @@
 
 		<itemizedlist>
 			<listitem><para>
-					Das Bearbeiten der eigenen Kontaktinformationen am UCS <wordasword>Self</wordasword> Service ist mit bestehender Single Sign On Anmeldung möglich.
+					Das Bearbeiten der eigenen Kontaktinformationen am UCS <foreignphrase>Self Service</foreignphrase> ist mit bestehender Single Sign On Anmeldung möglich.
 			</para></listitem>
 			<listitem><para>
-					Administratoren können über die UCR Variable <envar>umc/cookie-banner/show</envar> die Anzeige eines Banners steuern, dass Benutzer über die Verwendung von Cookies bei der Benutzung des UCS Portals und weiterer Dienste informiert.
+					Administratoren können über die &ucsUCRV; <envar>umc/cookie-banner/show</envar> die Anzeige eines Banners steuern, dass Benutzer über die Verwendung von Cookies bei der Benutzung des UCS Portals und weiterer Dienste informiert.
 			</para></listitem>
 			<listitem><para>
-					Im S4 Connector und im AD Connector wurde ein Bug behoben, der nach dem Verschieben oder Deaktivieren von Benutzerobjekten diese Objekte noch in für sie nicht mehr relevanten Gruppen zugeordnet hat.
+					Im &ucsS4C; und im &ucsADC; wurde ein Bug behoben, der nach dem Verschieben oder Deaktivieren von Benutzerobjekten diese Objekte noch in für sie nicht mehr relevanten Gruppen zugeordnet hat.
 			</para></listitem>
 			<listitem><para>
 					Das Update auf Samba 4.10.18 entschärft die <wordasword>Zerologon</wordasword> Lücke, <ulink url="https://help.univention.com/t/16107">neue Optionen ermöglichen die sichere Konfiguration</ulink> in Umgebungen, in denen <wordasword>Secure Channel</wordasword> verwendet werden muss.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-8 integriert, bspw. für <application>Postgresql</application>, Samba, den Linux Kernel und PHP.
+					Diverse Security Updates wurden in UCS 4.4-8 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>PHP.</application>
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
