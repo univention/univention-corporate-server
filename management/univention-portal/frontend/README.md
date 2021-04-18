@@ -62,6 +62,19 @@ This creates a static HTML file that may be served by UCS' apache. Everything in
 yarn lint
 ```
 
+## Translation
+
+We use the UCS tooling. The configuration is in debian/phoenixportal.univention-l10n. Here are some commands how to make the translation files locally (and so that they can be checked in):
+
+```
+# updates de.po
+~/git/ucs/packaging/univention-l10n/univention-l10n-build de
+
+# compiles de.po to de.json
+~/git/ucs/packaging/univention-l10n/univention-l10n-install de
+cp {debian/phoenixportal/,}public/i18n/de.json
+```
+
 ## Unit tests
 Runs unit tests with Jest
 ```

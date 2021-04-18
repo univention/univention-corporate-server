@@ -61,11 +61,7 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
 
 	_encoders = {
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'showApps': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'portalComputers': dn_list_property_encoder_for("auto"),
-		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'anonymousEmpty': ListOfListOflTextToDictPropertyEncoder,
-		'autoLayoutCategories': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+		'showUmc': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'background': Base64BinaryPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
 		'userLinks': dn_list_property_encoder_for("auto"),
@@ -84,7 +80,7 @@ class PortalsPortalModule(GenericModule):
 	_udm_object_class = PortalsPortalObject
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		suitable_for = ['portals/portal']
 
 
@@ -107,7 +103,7 @@ class PortalsCategoryModule(GenericModule):
 	_udm_object_class = PortalsCategoryObject
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		suitable_for = ['portals/category']
 
 
