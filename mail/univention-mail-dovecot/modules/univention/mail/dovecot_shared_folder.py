@@ -423,7 +423,9 @@ class DovecotSharedFolderListener(DovecotListener):
 				if right == "none":
 					imap.deleteacl(mailbox, identifier)
 				else:
-					imap.setacl(mailbox, '"{}"'.format(identifier), dovecot_acls[right][0])
+					# Bug #53111: escape double quotes within identifier, then put the string between
+					# double quotes to prevent problems with e.g. whitespace (e.g. group 'Domain Users').
+					imap.setacl(mailbox, '"{}"'.format(identifier.replace('"', r'\"')), dovecot_acls[right][0])
 		except Exception:
 			self.log_e("Failed to set ACLs '%s' on mailbox '%s' for '%s'.\n%s" % (acls, mailbox, mb_owner, traceback.format_exc()))
 			raise
