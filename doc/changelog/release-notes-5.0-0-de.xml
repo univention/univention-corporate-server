@@ -66,8 +66,8 @@
 					Verbindung zu verwenden.
 					Zusätzlich ändert sich die Voreinstellung für den OpenSSL <literal>CipherString</literal>, der nun
 					auf `DEFAULT@SECLEVEL=2` angehoben ist.
-					Dies kann zusätzlich die nutzbaren Cipher einschränken. Z.B. unterstützt Windows Server 2012
-					in der Voreinstellung weniger Cipher als Windows Server 2012R2.
+					Dies schränkt zusätzlich die nutzbaren Cipher ein, insbesondere schließt es <literal>SHA1</literal> aus.
+					Z.B. unterstützt Windows Server 2012 in der Voreinstellung weniger Cipher als Windows Server 2012R2.
 			</para></listitem>
 			<listitem><para>
 					Mehrere Komponenten wurden entfernen: &ucsUVMM;, Nagios, Desktop, …
