@@ -15,7 +15,7 @@ Pre-Depends:
 Depends:
  shell-univention-lib (>= 3.0.4-1),
  univention-config,
- univention-postgresql-11,
+ univention-postgresql-11 | univention-postgresql-9.6 | univention-postgresql-9.4,
  ${misc:Depends},
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
