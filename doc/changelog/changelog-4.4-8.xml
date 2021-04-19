@@ -74,6 +74,9 @@
 						<package>libcaca</package> (<u:cve>2021-3410</u:cve>) (<u:bug>52908</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>libebml</package> (<u:cve>2021-3405</u:cve>) (<u:bug>53121</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>libsdl2</package> (<u:cve>2019-7575</u:cve> <u:cve>2019-7577</u:cve> <u:cve>2019-7578</u:cve> <u:cve>2019-7635</u:cve> <u:cve>2019-7636</u:cve> <u:cve>2019-7638</u:cve> <u:cve>2019-13616</u:cve> <u:cve>2020-14409</u:cve> <u:cve>2020-14410</u:cve>) (<u:bug>52728</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -126,6 +129,9 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>python-pysaml2</package> (<u:cve>2017-1000433</u:cve> <u:cve>2021-21239</u:cve>) (<u:bug>52857</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python2.7</package> (<u:cve>2019-16935</u:cve> <u:cve>2021-23336</u:cve>) (<u:bug>53122</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>python3.5</package> (<u:cve>2021-3177</u:cve> <u:cve>2021-3426</u:cve> <u:cve>2021-23336</u:cve>) (<u:bug>53040</u:bug>)
