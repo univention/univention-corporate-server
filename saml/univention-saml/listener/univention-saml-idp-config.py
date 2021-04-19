@@ -29,12 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-
-from typing import Dict, Optional  # noqa F401
-
 import listener
+
 import univention.debug as ud
-from univention.config_registry.frontend import ConfigRegistry, ucr_update
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
 name = 'univention-saml-idp-config'
 description = 'Replication of identity provider settings'
@@ -49,19 +47,20 @@ def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	ucr = ConfigRegistry()
 	ucr.load()
-	idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%(ldap/base)s' % ucr)
+	idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
+	listener.setuid(0)
+	try:
+		if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
+			for key in LDAP_UCR_MAPPING.keys():
+				if key in new:
+					ucr_value = ""
+					if key == 'LdapGetAttributes':
+						ucr_value = "'" + "', '".join(x.decode('ASCII') for x in new[key]) + "'"
 
-	if idp_config_objectdn == dn:
-		changes = {}  # type: Dict[str, Optional[str]]
-		for key, ucrv in LDAP_UCR_MAPPING.items():
-			if key in new:
-				changes[ucrv] = ", ".join("'%s'" % (x.decode('ASCII'),) for x in new[key])
-			else:
-				changes[ucrv] = None
-
-		if changes:
-			with listener.SetUID(0):
-				ucr_update(ucr, changes)
-
-	else:
-		ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, dn))
+					handler_set(['%s=%s' % (LDAP_UCR_MAPPING[key], ucr_value)])
+				else:
+					handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
+		else:
+			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'].decode('UTF-8')))
+	finally:
+		listener.unsetuid()

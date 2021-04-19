@@ -31,13 +31,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-
-from os.path import exists
-from subprocess import call
-from typing import Dict, Optional  # noqa F401
-
 import listener
-from univention.config_registry.frontend import ConfigRegistry, ucr_update
+import subprocess
+import os.path
+
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
 name = 'univention-saml-servers'
 description = 'Manage ucs/server/saml-idp-server/* variables'
@@ -49,25 +47,25 @@ def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	ucr = ConfigRegistry()
 	ucr.load()
-
+	listener.setuid(0)
 	try:
-		fqhn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
-	except LookupError:
-		return
+		try:
+			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
+		except (KeyError, IndexError):
+			return
 
-	ucrv = 'ucs/server/saml-idp-server/%s' % (fqhn,)
+		change = False
+		if b'univention-saml' in new.get('univentionService', []):
+			handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
+			change = True
+		elif b'univention-saml' in old.get('univentionService', []):
+			handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
+			change = True
 
-	changes = {}  # type: Dict[str, Optional[str]]
-	if b'univention-saml' in new.get('univentionService', []):
-		changes[ucrv] = fqhn
-	elif b'univention-saml' in old.get('univentionService', []):
-		changes[ucrv] = None
-
-	if changes:
-		with listener.SetUID(0):
-			ucr_update(ucr, changes)
-
+		if change:
 			path_to_cert = ucr.get('saml/idp/certificate/certificate')
 			path_to_key = ucr.get('saml/idp/certificate/privatekey')
-			if path_to_cert and exists(path_to_cert) and path_to_key and exists(path_to_key):
-				call(['systemctl', 'restart', 'univention-saml'])
+			if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
+				subprocess.call(['systemctl', 'restart', 'univention-saml'])
+	finally:
+		listener.unsetuid()
