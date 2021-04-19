@@ -6,9 +6,8 @@ src: libebml
 fix: 1.3.4-1+deb9u2
 desc: |
  This update addresses the following issue:
- * A flaw was found in libebml before 1.4.2. A heap overflow bug exists in the
-   implementation of EbmlString::ReadData and EbmlUnicodeString::ReadData in
-   libebml. (CVE-2021-3405)
+ * A heap overflow bug exists in the implementation of EbmlString::ReadData
+   and EbmlUnicodeString::ReadData in libebml. (CVE-2021-3405)
 bug: [53121]
 cve:
 - CVE-2021-3405
