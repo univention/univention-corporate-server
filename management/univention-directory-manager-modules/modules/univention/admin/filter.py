@@ -47,7 +47,6 @@ class conjunction(object):
 	"""
 	LDAP filter conjunction (`&`) or disjunction (`|`).
 	"""
-	_type_ = 'conjunction'
 
 	def __init__(self, type, expressions):
 		# type: (str, List[Union[conjunction, expression]]) -> None
@@ -92,7 +91,7 @@ class conjunction(object):
 		>>> conjunction('|', ['(objectClass=*)'])
 		conjunction('|', ['(objectClass=*)'])
 		"""
-		return '%s(%r, %r)' % (self.__class__._type_, self.type, self.expressions)
+		return '%s(%r, %r)' % (self.__class__.__name__, self.type, self.expressions)
 
 	def append_unmapped_filter_string(self, filter_s, rewrite_function, mapping):
 		# type: (str, Callable[[expression, Optional[T]], None], T) -> None
@@ -106,7 +105,6 @@ class expression(object):
 	"""
 	LDAP filter expression.
 	"""
-	_type_ = 'expression'
 
 	def __init__(self, variable='', value='', operator='=', escape=False):
 		# type: (str, str, str, bool) -> None
@@ -156,7 +154,7 @@ class expression(object):
 	def transform_to_conjunction(self, con):
 		# type: (conjunction) -> None
 		if not isinstance(con, conjunction):
-			raise TypeError('must be conjunction, got %r (%r)' % (type(con).__name__, repr(con)))
+			raise TypeError('must be conjunction, got %s(%r)' % (type(con).__name__, con))
 		self.__dict__.clear()
 		self.__dict__.update(con.__dict__)
 		self.__class__ = type(con)  # type: ignore
@@ -175,7 +173,7 @@ class expression(object):
 		>>> expression('objectClass', '*', '!=', escape=False)
 		expression('objectClass', '*', '!=')
 		"""
-		return '%s(%r, %r, %r)' % (self.__class__._type_, self.variable, self.value, self.operator)
+		return '%s(%r, %r, %r)' % (self.__class__.__name__, self.variable, self.value, self.operator)
 
 
 def parse(filter_s, begin=0, end=-1):
@@ -247,7 +245,7 @@ def parse(filter_s, begin=0, end=-1):
 		return expression(variable, value, operator=delim)
 
 
-def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
+def walk(filter_p, expression_walk_function=None, conjunction_walk_function=None, arg=None):
 	# type: (Union[conjunction, expression], Optional[Callable[[expression, Optional[T]], None]], Optional[Callable[[conjunction, Optional[T]], None]], Optional[T]) -> None
 	"""
 	Walk LDAP filter expression tree.
@@ -269,14 +267,14 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 	('c', '(&(!(zone=univention.de))(soa=test))')
 	('c', '(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))')
 	"""
-	if filter._type_ == 'conjunction':
-		for e in filter.expressions:
+	if isinstance(filter_p, conjunction):
+		for e in filter_p.expressions:
 			walk(e, expression_walk_function, conjunction_walk_function, arg)
 		if conjunction_walk_function:
-			conjunction_walk_function(filter, arg)
-	elif filter._type_ == 'expression':
+			conjunction_walk_function(filter_p, arg)
+	elif isinstance(filter_p, expression):
 		if expression_walk_function:
-			expression_walk_function(filter, arg)
+			expression_walk_function(filter_p, arg)
 
 
 FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
