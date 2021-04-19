@@ -48,6 +48,8 @@ class conjunction(object):
 	LDAP filter conjunction (`&`) or disjunction (`|`).
 	"""
 
+	OPS = frozenset({'&', '|', '!'})
+
 	def __init__(self, type, expressions):
 		# type: (str, List[Union[conjunction, expression]]) -> None
 		"""
@@ -56,6 +58,7 @@ class conjunction(object):
 		>>> c = conjunction('&', ['(objectClass=*)'])
 		>>> c = conjunction('|', ['(objectClass=*)'])
 		"""
+		assert type in self.OPS
 		self.type = type
 		self.expressions = expressions
 
@@ -106,6 +109,10 @@ class expression(object):
 	LDAP filter expression.
 	"""
 
+	OPS = frozenset({'=', '>=', '<=', '~=', '=*'} | {'>', '<', '!='})
+	# LDAP RFC 4515 + UCS specific extensions
+	RE_OP = re.compile(r'([<>]=?|[!~]=|=(?:[*]$)?)')
+
 	def __init__(self, variable='', value='', operator='=', escape=False):
 		# type: (str, str, str, bool) -> None
 		"""
@@ -115,14 +122,21 @@ class expression(object):
 		>>> e = expression('objectClass', '*', '!=', escape=False)
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		"""
+		assert operator in self.OPS
 		self.variable = variable
 		self.value = value
 		self.operator = operator
 		self._escape = escape
 
+	@classmethod
+	def _parse(cls, text):
+		# type: (str) -> expression
+		var, op, val = cls.RE_OP.split(text, 1)
+		return expression(var, val, operator=op)
+
 	def __str__(self):
 		# type: () -> str
-		"""
+		r"""
 		Return string representation.
 
 		>>> str(expression('objectClass', '*', escape=False))
@@ -131,19 +145,19 @@ class expression(object):
 		'(!(objectClass=*))'
 		>>> str(expression('uidNumber', '10', '<'))
 		'(!(uidNumber>=10))'
+		>>> str(expression('cn', '', '=*'))
+		'(cn=*)'
+		>>> str(expression('cn', r'*\2A*', '='))
+		'(cn=*\\2A*)'
 		"""
-		if self.operator == '<=':
-			return self.escape('(%s<=%s)', (self.variable, self.value))
-		elif self.operator == '<':
+		if self.operator == '<':
 			return self.escape('(!(%s>=%s))', (self.variable, self.value))
-		elif self.operator == '>=':
-			return self.escape('(%s>=%s)', (self.variable, self.value))
 		elif self.operator == '>':
 			return self.escape('(!(%s<=%s))', (self.variable, self.value))
 		elif self.operator == '!=':
 			return self.escape('(!(%s=%s))', (self.variable, self.value))
 		else:
-			return self.escape('(%s=%s)', (self.variable, self.value))
+			return self.escape('(%%s%s%%s)' % (self.operator,), (self.variable, self.value))
 
 	def escape(self, string, args):
 		# type: (str, Sequence[str]) -> str
@@ -188,10 +202,42 @@ def parse(filter_s, begin=0, end=-1):
 	conjunction('!', [expression('key', '29', '>=')])
 	>>> parse('(&(key=va\\\\28!\\\\29ue))')
 	conjunction('&', [expression('key', 'va\\\\28!\\\\29ue', '=')])
-
-	Bug: This will break if parentheses are not quoted correctly:
-	>> parse('(&(key=va\\)!\\(ue))')
-	conjunction('&', [expression('key', 'va)!(ue', '=')])
+	>>> parse('(cn=Babs Jensen)')
+	expression('cn', 'Babs Jensen', '=')
+	>>> parse('(!(cn=Tim Howes))')
+	conjunction('!', [expression('cn', 'Tim Howes', '=')])
+	>>> parse('(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))')
+	conjunction('&', [expression('objectClass', 'Person', '='), conjunction('|', [expression('sn', 'Jensen', '='), expression('cn', 'Babs J*', '=')])])
+	>>> parse('(o=univ*of*mich*)')
+	expression('o', 'univ*of*mich*', '=')
+	>>> parse('(seeAlso=)')
+	expression('seeAlso', '', '=')
+	>>> parse('(cn:caseExactMatch:=Fred Flintstone)')
+	expression('cn:caseExactMatch:', 'Fred Flintstone', '=')
+	>>> parse('(cn:=Betty Rubble)')
+	expression('cn:', 'Betty Rubble', '=')
+	>>> parse('(sn:dn:2.4.6.8.10:=Barney Rubble)')
+	expression('sn:dn:2.4.6.8.10:', 'Barney Rubble', '=')
+	>>> parse('(o:dn:=Ace Industry)')
+	expression('o:dn:', 'Ace Industry', '=')
+	>>> parse('(:1.2.3:=Wilma Flintstone)')
+	expression(':1.2.3:', 'Wilma Flintstone', '=')
+	>>> parse('(:DN:2.4.6.8.10:=Dino)')
+	expression(':DN:2.4.6.8.10:', 'Dino', '=')
+	>>> parse(r'(o=Parens R Us \28for all your parenthetical needs\29)')
+	expression('o', 'Parens R Us \\28for all your parenthetical needs\\29', '=')
+	>>> parse(r'(cn=*\2A*)')
+	expression('cn', '*\\2A*', '=')
+	>>> parse(r'(cn=*)')
+	expression('cn', '', '=*')
+	>>> parse(r'(filename=C:\5cMyFile)')
+	expression('filename', 'C:\\5cMyFile', '=')
+	>>> parse(r'(bin=\00\00\00\04)')
+	expression('bin', '\\00\\00\\00\\04', '=')
+	>>> parse(r'(sn=Lu\c4\8di\c4\87)')
+	expression('sn', 'Lu\\c4\\8di\\c4\\87', '=')
+	>>> parse(r'(1.3.6.1.4.1.1466.0=\04\02\48\69)')
+	expression('1.3.6.1.4.1.1466.0', '\\04\\02\\48\\69', '=')
 	"""
 	# filter is already parsed
 	if not isinstance(filter_s, six.string_types):
@@ -223,7 +269,7 @@ def parse(filter_s, begin=0, end=-1):
 		begin += 1
 		end -= 1
 
-	if filter_s[begin] in ['&', '|', '!']:
+	if filter_s[begin] in conjunction.OPS:
 		# new conjunction
 		ftype = filter_s[begin]
 		begin += 1
@@ -231,18 +277,11 @@ def parse(filter_s, begin=0, end=-1):
 		c = conjunction(ftype, expressions)
 		return c
 	else:
-		if filter_s.find('=') == -1:
-			raise univention.admin.uexceptions.valueInvalidSyntax()
-
-		# new expression
-		if '<=' in filter_s:
-			delim = '<='
-		elif '>=' in filter_s:
-			delim = '>='
-		else:
-			delim = '='
-		variable, value = filter_s[begin:end + 1].split(delim, 1)
-		return expression(variable, value, operator=delim)
+		part = filter_s[begin:end + 1]
+		try:
+			return expression._parse(part)
+		except ValueError:
+			raise univention.admin.uexceptions.valueInvalidSyntax(part)
 
 
 def walk(filter_p, expression_walk_function=None, conjunction_walk_function=None, arg=None):
@@ -275,6 +314,8 @@ def walk(filter_p, expression_walk_function=None, conjunction_walk_function=None
 	elif isinstance(filter_p, expression):
 		if expression_walk_function:
 			expression_walk_function(filter_p, arg)
+	else:
+		raise TypeError(type(filter_p))
 
 
 FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
