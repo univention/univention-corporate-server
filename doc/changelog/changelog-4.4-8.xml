@@ -354,14 +354,14 @@
 					Package version bump to ensure package update will be done in all scenarios (<u:bug>52371</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The OpenAPI schema has been adjusted to be compliant: The <property>example</property> property of parameters has been removed as it conflicts with <property>examples</property> (<u:bug>52862</u:bug>).
+					The <application>OpenAPI</application> schema has been adjusted to be compliant: The <property>example</property> property of parameters has been removed as it conflicts with <property>examples</property> (<u:bug>52862</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The OpenAPI schema of the UDM REST API now contains <literal>201</literal> as additional possible status code for modify operations.
+					The <application>OpenAPI</application> schema of the UDM REST API now contains <literal>201</literal> as additional possible status code for modify operations.
 					It is returned in case an object was moved (<u:bug>52725</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The OpenAPI schema of the UDM REST API now returns <literal>200</literal> as status code for the retrieval of object creation templates (<u:bug>52723</u:bug>).
+					The <application>OpenAPI</application> schema of the UDM REST API now returns <literal>200</literal> as status code for the retrieval of object creation templates (<u:bug>52723</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -516,7 +516,7 @@
 					It is also possible now to configure arbitrary JSON encoded data, which gets mixed into the Docker daemon configuration file <filename>/etc/docker/daemon.json</filename> via the &ucsUCRV; <envar>docker/daemon/default/json</envar> (<u:bug>52344</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Add system call <function>statx</function> to docker seccomp profile (<u:bug>52478</u:bug>).
+					Add system call <function>statx</function> to docker <wordasword>seccomp</wordasword> profile (<u:bug>52478</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
