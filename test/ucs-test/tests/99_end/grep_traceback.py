@@ -206,12 +206,12 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string']),  # Bug #52789
 	('dbm.error: db type could not be determined', ['univention-management-console-web-server']),  # Bug #52764
 
-	# temporary
-	("univention.udm.exceptions.UnknownModuleType: UDM module 'portals/portal' does not exist.", ['refresh']),  # Bug #52512
-	("univention.udm.exceptions.ConnectionError: Could not read secret file", ['reloader.py.* in refresh']),  # Bug #52512
-	("AttributeError: 'NoneType' object has no attribute 'module'", ['create_portal_entries.py']),  # Bug #52512
-	('Exception: Creating blog entry failed: 3: unknown module portals/entry.', ['license_uuid.py']),  # Bug # 51197
-	(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['reloader.py.* in refresh']),  # Bug #52512
+	## temporary
+	#("univention.udm.exceptions.UnknownModuleType: UDM module 'portals/portal' does not exist.", ['refresh']),  # Bug #52512
+	#("univention.udm.exceptions.ConnectionError: Could not read secret file", ['reloader.py.* in refresh']),  # Bug #52512
+	#("AttributeError: 'NoneType' object has no attribute 'module'", ['create_portal_entries.py']),  # Bug #52512
+	#('Exception: Creating blog entry failed: 3: unknown module portals/entry.', ['license_uuid.py']),  # Bug # 51197
+	#(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['reloader.py.* in refresh']),  # Bug #52512
 ])
 
 
