@@ -207,9 +207,7 @@ def parse(filter_s, begin=0, end=-1):
 		# new conjunction
 		ftype = filter_s[begin]
 		begin += 1
-		expressions = []
-		for s in split(filter_s[begin:end + 1]):
-			expressions.append(parse(s))
+		expressions = [parse(s) for s in split(filter_s[begin:end + 1])]
 		c = conjunction(ftype, expressions)
 		return c
 	else:
