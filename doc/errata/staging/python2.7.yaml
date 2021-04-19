@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: python2.7
+fix: 2.7.13-2+deb9u5
+desc: |
+ This update addresses the following issues:
+ * XSS vulnerability in the documentation XML-RPC server in server_title field
+   (CVE-2019-16935)
+ * Web Cache Poisoning via urllib.parse.parse_qsl and urllib.parse.parse_qs by
+   using a semicolon in query parameters (CVE-2021-23336)
+bug: [53122]
+cve:
+- CVE-2019-16935
+- CVE-2021-23336
