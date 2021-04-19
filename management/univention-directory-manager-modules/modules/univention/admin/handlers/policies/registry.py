@@ -163,7 +163,7 @@ class object(univention.admin.handlers.simplePolicy):
 		self.polinfo_more['registry'] = []
 		for attr_name, value_dict in self.policy_attrs.items():
 			value_dict = copy.deepcopy(value_dict)
-			values[attr_name] = value_dict['value'].copy()
+			values[attr_name] = copy.copy(value_dict['value'])
 			value_dict['value'] = [x.decode('UTF-8') for x in value_dict['value']]
 			if attr_name.startswith('univentionRegistry;entry-hex-'):
 				key_name = codecs.decode(attr_name.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
