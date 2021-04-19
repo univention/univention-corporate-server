@@ -161,7 +161,7 @@ def system_join(
 	stepsPerScript = 100.0 / (nJoinScripts + 1)
 
 	with tempfile.NamedTemporaryFile() as passwordFile:
-		passwordFile.write(password)
+		passwordFile.write(password.encode('UTF-8'))
 		passwordFile.flush()
 
 		MODULE.process('Performing system join...')
@@ -263,7 +263,7 @@ def run(
 		# check for errors
 		if process.returncode != 0:
 			# error case
-			MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
+			MODULE.warn(f'Could not perform system join: {stdout.decode("UTF-8", "replace")}{stderr.decode("UTF-8", "replace")}')
 			success = False
 		elif failedJoinScripts:
 			MODULE.warn(f'The following join scripts could not be executed: {failedJoinScripts}')
