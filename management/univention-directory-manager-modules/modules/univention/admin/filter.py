@@ -140,7 +140,7 @@ class expression(object):
 		if not isinstance(con, conjunction):
 			raise TypeError('must be conjunction, got %r (%r)' % (type(con).__name__, repr(con)))
 		self.__dict__.clear()
-		self.__dict__.update(con.__dict__.copy())
+		self.__dict__.update(con.__dict__)
 		self.__class__ = type(con)
 
 	def __unicode__(self):
