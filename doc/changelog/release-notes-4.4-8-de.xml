@@ -51,16 +51,19 @@
 
 		<itemizedlist>
 			<listitem><para>
-					Die Performance des UMC Webservers in großen Umgebungen mit vielen Anfragen wurde verbessert, indem der Webserver mit mehreren Prozessen gestartet werden kann, um mehrere CPU Kerne zu nutzen. Hierfür wurde der UMC Webserver von single- auf multiprocessing umgestellt. Die Anzahl der Prozesse ist konfigurierbar.
+				Die Performance des UMC Webservers in großen Umgebungen mit vielen Anfragen wurde verbessert, indem der Webserver mit mehreren Prozessen gestartet werden kann, um mehrere CPU Kerne zu nutzen.
+				Hierfür wurde der UMC Webserver von <foreignphrase>single-</foreignphrase> auf <foreignphrase>multiprocessing</foreignphrase> umgestellt.
+				Die Anzahl der Prozesse ist konfigurierbar.
 			</para></listitem>
 			<listitem><para>
-					Diverse Verbesserungen wurden in Vorbereitung auf UCS 5.0 vorgenommen. Unter anderem wird das UCS Upgrade blockiert, wenn installierte Apps unter UCS 5.0 noch nicht verfügbar sind.
+				Diverse Verbesserungen wurden in Vorbereitung auf UCS 5.0 vorgenommen.
+				Unter anderem wird das UCS Upgrade blockiert, wenn installierte Apps unter UCS 5.0 noch nicht verfügbar sind.
 			</para></listitem>
 			<listitem><para>
-					Der S4 Connector synchronisiert nun auch das Attribut <envar>gidNumber</envar> für Gruppenobjekte.
+				Der S4 Connector synchronisiert nun auch das Attribut <envar>gidNumber</envar> für Gruppenobjekte.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-8 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
+				Diverse Security Updates wurden in UCS 4.4-8 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

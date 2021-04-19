@@ -51,17 +51,20 @@
 
 		<itemizedlist>
 			<listitem><simpara>
-                    The performance of the UMC web server in large environments with many requests has been improved by allowing the web server to be started with multiple processes to use multiple CPU cores. For this purpose, the UMC web server has been changed from single- to multiprocessing. The number of processes is configurable.
-            </para></listitem>
-            <listitem><para>
-                    Various improvements have been made in preparation for UCS 5.0. Among other things, the UCS upgrade is blocked if installed apps are not yet available under UCS 5.0.
-            </para></listitem>
-            <listitem><para>
-                    The S4 Connector now also synchronizes the <envar>gidNumber</envar> attribute for group objects.
-            </para></listitem>
-            <listitem><para>
-                    Various security updates have been integrated into UCS 4.4-8, for example for <application>PostgreSQL</application>, <application>Samba</application>, the <application>Linux Kernel</application> and <application>MariaDB</application>.
-            </para></listitem>
+				The performance of the UMC web server in large environments with many requests has been improved by allowing the web server to be started with multiple processes to use multiple CPU cores.
+				For this purpose, the UMC web server has been changed from single- to multiprocessing.
+				The number of processes is configurable.
+			</simpara></listitem>
+			<listitem><simpara>
+				Various improvements have been made in preparation for UCS 5.0.
+				Among other things, the UCS upgrade is blocked if installed apps are not yet available under UCS 5.0.
+			</simpara></listitem>
+			<listitem><simpara>
+				The S4 Connector now also synchronizes the <envar>gidNumber</envar> attribute for group objects.
+			</simpara></listitem>
+			<listitem><simpara>
+				Various security updates have been integrated into UCS 4.4-8, for example for <application>PostgreSQL</application>, <application>Samba</application>, the <application>Linux Kernel</application> and <application>MariaDB</application>.
+			</simpara></listitem>
 		</itemizedlist>
 	</chapter>
 
