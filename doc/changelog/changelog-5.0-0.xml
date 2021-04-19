@@ -763,7 +763,7 @@
 			<title>Docker</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					<package>docker</package> has been updated to version 19.03; <package>docker-compose</package> has been updated to version 1.25 (<u:bug>52838</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
