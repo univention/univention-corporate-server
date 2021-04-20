@@ -273,15 +273,14 @@ def parse(filter_s, begin=0, end=-1):
 		begin += 1
 		end -= 1
 
-	if filter_s[begin] in conjunction.OPS:
-		part = filter_s[begin:end + 1]
-		return conjunction._parse(part)
-	else:
-		part = filter_s[begin:end + 1]
-		try:
+	part = filter_s[begin:end + 1]
+	try:
+		if filter_s[begin] in conjunction.OPS:
+			return conjunction._parse(part)
+		else:
 			return expression._parse(part)
-		except ValueError:
-			raise univention.admin.uexceptions.valueInvalidSyntax(part)
+	except (AssertionError, ValueError):
+		raise univention.admin.uexceptions.valueInvalidSyntax(part)
 
 
 def walk(filter_p, expression_walk_function=None, conjunction_walk_function=None, arg=None):
