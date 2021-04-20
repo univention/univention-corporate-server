@@ -1531,7 +1531,8 @@ def mapping_hook(ad_mapping):
 </programlisting>
 
     Der Inhalt der Variable <command>ad_mapping</command> kann damit verändert werden,
-    um das Mapping zu beeinflussen.
+    um das Mapping zu beeinflussen. Das resultierende Mapping wird bei Neustart des AD-Connectors
+    unter <filename>/var/log/univention/connector-ad-mapping.log</filename> ausgegeben.
 </para>
 </section>
 </section>
