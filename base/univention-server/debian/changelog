@@ -1,3 +1,9 @@
+univention-server (15.0.4-1) unstable; urgency=medium
+
+  * Bug #52122: Remove univention-nagios-server
+
+ -- Arvid <requate@univention.de>  Tue, 20 Apr 2021 14:43:22 +0200
+
 univention-server (15.0.3-6) unstable; urgency=low
 
   * Bug #51984: Depend on linux-image-amd64 instead of univention-kernel-image

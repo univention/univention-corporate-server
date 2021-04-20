@@ -529,3 +529,32 @@
   desc: univention-self-service
   vars:
     - umc/self-service/passwordreset/sms/server
+
+- git: 32b60b0362
+  desc: univention-nagios-server
+  vars:
+   - auth/nagios/accessfile
+   - auth/nagios/restrict
+   - auth/nagios/group/.*
+   - auth/nagios/user/.*
+   - nagios/broker/.*
+   - nagios/plugin/check_nrpe/timeout
+   - nagios/server/authenticate
+   - nagios/server/autostart
+   - nagios/server/user/systeminfo
+   - nagios/server/user/configinfo
+   - nagios/server/user/systemcmd
+   - nagios/server/user/allinfo
+   - nagios/server/user/allcmd
+   - nagios/server/checkexternalcmd
+   - nagios/server/hostcheck/enable
+   - nagios/server/hostcheck/notificationinterval
+   - nagios/server/refreshrate
+   - nagios/server/theme
+   - ucs/web/overview/entries/admin/nagios/description/de
+   - ucs/web/overview/entries/admin/nagios/description
+   - ucs/web/overview/entries/admin/nagios/label
+   - ucs/web/overview/entries/admin/nagios/label/de
+   - ucs/web/overview/entries/admin/nagios/link
+   - ucs/web/overview/entries/admin/nagios/priority
+   - ucs/web/overview/entries/admin/nagios/icon
