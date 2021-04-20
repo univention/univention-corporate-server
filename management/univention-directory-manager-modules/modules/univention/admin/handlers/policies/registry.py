@@ -118,13 +118,14 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
+	UCR_HEX = "univentionRegistry;entry-hex-"
 	module = module
 
 	def _post_unmap(self, info, oldattr):
 		info['registry'] = []
 		for attr_name, ldap_value in oldattr.items():
-			if attr_name.startswith('univentionRegistry;entry-hex-'):
-				key_name = codecs.decode(attr_name.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
+			if self._is_ucr_hex(attr_name):
+				key_name = self._ucr_unhexlify(attr_name)
 				info['registry'].append([key_name, ldap_value[0].decode('UTF-8').strip()])
 
 		info['registry'].sort()
@@ -144,15 +145,15 @@ class object(univention.admin.handlers.simplePolicy):
 
 				for key_name, old_value in old_dict.items():
 					if key_name not in new_dict:  # UCR key has been removed
-						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						attr_name = self._ucr_hexlify(key_name)
 						modlist.append((attr_name, old_value.encode('UTF-8'), None))
 					elif old_value != new_dict[key_name]:  # UCR variable has been changed
-						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						attr_name = self._ucr_hexlify(key_name)
 						modlist.append((attr_name, old_value.encode('UTF-8'), new_dict[key_name].encode('utf-8')))
 
 				for key_name, new_value in new_dict.items():
 					if key_name not in old_dict:  # UCR key has been added
-						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						attr_name = self._ucr_hexlify(key_name)
 						modlist.append((attr_name, None, new_value.encode('UTF-8')))
 				break
 
@@ -165,8 +166,8 @@ class object(univention.admin.handlers.simplePolicy):
 			value_dict = copy.deepcopy(value_dict)
 			values[attr_name] = copy.copy(value_dict['value'])
 			value_dict['value'] = [x.decode('UTF-8') for x in value_dict['value']]
-			if attr_name.startswith('univentionRegistry;entry-hex-'):
-				key_name = codecs.decode(attr_name.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
+			if self._is_ucr_hex(attr_name):
+				key_name = self._ucr_unhexlify(attr_name)
 				value_dict['value'].insert(0, key_name)
 				self.polinfo_more['registry'].append(value_dict)
 			elif attr_name:
@@ -174,6 +175,18 @@ class object(univention.admin.handlers.simplePolicy):
 
 		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 		self.polinfo = self._post_unmap(self.polinfo, values)
+
+	def _ucr_hexlify(self, key_name):
+		# type: (str) -> str
+		return '%s%s' % (self.UCR_HEX, codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII'))
+
+	def _is_ucr_hex(self, attr_name):
+		# type: (str) -> bool
+		return attr_name.startswith(self.UCR_HEX)
+
+	def _ucr_unhexlify(self, attr_name):
+		# type: (str) -> str
+		return codecs.decode(attr_name[len(self.UCR_HEX):], 'hex').decode('UTF-8')
 
 
 lookup = object.lookup
