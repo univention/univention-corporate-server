@@ -32,7 +32,7 @@
 
 import re
 try:
-	from typing import Any, Callable, Dict, List, Match, Optional, Sequence, TypeVar, Union  # noqa F401
+	from typing import Any, Callable, Dict, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa F401
 	T = TypeVar("T")
 except ImportError:
 	pass
@@ -61,6 +61,29 @@ class conjunction(object):
 		assert type in self.OPS
 		self.type = type
 		self.expressions = expressions
+
+	@classmethod
+	def _parse(cls, text):
+		# type: (str) -> conjunction
+		op = text[0]
+		expressions = [parse(s) for s in cls._split(text[1:])]
+		return conjunction(op, expressions)
+
+	@staticmethod
+	def _split(text):
+		# type: (str) -> Iterator[str]
+		depth = 0
+		begin = -1
+		for i, c in enumerate(text):
+			if c == '(':
+				depth += 1
+				if depth == 1:
+					begin = i
+			elif c == ')':
+				depth -= 1
+				if depth == 0 and begin > -1:
+					yield text[begin:i + 1]
+					begin = -1
 
 	def __str__(self):
 		# type: () -> str
@@ -243,25 +266,6 @@ def parse(filter_s, begin=0, end=-1):
 	if not isinstance(filter_s, six.string_types):
 		return filter_s
 
-	def split(str):
-		# type: (str) -> List[str]
-		expressions = []
-		depth = 0
-		i = 0
-		begin = -1
-		for c in str:
-			if c == '(':
-				depth += 1
-				if depth == 1:
-					begin = i
-			elif c == ')':
-				depth -= 1
-				if depth == 0 and begin > -1:
-					expressions.append(str[begin:i + 1])
-					begin = -1
-			i += 1
-		return expressions
-
 	if end == -1:
 		end = len(filter_s) - 1
 
@@ -270,12 +274,8 @@ def parse(filter_s, begin=0, end=-1):
 		end -= 1
 
 	if filter_s[begin] in conjunction.OPS:
-		# new conjunction
-		ftype = filter_s[begin]
-		begin += 1
-		expressions = [parse(s) for s in split(filter_s[begin:end + 1])]
-		c = conjunction(ftype, expressions)
-		return c
+		part = filter_s[begin:end + 1]
+		return conjunction._parse(part)
 	else:
 		part = filter_s[begin:end + 1]
 		try:
