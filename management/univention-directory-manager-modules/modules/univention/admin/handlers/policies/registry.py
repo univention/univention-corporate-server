@@ -122,14 +122,11 @@ class object(univention.admin.handlers.simplePolicy):
 	module = module
 
 	def _post_unmap(self, info, oldattr):
-		info['registry'] = []
-		for attr_name, ldap_value in oldattr.items():
-			if self._is_ucr_hex(attr_name):
-				key_name = self._ucr_unhexlify(attr_name)
-				info['registry'].append([key_name, ldap_value[0].decode('UTF-8').strip()])
-
-		info['registry'].sort()
-
+		info['registry'] = sorted(
+			[self._ucr_unhexlify(attr_name), ldap_value[0].decode('UTF-8').strip()]
+			for attr_name, ldap_value in oldattr.items()
+			if self._is_ucr_hex(attr_name)
+		)
 		return info
 
 	def _post_map(self, modlist, diff):
