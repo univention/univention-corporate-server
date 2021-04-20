@@ -52,7 +52,7 @@ status=RUNNING
 phase=PREUP
 next_version=5.0-0
 target_version=5.1-99
-current_version=4.4-7
+current_version=4.4-8
 type=NET
 EOF
 univention-run-join-scripts --run-scripts "$JS_FILE" || echo "EXIT STATUS $?"
@@ -72,17 +72,17 @@ univention-run-join-scripts --run-scripts "$JS_FILE" || echo "EXIT STATUS $?"
 [ -f "$JS_FLAG" ] || fail_test 1 "Join script should have been executed in POSTUP when updating to UCS 5.1-15."
 cleanup_status
 
-# test 3: UCS 4.4-7 UPDATE
+# test 3: UCS 4.4-8 UPDATE
 cat > "${UU_STATUS}" <<EOF
 status=RUNNING
 phase=UPDATE
-next_version=4.4-7
-target_version=4.4-8
-current_version=4.4-6
+next_version=4.4-8
+target_version=4.4-9
+current_version=4.4-7
 type=NET
 EOF
 univention-run-join-scripts --run-scripts "$JS_FILE" || echo "EXIT STATUS $?"
-[ -f "$JS_FLAG" ] || fail_test 1 "Join script should have been executed in UPDATE when updating to UCS 4.4-7."
+[ -f "$JS_FLAG" ] || fail_test 1 "Join script should have been executed in UPDATE when updating to UCS 4.4-8."
 cleanup_status
 
 if [ "${version_version%%.*}" -le 4 ] ; then
