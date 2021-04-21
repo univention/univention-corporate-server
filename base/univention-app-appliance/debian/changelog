@@ -1,3 +1,9 @@
+univention-app-appliance (4.0.0-3) unstable; urgency=medium
+
+  * Bug #51598: Fix base64 value
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Apr 2021 03:17:06 +0200
+
 univention-app-appliance (4.0.0-2) unstable; urgency=medium
 
   * Bug #51598: Migrate to Python 3

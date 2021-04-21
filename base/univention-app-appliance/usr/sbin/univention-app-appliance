@@ -150,7 +150,7 @@ def configure_portal(app):
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
 		_download_resource(app, img_name, dest_path),
 		with open(dest_path, 'rb') as fp:
-			base64_img = base64.encodebytes(fp.read())
+			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['background'] = base64_img
 
 	# portal logo
@@ -161,7 +161,7 @@ def configure_portal(app):
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
 		_download_resource(app, img_name, dest_path),
 		with open(dest_path, 'rb') as fp:
-			base64_img = base64.encodebytes(fp.read())
+			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['logo'] = base64_img
 
 	if app_props.get('portal_css_background'):
