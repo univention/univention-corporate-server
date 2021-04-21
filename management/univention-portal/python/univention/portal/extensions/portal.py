@@ -31,6 +31,7 @@
 #
 
 import os.path
+import time
 
 import requests
 import requests.exceptions
@@ -379,3 +380,6 @@ class UMCPortal(Portal):
 
 	def refresh(self, reason=None):
 		pass
+
+	def get_cache_id(self):
+		return str(time.time())

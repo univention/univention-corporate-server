@@ -1,3 +1,9 @@
+univention-portal (4.0.5-33) unstable; urgency=medium
+
+  * Bug #52941: Fix UMC portal cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Apr 2021 11:47:23 +0200
+
 univention-portal (4.0.5-32) unstable; urgency=medium
 
   * Bug #52792: Typo in UCR definition
