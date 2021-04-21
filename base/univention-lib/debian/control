@@ -88,6 +88,8 @@ Depends:
  python3-univention-lib (= ${binary:Version}),
  univention-config (>= 15),
  ${misc:Depends},
+Breaks:
+ univention-join (<< 12),
 Recommends:
  univention-join,
 Description: UCS - common scripting functions for shell scripts
