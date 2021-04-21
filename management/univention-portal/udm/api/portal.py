@@ -64,6 +64,7 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
 		'showUmc': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'background': Base64BinaryPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
+		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'userLinks': dn_list_property_encoder_for("auto"),
 		'menuLinks': dn_list_property_encoder_for("auto"),
 		'categories': dn_list_property_encoder_for("portals/category"),

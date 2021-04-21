@@ -85,6 +85,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
 	),
+	'ensureLogin': univention.admin.property(
+		short_description=_('Redirect anonymous visitors to the login'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+		dontsearch=True,
+	),
 	'userLinks': univention.admin.property(
 		short_description=_('Entries in the user menu'),
 		long_description=_('List of portal entries that are shown in the menu for the logged in user'),
@@ -132,6 +138,9 @@ layout = [
 		Group(_('Appearance'), layout=[
 			['logo'],
 			['background'],
+		]),
+		Group(_('Login'), layout=[
+			['ensureLogin'],
 		]),
 	]),
 ]

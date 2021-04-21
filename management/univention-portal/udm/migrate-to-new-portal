@@ -77,6 +77,7 @@ def migrate_portal(udm, old_obj):
 	new_obj = udm.get("portals/portal").new()
 	new_obj.props.name = old_obj.props.name
 	new_obj.props.displayName = old_obj.props.displayName
+	new_obj.props.ensureLogin = old_obj.props.ensureLogin
 	new_obj.props.background = old_obj.props.background
 	new_obj.props.logo = old_obj.props.logo
 	new_obj.props.defaultLinkTarget = "embedded"  # old_obj.props.defaultLinkTarget

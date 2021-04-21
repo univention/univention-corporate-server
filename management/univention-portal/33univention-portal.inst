@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=20
+VERSION=21
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh

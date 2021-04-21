@@ -213,6 +213,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			ret["background"] = None
 		ret["name"] = portal.props.displayName
 		ret["defaultLinkTarget"] = portal.props.defaultLinkTarget
+		ret["ensureLogin"] = portal.props.ensureLogin
 		ret["categories"] = portal.props.categories
 		return ret
 
