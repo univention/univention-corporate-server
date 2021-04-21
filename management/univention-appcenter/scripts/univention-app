@@ -75,7 +75,13 @@ def main():
 	args = parser.parse_args()
 
 	try:
-		ret = args.func(args)
+		try:
+			action = args.func
+		except AttributeError:
+			parser.print_help()
+			ret = 0
+		else:
+			ret = action(args)
 	except Abort:
 		ret = 10
 	if ret is True:
