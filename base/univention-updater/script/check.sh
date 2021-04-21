@@ -617,6 +617,27 @@ update_check_adc_mapping () {  # Bug #52044
 	fi
 }
 
+## Check for PostgreSQL-9.4 (Bug #53034)
+update_check_for_postgresql94 () {
+	local var="update$VERSION/ignore_postgresql94"
+	ignore_check "$var" && return 100
+
+	case "$(dpkg-query -W -f '${Status}' postgresql-9.4 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+
+	echo "WARNING: PostgreSQL-9.4 is no longer supported by UCS-5.0 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See https://help.univention.com/t/8075 for"
+	echo "         more details."
+
+	echo
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	echo "	But be aware that this is not recommended!"
+
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

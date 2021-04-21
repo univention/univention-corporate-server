@@ -1,3 +1,9 @@
+univention-updater (15.0.3-41) unstable; urgency=medium
+
+  * Bug #53034: Block update for postgresql-9.4
+
+ -- Arvid <requate@univention.de>  Wed, 21 Apr 2021 12:03:52 +0200
+
 univention-updater (15.0.3-40) unstable; urgency=low
 
   * Bug #52977: Stop en-/disabling apache2.service
