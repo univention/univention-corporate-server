@@ -58,7 +58,8 @@ _join_call () {  # <role-check> <joinscript> [<args>...]
 	[ -f "$UCS_JS_STATUS" ] ||
 		return 0
 
-	"$role_check"
+	"$role_check" ||
+		return $?
 
 	shift 2 ||
 		return $?
