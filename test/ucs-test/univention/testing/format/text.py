@@ -31,9 +31,9 @@ class _Term(object):  # pylint: disable-msg=R0903
 	def __init__(self, term_stream=sys.stdout):  # type: (IO[str]) -> None
 		self.COLS = 80  # pylint: disable-msg=C0103
 		self.LINES = 25  # pylint: disable-msg=C0103
-		self.NORMAL = ''  # pylint: disable-msg=C0103
+		self.NORMAL = b''  # pylint: disable-msg=C0103
 		for color in self.__ANSICOLORS:
-			setattr(self, color, '')
+			setattr(self, color, b'')
 		if not term_stream.isatty():
 			return
 		try:
@@ -46,7 +46,7 @@ class _Term(object):  # pylint: disable-msg=R0903
 		set_fg_ansi = curses.tigetstr('setaf')
 		for color in self.__ANSICOLORS:
 			i = getattr(curses, 'COLOR_%s' % color)
-			val = set_fg_ansi and curses.tparm(set_fg_ansi, i) or ''
+			val = set_fg_ansi and curses.tparm(set_fg_ansi, i) or b''
 			setattr(self, color, val)
 
 
@@ -70,7 +70,7 @@ class Text(TestFormatInterface):
 		now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 		print("Starting %s ucs-test at %s to %s" % (count, now, environment.log.name), file=self.stream)
 		try:
-			ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework'])
+			ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework']).decode('UTF-8', 'replace')
 		except subprocess.CalledProcessError:
 			ucs_test_version = 'not installed'
 		ucr = univention.config_registry.ConfigRegistry()
@@ -107,9 +107,9 @@ class Text(TestFormatInterface):
 		msg = TestCodes.MESSAGE.get(reason, reason)
 
 		colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
-		color = getattr(self.term, colorname.upper(), '')
+		color = getattr(self.term, colorname.upper(), b'')
 
-		print('%s%s%s' % (color, msg, self.term.NORMAL), file=self.stream)
+		print('%s%s%s' % (color.decode('ASCII'), msg, self.term.NORMAL.decode('ASCII')), file=self.stream)
 		super(Text, self).end_test(result)
 
 	def end_section(self):  # type: () -> None
@@ -124,7 +124,9 @@ class Text(TestFormatInterface):
 		>>> tc = TestCase('python/data.py')
 		>>> tr = TestResult(tc, te)
 		>>> tr.success()
-		>>> Text().format(tr)
+		>>> import io
+		>>> s = io.StringIO()
+		>>> Text(s).format(tr)
 		"""
 		self.begin_run(result.environment)
 		self.begin_section('')

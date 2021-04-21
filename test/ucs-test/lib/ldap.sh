@@ -1,4 +1,4 @@
-PYTHON=python2.7
+PYTHON=python3
 
 scriptlet_error () {
 	local function="$1"
@@ -72,13 +72,15 @@ ldap_set_attribute () {
 	local dn=${1?:missing parameter: dn}
 	local name=${2?:missing parameter: attribute name}
 	local value=${3?:missing parameter: attribute value}
+	local encoding="${6:-UTF-8}"
 
 	"$PYTHON" -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import ldap_glue
+value = u'$value'.encode('$encoding')
 ldapconnection = ldap_glue.LDAPConnection()
-ldapconnection.set_attribute('$dn', '$name', '$value')
+ldapconnection.set_attribute('$dn', '$name', value)
 sys.exit(42)
 "
 	local rc=$?
@@ -123,7 +125,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
-ldapconnection.append_to_attribute('$dn', '$name', '$value')
+ldapconnection.append_to_attribute('$dn', '$name', b'$value')
 sys.exit(42)
 "
 	local rc="$?"
@@ -146,7 +148,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
-ldapconnection.remove_from_attribute('$dn', '$name', '$value')
+ldapconnection.remove_from_attribute('$dn', '$name', b'$value')
 sys.exit(42)
 "
 	local rc=$?
@@ -162,6 +164,7 @@ sys.exit(42)
 ldap_get_attribute () {
 	local dn=${1?:missing parameter: dn}
 	local attribute=${2?:missing parameter: attribute name}
+	local encoding="${3:-UTF-8}"
 
 	"$PYTHON" -c "
 import sys
@@ -169,7 +172,7 @@ sys.path.append('$TESTLIBPATH')
 import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 for value in ldapconnection.get_attribute('$dn', '$attribute'):
-	print value
+	print(value.decode('$encoding'))
 sys.exit(42)
 "
 	local rc=$?

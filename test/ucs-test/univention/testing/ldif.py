@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 """
@@ -11,6 +11,7 @@ from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 import re
 import os
 import sys
+import base64
 import signal
 import subprocess
 import select
@@ -118,7 +119,7 @@ class LdifSource(object):
 		if not match:
 			raise LdifError('%d: %s' % (self.lno, line))
 		oid, attr, _opt, b64, plain = match.groups()
-		return (attr or oid, plain or (b64.decode('base64') if b64 else None))
+		return (attr or oid, plain or (base64.b64decode(b64) if b64 else None))
 
 	def __iter__(self):
 		"""

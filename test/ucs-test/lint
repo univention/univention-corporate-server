@@ -50,13 +50,13 @@ export UCS_TESTS="tests"
 export PYTHONPATH=".${PYTHONPATH:+:$PYTHONPATH}"
 
 # shellcheck disable=SC2016
-python -c '
+python3 -c '
 from __future__ import print_function
 from univention.testing.internal import get_sections, get_tests
 from os.path import basename, splitext
 sections = get_sections()
 tests = get_tests(sections)
-for tests in tests.itervalues():
+for tests in tests.values():
     for fname in tests:
         name, ext = splitext(basename(fname))
         if "." not in name and not ext:

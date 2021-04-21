@@ -199,8 +199,9 @@ class Verdict(object):
 		self.reason = reason
 		Verdict.logger.debug(self)
 
-	def __nonzero__(self):  # type: () -> bool
+	def __bool__(self):  # type: () -> bool
 		return self.level < Verdict.ERROR
+	__nonzero__ = __bool__
 
 	def __str__(self):  # type: () -> str
 		return '%s: %s' % ('IWE'[self.level], self.message)
