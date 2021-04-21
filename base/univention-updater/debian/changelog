@@ -1,3 +1,9 @@
+univention-updater (16.0.31) unstable; urgency=medium
+
+  * Issue univention/ucs#2573: Block update for postgresql-9.6
+
+ -- Arvid <requate@univention.de>  Mon, 06 Jan 2025 15:16:06 +0100
+
 univention-updater (16.0.30) unstable; urgency=medium
 
   * Issue univention/ucs#2570: check docker storage driver

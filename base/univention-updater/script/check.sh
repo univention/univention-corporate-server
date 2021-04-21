@@ -632,6 +632,36 @@ update_check_docker_storage_driver () {  # Issue #2570
 	fi
 }
 
+## Check for PostgreSQL-9.6 (Issue #2573)
+update_check_for_postgresql96 () {
+	local legacy_psql var="update$VERSION/ignore_postgresql96"
+	ignore_check "$var" && return 100
+
+	case "$(dpkg-query -W -f '${Status}' postgresql-9.6 2>/dev/null)" in
+	install*) legacy_psql="PostgreSQL-9.6" ;;
+	esac
+
+	if [ -z "$legacy_psql" ]; then  # since the migration guide also mentions 9.4 we also check for that here.
+		case "$(dpkg-query -W -f '${Status}' postgresql-9.4 2>/dev/null)" in
+		install*) legacy_psql="PostgreSQL-9.4" ;;
+		esac
+	fi
+
+	if [ -z "$legacy_psql" ]; then
+		return 0
+	fi
+
+	echo "WARNING: $legacy_psql is no longer supported by UCS-5.2 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See https://help.univention.com/t/17531 for"
+	echo "         more details."
+
+	echo
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	echo "	But be aware that this is not recommended!"
+
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
