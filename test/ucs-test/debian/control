@@ -8,16 +8,19 @@ Build-Depends:
  python-all,
  python-apt,
  python-enum34,
- python-psutil,
  python-ldap,
  python-psutil,
+ python-univention-directory-manager,
  python-yaml,
  python3-all,
+ python3-apt,
+ python3-ldap,
  python3-psutil,
+ python3-univention-directory-manager,
+ python3-yaml,
  univention-config,
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
- python-univention-directory-manager,
 Standards-Version: 3.6.1
 
 Package: ucs-test
@@ -46,10 +49,10 @@ Depends:
  fakeroot,
  python,
  python-apt (>= 0.8),
- python-enum34,
  python-argparse,
- python-ldap,
  python-coverage,
+ python-enum34,
+ python-ldap,
  python-psutil,
  python-six,
  python-univention (>= 12.0.0-5),
@@ -117,11 +120,11 @@ Depends:
  lsb-release,
  lsof,
  nmap,
- sshpass,
  openssl,
  python,
  python-pexpect,
  python3-pexpect,
+ sshpass,
  ucs-test-libs (= ${source:Version}),
  univention-ssh,
  ${misc:Depends},
@@ -307,15 +310,15 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python-ldap,
+ python-psutil,
  python-pycountry,
  python-pytest,
- python-psutil,
- python-ldap,
  python-univention-directory-manager,
+ python3-ldap,
+ python3-psutil,
  python3-pycountry,
  python3-pytest,
- python3-psutil,
- python3-ldap,
  python3-univention-directory-manager,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -330,11 +333,11 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- ucs-test-libs (= ${source:Version}),
  python-ldap,
  python-univention-directory-manager,
  python3-ldap,
  python3-univention-directory-manager,
+ ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -540,11 +543,11 @@ Recommends:
 Depends:
  ucs-test-libs (= ${source:Version}),
  univention-management-console-server,
- ${python:Depends},
  ${python3:Depends},
+ ${python:Depends},
 Provides:
- ${python:Provides},
  ${python3:Provides},
+ ${python:Provides},
 Description: Test UMC modules
  This package includes some test UMC modules
 
@@ -571,8 +574,8 @@ Recommends:
 Provides:
  ucs-test-module,
 Depends:
- ucs-test-selenium-runner,
  ucs-test-libs (= ${source:Version}),
+ ucs-test-selenium-runner,
  xvfb,
  ${misc:Depends},
 Description: Test scripts for UMC
@@ -583,11 +586,11 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ ldb-tools,
  python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
- ldb-tools,
 Provides:
  ucs-test-module,
 Description: Test scripts for univention-ad-connector.
@@ -613,17 +616,17 @@ Recommends:
 Depends:
  chromium (>= 71.0.3578.80-1~deb9u1),
  chromium-driver (>= 71.0.3578.80-1~deb9u1),
- libnss3-tools,
  ffmpeg,
+ libnss3-tools,
  python-cssselect,
  python-lxml,
  python-pytest,
  python-requests,
  python3-cssselect,
  python3-lxml,
+ python3-pip,
  python3-pytest,
  python3-requests,
- python3-pip,
  python3-univention-config-registry,
  ucs-test-libs (= ${source:Version}),
  univention-appcenter-dev,
@@ -839,7 +842,6 @@ Description: Test scripts to check cryptography software in UCS
 Package: ucs-test-udm-rest
 Architecture: all
 Depends:
- python3-pip,
  python-pytest,
  python3-pip,
  python3-pytest,
