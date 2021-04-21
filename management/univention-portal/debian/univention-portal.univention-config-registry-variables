@@ -15,7 +15,7 @@ Categories=portal
 Description[de]=Pfade, unter denen das Portal erreichbar sein soll. Getrennt durch Kommata. Erfordert möglicherweise weitere Konfigurationen für Apache.
 Description[en]=Paths, which shall be served by the portal. Comma separated. May require additional configuration of Apache.
 Default=/univention/portal/, /univention/umc/
-Type=int
+Type=str
 Categories=portal
 
 [portal/auth-mode]
