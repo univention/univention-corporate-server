@@ -797,6 +797,9 @@
 					for the time of the update to prevent restart issues during the update (<u:bug>52923</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The ACL handling of user names and group names containing spaces has been fixed for shared folders (<u:bug>53111</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					An internal change to the listener module for shared mail folders
 					(<filename>dovecot-shared-folder.py</filename>) has been made to prevent
 					problems with mixed upper and lowercase domain names (<u:bug>52241</u:bug>).
