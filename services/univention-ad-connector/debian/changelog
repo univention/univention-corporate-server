@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.7-2) unstable; urgency=medium
+
+  * Bug #52044: added help to univention-adsearch
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Apr 2021 15:03:15 +0200
+
 univention-ad-connector (14.0.7-1) unstable; urgency=medium
 
   * Bug #52044: Log mapping to /var/log/univention/connector-ad-
