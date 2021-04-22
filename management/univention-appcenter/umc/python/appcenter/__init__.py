@@ -510,7 +510,7 @@ class Instance(umcm.Base, ProgressMixin):
 		for setting in app.get_settings():
 			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
 				if values.get(setting.name):
-					values[setting.name] = b64decode(values[setting.name]).decode('ascii')
+					values[setting.name] = b64decode(values[setting.name]).decode('utf-8')
 		configure = get_action('configure')
 		handler = UMCProgressHandler(progress)
 		handler.setLevel(logging.INFO)
