@@ -1,8 +1,6 @@
 ucs-test (10.0.5-3) unstable; urgency=low
 
-  * Bug #53111:
-    - convert test to py3
-    - disable test in S4 environment
+  * Bug #53111: disable test in S4 environment
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Apr 2021 20:59:43 +0200
 
