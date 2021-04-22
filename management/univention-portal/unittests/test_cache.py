@@ -67,17 +67,9 @@ class TestPortalFileCache:
 		mocked_reloader = mocker.Mock()
 		cache = Cache(cache_file_path, reloader=mocked_reloader)
 		content = cache.get()
-		mocked_reloader.refresh.assert_called_with(reason=None, content=content)
+		mocked_reloader.refresh.assert_not_called
 		cache.refresh(reason="force")
 		mocked_reloader.refresh.assert_called_with(reason="force", content=content)
-
-	def test_reload_on_get(self, dynamic_class, cache_file_path, mocker):
-		Cache = dynamic_class("PortalFileCache")
-		mocked_reloader = mocker.Mock()
-		cache = Cache(cache_file_path, reloader=mocked_reloader)
-		assert mocked_reloader.refresh.call_count == 0
-		cache.get()
-		assert mocked_reloader.refresh.call_count == 1
 
 
 class TestGroupFileCache:

@@ -42,7 +42,18 @@ class TestPortal:
 	def mocked_user(self, mocker):
 		user = mocker.Mock()
 		user.username = "hindenkampp"
+		user.display_name = "Hans Hindenkampp"
 		user.groups = []
+		user.headers = {}
+		return user
+
+	@pytest.fixture
+	def mocked_anonymous_user(self, mocker):
+		user = mocker.Mock()
+		user.username = None
+		user.display_name = None
+		user.groups = []
+		user.headers = {}
 		return user
 
 	@pytest.fixture
@@ -51,7 +62,7 @@ class TestPortal:
 		cache_file_path = get_file_path("portal_cache.json")
 		scorer = dynamic_class("Scorer")()
 		portal_cache = dynamic_class("PortalFileCache")(cache_file_path)
-		authenticator = dynamic_class("UMCAuthenticator")("session_url", "group_cache")
+		authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
 		return Portal(scorer, portal_cache, authenticator)
 
 	@pytest.fixture
@@ -83,23 +94,26 @@ class TestPortal:
 		}
 		assert content == expected_content
 
-	def test_user_links(self, mocked_user, standard_portal):
-		content_no_user = standard_portal.get_user_links(None, False)
-		content_with_user = standard_portal.get_user_links(mocked_user, False)
+	def test_user_links(self, mocked_user, mocked_anonymous_user, standard_portal):
+		content_with_user = standard_portal.get_visible_content(mocked_user, False)
+		content_no_user = standard_portal.get_visible_content(mocked_anonymous_user, False)
+		content_with_user = standard_portal.get_user_links(content_with_user)
+		content_no_user = standard_portal.get_user_links(content_no_user)
 		expected_content = []
 		assert content_no_user == expected_content
 		assert content_with_user == expected_content
 
 	def test_menu_links(self, mocked_user, standard_portal):
-		content = standard_portal.get_menu_links(mocked_user, False)
+		content = standard_portal.get_visible_content(mocked_user, False)
+		content = standard_portal.get_menu_links(content)
 		expected_content = []
 		assert content == expected_content
 
 	def test_portal_entries(self, mocked_user, standard_portal):
 		content = standard_portal.get_visible_content(mocked_user, False)
 		content = standard_portal.get_entries(content)
-		expected_content = {
-			"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+		expected_content = [
+			{
 				"activated": True,
 				"allowedGroups": [],
 				"anonymous": True,
@@ -114,7 +128,7 @@ class TestPortal:
 				"logo_name": "/univention/portal/icons/entries/server-overview.svg",
 				"name": {"de_DE": u"Server\xfcbersicht", "en_US": u"Server overview", "fr_FR": u"Vue d'ensemble de serveurs"},
 			},
-			"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+			{
 				"activated": True,
 				"allowedGroups": [],
 				"anonymous": True,
@@ -129,7 +143,7 @@ class TestPortal:
 				"logo_name": "/univention/portal/icons/entries/umc-domain.svg",
 				"name": {"de_DE": u"System- und Dom\xe4neneinstellungen", "en_US": u"System and domain settings", "fr_FR": u"R\xe9glages du syst\xe8me et du domaine"},
 			},
-			"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+			{
 				"activated": True,
 				"allowedGroups": [
 					"cn=g1,cn=groups,dc=intranet,dc=example,dc=de",
@@ -153,25 +167,25 @@ class TestPortal:
 					"fr_FR": "Univention Blog"
 				}
 			},
-		}
+		]
 		assert content == expected_content
 
 	def test_folders(self, mocked_user, standard_portal):
 		content = standard_portal.get_visible_content(mocked_user, False)
 		content = standard_portal.get_folders(content)
-		expected_content = {}
+		expected_content = []
 		assert content == expected_content
 
 	def test_categories(self, mocked_user, standard_portal):
 		content = standard_portal.get_visible_content(mocked_user, False)
 		content = standard_portal.get_categories(content)
-		expected_content = {
-			u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+		expected_content = [
+			{
 				"display_name": {"de_DE": u"Verwaltung", "en_US": u"Administration"},
 				"dn": u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
 				"entries": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
-			}
-		}
+			},
+		]
 		assert content == expected_content
 
 	def test_meta(self, mocked_user, standard_portal):

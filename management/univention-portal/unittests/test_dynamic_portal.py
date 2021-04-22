@@ -76,6 +76,7 @@ def test_make_portal_standard(portal_factory, dynamic_class):
 				"class": "UMCAuthenticator",
 				"type": "class",
 				"kwargs": {
+					"auth_mode": {"type": "static", "value": "ucs"},
 					"umc_session_url": {"type": "static", "value": "http://127.0.0.1:8090/get/session-info"},
 					"group_cache": {
 						"class": "GroupFileCache",

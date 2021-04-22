@@ -137,6 +137,6 @@ class UMCAuthenticator(Authenticator):
 		except ValueError:
 			get_logger("user").error("malformed answer!")
 		except KeyError:
-			get_logger("user").warn("session unknown!")
+			get_logger("user").warning("session unknown!")
 		else:
 			return username
