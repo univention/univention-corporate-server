@@ -356,7 +356,7 @@ class UMCPortal(Portal):
 			})
 		ret.append({
 			"display_name": {
-				"en_US": "UMC",
+				"en_US": "Univention Management Console",
 			},
 			"dn": "umc:category:umc",
 			"entries": [cat["id"] for cat in categories if cat["id"] not in ["_favorites_", "apps"]]
@@ -374,6 +374,7 @@ class UMCPortal(Portal):
 				"en_US": "Univention Management Console",
 			},
 			"defaultLinkTarget": "embedded",
+			"ensureLogin": True,
 			"categories": category_dns,
 			"content": content
 		}

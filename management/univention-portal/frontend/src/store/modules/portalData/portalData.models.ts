@@ -103,6 +103,7 @@ export interface Portal {
     categories: string[],
     logo: string | null,
     showUmc: boolean,
+    ensureLogin: boolean,
     content: PortalContent,
   }
 

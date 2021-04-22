@@ -41,6 +41,7 @@ import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 import Portal from '@/views/Portal.vue';
 
 import { getCookie } from '@/jsHelper/tools';
+import { login } from '@/jsHelper/login';
 import { mapGetters } from 'vuex';
 
 export default defineComponent({
@@ -63,10 +64,13 @@ export default defineComponent({
       await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
     }
     this.$store.dispatch('activateLoadingState');
-    await this.$store.dispatch('loadPortal', {
+    const answer = await this.$store.dispatch('loadPortal', {
       adminMode: false,
       waitForChange: true,
     });
+    if (answer.ensureLogin && !this.userState.username) {
+      login(this.userState);
+    }
     this.$store.dispatch('deactivateLoadingState');
   },
 });

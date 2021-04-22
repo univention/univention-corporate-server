@@ -35,6 +35,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       ref="portalHeaderH1"
       class="portal-header__left"
       tabindex="0"
+      :aria-label="ariaLabelPortalHeader"
       @click="goHome"
       @keydown.enter="goHome"
     >
@@ -43,7 +44,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         id="portal-header-logo"
         :src="portalLogo"
         class="portal-header__left-image"
-        alt="Portal logo"
+        :alt="$localized(portalName)"
       >
       <h1 class="portal-header__portal-name">
         {{ $localized(portalName) }}
@@ -68,14 +69,14 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="portal-header__right"
     >
       <div>
-        Edit mode
+       {{ ariaLabelEditmode }}
       </div>
       <header-button
-        aria-label="Button for Edit mode"
+        :aria-label="ariaLabelStartEditMode"
         icon="settings"
       />
       <header-button
-        aria-label="Stop edit mode"
+        :aria-label="ariaLabelStopEditmode"
         icon="x"
         @click="stopEditMode"
       />
@@ -87,19 +88,19 @@ License with the Debian GNU/Linux or Univention distribution in file
       <header-button
         ref="searchButton"
         data-test="searchbutton"
-        aria-label="Button for Searchbar"
+        :aria-label="ariaLabelSearch"
         icon="search"
         @click="dismissBubble"
       />
       <header-button
         data-test="bellbutton"
-        aria-label="Open notifications"
+        :aria-label="ariaLabelNotifications"
         icon="bell"
         @click="dismissBubble"
       />
       <header-button
         data-test="navigationbutton"
-        aria-label="Button for navigation"
+        :aria-label="ariaLabelMenu"
         icon="menu"
         @click="dismissNotification('menu')"
         @keydown.tab.exact.prevent="activeMenuButton ? dismissNotification('menu') : focusIntoSideNavIfOpen()"
@@ -126,7 +127,7 @@ import HeaderTab from '@/components/navigation/HeaderTab.vue';
 import NotificationBubble from '@/components/globals/NotificationBubble.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
-
+import Translate from '@/i18n/Translate.vue';
 import notificationMixin from '@/mixins/notificationMixin.vue';
 
 export default defineComponent({
@@ -140,6 +141,7 @@ export default defineComponent({
   },
   mixins: [
     notificationMixin,
+    Translate,
   ],
   computed: {
     ...mapGetters({
@@ -150,6 +152,27 @@ export default defineComponent({
       editMode: 'portalData/editMode',
       activeButton: 'navigation/getActiveButton',
     }),
+    ariaLabelPortalHeader(): string {
+      return `${this.translateLabel('GO_TO')} ${this.$localized(this.portalName)}`;
+    },
+    ariaLabelStartEditMode(): string {
+      return `${this.translateLabel('OPEN')} ${this.translateLabel('EDIT_MODE')} ${this.translateLabel('SIDEBAR')}`;
+    },
+    ariaLabelStopEditmode(): string {
+      return `${this.translateLabel('STOP')} ${this.translateLabel('EDIT_MODE')}`;
+    },
+    ariaLabelEditmode(): string {
+      return `${this.translateLabel('EDIT_MODE')}`;
+    },
+    ariaLabelSearch(): string {
+      return `${this.translateLabel('SEARCH')}`;
+    },
+    ariaLabelNotifications(): string {
+      return `${this.translateLabel('NOTIFCATIONS')}`;
+    },
+    ariaLabelMenu(): string {
+      return `${this.translateLabel('MENU')}`;
+    },
   },
   methods: {
     goHome(): void {

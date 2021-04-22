@@ -73,7 +73,16 @@ const catalog = {
   REMOVE: _('Remove'),
   UPLOAD: _('Upload'),
   SELECT_FILE: _('Select file'),
-  SHOW_UMC: _('Show local UMC modules'),
+  GO_TO: _('Go to'),
+  START: _('Start'),
+  STOP: _('Stop'),
+  OPEN: _('Open'),
+  EDIT_MODE: _('Edit mode'),
+  SIDEBAR: _('sidebar'),
+  SEARCH: _('search'),
+  NOTIFCATIONS: _('Notifications'),
+  MENU: _('Menu'),
+  SHOW_UMC: _('Show local UMC modules')
 };
 
 export { catalog };

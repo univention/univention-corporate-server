@@ -43,10 +43,11 @@ License with the Debian GNU/Linux or Univention distribution in file
       @focus="setFocusStyleToParent()"
       @blur="removeFocusStyleFromParent()"
     >
+      <!-- Alt-Tag should be empty, since it's not necessary for screenreader users -->
       <img
         :src="logo"
         onerror="this.src='./questionMark.svg'"
-        :alt="`${tabLabel} logo`"
+        alt=""
         class="header-tab__logo"
       >
       <span
@@ -107,10 +108,12 @@ export default defineComponent({
   },
   computed: {
     ariaLabelClose():string {
+      // TODO Screenreader Translations
       return ` ${this.tabLabel}: Close Tab.`;
     },
     ariaLabelFocus():string {
-      return ` ${this.tabLabel}: To Focus press Enter`; // Better naming?
+      // TODO Screenreader Translations
+      return ` ${this.tabLabel}: To Focus press Enter`;
     },
   },
   mounted() {

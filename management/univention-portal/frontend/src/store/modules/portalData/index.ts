@@ -49,6 +49,7 @@ const portalData: PortalModule<PortalDataState> = {
         categories: [],
         logo: null,
         showUmc: false,
+        ensureLogin: false,
         content: [],
       },
       entries: [],

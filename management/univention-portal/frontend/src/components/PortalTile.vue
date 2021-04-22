@@ -33,6 +33,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       :href="link"
       :target="anchorTarget"
       :aria-describedby="createID()"
+      :aria-label="$localized(title)"
       class="portal-tile"
       data-test="tileLink"
       @mouseover="editMode || showTooltip()"
@@ -50,10 +51,11 @@ License with the Debian GNU/Linux or Univention distribution in file
           'portal-tile__box', { 'portal-tile__box--dragable': editMode }
         ]"
       >
+      <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
         <img
           :src="pathToLogo || './questionMark.svg'"
           onerror="this.src='./questionMark.svg'"
-          :alt="`Logo ${$localized(title)}`"
+          alt=""
           class="portal-tile__img"
         >
       </div>
@@ -183,6 +185,7 @@ export default defineComponent({
       console.log('editTile');
     },
     createID() {
+      console.log(this.description);
       return `element-${this.$.uid}`;
     },
   },

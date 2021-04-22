@@ -1,3 +1,9 @@
+univention-portal (4.0.5-35) unstable; urgency=medium
+
+  * Bug #52941: Ensure login in UMC portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Apr 2021 09:12:54 +0200
+
 univention-portal (4.0.5-34) unstable; urgency=medium
 
   * Bug #51197: Re-add ensureLogin
