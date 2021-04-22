@@ -7,13 +7,12 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
-import os
+from __future__ import print_function, absolute_import
+
 from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
 from essential.mailclient import MailClient_SSL
 from essential.mail import random_email, create_shared_mailfolder
 
@@ -77,6 +76,7 @@ def main():  # type: () -> None
 						assert user_address in acls, '{} not in ACL list'.format(user_address)
 
 						udm.remove_object('mail/folder', dn=folder_dn)
+
 
 if __name__ == '__main__':
 	global timeout
