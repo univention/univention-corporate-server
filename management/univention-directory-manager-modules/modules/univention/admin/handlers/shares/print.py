@@ -74,21 +74,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		unique=True
 	),
-	'setQuota': univention.admin.property(
-		short_description=_('Enable quota support'),
-		long_description='',
-		syntax=univention.admin.syntax.boolean,
-	),
-	'pagePrice': univention.admin.property(
-		short_description=_('Price per page'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'jobPrice': univention.admin.property(
-		short_description=_('Price per print job'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
 }
 
 mapping = univention.admin.mapping.mapping()

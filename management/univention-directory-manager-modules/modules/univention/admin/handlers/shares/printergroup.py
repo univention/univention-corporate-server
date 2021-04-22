@@ -85,21 +85,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		unique=True
 	),
-	'setQuota': univention.admin.property(
-		short_description=_('Enable quota support'),
-		long_description='',
-		syntax=univention.admin.syntax.boolean,
-	),
-	'pagePrice': univention.admin.property(
-		short_description=_('Price per page'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'jobPrice': univention.admin.property(
-		short_description=_('Price per print job'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
 }
 
 layout = [
@@ -107,8 +92,6 @@ layout = [
 		Group(_('General printer group share settings'), layout=[
 			['name', 'spoolHost'],
 			['sambaName', 'groupMember'],
-			'setQuota',
-			['pagePrice', 'jobPrice'],
 		]),
 	]),
 ]
@@ -119,9 +102,6 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('groupMember', 'univentionPrinterGroupMember')
-mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)
-mapping.register('pagePrice', 'univentionPrinterPricePerPage', None, univention.admin.mapping.ListToString)
-mapping.register('jobPrice', 'univentionPrinterPricePerJob', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -132,20 +112,6 @@ class object(univention.admin.handlers.simpleLdap):
 		self.is_valid_printer_object()  # check all members
 
 	def _ldap_modlist(self):  # check for membership in a quota-printerclass
-		if self.hasChanged('setQuota') and self.info.get('setQuota', '0') == '0':
-			printergroups_filter = '(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1))'
-			group_cn = []
-			for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
-				for member_cn in [x.decode('UTF-8') for x in member_list.get('univentionPrinterGroupMember', [])]:
-					if member_cn == self.info['name']:
-						group_cn.append(member_list['cn'][0].decode('UTF-8'))
-			if group_cn:
-				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
-		elif self.info.get('setQuota', None) == '1' and self.info.get('spoolHost'):
-			for member_cn in self.info['groupMember']:
-				if not self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(|%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']), escape_filter_chars(member_cn))):
-					raise univention.admin.uexceptions.leavePrinterGroup(_('%s is disabled for quota support. ') % member_cn)
-
 		if self.hasChanged('groupMember'):
 			self.is_valid_printer_object()  # check all members
 		return univention.admin.handlers.simpleLdap._ldap_modlist(self)

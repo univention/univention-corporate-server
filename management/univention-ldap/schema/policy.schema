@@ -810,23 +810,23 @@ objectClass ( 1.3.6.1.4.1.10176.1000.20.2.1 NAME 'univentionPolicyAutoStart'
 # 1.3.6.1.4.1.10176.1000.21 (Print Quota) $
 
 attributetype ( 1.3.6.1.4.1.10176.1000.21.1.1 NAME 'univentionPrintQuotaGroups'
-        DESC 'Printquota for Groups'
+        DESC 'Deprecated: Printquota for Groups'
         EQUALITY caseExactMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1000.21.1.2 NAME 'univentionPrintQuotaUsers'
-        DESC 'Printquota for Users'
+        DESC 'Deprecated: Printquota for Users'
         EQUALITY caseExactMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1000.21.1.3 NAME 'univentionPrintQuotaGroupsPerUsers'
-	DESC 'Printquota for Groups per Users'
+	DESC 'Deprecated: Printquota for Groups per Users'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 objectclass ( 1.3.6.1.4.1.10176.1000.21.2.1 NAME 'univentionPolicySharePrintQuota'
 	SUP 'univentionPolicy' STRUCTURAL
-	DESC 'Update Policy'
+	DESC 'Deprecated: Update Policy'
 	MAY ( univentionPrintQuotaGroups $ univentionPrintQuotaUsers $ univentionPrintQuotaGroupsPerUsers))
 
 # $OID: 1.3.6.1.4.1.10176.1000.22 (Mail Quota) $

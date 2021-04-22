@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-7) unstable; urgency=medium
+
+  * Bug #51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 21:14:17 +0200
+
 univention-printserver (13.0.2-6) unstable; urgency=medium
 
   * Bug #52437: Increment joinscript version by 10 relative to 4.4-7

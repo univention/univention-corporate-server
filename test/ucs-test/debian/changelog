@@ -1,3 +1,9 @@
+ucs-test (10.0.5-4) unstable; urgency=medium
+
+  * Bug #51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 22:12:48 +0200
+
 ucs-test (10.0.5-3) unstable; urgency=low
 
   * Bug #53111: disable test in S4 environment

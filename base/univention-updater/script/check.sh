@@ -273,7 +273,7 @@ update_check_old_packages () {
 	return 1
 }
 
-# Bug #51497 #51973 #31048 #51655 #51955 #51982
+# Bug #51497 #51973 #31048 #51655 #51955 #51982 #51482
 declare -a legacy_ocs_structural=(
 	# UCC:
 	'(structuralObjectClass=univentionCorporateClient)'
@@ -291,6 +291,7 @@ declare -a legacy_ocs_auxiliary=(
 )
 declare -a obsolete_ocs_structural=(
 	'(structuralObjectClass=univentionAdminUserSettings)'
+	'(structuralObjectClass=univentionPolicySharePrintQuota)'
 	# UCS TCS:
 	'(structuralObjectClass=univentionPolicyAutoStart)'
 	'(structuralObjectClass=univentionPolicyThinClient)'

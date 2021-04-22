@@ -4758,7 +4758,6 @@ class univentionAdminModules(select):
 		('policies/masterpackages', 'Policy: Packages for Primary/Backup Nodes'),
 		('policies/memberpackages', 'Policy: Packages for Managed Nodes'),
 		('policies/nfsmounts', 'Policy: NFS mounts'),
-		('policies/print_quota', 'Policy: Print Quota'),
 		('policies/printserver', 'Policy: Print Server'),
 		('policies/pwhistory', 'Policy: Password Policy'),
 		('policies/registry', 'Policy: Univention Configuration Registry'),

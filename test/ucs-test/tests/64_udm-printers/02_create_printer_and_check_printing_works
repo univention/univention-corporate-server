@@ -26,8 +26,6 @@ import subprocess
 
 PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
-printquota_installed = utils.package_installed("univention-printquota")
-
 
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
@@ -41,8 +39,6 @@ if __name__ == '__main__':
 		password = ucr.get('tests/domainadmin/pwd', 'univention')
 
 		spoolhost = '.'.join([ucr['hostname'], ucr['domainname']])
-		## if setQuota=1 and target host doesn't have univention-printquota, then lpadmin fails in cups-printers listener
-		setquota = random.choice(['0', '1']) if printquota_installed else '0'
 		acltype = random.choice(['allow all', 'allow'])
 
 		properties = {
@@ -54,9 +50,6 @@ if __name__ == '__main__':
 			'model': 'hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd',
 			'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
 			'sambaName': uts.random_name(),
-			'setQuota': setquota,
-			'pagePrice': uts.random_int(bottom_end=1, top_end=999),
-			'jobPrice': uts.random_int(bottom_end=1, top_end=999),
 			'ACLtype': acltype,
 			'ACLUsers': admin_dn,
 			'ACLGroups': 'cn=Printer Admins,cn=groups,%s' % (ucr.get('ldap/base'),),
@@ -79,9 +72,6 @@ if __name__ == '__main__':
 				'univentionPrinterACLtype': [properties['ACLtype']],
 				'univentionPrinterLocation': [properties['location']],
 				'univentionPrinterModel': [properties['model']],
-				'univentionPrinterPricePerJob': [properties['jobPrice']],
-				'univentionPrinterPricePerPage': [properties['pagePrice']],
-				'univentionPrinterQuotaSupport': [properties['setQuota']],
 				'univentionPrinterSambaName': [properties['sambaName']],
 				'univentionPrinterSpoolHost': [properties['spoolHost']],
 				'univentionPrinterURI': [properties['uri'].replace(' ', '')],

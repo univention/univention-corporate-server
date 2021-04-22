@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-2) unstable; urgency=medium
+
+  * Bug 51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 21:14:24 +0200
+
 univention-ldap (16.0.7-1) unstable; urgency=medium
 
   * Bug #52280: migrate scripts to Python 3

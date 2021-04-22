@@ -1,3 +1,9 @@
+univention-updater (15.0.3-42) unstable; urgency=medium
+
+  * Bug #51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 21:44:30 +0200
+
 univention-updater (15.0.3-41) unstable; urgency=medium
 
   * Bug #53034: Block update for postgresql-9.4

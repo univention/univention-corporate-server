@@ -67,13 +67,6 @@
 		zwischen räumlich benachbarten Druckern ermöglicht.
 	</para>
 	<para>
-		Mit dem Druck-Quota-System, das über das
-		Paket <package>univention-printquota</package> installiert wird, kann eine
-		Erweiterung zur Ermittlung angefallener Druckkosten und zur
-		Limitierung zu druckender Seiten installiert werden. Die Einrichtung und Konfiguration ist
-		in der erweiterten Dokumentation beschrieben <biblioref linkend="ext-print-doc"/>.
-	</para>
-	<para>
 		Es können auch Druckerfreigaben von Windows-Systemen in den
 		CUPS-Druckserver integriert werden, dies ist in
 		<xref linkend="print::shares"/> dokumentiert.
@@ -283,35 +276,6 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Quota aktivieren</entry>
-					<entry>
-						<para>
-							Wurden Quota für den Drucker aktiviert, greifen die
-							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
-						</para>
-						<para>
-							Hierfür muss das Druck-Quota-System installiert sein, siehe <biblioref
-							linkend="ext-print-doc"/>.
-						</para>
-					</entry>
-				</row>
-
-				<row>
-					<entry>Preis pro Druckauftrag</entry>
-					<entry>
-						<para>
-							Dem Benutzer wird für jeden Druckauftrag der in diesem Eingabefeld
-							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
-							Benutzers aufsummiert und dienen zur genauen Abrechnung von
-							Druckkosten. Wird kein Wert angegeben, findet keine
-							Druckkostenberechnung statt.
-						</para>
-						<para>
-							Hierfür muss das Druck-Quota-System installiert sein.
-						</para>
-					</entry>
-				</row>
-				<row>
 					<entry>Standort</entry>
 					<entry>
 						Diese Angabe wird von einigen Anwendungen bei der Druckerauswahl
@@ -470,48 +434,6 @@
 						Durch diese Liste werden Drucker der Druckergruppe zugeordnet.
 					</entry>
 				</row>
-				<row>
-					<entry>Quota aktivieren</entry>
-					<entry>
-						<para>
-							Wurden Quota für die Druckergruppe aktiviert, gelten die
-							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
-						</para>
-						<para>
-							Hierfür muss das Druck-Quota-System installiert sein, siehe <biblioref linkend="ext-print-doc"/>.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Preis pro Seite</entry>
-					<entry>
-						<para>
-							Dem Benutzer wird für jede gedruckte Seite der in diesem Eingabefeld
-							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
-							Benutzers aufsummiert und dienen zur genauen Abrechnung von
-							Druckkosten. Wird kein Wert angegeben, findet keine
-							Druckkostenberechnung statt.
-						</para>
-						<para>
-							Hierfür muss das Druck-Quota-System installiert sein.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Preis pro Druckauftrag</entry>
-					<entry>
-						<para>
-							Dem Benutzer wird für jeden Druckauftrag der in diesem Eingabefeld
-							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
-							Benutzers aufsummiert und dienen zur genauen Abrechnung von
-							Druckkosten. Wird kein Wert angegeben, findet keine
-							Druckkostenberechnung statt.
-						</para>
-						<para>
-							Hierfür muss das Druck-Quota-System installiert sein.
-						</para>
-					</entry>
-				</row>
 			</tbody>
 		</tgroup>
 	</table>
@@ -531,18 +453,12 @@
 	<para>
 		Auf der Startseite des Moduls befindet sich eine Suchmaske, mit der die
 		vorhandenen Drucker ausgewählt werden können. In der Ergebnisliste wird zu dem
-		jeweiligen Drucker der Server, der Name, der Status, die
-		Druck-Quota-Eigenschaften, der Standort und die Beschreibung angezeigt. Durch
+		jeweiligen Drucker der Server, der Name, der Status,
+		der Standort und die Beschreibung angezeigt. Durch
 		Markieren der Drucker und Ausführen einer der beiden Aktionen
 		<guimenu>deaktivieren</guimenu> bzw. <guimenu>aktivieren</guimenu>, kann der Status
 		mehrerer Drucker gleichzeitig geändert werden.
 	</para>
-
-	<para>
-	  Die Konfiguration der Druck-Quota-Einstellungen ist in der erweiterten Dokumentation
-	  beschrieben <biblioref linkend="ext-print-doc"/>.
-	</para>
-
 	<para>
 		Durch den Klick auf einen Druckernamen können Details zu dem ausgewählten
 		Drucker angezeigt werden. Zu den angezeigten Informationen gehört auch eine Liste

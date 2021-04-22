@@ -125,14 +125,6 @@
 	  werden und der nächste freie Drucker verwendet wird. Die Benutzer müssen so nicht prüfen, ob
 	  ein Drucker gerade in Verwendung ist.
 	</para>
-
-	<para>
-      Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro
-      Benutzer die angefallenen Druckkosten ermittelt werden. Dies kann auch
-      mit einer Limitierung von zu druckenden Seiten verbunden werden. Über die
-      App <emphasis>Print Server Quota</emphasis> können Druckquotas auch auf Benutzergruppenbasis
-      ausgedehnt werden.
-	</para>
   </section>
 
   <section id="engineering:db">

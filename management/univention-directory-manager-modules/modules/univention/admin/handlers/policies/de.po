@@ -30,19 +30,13 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-09-25 01:35+0200\n"
-"PO-Revision-Date: 2011-10-29 22:19+0200\n"
+"PO-Revision-Date: 2021-04-22 21:27+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:169
-#: modules/univention/admin/handlers/policies/print_quota.py:175
-#, python-format
-msgid "%s is not valid. "
-msgstr "%s ist nicht erlaubt. "
 
 #: modules/univention/admin/handlers/policies/policy.py:52
 msgid ""
@@ -447,7 +441,6 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/admin_container.py:101
 #: modules/univention/admin/handlers/policies/dhcp_routing.py:102
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:109
-#: modules/univention/admin/handlers/policies/print_quota.py:122
 #: modules/univention/admin/handlers/policies/memberpackages.py:110
 #: modules/univention/admin/handlers/policies/maintenance.py:150
 #: modules/univention/admin/handlers/policies/umc.py:103
@@ -540,10 +533,6 @@ msgstr "Grundeinstellungen - Paketpflege"
 #: modules/univention/admin/handlers/policies/pwhistory.py:119
 msgid "General passwords settings"
 msgstr "Grundeinstellungen - Passwort"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:123
-msgid "General print quota settings"
-msgstr "Grundeinstellungen - Druck-Quota"
 
 #: modules/univention/admin/handlers/policies/printserver.py:103
 msgid "General print server settings"
@@ -785,7 +774,6 @@ msgstr "NFS-Freigaben einbinden"
 #: modules/univention/admin/handlers/policies/admin_container.py:77
 #: modules/univention/admin/handlers/policies/dhcp_routing.py:78
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:79
-#: modules/univention/admin/handlers/policies/print_quota.py:85
 #: modules/univention/admin/handlers/policies/memberpackages.py:79
 #: modules/univention/admin/handlers/policies/maintenance.py:81
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:82
@@ -971,10 +959,6 @@ msgstr "Richtlinie: Passwort"
 msgid "Policy: Packages for Primary/Backup Nodes"
 msgstr "Richtlinie: Pakete für Primary/Backup Nodes"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:70
-msgid "Policy: Print quota"
-msgstr "Richtlinie: Druck-Quota"
-
 #: modules/univention/admin/handlers/policies/printserver.py:64
 msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
@@ -1018,44 +1002,6 @@ msgstr "Primary/Backup Node-Paketerichtlinien"
 #: modules/univention/admin/handlers/policies/masterpackages.py:67
 msgid "Primary/Backup Node packages policy"
 msgstr "Primary/Backup Node-Paketerichtlinie"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:73
-msgid "Print Quota"
-msgstr "Druck-Quota"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:74
-msgid "Print Quota for users/groups per printer"
-msgstr "Druck-Quota pro Benutzer/Gruppe für einen Drucker"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:122
-msgid "Print quota"
-msgstr "Druck-Quota"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:56
-#: modules/univention/admin/handlers/policies/print_quota.py:94
-#: modules/univention/admin/handlers/policies/print_quota.py:126
-msgid "Print quota for groups"
-msgstr "Druck-Quota für Gruppen"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:58
-#: modules/univention/admin/handlers/policies/print_quota.py:100
-#: modules/univention/admin/handlers/policies/print_quota.py:125
-msgid "Print quota for groups per user"
-msgstr "Druck-Quota für Gruppen pro Benutzer"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:57
-#: modules/univention/admin/handlers/policies/print_quota.py:106
-#: modules/univention/admin/handlers/policies/print_quota.py:124
-msgid "Print quota for users"
-msgstr "Druck-Quota für Benutzer"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:72
-msgid "Print quota policies"
-msgstr "Druck-Quota für Benutzer-Richtlinien"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:71
-msgid "Print quota policy"
-msgstr "Druck-Quota-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/printserver.py:52
 #: modules/univention/admin/handlers/policies/printserver.py:67
@@ -1180,18 +1126,6 @@ msgstr "Serverkennung"
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:117
 msgid "Server name"
 msgstr "Servername"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:95
-msgid "Soft and hard limits for each allowed group"
-msgstr "Soft- und Hard-Limit für jede berechtigte Gruppe"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:107
-msgid "Soft and hard limits for each allowed user"
-msgstr "Soft- und Hard-Limit für jeden berechtigten Benutzer"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:101
-msgid "Soft and hard limits for each member of allowed group"
-msgstr "Soft- und Hard-Limit für jedes Mitglied der berechtigten Gruppe"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:53
 #: modules/univention/admin/handlers/policies/share_userquota.py:91

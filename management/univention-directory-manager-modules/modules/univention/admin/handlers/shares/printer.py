@@ -126,21 +126,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 		unique=True
 	),
-	'setQuota': univention.admin.property(
-		short_description=_('Enable quota support'),
-		long_description='',
-		syntax=univention.admin.syntax.boolean,
-	),
-	'pagePrice': univention.admin.property(
-		short_description=_('Price per page'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'jobPrice': univention.admin.property(
-		short_description=_('Price per print job'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
 	'ACLtype': univention.admin.property(
 		short_description=_('Access control'),
 		long_description=_('Access list can allow or deny listed users and groups.'),
@@ -169,8 +154,6 @@ layout = [
 			'uri',
 			['producer', 'model'],
 			['location', 'description'],
-			['setQuota', ],
-			['pagePrice', 'jobPrice'],
 		]),
 	], help_text=_('For information about how to manage Windows printer drivers and troubleshooting, see <a href="https://help.univention.com/t/overview-windows-printer-driver-distribution-known-issues-and-workarounds/13387" target="_blank" rel="noreferrer noopener">here</a>.')),
 	Tab(_('Access control'), _('Access control for users and groups'), layout=[
@@ -213,9 +196,6 @@ mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
 mapping.register('uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI, encoding='ASCII')
 mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
-mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)
-mapping.register('pagePrice', 'univentionPrinterPricePerPage', None, univention.admin.mapping.ListToString)
-mapping.register('jobPrice', 'univentionPrinterPricePerJob', None, univention.admin.mapping.ListToString)
 mapping.register('ACLUsers', 'univentionPrinterACLUsers')
 mapping.register('ACLGroups', 'univentionPrinterACLGroups')
 mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -251,18 +231,6 @@ class object(univention.admin.handlers.simpleLdap):
 		# cut off '/' at the beginning of the destination if it exists and protocol is file:/
 		if self['uri'] and self['uri'][0] == 'file:/' and self['uri'][1][0] == '/':
 			self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
-
-	def _ldap_pre_modify(self):  # check for membership in a quota-printerclass
-		super(object, self)._ldap_pre_modify()
-		if self.hasChanged('setQuota') and self.info['setQuota'] == '0' and self.info.get('spoolHost'):
-			printergroups_filter = '(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
-			group_cn = []
-			for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
-				for member_cn in [x.decode('UTF-8') for x in member_list.get('univentionPrinterGroupMember', [])]:
-					if member_cn == self.info['name']:
-						group_cn.append(member_list['cn'][0].decode('UTF-8'))
-			if group_cn:
-				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 
 	def _ldap_pre_remove(self):  # check for last member in printerclass
 		super(object, self)._ldap_pre_remove()

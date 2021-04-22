@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.8-2) unstable; urgency=medium
+
+  * Bug #51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 21:14:44 +0200
+
 univention-directory-manager-modules (15.0.8-1) unstable; urgency=medium
 
   * Bug #52984: UDM CLI: support modify --ignore_not_exists

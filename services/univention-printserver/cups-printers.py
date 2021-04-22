@@ -56,7 +56,7 @@ ldap_base = listener.configRegistry['ldap/base']
 name = 'cups-printers'
 description = 'Manage CUPS printer configuration'
 filter = '(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
-attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
+attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
 
 EMPTY = (b'',)
 reload_samba_in_postrun = None
@@ -260,8 +260,6 @@ def handler(dn, new, old):
 		args = []  # lpadmin args
 
 		# description = new.get('univentionPrinterSambaName', [b''])[0].decode('UTF-8')
-		# page_price = int(new.get('univentionPrinterPricePerPage', [b'0'])[0])
-		# job_price = int(new.get('univentionPrinterPricePerJob', [b'0'])[0])
 
 		if new.get('univentionPrinterACLtype'):
 			if new['univentionPrinterACLtype'][0] == b'allow all':

@@ -16,9 +16,7 @@
 	<para>
 		&ucsUCS; includes a print system, which can also be used to realize
 		complex environments. Printers and printer groups can be created and
-		configured conveniently in &ucsUMC;. Extensions for cost
-		calculation and page limitation can be installed subsequently using
-		the print quota system.
+		configured conveniently in &ucsUMC;.
 	</para>
 	<para>
 		The print services are based on <emphasis>CUPS (Common Unix Printing
@@ -65,13 +63,6 @@
 		CUPS offers the possibility of defining printer groups. The included
 		printers are used employed alternating, which allows automatic load
 		distribution between neighboring printers.
-	</para>
-	<para>
-		The print quota system, which can be installed using
-		the <package>univention-printquota</package> package, can be used to install an
-		expansion for recording incurred printer costs and for limiting the
-		number of pages to be printed. The setting and configuration is documented in the extended
-		documentation <biblioref linkend="ext-print-doc"/>.
 	</para>
 	<para>
 		Print shares from Windows systems can also be integrated in the CUPS
@@ -275,46 +266,6 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Enable quota support</entry>
-					<entry>
-						<para>
-							If quota were activated for this printer, the quota settings on the
-							<guimenu>[Print Quota]</guimenu> policy apply.
-						</para>
-						<para>
-							The print quota system needs to be installed for this, see <biblioref linkend="ext-print-doc"/>.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Price per page</entry>
-					<entry>
-						<para>
-							The user is charged the value given in this input field for every page
-							printed. The incurred costs are summarized in the user's account and
-							used for the accurate calculation of print costs. If no value is
-							specified, print costs will not be calculated.
-						</para>
-						<para>
-							The print quota system needs to be installed for this.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Price per print job</entry>
-					<entry>
-						<para>
-							The user is charged the value given in this input field for every
-							print job. The incurred costs are summarized in the user's account and
-							used for the accurate calculation of print costs. If no value is
-							specified, print costs will not be calculated.
-						</para>
-						<para>
-							The print quota system needs to be installed for this.
-						</para>
-					</entry>
-				</row>
-				<row>
 					<entry>Location</entry>
 					<entry>
 						This data is displayed by some applications when selecting the printer. It
@@ -468,37 +419,6 @@
 						This list is used to assign printers to the printer group.
 					</entry>
 				</row>
-				<row>
-					<entry>Enable quota support</entry>
-					<entry>
-						<para>
-							If quota were activated for this printer group, the quota settings on
-							the <guimenu>[Print Quota]</guimenu> tab apply.
-						</para>
-						<para>
-							The print quota system needs to be installed for this, see <biblioref linkend="ext-print-doc"/>.
-						</para>
-					</entry>
-				</row>
-
-				<row>
-					<entry>Price per page</entry>
-					<entry>
-						The user is charged the value given in this input field for every page
-						printed. The incurred costs are summarized in the user's account and
-						used for the accurate calculation of print costs. If no value is
-						specified, print costs will not be calculated.
-					</entry>
-				</row>
-				<row>
-					<entry>Price per print job</entry>
-					<entry>
-						The user is charged the value given in this input field for every
-						print job. The incurred costs are summarized in the user's account and
-						used for the accurate calculation of print costs. If no value is
-						specified, print costs will not be calculated.
-					</entry>
-				</row>
 			</tbody>
 		</tgroup>
 	</table>
@@ -519,17 +439,11 @@
 	<para>
 		The start page of the module contains a search mask with which the available
 		printers can be selected. The results list displays the server, name, status,
-		print quota properties, location and description of the respective
+		location and description of the respective
 		printer. The status of more than one printer can be changed simultaneously by
 		selecting the printers and running either the <guimenu>deactivate</guimenu> or
 		<guimenu>activate</guimenu> function.
 	</para>
-
-	<para>
-	  The configuration of the print quota settings is documented in the extended documentation
-	  <biblioref linkend="ext-print-doc"/>.
-	</para>
-
 	<para>
 		Clicking on the printer name displays details of the selected printer. The
 		information displayed includes a list of the print jobs currently in the

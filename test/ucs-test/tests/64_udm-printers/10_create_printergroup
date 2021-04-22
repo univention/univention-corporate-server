@@ -22,8 +22,6 @@ import random
 
 PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
-printquota_installed = utils.package_installed("univention-printquota")
-
 
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
@@ -34,8 +32,6 @@ if __name__ == '__main__':
 		ucr.load()
 
 		spoolHost = random_fqdn(ucr)
-		# if setQuota=1 and target host doesn't have univention-printquota, then lpadmin fails in cups-printers listener
-		setQuota = random.choice(['0', '1']) if printquota_installed else '0'
 
 		printer_properties1 = {
 			'name': uts.random_name(),
@@ -43,7 +39,6 @@ if __name__ == '__main__':
 			'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
 			'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
 			'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
-			'setQuota': setQuota,
 		}
 
 		print('*** Create shares/printer object')
@@ -58,7 +53,6 @@ if __name__ == '__main__':
 			'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
 			'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
 			'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
-			'setQuota': setQuota,
 		}
 
 		print('*** Create shares/printer object')
@@ -72,9 +66,6 @@ if __name__ == '__main__':
 			'spoolHost': spoolHost,
 			'groupMember': [printer_properties1['name'], printer_properties2['name']],
 			'sambaName': uts.random_name(),
-			'setQuota': setQuota,
-			'pagePrice': uts.random_int(bottom_end=1, top_end=999),
-			'jobPrice': uts.random_int(bottom_end=1, top_end=999),
 		}
 
 		print('*** Create shares/printergroup object')
@@ -88,9 +79,6 @@ if __name__ == '__main__':
 			{
 				'cn': [printergroup_properties['name']],
 				'univentionObjectType': ['shares/printergroup'],
-				'univentionPrinterPricePerJob': [printergroup_properties['jobPrice']],
-				'univentionPrinterPricePerPage': [printergroup_properties['pagePrice']],
-				'univentionPrinterQuotaSupport': [printergroup_properties['setQuota']],
 				'univentionPrinterSambaName': [printergroup_properties['sambaName']],
 				'univentionPrinterSpoolHost': [printergroup_properties['spoolHost']],
 				'univentionPrinterGroupMember': printergroup_properties['groupMember'],

@@ -59,17 +59,17 @@ attributetype ( 1.3.6.1.4.1.10176.1002.1.5 NAME 'univentionPrinterSambaName'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1002.1.8 NAME 'univentionPrinterQuotaSupport'
-	DESC 'Enable Quota'
+	DESC 'Deprecated: Enable Quota'
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1002.1.9 NAME 'univentionPrinterPricePerPage'
-	DESC 'Price per page'
+	DESC 'Deprecated: Price per page'
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1002.1.10 NAME 'univentionPrinterPricePerJob'
-	DESC 'Price per printjob'
+	DESC 'Deprecated: Price per printjob'
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
