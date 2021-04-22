@@ -68,7 +68,7 @@ export default defineComponent({
       adminMode: false,
       waitForChange: true,
     });
-    if (answer.ensureLogin && !this.userState.username) {
+    if (answer.portal && answer.portal.ensureLogin && !this.userState.username) {
       login(this.userState);
     }
     this.$store.dispatch('deactivateLoadingState');

@@ -39,6 +39,11 @@ const tileClickMixin = {
     linkTarget: {
       type: String,
     },
+    pathToLogo: {
+      type: String,
+      required: false,
+      default: './questionMark.svg',
+    },
     internalFunction: {
       type: Function,
       required: false,

@@ -103,11 +103,6 @@ export default defineComponent({
       type: Object as PropType<Description>,
       required: true,
     },
-    pathToLogo: {
-      type: String,
-      required: false,
-      default: './questionMark.svg',
-    },
     backgroundColor: {
       type: String,
       default: 'var(--color-grey40)',
