@@ -933,22 +933,23 @@ start_portal_in_local_firefox () {
 	sleep 1
 }
 
-postgres91_update () {
+postgres94_update () {
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
 	service postgresql stop
-	rm -rf /etc/postgresql/9.4
-	apt-get install --reinstall postgresql-9.4
-	pg_dropcluster 9.4 main --stop
+	rm -rf /etc/postgresql/9.6
+	apt-get install -y --reinstall postgresql-9.6
+	pg_dropcluster 9.6 main --stop
 	service postgresql start
-	test -e /var/lib/postgresql/9.4/main && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.old
-	pg_upgradecluster 9.1 main
-	ucr commit /etc/postgresql/9.4/main/*
-	chown -R postgres:postgres /var/lib/postgresql/9.4
-	systemctl restart postgresql
+	test -e /var/lib/postgresql/9.6/main && mv /var/lib/postgresql/9.6/main /var/lib/postgresql/9.6/main.old
+	pg_upgradecluster 9.4 main
+	ucr commit /etc/postgresql/9.6/main/*
+	chown -R postgres:postgres /var/lib/postgresql/9.6
+	service postgresql restart
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
-	DEBIAN_FRONTEND='noninteractive'  univention-install --yes univention-postgresql-9.4
-	pg_dropcluster 9.1 main --stop
-	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes postgresql-9.1
+	DEBIAN_FRONTEND='noninteractive'  univention-install --yes univention-postgresql-9.6
+	pg_dropcluster 9.4 main --stop
+	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes postgresql-9.4
+	service postgresql restart
 }
 
 dump_systemd_journal () {
