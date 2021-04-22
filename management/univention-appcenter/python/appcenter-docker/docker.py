@@ -93,7 +93,7 @@ def access(image):
 		image_tag = 'latest'
 	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
 	username = password = ucr_get('uuid/license')
-	auth = b64encode(('%s:%s' % (username, password)).encode('ascii')).decode('ascii')
+	auth = b64encode(('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
 	request = urllib_request.Request(url, headers={'Authorization': 'Basic %s' % auth})
 	try:
 		urlopen(request)

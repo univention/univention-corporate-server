@@ -496,7 +496,7 @@ class Instance(umcm.Base, ProgressMixin):
 				value = setting.get_value(app, phase)
 				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
 					if value:
-						value = b64encode(value.encode('ascii')).decode('ascii')
+						value = b64encode(value.encode('utf-8')).decode('ascii')
 				values[setting.name] = value
 		return {
 			'autostart': autostart,
