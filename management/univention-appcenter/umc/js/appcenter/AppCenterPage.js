@@ -294,7 +294,7 @@ define([
 							})
 						);
 					}
-					this._applications = data.result.map((app) => new App(app));
+					this._applications = data.result.map((app) => new App(app)).sort((a1, a2) => a1.name.localeCompare(a2.name));
 					return this._applications;
 				}));
 			}

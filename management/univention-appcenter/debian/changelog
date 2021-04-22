@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-33) unstable; urgency=medium
+
+  * Bug #53098: Fix sorting of Apps in UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Apr 2021 15:26:54 +0200
+
 univention-appcenter (9.0.2-32) unstable; urgency=medium
 
   * Bug #51598: Fix base64 encoding
