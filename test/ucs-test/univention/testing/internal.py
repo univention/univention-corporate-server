@@ -161,8 +161,8 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 	"""
 	RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 	_CONVERTER = {
-		None: lambda _: None,
-		'': lambda _: None,
+		None: lambda _: float('inf'),
+		'': lambda _: float('inf'),
 	}
 
 	@classmethod
@@ -170,27 +170,27 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		"""
 		Parse UCS-version range and return two-tuple (operator, version)
 		>>> UCSVersion._parse('11.22')
-		(<built-in function eq>, (11, 22, None, None))
+		(<built-in function eq>, (11, 22, inf, inf))
 		>>> UCSVersion._parse('11.22-33')
-		(<built-in function eq>, (11, 22, 33, None))
+		(<built-in function eq>, (11, 22, 33, inf))
 		>>> UCSVersion._parse('11.22-33-44')
 		(<built-in function eq>, (11, 22, 33, 44))
 		>>> UCSVersion._parse('<1.2-3')
-		(<built-in function lt>, (1, 2, 3, None))
+		(<built-in function lt>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('<<1.2-3')
-		(<built-in function lt>, (1, 2, 3, None))
+		(<built-in function lt>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('<=1.2-3')
-		(<built-in function le>, (1, 2, 3, None))
+		(<built-in function le>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('=1.2-3')
-		(<built-in function eq>, (1, 2, 3, None))
+		(<built-in function eq>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('==1.2-3')
-		(<built-in function eq>, (1, 2, 3, None))
+		(<built-in function eq>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('>=1.2-3')
-		(<built-in function ge>, (1, 2, 3, None))
+		(<built-in function ge>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('>>1.2-3')
-		(<built-in function gt>, (1, 2, 3, None))
+		(<built-in function gt>, (1, 2, 3, inf))
 		>>> UCSVersion._parse('>1.2-3')
-		(<built-in function gt>, (1, 2, 3, None))
+		(<built-in function gt>, (1, 2, 3, inf))
 		"""
 		match = cls.RE_VERSION.match(ver)
 		if not match:
@@ -228,7 +228,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		skipped = 0
 		for part in self.ver[2:]:
 			skipped += 1
-			if part is not None:
+			if part != float('inf'):
 				ver += '%s%d' % ('-' * skipped, part)
 				skipped = 0
 		return '%s%s' % (rel, ver)
@@ -263,11 +263,13 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		False
 		>>> UCSVersion('>1.2-3-5').match(UCSVersion('1.2-3-4'))
 		False
+		>>> UCSVersion('>=1.2-3').match(UCSVersion('1.2-3-4'))
+		True
 		"""
 		parts = [
 			(other_ver, self_ver)
 			for self_ver, other_ver in zip(self.ver, other.ver)
-			if self_ver is not None and other_ver is not None]
+			if self_ver != float('inf') and other_ver != float('inf')]
 		return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
 
 
