@@ -313,6 +313,9 @@
 					The portal is now modularized and can be generously configured (<u:bug>52512</u:bug>, <u:bug>52125</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					The portal server can now serve multiple paths (&ucsUCRV; <envar>portal/paths</envar>). Consequently, different portal content can be served for different paths (<u:bug>52792</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					Links can now be localized, i.e. the tiles point to different URLs depending on the user's locale (<u:bug>45918</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
