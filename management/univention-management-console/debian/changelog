@@ -1,3 +1,9 @@
+univention-management-console (12.0.11-4) unstable; urgency=medium
+
+  * Bug #52941: /umc/ should now redirect to /univention/umc/ (portal)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Apr 2021 09:31:20 +0200
+
 univention-management-console (12.0.11-3) unstable; urgency=medium
 
   * Bug #52198: Fix translation of pwquality error messages
