@@ -37,6 +37,7 @@ dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector
 create_logfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad-status.log "root:adm" 640
+create_logfile /var/log/univention/connector-ad-mapping.log "root:adm" 640
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
 	univention-config-registry set connector/ad/mapping/group/grouptype?false
