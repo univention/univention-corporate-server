@@ -13,7 +13,7 @@ config = {
 	"ldap_uri": "ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port")),
 	"auth_mode": configRegistry.get("portal/auth-mode"),
 	"umc_session_url": "http://localhost/univention/get/session-info",
-	"default_domain_dn": "cn=domain,cn=portal,cn=portals,cn=univention,%s" % configRegistry.get("ldap/base"),
+	"default_domain_dn": configRegistry.get("portal/default-dn"),
 }
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

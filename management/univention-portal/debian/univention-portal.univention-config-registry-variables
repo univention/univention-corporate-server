@@ -25,6 +25,13 @@ Default=ucs
 Type=str
 Categories=portal
 
+[portal/default-dn]
+Description[de]=LDAP-DN des Portal-Objektes, das die Daten für das Portal beinhaltet.
+Description[en]=LDAP DN of the portal object holding the data for the portal.
+Default=cn=domain,cn=portal,cn=portals,cn=univention,@%@ldap/base@%@
+Type=str
+Categories=portal
+
 [portal/show-outdated-browser-warning]
 Description[de]=Wenn aktiviert, wird eine Warnung angezeigt, falls die benutze Browserversion zu alt ist.
 Description[en]=If activated, a warning is displayed if the browser version used is too old.

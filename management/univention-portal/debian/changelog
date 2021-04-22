@@ -1,3 +1,9 @@
+univention-portal (4.0.5-36) unstable; urgency=medium
+
+  * Bug #52512: Added UCRV for the portal DN
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Apr 2021 10:52:44 +0200
+
 univention-portal (4.0.5-35) unstable; urgency=medium
 
   * Bug #52941: Ensure login in UMC portal
