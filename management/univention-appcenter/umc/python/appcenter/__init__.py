@@ -37,9 +37,9 @@ import locale
 import time
 from contextlib import contextmanager
 import logging
-from base64 import encodestring
 from threading import Thread
 from json import load
+from base64 import b64decode, b64encode
 
 # related third party
 import notifier
@@ -496,7 +496,7 @@ class Instance(umcm.Base, ProgressMixin):
 				value = setting.get_value(app, phase)
 				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
 					if value:
-						value = encodestring(value).rstrip()
+						value = b64encode(value.encode('ascii')).decode('ascii')
 				values[setting.name] = value
 		return {
 			'autostart': autostart,
@@ -510,7 +510,7 @@ class Instance(umcm.Base, ProgressMixin):
 		for setting in app.get_settings():
 			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
 				if values.get(setting.name):
-					values[setting.name] = values[setting.name].decode('base64')
+					values[setting.name] = b64decode(values[setting.name]).decode('ascii')
 		configure = get_action('configure')
 		handler = UMCProgressHandler(progress)
 		handler.setLevel(logging.INFO)

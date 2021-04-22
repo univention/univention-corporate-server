@@ -42,7 +42,7 @@ from json import loads
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 import ssl
-from base64 import encodestring
+from base64 import b64encode
 from ipaddress import IPv4Network, IPv4Address
 import time
 
@@ -93,7 +93,7 @@ def access(image):
 		image_tag = 'latest'
 	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
 	username = password = ucr_get('uuid/license')
-	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
+	auth = b64encode(('%s:%s' % (username, password)).encode('ascii')).decode('ascii')
 	request = urllib_request.Request(url, headers={'Authorization': 'Basic %s' % auth})
 	try:
 		urlopen(request)
