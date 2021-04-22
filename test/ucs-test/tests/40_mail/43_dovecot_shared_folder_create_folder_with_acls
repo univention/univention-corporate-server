@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and remove a shared folders with ACLs with whitespace-containing group names
 ## tags: [apptest]
 ## exposure: dangerous
