@@ -7,19 +7,16 @@ import logging
 import operator
 import sys
 from time import time
-try:
-	from typing import Iterable, List, Mapping, Optional, Sequence, Tuple  # noqa F401
-except ImportError:
-	pass
+from typing import Iterable, List, Mapping, Optional, Tuple
 
 import univention.testing.format
 from univention.testing.coverage import Coverage
-from univention.testing.data import TestEnvironment, TestCase, TestResult, TestFormatInterface  # noqa F401
+from univention.testing.data import TestEnvironment, TestCase, TestResult, TestFormatInterface
 from univention.testing.errors import TestError
 from univention.testing.internal import setup_environment, setup_debug, LOG_BASE, get_sections, get_tests
 
 
-def parse_options(sections):  # type: (Sequence[str]) -> Tuple[argparse.Namespace, List[str]]
+def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str]]:
 	"""Parse command line options."""
 	parser = argparse.ArgumentParser()
 	parser.add_argument(
@@ -91,23 +88,23 @@ class TestSet(object):
 
 	"""Container for tests."""
 
-	def __init__(self, tests):  # type: (Mapping[str, Iterable[TestCase]]) -> None
+	def __init__(self, tests: Mapping[str, Iterable[str]]) -> None:
 		self.tests = tests
 		self.max_count = sum(1 for tests in tests.values() for test in tests)
-		self.test_environment = None  # type: Optional[TestEnvironment]
-		self.format = None  # type: Optional[TestFormatInterface]
+		self.test_environment: Optional[TestEnvironment] = None
+		self.format: Optional[TestFormatInterface] = None
 		self.prefix = ''
 
-	def set_environment(self, test_environment):  # type: (TestEnvironment) -> None
+	def set_environment(self, test_environment: TestEnvironment) -> None:
 		"""Set environment for running tests."""
 		self.test_environment = test_environment
 
-	def set_format(self, format):  # type: (str) -> None
+	def set_format(self, format: str) -> None:
 		"""Select output format."""
 		formatter = getattr(univention.testing.format, 'format_%s' % (format,))
 		self.format = formatter()
 
-	def set_prefix(self, prefix):  # type: (bool) -> None
+	def set_prefix(self, prefix: bool) -> None:
 		"""Enable or disable test numbering."""
 		if prefix:
 			count_width = len('%d' % (self.max_count,))
@@ -115,7 +112,7 @@ class TestSet(object):
 		else:
 			self.prefix = ''
 
-	def run_tests(self, filter_condition=False, dry_run=False, stop_on_failure=False):  # type: (bool, bool, bool) -> Optional[int]
+	def run_tests(self, filter_condition: bool = False, dry_run: bool = False, stop_on_failure: bool = False) -> Optional[int]:
 		"""Run selected tests."""
 		assert self.format
 		assert self.test_environment
@@ -158,7 +155,7 @@ class TestSet(object):
 		return 0
 
 
-def main():  # type: () -> Optional[int]
+def main() -> Optional[int]:
 	"""Run UCS test suite."""
 	all_sections = get_sections()
 

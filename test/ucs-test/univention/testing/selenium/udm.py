@@ -34,6 +34,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import time
+from typing import Any, Dict, Mapping, Optional  # noqa F401
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -50,15 +51,19 @@ _ = translator.translate
 class UDMBase(object):
 
 	def __init__(self, selenium):
+		# type: (Any) -> None
 		self.selenium = selenium
 
 	def _get_search_value(self, objectname):
+		# type: (Any) -> str
 		return objectname
 
 	def _get_grid_value(self, objectname):
+		# type: (Any) -> str
 		return objectname
 
 	def exists(self, objectname):
+		# type: (str) -> bool
 		print('*** check if object exists', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
@@ -72,6 +77,7 @@ class UDMBase(object):
 		return False
 
 	def open_details(self, objectname):
+		# type: (str) -> None
 		print('*** open detail page of object', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
@@ -79,16 +85,19 @@ class UDMBase(object):
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def close_details(self):
+		# type: () -> None
 		print('*** close the detailpage')
 		self.selenium.click_button(_('Back'))
 		self.wait_for_main_grid_load()
 
 	def save_details(self):
+		# type: () -> None
 		print('*** save the detailpage')
 		self.selenium.click_button(_('Save'))
 		self.wait_for_main_grid_load()
 
 	def delete(self, objectname):
+		# type: (str) -> None
 		print('*** remove the object with name=', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
@@ -105,6 +114,7 @@ class UDMBase(object):
 		# self.wait_for_main_grid_load()
 
 	def search(self, objectname):
+		# type: (str) -> None
 		print('*** searching for objects with name=', objectname)
 		# This method will work with *most* UDM modules.
 		xpath = '//input[@name="objectPropertyValue"]'
@@ -118,10 +128,12 @@ class UDMBase(object):
 		elems[0].clear()
 
 	def wait_for_main_grid_load(self, timeout=60):
+		# type: (int) -> None
 		print('*** waiting for main grid load')
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def open_add_dialog(self, container=None, template=None):
+		# type: (Optional[str], Optional[str]) -> None
 		print('*** open the add dialog')
 		self.selenium.click_button(_('Add'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
@@ -162,6 +174,7 @@ class UDMBase(object):
 			self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def open_advanced_add_dialog(self, **kwargs):
+		# type: (**Any) -> None
 		self.open_add_dialog(**kwargs)
 		self.selenium.click_button(_('Advanced'))
 
@@ -170,11 +183,13 @@ class Portals(UDMBase):
 	name = _('Portal settings')
 
 	def __init__(self, selenium):
+		# type: (Any) -> None
 		super(Portals, self).__init__(selenium)
 		self.ucr = ucr_test.UCSTestConfigRegistry()
 		self.ucr.load()
 
 	def add(self, portalname=None, hostname=None):
+		# type: (Optional[str], Optional[str]) -> str
 		if portalname is None:
 			portalname = uts.random_string()
 
@@ -203,6 +218,7 @@ class Computers(UDMBase):
 	name = _('Computers')
 
 	def add(self, computername=None):
+		# type: (Optional[str]) -> str
 		if computername is None:
 			computername = uts.random_string()
 
@@ -220,6 +236,7 @@ class Groups(UDMBase):
 	name = _("Groups")
 
 	def add(self, groupname=None):
+		# type: (Optional[str]) -> str
 		if groupname is None:
 			groupname = uts.random_string()
 
@@ -236,6 +253,7 @@ class Policies(UDMBase):
 	name = _('Policies')
 
 	def add(self, policyname=None):
+		# type: (Optional[str]) -> str
 		if policyname is None:
 			policyname = uts.random_string()
 
@@ -257,11 +275,13 @@ class Users(UDMBase):
 	name = _("Users")
 
 	def __init__(self, selenium):
+		# type: (Any) -> None
 		super(Users, self).__init__(selenium)
 		self.ucr = ucr_test.UCSTestConfigRegistry()
 		self.ucr.load()
 
 	def get_description(self):
+		# type: () -> str
 		xpath = '//input[@name="description"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.selenium.get_all_enabled_elements
@@ -269,6 +289,7 @@ class Users(UDMBase):
 		return elems[0].get_attribute('value')
 
 	def get_primary_mail(self):
+		# type: () -> str
 		xpath = '//input[@name="mailPrimaryAddress"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.selenium.get_all_enabled_elements
@@ -277,12 +298,12 @@ class Users(UDMBase):
 
 	def add(
 		self,
-		template=None,
-		firstname='',
-		lastname=None,
-		username=None,
-		password='univention'
-	):
+		template=None,  # type: Optional[str]
+		firstname='',  # type: str
+		lastname=None,  # type: Optional[str]
+		username=None,  # type: Optional[str]
+		password='univention'  # type: str
+	):  # type: (...) -> Dict[str, str]
 		if username is None:
 			username = uts.random_string()
 		if lastname is None:
@@ -307,7 +328,9 @@ class Users(UDMBase):
 		return {'username': username, 'lastname': lastname}
 
 	def _get_search_value(self, user):
+		# type: (Mapping[str, str]) -> str
 		return user['username']
 
 	def _get_grid_value(self, user):
+		# type: (Mapping[str, str]) -> str
 		return user['lastname'] if self.ucr.get('ad/member') else user['username']

@@ -45,6 +45,8 @@ The API is currently under development and may change before next UCS release!
 from __future__ import print_function
 
 import copy
+from types import TracebackType  # noqa F401
+from typing import Any, Optional, Type  # noqa F401
 
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
@@ -58,11 +60,13 @@ class UCSTestConfigRegistry(ConfigRegistry):
 	"""
 
 	def __init__(self, *args, **kwargs):
+		# type: (*Any, **Any) -> None
 		""" initialise object """
 		ConfigRegistry.__init__(self, *args, **kwargs)
-		self.__original_registry = None
+		self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
 
 	def load(self):
+		# type: () -> None
 		""" call load() of superclass and save original registry values """
 		ConfigRegistry.load(self)
 		if self.__original_registry is None:
@@ -71,6 +75,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 				self.__original_registry[regtype] = copy.deepcopy(dict(self._registry[regtype]))
 
 	def revert_to_original_registry(self):
+		# type: () -> None
 		""" revert UCR values back to original state """
 		# load current values again to perform correct comparison
 		self.load()
@@ -96,10 +101,12 @@ class UCSTestConfigRegistry(ConfigRegistry):
 		self.load()
 
 	def __enter__(self):
+		# type: () -> UCSTestConfigRegistry
 		self.load()
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		self.revert_to_original_registry()
 
 

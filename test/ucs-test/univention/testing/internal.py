@@ -36,10 +36,7 @@ import os
 import re
 import six
 import sys
-try:
-	from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa F401
-except ImportError:
-	pass
+from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa F401
 
 
 __all__ = [
@@ -166,7 +163,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 	}
 
 	@classmethod
-	def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, Optional[int], Optional[int]]]
+	def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, Union[float, int], Union[float, int]]]
 		"""
 		Parse UCS-version range and return two-tuple (operator, version)
 		>>> UCSVersion._parse('11.22')
@@ -196,7 +193,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		if not match:
 			raise ValueError('Version does not match: "%s"' % (ver,))
 		rel = match.group(1) or default_op
-		parts = tuple([UCSVersion._CONVERTER.get(_, int)(_) for _ in match.groups()[1:]])  # type: Tuple[int, int, Optional[int], Optional[int]] # type: ignore
+		parts = tuple([UCSVersion._CONVERTER.get(_, int)(_) for _ in match.groups()[1:]])  # type: Tuple[int, int, Union[float, int], Union[float, int]] # type: ignore
 		if rel in ('<', '<<'):
 			return (operator.lt, parts)
 		if rel in ('<=',):
@@ -209,7 +206,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 			return (operator.gt, parts)
 		raise ValueError('Unknown version match: "%s"' % (ver,))
 
-	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, Optional[int], Optional[int]]]) -> None
+	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, Union[float, int], Union[float, int]]]) -> None
 		if isinstance(ver, six.string_types):
 			self.rel, self.ver = self._parse(ver)
 		else:

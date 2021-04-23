@@ -8,11 +8,8 @@ import time
 import subprocess
 import re
 import sys
+from typing import IO  # noqa F401
 from weakref import WeakValueDictionary
-try:
-	from typing import IO  # noqa F401
-except ImportError:
-	pass
 
 import univention.config_registry
 

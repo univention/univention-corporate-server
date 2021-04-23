@@ -9,6 +9,8 @@ import signal
 import atexit
 import subprocess
 import distutils.spawn
+from argparse import ArgumentParser, Namespace, _ArgumentGroup
+from typing import Any, Callable
 
 import six
 
@@ -22,7 +24,7 @@ class Coverage(object):
 
 	coverage = None
 
-	def __init__(self, options):
+	def __init__(self, options: Namespace) -> None:
 		self.coverage_config = options.coverage_config
 		self.branch_coverage = options.branch_coverage
 		self.coverage = options.coverage
@@ -62,7 +64,7 @@ class Coverage(object):
 			with open(self.COVERAGE_DEBUG_PATH, 'w'):
 				self.COVERAGE_DEBUG = True
 
-	def start(self):
+	def start(self) -> None:
 		"""Start measuring of coverage. Only called by ucs-test-framework once. Sets up the configuration."""
 		if not self.coverage:
 			return
@@ -70,7 +72,7 @@ class Coverage(object):
 		os.environ['COVERAGE_PROCESS_START'] = self.coverage_config
 		self.restart_python_services()
 
-	def write_config_file(self):
+	def write_config_file(self) -> None:
 		"""Write a python .pth file which is invoked before any python process"""
 		with open(self.COVERAGE_PTH, 'w') as fd:
 			fd.write(self.COVERAGE_PTH_CONTENT)
@@ -97,7 +99,7 @@ directory = {directory}
 				directory=self.output_directory,
 			))
 
-	def restart_python_services(self):
+	def restart_python_services(self) -> None:
 		"""Restart currently running python services, so that they start/stop measuring code"""
 		for service in self.services:
 			try:
@@ -109,7 +111,7 @@ directory = {directory}
 		except EnvironmentError:
 			pass
 
-	def stop(self):
+	def stop(self) -> None:
 		"""Stop coverage measuring. Only called by ucs-test-framework once. Stores the results."""
 		if not self.coverage:
 			return
@@ -132,7 +134,7 @@ directory = {directory}
 			os.remove(self.coverage_config)
 
 	@classmethod
-	def get_argument_group(cls, parser):
+	def get_argument_group(cls, parser: ArgumentParser) -> _ArgumentGroup:
 		"""The option group for ucs-test-framework"""
 		coverage_group = parser.add_argument_group('Code coverage measurement options')
 		coverage_group.add_argument("--with-coverage", dest="coverage", action='store_true', default=False)
@@ -146,7 +148,7 @@ directory = {directory}
 		return coverage_group
 
 	@classmethod  # noqa: C901
-	def startup(cls):
+	def startup(cls) -> None:
 		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
 		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg or 'ucr' in arg for arg in argv):
@@ -204,7 +206,7 @@ directory = {directory}
 		previous = signal.signal(signal.SIGTERM, sigterm)
 
 	@classmethod
-	def stop_measurement(cls, start=False):
+	def stop_measurement(cls, start: bool = False) -> None:
 		cover = cls.coverage
 		cls.debug_message('STOP MEASURE', bool(cover))
 		if not cover:
@@ -215,7 +217,7 @@ directory = {directory}
 			cover.start()
 
 	@classmethod
-	def debug_message(cls, *messages):
+	def debug_message(cls, *messages: object) -> None:
 		if not cls.COVERAGE_DEBUG:
 			return
 		try:
@@ -228,10 +230,10 @@ directory = {directory}
 class StopCoverageDecorator(object):
 	inDecorator = False
 
-	def __init__(self, method):
+	def __init__(self, method: Callable[..., Any]) -> None:
 		self.method = method
 
-	def __call__(self, *args, **kw):
+	def __call__(self, *args, **kw) -> None:
 		if not StopCoverageDecorator.inDecorator:
 			StopCoverageDecorator.inDecorator = True
 			Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
@@ -241,5 +243,5 @@ class StopCoverageDecorator(object):
 		finally:
 			StopCoverageDecorator.inDecorator = False
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '<StopCoverageDecorator %r>' % (self.method,)

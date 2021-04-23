@@ -51,6 +51,7 @@ import copy
 import time
 import pipes
 import subprocess
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Union  # noqa F401
 
 import six
 import psutil
@@ -144,6 +145,7 @@ class UCSTestUDM(object):
 
 	# map identifying UDM module or rdn-attribute to samba4 rdn attribute
 	def ad_object_identifying_filter(self, modulename, dn):
+		# type: (str, str) -> Optional[Dict[str, str]]
 		udm_mainmodule, udm_submodule = modulename.split('/', 1)
 		objname = ldap.dn.str2dn(dn)[0][0][1]
 
@@ -208,12 +210,14 @@ class UCSTestUDM(object):
 
 	@property
 	def _lo(self):
+		# type: () -> univention.admin.uldap.access
 		if self.__lo is None:
 			self.__lo = utils.get_ldap_connection()
 		return self.__lo
 
 	@property
 	def _ucr(self):
+		# type: () -> univention.testing.ucr.UCSTestConfigRegistry
 		if self.__ucr is None:
 			self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
 			self.__ucr.load()
@@ -221,26 +225,32 @@ class UCSTestUDM(object):
 
 	@property
 	def LDAP_BASE(self):
+		# type: () -> str
 		return self._ucr['ldap/base']
 
 	@property
 	def FQHN(self):
+		# type: () -> str
 		return '%(hostname)s.%(domainname)s.' % self._ucr
 
 	@property
 	def UNIVENTION_CONTAINER(self):
+		# type: () -> str
 		return 'cn=univention,%(ldap/base)s' % self._ucr
 
 	@property
 	def UNIVENTION_TEMPORARY_CONTAINER(self):
+		# type: () -> str
 		return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
 
 	def __init__(self):
+		# type: () -> None
 		self._cleanup = {}
 		self._cleanupLocks = {}
 
 	@classmethod
 	def _build_udm_cmdline(cls, modulename, action, kwargs):
+		# type: (str, str, Dict[str, Any]) -> List[str]
 		"""
 		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
 		to _build_udm_cmdline to build a command for UDM CLI.
@@ -319,6 +329,7 @@ class UCSTestUDM(object):
 		return cmd
 
 	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
+		# type: (str, bool, bool, bool, **Any) -> str
 		r"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -357,6 +368,7 @@ class UCSTestUDM(object):
 		return dn
 
 	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
+		# type: (str, bool, bool, bool, **Any) -> str
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -401,6 +413,7 @@ class UCSTestUDM(object):
 		return dn
 
 	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
+		# type: (str, bool, bool, bool, **Any) -> str
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -434,6 +447,7 @@ class UCSTestUDM(object):
 		return new_dn
 
 	def remove_object(self, modulename, wait_for_replication=True, wait_for=False, **kwargs):
+		# type: (str, bool, bool, **Any) -> None
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -459,6 +473,7 @@ class UCSTestUDM(object):
 		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 
 	def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False, everything=False):
+		# type: (str, str, bool, bool, bool, bool) -> None
 		# the order of the conditions is imporant
 		conditions = []
 		if wait_for_replication:
@@ -488,6 +503,7 @@ class UCSTestUDM(object):
 		return utils.wait_for(conditions, verbose=False)
 
 	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **kwargs):  # :pylint: disable-msg=W0613
+		# type: (bool, bool, bool, **Any) -> Tuple[str, str]
 		"""
 		Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -511,6 +527,7 @@ class UCSTestUDM(object):
 		return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, wait_for=wait_for, **attr), attr['username'])
 
 	def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=False, **kwargs):  # :pylint: disable-msg=W0613
+		# type: (bool, bool, **Any) -> Tuple[str, str]
 		# check_for_drs_replication=False -> ldap users are not replicated to s4
 		attr = self._set_module_default_attr(kwargs, (
 			('position', 'cn=users,%s' % self.LDAP_BASE),
@@ -523,6 +540,7 @@ class UCSTestUDM(object):
 		return (self.create_object('users/ldap', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
 
 	def remove_user(self, username, wait_for_replication=True):
+		# type: (str, bool) -> None
 		"""Removes a user object from the ldap given it's username."""
 		kwargs = {
 			'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
@@ -530,6 +548,7 @@ class UCSTestUDM(object):
 		self.remove_object('users/user', wait_for_replication, **kwargs)
 
 	def create_group(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		# type: (bool, bool, **Any) -> Tuple[str, str]
 		"""
 		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -562,11 +581,13 @@ class UCSTestUDM(object):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def _wait_for_drs_removal(self, modulename, dn, verbose=True):
+		# type: (str, str, bool) -> None
 		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 		if ad_ldap_search_args:
 			wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
 	def list_objects(self, modulename, **kwargs):
+		# type: (str, **Any) -> List[Tuple[str, Dict[str, Any]]]
 		cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
 		print('Listing %s objects %s' % (modulename, _prettify_cmd(cmd)))
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
@@ -578,9 +599,9 @@ class UCSTestUDM(object):
 		if child.returncode:
 			raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
 
-		objects = []
+		objects = []  # type: List[Tuple[str, Dict[str, Any]]]
 		dn = None
-		attrs = {}
+		attrs = {}  # type: Dict[str, Any]
 		pattr = None
 		pvalue = None
 		pdn = None
@@ -617,6 +638,7 @@ class UCSTestUDM(object):
 		return objects
 
 	def cleanup(self):
+		# type: () -> None
 		"""
 		Automatically removes LDAP objects via UDM CLI that have been created before.
 		"""
@@ -681,6 +703,7 @@ class UCSTestUDM(object):
 		print('UCSTestUDM cleanup done')
 
 	def stop_cli_server(self):
+		# type: () -> None
 		""" restart UDM CLI server """
 		print('trying to restart UDM CLI server')
 		procs = []
@@ -723,11 +746,13 @@ class UDM(UCSTestUDM):
 	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test-rest'
 
 	def stop_cli_server(self):
+		# type: () -> None
 		super(UDM, self).stop_cli_server()
 		subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest.service'])
 
 
 def verify_udm_object(module, dn, expected_properties):
+	# type: (Any, str, Optional[Mapping[str, Union[bytes, Text, Tuple[str, ...], List[str]]]]) -> None
 	"""
 	Verify an object exists with the given `dn` in the given UDM `module` with
 	some properties. Setting `expected_properties` to `None` requires the
@@ -776,6 +801,7 @@ def verify_udm_object(module, dn, expected_properties):
 
 
 def _prettify_cmd(cmd):
+	# type: (Iterable[str]) -> str
 	cmd = ' '.join(pipes.quote(x) for x in cmd)
 	if set(cmd) & set(['\x00', '\n']):
 		cmd = repr(cmd)
@@ -783,12 +809,14 @@ def _prettify_cmd(cmd):
 
 
 def _to_unicode(string):
+	# type: (Union[bytes, Text]) -> Text
 	if isinstance(string, bytes):
 		return string.decode('utf-8')
 	return string
 
 
 def _normalize_dn(dn):
+	# type: (str) -> str
 	r"""
 	Normalize a given dn. This removes some escaping of special chars in the
 	DNs. Note: The CON-LDAP returns DNs with escaping chars, OpenLDAP does not.

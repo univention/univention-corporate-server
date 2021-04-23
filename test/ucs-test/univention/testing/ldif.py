@@ -7,7 +7,6 @@ All differences will be displayed at the console.
 """
 from __future__ import print_function
 
-from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 import re
 import os
 import sys
@@ -17,7 +16,15 @@ import subprocess
 import select
 import errno
 import time
+from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa F401
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Union, NoReturn  # noqa F401
+try:
+	from typing_extensions import Literal  # noqa F401
+except ImportError:
+	pass
 
+VT = Union[bytes, None, Text]
+Entry = Dict[str, List[VT]]
 
 USAGE = 'usage: %prog [option] LDIF1 [[option] LDIF2]'
 DESCRIPTION = '''\
@@ -74,11 +81,13 @@ class LdifSource(object):
 	))
 
 	def __init__(self):
-		self.src = None  # type: Iterable[str]
+		# type: () -> None
+		self.src = None  # type: Optional[Iterable[str]]
 		self.lno = 0
 		self.exclude = LdifSource.OPERATIONAL
 
 	def next_line(self):
+		# type: () -> Iterator[str]
 		"""
 		Return line iterator.
 		"""
@@ -95,6 +104,7 @@ class LdifSource(object):
 		yield ''.join(lines)
 
 	def split(self, line):
+		# type: (str) -> Tuple[str, VT]
 		"""
 		Split attribute and value.
 		Options are stripped.
@@ -102,7 +112,6 @@ class LdifSource(object):
 
 		:param str line: The line to split.
 		:return: A tuple (name, value).
-		:rtype: tuple
 
 		>>> LdifSource().split('a:')
 		('a', None)
@@ -122,10 +131,11 @@ class LdifSource(object):
 		return (attr or oid, plain or (base64.b64decode(b64) if b64 else None))
 
 	def __iter__(self):
+		# type: () -> Iterator[Entry]
 		"""
 		Return line iterator.
 		"""
-		obj = {}   # type: Dict[str, List[Any]]
+		obj = {}   # type: Entry
 		for line in self.next_line():
 			if line.startswith('#'):
 				continue
@@ -146,13 +156,16 @@ class LdifFile(LdifSource):
 
 	@classmethod
 	def create(cls, arg, options):
+		# type: (str, Values) -> LdifFile
 		return cls(arg)
 
 	def __init__(self, filename):
+		# type: (str) -> None
 		super(LdifFile, self).__init__()
 		self.filename = filename
 
 	def start_reading(self):
+		# type: () -> None
 		"""
 		Start reading the LDIF data.
 		"""
@@ -169,14 +182,17 @@ class LdifSlapcat(LdifSource):
 
 	@classmethod
 	def create(cls, arg, options):
+		# type: (Any, Values) -> LdifSlapcat
 		return cls()
 
 	def __init__(self):
+		# type: () -> None
 		super(LdifSlapcat, self).__init__()
 		self.command = ('slapcat', '-d0')
-		self.proc = None
+		self.proc = None  # type: Optional[subprocess.Popen]
 
 	def start_reading(self):
+		# type: () -> None
 		"""
 		Start reading the LDIF data.
 		"""
@@ -184,6 +200,7 @@ class LdifSlapcat(LdifSource):
 		self.src = self.proc.stdout
 
 	def run_command(self):
+		# type: () -> None
 		"""
 		Run command to dump LDIF.
 		"""
@@ -200,13 +217,16 @@ class LdifSsh(LdifSlapcat):
 
 	@classmethod
 	def create(cls, hostname, options):
+		# type: (str, Values) -> LdifSsh
 		return cls(hostname, options.ssh)
 
 	def __init__(self, hostname, ssh='ssh'):
+		# type: (str, str) -> None
 		super(LdifSsh, self).__init__()
 		self.command = (ssh, hostname) + self.command
 
 	def start_reading(self):
+		# type: () -> None
 		"""
 		Start reading the LDIF data.
 		"""
@@ -214,6 +234,7 @@ class LdifSsh(LdifSlapcat):
 		self.wait_for_data()
 
 	def wait_for_data(self):
+		# type: () -> None
 		"""
 		Wait for the remote process to send data.
 
@@ -225,8 +246,8 @@ class LdifSsh(LdifSlapcat):
 		"""
 		while True:
 			rlist = [self.proc.stdout]
-			wlist = []
-			xlist = []
+			wlist = []  # type: List[int]
+			xlist = []  # type: List[int]
 			try:
 				rlist, wlist, xlist = select.select(rlist, wlist, xlist)
 				break
@@ -242,6 +263,7 @@ class LdifSsh(LdifSlapcat):
 
 
 def __test(_option, _opt_str, _value, _parser):
+	# type: (Values, str, None, OptionParser) -> NoReturn
 	"""
 	Run internal test suite.
 	"""
@@ -251,21 +273,21 @@ def __test(_option, _opt_str, _value, _parser):
 
 
 def stream2object(ldif):
+	# type: (LdifSource) -> Dict[str, Entry]
 	"""
 	Convert LDIF stream to dictionary of objects.
 
 	:param LdifSource ldif: A LDIF stream.
 	:return: A dictionary mapping distinguished names to a dictionary of key-values.
-	:rtype: dict(str, dict(str, list[str])
 
 	>>> stream2object([{'dn': ['dc=test']}])
 	{'dc=test': {}}
 	"""
-	objects = {}
+	objects = {}  # type: Dict[str, Entry]
 	for obj in ldif:
 		try:
 			dname, = obj.pop('dn')
-			objects[dname] = obj
+			objects[dname] = obj  # type: ignore
 		except KeyError:
 			print('Missing dn: %r' % (obj,), file=sys.stderr)
 		except ValueError:
@@ -274,12 +296,12 @@ def stream2object(ldif):
 
 
 def sort_dn(dname):
+	# type: (str) -> Tuple[Tuple[str, ...], ...]
 	"""
 	Sort by reversed dn.
 
 	:param str dname: distinguished name.
 	:return: tuple of relative distinguised names.
-	:rtype: tuple(tuple[str])
 
 	>>> sort_dn('a=1')
 	(('a=1',),)
@@ -292,6 +314,7 @@ def sort_dn(dname):
 
 
 def compare_ldif(lldif, rldif, options):
+	# type: (LdifSource, LdifSource, Values) -> int
 	"""
 	Compare two LDIF files.
 
@@ -341,6 +364,7 @@ def compare_ldif(lldif, rldif, options):
 
 
 def compare_keys(ldata, rdata):
+	# type: (Entry, Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, VT]]
 	"""
 	Compare and return attributes of two LDAP objects.
 
@@ -386,6 +410,7 @@ def compare_keys(ldata, rdata):
 
 
 def compare_values(attr, lvalues, rvalues):
+	# type: (str, List[VT], List[VT]) -> Iterator[Tuple[Literal[-1, 0, 1], str, VT]]
 	"""
 	Compare and return values of two multi-valued LDAP attributes.
 
@@ -422,6 +447,7 @@ def compare_values(attr, lvalues, rvalues):
 
 
 def commandline():
+	# type: () -> OptionParser
 	"""
 	Parse command line arguments.
 	"""
@@ -475,6 +501,7 @@ def commandline():
 
 
 def main():
+	# type: () -> None
 	"""
 	A main()-method with options.
 	"""
@@ -518,6 +545,7 @@ def main():
 
 
 def run_compare(ldif1, ldif2, options):
+	# type: (LdifSource, LdifSource, Values) -> NoReturn
 	"""
 	UNIX correct error handling.
 	Termination by signal is propagaed as signal.

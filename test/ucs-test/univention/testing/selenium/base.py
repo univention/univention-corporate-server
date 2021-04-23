@@ -38,6 +38,8 @@ import datetime
 import logging
 import json
 import subprocess
+from types import TracebackType  # noqa F401
+from typing import Optional, Type  # noqa F401
 
 from PIL import Image
 from selenium import webdriver
@@ -76,6 +78,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	}
 
 	def __init__(self, language='en', host=None, suppress_notifications=True, suppress_welcome_dialog=True):
+		# type: (str, str, bool, bool) -> None
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
@@ -89,6 +92,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
+		# type: () -> UMCSeleniumTest
 		self.restart_umc()
 		self._ucr.__enter__()
 		if self.selenium_grid:
@@ -130,6 +134,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		try:
 			if exc_type:
 				logger.error('Exception: %s %s' % (exc_type, exc_value))
@@ -140,9 +145,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 			self._ucr.__exit__(exc_type, exc_value, traceback)
 
 	def restart_umc(self):
+		# type: () -> None
 		subprocess.call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
 
 	def set_viewport_size(self, width, height):
+		# type: (int, int) -> None
 		self.driver.set_window_size(width, height)
 
 		measured = self.driver.execute_script("return {width: window.innerWidth, height: window.innerHeight};")
@@ -152,6 +159,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.driver.set_window_size(width + width_delta, height + height_delta)
 
 	def save_screenshot(self, name='error', hide_notifications=True, xpath='/html/body', append_timestamp=False):
+		# type: (str, bool, str, bool) -> None
 		# FIXME: This is needed, because sometimes it takes some time until
 		# some texts are really visible (even if elem.is_displayed() is already
 		# true).
@@ -182,6 +190,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				pass
 
 	def open_traceback(self):
+		# type: () -> None
 		try:
 			self.wait_for_text(_('Show server error message'), timeout=1)
 			self.click_text(_('Show server error message'))
@@ -189,6 +198,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 			pass
 
 	def crop_screenshot_to_element(self, image_filename, xpath):
+		# type: (str, str) -> Image
 		elem = self.driver.find_element_by_xpath(xpath)
 		location = elem.location
 		size = elem.size
@@ -199,6 +209,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		return screenshot.crop((left, top, right, bottom))
 
 	def save_browser_log(self, name='error', append_timestamp=True):
+		# type: (str, bool) -> None
 		timestamp = ''
 		if append_timestamp:
 			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
@@ -212,6 +223,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				f.write('%s\n' % (json.dumps(entry),))
 
 	def show_notifications(self, show_notifications=True):
+		# type: (bool) -> None
 		if show_notifications:
 			if not self.notifications_visible():
 				self.press_notifications_button()
@@ -220,14 +232,17 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				self.press_notifications_button()
 
 	def notifications_visible(self):
+		# type: () -> bool
 		return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
 
 	def press_notifications_button(self):
+		# type: () -> None
 		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
 		# Wait for the animation to run.
 		time.sleep(1)
 
 	def do_login(self, username=None, password=None, without_navigation=False, language=None):
+		# type: (Optional[str], Optional[str], bool, Optional[str]) -> None
 		if username is None:
 			username = self.umcLoginUsername
 		if password is None:
@@ -267,12 +282,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		logger.info('Successful login')
 
 	def end_umc_session(self):
+		# type: () -> None
 		"""
 		Log out the logged in user.
 		"""
 		self.driver.get(self.base_url + 'univention/logout')
 
 	def open_module(self, name, wait_for_standby=True, do_reload=True):
+		# type: (str, bool, bool) -> None
 		self.search_module(name, do_reload)
 		self.click_tile(name)
 		if wait_for_standby:
@@ -281,6 +298,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				self.wait_until_progress_bar_finishes()
 
 	def search_module(self, name, do_reload=True):
+		# type: (str, bool) -> None
 		if do_reload:
 			self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 

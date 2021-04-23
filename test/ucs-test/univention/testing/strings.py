@@ -31,6 +31,7 @@
 
 import six
 import random
+from typing import Iterator, Text  # noqa F401
 
 STR_NUMERIC = u'0123456789'
 STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
@@ -43,6 +44,7 @@ STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
 def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='utf-8'):
+	# type: (int, bool, bool, Text, str) -> str
 	"""
 	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
 	Default is an alphanumeric string of 10 characters length. A custom character set
@@ -65,6 +67,7 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 
 
 def random_name(length=10):
+	# type: (int) -> str
 	"""
 	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
 	"""
@@ -72,6 +75,7 @@ def random_name(length=10):
 
 
 def random_name_special_characters(length=10):
+	# type: (int) -> str
 	"""
 	create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
 	"""
@@ -84,18 +88,22 @@ def random_name_special_characters(length=10):
 
 
 def random_username(length=10):
+	# type: (int) -> str
 	return random_name(length)
 
 
 def random_groupname(length=10):
+	# type: (int) -> str
 	return random_name(length)
 
 
 def random_int(bottom_end=0, top_end=9):
+	# type: (int, int) -> str
 	return str(random.randint(bottom_end, top_end))
 
 
 def random_version(elements=3):
+	# type: (int) -> str
 	version = []
 	for _ in range(elements):
 		version.append(random_int(0, 9))
@@ -103,10 +111,12 @@ def random_version(elements=3):
 
 
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
+	# type: (int, int, int, int, int, int) -> str
 	return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
 
 
 def random_mac():
+	# type: () -> str
 	mac = [
 		random.randint(0x00, 0x7f),
 		random.randint(0x00, 0x7f),
@@ -147,9 +157,11 @@ class IP_Iter(object):
 
 
 def random_ip(ip_iter=IP_Iter()):
+	# type: (IP_Iter) -> str
 	return ip_iter.next()
 
 
 def random_dns_record():
+	# type: () -> str
 	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
 	return '%s.' % (random_string(),)

@@ -4,10 +4,7 @@
 from __future__ import print_function
 
 import sys
-try:
-	from typing import Any, IO  # noqa F401
-except ImportError:
-	pass
+from typing import IO, Any  # noqa F401
 
 from univention.testing.codes import TestCodes
 from univention.testing.data import TestFormatInterface, TestEnvironment, TestResult  # noqa F401

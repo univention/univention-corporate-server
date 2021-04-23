@@ -44,6 +44,13 @@ import copy
 import subprocess
 import univention.config_registry
 
+from types import TracebackType  # noqa F401
+from typing import List, Mapping, Optional, Set, Tuple, Type, Union  # noqa F401
+try:
+	from typing_extensions import Literal  # noqa F401
+except ImportError:
+	pass
+
 
 class UCSTestNetwork(Exception):
 	pass
@@ -112,6 +119,7 @@ class NetworkRedirector(object):
 	]
 
 	def __init__(self):
+		# type: () -> None
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 		self._external_address = None
@@ -123,18 +131,22 @@ class NetworkRedirector(object):
 		if not self._external_address:
 			raise UCSTestNetworkCannotDetermineExternalAddress
 		self.used_by_with_statement = False
-		self.cleanup_rules = []  # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
+		self.cleanup_rules = []  # type: List[Union[Tuple[Literal["loop"], str, str], Tuple[Literal["redirection"], str, int, int]]]
+		# [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
 	def __enter__(self):
+		# type: () -> NetworkRedirector
 		print('*** Entering with-statement of NetworkRedirector()')
 		self.used_by_with_statement = True
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
 		print('*** Leaving with-statement of NetworkRedirector()')
 		self.revert_network_settings()
 
 	def revert_network_settings(self):
+		# type: () -> None
 		print('*** NetworkRedirector.revert_network_settings()')
 		for entry in copy.deepcopy(self.cleanup_rules):
 			if entry[0] == 'loop':
@@ -143,6 +155,7 @@ class NetworkRedirector(object):
 				self.remove_redirection(entry[1], entry[2], entry[3], ignore_errors=True)
 
 	def run_commands(self, cmdlist, argdict, ignore_errors=False):
+		# type: (List[List[str]], Mapping[str, object], bool) -> None
 		"""
 		Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 
@@ -159,6 +172,7 @@ class NetworkRedirector(object):
 				raise UCSTestNetworkCmdFailed('Command returned with non-zero exitcode: %r' % cmd)
 
 	def add_loop(self, addr1, addr2):
+		# type: (str, str) -> None
 		"""
 		Add connection loop for addr1 and addr2.
 		Outgoing connections to addr1 will be redirected back to localhost. The redirected
@@ -184,6 +198,7 @@ class NetworkRedirector(object):
 		self.run_commands(self.CMD_LIST_LOOP, args)
 
 	def remove_loop(self, addr1, addr2, ignore_errors=False):
+		# type: (str, str, bool) -> None
 		"""
 		Remove previously defined connection loop.
 		"""
@@ -202,6 +217,7 @@ class NetworkRedirector(object):
 		self.run_commands(self.CMD_LIST_LOOP, args, ignore_errors)
 
 	def add_redirection(self, remote_addr, remote_port, local_port):
+		# type: (str, int, int) -> None
 		"""
 		Add new connection redirection.
 
@@ -210,7 +226,7 @@ class NetworkRedirector(object):
 		if not self.used_by_with_statement:
 			raise UCSTestNetworkNoWithStatement
 
-		entry = ('redirection', remote_addr, remote_port, local_port)
+		entry = ('redirection', remote_addr, remote_port, local_port)  # type: Tuple[Literal["redirection"], str, int, int]
 		if entry not in self.cleanup_rules:
 			self.cleanup_rules.append(entry)
 			args = {
@@ -223,6 +239,7 @@ class NetworkRedirector(object):
 			self.run_commands(self.CMD_LIST_REDIRECTION, args)
 
 	def remove_redirection(self, remote_addr, remote_port, local_port, ignore_errors=False):
+		# type: (str, int, int, bool) -> None
 		"""
 		Remove previously defined connection redirection.
 		"""

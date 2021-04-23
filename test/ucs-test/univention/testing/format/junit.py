@@ -6,11 +6,8 @@ import os
 import sys
 from codecs import encode as _encode
 from datetime import datetime
+from typing import IO, Any  # noqa F401
 from xml.sax.saxutils import XMLGenerator
-try:
-	from typing import Any, IO  # noqa F401
-except ImportError:
-	pass
 
 import six
 

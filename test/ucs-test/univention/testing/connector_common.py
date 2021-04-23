@@ -3,6 +3,7 @@
 from __future__ import print_function
 import ldap
 import subprocess
+from typing import Mapping, Text, Tuple, Union  # noqa F401
 
 import univention.testing.strings as tstrings
 from univention.testing.udm import verify_udm_object
@@ -22,10 +23,12 @@ SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOU
 
 
 def random_string(length=10, alpha=False, numeric=False, charset=None, encoding='utf-8'):
+	# type: (int, bool, bool, str, Text) -> str
 	return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
 def random_bytestring(length=10, alpha=False, numeric=False, charset=None):
+	# type: (int, bool, bool, Text) -> bytes
 	string = random_string(length, alpha, numeric, charset)
 	if not isinstance(string, bytes):
 		string = string.encode('utf-8')
@@ -33,6 +36,7 @@ def random_bytestring(length=10, alpha=False, numeric=False, charset=None):
 
 
 def normalize_dn(dn):
+	# type: (str) -> str
 	r"""
 	Normalize a given dn. This removes some escaping of special chars in the
 	DNs. Note: The CON-LDAP returns DNs with escaping chars, OpenLDAP does not.
@@ -44,12 +48,14 @@ def normalize_dn(dn):
 
 
 def to_unicode(string):
+	# type: (Union[bytes, Text]) -> Text
 	if isinstance(string, bytes):
 		string = string.decode('utf-8')
 	return string
 
 
 def restart_univention_cli_server():
+	# type: () -> None
 	print("Restarting Univention-CLI-Server")
 	subprocess.call(["pkill", "-f", "univention-cli-server"])
 

@@ -39,6 +39,8 @@ import time
 import socket
 import os
 from enum import IntEnum
+from types import TracebackType  # noqa F401
+from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, Union  # noqa F401
 
 import six
 
@@ -49,11 +51,6 @@ try:
 	from univention.admin.uldap import access
 except ImportError:
 	access = None
-try:
-	from types import TracebackType  # noqa F401
-	from typing import Any, Callable, Dict, IO, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, Union  # noqa F401
-except ImportError:
-	pass
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
@@ -407,7 +404,7 @@ class FollowLogfile(object):
 	"""
 
 	def __init__(self, logfiles, always=False):
-		# type: (List[str], bool) -> None
+		# type: (Iterable[str], bool) -> None
 		"""
 		:param logfiles: list of absolute filenames to read from
 		:param always: bool, if True: print logfile change also if no error occurred (default=False)

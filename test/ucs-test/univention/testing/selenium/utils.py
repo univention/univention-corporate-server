@@ -2,6 +2,7 @@ import re
 
 
 def expand_path(xpath):
+	# type: (str) -> str
 	# replaces instances of [@containsClass="className"]
 	# with
 	# [contains(concat(" ", normalize-space(@class), " "), " className ")]

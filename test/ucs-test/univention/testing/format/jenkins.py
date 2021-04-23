@@ -5,11 +5,8 @@ from __future__ import print_function
 
 import sys
 from codecs import encode
+from typing import IO  # noqa F401
 from xml.sax.saxutils import escape as escape_xml
-try:
-	from typing import IO  # noqa F401
-except ImportError:
-	pass
 
 from univention.testing.data import TestFormatInterface, TestResult  # noqa F401
 

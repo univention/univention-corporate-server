@@ -21,11 +21,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
 from time import time
-try:
-	from typing import Any, Dict, IO, Iterable, Iterator, List, Optional, Sequence, Set, TypeVar  # noqa F401
-	T = TypeVar("T")
-except ImportError:
-	pass
+from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, TypeVar  # noqa F401
 
 from univention.config_registry import ConfigRegistry
 
@@ -35,6 +31,7 @@ from univention.testing.errors import TestError
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
+T = TypeVar("T")
 
 # <http://stackoverflow.com/questions/1707890/>
 ILLEGAL_XML_UNICHR = (

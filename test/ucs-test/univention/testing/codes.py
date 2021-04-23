@@ -1,10 +1,7 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Public interface for test resultes."""
 
-try:
-	from typing import Dict, Optional  # noqa F401
-except ImportError:
-	pass
+from typing import Dict, Optional  # noqa F401
 
 __all__ = ['TestCodes']
 

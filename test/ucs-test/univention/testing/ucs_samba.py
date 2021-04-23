@@ -4,6 +4,7 @@ import time
 import socket
 import re
 import contextlib
+from typing import Any, Dict, Iterator, List, Optional, Union  # noqa F401
 
 import six
 import sqlite3
@@ -35,6 +36,7 @@ class WaitForS4ConnectorTimeout(Exception):
 
 @contextlib.contextmanager
 def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3):
+	# type: (bool, int, int) -> Iterator[None]
 	if not package_installed('univention-samba4'):
 		print('skipping samba password policy adjustment')
 		yield
@@ -53,6 +55,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 
 
 def wait_for_drs_replication(*args, **kwargs):
+	# type: (*Any, **Any) -> None
 	if six.PY2:
 			process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
 			stdout, stderr = process.communicate(b'''
@@ -77,6 +80,7 @@ except ldb.LdbError as exc:
 
 
 def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
+	# type: (str, Union[List[str], None, str], Optional[str], int, Optional[LoadParm], int, int, bool, bool, Optional[List[str]]) -> None
 	if not package_installed('univention-samba4'):
 		if package_installed('univention-samba'):
 			time.sleep(15)
@@ -140,6 +144,7 @@ def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOP
 
 
 def get_available_s4connector_dc():
+	# type: () -> str
 	cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=S4 Connector)", "uid")
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	stdout, _stderr = p.communicate()
@@ -177,6 +182,7 @@ def get_available_s4connector_dc():
 
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
+	# type: (Optional[str], Optional[str], Optional[str], str) -> int
 	if not package_installed('univention-samba4'):
 		print('force_drs_replication(): skip, univention-samba4 not installed.')
 		return
@@ -205,13 +211,15 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 
 
 def _ldap_replication_complete(verbose=True):
-	kwargs = {}
+	# type: (bool) -> bool
+	kwargs = {}  # type: Dict[str, Any]
 	if not verbose:
 		kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
 	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 
 def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
+	# type: (int, int, int) -> int
 	ucr = config_registry.ConfigRegistry()
 	ucr.load()
 
@@ -284,6 +292,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 
 
 def append_dot(verify_list):
+	# type: (List[str]) -> List[str]
 	"""The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
 	if not package_installed('univention-s4-connector'):
 		return verify_list

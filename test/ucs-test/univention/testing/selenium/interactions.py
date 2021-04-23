@@ -36,6 +36,7 @@ import six
 import json
 import logging
 import time
+from typing import Any, List, Union  # noqa F401
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -49,10 +50,12 @@ logger = logging.getLogger(__name__)
 class Interactions(object):
 
 	def click_text(self, text, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the text %r", text)
 		self.click_element('//*[contains(text(), "%s")]' % (text,), **kwargs)
 
 	def click_checkbox_of_grid_entry(self, name, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the checkbox of the grid entry  %r", name)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
@@ -61,6 +64,7 @@ class Interactions(object):
 		)
 
 	def click_checkbox_of_dojox_grid_entry(self, name, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the checkbox of the dojox grid entry  %r", name)
 		self.click_element(
 			expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
@@ -69,6 +73,7 @@ class Interactions(object):
 		)
 
 	def click_grid_entry(self, name, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the grid entry %r", name)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]'
@@ -77,6 +82,7 @@ class Interactions(object):
 		)
 
 	def click_tree_entry(self, name, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the tree entry %r", name)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]'
@@ -85,6 +91,7 @@ class Interactions(object):
 		)
 
 	def click_button(self, button_text, xpath_prefix='', **kwargs):
+		# type: (str, str, **Any) -> None
 		logger.info("Clicking the button %r", button_text)
 		xpath = '//*[@containsClass="dijitButtonText"][text() = "%s"]' % (button_text,)
 		xpath = expand_path(xpath_prefix + xpath)
@@ -104,10 +111,12 @@ class Interactions(object):
 				break
 
 	def click_search_button(self):
+		# type: () -> None
 		logger.info("Clicking the search button")
 		self.click_element('//form//div[contains(concat(" ", normalize-space(@class), " "), " umcSearchIcon ")]')
 
 	def click_tile(self, tilename, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the tile %r", tilename)
 		try:
 			self.click_element(
@@ -123,6 +132,7 @@ class Interactions(object):
 			)
 
 	def click_tile_menu_icon(self, tilename, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the menu icon of tile %r", tilename)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
@@ -131,6 +141,7 @@ class Interactions(object):
 		)
 
 	def click_tile_right_click(self, tilename, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Right-Clicking the tile %r", tilename)
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
@@ -146,6 +157,7 @@ class Interactions(object):
 		ActionChains(self.driver).context_click(elems[0]).perform()
 
 	def click_tab(self, tabname, **kwargs):
+		# type: (str, **Any) -> None
 		logger.info("Clicking the tab %r", tabname)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]'
@@ -154,22 +166,27 @@ class Interactions(object):
 		)
 
 	def open_side_menu(self):
+		# type: () -> None
 		self.click_element(expand_path('//*[@containsClass="umcMenuButton"]'))
 		time.sleep(0.5)
 
 	def close_side_menu(self):
+		# type: () -> None
 		self.click_element(expand_path('//*[@containsClass="umcMenuButton"]'))
 		time.sleep(0.5)
 
 	def click_side_menu_entry(self, text):
+		# type: (str) -> None
 		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuItem"][contains(text(), "%s")]') % text)
 		time.sleep(0.5)
 
 	def click_side_menu_back(self):
+		# type: () -> None
 		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
 		time.sleep(0.5)
 
 	def click_element(self, xpath, scroll_into_view=False, timeout=60):
+		# type: (str, bool, int) -> None
 		"""
 		Click on the element which is found by the given xpath.
 
@@ -200,6 +217,7 @@ class Interactions(object):
 				time.sleep(1)
 
 	def enter_input(self, inputname, inputvalue):
+		# type: (str, str) -> None
 		"""
 		Enter inputvalue into an input-element with the tag inputname.
 		"""
@@ -230,6 +248,7 @@ class Interactions(object):
 		self.click_element(xpath)
 
 	def submit_input(self, inputname):
+		# type: (str) -> None
 		"""
 		Submit the input in an input-element with the tag inputname.
 		"""
@@ -240,6 +259,7 @@ class Interactions(object):
 		elem.send_keys(Keys.RETURN)
 
 	def get_input(self, inputname):
+		# type: (str) -> None
 		"""
 		Get an input-element with the tag inputname.
 		"""
@@ -256,6 +276,7 @@ class Interactions(object):
 		return elems[0]
 
 	def get_all_enabled_elements(self, xpath):
+		# type: (str) -> List[Any]
 		elems = self.driver.find_elements_by_xpath(xpath)
 		try:
 			clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
@@ -266,6 +287,7 @@ class Interactions(object):
 		return False
 
 	def upload_image(self, img_path, button_label='Upload', timeout=60, xpath_prefix=''):
+		# type: (str, str, int, str) -> None
 		"""
 		Get an ImageUploader widget on screen and upload the given img_path.
 		Which ImageUploader widget is found can be isolated by specifying 'xpath_prefix'
@@ -283,6 +305,7 @@ class Interactions(object):
 		self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 
 	def drag_and_drop(self, source, target, find_by='xpath'):
+		# type: (Union[Any, str], Union[Any, str], str) -> None
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop
 		"""
@@ -293,6 +316,7 @@ class Interactions(object):
 		ActionChains(self.driver).drag_and_drop(source, target).perform()
 
 	def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath'):
+		# type: (Union[Any, str], int, int, str) -> None
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset
 		"""
