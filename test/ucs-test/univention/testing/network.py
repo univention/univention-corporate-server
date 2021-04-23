@@ -122,12 +122,12 @@ class NetworkRedirector(object):
 
 	def __init__(self):
 		# type: () -> None
-		self.ucr = univention.config_registry.ConfigRegistry()
-		self.ucr.load()
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
 		reUCRaddr = re.compile('^interfaces/[^/]+/address$')
-		for key in self.ucr.keys():
+		for key in ucr.keys():
 			if reUCRaddr.match(key):
-				self._external_address = self.ucr.get(key)
+				self._external_address = ucr.get(key)
 				break
 		else:
 			raise UCSTestNetworkCannotDetermineExternalAddress
