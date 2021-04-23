@@ -174,8 +174,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 
 	def _refresh(self):
 		udm_lib = importlib.import_module("univention.udm")
-		udm = udm_lib.UDM.machine().version(2)
 		try:
+			udm = udm_lib.UDM.machine().version(2)
 			portal = udm.get("portals/portal").get(self._portal_dn)
 		except udm_lib.ConnectionError:
 			get_logger("cache").warning("Could not establish UDM connection. Is the LDAP server accessible?")
@@ -348,8 +348,12 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 			return True
 
 	def _refresh(self):
-		with open(self._password_file) as fd:
-			password = fd.read().rstrip("\n")
+		try:
+			with open(self._password_file) as fd:
+				password = fd.read().rstrip("\n")
+		except EnvironmentError:
+			get_logger("cache").warning("Unable to read {}".format(self._password_file))
+			return None
 		con = ldap.initialize(self._ldap_uri)
 		con.simple_bind_s(self._bind_dn, password)
 		ldap_content = {}

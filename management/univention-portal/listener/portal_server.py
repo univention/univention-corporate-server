@@ -30,10 +30,7 @@
 
 from __future__ import absolute_import
 
-import os
 import subprocess
-from json import dump
-import shutil
 
 import univention.debug as ud
 

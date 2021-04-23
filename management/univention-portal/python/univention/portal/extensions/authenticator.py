@@ -34,7 +34,6 @@ from six import with_metaclass
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 from univention.portal.user import User
-import univention.portal.config as config
 
 
 class Session(object):
