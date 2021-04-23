@@ -1,3 +1,9 @@
+univention-saml (7.0.4-7) unstable; urgency=medium
+
+  * Bug #52941: fixup for icon in saml xml document
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 17:49:23 +0200
+
 univention-saml (7.0.4-6) unstable; urgency=medium
 
   * Bug #52941: added new icon design for SAML
