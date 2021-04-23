@@ -53,9 +53,9 @@ override_dh_auto_test:
 	python3 -m univention.testing.format.tap -v
 	python3 -m univention.testing.format.text -v
 	python3 -m univention.testing.internal -v
-	python -m univention.testing.ldif --test-internal -v
 	python3 -m univention.testing.udm -v
 	python3 -m univention.testing.utils -v
+	unittest/run-tests.sh
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))
