@@ -47,7 +47,7 @@ class BaseMailClient(object):
 				return "%s\x00%s\x00%s" % (user, authuser, password)
 		return self.authenticate('PLAIN', plain_callback)
 
-	def log_in(self, usermail, password):
+	def log_in(self, usermail, password):  # type: (str, str) -> None
 		"""wrap the super login method with try except
 
 		:usermail: string, user mail
@@ -99,7 +99,7 @@ class BaseMailClient(object):
 					result[i] = item
 		return result
 
-	def get_acl(self, mailbox):
+	def get_acl(self, mailbox):  # type: (str) -> Dict[str, Dict[str, str]]
 		"""get the exact acls from getacl
 
 		:mailbox: string, user mailbox name
@@ -134,7 +134,7 @@ class BaseMailClient(object):
 
 		return {mailbox: acl_result}
 
-	def check_acls(self, expected_acls):
+	def check_acls(self, expected_acls):  # type: (str) -> None
 		"""Check if the the correct acls are set
 
 		:expected_acls: string
@@ -292,7 +292,7 @@ class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
 
 	"""MailClient_SSL is a wrapper for imaplib.IMAP4_SSL"""
 
-	def __init__(self, host, port=993):
+	def __init__(self, host, port=993):  # type: (str, int) -> None
 		imaplib.IMAP4_SSL.__init__(self, host, port)
 
 
