@@ -247,30 +247,24 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 			replication_complete = True
 
 		previous_highestCommittedUSN = highestCommittedUSN
-
-		highestCommittedUSN = -1
-		ldbresult = subprocess.check_output([
+		ldbresult = subprocess.Popen([
 			'ldbsearch',
 			'--url', '/var/lib/samba/private/sam.ldb',
 			'--scope', 'base',
 			'--basedn', '',
 			'highestCommittedUSN',
-		])
-
-		if six.PY3:
-			ldbresult = ldbresult.decode('UTF-8')
-
-		for line in ldbresult.split('\n'):
-			line = line.strip()
+		], stdout=subprocess.PIPE)
+		assert ldbresult.stdout
+		for chunk in ldbresult.stdout:
+			line = chunk.decode('utf-8').strip()
 			if line.startswith('highestCommittedUSN: '):
-				highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
+				highestCommittedUSN = int(line[len('highestCommittedUSN: '):])
 				break
 		else:
 			raise KeyError('No highestCommittedUSN in ldbsearch')
 
 		previous_lastUSN = lastUSN
 		c.execute('select value from S4 where key=="lastUSN"')
-
 		lastUSN = c.fetchone()[0]
 
 		if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
