@@ -134,14 +134,9 @@ class DebianPackage():
 			install.append('*.uinst usr/lib/univention-uninstall/')
 		self.create_debian_file_from_buffer('install', '\n'.join(install))
 
-		cwd = os.getcwd()
-		os.chdir(self._package_path)
-		try:
-			sys.stdout.flush()
-			if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc']):
-				raise BuildRuntimeError
-		finally:
-				os.chdir(cwd)
+		sys.stdout.flush()
+		if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc'], cwd=self._package_path):
+			raise BuildRuntimeError()
 
 	def install(self):
 		# type: () -> None
