@@ -88,14 +88,9 @@ def random_name_special_characters(length=10):
 	)
 
 
-def random_username(length=10):
-	# type: (int) -> str
-	return random_name(length)
 
-
-def random_groupname(length=10):
-	# type: (int) -> str
-	return random_name(length)
+random_username = random_name
+random_groupname = random_name
 
 
 def random_int(bottom_end=0, top_end=9):
