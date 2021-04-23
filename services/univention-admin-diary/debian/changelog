@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.2-4) unstable; urgency=medium
+
+  * Bug #52941: added new icon design for admin diary
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:02:14 +0200
+
 univention-admin-diary (2.0.2-3) unstable; urgency=medium
 
   * Bug #52453: adjust font size

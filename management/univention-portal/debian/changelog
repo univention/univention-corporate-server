@@ -1,3 +1,9 @@
+univention-portal (4.0.5-39) unstable; urgency=medium
+
+  * Bug #52941: added new icon design for portal
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:03:36 +0200
+
 univention-portal (4.0.5-38) unstable; urgency=medium
 
   * Bug #52512: Better error handling

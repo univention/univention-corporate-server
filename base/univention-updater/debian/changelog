@@ -1,3 +1,9 @@
+univention-updater (15.0.3-44) unstable; urgency=medium
+
+  * Bug #52941: added new icon design for system update
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:10:19 +0200
+
 univention-updater (15.0.3-43) unstable; urgency=medium
 
   * Bug #52833: respect maintained components in

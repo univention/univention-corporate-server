@@ -1,3 +1,9 @@
+univention-saml (7.0.4-6) unstable; urgency=medium
+
+  * Bug #52941: added new icon design for SAML
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:03:03 +0200
+
 univention-saml (7.0.4-5) unstable; urgency=low
 
   * Bug #52975: Restart stunnel4 after join

@@ -1,3 +1,9 @@
+univention-quota (14.0.1-7) unstable; urgency=medium
+
+  * Bug #52941: added new icon design for filesystem quota
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:11:34 +0200
+
 univention-quota (14.0.1-6) unstable; urgency=medium
 
   * Bug #52941: update module icon for portal

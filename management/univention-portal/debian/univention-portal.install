@@ -4,6 +4,7 @@ udm/acls/62univention-portal.acl usr/lib/univention-portal/acl/
 udm/handlers/*.py usr/lib/univention-portal/udm/
 udm/syntax/*.py usr/lib/univention-portal/syntax/
 udm/api/*.py usr/lib/python3/dist-packages/univention/udm/modules/
+udm/icons/scalable/*.svg /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 udm/migrate-to-new-portal usr/lib/univention-portal/
 udm/migrate-to-new-portal-during-5.0-dev usr/lib/univention-portal/
 udm/univention-portal.xml usr/lib/univention-portal/umc/
