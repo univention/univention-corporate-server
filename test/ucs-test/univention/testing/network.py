@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # UCS test
-"""
-Networking helper that may establish connection redirection for testing
-network connections/configuration of different programs (e.g. postfix).
-
-WARNING:
-The networking helper will install special iptables rules that may completely
-break routing from/to the test system. Especially if the test script does
-not clean up in error cases!
-"""
 #
 # Copyright 2014-2021 Univention GmbH
 #
@@ -38,6 +29,15 @@ not clean up in error cases!
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Networking helper that may establish connection redirection for testing
+network connections/configuration of different programs (e.g. postfix).
+
+WARNING:
+The networking helper will install special iptables rules that may completely
+break routing from/to the test system. Especially if the test script does
+not clean up in error cases!
+"""
 
 from __future__ import print_function
 

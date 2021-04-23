@@ -1,21 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# UCS test
-"""
-BETA VERSION
-
-Wrapper around Univention Configuration Registry that is able to revert
-the UCR status after usage. For usage examples look at the end of this
-file.
-
-WARNING:
-changes to the ConfigRegistry object will also trigger the evaluation of templates
-and therefore changes in configuration files created by UCR!
-
-WARNING2:
-The API is currently under development and may change before next UCS release!
-"""
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -42,6 +26,22 @@ The API is currently under development and may change before next UCS release!
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+BETA VERSION
+
+Wrapper around Univention Configuration Registry that is able to revert
+the UCR status after usage. For usage examples look at the end of this
+file.
+
+WARNING:
+changes to the ConfigRegistry object will also trigger the evaluation of templates
+and therefore changes in configuration files created by UCR!
+
+WARNING2:
+The API is currently under development and may change before next UCS release!
+"""
+
 from __future__ import print_function
 
 import copy

@@ -1,6 +1,3 @@
-"""
-Common functions used by tests.
-"""
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -27,6 +24,10 @@ Common functions used by tests.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Common functions used by tests.
+"""
 
 from __future__ import print_function
 

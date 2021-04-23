@@ -1,22 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# UCS test
-"""
-ALPHA VERSION
-
-Wrapper around Univention Directory Manager CLI to simplify
-creation/modification of UDM objects in python. The wrapper automatically
-removed created objects during wrapper destruction.
-For usage examples look at the end of this file.
-
-WARNING:
-The API currently allows only modifications to objects created by the wrapper
-itself. Also the deletion of objects is currently unsupported. Also not all
-UDM object types are currently supported.
-
-WARNING2:
-The API is currently under heavy development and may/will change before next UCS release!
-"""
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -43,6 +26,23 @@ The API is currently under heavy development and may/will change before next UCS
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+ALPHA VERSION
+
+Wrapper around Univention Directory Manager CLI to simplify
+creation/modification of UDM objects in python. The wrapper automatically
+removed created objects during wrapper destruction.
+For usage examples look at the end of this file.
+
+WARNING:
+The API currently allows only modifications to objects created by the wrapper
+itself. Also the deletion of objects is currently unsupported. Also not all
+UDM object types are currently supported.
+
+WARNING2:
+The API is currently under heavy development and may/will change before next UCS release!
+"""
 
 from __future__ import print_function
 
