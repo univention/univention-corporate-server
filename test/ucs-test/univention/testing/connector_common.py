@@ -72,7 +72,7 @@ class TestUser(object):
 
 	@classmethod
 	def to_unicode(cls, dictionary):
-		return dict((k, to_unicode(v)) for k, v in dictionary.items())
+		return {k: to_unicode(v) for k, v in dictionary.items()}
 
 	def __repr__(self):
 		args = (self.user, self.rename, self.container)
@@ -163,7 +163,7 @@ class TestGroup(object):
 
 	@classmethod
 	def to_unicode(cls, dictionary):
-		return dict((k, to_unicode(v)) for k, v in dictionary.items())
+		return {k: to_unicode(v) for k, v in dictionary.items()}
 
 	def __repr__(self):
 		args = (self.group, self.rename, self.container)

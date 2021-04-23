@@ -91,7 +91,7 @@ def get_sections():  # type: () -> Dict[str, str]
 	Return dictionary section-name -> section-directory.
 	"""
 	section_dirs = os.listdir(TEST_BASE)
-	sections = dict([(dirname[3:], TEST_BASE + os.path.sep + dirname) for dirname in section_dirs if RE_SECTION.match(dirname)])
+	sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
 	return sections
 
 

@@ -784,15 +784,15 @@ def verify_udm_object(module, dn, expected_properties):
 		if udm_value is None:
 			udm_value = []
 		if isinstance(udm_value, (bytes, six.string_types)):
-			udm_value = set([udm_value])
+			udm_value = {udm_value}
 		if not isinstance(value, (tuple, list)):
-			value = set([value])
-		value = set(_to_unicode(v).lower() for v in value)
-		udm_value = set(_to_unicode(v).lower() for v in udm_value)
+			value = {value}
+		value = {_to_unicode(v).lower() for v in value}
+		udm_value = {_to_unicode(v).lower() for v in udm_value}
 		if udm_value != value:
 			try:
-				value = set(_normalize_dn(dn) for dn in value)
-				udm_value = set(_normalize_dn(dn) for dn in udm_value)
+				value = {_normalize_dn(dn) for dn in value}
+				udm_value = {_normalize_dn(dn) for dn in udm_value}
 			except ldap.DECODING_ERROR:
 				pass
 		if udm_value != value:
@@ -803,7 +803,7 @@ def verify_udm_object(module, dn, expected_properties):
 def _prettify_cmd(cmd):
 	# type: (Iterable[str]) -> str
 	cmd = ' '.join(pipes.quote(x) for x in cmd)
-	if set(cmd) & set(['\x00', '\n']):
+	if set(cmd) & {'\x00', '\n'}:
 		cmd = repr(cmd)
 	return cmd
 

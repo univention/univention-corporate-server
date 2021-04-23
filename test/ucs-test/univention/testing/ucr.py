@@ -70,9 +70,10 @@ class UCSTestConfigRegistry(ConfigRegistry):
 		""" call load() of superclass and save original registry values """
 		ConfigRegistry.load(self)
 		if self.__original_registry is None:
-			self.__original_registry = {}
-			for regtype in (ConfigRegistry.NORMAL, ConfigRegistry.LDAP, ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE):
-				self.__original_registry[regtype] = copy.deepcopy(dict(self._registry[regtype]))
+			self.__original_registry = {
+				regtype: copy.deepcopy(dict(reg))
+				for (regtype, reg) in self._walk()
+			}
 
 	def revert_to_original_registry(self):
 		# type: () -> None
@@ -86,15 +87,16 @@ class UCSTestConfigRegistry(ConfigRegistry):
 			(ConfigRegistry.SCHEDULE, 'schedule')
 		):
 			# remove new variables
-			keylist = list(set(self._registry[regtype]) - set(self.__original_registry[regtype]))
+			keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])
 			if keylist:
-				univention.config_registry.handler_unset(keylist, {option: True})
+				univention.config_registry.handler_unset(list(keylist), {option: True})
 
 			# add/revert existing variables
-			changes = []
-			for key, origval in self.__original_registry[regtype].items():
-				if origval != self._registry[regtype].get(key):
-					changes.append('%s=%s' % (key, origval))
+			changes = [
+				'%s=%s' % (key, origval)
+				for key, origval in self.__original_registry[regtype].items()
+				if origval != self._registry[regtype].get(key)
+			]
 			if changes:
 				univention.config_registry.handler_set(changes, {option: True})
 		# load new/original values

@@ -77,7 +77,7 @@ class TestEnvironment(object):
 			self.tags_prohibited = None  # type: Optional[Set[str]]
 		else:
 			self.tags_required = set()
-			self.tags_prohibited = set(('SKIP', 'WIP'))
+			self.tags_prohibited = {'SKIP', 'WIP'}
 
 		self.log = open(logfile or os.path.devnull, 'a')
 

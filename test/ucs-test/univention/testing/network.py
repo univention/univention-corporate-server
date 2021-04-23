@@ -164,9 +164,7 @@ class NetworkRedirector(object):
 		>>> run_commands([['/bin/echo', '%(msg)s'], ['/bin/echo', 'World']], {'msg': 'Hello'})
 		"""
 		for cmd in cmdlist:
-			cmd = copy.deepcopy(cmd)
-			for i, val in enumerate(cmd):
-				cmd[i] = val % argdict
+			cmd = [val % argdict for val in cmd]
 			print('*** %r' % cmd)
 			result = subprocess.call(cmd)
 			if result and not ignore_errors:

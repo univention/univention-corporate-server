@@ -105,10 +105,7 @@ def random_int(bottom_end=0, top_end=9):
 
 def random_version(elements=3):
 	# type: (int) -> str
-	version = []
-	for _ in range(elements):
-		version.append(random_int(0, 9))
-	return '.'.join(version)
+	return '.'.join(random_int(0, 9) for _ in range(elements))
 
 
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
