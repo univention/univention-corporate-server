@@ -189,7 +189,7 @@ class LdifSlapcat(LdifSource):
 	def __init__(self):
 		# type: () -> None
 		super(LdifSlapcat, self).__init__()
-		self.command = ('slapcat', '-d0')
+		self.command = ['slapcat', '-d0']
 		self.proc = None  # type: Optional[subprocess.Popen]
 
 	def start_reading(self):
@@ -225,7 +225,7 @@ class LdifSsh(LdifSlapcat):
 	def __init__(self, hostname, ssh='ssh'):
 		# type: (str, str) -> None
 		super(LdifSsh, self).__init__()
-		self.command = (ssh, hostname) + self.command
+		self.command = [ssh, hostname] + self.command
 
 	def start_reading(self):
 		# type: () -> None
