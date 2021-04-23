@@ -1,0 +1,26 @@
+Source: univention-management-console-module-welcome
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+ dh-python,
+ python3-all,
+ univention-management-console-dev,
+Standards-Version: 3.5.2
+
+Package: univention-management-console-module-welcome
+Architecture: all
+Depends:
+ univention-directory-manager-tools,
+ univention-management-console-server,
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
+Description: UMC module for the first steps after installation
+ This package contains the UMC module for welcome
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

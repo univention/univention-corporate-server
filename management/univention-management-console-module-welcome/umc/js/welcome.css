@@ -1,0 +1,41 @@
+.umcBubble {
+	background-color: var(--bgc-content-container);
+	border-radius: var(--border-radius-container);
+	margin-bottom: 2em;
+}
+.umcBubble__header {
+	border-bottom: 2px solid var(--bgc-content-body);
+	padding: calc(2 * var(--layout-spacing-unit));
+}
+.umcBubble__content {
+	padding: calc(2 * var(--layout-spacing-unit));
+	display: flex;
+}
+.umcBubble__content img {
+	height: 9rem;
+}
+.umcBubble__content-inner {
+	width: 100%;
+	margin-left: calc(2 * var(--layout-spacing-unit));
+}
+.umcBubble__buttons {
+	margin-top: calc(2 * var(--layout-spacing-unit));
+	display: flex;
+	flex-wrap: wrap;
+}
+.umcBubbleButton {
+	background-color: var(--bgc-content-body);
+	margin-top: calc(2 * var(--layout-spacing-unit));
+	margin-left: calc(2 * var(--layout-spacing-unit));
+	border: 2px solid transparent;
+	border-radius: var(--border-radius-container);
+	padding: var(--layout-spacing-unit);
+	width: 30%;
+}
+.umcBubbleButton:hover {
+	cursor: pointer;
+	border-color: var(--color-primary);
+}
+.umcBubbleButton__description {
+	margin-top: var(--layout-spacing-unit);
+}

@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-welcome\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-04-23 18:05+0200\n"
+"PO-Revision-Date: 2016-01-14 11:26+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: umc/js/welcome.js:51
+msgid ""
+"Great to see you! This page lets you upload a UCS license so you can start "
+"using the Univention App Center."
+msgstr ""
+"Schön Sie zu sehen! Auf dieser Seite können Sie eine UCS-Lizenz hochladen, "
+"mit der dann das Univention App Center benutzt werden kann."
+
+#: umc/js/welcome.js:74
+msgid "Import a license"
+msgstr "Lizenz importieren"
+
+#: umc/js/welcome.js:69
+msgid "License info"
+msgstr "Lizenz-Informationen"
+
+#: umc/js/welcome.js:59
+msgid "Manage your license for your Univention Corporate Server domain"
+msgstr "Verwalten Sie die Lizenz für Ihre Univention Corporate Server-Domäne"
+
+#: umc/js/welcome.js:63
+msgid "Request a new license"
+msgstr "Neue Lizenz anfordern"
+
+#: umc/js/welcome.js:70
+msgid "Show your current license"
+msgstr "Aktuelle Lizenz anzeigen"
+
+#: umc/js/welcome.js:57
+msgid "UCS License"
+msgstr "UCS-Lizenz"
+
+#: umc/js/welcome.js:75
+msgid "Upload a new license we sent you earlier"
+msgstr "Neue Lizenz hochladen, die wir zuvor verschickt haben"
+
+#: umc/js/welcome.js:64
+msgid "We send you a license with a Key ID to your email address"
+msgstr "Wir schicken eine Lizenz mit Key ID an Ihre E-Mail-Adresse"

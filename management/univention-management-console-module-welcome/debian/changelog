@@ -1,0 +1,5 @@
+univention-management-console-module-welcome (1.0.0-2) unstable; urgency=medium
+
+  * Bug #53147: Initial release
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Apr 2021 14:24:48 +0200
