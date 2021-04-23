@@ -42,7 +42,7 @@ class SetTimeout(object):
 				print("** Exiting", self.func.__name__)
 				break
 			except Exception as ex:
-				print("(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex)))
+				print("(%d)-- Exception cought: %s %s" % (i, type(ex), ex))
 				time.sleep(1)
 		else:
 			self.func(*args, **kwargs)
