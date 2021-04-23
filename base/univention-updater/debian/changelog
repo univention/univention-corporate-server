@@ -1,3 +1,10 @@
+univention-updater (15.0.3-43) unstable; urgency=medium
+
+  * Bug #52833: respect maintained components in
+    univention-list-installed-unmaintained-packages
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Apr 2021 13:32:05 +0200
+
 univention-updater (15.0.3-42) unstable; urgency=medium
 
   * Bug #51482: Remove PyKota print quota support

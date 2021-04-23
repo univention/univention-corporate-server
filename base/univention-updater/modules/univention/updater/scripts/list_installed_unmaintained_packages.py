@@ -35,7 +35,7 @@ from argparse import ArgumentParser, FileType, Namespace
 from os import get_terminal_size
 from sys import exit, stdout
 from textwrap import TextWrapper
-from typing import IO, Set
+from typing import IO, Set, Tuple
 
 import apt
 
@@ -62,14 +62,26 @@ def parse_args() -> Namespace:
 
 
 def get_unmaintained_packages(maintained: IO[str]) -> Set[str]:
-	installed_packages = get_installed_packages()
+	installed_packages, installed_from_maintained_repo = get_installed_packages()
 	maintained_packages = get_maintained_packages(maintained)
-	return installed_packages - maintained_packages
+	return installed_packages - maintained_packages - installed_from_maintained_repo
 
 
-def get_installed_packages() -> Set[str]:
+def get_installed_packages() -> Tuple[Set[str], Set[str]]:
 	cache = apt.Cache()
-	return {package.name for package in cache if cache[package.name].is_installed}
+	installed_packages = set()
+	from_maintained_repo = set()
+	for package in cache:
+		if cache[package.name].is_installed:
+			installed_packages.add(package.name)
+			# maintained components
+			if next((True for i in package.candidate.uris if '/maintained/component/' in i), False):
+				# TODO also test package.candidate.origins
+				#  [<Origin component:'' archive:'' origin:'Univention' label:'Univention' site:'appcenter.software-univention.de' isTrusted:True>,
+				#   <Origin component:'now' archive:'now' origin:'' label:'' site:'' isTrusted:False>]
+				# e.g. site is appcenter.software-univention.de or service.univention.de, or isTrusted is True
+				from_maintained_repo.add(package.name)
+	return installed_packages, from_maintained_repo
 
 
 def get_maintained_packages(maintained: IO[str]) -> Set[str]:
