@@ -1,7 +1,8 @@
 from __future__ import print_function
 
 import time
-from typing import Any, Callable, TypeVar  # noqa F401
+from functools import wraps
+from typing import Any, Callable, TypeVar, cast  # noqa F401
 
 DEFAULT_TIMEOUT = 90  # seconds
 
@@ -48,21 +49,25 @@ class SetTimeout(object):
 			self.func(*args, **kwargs)
 
 
-def setTimeout(func, timeout=DEFAULT_TIMEOUT):
-	# type: (F, int) -> F
-	def wrapper(*args, **kwargs):
-		# type: (*Any, **Any) -> None
-		for i in range(timeout):
-			try:
-				print("** Entering", func.__name__)
+def setTimeout(timeout=DEFAULT_TIMEOUT):
+	# type: (int) -> Callable[[F], F]
+	def decorator(func):
+		# type: (F) -> F
+		@wraps(func)
+		def wrapper(*args, **kwargs):
+			# type: (*Any, **Any) -> None
+			for i in range(timeout):
+				try:
+					print("** Entering", func.__name__)
+					func(*args, **kwargs)
+					print("** Exiting", func.__name__)
+					break
+				except Exception as ex:
+					print("(%d)-- Exception cought: %s %s" % (i, type(ex), ex))
+					time.sleep(1)
+			else:
 				func(*args, **kwargs)
-				print("** Exiting", func.__name__)
-				break
-			except Exception as ex:
-				print("(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex)))
-				time.sleep(1)
-		else:
-			func(*args, **kwargs)
-	return wrapper
+		return cast(F, wrapper)
+	return decorator
 
 # vim: set ft=python ts=4 sw=4 et ai :
