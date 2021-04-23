@@ -2,7 +2,7 @@
 #
 # Run test suite
 #
-BASE=$(cd "${0%/*}" && pwd -P)
+BASE=$(cd "${0%/*}" >/dev/null && pwd -P)
 BIN="$BASE"/../univention/testing/ldif.py
 ret=0
 for py in python2 python3
