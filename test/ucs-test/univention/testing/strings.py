@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import random
+from random import choice, randint
 from typing import Iterator, Text  # noqa F401
 
 import six
@@ -44,7 +44,7 @@ STR_UMLAUT = u'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='utf-8'):
+def random_string(length=10, alpha=True, numeric=True, charset=u"", encoding='utf-8'):
 	# type: (int, bool, bool, Text, str) -> str
 	"""
 	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
@@ -55,13 +55,13 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 	result = u''
 	for _ in range(length):
 		if charset:
-			result += random.choice(charset)
+			result += choice(charset)
 		elif alpha and numeric:
-			result += random.choice(STR_ALPHANUM)
+			result += choice(STR_ALPHANUM)
 		elif alpha:
-			result += random.choice(STR_ALPHA)
+			result += choice(STR_ALPHA)
 		elif numeric:
-			result += random.choice(STR_NUMERIC)
+			result += choice(STR_NUMERIC)
 	if six.PY2:
 		result = result.encode(encoding)
 	return result
@@ -72,7 +72,11 @@ def random_name(length=10):
 	"""
 	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
 	"""
-	return random_string(length=1, alpha=True, numeric=False) + random_string(length=(length - 2), alpha=True, numeric=True) + random_string(length=1, alpha=True, numeric=False)
+	return ''.join((
+		random_string(length=1, alpha=True, numeric=False),
+		random_string(length=(length - 2), alpha=True, numeric=True),
+		random_string(length=1, alpha=True, numeric=False),
+	))
 
 
 def random_name_special_characters(length=10):
@@ -80,13 +84,12 @@ def random_name_special_characters(length=10):
 	"""
 	create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
 	"""
-	return '%s%s%s%s' % (
+	return ''.join((
 		random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
 		random_string(length=2, alpha=True, numeric=False),
 		random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
 		random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
-	)
-
+	))
 
 
 random_username = random_name
@@ -95,7 +98,7 @@ random_groupname = random_name
 
 def random_int(bottom_end=0, top_end=9):
 	# type: (int, int) -> str
-	return str(random.randint(bottom_end, top_end))
+	return str(randint(bottom_end, top_end))
 
 
 def random_version(elements=3):
@@ -105,53 +108,30 @@ def random_version(elements=3):
 
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
 	# type: (int, int, int, int, int, int) -> str
-	return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
+	return '%s.%s-%s' % (
+		randint(min_major, max_major),
+		randint(min_minor, max_minor),
+		randint(min_patchlevel, max_patchlevel),
+	)
 
 
 def random_mac():
 	# type: () -> str
-	mac = [
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0xff),
-		random.randint(0x00, 0xff)
-	]
-
-	return ':'.join(map(lambda x: "%02x" % x, mac))
+	return ':'.join(
+		"%02x" % (randint(0, 0x7f if i < 4 else 0xff),)
+		for i in range(6)
+	)
 
 
-# Generate 110 different ip addresses in the range 11.x.x.x-120.x.x.x
-class IP_Iter(object):
-
-	def __init__(self):
-		self.max_range = 120
-		self.index = 11
-
-	def __iter__(self):
-		return self
-
-	def __next__(self):
-		if self.index < self.max_range:
-			ip_list = [
-				self.index,
-				random.randint(1, 254),
-				random.randint(1, 254),
-				random.randint(1, 254)
-			]
-			ip = ".".join(map(str, ip_list))
-			self.index += 1
-			return ip
-		else:
-			raise StopIteration()
-
-	next = __next__  # Python 2
-
-
-def random_ip(ip_iter=IP_Iter()):
-	# type: (IP_Iter) -> str
-	return ip_iter.next()
+def random_ip(ip_iter=iter(range(11, 121))):
+	# type: (Iterator[int]) -> str
+	"""Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
+	return '%d.%d.%d.%d' % (
+		next(ip_iter),
+		randint(1, 254),
+		randint(1, 254),
+		randint(1, 254),
+	)
 
 
 def random_dns_record():
