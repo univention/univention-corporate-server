@@ -56,6 +56,7 @@ Package: univention-base-files
 Architecture: all
 Depends:
  shell-univention-lib (>= 6.0.9-8),
+ udev,
  univention-config (>= 15),
  ${misc:Depends},
 Provides:
