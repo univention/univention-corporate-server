@@ -114,6 +114,7 @@ def get_html_tag_value(page, tag, condition, value_name):
 	htmlParser = GetHtmlTagValue(tag, condition, value_name)
 	htmlParser.feed(page)
 	htmlParser.close()
+	assert htmlParser.value is not None
 	return htmlParser.value
 
 

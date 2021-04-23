@@ -137,7 +137,7 @@ class AppCenter(object):
 		self.selenium.wait_until_progress_bar_finishes(timeout=900)
 		self.selenium.wait_for_text(_('More information'), timeout=900)
 
-	def search_for_apps(self, text, category=None):
+	def search_for_apps(self, text, category=""):
 		# type: (str, str) -> None
 		self.open()
 

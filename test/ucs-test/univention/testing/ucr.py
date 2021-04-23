@@ -80,6 +80,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 		""" revert UCR values back to original state """
 		# load current values again to perform correct comparison
 		self.load()
+		assert self.__original_registry is not None
 		for regtype, option in (
 			(ConfigRegistry.NORMAL, ''),
 			(ConfigRegistry.LDAP, 'ldap-policy'),

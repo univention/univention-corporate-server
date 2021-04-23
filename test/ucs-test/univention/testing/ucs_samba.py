@@ -42,16 +42,13 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 		print('skipping samba password policy adjustment')
 		yield
 		return
-	complexity = 'on' if complexity else 'off'
-	minimum_password_age = str(minimum_password_age)
-	maximum_password_age = str(maximum_password_age)
 	min_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip()
 	max_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip()
 	pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
-	if complexity != pwd_complexity or minimum_password_age != min_pwd_age or maximum_password_age != max_pwd_age:
-		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', minimum_password_age, '--max-pwd-age', maximum_password_age, '--complexity', complexity])
+	if complexity != pwd_complexity or str(minimum_password_age) != min_pwd_age or str(maximum_password_age) != max_pwd_age:
+		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', str(minimum_password_age), '--max-pwd-age', str(maximum_password_age), '--complexity', 'on' if complexity else 'off'])
 	yield
-	if complexity != pwd_complexity or minimum_password_age != min_pwd_age:
+	if complexity != pwd_complexity or str(minimum_password_age) != min_pwd_age:
 		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
@@ -103,13 +100,13 @@ def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOP
 	if base is None:
 		ucr = config_registry.ConfigRegistry()
 		ucr.load()
-		base = str(ucr.get('samba4/ldap/base'))
+		base = ucr['samba4/ldap/base']
 	else:
 		if len(ldap.dn.str2dn(base)[0]) > 1:
 			if verbose:
 				print('wait_for_drs_replication(): skip, multiple RDNs are not supported')
 			return
-	if not base or base == 'None':
+	if not base:
 		if verbose:
 			print('wait_for_drs_replication(): skip, no samba domain found')
 		return
@@ -151,13 +148,13 @@ def get_available_s4connector_dc():
 	stdout, _stderr = p.communicate()
 	if not stdout:
 		print("WARNING: Automatic S4 Connector host detection failed")
-		return
+		return ""
 	matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout)
 	if len(matches) == 1:
 		return matches[0]
 	elif len(matches) == 0:
 		print("WARNING: Automatic S4 Connector host detection failed")
-		return
+		return ""
 
 	# check if this is UCS@school
 	cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=UCS@school)", "dn")
@@ -165,7 +162,7 @@ def get_available_s4connector_dc():
 	stdout, _stderr = p.communicate()
 	if not stdout:
 		print("ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches))
-		return
+		return ""
 	# Look for replicating DCs
 	dcs_replicating_with_this_one = []
 	for s4c in matches:
@@ -179,14 +176,14 @@ def get_available_s4connector_dc():
 		return dcs_replicating_with_this_one[0]
 	else:
 		print("ERROR: Automatic S4 Connector host detection failed: Replicating with %s S4 Connector services" % len(dcs_replicating_with_this_one))
-		return
+		return ""
 
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
 	# type: (Optional[str], Optional[str], Optional[str], str) -> int
 	if not package_installed('univention-samba4'):
 		print('force_drs_replication(): skip, univention-samba4 not installed.')
-		return
+		return 0
 	if not source_dc:
 		source_dc = get_available_s4connector_dc()
 		if not source_dc:
@@ -196,7 +193,7 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		destination_dc = socket.gethostname()
 
 	if destination_dc == source_dc:
-		return
+		return 0
 
 	if not partition_dn:
 		ucr = config_registry.ConfigRegistry()
@@ -226,10 +223,10 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 
 	if not package_installed('univention-s4-connector'):
 		print('wait_for_s4connector(): skip, univention-s4-connector not installed.')
-		return
+		return 0
 	if ucr.is_false('connector/s4/autostart'):
 		print('wait_for_s4connector(): skip, connector/s4/autostart is set to false.')
-		return
+		return 0
 	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = conn.cursor()
 

@@ -194,6 +194,7 @@ class TestLicenseClient(HTMLParser):
 		returns the response
 		"""
 		self.log.debug("In 'make_post_request' method: url='%s', body='%s', headers='%s'" % (url, body, headers))
+		assert self.connection
 		try:
 			self.connection.request("POST", url, body, headers)
 			response = self.connection.getresponse()
@@ -209,6 +210,7 @@ class TestLicenseClient(HTMLParser):
 		returns the response
 		"""
 		self.log.debug("In 'make_get_request' method: url='%s', headers='%s'" % (url, headers))
+		assert self.connection
 		try:
 			self.connection.request("GET", url, headers=headers)
 			response = self.connection.getresponse()
@@ -334,6 +336,7 @@ class TestLicenseClient(HTMLParser):
 		with the default values in the 'self.license_params' dictionary
 		"""
 		self.log.debug("In 'process_cmd_arguments' method")
+		assert self.parser
 		self.parser.add_argument("BaseDN", help="A base DN for the license")
 		self.parser.add_argument("EndDate", help="The date till which the license will be valid (max 1 year from now)")
 		self.parser.add_argument("-f", "--FileName", help="The filename to be used for the issued license (default=ValidTest.license)")
@@ -346,8 +349,8 @@ class TestLicenseClient(HTMLParser):
 		self.parser.add_argument("--username", help="username (default: %(default)s)", default=self.server_username)
 		self.parser.add_argument("--secret-file", help="password file (default: %(default)s)", default=self.secret_file)
 
-		args = self.parser.parse_args()
-		args = vars(args)  # converting Namespace to a dictionary
+		opts = self.parser.parse_args()
+		args = vars(opts)  # converting Namespace to a dictionary
 		self.log.debug("Parsed arguments are: '%s'" % args)
 		self.update_with_parsed_args(args)
 

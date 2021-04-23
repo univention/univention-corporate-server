@@ -76,7 +76,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		'ff': 'firefox',
 	}
 
-	def __init__(self, language='en', host=None, suppress_notifications=True, suppress_welcome_dialog=True):
+	def __init__(self, language='en', host="", suppress_notifications=True, suppress_welcome_dialog=True):
 		# type: (str, str, bool, bool) -> None
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()

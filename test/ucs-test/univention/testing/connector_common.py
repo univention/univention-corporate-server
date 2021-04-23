@@ -23,16 +23,16 @@ FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ " + '$.'
 SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
 
 
-def random_string(length=10, alpha=False, numeric=False, charset=None, encoding='utf-8'):
+def random_string(length=10, alpha=False, numeric=False, charset=u"", encoding='utf-8'):
 	# type: (int, bool, bool, str, Text) -> str
 	return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
-def random_bytestring(length=10, alpha=False, numeric=False, charset=None):
+def random_bytestring(length=10, alpha=False, numeric=False, charset=u""):
 	# type: (int, bool, bool, Text) -> bytes
 	string = random_string(length, alpha, numeric, charset)
 	if not isinstance(string, bytes):
-		string = string.encode('utf-8')
+		return string.encode('utf-8')
 	return string
 
 
@@ -51,7 +51,7 @@ def normalize_dn(dn):
 def to_unicode(string):
 	# type: (Union[bytes, Text]) -> Text
 	if isinstance(string, bytes):
-		string = string.decode('utf-8')
+		return string.decode('utf-8')
 	return string
 
 

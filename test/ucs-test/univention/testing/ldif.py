@@ -92,6 +92,7 @@ class LdifSource(object):
 		Return line iterator.
 		"""
 		lines = []
+		assert self.src is not None
 		for lno, line in enumerate(self.src, start=1):
 			line = line.rstrip('\r\n')
 			if line[:1] in (' ', '\t'):
@@ -197,6 +198,7 @@ class LdifSlapcat(LdifSource):
 		Start reading the LDIF data.
 		"""
 		self.run_command()
+		assert self.proc
 		self.src = self.proc.stdout
 
 	def run_command(self):
@@ -244,6 +246,7 @@ class LdifSsh(LdifSlapcat):
 		...
 		SlapError: ('Error executing', ('false', '', 'slapcat', '-d0'), 1)
 		"""
+		assert self.proc
 		while True:
 			rlist = [self.proc.stdout]
 			wlist = []  # type: List[int]
