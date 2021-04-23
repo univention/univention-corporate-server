@@ -117,11 +117,7 @@ def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOP
 	while t < t0 + timeout:
 		try:
 			res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
-			if res and should_exist:
-				if verbose:
-					print("\nDRS replication took %d seconds" % (t - t0, ))
-				return  # res
-			if not res and not should_exist:
+			if bool(res) is bool(should_exist):
 				if verbose:
 					print("\nDRS replication took %d seconds" % (t - t0, ))
 				return  # res
@@ -149,7 +145,7 @@ def get_available_s4connector_dc():
 	if not stdout:
 		print("WARNING: Automatic S4 Connector host detection failed")
 		return ""
-	matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout)
+	matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout.decode('utf-8', 'replace'))
 	if len(matches) == 1:
 		return matches[0]
 	elif len(matches) == 0:
@@ -184,15 +180,13 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 	if not package_installed('univention-samba4'):
 		print('force_drs_replication(): skip, univention-samba4 not installed.')
 		return 0
-	if not source_dc:
-		source_dc = get_available_s4connector_dc()
-		if not source_dc:
-			return 1
 
-	if not destination_dc:
-		destination_dc = socket.gethostname()
+	src = source_dc or get_available_s4connector_dc()
+	if not src:
+		return 1
 
-	if destination_dc == source_dc:
+	dst = destination_dc or socket.gethostname()
+	if src == dst:
 		return 0
 
 	if not partition_dn:
@@ -201,10 +195,7 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		partition_dn = str(ucr.get('samba4/ldap/base'))
 		print("USING partition_dn:", partition_dn)
 
-	if direction == "in":
-		cmd = ("/usr/bin/samba-tool", "drs", "replicate", destination_dc, source_dc, partition_dn)
-	else:
-		cmd = ("/usr/bin/samba-tool", "drs", "replicate", source_dc, destination_dc, partition_dn)
+	cmd = ("/usr/bin/samba-tool", "drs", "replicate", dst, src, partition_dn)
 	return subprocess.call(cmd)
 
 
