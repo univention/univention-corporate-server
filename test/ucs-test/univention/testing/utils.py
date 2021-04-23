@@ -393,14 +393,13 @@ class FollowLogfile(object):
 	You may wish to make the server flush its logs before existing the
 	with block. Use AutoCallCommand inside the block for that::
 
-	    with FollowLogfile(logfiles=['/var/log/syslog', '/var/log/mail.log']) as flf:
-	        with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
-	            exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+	    cmd = ('doveadm', 'log', 'reopen')
+	    with FollowLogfile(logfiles=['/var/log/syslog', '/var/log/mail.log']):
+	        with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
 	            pass
 
-	    with FollowLogfile(logfiles=['/var/log/syslog'], always=True) as flf:
-	        with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
-	            exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+	    with FollowLogfile(logfiles=['/var/log/syslog'], always=True):
+	        with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
 	            pass
 	"""
 
@@ -410,18 +409,13 @@ class FollowLogfile(object):
 		:param logfiles: list of absolute filenames to read from
 		:param always: bool, if True: print logfile change also if no error occurred (default=False)
 		"""
-		assert isinstance(logfiles, list)
-		self.logfiles = logfiles
 		assert isinstance(always, bool)
 		self.always = always
-		self.logfile_pos = dict()  # type: Dict[str, int]
+		self.logfile_pos = dict.fromkeys(logfiles, 0)  # type: Dict[str, int]
 
 	def __enter__(self):
 		# type: () -> FollowLogfile
-		for logfile in self.logfiles:
-			with open(logfile, "rb") as log:
-				log.seek(0, 2)
-				self.logfile_pos[logfile] = log.tell()
+		self.logfile_pos.update((logfile, os.path.getsize(logfile)) for logfile in self.logfile_pos)
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
