@@ -326,8 +326,8 @@ def compare_ldif(lldif, rldif, options):
 	lefts = stream2object(lldif)
 	rights = stream2object(rldif)
 
-	lkeys = sorted(lefts.keys(), key=sort_dn, reverse=True)
-	rkeys = sorted(rights.keys(), key=sort_dn, reverse=True)
+	lkeys = sorted(lefts, key=sort_dn, reverse=True)
+	rkeys = sorted(rights, key=sort_dn, reverse=True)
 
 	ret = 0
 	ldn = rdn = None
@@ -383,8 +383,8 @@ def compare_keys(ldata, rdata):
 	>>> list(compare_keys({'a': [1]}, {'a': [2]}))
 	[(1, 'a', 2), (-1, 'a', 1)]
 	"""
-	lkeys = sorted(ldata.keys(), reverse=True)
-	rkeys = sorted(rdata.keys(), reverse=True)
+	lkeys = sorted(ldata, reverse=True)
+	rkeys = sorted(rdata, reverse=True)
 
 	lkey = rkey = None
 	while True:
@@ -560,14 +560,12 @@ def run_compare(ldif1, ldif2, options):
 	except KeyboardInterrupt:
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		os.kill(os.getpid(), signal.SIGINT)
-	except IOError as ex:
+	except EnvironmentError as ex:
 		if ex.errno == errno.EPIPE:
 			signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 			os.kill(os.getpid(), signal.SIGPIPE)
 		else:
 			print('Error: %s' % (ex,), file=sys.stderr)
-	except OSError as ex:
-		print('Error: %s' % (ex,), file=sys.stderr)
 	except LdifError as ex:
 		print('Invalid LDIF: %s' % (ex,), file=sys.stderr)
 	sys.exit(ret)

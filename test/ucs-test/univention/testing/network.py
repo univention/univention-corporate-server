@@ -124,13 +124,12 @@ class NetworkRedirector(object):
 		# type: () -> None
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
-		self._external_address = None
 		reUCRaddr = re.compile('^interfaces/[^/]+/address$')
 		for key in self.ucr.keys():
 			if reUCRaddr.match(key):
 				self._external_address = self.ucr.get(key)
 				break
-		if not self._external_address:
+		else:
 			raise UCSTestNetworkCannotDetermineExternalAddress
 		self.used_by_with_statement = False
 		self.cleanup_rules = []  # type: List[Union[Tuple[Literal["loop"], str, str], Tuple[Literal["redirection"], str, int, int]]]
@@ -202,11 +201,11 @@ class NetworkRedirector(object):
 		"""
 		Remove previously defined connection loop.
 		"""
-		entry = ('loop', addr1, addr2)
-		if entry not in self.cleanup_rules:
+		try:
+			self.cleanup_rules.remove(('loop', addr1, addr2))
+		except ValueError:
 			raise UCSTestNetworkUnknownLoop('The given loop has not been established and cannot be removed.')
 
-		self.cleanup_rules.remove(entry)
 		args = {
 			'addr1': addr1,
 			'addr2': addr2,
@@ -243,11 +242,11 @@ class NetworkRedirector(object):
 		"""
 		Remove previously defined connection redirection.
 		"""
-		entry = ('redirection', remote_addr, remote_port, local_port)
-		if entry not in self.cleanup_rules:
+		try:
+			self.cleanup_rules.remove(('redirection', remote_addr, remote_port, local_port))
+		except ValueError:
 			raise UCSTestNetworkUnknownRedirection('The given redirection has not been established and cannot be removed.')
 
-		self.cleanup_rules.remove(entry)
 		args = {
 			'remote_addr': remote_addr,
 			'remote_port': remote_port,

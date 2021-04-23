@@ -37,7 +37,7 @@ import sys
 from argparse import ArgumentParser
 from datetime import datetime
 from os import path
-from sys import modules, exit
+from sys import exit
 from typing import Any, Dict, Iterable, Optional, Tuple  # noqa F401
 
 if sys.version_info >= (3,):
@@ -386,6 +386,5 @@ class TestLicenseClient(HTMLParser):
 
 
 if __name__ == '__main__':
-	description = modules[__name__].__doc__
-	Client = TestLicenseClient(ArgumentParser(description=description))
+	Client = TestLicenseClient(ArgumentParser(description=__doc__))
 	Client.main()

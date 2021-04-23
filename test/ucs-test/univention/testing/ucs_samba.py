@@ -280,7 +280,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 			static_count = 0
 			print('Reset counter')
 		else:
-			static_count = static_count + 1
+			static_count += 1
 
 		print('Counter: {}; highestCommittedUSN: {}; lastUSN: {}'.format(static_count, highestCommittedUSN, lastUSN))
 
