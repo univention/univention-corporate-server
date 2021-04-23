@@ -83,7 +83,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
 		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
-		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
+		self.base_url = 'https://%s/' % (host or '%(hostname)s.%(domainname)s' % self._ucr)
 		self.screenshot_path = os.path.abspath('selenium/')
 		self.suppress_notifications = suppress_notifications
 		self.suppress_welcome_dialog = suppress_welcome_dialog
