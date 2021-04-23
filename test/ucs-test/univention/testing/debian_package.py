@@ -94,9 +94,8 @@ class DebianPackage():
 
 	def __create_file_from_buffer(self, path, file_buffer):
 		# type: (str, str) -> None
-		f = open(path, 'w')
-		f.write(file_buffer)
-		f.close()
+		with open(path, 'w') as f:
+			f.write(file_buffer)
 
 	def create_join_script_from_buffer(self, joinscript_name, joinscript_buffer):
 		# type: (str, str) -> None
