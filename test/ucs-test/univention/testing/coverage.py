@@ -117,11 +117,12 @@ directory = {directory}
 
 		# stop all services, so that their atexit-handler/signal handler stores the result before evaluating the result
 		self.restart_python_services()
-		coverage_bin = distutils.spawn.find_executable("coverage")
-		if not coverage_bin:
-			coverage_bin = distutils.spawn.find_executable("python3-coverage")
-		if not coverage_bin:
-			coverage_bin = distutils.spawn.find_executable("python-coverage")
+		for exe in ("coverage", "python3-coverage", "python-coverage"):
+			coverage_bin = distutils.spawn.find_executable("coverage")
+			if coverage_bin:
+				break
+		else:
+			raise FileNotFoundError("coverage")
 		subprocess.call([coverage_bin, '--version'])
 		subprocess.call([coverage_bin, 'combine'])
 		subprocess.call([coverage_bin, 'html'])
