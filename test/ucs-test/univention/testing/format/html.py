@@ -8,7 +8,7 @@ from typing import IO  # noqa F401
 from xml.sax.saxutils import escape as escape_xml
 
 from univention.testing.codes import TestCodes
-from univention.testing.data import TestFormatInterface, TestEnvironment, TestResult  # noqa F401
+from univention.testing.data import TestEnvironment, TestFormatInterface, TestResult  # noqa F401
 
 __all__ = ['HTML']
 

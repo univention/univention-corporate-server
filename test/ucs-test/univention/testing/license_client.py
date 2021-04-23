@@ -33,13 +33,12 @@ A tool to obtain licenses for the UCS test environments.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
-from sys import modules, exit
-from os import path
 import logging
-
+import sys
 from argparse import ArgumentParser
 from datetime import datetime
+from os import path
+from sys import modules, exit
 from typing import Any, Dict, Iterable, Optional, Tuple  # noqa F401
 
 if sys.version_info >= (3,):

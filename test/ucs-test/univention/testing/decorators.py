@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 import time
 from typing import Any, Callable, TypeVar  # noqa F401
 

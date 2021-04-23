@@ -30,11 +30,12 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import time
+
 import os
 import pwd
 import subprocess
 import sys
+import time
 from types import TracebackType  # noqa F401
 from typing import Optional, Set, Type  # noqa F401
 

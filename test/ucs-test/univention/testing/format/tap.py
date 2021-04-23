@@ -7,7 +7,7 @@ import sys
 from typing import IO, Any  # noqa F401
 
 from univention.testing.codes import TestCodes
-from univention.testing.data import TestFormatInterface, TestEnvironment, TestResult  # noqa F401
+from univention.testing.data import TestEnvironment, TestFormatInterface, TestResult  # noqa F401
 
 __all__ = ['TAP']
 

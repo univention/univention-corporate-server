@@ -28,11 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
 import shutil
 import subprocess
-import tempfile
-import os
 import sys
+import tempfile
 from typing import Optional  # noqa F401
 
 

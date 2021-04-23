@@ -34,10 +34,10 @@ import logging
 import operator
 import os
 import re
-import six
 import sys
 from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa F401
 
+import six
 
 __all__ = [
 	'TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',

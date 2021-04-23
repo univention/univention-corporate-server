@@ -29,13 +29,13 @@
 
 from __future__ import print_function
 
-from typing import Iterable, Mapping, Optional, Sequence, Union  # noqa F401
-
-from univention.testing.strings import random_name, random_version
-from univention.testing.utils import get_ldap_connection, fail
-from univention.config_registry import ConfigRegistry
 import subprocess
 import sys
+from typing import Iterable, Mapping, Optional, Sequence, Union  # noqa F401
+
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_name, random_version
+from univention.testing.utils import get_ldap_connection, fail
 
 VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')
 

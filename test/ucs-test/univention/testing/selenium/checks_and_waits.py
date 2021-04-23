@@ -35,10 +35,9 @@ from __future__ import absolute_import
 import logging
 from typing import Any, Callable, Iterable, List  # noqa F401
 
+import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
-import selenium.common.exceptions as selenium_exceptions
-
 from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)

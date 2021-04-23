@@ -17,7 +17,6 @@ UDM object types are currently supported.
 WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
-from __future__ import print_function
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -45,25 +44,26 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import sys
+from __future__ import print_function
+
 import copy
-import time
+import os
 import pipes
 import subprocess
+import sys
+import time
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Union  # noqa F401
 
-import six
-import psutil
 import ldap
 import ldap.filter
+import six
 
-import univention.admin.uldap
+import psutil
 import univention.admin.modules
 import univention.admin.objects
-
-import univention.testing.ucr
+import univention.admin.uldap
 import univention.testing.strings as uts
+import univention.testing.ucr
 import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
 

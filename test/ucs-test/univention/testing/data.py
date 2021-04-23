@@ -5,29 +5,29 @@
 
 from __future__ import print_function
 
-import apt
 import errno
-import logging
 import hashlib
+import logging
 import os
 import re
 import select
 import signal
-import six
 import sys
-import yaml
 from datetime import datetime
 from functools import reduce
 from operator import and_, or_
-from subprocess import call, Popen, PIPE
+from subprocess import PIPE, Popen, call
 from time import time
 from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, TypeVar  # noqa F401
 
-from univention.config_registry import ConfigRegistry
+import apt
+import six
+import yaml
 
+from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
-from univention.testing.internal import UCSVersion
 from univention.testing.errors import TestError
+from univention.testing.internal import UCSVersion
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 

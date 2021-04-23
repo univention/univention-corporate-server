@@ -31,15 +31,16 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import sys
+
 import pprint
+import sys
 from typing import Any, Iterable, Optional, Tuple  # noqa F401
 
-from six.moves.html_parser import HTMLParser
 import requests
+from six.moves.html_parser import HTMLParser
 
-from univention.lib.umc import Client as _Client
 from univention.config_registry import ConfigRegistry
+from univention.lib.umc import Client as _Client
 
 
 class Client(_Client):

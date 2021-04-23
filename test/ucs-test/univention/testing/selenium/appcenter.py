@@ -37,8 +37,8 @@ from typing import Any  # noqa F401
 
 from selenium.common.exceptions import TimeoutException
 
-from univention.testing.selenium.utils import expand_path
 from univention.admin import localization
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-framework')
 _ = translator.translate

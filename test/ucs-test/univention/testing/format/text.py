@@ -4,16 +4,16 @@
 from __future__ import print_function
 
 import curses
-import time
-import subprocess
 import re
+import subprocess
 import sys
+import time
 from typing import IO  # noqa F401
 from weakref import WeakValueDictionary
 
 import univention.config_registry
 
-from univention.testing.data import TestFormatInterface, TestCodes, TestCase, TestEnvironment, TestResult  # noqa F401
+from univention.testing.data import TestCase, TestCodes, TestEnvironment, TestFormatInterface, TestResult  # noqa F401
 
 __all__ = ['Text', 'Raw']
 

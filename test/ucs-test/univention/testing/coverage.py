@@ -1,14 +1,13 @@
 """Code coverage measurement for ucs-test"""
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
-import os
-import time
-import signal
 import atexit
-import subprocess
 import distutils.spawn
+import os
+import signal
+import subprocess
+import time
 from argparse import ArgumentParser, Namespace, _ArgumentGroup
 from typing import Any, Callable
 

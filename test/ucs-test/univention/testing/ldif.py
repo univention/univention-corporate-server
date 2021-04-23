@@ -7,14 +7,14 @@ All differences will be displayed at the console.
 """
 from __future__ import print_function
 
-import re
-import os
-import sys
 import base64
+import errno
+import os
+import re
+import select
 import signal
 import subprocess
-import select
-import errno
+import sys
 import time
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa F401
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Union, NoReturn  # noqa F401

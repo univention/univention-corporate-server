@@ -12,7 +12,7 @@ from xml.sax.saxutils import XMLGenerator
 import six
 
 from univention.testing.codes import TestCodes
-from univention.testing.data import TestFormatInterface, TestCase, TestResult  # noqa F401
+from univention.testing.data import TestCase, TestFormatInterface, TestResult  # noqa F401
 
 __all__ = ['Junit']
 

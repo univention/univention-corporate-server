@@ -32,16 +32,17 @@
 
 from __future__ import absolute_import
 
-import six
 import json
 import logging
 import time
 from typing import Any, List, Union  # noqa F401
 
+import six
+
+import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-import selenium.common.exceptions as selenium_exceptions
 from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)

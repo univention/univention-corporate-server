@@ -32,28 +32,27 @@
 
 from __future__ import absolute_import
 
-import os
-import time
 import datetime
-import logging
 import json
+import logging
+import os
 import subprocess
+import time
 from types import TracebackType  # noqa F401
 from typing import Optional, Type  # noqa F401
 
 from PIL import Image
+
+import selenium.common.exceptions as selenium_exceptions
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
-import selenium.common.exceptions as selenium_exceptions
-
 from univention.admin import localization
+from univention.config_registry import handler_set
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
 from univention.testing.selenium.utils import expand_path
-
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
-from univention.config_registry import handler_set
 
 logger = logging.getLogger(__name__)
 

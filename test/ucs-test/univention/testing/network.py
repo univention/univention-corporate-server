@@ -10,7 +10,6 @@ The networking helper will install special iptables rules that may completely
 break routing from/to the test system. Especially if the test script does
 not clean up in error cases!
 """
-from __future__ import print_function
 #
 # Copyright 2014-2021 Univention GmbH
 #
@@ -39,17 +38,20 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import re
-import copy
-import subprocess
-import univention.config_registry
 
+from __future__ import print_function
+
+import copy
+import re
+import subprocess
 from types import TracebackType  # noqa F401
 from typing import List, Mapping, Optional, Set, Tuple, Type, Union  # noqa F401
 try:
 	from typing_extensions import Literal  # noqa F401
 except ImportError:
 	pass
+
+import univention.config_registry
 
 
 class UCSTestNetwork(Exception):

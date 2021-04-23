@@ -30,18 +30,18 @@ Common functions used by tests.
 
 from __future__ import print_function
 
-import sys
 import functools
-import subprocess
-import traceback
-import ldap
-import time
-import socket
 import os
+import socket
+import subprocess
+import sys
+import time
+import traceback
 from enum import IntEnum
 from types import TracebackType  # noqa F401
 from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, Union  # noqa F401
 
+import ldap
 import six
 
 import univention.uldap as uldap

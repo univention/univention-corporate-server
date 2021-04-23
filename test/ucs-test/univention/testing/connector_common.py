@@ -1,14 +1,15 @@
 # coding: utf-8
 
 from __future__ import print_function
-import ldap
+
 import subprocess
 from typing import Mapping, Text, Tuple, Union  # noqa F401
 
-import univention.testing.strings as tstrings
-from univention.testing.udm import verify_udm_object
+import ldap
 
 import univention.config_registry
+import univention.testing.strings as tstrings
+from univention.testing.udm import verify_udm_object
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

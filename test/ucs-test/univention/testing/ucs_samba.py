@@ -1,17 +1,18 @@
 from __future__ import print_function
+
+import contextlib
+import re
+import socket
+import sqlite3
 import subprocess
 import time
-import socket
-import re
-import contextlib
 from typing import Any, Dict, Iterator, List, Optional, Union  # noqa F401
 
-import six
-import sqlite3
 import ldap
+import six
 
-from univention.testing.utils import package_installed
 import univention.config_registry as config_registry
+from univention.testing.utils import package_installed
 
 if not six.PY2:
 	import ldb

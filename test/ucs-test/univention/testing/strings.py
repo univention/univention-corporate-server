@@ -29,9 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
 import random
 from typing import Iterator, Text  # noqa F401
+
+import six
 
 STR_NUMERIC = u'0123456789'
 STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
