@@ -142,24 +142,22 @@ class ChecksAndWaits(object):
 
 	def get_all_visible_elements(self, xpaths):
 		# type: (Iterable[str]) -> List[Any]
-		visible_elems = []
 		try:
-			for xpath in xpaths:
-				elems = self.driver.find_elements_by_xpath(xpath)
-				[visible_elems.append(elem) for elem in elems if elem.is_displayed()]
+			return [
+				elem
+				for xpath in xpaths
+				for elem in self.driver.find_elements_by_xpath(xpath)
+				if elem.is_displayed()
+			]
 		except selenium_exceptions.StaleElementReferenceException:
 			pass
-		if len(visible_elems) > 0:
-			return visible_elems
-		return False
+		return []
 
 	def elements_invisible(self, xpath):
 		# type: (Iterable[str]) -> bool
 		elems = self.driver.find_elements_by_xpath(xpath)
 		try:
-			visible_elems = [elem for elem in elems if elem.is_displayed()]
-			if len(visible_elems) is 0:
-				return True
+			return all(not elem.is_displayed() for elem in elems)
 		except selenium_exceptions.StaleElementReferenceException:
 			pass
 		return False
@@ -168,9 +166,7 @@ class ChecksAndWaits(object):
 		# type: (Iterable[str]) -> bool
 		elems = self.driver.find_elements_by_xpath(xpath)
 		try:
-			visible_elems = [elem for elem in elems if elem.is_displayed()]
-			if len(visible_elems) > 0:
-				return True
+			return any(elem.is_displayed() for elem in elems)
 		except selenium_exceptions.StaleElementReferenceException:
 			pass
 		return False

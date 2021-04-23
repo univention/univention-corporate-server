@@ -280,12 +280,14 @@ class Interactions(object):
 		# type: (str) -> List[Any]
 		elems = self.driver.find_elements_by_xpath(xpath)
 		try:
-			clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
-			if clickable_elems:
-				return clickable_elems
+			return [
+				elem
+				for elem in elems
+				if elem.is_enabled() and elem.is_displayed()
+			]
 		except selenium_exceptions.StaleElementReferenceException:
 			pass
-		return False
+		return []
 
 	def upload_image(self, img_path, button_label='Upload', timeout=60, xpath_prefix=''):
 		# type: (str, str, int, str) -> None
