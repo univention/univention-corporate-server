@@ -241,7 +241,7 @@ class Interactions(object):
 			self.get_all_enabled_elements
 		)
 		if len(elems) != 1:
-			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
+			logger.warn("Found {:d} input elements instead of one. Try using the first one".format(len(elems)))
 		elems[0].clear()
 		elems[0].send_keys(inputvalue)
 		xpath = expand_path('//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "%s")]' % (inputvalue))
