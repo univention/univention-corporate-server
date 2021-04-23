@@ -32,6 +32,7 @@ Depends:
  univention-management-console,
  univention-management-console-module-ipchange,
  univention-management-console-module-udm,
+ univention-management-console-module-welcome,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
 Description: UCS - Primary Directory Node

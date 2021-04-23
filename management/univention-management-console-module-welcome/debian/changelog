@@ -1,3 +1,9 @@
+univention-management-console-module-welcome (1.0.0-3) unstable; urgency=medium
+
+  * Bug #53147: Dependencies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Apr 2021 18:12:35 +0200
+
 univention-management-console-module-welcome (1.0.0-2) unstable; urgency=medium
 
   * Bug #53147: Initial release

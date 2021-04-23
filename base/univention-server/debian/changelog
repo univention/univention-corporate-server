@@ -1,3 +1,9 @@
+univention-server (15.0.4-2) unstable; urgency=medium
+
+  * Bug #53147: Add welcome UMC module for primary role
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Apr 2021 18:13:55 +0200
+
 univention-server (15.0.4-1) unstable; urgency=medium
 
   * Bug #52122: Remove univention-nagios-server
