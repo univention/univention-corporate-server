@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Imap Server with hunderds of connections
+## desc: Imap Server with hundreds of connections
 ## tags: [producttest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
@@ -15,6 +15,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import time
 
+MAX_CONNECTIONS = 700
 
 def run_cmd(cmd):
 	"""
@@ -60,11 +61,21 @@ def main():
 				'mail/dovecot/limits/anvil/client_limit=8003',
 			])
 			run_cmd(['/etc/init.d/dovecot', 'restart'])
+			for i in range(10):
+				try:
+					imap = MailClient_SSL(host)
+				except Exception:
+					print('dovecot is not yet ready... retrying in 2s...')
+					time.sleep(2)
+					continue
+				break
 			set_openfiles_limit((2048, 2048))
 			mem_start = used_memory()
 			servers = []
 			time_start = time.time()
-			for i in range(700):
+			for i in range(MAX_CONNECTIONS):
+				if i % 20 == 0:
+					print('Open connections: {}/{}'.format(i, MAX_CONNECTIONS))
 				imap = MailClient_SSL(host)
 				servers.append(imap)
 			print('%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time() - time_start))
