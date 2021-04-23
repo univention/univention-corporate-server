@@ -85,17 +85,18 @@ class Session(object):
 		self.base_url = base_url
 		self.screenshot_path = screenshot_path
 		self.driver = driver
-		self.add_ucs_root_ca_to_chrome_cert_store()
+		self.ucs_root_ca = '/etc/univention/ssl/ucsCA/CAcert.pem'
+		if os.path.isfile(self.ucs_root_ca) and not os.environ.get('UCS_TEST_APPS_ADD_CERT', 'yes') == 'no':
+			self.add_ucs_root_ca_to_chrome_cert_store()
 
 	def add_ucs_root_ca_to_chrome_cert_store(self):
 		# add ucs root ca to chromiums cert store
 		# certutil -L -d sql:.pki/nssdb/
 		# certutil -A -n "UCS root CA" -t "TCu,Cu,Tu" -i /etc/univention/ssl/ucsCA/CAcert.pem -d sql:.pki/nssd
 		cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb')
-		ucs_root_ca = '/etc/univention/ssl/ucsCA/CAcert.pem'
 		if not os.path.isdir(cert_store):
 			os.makedirs(cert_store)
-		import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', ucs_root_ca, '-d', 'sql:{}'.format(cert_store)]
+		import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', self.ucs_root_ca, '-d', 'sql:{}'.format(cert_store)]
 		subprocess.check_output(import_cert)
 
 	def __enter__(self):

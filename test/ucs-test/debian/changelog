@@ -1,3 +1,10 @@
+ucs-test (10.0.5-6) unstable; urgency=medium
+
+  * Bug #52864: added UCS_TEST_APPS_ADD_CERT to
+    disable cert import chrome session
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Apr 2021 14:22:30 +0200
+
 ucs-test (10.0.5-5) unstable; urgency=low
 
   * Bug #53111: fix missing import
