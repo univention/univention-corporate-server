@@ -429,9 +429,7 @@ class FollowLogfile(object):
 			for logfile, pos in self.logfile_pos.items():
 				with open(logfile, "r") as log:
 					log.seek(pos, 0)
-					lim = (79 - len(logfile) - 2) / 2
-					lin = "{0} {1} {0}".format("=" * lim, logfile)
-					print(lin + "=" * (79 - len(lin)))
+					print(logfile.center(79, "="))
 					sys.stdout.writelines(log)
 					print("=" * 79)
 
