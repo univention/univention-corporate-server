@@ -222,6 +222,7 @@ def _add_umc(name: str, json_content: Dict):
 				"class": "PathScorer",
 				"kwargs": {
 					"path": {"value": "/univention/umc", "type": "static"},
+					"fallback_score": {"value": 0.5, "type": "static"},
 				},
 				"type": "class"},
 		},
@@ -407,9 +408,13 @@ def pull(name: str):
 
 
 def get_obj(name: str) -> Union[str, None]:
-	from univention.udm import UDM, NoObject
+	from univention.udm import UDM, NoObject, ConnectionError
 
-	udm = UDM.machine().version(1)
+	try:
+		udm = UDM.machine().version(1)
+	except ConnectionError as exc:
+		warn(str(exc))
+		return None
 	data = udm.get("settings/data")
 	base = "cn=config,cn=portals,cn=univention,{}".format(config.fetch("ldap_base"))
 	dn = "cn={},{}".format(name, base)

@@ -47,9 +47,7 @@ if [ "$1" = "configure" ]; then
 	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
-[ ! -e /var/cache/univention-portal/portal.json ] && ucr filter < /usr/share/univention-portal/portal-unjoined.json > /var/cache/univention-portal/portal.json
-univention-portal add-default --update
-univention-portal add-umc-default --update
+univention-portal add-umc-default
 univention-portal update
 systemctl restart univention-portal-server
 

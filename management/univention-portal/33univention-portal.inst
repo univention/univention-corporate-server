@@ -323,6 +323,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	done
 fi
 
+univention-portal add-default
 univention-portal update
 systemctl restart univention-portal-server
 

@@ -1,3 +1,9 @@
+univention-portal (4.0.5-40) unstable; urgency=medium
+
+  * Bug #53140: Until joined, UMC is the default portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 25 Apr 2021 21:41:03 +0200
+
 univention-portal (4.0.5-39) unstable; urgency=medium
 
   * Bug #52941: added new icon design for portal

@@ -44,11 +44,11 @@ class Scorer(with_metaclass(Plugin)):
 	`score`: Gets a Tornado request and returns a number. The highest score wins.
 	"""
 
-	def __init__(self):
-		pass
+	def __init__(self, score=1):
+		self._score = score
 
 	def score(self, request):
-		return 1
+		return self._score
 
 
 class DomainScorer(Scorer):
@@ -60,13 +60,15 @@ class DomainScorer(Scorer):
 		Name of the domain, e.g. "myportal2.fqdn.com"
 	"""
 
-	def __init__(self, domain):
+	def __init__(self, domain, score=10, fallback_score=0):
+		self._score = score
+		self._fallback_score = fallback_score
 		self.domain = domain
 
 	def score(self, request):
 		if request.host == self.domain:
-			return 10
-		return 0
+			return self._score
+		return self._fallback_score
 
 
 class PathScorer(Scorer):
@@ -80,11 +82,13 @@ class PathScorer(Scorer):
 		with this value, e.g. "/portal2".
 	"""
 
-	def __init__(self, path):
+	def __init__(self, path, score=10, fallback_score=0):
+		self._score = score
+		self._fallback_score = fallback_score
 		self.path = path
 
 	def score(self, request):
 		request_path = "/{}".format(request.path.lstrip("/"))
 		if request_path.startswith(self.path):
-			return 10
-		return 0
+			return self._score
+		return self._fallback_score
