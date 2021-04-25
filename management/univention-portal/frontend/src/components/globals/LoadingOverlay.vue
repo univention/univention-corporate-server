@@ -27,16 +27,18 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    v-if="loadingState"
-    class="loading-overlay"
-  >
-    <div class="loading-overlay__lds-ring">
-      <div class="loading-overlay__ring-item" />
-      <div class="loading-overlay__ring-item" />
-      <div class="loading-overlay__ring-item" />
-      <div class="loading-overlay__ring-item" />
-    </div>
+  <div class="loading-overlay">
+    <svg
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        class="loading-overlay__circle"
+        cx="50"
+        cy="50"
+        r="45"
+      />
+    </svg>
   </div>
 </template>
 
@@ -55,47 +57,53 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-// Info: Animations do not work with scope setting enabled
 .loading-overlay
-  position: absolute
-  top: 0
-  left: 0
-  background-color: rgba(30, 30, 29, 0.7)
-  width: 100%
-  height: 100%
+  width: 2rem
+  height: 2rem
+  display: flex
+  color: rgba(255, 255, 255, 0.4)
 
-  &__lds-ring
-    display: inline-block
-    position: relative
-    width: 80px
-    height: 80px
-    top: 45%
-    left: 45%
+  svg
+    animation: 2s linear infinite svg-animation
+    width: 100%
+    height: 100%
 
-  &__ring-item
-    box-sizing: border-box
+  &__circle
+    animation: 1.4s ease-in-out infinite both circle-animation
     display: block
-    position: absolute
-    width: 64px
-    height: 64px
-    margin: 8px
-    border: 8px solid
-    border-radius: 50%
-    border-color: var(--color-grey40) transparent transparent transparent
-    animation: lds-ring 1s cubic-bezier(0.2, 0, 0.2, 1) infinite
+    fill: transparent
+    stroke: currentColor
+    stroke-linecap: round
+    stroke-dasharray: 283
+    stroke-dashoffset: 280
+    stroke-width: 10px
+    transform-origin: 50% 50%
 
-    &:nth-child(1)
-      animation-delay: -0.1s
+@keyframes svg-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg)
+  }
+}
 
-    &:nth-child(2)
-      animation-delay: -0.2s
+@keyframes circle-animation {
+  0%,
+  25% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
 
-    &:nth-child(3)
-      animation-delay: -0.3s
+  50%,
+  75% {
+    stroke-dashoffset: 75;
+    transform: rotate(45deg);
+  }
 
-  @keyframes lds-ring
-    0%
-      transform: rotate(0deg)
-    100%
-      transform: rotate(360deg)
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(360deg);
+  }
+}
 </style>

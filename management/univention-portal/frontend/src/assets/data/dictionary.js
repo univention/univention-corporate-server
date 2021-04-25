@@ -82,7 +82,9 @@ const catalog = {
   SEARCH: _('search'),
   NOTIFCATIONS: _('Notifications'),
   MENU: _('Menu'),
-  SHOW_UMC: _('Show local UMC modules')
+  TABS: _('Tabs'),
+  CHOOSE_TAB: _('Choose a tab'),
+  SHOW_UMC: _('Show local UMC modules'),
 };
 
 export { catalog };

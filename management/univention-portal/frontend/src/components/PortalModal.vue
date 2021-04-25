@@ -47,6 +47,8 @@ import { mapGetters } from 'vuex';
 import ChangePassword from '@/components/forms/ChangePassword.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
+import ChooseTabs from '@/components/ChooseTabs.vue';
+import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 
 export default defineComponent({
   name: 'PortalModal',
@@ -57,6 +59,8 @@ export default defineComponent({
     ChangePassword,
     ModalWrapper,
     PortalFolder,
+    ChooseTabs,
+    LoadingOverlay,
   },
   props: {
     isActive: {

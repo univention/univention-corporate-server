@@ -1,3 +1,9 @@
+univention-portal (4.0.5-41) unstable; urgency=medium
+
+  * Bug #52869: Styling: font-face, loading spinner, tab navigation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Apr 2021 00:05:10 +0200
+
 univention-portal (4.0.5-40) unstable; urgency=medium
 
   * Bug #53140: Until joined, UMC is the default portal

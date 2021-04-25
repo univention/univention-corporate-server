@@ -52,22 +52,14 @@ const portalMetaPath = process.env.VUE_APP_META_DATA || '/univention/meta.json';
 
 export const key: InjectionKey<Store<RootState>> = Symbol('');
 
-const getters = {
-  getLoadingState: (state) => state.isLoading,
-};
-
-const mutations = {
-  SET_LOADING_STATE(state, loadingState: boolean) {
-    state.isLoading = loadingState;
-  },
-};
-
 const actions = {
-  activateLoadingState({ commit }) {
-    commit('SET_LOADING_STATE', true);
+  activateLoadingState({ dispatch }) {
+    dispatch('modal/setAndShowModal', {
+      name: 'LoadingOverlay',
+    });
   },
-  deactivateLoadingState({ commit }) {
-    commit('SET_LOADING_STATE', false);
+  deactivateLoadingState({ dispatch }) {
+    dispatch('modal/hideAndClearModal');
   },
   portalJsonRequest: (_, payload) => {
     console.log('Loading Portal...');
@@ -111,9 +103,7 @@ const actions = {
 export const store = createStore<RootState>({
   strict: process.env.NODE_ENV !== 'production',
   state: initialRootState,
-  mutations,
   actions,
-  getters,
   modules: {
     locale,
     menu,

@@ -29,6 +29,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <header
     id="portal-header"
+    :class="{ 'portal-header__tabs-overflow': tabsOverflow }"
     class="portal-header"
   >
     <div
@@ -51,7 +52,10 @@ License with the Debian GNU/Linux or Univention distribution in file
       </h1>
     </div>
 
-    <div class="portal-header__tabs">
+    <div
+      ref="tabs"
+      class="portal-header__tabs"
+    >
       <header-tab
         v-for="(item, index) in tabs"
         :key="index"
@@ -62,14 +66,12 @@ License with the Debian GNU/Linux or Univention distribution in file
       />
     </div>
 
-    <div class="portal-header__stretch" />
-
     <div
       v-if="editMode"
       class="portal-header__right"
     >
       <div>
-       {{ ariaLabelEditmode }}
+        {{ ariaLabelEditmode }}
       </div>
       <header-button
         :aria-label="ariaLabelStartEditMode"
@@ -85,6 +87,14 @@ License with the Debian GNU/Linux or Univention distribution in file
       v-else
       class="portal-header__right"
     >
+      <header-button
+        v-if="showTabButton"
+        ref="tabButton"
+        data-test="tabbutton"
+        :aria-label="ariaLabelTabs"
+        icon="copy"
+        class="portal-header__tab-button"
+      />
       <header-button
         ref="searchButton"
         data-test="searchbutton"
@@ -116,6 +126,9 @@ License with the Debian GNU/Linux or Univention distribution in file
       <portal-search />
     </template>
   </header>
+  <choose-tabs
+    v-if="activeButton === 'copy'"
+  />
 </template>
 
 <script lang="ts">
@@ -127,8 +140,13 @@ import HeaderTab from '@/components/navigation/HeaderTab.vue';
 import NotificationBubble from '@/components/globals/NotificationBubble.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
+import ChooseTabs from '@/components/ChooseTabs.vue';
 import Translate from '@/i18n/Translate.vue';
 import notificationMixin from '@/mixins/notificationMixin.vue';
+
+interface PortalHeaderData {
+  tabsOverflow: boolean;
+}
 
 export default defineComponent({
   name: 'PortalHeader',
@@ -138,11 +156,17 @@ export default defineComponent({
     NotificationBubble,
     NotificationBubbleSlot,
     PortalSearch,
+    ChooseTabs,
   },
   mixins: [
     notificationMixin,
     Translate,
   ],
+  data(): PortalHeaderData {
+    return {
+      tabsOverflow: false,
+    };
+  },
   computed: {
     ...mapGetters({
       portalLogo: 'portalData/portalLogo',
@@ -164,6 +188,9 @@ export default defineComponent({
     ariaLabelEditmode(): string {
       return `${this.translateLabel('EDIT_MODE')}`;
     },
+    ariaLabelTabs(): string {
+      return `${this.translateLabel('TABS')}`;
+    },
     ariaLabelSearch(): string {
       return `${this.translateLabel('SEARCH')}`;
     },
@@ -173,8 +200,34 @@ export default defineComponent({
     ariaLabelMenu(): string {
       return `${this.translateLabel('MENU')}`;
     },
+    showTabButton(): boolean {
+      return this.tabs.length > 0;
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.updateOverflow);
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.updateOverflow);
+  },
+  updated(): void {
+    this.updateOverflow();
   },
   methods: {
+    updateOverflow() {
+      const tabs = this.$refs.tabs as HTMLElement;
+      if (tabs === null) {
+        return;
+      }
+      this.tabsOverflow = tabs.scrollWidth > tabs.clientWidth;
+    },
+    chooseTab(): void {
+      this.$store.dispatch('modal/setAndShowModal', {
+        name: 'ChooseTabs',
+      });
+    },
     goHome(): void {
       this.$store.dispatch('tabs/setActiveTab', 0);
     },
@@ -206,6 +259,10 @@ export default defineComponent({
     font-size: var(--font-size-2);
     white-space: nowrap
 
+    @media only screen and (max-width: 600px)
+      width: 2rem
+      overflow: hidden
+
   &__left
     flex: 0 0 auto;
     display: flex;
@@ -229,15 +286,23 @@ export default defineComponent({
     flex: 1 1 auto;
     margin-left: calc(5 * var(--layout-spacing-unit));
     width: 100%;
-    min-width: 2.4rem; /* maybe fix later to 1.2 */
+    overflow: hidden
 
   &__right
+    margin-left: auto
     display: flex;
     align-items: center;
 
-  &__stretch
-    flex: 1 1 auto;
-
   &__bubble-container
     width: 360px
+
+#header-button-copy
+    display: none
+
+.portal-header__tabs-overflow
+  .portal-header
+    &__tabs
+      visibility: hidden
+  #header-button-copy
+      display: flex
 </style>

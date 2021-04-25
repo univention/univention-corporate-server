@@ -42,9 +42,6 @@ const tabs: PortalModule<TabState> = {
   },
 
   mutations: {
-    ALL_TABS(state, payload: Tab[]) {
-      state.tabs = payload;
-    },
     ACTIVE_TAB(state, index: number) {
       state.activeTabIndex = index;
     },
@@ -59,7 +56,11 @@ const tabs: PortalModule<TabState> = {
     },
     DELETE_TAB(state, index: number) {
       state.tabs.splice(index - 1, 1);
-      state.activeTabIndex = 0;
+      if (state.activeTabIndex === index) {
+        state.activeTabIndex = 0;
+      } else if (state.activeTabIndex > index) {
+        state.activeTabIndex -= 1;
+      }
     },
   },
 
@@ -69,9 +70,6 @@ const tabs: PortalModule<TabState> = {
   },
 
   actions: {
-    setAllTabs({ commit }, payload: Array<Tab>) {
-      commit('ALL_TABS', payload);
-    },
     setActiveTab({ commit }, index: number) {
       commit('ACTIVE_TAB', index);
     },

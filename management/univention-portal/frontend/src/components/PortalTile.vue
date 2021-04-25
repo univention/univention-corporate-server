@@ -36,13 +36,13 @@ License with the Debian GNU/Linux or Univention distribution in file
       :aria-label="$localized(title)"
       class="portal-tile"
       data-test="tileLink"
-      @mouseover="editMode || showTooltip()"
+      @mouseenter="editMode || showTooltip"
       @mouseleave="hideTooltip"
       @mousedown="hideTooltip"
       @click="tileClick"
       @keydown.tab.exact="setFocus($event, 'forward')"
       @keydown.shift.tab.exact="setFocus($event, 'backward')"
-      @focus="showTooltip()"
+      @focus="showTooltip"
       @blur="hideTooltip()"
     >
       <div

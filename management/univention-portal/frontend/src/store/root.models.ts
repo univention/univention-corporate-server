@@ -29,12 +29,11 @@
 
 import { Module } from 'vuex';
 
+/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface RootState {
-  isLoading: boolean;
 }
 
 export type PortalModule<S> = Module<S, RootState>;
 
 export const initialRootState: RootState = {
-  isLoading: true,
 };

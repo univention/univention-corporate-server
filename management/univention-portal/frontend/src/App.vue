@@ -29,7 +29,6 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <portal />
 
-  <loading-overlay />
   <cookie-banner />
 </template>
 
@@ -37,7 +36,6 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 
 import CookieBanner from '@/components/globals/CookieBanner.vue';
-import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 import Portal from '@/views/Portal.vue';
 
 import { getCookie } from '@/jsHelper/tools';
@@ -48,7 +46,6 @@ export default defineComponent({
   name: 'App',
   components: {
     CookieBanner,
-    LoadingOverlay,
     Portal,
   },
   computed: {
