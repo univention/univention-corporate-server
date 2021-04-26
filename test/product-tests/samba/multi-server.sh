@@ -232,7 +232,7 @@ test_master () {
 	# in UMC Gruppenberechtigungen vergeben (valid users = @Gruppe) und prüfen TODO
 
 	# printing
-	test_printers
+	#test_printers
 	# printer GPO's TODO
 
 	# Passworte
