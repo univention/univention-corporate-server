@@ -47,7 +47,7 @@ EOF
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "faking handler 'nss'" /var/log/univention/join.log
 	grep "Installing database file /opt/type1/data.mdb" /var/log/univention/join.log
-	grep "resync from master: cn=$slave1_NAME," /var/log/univention/join.log
+	grep "resync from Primary: cn=$slave1_NAME," /var/log/univention/join.log
 	test -f /tmp/fake_nss
 }
 
@@ -69,7 +69,7 @@ type2_listener_fake () {
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "faking handler 'nss'" /var/log/univention/join.log
 	grep "slapadd /opt/type2/ldif.gz" /var/log/univention/join.log
-	grep "resync from master: cn=$backup_NAME," /var/log/univention/join.log
+	grep "resync from Primary: cn=$backup_NAME," /var/log/univention/join.log
 }
 
 type3_listener_fake () {
@@ -86,5 +86,5 @@ type3_listener_fake () {
 	grep "faking listener initialization" /var/log/univention/join.log
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "searching ldap on master and slapadd " /var/log/univention/join.log
-	grep "resync from master: cn=$slave2_NAME," /var/log/univention/join.log
+	grep "resync from Primary: cn=$slave2_NAME," /var/log/univention/join.log
 }
