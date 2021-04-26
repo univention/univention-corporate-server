@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.7-2) unstable; urgency=medium
+
+  * Bug #52043: Adjust log level for paged LDAP search to INFO
+
+ -- Arvid <requate@univention.de>  Mon, 26 Apr 2021 15:50:58 +0200
+
 univention-s4-connector (14.0.7-1) unstable; urgency=medium
 
   * Bug #52043: Log mapping to /var/log/univention/connector-s4-

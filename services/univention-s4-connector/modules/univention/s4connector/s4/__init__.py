@@ -891,7 +891,7 @@ class s4(univention.s4connector.ucs):
 				cookie = pctrls[0].cookie
 				if cookie:
 					if pages > 1:
-						ud.debug(ud.LDAP, ud.PROCESS, "S4 search continues, already found %s objects" % len(res))
+						ud.debug(ud.LDAP, ud.INFO, "S4 search continues, already found %s objects" % len(res))
 					ctrls[0].cookie = cookie
 					msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
 				else:
