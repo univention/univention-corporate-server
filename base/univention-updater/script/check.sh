@@ -252,6 +252,7 @@ update_check_old_packages () {
 		univention-samba-slave-pdc
 		univention-dansguardian
 		univention-printquota
+		univention-passwd-store
 	)
 	for pkg in "${old[@]}"
 	do
