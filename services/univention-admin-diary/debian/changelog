@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.2-6) unstable; urgency=medium
+
+  * Bug #52941: added Icon tag to umc_modules file
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 26 Apr 2021 17:25:33 +0200
+
 univention-admin-diary (2.0.2-5) unstable; urgency=medium
 
   * Bug #52941: moved svg file to icon directory in install file
