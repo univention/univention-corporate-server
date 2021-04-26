@@ -6,7 +6,6 @@
 ## bugs: [42765,43428,29672]
 
 from __future__ import print_function
-import icu
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name, random_int
@@ -69,8 +68,14 @@ def template_umlauts_test():
 			(u"Pınar", u"Ağrı", "pinar", "agri"),
 			(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
 			(u"Fryderyk", u"Krępa", "fryderyk", "krepa"),
-			(u"Kübra", u"Gümuşay", "kuebra", "guemuesay")
+			(u"Kübra", u"Gümuşay", "kuebra", "guemusay"),
+			(u"Зиновьев Селиверст", u"Терентьевич", "zinov'ev seliverst", "terent'evich"),
+			(u"Ýlang", u"Müstèrmánn", "ylang", "muestermann"),
+			(u"Öle", u"Mästèrmànn", "oele", "maestermann"),
+			(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
+			(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
 		]
+
 		for firstname, lastname, expected_firstname, expected_lastname in usernames:
 			user_properties = {
 				'lastname': lastname,
@@ -81,9 +86,11 @@ def template_umlauts_test():
 			co = None
 			lo, po = getAdminConnection()
 			udm_modules.update()
+
 			# get udm module settings/usertemplate
 			mod_tmpl = udm_modules.get(MOD_TMPL)
-			udm_modules.init(lo, po, mod_tmpl)
+			# the mod_tmpl module is being initialized here
+			udm_modules.init(lo, po, mod_tmpl) 
 			obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
 
 			mod_user = udm_modules.get(MOD_USER)
@@ -101,79 +108,5 @@ def template_umlauts_test():
 			})
 
 
-def pre_umlauts_test():
-	# make sure that everything works with icu as it did before using a transliteration table
-	UMLAUTS = {
-		# 'À': 'A',
-		# 'Á': 'A',
-		# 'Â': 'A',
-		# 'Ã': 'A',
-		# 'Ä': 'Ae',
-		# 'Å': 'A',
-		# 'Æ': 'AE',
-		# 'Ç': 'C',
-		# 'È': 'E',
-		# 'É': 'E',
-		# 'Ê': 'E',
-		# 'Ë': 'E',
-		'Ì': 'I',
-		'Í': 'I',
-		'Î': 'I',
-		'Ï': 'I',
-		'Ð': 'D',
-		'Ñ': 'N',
-		'Ò': 'O',
-		'Ó': 'O',
-		'Ô': 'O',
-		'Õ': 'O',
-		# 'Ö': 'Oe',
-		'Ø': 'O',
-		'Ù': 'U',
-		'Ú': 'U',
-		'Û': 'U',
-		'Ü': 'Ue',
-		'Ý': 'Y',
-		'Þ': 'P',
-		'ß': 'ss',
-		'à': 'a',
-		'á': 'a',
-		'â': 'a',
-		'ã': 'a',
-		'ä': 'ae',
-		'å': 'a',
-		'æ': 'ae',
-		'ç': 'c',
-		'è': 'e',
-		'é': 'e',
-		'ê': 'e',
-		'ë': 'e',
-		'ì': 'i',
-		'í': 'i',
-		'î': 'i',
-		'ï': 'i',
-		'ð': 'o',
-		'ñ': 'n',
-		'ò': 'o',
-		'ó': 'o',
-		'ô': 'o',
-		'õ': 'o',
-		'ö': 'oe',
-		'ø': 'o',
-		'ù': 'u',
-		'ú': 'u',
-		'û': 'u',
-		'ü': 'ue',
-		'ý': 'y',
-		'þ': 'p',
-		'ÿ': 'y'
-	}
-	transliterator = icu.Transliterator.createInstance('Any-Latin')
-	for c, expected in sorted(UMLAUTS.items()):
-		t = transliterator.transliterate(c)
-		print(c, expected, t)
-		assert t == expected
-
-
 if __name__ == '__main__':
-	pre_umlauts_test()
-	# template_umlauts_test()
+	template_umlauts_test()
