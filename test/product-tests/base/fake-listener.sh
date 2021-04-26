@@ -85,6 +85,6 @@ type3_listener_fake () {
 	univention-check-join-status
 	grep "faking listener initialization" /var/log/univention/join.log
 	grep "faking handler 'replication'" /var/log/univention/join.log
-	grep "searching ldap on master and slapadd " /var/log/univention/join.log
+	grep "searching LDAP on Primary Node and slapadd " /var/log/univention/join.log
 	grep "resync from Primary: cn=$slave2_NAME," /var/log/univention/join.log
 }
