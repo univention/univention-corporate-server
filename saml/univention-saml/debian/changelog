@@ -1,3 +1,9 @@
+univention-saml (7.0.4-8) unstable; urgency=medium
+
+  * Bug #52941: moving svg file to usr/share while saml installation
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 26 Apr 2021 15:47:04 +0200
+
 univention-saml (7.0.4-7) unstable; urgency=medium
 
   * Bug #52941: fixup for icon in saml xml document
