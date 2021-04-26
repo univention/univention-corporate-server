@@ -6,6 +6,7 @@
 ## bugs: [42765,43428,29672]
 
 from __future__ import print_function
+import icu
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name, random_int
@@ -39,6 +40,7 @@ def create_template(udm, host, path):
 		departmentNumber=random_int(),
 	)
 	dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties)
+	print("verify that template was created as expected.")
 	utils.verify_ldap_object(dn_template, {
 		'univentionObjectType': [MOD_TMPL],
 		'cn': [template_name],
@@ -58,8 +60,7 @@ def create_template(udm, host, path):
 	return properties, dn_template
 
 
-if __name__ == '__main__':
-
+def template_umlauts_test():
 	with UCSTestUDM() as udm:
 		host = random_name()
 		path = '/%s' % (random_name(),)
@@ -68,7 +69,7 @@ if __name__ == '__main__':
 			(u"Pınar", u"Ağrı", "pinar", "agri"),
 			(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
 			(u"Fryderyk", u"Krępa", "fryderyk", "krepa"),
-			(u"Kübra", u"Gümusay", "kubra", "gumusay")
+			(u"Kübra", u"Gümuşay", "kuebra", "guemuesay")
 		]
 		for firstname, lastname, expected_firstname, expected_lastname in usernames:
 			user_properties = {
@@ -80,6 +81,7 @@ if __name__ == '__main__':
 			co = None
 			lo, po = getAdminConnection()
 			udm_modules.update()
+			# get udm module settings/usertemplate
 			mod_tmpl = udm_modules.get(MOD_TMPL)
 			udm_modules.init(lo, po, mod_tmpl)
 			obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
@@ -92,8 +94,86 @@ if __name__ == '__main__':
 			dn_user = obj_user.create()
 			udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
 
-			print('dn_user=%s' % (dn_user,))
+			print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
 			utils.verify_ldap_object(dn_user, {
 				'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
 				'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (expected_lastname, MAIL_DOMAIN)],
 			})
+
+
+def pre_umlauts_test():
+	# make sure that everything works with icu as it did before using a transliteration table
+	UMLAUTS = {
+		# 'À': 'A',
+		# 'Á': 'A',
+		# 'Â': 'A',
+		# 'Ã': 'A',
+		# 'Ä': 'Ae',
+		# 'Å': 'A',
+		# 'Æ': 'AE',
+		# 'Ç': 'C',
+		# 'È': 'E',
+		# 'É': 'E',
+		# 'Ê': 'E',
+		# 'Ë': 'E',
+		'Ì': 'I',
+		'Í': 'I',
+		'Î': 'I',
+		'Ï': 'I',
+		'Ð': 'D',
+		'Ñ': 'N',
+		'Ò': 'O',
+		'Ó': 'O',
+		'Ô': 'O',
+		'Õ': 'O',
+		# 'Ö': 'Oe',
+		'Ø': 'O',
+		'Ù': 'U',
+		'Ú': 'U',
+		'Û': 'U',
+		'Ü': 'Ue',
+		'Ý': 'Y',
+		'Þ': 'P',
+		'ß': 'ss',
+		'à': 'a',
+		'á': 'a',
+		'â': 'a',
+		'ã': 'a',
+		'ä': 'ae',
+		'å': 'a',
+		'æ': 'ae',
+		'ç': 'c',
+		'è': 'e',
+		'é': 'e',
+		'ê': 'e',
+		'ë': 'e',
+		'ì': 'i',
+		'í': 'i',
+		'î': 'i',
+		'ï': 'i',
+		'ð': 'o',
+		'ñ': 'n',
+		'ò': 'o',
+		'ó': 'o',
+		'ô': 'o',
+		'õ': 'o',
+		'ö': 'oe',
+		'ø': 'o',
+		'ù': 'u',
+		'ú': 'u',
+		'û': 'u',
+		'ü': 'ue',
+		'ý': 'y',
+		'þ': 'p',
+		'ÿ': 'y'
+	}
+	transliterator = icu.Transliterator.createInstance('Any-Latin')
+	for c, expected in sorted(UMLAUTS.items()):
+		t = transliterator.transliterate(c)
+		print(c, expected, t)
+		assert t == expected
+
+
+if __name__ == '__main__':
+	pre_umlauts_test()
+	# template_umlauts_test()
