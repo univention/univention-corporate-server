@@ -269,8 +269,6 @@ update_check_old_packages () {
 	echo "${found[*]}"
 	echo
 	echo "Use \"univention-remove --purge\" with the packages as following arguments to remove them"
-	echo
-	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 	return 1
 }
 
