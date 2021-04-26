@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 from time import sleep
 
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 
 from univention.testing.selenium.utils import expand_path
 from univention.admin import localization
@@ -70,39 +70,13 @@ class AppCenter(object):
 			while not install_clicked and x < max_pages:
 				x += 1
 				try:
-					self.selenium.click_button(_('Accept license'), timeout=0)
+					self.selenium.click_buttons([_('Accept license'), _('Next'), _('Continue anyway')], timeout=0)
 				except TimeoutException:
 					pass
 				else:
 					continue
 				try:
-					self.selenium.click_button(_('Next'), timeout=0)
-				except TimeoutException:
-					pass
-				else:
-					continue
-				try:
-					self.selenium.click_button(_('Continue anyway'), timeout=0)
-				except TimeoutException:
-					pass
-				else:
-					continue
-				try:
-					self.selenium.click_button(_('Install app'), timeout=0)
-					install_clicked = True
-				except TimeoutException:
-					pass
-				else:
-					continue
-				try:
-					self.selenium.click_button(_('Install anyway'), timeout=0)
-					install_clicked = True
-				except TimeoutException:
-					pass
-				else:
-					continue
-				try:
-					self.selenium.click_button(_('Start installation'), timeout=0)
+					self.selenium.click_buttons([_('Install app'), _('Install anyway'), _('Start installation')], timeout=0)
 					install_clicked = True
 				except TimeoutException:
 					pass
@@ -124,15 +98,7 @@ class AppCenter(object):
 
 	def uninstall_app(self, app_name):
 		self.open_app(app_name)
-
-		try:
-			self.selenium.click_button(_('Manage installations'))
-		except TimeoutException:
-			pass
-		try:
-			self.selenium.click_button(_('Manage installation'))
-		except TimeoutException:
-			pass
+		self.selenium.click_buttons([_('Manage installations'), _('Manage installation')], timeout=10)
 		try:
 			self.selenium.click_element("//*[contains(text(), 'this computer')]")
 			self.selenium.click_button(_('Actions'))

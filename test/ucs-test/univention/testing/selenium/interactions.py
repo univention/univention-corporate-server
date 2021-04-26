@@ -93,6 +93,22 @@ class Interactions(object):
 			**kwargs
 		)
 
+	def click_buttons(self, button_name_list, xpath_prefix='', **kwargs):
+		for i, button in enumerate(button_name_list):
+			try:
+				logger.info("Clicking the button %r", button)
+				xpath = '//*[@containsClass="dijitButtonText"][text() = "%s"]' % (button,)
+				xpath = expand_path(xpath_prefix + xpath)
+				self.click_element(
+					xpath,
+					**kwargs
+				)
+			except selenium_exceptions.TimeoutException:
+				if i == len(button_name_list) - 1:
+					raise
+			else:
+				break
+
 	def click_search_button(self):
 		logger.info("Clicking the search button")
 		self.click_element('//form//div[contains(concat(" ", normalize-space(@class), " "), " umcSearchIcon ")]')
