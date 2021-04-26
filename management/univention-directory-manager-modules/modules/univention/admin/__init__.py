@@ -133,9 +133,7 @@ def pattern_replace(pattern, object):
 				# We need this to handle german umlauts, e.g. ä -> ae
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
-				# We need a unicode object as input, but python3 doesn't have a unicode function any more.
-				# This works for both python2 and python3.
-				text = unidecode.unidecode(text.encode('utf-8').decode('utf-8'))
+				text = unidecode.unidecode(text.decode('utf-8'))
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
