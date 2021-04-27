@@ -245,7 +245,7 @@ define([
 	var NotificationsContainer = declare("umc.widgets.NotificationsButton.NotificationsContainer",
 			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
-			<div class="ucsNotifications">
+			<div class="ucsNotifications ucsNotifications--empty">
 				<div
 					class="ucsNotifications__title"
 					data-dojo-attach-point="titleNode"
@@ -279,7 +279,14 @@ define([
 		},
 
 		updateCount: function() {
-			this.onCountChanged(this.container.getChildren().length);
+			const count = this.container.getChildren().length;
+			if (count === 0) {
+				this.set('title', _('No notifications'));
+			} else {
+				this.set('title', _('Notifications'));
+			}
+			domClass.toggle(this.domNode, 'ucsNotifications--empty', count === 0);
+			this.onCountChanged(count);
 		},
 		onCountChanged: function() {}
 	});

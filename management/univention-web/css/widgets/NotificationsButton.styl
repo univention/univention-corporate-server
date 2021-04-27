@@ -30,6 +30,12 @@
 
 .ucsNotifications__title
 	margin: calc(2 * var(--layout-spacing-unit)) 0
+.ucsNotifications--empty .ucsNotifications__title
+	flex: 1 0 auto
+	display: flex
+	align-items: center
+	justify-content: center
+	color: var(--font-color-contrast-middle)
 
 $ucsNotificationBorderRadius = var(--border-radius-notification)
 $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
