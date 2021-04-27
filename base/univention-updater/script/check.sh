@@ -253,6 +253,12 @@ update_check_old_packages () {
 		univention-dansguardian
 		univention-printquota
 		univention-passwd-store
+		univention-nagios-dansguardian
+		univention-nagios-libvirtd
+		univention-nagios-libvirtd-kvm
+		univention-nagios-libvirtd-xen
+		univention-nagios-uvmmd
+		univention-printquotadb
 	)
 	for pkg in "${old[@]}"
 	do

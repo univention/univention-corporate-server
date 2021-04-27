@@ -1,3 +1,9 @@
+univention-updater (15.0.3-49) unstable; urgency=medium
+
+  * Bug #52957: added deleted packages to old packages check
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 27 Apr 2021 17:15:05 +0200
+
 univention-updater (15.0.3-48) unstable; urgency=medium
 
   * Bug #53103: Preup check for AD-Connector multi instance migration
