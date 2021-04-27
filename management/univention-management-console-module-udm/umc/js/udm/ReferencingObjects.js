@@ -37,8 +37,9 @@ define([
 	"umc/widgets/Text",
 	"umc/tools",
 	"umc/app",
-	"umc/widgets/ContainerWidget"
-], function(declare, lang, array, topic, Button, Text, tools, app, ContainerWidget) {
+	"umc/widgets/ContainerWidget",
+	"umc/i18n!umc/modules/udm"
+], function(declare, lang, array, topic, Button, Text, tools, app, ContainerWidget, _) {
 	return declare("umc.modules.udm.ReferencingObjects", [ ContainerWidget ], {
 		// summary:
 		//		Provides a list of buttons opening a given object
