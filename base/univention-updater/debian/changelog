@@ -1,3 +1,9 @@
+univention-updater (15.0.3-46) unstable; urgency=medium
+
+  * Bug #52453: adjust styling for warning message
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Apr 2021 10:55:30 +0200
+
 univention-updater (15.0.3-45) unstable; urgency=medium
 
   * Bug #53129: block update if defaultPackagesMaster of

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-6) unstable; urgency=medium
+
+  * Bug #52453: adjust ComboBox
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Apr 2021 10:53:35 +0200
+
 univention-management-console-module-udm (10.0.1-5) unstable; urgency=medium
 
   * Bug #52941: added new icon design for udm services

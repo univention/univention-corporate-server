@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-35) unstable; urgency=medium
+
+  * Bug #52453: adjust TitlePane style
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Apr 2021 10:55:10 +0200
+
 univention-appcenter (9.0.2-34) unstable; urgency=medium
 
   * Bug #52941: added new icon design for app and package management
