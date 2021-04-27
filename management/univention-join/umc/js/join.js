@@ -106,6 +106,7 @@ define([
 
 		helpText: _("Please enter credentials of a user account with administrator rights to join the system."),
 		fullWidth: true,
+		mainContentClass: 'umcCard2',
 
 		buildRendering: function() {
 			this.inherited(arguments);
