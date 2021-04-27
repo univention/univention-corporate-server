@@ -41,7 +41,7 @@ strings = {
 	'repositories_not_reachable': 'cannot be reached',
 	'join_domain': 'Join into an existing UCS',
 	'start_join': 'Start join at the end',
-	'system_name': 'Specify the name',
+	'system_name': 'Host settings',
 	'account_information': 'Account information',
 	'ad_account_information': 'Active Directory join information',
 	'host_settings': 'Specify the name',
