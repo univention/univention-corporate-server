@@ -1,3 +1,9 @@
+univention-updater (15.0.3-48) unstable; urgency=medium
+
+  * Bug #53103: Preup check for AD-Connector multi instance migration
+
+ -- Arvid <requate@univention.de>  Tue, 27 Apr 2021 14:07:38 +0200
+
 univention-updater (15.0.3-47) unstable; urgency=medium
 
   * Bug #46588: mark univention-postgresql as manually installed

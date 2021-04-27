@@ -660,6 +660,37 @@ update_check_adc_mapping () {  # Bug #52044
 	fi
 }
 
+update_check_adc_multiinstance_mapping () {  # Bug #53103
+	local var="update$VERSION/ignore_multi_adc_mapping"
+	local tocheck
+
+	eval "$(ucr shell connector/listener/additionalbasenames)"
+	for CONFIGBASENAME in $connector_listener_additionalbasenames; do
+		if ! [ -d /etc/univention/"$CONFIGBASENAME" ]; then
+			continue
+		fi
+		if grep -sq mapping_hook /etc/univention/"$CONFIGBASENAME/ad/localmapping.py"; then
+			continue
+		fi
+		tocheck="$tocheck $CONFIGBASENAME"
+		echo "WARNING: There are additional AD-Connector mappings (registered in UCR connector/listener/additionalbasenames)"
+		echo "         It needs to be converted into a python file named /etc/univention/$CONFIGBASENAME/ad/localmapping.py"
+		echo "         which must define a function named \"mapping_hook\"which receives the original ad_mapping as argument"
+		echo "         and must return a (possibly customized) ad_mapping."
+		echo "         See also https://docs.software-univention.de/manual-4.4.html#windows:groups:CustomMappings"
+		echo "         "
+		echo "         Please also note that the mapping code needs to be compatible with Python 3.7"
+		echo "         (See also https://docs.software-univention.de/developer-reference-5.0.html)."
+	done
+	if [ -n "$tocheck" ]; then
+		if is_ucr_true update50/ignore_multi_adc_mapping; then
+			echo "WARNING: $var is set to true. Continue as requested."
+		else
+			return 1
+		fi
+	fi
+}
+
 ## Check for PostgreSQL-9.4 (Bug #53034)
 update_check_for_postgresql94 () {
 	local var="update$VERSION/ignore_postgresql94"
