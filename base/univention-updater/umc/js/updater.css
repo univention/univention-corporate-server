@@ -39,17 +39,17 @@
 
 .umc .umcUpdaterWarningText {
 	min-height: 30px;
-	padding: calc(2 * var(--layout-spacing-unit)) calc(2 * var(--layout-spacing-unit)) 0;
-	padding-left: calc(6 * var(--layout-spacing-unit));
+	margin-top: calc(2 * var(--layout-spacing-unit));
+	padding: 0 calc(2 * var(--layout-spacing-unit)) 0 calc(6 * var(--layout-spacing-unit));
 	position: relative;
 }
 
 .umc .umcUpdaterWarningTextIcon {
 	position: absolute;
-	top: calc(50% - 0.5em);
+	font-size: 1.3rem;
+	top: calc(50% - 0.65rem);
 	left: calc(2 * var(--layout-spacing-unit));
 	color: var(--color-error);
-	font-size: 1.3rem;
 }
 
 .umc .umcUpdaterLogViewer {
