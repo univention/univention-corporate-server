@@ -46,10 +46,11 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ToggleButton",
 	"umc/tools",
+	"put-selector/put",
 	"umc/i18n!"
 ], function(
 	declare, lang, Deferred, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, ContentPane,
-	ContainerWidget, Button, ToggleButton, tools, _
+	ContainerWidget, Button, ToggleButton, tools, put, _
 ) {
 	var Notification = declare("umc.widgets.NotificationsButton.Notification",
 			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -269,11 +270,18 @@ define([
 		addNotification: function(item) {
 			const notification = new Notification(item);
 			this.container.addChild(notification);
+			this.updateCount();
 
 			notification.on('close', () => {
 				notification.destroyRecursive();
+				this.updateCount();
 			});
-		}
+		},
+
+		updateCount: function() {
+			this.onCountChanged(this.container.getChildren().length);
+		},
+		onCountChanged: function() {}
 	});
 
 
@@ -285,6 +293,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'ucsIconButton ucsNotificationsButton');
+			this.counterNode = put(this.domNode, 'div.ucsNotificationsButton__counter.ucsNotificationsButton__counter--hidden');
 		},
 
 		_setCheckedAttr: function(checked) {
@@ -318,6 +327,11 @@ define([
 			this.notificationsContainer.startup();
 
 			notificationsButtonCreatedDeferred.resolve(this);
+
+			on(this.notificationsContainer, 'countChanged', lang.hitch(this, function(count) {
+				domClass.toggle(this.counterNode, 'ucsNotificationsButton__counter--hidden', count === 0);
+				this.counterNode.innerHTML = count;
+			}));
 		}
 	});
 
