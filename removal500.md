@@ -25,6 +25,8 @@
 
 # Requires purge
 
+`dh_ucr` moved `ucr.info` files to `/etc/univention/templates/removed/`, so UCR templates are no longer registered and rendered: `remove` is sufficient.
+
 ## [desktop/univention-kdm/](desktop/univention-kdm/)
 - [x] UCR `/etc/default/kdm.d`
 - [ ] UCRV `kdm/usetheme`
@@ -77,6 +79,11 @@
 - [x] UCR `/etc/nagios-plugins/config/`
 - [x] JOIN `31univention-nagios-samba.inst`	OKAY
 - [x] JOIN `69univention-nagios-samba.uinst`
+
+## [base/univention-passwd-store/](base/univention-passwd-store/)
+- [ ] UCR.rm `/etc/pam.d/common-auth.d/`
+- [ ] UCR.rm `/etc/pam.d/common-session.d/`
+- [ ] UCRV.unset `auth/passwdstore`
 
 # Should have un-join script to remove registration
 
@@ -181,16 +188,14 @@
 - [ ] UCRV `bacula/`
 - [ ] UCRV `security/packetfilter/package/univention-bacula/**`
 
-## [base/univention-passwd-cache/](base/univention-passwd-cache/)
-- [ ] RM `/etc/univention/passwdcache/shadow`
-
 # Breaks afer uninstall
-
-## [base/univention-passwd-store/](base/univention-passwd-store/)
-- [ ] UCR.rm `/etc/pam.d/common-auth.d/`
-- [ ] UCR.rm `/etc/pam.d/common-session.d/`
-- [ ] UCRV.unset `auth/passwdstore`
 
 ## [services/univention-remote-backup/](services/univention-remote-backup/)
 - [ ] DIR.rm `/home/backup`
 - [ ] CRON.test
+
+## [base/univention-passwd-cache/](base/univention-passwd-cache/)
+- [ ] RM `/etc/univention/passwdcache/shadow`
+
+Installed manually → remove manually.
+Hopefully not used → IGNORE
