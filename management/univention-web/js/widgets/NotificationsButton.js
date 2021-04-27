@@ -29,7 +29,7 @@
 /*global define*/
 
 /**
- * @module portal/NotificationsButton
+ * @module umc/widgets/NotificationsButton
  */
 define([
 	"dojo/_base/declare",
@@ -45,12 +45,13 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/ToggleButton",
+	"umc/headerButtons",
 	"umc/tools",
 	"put-selector/put",
 	"umc/i18n!"
 ], function(
 	declare, lang, Deferred, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, ContentPane,
-	ContainerWidget, Button, ToggleButton, tools, put, _
+	ContainerWidget, Button, ToggleButton, headerButtons, tools, put, _
 ) {
 	var Notification = declare("umc.widgets.NotificationsButton.Notification",
 			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -330,15 +331,16 @@ define([
 			this.notificationsPreview.startup();
 
 			this.notificationsContainer = new NotificationsContainer({});
-			document.body.appendChild(this.notificationsContainer.domNode);
+			headerButtons.createOverlay(this.notificationsContainer.domNode);
 			this.notificationsContainer.startup();
-
-			notificationsButtonCreatedDeferred.resolve(this);
+			headerButtons.subscribe(this, 'notifications', this.notificationsContainer);
 
 			on(this.notificationsContainer, 'countChanged', lang.hitch(this, function(count) {
 				domClass.toggle(this.counterNode, 'umcHeaderButton__counter--hidden', count === 0);
 				this.counterNode.innerHTML = count;
 			}));
+
+			notificationsButtonCreatedDeferred.resolve(this);
 		}
 	});
 

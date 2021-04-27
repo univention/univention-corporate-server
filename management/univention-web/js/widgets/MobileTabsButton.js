@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 Univention GmbH
+ * Copyright 2021 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -26,60 +26,38 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define,dojo*/
+/*global define*/
 
+/**
+ * @module umc/widgets/MobileTabsButton
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/dom-class",
-	"dojo/Deferred",
 	"umc/widgets/ToggleButton",
-	"umc/menu/Menu",
 	"umc/headerButtons",
+	"umc/tools",
+	"put-selector/put",
 	"umc/i18n!"
-], function(declare, domClass, Deferred, ToggleButton, Menu, headerButtons, _) {
+], function(declare, domClass, ToggleButton, headerButtons, tools, put) {
+	return declare("umc.widgets.MobileTabsButton", [ToggleButton], {
+		showLabel: false,
+		iconClass: 'square',
 
-	// require umc/menu here in order to avoid circular dependencies
-	var menuDeferred = new Deferred();
-	require(["umc/menu"], function(_menu) {
-		menuDeferred.resolve(_menu);
-	});
-
-	var menuButtonDeferred = new Deferred();
-
-	var MenuButton = declare('umc.menu.Button', [ToggleButton], {
-		//// overwrites
-		iconClass: 'menu',
-
-		//// self
-		// forward to Menu.js
-		showLoginHeader: true,
-
-		//// lifecycle
 		buildRendering: function() {
 			this.inherited(arguments);
-			domClass.add(this.domNode, 'ucsIconButton umcMenuButton');
+			domClass.add(this.domNode, 'umcMobileTabsToggleButton ucsIconButton dijitDisplayNone');
+			this.counterNode = put(this.domNode, 'div.umcHeaderButton__counter');
 
-			this.watch('checked', function(_name, _oldChecked, checked) {
-				menuDeferred.then(function(menu) {
-					if (checked) {
-						menu.open();
-					} else {
-						menu.close();
-					}
-				});
-			});
+			this.mobileTabsContainer = put('div.umcMobileTabs');
+			headerButtons.createOverlay(this.mobileTabsContainer);
+			headerButtons.subscribe(this, 'tabs');
+		},
 
-			const menu = new Menu({
-				showLoginHeader: this.showLoginHeader
-			});
-			headerButtons.createOverlay(menu.domNode);
-			headerButtons.subscribe(this, 'menu', menu);
-			menu.startup();
-
-			menuButtonDeferred.resolve(this);
+		_setCheckedAttr: function(checked) {
+			domClass.toggle(this.mobileTabsContainer, 'umcMobileTabs--visible', checked);
+			this.inherited(arguments);
 		}
 	});
-
-	MenuButton.menuButtonDeferred = menuButtonDeferred;
-	return MenuButton;
 });
+

@@ -34,12 +34,8 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/_base/window",
-	"dojo/window",
 	"dojo/on/debounce",
 	"dojo/on",
-	"dojo/mouse",
-	"dojo/touch",
-	"dojox/gesture/tap",
 	"dojo/aspect",
 	"dojo/has",
 	"dojo/Evented",
@@ -51,29 +47,19 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/dom",
-	"dojo/dom-attr",
 	"dojo/dom-class",
-	"dojo/dom-geometry",
 	"dojo/dom-construct",
-	"dojo/dom-style",
 	"put-selector/put",
 	"dojo/hash",
 	"dojox/html/styles",
 	"dojox/html/entities",
 	"dojox/gfx",
-	"dijit/registry",
 	"umc/tools",
 	"login",
 	"umc/dialog",
 	"umc/dialog/NotificationSnackbar",
 	"umc/store",
-	"dijit/_WidgetBase",
-	"dijit/Menu",
-	"dijit/MenuItem",
-	"dijit/PopupMenuItem",
-	"dijit/MenuSeparator",
 	"dijit/Tooltip",
-	"dijit/form/DropDownButton",
 	"dijit/layout/StackContainer",
 	"umc/menu",
 	"umc/menu/Button",
@@ -81,7 +67,6 @@ define([
 	"umc/widgets/LiveSearch",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/Icon",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/Button",
@@ -89,14 +74,15 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/NotificationsButton",
+	"umc/widgets/MobileTabsButton",
 	"umc/i18n/tools",
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, win, onDebounce, on, mouse, touch, tap, aspect, has,
-		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, style, put, dojoHash, styles, entities, gfx, registry, tools, login, dialog, NotificationSnackbar, store,
-		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Icon, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton, i18nTools, _
+], function(declare, lang, kernel, array, baseWin, onDebounce, on, aspect, has, Evented, Deferred, all, cookie, topic,
+		ioQuery, Memory, Observable, dom, domClass, domConstruct, put, dojoHash, styles, entities, gfx, tools, login,
+		dialog, NotificationSnackbar, store, Tooltip, StackContainer, menu, MenuButton,	TabController, LiveSearch,
+		GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton,
+		MobileTabsButton, i18nTools, _
 ) {
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
@@ -647,12 +633,6 @@ define([
 		showAmbassadorNotification();
 	});
 
-	var MobileTabsToggleButton = declare([ToggleButton], {
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.counterNode = put(this.domNode, 'div.umcHeaderButton__counter');
-		}
-	});
 	var UmcHeader = declare([ContainerWidget], {
 
 		// top tap bar (handed over upon instantiation)
@@ -696,7 +676,7 @@ define([
 			}
 			this._headerRight.addChild(new NotificationsButton({}));
 			if (_menuVisible) {
-				this._setupMenu();
+				this._headerRight.addChild(new MenuButton({}));
 			}
 		},
 
@@ -709,31 +689,9 @@ define([
 		},
 
 		_setupModuleTabs: function() {
-			this._mobileTabsButton = new MobileTabsToggleButton({
-				iconClass: 'square',
-				'class': 'umcMobileTabsToggleButton ucsIconButton dijitDisplayNone'
-			});
+			this._mobileTabsButton = new MobileTabsButton({});
 			this._headerRight.addChild(this._mobileTabsButton);
-			this._mobileTabsContainer = put('div.umcMobileTabs.dijitDisplayNone');
-			dojo.body().appendChild(this._mobileTabsContainer);
-
-			var bodyClickHandler = on.pausable(dojo.body(), 'click', lang.hitch(this, function() {
-				this._mobileTabsButton.set('checked', false);
-			}));
-			bodyClickHandler.pause();
-			this._mobileTabsButton.watch('checked', lang.hitch(this, function(attr, oldVal, newVal) {
-				if (newVal) {
-					bodyClickHandler.resume();
-				} else {
-					bodyClickHandler.pause();
-				}
-				tools.toggleVisibility(this._mobileTabsContainer, newVal);
-			}));
-			on(this._mobileTabsButton, 'click', function(evt) {
-				// prevent bodyClickHandler from getting the click event when
-				// the toggle button is clicked directly
-				evt.stopImmediatePropagation();
-			});
+			var mobileTabsContainer = this._mobileTabsButton.mobileTabsContainer;
 
 			var aspectHandlesMap = {};
 			this._tabController.on('addChild', lang.hitch(this, function(module) {
@@ -742,7 +700,7 @@ define([
 					on(closeButton, 'click', lang.hitch(this, function(evt) {
 						evt.stopImmediatePropagation();
 						module.closeModule();
-						if (this._mobileTabsContainer.children.length === 0) {
+						if (mobileTabsContainer.children.length === 0) {
 							this._mobileTabsButton.set('checked', false);
 						}
 					}));
@@ -755,7 +713,7 @@ define([
 					}));
 					var labelNode = put(tab, 'div.umcMobileTab__label', module.title);
 					put(tab, closeButton);
-					put(this._mobileTabsContainer, tab);
+					put(mobileTabsContainer, tab);
 
 					this._updateMoreTabsVisibility();
 
@@ -829,13 +787,6 @@ define([
 
 			this._headerRight.addChild(searchToggleButton);
 			this._headerRight.addChild(this._search);
-		},
-
-		_setupMenu: function() {
-			this._headerRight.addChild(new MenuButton({}));
-			this._tabController.on('selectChild', lang.hitch(this, function() {
-				menu.close();
-			}));
 		},
 
 		setupBackToOverview: function() {

@@ -196,14 +196,19 @@ headerHeight = 48px
 		right: 0
 		border: 0px solid var(--color-grey8)
 		border-top-width: var(--layout-spacing-unit-small)
-		background-color: var(--color-grey0)
-		// z-index: 30
+		z-index: 31
 		display: flex
 		flex-direction: column
 		align-items: center
-		background: s('rgba(var(--color-grey8-rgb), 0.8)')
-		backdrop-filter: blur(8px)
 		overflow: auto
+		visibility: hidden
+		opacity 0
+		transition: opacity 250ms, visibility 260ms
+
+		&--visible
+			visibility: visible
+			opacity: 1
+			transition: opacity 250ms, visibility 0ms
 
 	.umcMobileTab
 		flex: 0 0 auto
@@ -259,3 +264,27 @@ headerHeight = 48px
 	.umcSearchBox__searchButton
 		display: none
 // module search end
+
+
+// close overlay
+#headerButtonsCloseOverlay
+	position: fixed
+	top: var(--layout-height-header)
+	bottom: 0
+	left: 0
+	right: 0
+	z-index: 30
+	visibility: hidden
+	transition: background 250ms, backdrop-filter 250ms, visibility 260ms
+	backdrop-filter: blur(0px)
+	background: transparent
+
+.ucsOverlay--menu,
+.ucsOverlay--notifications,
+.ucsOverlay--tabs
+	#headerButtonsCloseOverlay
+		visibility: visible
+		transition: background 250ms, backdrop-filter 250ms, visibility 0ms
+		background: s('rgba(var(--color-grey8-rgb), 0.5)')
+		backdrop-filter: blur(4px)
+// close overlay end

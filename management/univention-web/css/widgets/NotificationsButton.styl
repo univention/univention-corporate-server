@@ -18,7 +18,7 @@
 	border-top-width: var(--layout-spacing-unit-small)
 	background-color: var(--color-grey0)
 	transition: transform cubic-bezier(0.4, 0, 0.6, 1) 0.15s
-	z-index: 30
+	z-index: 33
 	transform: translate3d(110%, 0, 0)
 	padding: 0 calc(2 * var(--layout-spacing-unit))
 	display: flex
@@ -80,6 +80,7 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 
 .ucsNotificationPreview
 	position: fixed
+	z-index: 32
 	top: calc(var(--layout-height-header) + 1rem)
 	right: var(--layout-spacing-unit)
 	width: 90vw

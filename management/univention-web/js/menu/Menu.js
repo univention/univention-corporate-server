@@ -48,13 +48,12 @@ define([
 	"umc/menu/MenuItem",
 	"umc/menu/SubMenuItem",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!"
 ], function(
 		declare, lang, array, on, Deferred, topic, tap, domClass, _WidgetBase, _TemplatedMixin,
 		_WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, entities, MenuItem, SubMenuItem,
-		ContainerWidget, Text, Button, _
+		ContainerWidget, Button, _
 ) {
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -174,8 +173,6 @@ define([
 			this.addLoginHeader();
 			this.addMenuSlides();
 			this.addUserMenu();
-			this.addCloseOverlay();
-			dojo.body().appendChild(this.domNode);
 		},
 
 		postCreate: function() {
@@ -209,18 +206,6 @@ define([
 			domClass.replace(userMenuItem.menuSlide.domNode, 'visibleSlide', 'hiddenSlide');
 			domClass.add(userMenuItem.menuSlide.domNode, 'mainSlide');
 			this.menuSlides.addChild(userMenuItem.menuSlide);
-		},
-
-		addCloseOverlay: function() {
-			this._mobileMenuCloseOverlay = new ContainerWidget({
-				'class': 'mobileMenuCloseOverlay'
-			});
-			this._mobileMenuCloseOverlay.on(tap, lang.hitch(this, function() {
-				menuDeferred.then(function(menu) {
-					menu.close();
-				});
-			}));
-			dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
 		},
 
 		closeOpenedSubMenus: function() {

@@ -59,11 +59,6 @@ define([
 			});
 		},
 
-		createMenu: function(props) {
-			props = props || {};
-			return new Menu(props);
-		},
-
 		open: function() {
 			if (domClass.contains(baseWin.body(), 'mobileMenuActive')) {
 				return;
@@ -71,7 +66,6 @@ define([
 			domClass.add(baseWin.body(), 'mobileMenuActive');
 			var hasScrollbar = baseWin.body().scrollHeight > win.getBox().h;
 			domClass.toggle(baseWin.body(), 'hasScrollbar', hasScrollbar);
-			topic.publish('/umc/menu', 'open');
 		},
 
 		close: function() {
@@ -84,8 +78,7 @@ define([
 				this.getMenuInstance().then(function(menuInstance) {
 					menuInstance.closeOpenedSubMenus();
 				});
-			}), 510);
-			topic.publish('/umc/menu', 'close');
+			}), 260); // tied to transition duration in header.styl
 		},
 
 		getButtonInstance: function() {

@@ -10,7 +10,7 @@
 	border-top-width: var(--layout-spacing-unit-small)
 	background-color: var(--color-grey0)
 	transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
-	z-index: 30
+	z-index: 31
 	transform: translate3d(110%, 0, 0)
 	display: flex
 	flex-direction: column
@@ -155,18 +155,6 @@
 			transform: translate3d(0, 0, 0) scale(1, 1)
 			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
 
-.mobileMenuCloseOverlay
-	position: fixed
-	top: var(--layout-height-header)
-	bottom: 0
-	left: 0
-	right: 0
-	z-index: 29
-	visibility: hidden
-	transition: background 250ms, backdrop-filter 250ms, visibility 260ms
-	backdrop-filter: blur(0px)
-	background: transparent
-
 .mobileMenuActive
 	&.hasScrollbar
 		color: red
@@ -178,12 +166,6 @@
 		// right: 0
 		// overflow-y: scroll
 		*/
-	.mobileMenuCloseOverlay
-		visibility: visible
-		transition: background 250ms, backdrop-filter 250ms, visibility 0ms
-		background: s('rgba(var(--color-grey8-rgb), 0.5)')
-		backdrop-filter: blur(4px)
-
 	.mobileMenu
 		transform: translate3d(0, 0, 0) !important
 		transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
