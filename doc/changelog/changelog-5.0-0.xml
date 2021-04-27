@@ -489,6 +489,10 @@
 					Any direct calls to the <command>init</command> script or <command>runsv</command> must to be replaced with <command>systemctl</command>, for example <command>systemctl start isc-dhcp-server</command> (<u:bug>43688</u:bug>, <u:bug>52828</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					Hook scripts in <filename class="directory">/etc/dhcp/dhclient-enter-hooks.d/</filename> and <filename class="directory">/etc/dhcp/dhclient-exit-hooks.d/</filename> returning an error no longer abort the <command>dhclient-scipt</command>.
+					If the old behavior is required a hook script can use <command>exit</command> as the scripts are sourced and not executed in sub-shells (<u:bug>53172</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					Fix the day of week in leases when fallback to link-local addresses is enabled (<u:bug>44427</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
