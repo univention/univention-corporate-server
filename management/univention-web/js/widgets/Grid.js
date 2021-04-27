@@ -279,7 +279,6 @@ define([
 		// ContainerWidget that holds all buttons
 		_toolbar: null,
 
-		hideGlobalActionsOnSelection: false,
 		hideContextActionsWhenNoSelection: true,
 
 		updateActionsMenuVisibility: true,
@@ -1172,9 +1171,6 @@ define([
 				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', false);
 				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', true);
 			} else {
-				if (this.hideGlobalActionsOnSelection) {
-					domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', itemsSelected);
-				}
 				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected && this.hideContextActionsWhenNoSelection);
 			}
 		},
