@@ -1,3 +1,9 @@
+univention-updater (15.0.3-47) unstable; urgency=medium
+
+  * Bug #46588: mark univention-postgresql as manually installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Apr 2021 11:46:06 +0200
+
 univention-updater (15.0.3-46) unstable; urgency=medium
 
   * Bug #52453: adjust styling for warning message

@@ -170,6 +170,11 @@ fi
 # during the update to 5.0-0. This autoremoves univention-mariadb. But we need it
 # apt-mark manual always returns 0. even if not installed
 apt-mark manual univention-mariadb
+# Bug #46588: univention-postgresql may have been installed as a dependency.
+# If you removed this package again, the update to 5.0 may auto-remove univention-postgresql
+# but, for reasons yet unknown, postgresql-9.6 stays installed. This leaves the
+# database service ununsable. So keep it safe, keep univention-postgresql
+apt-mark manual univention-postgresql
 
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
