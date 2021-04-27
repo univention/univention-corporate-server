@@ -40,8 +40,11 @@ define([
 	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/ComboBox",
+	"umc/widgets/Button",
+	"umc/widgets/StandbyCircle",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, when, on, keys, domConstruct, domStyle, Deferred, tools, ComboBox, _) {
+], function(declare, lang, array, when, on, keys, domConstruct, domStyle, Deferred, tools, ComboBox, Button,
+		StandbyCircle, _) {
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
@@ -148,16 +151,11 @@ define([
 			// new nodes (replacing the original arrow)
 			// if needed
 			this._currentNode = this._buttonNode;
-			this._searchNode = lang.clone(this._buttonNode);
-			domStyle.set(this._searchNode.firstElementChild, {
-				'backgroundPosition': '-260px -40px'
-			});
+			this._searchNode = Button.simpleIconButtonNode('search', 'ucsIconButton umcTextBox__downArrowButton');
 			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServerAndOpen')));
-			this._searchingNode = lang.clone(this._searchNode);
-			domStyle.set(this._searchingNode.firstElementChild, {
-				'background': lang.replace('url({0})', [require.toUrl('dijit/themes/umc/form/images/loading.gif')]),
-				'backgroundSize': 'contain'
-			});
+			this._searchingNode = new StandbyCircle({
+				'class': 'udmComboBox__standbyCircle'
+			}).domNode;
 
 			if (!this.depends) {
 				this._checkThreshold().then(lang.hitch(this, function(result) {

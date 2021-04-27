@@ -75,23 +75,16 @@ define([
 			this.inherited(arguments);
 
 			// exchange validation icon node
-			var icon = new Icon({
-				'class': 'umcTextBox__validationIcon',
-				iconName: 'alert-circle'
-			});
+			var iconNode = Icon.createNode('alert-circle', 'umcTextBox__validationIcon');
 			var validationContainerNode = query('.dijitValidationContainer', this.domNode)[0];
-			put(validationContainerNode, '+', icon.domNode);
+			put(validationContainerNode, '+', iconNode);
 			put(validationContainerNode, '!');
 
 			// exchange dropdown icon node
-			var button = new Button({
-				iconClass: 'chevron-down',
-				'class': 'ucsIconButton umcTextBox__downArrowButton',
-				tabIndex: '-1'
-			});
-			put(this._buttonNode, '+', button.domNode);
+			var buttonNode = Button.simpleIconButtonNode('chevron-down', 'ucsIconButton umcTextBox__downArrowButton');
+			put(this._buttonNode, '+', buttonNode);
 			put(this._buttonNode, '!');
-			this._buttonNode = button.domNode;
+			this._buttonNode = buttonNode;
 		},
 
 		postCreate: function() {
