@@ -133,7 +133,9 @@ def pattern_replace(pattern, object):
 				# We need this to handle german umlauts, e.g. ä -> ae
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
-				text = unidecode.unidecode(text.decode('utf-8'))
+				if type(text) is bytes:
+					text = text.decode("utf-8")
+				text = unidecode.unidecode(text)
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
