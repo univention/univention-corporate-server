@@ -16,6 +16,7 @@ from languages import german
 import time
 import sys
 import os
+import logging
 
 
 class UCSInstallation(object):
@@ -61,11 +62,12 @@ class UCSInstallation(object):
 			self.connect()
 			return False
 
-	def tab_to_next_and_enter(self, tabs):
-		for i in range(tabs):
-			self.client.keyPress('tab')
-			time.sleep(0.5)
-		self.client.keyPress('enter')
+	def move_to_next_and_click(self):
+		time.sleep(1)
+		self.client.mouseMove(910, 700)
+		time.sleep(1)
+		logging.info('clicking next')
+		self.client.mousePress(1)
 
 	def installer(self):
 		# language
@@ -244,13 +246,13 @@ class UCSInstallation(object):
 		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
-			self.tab_to_next_and_enter(1)
+			self.move_to_next_and_click()
 			self.client.waitForText(self._['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
-			self.tab_to_next_and_enter(4)
+			self.move_to_next_and_click()
 		elif self.args.role in ['slave', 'backup', 'member']:
 			self.click(self._['join_domain'])
-			self.tab_to_next_and_enter(1)
+			self.move_to_next_and_click()
 			if self.text_is_visible(self._['no_dc_dns']):
 				self.client.keyPress('enter')
 				self.click(self._['preferred_dns'])
@@ -261,17 +263,17 @@ class UCSInstallation(object):
 					self.client.keyPress('enter')
 					time.sleep(30)
 				self.click(self._['join_domain'])
-				self.tab_to_next_and_enter(2)
+				self.move_to_next_and_click()
 			self.client.waitForText(self._['role'])
 			if self.args.role == 'backup':
 				self.click('Backup Directory Node')
-				self.tab_to_next_and_enter(2)
+				self.move_to_next_and_click()
 			if self.args.role == 'slave':
 				self.click('Replica Directory Node')
-				self.tab_to_next_and_enter(2)
+				self.move_to_next_and_click()
 			if self.args.role == 'member':
 				self.click('Managed Node')
-				self.tab_to_next_and_enter(2)
+				self.move_to_next_and_click()
 			self.client.waitForText(self._['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
@@ -281,7 +283,7 @@ class UCSInstallation(object):
 			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
 			self.click(self._['ad_domain'])
-			self.tab_to_next_and_enter(1)
+			self.move_to_next_and_click()
 			self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
 			self.client.keyPress('enter')
 			self.click(self._['preferred_dns'])
@@ -305,7 +307,7 @@ class UCSInstallation(object):
 			self.client.keyPress('tab')
 			self._clear_input()
 			self.client.enterText(self.args.join_password)
-			self.tab_to_next_and_enter(2)
+			self.move_to_next_and_click()
 		elif self.args.role == 'basesystem':
 			self.click(self._['no_domain'])
 			self.click(self._['next'])
@@ -330,7 +332,7 @@ class UCSInstallation(object):
 		self.client.enterText(self.args.fqdn)
 		if self.args.role == 'master':
 			self.client.keyPress('tab')
-		self.tab_to_next_and_enter(2)
+		self.move_to_next_and_click()
 
 	def finish(self):
 		self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
