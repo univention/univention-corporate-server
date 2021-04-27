@@ -163,7 +163,8 @@
 	right: 0
 	z-index: 29
 	visibility: hidden
-	transition: background 500ms, backdrop-filter 500ms, visibility 700ms
+	transition: background 250ms, backdrop-filter 250ms, visibility 260ms
+	backdrop-filter: blur(0px)
 	background: transparent
 
 .mobileMenuActive
@@ -179,7 +180,9 @@
 		*/
 	.mobileMenuCloseOverlay
 		visibility: visible
-		transition: background 500ms, backdrop-filter 500ms, visibility 0s
+		transition: background 250ms, backdrop-filter 250ms, visibility 0ms
+		background: s('rgba(var(--color-grey8-rgb), 0.5)')
+		backdrop-filter: blur(4px)
 
 	.mobileMenu
 		transform: translate3d(0, 0, 0) !important

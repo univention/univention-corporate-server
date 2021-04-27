@@ -690,7 +690,6 @@ define([
 				this._setupModuleTabs();
 			}
 
-
 			this.addChild(this._headerRight);
 			if (_overviewVisible) {
 				this.setupSearchField();

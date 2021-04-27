@@ -356,6 +356,3 @@ define([
 
 	return NotificationsButton;
 });
-
-
-
