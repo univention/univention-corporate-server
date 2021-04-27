@@ -255,7 +255,7 @@ define([
 				txt = '<p>' + _('No software changes necessary.') + '</p>';
 			}
 			content.push(new TitlePane({
-				'class': 'umcAppMoreTitlePane',
+				'class': 'umcAppMoreTitlePane umcTitlePane--alternate',
 				title: _('More information...'),
 				open: false,
 				content: txt

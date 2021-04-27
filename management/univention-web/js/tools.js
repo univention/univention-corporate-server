@@ -938,7 +938,7 @@ define([
 			var titlePane = new TitlePane({
 				title: showLink,
 				content: content,
-				'class': 'umcTracebackPane',
+				'class': 'umcTitlePane--alternate',
 				open: false,
 				onHide: function() { titlePane.set('title', showLink); },
 				onShow: function() { titlePane.set('title', hideLink); }
@@ -1000,7 +1000,7 @@ define([
 					type: TitlePane,
 					name: 'traceback',
 					title: _('Show error message'),
-					'class': 'umcTracebackPane',
+					'class': 'umcTitlePane--alternate',
 					style: 'display: block;',
 					open: false,
 					content: '<pre>' + entities.encode(traceback) + '</pre>'

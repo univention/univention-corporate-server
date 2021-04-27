@@ -79,26 +79,25 @@
 // nested TitlePanes (?) (end)
 
 
-/* special styling of tracebacks */
-.umc .umcTracebackPane
+/* alternate styling used in  traceback dialogs and appcenter package changes (in install dialog) */
+.umcTitlePane--alternate
+	background-color: transparent
+	border-radius: var(--border-radius-interactable)
+
 	.dijitTitlePaneTitle
-		font-weight: normal
-		border: none
-		font-size: $font-size-button
+		padding: 0
 
+	.dijitTitlePaneTitleFocus
+		outline: none
+		padding: 0
 
-	.dijitArrowNode
-		float: left
-		margin-right: 5px
-
-
-	.dijitTitlePaneTitleHover
+	.dijitTitlePaneTextNode
+		font-size: var(--font-size-4)
 		text-decoration: underline
+		margin: 0
 
+	.umcTitlePaneTitleFocus__arrowIcon
+		display: none
 
-	.dijitTitlePaneTitleClosed .dijitArrowNode
-		background-position: -120px 0
-
-
-	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
-		background-position: -140px 0
+	.dijitTitlePaneContentInner
+		padding: var(--layout-spacing-unit) 0 0 0
