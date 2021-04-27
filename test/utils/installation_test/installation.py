@@ -298,6 +298,7 @@ class UCSInstallation(object):
 				self.client.keyPress('enter')
 				time.sleep(60)
 			self.move_to_next_and_click()
+			self.move_to_next_and_click()
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self._clear_input()
