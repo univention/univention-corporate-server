@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-18 11:47+0200\n"
+"POT-Creation-Date: 2021-04-27 11:54+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -20,7 +20,7 @@ msgstr "Aktiviert"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: udm/handlers/portal.py:132
+#: udm/handlers/portal.py:138
 msgid "Appearance"
 msgstr "Erscheinung"
 
@@ -48,7 +48,7 @@ msgstr "Schwarz"
 msgid "Browser tab when opening link"
 msgstr "Browser-Tab beim Öffnen des Links"
 
-#: udm/handlers/portal.py:101 udm/handlers/portal.py:119
+#: udm/handlers/portal.py:107 udm/handlers/portal.py:125
 msgid "Categories"
 msgstr "Kategorien"
 
@@ -56,7 +56,7 @@ msgstr "Kategorien"
 msgid "Category options"
 msgstr "Optionen für Kategorie"
 
-#: udm/handlers/portal.py:106
+#: udm/handlers/portal.py:112
 msgid "Default browser tab for portal entries"
 msgstr "Standard Browser-Tab für Portaleinträge"
 
@@ -95,11 +95,11 @@ msgstr "Eingebettet"
 msgid "Entries"
 msgstr "Einträge"
 
-#: udm/handlers/portal.py:95
+#: udm/handlers/portal.py:101
 msgid "Entries in the menu"
 msgstr "Einträge im Menü"
 
-#: udm/handlers/portal.py:89
+#: udm/handlers/portal.py:95
 msgid "Entries in the user menu"
 msgstr "Einträge im Benutzermenü"
 
@@ -113,7 +113,7 @@ msgstr "Optionen für Eintrag"
 
 #: udm/handlers/folder.py:82 udm/handlers/folder.py:83
 #: udm/handlers/entry.py:122 udm/handlers/entry.py:123
-#: udm/handlers/portal.py:114 udm/handlers/category.py:82
+#: udm/handlers/portal.py:120 udm/handlers/category.py:82
 #: udm/handlers/category.py:86 udm/handlers/all.py:71
 msgid "General"
 msgstr "Allgemein"
@@ -171,7 +171,7 @@ msgstr "Sprachcode (z.B. de_DE)"
 msgid "Link"
 msgstr "Link"
 
-#: udm/handlers/portal.py:123
+#: udm/handlers/portal.py:129
 msgid "Link behaviour"
 msgstr "Link-Verhalten"
 
@@ -189,16 +189,20 @@ msgstr ""
 "Liste der Portaleinträge und/oder Portalordner die in diesem Ordner "
 "angezeigt werden"
 
-#: udm/handlers/portal.py:90
+#: udm/handlers/portal.py:96
 msgid ""
 "List of portal entries that are shown in the menu for the logged in user"
 msgstr ""
 "Liste der Portaleinträge, die im Menü des angemeldeten Benutzers angezeigt "
 "werden"
 
-#: udm/handlers/portal.py:96
+#: udm/handlers/portal.py:102
 msgid "List of portal entries that are shown in the menu of the portal"
 msgstr "Liste der Portaleinträge, die im Menü des Portals angezeigt werden"
+
+#: udm/handlers/portal.py:142
+msgid "Login"
+msgstr "Login"
 
 #: udm/handlers/portal.py:84
 msgid "Logo image for the portal."
@@ -208,11 +212,11 @@ msgstr "Logo Bild für das Portal."
 msgid "Management of portals and their entries"
 msgstr "Verwaltung der Portale und ihrer Einträge"
 
-#: udm/handlers/portal.py:129
+#: udm/handlers/portal.py:135
 msgid "Menu"
 msgstr "Menü"
 
-#: udm/handlers/portal.py:115 udm/handlers/category.py:83
+#: udm/handlers/portal.py:121 udm/handlers/category.py:83
 msgid "Name"
 msgstr "Name"
 
@@ -287,7 +291,7 @@ msgstr "Portal-Ordner"
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: udm/handlers/portal.py:114
+#: udm/handlers/portal.py:120
 msgid "Portal options"
 msgstr "Optionen für Portal"
 
@@ -315,6 +319,10 @@ msgstr "Portal: Einstellungen"
 msgid "Portals"
 msgstr "Portale"
 
+#: udm/handlers/portal.py:89
+msgid "Redirect anonymous visitors to the login"
+msgstr "Anonyme Besucher zum Login umleiten"
+
 #: udm/handlers/entry.py:85
 msgid "Restrict visibility to groups"
 msgstr "Sichtbarkeit auf Gruppen beschränken"
@@ -331,7 +339,7 @@ msgstr "Zeige UMC-Kategorien und -Module"
 msgid "Use default of portal"
 msgstr "Portal-Vorgabe nutzen"
 
-#: udm/handlers/portal.py:126
+#: udm/handlers/portal.py:132
 msgid "User menu"
 msgstr "Benutzermenü"
 
@@ -358,17 +366,11 @@ msgstr "Weiß"
 #~ msgid "List of Portal Entries shown in this category"
 #~ msgstr "Liste der Portaleinträge in dieser Kategorie"
 
-#~ msgid "Login"
-#~ msgstr "Login"
-
 #~ msgid "Manage anonymous visitors"
 #~ msgstr "Anonyme Besucher verwalten"
 
 #~ msgid "Message when the portal is empty"
 #~ msgstr "Nachricht, wenn das portal leer ist"
-
-#~ msgid "Redirect anonymous visitors to the login"
-#~ msgstr "Anonyme Besucher zum Login umleiten"
 
 #~ msgid "Show a category with all installed apps"
 #~ msgstr "Eine Kategorie mit allen installierten Apps anzeigen"
