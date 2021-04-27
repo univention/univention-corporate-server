@@ -270,25 +270,6 @@
 				<requiredCommand name="udm/request_new_license"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="settings/portal_all">
-			<name>Portal settings</name>
-			<description>Management of portals and their entries</description>
-			<keywords>portal</keywords>
-			<categories>
-				<category name="domain"/>
-			</categories>
-			<requiredCommands>
-				<requiredCommand name="udm/reports/query"/>
-				<requiredCommand name="udm/meta_info"/>
-				<requiredCommand name="udm/containers"/>
-				<requiredCommand name="udm/types"/>
-				<requiredCommand name="udm/properties"/>
-				<requiredCommand name="udm/layout"/>
-				<requiredCommand name="udm/policies"/>
-				<requiredCommand name="udm/values"/>
-				<requiredCommand name="udm/query"/>
-			</requiredCommands>
-		</flavor>
 		<categories>
 			<category name="domain"/>
 		</categories>

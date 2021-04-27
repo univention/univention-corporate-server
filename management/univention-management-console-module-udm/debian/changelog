@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-7) unstable; urgency=medium
+
+  * Bug #51197: Remove portal flavor
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Apr 2021 12:03:07 +0200
+
 univention-management-console-module-udm (10.0.1-6) unstable; urgency=medium
 
   * Bug #52453: adjust ComboBox
