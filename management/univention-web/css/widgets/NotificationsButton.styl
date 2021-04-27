@@ -41,14 +41,13 @@ $ucsNotificationBorderRadius = var(--border-radius-notification)
 $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 .ucsNotification
 	background: $ucsNotificationBgc
-	backdrop-filter: blur(20px)
 	border-radius: $ucsNotificationBorderRadius
 	padding: 16px
 	font-size: var(--font-size-4)
 	margin-bottom: 16px
 
 	&--warning
-		background: var(--color-error)
+		background: s('rgba(var(--color-error-rgb), 0.5)')
 		a
 			@extends a.sameColorInStates
 		.ucsNotification__closeButton
@@ -90,7 +89,6 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 
 	.ucsNotification
 		position: relative
-		// background: transparent
 		margin: 0
 
 	&--open
@@ -104,18 +102,17 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 	right: 0
 	overflow: hidden
 	border-radius: $ucsNotificationBorderRadius
-	// background: var(--color-grey25)
+	background: var(--color-grey8)
 
 .ucsNotificationPreview__background--full
 	height: 100%
 	width: 100%
 	border-radius: $ucsNotificationBorderRadius 0 0 $ucsNotificationBorderRadius
-	background: $ucsNotificationBgc
+	background: var(--color-grey0)
 	transition: width 0ms linear
 
 	&.drained
-		// width: 0 // no drain styling for now
-		width: 100%
+		width: 0
 
 .ucsNotificationPreview__triangle
 	display: none
