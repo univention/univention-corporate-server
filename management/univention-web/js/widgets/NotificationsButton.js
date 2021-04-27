@@ -293,7 +293,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'ucsIconButton ucsNotificationsButton');
-			this.counterNode = put(this.domNode, 'div.ucsNotificationsButton__counter.ucsNotificationsButton__counter--hidden');
+			this.counterNode = put(this.domNode, 'div.umcHeaderButton__counter.umcHeaderButton__counter--hidden');
 		},
 
 		_setCheckedAttr: function(checked) {
@@ -329,7 +329,7 @@ define([
 			notificationsButtonCreatedDeferred.resolve(this);
 
 			on(this.notificationsContainer, 'countChanged', lang.hitch(this, function(count) {
-				domClass.toggle(this.counterNode, 'ucsNotificationsButton__counter--hidden', count === 0);
+				domClass.toggle(this.counterNode, 'umcHeaderButton__counter--hidden', count === 0);
 				this.counterNode.innerHTML = count;
 			}));
 		}

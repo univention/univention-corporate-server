@@ -650,7 +650,7 @@ define([
 	var MobileTabsToggleButton = declare([ToggleButton], {
 		buildRendering: function() {
 			this.inherited(arguments);
-			this.counterNode = put(this.domNode, 'div.umcMobileTabsToggleButton__counter');
+			this.counterNode = put(this.domNode, 'div.umcHeaderButton__counter');
 		}
 	});
 	var UmcHeader = declare([ContainerWidget], {

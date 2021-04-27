@@ -169,7 +169,7 @@ headerHeight = 48px
 .umc
 	.umcMobileTabsToggleButton
 		position: relative
-	.umcMobileTabsToggleButton__counter
+	.umcHeaderButton__counter
 		position: absolute
 		color: var(--bgc-content-header)
 		background-color: var(--color-grey62)
@@ -183,6 +183,8 @@ headerHeight = 48px
 		align-items: center
 		justify-content: center
 		pointer-events: none
+		&--hidden
+			display: none
 
 	.umcMobileTabsToggleButton.dijitChecked
 		color: var(--color-primary)
