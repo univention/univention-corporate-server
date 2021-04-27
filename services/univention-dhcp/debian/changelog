@@ -1,3 +1,9 @@
+univention-dhcp (14.0.4-1) unstable; urgency=low
+
+  * Bug #53175: Delay DHCP server start until after join
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 Apr 2021 18:18:16 +0200
+
 univention-dhcp (14.0.3-5) unstable; urgency=medium
 
   * Bug #53074: Fix DHCP network creation

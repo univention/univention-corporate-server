@@ -87,6 +87,11 @@ then
 		;;
 	esac
 
+	# shellcheck disable=SC2015
+	dpkg --compare-versions "${2:-}" lt-nl 14.0.4 &&
+		[ -f /var/univention-join/joined ] &&
+		touch /var/univention-join/dhcp-server
+
 	if [ -d /run/systemd/system ]
 	then
 		systemctl --system daemon-reload >/dev/null || true

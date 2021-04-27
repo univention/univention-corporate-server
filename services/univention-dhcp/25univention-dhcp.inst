@@ -66,6 +66,7 @@ SERVICE="cn=$domainname,cn=dhcp,$ldap_base"
 univention-directory-manager dhcp/server create "$@" --ignore_exists \
 	--superordinate "$SERVICE" \
 	--set server="${hostname:-}" || die
+touch /var/univention-join/dhcp-server
 
 # Reference policies only for the first DHCP subnet created ever
 declare -a policies=()
