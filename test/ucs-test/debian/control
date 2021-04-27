@@ -403,8 +403,11 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python-ipaddress,
  python-passlib,
+ python-pytest,
  python3-passlib,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
