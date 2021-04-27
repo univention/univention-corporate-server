@@ -2302,7 +2302,7 @@ class simpleComputer(simpleLdap):
 			raise univention.admin.uexceptions.missingInformation(_('Reverse zone and IP address are incompatible.'))
 
 		tmppos = univention.admin.uldap.position(self.position.getDomain())
-		results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=*)(%s=%s))', (name, attr, ip)), unique=False)
+		results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=*)(%s=%s))', (name, attr, addr.exploded)), unique=False)
 		hostname_list = set(
 			u'%s.%s.' % (name, attr['zoneName'][0].decode('UTF-8'))
 			for dn, attr in results
