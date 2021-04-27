@@ -18,7 +18,9 @@
 				The Python module directories of <package>python-support</package> are not supported anymore (<u:bug>51506</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-				Systems can only join into the domain with at least UCS 4.4-8 (<u:bug>51625</u:bug>)
+				Systems can only join into the domain with at least UCS 4.4-8 (<u:bug>51625</u:bug>). If the Primary Directory Node was installed as UCS 5.0,
+				certain database objects are no longer created; thus, joining UCS 4.4-8 systems may result in these systems not having a proper portal until
+				they upgrade to UCS 5.0 (<u:bug>53091</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The upgrade to UCS 5.0 is blocked if there are systems in the domain which don't have at least UCS 4.4-8 (<u:bug>51621</u:bug>)
@@ -317,6 +319,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Links can now be localized, i.e. the tiles point to different URLs depending on the user's locale (<u:bug>45918</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					Only one portal setup is created by default. All UCS systems initially show the same portal (<u:bug>53091</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
