@@ -1,3 +1,9 @@
+univention-management-console (12.0.11-5) unstable; urgency=medium
+
+  * Bug #53147: Add welcome to the default favorites
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Apr 2021 02:27:34 +0200
+
 univention-management-console (12.0.11-4) unstable; urgency=medium
 
   * Bug #52941: /umc/ should now redirect to /univention/umc/ (portal)
