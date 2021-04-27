@@ -752,6 +752,7 @@ define([
 					on(tab, 'click', lang.hitch(this, function(evt) {
 						evt.stopImmediatePropagation();
 						this._tabContainer.selectChild(module);
+						this._mobileTabsButton.set('checked', false);
 					}));
 					var labelNode = put(tab, 'div.umcMobileTab__label', module.title);
 					put(tab, closeButton);
