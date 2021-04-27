@@ -52,7 +52,7 @@ import inspect
 import traceback
 
 import six
-from ipaddress import ip_address, IPv4Address, IPv6Address, IPv4Network
+from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address
 import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn, escape_dn_chars, str2dn, dn2str
@@ -2501,7 +2501,7 @@ class simpleComputer(simpleLdap):
 							new_ip_list.append(ip)
 							self.lo.modify(dn, [('aAAARecord', attr['aAAARecord'], new_ip_list)])
 					else:
-						self.lo.modify(dn, [('aAAARecord', b'', ip.encode('ASCII'))])
+						self.lo.modify(dn, [('aAAARecord', b'', ip)])
 
 	def __add_dns_forward_object_ipv4(self, name, zoneDn, addr):  # type: (str, str, IPv4Address) -> None
 			ip = addr.exploded.encode('ASCII')
@@ -3247,7 +3247,7 @@ class simpleComputer(simpleLdap):
 				if value and value != 'None':
 					network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
 					network_object.open()
-					subnet = IPv4Network(u"%(network)s/%(netmask)s" % network_object, strict=False)
+					subnet = ip_network(u"%(network)s/%(netmask)s" % network_object, strict=False)
 
 					if not ips or ip_address(u'%s' % (ip1,)) not in subnet:
 						if self.ip_freshly_set:
