@@ -682,11 +682,7 @@ update_check_adc_multiinstance_mapping () {  # Bug #53103
 		echo "WARNING: There are additional AD-Connector mappings (registered in UCR connector/listener/additionalbasenames)"
 		echo "         It needs to be converted into a python file named /etc/univention/$CONFIGBASENAME/ad/localmapping.py"
 		echo "         which must define a function named \"mapping_hook\"which receives the original ad_mapping as argument"
-		echo "         and must return a (possibly customized) ad_mapping."
-		echo "         See also https://docs.software-univention.de/manual-4.4.html#windows:groups:CustomMappings"
-		echo "         "
-		echo "         Please also note that the mapping code needs to be compatible with Python 3.7"
-		echo "         (See also https://docs.software-univention.de/developer-reference-5.0.html)."
+		echo "         and must return a (possibly customized) ad_mapping. See https://help.univention.com/t/17754 for details."
 	done
 	if [ -n "$tocheck" ]; then
 		if is_ucr_true update50/ignore_multi_adc_mapping; then
