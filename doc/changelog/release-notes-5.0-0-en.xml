@@ -63,7 +63,7 @@
 					the update.
 					This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than
 					<literal>2012R2</literal>, if they are configured to use an encrypted connection.
-					Additionally the OpenSSL default <literal>CipherString</literal> configuration is `DEFAULT@SECLEVEL=2`
+					Additionally the OpenSSL default <literal>CipherString</literal> configuration is <literal>DEFAULT@SECLEVEL=2</literal>
 					in UCS 5.0.
 					This additionally restricts the available ciphers for communication, which rules out <literal>SHA1</literal> in particular.
 					E.g. Windows Server 2012 supports less ciphers that Windows Server 2012R2 by default.
