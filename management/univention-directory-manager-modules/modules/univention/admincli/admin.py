@@ -298,8 +298,7 @@ def object_input(module, object, input, append=None, remove=None):
 						if test_val[0] and test_val[0] == orgval:
 							val = orgval.split(' ')
 						else:
-							out.append('test_val=%s' % test_val)
-							val = ['"%s"' % j.strip() for j in test_val if j.strip()]
+							val = [j.strip() for j in test_val if j.strip()]
 
 						if val and val in object[key]:
 							object[key].remove(val)

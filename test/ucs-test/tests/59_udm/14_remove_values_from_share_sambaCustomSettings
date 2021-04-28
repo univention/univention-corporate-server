@@ -3,7 +3,7 @@
 ## bugs: [41072]
 ## roles:
 ##  - domaincontroller_master
-## tags: [apptest,SKIP]
+## tags: [apptest]
 ## exposure: dangerous
 
 from univention.testing import utils
