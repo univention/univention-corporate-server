@@ -59,20 +59,23 @@ if [ "$role" != "domaincontroller_master" ]; then
 		--append description='"en_US" "Provide an overview of all UCS server in the domain"' \
 		--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
 		--append description='"fr_FR" "Vue d'"'"'ensemble de tous les serveurs UCS du domaine"' \
-		--append link='"en_US" "/univention/server-overview/"' \
+		--append link='"en_US" "/univention/server-overview/?header=try-hide"' \
 		--set linkTarget=newwindow \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" || die
-	if [ $JS_LAST_EXECUTED_VERSION -lt 12 ]; then
-		# update from 4.4? then linkTarget was useportaldefault
-		univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
-			--dn "cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" \
-			--set linkTarget=newwindow || die
-	fi
-
 	univention-directory-manager portals/category modify "$@" \
 		--dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append entries="cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" || die
 fi
+
+if [ $JS_LAST_EXECUTED_VERSION -lt 12 ]; then
+	# update from 4.4? then linkTarget was useportaldefault
+	univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
+		--dn "cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--remove link='en_US /univention/server-overview/' \
+		--append link='"en_US" "/univention/server-overview/?header=try-hide"' \
+		--set linkTarget=newwindow || die
+fi
+
 
 joinscript_save_current_version
 
