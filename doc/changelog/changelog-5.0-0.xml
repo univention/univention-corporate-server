@@ -384,6 +384,9 @@
 				<listitem><simpara>
 					The &ucsUDM; CLI command <command>modify</command> now supports the option <option>--ignore_not_exists</option> (<u:bug>52984</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The <option>--remove</option> option for the &ucsUDM; CLI command <command>modify</command> has been repaired for properties with <property>complex</property> syntax (<u:bug>41072</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
