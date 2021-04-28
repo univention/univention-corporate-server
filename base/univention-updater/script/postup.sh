@@ -263,6 +263,11 @@ service apache2 restart >&3 2>&3
 # Bug #48808
 univention-app update >&3 2>&3 || true
 univention-app register --app >&3 2>&3 || true
+if dpkg -l univention-samba4 | grep -q ^ii; then
+	if samba-tool drs showrepl  2>&1 | egrep -q "DsReplicaGetInfo (.*) failed"; then
+		/etc/init.d/samba restart
+	fi
+fi
 EOF
 
 exit 0

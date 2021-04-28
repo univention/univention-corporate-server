@@ -1,3 +1,9 @@
+univention-updater (15.0.3-50) unstable; urgency=medium
+
+  * Bug #53183: Restart samba in postup if drs showrepl fails
+
+ -- Arvid <requate@univention.de>  Wed, 28 Apr 2021 15:39:04 +0200
+
 univention-updater (15.0.3-49) unstable; urgency=medium
 
   * Bug #52957: added deleted packages to old packages check
