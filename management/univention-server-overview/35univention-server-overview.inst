@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=11
+VERSION=12
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -62,6 +62,12 @@ if [ "$role" != "domaincontroller_master" ]; then
 		--append link='"en_US" "/univention/server-overview/"' \
 		--set linkTarget=newwindow \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" || die
+	if [ $JS_LAST_EXECUTED_VERSION -lt 12 ]; then
+		# update from 4.4? then linkTarget was useportaldefault
+		univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
+			--dn "cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" \
+			--set linkTarget=newwindow || die
+	fi
 
 	univention-directory-manager portals/category modify "$@" \
 		--dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
