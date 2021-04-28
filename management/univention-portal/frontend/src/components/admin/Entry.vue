@@ -145,7 +145,7 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import { udmPut, udmAdd } from '@/jsHelper/umc';
+import { put, add } from '@/jsHelper/admin';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import ModalDialog from '@/components/ModalDialog.vue';
@@ -215,74 +215,55 @@ export default defineComponent({
     this.backgroundColor = this.modelValue.backgroundColor || null;
     this.title = { ...(this.modelValue.title || {}) };
     this.description = { ...(this.modelValue.description || {}) };
-    this.links.push(...(this.modelValue.links));
+    this.links.push(...(this.modelValue.links || []));
   },
   methods: {
     cancel() {
       this.$store.dispatch('modal/hideAndClearModal');
     },
     async remove() {
+      this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
       const category = this.portalCategories.find((cat) => cat.dn === this.categoryDn);
       const categoryAttrs = {
         entries: category.entries.filter((entryDn) => entryDn !== dn),
       };
       console.info('Removing', dn, 'from', this.categoryDn);
-      try {
-        await udmPut(this.categoryDn, categoryAttrs);
-        this.$store.dispatch('notificationBubble/addSuccessNotification', {
-          bubbleTitle: this.$translateLabel('ENTRY_REMOVED_SUCCESS'),
-        });
-      } catch (err) {
-        console.error(err.message);
-        this.$store.dispatch('notificationBubble/addErrorNotification', {
-          bubbleTitle: this.$translateLabel('ENTRY_REMOVED_FAILURE'),
-        });
-      }
-      this.$store.dispatch('modal/hideAndClearModal');
+      await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
+      this.$store.dispatch('deactivateLoadingState');
     },
     async finish() {
+      this.$store.dispatch('activateLoadingState');
       const attrs = {
         name: this.name,
         activated: this.activated,
-        pathToLogo: this.pathToLogo,
-        title: this.title,
+        displayName: Object.entries(this.title),
+        icon: '',
       };
+      if (this.pathToLogo.startsWith('data:')) {
+        attrs.icon = this.pathToLogo.split(',')[1];
+      } else if (this.pathToLogo === '') {
+        attrs.icon = '';
+      } else {
+        delete attrs.icon;
+      }
+
       if (this.modelValue.dn) {
         console.info('Modifying', this.modelValue.dn);
-        try {
-          await udmPut(this.modelValue.dn, attrs);
-          this.$store.dispatch('notificationBubble/addSuccessNotification', {
-            bubbleTitle: this.$translateLabel('ENTRY_MODIFIED_SUCCESS'),
-          });
-        } catch (err) {
-          console.error(err.message);
-          this.$store.dispatch('notificationBubble/addErrorNotification', {
-            bubbleTitle: this.$translateLabel('ENTRY_MODIFIED_FAILURE'),
-          });
-        }
+        await put(this.modelValue.dn, attrs, this.$store, 'ENTRY_MODIFIED_SUCCESS', 'ENTRY_MODIFIED_FAILURE');
       } else {
-        try {
-          console.info('Adding entry');
-          const response = await udmAdd('portals/category', attrs);
-          const dn = response.data.result[0].$dn$;
+        console.info('Adding entry');
+        const dn = await add('portals/entry', attrs, this.$store, 'ENTRY_ADDED_FAILURE');
+        if (dn) {
           console.info(dn, 'added');
           const category = this.portalCategories.find((cat) => cat.dn === this.categoryDn);
           const categoryAttrs = {
             entries: category.entries.concat([dn]),
           };
-          await udmPut(this.categoryDn, categoryAttrs);
-          this.$store.dispatch('notificationBubble/addSuccessNotification', {
-            bubbleTitle: this.$translateLabel('ENTRY_CREATED_SUCCESS'),
-          });
-        } catch (err) {
-          console.error(err.message);
-          this.$store.dispatch('notificationBubble/addErrorNotification', {
-            bubbleTitle: this.$translateLabel('ENTRY_CREATED_FAILURE'),
-          });
+          await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         }
       }
-      this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('deactivateLoadingState');
     },
 
     addField(fieldType) {

@@ -212,8 +212,7 @@ export default defineComponent({
       }
     },
     editTile() {
-      if (this.showEditButton) {
-        console.log('editTile');
+      if (this.showEditButton && this.editMode) {
         this.$store.dispatch('modal/setAndShowModal', {
           name: 'AdminEntry',
           props: {

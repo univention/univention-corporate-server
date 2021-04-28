@@ -29,6 +29,11 @@
 import { PortalModule } from '../../root.models';
 import { PortalData } from './portalData.models';
 
+interface WaitForChangePayload {
+  retries?: number;
+  adminMode?: boolean;
+}
+
 export interface PortalDataState {
   portal: PortalData;
   editMode: boolean;
@@ -110,11 +115,13 @@ const portalData: PortalModule<PortalDataState> = {
     setPortalBackground({ commit }, data: string) {
       commit('PORTALBACKGROUND', data);
     },
-    async waitForChange({ dispatch, getters }, retries: number) {
+    async waitForChange({ dispatch, getters }, payload: WaitForChangePayload) {
+      const retries = payload.retries || 10;
+      const adminMode = payload.adminMode || false;
       if (retries <= 0) {
         return false;
       }
-      const response = await dispatch('portalJsonRequest', { adminMode: false }, { root: true });
+      const response = await dispatch('portalJsonRequest', { adminMode }, { root: true });
       const portalJson = response.data;
       if (portalJson.cache_id !== getters.cacheId) {
         return true;

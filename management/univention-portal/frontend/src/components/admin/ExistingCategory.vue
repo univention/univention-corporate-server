@@ -53,7 +53,7 @@ import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
 
 import { setInvalidity } from '@/jsHelper/tools';
-import { udmPut } from '@/jsHelper/umc';
+import { put } from '@/jsHelper/admin';
 
 interface ExistingEntryData {
   datalistId: string,
@@ -67,9 +67,8 @@ export default defineComponent({
   },
   data(): ExistingEntryData {
     return {
-      datalistId: Math.random()
-        .toString(36)
-        .substr(2, 4),
+      datalistId: `datalist-${Math.random().toString(36)
+        .substr(2, 4)}`,
     };
   },
   computed: {
@@ -99,22 +98,13 @@ export default defineComponent({
       }
       setInvalidity(this, 'input', !dn);
       if (dn) {
+        this.$store.dispatch('activateLoadingState');
         const portalAttrs = {
           categories: this.categories.concat([dn]),
         };
         console.info('Adding', dn, 'to', this.portalDn);
-        try {
-          await udmPut(this.portalDn, portalAttrs);
-          this.$store.dispatch('notificationBubble/addSuccessNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_ADDED_SUCCESS'),
-          });
-        } catch (err) {
-          console.error(err.message);
-          this.$store.dispatch('notificationBubble/addErrorNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_ADDED_FAILURE'),
-          });
-        }
-        this.$store.dispatch('modal/hideAndClearModal');
+        put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
+        this.$store.dispatch('deactivateLoadingState');
       }
     },
   },

@@ -132,7 +132,7 @@ export default defineComponent({
       let background: string | null = null;
       if (this.portalBackgroundData.startsWith('data:')) {
         background = this.portalBackgroundData.split(',')[1];
-      } else if (this.portalLogoData === '') {
+      } else if (this.portalBackgroundData === '') {
         background = '';
       }
       const displayName = Object.entries(this.portalNameData);
@@ -148,7 +148,7 @@ export default defineComponent({
       try {
         this.$store.dispatch('activateLoadingState');
         await udmPut(this.portalDn, attrs);
-        await this.$store.dispatch('portalData/waitForChange', 10);
+        await this.$store.dispatch('portalData/waitForChange', { adminMode: false });
         this.$store.dispatch('portalData/setEditMode', false);
         this.$store.dispatch('navigation/setActiveButton', '');
       } catch (error) {

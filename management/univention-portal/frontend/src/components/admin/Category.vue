@@ -82,7 +82,7 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import { udmPut, udmAdd } from '@/jsHelper/umc';
+import { put, add } from '@/jsHelper/admin';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
@@ -133,63 +133,37 @@ export default defineComponent({
       this.$store.dispatch('modal/hideAndClearModal');
     },
     async remove() {
+      this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
       const portalAttrs = {
         categories: this.categories.filter((catDn) => catDn !== dn),
       };
       console.info('Removing', dn, 'from', this.portalDn);
-      try {
-        await udmPut(this.portalDn, portalAttrs);
-        this.$store.dispatch('notificationBubble/addSuccessNotification', {
-          bubbleTitle: this.$translateLabel('CATEGORY_REMOVED_SUCCESS'),
-        });
-      } catch (err) {
-        console.error(err.message);
-        this.$store.dispatch('notificationBubble/addErrorNotification', {
-          bubbleTitle: this.$translateLabel('CATEGORY_REMOVED_FAILURE'),
-        });
-      }
-      this.$store.dispatch('modal/hideAndClearModal');
+      put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_REMOVED_SUCCESS', 'CATEGORY_REMOVED_FAILURE');
+      this.$store.dispatch('deactivateLoadingState');
     },
     async finish() {
+      this.$store.dispatch('activateLoadingState');
       const attrs = {
         name: this.name,
         displayName: Object.entries(this.title),
       };
       if (this.modelValue.dn) {
         console.info('Modifying', this.modelValue.dn);
-        try {
-          await udmPut(this.modelValue.dn, attrs);
-          this.$store.dispatch('notificationBubble/addSuccessNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_MODIFIED_SUCCESS'),
-          });
-        } catch (err) {
-          console.error(err.message);
-          this.$store.dispatch('notificationBubble/addErrorNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_MODIFIED_FAILURE'),
-          });
-        }
+        put(this.modelValue.dn, attrs, this.$store, 'CATEGORY_MODIFIED_SUCCESS', 'CATEGORY_MODIFIED_FAILURE');
       } else {
-        try {
-          console.info('Adding category');
-          const response = await udmAdd('portals/category', attrs);
-          const dn = response.data.result[0].$dn$;
+        console.info('Adding category');
+        console.info('Then adding it to', this.categories, 'of', this.portalDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
+        const dn = await add('portals/category', attrs, this.$store, 'CATEGORY_ADDED_FAILURE');
+        if (dn) {
           console.info(dn, 'added');
           const portalAttrs = {
             categories: this.categories.concat([dn]),
           };
-          await udmPut(this.portalDn, portalAttrs);
-          this.$store.dispatch('notificationBubble/addSuccessNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_CREATED_SUCCESS'),
-          });
-        } catch (err) {
-          console.error(err.message);
-          this.$store.dispatch('notificationBubble/addErrorNotification', {
-            bubbleTitle: this.$translateLabel('CATEGORY_CREATED_FAILURE'),
-          });
+          await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
         }
       }
-      this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('deactivateLoadingState');
     },
   },
 });
