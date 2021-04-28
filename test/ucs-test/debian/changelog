@@ -1,3 +1,9 @@
+ucs-test (10.0.5-10) unstable; urgency=medium
+
+  * bug #52953: increased timeout for waiting for text in install_app
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 28 Apr 2021 16:00:14 +0200
+
 ucs-test (10.0.5-9) unstable; urgency=low
 
   * Bug #53185: add interactive mode to several scripts in 09_updater/
