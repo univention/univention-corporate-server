@@ -32,6 +32,8 @@
 # - $UT_VERBOSE: Enable verbose debugging to the given file including a trace
 # - $UT_DELAY: Delay exiting for given amount of time - usefull for debugging the failing state
 # - $UT_PERF: Run test under `perf` to gather performance petrics
+# - $UT_INTERACTIVE: if set to "wait", it will wait for ${UT_INTERACTIVE_FILE:-/tmp/ucs-test.interactive.wait} to exist
+# - $UT_INTERACTIVE_FILE: file to check for current timestamp in interactive mode
 # - $BASEDIR: Temporary base directory
 # - $REPOPREFIX: Directory name of repository - usually `univention-repository`
 # - $REPODIR: Base directory path of exported repository - `$BASEDIR/$REPOPREFIX"
@@ -66,6 +68,19 @@ repoprefix="univention-repository"
 ARCH=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 declare -a COMPRESS=('xz=.xz' 'gzip=.gz')  # 'bzip2=.bz2'
 # BUG: univention.updater.tools.UCSRepoPool et al. still has hard-coded `.gz`!
+
+handle_interactive_mode () {
+	# In interactive mode, wait until the trigger file $fn_wait exists.
+	# The trigger file is removed automatically if found.
+	local fn_wait="${UT_INTERACTIVE_FILE:-/tmp/ucs-test.interactive.wait}"
+	if [ "${UT_INTERACTIVE:-}" = "wait" ] ; then
+		echo "INTERACTIVE MODE: waiting for ${fn_wait}..." 2>&1
+		while [ ! -e "$fn_wait" ] ; do
+			sleep 1
+		done
+		rm -f "$fn_wait"
+	fi
+}
 
 wait_for_updater_lock () {
 	# wait up to 60 seconds

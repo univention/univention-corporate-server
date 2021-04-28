@@ -45,6 +45,7 @@ config_repo version/patchlevel=0 version/erratalevel=0
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	handle_interactive_mode
 	/usr/share/univention-updater/univention-updater net
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[3]}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	4"
