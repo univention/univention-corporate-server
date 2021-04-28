@@ -1,3 +1,9 @@
+ucs-test (10.0.5-9) unstable; urgency=low
+
+  * Bug #53185: add interactive mode to several scripts in 09_updater/
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 28 Apr 2021 13:01:54 +0200
+
 ucs-test (10.0.5-8) unstable; urgency=medium
 
   * Bug #52953: added timeout for click_button call and click_buttons method
