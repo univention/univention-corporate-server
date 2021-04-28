@@ -303,7 +303,7 @@ class UMCPortal(Portal):
 				"backgroundColor": color,
 				"links": [{
 					"locale": "en_US",
-					"value": "/univention/management/?overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))
+					"value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))
 				}],
 			})
 		return entries

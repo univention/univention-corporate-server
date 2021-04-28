@@ -54,6 +54,7 @@ class PortalHandler(tornado.web.RequestHandler):
 		for name, portal in self.portals.items():
 			score = portal.score(self.request)
 			if score > best_score:
+				best_score = score
 				best_portal = portal
 		return best_portal
 

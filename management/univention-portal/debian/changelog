@@ -1,3 +1,9 @@
+univention-portal (4.0.5-42) unstable; urgency=medium
+
+  * Bug #53140: Fixed bug in determining the best portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Apr 2021 13:22:14 +0200
+
 univention-portal (4.0.5-41) unstable; urgency=medium
 
   * Bug #52869: Styling: font-face, loading spinner, tab navigation

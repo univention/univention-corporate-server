@@ -99,13 +99,16 @@ def add_umc_default(update: bool):
 
 	# /univention/umc/
 	umc_name = "umc"
-	if update:
-		if umc_name in json_content:
+	if umc_name in json_content:
+		if update:
 			warn("Overwriting existing {}".format(umc_name))
-		_add_umc(umc_name, json_content)
-		changed = True
+			_add_umc(umc_name, json_content)
+			changed = True
+		else:
+			info("{} already exists".format(umc_name))
 	else:
-		info("{} already exists".format(umc_name))
+			_add_umc(umc_name, json_content)
+			changed = True
 
 	if changed:
 		write_portals_json(json_content)
