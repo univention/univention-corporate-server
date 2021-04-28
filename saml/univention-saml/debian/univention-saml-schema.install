@@ -1,5 +1,4 @@
 schema/univention-saml.schema usr/share/univention-ldap/schema
 modules/univention/admin usr/lib/python2.7/dist-packages/univention/
 modules/univention/admin usr/lib/python3/dist-packages/univention/
-umc/icons/scalable/*.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 listener/univention-saml-servers.py usr/lib/univention-directory-listener/system/

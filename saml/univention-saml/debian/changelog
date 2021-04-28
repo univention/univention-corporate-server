@@ -1,3 +1,9 @@
+univention-saml (7.0.4-12) unstable; urgency=medium
+
+  * Bug #52941: remove moving saml icon cia install file
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 28 Apr 2021 17:14:33 +0200
+
 univention-saml (7.0.4-11) unstable; urgency=medium
 
   * Bug #52941: added icon tag to umc_modules
