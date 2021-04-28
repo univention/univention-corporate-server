@@ -548,8 +548,9 @@ class ListOfItems(ArrayType):
 		definition['minItems'] = self._minimum
 		definition['maxItems'] = self._maximum
 		definition['uniqueItems'] = self._openapi_unique
-		items = [item.get_openapi_definition() for item in self.item_types]
-		if len(set(items)) == 1:
+		items = [item(self.property, self.property_name).get_openapi_definition() for item in self.item_types]
+		_items = [tuple(item.items()) if isinstance(item, dict) else item for item in items]
+		if len(set(_items)) == 1:
 			definition['items'] = items[0]
 		else:
 			definition['items'] = {

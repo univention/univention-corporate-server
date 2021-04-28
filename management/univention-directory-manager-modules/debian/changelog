@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-32) unstable; urgency=medium
+
+  * Bug #53513: fix types definition for complex syntaxes without
+    subsyntax_key_value
+
+ -- Florian Best <best@univention.de>  Wed, 20 Apr 2022 22:27:21 +0200
+
 univention-directory-manager-modules (14.0.20-31) unstable; urgency=medium
 
   * Bug #54487: memberUid is missing after updating group users

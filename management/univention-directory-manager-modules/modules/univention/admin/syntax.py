@@ -394,7 +394,7 @@ class complex(ISyntax):
 			return ComplexMultiValueDictType
 		else:
 			class ComplexListType(univention.admin.types.ListOfItems):
-				items = [_type_class(sub[1]) for sub in cls.subsyntaxes]
+				item_types = [_type_class(sub[1]) for sub in cls.subsyntaxes]
 			return ComplexListType
 
 	@property
