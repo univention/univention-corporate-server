@@ -277,8 +277,10 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
+			self._clear_input()
 			self.client.enterText(self.args.join_user)
 			self.client.keyPress('tab')
+			self._clear_input()
 			self.client.enterText(self.args.join_password)
 			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
