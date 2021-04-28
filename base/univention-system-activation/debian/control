@@ -18,7 +18,7 @@ Standards-Version: 3.8.2
 Package: univention-system-activation
 Architecture: all
 Depends:
- libapache2-mod-wsgi,
+ libapache2-mod-wsgi-py3,
  python-ldap,
  sudo,
  univention-apache,
