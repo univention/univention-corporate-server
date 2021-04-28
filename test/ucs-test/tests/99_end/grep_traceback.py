@@ -136,6 +136,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
 	(r'OSError\: \[Errno 3\].*', ['univention-management-console-server.*_terminate_daemon_process']),
 	('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
+	(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 
 	# updater test cases:
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
