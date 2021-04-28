@@ -69,8 +69,6 @@ univention-config-registry set \
 	"self-service/backend-server?$MASTER" \
 	self-service/web/enabled?yes
 
-IP="$(get_default_ip_address)"
-
 udm portals/entry create --ignore_exists "$@" \
 	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 	--set name="self-service" \
@@ -78,7 +76,6 @@ udm portals/entry create --ignore_exists "$@" \
 	--append displayName='"fr_FR" "Changer le mot de passe"' \
 	--append displayName='"en_US" "Change password"' \
 	--append displayName='"de_DE" "Passwort ändern"' \
-	--append link='"en_US" "'"https://${IP}/univention/self-service/?header=try-hide#page=passwordchange"'"' \
 	--append link='"en_US" "'"https://${hostname}.${domainname}/univention/self-service/?header=try-hide#page=passwordchange"'"' \
 	--append description='"de_DE" "Self-Service-Module (Passwort ändern und zurücksetzen)"' \
 	--append description='"en_US" "Self Service modules (change and recover passwords)"' \

@@ -1,3 +1,10 @@
+univention-self-service (5.0.1-7) unstable; urgency=medium
+
+  * Bug #52869: IP should not be supported for self-service links, does not
+    work with CSP anyway
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Apr 2021 14:19:48 +0200
+
 univention-self-service (5.0.1-6) unstable; urgency=medium
 
   * Bug #52869: Add portal user links
