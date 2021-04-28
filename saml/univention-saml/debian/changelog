@@ -1,3 +1,9 @@
+univention-saml (7.0.4-10) unstable; urgency=medium
+
+  * Bug #52941: fixed saml install file. removed unused icons
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 28 Apr 2021 16:54:38 +0200
+
 univention-saml (7.0.4-9) unstable; urgency=medium
 
   * Bug #52941: remove old icons for saml
