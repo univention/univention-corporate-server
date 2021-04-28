@@ -1,3 +1,9 @@
+univention-portal (4.0.5-43) unstable; urgency=medium
+
+  * Bug #52869: Improved edit Mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Apr 2021 17:03:40 +0200
+
 univention-portal (4.0.5-42) unstable; urgency=medium
 
   * Bug #53140: Fixed bug in determining the best portal
