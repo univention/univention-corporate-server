@@ -1,3 +1,9 @@
+univention-saml (7.0.4-9) unstable; urgency=medium
+
+  * Bug #52941: remove old icons for saml
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 28 Apr 2021 16:14:11 +0200
+
 univention-saml (7.0.4-8) unstable; urgency=medium
 
   * Bug #52941: moving svg file to usr/share while saml installation

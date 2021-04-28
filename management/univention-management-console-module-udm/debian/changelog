@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-9) unstable; urgency=medium
+
+  * bug #52941: set icon for users/self
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 28 Apr 2021 16:14:50 +0200
+
 univention-management-console-module-udm (10.0.1-8) unstable; urgency=medium
 
   * Bug #52453: add missing import

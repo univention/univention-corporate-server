@@ -233,7 +233,7 @@
 				<requiredCommand name="udm/nav/object/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" id="users/self">
+		<flavor priority="50" icon="users" id="users/self">
 			<name>User settings</name>
 			<description>Change settings for the user currently logged in</description>
 			<keywords>user,password</keywords>
