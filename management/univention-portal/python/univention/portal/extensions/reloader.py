@@ -148,29 +148,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			return False
 		if reason_args[0] != "ldap":
 			return False
-		if reason_args[1] not in ["portal", "category", "entry", "folder"]:
-			return False
-		if len(reason_args) == 2:
-			return True
-		if not content:
-			return True
-		module = reason_args[1]
-		dn = reason_args[2]
-		if module == "portal":
-			return content["portal"]["dn"] == dn
-		elif module == "category":
-			return dn in content["categories"]
-		elif module == "entry":
-			for link in content["menu_links"]:
-				if link["dn"] == dn:
-					return True
-			for link in content["user_links"]:
-				if link["dn"] == dn:
-					return True
-			return dn in content["entries"]
-		elif module == "folder":
-			return dn in content["folders"]
-		return False
+		return reason_args in ["portal", "category", "entry", "folder"]
 
 	def _refresh(self):
 		udm_lib = importlib.import_module("univention.udm")
@@ -188,7 +166,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			return None
 		content = {}
 		content["portal"] = self._extract_portal(portal)
-		content["categories"] = categories = self._extract_categories(portal)
+		content["categories"] = categories = self._extract_categories(udm, portal)
 		content["folders"] = folders = self._extract_folders(udm, portal, list(categories.values()))
 		content["entries"] = self._extract_entries(udm, portal, list(categories.values()), list(folders.values()))
 		content["user_links"] = self._extract_user_links(portal)
@@ -223,11 +201,13 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	def _extract_menu_links(self, portal):
 		return portal.props.menuLinks
 
-	def _extract_categories(self, portal):
+	def _extract_categories(self, udm, portal):
 		ret = {}
-		for category in portal.props.categories.objs:
+		for category in udm.get("portals/category").search():
+			in_portal = category.dn in portal.props.categories
 			ret[category.dn] = {
 				"dn": category.dn,
+				"in_portal": in_portal,
 				"display_name": category.props.displayName,
 				"entries": category.props.entries,
 			}
@@ -236,10 +216,11 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	def _extract_entries(self, udm, portal, categories, folders):
 		ret = {}
 
-		def add(entry, ret):
+		def add(entry, ret, in_portal):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
 					"dn": entry.dn,
+					"in_portal": in_portal,
 					"name": entry.props.displayName,
 					"description": entry.props.description,
 					"logo_name": self._save_image(portal, entry),
@@ -253,40 +234,43 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 
 		for obj in udm.get("portals/entry").search():
 			if obj.dn in portal.props.menuLinks:
-				add(obj, ret)
+				add(obj, ret, True)
 				continue
 			if obj.dn in portal.props.userLinks:
-				add(obj, ret)
+				add(obj, ret, True)
 				continue
-			if any(obj.dn in category["entries"] for category in categories):
-				add(obj, ret)
+			if any(obj.dn in category["entries"] for category in categories if category["in_portal"]):
+				add(obj, ret, True)
 				continue
-			if any(obj.dn in folder["entries"] for folder in folders):
-				add(obj, ret)
+			if any(obj.dn in folder["entries"] for folder in folders if folder["in_portal"]):
+				add(obj, ret, True)
 				continue
+			add(obj, ret, False)
 
 		return ret
 
 	def _extract_folders(self, udm, portal, categories):
 		ret = {}
 
-		def add(folder, ret):
+		def add(folder, ret, in_portal):
 			ret[folder.dn] = {
 				"dn": folder.dn,
+				"in_portal": in_portal,
 				"name": folder.props.displayName,
 				"entries": folder.props.entries,
 			}
 
 		for obj in udm.get("portals/folder").search():
 			if obj.dn in portal.props.menuLinks:
-				add(obj, ret)
+				add(obj, ret, True)
 				continue
 			if obj.dn in portal.props.userLinks:
-				add(obj, ret)
+				add(obj, ret, True)
 				continue
-			if any(obj.dn in category["entries"] for category in categories):
-				add(obj, ret)
+			if any(obj.dn in category["entries"] for category in categories if category["in_portal"]):
+				add(obj, ret, True)
 				continue
+			add(obj, ret, False)
 
 		return ret
 

@@ -60,46 +60,12 @@
           v-model="description"
           label="Description"
         />
-        <div
-          v-for="(link, index) in links"
-          :key="index"
-          class="admin-entry__spacer"
-        >
-          <locale-input
-            v-model="links[index]"
-            label="Links"
-          />
-          <span
-            v-if="links.length > 1"
-            class="modal-admin__button"
-          >
-            <button
-              class="modal-admin__button--inner"
-              @click.prevent="removeField(index, links)"
-            >
-              <portal-icon
-                icon="trash"
-              />
-              <translate
-                i18n-key="REMOVE"
-              />
-            </button>
-          </span>
-        </div>
-
-        <span class="modal-admin__button">
-          <button
-            class="modal-admin__button--inner"
-            @click.prevent="addField(links)"
-          >
-            <portal-icon
-              icon="plus"
-            />
-            <translate
-              i18n-key="NEW_ENTRY"
-            />
-          </button>
-        </span>
+        <hr class="admin-entry__spacer">
+        <h3>Links</h3>
+        <link-widget
+          v-model="links"
+        />
+        <hr class="admin-entry__spacer">
 
         <image-upload
           v-model="pathToLogo"
@@ -145,11 +111,11 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import ModalDialog from '@/components/ModalDialog.vue';
 import { put, add } from '@/jsHelper/admin';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
-import ModalDialog from '@/components/ModalDialog.vue';
-import PortalIcon from '@/components/globals/PortalIcon.vue';
+import LinkWidget from '@/components/widgets/LinkWidget.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
@@ -167,10 +133,10 @@ export default defineComponent({
   name: 'FormEntryEdit',
   components: {
     ModalDialog,
-    Translate,
     ImageUpload,
     LocaleInput,
-    PortalIcon,
+    LinkWidget,
+    Translate,
   },
   props: {
     label: {
@@ -238,6 +204,7 @@ export default defineComponent({
         name: this.name,
         activated: this.activated,
         displayName: Object.entries(this.title),
+        links: this.links,
         icon: '',
       };
       if (this.pathToLogo.startsWith('data:')) {
@@ -264,28 +231,6 @@ export default defineComponent({
         }
       }
       this.$store.dispatch('deactivateLoadingState');
-    },
-
-    addField(fieldType) {
-      fieldType.push({ value: '' });
-    },
-
-    removeField(index, fieldType) {
-      // TODO: does not yet remove the selected element
-      console.log('this.links: ', this.links);
-      console.log('index: ', index);
-      console.log('fieldType before: ', JSON.parse(JSON.stringify(fieldType)));
-
-      fieldType.splice(index, 1);
-
-      const test = JSON.parse(JSON.stringify(fieldType));
-      // test.splice(index, 1);
-
-      console.log('test: ', test);
-      this.links = [];
-      console.log('this.links: ', this.links);
-      this.links.push(...(test));
-      console.log('this.links: ', this.links);
     },
   },
 });

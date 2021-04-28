@@ -55,7 +55,7 @@ h2
   line-height: var(--font-lineheight-normal)
   font-weight: 600
 
-input
+input, select
   width: var(--inputfield-width)
   height: var(--inputfield-size)
   display: block
@@ -81,6 +81,11 @@ input
   &[disabled]
     cursor: var(--cursor-disabled)
     color: var(--font-color-disabled)
+
+select
+  cursor: pointer
+  appearance: none
+  width: 5rem
 
 label
   color: var(--color-grey62)

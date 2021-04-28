@@ -81,9 +81,8 @@ export default defineComponent({
   },
   data(): ExistingEntryData {
     return {
-      datalistId: Math.random()
-        .toString(36)
-        .substr(2, 4),
+      datalistId: `datalist-${Math.random().toString(36)
+        .substr(2, 4)}`,
     };
   },
   computed: {

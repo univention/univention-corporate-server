@@ -196,6 +196,8 @@ class Portal(with_metaclass(Plugin)):
 			if entry is None:
 				continue
 			if not admin_mode:
+				if not entry["in_portal"]:
+					continue
 				if not entry["activated"]:
 					continue
 				if entry["anonymous"] and not user.is_anonymous():
