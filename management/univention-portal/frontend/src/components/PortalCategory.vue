@@ -1,30 +1,30 @@
 <!--
-Copyright 2021 Univention GmbH
+  // Copyright 2021 Univention GmbH
 
-https://www.univention.de/
+  // https://www.univention.de/
 
-All rights reserved.
+  // All rights reserved.
 
-The source code of this program is made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
+  // The source code of this program is made available
+  // under the terms of the GNU Affero General Public License version 3
+  // (GNU AGPL V3) as published by the Free Software Foundation.
 
-Binary versions of this program provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
+  // Binary versions of this program provided by Univention to you as
+  // well as other copyrighted, protected or trademarked materials like
+  // Logos, graphics, fonts, specific documentations and configurations,
+  // cryptographic keys etc. are subject to a license agreement between
+  // you and Univention and not subject to the GNU AGPL V3.
 
-In the case you use this program under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
+  // In the case you use this program under the terms of the GNU AGPL V3,
+  // the program is provided in the hope that it will be useful,
+  // but WITHOUT ANY WARRANTY; without even the implied warranty of
+  // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  // GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<https://www.gnu.org/licenses/>.
+  // You should have received a copy of the GNU Affero General Public
+  // License with the Debian GNU/Linux or Univention distribution in file
+  // /usr/share/common-licenses/AGPL-3; if not, see
+  // <https://www.gnu.org/licenses/>.
 -->
 <template>
   <div
@@ -35,7 +35,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       v-if="editMode || showCategoryHeadline || hasTiles"
       :class="!editMode || 'portal-category__title--edit'"
       class="portal-category__title"
-      @click.prevent="editMode ? editCategory() : ''"
+      @click.prevent="editMode ? editCategory(categoryIndex, title) : ''"
     >
       <header-button
         v-if="editMode"
@@ -43,8 +43,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         :aria-label="ariaLabelButton"
         :no-click="true"
         class="portal-category__edit-button"
-      />
-      <span>{{ $localized(title) }}</span>
+      />{{ $localized(title) }}
     </h2>
     <div
       class="portal-category__tiles dragdrop__container"
@@ -53,6 +52,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       <template v-if="editMode">
         <draggable-wrapper
           v-model="vTiles"
+          :category-dn="dn"
           :drop-zone-id="dropZone"
           :data-drop-zone-id="dropZone"
           transition="10000"
@@ -68,13 +68,16 @@ License with the Debian GNU/Linux or Univention distribution in file
                 v-bind="item"
                 :data-folder="$localized(item.title)"
                 :is-admin="true"
+                :category-dn="dn"
               />
               <portal-tile
                 v-else
                 v-bind="item"
+                :category-dn="dn"
                 :data-tile="$localized(item.title)"
                 :title="item.title"
                 :is-admin="true"
+                :tile-model="item"
               />
             </div>
           </template>
@@ -94,38 +97,18 @@ License with the Debian GNU/Linux or Univention distribution in file
               v-if="tile.isFolder"
               v-bind="tile"
               :ref="'tile' + index"
+              :category-dn="dn"
             />
             <portal-tile
               v-else
               :ref="'tile' + index"
               v-bind="tile"
+              :category-dn="dn"
             />
           </div>
         </template>
       </template>
     </div>
-
-    <modal-wrapper
-      v-if="categoryModal"
-      :is-active="categoryModal"
-    >
-      <div class="portal-category__modal">
-        <modal-admin
-          :title="title"
-          :show-title-button="false"
-          :category-index="categoryIndex"
-          :modal-debugging="true"
-          modal-title="EDIT_CATEGORY"
-          variant="category"
-          modal-type="editCategory"
-          remove-action="removeCategory"
-          save-action="saveCategory"
-          @closeModal="closeModal"
-          @removeCategory="removeCategory"
-          @saveCategory="saveCategory"
-        />
-      </div>
-    </modal-wrapper>
 
     <draggable-debugger
       v-if="editMode && debug"
@@ -141,15 +124,18 @@ import { mapGetters } from 'vuex';
 import DraggableWrapper from '@/components/dragdrop/DraggableWrapper.vue';
 import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
-import ModalAdmin from '@/components/admin/ModalAdmin.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import PortalTile from '@/components/PortalTile.vue';
-import ModalWrapper from '@/components/globals/ModalWrapper.vue';
-
-import { Title, Tile, FolderTile, Description, BaseTile } from '@/store/modules/portalData/portalData.models';
+import {
+  Title,
+  Tile,
+  FolderTile,
+  Description,
+  BaseTile,
+} from '@/store/modules/portalData/portalData.models';
 
 interface PortalCategoryData {
-  vTiles: Tile[],
+  // vTiles: Tile[],
   debug: boolean,
   showCategoryHeadline: boolean,
   categoryModal: boolean,
@@ -160,13 +146,15 @@ export default defineComponent({
   components: {
     PortalTile,
     PortalFolder,
-    ModalAdmin,
     HeaderButton,
     DraggableWrapper,
     DraggableDebugger,
-    ModalWrapper,
   },
   props: {
+    dn: {
+      type: String,
+      required: true,
+    },
     title: {
       type: Object as PropType<Title>,
       required: true,
@@ -194,7 +182,6 @@ export default defineComponent({
   },
   data(): PortalCategoryData {
     return {
-      vTiles: this.tiles,
       debug: false, // `true` enables the debugger for the tiles array(s) in admin mode
       categoryModal: false,
       showCategoryHeadline: false,
@@ -207,6 +194,9 @@ export default defineComponent({
     }),
     hasTiles(): boolean {
       return this.tiles.some((tile) => this.tileMatchesQuery(tile));
+    },
+    vTiles(): Tile[] {
+      return this.tiles;
     },
   },
   watch: {
@@ -221,7 +211,13 @@ export default defineComponent({
       console.log('changed');
     },
     editCategory() {
-      this.categoryModal = true;
+      this.$store.dispatch('modal/setAndShowModal', {
+        name: 'AdminCategory',
+        props: {
+          modelValue: this.$props,
+          label: 'EDIT_CATEGORY',
+        },
+      });
     },
     closeModal() {
       this.categoryModal = false;
@@ -292,7 +288,7 @@ export default defineComponent({
 
   &__title
     height: var(--button-size)
-    display: flex
+    display: inline-flex
     align-items: center
     margin-top: 0
     margin-bottom: calc(6 * var(--layout-spacing-unit))

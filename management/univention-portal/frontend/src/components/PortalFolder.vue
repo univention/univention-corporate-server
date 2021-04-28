@@ -1,38 +1,42 @@
 <!--
-Copyright 2021 Univention GmbH
+  Copyright 2021 Univention GmbH
 
-https://www.univention.de/
+  https://www.univention.de/
 
-All rights reserved.
+  All rights reserved.
 
-The source code of this program is made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
+  The source code of this program is made available
+  under the terms of the GNU Affero General Public License version 3
+  (GNU AGPL V3) as published by the Free Software Foundation.
 
-Binary versions of this program provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
+  Binary versions of this program provided by Univention to you as
+  well as other copyrighted, protected or trademarked materials like
+  Logos, graphics, fonts, specific documentations and configurations,
+  cryptographic keys etc. are subject to a license agreement between
+  you and Univention and not subject to the GNU AGPL V3.
 
-In the case you use this program under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
+  In the case you use this program under the terms of the GNU AGPL V3,
+  the program is provided in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<https://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU Affero General Public
+  License with the Debian GNU/Linux or Univention distribution in file
+  /usr/share/common-licenses/AGPL-3; if not, see
+  <https://www.gnu.org/licenses/>.
 -->
 <template>
   <div
     v-if="hasTiles"
     class="portal-folder"
-    :class="{ 'portal-folder__in-modal': inModal }"
+    :class="[
+      { 'portal-folder__in-modal': inModal },
+      { 'icon-button--default-cursor' : !showEditButton },
+    ]"
   >
     <button
+      :class="{ 'icon-button--default-cursor' : !showEditButton }"
       class="portal-tile__box"
       tabindex="0"
       @click="openFolder"
@@ -55,17 +59,21 @@ License with the Debian GNU/Linux or Univention distribution in file
             :last-element="isLastElement(index, tiles)"
             :first-element="isFirstElement(index)"
             :no-edit="true"
+            :category-dn="categoryDn"
             @keepFocusInFolderModal="keepFocusInFolderModal"
             @clickAction="closeFolder"
           />
         </div>
       </div>
     </button>
-    <span class="portal-folder__name">
+    <span
+      :class="{ 'icon-button--default-cursor' : !showEditButton }"
+      class="portal-folder__name"
+    >
       {{ $localized(title) }}
     </span>
     <header-button
-      v-if="!noEdit && isAdmin && !inModal"
+      v-if="!noEdit && isAdmin && !inModal && showEditButton"
       :icon="buttonIcon"
       :aria-label="ariaLabelButton"
       :no-click="true"
@@ -77,10 +85,15 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { mapGetters } from 'vuex';
 
 import PortalTile from '@/components/PortalTile.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import { Title, Tile } from '@/store/modules/portalData/portalData.models';
+
+interface PortalFolderData {
+  showEditButton: boolean,
+}
 
 export default defineComponent({
   name: 'PortalFolder',
@@ -95,6 +108,10 @@ export default defineComponent({
     },
     tiles: {
       type: Array as PropType<Tile[]>,
+      required: true,
+    },
+    categoryDn: {
+      type: String,
       required: true,
     },
     inModal: {
@@ -118,7 +135,11 @@ export default defineComponent({
       default: 'Tab Aria Label',
     },
   },
+  data(): PortalFolderData {
+    return { showEditButton: false };
+  },
   computed: {
+    ...mapGetters({ editMode: 'portalData/editMode' }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
     },
@@ -128,6 +149,9 @@ export default defineComponent({
       this.$store.dispatch('modal/hideAndClearModal');
     },
     openFolder() {
+      if (this.editMode) {
+        return;
+      }
       if (this.inModal) {
         return;
       }
@@ -265,7 +289,7 @@ export default defineComponent({
     box-shadow: var(--box-shadow)
 
   .portal-tile__box
-    background: var(--color-grey0)
+    background-color: var(--color-grey0)
     padding: 0
 
 &:focus

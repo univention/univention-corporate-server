@@ -35,9 +35,7 @@ export interface NavigationState {
 
 const navigation: PortalModule<NavigationState> = {
   namespaced: true,
-  state: {
-    activeButton: '',
-  },
+  state: { activeButton: '' },
 
   mutations: {
     ACTIVEBUTTON(state, id) {
@@ -45,9 +43,7 @@ const navigation: PortalModule<NavigationState> = {
     },
   },
 
-  getters: {
-    getActiveButton: (state) => state.activeButton,
-  },
+  getters: { getActiveButton: (state) => state.activeButton },
 
   actions: {
     setActiveButton({ commit }, id) {

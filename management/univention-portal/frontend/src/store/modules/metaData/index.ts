@@ -38,12 +38,8 @@ const metaData: PortalModule<MetaDataState> = {
     meta: {
       cookieBanner: {
         show: false,
-        title: {
-          en: '',
-        },
-        text: {
-          en: '',
-        },
+        title: { en: '' },
+        text: { en: '' },
       },
     },
   },
@@ -54,9 +50,7 @@ const metaData: PortalModule<MetaDataState> = {
     },
   },
 
-  getters: {
-    getMeta: (state) => state.meta,
-  },
+  getters: { getMeta: (state) => state.meta },
 
   actions: {
     setMeta({ commit }, payload) {

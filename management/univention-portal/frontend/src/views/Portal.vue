@@ -1,30 +1,30 @@
 <!--
-Copyright 2021 Univention GmbH
+  Copyright 2021 Univention GmbH
 
-https://www.univention.de/
+  https://www.univention.de/
 
-All rights reserved.
+  All rights reserved.
 
-The source code of this program is made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
+  The source code of this program is made available
+  under the terms of the GNU Affero General Public License version 3
+  (GNU AGPL V3) as published by the Free Software Foundation.
 
-Binary versions of this program provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
+  Binary versions of this program provided by Univention to you as
+  well as other copyrighted, protected or trademarked materials like
+  Logos, graphics, fonts, specific documentations and configurations,
+  cryptographic keys etc. are subject to a license agreement between
+  you and Univention and not subject to the GNU AGPL V3.
 
-In the case you use this program under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
+  In the case you use this program under the terms of the GNU AGPL V3,
+  the program is provided in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<https://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU Affero General Public
+  License with the Debian GNU/Linux or Univention distribution in file
+  /usr/share/common-licenses/AGPL-3; if not, see
+  <https://www.gnu.org/licenses/>.
 -->
 <template>
   <div class="portal">
@@ -41,6 +41,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           v-for="(category, index) in categories"
           :key="index"
           :title="category.title"
+          :dn="category.dn"
           :tiles="category.tiles"
           :drop-zone="index"
           :category-index="index"
@@ -60,26 +61,6 @@ License with the Debian GNU/Linux or Univention distribution in file
         />
         <translate i18n-key="ADD_CATEGORY" />
       </h2>
-
-      <div
-        v-if="popMenuShow"
-        class="portal-categories__menu-wrapper portal-categories__add"
-      >
-        <div class="portal-categories__menu-container">
-          <div
-            v-for="(item, index) in popMenuCategories"
-            :key="index"
-            class="portal-categories__menu-parent"
-          >
-            <span
-              class="portal-categories__menu-title"
-              @click="openAdminModal(item.action)"
-            >
-              {{ $localized(item.title) }}
-            </span>
-          </div>
-        </div>
-      </div>
     </main>
 
     <div
@@ -99,26 +80,8 @@ License with the Debian GNU/Linux or Univention distribution in file
       v-bind="tooltip"
     />
 
-    <modal-wrapper
-      v-if="showAdminModal"
-      :is-active="showAdminModal"
-    >
-      <div class="portal-category__modal">
-        <modal-admin
-          :show-title-button="false"
-          :modal-debugging="true"
-          :modal-type="adminModalAction"
-          modal-title="ADD_CATEGORY"
-          variant="category"
-          save-action="saveCategory"
-          @closeModal="closeAdminModal"
-          @saveCategory="saveCategory"
-        />
-      </div>
-    </modal-wrapper>
-
     <portal-sidebar />
-    <portal-modal />
+    <portal-modal :is-active="false" />
   </div>
 </template>
 
@@ -127,7 +90,6 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
-import ModalAdmin from '@/components/admin/ModalAdmin.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 import PortalBackground from '@/components/PortalBackground.vue';
 import PortalCategory from 'components/PortalCategory.vue';
@@ -143,29 +105,19 @@ import Translate from '@/i18n/Translate.vue';
 import { Category } from '@/store/modules/portalData/portalData.models';
 import createCategories from '@/jsHelper/createCategories';
 
-// mocks
-import PopMenuDataCategories from '@/assets/data/popmenuCategories.json';
-
-// Temp interface for menu data mock
-interface PopMenuCategory {
-  title: Record<string, string>,
-  action: string
-}
-
 interface PortalViewData {
   buttonIcon: string,
   ariaLabelButton: string,
-  popMenuShow: boolean,
-  popMenuCategories: Array<PopMenuCategory>,
-  showAdminModal: boolean,
-  adminModalAction: string,
+  modalTitle: string,
+  entryIndex: number,
+  saveAction: string,
+  modalClass: string,
 }
 
 export default defineComponent({
   name: 'Portal',
   components: {
     HeaderButton,
-    ModalAdmin,
     ModalWrapper,
     PortalBackground,
     PortalCategory,
@@ -181,10 +133,10 @@ export default defineComponent({
     return {
       buttonIcon: 'plus',
       ariaLabelButton: 'Button for adding a new category',
-      popMenuShow: false,
-      popMenuCategories: PopMenuDataCategories,
-      showAdminModal: false,
-      adminModalAction: '',
+      modalTitle: '',
+      entryIndex: 0,
+      saveAction: '',
+      modalClass: '',
     };
   },
   computed: {
@@ -200,30 +152,21 @@ export default defineComponent({
       tooltip: 'tooltip/tooltip',
     }),
     categories(): Category[] {
-      return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget);
+      return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget, this.editMode);
+    },
+    setModalContent() {
+      let ret = '';
+      if (this.currentModal === 'editEntry') {
+        ret = this.tileObject;
+      }
+      return ret;
     },
   },
   methods: {
-    closeAdminModal(): void {
-      if (this.showAdminModal) {
-        this.showAdminModal = false;
-      }
-    },
     addCategory() {
-      console.log('addCategory');
-      this.popMenuShow = !this.popMenuShow;
-    },
-    openAdminModal(action) {
-      console.log('openAdminModal: ', action);
-      this.popMenuShow = false;
-      this.showAdminModal = true;
-      this.adminModalAction = action;
-      // open modal
-    },
-    saveCategory(value) {
-      // save the changes
-      console.log('save category: ', value);
-      this.closeAdminModal();
+      this.$store.dispatch('modal/setAndShowModal', {
+        name: 'CategoryAddModal',
+      });
     },
   },
 });

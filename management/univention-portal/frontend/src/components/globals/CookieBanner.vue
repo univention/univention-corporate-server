@@ -98,18 +98,12 @@ interface CookieBannerData {
 
 export default defineComponent({
   name: 'CookieBanner',
-  components: {
-    PortalButton,
-  },
+  components: { PortalButton },
   data(): CookieBannerData {
-    return {
-      fadeOutClass: '',
-    };
+    return { fadeOutClass: '' };
   },
   computed: {
-    ...mapGetters({
-      metaData: 'metaData/getMeta',
-    }),
+    ...mapGetters({ metaData: 'metaData/getMeta' }),
     cookieName(): string {
       return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
     },

@@ -41,9 +41,10 @@ License with the Debian GNU/Linux or Univention distribution in file
           :key="idx"
           class="choose-tab"
         >
-          <button
+          <div
             class="choose-tab__button"
-            type="button"
+            tabindex="0"
+            :aria-label="`Show ${tab.tabLabel}`"
             @click="gotoTab(idx)"
           >
             <img
@@ -52,9 +53,10 @@ License with the Debian GNU/Linux or Univention distribution in file
               alt=""
             >
             {{ tab.tabLabel }}
-          </button>
+          </div>
           <icon-button
             icon="x"
+            :aria-label="`Close ${tab.tabLabel}`"
             @click="closeTab(idx)"
           />
         </div>
@@ -107,13 +109,22 @@ export default defineComponent({
   display: flex
   background-color: var(--color-grey25)
   border-radius: var(--border-radius-container)
+  align-items: center
 
   &__button
-    text-transform: none
+    display: flex
+    align-items: center
+    cursor: pointer
+    border: 2px solid transparent
+    border-radius: var(--border-radius-container)
+    padding: var(--layout-spacing-unit)
+
+    &:focus, &:hover
+      border-color: var(--color-primary)
 
     img
       height: var(--button-size)
-      margin-right: calc(4 * var(--layout-spacing-unit))
+      margin-right: var(--layout-spacing-unit)
 
   .icon-button
     margin-left: auto

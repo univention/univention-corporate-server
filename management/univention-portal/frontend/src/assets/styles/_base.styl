@@ -83,13 +83,13 @@ input
     color: var(--font-color-disabled)
 
 label
-  display: inline-flex
   color: var(--color-grey62)
   font-size: var(--font-size-3)
   padding-bottom: calc(var(--layout-spacing-unit) * 1.25)
   position: relative
 
   input[type=checkbox]
+    display: inline-block
     height: var(--font-size-3)
     width: var(--font-size-3)
     padding: 0 !important
@@ -112,7 +112,8 @@ label
         position: absolute
         left: calc(var(--font-size-3) / 2 - 2px)
     & + span
-      cursor: pointer;
+      vertical-align: top
+      cursor: pointer
 
 // --------------
 // global classes
@@ -150,3 +151,7 @@ label
     background-position: center
     border-radius: 50%
     box-shadow: var(--box-shadow)
+
+  &--default-cursor,
+  &--default-cursor:hover
+    cursor: default !important

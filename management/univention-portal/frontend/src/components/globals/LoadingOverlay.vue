@@ -48,11 +48,7 @@ import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'LoadingOverlay',
-  computed: {
-    ...mapGetters({
-      loadingState: 'getLoadingState',
-    }),
-  },
+  computed: { ...mapGetters({ loadingState: 'getLoadingState' }) },
 });
 </script>
 

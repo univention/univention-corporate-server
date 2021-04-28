@@ -75,9 +75,7 @@ import HeaderButton from '@/components/navigation/HeaderButton.vue';
 
 export default defineComponent({
   name: 'HeaderTab',
-  components: {
-    HeaderButton,
-  },
+  components: { HeaderButton },
   props: {
     tabIndex: {
       type: Number,

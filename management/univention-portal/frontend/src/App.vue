@@ -38,6 +38,7 @@ import { defineComponent } from 'vue';
 import CookieBanner from '@/components/globals/CookieBanner.vue';
 import Portal from '@/views/Portal.vue';
 
+import addCustomStyles from '@/jsHelper/addCustomStyles';
 import { getCookie } from '@/jsHelper/tools';
 import { login } from '@/jsHelper/login';
 import { mapGetters } from 'vuex';
@@ -68,6 +69,8 @@ export default defineComponent({
     if (answer.portal && answer.portal.ensureLogin && !this.userState.username) {
       login(this.userState);
     }
+    addCustomStyles();
+
     this.$store.dispatch('deactivateLoadingState');
   },
 });

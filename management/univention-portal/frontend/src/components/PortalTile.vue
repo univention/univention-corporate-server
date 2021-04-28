@@ -1,30 +1,30 @@
 <!--
-Copyright 2021 Univention GmbH
+  Copyright 2021 Univention GmbH
 
-https://www.univention.de/
+  https://www.univention.de/
 
-All rights reserved.
+  All rights reserved.
 
-The source code of this program is made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
+  The source code of this program is made available
+  under the terms of the GNU Affero General Public License version 3
+  (GNU AGPL V3) as published by the Free Software Foundation.
 
-Binary versions of this program provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
+  Binary versions of this program provided by Univention to you as
+  well as other copyrighted, protected or trademarked materials like
+  Logos, graphics, fonts, specific documentations and configurations,
+  cryptographic keys etc. are subject to a license agreement between
+  you and Univention and not subject to the GNU AGPL V3.
 
-In the case you use this program under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
+  In the case you use this program under the terms of the GNU AGPL V3,
+  the program is provided in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<https://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU Affero General Public
+  License with the Debian GNU/Linux or Univention distribution in file
+  /usr/share/common-licenses/AGPL-3; if not, see
+  <https://www.gnu.org/licenses/>.
 -->
 <template>
   <div class="portal-tile__root-element">
@@ -34,24 +34,29 @@ License with the Debian GNU/Linux or Univention distribution in file
       :target="anchorTarget"
       :aria-describedby="createID()"
       :aria-label="$localized(title)"
+      :class="{ 'icon-button--default-cursor' : !showEditButton }"
       class="portal-tile"
       data-test="tileLink"
-      @mouseenter="editMode || showTooltip"
+      @mouseenter="editMode || showTooltip()"
       @mouseleave="hideTooltip"
       @mousedown="hideTooltip"
       @click="tileClick"
       @keydown.tab.exact="setFocus($event, 'forward')"
       @keydown.shift.tab.exact="setFocus($event, 'backward')"
-      @focus="showTooltip"
+      @focus="showTooltip()"
       @blur="hideTooltip()"
+      @click.prevent="editTile()"
     >
       <div
         :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
         :class="[
-          'portal-tile__box', { 'portal-tile__box--dragable': editMode }
+          'portal-tile__box',
+          { 'portal-tile__box--dragable': editMode },
+          { 'icon-button--default-cursor' : !showEditButton },
         ]"
+        class="portal-tile__box"
       >
-      <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
+        <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
         <img
           :src="pathToLogo || './questionMark.svg'"
           onerror="this.src='./questionMark.svg'"
@@ -60,6 +65,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         >
       </div>
       <span
+        :class="{ 'icon-button--default-cursor' : !showEditButton }"
         class="portal-tile__name"
         @click.prevent="tileClick"
       >
@@ -67,7 +73,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       </span>
 
       <header-button
-        v-if="!noEdit && isAdmin"
+        v-if="!noEdit && isAdmin && showEditButton"
         :icon="buttonIcon"
         :aria-label="ariaLabelButton"
         :no-click="true"
@@ -82,9 +88,14 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent, PropType } from 'vue';
 
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
+
 import TileClick from '@/mixins/TileClick.vue';
 
 import { Title, Description } from '@/store/modules/portalData/portalData.models';
+
+interface PortalTileData {
+  showEditButton: boolean,
+}
 
 export default defineComponent({
   name: 'PortalTile',
@@ -95,6 +106,18 @@ export default defineComponent({
     TileClick,
   ],
   props: {
+    tileModel: {
+      type: Object,
+      default: () => ({}),
+    },
+    dn: {
+      type: String,
+      required: true,
+    },
+    categoryDn: {
+      type: String,
+      required: true,
+    },
     title: {
       type: Object as PropType<Title>,
       required: true,
@@ -102,6 +125,15 @@ export default defineComponent({
     description: {
       type: Object as PropType<Description>,
       required: true,
+    },
+    activated: {
+      type: Boolean,
+      required: false,
+    },
+    pathToLogo: {
+      type: String,
+      required: false,
+      default: './questionMark.svg',
     },
     backgroundColor: {
       type: String,
@@ -141,6 +173,9 @@ export default defineComponent({
     },
   },
   emits: ['keepFocusInFolderModal'],
+  data(): PortalTileData {
+    return { showEditButton: true };
+  },
   computed: {
     wrapperTag(): string {
       return (this.inFolder || this.editMode) ? 'div' : 'a';
@@ -177,7 +212,17 @@ export default defineComponent({
       }
     },
     editTile() {
-      console.log('editTile');
+      if (this.showEditButton) {
+        console.log('editTile');
+        this.$store.dispatch('modal/setAndShowModal', {
+          name: 'AdminEntry',
+          props: {
+            modelValue: this.$props,
+            categoryDn: this.categoryDn,
+            label: 'EDIT_ENTRY',
+          },
+        });
+      }
     },
     createID() {
       console.log(this.description);
@@ -206,7 +251,7 @@ export default defineComponent({
     display:flex
     justify-content: center
   &__box
-    border-radius: 15%
+    border-radius: var(--border-radius-apptile)
     display: flex
     align-items: center
     justify-content: center
@@ -248,11 +293,15 @@ export default defineComponent({
     position: absolute
     top: -0.75em
     right: -0.75em
+    z-index: $zindex-1
 
     @extend .icon-button--admin
 
     &--in-modal
       position relative
+
+  &__modal
+    width: 650px
 
 // current fix for edit button in modal
 .portal-folder__in-modal

@@ -70,9 +70,7 @@ const hidePlaceholder = () => {
 
 const changePosition = (itemToChange, items, position) => {
   const newItems = items.filter((item) => item.id !== itemToChange.id);
-  newItems.splice(position, 0, {
-    ...itemToChange,
-  });
+  newItems.splice(position, 0, { ...itemToChange });
   return newItems;
 };
 
@@ -197,9 +195,7 @@ const useDraggableItem = ({ item, position, dropZoneId }, context) => {
 
     const offset = middleY.value - e.clientY;
 
-    context.emit('itemDragOver', {
-      position: offset > 0 ? position.value : position.value + 1,
-    });
+    context.emit('itemDragOver', { position: offset > 0 ? position.value : position.value + 1 });
   }, 50);
 
   const transitionStart = () => {

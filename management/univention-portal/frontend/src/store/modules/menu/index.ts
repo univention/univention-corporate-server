@@ -37,9 +37,7 @@ export interface MenuState {
 
 const menu: PortalModule<MenuState> = {
   namespaced: true,
-  state: {
-    menu: [],
-  },
+  state: { menu: [] },
 
   mutations: {
     MENU(state, payload) {
@@ -54,9 +52,7 @@ const menu: PortalModule<MenuState> = {
     },
   },
 
-  getters: {
-    getMenu: (state) => state.menu,
-  },
+  getters: { getMenu: (state) => state.menu },
 
   actions: {
     setMenu({ commit }, payload) {

@@ -141,7 +141,6 @@ import NotificationBubble from '@/components/globals/NotificationBubble.vue';
 import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
 import ChooseTabs from '@/components/ChooseTabs.vue';
-import Translate from '@/i18n/Translate.vue';
 import notificationMixin from '@/mixins/notificationMixin.vue';
 
 interface PortalHeaderData {
@@ -160,7 +159,6 @@ export default defineComponent({
   },
   mixins: [
     notificationMixin,
-    Translate,
   ],
   data(): PortalHeaderData {
     return {
@@ -177,28 +175,28 @@ export default defineComponent({
       activeButton: 'navigation/getActiveButton',
     }),
     ariaLabelPortalHeader(): string {
-      return `${this.translateLabel('GO_TO')} ${this.$localized(this.portalName)}`;
+      return `${this.$translateLabel('SHOW_PORTAL')}`;
     },
     ariaLabelStartEditMode(): string {
-      return `${this.translateLabel('OPEN')} ${this.translateLabel('EDIT_MODE')} ${this.translateLabel('SIDEBAR')}`;
+      return `${this.$translateLabel('OPEN_EDIT_SIDEBAR')}`;
     },
     ariaLabelStopEditmode(): string {
-      return `${this.translateLabel('STOP')} ${this.translateLabel('EDIT_MODE')}`;
+      return `${this.$translateLabel('STOP_EDIT_PORTAL')}`;
     },
     ariaLabelEditmode(): string {
-      return `${this.translateLabel('EDIT_MODE')}`;
+      return `${this.$translateLabel('EDIT_MODE')}`;
     },
     ariaLabelTabs(): string {
-      return `${this.translateLabel('TABS')}`;
+      return `${this.$translateLabel('TABS')}`;
     },
     ariaLabelSearch(): string {
-      return `${this.translateLabel('SEARCH')}`;
+      return `${this.$translateLabel('SEARCH')}`;
     },
     ariaLabelNotifications(): string {
-      return `${this.translateLabel('NOTIFCATIONS')}`;
+      return `${this.$translateLabel('NOTIFICATIONS')}`;
     },
     ariaLabelMenu(): string {
-      return `${this.translateLabel('MENU')}`;
+      return `${this.$translateLabel('MENU')}`;
     },
     showTabButton(): boolean {
       return this.tabs.length > 0;

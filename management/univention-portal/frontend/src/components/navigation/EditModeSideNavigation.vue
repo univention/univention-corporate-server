@@ -169,6 +169,7 @@ export default defineComponent({
     height: auto
     overflow: auto
     padding: calc(2 * var(--layout-spacing-unit))
+
     input
       width: 18rem
 </style>

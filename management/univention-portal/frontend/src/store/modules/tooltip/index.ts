@@ -35,9 +35,7 @@ export interface TooltipState {
 
 const tooltip: PortalModule<TooltipState> = {
   namespaced: true,
-  state: {
-    tooltip: null,
-  },
+  state: { tooltip: null },
 
   mutations: {
     SETTOOLTIP: (state: TooltipState, payload: TooltipState): void => {
@@ -45,9 +43,7 @@ const tooltip: PortalModule<TooltipState> = {
     },
   },
 
-  getters: {
-    tooltip: (state) => state.tooltip,
-  },
+  getters: { tooltip: (state) => state.tooltip },
 
   actions: {
     setTooltip({ commit }, payload: TooltipState): void {

@@ -33,9 +33,7 @@ import { getCookie } from '@/jsHelper/tools';
 function umc(path: string, options: any, flavor?: string): Promise<AxiosResponse<any>> {
   const umcSessionId = getCookie('UMCSessionId');
   const umcLang = getCookie('UMCLang');
-  const headers = {
-    'X-Requested-With': 'XMLHttpRequest',
-  };
+  const headers = { 'X-Requested-With': 'XMLHttpRequest' };
   if (umcLang) {
     headers['Accept-Language'] = umcLang;
   }
@@ -66,4 +64,12 @@ function udmPut(dn: string, attrs: any): Promise<AxiosResponse<any>> {
   'portals/all');
 }
 
-export { changePassword, umc, udmPut };
+function udmAdd(objectType: string, attrs: any): Promise<AxiosResponse<any>> {
+  return umc('command/udm/add', [{
+    object: { ...attrs },
+    options: { objectType },
+  }],
+  'portals/all');
+}
+
+export { changePassword, umc, udmPut, udmAdd };

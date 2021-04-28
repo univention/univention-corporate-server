@@ -26,37 +26,11 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalModule } from '../../root.models';
-import { User } from './user.models';
 
-export interface UserState {
-  user: User;
+// This function is necessary to make sure that the customStyles.css overrides all the other styles without the use of import.
+export default function addCustomStyles(): void {
+  const linkTag = document.createElement('link');
+  linkTag.rel = 'stylesheet';
+  linkTag.href = '/css/customStyles.css';
+  document.head.appendChild(linkTag);
 }
-
-const user: PortalModule<UserState> = {
-  namespaced: true,
-  state: {
-    user: {
-      username: '',
-      displayName: '',
-      mayEditPortal: false,
-      authMode: 'ucs',
-    },
-  },
-
-  mutations: {
-    SETUSER: (state, payload) => {
-      state.user = payload.user;
-    },
-  },
-
-  getters: { userState: (state) => state.user },
-
-  actions: {
-    setUser({ commit }, payload) {
-      commit('SETUSER', payload);
-    },
-  },
-};
-
-export default user;

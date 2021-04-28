@@ -29,11 +29,12 @@
 // plugins/localize
 import { Locale } from '@/store/modules/locale/locale.models';
 import { App } from 'vue';
+import { catalog } from '@/assets/data/dictionary';
+
 import { store } from '../store';
 
-// import { store } from '@/store';
-
 export type Localized = (input: Record<Locale, string>) => string;
+export type TranslateLabel = (translationLabel: string) => string;
 
 // expects an object, returns a string
 const localize = {
@@ -41,9 +42,16 @@ const localize = {
     const localized: Localized = (input: Record<Locale, string>) => {
       const curLocale = store.getters['locale/getLocale'];
       const shortLocale = curLocale.split('_')[0];
-      return input[curLocale] || input[shortLocale] || input.en || input.en_US;
+      let ret = '';
+
+      if (input) {
+        ret = input[curLocale] || input[shortLocale] || input.en || input.en_US;
+      }
+      return ret;
     };
     app.config.globalProperties.$localized = localized;
+    const translateLabel: TranslateLabel = (translationLabel: string) => catalog[translationLabel].translated.value;
+    app.config.globalProperties.$translateLabel = translateLabel;
   },
 };
 
@@ -51,6 +59,7 @@ declare module '@vue/runtime-core' {
   // Bind to `this` keyword
   interface ComponentCustomProperties {
     $localized: Localized;
+    $translateLabel: TranslateLabel;
   }
 }
 

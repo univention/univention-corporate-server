@@ -65,7 +65,7 @@ export default defineComponent({
     z-index: -999
 
     &--isVisible
-      z-index: $zindex-0
+      z-index: $zindex-3
       background-color: rgba(51, 51, 49, 0.5);
       display: flex
       align-items: center

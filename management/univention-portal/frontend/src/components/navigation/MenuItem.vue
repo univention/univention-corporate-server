@@ -69,9 +69,7 @@ import { Locale } from '@/store/modules/locale/locale.models';
 
 export default defineComponent({
   name: 'MenuItem',
-  components: {
-    PortalIcon,
-  },
+  components: { PortalIcon },
   mixins: [
     TileClick,
   ],

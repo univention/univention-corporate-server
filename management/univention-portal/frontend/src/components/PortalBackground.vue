@@ -40,9 +40,7 @@ import { mapGetters } from 'vuex';
 export default defineComponent({
   name: 'PortalBackground',
   computed: {
-    ...mapGetters({
-      portal: 'portalData/getPortal',
-    }),
+    ...mapGetters({ portal: 'portalData/getPortal' }),
     backgroundImageStyle(): string {
       if (!this.portal.portal.background) {
         return 'background-image: none';

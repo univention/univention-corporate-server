@@ -26,7 +26,7 @@ describe('General Tests', () => {
 
 
     // Mouseover tooltip?
-    cy.get('#ownCloud').trigger('mouseover');
+    cy.get('#ownCloud').trigger('mouseenter');
     cy.get('[data-test="portal-tooltip"]').contains('ownCloud');
     cy.get('#ownCloud').trigger('mouseleave');
     cy.get('[data-test="portal-tooltip"]').should('not.exist');

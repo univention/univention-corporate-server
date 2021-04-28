@@ -27,59 +27,61 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    v-for="locale in locales"
-    :key="locale"
+  <modal-dialog
+    i18n-title-key="ADD_CATEGORY"
+    @cancel="cancel"
   >
-    <label>
-      {{ label }} ({{ locale }})
-      <input
-        v-model="modelValueData[locale]"
-      >
-    </label>
-  </div>
+    <button
+      class="tile-add-modal-button"
+      @click="openModal('createCategory')"
+    >
+      <translate i18n-key="ADD_NEW_CATEGORY" />
+    </button>
+    <button
+      class="tile-add-modal-button"
+      @click="openModal('addCategory')"
+    >
+      <translate i18n-key="ADD_EXISTING_CATEGORY" />
+    </button>
+  </modal-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { mapGetters } from 'vuex';
+import { defineComponent } from 'vue';
+
+import ModalDialog from '@/components/ModalDialog.vue';
+import Translate from '@/i18n/Translate.vue';
 
 export default defineComponent({
-  name: 'LocaleInput',
-  props: {
-    label: {
-      type: String,
-      required: true,
+  name: 'CategoryAddModal',
+  components: {
+    ModalDialog,
+    Translate,
+  },
+  methods: {
+    openModal(action): void {
+      if (action === 'createCategory') {
+        this.$store.dispatch('modal/setAndShowModal', {
+          name: 'AdminCategory',
+          props: {
+            modelValue: {},
+            label: 'ADD_CATEGORY',
+          },
+        });
+      }
+      if (action === 'addCategory') {
+        this.$store.dispatch('modal/setAndShowModal', {
+          name: 'AdminExistingCategory',
+        });
+      }
     },
-    modelValue: {
-      type: Object as PropType<Record<string, string>>,
-      required: true,
+    cancel() {
+      this.$store.dispatch('modal/hideAndClearModal');
     },
-  },
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      modelValueData: {},
-    };
-  },
-  computed: {
-    ...mapGetters({
-      locales: 'locale/getAvailableLocales',
-    }),
-  },
-  created() {
-    const model = this.modelValue;
-    const newModel = {};
-
-    if ('locale' in model) {
-      newModel[model.locale] = model.value;
-      Object.assign(this.modelValueData, newModel);
-    } else {
-      Object.assign(this.modelValueData, model);
-    }
-  },
-  updated() {
-    this.$emit('update:modelValue', this.modelValueData);
   },
 });
 </script>
+<style lang="stylus">
+.tile-add-modal-button
+    margin: var(--layout-spacing-unit)
+</style>

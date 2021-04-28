@@ -80,9 +80,7 @@ import { catalog } from '@/i18n/translations';
 
 export default defineComponent({
   name: 'NotificationBubbleSlot',
-  components: {
-    HeaderButton,
-  },
+  components: { HeaderButton },
   mixins: [
     notificationMixin,
   ],

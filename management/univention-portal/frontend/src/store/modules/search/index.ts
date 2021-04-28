@@ -34,9 +34,7 @@ export interface SearchState {
 
 const search: PortalModule<SearchState> = {
   namespaced: true,
-  state: {
-    searchQuery: '',
-  },
+  state: { searchQuery: '' },
 
   mutations: {
     SET_SEARCH_QUERY(state, payload) {
@@ -44,9 +42,7 @@ const search: PortalModule<SearchState> = {
     },
   },
 
-  getters: {
-    searchQuery: (state) => state.searchQuery,
-  },
+  getters: { searchQuery: (state) => state.searchQuery },
 
   actions: {
     setSearchQuery({ commit }, payload) {

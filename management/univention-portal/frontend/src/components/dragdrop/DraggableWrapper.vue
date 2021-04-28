@@ -53,7 +53,9 @@ License with the Debian GNU/Linux or Univention distribution in file
       />
     </transition-group>
 
-    <tile-add />
+    <tile-add
+      :category-dn="categoryDn"
+    />
   </div>
 </template>
 
@@ -70,6 +72,10 @@ export default defineComponent({
     TileAdd,
   },
   props: {
+    categoryDn: {
+      type: String,
+      required: true,
+    },
     modelValue: {
       type: Array,
       default: () => [],

@@ -11,9 +11,7 @@ module.exports = {
     sourceType: 'module',
     extraFileExtensions: ['.vue'],
     ecmaVersion: 2020,
-    ecmaFeatures: {
-      legacyDecorators: true,
-    },
+    ecmaFeatures: { legacyDecorators: true },
   },
   plugins: [
     '@typescript-eslint',
@@ -50,32 +48,33 @@ module.exports = {
         ignoreUrls: true,
       },
     ],
-    'newline-per-chained-call': ['error', {
-      ignoreChainWithDepth: 2,
-    }],
+    'newline-per-chained-call': ['error', { ignoreChainWithDepth: 2 }],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-param-reassign': ['error', {
-      props: false,
-    }],
+    'no-param-reassign': ['error', { props: false }],
     'no-useless-escape': 'off',
-    'object-curly-newline': ['error', {
-      ImportDeclaration: 'never',
-    }],
+    // 'object-curly-newline': ['error', {
+    //   ImportDeclaration: 'never',
+    // }],
+    // 'object-curly-newline': ['error', { multiline: true }],
+    // 'object-curly-newline': 'off',
+    'object-curly-newline': [
+      process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      {
+        'ObjectExpression': { 'multiline': true, 'minProperties': 1 },
+        'ObjectPattern': { 'multiline': true },
+        'ImportDeclaration': { 'multiline': true, 'minProperties': 2 },
+        'ExportDeclaration': 'never',
+      }
+    ],
     'operator-linebreak': [
       'error',
       'after',
-      {
-        overrides: {
-          '?': 'before', ':': 'before',
-        },
-      },
+      { overrides: { '?': 'before', ':': 'before' } },
     ],
     'prefer-destructuring': 'off',
     'quote-props': ['error', 'consistent-as-needed'],
-    'quotes': ['error', 'single', {
-      avoidEscape: true,
-    }],
+    'quotes': ['error', 'single', { avoidEscape: true }],
     'space-in-parens': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'space-before-function-paren': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
 
@@ -84,6 +83,7 @@ module.exports = {
 
     // TODO: Temporay rule settings that should be deleted when code issues are fixed
     'import/no-extraneous-dependencies': 'warn', // e.g. no use of 'require' -> Convert all .js to .ts files and use import!
+    'vue/no-unused-components': 'off',
   },
   overrides: [
     {
@@ -91,19 +91,11 @@ module.exports = {
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
-      env: {
-        jest: true,
-      },
+      env: { jest: true },
     },
   ],
   settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
-      },
-    },
-    'jest': {
-      version: 26,
-    },
+    'import/resolver': { node: { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.vue'] } },
+    'jest': { version: 26 },
   },
 };

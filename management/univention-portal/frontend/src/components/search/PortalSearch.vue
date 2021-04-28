@@ -61,13 +61,9 @@ interface PortalSearchData {
 
 export default defineComponent({
   name: 'PortalSearch',
-  components: {
-    FlyoutWrapper,
-  },
+  components: { FlyoutWrapper },
   data(): PortalSearchData {
-    return {
-      portalSearch: '',
-    };
+    return { portalSearch: '' };
   },
   computed: {
     ...mapGetters({
