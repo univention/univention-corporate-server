@@ -1375,7 +1375,7 @@ class simpleLdap(object):
 
 		# evaluate (extended) options
 		module_options = univention.admin.modules.options(self.module)
-		available_options = set(module_options.keys())
+		available_options = set(module_options)
 		options = set(self.options)
 		if 'default' in available_options:
 			options |= {'default', }
