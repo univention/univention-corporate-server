@@ -1077,9 +1077,9 @@ class Localesubdirname_and_GNUMessageCatalog(complex):
 
 	See :py:class:`GNUMessageCatalog` and :py:class:`Localesubdirname`.
 
-	>>> Localesubdirname_and_GNUMessageCatalog.parse(('en', '3hIElQ==')) # first bytes of vim.mo
-	['en', '3hIElQ==']
-	>>> Localesubdirname_and_GNUMessageCatalog.parse(('en', 'qwerty')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> Localesubdirname_and_GNUMessageCatalog.parse(('de', '3hIElQ==')) # first bytes of vim.mo
+	['de', '3hIElQ==']
+	>>> Localesubdirname_and_GNUMessageCatalog.parse(('de', 'qwerty')) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	univention.admin.uexceptions.valueError:
