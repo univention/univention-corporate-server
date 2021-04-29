@@ -1069,6 +1069,7 @@ def findObject(co, lo, dn, type, attr=None, module_base=None):
 		if not ndn:
 			break
 		nattr = lo.get(ndn)
+	return None
 
 
 def policyOc(module_name):
