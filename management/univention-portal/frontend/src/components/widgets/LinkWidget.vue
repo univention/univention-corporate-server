@@ -120,6 +120,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
+      currentLocale: 'locale/getLocale',
     }),
   },
   created() {
@@ -131,12 +132,11 @@ export default defineComponent({
     });
   },
   updated() {
-    console.log('this.modelValueData: ', this.modelValueData);
     this.$emit('update:modelValue', this.modelValueData);
   },
   methods: {
     addField() {
-      this.modelValueData.push({ value: '' });
+      this.modelValueData.push({ locale: this.currentLocale || 'en_US', value: '' });
       const i = (this.modelValueData.length - 1);
 
       setTimeout(() => {

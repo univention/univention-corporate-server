@@ -45,7 +45,6 @@
       @keydown.shift.tab.exact="setFocus($event, 'backward')"
       @focus="showTooltip()"
       @blur="hideTooltip()"
-      @click.prevent="editTile()"
     >
       <div
         :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"

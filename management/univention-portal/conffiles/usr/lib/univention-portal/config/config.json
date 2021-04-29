@@ -14,6 +14,7 @@ config = {
 	"auth_mode": configRegistry.get("portal/auth-mode"),
 	"umc_session_url": "http://localhost/univention/get/session-info",
 	"default_domain_dn": configRegistry.get("portal/default-dn"),
+	"editable": configRegistry.get("server/role") == "domaincontroller_master",
 }
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

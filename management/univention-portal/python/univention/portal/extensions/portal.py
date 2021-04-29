@@ -37,6 +37,7 @@ import requests
 import requests.exceptions
 from six import with_metaclass
 
+import univention.portal.config as config
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 
@@ -174,7 +175,7 @@ class Portal(with_metaclass(Plugin)):
 		return self.authenticator.get_auth_mode(request)
 
 	def may_be_edited(self, user):
-		return user.is_admin()
+		return config.fetch('editable') and user.is_admin()
 
 	def get_meta(self, content, categories):
 		portal = self.portal_cache.get_portal()
