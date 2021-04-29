@@ -514,41 +514,42 @@ class access(object):
 		if self.require_license:
 			res = univention.admin.license.init_select(self.lo, 'admin')
 
+			assert univention.admin.license._license
 			self.licensetypes = univention.admin.license._license.types
 
 			if res == 1:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseClients()
 			elif res == 2:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseAccounts()
 			elif res == 3:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseDesktops()
 			elif res == 4:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseGroupware()
 			elif res == 5:
 				# Free for personal use edition
 				raise univention.admin.uexceptions.freeForPersonalUse()
 			# License Version 2:
 			elif res == 6:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseUsers()
 			elif res == 7:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseServers()
 			elif res == 8:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseManagedClients()
 			elif res == 9:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseCorporateClients()
 			elif res == 10:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseDVSUsers()
 			elif res == 11:
-				self.allow_modify = 0
+				self.allow_modify = False
 				raise univention.admin.uexceptions.licenseDVSClients()
 
 	def unbind(self):
