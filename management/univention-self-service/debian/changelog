@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-8) unstable; urgency=medium
+
+  * Bug #52869: Reload self-service after setting CSP
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Apr 2021 10:28:31 +0200
+
 univention-self-service (5.0.1-7) unstable; urgency=medium
 
   * Bug #52869: IP should not be supported for self-service links, does not
