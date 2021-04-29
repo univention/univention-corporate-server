@@ -161,7 +161,6 @@ def get(module):
 	:returns: the module or `None` if no module exists with the requested name.
 	"""
 	# FIXME: raise Exception instead of returning None
-	global modules
 	if not module:
 		return None  # type: ignore
 	if isinstance(module, six.string_types):
@@ -669,7 +668,6 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
 	:param module_base: Optional string the module names must start with.
 	:returns: the list of |UDM| modules.
 	"""
-	global modules
 	res = []  # type: List[UdmModule]
 	if 'univentionObjectType' in attr and attr['univentionObjectType'] and attr['univentionObjectType'][0].decode('ASCII', 'replace') in modules:
 		res.append(modules.get(attr['univentionObjectType'][0].decode('ASCII', 'replace')))
@@ -1101,7 +1099,6 @@ def policiesGroup(module_name):
 
 def policies():
 	# type: () -> List[univention.admin.policiesGroup]
-	global modules
 	res = {}  # type: Dict[str, List[str]]
 	for mod in modules.values():
 		if not isPolicy(mod):
@@ -1126,8 +1123,6 @@ def policyTypes(module_name):
 	:param module_name: the name of the |UDM| module, e.g. `users/user`.
 	:returns: a list of |UDM| policy modules, e.g. `policies/pwhistory`.
 	"""
-	global modules
-
 	res = []  # type: List[str]
 
 	if not module_name or module_name not in modules:
