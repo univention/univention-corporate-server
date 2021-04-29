@@ -37,9 +37,11 @@ DNSZones and so cannot be associated to one asscoiatedDomain entry.
 '''
 
 from __future__ import print_function
+
 import sys
-import univention.admin.uldap as uldap
 from argparse import ArgumentParser
+
+import univention.admin.uldap as uldap
 
 
 def parse_args():
