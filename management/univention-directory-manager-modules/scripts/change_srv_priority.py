@@ -28,7 +28,6 @@
 # <https://www.gnu.org/licenses/>.
 
 '''
-Univention Directory Manager Tools
 This tool changes the priority from some SRV records from 0 to 100
 '''
 

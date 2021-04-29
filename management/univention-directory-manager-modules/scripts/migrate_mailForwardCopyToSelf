@@ -30,6 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+With UCS 4.4-7 the UDM attribute mailForwardCopyToSelf is no longer calculated
+according to the values of the corresponding ldap attribute mailForwardAddress,
+but saved directly as an LDAP attribute.
+
+This script migrates the attribute values of users prior to UCS 4.4-7 by specifying
+the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was
+previously set implicitly.
+
+For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
+"""
+
 import sys
 from argparse import ArgumentParser
 
@@ -37,7 +49,10 @@ import univention.admin.uldap
 from univention.config_registry import ConfigRegistry
 
 
-def main(args):
+def main():
+	# type: () -> None
+	args = parse_args()
+
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -82,20 +97,8 @@ def main(args):
 		print("$ systemctl restart postfix.service")
 
 
-if __name__ == "__main__":
-	description = """
-
-With UCS 4.4-7 the UDM attribute mailForwardCopyToSelf is no longer calculated
-according to the values of the corresponding ldap attribute mailForwardAddress,
-but saved directly as an LDAP attribute.
-
-This script migrates the attribute values of users prior to UCS 4.4-7 by specifying
-the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was
-previously set implicitly.
-
-For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
-"""
-	parser = ArgumentParser(description=description)
+def parse_args():
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument(
 		'-m',
 		'--modify',
@@ -103,4 +106,8 @@ For more information please visit: https://help.univention.com/t/migration-of-ld
 		action='store_true',
 		help="Commit changes to LDAP [default: %(default)s (dry run)].")
 	args = parser.parse_args()
-	main(args)
+	return args
+
+
+if __name__ == "__main__":
+	main()

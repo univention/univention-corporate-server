@@ -28,9 +28,9 @@
 # <https://www.gnu.org/licenses/>.
 
 '''
-Univention Directory Manager Tools
 This tool removes the sambaPwdMustChange value from all accounts
 '''
+
 from __future__ import print_function
 
 import sys
@@ -39,10 +39,9 @@ import univention.admin.uldap
 from argparse import ArgumentParser
 
 if __name__ == '__main__':
-
 	ACTIONS = ('test', 'remove')
 
-	parser = ArgumentParser(description='\nremove the sambaPwdMustChange value from all accounts')
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument(
 		"action",
 		help="Test for sambaPwdMustChange values, or remove them. The default action is test.",

@@ -30,6 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+This script searches for user accounts with expired account that have not
+been locked yet. For all found user accounts the posix login will be
+disabled.
+"""
+
 from __future__ import print_function
 
 import sys
@@ -45,12 +51,7 @@ import univention.debug as ud
 
 
 def main():
-	usage = """%progname <options>
-
-This script searches for user accounts with expired account that have not
-been locked yet. For all found user accounts the posix login will be
-disabled."""
-	parser = argparse.ArgumentParser(usage=usage)
+	parser = argparse.ArgumentParser(descriptions=__doc__)
 	parser.add_argument("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
 	parser.add_argument("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
 	parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")

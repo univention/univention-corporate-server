@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
+"""
+
 import argparse
 
 import univention.admin.uldap
@@ -99,10 +103,7 @@ def lock(userdn, lock_timestamp):
 
 
 if __name__ == '__main__':
-	"""Usage:
-		python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
-	"""
-	parser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser(description=__doc__)
 	subparsers = parser.add_subparsers()
 	subparser = subparsers.add_parser('lock', help='Locks a user account')
 	subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.')
