@@ -488,7 +488,6 @@ class mapping(object):
 		# type: () -> None
 		self._map = {}  # type: Dict[str, Tuple[str, Optional[_Udm2Ldap]]]
 		self._unmap = {}  # type: Dict[str, Tuple[str, Optional[_Ldap2Udm]]]
-		self._map_func = {}
 		self._unmap_func = {}  # type: Dict[str, Any]
 		self._map_encoding = {}  # type: Dict[str, Tuple[str, str]]
 		self._unmap_encoding = {}  # type: Dict[str, Tuple[str, str]]
