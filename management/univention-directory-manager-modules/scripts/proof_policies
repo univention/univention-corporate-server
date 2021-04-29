@@ -93,7 +93,7 @@ for policy_reference_dn, policy_reference_attr in lo.search_s(baseDN, ldap.SCOPE
 				policy_object[el] = 1
 			else:
 				print("referenced policy does not exists:", policy_reference_dn, "->", el)
-				count_references = count_references + 1
+				count_references += 1
 				inp = ""
 				if not delete_all:
 					if query:
@@ -104,7 +104,7 @@ for policy_reference_dn, policy_reference_attr in lo.search_s(baseDN, ldap.SCOPE
 				if inp[:1] == "y":
 					modlist.append((ldap.MOD_DELETE, "univentionPolicyReference", el))
 					print("marked for deletion")
-					count_deleted_references = count_deleted_references + 1
+					count_deleted_references += 1
 
 		if modlist:
 			lo.modify(policy_reference_dn, modlist)
@@ -118,7 +118,7 @@ to_delete = []
 for el in policy_object.keys():
 	if policy_object[el] == 0:
 		print("no reference to policy", el)
-		count_policies = count_policies + 1
+		count_policies += 1
 		inp = ""
 		if not delete_all:
 			if query:
@@ -133,7 +133,7 @@ for el in policy_object.keys():
 for el in to_delete:
 	lo.delete_s(el)
 	print("deleted", el)
-	count_deleted_policies = count_deleted_policies + 1
+	count_deleted_policies += 1
 
 
 print("Found", count_references, "references to non-existing policies, deleted", end=' ')

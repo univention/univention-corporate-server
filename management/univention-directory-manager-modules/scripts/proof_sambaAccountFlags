@@ -80,7 +80,7 @@ for windows_dn, windows_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectC
 	flags = windows_attr["sambaAcctFlags"][0].decode('utf-8')
 	if 'M' in flags:
 		print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s)" % (windows_dn, flags))
-		count_flags = count_flags + 1
+		count_flags += 1
 		inp = ""
 		if not update_all:
 			if query:
@@ -92,7 +92,7 @@ for windows_dn, windows_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectC
 			modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags.replace('M', 'W').encode('utf-8'))]
 			lo.modify(windows_dn, modlist)
 			print("updated")
-			count_updated_flags = count_updated_flags + 1
+			count_updated_flags += 1
 
 
 print("Found", count_flags, "flags that seemed to be wrong, updated", end=' ')

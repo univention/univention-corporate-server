@@ -71,7 +71,7 @@ for dn, attribute in lo.search('(&(objectClass=univentionHost)(!(associatedDomai
 		computers[cn] = []
 	computers[cn].append(dn)
 
-if len(computers) == 0:
+if not computers:
 	print("No Hosts with missing associatedDomain found")
 	sys.exit(0)
 
@@ -85,7 +85,7 @@ for dn, attribute in lo.search('objectClass=dNSZone', attr=['relativeDomainName'
 			computer_zones[computer] = []
 		computer_zones[computer].append(attribute['zoneName'][0])
 
-if len(computer_zones) == 0:
+if not computer_zones:
 	print("No Hosts with associated DNSZOne found.")
 	sys.exit(0)
 

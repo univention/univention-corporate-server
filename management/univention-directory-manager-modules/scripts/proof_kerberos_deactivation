@@ -53,9 +53,6 @@ print("using baseDN", baseDN)
 
 lo = univention.uldap.getAdminConnection().lo
 
-count_changes = 0
-warning = 0
-
 # passwords will only be found in posixAccount
 res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount')
 
