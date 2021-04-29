@@ -32,13 +32,13 @@ License with the Debian GNU/Linux or Univention distribution in file
     :ref="`headerTab__${tabIndex}`"
     class="header-tab"
     :class="{ 'header-tab--active': isActive, 'header-tab--focus': hasFocus }"
+    @click="focusTab"
   >
     <div
       ref="tabFocusWrapper"
       class="header-tab__focus-wrapper"
       tabIndex="0"
       :aria-label="ariaLabelFocus"
-      @click="focusTab"
       @keydown.enter="focusTab('setFocusOnIframe')"
       @focus="setFocusStyleToParent()"
       @blur="removeFocusStyleFromParent()"
