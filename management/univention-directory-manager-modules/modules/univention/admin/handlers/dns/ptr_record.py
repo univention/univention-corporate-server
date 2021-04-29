@@ -287,8 +287,3 @@ def identify(dn, attr):
 		b'@' not in attr.get('relativeDomainName', []),
 		(attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6))
 	])
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

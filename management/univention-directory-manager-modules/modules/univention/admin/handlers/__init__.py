@@ -3565,10 +3565,3 @@ class _MergedAttributes(object):
 			elif old and new:  # MOD_REPLACE
 				values = set(new)
 		return list(values)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
-else:
-	__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore

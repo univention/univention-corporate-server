@@ -277,8 +277,3 @@ def identify(dn, attr):
 	return b'dNSZone' in attr.get('objectClass', []) and \
 		[b'@'] == attr.get('relativeDomainName', []) and \
 		(attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6))
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

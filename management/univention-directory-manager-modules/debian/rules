@@ -37,6 +37,11 @@ override_dh_auto_clean:
 	dh_auto_clean
 	find modules -name 'de.mo' -delete
 
+override_dh_auto_test:
+	dh_auto_test
+	PYTHONPATH=modules pytest-3
+	PYTHONPATH=modules pytest   --cov-append
+
 override_dh_install:
 	dh_install
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python-univention-directory-manager-cli/usr/lib/python2.7/dist-packages/univention/admincli/admin.py

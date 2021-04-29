@@ -202,8 +202,3 @@ class DHCPBaseSubnet(DHCPBase):
 			ranges = [tuple(IPv4Address(u'%s' % (ip,)) for ip in range_) for range_ in self['range']]
 			check_range_overlap(ranges)
 			check_range_subnet(subnet, ranges)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
