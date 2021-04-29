@@ -36,16 +36,12 @@ import argparse
 import sys
 import base64
 
-import univention.config_registry as config
 import univention.uldap
 import ldap
 import ldap.modlist
 
 ACTIONS = ('test', 'convert')
 JPEG_HEADER = b'\xff\xd8\xff\xe0'
-
-ucr = config.ConfigRegistry()
-ucr.load()
 
 
 def run(action, verbose=False):
