@@ -148,7 +148,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			return False
 		if reason_args[0] != "ldap":
 			return False
-		return reason_args in ["portal", "category", "entry", "folder"]
+		return reason_args[1] in ["portal", "category", "entry", "folder"]
 
 	def _refresh(self):
 		udm_lib = importlib.import_module("univention.udm")
