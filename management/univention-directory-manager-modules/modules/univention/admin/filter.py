@@ -350,8 +350,3 @@ def _replace_fqdn_filter(match):
 		host = domain = value
 		operator = '|'
 	return '(%s(cn=%s)(associatedDomain=%s))' % (operator, host, domain)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

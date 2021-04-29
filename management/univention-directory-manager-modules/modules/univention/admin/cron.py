@@ -225,8 +225,3 @@ def cron_split(cronlist):
 
 		pos += 1
 	return res
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

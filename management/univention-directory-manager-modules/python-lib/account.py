@@ -71,8 +71,8 @@ def lock(userdn, lock_timestamp):
 	* used by ppolicy OpenLDAP overlay
 	* used by PAM tally
 
-	>>> import univention.lib.account
-	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z')  # doctest: +SKIP
+	>>> from univention.lib.account import lock  # doctest: +SKIP
+	>>> lock('uid=user1,dc=example,dc=com', '20141006192950Z')  # doctest: +SKIP
 	"""
 
 	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.

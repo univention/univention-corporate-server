@@ -771,8 +771,3 @@ def mapRewrite(filter, mapping):
 	if k:
 		filter.variable = k
 		filter.value = v
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

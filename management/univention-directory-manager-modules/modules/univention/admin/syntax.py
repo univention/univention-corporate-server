@@ -461,7 +461,7 @@ class UDM_Objects(ISyntax):
 	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
 	>>> UDM_Objects().type_class
 	<class 'univention.admin.types.DistinguishedNameType'>
-	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")  # doctest: +ALLOW_UNICODE
+	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")
 	'uid=Administrator,cn=users,dc=intranet,dc=example,dc=com'
 	>>> UDM_Objects.parse("") #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -1454,9 +1454,9 @@ class IA5string(string):
 	"""
 	Syntax for string from International Alphabet 5 (printable |ASCII|)
 
-	>>> IA5string.parse(r''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')  # doctest: +ALLOW_UNICODE
+	>>> IA5string.parse(r''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
 	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-	>>> IA5string.parse(b'abc')  # doctest: +ALLOW_UNICODE
+	>>> IA5string.parse(b'abc')
 	'abc'
 	>>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -1538,7 +1538,7 @@ class uid_umlauts(simple):
 	True
 	>>> uid_umlauts.parse('user') == 'user'
 	True
-	>>> uid_umlauts.parse(b'admin')  # doctest: +ALLOW_UNICODE
+	>>> uid_umlauts.parse(b'admin')
 	'admin'
 	>>> uid_umlauts.parse('üs er') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -1575,9 +1575,9 @@ class uid_umlauts(simple):
 class uid_umlauts_lower_except_first_letter(simple):
 	"""
 	Syntax for user account names supporting umlauts expecpt for the first character.
-	>>> uid_umlauts_lower_except_first_letter.parse('admin')  # doctest: +ALLOW_UNICODE
+	>>> uid_umlauts_lower_except_first_letter.parse('admin')
 	'admin'
-	>>> uid_umlauts_lower_except_first_letter.parse(b'admin')  # doctest: +ALLOW_UNICODE
+	>>> uid_umlauts_lower_except_first_letter.parse(b'admin')
 	'admin'
 	>>> uid_umlauts_lower_except_first_letter.parse(u'ädmin') == u'ädmin'  # depends on current locale # doctest: +SKIP
 	True
@@ -3466,9 +3466,9 @@ class UserID(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`UserDN`.
-	>>> UserID.parse('0')  # doctest: +ALLOW_UNICODE
+	>>> UserID.parse('0')
 	'0'
-	>>> UserID.parse(0)  # doctest: +ALLOW_UNICODE
+	>>> UserID.parse(0)
 	'0'
 	"""
 	udm_modules = ('users/user', )
@@ -3494,9 +3494,9 @@ class GroupID(UDM_Objects):
 	.. seealso::
 		* :py:class:`GroupDN`
 		* :py:class:`GroupDNOrEmpty`
-	>>> GroupID.parse('5000')  # doctest: +ALLOW_UNICODE
+	>>> GroupID.parse('5000')
 	'5000'
-	>>> GroupID.parse(5000)  # doctest: +ALLOW_UNICODE
+	>>> GroupID.parse(5000)
 	'5000'
 	"""
 	udm_modules = ('groups/group', )
@@ -3759,9 +3759,9 @@ class dhcpService(UDM_Objects):
 class dhcpEntry(complex):
 	"""
 	Syntax to configure a |DHCP| host entry.
-	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
+	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])
 	['cn=service', '', 'aa:bb:cc:dd:ee:ff']
-	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
+	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])
 	['cn=service', '127.0.0.1', 'aa:bb:cc:dd:ee:ff']
 	"""
 	min_elements = 1
@@ -4697,7 +4697,7 @@ class univentionAdminModules(select):
 	Syntax for selecting an |UDM| module.
 
 	>>> univention.admin.modules.update()
-	>>> univentionAdminModules.parse('users/user')  # doctest: +ALLOW_UNICODE
+	>>> univentionAdminModules.parse('users/user')
 	'users/user'
 	>>> univentionAdminModules.parse('nonexistant') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -5456,10 +5456,10 @@ class PortalEntrySelection(complex):
 class PortalCategorySelection(simple):
 	r"""
 	Syntax to select a portal category.
-	>>> x = PortalCategorySelection.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])  # doctest: +ALLOW_UNICODE
+	>>> x = PortalCategorySelection.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])
 	>>> x.replace(' ','').replace('\n','')
 	'[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'
-	>>> PortalCategorySelection.parse('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]')  # doctest: +ALLOW_UNICODE
+	>>> PortalCategorySelection.parse('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]')
 	[['cn=category1', []], ['cn=category2', ['cn=entry1', 'cn=entry2']]]
 	>>> PortalCategorySelection.parse('[["cn=category1",[]],["",["cn=entry1","cn=entry2"]]]') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -5802,8 +5802,3 @@ class mailinglist_name(gid):
 
 __register_choice_update_function(Country.update_choices)
 Country.update_choices()
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

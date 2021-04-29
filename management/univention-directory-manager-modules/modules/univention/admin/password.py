@@ -338,8 +338,3 @@ class PasswortHistoryPolicy(object):
 				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
 			except ValueError:
 				ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

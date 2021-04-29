@@ -104,8 +104,3 @@ def stripDot(old, encoding=()):
 	if isinstance(old, list):
 		return [stripDot(_, encoding) for _ in old]
 	return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type)) and old.endswith('.') else old.encode(*encoding)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

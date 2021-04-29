@@ -656,8 +656,3 @@ class UnixTimeinterval(IntegerType):
 
 	def encode_value(self, value):
 		return self.syntax.from_integer(value)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()

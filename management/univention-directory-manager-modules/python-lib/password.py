@@ -45,9 +45,9 @@ def change(username, password):
 	"""
 	Change the password of the given user
 
-	>>> import univention.lib.password
-	>>> univention.lib.password.change('Administrator', 'secret12345')  # doctest: +SKIP
-	>>> univention.lib.password.change('Administrator@DOMAIN.DE', 'secret12345')  # doctest: +SKIP
+	>>> from univention.lib.password import change  # doctest: +SKIP
+	>>> change('Administrator', 'secret12345')  # doctest: +SKIP
+	>>> change('Administrator@DOMAIN.DE', 'secret12345')  # doctest: +SKIP
 	"""
 	try:
 		lo, pos = univention.admin.uldap.getAdminConnection()
