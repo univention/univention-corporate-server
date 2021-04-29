@@ -561,11 +561,11 @@ class simpleLdap(object):
 		return DiaryEvent.get('UDM_%s_%s' % (name, event_name)) or DiaryEvent.get('UDM_GENERIC_%s' % event_name)
 
 	def _get_admin_diary_args_names(self, event):
-		ret = []
-		for name, prop in self.descriptions.items():
-			if name in event.args:
-				ret.append(name)
-		return ret
+		return [
+			name
+			for name in self.descriptions
+			if name in event.args
+		]
 
 	def _get_admin_diary_args(self, event):
 		args = {'module': self.module}
@@ -912,10 +912,11 @@ class simpleLdap(object):
 		:returns: the distringuised name.
 		:rtype: str
 		"""
-		identifier = []
-		for name, prop in self.descriptions.items():
-			if prop.identifies:
-				identifier.append((self.mapping.mapName(name), self.mapping.mapValueDecoded(name, self.info[name]), 2))
+		identifier = [
+			(self.mapping.mapName(name), self.mapping.mapValueDecoded(name, self.info[name]), 2)
+			for name, prop in self.descriptions.items()
+			if prop.identifies
+		]
 		return u'%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
 	def _ldap_post_create(self):  # type: () -> None
@@ -1081,15 +1082,17 @@ class simpleLdap(object):
 
 	def __set_options(self):  # type: () -> None
 		"""Enables the UDM options of this object by evaluating the currently set LDAP object classes. If the object does not exists yet the default options are enabled."""
-		self.options = []
 		options = univention.admin.modules.options(self.module)
 		if 'objectClass' in self.oldattr:
-			ocs = set(map(lambda x: x.decode('UTF-8'), self.oldattr['objectClass']))
-			for opt, option in options.items():
-				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option):
-					self.options.append(opt)
+			ocs = {x.decode('UTF-8') for x in self.oldattr['objectClass']}
+			self.options = [
+				opt
+				for opt, option in options.items()
+				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option)
+			]
 		else:
 			ud.debug(ud.ADMIN, ud.INFO, 'reset options to default by _define_options')
+			self.options = []
 			self._define_options(options)
 
 	def _define_options(self, module_options):
@@ -1100,9 +1103,11 @@ class simpleLdap(object):
 		:param dict module_options: A mapping of option-name to option.
 		"""
 		ud.debug(ud.ADMIN, ud.INFO, 'modules/__init__.py _define_options: reset to default options')
-		for name, opt in module_options.items():
-			if not opt.disabled and opt.default:
-				self.options.append(name)
+		self.options.extend(
+			name
+			for name, opt in module_options.items()
+			if not opt.disabled and opt.default
+		)
 
 	def option_toggled(self, option):  # type: (str) -> bool
 		"""
@@ -1400,20 +1405,19 @@ class simpleLdap(object):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), b''))
 
-		unneeded_ocs |= functools.reduce(set.union, (set(module_options[option].objectClasses) for option in removed_options), set())
-		required_ocs |= functools.reduce(set.union, (set(module_options[option].objectClasses) for option in added_options), set())
+		unneeded_ocs |= {oc for option in removed_options for oc in module_options[option].objectClasses}
+		required_ocs |= {oc for option in added_options for oc in module_options[option].objectClasses}
 
 		ocs -= lowerset(unneeded_ocs)
 		ocs |= lowerset(required_ocs)
-		if lowerset([x.decode('utf-8') for x in self.oldattr.get('objectClass', [])]) == ocs:
+		if lowerset(x.decode('utf-8') for x in self.oldattr.get('objectClass', [])) == ocs:
 			return ml
 
 		ud.debug(ud.ADMIN, ud.INFO, 'OCS=%r; required=%r; removed: %r' % (ocs, required_ocs, unneeded_ocs))
 
 		# case normalize object class names
 		schema = self.lo.get_schema()
-		ocs = (schema.get_obj(ldap.schema.models.ObjectClass, x) for x in ocs)
-		ocs = set(x.names[0] for x in ocs if x)
+		ocs = {x.names[0] for x in (schema.get_obj(ldap.schema.models.ObjectClass, x) for x in ocs) if x}
 
 		# make sure we still have a structural object class
 		if not schema.get_structural_oc(ocs):
@@ -1461,10 +1465,11 @@ class simpleLdap(object):
 		for group in self.oldinfo.get('groups', []) + [self.oldinfo.get('machineAccountGroup', '')]:
 			if group != '':
 				members = self.lo.getAttr(group, 'uniqueMember')
-				newmembers = []
-				for member in members:
-					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), ):
-						newmembers.append(member)
+				newmembers = [
+					member
+					for member in members
+					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), )
+				]
 				newmembers.append(self.dn.encode('UTF-8'))
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
 
@@ -1839,7 +1844,7 @@ class simpleLdap(object):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		ocs = set([x.decode('utf-8') for x in attr.get('objectClass', [])])
+		ocs = {x.decode('utf-8') for x in attr.get('objectClass', [])}
 		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
 		return (ocs & required_object_classes) == required_object_classes
 
@@ -3476,27 +3481,24 @@ class simplePolicy(simpleLdap):
 		if not self.resultmode:
 			return {}
 
-		fixed_attributes = {}
 		self.__load_policies(None)
-
-		for attr_name, value_dict in self.policy_attrs.items():
-			fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict.get('fixed', False)
-
-		return fixed_attributes
+		return {
+			self.mapping.unmapName(attr_name): value_dict.get('fixed', False)
+			for attr_name, value_dict in self.policy_attrs.items()
+		}
 
 	def emptyAttributes(self):
 		# type: () -> Dict[str, bool]
 		"""
 		return effectively empty attributes.
 		"""
+		if not self.has_property('emptyAttributes'):
+			return {}
 
-		empty_attributes = {}
-
-		if self.has_property('emptyAttributes'):
-			for attrib in simpleLdap.__getitem__(self, 'emptyAttributes'):
-				empty_attributes[self.mapping.unmapName(attrib)] = True
-
-		return empty_attributes
+		return {
+			self.mapping.unmapName(attrib): True
+			for attrib in simpleLdap.__getitem__(self, 'emptyAttributes') or ()
+		}
 
 	def __setitem__(self, key, newvalue):
 		if not self.resultmode:

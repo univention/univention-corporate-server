@@ -668,10 +668,10 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
 	:param module_base: Optional string the module names must start with.
 	:returns: the list of |UDM| modules.
 	"""
-	res = []  # type: List[UdmModule]
-	if 'univentionObjectType' in attr and attr['univentionObjectType'] and attr['univentionObjectType'][0].decode('ASCII', 'replace') in modules:
-		res.append(modules.get(attr['univentionObjectType'][0].decode('ASCII', 'replace')))
-	else:
+	res = [m for m in (
+		modules.get(mt.decode('ASCII', 'replace')) for mt in attr.get('univentionObjectType', [])
+	) if m]
+	if not res:
 		for name, module in modules.items():
 			if module_base is not None and not name.startswith(module_base):
 				continue
@@ -866,10 +866,10 @@ def attributes(module_name):
 	:param module_name: the name of the |UDM| module, e.g. `users/user`.
 	"""
 	module = get(module_name)
-	attributes = []
-	for attribute in module.property_descriptions.keys():
-		attributes.append({'name': attribute, 'description': module.property_descriptions[attribute].short_description})
-	return attributes
+	return [
+		{'name': attribute, 'description': module.property_descriptions[attribute].short_description}
+		for attribute in module.property_descriptions.keys()
+	]
 
 
 def short_description(module_name):
@@ -1029,8 +1029,9 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
 		attr = lo.get(dn)
 		if not attr:
 			return []
-	if attr.get('univentionObjectType'):
-		return [x.decode('utf-8') for x in attr['univentionObjectType']]
+	ot = attr.get('univentionObjectType')
+	if ot:
+		return [x.decode('utf-8') for x in ot]
 
 	if not modules:
 		modules = identify(dn, attr, module_base=module_base)
@@ -1041,13 +1042,10 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
 def objectShadowType(co, lo, dn, attr=None, modules=[]):
 	# type: (univention.admin.config, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule]) -> List[Any]
 	# FIXME: This returns a nested List[...List[str]] for containers!
-	res = []
-	for type in objectType(co, lo, dn, attr, modules):
-		if type and type.startswith('container/'):
-			res.append(objectShadowType(co, lo, lo.parentDn(dn)))
-		else:
-			res.append(type)
-	return res
+	return [
+		objectShadowType(co, lo, lo.parentDn(dn)) if otype and otype.startswith('container/') else otype
+		for otype in objectType(co, lo, dn, attr, modules)
+	]
 
 
 def findObject(co, lo, dn, type, attr=None, module_base=None):
@@ -1105,14 +1103,10 @@ def policies():
 			continue
 		if not name(mod) == 'policies/policy':
 			res.setdefault(policiesGroup(mod), []).append(name(mod))
-	if not res:
-		return []
-	policies = []
-	groupnames = sorted(res.keys())
-	for groupname in groupnames:
-		members = sorted(res[groupname])
-		policies.append(univention.admin.policiesGroup(id=groupname, members=members))
-	return policies
+	return [
+		univention.admin.policiesGroup(id=groupname, members=sorted(members))
+		for groupname, members in sorted(res.items())
+	]
 
 
 def policyTypes(module_name):
@@ -1123,17 +1117,15 @@ def policyTypes(module_name):
 	:param module_name: the name of the |UDM| module, e.g. `users/user`.
 	:returns: a list of |UDM| policy modules, e.g. `policies/pwhistory`.
 	"""
-	res = []  # type: List[str]
-
-	if not module_name or module_name not in modules:
-		return res
-	for name, module in modules.items():
-		if not name.startswith('policies/') or not hasattr(module, 'policy_apply_to'):
-			continue
-		if module_name in module.policy_apply_to:
-			res.append(name)
-
-	return res
+	if not module_name:
+		return []
+	if module_name not in modules:
+		return []
+	return [
+		name
+		for name, module in modules.items()
+		if name.startswith('policies/') and module_name in getattr(module, 'policy_apply_to', ())
+	]
 
 
 def policyPositionDnPrefix(module_name):
