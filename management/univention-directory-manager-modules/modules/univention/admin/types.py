@@ -34,6 +34,7 @@ from __future__ import absolute_import
 import inspect
 import time
 import datetime
+from typing import Optional, Sequence, Type, Union  # noqa F401
 
 import six
 import ldap.dn
@@ -49,24 +50,26 @@ if six.PY3:
 	unicode = str
 	long = int
 
+_Types = Union[Type[object], Sequence[Type[object]]]
+
 
 class TypeHint(object):
 	"""
 
 	"""
-	_python_types = object
+	_python_types = object  # type: _Types
 
 	@property
 	def _json_type(self):
 		# in most cases, the python type is equivalent to the JSON type
 		return self._python_types
 
-	_openapi_type = None
-	_openapi_format = None
-	_openapi_regex = None
-	_openapi_example = None
-	_openapi_readonly = None
-	_openapi_writeonly = None
+	_openapi_type = None  # type: Optional[str]
+	_openapi_format = None  # type: Optional[str]
+	_openapi_regex = None  # type: Optional[str]
+	_openapi_example = None  # type: Optional[str]
+	_openapi_readonly = None  # type: Optional[bool]
+	_openapi_writeonly = None  # type: Optional[bool]
 	_openapi_nullable = True  # everything which can be removed is nullable
 
 	_umc_widget = None
@@ -76,7 +79,7 @@ class TypeHint(object):
 	_html_element = None
 	_html_input_type = None
 
-	_encoding = None
+	_encoding = None  # type: Optional[str]
 	_minimum = float('-inf')
 	_maximum = float('inf')
 
@@ -286,7 +289,7 @@ class NoneType(TypeHint):
 
 
 class BooleanType(TypeHint):
-	_python_types = bool
+	_python_types = bool  # type: _Types
 	_openapi_type = 'boolean'
 
 	def decode_value(self, value):
@@ -329,7 +332,7 @@ class NumberType(TypeHint):
 
 
 class StringType(TypeHint):
-	_python_types = unicode
+	_python_types = unicode  # type: _Types
 	_encoding = 'UTF-8'
 	_openapi_type = 'string'
 
@@ -497,7 +500,7 @@ class ArrayType(TypeHint):
 
 
 class ListType(ArrayType):
-	item_type = None  # must be set in subclasses
+	item_type = None  # type: Optional[Type[TypeHint]] # must be set in subclasses
 
 	def type_check_subitems(self, value):
 		item_type = self.item_type(self.property, self.property_name)
@@ -615,8 +618,8 @@ class DictionaryType(TypeHint):
 
 
 class KeyValueDictionaryType(DictionaryType):
-	key_type = None
-	value_type = None
+	key_type = None  # type: Optional[_Types]
+	value_type = None  # type: Optional[_Types]
 
 
 class SambaLogonHours(ListType):

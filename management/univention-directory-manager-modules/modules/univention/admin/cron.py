@@ -31,10 +31,7 @@
 
 from __future__ import absolute_import
 
-try:
-	from typing import Mapping, Sequence, Union  # noqa F401
-except ImportError:
-	pass
+from typing import Mapping, Sequence, Union  # noqa F401
 
 
 def month_map(month):

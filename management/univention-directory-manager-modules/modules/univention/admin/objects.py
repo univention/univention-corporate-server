@@ -31,14 +31,12 @@
 
 from __future__ import absolute_import
 
+from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
+
 import ldap
 
 import univention.debug as ud
 import univention.admin.modules
-try:
-	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
-except ImportError:
-	pass
 
 
 def module(object):
@@ -53,7 +51,7 @@ def module(object):
 
 
 def get_superordinate(module, co, lo, dn):
-	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, str) -> Optional[univention.admin.handlers.simpleLdap]
+	# type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, str) -> Optional[univention.admin.handlers.simpleLdap]
 	"""
 	Searches for the superordinate object for the given DN.
 
@@ -77,7 +75,7 @@ def get_superordinate(module, co, lo, dn):
 
 
 def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
-	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position, str, Dict[str, List[Any]], Any, Any) -> univention.admin.handlers.simpleLdap
+	# type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, Dict[str, List[Any]], Any, Any) -> univention.admin.handlers.simpleLdap
 	"""
 	Return object of module while trying to create objects of
 	superordinate modules as well.
@@ -124,7 +122,7 @@ def open(object):
 
 
 def default(module, co, lo, position):
-	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position) -> univention.admin.handlers.simpleLdap
+	# type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position) -> univention.admin.handlers.simpleLdap
 	"""
 	Create |UDM| object and initialize default values.
 

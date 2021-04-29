@@ -28,10 +28,12 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from typing import List  # noqa F401
+
 import univention.admin.modules
 
 
-def get_all_udm_module_names():  # type: () -> List(str)
+def get_all_udm_module_names():  # type: () -> List[str]
 	"""
 	Get the names of all installed UDM modules.
 

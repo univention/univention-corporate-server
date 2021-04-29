@@ -34,16 +34,13 @@ from __future__ import absolute_import
 import re
 import bcrypt
 import hashlib
+from typing import List, Optional, Tuple  # noqa F401
+
 import heimdal
 import passlib.hash
 
 import univention.debug as ud
 from univention.admin._ucr import configRegistry
-
-try:
-	from typing import List, Optional, Tuple  # noqa F401
-except ImportError:
-	pass
 
 RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 

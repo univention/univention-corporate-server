@@ -33,16 +33,13 @@ from __future__ import absolute_import
 
 import ldap
 import time
+from typing import Any, Dict, List, Optional, Tuple  # noqa F401
 
 import univention.debug as ud
 import univention.uldap
 from univention.admin import localization
 import univention.admin.license
 from univention.admin._ucr import configRegistry
-try:
-	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
-except ImportError:
-	pass
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -570,7 +567,7 @@ class access(object):
 		return self.lo.whoami()
 
 	def requireLicense(self, require=True):
-		# type: (int) -> None
+		# type: (bool) -> None
 		"""
 		Enable or disable the UCS licence check.
 
@@ -610,7 +607,7 @@ class access(object):
 		return univention.uldap.access.compare_dn(a, b)
 
 	def get(self, dn, attr=[], required=False, exceptions=False):
-		# type: (str, List[str], bool, bool) -> Dict[str, List[str]]
+		# type: (str, List[str], bool, bool) -> Dict[str, List[bytes]]
 		"""
 		Return multiple attributes of a single LDAP object.
 
@@ -640,7 +637,7 @@ class access(object):
 		return self.lo.getAttr(dn, attr, required)
 
 	def search(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		# type: (str, str, str, List[str], bool, bool, int, int) -> List[Tuple[str, Dict[str, List[str]]]]
+		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[Tuple[str, Dict[str, List[bytes]]]]
 		"""
 		Perform LDAP search and return values.
 
@@ -684,7 +681,7 @@ class access(object):
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		# type: (str, str, str, bool, bool, int, int) -> List[str]
+		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
 
@@ -741,7 +738,7 @@ class access(object):
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
 	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
-		# type: (str, List[Tuple], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
+		# type: (str, List[Tuple[str, Any]], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
 		"""
 		Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
 

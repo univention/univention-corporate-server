@@ -49,6 +49,7 @@ import time
 import sys
 import inspect
 import traceback
+from typing import Any, Dict, Iterable, List, Optional, Set, Text, Tuple, Union  # noqa F401
 
 import six
 from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address
@@ -77,12 +78,9 @@ try:
 except ImportError:
 	ud.debug(ud.ADMIN, ud.WARN, "Failed to import univention.lib.admember")
 	_prevent_to_change_ad_properties = False
-try:
-	from typing import Any, Dict, Iterable, List, Optional, Set, Text, Tuple, Union  # noqa F401
-	_Attributes = Dict[Text, Union[bytes, List[bytes]]]
-	_Properties = Dict[Text, Union[Text, List[Text]]]
-except ImportError:
-	pass
+
+_Attributes = Dict[Text, Union[bytes, List[bytes]]]
+_Properties = Dict[Text, Union[Text, List[Text]]]
 
 translation = univention.admin.localization.translation('univention/admin/handlers')
 _ = translation.translate
@@ -160,9 +158,9 @@ class simpleLdap(object):
 	module = ''  # the name of the module
 	use_performant_ldap_search_filter = False
 
-	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position, Text, simpleLdap, _Attributes) -> None
+	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):  # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, simpleLdap, _Attributes) -> None
 		self._exists = False
-		self.co = None  # type: univention.admin.uldap.config
+		self.co = None
 		if isinstance(lo, univention.admin.uldap.access):
 			self.lo = lo  # type: univention.admin.uldap.access
 		elif isinstance(lo, univention.uldap.access):
@@ -447,7 +445,7 @@ class simpleLdap(object):
 					raise univention.admin.uexceptions.valueInvalidSyntax("%s" % self.descriptions[key].short_description, property=key)
 			self.info[key] = p
 
-	def __getitem__(self, key):  # type: (str) -> Union[None, Text, List[Text]]
+	def __getitem__(self, key):  # type: (str) -> Any
 		"""
 		Get the currently set value of the given property.
 
@@ -810,7 +808,7 @@ class simpleLdap(object):
 			self._delete_temporary_ou_if_empty(temporary_ou)
 			return res
 
-	def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> List[Tuple[str, str]]
+	def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> Optional[List[Tuple[str, str]]]
 		"""
 		Internal function to move all children of a container.
 
@@ -1725,7 +1723,7 @@ class simpleLdap(object):
 		return containers
 
 	@classmethod
-	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[List], Optional[Dict]) -> List[simpleLdap]
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (None, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[List], Optional[Dict]) -> List[simpleLdap]
 		"""
 		Perform a LDAP search and return a list of instances.
 

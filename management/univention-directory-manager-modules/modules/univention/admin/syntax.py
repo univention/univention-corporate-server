@@ -53,6 +53,7 @@ import traceback
 import io
 from io import BytesIO
 from operator import itemgetter
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
 
 import six
 
@@ -65,11 +66,9 @@ from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 
 from ldap.filter import filter_format, escape_filter_chars
-try:
-	from typing import Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
+
+if TYPE_CHECKING:
 	from univention.admin.uldap import access  # noqa F401
-except ImportError:
-	pass
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -165,7 +164,7 @@ class ISyntax(object):
 	size = 'One'
 	"""Widget size. See :py:data:`SIZES`."""
 
-	type_class = None
+	type_class = None  # type: Optional[Type[univention.admin.types.TypeHint]]
 	type_class_multivalue = None
 
 	@ClassProperty
@@ -343,8 +342,8 @@ class complex(ISyntax):
 	all_required = True
 	"""All sub-values must contain a value."""
 
-	subsyntaxes = []
-	subsyntax_names = ()
+	subsyntaxes = []  # type: List[Tuple[str, Type[ISyntax]]]
+	subsyntax_names = ()  # type: Tuple[str, ...]
 	subsyntax_key_value = False
 
 	@classmethod

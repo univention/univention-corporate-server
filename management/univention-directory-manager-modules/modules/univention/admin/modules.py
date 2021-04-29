@@ -37,7 +37,7 @@ import sys
 import copy
 import locale
 import importlib
-from typing import Any, Dict, List, Optional, Set, Text, Tuple, Union  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Text, Tuple, Union  # noqa F401
 
 import six
 import ldap
@@ -79,7 +79,7 @@ try:
 
 		class object:
 			def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-				# type: (univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position, Text, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
+				# type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
 				pass
 
 		@staticmethod
@@ -89,7 +89,7 @@ try:
 
 		@staticmethod
 		def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-			# type: (univention.admin.config, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
+			# type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
 			pass
 
 	UdmName = Union[UdmModule, str]
@@ -776,7 +776,7 @@ def subordinates(module):
 
 
 def find_superordinate(dn, co, lo):
-	# type: (str, univention.admin.config, univention.admin.uldap.access) -> Optional[UdmModule]
+	# type: (str, None, univention.admin.uldap.access) -> Optional[UdmModule]
 	"""
 	For a given |DN|, search in the |LDAP| path whether this LDAP object is
 	below an object that is a superordinate or is a superordinate itself.
@@ -938,7 +938,7 @@ def virtual(module_name):
 
 
 def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-	# type: (UdmName, univention.admin.config, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
+	# type: (UdmName, None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
 	"""
 	Return objects of module that match the given criteria.
 
@@ -1022,7 +1022,7 @@ def supports(module_name, operation):
 
 
 def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
-	# type: (univention.admin.config, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule], Optional[str]) -> List[str]
+	# type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule], Optional[str]) -> List[str]
 	if not dn:
 		return []
 	if attr is None:
@@ -1040,7 +1040,7 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
 
 
 def objectShadowType(co, lo, dn, attr=None, modules=[]):
-	# type: (univention.admin.config, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule]) -> List[Any]
+	# type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule]) -> List[Any]
 	# FIXME: This returns a nested List[...List[str]] for containers!
 	return [
 		objectShadowType(co, lo, lo.parentDn(dn)) if otype and otype.startswith('container/') else otype
@@ -1049,7 +1049,7 @@ def objectShadowType(co, lo, dn, attr=None, modules=[]):
 
 
 def findObject(co, lo, dn, type, attr=None, module_base=None):
-	# type: (univention.admin.config, univention.admin.uldap.access, str, str, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
+	# type: (None, univention.admin.uldap.access, str, str, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
 	if attr is None:
 		attr = lo.get(dn)
 		if not attr:
