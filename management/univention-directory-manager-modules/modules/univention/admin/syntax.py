@@ -116,8 +116,6 @@ def update_choices():
 	"""
 	Update choices which are defined in LDAP
 	>>> import univention.admin.modules
-	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
-	False
 	>>> univention.admin.modules.update()
 	>>> update_choices()
 	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
@@ -776,7 +774,7 @@ class Base64GzipText(TextArea):
 	Syntax for some `gzip`-compressed and `base64`-encoded data.
 	>>> import base64
 	>>> import zlib
-	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> content = b'txt'
 	>>> bz2string = zlib.compress(content)
 	>>> b64string = base64.b64encode(bz2string)
 	>>> Base64GzipText.parse(b64string) == b64string
@@ -812,7 +810,7 @@ class Base64Bzip2Text(TextArea):
 	Syntax for some `bzip2`-compressed and `base64`-encoded data.
 	>>> import base64
 	>>> import bz2
-	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> content = b'txt'
 	>>> bz2string = bz2.compress(content)
 	>>> b64string = base64.b64encode(bz2string)
 	>>> Base64Bzip2Text.parse(b64string) == b64string
@@ -847,7 +845,7 @@ class Base64Upload(Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
 	>>> import base64
-	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> content = b'...'
 	>>> b64string = base64.b64encode(content)
 	>>> Base64Upload.parse(b64string) == b64string
 	True
@@ -873,7 +871,7 @@ class Base64BaseUpload(Base64Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
 	>>> import base64
-	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> content = b'...'
 	>>> b64string = base64.b64encode(content)
 	>>> Base64BaseUpload.parse(b64string) == b64string
 	True
@@ -899,15 +897,13 @@ class jpegPhoto(Upload):
 	>>> jpegPhoto.tostring(None)
 	''
 	>>> import base64
-	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
-	>>> b64string = base64.b64encode(content)
+	>>> b64string = b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='
 	>>> jpegPhoto.parse(b64string) != b64string  # lets believe the conversion worked
 	True
 	>>> jpegPhoto.tostring(b64string) == b64string
 	True
-	>>> import base64
 	>>> import bz2
-	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> content = b'...'
 	>>> bz2string = bz2.compress(content)
 	>>> b64string = base64.b64encode(bz2string)
 	>>> jpegPhoto.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -962,7 +958,7 @@ class Base64Bzip2XML(TextArea):
 	Syntax for some `bzip2`-compressed |XML| data.
 	>>> import base64
 	>>> import bz2
-	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> content = b'<?xml?><xml/>'
 	>>> bz2string = bz2.compress(content)
 	>>> b64string = base64.b64encode(bz2string)
 	>>> Base64Bzip2XML.parse(b64string) == b64string
@@ -971,12 +967,12 @@ class Base64Bzip2XML(TextArea):
 	Traceback (most recent call last):
 	...
 	valueError: Not a valid Base64 string: hallo
-	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
 	>>> b64string = base64.b64encode(content)
 	>>> Base64Bzip2XML.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Value must be bzip2 compressed and Base64 encoded: ...
+	>>> content = b'...'
 	>>> bz2string = bz2.compress(content)
 	>>> b64string = base64.b64encode(bz2string)
 	>>> Base64Bzip2XML.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1005,9 +1001,7 @@ class Base64Bzip2XML(TextArea):
 class Base64UMCIcon(TextArea):
 	"""
 	Syntax for a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
-	>>> import base64
-	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
-	>>> b64string = base64.b64encode(content)
+	>>> b64string = b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='
 	>>> Base64UMCIcon.parse(b64string) == b64string
 	True
 	>>> Base64UMCIcon.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1031,9 +1025,7 @@ class Base64UMCIcon(TextArea):
 class GNUMessageCatalog(TextArea):
 	"""
 	Syntax for a `base64` encoded binary message catalog `.mo`.
-	>>> import base64
-	>>> content = open('/usr/share/locale/de/LC_MESSAGES/univention-appcenter.mo', 'rb').read()
-	>>> b64string = base64.b64encode(content)
+	>>> b64string = b'3hIElQAAAAABAAAAHAAAACQAAAADAAAALAAAAAEAAAA4AAAAAQAAADoAAAAAAAAAAAAAAAEAAABfAF8A'
 	>>> GNUMessageCatalog.parse(b64string) == b64string
 	True
 	>>> GNUMessageCatalog.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1542,7 +1534,7 @@ class uid_umlauts(simple):
 	"""
 	Syntax for user account names supporting umlauts.
 
-	>>> uid_umlauts.parse('üser') == 'üser'
+	>>> uid_umlauts.parse(u'üser') == u'üser'
 	True
 	>>> uid_umlauts.parse('user') == 'user'
 	True
@@ -1587,7 +1579,7 @@ class uid_umlauts_lower_except_first_letter(simple):
 	'admin'
 	>>> uid_umlauts_lower_except_first_letter.parse(b'admin')  # doctest: +ALLOW_UNICODE
 	'admin'
-	>>> uid_umlauts_lower_except_first_letter.parse('ädmin') == 'ädmin'
+	>>> uid_umlauts_lower_except_first_letter.parse(u'ädmin') == u'ädmin'  # depends on current locale # doctest: +SKIP
 	True
 	>>> uid_umlauts_lower_except_first_letter.parse('admin@2') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -1620,8 +1612,10 @@ class gid(simple):
 	"""
 	Syntax for group account names.
 
-	>>> gid.parse(u'Groupe d\u2019acc\xe8s d\u2019autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
-	True
+	>>> gid.parse(u'group')
+	u'group'
+	>>> gid.parse(u'Groupe d’accès d’autorisation Windows')  # depends on current locale # doctest: +SKIP
+	u'Groupe d\u2019acc\u00e8s d\u2019autorisation Windows'
 	"""
 	min_length = 1   # TODO: not enforced here
 	max_length = 32  # TODO: not enforced here
@@ -2097,6 +2091,7 @@ class emailAddressTemplate(emailAddress):
 class emailAddressValidDomain(emailAddress):
 	"""
 	Syntax class for an e-mail address in one of the registered e-mail domains.
+
 	>>> from univention.admin.uldap import getMachineConnection
 	>>> if os.path.exists('/etc/machine.secret'):
 	...     lo, pos = getMachineConnection()
@@ -2456,7 +2451,7 @@ class dnsHostname(dnsName):
 
 class dnsName_umlauts(simple):
 	u"""
-	>>> dnsName_umlauts.parse(u'ä') == 'ä'
+	>>> dnsName_umlauts.parse(u'ä') == u'ä'
 	True
 	>>> dnsName_umlauts.parse('a_0-A')
 	'a_0-A'
@@ -4700,6 +4695,8 @@ class nfssync(select):
 class univentionAdminModules(select):
 	"""
 	Syntax for selecting an |UDM| module.
+
+	>>> univention.admin.modules.update()
 	>>> univentionAdminModules.parse('users/user')  # doctest: +ALLOW_UNICODE
 	'users/user'
 	>>> univentionAdminModules.parse('nonexistant') #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -4924,6 +4921,7 @@ class LDAP_Search(select):
 	or programmatically by directly instantiating
 
 		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
+
 	>>> from univention.admin.uldap import getMachineConnection
 	>>> from univention.lib.misc import custom_username
 	>>> syntax = LDAP_Search('mysyntax', '(univentionObjectType=users/user)', ['uid'])

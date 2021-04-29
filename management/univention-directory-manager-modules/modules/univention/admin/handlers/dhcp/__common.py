@@ -159,16 +159,16 @@ def check_range_subnet(subnet, ranges):  # type: (IPv4Network, Sequence[Range]) 
 	>>> range_ = (subnet[1], subnet[-2])
 	>>> check_range_subnet(subnet, [])
 	>>> check_range_subnet(subnet, [(subnet[1], subnet[-2])])
-	>>> check_range_subnet(subnet, [(subnet[0], subnet[-2])])
+	>>> check_range_subnet(subnet, [(subnet[0], subnet[-2])]) # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	rangeInNetworkAddress: 192.0.2.0-192.0.2.254
-	>>> check_range_subnet(subnet, [(subnet[1], subnet[-1])])
+	>>> check_range_subnet(subnet, [(subnet[1], subnet[-1])]) # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	rangeInBroadcastAddress: 192.0.2.1-192.0.2.255
 	>>> local = IPv4Address(u"127.0.0.1")
-	>>> check_range_subnet(subnet, [(local, local)])
+	>>> check_range_subnet(subnet, [(local, local)]) # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	rangeNotInNetwork: 127.0.0.1

@@ -130,8 +130,8 @@ class Base64BinaryProperty(BaseBinaryProperty):
 
 	obj.props.<prop>.encoded == base64.b64encode(obj.props.<prop>.decoded)
 
-	>>> binprop = Base64BinaryProperty('example', raw_value='raw value')
-	>>> Base64BinaryProperty('example', encoded_value=binprop.encoded).raw == 'raw value'
+	>>> binprop = Base64BinaryProperty('example', raw_value=b'raw value')
+	>>> Base64BinaryProperty('example', encoded_value=binprop.encoded).raw == b'raw value'
 	True
 	>>> import base64
 	>>> binprop.encoded == base64.b64encode(binprop.raw)
@@ -152,8 +152,8 @@ class Base64Bzip2BinaryProperty(BaseBinaryProperty):
 
 	obj.props.<prop>.encoded == base64.b64encode(obj.props.<prop>.decoded)
 
-	>>> binprop = Base64Bzip2BinaryProperty('example', raw_value='raw value')
-	>>> Base64Bzip2BinaryProperty('example', encoded_value=binprop.encoded).raw == 'raw value'
+	>>> binprop = Base64Bzip2BinaryProperty('example', raw_value=b'raw value')
+	>>> Base64Bzip2BinaryProperty('example', encoded_value=binprop.encoded).raw == b'raw value'
 	True
 	>>> import bz2, base64
 	>>> binprop.encoded == base64.b64encode(bz2.compress(binprop.raw))

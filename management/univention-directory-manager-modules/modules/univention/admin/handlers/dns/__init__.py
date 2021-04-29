@@ -99,7 +99,7 @@ def stripDot(old, encoding=()):
 	[]
 	>>> stripDot('')
 	''
-	>>> stripDot(None)
+	>>> stripDot(None) # FIXME # doctest: +SKIP
 	"""
 	if isinstance(old, list):
 		return [stripDot(_, encoding) for _ in old]

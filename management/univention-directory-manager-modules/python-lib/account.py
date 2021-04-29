@@ -72,9 +72,7 @@ def lock(userdn, lock_timestamp):
 	* used by PAM tally
 
 	>>> import univention.lib.account
-	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z')
-	>>>
-
+	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z')  # doctest: +SKIP
 	"""
 
 	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.

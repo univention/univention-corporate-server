@@ -167,11 +167,11 @@ def mapSubnet(subnet, encoding=()):
 def unmapSubnet(zone, encoding=()):
 	"""
 	Map reverse zone to subnet.
-	>>> unmapSubnet('f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
+	>>> unmapSubnet(b'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
 	'0123:4567:89ab:cdef'
-	>>> unmapSubnet('d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
+	>>> unmapSubnet(b'd.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
 	'0123:4567:89ab:cd'
-	>>> unmapSubnet('3.2.1.in-addr.arpa')
+	>>> unmapSubnet(b'3.2.1.in-addr.arpa')
 	'1.2.3'
 	"""
 	if isinstance(zone, list):
