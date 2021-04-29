@@ -170,43 +170,58 @@ def listfilter(attrib):
 			return "WARN Error with sender={} recipient={} attrib={}, check_sasl_username={}, traceback={}".format(
 				sender, recipient, attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
 
-# main
-attr = {}
 
-# testing
-if options.test:
-	_do_debug = True
-	if not options.sender or not options.recipient:
-		sys.stderr.write("sender and recipient are required\n")
-		parser.print_help()
+def mail2username(mail):
+	try:
+		ldap = univention.uldap.getMachineConnection(ldap_master=False)
+		user_filter = filter_format(
+			'(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))', (mail, mail, mail)
+		)
+		ldap_filter = usersmod.lookup_filter(user_filter)
+		user_result = ldap.search(base=options.ldap_base, filter=str(ldap_filter), attr=["uid"])
+		return user_result[0][1]["uid"][0]
+	except Exception as exc:
+		print("Could not parse sasl_username from mail address: {}\n".format(exc))
 		sys.exit(1)
-	attr["sender"] = options.sender
-	attr["recipient"] = options.recipient
-	action = listfilter(attr)
-	print("action={}\n".format(action))
-else:
-	# read from stdin python -u is required for unbufferd streams
-	while True:
-		data = sys.stdin.readline()
-		m = re.match(r'([^=]+)=(.*)\n', data)
-		if m:
-			attr[m.group(1).strip()] = m.group(2).strip()
 
-		elif data == "\n":
-			if attr.get("request", None) == "smtpd_access_policy":
-				action = listfilter(attr)
-				debug("action=%s", action)
-				sys.stdout.write("action=%s\n\n" % action)
-			else:
-				sys.stderr.write("unknown action in %s\n" % attr)
-				sys.stdout.write("defer_if_permit Service temporarily unavailable\n")
-				syslog.syslog(syslog.LOG_ERR, "unknown action in '{}', exiting.".format(attr))
-				sys.exit(1)
-			attr = {}
-		elif data == "":
-			# Postfix telling us to shutdown (max_idle).
-			debug("shutting down (max_idle)")
-			sys.exit(0)
-		else:
-			syslog.syslog(syslog.LOG_ERR, "received bad data: '{}', exiting.".format(data))
+
+if __name__ == '__main__':
+	attr = {}
+	# testing
+	if options.test:
+		_do_debug = True
+		if not options.sender or not options.recipient:
+			sys.stderr.write("sender and recipient are required\n")
+			parser.print_help()
 			sys.exit(1)
+		attr["sender"] = options.sender
+		attr["sasl_username"] = mail2username(options.sender)
+		attr["recipient"] = options.recipient
+		action = listfilter(attr)
+		print("action={}\n".format(action))
+	else:
+		# read from stdin python -u is required for unbufferd streams
+		while True:
+			data = sys.stdin.readline()
+			m = re.match(r'([^=]+)=(.*)\n', data)
+			if m:
+				attr[m.group(1).strip()] = m.group(2).strip()
+
+			elif data == "\n":
+				if attr.get("request", None) == "smtpd_access_policy":
+					action = listfilter(attr)
+					debug("action=%s", action)
+					sys.stdout.write("action=%s\n\n" % action)
+				else:
+					sys.stderr.write("unknown action in %s\n" % attr)
+					sys.stdout.write("defer_if_permit Service temporarily unavailable\n")
+					syslog.syslog(syslog.LOG_ERR, "unknown action in '{}', exiting.".format(attr))
+					sys.exit(1)
+				attr = {}
+			elif data == "":
+				# Postfix telling us to shutdown (max_idle).
+				debug("shutting down (max_idle)")
+				sys.exit(0)
+			else:
+				syslog.syslog(syslog.LOG_ERR, "received bad data: '{}', exiting.".format(data))
+				sys.exit(1)
