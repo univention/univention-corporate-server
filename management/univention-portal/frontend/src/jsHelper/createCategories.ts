@@ -29,6 +29,11 @@
 
 import { BaseTile, Category, LinkTarget, PortalCategory, PortalContent, PortalEntry, PortalFolder, TileOrFolder } from '@/store/modules/portalData/portalData.models';
 
+function randomId(): string {
+  return Math.random().toString(36)
+    .substr(2);
+}
+
 function isBaseTile(value: any): value is BaseTile {
   return (value !== null) && !value.isFolder;
 }
@@ -44,8 +49,8 @@ function makeEntry(
   if (entry) {
     // TODO: remove id once the service is offering the right data.
     return {
+      id: `entry-${randomId()}`,
       dn: entry.dn,
-      id: entry.name.en_US,
       title: entry.name,
       isFolder: false,
       activated: entry.activated,
@@ -77,9 +82,9 @@ function makeEntry(
     }
   });
   if (tiles.length || editMode) {
-    // TODO: remove id once the service is offering the right data.
     return {
-      id: folder.name.en_US,
+      id: `folder-${randomId()}`,
+      dn: folder.dn,
       title: folder.name,
       isFolder: true,
       tiles,
@@ -114,6 +119,7 @@ export default function createCategories(
     });
     if (tiles.length || editMode) {
       const categoryItem = {
+        id: `category-${randomId()}`,
         title: category.display_name,
         dn: category.dn,
         tiles,

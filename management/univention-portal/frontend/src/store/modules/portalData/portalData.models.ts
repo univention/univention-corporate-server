@@ -43,12 +43,12 @@ export interface Link {
 
 export interface Tile {
   id: string,
+  dn: string,
   title: Title,
   isFolder: boolean,
 }
 
 export interface BaseTile extends Tile {
-  dn: string,
   allowedGroups: string[],
   activated: boolean,
   selectedGroups: string[],
@@ -67,6 +67,7 @@ export interface FolderTile extends Tile {
 export type TileOrFolder = BaseTile | FolderTile;
 
 export interface Category {
+  id: string,
   title: Record<Locale, string>,
   dn: string,
   tiles: TileOrFolder[],

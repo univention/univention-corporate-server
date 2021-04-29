@@ -103,7 +103,7 @@ export default defineComponent({
           categories: this.categories.concat([dn]),
         };
         console.info('Adding', dn, 'to', this.portalDn);
-        put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
+        await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
         this.$store.dispatch('deactivateLoadingState');
       }
     },

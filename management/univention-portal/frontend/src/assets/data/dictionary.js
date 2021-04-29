@@ -77,6 +77,8 @@ const catalog = {
   OLD_PASSWORD: _('Old password'),
   NEW_PASSWORD: _('New password'),
   RETYPE: _('retype'),
+  ENTRY_ORDER_SUCCESS: _('Entries successfully re-sorted'),
+  ENTRY_ORDER_FAILURE: _('Entries could not be re-sorted'),
   ENTRY_CREATED_SUCCESS: _('Entry successfully created'),
   ENTRY_CREATED_FAILURE: _('Entry could not be created'),
   ENTRY_MODIFIED_SUCCESS: _('Entry successfully modified'),

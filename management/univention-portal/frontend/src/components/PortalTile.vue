@@ -72,7 +72,7 @@
       </span>
 
       <header-button
-        v-if="!noEdit && isAdmin && showEditButton"
+        v-if="!noEdit && editMode && showEditButton"
         :icon="buttonIcon"
         :aria-label="ariaLabelButton"
         :no-click="true"
@@ -105,10 +105,6 @@ export default defineComponent({
     TileClick,
   ],
   props: {
-    tileModel: {
-      type: Object,
-      default: () => ({}),
-    },
     dn: {
       type: String,
       required: true,
@@ -151,10 +147,6 @@ export default defineComponent({
       default: false,
     },
     firstElement: {
-      type: Boolean,
-      default: false,
-    },
-    isAdmin: {
       type: Boolean,
       default: false,
     },

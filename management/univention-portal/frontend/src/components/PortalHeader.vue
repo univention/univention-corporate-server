@@ -246,7 +246,7 @@ export default defineComponent({
   top: 0
   left: 0
   right: 0
-  z-index: $zindex-1
+  z-index: $zindex-3
   background-color: var(--bgc-content-header)
   color: var(--font-color-contrast-high)
   height: var(--portal-header-height)

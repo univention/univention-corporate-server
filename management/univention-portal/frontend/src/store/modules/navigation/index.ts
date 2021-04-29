@@ -46,7 +46,8 @@ const navigation: PortalModule<NavigationState> = {
   getters: { getActiveButton: (state) => state.activeButton },
 
   actions: {
-    setActiveButton({ commit }, id) {
+    setActiveButton({ commit, dispatch }, id) {
+      dispatch('modal/hideAndClearModal', undefined, { root: true });
       commit('ACTIVEBUTTON', id);
     },
   },

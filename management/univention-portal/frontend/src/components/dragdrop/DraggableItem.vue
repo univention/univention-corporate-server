@@ -92,5 +92,5 @@ export default defineComponent({
 <style lang="stylus">
 .draggable-item
   &__dragging
-    opacity: 0.2
+    opacity: 1
 </style>

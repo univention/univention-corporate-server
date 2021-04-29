@@ -119,7 +119,7 @@ export default defineComponent({
           entries: category.entries.concat([dn]),
         };
         console.info('Adding', dn, 'to', this.categoryDn);
-        put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+        await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         this.$store.dispatch('deactivateLoadingState');
       }
     },

@@ -39,12 +39,11 @@
       <template v-if="categories">
         <portal-category
           v-for="(category, index) in categories"
-          :key="index"
+          :key="category.id"
           :title="category.title"
           :dn="category.dn"
           :tiles="category.tiles"
           :drop-zone="index"
-          :category-index="index"
         />
       </template>
 

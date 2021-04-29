@@ -27,15 +27,14 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div @dragover.prevent="containerDragOver">
-    <transition-group
+  <div>
+    <template
       v-for="(item, index) in defaultItems"
       :key="index"
       name="draggable-wrapper"
     >
       <draggable-item
         :id="item.id"
-        :key="item.id"
         :item="item"
         :drop-zone-id="dropZoneId"
         :position="index"
@@ -46,12 +45,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           :item="item"
         />
       </draggable-item>
-      <div
-        v-if="placeholder"
-        :id="`placeholder-${item.id}`"
-        class="dragdrop__placeholder--dotted"
-      />
-    </transition-group>
+    </template>
 
     <tile-add
       :category-dn="categoryDn"
@@ -84,43 +78,26 @@ export default defineComponent({
       type: Number,
       default: -1,
     },
-    transition: {
-      default: '0',
-      type: String,
-    },
   },
   setup(props, context) {
-    const { modelValue, dropZoneId, transition } = toRefs(props);
+    const { modelValue, dropZoneId, categoryDn } = toRefs(props);
 
     const {
       defaultItems,
       onItemDragOver,
-      containerDragOver,
     } = useDraggableContainer(
       {
         initialItems: modelValue,
         dropZoneId,
+        categoryDn,
       },
       context,
     );
 
-    const placeholder = false;
-
-    const transitionStyle: ComputedRef<string> = computed((): string => `transform ${transition}ms`);
-
     return {
       defaultItems,
       onItemDragOver,
-      containerDragOver,
-      placeholder,
-      transitionStyle,
     };
   },
 });
 </script>
-
-<style lang="stylus" scoped>
-// class name follows https://v3.vuejs.org/guide/transitions-list.html#list-move-transitions
-.draggable-wrapper-move
-  transition: v-bind(transitionStyle)
-</style>

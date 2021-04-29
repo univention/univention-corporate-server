@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-28 22:40+0200\n"
+"POT-Creation-Date: 2021-04-29 20:31+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -16,11 +16,11 @@ msgstr ""
 msgid "Accept"
 msgstr "Akzeptieren"
 
-#: src/assets/data/dictionary.js:101
+#: src/assets/data/dictionary.js:103
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: src/assets/data/dictionary.js:63 src/assets/data/dictionary.js:102
+#: src/assets/data/dictionary.js:63 src/assets/data/dictionary.js:104
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -56,15 +56,15 @@ msgstr "Neue Kategorie hinzufügen"
 msgid "Add new entry"
 msgstr "Neuen Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:103
+#: src/assets/data/dictionary.js:105
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: src/assets/data/dictionary.js:98
+#: src/assets/data/dictionary.js:100
 msgid "Back"
 msgstr "Zurück"
 
-#: src/assets/data/dictionary.js:109
+#: src/assets/data/dictionary.js:111
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
@@ -72,43 +72,43 @@ msgstr "Hintergrundfarbe"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/assets/data/dictionary.js:93
+#: src/assets/data/dictionary.js:95
 msgid "Category could not be added"
 msgstr "Kategories konnte nicht hinzugefügt werden"
 
-#: src/assets/data/dictionary.js:89
+#: src/assets/data/dictionary.js:91
 msgid "Category could not be created"
 msgstr "Kategorie konnte nicht erstellt werden"
 
-#: src/assets/data/dictionary.js:91
+#: src/assets/data/dictionary.js:93
 msgid "Category could not be modified"
 msgstr "Kategorie konnte nicht bearbeitet werden"
 
-#: src/assets/data/dictionary.js:95
+#: src/assets/data/dictionary.js:97
 msgid "Category could not be removed"
 msgstr "Kategories konnte nicht entfernt werden"
 
-#: src/assets/data/dictionary.js:92
+#: src/assets/data/dictionary.js:94
 msgid "Category successfully added"
 msgstr "Kategorie erfolgreich hinzugefügt"
 
-#: src/assets/data/dictionary.js:88
+#: src/assets/data/dictionary.js:90
 msgid "Category successfully created"
 msgstr "Kategorie erfolgreich erstellt"
 
-#: src/assets/data/dictionary.js:90
+#: src/assets/data/dictionary.js:92
 msgid "Category successfully modified"
 msgstr "Kategorie erfolgreich bearbeitet"
 
-#: src/assets/data/dictionary.js:94
+#: src/assets/data/dictionary.js:96
 msgid "Category successfully removed"
 msgstr "Kategorie erfolgreich entfernt"
 
-#: src/assets/data/dictionary.js:96
+#: src/assets/data/dictionary.js:98
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: src/assets/data/dictionary.js:122
+#: src/assets/data/dictionary.js:124
 msgid "Choose a tab"
 msgstr "Tab wählen"
 
@@ -124,11 +124,11 @@ msgstr "Neuen Eintrag hinzufügen"
 msgid "Create new folder"
 msgstr "Neuen Ordner hinzufügen"
 
-#: src/assets/data/dictionary.js:115
+#: src/assets/data/dictionary.js:117
 msgid "Description"
 msgstr "Beschreibung"
 
-#: src/assets/data/dictionary.js:114
+#: src/assets/data/dictionary.js:116
 msgid ""
 "Description of the entry. At least one entry; strongly encouraged to have "
 "one for en_US"
@@ -164,7 +164,7 @@ msgstr "Eintrag bearbeiten"
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
-#: src/assets/data/dictionary.js:117
+#: src/assets/data/dictionary.js:119
 msgid "Edit mode"
 msgstr "Editiermodus"
 
@@ -172,39 +172,47 @@ msgstr "Editiermodus"
 msgid "Edit portal"
 msgstr "Portal bearbeiten"
 
-#: src/assets/data/dictionary.js:85
+#: src/assets/data/dictionary.js:81
+msgid "Entries could not be re-sorted"
+msgstr "Einträge konnten nicht umsortiert werden"
+
+#: src/assets/data/dictionary.js:80
+msgid "Entries successfully re-sorted"
+msgstr "Einträge erfolgreich umsortiert"
+
+#: src/assets/data/dictionary.js:87
 msgid "Entry could not be added"
 msgstr "Eintrag konnte nicht hinzugefügt werden"
 
-#: src/assets/data/dictionary.js:81
+#: src/assets/data/dictionary.js:83
 msgid "Entry could not be created"
 msgstr "Eintrag konnte nicht erstellt werden"
 
-#: src/assets/data/dictionary.js:83
+#: src/assets/data/dictionary.js:85
 msgid "Entry could not be modified"
 msgstr "Eintrag konnte nicht bearbeitet werden"
 
-#: src/assets/data/dictionary.js:87
+#: src/assets/data/dictionary.js:89
 msgid "Entry could not be removed"
 msgstr "Eintrag konnte nicht entfernt werden"
 
-#: src/assets/data/dictionary.js:84
+#: src/assets/data/dictionary.js:86
 msgid "Entry successfully added"
 msgstr "Eintrag erfolgreich hinzugefügt"
 
-#: src/assets/data/dictionary.js:80
+#: src/assets/data/dictionary.js:82
 msgid "Entry successfully created"
 msgstr "Eintrag erfolgreich erstellt"
 
-#: src/assets/data/dictionary.js:82
+#: src/assets/data/dictionary.js:84
 msgid "Entry successfully modified"
 msgstr "Eintrag erfolgreich bearbeitet"
 
-#: src/assets/data/dictionary.js:86
+#: src/assets/data/dictionary.js:88
 msgid "Entry successfully removed"
 msgstr "Eintrag erfolgreich entfernt"
 
-#: src/assets/data/dictionary.js:110
+#: src/assets/data/dictionary.js:112
 msgid ""
 "Headline of the entry. At least one entry; strongly encouraged to have one "
 "for en_US"
@@ -212,7 +220,7 @@ msgstr ""
 "Überschrift des Eintrags. Mindestens ein Eintrag; dringend empfohlen, einen "
 "Eintrag für 'en_US' zu haben"
 
-#: src/assets/data/dictionary.js:106
+#: src/assets/data/dictionary.js:108
 msgid ""
 "If one or more groups are selected then the portal entry will only be "
 "visible to logged in users that are in any of the selected groups. If no "
@@ -231,11 +239,11 @@ msgstr "Interner Name"
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z. B. en_US)"
 
-#: src/assets/data/dictionary.js:111
+#: src/assets/data/dictionary.js:113
 msgid "Link"
 msgstr "Link"
 
-#: src/assets/data/dictionary.js:112
+#: src/assets/data/dictionary.js:114
 msgid "Links"
 msgstr "Links"
 
@@ -255,7 +263,7 @@ msgstr ""
 msgid "Logout"
 msgstr "Abmelden"
 
-#: src/assets/data/dictionary.js:120
+#: src/assets/data/dictionary.js:122
 msgid "Menu"
 msgstr "Menü"
 
@@ -263,7 +271,7 @@ msgstr "Menü"
 msgid "Name"
 msgstr "Name"
 
-#: src/assets/data/dictionary.js:113
+#: src/assets/data/dictionary.js:115
 msgid "New entry"
 msgstr "Neuer Eintrag"
 
@@ -271,11 +279,11 @@ msgstr "Neuer Eintrag"
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: src/assets/data/dictionary.js:99
+#: src/assets/data/dictionary.js:101
 msgid "Next"
 msgstr "Weiter"
 
-#: src/assets/data/dictionary.js:39 src/assets/data/dictionary.js:119
+#: src/assets/data/dictionary.js:39 src/assets/data/dictionary.js:121
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -287,7 +295,7 @@ msgstr "Altes Passwort"
 msgid "Open edit sidebar"
 msgstr "Editierseite öffnen"
 
-#: src/assets/data/dictionary.js:100
+#: src/assets/data/dictionary.js:102
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -295,7 +303,7 @@ msgstr "Entfernen"
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: src/assets/data/dictionary.js:105
+#: src/assets/data/dictionary.js:107
 msgid "Restrict visibility to groups"
 msgstr "Beschränkung der Sichtbarkeit auf Gruppen"
 
@@ -303,19 +311,19 @@ msgstr "Beschränkung der Sichtbarkeit auf Gruppen"
 msgid "Save"
 msgstr "Speichern"
 
-#: src/assets/data/dictionary.js:107
+#: src/assets/data/dictionary.js:109
 msgid "Select all"
 msgstr "Alles auswählen"
 
-#: src/assets/data/dictionary.js:108
+#: src/assets/data/dictionary.js:110
 msgid "Select file"
 msgstr "Datei auswählen"
 
-#: src/assets/data/dictionary.js:123
+#: src/assets/data/dictionary.js:125
 msgid "Show local UMC modules"
 msgstr "UMC-Module anzeigen"
 
-#: src/assets/data/dictionary.js:116
+#: src/assets/data/dictionary.js:118
 msgid "Show portal"
 msgstr "Portal anzeigen"
 
@@ -331,11 +339,11 @@ msgstr "Abschicken"
 msgid "Switch locale"
 msgstr "Sprache ändern"
 
-#: src/assets/data/dictionary.js:121
+#: src/assets/data/dictionary.js:123
 msgid "Tabs"
 msgstr "Tabs"
 
-#: src/assets/data/dictionary.js:104
+#: src/assets/data/dictionary.js:106
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -350,7 +358,7 @@ msgstr ""
 " \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
 
-#: src/assets/data/dictionary.js:97
+#: src/assets/data/dictionary.js:99
 msgid "You have successfully updated your password"
 msgstr "Das Passwort wurde erfolgreich aktualisiert"
 
@@ -358,6 +366,6 @@ msgstr "Das Passwort wurde erfolgreich aktualisiert"
 msgid "retype"
 msgstr "Wiederholung"
 
-#: src/assets/data/dictionary.js:118
+#: src/assets/data/dictionary.js:120
 msgid "search"
 msgstr "suchen"
