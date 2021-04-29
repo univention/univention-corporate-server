@@ -470,14 +470,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
 		desc = tab.tab['name'].data
 	# replace invalid characters by underscores
 	desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
-	p_v = configRegistry.get('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
-	if not p_v:
-		return None
-
-	if p_v.lower() in ['0', 'false', 'no', 'off']:
-		return False
-	else:
-		return True
+	return configRegistry.is_true('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 
 
 def ucr_overwrite_module_layout(module):
