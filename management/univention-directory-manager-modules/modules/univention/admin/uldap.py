@@ -223,7 +223,7 @@ class domain(object):
 		:rtype: str
 		"""
 		if 'krb5RealmName' not in self.domain:
-			return
+			return None
 		return self.domain['krb5RealmName'][0].decode('ASCII')
 
 

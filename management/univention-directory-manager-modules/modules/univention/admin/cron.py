@@ -53,6 +53,7 @@ def month_map(month):
 		return '*'
 	if month in month_list:
 		return month_list.index(month)
+	return None  # FIXME
 
 
 def weekday_map(weekday):
@@ -73,6 +74,7 @@ def weekday_map(weekday):
 		return '*'
 	if weekday in weekday_list:
 		return weekday_list.index(weekday)
+	return None  # FIXME
 
 
 def month_reverse_map(month):
@@ -93,6 +95,7 @@ def month_reverse_map(month):
 		return '*'
 	if int(month) < len(month_list):
 		return month_list[int(month)]
+	return None  # FIXME
 
 
 def weekday_reverse_map(weekday):
@@ -113,6 +116,7 @@ def weekday_reverse_map(weekday):
 		return '*'
 	if int(weekday) < len(weekday_list):
 		return weekday_list[int(weekday)]
+	return None  # FIXME
 
 
 def cron_create(cronlist):

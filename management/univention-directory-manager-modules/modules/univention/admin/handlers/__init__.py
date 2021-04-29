@@ -847,6 +847,8 @@ class simpleLdap(object):
 					subobject.move(subolddn)
 				raise
 
+		return None  # FIXME
+
 	def remove(self, remove_childs=False):  # type: (bool) -> None
 		"""
 		Removes this LDAP object.
