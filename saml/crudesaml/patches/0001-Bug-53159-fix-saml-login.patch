@@ -1,0 +1,96 @@
+From 8f47d961bcde8e6391652b2a86808489e68f39a0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=BCrn=20Brodersen?= <brodersen@univention.de>
+Date: Thu, 18 Feb 2021 18:34:15 +0100
+Subject: [PATCH] Bug #53159: fix saml login
+Organization: Univention GmbH, Bremen, Germany
+
+Only one saml login per process was working with crudesaml. Any
+subsequent logins were denied.
+This happend due to "lasso_shutdown" and "lasso_init" being called
+multiple times in one process.
+According to lasso upstream "lasso_shutdown" should only be called then
+the lasso lib is not needed ever again in that process. It is also
+optional to call at all. See also bug #51932.
+---
+ cy2_saml.c | 8 ++++----
+ pam_saml.c | 6 ++++--
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/cy2_saml.c b/cy2_saml.c
+index 398715c..006724a 100644
+--- a/cy2_saml.c
++++ b/cy2_saml.c
+@@ -58,7 +58,6 @@ __RCSID("$Id: cy2_saml.c,v 1.12 2017/05/24 22:47:15 manu Exp $");
+ 
+ #include "plugin_common.h"
+ 
+-
+ typedef struct {
+ 	char *out;
+ 	unsigned int len;
+@@ -348,8 +347,6 @@ saml_server_mech_free(glob_context, utils)
+ 		gctx->lasso_server = NULL;
+ 	}
+ 
+-	lasso_shutdown();
+-
+ 	/* 
+ 	 * Do not free (saml_glob_context_t *)glob_context, it is static!
+ 	 */
+@@ -391,6 +388,7 @@ sasl_server_plug_init(utils, maxvers, outvers, pluglist, plugcount)
+ 	const char *flag;
+ 	char propname[1024];
+ 	int propnum = 0;
++	static int lasso_is_initialized = 0;
+ 
+ 	if (maxvers < SASL_SERVER_PLUG_VERSION) {
+ 		utils->seterror(utils->conn, 0, "SAML version mismatch");
+@@ -401,9 +399,11 @@ sasl_server_plug_init(utils, maxvers, outvers, pluglist, plugcount)
+ 	*pluglist = &saml_server_plugin;
+ 	*plugcount = 1;
+ 
+-	if (lasso_init() != 0) {
++	if (!lasso_is_initialized && lasso_init() != 0) {
+ 		utils->seterror(utils->conn, 0, "lasso_init() failed");
+ 		return SASL_FAIL;
++	} else {
++		lasso_is_initialized = 1;
+ 	}
+ 
+ 	gctx = (saml_glob_context_t *)saml_server_plugin.glob_context;
+diff --git a/pam_saml.c b/pam_saml.c
+index a9f99cc..d167f1b 100644
+--- a/pam_saml.c
++++ b/pam_saml.c
+@@ -153,7 +153,6 @@ gctx_cleanup(pamh, data, error)
+ 			gctx->lasso_server = NULL;
+ 		}
+ 		
+-		lasso_shutdown();
+ 		free(gctx);
+ 		gctx = NULL;
+ 	}
+@@ -171,6 +170,7 @@ pam_global_context_init(pamh, ac, av)
+ 	int i;
+ 	const char *cacert = NULL;
+ 	const char *uid_attr = "uid";
++	static int lasso_is_initialized = 0;
+ 
+ 
+ 	if (pam_get_data(pamh, GCTX_DATA, &data) == PAM_SUCCESS) {
+@@ -182,9 +182,11 @@ pam_global_context_init(pamh, ac, av)
+ 	/*
+ 	 * Initialize lasso
+ 	 */
+-	if (lasso_init() != 0) {
++	if (!lasso_is_initialized && lasso_init() != 0) {
+ 		syslog(LOG_ERR, "lasso_init() failed");
+ 		return NULL;
++	} else {
++		lasso_is_initialized = 1;
+ 	}
+ 
+ 	if ((gctx = malloc(sizeof(*gctx))) == NULL) {
+-- 
+2.27.0
+
