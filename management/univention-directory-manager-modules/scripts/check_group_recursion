@@ -46,8 +46,6 @@ import univention.admin.uexceptions
 
 lo = None
 position = None
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 grp2childgrps = {}
 
 
@@ -97,6 +95,8 @@ def main():
 
 	ud.init('/var/log/univention/check_group_recursion.log', ud.FLUSH, ud.NO_FUNCTION)
 
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 	basedn = configRegistry['ldap/base']
 
 	univention.admin.modules.update()

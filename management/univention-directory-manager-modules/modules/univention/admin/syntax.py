@@ -2097,8 +2097,11 @@ class emailAddressValidDomain(emailAddress):
 	"""
 	Syntax class for an e-mail address in one of the registered e-mail domains.
 	>>> from univention.admin.uldap import getMachineConnection
-	>>> lo, pos = getMachineConnection()
-	>>> emailAddressValidDomain.checkLdap(lo, 'user@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> if os.path.exists('/etc/machine.secret'):
+	...     lo, pos = getMachineConnection()
+	...     emailAddressValidDomain.checkLdap(lo, 'user@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...     raise univention.admin.uexceptions.valueError()
 	Traceback (most recent call last):
 	...
 	valueError:
@@ -4922,15 +4925,21 @@ class LDAP_Search(select):
 		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
 	>>> from univention.admin.uldap import getMachineConnection
 	>>> from univention.lib.misc import custom_username
-	>>> lo, pos = getMachineConnection()
 	>>> syntax = LDAP_Search('mysyntax', '(univentionObjectType=users/user)', ['uid'])
-	>>> syntax._load(lo)
-	>>> syntax._prepare(lo)
-	>>> any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.values)
+	>>> if os.path.exists('/etc/machine.secret'):
+	...     lo, pos = getMachineConnection()
+	...     syntax._load(lo)
+	...     syntax._prepare(lo)
+	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.values)
+	... else:
+	...     True
 	True
 	>>> syntax = LDAP_Search('mysyntax2', '(univentionObjectType=fantasy)', ['cn'])
-	>>> syntax._prepare(lo)
-	>>> syntax.values
+	>>> if os.path.exists('/etc/machine.secret'):
+	...     syntax._prepare(lo)
+	...     syntax.values
+	... else:
+	...     []
 	[]
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'

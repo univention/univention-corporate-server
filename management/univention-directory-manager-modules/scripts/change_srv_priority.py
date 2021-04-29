@@ -38,11 +38,6 @@ import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.srv_record
 import univention.config_registry
 
-univention.admin.modules.update()
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
 PRIORITY_NEW = '100'
 PRIORITY_OLD = '0'
 
@@ -56,27 +51,38 @@ SRV_RECORDS = [
 ]
 
 
-lo, position = univention.admin.uldap.getAdminConnection()
-forward_module = univention.admin.modules.get('dns/forward_zone')
-forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'))
+def main():
+	# type: () -> None
+	univention.admin.modules.update()
 
-srv_module = univention.admin.modules.get('dns/srv_record')
-for forward_zone in forward_zones:
-	srv_records = univention.admin.modules.lookup(srv_module, None, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'))
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 
-	for srv_record in srv_records:
-		name = srv_record.get('name')
-		modify = False
-		if name in SRV_RECORDS:
-			for location in srv_record['location']:
-				if len(location) > 1 and location[1] == PRIORITY_OLD:
-					location[1] = PRIORITY_NEW
-					modify = True
+	lo, position = univention.admin.uldap.getAdminConnection()
+	forward_module = univention.admin.modules.get('dns/forward_zone')
+	forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'))
 
-			if modify:
-				# make SRV records uniq
-				srv_record['location'] = list(set(srv_record['location']))
+	srv_module = univention.admin.modules.get('dns/srv_record')
+	for forward_zone in forward_zones:
+		srv_records = univention.admin.modules.lookup(srv_module, None, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'))
 
-				# Change the objects
-				print('Modify: %s' % srv_record.dn)
-				srv_record.modify()
+		for srv_record in srv_records:
+			name = srv_record.get('name')
+			modify = False
+			if name in SRV_RECORDS:
+				for location in srv_record['location']:
+					if len(location) > 1 and location[1] == PRIORITY_OLD:
+						location[1] = PRIORITY_NEW
+						modify = True
+
+				if modify:
+					# make SRV records uniq
+					srv_record['location'] = list(set(srv_record['location']))
+
+					# Change the objects
+					print('Modify: %s' % srv_record.dn)
+					srv_record.modify()
+
+
+if __name__ == "__main__":
+	main()
