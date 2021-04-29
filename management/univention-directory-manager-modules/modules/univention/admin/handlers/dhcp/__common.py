@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from ipaddress import IPv4Address, IPv4Network
+from typing import List, Tuple, Sequence  # noqa F401
 import sys
 
 import univention.admin.localization
@@ -38,11 +39,7 @@ import univention.admin.uexceptions as uex
 from univention.admin.layout import Tab
 from univention.admin.handlers import simpleLdap
 
-try:
-	from typing import List, Tuple, Sequence  # noqa F401
-	Range = Tuple[IPv4Address, IPv4Address]
-except ImportError:
-	pass
+Range = Tuple[IPv4Address, IPv4Address]
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

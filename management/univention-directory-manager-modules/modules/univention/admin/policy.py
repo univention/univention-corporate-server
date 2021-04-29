@@ -29,9 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Any, Dict, Tuple  # noqa F401
+
 import univention.admin.localization
 import univention.admin.syntax
-from univention.admin.mapping import ListToString
+from univention.admin.mapping import ListToString, mapping  # noqa F401
 from univention.admin.layout import Tab
 
 translation = univention.admin.localization.translation('univention.admin')
@@ -39,6 +41,7 @@ _ = translation.translate
 
 
 def register_policy_mapping(mapping):
+	# type: (mapping) -> None
 	mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 	mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 	mapping.register('fixedAttributes', 'fixedAttributes')
@@ -47,6 +50,7 @@ def register_policy_mapping(mapping):
 
 
 def policy_object_tab():
+	# type: () -> Tab
 	return Tab(_('Object'), _('Object'), advanced=True, layout=[
 		['ldapFilter'],
 		['requiredObjectClasses', 'prohibitedObjectClasses'],
@@ -55,6 +59,7 @@ def policy_object_tab():
 
 
 def requiredObjectClassesProperty(**kwargs):
+	# type: (**Any) -> Tuple[str, univention.admin.property]
 	pargs = dict(
 		short_description=_('Required object class'),
 		long_description='',
@@ -66,6 +71,7 @@ def requiredObjectClassesProperty(**kwargs):
 
 
 def prohibitedObjectClassesProperty(**kwargs):
+	# type: (**Any) -> Tuple[str, univention.admin.property]
 	pargs = dict(
 		short_description=_('Excluded object class'),
 		long_description='',
@@ -77,6 +83,7 @@ def prohibitedObjectClassesProperty(**kwargs):
 
 
 def fixedAttributesProperty(**kwargs):
+	# type: (**Any) -> Tuple[str, univention.admin.property]
 	pargs = dict(
 		short_description=_('Fixed attribute'),
 		long_description='',
@@ -87,6 +94,7 @@ def fixedAttributesProperty(**kwargs):
 
 
 def emptyAttributesProperty(**kwargs):
+	# type: (**Any) -> Tuple[str, univention.admin.property]
 	pargs = dict(
 		short_description=_('Empty attribute'),
 		long_description='',
@@ -97,6 +105,7 @@ def emptyAttributesProperty(**kwargs):
 
 
 def ldapFilterProperty(**kwargs):
+	# type: (**Any) -> Tuple[str, univention.admin.property]
 	pargs = dict(
 		short_description=_('LDAP filter'),
 		long_description=_('This policy applies only to objects which matches this LDAP filter.'),

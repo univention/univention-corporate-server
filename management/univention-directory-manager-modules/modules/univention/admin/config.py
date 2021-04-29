@@ -33,15 +33,13 @@
 
 from __future__ import absolute_import
 
+from typing import Optional, Union  # noqa F401
+from types import ModuleType  # noqa F401
+
 import six
 
 import univention.admin.modules
 import univention.admin.uldap
-try:
-	from typing import Dict, List, Optional, Set, Union  # noqa F401
-	from types import ModuleType  # noqa F401
-except ImportError:
-	pass
 
 
 class config(object):

@@ -31,16 +31,14 @@
 """
 
 import re
-try:
-	from typing import Any, Callable, Dict, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa F401
-	T = TypeVar("T")
-except ImportError:
-	pass
+from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa F401
 
 import six
 from ldap.filter import filter_format
 
 import univention.admin.uexceptions
+
+T = TypeVar("T")
 
 
 class conjunction(object):
