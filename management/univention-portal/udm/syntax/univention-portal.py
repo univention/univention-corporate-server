@@ -110,6 +110,6 @@ class NewPortalEntryLinkTarget(select):
 	]
 
 
-class LocalizedLinkList(translationTuple):
+class LocalizedLink(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Link'), string)]
 	subsyntax_key_value = False
