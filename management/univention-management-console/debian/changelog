@@ -1,3 +1,9 @@
+univention-management-console (12.0.11-7) unstable; urgency=medium
+
+  * Bug #53109: Fix a bug when reloading modules without an overview
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 30 Apr 2021 00:47:46 +0200
+
 univention-management-console (12.0.11-6) unstable; urgency=medium
 
   * Bug #52453: adjust header and menus

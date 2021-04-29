@@ -1208,6 +1208,9 @@ define([
 		reloadModules: function() {
 			tools.resetModules();
 			return this._loadModules(true).then(lang.hitch(this, function(args) {
+				if (!_overviewVisible) {
+					return;
+				}
 				this._grid.set('categories', args.categories);
 				this._moduleStore.constructor(args.modules, args.categories);
 
