@@ -1092,7 +1092,8 @@ class simpleLdap(object):
 			ud.debug(ud.ADMIN, ud.INFO, 'reset options to default by _define_options')
 			self._define_options(options)
 
-	def _define_options(self, module_options):  # type: (dict) -> None
+	def _define_options(self, module_options):
+		# type: (Dict[str, Any]) -> None
 		"""
 		Enables all UDM options which are enabled by default.
 
@@ -1134,6 +1135,7 @@ class simpleLdap(object):
 		self.policies = [policy for policy in self.policies if not any(self.lo.compare_dn(pol, policy) for pol in policies)]
 
 	def policiesChanged(self):
+		# type: () -> bool
 		return set(self.oldpolicies) != set(self.policies)
 
 	def __app_option_enabled(self, name, option):
@@ -1359,6 +1361,7 @@ class simpleLdap(object):
 		m = univention.admin.modules.get(self.module)
 
 		def lowerset(vals):
+			# type: (Iterable[str]) -> Set[str]
 			return set(x.lower() for x in vals)
 
 		ocs = lowerset(x.decode('UTF-8') for x in _MergedAttributes(self, ml).get_attribute('objectClass'))
@@ -1529,6 +1532,7 @@ class simpleLdap(object):
 		self.save()
 
 	def _write_admin_diary_remove(self):
+		# type: () -> None
 		self._write_admin_diary_event('REMOVED')
 
 	def loadPolicyObject(self, policy_type, reset=0):  # type: (str, int) -> simplePolicy
@@ -3350,6 +3354,7 @@ class simplePolicy(simpleLdap):
 		self.copyIdentifier(referring_object)
 
 	def getIdentifier(self):
+		# type: () -> str
 		for key, property in self.descriptions.items():
 			if property.identifies and key in self.info and self.info[key]:
 				return key
@@ -3453,12 +3458,10 @@ class simplePolicy(simpleLdap):
 		return result
 
 	def fixedAttributes(self):
+		# type: () -> Dict[str, bool]
 		"""
 		Return effectively fixed attributes.
-
-		:rtype: dict
 		"""
-
 		if not self.resultmode:
 			return {}
 
@@ -3471,10 +3474,9 @@ class simplePolicy(simpleLdap):
 		return fixed_attributes
 
 	def emptyAttributes(self):
+		# type: () -> Dict[str, bool]
 		"""
 		return effectively empty attributes.
-
-		:rtype: dict
 		"""
 
 		empty_attributes = {}

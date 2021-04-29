@@ -36,19 +36,17 @@ import copy
 import sys
 import re
 import unicodedata
+from typing import TYPE_CHECKING, Any, Container, Iterable, List, Match, Optional, Type, Union  # noqa F401
 
 import six
 from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug as ud
-
 from univention.admin._ucr import configRegistry
+if TYPE_CHECKING:
+	from univention.admin.layout import Tab  # noqa F401
 
-try:
-	from typing import Any, List, Optional, Type, Union  # noqa F401
-except ImportError:
-	pass
 
 __all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
 
@@ -60,6 +58,7 @@ ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
 
 def ucr_overwrite_properties(module, lo):
+	# type: (Any, univention.admin.uldap.access) -> None
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
@@ -116,14 +115,16 @@ def ucr_overwrite_properties(module, lo):
 
 
 def pattern_replace(pattern, object):
+	# type: (str, Any) -> str
 	"""
 	Replaces patterns like `<attribute:command,...>[range]` with values
 	of the specified UDM attribute.
 	"""
 
-	global_commands = []
+	global_commands = []  # type: List[str]
 
 	def modify_text(text, commands):
+		# type: (str, List[str]) -> str
 		# apply all string commands
 		for iCmd in commands:
 			if iCmd == 'lower':
@@ -149,6 +150,7 @@ def pattern_replace(pattern, object):
 		return text
 
 	def repl(match):
+		# type: (Match[str]) -> str
 		key = match.group('key')
 		ext = match.group('ext')
 		strCommands = []
@@ -348,6 +350,7 @@ class property:
 		self.type_class = type_class
 
 	def new(self):
+		# type: () -> Union[List[str], None]
 		return [] if self.multivalue else None
 
 	def _replace(self, res, object):
@@ -411,6 +414,7 @@ class property:
 		return defaults
 
 	def check_default(self, object):
+		# type: (Any) -> None
 		defaults = self.default(object)
 		try:
 			if isinstance(defaults, list):
@@ -423,6 +427,7 @@ class property:
 			raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
 	def matches(self, options):
+		# type: (Iterable[str]) -> bool
 		if not self.options:
 			return True
 		return bool(set(self.options).intersection(set(options)))
@@ -434,6 +439,7 @@ class option(object):
 	"""
 
 	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
+		# type: (str, str, int, bool, bool, Iterable[str], bool) -> None
 		self.short_description = short_description
 		self.long_description = long_description
 		self.default = default
@@ -445,6 +451,7 @@ class option(object):
 			self.objectClasses = set(objectClasses)
 
 	def matches(self, objectClasses):
+		# type: (Container[str]) -> bool
 		if not self.objectClasses:
 			return True
 		for oc in self.objectClasses:
@@ -454,6 +461,7 @@ class option(object):
 
 
 def ucr_overwrite_layout(module, ucr_property, tab):
+	# type: (Any, str, Tab) -> Optional[bool]
 	"""
 	Overwrite the advanced setting in the layout
 	"""
@@ -473,6 +481,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
 
 
 def ucr_overwrite_module_layout(module):
+	# type: (Any) -> None
 	"""
 	Overwrite the tab layout through |UCR| variables.
 	"""
@@ -554,6 +563,7 @@ class extended_attribute(object):
 	"""
 
 	def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
+		# type: (str, str, Any, bool, str, Any) -> None
 		self.name = name
 		self.objClass = objClass
 		self.ldapMapping = ldapMapping
@@ -659,6 +669,7 @@ if six.PY2:  # deprecated, use layout.Group instead
 class policiesGroup:
 
 	def __init__(self, id, short_description=None, long_description='', members=[]):
+		# type: (Any, Optional[str], str, Any) -> None
 		self.id = id
 		if short_description is None:
 			self.short_description = id
