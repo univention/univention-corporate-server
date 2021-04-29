@@ -438,7 +438,6 @@ class mapping(object):
 	def __init__(self):
 		self._map = {}
 		self._unmap = {}
-		self._map_func = {}
 		self._unmap_func = {}
 		self._map_encoding = {}
 		self._unmap_encoding = {}
