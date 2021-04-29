@@ -3374,6 +3374,7 @@ class simplePolicy(simpleLdap):
 		for key, property in self.descriptions.items():
 			if property.identifies and key in self.info and self.info[key]:
 				return key
+		raise ValueError()
 
 	def __makeUnique(self):
 		identifier = self.getIdentifier()
