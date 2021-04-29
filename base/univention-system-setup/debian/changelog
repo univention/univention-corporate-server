@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-23) unstable; urgency=medium
+
+  * Bug #53160: adjust design of initialsetup site
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Apr 2021 10:40:02 +0200
+
 univention-system-setup (13.0.3-22) unstable; urgency=medium
 
   * Bug #52941: added new icon design for certificate, language and network settings
