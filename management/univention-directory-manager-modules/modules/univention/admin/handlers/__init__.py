@@ -999,7 +999,7 @@ class simpleLdap(object):
 			self.superordinate = univention.admin.objects.get_superordinate(self.module, None, self.lo, self.dn or self.position.getDn())
 
 		if not self.superordinate:
-			if superordinate_names == set(['settings/cn']):
+			if superordinate_names == {'settings/cn'}:
 				ud.debug(ud.ADMIN, ud.WARN, 'No settings/cn superordinate was given.')
 				return   # settings/cn might be misued as superordinate, don't risk currently
 			if not must_exists:
@@ -1007,7 +1007,7 @@ class simpleLdap(object):
 			raise univention.admin.uexceptions.noSuperordinate(_('No superordinate object given'))
 
 		# check if the superordinate is of the correct object type
-		if not set([self.superordinate.module]) & superordinate_names:
+		if not {self.superordinate.module} & superordinate_names:
 			raise univention.admin.uexceptions.insufficientInformation(_('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)))
 
 		if self.dn and not self._ensure_dn_in_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
@@ -1362,7 +1362,7 @@ class simpleLdap(object):
 
 		def lowerset(vals):
 			# type: (Iterable[str]) -> Set[str]
-			return set(x.lower() for x in vals)
+			return {x.lower() for x in vals}
 
 		ocs = lowerset(x.decode('UTF-8') for x in _MergedAttributes(self, ml).get_attribute('objectClass'))
 		unneeded_ocs = set()  # type: Set[Text]
@@ -1389,11 +1389,11 @@ class simpleLdap(object):
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r' % (prop.name, prop.objClass))
 
 			if self.has_property(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
-				required_ocs |= set([prop.objClass])
+				required_ocs |= {prop.objClass}
 				continue
 
 			if prop.deleteObjClass:
-				unneeded_ocs |= set([prop.objClass])
+				unneeded_ocs |= {prop.objClass}
 
 			# if the value is unset we need to remove the attribute completely
 			if self.oldattr.get(prop.ldapMapping):
@@ -1426,7 +1426,7 @@ class simpleLdap(object):
 
 		# validate removal of object classes
 		must, may = schema.attribute_types(ocs)
-		allowed = set(name.lower() for attr in may.values() for name in attr.names) | set(name.lower() for attr in must.values() for name in attr.names)
+		allowed = {name.lower() for attr in may.values() for name in attr.names} | {name.lower() for attr in must.values() for name in attr.names}
 
 		ml = [x for x in ml if x[0].lower() != 'objectclass']
 		ml.append(('objectClass', self.oldattr.get('objectClass', []), [x.encode('utf-8') for x in ocs]))
