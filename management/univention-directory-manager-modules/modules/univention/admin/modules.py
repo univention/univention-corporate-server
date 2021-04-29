@@ -790,7 +790,7 @@ def find_superordinate(dn, co, lo):
 	while dn:
 		attr = lo.get(dn)
 		module = identifyOne(dn, attr)
-		if isSuperordinate(module):
+		if module and isSuperordinate(module):
 			return get(module)
 		dn = lo.parentDn(dn)
 	return None
