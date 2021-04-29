@@ -220,6 +220,7 @@ def ocToType(oc):
 	for module in univention.admin.modules.modules.values():
 		if univention.admin.modules.policyOc(module) == oc:
 			return univention.admin.modules.name(module)
+	return None  # FIXME
 
 
 def fixedAttribute(object, key):
