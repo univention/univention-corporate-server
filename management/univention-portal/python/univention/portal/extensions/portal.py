@@ -329,7 +329,7 @@ class UMCPortal(Portal):
 					"de_DE": category["name"],
 				},
 				"dn": category["id"],
-				"entries": [entry[1] for entry in entries],
+				"entries": [entry[2] for entry in entries],
 			})
 		return folders
 
