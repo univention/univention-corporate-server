@@ -294,7 +294,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		# but some default behaviour has to be added
 		univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
 			--dn "cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
-			--remove link='en_US /univention/management/' \
+			--remove link='"en_US" "/univention/management/"' \
 			--append link='"en_US" "/univention/umc/"' \
 			--set linkTarget=newwindow \
 			--set anonymous=TRUE || die
