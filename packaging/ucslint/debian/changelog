@@ -1,3 +1,9 @@
+ucslint (8.0.0-20) unstable; urgency=low
+
+  * Bug #51375 ucslint: Check for uldap.searchDn()
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 30 Apr 2021 10:24:34 +0200
+
 ucslint (8.0.0-19) unstable; urgency=low
 
   * Bug #49240: Allow ucslint on multiple packages
