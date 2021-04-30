@@ -35,6 +35,7 @@
           <translate i18n-key="CANCEL" />
         </button>
         <button
+          class="primary"
           type="submit"
           @click.prevent="finish"
         >
@@ -70,11 +71,15 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    categoryDn: {
+    superDn: {
       type: String,
       required: true,
     },
     objectGetter: {
+      type: String,
+      required: true,
+    },
+    superObjectGetter: {
       type: String,
       required: true,
     },
@@ -89,6 +94,9 @@ export default defineComponent({
     ...mapGetters({
       portalCategories: 'portalData/portalCategories',
     }),
+    superObjs(): any[] {
+      return this.$store.getters[this.superObjectGetter];
+    },
     items(): any[] {
       return this.$store.getters[this.objectGetter];
     },
@@ -114,12 +122,12 @@ export default defineComponent({
       setInvalidity(this, 'input', !dn);
       if (dn) {
         this.$store.dispatch('activateLoadingState');
-        const category = this.portalCategories.find((cat) => cat.dn === this.categoryDn);
-        const categoryAttrs = {
-          entries: category.entries.concat([dn]),
+        const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
+        const superAttrs = {
+          entries: superObj.entries.concat([dn]),
         };
-        console.info('Adding', dn, 'to', this.categoryDn);
-        await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+        console.info('Adding', dn, 'to', this.superDn);
+        await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         this.$store.dispatch('deactivateLoadingState');
       }
     },

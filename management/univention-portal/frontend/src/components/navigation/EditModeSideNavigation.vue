@@ -148,7 +148,10 @@ export default defineComponent({
       try {
         this.$store.dispatch('activateLoadingState');
         await udmPut(this.portalDn, attrs);
-        await this.$store.dispatch('portalData/waitForChange', { adminMode: false });
+        await this.$store.dispatch('portalData/waitForChange', {
+          retries: 10,
+          adminMode: false,
+        });
         this.$store.dispatch('portalData/setEditMode', false);
         this.$store.dispatch('navigation/setActiveButton', '');
       } catch (error) {

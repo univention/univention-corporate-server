@@ -30,8 +30,8 @@ import { PortalModule } from '../../root.models';
 import { PortalData } from './portalData.models';
 
 interface WaitForChangePayload {
-  retries?: number;
-  adminMode?: boolean;
+  retries: number;
+  adminMode: boolean;
 }
 
 export interface PortalDataState {
@@ -116,12 +116,10 @@ const portalData: PortalModule<PortalDataState> = {
       commit('PORTALBACKGROUND', data);
     },
     async waitForChange({ dispatch, getters }, payload: WaitForChangePayload) {
-      const retries = payload.retries || 10;
-      const adminMode = payload.adminMode || false;
-      if (retries <= 0) {
+      if (payload.retries <= 0) {
         return false;
       }
-      const response = await dispatch('portalJsonRequest', { adminMode }, { root: true });
+      const response = await dispatch('portalJsonRequest', { adminMode: payload.adminMode }, { root: true });
       const portalJson = response.data;
       if (portalJson.cache_id !== getters.cacheId) {
         return true;
@@ -129,7 +127,8 @@ const portalData: PortalModule<PortalDataState> = {
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
-      return dispatch('waitForChange', retries - 1);
+      payload.retries -= 1;
+      return dispatch('waitForChange', payload);
     },
     async setEditMode({ dispatch, commit }, editMode: boolean) {
       await dispatch('loadPortal', { adminMode: editMode }, { root: true });

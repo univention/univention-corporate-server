@@ -1,4 +1,4 @@
-s<!--
+<!--
   Copyright 2021 Univention GmbH
 
   https://www.univention.de/
@@ -149,6 +149,9 @@ export default defineComponent({
     },
   },
 });
+
+export { LocaleAndValue };
+
 </script>
 
 <style lang="stylus">
@@ -158,6 +161,9 @@ export default defineComponent({
 
   &__select
     max-width: 5rem
+
+    select
+      width: 5rem
 
   &__input
     width: 100%

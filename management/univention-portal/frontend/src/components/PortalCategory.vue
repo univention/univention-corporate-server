@@ -68,12 +68,12 @@
               <portal-folder
                 v-if="item.isFolder"
                 v-bind="item"
-                :category-dn="dn"
+                :super-dn="dn"
               />
               <portal-tile
                 v-else
                 v-bind="item"
-                :category-dn="dn"
+                :super-dn="dn"
               />
             </div>
           </template>
@@ -91,12 +91,12 @@
             <portal-folder
               v-if="tile.isFolder"
               v-bind="tile"
-              :category-dn="dn"
+              :super-dn="dn"
             />
             <portal-tile
               v-else
               v-bind="tile"
-              :category-dn="dn"
+              :super-dn="dn"
             />
           </div>
         </template>
@@ -256,7 +256,7 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .portal-category
-  margin-bottom: calc(10 * var(--layout-spacing-unit));
+  margin-bottom: calc(8 * var(--layout-spacing-unit));
 
   &--empty {
     margin-bottom: 0;
@@ -295,7 +295,7 @@ export default defineComponent({
     display: inline-flex
     align-items: center
     margin-top: 0
-    margin-bottom: calc(6 * var(--layout-spacing-unit))
+    margin-bottom: calc(3 * var(--layout-spacing-unit))
 
     &--edit
       cursor: pointer

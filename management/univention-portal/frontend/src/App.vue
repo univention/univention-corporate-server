@@ -64,7 +64,6 @@ export default defineComponent({
     this.$store.dispatch('activateLoadingState');
     const answer = await this.$store.dispatch('loadPortal', {
       adminMode: false,
-      waitForChange: true,
     });
     if (answer.portal && answer.portal.ensureLogin && !this.userState.username) {
       login(this.userState);

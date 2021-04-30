@@ -27,95 +27,64 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <modal-dialog
-    :i18n-title-key="label"
-    @cancel="cancel"
+  <edit-widget
+    :label="label"
+    :can-remove="!!modelValue.dn"
+    @remove="remove"
+    @save="finish"
   >
-    <form
-      class="admin-entry"
-      @submit.prevent="finish"
-    >
-      <main>
-        <label>
-          <translate i18n-key="INTERNAL_NAME" />
-          <span> *</span>
-          <input
-            v-model="name"
-            name="name"
-            :disabled="modelValue.dn"
-          >
-        </label>
-        <label>
-          <input
-            v-model="activated"
-            type="checkbox"
-          >
-          <translate i18n-key="ACTIVATED" />
-        </label>
-        <locale-input
-          v-model="title"
-          label="Name"
-        />
-        <locale-input
-          v-model="description"
-          label="Description"
-        />
-        <hr class="admin-entry__spacer">
-        <h3>Links</h3>
-        <link-widget
-          v-model="links"
-        />
-        <hr class="admin-entry__spacer">
-
-        <image-upload
-          v-model="pathToLogo"
-          label="Icon"
-        />
-        <label>
-          <translate i18n-key="BACKGROUND_COLOR" />
-          <input
-            v-model="backgroundColor"
-            name="backgroundColor"
-          >
-        </label>
-      </main>
-      <footer
-        v-if="modelValue.dn"
+    <label>
+      <translate i18n-key="INTERNAL_NAME" />
+      <span> *</span>
+      <input
+        v-model="name"
+        name="name"
+        :disabled="modelValue.dn"
       >
-        <button
-          type="button"
-          @click.prevent="remove"
-        >
-          <translate i18n-key="REMOVE_FROM_PORTAL" />
-        </button>
-      </footer>
-      <footer>
-        <button
-          type="button"
-          @click.prevent="cancel"
-        >
-          <translate i18n-key="CANCEL" />
-        </button>
-        <button
-          type="submit"
-          @click.prevent="finish"
-        >
-          <translate :i18n-key="label" />
-        </button>
-      </footer>
-    </form>
-  </modal-dialog>
+    </label>
+    <locale-input
+      v-model="title"
+      label="Name"
+    />
+    <locale-input
+      v-model="description"
+      label="Description"
+    />
+    <label>
+      <input
+        v-model="activated"
+        type="checkbox"
+      >
+      <translate i18n-key="ACTIVATED" />
+    </label>
+    <h3>Links</h3>
+    <link-widget
+      v-model="links"
+    />
+
+    <image-upload
+      v-model="pathToLogo"
+      label="Icon"
+    />
+    <label>
+      <translate i18n-key="BACKGROUND_COLOR" />
+      <input
+        v-model="backgroundColor"
+        name="backgroundColor"
+      >
+    </label>
+  </edit-widget>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import ModalDialog from '@/components/ModalDialog.vue';
 import { put, add } from '@/jsHelper/admin';
+import EditWidget from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
-import LinkWidget from '@/components/widgets/LinkWidget.vue';
+import LinkWidget, { LocaleAndValue } from '@/components/widgets/LinkWidget.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
@@ -126,14 +95,14 @@ interface AdminEntryData {
   backgroundColor: string | null,
   title: Record<string, string>,
   description: Record<string, string>,
-  links: Array<unknown>,
+  links: Array<LocaleAndValue>,
 }
 
 export default defineComponent({
   name: 'FormEntryEdit',
   components: {
-    ModalDialog,
     ImageUpload,
+    EditWidget,
     LocaleInput,
     LinkWidget,
     Translate,
@@ -143,8 +112,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    categoryDn: {
+    superDn: {
       type: String,
+      required: true,
+    },
+    fromFolder: {
+      type: Boolean,
       required: true,
     },
     modelValue: {
@@ -166,9 +139,17 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       portalCategories: 'portalData/portalCategories',
+      portalFolders: 'portalData/portalFolders',
     }),
+    superObjs(): any[] {
+      if (this.fromFolder) {
+        return this.portalFolders;
+      }
+      return this.portalCategories;
+    },
   },
   created(): void {
+    console.info('Edit entry', this.modelValue);
     const dn = this.modelValue.dn;
     const activated = this.modelValue.activated;
     if (dn) {
@@ -190,12 +171,12 @@ export default defineComponent({
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      const category = this.portalCategories.find((cat) => cat.dn === this.categoryDn);
-      const categoryAttrs = {
-        entries: category.entries.filter((entryDn) => entryDn !== dn),
+      const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
+      const superAttrs = {
+        entries: superObj.entries.filter((entryDn) => entryDn !== dn),
       };
-      console.info('Removing', dn, 'from', this.categoryDn);
-      await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
+      console.info('Removing', dn, 'from', this.superDn);
+      await put(this.superDn, superAttrs, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
       this.$store.dispatch('deactivateLoadingState');
     },
     async finish() {
@@ -204,7 +185,7 @@ export default defineComponent({
         name: this.name,
         activated: this.activated,
         displayName: Object.entries(this.title),
-        link: this.links,
+        link: this.links.map((lnk) => [lnk.locale, lnk.value]),
         icon: '',
       };
       if (this.pathToLogo.startsWith('data:')) {
@@ -223,11 +204,11 @@ export default defineComponent({
         const dn = await add('portals/entry', attrs, this.$store, 'ENTRY_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');
-          const category = this.portalCategories.find((cat) => cat.dn === this.categoryDn);
-          const categoryAttrs = {
-            entries: category.entries.concat([dn]),
+          const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
+          const superAttrs = {
+            entries: superObj.entries.concat([dn]),
           };
-          await put(this.categoryDn, categoryAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         }
       }
       this.$store.dispatch('deactivateLoadingState');
@@ -235,14 +216,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="stylus">
-.admin-entry
-  width: calc(var(--inputfield-width) + 3rem)
-  main
-    max-height: 26rem
-    overflow: auto
-
-  &__spacer
-    margin: calc(var(--layout-spacing-unit) * 5) auto
-</style>

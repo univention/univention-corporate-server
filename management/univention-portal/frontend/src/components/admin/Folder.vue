@@ -54,24 +54,33 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import { put, add } from '@/jsHelper/admin';
-import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import EditWidget from '@/components/admin/EditWidget.vue';
+import ImageUpload from '@/components/widgets/ImageUpload.vue';
+import LocaleInput from '@/components/widgets/LocaleInput.vue';
+import LinkWidget from '@/components/widgets/LinkWidget.vue';
+
 import Translate from '@/i18n/Translate.vue';
 
-interface AdminCategoryData {
+interface AdminFolderData {
   name: string,
   title: Record<string, string>,
 }
 
 export default defineComponent({
-  name: 'FormCategoryEdit',
+  name: 'FormFolderEdit',
   components: {
+    ImageUpload,
     EditWidget,
-    Translate,
     LocaleInput,
+    LinkWidget,
+    Translate,
   },
   props: {
     label: {
+      type: String,
+      required: true,
+    },
+    superDn: {
       type: String,
       required: true,
     },
@@ -80,7 +89,7 @@ export default defineComponent({
       required: true,
     },
   },
-  data(): AdminCategoryData {
+  data(): AdminFolderData {
     return {
       name: '',
       title: {},
@@ -88,8 +97,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalDn: 'portalData/getPortalDn',
-      categories: 'portalData/portalCategoriesOnPortal',
+      portalCategories: 'portalData/portalCategories',
     }),
   },
   created(): void {
@@ -106,11 +114,12 @@ export default defineComponent({
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      const portalAttrs = {
-        categories: this.categories.filter((catDn) => catDn !== dn),
+      const category = this.portalCategories.find((cat) => cat.dn === this.superDn);
+      const categoryAttrs = {
+        entries: category.entries.filter((entryDn) => entryDn !== dn),
       };
-      console.info('Removing', dn, 'from', this.portalDn);
-      put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_REMOVED_SUCCESS', 'CATEGORY_REMOVED_FAILURE');
+      console.info('Removing', dn, 'from', this.superDn);
+      await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_REMOVED_SUCCESS', 'FOLDER_REMOVED_FAILURE');
       this.$store.dispatch('deactivateLoadingState');
     },
     async finish() {
@@ -121,17 +130,17 @@ export default defineComponent({
       };
       if (this.modelValue.dn) {
         console.info('Modifying', this.modelValue.dn);
-        put(this.modelValue.dn, attrs, this.$store, 'CATEGORY_MODIFIED_SUCCESS', 'CATEGORY_MODIFIED_FAILURE');
+        await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
       } else {
-        console.info('Adding category');
-        console.info('Then adding it to', this.categories, 'of', this.portalDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
-        const dn = await add('portals/category', attrs, this.$store, 'CATEGORY_ADDED_FAILURE');
+        console.info('Adding folder');
+        const dn = await add('portals/folder', attrs, this.$store, 'FOLDER_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');
-          const portalAttrs = {
-            categories: this.categories.concat([dn]),
+          const category = this.portalCategories.find((cat) => cat.dn === this.superDn);
+          const categoryAttrs = {
+            entries: category.entries.concat([dn]),
           };
-          await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
+          await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
         }
       }
       this.$store.dispatch('deactivateLoadingState');

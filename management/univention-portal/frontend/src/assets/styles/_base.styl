@@ -24,11 +24,11 @@ button
   text-transform: uppercase
   border: none
   border-radius: var(--button-border-radius)
-  background-color: var(--button-text-bgc)
-  transition: var(--button-bgc-transition)
+  background-color: unquote('rgba(var(--color-grey25-rgb), 0.7)')
   transition: opacity 250ms
   display: flex
   align-items: center
+  cursor: pointer
 
   svg + span
     padding-left: var(--layout-spacing-unit-small)
@@ -36,10 +36,11 @@ button
   &[disabled]
     background-color: var(--button-bgc-overlay-disabled)
 
-  &:hover,
+  &:hover
+    background-color: unquote('rgba(var(--color-grey25-rgb), 0.85)')
+
   &:focus
-    background-color: var(--bgc-content-body)
-    cursor: pointer
+    background-color: unquote('rgba(var(--color-grey25-rgb), 1)')
 
   &.primary
     background-color: unquote('rgba(var(--color-primary-rgb), 0.7)')
@@ -85,9 +86,12 @@ input, select
 select
   cursor: pointer
   appearance: none
-  width: 5rem
 
-label
+  option
+    background-color: var(--color-grey0)
+    color: var(--font-color-contrast-high)
+
+label, div.label
   color: var(--color-grey62)
   font-size: var(--font-size-3)
   padding-bottom: calc(var(--layout-spacing-unit) * 1.25)

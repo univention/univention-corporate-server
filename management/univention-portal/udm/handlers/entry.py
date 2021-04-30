@@ -84,7 +84,7 @@ property_descriptions = {
 	'allowedGroups': univention.admin.property(
 		short_description=_('Restrict visibility to groups'),
 		long_description=_('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
-		syntax=univention.admin.syntax.GroupDNOrEmpty,
+		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 	),
 	'activated': univention.admin.property(

@@ -48,6 +48,7 @@ import ChangePassword from '@/components/forms/ChangePassword.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import AdminEntry from '@/components/admin/Entry.vue';
+import AdminFolder from '@/components/admin/Folder.vue';
 import AdminExistingEntry from '@/components/admin/ExistingEntry.vue';
 import AdminCategory from '@/components/admin/Category.vue';
 import AdminExistingCategory from '@/components/admin/ExistingCategory.vue';
@@ -66,6 +67,7 @@ export default defineComponent({
     ModalWrapper,
     PortalFolder,
     AdminEntry,
+    AdminFolder,
     AdminExistingEntry,
     AdminCategory,
     AdminExistingCategory,

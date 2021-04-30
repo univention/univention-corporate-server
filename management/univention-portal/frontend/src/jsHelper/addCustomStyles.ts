@@ -27,10 +27,10 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-// This function is necessary to make sure that the customStyles.css overrides all the other styles without the use of import.
+// This function is necessary to make sure that the custom.css overrides all the other styles without the use of import.
 export default function addCustomStyles(): void {
   const linkTag = document.createElement('link');
   linkTag.rel = 'stylesheet';
-  linkTag.href = '/css/customStyles.css';
+  linkTag.href = './custom.css';
   document.head.appendChild(linkTag);
 }

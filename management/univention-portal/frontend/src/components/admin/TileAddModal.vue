@@ -44,6 +44,14 @@
       <translate i18n-key="ADD_EXISTING_ENTRY" />
     </button>
     <button
+      v-if="!forFolder"
+      class="tile-add-modal-button"
+      @click="openModal('createFolder')"
+    >
+      <translate i18n-key="NEW_FOLDER" />
+    </button>
+    <button
+      v-if="!forFolder"
       class="tile-add-modal-button"
       @click="openModal('addFolder')"
     >
@@ -65,8 +73,12 @@ export default defineComponent({
     Translate,
   },
   props: {
-    categoryDn: {
+    superDn: {
       type: String,
+      required: true,
+    },
+    forFolder: {
+      type: Boolean,
       required: true,
     },
   },
@@ -77,18 +89,33 @@ export default defineComponent({
           name: 'AdminEntry',
           props: {
             modelValue: {},
-            categoryDn: this.categoryDn,
-            label: 'ADD_ENTRY',
+            superDn: this.superDn,
+            label: 'NEW_ENTRY',
           },
         });
       }
       if (action === 'addEntry') {
+        let superObjectGetter = 'portalData/portalCategories';
+        if (this.forFolder) {
+          superObjectGetter = 'portalData/portalFolders';
+        }
         this.$store.dispatch('modal/setAndShowModal', {
           name: 'AdminExistingEntry',
           props: {
             label: 'ADD_EXISTING_ENTRY',
             objectGetter: 'portalData/portalEntries',
-            categoryDn: this.categoryDn,
+            superObjectGetter,
+            superDn: this.superDn,
+          },
+        });
+      }
+      if (action === 'createFolder') {
+        this.$store.dispatch('modal/setAndShowModal', {
+          name: 'AdminFolder',
+          props: {
+            modelValue: {},
+            superDn: this.superDn,
+            label: 'NEW_FOLDER',
           },
         });
       }
@@ -98,7 +125,8 @@ export default defineComponent({
           props: {
             label: 'ADD_EXISTING_FOLDER',
             objectGetter: 'portalData/portalFolders',
-            categoryDn: this.categoryDn,
+            superObjectGetter: 'portalData/portalCategories',
+            superDn: this.superDn,
           },
         });
       }

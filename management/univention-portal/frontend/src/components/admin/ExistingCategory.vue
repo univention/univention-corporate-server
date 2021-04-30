@@ -35,6 +35,7 @@
           <translate i18n-key="CANCEL" />
         </button>
         <button
+          class="primary"
           type="submit"
           @click.prevent="finish"
         >

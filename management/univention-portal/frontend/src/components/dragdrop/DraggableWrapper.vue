@@ -48,7 +48,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     </template>
 
     <tile-add
-      :category-dn="categoryDn"
+      :super-dn="categoryDn"
     />
   </div>
 </template>

@@ -27,62 +27,76 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    class="tile-add"
-    @click="showMenu()"
+  <modal-dialog
+    :i18n-title-key="label"
+    @cancel="cancel"
   >
-    <portal-icon
-      icon="plus"
-      class="tile-add__icon--add"
-    />
-  </div>
+    <form
+      class="admin-entry"
+      @submit.prevent="finish"
+    >
+      <main>
+        <slot />
+      </main>
+      <footer
+        v-if="canRemove"
+      >
+        <button
+          type="button"
+          @click.prevent="$emit('remove')"
+        >
+          <translate i18n-key="REMOVE_HERE" />
+        </button>
+      </footer>
+      <footer>
+        <button
+          type="button"
+          @click.prevent="cancel"
+        >
+          <translate i18n-key="CANCEL" />
+        </button>
+        <button
+          class="primary"
+          type="submit"
+          @click.prevent="$emit('save')"
+        >
+          <translate i18n-key="SAVE" />
+        </button>
+      </footer>
+    </form>
+  </modal-dialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import PortalIcon from '@/components/globals/PortalIcon.vue';
-// mocks
+import ModalDialog from '@/components/ModalDialog.vue';
+import Translate from '@/i18n/Translate.vue';
+
 export default defineComponent({
-  name: 'TileAdd',
-  components: { PortalIcon },
+  name: 'EditWidget',
+  components: {
+    ModalDialog,
+    Translate,
+  },
   props: {
-    superDn: {
+    label: {
       type: String,
       required: true,
     },
-    forFolder: {
+    canRemove: {
       type: Boolean,
-      default: false,
+      required: true,
     },
   },
+  emits: ['remove', 'save'],
+  mounted() {
+    this.$el.querySelector('input:enabled')?.focus();
+  },
   methods: {
-    showMenu(): void {
-      this.$store.dispatch('modal/setAndShowModal', {
-        name: 'TileAddModal',
-        props: {
-          superDn: this.superDn,
-          forFolder: this.forFolder,
-        },
-      });
+    cancel() {
+      this.$store.dispatch('modal/hideAndClearModal');
     },
   },
 });
 </script>
-
-<style lang="stylus">
-.tile-add
-  margin: 0
-  min-width: var(--app-tile-side-length)
-  width: var(--app-tile-side-length)
-  height: var(--app-tile-side-length)
-  border-radius: var(--border-radius-apptile)
-  border: 0.2rem solid var(--color-grey40)
-  background-color: transparent
-  cursor: pointer
-
-  & svg
-    width: 100%
-    height: 100%
-    stroke: var(--color-grey40)
-</style>

@@ -88,6 +88,13 @@ export default defineComponent({
   max-width: calc(50 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
 
+  form
+    width: calc(var(--inputfield-width) + 3rem)
+
+  main
+    max-height: 26rem
+    overflow: auto
+
   footer
     margin-top: calc(2 * var(--layout-spacing-unit))
     padding-top: calc(2 * var(--layout-spacing-unit))

@@ -60,4 +60,5 @@ export default defineComponent({
   width: calc(2 * var(--button-icon-size))
   border-radius: var(--border-radius-circles)
   padding: var(--layout-spacing-unit)
+  background-color: transparent
 </style>

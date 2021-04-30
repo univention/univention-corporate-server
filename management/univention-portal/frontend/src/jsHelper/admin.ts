@@ -50,11 +50,18 @@ async function add(objectType, attrs, store, errorMessage): Promise<string> {
 
 async function put(dn, attrs, store, successMessage, errorMessage) {
   try {
-    await udmPut(dn, attrs);
+    const response = await udmPut(dn, attrs);
+    const result = response.data.result[0];
+    if (!result.success) {
+      throw new Error(result.details);
+    }
     store.dispatch('notificationBubble/addSuccessNotification', {
       bubbleTitle: translate(successMessage),
     });
-    await store.dispatch('portalData/waitForChange', { adminMode: true });
+    await store.dispatch('portalData/waitForChange', {
+      retries: 10,
+      adminMode: true,
+    });
     await store.dispatch('loadPortal', { adminMode: true });
   } catch (err) {
     console.error(err.message);
