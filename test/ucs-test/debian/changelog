@@ -1,3 +1,9 @@
+ucs-test (10.0.5-12) unstable; urgency=medium
+
+  * Bug #52869: Unskip first edit mode test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 30 Apr 2021 12:49:31 +0200
+
 ucs-test (10.0.5-11) unstable; urgency=medium
 
   * Bug #52953: fixed xpath problem in selenium test 180_portal_entries

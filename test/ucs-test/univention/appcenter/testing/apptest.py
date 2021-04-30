@@ -157,6 +157,13 @@ class Session(object):
 		# close side menu
 		self.wait_until_clickable_and_click('#header-button-menu')
 
+	def portal_login(self, username, password):
+		self.wait_until_clickable_and_click('#header-button-menu')
+		self.wait_until_clickable_and_click('#loginButton')
+		self.enter_input('username', username)
+		self.enter_input('password', password)
+		self.enter_return()
+
 	def click_portal_tile(self, name):
 		elements = self.find_all('.portal-tile')
 		for element in elements:
@@ -256,6 +263,7 @@ class Session(object):
 		filename = self._new_filename(name, 'png')
 		logger.info('Saving screenshot %r', filename)
 		self.driver.save_screenshot(filename)
+		return filename
 
 	@classmethod
 	def chrome(cls, display_num, base_url, screenshot_path):
@@ -557,7 +565,12 @@ else:
 			logger.warning('$UCS_TEST_SELENIUM_SCREENSHOT_PATH not set')
 			ret = 'selenium'
 			logger.warning('  using {}'.format(ret))
-		return ret
+		return os.path.abspath(ret)
+
+	@pytest.fixture
+	def test_logger():
+		"""Our logger instance so you can print some info for pytest"""
+		return logger
 
 	@pytest.fixture
 	def chrome(selenium_base_url, selenium_screenshot_path):

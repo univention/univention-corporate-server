@@ -1,147 +1,80 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/bin/python3
 # -*- coding: utf-8 -*-
 ## desc: Test portal_administration_inline_appearance_background_image
 ## roles:
 ##  - domaincontroller_master
 ## tags:
-##  - SKIP
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous
 
-import time
-import logging
-#  import base64
+import importlib
+import os
+import sys
 
-from univention.testing import selenium
-import univention.testing.ucr as ucr_test
-from univention.testing.udm import UCSTestUDM
-import univention.testing.strings as uts
-from univention.admin import localization
-from univention.udm import UDM
-from univention.testing.selenium.utils import expand_path
-
-logger = logging.getLogger(__name__)
-
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
+try:
+    test_lib = importlib.import_module(test_lib)
+except ImportError:
+    print('Could not import {}. Maybe set $UCS_TEST_LIB'.format(test_lib))
+    sys.exit(1)
 
 
-class ChangeBackgroundImageError(Exception):
-	pass
+def _save(chrome):
+    form = chrome.assert_one('form.edit-mode-side-navigation__form')
+    chrome.click_element_below(form, 'button.primary')
+    chrome.wait_until_clickable('#portalCategories')
 
+def _change_background(chrome):
+    chrome.wait_until_clickable_and_click('#header-button-menu')
+    chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
+    chrome.wait_until_clickable('form.edit-mode-side-navigation__form')
+    form = chrome.assert_one('form.edit-mode-side-navigation__form')
+    uploaders = chrome.find_all('div.image-upload')
+    assert len(uploaders) == 2
+    uploader = chrome.assert_one_below(uploaders[1], 'input[type=file]')
+    img_path = chrome.save_screenshot('background')
+    uploader.send_keys(img_path)
 
-class UMCTester(object):
+def _remove_background(chrome):
+    chrome.wait_until_clickable_and_click('#header-button-menu')
+    chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
+    chrome.wait_until_clickable('form.edit-mode-side-navigation__form')
+    form = chrome.assert_one('form.edit-mode-side-navigation__form')
+    uploaders = chrome.find_all('div.image-upload')
+    assert len(uploaders) == 2
+    buttons = chrome.find_all_below(uploaders[1], 'footer button')
+    buttons[1].click()
 
-	def test_umc(self):
-		try:
-			self.init()
-			self.do_test()
-		finally:
-			self.cleanup()
+def test_background(chrome, admin_username, admin_password, test_logger):
+    # chrome.goto_portal()
+    chrome.get('/univention/portal')
+    chrome.portal_login(admin_username, admin_password)
+    chrome.wait_until_clickable('#portalCategories')
+    body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
+    if 'none' != body_background:
+        raise ValueError('Background already set')
 
-	def init(self):
-		logger.info('Creating dummy portal')
-		self.dummy_portal_title = uts.random_string()
-		self.dummy_portal_cn = uts.random_string()
-		self.dummy_portal_dn = self.udm_test.create_object(
-			'portals/portal',
-			name=self.dummy_portal_cn,
-			displayName=['en_US ' + self.dummy_portal_title],
-			portalComputers=[ucr.get('ldap/hostdn')],
-		)
-		logger.info('Saving previously set portalComputers of main portal')
-		udm = UDM.admin().version(1)
-		portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
-		self.prev_comps = portal.props.portalComputers
-		portal.props.portalComputers = []
-		portal.save()
+    _change_background(chrome)
+    body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
+    if 'data:image/png;base64,' not in body_background:
+        raise ValueError('Changing the background image was not hot changed')
 
-	def do_test(self):
-		self.selenium.do_login()
+    _save(chrome)
+    body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
+    if 'none' == body_background:
+        raise ValueError('Background not set')
 
-		logger.info('Visiting dummy portal')
-		self.selenium.driver.get(self.selenium.base_url)
-		self.selenium.wait_for_text(self.dummy_portal_title)
+    _remove_background(chrome)
+    body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
+    if 'none' != body_background:
+        raise ValueError('Background not set')
 
-		logger.info('Enter edit mode')
-		self.selenium.click_element(expand_path('//*[@containsClass="iconMenu"]'))
-		self.selenium.click_button(_('Edit Portal'))
-
-		logger.info('Open portal properties')
-		self.selenium.click_element(expand_path('//*[@containsClass="iconGear"]'))
-		time.sleep(1)
-
-		logger.info('Uploading new background image')
-		logger.info("making screenshot")
-		img_path = '/tmp/background.png'
-		self.selenium.driver.save_screenshot(img_path)
-		#  with open(img_path, 'rb') as fd:
-			#  img_base64 = base64.b64encode(fd.read())
-
-		uploader = self.selenium.driver.find_element_by_xpath('//*[text() = "Background"]/../..//input[@type="file"]')
-		uploader.send_keys(img_path)
-		self.selenium.wait_until_element_visible('//*[text() = "Background"]/../..//*[text() = "Remove"]')
-
-		logger.info('Checking whether changing the background image is inline changed')
-		body_background = self.selenium.driver.find_element_by_class_name('portal__background').value_of_css_property('background-image')
-		if 'data:image/png;base64,' not in body_background:  # FIXME put base64 string in comparison
-			raise ChangeBackgroundImageError('Changing the background image was not hot changed')
-
-		self.selenium.click_button('Save')
-		self.selenium.wait_until_standby_animation_appears_and_disappears()
-
-		logger.info('Reload dummy portal')
-		self.selenium.driver.get(self.selenium.base_url)
-		self.selenium.wait_for_text(self.dummy_portal_title)
-
-		logger.info('Checking whether changing the background image worked')
-		body_background = self.selenium.driver.find_element_by_class_name('portal__background').value_of_css_property('background-image')
-		if '{}.png'.format(self.dummy_portal_cn) not in body_background:
-			raise ChangeBackgroundImageError('Changing the background image was not saved: {} should contain {}.png'.format(body_background, self.dummy_portal_cn))
-
-		logger.info('Enter edit mode')
-		self.selenium.click_element(expand_path('//*[@containsClass="iconMenu"]'))
-		self.selenium.click_button(_('Edit Portal'))
-
-		logger.info('Open portal properties')
-		self.selenium.click_element(expand_path('//*[@containsClass="iconGear"]'))
-		time.sleep(1)
-
-		logger.info('Clearing background image')
-		self.selenium.click_element('//*[text() = "Background"]/../..//*[text() = "Remove"]', scroll_into_view=True)
-		body_background = self.selenium.driver.find_element_by_class_name('portal__background').value_of_css_property('background-image')
-
-		if body_background != 'none':
-			raise ChangeBackgroundImageError('Clearing the background was not hot changed')
-
-		self.selenium.click_button('Save')
-		self.selenium.wait_until_standby_animation_appears_and_disappears()
-
-		logger.info('Reload dummy portal')
-		self.selenium.driver.get(self.selenium.base_url)
-		self.selenium.wait_until_standby_animation_appears_and_disappears()
-
-		logger.info('Checking whether clearing the background image worked')
-		body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background-image')
-		if body_background != 'none':
-			raise ChangeBackgroundImageError('Clearing the background was not saved')
-
-	def cleanup(self):
-		logger.info('Cleanup')
-		if hasattr(self, 'prev_comps'):
-			logger.info('Restore previously set portalComputers on main portal')
-			udm = UDM.admin().version(1)
-			portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
-			portal.props.portalComputers = self.prev_comps
-			portal.save()
+    _save(chrome)
+    body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
+    if 'none' != body_background:
+        raise ValueError('Background still set')
 
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
-		umc_tester = UMCTester()
-		umc_tester.ucr = ucr
-		umc_tester.udm_test = udm_test
-		umc_tester.selenium = s
-
-		umc_tester.test_umc()
+    test_lib.run_test_file(__file__)
