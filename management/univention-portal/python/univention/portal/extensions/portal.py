@@ -321,7 +321,7 @@ class UMCPortal(Portal):
 				continue
 			if category["id"] == "_favorites_":
 				continue
-			entries = [[module["name"], self._entry_id(module)] for module in content["umc_modules"] if category["id"] in module["categories"]]
+			entries = [[-module["priority"], module["name"], self._entry_id(module)] for module in content["umc_modules"] if category["id"] in module["categories"]]
 			entries = sorted(entries)
 			folders.append({
 				"name": {
