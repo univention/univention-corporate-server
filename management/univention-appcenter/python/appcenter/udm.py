@@ -199,13 +199,6 @@ class ApplicationLDAPObject(object):
 		create_recursive_container(self._container, self._lo, self._pos)
 		self._pos.setDn(self._container)
 		base64icon = ''
-		icon_file = app.get_cache_file('logo')
-		if os.path.exists(icon_file):
-			try:
-				with open(icon_file, 'rb') as f:
-					base64icon = base64.b64encode(f.read())
-			except IOError:
-				pass
 		attrs = {
 			'id': self._rdn,
 			'name': app.get_localised_list('name'),

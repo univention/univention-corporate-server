@@ -355,7 +355,7 @@ def get_sha256(content):
 
 def get_sha256_from_file(filename):
 	if os.path.exists(filename):
-		with open(filename, 'r') as f:
+		with open(filename, 'rb') as f:
 			return get_sha256(f.read())
 
 

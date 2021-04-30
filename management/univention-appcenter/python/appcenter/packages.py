@@ -170,8 +170,8 @@ def _apt_get_dry_run(action, pkgs):
 	logger = LogCatcher(package_logger)
 	success = call_process(['/usr/bin/apt-get'] + apt_args + [action, '-s'] + pkgs, logger=logger).returncode == 0
 	install, remove, broken = [], [], []
-	install_regex = re.compile('^(Inst) ([^ ]*?) \((.*?) ')
-	upgrade_remove_regex = re.compile('^(Remv|Inst) ([^ ]*?) \[(.*?)\]')
+	install_regex = re.compile(r'^(Inst) ([^ ]*?) \((.*?) ')
+	upgrade_remove_regex = re.compile(r'^(Remv|Inst) ([^ ]*?) \[(.*?)\]')
 	for line in logger.stdout():
 		for regex in [install_regex, upgrade_remove_regex]:
 			match = regex.match(line)

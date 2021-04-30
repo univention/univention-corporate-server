@@ -294,17 +294,17 @@ from __future__ import absolute_import
 
 from univention.appcenter.listener import AppListener
 
-name = '%(name)s'
+name = %(name)r
 
 class AppListener(AppListener):
 	class Configuration(AppListener.Configuration):
-		name = '%(name)s'
+		name = %(name)r
 		# the following attributes do nothing and are here solely for
 		# documentation / transparency purposes
 		# logic is in the AppListener class itself
-		ldap_filter = '%(ldap_filter)s'
-		dump_dir = '%(dump_dir)s'
-		output_dir = '%(output_dir)s'
+		ldap_filter = %(ldap_filter)r
+		dump_dir = %(dump_dir)r
+		output_dir = %(output_dir)r
 ''' % {'name': app.id, 'ldap_filter': ldap_filter, 'dump_dir': dump_dir, 'output_dir': output_dir})
 			self._update_converter_service(app)
 			self.log('Added Listener for %s' % app)

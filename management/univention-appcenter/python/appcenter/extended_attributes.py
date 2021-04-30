@@ -35,13 +35,15 @@
 import os
 import re
 
+from ldap.dn import escape_dn_chars
+from six import with_metaclass
+
 from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.ucr import ucr_get, ucr_run_filter
 from univention.appcenter.udm import create_object_if_not_exists, create_recursive_container, remove_object_if_exists, modify_object
 from univention.appcenter.utils import underscore, get_md5, read_ini_file
-from six import with_metaclass
 
 
 attribute_logger = get_base_logger().getChild('attributes')
@@ -187,11 +189,11 @@ class ExtendedAttribute(SchemaObject):
 
 	@property
 	def dn(self):
-		return 'cn=%s,%s,%s' % (self.name, self.position, ucr_get('ldap/base'))
+		return 'cn=%s,%s,%s' % (escape_dn_chars(self.name), self.position, ucr_get('ldap/base'))
 
 	def __init__(self, app, **kwargs):
 		kwargs.setdefault('belongs_to', '%sUser' % (app.id,))
-		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % app.id)
+		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % escape_dn_chars(app.id))
 		kwargs.setdefault('tab_name', app.name)
 		kwargs.setdefault('ldap_mapping', kwargs['name'])
 		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
@@ -238,7 +240,7 @@ class ExtendedOption(SchemaObject):
 	object_class = HiddenAttribute()
 
 	def __init__(self, app, **kwargs):
-		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % (app.id,))
+		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % escape_dn_chars(app.id))
 		kwargs.setdefault('description', app.name)
 		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
 		super(ExtendedOption, self).__init__(app, **kwargs)
@@ -249,7 +251,7 @@ class ExtendedOption(SchemaObject):
 
 	@property
 	def dn(self):
-		return 'cn=%s,%s,%s' % (self.name, self.position, ucr_get('ldap/base'))
+		return 'cn=%s,%s,%s' % (escape_dn_chars(self.name), self.position, ucr_get('ldap/base'))
 
 
 class ObjectClass(SchemaObject):
