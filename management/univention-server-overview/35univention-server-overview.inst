@@ -71,7 +71,7 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 12 ]; then
 	# update from 4.4? then linkTarget was useportaldefault
 	univention-directory-manager portals/entry modify "$@" --ignore_not_exists \
 		--dn "cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" \
-		--remove link='en_US /univention/server-overview/' \
+		--remove link='"en_US" "/univention/server-overview/"' \
 		--append link='"en_US" "/univention/server-overview/?header=try-hide"' \
 		--set linkTarget=newwindow || die
 fi
