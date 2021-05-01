@@ -31,6 +31,6 @@
 export default function addCustomStyles(): void {
   const linkTag = document.createElement('link');
   linkTag.rel = 'stylesheet';
-  linkTag.href = './custom.css';
+  linkTag.href = './css/custom.css';
   document.head.appendChild(linkTag);
 }

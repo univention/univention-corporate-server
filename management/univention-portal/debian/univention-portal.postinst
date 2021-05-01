@@ -47,6 +47,11 @@ if [ "$1" = "configure" ]; then
 	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
+# we do not ship a custom.css, nor do we alter it
+# admins may do whatever they want with it and we
+# try to keep the DOM stable. but this is only best effort
+touch /usr/share/univention-portal/css/custom.css
+
 univention-portal add-umc-default
 univention-portal update
 systemctl restart univention-portal-server
