@@ -70,17 +70,17 @@ const tileClickMixin = {
   ],
   methods: {
     tileClick(evt) {
-      this.$store.dispatch('tooltip/unsetTooltip');
       if (this.editMode) {
         evt.preventDefault();
-
-        // TODO: start edit tile dialog
+        this.editTile();
         return false;
       }
-      if (this.inFolder) {
+      if (this.minified) {
         evt.preventDefault();
         return false;
       }
+      this.$store.dispatch('tooltip/unsetTooltip');
+      this.$store.dispatch('modal/hideAndClearModal');
       if (this.linkTarget === 'internalFunction') {
         return this.internalFunction(this);
       }

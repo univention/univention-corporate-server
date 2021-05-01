@@ -81,7 +81,10 @@ export default defineComponent({
   background-color: transparent
   cursor: pointer
 
-  & svg
+  &:focus
+    border-color: var(--color-primary)
+
+  svg
     width: 100%
     height: 100%
     stroke: var(--color-grey40)

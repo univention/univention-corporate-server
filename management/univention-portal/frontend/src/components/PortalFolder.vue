@@ -74,16 +74,15 @@
     </button>
     <span
       class="portal-folder__name"
+      @click="openFolder"
     >
       {{ $localized(title) }}
     </span>
-    <header-button
+    <icon-button
       v-if="editMode && !inModal"
       icon="edit-2"
-      :aria-label="ariaLabelButton"
-      :no-click="true"
       class="portal-folder__edit-button"
-      @click="editFolder($event)"
+      @click="editFolder()"
     />
   </div>
 </template>
@@ -93,7 +92,7 @@ import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
 import PortalTile from '@/components/PortalTile.vue';
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
 import { Title, Tile } from '@/store/modules/portalData/portalData.models';
 
@@ -101,7 +100,7 @@ export default defineComponent({
   name: 'PortalFolder',
   components: {
     PortalTile,
-    HeaderButton,
+    IconButton,
     TileAdd,
   },
   props: {
@@ -124,10 +123,6 @@ export default defineComponent({
     inModal: {
       type: Boolean,
       default: false,
-    },
-    ariaLabelButton: {
-      type: String,
-      default: 'Tab Aria Label',
     },
   },
   computed: {
@@ -173,8 +168,7 @@ export default defineComponent({
         firstElement.focus();
       }
     },
-    editFolder(event) {
-      event.preventDefault();
+    editFolder() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminFolder',
         props: {
@@ -275,6 +269,7 @@ export default defineComponent({
 
   &__edit-button
     position: absolute
+    background-color: var(--color-grey0)
     top: -0.75em
     right: -0.75em
     z-index: $zindex-1

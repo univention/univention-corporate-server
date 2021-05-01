@@ -39,7 +39,7 @@
       @mouseenter="editMode || showTooltip()"
       @mouseleave="hideTooltip"
       @mousedown="hideTooltip"
-      @click="editMode && editTile($event) || tileClick($event)"
+      @click="tileClick($event)"
       @keydown.tab.exact="setFocus($event, 'forward')"
       @keydown.shift.tab.exact="setFocus($event, 'backward')"
       @focus="showTooltip()"
@@ -61,20 +61,14 @@
           class="portal-tile__img"
         >
       </div>
-      <span
-        class="portal-tile__name"
-        @click.prevent="tileClick"
-      >
+      <span class="portal-tile__name">
         {{ $localized(title) }}
       </span>
 
-      <header-button
+      <icon-button
         v-if="!minified && editMode"
         icon="edit-2"
-        :aria-label="ariaLabelButton"
-        :no-click="true"
         class="portal-tile__edit-button"
-        @click="editTile($event)"
       />
     </component>
   </div>
@@ -83,7 +77,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 
 import TileClick from '@/mixins/TileClick.vue';
 
@@ -92,7 +86,7 @@ import { Title, Description } from '@/store/modules/portalData/portalData.models
 export default defineComponent({
   name: 'PortalTile',
   components: {
-    HeaderButton,
+    IconButton,
   },
   mixins: [
     TileClick,
@@ -147,10 +141,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    ariaLabelButton: {
-      type: String,
-      default: 'Tab Aria Label',
-    },
   },
   emits: ['keepFocusInFolderModal'],
   computed: {
@@ -188,8 +178,7 @@ export default defineComponent({
         this.$emit('keepFocusInFolderModal', 'focusLast');
       }
     },
-    editTile(event) {
-      event.preventDefault();
+    editTile() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminEntry',
         props: {

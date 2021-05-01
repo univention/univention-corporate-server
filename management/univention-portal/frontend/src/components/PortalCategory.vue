@@ -37,11 +37,9 @@
       class="portal-category__title"
       @click.prevent="editMode ? editCategory() : ''"
     >
-      <header-button
+      <icon-button
         v-if="editMode"
         icon="edit-2"
-        :aria-label="ariaLabelButton"
-        :no-click="true"
         class="portal-category__edit-button"
       />{{ $localized(title) }}
     </h2>
@@ -117,7 +115,7 @@ import { put } from '@/jsHelper/admin';
 
 import DraggableWrapper from '@/components/dragdrop/DraggableWrapper.vue';
 import DraggableDebugger from '@/components/dragdrop/DraggableDebugger.vue';
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import PortalTile from '@/components/PortalTile.vue';
 import {
@@ -147,7 +145,7 @@ export default defineComponent({
   components: {
     PortalTile,
     PortalFolder,
-    HeaderButton,
+    IconButton,
     DraggableWrapper,
     DraggableDebugger,
   },
@@ -167,10 +165,6 @@ export default defineComponent({
     dropZone: {
       type: Number,
       required: true,
-    },
-    ariaLabelButton: {
-      type: String,
-      default: 'Tab Aria Label',
     },
   },
   data(): PortalCategoryData {
@@ -288,6 +282,7 @@ export default defineComponent({
     border: 3px dashed var(--color-grey40) !important
 
   &__edit-button
+    padding 0
     @extend .icon-button--admin
 
   &__title

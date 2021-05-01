@@ -29,7 +29,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <button
     class="icon-button"
-    @click="$emit('click')"
+    @click.prevent="$emit('click')"
   >
     <portal-icon
       :icon="icon"
