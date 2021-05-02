@@ -37,13 +37,22 @@
     <h2
       v-if="editMode || showCategoryHeadline || hasTiles"
       class="portal-category__title"
-      @click.prevent="editMode ? editCategory() : ''"
     >
       <icon-button
         v-if="editMode"
         icon="edit-2"
         class="portal-category__edit-button"
-      />{{ $localized(title) }}
+        @click="editCategory"
+      />
+      <div
+        :draggable="editMode"
+        @dragstart="dragstart"
+        @dragenter="dragenter"
+        @dragend="dragend"
+        @drop="categoryDropped"
+      >
+        {{ $localized(title) }}
+      </div>
     </h2>
     <div
       class="portal-category__tiles"
@@ -83,6 +92,7 @@ import TileAdd from '@/components/admin/TileAdd.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import PortalTile from '@/components/PortalTile.vue';
+import Draggable from '@/mixins/Draggable.vue';
 import {
   Title,
   Tile,
@@ -103,6 +113,9 @@ export default defineComponent({
     PortalFolder,
     IconButton,
   },
+  mixins: [
+    Draggable,
+  ],
   props: {
     dn: {
       type: String,
@@ -142,6 +155,17 @@ export default defineComponent({
       if (this.dn === data.superDn) {
         this.$store.dispatch('dragndrop/dropped');
         await this.$store.dispatch('portalData/saveContent');
+      }
+    },
+    async categoryDropped(evt: DragEvent) {
+      evt.preventDefault();
+      if (evt.dataTransfer === null) {
+        return;
+      }
+      const data = this.dragDropIds;
+      if (!data.superDn) {
+        this.$store.dispatch('dragndrop/dropped');
+        await this.$store.dispatch('portalData/savePortalCategories');
       }
     },
     editCategory() {
@@ -199,6 +223,6 @@ export default defineComponent({
     margin-top: 0
     margin-bottom: calc(3 * var(--layout-spacing-unit))
 
-    &--edit
-      cursor: pointer
+    & [draggable="true"]
+      cursor: move
 </style>

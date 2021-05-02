@@ -143,6 +143,16 @@ const portalData: PortalModule<PortalDataState> = {
     setPortalBackground({ commit }, data: string) {
       commit('PORTALBACKGROUND', data);
     },
+    async savePortalCategories({ commit, dispatch, getters }) {
+      dispatch('activateLoadingState', undefined, { root: true });
+      const content = getters.portalContent;
+      const portalDn = getters.getPortalDn;
+      const attrs = {
+        categories: content.map(([category]) => category),
+      };
+      await put(portalDn, attrs, { dispatch }, 'CATEGORY_ORDER_SUCCESS', 'CATEGORY_ORDER_FAILURE');
+      dispatch('deactivateLoadingState', undefined, { root: true });
+    },
     async saveContent({ commit, dispatch, getters }) {
       dispatch('activateLoadingState', undefined, { root: true });
       const content = getters.portalContent;
@@ -193,6 +203,37 @@ const portalData: PortalModule<PortalDataState> = {
       const dst = payload.dst;
       const cat = payload.cat;
       const content = getters.portalContent;
+      if (!cat) {
+        // src and dst are categories!
+        const newContent: string[][] = [];
+        let srcContent: string[] = [];
+        let srcIdx = -1;
+        let dstContent: string[] = [];
+        let dstIdx = -1;
+        content.forEach(([category, entries], idx) => {
+          if (category === src) {
+            srcContent = [category, entries];
+            srcIdx = idx;
+          }
+          if (category === dst) {
+            dstContent = [category, entries];
+            dstIdx = idx;
+          }
+        });
+        if (srcIdx < dstIdx) {
+          newContent.push(...content.slice(0, srcIdx));
+          newContent.push(...content.slice(srcIdx + 1, dstIdx + 1));
+          newContent.push(srcContent);
+          newContent.push(...content.slice(dstIdx + 1));
+        } else {
+          newContent.push(...content.slice(0, dstIdx));
+          newContent.push(srcContent);
+          newContent.push(...content.slice(dstIdx, srcIdx));
+          newContent.push(...content.slice(srcIdx + 1));
+        }
+        commit('CONTENT', newContent);
+        return;
+      }
       content.forEach(([category, oldEntries]) => {
         if (category !== cat) {
           return;

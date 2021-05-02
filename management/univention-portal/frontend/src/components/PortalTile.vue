@@ -196,7 +196,6 @@ export default defineComponent({
       });
     },
     createID() {
-      console.log(this.description);
       return `element-${this.$.uid}`;
     },
   },

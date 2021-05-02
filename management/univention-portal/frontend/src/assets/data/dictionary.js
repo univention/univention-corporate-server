@@ -94,6 +94,8 @@ const catalog = {
   FOLDER_ADDED_FAILURE: _('Folder could not be added'),
   FOLDER_REMOVED_SUCCESS: _('Folder successfully removed'),
   FOLDER_REMOVED_FAILURE: _('Folder could not be removed'),
+  CATEGORY_ORDER_SUCCESS: _('Categories successfully re-sorted'),
+  CATEGORY_ORDER_FAILURE: _('Categories could not be re-sorted'),
   CATEGORY_CREATED_SUCCESS: _('Category successfully created'),
   CATEGORY_CREATED_FAILURE: _('Category could not be created'),
   CATEGORY_MODIFIED_SUCCESS: _('Category successfully modified'),

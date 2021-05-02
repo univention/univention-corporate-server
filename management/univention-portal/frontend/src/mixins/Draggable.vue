@@ -28,9 +28,14 @@
 -->
 <script>
 const draggableMixin = {
+  computed: {
+    isDraggable() {
+      return this.editMode && !this.fromFolder && !this.inModal;
+    },
+  },
   methods: {
     dragstart(e) {
-      if (!this.editMode || this.fromFolder || this.inModal) {
+      if (!this.isDraggable) {
         e.preventDefault();
         return;
       }
@@ -41,7 +46,7 @@ const draggableMixin = {
       });
     },
     dragenter(e) {
-      if (!this.editMode || this.fromFolder || this.inModal) {
+      if (!this.isDraggable) {
         e.preventDefault();
         return;
       }
@@ -51,6 +56,10 @@ const draggableMixin = {
       const myId = this.dn;
       const otherId = data.dn;
       if (myCategory !== otherCategory) {
+        if (!myCategory || !otherCategory) {
+          // dragging category over tile or vice versa
+          return;
+        }
         this.$store.dispatch('portalData/moveContent', {
           src: otherId,
           origin: otherCategory,
@@ -74,7 +83,7 @@ const draggableMixin = {
       });
     },
     dragend(e) {
-      if (!this.editMode || this.fromFolder || this.inModal) {
+      if (!this.isDraggable) {
         e.preventDefault();
         return;
       }
