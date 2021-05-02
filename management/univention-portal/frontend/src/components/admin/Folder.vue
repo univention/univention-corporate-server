@@ -133,6 +133,7 @@ export default defineComponent({
         await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
       } else {
         console.info('Adding folder');
+        console.info('Then adding it to', this.portalCategories, 'of', this.superDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
         const dn = await add('portals/folder', attrs, this.$store, 'FOLDER_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');

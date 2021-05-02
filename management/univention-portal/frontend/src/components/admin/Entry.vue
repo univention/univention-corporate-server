@@ -203,6 +203,7 @@ export default defineComponent({
         await put(this.modelValue.dn, attrs, this.$store, 'ENTRY_MODIFIED_SUCCESS', 'ENTRY_MODIFIED_FAILURE');
       } else {
         console.info('Adding entry');
+        console.info('Then adding it to', [...this.superObjs], 'of', this.superDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
         const dn = await add('portals/entry', attrs, this.$store, 'ENTRY_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');
