@@ -128,6 +128,12 @@ class Session(object):
 		self.wait_until_clickable(css)
 		self.click_element(css)
 
+	def wait_until_gone(self, css):
+		from selenium.webdriver.common.by import By
+		from selenium.webdriver.support.ui import WebDriverWait
+		from selenium.webdriver.support import expected_conditions as EC
+		WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, css)))
+
 	def goto_portal(self):
 		self.get('/univention/portal')
 		time.sleep(3)
@@ -248,6 +254,22 @@ class Session(object):
 			self.enter_input_element(css, Keys.RETURN)
 		else:
 			self.send_keys(Keys.RETURN)
+
+	def enter_shift_tab(self):
+		from selenium.webdriver.common.keys import Keys
+		from selenium.webdriver import ActionChains
+		action = ActionChains(self.driver)
+		action.key_down(Keys.SHIFT).send_keys(Keys.TAB).key_up(Keys.SHIFT)
+		action.perform()
+
+	def enter_tab(self):
+		from selenium.webdriver.common.keys import Keys
+		self.send_keys(Keys.TAB)
+
+	def drag_and_drop(self, source, target):
+		from selenium.webdriver import ActionChains
+		action = ActionChains(self.driver)
+		action.drag_and_drop(source, target)
 
 	def send_keys(self, keys):
 		from selenium.webdriver import ActionChains

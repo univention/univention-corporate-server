@@ -1,160 +1,119 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/bin/python3
 # -*- coding: utf-8 -*-
 ## desc: Test adding portal categories and entries from within the portal
 ## roles:
 ##  - domaincontroller_master
 ## tags:
-##  - SKIP
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous
 
-import logging
+import importlib
+import os
+import sys
 import time
 
-from univention.testing import selenium
-import univention.testing.ucr as ucr_test
-from univention.testing.udm import UCSTestUDM
-import univention.testing.strings as uts
-from univention.admin import localization
-from univention.udm import UDM, NoObject
-from univention.testing.selenium.utils import expand_path
-from selenium.common.exceptions import NoSuchElementException
-
-logger = logging.getLogger(__name__)
-
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
+try:
+    test_lib = importlib.import_module(test_lib)
+except ImportError:
+    print('Could not import {}. Maybe set $UCS_TEST_LIB'.format(test_lib))
+    sys.exit(1)
 
 
-class CreationError(Exception):
-	pass
+def test_background(chrome, admin_username, admin_password, udm):
+    # chrome.goto_portal()
+    chrome.get('/univention/portal')
+    chrome.portal_login(admin_username, admin_password)
+    chrome.wait_until_clickable('#portalCategories')
+    chrome.wait_until_clickable_and_click('#header-button-menu')
+    chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
+    chrome.wait_until_clickable_and_click('#header-button-settings')
 
+    # create category
+    chrome.wait_until_clickable_and_click('.portal-categories__add-button')
+    buttons = chrome.find_all('.tile-add-modal-button')
+    assert len(buttons) == 2
+    buttons[0].click()
+    cat_name = 'internal-name-for-a-category'
+    cat_display = 'Category Name'
+    chrome.send_keys(cat_name)
+    chrome.enter_tab()
+    chrome.send_keys(cat_display + ' DE')
+    chrome.enter_tab()
+    chrome.send_keys(cat_display + ' EN')
+    chrome.enter_return()
+    chrome.wait_until_gone('.modal-wrapper--isVisible')
+    categories = udm.get('portals/category')
+    category = list(categories.search('name=%s' % cat_name))[0].open()
+    expected = {'name': 'internal-name-for-a-category', 'displayName': {'en_US': 'Category Name EN', 'de_DE': 'Category Name DE'}, 'entries': [], 'objectFlag': []}
+    assert category.properties == expected
 
-class UMCTester(object):
+    # create tile
+    buttons = chrome.find_all('.tile-add')
+    buttons[-1].click()
+    buttons = chrome.find_all('.tile-add-modal-button')
+    assert len(buttons) == 4
+    buttons[0].click()
+    tile_name = 'internal-name-for-a-tile'
+    tile_display = 'Tile Name'
+    tile_description = 'Tile Description'
+    tile_link = 'https://example.com'
+    tile_bgc = 'green'
+    chrome.send_keys(tile_name)
+    chrome.enter_tab()
+    chrome.send_keys(tile_display + ' DE')
+    chrome.enter_tab()
+    chrome.send_keys(tile_display + ' EN')
+    chrome.enter_tab()
+    chrome.send_keys(tile_description + ' DE')
+    chrome.enter_tab()
+    chrome.send_keys(tile_description + ' EN')
+    chrome.enter_tab()
+    chrome.enter_tab()
+    chrome.enter_return()
+    time.sleep(1)
+    chrome.enter_shift_tab()
+    chrome.send_keys('en')
+    chrome.enter_tab()
+    chrome.send_keys(tile_link)
+    chrome.enter_tab()
+    chrome.enter_tab()
+    chrome.enter_tab()
+    chrome.enter_tab()
+    tile_bgc = 'green'
+    chrome.click_element('form.admin-entry button.primary')
+    chrome.wait_until_gone('.modal-wrapper--isVisible')
+    entries = udm.get('portals/entry')
+    entry = list(entries.search('name=%s' % tile_name))[0].open()
+    expected = {'name': 'internal-name-for-a-tile', 'displayName': {'de_DE': 'Tile Name DE', 'en_US': 'Tile Name EN'}, 'description': {'en_US': 'Tile Description EN', 'de_DE': 'Tile Description DE'}, 'link': {'en_US': 'https://example.com'}, 'allowedGroups': [], 'activated': True, 'anonymous': False, 'icon': None, 'linkTarget': 'useportaldefault', 'backgroundColor': None, 'objectFlag': []}
+    assert entry.properties == expected
 
-	def test_umc(self):
-		try:
-			self.init()
-			self.do_test()
-		finally:
-			self.cleanup()
+    # create folder
+    buttons = chrome.find_all('.tile-add')
+    buttons[-1].click()
+    buttons = chrome.find_all('.tile-add-modal-button')
+    assert len(buttons) == 4
+    buttons[2].click()
+    folder_name = 'internal-name-for-a-folder'
+    folder_display = 'Folder Name'
+    chrome.send_keys(folder_name)
+    chrome.enter_tab()
+    chrome.send_keys(folder_display + ' DE')
+    chrome.enter_tab()
+    chrome.send_keys(folder_display + ' EN')
+    chrome.enter_return()
+    chrome.wait_until_gone('.modal-wrapper--isVisible')
+    folders = udm.get('portals/folder')
+    folder = list(folders.search('name=%s' % folder_name))[0].open()
+    expected = {'name': 'internal-name-for-a-folder', 'displayName': {'en_US': 'Folder Name EN', 'de_DE': 'Folder Name DE'}, 'entries': [], 'objectFlag': []}
+    assert folder.properties == expected
 
-	def init(self):
-		logger.info('Creating dummy portal')
-		self.dummy_portal_title = uts.random_string()
-		self.dummy_portal_dn = self.udm_test.create_object(
-			'portals/portal',
-			name=uts.random_string(),
-			displayName=['en_US ' + self.dummy_portal_title],
-			portalComputers=[ucr.get('ldap/hostdn')],
-		)
-		logger.info('Saving previously set portalComputers of main portal')
-		udm = UDM.admin().version(1)
-		portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
-		self.prev_comps = portal.props.portalComputers
-		portal.props.portalComputers = []
-		portal.save()
+    category.delete()
+    entry.delete()
+    folder.delete()
 
-	def do_test(self):
-		self.selenium.do_login()
-
-		logger.info('Visiting dummy portal')
-		self.selenium.driver.get(self.selenium.base_url)
-		self.selenium.wait_for_text(self.dummy_portal_title)
-
-		logger.info('Enter edit mode')
-		self.selenium.click_element(expand_path('//*[@containsClass="iconMenu"]'))
-		self.selenium.click_button(_('Edit Portal'))
-
-		udm = UDM.admin().version(1)
-		logger.info('Create category')
-		self.cat_name = uts.random_string()  # not sure if using random strings here is a good idea
-		cat_dname = uts.random_string()
-		self.selenium.click_button('Add category')
-		self.selenium.wait_for_text('Create new category')
-		self.selenium.click_text('Create new category')
-		self.selenium.wait_for_text('Internal name *')
-		self.selenium.enter_input('name', self.cat_name)
-		self.selenium.enter_input('__displayName-0-1', cat_dname)
-		self.selenium.click_button('Save')
-		self.selenium.wait_until_all_dialogues_closed()
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-		logger.info('Check if the category was created')
-		try:
-			self.selenium.wait_until_element_visible('//h2[text()="%s"]' % (cat_dname), timeout=10)
-			udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
-		except NoSuchElementException:
-			try:
-				udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
-			except NoObject:
-				raise CreationError('Creation of the settings/portal_category UDM object failed')
-			raise CreationError('A settings/portal_category UDM object was created but the category was not immediately visible in the portal')
-		except NoObject:
-			raise CreationError('Creation of the settings/portal_category UDM object failed')
-
-		logger.info('Create entry')
-		self.selenium.click_element(expand_path('//h2[text()="%s"]/following-sibling::*[1]//*[@containsClass="portalAddEntryButton"]' % (cat_dname)))
-		self.selenium.wait_for_text('Add entry')
-		self.selenium.click_text('Add entry')
-		self.selenium.wait_for_text('Create new entry')
-		self.selenium.click_text('Create new entry')
-		self.selenium.wait_for_text('Internal name *')
-		self.entry_name = uts.random_string()
-		entry_dname = uts.random_string()
-		self.selenium.enter_input('name', self.entry_name)
-		self.selenium.click_button('Next')
-		self.selenium.wait_until_standby_animation_appears_and_disappears()
-		self.selenium.click_button('Next')
-		self.selenium.enter_input('__displayName-0-1', entry_dname)
-		self.selenium.click_button('Next')
-		self.selenium.enter_input('__link-0-0', 'foo')
-		self.selenium.click_button('Next')
-		self.selenium.click_button('Finish')
-		self.selenium.wait_until_all_dialogues_closed()
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		logger.info('Check if the entry was created')
-		try:
-			self.selenium.wait_until_element_visible(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (cat_dname, entry_dname)), timeout=10)
-			udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
-		except NoSuchElementException:
-			try:
-				udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
-			except NoObject:
-				raise CreationError('Creation of the settings/portal_entry UDM object failed')
-			raise CreationError('A settings/portal_entry UDM object was created but the entry was not immediately visible in the portal')
-		except NoObject:
-			raise CreationError('Creation of the settings/portal_entry UDM object failed')
-
-	def cleanup(self):
-		logger.info('Cleanup')
-		logger.info('Delete the UDM objects created via the portal')
-		udm = UDM.admin().version(1)
-		if hasattr(self, 'cat_name'):
-			try:
-				udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base'])).delete()
-			except Exception:
-				pass
-		if hasattr(self, 'entry_name'):
-			try:
-				udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base'])).delete()
-			except Exception:
-				pass
-		if hasattr(self, 'prev_comps'):
-			logger.info('Restore previously set portalComputers on main portal')
-			udm = UDM.admin().version(1)
-			portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
-			portal.props.portalComputers = self.prev_comps
-			portal.save()
 
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
-		umc_tester = UMCTester()
-		umc_tester.ucr = ucr
-		umc_tester.udm_test = udm_test
-		umc_tester.selenium = s
-
-		umc_tester.test_umc()
-
+    test_lib.run_test_file(__file__)
