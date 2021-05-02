@@ -185,8 +185,10 @@ export default defineComponent({
         name: this.name,
         activated: this.activated,
         displayName: Object.entries(this.title),
+        description: Object.entries(this.description),
         link: this.links.map((lnk) => [lnk.locale, lnk.value]),
         icon: '',
+        backgroundColor: this.backgroundColor,
       };
       if (this.pathToLogo.startsWith('data:')) {
         attrs.icon = this.pathToLogo.split(',')[1];
