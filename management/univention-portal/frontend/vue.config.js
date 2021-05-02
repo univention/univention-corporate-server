@@ -21,7 +21,6 @@ const vueConfig = {
           path.resolve(__dirname, 'src/assets/styles/_vars.styl'),
           path.resolve(__dirname, 'src/assets/styles/_variables.styl'),
           path.resolve(__dirname, 'src/assets/styles/_base.styl'),
-          path.resolve(__dirname, 'src/assets/styles/_dragdrop.styl'),
         ],
       },
     },

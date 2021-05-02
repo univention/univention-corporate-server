@@ -48,26 +48,26 @@ async function add(objectType, attrs, store, errorMessage): Promise<string> {
   return '';
 }
 
-async function put(dn, attrs, store, successMessage, errorMessage) {
+async function put(dn, attrs, { dispatch }, successMessage, errorMessage) {
   try {
     const response = await udmPut(dn, attrs);
     const result = response.data.result[0];
     if (!result.success) {
       throw new Error(result.details);
     }
-    store.dispatch('notificationBubble/addSuccessNotification', {
+    dispatch('notificationBubble/addSuccessNotification', {
       bubbleTitle: translate(successMessage),
-    });
-    await store.dispatch('portalData/waitForChange', {
+    }, { root: true });
+    await dispatch('portalData/waitForChange', {
       retries: 10,
       adminMode: true,
-    });
-    await store.dispatch('loadPortal', { adminMode: true });
+    }, { root: true });
+    await dispatch('loadPortal', { adminMode: true }, { root: true });
   } catch (err) {
     console.error(err.message);
-    store.dispatch('notificationBubble/addErrorNotification', {
+    dispatch('notificationBubble/addErrorNotification', {
       bubbleTitle: translate(errorMessage),
-    });
+    }, { root: true });
   }
 }
 

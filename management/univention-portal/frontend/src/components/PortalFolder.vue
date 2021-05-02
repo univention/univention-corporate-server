@@ -30,9 +30,13 @@
   <div
     v-if="hasTiles || editMode"
     class="portal-folder"
+    :draggable="editMode && !inModal"
     :class="[
       { 'portal-folder__in-modal': inModal },
     ]"
+    @dragstart="dragstart"
+    @dragenter="dragenter"
+    @dragend="dragend"
   >
     <button
       class="portal-tile__box"
@@ -92,6 +96,7 @@ import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
 import PortalTile from '@/components/PortalTile.vue';
+import Draggable from '@/mixins/Draggable.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
 import { Title, Tile } from '@/store/modules/portalData/portalData.models';
@@ -103,6 +108,9 @@ export default defineComponent({
     IconButton,
     TileAdd,
   },
+  mixins: [
+    Draggable,
+  ],
   props: {
     dn: {
       type: String,

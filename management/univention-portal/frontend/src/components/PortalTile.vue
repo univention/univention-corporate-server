@@ -35,6 +35,7 @@
       :aria-describedby="createID()"
       :aria-label="$localized(title)"
       class="portal-tile"
+      :draggable="editMode && !fromFolder"
       data-test="tileLink"
       @mouseenter="editMode || showTooltip()"
       @mouseleave="hideTooltip"
@@ -44,6 +45,9 @@
       @keydown.shift.tab.exact="setFocus($event, 'backward')"
       @focus="showTooltip()"
       @blur="hideTooltip()"
+      @dragstart="dragstart"
+      @dragenter="dragenter"
+      @dragend="dragend"
     >
       <div
         :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
@@ -80,6 +84,7 @@ import { defineComponent, PropType } from 'vue';
 import IconButton from '@/components/globals/IconButton.vue';
 
 import TileClick from '@/mixins/TileClick.vue';
+import Draggable from '@/mixins/Draggable.vue';
 
 import { Title, Description } from '@/store/modules/portalData/portalData.models';
 
@@ -90,6 +95,7 @@ export default defineComponent({
   },
   mixins: [
     TileClick,
+    Draggable,
   ],
   props: {
     dn: {

@@ -32,6 +32,7 @@ import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { getCookie } from '@/jsHelper/tools';
+import dragndrop from './modules/dragndrop';
 import locale from './modules/locale';
 import menu from './modules/menu';
 import metaData from './modules/metaData';
@@ -114,6 +115,7 @@ export const store = createStore<RootState>({
   state: initialRootState,
   actions,
   modules: {
+    dragndrop,
     locale,
     menu,
     metaData,
