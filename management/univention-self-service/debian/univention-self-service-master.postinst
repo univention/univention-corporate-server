@@ -33,6 +33,7 @@
 #DEBHELPER#
 
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 
 eval "$(univention-config-registry shell)"

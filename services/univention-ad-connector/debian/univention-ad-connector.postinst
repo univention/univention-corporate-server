@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"

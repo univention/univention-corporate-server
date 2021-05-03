@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-samba4/lib/all.sh
 

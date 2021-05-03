@@ -32,6 +32,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind

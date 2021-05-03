@@ -32,6 +32,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 chown listener:root /var/spool/univention-fetchmail
