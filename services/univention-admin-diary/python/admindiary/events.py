@@ -42,7 +42,7 @@ class DiaryEvent(object):
 	@classmethod
 	def names(cls):
 		# type: () -> List[str]
-		return sorted(cls._all_events.keys())
+		return sorted(cls._all_events)
 
 	def __init__(self, name, message, args=None, tags=None, icon=None):
 		# type: (str, Dict[str, str], Optional[Dict[str, str]], Optional[List[str]], Optional[str]) -> None

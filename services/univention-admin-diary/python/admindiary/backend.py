@@ -73,7 +73,7 @@ def get_engine():
 	if not dbhost:
 		admin_diary_backend = ucr.get('admin/diary/backend') or 'localhost'
 		dbhost = admin_diary_backend.split()[0]
-	if dbhost == ucr.get('hostname') or dbhost == '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')):
+	if dbhost in {ucr.get('hostname'), '%(hostname)s.%(domainname)s' % ucr}:
 		dbhost = 'localhost'
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
 	if dbms == 'mysql':
@@ -275,7 +275,7 @@ class Client(object):
 		if ids is None:
 			return new_ids
 		else:
-			return ids.intersection(new_ids)
+			return ids & new_ids
 
 	def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
 		# type: (Optional[datetime], Optional[datetime], Optional[str], Optional[str], Optional[str], Optional[str], Optional[str], str) -> List[Dict[str, Any]]
