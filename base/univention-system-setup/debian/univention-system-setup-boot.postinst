@@ -61,7 +61,7 @@ if [ "$1" = "configure" ]; then
 		/usr/share/univention-system-setup/download-packages
 	fi
 
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.4-34; then
+	if dpkg --compare-versions "$2" lt-nl 9.0.4-34; then
 		ucr set system/setup/boot/legacyfrontend?true
 	fi
 fi

@@ -34,7 +34,7 @@
 eval "$(univention-config-registry shell)"
 
 # migration from old variables while updating to UCS 3.0 (Bug #10527)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 6.0.15; then
 	if [ -n "$mail_relay" -a -z "$mail_relayhost" ] ; then
 		univention-config-registry set "mail/relayhost=$mail_relay"
 	fi

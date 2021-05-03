@@ -47,14 +47,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.7; then
 	fi
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.19-1; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 2.0.19-1; then
        if [ -e "/etc/ldap-backup.secret" ]; then
 		chmod 640 /etc/ldap-backup.secret
 		chgrp "DC Backup Hosts" /etc/ldap-backup.secret || true
        fi
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.4-1; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 4.0.4-1; then
 	for secret_file in "/etc/ldap.secret" "/etc/ldap-backup.secret" "/etc/machine.secret" "/etc/backup-join.secret" "/etc/slave-join.secret"; do
 		## remove EOL
 		if test -e "$secret_file"; then

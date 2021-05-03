@@ -112,7 +112,7 @@ if [ "i686" = "$(uname -m)" ]; then
 fi
 
 # set ldap/shadowbind to false for updates (4.1 -> 4.2)
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 13.0.3-5; then
 	ucr set ldap/shadowbind=false
 fi
 
@@ -238,7 +238,7 @@ if [ "$1" = "configure" ]; then
 
 	# Bug #48530: resync listener module ldap_extension on Backup Directory Node/Replica Directory Node updating from older version
 	# to fix replication/activation issue in older versions of the listener module.
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.2-35; then
+	if dpkg --compare-versions "$2" lt-nl 14.0.2-35; then
 		if [ -e /var/univention-join/joined ] ; then
 			if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ] ; then
 				echo "NOTICE: resyncing listener module 'ldap_extension' to replicate missing LDAP ACLs"

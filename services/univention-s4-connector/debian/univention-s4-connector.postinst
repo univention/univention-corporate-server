@@ -79,7 +79,7 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 	## This would be the location for errata bugfixes
 
 	# Bug $BUGNR
-	# if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 14.1.0-1; then
+	# if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 14.1.0-1; then
 	# 	# Fix goes here
 	# 	/etc/init.d/univention-s4-connector start
 	# 	skip_final_restart=true

@@ -101,7 +101,7 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 fi
 
 # Bug 42249 - support virtual mail aliases
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-5; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.1-5; then
     # if mail/postfix/virtual/alias/maps is set, append ldap.external_aliases
     if [ -n "$mail_postfix_virtual_alias_maps" ] && [ "${mail_postfix_virtual_alias_maps#*ldap.external_aliases}" = "$mail_postfix_virtual_alias_maps" ]; then
         ucr set mail/postfix/virtual/alias/maps="$mail_postfix_virtual_alias_maps, ldap:/etc/postfix/ldap.external_aliases"

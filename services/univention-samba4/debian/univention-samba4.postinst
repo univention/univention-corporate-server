@@ -58,7 +58,7 @@ if [ -z "$2" ]; then
 	done
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-29; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 6.0.10-29; then
 	python - <<EOF
 # coding: utf-8
 import os
@@ -80,7 +80,7 @@ if rewrite:
 EOF
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-33; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 6.0.10-33; then
 	SAMBA_DRIVERS="/var/lib/samba/drivers"
 	if [ -d "$SAMBA_DRIVERS" ]; then
 		chgrp -R "Printer-Admins" "$SAMBA_DRIVERS"
@@ -89,36 +89,36 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-3
 	fi
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.148-1 ; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 1.0.148-1 ; then
 	mkdir -p /etc/univention/skel/windows-profiles/default
 	mkdir -p /etc/univention/skel/windows-profiles/default.V2
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 3.0; then
 	## set default for Bug #32394, may be removed after ucs3.2-0
 	ucr set samba/max/protocol?NT1
 fi
 
 
 # do not start wins in an ipv6 (only) setup Bug #33250
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.39-8 ; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 3.0.39-8 ; then
 	if [ -z "$(get_default_ipv4_address)" ]; then
 		echo "WARNING: Wins support deactivated (this is an ipv6 only environment)."
 		univention-config-registry set windows/wins-support="no"
 	fi
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-4 ; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 4.0.3-4 ; then
 	univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-6 ; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 4.0.3-6 ; then
 	for dname in default.V3 default.V4 default.V5; do
 		mkdir -p "/etc/univention/skel/windows-profiles/$dname"
 	done
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-24 ; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 6.0.10-24 ; then
 	mkdir -p "/etc/univention/skel/windows-profiles/default.V6"
 fi
 
@@ -474,7 +474,7 @@ call_joinscript 98univention-samba4-saml-kerberos.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 
 # Run a samba-tool ntacl sysvolreset, this is required for the rc6 upgrade
-if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl 9.0.5-2; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.5-2; then
 	univention-config-registry commit /etc/samba/smb.conf
 fi
 

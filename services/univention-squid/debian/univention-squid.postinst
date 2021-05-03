@@ -39,7 +39,7 @@
 adduser proxy winbindd_priv
 
 # 4.3 update
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.0-3; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.0-3; then
 	if [ -e "/etc/squid3.secret" ] && [ ! -e "/etc/squid.secret" ]; then
 		mv /etc/squid3.secret /etc/squid.secret
 	fi

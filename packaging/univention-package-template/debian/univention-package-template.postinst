@@ -46,7 +46,7 @@ case "$1" in
 		# if [ -z "$2" ]; then    # installation
 		# fi
 
-		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; then #upgrade
+		# if dpkg --compare-versions "$2" lt-nl 3.0.9-1; then  # upgrade
 		# fi
 
 		;;

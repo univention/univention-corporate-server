@@ -48,10 +48,6 @@ case "$1" in
 			fi
 		fi
 
-		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
-		# then
-		# fi
-
 		# restart postgresql to load correct configfiles (Bug #27786)
 		if [ -x "/etc/init.d/postgresql" ]
 		then

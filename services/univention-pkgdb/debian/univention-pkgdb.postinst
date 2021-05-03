@@ -92,7 +92,7 @@ case "$1" in
 		systemctl try-restart univention-directory-listener
 
 		# file was moved to univention-pkgdb-tools (Bug #33935)
-		if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.1-4; then
+		if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.1-4; then
 			rm -f /etc/apt/apt.conf.d/60invoke
 		fi
 		;;
