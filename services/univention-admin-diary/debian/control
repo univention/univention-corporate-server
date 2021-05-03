@@ -53,8 +53,6 @@ Description: Univention Admin Diary backend library
 
 Package: python3-univention-admin-diary-backend
 Architecture: all
-Provides:
- ${python3:Provides},
 Depends:
  python3-mysqldb,
  python3-psycopg2,
@@ -97,9 +95,6 @@ Depends:
  python3-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
-Provides:
- ${python3:Provides},
- ${python:Provides},
 Description: Univention Admin Diary client
  .
  It is part of Univention Corporate Server (UCS), an
@@ -127,8 +122,6 @@ Architecture: all
 Depends:
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Description: Univention Admin Diary lib
  .
  It is part of Univention Corporate Server (UCS), an
