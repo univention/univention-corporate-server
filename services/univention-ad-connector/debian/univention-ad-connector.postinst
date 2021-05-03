@@ -33,8 +33,6 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
-dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"
-
 create_logfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad-status.log "root:adm" 640

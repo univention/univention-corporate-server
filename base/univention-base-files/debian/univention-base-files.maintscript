@@ -9,3 +9,4 @@ rm_conffile /etc/univention/templates/files/etc/kernel-img.conf 9.0.3~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/00header.py 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/10apport.py 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/20utf8.py 9.0.0-3~
+rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"

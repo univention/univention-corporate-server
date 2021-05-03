@@ -32,8 +32,6 @@
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile /etc/cron.weekly/univention-pkgdb-clean 6.0.17-3 univention-pkgdb -- "$@"
-
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 

@@ -32,8 +32,6 @@
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"
-
 if [ "$1" = "remove" ]; then
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 19univention-ad-connector.uinst

@@ -1,1 +1,2 @@
+rm_conffile /etc/apache2/conf.d/univention-ad-connector/apache2.conf 11.0.6-4~
 rm_conffile /etc/univention/connector/ad/mapping 14.0.5~

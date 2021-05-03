@@ -49,8 +49,6 @@ fi
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile /etc/cron.weekly/univention-pkgdb-clean 6.0.17-3 univention-pkgdb -- "$@"
-
 set +e
 
 if [ "$1" = 'remove' ]
