@@ -40,9 +40,6 @@ anon_dir='/var/spool/cups-pdf/%U'
 univention-config-registry set "cups/cups-pdf/directory?$dir"
 univention-config-registry set "cups/cups-pdf/anonymous?$anon_dir"
 
-# run join script
-call_joinscript 79univention-printserver-pdf.inst
-
 # cups backend
 if dpkg-statoverride --list /usr/lib/cups/backend/cups-pdf >/dev/null
 then

@@ -65,8 +65,6 @@ univention-config-registry set \
 	cups/policy/default/limit/3/Require="user @SYSTEM" \
 	cups/policy/default/limit/3/Order="deny,allow"
 
-#DEBHELPER#
-
 # debian stores ppd's in /usr/share/ppd but
 # cups looks in /usr/share/cups/model
 if [ "/usr/share/ppd" != "$(readlink /usr/share/cups/model)" ]; then
@@ -81,16 +79,11 @@ ucr set security/packetfilter/package/univention-printserver/tcp/631/all="ACCEPT
 		security/packetfilter/package/univention-printserver/udp/631/all/en="IPP"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/21univention-printserver.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 79univention-printserver.inst
-
 if [ ! -d /var/lib/cups/certs ]; then
 	mkdir -p /var/lib/cups/certs
 fi
+
+#DEBHELPER#
 
 if [ "$1" = "configure" ]; then
 
