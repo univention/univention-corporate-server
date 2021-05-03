@@ -33,17 +33,13 @@
 #DEBHELPER#
 
 if [ "$1" = "remove" ]; then
-	. /usr/share/univention-lib/all.sh
-	call_unjoinscript 19univention-ad-connector.uinst
-
 	systemctl try-restart univention-directory-listener
 
 	handler_file=/var/lib/univention-directory-listener/handlers/ad-connector
 	test -e "$handler_file" && rm -f "$handler_file"
-	
+
 	db=/etc/univention/connector/internal.sqlite
 	test -e "$db" && mv "$db" "${db}_backup_$(date +%Y%m%d%H%M%S)"
-
 fi
 
 exit 0
