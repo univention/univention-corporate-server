@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-6) unstable; urgency=low
+
+  * Bug #52878: fix turkish umlauts
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 03 May 2021 10:28:02 +0200
+
 univention-directory-manager-modules (14.0.20-5) unstable; urgency=medium
 
   * Bug #52832: fixed encoding in bcrypt support

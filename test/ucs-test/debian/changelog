@@ -1,3 +1,9 @@
+ucs-test (9.0.7-29) unstable; urgency=low
+
+  * Bug #52878: add test for umlauts in user templates
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 03 May 2021 10:28:49 +0200
+
 ucs-test (9.0.7-28) unstable; urgency=medium
 
   * Bug #50766: test sync of gidNumber
