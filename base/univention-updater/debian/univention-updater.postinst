@@ -83,8 +83,6 @@ if [ "$1" = "configure" ]; then
 		version/erratalevel?0
 fi
 
-call_joinscript 41univention-updater.inst
-
 #DEBHELPER#
 
 # force the listener module license_uuid to be executed
