@@ -29,8 +29,6 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-
 if ! grep "^samlcgi" /etc/passwd; then
 	adduser --system --disabled-password --disabled-login --no-create-home samlcgi
 fi

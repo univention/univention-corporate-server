@@ -5,6 +5,4 @@ listener/univention-saml-groups.py usr/lib/univention-directory-listener/system/
 simplesamlphp/* usr/share/simplesamlphp/
 modules/univention/saml usr/lib/python2.7/dist-packages/univention/
 modules/univention/saml usr/lib/python3/dist-packages/univention/
-24univention-saml-uninstall.uinst usr/lib/univention-uninstall
-91univention-saml.inst usr/lib/univention-install
 scripts/php-cgi /var/www/saml
