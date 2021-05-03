@@ -194,12 +194,12 @@ class Client(object):
 
 	def options(self):
 		# type: () -> dict
-		ret = {}
-		ret['tags'] = sorted([tag.name for tag in self._session.query(Tag).all()])
-		ret['usernames'] = sorted([username[0] for username in self._session.query(Entry.username).distinct()])
-		ret['hostnames'] = sorted([hostname[0] for hostname in self._session.query(Entry.hostname).distinct()])
-		ret['events'] = sorted([event.name for event in self._session.query(Event).all()])
-		return ret
+		return {
+			'tags': sorted(tag.name for tag in self._session.query(Tag).all()),
+			'usernames': sorted(username[0] for username in self._session.query(Entry.username).distinct()),
+			'hostnames': sorted(hostname[0] for hostname in self._session.query(Entry.hostname).distinct()),
+			'events': sorted(event.name for event in self._session.query(Event).all()),
+		}
 
 	def add_tag(self, name):
 		# type: (str) -> Tag
@@ -269,9 +269,7 @@ class Client(object):
 		# type: (Optional[Set[int]], Iterable[Any]) -> Set[int]
 		if ids is not None and not ids:
 			return set()
-		new_ids = set()
-		for entry in result:
-			new_ids.add(entry.id)
+		new_ids = {entry.id for entry in result}
 		if ids is None:
 			return new_ids
 		else:
@@ -309,52 +307,37 @@ class Client(object):
 		limit = get_query_limit()
 		if limit:
 			entries = entries.limit(limit)
-		res = []
-		for entry in entries:
-			event = entry.event
-			if event:
-				event_name = event.name
-			else:
-				event_name = 'COMMENT'
-			args = dict((arg.key, arg.value) for arg in entry.args)
-			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()  # noqa: E711
-			res.append({
+		return [
+			{
 				'id': entry.id,
 				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-				'event_name': event_name,
+				'event_name': entry.event.name if entry.event else 'COMMENT',
 				'hostname': entry.hostname,
 				'username': entry.username,
 				'context_id': entry.context_id,
 				'message': entry.message,
-				'args': args,
-				'comments': comments > 0,
-			})
-		return res
+				'args': {arg.key: arg.value for arg in entry.args},
+				'comments': any(self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None))  # noqa: E711
+			}
+			for entry in entries
+		]
 
 	def get(self, context_id):
 		# type: (int) -> List[Dict[str, Any]]
-		res = []
-		for entry in self._session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
-			args = dict((arg.key, arg.value) for arg in entry.args)
-			tags = [tag.name for tag in entry.tags]
-			event = entry.event
-			if event:
-				event_name = event.name
-			else:
-				event_name = 'COMMENT'
-			obj = {
+		return [
+			{
 				'id': entry.id,
 				'username': entry.username,
 				'hostname': entry.hostname,
 				'message': entry.message,
-				'args': args,
+				'args': {arg.key: arg.value for arg in entry.args},
 				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-				'tags': tags,
+				'tags': [tag.name for tag in entry.tags],
 				'context_id': entry.context_id,
-				'event_name': event_name,
+				'event_name': entry.event.name if entry.event else 'COMMENT',
 			}
-			res.append(obj)
-		return res
+			for entry in self._session.query(Entry).filter(Entry.context_id == context_id).order_by('id')
+		]
 
 
 @contextmanager
