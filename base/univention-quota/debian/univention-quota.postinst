@@ -30,15 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
-eval "$(univention-config-registry shell)"
-
 univention-config-registry set samba/quota/command?'/usr/sbin/univention-setquota'
 
-if [ ! `echo $kernel_modules | grep quota_v2` ]; then
-	univention-config-registry set kernel/modules="$kernel_modules;quota_v2"
-fi
+modules="$(univention-config-registry get kernel/modules)"
+case "${modules:-}" in
+*quota_v2*) ;;
+*) univention-config-registry set kernel/modules="${modules:+$modules;}quota_v2" ;;
+esac
 
 #DEBHELPER#
 

@@ -40,7 +40,7 @@ case "$1" in
 			pkgdb/scan?yes
 
 		# Create the local DB-Superuser pkgdbu for pkgdb with password in /etc/postgresql/pkgdb.secret
-		pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
+		pkgdbu="$(su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}')"
 		if [ ! "$pkgdbu" ] ;then
 			# only, if pkgdbu not exists
 			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
@@ -49,7 +49,7 @@ case "$1" in
 		# password
 		newPwd="$(create_machine_password)"
 		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$newPwd';\" template1"; then
-			printf "$newPwd" >/etc/postgresql/pkgdb.secret
+			printf '%s' "$newPwd" >/etc/postgresql/pkgdb.secret
 		fi
 		chmod ug=r,o= /etc/postgresql/pkgdb.secret
 		chown postgres:www-data /etc/postgresql/pkgdb.secret
@@ -58,6 +58,7 @@ case "$1" in
 		then # installation
 			su - postgres -c 'psql -v ON_ERROR_STOP= -qf /usr/share/univention-pkgdb/sql/create-database.sql'
 		else # upgrade
+			# shellcheck disable=SC2043
 			for version in 6.0.7-1
 			do
 				if dpkg --compare-versions "$2" lt "$version"
