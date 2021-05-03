@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
@@ -82,13 +80,6 @@ case "$1" in
 			chown postgres:www-data /etc/postgresql/pkgdb.secret
 		fi
 
-		uinst=/usr/lib/univention-install/50univention-pkgdb-uninstall.uinst
-		[ -e "$uinst" ] && rm "$uinst"
-
-		call_joinscript 50univention-pkgdb.inst || true
-
-		systemctl try-restart univention-directory-listener
-
 		# file was moved to univention-pkgdb-tools (Bug #33935)
 		if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.1-4; then
 			rm -f /etc/apt/apt.conf.d/60invoke
@@ -103,5 +94,7 @@ case "$1" in
 		exit 1
 		;;
 esac
+
+#DEBHELPER#
 
 exit 0
