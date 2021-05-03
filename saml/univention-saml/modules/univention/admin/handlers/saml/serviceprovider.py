@@ -47,7 +47,7 @@ help_text = _(u'You can download the public certificate for this identity provid
 
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionSAMLServiceProvider'],
 	),

@@ -72,6 +72,7 @@ policy_short_description = _('Univention Configuration Registry')
 long_description = ''
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPolicy', 'univentionPolicyRegistry'],
 	),

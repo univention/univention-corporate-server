@@ -51,6 +51,7 @@ object_name_plural = _('Service records')
 long_description = _('Resolve well-known services to servers providing those services.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

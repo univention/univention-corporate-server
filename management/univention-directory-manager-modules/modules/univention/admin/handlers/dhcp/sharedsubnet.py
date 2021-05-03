@@ -51,6 +51,7 @@ object_name_plural = _('Shared DHCP subnets')
 long_description = _('An IP address range used in a shared network.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet'],
 	),

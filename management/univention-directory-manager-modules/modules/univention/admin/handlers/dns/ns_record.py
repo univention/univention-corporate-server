@@ -53,6 +53,7 @@ object_name_plural = 'Nameserver records'
 long_description = _('Delegate a subzone to other nameservers.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

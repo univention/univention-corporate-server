@@ -52,6 +52,7 @@ object_name_plural = _('UMC operation sets')
 long_description = _('List of Operations for UMC')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'umcOperationSet'],
 	),

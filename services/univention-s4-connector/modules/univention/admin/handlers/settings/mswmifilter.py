@@ -48,7 +48,7 @@ short_description = _('Settings: MS WMI Filter')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['msWMISom', 'top']
 	),

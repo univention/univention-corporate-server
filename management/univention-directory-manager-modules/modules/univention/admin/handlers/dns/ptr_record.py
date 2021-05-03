@@ -55,6 +55,7 @@ object_name_plural = _('Pointer records')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

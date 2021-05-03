@@ -54,6 +54,7 @@ object_name_plural = _('Forward lookup zones')
 long_description = _('Map names to IP addresses (and other data).')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

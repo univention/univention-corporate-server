@@ -51,7 +51,7 @@ object_name_plural = _('Mac OS X Clients')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Mac OS X Client'),
+		short_description=short_description,
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionMacOSClient'),
 	),

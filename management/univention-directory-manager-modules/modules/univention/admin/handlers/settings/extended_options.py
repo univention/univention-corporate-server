@@ -51,6 +51,7 @@ long_description = _('Options for extended attributes')
 
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionUDMOption'],
 	),
