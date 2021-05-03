@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.10-1) unstable; urgency=medium
+
+  * Bug #50575: Use python-passlib instead of python-smbpasswd for
+    generating samba NTLM hashes
+
+ -- Florian Best <best@univention.de>  Tue, 04 May 2021 00:38:52 +0200
+
 univention-directory-manager-modules (15.0.9-1) unstable; urgency=medium
 
   * Bug #41072: fix removal of values with complex syntax

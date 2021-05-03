@@ -35,7 +35,7 @@ import re
 import bcrypt
 import hashlib
 import heimdal
-import smbpasswd
+import passlib.hash
 
 import univention.debug as ud
 from univention.admin._ucr import configRegistry
@@ -112,10 +112,10 @@ def ntlm(password):
 	:param password: password string.
 	:returns: 2-tuple (NT, LanMan)
 	"""
-	nt = smbpasswd.nthash(password)
+	nt = passlib.hash.nthash.hash(password).upper()
 
 	if configRegistry.is_true('password/samba/lmhash', False):
-		lm = smbpasswd.lmhash(password)
+		lm = passlib.hash.lmhash.hash(password).upper()
 	else:
 		lm = ''
 
