@@ -1,4 +1,3 @@
-20univention-join.inst	usr/lib/univention-install/
 check_join_status.sh	usr/share/univention-join/
 ensure-minmum-ucs-version	usr/share/univention-join/
 joinscripthelper.lib	usr/share/univention-join/
