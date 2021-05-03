@@ -30,13 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
-
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
-
-eval "$(univention-config-registry shell)"
 
 if dpkg --compare-versions "$2" lt-nl 4.0.0; then
 	# On update from UCS 4.3, disable profile data management for users
@@ -46,8 +41,6 @@ fi
 ucr set umc/self-service/profiledata/enabled?true \
         self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
 
-call_joinscript 35univention-self-service-master.inst
-
-systemctl try-restart univention-directory-listener
+#DEBHELPER#
 
 exit 0
