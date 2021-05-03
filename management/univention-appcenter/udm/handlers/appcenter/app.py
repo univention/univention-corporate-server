@@ -30,30 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.password
-import univention.admin.allocators
 import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.appcenter')
 _ = translation.translate
 
-OC = "univentionApp"
 
 module = 'appcenter/app'
 superordinate = 'settings/cn'
 default_containers = ['cn=apps,cn=univention']
-childs = 0
+childs = True
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Appcenter: App Metadata')
 object_name = _('App Metadata')
 object_name_plural = _('App Metadata')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionApp'],
+	),
+}
 property_descriptions = {
 	'id': univention.admin.property(
 		short_description=_('App ID'),
@@ -256,30 +256,7 @@ mapping.register('server', 'univentionAppInstalledOnServer')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_addlist(self):
-		ocs = [b'top', OC.encode()]
 
-		return [
-			('objectClass', ocs),
-		]
-
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', OC),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes=attrs))
-	return res
-
-
-def identify(dn, attr, canonical=0):
-	return OC.encode() in attr.get('objectClass', [])
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify
