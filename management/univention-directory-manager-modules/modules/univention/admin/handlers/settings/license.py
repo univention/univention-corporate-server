@@ -50,6 +50,7 @@ object_name_plural = _('Licenses')
 long_description = _('Univention License')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionLicense'],
 	),

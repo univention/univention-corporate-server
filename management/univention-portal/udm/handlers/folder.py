@@ -48,6 +48,7 @@ object_name_plural = _('Portal folders')
 long_description = _('One folder in https://fqdn/univention/portal which holds one or more portals/entry objects. Belongs to one or more portals/category objects, which belong to one or more portals/portal objects')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionNewPortalFolder'],
 	),

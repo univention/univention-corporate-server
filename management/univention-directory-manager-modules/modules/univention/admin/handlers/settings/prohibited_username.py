@@ -50,6 +50,7 @@ object_name_plural = _('Prohibited user names')
 long_description = _('Univention Prohibited user names')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionProhibitedUsernames'],
 	),

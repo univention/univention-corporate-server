@@ -52,6 +52,7 @@ object_name_plural = _('Printer Driver Lists')
 long_description = _('List of drivers for printers')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPrinterModels'],
 	),

@@ -50,6 +50,7 @@ object_name_plural = _('Locks')
 long_description = _('Lock objects')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['lock'],
 	),

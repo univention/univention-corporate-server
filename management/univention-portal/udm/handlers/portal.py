@@ -47,6 +47,7 @@ object_name_plural = _('Portals')
 long_description = _('Object that feeds everything in https://fqdn/univention/portal')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionNewPortal'],
 	),

@@ -54,6 +54,7 @@ module_search_filter = univention.admin.filter.conjunction('&', [
 ])
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionMailDomainname'],
 	),

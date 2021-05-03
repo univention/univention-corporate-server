@@ -73,6 +73,7 @@ policy_short_description = _('User quota')
 long_description = _('Default quota for each user on a share')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],
 	),

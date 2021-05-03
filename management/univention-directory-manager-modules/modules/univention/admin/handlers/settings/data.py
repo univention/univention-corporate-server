@@ -48,6 +48,7 @@ object_name_plural = _('Data')
 long_description = _('Arbitrary data files')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionData'],
 	),

@@ -47,6 +47,7 @@ object_name_plural = _('Portal categories')
 long_description = _('Object under which settings/portal_entry objects can be displayed')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPortalCategory'],
 	),

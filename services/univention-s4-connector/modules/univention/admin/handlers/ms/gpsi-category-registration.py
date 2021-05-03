@@ -46,7 +46,7 @@ short_description = _('MS Software Installation Group Policy: Category Registrat
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['categoryRegistration', 'leaf']
 	),

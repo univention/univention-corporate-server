@@ -52,6 +52,7 @@ object_name_plural = _('Host records')
 long_description = _('Resolve the symbolic name to IP addresses.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

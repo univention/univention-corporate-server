@@ -55,6 +55,7 @@ object_name_plural = _('Alias records')
 long_description = _('Assign additional names to a host.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

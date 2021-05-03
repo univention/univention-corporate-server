@@ -50,6 +50,7 @@ object_name_plural = _('DHCP services')
 long_description = _('The top-level container for a DHCP configuration.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionDhcpService'],
 	),

@@ -51,6 +51,7 @@ module_search_filter = univention.admin.filter.expression('objectClass', 'univen
 
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionMailList'],
 	),

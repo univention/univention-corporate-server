@@ -46,7 +46,7 @@ short_description = _('Software Installation Group Policy: Package Registration'
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['packageRegistration', 'top']
 	),

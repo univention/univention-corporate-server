@@ -46,7 +46,7 @@ short_description = _('MS wired Group Policy')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['ms-net-ieee-8023-GroupPolicy', 'top']
 	),

@@ -61,7 +61,7 @@ long_description = _('This user object can only simply do an LDAP bind. It is in
 # {'person': (('sn', 'cn'), ('userPassword', 'telephoneNumber', 'seeAlso', 'description')), 'uidObject': (('uid',), ()), 'univentionPWHistory': ((), ('pwhistory',)), 'simpleSecurityObject': (('userPassword',), ())}
 options = {
 	'default': univention.admin.option(
-		short_description=_('Simple authentication account'),
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'person', 'univentionPWHistory', 'simpleSecurityObject', 'uidObject'],
 	)

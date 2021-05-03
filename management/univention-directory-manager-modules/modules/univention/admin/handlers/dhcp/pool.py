@@ -54,6 +54,7 @@ object_name_plural = _('DHCP pools')
 long_description = _('A pool of dynamic addresses assignable to hosts.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionDhcpPool']
 	),

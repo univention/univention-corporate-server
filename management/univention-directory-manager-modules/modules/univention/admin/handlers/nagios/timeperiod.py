@@ -80,6 +80,7 @@ class syntax_timeperiod(univention.admin.syntax.simple):
 
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionNagiosTimeperiodClass'],
 	),

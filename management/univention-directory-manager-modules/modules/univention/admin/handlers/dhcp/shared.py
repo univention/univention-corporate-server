@@ -51,6 +51,7 @@ object_name_plural = _('Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dhcpSharedNetwork'],
 	),

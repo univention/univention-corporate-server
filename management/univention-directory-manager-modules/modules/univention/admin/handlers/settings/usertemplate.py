@@ -50,6 +50,7 @@ object_name_plural = _('User Templates')
 long_description = ''
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionUserTemplate'],
 	),

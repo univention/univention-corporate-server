@@ -51,6 +51,7 @@ object_name_plural = _('TXT record')
 long_description = _('Resolve the symbolic name to some textual data.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),

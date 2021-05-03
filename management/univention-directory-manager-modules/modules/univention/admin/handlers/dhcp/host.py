@@ -51,6 +51,7 @@ object_name_plural = _('DHCP hosts')
 long_description = _('Configure a host identified by its hardware MAC address.')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionDhcpHost']
 	),

@@ -50,6 +50,7 @@ object_name_plural = _('Printer URI Lists')
 long_description = _('List of URIs for printers')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPrinterURIs'],
 	),

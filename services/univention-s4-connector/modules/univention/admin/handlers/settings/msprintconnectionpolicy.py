@@ -45,7 +45,7 @@ short_description = _('Settings: MS Print Connection Policy')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description='',
+		short_description=short_description,
 		default=True,
 		objectClasses=['msPrintConnectionPolicy', 'top']
 	),

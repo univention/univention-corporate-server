@@ -50,6 +50,7 @@ object_name_plural = _('Portal entries')
 long_description = _('One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPortalEntry'],
 	),

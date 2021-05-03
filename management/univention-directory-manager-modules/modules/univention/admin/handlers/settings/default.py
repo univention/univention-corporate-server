@@ -48,6 +48,7 @@ object_name_plural = _('Default preferences')
 long_description = ''
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionDefault'],
 	),

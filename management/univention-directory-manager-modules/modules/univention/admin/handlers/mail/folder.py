@@ -63,6 +63,7 @@ ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
 
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['univentionMailSharedFolder'],
 	),

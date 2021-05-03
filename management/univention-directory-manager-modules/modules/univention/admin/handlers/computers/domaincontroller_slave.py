@@ -51,7 +51,7 @@ object_name_plural = _('Replica Directory Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Replica Directory Node'),
+		short_description=short_description,
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
 	),

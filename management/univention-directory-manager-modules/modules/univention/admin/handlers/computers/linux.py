@@ -52,7 +52,7 @@ object_name_plural = _('Linux Computers')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Linux'),
+		short_description=short_description,
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionLinuxClient'),
 	),

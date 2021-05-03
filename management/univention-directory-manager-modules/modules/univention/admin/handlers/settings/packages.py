@@ -50,6 +50,7 @@ object_name_plural = _('Package Lists')
 long_description = _('List of Packages for UCS Systems')
 options = {
 	'default': univention.admin.option(
+		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'univentionPackageList'],
 	),
