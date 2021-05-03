@@ -7,6 +7,7 @@ Build-Depends:
  dh-python,
  node-stylus,
  python-all,
+ python-typing,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -41,6 +42,7 @@ Depends:
  python-mysqldb,
  python-psycopg2,
  python-sqlalchemy,
+ python-typing,
  python-univention-admin-diary (= ${binary:Version}),
  ${misc:Depends},
  ${python:Depends},
@@ -105,6 +107,7 @@ Description: Univention Admin Diary client
 Package: python-univention-admin-diary
 Architecture: all
 Depends:
+ python-typing,
  shall-univention-lib,
  ${misc:Depends},
  ${python:Depends},

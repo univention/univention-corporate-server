@@ -34,6 +34,7 @@ from socket import gethostname
 from datetime import datetime
 import logging
 import json
+from typing import Dict, List  # noqa F401
 
 from univention.config_registry import ConfigRegistry
 
@@ -44,6 +45,7 @@ LOG_FILE = '/var/log/univention/admindiary.log'
 
 
 def get_events_to_reject():
+	# type: () -> List[str]
 	ucrv = 'admin/diary/reject'
 	blocked_events = ucr.get(ucrv)
 	if blocked_events:
@@ -55,6 +57,7 @@ class _ShortNameFormatter(logging.Formatter):
 	shorten = 'univention.admindiary'
 
 	def format(self, record):
+		# type: (logging.LogRecord) -> str
 		record.short_name = record.name
 		if record.short_name.startswith('%s.' % self.shorten):
 			record.short_name = record.short_name[len(self.shorten) + 1:]
@@ -62,6 +65,7 @@ class _ShortNameFormatter(logging.Formatter):
 
 
 def _setup_logger():
+	# type: () -> logging.Logger
 	base_logger = logging.getLogger('univention.admindiary')
 	if not _setup_logger._setup:
 		base_logger.setLevel(logging.INFO)
@@ -82,6 +86,7 @@ _setup_logger._setup = False
 
 
 def get_logger(name):
+	# type: (str) -> logging.Logger
 	base_logger = _setup_logger()
 	logger = base_logger.getChild(name)
 	log_level = ucr.get('admin/diary/logging/%s' % name)
@@ -96,6 +101,7 @@ def get_logger(name):
 
 class DiaryEntry(object):
 	def __init__(self, username, message, args, tags, context_id, event_name):
+		# type: (str, str, Dict[str, str], List[str], str, str) -> None
 		self.username = username
 		self.hostname = gethostname()
 		self.message = message
@@ -106,6 +112,7 @@ class DiaryEntry(object):
 		self.event_name = event_name
 
 	def assert_types(self):
+		# type: () -> None
 		if not isinstance(self.username, six.string_types):
 			raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
 		if not isinstance(self.hostname, six.string_types):
@@ -130,6 +137,7 @@ class DiaryEntry(object):
 			raise TypeError('DiaryEntry() argument "event" name has to be "string", but is: %s (%s)' % (type(self.event_name), self.event_name))
 
 	def to_json(self):
+		# type: () -> str
 		attrs = {
 			'username': self.username,
 			'hostname': self.hostname,
@@ -145,6 +153,7 @@ class DiaryEntry(object):
 
 	@classmethod
 	def from_json(cls, body):
+		# type: (str) -> DiaryEntry
 		json_body = json.loads(body)
 		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['context_id'], json_body['event'])
 		entry.timestamp = datetime.strptime(json_body['timestamp'], '%Y-%m-%d %H:%M:%S')

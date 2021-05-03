@@ -28,19 +28,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Dict, List, Optional  # noqa F401
+
 
 class DiaryEvent(object):
-	_all_events = {}
+	_all_events = {}  # type: Dict[str, DiaryEvent]
 
 	@classmethod
 	def get(cls, name):
+		# type: (str) -> Optional[DiaryEvent]
 		return cls._all_events.get(name)
 
 	@classmethod
 	def names(cls):
+		# type: () -> List[str]
 		return sorted(cls._all_events.keys())
 
 	def __init__(self, name, message, args=None, tags=None, icon=None):
+		# type: (str, Dict[str, str], Optional[Dict[str, str]], Optional[List[str]], Optional[str]) -> None
 		self.name = name
 		self.message = message
 		self.args = args or {}

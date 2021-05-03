@@ -34,14 +34,18 @@ from logging.handlers import SysLogHandler
 import uuid
 from getpass import getuser
 from functools import partial, wraps
+from typing import Any, Callable, Dict, List, Optional, TypeVar  # noqa F401
 
 from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
 from univention.admindiary.events import DiaryEvent
 
 get_logger = partial(get_logger, 'client')
 
+F = TypeVar('F', bound=Callable[..., Any])
+
 
 def exceptionlogging(f):
+	# type: (F) -> F
 	@wraps(f)
 	def wrapper(*args, **kwds):
 		try:
@@ -51,14 +55,16 @@ def exceptionlogging(f):
 			import traceback
 			get_logger().error(traceback.format_exc())
 			return ''
-	return wrapper
+	return wrapper  # type: ignore
 
 
 class RsyslogEmitter(object):
 	def __init__(self):
-		self.handler = None
+		# type: () -> None
+		self.handler = None  # type: Optional[SysLogHandler]
 
 	def emit(self, entry):
+		# type: (object) -> None
 		if self.handler is None:
 			if os.path.exists('/dev/log'):
 				self.handler = SysLogHandler(address='/dev/log', facility='user')
@@ -74,18 +80,21 @@ emitter = RsyslogEmitter()
 
 @exceptionlogging
 def add_comment(message, context_id, username=None):
+	# type: (str, str, Optional[str]) -> Optional[int]
 	event = DiaryEvent('COMMENT', {'en': message})
 	return write_event(event, username=username, context_id=context_id)
 
 
 @exceptionlogging
 def write_event(event, args=None, username=None, context_id=None):
+	# type: (DiaryEvent, Dict[str, str], Optional[str], Optional[str]) -> Optional[int]
 	args = args or {}
 	return write(event.message, args, username, event.tags, context_id, event.name)
 
 
 @exceptionlogging
 def write(message, args=None, username=None, tags=None, context_id=None, event_name=None):
+	# type: (str, Dict[str, str], Optional[str], Optional[List[str]], Optional[str], Optional[str]) -> Optional[int]
 	if username is None:
 		username = getuser()
 	if args is None:
@@ -102,11 +111,12 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 
 @exceptionlogging
 def write_entry(entry):
+	# type: (DiaryEntry) -> Optional[int]
 	entry.assert_types()
 	blocked_events = get_events_to_reject()
 	if entry.event_name in blocked_events:
 		get_logger().info('Rejecting %s' % entry.event_name)
-		return
+		return None
 	body = entry.to_json()
 	emitter.emit(body)
 	get_logger().debug('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))
