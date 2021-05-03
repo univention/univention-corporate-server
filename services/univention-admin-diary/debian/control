@@ -110,6 +110,7 @@ Description: Univention Admin Diary client
 Package: python-univention-admin-diary
 Architecture: all
 Depends:
+ shall-univention-lib,
  ${misc:Depends},
  ${python:Depends},
 Provides:
