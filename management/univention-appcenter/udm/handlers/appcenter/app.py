@@ -59,11 +59,8 @@ property_descriptions = {
 		short_description=_('App ID'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'name': univention.admin.property(
@@ -72,211 +69,120 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'version': univention.admin.property(
 		short_description=_('Version'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'shortDescription': univention.admin.property(
 		short_description=_('Short description'),
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'longDescription': univention.admin.property(
 		short_description=_('Long description'),
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'vendor': univention.admin.property(
 		short_description=_('Vendor'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'maintainer': univention.admin.property(
 		short_description=_('Maintainer'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'website': univention.admin.property(
 		short_description=_('Website'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'websiteVendor': univention.admin.property(
 		short_description=_('Website Vendor'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'websiteMaintainer': univention.admin.property(
 		short_description=_('Website Maintainer'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'icon': univention.admin.property(
 		short_description=_('Icon'),
 		long_description='',
 		syntax=univention.admin.syntax.Base64Upload,
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'category': univention.admin.property(
 		short_description=_('Category'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'webInterface': univention.admin.property(
 		short_description=_('Web Interface'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'webInterfaceName': univention.admin.property(
 		short_description=_('Web Interface Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'conflictingApps': univention.admin.property(
 		short_description=_('Conflicting Apps'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'conflictingSystemPackages': univention.admin.property(
 		short_description=_('Conflicting System Packages'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'defaultPackages': univention.admin.property(
 		short_description=_('Default Packages'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'defaultPackagesMaster': univention.admin.property(
 		short_description=_('Default Primary Node Packages'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'umcModuleName': univention.admin.property(
 		short_description=_('UMC Module Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'umcModuleFlavor': univention.admin.property(
 		short_description=_('UMC Module Flavor'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'serverRole': univention.admin.property(
 		short_description=_('Installable on Server Roles'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSServerRole,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'server': univention.admin.property(
 		short_description=_('Installed On Server'),
@@ -284,10 +190,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.UCS_Server,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

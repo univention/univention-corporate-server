@@ -491,7 +491,6 @@ property_descriptions = {
 		dontsearch=True,
 		copyable=True,
 		default='0',
-		required=False,
 		prevent_umc_default_popup=True,
 	),
 	'overridePWHistory': univention.admin.property(

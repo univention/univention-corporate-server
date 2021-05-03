@@ -29,41 +29,30 @@ property_descriptions = {
 		short_description=_('service name'),
 		long_description=_('Name of the service'),
 		syntax=string,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
-		identifies=False,
 	),
 	'protocol': property(
 		short_description=_('Protocol'),
 		long_description=_('Protocol of the service'),
 		syntax=ipProtocol,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'port': property(
 		short_description=_('Port'),
 		long_description=_('Network port of the service'),
 		syntax=integer,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': property(
 		short_description=_('Description'),
 		long_description=_('Optional description for service'),
 		syntax=string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 }
 
