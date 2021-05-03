@@ -6,6 +6,13 @@ It features comprehensive Active Directory services based on Samba, an extensive
 At the core of UCS is an integrated identity and infrastructure management system including a modern Web GUI as well as various APIs and command line interfaces.
 These tools make it very easy to administrate applications, users and resources in almost any environment.
 
+## Open Position at Univention
+
+[![](FullStackDeveloper.jpg?raw=true)](https://www.univention.de/ueber-uns/karriere/stellenangebote/full-stack-developer/?pk_campaign=github-full-stack-developer)
+
+Are you a fountain of knowledge when it comes to open source? And do you enjoy designing the basis for future-proof IT infrastructures? Then apply as [Full Stack Developer](https://www.univention.de/ueber-uns/karriere/stellenangebote/full-stack-developer/?pk_campaign=github-full-stack-developer).
+The Univention Development Team is looking for Support! Click the banner to see the vacancy on our website.
+
 ## Download and Demo
 
 ISO and virtual machine images of UCS are [available for download](https://www.univention.com/downloads/ucs-download/).
