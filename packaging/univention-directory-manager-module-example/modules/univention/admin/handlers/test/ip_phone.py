@@ -119,73 +119,44 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('ID of the IP-phone'),
 		syntax=univention.admin.syntax.hostName,  # Eigenschaft muss der Syntax eines Rechnernamens entsprechen, Def. in syntax.py
-		multivalue=False,
-		options=[],
 		required=True,  # Eigenschaft muss angegeben werden
-		may_change=False,  # Eigenschaft darf nach Erstellung nicht verändert werden
 		identifies=True,  # Eigenschaft muss eindeutig sein
 	),
 	'active': univention.admin.property(
 		short_description=_('active'),
 		long_description=_('The IP-phone can be deactivated'),
 		syntax=univention.admin.syntax.TrueFalseUp,  # Definition in syntax.py, kompatibel zur LDAP Boolean Syntax
-		multivalue=False,
-		options=[],
-		required=False,  # Eigenschaft muss nicht zwingend angegeben werden
 		default='TRUE',  # Eigenschaft ist standardmäßig aktiviert
-		may_change=True,  # Eigenschaft darf modifiziert werden
-		identifies=False
 	),
 	'protocol': univention.admin.property(
 		short_description=_('Protocol'),
 		long_description=_('Supported VoIP protocols'),
 		syntax=SynVoIP_Protocols,  # nutzt die selbst definierte Auswahlliste als Syntax
-		multivalue=False,
-		options=[],
-		required=False,
 		default='sip',  # der Eintrag 'sip' ist vorausgewählt
-		may_change=True,
-		identifies=False
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP-Address'),
 		long_description=_('IP-Address of the IP-phone'),
 		syntax=univention.admin.syntax.ipAddress,  # muss der Syntax einer IP (Version 4) Adresse entsprechen
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'priuser': univention.admin.property(
 		short_description=_('Primary User'),
 		long_description=_('The primary user of this IP-phone'),
 		syntax=SynVoIP_Address,  # muss der Syntax einer VoIP Adresse entsprechen
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'users': univention.admin.property(
 		short_description=_('Additional Users'),
 		long_description=_('Users, that may register with this phone'),
 		syntax=SynVoIP_Address,  # jeder Eintrag muss der Syntax einer VoIP Adresse entsprechen
 		multivalue=True,  # Dies ist eine Liste von Adressen
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'redirect_user': univention.admin.property(
 		short_description=_('Redirection User'),
 		long_description=_('Address for call redirection'),
 		syntax=SynVoIP_Address,
-		multivalue=False,
 		options=['redirection'],  # Ist nur da, wenn die Option gesetzt ist
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

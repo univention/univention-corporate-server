@@ -74,7 +74,6 @@ property_descriptions = {
 		long_description=_('List of portal entries and/or portal folders shown in this folder'),
 		syntax=univention.admin.syntax.NewPortalEntries,
 		multivalue=True,
-		required=False,
 	),
 }
 

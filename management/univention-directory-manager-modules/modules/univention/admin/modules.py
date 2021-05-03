@@ -483,7 +483,6 @@ def update_extended_attributes(lo, module, position):
 			required=valueRequired,
 			may_change=mayChange,
 			dontsearch=doNotSearch,
-			identifies=False,
 			default=propertyDefault,
 			editable=editable,
 			copyable=copyable,
