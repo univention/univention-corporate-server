@@ -476,7 +476,7 @@ class access(object):
 
 	@_fix_reconnect_handling
 	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> List[Tuple[str, Dict[str, List[str]]]]
+		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
 		Perform LDAP search and return values.
 
@@ -522,7 +522,7 @@ class access(object):
 		return res
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]]) -> List[str]
+		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
 
@@ -576,7 +576,7 @@ class access(object):
 
 		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
-		merged = {}
+		merged = {}  # type: Dict[str, Dict[str, Any]]
 		if dn:
 			obj_dn = dn
 			while True:
