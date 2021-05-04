@@ -6,8 +6,6 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## join: true
 ## exposure: dangerous
-## packages:
-##  - python-requests
 
 from __future__ import print_function
 import subprocess

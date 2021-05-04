@@ -5,7 +5,6 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages:
-##   - python-requests
 ##   - univention-samba4
 ## tags:
 ##  - skip_admember

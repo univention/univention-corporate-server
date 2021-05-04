@@ -4,8 +4,6 @@
 ## roles: [domaincontroller_master]
 ## join: true
 ## exposure: safe
-## packages:
-##   - python-requests
 ## tags:
 ##  - skip_admember
 

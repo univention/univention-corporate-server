@@ -6,8 +6,6 @@
 ## roles: [domaincontroller_backup]
 ## join: true
 ## exposure: dangerous
-## packages:
-##  - python-requests
 
 import time
 import socket

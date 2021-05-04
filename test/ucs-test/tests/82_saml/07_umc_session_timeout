@@ -4,8 +4,6 @@
 ## join: true
 ## exposure: safe
 ## roles: [domaincontroller_master]
-## packages:
-##   - python-requests
 
 from __future__ import print_function
 import time

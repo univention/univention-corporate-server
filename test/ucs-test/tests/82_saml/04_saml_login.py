@@ -3,8 +3,6 @@
 ## tags: [saml]
 ## join: true
 ## exposure: safe
-## packages:
-##   - python-requests
 ## tags:
 ##  - skip_admember
 
