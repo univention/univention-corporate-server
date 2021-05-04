@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-9) unstable; urgency=medium
+
+  * Bug #53215: adjust spacing in "Your profile" tab
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 09:02:34 +0200
+
 univention-self-service (5.0.1-8) unstable; urgency=medium
 
   * Bug #52869: Reload self-service after setting CSP
