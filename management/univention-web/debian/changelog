@@ -1,3 +1,9 @@
+univention-web (4.0.1-26) unstable; urgency=medium
+
+  * Bug #53216: fix text overflow in ProgressBar
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 09:02:08 +0200
+
 univention-web (4.0.1-25) unstable; urgency=medium
 
   * Bug #52453: adjust new design
