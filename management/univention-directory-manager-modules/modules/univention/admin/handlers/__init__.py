@@ -2087,6 +2087,7 @@ class simpleComputer(simpleLdap):
 			return
 
 		ethernet = 'ethernet %s' % mac
+		bip = ip.encode('ASCII') if ip else b''
 
 		tmppos = univention.admin.uldap.position(self.position.getDomain())
 		if not position:
@@ -2109,23 +2110,24 @@ class simpleComputer(simpleLdap):
 				name = '%s_uv%d' % (name, n)
 
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), position)
-			self.lo.add(dn, [
+			ml = [
 				('objectClass', [b'top', b'univentionObject', b'univentionDhcpHost']),
 				('univentionObjectType', [b'dhcp/host']),
 				('cn', [name.encode('UTF-8')]),
-				('univentionDhcpFixedAddress', [ip.encode('ASCII')]),
 				('dhcpHWAddress', [ethernet.encode('ASCII')]),
-			])
+			]
+			if ip:
+				ml.append(('univentionDhcpFixedAddress', [bip]))
+			self.lo.add(dn, ml)
 			ud.debug(ud.ADMIN, ud.INFO, 'we just added the object "%s"' % (dn,))
-		else:
+		elif ip:
 			# if the object already exists, we append or remove the ip address
 			ud.debug(ud.ADMIN, ud.INFO, 'the dhcp object with the mac address "%s" exists, we change the ip' % ethernet)
 			for dn, attr in results:
-				if ip:
-					if ip.encode('ASCII') in attr.get('univentionDhcpFixedAddress', []):
-						continue
-					self.lo.modify(dn, [('univentionDhcpFixedAddress', b'', ip.encode('ASCII'))])
-					ud.debug(ud.ADMIN, ud.INFO, 'we added the ip "%s"' % ip)
+				if bip in attr.get('univentionDhcpFixedAddress', []):
+					continue
+				self.lo.modify(dn, [('univentionDhcpFixedAddress', b'', bip)])
+				ud.debug(ud.ADMIN, ud.INFO, 'we added the ip "%s"' % ip)
 
 	def __rename_dns_object(self, position=None, old_name=None, new_name=None):
 		for dns_line in self['dnsEntryZoneForward']:

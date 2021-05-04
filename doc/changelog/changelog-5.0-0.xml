@@ -472,7 +472,10 @@
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Remove one of multiple DNS PTR records from a computer has been fixed (<u:bug>53213</u:bug>)
+					Removing one of multiple DNS PTR records from a computer has been fixed (<u:bug>53213</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					Creating a new DHCP enabled computer entry without an IP address did create an invalid <classname>dhcp/host</classname> entry (<u:bug>53204</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

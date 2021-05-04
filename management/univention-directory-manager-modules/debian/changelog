@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.10-2) unstable; urgency=low
+
+  * Bug #53213: Remove one of multiple DNS PTR RRs
+  * Bug #53204: Do not add dhcp/host entries if no IP
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 04 May 2021 10:52:04 +0200
+
 univention-directory-manager-modules (15.0.10-1) unstable; urgency=medium
 
   * Bug #50575: Use python-passlib instead of python-smbpasswd for
