@@ -1,3 +1,10 @@
+univention-portal (4.0.5-45) unstable; urgency=medium
+
+  * Bug #51197: The new UDM modules only need to be present starting with
+    5.0-0
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 04 May 2021 17:24:34 +0200
+
 univention-portal (4.0.5-44) unstable; urgency=medium
 
   * Bug #52869: Custom CSS
