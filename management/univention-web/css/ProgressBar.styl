@@ -27,36 +27,17 @@
 
 @require "variables.styl"
 
-.umc .dijitProgressBar
-	margin: 2px 0 2px 0
-
 .umc .dijitProgressBarEmpty
-	/* outer container and background of the bar that's not finished yet*/
-	//background-color: $progressbar-empty-background-color
-	//background: $progressbar-empty-background-color
 	background-color: var(--color-grey62)
 	height: 5px
 
 .umc .dijitProgressBarTile
-	/* inner container for finished portion when in 'tile' (image) mode */
 	background-color: var(--color-success)
 
-	// gradient background using CSS gradient, with fallback to image for IE
-	//background-image: url("images/progressBarFull.png")
-	//background-repeat: repeat-x
-	//alpha-white-gradient((0.93 0px), (0.41 1px), (0.7 2px), (0 100%))
-	background-attachment: scroll	// override strange "fixed" setting from dijit.css
-
-.dj_ie6 .umc .dijitProgressBarTile
-	background-image: none
- 
 .umc .dijitProgressBarFull
-	border: 0px solid $progressbar-border-color
-	border-right-width: 1px
 	transition-property: width
 	transition-duration: .5s
-	height: $progressbar-height
-	box-sizing: content-box
+	height: 100%
 
 .umc .dijitProgressBarIndeterminate .dijitProgressBarFull
 	transition: none
@@ -65,18 +46,45 @@
 	transition: none
 
 .umc .dijitProgressBarLabel
-	color: $progressbar-text-color
-	padding: 2px 0
-	transition-property: color
-	transition-duration: .5s
-	height: $progressbar-height
-
-.umc .dijitProgressBarGreaterThan50Percent .dijitProgressBarLabel
-	color: $text-color-dark-background
-	padding: 2px 0
+	display: none
 
 .umc .dijitProgressBarIndeterminate .dijitProgressBarTile
 	/* use an animated gif for the progress bar in 'indeterminate' mode
 		background-color won't appear unless user has turned off background images */
 	background: $bar-background-color url($image-progressbar-anim) repeat-x top
  
+.umc .umcProgressBar,
+.umc .umcProgressInfo
+	width: 460px
+
+.umc .umcProgressDetails
+	display: grid
+	grid-template-columns: auto 4ch
+	grid-gap: 0 spacing(1, true)
+	margin-top: spacing(2)
+
+	.umcProgressPercentage
+		color: var(--font-color-contrast-middle)
+		font-size: var(--font-size-4);
+		justify-self: flex-end
+
+.umc .umcProgressBar
+	background-color: var(--bgc-content-container)
+	border-radius: var(--border-radius-container);
+	padding: spacing(2)
+	overflow: visible
+
+	.umcProgressBarComponent
+		min-height: calc(2 * 1em * var(--font-lineheight-normal))
+		font-size: var(--font-size-2);
+		font-weight: var(--font-weight-bold)
+		margin-bottom: spacing(2)
+		overflow: hidden
+		overflow-wrap: break-word
+
+	.umcProgressBarMessage
+		min-height: calc(3 * 1em * var(--font-lineheight-normal))
+		font-size: var(--font-size-4);
+		color: var(--font-color-contrast-middle)
+		overflow: hidden
+		overflow-wrap: break-word
