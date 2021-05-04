@@ -170,6 +170,8 @@ def _handler(ucr, changes):
 			elif key == 'description/fr':
 				entry.setdefault('description', [])
 				entry['description'].append(('fr_FR', value))
+			elif key == 'link-target':
+				entry['linkTarget'] = value
 			elif key == 'background-color':
 				entry['backgroundColor'] = value
 			else:

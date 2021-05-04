@@ -607,6 +607,14 @@ class App(with_metaclass(AppMetaClass, object)):
 			both, http will go to http, https to https.
 		ucs_overview_category: Whether and if where on the start site
 			the *web_interface* should be registered automatically.
+		background_color: Which background color to use on tiles in
+			the App Center overview and the portal.
+		web_interface_link_target: Which link_target to add to a portal
+			entry. Currently supported:
+			useportaldefault: let the portal decide (default)
+			embedded: in an iframe within the portal
+			newwindow: new browser tab
+			samewindow: replaces portal (not recommended)
 		database: Which (if any) database an App wants to use. The App
 			Center will setup the database for the App. Useful for
 			Docker Apps running against the Host's database.
@@ -883,6 +891,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	auto_mod_proxy = AppBooleanAttribute(default=True)
 	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
 	background_color = AppAttribute()
+	web_interface_link_target = AppAttribute()
 
 	database = AppAttribute()
 	database_name = AppAttribute()

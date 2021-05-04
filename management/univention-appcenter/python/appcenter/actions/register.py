@@ -614,6 +614,8 @@ class AppListener(AppListener):
 				'link': app.web_interface,
 				'background-color': app.background_color,
 			}
+			if app.web_interface_link_target != 'useportaldefault':
+				variables['link-target'] = app.web_interface_link_target
 			for key, value in variables.items():
 				updates[registry_key % key] = value
 		return updates
