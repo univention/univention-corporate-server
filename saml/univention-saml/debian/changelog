@@ -1,3 +1,9 @@
+univention-saml (7.0.4-13) unstable; urgency=medium
+
+  * Bug #53198: fix color of error message
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 02:18:54 +0200
+
 univention-saml (7.0.4-12) unstable; urgency=medium
 
   * Bug #52941: remove moving saml icon cia install file
