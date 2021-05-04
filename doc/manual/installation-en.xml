@@ -19,6 +19,15 @@ The following documentation describes how to install Univention Corporate Server
 	<para>
 	  The installation DVD is available for the computer architecture <emphasis>amd64</emphasis> (64-bit). In addition to support for the widely distributed BIOS systems, the DVD also includes support for the Unified Extensible Firmware Interface (UEFI) standard. The UEFI support on the DVD is also capable of starting systems with activated SecureBoot and installing UCS there.
 	</para>
+	<note>
+		<para>
+			Please note that simultaneous operation of UCS and Debian on a UEFI system starting with
+			UCS 5.0-0 is not supported. The reason for this is the GRUB boot loader of &ucsUCS;, which partly
+			uses the same configuration files as Debian. An already installed Debian leads to the fact that UCS
+			cannot be booted (any more) after the installation of or an update to UCS 5.0. A subsequent
+			installation of Debian will also result in UCS 5.0 not being able to boot.
+		</para>
+	</note>
 
 	<para>
 Following installation on hardware or in a virtualization solution, UCS can also be installed on the Amazon EC2 cloud using an AMI image. Further information can be found in <xref linkend="installation:amazonec2"/>.
