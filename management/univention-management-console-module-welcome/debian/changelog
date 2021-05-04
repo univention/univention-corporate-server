@@ -1,3 +1,9 @@
+univention-management-console-module-welcome (1.0.0-5) unstable; urgency=medium
+
+  * Bug #53147: adjust layout for different screen sizes
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 01:59:28 +0200
+
 univention-management-console-module-welcome (1.0.0-4) unstable; urgency=medium
 
   * Bug #53147: Minor cleanups
