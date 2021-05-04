@@ -9,33 +9,48 @@
 }
 .umcBubble__content {
 	padding: calc(2 * var(--layout-spacing-unit));
-	display: flex;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto auto;
+	grid-template-areas: "img text" "img buttons";
+	gap: calc(2 * var(--layout-spacing-unit));
 }
-.umcBubble__content img {
+.umcBubble__img {
+	grid-area: img;
 	height: 9rem;
 }
-.umcBubble__content-inner {
-	width: 100%;
-	margin-left: calc(2 * var(--layout-spacing-unit));
+.umcBubble__description {
+	grid-area: text;
 }
 .umcBubble__buttons {
-	margin-top: calc(2 * var(--layout-spacing-unit));
-	display: flex;
-	flex-wrap: wrap;
+	grid-area: buttons;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: calc(2 * var(--layout-spacing-unit));
 }
 .umcBubbleButton {
 	background-color: var(--bgc-content-body);
-	margin-top: calc(2 * var(--layout-spacing-unit));
-	margin-left: calc(2 * var(--layout-spacing-unit));
 	border: 2px solid transparent;
 	border-radius: var(--border-radius-container);
 	padding: var(--layout-spacing-unit);
-	width: 30%;
+	transition: border-color 250ms;
 }
 .umcBubbleButton:hover {
 	cursor: pointer;
 	border-color: var(--color-primary);
 }
-.umcBubbleButton__description {
-	margin-top: var(--layout-spacing-unit);
+
+@media (max-width: 767px) {
+	.umcBubble__content {
+		grid-template-areas: "img text"	"buttons buttons";
+	}
+	.umcBubble__img {
+		height: 5rem;
+	}
+}
+
+@media (max-width: 549px) {
+	.umcBubble__buttons {
+		grid-template-columns: 1fr;
+	}
 }

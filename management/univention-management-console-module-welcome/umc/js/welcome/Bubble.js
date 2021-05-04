@@ -46,13 +46,9 @@ define([
 					<h2>\${header}</h2>
 				</div>
 				<div class="umcBubble__content">
-					<img src="\${icon}">
-					<div class="umcBubble__content-inner">
-						<div class="umcBubble__description">
-							\${description}
-						</div>
-						<div class="umcBubble__buttons" data-dojo-attach-point="containerNode"></div>
-					</div>
+					<img class="umcBubble__img" src="\${icon}">
+					<div class="umcBubble__description">\${description}</div>
+					<div class="umcBubble__buttons" data-dojo-attach-point="containerNode"></div>
 				</div>
 			</div>
 		`
