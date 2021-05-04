@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-37) unstable; urgency=medium
+
+  * Bug #53214: adjust design of multi-select
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 09:04:58 +0200
+
 univention-appcenter (9.0.2-36) unstable; urgency=medium
 
   * Bug #53217: adjust unsupported css
