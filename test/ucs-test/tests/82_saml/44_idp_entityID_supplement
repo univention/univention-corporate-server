@@ -4,8 +4,6 @@
 ## join: true
 ## exposure: dangerous
 ## roles: [domaincontroller_master, domaincontroller_backup]
-## packages:
-##   - python-requests
 ## tags:
 ##  - skip_admember
 

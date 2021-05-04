@@ -4,7 +4,6 @@
 ## join: true
 ## exposure: dangerous
 ## packages:
-##   - python-requests
 ##   - univention-self-service-passwordreset-umc
 ## tags:
 ##  - skip_admember

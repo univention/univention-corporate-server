@@ -3,8 +3,6 @@
 ## tags: [saml]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
-## packages:
-##  - python-requests
 ## tags:
 ##  - skip_admember
 

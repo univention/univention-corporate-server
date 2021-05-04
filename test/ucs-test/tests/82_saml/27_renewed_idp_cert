@@ -5,8 +5,6 @@
 ## roles: [domaincontroller_master]
 ## join: true
 ## exposure: dangerous
-## packages:
-##   - python-requests
 
 from __future__ import print_function
 import subprocess

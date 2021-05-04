@@ -4,8 +4,6 @@
 ## bugs: [39355]
 ## join: true
 ## exposure: dangerous
-## packages:
-##   - python-requests
 
 from __future__ import print_function
 import os
