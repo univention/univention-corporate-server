@@ -226,7 +226,6 @@ define([
 			var label = put('div.stepLabel', _('Activate renew options.'));
 			put(step, label);
 			this._renewInputs = array.map(options, lang.hitch(this, function(option) {
-				var optionNode = put('div');
 				var input = new TextBox({
 					id: option.id + '_check',
 					value: option.value
@@ -250,11 +249,10 @@ define([
 					}
 				}));
 				inputRetype.startup();
-				put(optionNode, 'label[for=' + option.id + '_check]', option.label);
-				put(optionNode, input.domNode);
-				put(optionNode, 'label[for=' + option.id + ']', option.label + _(' (retype)'));
-				put(optionNode, inputRetype.domNode);
-				put(step, optionNode);
+				put(step, 'label[for=' + option.id + '_check]', option.label);
+				put(step, input.domNode);
+				put(step, 'label[for=' + option.id + ']', option.label + _(' (retype)'));
+				put(step, inputRetype.domNode);
 				return {
 					id: option.id,
 					getValue: function() { return inputRetype.get('value');},

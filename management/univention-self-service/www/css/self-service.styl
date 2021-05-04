@@ -22,6 +22,11 @@ ol.PasswordOl {
 
 	li.step {
 		counter-increment: step-counter;
+		
+		> .dijitTextBox,
+		> .umcContainerWidget {
+			margin-bottom: calc(3 * var(--layout-spacing-unit));
+		}
 	}
 
 	.stepLabel::before {
@@ -32,11 +37,6 @@ ol.PasswordOl {
 		font-weight: var(--font-weight-bold);
 		padding: 3px 8px;
 		border-radius: 3px;
-	}
-	
-	.dijitTextBox,
-	.umcContainerWidget {
-		margin-bottom: calc(3 * var(--layout-spacing-unit));
 	}
 }
 
