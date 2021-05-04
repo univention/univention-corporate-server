@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-09-25 01:35+0200\n"
-"PO-Revision-Date: 2015-07-17 12:46+0200\n"
+"PO-Revision-Date: 2021-05-04 10:26+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -1007,8 +1007,8 @@ msgid "documents"
 msgstr "Dokumente"
 
 #: modules/univention/admin/handlers/shares/printer.py:59
-msgid "https://docs.software-univention.de/manual-4.4.html#print::shares"
-msgstr "https://docs.software-univention.de/handbuch-4.4.html#print::shares"
+msgid "https://docs.software-univention.de/manual-5.0.html#print::shares"
+msgstr "https://docs.software-univention.de/handbuch-5.0.html#print::shares"
 
 #: modules/univention/admin/handlers/shares/share.py:49
 msgid "manual"
