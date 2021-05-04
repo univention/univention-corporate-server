@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <module id="udm" icon="udm/module" version="1.0" translationId="univention-portal">
-    <!-- Translation currently broken due to Bug #35061 -->
+  <module id="udm" version="1.0">
     <name></name>
     <description></description>
     <flavor id="portals/all" icon="portal">
