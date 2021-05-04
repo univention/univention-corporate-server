@@ -135,9 +135,9 @@
 	</chapter>
 
 	<chapter id="relnotes:bootloader">
-        <title>Gleichzeitiger Betrieb von UCS und Debian auf UEFI-Systemen</title>
+		<title>Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen</title>
 		<para>
-			Beginnend ab UCS 5.0-0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI-System nicht unterstützt.
+			Beginnend ab UCS 5.0-0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
 		</para>
 		<para>
 			Ursache hierfür ist der Bootloader GRUB von &ucsUCS;, der teilweise die gleichen Konfigurationsdateien wie Debian verwendet.
@@ -145,7 +145,7 @@
 			Eine nachträgliche Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht mehr gebootet werden kann.
 		</para>
 		<para>
-			An folgendem Help-Artikel werden weitere Hinweise zu diesem Thema gesammelt:
+			An folgendem Artikel werden weitere Hinweise zu diesem Thema gesammelt:
 			<ulink url="https://help.univention.com/t/17768">https://help.univention.com/t/17768</ulink>
 		</para>
 	</chapter>
