@@ -62,25 +62,23 @@ define([
 					license.addChild(new BubbleButton({
 						header: _('Request a new license'),
 						description: _('We send you a license with a Key ID to your email address'),
-						onClick: () => { new ActivationDialog(); }
+						onClick: () => { new ActivationDialog({}); }
 					}));
 				}
 				license.addChild(new BubbleButton({
 					header: _('License info'),
 					description: _('Show your current license'),
-					onClick: () => { new LicenseDialog(); }
+					onClick: () => { new LicenseDialog({}); }
 				}));
 				license.addChild(new BubbleButton({
 					header: _('Import a license'),
 					description: _('Upload a new license we sent you earlier'),
 					onClick: () => {
-						var dlg = new LicenseImportDialog();
+						var dlg = new LicenseImportDialog({});
 						dlg.show();
 					}
 				}));
 				this._page.addChild(license);
-
-				this._page.startup();
 			});
 		}
 	});
