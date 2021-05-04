@@ -39,6 +39,7 @@ import re
 from optparse import Values
 
 from ldap.dn import str2dn, dn2str
+from ldap.filter import filter_format
 
 from univention.lib.ldap_extension import UniventionLDAPSchema, get_handler_message
 
@@ -283,7 +284,7 @@ class Register(CredentialsAction):
 			listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
 			if os.path.exists(listener_file):
 				return
-			ldap_filter = '(|%s)' % ''.join('(univentionObjectType=%s)' % udm_module for udm_module in app.listener_udm_modules)
+			ldap_filter = '(|%s)' % ''.join(filter_format('(univentionObjectType=%s)', [udm_module]) for udm_module in app.listener_udm_modules)
 			dump_dir = os.path.join('/var/lib/univention-appcenter/listener/', app.id)  # this is appcenter.listener.LISTENER_DUMP_DIR, but save the import for just that
 			output_dir = os.path.join(app.get_data_dir(), 'listener')
 			with open(listener_file, 'w') as fd:

@@ -52,6 +52,7 @@ from six.moves.configparser import RawConfigParser, ParsingError
 from six.moves import urllib_request, http_client
 from six.moves.urllib_parse import urlencode
 from six import string_types
+from ldap.filter import filter_format
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -578,7 +579,7 @@ def resolve_dependencies(apps, action):
 				continue
 			if required_app.is_installed():
 				continue
-			if lo.search('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))' % required_app.id):
+			if lo.search(filter_format('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))', [required_app.id])):
 				continue
 			utils_logger.info('Adding %s to the list of Apps' % required_app.id)
 			apps.append(required_app)
