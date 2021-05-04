@@ -6,16 +6,6 @@ src: gst-plugins-base1.0
 fix: 1.10.4-1+deb9u2
 desc: |
  This update addresses the following issue:
-
- * 1.10.4-1+deb9u2 (Mon, 26 Apr 2021 12:23:17 +0200) *
-   d/p/0001-tag-id3v2-fix-frame-size-check-and-potential-invalid-reads.patch:
-   + Add upstream patch for fixing invalid reads during ID3v2 tag parsing that
-   can lead to application crashes.
-
- * 1.10.4-1+deb9u2 (Mon, 26 Apr 2021 12:23:17 +0200) *
-   d/p/0001-tag-id3v2-fix-frame-size-check-and-potential-invalid-reads.patch:
-   + Add upstream patch for fixing invalid reads during ID3v2 tag parsing that
-   can lead to application crashes.
  * out-of-bounds read when handling certain ID3v2 tags (CVE-2021-3522)
 bug: [53208]
 cve:
