@@ -34,8 +34,7 @@ set -e
 
 check_returnvalue ()
 {
-	rval=$1
-	errormessage=$2
+	local rval="$1" errormessage="$2"
 	if [ "${rval}" != 0 ]; then
 		echo "${errormessage}"
 		exit "${rval}"
@@ -56,7 +55,8 @@ install_virtualbox_packages ()
 
 install_activation_packages ()
 {
-	if $1; then
+	if "$1"
+	then
 		univention-install -y --force-yes univention-system-activation
 		ucr set --force auth/sshd/user/root=yes
 		ucr set appliance/activation/enabled=true
@@ -67,30 +67,35 @@ install_activation_packages ()
 
 download_packages ()
 {
+	local package install_cmd
 	mkdir -p /var/cache/univention-system-setup/packages/
-	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-	fi
+	(
+		cd /var/cache/univention-system-setup/packages/
+		touch Packages
+		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
+			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 
-	cd /var/cache/univention-system-setup/packages/
-	install_cmd="$(univention-config-registry get update/commands/install)"
+		install_cmd="$(univention-config-registry get update/commands/install)"
+		for package in "$@"
+		do
+			# shellcheck disable=SC2046
+			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" |
+			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
+				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
-	for package in "$1"; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
-		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-
-		check_returnvalue $? "Failed to download required packages for ${package}"
-		apt-ftparchive packages . >Packages
-		check_returnvalue $? "Failed to create ftparchive directory"
-		apt-get update
-	done
+			check_returnvalue $? "Failed to download required packages for ${package}"
+			apt-ftparchive packages . >Packages
+			check_returnvalue $? "Failed to create ftparchive directory"
+			apt-get -q update
+		done
+	)
 
 	return 0
 }
 
 app_get_ini ()
 {
-	local app=$1
+	local app="$1"
 	python3 -c "from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
 print app.get_ini_file()"
@@ -98,7 +103,7 @@ print app.get_ini_file()"
 
 app_appliance_hook ()
 {
-	local app=$1
+	local app="$1"
 	python3 -c "from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
 print app.get_cache_file('appliance_hook')"
@@ -106,31 +111,28 @@ print app.get_cache_file('appliance_hook')"
 
 get_app_attr_raw_line ()
 {
-	local app=$1
-	local attr=$2
-	local ini="$(app_get_ini $app)"
+	local app="$1" attr="$2" ini
+	ini="$(app_get_ini "$app")"
 	grep -i "^$attr " "$ini" # assumption: ini contains $attr + <space> before the '='
 }
 
 get_app_attr_raw ()
 {
-	local app=$1
-	local attr=$2
-	local line="$(get_app_attr_raw_line $app $attr)"
-	echo "$line" | sed -e "s/^.*= //"
+	local app="$1" attr="$2" line
+	line="$(get_app_attr_raw_line "$app" "$attr")"
+	echo "${line##*= }"
 }
 
 get_app_attr ()
 {
-	local app=$1
-	local attr=$2
-	local value="$(get_app_attr_raw $app $attr)"
-	echo "$value" | sed -e 's/, */ /g'
+	local app="$1" attr="$2" value
+	value="$(get_app_attr_raw "$app" "$attr")"
+	echo "${value//, / }"
 }
 
 app_get_database_packages_for_docker_host ()
 {
-	local app=$1
+	local app="$1"
 	python3 -c "
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.database import DatabaseConnector
@@ -143,7 +145,7 @@ if d:
 
 app_get_component ()
 {
-	local app=$1
+	local app="$1"
 	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
@@ -152,8 +154,8 @@ print(app.component_id)"
 
 app_get_appliance_hook_download_link ()
 {
-	local app=$1
-	local server="$(ucr get repository/app_center/server)"
+	local app="$1" server
+	server="$(ucr get repository/app_center/server)"
 	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
@@ -162,14 +164,14 @@ print('https://$server/univention-repository/%s/maintained/component/%s/applianc
 
 app_download_appliance_hook ()
 {
-	local app=$1
-	local srclink="$(app_get_appliance_hook_download_link $1)"
-	wget "$srclink" -O "$(app_appliance_hook $app)" || true
+	local app="$1" srclink
+	srclink="$(app_get_appliance_hook_download_link "$1")"
+	wget "$srclink" -O "$(app_appliance_hook "$app")" || true
 }
 
 app_get_compose_file ()
 {
-	local app=$1
+	local app="$1"
 	python3 -c "
 from univention.appcenter.app_cache import Apps
 app = Apps().find('$app')
@@ -178,44 +180,39 @@ print(app.get_cache_file('compose'))"
 
 app_appliance_is_software_blacklisted ()
 {
-	local app="$1"
+	local app="$1" value
 	[ -z "$app" ] && return 1
-	local value="$(get_app_attr $app AppliancePagesBlackList)"
+	value="$(get_app_attr "$app" AppliancePagesBlackList)"
 	echo "$value" | grep -qs software
-	return $?
 }
 
 app_has_no_repository ()
 {
-	local app="$1"
+	local app="$1" value
 	[ -z "$app" ] && return 1
-	local value="$(get_app_attr $app WithoutRepository)"
-	echo "$value" | grep -qs True 
-	return $?
+	value="$(get_app_attr "$app" WithoutRepository)"
+	echo "$value" | grep -qs True
 }
 
 appliance_dump_memory ()
 {
-	local app="$1"
-	local targetfile="$2"
-	local value="$(get_app_attr $app ApplianceMemory)"
-	[ -z $value ] && value="2048"
-	echo "$value" > "$targetfile"
+	local app="$1" targetfile="$2" value
+	value="$(get_app_attr "$app" ApplianceMemory)"
+	echo "${value:-2048}" > "$targetfile"
 }
 
 appliance_dump_identifier()
 {
-	local app="$1"
-	local targetfile="$2"
-	local value="$(get_app_attr $app ApplianceIdentifier)"
-	[ -z $value ] && value="$app"
-	echo "$value" > "$targetfile"
+	local app="$1" targetfile="$2" value
+	value="$(get_app_attr "$app" ApplianceIdentifier)"
+	echo "${value:-$app}" > "$targetfile"
 }
 
 app_appliance_AllowPreconfiguredSetup ()
 {
-	local app="$1"
-	local value="$(get_app_attr $app ApplianceAllowPreconfiguredSetup)"
+	local app="$1" value
+	value="$(get_app_attr "$app" ApplianceAllowPreconfiguredSetup)"
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/ucr.sh
 	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
 		1|yes|on|true|enable|enabled) return 0 ;;
@@ -226,40 +223,34 @@ app_appliance_AllowPreconfiguredSetup ()
 
 app_appliance_IsDockerApp ()
 {
-	local app="$1"
+	local app="$1" image dockercompose
 	[ -z "$app" ] && return 1
-	local image="$(get_app_attr $app dockerimage)"
-	test -n "$image" && return 0
-	local dockercompose="$(app_get_compose_file $app)"
-	test -e "$dockercompose" && return 0
-	return 1
+	image="$(get_app_attr "$app" dockerimage)"
+	[ -n "$image" ] && return 0
+	dockercompose="$(app_get_compose_file "$app")"
+	[ -e "$dockercompose" ]
 }
 
 appliance_app_has_external_docker_image ()
 {
 	local app="$1"
-	image="$(get_app_attr $app DockerImage)"
+	image="$(get_app_attr "$app" DockerImage)"
 	echo "Docker image: $image"
-	if echo "$image" | grep -qs "ucs-appbox" ; then
-		return 1
-	else
-		return 0
-	fi
+	! echo "$image" | grep -qs "ucs-appbox"
 }
 
 prepare_package_app ()
 {
-	local app=$1
-	local counter=$2
-	local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
-	local version="$(get_app_attr $app Version)"
-	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
-	local install_cmd="$(univention-config-registry get update/commands/install)"
+	local app="$1" counter="$2" packages version ucsversion install_cmd i package
+	packages="$(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)"
+	version="$(get_app_attr "$app" Version)"
+	ucsversion="$(app_get_ini "$app" | awk -F / '{print $(NF-1)}')"
+	install_cmd="$(univention-config-registry get update/commands/install)"
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	for i in oxseforucs horde tine20 fortnox kolab-enterprise kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
-	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
+	cat >"/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}" <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/base.sh
@@ -273,7 +264,7 @@ info_header "$0" "$(gettext "Installing $app")"
 
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
-apt-get update
+apt-get -q update
 if [ "$close_fds" = "TRUE" ]; then
 	echo "Close logfile output now. Please see /var/log/dpkg.log for more information"
 	exec 1> /dev/null
@@ -289,33 +280,35 @@ univention-run-join-scripts -dcaccount "\$dn" -dcpwd /tmp/joinpwd
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}
+	chmod 755 "/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}"
 
 	# default packages for non-docker apps
 	mkdir -p /var/cache/univention-system-setup/packages/
-	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-	fi
-	cd /var/cache/univention-system-setup/packages/
-	echo "Try to download: $packages"
-	for package in $packages; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} |
-		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-			$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-	done
-	apt-ftparchive packages . >Packages
-	apt-get update
+	(
+		cd /var/cache/univention-system-setup/packages/
+		touch Packages
+
+		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
+			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+		echo "Try to download: $packages"
+		for package in $packages
+		do
+			# shellcheck disable=SC2046
+			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" |
+			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
+				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+		done
+		apt-ftparchive packages . >Packages
+	)
+	apt-get -q update
 }
 
 prepare_docker_app () {
-	local app=$1
-	local counter=$2
-	local php7_required=false
-	local extra_packages=""
-	local dockercompose="$(app_get_compose_file $app)"
-	local dockerimage="$(get_app_attr $app DockerImage)"
-	local local_app_component_id=$(app_get_component $app)""
-	if [ ! -e "$dockercompose" -a -z "$dockerimage" ]; then
+	local app="$1" counter="$2" extra_packages="" dockercompose dockerimage local_app_component_id name component component_prefix="repository/online/component/" packages
+	dockercompose="$(app_get_compose_file "$app")"
+	dockerimage="$(get_app_attr "$app" DockerImage)"
+	local_app_component_id="$(app_get_component "$app")"
+	if [ ! -e "$dockercompose" ] && [ -z "$dockerimage" ]; then
 		echo "Error: No docker image and compose file for docker app $app!"
 		exit 1
 	fi
@@ -328,51 +321,53 @@ prepare_docker_app () {
 	# compose
 	if [ -e "$dockercompose" ]; then
 		local_app_docker_image=""
-		while read image; do
-			docker pull $image
-		done < <(cat "$dockercompose" | sed -n 's/.*image: //p' | sed 's/"//g')
+		while read -r image; do
+			docker pull "$image"
+		done < <(exec sed -n 's/.*image: //p' "$dockercompose" | sed 's/"//g')
 	else
 		local_app_docker_image="$dockerimage"
 		docker pull "$dockerimage"
 	fi
 	# appbox image
-	if ! appliance_app_has_external_docker_image $app; then
+	if ! appliance_app_has_external_docker_image "$app"
+	then
 			container_id=$(docker create "$dockerimage")
 			docker start "$container_id"
 			sleep 60 # some startup time...
 			# update to latest version
-			v=$(docker exec $container_id ucr get version/version)
+			v=$(docker exec "$container_id" ucr get version/version)
 			# update is broken (empty domainname breaks postfix upgrade)
-			docker exec $container_id ucr set domainname='test.test'
-			docker exec $container_id univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
-			docker exec $container_id ucr unset domainname
+			docker exec "$container_id" ucr set domainname='test.test'
+			docker exec "$container_id" univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
+			docker exec "$container_id" ucr unset domainname
 			docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
 				repository/app_center/server="$(ucr get repository/app_center/server)" \
 				appcenter/index/verify="$(ucr get appcenter/index/verify)" \
 				update/secure_apt="$(ucr get update/secure_apt)"
 			# activate app repo
-			local name=$(get_app_attr $app Name)
-			local component=$(app_get_component $app)
-			local component_prefix="repository/online/component/"
-			docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
-				${component_prefix}${component}/localmirror=false \
-				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-				${component_prefix}${component}/unmaintained=disabled \
-				${component_prefix}${component}/version=current \
-				${component_prefix}${component}=enabled
+			name=$(get_app_attr "$app" Name)
+			component=$(app_get_component "$app")
+			docker exec "$container_id" ucr set "${component_prefix}${component}/description=$name" \
+				"${component_prefix}${component}/localmirror=false" \
+				"${component_prefix}${component}/server=$(ucr get repository/app_center/server)" \
+				"${component_prefix}${component}/unmaintained=disabled" \
+				"${component_prefix}${component}/version=current" \
+				"${component_prefix}${component}=enabled"
 			# TODO
 			# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
 			#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
 			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 			#fi
 			# provide required packages inside container
-			docker exec "$container_id" apt-get update
+			docker exec "$container_id" apt-get -q update
 			docker exec "$container_id" univention-install --yes apt-utils
-			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages
-			docker exec "$container_id" apt-get update
+			# shellcheck disable=SC2046,SC2086
+			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster) $extra_packages
+			docker exec "$container_id" apt-get -q update
 			# check if packages are downloaded
-			for i in $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster); do
-				docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep $i
+			for i in $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)
+			do
+				docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep "$i"
 			done
 			# update appcenter
 			docker exec "$container_id" univention-app update
@@ -385,7 +380,7 @@ prepare_docker_app () {
 	fi
 
 	# clear old app
-	cat >/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app} <<__EOF__
+	cat >"/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}" <<__EOF__
 #!/bin/bash
 
 set -x
@@ -395,17 +390,15 @@ DEMO_MODE=\$(echo "\$@" | grep -q "\\-\\-demo-mode" && echo 1)
 
 if [ "\$DEMO_MODE" != 1 ]; then
 	univention-app remove \${APP} --noninteractive --do-not-backup
-	if [ -d "/var/lib/univention-appcenter/apps/\${APP}/" ]; then
-		rm -rf "/var/lib/univention-appcenter/apps/\${APP}/"
-	fi
+	rm -rf "/var/lib/univention-appcenter/apps/\${APP}/"
 fi
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}
+	chmod 755 "/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}"
 
 	# reinstall the app
-	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
+	cat >"/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}" <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/ucr.sh
@@ -450,26 +443,26 @@ install.call(app=[app], noninteractive=True, skip_checks=['must_have_valid_licen
 
 # fix docker app image name
 ucr unset --force appcenter/index/verify
-test -n "${local_app_docker_image}" && ucr set appcenter/apps/${app}/image="${dockerimage}"
+[ -n "${local_app_docker_image}" ] && ucr set appcenter/apps/${app}/image="${dockerimage}"
 
 # re activate repo
 univention-app shell ${app} ucr set repository/online=yes || true
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}
+	chmod 755 "/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}"
 
 	# database packages for docker app
-	local packages="$(app_get_database_packages_for_docker_host $app)"
+	packages="$(app_get_database_packages_for_docker_host "$app")"
 	if [ -n "$packages" ]; then
+		# shellcheck disable=SC2086
 		DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
 	fi
 }
 
 install_appliance_hook () {
-	local app="$1"
-	local counter="$2"
-	local hook_file="$(app_appliance_hook $app)"
+	local app="$1" counter="$2" hook_file
+	hook_file="$(app_appliance_hook "$app")"
 	app_download_appliance_hook "$app"
 	if [ -e "$hook_file" ]; then
 		local appliance_hook_file="/usr/lib/univention-system-setup/appliance-hooks.d/90_${counter}_${app}"
@@ -480,53 +473,50 @@ install_appliance_hook () {
 
 register_app_components ()
 {
-	local main_app="$1"
+	local main_app="$1" app name component component_prefix="repository/online/component/"
 
 	# register all non-docker components before package download
-	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
-		if ! app_appliance_IsDockerApp $app; then
-			if app_has_no_repository $app; then
-				continue
-			fi
-			local name=$(get_app_attr $app Name)
-			local component=$(app_get_component $app)
-			local component_prefix="repository/online/component/"
-			ucr set ${component_prefix}${component}/description="$name" \
-				${component_prefix}${component}/localmirror=false \
-				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-				${component_prefix}${component}/unmaintained=disabled \
-				${component_prefix}${component}/version=current \
-				${component_prefix}${component}=enabled
-		fi
+	for app in $(get_app_attr "$main_app" ApplianceAdditionalApps) "$main_app"
+	do
+		app_appliance_IsDockerApp "$app" ||
+			continue
+		app_has_no_repository "$app" &&
+			continue
+		name="$(get_app_attr "$app" Name)"
+		component="$(app_get_component "$app")"
+		ucr set "${component_prefix}${component}/description=$name" \
+			"${component_prefix}${component}/localmirror=false" \
+			"${component_prefix}${component}/server=$(ucr get repository/app_center/server)" \
+			"${component_prefix}${component}/unmaintained=disabled" \
+			"${component_prefix}${component}/version=current" \
+			"${component_prefix}${component}=enabled"
 	done
-	apt-get update
+	apt-get -q update
 }
 
 prepare_apps ()
 {
-	local main_app="$1"
-	local extra_packages=""
-	local counter=0
-	local packages=""
+	local main_app="$1" extra_packages="" packages="" app
+	declare -i counter=0
 	declare -A applist
 
 	register_app_components "$main_app"
 
-	for app in $(get_app_attr $main_app RequiredAppsInDomain) $(get_app_attr $main_app RequiredApps) $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
+	for app in $(get_app_attr "$main_app" RequiredAppsInDomain) $(get_app_attr "$main_app" RequiredApps) "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
+	do
 		if [ -z "${applist[$app]}" ]; then
 			if app_appliance_IsDockerApp "$app"; then
 				prepare_docker_app "$app" "$counter"
 			else
 				prepare_package_app "$app" "$counter"
-
 			fi
 			install_appliance_hook "$app" "$counter"
-			counter=$((counter+1))
+			counter+=1
 			# pre installed packages
-			packages="$(get_app_attr $app AppliancePreInstalledPackages)"
+			packages="$(get_app_attr "$app" AppliancePreInstalledPackages)"
 			if [ -n "$packages" ]; then
+				# shellcheck disable=SC2086
 				DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
-
 			fi
 			applist["$app"]="true"
 		fi
@@ -545,7 +535,7 @@ chmod 0600 /tmp/joinpwd
 get_profile_var root_password > /tmp/joinpwd
 
 admember_password="$(get_profile_var ad/password)"
-test -n "$admember_password" && echo "$admember_password" > /tmp/joinpwd
+[ -n "$admember_password" ] && echo "$admember_password" > /tmp/joinpwd
 
 exit 0
 __EOF__
@@ -565,7 +555,7 @@ dn="$(univention-ldapsearch uid=$uid dn | sed -ne 's|dn: ||p')"
 
 univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 
-[ -e /tmp/joinpwd ] && rm /tmp/joinpwd
+rm -f /tmp/joinpwd
 
 invoke-rc.d ntp restart
 
@@ -577,12 +567,11 @@ __EOF__
 	#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
 	#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 	#fi
-
 }
 
 download_system_setup_packages ()
 {
-	app="$1"
+	local app="$1"
 
 	# autoremove packages before updating package cache
 	# there is an automatic autoremove after installing
@@ -594,37 +583,53 @@ download_system_setup_packages ()
 
 	mkdir -p /var/cache/univention-system-setup/packages/
 	(
-		if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-		fi
-
 		cd /var/cache/univention-system-setup/packages/
-		install_cmd="$(univention-config-registry get update/commands/install)"
+		touch Packages
+		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
+			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 
+		install_cmd="$(univention-config-registry get update/commands/install)"
 		# server role packages
-		packages="univention-server-master univention-server-backup univention-server-slave univention-server-member"
+		declare -a packages=(
+			univention-server-master
+			univention-server-backup
+			univention-server-slave
+			univention-server-member
+		)
 
 		# ad member mode
-		packages="$packages univention-ad-connector univention-samba"
+		packages+=(univention-ad-connector univention-samba)
 
 		# welcome-screen + dependencies for all roles
 		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages="$packages univention-welcome-screen linux-headers-amd64"
+		packages+=(univention-welcome-screen linux-headers-amd64)
 
-		packages="$packages firefox-esr-l10n-de"
+		packages+=(firefox-esr-l10n-de)
 
-		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages univention-management-console-module-adtakeover univention-printserver univention-dhcp
-				univention-fetchmail univention-radius univention-mail-server
-				univention-pkgdb univention-samba4 univention-s4-connector univention-squid
-				univention-self-service univention-self-service-passwordreset-umc
-				univention-self-service-master"
-		fi
+		app_appliance_is_software_blacklisted "$app" ||
+			packages+=(
+				univention-management-console-module-adtakeover
+				univention-printserver
+				univention-dhcp
+				univention-fetchmail
+				univention-radius
+				univention-mail-server
+				univention-pkgdb
+				univention-samba4
+				univention-s4-connector
+				univention-squid
+				univention-self-service
+				univention-self-service-passwordreset-umc
+				univention-self-service-master
+			)
 
-		apt-get update || true
-		for package in $packages; do
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package}
-			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+		apt-get -q update || true
+		for package in "${packages[@]}"
+		do
+			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}"
+			# shellcheck disable=SC2046
+			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
+				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 			check_returnvalue $? "Failed to download required packages for ${package}"
 		done
 
@@ -644,7 +649,7 @@ appliance_preinstall_common_role ()
 
 appliance_preinstall_non_univention_packages ()
 {
-	local packages="
+	declare -a packages=(
 		libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
 		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgnutls-dane0
 		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libjbig2dec0 libkdc2-heimdal
@@ -652,15 +657,16 @@ appliance_preinstall_non_univention_packages ()
 		libmcrypt4 libnet-snmp-perl libnetpbm10 libnfsidmap2 libnl-3-200 libnl-genl-3-200 libnss-extrausers libnss-ldap
 		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-cracklib libpam-heimdal libpam-ldap libpaper-utils
 		libpaper1 libpcap0.8 libpq5 libquadmath0 libradcli4 libsnmp-base libsnmp-session-perl libsnmp30 libsocket6-perl
-		libtre5 libyaml-0-2 bind9 emacs24 ifplugd sudo vim zip"
-	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $packages
+		libtre5 libyaml-0-2 bind9 emacs24 ifplugd sudo vim zip
+	)
+	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "${packages[@]}"
 }
 
 install_haveged ()
 {
-    ucr set repository/online/unmaintained="yes"
-    univention-install -y haveged
-    ucr set repository/online/unmaintained="no"
+	ucr set repository/online/unmaintained="yes"
+	univention-install -y haveged
+	ucr set repository/online/unmaintained="no"
 }
 
 backup_current_local_packagecache ()
@@ -684,10 +690,7 @@ uninstall_packages ()
 		apt-get -y --force-yes autoremove
 	fi
 
-	# Old kernels
-	for kernel in linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed linux-image-4.9.0-ucs104-amd64 linux-image-4.9.0-ucs104-amd64-signed; do
-		DEBIAN_FRONTEND=noninteractive apt-get purge -y --force-yes ${kernel} || true
-	done
+	univention-prune-kernels -v
 }
 
 setup_pre_joined_environment ()
@@ -695,14 +698,10 @@ setup_pre_joined_environment ()
 	# $1 = appid
 	# $2 = domainname / derived ldapbase
 	# $3 = fastdemomode ?
-	local main_app="$1"
-	local domainname="$2"
-	local mode="$3"
-	local fastdemomode="unknown"
-	local ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
-	if app_appliance_AllowPreconfiguredSetup $main_app; then
-			fastdemomode="yes"
-	fi
+	local main_app="$1" domainname="$2" mode="$3" fastdemomode="unknown" packages ldapbase version ucsversion
+	ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
+	app_appliance_AllowPreconfiguredSetup "$main_app" &&
+		fastdemomode="yes"
 	if [ "ignore" != "$mode" ]; then
 			fastdemomode="$mode"
 			ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
@@ -745,20 +744,23 @@ __EOF__
 	register_app_components "$main_app"
 
 	# install apps
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
-		if ! app_appliance_IsDockerApp $app; then
+	for app in "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
+	do
+		if ! app_appliance_IsDockerApp "$app"
+		then
 			# Only for non docker apps
 			eval "$(ucr shell update/commands/install)"
 			export DEBIAN_FRONTEND=noninteractive
-			local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
+			packages="$(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)"
 			if [ -n "$packages" ]; then
+				# shellcheck disable=SC2154,SC2086
 				$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
 			fi
 			univention-run-join-scripts
 		fi
-		local version="$(get_app_attr $app Version)"
-		local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
-		univention-app register --do-it ${ucsversion}/${app}=${version}
+		version="$(get_app_attr "$app" Version)"
+		ucsversion="$(app_get_ini "$app" | awk -F / '{print $(NF-1)}')"
+		univention-app register --do-it "${ucsversion}/${app}=${version}"
 	done
 }
 
@@ -786,6 +788,7 @@ setup_appliance ()
 	# generate all UMC languages
 	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"; locale-gen
 
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	install_haveged
 
 	uninstall_packages
@@ -794,16 +797,16 @@ setup_appliance ()
 
 	# shrink appliance image size
 	appliance_preinstall_non_univention_packages
-	rm /etc/apt/sources.list.d/05univention-system-setup.list
-	rm -r /var/cache/univention-system-setup/packages/
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+	rm -rf /var/cache/univention-system-setup/packages/
 
 	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
-	apt-get update
+	apt-get -q update
 	apt-get -y autoremove
-	download_system_setup_packages $@
+	download_system_setup_packages "$@"
 
 	# Cleanup apt archive
-	apt-get update
+	apt-get -q update
 
 	# set initial system uuid (set to new value in setup-join.sh)
 	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
@@ -857,15 +860,14 @@ __EOF__
 		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
-	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
+	[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-	fi
 
-	rm -rf /root/shared-utils/ || true
+	rm -rf /root/shared-utils/
 
 	# Cleanup apt archive
 	apt-get clean
-	apt-get update
+	apt-get -q update
 
 	# do not restart network interfaces / reset UCR variables
 	ucr set interfaces/restart/auto=false
@@ -897,12 +899,12 @@ __EOF__
 	# Manual cleanup
 	rm -rf /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
-		[ -d "/usr/share/doc/$dir" ] && rm -rf "/usr/share/doc/$dir"
+		rm -rf "/usr/share/doc/$dir"
 	done
 
 	[ -e /var/lib/logrotate/status ] && :> /var/lib/logrotate/status
-	test -e /var/mail/systemmail && rm /var/mail/systemmail
-	rm -r /var/univention-backup/* || true
+	rm -f /var/mail/systemmail
+	rm -rf /var/univention-backup/*
 
 	# fill up HDD with ZEROs to maximize possible compression
 	dd if=/dev/zero of=/fill-it-up bs=1M || true
@@ -917,20 +919,19 @@ __EOF__
 
 appliance_basesettings ()
 {
-	local main_app=$1
+	local main_app="$1" app_fav_list="appcenter:appcenter,updater" a app
 
 	ucr set repository/online/unmaintained='yes'
-	ucr set umc/web/appliance/id?${main_app}
+	ucr set umc/web/appliance/id?"${main_app}"
 	univention-install -y univention-app-appliance
 	ucr set repository/online/unmaintained='no'
-	apt-get update
-	
-	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
+	apt-get -q update
+
+	/usr/sbin/univention-app-appliance --not-configure-portal "$main_app"
 	ucr set grub/title="Start $main_app"
 
 	# Set UMC favourites for administrator user
-	local app_fav_list="appcenter:appcenter,updater"
-	for a in $(get_app_attr $main_app ApplianceFavoriteModules); do
+	for a in $(get_app_attr "$main_app" ApplianceFavoriteModules); do
 		app_fav_list="$app_fav_list,$a"
 	done
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites <<__EOF__
@@ -949,11 +950,11 @@ exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
 
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
-
+	for app in "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
+	do
 		# update docker container
-		if app_appliance_IsDockerApp $app; then
-			cat >/usr/lib/univention-system-setup/appliance-hooks.d/20_update_${app}_container_settings <<__EOF__
+		if app_appliance_IsDockerApp "$app"; then
+			cat >"/usr/lib/univention-system-setup/appliance-hooks.d/20_update_${app}_container_settings" <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
 . /usr/share/univention-lib/ldap.sh
@@ -1007,7 +1008,7 @@ service docker restart
 docker start "\$container_id"
 
 __EOF__
-			chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/20_update_${app}_container_settings
+			chmod 755 "/usr/lib/univention-system-setup/appliance-hooks.d/20_update_${app}_container_settings"
 		fi
 
 		if [ "$app" = "mattermost" ]; then
@@ -1032,11 +1033,11 @@ setup_ec2 ()
 	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
 
 	DEV='/dev/xvda' GRUB='(hd0)'
-    echo "${GRUB} ${DEV}" >/boot/grub/device.map
+	echo "${GRUB} ${DEV}" >/boot/grub/device.map
 	debconf-communicate <<<"set grub-pc/install_devices $DEV"
 
 	append="$(ucr get grub/append |
-	    sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+		sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
 
 	ucr set server/amazon=true \
 		updater/identify="UCS (EC2)" \
@@ -1142,9 +1143,10 @@ appliance_reset_servers ()
 	if [ "$reset" = true ]; then
 		ucr set repository/online/server="https://updates.software-univention.de/"
 		ucr unset appcenter/index/verify
-			ucr set update/secure_apt=yes
+		ucr set update/secure_apt=yes
 
-		ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
+		ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
+		do
 			ucr set "$key=appcenter.software-univention.de"
 		done
 	fi
@@ -1152,29 +1154,33 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	if ! $1 && $2; then
+	if ! "$1" && "$2"
+	then
 		ucr set --force auth/sshd/user/root=no
 		echo "root:$appliance_default_password" | chpasswd
 	fi
-	rm -r /root/* || true
-	rm /root/.ssh/authorized_keys || true
-	rm /root/.bash_history || true
+	rm -rf /root/*
+	rm -f /root/.ssh/authorized_keys
+	rm -f /root/.bash_history
 	history -c
 	echo "halt -p" | at now || true
 }
 
 appliance_poweroff ()
 {
-	rm -r /root/* || true
-	rm /root/.ssh/authorized_keys || true
-	rm /root/.bash_history || true
+	rm -rf /root/*
+	rm -f /root/.ssh/authorized_keys
+	rm -f /root/.bash_history
 	history -c
 	echo "halt -p" | at now || true
 }
 
 appliance_test_appcenter () {
-	if $1; then
+	if "$1"
+	then
 		univention-install --yes univention-appcenter-dev
 		univention-app dev-use-test-appcenter
 	fi
 }
+
+# vim:set ts=8 sw=8 noexpandtab:
