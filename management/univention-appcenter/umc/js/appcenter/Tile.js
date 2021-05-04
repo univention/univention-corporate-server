@@ -46,8 +46,8 @@ define([
 		clickCallback: null,
 		templateString: `
 			<div>
+				<div class="umcTile__selectionBox"></div>
 				<div class="umcTile__inner">
-					<div class="umcTile__selectionBox"></div>
 					<div
 						class="umcTile__box"
 						style="background: \${bgc}"
