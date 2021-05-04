@@ -64,6 +64,17 @@ def template_umlauts_test():
 		host = random_name()
 		path = '/%s' % (random_name(),)
 		properties, dn_template = create_template(udm, host, path)
+		co = None
+		lo, po = getAdminConnection()
+		udm_modules.update()
+		# get udm module settings/usertemplate
+		mod_tmpl = udm_modules.get(MOD_TMPL)
+		# the mod_tmpl module is being initialized here
+		udm_modules.init(lo, po, mod_tmpl)
+		obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
+		mod_user = udm_modules.get(MOD_USER)
+		udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
+
 		usernames = [
 			(u"Pınar", u"Ağrı", "pinar", "agri"),
 			(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
@@ -75,7 +86,6 @@ def template_umlauts_test():
 			(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
 			(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
 		]
-
 		for firstname, lastname, expected_firstname, expected_lastname in usernames:
 			user_properties = {
 				'lastname': lastname,
@@ -83,24 +93,11 @@ def template_umlauts_test():
 				'password': PASSWORD,
 				'username': random_name(),
 			}
-			co = None
-			lo, po = getAdminConnection()
-			udm_modules.update()
-
-			# get udm module settings/usertemplate
-			mod_tmpl = udm_modules.get(MOD_TMPL)
-			# the mod_tmpl module is being initialized here
-			udm_modules.init(lo, po, mod_tmpl) 
-			obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
-
-			mod_user = udm_modules.get(MOD_USER)
-			udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
 			obj_user = mod_user.object(None, lo, po)
 			obj_user.open()
 			obj_user.info.update(user_properties)
 			dn_user = obj_user.create()
 			udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
-
 			print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
 			utils.verify_ldap_object(dn_user, {
 				'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
