@@ -568,8 +568,9 @@
 
 .imageGallery__dots
 	position: relative
-	display: flex
-	grid-gap: 1rem
+	display: grid
+	grid-auto-flow: column
+	gap: 1rem
 
 .imageGallery__dot
 	width: 0.5rem
@@ -587,32 +588,30 @@
 
 .umcAppDetailsPage__content
 	display: grid
-	grid-template-columns: 8fr 4fr
-	grid-template-rows: auto auto
-	grid-template-areas: "imageGallery callToAction" "mainInfo supplementaryInfo"
-	grid-gap: 2rem
-	align-items: flex-start
-
-.umcAppDetailsPage__content__callToAction
-	grid-area: callToAction
-
-.umcAppDetailsPage__content__imageGallery
-	grid-area: imageGallery
-
-.umcAppDetailsPage__content__mainInfo
-	grid-column: mainInfo
-	grid-row: imageGallery / mainInfo
-.umcAppDetailsPage__content__imageGallery + .umcAppDetailsPage__content__mainInfo
-	grid-row: mainInfo
+	gap: 2rem
 
 .umcAppDetailsPage__content__supplementaryInfo
-	grid-area: supplementaryInfo
 	display: grid
-	grid-gap: 2rem
+	gap: 2rem
 
-@media (max-width: 991px)
+@media (min-width: 992px)
 	.umcAppDetailsPage__content
-		display: flex
-		flex-direction: column
-		align-items: stretch
+		grid-template-columns: 8fr 4fr
+		grid-template-rows: auto auto
+		grid-template-areas: "imageGallery callToAction" "mainInfo supplementaryInfo"
+		align-items: flex-start
 
+	.umcAppDetailsPage__content__callToAction
+		grid-area: callToAction
+
+	.umcAppDetailsPage__content__imageGallery
+		grid-area: imageGallery
+
+	.umcAppDetailsPage__content__mainInfo
+		grid-column: mainInfo
+		grid-row: imageGallery / mainInfo
+	.umcAppDetailsPage__content__imageGallery + .umcAppDetailsPage__content__mainInfo
+		grid-row: mainInfo
+
+	.umcAppDetailsPage__content__supplementaryInfo
+		grid-area: supplementaryInfo
