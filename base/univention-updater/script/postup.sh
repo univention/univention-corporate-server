@@ -267,6 +267,17 @@ if dpkg -l univention-samba4 | grep -q ^ii; then
 	if samba-tool drs showrepl  2>&1 | egrep -q "DsReplicaGetInfo (.*) failed"; then
 		/etc/init.d/samba restart
 	fi
+	sleep 5
+	if [ "$(pgrep -c '(samba|rpc[([]|s3fs|cldap|ldap|drepl|kdc|kcc|ntp_signd|dnsupdate|winbindd|wrepl)') -lt 10 ]; then  # should be about 25
+		echo "WARNING "
+		echo "WARNING: There are too few samba processes running. Please check functionality before updating other UCS systems!"
+		echo "WARNING "
+	fi
+	if ! univention-s4search -s base -b '' defaultNamingContext >/dev/null 2>&1; then
+		echo "ERROR "
+		echo "ERROR: Samba/AD LDAP is not available. Please check functionality before updating other UCS systems!"
+		echo "ERROR "
+	elif
 fi
 EOF
 

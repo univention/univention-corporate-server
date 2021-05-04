@@ -711,6 +711,33 @@ update_check_for_postgresql94 () {
 	return 1
 }
 
+update_check_samba_tdb_size () {  # Bug #53212
+	local var="update$VERSION/ignore_samba_tdb_size"
+
+	for p in $(ldbsearch -H /var/lib/samba/private/sam.ldb  -b '@PARTITION' -s base partition | ldapsearch-wrapper | sed -n 's/partition: //p'); do
+		if [ "$(stat -c %s "/var/lib/samba/private/${p#*:}")" -gt 1950000000 ]; then
+			echo "WARNING: The Samba SAM database is very large. During update Samba will attempt to convert"
+			echo "         the database to a new index format. For that step Samba requires temporary duplication"
+			echo "         of the database content, which may result in an overflow of the maximal size of the tdb"
+			echo "         database of 4GB. This may result in Samba not starting after the update."
+			echo "         We are currently researching possible solutions for this technical limitation."
+			echo "         "
+			echo "         Currently we recommend to not update this system without first checking with"
+			echo "         a non-productive clone of the system. Otherwise Samba may need to be reprovisioned manually."
+			echo "         "
+			echo "         A similar situation happend during update from Samba 4.7 to Samba 4.10, so the techically"
+			echo "         demanding workaround described under https://help.univention.com/t/12492 may be an option,"
+			echo "         but it is still untested with Samba 4.13."
+			break
+		fi
+	done
+	if is_ucr_true update50/ignore_multi_adc_mapping; then
+		echo "WARNING: $var is set to true. Continue as requested."
+	else
+		return 1
+	fi
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

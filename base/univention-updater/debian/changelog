@@ -1,3 +1,10 @@
+univention-updater (15.0.3-52) unstable; urgency=medium
+
+  * Bug #53212: Block the update if Samba SAM database is too large
+  * Check if samba is running after the update
+
+ -- Arvid <requate@univention.de>  Tue, 04 May 2021 14:13:21 +0200
+
 univention-updater (15.0.3-51) unstable; urgency=medium
 
   * Bug #52957: remove dublicates from check.sh
