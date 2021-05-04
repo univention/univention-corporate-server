@@ -472,7 +472,7 @@
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Remove one of multiple DNS PTR records from a computer has been fixed (<u:bug>53213</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
