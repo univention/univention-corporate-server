@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-36) unstable; urgency=medium
+
+  * Bug #53217: adjust unsupported css
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 May 2021 09:04:24 +0200
+
 univention-appcenter (9.0.2-35) unstable; urgency=medium
 
   * Bug #52453: adjust TitlePane style
