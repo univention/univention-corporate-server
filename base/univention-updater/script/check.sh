@@ -714,6 +714,9 @@ update_check_for_postgresql94 () {
 update_check_samba_tdb_size () {  # Bug #53212
 	local var="update$VERSION/ignore_samba_tdb_size"
 
+	if ! dpkg -l univention-samba4 | grep -q ^ii; then
+		return 0
+	fi
 	for p in $(ldbsearch -H /var/lib/samba/private/sam.ldb  -b '@PARTITION' -s base partition | ldapsearch-wrapper | sed -n 's/partition: //p'); do
 		if [ "$(stat -c %s "/var/lib/samba/private/${p#*:}")" -gt 1950000000 ]; then
 			echo "WARNING: The Samba SAM database is very large. During update Samba will attempt to convert"
