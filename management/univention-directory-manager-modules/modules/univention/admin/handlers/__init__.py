@@ -2275,8 +2275,11 @@ class simpleComputer(simpleLdap):
 
 		ud.debug(ud.ADMIN, ud.INFO, 'we should remove a dns reverse object: dnsEntryZoneReverse="%s", name="%s", ip="%s"' % (dnsEntryZoneReverse, name, ip))
 		if dnsEntryZoneReverse:
-			rdn = self.calc_dns_reverse_entry_name(ip, dnsEntryZoneReverse)
-			if rdn:
+			try:
+				rdn = self.calc_dns_reverse_entry_name(ip, dnsEntryZoneReverse)
+			except ValueError:
+				pass
+			else:
 				modify(rdn, dnsEntryZoneReverse)
 
 		elif ip:
@@ -2286,13 +2289,14 @@ class simpleComputer(simpleLdap):
 				ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: dn: "%s"' % dn)
 				zone = self.lo.parentDn(dn)
 				ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: zone: "%s"' % zone)
-				rdn = self.calc_dns_reverse_entry_name(ip, zone)
-				ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: rdn: "%s"' % rdn)
-				if rdn:
-					try:
-						modify(rdn, zone)
-					except univention.admin.uexceptions.noObject:
-						pass
+				try:
+					rdn = self.calc_dns_reverse_entry_name(ip, zone)
+					ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: rdn: "%s"' % rdn)
+					modify(rdn, zone)
+				except ValueError as ex:
+					ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: rdn: "%s"' % ex)
+				except univention.admin.uexceptions.noObject:
+					pass
 
 	def __add_dns_reverse_object(self, name, zoneDn, ip):  # type: (str, str, str) -> None
 		ud.debug(ud.ADMIN, ud.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
@@ -2302,7 +2306,7 @@ class simpleComputer(simpleLdap):
 		addr, attr = self._ip2dns(ip)
 		try:
 			ipPart = self.calc_dns_reverse_entry_name(ip, zoneDn)
-		except AssertionError:
+		except ValueError:
 			raise univention.admin.uexceptions.missingInformation(_('Reverse zone and IP address are incompatible.'))
 
 		tmppos = univention.admin.uldap.position(self.position.getDomain())
@@ -2902,11 +2906,16 @@ class simpleComputer(simpleLdap):
 		u'5.2'
 		>>> simpleComputer.calc_dns_reverse_entry_name('2001:db8::3', 'subnet=0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa')
 		u'3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'
+		>>> simpleComputer.calc_dns_reverse_entry_name('1.2.3.4', 'subnet=2.in-addr.arpa')
+		Traceback (most recent call last):
+		    ...
+		ValueError: 4.3.2.1.in-addr.arpa not in .2.in-addr.arpa
 		"""
 		addr = ip_address(u'%s' % (sip,))
 		rev = addr.reverse_pointer
 		subnet = u".%s" % (explode_rdn(reverseDN, True)[0],)
-		assert rev.endswith(subnet)
+		if not rev.endswith(subnet):
+			raise ValueError("%s not in %s" % (rev, subnet))
 		return rev[:-len(subnet)]
 
 	def _ldap_pre_create(self):
