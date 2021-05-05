@@ -352,6 +352,9 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The App Center has been migrated to Python 3 (<u:bug>51598</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					The App Center can now install multiple Apps at once. It also resolves dependencies between Apps automatically during install (<u:bug>40225</u:bug>, <u:bug>52863</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
