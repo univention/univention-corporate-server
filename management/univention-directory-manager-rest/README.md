@@ -301,7 +301,10 @@ A client implementation using the OpenAPI schema is provided at [python-udm-rest
 
 ## CLI Client
 There is an unsupported CLI client and client library called `__udm` which tries to behave similar to the real `udm`.
-It can be used to easy test basic operations.
+It can be used to easyly test basic operations manually.
+It uses the `application/json-patch+json` MIME media type to transfer a patch of operations to the UDM REST API.
+This keeps the client stupid by not exposing details of the data format for certain properties, which also would allow to change implementation details on the server side.
+To use this client, `/usr/sbin/udm-test-rest` can be used for testing. E.g. via the `univention.testing.udm.UDM` class.
 A real supported client will follow in the Future™.
 
 ## Known issues

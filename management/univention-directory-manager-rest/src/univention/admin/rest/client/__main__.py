@@ -45,9 +45,35 @@ import ldap
 import ldap.dn
 
 from univention.admin.rest.client import (
-    UDM, ConnectionError, HTTPError, NotFound, ServerError, ServiceUnavailable, Unauthorized, UnprocessableEntity,
+    UDM, ConnectionError, HTTPError, NotFound, PatchDocument, ServerError, ServiceUnavailable, Unauthorized,
+    UnprocessableEntity,
 )
-from univention.config_registry import ucr
+
+
+def _binddn_to_username(binddn):
+    try:
+        dn = ldap.dn.str2dn(binddn)[0][0]
+        return '%s$' % dn[1] if dn[0] == 'cn' else dn[1]
+    except (ldap.DECODING_ERROR, IndexError):
+        pass
+
+
+try:  # UCS system
+    from univention.config_registry import ucr as _ucr
+    ucr = dict(_ucr)
+    FQDN = '%(hostname)s.%(domainname)s' % ucr
+    USER_AGENT = 'univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr
+    DEFAULT_USERNAME = _binddn_to_username(ucr['ldap/hostdn'])
+    DEFAULT_PASSWORD = open('/etc/machine.secret').read().strip()
+except (ImportError, KeyError, OSError):  # docker container
+    FQDN = os.getenv('FQDN', 'localhost')
+    USER_AGENT = 'univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % {
+        'version/version': os.getenv('VERSION_VERSION', ''),
+        'version/patchlevel': os.getenv('VERSION_PATCH', ''),
+        'version/erratalevel': os.getenv('VERSION_ERRATA', ''),
+    }
+    DEFAULT_USERNAME = os.getenv('USERNAME', 'Administrator')
+    DEFAULT_PASSWORD = os.getenv('PASSWORD', 'univention')
 
 
 class CLIClient:
@@ -59,18 +85,21 @@ class CLIClient:
             password = None
         else:
             username = args.binddn
-            try:
-                username = ldap.dn.str2dn(username)[0][0][1]
-            except (ldap.DECODING_ERROR, IndexError):
-                pass
-            password = args.bindpwd
+            if args.binddn and args.binddn != 'cn=admin':
+                username = _binddn_to_username(args.binddn)
+            if not username:
+                username = args.username or DEFAULT_USERNAME
+
+            password = args.bindpwdfile.read().strip() if args.bindpwdfile else args.bindpwd
+            if not password:
+                password = DEFAULT_PASSWORD
 
         self.udm = UDM(
-            'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
+            args.uri,
             username,
             password,
             bearer_token=args.bearertoken,
-            user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr,
+            user_agent=args.user_agent,
             language=args.language
         )
 
@@ -92,11 +121,19 @@ class CLIClient:
 
     def create_object(self, args):
         module = self.get_module(args.object_type)
-        obj = module.new(position=args.position, superordinate=args.superordinate, template=args.template)
+        try:
+            obj = module.new(position=args.position, superordinate=args.superordinate, template=args.template)
+        except UnprocessableEntity as exc:
+            self.handle_unprocessible_entity(exc.error_details)
+            raise SystemExit(2)
         if args.position:
             obj.position = args.position
-        self.set_properties(obj, args)
-        self.save_object(obj)
+        if args.no_patch:
+            self.set_properties(obj, args)
+            self.save_object(obj)
+        else:
+            patch = self.patch_properties(obj, args)
+            self.patch_object(obj, patch.patch)
         self.print_line('Object created', obj.dn)
 
     def modify_object(self, args):
@@ -110,8 +147,12 @@ class CLIClient:
                 return
             else:
                 raise
-        self.set_properties(obj, args)
-        self.save_object(obj)
+        if args.no_patch:
+            self.set_properties(obj, args)
+            self.save_object(obj)
+        else:
+            patch = self.patch_properties(obj, args)
+            self.patch_object(obj, patch.patch)
         self.print_line('Object modified', obj.dn)
 
     def remove_object(self, args):
@@ -137,12 +178,58 @@ class CLIClient:
     def copy_object(self, args):
         pass
 
+    def patch_object(self, obj, patch):
+        try:
+            response = obj.json_patch(patch)
+            for warning in self.udm.client.resolve_relations(response.data, 'udm:warning'):
+                self.print_warning(warning['message'])
+        except UnprocessableEntity as exc:
+            self.handle_unprocessible_entity(exc.error_details)
+            raise SystemExit(2)
+
     def save_object(self, obj):
         try:
             obj.save()
         except UnprocessableEntity as exc:
             self.handle_unprocessible_entity(exc.error_details)
             raise SystemExit(2)
+
+    def patch_properties(self, obj, args):
+        patch = PatchDocument()
+        if getattr(args, 'superordinate', None):  # FIXME: unable to unset, required?
+            patch.replace(['superordinate'], getattr(args, 'superordinate', None))
+        if getattr(args, 'position', None):  # FIXME: unable to unset, required?
+            patch.replace(['position'], getattr(args, 'position', None))
+        if args.option:
+            patch.replace(['options'], [])
+            for option in args.option:
+                patch.add(['options'], option)
+        for option in args.append_option:
+            patch.add(['options'], option)
+        for option in args.remove_option:
+            patch.remove(['options'], option)
+
+        for key_val in args.set:
+            key, value = self.parse_input(key_val)
+            patch.replace(['properties', key], value)
+
+        for key_val in args.append:
+            key, value = self.parse_input(key_val)
+            patch.add(['properties', key], value)
+
+        for key_val in getattr(args, 'remove', []):
+            if '=' not in key_val:
+                patch.remove(['properties', key_val])
+            else:
+                key, value = self.parse_input(key_val)
+                patch.remove(['properties', key], value)
+
+        for policy_dn in args.policy_reference:
+            patch.add(['policies'], policy_dn)
+        for policy_dn in getattr(args, 'policy_dereference', []):
+            patch.remove(['policies'], policy_dn)
+
+        return patch
 
     def set_properties(self, obj, args):
         obj.superordinate = getattr(args, 'superordinate', None)
@@ -217,11 +304,13 @@ class CLIClient:
             self.print_line('URL', entry.uri)
             self.print_line('Object-Type', entry.object_type)
             if args.as_json:
-                print(json.dumps(entry.options, indent=4, ensure_ascii=False))
-                print(json.dumps(entry.properties, indent=4, ensure_ascii=False))
-                print(json.dumps(entry.policies, indent=4, ensure_ascii=False))
+                print('Options:', json.dumps(entry.options, indent=4, ensure_ascii=False))
+                print('Properties:', json.dumps(entry.properties, indent=4, ensure_ascii=False))
+                print('Policies:', json.dumps(entry.policies, indent=4, ensure_ascii=False))
                 continue
             for key, value in sorted(entry.properties.items()):
+                if args.properties and key not in args.properties:
+                    continue
                 if isinstance(value, list):
                     for item in value:
                         if isinstance(item, (str, bytes, int, float)):
@@ -368,12 +457,6 @@ class CLIClient:
         self.handle_unprocessible_entity(error)
 
 
-def Unicode(bytestring):
-    if isinstance(bytestring, bytes):
-        return bytestring.decode(sys.getfilesystemencoding())
-    return bytestring
-
-
 def parse_known_args(parser, client, known_args=None, subparsers=None):
     class Format(argparse.ArgumentDefaultsHelpFormatter):
         def format_help(self):
@@ -440,14 +523,17 @@ univention-directory-manager is a tool to handle the configuration for UCS on co
 Use "univention-directory-manager modules" for a list of available modules.''',
     )
     parser.set_defaults(parser=parser)
-    parser.add_argument('--binddn', help='bind DN', default='Administrator', type=Unicode)
-    parser.add_argument('--bindpwd', help='bind password', default='univention', type=Unicode)
-    parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
-    parser.add_argument('--bearertoken', help='bearer token (Access Token) as JWT', type=Unicode)
-    parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
+    parser.add_argument('--username', help='username to authenticate with')
+    parser.add_argument('--binddn', help='binddn where username can be extracted from')
+    parser.add_argument('--bindpwd', help='password to authenticate with')
+    parser.add_argument('--bindpwdfile', help='file containing password', type=argparse.FileType('r'))
+    parser.add_argument('--bearertoken', help='bearer token (Access Token) as JWT')
+    parser.add_argument('--logfile', help='path and name of the logfile to be used')
     parser.add_argument('--language', default=(locale.getlocale(locale.LC_MESSAGES)[0] or 'en_US').replace('_', '-'), help=argparse.SUPPRESS)
     parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
     parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')  # FIXME: version number
+    parser.add_argument('--uri', default='https://%s/univention/udm/' % FQDN, help=argparse.SUPPRESS)
+    parser.add_argument('--user-agent', default=USER_AGENT, help=argparse.SUPPRESS)
 
     parser.add_argument('object_type')
     known_args = parse_known_args(parser, client)
@@ -494,59 +580,64 @@ def add_object_action_arguments(parser, client):
 
     create = add_subparser('create', help='Create a new object', usage=argparse.SUPPRESS)
     create.set_defaults(func=client.create_object)
-    create.add_argument('--position', help='Set position in tree', type=Unicode)
+    create.add_argument('--position', help='Set position in tree')
     # create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
-    create.add_argument('--template', help='Use template for creation', type=Unicode)
-    create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
-    create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[], type=Unicode)
-    create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[], type=Unicode)
-    create.add_argument('--superordinate', help='Use superordinate', type=Unicode)
-    create.add_argument('--option', action='append', help='Use only given module options', default=[], type=Unicode)
-    create.add_argument('--append-option', action='append', help='Append the module options', default=[], type=Unicode)
-    create.add_argument('--remove-option', action='append', help='Remove the module options', default=[], type=Unicode)
-    create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
+    create.add_argument('--template', help='Use template for creation')
+    create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
+    create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
+    create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
+    create.add_argument('--superordinate', help='Use superordinate')
+    create.add_argument('--option', action='append', help='Use only given module options', default=[])
+    create.add_argument('--append-option', action='append', help='Append the module options', default=[])
+    create.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
+    create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
     create.add_argument('--ignore-exists', action='store_true', help='ignore if object already exists')
+    create.add_argument('--no-patch', action='store_true', help=argparse.SUPPRESS)
 
     modify = add_subparser('modify', help='Modify an existing object', usage=argparse.SUPPRESS)
     modify.set_defaults(func=client.modify_object)
-    modify.add_argument('--dn', help='Edit object with DN', type=Unicode)
-    modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
-    modify.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[], type=Unicode)
-    modify.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[], type=Unicode)
-    modify.add_argument('--option', action='append', help='Use only given module options', default=[], type=Unicode)
-    modify.add_argument('--append-option', action='append', help='Append the module options', default=[], type=Unicode)
-    modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[], type=Unicode)
-    modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
-    modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[], type=Unicode)
+    modify.add_argument('--dn', help='Edit object with DN')
+    modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
+    modify.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
+    modify.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
+    modify.add_argument('--option', action='append', help='Use only given module options', default=[])
+    modify.add_argument('--append-option', action='append', help='Append the module options', default=[])
+    modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
+    modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
+    modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[])
     modify.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
+    modify.add_argument('--no-patch', action='store_true', help=argparse.SUPPRESS)
+    modify.add_argument('--superordinate', help=argparse.SUPPRESS)  # unused, just for backwards compatibility
 
     remove = add_subparser('remove', help='Remove an existing object', usage=argparse.SUPPRESS)
     remove.set_defaults(func=client.remove_object)
-    remove.add_argument('--dn', help='Remove object with DN', type=Unicode)
-    # remove.add_argument('--superordinate', help='Use superordinate', type=Unicode)  # not required
-    remove.add_argument('--filter', help='Lookup filter e.g. foo=bar', type=Unicode)
+    remove.add_argument('--dn', help='Remove object with DN')
+    remove.add_argument('--superordinate', help=argparse.SUPPRESS)  # unused, just for backwards compatibility
+    remove.add_argument('--filter', help='Lookup filter e.g. foo=bar')
     remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
     remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
     list_ = add_subparser('list', help='List objects', usage=argparse.SUPPRESS)
     list_.set_defaults(func=client.list_objects)
-    list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
-    list_.add_argument('--position', help='Search underneath of position in tree', type=Unicode)
-    list_.add_argument('--superordinate', help='Use superordinate', type=Unicode)
-    list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
+    list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
+    list_.add_argument('--position', help='Search underneath of position in tree')
+    list_.add_argument('--superordinate', help='Use superordinate')
+    list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
     list_.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
+    list_.add_argument('properties', help='The properties to print', nargs='*')
 
     get = add_subparser('get', help='Get object', usage=argparse.SUPPRESS)
     get.set_defaults(func=client.get_object)
-    get.add_argument('position', metavar='dn', help='The object LDAP DN', type=Unicode)
-    get.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
-    get.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
+    get.add_argument('position', metavar='dn', help='The object LDAP DN')
+    get.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
+    get.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
     get.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
+    get.add_argument('properties', help='The properties to print', nargs='*')
 
     move = add_subparser('move', help='Move object in directory tree', usage=argparse.SUPPRESS)
     move.set_defaults(func=client.move_object)
-    move.add_argument('--dn', help='Move object with DN', type=Unicode)
-    move.add_argument('--position', help='Move to position in tree', type=Unicode)
+    move.add_argument('--dn', help='Move object with DN')
+    move.add_argument('--position', help='Move to position in tree')
 
     copy = add_subparser('copy', help='Copy object in directory tree', usage=argparse.SUPPRESS)
     copy.set_defaults(func=client.copy_object)

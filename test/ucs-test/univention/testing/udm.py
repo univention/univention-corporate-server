@@ -51,6 +51,7 @@ from __future__ import annotations
 import base64
 import copy
 import functools
+import json
 import os
 import random
 import shlex
@@ -295,6 +296,8 @@ class UCSTestUDM:
 
         if action == 'list' and 'filter' in args:
             cmd.extend(['--filter=%s' % (args.pop('filter'),)])
+        if action == 'list' and args.pop('as_json', False):
+            cmd.append('--as-json')
 
         for option in args.pop('options', ()):
             cmd.extend(['--option', option])
@@ -1134,6 +1137,37 @@ class UDM(UCSTestUDM):
     """UDM interface using the REST API"""
 
     PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test-rest'
+
+    def list_objects_json(self, modulename: str, **kwargs: Any) -> List[Tuple[str, Dict[str, Any]]]:
+        kwargs['as_json'] = True
+        cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
+        print(f'Listing {modulename} objects {_prettify_cmd(cmd)}')
+        returncode, stdout, stderr = self._execute_udm(cmd)
+
+        if returncode:
+            raise UCSTestUDM_ListUDMObjectFailed(returncode, stdout, stderr)
+
+        objects = {}
+        dn = None
+        current = None
+        for line in stdout.splitlines():
+            if line.startswith('DN: '):
+                dn = line[3:].strip()
+            elif line.startswith(('URL: ', 'Object-Type: ')):
+                key, val = line.split(': ', 1)
+                objects.setdefault(dn, {})[key.lower().replace('-', '_')] = val
+            elif line.startswith(('Options: ', 'Properties: ', 'Policies: ')):
+                if current:
+                    name, current = current.split(': ', 1)
+                    objects.setdefault(dn, {})[name.lower()] = json.loads(current)
+                current = line
+                continue
+            elif current:
+                current += line
+        if dn and current:
+            name, current = current.split(': ', 1)
+            objects.setdefault(dn, {})[name.lower()] = json.loads(current)
+        return objects
 
     def stop_cli_server(self) -> None:
         super().stop_cli_server()

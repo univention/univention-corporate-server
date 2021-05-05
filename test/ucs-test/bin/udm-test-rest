@@ -5,14 +5,17 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import argparse
 import sys
 
-import univention.config_registry
 from univention.admin.rest.client.__main__ import main
+from univention.config_registry import ucr
 
 
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
+parser = argparse.ArgumentParser()
+parser.add_argument('--binddn')
+parser.add_argument('--bindpwd')
+parser.add_argument('--bindpwdfile')
 
 replacements = {
     '--ignore_exists': '--ignore-exists',
@@ -22,11 +25,16 @@ replacements = {
 
 sys.argv = [replacements.get(x, x) for x in sys.argv]
 
+args, sys.argv = parser.parse_known_args(sys.argv)
+
 if True:  # or ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
-    import ldap.dn
     sys.argv.insert(1, '--binddn')
-    sys.argv.insert(2, ldap.dn.explode_rdn(ucr['tests/domainadmin/account'], True)[0])
-    sys.argv.insert(3, '--bindpwd')
-    sys.argv.insert(4, ucr['tests/domainadmin/pwd'])
+    sys.argv.insert(2, args.binddn or ucr['tests/domainadmin/account'])
+    if args.bindpwdfile:
+        sys.argv.insert(3, '--bindpwdfile')
+        sys.argv.insert(4, args.bindpwdfile)
+    else:
+        sys.argv.insert(3, '--bindpwd')
+        sys.argv.insert(4, args.bindpwd or ucr['tests/domainadmin/pwd'])
 
 main()

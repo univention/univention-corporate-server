@@ -233,8 +233,8 @@ def test_special_characters_in_dn(name, udm_client, udm_rest):
 
 @locale_available()
 @pytest.mark.parametrize('language,error_message', [
-    ('en-US', 'The property gecos has an invalid value: Field must only contain ASCII characters!'),
-    ('de-DE', 'Die Eigenschaft gecos hat einen ungültigen Wert: Der Wert darf nur ASCII Buchstaben enthalten!'),
+    ('en-US', 'The property gecos has an invalid value: GECOS: Field must only contain ASCII characters!'),
+    ('de-DE', 'Die Eigenschaft gecos hat einen ungültigen Wert: GECOS: Der Wert darf nur ASCII Buchstaben enthalten!'),
 ])
 def test_translation(language, error_message):
     with UDM(language=language) as udm:

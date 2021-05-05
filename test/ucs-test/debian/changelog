@@ -1,3 +1,9 @@
+ucs-test (10.0.20-45) unstable; urgency=medium
+
+  * Bug #55555: adjust test case
+
+ -- Florian Best <best@univention.de>  Thu, 29 Feb 2024 12:59:28 +0100
+
 ucs-test (10.0.20-44) unstable; urgency=medium
 
   * Bug #53538: fix

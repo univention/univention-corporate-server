@@ -49,9 +49,9 @@ from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 from univention.management.console.error import UnprocessableEntity
 from univention.management.console.modules.sanitizers import (  # noqa: F401
-    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, IntegerSanitizer,
-    LDAPSearchSanitizer, ListSanitizer, MultiValidationError, Sanitizer, SearchSanitizer, StringSanitizer,
-    ValidationError,
+    BooleanSanitizer, ChoicesSanitizer, DictSanitizer as UMCDictSanitizer, DNSanitizer, EmailSanitizer,
+    IntegerSanitizer, LDAPSearchSanitizer, ListSanitizer, MultiValidationError, Sanitizer, SearchSanitizer,
+    StringSanitizer, ValidationError,
 )
 
 
@@ -59,10 +59,6 @@ _ = Translation('univention-directory-manager-rest').translate
 
 
 class Param:
-
-    @property
-    def type(self):
-        return type(self).__name__.lower()
 
     def __init__(self, sanitizer, alias=None, description=None, deprecated=None, example=None, examples=None, style=None, explode=None):
         self.sanitizer = sanitizer
@@ -90,28 +86,72 @@ class Query(Param):
     pass
 
 
+class Payload:
+
+    def __init__(self, content_type, sanitizer=None):
+        self.content_type = content_type
+        self.sanitizer = sanitizer or DictSanitizer
+
+    def make_sanitizer(self, body_params):
+        return self.sanitizer()
+
+
+class JSONPayload(Payload):
+
+    def __init__(self, **kwargs):
+        super().__init__('application/json', DictSanitizer)
+        self.kwargs = kwargs
+
+    def make_sanitizer(self, body_params):
+        kwargs = self.kwargs.copy()
+        kwargs.update({
+            param.alias or key: param.sanitizer if param.content_type == self.content_type else Sanitizer() for key, param in body_params.items()
+        })
+        return self.sanitizer(self.kwargs, required=True, further_arguments=['resource'], _copy_value=False)
+
+
+class PatchDocument(Payload):
+
+    def __init__(self, cls=None, **kwargs):
+        super().__init__('application/json-patch+json', cls or PatchDocumentSanitizer, **kwargs)
+
+
+class PatchRepresentation(PatchDocument):
+
+    def __init__(self, **kwargs):
+        super().__init__(PatchRepresentationSanitizer, **kwargs)
+
+
 def sanitize(method):
     args = inspect.getfullargspec(method)
     all_args = dict(zip(reversed(args.args), reversed(args.defaults)))
-    method.params = {
-        ptype: {
+
+    def _get_args(ptype):
+        return {
             key: param
             for key, param in all_args.items()
-            if isinstance(param, Param) and param.type == ptype
-        } for ptype in ('path', 'query', 'body')
-    }
+            if isinstance(param, ptype)
+        }
+    query_params = _get_args(Query)
+    body_params = _get_args(Body)
+    payload_params = _get_args(Payload)
+    if body_params and payload_params:
+        raise RuntimeError('body and payload sanitizer cannot be combined.')
+
+    method.params = {'query': query_params}  # for openapi
     method.sanitizers = {}
-    if method.params.get('query'):
-        query_sanitizers = {param.alias or key: param.sanitizer for key, param in method.params['query'].items()}
+
+    if query_params:
+        query_sanitizers = {param.alias or key: param.sanitizer for key, param in query_params.items()}
         method.sanitizers['query_string'] = QueryStringSanitizer(query_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
-    if method.params['body']:
-        content_types = {param.content_type for param in method.params['body'].values()}
-        method.sanitizers['body_arguments'] = DictSanitizer({
-            content_type: DictSanitizer({
-                param.alias or key: param.sanitizer if param.content_type == content_type else Sanitizer() for key, param in method.params['body'].items()
-            }, required=True, further_arguments=['resource'], _copy_value=False)
-            for content_type in content_types
-        }, required=True, further_arguments=['resource'], _copy_value=False)
+
+    if body_params:
+        content_type_sanitizers = {param.content_type: DictSanitizer({name: param.sanitizer}, further_arguments=['resource'], _copy_value=False) for name, param in body_params.items()}
+        method.sanitizers['body_arguments'] = DictSanitizer(content_type_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
+
+    if payload_params:
+        content_type_sanitizers = {param.content_type: param.make_sanitizer(body_params) for name, param in payload_params.items()}
+        method.sanitizers['body_arguments'] = DictSanitizer(content_type_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
 
     method.sanitizer = DictSanitizer(method.sanitizers, further_arguments=['resource'], _copy_value=False)
 
@@ -122,30 +162,100 @@ def sanitize(method):
             'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in self.request.query_arguments.items()} if self.request.query_arguments else {},
             'body_arguments': {
                 'application/json': {},
+                'application/json-patch+patch': [],
                 'application/x-www-form-urlencoded': {},
                 'multipart/form-data': {},
             },
         }
-        payload['body_arguments'][content_type] = self.request.body_arguments
+        payload['body_arguments'] = {content_type: self.request.body_arguments}
+        if 'body_arguments' in method.sanitizers:
+            for key, san in method.sanitizers['body_arguments'].sanitizers.items():
+                san.required = content_type == key
 
         def _result_func(x):
             if x.get('body_arguments', {}).get(content_type):
                 x['body_arguments'] = x['body_arguments'][content_type]
             return x
+
         arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self}, _result_func=_result_func)
         self.request.decoded_query_arguments = {
             key: arguments['query_string'][param.alias or key]
-            for key, param in method.params['query'].items()
+            for key, param in query_params.items()
         }
+        body_arguments = arguments['body_arguments'][content_type]
         self.request.body_arguments = {
-            key: arguments['body_arguments'][content_type][param.alias or key]
-            for key, param in method.params['body'].items()
+            key: None if param.content_type != content_type else body_arguments
+            for key, param in payload_params.items()
         }
+        self.request.body_arguments.update({
+            key: None if param.content_type != content_type else body_arguments[param.alias or key]
+            for key, param in body_params.items()
+        })
         return await method(self, *self.path_args, **self.path_kwargs, **self.request.decoded_query_arguments, **self.request.body_arguments)
     return decorator
 
 
-class DictSanitizer(DictSanitizer):
+class PatchDocumentSanitizer(ListSanitizer):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(DictSanitizer({
+            'op': ChoicesSanitizer(('add', 'remove', 'replace', 'copy', 'move', 'test'), required=True),
+            'path': StringSanitizer('^/.*', required=True),
+            'value': Sanitizer(),
+        }), *args, **kwargs)
+
+    def _sanitize(self, value, name, further_arguments):
+        return list(self.parse_patch_document(super()._sanitize(value, name, further_arguments), name))
+
+    def parse_patch_document(self, value, name):
+        for operation in value:
+            op = operation['op']
+            path = [x.replace('~1', '/').replace('~0', '~') for x in operation['path'].split('/')[1:]]
+            value = operation.get('value')
+            if op in ('copy', 'move', 'test'):
+                continue  # ignore, currently not needed
+            yield op, path, value
+
+
+class PatchRepresentationSanitizer(PatchDocumentSanitizer):
+
+    def _sanitize(self, value, name, further_arguments):
+        patch_document = super()._sanitize(value, name, further_arguments)
+        multi_error = MultiValidationError()
+        patch = []
+        # TODO: restrict length?
+        for op, path, value in patch_document:
+            if path[0] not in ('superordinate', 'options', 'properties', 'policies'):
+                continue
+            if op in ('test', 'move', 'copy'):
+                try:
+                    self.raise_formatted_validation_error('Operation %(name)s unsupported.', path[0], value)
+                except ValidationError as exc:
+                    multi_error.add_error(exc, op)
+                continue
+            if path[0] == 'properties':
+                if len(path) != 2:
+                    try:
+                        self.raise_formatted_validation_error('Invalid property name given: %(name)s', '.'.join(path), value)
+                    except ValidationError as exc:
+                        multi_error.add_error(exc, path[0])
+                    continue
+                patch.append((path[0], path[1], op, value))
+            elif len(path) != 1:
+                try:
+                    self.raise_formatted_validation_error('Invalid name given: %(name)s', '.'.join(path), value)
+                except ValidationError as exc:
+                    multi_error.add_error(exc, path[0])
+            else:
+                patch.append((path[0], None, op, value))
+
+        if multi_error.has_errors():
+            raise multi_error
+
+        return patch
+
+
+class DictSanitizer(UMCDictSanitizer):
 
     def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
         self.default_sanitizer = kwargs.get('default_sanitizer', None)
