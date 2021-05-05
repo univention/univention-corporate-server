@@ -247,7 +247,7 @@ def module_information(module, identifies_only=0):
 def object_input(module, object, input, append=None, remove=None):
 	out = []
 	if append:
-		for key, value in append.items():
+		for key, values in append.items():
 			if key in object and not object.has_property(key):
 				opts = module.property_descriptions[key].options
 				if len(opts) == 1:
@@ -255,33 +255,35 @@ def object_input(module, object, input, append=None, remove=None):
 					out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
 
 			if module.property_descriptions[key].syntax.name == 'file':
-				if os.path.exists(value):
-					with open(value, 'r') as fh:
+				if os.path.exists(values):
+					with open(values, 'r') as fh:
 						object[key] = fh.read()
 				else:
-					out.append('WARNING: file not found: %s' % value)
-
-			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				for val in _parse_complex_syntax_input(value):
-					if not object.has_property(key):
-						object[key] = []
-					if val in object[key]:
-						out.append('WARNING: cannot append %s to %s, value exists' % (val, key))
-					elif object[key] == [''] or object[key] == []:
-						object[key] = [val]
-					else:
-						object[key].append(val)
+					out.append('WARNING: file not found: %s' % values)
 			else:
-				for val in value:
-					if val in object[key]:
+				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
+					values = _parse_complex_syntax_input(values if isinstance(values, list) else [values])
+				current_values = list(object[key] or [])
+				if current_values == ['']:
+					current_values = []
+
+				for val in values:
+					if val in current_values:
 						out.append('WARNING: cannot append %s to %s, value exists' % (val, key))
-					elif object[key] == [''] or object[key] == []:
-						object[key] = [val]
 					else:
-						try:
-							object[key] = list(list(object[key]) + [val])
-						except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-							out.append('E: Invalid Syntax: %s' % (errmsg,))
+						current_values.append(val)
+
+				if not module.property_descriptions[key].multivalue:
+					out.append('WARNING: using --append on a single value property (%s) is not supported.' % (key,))
+					try:
+						current_values = current_values[-1]
+					except IndexError:
+						current_values = None
+
+				try:
+					object[key] = current_values
+				except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
+					out.append('E: Invalid Syntax: %s' % (errmsg,))
 
 	if remove:
 		for key, values in remove.items():
