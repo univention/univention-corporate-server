@@ -337,17 +337,15 @@ def object_input(module, object, input, append=None, remove=None):
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
-			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				if isinstance(value, list):
-					val = _parse_complex_syntax_input(value)[-1]
-				else:
-					val = _parse_complex_syntax_input([value])[0]
-
-				if module.property_descriptions[key].multivalue:
-					object[key] = [val]
-				else:
-					object[key] = val
 			else:
+				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
+					if isinstance(value, list):
+						value = _parse_complex_syntax_input(value)[-1]
+					else:
+						value = _parse_complex_syntax_input([value])[0]
+
+					if module.property_descriptions[key].multivalue:
+						value = [value]
 				try:
 					object[key] = value
 				except univention.admin.uexceptions.ipOverridesNetwork as exc:
