@@ -296,8 +296,15 @@ def object_input(module, object, input, append=None, remove=None):
 					vallist = _parse_complex_syntax_input(vallist)
 
 				for val in vallist:
+					try:
+						normalized_val = module.property_descriptions[key].syntax.parse(val)
+					except (univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueError):
+						normalized_val = None
+
 					if val in current_values:
 						current_values.remove(val)
+					elif normalized_val is not None and normalized_val in current_values:
+						current_values.remove(normalized_val)
 					else:
 						out.append("WARNING: cannot remove %s from %s, value does not exist" % (val, key))
 			if not module.property_descriptions[key].multivalue:
