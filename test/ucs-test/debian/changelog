@@ -1,3 +1,10 @@
+ucs-test (10.0.5-14) unstable; urgency=medium
+
+  * Bug #52869: Slightly changed DOM needs an update for
+    86_selenium/180_portal_entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 May 2021 20:53:00 +0200
+
 ucs-test (10.0.5-13) unstable; urgency=medium
 
   * Bug #52869: Unskip second edit mode test
