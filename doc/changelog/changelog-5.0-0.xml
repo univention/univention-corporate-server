@@ -902,9 +902,6 @@
 				<listitem><simpara>
 					The package <package>univention-nagios-server</package> has been removed (<u:bug>52122</u:bug>)
 				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>univention-nagios-raid</package> has been removed (<u:bug>52991</u:bug>)
-				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

@@ -1,0 +1,155 @@
+univention-nagios-raid (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:24 +0200
+
+univention-nagios-raid (8.0.1-1) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 17:31:29 +0100
+
+univention-nagios-raid (8.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:40 +0100
+
+univention-nagios-raid (7.0.1-0) unstable; urgency=medium
+
+  * Bug #47319: use mdstat plugin in check_raid test
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2018 11:12:56 +0200
+
+univention-nagios-raid (7.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:41 +0100
+
+univention-nagios-raid (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:52 +0200
+
+univention-nagios-raid (5.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:18:54 +0100
+
+univention-nagios-raid (4.0.0-3) unstable; urgency=low
+
+  * Increased join script version number (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 11 Sep 2014 08:46:34 +0200
+
+univention-nagios-raid (4.0.0-2) unstable; urgency=low
+
+  * Using check_raid from nagios-plugins-contrib
+  * instead of check_linux_raid (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Sep 2014 09:43:11 +0200
+
+univention-nagios-raid (4.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 20 Aug 2014 10:24:06 +0200
+
+univention-nagios-raid (3.0.0-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+  * version bump for UCS 3.1 (Bug #27966)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:23:33 +0200
+
+univention-nagios-raid (2.0.5-2) unstable; urgency=low
+
+  * run the join script at an earlier stage (Bug #24252) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 09:39:36 +0100
+
+univention-nagios-raid (2.0.5-1) unstable; urgency=low
+
+  * run the join script at an earlier stage (Bug #24252)
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 09:29:47 +0100
+
+univention-nagios-raid (2.0.4-3) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:31:18 +0200
+
+univention-nagios-raid (2.0.4-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:22 +0200
+
+univention-nagios-raid (2.0.4-1) unstable; urgency=low
+
+  * harmonise container check in join script (Bug #23180)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Sep 2011 16:00:49 +0200
+
+univention-nagios-raid (2.0.3-1) unstable; urgency=low
+
+  * Fixed quoting error from last commit (Bug #22472)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 16:18:21 +0200
+
+univention-nagios-raid (2.0.2-1) unstable; urgency=low
+
+  * Fixed quoting error from last commit (Bug #22472)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 16:02:01 +0200
+
+univention-nagios-raid (2.0.1-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Andreas Büsching ]
+    * automatically register client for nagios service if a RAID exists and
+      the nagios contact e-mail address is set; Bug #22472
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:10:18 +0200
+
+univention-nagios-raid (2.0.0-0) unstable; urgency=low
+
+  * update to UCS 3.0 policies (Bug #14594)
+  * bump version for UCS 3.0
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 16 Jun 2011 14:14:05 +0200
+
+univention-nagios-raid (1.0.1-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:04:34 +0200
+
+univention-nagios-raid (1.0.0-2) unstable; urgency=low
+
+  * some cleanups (Bug #17287)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 May 2010 14:59:20 +0200
+
+univention-nagios-raid (1.0.0-1) unstable; urgency=low
+
+  * merged to UCS 2.4 (Bug #17287)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 May 2010 11:47:55 +0200
+
+univention-nagios-raid (0.0.2-1) unstable; urgency=low
+
+  * added description for nagios service Ticket #2009102710000119 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 16:43:27 +0100
+
+univention-nagios-raid (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Univention GmbH Felix Botner  <botner@univention.de>  Thu, 06 Jun 2009 08:53:54 +0200
