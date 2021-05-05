@@ -746,6 +746,7 @@ update_check_for_postgresql94 () {
 
 update_check_samba_tdb_size () {  # Bug #53212
 	local var="update$VERSION/ignore_samba_tdb_size"
+	local rc=0
 
 	if ! dpkg -l univention-samba4 | grep -q ^ii; then
 		return 0
@@ -764,13 +765,14 @@ update_check_samba_tdb_size () {  # Bug #53212
 			echo "         A similar situation happend during update from Samba 4.7 to Samba 4.10, so the techically"
 			echo "         demanding workaround described under https://help.univention.com/t/12492 may be an option,"
 			echo "         but it is still untested with Samba 4.13."
+			rc=1
 			break
 		fi
 	done
-	if is_ucr_true update50/ignore_multi_adc_mapping; then
+	if is_ucr_true "$var"; then
 		echo "WARNING: $var is set to true. Continue as requested."
 	else
-		return 1
+		return $rc
 	fi
 }
 
