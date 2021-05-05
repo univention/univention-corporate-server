@@ -44,18 +44,17 @@ eval "$(univention-config-registry shell)"
 # remove service
 ucs_removeServiceFromLocalhost "PROXY" "$@" || die
 
-# remove squid to nagios' UNIVENTION_SQUID service check
+# remove squid from nagios' UNIVENTION_SQUID service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
-	hostname="$(univention-ldapsearch \
-		cn=UNIVENTION_SQUID \
-		univentionNagiosHostname | \
-		ldapsearch-wrapper | \
-		grep ^univentionNagiosHostname: | \
-		awk -F ': ' '{print $2}')"
+	fqdn=$(hostname -f)
+	service_dn=$(univention-ldapsearch -LLL \
+		"(&(univentionNagiosHostname=$fqdn)(cn=UNIVENTION_SQUID))" \
+		1.1 | \
+		sed -n 's/^dn: //p')
 
-	if [ -n "$hostname" -a "$hostname" = "$(hostname -f)" ]; then
+	if [ -n "$service_dn" ]; then
 		univention-directory-manager nagios/service modify "$@" \
-			--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
+			--dn "$service_dn" \
 			--remove assignedHosts="${ldap_hostdn}" || die
 	fi
 fi
