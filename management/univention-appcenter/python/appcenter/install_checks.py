@@ -212,6 +212,7 @@ class MustHaveCandidate(SingleRequirement, HardRequirement):
 		if not _app.is_installed() or _app >= app:
 			return False
 
+
 class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
 	'''The application requires UCS version %(required_version)s.'''
 	def test_install(self, app):

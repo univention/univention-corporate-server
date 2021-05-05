@@ -84,9 +84,9 @@ class List(UniventionAppAction):
 		blacklist = ucr_get('repository/app_center/blacklist')
 		whitelist = ucr_get('repository/app_center/whitelist')
 		if blacklist:
-			blacklist = re.split('\s*,\s*', blacklist)
+			blacklist = re.split(r'\s*,\s*', blacklist)
 		if whitelist:
-			whitelist = re.split('\s*,\s*', whitelist)
+			whitelist = re.split(r'\s*,\s*', whitelist)
 		for app in apps:
 			if blacklist or whitelist:
 				unlocalised_app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)

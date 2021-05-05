@@ -32,9 +32,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import os
-import base64
-
 from ldap.filter import escape_filter_chars
 from ldap.dn import explode_dn, escape_dn_chars
 

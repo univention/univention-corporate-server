@@ -53,7 +53,7 @@ class StoreKeysAction(Action):
 		for val in value:
 			try:
 				section, key = val.rsplit(':', 1)
-			except:
+			except ValueError:
 				section, key = None, val
 			keys.append((section, key))
 		setattr(namespace, self.dest, keys)

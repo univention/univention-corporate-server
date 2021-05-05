@@ -102,7 +102,7 @@ class BooleanAttribute(Attribute):
 
 class AttributeListAttribute(Attribute):
 	def escape_value(self, value):
-		values = sorted(val for val in set(re.split('\s*,\s*', value or '')) if val)
+		values = sorted(val for val in set(re.split(r'\s*,\s*', value or '')) if val)
 		if values:
 			return '( ' + ' $ '.join(values) + ' )'
 
@@ -196,9 +196,9 @@ class ExtendedAttribute(SchemaObject):
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % escape_dn_chars(app.id))
 		kwargs.setdefault('tab_name', app.name)
 		kwargs.setdefault('ldap_mapping', kwargs['name'])
-		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
+		kwargs['module'] = re.split(r'\s*,\s*', kwargs.get('module', 'users/user'))
 		if 'options' in kwargs:
-			kwargs['options'] = re.split('\s*,\s*', kwargs.get('options', []))
+			kwargs['options'] = re.split(r'\s*,\s*', kwargs.get('options', []))
 		kwargs.setdefault('options', [])
 		super(ExtendedAttribute, self).__init__(app, **kwargs)
 		if self.syntax == 'Boolean':
@@ -242,7 +242,7 @@ class ExtendedOption(SchemaObject):
 	def __init__(self, app, **kwargs):
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % escape_dn_chars(app.id))
 		kwargs.setdefault('description', app.name)
-		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
+		kwargs['module'] = re.split(r'\s*,\s*', kwargs.get('module', 'users/user'))
 		super(ExtendedOption, self).__init__(app, **kwargs)
 
 	@property
@@ -354,7 +354,7 @@ def get_extended_attributes(app):
 			object_class_suffix += 1
 			object_classes.insert(0, object_class)
 		object_class = [obj for obj in object_classes if obj.name == attribute.belongs_to][0]
-		if attribute.name not in re.split('\s*,\s*', object_class.must):
+		if attribute.name not in re.split(r'\s*,\s*', object_class.must):
 			object_class.may = '%s, %s' % (object_class.may, attribute.name)
 		for option in extended_options:
 			if option.name in (object_class.option_name, attribute.belongs_to):

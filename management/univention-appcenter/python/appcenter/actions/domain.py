@@ -123,7 +123,7 @@ class Domain(CredentialsAction):
 			remote_ucs_version = host.info.get('operatingSystemVersion')
 			is_local = host.info.get('fqdn') == get_local_fqdn()
 			if remote_ucs_version:
-				remote_ucs_version = re.sub('.*([0-9]+\.[0-9]+).*', '\\1', remote_ucs_version)
+				remote_ucs_version = re.sub(r'.*([0-9]+\.[0-9]+).*', r'\1', remote_ucs_version)
 			ip = host.info.get('ip')  # list
 			version = None
 			update_available = None

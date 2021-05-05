@@ -49,7 +49,7 @@ import json
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
-from univention.lib.umc import Client, ConnectionError, BadRequest, HTTPError, Forbidden
+from univention.lib.umc import Client, ConnectionError, HTTPError, Forbidden
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
@@ -278,7 +278,7 @@ class Instance(umcm.Base, ProgressMixin):
 				else:
 					try:
 						ret[host] = self._run_remote_dry_run(host, _apps, action, auto_installed, {}, progress)
-					except umcm.UMC_Error as exc:
+					except umcm.UMC_Error:
 						ret[host] = {'unreachable': [app.id for app in _apps]}
 		else:
 			for app in apps:

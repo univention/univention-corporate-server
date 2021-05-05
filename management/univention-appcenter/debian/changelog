@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-41) unstable; urgency=medium
+
+  * Bug #51598: Fix issues found by linting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 May 2021 22:57:01 +0200
+
 univention-appcenter (9.0.2-40) unstable; urgency=medium
 
   * Bug #51598: Improve SQL query building

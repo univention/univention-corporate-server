@@ -156,7 +156,7 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 		s = socket.socket()
 		try:
 			s.bind(('', port))
-		except:
+		except OSError:
 			pass
 		else:
 			s.close()
