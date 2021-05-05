@@ -1,3 +1,9 @@
+univention-nagios-raid (9.0.0-2) unstable; urgency=medium
+
+  * Bug #52991: Add unjoin script
+
+ -- Arvid <requate@univention.de>  Wed, 05 May 2021 15:45:46 +0200
+
 univention-nagios-raid (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
