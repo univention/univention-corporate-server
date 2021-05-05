@@ -1,0 +1,3 @@
+31univention-nagios-smart.inst usr/lib/univention-install/
+check_smart.pl usr/lib/nagios/plugins/
+check_smart_suidwrapper usr/lib/nagios/plugins/

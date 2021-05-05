@@ -282,6 +282,11 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
+				<package>univention-nagios-smart</package> Prüfung des S.M.A.R.T.-Status von Festplatten
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
 				<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung opsi
 				</simpara>
 			</listitem>
