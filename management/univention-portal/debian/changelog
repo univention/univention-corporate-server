@@ -1,3 +1,9 @@
+univention-portal (4.0.5-46) unstable; urgency=medium
+
+  * Bug #52941: icons for univention portal in different sizes added
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 05 May 2021 15:03:14 +0200
+
 univention-portal (4.0.5-45) unstable; urgency=medium
 
   * Bug #51197: The new UDM modules only need to be present starting with
