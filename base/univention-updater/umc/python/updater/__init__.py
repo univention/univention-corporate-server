@@ -495,8 +495,6 @@ class Instance(Base):
 			result['serial'] = self._serial_file.timestamp()
 
 		except Exception as exc:  # FIXME: don't catch everything
-			typ = str(type(exc)).strip('<>')
-			msg = '[while %s] [%s] %s' % (what, typ, exc)
 			msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
 			msg += ' ' + _('This is the error message:') + ' ' + str(exc)
 			raise UMC_Error(msg)
