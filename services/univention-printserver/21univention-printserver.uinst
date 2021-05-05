@@ -44,6 +44,21 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
+# remove cups from nagios' UNIVENTION_CUPS service check
+if [ ! "$nagios_client_autoregister" = "no" ] ; then
+	fqdn=$(hostname -f)
+	service_dn=$(univention-ldapsearch -LLL \
+		"(&(univentionNagiosHostname=$fqdn)(cn=UNIVENTION_CUPS))" \
+		1.1 | \
+		sed -n 's/^dn: //p')
+
+	if [ -n "$service_dn" ]; then
+		univention-directory-manager nagios/service modify "$@" \
+			--dn "$service_dn" \
+			--remove assignedHosts="${ldap_hostdn}" || die
+	fi
+fi
+
 joinscript_remove_script_from_status_file univention-printserver
 
 exit 0
