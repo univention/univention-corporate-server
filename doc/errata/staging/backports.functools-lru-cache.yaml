@@ -9,3 +9,5 @@ desc: |
  * The package unidecode has been moved to maintained
 bug: [52920]
 maintained: true
+ignore:
+ - scope+version
