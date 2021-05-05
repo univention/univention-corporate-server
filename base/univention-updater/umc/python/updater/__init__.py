@@ -438,12 +438,7 @@ class Instance(Base):
 				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
-			try:
-				blocking_components = self.uu.get_all_available_release_updates()[1]
-			except (UpdaterException, ValueError) as exc:
-				msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
-				msg += ' ' + _('This is the error message:') + ' ' + str(exc)
-				raise UMC_Error(msg)
+			blocking_components = self.uu.get_all_available_release_updates()[1]
 			# check apps
 			if result['release_update_available']:
 				try:
