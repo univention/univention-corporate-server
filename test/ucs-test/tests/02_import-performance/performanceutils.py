@@ -231,11 +231,11 @@ def count_users(needed):
 	users = count_ldap_users()
 	if users < needed:
 		print('ERROR: Not all users were found in OpenLDAP')
-		returnCode = False
+		return False
 
 	users = count_samba4_users()
 	if users < needed:
 		print('ERROR: Not all users were found in Samba4')
-		returnCode = False
+		return False
 
 	return True

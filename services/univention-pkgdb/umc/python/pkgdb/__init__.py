@@ -359,7 +359,7 @@ def _make_query(key, operator, pattern):
 		if '~' in operator:
 
 			# 1. dot is not a wildcard here but rather a literal dot
-			pattern = pattern.replace('.', '\.')
+			pattern = pattern.replace('.', r'\.')
 
 			# 2. a * indicates to not do a substring search
 			if '*' in pattern:

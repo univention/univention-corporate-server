@@ -37,7 +37,6 @@ import logging
 import requests
 import functools
 import itertools
-import threading
 import lxml.html
 import subprocess
 import contextlib
@@ -134,7 +133,6 @@ class AppCenterOperations(object):
 
 		while True:
 			progress = self.client.umc_command("appcenter/progress", {"progress_id": progress_id}, print_request_data=False, print_response=False).result
-			info = progress.get("title")
 			if last_title != progress["title"]:
 				last_title = progress["title"]
 				print(last_title)

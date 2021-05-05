@@ -59,7 +59,6 @@ def test_background(chrome, admin_username, admin_password, udm):
     tile_display = 'Tile Name'
     tile_description = 'Tile Description'
     tile_link = 'https://example.com'
-    tile_bgc = 'green'
     chrome.send_keys(tile_name)
     chrome.enter_tab()
     chrome.send_keys(tile_display + ' EN')
@@ -81,12 +80,23 @@ def test_background(chrome, admin_username, admin_password, udm):
     chrome.enter_tab()
     chrome.enter_tab()
     chrome.enter_tab()
-    tile_bgc = 'green'
     chrome.click_element('form.admin-entry button.primary')
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     entries = udm.get('portals/entry')
     entry = list(entries.search('name=%s' % tile_name))[0].open()
-    expected = {'name': 'internal-name-for-a-tile', 'displayName': {'de_DE': 'Tile Name DE', 'en_US': 'Tile Name EN'}, 'description': {'en_US': 'Tile Description EN', 'de_DE': 'Tile Description DE'}, 'link': {'en_US': 'https://example.com'}, 'allowedGroups': [], 'activated': True, 'anonymous': False, 'icon': None, 'linkTarget': 'useportaldefault', 'backgroundColor': None, 'objectFlag': []}
+    expected = {
+        'name': 'internal-name-for-a-tile',
+        'displayName': {'de_DE': 'Tile Name DE', 'en_US': 'Tile Name EN'},
+        'description': {'en_US': 'Tile Description EN', 'de_DE': 'Tile Description DE'},
+        'link': {'en_US': 'https://example.com'},
+        'allowedGroups': [],
+        'activated': True,
+        'anonymous': False,
+        'icon': None,
+        'linkTarget': 'useportaldefault',
+        'backgroundColor': None,
+        'objectFlag': []
+    }
     assert entry.properties == expected
 
     # create folder
@@ -112,7 +122,6 @@ def test_background(chrome, admin_username, admin_password, udm):
     category.delete()
     entry.delete()
     folder.delete()
-
 
 
 if __name__ == '__main__':

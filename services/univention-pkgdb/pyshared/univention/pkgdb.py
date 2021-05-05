@@ -177,7 +177,7 @@ def get_dbservername(domainname):
 	dbsrvname = None
 	try:
 		dbsrvname = map(lambda x: x['data'], DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers)[0][3]
-	except:
+	except Exception:
 		log('Cannot find service-record of _pkgdb._tcp.')
 		print('Cannot find service-record of _pkgdb._tcp.')
 	return dbsrvname

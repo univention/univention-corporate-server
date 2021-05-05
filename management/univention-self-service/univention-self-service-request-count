@@ -61,7 +61,7 @@ while True:
 
 lines = text.split("\r\n")
 entries = dict()
-reg = re.compile('^ITEM (.*) \[.*; (.*) .*\]$')
+reg = re.compile(r'^ITEM (.*) \[.*; (.*) .*\]$')
 for line in lines:
 	parts = line.split(":")
 	if len(parts) >= 3:

@@ -66,9 +66,9 @@ filter_add((ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse, ua_sy
 
 def _email_address(prop, key, value):
 	if prop.multivalue:
-		value = ['\mbox{%s}' % val for val in value]
+		value = [r'\mbox{%s}' % val for val in value]
 	else:
-		value = '\mbox{%s}' % value
+		value = r'\mbox{%s}' % value
 	return (key, value)
 
 

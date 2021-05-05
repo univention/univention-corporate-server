@@ -67,15 +67,15 @@ if not(os.path.exists(cmd)):
 	print("Target executable %s does not exist. Exiting." % cmd)
 	sys.exit(2)
 
-baseConfig = univention.config_registry.ConfigRegistry()
-baseConfig.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
 # read machine password
 secretFile = open('/etc/machine.secret', 'r')
 pwdLine = secretFile.readline()
 machine_password = re.sub('\n', '', pwdLine)
 
-machine_uid = pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
+machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]
 old_uid = os.getuid()
 os.setuid(machine_uid)
 
@@ -83,7 +83,7 @@ child = spawn('%s %s' % (cmd, ' '.join(args)))
 i = 0
 timeout = 60
 while not i == 2:
-	i = child.expect(['%s\.%s.*\?' % (baseConfig['hostname'], baseConfig['domainname']), 'localhost.*\?', EOF], timeout=timeout)
+	i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'localhost.*\?', EOF], timeout=timeout)
 	if i in [0, 1]:
 		child.sendline(machine_password)
 	elif i == 2:

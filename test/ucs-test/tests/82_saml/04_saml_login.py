@@ -7,8 +7,6 @@
 ##  - skip_admember
 
 from __future__ import print_function
-import subprocess
-import time
 import samltest
 import univention.testing.utils as utils
 

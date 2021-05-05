@@ -44,10 +44,10 @@ try:
 		if res:
 			try:
 				print('%s: %s' % (res.group(1), base64.decodestring(res.group(2))))
-			except:
+			except Exception:
 				pass
 		else:
 			print(line, end='')
 		line = sys.stdin.readline()
-except:
+except Exception:
 	sys.stdout.flush()

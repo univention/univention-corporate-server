@@ -8,11 +8,6 @@ import imaplib
 import time
 import univention.testing.strings as uts
 
-try:
-	from itertools import izip as zip
-except ImportError:  # py3
-	pass
-
 
 class WrongAcls(Exception):
 	pass

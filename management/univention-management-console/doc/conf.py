@@ -261,5 +261,5 @@ epub_copyright = u'2012-2021, Univention GmbH'
 autodoc_member_order = 'bysource'
 
 autodoc_mock_imports = [
-	'tornado',  # python-tornado
+    'tornado',  # python-tornado
 ]

@@ -28,6 +28,21 @@ def handler(dn, new, old, command):
 		pass  # ignore, reserved for future use
 
 
+def handler_add(dn, new):
+	"""Handle creation of object."""
+	pass  # replace this
+
+
+def handler_modify(dn, old, new):
+	"""Handle modification of object."""
+	pass  # replace this
+
+
+def handler_remove(dn, old):
+	"""Handle removal of object."""
+	pass  # replace this
+
+
 def handler_move(old_dn, old, new_dn, dn):
 	"""Handle rename or move of object."""
 	pass  # replace this
