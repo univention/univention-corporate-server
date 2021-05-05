@@ -262,13 +262,7 @@ def object_input(module, object, input, append=None, remove=None):
 					out.append('WARNING: file not found: %s' % value)
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				for orgval in value:
-					test_val = orgval.split('"')
-					if test_val[0] and test_val[0] == orgval:
-						val = orgval.split(' ')
-					else:
-						val = [j.strip() for j in test_val if j.strip()]
-
+				for val in _parse_complex_syntax_input(value):
 					if not object.has_property(key):
 						object[key] = []
 					if val in object[key]:
@@ -293,13 +287,7 @@ def object_input(module, object, input, append=None, remove=None):
 		for key, value in remove.items():
 			if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if value:
-					for orgval in value:
-						test_val = orgval.split('"')
-						if test_val[0] and test_val[0] == orgval:
-							val = orgval.split(' ')
-						else:
-							val = [j.strip() for j in test_val if j.strip()]
-
+					for val in _parse_complex_syntax_input(value):
 						if val and val in object[key]:
 							object[key].remove(val)
 						else:
@@ -351,15 +339,9 @@ def object_input(module, object, input, append=None, remove=None):
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if isinstance(value, list):
-					val = []
-					for orgval in value:
-						test_val = orgval.split('"')
-						if test_val[0] and test_val[0] == orgval:
-							val = orgval.split(' ')
-						else:
-							val = [j.strip() for j in test_val if j.strip()]
+					val = _parse_complex_syntax_input(value)[-1]
 				else:
-					val = value.split(' ')
+					val = _parse_complex_syntax_input([value])[0]
 
 				if module.property_descriptions[key].multivalue:
 					object[key] = [val]
@@ -373,6 +355,17 @@ def object_input(module, object, input, append=None, remove=None):
 				except univention.admin.uexceptions.valueMayNotChange as exc:
 					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (exc.message, key))
 	return out
+
+
+def _parse_complex_syntax_input(values):
+	parsed_values = []
+	for value in values:
+		if '"' not in value:
+			value = value.split(' ')
+		else:
+			value = [x.strip() for x in value.split('"') if x.strip()]
+		parsed_values.append(value)
+	return parsed_values
 
 
 def list_available_modules(o=[]):
