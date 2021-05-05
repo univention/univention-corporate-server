@@ -11,3 +11,5 @@ bug: [52920]
 maintained: true
 ignore:
  - bug.52920.scope+version
+erratum: 969
+announced: 2021-05-05
