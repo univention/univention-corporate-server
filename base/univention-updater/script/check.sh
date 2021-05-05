@@ -553,6 +553,39 @@ update_check_md5_signature_is_used () {
 	return 1
 }
 
+update_check_tls_public_key_size () {  # Bug #53013
+	local min_key_size=2048
+	local fqdn=${1:-"$hostname.$domainname"}
+	local cert_path="/etc/univention/ssl/$fqdn/cert.pem"
+	[ -f "$cert_path" ] || return 0
+
+	local rsa_indicator="Public Key Algorithm: rsaEncryption"
+	local certopt="no_header,no_version,no_serial,no_signame,no_subject,no_issuer,no_aux,no_extensions,no_validity,no_sigdump"
+	openssl x509 -in "$cert_path" -text -certopt "$certopt" | grep --quiet "$rsa_indicator" || return 0
+	local key_size
+	key_size="$(openssl x509 -noout -text -certopt "$certopt" -in "$cert_path" | grep 'Public-Key: (.* bit)' | grep -oE '[0-9]+')"
+	[ "$key_size" -lt "$min_key_size" ] || return 0
+
+	echo "	The pre-check of the update found that the certificate file:"
+	echo "	$cert_path"
+	echo "	is using a public key smaller ${min_key_size} bits. This is not supported in"
+	echo "	UCS ${VERSION_NAME} and later versions. The public key bit size can be set"
+	echo "	on the Primary Directory Node with:"
+	echo "	ucr set ssl/default/bits=2048"
+	echo "	The certificate needs to be recreated afterwards."
+	echo "	A new certificate with a new public key can be created on the"
+	echo "	Primary Directory Node with:"
+	echo "	univention-certificate new -name ${fqdn}"
+	echo "	Afterwards follow the help article below,"
+	echo "	as like the certificate had been renewed:"
+	echo "	<https://help.univention.com/t/37>"
+	return 1
+}
+
+update_check_tls_public_key_size_ucs-sso () {  # Bug #53013
+	update_check_tls_public_key_size "$ucs_server_sso_fqdn"
+}
+
 # block update if system date is too old
 update_check_system_date_too_old() {
 	local system_year
