@@ -221,6 +221,9 @@ class DatabaseConnector(object):
 
 class PostgreSQL(DatabaseConnector):
 
+	def _escape(self, value):
+		return mysql.string_literal(value).decode('utf-8')
+
 	def _get_software_packages(self):
 		return ['univention-postgresql']
 
@@ -249,7 +252,7 @@ class PostgreSQL(DatabaseConnector):
 
 	def db_exists(self):
 		database_logger.info('Checking if database %s exists (postgresql implementation)' % self.get_db_name())
-		stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = \'%s\'' % self.get_db_name())
+		stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = %s' % self._escape(self.get_db_name()))
 		if stdout and stdout[0].strip() == '1':
 			database_logger.info('Database %s already exists' % self.get_db_name())
 			return True
@@ -258,14 +261,14 @@ class PostgreSQL(DatabaseConnector):
 			return False
 
 	def db_user_exists(self):
-		stdout = self.execute('SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\'' % self.get_db_user())
+		stdout = self.execute('SELECT COUNT(*) FROM pg_user WHERE usename = %s' % self._escape(self.get_db_user()))
 		if stdout and stdout[0].strip() == '1':
 			return True
 
 	def create_db_and_user(self, password):
 		call_process_as('postgres', ['/usr/bin/createuser', '-DRS', '--login', self.get_db_user()], logger=database_logger)
 		call_process_as('postgres', ['/usr/bin/createdb', '-O', self.get_db_user(), '-T', 'template0', '-E', 'UTF8', self.get_db_name()], logger=database_logger)
-		self.execute('ALTER ROLE "%s" WITH ENCRYPTED PASSWORD \'%s\'' % (self.get_db_user(), password))
+		self.execute('ALTER ROLE "%s" WITH ENCRYPTED PASSWORD %s' % (self.get_db_user(), self._escape(password)))
 
 
 class MySQL(DatabaseConnector):

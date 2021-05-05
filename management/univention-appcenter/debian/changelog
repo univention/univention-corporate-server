@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-40) unstable; urgency=medium
+
+  * Bug #51598: Improve SQL query building
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 May 2021 22:12:32 +0200
+
 univention-appcenter (9.0.2-39) unstable; urgency=medium
 
   * Bug #53161: Apps may now specify how the link of their portal tile is
