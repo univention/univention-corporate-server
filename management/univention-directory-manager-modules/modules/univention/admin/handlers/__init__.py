@@ -2435,7 +2435,7 @@ class simpleComputer(simpleLdap):
 
 			naddr, nattr = self._ip2dns(new_ip)
 			oaddr, oattr = self._ip2dns(old_ip)
-			results = self.lo.search(base=base, scope='domain', attr=[oattr], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False)
+			results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False)
 
 			for dn, attr in results:
 				old_aRecord = attr.get('aRecord', [])
