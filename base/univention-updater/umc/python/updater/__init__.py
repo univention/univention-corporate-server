@@ -375,7 +375,7 @@ class Instance(Base):
 				result['release_update_available'] = exc.version
 
 			what = 'querying update-blocking components'
-			blocking_components = self.uu.get_all_available_release_updates()[1]
+			blocking_components = self.uu.get_all_available_release_updates()[1] or set()
 			# check apps
 			if result['release_update_available']:
 				try:
@@ -390,7 +390,7 @@ class Instance(Base):
 					# Cannot be a dependency as the app center depends on updater...
 					raise UMC_Error(_('Error checking if installed apps are available for next UCS version.'))
 
-			result['release_update_blocking_components'] = ' '.join(blocking_components or [])
+			result['release_update_blocking_components'] = ' '.join(blocking_components)
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"
