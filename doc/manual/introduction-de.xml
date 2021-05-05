@@ -326,7 +326,7 @@ UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:
 <listitem><simpara>Umfangreiche Unterstützung für komplexe Serverumgebungen und Replikationsszenarien</simpara></listitem>
 <listitem><simpara>Weitergehende Einsatzmöglichkeiten für Microsoft Windows-Umgebungen</simpara></listitem>
 <listitem><simpara>Zentrales Netzmanagement mit DNS und DHCP</simpara></listitem>
-<listitem><simpara>System- und Netzüberwachung mit Nagios</simpara></listitem>
+<listitem><simpara>System- und Netzüberwachung</simpara></listitem>
 <listitem><simpara>Druckserver-Funktionalität</simpara></listitem>
 <listitem><simpara>Thin-Client-Support</simpara></listitem>
 <listitem><simpara>Proxy-Server</simpara></listitem>
@@ -364,7 +364,7 @@ Diese Felder beschreiben den Funktionsumfang eines UMC-Moduls:
 </para>
 
 <table>
-<title>Reiter Nagios-Dienst</title>
+<title>Reiter DHCP-Dienst</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -379,7 +379,7 @@ Diese Felder beschreiben den Funktionsumfang eines UMC-Moduls:
 <row>
 <entry>Name</entry>
 <entry>
-Ein eindeutiger Name für den Nagios-Dienst.
+Ein eindeutiger Name für den DHCP-Dienst.
 </entry>
 </row>
 

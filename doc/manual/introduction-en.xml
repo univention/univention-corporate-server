@@ -315,7 +315,7 @@ UCS. Among other things, UCS and solutions based on UCS provide:
 	<listitem><simpara>Comprehensive support for complex server environments and replication scenarios</simpara></listitem>
 	<listitem><simpara>Advanced capabilities for Windows environments</simpara></listitem>
 	<listitem><simpara>Central network management with DNS and DHCP</simpara></listitem>
-	<listitem><simpara>Monitoring systems and networks with Nagios</simpara></listitem>
+	<listitem><simpara>Monitoring systems and networks</simpara></listitem>
 	<listitem><simpara>Print server functionalities</simpara></listitem>
 	<listitem><simpara>Thin Client support</simpara></listitem>
 	<listitem><simpara>Fax service</simpara></listitem>
@@ -352,7 +352,7 @@ Notes are also highlighted.
 This tables describes the functionality of a UMC module:
 
 <table>
-<title>Tab Nagios service</title>
+<title>Tab DHCP service</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -367,7 +367,7 @@ This tables describes the functionality of a UMC module:
 <row>
 <entry>Name</entry>
 <entry>
-The unique name of a Nagios service.
+The unique name of a DHCP service.
 </entry>
 </row>
 

@@ -362,7 +362,7 @@ udm settings/ldapacl remove \
 		<para>
 		  Alle UMC-Module zur Verwaltung von LDAP-Objekten wie bspw.
 		  Benutzer-, Gruppen- und Rechnerkonten oder Einstellungen für Drucker,
-		  Freigaben, Mail, Nagios und Richtlinien werden strukturell identisch
+		  Freigaben, Mail und Richtlinien werden strukturell identisch
 		  bedient. Die folgenden
 		  Beispiele werden anhand der Benutzerverwaltung dargestellt, gelten aber analog für alle
 		  Module. Die Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden
@@ -387,7 +387,6 @@ udm settings/ldapacl remove \
 			<listitem><simpara>Freigaben - <xref linkend="shares::general"/></simpara></listitem>
 			<listitem><simpara>Drucker - <xref linkend="print::general"/></simpara></listitem>
 			<listitem><simpara>E-Mail - <xref linkend="mail::general"/></simpara></listitem>
-			<listitem><simpara>Nagios - <xref linkend="nagios::general"/></simpara></listitem>
 		</itemizedlist>
 		<para>
 			Die Verwendung von Richtlinien (<xref linkend="central:policies"/>) und

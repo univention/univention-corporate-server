@@ -82,20 +82,6 @@
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
-
-	<para>
-	  The following example configures the link to the Nagios web interface:
-
-	  <programlisting>
-ucs/web/overview/entries/admin/nagios/description/de: Netzwerk-, Host- und Serviceüberwachung
-ucs/web/overview/entries/admin/nagios/description: Network, host and service monitoring system
-ucs/web/overview/entries/admin/nagios/icon: /icon/50x50/nagios.png
-ucs/web/overview/entries/admin/nagios/label/de: Univention Nagios
-ucs/web/overview/entries/admin/nagios/label: Univention Nagios
-ucs/web/overview/entries/admin/nagios/link: /nagios/
-ucs/web/overview/entries/admin/nagios/priority: 50
-	  </programlisting>
-	</para>
   </section>
 
 	<!-- <section id="www:rest"> -->

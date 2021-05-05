@@ -291,10 +291,6 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Service monitoring with Nagios <biblioref linkend="ucs-nagios"/>
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		Hybrid cloud setups
 	  </simpara></listitem>
 	</itemizedlist>
@@ -345,7 +341,6 @@
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ext-doc-inst"/>
   <bibliomixed id="ucs-proxy"/>
-  <bibliomixed id="ucs-nagios"/>
   <bibliomixed id="ucs-dhcp"/>
   <bibliomixed id="ubuntu-join"/>
   <bibliomixed id="ucs-portal"/>

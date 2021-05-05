@@ -351,34 +351,6 @@
 		</tgroup>
 	</table>
 	<table>
-		<title>'Nagios services' tab (advanced settings)</title>
-		<tgroup cols="1">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<tbody>
-				<row>
-					<entry>
-						This tab is used to specify which Nagios tests should be performed for this
-						computer, see <xref linkend="nagios::hostconfig"/>.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
-	<table>
-		<title>'Nagios notification' tab (advanced settings)</title>
-		<tgroup cols="1">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<tbody>
-				<row>
-					<entry>
-						This tab is used to specify which users should be informed if Nagios tests
-						should fail, see <xref linkend="nagios::hostconfig"/>.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
-	<table>
 		<title>'(Options)' tab</title>
 		<tgroup cols="2">
 			<colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -410,12 +382,6 @@
 					<entry>
 						If this checkbox is not selected the host does not receive the
 						<classname>posixAccount</classname> object class.
-					</entry>
-				</row>
-				<row>
-					<entry>Nagios support</entry>
-					<entry>
-						If this checkbox is selected Nagios checks can be activated for this host.
 					</entry>
 				</row>
 				<row>

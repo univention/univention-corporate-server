@@ -360,35 +360,6 @@
             </tgroup>
         </table>
         <table>
-            <title>Reiter 'Nagios-Dienste' (erweiterte Einstellungen)</title>
-            <tgroup cols="1">
-                <colspec colnum="1" colname="col1" colwidth="1*"/>
-                <tbody>
-                    <row>
-                        <entry>
-                            In diesem Reiter wird festgelegt, welche Nagios-Prüfungen für diesen
-                            Rechner durchgeführt werden, siehe <xref linkend="nagios::hostconfig"/>.
-                        </entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
-        <table>
-            <title>Reiter 'Nagios-Benachrichtigung' (erweiterte Einstellungen)</title>
-            <tgroup cols="1">
-                <colspec colnum="1" colname="col1" colwidth="1*"/>
-                <tbody>
-                    <row>
-                        <entry>
-                            In diesem Reiter wird festgelegt, welche Benutzer bei fehlschlagenden
-                            Nagios-Prüfungen benachrichtigt werden, siehe
-                            <xref linkend="nagios::hostconfig"/>.
-                        </entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
-        <table>
             <title>Reiter '(Optionen)'</title>
             <tgroup cols="2">
                 <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -427,13 +398,6 @@
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
                             Objektklasse <classname>sambaSamAccount</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Nagios-Unterstützung</entry>
-                        <entry>
-                            Nur wenn diese Option aktiviert ist, können Nagios-Prüfungen für
-                            dieses Rechnerkonto konfiguriert werden.
                         </entry>
                     </row>
                 </tbody>
