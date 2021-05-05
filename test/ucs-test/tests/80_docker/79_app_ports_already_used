@@ -15,8 +15,8 @@ def _open_port(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
 		s.bind(('', port))
-	except socket.error as msg:
-		print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+	except OSError as msg:
+		print('Bind failed. Error Code : ' + str(msg.errno) + ' Message ' + msg.strerr)
 		return
 	s.listen(10)
 	print('Opened socket on port %d' % port)
