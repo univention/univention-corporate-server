@@ -284,35 +284,26 @@ def object_input(module, object, input, append=None, remove=None):
 							out.append('E: Invalid Syntax: %s' % (errmsg,))
 
 	if remove:
-		for key, value in remove.items():
-			if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				if value:
-					for val in _parse_complex_syntax_input(value):
-						if val and val in object[key]:
-							object[key].remove(val)
-						else:
-							out.append("WARNING: cannot remove %s from %s, value does not exist" % (val, key))
-				else:
-					object[key] = []
-
+		for key, values in remove.items():
+			current_values = [object[key]] if not module.property_descriptions[key].multivalue else list(object[key])
+			if values is None:
+				current_values = []
 			else:
-				current_values = [object[key]] if isinstance(object[key], six.string_types) else list(object[key])
-				if value is None:
-					current_values = []
-				else:
-					vallist = [value] if isinstance(value, six.string_types) else value
+				vallist = [values] if isinstance(values, six.string_types) else values
+				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
+					vallist = _parse_complex_syntax_input(vallist)
 
-					for val in vallist:
-						if val in current_values:
-							current_values.remove(val)
-						else:
-							out.append("WARNING: cannot remove %s from %s, value does not exist" % (val, key))
-				if not module.property_descriptions[key].multivalue:
-					try:
-						current_values = current_values[0]
-					except IndexError:
-						current_values = None
-				object[key] = current_values
+				for val in vallist:
+					if val in current_values:
+						current_values.remove(val)
+					else:
+						out.append("WARNING: cannot remove %s from %s, value does not exist" % (val, key))
+			if not module.property_descriptions[key].multivalue:
+				try:
+					current_values = current_values[0]
+				except IndexError:
+					current_values = None
+			object[key] = current_values
 
 	if input:
 		for key, value in input.items():
