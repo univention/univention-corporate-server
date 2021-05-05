@@ -53,18 +53,6 @@ if [ "$1" = "configure" ]; then
     done
 fi
 
-# switch from check_univention_winbind to check_univention_winbind_suidwrapper during update to version 4.0.13-*
-# Bug #21800
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; then
-	for fn in /etc/nagios/nrpe.univention.d/*.cfg ; do
-		if egrep -q "/usr/lib/nagios/plugins/check_univention_winbind( |$)" "$fn" ; then
-			echo -n "Updating $fn ..."
-			sed -i -e 's,/usr/lib/nagios/plugins/check_univention_winbind,/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper,' "$fn"
-			echo " done"
-		fi
-	done
-fi
-
 # configure firewall
 ucr set security/packetfilter/package/univention-nagios-client/tcp/5666/all="ACCEPT" \
 		security/packetfilter/package/univention-nagios-client/tcp/5666/all/en="Nagios NRPE"
@@ -79,22 +67,5 @@ fi
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 call_joinscript 30univention-nagios-client.inst
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.1-9; then
-	if [ "$server_role" = "domaincontroller_master" ]; then
-		NAGIOSCONTAINER="cn=nagios,$ldap_base"
-		univention-directory-manager nagios/service create --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SLAPD_MDB_MAXSIZE" --set description="Default Service: check slapd mdb database size" --set checkCommand="check_univention_slapd_mdb_maxsize" --set checkArgs='75!90' --set useNRPE="1" --set normalCheckInterval="10" --set retryCheckInterval="1" --set maxCheckAttempts="10" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
-		univention-directory-manager nagios/service create --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LISTENER_MDB_MAXSIZE" --set description="Default Service: check listener mdb database size" --set checkCommand="check_univention_listener_mdb_maxsize" --set checkArgs='75!90' --set useNRPE="1" --set normalCheckInterval="10" --set retryCheckInterval="1" --set maxCheckAttempts="10" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
-
-		for dn in "cn=UNIVENTION_LISTENER_MDB_MAXSIZE,cn=nagios,$ldap_base" "cn=UNIVENTION_SLAPD_MDB_MAXSIZE,cn=nagios,$ldap_base"; do
-			rdn="$(echo "$dn" | sed -e 's|,.*||')"
-			if udm nagios/service list --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-				univention-directory-manager nagios/service modify --append assignedHosts="${ldap_hostdn}" --dn "$dn"
-			else
-				echo "Skipping $dn (code $?)"
-			fi
-		done
-	fi
-fi
 
 exit 0
