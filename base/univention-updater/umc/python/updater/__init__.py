@@ -41,6 +41,7 @@ import pipes
 import yaml
 import requests
 from datetime import datetime
+from traceback import format_exc
 
 import univention.hooks
 import notifier.threads
@@ -490,9 +491,11 @@ class Instance(Base):
 			result['serial'] = self._serial_file.timestamp()
 
 		except Exception as exc:  # FIXME: don't catch everything
-			msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
-			msg += ' ' + _('This is the error message:') + ' ' + str(exc)
-			raise UMC_Error(msg)
+			raise UMC_Error("%s %s %s" % (
+				_('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.'),
+				_('This is the error message:'),
+				exc,
+			), traceback=format_exc())
 
 		self.finished(request.id, [result])
 
