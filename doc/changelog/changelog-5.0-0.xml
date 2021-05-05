@@ -326,6 +326,9 @@
 				<listitem><simpara>
 					The portal can now be configured to show UMC modules for the current user. A portal only dedicated to UMC modules is also added, effectively replacing the UMC overview (although that still exists) (<u:bug>52932</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					New Icons for the UMC modules on the portal page has been added (<u:bug>52941</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
