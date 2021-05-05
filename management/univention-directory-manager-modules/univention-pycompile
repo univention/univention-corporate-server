@@ -57,7 +57,7 @@ else:
 	output_pp = open(output, 'w')
 
 ifdef_pattern = re.compile('^#ifdef (.*)')
-endif_pattern = re.compile('^#endif *(/\*.*\*/)*')
+endif_pattern = re.compile(r'^#endif *(/\*.*\*/)*')
 
 hide_depth = 0
 depth = 0

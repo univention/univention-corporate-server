@@ -65,7 +65,7 @@ class BaseObjectProperties(object):
 
 
 class BaseObject(object):
-	"""
+	r"""
 	Base class for |UDM| object classes.
 
 	Usage:
@@ -150,9 +150,9 @@ class BaseModuleMetadata(object):
 	"""Base class for UDM module meta data."""
 
 	auto_open = True
-	"""Whether |UDM| objects should be ``open()``\ ed."""
+	r"""Whether |UDM| objects should be ``open()``\ ed."""
 	auto_reload = True
-	"""Whether |UDM| objects should be ``reload()``\ ed after saving."""
+	r"""Whether |UDM| objects should be ``reload()``\ ed after saving."""
 
 	def __init__(self, meta):
 		self.supported_api_versions = []
@@ -230,7 +230,7 @@ class ModuleMeta(Plugin):
 
 
 class BaseModule(with_metaclass(ModuleMeta)):
-	"""
+	r"""
 	Base class for UDM module classes. UDM modules are basically UDM object
 	factories.
 

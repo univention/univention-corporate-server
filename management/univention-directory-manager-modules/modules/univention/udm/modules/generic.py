@@ -88,7 +88,7 @@ class GenericObjectProperties(BaseObjectProperties):
 
 
 class GenericObject(BaseObject):
-	"""
+	r"""
 	Generic object class that can be used with all UDM module types.
 
 	Usage:

@@ -26,7 +26,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
+r"""
 Module and object for all `computers/\*` UDM modules.
 """
 
@@ -40,7 +40,7 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class ComputersAllObjectProperties(GenericObjectProperties):
-	"""`computers/\*` UDM properties."""
+	r"""`computers/\*` UDM properties."""
 
 	_encoders = {
 		'dnsAlias': CnameListPropertyEncoder,  # What is this? Isn't this data in dnsEntryZoneAlias already?
@@ -59,7 +59,7 @@ class ComputersAllObjectProperties(GenericObjectProperties):
 
 
 class ComputersAllObject(GenericObject):
-	"""Better representation of `computers/\*` properties."""
+	r"""Better representation of `computers/\*` properties."""
 	udm_prop_class = ComputersAllObjectProperties
 
 

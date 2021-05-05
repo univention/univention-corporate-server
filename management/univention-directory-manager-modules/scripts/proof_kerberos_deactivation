@@ -66,7 +66,7 @@ for posix_account, posix_account_attrs in res_pA:
 	if 'objectClass' in posix_account_attrs:
 		if b'krb5KDCEntry' in posix_account_attrs['objectClass']:
 			if 'userPassword' in posix_account_attrs:
-				_re = re.compile('^\{crypt\}!.*$')
+				_re = re.compile(r'^\{crypt\}!.*$')
 				disabled = _re.match(posix_account_attrs['userPassword'][0].decode('utf-8'))
 				if 'krb5KDCFlags' in posix_account_attrs:
 					if disabled and not posix_account_attrs['krb5KDCFlags'][0] == b'254':

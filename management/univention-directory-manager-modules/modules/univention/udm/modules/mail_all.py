@@ -26,7 +26,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
+r"""
 Module and object specific for all "mail/\*" UDM modules.
 
 This module handles the problem that on a OX system, UDM modules are registered
@@ -69,7 +69,7 @@ class MailAllModule(GenericModule):
 	_udm_object_class = MailAllObject
 
 	def _verify_univention_object_type(self, orig_udm_obj):
-		"""
+		r"""
 		Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`.
 		"""
 		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
