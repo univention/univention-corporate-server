@@ -45,7 +45,8 @@ import ldap
 import ldap.dn
 
 from univention.admin.rest.client import (
-    UDM, ConnectionError, HTTPError, NotFound, ServerError, ServiceUnavailable, Unauthorized, UnprocessableEntity,
+    UDM, ConnectionError, HTTPError, NotFound, PatchDocument, ServerError, ServiceUnavailable, Unauthorized,
+    UnprocessableEntity,
 )
 from univention.config_registry import ucr
 
@@ -82,8 +83,10 @@ class CLIClient:
         obj = module.new(position=args.position, superordinate=args.superordinate, template=args.template)
         if args.position:
             obj.position = args.position
-        self.set_properties(obj, args)
-        self.save_object(obj)
+        # self.set_properties(obj, args)
+        # self.save_object(obj)
+        patch = self.patch_properties(obj, args)
+        self.patch_object(obj, patch.patch)
         self.print_line('Object created', obj.dn)
 
     def modify_object(self, args):
@@ -97,8 +100,10 @@ class CLIClient:
                 return
             else:
                 raise
-        self.set_properties(obj, args)
-        self.save_object(obj)
+        # self.set_properties(obj, args)
+        # self.save_object(obj)
+        patch = self.patch_properties(obj, args)
+        self.patch_object(obj, patch.patch)
         self.print_line('Object modified', obj.dn)
 
     def remove_object(self, args):
@@ -124,12 +129,58 @@ class CLIClient:
     def copy_object(self, args):
         pass
 
+    def patch_object(self, obj, patch):
+        try:
+            response = obj.json_patch(patch)
+            for warning in self.udm.client.resolve_relations(response.data, 'udm:warning'):
+                self.print_warning(warning['message'])
+        except UnprocessableEntity as exc:
+            self.handle_unprocessible_entity(exc.error_details)
+            raise SystemExit(2)
+
     def save_object(self, obj):
         try:
             obj.save()
         except UnprocessableEntity as exc:
             self.handle_unprocessible_entity(exc.error_details)
             raise SystemExit(2)
+
+    def patch_properties(self, obj, args):
+        patch = PatchDocument()
+        if getattr(args, 'superordinate', None):  # FIXME: unable to unset, required?
+            patch.replace(['superordinate'], getattr(args, 'superordinate', None))
+        if getattr(args, 'position', None):  # FIXME: unable to unset, required?
+            patch.replace(['position'], getattr(args, 'position', None))
+        if args.option:
+            patch.replace(['options'], [])
+            for option in args.option:
+                patch.add(['options'], option)
+        for option in args.append_option:
+            patch.add(['options'], option)
+        for option in args.remove_option:
+            patch.remove(['options'], option)
+
+        for key_val in args.set:
+            key, value = self.parse_input(key_val)
+            patch.replace(['properties', key], value)
+
+        for key_val in args.append:
+            key, value = self.parse_input(key_val)
+            patch.add(['properties', key], value)
+
+        for key_val in getattr(args, 'remove', []):
+            if '=' not in key_val:
+                patch.remove(['properties'], key_val)
+            else:
+                key, value = self.parse_input(key_val)
+                patch.remove(['properties', key], value)
+
+        for policy_dn in args.policy_reference:
+            patch.add(['policies'], policy_dn)
+        for policy_dn in getattr(args, 'policy_dereference', []):
+            patch.remove(['policies'], policy_dn)
+
+        return patch
 
     def set_properties(self, obj, args):
         obj.superordinate = getattr(args, 'superordinate', None)

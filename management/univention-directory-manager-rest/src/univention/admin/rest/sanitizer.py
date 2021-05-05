@@ -86,6 +86,11 @@ class Body(Param):
         self.content_type = content_type
 
 
+class PatchDocument(Body):
+    def __init__(self, **kwargs):
+        super().__init__(PatchDocumentSanitizer(), content_type='application/json-patch+json', **kwargs)
+
+
 class Query(Param):
     pass
 
@@ -118,6 +123,10 @@ def sanitize(method):
     @functools.wraps(method)
     async def decorator(self, *args, **params):
         content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
+        if content_type == 'application/json-patch+json':
+            param = ([p.alias or key for key, p in method.params['body'].items() if p.content_type == 'application/json-patch+json'] + [None])[0]
+            if param:
+                self.request.body_arguments = {param: self.request.body_arguments}
         payload = {
             'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in self.request.query_arguments.items()} if self.request.query_arguments else {},
             'body_arguments': {
@@ -143,6 +152,28 @@ def sanitize(method):
         }
         return await method(self, *self.path_args, **self.path_kwargs, **self.request.decoded_query_arguments, **self.request.body_arguments)
     return decorator
+
+
+class PatchDocumentSanitizer(ListSanitizer):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(DictSanitizer({
+            'op': ChoicesSanitizer(('add', 'remove', 'replace', 'copy', 'move', 'test'), required=True),
+            'path': StringSanitizer('^/.*', required=True),
+            'value': Sanitizer(),
+        }), *args, **kwargs)
+
+    def _sanitize(self, value, name, further_arguments):
+        return list(self.parse_patch_document(super()._sanitize(value, name, further_arguments), name))
+
+    def parse_patch_document(self, value, name):
+        for operation in value:
+            op = operation['op']
+            path = [x.replace('~1', '/').replace('~0', '~') for x in operation['path'].split('/')[1:]]
+            value = operation.get('value')
+            if op in ('copy', 'move', 'test'):
+                continue  # ignore, currently not needed
+            yield op, path, value
 
 
 class DictSanitizer(DictSanitizer):

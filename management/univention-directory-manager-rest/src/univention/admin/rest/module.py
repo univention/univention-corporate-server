@@ -279,7 +279,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.')
             return
 
-        if content_type in ('application/json',):
+        if content_type in ('application/json', 'application/json-patch+json'):
             try:
                 self.request.body_arguments = json.loads(self.request.body)
             except ValueError as exc:
@@ -1455,6 +1455,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
         policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
         properties: Dict = Body(DictSanitizer({}, required=True)),
+        patch_document: List = PatchDocument(),
     ):
         """Create a new {module.object_name} object"""
         obj = Object(self.application, self.request)
@@ -1469,7 +1470,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             'policies': policies,
             'properties': properties,
         }
-        new_obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response)
+        new_obj = await obj.create(object_type, None, representation, result, patch_document=patch_document, serverctrls=serverctrls, response=response)
         self.set_header('Location', self.urljoin(quote_dn(new_obj.dn)))
         self.set_entity_tags(new_obj, check_conditionals=False)
         self.set_status(201)
@@ -1799,6 +1800,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
         policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
         properties: Optional[Dict] = Body(DictSanitizer({})),
+        patch_document: List = PatchDocument(),
     ):
         """Modify an {module.object_name} object (moving is currently not possible)"""
         dn = unquote_dn(dn)
@@ -1806,28 +1808,31 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         self.set_entity_tags(obj)
 
-        entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
-        representation = {
-            'position': position,
-            'superordinate': superordinate,
-            'options': options,
-            'policies': policies,
-            'properties': properties,
-        }
-        if representation['options'] is None:
-            representation['options'] = entry['options']
-        if representation['policies'] is None:
-            representation['policies'] = entry['policies']
-        if representation['properties'] is None:
-            representation['properties'] = {}
-        if representation['position'] is None:
-            representation['position'] = entry['position']
-        if representation['superordinate'] is None:
-            representation['superordinate'] = entry.get('superordinate')
+        representation = None
+        if not patch_document:
+            entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
+            representation = {
+                'position': position,
+                'superordinate': superordinate,
+                'options': options,
+                'policies': policies,
+                'properties': properties,
+            }
+            if representation['options'] is None:
+                representation['options'] = entry['options']
+            if representation['policies'] is None:
+                representation['policies'] = entry['policies']
+            if representation['properties'] is None:
+                representation['properties'] = {}
+            if representation['position'] is None:
+                representation['position'] = entry['position']
+            if representation['superordinate'] is None:
+                representation['superordinate'] = entry.get('superordinate')
+
         serverctrls = [PostReadControl(True, ['entryUUID', 'modifyTimestamp', 'entryCSN'])]
         response = {}
         result = {}
-        obj = await self.modify(module, obj, representation, result, serverctrls=serverctrls, response=response)
+        obj = await self.modify(module, obj, representation, result, patch_document=patch_document, serverctrls=serverctrls, response=response)
 
         self.set_entity_tags(obj, check_conditionals=False)
         self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
@@ -1838,10 +1843,20 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             self.set_status(204)
         raise Finish()
 
-    async def create(self, object_type, dn=None, representation=None, result=None, **kwargs):
+    async def create(self, object_type, dn=None, representation=None, result=None, patch_document=None, **kwargs):
         module = self.get_module(object_type, ldap_connection=self.ldap_write_connection)
-        container = self.request.body_arguments['position']
-        superordinate = self.request.body_arguments['superordinate']
+        if patch_document:
+            def get_patch_replacements(field):
+                for op, path, value in patch_document:
+                    if op != 'replace':
+                        continue
+                    if path == [field]:
+                        return value
+            container = get_patch_replacements('position')
+            superordinate = get_patch_replacements('superordinate')
+        else:
+            container = representation['position']
+            superordinate = representation['superordinate']
         if dn:
             container = self.ldap_write_connection.parentDn(dn)
             # TODO: validate that properties are equal to rdn
@@ -1858,7 +1873,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         obj = module.module.object(None, self.ldap_write_connection, ldap_position, superordinate=superordinate)
         obj.open()
-        self.set_properties(module, obj, representation, result)
+        self.set_properties(module, obj, representation, result, patch_document=patch_document)
 
         if dn and not self.ldap_write_connection.compare_dn(dn, obj._ldap_dn()):
             self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
@@ -1866,9 +1881,9 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs)
         return obj
 
-    async def modify(self, module, obj, representation, result, **kwargs):
+    async def modify(self, module, obj, representation, result, patch_document=None, **kwargs):
         assert obj._open
-        self.set_properties(module, obj, representation, result)
+        self.set_properties(module, obj, representation, result, patch_document=patch_document)
         await self.pool_submit(self.handle_udm_errors, obj.modify, **kwargs)
         return obj
 
@@ -1927,7 +1942,11 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         except udm_errors.base as exc:
             UDM_Error(exc).reraise()
 
-    def set_properties(self, module, obj, representation, result):
+    def set_properties(self, module, obj, representation, result, patch_document=None):
+        if patch_document:
+            self.set_patch_properties(module, obj, patch_document, result)
+            return
+
         options = representation['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
         options_enable = {opt for opt, enabled in options.items() if enabled}
         options_disable = {opt for opt, enabled in options.items() if enabled is False}  # ignore None!
@@ -1976,6 +1995,9 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             except KeyError:
                 if property_name != 'objectFlag':
                     raise
+            except udm_errors.ipOverridesNetwork as exc:
+                self.add_resource(result, 'udm:warning', {'message': '%s' % exc.message})
+                return
             except udm_errors.valueMayNotChange:
                 if obj[property_name] == value:  # UDM does not check equality before raising the exception
                     return
@@ -1997,6 +2019,112 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 self.raise_sanitization_error(property_name, _('The property %(name)s has an invalid value: %(details)s') % {'name': property_name, 'details': UDM_Error(exc)})
             except ValidationError as exc:
                 multi_error.add_error(exc, property_name)
+
+    def set_patch_properties(self, module, obj, patch_document, result):
+        multi_error = MultiValidationError()
+        for op, path, value in patch_document:
+            if path[0] not in ('superordinate', 'options', 'properties', 'policies'):
+                continue
+            if op in ('test', 'move', 'copy'):
+                try:
+                    self.raise_sanitization_error(path[0], 'OP unsupported: %s' % (op,))
+                except ValidationError as exc:
+                    multi_error.add_error(exc, op)
+                continue
+            if path == ['superordinate']:
+                if op in ('add', 'replace') or (op == 'remove' and not value):
+                    obj.superordinate = value
+                elif op in ('remove',):
+                    if obj.superordinate == value:  # TODO: compare_dn
+                        obj.superordinate = None
+            elif path == ['options']:
+                if op == 'replace':
+                    obj.options = []
+                if op in ('add', 'replace') and value:
+                    obj.options.append(value)
+                if op == 'remove':
+                    if value and value in obj.options:
+                        obj.options.remove(value)
+                    elif not value:
+                        obj.options = []
+            elif path[0] == 'properties':
+                if len(path) != 2:
+                    try:
+                        self.raise_sanitization_error(path[0], 'Invalid property name given: %s' % (''.join(path)))
+                    except ValidationError as exc:
+                        multi_error.add_error(exc, path[0])
+                    continue
+                property_name = path[1]
+                self.set_patch_property(module, obj, op, property_name, value, result, multi_error)
+            elif path[0] == 'policies':
+                if op == 'replace':
+                    obj.policies = []
+                if op in ('add', 'replace') and value:
+                    obj.policy_reference(value)
+                if op == 'remove':
+                    if value:
+                        obj.policy_dereference(value)
+                    elif not value:
+                        obj.policies = []
+            else:
+                try:
+                    self.raise_sanitization_error(path[0], 'Unknown field %s' % (''.join(path)))
+                except ValidationError as exc:
+                    multi_error.add_error(exc, path[0])
+
+        if multi_error.has_errors():
+            class FalseSanitizer(Sanitizer):
+                def sanitize(self):
+                    raise multi_error
+            self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {'body': x}, _fieldname='patch')
+
+    def set_patch_property(self, module, obj, op, property_name, value, result, multi_error):
+        try:
+            prop = module.module.property_descriptions[property_name]
+        except KeyError:
+            if property_name == 'objectFlag':
+                return
+            raise
+
+        value = prop.syntax.parse_command_line(value)
+
+        current_values = obj[property_name] if prop.multivalue else [obj[property_name]]
+        current_values = list(current_values or [])
+        if current_values == ['']:
+            current_values = []
+
+        if op == 'replace':
+            current_values = []
+
+        if op in ('add', 'replace'):
+            if value in current_values:
+                self.add_resource(result, 'udm:warning', {'message': 'cannot append %s to %s, value exists' % (value, property_name)})
+                return
+            if prop.multivalue:
+                value = current_values + [value]
+            else:  # TODO: I don't understand it anymore. shouldn't it be elif op == 'add':
+                self.add_resource(result, 'udm:warning', {'message': 'appending to a single value property (%s) is not supported.' % (property_name,)})
+                return
+        elif op == 'remove' and value is None:
+            pass
+        elif op == 'remove':
+            try:
+                normalized_val = prop.syntax.parse(value)
+            except (univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueError):
+                normalized_val = None
+
+            if value in current_values:
+                current_values.remove(value)
+            elif normalized_val is not None and normalized_val in current_values:
+                current_values.remove(normalized_val)
+            else:
+                self.add_resource(result, 'udm:warning', {'message': 'cannot remove %s from %s, value does not exist' % (value, property_name)})
+                return
+
+            value = current_values if prop.multivalue else None
+
+        password_properties = module.password_properties
+        self.set_property(obj, property_name, value, result, multi_error, password_properties)
 
     async def move(self, module, dn, position):
         status_id = str(uuid.uuid4())

@@ -632,6 +632,14 @@ class Object(Client):
         else:
             return self._create(reload)
 
+    def json_patch(self, patch, reload=True):
+        # type: (dict, bool) -> Response
+        if self.dn:
+            return self._patch(patch, reload=reload)
+        else:
+            uri = self.client.get_relation(self.hal, 'create')
+            return self._request('POST', uri['href'], patch, {'Content-Type': 'application/json-patch+json'})
+
     def delete(self, remove_referring=False):
         # type: (bool) -> bytes
         assert self.uri
@@ -653,16 +661,27 @@ class Object(Client):
             'If-Unmodified-Since': self.last_modified,
             'If-Match': self.etag,
         }.items() if value}
+        return self._request('PUT', self.uri, self.representation, headers, reload=reload)
 
-        response = self.client.make_request('PUT', self.uri, data=self.representation, allow_redirects=False, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
-        response = self._follow_redirection(response, reload)  # move() causes multiple redirections!
-        return response
+    def _patch(self, data, reload=True):
+        # type: (str, dict, bool) -> Response
+        assert self.uri
+        headers = {key: value for key, value in {
+            'If-Unmodified-Since': self.last_modified,
+            'If-Match': self.etag,
+            'Content-Type': 'application/json-patch+json',
+        }.items() if value}
+        return self._request('PATCH', self.uri, data, headers, reload=reload)
 
     def _create(self, reload=True):
         # type: (bool) -> Response
         uri = self.client.get_relation(self.hal, 'create')
-        response = self.client.make_request('POST', uri['href'], data=self.representation, allow_redirects=False)
-        response = self._follow_redirection(response, reload)
+        return self._request('POST', uri['href'], self.representation, {}, reload=reload)
+
+    def _request(self, method, uri, data, headers, reload=True):
+        # type: (str, str, dict, dict, bool) -> Response
+        response = self.client.make_request(method, uri, data=data, allow_redirects=False, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
+        response = self._follow_redirection(response, reload)  # move() causes multiple redirections!
         return response
 
     def _reload_from_response(self, response, reload):
@@ -730,3 +749,55 @@ class Object(Client):
         policy_result.pop('_links', None)
         policy_result.pop('_embedded', None)
         return policy_result
+
+
+class PatchDocument:
+    """application/json-patch+json representation"""
+
+    def __init__(self):
+        self.patch = []
+
+    def add(self, path_segments, value):
+        self.patch.append({
+            'op': 'add',
+            'path': self.expand_path(path_segments),
+            'value': value,
+        })
+
+    def replace(self, path_segments, value):
+        self.patch.append({
+            'op': 'replace',
+            'path': self.expand_path(path_segments),
+            'value': value,
+        })
+
+    def remove(self, path_segments, value):
+        self.patch.append({
+            'op': 'remove',
+            'path': self.expand_path(path_segments),
+            'value': value,  # FIXME: not official
+        })
+
+    def move(self, path_segments, from_segments):
+        self.patch.append({
+            'op': 'move',
+            'path': self.expand_path(path_segments),
+            'from': self.expand_path(from_segments),
+        })
+
+    def copy(self, path_segments, from_segments):
+        self.patch.append({
+            'op': 'copy',
+            'path': self.expand_path(path_segments),
+            'from': self.expand_path(from_segments),
+        })
+
+    def test(self, path_segments, value):
+        self.patch.append({
+            'op': 'test',
+            'path': self.expand_path(path_segments),
+            'value': value,
+        })
+
+    def expand_path(self, path_segments):
+        return '/'.join(path.replace('~', '~0').replace('/', '~1') for path in [''] + path_segments)
