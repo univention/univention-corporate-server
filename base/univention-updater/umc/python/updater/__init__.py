@@ -41,6 +41,7 @@ import pipes
 import yaml
 import requests
 from datetime import datetime
+from traceback import format_exc
 
 import univention.hooks
 import notifier.threads
@@ -438,12 +439,7 @@ class Instance(Base):
 				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
-			try:
-				blocking_components = self.uu.get_all_available_release_updates()[1]
-			except (UpdaterException, ValueError) as exc:
-				msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
-				msg += ' ' + _('This is the error message:') + ' ' + str(exc)
-				raise UMC_Error(msg)
+			blocking_components = self.uu.get_all_available_release_updates()[1] or set()
 			# check apps
 			if result['release_update_available']:
 				try:
@@ -458,7 +454,7 @@ class Instance(Base):
 					# Cannot be a dependency as the app center depends on updater...
 					raise UMC_Error(_('Error checking if installed apps are available for next UCS version.'))
 
-			result['release_update_blocking_components'] = ' '.join(blocking_components or [])
+			result['release_update_blocking_components'] = ' '.join(blocking_components)
 
 			what = "querying availability for easy mode"
 
@@ -495,11 +491,11 @@ class Instance(Base):
 			result['serial'] = self._serial_file.timestamp()
 
 		except Exception as exc:  # FIXME: don't catch everything
-			typ = str(type(exc)).strip('<>')
-			msg = '[while %s] [%s] %s' % (what, typ, exc)
-			msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
-			msg += ' ' + _('This is the error message:') + ' ' + str(exc)
-			raise UMC_Error(msg)
+			raise UMC_Error("%s %s %s" % (
+				_('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.'),
+				_('This is the error message:'),
+				exc,
+			), traceback=format_exc())
 
 		self.finished(request.id, [result])
 
