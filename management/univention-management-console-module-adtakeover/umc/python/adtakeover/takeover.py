@@ -807,7 +807,7 @@ class AD_Takeover(object):
 		self.lp = LoadParm()
 		try:
 			self.lp.load('/etc/samba/smb.conf')
-		except:
+		except Exception:
 			self.lp.load('/dev/null')
 
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
@@ -940,8 +940,8 @@ class AD_Takeover(object):
 		log.info("Starting Samba domain join.")
 		t = time.time()
 		p = subprocess.Popen(["samba-tool", "domain", "join", self.ucr["domainname"], "DC", "-U%s%%%s" % (self.AD.username, self.AD.password), "--realm=%s" % self.ucr["kerberos/realm"], "--machinepass=%s" % machine_secret, "--server=%s" % self.ad_server_fqdn, "--site=%s" % self.AD.domain_info["ad_server_site"]], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-		RE_SCHEMA = re.compile("^Schema-DN\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
-		RE_PARTITION = re.compile("^Partition\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
+		RE_SCHEMA = re.compile(r"^Schema-DN\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
+		RE_PARTITION = re.compile(r"^Partition\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
 		domain_dn = self.AD.samdb.domain_dn()
 		part_started = ''
 		while p.poll() is None:
@@ -1475,7 +1475,7 @@ class AD_Takeover_Finalize(object):
 		self.lp = LoadParm()
 		try:
 			self.lp.load('/etc/samba/smb.conf')
-		except:
+		except Exception:
 			self.lp.load('/dev/null')
 
 		# check if an IP address was recorded in UCR during Phase I
@@ -1640,7 +1640,7 @@ class AD_Takeover_Finalize(object):
 					try:
 						log.info("Removing %s from SAM database." % (backlink_object,))
 						self.samdb.delete(backlink_object, ["tree_delete:0"])
-					except:
+					except Exception:
 						log.debug("Removal of AD %s objects %s from Samba4 SAM database failed. See %s for details." % (backlink_attribute, backlink_object, LOGFILE_NAME,))
 						log.debug(traceback.format_exc())
 
@@ -1654,7 +1654,7 @@ class AD_Takeover_Finalize(object):
 				try:
 					log.info("Removing %s from SAM database." % (obj_dn,))
 					self.samdb.delete(obj_dn)
-				except:
+				except Exception:
 					log.error("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME,))
 					log.debug(traceback.format_exc())
 
@@ -1892,7 +1892,7 @@ def check_gpo_presence():
 	lp = LoadParm()
 	try:
 		lp.load('/etc/samba/smb.conf')
-	except:
+	except Exception:
 		lp.load('/dev/null')
 
 	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
@@ -2377,8 +2377,8 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
 
 	try:
-		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port')))
-	except:
+		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port', 7389)))
+	except ValueError:
 		port = 7389
 
 	lo = univention.admin.uldap.access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=0, follow_referral=True)
@@ -2458,7 +2458,7 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 				delta["hasPartialReplicaNCs"] = ldb.MessageElement(partition_dn_utf8, ldb.FLAG_MOD_DELETE, "hasPartialReplicaNCs")
 				try:
 					samdb.modify(delta)
-				except:
+				except Exception:
 					log.debug("Failed to remove hasPartialReplicaNCs %s from %s" % (partition_dn, ucr["hostname"]))
 					log.debug("Current NTDS object: %s" % obj)
 
@@ -2470,7 +2470,7 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 				delta[partition_dn] = ldb.MessageElement(partition_dn_utf8, ldb.FLAG_MOD_ADD, "msDS-hasMasterNCs")
 				try:
 					samdb.modify(delta)
-				except:
+				except Exception:
 					log.debug("Failed to add msDS-hasMasterNCs %s to %s" % (partition_dn, ucr["hostname"]))
 					log.debug("Current NTDS object: %s" % obj)
 
