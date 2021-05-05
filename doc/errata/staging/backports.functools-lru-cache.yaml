@@ -10,4 +10,4 @@ desc: |
 bug: [52920]
 maintained: true
 ignore:
- - scope+version
+ - bug.52920.scope+version
