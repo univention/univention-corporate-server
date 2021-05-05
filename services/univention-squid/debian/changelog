@@ -1,3 +1,9 @@
+univention-squid (13.0.3-2) unstable; urgency=medium
+
+  * Bug #52122: Fix unjoin script
+
+ -- Arvid <requate@univention.de>  Wed, 05 May 2021 15:59:41 +0200
+
 univention-squid (13.0.3-1) unstable; urgency=medium
 
   * Bug #53011: make sure squid starts when configured as transparent
