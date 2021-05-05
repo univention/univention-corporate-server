@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-9) unstable; urgency=medium
+
+  * Bug #52122: Unregister nagios service in unjoin script
+
+ -- Arvid <requate@univention.de>  Wed, 05 May 2021 16:00:31 +0200
+
 univention-printserver (13.0.2-8) unstable; urgency=medium
 
   * Bug #52941: added new icon design for print jobs
