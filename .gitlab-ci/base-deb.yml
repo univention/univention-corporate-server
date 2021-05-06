@@ -25,6 +25,7 @@ stages:
     - apt-get -qq update
     - cd $base
     - apt-get -q --assume-yes build-dep .
+    - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
   script:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
