@@ -283,7 +283,7 @@ def object_input(module, object, input, append=None, remove=None):
 				try:
 					object[key] = current_values
 				except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-					out.append('E: Invalid Syntax: %s' % (errmsg,))
+					raise OperationFailed(out, 'E: Invalid Syntax: %s' % (errmsg,))
 
 	if remove:
 		for key, values in remove.items():
