@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+set -e -u
+
 have () {
 	command -v "$1" >/dev/null 2>&1
 }
@@ -158,17 +160,10 @@ do
 done
 
 SRC="$SRC_DIR/$TEMPLATE"
-if [ ! -d "$SRC" ]; then
-	echo "error: unknown template $TEMPLATE"
-	exit 1
-fi
+[ -d "$SRC" ] ||
+	err "unknown template $TEMPLATE"
 
-MODULEID="$1"
-if [ -z "$MODULEID" ]; then
-	usage
-	echo "error: module ID missing!"
-	exit 1
-fi
+MODULEID="${1:?moduel ID missing}"
 
 if [ $# -ge 2 ]; then
 	DESTDIR=$(readlink -f "$2")
