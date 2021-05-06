@@ -74,10 +74,10 @@ function warn() {
 KEYS=(MODULEID MODULENAME MODULEDESC MODULEKEYWORDS PACKAGENAME CATEGORYNAME YEAR)
 
 function replace_var() {
-	str="$1"
-	for ikey in ${KEYS[@]}; do
-		eval "ival=\${$ikey}"
-		str=${str/$ikey/$ival}
+	local str="$1" ikey
+	for ikey in "${KEYS[@]}"
+	do
+		str=${str/$ikey/${!ikey}}
 	done
 	echo "$str"
 }
@@ -93,6 +93,7 @@ ICONFILE=""
 DESTDIR="$PWD"
 TEMPLATE="grid_with_detailpage"
 SRC_DIR="/usr/share/univention-management-console-dev/umc-module-templates"
+# shellcheck disable=SC2034
 YEAR=$(date +'%Y')
 NO_DEBIAN=""
 
@@ -100,18 +101,22 @@ NO_DEBIAN=""
 for iparam in "$@"; do
 	case "$iparam" in
 		--name)
+			# shellcheck disable=SC2034
 			MODULENAME="$2"
 			shift 2
 			;;
 		--description)
+			# shellcheck disable=SC2034
 			MODULEDESC="$2"
 			shift 2
 			;;
 		--keywords)
+			# shellcheck disable=SC2034
 			MODULEKEYWORDS="$2"
 			shift 2
 			;;
 		--category)
+			# shellcheck disable=SC2034
 			CATEGORYNAME="$2"
 			shift 2
 			;;
@@ -178,8 +183,7 @@ done
 # replace file content
 sedParam=""
 for ikey in ${KEYS[@]}; do
-	eval "ival=\${$ikey}"
-	sedParam="${sedParam}s/$ikey/$ival/g; "
+	sedParam+="s/$ikey/${!ikey}/g; "
 done
 sed -i "$sedParam" $(find "$moduleDir" -type f)
 
