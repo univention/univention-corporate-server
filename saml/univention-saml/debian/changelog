@@ -1,3 +1,9 @@
+univention-saml (7.0.4-14) unstable; urgency=medium
+
+  * Bug #53209: Fix join script handling (univention-join debhelper)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 May 2021 21:06:30 +0200
+
 univention-saml (7.0.4-13) unstable; urgency=medium
 
   * Bug #53198: fix color of error message
