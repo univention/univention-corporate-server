@@ -33,7 +33,7 @@
 
 function err() {
 	echo
-	echo "ERROR: $@"
+	echo "ERROR: $*"
 	echo "... aborting"
 	echo
 	exit 1
@@ -41,7 +41,7 @@ function err() {
 
 function warn() {
 	echo
-	echo "WARNING: $@"
+	echo "WARNING: $*"
 	echo
 }
 
@@ -192,7 +192,7 @@ done
 
 # replace file content
 sedParam=""
-for ikey in ${KEYS[@]}; do
+for ikey in "${KEYS[@]}"; do
 	sedParam+="s/$ikey/${!ikey}/g; "
 done
 sed -i "$sedParam" $(find "$moduleDir" -type f)
