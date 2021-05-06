@@ -44,6 +44,7 @@ joinscript_init
 
 eval "$(ucr shell)"
 
+
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
 	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
@@ -68,6 +69,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
 fi
 
+systemctl try-restart univention-directory-listener
 
 joinscript_save_current_version
 
