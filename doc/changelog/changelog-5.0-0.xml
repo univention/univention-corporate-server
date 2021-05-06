@@ -1108,6 +1108,19 @@
 							This in turn improves performance during replication of large domains.
 						</simpara></listitem>
 						<listitem><simpara>
+							Please note that the default backend key value store TDB, used by Samba/AD for its <filename>sam.ldb</filename> database, is size limited.
+							This should be considered when designing or growing a domain into larger dimensions.
+							Since this is a limit of the backend key value store, it doesn't directly translate into a fixed limit for LDAP objects,
+							as it depends on the number of attributes, if the attributes are indexed and other factors like these.
+							The size limit of TDB is due to its 32-bit data model. This may impact update scenarios in particular, where Samba/AD
+							re-keys and re-indexes the data transparently on the first startup. Since this happens in a single transaction,
+							the storage requirement doubles temporarily. To avoid issues, UCS checks the current size of the SAM backend databases before updating
+							and will abort with a warning if the update may run in danger to render Samba/AD into a non-functional state.
+							Workarounds for this are conceivable, but the exact details depend on the topology of the specific UCS domain.
+							In particular, Samba/AD offers an alternative implementation for the key value store, which is based on the same LMDB database
+							technology that backs the high consistency and performance demands of OpenLDAP.
+						</simpara></listitem>
+						<listitem><simpara>
 							To improve performance during batch operations i.e. joins, LDB now accepts a <option>batch_mode</option> option.
 							However to prevent any index or database inconsistencies if an operation fails, the entire transaction will be aborted at commit.
 						</simpara></listitem>
