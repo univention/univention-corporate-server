@@ -32,5 +32,6 @@ use Debian::Debhelper::Dh_Lib;
 
 insert_before("dh_auto_build", "univention-l10n-build");
 insert_before("dh_auto_install", "univention-l10n-install");
+add_command_options("dh_install", "-Xde.po");
 
 1;

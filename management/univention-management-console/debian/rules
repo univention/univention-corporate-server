@@ -39,7 +39,7 @@ override_dh_auto_install:
 	dh_auto_install -- --install-scripts=$(destdir)/usr/sbin
 
 override_dh_install:
-	dh_install -X.svn
+	dh_install -Xde.po
 
 %:
 	dh $@ --with python2,python3,univention-l10n,ucr
