@@ -800,7 +800,6 @@ setup_appliance ()
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /var/cache/univention-system-setup/packages/
 
-	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
 	apt-get -q update
 	apt-get -y autoremove
 	download_system_setup_packages "$@"
@@ -882,8 +881,6 @@ __EOF__
 		nameserver1=208.67.222.222 \
 		interfaces/eth0/type=dhcp \
 		dhclient/options/timeout=12
-
-	ucr set update/secure_apt=yes
 
 	# Manual cleanup
 	rm -rf /tmp/*
@@ -1132,7 +1129,6 @@ appliance_reset_servers ()
 	if [ "$reset" = true ]; then
 		ucr set repository/online/server="https://updates.software-univention.de/"
 		ucr unset appcenter/index/verify
-		ucr set update/secure_apt=yes
 
 		ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
 		do
