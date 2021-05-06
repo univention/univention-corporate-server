@@ -849,7 +849,7 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 		done
 
 		# check releases file
-		[ -s "${mirror}/${prefix}/releases.json" ]
+		[ -s "${mirror}/${prefix}/ucs-releases.json" ]
 	done </etc/apt/mirror.list
 }
 

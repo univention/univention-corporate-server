@@ -72,7 +72,7 @@ def filter_releases_json(releases, start, end):
     Filter releases that are not mirrored from the upstream repository
     Filtering is done inplace!
 
-    :param releases: The upstream releases object from releases.json.
+    :param releases: The upstream releases object from `ucs-releases.json`.
     :param UCS_Version start: First UCS version that is being mirrored.
     :param UCS_Version end: Last UCS version that is being mirrored.
     """
@@ -191,9 +191,9 @@ class UniventionMirror(UniventionUpdater):
 
     def write_releases_json(self):
         """
-        Write a releases.json including only the mirrored releases.
+        Write a `ucs-releases.json` including only the mirrored releases.
         """
-        _code, _size, data = self.server.access(None, 'releases.json', get=True)
+        _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True)
         try:
             releases = json.loads(data)
         except ValueError as exc:
@@ -204,7 +204,7 @@ class UniventionMirror(UniventionUpdater):
             raise
 
         filter_releases_json(releases, start=self.version_start, end=self.version_end)
-        releases_json_path = os.path.join(self.repository_path, 'mirror', 'releases.json')
+        releases_json_path = os.path.join(self.repository_path, 'mirror', 'ucs-releases.json')
         makedirs(os.path.dirname(releases_json_path))
         with open(releases_json_path, 'w') as releases_json:
             json.dump(releases, releases_json)

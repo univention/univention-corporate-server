@@ -1302,12 +1302,12 @@ class UniventionUpdater(object):
     def _get_releases(self):
         # type: () -> None
         """
-        Detect server prefix and download `releases.json` file.
+        Detect server prefix and download `ucs-releases.json` file.
         """
         try:
             if not self.repourl.path:
                 try:
-                    _code, _size, data = self.server.access(None, '/univention-repository/releases.json', get=True)
+                    _code, _size, data = self.server.access(None, '/univention-repository/ucs-releases.json', get=True)
                     self.server += '/univention-repository/'
                     self.log.info('Using detected prefix /univention-repository/')
                     self.releases = json.loads(data)
@@ -1316,7 +1316,7 @@ class UniventionUpdater(object):
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
             # Validate server settings
             try:
-                _code, _size, data = self.server.access(None, 'releases.json', get=True)
+                _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True)
                 self.log.info('Using configured prefix %s', self.repourl.path)
                 self.releases = json.loads(data)
             except DownloadError as e:

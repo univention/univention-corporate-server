@@ -97,7 +97,7 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 	mkdir "${BASEDIR}/mirror/mirror/${srcprefix}"
 	cp -r "${BASEDIR}/mirror/mirror/pool" "${BASEDIR}/mirror/mirror/${srcprefix}/"
 	cp -r "${BASEDIR}/mirror/mirror/dists" "${BASEDIR}/mirror/mirror/${srcprefix}/"
-	cp -r "${BASEDIR}/mirror/mirror/releases.json" "${BASEDIR}/mirror/mirror/${srcprefix}/"
+	cp -r "${BASEDIR}/mirror/mirror/ucs-releases.json" "${BASEDIR}/mirror/mirror/${srcprefix}/"
 	# Since UCS-3.0 the local repo is no longer updater automatically
 	univention-repository-update net
 	/usr/share/univention-updater/univention-updater local

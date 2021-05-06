@@ -17,12 +17,12 @@ MAJOR, MINOR, PATCH = RELEASE = (3, 0, 1)
 ERRAT = 3
 ARCH = 'amd64'
 DATA = b'x' * 100  # univention.updater.tools.MIN_GZIP
-RJSON = '/releases.json'
+RJSON = '/ucs-releases.json'
 
 
 def gen_releases(releases=[], major=MAJOR, minor=MINOR, patches=range(0, PATCH + 1)):  # type: (Iterable[Tuple[int, int, int]], int, int, Iterable[int]) -> bytes
     """
-    Generate a releases.json string from a list of given releases.
+    Generate a `ucs-releases.json` string from a list of given releases.
 
     :param releases: List of UCS releases.
     :param major: UCS major version.

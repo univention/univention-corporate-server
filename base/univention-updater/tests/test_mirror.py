@@ -120,7 +120,7 @@ class TestUniventionMirror(object):
         releases = gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])
         http({RJSON: releases})
         m.write_releases_json()
-        releases_json = tmpdir / 'repo' / 'mirror' / 'releases.json'
+        releases_json = tmpdir / 'repo' / 'mirror' / 'ucs-releases.json'
         assert json.loads(releases_json.read()) == json.loads(releases)
 
     def test_run(self, mocker, m):
