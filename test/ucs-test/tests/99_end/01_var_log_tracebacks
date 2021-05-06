@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Find traceback in /var/log/univention/ logfile"
 ## exposure: safe
+## tags: [01_var_log_tracebacks]
 
 from __future__ import print_function
 
