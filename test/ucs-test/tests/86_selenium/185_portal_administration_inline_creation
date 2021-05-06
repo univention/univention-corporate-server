@@ -88,7 +88,7 @@ def test_background(chrome, admin_username, admin_password, udm):
         'name': 'internal-name-for-a-tile',
         'displayName': {'de_DE': 'Tile Name DE', 'en_US': 'Tile Name EN'},
         'description': {'en_US': 'Tile Description EN', 'de_DE': 'Tile Description DE'},
-        'link': {'en_US': 'https://example.com'},
+        'link': [['en_US', 'https://example.com']],
         'allowedGroups': [],
         'activated': True,
         'anonymous': False,

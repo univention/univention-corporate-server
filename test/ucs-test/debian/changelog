@@ -1,3 +1,9 @@
+ucs-test (10.0.5-16) unstable; urgency=medium
+
+  * Bug #52869: New UDM return value for links
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 May 2021 17:33:22 +0200
+
 ucs-test (10.0.5-15) unstable; urgency=medium
 
   * Bug #52869: EN comes first when creating portal objects in edit mode
