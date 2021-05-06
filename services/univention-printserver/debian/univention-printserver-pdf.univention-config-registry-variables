@@ -2,28 +2,33 @@
 Description[de]=Diese Variable konfiguriert das Verzeichnis, in dem die PDF-Dokumente der verarbeiteten Druckaufträge abgelegt werden. Die Zeichenkette '%U' wird zur Laufzeit auf den aktuellen Benutzer expandiert.
 Description[en]=This variable configures the directory in which the PDF documents of the processed print jobs are stored. The string '%U' is expanded at runtime to the current username.
 Type=str
+Default=/var/spool/cups-pdf/%U
 Categories=Printing
 
 [cups/cups-pdf/anonymous]
 Description[de]=Diese Variable konfiguriert das Verzeichnis, in dem die PDF-Dokumente der verarbeiteten Druckaufträge abgelegt werden wenn ohne Authentifizierung auf die Freigabe zugegriffen wird.
 Description[en]=This variable configures the directory in which the PDF documents of the processed print jobs are stored if the printer share is accessed anonymously without authentication.
 Type=str
+Default=/var/spool/cups-pdf/%U
 Categories=Printing
 
 [cups/cups-pdf/cleanup/enabled]
 Description[de]=Ist diese Option aktiviert, werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Konfiguration erfolgt über die Variablen 'cups/cups-pdf/cleanup/interval' und 'cups/cups-pdf/cleanup/keep'. Ist die Variable nicht gesetzt, erfolgt keine Löschung alter PDF-Dokumente.
 Description[en]=If this option is enabled, old PDF print jobs are removed via a Cron job. The configuration occurs through the variables 'cups/cups-pdf/cleanup/interval' and 'cups/cups-pdf/cleanup/keep'. If the variable is unset, old PDF documents are not deleted.
 Type=bool
+Default=no
 Categories=Printing
 
 [cups/cups-pdf/cleanup/interval]
 Description[de]=Wurde die automatische Entfernung alter PDF-Druckaufträge über die Variable 'cups/cups-pdf/cleanup/enabled' aktiviert, wird mit dieser Variable das Intervall konfiguriert, wie oft die Prüfung durchgeführt werden soll. Ist die Variable nicht gesetzt, greift ein tägliches Intervall. Die Konfiguration erfolgt im Cron-Format, das unter 'man 5 crontab' dokumentiert ist.
 Description[en]=If the automatic removal of old PDF print jobs has been enabled through the variable 'cups/cups-pdf/cleanup/enabled', this variable configures the interval how often the expiry is tested. If the variable is unset, a daily interval applies. The configuration is done in cron format (documented under 'man 5 crontab').
 Type=str
+Default=* * 1 * *
 Categories=Printing
 
 [cups/cups-pdf/cleanup/keep]
 Description[de]=Wurde die automatische Entfernung alter PDF-Druckaufträge über die Variable 'cups/cups-pdf/cleanup/enabled' aktiviert, wird mit dieser Variable der Zeitraum in Tagen festgelegt für den konvertierte PDF-Dokumente vorgehalten werden sollen. Ist die Variable nicht gesetzt, gelten 30 Tage.
 Description[en]=If the automatic removal of old PDF print jobs has been enabled through the variable 'cups/cups-pdf/cleanup/enabled', this variable configures the time span in days for how long generated PDF documents are kept. If the variable is unset, a time span of 30 days applies.
 Type=int
+Default=30
 Categories=Printing

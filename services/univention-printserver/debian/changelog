@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-10) unstable; urgency=medium
+
+  * Bug #53209: Fix join script handling (univention-join debhelper)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 May 2021 21:46:50 +0200
+
 univention-printserver (13.0.2-9) unstable; urgency=medium
 
   * Bug #52122: Unregister nagios service in unjoin script
