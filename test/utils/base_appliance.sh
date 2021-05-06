@@ -871,6 +871,9 @@ __EOF__
 
 	# do not restart network interfaces / reset UCR variables
 	ucr set --forced interfaces/restart/auto=false
+	# Remove all previous network setting
+	ucr --keys-only search --non-empty --key '^(interfaces/|gateway$|nameserver|dns/forwarder)' |
+		xargs -r ucr unset
 
 	# Set a default nameserver and remove all local configured nameserver
 	# Activate DHCP for eth0
@@ -879,20 +882,6 @@ __EOF__
 		nameserver1=208.67.222.222 \
 		interfaces/eth0/type=dhcp \
 		dhclient/options/timeout=12
-
-	# unset currenty network config, we only need eth0=dhcp in ec2
-	ucr unset \
-		interfaces/ens3/address \
-		interfaces/ens3/broadcast \
-		interfaces/ens3/netmask \
-		interfaces/ens3/network \
-		interfaces/ens3/type \
-		gateway \
-		nameserver2 \
-		nameserver3 \
-		dns/forwarder2 \
-		dns/forwarder3 \
-		interfaces/primary
 
 	ucr set update/secure_apt=yes
 
