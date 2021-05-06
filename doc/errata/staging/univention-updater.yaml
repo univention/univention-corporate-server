@@ -1,9 +1,9 @@
 product: ucs
 release: "4.4"
-version: [7, 8]
+version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-updater
-fix: 14.0.3-11A~4.4.0.202105051841
+fix: 14.0.3-12A~4.4.0.202105061239
 desc: |
  This update addresses the following issue:
  * Prevent non-blocking components to crash the UMC updater module during the
