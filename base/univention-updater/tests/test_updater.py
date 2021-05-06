@@ -118,7 +118,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MAJOR_to_UCS5(self):
         """Test next major version UCS 5."""
         self._uri({
-            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+            'ucs-releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR_UCS5, 0, MAJOR_UCS5, 0, 0): '',
         })
         ver = self.u.get_next_version(version=U.UCS_Version((4, 99, 99)))
@@ -128,7 +128,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test update to UCS 5 blocks because of missing current component."""
         NEXT = '%d.%d-%d' % (MAJOR_UCS5, 0, 0)
         self._uri({
-            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+            'ucs-releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
         })
         MockConfigRegistry._EXTRA = {
             'repository/online/component/a': 'yes',
@@ -143,7 +143,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test update to UCS 5 is available with an existing current component."""
         NEXT = '%d.%d-%d' % (MAJOR_UCS5, 0, 0)
         self._uri({
-            'releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
+            'ucs-releases.json': gen_releases([(MAJOR_UCS5, 0, 0)]),
             '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR_UCS5, 0, 'a'): DATA,
         })
         MockConfigRegistry._EXTRA = {

@@ -998,7 +998,7 @@ class UniventionUpdater(object):
     def get_releases(server):
         # type: (_UCSServer) -> Iterator[UCS_Version]
         try:
-            _code, _size, data = server.access(None, 'releases.json', get=True)
+            _code, _size, data = server.access(None, 'ucs-releases.json', get=True)
         except DownloadError as e:
             ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
             return

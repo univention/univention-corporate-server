@@ -188,7 +188,7 @@ def verbose(verbose_mode=True):
     U.ud.set_level(U.ud.NETWORK, level)
 
 def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> str
-    """Generate a releases.json string from a list of given releases"""
+    """Generate a `ucs-releases.json` string from a list of given releases"""
     data = dict(
         releases=[
             dict(
