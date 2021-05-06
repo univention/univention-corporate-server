@@ -141,8 +141,7 @@ do
 			;;
 		--list)
 			echo "Available templates:"
-			(cd $SRC_DIR && find -maxdepth 1 -type d ! -name debian -a ! -name "." | sed 's,./,  ,')
-			exit 0
+			exec find "$SRC_DIR" -mindepth 1 -maxdepth 1 -type d -not -name debian -printf '  %f\n'
 			;;
 		--no-debian)
 			NO_DEBIAN="yes"
@@ -187,8 +186,9 @@ cp -r "$SRC" "$moduleDir"
 [ -z "$NO_DEBIAN" ] && cp -r "$SRC_DIR/debian" "$moduleDir"
 
 # fix directory and file names
-for findParam in "-type d" "-type f"; do
-	find "$moduleDir" $findParam | sort -r | while read ipath; do
+for findType in d f
+do
+	find "$moduleDir" -type "$findType" | sort -r | while read -r ipath; do
 		jpath=$(replace_var "$ipath")
 		[ "$ipath" != "$jpath" ] && mv "$ipath" "$jpath"
 	done
@@ -199,7 +199,7 @@ sedParam=""
 for ikey in "${KEYS[@]}"; do
 	sedParam+="s/$ikey/${!ikey}/g; "
 done
-sed -i "$sedParam" $(find "$moduleDir" -type f)
+find "$moduleDir" -type f -exec sed -i "$sedParam" {} +
 
 # create empty changelog
 cd "$moduleDir"
