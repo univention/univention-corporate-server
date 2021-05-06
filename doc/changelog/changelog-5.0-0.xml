@@ -1090,6 +1090,7 @@
 				<listitem>
 					<para>
 						Samba has been updated to version 4.13.7 (<u:bug>49898</u:bug>).
+						It also includes the patch for the security issue CVE-2021-20254 (<u:bug>53069</u:bug>).
 						Some highlights, quoting upstream release notes:
 					</para>
 					<itemizedlist>
