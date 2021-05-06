@@ -1,3 +1,9 @@
+univention-management-console (12.0.11-8) unstable; urgency=medium
+
+  * Bug #53108: Make UCS build reproducible
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 06 May 2021 17:52:11 +0200
+
 univention-management-console (12.0.11-7) unstable; urgency=medium
 
   * Bug #53109: Fix a bug when reloading modules without an overview

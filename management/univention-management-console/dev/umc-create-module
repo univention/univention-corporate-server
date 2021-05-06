@@ -206,7 +206,7 @@ for i in 50 16; do
 		inkscape -C -w $i -h $i -e "$out" "$icon"
 	elif which convert > /dev/null 2>&1; then
 		# ImageMagick is available
-		convert -background none "$icon" -resize "${i}x${i}" "$out"
+		convert -background none "$icon" -resize "${i}x${i}" -define png:exclude-chunk=date,time "$out"
 	else
 		warn "Could not find inkscape or ImageMagick to convert SVG icon to PNG format."
 	fi
