@@ -239,9 +239,6 @@ update_check_old_packages () {
 		univention-management-console-module-uvmm
 		univention-virtual-machine-manager-node-common
 		univention-virtual-machine-manager-node-kvm
-		univention-nagios-libvirtd
-		univention-nagios-libvirtd-xen
-		univention-nagios-uvmmd
 		univention-nagios-server
 		univention-bacula
 		univention-kde'=Mark KDE as manually installed "apt-mark manual kde-standard" to keep KDE'
@@ -253,9 +250,6 @@ update_check_old_packages () {
 		univention-dansguardian
 		univention-printquota
 		univention-passwd-store
-		univention-nagios-dansguardian
-		univention-nagios-libvirtd-kvm
-		univention-printquotadb
 	)
 	for pkg in "${old[@]}"
 	do
