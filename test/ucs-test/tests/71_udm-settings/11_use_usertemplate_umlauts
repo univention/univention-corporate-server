@@ -3,7 +3,7 @@
 ## desc: Test umlauts for usertemplate object
 ## roles: [domaincontroller_master]
 ## exposure: careful
-## bugs: [42765,43428,29672]
+## bugs: [52878]
 
 from __future__ import print_function
 import unidecode
