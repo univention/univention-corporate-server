@@ -31,6 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
 function err() {
 	echo
 	echo "ERROR: $*"
@@ -215,11 +219,11 @@ fi
 for i in 50 16; do
 	out="$moduleDir/umc/icons/${i}x${i}/$MODULEID.png"
 	mkdir -p "${out%/*}"
-	if which inkscape > /dev/null 2>&1; then
-		# inkscape is available
+	if have inkscape
+	then
 		inkscape -C -w $i -h $i -e "$out" "$icon"
-	elif which convert > /dev/null 2>&1; then
-		# ImageMagick is available
+	elif have convert
+	then
 		convert -background none "$icon" -resize "${i}x${i}" -define png:exclude-chunk=date,time "$out"
 	else
 		warn "Could not find inkscape or ImageMagick to convert SVG icon to PNG format."
