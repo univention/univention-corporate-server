@@ -34,7 +34,7 @@ set -e
 
 if [ "$1" = "purge" ]
 then
-	if [ -e /etc/postgresql/pkgdb.secret ] ;then
+	if [ -e /etc/postgresql/pkgdb.secret ]; then
 		rm /etc/postgresql/pkgdb.secret
 	fi
 	su - postgres -c 'psql -v ON_ERROR_STOP= -q' <<EOF
@@ -48,18 +48,5 @@ EOF
 fi
 
 #DEBHELPER#
-
-dpkg-maintscript-helper rm_conffile /etc/cron.weekly/univention-pkgdb-clean 6.0.17-3 univention-pkgdb -- "$@"
-
-set +e
-
-if [ "$1" = 'remove' ]
-then
-	. /usr/share/univention-lib/all.sh
-	# always call 65 after 50 (to remove service)
-	# packages are always removed in unison because of cross-dependencies
-	call_unjoinscript 50univention-pkgdb-uninstall.uinst
-	call_unjoinscript 65univention-management-console-module-pkgdb-uninstall.uinst
-fi
 
 exit 0

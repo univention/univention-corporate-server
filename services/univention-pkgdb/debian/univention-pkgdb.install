@@ -1,6 +1,4 @@
 sql                                               usr/share/univention-pkgdb
 conffiles/etc/cron.d/univention-pkgdb-check       etc/cron.d
-50univention-pkgdb.inst                           usr/lib/univention-install
-50univention-pkgdb-uninstall.uinst                usr/lib/univention-uninstall
 pkgdb.py                                          usr/lib/univention-directory-listener/system
 univention-pkgdb-check                            usr/sbin
