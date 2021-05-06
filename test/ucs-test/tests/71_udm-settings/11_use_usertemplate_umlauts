@@ -6,6 +6,7 @@
 ## bugs: [42765,43428,29672]
 
 from __future__ import print_function
+import unidecode
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name, random_int
@@ -19,13 +20,74 @@ MOD_USER = 'users/user'
 MAIL_DOMAIN = '%s.%s' % (random_name(), random_name())
 
 
+def pre_test():
+	previously_hard_coded_umlauts = {
+		'À': 'A',
+		'Á': 'A',
+		'Â': 'A',
+		'Ã': 'A',
+		'Å': 'A',
+		'Æ': 'AE',
+		'Ç': 'C',
+		'È': 'E',
+		'É': 'E',
+		'Ê': 'E',
+		'Ë': 'E',
+		'Ì': 'I',
+		'Í': 'I',
+		'Î': 'I',
+		'Ï': 'I',
+		'Ð': 'D',
+		'Ñ': 'N',
+		'Ò': 'O',
+		'Ó': 'O',
+		'Ô': 'O',
+		'Õ': 'O',
+		'Ø': 'O',
+		'Ù': 'U',
+		'Ú': 'U',
+		'Û': 'U',
+		'Ý': 'Y',
+		'ß': 'ss',
+		'à': 'a',
+		'á': 'a',
+		'â': 'a',
+		'ã': 'a',
+		'å': 'a',
+		'æ': 'ae',
+		'ç': 'c',
+		'è': 'e',
+		'é': 'e',
+		'ê': 'e',
+		'ë': 'e',
+		'ì': 'i',
+		'í': 'i',
+		'î': 'i',
+		'ï': 'i',
+		'ñ': 'n',
+		'ò': 'o',
+		'ó': 'o',
+		'ô': 'o',
+		'õ': 'o',
+		'ø': 'o',
+		'ù': 'u',
+		'ú': 'u',
+		'û': 'u',
+		'ý': 'y',
+		'ÿ': 'y'
+	}
+	for umlaut, expected in previously_hard_coded_umlauts.items():
+		if isinstance(umlaut, bytes):
+			umlaut = umlaut.decode('UTF-8')
+		assert unidecode.unidecode(umlaut) == expected
+
+
 def create_template(udm, host, path):
 	template_name = random_name()
 	udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN)
 	dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
 	properties = dict(
 		name=template_name,
-		_options=['pki'],
 		mailPrimaryAddress='<:umlauts><firstname>.<lastname><:lower>@%s' % (MAIL_DOMAIN,),
 		mailAlternativeAddress=['<:umlauts><username><:lower>@%s' % (MAIL_DOMAIN,), '<:umlauts><lastname><:lower>@%s' % (MAIL_DOMAIN,)],
 		displayName='<:umlauts><lastname>, <:umlauts><firstname>',
@@ -54,7 +116,6 @@ def create_template(udm, host, path):
 		'userHomeSharePathPreset': [properties['homeSharePath']],
 		'mailPrimaryAddress': [properties['mailPrimaryAddress']],
 		'mailAlternativeAddress': properties['mailAlternativeAddress'],
-		'userOptionsPreset': properties['_options'],
 	})
 	return properties, dn_template
 
@@ -74,7 +135,6 @@ def template_umlauts_test():
 		obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
 		mod_user = udm_modules.get(MOD_USER)
 		udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
-
 		usernames = [
 			(u"Pınar", u"Ağrı", "pinar", "agri"),
 			(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
@@ -85,6 +145,8 @@ def template_umlauts_test():
 			(u"Öle", u"Mästèrmànn", "oele", "maestermann"),
 			(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
 			(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
+			(u"Daniel", "Groß", "daniel", "gross"),
+			(u"Üwe", "Äpfelmann", "uewe", "aepfelmann"),
 		]
 		for firstname, lastname, expected_firstname, expected_lastname in usernames:
 			user_properties = {
@@ -106,4 +168,5 @@ def template_umlauts_test():
 
 
 if __name__ == '__main__':
+	pre_test()
 	template_umlauts_test()

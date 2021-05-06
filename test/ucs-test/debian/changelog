@@ -1,3 +1,9 @@
+ucs-test (9.0.7-31) unstable; urgency=medium
+
+  * Bug #52878: add test for unidecode
+
+ -- Tobias Wenzel <wenzel@univention.de>  Thu, 06 May 2021 11:06:33 +0200
+
 ucs-test (9.0.7-30) unstable; urgency=medium
 
   * Bug #52878: extract code from loop

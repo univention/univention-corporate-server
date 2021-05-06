@@ -130,19 +130,19 @@ def pattern_replace(pattern, object):
 			elif iCmd == 'upper':
 				text = text.upper()
 			elif iCmd == 'umlauts':
-				if isinstance(text, bytes):
+				if isinstance(text, bytes):  # Python 2
 					text = text.decode('UTF-8')
 				# We need this to handle german umlauts, e.g. ä -> ae
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
 				text = unidecode.unidecode(text)
-				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
+				text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
-				if not type(whitelist) == unicode:
-					whitelist = unicode(whitelist, 'utf-8')
-				if not type(text) == unicode:
-					text = unicode(text, 'utf-8')
+				if isinstance(whitelist, bytes):  # Python 2
+					whitelist = whitelist.decode('UTF-8')
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
 				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
@@ -192,68 +192,15 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
-		'À': 'A',
-		'Á': 'A',
-		'Â': 'A',
-		'Ã': 'A',
-		'Ä': 'Ae',
-		'Å': 'A',
-		'Æ': 'AE',
-		'Ç': 'C',
-		'È': 'E',
-		'É': 'E',
-		'Ê': 'E',
-		'Ë': 'E',
-		'Ì': 'I',
-		'Í': 'I',
-		'Î': 'I',
-		'Ï': 'I',
-		'Ð': 'D',
-		'Ñ': 'N',
-		'Ò': 'O',
-		'Ó': 'O',
-		'Ô': 'O',
-		'Õ': 'O',
-		'Ö': 'Oe',
-		'Ø': 'O',
-		'Ù': 'U',
-		'Ú': 'U',
-		'Û': 'U',
-		'Ü': 'Ue',
-		'Ý': 'Y',
-		'Þ': 'P',
-		'ß': 'ss',
-		'à': 'a',
-		'á': 'a',
-		'â': 'a',
-		'ã': 'a',
-		'ä': 'ae',
-		'å': 'a',
-		'æ': 'ae',
-		'ç': 'c',
-		'è': 'e',
-		'é': 'e',
-		'ê': 'e',
-		'ë': 'e',
-		'ì': 'i',
-		'í': 'i',
-		'î': 'i',
-		'ï': 'i',
-		'ð': 'o',
-		'ñ': 'n',
-		'ò': 'o',
-		'ó': 'o',
-		'ô': 'o',
-		'õ': 'o',
-		'ö': 'oe',
-		'ø': 'o',
-		'ù': 'u',
-		'ú': 'u',
-		'û': 'u',
-		'ü': 'ue',
-		'ý': 'y',
-		'þ': 'p',
-		'ÿ': 'y'
+		u'Ä': 'Ae',
+		u'Ö': 'Oe',
+		u'Ü': 'Ue',
+		u'ä': 'ae',
+		u'ö': 'oe',
+		u'ü': 'ue',
+		u'Þ': 'P',
+		u'ð': 'o',
+		u'þ': 'p'
 	}
 
 	def __init__(
