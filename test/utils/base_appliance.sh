@@ -870,7 +870,7 @@ __EOF__
 	apt-get -q update
 
 	# do not restart network interfaces / reset UCR variables
-	ucr set interfaces/restart/auto=false
+	ucr set --forced interfaces/restart/auto=false
 
 	# Set a default nameserver and remove all local configured nameserver
 	# Activate DHCP for eth0
@@ -913,7 +913,7 @@ __EOF__
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
 
-	ucr unset interfaces/restart/auto
+	ucr unset --forced interfaces/restart/auto
 	ucr set system/setup/boot/start=true
 }
 
