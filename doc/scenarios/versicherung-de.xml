@@ -263,29 +263,12 @@
   </section>
 
   <section id="insurance:monitoring">
-	<title>System-Monitoring mit Nagios</title>
+	<title>System-Monitoring per Nagios-NRPE</title>
 	<para>
-	  UCS integriert die Systemüberwachungssoftware Nagios, die die Überwachung
+	  UCS unterstützt Systemüberwachungssoftware z.B. per Nagios-NRPE, was die Überwachung
 	  komplexer IT-Strukturen aus Netzen, Rechnern und Diensten ermöglicht.
-	  Nagios bringt eine umfassende Sammlung an Überwachungsmodulen mit, die
+	  Es bringt eine umfassende Sammlung an Überwachungsmodulen mit, die
 	  ggf. auch noch erweitert werden können.
-	</para>
-
-	<para>
-	  Die Konfiguration von Nagios erfolgt weitestgehend in der &ucsUMC;.
-	</para>
-
-	<para>
-	  Über eine webbasierte Oberfläche kann der Zustand der überwachten
-	  Objekte einfach abgefragt werden. Darüber hinaus wird Nagios so
-	  konfiguriert, dass beim Auftreten von Fehlern E-Mails an die
-	  Administratoren verschickt werden. Für gravierende Fehler werden
-	  SMS-Kurznachrichten verschickt.
-	</para>
-
-	<para>
-	  Nagios-Prüfungen können zeitlich eingeschränkt werden, sodass
-	  unkritische Werte beispielsweise nachts keine Meldungen auslösen.
 	</para>
   </section>
 
