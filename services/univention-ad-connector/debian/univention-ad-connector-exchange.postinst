@@ -37,10 +37,6 @@ univention-config-registry set	connector/ad/mapping/user/primarymail?true \
 				connector/ad/mapping/user/exchange?true \
 				connector/ad/mapping/group/exchange?true
 
-#DEBHELPER#
-
-. /usr/share/univention-lib/base.sh
-
 if [ -x /etc/init.d/univention-ad-connector ]; then
     /etc/init.d/univention-ad-connector crestart || true
 fi
@@ -49,6 +45,6 @@ if [ -x /etc/init.d/slapd ]; then
     /etc/init.d/slapd restart || true
 fi
 
-call_joinscript 51univention-ad-connector-exchange.inst
+#DEBHELPER#
 
 exit 0
