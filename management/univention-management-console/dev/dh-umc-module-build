@@ -107,6 +107,9 @@ def main():
 
 
 if __name__ == '__main__':
+	if not sys.warnoptions:
+		import warnings
+		warnings.filterwarnings("ignore", category=UserWarning, module="debian.deb822")
 	try:
 		main()
 	except dh_umc.Error as exc:
