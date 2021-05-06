@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 dpkg-maintscript-helper rm_conffile /etc/cron.weekly/univention-pkgdb-clean 6.0.17-3 univention-pkgdb -- "$@"
 
 # shellcheck source=/dev/null
@@ -84,11 +82,12 @@ case "$1" in
 			chown postgres:www-data /etc/postgresql/pkgdb.secret
 		fi
 
-		uinst=/usr/lib/univention-install/50univention-pkgdb-uninstall.uinst
-		[ -e "$uinst" ] && rm "$uinst"
+esac
 
-		call_joinscript 50univention-pkgdb.inst || true
+#DEBHELPER#
 
+case "$1" in
+	configure)
 		systemctl try-restart univention-directory-listener
 
 		# file was moved to univention-pkgdb-tools (Bug #33935)

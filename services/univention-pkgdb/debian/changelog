@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.1-7) unstable; urgency=medium
+
+  * Bug #53209: Fix join script handling (univention-join debhelper)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 May 2021 21:37:16 +0200
+
 univention-pkgdb (13.0.1-6) unstable; urgency=medium
 
   * Bug #52941: added new icon design for software monitoring

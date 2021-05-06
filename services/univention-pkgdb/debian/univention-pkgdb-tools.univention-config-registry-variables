@@ -8,6 +8,7 @@ Categories=system-swmon
 Description[de]=Ist die Option aktiviert, werden nur SSL-gesicherte Verbindungen zum PostgreSQL-Datenbankserver des Software-Monitors aufgebaut.
 Description[en]=If this option is activated only SSL-secured connected are opened to the PostgreSQL database server of the software monitor.
 Type=bool
+Default=true
 Categories=system-swmon
 
 [pkgdb/overwrite/joincheck]

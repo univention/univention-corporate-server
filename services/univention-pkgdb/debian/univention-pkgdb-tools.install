@@ -1,4 +1,2 @@
 univention-pkgdb-scan usr/sbin
-98univention-pkgdb-tools.inst usr/lib/univention-install
-02univention-pkgdb-tools-uninstall.uinst usr/lib/univention-uninstall
 pkgdb-watch.py usr/lib/univention-directory-listener/system
