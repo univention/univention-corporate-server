@@ -59,6 +59,9 @@
 			<listitem><simpara>
 				Join scripts are not executed with the unsafe option <option>--bindpwd</option> anymore (<u:bug>31996</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				Installed unsupported packages will now block the upgrade until they are removed from the system (<u:bug>52957</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
