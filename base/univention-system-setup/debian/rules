@@ -39,6 +39,9 @@ override_dh_python2:
 override_dh_python3:
 	dh_python3 --skip-private
 
+override_dh_install:
+	dh_install -Xde.po -Xunivention-system-setup-scripts.po
+
 override_dh_installsystemd:
 	dh_installsystemd --no-start --no-restart-after-upgrade
 
