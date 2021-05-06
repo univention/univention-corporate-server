@@ -20,6 +20,7 @@ stages:
   before_script:
     - echo man-db man-db/auto-update boolean false | debconf-set-selections
     - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
+    - install -m644 .gitlab-ci/git.pref /etc/apt/preferences.d/10git.pref
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - cd $base
