@@ -1,3 +1,9 @@
+univention-server-overview (3.0.1-4) unstable; urgency=medium
+
+  * Bug #53209: Fix join script handling (univention-join debhelper)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 May 2021 15:41:20 +0200
+
 univention-server-overview (3.0.1-3) unstable; urgency=medium
 
   * Bug #52869: newwindow for server-overview portal tile even for upgrades
