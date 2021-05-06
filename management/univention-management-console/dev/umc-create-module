@@ -99,6 +99,15 @@ EOF
 	exit "${1:-0}"
 }
 
+find_templates () {
+	for SRC_DIR in "$(readlink -f ../umc-module-templates)" /usr/share/univention-management-console-dev/umc-module-templates
+	do
+		[ -d "$SRC_DIR" ] && return 0
+	done
+	error "Template directory not found"
+}
+find_templates
+
 # parse the CLI parameters
 opts=$(getopt --options 'h' --longoptions 'help,name:,description:,keywords:,category:,package:,icon:,template:,list,no-debian' --name "${0##*/}" -- "$@") ||
 	usage 2
