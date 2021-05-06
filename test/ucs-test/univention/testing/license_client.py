@@ -55,7 +55,7 @@ class ShopParser(HTMLParser):
 
 	def __init__(self, log):
 		# type: (logging.Logger) -> None
-		super(ShopParser, self).__init__()
+		HTMLParser.__init__(self)  # old style class
 		self.log = log
 		self.link_to_license = None  # type: Optional[str]
 
