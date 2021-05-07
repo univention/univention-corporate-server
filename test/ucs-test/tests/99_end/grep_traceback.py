@@ -72,6 +72,8 @@ def main(filenames, ignore_exceptions={}):
 			line = True
 			while line:
 				line = fd.readline()
+				if isinstance(line, bytes):
+					line = line.decode('UTF-8', 'replace')
 				if line.endswith('Traceback (most recent call last):\n'):
 					lines = []
 					line = '  '
