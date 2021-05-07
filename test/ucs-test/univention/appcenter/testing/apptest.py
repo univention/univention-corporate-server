@@ -171,13 +171,19 @@ class Session(object):
 		self.enter_return()
 
 	def click_portal_tile(self, name):
+		from selenium.common.exceptions import NoSuchElementException
 		elements = self.find_all('.portal-tile')
 		for element in elements:
-			print('-%s-' % element.text)
+			print('-%s- -> %s' % (element.text, name))
 			if element.text == name:
 				self.driver.execute_script("arguments[0].click();", element)
 				time.sleep(2)
-				self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portal-iframe__iframe"]'))
+				try:
+					# iframe mode
+					self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portal-iframe__iframe"]'))
+				except NoSuchElementException:
+					# tab mode
+					self.change_tab(-1)
 				break
 		else:
 			raise RuntimeError('Could not find {}'.format(name))
