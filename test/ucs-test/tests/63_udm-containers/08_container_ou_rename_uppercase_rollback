@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
@@ -33,10 +34,10 @@ if __name__ == '__main__':
 		user = udm.create_user(position=ou, username=user_name)
 		network = udm.create_object('networks/network', position=ou, name=network_name, network='1.1.1.1', netmask='24')
 
-		try:
+		with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed) as exc:
 			udm.modify_object('container/ou', dn=ou, name=ou_name_new)
-		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-			pass
+		# This operation is not allowed on this object: Unable to move object ayj9blkm9k (networks/network) in subtree, trying to revert changes.
+		assert 'Unable to move object' in str(exc.value)
 
 		new_ou = 'ou=%s,%s' % (ldap.dn.escape_dn_chars(ou_name_new), ucr.get('ldap/base'))
 		new_user = 'uid=%s,ou=%s,%s' % (ldap.dn.escape_dn_chars(user_name), ldap.dn.escape_dn_chars(ou_name_new), ucr.get('ldap/base'))
