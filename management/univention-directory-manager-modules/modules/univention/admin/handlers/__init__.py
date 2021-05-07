@@ -44,7 +44,6 @@ A UDM handler represents an abstraction of an LDAP object.
 from __future__ import absolute_import
 
 import copy
-import functools
 import re
 import time
 import sys
@@ -771,7 +770,11 @@ class simpleLdap(object):
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 						if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
 							subold_rdn = u'+'.join(explode_rdn(subolddn, 1))
-							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
+							type_ = univention.admin.modules.identifyOne(subolddn, suboldattrs)
+							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {
+								'name': subold_rdn,
+								'type': type_ and type_.module,
+							})
 						to_be_moved.append((subobject, subolddn, subnewdn))
 
 					for subobject, subolddn, subnewdn in to_be_moved:
