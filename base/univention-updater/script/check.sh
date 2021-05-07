@@ -420,38 +420,27 @@ update_check_default_master_packages () {
 	[ -f /var/univention-join/joined ] || return 0
 	local var="update$VERSION/ignore_default_master_packages_apps"
 	local ret=0
+	ignore_check "$var" && return 100
 	# kopano-core
 	status=$(dpkg-query -W -f '${db:Status-Status}' "kopano4ucs-udm" 2>/dev/null)
 	if [ "$status" = 'installed' ]; then
 		echo
-		echo "The Kopano App is installed in your domain."
-		echo "A newer version of the Kopano App is needed in order to update to UCS 5.0."
-		echo "Kopano and Univention are currently working on providing this new version"
-		echo "as soon a possible."
+		echo "  The Kopano App is or was installed in your domain."
+		echo "  A newer version of the Kopano App is needed in order to update to UCS 5.0."
+		echo "  Kopano and Univention are currently working on providing this new version"
+		echo "  as soon a possible."
+		echo
+		echo "  If the Kopano App is no longer used and has already been removed from the domain"
+		echo "  the package kopano4ucs-udm can be removed from this server"
+		echo "  in order to update to UCS 5.0: univention-remove --purge kopano4ucs-udm"
+		echo
+		echo "  This check can be disabled by setting the UCR variable '$var' to 'yes'."
 		# once the update is available, we can change the message to something like
 		#echo "The Kopano App is installed in your domain."
 		#echo "In order to update to UCS 5.0 the Kopano App has to be updated to"
 		#echo "version x.x. Once all systems are updated the package"
 		#echo "  kopano4ucs-udm"
 		#echo "has to be removed from this server: univention-remove --purge kopano4ucs-udm"
-		ret=1
-	fi
-	# openvpn4ucs
-	status_s=$(dpkg-query -W -f '${db:Status-Status}' "univention-openvpn-schema" 2>/dev/null)
-	status_m=$(dpkg-query -W -f '${db:Status-Status}' "univention-openvpn-master" 2>/dev/null)
-	if [ "$status_s" = 'installed' ] || [ "$status_m" = 'installed' ]; then
-		echo
-		echo "The OpenVPN4UCS App is installed in your domain."
-		echo "A newer version of the OpenVPN4UCS App is needed in order to update to UCS 5.0."
-		echo "Bytemine and Univention are currently working on providing this new version"
-		echo "as soon a possible."
-		# once the update is available, we can change the message to something like
-		#echo "The OpenVPN4UCS App is installed in your domain."
-		#echo "In order to update to UCS 5.0 the OpenVPN4UCS App has to be updated to"
-		#echo "version x.x. Once all systems are updated the packages"
-		#echo "  univention-openvpn-schema"
-		#echo "  univention-openvpn-master"
-		#echo "have to be removed from this server: univention-remove --purge univention-openvpn-schema univention-openvpn-master"
 		ret=1
 	fi
 	return $ret
