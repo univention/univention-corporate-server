@@ -1,10 +1,9 @@
-#!/bin/sh
-# -*- coding: utf-8 -*-
+#!/bin/bash
 #
 # Univention Self Service
-#  join script
+#  postinst file for the debian package
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2019-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,44 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-## joinscript api: bindpwdfile
+#DEBHELPER#
 
-VERSION=1
-
-. /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/ldap.sh
-. /usr/share/univention-lib/base.sh
-
-joinscript_init
-
-
-eval "$(ucr shell)"
-
-
-if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
-
-	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
-	slapd=$(pidof -s slapd)
-	test -n "$slapd" || die 
-	if univention-ldapsearch -LLL -b "cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base" dn | grep "dn: cn=67"; then
-		# unregister old
-		univention-self-service-register-acl unregister /usr/share/univention-self-service/67selfservice_userattributes.acl 1
-		# now wait for a slapd restart
-		for i in $(seq 1 100); do
-			new_slapd=$(pidof -s slapd)
-			if [ -n "$new_slapd" -a "$new_slapd" != "$slapd" ]; then
-				break
-			fi
-			echo "waiting for 67selfservice_userattributes.acl unregister slapd restart"
-			sleep 3
-		done
-	fi
-
-	# activate
-	ucr set self-service/ldap_attributes="$self_service_ldap_attributes" || die
-
-fi
-
-joinscript_save_current_version
+systemctl try-restart univention-directory-listener
 
 exit 0
