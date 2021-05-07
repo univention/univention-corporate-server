@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Package Database
-#  postrm script for the Debian package
+# Univention Management Console Module pkgdb (Software Monitor)
+#  postrm script for the debian package
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,31 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-set -e
-
-if [ "$1" = "purge" ]
-then
-	if [ -e /etc/postgresql/pkgdb.secret ]; then
-		rm /etc/postgresql/pkgdb.secret
-	fi
-	su - postgres -c 'psql -v ON_ERROR_STOP= -q' <<EOF
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET client_min_messages = warning;
-DROP DATABASE IF EXISTS pkgdb;
-DROP ROLE IF EXISTS pkgdbu;
-DROP ROLE IF EXISTS pkgdbg;
-EOF
-fi
-
-#DEBHELPER#
-
 if [ "$1" = "remove" ]
 then
 	. /usr/share/univention-lib/all.sh
 	# always call 65 after 50 (to remove service)
 	# packages are always removed in unison because of cross-dependencies
-	call_unjoinscript 65univention-management-console-module-pkgdb.uinst
+	call_unjoinscript 50univention-pkgdb.uinst
 fi
+
+#DEBHELPER#
 
 exit 0
