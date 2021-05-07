@@ -43,6 +43,8 @@ strings = {
 	'no_dc_dns_adapt': 'Einstellungen anpassen',
 	'preferred_dns': 'Bevorzugter DNS-Server',
 	'repositories_not_reachable': 'nicht erreicht werden',
+	'username': 'Benutzername',
+	'password': 'Paswort',
 	'join_domain': 'Einer bestehenden UCS-Domäne',
 	'start_join': 'Informationen zum',
 	'system_name': 'Eingabe des Namens',

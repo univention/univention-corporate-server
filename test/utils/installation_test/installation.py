@@ -302,11 +302,9 @@ class UCSInstallation(object):
 			self.move_to_next_and_click()
 			self.move_to_next_and_click()
 			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
-			self.client.keyPress('tab')
-			self._clear_input()
+			self.click(self._['username'])
 			self.client.enterText(self.args.join_user)
-			self.client.keyPress('tab')
-			self._clear_input()
+			self.click(self._['password'])
 			self.client.enterText(self.args.join_password)
 			self.move_to_next_and_click()
 		elif self.args.role == 'basesystem':
