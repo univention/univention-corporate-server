@@ -50,6 +50,7 @@ strings = {
 	'system_name': 'Eingabe des Namens',
 	'account_information': 'Kontoinformationen',
 	'ad_account_information': 'Active Directory-Kontoinformationen',
+	'address_ad': 'Adresse des Active Directory',
 	'host_settings': 'Rechnereinstellungen',
 	'software_configuration': 'Software-Konfiguration',
 	'software_configuration_non_master': 'Wählen Sie UCS-Software',
