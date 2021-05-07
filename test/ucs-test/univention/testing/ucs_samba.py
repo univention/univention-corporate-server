@@ -256,7 +256,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 
 		previous_lastUSN = lastUSN
 		c.execute('select value from S4 where key=="lastUSN"')
-		lastUSN = c.fetchone()[0]
+		lastUSN = int(c.fetchone()[0])
 
 		if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
 			static_count = 0
@@ -264,7 +264,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 		else:
 			static_count += 1
 
-		print('Counter: {}; highestCommittedUSN: {}; lastUSN: {}'.format(static_count, highestCommittedUSN, lastUSN))
+		print('Counter: {}; highestCommittedUSN: {!r}; lastUSN: {!r}'.format(static_count, highestCommittedUSN, lastUSN))
 
 		if static_count * delta_t >= s4cooldown_t:
 			return 0
