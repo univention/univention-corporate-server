@@ -1,3 +1,12 @@
+ucs-test (10.0.5-17) unstable; urgency=medium
+
+  * Bug #53089: Since acl:search is set no "true" in smb.conf, the hidden
+    ntsecuritydescriptor attribute can not be found via ldbsearch when using
+    the ldap url. Test 100sync_gpo_ntsecurity_descriptor has been adapted
+    to search with the sam.ldb.
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 07 May 2021 11:55:50 +0200
+
 ucs-test (10.0.5-16) unstable; urgency=medium
 
   * Bug #52869: New UDM return value for links

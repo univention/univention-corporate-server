@@ -101,7 +101,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		self.samba_machine_creds = Credentials()
 		self.samba_machine_creds.guess(self.lp)
 		self.samba_machine_creds.set_machine_account(self.lp)
-		self.machine_samdb = SamDB(url="ldap://%s" % self.fqdn, session_info=system_session(), credentials=self.samba_machine_creds, lp=self.lp)
+		self.machine_samdb = SamDB(url="/var/lib/samba/private/sam.ldb", session_info=system_session(), credentials=self.samba_machine_creds, lp=self.lp)
 		self.domain_sid = security.dom_sid(self.machine_samdb.get_domain_sid())
 		self.DA_SID = security.dom_sid("%s-%d" % (self.domain_sid, security.DOMAIN_RID_ADMINS))
 		self.DU_SID = security.dom_sid("%s-%d" % (self.domain_sid, security.DOMAIN_RID_USERS))
@@ -110,7 +110,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		self.samba_admin_creds.guess(self.lp)
 		self.samba_admin_creds.parse_string(self.adminaccount.username)
 		self.samba_admin_creds.set_password(self.adminaccount.bindpw)
-		self.admin_samdb = SamDB(url="ldap://%s" % self.fqdn, session_info=system_session(), credentials=self.samba_admin_creds, lp=self.lp)
+		self.admin_samdb = SamDB(url="/var/lib/samba/private/sam.ldb", session_info=system_session(), credentials=self.samba_admin_creds, lp=self.lp)
 		self.admin_samdb_sdutil = SDUtils(self.admin_samdb)
 
 	def restart_s4_connector(self):
