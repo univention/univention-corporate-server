@@ -70,7 +70,7 @@ def verify(computerName, service, mac, ip=None):
 		'dhcpHWAddress': ['ethernet %s' % (mac,)],
 		'univentionObjectType': ['dhcp/host'],
 	}
-	if ip is not None:
+	if ip is not None and ip != ['']:
 		expected['univentionDhcpFixedAddress'] = ip
 	utils.verify_ldap_object(dn, expected)
 	if ip is None:
