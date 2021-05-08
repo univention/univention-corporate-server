@@ -101,7 +101,7 @@
 	<para>
 	  The basic installation is performed using the standard UCS installer. Further information on
 	  the individual options can be found in the UCS manual. The installation should be performed in
-	  a virtualization solution. In this example, the installation is performed in Qemu. A qcow2
+	  a virtualization solution. In this example, the installation is performed in QEMU. A qcow2
 	  image should be selected for the hard drive for the virtual machine.  Qcow2 images can be
 	  converted to different virtualization formats such as VirtualBox or VMware using a tool
 	  provided by Univention, see <xref linkend="appliance:create:virt"/>.
@@ -188,7 +188,7 @@ univention-app install APPID
 
 	<para>
 	  The qcow2 image (i.e., the hard drive of the virtual machine) is now copied. If the
-	  <emphasis>default</emphasis> storage pool of libvirtd was used, the image is stored in the
+	  <emphasis>default</emphasis> storage pool of <systemitem class="daemon">libvirtd</systemitem> was used, the image is stored in the
 	  directory <filename class="directory">/var/lib/libvirt/images/</filename>.
 	</para>
 
