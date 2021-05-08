@@ -720,16 +720,16 @@ END CATEGORY
 		  &ar; Set roaming profile path for all users logging onto this computer</guimenu>.
 		  If this is set to the UNC path
 		  <filename class="directory">%LOGONSERVER%\%USERNAME%\windows-profiles\default</filename>
-		  the profile data will get written to the directories <filename class="directory">windows-profiles\default.*</filename>
+		  the profile data will get written to the directories <filename class="directory">windows-profiles\default.V<replaceable>?</replaceable></filename>
 		  in the home directory of the user located on the currently chosen logon server.
 		</para>
 
 		<para>
 		  Alternatively the profile path can be defined for individual user accounts.
-		  This is possible in the &ucsUMC; in the section <emphasis>Account</emphasis>
-		  of the user account by filling the field <emphasis>Windows profile directory</emphasis>.
-		  The corresponding UDM property is called <emphasis>profilepath</emphasis>.
-		  In the OpenLDAP backend this is stored in the LDAP attribute <emphasis>sambaProfilePath</emphasis>.
+		  This is possible in the &ucsUMC; in the section <guimenu>Account</guimenu>
+		  of the user account by filling the field <guimenuitem>Windows profile directory</guimenuitem>.
+		  The corresponding UDM property is called <property>profilepath</property>.
+		  In the OpenLDAP backend this is stored in the LDAP attribute <property>sambaProfilePath</property>.
 		</para>
 
 		<para>
@@ -1449,7 +1449,7 @@ def mapping_hook(ad_mapping):
 
     The contents of the <command>ad_mapping</command> variable can be modified to
     influence the mapping. The resulting mapping gets written to
-    <filename>/var/log/univention/connector-ad-mapping.log</filename> when the AD-Connector is restarted.
+    <filename>/var/log/univention/connector-ad-mapping.log</filename> when the &ucsADC; is restarted.
 </para>
 </section>
 </section>

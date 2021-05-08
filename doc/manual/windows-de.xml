@@ -89,7 +89,7 @@
 	  </para>
 
 	  <para>
-		Ein Samba-File- und Printserver kann auf UCS Managed Nodes mit der Applikation
+		Ein Datei- und Druckserver kann auf UCS Managed Nodes mit der Applikation
 		<emphasis>Windows-kompatibler Fileserver</emphasis> aus dem Univention App Center
 		installiert werden. Alternativ kann das Softwarepakete <package>univention-samba</package>
 		installiert werden (anschließend muss der Befehl
@@ -742,16 +742,16 @@ END CATEGORY
 		  &ar; Benutzerprofile &ar; Pfad des servergespeicherten Profils für alle Benutzer
 		  festlegen</guimenu> zu finden ist. Wenn hier z.B. der UNC-Pfad
 		  <filename class="directory">%LOGONSERVER%\%USERNAME%\windows-profiles\default</filename> eingetragen
-		  wird, dann werden die Verzeichnisse <filename class="directory">windows-profiles\default.*</filename>
+		  wird, dann werden die Verzeichnisse <filename class="directory">windows-profiles\default.V<replaceable>?</replaceable>*</filename>
 		  im Heimatverzeichnis des Benutzers auf dem jeweils gewählten Logonserver verwendet.
 		</para>
 
 		<para>
 		  Alternativ kann das Profilverzeichnis individuell für einzelne Benutzerkonten definiert werden.
-		  Das ist in der &ucsUMC; im Abschnitt <emphasis>Konto</emphasis> des Benutzerkontos über das Feld
-		  <emphasis>Profilverzeichnis</emphasis> möglich.
-		  Die entsprechende UDM-Property heißt <emphasis>profilepath</emphasis>.
-		  In OpenLDAP-Backend wird dies im LDAP-Attribut <emphasis>sambaProfilePath</emphasis> gespeichert.
+		  Das ist in der &ucsUMC; im Abschnitt <guimenu>Konto</guimenu> des Benutzerkontos über das Feld
+		  <guimenuitem>Profilverzeichnis</guimenuitem> möglich.
+		  Der entsprechende UDM-Attributname heißt <property>profilepath</property>.
+		  Mit OpenLDAP als Backend wird dies im LDAP-Attribut <property>sambaProfilePath</property> gespeichert.
 		</para>
 
 		<para>
@@ -1531,7 +1531,7 @@ def mapping_hook(ad_mapping):
 </programlisting>
 
     Der Inhalt der Variable <command>ad_mapping</command> kann damit verändert werden,
-    um das Mapping zu beeinflussen. Das resultierende Mapping wird bei Neustart des AD-Connectors
+    um das Mapping zu beeinflussen. Das resultierende Mapping wird bei Neustart des &ucsADC;
     unter <filename>/var/log/univention/connector-ad-mapping.log</filename> ausgegeben.
 </para>
 </section>
