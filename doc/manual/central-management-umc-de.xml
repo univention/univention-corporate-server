@@ -98,14 +98,14 @@
 	<section id="central:globalcustom-design">
 		<title>Das Design von UCS anpassen</title>
 		<para>
-			Alle UCS-Unterseiten verwenden den gleichen Satz an
+			Alle Unterseiten verwenden den gleichen Satz an
 			<ulink url="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties"><foreignphrase>CSS custom properties</foreignphrase></ulink>,
 			die den allgemeinen Stil von UCS definieren. Diese Eigenschaften sind in der Datei
 			<filename>/usr/share/univention-web/js/dijit/themes/umc/globalCSSVariables.css</filename> definiert, welche
-			direkt oder indirekt von jeder UCS-Unterseite importiert wird. Jede Unterseite importiert auch die Datei
+			direkt oder indirekt von jeder Unterseite importiert wird. Jede Unterseite importiert auch die Datei
 			<filename>/usr/share/univention-web/js/dijit/themes/umc/globalCustom.css</filename>, die bei Updates nicht
 			verändert oder gelöscht wird. Diese Datei kann dazu verwendet werden, das Design aller Unterseiten anzupassen,
-			indem definierte <foreignphrase>CSS custom properties</foreignphrase> überschrieben und CSS-Anweisungen überschrieben oder hinzugefügt werden.
+			indem definierte <foreignphrase>CSS custom properties</foreignphrase> überschrieben und <abbrev>CSS</abbrev>-Anweisungen überschrieben oder hinzugefügt werden.
 		</para>
 		<para>
 			Jede Unterseite importiert auch ihre eigene lokale <filename>custom.css</filename> Datei, die zur Anpassung
