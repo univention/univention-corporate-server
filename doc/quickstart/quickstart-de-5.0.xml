@@ -69,7 +69,7 @@
 	kein Gateway anzugeben. Die Netzkonfiguration kann auch über DHCP erfolgen.
 	Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte dieser verwendet
 	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsPrimaryDN; und
-	ggf. vorhandene &ucsBackupDN;-Systeme als Nameserver eingetragen werden.
+	ggf. vorhandene &ucsBackupDN;s als Nameserver eingetragen werden.
   </para>
 
   <figure id="quick-systemrole">

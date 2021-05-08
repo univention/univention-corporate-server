@@ -191,7 +191,7 @@
 	  Regel LDAP-Schema-Erweiterungen oder Erweiterungen für das UCS-Managementsystem). Diese
 	  Pakete werden automatisch auf dem &ucsPrimaryDN; installiert. Ist dieser nicht erreichbar,
 	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
-	  &ucsBackupDN;-Systemen eingerichtet.
+	  &ucsBackupDN;s eingerichtet.
 	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind, kann ausgewählt werden, auf welchem
 	  der Systeme die Applikation installiert werden soll.
 	</para>

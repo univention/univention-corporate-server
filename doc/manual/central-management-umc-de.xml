@@ -164,7 +164,7 @@
 		Bei der Anmeldung mit dem <systemitem class="username">Administrator</systemitem>-Konto auf &ucsPrimaryDN;
 		oder &ucsBackupDN; werden UMC-Module zur Verwaltung und Konfiguration des lokalen Systems sowie UMC-Module zur Verwaltung der Daten des LDAP-Verzeichnisses bereitgestellt.
 		Das initiale Passwort dieses Kontos wurde im Einrichtungsassistent bei der Installation angegeben und stimmt mit dem initialen Passwort des lokalen <systemitem class="username">root</systemitem>-Kontos überein.
-		<systemitem class="username">Administrator</systemitem> ist auch das Konto, mit dem die erste Anmeldung an einem neu installierten &ucsPrimaryDN;-System durchgeführt werden sollte.
+		<systemitem class="username">Administrator</systemitem> ist auch das Konto, mit dem die erste Anmeldung an einem neu installierten &ucsPrimaryDN; durchgeführt werden sollte.
 	  </simpara></listitem>
 
 	  <listitem><simpara>

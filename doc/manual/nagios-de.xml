@@ -276,7 +276,7 @@
 							<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
 							<entry>
 								Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate.
-								Dieses Plugin ist nur für &ucsPrimaryDN;- und &ucsBackupDN;-Systeme geeignet.
+								Dieses Plugin ist nur für &ucsPrimaryDN; und &ucsBackupDN;s geeignet.
 							</entry>
 						</row>
 						<row>

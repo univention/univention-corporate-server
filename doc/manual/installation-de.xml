@@ -525,7 +525,7 @@
 	  abgefragt.  Soll der Domänenbeitritt nicht automatisch während der Installation stattfinden, kann
 	  die Option <guimenu>Domänenbeitritt am Ende der Installation starten</guimenu> deaktiviert werden.
 	  Wurde während der Netzwerkkonfiguration der richtige DNS-Server ausgewählt, kann Univention
-	  Installer den Namen des &ucsPrimaryDN;-Systems automatisch bestimmen.  Falls doch in eine andere
+	  Installer den Namen des &ucsPrimaryDN; automatisch bestimmen.  Falls doch in eine andere
 	  UCS-Domäne gejoined werden soll, kann die Option <guimenu>&ucsPrimaryDN; im DNS suchen</guimenu>
 	  deaktiviert und der vollständige Rechnername des gewünschten &ucsPrimaryDN; im Eingabefeld darunter
 	  eingetragen werden. Die für den Domänenbeitritt notwendigen Zugangsinformationen müssen in die
