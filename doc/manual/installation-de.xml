@@ -28,7 +28,7 @@
 	</para>
 	<note>
 		<para>
-			Es ist zu beachten, dass beginnend ab UCS 5.0-0 ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI-System nicht unterstützt wird.
+			Es ist zu beachten, dass beginnend ab UCS 5.0-0 ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt wird.
 			Ursache hierfür ist der Bootloader GRUB von &ucsUCS;, der teilweise die gleichen Konfigurationsdateien wie Debian verwendet.
 			Ein bereits installiertes Debian führt dazu, dass UCS nach der Installation von bzw. einem Update auf UCS 5.0 nicht (mehr) gebootet werden kann.
 			Eine nachträgliche Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht mehr gebootet werden kann.

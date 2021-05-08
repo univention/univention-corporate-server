@@ -943,7 +943,7 @@ slapcat &gt; ldapdaten.txt
 			Anfragen entgegennimmt.
 		</para>
 		<para>
-			Wird Samba/AD eingesetzt, belegt der Samba/AD-Domänencontroller-Dienst die
+			Wird Samba/AD eingesetzt, belegt der Dienst Samba/AD-Domänencontroller die
 			Ports 389 und 636. In diesem Fall wird OpenLDAP automatisch umkonfiguriert, so
 			dass nur noch die Ports 7389 und 7636 eingesetzt werden. Dies ist insbesondere
 			bei der Konfiguration von syncrepl zu beachten (siehe <xref
@@ -1250,7 +1250,7 @@ univention-directory-listener-ctrl resync cups-printers
 		diesem KDC und erhält ein Authentizierungs-Token, das sogenannte Ticket, das
 		zur Authentizierung innerhalb einer Kerberos-Umgebung (der sogenannten Kerberos
 		Realm) verwendet werden kann. Der Name der Kerberos Realm wird im Rahmen der Installation
-		des &ucsPrimaryDN; konfiguriert und in der	&ucsUCRV; <envar>kerberos/realm</envar>
+		des &ucsPrimaryDN; konfiguriert und in der &ucsUCRV; <envar>kerberos/realm</envar>
 		gespeichert. Der Name der Kerberos-Realm kann nachträglich nicht angepasst werden.
 	</para>
 	<para>
