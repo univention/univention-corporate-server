@@ -263,9 +263,9 @@
   </section>
 
   <section id="insurance:monitoring">
-	<title>System-Monitoring per Nagios-NRPE</title>
+	<title>System-Monitoring per Nagios NRPE</title>
 	<para>
-	  UCS unterstützt Systemüberwachungssoftware z.B. per Nagios-NRPE, was die Überwachung
+	  UCS unterstützt Systemüberwachungssoftware z.B. Nagios per NRPE, was die Überwachung
 	  komplexer IT-Strukturen aus Netzen, Rechnern und Diensten ermöglicht.
 	  Es bringt eine umfassende Sammlung an Überwachungsmodulen mit, die
 	  ggf. auch noch erweitert werden können.
