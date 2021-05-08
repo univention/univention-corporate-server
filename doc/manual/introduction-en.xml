@@ -219,7 +219,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </figure>
 <para>
 Access to the LDAP directory is performed via the web-based user interface &ucsUMC; (UMC).
-In addition to this, Univention Directory Manager allows the realization of all
+In addition to this, &ucsUDM; allows the realization of all
 domain-wide administrative tasks via a command line interface. This
 is particularly suitable for the integration in scripts or automated
 administrative steps.

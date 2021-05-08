@@ -54,7 +54,7 @@
     </para>
 
 	  <figure id="umc-anlegen">
-		<title>Creating a user in Univention Directory Manager</title>
+		<title>Creating a user in &ucsUDM;</title>
 		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen_en.png"/>
 	  </figure>
   </section>

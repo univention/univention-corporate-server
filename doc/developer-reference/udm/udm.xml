@@ -10,14 +10,14 @@
 ]>
 <chapter id="chap:udm">
 	<title>&ucsUDM; (<acronym>UDM</acronym>)
-		<indexterm><primary>Univention Directory Manager</primary><see>Directory Manager</see></indexterm>
+		<indexterm><primary>&ucsUDM;</primary><see>Directory Manager</see></indexterm>
 		<indexterm><primary>Directory Manager</primary></indexterm>
 		<indexterm><primary>UDM</primary><see>Directory Manager</see></indexterm>
 	</title>
 	<remark>PMH: Bug #31269</remark>
 
 	<para>
-		The Univention Directory Manager (<acronym>UDM</acronym>) is a wrapper for <acronym>LDAP</acronym> objects.
+		The &ucsUDM; (<acronym>UDM</acronym>) is a wrapper for <acronym>LDAP</acronym> objects.
 		Traditionally <acronym>LDAP</acronym> stores objects as a collection of attributes, which are defines by so called schemata.
 		Modifying entries is slightly complicated, as there are no high-level operations to add or remove values from multi-valued attributes, or to keep the password used by different authentication schemes such as Windows <acronym>NTLM</acronym>-hashes, UNIX <acronym>MD5</acronym> hashes, or Kerberos tickets in sync.
 	</para>
@@ -870,7 +870,7 @@ udm settings/extended_attribute modify \
 		</title>
 		<remark>PMH: Bug #29525</remark>
 		<para>
-		  The development of Univention Directory Manager modules is currently only documented in
+		  The development of &ucsUDM; modules is currently only documented in
 		  Univention Wiki (currently only available in German):
 		  <ulink url="https://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
 		</para>

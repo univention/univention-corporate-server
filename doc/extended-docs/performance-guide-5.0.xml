@@ -135,9 +135,9 @@ slapadd -l ldif
 	</section>
 
 	<section id="listener">
-		<title>Univention Directory Listener</title>
+		<title>&ucsUDL;</title>
 		<para>
-			The Univention Directory Listener can perform safety
+			The &ucsUDL; can perform safety
 			checks to prevent a user name being added into a group twice.
 			These checks add some overhead to replication and can
 			be deactivated by setting the &ucsUCR; variables
@@ -225,7 +225,7 @@ slapadd -l ldif
 		deactivated by setting the &ucsUCRV;
 		<envar>nss/group/invalidate_cache_on_changes</envar> to
 		<literal>false</literal>. This setting takes effect immediately and does not
-		require a restart of the Univention Directory Listener.
+		require a restart of the &ucsUDL;.
 	</para>
 
 	<para>

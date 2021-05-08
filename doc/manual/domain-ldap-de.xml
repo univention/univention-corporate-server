@@ -651,9 +651,9 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 			</para>
 
 			<para>
-				Die eigentliche Replikation der Schema-Definitionen wird vom Univention
-				Directory Listener initiiert. Vor jeder Abfrage einer neuen Transaktion-ID
-				durch den Univention Directory Notifier wird dessen aktuelle Schema-ID
+				Die eigentliche Replikation der Schema-Definitionen wird vom &ucsUDL;
+				initiiert. Vor jeder Abfrage einer neuen Transaktion-ID
+				durch den &ucsUDN; wird dessen aktuelle Schema-ID
 				abgefragt. Ist diese höher als die Schema-ID auf der Listener-Seite, wird über
 				eine LDAP-Suche vom LDAP-Server des Notifier-Systems dessen aktuell verwendetes
 				Subschema bezogen.
@@ -683,8 +683,8 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  <envar>ldap/logging/exclude1</envar>, <envar>ldap/logging/exclude2</envar>
 		  etc. konfiguriert werden. Standardmässig ist der Container exkludiert, in dem die
 		  temporären Objekte gespeichert werden (<uri>cn=temporary,cn=univention</uri>).
-		  Die Protokollierung der LDAP-Änderungen erfolgt durch ein Univention Directory
-		  Listener-Modul, nach &ucsUCR;-Änderungen muss der Univention Directory Listener-Dienst neu
+		  Die Protokollierung der LDAP-Änderungen erfolgt durch ein
+		  &ucsUDL;-Modul, nach &ucsUCR;-Änderungen muss der &ucsUDL;-Dienst neu
 		  gestartet werden.
 		</para>
 
@@ -791,8 +791,8 @@ slapcat &gt; ldapdaten.txt
 
 		<para>
 		  Wenn LDAP-ACL-Erweiterungen als Teil von Softwarepaketen ausgeliefert werden sollen,
-		  besteht auch die Möglichkeit diese zu paketieren und durch ein Univention Directory
-		  Listener-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere Hinweise finden sich
+		  besteht auch die Möglichkeit diese zu paketieren und durch ein
+		  &ucsUDL;-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere Hinweise finden sich
 		  in <xref linkend="packaging-acl-extensions"/>.
 		</para>
 
@@ -984,8 +984,7 @@ slapcat &gt; ldapdaten.txt
 	<section id="domain:listenernotifier:intro">
 	  <title>Ablauf der Listener/Notifier-Replikation</title>
 	  <para>
-		Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt über den
-		Listener/Notifier-Mechanismus:
+		Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt über den &ucsUDL;/Notifier-Mechanismus:
 
 		<itemizedlist>
 		  <listitem> <simpara>
@@ -1787,7 +1786,7 @@ apt-get dselect-upgrade
 		</listitem>
 		<listitem>
 			<simpara>
-			Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie Univention Directory Notifier und Listener gestoppt,
+			Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie &ucsUDN; und Listener gestoppt,
 			elementare &ucsUCRV; wie <envar>ldap/master</envar> und <envar>server/role</envar> umgestellt, das UCS Root-Zertifikat
 			vom Webserver des &ucsBackupDN; abrufbar gemacht und die oben genannten Dienste wieder gestartet.
 			</simpara>

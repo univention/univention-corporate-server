@@ -1373,7 +1373,7 @@ udm settings/ldapacl remove \
 
 
 <section id="central:udm">
-	<title>Kommandozeilenschnittstelle der Domänenverwaltung (Univention Directory Manager)</title>
+	<title>Kommandozeilenschnittstelle der Domänenverwaltung (&ucsUDM;)</title>
 	<para>
 		Der &ucsUDM; ist die Kommandozeilenschnittstelle der
 		Domänenverwaltungsfunktionalität von &ucsUMC;. Er ergänzt die

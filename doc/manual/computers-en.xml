@@ -1753,7 +1753,7 @@ auth/sshd/restrict: yes
 				series in intervals (can be configured in weeks using the &ucsUCRV;
 				<envar>log/rotate/weeks</envar>, with the default setting being 12) and older
 				log files are then deleted. For example, the current log file for the
-				Univention Directory Listener is found in the <filename>listener.log</filename>
+				&ucsUDL; is found in the <filename>listener.log</filename>
 				file; the one for the previous week in <filename>listener.log.1</filename>,
 				etc.
 			</para>

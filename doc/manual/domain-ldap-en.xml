@@ -45,8 +45,8 @@
 		to the LDAP directory.
 	</para>
 	<para>
-		Replication of the directory data within a UCS domain occurs via the Univention
-		Directory Listener/Notifier mechanism. Further information can be found in
+		Replication of the directory data within a UCS domain occurs via the
+		&ucsUDL;/Notifier mechanism. Further information can be found in
 		<xref linkend="domain:listenernotifier"/>.
 	</para>
 	<para>
@@ -613,7 +613,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 			<para>
 			  If LDAP schema extensions are to be delivered as part of software packages, there is
 			  also the possibility of packaging them and distributing them to all the &ucsBackupDN;
-			  servers in the domain using a Univention Directory listener module. Further
+			  servers in the domain using a &ucsUDL; module. Further
 			  information is available in <xref linkend="packaging-schema-extensions"/>.
 			</para>
 
@@ -636,9 +636,9 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 				<filename>/var/lib/univention-ldap/schema/md5</filename> file.
 			</para>
 			<para>
-				The actual replication of the schema definitions is initiated by the Univention
-				Directory Listener. Prior to every request from the Univention Directory
-				Notifier for a new transaction ID, its current schema ID is requested. If this
+				The actual replication of the schema definitions is initiated by the &ucsUDL;.
+				Prior to every request from the &ucsUDN;
+				for a new transaction ID, its current schema ID is requested. If this
 				is higher than the schema ID on the listener side, the currently used
 				sub-schema is procured from the notifier system's LDAP server via an LDAP
 				search.
@@ -667,7 +667,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
 		  <envar>ldap/logging/exclude2</envar>, etc.  As standard, the container is excluded in
 		  which the temporary objects are stored (<uri>cn=temporary,cn=univention</uri>). The LDAP changes are
-		  logged by a Univention directory listener module. The Univention directory listener
+		  logged by a &ucsUDL; module. The &ucsUDL;
 		  service must be restarted if changes are made to the &ucsUCR; variables.
 		</para>
 
@@ -774,7 +774,7 @@ slapcat &gt; ldapdata.txt
 		<para>
 		  If LDAP ACL extensions are to be delivered as part of software packages, there is also the
 		  possibility of packaging them and distributing them to all the LDAP servers in the domain
-		  using a Univention Directory listener module. Further information is available in <xref
+		  using a &ucsUDL; module. Further information is available in <xref
 		  linkend="packaging-acl-extensions"/>.
 		</para>
 
@@ -958,8 +958,7 @@ slapcat &gt; ldapdata.txt
 	<title>Listener/notifier replication workflow</title>
 
 	<para>
-	  Replication of the directory data within a UCS domain occurs via the Univention
-	  Directory Listener/Notifier mechanism:
+	  Replication of the directory data within a UCS domain occurs via the &ucsUDL;/Notifier mechanism:
 
 	  <itemizedlist>
 		<listitem> <simpara>
@@ -1754,7 +1753,7 @@ apt-get dselect-upgrade
 		</listitem>
 		<listitem>
 			<simpara>
-				Now, the most important services OpenLDAP, Samba, Kerberos and Univention Directory Notifier and Listener will be stopped.
+				Now, the most important services OpenLDAP, Samba, Kerberos and &ucsUDN; and Listener will be stopped.
 				Important &ucsUCRV;, such as <envar>ldap/master</envar> and <envar>server/role</envar> will be changed. The UCS Root CA certificate will be available via the webserver on the &ucsBackupDN;. All mentioned services will be started again.
 			</simpara>
 		</listitem>

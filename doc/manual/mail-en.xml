@@ -167,7 +167,7 @@
 			  and Dovecot. Primary e-mail addresses must always be unique. Only one primary e-mail
 			  address can be configured for every user. It also defines the user's IMAP mailbox.
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
-			  the IMAP inbox is automatically created by a Univention directory listener module.
+			  the IMAP inbox is automatically created by a &ucsUDL; module.
 			  The domain part of the e-mail address must be registered in &ucsUMC; (see
 			  <xref linkend="mail::management::domains"/>).
 			</para>

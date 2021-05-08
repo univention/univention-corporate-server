@@ -27,7 +27,7 @@
 			programming languages.
 		</para>
 		<para>
-			On top of the raw <acronym>LDAP</acronym> layer, the Univention Directory Manager offers an object model on a higher level,
+			On top of the raw <acronym>LDAP</acronym> layer, the &ucsUDM; offers an object model on a higher level,
 			featuring advanced object semantics (see <xref linkend="chap:udm"/>). That is the level that usually appropriate for app developers, which
 			should be considered before venturing down to the level of direct <acronym>LDAP</acronym> operations. On the other hand, for the development
 			of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.

@@ -227,7 +227,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <para>
 Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte Benutzerschnittstelle &ucsUMC; (UMC).
-Daneben ermöglicht Univention Directory Manager auch die Umsetzung aller domänenweiten
+Daneben ermöglicht &ucsUDM; auch die Umsetzung aller domänenweiten
 administrativen Aufgaben über eine Kommandozeilen-Schnittstelle. Dies eignet
 sich besonders für die Integration in Skripte oder automatisierte
 administrative Schritte.

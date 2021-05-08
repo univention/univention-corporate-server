@@ -9,10 +9,10 @@
 	%entities;
 ]>
 <chapter id="chap:listener">
-	<title>Univention Directory Listener
+	<title>&ucsUDL;
 		<indexterm><primary>Directory Listener</primary></indexterm>
 		<indexterm><primary>Listener</primary><see>Directory Listener</see></indexterm>
-		<indexterm><primary>Univention Directory Listener</primary><see>Directory Listener</see></indexterm>
+		<indexterm><primary>&ucsUDL;</primary><see>Directory Listener</see></indexterm>
 	</title>
 
 	<para>

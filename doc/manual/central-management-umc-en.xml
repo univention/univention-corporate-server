@@ -1329,7 +1329,7 @@ udm settings/ldapacl remove \
 
 
 <section id="central:udm">
-	<title>Command line interface of domain management (Univention Directory Manager)</title>
+	<title>Command line interface of domain management (&ucsUDM;)</title>
 	<para>
 		The &ucsUDM; is the command line interface of the domain management
 		function of &ucsUMC;. It expands the web-based interface of the

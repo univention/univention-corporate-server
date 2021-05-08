@@ -1735,7 +1735,7 @@ auth/sshd/restrict: yes
                     Logdateien in einem Intervall (konfigurierbar in Wochen über
                     die &ucsUCRV; <envar>log/rotate/weeks</envar>, standardmäßig 12) fortlaufend benannt werden
                     und ältere Logdateien anschließend gelöscht werden. Die aktuelle Logdatei für
-                    den Univention Directory Listener findet sich beispielsweise in der
+                    den &ucsUDL; findet sich beispielsweise in der
                     Datei <filename>listener.log</filename>, die der Vorwoche in <filename>listener.log.1</filename> usw.
                 </para>
                 <para>
