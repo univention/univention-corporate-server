@@ -68,12 +68,10 @@ def main(filenames, ignore_exceptions={}):
 	tracebacks = {}
 	for filename in filenames:
 		opener = gzip.open if filename.endswith('.gz') else open
-		with opener(filename) as fd:
+		with opener(filename, 'r') as fd:
 			line = True
 			while line:
 				line = fd.readline()
-				if isinstance(line, bytes):
-					line = line.decode('UTF-8', 'replace')
 				if line.endswith('Traceback (most recent call last):\n'):
 					lines = []
 					line = '  '
