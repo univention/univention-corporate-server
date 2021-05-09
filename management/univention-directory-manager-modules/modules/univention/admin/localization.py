@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-|UDM| localization.
-
-usage::
-
-	translation = univention.admin.localization.translation()
-	_ = translation.translate
-"""
+#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -33,6 +26,15 @@ usage::
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| localization.
+
+usage::
+
+	translation = univention.admin.localization.translation()
+	_ = translation.translate
+"""
 
 from univention.lib.i18n import Translation
 

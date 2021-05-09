@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  admin module for the DNS objects
-#
 # Copyright 2018-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +27,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+|UDM| module for Portal settings
+"""
 
 import univention.admin.handlers
 import univention.admin.handlers.settings.portal

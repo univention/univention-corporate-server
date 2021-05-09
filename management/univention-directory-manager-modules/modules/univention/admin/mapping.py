@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Functions to map between |UDM| properties and |LDAP| attributes.
-"""
+#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -28,6 +26,10 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Functions to map between |UDM| properties and |LDAP| attributes.
+"""
 
 from __future__ import absolute_import
 

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-|UDM| policy utilities
-"""
+#
 # Copyright 2015-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -28,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| policy utilities
+"""
 
 from typing import Any, Dict, Tuple  # noqa F401
 

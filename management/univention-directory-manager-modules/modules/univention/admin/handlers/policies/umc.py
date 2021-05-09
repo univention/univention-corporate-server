@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#  admin module: policy defining access restriction for UMC
-#
 # Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+admin module: policy defining access restriction for UMC
+"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax as udm_syntax

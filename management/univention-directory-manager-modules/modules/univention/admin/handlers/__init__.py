@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  base class for the handlers
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 """
 This module is the base for all Univention Directory Management handler modules.
 A UDM handler represents an abstraction of an LDAP object.

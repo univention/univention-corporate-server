@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Directory Manager
-"""listener script for UDM extension modules."""
-#
 # Copyright 2013-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""listener script for UDM extension modules."""
 
 from __future__ import absolute_import
 

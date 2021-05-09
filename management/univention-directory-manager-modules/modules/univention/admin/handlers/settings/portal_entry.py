@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Directory Manager Modules
-#  directory manager module for Portal entries
-#
 # Copyright 2017-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| module for Portal entries
+"""
 
 import six
 from ldap.dn import escape_dn_chars

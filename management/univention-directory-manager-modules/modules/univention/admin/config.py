@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-|UDM| configuration basics
-
-.. deprecated:: UCS 4.4
-"""
+#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +26,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| configuration basics
+
+.. deprecated:: UCS 4.4
+"""
 
 from __future__ import absolute_import
 
