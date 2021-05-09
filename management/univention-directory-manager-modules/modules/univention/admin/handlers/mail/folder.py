@@ -152,8 +152,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _post_unmap(self, oldinfo, oldattr):
 		cn = oldattr.get('cn', [b''])[0].decode('UTF-8')
 		if cn:
-			oldinfo['name'] = cn.split('@', 1)[0]
-			oldinfo['mailDomain'] = cn.split('@', 1)[1]
+			oldinfo['name'], oldinfo['mailDomain'] = cn.split('@', 1)
 
 		# fetch values for ACLs
 		acls = oldattr.get('univentionMailACL', [])
