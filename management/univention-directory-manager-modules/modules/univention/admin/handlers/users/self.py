@@ -42,12 +42,10 @@ _ = translation.translate
 
 module = 'users/self'
 operations = ['edit', 'search']
-options = {}
 
+options = udm_user.options
+property_descriptions = udm_user.property_descriptions
 mapping = udm_user.mapping
-
-property_descriptions = {}
-
 layout = [Tab(_('General'), layout=[])]
 
 uid_umlauts = 0
