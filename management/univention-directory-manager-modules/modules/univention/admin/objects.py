@@ -67,7 +67,7 @@ def get_superordinate(module, co, lo, dn):
 	if super_modules:
 		while dn:
 			attr = lo.get(dn)
-			super_module = set(univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)) & super_modules
+			super_module = {univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)} & super_modules
 			if super_module:
 				super_module = univention.admin.modules.get(list(super_module)[0])
 				return get(super_module, co, lo, None, dn)

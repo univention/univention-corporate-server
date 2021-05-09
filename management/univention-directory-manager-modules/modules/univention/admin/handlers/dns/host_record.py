@@ -182,7 +182,7 @@ class object(univention.admin.handlers.simpleLdap):
 						newARecord.append(address.encode('ASCII'))
 
 			# explode all IPv6 addresses and remove duplicates
-			newAaaaRecord = list(set([ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord]))
+			newAaaaRecord = {ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord}
 			newAaaaRecord = [x.encode('ASCII') for x in newAaaaRecord]
 
 			ml.append(('aRecord', oldARecord, newARecord, ))

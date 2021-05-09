@@ -406,9 +406,10 @@ class complex(ISyntax):
 			return ComplexMultiValueKeyValueDictType
 		elif cls.subsyntax_names:
 			class ComplexMultiValueDictType(univention.admin.types.DictionaryType):
-				properties = dict()
-				for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes):
-					properties[key] = _type_class(syn)
+				properties = {
+					key: _type_class(syn)
+					for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes)
+				}
 			return ComplexMultiValueDictType
 		else:
 			class ComplexListType(univention.admin.types.ListOfItems):

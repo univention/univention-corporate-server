@@ -462,8 +462,8 @@ class GenericModuleMetadata(BaseModuleMetadata):
 		:rtype: LdapMapping
 		"""
 		return LdapMapping(
-			udm2ldap=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._map.items()),
-			ldap2udm=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._unmap.items())
+			udm2ldap={k: v[0] for k, v in self._udm_module._orig_udm_module.mapping._map.items()},
+			ldap2udm={k: v[0] for k, v in self._udm_module._orig_udm_module.mapping._unmap.items()}
 		)
 
 

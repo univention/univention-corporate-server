@@ -214,7 +214,7 @@ class TypeHint(object):
 		return self.syntax.parse_command_line(value)
 
 	def get_openapi_definition(self):
-		return dict((key, value) for key, value in self.openapi_definition().items() if value is not None and value not in (float('inf'), -float('inf')))
+		return {key: value for key, value in self.openapi_definition().items() if value is not None and value not in (float('inf'), -float('inf'))}
 
 	def openapi_definition(self):
 		definition = {
@@ -642,7 +642,7 @@ class AppcenterTranslation(KeyValueDictionaryType):
 
 	def decode_value(self, value):
 		value = [x.partition(' ')[::2] for x in value]
-		return dict((k.lstrip('[').rstrip(']'), v) for k, v in value)
+		return {k.lstrip('[').rstrip(']'): v for k, v in value}
 
 	def encode_value(self, value):
 		value = ['[{}] {}'.format(k, v) for k, v in value.items()]

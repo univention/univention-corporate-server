@@ -466,7 +466,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if 'posix' not in self.options:
 			al.append(['objectClass', b'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
-		if set(('posix', 'samba')) & set(self.options):
+		if {'posix', 'samba'} & set(self.options):
 			al.append(('gidNumber', [self.gidNum.encode('ASCII')]))
 		if 'samba' in self.options:
 			al.append(('sambaSID', [self.groupSid.encode('ASCII')]))
@@ -527,7 +527,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# calling keepCase is not necessary as the LDAP server already handles the case when removing elements
 			# TODO: removable?
 			def keepCase(members, oldMembers):
-				mapping = dict((x.lower(), x) for x in oldMembers)
+				mapping = {x.lower(): x for x in oldMembers}
 				return [mapping.get(member.lower(), member) for member in members]
 
 			# create lists for memberUid entries to be added or removed
@@ -728,8 +728,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# test short dependencies: A -> B -> A
 		# ==> intersection of nestedGroup and memberOf is not empty
-		set_nestedGroup = set([x.lower() for x in self.info.get('nestedGroup', [])])
-		set_memberOf = set([x.lower() for x in self.info.get('memberOf', [])])
+		set_nestedGroup = {x.lower() for x in self.info.get('nestedGroup', [])}
+		set_memberOf = {x.lower() for x in self.info.get('memberOf', [])}
 		set_intersection = set_nestedGroup & set_memberOf
 		if set_intersection:
 			childdn = list(set_intersection)[0]

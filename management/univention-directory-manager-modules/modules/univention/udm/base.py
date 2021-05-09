@@ -50,7 +50,7 @@ class BaseObjectProperties(object):
 	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
-			pprint.pformat(dict((k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')), indent=2)
+			pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2)
 		)
 
 	def __deepcopy__(self, memo):

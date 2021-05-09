@@ -691,7 +691,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return _('%(name)s (%(path)s on %(host)s)') % self
 
 	def check_options_for_validity(self):
-		if not set(self.options) & set(['samba', 'nfs']):
+		if not set(self.options) & {'samba', 'nfs'}:
 			raise univention.admin.uexceptions.invalidOptions(_('Need %(samba)s or %(nfs)s in options to create a share.') % {
 				'samba': options['samba'].short_description,
 				'nfs': options['nfs'].short_description})

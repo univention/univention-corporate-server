@@ -135,7 +135,7 @@ class object(DHCPBase):
 		'dynamic_bootp_clients': 'dynamic bootp clients',
 		'all_clients': 'all clients',
 	}
-	permits_dhcp2udm = dict((value, key) for (key, value) in permits_udm2dhcp.items())
+	permits_dhcp2udm = {value: key for (key, value) in permits_udm2dhcp.items()}
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)

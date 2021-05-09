@@ -39,4 +39,4 @@ def get_all_udm_module_names():  # type: () -> List(str)
 	:rtype: list(str)
 	"""
 	univention.admin.modules.update()
-	return sorted([mod for mod in univention.admin.modules.modules.keys()])
+	return sorted(mod for mod in univention.admin.modules.modules)

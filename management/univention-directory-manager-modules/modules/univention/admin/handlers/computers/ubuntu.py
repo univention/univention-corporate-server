@@ -269,7 +269,7 @@ class object(ComputerObject):
 	SAMBA_ACCOUNT_FLAG = 'W'
 
 	def check_required_options(self):
-		if not set(self.options) & set(['posix', 'kerberos']):
+		if not set(self.options) & {'posix', 'kerberos'}:
 			raise univention.admin.uexceptions.invalidOptions(_('At least posix or kerberos is required.'))
 
 	def link(self):

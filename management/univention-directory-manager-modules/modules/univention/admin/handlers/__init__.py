@@ -2113,7 +2113,7 @@ class simpleComputer(simpleLdap):
 			if results:
 				ud.debug(ud.ADMIN, ud.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % (name))
 				RE = re.compile(r'cn=[^,]+_uv(\d+),')
-				taken = set(int(m.group(1)) for m in (RE.match(dn) for dn in results) if m)
+				taken = {int(m.group(1)) for m in (RE.match(dn) for dn in results) if m}
 				n = min(set(range(max(taken) + 2)) - taken) if taken else 0
 				name = '%s_uv%d' % (name, n)
 
@@ -2321,10 +2321,10 @@ class simpleComputer(simpleLdap):
 
 		tmppos = univention.admin.uldap.position(self.position.getDomain())
 		results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=*)(%s=%s))', (name, attr, addr.exploded)), unique=False)
-		hostname_list = set(
+		hostname_list = {
 			u'%s.%s.' % (name, attr['zoneName'][0].decode('UTF-8'))
 			for dn, attr in results
-		)
+		}
 		if not hostname_list:
 			ud.debug(ud.ADMIN, ud.ERROR, 'Could not determine host record for name=%r, ip=%r. Not creating pointer record.' % (name, ip))
 			return
@@ -3547,8 +3547,8 @@ class _MergedAttributes(object):
 		self.case_insensitive_attributes = ['objectClass']
 
 	def get_attributes(self):
-		attributes = set(self.obj.oldattr.keys()) | set(x[0] for x in self.modlist)
-		return dict((attr, self.get_attribute(attr)) for attr in attributes)
+		attributes = set(self.obj.oldattr.keys()) | {x[0] for x in self.modlist}
+		return {attr: self.get_attribute(attr) for attr in attributes}
 
 	def get_attribute(self, attr):
 		values = set(self.obj.oldattr.get(attr, []))
