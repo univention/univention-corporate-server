@@ -155,12 +155,11 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for transKey in ['ShortDescription', 'LongDescription']:
-			translations = []
-			for key in self.oldattr.keys():
-				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey):
-					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
-					txt = self.oldattr[key][0].decode('UTF-8')
-					translations.append((lang, txt))
+			translations = [
+				('%s_%s' % (key[-5:-3].lower(), key[-2:].upper()), vals[0].decode('UTF-8'))
+				for key, vals in self.oldattr.items()
+				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey)
+			]
 
 			debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations))
 			self['translation%s' % transKey] = translations

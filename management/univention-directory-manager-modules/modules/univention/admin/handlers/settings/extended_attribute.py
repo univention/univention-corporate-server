@@ -38,15 +38,17 @@ import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
-module = 'settings/extended_attribute'
 
+module = 'settings/extended_attribute'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
+
 childs = False
 short_description = _('Settings: Extended attribute')
 object_name = _('Extended attribute')
 object_name_plural = _('Extended attributes')
 long_description = ''
+
 options = {
 	'default': univention.admin.option(
 		short_description=short_description,
@@ -54,6 +56,7 @@ options = {
 		objectClasses=['top', 'univentionUDMProperty'],
 	),
 }
+
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Unique name'),
@@ -341,14 +344,13 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
-			translations = []
-			for key in self.oldattr.keys():
-				if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey):
-					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
-					txt = self.oldattr[key][0].decode('UTF-8')
-					translations.append((lang, txt))
+			translations = [
+				('%s_%s' % (key[-5:-3].lower(), key[-2:].upper()), vals[0].decode('UTF-8'))
+				for key, vals in self.oldattr.items()
+				if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey)
+			]
 
-			ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
+			ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, translations))
 			self['translation%s' % transKey] = translations
 
 		self.save()
