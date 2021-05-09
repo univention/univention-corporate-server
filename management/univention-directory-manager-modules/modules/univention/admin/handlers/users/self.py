@@ -41,12 +41,10 @@ _ = translation.translate
 
 module = 'users/self'
 operations = ['edit', 'search']
-options = {}
 
+options = udm_user.options
+property_descriptions = udm_user.property_descriptions
 mapping = udm_user.mapping
-
-property_descriptions = {}
-
 layout = [Tab(_('General'), layout=[])]
 
 uid_umlauts = 0
@@ -63,4 +61,4 @@ class object(univention.admin.handlers.users.user.object):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	dn = lo.whoami()
-	return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit) if lo.compare_dn(dn, user.dn)]
+	return udm_user.lookup(co, lo, filter_s, dn, superordinate, scope='base', unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
