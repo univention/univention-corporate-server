@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  admin module for dns records
-#
 # Copyright 2017-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +27,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 # vim: set fileencoding=utf-8 et sw=4 ts=4 :
+
+"""
+|UDM| module for |DNS| records
+"""
 
 import six
 

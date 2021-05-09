@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#
 # Copyright 2011-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +27,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| module for |UMC| operation set objects
+"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax as udm_syntax

@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  passwd part for the command line interface
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+passwd part for the command line interface
+"""
 
 import os
 import getopt

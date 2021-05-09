@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  admin module for the DHCP subnet
-#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+|UDM| module for |DHCP| subnets
+"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter

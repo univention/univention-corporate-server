@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 #
-'''Univention Admin Modules
-migration tool for univentionObjectType'''
-#
 # Copyright 2005-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,6 +26,10 @@ migration tool for univentionObjectType'''
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Migration tool for `univentionObjectType`
+"""
 
 from __future__ import print_function
 

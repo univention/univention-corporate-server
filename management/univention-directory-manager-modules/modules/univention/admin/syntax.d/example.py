@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+"""
+Example for |UDM| syntax.
+"""
+
 from univention.admin.syntax import select
 
 

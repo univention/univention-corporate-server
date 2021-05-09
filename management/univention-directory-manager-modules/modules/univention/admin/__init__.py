@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-|UDM| basic functionality
-"""
-from __future__ import print_function
+#
 # Copyright 2004-2021 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,7 +27,11 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+"""
+|UDM| basic functionality
+"""
+
+from __future__ import absolute_import, print_function
 
 import copy
 import sys
