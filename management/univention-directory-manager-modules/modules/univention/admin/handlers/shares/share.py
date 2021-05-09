@@ -688,7 +688,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.homeShareUsed(exstr)
 
 	def description(self):
-		return _('%(name)s (%(path)s on %(host)s)') % {'name': self['name'], 'path': self['path'], 'host': self['host']}
+		return _('%(name)s (%(path)s on %(host)s)') % self
 
 	def check_options_for_validity(self):
 		if not set(self.options) & set(['samba', 'nfs']):

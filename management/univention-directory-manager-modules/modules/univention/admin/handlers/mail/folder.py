@@ -169,7 +169,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def description(self):
 		"""Returns a name that identifies the object. This may be used
 		to override the default value that is the property marked with identifies = True"""
-		return '%s@%s' % (self['name'], self['mailDomain'])
+		return '%(name)s@%(mailDomain)s' % self
 
 	def _ldap_dn(self):
 		name = '%s@%s' % (self.info['name'], self.info['mailDomain'])
