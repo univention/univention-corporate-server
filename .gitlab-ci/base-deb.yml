@@ -29,7 +29,6 @@ stages:
   script:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
-    - apt-get -qq --no-install-recommends install curl
     - .gitlab-ci/aptly-upload ${base}_*.changes
 
 prepare ucslint:

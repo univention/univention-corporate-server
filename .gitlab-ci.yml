@@ -27,7 +27,9 @@ prepare aptly:
   stage: build
   rules:
     - when: always
-  image: docker-registry.knut.univention.de/curlimages/curl
+  image:
+    name: $BUILD
+    entrypoint: [""]
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
     - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
