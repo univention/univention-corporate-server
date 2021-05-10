@@ -68,6 +68,8 @@ doc-pipeline:
       - "doc/errata?*/**/*"
   needs:
     - generate-config
+  variables:
+    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-doc.yml
@@ -96,6 +98,8 @@ deb-pipeline:
       - "test/univention-demo-configuration/**/*"
   needs:
     - generate-config
+  variables:
+    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-deb.yml
