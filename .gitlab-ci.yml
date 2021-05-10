@@ -72,6 +72,7 @@ doc-pipeline:
     include:
       - artifact: generated-config-doc.yml
         job: generate-config
+    strategy: depend
 
 deb-pipeline:
   stage: test
@@ -99,3 +100,4 @@ deb-pipeline:
     include:
       - artifact: generated-config-deb.yml
         job: generate-config
+    strategy: depend
