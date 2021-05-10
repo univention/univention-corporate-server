@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e -u
 
-base="$(dirname "$1")"
+[ -s "$1" ]
+dir="$(dirname "$1")"
+base="$(basename "$1" .changes)"
 pkg="${base%%_*}"
 
 aptly () {
@@ -22,7 +24,7 @@ aptly () {
 
 upload () {
     RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
-    args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
+    args="$(sed -rne "s!${RE}!-F file=@${dir}/\\5!p" "$1")"
     # shellcheck disable=SC2086
     aptly upload \
         -X POST \
@@ -36,6 +38,7 @@ list () {
         --data-urlencode q="\$Source ($pkg)" \
         --get "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
     )"
+    echo "$pkgs"
 }
 
 delete () {
