@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-10) unstable; urgency=medium
+
+  * Bug #53217: css adjustments for browser compatibility
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 May 2021 10:05:46 +0200
+
 univention-management-console-module-udm (10.0.1-9) unstable; urgency=medium
 
   * bug #52941: set icon for users/self

@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-24) unstable; urgency=medium
+
+  * Bug #53217: css adjustments for browser compatibility
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 May 2021 10:04:58 +0200
+
 univention-system-setup (13.0.3-23) unstable; urgency=medium
 
   * Bug #53160: adjust design of initialsetup site
