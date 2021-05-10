@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-12) unstable; urgency=medium
+
+  * Bug #53209: Fix join script handling (univention-join debhelper) (3)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 May 2021 16:45:15 +0200
+
 univention-self-service (5.0.1-11) unstable; urgency=medium
 
   * Bug #53209: Fix join script handling (univention-join debhelper) (2)

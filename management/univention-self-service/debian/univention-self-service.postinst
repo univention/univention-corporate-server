@@ -30,29 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+#DEBHELPER#
 
-a2ensite univention-self-service.conf
 univention-config-registry set \
 	"umc/web/hooks/univention-self-service?passwordreset" \
 	"umc/login/links/forgot_your_password/enabled?true"
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
-	# Update to UCS 4.2
-	rm -f /etc/self-service-ldap.secret
-	deluser --system --remove-home self-service
-	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/service/(passwordreset|passwordchange)/.*')
-	if [ -n "$keys" ]; then
-		univention-config-registry unset $keys
-	fi
-fi
-
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/65univention-self-service.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-#DEBHELPER#
-
 
 exit 0
