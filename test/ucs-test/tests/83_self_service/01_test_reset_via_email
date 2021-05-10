@@ -34,6 +34,7 @@ def main():
 		finally:
 			# force all module processes to close
 			subprocess.call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
+			time.sleep(3)
 
 
 def test_contact(user):
