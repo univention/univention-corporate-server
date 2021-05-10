@@ -360,6 +360,9 @@
 				<listitem><simpara>
 					The App Center can now install multiple Apps at once. It also resolves dependencies between Apps automatically during install (<u:bug>40225</u:bug>, <u:bug>52863</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Apps can now define in which way they want to be opened in the new Univention Portal (<u:bug>53161</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
