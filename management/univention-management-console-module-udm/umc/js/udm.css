@@ -90,7 +90,7 @@
 
 .umc .umcLabelPane .udmAppLabel {
 	display: inline-grid;
-	grid-gap: 6px 8px;
+	gap: 6px 8px;
 	grid-template-columns: 1rem 3.5em auto;
 	grid-template-rows: auto auto;
 	grid-template-areas: "checkbox icon label" "overwrite overwrite overwrite";
@@ -160,10 +160,14 @@
 
 /* ReferencingObjects widget */
 .umc .umcReferencingObjects {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    /* gap: calc(2 * var(--layout-spacing-unit)); */
     justify-items: flex-start;
+    margin: calc(-1 * var(--layout-spacing-unit));
+}
+.umc .umcReferencingObjects > .ucsButton {
+	margin: var(--layout-spacing-unit);
 }
 
 

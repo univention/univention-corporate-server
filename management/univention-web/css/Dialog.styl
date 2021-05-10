@@ -61,21 +61,26 @@
 	padding: spacing(2)
 	display: flex
 	align-items: center
-	grid-gap: 0 1rem
 .umc .dijitDialogCloseIcon
 	margin-left: auto
 .umc .dijitDialogTitle
 	@extends h2
+	margin-right: spacing(1)
 
 .umc .dijitDialogPaneContent
 	padding: 0 spacing(2) spacing(2)
 
 .umc .umcDialogActionBar
 	display: flex
+	flex-wrap: wrap
 	justify-content: space-between
-	grid-gap: spacing(1)
 	border-top: thin solid var(--bgc-content-body)
 	padding: spacing(1) spacing(2)
+	// gap: spacing(1) // replace margin with this if supported in all browsers
+	margin: spacing(-1, true)
+	> .ucsButton
+		margin: spacing(1, true)
+
 
 .umc .dijitDialog .umcPageFooter
 	border-top: thin solid var(--bgc-content-body)

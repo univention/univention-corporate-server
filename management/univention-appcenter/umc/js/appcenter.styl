@@ -170,7 +170,10 @@
 	flex: 1 1 auto
 	display: flex
 	flex-wrap: wrap
-	grid-gap: var(--layout-spacing-unit)
+	// gap: var(--layout-spacing-unit) // replace margin with this if supported in all browsers
+	margin: calc(-1 * var(--layout-spacing-unit-small))
+	> .ucsButton
+		margin: var(--layout-spacing-unit-small)
 
 .umcTiles__actionBar__text
 	flex: 0 0 auto
@@ -181,7 +184,7 @@
 .umcTiles__collection
 	display: grid
 	grid-template-columns: repeat(auto-fill, 8rem)
-	grid-gap: calc(4 * var(--layout-spacing-unit)) var(--layout-spacing-unit)
+	gap: calc(4 * var(--layout-spacing-unit)) var(--layout-spacing-unit)
 	padding: calc(2 * var(--layout-spacing-unit))
 	justify-content: space-between
 
@@ -201,9 +204,9 @@
 	width: 100%
 
 .umcManageAppInstallationsDialogButtons
-	display: flex
-	flex-direction: column
-	grid-gap: calc(2 * var(--layout-spacing-unit)) 0
+	display: grid
+	grid-auto-flow: row
+	gap: calc(2 * var(--layout-spacing-unit)) 0
 
 .umcAppText
 	display: flex
@@ -580,7 +583,7 @@
 	position: relative
 	display: grid
 	grid-auto-flow: column
-	gap: 1rem
+	gap: calc(2 * var(--layout-spacing-unit))
 
 .imageGallery__dot
 	width: 0.5rem
@@ -598,11 +601,11 @@
 
 .umcAppDetailsPage__content
 	display: grid
-	gap: 2rem
+	gap: calc(4 * var(--layout-spacing-unit))
 
 .umcAppDetailsPage__content__supplementaryInfo
 	display: grid
-	gap: 2rem
+	gap: calc(4 * var(--layout-spacing-unit))
 
 @media (min-width: 992px)
 	.umcAppDetailsPage__content

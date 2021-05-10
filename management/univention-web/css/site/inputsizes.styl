@@ -94,7 +94,10 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
 		margin: 0
 		display: flex
 		flex-wrap: wrap
-		grid-gap: spacing(2)
+		// gap: spacing(2) // replace margin with this if supported in all browsers
+		margin: spacing(-1)
+		> .ucsButton
+			margin: spacing(1)
 
 
 /* mobile first (width=$xxs-max): default is a one-column layout */

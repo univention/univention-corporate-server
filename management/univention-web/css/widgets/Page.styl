@@ -10,13 +10,17 @@
 	display: flex
 	justify-content: space-between
 	flex-wrap: wrap
-	grid-gap: spacing(4) spacing(2)
+	gap: spacing(4) spacing(2)
 
 .umcPageFooterLeft,
 .umcPageFooterRight
 	display: flex
 	flex-wrap: wrap
-	grid-gap: spacing(2)
+	// gap: spacing(2) // replace margin with this if supported in all browsers
+	margin: spacing(-1)
+	> .ucsButton
+		margin: spacing(1)
 
 .umcPageFooterRight
 	margin-left: auto
+	justify-content: flex-end

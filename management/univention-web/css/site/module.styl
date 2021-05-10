@@ -47,7 +47,7 @@
 	display: flex
 	align-items: center
 	flex-wrap: wrap
-	grid-gap: spacing(1) 0
+	gap: spacing(1) 0
 
 .umcModuleHeader--withSubTitle .umcModuleHeaderWrapper
 	align-items: flex-start
@@ -58,8 +58,11 @@
 .umcModuleHeaderRight__buttons
 	display: flex
 	flex-wrap: wrap
-	grid-gap: spacing(2)
 	justify-content: flex-end
+	// gap: spacing(2) // replace margin with this if supported in all browsers
+	margin: spacing(-1)
+	> .ucsButton
+		margin: spacing(1)
 
 .umcModuleTitle
 	@extends h1
