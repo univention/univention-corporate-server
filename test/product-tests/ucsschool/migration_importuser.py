@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from ucsschool.lib.models import Student
+from ucsschool.lib.models.user import Student
 from univention.admin.uldap import getAdminConnection
 import sys
 
