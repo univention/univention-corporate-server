@@ -68,7 +68,7 @@ def main(filenames, ignore_exceptions={}):
 	tracebacks = {}
 	for filename in filenames:
 		opener = gzip.open if filename.endswith('.gz') else open
-		with opener(filename, 'r') as fd:
+		with opener(filename, 'rt') as fd:
 			line = True
 			while line:
 				line = fd.readline()
