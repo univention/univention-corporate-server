@@ -729,13 +729,15 @@ update_check_for_postgresql94 () {
 
 update_check_samba_tdb_size () {  # Bug #53212
 	local var="update$VERSION/ignore_samba_tdb_size"
+	local fpath
 	local rc=0
 
 	if ! dpkg -l univention-samba4 | grep -q ^ii; then
 		return 0
 	fi
 	for p in $(ldbsearch -H /var/lib/samba/private/sam.ldb  -b '@PARTITION' -s base partition | ldapsearch-wrapper | sed -n 's/partition: //p'); do
-		if [ "$(stat -c %s "/var/lib/samba/private/${p#*:}")" -gt 1950000000 ]; then
+		fpath="/var/lib/samba/private/${p#*:}"
+		if file -b "$fpath" | grep -q "^TDB database" && [ "$(stat -c %s "$fpath")" -gt 1950000000 ]; then
 			echo "WARNING: The Samba SAM database is very large. During update Samba will attempt to convert"
 			echo "         the database to a new index format. For that step Samba requires temporary duplication"
 			echo "         of the database content, which may result in an overflow of the maximal size of the tdb"
