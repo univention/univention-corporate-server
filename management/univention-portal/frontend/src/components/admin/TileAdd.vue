@@ -30,6 +30,7 @@
   <div
     class="tile-add"
     @click="showMenu()"
+    @dragenter="dragenter"
   >
     <portal-icon
       icon="plus"
@@ -42,10 +43,14 @@
 import { defineComponent } from 'vue';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
-// mocks
+import Draggable from '@/mixins/Draggable.vue';
+
 export default defineComponent({
   name: 'TileAdd',
   components: { PortalIcon },
+  mixins: [
+    Draggable,
+  ],
   props: {
     superDn: {
       type: String,
@@ -80,9 +85,10 @@ export default defineComponent({
   border: 0.2rem solid var(--color-grey40)
   background-color: transparent
   cursor: pointer
+  box-sizing: border-box
 
   &:focus
-    border-color: var(--color-primary)
+    border-color: var(--color-focus)
 
   svg
     width: 100%

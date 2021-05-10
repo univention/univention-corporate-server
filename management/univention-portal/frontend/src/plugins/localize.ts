@@ -45,7 +45,7 @@ const localize = {
       let ret = '';
 
       if (input) {
-        ret = input[curLocale] || input[shortLocale] || input.en || input.en_US;
+        ret = input[curLocale] || input[shortLocale] || input.en || input.en_US || '';
       }
       return ret;
     };

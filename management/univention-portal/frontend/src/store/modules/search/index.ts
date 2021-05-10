@@ -30,23 +30,42 @@ import { PortalModule } from '@/store/root.models';
 
 export interface SearchState {
   searchQuery: string,
+  emptySearchResults: boolean,
 }
 
 const search: PortalModule<SearchState> = {
   namespaced: true,
-  state: { searchQuery: '' },
+  state: {
+    searchQuery: '',
+    emptySearchResults: false,
+  },
 
   mutations: {
     SET_SEARCH_QUERY(state, payload) {
       state.searchQuery = payload;
     },
+    SET_SEARCH_RESULTS_EMPTY(state) {
+      state.emptySearchResults = true;
+    },
+    SET_SEARCH_RESULTS_NOT_EMPTY(state) {
+      state.emptySearchResults = false;
+    },
   },
 
-  getters: { searchQuery: (state) => state.searchQuery },
+  getters: {
+    searchQuery: (state) => state.searchQuery,
+    hasEmptySearchResults: (state) => !!state.searchQuery && state.emptySearchResults,
+  },
 
   actions: {
     setSearchQuery({ commit }, payload) {
       commit('SET_SEARCH_QUERY', payload);
+    },
+    setSearchResultsEmpty({ commit }) {
+      commit('SET_SEARCH_RESULTS_EMPTY');
+    },
+    setSearchResultsNotEmpty({ commit }) {
+      commit('SET_SEARCH_RESULTS_NOT_EMPTY');
     },
   },
 };

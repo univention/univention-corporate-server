@@ -143,18 +143,18 @@ export default defineComponent({
     &:focus
       border-radius: 100%
     &:focus
-      border: 0.2rem solid var(--color-primary)
+      border: 0.2rem solid var(--color-focus)
       outline: none
 
     &--success
       &:hover,
       &:focus
-        background-color: var(--notification-success)
+        background-color: var(--color-notification-success)
 
     &--warning
       &:hover,
       &:focus
-        background-color: var(--notification-warning)
+        background-color: var(--color-notification-warning)
 
     &--error
       &:hover,

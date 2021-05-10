@@ -83,5 +83,6 @@ export default defineComponent({
 </script>
 <style lang="stylus">
 .tile-add-modal-button
-    margin: var(--layout-spacing-unit)
+    margin: calc(2 * var(--layout-spacing-unit)) 0
+    width: 100%
 </style>

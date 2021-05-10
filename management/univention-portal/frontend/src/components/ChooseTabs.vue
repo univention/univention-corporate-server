@@ -120,7 +120,7 @@ export default defineComponent({
     padding: var(--layout-spacing-unit)
 
     &:focus, &:hover
-      border-color: var(--color-primary)
+      border-color: var(--color-focus)
 
     img
       height: var(--button-size)

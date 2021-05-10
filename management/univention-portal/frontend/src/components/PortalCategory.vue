@@ -154,7 +154,9 @@ export default defineComponent({
       const data = this.dragDropIds;
       if (this.dn === data.superDn) {
         this.$store.dispatch('dragndrop/dropped');
+        this.$store.dispatch('activateLoadingState');
         await this.$store.dispatch('portalData/saveContent');
+        this.$store.dispatch('deactivateLoadingState');
       }
     },
     async categoryDropped(evt: DragEvent) {
@@ -165,7 +167,9 @@ export default defineComponent({
       const data = this.dragDropIds;
       if (!data.superDn) {
         this.$store.dispatch('dragndrop/dropped');
+        this.$store.dispatch('activateLoadingState');
         await this.$store.dispatch('portalData/savePortalCategories');
+        this.$store.dispatch('deactivateLoadingState');
       }
     },
     editCategory() {

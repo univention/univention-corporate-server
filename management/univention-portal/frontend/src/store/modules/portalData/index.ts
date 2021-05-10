@@ -54,7 +54,7 @@ const portalData: PortalModule<PortalDataState> = {
   state: {
     portal: {
       portal: {
-        name: { en_US: 'Univention Portal' },
+        name: { en_US: '' },
         background: null,
         defaultLinkTarget: 'embedded',
         dn: 'default',
@@ -144,20 +144,18 @@ const portalData: PortalModule<PortalDataState> = {
       commit('PORTALBACKGROUND', data);
     },
     async savePortalCategories({ commit, dispatch, getters }) {
-      dispatch('activateLoadingState', undefined, { root: true });
       const content = getters.portalContent;
       const portalDn = getters.getPortalDn;
       const attrs = {
         categories: content.map(([category]) => category),
       };
       await put(portalDn, attrs, { dispatch }, 'CATEGORY_ORDER_SUCCESS', 'CATEGORY_ORDER_FAILURE');
-      dispatch('deactivateLoadingState', undefined, { root: true });
     },
     async saveContent({ commit, dispatch, getters }) {
-      dispatch('activateLoadingState', undefined, { root: true });
       const content = getters.portalContent;
       const categories = getters.portalCategories;
-      const puts = await categories.map(async (category) => content.map(async ([cat, entries]) => {
+      const puts: Promise<void>[] = [];
+      categories.forEach((category) => content.forEach(([cat, entries]) => {
         if (cat !== category.dn) {
           return;
         }
@@ -168,10 +166,10 @@ const portalData: PortalModule<PortalDataState> = {
           return;
         }
         console.info('Rearranging entries for', cat);
-        await put(cat, attrs, { dispatch }, 'ENTRY_ORDER_SUCCESS', 'ENTRY_ORDER_FAILURE');
+        const ret = put(cat, attrs, { dispatch }, 'ENTRY_ORDER_SUCCESS', 'ENTRY_ORDER_FAILURE');
+        puts.push(ret);
       }));
       await Promise.all(puts);
-      dispatch('deactivateLoadingState', undefined, { root: true });
     },
     replaceContent({ commit }, content) {
       commit('CONTENT', content);
@@ -190,7 +188,11 @@ const portalData: PortalModule<PortalDataState> = {
         }
         if (category === cat) {
           const entries = [...oldEntries];
-          const idx = entries.indexOf(dst);
+          let idx = entries.indexOf(dst);
+          if (idx === -1) {
+            // TileAdd.vue
+            idx = entries.length;
+          }
           entries.splice(idx, 0, src);
           return [category, entries];
         }
@@ -239,7 +241,16 @@ const portalData: PortalModule<PortalDataState> = {
           return;
         }
         const idx1 = oldEntries.indexOf(src);
-        const idx2 = oldEntries.indexOf(dst);
+        let idx2 = oldEntries.indexOf(dst);
+        if (idx2 === -1) {
+          // TileAdd.vue
+          idx2 = oldEntries.length - 1;
+          if (idx1 === idx2) {
+            // otherwise drop does not work on TileAdd.vue
+            // I do not know exactly why, though
+            return;
+          }
+        }
         let entries: string[] = [];
         if (idx1 < idx2) {
           entries = oldEntries.slice(0, idx1);

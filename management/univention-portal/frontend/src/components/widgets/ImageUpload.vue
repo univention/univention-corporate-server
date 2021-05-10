@@ -147,9 +147,10 @@ export default defineComponent({
     height: 10rem
     width: 10rem
     cursor: pointer
+    display: flex
     img
       max-height: 10rem
-      max-width: auto
+      margin: auto
   &__footer
     margin: var(--layout-spacing-unit) 0
     display: flex

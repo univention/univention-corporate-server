@@ -133,6 +133,7 @@ const catalog = {
   TABS: _('Tabs'),
   CHOOSE_TAB: _('Choose a tab'),
   SHOW_UMC: _('Show local UMC modules'),
+  NO_RESULTS: _('No search results'),
 };
 
 export { catalog };

@@ -32,6 +32,13 @@ const draggableMixin = {
     isDraggable() {
       return this.editMode && !this.fromFolder && !this.inModal;
     },
+    canDragEnter() {
+      if (this.forFolder !== undefined) {
+        // TileAdd
+        return true;
+      }
+      return this.isDraggable;
+    },
   },
   methods: {
     dragstart(e) {
@@ -46,7 +53,7 @@ const draggableMixin = {
       });
     },
     dragenter(e) {
-      if (!this.isDraggable) {
+      if (!this.canDragEnter) {
         e.preventDefault();
         return;
       }

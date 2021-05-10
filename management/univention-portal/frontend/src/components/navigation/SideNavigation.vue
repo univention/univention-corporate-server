@@ -372,7 +372,7 @@ export default defineComponent({
     &:hover
       background-color: #272726
     &:focus
-      border: 0.2rem solid var(--color-primary);
+      border: 0.2rem solid var(--color-focus);
       outline: 0
   &__user-row
     padding-left: var(--layout-spacing-unit)
@@ -403,7 +403,7 @@ export default defineComponent({
     &:hover
       background-color: #272726
     &:focus
-      border: 0.2rem solid var(--color-primary);
+      border: 0.2rem solid var(--color-focus);
       outline: 0
 
     span

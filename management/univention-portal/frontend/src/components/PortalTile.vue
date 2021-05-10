@@ -231,9 +231,10 @@ export default defineComponent({
     height: @width
     margin-bottom: calc(2 * var(--layout-spacing-unit))
     border: 0.2rem solid transparent
+    box-sizing: border-box
 
     ~/:focus &
-      border-color: var(--color-primary)
+      border-color: var(--color-focus)
 
     &--dragable
       position: relative

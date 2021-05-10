@@ -82,7 +82,7 @@ msgstr "Kategorien erfolgreich umsortiert"
 
 #: src/assets/data/dictionary.js:104
 msgid "Category could not be added"
-msgstr "Kategories konnte nicht hinzugefügt werden"
+msgstr "Kategorie konnte nicht hinzugefügt werden"
 
 #: src/assets/data/dictionary.js:100
 msgid "Category could not be created"
@@ -94,7 +94,7 @@ msgstr "Kategorie konnte nicht bearbeitet werden"
 
 #: src/assets/data/dictionary.js:106
 msgid "Category could not be removed"
-msgstr "Kategories konnte nicht entfernt werden"
+msgstr "Kategorie konnte nicht entfernt werden"
 
 #: src/assets/data/dictionary.js:103
 msgid "Category successfully added"

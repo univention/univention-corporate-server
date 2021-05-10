@@ -113,7 +113,6 @@ License with the Debian GNU/Linux or Univention distribution in file
         :aria-label="ariaLabelMenu"
         icon="menu"
         @click="dismissNotification('menu')"
-        @keydown.tab.exact.prevent="activeMenuButton ? dismissNotification('menu') : focusIntoSideNavIfOpen()"
       />
     </div>
 
@@ -229,9 +228,6 @@ export default defineComponent({
     goHome(): void {
       this.$store.dispatch('tabs/setActiveTab', 0);
     },
-    focusIntoSideNavIfOpen(): void {
-      (document.querySelector('.portal-tile') as HTMLFormElement).focus();
-    },
     stopEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', false);
       this.$store.dispatch('navigation/setActiveButton', '');
@@ -270,7 +266,7 @@ export default defineComponent({
     border: 0.2rem solid rgba(0,0,0,0)
 
     &:focus
-      border: 0.2rem solid var(--color-primary)
+      border: 0.2rem solid var(--color-focus)
       outline: 0
 
     &-image

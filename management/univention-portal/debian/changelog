@@ -1,3 +1,9 @@
+univention-portal (4.0.5-47) unstable; urgency=medium
+
+  * Bug #53234: Fix blockers for UCS 5
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 May 2021 12:14:32 +0200
+
 univention-portal (4.0.5-46) unstable; urgency=medium
 
   * Bug #52941: icons for univention portal in different sizes added

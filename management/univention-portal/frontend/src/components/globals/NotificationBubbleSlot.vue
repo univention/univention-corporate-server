@@ -106,7 +106,7 @@ export default defineComponent({
   },
   methods: {
     clickable(item): boolean {
-      return item.onClick !== null;
+      return !!item.onClick;
     },
     onClick(item): void {
       if (this.clickable(item)) {
@@ -138,17 +138,18 @@ export default defineComponent({
     backdrop-filter: blur(2rem)
     border-radius: var(--border-radius-notification)
     padding: var(--layout-spacing-unit)
+    padding-left: calc(3 * var(--layout-spacing-unit))
     margin-bottom: calc(2 * var(--layout-spacing-unit))
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4)
 
     &--default
       background-color: rgba(0,0,0,0.4)
 
     &--success
-      background-color: var(--notification-success)
+      background-color: var(--color-notification-success)
 
     &--warning
-      background-color: var(--notification-warning)
+      background-color: var(--color-notification-warning)
 
     &--error
       background-color: var(--notification-error)
@@ -156,7 +157,6 @@ export default defineComponent({
   &__header
     display: flex
     align-items: center
-    margin-bottom: var(--layout-spacing-unit)
 
   &__title
     flex: 1 1 auto
@@ -167,10 +167,11 @@ export default defineComponent({
     overflow: auto
 
   &__message
+    margin-top: var(--layout-spacing-unit)
     text-decoration: none
 
     &>a
-      color: #fff!important
+      color: var(--color-white)!important
       transition: color 250ms
       text-decoration: underline
 </style>

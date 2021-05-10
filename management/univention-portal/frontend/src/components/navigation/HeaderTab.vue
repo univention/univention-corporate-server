@@ -192,7 +192,7 @@ export default defineComponent({
     width: 100%
 
   &--focus
-    border-color: var(--color-primary);
+    border-color: var(--color-focus);
 
   &--active
     --tabColor: var(--color-grey8);
