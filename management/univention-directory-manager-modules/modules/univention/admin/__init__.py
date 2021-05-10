@@ -192,15 +192,15 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
-		u'Ä': 'Ae',
-		u'Ö': 'Oe',
-		u'Ü': 'Ue',
-		u'ä': 'ae',
-		u'ö': 'oe',
-		u'ü': 'ue',
-		u'Þ': 'P',
-		u'ð': 'o',
-		u'þ': 'p'
+		u'Ä': u'Ae',
+		u'Ö': u'Oe',
+		u'Ü': u'Ue',
+		u'ä': u'ae',
+		u'ö': u'oe',
+		u'ü': u'ue',
+		u'Þ': u'P',
+		u'ð': u'o',
+		u'þ': u'p'
 	}
 
 	def __init__(
