@@ -187,7 +187,8 @@ define([
 							);
 						}
 						this.onSearch();  // Trigger the refresh of the displayed Apps
-					})
+					}),
+					size: 'Two'
 				});
 			}));
 			var form = new Form({
