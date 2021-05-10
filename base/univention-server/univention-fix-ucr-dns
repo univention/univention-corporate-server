@@ -88,7 +88,7 @@ def main() -> None:
 	if not need_fixing:
 		log.info("No action required.")
 		return
-	add_self(nameservers, ucr)
+	add_self(nameservers, ucr, options.own_ip)
 	add_nameservers(nameservers, ucr['domainname'])
 	add_master(nameservers, ucr['ldap/master'])
 	move_nameservers(forwarders, nameservers)
@@ -128,6 +128,9 @@ def parse_args() -> Namespace:
 		'--force-self', '-f',
 		action='store_true',
 		help='Force adding self as name-server')
+	parser.add_argument(
+		'--own-ip',
+		help='Specify own IP address')
 	parser.add_argument(
 		'--add-master', '-m',
 		action='store_true',
@@ -308,7 +311,7 @@ def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
 	return need_fixing
 
 
-def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> None:
+def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: str = None) -> None:
 	"""
 	Add self as internal DNS server (on DCs).
 
@@ -324,10 +327,14 @@ def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> None:
 		log.info('Already using self')
 		return
 
-	iface = Interfaces(ucr)
-	mynet = iface.get_default_ip_address()
-	myself = mynet.ip
-	log.info('Default IP address configured in UCR: %s', myself)
+	if own_ip:
+		myself = own_ip
+		log.info('Own IP address given via CLI option: %s', myself)
+	else:
+		iface = Interfaces(ucr)
+		mynet = iface.get_default_ip_address()
+		myself = mynet.ip
+		log.info('Default IP address configured in UCR: %s', myself)
 
 	domain = ucr['domainname']
 	if not options.force_self and not query_master_src_record(domain, myself):

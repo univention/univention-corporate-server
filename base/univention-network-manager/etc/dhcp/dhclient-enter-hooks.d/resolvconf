@@ -75,7 +75,11 @@ make_resolv_conf () {
 	if	[ -e /var/univention-join/joined ] &&
 		( . /usr/share/univention-lib/base.sh ; is_domain_controller )
 	then
-		/usr/share/univention-server/univention-fix-ucr-dns --no-ucr --force-self "$@"
+		if [ -n "$new_ip_address" ]; then
+			/usr/share/univention-server/univention-fix-ucr-dns --no-ucr --force-self --own-ip "$new_ip_address" "$@"
+		else
+			/usr/share/univention-server/univention-fix-ucr-dns --no-ucr --force-self "$@"
+		fi
 	else
 		# on unjoined systems or non-domaincontrollers do not add own IP address
 		/usr/share/univention-server/univention-fix-ucr-dns --no-ucr --no-self "$@"

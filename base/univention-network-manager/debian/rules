@@ -35,4 +35,4 @@ override_dh_fixperms:
 	chmod 755 debian/univention-network-common/etc/network/if-pre-up.d/10_dhclientconf
 
 %:
-	dh $@ --with ucr
+	dh $@ --with systemd,ucr
