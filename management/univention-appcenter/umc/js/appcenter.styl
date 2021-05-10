@@ -556,7 +556,13 @@
 
 .imageGallery__navButton
 	position: absolute
-	--button-icon-highlighted-bgc: var(--color-black)
+	--bgc: var(--color-black)
+	&.dijit
+		&Hover,
+		&Focused,
+		&Active,
+		&Disabled
+			--bgc: var(--color-black)
 
 	&--left
 		left: 1rem
