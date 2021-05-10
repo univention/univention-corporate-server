@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-44) unstable; urgency=medium
+
+  * Bug #53217: fix image gallery nav buttons
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 May 2021 10:43:32 +0200
+
 univention-appcenter (9.0.2-43) unstable; urgency=medium
 
   * Bug #53217: adjust size of app search sidebar checkboxes
