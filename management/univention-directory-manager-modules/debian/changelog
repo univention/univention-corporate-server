@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-9) unstable; urgency=medium
+
+  * Bug #52878: remove unicodedata.normalize call
+
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 11 May 2021 12:46:33 +0200
+
 univention-directory-manager-modules (14.0.20-8) unstable; urgency=medium
 
   * Bug #52878: add u-string 

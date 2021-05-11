@@ -136,7 +136,6 @@ def pattern_replace(pattern, object):
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
 				text = unidecode.unidecode(text)
-				text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
 				if isinstance(whitelist, bytes):  # Python 2
