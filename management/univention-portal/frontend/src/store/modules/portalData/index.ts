@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { put } from '@/jsHelper/admin';
+import { put, adminState } from '@/jsHelper/admin';
 
 import { PortalModule } from '../../root.models';
 import { PortalData } from './portalData.models';
@@ -68,7 +68,7 @@ const portalData: PortalModule<PortalDataState> = {
       folders: [],
       categories: [],
     },
-    editMode: false,
+    editMode: adminState,
     cacheId: '',
   },
 
@@ -110,6 +110,17 @@ const portalData: PortalModule<PortalDataState> = {
     },
     EDITMODE(state, editMode) {
       state.editMode = editMode;
+
+      // save state to localstorage if we are in dev mode
+      if (process.env.VUE_APP_LOCAL) {
+        if (editMode) {
+          console.info('logged into admin mode');
+          localStorage.setItem('UCSAdmin', editMode);
+        } else {
+          console.info('logged out of admin mode');
+          localStorage.removeItem('UCSAdmin');
+        }
+      }
     },
   },
 

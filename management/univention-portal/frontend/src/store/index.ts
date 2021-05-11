@@ -32,6 +32,7 @@ import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { getCookie } from '@/jsHelper/tools';
+import { adminState } from '@/jsHelper/admin';
 import dragndrop from './modules/dragndrop';
 import locale from './modules/locale';
 import menu from './modules/menu';
@@ -70,7 +71,7 @@ const actions = {
       'X-Requested-With': 'XMLHTTPRequest',
       'Accept-Language': umcLang || 'en-US',
     };
-    if (payload.adminMode) {
+    if (payload.adminMode || adminState) {
       console.log('... in Admin mode');
       headers['X-Univention-Portal-Admin-Mode'] = 'yes';
 

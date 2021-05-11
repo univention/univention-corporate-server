@@ -247,16 +247,16 @@ function getLocalLinks(browserHostname, serverFQDN, links) {
 }
 
 export default function main(links, fqdn, locale) {
-  if (links.length === 0) {
-    return '';
-  }
   const localizedLinks = {};
   links.forEach((link) => {
     const alreadyFoundLinks = localizedLinks[link.locale] || [];
     alreadyFoundLinks.push(link.value);
     localizedLinks[link.locale] = alreadyFoundLinks;
   });
-  const usedLinks = localizedLinks[locale] || localizedLinks.en_US;
+  const usedLinks = localizedLinks[locale] || localizedLinks.en_US || [];
+  if (usedLinks.length === 0) {
+    return '';
+  }
   const browserHostname = getURIHostname(document.location.href);
   // get the best link to be displayed
   const localLinks = getLocalLinks(browserHostname, fqdn, usedLinks).concat(usedLinks);

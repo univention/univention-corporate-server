@@ -71,4 +71,7 @@ async function put(dn, attrs, { dispatch }, successMessage, errorMessage) {
   }
 }
 
-export { put, add };
+// edit mode default settings
+const adminState = process.env.VUE_APP_LOCAL ? (!!localStorage.getItem('UCSAdmin') || false) : false;
+
+export { put, add, adminState };
