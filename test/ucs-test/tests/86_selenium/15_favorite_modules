@@ -110,6 +110,8 @@ class UMCTester(object):
 
 	def _get_default_favorites(self):
 		default_favorites_string = ucr.get('umc/web/favorites/default')
+		if not utils.package_installed('univention-management-console-module-welcome'):
+			default_favorites_string = re.sub(r'welcome(,|$)', '', default_favorites_string).rstrip(',')
 		if not utils.package_installed('univention-management-console-module-udm'):
 			default_favorites_string = re.sub(r'udm.*?(,|$)', '', default_favorites_string).rstrip(',')
 		return default_favorites_string.split(',')
