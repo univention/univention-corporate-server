@@ -110,7 +110,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/create_printershare_en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/create_printershare_en.png"/>
 	</figure>
 	<para>
 		When adding/deleting/editing a printer share, the printer is
@@ -338,7 +338,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/printer_group-en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/printer_group-en.png"/>
 	</figure>
 	<para>
 		A printer group must have at least one printer as a member. Only
@@ -434,7 +434,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Printer administration</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/umc-printer_administration-en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations50/umc-printer_administration-en.png"/>
 	</figure>
 	<para>
 		The start page of the module contains a search mask with which the available
@@ -547,7 +547,7 @@
 				</simpara>
 				<figure id="printer:addserver">
 					<title>Add printer server</title>
-					<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-addserver-en.png"/>
+					<graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-addserver-en.png"/>
 				</figure>
 			</listitem>
 
@@ -558,7 +558,7 @@
 				</simpara>
 				<figure id="printer:printers">
 					<title>Printer list</title>
-					<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-printerlist-en.png"/>
+					<graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-printerlist-en.png"/>
 				</figure>
 			</listitem>
 
@@ -578,7 +578,7 @@
 				</simpara>
 				<figure id="printer:upload">
 					<title>Driver installation</title>
-					<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-upload-en.png"/>
+					<graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-upload-en.png"/>
 				</figure>
 			</listitem>
 
@@ -594,7 +594,7 @@
 				</simpara>
 				<figure id="printer:selectprinter">
 					<title>Selecting a printer</title>
-					<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-printerselect-en.png"/>
+					<graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-printerselect-en.png"/>
 				</figure>
 			</listitem>
 
@@ -605,7 +605,7 @@
 				</simpara>
 				<figure id="printer:error">
 					<title>Error message on first access</title>
-					<graphic scalefit="1" align="center" width="40%" fileref="illustrations44/windows-printerdriver-en.png"/>
+					<graphic scalefit="1" align="center" width="40%" fileref="illustrations50/windows-printerdriver-en.png"/>
 				</figure>
 			</listitem>
 

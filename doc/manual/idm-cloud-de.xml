@@ -85,7 +85,7 @@
 
 		<figure id="idmcloud:o365:wizard">
 			<title>Microsoft 365 Einrichtungsassistent</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations44/office_wizard1_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/office_wizard1_de.png"/>
 		</figure>
 
 	</section>
@@ -242,7 +242,7 @@
 
 		<figure id="idmcloud:gsuite:wizard">
 			<title>Google Apps for Work Einrichtungsassistent</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations44/google_wizard1_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/google_wizard1_de.png"/>
 		</figure>
 
 	</section>

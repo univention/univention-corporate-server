@@ -74,7 +74,7 @@
 
   <figure id="quick-systemrole">
 	<title>Auswahl der Domäneneinstellungen</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/systemrole-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/systemrole-de.png"/>
   </figure>
 
   <para>
@@ -157,7 +157,7 @@
 
   <figure id="quick-ucs-portal">
 	<title>Ansicht der Portalseite des &ucsPrimaryDN; mit den in der Domäne verfügbaren Applikationen</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/ucs-portal-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/ucs-portal-de.png"/>
   </figure>
 
   <para>
@@ -178,7 +178,7 @@
 
   <figure id="quick-umc-overview">
 	<title>Module in der UMC</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/umc-modules-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/umc-modules-de.png"/>
   </figure>
 
 </chapter>
@@ -211,7 +211,7 @@
 
 	<figure id="quick-appcenter">
 	  <title>Nachträgliche Installation von UCS-Komponenten</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/appcenter-de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/appcenter-de.png"/>
 	</figure>
 
   </para>
@@ -236,7 +236,7 @@
 
   <figure id="quick-ucr">
 	<title>Verwaltung von &ucsUCR;-Variablen</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/ucr-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/ucr-de.png"/>
   </figure>
 
 </chapter>

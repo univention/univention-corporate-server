@@ -186,7 +186,7 @@
            <para>
              <figure id="create-app-with-docker:portal-overview">
                  <title>App Provider Portal overview with "Apps" module selected</title>
-                 <graphic scalefit="1" width="100%" fileref="illustrations44/app_portal_overview.png"/>
+                 <graphic scalefit="1" width="100%" fileref="illustrations50/app_portal_overview.png"/>
              </figure>
           </para>
        </section>
@@ -216,7 +216,7 @@
         <para>
             <figure id="create-app-with-docker:create-app">
                 <title>Add a new App</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_new_app.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations50/app_portal_new_app.png"/>
             </figure>
         </para>
 
@@ -955,7 +955,7 @@ univention-app dev-use-test-appcenter
 
                 <figure id="testing:install:app-center-umc-module">
                     <title>Univention Management Console overview with App Center module</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/umc-module-app-center.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/umc-module-app-center.png"/>
                 </figure>
 
             <para>
@@ -1279,11 +1279,11 @@ docker-compose -p $appid logs
 
             <figure id="app-life-cycle:update:create-new-version">
                 <title>Menu to add a new App</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_create_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations50/app_portal_create_new_version.png"/>
             </figure>
             <figure id="app-life-cycle:update:new-version">
                 <title>Add a new App version</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations50/app_portal_new_version.png"/>
             </figure>
     </section>
 
@@ -2402,7 +2402,7 @@ cat $MY_APP.json | jq -r .compose > compose
 
 			<figure id="installation-scripts:app-flow:install">
 				<title>App workflow for installation</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-install.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations50/app-flow-install.png"/>
             </figure>
 
 		<section id="installation:preinst">
@@ -2668,7 +2668,7 @@ exit 0
 
 			<figure id="uninstallation-scripts:app-flow:remove">
 				<title>App workflow for Removal</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-remove.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations50/app-flow-remove.png"/>
             </figure>
 
 		<section id="uninstallation:prerm">
@@ -2766,7 +2766,7 @@ exit 0
 
 			<figure id="upgrade-scripts:app-flow:update">
 				<title>App workflow for upgrade</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations50/app-flow-update.png"/>
             </figure>
 
 		<section id="upgrade-scripts:preinst">
@@ -2904,12 +2904,12 @@ exit 0
 			settings in the app configuration, see <xref linkend="app-configurations:app-settings:button" />).
 			<figure id="app-configurations:app-settings:button">
 				<title>App settings button</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations44/Appcenter-settings-button.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations50/Appcenter-settings-button.png"/>
 			</figure>
 			An example for an App settings dialog is in <xref linkend="app-configurations:app-settings:example" />).
 			<figure id="app-configurations:app-settings:example">
 				<title>App settings example</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations44/Appcenter-settings-example.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations50/Appcenter-settings-example.png"/>
 			</figure>
 		</para>
 		<para>
@@ -3668,7 +3668,7 @@ fi
             </para>
                 <figure id="appliance:branding:bootloader-figure">
                     <title>Boot loader</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootloader.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_Bootloader.png"/>
                 </figure>
         </section>
 
@@ -3694,7 +3694,7 @@ fi
             </para>
                 <figure id="appliance:branding:bootsplash-figure">
                     <title>Boot splash</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootsplash.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_Bootsplash.png"/>
                 </figure>
         </section>
 
@@ -3723,11 +3723,11 @@ fi
             </para>
                 <figure id="appliance:branding:setup-wizard-figure">
                     <title>System setup first screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Setup_Wizard.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_Setup_Wizard.png"/>
                 </figure>
                 <figure id="appliance:branding:umc-branding-figure">
                     <title>System setup summary screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_UMC.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_UMC.png"/>
                 </figure>
         </section>
 
@@ -3751,7 +3751,7 @@ fi
             </para>
                 <figure id="appliance:branding:umc-branding-welcome-screen">
                     <title>Appliance welcome screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Welcome_Screen.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
         </section>
 
@@ -3770,7 +3770,7 @@ fi
             </para>
                 <figure id="appliance:branding:portal-page-figure">
                     <title>Appliance portal page</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Portal_Page.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations50/Appliance_Branding_Portal_Page.png"/>
                 </figure>
         </section>
 

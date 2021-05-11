@@ -132,7 +132,7 @@ Systemrollen sind Directory Node, &ucsManagedNode; und Client.
 </para>
 
 <figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/domainconcept.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations50/domainconcept.png"/>
 </figure>
 
 <para>
@@ -222,7 +222,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 <section id="introduction:Domaenenadministration"><title>Domänenadministration</title>
 
 <figure id="introduction:umc"><title>Univention Management Console</title>
- <graphic scalefit="1" width="100%" fileref="illustrations44/umc-favorites-tab-de.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations50/umc-favorites-tab-de.png"/>
 </figure>
 
 <para>

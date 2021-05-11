@@ -86,7 +86,7 @@
 
 			<figure id="idmcloud:o365:wizard">
 				<title>Microsoft 365 Setup assistant</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/office_wizard1_en.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations50/office_wizard1_en.png"/>
 			</figure>
 		</section>
 
@@ -243,7 +243,7 @@
 
 			<figure id="idmcloud:gsuite:wizard">
 				<title>Google Apps for Work Setup Wizard</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/google_wizard1_en.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations50/google_wizard1_en.png"/>
 			</figure>
 		</section>
 

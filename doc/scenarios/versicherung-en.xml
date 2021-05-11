@@ -84,7 +84,7 @@
 
 	  <figure id="versicherung-gesamt">
 		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/versicherung_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations50/versicherung_en.png"/>
 	  </figure>
 
 	<para>
@@ -107,7 +107,7 @@
 
 	  <figure id="versicherung-standort">
 		<title>Structure of a location</title>
-		<graphic align="center" scalefit="1" width="80%" fileref="illustrations44/versicherung-standort_en.png"/>
+		<graphic align="center" scalefit="1" width="80%" fileref="illustrations50/versicherung-standort_en.png"/>
 	  </figure>
   </section>
 

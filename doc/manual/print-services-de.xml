@@ -112,7 +112,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Anlegen einer Druckerfreigabe</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/create_printershare_de.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/create_printershare_de.png"/>
 	</figure>
 	<para>
 		Beim Hinzufügen, Entfernen oder Bearbeiten einer Druckerfreigabe wird der
@@ -355,7 +355,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Konfiguration einer Druckergruppe</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/printer_group-de.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/printer_group-de.png"/>
 	</figure>
 	<para>
 		Eine Druckergruppe muss mindestens einen Drucker als Mitglied
@@ -448,7 +448,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Drucker-Administration</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/umc-printer_administration-de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations50/umc-printer_administration-de.png"/>
 	</figure>
 	<para>
 		Auf der Startseite des Moduls befindet sich eine Suchmaske, mit der die
@@ -566,7 +566,7 @@
 	    </simpara>
 		<figure id="printer:addserver">
 		  <title>Druckerserver hinzufügen</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-addserver-de.png"/>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-addserver-de.png"/>
 		</figure>
 	   </listitem>
 
@@ -577,7 +577,7 @@
 	    </simpara>
 		<figure id="printer:printers">
 		  <title>Druckerliste</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-printerlist-de.png"/>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-printerlist-de.png"/>
 		</figure>
 	   </listitem>
 
@@ -599,7 +599,7 @@
 	    </simpara>
 		<figure id="printer:upload">
 		  <title>Treiberinstallation</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-upload-de.png"/>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-upload-de.png"/>
 		</figure>
 	   </listitem>
 
@@ -614,7 +614,7 @@
 	    </simpara>
 		<figure id="printer:selectprinter">
 		  <title>Drucker auswählen</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations44/windows-printerdriver-printerselect-de.png"/>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations50/windows-printerdriver-printerselect-de.png"/>
 		</figure>
 	   </listitem>
 
@@ -624,7 +624,7 @@
 		</simpara>
 		<figure id="printer:error">
 		  <title>Fehlermeldung beim ersten Zugriff</title>
-		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations44/windows-printerdriver-de.png"/>
+		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations50/windows-printerdriver-de.png"/>
 		</figure>
 	  </listitem>
 

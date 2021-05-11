@@ -33,7 +33,7 @@
 			The architecture and the communication channels is shown in <xref linkend="umc:api"/>.
 		</para>
 		<figure id="umc:api"><title>UMC architecture and communication channels</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations44/umc-api.svg"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations50/umc-api.svg"/>
 		</figure>
 		<itemizedlist>
 			<listitem>

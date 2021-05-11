@@ -133,7 +133,7 @@
 	</para>
 
 	<figure id="appcenter-overview"><title>Overview of applications available in the App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations44/appcenter_overview_en.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations50/appcenter_overview_en.png"/>
 	</figure>
 
 	<para>
@@ -159,7 +159,7 @@
 	</para>
 
 	<figure id="appcenter-details"><title>Details for an application in the App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations44/appcenter_details_en.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations50/appcenter_details_en.png"/>
 	</figure>
 
 	<para>
@@ -171,7 +171,7 @@
 	</para>
 
 	<figure id="appcenter-vote-apps"><title>Example Vote Apps in App Center overview and detail view</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations44/vote_apps_en.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations50/vote_apps_en.png"/>
 	</figure>
 
 	<para>
@@ -234,7 +234,7 @@ univention-app shell demo-docker-app
 	</para>
 
 	<figure id="appcenter-configure"><title>Setting of an application in the App Center</title>
-	<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/appcenter_configure_en.png"/>
+	<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/appcenter_configure_en.png"/>
 	</figure>
 
 	<para>
@@ -307,7 +307,7 @@ univention-app shell demo-docker-app
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Updating a UCS system in UMC</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations44/software_onlineupdate_en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations50/software_onlineupdate_en.png"/>
 	  </figure>
 
 	  <para>
@@ -386,7 +386,7 @@ univention-app shell demo-docker-app
 
 	  <figure id="software-policyupdate">
 		<title>Updating UCS systems using an update policy</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/software_policy_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations50/software_policy_en.png"/>
 	  </figure>
 
 	  <para>
@@ -652,7 +652,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Selection of UCS components in the App Center</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/appcenter-ucs-en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations50/appcenter-ucs-en.png"/>
 	  </figure>
 
 	</section>
@@ -666,7 +666,7 @@ univention-repository-update -h
 
 	  <figure id="software-umcinstall">
 		  <title>Installing the package <package>univention-squid</package> in &ucsUMC;</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/software_install_en1.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations50/software_install_en1.png"/>
 	  </figure>
 
 	  <para>
@@ -984,7 +984,7 @@ apt-cache search fax
 
 	<figure id="software-monitor">
 	  <title>Searching for packages in the software monitor</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations44/software_softwaremonitor_en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations50/software_softwaremonitor_en.png"/>
 	</figure>
 
 	<para>

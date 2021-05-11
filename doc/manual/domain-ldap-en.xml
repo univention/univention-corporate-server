@@ -258,7 +258,7 @@
 
 	  <figure id="domain-ldap:join:win7">
 		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/win7-join_2-en.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/win7-join_2-en.png"/>
 	  </figure>
 
 	  <para>
@@ -418,7 +418,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domain join of a Mac OS X system</title>
-			<graphic scalefit="1" width="60%" align="center" fileref="illustrations44/macosx-bind_en.png"/>
+			<graphic scalefit="1" width="60%" align="center" fileref="illustrations50/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
@@ -976,7 +976,7 @@ slapcat &gt; ldapdata.txt
 
 	<figure id="domain-join:listener-notifier">
 	  <title>Listener/Notifier mechanism</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/administration-overview_en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/administration-overview_en.png"/>
 	</figure>
 
 	<para>
@@ -1296,7 +1296,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<figure id="domain:saml:samllogin">
 		<title>The <foreignphrase>single sign-on</foreignphrase> login page</title>
-		<graphic scalefit="1" width="70%" align="center" fileref="illustrations44/sso_login_en.png"/>
+		<graphic scalefit="1" width="70%" align="center" fileref="illustrations50/sso_login_en.png"/>
 	</figure>
 
 	<para>
@@ -1837,7 +1837,7 @@ apt-get dselect-upgrade
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
 		<title>View of events in<phrase> min</phrase> Diary</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/admindiary-list_en.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-list_en.png"/>
 	</figure>
 	<para>
 		<xref linkend="domain-ldap:adminndiary:list"/> shows, how events are shown in the &ucsUMC;.
@@ -1848,7 +1848,7 @@ apt-get dselect-upgrade
 	</para>
 	<figure id="domain-ldap:adminndiary:detail">
 		<title>Detail view in <phrase>Admin Diary</phrase></title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/admindiary-detail_en.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-detail_en.png"/>
 	</figure>
 	<para>
 		The app consists of two components:

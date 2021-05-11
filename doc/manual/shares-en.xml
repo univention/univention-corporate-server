@@ -114,7 +114,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
 <figure id="shares:umc"><title>Creating a share in UMC</title>
- <graphic scalefit="1" width="100%" fileref="illustrations44/projekt-freigabe_EN.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations50/projekt-freigabe_EN.png"/>
 </figure>
 
 <table>
@@ -1055,7 +1055,7 @@ Microsoft Distributed File System Tree'.
 
 	<figure id="shares:quota">
 	  <title>Managing quota in the UMC</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations44/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations50/quota-overview-en.png"/>
 	</figure>
 
 	<para>

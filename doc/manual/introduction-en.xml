@@ -130,7 +130,7 @@ security and trust context, referred to as the UCS domain. Every UCS system is a
 during the installation. Possible system roles are Directory Node, &ucsManagedNode; and client.
 </para>
 <figure id="introduction:domain"><title>UCS domain concept</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/domainconcept_en.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations50/domainconcept_en.png"/>
  </figure>
 <para>
 Depending on the system role within the
@@ -215,7 +215,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 
 <section id="introduction:Domain_administration"><title>Domain administration</title>
 <figure id="introduction:umc"><title>Univention Management Console</title>
-	<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/umc-favorites-tab-en.png"/>
+	<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/umc-favorites-tab-en.png"/>
 </figure>
 <para>
 Access to the LDAP directory is performed via the web-based user interface &ucsUMC; (UMC).

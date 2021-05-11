@@ -40,7 +40,7 @@
 
 	  <figure id="kanzlei">
 		<title>Systemübersicht der Kanzlei Hemmerlein und Söhne</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/kanzlei.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations50/kanzlei.png"/>
 	  </figure>
   </section>
 
@@ -57,7 +57,7 @@
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Anlegen eines Benutzers in der Univention Management Console</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations50/umc-benutzeranlegen.png"/>
 	  </figure>
 	</para>
   </section>

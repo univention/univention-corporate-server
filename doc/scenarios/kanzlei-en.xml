@@ -40,7 +40,7 @@
 
 	  <figure id="kanzlei">
 		<title>System overview of the lawyer's office Hemmerlein and Sons</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/kanzlei_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations50/kanzlei_en.png"/>
 	  </figure>
   </section>
 
@@ -55,7 +55,7 @@
 
 	  <figure id="umc-anlegen">
 		<title>Creating a user in &ucsUDM;</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations50/umc-benutzeranlegen_en.png"/>
 	  </figure>
   </section>
 

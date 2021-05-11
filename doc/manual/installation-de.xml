@@ -84,7 +84,7 @@
 	</para>
 	<figure id="installation-isolinux">
 	<title>Bootprompt der Installation</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-isolinux.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-isolinux.png"/>
 	</figure>
 	<para>
 		Hier kann zwischen verschiedenen Installationsverfahren gewählt werden.
@@ -145,7 +145,7 @@
 	</para>
 	<figure id="installation-languageeselection">
 	<title>Auswahl der Installationssprache</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-language.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-language.png"/>
 	</figure>
 	<para>
 		Sofern der Univention Installer die ausgewählte Sprache unterstützt, wird diese als
@@ -164,7 +164,7 @@
 	</para>
 	<figure id="installation-location">
 	<title>Auswahl des Standorts</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-location_de.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-location_de.png"/>
 	</figure>
 </section>
 <section id="installation:Auswahl_der_Tastaturbelegung">
@@ -176,7 +176,7 @@
 	</para>
 	<figure id="installation-keyboardselection">
 	<title>Auswahl der Tastaturbelegung</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-keyboardselection_de.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-keyboardselection_de.png"/>
 	</figure>
 </section>
 <section id="installation:Netzwerkkonfiguration">
@@ -190,7 +190,7 @@
   </para>
   <figure id="installation-netcfg-dhcp">
 	<title>Automatische Netzwerkkonfiguration</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-netcfg-dhcp_de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-netcfg-dhcp_de.png"/>
   </figure>
   <para>
 	Sollte kein DHCP-Server im lokalen Netz vorhanden sein oder es soll eine statische Konfiguration
@@ -207,7 +207,7 @@
   </note>
   <figure id="installation-netcfg-static">
 	<title>Auswahl der manuellen Netzwerkkonfiguration</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-netcfg-static_de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-netcfg-static_de.png"/>
   </figure>
   <para>
 	Bei der manuellen Konfiguration kann für das System wahlweise eine statische IPv4- oder eine
@@ -218,7 +218,7 @@
   </para>
   <figure id="installation-netcfg-ip">
 	<title>Angabe einer IP-Adresse</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-netcfg-ip_de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-netcfg-ip_de.png"/>
   </figure>
   <para>
 	Bei der manuellen Angabe eines DNS-Server sind die folgenden Punkte zu beachten. Sie sind abhängig von späteren Verwendungszweck des UCS-Systems.
@@ -262,7 +262,7 @@
   </para>
   <figure id="installation-password">
 	<title>root-Passwort einrichten</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-password_de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-password_de.png"/>
   </figure>
 </section>
 
@@ -322,7 +322,7 @@
 	</caution>
 	<figure id="installation-partman-selectguided">
 	  <title>Auswahl des Partitionierungsschemas</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-partman-selectguided_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-partman-selectguided_de.png"/>
 	</figure>
   </para>
   <para>
@@ -358,7 +358,7 @@
 	Vor jeder aktiven Änderung auf der Festplatte wird diese noch einmal in einem zusätzlichen Dialog angezeigt und mit explizit bestätigt werden.
 	<figure id="installation-partman-writelvm">
 	  <title>Bestätigung von Änderungen auf der Festplatte</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-partman-writelvm_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-partman-writelvm_de.png"/>
 	</figure>
   </para>
   <para>
@@ -405,7 +405,7 @@
 	</itemizedlist>
 	<figure id="installation-domainrole">
 	  <title>Domäneneinstellungen</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-domainrole_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-domainrole_de.png"/>
 	</figure>
   </para>
   <section id="installation:Domäneneinstellungen:NeueDomäne">
@@ -438,7 +438,7 @@
 	</para>
 	<figure id="installation-newdomain">
 	  <title>Angabe des Rechnernamens und der LDAP-Basis</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-hostname_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-hostname_de.png"/>
 	</figure>
   </section>
   <section id="installation:Domäneneinstellungen:ADMember">
@@ -473,7 +473,7 @@
 	</para>
 	<figure id="installation-adjoin">
 	  <title>Informationen zum Active Directory-Domänenbeitritt</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-adjoin_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-adjoin_de.png"/>
 	</figure>
   </section>
   <section id="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten">
@@ -534,7 +534,7 @@
 	</para>
 	<figure id="installation-join">
 	  <title>Informationen zum Domänenbeitritt</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-join_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-join_de.png"/>
 	</figure>
 	<para>
 	  Im nächsten Schritt muss zusätzlich ein Rechnername für das zu konfigurierende UCS-System angegeben werden. Dabei
@@ -557,7 +557,7 @@
   </para>
 	<figure id="installation-softwareselection">
 	  <title>Auswahl von UCS-Software-Komponenten</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-softwareselection_de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-softwareselection_de.png"/>
 	</figure>
 </section>
 
@@ -581,7 +581,7 @@
   </para>
   <figure id="installation-overview">
 	<title>Installationsüberblick</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-overview_de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-overview_de.png"/>
   </figure>
   <para>
 	Während der Konfiguration zeigt ein Fortschrittsbalken den Verlauf der Installation an.

@@ -67,14 +67,14 @@
         </para>
 		<figure id="user-create">
 			<title>Anlegen eines Benutzers in UMC</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_user_de.png"/>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_user_de.png"/>
 		</figure>
 		<para>
 			Über <guimenu>Weiter</guimenu> in <xref linkend="user-create"/> gelangt man auf die zweite Seite <xref linkend="user-password"/>, auf der dann das initiale Passwort gesetzt werden kann.
 		</para>
 		<figure id="user-password">
 			<title>Passwortvergabe für einen neuen Benutzer</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_password_de.png"/>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_password_de.png"/>
 		</figure>
 		<para>
 			Alternativ besteht bei installierter <foreignphrase>Self Service-App</foreignphrase> die Möglichkeit, das Setzen des Passworts dem Benutzer selbst zu überlassen.
@@ -84,7 +84,7 @@
 		</para>
 		<figure id="user-password-new">
 			<title>Initiales Benutzerpasswort</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_self-service_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/users_self-service_de.png"/>
 		</figure>
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
@@ -96,7 +96,7 @@
         </para>
 		<figure id="user-create-advanced">
 			<title>Erweiterte Benutzeransicht</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_user_advanced_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/users_user_advanced_de.png"/>
 		</figure>
         <table>
             <title>Karteikarte 'Allgemein'</title>
@@ -647,7 +647,7 @@
         </para>
         <figure id="user-app-activation">
             <title>Benutzeraktivierung für installierte Apps</title>
-            <graphic scalefit="1" width="100%" align="center" fileref="illustrations44/user_activation_de.png" />
+            <graphic scalefit="1" width="100%" align="center" fileref="illustrations50/user_activation_de.png" />
         </figure>
         <para>
             Sobald eine App in der UCS-Umgebung installiert ist, die die
@@ -717,7 +717,7 @@
 		</para>
             <figure id="password-policy">
                 <title>Konfiguration einer Passwort-Richtlinie</title>
-                <graphic scalefit="1" width="100%" fileref="illustrations44/users_policy_password_de.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations50/users_policy_password_de.png"/>
             </figure>
             <itemizedlist>
                 <listitem>
@@ -1001,7 +1001,7 @@
 			</para>
 			<figure id="user-self-service">
 				<title>Profilverwaltung</title>
-				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_profile_de.png"/>
+				<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_profile_de.png"/>
 			</figure>
 			<para>
 				Dafür müssen folgende &ucsUCRV;n konfiguriert werden:<footnote><simpara>Beide <foreignphrase>attributes</foreignphrase> Variablen müssen zueinander passen. Die Namen der Attribute und deren Zuordnung kann man über folgenden Aufruf erhalten: <command><![CDATA[python -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
@@ -1056,7 +1056,7 @@
 				<title>Kontoerstellung</title>
 				<figure id="user-registration">
 					<title>Selbstregistrierung</title>
-					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_registration_de.png"/>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_registration_de.png"/>
 				</figure>
 				<para>
 					Die "Konto erstellen" Seite kann mit der &ucsUCRV; <envar>umc/self-service/account-registration/frontend/enabled</envar>
@@ -1111,7 +1111,7 @@
 				</para>
 				<figure id="user-verification-email">
 					<title>Senden der <wordasword>Verifizierungs-E-Mail</wordasword></title>
-					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_email_de.png"/>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_verification_email_de.png"/>
 				</figure>
 				<para>
 					Aspekte der <wordasword>Verifizierungs-E-Mail</wordasword> und des <wordasword>Verifizierungs-Tokens</wordasword> können über die folgenden &ucsUCRV;n konfiguriert werden.
@@ -1165,7 +1165,7 @@
 				</para>
 				<figure id="user-verification">
 					<title>Kontoverifizierung</title>
-					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_de.png"/>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_verification_de.png"/>
 				</figure>
 				<para>
 					Die "Kontoverifizierung" Seite kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/frontend/enabled</envar>
@@ -1186,7 +1186,7 @@
 				</para>
 				<figure id="user-verification-message">
 					<title>Kontoverifizierung</title>
-					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_message_de.png"/>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_verification_message_de.png"/>
 				</figure>
 				<para>
 					Der SSO Login kann konfiguriert werden den Login für unverifizierte, selbst registrierte Konten zu
@@ -1441,7 +1441,7 @@ __EOT__
         </para>
         <figure id="user-create-template">
             <title>Auswahl einer Benutzervorlage</title>
-            <graphic scalefit="1" width="70%" align="center" fileref="illustrations44/users_usertemplate_de.png"/>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations50/users_usertemplate_de.png"/>
         </figure>
         <para>
             Benutzervorlagen werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>

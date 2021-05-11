@@ -88,7 +88,7 @@
 					<title>Domain dashboard</title>
 						<figure id="dashboard-domain">
 							<title>Domain dashboard</title>
-							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-domain.png"/>
+							<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/dashboard-domain.png"/>
 						</figure>
 					<para>
 						After the login, the Domain dashboard is opened by default. On this
@@ -110,7 +110,7 @@
 					<title>Server dashboard</title>
 						<figure id="dashboard-server">
 							<title>Server dashboard</title>
-							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-server.png"/>
+							<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/dashboard-server.png"/>
 						</figure>
 					<para>
 						By default, the server dashboard is also configured. On this dashboard, 

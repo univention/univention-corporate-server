@@ -258,7 +258,7 @@
 		</para>
 		<figure id="domain-ldap:join:win7">
 			<title>Domänenbeitritt eines Windows 7-Systems</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/win7-join_2-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/win7-join_2-de.png"/>
 		</figure>
 		<para>
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
@@ -432,7 +432,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domänenbeitritt eines Mac OS X-Systems</title>
-			<graphic scalefit="1" width="60%" align="center" fileref="illustrations44/macosx-bind_de.png"/>
+			<graphic scalefit="1" width="60%" align="center" fileref="illustrations50/macosx-bind_de.png"/>
 		</figure>
 
 		  <para>
@@ -1002,7 +1002,7 @@ slapcat &gt; ldapdaten.txt
 
 	  <figure id="domain-join:listener-notifier">
 		<title>Listener/Notifier-Mechanismus</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/administration-overview.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/administration-overview.png"/>
 	  </figure>
 
 	  <para>
@@ -1327,7 +1327,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<figure id="domain:saml:samllogin">
 		<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
-		<graphic scalefit="1" width="70%" align="center" fileref="illustrations44/sso_login_de.png"/>
+		<graphic scalefit="1" width="70%" align="center" fileref="illustrations50/sso_login_de.png"/>
 	</figure>
 	<para>
 		Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration von <package>simplesamlphp</package> bereitgestellt.
@@ -1871,7 +1871,7 @@ apt-get dselect-upgrade
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
 		<title>Ansicht der Ereignisse im <foreignphrase>Admin Diary</foreignphrase></title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/admindiary-list_de.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-list_de.png"/>
 	</figure>
 	<para>
 		<xref linkend="domain-ldap:adminndiary:list"/> zeigt, wie die Ereignisse in der &ucsUMC; dargestellt werden.
@@ -1882,7 +1882,7 @@ apt-get dselect-upgrade
 	</para>
 	<figure id="domain-ldap:adminndiary:detail">
 		<title>Detailansicht im <foreignphrase>Admin Diary</foreignphrase></title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/admindiary-detail_de.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-detail_de.png"/>
 	</figure>
 	<para>
 		Die App besteht aus zwei Komponenten:

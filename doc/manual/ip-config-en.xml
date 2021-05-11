@@ -41,7 +41,7 @@
 	</para>
 	<figure id="net-networks">
 	  <title>Creating a network object</title>
-	  <graphic fileref="illustrations44/create-network_EN.png" scalefit="1" width="100%"/>
+	  <graphic fileref="illustrations50/create-network_EN.png" scalefit="1" width="100%"/>
 	</figure>
 	<para>
 	  For example, it is possible to define a network object <emphasis>Workstation network</emphasis>
@@ -382,7 +382,7 @@
 		</para>
 		<figure id="net-dns-forward">
 		  <title>Configuring a forward lookup zone in UMC</title>
-		  <graphic fileref="illustrations44/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
+		  <graphic fileref="illustrations50/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
 		</figure>
 		<para>
 		  <table>
@@ -801,7 +801,7 @@
 		  <title>
 			Configuring a service record
 		  </title>
-		  <graphic fileref="illustrations44/srv-record_EN.png" scalefit="1" width="100%"/>
+		  <graphic fileref="illustrations50/srv-record_EN.png" scalefit="1" width="100%"/>
 		</figure>
 		<para>
 		  A service record must always be assigned to a forward lookup zone and
@@ -2410,7 +2410,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 			  </para>
 			  <figure id="ip-config:radius:group">
 				  <title>Example for a group allowing network access to its users</title>
-				  <graphic fileref="illustrations44/radius-group-allow-network_EN.png" scalefit="1" width="100%"/>
+				  <graphic fileref="illustrations50/radius-group-allow-network_EN.png" scalefit="1" width="100%"/>
 			  </figure>
 		  </section>
 		  <section id="ip-config:radius:configuration:mac-filtering">
@@ -2465,11 +2465,11 @@ client AP01 {
 				</para>
 					<figure id="ip-config:radius:option">
 						<title>RADIUS option</title>
-						<graphic fileref="illustrations44/radius_option_EN.png" align="center" scalefit="1" width="75%"/>
+						<graphic fileref="illustrations50/radius_option_EN.png" align="center" scalefit="1" width="75%"/>
 					</figure>
 					<figure id="ip-config:radius:authenticator">
 						<title>RADIUS authenticator options</title>
-						<graphic fileref="illustrations44/radius_authenticator_EN.png" scalefit="1" width="100%"/>
+						<graphic fileref="illustrations50/radius_authenticator_EN.png" scalefit="1" width="100%"/>
 					</figure>
 		</section>
 		  <section id="ip-config:radius:configuration:access-points_clients">

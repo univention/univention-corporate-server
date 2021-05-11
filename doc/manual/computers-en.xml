@@ -61,11 +61,11 @@
 
 	<figure id="computers-create">
 		<title>Creating a computer in UMC</title>
-		<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/computers_computer_en.png"/>
+		<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/computers_computer_en.png"/>
 	</figure>
 	<figure id="computers-create-advanced">
 		<title>Advanced computer settings</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/computers_computer_advanced_en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/computers_computer_advanced_en.png"/>
 	</figure>
 	<table>
 		<title>'General' tab</title>
@@ -541,7 +541,7 @@
 			load another kernel in case of an error.
 		</para>
 		<figure id="grub-selection"><title>GRUB menu</title>
-		  <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/computers_grub.png"/>
+		  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/computers_grub.png"/>
 		</figure>
 		<para>
 			GRUB gets loaded in a two-step procedure; in the Master
@@ -605,7 +605,7 @@
 			</para>
 			<figure id="network-settings">
 				<title>Configuring the network settings</title>
-				<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/computers_network_en.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/computers_network_en.png"/>
 			</figure>
 			<para>
 				All the network cards available in the system are listed under
@@ -1071,7 +1071,7 @@
 		</para>
 		<figure id="nfs-mount">
 			<title>Mounting a NFS share</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations44/computers_policy_nfsshare_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_nfsshare_en.png"/>
 		</figure>
 	</section>
 
@@ -1447,7 +1447,7 @@ primary.firma.de
 		</para>
 		<figure id="policy-mailsize">
 			<title>Policy-based configuration of the maximum mail size</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations44/computers_policy_mailsize_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_mailsize_en.png"/>
 		</figure>
 		<para>
 			Firstly, a <guimenu>Name</guimenu> must be set for the policy which is to be
@@ -1619,7 +1619,7 @@ if configRegistry.get('version/version') and \
 		</para>
 		<figure id="language-settings">
 			<title>Configuring the language settings</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations44/computers_timezone_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_timezone_en.png"/>
 		</figure>
 		<para>
 			The <guimenu>Keyboard layout</guimenu> in the menu entry <guimenu>Time zone and
@@ -1635,7 +1635,7 @@ if configRegistry.get('version/version') and \
 		</para>
 		<figure id="umc-services">
 			<title>Overview of system services</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/umc-systemservices_en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/umc-systemservices_en.png"/>
 		</figure>
 		<para>
 			In this list of all the services installed on the system, the current running

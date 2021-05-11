@@ -251,7 +251,7 @@ doveadm auth cache flush
 
 		<figure id="mail-mailinglist">
 		  <title>Einrichtung einer Mailingliste</title>
-		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/mail_mailinglist_de.png"/>
+		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations50/mail_mailinglist_de.png"/>
 		</figure>
 
 	  <para>
@@ -343,7 +343,7 @@ doveadm auth cache flush
 
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations44/mail_imapfolder_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations50/mail_imapfolder_de.png"/>
 		</figure>
 
 		<table>
@@ -1278,7 +1278,7 @@ invoke-rc.d dovecot restart
 
 	  <figure id="mail:clients:thunderbird">
 		<title>Einrichtung von Mozilla Thunderbird</title>
-		<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/thunderbird_de.png"/>
+		<graphic scalefit="1" align="center" width="80%" fileref="illustrations50/thunderbird_de.png"/>
 	  </figure>
   </section>
 
@@ -1303,7 +1303,7 @@ invoke-rc.d dovecot restart
 
 		<figure id="horde-login">
 		  <title>Anmeldung an Horde</title>
-		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations44/login_de.png"/>
+		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations50/login_de.png"/>
 		</figure>
 
 	  <para>
@@ -1341,7 +1341,7 @@ invoke-rc.d dovecot restart
 
 		<figure id="horde-inbox">
 		  <title>Webmail (Posteingang)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations44/inbox_de.png"/>
+		  <graphic scalefit="1" width="95%" fileref="illustrations50/inbox_de.png"/>
 		</figure>
 
 	  <para>
@@ -1363,7 +1363,7 @@ invoke-rc.d dovecot restart
 
 		<figure id="horde-address">
 		  <title>Adressbuch für Webmail</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations44/addressbook_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations50/addressbook_de.png"/>
 		</figure>
 
 	  <para>
@@ -1399,7 +1399,7 @@ invoke-rc.d dovecot restart
 
 		<figure id="horde-filter">
 		  <title>Filterverwaltung in Horde</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations44/filter_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations50/filter_de.png"/>
 		</figure>
 
 	  <para>

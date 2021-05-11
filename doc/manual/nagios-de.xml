@@ -96,7 +96,7 @@
 				<title>Domain Dashboard</title>
 					<figure id="dashboard-domain">
 						<title>Domain Dashboard</title>
-						<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-domain.png"/>
+						<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/dashboard-domain.png"/>
 					</figure>
 				<para>
 					Nach der Anmeldung wird standardmäßig das Domain Dashboard geöffnet. Auf diesem
@@ -118,7 +118,7 @@
 				<title>Server Dashboard</title>
 					<figure id="dashboard-server">
 						<title>Server Dashboard</title>
-						<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-server.png"/>
+						<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/dashboard-server.png"/>
 					</figure>
 				<para>
 					Standardmäßig wird zusätzlich das Server Dashboard eingerichtet. Auf diesem Dashboard sind
