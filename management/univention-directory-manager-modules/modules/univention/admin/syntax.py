@@ -4793,7 +4793,6 @@ class univentionAdminModules(select):
 		('settings/udm_syntax', 'Settings: UDM Syntax'),
 		('settings/umc_operationset', 'Settings: UMC operation set'),
 		('settings/usertemplate', 'Settings: User Template'),
-		('settings/xconfig_choices', 'Preferences: X Configuration Choices'),
 		('shares/printer', 'Print-Share: Printer'),
 		('shares/printergroup', 'Print-Share: Printer Group'),
 		('shares/share', 'Share: Directory'),

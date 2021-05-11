@@ -31,7 +31,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-28 20:28+0900\n"
+"PO-Revision-Date: 2021-05-11 12:00+0200\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
@@ -199,10 +199,6 @@ msgstr "Changer le mot de passe à la prochaine ouverture de session"
 #: modules/univention/admin/handlers/settings/usertemplate.py:225
 msgid "City"
 msgstr "Ville"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:81
-msgid "Color Depth"
-msgstr "Profondeur de couleurs"
 
 #: modules/univention/admin/handlers/settings/directory.py:121
 msgid "Computer Link"
@@ -381,10 +377,6 @@ msgstr "Affichage"
 msgid "Display Name"
 msgstr "Nom de l'affichage"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:161
-msgid "Display Size (mm)"
-msgstr "Taille de l'affichage (mm)"
-
 #: modules/univention/admin/handlers/settings/portal_entry.py:166
 #: modules/univention/admin/handlers/settings/usertemplate.py:83
 msgid "Display name"
@@ -467,7 +459,6 @@ msgstr "Catalogue de messages GNU pour la traduction"
 #: modules/univention/admin/handlers/settings/lock.py:78
 #: modules/univention/admin/handlers/settings/packages.py:79
 #: modules/univention/admin/handlers/settings/service.py:65
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:173
 #: modules/univention/admin/handlers/settings/portal_entry.py:160
 #: modules/univention/admin/handlers/settings/portal_entry.py:161
 #: modules/univention/admin/handlers/settings/udm_module.py:181
@@ -527,10 +518,6 @@ msgstr "Réglages généraux de la syntaxe UDM"
 #: modules/univention/admin/handlers/settings/umc_operationset.py:105
 msgid "General UMC operation set settings"
 msgstr "Réglages généraux des opérations UMC"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:174
-msgid "General X configuration choices settings"
-msgstr "Réglages généraux des choix de configuration X"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:396
 msgid "General extended attribute settings"
@@ -638,10 +625,6 @@ msgstr "Chemin du répertoire personnel partagé"
 msgid "Hook class"
 msgstr "Classe d'interfaçage"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:131
-msgid "Horizontal Sync"
-msgstr "Synchronisation horizontale"
-
 #: modules/univention/admin/handlers/settings/portal_entry.py:147
 msgid "Icon"
 msgstr "Icône"
@@ -709,14 +692,6 @@ msgstr "Identifiant de clé"
 #: modules/univention/admin/handlers/settings/license.py:188
 msgid "Key ID of this license."
 msgstr "Identifiant de clé de cette licence."
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:111
-msgid "Keyboard Layout"
-msgstr "Disposition du clavier"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:121
-msgid "Keyboard Variant"
-msgstr "Variante de clavier"
 
 #: modules/univention/admin/handlers/settings/syntax.py:84
 msgid "LDAP Base"
@@ -975,14 +950,6 @@ msgstr ""
 msgid "Modules to be extended"
 msgstr "Modules à étendre"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:101
-msgid "Mouse Device"
-msgstr "Périphérique souris"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:91
-msgid "Mouse Protocol"
-msgstr "Protocole de la souris"
-
 #: modules/univention/admin/handlers/settings/extended_attribute.py:147
 msgid "Multi value"
 msgstr "Valeurs multiples"
@@ -991,7 +958,6 @@ msgstr "Valeurs multiples"
 #: modules/univention/admin/handlers/settings/lock.py:56
 #: modules/univention/admin/handlers/settings/packages.py:55
 #: modules/univention/admin/handlers/settings/packages.py:56
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:60
 #: modules/univention/admin/handlers/settings/license.py:65
 #: modules/univention/admin/handlers/settings/license.py:66
 #: modules/univention/admin/handlers/settings/directory.py:59
@@ -1203,10 +1169,6 @@ msgstr "Préférences : par défaut"
 msgid "Preferences: Default Container"
 msgstr "Préférences : conteneur par défaut"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:54
-msgid "Preferences: X Configuration Choices"
-msgstr "Préférences : choix de configuration de X"
-
 #: modules/univention/admin/handlers/settings/license.py:217
 msgid "Premium Support"
 msgstr "Assistance premium"
@@ -1309,10 +1271,6 @@ msgstr "Durée avant réinitialisation du décompte"
 #: modules/univention/admin/handlers/settings/sambadomain.py:201
 msgid "Reset count minutes"
 msgstr "Durée avant réinitialisation du décompte"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:71
-msgid "Resolution"
-msgstr "Résolution"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:261
 msgid "Room number"
@@ -1897,10 +1855,6 @@ msgstr "Format de version pour cette licence."
 msgid "Version of extended attribute"
 msgstr "Version de l'attribut étendu"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:141
-msgid "Vertical Refresh"
-msgstr "Rafraîchissement vertical"
-
 #: modules/univention/admin/handlers/settings/extended_attribute.py:128
 msgid ""
 "When values are entered, the UMC performs a syntax check. Apart from "
@@ -1941,14 +1895,6 @@ msgstr "Chemin de connexion Windows"
 #: modules/univention/admin/handlers/settings/usertemplate.py:189
 msgid "Windows profile directory"
 msgstr "Répertoire de profil Windows"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:173
-msgid "X Configuration Choices"
-msgstr "Choix de configuration de X"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:151
-msgid "X Module"
-msgstr "Module X"
 
 #: modules/univention/admin/handlers/settings/udm_module.py:237
 #: modules/univention/admin/handlers/settings/ldapacl.py:203
