@@ -308,7 +308,6 @@ update_check_old_packages () {
 # Bug #51497 #51973 #31048 #51655 #51955 #51982 #51482
 declare -a legacy_ocs_structural=(
 	# UCC:
-	'(structuralObjectClass=univentionCorporateClient)'
 	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
 	'(structuralObjectClass=univentionCorporateClientSession)'
 	'(structuralObjectClass=univentionCorporateClientAutostart)'
@@ -320,16 +319,17 @@ declare -a legacy_ocs_structural=(
 )
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
+	'(objectClass=univentionCorporateClient)'
 )
-declare -a obsolete_ocs_structural=(
+declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionAdminUserSettings)'
 	'(structuralObjectClass=univentionPolicySharePrintQuota)'
 	# UCS TCS:
 	'(structuralObjectClass=univentionPolicyAutoStart)'
 	'(structuralObjectClass=univentionPolicyThinClient)'
-	'(structuralObjectClass=univentionThinClient)'
-	'(structuralObjectClass=univentionMobileClient)'
-	'(structuralObjectClass=univentionFatClient)'
+	'(objectClass=univentionThinClient)'
+	'(objectClass=univentionMobileClient)'
+	'(objectClass=univentionFatClient)'
 )
 
 update_check_legacy_objects () {
@@ -406,6 +406,12 @@ delete_legacy_objects () {
 	done
 	rm -f "$ldif"
 }
+
+# Some objects get deleted automatically in preup.sh
+# Objects are found by queries based on obsolete_objectclasses
+# references to these deleted objects are also deleted if the
+# reference is in an attribute named univentionPolicyReference or
+# univentionPolicyObject
 delete_obsolete_objects () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
@@ -416,10 +422,33 @@ delete_obsolete_objects () {
 	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
 	echo "> An LDIF file of removed objects is available: ${backupfile}"
 	install -b -m 400 /dev/null "${backupfile}"
-	echo "> Removing obsolete structural objects"
-	for filter in "${obsolete_ocs_structural[@]}"
+	echo "> Removing objects with obsolete objectClasses"
+	for filter in "${obsolete_objectclasses[@]}"
 	do
 		echo ">> $filter"
+		# check if object is referenced anywhere in a policy
+		local object_dns
+		object_dns="$(univention-ldapsearch -LLL "$filter" | sed -ne 's/^dn: //p')"
+		echo "object_dns: $object_dns"
+		[ -z "$object_dns" ] && continue
+		# Iterate over all found objects matching the ldap filter to find references
+		while IFS= read -r object_dn; do
+			# References to objects can come in two attributes
+			for policy_reference_type in univentionPolicyReference univentionPolicyObject; do
+				local policy_references
+				policy_references="$(univention-ldapsearch -LLL "$policy_reference_type"="$object_dn" dn | sed -ne 's/^dn: //p')"
+				[ -z "$policy_references" ] && continue
+				while read -r referencing_dn; do
+					echo "Deleting reference to $object_dn from $referencing_dn"
+					ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret <<__EOF__
+dn: $referencing_dn
+changetype: modify
+delete: $policy_reference_type
+$policy_reference_type: $object_dn
+__EOF__
+				done <<< "$policy_references"
+			done # for policy_reference_type
+		done <<< "$object_dns" # while read object_dn
 		univention-ldapsearch -LLL "$filter" "*" + |
 			tee -a "${backupfile}" |
 			sed -ne 's/^dn: //p' |
