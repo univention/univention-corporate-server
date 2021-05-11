@@ -1,3 +1,9 @@
+univention-updater (15.0.3-58) unstable; urgency=medium
+
+  * Bug #51655: preup.sh: Fixes and improvements for delete_obsolete_objects
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 11 May 2021 16:57:06 +0200
+
 univention-updater (15.0.3-57) unstable; urgency=medium
 
   * Bug #53003: block update with univention-legacy-kolab-schema

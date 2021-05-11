@@ -308,25 +308,25 @@ update_check_old_packages () {
 # Bug #51497 #51973 #31048 #51655 #51955 #51982 #51482
 declare -a legacy_ocs_structural=(
 	# UCC:
-	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
-	'(structuralObjectClass=univentionCorporateClientSession)'
-	'(structuralObjectClass=univentionCorporateClientAutostart)'
-	'(structuralObjectClass=univentionCorporateClientImage)'
-	'(structuralObjectClass=univentionPolicyCorporateClientComputer)'
-	'(structuralObjectClass=univentionPolicyCorporateClientDesktop)'
-	'(structuralObjectClass=univentionPolicySoftwareupdates)'
-	'(structuralObjectClass=univentionPolicyCorporateClient)'
+	'(objectClass=univentionPolicyCorporateClientUser)'
+	'(objectClass=univentionCorporateClientSession)'
+	'(objectClass=univentionCorporateClientAutostart)'
+	'(objectClass=univentionCorporateClientImage)'
+	'(objectClass=univentionPolicyCorporateClientComputer)'
+	'(objectClass=univentionPolicyCorporateClientDesktop)'
+	'(objectClass=univentionPolicySoftwareupdates)'
+	'(objectClass=univentionPolicyCorporateClient)'
 )
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
 	'(objectClass=univentionCorporateClient)'
 )
 declare -a obsolete_objectclasses=(
-	'(structuralObjectClass=univentionAdminUserSettings)'
-	'(structuralObjectClass=univentionPolicySharePrintQuota)'
+	'(objectClass=univentionAdminUserSettings)'
+	'(objectClass=univentionPolicySharePrintQuota)'
 	# UCS TCS:
-	'(structuralObjectClass=univentionPolicyAutoStart)'
-	'(structuralObjectClass=univentionPolicyThinClient)'
+	'(objectClass=univentionPolicyAutoStart)'
+	'(objectClass=univentionPolicyThinClient)'
 	'(objectClass=univentionThinClient)'
 	'(objectClass=univentionMobileClient)'
 	'(objectClass=univentionFatClient)'
@@ -429,8 +429,8 @@ delete_obsolete_objects () {
 		# check if object is referenced anywhere in a policy
 		local object_dns
 		object_dns="$(univention-ldapsearch -LLL "$filter" | sed -ne 's/^dn: //p')"
-		echo "object_dns: $object_dns"
 		[ -z "$object_dns" ] && continue
+		echo "Deleting object(s) with dn: $object_dns"
 		# Iterate over all found objects matching the ldap filter to find references
 		while IFS= read -r object_dn; do
 			# References to objects can come in two attributes
@@ -439,7 +439,7 @@ delete_obsolete_objects () {
 				policy_references="$(univention-ldapsearch -LLL "$policy_reference_type"="$object_dn" dn | sed -ne 's/^dn: //p')"
 				[ -z "$policy_references" ] && continue
 				while read -r referencing_dn; do
-					echo "Deleting reference to $object_dn from $referencing_dn"
+					echo "Deleting reference to $object_dn from $referencing_dn" | tee -a "${backupfile}"
 					ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret <<__EOF__
 dn: $referencing_dn
 changetype: modify
