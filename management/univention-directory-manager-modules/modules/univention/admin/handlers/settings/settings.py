@@ -39,7 +39,6 @@ import univention.admin.handlers.settings.directory
 import univention.admin.handlers.settings.default
 import univention.admin.handlers.settings.usertemplate
 import univention.admin.handlers.settings.license
-import univention.admin.handlers.settings.xconfig_choices
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -65,8 +64,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	return univention.admin.handlers.settings.directory.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.default.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.usertemplate.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.license.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.xconfig_choices.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	return [
+		obj
+		for mod in (univention.admin.handlers.settings.directory, univention.admin.handlers.settings.default, univention.admin.handlers.settings.usertemplate, univention.admin.handlers.settings.license)
+		for obj in mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	]
 
 
 def identify(dn, attr, canonical=False):

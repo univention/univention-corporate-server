@@ -306,6 +306,7 @@ update_check_old_packages () {
 }
 
 # Bug #51497 #51973 #31048 #51655 #51955 #51982 #51482
+# Admin must agree to remove these:
 declare -a legacy_ocs_structural=(
 	# UCC:
 	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
@@ -321,9 +322,11 @@ declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
 	'(objectClass=univentionCorporateClient)'
 )
+# These are auto-removed:
 declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionAdminUserSettings)'
 	'(structuralObjectClass=univentionPolicySharePrintQuota)'
+	'(structuralObjectClass=univentionXConfigurationChoices)'
 	# UCS TCS:
 	'(structuralObjectClass=univentionPolicyAutoStart)'
 	'(structuralObjectClass=univentionPolicyThinClient)'

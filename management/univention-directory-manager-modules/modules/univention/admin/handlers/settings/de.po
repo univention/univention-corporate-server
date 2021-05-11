@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-09-25 01:35+0200\n"
-"PO-Revision-Date: 2019-05-09 18:02+0200\n"
+"PO-Revision-Date: 2021-05-11 12:01+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -190,10 +190,6 @@ msgstr "Passwort bei der nächsten Anmeldung ändern"
 #: modules/univention/admin/handlers/settings/usertemplate.py:169
 msgid "City"
 msgstr "Stadt"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:81
-msgid "Color Depth"
-msgstr "Farbtiefe"
 
 #: modules/univention/admin/handlers/settings/directory.py:100
 msgid "Computer Link"
@@ -443,10 +439,6 @@ msgstr "Anzeige"
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:129
-msgid "Display Size (mm)"
-msgstr "Bildschirm Größe (mm)"
-
 #: modules/univention/admin/handlers/settings/usertemplate.py:86
 #: modules/univention/admin/handlers/settings/portal_entry.py:145
 #: modules/univention/admin/handlers/settings/portal_category.py:77
@@ -581,7 +573,6 @@ msgstr "GNU Message Catalog für Übersetzungen"
 #: modules/univention/admin/handlers/settings/portal.py:180
 #: modules/univention/admin/handlers/settings/udm_syntax.py:120
 #: modules/univention/admin/handlers/settings/udm_module.py:131
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:137
 #: modules/univention/admin/handlers/settings/service.py:68
 #: modules/univention/admin/handlers/settings/printermodel.py:78
 #: modules/univention/admin/handlers/settings/portal_category.py:73
@@ -625,10 +616,6 @@ msgstr "Grundeinstellungen - UDM-Syntax"
 #: modules/univention/admin/handlers/settings/umc_operationset.py:102
 msgid "General UMC operation set settings"
 msgstr "Grundeinstellungen - UMC-Operationen"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:138
-msgid "General X configuration choices settings"
-msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:267
 msgid "General extended attribute settings"
@@ -737,10 +724,6 @@ msgstr "Pfad der Benutzerverzeichnis-Freigabe"
 msgid "Hook class"
 msgstr "Hook-Klasse"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:111
-msgid "Horizontal Sync"
-msgstr "Horizontale Synchronisation"
-
 #: modules/univention/admin/handlers/settings/portal_entry.py:126
 msgid "Icon"
 msgstr "Icon"
@@ -824,14 +807,6 @@ msgstr "Key ID"
 #: modules/univention/admin/handlers/settings/license.py:159
 msgid "Key ID of this license."
 msgstr "Key ID der Lizenz"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:99
-msgid "Keyboard Layout"
-msgstr "Tastaturlayout"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:105
-msgid "Keyboard Variant"
-msgstr "Tastaturvariante"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:47
 msgid "LDAP ACL Extension"
@@ -1157,14 +1132,6 @@ msgstr ""
 msgid "Modules to be extended"
 msgstr "Zu erweiternde Module"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:93
-msgid "Mouse Device"
-msgstr "Maus-Device"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:87
-msgid "Mouse Protocol"
-msgstr "Mausprotokoll"
-
 #: modules/univention/admin/handlers/settings/extended_attribute.py:116
 msgid "Multi value"
 msgstr "Mehrfachwert"
@@ -1184,7 +1151,6 @@ msgstr "Mehrfachwert"
 #: modules/univention/admin/handlers/settings/prohibited_username.py:59
 #: modules/univention/admin/handlers/settings/prohibited_username.py:60
 #: modules/univention/admin/handlers/settings/portal.py:181
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:66
 #: modules/univention/admin/handlers/settings/license.py:69
 #: modules/univention/admin/handlers/settings/license.py:70
 #: modules/univention/admin/handlers/settings/printermodel.py:61
@@ -1444,10 +1410,6 @@ msgstr "Einstellungen: Vorgabe"
 msgid "Preferences: Default Container"
 msgstr "Einstellungen: Standard-Container"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:54
-msgid "Preferences: X Configuration Choices"
-msgstr "Einstellungen: X-Konfigurationsauswahl"
-
 #: modules/univention/admin/handlers/settings/usertemplate.py:75
 msgid "Preferred delivery method"
 msgstr "Bevorzugte Liefermethode"
@@ -1581,10 +1543,6 @@ msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
 #: modules/univention/admin/handlers/settings/sambadomain.py:150
 msgid "Reset count minutes"
 msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:75
-msgid "Resolution"
-msgstr "Auflösung"
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:92
 msgid "Restrict to host"
@@ -2319,10 +2277,6 @@ msgstr "Version dieser Lizenz"
 msgid "Version of extended attribute"
 msgstr "Version des erweiterten Attributs"
 
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:117
-msgid "Vertical Refresh"
-msgstr "Vertikale Wiederholungsrate"
-
 #: modules/univention/admin/handlers/settings/portal.py:185
 msgid "Visibility"
 msgstr ""
@@ -2363,19 +2317,6 @@ msgstr "Windows-Logon-Pfad"
 #: modules/univention/admin/handlers/settings/usertemplate.py:149
 msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:55
-msgid "X Configuration Choice"
-msgstr "X-Konfigurations Auswahl"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:56
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:137
-msgid "X Configuration Choices"
-msgstr "X-Konfiguration Auswahl"
-
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:123
-msgid "X Module"
-msgstr "X-Modul"
 
 #: modules/univention/admin/handlers/settings/data.py:57
 msgid "name"
