@@ -327,6 +327,7 @@ declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionAdminUserSettings)'
 	'(structuralObjectClass=univentionPolicySharePrintQuota)'
 	'(structuralObjectClass=univentionXConfigurationChoices)'
+	'(structuralObjectClass=univentionMailQuota)'
 	# UCS TCS:
 	'(structuralObjectClass=univentionPolicyAutoStart)'
 	'(structuralObjectClass=univentionPolicyThinClient)'
