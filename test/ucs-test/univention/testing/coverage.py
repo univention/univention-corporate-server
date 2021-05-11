@@ -125,7 +125,10 @@ directory = {directory}
 			return
 
 		# stop all services, so that their atexit-handler/signal handler stores the result before evaluating the result
+		if os.path.exists(self.COVERAGE_PTH):
+			os.remove(self.COVERAGE_PTH)
 		self.restart_python_services()
+
 		for exe in ("coverage", "python3-coverage", "python-coverage"):
 			coverage_bin = distutils.spawn.find_executable(exe)
 			if coverage_bin:
@@ -137,8 +140,6 @@ directory = {directory}
 		subprocess.call([coverage_bin, 'html'])
 		subprocess.call([coverage_bin, 'report'])
 		subprocess.call([coverage_bin, 'erase'])
-		if os.path.exists(self.COVERAGE_PTH):
-			os.remove(self.COVERAGE_PTH)
 		if os.path.exists(self.coverage_config):
 			os.remove(self.coverage_config)
 
