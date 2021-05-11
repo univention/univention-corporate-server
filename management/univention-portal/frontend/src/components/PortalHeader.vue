@@ -253,7 +253,7 @@ export default defineComponent({
     font-size: var(--font-size-2);
     white-space: nowrap
 
-    @media only screen and (max-width: 600px)
+    @media mqSmartphone
       width: 2rem
       overflow: hidden
 

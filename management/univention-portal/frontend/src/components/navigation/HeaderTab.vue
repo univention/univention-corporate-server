@@ -132,12 +132,6 @@ export default defineComponent({
     },
     reManageFocus():void {
       this.closeTab();
-      // setTimeout(() => {
-      //   const tabArray = document.querySelectorAll('.header-tab__focus-wrapper');
-      //   console.log(tabArray);
-      //   const indexOfLastChild = tabArray.length - 1;
-      //   (tabArray[indexOfLastChild] as HTMLElement).focus();
-      // }, 50);
     },
   },
 });

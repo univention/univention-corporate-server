@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-05-02 15:46+0200\n"
+"POT-Creation-Date: 2021-05-11 02:10+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -327,6 +327,10 @@ msgstr "Neues Passwort"
 msgid "Next"
 msgstr "Weiter"
 
+#: src/assets/data/dictionary.js:136
+msgid "No search results"
+msgstr "Keine Suchergebnisse"
+
 #: src/assets/data/dictionary.js:39 src/assets/data/dictionary.js:131
 msgid "Notifications"
 msgstr "Benachrichtigungen"
@@ -338,6 +342,22 @@ msgstr "Altes Passwort"
 #: src/assets/data/dictionary.js:43
 msgid "Open edit sidebar"
 msgstr "Editierseite öffnen"
+
+#: src/assets/data/dictionary.js:140
+msgid "Please enter a description"
+msgstr "Bitte geben Sie eine Beschreibung ein"
+
+#: src/assets/data/dictionary.js:139
+msgid "Please enter a display name"
+msgstr "Bitte geben Sie einen Anzeigenamen ein"
+
+#: src/assets/data/dictionary.js:138
+msgid "Please enter an internal name"
+msgstr "Bitte geben Sie einen internen Namen ein"
+
+#: src/assets/data/dictionary.js:141
+msgid "Please enter at least one English link"
+msgstr "Bitte geben Sie mindestens einen englischen Link ein"
 
 #: src/assets/data/dictionary.js:111
 msgid "Remove"
@@ -386,6 +406,10 @@ msgstr "Sprache ändern"
 #: src/assets/data/dictionary.js:133
 msgid "Tabs"
 msgstr "Tabs"
+
+#: src/assets/data/dictionary.js:137
+msgid "The form data is not valid"
+msgstr "Die Formulardaten sind fehlerhaft"
 
 #: src/assets/data/dictionary.js:115
 msgid "Upload"

@@ -134,6 +134,11 @@ const catalog = {
   CHOOSE_TAB: _('Choose a tab'),
   SHOW_UMC: _('Show local UMC modules'),
   NO_RESULTS: _('No search results'),
+  ERROR_ON_VALIDATION: _('The form data is not valid'),
+  ERROR_ENTER_NAME: _('Please enter an internal name'),
+  ERROR_ENTER_TITLE: _('Please enter a display name'),
+  ERROR_ENTER_DESCRIPTION: _('Please enter a description'),
+  ERROR_ENTER_LINK: _('Please enter at least one English link'),
 };
 
 export { catalog };

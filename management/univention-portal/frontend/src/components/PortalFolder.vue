@@ -163,9 +163,6 @@ export default defineComponent({
     isFirstElement(index): boolean {
       return index === 0;
     },
-    getLastElement() {
-      console.log('ELEMENT');
-    },
     keepFocusInFolderModal(focusElement) {
       // TODO: Following $refs are bad practice and do not have proper typescript support
       const firstElement = (this.$refs.portalFolderChildren0 as HTMLFormElement).$el.children[0];

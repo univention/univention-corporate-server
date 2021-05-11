@@ -36,9 +36,12 @@
       id="portalCategories"
       class="portal-categories"
     >
-      <div aria-live="assertive" aria-atomic="true">
-        <h2 v-if="hasEmptySearchResults" >
-         <translate i18n-key="NO_RESULTS" />
+      <div
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <h2 v-if="hasEmptySearchResults">
+          <translate i18n-key="NO_RESULTS" />
         </h2>
       </div>
 

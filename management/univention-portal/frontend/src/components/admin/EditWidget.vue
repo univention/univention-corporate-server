@@ -33,7 +33,7 @@
   >
     <form
       class="admin-entry"
-      @submit.prevent="finish"
+      @submit.prevent="submit"
     >
       <main>
         <slot />
@@ -58,7 +58,7 @@
         <button
           class="primary"
           type="submit"
-          @click.prevent="$emit('save')"
+          @click.prevent="submit"
         >
           <translate i18n-key="SAVE" />
         </button>
@@ -68,10 +68,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
+
+export interface ValidatableData {
+  getErrors: () => Record<string, string>,
+}
 
 export default defineComponent({
   name: 'EditWidget',
@@ -88,6 +92,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    model: {
+      type: Object as PropType<ValidatableData>,
+      required: true,
+    },
   },
   emits: ['remove', 'save'],
   mounted() {
@@ -96,6 +104,29 @@ export default defineComponent({
   methods: {
     cancel() {
       this.$store.dispatch('modal/hideAndClearModal');
+    },
+    submit() {
+      const errors = this.model.getErrors();
+      if (Object.keys(errors).length === 0) {
+        this.$emit('save');
+      } else {
+        this.$el.querySelectorAll('input').forEach((input) => {
+          if (input.name) {
+            if (input.name in errors) {
+              input.setAttribute('invalid', 'invalid');
+            } else {
+              input.removeAttribute('invalid');
+            }
+          }
+        });
+        const description = Object.values(errors)
+          .map((err) => this.$translateLabel(err))
+          .join('</li><li>');
+        this.$store.dispatch('notificationBubble/addErrorNotification', {
+          bubbleTitle: this.$translateLabel('ERROR_ON_VALIDATION'),
+          bubbleDescription: `<ul><li>${description}</li></ul>`,
+        });
+      }
     },
   },
 });

@@ -28,6 +28,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <button
+    type="button"
     class="icon-button"
     @click.prevent="$emit('click')"
   >

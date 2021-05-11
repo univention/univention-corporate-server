@@ -169,6 +169,7 @@ export default defineComponent({
   &__message
     margin-top: var(--layout-spacing-unit)
     text-decoration: none
+    padding-right: calc(2 * var(--layout-spacing-unit))
 
     &>a
       color: var(--color-white)!important

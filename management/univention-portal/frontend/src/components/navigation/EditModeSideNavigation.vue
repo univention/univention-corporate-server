@@ -39,6 +39,7 @@
       <locale-input
         v-model="portalNameData"
         label="Name"
+        name="name"
         @update:modelValue="update"
       />
       <image-upload

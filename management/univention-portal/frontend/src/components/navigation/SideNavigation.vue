@@ -240,7 +240,6 @@ export default defineComponent({
     selectPrevious(menuReference: string, index?: number, numberOfItems?: number): void {
       // test
       if (menuReference === 'subItemParent') {
-        console.log('selectPrevious: in subMenu');
         // If current is subitem Parent focus last item in list
         this.$nextTick(() => {
           const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
@@ -248,20 +247,15 @@ export default defineComponent({
           firstSubItemChild.focus();
         });
       } else if (menuReference === 'subItem' || menuReference === 'menuItem') {
-        console.log('selectPrevious: in parentMenu');
         if (index === 0) {
-          console.log('selectPrevious: ?');
           // If current is first submenu item set focus to subItemParent.
           if (menuReference === 'subItem') {
-            console.log('selectPrevious: !');
             this.focusOnSubItemParent();
           } else {
-            console.log('selectPrevious: ?');
             const lastElementIndex = numberOfItems ? numberOfItems - 1 : null;
             (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el.focus();
           }
         } else {
-          console.log('selectPrevious: normal previous behaviour');
           // normal previous behaviour
           const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
           const previousElement = currentElement.parentElement.previousElementSibling.children[0];

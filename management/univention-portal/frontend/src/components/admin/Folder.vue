@@ -30,6 +30,7 @@
   <edit-widget
     :label="label"
     :can-remove="!!modelValue.dn"
+    :model="$data"
     @remove="remove"
     @save="finish"
   >
@@ -45,6 +46,7 @@
     <locale-input
       v-model="title"
       label="Name"
+      name="title"
     />
   </edit-widget>
 </template>
@@ -54,16 +56,27 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import { put, add } from '@/jsHelper/admin';
-import EditWidget from '@/components/admin/EditWidget.vue';
+import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import LinkWidget from '@/components/widgets/LinkWidget.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
-interface AdminFolderData {
+interface AdminFolderData extends ValidatableData {
   name: string,
   title: Record<string, string>,
+}
+
+function getErrors(this: AdminFolderData) {
+  const errors: Record<string, string> = {};
+  if (!this.name) {
+    errors.name = 'ERROR_ENTER_NAME';
+  }
+  if (!this.title.en_US) {
+    errors.title = 'ERROR_ENTER_TITLE';
+  }
+  return errors;
 }
 
 export default defineComponent({
@@ -93,6 +106,7 @@ export default defineComponent({
     return {
       name: '',
       title: {},
+      getErrors,
     };
   },
   computed: {

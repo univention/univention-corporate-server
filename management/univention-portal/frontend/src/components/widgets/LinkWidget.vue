@@ -51,6 +51,7 @@
         <input
           :ref="`link${index}`"
           v-model="modelValueData[index].value"
+          :name="index === 0 ? name : `${name}-${index}`"
         >
       </span>
       <span
@@ -65,6 +66,7 @@
     </div>
     <span class="modal-admin__button">
       <button
+        type="button"
         class="modal-admin__button--inner"
         @click.prevent="addField"
       >
@@ -108,6 +110,10 @@ export default defineComponent({
       type: Array as PropType<LocaleAndValue[]>,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
   },
   emits: ['update:modelValue'],
   data(): LinkWidgetData {
@@ -127,6 +133,10 @@ export default defineComponent({
         locale: val.locale,
         value: val.value,
       });
+    });
+    this.modelValueData.push({
+      locale: 'en_US',
+      value: '',
     });
   },
   updated() {

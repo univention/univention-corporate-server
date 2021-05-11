@@ -30,6 +30,7 @@
   <edit-widget
     :label="label"
     :can-remove="!!modelValue.dn"
+    :model="$data"
     @remove="remove"
     @save="finish"
   >
@@ -44,10 +45,12 @@
     </label>
     <locale-input
       v-model="title"
+      name="title"
       label="Name"
     />
     <locale-input
       v-model="description"
+      name="description"
       label="Description"
     />
     <label>
@@ -57,10 +60,15 @@
       >
       <translate i18n-key="ACTIVATED" />
     </label>
-    <h3>Links</h3>
-    <link-widget
-      v-model="links"
-    />
+    <div>
+      <label>
+        Links
+      </label>
+      <link-widget
+        v-model="links"
+        name="links"
+      />
+    </div>
 
     <image-upload
       v-model="pathToLogo"
@@ -81,14 +89,14 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import { put, add } from '@/jsHelper/admin';
-import EditWidget from '@/components/admin/EditWidget.vue';
+import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import LinkWidget, { LocaleAndValue } from '@/components/widgets/LinkWidget.vue';
 
 import Translate from '@/i18n/Translate.vue';
 
-interface AdminEntryData {
+interface AdminEntryData extends ValidatableData {
   name: string,
   activated: boolean,
   pathToLogo: string,
@@ -96,6 +104,26 @@ interface AdminEntryData {
   title: Record<string, string>,
   description: Record<string, string>,
   links: Array<LocaleAndValue>,
+}
+
+function getErrors(this: AdminEntryData) {
+  const errors: Record<string, string> = {};
+  if (!this.name) {
+    errors.name = 'ERROR_ENTER_NAME';
+  }
+  if (!this.title.en_US) {
+    errors.title = 'ERROR_ENTER_TITLE';
+  }
+  if (!this.description.en_US) {
+    errors.description = 'ERROR_ENTER_DESCRIPTION';
+  }
+  if (!this.links.some((link) => link.locale === 'en_US' && !!link.value)) {
+    errors.links = 'ERROR_ENTER_LINK';
+  }
+  if (this.links.length === 0) {
+    errors.links = 'ERROR_ENTER_LINK';
+  }
+  return errors;
 }
 
 export default defineComponent({
@@ -134,6 +162,7 @@ export default defineComponent({
       description: {},
       backgroundColor: null,
       links: [],
+      getErrors,
     };
   },
   computed: {
@@ -181,12 +210,13 @@ export default defineComponent({
     },
     async finish() {
       this.$store.dispatch('activateLoadingState');
+      const links = this.links.filter((lnk) => !!lnk.value).map((lnk) => [lnk.locale, lnk.value]);
       const attrs = {
         name: this.name,
         activated: this.activated,
         displayName: Object.entries(this.title),
         description: Object.entries(this.description),
-        link: this.links.map((lnk) => [lnk.locale, lnk.value]),
+        link: links,
         icon: '',
         backgroundColor: this.backgroundColor,
       };

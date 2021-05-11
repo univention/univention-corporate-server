@@ -91,6 +91,7 @@ export default defineComponent({
             modelValue: {},
             superDn: this.superDn,
             label: 'NEW_ENTRY',
+            fromFolder: this.forFolder,
           },
         });
       }

@@ -94,6 +94,10 @@ export default defineComponent({
   main
     max-height: 26rem
     overflow: auto
+    padding-right: var(--layout-spacing-unit)
+
+    > label:first-child
+      margin-top: 0
 
   footer
     margin-top: calc(2 * var(--layout-spacing-unit))

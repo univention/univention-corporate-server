@@ -33,8 +33,11 @@ button
   svg + span
     padding-left: var(--layout-spacing-unit-small)
 
-  &[disabled]
+  &[disabled],
+  &[disabled]:hover
     background-color: var(--button-bgc-overlay-disabled)
+    color: var(--font-color-disabled)
+    cursor: var(--cursor-disabled)
 
   &:hover
     background-color: unquote('rgba(var(--color-grey25-rgb), 0.85)')
@@ -93,9 +96,10 @@ select
     color: var(--font-color-contrast-high)
 
 label, div.label
+  display: block
+  margin-top: calc(3 * var(--layout-spacing-unit))
   color: var(--color-grey62)
   font-size: var(--font-size-3)
-  padding-bottom: calc(var(--layout-spacing-unit) * 1.25)
   position: relative
 
   input[type=checkbox]

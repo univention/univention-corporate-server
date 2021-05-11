@@ -27,14 +27,17 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    v-for="locale in locales"
-    :key="locale"
-  >
-    <label>
+  <div class="locale-input">
+    <label
+      v-for="locale in locales"
+      :key="locale"
+    >
       {{ label }} ({{ locale }})
       <input
         v-model="modelValueData[locale]"
+        :name="locale === 'en_US' ? name : `${name}-${locale}`"
+        autocomplete="off"
+        tabindex="0"
       >
     </label>
   </div>
@@ -44,19 +47,30 @@
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
+import Translate from '@/i18n/Translate.vue';
+
 export default defineComponent({
   name: 'LocaleInput',
+  components: {
+    Translate,
+  },
   props: {
-    label: {
-      type: String,
-      required: true,
-    },
     modelValue: {
       type: Object as PropType<Record<string, string>>,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    label: {
+      type: String,
+      required: true,
+    },
   },
-  emits: ['update:modelValue'],
+  emits: [
+    'update:modelValue',
+  ],
   data() {
     return {
       modelValueData: {},
@@ -65,6 +79,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
+      getModalError: 'modal/getModalError',
     }),
   },
   created() {
@@ -83,3 +98,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="stylus">
+.locale-input
+  margin-top: calc(3 * var(--layout-spacing-unit))
+
+  label
+    margin-top: 0
+</style>

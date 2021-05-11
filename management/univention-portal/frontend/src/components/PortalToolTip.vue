@@ -108,6 +108,17 @@ export default defineComponent({
   color: var(--color-white)
   display: block;
 
+  @media mqSmartphone
+    bottom: unset;
+    top: calc(3 * var(--layout-spacing-unit))
+    min-width: 4rem
+    max-width: calc(20 * 1rem)
+    width: 90%
+    left:0
+    right:0
+    margin-left:auto
+    margin-right:auto
+
   &__header
     display: flex
     align-items: center
