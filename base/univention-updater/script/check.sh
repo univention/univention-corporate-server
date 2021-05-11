@@ -669,7 +669,7 @@ V5 = LooseVersion("5.0-0")
 ATTR = "univentionOperatingSystemVersion"
 blocking_computers = [
     "%s: %s" % (dn, attrs[ATTR][0].decode("UTF-8", "replace"))
-    for dn, attrs in lo.search("(&(%s=*)(univentionOperatingSystem=Univention Corporate Server))" % ATTR, attr=[ATTR])
+    for dn, attrs in lo.search("(&(%s=*)(univentionOperatingSystem=Univention Corporate Server)(!(univentionObjectFlag=docker)))" % ATTR, attr=[ATTR])
     if LooseVersion(attrs[ATTR][0].decode("UTF-8", "replace")) < LooseVersion(REQUIRED_VERSION)
 ]
 

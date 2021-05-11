@@ -1,3 +1,10 @@
+univention-updater (15.0.3-59) unstable; urgency=medium
+
+  * Bug #53030: Do not find Appbox computers when checking whether any UCS
+    systems < 4.4-8 are present
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 May 2021 17:51:09 +0200
+
 univention-updater (15.0.3-58) unstable; urgency=medium
 
   * Bug #51655: preup.sh: Fixes and improvements for delete_obsolete_objects
