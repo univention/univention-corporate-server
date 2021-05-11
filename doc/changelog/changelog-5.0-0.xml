@@ -221,6 +221,15 @@
 				</itemizedlist>
 			</section>
 
+			<section id="changelog:domain:openldap:index">
+				<title>LDAP index changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+						The LDAP attributes <wordasword>aAAARecord</wordasword>, <wordasword>mXRecord</wordasword>, <wordasword>cNAMERecord</wordasword>, <wordasword>sRVRecord</wordasword>, <wordasword>tXTRecord</wordasword> and <wordasword>nSRecord</wordasword> now get indexed to improve ther performance of presence searches in the UDM module <wordasword>dns/txt_record</wordasword> (<bug>53192</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
