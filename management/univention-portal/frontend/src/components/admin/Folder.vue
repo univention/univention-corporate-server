@@ -45,7 +45,7 @@
     </label>
     <locale-input
       v-model="title"
-      label="Name"
+      i18n-label="NAME"
       name="title"
     />
   </edit-widget>

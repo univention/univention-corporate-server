@@ -1,3 +1,9 @@
+univention-portal (4.0.5-49) unstable; urgency=medium
+
+  * Bug #53234: Fix blockers for UCS 5 (form validation) (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 12 May 2021 00:36:52 +0200
+
 univention-portal (4.0.5-48) unstable; urgency=medium
 
   * Bug #53234: Fix blockers for UCS 5 (form validation)

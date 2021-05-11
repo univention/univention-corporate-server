@@ -32,7 +32,14 @@
       v-for="locale in locales"
       :key="locale"
     >
-      {{ label }} ({{ locale }})
+      <translate
+        :i18n-key="i18nLabel"
+      /> ({{ locale }})
+      <span
+        v-if="locale === 'en_US'"
+      >
+        *
+      </span>
       <input
         v-model="modelValueData[locale]"
         :name="locale === 'en_US' ? name : `${name}-${locale}`"
@@ -63,7 +70,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    label: {
+    i18nLabel: {
       type: String,
       required: true,
     },

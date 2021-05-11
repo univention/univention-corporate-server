@@ -12,6 +12,7 @@
           <input
             ref="input"
             type="text"
+            autocomplete="off"
             :list="datalistId"
             name="display_name"
           >

@@ -36,6 +36,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       ref="portalHeaderH1"
       class="portal-header__left"
       tabindex="0"
+      role="button"
       :aria-label="ariaLabelPortalHeader"
       @click="goHome"
       @keydown.enter="goHome"
@@ -45,7 +46,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         id="portal-header-logo"
         :src="portalLogo"
         class="portal-header__left-image"
-        :alt="$localized(portalName)"
+        alt=""
       >
       <h1 class="portal-header__portal-name">
         {{ $localized(portalName) }}
@@ -98,19 +99,19 @@ License with the Debian GNU/Linux or Univention distribution in file
       <header-button
         ref="searchButton"
         data-test="searchbutton"
-        :aria-label="ariaLabelSearch"
+        :aria-label-prop="ariaLabelSearch"
         icon="search"
         @click="dismissBubble"
       />
       <header-button
         data-test="bellbutton"
-        :aria-label="ariaLabelNotifications"
+        :aria-label-prop="ariaLabelNotifications"
         icon="bell"
         @click="dismissBubble"
       />
       <header-button
         data-test="navigationbutton"
-        :aria-label="ariaLabelMenu"
+        :aria-label-prop="ariaLabelMenu"
         icon="menu"
         @click="dismissNotification('menu')"
       />

@@ -33,7 +33,7 @@
       :href="link"
       :target="anchorTarget"
       :aria-describedby="createID()"
-      :aria-label="$localized(title)"
+      :aria-label="ariaLabelPortalTile"
       class="portal-tile"
       :draggable="editMode && !fromFolder"
       data-test="tileLink"
@@ -166,6 +166,9 @@ export default defineComponent({
     },
     isTouchDevice(): boolean {
       return 'ontouchstart' in document.documentElement;
+    },
+    ariaLabelPortalTile(): null | string {
+      return (this.minified || this.editMode) ? null : this.$localized(this.title);
     },
   },
   mounted() {
@@ -302,6 +305,15 @@ export default defineComponent({
 
     &--in-modal
       position relative
+
+  &__info-button
+    width: calc(5.5 * var(--layout-spacing-unit))
+    height: @width
+    font-size: var(--font-size-2)
+
+    svg
+      width: calc(1.5 * var(--button-icon-size))
+      height: @width
 
   &__modal
     width: 650px

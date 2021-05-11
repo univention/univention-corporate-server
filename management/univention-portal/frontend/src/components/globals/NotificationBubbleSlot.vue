@@ -48,7 +48,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           </div>
 
           <header-button
-            :aria-label="ariaLabel"
+            :aria-label="ariaLabelDismissButton"
             icon="x"
             :no-click="true"
             :hover-class="`header-button__button--${item.bubbleImportance}`"
@@ -100,7 +100,7 @@ export default defineComponent({
       }
       return data;
     },
-    ariaLabel() {
+    ariaLabelDismissButton() {
       return catalog.DISMISS_NOTIFICATION.translated.value;
     },
   },

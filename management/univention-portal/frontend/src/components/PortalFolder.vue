@@ -41,6 +41,7 @@
     <button
       class="portal-tile__box"
       tabindex="0"
+      :aria-label="ariaLabelFolder"
       @click="openFolder"
       @keypress.enter="openFolder"
       @keyup.esc.stop="closeFolder()"
@@ -138,6 +139,9 @@ export default defineComponent({
     ...mapGetters({ editMode: 'portalData/editMode' }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
+    },
+    ariaLabelFolder(): string {
+      return `${this.$translateLabel('FOLDER')}`;
     },
   },
   methods: {

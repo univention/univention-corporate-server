@@ -105,13 +105,11 @@ export default defineComponent({
     };
   },
   computed: {
-    ariaLabelClose():string {
-      // TODO Screenreader Translations
-      return ` ${this.tabLabel}: Close Tab.`;
+    ariaLabelClose(): string {
+      return `${this.tabLabel}:  ${this.$translateLabel('CLOSE_TAB')}`;
     },
-    ariaLabelFocus():string {
-      // TODO Screenreader Translations
-      return ` ${this.tabLabel}: To Focus press Enter`;
+    ariaLabelFocus(): string {
+      return `${this.tabLabel}:  ${this.$translateLabel('SELECT_TAB')}`;
     },
   },
   mounted() {

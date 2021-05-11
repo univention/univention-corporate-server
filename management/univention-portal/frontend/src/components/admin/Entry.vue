@@ -46,12 +46,12 @@
     <locale-input
       v-model="title"
       name="title"
-      label="Name"
+      i18n-label="NAME"
     />
     <locale-input
       v-model="description"
       name="description"
-      label="Description"
+      i18n-label="DESCRIPTION"
     />
     <label>
       <input

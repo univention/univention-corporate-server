@@ -132,6 +132,9 @@ const catalog = {
   MENU: _('Menu'),
   TABS: _('Tabs'),
   CHOOSE_TAB: _('Choose a tab'),
+  SELECT_TAB: _('Select'),
+  CLOSE_TAB: _('Close'),
+  PRESS_ENTER_TO_FOCUS: _('To focus press Enter'),
   SHOW_UMC: _('Show local UMC modules'),
   NO_RESULTS: _('No search results'),
   ERROR_ON_VALIDATION: _('The form data is not valid'),
@@ -139,6 +142,7 @@ const catalog = {
   ERROR_ENTER_TITLE: _('Please enter a display name'),
   ERROR_ENTER_DESCRIPTION: _('Please enter a description'),
   ERROR_ENTER_LINK: _('Please enter at least one English link'),
+  FOLDER: _('Folder'),
 };
 
 export { catalog };

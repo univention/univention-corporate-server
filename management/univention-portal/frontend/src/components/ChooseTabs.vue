@@ -44,7 +44,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           <div
             class="choose-tab__button"
             tabindex="0"
-            :aria-label="`Show ${tab.tabLabel}`"
+            :aria-label="ariaLabelChooseTab(tab.tabLabel)"
             @click="gotoTab(idx)"
           >
             <img
@@ -56,7 +56,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           </div>
           <icon-button
             icon="x"
-            :aria-label="`Close ${tab.tabLabel}`"
+            :aria-label="ariaLabelCloseTab(tab.tabLabel)"
             @click="closeTab(idx)"
           />
         </div>
@@ -84,6 +84,12 @@ export default defineComponent({
     ...mapGetters({
       tabs: 'tabs/allTabs',
     }),
+    ariaLabelChooseTab(tabLabel: string): string {
+      return `${tabLabel} ${this.$translateLabel('SELECT_TAB')}`;
+    },
+    ariaLabelCloseTab(tabLabel: string): string {
+      return `${tabLabel} ${this.$translateLabel('CLOSE_TAB')}`;
+    },
   },
   methods: {
     closeTab(idx: number) {

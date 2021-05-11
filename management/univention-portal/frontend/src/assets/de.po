@@ -443,3 +443,13 @@ msgstr "suchen"
 
 #~ msgid "Remove from this portal"
 #~ msgstr "Aus diesem Portal entfernen"
+
+
+msgid "Select"
+msgstr "auswählen"
+
+msgid "Close"
+msgstr "schließen"
+
+msgid "Folder"
+msgstr "Ordner"

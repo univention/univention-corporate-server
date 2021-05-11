@@ -38,7 +38,7 @@
       />
       <locale-input
         v-model="portalNameData"
-        label="Name"
+        i18n-label="NAME"
         name="name"
         @update:modelValue="update"
       />
