@@ -9,7 +9,7 @@ import signal
 import subprocess
 import time
 from argparse import ArgumentParser, Namespace, _ArgumentGroup  # noqa F401
-from typing import Any, Callable  # noqa F401
+from typing import Any, Callable, List  # noqa F401
 
 import six
 
@@ -158,18 +158,30 @@ directory = {directory}
 		coverage_group.add_argument("--coverage-output-directory", default=os.path.abspath(os.path.expanduser('~/htmlcov')))
 		return coverage_group
 
+	@classmethod
+	def is_candidate(cls, argv):
+		# type: (List[str]) -> bool
+		if os.getuid():
+			return False
+		exe = os.path.basename(argv[0])
+		if exe not in {'python', 'python2', 'python2.7', 'python3', 'python3.5', 'python3.7'}:
+			return False
+		if not any(s in arg for arg in argv for s in {'univention', 'udm', 'ucs', 'ucr'}):
+			cls.debug_message('skip non-ucs process', argv)
+			return False
+		if any(s in arg for arg in argv[2:] for s in {'listener', 'notifier'}):
+			# we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
+			cls.debug_message('skip UDL/UDN', argv)
+			return False
+		return True
+
 	@classmethod  # noqa: C901
 	def startup(cls):
 		# type: () -> None
 		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
-		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg or 'ucr' in arg for arg in argv):
-			if argv != ['/usr/bin/python2.7', ''] and argv != ['/usr/bin/python3', '']:
-				cls.debug_message('skip non-ucs process', argv)
-			return  # don't change non UCS-python scripts
-		if any('listener' in arg or 'notifier' in arg for arg in argv[2:]):
-			cls.debug_message('skip listener', argv)
-			return  # we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
+		if not cls.is_candidate(argv):
+			return
 
 		cls.debug_message('START', argv)
 		atexit.register(lambda: cls.debug_message('STOP'))
