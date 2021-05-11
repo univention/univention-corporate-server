@@ -35,7 +35,6 @@ from __future__ import absolute_import
 import copy
 import sys
 import re
-import unicodedata
 
 from ldap.filter import filter_format
 import unidecode
