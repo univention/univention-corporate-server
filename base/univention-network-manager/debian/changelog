@@ -1,3 +1,9 @@
+univention-network-manager (12.0.2-4) unstable; urgency=medium
+
+  * Bug #52959: make univention-network-common unit wait for UMC-web-server
+
+ -- Arvid <requate@univention.de>  Tue, 11 May 2021 16:25:35 +0200
+
 univention-network-manager (12.0.2-3) unstable; urgency=medium
 
   * Bug #52959: Register IP obtained from DHCP rather than the one

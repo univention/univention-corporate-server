@@ -1,6 +1,8 @@
 [Unit]
 Description=Register current IP addresses in LDAP directory
 After=network-online.target
+After=univention-management-console-web-server.service
+After=apache2.service
 Wants=network-online.target
 ConditionPathExists=/var/univention-join/joined
 ConditionFileIsExecutable=/usr/sbin/univention-register-network-address
