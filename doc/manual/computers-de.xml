@@ -1430,8 +1430,8 @@ primary.firma.de
                 Variablen zusammengefasst und auf mehr als einen Rechner angewendet
                 werden.
             </para>
-                <figure id="policy-mailsize"><title>Konfiguration der maximalen Mailgröße über eine Richtlinie</title>
-                    <graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_mailsize_de.png"/>
+                <figure id="policy-apache-settings"><title>Konfiguration der Startseite und des forciertem HTTPS</title>
+                    <graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_apache_settings_de.png"/>
                 </figure>
             <para>
                 Zuerst muss für die anzulegende Richtlinie ein <guimenu>Name</guimenu>

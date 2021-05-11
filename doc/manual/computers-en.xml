@@ -1445,9 +1445,9 @@ primary.firma.de
 			managed in the UMC module <guimenu>Policies</guimenu> can be used
 			to compile variables and apply them on more than one computer.
 		</para>
-		<figure id="policy-mailsize">
-			<title>Policy-based configuration of the maximum mail size</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_mailsize_en.png"/>
+		<figure id="policy-apache-settings">
+			<title>Policy-based configuration of the apache startpage and forced HTTPS</title>
+			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_apache_settings_en.png"/>
 		</figure>
 		<para>
 			Firstly, a <guimenu>Name</guimenu> must be set for the policy which is to be
