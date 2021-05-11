@@ -172,7 +172,7 @@ SRC="$SRC_DIR/$TEMPLATE"
 [ -d "$SRC" ] ||
 	err "unknown template $TEMPLATE"
 
-MODULEID="${1:?moduel ID missing}"
+MODULEID="${1:?module ID missing}"
 
 if [ $# -ge 2 ]; then
 	DESTDIR=$(readlink -f "$2")
