@@ -1,3 +1,9 @@
+univention-updater (15.0.3-57) unstable; urgency=medium
+
+  * Bug #53003: block update with univention-legacy-kolab-schema
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 May 2021 11:45:39 +0200
+
 univention-updater (15.0.3-56) unstable; urgency=medium
 
   * Bug #53129: block update if defaultPackagesMaster of

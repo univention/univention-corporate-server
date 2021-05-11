@@ -225,6 +225,42 @@ update_check_role_package_removed () {
 	return 1
 }
 
+# Bug #53003
+update_check_kolab_schema () {
+	local var="update$VERSION/ignore_kolab_schema"
+	ignore_check "$var" && return 100
+	local status
+	status=$(dpkg-query -W -f '${db:Status-Status}' "univention-legacy-kolab-schema" 2>/dev/null)
+	if [ "$status" = "installed" ]; then
+		echo " The package univention-legacy-kolab-schema is installed. This package is"
+		echo " incompatible with UCS 5.0-0."
+		echo
+		echo " As the package contains a LDAP schema extension, this extension (a) has to"
+		echo " registered in the LDAP database or (b) has to be removed before the update"
+		echo " to UCS 5.0 is possible."
+		echo
+		echo " Note: These steps are only required on the Primary Node. On non-primary systems,"
+		echo "       the package can be removed without step (a) or (b)."
+		echo
+		echo " (a) Register LDAP schema files from univention-legacy-kolab-schema:"
+		echo "     To register the LDAP schema, run the following commands:"
+		echo "     cat /usr/share/univention-ldap/schema/legacy/rfc2739.schema > /opt/kolab-legacy.schema"
+		echo "     cat /usr/share/univention-ldap/schema/legacy/kolab2.schema >> /opt/kolab-legacy.schema"
+		echo "     cat /usr/share/univention-ldap/schema/legacy/univention-kolab2.schema >> /opt/kolab-legacy.schema"
+		echo "     cat /usr/share/univention-ldap/schema/legacy/kolab-legacy.schema >> /opt/kolab-legacy.schema"
+		echo "     bash -c 'source /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename \"univention-legacy-kolab-schema\" --packageversion \"3.0.0-1.22.201309110849\" --schema /opt/kolab-legacy.schema'"
+		echo
+		echo " or (b) Remove the LDAP schema extension:"
+		echo "        Please visit https://help.univention.com/t/6443 for how to remove LDAP schema extensions"
+		echo "        (remove all attributes and objectclasses from that schema from the LDAP database)."
+		echo
+		echo " After either (a) or (b) has been completed, the package has to be removed from this server:"
+		echo "  univention-remove --purge univention-legacy-kolab-schema"
+		return 1
+	fi
+}
+
+
 # Bug #51955
 update_check_old_packages () {
 	local pkg status IFS=$'\n' var="update$VERSION/ignore_old_packages"
