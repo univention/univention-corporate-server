@@ -1,3 +1,10 @@
+univention-lib (9.0.11-4) unstable; urgency=medium
+
+  * Bug #53191: Improve performance of LDAP search for univentionShareHost
+    in postinst
+
+ -- Arvid <requate@univention.de>  Tue, 11 May 2021 15:02:09 +0200
+
 univention-lib (9.0.11-3) unstable; urgency=low
 
   * Bug #52211: Move join function to separate join.sh
