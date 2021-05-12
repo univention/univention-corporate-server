@@ -33,27 +33,40 @@
 from __future__ import print_function
 import sys
 import argparse
+import time
+
 import netifaces
 
 import univention.config_registry
 import univention.uldap
-from univention.lib.umc import Client, HTTPError, ConnectionError
+from univention.lib.umc import Client, HTTPError, ConnectionError, ServiceUnavailable
+
+ATTEMPTS = 5
+RETRY_DELAY = 5
 
 
 def register_iface(configRegistry, iface, verbose):
-	try:
-		client = Client(configRegistry['ldap/master'])
-		client.authenticate_with_machine_account()
-		client.umc_command('ip/change', {
-			'ip': configRegistry.get('interfaces/%s/address' % iface),
-			'oldip': configRegistry.get('interfaces/%s/fallback/address' % iface),
-			'netmask': configRegistry.get('interfaces/%s/netmask' % iface),
-			'role': configRegistry.get('server/role'),
-		})
-	except (HTTPError, ConnectionError) as exc:
-		if verbose:
-			print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
-		return False
+	for retry in range(ATTEMPTS):
+		try:
+			client = Client(configRegistry['ldap/master'])
+			client.authenticate_with_machine_account()
+			client.umc_command('ip/change', {
+				'ip': configRegistry.get('interfaces/%s/address' % iface),
+				'oldip': configRegistry.get('interfaces/%s/fallback/address' % iface),
+				'netmask': configRegistry.get('interfaces/%s/netmask' % iface),
+				'role': configRegistry.get('server/role'),
+			})
+			return True
+		except ServiceUnavailable as exc:
+			if verbose:
+				print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
+			if retry + 1 < ATTEMPTS:
+				print('INFO: Retry (%s/%s) in %s seconds.' % (retry + 1, ATTEMPTS - 1, RETRY_DELAY))
+				time.sleep(RETRY_DELAY)
+		except (HTTPError, ConnectionError) as exc:
+			if verbose:
+				print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
+			return False
 	return True
 
 
