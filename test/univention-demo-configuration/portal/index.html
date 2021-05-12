@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Univention Server Overview</title>
+		<title>Univention Demo Apps</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +9,51 @@
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 		<style type="text/css">
 			#content {
-				position: relative;
-				padding: 30px;
-				padding-left: 125px;
+				padding: calc(2 * var(--layout-spacing-unit));
 				max-width: 600px;
+				margin: calc(8 * var(--layout-spacing-unit)) auto 0;
+				display: grid;
+				grid-template-columns: auto auto;
+				grid-template-rows: auto auto;
+				grid-template-areas: "icon title" "icon message";
+				gap: calc(2 * var(--layout-spacing-unit));
+			}
+
+			#content.loading {
+				display: flex;
+				justify-content: center;
+			}
+			#content.loading #icon,
+			#content.loading #message {
+				display: none;
 			}
 
 			#icon {
-				width: 100px;
+				width: 6rem;
 				height: auto;
-				position: absolute;
-				left: 15px;
-				top: 30px;
+				grid-area: icon;
+				align-self: center;
+			}
+
+			#title {
+				grid-area: title;
+			}
+
+			#message {
+				grid-area: message;
+			}
+
+			.isembedded #umcHeader {
+				display: none;
 			}
 		</style>
 		<script type="text/javascript">
 			var _de = {
-				'This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.': 'Das ist ein Demo-System, auf dem keine externen Apps installiert sind. Um mehr über {label} zu erfahren, besuchen Sie den <a href="https://www.univention.de/produkte/univention-app-center/app-katalog/{catalogID}/">Univention App Katalog</a> auf der Univention Webseite oder <a href="https://www.univention.de/download/">laden Sie UCS herunter</a> und installieren Sie sich ein System selber.'
+				'This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.': 'Dies ist ein Demo-System, auf dem keine externen Apps installiert sind. Um mehr über {label} zu erfahren, besuchen Sie den <a href="https://www.univention.de/produkte/univention-app-center/app-katalog/{catalogID}/">Univention App Katalog</a> auf der Univention Webseite oder <a href="https://www.univention.de/download/">laden Sie UCS herunter</a> und installieren Sie sich ein System selber.'
 			};
+			if (window.frameElement) {
+				document.documentElement.classList.add('isembedded');
+			}
 
 			var umcConfig = {
 				deps: ["dojo/_base/lang", "dojo/_base/kernel", "dojo/io-query", "dojo/dom", "dojo/topic", "dojox/html/entities", "umc/piwik"],
@@ -51,6 +78,7 @@
 					dom.byId('title').innerHTML = label_enc;
 					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.', lang.mixin({}, data, {label: label_enc, catalogID: catalogID_enc}));
 					dom.byId('icon').src = lang.replace("/univention/portal/icons/entries/{cn}.svg", data);
+					dom.byId('content').classList.remove('loading');
 				}
 			};
 		</script>
@@ -58,14 +86,10 @@
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc">
-		<div id="umcHeader" class="umcHeader">
-			<div class="umcHeaderRight" id="umcHeaderRight">
-				<div class="univentionLogo"></div>
-			</div>
-		</div>
+		<div id="umcHeader" class="umcHeader"></div>
 		<div id="wrapper" class="container">
-			<div id="content" class="umcCard">
-				<h1 id="title"></h1>
+			<div id="content" class="umcCard2 loading">
+				<h1 id="title">Loading ...</h1>
 				<img id="icon" />
 				<div id="message"></div>
 			</div>
