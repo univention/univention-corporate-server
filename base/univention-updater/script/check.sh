@@ -416,8 +416,8 @@ delete_obsolete_objects () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
 	[ -z "$updateLogDir" ] && die "ERROR: updateLogDir not set"
-	local backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
-	local filter ldif oc
+	local filter ldif oc backupfile
+	backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
 
 	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
 	echo "> An LDIF file of removed objects is available: ${backupfile}"
