@@ -7,13 +7,10 @@ Wants=network-online.target
 ConditionPathExists=/var/univention-join/joined
 ConditionFileIsExecutable=/usr/sbin/univention-register-network-address
 ConditionVirtualization=!container
-StartLimitInterval=30
-StartLimitBurst=5
 
 [Service]
+Type=oneshot
 ExecStart=/usr/sbin/univention-register-network-address
-Restart=on-failure
-RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
