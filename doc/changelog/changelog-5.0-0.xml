@@ -225,7 +225,7 @@
 				<title>LDAP index changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The LDAP attributes <wordasword>aAAARecord</wordasword>, <wordasword>mXRecord</wordasword>, <wordasword>cNAMERecord</wordasword>, <wordasword>sRVRecord</wordasword>, <wordasword>tXTRecord</wordasword> and <wordasword>nSRecord</wordasword> now get indexed to improve ther performance of presence searches in the UDM module <wordasword>dns/txt_record</wordasword> (<bug>53192</u:bug>)
+						The LDAP attributes <property>aAAARecord</property>, <property>mXRecord</property>, <property>cNAMERecord</property>, <property>sRVRecord</property>, <property>tXTRecord</property> and <property>nSRecord</property> now get indexed to improve the performance of presence searches in the UDM module <classname>dns/txt_record</classname> (<u:bug>53192</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
