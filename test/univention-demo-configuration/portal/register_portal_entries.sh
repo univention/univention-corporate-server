@@ -30,12 +30,45 @@
 eval "$(ucr shell)"
 DIR="$(dirname $0)"
 
+univention-directory-manager portals/category remove --ignore_not_exists \
+	--dn "cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base"
+univention-directory-manager portals/category create \
+	--position "cn=category,cn=portals,cn=univention,$ldap_base" \
+	--set name=demo-service \
+	--append entries="cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
+	--append displayName='"en_US" "Applications"' \
+	--append displayName='"de_DE" "Applikationen"'
+
+univention-directory-manager portals/category remove --ignore_not_exists \
+	--dn "cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base"
+univention-directory-manager portals/category create \
+	--position "cn=category,cn=portals,cn=univention,$ldap_base" \
+	--set name=demo-admin \
+	--append entries="cn=univentionblog,cn=entry,cn=portals,cn=univention,$ldap_base" \
+	--append displayName='"en_US" "Administration"' \
+	--append displayName='"de_DE" "Verwaltung"'
+
+univention-directory-manager portals/portal remove --ignore_not_exists \
+	--dn "cn=demo,cn=portal,cn=portals,cn=univention,$ldap_base"
+univention-directory-manager portals/portal create \
+	--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
+	--set name=demo \
+	--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
+	--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
+	--append categories="cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+	--append categories="cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+	--append displayName='"en_US" "Univention Portal"' \
+	--append displayName='"de_DE" "Univention Portal"' \
+	--append displayName='"fr_FR" "Portail Univention"' \
+	--set showUmc=TRUE
+
 create_app_entry () {
 	cn=demo-$1
 	catalogID="$2"
 	label="$3"
 	description_en="$4"
 	description_de="$5"
+	backgroundColor="${6:-var(--color-grey0)}"
 	link="/apps/?cn=$cn&catalogID=$catalogID&label=$label"
 	icon="$DIR/app-logo-$1.svg"
 	position="cn=entry,cn=portals,cn=univention,$ldap_base"
@@ -51,6 +84,7 @@ create_app_entry () {
 	udm portals/entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
+		--set backgroundColor="$backgroundColor" \
 		--append displayName='"en_US" "'"$label"'"' \
 		--append description='"en_US" "'"$description_en"'"' \
 		--append displayName='"de_DE" "'"$label"'"' \
@@ -59,15 +93,16 @@ create_app_entry () {
 		--set icon="$(base64 "$icon")"
 
 	udm portals/category modify \
-		--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--dn "cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append entries="$dn"
 }
 
 create_app_entry \
-	kopano kopano-core \
-	Kopano \
-	"Kopano Sharing &amp; Communication Software for Professionals" \
-	"Kopano Sharing &amp; Communication Software für Profis"
+	owncloud owncloud \
+	ownCloud \
+	"Cloud solution for data and file sync and share" \
+	"Cloud Lösung für Filesync und -share" \
+	"#1d2d44"
 
 create_app_entry \
 	nextcloud nextcloud \
@@ -76,22 +111,35 @@ create_app_entry \
 	"Daten sicher speichern, synchronisieren &amp; teilen in und außerhalb Ihrer Organisation"
 
 create_app_entry \
+	kopano kopano-core \
+	Kopano \
+	"Kopano Sharing &amp; Communication Software for Professionals" \
+	"Kopano Sharing &amp; Communication Software für Profis"
+
+create_app_entry \
+	ox oxseforucs \
+	"OX App Suite" \
+	"Groupware, email and communication platform" \
+	"Groupware, E-Mail- und Kommunikationsplattform" \
+	"#223e58"
+
+create_app_entry \
+	collabora collabora-online \
+	"Collabora Online" \
+	"Powerful LibreOffice-based online office suite" \
+	"Leistungsstarke LibreOffice-basierte Online-Office-Suite"
+
+create_app_entry \
+	onlyoffice onlyoffice-ds-integration \
+	"ONLYOFFICE Docs Enterprise Edition" \
+	"Feature-rich office suite on your own server" \
+	"Leistungsstarke Büro- und Produktivitäts-Suite auf Ihrem eigenen Server"
+
+create_app_entry \
 	openproject openproject \
 	OpenProject \
-	"Leading open source project management software" \
-	"Führende Open Source Projekt Management Software"
-
-create_app_entry \
-	owncloud owncloud82 \
-	ownCloud \
-	"Cloud solution for data and file sync and share" \
-	"Cloud Lösung für Filesync und -share"
-
-create_app_entry \
-	suitecrm digitec-suitecrm \
-	SuiteCRM \
-	"Open Source customer relationship management for the world" \
-	"Open Source Customer Relationship Management für die Welt"
+	"Open Source Project Management. Powerful. Easy-to-use. Enterprise class." \
+	"Open Source Projekt-Management Software und Team Kollaboration"
 
 create_admin_entry () {
 	cn=demo-$1
@@ -113,15 +161,17 @@ create_admin_entry () {
 	udm portals/entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
+		--set backgroundColor="transparent" \
 		--append displayName='"en_US" "'"$label"'"' \
 		--append description='"en_US" "'"$description_en"'"' \
 		--append displayName='"de_DE" "'"$label"'"' \
 		--append description='"de_DE" "'"$description_de"'"' \
 		--append link='"en_US" "'"$link"'"' \
+		--set linkTarget="newwindow" \
 		--set icon="$(base64 "$icon")"
 
 	udm portals/category modify \
-		--dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--dn "cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append entries="$dn"
 }
 
@@ -139,19 +189,7 @@ create_admin_entry \
 	"Die Univention-Support-Datenbank" \
 	"http://sdb.univention.de"
 
-udm portals/portal modify \
-	--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
-	--set categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base"
-udm portals/portal modify \
-	--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
-	--append categories="cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base"
+cat "$DIR/domain-portal.ldif" | univention-config-registry filter | ldapmodify -D "$ldap_hostdn" -y /etc/machine.secret
+cp "$DIR/portal.css" /usr/share/univention-portal/css/custom.css
 
-function has_portal_background {
-	univention-ldapsearch -LLL -b "cn=portal,cn=portals,cn=univention,$ldap_base" cn=domain | grep -q univentionNewPortalBackground:
-}
-
-
-if ! has_portal_background; then
-	cat "$DIR/domain-portal.ldif" | univention-config-registry filter | ldapmodify -D "$ldap_hostdn" -y /etc/machine.secret 
-fi
-
+ucr set portal/default-dn="cn=demo,cn=portal,cn=portals,cn=univention,$ldap_base"

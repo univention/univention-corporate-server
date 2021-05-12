@@ -76,7 +76,7 @@
 					var label_enc = entities.encode(data.label);
 					var catalogID_enc = entities.encode(data.catalogID);
 					dom.byId('title').innerHTML = label_enc;
-					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.', lang.mixin({}, data, {label: label_enc, catalogID: catalogID_enc}));
+					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/" target="_blank">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/" target="_blank">download</a> and install a UCS system yourself.', lang.mixin({}, data, {label: label_enc, catalogID: catalogID_enc}));
 					dom.byId('icon').src = lang.replace("/univention/portal/icons/entries/{cn}.svg", data);
 					dom.byId('content').classList.remove('loading');
 				}

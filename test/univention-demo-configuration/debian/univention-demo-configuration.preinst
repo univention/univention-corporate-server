@@ -43,7 +43,7 @@ case "$1" in
 			_divert "$file"
 		done
 
-		for module in appcenter diagnostic ipchange join lib passwordchange quota reboot services setup sysinfo top ucr updater printers saml-serviceprovider serveroverview udm; do
+		for module in appcenter diagnostic ipchange join lib passwordchange quota reboot services setup sysinfo top ucr updater printers saml-serviceprovider udm-portals-portal serveroverview udm; do
 			_divert /usr/share/univention-management-console/modules/"$module".xml
 		done
 		;;

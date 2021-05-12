@@ -90,6 +90,9 @@ case "$1" in
 
 		# Online Demo UMC has a unique piwik tracking id
 		sed -i 's|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",14)|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",37)|' /usr/share/univention-web/js/dojo/dojo.js
+		sed -i 's|PortalReloaderUDM|DemoPortalReloader|' /usr/share/univention-portal/portals.json
+		univention-portal update --reason demo
+		service univention-portal-server restart
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;

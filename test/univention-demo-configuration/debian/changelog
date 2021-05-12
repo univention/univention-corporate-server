@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-5) unstable; urgency=medium
+
+  * Bug #53251: Make UCS 5 adjustments
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 12 May 2021 23:29:36 +0200
+
 univention-demo-configuration (8.0.0-4) unstable; urgency=medium
 
   * Bug #52869: Portal entries have to be created differently now
