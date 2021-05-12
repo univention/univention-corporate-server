@@ -9,3 +9,5 @@ desc: |
  * Prevent non-blocking components to crash the UMC updater module during the
    update to UCS 5.0-0.
 bug: [53228]
+erratum: 972
+announced: 2021-05-12
