@@ -707,7 +707,7 @@ update_check_architecture () {  # Bug #51972
 }
 
 update_check_samba_server_schannel () {  # Bug #49898
-	server_schannel=$(testparm -sv 2>/dev/null | sed -n "s/\t*server schannel = //p")
+	server_schannel=$(testparm -sv 2>/dev/null | sed -n 's/\t*server schannel = //p')
 	if [ "$server_schannel" != "Yes" ]; then
 		echo "WARNING: Samba is configured with \"server schannel = ${server_schannel,,}\","
 		echo "         This is extremely dangerous, see https://www.samba.org/samba/security/CVE-2020-1472.html"
