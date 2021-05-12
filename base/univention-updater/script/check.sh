@@ -797,7 +797,7 @@ update_check_samba_tdb_size () {  # Bug #53212
 	local fpath
 	local rc=0
 
-	if ! dpkg -l univention-samba4 | grep -q ^ii; then
+	if ! dpkg -l univention-samba4 2>/dev/null | grep -q ^ii; then
 		return 0
 	fi
 	for p in $(ldbsearch -H /var/lib/samba/private/sam.ldb  -b '@PARTITION' -s base partition | ldapsearch-wrapper | sed -n 's/partition: //p'); do
