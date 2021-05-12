@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-25) unstable; urgency=low
+
+  * Bug #51683: cleanup univention-system-setup.ldap status file
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 12 May 2021 13:58:12 +0200
+
 univention-system-setup (13.0.3-24) unstable; urgency=medium
 
   * Bug #53217: css adjustments for browser compatibility
