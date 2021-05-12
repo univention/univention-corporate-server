@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-45) unstable; urgency=medium
+
+  * Bug #53161: Apps shall open in newwindow by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 May 2021 01:08:20 +0200
+
 univention-appcenter (9.0.2-44) unstable; urgency=medium
 
   * Bug #53217: fix image gallery nav buttons

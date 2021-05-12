@@ -611,9 +611,9 @@ class App(with_metaclass(AppMetaClass, object)):
 			the App Center overview and the portal.
 		web_interface_link_target: Which link_target to add to a portal
 			entry. Currently supported:
-			useportaldefault: let the portal decide (default)
+			useportaldefault: let the portal decide
 			embedded: in an iframe within the portal
-			newwindow: new browser tab
+			newwindow: new browser tab (default)
 			samewindow: replaces portal (not recommended)
 		database: Which (if any) database an App wants to use. The App
 			Center will setup the database for the App. Useful for
@@ -891,7 +891,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	auto_mod_proxy = AppBooleanAttribute(default=True)
 	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
 	background_color = AppAttribute()
-	web_interface_link_target = AppAttribute()
+	web_interface_link_target = AppAttribute(default='newwindow')
 
 	database = AppAttribute()
 	database_name = AppAttribute()
