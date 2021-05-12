@@ -708,6 +708,9 @@
 					copied, which then references the same packages from the <filename class="directory">pool/</filename> directory (Hint: using
 					relative links with <filename class="directory">../</filename> is also okay) (<u:bug>51316</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					During the update to UCS 5.0, objects from deprecated UCS versions are deleted from the LDAP directory. Information about deleted objects and the objects LDIF output can be found in the logfile <filename>/var/univention-backup/update-to-5.0-0/removed_with_ucs5_<literal>timestamp</literal>.ldif</filename> (<u:bug>51655</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
