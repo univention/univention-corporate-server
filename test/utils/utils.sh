@@ -798,12 +798,27 @@ import_license () {
 	echo "license/base=$(ucr get license/base) uuid/license=$(ucr get uuid/license)"
 }
 
+umc_apps () {
+	local version retval=0
+	version=$(ucr get version/version)
+	if [ "${version%%.*}" -ge 5 ]; then
+		# umc appcenter with UCS 5.0
+		python3 umc-appcenter.py "$@"
+		retval=$?
+	else
+		# legacy umc appcenter, neede for app release tests
+		python -m shared-utils/apps "$@"
+		retval=$?
+	fi
+	return $retval
+}
+
 install_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
 	shift 2 || return $?
 	test -e /var/cache/appcenter-installed.txt && rm /var/cache/appcenter-installed.txt
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app || rv=$?
+		umc_apps -U "$username" -p "$password" -a $app || rv=$?
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
 	return $rv
@@ -814,17 +829,17 @@ update_apps_via_umc () {
 	shift 3 || return $?
 
 	# update the main app
-	python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
+	umc_apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
 
 	# In app tests we want to check the new version of the main app.
 	# And for the main app an update is required.
 	# Additional apps can have updates, but if no update is
-	# available, we just ignore this (-i for shared-utils/apps)
+	# available, we just ignore this (-i)
 	for app in "$@"; do
 		test "$app" = "$main_app" && continue
 		if ! assert_app_is_installed_and_latest "${app}"; then
 			# try update, but do not except that an update is available
-			python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -u -i || rv=$?
+			umc_apps -U "$username" -p "$password" -a "$app" -u -i || rv=$?
 		fi
 	done
 
@@ -842,7 +857,7 @@ remove_apps_via_umc () {
 		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
 	for app in $reverse; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r || rv=$?
+		umc_apps -U "$username" -p "$password" -a "$app" -r || rv=$?
 	done
 	return $rv
 }
