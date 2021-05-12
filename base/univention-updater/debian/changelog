@@ -1,3 +1,9 @@
+univention-updater (15.0.3-60) unstable; urgency=medium
+
+  * Bug #51655: preup.sh: Rename logfile created by delete_obsolete_objects
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 12 May 2021 09:34:20 +0200
+
 univention-updater (15.0.3-59) unstable; urgency=medium
 
   * Bug #53030: Do not find Appbox computers when checking whether any UCS
