@@ -1,3 +1,10 @@
+univention-updater (15.0.3-61) unstable; urgency=medium
+
+  * Bug #51655: preup.sh: Fix issues from QA, partly revert previous changes
+    to delete_obsolete_objects
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 12 May 2021 12:00:15 +0200
+
 univention-updater (15.0.3-60) unstable; urgency=medium
 
   * Bug #51655: preup.sh: Rename logfile created by delete_obsolete_objects

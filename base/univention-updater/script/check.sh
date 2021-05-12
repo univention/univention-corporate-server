@@ -308,25 +308,25 @@ update_check_old_packages () {
 # Bug #51497 #51973 #31048 #51655 #51955 #51982 #51482
 declare -a legacy_ocs_structural=(
 	# UCC:
-	'(objectClass=univentionPolicyCorporateClientUser)'
-	'(objectClass=univentionCorporateClientSession)'
-	'(objectClass=univentionCorporateClientAutostart)'
-	'(objectClass=univentionCorporateClientImage)'
-	'(objectClass=univentionPolicyCorporateClientComputer)'
-	'(objectClass=univentionPolicyCorporateClientDesktop)'
-	'(objectClass=univentionPolicySoftwareupdates)'
-	'(objectClass=univentionPolicyCorporateClient)'
+	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
+	'(structuralObjectClass=univentionCorporateClientSession)'
+	'(structuralObjectClass=univentionCorporateClientAutostart)'
+	'(structuralObjectClass=univentionCorporateClientImage)'
+	'(structuralObjectClass=univentionPolicyCorporateClientComputer)'
+	'(structuralObjectClass=univentionPolicyCorporateClientDesktop)'
+	'(structuralObjectClass=univentionPolicySoftwareupdates)'
+	'(structuralObjectClass=univentionPolicyCorporateClient)'
 )
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionSamba4WinsHost)'  # EA
 	'(objectClass=univentionCorporateClient)'
 )
 declare -a obsolete_objectclasses=(
-	'(objectClass=univentionAdminUserSettings)'
-	'(objectClass=univentionPolicySharePrintQuota)'
+	'(structuralObjectClass=univentionAdminUserSettings)'
+	'(structuralObjectClass=univentionPolicySharePrintQuota)'
 	# UCS TCS:
-	'(objectClass=univentionPolicyAutoStart)'
-	'(objectClass=univentionPolicyThinClient)'
+	'(structuralObjectClass=univentionPolicyAutoStart)'
+	'(structuralObjectClass=univentionPolicyThinClient)'
 	'(objectClass=univentionThinClient)'
 	'(objectClass=univentionMobileClient)'
 	'(objectClass=univentionFatClient)'
@@ -416,11 +416,11 @@ delete_obsolete_objects () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
 	[ -z "$updateLogDir" ] && die "ERROR: updateLogDir not set"
-	local backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).log"
+	local backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
 	local filter ldif oc
 
 	echo "> Several LDAP objects are no longer supported with UCS 5 and are removed automatically."
-	echo "> An logfile of removed objects is available: ${backupfile}"
+	echo "> An LDIF file of removed objects is available: ${backupfile}"
 	install -b -m 400 /dev/null "${backupfile}"
 	echo "> Removing objects with obsolete objectClasses"
 	for filter in "${obsolete_objectclasses[@]}"
@@ -439,7 +439,7 @@ delete_obsolete_objects () {
 				policy_references="$(univention-ldapsearch -LLL "$policy_reference_type"="$object_dn" dn | sed -ne 's/^dn: //p')"
 				[ -z "$policy_references" ] && continue
 				while read -r referencing_dn; do
-					echo "Deleting reference to $object_dn from $referencing_dn" | tee -a "${backupfile}"
+					echo "# Deleting reference to $object_dn from $referencing_dn" | tee -a "${backupfile}"
 					ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret <<__EOF__
 dn: $referencing_dn
 changetype: modify
