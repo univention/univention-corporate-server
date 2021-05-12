@@ -891,6 +891,9 @@ class CPgeneric(Ressource):
 			CORE.warn('malformed Accept-Language header: %s' % (exc,))
 			languages = []
 
+		# workaround for Safari (de-de -> de-DE): https://bugs.webkit.org/show_bug.cgi?id=163096
+		languages = [re.sub('^([a-z][a-z]-)([a-z][a-z])$', lambda m: m.group(1) + m.group(2).upper(), lang) for lang in languages]
+
 		# pre parse the HTTP syntax so that the UMC-Server doesn't need to do this (because there are no utility functions there)
 		request.headers['Accept-Language'] = ', '.join(languages) or 'en-US'
 
