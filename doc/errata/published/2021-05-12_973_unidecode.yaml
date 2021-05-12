@@ -9,3 +9,5 @@ desc: |
  * The package unidecode has been moved to maintained
 bug: [52878]
 maintained: true
+erratum: 973
+announced: 2021-05-12
