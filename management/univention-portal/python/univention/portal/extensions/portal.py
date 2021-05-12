@@ -301,7 +301,7 @@ class UMCPortal(Portal):
 				"description": {
 					"en_US": module["description"],
 				},
-				"linkTarget": "useportaldefault",
+				"linkTarget": "embedded",
 				"logo_name": logo_name,
 				"backgroundColor": color,
 				"links": [{
