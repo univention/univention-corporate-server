@@ -51,7 +51,7 @@ import univention.debug as ud
 
 
 def main():
-	parser = argparse.ArgumentParser(descriptions=__doc__)
+	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
 	parser.add_argument("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
 	parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")
