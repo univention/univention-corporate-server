@@ -18,8 +18,8 @@ Package: univention-admin-diary-backend
 Architecture: all
 Depends:
  python-pyparsing,
- python3-pyparsing,
  python-univention-admin-diary-backend (= ${binary:Version}),
+ python3-pyparsing,
  python3-univention-admin-diary-backend (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
@@ -93,7 +93,6 @@ Description: UMC module for the Admin Diary
 Package: univention-admin-diary-client
 Architecture: all
 Depends:
- python-univention-admin-diary (= ${binary:Version}),
  python3-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
@@ -111,6 +110,10 @@ Depends:
  shell-univention-lib,
  ${misc:Depends},
  ${python:Depends},
+Breaks:
+ univention-admin-diary-client (<< 2.0.3),
+Replaces:
+ univention-admin-diary-client (<< 2.0.3),
 Provides:
  ${python:Provides},
 Description: Univention Admin Diary lib
@@ -125,6 +128,10 @@ Architecture: all
 Depends:
  ${misc:Depends},
  ${python3:Depends},
+Breaks:
+ univention-admin-diary-client (<< 2.0.3),
+Replaces:
+ univention-admin-diary-client (<< 2.0.3),
 Description: Univention Admin Diary lib
  .
  It is part of Univention Corporate Server (UCS), an

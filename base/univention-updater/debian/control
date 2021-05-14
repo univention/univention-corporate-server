@@ -44,7 +44,6 @@ Depends:
  python3-univention-lib (>= 8.0.1-33),
  python3-univention-updater (= ${source:Version}),
  shell-univention-lib,
- univention-admin-diary-client (>= 1.0.0-29),
  univention-config,
  univention-directory-policy,
  univention-errata-level,
@@ -76,6 +75,7 @@ Depends:
  python-backports.tempfile,
  python-monotonic,
  python-six,
+ python-univention-admin-diary,
  python-univention-config-registry,
  ${misc:Depends},
  ${python:Depends},
@@ -90,6 +90,7 @@ Package: python3-univention-updater
 Architecture: all
 Depends:
  python3-six,
+ python3-univention-admin-diary,
  python3-univention-config-registry,
  ${misc:Depends},
  ${python3:Depends},
