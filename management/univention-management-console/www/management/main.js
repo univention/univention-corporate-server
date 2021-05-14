@@ -438,8 +438,9 @@ define([
 			}
 		};
 
-		var startupDialogWasShown = true;
+		var startupDialogWasShown = false;
 		var checkShowStartupDialog = function() {
+			return; // FIXME completely remove StartupDialog code; just deactivated for Bug #53226
 			var isUserAdmin = tools.status('username').toLowerCase() === 'administrator';
 			var isUCRVariableEmpty = !Boolean(tools.status('umc/web/startupdialog'));
 			var showStartupDialog = tools.isTrue(tools.status('umc/web/startupdialog'));
