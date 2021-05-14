@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-29) unstable; urgency=medium
+
+  * Bug #53226: remove StartupDialog code
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 May 2021 11:11:54 +0200
+
 univention-system-setup (13.0.3-28) unstable; urgency=medium
 
   * Bug #53225: redirect to /univention/portal/ instead of
