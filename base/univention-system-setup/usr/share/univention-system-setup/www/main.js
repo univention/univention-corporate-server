@@ -282,14 +282,16 @@ define([
 		_redirectBrowser: function(interfaces, primary_interface) {
 			// redirect to new UMC address and set username to Administrator
 			this._container.standby(true);
-			var target = '/univention/management/?username=Administrator';
+			var target = '/univention/logout/';
 			if (this._orgValues.system_activation_installed && this.wizard._isRoleMaster()) {
 				// redirect to '/' as the system activation service is enabled
 				// (Note: For roles other than Primary Directory Node, the system activation service
 				// will not be enabled as they may only join into a domain with an
 				// already activated license.)
 				// Add a random digit at the end to avoid caching effects
-				target = '/?_rnd=' + Math.floor(Math.random() * 10e10);
+				target += '?location=' + encodeURIComponent('/?_rnd=' + Math.floor(Math.random() * 10e10));
+			} else {
+				target += '?location=' + encodeURIComponent('/univention/login/?username=Administrator&location=' + encodeURIComponent('/univention/portal'));
 			}
 			target = window.location.href.replace(new RegExp( "/univention/setup/.*", "g" ), target);
 

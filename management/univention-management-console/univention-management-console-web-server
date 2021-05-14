@@ -1179,7 +1179,15 @@ class Root(Ressource):
 		if user and user.saml is not None:
 			raise HTTPRedirect('/univention/saml/logout')
 		self.expire_session()
-		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention/')
+		location = kwargs.get('location')
+		if location:
+			# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+			location = urlparse(location)
+			if location.path.startswith('//'):
+				location = urlparse('')
+			location = urlunsplit(('', '', location.path, location.query, location.fragment))
+		location = location or ucr.get('umc/logout/location') or '/univention/'
+		raise HTTPRedirect(location)
 
 
 def get_ip_address():
