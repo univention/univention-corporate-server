@@ -62,9 +62,6 @@ if [ "$ACTION" = "start" ]; then
 		"system/setup/boot/nssldaptimeout=$nssldap_timelimit" \
 		'nssldap/timelimit=10'
 
-	univention-config-registry unset \
-		'umc/web/startupdialog'
-
 	# set apache2/startsite
 	if ! _has_system_setup_boot_startsite; then
 		# store old value

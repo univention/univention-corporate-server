@@ -76,7 +76,6 @@ define([
 					hasLicense: Boolean(ucr['uuid/license']),
 					hasLicenseRequested: tools.isTrue(ucr['ucs/web/license/requested'])
 				};
-				res.showInStartupDialog = !res.hasLicense && !res.hasLicenseRequested;
 				return res;
 			});
 		}

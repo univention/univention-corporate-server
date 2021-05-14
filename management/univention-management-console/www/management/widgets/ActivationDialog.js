@@ -55,7 +55,7 @@ define([
 
 		title: _('Activation of Univention Corporate Server'),
 
-		'class': 'umcStartupDialog umcActivationDialog umcLargeDialog',
+		'class': 'umcActivationDialog umcLargeDialog',
 
 		_wizard: null,
 

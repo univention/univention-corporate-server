@@ -76,7 +76,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		'ff': 'firefox',
 	}
 
-	def __init__(self, language='en', host="", suppress_notifications=True, suppress_welcome_dialog=True):
+	def __init__(self, language='en', host="", suppress_notifications=True):
 		# type: (str, str, bool, bool) -> None
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()
@@ -86,7 +86,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.base_url = 'https://%s/' % (host or '%(hostname)s.%(domainname)s' % self._ucr)
 		self.screenshot_path = os.path.abspath('selenium/')
 		self.suppress_notifications = suppress_notifications
-		self.suppress_welcome_dialog = suppress_welcome_dialog
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
@@ -112,8 +111,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.ldap_base = self._ucr.get('ldap/base')
 		if self.suppress_notifications:
 			handler_set(['umc/web/hooks/suppress_notifications=suppress_notifications'])
-		if self.suppress_welcome_dialog:
-			handler_set(['umc/web/startupdialog=false'])
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username

@@ -438,42 +438,8 @@ define([
 			}
 		};
 
-		var startupDialogWasShown = false;
-		var checkShowStartupDialog = function() {
-			return; // FIXME completely remove StartupDialog code; just deactivated for Bug #53226
-			var isUserAdmin = tools.status('username').toLowerCase() === 'administrator';
-			var isUCRVariableEmpty = !Boolean(tools.status('umc/web/startupdialog'));
-			var showStartupDialog = tools.isTrue(tools.status('umc/web/startupdialog'));
-			var isDCMaster = tools.status('server/role') === 'domaincontroller_master';
-			if (!isDCMaster || !((isUCRVariableEmpty && tools.status('hasFreeLicense') && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
-				startupDialogWasShown = false;
-				return;
-			}
-
-			require(["management/widgets/StartupDialog"], lang.hitch(this, function(StartupDialog) {
-				var startupDialog = new StartupDialog({});
-				startupDialog.on('hide', function() {
-					// dialog is being closed
-					// set the UCR variable to false to prevent any further popup
-					var ucrStore = store('key', 'ucr');
-					ucrStore.put({
-						key: 'umc/web/startupdialog',
-						value: 'false'
-					});
-					startupDialog.destroyRecursive();
-				});
-			}));
-		};
-
 		var summit2021DialogWasShown = true;
 		var showSummit2021Dialog = function() {
-			if (startupDialogWasShown) {
-				// we don't want to spam the user with dialogs
-				// so don't show this one if the StartupDialog was shown
-				summit2021DialogWasShown = false;
-				return;
-			}
-
 			var endOfSummit = new Date(2021, 0, 28, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
@@ -565,7 +531,7 @@ define([
 		};
 
 		var showSummit2021Notification = function() {
-			if (startupDialogWasShown || summit2021DialogWasShown) {
+			if (summit2021DialogWasShown) {
 				return;
 			}
 
@@ -591,10 +557,6 @@ define([
 		};
 
 		var showAmbassadorNotification = function() {
-			if (startupDialogWasShown) {
-				return;
-			}
-
 			var endOfAmbassadorProgram = new Date(2019, 7, 14, 0, 0, 0);
 			var ambassadorProgramHasPassed = endOfAmbassadorProgram < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
@@ -628,7 +590,6 @@ define([
 
 		// run several checks
 		checkCertificateValidity();
-		checkShowStartupDialog();
 		showSummit2021Dialog();
 		showSummit2021Notification();
 		showAmbassadorNotification();

@@ -8,10 +8,6 @@
 	display: none;
 }
 
-.umc .umcAppWelcomePageLink {
-	margin-bottom: -20px
-}
-
 .umc .umcAppDialogPage .umcLayoutRow:last-child {
 	margin-bottom: -20px;
 }
@@ -23,10 +19,6 @@
 	background-repeat: no-repeat;
 	margin-right: 1rem;
 	margin-top: 2rem;
-}
-
-.umc .umcAppDialogPage-welcome .umcPageIcon {
-	background-image: url(widgets/welcome.svg);
 }
 
 .umc .umcAppDialogPage-feedback .umcPageIcon {
@@ -43,10 +35,6 @@
 
 .umc .umcAppDialogPage-help .umcPageIcon {
 	background-image: url(widgets/help.svg);
-}
-
-.umc .umcAppDialogPage-finished .umcPageIcon {
-	background-image: url(widgets/finished.svg);
 }
 
 .umc .umcAppDialogPage-about .umcPageIcon {

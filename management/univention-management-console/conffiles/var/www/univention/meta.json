@@ -175,7 +175,6 @@ ucr_vars = [
 	('system/setup/showloginmessage', ),
 	('umc/web/feedback/description', 'feedbackSubject', '[UMC-Feedback] Traceback', ),
 	('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de', ),
-	('umc/web/startupdialog', ),
 	('umc/server/upload/max', ),
 	('umc/web/sso/enabled', ),
 	('umc/self-service/.*/title/.*', ),

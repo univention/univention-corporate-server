@@ -22,12 +22,6 @@ Description[en]=If this option is activated or the variable is unset, anonymous 
 Type=bool
 Categories=management-umc
 
-[umc/web/startupdialog]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird bei der ersten Anmeldung als Administrator ein Dialog zur Inbetriebnahme von UCS angezeigt.
-Description[en]=If this option is activated or the variable is unset, a startup dialogue is shown with the first login as the Administrator.
-Type=bool
-Categories=management-umc
-
 [umc/web/host_referrallimit]
 Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console in der Domäne gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
 Description[en]=In the title panel of the UMC a selection list is shown. It can be used to navigate to a different Univention Management Console in the domain. This variable configures the maximum number of instances which are presented as a drop down menu.

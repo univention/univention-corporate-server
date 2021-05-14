@@ -181,7 +181,6 @@ class UMCTester(object):
 
 
 	def init(self):
-		self.ucr['umc/web/startupdialog'] = 'false'
 		self.ucr.save()
 		self.license_dump_successful = False
 		self.temp_license_folder = mkdtemp()

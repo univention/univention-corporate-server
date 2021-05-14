@@ -80,10 +80,7 @@ define([
 
 		// the following values will be loaded via UCR
 		hasLicense: null,
-		hasLicenseRequested: null,
-		showInStartupDialog: function(wizardValues) {
-			return !this.hasLicense && (this.hasLicenseRequested || lang.trim(wizardValues.email));
-		}
+		hasLicenseRequested: null
 	};
 
 	var _ucrDeferred = null;

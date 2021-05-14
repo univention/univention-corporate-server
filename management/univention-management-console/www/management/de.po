@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-10-06 10:37+0200\n"
+"POT-Creation-Date: 2021-05-13 07:17+0200\n"
 "PO-Revision-Date: 2019-09-20 15:57+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,29 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: www/management/widgets/WelcomePage.js:78
-#, javascript-format
-msgid ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us your "
-"opinion!</a></p>"
-msgstr ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre "
-"Meinung!</a></p>"
-
 #: www/management/widgets/LicenseImportPage.js:48
 msgid ""
 "<p><b>You have got mail!</b></p><p>A license file should have been sent to "
 "your email address. Upload the license file from the email to activate your "
 "UCS instance.</p>"
-msgstr ""
-
-#: www/management/widgets/WelcomePage.js:58
-msgid ""
-"<p>Congratulations, you have successfully completed the configuration of "
-"your Univention Corporate Server (UCS), and you have logged into Univention "
-"Management Console (UMC). UMC is the central web application for a "
-"comfortable system administration and domain management.</p><p>Are you "
-"satisfied with the system configuration?</p>"
 msgstr ""
 
 #: www/management/widgets/HelpPage.js:44
@@ -78,13 +60,6 @@ msgid ""
 " installation on this system.</p>"
 msgstr ""
 
-#: www/management/widgets/FinishedPage.js:44
-msgid ""
-"<p>The startup wizard has been completed now.</p><p>All listed information "
-"can be accessed at any later point in time via the application menu on the "
-"top right.</p>"
-msgstr ""
-
 #: www/management/widgets/ActivationPage.js:47
 msgid ""
 "<p>You may now enter a valid e-mail address in order to activate the UCS "
@@ -102,28 +77,24 @@ msgid ""
 "target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
 
-#: www/management/main.js:851
+#: www/management/main.js:781
 msgid "About UMC"
 msgstr ""
 
-#: www/management/widgets/ActivationDialog.js:56
 #: www/management/widgets/ActivationPage.js:40
+#: www/management/widgets/ActivationDialog.js:56
 msgid "Activation of Univention Corporate Server"
 msgstr ""
 
-#: www/management/main.js:1466
+#: www/management/main.js:1436
 msgid "Add to favorites"
 msgstr ""
 
-#: www/management/main.js:877
+#: www/management/main.js:807
 msgid "Close"
 msgstr "Schließen"
 
-#: www/management/widgets/FinishedPage.js:40
-msgid "Completion of startup wizard"
-msgstr ""
-
-#: www/management/main.js:1243
+#: www/management/main.js:1213
 #, javascript-format
 msgid "Could not load module \"%s\"."
 msgstr ""
@@ -136,7 +107,7 @@ msgstr ""
 msgid "Date of expiry of the SSL root certificate"
 msgstr ""
 
-#: www/management/main.js:844
+#: www/management/main.js:774
 msgid "Documentation and Support"
 msgstr "Dokumentation und Support"
 
@@ -148,10 +119,6 @@ msgstr ""
 msgid "Enable one-time statistic on hardware configuration."
 msgstr ""
 
-#: www/management/widgets/WelcomePage.js:62
-msgid "Everything worked great."
-msgstr ""
-
 #: www/management/widgets/FeedbackPage.js:40
 msgid "Feedback via usage statistics"
 msgstr ""
@@ -160,13 +127,8 @@ msgstr ""
 msgid "Further Information"
 msgstr ""
 
-#: www/management/widgets/WelcomePage.js:70
-msgid "I see potential for improvement."
-msgstr ""
-
-#: www/management/widgets/ActivationDialog.js:139
 #: www/management/widgets/LicenseImportPage.js:57
-#: www/management/widgets/StartupDialog.js:125
+#: www/management/widgets/ActivationDialog.js:139
 msgid "Importing license data..."
 msgstr ""
 
@@ -178,27 +140,27 @@ msgstr ""
 msgid "No valid e-mail address."
 msgstr ""
 
-#: www/management/main.js:1456
+#: www/management/main.js:1426
 msgid "Open module"
 msgstr ""
 
-#: www/management/main.js:1466
+#: www/management/main.js:1436
 msgid "Remove from favorites"
 msgstr ""
 
-#: www/management/main.js:443
+#: www/management/main.js:432
 msgid "SSL host certificate"
 msgstr ""
 
-#: www/management/main.js:440
+#: www/management/main.js:429
 msgid "SSL root certificate"
 msgstr ""
 
-#: www/management/main.js:809
+#: www/management/main.js:713
 msgid "Search"
 msgstr "Suchen"
 
-#: www/management/main.js:1616
+#: www/management/main.js:1572
 #, javascript-format
 msgid "Search query ›%s‹"
 msgstr ""
@@ -208,7 +170,6 @@ msgid "Send license"
 msgstr ""
 
 #: www/management/widgets/ActivationDialog.js:101
-#: www/management/widgets/StartupDialog.js:108
 msgid "Sending activation email..."
 msgstr ""
 
@@ -217,30 +178,27 @@ msgid "Server"
 msgstr ""
 
 #: www/management/widgets/ActivationDialog.js:150
-#: www/management/widgets/StartupDialog.js:136
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
-#: www/management/main.js:448
+#: www/management/main.js:437
 msgid ""
 "The %(certificate)s will expire in %(days)d days and should be renewed!"
 msgstr ""
 
 #: www/management/widgets/ActivationDialog.js:188
-#: www/management/widgets/StartupDialog.js:233
 msgid ""
 "The activation of UCS failed. Please re-try to perform the the activation "
 "again via the user menu in the top right."
 msgstr ""
 
 #: www/management/widgets/ActivationDialog.js:148
-#: www/management/widgets/StartupDialog.js:134
 msgid ""
 "The import of the license failed. Check the integrity of the original file "
 "given to you."
 msgstr ""
 
-#: www/management/main.js:1307
+#: www/management/main.js:1277
 #, javascript-format
 msgid "There is no module available for the authenticated user %s."
 msgstr ""
@@ -265,16 +223,8 @@ msgstr ""
 msgid "Upload license file..."
 msgstr ""
 
-#: www/management/main.js:864
+#: www/management/main.js:794
 msgid "Usage statistics"
-msgstr ""
-
-#: www/management/widgets/StartupDialog.js:57
-msgid "Welcome to UMC"
-msgstr ""
-
-#: www/management/widgets/WelcomePage.js:51
-msgid "Welcome to Univention Management Console"
 msgstr ""
 
 #: www/management/widgets/LicenseImportPage.js:78
@@ -282,10 +232,6 @@ msgid ""
 "You may as well import the license file at a later point in time via the "
 "user menu in the top right."
 msgstr ""
-
-#: www/management/widgets/WelcomePage.js:78
-msgid "https://www.univention.com/feedback/"
-msgstr "https://www.univention.de/produkt-feedback/"
 
 #~ msgid "\"${moduleName}\" module"
 #~ msgstr "Modul \"${moduleName}\""
@@ -304,6 +250,13 @@ msgstr "https://www.univention.de/produkt-feedback/"
 
 #~ msgid "1 entry of %d selected"
 #~ msgstr "1 Eintrag von %d ausgewählt"
+
+#~ msgid ""
+#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us your "
+#~ "opinion!</a></p>"
+#~ msgstr ""
+#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre "
+#~ "Meinung!</a></p>"
 
 #~ msgid ""
 #~ "A reload of the Univention Management Console is required to use new "
@@ -696,6 +649,9 @@ msgstr "https://www.univention.de/produkt-feedback/"
 
 #~ msgid "expected result"
 #~ msgstr "erwartetes Ergebnis"
+
+#~ msgid "https://www.univention.com/feedback/"
+#~ msgstr "https://www.univention.de/produkt-feedback/"
 
 #~ msgid "more"
 #~ msgstr "mehr"
