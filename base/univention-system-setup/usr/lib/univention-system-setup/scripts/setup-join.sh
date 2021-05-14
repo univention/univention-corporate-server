@@ -77,7 +77,7 @@ JOIN_LOG="/var/log/univention/join.log"
 echo "Reset UCR variables"
 run-parts -v /usr/lib/univention-system-setup/scripts/00_system_setup
 
-echo "no-ldap" > /var/run/univention-system-setup.ldap
+touch /var/run/univention-system-setup.ldap
 
 # Call scripts which won't be handled by join scripts
 # keyboard, language and timezone

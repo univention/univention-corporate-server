@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-26) unstable; urgency=low
+
+  * Bug #51683: remove unused content from ldap status file
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 14 May 2021 09:16:04 +0200
+
 univention-system-setup (13.0.3-25) unstable; urgency=low
 
   * Bug #51683: cleanup univention-system-setup.ldap status file

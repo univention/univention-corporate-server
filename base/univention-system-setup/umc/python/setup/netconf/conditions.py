@@ -139,12 +139,7 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
 			self.load_credentials()
 
 	def check_available(self):
-		try:
-			with open("/var/run/univention-system-setup.ldap", "r") as state_file:
-				line = state_file.readline()
-				self.available = line.strip() != "no-ldap"
-		except IOError:
-			self.available = True
+		self.available = not os.path.exists("/var/run/univention-system-setup.ldap")
 
 	def load_credentials(self):
 		if self.is_master_or_backup():
