@@ -1,3 +1,10 @@
+univention-system-setup (13.0.3-28) unstable; urgency=medium
+
+  * Bug #53225: redirect to /univention/portal/ instead of
+    /univention/management/
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 May 2021 11:09:09 +0200
+
 univention-system-setup (13.0.3-27) unstable; urgency=low
 
   * Bug #51683: remove unused variable
