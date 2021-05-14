@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-27) unstable; urgency=low
+
+  * Bug #51683: remove unused variable
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 14 May 2021 09:42:07 +0200
+
 univention-system-setup (13.0.3-26) unstable; urgency=low
 
   * Bug #51683: remove unused content from ldap status file
