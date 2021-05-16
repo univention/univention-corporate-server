@@ -36,8 +36,8 @@ Build-Depends:
  python3-univention-lib,
  python3-univention-license,
  univention-config-dev (>= 15.0.3),
- univention-l10n-dev (>= 7.0.1),
  univention-directory-listener,
+ univention-l10n-dev (>= 7.0.1),
 
 Package: python-univention-directory-manager
 Architecture: all
@@ -51,10 +51,10 @@ Depends:
  python-ipaddress,
  python-lazy-object-proxy,
  python-m2crypto,
+ python-passlib,
  python-pil,
  python-pyasn1-modules,
  python-six,
- python-passlib,
  python-typing,
  python-unidecode,
  python-univention (>= 13.0.2-4),
@@ -112,10 +112,10 @@ Depends:
  python3-dateutil,
  python3-lazy-object-proxy,
  python3-m2crypto,
+ python3-passlib,
  python3-pil,
  python3-pyasn1-modules,
  python3-six,
- python3-passlib,
  python3-unidecode,
  python3-univention (>= 13.0.2-4),
  python3-univention-admin-diary,
@@ -141,8 +141,8 @@ Package: python3-univention-directory-manager-cli
 Architecture: all
 Depends:
  python3-univention,
- python3-univention-lib,
  python3-univention-directory-manager (>= 15.0.11-3),
+ python3-univention-lib,
  shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},
