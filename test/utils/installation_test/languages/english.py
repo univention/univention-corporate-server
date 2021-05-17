@@ -41,6 +41,7 @@ strings = {
 	'repositories_not_reachable': 'cannot be reached',
 	'join_domain': 'Join into an existing UCS',
 	'start_join': 'Start join at the end',
+	'hostname_primary': 'Hostname of the Primary',
 	'system_name': 'Host settings',
 	'account_information': 'Account information',
 	'ad_account_information': 'Active Directory join information',
@@ -51,6 +52,7 @@ strings = {
 	'confirm_config_non_maste': 'Please confirm the',
 	'setup_successful': 'UCS setup successful',
 	'finish': 'FINISH',
+	'error': 'An error occurred',
 
 	'samba4': 'Active Directory-compatible Domain',
 	'samba': 'Memberserver',

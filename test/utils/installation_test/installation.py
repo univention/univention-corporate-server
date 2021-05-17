@@ -274,15 +274,6 @@ class UCSInstallation(object):
 			if self.args.role == 'member':
 				self.click('Managed Node')
 				self.move_to_next_and_click()
-			self.client.waitForText(self._['start_join'], timeout=self.timeout)
-			self.client.keyPress('tab')
-			self.client.keyPress('tab')
-			self._clear_input()
-			self.client.enterText(self.args.join_user)
-			self.client.keyPress('tab')
-			self._clear_input()
-			self.client.enterText(self.args.join_password)
-			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
 			self.click(self._['ad_domain'])
 			self.move_to_next_and_click()
@@ -301,13 +292,6 @@ class UCSInstallation(object):
 				time.sleep(60)
 			self.move_to_next_and_click()
 			self.move_to_next_and_click()
-			self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
-			self.click(self._['address_ad'])
-			self.client.keyPress('tab')
-			self.client.enterText(self.args.join_user)
-			self.click(self._['password'])
-			self.client.enterText(self.args.join_password)
-			self.move_to_next_and_click()
 		elif self.args.role == 'basesystem':
 			self.click(self._['no_domain'])
 			self.click(self._['next'])
@@ -321,6 +305,47 @@ class UCSInstallation(object):
 			sys.exit(0)
 		else:
 			raise NotImplementedError
+
+	def joinpass(self):
+		if self.args.role not in ['slave', 'backup', 'member']:
+			return
+		self.client.waitForText(self._['start_join'], timeout=self.timeout)
+		for i in range(2):
+			self.click(self._['hostname_primary'])
+			self.client.keyPress('tab')
+			self._clear_input()
+			self.client.enterText(self.args.join_user)
+			self.client.keyPress('tab')
+			self._clear_input()
+			self.client.enterText(self.args.join_password)
+			self.move_to_next_and_click()
+			try:
+				self.client.waitForText(self._['error'], timeout=self.timeout)
+				self.client.keyPress('enter')
+				self.client.keyPress('caplk')
+			except VNCDoException:
+				self.connect()
+				break
+
+	def joinpass_ad(self):
+		if self.args.role not in ['admember']:
+			return
+		# join/ad password and user
+		self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
+		for i in range(2):
+			self.click(self._['address_ad'])
+			self.client.keyPress('tab')
+			self.client.enterText(self.args.join_user)
+			self.click(self._['password'])
+			self.client.enterText(self.args.join_password)
+			self.move_to_next_and_click()
+			try:
+				self.client.waitForText(self._['error'], timeout=self.timeout)
+				self.client.keyPress('enter')
+				self.client.keyPress('caplk')
+			except VNCDoException:
+				self.connect()
+				break
 
 	def hostname(self):
 		# name hostname
@@ -376,6 +401,8 @@ class UCSInstallation(object):
 			self.bootmenu()
 			self.installer()
 			self.setup()
+			self.joinpass_ad()
+			self.joinpass()
 			self.hostname()
 			self.ucsschool()
 			self.finish()
