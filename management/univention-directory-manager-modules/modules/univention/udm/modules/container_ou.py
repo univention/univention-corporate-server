@@ -41,9 +41,11 @@ from .container_cn import ContainerCnModule, ContainerCnObject, ContainerCnObjec
 class ContainerOuObjectProperties(ContainerCnObjectProperties):
     """container/ou UDM properties."""
 
-    _encoders = ContainerCnObjectProperties._encoders
-    _encoders['ucsschoolClassShareFileServer'] = dn_property_encoder_for('auto')
-    _encoders['ucsschoolHomeShareFileServer'] = dn_property_encoder_for('auto')
+    _encoders = dict(
+        ContainerCnObjectProperties._encoders,
+        ucsschoolClassShareFileServer=dn_property_encoder_for('auto'),
+        ucsschoolHomeShareFileServer=dn_property_encoder_for('auto'),
+    )
 
 
 class ContainerOuObject(ContainerCnObject):
