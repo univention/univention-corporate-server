@@ -418,7 +418,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The unused script <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>)
+					The unused script <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>, <u:bug>51683</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The directories for hook scripts have been restored (<u:bug>33029</u:bug>)
