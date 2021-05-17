@@ -78,9 +78,13 @@ define([
 			//
 			// Catch the focus and then pass through to the actual input.
 			// Likely that this workaround will be fixed in later chrome versions
-			this.focusCatchNode = put('input.dijitInputInner[type="password"][tabIndex="-1"][style="position: absolute; opacity: 0;"]');
+			this.focusCatchNode = put('input.dijitInputInner[type="password"][tabIndex="-1"][autocomplete="new-password"][style="position: absolute; top: 0; left: 0; opacity: 0;"]');
 			on(this.focusCatchNode, 'focus', lang.hitch(this, 'focus'));
 			put(this.focusNode, '-', this.focusCatchNode);
+
+			// firefox adds the autofill dropdown to the input before the password input.
+			// add a hidden input to catch that
+			put(this.focusCatchNode, '- input.dijitDisplayNone[type="text"]');
 		},
 
 		_setDisabledAttr: function(disabled) {
