@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -374,12 +372,24 @@ class object(univention.admin.handlers.simpleLdap):
 	def filter_object_classes(cls, ml):
 		"""Remove blacklisted object classes
 
-		>>> object.filter_object_classes([('objectClass', 'inetOrgPerson'), ('objectClass', 'foo', ['inetOrgPerson'])])
-		[['objectClass', 'foo', []]]
+		>>> object.filter_object_classes([('objectClass', b'bar', b'inetOrgPerson'), ('objectClass', b'foo', [b'inetOrgPerson', b'baz'])])
+		[('objectClass', b'bar', None), ('objectClass', b'foo', [b'baz'])]
 		"""
-		ml = [x for x in ml if x[0] != 'objectClass' or not isinstance(x[-1], six.string_types) or x[-1] not in BLACKLISTED_OBJECT_CLASSES]
-		ml = [x if x[0] != 'objectClass' and not isinstance(x[-1], (list, tuple)) else list(x[:-1]) + [list(set(x[-1]) - BLACKLISTED_OBJECT_CLASSES)] for x in ml]
-		return ml
+		def _iter_ml():
+			for x in ml:
+				if x[0].lower() != 'objectClass'.lower():
+					yield x
+				elif isinstance(x[-1], (bytes, str, type(u''))):
+					if x[-1] not in BLACKLISTED_OBJECT_CLASSES:
+						yield x
+					elif len(x) == 3:
+						yield (x[0], x[1], None)
+				elif isinstance(x[-1], (list, tuple)):
+					yield tuple(list(x[:-1]) + [[z for z in x[-1] if z not in BLACKLISTED_OBJECT_CLASSES]])
+				else:
+					yield x
+
+		return list(_iter_ml())
 
 	def _ldap_pre_modify(self):
 		super(object, self)._ldap_pre_modify()
