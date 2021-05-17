@@ -1,3 +1,9 @@
+ucs-test (10.0.5-21) unstable; urgency=medium
+
+  * Bug #53255: new appcenter umc api in apptest.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 May 2021 15:20:17 +0200
+
 ucs-test (10.0.5-20) unstable; urgency=medium
 
   * Bug #53226: remove StartupDialog code

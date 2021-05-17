@@ -345,6 +345,18 @@ else:
 		return ret
 
 	@pytest.fixture(scope='session')
+	def fqdn(config):
+		"""fqdn to test against"""
+		ret = os.environ.get('UCS_TEST_HOSTNAME')
+		if ret is None:
+			if config:
+				ret = '{hostname}.{domainname}'.format(**config)
+			else:
+				logger.warning('$UCS_TEST_HOSTNAME not set')
+				ret = 'localhost'
+		return ret
+
+	@pytest.fixture(scope='session')
 	def admin_username(config):
 		"""Username of the Admin account"""
 		ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
@@ -411,7 +423,7 @@ else:
 			ucr_module.set(ucr_module._old, revert_afterwards=False)
 
 	@pytest.fixture(scope='session')
-	def appcenter(umc):
+	def appcenter(umc, fqdn):
 		class AppCenter(object):
 			def __init__(self, client):
 				self.client = client
@@ -431,38 +443,30 @@ else:
 					logger.info('App already installed')
 					if 'candidate_version' in app:
 						logger.info('Upgrading App...')
-						app_function = 'update'
+						app_function = 'upgrade'
 				else:
 					logger.info('Installing App...')
 					app_function = 'install'
 				if not app_function:
 					return app
-				if app['docker_image'] or app['docker_main_service']:
-					logger.info('Installing Docker App {}={}'.format(app_id, app['version']))
-					response = self.client.umc_command('appcenter/docker/invoke', {
-						'app': '{}={}'.format(app_id, app['version']),
-						'function': app_function,
-						'force': True,
-					})
-					progress_id = response.result['id']
-					progress_command = 'appcenter/docker/progress'
-				else:
-					logger.info('Installing Non-Docker App {}={}'.format(app_id, app['version']))
-					response = self.client.umc_command('appcenter/invoke', {
-						'application': '{}={}'.format(app_id, app['version']),
-						'function': app_function,
-						'only_dry_run': False,
-					})
-					progress_id = response.result['id']
-					progress_command = 'appcenter/progress'
+				data = {
+					"action": app_function,
+					"auto_installed": [],
+					"hosts": {fqdn: app_id},
+					"apps": ["{}={}".format(app_id, app['version'])],
+					"dry_run": False,
+					"settings": {app_id: {}},
+				}
+				response = self.client.umc_command("appcenter/run", data)
+				progress_id = response.result['id']
 				finished = False
 				i = 0
 				while not finished:
-					time.sleep(2)
+					time.sleep(5)
 					i += 1
 					if i > 600:
 						raise RuntimeError('Did not finish within 20 minutes')
-					result = self.client.umc_command(progress_command, {'progress_id': progress_id}).result
+					result = self.client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
 					finished = result.get('finished')
 					assert not result.get('serious_problems')
 					for message in result.get('intermediate', []):
