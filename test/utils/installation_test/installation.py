@@ -335,8 +335,10 @@ class UCSInstallation(object):
 		for i in range(2):
 			self.click(self._['address_ad'])
 			self.client.keyPress('tab')
+			self._clear_input()
 			self.client.enterText(self.args.join_user)
-			self.click(self._['password'])
+			self.client.keyPress('tab')
+			self._clear_input()
 			self.client.enterText(self.args.join_password)
 			self.move_to_next_and_click()
 			try:
