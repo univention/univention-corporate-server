@@ -209,6 +209,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('dbm.error: db type could not be determined', ['univention-management-console-web-server']),  # Bug #52764
 	('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir']),  # Bug #43171, ...
 	('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list']),  # Bug #43171
+	('LISTENER    ( PROCESS ) : updating.*command a', ['cleanup_python_moduledir']),  # ...
 ])
 
 
