@@ -92,12 +92,8 @@
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenuitem>Start with default settings</guimenuitem> startet die interaktive, graphische Installation
-			von UCS. Bei der
-			Installation fragt das System nach einigen Parametern wie
-			Netzwerkeinstellungen, Festplattenpartitionierung, Domäneneinstellungen und
-			Komponentenauswahl für das zu installierende UCS-System und führt anschließend
-			die Installation und Konfiguration durch.
+				<guimenuitem>Start with default settings</guimenuitem> startet die interaktive, graphische Installation von UCS.
+				Bei der Installation fragt das System nach einigen Parametern wie Netzwerkeinstellungen, Festplattenpartitionierung und Domäneneinstellungen für das zu installierende UCS-System und führt anschließend die Installation und Konfiguration durch.
 			</simpara>
 		</listitem>
 		<listitem>
@@ -114,9 +110,15 @@
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					<guimenuitem>Install in text mode</guimenuitem> führt eine interaktive
+					<guimenuitem>Start in text mode</guimenuitem> führt eine interaktive
 					Standardinstallation im Textmodus durch. Dies ist auf Systemen sinnvoll, die
 					Probleme mit der graphischen Variante des Installers zeigen.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<guimenuitem>Rescue mode</guimenuitem>
+					Der Rettungsmodus ist da, um nicht bootende Systeme wiederherzustellen.
 					</simpara>
 				</listitem>
 				<listitem>
@@ -127,6 +129,12 @@
 				  </simpara>
 				</listitem>
 			</itemizedlist>
+		</listitem>
+		<listitem>
+			<simpara>
+				<guimenuitem>Accessible dark contrast installer menu</guimenuitem>
+				erlaubt das Starten der Installation in einem dunklen und kontrastreichen Modus.
+			</simpara>
 		</listitem>
 	</itemizedlist>
 	<para>
@@ -367,6 +375,14 @@
 	beanspruchen. Nachfolgend wird das System durch die Installation des GRUB-Bootloaders bootfähig
 	gemacht.
   </para>
+
+  <para>
+		<figure id="installation-reboot">
+			<title>Installation abschließen</title>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-reboot_de.png"/>
+		</figure>
+		Ein Systemneustart in das frisch installierte System erfolgt anschließend, um darin die Konfiguration abzuschließen.
+  </para>
 </section>
 <section id="installation:Domäneneinstellungen">
   <title>Domäneneinstellungen</title>
@@ -547,26 +563,12 @@
   </section>
 </section>
 
-<section id="installation:software">
-  <title>Auswahl von UCS-Software-Komponenten</title>
-  <para>
-	Der Schritt <guimenu>Software-Konfiguration</guimenu> bietet die Möglichkeit bereits während der
-	Installation zusätzliche UCS-Komponenten zu installieren.  Diese stehen auch nach der Installation
-	über das Univention App Center in der Kategorie <guimenu>UCS-Komponenten</guimenu> zur Verfügung und
-	können dort nachträglich installiert und deinstalliert werden.
-  </para>
-	<figure id="installation-softwareselection">
-	  <title>Auswahl von UCS-Software-Komponenten</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-softwareselection_de.png"/>
-	</figure>
-</section>
-
 <section id="installation:overview">
   <title>Bestätigen der Einstellungen</title>
   <para>
 	In diesem Dialog werden die wichtigsten vorgenommenen Einstellungen angezeigt.
 	Sind alle Einstellungen korrekt, kann über die
-	Schaltfläche <guimenu>System konfigurieren</guimenu> die Konfiguration des UCS-Systems
+	Schaltfläche <guimenu>SYSTEM KONFIGURIEREN</guimenu> die Konfiguration des UCS-Systems
 	veranlasst werden, siehe <xref linkend="installation-overview"/>.
   </para>
   <para>
@@ -602,8 +604,8 @@
 	</itemizedlist>
   </para>
   <para>
-	Der Abschluss der Konfiguration muss über die Schaltfläche <guimenu>Fertigstellen</guimenu> bestätigt werden.
-	Das UCS-System wird anschließend auf den ersten Bootvorgang vorbereitet und neugestartet.
+	Der Abschluss der Konfiguration muss über die Schaltfläche <guimenu>SYSTEM KONFIGURIEREN</guimenu> bestätigt werden.
+	Das UCS-System wird anschließend auf den ersten vollständigen Bootvorgang vorbereitet und neugestartet.
   </para>
   <para>
 	Das System startet nun von Festplatte. Nach dem Bootvorgang können sich die Benutzer
