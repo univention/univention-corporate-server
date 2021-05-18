@@ -71,10 +71,16 @@ class UCSInstallation(object):
 
 	def installer(self):
 		# language
-		self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
-		self.client.enterText(self._['english_language_name'])
-		self.click('Continue')
-		self.client.waitForText(self._['select_location'], timeout=self.timeout)
+		for i in range(3):
+			self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
+			self.client.enterText(self._['english_language_name'])
+			self.click('Continue')
+			try:
+				self.client.waitForText(self._['select_location'], timeout=self.timeout)
+				break
+			except VNCDoException:
+				self.connect()
+				self.click('Go Back')
 		self.client.enterText(self._['location'])
 		self.client.keyPress('enter')
 		self.client.waitForText(self._['select_keyboard'], timeout=self.timeout)
