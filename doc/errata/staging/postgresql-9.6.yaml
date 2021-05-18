@@ -7,7 +7,7 @@ fix: 9.6.22-0+deb9u1
 desc: |
  This update addresses the following issues:
  * Prevent integer overflows in array subscripting
-   calculations (CVE-2021-32028)
+   calculations (CVE-2021-32027)
  * Fix mishandling of junk columns in INSERT ... ON CONFLICT ... UPDATE
    target lists (CVE-2021-32028)
  * Fix CREATE INDEX CONCURRENTLY to wait for concurrent prepared transactions
