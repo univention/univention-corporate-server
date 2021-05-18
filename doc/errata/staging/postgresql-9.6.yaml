@@ -6,72 +6,11 @@ src: postgresql-9.6
 fix: 9.6.22-0+deb9u1
 desc: |
  This update addresses the following issues:
-
- * 9.6.22-0+deb9u1 (Wed, 12 May 2021 16:53:28 +0200) * New upstream version. +
-   Prevent integer overflows in array subscripting calculations (Tom Lane) The
-   array code previously did not complain about cases where an array's lower
-   bound plus length overflows an integer. This resulted in later entries in
-   the array becoming inaccessible (since their subscripts could not be
-   written as integers), but more importantly it confused subsequent
-   assignment operations. This could lead to memory overwrites, with ensuing
-   crashes or unwanted data modifications. (CVE-2021-32027) + Fix mishandling
-   of junk columns in INSERT ... ON CONFLICT ... UPDATE target lists (Tom
-   Lane) If the UPDATE list contains any multi-column sub-selects (which give
-   rise to junk columns in addition to the results proper), the UPDATE path
-   would end up storing tuples that include the values of the extra junk
-   columns. That's fairly harmless in the short run, but if new columns are
-   added to the table then the values would become accessible, possibly
-   leading to malfunctions if they don't match the datatypes of the added
-   columns. In addition, in versions supporting cross-partition updates, a
-   cross-partition update triggered by such a case had the reverse problem:
-   the junk columns were removed from the target list, typically causing an
-   immediate crash due to malfunction of the multi-column sub-select
-   mechanism. (CVE-2021-32028)
-
- * 9.6.21-0+deb9u1 (Wed, 12 May 2021 16:53:28 +0200) + Fix CREATE INDEX
-   CONCURRENTLY to wait for concurrent prepared transactions (Andrey Borodin)
-   At the point where CREATE INDEX CONCURRENTLY waits for all concurrent
-   transactions to complete so that it can see rows they inserted, it must
-   also wait for all prepared transactions to complete, for the same reason.
-   Its failure to do so meant that rows inserted by prepared transactions
-   might be omitted from the new index, causing queries relying on the index
-   to miss such rows. In installations that have enabled prepared transactions
-   (max_prepared_transactions > 0), it's recommended to reindex any
-   concurrently-built indexes in case this problem occurred when they were
-   built.
-
- * 9.6.22-0+deb9u1 (Wed, 12 May 2021 16:53:28 +0200) * New upstream version. +
-   Prevent integer overflows in array subscripting calculations (Tom Lane) The
-   array code previously did not complain about cases where an array's lower
-   bound plus length overflows an integer. This resulted in later entries in
-   the array becoming inaccessible (since their subscripts could not be
-   written as integers), but more importantly it confused subsequent
-   assignment operations. This could lead to memory overwrites, with ensuing
-   crashes or unwanted data modifications. (CVE-2021-32027) + Fix mishandling
-   of junk columns in INSERT ... ON CONFLICT ... UPDATE target lists (Tom
-   Lane) If the UPDATE list contains any multi-column sub-selects (which give
-   rise to junk columns in addition to the results proper), the UPDATE path
-   would end up storing tuples that include the values of the extra junk
-   columns. That's fairly harmless in the short run, but if new columns are
-   added to the table then the values would become accessible, possibly
-   leading to malfunctions if they don't match the datatypes of the added
-   columns. In addition, in versions supporting cross-partition updates, a
-   cross-partition update triggered by such a case had the reverse problem:
-   the junk columns were removed from the target list, typically causing an
-   immediate crash due to malfunction of the multi-column sub-select
-   mechanism. (CVE-2021-32028)
-
- * 9.6.21-0+deb9u1 (Wed, 12 May 2021 16:53:28 +0200) + Fix CREATE INDEX
-   CONCURRENTLY to wait for concurrent prepared transactions (Andrey Borodin)
-   At the point where CREATE INDEX CONCURRENTLY waits for all concurrent
-   transactions to complete so that it can see rows they inserted, it must
-   also wait for all prepared transactions to complete, for the same reason.
-   Its failure to do so meant that rows inserted by prepared transactions
-   might be omitted from the new index, causing queries relying on the index
-   to miss such rows. In installations that have enabled prepared transactions
-   (max_prepared_transactions > 0), it's recommended to reindex any
-   concurrently-built indexes in case this problem occurred when they were
-   built.
+ * Prevent integer overflows in array subscripting
+   calculations (CVE-2021-32028)
+ * Fix mishandling of junk columns in INSERT ... ON CONFLICT ... UPDATE
+   target lists (CVE-2021-32028)
+ * Fix CREATE INDEX CONCURRENTLY to wait for concurrent prepared transactions
 bug: [53270]
 cve:
 - CVE-2021-32027
