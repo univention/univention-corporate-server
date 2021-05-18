@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-11) unstable; urgency=medium
+
+  * Bug #52446: Dont evaluate displayname when checking pwd complexity
+    of user/ldap objects
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 18 May 2021 17:32:27 +0200
+
 univention-directory-manager-modules (14.0.20-10) unstable; urgency=medium
 
   * Bug #52878: remove unused import 
