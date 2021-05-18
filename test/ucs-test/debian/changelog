@@ -1,3 +1,9 @@
+ucs-test (9.0.7-29) unstable; urgency=medium
+
+  * Bug #52446: Test ms pwpolicy of users/user and users/ldap
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 18 May 2021 17:33:43 +0200
+
 ucs-test (9.0.7-28) unstable; urgency=medium
 
   * Bug #50766: test sync of gidNumber
