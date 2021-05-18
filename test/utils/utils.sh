@@ -59,10 +59,14 @@ basic_setup () {
 	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f "startxwithfirefox" ; do
 		sleep 1s
 	done
-	sleep 5s
-	if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
-		mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
-	fi
+	for i in $(seq 120); do
+		if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
+			mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
+			break
+		fi
+		echo "Waiting for /var/cache/univention-system-setup/profile.bak"
+		sleep 1
+	done
 }
 
 rotate_logfiles () {
