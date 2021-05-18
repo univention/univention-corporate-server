@@ -306,6 +306,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 			--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
 			--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
 			--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
+			--append categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
 			--set showUmc=TRUE || die
 	fi
 fi

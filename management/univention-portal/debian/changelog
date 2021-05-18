@@ -1,3 +1,9 @@
+univention-portal (4.0.5-51) unstable; urgency=medium
+
+  * Bug #53285: Add cn=services to cn=portal on 4.4 update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 May 2021 22:19:37 +0200
+
 univention-portal (4.0.5-50) unstable; urgency=medium
 
   * Bug #53161: Updated portals will have linkTarget newwindow; UMC module
