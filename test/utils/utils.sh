@@ -222,6 +222,7 @@ _upgrade_to_latest () {
 
 # temp. patch to retry source.list commit and apt-get update after error
 patch_setup_join () {
+	# shellcheck disable=SC2016
 	local script='{ set -x; nscd -i hosts; grep -H . /etc/resolv.conf /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*.list; apt-get update; } ; grep -H . /etc/apt/sources.list.d/15_ucs-online-version.list'
 	sed -i "s~^apt-get update\$~& || $script~" /usr/lib/univention-system-setup/scripts/setup-join.sh
 }
@@ -283,11 +284,11 @@ wait_for_replication () {
 	timestamp=$(date +"%s")
 	echo "Waiting for replication..."
 	while ! /usr/lib/nagios/plugins/check_univention_replication; do
-		if [ $((timestamp+timeout)) -lt $(date +"%s") ]; then
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
 			echo "ERROR: replication incomplete."
 			return 1
 		fi
-		sleep $steps
+		sleep "$steps"
 	done
 	return 0
 }
@@ -300,11 +301,11 @@ wait_for_process () {
 	timestamp=$(date +"%s")
 	echo "Waiting for process '$process_name'..."
 	while ! pgrep -f "$process_name" >/dev/null; do
-		if [ $((timestamp+timeout)) -lt $(date +"%s") ]; then
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
 			echo "ERROR: process '$process_name' does not run."
 			return 1
 		fi
-		sleep $steps
+		sleep "$steps"
 	done
 	return 0
 }
@@ -469,7 +470,7 @@ install_apps_test_packages () {
 	do
 		if [ -n "$(univention-app get $app DockerImage)" ]; then
 			univention-app shell "$app" apt-get download "ucs-test-$app" &&
-			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb &&
+			dpkg -i "/var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_"*.deb &&
 			univention-install -f --yes || rv=$?
 		else
 			univention-install --yes "ucs-test-$app" || rv=$?
@@ -606,8 +607,11 @@ run_apptests () {
 	# until this is fixed, force the variables in the docker container
 	for app in $(< /var/cache/appcenter-installed.txt); do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			# shellcheck disable=SC2016
 			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_server_name" && ucr set --force ldap/server/name="$ldap_server_name"'
+			# shellcheck disable=SC2016
 			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_master" && ucr set --force ldap/master="$ldap_master"'
+			# shellcheck disable=SC2016
 			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$kerberos_adminserver" && ucr set --force kerberos/adminserver="$kerberos_adminserver"'
 		fi
 	done
@@ -706,6 +710,7 @@ run_tests () {
 		return 0
 	fi
 
+	# shellcheck disable=SC2086
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
 }
 
@@ -838,7 +843,7 @@ set_userpassword_for_administrator ()
 	lb="$(ucr get ldap/base)"
 
 	local passwordhash
-	passwordhash="$(mkpasswd -m sha-512 $password)"
+	passwordhash="$(mkpasswd -m sha-512 "$password")"
 	echo "dn: uid=$user,cn=users,$lb
 changetype: modify
 replace: userPassword
@@ -971,12 +976,12 @@ assert_app_master_packages () {
 run_app_appliance_tests () {
 	local app rv=0
 	for app in "$@"; do
-		assert_app_is_installed $app || return 1
-		echo $app >>/var/cache/appcenter-installed.txt
+		assert_app_is_installed "$app" || return 1
+		echo "$app" >>/var/cache/appcenter-installed.txt
 		# check additinal apps too
-		for add in $(univention-app get $app ApplianceAdditionalApps | sed -ne 's|ApplianceAdditionalApps: ||p' | sed 's|,| |g'); do
-			assert_app_is_installed $add || return 1
-			echo $add >>/var/cache/appcenter-installed.txt
+		for add in $(univention-app get "$app" ApplianceAdditionalApps | sed -ne 's|ApplianceAdditionalApps: ||p' | sed 's|,| |g'); do
+			assert_app_is_installed "$add" || return 1
+			echo "$add" >>/var/cache/appcenter-installed.txt
 		done
 	done
 	## install ucs-test from errata test
@@ -1016,7 +1021,7 @@ start_portal_in_local_firefox () {
 	X &
 	DISPLAY=:0 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
 	sleep 1
-	DISPLAY=:0 firefox http://$(hostname -f)/univention/portal &
+	DISPLAY=:0 firefox "http://$(hostname -f)/univention/portal" &
 	sleep 10
 	chvt 2
 	sleep 1
@@ -1050,7 +1055,7 @@ add_hostname_to_juint_results ()
 	local hostname
 	hostname="$(hostname)"
 	for f in test-reports/*/*.xml; do
-		sed -i "s| name=\"| name=\"${hostname}.|g;s|testcase classname=\"|testcase classname=\"${hostname}.|g" $f
+		sed -i "s| name=\"| name=\"${hostname}.|g;s|testcase classname=\"|testcase classname=\"${hostname}.|g" "$f"
 	done
 }
 
@@ -1259,8 +1264,8 @@ transfer_docker_image () {
 # lock the  image transfer (update, pull, app update)
 ( flock --verbose -w 600 9 || return 1
 
-	ssh root@$docker_host univention-app update || return 1
-cat <<-EOF | ssh root@$docker_host python
+	ssh "root@$docker_host" univention-app update || return 1
+cat <<-EOF | ssh "root@$docker_host" python
 # only whitespaces here, no tabs!
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import UniventionAppAction, get_action
