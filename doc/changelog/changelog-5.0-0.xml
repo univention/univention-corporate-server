@@ -143,7 +143,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The boot process has been adjusted to the new design. It is possible to switch between a dark theme (default) by setting <command>ucr set bootsplash/theme='ucs-light'</command> and a light theme by setting <command>ucr set bootsplash/theme='ucs-light'</command> (<u:bug>52797</u:bug>, <u:bug>52798</u:bug>, <u:bug>52454</u:bug>).
+						The boot process has been adjusted to the new design. It is possible to switch between a dark theme (default) by setting <command>ucr set bootsplash/theme='ucs'</command> and a light theme by setting <command>ucr set bootsplash/theme='ucs-light'</command> (<u:bug>52797</u:bug>, <u:bug>52798</u:bug>, <u:bug>52454</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
