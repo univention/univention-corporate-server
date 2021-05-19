@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Remove unused code leading to problems while updating to UCS 5.
 bug: [52956]
+erratum: 979
+announced: 2021-05-19
