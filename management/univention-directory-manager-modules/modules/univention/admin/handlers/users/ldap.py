@@ -302,7 +302,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pwdCheck = univention.password.Check(self.lo)
 			pwdCheck.enableQualityCheck = True
 			try:
-				pwdCheck.check(self['password'], username=self['username'], displayname=self['displayName'])
+				pwdCheck.check(self['password'], username=self['username'])
 			except univention.password.CheckFailed as exc:
 				raise univention.admin.uexceptions.pwQuality(str(exc))
 
