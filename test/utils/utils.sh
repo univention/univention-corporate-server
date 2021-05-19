@@ -1055,11 +1055,9 @@ dump_systemd_journal () {
 
 add_hostname_to_juint_results ()
 {
-	local hostname
-	hostname="$(hostname)"
-	for f in test-reports/*/*.xml; do
-		sed -i "s| name=\"| name=\"${hostname}.|g;s|testcase classname=\"|testcase classname=\"${hostname}.|g" "$f"
-	done
+	local HOSTNAME
+	: "${HOSTNAME:=$(hostname)}"
+	sed -i "s|<testsuite\>[^<>]*\<name=\"|&${HOSTNAME}.|g;s|<testcase\>[^<>]*\<classname=\"|&${HOSTNAME}.|g" test-reports/*/*.xml
 }
 
 prepare_results () {
