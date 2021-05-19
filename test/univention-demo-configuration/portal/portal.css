@@ -1,6 +1,5 @@
 .portal-header__left {
-	padding-left: 0;
-	margin-left: -3px;
+	margin-left: -13px;
 }
 .portal-header__left-image {
 	height: var(--font-size-2);
