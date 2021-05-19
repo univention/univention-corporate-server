@@ -1262,25 +1262,24 @@ transfer_docker_image () {
 	# add 4.4 to SupportedUCSVersions for [4.3] on docker.knut.univention.de in
 	# /var/cache/univention-appcenter/appcenter-test.software-univention.de/.ucs.ini
 	# as long as docker.knut.univention.de is UCS 4.3
-	local appid=${1:=missing appid}
-	local docker_host=docker
-	local transfer_user=automation
-	local transfer_pwfile=/root/automation.secret
+	local appid=${1:?missing appid}
+	local docker_host='docker.knut.univention.de'
 
 # lock the  image transfer (update, pull, app update)
 ( flock --verbose -w 600 9 || return 1
 
-	ssh "root@$docker_host" univention-app update || return 1
-cat <<-EOF | ssh "root@$docker_host" python
+	# shellcheck disable=SC2087
+	ssh "root@$docker_host" 'univention-app update && python' <<__PY__
 # only whitespaces here, no tabs!
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import UniventionAppAction, get_action
-from subprocess import check_output
+from subprocess import check_call
 import sys
+
+TRANSFER_USER = 'automation'
+TRANSFER_PWFILE = '/root/automation.secret'
+
+app_id = "${appid}"
 apps_cache = Apps()
-app_id="$appid"
-transfer_user="$transfer_user"
-transfer_pwfile="$transfer_pwfile"
 for appcenter_cache in apps_cache.get_appcenter_caches():
     for cache in appcenter_cache.get_app_caches():
         assert cache.get_server() == 'https://appcenter-test.software-univention.de'
@@ -1294,22 +1293,17 @@ for appcenter_cache in apps_cache.get_appcenter_caches():
                         print('found appbox image {}, do nothing'.format(app.docker_image))
                         sys.exit(0)
                 print('transfer {}'.format(app_name))
-                #transfer = get_action('internal-transfer-images')
-                #print(dir(transfer))
-                #transfer.call(app=app, brute_yaml=True)
-                cmd = ['univention-app', 'internal-transfer-images', '--noninteractive', '--username', transfer_user, '--pwdfile', transfer_pwfile, '--brute-yaml', app_name]
-                print('running {}'.format(''.join(cmd)))
-                print(check_output(cmd))
+                cmd = ['univention-app', 'internal-transfer-images', '--noninteractive', '--username', TRANSFER_USER, '--pwdfile', TRANSFER_PWFILE, '--brute-yaml', app_name]
+                print('running {}'.format(' '.join(cmd)))
+                sys.stdout.flush()
+                check_call(cmd, stdin=open('/dev/null', 'rb'))
             else:
                 print('{} is no docker app, do nothing'.format(app_id))
             sys.exit(0)
 print('found no app for {}'.format(app_id))
 sys.exit(1)
-EOF
-	return $?
-
+__PY__
 ) 9>/tmp/mylockfile
-
 }
 
 ################################################################################
