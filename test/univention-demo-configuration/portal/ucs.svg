@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="18.4"
+   height="18.639999"
+   id="svg4306"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="univention_logo.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     id="namedview33"
+     showgrid="false"
+     inkscape:zoom="7.7852349"
+     inkscape:cx="61.541841"
+     inkscape:cy="-16.185796"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g156" />
+  <defs
+     id="defs4308" />
+  <metadata
+     id="metadata4311">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.79999678,0,0,0.79999678,-343.78403,-197.13856)"
+     id="layer1">
+    <g
+       id="g156"
+       transform="matrix(1.25,0,0,-1.25,448.76551,246.88178)">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="path158"
+         d="m 0,0 -9.136,0 c -1.683,0 -3.045,-1.364 -3.045,-3.046 l 2.739,0 0,-8.848 c 0.057,-0.676 1.041,-1.415 3.077,-1.544 1.666,-0.105 3.233,0.52 3.629,1.454 l 0,8.929 c 0.349,-0.032 2.303,-0.538 2.67,-2.432 0.024,-0.104 0.043,-0.214 0.053,-0.333 l 10e-4,0 0,-0.005 C -0.005,-5.91 0,-5.998 0,-6.092 l 0,-9.136 -0.012,0 -2.332,0 -0.396,0 0,1.327 c -0.44,-0.614 -1.224,-1.197 -1.901,-1.327 l -4.496,0 c -1.844,0.095 -2.999,1.328 -3.046,3.046 l 0,9.136 c -1.681,-0.001 -3.044,-1.364 -3.044,-3.046 l 0,-9.136 c 0,-1.682 1.364,-3.046 3.045,-3.046 l 9.137,0 c 1.682,0 3.045,1.364 3.045,3.046 1.682,0 3.046,1.363 3.046,3.046 l 0,9.136 C 3.046,-1.364 1.682,0 0,0" />
+    </g>
+  </g>
+</svg>

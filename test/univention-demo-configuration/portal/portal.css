@@ -1,5 +1,13 @@
-.portal-tile__box {
-	box-shadow: none;
+.portal-header__left {
+	padding-left: 0;
+	margin-left: -3px;
+}
+.portal-header__left-image {
+	height: var(--font-size-2);
+	width: var(--font-size-2);
+}
+.portal__background {
+	background-position: bottom right;
 }
 .portal-folder__name, .portal-tile__name, .portal-category__title {
 	color: var(--color-grey0);

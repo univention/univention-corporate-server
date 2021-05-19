@@ -30,6 +30,10 @@
 eval "$(ucr shell)"
 DIR="$(dirname $0)"
 
+univention-directory-manager portals/entry modify \
+	--dn "cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
+	--set backgroundColor="var(--color-grey0)"
+
 univention-directory-manager portals/category remove --ignore_not_exists \
 	--dn "cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base"
 univention-directory-manager portals/category create \
@@ -52,13 +56,12 @@ univention-directory-manager portals/portal remove --ignore_not_exists \
 univention-directory-manager portals/portal create \
 	--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 	--set name=demo \
+	--set logo="$(base64 "$DIR/ucs.svg")" \
 	--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
 	--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
 	--append categories="cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base" \
 	--append categories="cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
-	--append displayName='"en_US" "Univention Portal"' \
-	--append displayName='"de_DE" "Univention Portal"' \
-	--append displayName='"fr_FR" "Portail Univention"' \
+	--append displayName='"en_US" "UCS"' \
 	--set showUmc=TRUE
 
 create_app_entry () {

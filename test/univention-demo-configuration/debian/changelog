@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-7) unstable; urgency=medium
+
+  * Bug #53251: Update background image; add portal logo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 May 2021 00:25:11 +0200
+
 univention-demo-configuration (8.0.0-6) unstable; urgency=medium
 
   * Bug #53251: Update logos; enable cookie banner
