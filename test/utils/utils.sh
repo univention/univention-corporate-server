@@ -233,7 +233,7 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 }
 
 run_setup_join () {
-	local srv rv=0
+	local rv=0
 	patch_setup_join # temp. remove me
 	set -o pipefail
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
@@ -854,7 +854,6 @@ monkeypatch () {
 
 import_license () {
 	# wait for server
-	local server="license.univention.de"
 	for i in $(seq 1 100); do
 		nc -w 3 -z license.univention.de 443 && break
 		sleep 1
