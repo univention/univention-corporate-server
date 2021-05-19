@@ -104,9 +104,9 @@ jenkins_updates () {
 	# Update UCS@school instances always to latest patchlevel version
 	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,^UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
 
-	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
-	test -n "$RELEASE_UPDATE" && release_update="$RELEASE_UPDATE"
-	test -n "$ERRATA_UPDATE" && errata_update="$ERRATA_UPDATE"
+	test -n "${TARGET_VERSION:-}" && target="$TARGET_VERSION"
+	test -n "${RELEASE_UPDATE:-}" && release_update="$RELEASE_UPDATE"
+	test -n "${ERRATA_UPDATE:-}" && errata_update="$ERRATA_UPDATE"
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
@@ -699,13 +699,13 @@ run_tests () {
 		echo "-----------------------------------------------------------------------------------"
 		return 1
 	fi
-	if [ "$COVERAGE_REPORT" = "true" ]; then
+	if [ "${COVERAGE_REPORT:-}" = "true" ]; then
 		GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
 	fi
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 
 	# check is ucs-test run is allowed
-	if [ -n "$UCS_TEST_RUN" -a "$UCS_TEST_RUN" = "false" ]; then
+	if [ "${UCS_TEST_RUN:-}" = "false" ]; then
 		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN"
 		return 0
 	fi
