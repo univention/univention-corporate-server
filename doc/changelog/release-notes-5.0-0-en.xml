@@ -351,11 +351,11 @@
 			Prior to the update, this script can be downloaded and executed on the UCS system.
 			<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
+curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{,.gpg}
 
 # run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
-        pre-update-checks-5.0.gpg pre-update-checks-5.0 && bash pre-update-checks-5.0
+gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg pre-update-checks-5.0-0.gpg \
+        pre-update-checks-5.0-0 && bash pre-update-checks-5.0-0
 
 ...
 
