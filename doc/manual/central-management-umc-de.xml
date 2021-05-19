@@ -149,10 +149,14 @@
 	</figure>
 
 	<para>
-		Standardmäßig wird ein <foreignphrase>Single Sign-On</foreignphrase> (SSO) mittels SAML (siehe auch <xref linkend="domain:saml"/>) durchgeführt, sofern <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreicht werden kann.
+		Für eine Anmeldung wird standardmäßig kein <foreignphrase>Single Sign-On</foreignphrase> genutzt.
+		Der Login kann auf <foreignphrase>Single Sign-On</foreignphrase> (SSO) mittels SAML (siehe auch <xref linkend="domain:saml"/>) umgestellt werden, hierfür muss <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreichbar sein	und die &ucsUCRV; <envar>portal/auth-mode=saml</envar> gesetzt sein.
+		Damit die Umstellung wirksam wird, muss der Portal-Server neu gestartet werden:
+		<command>systemctl restart univention-portal-server.servic</command>.
+		Jetzt ist die Anmeldung über das Benutzermenü umgestellt.
+		Kacheln auf der Portal müssen manuell angepasst werden.
+		Eine SSO Login Kachel ist bereits vorkonfiguriert und kann über den Editiermodus des Portal aktiviert werden.
 		Nach erfolgter Anmeldung ist eine Sitzung gültig für alle UCS-Systeme der Domäne sowie Apps von Drittherstellern, wenn diese einen webbasierten SSO unterstützen.
-		Kann <uri>ucs-sso.<replaceable>domainname</replaceable></uri> nicht erreicht werden, geschieht die Anmeldung an dem lokalen UCS-System.
-		Die Sitzung ist dann nur gültig für die UCS Webseiten auf dem selben System.
 		Es ist möglich die Anmeldung am lokalen System über den Link <guimenu>Ohne Single Sign-On anmelden</guimenu> zu erzwingen.
 	</para>
 
