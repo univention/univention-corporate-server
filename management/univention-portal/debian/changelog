@@ -1,3 +1,9 @@
+univention-portal (4.0.5-52) unstable; urgency=medium
+
+  * Bug #53289: Remove empty value from portal syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 May 2021 15:43:48 +0200
+
 univention-portal (4.0.5-51) unstable; urgency=medium
 
   * Bug #53285: Add cn=services to cn=portal on 4.4 update

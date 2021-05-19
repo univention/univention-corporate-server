@@ -40,7 +40,7 @@ class NewPortalCategories(UDM_Objects):
 	"""
 	udm_modules = ('portals/category', )
 	label = '%(name)s'
-	empty_value = True
+	empty_value = False
 	simple = True
 
 
@@ -50,7 +50,7 @@ class NewPortalCategoryEntries(UDM_Objects):
 	"""
 	udm_modules = ('portals/entry', 'portals/folder', )
 	label = '%(name)s'
-	empty_value = True
+	empty_value = False
 	simple = True
 
 
@@ -60,7 +60,7 @@ class NewPortalEntries(UDM_Objects):
 	"""
 	udm_modules = ('portals/entry', )
 	label = '%(name)s'
-	empty_value = True
+	empty_value = False
 	simple = True
 
 
@@ -70,7 +70,7 @@ class NewPortalFolders(UDM_Objects):
 	"""
 	udm_modules = ('portals/folder', )
 	label = '%(name)s'
-	empty_value = True
+	empty_value = False
 	simple = True
 
 
