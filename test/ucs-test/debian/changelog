@@ -1,4 +1,4 @@
-ucs-test (9.0.7-33) unstable; urgency=medium
+ucs-test (9.0.7-34) unstable; urgency=medium
 
   * Bug #52446: Test ms pwpolicy of users/user and users/ldap
 

@@ -6,45 +6,35 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [52446]
 
-from __future__ import print_function
+import pytest
+
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
 from univention.config_registry import handler_set
-import atexit
-import pytest
-import subprocess
 
 
 if __name__ == '__main__':
-	atexit.register(utils.restart_slapd)
 
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(['password/quality/mspolicy=true'])
 		lo = utils.get_ldap_connection()
-		policy_dn, att = lo.search('(&(cn=default-settings)(objectClass=univentionPolicyPWHistory))', attr=['univentionPWQualityCheck'])[0]
-		att = att.get('univentionPWQualityCheck', '')
-		try:
-			cmd = (['udm-test', 'policies/pwhistory', 'modify', '--dn=%s' % (policy_dn,), '--set', 'pwQualityCheck=TRUE'])
-			subprocess.check_output(cmd, shell=False, close_fds=True)
-			utils.wait_for_replication_and_postrun()
+		attr = dict(name='%s' % (uts.random_username()), pwQualityCheck='TRUE')
+		pol_dn = udm.create_object('policies/pwhistory', wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
+		utils.wait_for_replication_and_postrun()
 
-			for module in ['users/user', 'users/ldap']:
-				name = "%s_test1" % (uts.random_username())
-				attr = dict(password='Univention.1', username=name, lastname='test')
-				dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
+		for module in ['users/user', 'users/ldap']:
+			name = "%s_test1" % (uts.random_username())
+			attr = dict(password='Univention.1', username=name, lastname='test', policy_reference=pol_dn)
+			dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
+			with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
+				udm.modify_object(module, dn=dn, password='univention')
+
+			with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
+				udm.modify_object(module, dn=dn, password='Uni1%s' % (name,))
+
+			if module == 'users/user':
 				with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
-					udm.modify_object(module, dn=dn, password='univention')
-
-				with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
-					udm.modify_object(module, dn=dn, password='Uni1%s' % (name,))
-
-				if module == 'users/user':
-					with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
-						udm.modify_object(module, dn=dn, password='Uni.1test1')
-
-		finally:
-			cmd = (['udm-test', 'policies/pwhistory', 'modify', '--dn=%s' % (policy_dn,), '--set', 'pwQualityCheck=%s' % (att)])
-			subprocess.check_output(cmd, shell=False, close_fds=True)
+					udm.modify_object(module, dn=dn, password='Uni.1test1')
