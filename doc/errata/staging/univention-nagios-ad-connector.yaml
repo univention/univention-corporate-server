@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-nagios-ad-connector
-fix: 8.0.1-3A~4.4.0.202105181752
+fix: 8.0.1-4A~4.4.0.202105192143
 desc: |
  This update addresses the following issue:
  * The nagios check for univention-ad-connector reported
