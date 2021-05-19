@@ -56,7 +56,7 @@ be assigned to the following three main categories:
 </para>
 <orderedlist>
 <listitem><simpara>Base system</simpara></listitem>
-<listitem><simpara>UCS management system with Univention Management Console</simpara></listitem>
+<listitem><simpara>UCS management system with &ucsUMC; modules</simpara></listitem>
 <listitem><simpara>Univention App Center, allowing the installation of further components and
 applications of other software vendors</simpara></listitem>
 </orderedlist>
@@ -75,7 +75,7 @@ service. Core components of the management system are the services
 OpenLDAP (directory service), Samba (provision of domain, file and
 print services for Windows), Kerberos (authentication and single sign
 on), DNS (network name resolution) and SSL/TLS (secure transmission
-of data between systems). It can be used either via a web interface (&ucsUMC;)
+of data between systems). It can be used either via a web interface (&ucsUMC; modules)
 or in the command line and in individual scripts. The UCS management
 system can be extended with APIs (application programming interfaces)
 and provides a flexible client-server architecture which allows
@@ -168,8 +168,8 @@ App Center</title>
 The Univention App Center offers additional UCS components and extensions and a broad selection of
 business IT software, e.g., groupware and collaboration, file exchange, CRM or backup. These
 applications can be installed in existing environments with a few clicks and are usually ready to
-use. In most cases they are directly integrated into the &ucsUMS; such that they are available in
-&ucsUMC;. This provides a central management of data on the domain level and obsoletes the separate
+use. In most cases they are directly integrated into the &ucsUMS; such that they are available as
+&ucsUMC; modules. This provides a central management of data on the domain level and obsoletes the separate
 management of, e.g., user data in multiple places.
 </para>
 </section>
@@ -214,11 +214,11 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </section>
 
 <section id="introduction:Domain_administration"><title>Domain administration</title>
-<figure id="introduction:umc"><title>Univention Management Console</title>
+<figure id="introduction:umc"><title>&ucsUMC; modules</title>
 	<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/umc-favorites-tab-en.png"/>
 </figure>
 <para>
-Access to the LDAP directory is performed via the web-based user interface &ucsUMC; (UMC).
+Access to the LDAP directory is performed via a web-based user interface through &ucsUMC; (UMC) modules.
 In addition to this, &ucsUDM; allows the realization of all
 domain-wide administrative tasks via a command line interface. This
 is particularly suitable for the integration in scripts or automated
@@ -226,7 +226,7 @@ administrative steps.
 </para>
 
 <para>
-&ucsUMC; allows to display, edit, delete, and search the data in
+&ucsUMC; modules allows to display, edit, delete, and search the data in
 the LDAP directory via various filter criteria.
 The web interface offers a range of wizards for the
 administration of user, groups, networks, computers, directory shares
@@ -243,7 +243,7 @@ Further information can be found in <xref linkend="central:general"/>.
 
 <section id="introduction:Computer_administration"><title>Computer administration</title>
 <para>
-&ucsUMC; allows not only the access to the LDAP directory,
+&ucsUMC; modules allows not only the access to the LDAP directory,
 but also the web-based configuration and administration
 of individual computers. These include the adaptation of configuration data,
 the installation of software as well as the monitoring and control of
@@ -285,7 +285,7 @@ The listener/notifier mechanism is an important technical component of
 the &ucsUMS;. With this, the creation, editing or deleting of
 entries in the LDAP directory triggers defined actions on
 the computers in question.
-For example, the creation of a directory share with &ucsUMC; leads to
+For example, the creation of a directory share with the UMC module <guimenu>Shares</guimenu> leads to
 the share firstly being entered in the LDAP directory. The
 listener/notifier mechanism then ensures that the NFS
 and Samba configuration files are also expanded accordingly on the

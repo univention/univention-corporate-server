@@ -13,7 +13,7 @@
 	<section id="idmcloud:general">
 		<title>Introduction</title>
 		<para>
-			UCS offers an integrated Identity Management System. Through &ucsUMC;, users and groups among others
+			UCS offers an integrated Identity Management System. Through UMC modules, users and groups among others
 			can easily be administered. Depending on the installed services, these identities are made available through
 			different interfaces e.g. via LDAP.
 		</para>

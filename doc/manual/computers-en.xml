@@ -11,7 +11,7 @@
 <chapter id="computers:general"><title>Computer management</title>
 
 <section id="computers::hostaccounts">
-	<title>Management of computer accounts in &ucsUMC;</title>
+	<title>Management of computer accounts via &ucsUMC; module</title>
 	<para>
 		All UCS, Linux and Windows systems within a UCS domain each have a
 		computer domain account (also referred to as the host account) with which the
@@ -60,7 +60,7 @@
 	</para>
 
 	<figure id="computers-create">
-		<title>Creating a computer in UMC</title>
+		<title>Creating a computer in the UMC module</title>
 		<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/computers_computer_en.png"/>
 	</figure>
 	<figure id="computers-create-advanced">
@@ -398,8 +398,8 @@
 	<section id="computers:ubuntu">
 		<title>Integration of Ubuntu clients</title>
 		<para>
-			Ubuntu clients can be managed in &ucsUMC; with their own system role. The
-			network properties for DNS/DHCP can also be managed via &ucsUMC;.
+			Ubuntu clients can be managed in the UMC module <guimenu>Computers</guimenu>  with their own system role. The
+			network properties for DNS/DHCP can also be managed there.
 		</para>
 		<para>
 			The use of policies is not supported.
@@ -589,8 +589,7 @@
 		<section id="computers:Network_interfaces">
 			<title>Network interfaces</title>
 			<para>
-				The configuration of network interfaces can be adjusted in &ucsUMC;
-				via the module <guimenu>Network settings</guimenu>.
+				The configuration of network interfaces can be adjusted with the UMC module <guimenu>Network settings</guimenu>.
 			</para>
 			<para>
 				The configuration is saved in &ucsUCR; variables, which can also be set
@@ -938,7 +937,8 @@
 				</itemizedlist>
 
 				<para>
-				  When configuring a VLAN in &ucsUMC; it is possible to configure for a
+				  When configuring a VLAN in the UMC module <guimenu>Network settings</guimenu>
+				  it is possible to configure for a
 				  computer which VLANs it wants to participate in. An example here would be an
 				  internal company web server, which should be available both to the employees and
 				  any users of the guest network.
@@ -1161,7 +1161,7 @@
 		<para>
 			&ucsUCR; variables can be configured in the command line using the
 			<command>univention-config-registry</command> command (short form:
-			<command>ucr</command> or via &ucsUMC;.
+			<command>ucr</command> or via the UMC module <guimenu>Univention Configuration Registry</guimenu>.
 		</para>
 		<para>
 			As the majority of packages perform their configuration via &ucsUCR; and the
@@ -1194,7 +1194,7 @@
 		<para>
 			Part of the settings configured in &ucsUCR; are system-specific (e.g., the
 			computer name); many settings can, however, be used on more then one
-			computer. The &ucsUCR; policy in the domain administration of &ucsUMC; can be
+			computer. The &ucsUCR; policy in the domain administration UMC modules can be
 			used to compile variables and apply them on more than one computer.
 		</para>
 		<para>
@@ -1243,7 +1243,7 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 	</section>
 
 	<section id="computers:Using_the_Univention_Management_Console_web_interface">
-		<title>Using the &ucsUMC; web interface</title>
+		<title>Using the &ucsUMC; module</title>
 		<para>
 			The UMC module <guimenu>Univention Configuration Registry</guimenu>
 			can be used to display and adjust the variables of a system. There is also the
@@ -1264,8 +1264,8 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 			the variable name.
 		</para>
 		<para>
-			Clicking on the icon with the stylized pen edits the setting of a variable. The
-			icon with the stylized minus sign allows the deletion of a variable.
+			A variable can be edited by clicking on its name.
+			A variable can be deleted by right-clicking and selecting <guimenu>Delete</guimenu>.
 		</para>
 	</section>
 
@@ -1606,7 +1606,7 @@ if configRegistry.get('version/version') and \
 			<emphasis>locales</emphasis>. Configuration includes, among other things,
 			settings for date and currency format, the set of characters in use and the
 			language used for internationalized programs. The installed locales can be
-			changed in &ucsUMC; under <guimenu>Language settings &ar; Installed
+			changed in the UMC module <guimenu>Language settings</guimenu> under <guimenu>Language settings &ar; Installed
 			system locales</guimenu> The standard locale is set under <guimenu>Default
 			system locale</guimenu>.
 		</para>
@@ -1703,7 +1703,7 @@ auth/sshd/restrict: yes
 
 		<para>
 		  Alternatively, the LDAP servers can also be specified via a <guimenu>LDAP
-		  server</guimenu> policy in the UMC computer management. The order
+		  server</guimenu> policy. The order
 		  of the servers determines the order of the computer's requests to the server if
 		  a LDAP server cannot be reached.
 		</para>
@@ -1726,7 +1726,7 @@ auth/sshd/restrict: yes
 		</para>
 		<para>
 			Alternatively, the server can also be specified via the <guimenu>Print
-			server</guimenu> policy in the UMC computer management.
+			server</guimenu> policy in the UMC module <guimenu>Computers</guimenu>.
 		</para>
 	</section>
 
@@ -1818,7 +1818,7 @@ auth/sshd/restrict: yes
 		</section>
 
 		<section id="computers:Querying_system_statistics_in_the_UMC">
-			<title>Querying system statistics in &ucsUMC;</title>
+			<title>Querying system statistics via &ucsUMC; module</title>
 			<para>
 				The UMC module <guimenu>Statistics</guimenu> displays the utilization of system
 				resources. For this purpose, a graph is displayed for different periods:
@@ -1841,7 +1841,7 @@ auth/sshd/restrict: yes
 		</section>
 
 		<section id="computers:modules:top">
-			<title>Process overview in &ucsUMC;</title>
+			<title>Process overview via &ucsUMC; module</title>
 			<para>
 				The UMC module <guimenu>Process overview</guimenu> displays a
 				table of the current processes on the system. The processes can be sorted based
@@ -1879,9 +1879,9 @@ auth/sshd/restrict: yes
 				save open files.
 			</para>
 		</section>
-		<section id="computers:modules:diagnostic"><title>System error diagnosis in &ucsUMC;</title>
+		<section id="computers:modules:diagnostic"><title>System error diagnosis via &ucsUMC; module</title>
 			<para>
-				The <guimenu>System diagnostic</guimenu> UMC module offers a
+				The UMC module <guimenu>System diagnostic</guimenu> offers a
 				corresponding user interface to analyze a UCS system for a
 				range of known problems.
 			</para>
@@ -2092,7 +2092,7 @@ nscd -i hosts
             <para>
                 XRDP is available through the App Center (see <xref
                 linkend="software:appcenter"/>) and can be installed using the corresponding
-                &ucsUMC; module App Center. It can be installed on multiple machines. After the
+                UMC module <guimenu>App Center</guimenu>. It can be installed on multiple machines. After the
                 installation the machine runs a <ulink url="http://www.xrdp.org/">XRDP
                 server</ulink>.
             </para>
@@ -2269,8 +2269,9 @@ nscd -i hosts
 	<section id="basicservices::ntp">
 		<title>Configuring the time zone / time synchronization</title>
 		<para>
-			The time zone in which a system is located can be changed in &ucsUMC; under
-			<guimenu>Language settings &ar; Time zone</guimenu>.
+			The time zone in which a system is located can be changed in the UMC module
+			<guimenu>Language settings</guimenu> under
+			<guimenu>Time zone and keyboard settings &ar; Time zone</guimenu>.
 		</para>
 		<para>
 			Asynchronous system times between individual hosts of a domain can be the

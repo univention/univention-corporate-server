@@ -12,7 +12,7 @@
   <title>IP and network management</title>
   <para>
 	This chapter describes how IP addresses for computer systems in a UCS
-	domain can be centrally managed via &ucsUMC; and and assigned via DHCP.
+	domain can be centrally managed via UMC modules and assigned via DHCP.
   </para>
   <para>
 	<emphasis>Network objects</emphasis> (<xref linkend="networks::introduction"/>)
@@ -54,7 +54,7 @@
 	  address is automatically reassigned.
 	</para>
 	<para>
-		Network objects are managed in the UMC module <emphasis>Networks</emphasis>
+		Network objects are managed in the UMC module <guimenu>Networks</guimenu>
 		(see <xref linkend="central:user-interface"/>)
 	</para>
 	  <table>
@@ -130,7 +130,7 @@
 				  created automatically.
 				</para>
 				<para>
-				  The zones are also administrated in &ucsUMC;, see
+				  	The zones are also administrated in the UMC module <guimenu>DNS</guimenu>, see
 				  <xref linkend="networks::dns::forwardzone"/>.
 				</para>
 				<para>
@@ -169,7 +169,7 @@
 				  address will be created automatically in the selected DHCP service.
 				</para>
 				<para>
-				  The DHCP service settings are also administrated in &ucsUMC;, see <xref linkend="networks::dhcp::general"/>.
+				  	The DHCP service settings are also administrated in the UMC module <guimenu>DHCP</guimenu>, see <xref linkend="networks::dhcp::general"/>.
 				</para>
 				<para>
 				  If no DHCP service is selected, no DHCP host record is created
@@ -288,7 +288,7 @@
 		<para>
 		  In a typical BIND installation on a non-UCS system, the configuration
 		  is performed by editing zone files. In UCS, BIND is completely
-		  configured via &ucsUMC;, which saves its data in the LDAP
+		  configured via UMC modules, which saves its data in the LDAP
 		  directory.
 		</para>
 		<para>
@@ -329,7 +329,7 @@
 		<para>
 		  The backend is configured via the &ucsUCRV; <envar>dns/backend</envar>. The DNS
 		  administration is not changed by the backend used and is performed via
-		  &ucsUMC; in both cases.
+		  UMC modules in both cases.
 		</para>
 	  </section>
 
@@ -346,7 +346,7 @@
 	</section>
 
 	<section id="ip-config:dns:umc">
-	  <title>Administration of DNS data in &ucsUMC;</title>
+	  <title>Administration of DNS data via &ucsUMC; module</title>
 	  <para>
 		DNS files are stored in the <uri>cn=dns,<replaceable>base DN</replaceable></uri> container as
 		standard. Forward and reverse lookup zones are stored directly in the
@@ -375,13 +375,13 @@
 		<title>Forward lookup zone</title>
 		<para>
 		  Forward lookup zones contain information which is used to resolve DNS
-		  names into IP addresses. They are managed in the UMC module <emphasis>DNS</emphasis>
+		  names into IP addresses. They are managed in the UMC module <guimenu>DNS</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To add another forward lookup zone, select <guimenu>All DNS
 		  zones</guimenu> and <guimenu>Add &ar; DNS: Forward lookup zone</guimenu>.
 		</para>
 		<figure id="net-dns-forward">
-		  <title>Configuring a forward lookup zone in UMC</title>
+		  <title>Configuring a forward lookup zone in the UMC module 'DNS'</title>
 		  <graphic fileref="illustrations50/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
 		</figure>
 		<para>
@@ -672,7 +672,7 @@
 	  <section id="ip-config:CNAME-Record_Alias-Records">
 		<title>CNAME record (Alias records)</title>
 		<para>
-		  CNAME records / alias records are managed in the UMC module <emphasis>DNS</emphasis>
+		  CNAME records / alias records are managed in the UMC module <guimenu>DNS</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in
 		  the left column. <guimenu>Add &ar; DNS: Alias record</guimenu> can be used to create a new
@@ -726,7 +726,7 @@
 	  <section id="networks::dns::hostrecord">
 		<title>A/AAAA records (host records)</title>
 		<para>
-		  Host records are managed in the UMC module <emphasis>DNS</emphasis>
+		  Host records are managed in the UMC module <guimenu>DNS</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Host record</guimenu> can be used to create a new record.
@@ -791,7 +791,7 @@
 	  <section id="ip-config:Service_records">
 		<title>Service records</title>
 		<para>
-		  Service records are managed in the UMC module <emphasis>DNS</emphasis>
+		  Service records are managed in the UMC module <guimenu>DNS</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Service record</guimenu> can be used to create a new
@@ -933,7 +933,7 @@
 		<title>Reverse lookup zone</title>
 		<para>
 		  A reverse lookup zone is used to resolve IP address into host names.
-		  They are managed in the UMC module <emphasis>DNS</emphasis>.
+		  They are managed in the UMC module <guimenu>DNS</guimenu>.
 		  To add another reverse lookup zone, select <guimenu>All DNS zones</guimenu> and
 		  <guimenu>Add &ar; DNS: Reverse lookup zone</guimenu>.
 		</para>
@@ -1087,7 +1087,7 @@
 	  <section id="ip-config:Pointer_record">
 		<title>Pointer record</title>
 		<para>
-		  Pointer records are managed in the UMC module <emphasis>DNS</emphasis>
+		  Pointer records are managed in the UMC module <guimenu>DNS</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the reverse lookup zone must be
 		  selected in the left column. <guimenu>Add &ar; DNS: Pointer record</guimenu> can be used
@@ -1253,7 +1253,7 @@ closest to the object always applies.
 	  <section id="networks::dhcp::services">
 		<title>Administration of DHCP services</title>
 		<para>
-		  DHCP services are managed in the UMC module <emphasis>DHCP</emphasis>
+		  DHCP services are managed in the UMC module <guimenu>DHCP</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
 		  be selected in the left column of the UMC module.
@@ -1327,7 +1327,7 @@ closest to the object always applies.
 		  not normally need to be created manually, instead it is created by the
 		  join script of the <package>univention-dhcp</package> package.
 		  However, to create another record manually, a DHCP service must be selected in the left
-		  column of the UMC module <emphasis>DHCP</emphasis>.
+		  column of the UMC module <guimenu>DHCP</guimenu>.
 		  <guimenu>Add &ar; DHCP Server</guimenu> can then be used to register a new server.
 		</para>
 
@@ -1372,7 +1372,7 @@ closest to the object always applies.
 	  <section id="ip-config:Administration_of_DHCP_subnets">
 		<title>Administration of DHCP subnets</title>
 		<para>
-		  DHCP subnets are managed in the UMC module <emphasis>DHCP</emphasis>
+		  DHCP subnets are managed in the UMC module <guimenu>DHCP</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create another subnet, a DHCP service must be selected in the left
 		  column. <guimenu>Add &ar; DHCP: Subnet</guimenu> can be used to create a new subnet.
@@ -1464,7 +1464,7 @@ closest to the object always applies.
 	  <section id="ip-config:Administration_of_DHCP_pools">
 		<title>Administration of DHCP pools</title>
 		<para>
-		  DHCP pools can only be managed via the UMC module <emphasis>LDAP directory</emphasis>.
+		  DHCP pools can only be managed via the UMC module <guimenu>LDAP directory</guimenu>.
 		  To do so, one must always be in a DHCP subnet object
 		  - a DHCP pool object must always be created below a DHCP subnet
 		  object - and a <guimenu>DHCP: Pool</guimenu>
@@ -1623,7 +1623,7 @@ closest to the object always applies.
 		  created manually or automatically.
 		</para>
 		<para>
-		  DHCP host objects are managed in the UMC module <emphasis>DHCP</emphasis>
+		  DHCP host objects are managed in the UMC module <guimenu>DHCP</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To register a host in the DHCP manually, a DHCP service must be selected in
 		  the left column of the module. <guimenu>Add &ar; DHCP:
@@ -1664,7 +1664,7 @@ closest to the object always applies.
 				  </entry>
 				  <entry>
 					<para>
-					  The type of network used can be selected in this select
+					  The type of network used can be selected in this selection
 					  list. <guimenu>Ethernet</guimenu> almost always needs to be selected here.
 					</para>
 				  </entry>
@@ -1706,7 +1706,7 @@ closest to the object always applies.
 		  common physical network.
 		</para>
 		<para>
-		  DHCP shared network objects are managed in the UMC module <emphasis>DHCP</emphasis>
+		  DHCP shared network objects are managed in the UMC module <guimenu>DHCP</guimenu>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create a shared network, a DHCP service must be selected in the left
 		  column of the module. <guimenu>Add &ar; DHCP: Shared
@@ -1756,7 +1756,7 @@ closest to the object always applies.
 		</para>
 		<para>
 		  DHCP shared subnet objects can only be managed via
-		  the UMC module <emphasis>LDAP directory</emphasis>. To do so, one must
+		  the UMC module <guimenu>LDAP directory</guimenu>. To do so, one must
 		  always be in a DHCP shared network object - a DHCP shared subnet object
 		  must always be created below a DHCP shared network object - and
 		  a <guimenu>DHCP shared subnet</guimenu> object added
@@ -2207,7 +2207,7 @@ closest to the object always applies.
 	  </para>
 	  <para>
 		If changes are made to the configuration, Squid must be
-		restarted. This can be performed either via &ucsUMC; or the
+		restarted. This can be performed either via the UMC module <guimenu>System services</guimenu> or the
 		command line:
 	  </para>
 		<programlisting language="sh">
@@ -2387,7 +2387,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		  <title>Installation</title>
 		  <para>
 			  <package>RADIUS</package> is available through the App Center (see <xref linkend="software:appcenter"/>)
-			and can be installed using the corresponding &ucsUMC; module App Center. It can be
+			  and can be installed using the UMC module <guimenu>App Center</guimenu>. It can be
 			installed on multiple machines. After the installation it runs a <ulink
 			url="http://freeradius.org/">FreeRADIUS</ulink> server. Authenticators (e.g.  access
 			points) can contact via RADIUS to check network access requests.
@@ -2431,7 +2431,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 			  <para>
 				  All access points must be known to the RADIUS server. An access point can either
 				  be configured in the file <filename>/etc/freeradius/3.0/clients.conf</filename>
-				  or through the &ucsUMC;. For each access point a random shared secret should be created
+				  or through the UMC module <guimenu>Computers</guimenu>. For each access point a random shared secret should be created
 				  (e.g. by using the command <command>makepasswd</command>).
 				  The <literal>shortname</literal> can be chosen at will.
 				</para>
@@ -2445,8 +2445,8 @@ client AP01 {
 </programlisting>
 				</para>
 				<para>
-					To configure an access point using the &ucsUMC; a computer object must exists for it.
-					This object needs the <emphasis>RADIUS-Authenticator</emphasis>	option to be set
+					To configure an access point using the UMC module <guimenu>Computers</guimenu> create
+					or select a computer object and activate the <emphasis>RADIUS-Authenticator</emphasis> option
 					(<xref linkend="ip-config:radius:option"/>).
 					An <emphasis>IP client</emphasis> is a good choice as a computer object for access points.
 					The RADIUS settings can be edited on the <guimenu>RADIUS</guimenu> tab of the object
@@ -2455,8 +2455,8 @@ client AP01 {
 					and NAS type options usually do not need to be changed.
 				</para>
 				<para>
-					Access points that are configured via the UMC are available to all
-					RADIUS server in the domain.
+					Access points that are configured via the UMC module <guimenu>Computers</guimenu> are available to all
+					RADIUS servers in the domain.
 					To achieve this, the &ucsUDL; will write them into
 					the file <filename>/etc/freeradius/3.0/clients.univention.conf</filename> and
 					restart the RADIUS server. In order to merge multiple changes in one restart, this happens with

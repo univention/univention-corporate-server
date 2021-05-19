@@ -11,13 +11,13 @@
 <chapter id="shares::general">
   <title>File share management</title>
   <para>
-	UCS supports the central management of directory shares. A share registered in &ucsUMC; is
-	created on an arbitrary UCS server system as part of the UCS domain replication.
+	  UCS supports the central management of directory shares. A share registered via the UMC module <guimenu>Shares</guimenu>
+	is created on an arbitrary UCS server system as part of the UCS domain replication.
   </para>
 
   <para>
 	Provision for accessing clients can occur via CIFS (supported by Windows/Linux clients) and/or
-	NFS (primarily supported by Linux/Unix). The NFS shares managed in &ucsUMC; can be mounted
+	NFS (primarily supported by Linux/Unix). The NFS shares managed in the UMC module can be mounted
 	by clients both via NFSv3 and via NFSv4.
   </para>
 
@@ -87,9 +87,9 @@
   <para>
 	Changes to the permissions of a shared directory performed directly
 	in the file system are not forwarded to the LDAP directory. If the
-	permissions/owners are edited within &ucsUMC;, the changes in the file
+	permissions/owners are edited with the UMC module <guimenu>Shares</guimenu>, the changes in the file
 	system are overwritten. Settings to the root directory of a file share
-	should thus only be set and edited with &ucsUMC;. Additional adjustment of the access
+	should thus only be set and edited with the UMC module. Additional adjustment of the access
 	permissions of the subordinate directories are then performed via the
 	accessing clients, e.g., via Windows Explorer, or directly via command
 	line commands on the file server.
@@ -103,9 +103,9 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Management of shares in UMC</title>
+<section id="shares::management"><title>Management of shares via UMC module</title>
 <para>
-File shares are managed in the UMC module <emphasis>Shares</emphasis>
+File shares are managed in the UMC module <guimenu>Shares</guimenu>
 (see <xref linkend="central:user-interface"/>).
 </para>
 <para>
@@ -113,7 +113,7 @@ When adding/editing/deleting a share, it is entered, modified or removed
 in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
-<figure id="shares:umc"><title>Creating a share in UMC</title>
+<figure id="shares:umc"><title>Creating a share via the UMC module 'Shares'</title>
  <graphic scalefit="1" width="100%" fileref="illustrations50/projekt-freigabe_EN.png"/>
 </figure>
 
@@ -263,7 +263,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Only allow access for these hosts, IP addresses or networks</entry>
 		<entry>
-		  By default, all hosts are permitted access to a share. In this select list,
+		  By default, all hosts are permitted access to a share. In this selection list,
 		  host names and IP addresses can be included, to which the access to the share
 		  is to be restricted. For example, access to a share containing mail data could
 		  be restricted to the mail server of the domain.
@@ -295,7 +295,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  <para>
 			The NetBIOS name of the share. This is the name under which the share
 			is displayed on Windows computers in the network environment. When
-			adding a directory share, &ucsUMC; adopts the name entered in
+			adding a directory share, the UMC module adopts the name entered in
 			the <guimenu>Name</guimenu> field of the <guimenu>General</guimenu> tab
 			as the default.
 		  </para>
@@ -1054,7 +1054,7 @@ Microsoft Distributed File System Tree'.
 	</para>
 
 	<figure id="shares:quota">
-	  <title>Managing quota in the UMC</title>
+	  <title>The UMC module 'Filesystem quotas'</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations50/quota-overview-en.png"/>
 	</figure>
 

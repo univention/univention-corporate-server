@@ -41,13 +41,13 @@
 		</para>
 
 	<section id="groups::management">
-		<title>Managing groups in &ucsUMC;</title>
+		<title>Managing groups via &ucsUMC; module</title>
 		<para>
-			Groups are managed in the UMC module <emphasis>Groups</emphasis>
+			Groups are managed in the UMC module <guimenu>Groups</guimenu>
 			(see <xref linkend="central:user-interface"/>).
 		</para>
 		<figure id="create-group">
-			<title>Creating a group in UMC</title>
+			<title>Creating a group via UMC module</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations50/create-group_EN.png"/>
 		</figure>
 		<table>
@@ -137,7 +137,7 @@
 						<entry>
 							<para>
 								If a group is to be assigned a certain group ID, the ID in question
-								can be entered in this field. Otherwise, &ucsUMC;
+								can be entered in this field. Otherwise, the UMC module
 								will automatically assign the next available group ID when
 								adding the group. The group ID cannot be subsequently changed. When
 								editing the group, the group ID will be represented in gray.
@@ -155,7 +155,7 @@
 								The relative ID (RID) is the local part of the Security ID (SID) and
 								is used in Windows and Samba domains. If a group is to be assigned a
 								certain RID, the ID in question can be entered in this
-								field. Otherwise, &ucsUMC; will automatically
+								field. Otherwise, the UMC module will automatically
 								assign the next available group ID when adding the group.
 							</para>
 							<para>
@@ -315,7 +315,7 @@
 
 		<para>
 		  When the group cache file is being generated, the script can verify whether the group
-		  members are still present in the LDAP directory. If not only &ucsUMC; is used for user
+		  members are still present in the LDAP directory. If not only UMC modules are used for user
 		  management, this additional check can be can be enabled by setting the
 		  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
 		  <literal>true</literal>.
@@ -361,12 +361,12 @@
 		  <listitem><simpara>
 			<emphasis>Local</emphasis> groups only exist locally on a host. A local group created in
 			Samba/AD is synchronized by the Univention S4 Connector and thus also appears in the
-			UMC. There is no need to create local groups in the UMC.
+			UMC module <guimenu>Groups</guimenu>. There is no need to create local groups in the UMC.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			<emphasis>Global</emphasis> groups are the standard type for newly created groups in the
-			UMC. A global group applies for one domain, but it can also accept members from other
+			UMC module <guimenu>Groups</guimenu>. A global group applies for one domain, but it can also accept members from other
 			domains. If there is a trust relationship with a domain, the groups there are displayed
 			and permissions can be assigned. However, the current version of UCS does not support
 			multiple domains/forests or outgoing trust relationships.

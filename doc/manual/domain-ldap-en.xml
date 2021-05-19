@@ -75,8 +75,8 @@
 		<para>
 			There are three possibilities for a UCS system to join an existing domain;
 			directly after installation in the Univention Installer (see <xref
-			linkend="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten"/>) or subsequently using the command
-			<command>univention-join</command> or using &ucsUMC;.
+			linkend="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten"/>) or subsequently using either
+			the command <command>univention-join</command> or the UMC module <guimenu>Domain join</guimenu>.
 		</para>
 		<para>
 			The &ucsPrimaryDN; should always be installed at the most up-to-date release stand
@@ -146,11 +146,11 @@
 		</section>
 
 		<section id="linux-domaenenbeitritt-umc">
-			<title>Joining domains with &ucsUMC;</title>
+			<title>Joining domains via &ucsUMC; module</title>
 			<para>
 				A domain join can also be carried out web based via the UMC module <guimenu>Domain join</guimenu>.
 				As the Administrator user does not yet exist on a system which has yet to join
-				the domain, the login to &ucsUMC; is done as user <systemitem class="username">root</systemitem>.
+				the domain, the login to the module is done as user <systemitem class="username">root</systemitem>.
 			</para>
 			<para>
 				As for the domain joining procedure via the command line, username and password of a
@@ -194,7 +194,7 @@
 			<title>Subsequent running of join scripts</title>
 			<para>
 			  If there are join/unjoin scripts on a system which have not yet been run or which can only be
-			  run for an older version, a warning message is shown upon login to &ucsUMC;.
+			  run for an older version, a warning message is shown upon opening a UMC module.
 			</para>
 
 			<para>
@@ -240,7 +240,7 @@
 	  <para>
 		A host account is created for the Windows client automatically when it joins the domain (see
 		<xref linkend="computers::hostaccounts"/>). Information concerning MAC and IP addresses, the
-		network, DHCP or DNS can be configured in &ucsUMC; prior to or after joining the domain.
+		network, DHCP or DNS can be configured via UMC modules prior to or after joining the domain.
 	  </para>
 
 	  <para>
@@ -823,9 +823,9 @@ slapcat &gt; ldapdata.txt
 			</para>
 
 			<para>
-			  Passwords can be reset via &ucsUMC;. In the default setting, &ucsUMC; only
-			  offers the user wizard to the <systemitem class="username">Administrator</systemitem> user, which
-			  allows the setting of new passwords. During the installation a new
+			  Passwords can be reset via the UMC module <guimenu>Users</guimenu>. In the default setting, the module is
+			  only accessible to the <systemitem class="username">Administrator</systemitem> user.
+			  During the installation a new
 			  <uri>default-user-password-admins</uri> policy is created
 			  automatically, which is linked to the members of the <systemitem class="groupname">User
 			  Password Admins</systemitem> group and can be assigned to a corresponding
@@ -1051,7 +1051,7 @@ slapcat &gt; ldapdata.txt
 
 		<para>
 		  When the domain replication is running normally (normal system load, no network problems),
-		  the delay between the change being made in &ucsUMC; and replicated to,
+		  the delay between changes being made in UMC modules and these changes being replicated to,
 		  for example, a &ucsReplicaDN; is barely noticeable. An incomplete replication can be
 		  identified by comparing the transaction IDs of the listener and notifier services.
 		</para>
@@ -1121,7 +1121,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		For example, SSL/TLS is employed in the listener/notifier domain
-		replication or for HTTPS access to &ucsUMC;.
+		replication or for HTTPS access to &ucsWeb;s
 	</para>
 	<para>
 		Both communication partners must be able to verify the authenticity of the
@@ -1184,8 +1184,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		It is thus necessary to verify the validity of the certificate regularly and to
 		renew the root certificate in time. A Nagios plugin is provided for the
-		monitoring of the validity period. In addition, a warning is shown when logging
-		on to &ucsUMC; if the root certificate is going to expire soon (the warning
+		monitoring of the validity period. In addition, a warning is shown when opening
+		a UMC module if the root certificate is going to expire soon (the warning
 		period can be specified with the &ucsUCRV; <envar>ssl/validity/warning</envar>;
 		the standard value is 30 days).
 	</para>
@@ -1205,7 +1205,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<para>
 	  In &ucsUMC;, the effective expiry date of the computer and root certificate can be
-	  accessed via the upper right user menu and the entry <guimenu>License &ar; License information</guimenu>.
+	  accessed via the upper right menu and the entry <guimenu>License &ar; License information</guimenu>.
 	</para>
 
 </section>
@@ -1354,7 +1354,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Login via <foreignphrase>single sign-on</foreignphrase></title>
 	<para>
-		The <foreignphrase>single sign-on</foreignphrase> is the default login for &ucsUMC;, as long as <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
+		The <foreignphrase>single sign-on</foreignphrase> is the default login for &ucsWeb;s, as long as <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
 		To login the domain credentials must be provided.
 		For the login directly at the UCS system (i.e., without <foreignphrase>single sign-on</foreignphrase>), follow the link <guimenu>Login without Single Sign On</guimenu>.
 	</para>
@@ -1377,7 +1377,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Adding a new external service provider</title>
 	<para>
-		The &ucsUMC; domain module <guimenu>SAML identity provider</guimenu> allows to manage all service providers that are registered at the UCS identity provider.
+		The UMC module <guimenu>SAML identity provider</guimenu> allows to manage all service providers that are registered at the UCS identity provider.
 		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
 		The service provider can be activated for groups, to allow authentication with that service provider for all users within that group.
 		On the users <guimenu>Account tab</guimenu> or the groups <guimenu>General tab</guimenu>, the service provider can to be added under <guimenu>SAML settings</guimenu>.
@@ -1550,7 +1550,7 @@ univention-directory-listener-ctrl resync cups-printers
   </para>
   <para>
 	External Web services can be connected to UCS via <application>OpenID Connect</application> by creating a specific object of type <classname>oidc/rpservice</classname> for this service in the UCS directory service.
-	These can be created in the Univention Management Console in the LDAP browser in the container <uri>cn=oidc</uri>, which is located below the container <uri>cn=univention</uri>.
+	These can be created via the UMC module <guimenu>LDAP directory</guimenu> in the container <uri>cn=oidc</uri>, which is located below the container <uri>cn=univention</uri>.
 	Here the new service can be registered via the item Add and the selection <guimenu>OpenID Connect Relying Party Service</guimenu>.
   </para>
   <para>
@@ -1836,11 +1836,11 @@ apt-get dselect-upgrade
 		</simpara></listitem>
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
-		<title>View of events in<phrase> min</phrase> Diary</title>
+		<title>View of events in Admin Diary</title>
 		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-list_en.png"/>
 	</figure>
 	<para>
-		<xref linkend="domain-ldap:adminndiary:list"/> shows, how events are shown in the &ucsUMC;.
+		<xref linkend="domain-ldap:adminndiary:list"/> shows, how events are shown in the UMC module <guimenu>Admin Diary</guimenu>.
 		By default the displayed entries are grouped by week and can additionally be filtered through the search field.
 		Selecting an entry from the list opens a dialog showing additional details about the who and when of the event,
 		as shown in <xref linkend="domain-ldap:adminndiary:detail"/>.
@@ -1866,7 +1866,7 @@ apt-get dselect-upgrade
 			<term><phrase>Admin Diary</phrase> frontend</term>
 			<listitem><simpara>
 				Likewise the frontend must be installed at least once, but more installations are also possible.
-				The frontend includes the &ucsUMC; module, which is used to show and comment the entries.
+				The frontend includes the UMC module <guimenu>Admin Diary</guimenu>, which is used to show and comment the entries.
 				When installing it on a different host than where the backend is installed, access to the central database needs to be configured manually.
 				The required steps for this are described in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
 			</simpara></listitem>

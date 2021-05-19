@@ -16,8 +16,9 @@
 	<para>
 	  The software deployment integrated in UCS offers extensive possibilities for
 	  the rollout and updating of UCS installations. Security and version updates can
-	  be installed via &ucsUMC;, a command line tool and
-	  policy-based. This is described in the <xref linkend="software::ucs-updates"/>.
+	  be installed via the UMC module <guimenu>Software update</guimenu>,
+	  a command line tool or based on policies.
+	  This is described in the <xref linkend="software::ucs-updates"/>.
 	  The UCS software deployment does not support the updating of Microsoft Windows
 	  systems. An additional Windows software distribution is required for this.
 	</para>
@@ -112,8 +113,8 @@
 	</para>
 
 	<para>
-	  If new release or errata updates are available, a corresponding notification is
-	  given when a user logs on to &ucsUMC;.
+	  If a new release or errata updates are available, a corresponding notification is
+	  given when a user opens a UMC module.
 	  The availability of new updates is also notified via e-mail; the corresponding
 	  newsletters - separated into release and error updates - can be subscribed on
 	  the Univention website.
@@ -137,7 +138,7 @@
 	</figure>
 
 	<para>
-		The Univention App Center can be opened via the UMC module <emphasis>App Center</emphasis>. It
+		The Univention App Center can be opened via the UMC module <guimenu>App Center</guimenu>. It
 		shows by default all installed as well as available software components. <guimenu>Search
 			applications...</guimenu> can be used to search for available applications. Furthermore, the
 		applications can also be filtered using the <guimenu>Categories</guimenu>. More filters like the
@@ -251,8 +252,6 @@ univention-app shell demo-docker-app
 	  version of an application is available, the <guimenu>Upgrade</guimenu> menu item is
 	  shown, which starts the installation of the new version. If updates are available, a
 	  corresponding message is also shown in the UMC module <guimenu>Software update</guimenu>.
-	  An overview of the installed applications in the domain can be opened under <guimenu>Installed
-	  applications</guimenu> on the UMC start page.
 	</para>
 
 	<para>
@@ -266,7 +265,7 @@ univention-app shell demo-docker-app
 	<title>Updates of UCS systems</title>
 	<para>
 	  There are two ways to update UCS systems; either on individual systems (via
-	  &ucsUMC; or command line) or via a &ucsUMC; computer policy for larger groups
+	  UMC module <guimenu>Software update</guimenu> or command line) or via a computer policy for larger groups
 	  of UCS systems.
 	</para>
 
@@ -294,24 +293,24 @@ univention-app shell demo-docker-app
 	</section>
 
 	<section id="computers:Updating_individual_systems_via_the_UMC">
-	  <title>Updating individual systems via &ucsUMC;</title>
+	  <title>Updating individual systems via &ucsUMC; module</title>
 	  <para>
-		The <guimenu>Software update</guimenu> module allows the installation of release
+		The UMC module <guimenu>Software update</guimenu> allows the installation of release
 		updates and errata updates.
 	  </para>
 
 	  <para>
 		Figure <xref linkend="software-umcupdate"/> shows the overview page of the
 		module. The currently installed version is displayed under <guimenu>Release
-		updates</guimenu> in the upper part of the dialogue box.
+		updates</guimenu>.
 	  </para>
 
-	  <figure id="software-umcupdate"><title>Updating a UCS system in UMC</title>
+	  <figure id="software-umcupdate"><title>Updating a UCS system via UMC module 'Software update'</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations50/software_onlineupdate_en.png"/>
 	  </figure>
 
 	  <para>
-		If a newer UCS version is available, a select list is displayed. After clicking
+		If a newer UCS version is available, a selection list is displayed. After clicking
 		on <guimenu>Install release updates</guimenu> and confirmation all updates up
 		to the respective version are installed. Before the installation process is
 		started, a message will be displayed informing the user of possible
@@ -380,8 +379,8 @@ univention-app shell demo-docker-app
 	  <title>Updating systems via a policy</title>
 	  <para>
 		An update for more than one computer can be configured with an
-		<guimenu>Automatic updates</guimenu> policy in the UMC modules for computer
-		and domain management (see <xref linkend="central:policies"/>).
+		<guimenu>Automatic updates</guimenu> policy in the UMC modules <guimenu>Computers</guimenu>
+		and <guimenu>LDAP directory</guimenu> (see <xref linkend="central:policies"/>).
 	  </para>
 
 	  <figure id="software-policyupdate">
@@ -421,7 +420,7 @@ univention-app shell demo-docker-app
 	  </para>
 
 	  <para>
-		Either the <emphasis>Domain join</emphasis> UMC module or the command
+		Either the UMC module <guimenu>Domain join</guimenu> or the command
 		line program <command>univention-run-join-scripts</command> is used for
 		checking and starting the join scripts (see <xref
 		linkend="linux-domaenenbeitritt"/>).
@@ -496,7 +495,7 @@ univention-app shell demo-docker-app
 	</para>
 
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
-	  <title>Configuration via &ucsUMC;</title>
+	  <title>Configuration via &ucsUMC; module</title>
 	  <para>
 		The <guimenu>Repository server</guimenu> and the use of
 		the maintained and unmaintained sections can be specified in the
@@ -521,8 +520,8 @@ univention-app shell demo-docker-app
 	  <title>Policy-based configuration of the repository server</title>
 	  <para>
 		The repository server to be used can also be specified using the
-		<guimenu>Repository server</guimenu> policy in the computer management of the
-		&ucsUMC;. Only UCS server systems for which a DNS entry has been configured are
+		<guimenu>Repository server</guimenu> policy in the
+		&ucsUMC; module <guimenu>Computers</guimenu>. Only UCS server systems for which a DNS entry has been configured are
 		shown in the selection field
 		(see <xref linkend="central:policies"/>).
 	  </para>
@@ -658,14 +657,14 @@ univention-repository-update -h
 	</section>
 
 	<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">
-	  <title>Installation/removal of individual packages in &ucsUMC;</title>
+	  <title>Installation/removal of individual packages via &ucsUMC; module</title>
 	  <para>
 		The UMC module <guimenu>Package Management</guimenu> can be used to install and uninstall
 		individual software packages.
 	  </para>
 
 	  <figure id="software-umcinstall">
-		  <title>Installing the package <package>univention-squid</package> in &ucsUMC;</title>
+		  <title>Installing the package <package>univention-squid</package> via &ucsUMC; module 'Package management'</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations50/software_install_en1.png"/>
 	  </figure>
 
@@ -780,7 +779,7 @@ apt-cache search fax
 	  </para>
 
 	  <para>
-		Package policies are managed in the UMC module <emphasis>Policies</emphasis>
+		Package policies are managed in the UMC module <guimenu>Policies</guimenu>
 		with the <guimenu>Policy: Packages + system
 		role</guimenu>.
 	  </para>
@@ -937,9 +936,8 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  The software monitor's web-based interface integrates in &ucsUMC; and can
-	  be accessed via the <guimenu>Software monitor</guimenu> module. The following
-	  functions are available:
+	  The software monitor brings its own UMC module <guimenu>Software monitor</guimenu>.
+	  The following functions are available:
 	</para>
 
 	<itemizedlist>

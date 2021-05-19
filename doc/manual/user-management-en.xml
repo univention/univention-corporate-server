@@ -12,7 +12,7 @@
     <title>User management</title>
     <para>
         UCS integrates central identity management. All user information are
-        managed centrally in UCS via &ucsUMC; and stored in the LDAP directory
+        managed centrally in UCS via the &ucsUMC; module <guimenu>Users</guimenu> and stored in the LDAP directory
         service.
     </para>
     <para>
@@ -55,13 +55,13 @@
         </orderedlist>
     </para>
     <section id="users::management">
-        <title>User management with Univention Management Console</title>
+        <title>User management via &ucsUMC; module</title>
         <para>
 			Users are managed in the UMC module <emphasis>Users</emphasis>
 			(see <xref linkend="central:user-interface"/>).
         </para>
 		<figure id="user-create">
-			<title>Creating a user in UMC</title>
+			<title>Creating a user in the UMC module 'Users'</title>
 			<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_user_en.png"/>
 		</figure>
 		<para>
@@ -104,6 +104,24 @@
                     </row>
                 </thead>
                 <tbody>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>
+                            The title of the user is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>First name</entry>
+                        <entry>
+                            The first name of the user is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Last name</entry>
+                        <entry>
+                            The last name of the user is to be entered here.
+                        </entry>
+                    </row>
                     <row>
                         <entry>User name</entry>
                         <entry>
@@ -171,24 +189,6 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Title</entry>
-                        <entry>
-                            The title of the user is to be entered here.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>First name</entry>
-                        <entry>
-                            The first name of the user is to be entered here.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Last name</entry>
-                        <entry>
-                            The last name of the user is to be entered here.
-                        </entry>
-                    </row>
-                    <row>
                         <entry>Display name</entry>
                         <entry>
                             The display name is automatically composed of the first and
@@ -198,22 +198,15 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Organization</entry>
-                        <entry>
-                            The organization is to be entered here.
-                        </entry>
-                    </row>
-                    <row>
                         <entry>Birthday</entry>
                         <entry>
                             This field is used to save a user's birthday.
                         </entry>
                     </row>
                     <row>
-                        <entry>Picture of the user (JPEG format)</entry>
+                        <entry>Organization</entry>
                         <entry>
-                            This mask can be used to save a picture of the user in LDAP in JPEG format. In
-                            the default settings the file size is limited to 512 kilobytes.
+                            The organization is to be entered here.
                         </entry>
                     </row>
                     <row>
@@ -234,6 +227,13 @@
                             The superior of the user can be selected here.
                         </entry>
                     </row>
+                    <row>
+                        <entry>Picture of the user (JPEG format)</entry>
+                        <entry>
+                            This mask can be used to save a picture of the user in LDAP in JPEG format. In
+                            the default settings the file size is limited to 512 kilobytes.
+                        </entry>
+                    </row>
                 </tbody>
             </tgroup>
         </table>
@@ -252,7 +252,7 @@
                     <row>
                         <entry>Primary group</entry>
                         <entry>
-                            This select list can be used for specifying the user's primary
+                            This selection list can be used for specifying the user's primary
                             group. All the groups registered in the domain are open for selection. By
                             default, the group <systemitem class="groupname">Domain Users</systemitem> is preset.
                         </entry>
@@ -307,7 +307,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Change password on next login</entry>
+                        <entry>User has to change password on next login</entry>
                         <entry>
                             If this checkbox is ticked, then the user has to change his password during
                             the next login procedure.
@@ -332,7 +332,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Reset lockout</entry>
+                        <entry>Unlock lockout</entry>
                         <entry>
                             <para>
                                 If the account has automatically been locked temporarily for security reasons,
@@ -359,7 +359,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Lockout ends</entry>
+                        <entry>Lockout till</entry>
                         <entry>
                             <para>
                                 If the account has automatically been locked temporarily for security reasons,
@@ -408,7 +408,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Samba privileges</entry>
+                        <entry>Samba privilege(s)</entry>
                         <entry>
                             This selection mask can be used to assign a user selected Windows
                             systems rights, for example the permission to join a system to the
@@ -428,7 +428,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Allow the authentication only on these Microsoft Windows hosts</entry>
+                        <entry>Allow the authentication only on these Microsoft Windows host(s)</entry>
                         <entry>
                             This setting specifies the clients where the user may log in. If no settings
                             are made, the user can log into any client.
@@ -520,13 +520,13 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Room number</entry>
+                        <entry>Room number(s)</entry>
                         <entry>
                             The room number of the user.
                         </entry>
                     </row>
                     <row>
-                        <entry>Department number</entry>
+                        <entry>Department number(s)</entry>
                         <entry>
                             The department number of the user can be entered here.
                         </entry>
@@ -568,7 +568,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Private postal address</entry>
+                        <entry>Private postal address(es)</entry>
                         <entry>
                             One or more of the user's private postal addresses can be entered in this
                             field.
@@ -640,7 +640,7 @@
             Once an app with user activation is installed in the UCS
             environment, it will appear with the logo in the
             <guimenu>Apps</guimenu> tab of the user in the UMC module
-            <emphasis>users</emphasis>. With a tick in the checkbox the user is
+            <guimenu>Users</guimenu>. With a tick in the checkbox the user is
             activated for the app. If the app offers specific settings another
             tab with the name of the app will appear to set these parameters.
             The app activation and the parameters are stored at the user object
@@ -729,7 +729,7 @@
                 <listitem>
 					<simpara>
                     A <emphasis>password expiry interval</emphasis> demands regular password
-                    changes. A password change is demanded during logons to &ucsUMC;, to Kerberos,
+                    changes. A password change is demanded during logons to &ucsWeb;s, to Kerberos,
                     on Windows clients and on UCS systems following expiry of the period
                     in days. The remaining validity of the password is displayed in the
                     user management under <guimenu>Password expiry date</guimenu> in the
@@ -741,7 +741,7 @@
                     <para>
                         If the option <emphasis>Password quality check</emphasis> is activated,
                         additional checks - including dictionary checks - are performed for
-                        password changes in Samba, &ucsUMC; and Kerberos.
+                        password changes in Samba, &ucsWeb;s and Kerberos.
                     </para>
                     <para>
                         The configuration is done via &ucsUCR; and should occur on all login
@@ -876,13 +876,11 @@
     <section id="user-management:Password-changes-by-users">
 		<title>User self services</title>
 		<section id="user-management:Password_changes_by_users_via_UMC">
-			<title>Password change by user via &ucsUMC;</title>
+			<title>Password change by user via UCS portal page</title>
 			<para>
-				In &ucsUMC;, every user can reset his password via the
-				<guimenu>Change password</guimenu> module. The module can also be opened
-				by selecting the <guimenu>Settings &ar; Change password</guimenu>
-				entry in the top right user menu.
-				To change the password, the current password must be entered first.
+				Every logged in user can change his own password by opening the menu
+				via the hamburger icon in the top right corner and selecting
+				<guimenu>User settings &ar; Change password</guimenu>.
 				The change is performed directly via the PAM stack
 				(see <xref linkend="computers:Authentication__PAM"/>) and is
 				then available centrally for all services.
@@ -1316,7 +1314,7 @@ ucr set cron/delete_deregistered_accounts/command=\
 			<para>
 				If accounts are only locked locally, the administrator can unlock a user account by entering the command
 				<command>faillog -r -u USERNAME</command>. If the lock occurs globally in the LDAP directory, the user can be reset
-				in Univention Management Console on the tab <guimenu>Account</guimenu> in the user options
+				in the &ucsUMC; module <guimenu>Users</guimenu> on the tab <guimenu>Account</guimenu> via the checkbox
 				<guimenu>Unlock account</guimenu>.
 			</para>
 		</section>
@@ -1338,7 +1336,8 @@ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
 			</para>
 			<para>
 				The default policy is designed so that five repeated failed LDAP server logon attempts within five minutes
-				cause the lockout. A locked account can only be unlocked by a domain administrator via &ucsUMC;.
+				cause the lockout. A locked account can only be unlocked by a domain administrator through the UMC module
+				<guimenu>Users</guimenu> via the checkbox <guimenu>Unlcok account</guimenu> on the <guimenu>Account</guimenu> tab.
 			</para>
 			<para>
 				The number of repeated failed LDAP server logon attempts can be adjusted in the configuration object with the

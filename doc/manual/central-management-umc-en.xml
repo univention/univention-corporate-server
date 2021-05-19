@@ -35,13 +35,13 @@
 	<para>
 		For environments with more than one server, an additional entry to a server overview page is shown on the portal page.
 		This sub page gives an overview of all available UCS systems in the domain.
-		It allows a fast navigation to other systems in order to adjust local settings via &ucsUMC;.
+		It allows a fast navigation to other systems in order to adjust local settings via UMC modules.
 	</para>
 	<para>
-		&ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
-		<xref linkend="central:user-interface"/> describes its general operation.
+		UMC modules are the web based tool for the administration of the UCS domain.
 		There are various modules available for the	administration of the different aspects of a domain depending on the respective system role.
-		New UMC modules may be added to a system when installing further software components.
+		Installing additional software components may add new UMC modules to the system.
+		<xref linkend="central:user-interface"/> describes their general operation.
 	</para>
 	<para>
 		The subsequent sections detail the usage of various aspects of the domain management.
@@ -114,7 +114,7 @@
 	</section>
 
 	<section id="central-management-umc:feedback">
-		<title>Feedback on UMC and UCS</title>
+		<title>Feedback on UMC modules and UCS</title>
 		<para>
 			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right user menu,
 			you can provide feedback on UCS via a web form.
@@ -184,7 +184,7 @@
 
 	<para>
 	  By installing a third-party application, such as <application>privacyIDEA</application>,
-	  it is possible to extend the &ucsUMC; authentication with a two-factor authentication (2FA).
+	  it is possible to extend the &ucsWeb; authentication with a two-factor authentication (2FA).
 	  These extensions can be installed from the Univention App Center.
 	</para>
 
@@ -277,50 +277,45 @@ udm settings/ldapacl remove \
 </section>
 
 <section id="central:user-interface">
-	<title>&ucsUMC;</title>
+	<title>&ucsUMC; modules</title>
 
 	<section id="central-management-umc:introduction">
 		<title>Introduction</title>
 		<para>
-			&ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
-			It can be launched from the portal page (<xref linkend="central:portal"/>) via the link <guimenu>System and domain settings</guimenu> or <guimenu>System settings</guimenu>, respectively.
-			Depending on the system role, different UMC modules are provided for administrating UCS.
-			These may be complemented with new modules when installing additional software components.
+			&ucsUMC; (UMC) modules are the web-based tool for administration of the UCS domain.
+			They are shown on the portal page (<xref linkend="central:portal"/>) for logged in administrators.
+			Depending on the system role, different UMC modules are available.
+			Additionally installed software components may bring their own new UMC modules.
 		</para>
 		<para>
 			UMC modules for the administration of all the data included in the LDAP
 			directory (such as users, groups and computer accounts) are only
-			provided on &ucsPrimaryDN; and &ucsBackupDN;. Changes made in these
+			provided on &ucsPrimaryDN;s and &ucsBackupDN;s. Changes made in these
 			modules are applied to the whole domain.
 		</para>
 		<para>
 			UMC modules for the configuration and administration of the local
-			system are provided on all system roles. These modules can be used to
+			system are provided on all system roles. These modules can for example be used to
 			install additional applications and updates, adapt the local
-			configuration via &ucsUCR; or start/stop services, for example.
-		</para>
-		<para>
-			During the first login, an introduction wizard is shown, which informs the user of the
-			collection of usage statistics (see <xref linkend="central-management-umc:piwik"/>) and
-			allows license activation (see <xref linkend="central:license" />) among other things.
+			configuration via &ucsUCR; or start/stop services.
 		</para>
 	</section>
 
 	<section id="central:license">
 		<title>Activation of UCS license / license overview</title>
 		<para>
-			The current license status can be shown on a &ucsPrimaryDN; of a
-			domain by clicking on the user menu in the top right line of the
-			screen. Below the menu item <guimenu>License</guimenu> the entry
-			<guimenu>License information</guimenu> can be selected to open a
-			corresponding information dialogue.
+			The UCS license of a domain can be managed via the UMC module <guimenu>Welcome!</guimenu>
+			on a &ucsPrimaryDN;.
+		</para>
+		<para>
+			The current license status can be shown by clicking the <guimenu>License info</guimenu> button.
 		</para>
 		<figure id="umc-license">
 			<title>Displaying the UCS license</title>
 			<graphic scalefit="1" width="70%" align="center" fileref="illustrations50/umc_coreedition_en.png"/>
 		</figure>
 		<para>
-		  The menu entry <guimenu>Import new license</guimenu> opens a dialogue in which
+		  The button <guimenu>Import a license</guimenu> opens a dialogue in which 
 		  a new license key can be activated (otherwise the core edition license
 		  is used as default license).
 		  A license file can be selected and imported via the button <guimenu>Import from file...</guimenu>.
@@ -331,7 +326,7 @@ udm settings/ldapacl remove \
 		<para>
 		  Installation of most of the applications in the Univention App Center requires a
 		  personalized license key. UCS core edition licenses can
-		  be converted by clicking <guimenu>Activation of UCS</guimenu>.
+		  be converted by clicking <guimenu>Request a new license</guimenu>.
 		  The current license key is sent to Univention and the updated key
 		  returned to a specified e-mail address within a few minutes. The new key can be imported
 		  directly. The conversion does not affect the scope of the license.
@@ -339,9 +334,9 @@ udm settings/ldapacl remove \
 
 		<para>
 		  If the number of licensed user or computer objects is exceeded, it is not possible to create
-		  any additional objects in &ucsUMC; or edit any existing ones unless an extended
+		  any additional objects in UMC modules or edit any existing ones unless an extended
 		  license is imported or no longer required users or computers are deleted. A corresponding
-		  message is displayed on the UMC start page if the license is exceeded.
+		  message is displayed when opening a UMC module if the license is exceeded.
 		</para>
 	</section>
 
@@ -387,41 +382,42 @@ udm settings/ldapacl remove \
 			<title>Searching for objects</title>
 
 			<para>
-			  The module overview lists all the objects managed by this
-			  module. <guimenu>Search</guimenu> performs a search for a selection of important
-			  attributes (e.g., for user objects by first and last name, primary e-mail address,
-			  description, employee number and user name). A wildcard search is also possible, e.g.,
-			  <emphasis>m*</emphasis>.
+				The module overview lists all the objects managed by this
+				module. <guimenu>Search</guimenu> performs a search for a selection of important
+				attributes (e.g., for user objects by first and last name, primary e-mail address,
+				description, employee number and user name). A wildcard search is also possible, e.g.,
+				<emphasis>m*</emphasis>.
 			</para>
 
 			<para>
-			  Clicking on <guimenu>Advanced options</guimenu> displays additional search options:
+				Clicking on the <guimenu>Advanced options</guimenu> button (the filter icon) next to the input field
+				displays additional search options:
 
-			  <itemizedlist>
-				<listitem><simpara>
-				  The <guimenu>Search in</guimenu> field can be used to select whether the complete
-				  LDAP directory or only individual LDAP containers/OUs are searched. Further
-				  information on the structure of the LDAP directory service can be found in <xref
-				  linkend="central:cn-and-ous"/>.
-				</simpara></listitem>
+				<itemizedlist>
+					<listitem><simpara>
+						The <guimenu>Search in</guimenu> field can be used to select whether the complete
+						LDAP directory or only individual LDAP containers/OUs are searched. Further
+						information on the structure of the LDAP directory service can be found in <xref
+						linkend="central:cn-and-ous"/>.
+					</simpara></listitem>
 
-				<listitem><simpara>
-				  The <guimenu>Property</guimenu> field can be used to search for a certain
-				  attribute directly.
-				</simpara></listitem>
+					<listitem><simpara>
+						The <guimenu>Property</guimenu> field can be used to search for a certain
+						attribute directly.
+					</simpara></listitem>
 
-				<listitem><simpara>
-				  The majority of the modules administrate a range of types of LDAP objects; the
-				  computer management for example administrates different objects for the individual
-				  system roles. The search can be limited to one type of LDAP object.
-				</simpara></listitem>
+					<listitem><simpara>
+						The majority of the modules administrate a range of types of LDAP objects; the
+						computer management for example administrates different objects for the individual
+						system roles. The search can be limited to one type of LDAP object.
+					</simpara></listitem>
 
-				<listitem><simpara>
-				  Some of the internally used user groups and groups (e.g., for domain joins) are
-				  hidden in the default setting. If the <guimenu>Include hidden objects</guimenu>
-				  option is enabled, these objects are also shown.
-				</simpara></listitem>
-			  </itemizedlist>
+					<listitem><simpara>
+						Some of the internally used user groups and groups (e.g., for domain joins) are
+						hidden in the default setting. If the <guimenu>Include hidden objects</guimenu>
+						option is enabled, these objects are also shown.
+					</simpara></listitem>
+				</itemizedlist>
 			</para>
 
 			<figure id="umc-search">
@@ -433,7 +429,7 @@ udm settings/ldapacl remove \
 		<section id="central-management-umc:create">
 			<title>Creating objects</title>
 			<para>
-			  The line above the table with the objects includes an actions toolbar which can be
+			  At the top of the table that shows the objects is a toolbar which can be
 			  used to create a new object using <guimenu>Add</guimenu>.
 			</para>
 
@@ -451,22 +447,23 @@ udm settings/ldapacl remove \
 				Right-clicking on an LDAP object and selecting
 				<guimenu>Edit</guimenu> allows to edit the object. The
 				individual attributes are described in the individual
-				documentation chapters. By clicking on the floppy disk symbol
-				in the colored module bar, all changes are written into the
-				LDAP directory. The X symbol cancels the editing and returns to
+				documentation chapters. By clicking on <guimenu>Save</guimenu>
+				at the top of the module, all changes are written into the
+				LDAP directory. The <guimenu>Back</guimenu> button cancels the editing and returns to
 				the previous search view.
 			</para>
 
 			<para>
-				In front of every item in the result list is a selection field with which the
+				In front of every item in the result list is a checkbox with which
 				individual objects can be selected. The selection status is also
-				displayed in the lowest screen line, e.g., <guimenu>2 users	of 102 selected</guimenu>
+				displayed in toolbar at the top of the table,
+				e.g., <guimenu>2 users	of 102 selected</guimenu>
 				If more than one object is selected,
-				clicking on the stylized pen in the selection status bar activates the
+				clicking on the <guimenu>Edit</guimenu> button in the toolbar activates the
 				multi edit mode. The same attributes are now shown as when
 				editing an individual object, but the changes are only accepted for
-				the objects where the <guimenu>Overwrite</guimenu> tick is activated.
-				Only objects of the same type can be edited.
+				the objects where the <guimenu>Overwrite</guimenu> checkbox is activated.
+				Only objects of the same type can be edited at the same time.
 			</para>
 		</section>
 
@@ -475,13 +472,14 @@ udm settings/ldapacl remove \
 			<para>
 			  Right-clicking on an LDAP object and selecting <guimenu>Delete</guimenu> allows to
 			  delete the object. The prompt must be confirmed. Some objects use internal references
-			  - e.g., a DNS or DHCP object - can be associated with computer objects. These can also
+			  (e.g., a DNS or DHCP object can be associated with computer objects). These can also
 			  be deleted by selecting the <guimenu>Delete referring objects</guimenu> option.
 			</para>
 
 			<para>
-				Similar to the selection of multiple objects when editing objects, it
-				is also possible to delete multiple objects at once.
+				Similar to editing multiple objects at once,
+				multiple objects can be deleted at once via the <guimenu>Delete</guimenu> button in the
+				toolbar.
 			</para>
 		</section>
 
@@ -493,28 +491,21 @@ udm settings/ldapacl remove \
 			</para>
 
 			<para>
-				Similar to the selection of multiple objects when editing objects, it
-				is also possible to move multiple objects at once.
+				Similar to editing multiple objects at once,
+				multiple objects can be moved at once by clicking the <guimenu>More</guimenu> button in the
+				toolbar and then selecting <guimenu>Move to...</guimenu> from the dropdown.
 			</para>
 		</section>
-	</section>
-
-	<section id="central-management-umc:Favorites">
-	  <title>Favorites</title>
-	  <para>
-		Commonly used UMC modules are shown in the category <guimenu>Favorites</guimenu>. Clicking on a
-		UMC module with the right mouse button opens a context menu. <guimenu>Add to favorites</guimenu>
-		and <guimenu>Remove from favorites</guimenu> can be used to mark a UMC module as a favorite
-		or remove it again.
-	  </para>
 	</section>
 
 	<section id="central-management-umc:notifications">
 	  <title>Display of system notifications</title>
 	  <para>
-		UMC modules can deploy system messages to alert the user to potential errors - e.g., join
-		scripts which have not been run - or necessary actions such as available updates.
-		The messages are shown on the right side and can be dismissed with a mouse click.
+		UMC modules can deploy system notifications to alert the user to potential errors like join
+		scripts which have not been run or necessary actions such as available updates.
+		These notifications are shown in the top right corner of the screen and can be viewed again
+		in the Notifications menu, which can be opened by clicking the bell icon in the top right corner of the
+		screen.
 	  </para>
 	</section>
 </section>
@@ -522,7 +513,7 @@ udm settings/ldapacl remove \
 <section id="central:navigation">
 	<title>LDAP directory browser</title>
 	<para>
-		The <guimenu>LDAP directory</guimenu> UMC module can be used to navigate
+		The UMC module <guimenu>LDAP directory</guimenu> can be used to navigate
 		through the LDAP directory. When doing so, new objects can be created,
 		modified or deleted in the LDAP directory.
 	</para>
@@ -532,18 +523,17 @@ udm settings/ldapacl remove \
 	</figure>
 	<para>
 		The left half of the screen shows the LDAP directory as a tree
-		structure whose elements can be shown and hidden using the plus and
-		minus buttons.
+		structure whose elements can be shown and hidden using the arrow icons.
 	</para>
 	<para>
 		Clicking on an element of the tree structure switches to this LDAP
 		position and displays the objects at this LDAP position in the
-		overview in the left side of the screen. The selection
-		list <guimenu>LDAP object type</guimenu> can be used to limit the display
+		in the right side of the screen. The <guimenu>Type</guimenu> selection
+		list can be used to limit the display
 		to selected attributes.
 	</para>
 	<para>
-		The <guimenu>Add</guimenu> option can be used to add new
+		The <guimenu>Add</guimenu> button can be used to add new
 		objects here too. Similar to the control elements described in
 		<xref linkend="central:user-interface"/>, existing objects can also be edited,
 		deleted or moved here.
@@ -561,8 +551,8 @@ udm settings/ldapacl remove \
 <section id="central:policies">
 	<title>Policies</title>
 	<para>
-		<emphasis>Policies</emphasis> describe administrative settings which can be
-		practically be used on more than one object. They facilitate the
+		<emphasis>Policies</emphasis> describe administrative settings which can
+		be used on more than one object. They facilitate the
 		administration as they can be connected to containers and then apply
 		to all the objects in the container in question and the objects in
 		sub containers. The values are applied according to the inheritance principle. For
@@ -720,9 +710,9 @@ udm settings/ldapacl remove \
 </section>
 
 <section id="central:extendedattrs">
-	<title>Expansion of UMC with extended attributes</title>
+	<title>Expansion of UMC modules with extended attributes</title>
 	<para>
-		The domain management of &ucsUMC; allows the comprehensive
+		The domain management UMC modules allow the comprehensive
 		management of the data in a domain. <emphasis>Extended attributes</emphasis>
 		offer the possibility of integrating new attributes in the domain
 		management which are not covered by the UCS standard scope. Extended
@@ -744,7 +734,7 @@ udm settings/ldapacl remove \
 	<para>
 		Extended attributes can be internationalized. In this case, the name
 		and description should be compiled in English as this is the standard
-		language for &ucsUMC;.
+		language for UMC modules.
 	</para>
 
 	<table>
@@ -781,7 +771,7 @@ udm settings/ldapacl remove \
 		  <row>
 			<entry>Short description</entry>
 			<entry>
-			  Used as title of the input field in &ucsUMC; or as the attribute description in
+			  Used as title of the input field in UMC modules or as the attribute description in
 			  the command line interface.
 			</entry>
 		  </row>
@@ -800,7 +790,7 @@ udm settings/ldapacl remove \
 		  <row>
 			<entry>Long description</entry>
 			<entry>
-			  This long description is shown as a tool tip in the input fields in &ucsUMC;.
+			  This long description is shown as a tool tip in the input fields in UMC modules.
 			</entry>
 		  </row>
 
@@ -861,7 +851,7 @@ udm settings/ldapacl remove \
 	</table>
 
 	<table>
-	  <title>'LDAP' tab</title>
+	  <title>'LDAP mapping' tab</title>
 	  <tgroup cols="2">
 		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -906,7 +896,7 @@ udm settings/ldapacl remove \
 		  <row>
 			<entry>Remove object class if the attribute is removed</entry>
 			<entry>
-			  If the value of a extended attribute in &ucsUMC; is deleted, the attribute is removed
+			  If the value of an extended attribute in a UMC module is deleted, the attribute is removed
 			  from the LDAP object. If no further attributes of the registered object class are used
 			  in this LDAP object, the <emphasis>LDAP object class</emphasis> will also be removed
 			  from the LDAP object if this option is activated.
@@ -930,17 +920,17 @@ udm settings/ldapacl remove \
 		<tbody>
 
 		  <row>
-			<entry>Do not show this extended attribute in the UMC</entry>
+			<entry>Do not show this extended attribute in UMC modules</entry>
 			<entry>
 			  This option can be activated if an attribute should only be administrated internally
 			  instead of by the administrator, e.g., indirectly by scripts. The attribute can then
-			  only be set via the command line interface &ucsUDM; and is not displayed in the
-			  &ucsUMC;.
+			  only be set via the command line interface &ucsUDM; and is not displayed in
+			  UMC modules.
 			</entry>
 		  </row>
 
 		  <row>
-			<entry>Exclude from UMC search</entry>
+			<entry>Exclude from from of UMC module</entry>
 			<entry>
 			  <para>
 				If it should not be possible to search for an extended attribute in the search
@@ -996,7 +986,7 @@ udm settings/ldapacl remove \
 			<entry>Tab name</entry>
 			<entry>
 			  <para>
-				The name of the tab in &ucsUMC; on which the extended attribute should be
+				The name of the tab in UMC modules on which the extended attribute should be
 				displayed. New tabs can also be added here.
 			  </para>
 
@@ -1085,7 +1075,7 @@ udm settings/ldapacl remove \
 			<entry>Syntax class</entry>
 			<entry>
 			  <para>
-				When values are entered, &ucsUMC; performs a syntax check.
+				When values are entered in UMC modules, a syntax check is performed.
 			  </para>
 
 			  <para>
@@ -1147,6 +1137,13 @@ udm settings/ldapacl remove \
 			  If this option is activated, the attribute cannot be modified manually, neither at
 			  creation time, nor later. This is useful for internal state information configured
 			  through a hook function or internally inside a module.
+			</entry>
+		  </row>
+
+		  <row>
+			<entry>Copyable</entry>
+			<entry>
+			  	Values of this extended attribute are automatically filled into the form when copying a object.
 			</entry>
 		  </row>
 		</tbody>
@@ -1266,7 +1263,7 @@ udm settings/ldapacl remove \
 
 
 <section id="delegated-administration">
-  <title>Delegated administration in the UMC</title>
+  <title>Delegated administration for UMC modules</title>
   <para>
 	In the default setting, only the members of the <systemitem class="groupname">Domain Admins</systemitem> group can
 	access all UMC modules. Policies can be used to configure the access to UMC modules for
@@ -1319,7 +1316,7 @@ udm settings/ldapacl remove \
 	</table>
   <caution>
     <para>
-	  For access to UMC, only policies are considered that are assigned to
+	  For access to UMC modules, only policies are considered that are assigned to
 	  groups or directly to user and computer accounts. Nested
 	  group memberships (i.e., groups in groups) are not evaluated.
     </para>
@@ -1331,9 +1328,9 @@ udm settings/ldapacl remove \
 <section id="central:udm">
 	<title>Command line interface of domain management (&ucsUDM;)</title>
 	<para>
-		The &ucsUDM; is the command line interface of the domain management
-		function of &ucsUMC;. It expands the web-based interface of the
-		&ucsUMC; and functions as a powerful tool for the automation of
+		The &ucsUDM; is the command line interface alternative to the web-based
+		interface of the domain management UMC modules.
+		It functions as a powerful tool for the automation of
 		administrative procedures in scripts and for the integration in other
 		programs.
 	</para>
@@ -1343,7 +1340,7 @@ udm settings/ldapacl remove \
 		<command>udm</command>) as the <systemitem class="username">root</systemitem> user on the &ucsPrimaryDN;.
 	</para>
 	<para>
-		&ucsUMC; and &ucsUDM; use the same domain management modules, i.e.,
+		UMC modules and &ucsUDM; use the same domain management modules, i.e.,
 		all functions of the web interface are also available in the command
 		line interface.
 	</para>
@@ -1817,8 +1814,8 @@ univention-directory-manager dns/ptr_record create \
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
 		<para>
-		  Extended attributes can be used to expand the functional scope of &ucsUMC;,
-		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
+		  Extended attributes can be used to expand the functional scope of UMC modules
+		  (see <xref linkend="central:extendedattrs"/>). In the following example, a new attribute is
 		  added, where the car license number of the company car can be saved for each user. The
 		  values are managed in the object class <classname>univentionFreeAttributes</classname> created specially for this purpose:
 		</para>
@@ -1866,8 +1863,9 @@ univention-directory-manager settings/extended_attribute create \
 		lists, for example.
 	</para>
 	<para>
-		The creation of the reports is directly integrated in the web
-		interface of &ucsUMC;. Alternatively, the command line program
+		The creation of the reports is directly integrated in the
+		UMC modules <guimenu>Users</guimenu>, <guimenu>Groups</guimenu> and <guimenu>Computers</guimenu>.
+		Alternatively, the command line program
 		<command>univention-directory-reports</command> can be used.
 	</para>
 	<para>
@@ -1877,17 +1875,15 @@ univention-directory-manager settings/extended_attribute create \
 		which can be used as an import source for other programs. Further
 		templates can be created and registered.
 	</para>
-	<para>
-		Reports can be created via a command line program or via &ucsUMC;.
-	</para>
 
 	<section id="central:reports:create">
-	  <title>Creating reports in &ucsUMC;</title>
+	  <title>Creating reports via &ucsUMC; modules</title>
 	  <para>
-		To create a report, you need to switch to the UMC module for users, groups or hosts. Then
-		all the objects covered by the report must be selected (you can select all objects by
-		clicking the button on the left of <guimenu>Name</guimenu>).
-		Clicking on <guimenu>more &ar; Create report</guimenu> allows to choose between the
+	    To create a report, you need to open the UMC module <guimenu>Users</guimenu>, <guimenu>Groups</guimenu>
+		or <guimenu>Computers</guimenu>. Then
+		all the objects which should be covered by the report must be selected (you can select all objects by
+		clicking the checkbox the left of <guimenu>Name</guimenu>).
+		Clicking on <guimenu>More &ar; Create report</guimenu> allows to choose between the
 		<guimenu>Standard Report</guimenu> in PDF format and the <guimenu>Standard CSV
 		Report</guimenu> in CSV format.
 	  </para>
@@ -1898,7 +1894,7 @@ univention-directory-manager settings/extended_attribute create \
 	  </figure>
 
 	  <para>
-		The reports created via &ucsUMC; are stored for 12 hours and then deleted by a cron job. The
+		The reports created via a UMC module are stored for 12 hours and then deleted by a cron job. The
 		settings for when the cron job should run and how long the reports should be stored for can
 		be defined via two &ucsUCR; variables:
 	  </para>

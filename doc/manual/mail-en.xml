@@ -57,8 +57,8 @@
 
     <para>
 	  The management of the user data of the mail server (e.g., e-mail
-	  addresses or mailing list) is performed via &ucsUMC; and is documented in
-	  <xref linkend="mail::management::general"/> User data are stored in LDAP.
+	  addresses or mailing list) is performed via UMC modules and is documented in
+	  <xref linkend="mail::management::general"/>. User data are stored in LDAP.
 	  The authentication is performed using a user's primary e-mail address,
 	  i.e., it must be entered as the user name in mail clients.
 	  As soon as a primary e-mail address is assigned to a user in the LDAP
@@ -150,7 +150,7 @@
 		by an Internet provider.
 	  </para>
 	  <para>
-		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
+		Mail domains are managed in the UMC module <guimenu>Mail</guimenu>
 		with the <guimenu>Mail domain</guimenu> object type.
 	  </para>
 	</section>
@@ -168,7 +168,7 @@
 			  address can be configured for every user. It also defines the user's IMAP mailbox.
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
 			  the IMAP inbox is automatically created by a &ucsUDL; module.
-			  The domain part of the e-mail address must be registered in &ucsUMC; (see
+			  The domain part of the e-mail address must be registered in the UMC module <guimenu>Mail</guimenu> (see
 			  <xref linkend="mail::management::domains"/>).
 			</para>
 		  </listitem>
@@ -179,7 +179,7 @@
 			  alternative e-mail addresses do not have to be unique: if two users
 			  have the same e-mail address, they both receive all the e-mails which
 			  are sent to this address. The domain part of the
-			  e-mail address must be registered in &ucsUMC; (see
+			  e-mail address must be registered in the UMC module <guimenu>Mail</guimenu> (see
 			  <xref linkend="mail::management::domains"/>). To receive e-mails to alternative e-mail addresses,
 				a user must have a primary e-mail address.
 			</para>
@@ -191,7 +191,7 @@
 		      e-mails received through the primary or alternative e-mail addresses are
 		      forwarded to them. A copy of the messages can optionally be stored in the
 		      user's mailbox. Forward e-mail addresses do not have to be unique and their
-		      domain part does not have to be registered in &ucsUMC;.
+		      domain part does not have to be registered via a UMC module.
 		    </simpara>
 		  </listitem>
 		</itemizedlist>
@@ -207,7 +207,7 @@
 		  </note>
 
 	  <para>
-		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>.
+		E-mail addresses are managed in the UMC module <guimenu>Users</guimenu>.
 		The <guimenu>primary e-mail address</guimenu> is entered in
 		the <guimenu>General</guimenu> tab in the <guimenu>User account</guimenu>
 		submenu.
@@ -246,7 +246,7 @@ doveadm auth cache flush
 		</figure>
 
 	  <para>
-		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
+		Mail domains are managed in the UMC module <guimenu>Mail</guimenu>
 		with the <guimenu>Mailing list</guimenu> object type.
 		A name of your choice can be entered for the mailing list
 		under <guimenu>Name</guimenu>; the entry of a <guimenu>Description</guimenu>
@@ -281,7 +281,7 @@ doveadm auth cache flush
 		delivered to the primary e-mail address of each of the group members.
 	  </para>
 	  <para>
-		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>
+		Mail groups are managed in the UMC module <guimenu>Groups</guimenu>
 		(see <xref linkend="groups"/>).
 	  </para>
 	  <para>
@@ -316,13 +316,13 @@ doveadm auth cache flush
 	  <para>
 		Alternatively, individual IMAP folders can be shared for users or user
 		groups. This type of folder is described as a shared IMAP folder.
-		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
+		Shared IMAP folders are managed in the UMC module <guimenu>Mail</guimenu>
 		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
 		<para>
 			Shared folders cannot be renamed, therefore the &ucsUCRV;
 			<envar>mail/dovecot/mailbox/rename</envar> is not taken into account. When a shared
-			folder is deleted in the UMC module <emphasis>Mail</emphasis>, it is
+			folder is deleted in the UMC module <guimenu>Mail</guimenu>, it is
 			only deleted from the hard disk, if
 			<envar>mail/dovecot/mailbox/delete</envar> is set to <literal>yes</literal>. The default value is <literal>no</literal>.
 		</para>
@@ -391,7 +391,7 @@ doveadm auth cache flush
 				  possible to write in the folder from e-mail clients.
 				</para>
 				<para>
-				  The domain part of the e-mail address must be registered in &ucsUMC; (see
+				  The domain part of the e-mail address must be registered in the UMC module <guimenu>Mail</guimenu> (see
 				  <xref linkend="mail::management::domains"/>).
 				</para>
 			  </entry>
@@ -419,7 +419,7 @@ doveadm auth cache flush
 				<para>
 				  Access permissions based on users or groups can be entered
 				  here. Users are entered with their user name; the groups saved
-				  in &ucsUMC; can be used as groups.
+				  in the UMC module <guimenu>Groups</guimenu> can be used as groups.
 				</para>
 				<para>
 				  The access permissions have the following consequences for individual
@@ -497,7 +497,7 @@ doveadm auth cache flush
 			The limit is specified in megabytes in the <guimenu>Mail quota</guimenu> field
 			under <guimenu>Advanced settings &ar; Mail</guimenu>. The default value
 			is <literal>0</literal> and means that no limit is set.
-			The multi edit mode of &ucsUMC; can be used to assign a quota to multiple
+			The multi edit mode of UMC modules can be used to assign a quota to multiple
 			users at one time, see <xref linkend="central:user-interface:edit"/>.
 		</para>
 		<para>

@@ -349,7 +349,7 @@ the size of the respective hard drive.
 	  Specification of an organization name is optional and it is used in the second step to generate a domain name and the LDAP base automatically.
 	</para>
 	<para>
-	  If a valid e-mail address is specified, this is used to activate a personalized license, which is required for the use of the Univention App Center. The license is generated automatically and sent to the specified e-mail address immediately. The license can then be imported via the &ucsUMC; license dialog.
+	  	If a valid e-mail address is specified, this is used to activate a personalized license, which is required for the use of the Univention App Center. The license is generated automatically and sent to the specified e-mail address immediately. The license can then be imported via the UMC module <guimenu>Welcome!</guimenu> (<xref linkend="central:license"/>).
 	</para>
 	<para>
 	  The name of the UCS system to be configured and the name of the DNS domain are determined from the fully qualified domain name (host name including domain name) entered here.
@@ -469,7 +469,10 @@ see <xref linkend="installation-overview"/>.
 	The UCS system is then prepared for the first full booting procedure and restarted.
   </para>
   <para>
-	The system will then boot from the hard drive. Following the boot procedure, the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
+	  The system will then boot from the hard drive. Following the boot procedure, the
+	  <systemitem class="username">root</systemitem> and <systemitem class="username">Administrator</systemitem>
+	  users can log on to the UCS portal page (see <xref linkend="central:general"/>),
+	  which can be reached under the IP address set during the installation or the host name.
 </para>
   <para>
 	If the computer was installed as the first system in the UCS domain (&ucsPrimaryDN;), the license can now be imported (see <xref linkend="central:license"/>).
@@ -512,7 +515,7 @@ see <xref linkend="installation-overview"/>.
 	<para>
 		Univention provides an Amazon Machine Image (AMI) for the Amazon EC2
 		cloud for UCS. This generic image for all UCS system roles is used to derive an individual instance
-		which can be configured via the &ucsUMC; (domain name, software
+		which can be configured via &ucsUMC; modules (domain name, software
 		selection, etc.).
 	</para>
 	<para>

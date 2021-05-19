@@ -16,13 +16,13 @@
 	<para>
 		&ucsUCS; includes a print system, which can also be used to realize
 		complex environments. Printers and printer groups can be created and
-		configured conveniently in &ucsUMC;.
+		configured conveniently in the UMC module <guimenu>Printers</guimenu>.
 	</para>
 	<para>
 		The print services are based on <emphasis>CUPS (Common Unix Printing
 		System)</emphasis>. <emphasis>CUPS</emphasis> manages print jobs in print queues and
 		converts print jobs into the native formats of the connected printers.
-		The print queues are also administrated in &ucsUMC;, see
+		The print queues are administrated via the UMC module <guimenu>Print jobs</guimenu>, see
 		<xref linkend="umc:modules:printer"/>.
 	</para>
 	<para>
@@ -56,7 +56,7 @@
 	</para>
 	<para>
 		Network printers with their own IP address should be registered in the
-		computer administration of &ucsUMC; as an IP client (see
+		UMC module <guimenu>Computers</guimenu> as an IP client (see
 		<xref linkend="systemrollen"/>).
 	</para>
 	<para>
@@ -104,7 +104,7 @@
 <section id="print::shares">
 <title>Creating a printer share</title>
 	<para>
-		Print shares are administrated in the UMC module <emphasis>Printers</emphasis>
+		Print shares are administrated in the UMC module <guimenu>Printers</guimenu>
 		with the <guimenu>Printer share</guimenu> object type
 		(see <xref linkend="central:user-interface"/>).
 	</para>
@@ -354,7 +354,7 @@
 		</para>
 	</caution>
 	<para>
-		Printer groups are administrated in the UMC module <emphasis>Printers</emphasis>
+		Printer groups are administrated in the UMC module <guimenu>Printers</guimenu>
 		with the <guimenu>Printer share</guimenu> object type
 		(see <xref linkend="central:user-interface"/>).
 	</para>
@@ -427,7 +427,7 @@
 <section id="umc:modules:printer">
 <title>Administration of print jobs and print queues</title>
 	<para>
-		The UMC module <guimenu>Printer Administration</guimenu>
+		The UMC module <guimenu>Print jobs</guimenu>
 		allows you to check the status of the connected printers, restart
 		paused printers and remove print jobs from the queues on printer
 		servers.
@@ -464,7 +464,7 @@
 	</para>
 	<para>
 		The <guimenu>cups-pdf:/</guimenu> protocol must be selected when creating a
-		PDF printer in &ucsUMC; (see <xref linkend="print::shares"/>); the
+		PDF printer in the UMC module <guimenu>Printers</guimenu> (see <xref linkend="print::shares"/>); the
 		destination field remains empty.
 	</para>
 
@@ -499,7 +499,7 @@
   <title>Mounting of print shares in Windows clients</title>
 
   <para>
-	The printer shares set up in &ucsUMC; can be added as network printers on Windows
+		The printer shares set up in the UMC module <guimenu>Printers</guimenu> can be added as network printers on Windows
 	systems. This is done via the Control Panel under <guimenu>Add a device &ar; Add a
 	printer</guimenu>. The printer drivers need to be set up during the first access. If the
 	drivers are stored on the server side (see below), the drivers are assigned automatically.
@@ -527,7 +527,8 @@
   <para>
 	Windows supports a mechanism for providing the printer drivers on the print server
 	(<emphasis>Point 'n' Print</emphasis>). The following guide describes the provision of the
-	printer drivers in Windows 7 for a print share configured in the UMC. Firstly, the printer
+	printer drivers in Windows 7 for a print share configured in the UMC module<guimenu>Printers</guimenu>.
+	Firstly, the printer
 	drivers must be stored on the print server. There are a number of pitfalls in the Windows user
 	wizard, so it is important to follow the individual steps precisely.
   </para>
@@ -628,7 +629,7 @@
 					In UCS releases earlier than UCS 4.0-1, it is possible that the Windows system has changed the name of the printer share to the name of the printer driver.
 					If that were accepted, the printer would no longer be associated with the share!
 					If this is the case, the name of the printer on the <guimenu>General</guimenu> tab (the first input field next to the stylized printer symbol) needs to be reset to the name of the print share.
-					This can be done using the <guimenu>Samba name</guimenu> field configured in the print management of the UMC (or if this was left blank, use the value from <guimenu>Name</guimenu>).
+					This can be done using the <guimenu>Windows name</guimenu> field configured in the UMC module <guimenu>Printers</guimenu> (or if this was left blank, use the value from <guimenu>Name</guimenu>).
 					If the name has had to be reset in this fashion, Windows then asks if you are sure that you want to change the name when <guimenu>OK</guimenu> is clicked.
 					Confirm the prompt.
 			</simpara></listitem>
@@ -667,7 +668,7 @@
 	</para>
 	<para>
 		In addition to the PPD files already included in the standard scope,
-		additional ones can be added via &ucsUMC;. The PPDs are generally
+		additional ones can be added via UMC modules. The PPDs are generally
 		provided by the printer manufacturer and need to be copied into
 		the <filename class="directory">/usr/share/ppd/</filename> directory on the print servers.
 	</para>

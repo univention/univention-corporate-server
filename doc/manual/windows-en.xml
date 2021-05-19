@@ -340,7 +340,7 @@ instanceType: 4
 
 		  <para>
 			In contrast to UCS policies (see <xref linkend="central:policies"/>), group policies are
-			not configured in &ucsUMC;, but instead are configured in a separate editor, the
+			not configured via UMC modules, but instead are configured in a separate editor, the
 			<emphasis>Group Policy Management</emphasis> editor, which is a component of the
 			<emphasis>Remote Server Administration Tools (RSAT)</emphasis>. The installation is described
 			in <xref linkend="gpo:install"/>.
@@ -689,13 +689,13 @@ END CATEGORY
 		<title>Configuration of the file server for the home directory</title>
 
 		<para>
-		  The home directory can be defined user-specifically in &ucsUMC;, see <xref
+		  	The home directory can be defined user-specifically in the UMC module <guimenu>Users</guimenu>, see <xref
 		  linkend="users::management"/>. This is performed with the setting <guimenu>Windows home
 		  path</guimenu>, e.g., <filename class="directory">\\ucs-file-server\smith</filename>.
 		</para>
 
 		<para>
-		  The multi edit mode of &ucsUMC; can be used to assign the home directory to multiple
+		  The multi edit mode of UMC modules can be used to assign the home directory to multiple
 		  users at one time, see <xref linkend="central:user-interface:edit"/>.
 		</para>
 	  </section>
@@ -726,14 +726,14 @@ END CATEGORY
 
 		<para>
 		  Alternatively the profile path can be defined for individual user accounts.
-		  This is possible in the &ucsUMC; in the section <guimenu>Account</guimenu>
-		  of the user account by filling the field <guimenuitem>Windows profile directory</guimenuitem>.
+		  This is possible in the UMC module <guimenu>Users</guimenu> under the <guimenu>Account</guimenu> tab
+		  by filling the field <guimenuitem>Windows profile directory</guimenuitem>.
 		  The corresponding UDM property is called <property>profilepath</property>.
 		  In the OpenLDAP backend this is stored in the LDAP attribute <property>sambaProfilePath</property>.
 		</para>
 
 		<para>
-		  If the profile path is changed in &ucsUMC;, then a new profile directory will be
+		  If the profile path is changed, then a new profile directory will be
 		  created. The data in the old profile directory will be kept. These data can be manually
 		  copied or moved to the new profile directory. Finally, the old profile directory can be
 		  deleted.
@@ -865,7 +865,7 @@ END CATEGORY
   </note>
 
   <para>
-    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration, e.g., for checking whether the service is running and to restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
+      Following this set-up, the UMC module <guimenu>Active Directory Connection</guimenu> can be used for further administration, e.g., for checking whether the service is running and to restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
   </para>
 
   <para>
@@ -943,11 +943,11 @@ ucr set connector/ad/mapping/user/password/kinit=false
 <section id="ad-connector:basicsetup">
   <title>Basic configuration of the UCS AD Connector</title>
   <para>
-	The UCS AD Connector is configured using the UMC wizard <guimenu>Active Directory Connection</guimenu>.
+	The UCS AD Connector is configured using a wizard in the UMC module <guimenu>Active Directory Connection</guimenu>.
   </para>
 
   <para>
-	The wizard can be installed from the Univention App Center with the application
+	The module can be installed from the Univention App Center with the application
 	<emphasis>Active Directory Connection</emphasis>. Alternatively, the software package
 	<package>univention-ad-connector</package> can be installed. Additional information can be found in
 	<xref linkend="computers::softwaremanagement::installsoftware"/>.
@@ -970,19 +970,19 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </warning>
 
   <para>
-	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded into &ucsUMC;.
+	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded to the wizard.
   </para>
 
   <para>
 	Internet Explorer 6 - which is preinstalled on Windows 2003 systems - is not supported by
-	&ucsUMC;. The browser must be updated before continuing.
+	&ucsWeb;. The browser must be updated before continuing.
   </para>
 
   <para>
 	In the first dialog window of the set-up wizard, the point <emphasis>Synchronization of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
 	</para>
 
-	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector in UMC</title>
+	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector via UMC module</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations50/adconnector_1-en.png"/>
 	</figure>
 
@@ -991,8 +991,8 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	Here you can specify the IP address of a fully qualified DNS name.
 	If the UCS system is not be able to resolve the computer name of the AD
 	system, the AD DNS server can either be configured as the DNS forwarder
-	under UCS or a DNS host record can be created for the AD system in the UMC DNS
-	management (see <xref linkend="networks::dns::hostrecord"/>).
+	under UCS or a DNS host record can be created for the AD system in the UMC module <guimenu>DNS</guimenu>
+	(see <xref linkend="networks::dns::hostrecord"/>).
   </para>
 
   <para>
@@ -1046,7 +1046,7 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	The subsequent dialogue window needs to be closed by clicking on <mousebutton>Finish</mousebutton>.
   </para>
   <para>
-    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration of the Active Directory Connection, e.g., for checking whether the service is running and restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
+    Following this set-up, the UMC module <guimenu>Active Directory Connection</guimenu> can be used for further administration of the Active Directory Connection, e.g., for checking whether the service is running and restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
   </para>
 
   <note>
@@ -1194,7 +1194,7 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 <section id="windows:Copying_the_Active_Directory_certificate_to_the_UCS_system"><title>Copying the Active Directory certificate to the UCS system</title>
 <para>
 The SSL AD certificate should now be imported into the UCS
-system using the UMC wizard.
+system using the UMC module.
 </para>
 <para>
 This is done by clicking on <mousebutton>Upload</mousebutton> in the sub menu
@@ -1656,8 +1656,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  The takeover is performed with the <guimenu>Active Directory Takeover</guimenu> &ucsUMC;
-	  module. The IP address of the AD system must be specified under <guimenu>Name or address of
+	  The takeover is performed with the UMC module <guimenu>Active Directory Takeover</guimenu>.
+	  The IP address of the AD system must be specified under <guimenu>Name or address of
 	  the Domain Controller</guimenu>. An account from the AD domain must be specified under
 	  <guimenu>Active Directory Administrator account</guimenu> which is a member of the AD group
 	  <systemitem class="groupname">Domain Admins</systemitem> (e.g., the <systemitem class="username">Administrator</systemitem>) and the
@@ -1817,7 +1817,7 @@ samba-tool dbcheck --fix --yes
 		<listitem><simpara>
 		  In case there has been more than one Active Directory domain controller in the original
 		  Active Directory domain, all the host accounts of the other domain controllers must be
-		  removed in the computers management module of the Univention Management Console.
+		  removed in the computers management UMC modules.
 		  In addition their accounts must be removed from the Samba SAM database. This may be done
 		  by logging on to a migrated Windows client as member of the group
 		  <systemitem class="groupname">Domain Admins</systemitem> and running the tool
