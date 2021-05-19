@@ -93,6 +93,10 @@ case "$1" in
 		sed -i 's|PortalReloaderUDM|DemoPortalReloader|' /usr/share/univention-portal/portals.json
 		univention-portal update --reason demo
 		service univention-portal-server restart
+
+		ucr set umc/cookie-banner/show=true \
+			umc/cookie-banner/text/de='Wir verwenden auf dieser Webseite Cookies und andere Technologien, um sicherzustellen, dass die Seite zuverlässig, sicher und für Besucher optimal läuft. Damit das funktioniert, messen wir, wie häufig unsere Seite besucht und wie sie genutzt wird. Mit dem Button "Cookies akzeptieren" stimmen Sie der Verwendung zu. Weitere Informationen erhalten Sie in unserer Datenschutzerklärung https://www.univention.de/datenschutzerklaerung/.' \
+			umc/cookie-banner/text/en='We use cookies and other technologies on this website to ensure that the site works reliably, securely, and optimally for visitors. For this to work, we measure how often our website is visited and how it is used. By clicking the "Accept cookies" button, you consent to their use. Further information can be found in our Data Privacy Policy https://www.univention.com/privacy-statement/.'
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
