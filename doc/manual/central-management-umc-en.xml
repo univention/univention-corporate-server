@@ -124,10 +124,17 @@
 		To log out, the entry <guimenu>Logout</guimenu> in the user menu can be used.
 	</para>
 	<para>
-		By default, a <foreignphrase>single sign-on</foreignphrase> (SSO) is carried out via SAML (cf. <xref linkend="domain:saml"/>) provided that <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
+		By default a login does not use <foreignphrase>single sign-on</foreignphrase>.
+		The login can be changed to use <foreignphrase>single sign-on</foreignphrase> (SSO) via SAML (cf. <xref linkend="domain:saml"/>).
+		To configure this, <uri>ucs-sso.<replaceable>domainname</replaceable></uri> must be reachable and the &ucsUCRV; <envar>portal/auth-mode=saml</envar> has to be set.
+		For the change to take effect the portal server needs to be restarted:
+		<command>systemctl restart univention-portal-server.servic</command>.
+		The login using the user menu has now be changed.
+		Portal tiles have to be adapted manually.
+		The default portal has a SSO login tile preconfigured which can be activated using the portal edit mode.
+	</para>
+	<para>
 		After successful login, a session is valid for all UCS systems of the domain as well as for third party Apps if these support web based SSO.
-		In case <uri>ucs-sso.<replaceable>domainname</replaceable></uri> cannot be reached, the login is carried out at the local UCS system.
-		The session is then only valid for the UCS web pages on the same system.
 		It is possible to enforce a login on the local system by clicking on the link <guimenu>Login without Single Sign On</guimenu>.
 	</para>
 	<para>
