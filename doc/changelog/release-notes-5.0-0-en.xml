@@ -51,39 +51,61 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS 5 is based on Debian 10 Buster.
-					Only architecture amd64 is supported.
-					Architecture i386 is no longer supported.
+					This new major &ucsUCS; release is based on Debian 10 Buster. A lot of packages have been updated from upstream.
+					This includes for example the Linux Kernel (4.19), PostgreSQL (11), Python 3 (3.7) and Samba (4.13.7).
 			</para></listitem>
 			<listitem><para>
-					In the area of cryptography this raises the minimal TLS protocol version to 1.2.
-					For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal>
-					in <filename>/etc/ssl/openssl.cnf</filename>. As a consequence, TLS connections to external systems
-					should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after
-					the update.
-					This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than
-					<literal>2012R2</literal>, if they are configured to use an encrypted connection.
-					Additionally the OpenSSL default <literal>CipherString</literal> configuration is <literal>DEFAULT@SECLEVEL=2</literal>
-					in UCS 5.0.
-					This additionally restricts the available ciphers for communication, which rules out <literal>SHA1</literal> in particular.
-					E.g. Windows Server 2012 supports less ciphers that Windows Server 2012R2 by default.
+					The portal has been updated to become the central hub for &ucsUCS; users.
+					Apps and web pages can be opened as inline frames (<literal>iframe</literal>) within the portal.
+					Enabling users to quickly open and switch apps, as well as giving organizations the ability to strengthen their identity by having their apps on a central page.
 			</para></listitem>
 			<listitem><para>
-					Many components of UCS have already been converted to run with Python 3.7.
+					With Python as the language of choice for many &ucsUCS; components, most have been converted to run with Python 3.7.
 					Python 2.7 is still supported with UCS 5.0, but will be removed with UCS 5.1.
 			</para></listitem>
 			<listitem><para>
-					Several components haven been removed: &ucsUVMM;, Nagios, Desktop, …
+					The &ucsUMC; now uses a dark colored theme.
+					A light colored theme will be added as an update at a later date.
 			</para></listitem>
 			<listitem><para>
-					System roles have been renamed: Master → Primary, Backup → …, Slave → ...
+					The system roles have been renamed.
+					"&ucsMaster;" is renamed to "&ucsPrimaryDN;", "&ucsBackup;" to "&ucsBackupDN;", "&ucsSlave;" to "&ucsReplicaDN;" and "&ucsMember;" to "&ucsManagedNode;".
+					This is an ongoing process, in this release the documentation and <literal>UI</literal> texts have been adjusted.
 			</para></listitem>
 			<listitem><para>
+					Software installation is now done exclusively via the App Center.
+					The Software Selection during the initial Configuration of a &ucsUCS; node has been removed.
 			</para></listitem>
 			<listitem><para>
+					Multiple apps can now be installed in a single step which simplifies app management.
+					Dependencies between apps will now be be automatically resolved by installing multiple apps if necessary.
+					The functionality to install multiple apps at once through the App Center replaces the Software Selection during the setup process.
 			</para></listitem>
 			<listitem><para>
-					FIXME
+					If a &ucsUCS; is ready to upgrade from 4.4 to 5.0 can now be checked by using this <ulink url="https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0">script</ulink>.
+					<package>univention-upgrade</package> will not proceed with the upgrade if these checks are not successful.
+					See also <xref linkend="relnotes:prepare"/> for a more in depth manual about the preparation for the upgrade.
+			</para></listitem>
+			<listitem><para>
+					The &ucsUCS; package sources have been reduced to a fixed number of two, one for the release and one for errata updates.
+					This speeds up updating the <package>apt</package> package meta data cache especially for upcoming UCS 5 releases.
+					Due to some necessary changes on the Univention repository server, a local UCS 4.x repository will not be able to serve UCS 5.x packages, please check <xref linkend="relnotes:localrepo"/>.
+			</para></listitem>
+			<listitem><para>
+					&ucsUCRV;s can now have a default value which is returned if the variable is unset.
+					Please note that not all packages have been updated to use this feature and still define default values in templates.
+			</para></listitem>
+			<listitem><para>
+					The Linux Kernel, including the signed version for UEFI secure boot, shipped with &ucsUCS; 5 is now identical with the Kernel in Debian 10 Buster.
+			</para></listitem>
+			<listitem><para>
+					A new welcome module has been added to the &ucsUMC; to guide administrators through the first steps of using &ucsUCS; like requesting a license or installing apps.
+			</para></listitem>
+			<listitem><para>
+					For easier and a more uniform service management the services <systemitem class="service">&ucsUDL;</systemitem>, <systemitem class="service">&ucsUDN;</systemitem> and <systemitem class="service">univention-dhcp</systemitem> have been converted from <package>runit</package> services to native <package>systemd</package> services.
+			</para></listitem>
+			<listitem><para>
+					A thorough list of changes and fixes included in this release can be found at the end of this document <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -252,7 +274,22 @@
 				</varlistentry>
 			</variablelist>
 		</section>
-
+		<section id="relnotes:tls">
+			<title>Increased minimal TLS protocol version</title>
+			<para>
+				In the area of cryptography this raises the minimal TLS protocol version to 1.2.
+				For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal>
+				in <filename>/etc/ssl/openssl.cnf</filename>. As a consequence, TLS connections to external systems
+				should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after
+				the update.
+				This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than
+				<literal>2012R2</literal>, if they are configured to use an encrypted connection.
+				Additionally the OpenSSL default <literal>CipherString</literal> configuration is <literal>DEFAULT@SECLEVEL=2</literal>
+				in UCS 5.0.
+				This additionally restricts the available ciphers for communication, which rules out <literal>SHA1</literal> in particular.
+				E.g. Windows Server 2012 supports less ciphers that Windows Server 2012R2 by default.
+			</para>
+		</section>
 		<section id="relnotes:ubuntuclient">
 			<!-- Bug 53025 -->
 			<title>Notes about the Univention Domain Join Assistant for Ubuntu clients</title>
