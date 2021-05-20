@@ -1106,6 +1106,9 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	  Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
 	  in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
 	  Es wird empfohlen diesem Rat zu folgen.
+	  UCS 5.0 erfordert TLS 1.2, welches für Windows Server Releases vor 2012R2 manuell auf dem Windows Server aktiviert werden muss.
+	  UCS 5.0 unterstüzt das Hashingverfahren SHA1 nicht mehr. Falls für die Erstellung des das AD-Root-Zertifikat oder
+	  das Zertifikat des Windows Servers dieses Verfahren verwendet wurde, dann sollten diese ersetzt werden.
 	  Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf <mousebutton>Weiter</mousebutton> fortgesetzt werden.
 	  Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt,
 	  ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.

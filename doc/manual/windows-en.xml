@@ -1022,6 +1022,9 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install
 	a certification authority on the AD domain controller.
 	It is recommended to follow this advice.
+	UCS 5.0 requires TLS 1.2, which needs to be activated manually for Windows Server Releases prior to 2012R2.
+	UCS 5.0 doesn't support the hash algorithm SHA1 any longer. If this has been used in the creation of the AD root certificate or
+	for the certificate of the Windows server then they should be replaced.
 	Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again.
 	If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears
 	asking whether to set up the synchronization without SSL encryption.
