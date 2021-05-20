@@ -1102,11 +1102,16 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Nach Klick auf <mousebutton>Weiter</mousebutton> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller. Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
+	  Nach Klick auf <mousebutton>Weiter</mousebutton> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller.
+	  Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
 	  in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
-	  Es wird empfohlen diesem Rat zu folgen. Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf
-	  <mousebutton>Weiter</mousebutton> fortgesetzt werden. Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt, ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
-	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <mousebutton>Fortfahren ohne Verschlüsselung</mousebutton> fortgesetzt werden. In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
+	  Es wird empfohlen diesem Rat zu folgen.
+	  Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf <mousebutton>Weiter</mousebutton> fortgesetzt werden.
+	  Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt,
+	  ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
+	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <mousebutton>Fortfahren ohne Verschlüsselung</mousebutton> fortgesetzt werden.
+	  In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
+	  Falls
 	</para>
 
 	<para>

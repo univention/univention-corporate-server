@@ -1018,8 +1018,15 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	Clicking on <mousebutton>Next</mousebutton> prompts the set-up wizard to check the connection to the AD domain controller. If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install a certification authority on the AD domain controller. It is recommended to follow this advice. Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again. If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears asking whether to set up the synchronization without SSL encryption.
-	If this is desired, the set-up can be continued by clicking <mousebutton>Continue without encryption</mousebutton>. In this case, the synchronization of the directory data is performed unencrypted.
+	Clicking on <mousebutton>Next</mousebutton> prompts the set-up wizard to check the connection to the AD domain controller.
+	If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install
+	a certification authority on the AD domain controller.
+	It is recommended to follow this advice.
+	Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again.
+	If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears
+	asking whether to set up the synchronization without SSL encryption.
+	If this is desired, the set-up can be continued by clicking <mousebutton>Continue without encryption</mousebutton>.
+	In this case, the synchronization of the directory data is performed unencrypted.
   </para>
 
   <para>
