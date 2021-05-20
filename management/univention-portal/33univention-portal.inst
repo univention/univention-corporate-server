@@ -240,7 +240,6 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain-admin \
 		--append entries="cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
-		--append entries="cn=univentionblog,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 

@@ -1,3 +1,9 @@
+univention-portal (4.0.5-53) unstable; urgency=medium
+
+  * Bug #53293: Remove Blog tile
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 May 2021 11:43:18 +0200
+
 univention-portal (4.0.5-52) unstable; urgency=medium
 
   * Bug #53289: Remove empty value from portal syntax
