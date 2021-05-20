@@ -1285,7 +1285,7 @@ print(configRegistry.get('my/variable'))
 			This way the statement is both compatible with Python 2 and Python 3.
 			But it breaks if multiple arguments are supplied or extra arguments from the Python 3 syntax are used:
 			<programlisting language="python"><![CDATA[
-priint("one", "two")
+print("one", "two")
 # Python 2: ('one', 'two')
 # Python 3: one two
 print(configRegistry.get('my/variable'), file=sys.stderr)

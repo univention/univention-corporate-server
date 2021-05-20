@@ -459,7 +459,7 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 					This can be done by using <command>ucs_registerLDAPExtension</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
-					As an alternative the file can be put into the directory <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
+					As an alternative the file can be put into the directories <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename> and <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 				</para>
 				<para>
 					The following example is comparable to the default example in file <filename>/usr/lib/python3/dist-packages/univention/admin/syntax.d/example.py</filename>:
