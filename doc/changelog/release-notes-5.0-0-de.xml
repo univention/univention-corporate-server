@@ -298,6 +298,30 @@
 			</para>
 		</section>
 
+		<section id="relnotes:samba">
+			<title>Änderungen in Samba</title>
+				<para>
+					Samba wurde auf die Version 4.13.7 aktualisiert und enthält auch den Patch für die Sicherheitslücke CVE-2021-20254 aus 4.13.8.
+					Weitere Details dazu und zu den folgenden Punkten sind im Changelog weiter unten aufgeführt.
+				</para>
+				<para>
+					Während des Updates auf UCS 5 konvertiert Samba die SAM-Datenbank auf ein neues Index-Format.
+					Da diese Operation transaktionsbasiert erfolgt, verdoppelt sich der Speicherbedarf der
+					<literal>sam.ldb</literal> Dateien temporär.
+					Standardmäßig verwendet Samba das TDB Datenbankformat als Backend, welches auf 4GB beschränkt ist.
+					Vor dem UCS Update wird geprüft, ob eine der fünf <wordasword>TDB-Dateien</wordasword> schon nahe oder über der halben maximalen Kapazität ist.
+					Falls das der Fall ist, wird das Update blockiert, um zu vermeiden,
+					dass nach dem Update die Services für Windows nicht funktionsfähig sind
+					und ein Link zu einem Migrationsleitfaden wird angezeigt.
+				</para>
+				<para>
+					Unterstützung für die SMB1 Protokollversion wurde deaktiviert, weil sie heutigen Sicherheitsanforderungen nicht genügt.
+				</para>
+				<para>
+					Unterstützung für <literal>DES</literal> Verschlüsselung von Kerberos-Schlüsseln wurde entfernt.
+				</para>
+		</section>
+
 		<section id="relnotes:ubuntuclient">
 			<!-- Bug 53025 -->
 			<title>Hinweis zum <foreignphrase>Univention Domain Join Assistant</foreignphrase> für Ubuntu-Clients</title>

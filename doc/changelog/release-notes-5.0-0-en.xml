@@ -296,6 +296,28 @@
 			</para>
 		</section>
 
+		<section id="relnotes:samba">
+			<title>Samba changes</title>
+				<para>
+					Samba has been updated to version 4.13.7 and also includes the patch for the security issue CVE-2021-20254 from 4.13.8.
+					More details about this and the following points can be found in the changelog below.
+				</para>
+				<para>
+					During updates to UCS 5 Samba will convert the database to a new index format. Since this is a transaction based operation
+					the required storage capacity of the <literal>sam.ldb</literal> files will double temporarily for this operation.
+					By default Samba uses the TDB key value database format as backing store, which is limited to a size of 4GB.
+					Before the UCS update, a check is performed, if any of the five database backing files is already close to half of that size.
+					In that case, the update is blocked to avoid non-functional Services for Windows after the update,
+					and a link to a migration guide will be shown.
+				</para>
+				<para>
+					Support for the SMB1 protocol variant is disabled by default as it is insecure for todays standards.
+				</para>
+				<para>
+					Support for <literal>DES</literal> Kerberos encryption types has been removed.
+				</para>
+		</section>
+
 		<section id="relnotes:ubuntuclient">
 			<!-- Bug 53025 -->
 			<title>Notes about the Univention Domain Join Assistant for Ubuntu clients</title>
