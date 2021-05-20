@@ -1,3 +1,9 @@
+univention-updater (15.0.3-63) unstable; urgency=medium
+
+  * Bug #51655: Improve auxiliary objectClass reporting
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 May 2021 16:28:31 +0200
+
 univention-updater (15.0.3-62) unstable; urgency=low
 
   * Bug #52475: Revert to public repository server for offical release.

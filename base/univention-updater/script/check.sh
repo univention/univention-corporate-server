@@ -348,9 +348,9 @@ update_check_legacy_objects () {
 	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
 	IFS=$'\n' read -d '' -r -a found_structural <<<"$(grep '^dn:' "$tmp")"
 
-	local filter="(|${legacy_ocs_auxiliary[*]})"
-	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
-	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(grep '^dn:' "$tmp")"
+	local filter="${legacy_ocs_auxiliary[*]}"
+	univention-ldapsearch -LLL -E mv="($filter)" "(|$filter)" objectClass >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(sed '/^./{H;d};x;s/\n/\t/g' "$tmp")"
 
 	# shellcheck disable=SC2128
 	[ -z "${found_structural:-}" ] && [ -z "${found_auxiliary:-}" ] && return 0
@@ -372,7 +372,7 @@ update_check_legacy_objects () {
 		local obj
 		for obj in "${found_auxiliary[@]}"
 		do
-			printf '\t\t%s\n' "${obj}"
+			printf '\t%s\n' "${obj}"
 		done
 		echo "	They must be cleaned up before the update can be done."
 		echo
