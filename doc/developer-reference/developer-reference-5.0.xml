@@ -38,7 +38,7 @@
 			</para>
 
 			<para>
-			  <trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
+				<trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
 			</para>
 		</legalnotice>
 	</bookinfo>
@@ -68,37 +68,37 @@
 		<bibliomixed id="ucs-handbuch"/>
 		<biblioentry id="make">
 			<publishername>Free Software Foundation</publishername>
-			<pubdate>2010</pubdate>
+			<pubdate>2020</pubdate>
 			<title><ulink url="https://www.gnu.org/software/make/manual/">The GNU Make manual</ulink></title>
 		</biblioentry>
 		<biblioentry id="ISO639">
 			<abbrev>ISO639</abbrev>
 			<publishername>International Organization for Standardization</publishername>
-			<pubdate>2002</pubdate>
+			<pubdate>2010</pubdate>
 			<title><ulink url="http://www.loc.gov/standards/iso639-2/">ISO 639-1: Alpha-2 code</ulink></title>
 		</biblioentry>
 		<biblioentry id="Debian:pkg_basics">
 			<abbrev>Debian FAQ</abbrev>
 			<publishername>Debian</publishername>
-			<pubdate>2012</pubdate>
-			<title><ulink url="http://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics">The Debian GNU/Linux FAQ - Basics of the Debian package management system</ulink></title>
+			<pubdate>2019</pubdate>
+			<title><ulink url="https://www.debian.org/doc/manuals/debian-faq/pkg-basics.en.html">The Debian GNU/Linux FAQ - Basics of the Debian package management system</ulink></title>
 		</biblioentry>
 		<biblioentry id="Debian:maint-guide">
 			<abbrev>Debian Guide</abbrev>
 			<publishername>Debian</publishername>
-			<pubdate>2013</pubdate>
+			<pubdate>2015</pubdate>
 			<title><ulink url="http://www.debian.org/doc/devel-manuals#maint-guide">Debian New Maintainers' Guide</ulink></title>
 		</biblioentry>
 		<biblioentry id="Debian:policy">
 			<abbrev>Debian Policy</abbrev>
 			<publishername>Debian</publishername>
-			<pubdate>2012</pubdate>
+			<pubdate>2020</pubdate>
 			<title><ulink url="http://www.debian.org/doc/debian-policy/">Debian Policy Manual</ulink></title>
 		</biblioentry>
 		<biblioentry id="Debian:dev-ref">
 			<abbrev>Debian Reference</abbrev>
 			<publishername>Debian</publishername>
-			<pubdate>2012</pubdate>
+			<pubdate>2021</pubdate>
 			<title><ulink url="http://www.debian.org/doc/manuals/developers-reference/">Debian Developer's Reference</ulink></title>
 		</biblioentry>
 		<!--
@@ -112,4 +112,4 @@
 	</bibliography>
 	<index id="index"/>
 </book>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

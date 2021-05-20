@@ -51,17 +51,17 @@ udm saml/serviceprovider create "$@" \
 <programlisting lang="sh"><![CDATA[
 eval "$(ucr shell)"
 wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
-https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate \
-	-O /etc/idp.cert
+	-O /etc/idp.cert \
+https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate
 ]]></programlisting>
 			The XML metadata is available e.g. from
 <programlisting lang="sh"><![CDATA[
 eval "$(ucr shell)"
 wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
-https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php \
-	-O /etc/idp.metadata
+	-O /etc/idp.metadata \
+https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php
 ]]></programlisting>
-The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in the service provider is <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php</uri>
+The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in the service provider is <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php</uri>.
 		</para>
 	</section>
 
@@ -79,8 +79,8 @@ ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
 ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
 ucs/web/overview/entries/service/SP/priority=50
 ]]></programlisting>
-			Where <literal>MyServiceProviderIdentifier</literal> is the identifier used when creating the UDM service provider object.
+			where <literal>MyServiceProviderIdentifier</literal> is the identifier used when creating the UDM service provider object.
 		</para>
 	</section>
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

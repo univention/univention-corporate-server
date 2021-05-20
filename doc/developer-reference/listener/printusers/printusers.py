@@ -4,11 +4,12 @@ Example for a listener module, which logs changes to users.
 
 from __future__ import print_function
 
-from listener import SetUID
-import os
 import errno
-import univention.debug as ud
+import os
 from collections import namedtuple
+
+import univention.debug as ud
+from listener import SetUID
 
 name = 'printusers'
 description = 'print all names/users/uidNumbers into a file'
@@ -29,7 +30,7 @@ filter = ''.join("""\
 	(!(uid=*$))
 )""".split())
 attributes = ['uid', 'uidNumber', 'cn']
-_Rec = namedtuple('Rec', 'uid uidNumber cn')
+_Rec = namedtuple('_Rec', 'uid uidNumber cn')
 
 USER_LIST = '/root/UserList.txt'
 

@@ -88,7 +88,8 @@
 				<term><command>univention-join</command></term>
 				<listitem>
 					<para>
-						When <command>univention-join</command> is invoked, a machine account is created.
+						When <command>univention-join</command> is invoked, the machine account is created if it is missing.
+						Otherwise an already existing account is re-used which allows it to be created beforehand.
 						The <firstterm>distinguished name</firstterm> (<abbrev>dn</abbrev>) of that entry is stored locally in the &ucsUCRV; <envar>ldap/hostdn</envar>.
 						A random password is generated, which is stored in the file <filename>/etc/machine.secret</filename>.
 					</para>
@@ -174,12 +175,22 @@
 						</para>
 						<variablelist>
 							<varlistentry>
+								<term><literal>## joinscript api: bindpwdfile</literal></term>
+								<listitem>
+									<simpara>
+										Credentials from <command>univention-join</command> and <command>univention-run-join-script</command> are always passed via the two parameters <option>--binddn</option> and <option>--bindpwdfile</option>.
+										The old parameter <option>--bindpwd <replaceable>secret</replaceable></option> is no longer supported and used.
+										This is the default since UCS 5.
+									</simpara>
+								</listitem>
+							</varlistentry>
+							<varlistentry>
 								<term><literal>## joinscript api: nocredentials</literal></term>
 								<listitem>
 									<simpara>
-										This instructs <command>univention-join</command> and <command>univention-run-join-script</command> to not pass the credentials via the <option>--bind<replaceable>*</replaceable></option> parameters at all.
-										Instead the script may retrieve the credentials from the two files named <filename>/var/run/univention-join/binddn</filename> and <filename>/var/run/univention-join/bindpwd</filename>.
+										The credentials will be stored in two files named <filename>/var/run/univention-join/binddn</filename> and <filename>/var/run/univention-join/bindpwd</filename>.
 										They exist only while <command>univention-join</command> or <command>univention-run-join-script</command> are running.
+										Each individual join script will be called with no extra options.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -665,8 +676,9 @@ fi
 									<term><option>--name</option> <replaceable>name</replaceable></term>
 									<listitem>
 										<simpara>
-											The option can be used to supply an object name to be used to store the extension. If not set <filename><replaceable>filename</replaceable></filename> will be used.
-												If combined with <option>--udm_module</option> the name must include a forward slash.
+											The option can be used to supply an object name to be used to store the extension.
+											If not set <filename><replaceable>filename</replaceable></filename> will be used.
+											If combined with <option>--udm_module</option> the name must include a forward slash.
 										</simpara>
 									</listitem>
 								</varlistentry>
@@ -725,9 +737,8 @@ fi
 							</note>
 
 							<para>
-								Called from a joinscript, the function automatically determines some required parameters, like the app identifier plus Debian package name and version,
-								required for the creation of the corresponding object. After creation of the object the function waits
-								up to 3 minutes for the &ucsPrimaryDN; to signal availability of the new extension and reports success or failure.
+								Called from a joinscript, the function automatically determines some required parameters, like the app identifier plus Debian package name and version, required for the creation of the corresponding object.
+								After creation of the object the function waits up to 3 minutes for the &ucsPrimaryDN; to signal availability of the new extension and reports success or failure.
 								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
 								Failure conditions may occur e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
 								The &ucsPrimaryDN; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
@@ -738,25 +749,20 @@ fi
 								</para>
 							</note>
 							<para>
-								Before calling the shell function the shell variable <envar>UNIVENTION_APP_IDENTIFIER</envar> should be set
-								to the versioned app identifier (and exported to the environment of subprocesses).
-								The shell function will then register the specified app identifier with the extension object to indicate that
-								the extension object is required as long as this app is installed anywhere in the UCS domain.
+								Before calling the shell function the shell variable <envar>UNIVENTION_APP_IDENTIFIER</envar> should be set to the versioned app identifier (and exported to the environment of subprocesses).
+								The shell function will then register the specified app identifier with the extension object to indicate that the extension object is required as long as this app is installed anywhere in the UCS domain.
 							</para>
 							<para>
-								The options <option>--packagename</option> and <option>--packageversion</option> should usually not be used, as these parameters
-								are determined automatically.
-								To prevent accidental downgrades the function <command>ucs_registerLDAPExtension</command> (as well as the corresponding UDM module)
-								only execute modifications of an existing object if the Debian package version is not older than the previous one.
+								The options <option>--packagename</option> and <option>--packageversion</option> should usually not be used, as these parameters are determined automatically.
+								To prevent accidental downgrades the function <command>ucs_registerLDAPExtension</command> (as well as the corresponding UDM module) only execute modifications of an existing object if the Debian package version is not older than the previous one.
 							</para>
 							<para>
-								<command>ucs_registerLDAPExtension</command> supports two additional options to specify a valid range of UCS versions, where an extension should be
-								activated. The options are <option>--ucsversionstart</option> and <option>--ucsversionend</option>. The version check is only
-								performed whenever the extension object is modified. By calling this function from a joinscript, it will
-								automatically update the Debian package version number stored in the object, triggering a re-evaluation of the specified UCS version range.
+								<command>ucs_registerLDAPExtension</command> supports two additional options to specify a valid range of UCS versions, where an extension should be activated.
+								The options are <option>--ucsversionstart</option> and <option>--ucsversionend</option>.
+								The version check is only performed whenever the extension object is modified.
+								By calling this function from a joinscript, it will automatically update the Debian package version number stored in the object, triggering a re-evaluation of the specified UCS version range.
 								The extension is activated up to and excluding the UCS version specified by <option>--ucsversionend</option>.
-								This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they must not be undefined as long as there are objects
-								in the <acronym>LDAP</acronym> directory which make use of it.
+								This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they must not be undefined as long as there are objects in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
 
 							<example id="join:registerExtensions">
@@ -798,7 +804,10 @@ ucs_registerLDAPExtension "$@" \
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it should generally not be called in unjoin scripts.
+								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects.
+								This only works if no App is registered any longer for the object.
+								It must not be called unless it has been verified that no object in <acronym>LDAP</acronym> still requires this schema extension.
+								For this reason it should generally not be called in unjoin scripts.
 							</para>
 							<example id="join:unregisterExtensions">
 								<title>Schema unregistration in unjoin script</title>
@@ -836,7 +845,7 @@ ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 		<para>
 			Just like join scripts an unjoin script is prefixed with a two-digit number for lexicographical ordering.
 			To reverse the order of the unjoin scripts in comparison to the corresponding join scripts, the number of the unjoin script should be 100 minus the number of the corresponding join script.
-			The suffix of an unjoin script is <literal>-uninstall.uinst</literal> and it should be installed in <filename class="directory">/usr/lib/univention-uninstall/</filename>.
+			The suffix of an unjoin script is <literal>.uinst</literal> and it should be installed in <filename class="directory">/usr/lib/univention-uninstall/</filename>.
 		</para>
 		<para>
 			On package removal the unjoin script would be deleted as well, while the Univention directory service might still contain data managed by the package.
@@ -844,11 +853,10 @@ ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 		</para>
 		<para>
 			Example:
-			The package <package>univention-fetchmail</package> provides both a join script <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script as <filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
+			The package <package>univention-fetchmail</package> provides both a join script <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script as <filename>/usr/lib/univention-uninstall/09univention-fetchmail.uinst</filename>.
 		</para>
 		<para>
 			As of UCS 3.1 <filename class="extension">.inst</filename> and <filename class="extension">.uinst</filename> are not distinguishable in the <emphasis>UMC Join module</emphasis> by the user.
-			Therefore it is important to use the <literal>-uninstall</literal> suffix to give users a visual hint.
 			Internally join scripts are always executed before unjoin scripts and then ordered lexicographically by their prefix.
 		</para>
 		<para>
@@ -861,17 +869,16 @@ ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term><filename>50join-template-uninstall.uinst</filename></term>
+				<term><filename>50join-template.uinst</filename></term>
 				<listitem>
 					<para>
 						This unjoin script reverts the changes of the join script from <xref linkend="join:minimal"/>.
 					</para>
-					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/50join-template-uninstall.uinst" parse="text"/></programlisting>
+					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/50join-template.uinst" parse="text"/></programlisting>
 				</listitem>
 			</varlistentry>
 		</variablelist>
 	</section>
 
-
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

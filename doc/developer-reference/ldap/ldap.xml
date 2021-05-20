@@ -21,39 +21,34 @@
 		</para>
 		<para>
 			At least it should be noted that OpenLDAP offers two fundamentally different tool sets for direct access or modification of LDAP data:
-			The <command>slap<replaceable>*</replaceable></command> commands (<command>slapcat</command>, etc.) are very low level, operating directly on the <acronym>LDAP</acronym> backend data and
-			should only be used in rare cases, usually with the LDAP server not running. The <command>ldap<replaceable>*</replaceable></command> commands (<command>ldapsearch</command>, etc.) on the
-			other hand are the proper way to perform LDAP operations from the command line and their functionality can equivalently be used from all major
-			programming languages.
+			The <command>slap<replaceable>*</replaceable></command> commands (<command>slapcat</command>, etc.) are very low level, operating directly on the <acronym>LDAP</acronym> backend data and should only be used in rare cases, usually with the LDAP server not running.
+			The <command>ldap<replaceable>*</replaceable></command> commands (<command>ldapsearch</command>, etc.) on the other hand are the proper way to perform LDAP operations from the command line and their functionality can equivalently be used from all major programming languages.
 		</para>
 		<para>
-			On top of the raw <acronym>LDAP</acronym> layer, the &ucsUDM; offers an object model on a higher level,
-			featuring advanced object semantics (see <xref linkend="chap:udm"/>). That is the level that usually appropriate for app developers, which
-			should be considered before venturing down to the level of direct <acronym>LDAP</acronym> operations. On the other hand, for the development
-			of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.
+			On top of the raw <acronym>LDAP</acronym> layer, the &ucsUDM; offers an object model on a higher level, featuring advanced object semantics (see <xref linkend="chap:udm"/>).
+			That is the level that usually appropriate for app developers, which should be considered before venturing down to the level of direct <acronym>LDAP</acronym> operations.
+			On the other hand, for the development of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.
 		</para>
 		<para>
 			One essential trait of <acronym>LDAP</acronym> as used in UCS, is the strict enforcement of <acronym>LDAP</acronym> schemata.
-			An <acronym>LDAP</acronym> server refuses to start if an unknown <acronym>LDAP</acronym> attribute is referenced either in the configuration
-			or in the backend data. This makes it critically important to install schemata on all systems. To simplify this task UCS features a builtin
-			mechanism for automatic schema replication to all UCS hosted <acronym>LDAP</acronym> servers in the UCS domain
-			(see <xref linkend="chap:listener"/>).
+			An <acronym>LDAP</acronym> server refuses to start if an unknown <acronym>LDAP</acronym> attribute is referenced either in the configuration or in the backend data.
+			This makes it critically important to install schemata on all systems.
+			To simplify this task UCS features a builtin mechanism for automatic schema replication to all UCS hosted <acronym>LDAP</acronym> servers in the UCS domain (see <xref linkend="chap:listener"/>).
 			The schema replication mechanism is triggered by installation of a new schema extension package on the &ucsPrimaryDN;.
-			For redundancy it is strongly recommended to install schema extension packages also on each &ucsBackupDN;. This way, a &ucsBackupDN;
-			can replace a &ucsPrimaryDN; in case the &ucsPrimaryDN; needs to be replaced for some reason. To simplify these tasks even further, UCS offers methods
-			to register new <acronym>LDAP</acronym> schemata and associated <acronym>LDAP</acronym> ACLs from any UCS system.
+			For redundancy it is strongly recommended to install schema extension packages also on each &ucsBackupDN;.
+			This way, a &ucsBackupDN; can replace a &ucsPrimaryDN; in case the &ucsPrimaryDN; needs to be replaced for some reason.
+			To simplify these tasks even further, UCS offers methods to register new <acronym>LDAP</acronym> schemata and associated <acronym>LDAP</acronym> ACLs from any UCS system.
 		</para>
 	</section>
 
 	<section id="settings:ldapschema">
 		<title>Packaging LDAP Schema Extensions</title>
 		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> schema extension
-			from any system in the UCS domain. For this purpose, the schema extension can be stored as a special type of UDM object. The module
-			responsible for this type of objects is called <classname>settings/ldapschema</classname>. As these objects are replicated throughout the
-			UCS domain, the &ucsPrimaryDN; and &ucsBackupDN; systems listen for modifications of these objects and integrate them into the local
-			<acronym>LDAP</acronym> schema directory. As noted above, this simplifies the task of keeping the schema on the &ucsBackupDN; systems
-			up to date with that on the &ucsPrimaryDN;.
+			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> schema extension from any system in the UCS domain.
+			For this purpose, the schema extension can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <classname>settings/ldapschema</classname>.
+			As these objects are replicated throughout the UCS domain, the &ucsPrimaryDN; and &ucsBackupDN; systems listen for modifications of these objects and integrate them into the local <acronym>LDAP</acronym> schema directory.
+			As noted above, this simplifies the task of keeping the schema on the &ucsBackupDN; systems up to date with that on the &ucsPrimaryDN;.
 		</para>
 		<para>
 			The commands to create the <acronym>LDAP</acronym> schema extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -82,7 +77,8 @@
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the schema should be written to on &ucsPrimaryDN; and &ucsBackupDN;. The file name must not contain any path elements.
+						The file name the schema should be written to on &ucsPrimaryDN; and &ucsBackupDN;.
+						The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -96,14 +92,16 @@
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+						Version of the Debian package which creates the object.
+						For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						The identifier of the app which creates the object.
+						This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -134,12 +132,11 @@ ucs_registerLDAPExtension "$@" \
 	<section id="settings:ldapacl">
 		<title>Packaging LDAP ACL Extensions</title>
 		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> ACL extension
-			from any system in the UCS domain. For this purpose, the UCR template for an ACL extension can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <classname>settings/ldapacl</classname>. As these objects are replicated throughout the
-			UCS domain, the &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN; systems listen for modifications on these objects and integrate them into the local
-			<acronym>LDAP</acronym> ACL UCR template directory. This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackupDN; systems
-			up to date with those on the &ucsPrimaryDN;.
+			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> ACL extension from any system in the UCS domain.
+			For this purpose, the UCR template for an ACL extension can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <classname>settings/ldapacl</classname>.
+			As these objects are replicated throughout the UCS domain, the &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN; systems listen for modifications on these objects and integrate them into the local <acronym>LDAP</acronym> ACL UCR template directory.
+			This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackupDN; systems up to date with those on the &ucsPrimaryDN;.
 		</para>
 		<para>
 			The commands to create the <acronym>LDAP</acronym> ACL extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -168,7 +165,8 @@ ucs_registerLDAPExtension "$@" \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the ACL UCR template data should be written to on &ucsPrimaryDN;, &ucsBackupDN; and  &ucsReplicaDN;. The file name must not contain any path elements.
+						The file name the ACL UCR template data should be written to on &ucsPrimaryDN;, &ucsBackupDN; and  &ucsReplicaDN;.
+						The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -182,14 +180,16 @@ ucs_registerLDAPExtension "$@" \
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+						Version of the Debian package which creates the object.
+						For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						The identifier of the app which creates the object.
+						This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -197,14 +197,17 @@ ucs_registerLDAPExtension "$@" \
 			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Minimal required UCS version. The UCR template for the ACL is only activated by systems with a version higher than or equal to this.
+						Minimal required UCS version.
+						The UCR template for the ACL is only activated by systems with a version higher than or equal to this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UCR template for the ACL is only activated by systems with a version lower or equal than this. To specify validity for the whole 4.1-x release range a value like 4.1-99 may be used.
+						Maximal required UCS version.
+						The UCR template for the ACL is only activated by systems with a version lower or equal than this.
+						To specify validity for the whole 4.1-x release range a value like 4.1-99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -397,3 +400,4 @@ esac
 	</section>
 
 </chapter>
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

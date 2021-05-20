@@ -15,7 +15,7 @@
 		<indexterm><primary>Registry</primary><see>Config Registry</see></indexterm>
 	</title>
 	<para>
-		The Univention Config Registry (<acronym>UCR</acronym>) is a local mechanism, which is used on all <acronym>UCS</acronym> system roles to consistently configure all services and applications.
+		The &ucsUCR; (<acronym>UCR</acronym>) is a local mechanism, which is used on all <acronym>UCS</acronym> system roles to consistently configure all services and applications.
 		It consists of a database, were the currently configured values are stored, and a mechanism to trigger certain actions, when values are changed.
 		This is mostly used to create configuration files from templates by filling in the configured values.
 		In addition to using simple place holders its also possible to use Python code for more advanced templates or to call external programs when values are changed.
@@ -474,9 +474,15 @@ Postinst: <module>
 								The module must implement the following two functions:
 							</para>
 							<synopsis><![CDATA[
-def preinst(config_registry, changes):
+def preinst(
+	config_registry: ConfigRegistry,
+	changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+) -> None:
 	pass
-def postinst(config_registry, changes):
+def postinst(
+	config_registry: ConfigRegistry,
+	changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+) -> None:
 	pass]]></synopsis>
 							<para>
 								Each function receives two arguments:
@@ -651,7 +657,10 @@ Variables: <variable1>
 								The module must implement the following function:
 							</para>
 							<synopsis><![CDATA[
-def handler(config_registry, changes):
+def handler(
+	config_registry: ConfigRegistry,
+	changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+) -> None:
 	pass]]></synopsis>
 							<para>
 								The function receives two arguments:
@@ -878,9 +887,9 @@ init_scipt=<init.name>]]></programlisting>
 							Specifies the name of the <acronym>UCR</acronym> variable, which controls if the service should be started automatically.
 							It is recommended to use the shell library <filename>/usr/share/univention-config-registry/init-autostart.lib</filename> to evaluate the setting from the init-script of the service.
 							If the variable is set to <literal>false</literal> or <literal>no</literal>, the service should never be started.
-							If the variable is set to <literal>manually</literal>, the service is explicitly not started during system boot. The service
-							can still be started manually. It should be noted that if other services are started that have a dependency on a service marked
-							as <literal>manually</literal>, the service marked as <literal>manually</literal> will also be started.
+							If the variable is set to <literal>manually</literal>, the service is explicitly not started during system boot.
+							The service can still be started manually.
+							It should be noted that if other services are started that have a dependency on a service marked as <literal>manually</literal>, the service marked as <literal>manually</literal> will also be started.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -914,17 +923,16 @@ init_scipt=<init.name>]]></programlisting>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term><literal>icon</literal> (optional)</term>
+					<term><literal>icon</literal> (unused)</term>
 					<listitem>
 						<simpara>
+							This is unused in UCS, but future versions might display the icon for the service.
 							The file name of an icon in either Portable Network Graphics (<acronym>PNG</acronym>) format or Graphics Interchange Format (<acronym>GIF</acronym>) format.
-							This is unused in UCS-3.1, but future versions might display the icon for the service.
 						</simpara>
 					</listitem>
 				</varlistentry>
 			</variablelist>
 		</section>
-
 	</section>
 
 	<section id="ucr:conffiles">
@@ -1260,39 +1268,46 @@ Depends: ..., ${misc:Depends}, ...
 
 	<section id="ucr:python-migration"><title>Python 3 Migration</title>
 		<para>
-			In UCS 5.0 all UCR templates and UCR modules must be Python 2 and Python 3 compatible.
+			In UCS 5.0 all UCR templates and UCR modules must be compatible with Python 2 and Python 3.
 			This must also be the case for UCS 4.4 and newer, because during the upgrade to UCS 5.0 UCR templates can be evaluated with either Python version.
 		</para>
 		<para>
-			Most templates simply use the Python 2 print statement:
+			Many templates simply use the Python 2 <function>print</function> statement:
 			<programlisting language="python"><![CDATA[
 print configRegistry.get('my/variable')
 			]]></programlisting>
 
-			Parenthesis have to be added:
+			In Python 3 <function>print()</function> is a function, which requires parenthesis to be added:
 			<programlisting language="python"><![CDATA[
 print(configRegistry.get('my/variable'))
 			]]></programlisting>
 
-			Please note that is is not possible yet to use Python 3 only syntax (as in Python 2 <function>print</function> is a statement), such as:
+			This way the statement is both compatible with Python 2 and Python 3.
+			But it breaks if multiple arguments are supplied or extra arguments from the Python 3 syntax are used:
 			<programlisting language="python"><![CDATA[
+priint("one", "two")
+# Python 2: ('one', 'two')
+# Python 3: one two
 print(configRegistry.get('my/variable'), file=sys.stderr)
+# Python 2: SyntaxError
+# Python 3: Okay
 			]]></programlisting>
 
-			It is also not possible to use <programlisting language="python"><![CDATA[ from __future__ import print_function ]]></programlisting> as &ucsUCR; executes Python code before the template is imported.
+			Using <code language="python"><![CDATA[ from __future__ import print_function ]]></code> is not allowed as &ucsUCR; executes Python code before the template is imported.
 		</para>
 		<para>
 			The deprecated variable <varname>baseConfig</varname> has been removed but <varname>configRegistry</varname> remains for using.
 		</para>
 		<para>
 			The API of <type>ConfigRegistry</type> works with <type>str</type>.
-			For Python 2 this equals <type>bytes</type>, while for Python 3 this is a unicode sting.
+			For Python 2 this equals <type>bytes</type>, while for Python 3 this is a <type>unicode</type> string.
 		</para>
 		<para>
 			The test case <filename>/usr/share/ucs-test/03_ucr/37check-ucr-templates-py3-migration-status.py</filename> from the package <package>ucs-test-ucr</package> can be used to check if the UCR template output works with both Python versions and is idempotent.
 		</para>
 		<para>
-			UCR modules and scripts have no API changes. They simply need to be migrated to be Python 3 compatible.
+			UCR modules and scripts have no API changes.
+			They simply need to be migrated to be Python 3 compatible.
 		</para>
 	</section>
 
@@ -1325,4 +1340,4 @@ print(configRegistry.get('my/variable'), file=sys.stderr)
 	-->
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

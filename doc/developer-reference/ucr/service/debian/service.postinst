@@ -1,7 +1,11 @@
 #!/bin/sh
 
-#DEBHELPER#
+case "$1" in
+configure)
+	ucr set atd/autostart?yes
+	;;
+esac
 
-ucr set atd/autostart?yes
+#DEBHELPER#
 
 exit 0

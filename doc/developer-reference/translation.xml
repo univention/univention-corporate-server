@@ -162,4 +162,4 @@ sudo dpkg -i ../univention-l10n-fr_*.deb
 	</section>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

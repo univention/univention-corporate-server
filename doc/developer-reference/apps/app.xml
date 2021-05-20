@@ -13,13 +13,11 @@
 		<indexterm><primary>App center</primary></indexterm>
 	</title>
 	<para>
-		The Univention App Center provides a platform for software vendors and an
-		easy-to-use entry point for &ucsUCS; users to extend their environment with
-		business software.
+		The &ucsAppC; provides a platform for software vendors and an easy-to-use entry point for &ucsUCS; users to extend their environment with business software.
 	</para>
 	<para>
-		The documentation how to develop Apps for Univention App Center can be found in the <ulink url="https://wiki.univention.de/index.php?title=Category:App_Center_Developer_Guide">App Center Developer Guide</ulink>
+		The documentation how to develop Apps for &ucsAppC; can be found in the <ulink url="https://wiki.univention.de/index.php?title=Category:App_Center_Developer_Guide">App Center Developer Guide</ulink>.
 	</para>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

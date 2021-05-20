@@ -25,7 +25,7 @@
 			<indexterm><primary>Updater</primary><secondary>Repositories</secondary></indexterm>
 		</title>
 		<para>
-			UCS releases are provided either via <acronym>DVD</acronym> images or via online repositories.
+			UCS releases are provided either via <acronym>ISO</acronym> images or via online repositories.
 			For each major, minor and patchlevel release there is a separate online repository.
 			They are automatically added to the files in <filename class="directory">/etc/apt/sources.list.d/</filename> depending on the &ucsUCRV;s <envar>version/version</envar> and <envar>version/patchlevel</envar>, which are managed by the updater.
 		</para>
@@ -35,15 +35,14 @@
 			The only exception from this rule are the <firstterm>errata</firstterm> updates, which are put into a single repository, which is updated incrementally.
 		</para>
 		<para>
-			Therefore the updater will include the repositories of a new release in a file called <filename>/etc/apt/sources.list.d/00_ucs_temporary_errata__components_update.list</filename> and then do the updates.
+			Therefore the updater will include the repositories of a new release in a file called <filename>/etc/apt/sources.list.d/00_ucs_temporary_installation.list</filename> and then do the updates.
 			Only at the end of a successful update are the &ucsUCRV;s updated.
 		</para>
 		<para>
-			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="ucs-5.0" targetptr="computers::softwaremanagement::repoadd"/> manual.
+			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <xref linkend="chap:repoadd"/> and <olink targetdoc="ucs-5.0" targetptr="computers::softwaremanagement::repoadd"/> manual.
 			Setting the variable <envar>…/version</envar> can be used to mark a component as required (for certain UCS versions), which blocks an upgrade until the component is available for the specific release(es).
-			If configured and enabled, components are considered required if the variable <envar>…/version</envar> is set to <literal>current</literal> or is unset. As an alternative a fixed list of
-			<literal><replaceable>$major</replaceable>.<replaceable>$minor</replaceable></literal> releases can be used to include the component only for a sub-set of releases: such a component is only used locally if the listed component versions include the current
-			version, e.g. a <literal>5.0 5.1 5.2</literal> component will not be used on a <literal>5.4</literal> system.
+			If configured and enabled, components are considered required if the variable <envar>…/version</envar> is unset or set to <literal>current</literal>.
+			As an alternative a fixed list of <literal><replaceable>$major</replaceable>.<replaceable>$minor</replaceable></literal> releases can be used to include the component only for a sub-set of releases: such a component is only used locally if the listed component versions include the current version, e.g. a <literal>5.0 5.1 5.2</literal> component will not be used on a <literal>5.4</literal> system.
 		</para>
 	</section>
 
@@ -86,7 +85,7 @@
 		</variablelist>
 		<para>
 			The scripts are located in the <filename class="directory">all/</filename> component of each release and component.
-			For UCS-4.4 this would be <filename>4.4/maintained/4.4-0/all/preup.sh</filename> and <filename>4.4/maintained/components/<replaceable>some-component</replaceable>/all/preup.sh</filename> for the <filename>preup.sh</filename> script. <!-- FIXME: UCS 5.0 path -->
+			For UCS-5.0 this would be <filename>dists/ucs500/preup.sh</filename> and <filename>5.0/maintained/components/<replaceable>some-component</replaceable>/all/preup.sh</filename> for the <filename>preup.sh</filename> script.
 			The same applies to the <filename>postup.sh</filename> script.
 			The full process is shown in <xref linkend="updater:scripts:example"/>.
 		</para>
@@ -121,7 +120,7 @@
 
 		<procedure id="updater:scripts:example">
 			<title>Update process steps</title>
-			<step><simpara>Create temporary source list file <filename>00_ucs_temporary_errata__components_update.list</filename></simpara></step>
+			<step><simpara>Create temporary source list file <filename>00_ucs_temporary_installation.list</filename></simpara></step>
 			<step><simpara>Download the <filename>preup.sh</filename> and <filename>postup.sh</filename> files for the next release and all components into a temporary directory and validate their <acronym>PGP</acronym> signatures</simpara></step>
 			<step><simpara>Execute <command><filename>component-preup.sh</filename> <literal>pre</literal> <replaceable>$version</replaceable></command></simpara></step>
 			<step><simpara>Execute <command><filename>release-preup.sh</filename> <replaceable>$version</replaceable></command></simpara></step>
@@ -136,4 +135,4 @@
 	</section>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

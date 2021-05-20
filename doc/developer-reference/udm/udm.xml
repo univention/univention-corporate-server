@@ -167,7 +167,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		</para>
 		<para>
 			The module <classname>settings/extended_attribute</classname> requires many parameters.
-			They are described in <olink targetdoc="ucs-4.3" targetptr="central:extendedattrs"/>.
+			They are described in <olink targetdoc="ucs-5.0" targetptr="central:extendedattrs"/>.
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -278,6 +278,15 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 					<simpara>
 						Disable all modification of the property, even when the object is first created.
 						The property is only modified through hooks.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>copyable</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Copy the value of the property when the entry is cloned.
+						<remark>PMH: check next</remark>
+						Otherwise the value is reset to the default value.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -450,10 +459,10 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 					This can be done by using <command>ucs_registerLDAPExtension</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
-					As an alternative the file can be put into the directory <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
+					As an alternative the file can be put into the directory <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 				</para>
 				<para>
-					The following example is comparable to the default example in file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/example.py</filename>:
+					The following example is comparable to the default example in file <filename>/usr/lib/python3/dist-packages/univention/admin/syntax.d/example.py</filename>:
 				</para>
 				<programlisting language="python"><![CDATA[
 class StaticSelection(select):
@@ -469,7 +478,7 @@ class StaticSelection(select):
 				<para>
 					A dynamic list is implemented as an <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
 					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
-					The file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.py</filename> contains several examples.
+					The file <filename>/usr/lib/python3/dist-packages/univention/admin/syntax.py</filename> contains several examples.
 				</para>
 				<example id="udm:ea:select:dynamic:example">
 					<title>Dynamic selection list for Extended Attributes</title>
@@ -544,7 +553,7 @@ udm settings/extended_attribute create --position "cn=custom attributes,$base" \
 						If they do not match, a new tab or group is added.
 						This also applies to the translation:
 						They must match the already translated strings and must be repeated for every Extended Attribute again and again.
-						The untranslated strings are best extracted directly from the Python source code of the modules in <filename>/usr/lib/python2.7/dist-packages/univention/admin/handlers/*/*.py</filename>.
+						The untranslated strings are best extracted directly from the Python source code of the modules in <filename>/usr/lib/python3/dist-packages/univention/admin/handlers/*/*.py</filename>.
 						For the translated strings run <command>msgunfmt /usr/share/locale/<replaceable>language-code</replaceable>/LC_MESSAGES/univention-admin*.mo</command>.
 					</simpara>
 				</listitem>
@@ -684,7 +693,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
 				Normally <acronym>UDM</acronym> properties are stored as-is in <acronym>LDAP</acronym> attributes.
 				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
-				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/</filename>.
+				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/hooks.d/</filename>.
 				The file name must end with <filename class="extension">.py</filename>.
 			</para>
 			<para>
@@ -870,9 +879,8 @@ udm settings/extended_attribute modify \
 		</title>
 		<remark>PMH: Bug #29525</remark>
 		<para>
-		  The development of &ucsUDM; modules is currently only documented in
-		  Univention Wiki (currently only available in German):
-		  <ulink url="https://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
+			The development of &ucsUDM; modules is currently only documented in Univention Wiki (currently only available in German):
+			<ulink url="https://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
 		</para>
 	</section>
 
@@ -881,7 +889,7 @@ udm settings/extended_attribute modify \
 		<remark>PMH: Bug #24236</remark>
 		<para>
 			Every <acronym>UDM</acronym> property has a syntax, which is used to check the value for correctness.
-			&ucsUCS; already provides several syntax types, which are defined in the Python file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.py</filename>.
+			&ucsUCS; already provides several syntax types, which are defined in the Python file <filename>/usr/lib/python3/dist-packages/univention/admin/syntax.py</filename>.
 			The following list of syntaxes is not complete, for a complete overview the file should be consulted directly.
 		</para>
 		<variablelist>
@@ -998,7 +1006,7 @@ udm settings/extended_attribute modify \
 			</varlistentry>
 		</variablelist>
 		<para>
-			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
+			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 			They're automatically imported by <acronym>UDM</acronym>.
 		</para>
 
@@ -1018,7 +1026,7 @@ udm settings/extended_attribute modify \
 			</para>
 			<para>
 				Since UCR variables only affect the local system, the variables must be set on all systems were <acronym>UDM</acronym> is used.
-				This can be either done through a &ucsUCR; policy (see <olink targetdoc="ucs-4.3" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
+				This can be either done through a &ucsUCR; policy (see <olink targetdoc="ucs-5.0" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
 			</para>
 		</section>
 
@@ -1029,7 +1037,7 @@ udm settings/extended_attribute modify \
 			<para>
 				It is often required to present a list of entries to the user, from which she can select one or — in case of a multi-valued property — more entries.
 				Several syntax classes derived from <classname>select</classname> provide a fixed list of choices.
-				If the set of values is known and fixed, it's best to derive an own class from <classname>select</classname> and provide the Python file in <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
+				If the set of values is known and fixed, it's best to derive an own class from <classname>select</classname> and provide the Python file in <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 			</para>
 			<para>
 				If on the other hand the list is dynamic and is stored in <acronym>LDAP</acronym>, <acronym>UDM</acronym> provides three methods to retrieve the values.
@@ -1242,7 +1250,7 @@ class MyServers(UDM_Objects):
 								<term><firstterm>Python API</firstterm></term>
 								<listitem>
 									<simpara>
-										By implementing a Python class derived from <classname>LDAP_Search</classname> and providing that implementation in <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
+										By implementing a Python class derived from <classname>LDAP_Search</classname> and providing that implementation in <filename>/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1414,10 +1422,10 @@ udm settings/syntax create "$@" --ignore_exists \
 			<indexterm><primary>Directory Manager</primary><secondary>Hooks</secondary><tertiary>Packaging</tertiary></indexterm>
 		</title>
 		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain
-			from any system in the domain. For this purpose, a UDM hook can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <classname>settings/udm_hook</classname>. As these objects are replicated throughout the
-			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
+			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain from any system in the domain.
+			For this purpose, a UDM hook can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <classname>settings/udm_hook</classname>.
+			As these objects are replicated throughout the UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
 			The commands to create the <acronym>UDM</acronym> hook objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -1447,7 +1455,8 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the UDM hook data should be written to by the listening servers. The file name must not contain any path elements.
+						The file name the UDM hook data should be written to by the listening servers.
+						The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1461,14 +1470,16 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+						Version of the Debian package which creates the object.
+						For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						The identifier of the app which creates the object.
+						This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1476,14 +1487,17 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Minimal required UCS version. The UDM hook is only activated by systems with a version higher than or equal to this.
+						Minimal required UCS version.
+						The UDM hook is only activated by systems with a version higher than or equal to this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.1-x release range a value like 4.1-99 may be used.
+						Maximal required UCS version.
+						The UDM hook is only activated by systems with a version lower than or equal to this.
+						To  specify validity for the whole <productnumber>5.0-x</productnumber> release range a value like <literal>5.0-99</literal> may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1500,10 +1514,10 @@ udm settings/syntax create "$@" --ignore_exists \
 	<section id="settings:udm_module">
 		<title>Packaging UDM Extension Modules</title>
 		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> module in the UCS domain
-			from any system in the domain. For this purpose, a UDM module can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <classname>settings/udm_module</classname>. As these objects are replicated throughout the
-			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
+			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> module in the UCS domain from any system in the domain.
+			For this purpose, a UDM module can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <classname>settings/udm_module</classname>.
+			As these objects are replicated throughout the UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
 			The commands to create the <acronym>UDM</acronym> module objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -1533,7 +1547,8 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the UDM module data should be written to by the listening servers. The file name may contain path elements and should conform to the name of the UDM module (e.g. <literal>newapp/someobject.py</literal>).
+						The file name the UDM module data should be written to by the listening servers.
+						The file name may contain path elements and should conform to the name of the UDM module (e.g. <literal>newapp/someobject.py</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1568,14 +1583,16 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+						Version of the Debian package which creates the object.
+						For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						The identifier of the app which creates the object.
+						This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1583,14 +1600,17 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Minimal required UCS version. The UDM module is only activated by systems with a version higher than or equal to this.
+						Minimal required UCS version.
+						The UDM module is only activated by systems with a version higher than or equal to this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM module is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.1-x release range a value like 4.1-99 may be used.
+						Maximal required UCS version.
+						The UDM module is only activated by systems with a version lower than or equal to this.
+						To  specify validity for the whole <productnumber>5.0-x</productnumber> release range a value like <literal>5.0-99</literal> may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1607,10 +1627,10 @@ udm settings/syntax create "$@" --ignore_exists \
 	<section id="settings:udm_syntax">
 		<title>Packaging UDM Syntax Extension</title>
 		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> syntax in the UCS domain
-			from any system in the domain. For this purpose, a UDM syntax can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <classname>settings/udm_syntax</classname>. As these objects are replicated throughout the
-			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
+			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> syntax in the UCS domain from any system in the domain.
+			For this purpose, a UDM syntax can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <classname>settings/udm_syntax</classname>.
+			As these objects are replicated throughout the UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
 			The commands to create the <acronym>UDM</acronym> syntax objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -1640,7 +1660,8 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the UDM syntax data should be written to by the listening servers. The file name must not contain any path elements.
+						The file name the UDM syntax data should be written to by the listening servers.
+						The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1654,14 +1675,16 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+						Version of the Debian package which creates the object.
+						For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						The identifier of the app which creates the object.
+						This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1669,14 +1692,17 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Minimal required UCS version. The UDM syntax is only activated by systems with a version higher than or equal to this.
+						Minimal required UCS version.
+						The UDM syntax is only activated by systems with a version higher than or equal to this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM syntax is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.1-x release range a value like 4.1-99 may be used.
+						Maximal required UCS version.
+						The UDM syntax is only activated by systems with a version lower than or equal to this.
+						To  specify validity for the whole <productnumber>5.0-x</productnumber> release range a value like <literal>5.0-99</literal> may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1693,29 +1719,19 @@ udm settings/syntax create "$@" --ignore_exists \
 	<section id="udm:rest_api">
 		<title>UDM REST API</title>
 		<para>
-			UCS provides a REST API
-			which can be used to inspect, modify, create and delete UDM objects via HTTP requests.
+			UCS provides a REST API which can be used to inspect, modify, create and delete UDM objects via HTTP requests.
 		</para>
 
 		<para>
-			The API is accessible from https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/.
+			The API is accessible from <uri>https://<replaceable>FQHN</replaceable>/univention/udm/</uri>.
 		</para>
 
 		<section id="udm:rest_api:authentication">
 			<title>Authentication</title>
 			<para>
-				To be able to use the API you have to authenticate with a
-				user account which is a member of an authorized group.
-				The group authorization is managed via the 
-				<envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar> UCR variables.
-				The API comes predefined with the UCR variables
-				<envar>directory/manager/rest/authorized-groups/domain-admins</envar>,
-				<envar>directory/manager/rest/authorized-groups/dc-backup</envar> and
-				<envar>directory/manager/rest/authorized-groups/dc-slaves</envar>
-				which authorizes the groups
-				<systemitem class="groupname">Domain Admins</systemitem>,
-				<systemitem class="groupname">DC Backup Hosts</systemitem> and
-				<systemitem class="groupname">DC Slave Hosts</systemitem> respectively.
+				To be able to use the API you have to authenticate with a user account which is a member of an authorized group.
+				The group authorization is managed via the &ucsUCRV;s <envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar>.
+				The API comes predefined with the UCR variables <envar>directory/manager/rest/authorized-groups/domain-admins</envar>, <envar>directory/manager/rest/authorized-groups/dc-backup</envar> and <envar>directory/manager/rest/authorized-groups/dc-slaves</envar> which authorizes the groups <systemitem class="groupname">Domain Admins</systemitem>, <systemitem class="groupname">DC Backup Hosts</systemitem> and <systemitem class="groupname">DC Slave Hosts</systemitem> respectively.
 			</para>
 			<para>
 				To authorize additional groups you just have to create a new UCR variable.
@@ -1724,21 +1740,19 @@ udm settings/syntax create "$@" --ignore_exists \
 udm groups/group create --position="cn=groups,$(ucr get ldap/base)" --set name="UDM API Users"
 				</programlisting>
 				Now set the UCR variable to allow the group members to use the API.
-				<programlisting language="sh">
-ucr set directory/manager/rest/authorized-groups/udm-api-users="cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
-				</programlisting>
-				<note>
-					<para>
-						The authorization of a group only allows the group members to access the API in the first place.
-						After that, which actions the user can perform with the API is regulated via ACLs.
-						For example a normal <systemitem class="groupname">Domain Users</systemitem> user
-						can't create or delete objects.
-					</para>
-				</note>
 			</para>
+			<programlisting language="sh">
+ucr set directory/manager/rest/authorized-groups/udm-api-users="cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
+			</programlisting>
+			<note>
+				<para>
+					The authorization of a group only allows the group members to access the API in the first place.
+					After that, which actions the user can perform with the API is regulated via ACLs.
+					For example a normal <systemitem class="groupname">Domain Users</systemitem> user can't create or delete objects.
+				</para>
+			</note>
 			<para>
-				After you add or modify a <envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar>
-				UCR variable you have to restart the API service for the changes to take effect.
+				After you add or modify a &ucsUCRV; <envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar> you have to restart the API service for the changes to take effect.
 				<programlisting language="sh">
 service univention-directory-manager-rest restart
 				</programlisting>
@@ -1751,52 +1765,45 @@ service univention-directory-manager-rest restart
 				and by using different HTTP methods you can achieve different results.
 			</para>
 			<table>
-	  		<title>HTTP methods</title>
+				<title>HTTP methods</title>
 				<tgroup cols="2">
-		  		<colspec colnum="1" colname="col1" colwidth="1*"/>
-		  		<colspec colnum="2" colname="col2" colwidth="2*"/>
-		  		<thead>
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
 						<row>
-			  			<entry>Verb</entry>
-			  			<entry>Description</entry>
+							<entry>Verb</entry>
+							<entry>Description</entry>
 						</row>
-		  		</thead>
-		  		<tbody>
+					</thead>
+					<tbody>
 						<row>
-			  			<entry>GET</entry>
-			  			<entry>Retrieve a resource</entry>
+							<entry>GET</entry>
+							<entry>Retrieve a resource</entry>
 						</row>
-
 						<row>
-			  			<entry>POST</entry>
-			  			<entry>Create a resource</entry>
+							<entry>POST</entry>
+							<entry>Create a resource</entry>
 						</row>
-
 						<row>
-			  			<entry>PUT</entry>
-			  			<entry>Replace or move a resource</entry>
+							<entry>PUT</entry>
+							<entry>Replace or move a resource</entry>
 						</row>
-
 						<row>
-			  			<entry>PATCH</entry>
-			  			<entry>Modify or move a resource</entry>
+							<entry>PATCH</entry>
+							<entry>Modify or move a resource</entry>
 						</row>
-
 						<row>
-			  			<entry>DELETE</entry>
-			  			<entry>Delete a resource</entry>
+							<entry>DELETE</entry>
+							<entry>Delete a resource</entry>
 						</row>
-		  		</tbody>
+					</tbody>
 				</tgroup>
 			</table>
 			<para>
-				For an in depth overview over which resources are available, which HTTP methods are allowed on them
-				and which query parameters are available for a given HTTP method visit
-				https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/schema/ with a browser.
+				For an in depth overview over which resources are available, which HTTP methods are allowed on them and which query parameters are available for a given HTTP method visit <uri>https://<replaceable>FQHN</replaceable>/univention/udm/schema/</uri> with a browser.
 			</para>
 			<para>
-				By visiting https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/ with a browser you can navigate and use
-				the API interactively.
+				By visiting <uri>https://<replaceable>FQHN</replaceable>/univention/udm/</uri> with a browser you can navigate and use the API interactively.
 			</para>
 		</section>
 		<section id="udm:rest_api:usage_examples">
@@ -1805,56 +1812,49 @@ service univention-directory-manager-rest restart
 				In the following section you will learn how to create, modify, search and delete a user via the API.
 			</para>
 			<para>
-				While you try out these examples you will often see the <wordasword>"_links"</wordasword>
-				and <wordasword>"_embedded"</wordasword> properties in the responses.
-				These properties are defined by <wordasword>HAL</wordasword>, the Hypertext Application Language,
-				which is used in the API.
+				While you try out these examples you will often see the <wordasword>"_links"</wordasword> and <wordasword>"_embedded"</wordasword> properties in the responses.
+				These properties are defined by <abbrev>HAL</abbrev>, the Hypertext Application Language, which is used in the API.
 				These properties contain links which can be used to traverse the API.
-				For example the <wordasword>"_links"</wordasword> property of the response to a paginated query
-				could contain the <wordasword>"next"</wordasword> property which points to the next page.
+				For example the <wordasword>"_links"</wordasword> property of the response to a paginated query could contain the <wordasword>"next"</wordasword> property which points to the next page.
 			</para>
 			<para>
-				For more information on <wordasword>HAL</wordasword> please refer to the
-				<ulink url="https://tools.ietf.org/html/draft-kelly-json-hal-08">Internet Draft for HAL</ulink>.
+				For more information on <wordasword>HAL</wordasword> please refer to the <ulink url="https://tools.ietf.org/html/draft-kelly-json-hal-08">Internet Draft for HAL</ulink>.
 			</para>
 			<section id="udm:rest_api:usage_examples:post">
 				<title>Create a user via a POST request</title>
 				<para>
-					To create a new user your first want to get a template that describes a valid user
-					and has all attributes filled out with default values.
+					To create a new user your first want to get a template that describes a valid user and has all attributes filled out with default values.
 				</para>
 				<para>
 					You can get the template for an UDM module with:
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" \
-  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/&lt;module&gt;/add 
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/${module}/add
 					</programlisting>
 				</para>
 				<para>
 					So for the users/user module you get the template with:
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" \
-  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add 
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add
 					</programlisting>
 				</para>
 				<para>
-					To work with the template you can save it into a file and to make it more readable
-					you can use something like pythons <wordasword>json.tool</wordasword>.
+					To work with the template you can save it into a file and to make it more readable you can use something like pythons <wordasword>json.tool</wordasword>.
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" \
-  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add \
-  | python -m json.tool > user_template.json
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
+  python -m json.tool > user_template.json
 					</programlisting>
 				</para>
 				<para>
-					The JSON file contains meta information (keys that start with underscore '_') that
-					are not necessary to create a user. These can be filtered out to make it easier
-					to work with the template file.
+					The JSON file contains meta information (keys that start with underscore '_') that are not necessary to create a user.
+					These can be filtered out to make it easier to work with the template file.
 					The following example produces such a condensed template:
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" \
-  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add \
-  | python -c 'import sys, json; \
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
+  python -c 'import sys, json; \
     template = json.load(sys.stdin); \
     template = {key:value for key, value in template.items() if not key.startswith("_")}; \
     json.dump(template, sys.stdout, indent=4)' > user_template.json
@@ -1864,124 +1864,120 @@ curl -X GET -H "Accept: application/json" \
 					The content of <filename>user_template.json</filename> should look something like this.
 					<programlisting language="js">
 {
-    "position": "cn=users,dc=mydomain,dc=intranet", 
-    "objectType": "users/user", 
+    "position": "cn=users,dc=mydomain,dc=intranet",
+    "objectType": "users/user",
     "options": {
         "pki": false
-    }, 
+    },
     "policies": {
-        "policies/pwhistory": [], 
-        "policies/umc": [], 
+        "policies/pwhistory": [],
+        "policies/umc": [],
         "policies/desktop": []
-    }, 
+    },
     "properties": {
-        "mobileTelephoneNumber": [], 
-        "certificateSubjectOrganisationalUnit": null, 
-        "groups": [], 
-        "sambahome": null, 
-        "departmentNumber": [], 
-        "certificateSerial": null, 
-        "certificateSubjectCommonName": null, 
-        "primaryGroup": "cn=Domain Users,cn=groups,dc=mydomain,dc=intranet", 
-        "uidNumber": null, 
-        "disabled": false, 
-        "unlock": false, 
-        "street": null, 
-        "postcode": null, 
-        "scriptpath": null, 
-        "sambaPrivileges": [], 
-        "description": null, 
-        "certificateIssuerCommonName": null, 
-        "mailForwardCopyToSelf": false, 
-        "employeeType": null, 
-        "homedrive": null, 
-        "overridePWLength": null, 
-        "title": null, 
-        "mailAlternativeAddress": [], 
-        "userCertificate": null, 
-        "organisation": null, 
-        "homeSharePath": "", 
-        "certificateIssuerOrganisationalUnit": null, 
-        "e-mail": [], 
-        "userexpiry": null, 
-        "pwdChangeNextLogin": null, 
-        "mailHomeServer": null, 
-        "unixhome": "/home/", 
-        "gecos": "", 
-        "sambaUserWorkstations": [], 
-        "preferredLanguage": null, 
-        "certificateIssuerState": null, 
-        "pagerTelephoneNumber": [], 
-        "username": null, 
-        "umcProperty": [], 
-        "certificateIssuerCountry": null, 
-        "homeTelephoneNumber": [], 
-        "shell": "/bin/bash", 
-        "homePostalAddress": [], 
-        "firstname": null, 
-        "certificateIssuerOrganisation": null, 
-        "lastname": null, 
-        "city": null, 
-        "certificateSubjectMail": null, 
-        "mailForwardAddress": [], 
-        "phone": [], 
-        "gidNumber": null, 
-        "birthday": null, 
-        "employeeNumber": null, 
-        "objectFlag": [], 
-        "sambaLogonHours": null, 
-        "certificateSubjectLocation": null, 
-        "displayName": "", 
-        "password": null, 
-        "lockedTime": null, 
-        "sambaRID": null, 
-        "secretary": [], 
-        "certificateSubjectOrganisation": null, 
-        "overridePWHistory": null, 
-        "mailPrimaryAddress": null, 
-        "country": null, 
-        "roomNumber": [], 
-        "certificateSubjectCountry": null, 
-        "locked": false, 
-        "certificateDateNotBefore": null, 
-        "passwordexpiry": null, 
-        "certificateVersion": null, 
-        "homeShare": null, 
-        "certificateIssuerMail": null, 
-        "unlockTime": null, 
-        "serviceprovider": [], 
-        "profilepath": null, 
-        "certificateIssuerLocation": null, 
-        "jpegPhoto": null, 
-        "certificateDateNotAfter": null, 
+        "mobileTelephoneNumber": [],
+        "certificateSubjectOrganisationalUnit": null,
+        "groups": [],
+        "sambahome": null,
+        "departmentNumber": [],
+        "certificateSerial": null,
+        "certificateSubjectCommonName": null,
+        "primaryGroup": "cn=Domain Users,cn=groups,dc=mydomain,dc=intranet",
+        "uidNumber": null,
+        "disabled": false,
+        "unlock": false,
+        "street": null,
+        "postcode": null,
+        "scriptpath": null,
+        "sambaPrivileges": [],
+        "description": null,
+        "certificateIssuerCommonName": null,
+        "mailForwardCopyToSelf": false,
+        "employeeType": null,
+        "homedrive": null,
+        "overridePWLength": null,
+        "title": null,
+        "mailAlternativeAddress": [],
+        "userCertificate": null,
+        "organisation": null,
+        "homeSharePath": "",
+        "certificateIssuerOrganisationalUnit": null,
+        "e-mail": [],
+        "userexpiry": null,
+        "pwdChangeNextLogin": null,
+        "mailHomeServer": null,
+        "unixhome": "/home/",
+        "gecos": "",
+        "sambaUserWorkstations": [],
+        "preferredLanguage": null,
+        "certificateIssuerState": null,
+        "pagerTelephoneNumber": [],
+        "username": null,
+        "umcProperty": [],
+        "certificateIssuerCountry": null,
+        "homeTelephoneNumber": [],
+        "shell": "/bin/bash",
+        "homePostalAddress": [],
+        "firstname": null,
+        "certificateIssuerOrganisation": null,
+        "lastname": null,
+        "city": null,
+        "certificateSubjectMail": null,
+        "mailForwardAddress": [],
+        "phone": [],
+        "gidNumber": null,
+        "birthday": null,
+        "employeeNumber": null,
+        "objectFlag": [],
+        "sambaLogonHours": null,
+        "certificateSubjectLocation": null,
+        "displayName": "",
+        "password": null,
+        "lockedTime": null,
+        "sambaRID": null,
+        "secretary": [],
+        "certificateSubjectOrganisation": null,
+        "overridePWHistory": null,
+        "mailPrimaryAddress": null,
+        "country": null,
+        "roomNumber": [],
+        "certificateSubjectCountry": null,
+        "locked": false,
+        "certificateDateNotBefore": null,
+        "passwordexpiry": null,
+        "certificateVersion": null,
+        "homeShare": null,
+        "certificateIssuerMail": null,
+        "unlockTime": null,
+        "serviceprovider": [],
+        "profilepath": null,
+        "certificateIssuerLocation": null,
+        "jpegPhoto": null,
+        "certificateDateNotAfter": null,
         "certificateSubjectState": null
     }
 }
 					</programlisting>
 				</para>
 				<para>
-					Now you can modify the attributes the new user should have
-					and send the modified template, via a POST request, to create a new user.
+					Now you can modify the attributes the new user should have and send the modified template, via a <command>POST</command> request, to create a new user.
 					<programlisting language="sh">
 curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
-  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/ --data @user_template.json
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/ --data @user_template.json
 					</programlisting>
 				</para>
 			</section>
 			<section id="udm:rest_api:usage_examples:get">
 				<title>Search for users via a GET request</title>
 				<para>
-					In this example we search for a users/user object where the "firstname" property
-					starts with <wordasword>"Ale"</wordasword> and the "lastname" property ends with
-					<wordasword>"er"</wordasword>.
+					In this example we search for a users/user object where the property <property>firstname</property> starts with <literal>"Ale"</literal> and the property <property>lastname</property> ends with <literal>"er"</literal>.
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" \
-  "http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/?query\[firstname\]=Al%2A&amp;query\[lastname\]=%2Aer"
+  "http://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/?query\[firstname\]=Al%2A&amp;query\[lastname\]=%2Aer"
 					</programlisting>
 				</para>
 				<para>
-					The response should look something like this
-					(some fields where omitted for clarity):
+					The response should look something like this (some fields where omitted for clarity):
 					<programlisting language="js">
 {
     "_embedded": {
@@ -2077,13 +2073,12 @@ curl -X GET -H "Accept: application/json" \
 				<title>Modify a user via a PUT request</title>
 				<para>
 					To modify a user you first get the current state of the user.
-					To prevent modification conflicts you also have to get the entity tag (<wordasword>Etag</wordasword>)
-					of the user resource. The <wordasword>Etag</wordasword> can be found in the response
-					headers; it is used to identify a specific version of a resource.
+					To prevent modification conflicts you also have to get the entity tag (<wordasword>Etag</wordasword>) of the user resource.
+					The <wordasword>Etag</wordasword> can be found in the response headers; it is used to identify a specific version of a resource.
 					<programlisting language="sh">
 curl -X GET -H "Accept: application/json" --dump-header user.headers \
-  https://api-user:univention@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt; \
-  | python -m json.tool > user.json
+  https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/&lt;dn&gt; |
+  python -m json.tool > user.json
 					</programlisting>
 					<note>
 						<para>
@@ -2093,14 +2088,11 @@ curl -X GET -H "Accept: application/json" --dump-header user.headers \
 				</para>
 				<para>
 					Now you can edit the user in the <filename>user.json</filename> file to your liking.
-					After you are done, send the changed <filename>user.json</filename> via a
-					PUT request to modify the user.
-					To avoid modification conflicts it is required to send the value of the
-					<wordasword>Etag</wordasword> header, which you saved earlier in the
-					<filename>user.headers</filename> file, as the value for the "If-Match" header.
+					After you are done, send the changed <filename>user.json</filename> via a <command>PUT</command> request to modify the user.
+					To avoid modification conflicts it is required to send the value of the <wordasword>Etag</wordasword> header, which you saved earlier in the <filename>user.headers</filename> file, as the value for the <property>If-Match</property> header.
 					<programlisting language="sh">
 curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H 'If-Match: "&lt;Etag&gt;"' \
-  "https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;" --data @user.json
+  "https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/&lt;dn&gt;" --data @user.json
 					</programlisting>
 					<note>
 						<para>
@@ -2115,9 +2107,9 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
 			<section id="udm:rest_api:usage_examples:delete">
 				<title>Delete a user via a DELETE request</title>
 				<para>
-					To delete a user you just have to send a DELETE request to <uri>/univention/udm/users/user/&lt;dn&gt;</uri>
+					To delete a user you just have to send a <command>DELETE</command> request to <uri>/univention/udm/users/user/&lt;dn&gt;</uri>
 					<programlisting language="sh">
-curl -X DELETE http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;
+curl -X DELETE http://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/&lt;dn&gt;
 					</programlisting>
 					<note>
 						<para>
@@ -2199,15 +2191,14 @@ options = {
 class object(...):
     ...
 				]]></programlisting>
-
 				This enables generic functionality like automatic creation of search filters, automatic identification of objects and obsoletes the need to create the add-list manually.
 			</para>
 		</section>
 
 		<section id="udm:python-migration:mapping-functions"><title>Mapping functions</title>
 			<para>
-				The <function>unmap</function> functions must decode the given list of byte strings (<type>bytes</type>) into unicode strings (<type>str</type>).
-				The <function>map</function> functions must encode the result of the <function>unmap</function> functions (e.g. unicode strings <type>str</type>) into a list of byte strings (<type>bytes</type>).
+				The <function>unmap</function> functions must decode the given list of <type>byte</type> strings (<type>bytes</type>) into <type>unicode</type> strings (<type>str</type>).
+				The <function>map</function> functions must encode the result of the <function>unmap</function> functions (e.g. <type>unicode</type> strings <type>str</type>) into a list of <type>byte</type> strings (<type>bytes</type>).
 				Both functions have a new optional parameter <parameter>encoding</parameter>, which is a tuple consisting of the encoding (defaulting to <literal>UTF-8</literal>) and the error handling in case de/encoding fails (defaulting to <literal>strict</literal>).
 			</para>
 			<para>
@@ -2226,11 +2217,17 @@ mapping.register('property', 'attribute', map_function, unmap_function)
 
 				In UCS 5.0 the code has to look like:
 				<programlisting language="python"><![CDATA[
-def map_function(value, encoding=None):  # type: (Union[Text, Sequence[Text]], Optional[Tuple[str, str]]) -> List[bytes]
+def map_function(
+    value: Union[Text, Sequence[Text]],
+    encoding: Optional[Tuple[str, str]] = None,
+) -> List[bytes]:
     return [value.encode(*encoding)]
 
 
-def unmap_function(value, encoding=None):  # type: (Sequence[bytes], Optional[Tuple[str, str]]) -> Text
+def unmap_function(
+    value: Sequence[bytes],
+    encoding: Optional[Tuple[str, str]] = None,
+) -> Text:
     return value[0].decode(*encoding)
 
 
@@ -2256,10 +2253,7 @@ mapping.register('property', 'attribute', map_function, unmap_function, encoding
 			</para>
 			<para>
 				The encoding depends on the LDAP syntax of the corresponding LDAP attribute.
-				Syntaxes storing binary data should either be specified as <literal>ISO8859-1</literal> or
-				preferably should be decoded to an <literal>ASCII</literal> representation of <literal>base64</literal>
-				via <function>univention.admin.mapping.mapBase64</function> and <function>univention.admin.mapping.unmapBase64</function>.
-
+				Syntaxes storing binary data should either be specified as <literal>ISO8859-1</literal> or preferably should be decoded to an <literal>ASCII</literal> representation of <literal>base64</literal> via <function>univention.admin.mapping.mapBase64</function> and <function>univention.admin.mapping.unmapBase64</function>.
 				The attributes of the following syntaxes e.g. should be set to <literal>ASCII</literal> as they consist of ASCII only characters or a subset of ASCII (e.g. numbers).
 				<itemizedlist>
 					<listitem><para>IA5 String (1.3.6.1.4.1.1466.115.121.1.26)</para></listitem>
@@ -2291,7 +2285,7 @@ print(atttr.syntax)'
 				LDAP attributes contained in <varname>self.oldattr</varname> are usually transformed into property values (in <varname>self.info</varname>) by the mapping functions.
 				In some cases this cannot be done automatically.
 				Instead this is done manually in the methods <function>open()</function> or <function>_post_unmap()</function>.
-				These functions must consider transforming byte strings (<type>bytes</type> in <varname>self.oldattr</varname>) into unicode strings (<type>str</type> in <varname>self.info</varname>).
+				These functions must consider transforming <type>byte</type> strings (<type>bytes</type> in <varname>self.oldattr</varname>) into <type>unicode</type> strings (<type>str</type> in <varname>self.info</varname>).
 			</para>
 		</section>
 
@@ -2304,8 +2298,7 @@ print(atttr.syntax)'
 
 		<section id="udm:python-migration:identify"><title><function>identify()</function></title>
 			<para>
-				The <function>identify()</function> function must now consider that the given attribute values are byte strings.
-
+				The <function>identify()</function> function must now consider that the given attribute values are <type>byte</type> strings.
 				The code prior looked like:
 				<programlisting language="python"><![CDATA[
 def identify(dn, attr, canonical=False):
@@ -2345,7 +2338,7 @@ identify = object.identify
 
 		<section id="udm:python-migration:modlist"><title><function>_ldap_modlist()</function></title>
 			<para>
-				The methods <function>_ldap_modlist()</function> and <function>_ldap_addlist()</function> now must insert byte strings into the add/modlist.
+				The methods <function>_ldap_modlist()</function> and <function>_ldap_addlist()</function> now must insert <type>byte</type> strings into the add/modlist.
 
 				The code prior looked like:
 				<programlisting language="python"><![CDATA[
@@ -2394,7 +2387,7 @@ class object(...):
 
 		<section id="udm:python-migration:syntax"><title>Syntax classes</title>
 			<para>
-				Syntax classes now must ensure to return unicode strings.
+				Syntax classes now must ensure to return <type>unicode</type> strings.
 			</para>
 		</section>
 
@@ -2426,4 +2419,4 @@ class object(...):
 	<!-- </section> -->
 
 </chapter>
-<!-- vim:set noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

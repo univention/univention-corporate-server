@@ -3,9 +3,9 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 9),
+ debhelper-compat (= 12),
  univention-join-dev (>= 12),
-Standards-Version: 3.7.2
+Standards-Version: 4.3.0.3
 
 Package: join-template
 Architecture: all

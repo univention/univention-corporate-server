@@ -1,11 +1,11 @@
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import os
-import ldap
-from listener import SetUID
-import univention.debug as ud
 from pwd import getpwnam
+
+import ldap
+import univention.debug as ud
+from listener import SetUID
 
 name = "refcheck"
 description = "Check referential integrity of uniqueMember relations"

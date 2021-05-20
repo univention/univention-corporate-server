@@ -537,6 +537,15 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 								</para>
 							</listitem>
 						</varlistentry>
+						<varlistentry>
+							<term>python</term>
+							<listitem>
+								<para>
+									This value can be used to specify the Python interpreter version, e.g. <literal>2</literal> or <literal>3</literal>.
+									Default is Python 2.
+								</para>
+							</listitem>
+						</varlistentry>
 					</variablelist>
 					<para>
 						The child elements <literal>name</literal> and <literal>description</literal> define the English human readable name and description of the module.
@@ -807,7 +816,6 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 				<listitem><simpara><filename>univention-management-console-module-ucr/debian/changelog</filename></simpara></listitem>
 				<listitem><simpara><filename>univention-management-console-module-ucr/debian/control</filename></simpara></listitem>
 				<listitem><simpara><filename>univention-management-console-module-ucr/debian/copyright</filename></simpara></listitem>
-				<listitem><simpara><filename>univention-management-console-module-ucr/debian/compat</filename></simpara></listitem>
 			</itemizedlist>
 			<para>
 				All these files are standard Debian packaging files except <filename>univention-management-console-module-ucr.umc-modules</filename>.
@@ -878,12 +886,6 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term><filename>debian/compat</filename></term>
-					<listitem>
-						<programlisting>7</programlisting>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
 					<term><filename>debian/rules</filename></term>
 					<listitem>
 						<programlisting language="make"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/debian/rules" parse="text"/></programlisting>
@@ -920,8 +922,8 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 		<para>
 			To disabling a module use the following <acronym>XML</acronym> file as a template:
 		</para>
-			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-disable.xml" parse="text"/></programlisting>
+		<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-disable.xml" parse="text"/></programlisting>
 	</section>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

@@ -33,26 +33,20 @@
 	</para>
 
 	<para>
-		The active &ucsUDL; instances in the domain connect to a &ucsUDN;
-		service. If an LDAP change is performed on the &ucsPrimaryDN; (all other LDAP
-		servers in the domain are read-only), this is registered by the &ucsUDN;
-		and reported to the listener instances.
+		The active &ucsUDL; instances in the domain connect to a &ucsUDN; service.
+		If an LDAP change is performed on the &ucsPrimaryDN; (all other LDAP servers in the domain are read-only), this is registered by the &ucsUDN; and reported to the listener instances.
 	</para>
 
 	<para>
-		Each &ucsUDL; instance hosts a range of &ucsUDL;
-		modules. These modules are shipped by the installed applications; the print server package
-		includes, for example, listener modules which generate the CUPS configuration.
+		Each &ucsUDL; instance hosts a range of &ucsUDL; modules.
+		These modules are shipped by the installed applications; the print server package includes, for example, listener modules which generate the CUPS configuration.
 	</para>
 
 	<para>
-		&ucsUDL; modules can be used to communicate domain changes to services which are not
-		LDAP-aware. The print server CUPS is an example of this: The printer definitions are not
-		read from the LDAP, but instead from the file <filename>/etc/cups/printers.conf</filename>.
-		Now, if a printer is saved in the printer management of the &ucsUMC;, it is stored
-		in the LDAP directory. This change is detected by the &ucsUDL; module
-		<emphasis>cups-printers</emphasis> and an entry gets added to, modified in or deleted from
-		<filename>/etc/cups/printers.conf</filename> based on the modification in the LDAP directory.
+		&ucsUDL; modules can be used to communicate domain changes to services which are not LDAP-aware.
+		The print server CUPS is an example of this: The printer definitions are not read from the LDAP, but instead from the file <filename>/etc/cups/printers.conf</filename>.
+		Now, if a printer is saved in the printer management of the &ucsUMC;, it is stored in the LDAP directory.
+		This change is detected by the &ucsUDL; module <emphasis>cups-printers</emphasis> and an entry gets added to, modified in or deleted from <filename>/etc/cups/printers.conf</filename> based on the modification in the LDAP directory.
 	</para>
 
 	<section id="listener:handler">
@@ -152,16 +146,27 @@ modrdn : str = "1"
 			They are called in different situations of the live-cycle of the module.
 		</para>
 		<programlisting language="python"><![CDATA[
-def initialize() -> None: pass
-def handler(dn: str, new: Mapping[str, Sequence[bytes]], old: Mapping[str, Sequence[bytes]], command: str = '') -> None: pass
-def clean() -> None: pass
-def prerun() -> None: pass
-def postrun()  -> None: pass
-def setdata(key: str, value: str) -> None: pass
+def initialize() -> None:
+  pass
+def handler(
+  dn: str,
+  new: Optional[Mapping[str, Sequence[bytes]]],
+  old: Optional[Mapping[str, Sequence[bytes]]],
+  command: str = '',
+) -> None:
+  pass
+def clean() -> None:
+  pass
+def prerun() -> None:
+  pass
+def postrun() -> None:
+  pass
+def setdata(key: str, value: str) -> None:
+  pass
 		]]></programlisting>
 		<variablelist>
 			<varlistentry>
-				<term><function>handler(dn: str, new: Mapping[str, Sequence[bytes]], old: Mapping[str, Sequence[bytes]], command: str = '')</function> (required)</term>
+				<term><function>handler(dn: str, new: Optional[Mapping[str, Sequence[bytes]]], old: Optional[Mapping[str, Sequence[bytes]]], command: str = '')</function> (required)</term>
 				<listitem>
 					<para>
 						This function is called for each change matching the <varname>filter</varname> and <varname>attributes</varname> as declared in the header of the module.
@@ -445,10 +450,19 @@ def setdata(key: str, value: str) -> None: pass
 			</title>
 			<para>
 				The listener runs with the effective permissions of the user <literal>listener</literal>.
-				If <literal>root</literal>-privileges are required, <function>listener.setuid()</function> can be used to switch the effective UID.
-				When done, <function>listener.unsetuid()</function> should be called to drop back to the <literal>listener</literal> UID.
-				It's best practice to code this as <literal>try</literal>/<literal>finally</literal> clauses in Python.
+				If <literal>root</literal>-privileges are required, <function>listener.SetUID()</function> can be used as a context manager or method wrapper to switch the effective UID.
 			</para>
+		<programlisting language="python"><![CDATA[
+from listener import SetUID
+
+@SetUID()
+def prerun() -> None:
+			pass
+
+def postrun() -> None:
+	with SetUID(0):
+			pass
+		]]></programlisting>
 		</section>
 
 		<section id="listener:details:cache">
@@ -489,7 +503,8 @@ def setdata(key: str, value: str) -> None: pass
 					<term><filename>cache.db</filename>, <filename>cache.db.lock</filename></term>
 					<listitem>
 						<para>
-							Before UCS 4.2 the BDB cache file contained a copy of all objects and their attributes. With the update to UCS 4.2 it gets converted into an LMDB database.
+							Before UCS 4.2 the <abbrev>BDB</abbrev> cache file contained a copy of all objects and their attributes.
+							With the update to UCS 4.2 it gets converted into an <abbrev>LMDB</abbrev> database.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -521,6 +536,11 @@ def setdata(key: str, value: str) -> None: pass
 
 			<section id="listener:commands:ctrl">
 				<title><command>univention-directory-listener-ctrl</command></title>
+				<para>
+					The command <command>univention-directory-listener-ctrl status</command> shows the status of the Listener.
+					This includes the transaction from the &ucsPrimaryDN; in comparison to the last processes transaction.
+					It also shows a list of all installed modules and their status.
+				</para>
 				<para>
 					The command <command>univention-directory-listener-ctrl resync <replaceable>name</replaceable></command> can be used to reset and re-initialize a module.
 					It stops any currently running listener process, removes the state file for the specified module and starts the listener process again.
@@ -630,7 +650,7 @@ univention-directory-listener-verify \
 				<step>
 					<para>
 						All listeners get notified of the new transaction.
-						Before UCS <productnumber>4.3-3</productnumber> <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">erratum update 427</ulink> the information already included the latest transaction <abbrev>ID</abbrev>, <abbrev>DN</abbrev> and the change type.
+						Before <u:erratum release="4.3-3">427</u:erratum> the information already included the latest transaction <abbrev>ID</abbrev>, <abbrev>DN</abbrev> and the change type.
 						With protocol version 3 only the transaction <abbrev>ID</abbrev> is included.
 					</para>
 				</step>
@@ -697,10 +717,8 @@ univention-directory-listener-verify \
 				Since UCS 5.0 the &ucsUDL; uses Python 3 to execute listener modules.
 		</para>
 		<para>
-
 				For a successful migration all functions must be migrated to work with Python 3.
 				There is no change in the module variables (<varname>name</varname>, <varname>description</varname>, <varname>filter</varname>, ...) necessary.
-
 		</para>
 		<para>
 				The data structure of the arguments <varname>new</varname> and <varname>old</varname> given to the <function>handler()</function> function now explicitly differentiates between byte strings (<type>bytes</type>) and unicode strings (<type>str</type>).
@@ -724,30 +742,35 @@ univention-directory-listener-verify \
   'univentionObjectType': [b'container/dc'],
 }
 				]]></programlisting>
-
 		</para>
 		<para>
 				While in UCS 4 <function>handler()</function> typically looked like:
 				<programlisting language="python"><![CDATA[
-def handler(dn, new, old):
-    if 'myObjectClass' in new.get('objectClass', []):
+def handler(
+    dn,   # type: str,
+    new,  # type: Optional[Mapping[str, Sequence[str]]]
+    old,  # type: Optional[Mapping[str, Sequence[str]]]
+):  # type: (...) -> None
+    if new and 'myObjectClass' in new.get('objectClass', []):
         value = new['myAttribute'][0]
         ...
 				]]></programlisting>
-
 		</para>
 		<para>
 			In UCS 5 it would look like:
 			<programlisting language="python"><![CDATA[
-def handler(dn, new, old):  # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]]) -> None
-    if b'myObjectClass' in new.get('objectClass', []):
+def handler(
+    dn: str,
+    new: Optional[Mapping[str, Sequence[bytes]]],
+    old: Optional[Mapping[str, Sequence[bytes]]],
+) -> None:
+    if new and b'myObjectClass' in new.get('objectClass', []):
         value = new['myAttribute'][0].decode('UTF-8')
         ...
 			]]></programlisting>
-
 			</para>
 		</section>
 	</section>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

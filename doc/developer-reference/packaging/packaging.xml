@@ -118,7 +118,7 @@ dpkg-buildpackage -uc -us -b -rfakeroot
 			<step>
 				<para>Locally install the new binary package</para>
 				<programlisting><![CDATA[
-sudo dpkg -i ../univention-ssh_*_*.deb
+sudo apt-get install ../univention-ssh_*_*.deb
 					]]></programlisting>
 			</step>
 		</procedure>
@@ -273,15 +273,13 @@ rm debian/README* debian/doc
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><filename>debian/compat</filename></term>
 				<term><filename>debian/source/format</filename></term>
 				<listitem>
 					<para>
-						These files control some internal aspects of the package build process.
-						They can be ignored for the moment and are further described in <xref linkend="deb:debian"/>.
+						This file control some internal aspects of the package build process.
+						It can be ignored for the moment and are further described in <xref linkend="deb:debian"/>.
 					</para>
 					<!--
-					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/compat" parse="text"/></programlisting>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/source/format" parse="text"/></programlisting>
 					-->
 				</listitem>
@@ -295,78 +293,52 @@ rm debian/README* debian/doc
 			The command should then produce the following output:
 		</para>
 		<screen><![CDATA[
-dpkg-buildpackage: source package testdeb
-dpkg-buildpackage: source version 0.1-1
-dpkg-buildpackage: source changed by John Doe <user@example.com>
-dpkg-buildpackage: host architecture amd64
- dpkg-source --before-build testdeb
- fakeroot debian/rules clean
+dpkg-buildpackage: info: source package testdeb
+dpkg-buildpackage: info: source version 0.1-1
+dpkg-buildpackage: info: source distribution unstable
+dpkg-buildpackage: info: source changed by John Doe <user@example.com>
+dpkg-buildpackage: info: host architecture amd64
+ dpkg-source --before-build .
+ debian/rules clean
 dh clean
-   dh_testdir
-   dh_auto_clean
    dh_clean
- dpkg-source -b testdeb
-dpkg-source: Information: Quellformat »3.0 (native)« wird verwendet
-dpkg-source: Information: testdeb wird in testdeb_0.1-1.tar.gz gebaut
-dpkg-source: Information: testdeb wird in testdeb_0.1-1.dsc gebaut
+ dpkg-source -b .
+dpkg-source: info: using source format '1.0'
+dpkg-source: warning: source directory 'testdeb' is not <sourcepackage>-<upstreamversion> 'testdeb-0.1'
+dpkg-source: info: building testdeb in testdeb_0.1-1.tar.gz
+dpkg-source: info: building testdeb in testdeb_0.1-1.dsc
  debian/rules build
 dh build
-   dh_testdir
-   dh_auto_configure
-   dh_auto_build
-   dh_auto_test
- fakeroot debian/rules binary
+   dh_update_autotools_config
+   dh_autoreconf
+   create-stamp debian/debhelper-build-stamp
+ debian/rules binary
 dh binary
    dh_testroot
    dh_prep
-   dh_installdirs
-   dh_auto_install
    dh_install
    dh_installdocs
    dh_installchangelogs
-   dh_installexamples
-   dh_installman
-   dh_installcatalogs
-   dh_installcron
-   dh_installdebconf
-   dh_installemacsen
-   dh_installifupdown
-   dh_installinfo
-   dh_installinit
-   dh_installmenu
-   dh_installmime
-   dh_installmodules
-   dh_installlogcheck
-   dh_installlogrotate
-   dh_installpam
-   dh_installppp
-   dh_installudev
-   dh_installwm
-   dh_installxfonts
-   dh_installgsettings
-   dh_bugfiles
-   dh_ucf
-   dh_lintian
-   dh_gconf
-   dh_icons
    dh_perl
-   dh_usrlocal
    dh_link
+   dh_strip_nondeterminism
    dh_compress
    dh_fixperms
+   dh_missing
    dh_installdeb
    dh_gencontrol
    dh_md5sums
    dh_builddeb
-dpkg-deb: building package `testdeb' in `../testdeb_0.1-1_all.deb'.
- dpkg-genchanges -b >../testdeb_0.1-1_amd64.changes
-dpkg-genchanges: binary-only upload - not including any source code
- dpkg-source --after-build testdeb
-dpkg-buildpackage: full upload; Debian-native package (full source is included)
+dpkg-deb: building package 'testdeb' in '../testdeb_0.1-1_all.deb'.
+ dpkg-genbuildinfo
+ dpkg-genchanges  >../testdeb_0.1-1_amd64.changes
+dpkg-genchanges: info: including full source code in upload
+ dpkg-source --after-build .
+dpkg-buildpackage: info: full upload; Debian-native package (full source is included)
 		]]></screen>
 		<para>
 			The binary package file <filename>testdeb_0.1-1_all.deb</filename> is stored in the parent directory.
-			When it is installed manually using <command>dpkg -i ../testdeb_0.1-2_all.deb</command> as root, the Python script is installed as <filename>/usr/bin/testdeb.py</filename>.
+			When it is installed manually using <command>dpkg -i ../testdeb_0.1-2_all.deb</command> as <systemitem class="username">root</systemitem>, the Python script is installed as <filename>/usr/bin/testdeb.py</filename>.
 			It is automatically invoked by the <filename>postint</filename> script, so a file named <filename>/tmp/testdeb-<replaceable>date</replaceable>-<replaceable>time</replaceable></filename> has been created, too.
 		</para>
 		<para>
@@ -387,23 +359,23 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 		<para>
 			For this example the repository is created below <filename class="directory">/var/www/repository/</filename>, which is exported by default on all UCS systems, where <application>apache2</application> is installed.
 			Below that directory several other sub-directories and files must be created to be compatible with the <application>UCS Updater</application>.
-			The following example commands create a repository for UCS version 4.3 with the component name <replaceable>testcomp</replaceable>:
+			The following example commands create a repository for UCS version 5.0 with the component name <replaceable>testcomp</replaceable>:
 		</para>
 		<programlisting><![CDATA[
-WWW_BASE="/var/www/repository/4.3/maintained/component"
+WWW_BASE="/var/www/repository/5.0/maintained/component"
 TESTCOMP="testcomp/all"
 install -m755 -d "$WWW_BASE/$TESTCOMP"
 install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
-( cd "$WWW_BASE" &&
-  rm -f "$TESTCOMP/Packages"* &&
-  apt-ftparchive packages "$TESTCOMP" > "Packages" &&
-  gzip -9 < "Packages" > "$TESTCOMP/Packages.gz" &&
+( cd "$WWW_BASE"
+  rm -f "$TESTCOMP/Packages"*
+  apt-ftparchive packages "$TESTCOMP" > "Packages"
+  gzip -9 < "Packages" > "$TESTCOMP/Packages.gz"
   mv "Packages" "$TESTCOMP/Packages" )
 		]]></programlisting>
 		<para>
 			This repository can be included on any UCS system by appending the following line to <filename>/etc/apt/sources.list</filename>, assuming the <acronym>FQDN</acronym> of the host providing the repository is named <replaceable>repository.server</replaceable>:
 		</para>
-		<programlisting>deb http://repository.server/repository/4.3/maintained/component testcomp/all/</programlisting>
+		<programlisting>deb [trusted=yes] http://repository.server/repository/5.0/maintained/component testcomp/all/</programlisting>
 		<note>
 			<para>
 				It is important that the directory, from were the <command>apt-ftparchive</command> command is invoked, matches the first string given in the <filename>sources.list</filename> file after the <literal>deb</literal> prefix.
@@ -425,15 +397,14 @@ ucr set \
 	</section>
 
 	<section id="pkg:obs"><title>Building packages through the openSUSE Build Service</title>
-	<para>
-	  The openSUSE Build Service (OBS) is a framework to generate packages for a wide range of
-	  distributions. Additional information can be found at <ulink
-	  url="https://build.opensuse.org/"/>. If OBS is already used to build packages for other distributions, it can also
-	  be used for Univention Corporate Server builds. The build target for UCS 4.3 is called
-	  <emphasis>Univention UCS 4.3</emphasis>. Note that OBS doesn't handle the integration steps
-	  described in later chapters (e.g. the use of Univention Configuration Registry templates).
-	</para>
+		<para>
+			The openSUSE Build Service (<abbrev>OBS</abbrev>) is a framework to generate packages for a wide range of distributions.
+			Additional information can be found at <ulink url="https://build.opensuse.org/"/>.
+			If <abbrev>OBS</abbrev> is already used to build packages for other distributions, it can also be used for &ucsUCS; builds.
+			The build target for UCS 4.4 is called <emphasis>Univention UCS 4.4</emphasis>.
+			Note that OBS doesn't handle the integration steps described in later chapters (e.g. the use of &ucsUCR; templates).
+		</para>
 	</section>
 
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

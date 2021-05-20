@@ -15,20 +15,28 @@
 		<title>Databases
 			<indexterm><primary>Database</primary></indexterm>
 		</title>
-		<para><acronym>UCS</acronym> ships with two major database management systems, which are used for <acronym>UCS</acronym> internal purposes, but can also be used for custom additions.</para>
+		<para>
+			<acronym>UCS</acronym> ships with two major database management systems, which are used for <acronym>UCS</acronym> internal purposes, but can also be used for custom additions.
+		</para>
 
 		<section id="misc:postgresql">
 			<title>PostgreSQL
 				<indexterm><primary>Database</primary><secondary>PostgreSQL</secondary></indexterm>
 			</title>
-			<para><acronym>UCS</acronym> uses PostgreSQL by default for its package tracking database, which collects the state and versions of packages installed on all systems of the domain.</para>
+			<para>
+				<acronym>UCS</acronym> uses PostgreSQL by default for its package tracking database, which collects the state and versions of packages installed on all systems of the domain.
+			</para>
 		</section>
 
 		<section id="misc:mysql">
-			<title>MySQL
+			<title>MariaDB
+				<indexterm><primary>Database</primary><secondary>MariaDB</secondary></indexterm>
 				<indexterm><primary>Database</primary><secondary>MySQL</secondary></indexterm>
 			</title>
-			<para>By default the MySQL root password is set to ___. Debian provides the <package>dbconfig</package> package, which can be used to create and modify additional databases from maintainer scripts. <!--bug>19354</bug--></para>
+			<para>
+				By default the MariaDB root password is set to ___.
+				Debian provides the <package>dbconfig</package> package, which can be used to create and modify additional databases from maintainer scripts. <!--bug>19354</bug-->
+			</para>
 		</section>
 	</section>
 
@@ -37,16 +45,11 @@
 			<indexterm><primary>Packaging</primary><secondary>Checking for errors</secondary></indexterm>
 		</title>
 		<para>
-			Use <command>ucslint</command> to find packaging mistakes.
-			Called best from <filename>debian/rules</filename>, needs build dependency on <package>ucslint</package>.
+			Use <command>ucslint</command> to find packaging issues.
 		</para>
-		<programlisting language="make"><![CDATA[
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-		]]></programlisting>
 		<para>
-			For each issue, <command>ucslint</command> prints one line, which line contains several fields separated by <literal>:</literal>:
+			For each issue one or more lines are printed.
+			The first line per issue always contains several fields separated by <literal>:</literal>:
 		</para>
 		<synopsis><replaceable>severity</replaceable>:<replaceable>module-id</replaceable>-<replaceable>test-id</replaceable><optional>:<replaceable>filename</replaceable><optional>:<replaceable>line-number</replaceable><optional>:<replaceable>column-number</replaceable></optional></optional></optional>: <replaceable>message</replaceable></synopsis>
 		<para>
@@ -137,6 +140,14 @@ override_dh_auto_test:
 				<term>0017-Shell</term>
 				<listitem><simpara>Checks shell scripts for quoting errors</simpara></listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>0018-Debian</term>
+				<listitem><simpara>Checks for Debian packaging issues</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0020-flake8</term>
+				<listitem><simpara>Checks Python scripts for <command>flake8</command> issues</simpara></listitem>
+			</varlistentry>
 		</variablelist>
 		<para>
 			The module and test number may be optionally followed by a file name, line number in that file, and column number in that line, where the issue was found.
@@ -145,7 +156,7 @@ override_dh_auto_test:
 		<para>
 			Since <command>ucslint</command> is very Univention centric, many of its tests return false positives for software packages by other parties.
 			Therefore many tests need to be disables.
-			For that a file <filename>debian/ucslint.overrides</filename> can be created with list of modules and test, which should be ignored.
+			For this the file <filename>debian/ucslint.overrides</filename> can be created with list of modules and test to be ignored.
 			Without specifying the optional filename, line number and column number, the test is globally disabled for all files.
 		</para>
 	</section>
@@ -155,14 +166,14 @@ override_dh_auto_test:
 			<indexterm><primary>Packaging</primary><secondary>Library functions</secondary></indexterm>
 		</title>
 		<para>
-			The source package <package>univention-lib</package> provides two binary packages <package>shell-univention-lib</package> and <package>python-univention-lib</package>, which contain common library functions usable in shell or Python programs.
+			The source package <package>univention-lib</package> provides the binary packages <package>shell-univention-lib</package>, <package>python3-univention-lib</package> and <package>python-univention-lib</package>, which contain common library functions usable in shell or Python programs.
 		</para>
 		<remark>PMH: poorly documented and of qustionale code quality</remark>
 
 		<section id="misc:lib:sh">
 			<title><package>shell-univention-lib</package></title>
 			<para>
-				This package provides several libraries in <filename class="directory">/usr/share/univention-lib/</filename>, which can be used in shell scripts.
+				This package (and several others) provides shell libraries in <filename class="directory">/usr/share/univention-lib/</filename>, which can be used in shell scripts.
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -174,10 +185,28 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term><filename>/usr/share/univention-lib/backup.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains code to remove old backup files from <filename class="directory">/var/univention-backup/</filename>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term><filename>/usr/share/univention-lib/base.sh</filename></term>
 					<listitem>
 						<para>
 							This file contains some helpers to create log files, handle unjoin scripts (see <xref linkend="join:unjoin"/>) or query the network configuration.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/join.sh</filename></term>
+					<listitem>
+						<para>
+							This file is provided by the package <package>univention-join</package>.
+							It is used by by Debian maintainer scripts to register and call join scripts.
+							See <xref linkend="join:libraries:shell"/> for further details.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -201,7 +230,9 @@ override_dh_auto_test:
 					<term><filename>/usr/share/univention-lib/ucr.sh</filename></term>
 					<listitem>
 						<para>
-							This file contains some helpers to handle bool'ean &ucsUCRV;s and handle UCR files on package removal.
+							This file is provided by the package <package>univention-config</package>.
+							It contains some helpers to handle bool'ean &ucsUCRV;s and handle UCR files on package removal.
+							See <xref linkend="ucr:usage:shell"/> for further details.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -243,7 +274,7 @@ override_dh_auto_test:
 					<listitem>
 						<remark>PMH: Bug #27670</remark>
 						<para>
-							This module contains functions to handle at-jobs.
+							This module contains functions to handle <command>at</command>-jobs.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -252,21 +283,6 @@ override_dh_auto_test:
 					<listitem>
 						<para>
 							This module provides some functions for handling the file <filename>/etc/fstab</filename>.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><cmdsynopsis>
-							<command>python -m univention.lib.getMailFromMailOrUid</command>
-							<group choice="req">
-								<arg choice="plain">uid</arg>
-								<arg choice="plain">email</arg>
-							</group>
-							</cmdsynopsis></term>
-					<listitem>
-						<remark>PMH: WTF?</remark>
-						<para>
-							This program returns the distinguished name of the user, which either matches the user identifier or email address given to the command as an argument.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -328,14 +344,6 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term><package>univention.lib.shell</package></term>
-					<listitem>
-						<para>
-							This module provides two functions for escaping shell command line arguments and creating at jobs.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
 					<term><package>univention.lib.ucrLogrotate</package></term>
 					<listitem>
 						<para>
@@ -364,14 +372,6 @@ override_dh_auto_test:
 					<listitem>
 						<para>
 							This module provides some functions for handling icons.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><package>univention.lib.urllib2_ssl</package></term>
-					<listitem>
-						<para>
-							This module provides a pack-port of <package>urllib2</package> from Python-3.3, which implements proper certificate checking.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -537,4 +537,4 @@ nmap 192.0.2.110 -sU -p 400-500
 		</section>
 	</section>
 </chapter>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

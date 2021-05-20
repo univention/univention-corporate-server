@@ -839,7 +839,8 @@ override_dh_auto_configure:
 	./setup --prefix=/usr --with-option-foo
 			]]></programlisting>
 			<para>
-				Without that explicit override <command>dh_auto_configure</command> would be called, which normally automatically detects several build systems like <application>cmake</application>, <application>setup.py</application>, <application>autoconf</application> and others. For these <command>dh</command> also passes the right options to configure the default prefix <filename class="directory">/usr</filename> and use the right compiler flags.
+				Without that explicit override <command>dh_auto_configure</command> would be called, which normally automatically detects several build systems like <application>cmake</application>, <application>setup.py</application>, <application>autoconf</application> and others.
+				For these <command>dh</command> also passes the right options to configure the default prefix <filename class="directory">/usr</filename> and use the right compiler flags.
 			</para>
 			<para>
 				After configuration the package is built and installed to the temporary staging area in <filename class="directory">debian/tmp/</filename>.
@@ -907,7 +908,11 @@ override_dh_auto_configure:
 			</para>
 			<warning>
 				<para>
-					It is important that these scripts handle error conditions properly:
+					Make sure to handle package <emphasis>upgrades</emphasis> and <emphasis>removal</emphasis> correctly:
+					Both tasks will invoke any existing scripts <filename>prerm</filename> and <filename>postrm</filename>, but with different parameters <option>remove</option> and <option>upgrade</option> only.
+				</para>
+				<para>
+					It is important that all these scripts handle error conditions properly:
 					Maintainer scripts should terminate with <command>exit 0</command> on success and <command>exit 1</command> on fail, if things go catastrophically wrong.
 				</para>
 				<para>
@@ -952,4 +957,4 @@ override_dh_auto_configure:
 	</section>
 
 </appendix>
-<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
