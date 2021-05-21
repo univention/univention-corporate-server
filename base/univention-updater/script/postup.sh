@@ -139,11 +139,6 @@ then
 		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >&3 2>&3
 fi
 
-# run remaining joinscripts
-if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-run-join-scripts >&3 2>&3
-fi
-
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >&3 2>&3
 
@@ -179,6 +174,11 @@ while [ "$wait_period" -lt "300" ]; do
 done
 # Wait another 30 seconds for listener postrun, as ldap_extension restarts slapd
 sleep 30
+
+# run remaining joinscripts
+if [ "$server_role" = "domaincontroller_master" ]; then
+	univention-run-join-scripts >&3 2>&3
+fi
 
 rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
 
