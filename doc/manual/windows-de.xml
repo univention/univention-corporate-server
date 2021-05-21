@@ -1103,18 +1103,16 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 
 	<para>
 	  Nach Klick auf <mousebutton>Weiter</mousebutton> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller.
-	  Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
-	  in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
+	  Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
 	  Es wird empfohlen diesem Rat zu folgen.
 	  UCS 5.0 erfordert TLS 1.2, welches für Windows Server Releases vor 2012R2 manuell auf dem Windows Server aktiviert werden muss.
-	  UCS 5.0 unterstüzt das Hashingverfahren SHA1 nicht mehr. Falls für die Erstellung des das AD-Root-Zertifikat oder
-	  das Zertifikat des Windows Servers dieses Verfahren verwendet wurde, dann sollten diese ersetzt werden.
+	  UCS 5.0 unterstützt die Hash-Funktion SHA-1 nicht mehr.
+	  Falls für die Erstellung des das AD Root-Zertifikat oder das Zertifikat des Windows Servers dieses Verfahren verwendet wurde, dann sollten diese ersetzt werden.
 	  Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf <mousebutton>Weiter</mousebutton> fortgesetzt werden.
 	  Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt,
 	  ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
 	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <mousebutton>Fortfahren ohne Verschlüsselung</mousebutton> fortgesetzt werden.
 	  In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
-	  Falls
 	</para>
 
 	<para>
@@ -2068,3 +2066,4 @@ wbinfo --check-secret –domain=addom.example
 </section>
 
 </chapter>
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
