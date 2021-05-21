@@ -241,6 +241,7 @@ create_ucs_images () {
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
 
+	echo "## Images available at $APPS_BASE"
 }
 
 create_ec2_image () {
