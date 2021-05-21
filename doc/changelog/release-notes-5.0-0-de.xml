@@ -141,6 +141,144 @@
 			</para>
 		</section>
 
+		<section id="relnotes:removals">
+			<title>Entfernte Komponenten</title>
+			<para>
+				In UCS 5 wurden mehrere Integrationspakete entfernt.
+			</para>
+
+			<variablelist>
+				<varlistentry>
+					<term>&ucsUVMM;</term>
+					<term><package>src:univention-kvm-virtio</package></term>
+					<term><package>src:univention-novnc</package></term>
+					<term><package>src:univention-virtual-machine-manager-daemon</package></term>
+					<term><package>src:univention-virtual-machine-manager-node</package></term>
+					<term><package>src:univention-virtual-machine-manager-schema</package></term>
+					<listitem>
+						<simpara>
+							UCS 5 stellt keine grafische Benutzeroberfläche zum Betrieb virtueller Maschinen zur Verfügung,
+							aber unter UCS können weiterhin per KVM virtualisierte Systeme betrieben werden.
+							Ebenso kann UCS weiterhin virtualisiert auf verschiedenen <literal>Hypervisoren</literal> laufen.
+							Die Debian-Pakete  <package>libvirt</package> und <package>qemu</package> sind weiterhin verfügbar.
+							Das Update auf UCS 5 wird blockiert solange die Integrationspakete für UVMM nicht entfernt worden sind.
+							Alle LDAP-Objekte mit <literal>univentionObjectType</literal> vom Typ <classname>uvmm/profile</classname> und <classname>uvmm/info</classname> sollten entfernt werden.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Bacula</term>
+					<term><package>src:univention-bacula</package></term>
+					<listitem>
+						<simpara>
+							Die direkte Integration für Bacula Backup wurde entfernt.
+							Bacula und Bareos sind weiterhin als Debian Pakete verfügbar und auch im App Center.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>src:univention-doc</package></term>
+					<listitem>
+						<simpara>
+							Die Python API Dokumentation ist jetzt <ulink url="https://docs.software-univention.de/ucs-python-api/">online</ulink> verfügbar.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>MRTG</term>
+					<term><package>src:univention-mrtg</package></term>
+					<listitem>
+						<simpara>
+							MRTG wurde entfernt.
+							Als Ersatz wird eine vergleichbare Funktionalität durch die UCS Dashboard app abgedeckt.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>src:univention-java</package></term>
+					<listitem>
+						<simpara>
+							Das Integrationspaket wurde entfernt.
+							Das von Debian bereitgestellte OpenJDK kann weiterhin verwendet und installiert werden über die Pakete <package>default-jre</package> oder <package>default-jdk</package>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>KDE</term>
+					<term><package>src:univention-kde</package></term>
+					<listitem>
+						<simpara>
+							Das Integrationspaket für das <literal>K Desktop Environment (KDE)</literal> wurde entfernt.
+							Die von Debian bereitgestellten Pakete sind weiterhin verfügbar.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>src:univention-ftp</package></term>
+					<listitem>
+						<simpara>
+							Das Integrationspaket für FTP wurde entfernt.
+							Die von Debian bereitgestellten Pakete für <application>ProFTPd</application> und andere FTP-Server sind weiterhin verfügbar.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>MySQL</term>
+					<term><package>src:univention-mysql</package></term>
+					<listitem>
+						<simpara>
+							Das Integrationspaket für MySQL wurde entfernt.
+							Es wurde durch MariaDB abgelöst.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>PyKota</term>
+					<term><package>src:univention-printserver-quota</package></term>
+					<listitem>
+						<simpara>
+							Das <wordasword>Druck-Kontigent-System</wordasword> PyKota wurde entfernt, weil es <wordasword>upstream</wordasword> nicht mehr unterstützt ist.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>DansGuardian</term>
+					<term><package>src:univention-dansguardian</package></term>
+					<listitem>
+						<simpara>
+							Die Unterstützung des <wordasword>Filterungssystems</wordasword> DansGuardian wurde eingestellt, weil es <wordasword>upstream</wordasword> nicht mehr gepflegt wird.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Samba 4 WINS</term>
+					<term><package>src:univention-samba4wins</package></term>
+					<listitem>
+						<simpara>
+							Unterstützung für Windows NT Domänen wurde von Samba abgekündigt.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Linux Kernel</term>
+					<term>GRUB</term>
+					<term><wordasword>SHIM</wordasword></term>
+					<term><package>src:univention-kernel-image</package></term>
+					<term><package>src:univention-kernel-image-signed</package></term>
+					<term><package>src:shim-signed</package></term>
+					<term><package>src:grub-efi-amd64-signed</package></term>
+					<listitem>
+						<simpara>
+							Debian unterstützt UEFI Secure Boot direkt selbst.
+							UCS spezifische Pakete wurden entfernt.
+							Der aktuelle Linux-Kernel für Debian <wordasword>Buster</wordasword> wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
+							Die zugehörigen Header-Dateien können bei Bedarf über das Paket <package>linux-headers-amd64</package> installiert werden.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
+
 		<section id="relnotes:tls">
 			<title>Erhöhung der minimalen TLS Protokollversion</title>
 			<para>
