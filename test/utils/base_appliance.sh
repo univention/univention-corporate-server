@@ -1033,10 +1033,8 @@ setup_ec2 ()
 		grub/append="${append}" \
 		grub/boot=${DEV} \
 		grub/root=${DEV}1 \
-		grub/grub1root=${GRUB} \
 		grub/rootdelay=0 \
 		grub/timeout=0 \
-		grub/generate-menu-lst=no \
 		grub/terminal="console serial" \
 		grub/serialcommand="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
 

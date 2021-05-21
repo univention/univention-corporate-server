@@ -568,14 +568,6 @@
                 Splash-Screen - kann durch Setzen der &ucsUCRV; <envar>grub/bootsplash</envar> auf
                 <literal>nosplash</literal> deaktiviert werden.
             </para>
-            <para>
-                In älteren Xen-Umgebungen wird zum Booten paravirtualisierter Systeme
-                noch eine Version von PyGrub verwendet, die
-                auf die ältere GRUB 1-Konfigurationsdatei <filename>/boot/grub/menu.lst</filename>
-                angewiesen ist. Diese wird automatisch erzeugt, sofern sie noch nicht existiert.
-                Dieses Verhalten kann durch Setzen der
-                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <literal>no</literal> deaktiviert werden.
-            </para>
         </section>
 
         <section id="hardware::networkconfiguration"><title>Netz-Konfiguration</title>

@@ -581,13 +581,6 @@
 			screen - can be deactivated by setting &ucsUCRV; <envar>grub/bootsplash</envar>
 			to <literal>nosplash</literal>.
 		</para>
-		<para>
-			Older Xen environments might use a version of PyGrub, which still
-			requires the GRUB 1 configuration file <filename>/goot/grub/menu.lst</filename>
-			to boot paravirtualized Xen systems. This file is generated automatically if
-			it does not yet exist. This behavior can be deactivated by setting the
-			&ucsUCRV; <envar>grub/generate-menu-lst</envar> to <literal>no</literal>.
-		</para>
 	</section>
 
 	<section id="hardware::networkconfiguration">
