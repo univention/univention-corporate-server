@@ -1,3 +1,10 @@
+univention-directory-logger (11.0.3-1) unstable; urgency=medium
+
+  * Bug #53304: fix Python 3 error: RuntimeError: dictionary changed
+    size during iteration
+
+ -- Florian Best <best@univention.de>  Fri, 21 May 2021 13:48:32 +0200
+
 univention-directory-logger (11.0.2-1) unstable; urgency=medium
 
   * Bug #52301: fix int(filemode, 0) guessing of Python 3

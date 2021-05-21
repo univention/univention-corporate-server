@@ -93,8 +93,7 @@ def ldapTime2string(timestamp):
 
 
 def filterOutUnchangedAttributes(old_copy, new_copy):
-	keylist = old_copy.keys()
-	for key in keylist:
+	for key in list(old_copy.keys()):
 		if key not in new_copy:
 			continue
 		if new_copy[key] == old_copy[key]:
