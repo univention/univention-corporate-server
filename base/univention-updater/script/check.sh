@@ -839,6 +839,114 @@ update_check_samba_tdb_size () {  # Bug #53212
 	fi
 }
 
+update_check_python_ucr_template_compatibility () {
+	local var="update$VERSION/ignore-python3-compatiblity-ucr-templates"
+	ignore_check "$var" && return 100
+
+	/usr/bin/python2.7 - <<EOF
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+
+import os
+import atexit
+import shutil
+import tempfile
+import subprocess
+
+from univention.config_registry.handler import EXECUTE_TOKEN
+
+BASE_DIR = "/etc/univention/templates/files/"
+
+DENY_LIST = ['/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter']
+
+def dpkg():
+	etc = {}
+	cmd_dpkg = ["dpkg", "-S", os.path.join(BASE_DIR, '*')]
+	proc = subprocess.Popen(cmd_dpkg, stdout=subprocess.PIPE)
+	for line in proc.stdout:
+		pkg, fn = line.decode('UTF-8', 'replace').strip().split(': ')
+		etc[fn] = pkg
+	return etc
+
+
+def uninstalled(package):
+	try:
+		out = subprocess.check_output(['dpkg-query', '-W', '-f', '\${Status}', package], env={'LANG': 'C'})
+	except subprocess.CalledProcessError:
+		return False
+	return out.decode('UTF-8', 'replace').startswith('deinstall ')
+
+
+def cleanup(tmpdir):
+	shutil.rmtree(tmpdir, True)
+
+
+os.umask(0o077)
+tmpdir = tempfile.mkdtemp()
+atexit.register(cleanup, tmpdir)
+tempfiles = [
+	path
+	for path in (
+		os.path.join(path, filename)
+		for path, dirs, files in os.walk(BASE_DIR)
+		for filename in files
+	) if EXECUTE_TOKEN.search(open(path, 'rb').read())
+]
+failed = []
+for ucr_config_file in tempfiles:
+	if ucr_config_file.endswith('.dpkg-new') or ucr_config_file.endswith('.dpkg-old') or ucr_config_file in DENY_LIST:
+		continue
+	with open(ucr_config_file, 'rb') as fd:
+		template = fd.read()
+
+	num = 0
+	while True:
+		i = EXECUTE_TOKEN.finditer(template)
+		num += 1
+		try:
+			start = next(i)
+			end = next(i)
+
+			ucr_temp_file = os.path.join(tmpdir, '%s%d.py' % (os.path.basename(ucr_config_file), num))
+			with open(ucr_temp_file, 'wb') as fd:
+				fd.write(b'''\
+# -*- coding: utf-8 -*-
+import univention.config_registry
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+# for compatibility
+baseConfig = configRegistry
+%s
+''' % template[start.end():end.start()])
+			ret = subprocess.call(
+				('/usr/bin/python3', '-m', 'py_compile', ucr_temp_file),
+				stdout=open('/dev/null', 'a'), stderr=subprocess.STDOUT,
+				close_fds=True)
+			template = template[end.end():]
+
+			if ret:
+				failed.append(ucr_config_file)
+				break
+
+		except StopIteration:
+			break
+
+if failed:
+	packages = dpkg()
+failed = [p for p in failed if not packages.get(p) or not uninstalled(packages[p])]
+if failed:
+	print('The following UCR templates are not compatible with Python 3:')
+for failed_template in failed:
+	print('\\t', failed_template, end='')
+	if failed_template in packages:
+		print(' (package: %s)' % (packages[failed_template], ), end='')
+	print('')
+if failed:
+	exit(1)
+EOF
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
