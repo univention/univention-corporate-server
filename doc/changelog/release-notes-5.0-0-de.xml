@@ -322,6 +322,15 @@
 				</para>
 		</section>
 
+		<section id="relnotes:defaultmasterpkg">
+			<title>Hinweise zu <foreignphrase>Default-Master-Paketen</foreignphrase></title>
+			<para>
+				Apps wie <wordasword>UCC</wordasword> und <wordasword>Open-Xchange</wordasword> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
+				Diese Pakete werden nicht mehr benötigt, die Erweiterungen werden jetzt per &ucsUDL; verteilt.
+				Die Pakete sollten vor dem Upgrade entfernt werden um Inkompatibilitäten mit Python 3 zu vermeiden.
+			</para>
+		</section>
+
 		<section id="relnotes:ubuntuclient">
 			<!-- Bug 53025 -->
 			<title>Hinweis zum <foreignphrase>Univention Domain Join Assistant</foreignphrase> für Ubuntu-Clients</title>
