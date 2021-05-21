@@ -119,6 +119,7 @@
 			Grundsätzlich wird empfohlen, das Update zunächst in einer Testumgebung einzuspielen und zu testen.
 			Die Testumgebung sollte dabei identisch zur Produktivumgebung sein.
 			Je nach Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden dauern.
+			In großen Umgebungen kann es sinnvoll sein, den <ulink url="https://docs.software-univention.de/performance-guide-5.0.html"><wordasword>UCS performance guide</wordasword></ulink> zu berücksichtigen.
 		</para>
 
 		<section id="relnotes:order">
@@ -311,7 +312,7 @@
 			<!-- Bug 31996 -->
 			<title>Hinweise zu Anmeldeinformationen, die an Join-Skripte übergeben werden</title>
 			<para>
-				Join-Skripte werden jetzt immer mit der sicheren Option <option>--bindpwdfile</option> ausgeführt, anstatt die Anmeldedaten direkt zu übergeben.
+				Join-Skripte werden jetzt immer mit der sicheren Option <option>--bindpwdfile</option> ausgeführt, anstatt die Anmeldedaten direkt als Kommandozeilenoption zu übergeben.
 			</para>
 		</section>
 	</chapter>
@@ -319,7 +320,7 @@
 	<chapter id="relnotes:bootloader">
 		<title>Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen</title>
 		<para>
-			Beginnend ab UCS 5.0-0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
+			Beginnend mit UCS 5.0-0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
 		</para>
 		<para>
 			Ursache hierfür ist der Bootloader GRUB von &ucsUCS;, der teilweise die gleichen Konfigurationsdateien wie Debian verwendet.
@@ -365,9 +366,9 @@
 		<title>Vorbereitung des Updates</title>
 
 		<para>
-			Manuell angepasster Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
+			Manuell erstellter Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
 			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten. Angepasste &ucsADC; Mapping Templates sind ein Beispiel.
-			Unter https://docs.software-univention.de/developer-reference-4.4.html finden sich weitere Hinweise.
+			In der <ulink url="https://docs.software-univention.de/developer-reference-4.4.html"><wordasword>Developer Reference</wordasword></ulink> finden sich weitere Hinweise.
 		</para>
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.

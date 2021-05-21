@@ -117,6 +117,7 @@
 			It is recommended to test the update in a separate test environment prior to the actual update.
 			The test environment should be identical to the production environment.
 			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
+			In large environments it may be useful to consult the <ulink url="https://docs.software-univention.de/performance-guide-5.0.html">UCS performance guide</ulink>.
 		</para>
 
 		<section id="relnotes:order">
@@ -140,6 +141,7 @@
 		</section>
 
 		<section id="relnotes:removals">
+
 			<title>Component removals</title>
 			<para>
 				For UCS 5 several integration packages have been removed.
@@ -155,10 +157,12 @@
 					<term><package>src:univention-virtual-machine-manager-schema</package></term>
 					<listitem>
 						<simpara>
-							UCS 5 no longer contains the graphical user interface for running virtual machines, but UCS still can be run virtualized on multiple hypervisors.
+							UCS 5 no longer contains the graphical user interface for running virtual machines,
+							but UCS can still run KVM virtualized guests
+							and UCS can still be run virtualized on multiple hypervisors.
 							The Debian packages <package>libvirt</package> and <package>qemu</package> are still available.
 							The update to UCS 5 is blocked until the integration packages are removed.
-							All entries in LDAP for <classname>uvmm/profile</classname> and <classname>uvmm/info</classname> should be removed.
+							All LDAP objects with <literal>univentionObjectType</literal> of type <classname>uvmm/profile</classname> and <classname>uvmm/info</classname> should be removed.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -167,7 +171,7 @@
 					<term><package>src:univention-bacula</package></term>
 					<listitem>
 						<simpara>
-							The integration for Bacula backup has been removed.
+							The direct integration for Bacula backup has been removed.
 							Bacula and Bareos are both still available as Debian packages and also from the App Center.
 						</simpara>
 					</listitem>
@@ -195,7 +199,7 @@
 					<listitem>
 						<simpara>
 							The integration package has been removed.
-							The Debian provided OpenJDK can still be used and installed via the packages <package>default-jdk</package> or <package>default-jre</package>.
+							The Debian provided OpenJDK can still be used and installed via the packages <package>default-jre</package> or <package>default-jdk</package>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -233,7 +237,7 @@
 					<term><package>src:univention-printserver-quota</package></term>
 					<listitem>
 						<simpara>
-							Support for the printer quota system PyKota has been removed as the important is no longer maintained upstream.
+							Support for the printer quota system PyKota has been removed as it is no longer maintained upstream.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -265,19 +269,20 @@
 					<term><package>src:grub-efi-amd64-signed</package></term>
 					<listitem>
 						<simpara>
-							Support for UEFI Secure Boot is already provided by Debian.
+							Support for UEFI Secure Boot is already provided by Debian itself.
 							The UCS specific packages have been removed.
-							The latest Linux kernel is pulled in via the package <package>linux-image-amd64</package>.
+							The latest Linux kernel for Debian Buster is pulled in via the package <package>linux-image-amd64</package>.
 							The header files of the latest Linux kernel can be pulled in via the package <package>linux-headers-amd64</package>.
 						</simpara>
 					</listitem>
 				</varlistentry>
 			</variablelist>
 		</section>
+
 		<section id="relnotes:tls">
 			<title>Increased minimal TLS protocol version</title>
 			<para>
-				In the area of cryptography this raises the minimal TLS protocol version to 1.2.
+				In the area of cryptography the minimal TLS protocol version has been raised to 1.2.
 				For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal>
 				in <filename>/etc/ssl/openssl.cnf</filename>. As a consequence, TLS connections to external systems
 				should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after
@@ -290,6 +295,7 @@
 				E.g. Windows Server 2012 supports less ciphers that Windows Server 2012R2 by default.
 			</para>
 		</section>
+
 		<section id="relnotes:ubuntuclient">
 			<!-- Bug 53025 -->
 			<title>Notes about the Univention Domain Join Assistant for Ubuntu clients</title>
@@ -304,7 +310,7 @@
 			<!-- Bug 31996 -->
 			<title>Notes about credentials passed to join scripts</title>
 			<para>
-				Join scripts are now always executed with the safe option <option>--bindpwdfile</option> instead of passing the credentials directly.
+				Join scripts are now always executed with the safe option <option>--bindpwdfile</option> instead of passing the credentials directly as command line option.
 			</para>
 		</section>
 	</chapter>
@@ -360,9 +366,9 @@
 		<title>Preparation of update</title>
 
 		<para>
-			Manually adjusted Python code needs to be checked for compatibility with Python 3.7 before the Update and adjusted accordingly.
+			Manually crafted Python code needs to be checked for compatibility with Python 3.7 before the Update and adjusted accordingly.
 			This includes &ucsUCR; templates containing Python code. Customized AD-Connector mapping templates are an example for this.
-			See also https://docs.software-univention.de/developer-reference-4.4.html for advice.
+			See also the <ulink url="https://docs.software-univention.de/developer-reference-4.4.html">Developer Reference</ulink> for advice.
 		</para>
 		<para>
 			It must be checked whether sufficient disk space is available.
