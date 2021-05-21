@@ -286,6 +286,7 @@ update_check_old_packages () {
 		univention-dansguardian
 		univention-printquota
 		univention-passwd-store
+		univention-corporate-client-schema
 	)
 	for pkg in "${old[@]}"
 	do
