@@ -1446,7 +1446,7 @@ primary.firma.de
 			to compile variables and apply them on more than one computer.
 		</para>
 		<figure id="policy-apache-settings">
-			<title>Policy-based configuration of the apache startpage and forced HTTPS</title>
+			<title>Policy-based configuration of the Apache start page and forced HTTPS</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations50/computers_policy_apache_settings_en.png"/>
 		</figure>
 		<para>
