@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-					Dieses neue Major &ucsUCS; Release basiert auf Debian 10 <wordasword>Buster</wordasword>. Damit wurden viele Paket von aktualisiert.
+					Dieses neue Major &ucsUCS; Release basiert auf Debian 10 <productname>Buster</productname>. Damit wurden viele Paket von aktualisiert.
 					Einige Beispiele sind der Linux-Kernel (4.19), PostgreSQL (11), Python 3 (3.7) und Samba (4.13.7).
 			</para></listitem>
 			<listitem><para>
@@ -89,14 +89,14 @@
 			<listitem><para>
 					Die Paketquellen wurden auf eine feste Anzahl von zwei reduziert, eine für das Release und eine für Errata-Updates.
 					Dadurch wird das Aktualisieren des <package>apt</package> Paket Metadaten-<literal>Caches</literal> beschleunigt, vor allem für spätere UCS 5 Releases.
-					Hierfür waren Änderungen am <wordasword>Univention-Paketdepot</wordasword> nötig, ein lokales UCS 4.x Paketdepot wird keine UCS 5.x Pakete ausliefern können, siehe auch <xref linkend="relnotes:localrepo"/>.
+					Hierfür waren Änderungen am Paketdepot nötig, ein lokales UCS 4.x Paketdepot wird keine UCS 5.x Pakete ausliefern können, siehe auch <xref linkend="relnotes:localrepo"/>.
 			</para></listitem>
 			<listitem><para>
 					&ucsUCRV;n können jetzt einen Vorgabewert haben, welcher zurückgegeben wird falls die Variable nicht gesetzt ist.
 					Es ist zu beachten, dass noch nicht alle Pakete dieses Feature nutzen sondern Vorgabewerte teilweise direkt im <literal>Template</literal> definieren.
 			</para></listitem>
 			<listitem><para>
-					Der Linux-Kernel, inklusive der signierten UEFI <literal>secure boot</literal> Variante, welcher mit UCS 5 ausgeliefert wird, ist nun identisch zum Kernel in Debian 10 <wordasword>Buster</wordasword>.
+					Der Linux-Kernel, inklusive der signierten UEFI <literal>secure boot</literal> Variante, welcher mit UCS 5 ausgeliefert wird, ist nun identisch zum Kernel in Debian 10 <productname>Buster</productname>.
 			</para></listitem>
 			<listitem><para>
 					Die &ucsUMC; hat ein neues <wordasword>Willkommensmodul</wordasword> erhalten, um Administratoren durch die ersten Schritte bei der Nutzung eines &ucsUCS; zu führen,
@@ -119,7 +119,7 @@
 			Grundsätzlich wird empfohlen, das Update zunächst in einer Testumgebung einzuspielen und zu testen.
 			Die Testumgebung sollte dabei identisch zur Produktivumgebung sein.
 			Je nach Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden dauern.
-			In großen Umgebungen kann es sinnvoll sein, den <ulink url="https://docs.software-univention.de/performance-guide-5.0.html"><wordasword>UCS performance guide</wordasword></ulink> zu berücksichtigen.
+			In großen Umgebungen kann es sinnvoll sein, den <biblioref linkend="ucs-performance-guide"/> zu berücksichtigen.
 		</para>
 
 		<section id="relnotes:order">
@@ -263,7 +263,7 @@
 				<varlistentry>
 					<term>Linux Kernel</term>
 					<term>GRUB</term>
-					<term><wordasword>SHIM</wordasword></term>
+					<term><package>SHIM</package></term>
 					<term><package>src:univention-kernel-image</package></term>
 					<term><package>src:univention-kernel-image-signed</package></term>
 					<term><package>src:shim-signed</package></term>
@@ -272,7 +272,7 @@
 						<simpara>
 							Debian unterstützt UEFI Secure Boot direkt selbst.
 							UCS spezifische Pakete wurden entfernt.
-							Der aktuelle Linux-Kernel für Debian <wordasword>Buster</wordasword> wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
+							Der aktuelle Linux-Kernel für Debian <productname>Buster</productname> wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
 							Die zugehörigen Header-Dateien können bei Bedarf über das Paket <package>linux-headers-amd64</package> installiert werden.
 						</simpara>
 					</listitem>
@@ -325,7 +325,7 @@
 		<section id="relnotes:defaultmasterpkg">
 			<title>Hinweise zu <foreignphrase>Default-Master-Paketen</foreignphrase></title>
 			<para>
-				Apps wie <wordasword>UCC</wordasword> und <wordasword>Open-Xchange</wordasword> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
+				Apps wie <productname>UCC</productname> und <productname>Open-Xchange</productname> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
 				Diese Pakete werden nicht mehr benötigt, die Erweiterungen werden jetzt per &ucsUDL; verteilt.
 				Die Pakete sollten vor dem Upgrade entfernt werden um Inkompatibilitäten mit Python 3 zu vermeiden.
 			</para>
@@ -401,12 +401,12 @@
 		<para>
 			Manuell erstellter Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
 			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten. Angepasste &ucsADC; Mapping Templates sind ein Beispiel.
-			In der <ulink url="https://docs.software-univention.de/developer-reference-4.4.html"><wordasword>Developer Reference</wordasword></ulink> finden sich weitere Hinweise.
+			In der <biblioref linkend="developer-reference"/> finden sich weitere Hinweise.
 		</para>
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
-			Eine Standard-Installation benötigt min. FIXME GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr FIXME GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Eine Standard-Installation benötigt min. 6-10 GB Speicherplatz.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 1-2- GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
@@ -416,19 +416,20 @@
 		<para>
 			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
-			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
+			Hierfür können beispielsweise die Tools <command>tmux</command>, <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
 
 		<para>
 			Univention bietet ein Skript an, mit dem Probleme, die das Update des UCS Systems verhindern würden, schon vor dem Update erkannt werden können.
 			Dieses Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
-			<screen><![CDATA[
+		</para>
+		<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{,.gpg}
+curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{.gpg,}
 
-# run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg pre-update-checks-5.0-0.gpg \
-        pre-update-checks-5.0-0 && bash pre-update-checks-5.0-0
+# verify and run script
+apt-key verify pre-update-checks-5.0-0{.gpg,} &&
+  bash pre-update-checks-5.0-0
 
 ...
 
@@ -442,9 +443,7 @@ Checking hold_packages ...                        OK
 Checking ldap_connection ...                      OK
 Checking ldap_schema ...                          OK
 ...
-			]]></screen>
-		</para>
-
+		]]></screen>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -491,15 +490,6 @@ Checking ldap_schema ...                          OK
 			</para>
 		</section>
 
-		<section id="relnotes:secbrowsers">
-			<title>Umfang des Sicherheits-Supports von WebKit, Konqueror und QtWebKit</title>
-			<para>
-				WebKit, Konqueror und QtWebKit werden in UCS im maintained-Zweig des Repositorys mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt.
-				WebKit wird vor allem für die Darstellung von HTML-Hilfeseiten u.ä. verwendet.
-				Als Web-Browser sollte Firefox eingesetzt werden.
-			</para>
-		</section>
-
 		<section id="relnotes:browsers">
 			<title>Empfohlene Browser für den Zugriff auf &ucsUMC;</title>
 
@@ -511,19 +501,19 @@ Checking ldap_schema ...                          OK
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome ab Version FIXME</para>
+					<para>Chrome ab Version 85</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox ab Version FIXME</para>
+					<para>Firefox ab Version 78</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari und Safari Mobile ab Version FIXME</para>
+					<para>Safari und Safari Mobile ab Version 13</para>
 				</listitem>
 
 				<listitem>
-					<para>Microsoft Edge ab Version FIXME</para>
+					<para>Microsoft Edge ab Version 88</para>
 				</listitem>
 			</itemizedlist>
 
@@ -538,10 +528,16 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-8</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <productnumber>4.4-8</productnumber>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
+
+	<bibliography id="bibliography">
+		<bibliomixed id="ucs-performance-guide"/>
+		<bibliomixed id="developer-reference"/>
+	</bibliography>
+
 </book>
-<!-- vim: set ts=4 sw=4 noet: -->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

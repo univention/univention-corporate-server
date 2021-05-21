@@ -117,7 +117,7 @@
 			It is recommended to test the update in a separate test environment prior to the actual update.
 			The test environment should be identical to the production environment.
 			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
-			In large environments it may be useful to consult the <ulink url="https://docs.software-univention.de/performance-guide-5.0.html">UCS performance guide</ulink>.
+			In large environments it may be useful to consult the <biblioref linkend="ucs-performance-guide"/>.
 		</para>
 
 		<section id="relnotes:order">
@@ -321,7 +321,7 @@
 		<section id="relnotes:defaultmasterpkg">
 			<title>Notes about default master packages</title>
 			<para>
-				Apps like <wordasword>UCC</wordasword> and <wordasword>Open-Xchange</wordasword> used to install special packages on &ucsPrimaryDN; and &ucsBackupDN; to extend the LDAP server with schemata and ACL rules.
+				Apps like <application>UCC</application> and <application>Open-Xchange</application> used to install special packages on &ucsPrimaryDN; and &ucsBackupDN; to extend the LDAP server with schemata and ACL rules.
 				These packages are not needed anymore, these extensions are now distributed via &ucsUDL;.
 				The packages should be removed before the upgrade is started to avoid incompatibilities with Python 3.
 			</para>
@@ -399,12 +399,12 @@
 		<para>
 			Manually crafted Python code needs to be checked for compatibility with Python 3.7 before the Update and adjusted accordingly.
 			This includes &ucsUCR; templates containing Python code. Customized AD-Connector mapping templates are an example for this.
-			See also the <ulink url="https://docs.software-univention.de/developer-reference-4.4.html">Developer Reference</ulink> for advice.
+			See also the <biblioref linkend="developer-reference"/> for advice.
 		</para>
 		<para>
 			It must be checked whether sufficient disk space is available.
-			A standard installation requires a minimum of FIXME GB of disk space.
-			The update requires approximately FIXME GB additional disk space to download and install the packages, depending on the size of the existing installation.
+			A standard installation requires a minimum of 6-10 GB of disk space.
+			The update requires approximately 1-2 GB additional disk space to download and install the packages, depending on the size of the existing installation.
 		</para>
 
 		<para>
@@ -416,20 +416,21 @@
 			Remote updating via SSH is not recommended as this may result in the update procedure being canceled, e.g., if the network connection is interrupted.
 			In consequence, this can affect the system severely.
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues in case of disconnection from the network.
-			This can be achieved, e.g., using the tools <command>screen</command> and <command>at</command>.
+			This can be achieved, e.g., using the tools <command>tmux</command>, <command>screen</command> and <command>at</command>.
 			These tools are installed on all UCS system roles by default.
 		</para>
 
 		<para>
 			Univention provides a script that checks for problems which would prevent the successful update of the system.
 			Prior to the update, this script can be downloaded and executed on the UCS system.
-			<screen><![CDATA[
+		</para>
+		<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{,.gpg}
+curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{.gpg,}
 
-# run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg pre-update-checks-5.0-0.gpg \
-        pre-update-checks-5.0-0 && bash pre-update-checks-5.0-0
+# verify and run script
+apt-key verify pre-update-checks-5.0-0{.gpg,} &&
+  bash pre-update-checks-5.0-0
 
 ...
 
@@ -443,8 +444,7 @@ Checking hold_packages ...                        OK
 Checking ldap_connection ...                      OK
 Checking ldap_schema ...                          OK
 ...
-			]]></screen>
-		</para>
+		]]></screen>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -491,15 +491,6 @@ Checking ldap_schema ...                          OK
 			</para>
 		</section>
 
-		<section id="relnotes:secbrowsers">
-			<title>Scope of security support for WebKit, Konqueror and QtWebKit</title>
-			<para>
-				WebKit, Konqueror and QtWebKit are shipped in the maintained branch of the UCS repository, but not covered by security support.
-				WebKit is primarily used for displaying HTML help pages etc.
-				Firefox should be used as web browser.
-			</para>
-		</section>
-
 		<section id="relnotes:browsers">
 			<title>Recommended browsers for the access to &ucsUMC;</title>
 
@@ -511,19 +502,19 @@ Checking ldap_schema ...                          OK
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome as of version FIXME</para>
+					<para>Chrome as of version 85</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox as of version FIXME</para>
+					<para>Firefox as of version 78</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari and Safari Mobile as of version FIXME</para>
+					<para>Safari and Safari Mobile as of version 13</para>
 				</listitem>
 
 				<listitem>
-					<para>Microsoft Edge as of version FIXME</para>
+					<para>Microsoft Edge as of version 88</para>
 				</listitem>
 			</itemizedlist>
 
@@ -537,10 +528,16 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-8</wordasword>:
+			Listed are the changes since UCS <productnumber>4.4-8</productnumber>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
+
+	<bibliography id="bibliography">
+		<bibliomixed id="ucs-performance-guide"/>
+		<bibliomixed id="developer-reference"/>
+	</bibliography>
+
 </book>
-<!-- vim: set ts=4 sw=4 noet: -->
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
