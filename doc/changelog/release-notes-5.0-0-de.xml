@@ -51,13 +51,15 @@
 
 		<itemizedlist>
 			<listitem><para>
-					Dieses neue Major &ucsUCS; Release basiert auf Debian 10 <productname>Buster</productname>. Damit wurden viele Paket von aktualisiert.
+					Dieses neue Major &ucsUCS; Release basiert auf Debian 10 <productname>Buster</productname>.
+					Viele Pakete liegen in neuerer Version vor.
 					Einige Beispiele sind der Linux-Kernel (4.19), PostgreSQL (11), Python 3 (3.7) und Samba (4.13.7).
 			</para></listitem>
 			<listitem><para>
 					Das Portal wurde aktualisiert um die zentrale Anlaufstelle für &ucsUCS; Nutzer zu sein.
 					Apps und Webseiten lassen sich als <literal>frame</literal> im Portal einbinden (<literal>iframe</literal>).
-					Nutzer können dadurch schnell Apps öffnen und zwischen ihnen wechseln, weiter können Organisationen ihre Identität durch eine zentrale Seite stärken.
+					Nutzer können dadurch schnell Apps öffnen und zwischen ihnen wechseln.
+					Organisationen können ihre Identität durch eine zentrale Seite stärken, auf der alle Apps zu finden sind.
 			</para></listitem>
 			<listitem><para>
 					Python ist die Sprache der Wahl für viele &ucsUCS; Komponenten, ein Großteil wurde migriert um auf Python 3.7 zu laufen.
@@ -82,7 +84,7 @@
 					Die Funktion mehrere Apps zu installieren ersetzt die Software-Auswahl während des Installationsprozesses.
 			</para></listitem>
 			<listitem><para>
-					Ob ein &ucsUCS; bereit für ein Upgrade von 4.4 auf 5.0 ist, kann jetzt über das hier verlinkte <ulink url="https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0">Skript</ulink> geprüft werden.
+					Ob ein &ucsUCS; bereit für ein Upgrade von 4.4 auf 5.0 ist, kann über das hier verlinkte <ulink url="https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0">Skript</ulink> geprüft werden.
 					<package>univention-upgrade</package> wird das Upgrade nicht durchführen, wenn diese Tests nicht erfolgreich sind.
 					Eine ausführliche Anleitung zum Upgrade ist in <xref linkend="relnotes:prepare"/> zu finden.
 			</para></listitem>
@@ -106,7 +108,7 @@
 					Für eine einheitlichere und einfachere Verwaltung von Diensten sind die Dienste <systemitem class="service">&ucsUDL;</systemitem>, <systemitem class="service">&ucsUDN;</systemitem> und <systemitem class="service">univention-dhcp</systemitem> von <package>runit</package>-Diensten zu nativen <package>systemd</package>-Diensten umgestellt wurden.
 			</para></listitem>
 			<listitem><para>
-					Eine vollständige Liste von Änderungen und Verbesserungen in diesem Release findet sich am Ende dieses Dokumentes <xref linkend="relnotes:changelog"/>.
+					Eine vollständige Liste von Änderungen und Verbesserungen in diesem Release findet sich in <xref linkend="relnotes:changelog"/> am Ende dieses Dokumentes.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -173,7 +175,7 @@
 					<listitem>
 						<simpara>
 							Die direkte Integration für Bacula Backup wurde entfernt.
-							Bacula und Bareos sind weiterhin als Debian Pakete verfügbar und auch im App Center.
+							Bacula und Bareos sind weiterhin als Debian Pakete und auch im App Center verfügbar.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -191,7 +193,7 @@
 					<listitem>
 						<simpara>
 							MRTG wurde entfernt.
-							Als Ersatz wird eine vergleichbare Funktionalität durch die UCS Dashboard app abgedeckt.
+							Als Ersatz wird eine vergleichbare Funktionalität durch die UCS Dashboard App abgedeckt.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -336,7 +338,7 @@
 			<title>Hinweis zum <foreignphrase>Univention Domain Join Assistant</foreignphrase> für Ubuntu-Clients</title>
 			<para>
 				Univention stellt den <foreignphrase>Univention Domain Join Assistant</foreignphrase> für die Integration von Ubuntu-Clients in eine UCS-Domäne bereit.
-				Zum Zeitpunkt des Releases von UCS 5.0-0 ist der <foreignphrase>Univention Domain Join Assistant</foreignphrase> noch nicht mit UCS 5 kompatibel und ein Betritt wird fehlschlagen.
+				Zum Zeitpunkt des Releases von UCS 5.0-0 ist der <foreignphrase>Univention Domain Join Assistant</foreignphrase> noch nicht mit UCS 5 kompatibel und ein Beitritt wird fehlschlagen.
 				Dieses Problem wird im Rahmen eines folgenden UCS 5-Erratums bzw. eines Updates für den <foreignphrase>Univention Domain Join Assistant</foreignphrase> behoben.
 			</para>
 		</section>
