@@ -138,6 +138,10 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
 	(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 
+	# during upgrade to UCS 5.0-0
+	('ImportError: No module named client', ['univention-directory-listener/system/faillog.py']),  # Bug #53290
+	(re.escape("AttributeError: 'ConfigRegistry' object has no attribute '_walk'"), ['univention-directory-listener/system/nfs-shares.py']),  # Bug #53291
+
 	# updater test cases:
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
 	('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
@@ -209,7 +213,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('dbm.error: db type could not be determined', ['univention-management-console-web-server']),  # Bug #52764
 	('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir']),  # Bug #43171, ...
 	('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list']),  # Bug #43171
-	('LISTENER    ( PROCESS ) : updating.*command a', ['cleanup_python_moduledir']),  # ...
+	(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
 ])
 
 
