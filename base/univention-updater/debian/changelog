@@ -1,3 +1,10 @@
+univention-updater (15.0.3-64) unstable; urgency=medium
+
+  * Bug #53318: Block update if Python 3 incompatible UCR templates
+    exists
+
+ -- Florian Best <best@univention.de>  Tue, 25 May 2021 12:44:07 +0200
+
 univention-updater (15.0.3-63) unstable; urgency=medium
 
   * Bug #51655: Improve auxiliary objectClass reporting
