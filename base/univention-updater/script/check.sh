@@ -858,7 +858,11 @@ from univention.config_registry.handler import EXECUTE_TOKEN
 
 BASE_DIR = "/etc/univention/templates/files/"
 
-DENY_LIST = ['/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter']
+DENY_LIST = [
+	'/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter',
+	'/etc/univention/templates/files/var/www/ucs-overview/entries.json',
+	'/etc/univention/templates/files/usr/share/univention-management-console-frontend/entries.json',
+]
 
 def dpkg():
 	etc = {}
