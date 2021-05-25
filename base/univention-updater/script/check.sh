@@ -41,6 +41,8 @@ VERSION="50"
 VERSION_NAME="5.0"
 MIN_VERSION="4.4-8"
 
+updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
+
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
 
@@ -420,7 +422,9 @@ delete_legacy_objects () {
 delete_obsolete_objects () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
-	[ -z "$updateLogDir" ] && die "ERROR: updateLogDir not set"
+	[ -d "${updateLogDir:?}" ] ||
+		install -m0700 -o root -d "$updateLogDir" ||
+		die "ERROR: Could not create $updateLogDir"
 	local filter ldif oc backupfile
 	backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
 

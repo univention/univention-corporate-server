@@ -33,12 +33,6 @@ UPDATE_NEXT_VERSION="$1"
 UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
 
-updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
-if [ ! -d "$updateLogDir" ]; then
-	mkdir -p "$updateLogDir"
-fi
-
-
 ###CHECKS###
 
 readcontinue () {
@@ -125,6 +119,8 @@ delete_obsolete_objects
 [ -e "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png" ] && rm -f "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png"
 
 # save ucr settings
+[ -d "${updateLogDir:?}" ] ||
+	install -m0700 -o root -d "$updateLogDir"
 cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
 
