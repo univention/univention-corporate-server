@@ -444,8 +444,12 @@ delete_obsolete_objects () {
 		while IFS= read -r object_dn; do
 			# References to objects can come in two attributes
 			for policy_reference_type in univentionPolicyReference univentionPolicyObject; do
-				local policy_references
-				policy_references="$(univention-ldapsearch -LLL "$policy_reference_type"="$object_dn" dn | sed -ne 's/^dn: //p')"
+				local policy_references dn="$object_dn"
+				dn="${dn//\\/\\5c}"
+				dn="${dn//\*/\\2a}"
+				dn="${dn//\(/\\28}"
+				dn="${dn//\)/\\29}"
+				policy_references="$(univention-ldapsearch -LLL "($policy_reference_type=$dn)" 1.1 | sed -ne 's/^dn: //p')"
 				[ -z "$policy_references" ] && continue
 				while read -r referencing_dn; do
 					echo "# Deleting reference to $object_dn from $referencing_dn" | tee -a "${backupfile}"
