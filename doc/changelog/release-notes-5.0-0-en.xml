@@ -115,6 +115,11 @@
 	<chapter id="relnotes:update">
 		<title>Notes about the update</title>
 		<para>
+			Prerequisite for updating is at least UCS <productnumber>4.4-8</productnumber> with <u:erratum release="4.4-8">972</u:erratum>.
+			Only then the available update will be shown.
+			Is is recommended to install all other pending errata too before the update is started.
+		</para>
+		<para>
 			During the update some services in the domain may not be available temporarily, that is why the update should occur in a maintenance window.
 			It is recommended to test the update in a separate test environment prior to the actual update.
 			The test environment should be identical to the production environment.

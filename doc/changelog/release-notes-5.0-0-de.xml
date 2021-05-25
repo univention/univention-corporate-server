@@ -116,6 +116,11 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 		<para>
+			Voraussetzung für ein Update ist mindestens UCS <productnumber>4.4-8</productnumber> mit <u:erratum release="4.4-8">972</u:erratum>.
+			Erst dann wird das verfügbare Update angezeigt.
+			Generell wird empfohlen, vor dem Update zunächst auch alle weiteren Errata einzuspielen.
+		</para>
+		<para>
 			Während der Aktualisierung kann es zu temporären Ausfällen von Diensten innerhalb der Domäne kommen.
 			Aus diesem Grund sollte das Update innerhalb eines Wartungsfensters erfolgen.
 			Grundsätzlich wird empfohlen, das Update zunächst in einer Testumgebung einzuspielen und zu testen.
