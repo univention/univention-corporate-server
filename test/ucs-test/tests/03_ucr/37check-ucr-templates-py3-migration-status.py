@@ -21,7 +21,7 @@ ucr = ConfigRegistry()
 ucr.load()
 
 VERSIONS = (2, 3)
-BASE_DIR = "/etc/univention/templates/files/etc"
+BASE_DIR = "/etc/univention/templates/files/"
 
 ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
@@ -33,7 +33,7 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/etc/dhcp/dhclient.conf',  # different IP address received, different date
 	'/etc/univention/templates/files/var/lib/dovecot/sieve/default.sieve',  # different date if not commited in the same second
 	'/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
-] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*') + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
+] + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 IGNORE = {
 }  # type: Dict[str, Set[int]]
 
