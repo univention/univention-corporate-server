@@ -51,7 +51,8 @@
 
 		<itemizedlist>
 			<listitem><para>
-					This new major &ucsUCS; release is based on Debian 10 Buster. A lot of packages have been updated from upstream.
+					This new major &ucsUCS; release is based on Debian 10.9 <wordasword>Buster</wordasword>.
+					A lot of packages have been updated from upstream.
 					This includes for example the Linux Kernel (4.19), PostgreSQL (11), Python 3 (3.7) and Samba (4.13.7).
 			</para></listitem>
 			<listitem><para>
@@ -97,7 +98,7 @@
 					Please note that not all packages have been updated to use this feature and still define default values in templates.
 			</para></listitem>
 			<listitem><para>
-					The Linux Kernel, including the signed version for UEFI secure boot, shipped with &ucsUCS; 5 is now identical with the Kernel in Debian 10 Buster.
+					The Linux Kernel, including the signed version for UEFI secure boot, shipped with &ucsUCS; 5 is now identical with the Kernel in Debian.
 			</para></listitem>
 			<listitem><para>
 					A new welcome module has been added to the &ucsUMC; to guide administrators through the first steps of using &ucsUCS; like requesting a license or installing apps.
@@ -272,7 +273,7 @@
 						<simpara>
 							Support for UEFI Secure Boot is already provided by Debian itself.
 							The UCS specific packages have been removed.
-							The latest Linux kernel for Debian Buster is pulled in via the package <package>linux-image-amd64</package>.
+							The latest Linux kernel for Debian is pulled in via the package <package>linux-image-amd64</package>.
 							The header files of the latest Linux kernel can be pulled in via the package <package>linux-headers-amd64</package>.
 						</simpara>
 					</listitem>
@@ -284,14 +285,10 @@
 			<title>Increased minimal TLS protocol version</title>
 			<para>
 				In the area of cryptography the minimal TLS protocol version has been raised to 1.2.
-				For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal>
-				in <filename>/etc/ssl/openssl.cnf</filename>. As a consequence, TLS connections to external systems
-				should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after
-				the update.
-				This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than
-				<literal>2012R2</literal>, if they are configured to use an encrypted connection.
-				Additionally the OpenSSL default <literal>CipherString</literal> configuration is <literal>DEFAULT@SECLEVEL=2</literal>
-				in UCS 5.0.
+				For <literal>OpenSSL</literal> this is enforced by the parameter <literal>MinProtocol</literal> in <filename>/etc/ssl/openssl.cnf</filename>.
+				As a consequence, TLS connections to external systems should be checked for TLS 1.2 support before updating to UCS 5.0, as they are likely to fail after the update.
+				This affects AD-Connector setups synchronizing UCS with Microsoft Server versions older than <literal>2012R2</literal>, if they are configured to use an encrypted connection.
+				Additionally the OpenSSL default <literal>CipherString</literal> configuration is <literal>DEFAULT@SECLEVEL=2</literal> in UCS 5.0.
 				This additionally restricts the available ciphers for communication, which rules out <literal>SHA1</literal> in particular.
 				E.g. Windows Server 2012 supports less ciphers that Windows Server 2012R2 by default.
 			</para>
@@ -304,8 +301,8 @@
 					More details about this and the following points can be found in the changelog below.
 				</para>
 				<para>
-					During updates to UCS 5 Samba will convert the database to a new index format. Since this is a transaction based operation
-					the required storage capacity of the <literal>sam.ldb</literal> files will double temporarily for this operation.
+					During updates to UCS 5 Samba will convert the database to a new index format.
+					Since this is a transaction based operation the required storage capacity of the <literal>sam.ldb</literal> files will double temporarily for this operation.
 					By default Samba uses the TDB key value database format as backing store, which is limited to a size of 4GB.
 					Before the UCS update, a check is performed, if any of the five database backing files is already close to half of that size.
 					In that case, the update is blocked to avoid non-functional Services for Windows after the update,
@@ -348,7 +345,7 @@
 	</chapter>
 
 	<chapter id="relnotes:bootloader">
-        <title>Simultaneous operation of UCS and Debian on UEFI systems</title>
+		<title>Simultaneous operation of UCS and Debian on UEFI systems</title>
 		<para>
 			Please note that simultaneous operation of UCS and Debian on a UEFI system starting with UCS 5.0-0 is not supported.
 		</para>
@@ -363,43 +360,44 @@
 		</para>
 	</chapter>
 
-	 <chapter id="relnotes:localrepo">
-        <title>Local package repository</title>
+	<chapter id="relnotes:localrepo">
+		<title>Local package repository</title>
 
-        <para>
-            This section is relevant for environments where a <ulink url="https://docs.software-univention.de/handbuch-4.4.html#software::createrepo">local repository</ulink> is set up.
-            The installed (major) version of UCS determines which packages a local repository provides.
+		<para>
+			This section is relevant for environments where a <ulink url="https://docs.software-univention.de/handbuch-4.4.html#software::createrepo">local repository</ulink> is set up.
+			The installed (major) version of UCS determines which packages a local repository provides.
 			A repository running on a UCS server with version 4.x will only provide packages up to UCS 4.x, a repository server running on UCS 5 will only provide packages for UCS 5 and newer versions.
 			To upgrade systems to UCS 5 in an environment with a local repository, the following are some of the options.
-            First, a local UCS 5 repository server must be set up.
-            <itemizedlist>
-                <listitem>
+			First, a local UCS 5 repository server must be set up.
+			<itemizedlist>
+				<listitem>
 					<para>
 						A new UCS 5 system is installed as a &ucsPrimaryDN; from the DVD or from a virtualized base image.
 						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">a local repository is set up on this system as described in the UCS 5 manual</ulink>.
 					</para>
-                </listitem>
-                <listitem>
+				</listitem>
+				<listitem>
 					<para>
 						A new UCS 5 system is installed with the system role &ucsBackupDN;, &ucsReplicaDN; or &ucsManagedNode; from the DVD or from a virtualized base image.
 						In system setup, select that the system will not join a domain.
 						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">set up a local repository on this system as described in the UCS 5 manual</ulink>.
 						After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.
 					</para>
-                </listitem>
-            </itemizedlist>
-            To upgrade a system in the domain to UCS 5, the server should first be upgraded to the latest package level available for UCS 4.x.
-            Then the repository server used by the system is switched to the local UCS 5 repository by changing the &ucsUCRV; <envar>repository/online/server</envar>.
-            The system can now be upgraded to UCS 5 via the &ucsUMC; or via the command line.
-        </para>
-    </chapter>
+				</listitem>
+			</itemizedlist>
+			To upgrade a system in the domain to UCS 5, the server should first be upgraded to the latest package level available for UCS 4.x.
+			Then the repository server used by the system is switched to the local UCS 5 repository by changing the &ucsUCRV; <envar>repository/online/server</envar>.
+			The system can now be upgraded to UCS 5 via the &ucsUMC; or via the command line.
+		</para>
+	</chapter>
 
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
 
 		<para>
 			Manually crafted Python code needs to be checked for compatibility with Python 3.7 before the Update and adjusted accordingly.
-			This includes &ucsUCR; templates containing Python code. Customized AD-Connector mapping templates are an example for this.
+			This includes &ucsUCR; templates containing Python code.
+			Customized AD-Connector mapping templates are an example for this.
 			See also the <biblioref linkend="developer-reference"/> for advice.
 		</para>
 		<para>
@@ -454,7 +452,7 @@ Checking ldap_schema ...                          OK
 		<para>
 			Following the update, new or updated join scripts need to be executed.
 			This can be done in two ways:
-			Either using the UMC module  <guimenu>Domain join</guimenu> or by running the command
+			Either using the UMC module <guimenu>Domain join</guimenu> or by running the command
 			<command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
 		</para>
 

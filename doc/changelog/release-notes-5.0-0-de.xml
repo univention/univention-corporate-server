@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-					Dieses neue Major &ucsUCS; Release basiert auf Debian 10 <productname>Buster</productname>.
+					Dieses neue Major &ucsUCS; Release basiert auf Debian 10.9 <wordasword>Buster</wordasword>.
 					Viele Pakete liegen in neuerer Version vor.
 					Einige Beispiele sind der Linux-Kernel (4.19), PostgreSQL (11), Python 3 (3.7) und Samba (4.13.7).
 			</para></listitem>
@@ -98,7 +98,7 @@
 					Es ist zu beachten, dass noch nicht alle Pakete dieses Feature nutzen sondern Vorgabewerte teilweise direkt im <literal>Template</literal> definieren.
 			</para></listitem>
 			<listitem><para>
-					Der Linux-Kernel, inklusive der signierten UEFI <literal>secure boot</literal> Variante, welcher mit UCS 5 ausgeliefert wird, ist nun identisch zum Kernel in Debian 10 <productname>Buster</productname>.
+					Der Linux-Kernel, inklusive der signierten UEFI <literal>secure boot</literal> Variante, welcher mit UCS 5 ausgeliefert wird, ist nun identisch zum Kernel in Debian.
 			</para></listitem>
 			<listitem><para>
 					Die &ucsUMC; hat ein neues <wordasword>Willkommensmodul</wordasword> erhalten, um Administratoren durch die ersten Schritte bei der Nutzung eines &ucsUCS; zu führen,
@@ -274,7 +274,7 @@
 						<simpara>
 							Debian unterstützt UEFI Secure Boot direkt selbst.
 							UCS spezifische Pakete wurden entfernt.
-							Der aktuelle Linux-Kernel für Debian <productname>Buster</productname> wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
+							Der aktuelle Linux-Kernel für Debian wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
 							Die zugehörigen Header-Dateien können bei Bedarf über das Paket <package>linux-headers-amd64</package> installiert werden.
 						</simpara>
 					</listitem>
@@ -327,7 +327,7 @@
 		<section id="relnotes:defaultmasterpkg">
 			<title>Hinweise zu <foreignphrase>Default-Master-Paketen</foreignphrase></title>
 			<para>
-				Apps wie <productname>UCC</productname> und <productname>Open-Xchange</productname> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
+				Apps wie <application>UCC</application> und <application>Open-Xchange</application> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
 				Diese Pakete werden nicht mehr benötigt, die Erweiterungen werden jetzt per &ucsUDL; verteilt.
 				Die Pakete sollten vor dem Upgrade entfernt werden um Inkompatibilitäten mit Python 3 zu vermeiden.
 			</para>
@@ -402,7 +402,8 @@
 
 		<para>
 			Manuell erstellter Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
-			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten. Angepasste &ucsADC; Mapping Templates sind ein Beispiel.
+			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten.
+			Angepasste &ucsADC; Mapping Templates sind ein Beispiel.
 			In der <biblioref linkend="developer-reference"/> finden sich weitere Hinweise.
 		</para>
 		<para>

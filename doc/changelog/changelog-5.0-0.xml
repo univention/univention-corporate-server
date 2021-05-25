@@ -36,7 +36,7 @@
 					Process supervision by <package>univention-runit</package> has been replaced with <package>systemd</package> (<u:bug>52448</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					The selection on locales has been fixed in <package>univention-directory-reports</package>, <package>univention-appcenter</package>, <package>univention-system-setup</package>  and <package>univention-management-console</package> (<u:bug>52194</u:bug>)
+					The selection on locales has been fixed in <package>univention-directory-reports</package>, <package>univention-appcenter</package>, <package>univention-system-setup</package> and <package>univention-management-console</package> (<u:bug>52194</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 					The command <command>lastlog</command> can now be called by any user.
@@ -466,7 +466,7 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The &ucsUMC; module <package>univention-management-console-module-join</package> has been migrated to Python 3  (<u:bug>51330</u:bug>)
+						The &ucsUMC; module <package>univention-management-console-module-join</package> has been migrated to Python 3 (<u:bug>51330</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 						The scripts have been improved for robustness and security (<u:bug>31026</u:bug>)
@@ -572,7 +572,7 @@
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The &ucsUMC; module <package>univention-management-console-module-ucr</package> has been migrated to Python 3  (<u:bug>51322</u:bug>)
+						The &ucsUMC; module <package>univention-management-console-module-ucr</package> has been migrated to Python 3 (<u:bug>51322</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -587,13 +587,10 @@
 						The old system statistics based on <application>MRTG</application> has been removed (<u:bug>44475</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-						The &ucsUMC; module <package>univention-management-console-module-services</package> has been migrated to Python 3  (<u:bug>51333</u:bug>)
+						The &ucsUMC; module <package>univention-management-console-module-services</package> has been migrated to Python 3 (<u:bug>51333</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-						The &ucsUMC; module <package>univention-management-console-module-ipchange</package> has been migrated to Python 3  (<u:bug>51331</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-						(<u:bug>00000</u:bug>)
+						The &ucsUMC; module <package>univention-management-console-module-ipchange</package> has been migrated to Python 3 (<u:bug>51331</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
