@@ -121,11 +121,11 @@
 			Generell wird empfohlen, vor dem Update zunächst auch alle weiteren Errata einzuspielen.
 		</para>
 		<para>
-			Falls das Update aus der UMC heraus gestartet wird: Vor der tatsächlichen Aktualisierung werden verschiedene Tests ausgeführt, z.B. ob alle
-			installierten Apps auch für UCS <productnumber>5.0</productnumber> zur Verfügung stehen. Zu diesem Zeitpunkt befindet sich das Webinterface
-			bereits im Wartungsmodus und es wird lediglich ein Fortschrittsbalken angezeigt. Falls ein Test fehlschlägt, wird das Update abgebrochen
-			und der Grund nach <filename>/var/log/univention/updater.log</filename> geschrieben. Um sich diese Datei im Webinterface anzusehen, loggen
-			Sie sich in die UMC ein, öffnen Sie das Modul <guimenu>Software-Aktualierung</guimenu> und klicken Sie auf "Log-Datei ansehen".
+			Falls das Update aus der &ucsUMC; heraus gestartet wird:
+			Vor der tatsächlichen Aktualisierung werden verschiedene Tests ausgeführt, z.B. ob alle installierten Apps auch für UCS <productnumber>5.0</productnumber> zur Verfügung stehen.
+			Zu diesem Zeitpunkt befindet sich das Webinterface bereits im Wartungsmodus und es wird lediglich ein Fortschrittsbalken angezeigt.
+			Falls ein Test fehlschlägt, wird das Update abgebrochen	und der Grund nach <filename>/var/log/univention/updater.log</filename> geschrieben.
+			Um sich diese Datei im Webinterface anzusehen, loggen	Sie sich in die &ucsUMC; ein, öffnen Sie das Modul <guimenu>Software-Aktualierung</guimenu> und klicken Sie auf "Log-Datei ansehen".
 		</para>
 		<para>
 			Während der Aktualisierung kann es zu temporären Ausfällen von Diensten innerhalb der Domäne kommen.
