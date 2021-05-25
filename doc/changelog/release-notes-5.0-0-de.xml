@@ -345,8 +345,6 @@
 				Bekannte inkompatible Pakete sind: <package>univention-corporate-client-schema</package>, <package>univention-ox-dependencies-master</package> und <package>univention-ox-directory-integration</package>.
 				Als Vorbereitung für das Upgrade wird das System auf inkompatible Pakete geprüft werden, siehe auch <xref linkend="relnotes:prepare"/>.
 			</para>
-
-			</para>
 		</section>
 
 		<section id="relnotes:ubuntuclient">
