@@ -331,9 +331,11 @@
 		<section id="relnotes:defaultmasterpkg">
 			<title>Notes about default master packages</title>
 			<para>
-				Apps like <application>UCC</application> and <application>Open-Xchange</application> used to install special packages on &ucsPrimaryDN; and &ucsBackupDN; to extend the LDAP server with schemata and ACL rules.
+				Apps like <application>UCC</application> and <application>Open-Xchange</application> used to install special packages on &ucsPrimaryDN; and &ucsBackupDN; to extend the LDAP server with schema and ACL rules.
 				These packages are not needed anymore, these extensions are now distributed via &ucsUDL;.
 				The packages should be removed before the upgrade is started to avoid incompatibilities with Python 3.
+				Packages that are known to be incompatible are: <package>univention-corporate-client-schema</package>, <package>univention-ox-dependencies-master</package> and <package>univention-ox-directory-integration</package>.
+				The system will also be checked for incompatible package as a preparation for the upgrade, see also <xref linkend="relnotes:prepare"/>.
 			</para>
 		</section>
 
