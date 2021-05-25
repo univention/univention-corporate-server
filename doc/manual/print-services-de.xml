@@ -15,13 +15,13 @@
 	<para>
 		&ucsUCS; beinhaltet ein Drucksystem, mit dem sich auch komplexe
 		Umgebungen realisieren lassen. Drucker und Druckergruppen werden dabei
-		in &ucsUMC; verwaltet.
+		im UMC-Modul <guimenu>Drucker</guimenu> verwaltet.
 	</para>
 	<para>
 		Die Druckdienste basieren auf <emphasis>CUPS (Common Unix Printing
 		System)</emphasis>. Druckaufträge werden von CUPS in Warteschlangen verwaltet
 		und in die Druckformate der angeschlossenen Drucker umgewandelt.
-		Die Druckerwarteschlangen werden ebenfalls in &ucsUMC; verwaltet,
+		Die Druckerwarteschlangen werden im UMC-Modul <guimenu>Druckaufträge</guimenu> verwaltet,
 		siehe <xref linkend="umc:modules:printer"/>.
 	</para>
 	<para>
@@ -57,7 +57,7 @@
 	</para>
 	<para>
 		Netzwerkdrucker mit eigener IP-Adresse sollten als IP-Client
-		in der UMC-Rechnerverwaltung registriert werden (siehe
+		im UMC-Modul <guimenu>Rechner</guimenu> registriert werden (siehe
 		<xref linkend="systemrollen"/>).
 	</para>
 	<para>
@@ -106,7 +106,7 @@
 <section id="print::shares">
 <title>Konfiguration von Druckerfreigaben</title>
 	<para>
-		Druckerfreigaben werden im UMC-Modul <emphasis>Drucker</emphasis>
+		Druckerfreigaben werden im UMC-Modul <guimenu>Drucker</guimenu>
 		mit dem Objekttyp <guimenu>Druckerfreigabe: Drucker</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
 	</para>
@@ -222,7 +222,7 @@
 						<para>
 							Mit dem Protokoll <uri>smb://</uri> kann eine Windows-Druckerfreigabe
 							eingebunden werden. Um beispielsweise die Druckerfreigabe <emphasis>laser01</emphasis> des
-							Windows-Systems <emphasis>win01</emphasis> über &ucsUMC; einzubinden,
+							Windows-Systems <emphasis>win01</emphasis> einzubinden,
 							muss als Ziel <emphasis>win01/laser01</emphasis> angegeben werden. Dabei sollten
 							Hersteller und Modell-Typ entsprechend des verwendeten Geräts gewählt
 							werden. Der Druckserver nutzt dabei die verwendeten
@@ -372,7 +372,7 @@
 		</para>
 	</caution>
 	<para>
-		Druckergruppen werden im UMC-Modul <emphasis>Drucker</emphasis>
+		Druckergruppen werden im UMC-Modul <guimenu>Drucker</guimenu>
 		mit dem Objekttyp <guimenu>Druckerfreigabe: Druckergruppe</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
 	</para>
@@ -441,7 +441,7 @@
 <section id="umc:modules:printer">
 <title>Verwaltung von Druckaufträgen und Druckerwarteschlangen</title>
 	<para>
-		Das UMC-Modul <guimenu>Drucker Administration</guimenu> erlaubt
+		Das UMC-Modul <guimenu>Druckaufträge</guimenu> erlaubt
 		auf Druckservern den Status der angeschlossenen Drucker zu prüfen,
 		angehaltene Drucker neu zu starten oder Druckaufträge aus den
 		Warteschlagen zu entfernen.
@@ -480,8 +480,8 @@
   </para>
 
   <para>
-	Beim Anlegen eines PDF-Druckers in &ucsUMC; (siehe <xref linkend="print::shares"/>) muss als
-	Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld bleibt leer.
+		Beim Anlegen eines PDF-Druckers im UMC-Modul <guimenu>Drucker</guimenu> (siehe <xref linkend="print::shares"/>) muss als
+	  Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld bleibt leer.
   </para>
 
   <para>
@@ -514,7 +514,7 @@
 <section id="print-services:winclients">
   <title>Einbinden von Druckerfreigaben auf Windows-Clients</title>
   <para>
-	Die in &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
+		Die im UMC-Modul <guimenu>Drucker</guimenu> eingerichteten Druckerfreigaben können auf Windows-Systemen als
 	Netzwerkdrucker hinzugefügt werden. Dies erfolgt über die Systemsteuerung unter <guimenu>Drucker
 	&ar; Netzwerkdrucker hinzufügen</guimenu>. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
 	werden. Wurden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des
@@ -543,7 +543,7 @@
   <para>
 	Windows unterstützt ein Verfahren zur serverseitigen Bereitstellung von Druckertreibern auf dem
 	Druckserver (<emphasis>Point 'n' Print</emphasis>). Die folgende Anleitung beschreibt die
-	Bereitstellung der Druckertreiber unter Windows 7 bzw. Windows 8 für eine in der UMC konfigurierte
+	Bereitstellung der Druckertreiber unter Windows 7 bzw. Windows 8 für eine im UMC-Modul <guimenu>Drucker</guimenu> konfigurierte
 	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden, danach werden
 	die Drucker mit einem Druckertreiber verknüpft.
 	Die Benutzerführung unter Windows bietet zahlreiche Stolperfallen, es ist wichtig den einzelnen
@@ -653,8 +653,8 @@
 		wäre der Drucker nicht mehr mit der Freigabe assoziiert!
 		Wenn dieser Fall eingetreten ist, muss der Name des Druckers auf dem Reiter
 		<guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem stilisierten Druckersymbol)
-		wieder auf den Namen der Druckerfreigabe geändert werden. Hier ist das in der
-		Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
+		wieder auf den Namen der Druckerfreigabe geändert werden. Hier ist das im
+		UMC-Modul <guimenu>Drucker</guimenu> konfigurierte Feld <guimenu>Windows-Name</guimenu> zu
 		verwenden (oder falls dies leer gelassen wurde, dann der Wert aus <guimenu>Name</guimenu>).
 		Wenn der Name auf diese Weise zurückgesetzt werden musste, dann fragt Windows beim
 		abschließenden Klick auf <guimenu>OK</guimenu> nach, ob man sich sicher ist, dass
@@ -704,7 +704,7 @@
 	</para>
 	<para>
 		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
-		weitere über &ucsUMC; hinzugefügt werden. Die PPD wird in der
+		weitere über UMC-Module hinzugefügt werden. Die PPD wird in der
 		Regel vom Hersteller des Druckers bereitgestellt und muss auf den
 		Druckservern in das Verzeichnis <filename class="directory">/usr/share/ppd/</filename> kopiert werden.
 	</para>

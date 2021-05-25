@@ -350,7 +350,7 @@ instanceType: 4
 
 		  <para>
 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
-			linkend="central:policies"/>) nicht in &ucsUMC;, sondern mit einem  separaten Editor
+			linkend="central:policies"/>) nicht über UMC-Module, sondern mit einem  separaten Editor
 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der
 			<foreignphrase>Remote Server Administration Tools</foreignphrase> (RSAT) ist. Die Einrichtung ist
 			in <xref linkend="gpo:install"/> dokumentiert.
@@ -706,7 +706,7 @@ END CATEGORY
 		<title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
 
 		<para>
-		  Das Heimatverzeichnis wird benutzerbezogen in &ucsUMC; definiert siehe <xref
+		  Das Heimatverzeichnis wird benutzerbezogen im UMC-Modul <guimenu>Benutzer</guimenu> definiert, siehe <xref
 		  linkend="users::management"/>. Dies erfolgt mit der Einstellung
 		  <guimenu>Windows-Heimatverzeichnis</guimenu>,
 		  z.B. <filename class="directory">\\ucs-file-server\meier</filename>.
@@ -714,7 +714,7 @@ END CATEGORY
 
 		<para>
 		  Für das Zuweisen des Heimatverzeichnis-Servers an mehrere Benutzer auf einmal kann der
-		  Mehrfachbearbeitungsmodus von &ucsUMC; verwendet  werden, siehe <xref
+		  Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, siehe <xref
 		  linkend="central:user-interface:edit"/>.
 		</para>
 	  </section>
@@ -748,14 +748,14 @@ END CATEGORY
 
 		<para>
 		  Alternativ kann das Profilverzeichnis individuell für einzelne Benutzerkonten definiert werden.
-		  Das ist in der &ucsUMC; im Abschnitt <guimenu>Konto</guimenu> des Benutzerkontos über das Feld
-		  <guimenuitem>Profilverzeichnis</guimenuitem> möglich.
+		  Das ist im UMC-Modul <guimenu>Benutzer</guimenu> unter dem Reiter <guimenu>Konto</guimenu> des Benutzerkontos
+		  über das Feld <guimenuitem>Profilverzeichnis</guimenuitem> möglich.
 		  Der entsprechende UDM-Attributname heißt <property>profilepath</property>.
 		  Mit OpenLDAP als Backend wird dies im LDAP-Attribut <property>sambaProfilePath</property> gespeichert.
 		</para>
 
 		<para>
-		  Wird der Profilpfad in &ucsUMC; geändert, wird ein neues Profilverzeichnis
+		  Wird der Profilpfad in geändert, wird ein neues Profilverzeichnis
 		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
 		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
 		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
@@ -929,7 +929,7 @@ END CATEGORY
   </note>
 
   <para>
-    Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
+    Nach dieser Einrichtung kann das UMC-Modul <guimenu>Active Directory-Verbindung</guimenu> zur weiteren Administration verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
   </para>
 
   <para>
@@ -1022,12 +1022,12 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	<title>Grundkonfiguration des UCS AD-Connectors</title>
 
 	<para>
-	  Der UCS AD-Connector wird über den Assistenten <guimenu>Active Directory-Verbindung</guimenu> der
-	  &ucsUMC; konfiguriert.
+	  Der UCS AD-Connector wird über einen Assistenten im UMC-Modul <guimenu>Active Directory-Verbindung</guimenu>
+	  konfiguriert.
 	</para>
 
 	<para>
-	  Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
+	  Das Modul kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
 	  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
 	  <package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
 	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
@@ -1049,11 +1049,12 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	</warning>
 
 	<para>
-	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen, da Dateien auf den AD-Domänencontroller herunter geladen und in &ucsUMC; hochgeladen werden müssen.
+	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen,
+	  da Dateien auf den AD-Domänencontroller herunter geladen und im Assistenten hochgeladen werden müssen.
 	</para>
 
 	<para>
-	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird durch &ucsUMC;
+	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird von &ucsWeb;n
 	  nicht unterstützt. Hier sollte zuerst eine Aktualisierung des Browsers durchgeführt oder ein
 	  alternativer Browser installiert werden.
 	</para>
@@ -1062,7 +1063,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <mousebutton>Weiter</mousebutton> bestätigt werden.
 	</para>
 
-	  <figure id="windows:ad:connector"><title>Konfiguration des UCS AD-Connectors in UMC</title>
+	  <figure id="windows:ad:connector"><title>Konfiguration des UCS AD-Connectors über UMC-Modul</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations50/adconnector_1-de.png"/>
 	  </figure>
 
@@ -1071,7 +1072,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	  Hier kann die IP-Adresse oder ein voll qualifizierter DNS-Name eingegeben werden.
 	  Wenn der Rechnername des AD-Systems für das UCS-System nicht auflösbar sein sollte,
 	  kann entweder unter UCS der AD DNS-Server als DNS-Forwarder konfiguriert werden
-	  oder es kann in der DNS-Verwaltung von &ucsUMC; ein DNS-Host-Record für das
+	  oder es kann im UMC-Modul <guimenu>DNS</guimenu> ein DNS-Host-Record für das
 	  AD-System angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
 	</para>
 
@@ -1117,8 +1118,11 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 
 	<para>
 		Falls der AD-Domänencontroller SSL/TLS-verschlüsselte Verbindungen unterstützt, bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an.
-		Dieses Zertifikat muss vorher aus der AD-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>).
-		Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
+		Dieses Zertifikat muss vorher aus der AD-Zertifizierungsstelle exportiert werden
+		(siehe <xref linkend="ad-connector:ad-zertifikat"/>).
+		Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das
+		UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden
+		(bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
 	</para>
 
 	<para>
@@ -1134,7 +1138,9 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	  Der abschließende Dialog muss dann durch Klick auf <mousebutton>Fertigstellen</mousebutton> geschlossen werden.
 	</para>
 	<para>
-      Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des UCS Active Directory Connectors verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
+    Nach dieser Einrichtung kann das UMC-Modul <guimenu>Active Directory-Verbindung</guimenu> zur weiteren
+    Administration des UCS Active Directory Connectors verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und
+    ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
 	</para>
 
 	<note>
@@ -1285,7 +1291,7 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 
 <section id="windows:Kopieren_des_AD-Zertifikats_auf_das_UCS-System"><title>Kopieren des AD-Zertifikats auf das UCS-System</title>
 <para>
-Nun muss das SSL-AD-Zertifikat über den &ucsUMC;-Assistenten in das
+Nun muss das SSL-AD-Zertifikat über das UMC-Modul in das
 UCS-System importiert werden.
 </para>
 <para>
@@ -1732,8 +1738,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Die Übernahme erfolgt mit dem &ucsUMC;-Modul <guimenu>Active Directory
-	  Takeover</guimenu>. Unter <guimenu>Name oder Adresse des Domänencontrollers</guimenu> muss die
+	  Die Übernahme erfolgt mit dem UMC-Modul <guimenu>Active Directory Takeover</guimenu>.
+	  Unter <guimenu>Name oder Adresse des Domänencontrollers</guimenu> muss die
 	  IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory
 	  Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegeben werden, das Mitglied der
 	  AD-Gruppe  <systemitem class="groupname">Domain Admins</systemitem> ist (z.B. der
@@ -1891,7 +1897,7 @@ samba-tool dbcheck --fix --yes
 
 		<listitem><simpara>
 		  Gab es in der migrierten AD-Domäne mehr als einen Domänencontroller, müssen die
-		  Rechnerkonten der weiteren Domänencontroller in der Rechnerverwaltung der UMC gelöscht
+		  Rechnerkonten der weiteren Domänencontroller in der Rechnerverwaltung UMC-Modulen gelöscht
 		  werden. Außerdem müssen sie aus der Samba SAM-Datenbank gelöscht werden. Dies kann
 		  erfolgen, indem von einem migrierten Windows-Client eine Anmeldung als Mitglied der Gruppe
 		  <systemitem class="groupname">Domain Admins</systemitem> erfolgt und das AD-Verwaltungstool für Benutzer und

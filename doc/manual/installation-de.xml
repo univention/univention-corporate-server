@@ -436,9 +436,9 @@
 	</para>
 	<para>
 	  Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um eine personalisierte
-	  Lizenz zu aktivieren, die für die Verwendung des Univention App Centers notwendig ist.  Die
+	  Lizenz zu aktivieren, die für die Verwendung des Univention App Centers notwendig ist. Die
 	  Lizenz wird automatisch generiert und umgehend an die angegeben E-Mail-Adresse zugeschickt. Die
-	  Lizenz kann dann über den Lizenzdialog von &ucsUMC; eingespielt werden.
+	  Lizenz kann dann über das UMC-Modul <guimenu>Wilkommen!</guimenu> eingespielt werden.
 	</para>
 	<para>
 	  Aus dem hier eingetragenen vollständigen Rechnernamen (ein Rechnername inkl. Domänenname) wird
@@ -609,7 +609,8 @@
   </para>
   <para>
 	Das System startet nun von Festplatte. Nach dem Bootvorgang können sich die Benutzer
-	<systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem> beim Web-Frontend &ucsUMC; anmelden
+	<systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem>
+	beim UCS Portal anmelden
 	(siehe <xref linkend="central:general"/>), welche unter der während der Installation gesetzten
 	IP-Adresse bzw. unter dem Rechnernamen erreichbar ist.
   </para>
@@ -655,7 +656,7 @@
 	<para>
 		Univention stellt für UCS ein Amazon Machine Image (AMI) für die
 		Amazon EC2 Cloud bereit. Aus diesem generischen Image für alle UCS-Systemrollen wird eine eigene Instanz
-		abgeleitet, die über &ucsUMC; konfiguriert wird (Domänenname,
+		abgeleitet, die über UMC-Module konfiguriert wird (Domänenname,
 		Softwareauswahl etc.).
 	</para>
 	<para>

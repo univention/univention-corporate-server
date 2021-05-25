@@ -137,9 +137,10 @@
 						<entry>
 							<para>
 								If a group is to be assigned a certain group ID, the ID in question
-								can be entered in this field. Otherwise, the UMC module
-								will automatically assign the next available group ID when
-								adding the group. The group ID cannot be subsequently changed. When
+								can be entered in this field.
+								Otherwise the next available group ID will be automatically assigned
+								when adding the group.
+								The group ID cannot be subsequently changed. When
 								editing the group, the group ID will be represented in gray.
 							</para>
 							<para>
@@ -155,8 +156,8 @@
 								The relative ID (RID) is the local part of the Security ID (SID) and
 								is used in Windows and Samba domains. If a group is to be assigned a
 								certain RID, the ID in question can be entered in this
-								field. Otherwise, the UMC module will automatically
-								assign the next available group ID when adding the group.
+								field.
+								Otherwise a RID will be automatically assigned.
 							</para>
 							<para>
 								The RID cannot be subsequently changed. When editing the group, the group ID
@@ -179,7 +180,7 @@
 						<itemizedlist>
 						  <listitem><simpara>
 							<emphasis>Domain Groups</emphasis> are known across the domain. This is the
-							default group time.
+							default group type.
 						  </simpara></listitem>
 
 						  <listitem><simpara>
@@ -361,7 +362,7 @@
 		  <listitem><simpara>
 			<emphasis>Local</emphasis> groups only exist locally on a host. A local group created in
 			Samba/AD is synchronized by the Univention S4 Connector and thus also appears in the
-			UMC module <guimenu>Groups</guimenu>. There is no need to create local groups in the UMC.
+			UMC module <guimenu>Groups</guimenu>. There is no need to create local groups in the UMC module.
 		  </simpara></listitem>
 
 		  <listitem><simpara>

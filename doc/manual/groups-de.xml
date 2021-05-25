@@ -43,13 +43,13 @@
 
 
 	<section id="groups::management">
-		<title>Verwaltung von Gruppen in &ucsUMC;</title>
+		<title>Verwaltung von Gruppen über &ucsUMC; Modul</title>
 		<para>
 			Gruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet
 			(siehe auch <xref linkend="central:user-interface"/>).
 		</para>
 			<figure id="create-group">
-				<title>Anlegen einer Gruppe in UMC</title>
+				<title>Anlegen einer Gruppe im UMC-Modul 'Gruppen'</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations50/create-group_DE.png"/>
 			</figure>
 		<table>
@@ -184,8 +184,8 @@
 						<itemizedlist>
 						  <listitem><simpara>
 							<emphasis>Globale Gruppe:</emphasis> Diese Gruppen sind domänenweit
-							bekannt. In &ucsUMC; sind neu erstellte Gruppen standardmäßig von diesem
-							Typ.
+							bekannt. Neu erstellte Gruppen im UMC-Modul <guimenu>Gruppen</guimenu> sind 
+							standardmäßig von diesem Typ.
 						  </simpara></listitem>
 
 						  <listitem><simpara>
@@ -329,9 +329,9 @@
 		<para>
 		  Während des Generierens der Gruppencache-Datei kann das
 		  Skript prüfen, ob die Gruppenmitglieder weiterhin im
-		  LDAP-Verzeichnis vorhanden sind. Wird für die Verwaltung der
-		  Verzeichnisdaten nicht ausschließlich &ucsUMC; eingesetzt,
-		  kann diese zusätzliche Prüfung durch Setzen der
+		  LDAP-Verzeichnis vorhanden sind. Werden für die Verwaltung der
+		  Verzeichnisdaten nicht ausschließlich UMC-Module eingesetzt,
+		  kann die zusätzliche Prüfung durch Setzen der
 		  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar>
 		  auf <literal>true</literal> aktiviert werden.
 		</para>
@@ -377,13 +377,14 @@
 		  <listitem><simpara>
 			<emphasis>Lokale Gruppen</emphasis> existieren immer nur lokal auf einem Rechner. Eine
 			lokale Gruppe, die in Samba/AD angelegt wurde, wird durch den Univention S4 Connector
-			synchronisiert und erscheint daher auch in der UMC. Es besteht aber keine Notwendigkeit
-			lokale Gruppen in der UMC anzulegen.
+			synchronisiert und erscheint daher auch im UMC-Modul <guimenu>Gruppen</guimenu>.
+			Es besteht aber keine Notwendigkeit lokale Gruppen im UMC-Modul anzulegen.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			<emphasis>Globale Gruppen</emphasis> sind der Standardtyp für neu angelegte Gruppen in
-			der UMC. Eine globale Gruppe gilt für eine Domäne, es können aber keine Konten anderer
+			<emphasis>Globale Gruppen</emphasis> sind der Standardtyp für neu angelegte Gruppen im
+			UMC-Modul <guimenu>Gruppen</guimenu>.
+			Eine globale Gruppe gilt für eine Domäne, es können aber keine Konten anderer
 			Domänen aufgenommen werden. Besteht eine Vertrauensstellung zu einer Domäne, werden die
 			Gruppen dort angezeigt und es können Berechtigungen zugewiesen werden. Die aktuelle
 			Version von UCS unterstützt allerdings weder mehrfache Domänen/Forests, noch

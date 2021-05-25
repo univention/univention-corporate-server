@@ -56,7 +56,7 @@ den folgenden drei Hauptbestandteilen zuordnen:
 
 <orderedlist>
 <listitem><simpara>Basissystem</simpara></listitem>
-<listitem><simpara>&ucsUMS; mit Univention Management Console</simpara></listitem>
+<listitem><simpara>&ucsUMS; mit &ucsUMC; Modulen</simpara></listitem>
 <listitem><simpara>Das App Center, über das sich zahlreiche weitere Komponenten und Anwendungen anderer Hersteller installieren lassen</simpara></listitem>
 </orderedlist>
 
@@ -73,8 +73,8 @@ und Dienste wie DNS und DHCP in einem Verzeichnisdienst verwaltet werden. Kernko
 Managementsystems sind die Dienste OpenLDAP (Verzeichnisdienst), Samba
 (Bereitstellung von Domänen-, Datei- und Druckdiensten für Microsoft Windows), Kerberos
 (Authentifizierung und Single-Sign-On), DNS (Namensauflösung im Netzwerk) und
-SSL/TLS (sichere Datenübertragung zwischen Systemen). Es lässt sich sowohl über
-eine Webanwendung (&ucsUMC;) als auch an der Kommandozeile und in eigenen Skripten
+SSL/TLS (sichere Datenübertragung zwischen Systemen). Es lässt sich sowohl webbasiert
+(&ucsUMC; Module) als auch an der Kommandozeile und in eigenen Skripten
 verwenden. Das &ucsUMS; ist über APIs (<foreignphrase>Application Programming
 Interfaces</foreignphrase>) erweiterbar und besitzt eine flexible Client-Server-Architektur,
 durch die Änderungen auf die davon betroffenen Systeme übertragen und dort
@@ -173,8 +173,8 @@ sowie eine umfangreiche Auswahl von Softwarelösungen für Business IT-Bereiche
 wie Groupware, Datenaustausch, CRM oder Backup.
 Die Anwendungen lassen sich mit wenigen Klicks in bestehende Umgebungen
 installieren und sind in der Regel einsatzbereit vorkonfiguriert. Sie werden
-in vielen Fällen direkt in das &ucsUMS; integriert und stehen anschließend in der
-&ucsUMC; zur Verfügung. Damit ist eine zentrale Verwaltung von Daten auf
+in vielen Fällen direkt in das &ucsUMS; integriert und stehen anschließend als
+UMC-Module zur Verfügung. Damit ist eine zentrale Verwaltung von Daten auf
 Domänenebene gegeben und eine separate Verwaltung, z.B. von Nutzerdaten für
 unterschiedliche Dienste an unterschiedlichen Orten, entfällt.
 </para>
@@ -221,20 +221,21 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <section id="introduction:Domaenenadministration"><title>Domänenadministration</title>
 
-<figure id="introduction:umc"><title>Univention Management Console</title>
+<figure id="introduction:umc"><title>&ucsUMC; Module</title>
  <graphic scalefit="1" width="100%" fileref="illustrations50/umc-favorites-tab-de.png"/>
 </figure>
 
 <para>
-Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte Benutzerschnittstelle &ucsUMC; (UMC).
+Der Zugang zum LDAP-Verzeichnis erfolgt über eine webbasierte Benutzerschnittstelle
+durch &ucsUMC; (UMC) Module.
 Daneben ermöglicht &ucsUDM; auch die Umsetzung aller domänenweiten
 administrativen Aufgaben über eine Kommandozeilen-Schnittstelle. Dies eignet
 sich besonders für die Integration in Skripte oder automatisierte
 administrative Schritte.
 </para>
 <para>
-Mit &ucsUMC; können Daten des LDAP-Verzeichnisses angezeigt, bearbeitet,
-gelöscht sowie über eine Suche nach unterschiedlichen Kriterien gefiltert werden.
+UMC-Module erlauben das Suchen, Anzeigen, Bearbeiten und Löschen von Daten
+im LDAP-Verzeichnis anhand unterschiedlichen Filter-Kriterien.
 Die Web-Oberfläche stellt Assistenten bereit u.a. zur
 Verwaltung von Benutzern, Gruppen, Netzwerken, Rechnern, Verzeichnisfreigaben
 und Druckern zur Verfügung. Die Rechnerverwaltung umfasst auch umfangreiche
@@ -251,7 +252,7 @@ Weiterführende Informationen finden sich in <xref linkend="central:general"/>.
 
 <section id="introduction:Rechneradministration"><title>Rechneradministration</title>
 <para>
-&ucsUMC; ermöglicht nicht nur den Zugriff auf das
+UMC-Module ermöglichen nicht nur den Zugriff auf das
 LDAP-Verzeichnis, sondern auch die webbasierte
 Konfiguration und Administration einzelner Rechner. Dazu gehören die Anpassung von
 Konfigurationsdaten, die Installation von Software sowie die Überwachung und
@@ -297,7 +298,8 @@ Ein wichtiger technischer Bestandteil des &ucsUMS;s stellt der so genannte
 "Listener/Notifier-Mechanismus" dar. Mit ihm lösen das Anlegen, Verändern oder
 Löschen von Einträgen im LDAP-Verzeichnis definierte Aktionen auf
 betroffenen Rechnern aus.
-So führt zum Beispiel das Anlegen einer Verzeichnisfreigabe mit &ucsUMC; dazu, das die Freigabe
+So führt zum Beispiel das Anlegen einer Verzeichnisfreigabe mit dem UMC-Modul
+<guimenu>Freigaben</guimenu> dazu, das die Freigabe
 zunächst in das LDAP-Verzeichnis eingetragen wird. Der
 Listener/Notifier-Mechanismus stellt dann sicher, dass die
 Konfigurationsdateien auf dem gewählten Server entsprechend erweitert

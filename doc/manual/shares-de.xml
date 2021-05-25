@@ -11,15 +11,15 @@
 <chapter id="shares::general">
   <title>Freigaben-Verwaltung</title>
   <para>
-	UCS unterstützt die zentrale Verwaltung von Verzeichnisfreigaben. Eine in &ucsUMC;
+	  UCS unterstützt die zentrale Verwaltung von Verzeichnisfreigaben. Eine im UMC-Modul <guimenu>Freigaben</guimenu>
 	registrierte Freigabe wird im Rahmen der UCS-Domänenreplikation auf beliebigen Serversystemen
 	der UCS-Domäne angelegt.
   </para>
 
   <para>
 	Die Bereitstellung für die zugreifenden Clients kann über CIFS (unterstützt von
-	Windows/Linux-Clients) und/oder NFS (vorrangig unterstützt von Linux/Unix) erfolgen. Die in der
-	&ucsUMC; verwalteten NFS-Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4
+	Windows/Linux-Clients) und/oder NFS (vorrangig unterstützt von Linux/Unix) erfolgen. Die im
+	UMC-Modul verwalteten NFS-Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4
 	eingebunden werden.
   </para>
 
@@ -92,9 +92,9 @@
   <para>
 	Berechtigungsänderungen an einem freigegebenen Verzeichnis, die direkt im Dateisystem
 	vorgenommen wurden, werden nicht an das LDAP-Verzeichnis weitergeleitet.
-	Wird die Berechtigungen/Besitzer in &ucsUMC; bearbeitet, werden die Änderungen im
-	Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit
-	&ucsUMC; gesetzt und bearbeitet werden. Die weitere Anpassung der
+	Wird die Berechtigungen/Besitzer im UMC-Modul <guimenu>Freigaben</guimenu> bearbeitet, werden die Änderungen im
+	Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit dem
+	UMC-Modul gesetzt und bearbeitet werden. Die weitere Anpassung der
 	Zugriffsrechte der unterliegenden Verzeichnisses erfolgt dann von den
 	zugreifenden Clients, z.B. über den Windows-Explorer, oder direkt über
 	Kommandozeilenbefehle auf dem Fileserver.
@@ -108,9 +108,9 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Verwaltung von Freigaben in UMC</title>
+<section id="shares::management"><title>Verwaltung von Freigaben über &ucsUMC; Modul</title>
 <para>
-	Verzeichnisfreigaben werden im UMC-Modul <emphasis>Freigaben</emphasis> verwaltet
+	Verzeichnisfreigaben werden im UMC-Modul <guimenu>Freigaben</guimenu> verwaltet
 	(siehe auch <xref linkend="central:user-interface"/>).
 </para>
 
@@ -120,7 +120,7 @@ Datei <filename>/etc/exports</filename>, bzw. in die Samba-Konfigurationsdatei
 eingetragen/modifiziert oder entfernt.
 </para>
 
-<figure id="shares:create"><title>Anlegen einer Freigabe in UMC</title>
+<figure id="shares:create"><title>Anlegen einer Freigabe im UMC-Modul 'Freigaben'</title>
  <graphic scalefit="1" width="100%" fileref="illustrations50/projekt-freigabe_DE.png"/>
 </figure>
 
@@ -300,7 +300,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>Samba-Name</entry>
 		<entry>
 		  Der NetBIOS-Name der Freigabe. Unter diesem Namen wird die Freigabe auf
-		  auf Windows-Rechnern in der Netzwerkumgebung angezeigt.. &ucsUMC; übernimmt
+		  auf Windows-Rechnern in der Netzwerkumgebung angezeigt. Das UMC-Modul übernimmt
 		  beim Hinzufügen einer Verzeichnisfreigabe als Vorgabe den Namen, der auf der
 		  Karteikarte <guimenu>Allgemein</guimenu> im Feld <guimenu>Name</guimenu>
 		  eingetragen ist.

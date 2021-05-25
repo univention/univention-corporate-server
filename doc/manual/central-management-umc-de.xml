@@ -34,15 +34,15 @@
 	<para>
 		Für Umgebungen mit mehr als einem Server ist auf der Portalseite ein Verweis auf eine Serverübersichtseite zu sehen.
 		Diese Unterseite gibt einen Überblick über alle in der Domäne verfügbaren UCS-Systeme.
-		Sie erlaubt die schnelle Navigation hin zu anderen Systemen, um dort bspw. über &ucsUMC; Anpassungen an lokalen Einstellungen vorzunehmen.
+		Sie erlaubt die schnelle Navigation hin zu anderen Systemen, um dort bspw. durch UMC-Module Anpassungen an lokalen Einstellungen vorzunehmen.
 		<!-- (<xref linkend="central:server-overview"/>) -->
 	</para>
 	<para>
-		&ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne, dessen generelle Funktionsweise in <xref linkend="central:user-interface"/> beschrieben wird.
+		&ucsUMC; (UMC) Module sind das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne, dessen generelle Funktionsweise in <xref linkend="central:user-interface"/> beschrieben wird.
 		Für die Administration der unterschiedlichen Aspekte einer
-		Domäne werden verschiedene Module bereit gestellt. Diese sind je nach
-		Systemrolle verfügbar und werden bei Installation weiterer
-		Software-Komponenten durch neue UMC-Module ergänzt.
+		Domäne werden je nach Systemrolle verschiedene Module bereit gestellt.
+		Zusätzlich installierte Software-Komponenten können ihre eigenen
+		UMC-Module mitbringen.
 	</para>
 	<para>
 		Die anschließenden Abschnitte vertiefen die Benutzung einzelner Aspekte der Domänenverwaltung.
@@ -95,31 +95,11 @@
 		</para>
 	</section>
 
-	<section id="central:globalcustom-design">
-		<title>Das Design von UCS anpassen</title>
-		<para>
-			Alle Unterseiten verwenden den gleichen Satz an
-			<ulink url="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties"><foreignphrase>CSS custom properties</foreignphrase></ulink>,
-			die den allgemeinen Stil von UCS definieren. Diese Eigenschaften sind in der Datei
-			<filename>/usr/share/univention-web/js/dijit/themes/umc/globalCSSVariables.css</filename> definiert, welche
-			direkt oder indirekt von jeder Unterseite importiert wird. Jede Unterseite importiert auch die Datei
-			<filename>/usr/share/univention-web/js/dijit/themes/umc/globalCustom.css</filename>, die bei Updates nicht
-			verändert oder gelöscht wird. Diese Datei kann dazu verwendet werden, das Design aller Unterseiten anzupassen,
-			indem definierte <foreignphrase>CSS custom properties</foreignphrase> überschrieben und <abbrev>CSS</abbrev>-Anweisungen überschrieben oder hinzugefügt werden.
-		</para>
-		<para>
-			Jede Unterseite importiert auch ihre eigene lokale <filename>custom.css</filename> Datei, die zur Anpassung
-			des Designs jener Seite genutzt werden kann. Diese sind <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
-			(<xref linkend="domain:saml:ssologin"/>), <filename>/usr/share/univention-portal/custom.css</filename> (<xref linkend="central:portal"/>)
-			und <filename>/usr/share/univention-self-service/wwww/css/custom.css</filename> (<xref linkend="user-management:password-changes-by-users:self-service"/>).
-		</para>
-	</section>
-
 	<section id="central-management-umc:feedback">
 		<title>Feedback zu UCS</title>
 		<para>
 			Durch die Auswahl des Menüeintrages <guimenu>Hilfe &ar; Feedback</guimenu>
-			in dem oberen, rechten Benutzermenü kann über ein Webformular Feedback zu
+			in dem oberen, rechten Menü kann über ein Webformular Feedback zu
 			UCS gegeben werden.
 		</para>
 	</section>
@@ -139,7 +119,7 @@
 		UCS stellt eine zentral Anmeldeseite zur Verfügung.
 		Die Anmeldung an der &ucsWeb; geschieht zentral mit den Anmeldedaten des jeweiligen Domänenkontos.
 		Auf der Portalseite kann der Anmeldevorgang entweder über das Benutzermenü und dann <guimenu>Anmelden</guimenu> (letzter Eintrag)  oder über einen Klick auf das Schlosssymbol in der Kopfzeile oben rechts angestoßen werden.
-		Setzt eine Seite (wie bspw. &ucsUMC;) eine Anmeldung voraus, so wird automatisch auf die zentrale Anmeldeseite weitergeleitet.
+		Setzt eine Seite (wie bspw. ein UMC-Modul) eine Anmeldung voraus, so wird automatisch auf die zentrale Anmeldeseite weitergeleitet.
 		Zum Abmelden kann analog entweder auf das (geöffnete) Schlosssymbol in der Kopfzeile geklickt oder der Eintrag <guimenu>Abmelden</guimenu> im Benutzermenü (letzter Eintrag) ausgewählt werden.
 	</para>
 
@@ -186,7 +166,7 @@
 
 	<para>
 	  Es besteht die Möglichkeit durch die Installation von Drittanbietern Software,
-	  bspw. <application>privacyIDEA</application>, die &ucsUMC; Anmeldung um eine Zwei-Faktor-Authentifizierung
+	  bspw. <application>privacyIDEA</application>, die &ucsWeb; Anmeldung um eine Zwei-Faktor-Authentifizierung
 	  (2FA) zu ergänzen. Diese Erweiterungen können aus dem Univention App Center installiert werden.
 	</para>
 </section>
@@ -285,17 +265,18 @@ udm settings/ldapacl remove \
 </section>-->
 
 <section id="central:user-interface">
-<title>&ucsUMC;</title>
+<title>&ucsUMC; Module</title>
 <section id="central:introduction">
 	<title>Einführung</title>
 	<para>
-		&ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne.
-		Der Aufruf erfolgt von der Portalseite aus (<xref linkend="central:portal"/>) über den Link <guimenu>System- und Domäneneinstellungen</guimenu>, bzw. über den Link <guimenu>Systemeinstellungen</guimenu>.
-		Je nach Systemrolle stehen unterschiedliche UMC-Module für die Administration von UCS zur Verfügung und werden bei Installation weiterer Software-Komponenten durch neue Module ergänzt.
+		&ucsUMC; (UMC) Module sind das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne.
+		Sie werden auf der Portalseite (<xref linkend="central:portal"/>) für eingeloggte Administratoren angezeigt.
+		Je nach Systemrolle sind unterschiedliche UMC-Module verfügbar.
+		Zusätzlich installierte Software-Komponenten können ihre eigenen neuen UMC-Module mitbringen.
 	</para>
 	<para>
 		UMC-Module zur Verwaltung aller im LDAP-Verzeichnis vorgehaltenen Daten
-		(wie z.B. Benutzer, Gruppen oder Rechnerkonten) werden lediglich auf
+		(wie z.B. Benutzer, Gruppen oder Rechnerkonten) werden lediglich auf einem
 		&ucsPrimaryDN; und &ucsBackupDN; bereitgestellt.
 		Änderungen, die in diesen Modulen vorgenommen werden, gelten für die
 		gesamte Domäne.
@@ -306,22 +287,16 @@ udm settings/ldapacl remove \
 		installiert, Aktualisierungen eingespielt, die lokale Konfiguration über &ucsUCR;
 		angepasst oder Dienste gestartet/gestoppt werden.
 	</para>
-	<para>
-		Bei der ersten Anmeldung wird ein Einführungsassistent angezeigt, der u.a. auf die Erfassung
-		von Nutzungsstatistiken hinweist (siehe <xref linkend="central-management-umc:piwik"/>)
-		und die Aktivierung der Lizenz anbietet (siehe <xref linkend="central:license" />).
-	</para>
 </section>
 
 <section id="central:license">
 	<title>Aktivierung der UCS-Lizenz / Lizenz-Übersicht</title>
 	<para>
-		Der momentane Lizenzierungszustand kann auf dem &ucsPrimaryDN; einer
-		Domäne über das Benutzermenü in der oberen, rechten Bildschirmzeile
-		eingesehen werden. Unterhalb des Menüpunktes
-		<guimenu>Lizenz</guimenu> kann der Punkt
-		<guimenu>Lizenzinformation</guimenu> ausgewählt werden, um einen
-		entsprechenden Informationsdialog zu öffnen.
+		Die UCS-Lizenz einer Domäne kann dem &ucsPrimaryDN; über das UMC-Modul <guimenu>Wilkommen!</guimenu>
+		verwaltet werden.
+	</para>
+	<para>
+		Der aktuelle Lizenzstatus kann mit einem Klick auf <guimenu>Lizenzinfo</guimenu> angezeigt werden.
 	</para>
 	<figure id="umc-license">
 		<title>Anzeige der UCS-Lizenz</title>
@@ -329,19 +304,19 @@ udm settings/ldapacl remove \
 	</figure>
 
 	<para>
-	  Der Menüpunkt <guimenu>Neue Lizenz importieren</guimenu> öffnet einen Dialog,
+	  Der Schaltfläche <guimenu>Lizenz importieren</guimenu> öffnet einen Dialog,
 	  über den ein neuer UCS-Lizenzschlüssel aktiviert werden kann (ansonsten greift die
 	  standardmäßig installierte Core-Edition-Lizenz). Über die Schaltfläche
 	  <guimenu>Importieren aus Datei...</guimenu> kann eine Lizenz-Datei ausgewählt
 	  und importiert werden. Alternativ kann der Lizenz-Schlüssel auch in das darunter
-	  liegende Eingabefeld kopiert und dann über der Schaltfläche
+	  liegende Eingabefeld kopiert und dann über die Schaltfläche
 	  <guimenu>Importieren aus Textfeld</guimenu> eingespielt werden.
 	</para>
 
 	<para>
 	  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
 	  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Core-Edition-Lizenzen
-	  können durch Klick auf die Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden.
+	  können mit einem Klick auf <guimenu>Neue Lizenz anfordern</guimenu> aktualisiert werden.
 	  Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
 	  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
 	  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
@@ -350,9 +325,9 @@ udm settings/ldapacl remove \
 
 	<para>
 	  Ist die Anzahl der lizenzierten Benutzer- oder Rechner-Objekte überschritten, können keine
-	  weiteren Objekte in &ucsUMC; angelegt oder bestehende editiert werden, solange keine
-	  erweiterte Lizenz eingespielt wird oder nicht mehr benötigte Benutzer oder Rechner
-	  entfernt werden. Auf der UMC-Startseite wird bei überschrittener Lizenz ein entsprechender
+	  weiteren Objekte in UMC-Modulen mehr angelegt oder bestehende editiert werden, solange keine
+	  erweiterte Lizenz eingespielt wird, oder nicht mehr benötigte Benutzer oder Rechner
+	  entfernt werden. Beim Öffnen eines UMC-Moduls wird bei überschrittener Lizenz ein entsprechender
 	  Hinweis angezeigt.
 	</para>
 </section>
@@ -370,7 +345,7 @@ udm settings/ldapacl remove \
 		</para>
 
 		<figure id="umc-modules">
-			<title>Modulübersicht in &ucsUMC;</title>
+			<title>Modulübersicht</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations50/umc-favorites-tab-de.png"/>
 		</figure>
 		<para>
@@ -405,7 +380,7 @@ udm settings/ldapacl remove \
 			</para>
 
 			<para>
-			  Durch Klick auf <guimenu>Erweiterte Optionen</guimenu> werden weitere Suchoptionen
+			  Durch einen Klick auf <guimenu>Erweiterte Optionen</guimenu> (das Filter-Icon) werden weitere Suchoptionen
 			  angezeigt:
 
 			  <itemizedlist>
@@ -462,22 +437,23 @@ udm settings/ldapacl remove \
 				Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von
 				<guimenu>Bearbeiten</guimenu> kann ein Objekt bearbeitet werden.
 				Die einzelnen Attribute sind in den entsprechenden
-				Dokumentations-Kapiteln beschrieben. Ein Klick auf das
-				Diskettensymbol in der farbigen Modulleiste übernimmt alle
-				vorgenommenen Anpassungen in das LDAP-Verzeichnis. Das X-Symbol
+				Dokumentations-Kapiteln beschrieben. Mit einem Klick auf <guimenu>Speichern</guimenu>
+				ganz oben im Module werden alle
+				vorgenommenen Anpassungen in das LDAP-Verzeichnis übernommen. Die Schaltfläche <guimenu>Zurück</guimenu>
 				bricht die Bearbeitung ab und kehrt zur vorherigen Suchansicht
 				zurück.
 			</para>
 			<para>
-				Vor jedem Eintrag in der Ergebnisliste ist ein Auswahlfeld, mit dem einzelne Objekte
-				ausgewählt werden können. In der unteren Bildzeile wird der Auswahlstatus
-				zusätzlich dargestellt, z.B. <guimenu>2 Benutzer von 102 sind ausgewählt</guimenu>.
+				Vor jedem Eintrag in der Ergebnisliste ist eine Checkbox, mit dem einzelne Objekte
+				ausgewählt werden können. Der Auswahlstatus wird
+				zusätzlich in der Aktionsleiste der Tabelle dargestellt,
+				z.B. <guimenu>2 Benutzer von 102 sind ausgewählt</guimenu>.
 				Ist mehr als ein Objekt selektiert, wird nach einem
-				Klick auf den stilisierten Stift in der Auswahlstatusleiste der
+				Klick auf <guimenu>Bearbeiten</guimenu> in der Aktionsleiste der
 				Mehrfachbearbeitungs-Modus aktiviert. Hierbei werden dieselben
 				Attribute angezeigt wie bei der Bearbeitung eines einzelnen Objekts,
-				Änderungen werden aber nur für die Objekte übernommen, bei denen der
-				<guimenu>Überschreiben</guimenu>-Haken aktiviert wird. Es können nur
+				Änderungen werden aber nur für die Objekte übernommen, bei denen die
+				<guimenu>Überschreiben</guimenu>-Checkbox aktiviert wird. Es können nur
 				Objekte gleichen Typs bearbeitet werden.
 			</para>
 		</section>
@@ -487,14 +463,15 @@ udm settings/ldapacl remove \
 			<para>
 			  Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von <guimenu>Löschen</guimenu> wird
 			  das Objekt nach Bestätigung einer Rückfrage gelöscht. Einige Objekte verwenden interne
-			  Referenzen - z.B. kann zu Rechner-Objekten ein DNS- oder DHCP-Objekt assoziiert
-			  werden. Diese können durch Auswahl der Option <guimenu>Zugehörige Objekte
+			  Referenzen (z.B. kann zu Rechner-Objekten ein DNS- oder DHCP-Objekt assoziiert
+			  werden). Diese können durch Auswahl der Option <guimenu>Zugehörige Objekte
 			  löschen</guimenu> ebenfalls entfernt werden.
 			</para>
 
 			<para>
-				Analog zur Auswahl mehrerer Objekte bei der Bearbeitung von Objekten
-				können auch mehrere Objekte auf einmal entfernt werden.
+				Ähnlich wie beim Bearbeiten mehrerer Objekte auf einmal,
+				können mehrere Objekte auf einmal über die Schaltfläche <guimenu>Löschen</guimenu> in der
+				Aktionsleiste gelöscht werden.
 			</para>
 		</section>
 
@@ -509,28 +486,21 @@ udm settings/ldapacl remove \
 			<para>
 			  Analog zur Auswahl mehrerer Objekte bei der Bearbeitung von Objekten
 			  können auch mehrere Objekte auf einmal verschoben werden.
+				Ähnlich wie beim Bearbeiten mehrerer Objekte auf einmal,
+				können mehrere Objekte auf einmal über die Schaltfläche
+				<guimenu>Mehr &ar; Verschieben nach...</guimenu> in der
+				Aktionsleiste verschoben werden.
 			</para>
 		</section>
-	</section>
-
-	<section id="central-management-umc:Favoriten">
-	  <title>Favoriten</title>
-	  <para>
-		Häufig benutzte UMC-Module werden in der Kategorie <guimenu>Favoriten</guimenu>
-		angezeigt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein
-		Kontextmenü angezeigt. Mit <guimenu>Zu Favoriten hinzufügen</guimenu>, bzw. <guimenu>Aus
-		Favoriten entfernen</guimenu> kann ein UMC-Modul als Favorit markiert oder wieder entfernt
-		werden.
-	  </para>
 	</section>
 
 	<section id="central-management-umc:notifications">
 	  <title>Anzeige von Systembenachrichtigungen</title>
 	  <para>
-		UMC-Module können den Benutzer durch Systembenachrichtigungen auf potentielle Fehler -
-		z.B. nicht ausgeführte Join-Skripte - oder nötige Aktionen wie verfügbare Aktualisierungen hinweisen.
-		Die Benachrichtigungen werden an der rechten Seite eingeblendet und können durch
-		einen Mausklick ausgeblendet werden.
+		UMC-Module können den Benutzer durch Systembenachrichtigungen auf potentielle Fehler wie
+		z.B. nicht ausgeführte Join-Skripte, oder nötige Aktionen wie verfügbare Aktualisierungen hinweisen.
+		Die Benachrichtigungen werden in der oberen rechten Ecke eingeblendet und können erneut
+		mit einem Klick auf das Glockensymbol in der oberen rechten Ecke eingesehen werden.
 	</para>
 	</section>
 </section>
@@ -548,18 +518,18 @@ udm settings/ldapacl remove \
 	</figure>
 	<para>
 		In der linken Bildschirmhälfte ist das LDAP-Verzeichnis in einer
-		Baumstruktur dargestellt, deren Unterelemente durch die Symbole mit
-		dem Plus- und Minuszeichen ein- und ausgeblendet werden können.
+		Baumstruktur dargestellt, deren Unterelemente durch die Pfeilsymbole
+		ein- und ausgeblendet werden können.
 	</para>
 	<para>
 		Durch Klick auf ein Element der Baumstruktur wird an diese
-		LDAP-Position gewechselt und in der Übersichtsliste auf der linken
+		LDAP-Position gewechselt und in der Übersichtsliste auf der rechten
 		Bildschirmhälfte, die an dieser LDAP-Position befindlichen Objekte
-		angezeigt. Über die Auswahlliste <guimenu>LDAP-Objekttyp</guimenu> kann die
+		angezeigt. Über die Auswahlliste <guimenu>Typ</guimenu> kann die
 		Anzeige auf ausgewählte Attribute eingeschränkt werden.
 	</para>
 	<para>
-		Mit der Option <guimenu>Hinzufügen</guimenu> können hier auch
+		Mit der Schaltfläche <guimenu>Hinzufügen</guimenu> können hier auch
 		neue Objekte eingefügt werden. Analog zu den in <xref linkend="central:user-interface"/>
 		beschriebenen Bedienelementen können hier auch bestehende Objekte
 		editiert, gelöscht oder verschoben werden.
@@ -749,9 +719,9 @@ udm settings/ldapacl remove \
 </section>
 
 <section id="central:extendedattrs">
-	<title>Erweiterung der UMC mit erweiterten Attributen</title>
+	<title>Erweiterung von UMC-Modulen mit erweiterten Attributen</title>
 	<para>
-	  Die Domänenverwaltung von &ucsUMC; ermöglicht die umfassende Verwaltung der Daten einer
+	  Die Domänenverwaltungs-UMC-Module ermöglichen die umfassende Verwaltung der Daten einer
 	  Domäne. <emphasis>Erweiterte Attribute</emphasis> bieten eine Möglichkeit, neue Attribute in
 	  die Domänenverwaltung zu integrieren, die durch den UCS-Standardumfang nicht abgedeckt
 	  sind. Erweiterte Attribute werden auch von Drittanbietern für die Integration von Lösungen in
@@ -773,7 +743,7 @@ udm settings/ldapacl remove \
 
 	<para>
 	  Erweiterte Attribute können internationalisiert werden. In diesem Fall sollten Namen und
-	  Beschreibungen in Englisch verfasst werden, da dies der Standardsprache des &ucsUMC;
+	  Beschreibungen in Englisch verfasst werden, da dies der Standardsprache von UMC-Modulen
 	  entspricht.
 	</para>
 
@@ -808,7 +778,7 @@ udm settings/ldapacl remove \
 		  <row>
 			<entry>Kurzbeschreibung</entry>
 			<entry>
-			  Wird als Überschrift des Eingabefelds in &ucsUMC;, bzw. als Attribut-Beschreibung
+			  Wird als Überschrift des Eingabefelds in UMC-Modulen, bzw. als Attribut-Beschreibung
 			  in der Kommandozeilenschnittstelle verwendet.
 			</entry>
 		  </row>
@@ -825,7 +795,7 @@ udm settings/ldapacl remove \
 		  <row>
 			<entry>Ausführliche Beschreibung</entry>
 			<entry>
-			  Diese erweiterte Beschreibung wird für die Eingabefelder in &ucsUMC; als Tooltip
+			  Diese erweiterte Beschreibung wird für die Eingabefelder in UMC-Modulen als Tooltip
 			  angezeigt.
 			</entry>
 		  </row>
@@ -933,7 +903,7 @@ udm settings/ldapacl remove \
 			<row>
 			  <entry>Objektklasse löschen, wenn das Attribut entfernt wird</entry>
 			  <entry>
-				Wird für ein erweitertes Attribut in &ucsUMC; der Wert gelöscht, wird das
+				Wird der Wert für ein erweitertes Attribut in einem UMC-Module gelöscht, wird das
 				Attribut vom LDAP-Objekt entfernt. Werden an diesem LDAP-Objekt keine weiteren
 				Attribute der angegebenen <emphasis>Objektklasse</emphasis> verwendet, wird auch die
 				Objektklasse vom LDAP-Objekt entfernt, sofern diese Option aktiviert ist.
@@ -956,12 +926,12 @@ udm settings/ldapacl remove \
 		  </thead>
 		  <tbody>
 			<row>
-			  <entry>Dieses erweiterte Attribut nicht in der UMC anzeigen</entry>
+			  <entry>Dieses erweiterte Attribut nicht in UMC-Modulen anzeigen</entry>
 			  <entry>
 				Wenn ein Attribut anstatt durch den Administrator nur intern verwaltet werden soll,
 				- z.B. indirekt durch Skripte - kann diese Option aktiviert werden. Das Attribut
 				kann dann nur über das Kommandozeilen-Interface &ucsUDM; gesetzt werden und wird in
-				&ucsUMC; nicht angezeigt.
+				UMC-Modulen nicht angezeigt.
 			  </entry>
 			</row>
 
@@ -1026,7 +996,7 @@ udm settings/ldapacl remove \
 			  <entry>Name der Karteikarte</entry>
 			  <entry>
 				<para>
-				  Der Name der Karteikarte in &ucsUMC;, auf der das erweiterte Attribut
+				  Der Name der Karteikarte in UMC-Modulen, auf der das erweiterte Attribut
 				  angezeigt werden soll. Hier können auch neue Karteikarten hinzugefügt werden.
 				</para>
 
@@ -1118,7 +1088,7 @@ udm settings/ldapacl remove \
 			  <entry>Syntax-Klasse</entry>
 			  <entry>
 				<para>
-				  Bei der Eingabe von Werten nimmt &ucsUMC; eine Syntaxprüfung vor.
+				  Bei der Eingabe von Werten nimmt das UMC-Modul eine Syntaxprüfung vor.
 				</para>
 
 				<para>
@@ -1184,6 +1154,13 @@ udm settings/ldapacl remove \
 				beim Anlegen des Objekts, noch nachträglich. Dies ist sinnvoll für automatisch
 				generierte interne Zustände, die über Hook-Funktionen oder intern in einem Modul
 				gepflegt werden.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Kopierbar</entry>
+			  <entry>
+			  	Werte dieses erweiterten Attributs werden beim Kopieren eines Objekts automatisch in das Formular eingesetzt.
 			  </entry>
 			</row>
 		  </tbody>
@@ -1305,7 +1282,7 @@ udm settings/ldapacl remove \
 
 
 <section id="delegated-administration">
-  <title>Delegierte Administration in der UMC</title>
+  <title>Delegierte Administration für UMC-Module</title>
   <para>
 	In der Grundeinstellung können nur die Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> alle
 	UMC-Module aufrufen.
@@ -1375,10 +1352,10 @@ udm settings/ldapacl remove \
 <section id="central:udm">
 	<title>Kommandozeilenschnittstelle der Domänenverwaltung (&ucsUDM;)</title>
 	<para>
-		Der &ucsUDM; ist die Kommandozeilenschnittstelle der
-		Domänenverwaltungsfunktionalität von &ucsUMC;. Er ergänzt die
-		webbasierte Schnittstelle von &ucsUMC; und dient als mächtiges
-		Werkzeug für die Automatisierung administrativer Vorgängen in
+		Der &ucsUDM; ist die Kommandozeilenschnittstelle-Alternative
+		zur webbasierten Schnittstelle der Domänenverwaltungs-UMC-Module.
+		Es dient als mächtiges Werkzeug für die Automatisierung von
+		administrativen Vorgängen in
 		Skripten und zur Integration in andere Programme.
 	</para>
 	<para>
@@ -1387,7 +1364,7 @@ udm settings/ldapacl remove \
 		aufgerufen
 	</para>
 	<para>
-		&ucsUMC; und &ucsUDM; verwenden dieselben Domänen-Verwaltungsmodule,
+		UMC-Module und &ucsUDM; verwenden dieselben Domänen-Verwaltungsmodule,
 		d.h. alle Funktionen der Webschnittstelle stehen auch im
 		Kommandozeilen-Interface zur Verfügung.
 	</para>
@@ -1866,7 +1843,7 @@ univention-directory-manager dns/ptr_record create \
 	  <section id="central:udm:example:extendedattr">
 		<title>Erweiterte Attribute</title>
 		<para>
-		  Mit erweiterten Attributen lässt sich der Funktionsumfang von &ucsUMC; flexibel
+		  Mit erweiterten Attributen lässt sich der Funktionsumfang von UMC-Modulen flexibel
 		  erweitern, siehe <xref linkend="central:extendedattrs"/>. Im folgenden Beispiel wird ein
 		  neues Attribut eingefügt, an dem pro Benutzer das KFZ-Kennzeichen des Dienstwagens
 		  gespeichert wird. Die Werte werden in einer extra für diesen Zweck vorgesehenen Objektklasse
@@ -1916,8 +1893,9 @@ univention-directory-manager settings/extended_attribute create \
 		Reports oder nur einfache Adresslisten erstellt werden.
 	</para>
 	<para>
-		Die Erstellung von Reports ist direkt in die Weboberfläche der
-		&ucsUMC; integriert. Alternativ kann das Kommandozeilenprogramm
+		Die Erstellung von Reports ist direkt in die UMC-Module <guimenu>Benutzer</guimenu>,
+		<guimenu>Gruppen</guimenu> und <guimenu>Rechner</guimenu> integriert.
+		Alternativ kann das Kommandozeilenprogramm
 		<command>univention-directory-reports</command> verwendet werden.
 	</para>
 	<para>
@@ -1927,18 +1905,15 @@ univention-directory-manager settings/extended_attribute create \
 		Vorlagen CSV-Dateien, die als Import-Quelle für andere Programme verwendet werden
 		können. Weitere Vorlagen können erstellt und registriert werden.
 	</para>
-	<para>
-		Reports können über ein Kommandozeilenprogramm oder über das
-		Web-Interface von &ucsUMC; erstellt werden.
-	</para>
 
 	<section id="central:reports:create">
-	  <title>Erstellen von Reports in &ucsUMC;</title>
+	  <title>Erstellen von Reports in UMC-Modulen</title>
 	  <para>
-		Um einen Report zu erstellen, muss in die UMC-Module für Benutzer, Gruppen oder Rechner
-		gewechselt werden. Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden
-		(durch einen Klick auf den Button links von <guimenu>Name</guimenu> können alle Objekte
-		selektiert werden).
+	    Um einen Report zu erstellen, muss das UMC-Modul <guimenu>Benutzer</guimenu>,
+	    <guimenu>Gruppen</guimenu> oder <guimenu>Rechner</guimenu>
+		geöffnet werden. Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden
+		(durch einen Klick auf die Checkbox links von <guimenu>Name</guimenu> können alle Objekte
+		ausgewählt werden).
 		Ein Klick auf <guimenu>Mehr &ar; Report erstellen</guimenu> ermöglicht die
 		Auswahl zwischen dem <guimenu>Standard-Report</guimenu> im PDF-Format und
 		dem <guimenu>CSV-Report</guimenu> im CSV-Format.
@@ -1950,7 +1925,7 @@ univention-directory-manager settings/extended_attribute create \
 	  </figure>
 
 	  <para>
-		Die über &ucsUDM; erzeugten Reports werden für 12 Stunden aufbewahrt und danach durch einen
+		Die über die UMC-Module erzeugten Reports werden für 12 Stunden aufbewahrt und danach durch einen
 		Cron-Job entfernt. Die Einstellungen, wann dieser Cron-Job laufen soll und wie lange diese
 		Reports aufbewahrt werden sollen, kann über zwei &ucsUCR;-Variablen definiert werden:
 	  </para>

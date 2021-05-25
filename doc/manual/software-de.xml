@@ -15,7 +15,8 @@
 	<para>
 	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
 	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
-	  Sicherheits- und Versionsupdates können über &ucsUMC;, über ein Kommandozeilen-Tool
+	  Sicherheits- und Versionsupdates können über das UMC-Modul <guimenu>Software-Aktualisierung</guimenu>, 
+	  über ein Kommandozeilen-Tool
 	  und richtliniengesteuert installiert werden. Dies wird in
 	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
 	  unterstützt nicht die Aktualisierung von Microsoft Windows-Systemen.
@@ -112,8 +113,8 @@
 	</para>
 
 	<para>
-	  Wenn neue Release- oder Errata-Updates verfügbar sind, wird bei der Anmeldung
-	  an &ucsUMC; ein entsprechender Hinweis ausgegeben.
+	  Wenn neue Release- oder Errata-Updates verfügbar sind, wird beim Öffnen
+	  eines UMC-Moduls ein entsprechender Hinweis ausgegeben.
 	  Die Verfügbarkeit neuer Updates wird außerdem per E-Mail angekündigt,
 	  entsprechende Newsletter - getrennt nach Release- und Errata-Updates - können
 	  auf der Univention-Webseite abonniert werden.
@@ -137,7 +138,7 @@
 	</figure>
 
 	<para>
-	  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
+	  Das Univention App Center kann über das UMC-Modul <guimenu>App Center</guimenu>
 	  aufgerufen werden. Es zeigt standardmäßig alle installierten sowie verfügbare
 		Softwarekomponenten an. Mit <guimenu>Suche Applikationen...</guimenu> kann die Liste der angezeigten
 		Applikationen auf Suchbegriffe eingeschränkt werden. Außerdem können die Applikationen anhand
@@ -255,12 +256,10 @@
 	  &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt
 	  <guimenu>Aktualisieren</guimenu> angezeigt, der die Installation der neuen Version
 	  startet. Wenn Aktualisierungen verfügbar sind, wird außerdem im UMC-Modul <guimenu>Software-Aktualisierung</guimenu>
-	  &ucsUMC; ein entsprechender Hinweis ausgegeben.
+	  ein entsprechender Hinweis ausgegeben.
 	</para>
 
 	<para>
-	  Eine Übersicht über die installierten Applikationen in der Domäne kann auf der UMC-Startseite
-	  unter <guimenu>Installierte Applikationen</guimenu> abgerufen werden.
 	  Installationen und das Entfernen von Paketen werden in der Logdatei
 	  <filename>/var/log/univention/management-console-module-appcenter.log</filename>
 	  protokolliert.
@@ -272,7 +271,7 @@
 	<title>Aktualisierung von UCS-Systemen</title>
 	<para>
 	  UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
-	  (über &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+	  (über das UMC-Modul <guimenu>Software-Aktualisierung</guimenu>  oder auf der Kommandozeile) oder für größere Gruppen von
 	  UCS-Systemen automatisiert über eine UMC-Rechner-Richtlinie.
 	</para>
 
@@ -301,7 +300,7 @@
 	</section>
 
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC">
-	  <title>Aktualisierung eines einzelnen Systems in &ucsUMC;</title>
+	  <title>Aktualisierung eines einzelnen Systems im &ucsUMC; Modul 'Software-Aktualisierung'</title>
 	  <para>
 		Mit dem UMC-Modul <guimenu>Software-Aktualisierung</guimenu> können Versions- und
 		Errata-Updates installiert werden.
@@ -314,7 +313,7 @@
 		angezeigt.
 	  </para>
 
-	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
+	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über das UMC-Modul 'Software-Aktualisierung'</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations50/software_onlineupdate_de.png"/>
 	  </figure>
 
@@ -388,8 +387,8 @@
 	<section id="computers::softwaremanagement::releasepolicy">
 	  <title>Aktualisierung von Systemen über eine Rechner-Richtlinie</title>
 	  <para>
-		Mit einer <guimenu>Automatische Updates</guimenu>-Richtlinien in den
-		UMC-Modulen zur Rechner- und Domänenverwaltung lässt sich ein Update für
+		Mit einer <guimenu>Automatische Updates</guimenu>-Richtlinien im
+		UMC-Modul <guimenu>Rechner</guimenu> lässt sich ein Update für
 		mehrere Rechner konfigurieren (siehe auch <xref linkend="central:policies"/>).
 	  </para>
 
@@ -427,7 +426,7 @@
 		Nach erfolgreicher Durchführung eines Release-Updates sollte geprüft
 		werden, ob neue oder aktualisierte Join-Skripte ausgeführt werden
 		müssen. Zur Überprüfung und zum Starten der Join-Skripte kann
-		entweder das UMC-Modul <emphasis>Domänenbeitritt</emphasis> verwendet werden
+		entweder das UMC-Modul <guimenu>Domänenbeitritt</guimenu> verwendet werden
 		oder das Kommandozeilenprogramm
 		<command>univention-run-join-scripts</command> (siehe
 		<xref linkend="linux-domaenenbeitritt"/>).
@@ -503,7 +502,7 @@
 	</para>
 
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
-	  <title>Konfiguration über &ucsUMC;</title>
+	  <title>Konfiguration über &ucsUMC; Modul</title>
 	  <para>
 		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu>
 		kann der <guimenu>Repository-Server</guimenu> und die Verwendung der
@@ -524,7 +523,7 @@
 	  <title>Richtlinienbasierte Konfiguration des Repository-Servers</title>
 	  <para>
 		Der zu verwendende Repository-Server kann auch über die Richtlinie
-		<guimenu>Repository-Server</guimenu> in der UMC-Rechnerverwaltung
+		<guimenu>Repository-Server</guimenu> im UMC-Modul <guimenu>Rechner</guimenu>
 		festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme
 		angezeigt, für die ein DNS-Eintrag hinterlegt ist
 		(siehe auch <xref linkend="central:policies"/>).
@@ -657,13 +656,13 @@ univention-repository-update -h
 
 	<section
 		id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console">
-	  <title>Installation/Deinstallation von einzelnen Paketen in &ucsUMC;</title>
+	  <title>Installation/Deinstallation von einzelnen Paketen über &ucsUMC; Modul</title>
 	  <para>
-		Mit dem &ucsUMC;-Modul <guimenu>Paket Verwaltung</guimenu> können einzelne Softwarepakete installiert
+		Mit dem UMC-Modul <guimenu>Paket-Verwaltung</guimenu> können einzelne Softwarepakete installiert
 		und deinstalliert werden.
 	  </para>
 
-	  <figure id="software-umcinstall"><title>Installation des Pakets <package>univention-squid</package> in &ucsUMC;</title>
+	  <figure id="software-umcinstall"><title>Installation des Pakets <package>univention-squid</package> im UMC-Modul 'Paket-Verwaltung'</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations50/software_install_de1.png"/>
 	  </figure>
 
@@ -780,7 +779,7 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  Paketrichtlinien werden im UMC-Modul <emphasis>Richtlinien</emphasis>
+	  Paketrichtlinien werden im UMC-Modul <guimenu>Richtlinien</guimenu>
 	  mit dem Objekttyp <guimenu>Richtlinie: Pakete + Systemrolle</guimenu>
 	  verwaltet.
 	</para>
@@ -938,9 +937,8 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
-	  &ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
-	  werden. Folgende Funktionen stehen zur Verfügung:
+		Der Software-Monitor bringt sein eigenes UMC-Modul <guimenu>Software-Monitor</guimenu>.
+	  Folgende Funktionen stehen zur Verfügung:
 	</para>
 
 	<itemizedlist>

@@ -60,7 +60,7 @@
 
 	<para>
 	  Die Verwaltung der Benutzerdaten des Mailservers (z.B. E-Mail-Adressen oder
-	  Verteiler) erfolgt über &ucsUMC; und ist in
+	  Verteiler) erfolgt über UMC-Module und ist in
 	  <xref linkend="mail::management::general"/> dokumentiert. Benutzerdaten werden
 	  in LDAP gespeichert.
 	  Die Authentifizierung wird anhand der primären E-Mail-Adresse eines Benutzers
@@ -152,7 +152,7 @@
 		vorgenommen.
 	  </para>
 	  <para>
-		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
+		Mail-Domänen werden im UMC-Modul <guimenu>E-Mail</guimenu>
 		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet.
 	  </para>
 	</section>
@@ -172,7 +172,7 @@
 			  IMAP-Postfach des Benutzers. Wenn dem Benutzer ein Mail Home Server zugeordnet ist
 			  (siehe <xref linkend="mail::homeserver"/>), wird das IMAP-Postfach automatisch durch
 			  ein &ucsUDL;-Modul erstellt. Der
-			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
+			  Domänenanteil der E-Mail-Adresse muss im UMC-Modul <guimenu>E-Mail</guimenu> registriert sein (siehe
 			  <xref linkend="mail::management::domains"/>).
 			</simpara>
 		  </listitem>
@@ -184,7 +184,7 @@
 			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen
 			  nicht eindeutig sein; besitzen zwei Benutzer die gleiche Adresse, erhalten
 			  beide Benutzer alle E-Mails, die an diese Adresse gesandt werden. Der
-			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
+			  Domänenanteil der E-Mail-Adresse muss im UMC-Modul <guimenu>E-Mail</guimenu> registriert sein (siehe
 			  <xref linkend="mail::management::domains"/>). Um E-Mails an
 				alternative E-Mail-Adressen zu erhalten, muss ein Benutzer eine
 				primäre E-Mail-Adresse besitzen.
@@ -198,7 +198,7 @@
 		      E-Mail-Adressen empfängt, an diese weiter geleitet. Optional kann eine Kopie
 		      der eingehenden Nachrichten in das Postfach des Benutzers zugestellt werden. Es können beliebig
 		      viele Adressen angegeben werden. Weiterleitungs-E-Mail-Adressen müssen weder
-		      eindeutig, noch muss ihr Domänenanteil in &ucsUMC; registriert sein.
+		      eindeutig, noch muss ihr Domänenanteil im UMC-Modul registriert sein.
 		    </simpara>
 		  </listitem>
 		</itemizedlist>
@@ -216,7 +216,7 @@
 	  </note>
 
 	  <para>
-		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
+		E-Mail-Adressen werden im UMC-Modul <guimenu>Benutzer</guimenu> verwaltet.
 		Die <guimenu>primäre E-Mail-Adresse</guimenu> wird im
 		Reiter <guimenu>Allgemein</guimenu> im Untermenü <guimenu>Benutzer-Konto</guimenu>
 		eingetragen.
@@ -255,7 +255,7 @@ doveadm auth cache flush
 		</figure>
 
 	  <para>
-		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
+		Mail-Domänen werden im UMC-Modul <guimenu>E-Mail</guimenu>
 		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet.
 		Unter <guimenu>Name</guimenu> ist ein frei wählbarer Name der Mailingliste
 		anzugeben, die Angabe einer <guimenu>Beschreibung</guimenu> ist optional.
@@ -291,7 +291,7 @@ doveadm auth cache flush
 	  </para>
 
 	  <para>
-		  Mailgruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet
+		  Mailgruppen werden im UMC-Modul <guimenu>Gruppen</guimenu> verwaltet
 		  (siehe auch <xref linkend="groups"/>).
 	  </para>
 
@@ -330,7 +330,7 @@ doveadm auth cache flush
 		Alternativ können eigene IMAP-Ordner für Benutzer oder
 		Benutzergruppen freigegeben werden. Ein solcher Ordner wird als globaler
 		IMAP-Ordner bezeichnet.
-		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
+		Globale IMAP-Ordner werden im UMC-Modul <guimenu>Mail</guimenu>
 		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
 		<para>
@@ -338,7 +338,7 @@ doveadm auth cache flush
 			<envar>mail/dovecot/mailbox/rename</envar> kommt daher nicht zur Anwendung. Nur wenn
 			<envar>mail/dovecot/mailbox/delete</envar> auf <literal>yes</literal> gesetzt ist (Standard ist <literal>no</literal>),
 			wird ein globaler IMAP-Ordner beim Löschen im UMC-Modul
-			<emphasis>Mail</emphasis> auch tatsächlich von der Festplatte gelöscht.
+			<guimenu>Mail</guimenu> auch tatsächlich von der Festplatte gelöscht.
 		</para>
 
 		<figure id="mail-sharedfolder">
@@ -403,7 +403,7 @@ doveadm auth cache flush
 					kann nur aus E-Mail-Clients heraus in den Ordner geschrieben werden.
 				  </para>
 				  <para>
-					Der Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
+						Der Domänenanteil der E-Mail-Adresse muss im UMC-Modul <guimenu>E-Mail</guimenu> registriert sein (siehe
 					<xref linkend="mail::management::domains"/>).
 				  </para>
 				</entry>
@@ -431,7 +431,7 @@ doveadm auth cache flush
 				  <para>
 					Hier können Zugriffsberechtigungen auf Basis von Benutzern oder Gruppen
 					vergeben werden. Benutzer werden mit Ihrem Benutzernamen
-					eingetragen, als Gruppen werden die in &ucsUMC; angelegten Gruppen
+					eingetragen; als Gruppen werden die im UMC-Modul <guimenu>Gruppen</guimenu> angelegten Gruppen
 					verwendet.
 				  </para>
 				  <para>
@@ -511,7 +511,7 @@ doveadm auth cache flush
 		unter <guimenu>Erweiterte Einstellungen &ar; Mail</guimenu> verwaltet
 		wird. Der Standardwert ist <literal>0</literal> und bedeutet, dass keine Beschränkung aktiv ist.
 		Für das Zuweisen einer Quota an mehrere Benutzer auf einmal, kann der
-		Mehrfachbearbeitungsmodus von &ucsUMC; verwendet  werden, siehe
+		Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, siehe
 		<xref linkend="central:user-interface:edit"/>.
 	  </para>
 

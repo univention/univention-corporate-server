@@ -13,7 +13,7 @@
   <section id="idmcloud:general">
 	<title>Einführung</title>
 	<para>
-		UCS bietet ein integriertes Identity Management System. Über &ucsUMC; können u.a. Benutzer
+		UCS bietet ein integriertes Identity Management System. Über UMC-Module können u.a. Benutzer
 		oder Gruppen sehr einfach administriert werden. Abhängig von den installierten Diensten stehen diese
 		Identitäten über unterschiedliche Schnittstellen bereit, bspw. via LDAP.
 	</para>

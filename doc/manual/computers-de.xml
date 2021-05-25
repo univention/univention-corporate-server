@@ -10,7 +10,7 @@
 ]>
 <chapter id="computers:general"><title>Rechnerverwaltung</title>
 
-    <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten in Univention Management Console</title>
+    <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten über &ucsUMC; Modul</title>
         <para>
             Alle UCS-, Linux- und Windowssysteme innerhalb einer UCS-Domäne verfügen über
             ein Rechner-Domänenkonto, mit dem sich die Systeme untereinander
@@ -39,8 +39,7 @@
             <xref linkend="systemrollen"/>.
         </para>
         <para>
-            Rechnerkonten werden im Modul <guimenu>Rechner</guimenu> von &ucsUMC;
-            verwaltet.
+            Rechnerkonten werden im UMC-Modul <guimenu>Rechner</guimenu> verwaltet.
         </para>
 
 		<para>
@@ -61,7 +60,7 @@
 		</para>
 
 		<figure id="computer-create">
-			<title>Anlegen eines Rechners in UMC</title>
+			<title>Anlegen eines Rechners im UMC-Modul 'Rechner'</title>
 			<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/computers_computer_de.png"/>
 		</figure>
 		<figure id="computer-create-advanced">
@@ -406,9 +405,9 @@
 
         <section id="computers:ubuntu"><title>Integration von Ubuntu-Clients</title>
             <para>
-                Ubuntu-Clients können mit einer eigenen Rechnerrolle in &ucsUMC;
-                verwaltet werden. Die Netzwerkeigenschaften für DNS/DHCP können dabei
-                ebenfalls mit &ucsUMC; verwaltet werden.
+                Ubuntu-Clients können mit einer eigenen Rechnerrolle im UMC-Modul
+                <guimenu>Rechner</guimenu> verwaltet werden. Die Netzwerkeigenschaften für DNS/DHCP können dabei
+                ebenfalls dort verwaltet werden.
             </para>
             <para>
                 Die Anwendung von Richtlinien wird nicht unterstützt.
@@ -573,7 +572,7 @@
         <section id="hardware::networkconfiguration"><title>Netz-Konfiguration</title>
             <section id="computers:Netzwerk-Interfaces"><title>Netzwerk-Interfaces</title>
 				<para>
-                Die Konfiguration von Netzwerk-Interfaces kann in &ucsUMC; über das Modul
+                Die Konfiguration von Netzwerk-Interfaces kann über das UMC-Modul
                 <guimenu>Netzwerk-Einstellungen</guimenu> angepasst werden.
 				</para>
                 <para>
@@ -919,7 +918,8 @@
 					  </itemizedlist>
 
 					<para>
-					  Mit der Konfiguration eines VLANs in &ucsUMC; kann für einen Rechner
+					  Mit der Konfiguration eines VLANs im UMC-Modul <guimenu>Netzwerk-Einstellungen</guimenu>
+					  kann für einen Rechner
 					  konfiguriert werden, an welchen VLANs er teilnehmen möchte. Ein Beispiel wäre
 					  ein interner Firmen-Webserver, der sowohl für die Mitarbeiter, als auch für
 					  die Benutzer des Gastnetzes verfügbar sein soll.
@@ -1037,8 +1037,8 @@
 
         <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
 			<para>
-            Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> der Rechnerverwaltung
-            in &ucsUMC; können NFS-Freigaben konfiguriert werden, die auf dem
+            Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> der Rechnerverwaltungs-UMC-Module
+            können NFS-Freigaben konfiguriert werden, die auf dem
             System gemountet werden. Zur Auswahl steht eine
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
             point</guimenu> angegebenen Dateipfad eingehängt wird.
@@ -1139,7 +1139,7 @@
             <para>
                 &ucsUCR;-Variablen können auf der Kommandozeile über den
                 Befehl <command>univention-config-registry</command> (Kurzform: <command>ucr</command>)
-				oder über das UMC-Modul <guimenu>Univention Config Registry</guimenu> konfiguriert werden.
+				oder über das UMC-Modul <guimenu>Univention Configuration Registry</guimenu> konfiguriert werden.
             </para>
             <para>
                 Da die meisten Pakete ihre Konfiguration über &ucsUCR; durchführen
@@ -1226,10 +1226,10 @@ univention-config-registry set --force mail/messagesizelimit=1000000
             </para>
         </section><!--Einführung -->
 
-        <section id="computers:Verwendung_des_Web-Interface_der_Univention_Management_Console"><title>Verwendung des Web-Interface in &ucsUMC;</title>
+        <section id="computers:Verwendung_des_Web-Interface_der_Univention_Management_Console"><title>Verwendung des &ucsUMC; Moduls</title>
             <para>
-                Über das Modul <guimenu>Univention Configuration Registry</guimenu> von
-                &ucsUMC; können die Variablen eines Systems angezeigt und verändert
+                Über das UMC-Modul <guimenu>Univention Configuration Registry</guimenu>
+                können die Variablen eines Systems angezeigt und verändert
                 werden, außerdem besteht die Möglichkeit über
                 <guimenu>Hinzufügen</guimenu> neue Variablen zu setzen.
             </para>
@@ -1250,9 +1250,9 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 				Beschreibung der Variable angezeigt.
             </para>
             <para>
-                Mit einem Klick auf das Icon mit dem stilisierten Stift wird die
-                Einstellung einer Variable bearbeitet. Das Icon mit dem stilisierten
-                Minuszeichen erlaubt das Löschen einer Variable.
+                Eine Variable kann mit einem Klick auf ihren Namen bearbeitet werden.
+                Mit einem Rechts-Klick und der Auswahl von <guimenu>Löschen</guimenu> können
+                Variablen gelöscht werden.
             </para>
 			</section><!-- Verwendung des Web-Interface der Univention Management Console-->
 
@@ -1417,7 +1417,7 @@ primary.firma.de
                 Ein Teil der über &ucsUCR; konfigurierten Einstellungen sind
                 systemspezifisch (z.B. der Rechnername), viele Eigenschaften können
                 jedoch auch auf mehrere Rechner angewendet werden. Mithilfe der
-                im <guimenu>Richtlinien</guimenu>-Modul von &ucsUMC; verwalteten
+                im UMC-Modul <guimenu>Richtlinien</guimenu> verwalteten
                 <guimenu>Univention Configuration Registry</guimenu>-Richtlinie können
                 Variablen zusammengefasst und auf mehr als einen Rechner angewendet
                 werden.
@@ -1591,9 +1591,9 @@ if configRegistry.get('version/version') and \
                 definiert. Konfiguriert werden u.a. Einstellungen wie Datums- sowie zu
                 nutzende Währungsformate, verwendete Zeichensätze und die
 				Sprachauswahl für internationalisierte Programme.
-				Die installierten Locales können in &ucsUMC; unter
-                <guimenu>Sprach-Einstellungen &ar; Verfügbare
-                Systemsprachen</guimenu> geändert werden. Unter
+				Die installierten Locales können im UMC-Modul <guimenu>Sprach-Einstallungen</guimenu>  unter
+                <guimenu>Spracheinstellungen &ar; Verfügbare
+                Systemsprache</guimenu> geändert werden. Unter
                 <guimenu>Standard-System-Sprachdefinition</guimenu> wird die Standard-Locale
                 festgelegt.
             </para>
@@ -1687,7 +1687,7 @@ auth/sshd/restrict: yes
 
 		  <para>
 			Alternativ können die LDAP-Server auch über die Richtlinie
-			<guimenu>LDAP-Server</guimenu> in der UMC-Rechnerverwaltung festgelegt
+			<guimenu>LDAP-Server</guimenu> festgelegt
 			werden. Die Reihenfolge der Server bestimmt die Reihenfolge der Anfragen des Rechners an
 			die Server, falls ein LDAP-Server nicht erreichbar sein sollte.
 		  </para>
@@ -1710,7 +1710,7 @@ auth/sshd/restrict: yes
             </para>
             <para>
                 Alternativ kann der Server auch über die Richtlinie
-                <guimenu>Druckserver</guimenu> in der UMC-Rechnerverwaltung festgelegt werden.
+                <guimenu>Druckserver</guimenu> im UMC-Modul <guimenu>Rechner</guimenu> festgelegt werden.
             </para>
         </section><!-- Konfiguration des verwendeten Druckservers -->
 
@@ -1767,7 +1767,7 @@ auth/sshd/restrict: yes
                 </para>
             </section><!-- Protokollierung des Systemzustands -->
 
-            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken in &ucsUMC;</title>
+            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken über &ucsUMC; Modul</title>
                 <para>
                     Das UMC-Modul <guimenu>Statistiken</guimenu> zeigt die Auslastung des
                     Systems an. Dabei wird jeweils eine Grafik für die unterschiedlichen
@@ -1790,7 +1790,7 @@ auth/sshd/restrict: yes
                     </itemizedlist>
             </section><!-- Anzeige von Systemstatistiken in &ucsUMC; -->
 
-            <section id="computers:modules:top"><title>Prozessübersicht in &ucsUMC;</title>
+            <section id="computers:modules:top"><title>Prozessübersicht über &ucsUMC; Modul</title>
                 <para>
                     Das UMC-Modul <guimenu>Prozessübersicht</guimenu> zeigt eine Tabelle der aktuellen
                     Prozesse auf dem System an. Die Prozesse können nach den folgenden
@@ -1832,7 +1832,7 @@ auth/sshd/restrict: yes
                 </para>
             </section><!-- Prozessübersicht in &ucsUMC; -->
 
-            <section id="computers:modules:diagnostic"><title>System-Fehlerdiagnose in &ucsUMC;</title>
+            <section id="computers:modules:diagnostic"><title>System-Fehlerdiagnose über &ucsUMC; Modul</title>
                 <para>
 					Um ein UCS-System auf verschiedene bekannte Probleme hin zu analysieren
 					bietet das UMC-Modul <guimenu>System-Fehlerdiagnose</guimenu> eine
@@ -2038,7 +2038,7 @@ nscd -i hosts
                 <title>Installation</title>
                 <para>
                     XRDP ist über das App Center (siehe <xref linkend="software:appcenter"/>)
-                    verfügbar und kann über das entsprechende &ucsUMC; Modul App Center installiert
+                    verfügbar und kann über das entsprechende UMC-Modul <guimenu>App Center</guimenu> installiert
                     werden, auch auf mehreren Systemen. Nach der Installation
                     läuft ein <ulink url="http://www.xrdp.org/">XRDP Server</ulink>.
                 </para>
@@ -2222,8 +2222,9 @@ nscd -i hosts
 
         <section id="basicservices::ntp"><title>Konfiguration der Zeitzone / Zeitsynchronisation</title>
             <para>
-                Die Zeitzone, in der ein System angesiedelt ist, kann in &ucsUMC;
-				unter <guimenu>Sprach-Einstellungen &ar; Zeitzone</guimenu>
+                Die Zeitzone, in der ein System angesiedelt ist, kann im UMC-Modul
+                <guimenu>Sprach-Einstellungen</guimenu>
+				unter <guimenu>Zeitzonen- und Tastatureinstellungen</guimenu>
                 geändert werden.
             </para>
             <para>

@@ -79,7 +79,7 @@
 			Es gibt drei Möglichkeiten ein UCS-System einer bestehenden Domäne
 			beitreten zu lassen; direkt am Ende der Installation im Univention Installer
 			(siehe <xref linkend="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten"/>) oder nachträglich durch den
-			Befehl <command>univention-join</command> bzw. mit &ucsUMC;.
+			Befehl <command>univention-join</command> oder mit dem UMC-Module <guimenu>Domänenbeitritt</guimenu>.
 		</para>
 		<para>
 			Der &ucsPrimaryDN; sollte immer auf dem aktuellsten Release-Stand der Domäne
@@ -149,12 +149,12 @@
 		</section>
 
 		<section id="linux-domaenenbeitritt-umc">
-			<title>Domänenbeitritt mit &ucsUMC;</title>
+			<title>Domänenbeitritt über &ucsUMC; Modul</title>
 			<para>
 				Der Domänenbeitritt kann auch webbasiert über das UMC-Modul
 				<guimenu>Domänenbeitritt</guimenu> erfolgen.
 				Da auf einem noch nicht der Domäne beigetretenen System der
-				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung an &ucsUMC;
+				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung am Modul
 				als Benutzer <systemitem class="username">root</systemitem> erfolgen.
 			</para>
 			<para>
@@ -199,7 +199,7 @@
 			<title>Nachträgliches Ausführen von Join-/Unjoin-Skripten</title>
 			<para>
 			  Gibt es auf einem System Join- oder Unjoin-Skripte, die noch nicht ausgeführt wurden oder die nur
-			  für eine ältere Version ausgeführt wurden, wird bei der Anmeldung an &ucsUMC; eine
+			  für eine ältere Version ausgeführt wurden, wird beim Öffnen eines UMC-Moduls eine
 			  Warnmeldung ausgegeben.
 			</para>
 
@@ -249,7 +249,7 @@
 			Beim Domänenbeitritt wird automatisch ein Rechnerkonto für den
 			Windows-Client erstellt (siehe <xref
 			linkend="computers::hostaccounts"/>). Angaben zu MAC- und IP-Adresse, Netzwerk,
-			DHCP oder DNS können vor oder nach dem Domänenbeitritt in &ucsUMC; ergänzt
+			DHCP oder DNS können vor oder nach dem Domänenbeitritt durch UMC-Module ergänzt
 			werden.
 		</para>
 		<para>
@@ -753,7 +753,7 @@ ID 342: END
 	<section id="domain-ldap:LDAP-Kommandozeilen-Tools">
 		<title>LDAP-Kommandozeilen-Tools</title>
 		<para>
-			Neben dem UMC-Webinterface gibt es auch eine Reihe von Programmen,
+			Neben den UMC-Modulen gibt es auch eine Reihe von Programmen,
 			mit denen auf der Kommandozeile auf das LDAP-Verzeichnis zugegriffen werden
 			kann.
 		</para>
@@ -846,10 +846,10 @@ slapcat &gt; ldapdaten.txt
 				erforderlich.
 			</para>
 			<para>
-				Das Zurücksetzen der Passwörter kann über &ucsUMC; erfolgen. In der
-				Standardeinstellung bietet &ucsUMC; nur dem Benutzer
-				<systemitem class="username">Administrator</systemitem> den Benutzer-Assistenten an, über den neue
-				Passwörter gesetzt werden können. Während der Installation wird automatisch
+				Passwörter können über das UMC-Modul <guimenu>Benutzer</guimenu> zurückgesetzt werden.
+				In der Standardeinstellung wird das Modul nur dem Benutzer
+				<systemitem class="username">Administrator</systemitem> angezeigt.
+				Während der Installation wird automatisch
 				eine neue Richtlinie <uri>default-user-password-admins</uri> erstellt,
 				die den Mitgliedern der Gruppe <systemitem class="groupname">User Password Admins</systemitem>
 				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis
@@ -1022,8 +1022,8 @@ slapcat &gt; ldapdaten.txt
 		Durch &ucsUDL;-Module können Änderungen an der Domäne auch an Dienste übermittelt werden,
 		die selbst nicht LDAP-fähig sind. Ein Beispiel ist der Druckserver CUPS: Die
 		Druckerdefinitionen werden nicht aus dem LDAP ausgelesen, sondern aus der Datei
-		<filename>/etc/cups/printers.conf</filename>. Wird nun in der
-		UMC-Druckerverwaltung ein Drucker angelegt, wird dieser im LDAP registriert. Diese
+		<filename>/etc/cups/printers.conf</filename>. Wird nun im UMC-Modul <guimenu>Drucker</guimenu>
+		ein Drucker angelegt, wird dieser im LDAP registriert. Diese
 		Änderung wird dann vom &ucsUDL;-Modul <emphasis>cups-printers</emphasis> erkannt und
 		basierend auf den Daten im LDAP ein Eintrag in
 		<filename>/etc/cups/printers.conf</filename> hinzugefügt, modifiziert oder gelöscht.
@@ -1079,7 +1079,7 @@ slapcat &gt; ldapdaten.txt
 
 		<para>
 		  Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen, keine Störungen
-		  im Netzwerk) ist die Verzögerung zwischen der Änderung in &ucsUMC; bis zur
+		  im Netzwerk) ist die Verzögerung zwischen Änderungen in UMC-Modulen bis zur
 		  Replikation auf z.B. eines &ucsReplicaDN; kaum merkbar. Eine möglicherweise unvollständige
 		  Replikation kann durch einen Vergleich der Transaktions-IDs von Listener- und
 		  Notifier-Dienst identifiziert werden.
@@ -1150,7 +1150,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		SSL/TLS kommt beispielsweise bei der Listener/Notifier-Domänenreplikation
-		oder beim HTTPS-Zugriff auf &ucsUMC; zum Einsatz.
+		oder beim HTTPS-Zugriff auf &ucsWeb;n zum Einsatz.
 	</para>
 	<para>
 		Für eine verschlüsselte Kommunikation zwischen zwei Rechnern müssen beide
@@ -1213,7 +1213,7 @@ univention-directory-listener-ctrl resync cups-printers
 			nicht mehr. Es ist deshalb notwendig, die Gültigkeit der Zertifikate
 			regelmäßig zu überprüfen und rechtzeitig das Root-Zertifikat zu
 			erneuern. Für die Überwachung des Gültigkeitszeitraums wird ein Nagios-Plugin
-			bereitgestellt. Außerdem erfolgt bei der Anmeldung an &ucsUMC; eine
+			bereitgestellt. Außerdem erfolgt beim Öffnen eines UMC-Moduls eine
 			Warnmeldung, wenn das Root-Zertifikat bald abläuft (der Warnzeitraum kann mit
 			der &ucsUCRV; <envar>ssl/validity/warning</envar> festgelegt werden und beträgt
 			standardmäßig 30 Tage).
@@ -1384,7 +1384,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> ist der Standard-Login für &ucsUMC;, sofern <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreicht werden kann.
+		Der <foreignphrase>Single Sign-On</foreignphrase> ist der Standard-Login für &ucsWeb;n, sofern <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreicht werden kann.
 		Zum Login werden die Anmeldedaten des Domänenkontos verwendet.
 		Für den Login direkt am UCS-System (also ohne <foreignphrase>Single Sign-On</foreignphrase>) gelangt man über den Link <guimenu>Ohne Single Sign-On anmelden</guimenu>.
 	</para>
@@ -1407,14 +1407,14 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Hinzufügen eines neuen externen Service Providers</title>
 	<para>
-		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
+		Die am UCS Identity Provider registrierten Service Provider können über das UMC-Modul <guimenu>SAML Identity Provider</guimenu> verwaltet werden.
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
 		Service Provider können auch für Gruppen aktiviert werden, sodass sich alle Benutzer in dieser Gruppe für diesen Dienst authentifizieren können.
 		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers, oder dem <foreignphrase>Tab</foreignphrase> <guimenu>Allgemein</guimenu> einer Gruppe, muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	<para>
 		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des <wordasword>SAML-Zertifikats</wordasword> auf dem Service Provider benötigt.
-	    Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
+	    Dieses kann über einen Download-Link im UMC-Modul heruntergeladen werden.
 		Andere Service Provider benötigen die <wordasword>XML-Metadaten</wordasword> des Identity Providers in Form eines Datei-<foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML-Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
@@ -1580,8 +1580,10 @@ univention-directory-listener-ctrl resync cups-printers
   </para>
   <para>
 	Um externe Web-Dienste per <application>OpenID Connect</application> an UCS anzubinden, muss für diesen Dienst ein bestimmtes Objekt des Typs <classname>oidc/rpservice</classname> im UCS Verzeichnisdienst vorhanden sein.
-	Dies kann in der Univention Management Console im LDAP Browser im Container <uri>cn=oidc</uri> angelegt werden, der sich unterhalb des Containers <uri>cn=univention</uri> befindet.
-	Hier kann über den Punkt Hinzufügen und die Auswahl <guimenu>OpenID Connect Relying Party Service</guimenu> ein neuer Dienst registriert werden.
+	Dies kann im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> im Container <uri>cn=oidc</uri> angelegt werden,
+	der sich unterhalb des Containers <uri>cn=univention</uri> befindet.
+	Hier kann über die Schaltfläche <guimenu>Hinzufügen</guimenu> und die Auswahl
+	<guimenu>OpenID Connect Relying Party Service</guimenu> ein neuer Dienst registriert werden.
   </para>
   <para>
 	Das gleiche ist auch über die Kommandozeile möglich:
@@ -1874,7 +1876,8 @@ apt-get dselect-upgrade
 		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/admindiary-list_de.png"/>
 	</figure>
 	<para>
-		<xref linkend="domain-ldap:adminndiary:list"/> zeigt, wie die Ereignisse in der &ucsUMC; dargestellt werden.
+		<xref linkend="domain-ldap:adminndiary:list"/> zeigt, wie die Ereignisse im UMC-Modul
+		<guimenu>Admin Diary</guimenu> dargestellt werden.
 		Die angezeigten Einträge werden standardmäßig wochenweise gruppiert und können über das Suchfeld weiter eingegrenzt werden.
 		Durch das Auswählen eines Eintrags gelangt man zu einer Detailansicht, wie sie in <xref linkend="domain-ldap:adminndiary:detail"/> zu sehen ist.
 		Dieser kann man weitere Details zum Wo und Wann entnehmen.
@@ -1900,7 +1903,7 @@ apt-get dselect-upgrade
 			<term><foreignphrase>Admin Diary</foreignphrase> Frontend</term>
 			<listitem><simpara>
 				Auch das Frontend muss mindestens einmal installiert sein, kann aber öfter installiert werden.
-				Das Frontend beinhaltet das &ucsUMC; Modul, um die Einträge anzuzeigen und zu kommentieren.
+				Das Frontend beinhaltet das UMC-Modul <guimenu>Admin Diary</guimenu>, um die Einträge anzuzeigen und zu kommentieren.
 				Wenn es nicht auf dem selben System installiert werden soll, auf dem das Backend läuft, dann muss der Zugriff auf die zentrale Datenbank
 				manuell eingerichtet werden.
 				Die dazu notwendigen Schritte sind in einem <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separaten Artikel</ulink> beschrieben.

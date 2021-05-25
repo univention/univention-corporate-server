@@ -12,7 +12,7 @@
     <title>Benutzerverwaltung</title>
     <para>
         UCS integriert ein zentrales Identity-Management. Alle Benutzerinformationen
-        werden in UCS zentral über &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
+        werden in UCS zentral über das UMC-Modul <guimenu>Benutzer</guimenu> verwaltet und im LDAP-Verzeichnisdienst
         gespeichert.
     </para>
     <para>
@@ -60,13 +60,13 @@
         </orderedlist>
     </para>
     <section id="users::management">
-        <title>Verwaltung von Benutzern mit Univention Management Console</title>
+        <title>Verwaltung von Benutzern über &ucsUMC; Modul</title>
         <para>
-			Benutzer werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet
+			Benutzer werden im UMC-Modul <guimenu>Benutzer</guimenu> verwaltet
 			(siehe auch <xref linkend="central:user-interface"/>).
         </para>
 		<figure id="user-create">
-			<title>Anlegen eines Benutzers in UMC</title>
+			<title>Anlegen eines Benutzers im UMC-Modul 'Benutzer'</title>
 			<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_user_de.png"/>
 		</figure>
 		<para>
@@ -652,8 +652,8 @@
         <para>
             Sobald eine App in der UCS-Umgebung installiert ist, die die
             Benutzeraktivierung verwendet, erscheint sie mit Logo im Reiter
-            <guimenu>Apps</guimenu> des Benutzers im UMC Modul
-            <emphasis>Benutzer</emphasis>. Mit einem Haken in der Checkbox wird
+            <guimenu>Apps</guimenu> des Benutzers im UMC-Modul
+            <guimenu>Benutzer</guimenu>. Mit einem Haken in der Checkbox wird
             der Benutzer für die App aktiviert. Wenn noch weitere Einstellungen
             für die Berechtigung gemacht werden können, erscheint ein
             zusätzlicher Reiter mit dem Namen der App, um diese Parameter zu
@@ -667,7 +667,7 @@
         <para>
             Wenn die App deinstalliert wird, wird die Checkbox der
             Benutzeraktivierung für die App vom Reiter <guimenu>Apps</guimenu>
-            des Benutzers im UMC Modul entfernt.
+            des Benutzers im UMC-Modul entfernt.
         </para>
     </section>
 
@@ -758,7 +758,7 @@
                 <listitem>
 					<simpara>
                     Ein <emphasis>Passwort-Ablaufintervall</emphasis> forciert regelmäßige
-                    Passwortänderungen. Bei der Anmeldung an &ucsUMC;, Kerberos, Windows-Clients und
+                    Passwortänderungen. Bei der Anmeldung an &ucsWeb;n, Kerberos, Windows-Clients und
                     an UCS-Systemen wird nach Ablauf des Intervalls in Tagen ein
                     Passwortwechsel erzwungen. Die verbleibende Gültigkeit des Kennworts
                     wird in der Benutzerverwaltung unter <guimenu>Passwort-Ablaufdatum</guimenu>
@@ -769,7 +769,7 @@
                 <listitem>
                     <para>
                         Ist die Option <emphasis>Passwort-Qualitätsprüfung</emphasis> aktiviert,
-                        werden für Passwortänderungen in Samba, &ucsUMC; und Kerberos
+                        werden für Passwortänderungen in Samba, &ucsWeb;n und Kerberos
                         zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung
                         beinhalten.
                     </para>
@@ -837,7 +837,7 @@
 
 	  <para>
 		Das Samba-Domänenobjekt wird über das UMC-Modul
-		<emphasis>LDAP-Verzeichnis</emphasis> verwaltet. Es
+		<guimenu>LDAP-Verzeichnis</guimenu> verwaltet. Es
 		befindet sich im Container <uri>samba</uri>
 		unterhalb der LDAP-Basis und trägt den NetBIOS-Namen der Domäne.
 	  </para>
@@ -909,14 +909,11 @@
     <section id="user-management:password-changes-by-users">
         <title>Benutzer Selbstverwaltung</title>
 		<section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
-			<title>Passwortwechsel über &ucsUMC;</title>
+			<title>Passwortwechsel über UCS Portal</title>
 			<para>
-				In &ucsUMC; kann jeder Benutzer sein Passwort über das Modul
-				<guimenu>Passwort ändern</guimenu> neu setzen. Dieses wird auch bei
-				Auswahl des Eintrages <guimenu>Einstellungen &ar; Passwort ändern</guimenu>
-				im oberen, rechten Benutzermenü aufgerufen.
-				Damit das Passwort geändert werden kann, muss zunächst das aktuelle
-				angegeben werden. Die Änderung wird dann direkt über den PAM-Stack
+				Jeder angemeldete Benutzer kann sein eigenes Passwort ändern, indem er das Menü in der oberen rechten
+				Ecke öffnet und <guimenu>Benutzereinstellungen &ar; Passwort ändern</guimenu> auswählt.
+				Die Änderung wird dann direkt über den PAM-Stack
 				(siehe <xref linkend="computers:Authentifizierung__PAM"/>) durchgeführt
 				und ist danach zentral für alle Dienste verfügbar.
 			</para>
@@ -1377,8 +1374,8 @@ ucr set cron/delete_deregistered_accounts/command=\
 			<para>
 				Werden Konten nur lokal gesperrt, kann der Administrator ein Benutzerkonto durch
 				Eingabe des Befehls <command>faillog -r -u USERNAME</command> entsperren. Erfolgt die
-				Sperrung global im LDAP, kann der Benutzer in Univention Management Console im
-				Reiter <guimenu>Konto</guimenu> in den Benutzer-Optionen <guimenu>Aussperrung zurücksetzen</guimenu>
+				Sperrung global im LDAP, kann der Benutzer im UMC-Modul <guimenu>Benutzer</guimenu> unter dem
+				Reiter <guimenu>Konto</guimenu> mit der Optionen <guimenu>Aussperrung zurücksetzen</guimenu>
 				zurückgesetzt werden.
 			</para>
 		</section>
@@ -1401,8 +1398,9 @@ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
 			</para>
 			<para>
 				Die Standardrichtlinie ist so ausgelegt, dass fünf wiederholte LDAP-Authentifizierungsfehler innerhalb eines
-				Überwachungsintervalls von fünf Minuten dazu führen, dass das authentifizierende Konto in UMC gesperrt wird. Ein
-				gesperrtes Konto kann nur von einem Domain-Administrator über &ucsUMC; freigeschaltet werden.
+				Überwachungsintervalls von fünf Minuten dazu führen, dass das authentifizierende Konto gesperrt wird. Ein
+				gesperrtes Konto kann nur von einem Domain-Administrator über das UMC-Modul <guimenu>Benutzer</guimenu>
+				freigeschaltet werden.
 			</para>
 			<para>
 				Die Anzahl der wiederholten LDAP-Authentifizierungsfehler kann in dem Konfigurationsobjekt mit der <envar>objectClass</envar>

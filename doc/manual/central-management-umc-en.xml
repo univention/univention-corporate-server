@@ -94,9 +94,9 @@
 	</section>
 
 	<section id="central-management-umc:feedback">
-		<title>Feedback on UMC modules and UCS</title>
+		<title>Feedback on UCS</title>
 		<para>
-			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right user menu,
+			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right menu,
 			you can provide feedback on UCS via a web form.
 		</para>
 	</section>
@@ -284,8 +284,7 @@ udm settings/ldapacl remove \
 	<section id="central:license">
 		<title>Activation of UCS license / license overview</title>
 		<para>
-			The UCS license of a domain can be managed via the UMC module <guimenu>Welcome!</guimenu>
-			on a &ucsPrimaryDN;.
+			The UCS license of a domain can be managed on the &ucsPrimaryDN; via the UMC module <guimenu>Welcome!</guimenu>.
 		</para>
 		<para>
 			The current license status can be shown by clicking the <guimenu>License info</guimenu> button.
@@ -472,8 +471,8 @@ udm settings/ldapacl remove \
 
 			<para>
 				Similar to editing multiple objects at once,
-				multiple objects can be moved at once by clicking the <guimenu>More</guimenu> button in the
-				toolbar and then selecting <guimenu>Move to...</guimenu> from the dropdown.
+				multiple objects can be moved at once by selecting <guimenu>More &ar; Move to...</guimenu> in the
+				toolbar.
 			</para>
 		</section>
 	</section>
@@ -532,7 +531,7 @@ udm settings/ldapacl remove \
 	<title>Policies</title>
 	<para>
 		<emphasis>Policies</emphasis> describe administrative settings which can
-		be used on more than one object. They facilitate the
+		practically be used on more than one object. They facilitate the
 		administration as they can be connected to containers and then apply
 		to all the objects in the container in question and the objects in
 		sub containers. The values are applied according to the inheritance principle. For
@@ -1794,8 +1793,8 @@ univention-directory-manager dns/ptr_record create \
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
 		<para>
-		  Extended attributes can be used to expand the functional scope of UMC modules
-		  (see <xref linkend="central:extendedattrs"/>). In the following example, a new attribute is
+		  Extended attributes can be used to expand the functional scope of UMC modules,
+		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
 		  added, where the car license number of the company car can be saved for each user. The
 		  values are managed in the object class <classname>univentionFreeAttributes</classname> created specially for this purpose:
 		</para>
