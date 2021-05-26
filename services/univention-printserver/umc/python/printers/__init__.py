@@ -38,6 +38,7 @@ from univention.lib.i18n import Translation
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
+from univention.management.console.error import UMC_Error
 from univention.management.console.base import Base
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import simple_response, log, sanitize
@@ -47,9 +48,6 @@ _ = Translation('univention-management-console-module-printers').translate
 
 
 class Instance(Base):
-
-	def init(self):
-		self._hostname = ucr.get('hostname')
 
 	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True))
 	@simple_response
@@ -79,12 +77,6 @@ class Instance(Base):
 		return result
 
 	@simple_response
-	def list_jobs(self, printer=''):
-		""" returns list of jobs for one printer. """
-
-		return self._job_list(printer)
-
-	@simple_response
 	def list_users(self):
 		""" convenience function for the username entry. Lists
 			all user names. We don't return this as an array of {id, label}
@@ -99,32 +91,15 @@ class Instance(Base):
 		ucr = ConfigRegistry()
 		ucr.load()
 		identity = ucr.get('ldap/hostdn')
-		password = open('/etc/machine.secret').read().rstrip('\n')
+		with open('/etc/machine.secret') as fd:
+			password = fd.readline().strip()
 		server = ucr.get('ldap/server/name')
 		udm = UDM.credentials(identity, password, server=server).version(2)
 		users = udm.get('users/user').search()
 		return [user.props.username for user in users]
 
 	@simple_response
-	@log
-	def enable_printer(self, printer='', on=False):
-		""" can enable or disable a printer, depending on args.
-			returns empty string on success, else error message.
-		"""
-
-		return self._enable_printer(printer, on)
-
-	@simple_response
-	@log
-	def cancel_jobs(self, jobs, printer=''):
-		""" cancels one or more print jobs. Job IDs are passed
-			as an array that can be directly passed on to the
-			_shell_command() method
-		"""
-
-		return self._cancel_jobs(printer, jobs)
-
-	def _job_list(self, printer):
+	def list_jobs(self, printer=''):
 		""" lists jobs for a given printer, directly suitable for the grid """
 
 		# *** NOTE *** we don't set language to 'neutral' since it is useful
@@ -182,25 +157,25 @@ class Instance(Base):
 				mobj = expr.match(line)
 				if mobj:
 					result[mobj.group(1).lower()] = mobj.group(2)
-		result['server'] = self._hostname
+		result['server'] = ucr.get('hostname')
 		return result
 
-	def _enable_printer(self, printer, on):
-		""" internal function that enables/disables a printer.
-			returns empty string or error message.
-		"""
-
+	@simple_response
+	@log
+	def enable_printer(self, printer='', on=False):
+		""" enable or disable a printer, depending on args. """
 		cmd = 'univention-cups-enable' if on else 'univention-cups-disable'
 		(stdout, stderr, status) = self._shell_command([cmd, printer])
 
 		if status:
-			return stderr
+			raise UMC_Error(_('Could not %s printer: %s') % (_('activate') if on else _('deactivate'), stderr,))
 
-		return ''
-
-	def _cancel_jobs(self, printer, jobs):
-		""" internal function that cancels a list of jobs.
-			returns empty string or error message.
+	@simple_response
+	@log
+	def cancel_jobs(self, jobs, printer=''):
+		""" cancels one or more print jobs. Job IDs are passed
+			as an array that can be directly passed on to the
+			_shell_command() method
 		"""
 
 		args = ['/usr/bin/cancel', '-U', '%s$' % self._hostname]
@@ -208,10 +183,8 @@ class Instance(Base):
 			args.append(job)
 		args.append(printer)
 		(stdout, stderr, status) = self._shell_command(args)
-
 		if status:
-			return stderr
-		return ''
+			raise UMC_Error(_('Could not cancel job: %s') % (stderr,))
 
 	def _shell_command(self, args, env=None):
 		proc = subprocess.Popen(args=args, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)

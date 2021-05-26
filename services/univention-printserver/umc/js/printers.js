@@ -65,74 +65,32 @@ define([
 
 			// -------------- Events for page switching ----------------
 
-			this.own(aspect.after(this._pages.overview,'openDetail',lang.hitch(this,function(args) {
+			this.own(aspect.after(this._pages.overview, 'openDetail', lang.hitch(this, function(args) {
 				this._switch_page('detail',args);
 			}),true));
 
-			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
+			this.own(aspect.after(this._pages.detail, 'closeDetail', lang.hitch(this, function(args) {
 				this._switch_page('overview',args);
 				this.resetTitle();
 			}),true));
-
 
 			// ------------- Listen to onPrinterLoaded to set module title
 			this.own(on(this._pages.detail, 'printerLoaded', lang.hitch(this, function(printer) {
 				this.addBreadCrumb(printer);
 			})));
+		},
 
-			// ------------- work events: printer management ---------------
+		startup: function() {
+			this.inherited(arguments);
+			this._switch_page('overview');
+		},
 
-			this.own(aspect.after(this._pages.overview,'managePrinter',lang.hitch(this, function(printer,func,callback) {
-				this._manage_printer(printer,func,callback);
-			}),true));
-			this.own(aspect.after(this._pages.detail,'managePrinter',lang.hitch(this, function(printer,func,callback) {
-				this._manage_printer(printer,func,callback);
-			}),true));
- 		},
+		_switch_page: function(name, args) {
+			if ((args) && (typeof (this._pages[name].setArgs) == 'function')) {
+			this._pages[name].setArgs(args);
+		}
 
- 		startup: function() {
- 			this.inherited(arguments);
-
- 			this._switch_page('overview');
- 		},
-
- 		_switch_page: function(name, args) {
- 			if ((args) && (typeof (this._pages[name].setArgs) == 'function')) {
-				this._pages[name].setArgs(args);
-			}
-
- 			this.selectChild(this._pages[name]);
- 		},
-
- 		// Most management functions can be called from overview or detail view, so we write
- 		// the functions here.
- 		_manage_printer: function(printer,func,callback) {
-
- 			var cmd = '';
- 			var args = {};
- 			switch(func) {
- 				case 'activate':
- 					cmd = 'printers/enable';
- 					args = { printer: printer, on: true };
- 					break;
- 				case 'deactivate':
- 					cmd = 'printers/enable';
- 					args = { printer: printer, on: false };
- 					break;
- 			}
-
- 			if (cmd) {
- 				tools.umcpCommand(cmd,args).then(lang.hitch(this, function(data) {
- 					if (data.result.length) {
- 						callback(false,data.result);
- 					} else {
- 						callback(true);
- 					}
- 				}), lang.hitch(this, function(data) {
- 					callback(false,data.result);
- 				}));
- 			}
- 		}
-
+			this.selectChild(this._pages[name]);
+		}
 	});
 });

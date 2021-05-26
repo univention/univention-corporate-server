@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-printers\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-14 16:28+0200\n"
+"POT-Creation-Date: 2021-05-26 16:57+0200\n"
 "PO-Revision-Date: 2011-11-17 14:28+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,49 +11,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/printers/OverviewPage.js:133 umc/js/printers/DetailPage.js:77
+#: umc/js/printers/OverviewPage.js:133 umc/js/printers/DetailPage.js:76
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: umc/js/printers/DetailPage.js:78
+#: umc/js/printers/DetailPage.js:77
 msgid "Activate this printer"
 msgstr "diesen Drucker aktivieren"
 
-#: umc/js/printers/DetailPage.js:146
+#: umc/js/printers/DetailPage.js:131
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/js/printers/DetailPage.js:125
+#: umc/js/printers/DetailPage.js:120
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/printers/DetailPage.js:126
+#: umc/js/printers/DetailPage.js:121
 msgid "Cancel this job/these jobs"
 msgstr "Diesen Druckauftrag (oder mehrere) abbrechen"
 
-#: umc/js/printers/OverviewPage.js:151 umc/js/printers/DetailPage.js:88
+#: umc/js/printers/OverviewPage.js:149 umc/js/printers/DetailPage.js:85
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
-#: umc/js/printers/DetailPage.js:89
+#: umc/js/printers/DetailPage.js:86
 msgid "Deactivate this printer"
 msgstr "diesen Drucker deaktivieren"
 
 #: umc/js/printers/OverviewPage.js:71 umc/js/printers/OverviewPage.js:120
-#: umc/js/printers/DetailPage.js:213
+#: umc/js/printers/DetailPage.js:197
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/printers/DetailPage.js:111
+#: umc/js/printers/DetailPage.js:106
 msgid "Job"
 msgstr "Druckauftrag"
 
 #: umc/js/printers/OverviewPage.js:72 umc/js/printers/OverviewPage.js:117
-#: umc/js/printers/DetailPage.js:212
+#: umc/js/printers/DetailPage.js:196
 msgid "Location"
 msgstr "Ort"
 
-#: umc/js/printers/DetailPage.js:114
+#: umc/js/printers/DetailPage.js:109
 msgid "Owner"
 msgstr "Eigentümer"
 
@@ -73,11 +73,11 @@ msgstr "Druckerdetails"
 msgid "Printer name"
 msgstr "Druckername"
 
-#: umc/js/printers/DetailPage.js:153
+#: umc/js/printers/DetailPage.js:138
 msgid "Refresh job list"
 msgstr "Job-Liste aktualisieren"
 
-#: umc/js/printers/OverviewPage.js:169
+#: umc/js/printers/OverviewPage.js:165
 msgid "Refresh printer list"
 msgstr "Drucker-Liste aktualisieren"
 
@@ -89,19 +89,19 @@ msgstr "Suche nach"
 msgid "Search..."
 msgstr "Suche..."
 
-#: umc/js/printers/OverviewPage.js:97 umc/js/printers/DetailPage.js:210
+#: umc/js/printers/OverviewPage.js:97 umc/js/printers/DetailPage.js:194
 msgid "Server"
 msgstr "Server"
 
-#: umc/js/printers/DetailPage.js:117
+#: umc/js/printers/DetailPage.js:112
 msgid "Size"
 msgstr "Größe"
 
-#: umc/js/printers/OverviewPage.js:103 umc/js/printers/DetailPage.js:211
+#: umc/js/printers/OverviewPage.js:103 umc/js/printers/DetailPage.js:195
 msgid "Status"
 msgstr "Status"
 
-#: umc/js/printers/DetailPage.js:120
+#: umc/js/printers/DetailPage.js:115
 msgid "Submitted at"
 msgstr "beauftragt"
 
@@ -122,18 +122,17 @@ msgid ""
 "deactivate the printer and cancel print jobs."
 msgstr ""
 "Sie sehen die Details des Druckers sowie seine aktuellen Druckaufträge. Sie "
-"können den Drucker aktivieren/deaktivieren und "
-"Druckaufträge abbrechen."
+"können den Drucker aktivieren/deaktivieren und Druckaufträge abbrechen."
 
-#: umc/js/printers/OverviewPage.js:110 umc/js/printers/DetailPage.js:204
+#: umc/js/printers/OverviewPage.js:110 umc/js/printers/DetailPage.js:188
 msgid "active"
 msgstr "aktiv"
 
-#: umc/js/printers/OverviewPage.js:111 umc/js/printers/DetailPage.js:205
+#: umc/js/printers/OverviewPage.js:111 umc/js/printers/DetailPage.js:189
 msgid "inactive"
 msgstr "inaktiv"
 
-#: umc/js/printers/OverviewPage.js:113 umc/js/printers/DetailPage.js:202
+#: umc/js/printers/OverviewPage.js:113 umc/js/printers/DetailPage.js:186
 msgid "unknown"
 msgstr "unbekannt"
 

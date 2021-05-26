@@ -31,7 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"umc/dialog",
+	"umc/tools",
 	"umc/store",
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
@@ -39,7 +39,7 @@ define([
 	"umc/widgets/SearchBox",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, dialog, store, Page, Grid, SearchForm, SearchBox, ComboBox, _) {
+], function(declare, lang, tools, store, Page, Grid, SearchForm, SearchBox, ComboBox, _) {
 	return declare("umc.modules.printers.OverviewPage", [ Page ], {
 
 		_last_filter: { key: 'printer', pattern: '' },
@@ -85,7 +85,7 @@ define([
 				layout: [['key', 'pattern']],
 				onSearch: lang.hitch(this, function(values) {
 					this._enable_search_button(false);
-					this._last_filter = values;			// save for easy refresh
+					this._last_filter = values; // save for easy refresh
 					this._grid.filter(values);
 				})
 			});
@@ -104,7 +104,7 @@ define([
 				// 'enabled'/'disabled' are kind of keywords, just as they're returned
 				// from cups if invoked without locale (LANG=C).
 				// Our wording for this is 'active'/'inactive'.
-				formatter: lang.hitch(this,function(value) {
+				formatter: lang.hitch(this, function(value) {
 					switch(value)
 					{
 						case 'enabled': return _("active");
@@ -136,11 +136,9 @@ define([
 					// no multi action for now, but who knows...
 					for (var p in ids)
 					{
-						this.managePrinter(ids[p],'activate',
-							lang.hitch(this, function(success,message) {
-								this._manage_callback(success,message);
-							})
-						);
+						tools.umcpCommand('printers/enable', { printer: ids[p], on: true }).then(lang.hitch(this, function() {
+							this._refresh_view();
+						}));
 					}
 				}),
 				canExecute: lang.hitch(this, function(values) {
@@ -154,11 +152,9 @@ define([
 					// no multi action for now, but who knows...
 					for (var p in ids)
 					{
-						this.managePrinter(ids[p],'deactivate',
-							lang.hitch(this, function(success,message) {
-								this._manage_callback(success,message);
-							})
-						);
+						tools.umcpCommand('printers/enable', { printer: ids[p], on: false }).then(lang.hitch(this, function() {
+							this._refresh_view();
+						}));
 					}
 				}),
 				canExecute: lang.hitch(this, function(values) {
@@ -193,18 +189,9 @@ define([
 		},
 
 		// refreshes the grid. can be called manually (pressing the refresh button)
-		// or automatically (as response to the managePrinter() result)
+		// or automatically (as response to the activate/deactivate action)
 		_refresh_view: function() {
 			this._grid.filter(this._last_filter);
-		},
-
-		// will be called with the result of 'managePrinter'
-		_manage_callback: function(success,message) {
-			if (success) {
-				this._refresh_view();
-			} else {
-				dialog.alert(message);
-			}
 		},
 
 		// when we come back from any kind of detail view that
@@ -215,11 +202,6 @@ define([
 
 		// DetailPage gives results back here.
 		setArgs: function(args) {
-		},
-
-		// main module listens here, to carry out direct printer
-		// management functions.
-		managePrinter: function(printer,func,callback) {
 		},
 
 		// main module listens here, to switch to the detail view.
