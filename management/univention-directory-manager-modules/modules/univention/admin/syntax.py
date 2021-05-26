@@ -4714,7 +4714,7 @@ class univentionAdminModules(select):
 		('computers/domaincontroller_slave', 'Computer: Replica Directory Node'),
 		('computers/ipmanagedclient', 'Computer: IP Client'),
 		('computers/linux', 'Computer: Linux'),
-		('computers/macos', 'Computer: Mac OS X Client'),
+		('computers/macos', 'Computer: macOS Client'),
 		('computers/memberserver', 'Computer: Managed Node'),
 		('computers/trustaccount', 'Computer: Domain Trust Account'),
 		('computers/ubuntu', 'Computer: Ubuntu'),

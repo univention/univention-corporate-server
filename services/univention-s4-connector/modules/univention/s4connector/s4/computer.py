@@ -39,7 +39,7 @@ def _shouldBeMacClient(attributes):
 	if not attributes:
 		return False
 
-	return b'Mac OS X' in attributes.get('operatingSystem', [])  # FIXME: shouldn't it be univentionOperationSystem?!
+	return b'Mac OS X' in attributes.get('operatingSystem', [])  # FIXME: shouldn't it be univentionOperationSystem?! # FIXME: macOS ?
 
 
 def _isAlreadyMac(attributes):
@@ -65,7 +65,7 @@ def _convertWinToMac(s4connector, sync_object):
 	modlist.append(('objectClass', oldObjectClass, newObjectClass))
 	modlist.append(('univentionServerRole', ucs_object.get('univentionServerRole'), []))
 
-	ud.debug(ud.LDAP, ud.PROCESS, "Convert Windows client to Mac OS X: %r", sync_object['dn'])
+	ud.debug(ud.LDAP, ud.PROCESS, "Convert Windows client to macOS: %r", sync_object['dn'])
 
 	s4connector.lo.lo.modify(sync_object['dn'], modlist)
 

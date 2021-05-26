@@ -46,9 +46,9 @@ module = 'computers/macos'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = True
 childs = False
-short_description = _('Computer: Mac OS X Client')
-object_name = _('Mac OS X Client')
-object_name_plural = _('Mac OS X Clients')
+short_description = _('Computer: macOS Client')
+object_name = _('macOS Client')
+object_name_plural = _('macOS Clients')
 long_description = ''
 options = {
 	'default': univention.admin.option(

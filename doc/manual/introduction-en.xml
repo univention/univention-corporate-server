@@ -157,7 +157,7 @@ of the Active Directory domain can access applications from the Univention App C
 </para>
 
 <para>
-Ubuntu or Mac OS X clients can be integrated in a UCS environment, as well (see
+Ubuntu or macOS clients can be integrated in a UCS environment, as well (see
 <xref linkend="computers:ubuntu"/>).
 </para>
 </section>

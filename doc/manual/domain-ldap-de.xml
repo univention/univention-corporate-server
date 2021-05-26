@@ -69,7 +69,7 @@
 	</para>
 
 	<para>
-	  Neben UCS, Ubuntu und Mac OS X können auch weitere Unix-Systeme in die Domäne integriert
+	  Neben UCS, Ubuntu und macOS können auch weitere Unix-Systeme in die Domäne integriert
 	  werden; dies ist in <biblioref linkend="ext-doc-domain"/> beschrieben.
 	</para>
 
@@ -388,10 +388,10 @@
 	</section>
 
 	<section id="joining-macos">
-		<title>Mac OS X-Domänenbeitritt</title>
+		<title>macOS-Domänenbeitritt</title>
 		<para>
-		  UCS unterstützt den Domänenbeitritt von Mac OS X-Clients in eine UCS-Umgebung mit Samba
-		  4. Diese Anleitung bezieht sich auf Mac OS X 10.8.2.
+		  UCS unterstützt den Domänenbeitritt von macOS-Clients in eine UCS-Umgebung mit Samba
+		  4. Diese Anleitung bezieht sich auf macOS 10.8.2.
 		</para>
 
 		<para>
@@ -431,7 +431,7 @@
 		  </para>
 
 		<figure id="domain-ldap:join:osx">
-			<title>Domänenbeitritt eines Mac OS X-Systems</title>
+			<title>Domänenbeitritt eines macOS-Systems</title>
 			<graphic scalefit="1" width="60%" align="center" fileref="illustrations50/macosx-bind_de.png"/>
 		</figure>
 
@@ -443,7 +443,7 @@
 
 		  <para>
 			Der Domänenname muss nun im Feld <guimenu>Active Directory Domain</guimenu> und der
-			Rechnername des Mac OS X-Clients in das Feld <guimenu>Computer-ID</guimenu> eingetragen
+			Rechnername des macOS-Clients in das Feld <guimenu>Computer-ID</guimenu> eingetragen
 			werden. Der Domänenbeitritt erfolgt nach einem Klick auf <guimenu>OK</guimenu>. Für den
 			Domänenbeitritt muss ein Konto aus der Gruppen <systemitem class="groupname">Domain Admins</systemitem>
 			verwendet werden, z.B. <systemitem class="username">Administrator</systemitem>.
@@ -541,9 +541,9 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	</section>
 
 	<section id="domain-ldap:macos">
-	  <title>Mac OS X</title>
+	  <title>macOS</title>
 	  <para>
-		Mac OS X-Systeme können einer UCS-Domäne mit Samba/AD beitreten. Weitere Hinweise finden sich
+		macOS-Systeme können einer UCS-Domäne mit Samba/AD beitreten. Weitere Hinweise finden sich
 		in <xref linkend="joining-macos"/>.
 	  </para>
 	</section>

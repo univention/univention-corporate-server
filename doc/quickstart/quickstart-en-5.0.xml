@@ -250,7 +250,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Mac OS X systems are also integrated via a Samba-based, AD-compatible Windows
+		  macOS systems are also integrated via a Samba-based, AD-compatible Windows
 		  domain. Further information on setting up Samba and the domain join can
 		  be found in the UCS manual <biblioref linkend="ucs-macjoin"/>.
 		</simpara></listitem>

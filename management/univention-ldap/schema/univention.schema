@@ -146,7 +146,7 @@ objectclass ( 1.3.6.1.4.1.10176.71 NAME 'univentionClient'
 
 objectclass ( 1.3.6.1.4.1.10176.99 NAME 'univentionMacOSClient'
 	SUP 'univentionHost' AUXILIARY
-	DESC 'Univention MacOS X Client'
+	DESC 'Univention macOS Client'
 	MUST ( cn ) )
 
 objectclass ( 1.3.6.1.4.1.10176.96 NAME 'univentionMobileClient'

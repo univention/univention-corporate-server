@@ -113,10 +113,10 @@ UDM_COMPUTERS_LINUX_MODIFIED = DiaryEvent('UDM_COMPUTERS_LINUX_MODIFIED', {'en':
 UDM_COMPUTERS_LINUX_MOVED = DiaryEvent('UDM_COMPUTERS_LINUX_MOVED', {'en': 'Linux Computer {name} moved to {position}', 'de': 'Linux-Rechner {name} verschoben nach {position}'}, args=['name'], icon='devices')
 UDM_COMPUTERS_LINUX_REMOVED = DiaryEvent('UDM_COMPUTERS_LINUX_REMOVED', {'en': 'Linux Computer {name} removed', 'de': 'Linux-Rechner {name} gelöscht'}, args=['name'], icon='devices')
 
-UDM_COMPUTERS_MACOS_CREATED = DiaryEvent('UDM_COMPUTERS_MACOS_CREATED', {'en': 'Mac OS X Client {name} created', 'de': 'Mac OS X Client {name} angelegt'}, args=['name'], icon='devices')
-UDM_COMPUTERS_MACOS_MODIFIED = DiaryEvent('UDM_COMPUTERS_MACOS_MODIFIED', {'en': 'Mac OS X Client {name} modified', 'de': 'Mac OS X Client {name} bearbeitet'}, args=['name'], icon='devices')
-UDM_COMPUTERS_MACOS_MOVED = DiaryEvent('UDM_COMPUTERS_MACOS_MOVED', {'en': 'Mac OS X Client {name} moved to {position}', 'de': 'Mac OS X Client {name} verschoben nach {position}'}, args=['name'], icon='devices')
-UDM_COMPUTERS_MACOS_REMOVED = DiaryEvent('UDM_COMPUTERS_MACOS_REMOVED', {'en': 'Mac OS X Client {name} removed', 'de': 'Mac OS X Client {name} gelöscht'}, args=['name'], icon='devices')
+UDM_COMPUTERS_MACOS_CREATED = DiaryEvent('UDM_COMPUTERS_MACOS_CREATED', {'en': 'macOS Client {name} created', 'de': 'macOS Client {name} angelegt'}, args=['name'], icon='devices')
+UDM_COMPUTERS_MACOS_MODIFIED = DiaryEvent('UDM_COMPUTERS_MACOS_MODIFIED', {'en': 'macOS Client {name} modified', 'de': 'macOS Client {name} bearbeitet'}, args=['name'], icon='devices')
+UDM_COMPUTERS_MACOS_MOVED = DiaryEvent('UDM_COMPUTERS_MACOS_MOVED', {'en': 'macOS Client {name} moved to {position}', 'de': 'macOS Client {name} verschoben nach {position}'}, args=['name'], icon='devices')
+UDM_COMPUTERS_MACOS_REMOVED = DiaryEvent('UDM_COMPUTERS_MACOS_REMOVED', {'en': 'macOS Client {name} removed', 'de': 'macOS Client {name} gelöscht'}, args=['name'], icon='devices')
 
 UDM_COMPUTERS_MEMBERSERVER_CREATED = DiaryEvent('UDM_COMPUTERS_MEMBERSERVER_CREATED', {'en': 'Managed Node {name} created', 'de': 'Managed Node {name} angelegt'}, args=['name'], icon='devices')
 UDM_COMPUTERS_MEMBERSERVER_MODIFIED = DiaryEvent('UDM_COMPUTERS_MEMBERSERVER_MODIFIED', {'en': 'Managed Node {name} modified', 'de': 'Managed Node {name} bearbeitet'}, args=['name'], icon='devices')

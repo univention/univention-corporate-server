@@ -159,7 +159,7 @@ Domäne betrieben werden. Benutzer und Gruppen aus der Active Directory Domäne
 können dadurch auf Applikationen des Univention App Centers zugreifen.
 </para>
 <para>
-Ubuntu- oder Mac OS X-Clients können ebenfalls in eine UCS-Umgebung integriert
+Ubuntu- oder macOS-Clients können ebenfalls in eine UCS-Umgebung integriert
 werden (siehe <xref linkend="computers:ubuntu"/>).
 </para>
 </section>

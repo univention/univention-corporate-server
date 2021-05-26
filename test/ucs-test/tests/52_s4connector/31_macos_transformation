@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
-## desc: "Check for Windows client to Mac OS X transformation"
+## desc: "Check for Windows client to macOS transformation"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
@@ -24,7 +24,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
 ad_exists "$AD_DN"; fail_bool 0 110
 
-udm-test 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110
+udm-test 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110  # FIXME: macOS ?
 
 ad_wait_for_synchronization; fail_bool 0 110
 

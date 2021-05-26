@@ -66,7 +66,7 @@
 	</para>
 
 	<para>
-	  In addition to UCS, Ubuntu and Mac OS X, arbitrary Unix systems can be integrated into the
+	  In addition to UCS, Ubuntu and macOS, arbitrary Unix systems can be integrated into the
 	  domain. This is documented in <biblioref linkend="ext-doc-domain"/>.
 	</para>
 
@@ -376,10 +376,10 @@
 	</section>
 
 	<section id="joining-macos">
-		<title>Mac OS X domain joins</title>
+		<title>macOS domain joins</title>
 		<para>
-		  UCS supports domain joins of Mac OS X clients into a UCS environment using Samba/AD. This
-		  documentation refers to Mac OS X 10.8.2.
+		  UCS supports domain joins of macOS clients into a UCS environment using Samba/AD. This
+		  documentation refers to macOS 10.8.2.
 		</para>
 		<para>
 		  The domain join can be performed using the system preferences menu or the
@@ -417,20 +417,20 @@
 		  </para>
 
 		<figure id="domain-ldap:join:osx">
-			<title>Domain join of a Mac OS X system</title>
+			<title>Domain join of a macOS system</title>
 			<graphic scalefit="1" width="60%" align="center" fileref="illustrations50/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
 			In the advanced options section, the option <guimenu>Create mobile account at
 			login</guimenu> should be activated. A mobile account has the advantage that, when the
-			domain is not available, the user can log into the Mac OS X system with the same account
+			domain is not available, the user can log into the macOS system with the same account
 			used for logging into the domain.
 		  </para>
 
 		  <para>
 			After filling in the domain name in the field <guimenu>Active Directory Domain</guimenu>
-			and the hostname of the Mac OS X client in the field <guimenu>Computer ID</guimenu>, the
+			and the hostname of the macOS client in the field <guimenu>Computer ID</guimenu>, the
 			join process is initiated after clicking the button <guimenu>Bind...</guimenu>. The
 			username and password of an account in the <systemitem class="groupname">Domain Admins</systemitem> group
 			needs to be entered, e.g., <systemitem class="username">Administrator</systemitem>.
@@ -531,9 +531,9 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	</section>
 
 	<section id="domain-ldap:macos">
-	  <title>Mac OS X</title>
+	  <title>macOS</title>
 	  <para>
-		Mac OS X systems can be joined into a UCS domain using Samba/AD. Additional information can be
+		macOS systems can be joined into a UCS domain using Samba/AD. Additional information can be
 		found in <xref linkend="joining-macos"/>.
 	  </para>
 	</section>

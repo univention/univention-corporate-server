@@ -31,7 +31,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 21:10+0100\n"
+"PO-Revision-Date: 2021-05-26 13:49+0200\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: Français <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -141,8 +141,8 @@ msgid "Computer: Linux"
 msgstr "Ordinateur : Linux"
 
 #: modules/univention/admin/handlers/computers/macos.py:56
-msgid "Computer: Mac OS X Client"
-msgstr "Ordinateur : client Mac OS X"
+msgid "Computer: macOS Client"
+msgstr "Ordinateur : client macOS"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:56
 msgid "Computer: Managed Node"

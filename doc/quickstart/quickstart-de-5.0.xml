@@ -258,7 +258,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
+		macOS-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
 		findet sich im UCS-Handbuch <biblioref linkend="ucs-macjoin"/>.
 	  </simpara></listitem>

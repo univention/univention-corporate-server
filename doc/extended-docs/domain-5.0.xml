@@ -359,8 +359,8 @@ EOF
 		</para>
 
         <para>
-		  The integration of Mac OS X clients is documented with example step-by-step instructions
-		  in the UCS manual. Mac OS systems use a deviating domain integration based
+		  The integration of macOS clients is documented with example step-by-step instructions
+		  in the UCS manual. macOS systems use a deviating domain integration based
 		  on Samba 4.
 		</para>
 

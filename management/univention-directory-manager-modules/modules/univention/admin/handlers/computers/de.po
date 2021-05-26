@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-09-25 01:35+0200\n"
-"PO-Revision-Date: 2009-08-04 17:18+0200\n"
+"PO-Revision-Date: 2021-05-26 14:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -142,8 +142,8 @@ msgstr "Rechner: Linux"
 
 #: modules/univention/admin/handlers/computers/macos.py:47
 #: modules/univention/admin/handlers/computers/macos.py:53
-msgid "Computer: Mac OS X Client"
-msgstr "Rechner: Mac OS X Client"
+msgid "Computer: macOS Client"
+msgstr "Rechner: macOS Client"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:47
 #: modules/univention/admin/handlers/computers/memberserver.py:53
@@ -450,12 +450,12 @@ msgid "MAC address"
 msgstr "MAC-Adresse"
 
 #: modules/univention/admin/handlers/computers/macos.py:48
-msgid "Mac OS X Client"
-msgstr "Mac OS X Client"
+msgid "macOS Client"
+msgstr "macOS Client"
 
 #: modules/univention/admin/handlers/computers/macos.py:49
-msgid "Mac OS X Clients"
-msgstr "Mac OS X Clients"
+msgid "macOS Clients"
+msgstr "macOS Clients"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:74
 msgid "Machine Password"
