@@ -1,3 +1,9 @@
+univention-quota (14.0.1-8) unstable; urgency=medium
+
+  * Bug #51317: migrate univention-quota to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 26 May 2021 21:39:43 +0200
+
 univention-quota (14.0.1-7) unstable; urgency=medium
 
   * Bug #52941: added new icon design for filesystem quota

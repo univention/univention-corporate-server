@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -81,11 +81,12 @@ class Commands(object):
 		# skip header
 		header = 0
 		try:
-			while not callbackResult[header].startswith('----'):
+			while not callbackResult[header].startswith(b'----'):
 				header += 1
 		except IndexError:
 			pass
-		quotas = tools.repquota_parse(partition, callbackResult[header + 1:])
+		output = [x.decode('UTF-8', 'replace') for x in callbackResult[header + 1:]]
+		quotas = tools.repquota_parse(partition, output)
 		result = [q for q in quotas if request.options['filter'].match(q['user'])]
 		self.finished(request.id, result)
 
@@ -123,7 +124,7 @@ class Commands(object):
 
 			# Determine different partitions
 			for obj in request.options:
-				partitions.append(obj['object'].split('@')[-1])
+				partitions.append(obj['object'].split('@', 1)[-1])
 			for partition in set(partitions):
 				self._check_error(request, partition)
 

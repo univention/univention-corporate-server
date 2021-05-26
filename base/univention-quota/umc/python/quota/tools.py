@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -141,6 +141,7 @@ def quota_is_enabled(fstab_entry):
 	cmd = ("/sbin/quotaon", "-p", "-u", fstab_entry.mount_point)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=local_env)
 	stdout, stderr = p1.communicate()
+	stdout = stdout.decode('UTF-8', 'replace')
 	if "not found or has no quota enabled" in stdout:
 		return False
 	else:
