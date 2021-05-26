@@ -105,7 +105,7 @@
 					zum Beispiel durch das Anfordern einer Lizenz oder die Installation von Apps.
 			</para></listitem>
 			<listitem><para>
-					Für eine einheitlichere und einfachere Verwaltung von Diensten sind die Dienste <systemitem class="service">&ucsUDL;</systemitem>, <systemitem class="service">&ucsUDN;</systemitem> und <systemitem class="service">univention-dhcp</systemitem> von <package>runit</package>-Diensten zu nativen <package>systemd</package>-Diensten umgestellt wurden.
+					Für eine einheitlichere und einfachere Verwaltung von Diensten sind die Dienste <systemitem class="service">&ucsUDL;</systemitem>, <systemitem class="service">&ucsUDN;</systemitem> und <systemitem class="service">univention-dhcp</systemitem> von <package>runit</package>-Diensten zu nativen <package>systemd</package>-Diensten umgestellt worden.
 			</para></listitem>
 			<listitem><para>
 					Eine vollständige Liste von Änderungen und Verbesserungen in diesem Release findet sich in <xref linkend="relnotes:changelog"/> am Ende dieses Dokumentes.
