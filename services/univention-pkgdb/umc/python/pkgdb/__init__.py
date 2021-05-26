@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -354,7 +354,7 @@ def _make_query(key, operator, pattern):
 		pattern = _coded_value(key, pattern)
 
 		pattern = pgdb.escape_string(pattern)
-		key = key.replace('"', r'\"')
+		key = key.replace('\\', '\\\\').replace('"', r'\"')
 
 		if '~' in operator:
 

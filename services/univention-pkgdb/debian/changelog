@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.1-9) unstable; urgency=medium
+
+  * Bug #51337: migrate univention-pkgdb to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 26 May 2021 23:48:07 +0200
+
 univention-pkgdb (13.0.1-8) unstable; urgency=medium
 
   * Bug #53209: Fix join script handling (univention-join debhelper) (2)

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 '''Univention Package Database
@@ -32,15 +32,17 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import DNS
-import apt_pkg
 import csv
-import optparse
+import argparse
 import os
 import os.path
-import pgdb
 import sys
 import time
+
+import DNS
+import apt_pkg
+import pgdb
+
 import univention.config_registry
 import univention.uldap
 
@@ -61,63 +63,57 @@ def parse_options():
 		<options.db_server>
 		set
 	'''
-	parser = optparse.OptionParser(add_help_option=False)
-	actions = optparse.OptionGroup(parser, 'Actions', 'Select an action, default is --scan')
-	parser.add_option_group(actions)
-	parser.usage = '%prog [options]\nScan all packages in the local system and send this data to the database pkgdb.'
-	actions.add_option(
+	parser = argparse.ArgumentParser(add_help=False, description='Scan all packages in the local system and send this data to the database pkgdb.')
+	actions = parser.add_argument_group('Actions', 'Select an action, default is --scan')
+	actions.add_argument(
 		"--scan",
 		help='Scan this systems packages and sent them to the package database',
 		action='append_const', dest='action', const='scan', default=[])
-	actions.add_option(
+	actions.add_argument(
 		"--remove-system", metavar='SYSTEM',
 		help='Removes SYSTEM from the package database',
-		action='store', dest='removesystem')
-	actions.add_option(
+		dest='removesystem')
+	actions.add_argument(
 		"--test-superuser",
 		help='Test for ability to add or delete database users',
 		action='append_const', dest='action', const='test-superuser')
-	actions.add_option(
+	actions.add_argument(
 		'--dump-all',
 		help='Dump entire content of the database',
 		action='append_const', dest='action', const='dump-all')
-	actions.add_option(
+	actions.add_argument(
 		'--dump-systems',
 		help='Dump systems-table of the database',
 		action='append_const', dest='action', const='dump-systems')
-	actions.add_option(
+	actions.add_argument(
 		'--dump-packages',
 		help='Dump packages-table (query) of the database',
 		action='append_const', dest='action', const='dump-packages')
-	actions.add_option(
+	actions.add_argument(
 		'--dump-systems-packages',
 		help='Dump systems-packages-table of the database',
 		action='append_const', dest='action', const='dump-systems-packages')
-	actions.add_option(
+	actions.add_argument(
 		'--fill-testdb',
 		help="Scan all packages of the local system and add them to the database using system name 'testsystemX', using 0001 to 1500 for X. For testing purposes only.",
 		action='append_const', dest='action', const='fill-testdb')
-	actions.add_option(
+	actions.add_argument(
 		'--version',
 		help='Print version information and exit',
 		action='append_const', dest='action', const='version')
-	actions.add_option(
+	actions.add_argument(
 		"--add-system", metavar='SYSTEM',
 		help='Add a SYSTEM as db-user-account. Normally this will be used by univention-listener',
-		action='store', dest='addsystem')
-	actions.add_option(
+		dest='addsystem')
+	actions.add_argument(
 		"--del-system", metavar='SYSTEM',
 		help='Delete a SYSTEM as db-user-account. Normally this will be used by univention-listener',
-		action='store', dest='delsystem')
-	parser.add_option("-?", "-h", "--help", action='help', help='show this help message and exit')
-	parser.add_option('--debug', help='Print more output', action='count', dest='debug', default=0)
-	parser.add_option(
-		'--db-server', metavar='SERVER',
-		help='The database server',
-		action='store', dest='db_server')
-	(options, args, ) = parser.parse_args()
-	if args:
-		parser.error('Additional arguments not supported!')
+		dest='delsystem')
+	parser.add_argument("-?", "-h", "--help", action='help', help='show this help message and exit')
+	parser.add_argument('--debug', help='Print more output', action='count', default=0)
+	parser.add_argument('--db-server', metavar='SERVER', help='The database server')
+	options = parser.parse_args()
+
 	if options.addsystem is not None:
 		options.action.append('add-system')
 		options.system = options.addsystem
@@ -141,9 +137,8 @@ def parse_options():
 def log(message):
 	'''Log-Funktion'''
 	try:
-		logfile = open("/var/log/univention/pkgdb.log", "a")  # TODO: persistent handle?
-		logfile.write(time.strftime('%G-%m-%d %H:%M:%S') + ' ' + message + '\n')
-		logfile.close()
+		with open("/var/log/univention/pkgdb.log", "a") as logfile:  # TODO: persistent handle?
+			logfile.write(time.strftime('%G-%m-%d %H:%M:%S') + ' ' + message + '\n')
 	except EnvironmentError:
 		# no log, no real problem
 		pass
@@ -176,7 +171,7 @@ def get_dbservername(domainname):
 	DNS.DiscoverNameServers()
 	dbsrvname = None
 	try:
-		dbsrvname = map(lambda x: x['data'], DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers)[0][3]
+		dbsrvname = [x['data'] for x in DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers][0][3]
 	except Exception:
 		log('Cannot find service-record of _pkgdb._tcp.')
 		print('Cannot find service-record of _pkgdb._tcp.')
@@ -555,7 +550,8 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
 		connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
 		password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
 
-	connection_info['password'] = open(password_file, 'rb').read().rstrip('\n')
+	with open(password_file, 'r') as fd:
+		connection_info['password'] = fd.read().rstrip('\n')
 	connectstring = ' '.join([
 		"%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"),)
 		for (key, value, )
