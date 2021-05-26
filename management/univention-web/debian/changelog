@@ -1,3 +1,9 @@
+univention-web (4.0.1-29) unstable; urgency=medium
+
+  * Bug #53310: fix regression of saved username being autofilled in firefox
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 May 2021 14:11:13 +0200
+
 univention-web (4.0.1-28) unstable; urgency=medium
 
   * Bug #53217: fix css for open menu
