@@ -137,6 +137,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'OSError\: \[Errno 3\].*', ['univention-management-console-server.*_terminate_daemon_process']),
 	('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
 	(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
+	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 
 	# during upgrade to UCS 5.0-0
 	('ImportError: No module named client', ['univention-directory-listener/system/faillog.py']),  # Bug #53290
@@ -168,6 +169,9 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ImportError: cannot import name saxutils', [r'_cperror\.py']),
 	(r'gaierror: \[Errno -5\] No address associated with hostname', None),
 	('.*moduleCreationFailed: Target directory.*not below.*', None),
+	("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-a-tile", ['in refresh']),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+	("univention.admin.uexceptions.noObject: cn=internal-name-for-a-tile,cn=entry,cn=portals", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+	("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
@@ -214,6 +218,10 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir']),  # Bug #43171, ...
 	('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list']),  # Bug #43171
 	(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
+	('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs']),  # Bug #53278
+	('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs']),  # Bug #53277
+	(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns']),  # Bug #53332
+	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{39797a0f-7538-43ea-b46b-7922d2a9eb45\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
 ])
 
 
