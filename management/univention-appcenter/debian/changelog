@@ -1,4 +1,4 @@
-univention-appcenter (9.0.2-46) unstable; urgency=low
+univention-appcenter (9.0.2-47) unstable; urgency=low
 
   * Bug #53273: A line wrap in the output of `docker-compose ps` breaks the
     app installation

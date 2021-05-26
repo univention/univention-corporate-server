@@ -45,6 +45,7 @@ import ssl
 from base64 import b64encode
 from ipaddress import IPv4Network, IPv4Address
 import time
+import pipes
 
 from six.moves import urllib_request, http_client, urllib_error
 import ruamel.yaml as yaml
@@ -605,11 +606,9 @@ class MultiDocker(Docker):
 				try:
 					# by using a pipe to 'bash -s' COLUMNS is unset and the terminal and the table
 					# is never line-wrapped.
-					ps = check_output(['bash', '-s']
-						input=str.encode(
-						    ' '.join(['echo', 'docker-compose', '-p', self.app.id, 'ps'])
-						), cwd=self.app.get_compose_dir()
-					)
+					ps = check_output(['bash', '-s'], input=' '.join(
+						['echo', 'docker-compose', '-p', pipes.quote(self.app.id), 'ps']
+					).encode('utf-8'), cwd=self.app.get_compose_dir())
 					break
 				except Exception as e:
 					_logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
