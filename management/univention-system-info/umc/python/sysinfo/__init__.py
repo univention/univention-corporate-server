@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -35,22 +35,15 @@ import os
 import re
 import subprocess
 
+import requests
+from six.moves.urllib_parse import urlencode, urlunparse
+
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
-
-from urllib import urlencode
-from urlparse import urlunparse
-
-# local module that overrides functions in urllib2
-import univention.management.console.modules.sysinfo.upload
-
-import urllib2
-import httplib
 
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
@@ -68,11 +61,12 @@ class Instance(umcm.Base):
 		try:
 			process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(stdoutdata, stderrdata, ) = process.communicate()
-			return (process.returncode, stdoutdata, stderrdata, )
+			return (process.returncode, stdoutdata.decode('UTF-8'), stderrdata.decode('UTF-8'), )
 		except OSError:
 			return (True, None, None, )
 
-	def get_general_info(self, request):
+	@simple_response
+	def get_general_info(self):
 		DMIDECODE = '/usr/sbin/dmidecode'
 		MANUFACTURER_CMD = (DMIDECODE, '-s', 'system-manufacturer', )
 		MODEL_CMD = (DMIDECODE, '-s', 'system-product-name', )
@@ -81,58 +75,55 @@ class Instance(umcm.Base):
 		for command in (MANUFACTURER_CMD, MODEL_CMD, ):
 			(exitcode, stdout, stderr, ) = self._call(command)
 			if exitcode:
-				message = _('Failed to execute command')
-				request.status = MODULE_ERR
-				self.finished(request.id, None, message)
-				return
+				MODULE.error('Command %r failed: %s %r %r' % (command, exitcode, stdout, stderr))
+				raise UMC_Error(_('Failed to execute command'))
 			else:
 				stdout = stdout[:-1]  # remove newline character
 				stdout_list.append(stdout)
 		result = {}
 		result['manufacturer'] = stdout_list[0]
 		result['model'] = stdout_list[1]
+		return result
 
-		request.status = SUCCESS
-		self.finished(request.id, result)
-
-	def get_system_info(self, request):
-		MANUFACTURER = request.options['manufacturer'].encode('utf-8')
-		MODEL = request.options['model'].encode('utf-8')
-		COMMENT = request.options['comment'].encode('utf-8')
+	@sanitize(
+		manufacturer=StringSanitizer(required=True),
+		model=StringSanitizer(required=True),
+		comment=StringSanitizer(required=True),
+		ticket=StringSanitizer(required=False, default=''),
+	)
+	@simple_response
+	def get_system_info(self, manufacturer, model, comment, ticket=''):
 		SYSTEM_INFO_CMD = (
 			'/usr/bin/univention-system-info',
-			'-m', MANUFACTURER,
-			'-t', MODEL,
-			'-c', COMMENT,
-			'-s', request.options.get('ticket', ''),
+			'-m', manufacturer,
+			'-t', model,
+			'-c', comment,
+			'-s', ticket,
 			'-u', )
 
 		(exitcode, stdout, stderr, ) = self._call(SYSTEM_INFO_CMD)
 		if exitcode:
-			MODULE.error('Execution of univention-system-info failed: %s' % stdout)
-			result = None
-			request.status = MODULE_ERR
-		else:
-			result = {}
-			for line in stdout.splitlines():
-				try:
-					info, value = line.split(':', 1)
-					result[info] = value
-				except ValueError:
-					pass
-			if result.get('mem'):
-				match = self.mem_regex.match(result['mem'])
-				if match:
-					try:
-						converted_mem = (float(match.groups()[0]) / 1048576)
-						result['mem'] = '%.2f GB' % converted_mem
-						result['mem'] = result['mem'].replace('.', ',')
-					except (IndexError, ValueError):
-						pass
-			result.pop('Temp', None)  # remove unnecessary entry
-			request.status = SUCCESS
+			MODULE.error('Execution of univention-system-info failed: %s' % (stdout,))
+			raise UMC_Error('Execution of univention-system-info failed')
 
-		self.finished(request.id, result)
+		result = {}
+		for line in stdout.splitlines():
+			try:
+				info, value = line.split(':', 1)
+				result[info] = value
+			except ValueError:
+				pass
+		if result.get('mem'):
+			match = self.mem_regex.match(result['mem'])
+			if match:
+				try:
+					converted_mem = (float(match.groups()[0]) / 1048576)
+					result['mem'] = '%.2f GB' % converted_mem
+					result['mem'] = result['mem'].replace('.', ',')
+				except (IndexError, ValueError):
+					pass
+		result.pop('Temp', None)  # remove unnecessary entry
+		return result
 
 	@simple_response
 	def get_mail_info(self):
@@ -156,17 +147,15 @@ class Instance(umcm.Base):
 		if not path.startswith(SYSINFO_PATH):
 			raise UMC_Error('Archive path invalid.')
 
-		fd = open(os.path.join(SYSINFO_PATH, archive), 'r')
-		data = {'filename': fd, }
-		req = urllib2.Request(url, data, {})
-		try:
-			u = urllib2.urlopen(req)
-			answer = u.read()
-		except (urllib2.HTTPError, urllib2.URLError, httplib.HTTPException) as exc:
-			raise UMC_Error('Archive upload failed: %s' % (exc,))
-		else:
-			if answer.startswith('ERROR:'):
-				raise UMC_Error(answer)
+		with open(os.path.join(SYSINFO_PATH, archive), 'rb') as fd:
+			try:
+				response = requests.post(url, files={'filename': fd, })
+				response.raise_for_status()
+			except requests.exceptions.RequestException as exc:
+				raise UMC_Error('Archive upload failed: %s' % (exc,))
+			answer = response.text
+		if answer.startswith('ERROR:'):
+			raise UMC_Error(answer)
 
 	@sanitize(traceback=StringSanitizer(), remark=StringSanitizer(), email=StringSanitizer())
 	@simple_response
@@ -188,5 +177,8 @@ class Instance(umcm.Base):
 			'uuid_license': ucr.get('uuid/license', ''),
 			'server_role': ucr.get('server/role'),
 		}
-		request = urllib2.Request(url, request_data)
-		urllib2.urlopen(request)
+		try:
+			response = requests.post(url, data=request_data)
+			response.raise_for_status()
+		except requests.exceptions.RequestException as exc:
+			raise UMC_Error('Sending traceback failed: %s' % (exc,))
