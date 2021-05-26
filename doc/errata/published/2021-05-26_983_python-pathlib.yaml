@@ -10,3 +10,5 @@ desc: |
    dependency of python-django.
 bug: [53237]
 maintained: true
+erratum: 983
+announced: 2021-05-26
