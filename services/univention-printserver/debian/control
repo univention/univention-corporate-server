@@ -27,6 +27,9 @@ Depends:
  python-pexpect,
  python-univention-lib (>= 1.0.25-1),
  python3-ldap,
+ python3-pexpect,
+ python3-univention-lib,
+ python3-ldap,
  shell-univention-lib,
  univention-config (>= 15),
  univention-directory-listener,
@@ -72,12 +75,14 @@ Description: UCS - print server addons for pdf pseudo printer
 Package: univention-management-console-module-printers
 Architecture: all
 Depends:
- python-lxml,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
 Recommends:
  univention-printserver (= ${source:Version}),
 Description: UMC module for printer administration

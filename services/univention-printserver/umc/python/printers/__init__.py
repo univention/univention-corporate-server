@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -101,7 +101,7 @@ class Instance(Base):
 		identity = ucr.get('ldap/hostdn')
 		password = open('/etc/machine.secret').read().rstrip('\n')
 		server = ucr.get('ldap/server/name')
-		udm = UDM.credentials(identity, password, server=server).version(1)
+		udm = UDM.credentials(identity, password, server=server).version(2)
 		users = udm.get('users/user').search()
 		return [user.props.username for user in users]
 
@@ -124,8 +124,6 @@ class Instance(Base):
 
 		return self._cancel_jobs(printer, jobs)
 
-	# ----------------------- Internal functions -------------------------
-
 	def _job_list(self, printer):
 		""" lists jobs for a given printer, directly suitable for the grid """
 
@@ -142,7 +140,7 @@ class Instance(Base):
 					entry = {
 						'job': mobj.group(1),
 						'owner': mobj.group(2),
-						'size': mobj.group(3),
+						'size': int(mobj.group(3)),
 						'date': mobj.group(4)
 					}
 					result.append(entry)
@@ -216,8 +214,7 @@ class Instance(Base):
 		return ''
 
 	def _shell_command(self, args, env=None):
-
 		proc = subprocess.Popen(args=args, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
-		outputs = proc.communicate()
-
-		return (outputs[0], outputs[1], proc.returncode)
+		stdout, stderr = proc.communicate()
+		stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+		return (stdout, stderr, proc.returncode)

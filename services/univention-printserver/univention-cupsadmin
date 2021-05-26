@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Print Server
@@ -33,12 +33,14 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
-import re
 import pwd
 import os
 import os.path
+
 from pexpect import spawn, EOF
+
 import univention.config_registry
 
 args = sys.argv[1:]
@@ -63,7 +65,7 @@ if cmd[-len("univention-cupsadmin"):] == "univention-cupsadmin":
 cmd = os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")
 
 # check if target executable exists
-if not(os.path.exists(cmd)):
+if not os.path.exists(cmd):
 	print("Target executable %s does not exist. Exiting." % cmd)
 	sys.exit(2)
 
@@ -71,9 +73,8 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 # read machine password
-secretFile = open('/etc/machine.secret', 'r')
-pwdLine = secretFile.readline()
-machine_password = re.sub('\n', '', pwdLine)
+with open('/etc/machine.secret', 'r') as fd:
+	machine_password = fd.readline().strip()
 
 machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]
 old_uid = os.getuid()
@@ -88,4 +89,4 @@ while not i == 2:
 		child.sendline(machine_password)
 	elif i == 2:
 		if child.before:
-			print(child.before)
+			print(child.before.decode('UTF-8', 'replace'))

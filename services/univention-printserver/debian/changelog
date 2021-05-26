@@ -1,3 +1,9 @@
+univention-printserver (13.0.2-11) unstable; urgency=medium
+
+  * Bug #51335: migrate univention-printserver to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 26 May 2021 16:02:15 +0200
+
 univention-printserver (13.0.2-10) unstable; urgency=medium
 
   * Bug #53209: Fix join script handling (univention-join debhelper)

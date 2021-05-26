@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Print Server
@@ -32,11 +32,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
-import re
 import pwd
 import os
+
 from pexpect import spawn, EOF
+
 import univention.config_registry
 
 args = sys.argv[1:]
@@ -56,9 +58,8 @@ if '-h' not in args:
 	args = args + ['-h', 'localhost']
 
 # read machine password
-secretFile = open('/etc/machine.secret', 'r')
-pwdLine = secretFile.readline()
-machine_password = re.sub('\n', '', pwdLine)
+with open('/etc/machine.secret', 'r') as fd:
+	machine_password = fd.readline().strip()
 
 machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]
 old_uid = os.getuid()
@@ -75,8 +76,8 @@ rc = 0
 def show_child_before_message(child):
 	""" Method shows only lpadmin error/info message that comes only with "lpadmin: """
 	for stdout_line in child.before.splitlines():
-		if "lpadmin: " in stdout_line:
-			print(stdout_line.strip())
+		if b"lpadmin: " in stdout_line:
+			print(stdout_line.decode('UTF-8', 'replace').strip())
 
 
 def enableaccept(command, groupname, timeout, machine_password):
@@ -98,7 +99,7 @@ def enableaccept(command, groupname, timeout, machine_password):
 		sys.exit(child.exitstatus)
 
 
-while not i == 3:
+while i != 3:
 	i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
 	if i in [0, 1, 2]:
 		show_child_before_message(child)
@@ -126,7 +127,7 @@ if '-c' in args:
 	i = 0
 	for arg in args:
 		if arg == '-c':
-			# print "arg: ", args[i+1]
+			# print("arg: ", args[i+1])
 			enableaccept(enableexec, args[i + 1], timeout, machine_password)
 			enableaccept(acceptexec, args[i + 1], timeout, machine_password)
 		i += 1
