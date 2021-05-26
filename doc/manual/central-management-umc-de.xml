@@ -22,13 +22,12 @@
 	</para>
 	<para>
 		Die &ucsWeb; untergliedert sich in mehrere Unterseiten, die alle eine ähnlich gestaltete Kopfzeile besitzen.
-		Über die Symbole oben rechts kann eine Suche auf der aktuellen Seite durchgeführt (Lupe), sich angemeldet/abgemeldet (Schloss) oder das Benutzermenü (drei Balken) geöffnet werden.
+		Über die Symbole oben rechts kann eine Suche auf der aktuellen Seite durchgeführt (Lupe) oder das Benutzermenü (drei Balken) geöffnet werden (dort kann man sich auch anmelden).
 		Die Anmeldung an der Oberfläche geschieht über eine zentrale Seite für alle Unterseiten von UCS sowie Drittherstellern, sofern diese einen webbasierten <foreignphrase>Single Sign-on</foreignphrase> unterstützen (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
 		Zentraler Ausgangspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
-		Die Portalseite ist standardmäßig auf dem &ucsPrimaryDN; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
-		Alle anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsPrimaryDN; an.
+		Die Portalseite ist standardmäßig auf allen Systemrollen verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
 		Alle Aspekte der Portalseite können umfangreich an die eigenen Bedürfnisse angepasst werden (<xref linkend="central:portal"/>).
 	</para>
 	<para>
@@ -116,11 +115,11 @@
 <section id="central-management-umc:login">
 	<title>Anmeldung</title>
 	<para>
-		UCS stellt eine zentral Anmeldeseite zur Verfügung.
+		UCS stellt eine zentrale Anmeldeseite zur Verfügung.
 		Die Anmeldung an der &ucsWeb; geschieht zentral mit den Anmeldedaten des jeweiligen Domänenkontos.
-		Auf der Portalseite kann der Anmeldevorgang entweder über das Benutzermenü und dann <guimenu>Anmelden</guimenu> (letzter Eintrag)  oder über einen Klick auf das Schlosssymbol in der Kopfzeile oben rechts angestoßen werden.
+		Auf der Portalseite kann der Anmeldevorgang entweder über das Benutzermenü und dann <guimenu>Anmelden</guimenu> oder über einen Klick auf einen Eintrag im Portal selbst angestoßen werden.
 		Setzt eine Seite (wie bspw. ein UMC-Modul) eine Anmeldung voraus, so wird automatisch auf die zentrale Anmeldeseite weitergeleitet.
-		Zum Abmelden kann analog entweder auf das (geöffnete) Schlosssymbol in der Kopfzeile geklickt oder der Eintrag <guimenu>Abmelden</guimenu> im Benutzermenü (letzter Eintrag) ausgewählt werden.
+		Zum Abmelden kann analog der Eintrag <guimenu>Abmelden</guimenu> im Benutzermenü ausgewählt werden.
 	</para>
 
 	<figure id="umc-login">
@@ -179,36 +178,32 @@
 	</para>
 	<para>
 		Wie in <xref linkend="portal-schema"/> dargestellt, können Portaleinträge (also Verweise auf Applikationen/Apps/Dienste; UDM-Objekttyp <classname>portals/entry</classname>) keinem, einem oder mehreren Portal-Kategorien zugeordnet werden.
-		Eine Portal-Kategorie (UDM-Objekttyp <classname>portals/category</classname>) kann keinem, einem oder mehreren Portal zugeordnet werden.
+		Eine Portal-Kategorie (UDM-Objekttyp <classname>portals/category</classname>) kann keinem, einem oder mehreren Portalen zugeordnet werden.
 		Ein Portal selbst (UDM-Objekttyp <classname>portals/portal</classname>) stellt alle Portal-Kategorien dar, die mit ihm verknüpft sind.
 	</para>
 	<para>
-		Standardmäßig ist UCS so voreingestellt, dass es zwei Portale gibt.
-		Das Portal <foreignphrase>domain</foreignphrase> ist mit den &ucsPrimaryDN; und &ucsBackupDN;s der Domäne verknüpft.
+		Das Portal <foreignphrase>domain</foreignphrase>, das mit jeder Installation mitgebracht wird, ist zunächst auf allen UCS-Systemen vorkonfiguriert.
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
-		Das Portal <foreignphrase>local</foreignphrase> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
-		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsPrimaryDN; der Domäne dargestellt.
 	</para>
 	<para>
-		Eigene Portale und Portaleinträge können entweder über das UMC-Modul <guimenu>Portaleinstellungen</guimenu> oder
+		Eigene Portale und Portaleinträge können entweder über das UMC-Modul <guimenu>Portal</guimenu> oder
 		direkt auf der Portalseite angelegt und verwaltet werden.
 	</para>
 	<para>
-		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem &ucsPrimaryDN; oder &ucsBackupDN; nach einem Klick auf das gelbe Bearbeitungs-Icon neue
-		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, sowie die Reihenfolge oder das Design modifizieren. Es ist darüber hinaus möglich, diese Rechte auf ausgewählte Gruppen oder Benutzer zu übertragen. Hierzu gibt es eine Anleitung unter <xref linkend="central-management-umc:Assignment-of-portal-settings-module"/>
+		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem &ucsPrimaryDN; oder &ucsBackupDN; nach einem Klick auf den entsprechenden Eintrag im Benutzermenü das Portal bearbeiten. Jetzt können neue
+		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, sowie die Reihenfolge oder das Design modifizieren.
 	</para>
 	<para>
-		Weiterführende Einstellungen, wie das Hinzufügen neuer Portale oder die Einstellung, welche Gruppenmitglieder welche Portaleinträge sehen dürfen, können über das UMC-Modul
-		Portaleinstellungen durchgeführt werden.
+		Weiterführende Einstellungen, wie das Hinzufügen neuer Portale oder die Einstellung, welche Benutzer welche Portaleinträge sehen dürfen (über ihre Gruppenmitgliedschaft), können über das UMC-Modul
+		<guimenu>Portal</guimenu> durchgeführt werden.
 	</para>
 	<para>
-		Standardmäßig werden alle Portaleinträge für jeden angezeigt. Im UMC-Modul <guimenu>Portaleinstellungen</guimenu> kann pro Portal auf dem Reiter
-		<guimenu>Anonyme Besucher verwalten</guimenu> konfiguriert werden, ob anonyme Besucher sich erst anmelden müssen bevor sie Einträge sehen können.
+		Standardmäßig werden alle Portaleinträge für jeden angezeigt. Im UMC-Modul <guimenu>Portal</guimenu> kann für ein Portal in der Kategorie <guimenu>Login</guimenu> konfiguriert werden, ob anonyme Besucher sich erst anmelden müssen bevor sie Einträge sehen können.
 		Es ist auch möglich bestimmte Einträge für bestimmte Gruppen zu limitieren. Dies erfordert das LDAP-Attribut <property>memberOf</property>.
-		Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet nicht statt.
+		Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet statt.
 	</para>
 	<para>
-		Weiterführende Design Anpassungen können in der Datei <filename>/usr/share/univention-portal/custom.css</filename> vorgenommen werden.
+		Weiterführende Design Anpassungen können in der Datei <filename>/usr/share/univention-portal/css/custom.css</filename> vorgenommen werden.
 		Dieses Datei wird während eines Updates nicht überschrieben.
 	</para>
 	<figure id="portal-schema">
@@ -218,7 +213,7 @@
 	<section id="central-management-umc:Assignment-of-portal-settings-module">
 		<title>Rechte für Portaleinstellungen vergeben</title>
 		<para>
-			Im Folgenden wird beschrieben, wie das UMC-Modul <guimenu>Portaleinstellungen</guimenu> für ausgewählte Gruppen oder Benutzer zugänglich gemacht werden kann. Dies wird anhand eines Beispiels erläutert. Für das Beispiel wird davon ausgegangen, dass eine Gruppe <guimenu>Portal Admins</guimenu> erstellt wurde und Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen.
+			Im Folgenden wird beschrieben, wie das UMC-Modul <guimenu>Portal</guimenu> für ausgewählte Gruppen oder Benutzer zugänglich gemacht werden kann. Dies wird anhand eines Beispiels erläutert. Für das Beispiel wird davon ausgegangen, dass eine Gruppe <guimenu>Portal Admins</guimenu> erstellt wurde und Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen.
 		</para>
 		<para>
 			Auf einem <guimenu>&ucsPrimaryDN;</guimenu> ist zunächst eine ACL-Datei zu erstellen (für das Beispiel wurde das Verzeichnis <guimenu>/opt/</guimenu> verwendet):
@@ -292,7 +287,7 @@ udm settings/ldapacl remove \
 <section id="central:license">
 	<title>Aktivierung der UCS-Lizenz / Lizenz-Übersicht</title>
 	<para>
-		Die UCS-Lizenz einer Domäne kann dem &ucsPrimaryDN; über das UMC-Modul <guimenu>Wilkommen!</guimenu>
+		Die UCS-Lizenz einer Domäne kann dem &ucsPrimaryDN; über das UMC-Modul <guimenu>Willkommen!</guimenu>
 		verwaltet werden.
 	</para>
 	<para>

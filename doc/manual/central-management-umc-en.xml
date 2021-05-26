@@ -22,14 +22,12 @@
 	</para>
 	<para>
 		The &ucsWeb; is divided into several subpages which all have a similarly designed header.
-		Via the symbols in the top right, one may launch a search on the current page (magnifier), log in/out (lock) or open the user menu (three bars).
+		Via the symbols in the top right, one may launch a search on the current page (magnifier) or open the user menu (three bars) (login is possible through the latter).
 		The login at the web interface is done via a central page once for all sub pages of UCS as well as for third party applications as far as a web based <foreignphrase>single sign-on</foreignphrase> is supported (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
 		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="fig-ucs-portal"/>).
-		By default, the portal page is available on the &ucsPrimaryDN;.
-		It allows an overview of all Apps and further services which are installed in the UCS domain.
-		All other system roles show by default links to locally installed Apps as well as a link back to the portal page of the &ucsPrimaryDN;.
+		By default, the portal page is available on all system roles and allows an overview of all Apps and further services which are installed in the UCS domain.
 		All aspects of the portal page can be customized to match one's needs (<xref linkend="central:portal"/>).
 	</para>
 	<para>
@@ -39,7 +37,7 @@
 	</para>
 	<para>
 		UMC modules are the web based tool for the administration of the UCS domain.
-		There are various modules available for the	administration of the different aspects of a domain depending on the respective system role.
+		There are various modules available for the administration of the different aspects of a domain depending on the respective system role.
 		Installing additional software components may add new UMC modules to the system.
 		<xref linkend="central:user-interface"/> describes their general operation.
 	</para>
@@ -120,6 +118,12 @@
 	</figure>
 	<para>
 		UCS comes with a central login page.
+		Logging in to the &ucsWeb; is done with the credentials of the respective domain account.
+		On the portal, the login process can be started either via the user menu an then <guimenu>Login</guimenu> or by clicking on the entry in the portal itself.
+		If a site (e.g., a UMC module) requires a login, it will redirect to the central login page.
+		To log out, the entry <guimenu>Logout</guimenu> in the user menu can be used.
+	</para>
+	<para>
 		By default, a <foreignphrase>single sign-on</foreignphrase> (SSO) is carried out via SAML (cf. <xref linkend="domain:saml"/>) provided that <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
 		After successful login, a session is valid for all UCS systems of the domain as well as for third party Apps if these support web based SSO.
 		In case <uri>ucs-sso.<replaceable>domainname</replaceable></uri> cannot be reached, the login is carried out at the local UCS system.
@@ -183,30 +187,27 @@
 		A portal itself (UDM object type <classname>portals/portal</classname>) renders all portal categories which are assigned to it.
 	</para>
 	<para>
-		By default, UCS is configured to have two portals.
-		The portal <emphasis>domain</emphasis> is assigned to the Primary and &ucsBackupDN;s of the domain.
+		The portal <foreignphrase>domain</foreignphrase>, shipped with every installation, is configured on each server by default.
 		In addition to all installed applications of the domain, links to &ucsUMC; as well as the server overview are shown on this portal page.
-		The portal <emphasis>local</emphasis> is assigned to all other server roles in the domain.
-		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsPrimaryDN; are shown.
 	</para>
 	<para>
-		Custom portals and portal entries can be defined and managed either via the UMC module <guimenu>Portal settings</guimenu> or directly on the portal site.
+		Custom portals and portal entries can be defined and managed either via the UMC module <guimenu>Portal</guimenu> or directly on the portal site.
 	</para>
 	<para>
-		After logging in to the portal on the &ucsPrimaryDN; or &ucsBackupDN;, members of the <systemitem class="groupname">Domain Admins</systemitem> group can create new
-		entries on the portal, modify existing entries, modify the order or the design after clicking on the yellow edit icon.
+		After logging in to the portal on the &ucsPrimaryDN; or &ucsBackupDN;, members of the <systemitem class="groupname">Domain Admins</systemitem> group can edit the portal after clicking on the corresponding entry in the user menu.
+		They now can create new entries on the portal, modify existing entries, modify the order or the design.
 	</para>
 	<para>
 		Advanced settings, such as adding new portals or setting which group members can see which portal entries can be made using the UMC portal settings module.
 	</para>
 	<para>
-		By default, all portal entries are displayed for everyone. In the UMC module <guimenu>Portal settings</guimenu> on the tab <guimenu>Manage anonymous visitors</guimenu>,
+		By default, all portal entries are displayed for everyone. In the UMC module <guimenu>Portal</guimenu> in the category <guimenu>Login</guimenu>,
 		it can be configured whether anonymous visitors have to log in before they can see entries.
 		It is also possible to limit certain entries for certain groups. This requires the LDAP attribute <property>memberOf</property>.
-		Nested group memberships (i.e., groups in groups) are not evaluated.
+		Nested group memberships (i.e., groups in groups) are evaluated.
 	</para>
 	<para>
-		Further design adjustments can be made in the file <filename>/usr/share/univention-portal/custom.css</filename>.
+		Further design adjustments can be made in the file <filename>/usr/share/univention-portal/css/custom.css</filename>.
 		This file will not be overwritten during an update.
 	</para>
 	<figure id="portal-schema">
@@ -216,7 +217,7 @@
 	<section id="central-management-umc:Assignment-of-portal-settings-module">
 		<title>Assign rights for portal settings</title>
 		<para>
-			The following describes how to make the UMC module <guimenu>Portal settings</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group are supposed to be given access to the portal settings.
+			The following describes how to make the UMC module <guimenu>Portal</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group are supposed to be given access to the portal settings.
 		</para>
 		<para>
 			On a <guimenu>&ucsPrimaryDN;</guimenu> an ACL file has to be created first:
