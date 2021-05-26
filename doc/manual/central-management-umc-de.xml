@@ -260,11 +260,11 @@ udm settings/ldapacl remove \
 </section>-->
 
 <section id="central:user-interface">
-<title>&ucsUMC; Module</title>
+<title>&ucsUMC;-Module</title>
 <section id="central:introduction">
 	<title>Einführung</title>
 	<para>
-		&ucsUMC; (UMC) Module sind das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne.
+		&ucsUMC;-Module (UMC-Module) sind das zentrale Werkzeug zur webbasierten Administration der UCS-Domäne.
 		Sie werden auf der Portalseite (<xref linkend="central:portal"/>) für eingeloggte Administratoren angezeigt.
 		Je nach Systemrolle sind unterschiedliche UMC-Module verfügbar.
 		Zusätzlich installierte Software-Komponenten können ihre eigenen neuen UMC-Module mitbringen.
