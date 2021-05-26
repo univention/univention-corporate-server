@@ -1,4 +1,4 @@
-univention-nagios-ad-connector (8.0.1-5) unstable; urgency=medium
+univention-nagios-ad-connector (8.0.1-4) unstable; urgency=medium
 
   * Bug #51869: False positive adcon nagios check if adcon is started with flags
 

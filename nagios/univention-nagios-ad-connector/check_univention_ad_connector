@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 #
-. /usr/share/univention-lib/all.sh
 
 PROGNAME=$(/usr/bin/basename $0)
 
@@ -52,16 +51,11 @@ print_usage() {
 	exit $STATE_OK
 }
 
-count_connectors() {
-	ab="connector $(univention-config-registry get connector/listener/additionalbasenames)"
-	basenames=($ab)
-	count_connectors=0
-	for i in "${basenames[@]}"; do
-		if is_ucr_true "$i/ad/autostart"; then
-			let "count_connectors++"
-		fi
-	done
-	echo "$count_connectors"
+amount_connectors() {
+	ab="$(univention-config-registry get connector/listener/additionalbasenames)"
+	additionalbasenames=($ab)
+	amount_connectors=${#additionalbasenames[@]}
+	echo "$((amount_connectors+1))"
 }
 
 nagios_exit() {
@@ -100,7 +94,7 @@ if [ "$#" -gt 0 -a -n "$1" ]; then
 	CONNECTOR="$1"
 	MSG_CONNECTOR=" [$1]"
 else
-	connectors="$(count_connectors)"
+	connectors="$(amount_connectors)"
 fi
 # get the amount of connectors that are supposed to be running
 
@@ -116,11 +110,10 @@ case "$ret" in
 	$STATE_OK)
 		;;
 	$STATE_WARNING)
-		[ "$connectors" != "1" ] && nagios_exit $ret "More than the configured $connectors AD connectors are running!"
 		nagios_exit $ret "More than one AD connector instance are running!"
 		;;
 	$STATE_CRITICAL)
-		[ "$connectors" != "1" ] && nagios_exit $STATE_WARNING "Not all $connectors AD connectors are running!"
+		[ "$connectors" -gt "1" ] && nagios_exit $STATE_WARNING "Not all AD connectors are running!"
 		nagios_exit $ret "AD connector is not running!"
 		;;
 	*)
