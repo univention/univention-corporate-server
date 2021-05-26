@@ -123,7 +123,7 @@
 			If the update is started via &ucsUMC;:
 			Before the actual update starts, some tests are performed, e.g. if all installed Apps would be available on UCS <productnumber>5.0</productnumber>.
 			At this point, the web interface is already in maintenance mode and nothing is shown but a progress bar.
-			If one test fails, the update will be cancelled and a message is written to <filename>/var/log/univention/updater.log</filename>.
+			If one test fails, the update will be canceled and a message is written to <filename>/var/log/univention/updater.log</filename>.
 			To read these in the web frontend, log in to &ucsUMC;, open the <guimenu>Software update</guimenu> module and click on "View log file".
 		</para>
 		<para>
