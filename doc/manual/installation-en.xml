@@ -310,7 +310,7 @@ the size of the respective hard drive.
 			<title>Finish the installation</title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/installer-reboot_en.png"/>
 		</figure>
-		A restart into the freshly installed system follows subsequently in order to complete the cofiguration within it.
+		A restart into the freshly installed system follows subsequently in order to complete the configuration within it.
   </para>
 </section>
 <section id="installation:Domäneneinstellungen">
