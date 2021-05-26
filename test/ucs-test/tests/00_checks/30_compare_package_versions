@@ -75,15 +75,11 @@ def perform_cleanup():
                   % (exc, folder))
 
 
-def download_packages_file(url, version, arch, temp_directory):
+def download_packages_file(file_name, file_path, url, arch):
     """
     Downloads a 'Packages.gz' as the given url into the
     'temp_directory/version/arch/' folder.
     """
-    file_name = temp_directory + '/' + version + '/'  # only part of the path that has version
-    file_path = file_name + arch + '/Packages.gz'  # a complete path to the 'Packages.gz' file
-
-    url += version + '/' + arch + '/Packages.gz'
     print("\nDownloading:", url)
 
     try:
@@ -120,6 +116,8 @@ def load_packages_file(filename, target_dict, ucs_version):
 
     try:
         # first try to open it as a .gzip
+        if not filename.endswith('.gz'):
+            raise IOError()
         packages_file = gzip_open(filename, 'r')
     except IOError:
         # otherwise open it as a usual file
@@ -152,12 +150,13 @@ def load_packages_file(filename, target_dict, ucs_version):
                 target_dict[item.package] = item
 
 
-def load_version(url):
+def load_version(repo_url, ucs_version, repo_type):
     """
     Selects all minor and errata versions for the given 'url'.
     Downloads respective 'Packages.gz' for each version and
     returns a dict filled with PackageEntries.
     """
+    url = repo_url + ucs_version + '/' + repo_type
     target = {}
 
     temp = mkdtemp()  # a temp folder to store 'Packages.gz' for each version
@@ -166,7 +165,10 @@ def load_version(url):
 
     for version in select_minor_levels(url):
         for arch in ('all', 'i386', 'amd64'):
-            file_name = download_packages_file(url, version, arch, temp)
+            file_name = temp + '/' + version + '/'  # only part of the path that has version
+            file_path = file_name + arch + '/Packages.gz'  # a complete path to the 'Packages.gz' file
+            new_url = url + version + '/' + arch + '/Packages.gz'
+            file_name = download_packages_file(file_name, file_path, new_url, arch)
 
             if file_name:
                 # only load the packages file when it was downloaded
@@ -174,6 +176,35 @@ def load_version(url):
                 load_packages_file(path.join(file_name, arch, 'Packages.gz'),
                                    target,
                                    'ucs_' + version)
+    return target
+
+
+def load_new_version(repo_url, ucs_version, repo_type):
+    """
+    Selects all minor and errata versions for the given 'url'.
+    Downloads respective 'Packages.gz' for each version and
+    returns a dict filled with PackageEntries.
+    """
+    url = repo_url + '/dists/ucs500/main/binary-'
+    target = {}
+
+    temp = mkdtemp()  # a temp folder to store 'Packages.gz' for each version
+    global cleanup_folders
+    cleanup_folders.append(temp)  # to remove a folder after
+
+    for arch in ('amd64',):
+        file_name = temp + '/' + ucs_version + '/'  # only part of the path that has version
+        file_path = file_name + arch + '/Packages'  # a complete path to the 'Packages.gz' file
+
+        new_url = url + arch + '/Packages'
+        file_name = download_packages_file(file_name, file_path, new_url, arch)
+
+        if file_name:
+            # only load the packages file when it was downloaded
+            print("Loading packages file:", file_name + arch + '/Packages')
+            load_packages_file(path.join(file_name, arch, 'Packages'),
+                               target,
+                               'ucs_' + ucs_version)
     return target
 
 
@@ -354,12 +385,14 @@ if __name__ == '__main__':
             # comparing first maintained and than unmaintained sections:
             for repo_type in ('maintained/', 'unmaintained/'):
                 print("\nChecking %s packages:" % repo_type[:-1])
-                previous_version = repo_url + check_versions[0] + '/' + repo_type
-                current_version = repo_url + check_versions[1] + '/' + repo_type
+                previous_version = check_versions[0]
+                current_version = check_versions[1]
+                load_previous_version = load_new_version if StrictVersion(previous_version) >= StrictVersion('5.0') else load_version
+                load_current_version = load_new_version if StrictVersion(current_version) >= StrictVersion('5.0') else load_version
 
                 # comparing determined versions:
-                compare(load_version(previous_version),
-                        load_version(current_version))
+                compare(load_previous_version(repo_url, previous_version, repo_type),
+                        load_current_version(repo_url, current_version, repo_type))
     finally:
         perform_cleanup()
         if total_errors:  # an overall statistics
