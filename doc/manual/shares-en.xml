@@ -1054,7 +1054,7 @@ Microsoft Distributed File System Tree'.
 	</para>
 
 	<figure id="shares:quota">
-	  <title>The UMC module 'Filesystem quotas'</title>
+	  <title>The UMC module 'File system quotas'</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations50/quota-overview-en.png"/>
 	</figure>
 
