@@ -77,13 +77,13 @@
 			The following browsers are supported:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><application>Chrome</application> as of version 71</simpara></listitem>
-			<listitem><simpara><application>Firefox</application> as of version 60</simpara></listitem>
-			<listitem><simpara><application>Microsoft Edge</application> as of version 18</simpara></listitem>
-			<listitem><simpara><application>Safari</application> and <application>Safari Mobile</application> as of version 12</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> as of version 85</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> as of version 78</simpara></listitem>
+			<listitem><simpara><application>Microsoft Edge</application> as of version 88</simpara></listitem>
+			<listitem><simpara><application>Safari</application> and <application>Safari Mobile</application> as of version 13</simpara></listitem>
 		</itemizedlist>
 		<para>
-			Users with older browsers may experience display problems.
+			Users with older browsers may experience display problems or the site does not work at all.
 		</para>
 		<para>
 			The &ucsWeb; is available in German and English (and French if it is chosen as language during the installation from DVD);

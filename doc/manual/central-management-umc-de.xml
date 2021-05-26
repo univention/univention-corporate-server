@@ -80,17 +80,17 @@
 			Die folgenden Browser werden unterstützt:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><application>Chrome</application> ab Version 71</simpara></listitem>
-			<listitem><simpara><application>Firefox</application> ab Version 60</simpara></listitem>
-			<listitem><simpara><application>Microsoft Edge</application> ab Version 18</simpara></listitem>
-			<listitem><simpara><application>Safari</application> und <application>Safari Mobile</application> ab Version 12</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> ab Version 85</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> ab Version 78</simpara></listitem>
+			<listitem><simpara><application>Microsoft Edge</application> ab Version 88</simpara></listitem>
+			<listitem><simpara><application>Safari</application> und <application>Safari Mobile</application> ab Version 13</simpara></listitem>
 		</itemizedlist>
 		<para>
-			Auf älteren Browsern können Darstellungsprobleme auftreten.
+			Auf älteren Browsern können Darstellungsprobleme auftreten oder die Seite funktioniert gar nicht.
 		</para>
 		<para>
 			Die &ucsWeb; ist in Deutsch und Englisch verfügbar (und Französisch wenn dieses bei der Installation von DVD als Sprache ausgewählt wurde);
-			die Darstellungssprache	kann über den Punkt <guimenu>Sprache ändern</guimenu> im Benutzermenü der rechten, oberen Ecke geändert werden.
+			die Darstellungssprache kann über den Punkt <guimenu>Sprache ändern</guimenu> im Benutzermenü der rechten, oberen Ecke geändert werden.
 		</para>
 	</section>
 
