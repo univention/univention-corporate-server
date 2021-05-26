@@ -70,7 +70,7 @@
 
 	<para>
 	  Eine Spezialapplikation für die Versicherungswirtschaft wird auf einem
-	  POWER7-System mit IBM AIX betrieben. Die Benutzer auf diesem System sollen
+	  Power7-System mit IBM AIX betrieben. Die Benutzer auf diesem System sollen
 	  nicht doppelt gepflegt werden.
 	</para>
   </section>
@@ -276,7 +276,7 @@
 	<title>Integration des AIX-Systems</title>
 	<para>
 	  Die Versicherungspolicen werden mit einer Applikation verwaltet, die nur
-	  auf hochverfügbaren POWER7-Systemen mit IBM AIX betrieben werden kann.
+	  auf hochverfügbaren Power7-Systemen mit IBM AIX betrieben werden kann.
 	</para>
 
 	<para>
