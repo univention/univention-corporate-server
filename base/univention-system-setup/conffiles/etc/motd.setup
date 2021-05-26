@@ -32,10 +32,10 @@ password change.
 UMC uses numerous Javascript and CSS functions to display the web
 interface. Some of these features are unavailable in older browsers. The
 following web browsers are supported:
- - Chrome as of version 37 or later
- - Firefox as of version 38 or later
- - Internet Explorer as of version 11 or later
- - Safari and Safari Mobile as of version 9
+ - Chrome as of version 85 or later
+ - Firefox as of version 78 or later
+ - Microsoft Edge as of version 88 or later
+ - Safari and Safari Mobile as of version 13
 
 ########################################################################
 
@@ -58,10 +58,10 @@ the user "root" and the password you entered during installation.
 UMC uses numerous Javascript and CSS functions to display the web
 interface. Some of these features are unavailable in older browsers. The
 following web browsers are supported:
- - Chrome as of version 37 or later
- - Firefox as of version 38 or later
- - Internet Explorer as of version 11 or later
- - Safari and Safari Mobile as of version 9
+ - Chrome as of version 85 or later
+ - Firefox as of version 78 or later
+ - Microsoft Edge as of version 88 or later
+ - Safari and Safari Mobile as of version 13
 
 ########################################################################
 
