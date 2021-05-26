@@ -1079,6 +1079,13 @@ basic_setup_ucs_role () {
 	return $rv
 }
 
+ucs-winrm () {
+    local image="docker.software-univention.de/ucs-winrm"
+    docker pull "$image"
+    docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
+	return $?
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
