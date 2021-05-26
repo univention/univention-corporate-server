@@ -722,7 +722,7 @@ udm settings/ldapacl remove \
 <section id="central:extendedattrs">
 	<title>Erweiterung von UMC-Modulen mit erweiterten Attributen</title>
 	<para>
-	  Die Domänenverwaltungs-UMC-Module ermöglichen die umfassende Verwaltung der Daten einer
+	  Die UMC-Module für die Domänenverwaltung ermöglichen die umfassende Verwaltung der Daten einer
 	  Domäne. <emphasis>Erweiterte Attribute</emphasis> bieten eine Möglichkeit, neue Attribute in
 	  die Domänenverwaltung zu integrieren, die durch den UCS-Standardumfang nicht abgedeckt
 	  sind. Erweiterte Attribute werden auch von Drittanbietern für die Integration von Lösungen in
@@ -1354,7 +1354,7 @@ udm settings/ldapacl remove \
 	<title>Kommandozeilenschnittstelle der Domänenverwaltung (&ucsUDM;)</title>
 	<para>
 		Der &ucsUDM; ist die Kommandozeilenschnittstelle-Alternative
-		zur webbasierten Schnittstelle der Domänenverwaltungs-UMC-Module.
+		zur webbasierten Schnittstelle der UMC-Module für die Domänenverwaltung.
 		Es dient als mächtiges Werkzeug für die Automatisierung von
 		administrativen Vorgängen in
 		Skripten und zur Integration in andere Programme.

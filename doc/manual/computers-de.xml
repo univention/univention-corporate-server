@@ -1037,7 +1037,7 @@
 
         <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
 			<para>
-            Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> der Rechnerverwaltungs-UMC-Module
+            Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> in den UMC-Modulen für die Rechnerverwaltung
             können NFS-Freigaben konfiguriert werden, die auf dem
             System gemountet werden. Zur Auswahl steht eine
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
