@@ -953,11 +953,6 @@ add_tech_key_authorized_keys() {
 	echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech' >>/root/.ssh/authorized_keys
 }
 
-install_winrm() {
-	# TODO: move python-winrm to ucs
-	dpkg -i shared-utils/addons/python-winrm_*deb shared-utils/addons/python-isodate_*.deb  shared-utils/addons/python-xmltodict_*.deb
-}
-
 assert_admember_mode () {
 	. /usr/share/univention-lib/admember.sh
 	is_localhost_in_admember_mode
@@ -1077,23 +1072,6 @@ winrm_config () {
 	return $rv
 }
 
-test_windows () {
-	local rv=0
-	if ! python shared-utils/ucs-winrm.py run-ps --cmd ipconfig; then
-		sleep 60
-		python shared-utils/ucs-winrm.py run-ps --cmd ipconfig || rv=1
-	fi
-	python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption" || rv=1
-	return $rv
-}
-
-promote_ad_server () {
-	local forest=${1:=missing forest mode} domain=${1:=missing domain mode} rv=0
-	python shared-utils/ucs-winrm.py promote-ad --forestmode ${forest} --domainmode ${domain} || rv=1
-	sleep 400
-	return $rv
-}
-
 # setup for the ucs-$role kvm template (provisioned but not joined)
 basic_setup_ucs_role () {
 	local masterip="${1:?missing master ip}"
@@ -1108,6 +1086,12 @@ basic_setup_ucs_role () {
 		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
 	fi
 	return $rv
+}
+
+ucs-winrm () {
+    local image="docker.software-univention.de/ucs-winrm"
+    docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
+	return $?
 }
 
 basic_setup_ucs_joined () {

@@ -177,8 +177,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/setup-testing/slave-no-samba.cfg](scenarios/setup-testing/slave-no-samba.cfg)
 * [scenarios/setup-testing/slave-s4.cfg](scenarios/setup-testing/slave-s4.cfg)
 * [scenarios/setup-testing/slave-samba-pdc.cfg](scenarios/setup-testing/slave-samba-pdc.cfg)
-* [scenarios/windows/win2k16-de-client.cfg](scenarios/windows/win2k16-de-client.cfg)
-* [scenarios/windows/win2k8r2-ad-level-2003.cfg](scenarios/windows/win2k8r2-ad-level-2003.cfg)
 
 * [scenarios/ipv6/update/autotest-300-master46-slave46.cfg](scenarios/ipv6/update/autotest-300-master46-slave46.cfg)
 * [scenarios/ipv6/update/autotest-301-master46-backup46.cfg](scenarios/ipv6/update/autotest-301-master46-backup46.cfg)
@@ -283,10 +281,9 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 1. Last minute tests before new release
 
-* [scenarios/base/fake-listener.cfg](scenarios/base/fake-listener.cfg): Test joining with FAKE init
 * [product-tests/appcenter/first-run.cfg](product-tests/appcenter/first-run.cfg)
 * [product-tests/appcenter/ucs-tests.cfg](product-tests/appcenter/ucs-tests.cfg)
-* [product-tests/base/fake-listener.cfg](product-tests/base/fake-listener.cfg)
+* [product-tests/base/fake-listener.cfg](product-tests/base/fake-listener.cfg): Test joining with FAKE init
 * [product-tests/base/ldap-in-samba-domain.cfg](product-tests/base/ldap-in-samba-domain.cfg)
 * [product-tests/base/ldap-non-samba-domain.cfg](product-tests/base/ldap-non-samba-domain.cfg)
 * [product-tests/base/saml.cfg](product-tests/base/saml.cfg)
