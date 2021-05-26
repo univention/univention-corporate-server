@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: 
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * 
+bug: [53273]

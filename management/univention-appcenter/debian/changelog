@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-46) unstable; urgency=low
+
+  * Bug #53273: A line wrap in the output of `docker-compose ps` breaks the
+    app installation
+
+ -- Max Christian Pohle <pohle@univention.de>  Wed, 26 May 2021 11:44:00 +0200
+
 univention-appcenter (9.0.2-45) unstable; urgency=medium
 
   * Bug #53161: Apps shall open in newwindow by default

@@ -603,7 +603,13 @@ class MultiDocker(Docker):
 			ps = str()
 			for i in range(3):
 				try:
-					ps = check_output(['docker-compose', '-p', self.app.id, 'ps'], cwd=self.app.get_compose_dir())
+					# by using a pipe to 'bash -s' COLUMNS is unset and the terminal and the table
+					# is never line-wrapped.
+					ps = check_output(['bash', '-s']
+						input=str.encode(
+						    ' '.join(['echo', 'docker-compose', '-p', self.app.id, 'ps'])
+						), cwd=self.app.get_compose_dir()
+					)
 					break
 				except Exception as e:
 					_logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
