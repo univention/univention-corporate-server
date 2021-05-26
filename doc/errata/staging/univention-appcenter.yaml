@@ -1,9 +1,9 @@
 product: ucs
 release: "5.0"
-version: [46]
+version: [47]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
-fix: 9.0.2-46A~5.0.0.202105261420
+fix: 9.0.2-47A~5.0.0.202105261442
 desc: |
  This update addresses the following issue(s):
  * Installation of certain apps failed, if their name exeeded a certain limit
