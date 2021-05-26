@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-30) unstable; urgency=medium
+
+  * Bug #53244: Updated browser versions in motd
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 May 2021 13:54:55 +0200
+
 univention-system-setup (13.0.3-29) unstable; urgency=medium
 
   * Bug #53226: remove StartupDialog code
