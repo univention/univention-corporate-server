@@ -906,12 +906,6 @@ from univention.config_registry.handler import EXECUTE_TOKEN
 
 BASE_DIR = "/etc/univention/templates/files/"
 
-DENY_LIST = [
-	'/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter',
-	'/etc/univention/templates/files/var/www/ucs-overview/entries.json',
-	'/etc/univention/templates/files/usr/share/univention-management-console-frontend/entries.json',
-]
-
 def dpkg():
 	etc = {}
 	cmd_dpkg = ["dpkg", "-S", os.path.join(BASE_DIR, '*')]
@@ -930,6 +924,21 @@ def uninstalled(package):
 	return out.decode('UTF-8', 'replace').startswith('deinstall ')
 
 
+def get_registered_files():
+	files = []
+	registered_directory = '/etc/univention/templates/info/'
+	for f in os.listdir(registered_directory):
+		for line in open(os.path.join(registered_directory, f), 'r').readlines():
+			if line.startswith('File: '):
+				fn = line.replace('File: ', '').strip()
+				files.append(BASE_DIR + fn)
+			elif line.startswith('Subfile: '):
+				fn = line.replace('Subfile: ', '').strip()
+				files.append(BASE_DIR + fn)
+
+	return files
+
+
 def cleanup(tmpdir):
 	shutil.rmtree(tmpdir, True)
 
@@ -945,9 +954,10 @@ tempfiles = [
 		for filename in files
 	) if EXECUTE_TOKEN.search(open(path, 'rb').read())
 ]
+registered_files = get_registered_files()
 failed = []
 for ucr_config_file in tempfiles:
-	if ucr_config_file.endswith('.dpkg-new') or ucr_config_file.endswith('.dpkg-old') or ucr_config_file in DENY_LIST:
+	if ucr_config_file not in registered_files:
 		continue
 	with open(ucr_config_file, 'rb') as fd:
 		template = fd.read()
@@ -994,6 +1004,7 @@ for failed_template in failed:
 	if failed_template in packages:
 		print(' (package: %s)' % (packages[failed_template], ), end='')
 	print('')
+	print('See <https://help.univention.com/t/17948> for information on how to proceed with each template.')
 if failed:
 	exit(1)
 EOF
