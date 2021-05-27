@@ -347,16 +347,6 @@
 			</para>
 		</section>
 
-		<section id="relnotes:ubuntuclient">
-			<!-- Bug 53025 -->
-			<title>Hinweis zum <foreignphrase>Univention Domain Join Assistant</foreignphrase> für Ubuntu-Clients</title>
-			<para>
-				Univention stellt den <foreignphrase>Univention Domain Join Assistant</foreignphrase> für die Integration von Ubuntu-Clients in eine UCS-Domäne bereit.
-				Zum Zeitpunkt des Releases von UCS 5.0-0 ist der <foreignphrase>Univention Domain Join Assistant</foreignphrase> noch nicht mit UCS 5 kompatibel und ein Beitritt wird fehlschlagen.
-				Dieses Problem wird im Rahmen eines folgenden UCS 5-Erratums bzw. eines Updates für den <foreignphrase>Univention Domain Join Assistant</foreignphrase> behoben.
-			</para>
-		</section>
-
 		<section id="relnotes:joinscript-password">
 			<!-- Bug 31996 -->
 			<title>Hinweise zu Anmeldeinformationen, die an Join-Skripte übergeben werden</title>

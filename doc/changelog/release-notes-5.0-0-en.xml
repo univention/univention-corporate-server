@@ -339,16 +339,6 @@
 			</para>
 		</section>
 
-		<section id="relnotes:ubuntuclient">
-			<!-- Bug 53025 -->
-			<title>Notes about the Univention Domain Join Assistant for Ubuntu clients</title>
-			<para>
-				Univention provides the Univention Domain Join Assistant for integrating Ubuntu clients into a UCS domain.
-				At the time of UCS 5.0-0 release, the Domain Join Assistant is not yet compatible with UCS 5 and joining of clients will fail.
-				This issue will be fixed as part of a UCS 5 errata or via an update for the Univention Domain Join Assistant.
-			</para>
-		</section>
-
 		<section id="relnotes:joinscript-password">
 			<!-- Bug 31996 -->
 			<title>Notes about credentials passed to join scripts</title>
