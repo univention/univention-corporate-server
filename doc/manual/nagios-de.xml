@@ -49,7 +49,19 @@
 					<listitem>
 						<simpara>
 							Die UCS Dashboard App für die Visualisierung von Daten aus der zentralen
-							Datenbank. Diese Komponente basiert auf der Softwarekomponente Grafana.
+							Datenbank. Diese Komponente basiert auf der Softwarekomponente
+							<ulink url="https://grafana.com">
+								Grafana®
+							</ulink>
+							<footnote>
+								<para>
+									Die Grafana Labs-Marken sind Warenzeichen von Grafana Labs und werden
+									mit Genehmigung von Grafana Labs verwendet. Wir sind weder mit Grafana
+									Labs noch mit seinen Tochtergesellschaften verbunden, noch werden wir
+									von ihnen unterstützt oder gefördert.
+								</para>
+							</footnote>
+							.
 						</simpara>
 					</listitem>
 					<listitem>
