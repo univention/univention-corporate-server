@@ -1081,7 +1081,6 @@ basic_setup_ucs_role () {
 
 ucs-winrm () {
     local image="docker.software-univention.de/ucs-winrm"
-    docker pull "$image"
     docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
 	return $?
 }
