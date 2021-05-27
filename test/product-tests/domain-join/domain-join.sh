@@ -38,6 +38,7 @@ install_testing_version () {
 
 install_released_version() {
 	add-apt-repository -y ppa:univention-dev/ppa
+	apt-get update
 	DEBIAN_FRONTEND=noninteractive apt-get -y install univention-domain-join univention-domain-join-cli expect
 }
 
