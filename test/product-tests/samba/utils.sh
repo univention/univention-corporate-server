@@ -10,9 +10,9 @@ ucs-winrm () {
 }
 
 create_and_print_testfile () {
-	ucs-winrm --cmd "New-Item .\\printest.txt -ItemType file"
-	ucs-winrm --cmd "Add-Content .\\printest.txt 'print this in PDF'"
-	ucs-winrm --cmd "copy .\\printest.txt \\\\$(hostname)\SambaPDFprinter"
+	ucs-winrm run-ps --cmd "New-Item .\\printest.txt -ItemType file"
+	ucs-winrm run-ps --cmd "Add-Content .\\printest.txt 'print this in PDF'"
+	ucs-winrm run-ps --cmd "copy .\\printest.txt \\\\$(hostname)\SambaPDFprinter"
 }
 
 check_windows_client_sid () {

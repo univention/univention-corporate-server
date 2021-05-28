@@ -25,10 +25,10 @@ check_ad_takeover () {
 	# Login am übernommenen Windows-Client mit einem übernommenen Benutzer
 	# GPOs müssen korrekt angewendet werden.
 	# Login am übernommenen Windows-Client als "Domänen\Administrator"
-	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'Administrator' --userpwd "$AD_PASSWORD" \
+	ucs-winrm check-applied-gpos --client "$WIN1" --username 'Administrator' --userpwd "$AD_PASSWORD" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 	for user in 1 3 150 1000 1500; do
-		python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username "benutzer$user" --userpwd 'Univention@99' \
+		ucs-winrm check-applied-gpos --client "$WIN1" --username "benutzer$user" --userpwd 'Univention@99' \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy'
 		check_user_in_ucs "benutzer$user" "Univention@99"
 	done
@@ -44,22 +44,22 @@ check_ad_takeover () {
 
 	# Passwortänderung muss funktionieren
 	new_password='üUnivention@90809098798'
-	python shared-utils/ucs-winrm.py change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
-	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
+	ucs-winrm change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
+	ucs-winrm domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
 	check_user_in_ucs benutzer11 "$new_password"
 
 	# Gruppenrichtlinienverwaltung (GPMC) starten, neue GPO anlegen.
 	# Name des Windows-Clients ändern, dann reboot
-	python shared-utils/ucs-winrm.py create-gpo --name NewGPO --comment "testing new GPO in domain" --client "$WIN1" --credssp
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "$ldap_base" --client "$WIN1" --credssp
-	python shared-utils/ucs-winrm.py run-ps --client "$WIN1" --credssp \
+	ucs-winrm create-gpo --name NewGPO --comment "testing new GPO in domain" --client "$WIN1" --credssp
+	ucs-winrm link-gpo --name NewGPO --target "$ldap_base" --client "$WIN1" --credssp
+	ucs-winrm run-ps --client "$WIN1" --credssp \
 		--cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update' --client "$WIN1" --credssp
 	samba-tool gpo listall | grep NewGPO
-	python shared-utils/ucs-winrm.py rename-computer --name mycom --domainmode --credssp --client "$WIN1"
+	ucs-winrm rename-computer --name mycom --domainmode --credssp --client "$WIN1"
 	# AD Benutzer&Computer: Neuen Benutzer anlegen.
 	# Client-Anmeldung als neuer Benutzer: GPO Auswertung OK?
-	python shared-utils/ucs-winrm.py create-user --user-name "new1" --directory-entry --client "$WIN1" --credssp --user-password "Univention@99"
-	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'new1' --userpwd "Univention@99" \
+	ucs-winrm create-user --user-name "new1" --directory-entry --client "$WIN1" --credssp --user-password "Univention@99"
+	ucs-winrm check-applied-gpos --client "$WIN1" --username 'new1' --userpwd "Univention@99" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
 		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 
@@ -69,14 +69,14 @@ check_ad_takeover () {
 
 	# Anlegen eines neuen Benutzers per UMC, Anmeldung mit dem neuen Benutzer am Windows Client
 	udm users/user create --position "cn=users,dc=adtakeover,dc=local" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
-	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'newuser01' --userpwd "Univention.99" \
+	ucs-winrm check-applied-gpos --client "$WIN1" --username 'newuser01' --userpwd "Univention.99" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
 		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 
 	# Joinen eines weiteren Windows Clients in die (UCS-)Domäne
-	python shared-utils/ucs-winrm.py domain-join --dnsserver "$UCS" --client "$WIN2" --user "$WIN2_ADMIN" --password "$WIN2_PASSWORD" --domainpassword "$AD_PASSWORD" --domainuser "$AD_ADMIN"
+	ucs-winrm domain-join --dnsserver "$UCS" --client "$WIN2" --user "$WIN2_ADMIN" --password "$WIN2_PASSWORD" --domainpassword "$AD_PASSWORD" --domainuser "$AD_ADMIN"
 	# Anmeldung als übernommener Benutzer, GPO's?
-	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN2" --username 'benutzer13' --userpwd "Univention@99" \
+	ucs-winrm check-applied-gpos --client "$WIN2" --username 'benutzer13' --userpwd "Univention@99" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
 		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 
@@ -107,15 +107,15 @@ prepare_ad_takeover () {
 	# Im AD sollten 1500 Benutzern und 40 Gruppen angelegt werden. Die Benutzer sollten auf die Gruppen verteilt werden.
 	# in Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
 	# Ein Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
-	python shared-utils/ucs-winrm.py create-multiple-user --user-prefix benutzer --user-amount 1500 --user-password "Univention@99"
-	python shared-utils/ucs-winrm.py create-multiple-adgroup --group-prefix gruppe --group-amount 40 --path "$ldap_base"
-	python shared-utils/ucs-winrm.py add-modulo-user-in-group
-	python shared-utils/ucs-winrm.py create-ou --name TestContainer --path "$ldap_base"
-	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer1
-	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer2
+	ucs-winrm create-multiple-user --user-prefix benutzer --user-amount 1500 --user-password "Univention@99"
+	ucs-winrm create-multiple-adgroup --group-prefix gruppe --group-amount 40 --path "$ldap_base"
+	ucs-winrm add-modulo-user-in-group
+	ucs-winrm create-ou --name TestContainer --path "$ldap_base"
+	ucs-winrm add-user-to-domainadmin --username benutzer1
+	ucs-winrm add-user-to-domainadmin --username benutzer2
 
 	# ein client vor dem takeover
-	python shared-utils/ucs-winrm.py domain-join \
+	ucs-winrm domain-join \
 		--dnsserver "$AD" \
 		--client "$WIN1" \
 		--user "$WIN1_ADMIN" \
@@ -124,20 +124,20 @@ prepare_ad_takeover () {
 		--domainuser "$AD_ADMIN"
 
 	# Im AD sollten jeweils eine GPO, mit Benutzer bzw. Windows-Client verknüpft werden
-	python shared-utils/ucs-winrm.py create-gpo --name TestGPOUser --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py run-ps --cmd \
+	ucs-winrm create-gpo --name TestGPOUser --comment "testing new GPO in domain"
+	ucs-winrm run-ps --cmd \
 		'set-GPPrefRegistryValue -Name TestGPOUser -Context User -key "HKCU\Environment" -ValueName TestGPOUser -Type String -value TestGPOUser -Action Update'
-	python shared-utils/ucs-winrm.py link-gpo --name TestGPOUser --target "$ldap_base"
+	ucs-winrm link-gpo --name TestGPOUser --target "$ldap_base"
 
-	python shared-utils/ucs-winrm.py create-gpo --name TestGPOMachine --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py run-ps --cmd \
+	ucs-winrm create-gpo --name TestGPOMachine --comment "testing new GPO in domain"
+	ucs-winrm run-ps --cmd \
 		'set-GPPrefRegistryValue -Name TestGPOMachine -Context Computer -key "HKLM\Environment" -ValueName TestGPOMachine -Type String -value TestGPOMachine -Action Update'
-	python shared-utils/ucs-winrm.py link-gpo --name TestGPOMachine --target "$ldap_base"
+	ucs-winrm link-gpo --name TestGPOMachine --target "$ldap_base"
 
 	# Zusätzlich sollte etwas erkennbar an der AD Default-Domänen-Policy geändert werden
-	python shared-utils/ucs-winrm.py run-ps --cmd \
+	ucs-winrm run-ps --cmd \
 		'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context User -key "HKCU\Environment" -ValueName DefaultUserGPO -Type String -value TestGPOUser -Action Update'
-	python shared-utils/ucs-winrm.py run-ps --cmd \
+	ucs-winrm run-ps --cmd \
 		'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context Computer -key "HKLM\Environment" -ValueName DefaultMachineGPO -Type String -value TestMachineUser -Action Update'
 
 	echo "Success"
