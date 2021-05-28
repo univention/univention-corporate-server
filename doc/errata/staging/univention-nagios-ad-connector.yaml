@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-nagios-ad-connector
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The nagios check for univention-ad-connector reported
+   a false positive if multiple ad-connector instances
+   were running. This has been fixed.
+bug: [53340]

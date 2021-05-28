@@ -1,3 +1,10 @@
+univention-nagios-ad-connector (9.0.0-2) unstable; urgency=medium
+
+  * Bug #53340: Fix false positive nagios check if multiple adconnector are running.
+    Check if the correct number of connectors is running.
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 28 May 2021 10:31:58 +0200
+
 univention-nagios-ad-connector (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
