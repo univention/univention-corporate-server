@@ -262,6 +262,51 @@ update_check_kolab_schema () {
 	fi
 }
 
+# Bug #53313
+update_check_ox_schema () {
+	status=$(dpkg-query -W -f '${db:Status-Status}' "univention-ox-directory-integration" 2>/dev/null)
+	if [ "$status" = "installed" ]; then
+		if ! is_ucr_true "ox/master/42/registered_ldap_acls"; then
+			local convert_schema_script
+			case "$server_role" in
+				domaincontroller_master)
+					convert_schema_script="/usr/share/univention-server-master/reregister_ox_ldap_schema.sh"
+					;;
+				domaincontroller_backup)
+					convert_schema_script="/usr/share/univention-server-backup/reregister_ox_ldap_schema.sh"
+					;;
+				*)
+					return 0
+					;;
+			esac
+			echo " The package univention-ox-directory-integration is installed. This package is"
+			echo " incompatible with UCS 5.0-0."
+			echo
+			echo " As the package contains a LDAP schema extension, this extension (a) has to"
+			echo " registered in the LDAP database or (b) has to be removed before the update"
+			echo " to UCS 5.0 is possible."
+			echo
+			echo " (a) Register LDAP schema files from univention-ox-directory-integration:"
+			echo "     To register the LDAP schema, run the following commands:"
+			echo "     \"$convert_schema_script\""
+			echo
+			echo " or (b) Remove the LDAP schema extension:"
+			echo "        Please visit https://help.univention.com/t/6443 for how to remove LDAP schema extensions"
+			echo "        (remove all attributes and objectclasses from that schema from the LDAP database)."
+			echo
+			echo " After either a) or b) has been completed, the package has to be removed from this server:"
+			echo "  univention-remove --purge univention-ox-directory-integration"
+			return 1
+		else
+			echo " The package univention-ox-directory-integration is installed. This package is"
+			echo " incompatible with UCS 5.0-0."
+			echo
+			echo " The package has to be removed from this server:"
+			echo "  univention-remove --purge univention-ox-directory-integration"
+			return 1
+		fi
+	fi
+}
 
 # Bug #51955
 update_check_old_packages () {
@@ -289,6 +334,7 @@ update_check_old_packages () {
 		univention-printquota
 		univention-passwd-store
 		univention-corporate-client-schema
+		univention-ox-dependencies-master
 	)
 	for pkg in "${old[@]}"
 	do
