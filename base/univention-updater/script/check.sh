@@ -720,6 +720,8 @@ update_check_architecture () {  # Bug #51972
 }
 
 update_check_samba_server_schannel () {  # Bug #49898
+	[ -x /usr/bin/testparm ] ||
+		return 0
 	server_schannel=$(testparm -sv 2>/dev/null | sed -n 's/\t*server schannel = //p')
 	if [ "$server_schannel" != "Yes" ]; then
 		echo "WARNING: Samba is configured with \"server schannel = ${server_schannel,,}\","
