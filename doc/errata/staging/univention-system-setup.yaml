@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-system-setup
-fix: 13.0.3-30A~5.0.0.202105261357
+fix: 13.0.3-31A~5.0.0.202105302335
 desc: |
  This update addresses the following issue(s):
  * The login message (message of the day) showed wrong versions of supported browsers
