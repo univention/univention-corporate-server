@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-31) unstable; urgency=medium
+
+  * Bug #53244: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 30 May 2021 23:34:10 +0200
+
 univention-system-setup (13.0.3-30) unstable; urgency=medium
 
   * Bug #53244: Updated browser versions in motd
