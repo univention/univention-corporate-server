@@ -272,7 +272,7 @@ msgstr "Dies kann einen Moment dauern..."
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:46
 msgid "This might take a while depending on the number of pending updates."
 msgstr ""
-"Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "
+"Abhängig von der Anzahl der ausstehenden Updates, kann dies einige Zeit "
 "dauern."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
