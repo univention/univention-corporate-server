@@ -1,3 +1,10 @@
+univention-directory-manager-module-example (9.0.0-2) unstable; urgency=medium
+
+  * Bug #53360: migrate univention-directory-manager-module-example to
+    Python 3
+
+ -- Florian Best <best@univention.de>  Mon, 31 May 2021 12:44:06 +0200
+
 univention-directory-manager-module-example (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

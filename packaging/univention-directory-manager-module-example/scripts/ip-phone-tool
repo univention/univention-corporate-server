@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2004-2021 Univention GmbH
@@ -32,11 +32,12 @@
 from __future__ import print_function
 
 import sys
-import univention.debug
+import locale
 from argparse import ArgumentParser
 
 from ldap.filter import filter_format
 
+import univention.debug
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.modules
@@ -46,7 +47,7 @@ import univention.admin.uexceptions
 import univention.admin.localization
 
 univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
-univention.admin.localization.locale.setlocale(univention.admin.localization.locale.LC_ALL, '')
+locale.setlocale(locale.LC_ALL, '')
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
 
@@ -83,7 +84,7 @@ class ipphonetool(object):
 		try:
 			self.lo = univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
 		except Exception as e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % (e,))
 			print('authentication error: %s' % str(e))
 			sys.exit(1)
 
@@ -96,7 +97,7 @@ class ipphonetool(object):
 		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties
 		"""
 
-		filter = univention.admin.filter.expression('name', name)
+		filter = univention.admin.filter.expression('name', name, escape=True)
 
 		objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:
@@ -137,7 +138,7 @@ class ipphonetool(object):
 	def remove(self, name):
 		"""remove the object, no safety belt in this example"""
 
-		filter = univention.admin.filter.expression('name', name)
+		filter = univention.admin.filter.expression('name', name, escape=True)
 
 		objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:

@@ -34,8 +34,8 @@ set -e
 alias udm=univention-directory-manager
 
 ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
-ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
-ip-phone-tool set voip2 10.1.0.43 sip:user2@dom.local --redirect sip:otheruser@dom.local
+ip-phone-tool --redirect sip:otheruser@dom.local set voip1 10.1.0.42 sip:user1@dom.local
+ip-phone-tool --redirect sip:otheruser@dom.local set voip2 10.1.0.43 sip:user2@dom.local
 ip-phone-tool clear_redirect voip1
 ip-phone-tool remove voip1
 ip-phone-tool remove voip2

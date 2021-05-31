@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2004-2021 Univention GmbH
@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+
 import univention.admin.handlers  # Enthält simpleLdap, die Basisklasse für 'object' unten
 import univention.admin.syntax  # Liefert standard Syntax-Definitionen für die UDM 'property_descriptions' unten
 import univention.admin.localization
@@ -170,15 +171,15 @@ property_descriptions = {
 # * Per advanced=True wird der Reiter nur angezeigt, wenn das Anzeigen der
 # erweiterten Einstellungen aktiviert ist.
 layout = [
-	Tab(_('General'), _('Basic Settings'), [
+	Tab(_('General'), _('Basic Settings'), layout=[
 		["name", "active"],
 		["ip", "protocol"],
 		["priuser"],
 	]),
-	Tab(_('Advanced'), _('Advanced Settings'), [
+	Tab(_('Advanced'), _('Advanced Settings'), layout=[
 		["users"],
 	], advanced=True),
-	Tab(_('Redirect'), _('Redirect Option'), [
+	Tab(_('Redirect'), _('Redirect Option'), layout=[
 		["redirect_user"],
 	], advanced=True),
 ]

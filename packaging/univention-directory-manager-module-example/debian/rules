@@ -39,8 +39,8 @@ override_dh_auto_install:
 
 	# Install Univention Directory Manager Images
 	@set -e;\
-	for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
-		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
+	for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.svg"`; do\
+		o=${D}/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/$${i#modules/univention/admin/handlers/};\
 		install -d "`dirname "$$o"`";\
 		install -m 644 "$$i" "$$o";\
 	done
