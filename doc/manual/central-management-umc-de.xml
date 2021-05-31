@@ -131,7 +131,7 @@
 		Für eine Anmeldung wird standardmäßig kein <foreignphrase>Single Sign-On</foreignphrase> genutzt.
 		Der Login kann auf <foreignphrase>Single Sign-On</foreignphrase> (SSO) mittels SAML (siehe auch <xref linkend="domain:saml"/>) umgestellt werden, hierfür muss <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreichbar sein	und die &ucsUCRV; <envar>portal/auth-mode=saml</envar> gesetzt sein.
 		Damit die Umstellung wirksam wird, muss der Portal-Server neu gestartet werden:
-		<command>systemctl restart univention-portal-server.servic</command>.
+		<command>systemctl restart univention-portal-server.service</command>.
 		Jetzt ist die Anmeldung über das Benutzermenü umgestellt.
 		Kacheln auf der Portal müssen manuell angepasst werden.
 		Eine SSO Login Kachel ist bereits vorkonfiguriert und kann über den Editiermodus des Portal aktiviert werden.
