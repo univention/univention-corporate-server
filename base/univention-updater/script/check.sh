@@ -294,7 +294,7 @@ update_check_ox_schema () {
 			echo "        Please visit https://help.univention.com/t/6443 for how to remove LDAP schema extensions"
 			echo "        (remove all attributes and objectclasses from that schema from the LDAP database)."
 			echo
-			echo " After either (a) or (b) has been completed, the package has to be removed from this server:"
+			echo " After either a) or b) has been completed, the package has to be removed from this server:"
 			echo "  univention-remove --purge univention-ox-directory-integration"
 			return 1
 		else
