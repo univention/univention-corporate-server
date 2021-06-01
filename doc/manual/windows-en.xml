@@ -61,11 +61,6 @@
 	  (see <xref linkend="windows_trust"/>).
 	  Outgoing trusts with Active Directory domain (UCS trusts Windows) are not supported currently.
 	</para>
-
-	<note><para>
-	  The usage of UCS as a Windows NT-compatible domain controller is unsupported since UCS 4.3.
-	</para></note>
-
   </section>
 
   <section id="windows:addomain">

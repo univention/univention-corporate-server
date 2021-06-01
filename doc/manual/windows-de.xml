@@ -63,12 +63,6 @@
 	  Ausgehende Vertrauensstellungen mit Active Directory Domänen (UCS vertraut Windows)
 	  sind aktuell nicht unterstützt.
 	</para>
-
-	<note><para>
-	  Die Nutzung von UCS als Windows NT-kompatiblen Domänencontroller ist seit UCS 4.3 nicht mehr
-	  unterstützt.
-	</para></note>
-
   </section>
 
   <section id="windows:addomain">
