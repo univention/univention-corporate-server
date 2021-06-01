@@ -1761,29 +1761,6 @@ auth/sshd/restrict: yes
 			</para>
 		</section>
 
-		<section id="computers:Querying_system_statistics_in_the_UMC">
-			<title>Querying system statistics via &ucsUMC; module</title>
-			<para>
-				The UMC module <guimenu>Statistics</guimenu> displays the utilization of system
-				resources. For this purpose, a graph is displayed for different periods:
-			</para>
-			<itemizedlist>
-				<listitem><simpara>The past 24 hours</simpara></listitem>
-				<listitem><simpara>The past week</simpara></listitem>
-				<listitem><simpara>The past month</simpara></listitem>
-				<listitem><simpara>The past year</simpara></listitem>
-			</itemizedlist>
-			<para>
-				The following system information is documented:
-			</para>
-			<itemizedlist>
-				<listitem><simpara>The utilization of the main memory in percent</simpara></listitem>
-				<listitem><simpara>The processor utilization of the system</simpara></listitem>
-				<listitem><simpara>The number of terminal server sessions active</simpara></listitem>
-				<listitem><simpara>The utilization of the swap file</simpara></listitem>
-			</itemizedlist>
-		</section>
-
 		<section id="computers:modules:top">
 			<title>Process overview via &ucsUMC; module</title>
 			<para>

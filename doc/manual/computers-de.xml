@@ -1710,29 +1710,6 @@ auth/sshd/restrict: yes
                 </para>
             </section><!-- Protokollierung des Systemzustands -->
 
-            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken über &ucsUMC; Modul</title>
-                <para>
-                    Das UMC-Modul <guimenu>Statistiken</guimenu> zeigt die Auslastung des
-                    Systems an. Dabei wird jeweils eine Grafik für die unterschiedlichen
-                    Zeiträume angezeigt:
-                </para>
-                    <itemizedlist>
-					<listitem><simpara>Die letzten 24 Stunden</simpara></listitem>
-					<listitem><simpara>Die vergangene Woche</simpara></listitem>
-					<listitem><simpara>Der vergangene Monat</simpara></listitem>
-					<listitem><simpara>Das vergangene Jahr</simpara></listitem>
-                    </itemizedlist>
-                <para>
-                    Folgende Systeminformationen werden protokolliert:
-                </para>
-                    <itemizedlist>
-					<listitem><simpara>Die Auslastung des Hauptspeichers in Prozent</simpara></listitem>
-					<listitem><simpara>Die Prozessor-Auslastung des Systems</simpara></listitem>
-					<listitem><simpara>Die Anzahl der jeweils aktiven Terminalserver-Sitzungen</simpara></listitem>
-					<listitem><simpara>Die Auslastung der Auslagerungsdatei (Swap)</simpara></listitem>
-                    </itemizedlist>
-            </section><!-- Anzeige von Systemstatistiken in &ucsUMC; -->
-
             <section id="computers:modules:top"><title>Prozessübersicht über &ucsUMC; Modul</title>
                 <para>
                     Das UMC-Modul <guimenu>Prozessübersicht</guimenu> zeigt eine Tabelle der aktuellen
