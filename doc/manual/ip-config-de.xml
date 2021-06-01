@@ -1856,13 +1856,6 @@
 	  Internetzugang verringert werden.
 	</para>
 	<para>
-	  Als zusätzliche Komponente kann die Software DansGuardian
-	  installiert werden. Damit ist es möglich,
-	  dass Internetinhalte vor der Auslieferung an den Anwender überprüft und gefiltert
-	  werden, um so Dateien auf Viren zu scannen oder den Zugriff auf unerwünschte
-	  Inhalte zu unterbinden.
-	</para>
-	<para>
 	  Einige weiterführende Funktionen der Proxy-Dienste - wie etwa die Kaskadierung von
 	  Proxy-Servern - werden in <xref linkend="ext-doc-net"/> beschrieben.
 	</para>
@@ -1946,12 +1939,6 @@ univention-config-registry set squid/allowfrom="192.0.2.0/24 192.0.2.0/24"
 		</programlisting>
 		Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken
 		<systemitem class="ipaddress">192.0.2.0/24</systemitem> und <systemitem class="ipaddress">192.0.2.0/24</systemitem> erlaubt. Durch Angabe von <literal>all</literal> kann der Zugriff auch aus allen Netzen erlaubt werden.
-	  </para>
-	  <para>
-		Wenn Squid zusammen mit DansGuardian eingesetzt wird, d.h. die Viren- oder
-		Webinhaltsfilterung aktiviert wird, kann Squid den Zugriff nicht prüfen,
-		da die Verbindungen über DansGuardian erfolgen. In diesem Fall kann der
-		Zugriff über DansGuardian eingeschränkt werden.
 	  </para>
 	</section>
 

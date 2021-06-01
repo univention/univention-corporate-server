@@ -352,14 +352,6 @@
 							</entry>
 						</row>
 						<row>
-							<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
-							<entry>
-								Überwacht den Webfilter DansGuardian.
-								Läuft kein DansGuardian-Prozess oder ist der DansGuardian-Proxy
-								ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
-							</entry>
-						</row>
-						<row>
 							<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
 							<entry>
 								Überwacht den Proxy Squid.

@@ -2269,12 +2269,6 @@ univention-config-registry set squid/allowfrom=&quot;192.0.2.0/24 192.0.2.0/24&q
 		<systemitem class="ipaddress">192.0.2.0/24</systemitem> and <systemitem class="ipaddress">192.0.2.0/24</systemitem>. If configured to <literal>all</literal>, proxy access
 		in granted from all networks.
 	  </para>
-	  <para>
-		If Squid is used together with DansGuardian, i.e., the virus or web
-		content filter is activated, Squid cannot verify the access as the
-		connections are performed via DansGuardian. In this case, the access
-		can be restricted via DansGuardian.
-	  </para>
 	</section>
 
 	<section id="ip-config:Configuration_of_the_ports_used">

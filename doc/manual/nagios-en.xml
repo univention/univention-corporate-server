@@ -336,15 +336,6 @@
 							</entry>
 						</row>
 						<row>
-							<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
-							<entry>
-								monitors the DansGuardian web filter.
-								If no DansGuardian process is running
-								or the DansGuardian proxy is not accessible,
-								the CRITICAL status is returned.
-							</entry>
-						</row>
-						<row>
 							<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
 							<entry>
 								monitors the Squid proxy.
