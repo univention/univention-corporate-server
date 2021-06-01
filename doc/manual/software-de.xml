@@ -482,7 +482,7 @@
 		<listitem><simpara>
 			Alle Pakete im Standard-Paketumfang befinden sich im Status <emphasis>maintained</emphasis>.
 			Sicherheits-Updates werden zeitnah nur für <emphasis>maintained</emphasis> Pakete bereitgestellt.
-			Die Liste der <emphasis>maintained</emphasis> Pakete ist auf einem UCS System unter <filename>/usr/share/univention-errata-level/univention-maintained-packages.txt</filename> einsehbar.
+			Die Liste der <emphasis>maintained</emphasis> Pakete ist auf einem UCS System unter <filename>/usr/share/univention-errata-level/maintained-packages.txt</filename> einsehbar.
 		</simpara></listitem>
 
 	  <listitem><simpara>
@@ -503,9 +503,7 @@
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
 	  <title>Konfiguration über &ucsUMC; Modul</title>
 	  <para>
-		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu>
-		kann der <guimenu>Repository-Server</guimenu> und die Verwendung der
-		Maintained- und Unmaintained-Sektionen festgelegt werden.
+		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu> kann der <guimenu>Repository-Server</guimenu> festgelegt werden.
 	  </para>
 	</section>
 
@@ -549,14 +547,7 @@
 		von einer Installations-DVD eingelesen, mit dem Parameter <option>--iso</option>
 		kann hier auch ein ISO-Image übergeben werden. UCS ist nur als 64 Bit-DVD
 		verfügbar. Das Repository wird von <command>univention-repository-create</command>
-		mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung
-		betrieben, in der sowohl 32-, als auch 64 Bit-Pakete bereitgestellt werden sollen,
-		sind die folgenden Befehle auf dem Repository-Server nötig:
-
-		<programlisting language="sh">
-ucr set repository/online/architectures="i386 amd64"
-univention-repository-update net
-		</programlisting>
+		mit der Architektur des angegebenen Installationsmediums erzeugt.
 	  </para>
 
 	  <para>
@@ -570,22 +561,12 @@ univention-repository-update net
 
 	  <para>
 		Mit dem Tool <command>univention-repository-update</command> werden die Pakete im
-		Repository aktualisiert. Es unterstützt zwei Modi:
-
-	  </para>
-	  <itemizedlist>
-		<listitem> <simpara>
-		  <command>univention-repository-update cdrom</command> Dabei wird das Repository über
-		  eine Update-DVD oder ein ISO-Image aktualisiert.
-		</simpara> </listitem>
-
-		<listitem><simpara>
-		  <command>univention-repository-update net</command> Bei dieser Variante wird das
+		Repository aktualisiert.
+		  Mit <command>univention-repository-update net</command> wird das
 		  Repository mit einem angegebenen anderen Repository-Server synchronisiert. Dieser ist
 		  in der &ucsUCRV; <envar>repository/mirror/server</envar> definiert (typischerweise
 		  <uri>updates.software-univention.de</uri>).
-		</simpara></listitem>
-	  </itemizedlist>
+	  </para>
 
 	  <para>
 		Eine Übersicht über die möglichen Optionen kann mit folgendem Befehl aufgerufen werden:

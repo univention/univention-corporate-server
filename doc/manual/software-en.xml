@@ -475,7 +475,7 @@ univention-app shell demo-docker-app
     <listitem><simpara>
       All packages in the standard package scope are in <emphasis>maintained</emphasis> status.
       Security updates are provided in a timely manner only for <emphasis>maintained</emphasis> packages.
-      The list of <emphasis>maintained</emphasis> packages can be viewed on a UCS system in <filename>/usr/share/univention-errata-level/univention-maintained-packages.txt</filename>.
+      The list of <emphasis>maintained</emphasis> packages can be viewed on a UCS system in <filename>univention-errata-level/maintained-packages.txt</filename>.
     </simpara></listitem>                                   
   
     <listitem><simpara>                                     
@@ -496,9 +496,7 @@ univention-app shell demo-docker-app
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
 	  <title>Configuration via &ucsUMC; module</title>
 	  <para>
-		The <guimenu>Repository server</guimenu> and the use of
-		the maintained and unmaintained sections can be specified in the
-		UMC module <guimenu>Repository Settings</guimenu>.
+		The <guimenu>Repository server</guimenu> can be specified in the UMC module <guimenu>Repository Settings</guimenu>.
 	  </para>
 	</section>
 
@@ -508,10 +506,6 @@ univention-app shell demo-docker-app
 		The repository server to be used can be entered in the &ucsUCRV;
 		<envar>repository/online/server</envar> and is preset to
 		<uri>updates.software-univention.de</uri> for a new installation.
-	  </para>
-	  <para>
-		The unmaintained repository can be integrated by setting the &ucsUCRV;
-		<envar>repository/online/unmaintained</envar> to <literal>yes</literal>.
 	  </para>
 	</section>
 
@@ -549,14 +543,7 @@ univention-app shell demo-docker-app
 		imported from an installation DVD. The parameter <option>--iso</option> allows
 		importing from an ISO image. UCS is only available as a 64-bit DVD. The
 		repository is created by <command>univention-repository-create</command> with the
-		architecture of the specified installation medium. If an environment is operated in
-		which both 32-bit and 64-bit packages are needed, the following commands must be
-		executed on the repository server:
-
-		<programlisting language="sh">
-ucr set repository/online/architectures="i386 amd64"
-univention-repository-update net
-		</programlisting>
+		architecture of the specified installation medium.
 	  </para>
 
 	  <para>
@@ -570,22 +557,12 @@ univention-repository-update net
 
 	  <para>
 		The packages in the repository can be updated using the
-		<command>univention-repository-update</command> tool. It supports two modes:
-	  </para>
-
-	  <itemizedlist>
-		<listitem><simpara>
-		  <command>univention-repository-update cdrom</command>Here the
-		  repository is updated with an update DVD or an ISO image.
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <command>univention-repository-update net</command> Here the
+		<command>univention-repository-update</command> tool.
+		  with <command>univention-repository-update net</command> the
 		  repository is synchronized with another specified repository server. This is
 		  defined in the &ucsUCRV; <envar>repository/mirror/server</envar> and typically
 		  points to <uri>updates.software-univention.de</uri>.
-		</simpara></listitem>
-	  </itemizedlist>
+	  </para>
 
 	  <para>
 		An overview of the possible options is displayed with the following
