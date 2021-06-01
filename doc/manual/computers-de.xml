@@ -1448,8 +1448,8 @@ X11Forwarding @%@sshd/xforwarding@%@
                     <programlisting>
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
-    print 'SSLCertificateFile %s' % \
-        configRegistry['apache2/ssl/certificate']
+    print('SSLCertificateFile %s' %
+        configRegistry['apache2/ssl/certificate'])
 @!@
                     </programlisting>
                 <para>
@@ -1462,8 +1462,8 @@ if configRegistry.get('apache2/ssl/certificate'):
 @!@
 if configRegistry.get('version/version') and \
         configRegistry.get('version/patchlevel'):
-    print 'UCS %(version/version)s-%(version/patchlevel)s' % \
-        configRegistry
+    print('UCS %(version/version)s-%(version/patchlevel)s' %
+        configRegistry)
 @!@
                     </programlisting>
                 <para>
