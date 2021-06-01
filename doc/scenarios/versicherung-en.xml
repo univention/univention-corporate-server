@@ -257,28 +257,12 @@
   </section>
 
   <section id="insurance:monitoring">
-	<title>System monitoring with Nagios</title>
+	<title>System monitoring with Nagios NRPE</title>
 	<para>
-	  UCS integrates the system monitoring software Nagios, which allows the
+	  UCS integrates the system monitoring software Nagios via NRPE, which allows the
 	  monitoring of complex IT structures from networks, computers and
-	  services. Nagios includes a comprehensive range of monitoring modules,
+	  services. This includes a comprehensive range of monitoring modules,
 	  which can also be expanded if necessary.
-	</para>
-
-	<para>
-	  The Nagios configuration is predominantly performed in the &ucsUMC;.
-	</para>
-
-	<para>
-	  A web-based interface can be used to check the status of the monitored
-	  objects. In addition, Nagios is configured in such a way that the
-	  administrators receive e-mails when errors occur. SMS messages are
-	  sent for serious errors.
-	</para>
-
-	<para>
-	  Nagios checks can be chronologically limited so that non-critical
-	  values don't trigger logging messages during the night, for example.
 	</para>
   </section>
 

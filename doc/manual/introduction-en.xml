@@ -374,7 +374,7 @@ The unique name of a DHCP service.
 <row>
 <entry>Description</entry>
 <entry>
-An arbitrary description of the Nagios service.
+An arbitrary description of the service.
 </entry>
 </row>
 </tbody>

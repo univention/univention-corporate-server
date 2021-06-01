@@ -9,9 +9,7 @@
 	%entities;
 ]>
 <chapter id="monitoring::general">
-<title>Infrastructure monitoring</title>
-	<section id="monitoring::einfuehrung">
-		<title>Introduction</title>
+	<title>Infrastructure monitoring</title>
 		<para>
 			UCS offers two different solutions for infrastructure monitoring. On the one hand the UCS Dashboard helps administrators
 			to quickly read the state of domains and individual servers. On the other hand, under UCS 4.4, with Nagios it is possible to
@@ -19,26 +17,21 @@
 			reached. With UCS 5.0 support for the Nagios server component has been discontinued, but the systems can still be
 			monitored, e.g. by UCS 4.4 Nagios servers, as described in the UCS 4.4 manual.
 		</para>
+
 		<section id="dashboard::general">
 			<title>UCS Dashboard</title>
-			<section id="dashboard::introduction">
-				<title>Introduction and structure</title>
 				<para>
 					The UCS Dashboard app allows administrators to view the state of the domain and individual
 					servers can be read quickly and clearly on so-called dashboards. The dashboards are
 					accessible via a Web browser, access a database in the background, and deliver
 					continuously updated reports on specific aspects of the domain or server.
 				</para>
-				<para>
-					Prerequisite for using the <emphasis>UCS Dashboard</emphasis> app is a
-					valid subscription. More information can be found on the website
-					<ulink url="https://www.univention.com/products/prices-and-subscriptions/"/>.
-				</para>
-			</section>
+
 			<section id="dashboard::installation">
 				<title>Installation</title>
 				<para>
 					The UCS Dashboard consists of three parts:
+				</para>
 					<itemizedlist>
 						<listitem>
 							<simpara>
@@ -70,7 +63,6 @@
 							</simpara>
 						</listitem>
 					</itemizedlist>
-				</para>
 				<para>
 					The app <emphasis>UCS Dashboard</emphasis> can be installed from the Univention App Center on a
 					server in the domain. Currently, the installation is only possible on the system roles
@@ -83,6 +75,7 @@
 					Only then will the system data be displayed on the dashboard.
 				</para>
 			</section>
+
 			<section id="dashboard::usage">
 				<title>Usage</title>
 				<para>
@@ -147,12 +140,11 @@
 					</para>
 				</section>
 			</section>
+
 		</section>
-	</section>
 
 	<section id="nagios::general">
 	<title>Nagios</title>
-
 	<para>
 		With UCS 5.0 support for the Nagios server component has been discontinued.
 		Yet, the systems can still be monitored, e.g. by UCS 4.4 Nagios servers, as described in the UCS 4.4 manual.
@@ -160,13 +152,11 @@
 
 	<section id="Nagios:Installation">
 		<title>Installation</title>
-
 		<para>
 		In addition to the standard plugins provided with the installation of
 		the <package>univention-nagios-client</package> package, additional plugins can
 		be subsequently installed with the following packages:
 		</para>
-
 		<itemizedlist>
 			<listitem>
 				<simpara>
@@ -189,13 +179,13 @@
 				</simpara>
 			</listitem>
 		</itemizedlist>
-
 		<para>
 		Some of the packages are automatically set up during installation of
 		the respective services. For example, if the UCS
 		AD connector is set up, the monitoring plugin is included
 		automatically.
 		</para>
+	</section>
 
 		<section id="nagios:preconfiguredchecks">
 			<title>Preconfigured Nagios checks</title>
@@ -203,7 +193,6 @@
 			During the installation, basic Nagios tests are set up
 			automatically for UCS systems.
 			</para>
-
 			<informaltable>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
@@ -392,13 +381,11 @@
 					</tbody>
 				</tgroup>
 			</informaltable>
-
 			<para>
 			The following Nagios services
 			are only available on the respective Nagios client once additional packages have been installed
 			(see <xref linkend="Nagios:Installation"/>):
 			</para>
-
 			<informaltable>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
@@ -457,8 +444,8 @@
 				</tgroup>
 			</informaltable>
 		</section>
-	</section>
 
 	</section>
 
 </chapter>
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->

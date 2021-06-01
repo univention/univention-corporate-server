@@ -10,9 +10,7 @@
 ]>
 
 <chapter id="monitoring::general">
-<title>Infrastruktur-Monitoring</title>
-	<section id="monitoring::einfuehrung">
-		<title>Einführung</title>
+	<title>Infrastruktur-Monitoring</title>
 		<para>
 			UCS bietet zwei unterschiedliche Lösungen für das Monitoring der Infrastruktur.
 			Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr schnell den Zustand der Domänen
@@ -23,28 +21,21 @@
 			wie im UCS 4.4 Handbuch beschreiben.
 
 		</para>
-	</section>
 
 	<section id="dashboard::general">
 		<title>UCS Dashboard</title>
-		<section id="dashboard::einfuehrung">
-			<title>Einführung und Aufbau</title>
 			<para>
 				Das UCS Dashboard ermöglicht es Administratoren, den Zustand der Domäne und einzelner
 				Server schnell und übersichtlich auf sogenannten Dashboards abzulesen. Die Dashboards sind 
 				über einen Web-Browser erreichbar, greifen im Hintergrund auf eine Datenbank zu und liefern
 				kontinuierlich aktualisierte Reports über bestimmte Aspekte der Domäne oder der Server.
 			</para>
-			<para>
-				Voraussetzung für die Nutzung der <emphasis>UCS Dashboard</emphasis> App ist eine
-				gültige Subskription. Mehr Informationen dazu sind auf der Webseite
-				<ulink url="https://www.univention.de/produkte/preise/"/> zu finden.
-			</para>
-		</section>
+
 		<section id="dashboard::installation">
 			<title>Installation</title>
 			<para>
 				Das UCS Dashboard besteht aus drei Teilen:
+			</para>
 				<itemizedlist>
 					<listitem>
 						<simpara>
@@ -78,7 +69,6 @@
 						</simpara>
 					</listitem>
 				</itemizedlist>
-			</para>
 			<para>
 				Die App <emphasis>UCS Dashboard</emphasis> kann aus dem Univention App Center auf einem Server in der
 				Domäne installiert werden. Derzeit ist die Installation nur auf den Systemrollen
@@ -91,6 +81,7 @@
 				werden. Nur dadurch werden die Daten des Systems auf dem Dashboard dargestellt.
 			</para>
 		</section>
+
 		<section id="dashboard::nutzung">
 			<title>Nutzung</title>
 			<para>
@@ -104,6 +95,7 @@
 				<!--Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu
 				erweitern.-->
 			</para>
+
 			<section id="dashboard::nutzung:domain">
 				<title>Domain Dashboard</title>
 					<figure id="dashboard-domain">
@@ -126,6 +118,7 @@
 					alle Serversysteme angezeigt.
 				</para>
 			</section>
+
 			<section id="dashboard::nutzung:server">
 				<title>Server Dashboard</title>
 					<figure id="dashboard-server">
@@ -142,6 +135,7 @@
 					Grafiken entsprechend aktualisiert.
 				</para>
 			</section>
+
 			<section id="dashboard::nutzung:mydashboard">
 				<title>Eigene Dashboards</title>
 				<para>
@@ -156,12 +150,13 @@
 					welches mit Elementen befüllt werden kann.
 				</para>
 			</section>
+
 		</section>
+
 	</section>
 
 	<section id="nagios::general">
 	<title>Nagios</title>
-
 	<para>
 		In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt.
 		Die Systeme können aber als Nagios Client dienen, um sie z.B. von einem UCS 4.4 Nagios Server überwachen zu lassen,
@@ -170,7 +165,6 @@
 
 	<section id="Nagios:Installation">
 		<title>Installation</title>
-
 		<para>
 		Neben den Standard-Plugins, die mit der Installation des
 		Pakets <package>univention-nagios-client</package> mitgebracht werden, können
@@ -198,13 +192,13 @@
 				</simpara>
 			</listitem>
 		</itemizedlist>
-
 		<para>
 			Einige der Pakete werden bei der Installation der entsprechenden
 			Dienste automatisch mit eingerichtet.
 			Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
 			das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
 		</para>
+		</section>
 
 		<section id="nagios:preconfiguredchecks">
 			<title>Vorkonfigurierte Nagios-Prüfungen</title>
@@ -212,7 +206,6 @@
 				Während der Installation werden automatisch grundlegende
 				Nagios-Prüfungen für die UCS-Systeme der Domäne eingerichtet.
 			</para>
-
 			<informaltable>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
@@ -406,13 +399,11 @@
 					</tbody>
 				</tgroup>
 			</informaltable>
-
 			<para>
 				Die folgenden Nagios-Dienste sind erst nach der Installation
 				zusätzlicher Pakete auf dem jeweiligen Nagios-Client verfügbar
 				(siehe <xref linkend="Nagios:Installation"/>):
 			</para>
-
 			<informaltable>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
@@ -465,8 +456,8 @@
 				</tgroup>
 			</informaltable>
 		</section>
-	</section>
 
 	</section>
 
 </chapter>
+<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
