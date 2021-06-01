@@ -1331,7 +1331,7 @@ ucr set cron/delete_deregistered_accounts/command=\
 				<envar>yes</envar> and the OpenLDAP server must be restarted:
 				<programlisting language="sh">
 ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
-/etc/init.d/slapd restart
+systemctl restart slapd
 				</programlisting>
 			</para>
 			<para>

@@ -845,7 +845,7 @@ rsync -aR /etc/univention/ssl/ucsCA/CAcert.pem extldap.univention.test:/
 		  local adaptations as necessary:
 
 		  <programlisting language="sh">
-/etc/init.d/slapd stop
+systemctl stop slapd
 cp /etc/ldap/slapd.conf /root/backup-slapd.conf
 cp /root/slapd.conf /etc/ldap
 		  </programlisting>
@@ -889,7 +889,7 @@ slapadd -f /etc/ldap/slapd.conf -l /root/data.ldif
 chown openldap.openldap /var/lib/ldap/*.*
 chgrp openldap /etc/ldap/slapd.conf
 chgrp -R openldap /etc/univention/ssl
-/etc/init.d/slapd start
+systemctl start slapd
 		  </programlisting>
 		</para>
 
@@ -917,11 +917,11 @@ rsync -aR /var/lib/univention-ldap/local-schema extldap.univention.test:/
 		  </programlisting>
 		  And after that the following steps need to be repeated on the external LDAP server:
 		  <programlisting language="sh">
-/etc/init.d/slapd stop
+systemctl stop slapd
 cp /etc/ldap/slapd.conf /root/backup-slapd.conf
 cp /root/slapd.conf /etc/ldap
 chgrp openldap /etc/ldap/slapd.conf
-/etc/init.d/slapd start
+systemctl start slapd
 		  </programlisting>
 		</para>
 
@@ -947,7 +947,7 @@ echo -n 'REMOTE_UPDATE_PASSWORD' >  /etc/replica-001.secret
 chmod 600 /etc/replica-001.secret
 univention-config-registry set ldap/replica/target/uri='ldaps://extldap.univention.test/'
 ucr commit /etc/ldap/syncrepl-proxy.conf
-/etc/init.d/slapd restart
+systemctl restart slapd
 		  </programlisting>
 		</para>
 

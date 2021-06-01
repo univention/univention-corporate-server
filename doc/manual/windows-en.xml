@@ -1838,14 +1838,13 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <programlisting language="sh"><![CDATA[
-cat >> /etc/bind/local.conf.samba4 <<%EOR
-
+cat >>/etc/bind/local.conf.samba4 <<__CONF__
 zone "addom.example" {
-type forward;
-forwarders { 192.0.2.20; };
+  type forward;
+  forwarders { 192.0.2.20; };
 };
-%EOR
-service bind9 restart
+__CONF__
+systemctl restart bind9
 ]]>
   </programlisting>
 

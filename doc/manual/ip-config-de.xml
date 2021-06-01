@@ -1880,7 +1880,7 @@
 		neu gestartet werden. Dies kann entweder über das UMC-Modul <guimenu>Systemdienste</guimenu>
 		oder auf der Kommandozeile erfolgen:
 		<programlisting language="sh">
-/etc/init.d/squid restart
+systemctl restart squid
 		</programlisting>
 	  </para>
 	  <para>

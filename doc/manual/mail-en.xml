@@ -897,7 +897,7 @@ postmap /etc/postfix/smtp_auth
 		<note>
 			<para>
 				After each change of a UCR variable for <application>postscreen</application> the configuration of Postfix and <application>postscreen</application> should
-				be reloaded. This can be triggered e.g. via the command  <command>service postfix reload</command>.
+				be reloaded. This can be triggered e.g. via the command  <command>systemctl reload postfix</command>.
 			</para>
 		</note>
 	</section>
@@ -914,7 +914,7 @@ ucr commit /etc/postfix/main.cf
 			</programlisting>
 			For the Postfix service to accept the changes, it must be reloaded:
 			<programlisting language="sh">
-service postfix reload
+systemctl reload postfix
 			</programlisting>
 		</para>
 		<para>
@@ -941,7 +941,7 @@ service postfix reload
 			be added or edited in <filename>/etc/postfix/main.cf.local</filename>:
                         <programlisting>virtual_alias_expansion_limit = 5000</programlisting>
 			Afterwards Postfix needs to be restarted:
-			<programlisting>service postfix restart</programlisting>
+			<programlisting>systemctl restart postfix</programlisting>
                 </para>
         </section>
 
@@ -1169,7 +1169,7 @@ master: Warning: fd limit (ulimit -n) is lower than required under max. load (20
 </screen>
 			The Linux kernel controlled setting <literal>ulimit</literal> setting (limit on the number of files/connections a process is allowed to open) is changed only when the Dovecot service is restarted:
 <programlisting language="sh">
-invoke-rc.d dovecot restart
+systemctl restart dovecot
 </programlisting>
 			No more warnings are written to the log file and both IMAP and POP3 servers now accept 3000 client connections each.
 		</para>

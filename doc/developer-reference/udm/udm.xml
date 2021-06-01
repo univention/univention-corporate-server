@@ -1753,10 +1753,10 @@ ucr set directory/manager/rest/authorized-groups/udm-api-users="cn=UDM API Users
 			</note>
 			<para>
 				After you add or modify a &ucsUCRV; <envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar> you have to restart the API service for the changes to take effect.
-				<programlisting language="sh">
-service univention-directory-manager-rest restart
-				</programlisting>
 			</para>
+				<programlisting language="sh">
+systemctl restart univention-directory-manager-rest
+				</programlisting>
 		</section>
 		<section id="udm:rest_api:overview">
 			<title>API overview</title>

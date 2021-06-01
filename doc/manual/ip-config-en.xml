@@ -2211,7 +2211,7 @@ closest to the object always applies.
 		command line:
 	  </para>
 		<programlisting language="sh">
-/etc/init.d/squid restart
+systemctl restart squid
 		</programlisting>
 	  <para>
 		In addition to the configuration possibilities via &ucsUCR; described

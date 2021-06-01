@@ -74,8 +74,7 @@ sysctl -p
 				  The &ucsUCRV; <envar>squid/transparentproxy</envar> must be set to
 				  <emphasis>yes</emphasis> on the proxy server. After that Univention Firewall and Squid need to be restarted:
 				  <programlisting lang="sh">
-/etc/init.d/univention-firewall restart
-/etc/init.d/squid restart
+systemctl restart univention-firewall squid
 				  </programlisting>
 
 				  This enables packet filter rules which redirect all queries for the web ports to the proxy server.

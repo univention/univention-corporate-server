@@ -823,7 +823,7 @@ slapcat &gt; ldapdaten.txt
 			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> können Benutzer und Gruppen
 			  konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. Nach
 			  Änderungen an den Variable ist es erforderlich, den LDAP-Server über den Befehl
-			  <command>/etc/init.d/slapd restart</command> neu zu starten. In der
+			  <command>systemctl restart slapd</command> neu zu starten. In der
 			  Standardeinstellung werden die Mitglieder der Gruppe <systemitem class="groupname">Domain
 			  Admins</systemitem> vor Passwortänderungen geschützt.
 			</para>

@@ -53,12 +53,12 @@
 			To determine whether not-indexed variables are used, you can activate OpenLDAP
 			debug level -1 and search for the string 'not indexed' in the log file
 			<filename>/var/log/syslog</filename>. For example:
+		</para>
 			<programlisting language="sh">
 ucr set ldap/debug/level=-1
-invoke-rc.d slapd restart
+systemctl restart slapd
 grep 'not indexed' /var/log/syslog
 			</programlisting>
-		</para>
 	</section>
 
 	<section id="slapd:bdb">
@@ -69,13 +69,13 @@ grep 'not indexed' /var/log/syslog
 			The database backend can be controlled via the UCR variable
 			<envar>ldap/database/type</envar>. A migration can be performed as follows:
 			<programlisting language="sh">
-/etc/init.d/slapd stop
+systemctl stop slapd
 slapcat -l ldif
 mkdir /var/lib/univention-ldap/ldap.BACKUP
 mv /var/lib/univention-ldap/ldap/* /var/lib/univention-ldap/ldap.BACKUP
 ucr set ldap/database/type=mdb
 slapadd -l ldif
-/etc/init.d/slapd start
+systemctl start slapd
 			</programlisting>
 			In the default configuration the memory mapped database needs more I/O operations than
 			the BDB backend. With the &ucsUCRV; <envar>ldap/database/mdb/envflags</envar> this

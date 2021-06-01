@@ -385,12 +385,12 @@ nochange)
 	;;
 postchange)
 	# restart daemon after password was changed
-	invoke-rc.d my-daemon restart
+	deb-systemd-invoke my-daemon restart
 	;;
 esac
 				]]></programlisting>
 				<para>
-					init-scripts should only be invoked indirectly through <citerefentry><refentrytitle>invoke-rc.d</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
+					init-scripts should only be invoked indirectly through <citerefentry><refentrytitle>deb-systemd-invoke</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
 					This is required for <command>chroot</command> environments and allows the policy layer to control starting and stopping in certain special situations like during an system upgrade.
 					<remark>PMH: we need to use it too Bug #18497</remark>
 				</para>

@@ -2787,9 +2787,9 @@ univention-add-vhost \
 	--conffile /var/lib/univention-appcenter/apps/myapp/data/apache.conf \
 	"$@"  # "$@" is used to pass credentials
 # write the apache.conf, maybe by using the App Settings
-service apache2 reload
+systemctl reload apache2
 nscd -i hosts  # only needed if the new fqdn should be used immediately by the system
-service bind9 reload  # same here
+systemctl reload bind9  # same here
 				]]></programlisting>
 			<para>
 				This will create the following entry in <filename>/etc/apache2/sites-available/univention-vhosts.conf</filename>
