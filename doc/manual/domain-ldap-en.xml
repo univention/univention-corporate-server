@@ -639,7 +639,7 @@ END
 		<wordasword>daemon.info</wordasword> section of the Syslog service.
 		</para>
 		<para>
-			As of <u:erratum>536</u:erratum> the respective transaction ID of the entry is added to the file <filename>/var/log/univention/directory-logger.log</filename> before each line as a prefix:
+			As of <u:erratum release="4.4-4">536</u:erratum> the respective transaction ID of the entry is added to the file <filename>/var/log/univention/directory-logger.log</filename> before each line as a prefix:
 			<screen>
 ID 342: START
 ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985
