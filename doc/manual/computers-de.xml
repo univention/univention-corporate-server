@@ -980,61 +980,6 @@
             </section>
         </section>
 
-        <section id="computers:Konfiguration_der_Bildschirmeinstellungen"><title>Konfiguration der Bildschirmeinstellungen</title>
-            <para>
-                Die Konfiguration der Grafikauflösungen und Monitor-Parameter erfolgt
-                in der Grundeinstellung über eine automatische Erkennung der
-                Grafikkarte und des Monitors. Dabei wird automatisch der
-                beste für die Grafikkarte verfügbare Treiber ausgewählt und die
-                Monitorauflösung auf den höchsten vom Monitor unterstützten Wert
-                gesetzt.
-            </para>
-            <para>
-                Die Einstellungen können auch über eine &ucsUCR;-Richtlinie gesetzt werden.
-                Die manuelle Konfiguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
-                werden soll. Im folgenden eine Auswahl der wichtigen Einstellungen
-                und die dazugehörigen UCR-Variablen in Klammern:
-            </para>
-            <itemizedlist>
-				<listitem>
-					<simpara>
-					<guimenu>Grafikkarten-Treiber</guimenu> wählt den zuständigen
-					Xorg-Treiber aus (<envar>xorg/device/driver</envar>).
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Unter <guimenu>Auflösung des primären Monitors</guimenu> ist die
-                    Bildschirmauflösung des Hauptmonitors einzutragen. Die Angabe von
-                    Breite und Höhe in Pixeln ist durch ein "x" zu trennen,
-					z.B. <literal>1024x768</literal> (<envar>xorg/resolution</envar>).
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Auflösung des sekundären Monitors</guimenu> definiert die
-                    Bildschirmauflösung eines eventuellen zweiten Monitors. Dieser
-                    bildet zusammen mit dem primären Monitor eine gemeinsame
-					Bildschirmfläche (<envar>xorg/resolution/secondary</envar>).
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Das Auswahlfeld <guimenu>Position des sekundären Monitors</guimenu>
-                    gibt die relative Position des sekundären Monitors gegenüber dem
-					primären Monitor an (<envar>xorg/display/relative-position</envar>).
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Die <guimenu>Farbtiefe</guimenu> ist in Bit pro Pixel
-                    anzugeben. Zulässige Werte sind 1, 2, 4, 8, 16 und 24. (24 Bit ist
-					True Color-Farbtiefe) (<envar>xorg/screen/DefaultDepth</envar>).
-					</simpara>
-				</listitem>
-            </itemizedlist>
-        </section>
-
         <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
 			<para>
             Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> in den UMC-Modulen für die Rechnerverwaltung

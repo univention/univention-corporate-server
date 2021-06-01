@@ -1000,60 +1000,6 @@
 		</section>
 	</section>
 
-	<section id="computers:Configuration_of_the_monitor_settings">
-		<title>Configuration of the monitor settings</title>
-		<para>
-			The configuration of the graphic resolutions and monitor parameters is
-			performed via automatic detection of the graphics card and the monitor in the
-			default setting. When this is done, the best available driver for the graphics
-			card is selected automatically and the monitor resolution set to the highest
-			value supported by the monitor.
-		</para>
-		<para>
-			The settings can be set with a &ucsUCR; policy. Manual configuration is also necessary if dual monitor operation is to be
-			used. The following provides a selection of the important settings and the
-			corresponding UCR variables in parentheses:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				<guimenu>Graphics adapter driver</guimenu> selects the responsible Xorg
-				driver (<envar>xorg/device/driver</envar>).
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				The screen resolution of the main monitor should be entered under
-				<guimenu>Resolution of primary monitor</guimenu>. The values for width and
-				height in pixels should be separated by an 'x', e.g.,
-				<literal>1024x768</literal> (<envar>xorg/resolution</envar>).
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<guimenu>Resolution of secondary display</guimenu> defines the screen
-				resolution of a second monitor, if present. This combines with the primary
-				monitor to display a shared screen area
-				(<envar>xorg/resolution/secondary</envar>).
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				The <guimenu>Position of secondary display</guimenu> menu specifies the
-				relative position of the secondary monitor with respect to the primary monitor
-				(<envar>xorg/display/relative-position</envar>).
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				The <guimenu>Color depth</guimenu> should be entered in bits per
-				pixel. Admissible values are 1, 2, 4, 8, 16 and 24. (24-bit is true color
-				color depth) (<envar>xorg/screen/DefaultDepth</envar>).
-				</simpara>
-			</listitem>
-		</itemizedlist>
-	</section>
-
 	<section id="computers:Mounting_NFS_shares">
 		<title>Mounting NFS shares</title>
 		<para>
