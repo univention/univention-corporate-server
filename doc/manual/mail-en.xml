@@ -44,14 +44,6 @@
 	  applies to IMAP and the &ucsUCRV; <envar>mail/dovecot/imap</envar>.
 	  The further configuration of the mail server is performed via &ucsUCR;,
 	  as well (see <xref linkend="mail::serverconfig::general"/>).
-
-		<note>
-			<para>
-				Since &ucsUCS; version 4.0-2 Dovecot is used as the default IMAP and
-				POP3 server. Since &ucsUCS; version 4.3-0 the integration of Cyrus is
-				not available anymore.
-			</para>
-		</note>
 	</para>
 
     <para>

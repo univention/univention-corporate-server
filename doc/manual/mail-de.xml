@@ -46,14 +46,6 @@
 	  die &ucsUCRV; <envar>mail/dovecot/imap</envar>.
 	  Auch die weitere Konfiguration der Mailserver erfolgt über &ucsUCR; (siehe
 	  <xref linkend="mail::serverconfig::general"/>).
-
-		<note>
-			<para>
-				Seit &ucsUCS; Version 4.0-2 wird standardmäßig Dovecot als IMAP- und
-				POP3-Server verwendet. Die Integration von Cyrus ist seit &ucsUCS;
-				Version 4.3-0 nicht mehr verfügbar.
-			</para>
-		</note>
 		</para>
 
 	<para>
