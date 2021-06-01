@@ -397,15 +397,8 @@ instanceType: 4
 		  <para>
 			Group Policy Management can be installed as a component of the
 			<emphasis>Remote Server Administration Tools</emphasis>
-			on Windows clients. They can be found at
-			<footnote><para><ulink url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>
-			for Windows 7, at
-			<emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-			<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
-			for Windows 8 or at
-			<emphasis>Remote Server Administration Tools (RSAT) for Windows 10</emphasis>
-			<footnote><para><ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520"/></para></footnote>
-			for Windows 10.
+			on Windows clients.
+			They can be found at <ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520">Remote Server Administration Tools (RSAT) for Windows 10</ulink> for Windows 10.
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Activating the Group Policy Management tools</title>
@@ -1073,75 +1066,8 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	encrypted password data.
   </para>
 
-  <section id="windows:Exporting_the_certificate_on_Windows_2003">
-	<title>Exporting the certificate on Windows 2003</title>
-	<para>
-	  The certificate service can be installed subsequently if
-	  necessary: <guimenu>Start &ar; Properties &ar;
-	  System settings &ar; Software &ar; Windows components,
-	  choose Certificate Services &ar; Next
-	  select Enterprise root CA &ar; Next,
-	  Enter domain name &ar; Next &ar; Next</guimenu>.
-	</para>
-
-	<para>
-	  The AD server should be rebooted after the installation.
-	</para>
-
-	<para>
-	  This certificate must now be exported and copied onto the UCS system:
-	  <guimenu>Root CA &ar; AD domain &ar;
-	  Properties &ar; Show certificate &ar; Details &ar; Copy to file
-	  &ar; DER binary encoded X.509</guimenu>.
-	</para>
-  </section>
-
-  <section id="windows:Exporting_the_certificate_on_Windows_2008">
-	<title>Exporting the certificate on Windows 2008</title>
-	<para>
-	  If the certificate service is not installed, it must be installed
-	  before proceeding.
-	</para>
-
-	  <figure id="windows:2008:ca"><title>Exporting the root certificate on Windows 2008</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations50/adconnector_23-en.png"/>
-	  </figure>
-
-	<para>
-	  <guimenu>Start &ar; Server Manager &ar; Add or Remove Programs &ar; Add Roles &ar; Next &ar;
-	  Active Directory Certificate Services &ar; Next &ar; Next &ar; activate Certification
-	  Authority &ar; select Enterprise &ar; select Root CA &ar;
-	  Create new private key &ar; Next &ar; Accept the proposed crypto setting &ar; Next &ar;
-	  Accept the proposed name for the CA &ar; Select an arbitrary validate date &ar;
-	  Next &ar; Accept default path for the certificate database</guimenu>.
-	</para>
-
-	<para>
-	  The following dialogue contains a warning that the name and domain
-	  setting cannot be changed again once the certificate authority is
-	  installed. This must be confirmed with <guimenu>Install</guimenu>.
-	</para>
-
-	<para>
-	  The AD server must then be restarted.
-	</para>
-
-	<para>
-	  This certificate must now be exported and copied onto the UCS system:
-	  <guimenu>Start &ar; Administrative Tools &ar; Certification &ar;
-	  Authority</guimenu>. A computer list is shown there and the elements <guimenu>Revoked Certificates</guimenu>,
-	  <guimenu>Issued Certificates</guimenu>, <guimenu>Pending Requests</guimenu>,
-	  <guimenu>Failed Requests</guimenu> and <guimenu>Certificate Templates</guimenu>
-	  displayed under every system. Here, one must right click on the computer name - not on
-	  one of the elements - and then select <guimenu>Properties</guimenu>. The root
-	  certificate is usually called <guimenuitem>Certificate #0</guimenuitem>. Then select
-	  <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar; Select an arbitrary
-	  filename &ar; Finish</guimenu>.
-	</para>
-  </section>
-
   <section id="windows:adconn:win2012">
-	<title>Exporting the certificate on Windows 2012</title>
+		<title>Exporting the certificate on Windows 2012 / 2016 / 2019</title>
 
 	<para>
 	  If the certificate service is not installed, it must be installed

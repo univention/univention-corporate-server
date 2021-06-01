@@ -226,7 +226,7 @@
 	  <title>Windows domain joins</title>
 	  <para>
 		The procedure for joining a Windows system to a UCS domain made available via Samba is now
-		described as an example for Windows 7/8/10 and Windows 2012. The process is similar for other
+		described as an example for Windows 10 and Windows 2012 / 2016 / 2019. The process is similar for other
 		Windows versions. In addition to the client versions, Windows server systems can also join
 		the domain. Windows servers join the domain as member servers; joining a Windows systems as
 		a domain controller is not supported.
@@ -255,12 +255,6 @@
 		<mousebutton>OK</mousebutton>. The computer must then be restarted for the changes to take
 		effect.
 	  </para>
-
-	  <figure id="domain-ldap:join:win7">
-		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/win7-join_2-en.png"/>
-	  </figure>
-
 	  <para>
 		Domain names must be limited to 13 characters as they are otherwise truncated at the Windows
 		client and this can lead to log-in errors.
@@ -296,58 +290,8 @@
 			</para>
 		</section>
 
-		<section id="domain-ldap:Windows_8">
-			<title>Windows 8</title>
-			<para>
-			  The joining of domains is only possible with the Pro and Enterprise editions of
-			  Windows 8.
-			</para>
-			<para>
-			  The control panel can be reached by moving the cursor to the bottom right-hand corner
-			  of the screen. The <emphasis>Control Panel</emphasis> can then be searched for under
-			  <guimenu>Search &ar; Apps</guimenu>. <guimenu>Change settings &ar; Network ID</guimenu>
-			  must be clicked on under <guimenu>System and Security &ar; System</guimenu>.
-			</para>
-			<para>
-			  The <guimenu>Domain</guimenu> option field must be ticked and the name of the
-			  Samba domain entered in the input field for the domain join. After clicking on
-			  the <mousebutton>OK</mousebutton> button, the
-			  <systemitem class="username">Administrator</systemitem> must be entered in the input field
-			  <guimenu>Name</guimenu> and the password from
-			  <uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
-			  the <guimenu>Password</guimenu> input field. The process for joining the domain
-			  can then be started by clicking on <mousebutton>OK</mousebutton>.
-			</para>
-		</section>
-
-		<section id="domain-ldap:Windows_7">
-			<title>Windows 7</title>
-			<para>
-				The joining of domains is only possible with the Professional, Enterprise or
-				Ultimate editions of Windows 7.
-			</para>
-			<para>
-				The basic configuration dialogue is found under <guimenu>Start &ar; Control Panel
-				&ar; System and Security &ar; See the name of this computer</guimenu>.
-				<guimenu>Change settings</guimenu> must be selected and
-				<guimenu>Change</guimenu> clicked under <guimenu>Computer name, domain, and
-				workgroup settings</guimenu>.
-			</para>
-			<para>
-				The <guimenu>Domain</guimenu> option field must be ticked and the name of the
-				Samba domain entered in the input field for the domain join. After clicking on
-				the <mousebutton>OK</mousebutton> button, the
-				<systemitem class="username">Administrator</systemitem> must be entered in the input field
-				<guimenu>Name</guimenu> and the password from
-				<uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
-				the <guimenu>Password</guimenu> input field. The process for joining the domain
-				can then be started by clicking on <mousebutton>OK</mousebutton>.
-			</para>
-		</section>
-
 		<section id="domain-ldap:win2012">
-		  <title>Windows Server 2012</title>
-
+		  <title>Windows Server 2012 / 2016 / 2019</title>
 		  <para>
 			The control panel can be reached by moving the cursor to the bottom right-hand corner of
 			the screen. The <emphasis>Control Panel</emphasis> can then be searched for under

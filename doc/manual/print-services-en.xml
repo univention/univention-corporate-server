@@ -527,7 +527,7 @@
   <para>
 	Windows supports a mechanism for providing the printer drivers on the print server
 	(<emphasis>Point 'n' Print</emphasis>). The following guide describes the provision of the
-	printer drivers in Windows 7 for a print share configured in the UMC module<guimenu>Printers</guimenu>.
+	printer drivers in Windows for a print share configured in the UMC module<guimenu>Printers</guimenu>.
 	Firstly, the printer
 	drivers must be stored on the print server. There are a number of pitfalls in the Windows user
 	wizard, so it is important to follow the individual steps precisely.

@@ -407,15 +407,7 @@ instanceType: 4
 		  <para>
 			Die Gruppenrichtlinienverwaltung kann als Teil der
 			<emphasis>Remote Server Administration Tools</emphasis> auf Windows Clients installiert werden.
-			Sie können für Windows 7 unter
-			<footnote><para><ulink url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>,
-			für Windows 8 unter
-			<emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-			<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
-			oder für Windows 10 unter
-			<emphasis>Remote Server Administration Tools (RSAT) for Windows 10</emphasis>
-			<footnote><para><ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520"/></para></footnote>
-			bezogen werden.
+			Sie können für Windows 10 unter <ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520">Remote Server Administration Tools (RSAT) for Windows 10</ulink> bezogen werden.
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
@@ -1169,77 +1161,8 @@ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	Einstellung betrifft nicht die Synchronisation der verschlüsselten Passwortdaten.
   </para>
 
-  <section id="windows:Export_unter_Windows_2003">
-	<title>Export unter Windows 2003</title>
-
-	<para>
-	  Falls der Zertifikatsdienst nicht installiert ist, so kann dieser
-	  nachinstalliert werden: <guimenu>Start &ar;
-	  Einstellungen &ar; Systemsteuerung &ar; Software &ar; Windows
-	  Komponenten, Zertifikatsdienst auswählen &ar; Weiter
-	  Stammzertifizierungsstelle des Unternehmens wählen &ar; Weiter, Domänen
-	  Namen angeben &ar; Weiter &ar; Weiter</guimenu>. Anschließend sollte der Server neu
-	  gestartet werden.
-	</para>
-
-	<para>
-	  Dieses Zertifikat muss exportiert und auf das UCS System kopiert werden:
-	  <guimenu>Zertifizierungsstelle &ar; AD-Domäne &ar;
-	  Eigenschaften &ar; Zertifikat anzeigen &ar; Details &ar; In Datei kopieren &ar;
-	  DER-codiert-binaer X.509</guimenu>.
-	</para>
-  </section>
-
-  <section id="windows:Export_unter_Windows_2008">
-	<title>Export unter Windows 2008</title>
-
-	<para>
-	  Falls der Zertifikatsdienst nicht installiert ist, so muss dieser
-	  nachinstalliert werden:
-	</para>
-
-	  <figure id="windows:2008:ca"><title>Export des Root-Zertifikats unter Windows 2008</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations50/adconnector_23-de.png"/>
-	  </figure>
-
-	<para>
-	  <guimenu>Start &ar; Systemsteuerung &ar; Programme und Funktionen &ar; Windows-Funktionen
-	  aktivieren oder deaktivieren &ar; Rollen &ar; Rollen hinzufügen &ar; Weiter
-	  &ar; Haken bei Active Directory-Zertifikatsdienste aktivieren &ar; Weiter
-	  &ar; Weiter &ar; Zertifizierungsstelle aktivieren &ar; Unternehmen auswählen
-	  &ar; Stammzertifierungsstelle auswählen &ar; Neuen privaten Schlüssel
-	  erstellen &ar; Weiter &ar; Die vorgeschlagenen Kryptoeinstellungen mit
-	  Weiter akzeptieren &ar; Den vorgeschlagenen Namen der
-	  Zertifizierungsstelle akzeptieren &ar; Eine beliebige Gültigkeitsdauer
-	  auswählen &ar; Weiter &ar; Standardpfad für die Zertifikatsdatenbank
-	  akzeptieren</guimenu> . Im abschließenden Dialog erscheint eine Warnmeldung,
-	  dass Name und Domäneneinstellung nach Installation der
-	  Zertifizierungsstelle nicht mehr geändert werden können. Dies muss
-	  mit <guimenu>Installieren</guimenu> bestätigt werden.
-	</para>
-
-	<para>
-	  Anschließend muss der AD-Server neu gestartet werden.
-	</para>
-
-	<para>
-	  Dieses Zertifikat muss nun exportiert und auf das UCS System kopiert
-	  werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar; Zertifizierungsstelle</guimenu>.
-	  Dort wird eine
-	  Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte
-	  Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende
-	  Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und
-	  <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den
-	  Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und
-	  <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel
-	  <guimenuitem>Zertifikat Nr. 0</guimenuitem>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar;
-	  DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad
-	  &ar; Fertig stellen</guimenu>.
-	</para>
-  </section>
-
   <section id="windows:adconn:win2012">
-	<title>Export unter Windows Server 2012</title>
+		<title>Export unter Windows Server 2012 / 2016 / 2019</title>
 
 	<para>
 	  Falls der Zertifikatsdienst nicht installiert ist, so muss dieser

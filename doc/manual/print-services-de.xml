@@ -543,7 +543,7 @@
   <para>
 	Windows unterstützt ein Verfahren zur serverseitigen Bereitstellung von Druckertreibern auf dem
 	Druckserver (<emphasis>Point 'n' Print</emphasis>). Die folgende Anleitung beschreibt die
-	Bereitstellung der Druckertreiber unter Windows 7 bzw. Windows 8 für eine im UMC-Modul <guimenu>Drucker</guimenu> konfigurierte
+	Bereitstellung der Druckertreiber unter Windows für eine im UMC-Modul <guimenu>Drucker</guimenu> konfigurierte
 	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden, danach werden
 	die Drucker mit einem Druckertreiber verknüpft.
 	Die Benutzerführung unter Windows bietet zahlreiche Stolperfallen, es ist wichtig den einzelnen

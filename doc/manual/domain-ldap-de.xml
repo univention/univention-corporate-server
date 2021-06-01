@@ -234,7 +234,7 @@
 		<title>Windows-Domänenbeitritt</title>
 		<para>
 			Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba
-			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8/10 und Windows 2012
+			bereitgestellten UCS-Domäne wird nachfolgend für Windows 10 und Windows 2012 / 2016 / 2019
 			beispielhaft beschrieben. Bei anderen Windows-Versionen funktioniert der
 			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
 			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
@@ -256,10 +256,6 @@
 			Der Domänenbeitritt wird in der Regel mit dem lokalen Administrator-Konto
 			des Windows-Systems durchgeführt.
 		</para>
-		<figure id="domain-ldap:join:win7">
-			<title>Domänenbeitritt eines Windows 7-Systems</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations50/win7-join_2-de.png"/>
-		</figure>
 		<para>
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
 			abgebrochen werden. Nach einem erfolgreichen Beitritt erscheint ein kleines
@@ -304,59 +300,8 @@
 			</para>
 		</section>
 
-		<section id="domain-ldap:Windows_8">
-			<title>Windows 8</title>
-			<para>
-			  Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von Windows 8 möglich.
-			</para>
-			<para>
-			  Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
-			  Bildschirmecke bewegt wird. Anschließend kann unter <guimenu>Suchen &ar; Apps</guimenu> nach der
-			  <emphasis>Systemsteuerung</emphasis> gesucht werden. Unter <guimenu>System und
-			  Sicherheit &ar; System</guimenu> muss auf <guimenu>Einstellungen ändern &ar; Netzwerk
-			  ID</guimenu> geklickt werden.
-			</para>
-			<para>
-			  Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
-			  markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
-			  werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
-			  muss in das Eingabefeld <guimenu>Name</guimenu> der Name
-			  <systemitem class="username">Administrator</systemitem> und in das Eingabefeld
-			  <guimenu>Kennwort</guimenu> das Passwort von
-			  <uri>uid=Administrator,cn=users,<replaceable>Basis-DN</replaceable></uri> eingetragen
-			  werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
-			  <mousebutton>OK</mousebutton> gestartet werden.
-			</para>
-		</section>
-
-		<section id="domain-ldap:Windows_7">
-			<title>Windows 7</title>
-			<para>
-				Der Domänenbeitritt ist nur mit der Professional, Enterprise oder
-				Ultimate-Edition von Windows 7 möglich.
-			</para>
-			<para>
-				Über <guimenu>Start &ar; Systemsteuerung &ar; System und Sicherheit &ar;
-				Computernamen anzeigen</guimenu> kann der Basiskonfigurationsdialog erreicht
-				werden. Unter <guimenu>Einstellungen für Computernamen, Domäne und
-				Arbeitsgruppe</guimenu> muss <guimenu>Einstellungen ändern</guimenu> gewählt
-				werden und auf <guimenu>Ändern</guimenu> geklickt werden.
-			</para>
-			<para>
-				Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
-				markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
-				werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
-				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
-				<systemitem class="username">Administrator</systemitem> und in das Eingabefeld
-				<guimenu>Kennwort</guimenu> das Passwort von
-				<uri>uid=Administrator,cn=users,<replaceable>Basis-DN</replaceable></uri> eingetragen
-				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
-				<mousebutton>OK</mousebutton> gestartet werden.
-			</para>
-		</section>
-
 		<section id="domain-ldap:win2012">
-		  <title>Windows Server 2012</title>
+		  <title>Windows Server 2012 / 2016 / 2019</title>
 		  <para>
 			Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
 			Bildschirmecke bewegt wird. Anschließend kann unter <guimenu>Suchen &ar; Apps</guimenu>
