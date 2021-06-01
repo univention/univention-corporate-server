@@ -330,9 +330,7 @@ UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:
 <listitem><simpara>Zentrales Netzmanagement mit DNS und DHCP</simpara></listitem>
 <listitem><simpara>System- und Netzüberwachung</simpara></listitem>
 <listitem><simpara>Druckserver-Funktionalität</simpara></listitem>
-<listitem><simpara>Thin-Client-Support</simpara></listitem>
 <listitem><simpara>Proxy-Server</simpara></listitem>
-<listitem><simpara>Virtualisierung</simpara></listitem>
 <listitem><simpara>Integriertes Backup</simpara></listitem>
 </itemizedlist>
 <para>

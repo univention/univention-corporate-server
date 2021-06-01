@@ -37,14 +37,11 @@
 							<simpara>
 								The UCS Dashboard app for the visualization of data from the central
 								Database. This component is based on the software component
-								<ulink url="https://grafana.com">
-									Grafana®
-								</ulink>
+								<ulink url="https://grafana.com/"><productname class="registered">Grafana</productname></ulink>
 								<footnote>
 									<para>
-										The Grafana Labs Marks are trademarks of Grafana Labs, and are used
-										with Grafana Labs’ permission. We are not affiliated with, endorsed
-										or sponsored by Grafana Labs or its affiliates.
+										The <orgname>Grafana Labs</orgname> Marks are trademarks of <orgname>Grafana Labs</orgname>, and are used with <orgname>Grafana Labs</orgname>’ permission.
+										We are not affiliated with, endorsed or sponsored by <orgname>Grafana Labs</orgname> or its affiliates.
 									</para>
 								</footnote>
 								.
@@ -353,29 +350,6 @@
 								monitors the Squid proxy.
 								If no squid process is running or the Squid proxy is not accessible,
 								the CRITICAL status is returned.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
-							<entry>
-								tests the status of a KVM virtualization server
-								via a request to <command>virsh</command>
-								and returns CRITICAL if the request takes longer than ten seconds.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
-							<entry>
-								tests the status of a Xen virtualization server
-								via a request to <command>virsh</command>
-								and returns CRITICAL if the request takes longer than ten seconds.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
-							<entry>
-								tests the status of the &ucsUVMM; by requesting the available nodes.
-								If they cannot be resolved, CRITICAL is returned.
 							</entry>
 						</row>
 					</tbody>

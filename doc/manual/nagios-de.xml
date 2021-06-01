@@ -41,15 +41,11 @@
 						<simpara>
 							Die UCS Dashboard App für die Visualisierung von Daten aus der zentralen
 							Datenbank. Diese Komponente basiert auf der Softwarekomponente
-							<ulink url="https://grafana.com">
-								Grafana®
-							</ulink>
+							<ulink url="https://grafana.com/"><productname class="registered">Grafana</productname></ulink>
 							<footnote>
 								<para>
-									Die Grafana Labs-Marken sind Warenzeichen von Grafana Labs und werden
-									mit Genehmigung von Grafana Labs verwendet. Wir sind weder mit Grafana
-									Labs noch mit seinen Tochtergesellschaften verbunden, noch werden wir
-									von ihnen unterstützt oder gefördert.
+									Die <orgname>Grafana Labs</orgname>-Marken sind Warenzeichen von <orgname>Grafana Labs</orgname> und werden mit Genehmigung von <orgname>Grafana Labs</orgname> verwendet.
+									Wir sind weder mit <orgname>Grafana Labs</orgname> noch mit seinen Tochtergesellschaften verbunden, noch werden wir von ihnen unterstützt oder gefördert.
 								</para>
 							</footnote>
 							.
@@ -369,31 +365,6 @@
 								Überwacht den Proxy Squid.
 								Läuft kein Squid-Prozess oder der Squid-Proxy ist nicht erreichbar,
 								wird der Status CRITICAL zurückgegeben.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
-							<entry>
-								Prüft den Status eines KVM-Virtualisierungs-Servers
-								über eine Anfrage an <command>virsh</command>
-								und gibt den Status CRITICAL zurück, wenn die Rückmeldung
-								mehr als zehn Sekunden dauert.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
-							<entry>
-								Prüft den Status eines Xen-Virtualisierungs-Servers
-								über eine Abfrage an <command>virsh</command>
-								und gibt den Status CRITICAL zurück, wenn die Rückmeldung
-								mehr als zehn Sekunden dauert.
-							</entry>
-						</row>
-						<row>
-							<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
-							<entry>
-								Prüft den Status des &ucsUVMM;s über eine Anfrage der verfügbaren Nodes.
-								Können sie nicht aufgelöst werden, wird der Status CRITICAL zurückgegeben.
 							</entry>
 						</row>
 					</tbody>
