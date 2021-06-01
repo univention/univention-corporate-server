@@ -339,19 +339,38 @@
 		logged on to the system. Pseudo groups are stored in the UCS directory service, but they are
 		not synchronized by the Univention S4 connector and should usually not be edited. This
 		applies to the following groups:
-
-		<itemizedlist>
-		  <listitem><simpara><systemitem class="groupname">Anonymous Logon</systemitem>, <systemitem class="groupname">Authenticated Users</systemitem>, <systemitem class="groupname">Batch</systemitem>, <systemitem class="groupname">Creator Group</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Creator Owner</systemitem>, <systemitem class="groupname">Dialup</systemitem>, <systemitem class="groupname">Digest Authentication</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Enterprise Domain Controllers</systemitem>, <systemitem class="groupname">Everyone</systemitem>, <systemitem class="groupname">IUSR</systemitem>, <systemitem class="groupname">Interactive</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Local Service</systemitem>, <systemitem class="groupname">NTLM Authentication</systemitem>, <systemitem class="groupname">Network Service</systemitem>, <systemitem class="groupname">Network</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Nobody</systemitem>, <systemitem class="groupname">Null Authority</systemitem>, <systemitem class="groupname">Other Organization</systemitem>, <systemitem class="groupname">Owner Rights</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Proxy</systemitem>, <systemitem class="groupname">Remote Interactive Logon</systemitem>, <systemitem class="groupname">Restricted</systemitem>, <systemitem class="groupname">SChannel Authentication</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">Self</systemitem>, <systemitem class="groupname">Service</systemitem>, <systemitem class="groupname">System</systemitem>, <systemitem class="groupname">Terminal Server User</systemitem>, <systemitem class="groupname">This Organization</systemitem></simpara></listitem>
-		  <listitem><simpara><systemitem class="groupname">World Authority</systemitem></simpara></listitem>
-		</itemizedlist>
-	  </para>
-
+		</para>
+		<simplelist type='inline'>
+			<member><systemitem class="groupname">Anonymous Logon</systemitem></member>
+			<member><systemitem class="groupname">Authenticated Users</systemitem></member>
+			<member><systemitem class="groupname">Batch</systemitem></member>
+			<member><systemitem class="groupname">Creator Group</systemitem></member>
+			<member><systemitem class="groupname">Creator Owner</systemitem></member>
+			<member><systemitem class="groupname">Dialup</systemitem></member>
+			<member><systemitem class="groupname">Digest Authentication</systemitem></member>
+			<member><systemitem class="groupname">Enterprise Domain Controllers</systemitem></member>
+			<member><systemitem class="groupname">Everyone</systemitem></member>
+			<member><systemitem class="groupname">IUSR</systemitem></member>
+			<member><systemitem class="groupname">Interactive</systemitem></member>
+			<member><systemitem class="groupname">Local Service</systemitem></member>
+			<member><systemitem class="groupname">NTLM Authentication</systemitem></member>
+			<member><systemitem class="groupname">Network Service</systemitem></member>
+			<member><systemitem class="groupname">Network</systemitem></member>
+			<member><systemitem class="groupname">Nobody</systemitem></member>
+			<member><systemitem class="groupname">Null Authority</systemitem></member>
+			<member><systemitem class="groupname">Other Organization</systemitem></member>
+			<member><systemitem class="groupname">Owner Rights</systemitem></member>
+			<member><systemitem class="groupname">Proxy</systemitem></member>
+			<member><systemitem class="groupname">Remote Interactive Logon</systemitem></member>
+			<member><systemitem class="groupname">Restricted</systemitem></member>
+			<member><systemitem class="groupname">SChannel Authentication</systemitem></member>
+			<member><systemitem class="groupname">Self</systemitem></member>
+			<member><systemitem class="groupname">Service</systemitem></member>
+			<member><systemitem class="groupname">System</systemitem></member>
+			<member><systemitem class="groupname">Terminal Server User</systemitem></member>
+			<member><systemitem class="groupname">This Organization</systemitem></member>
+			<member><systemitem class="groupname">World Authority</systemitem></member>
+		</simplelist>
 	  <para>
 		In Active Directory/Samba, a distinction is made between the following four AD group
 		types. These group types can be applied to two types of groups;
