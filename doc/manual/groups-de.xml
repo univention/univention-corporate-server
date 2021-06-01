@@ -315,14 +315,14 @@
 		</para>
 
 		<para>
-		  Der Export erfolgt in der Grundeinstellung alle 15 Minuten
+		  Der Export erfolgt in der Grundeinstellung einmal täglich
 		  durch einen Cron-Job und wird zusätzlich gestartet wenn der
 		  &ucsUDL; 15 Sekunden inaktiv gewesen
 		  ist. Der Intervall für die Cron-Aktualisierung wird über die
 		  &ucsUCRV; <envar>nss/group/cachefile/invalidate_interval</envar> in
 		  Cron-Syntax (siehe <xref linkend="cron:local"/>) festgelegt
 		  Das Listener-Modul kann über die &ucsUCRV;
-		  <envar>nss/group/invalidate_cache_on_changes</envar> aktiviert/deaktiviert werden
+		  <envar>nss/group/cachefile/invalidate_on_changes</envar> aktiviert/deaktiviert werden
 		  (<literal>true</literal>/<literal>false</literal>).
 		</para>
 

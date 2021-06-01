@@ -305,13 +305,13 @@
 		</para>
 
 		<para>
-		  In the basic setting, the export is performed every 15 minutes by a cron job and is
+		  In the basic setting, the export is performed once a day by a cron job and is
 		  additionally started if the &ucsUDL; has been inactive for 15
 		  seconds. The interval for the cron update is configured in Cron syntax (see <xref
 		  linkend="cron:local"/>) by the &ucsUCRV;
 		  <envar>nss/group/cachefile/invalidate_interval</envar>. This listener module can be
 		  activated/deactivated via the &ucsUCRV;
-		  <envar>nss/group/invalidate_cache_on_changes</envar> (<literal>true</literal>/<literal>false</literal>).
+		  <envar>nss/group/cachefile/invalidate_on_changes</envar> (<literal>true</literal>/<literal>false</literal>).
 		</para>
 
 		<para>
