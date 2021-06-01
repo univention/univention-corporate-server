@@ -82,7 +82,7 @@
 	  Das UCS-Mailsystem bietet keine Groupware-Funktionalität wie gemeinsam
 	  genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS basierende
 	  Groupwaresysteme, die sich in das UCS-Managementsystem integrieren,
-	  bspw. Kolab, Zarafa oder Open-Xchange. Weiterführende Informationen finden
+	  bspw. Kopano oder Open-Xchange. Weiterführende Informationen finden
 	  sich im Univention App Center (siehe <xref linkend="software:appcenter"/>).
 	</para>
   </section>
