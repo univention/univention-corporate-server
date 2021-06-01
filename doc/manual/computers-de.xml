@@ -1890,7 +1890,6 @@ auth/sshd/restrict: yes
                 </para>
                     <programlisting>
 30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-sync
-*/5 * * * * www-data /usr/bin/php -q /usr/share/horde/reminders.php
                     </programlisting>
             </section>
 

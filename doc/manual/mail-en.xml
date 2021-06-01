@@ -14,8 +14,7 @@
   <section id="mail::introduction">
     <title>Introduction</title>
     <para>
-	  &ucsUCS; provides mail services that users can access both via standard
-	  mail clients such as Thunderbird and via the webmail interface Horde.
+	  &ucsUCS; provides mail services that users can access via standard mail clients such as Thunderbird.
     </para>
 
     <para>
@@ -86,8 +85,7 @@
     </para>
 
     <para>
-	  The Horde framework is available for web-based mail access
-	  (see <xref linkend="mail::horde"/>). The UCS mail system does not offer
+	  The UCS mail system does not offer
 	  any groupware functionality such as shared calendars or invitations to
 	  appointments. However, there are groupware systems based on UCS which
 	  integrate in the UCS management system such as Kolab, Zarafa and
@@ -113,12 +111,6 @@
 	  <filename class="directory">/var/spool/dovecot/</filename> directory. If this directory
 	  is on a NFS share, please read <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
-
-	<para>
-	  The webmail interface Horde can be installed via the Univention App Center (see <xref
-	  linkend="software:appcenter"/>).
-	</para>
-
   </section>
 
   <section id="mail::management::general">
@@ -589,9 +581,7 @@ doveadm auth cache flush
 	  However, depending on experience in the local environment, this
 	  value can also be set lower. This will, however, result in more
 	  e-mails being incorrectly designated as Spam.
-	  Changes to the threshold do not apply to existing users, but the users
-	  can change the value themselves in the Horde web client (see
-	  <xref linkend="mail::horde::filter"/>).
+	  Changes to the threshold do not apply to existing users.
 	</para>
 	<para>
 	  There is also the possibility of evaluating e-mails with a Bayes
@@ -820,14 +810,6 @@ postmap /etc/postfix/smtp_auth
 		Please note that e-mail attachments are enlarged by approximately a third due to the base64
 		encoding.
 	  </para>
-
-	  <para>
-		If Horde (see <xref linkend="mail::horde"/>) is used, the &ucsUCR; variables
-		<envar>php/limit/filesize</envar> and <envar>php/limit/postsize</envar> must also be
-		adjusted. The maximum size in megabytes must be entered as the value in both variables. Then
-		the Apache web server has to be restarted.
-	  </para>
-
 	</section>
 
 	<section id="mail::serverconfig::archivefolder">
@@ -1227,136 +1209,5 @@ invoke-rc.d dovecot restart
 	  </figure>
   </section>
 
-  <section id="mail::horde">
-	<title>Webmail and administration of e-mail filters with Horde</title>
-	<para>
-	  UCS integrates a number of applications from the Horde framework for
-	  web access to e-mails and web-based administration of server-side e-mail filter
-	  rules based on Sieve. Horde can be installed via the Univention App Center (see <xref
-	  linkend="software:appcenter"/>).
-	</para>
-	<section id="mail:Login_and_overview">
-	  <title>Login and overview</title>
-	  <para>
-		The Horde login mask is linked on the system overview page (see <xref
-		linkend="central-management-umc:login"/>) under <guimenu>Horde web client</guimenu> and can
-		be opened directly at <uri>http://<replaceable>SERVERNAME</replaceable>/horde/</uri>.
-	  </para>
-
-		<figure id="horde-login">
-		  <title>Login on Horde</title>
-		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations50/login_en.png"/>
-		  </figure>
-
-	  <para>
-		Either the UCS user name or the primary e-mail address can be used as the user name. The
-		webmail interface can be used in a number of display modes. The preferred version can be
-		selected under <guimenu>Mode</guimenu>. We recommend the use of the dynamic interface for
-		standard workstations. The remaining documentation refers to this version. Selecting the
-		<guimenu>Language</guimenu> has no effect in many web browsers, as the browser's preferred
-		language settings take precedence.
-	  </para>
-	  <para>
-		In the top toolbar there are a number or menu points (e.g., <guimenu>Mail</guimenu> and
-		<guimenu>Address Book</guimenu>), which can be used to switch between the individual
-		modules.
-	  </para>
-	  <para>
-		The user can personalize Horde by clicking the cog symbol.
-	  </para>
-	</section>
-
-	<section id="mail:Web-based_mail_access">
-	  <title>Web-based mail access</title>
-	  <para>
-		Horde offers all the standard functions of an e-mail client such as the
-		sending, forwarding and deletion of e-mails. E-mails can be sorted in folders
-		and are stored in <guimenu>Inbox</guimenu> as standard. A <emphasis>Sent</emphasis>
-		folder is created automatically the first time an e-mail is sent.
-	  </para>
-
-		<figure id="horde-inbox">
-		  <title>Web mail (Inbox)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations50/inbox_en.png"/>
-		  </figure>
-
-	  <para>
-		Horde differentiates between two types of deletion: An e-mail deleted with
-		<guimenu>Delete</guimenu> is initially moved to the <emphasis>Trash</emphasis> folder. From
-		there, it can be moved into any other folder as long as the trash can has not been emptied
-		with <guimenu>Empty</guimenu>.
-	  </para>
-	</section>
-
-	<section id="mail:Address_book">
-	  <title>Address book</title>
-	  <para>
-		This module is used to administrate e-mail addresses and additional contact
-		information. The information compiled here are saved in Horde's own SQL
-		database.
-	  </para>
-	  <figure id="horde-address">
-		<title>Address book for webmail</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations50/addressbook_en.png"/>
-	  </figure>
-	  <para>
-		Contact information found using the simple or advanced search can then be
-		copied into individual address books and edited there. New contacts can be
-		entered via the <guimenu>New Contact</guimenu> menu item. Personal address books
-		can also be created via <guimenu>My Address Books</guimenu>.
-	  </para>
-	  <para>
-		The <guimenu>Browse</guimenu> menu item can be used to display the contents of
-		address books. The lists can be sorted alphabetically by clicking on the
-		preferred column title (surname, first name, etc.). Clicking on the magnifying
-		glass in the header of the respective address book (directly next to the name
-		of the address book) opens a search field that can be used easily to search
-		within the open address book. Individual addresses in a list can be marked
-		with an X for subsequent use, i.e., to export them as a file in a certain file
-		format or to copy them into another address book.
-	  </para>
-	</section>
-
-	<section id="mail::horde::filter">
-	  <title>E-mail filters</title>
-	  <para>
-		Dovecot supports server-side filter scripts written in an individual
-		script language called Sieve. The filter module allows the generation
-		of these filter scripts. They apply generally and thus also apply for
-		users accessing their inboxes via a standard mail client.
-	  </para>
-	  <figure id="horde-filter">
-		<title>Filter management in Horde</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations50/filter_en.png"/>
-	  </figure>
-	  <para>
-		Filters can be edited and expanded
-		under <guimenu>Mail &ar; Filters</guimenu>. The filters are applied to incoming e-mails
-		in the consecutively numbered order. Their position can be altered either
-		using the arrows to the right or by entering a number in
-		the <command>Move</command> column directly. Individual filter rules can be
-		switched on and off in the <command>Enabled</command> column.
-	  </para>
-	  <para>
-		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which Spam
-		threshold should apply. The specified <guimenu>Spam Level</guimenu> is the
-		SpamAssassin threshold. An e-mail which returns this value will be sent to
-		the specified folder.
-	  </para>
-	  <para>
-		A <guimenu>Vacation</guimenu> filter can be used to specify a period in which
-		incoming e-mails are automatically replied to with an answer e-mail by the
-		mail server. The text and subject of the e-mail can be selected as required.
-	  </para>
-	  <para>
-		<guimenu>New Rule</guimenu> can be used to create new rules, e.g., for
-		the automatic sorting of incoming mails into topic-specific mail folders.
-	  </para>
-	  <para>
-		Clicking on <guimenu>Script</guimenu> displays the source text of the generated
-		Sieve script.
-	  </para>
-	</section>
-  </section>
 </chapter>
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

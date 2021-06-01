@@ -242,9 +242,8 @@ univention-app shell demo-docker-app
 	  After its installation, one or several new options are shown when clicking on the icon
 	  of an application: <guimenu>Uninstall</guimenu> removes an application.
 	  <guimenu>Open</guimenu> refers you to a website or a UMC module with which you can further configure or use
-	  the installed application. For example, if you install the Horde application, this link takes
-	  you to the login window. This option is not displayed for applications which do not have a web
-	  interface or a UMC module.
+	  the installed application.
+	  This option is not displayed for applications which do not have a web interface or a UMC module.
 	</para>
 
 	<para>

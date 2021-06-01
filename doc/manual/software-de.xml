@@ -246,9 +246,8 @@
 	  Nach der Installation einer Applikation werden beim Klick auf das Icon einer Applikation
 	  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
 	  <guimenu>Öffnen</guimenu> verweist auf eine Webseite oder ein UMC-Modul, mit dem die installierte Applikation
-	  weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die
-	  Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne
-	  Webinterface oder UMC-Modul wird die Option nicht angezeigt.
+	  weitergehend konfiguriert oder verwendet werden kann.
+	  Bei Applikationen ohne Webinterface oder UMC-Modul wird die Option nicht angezeigt.
 	</para>
 
 	<para>

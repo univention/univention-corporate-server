@@ -14,9 +14,7 @@
   <section id="mail::introduction">
 	<title>Einführung</title>
 	<para>
-	  &ucsUCS; stellt Maildienste bereit, auf die Benutzer sowohl über
-	  Standard-Mail-Clients wie Thunderbird, als auch über das Webmail-Interface Horde zugreifen
-	  können.
+	  &ucsUCS; stellt Maildienste bereit, auf die Benutzer über Standard-Mail-Clients wie Thunderbird zugreifen können.
 	</para>
 
 	<para>
@@ -89,8 +87,6 @@
 	</para>
 
 	<para>
-	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework zur
-	  Verfügung (siehe <xref linkend="mail::horde"/>).
 	  Das UCS-Mailsystem bietet keine Groupware-Funktionalität wie gemeinsam
 	  genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS basierende
 	  Groupwaresysteme, die sich in das UCS-Managementsystem integrieren,
@@ -115,12 +111,6 @@
 	  abgelegt. Falls dieses Verzeichnis auf einem NFS-Laufwerk liegen sollte,
         lesen Sie bitte <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
-
-	<para>
-	  Das Webmail-Interface Horde kann über das Univention App Center installiert werden (siehe
-	  <xref linkend="software:appcenter"/>).
-	</para>
-
   </section>
 
 
@@ -607,8 +597,7 @@ zwei Warn-Nachrichten automatisch konfiguriert:
 	  Umfeld kann dieser Wert aber auch niedriger angesetzt werden. Es muss dann
 	  jedoch mit mehr E-Mails gerechnet werden, die fälschlich als Spam erkannt
 	  wurden. Die Änderung des Schwellwerts wirkt sich nicht auf bestehende Benutzer
-	  aus, diese können den Wert aber im Horde-Webclient selbst anpassen (siehe
-	  <xref linkend="mail::horde::filter"/>).
+	  aus.
 	</para>
 
 	<para>
@@ -847,13 +836,6 @@ postmap /etc/postfix/smtp_auth
 		Wird <literal>0</literal> als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist
 		zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert
 		werden.
-	  </para>
-
-	  <para>
-		Wird Horde (siehe <xref linkend="mail::horde"/>) eingesetzt, müssen außerdem die
-		&ucsUCR;-Variablen <envar>php/limit/filesize</envar> und <envar>php/limit/postsize</envar>
-		angepasst werden. Als Wert muss in beide Variablen die maximale Größe in Megabyte
-		eingetragen werden. Anschließend muss der Apache-Webserver neu gestartet werden.
 	  </para>
 	</section>
 
@@ -1282,159 +1264,5 @@ invoke-rc.d dovecot restart
 	  </figure>
   </section>
 
-
-  <section id="mail::horde">
-	<title>Webmail und Verwaltung von E-Mail-Filtern mit Horde</title>
-
-	<para>
-	  UCS integriert mehrere Applikationen des Horde-Frameworks für den Webzugriff
-	  auf E-Mails und zur webbasierten Verwaltung von serverseitigen
-	  E-Mail-Filterregeln auf Basis von Sieve. Horde kann über das Univention App Center installiert
-	  werden (siehe <xref linkend="software:appcenter"/>).
-	</para>
-
-	<section id="mail:Anmeldung_und_Übersicht">
-	  <title>Anmeldung und Übersicht</title>
-	  <para>
-		Die Horde-Anmeldemaske ist auf der Übersichtswebseite (siehe <xref linkend="central-management-umc:login"/>) unter
-		<guimenu>Horde Webclient</guimenu> verlinkt und kann auch direkt unter
-		<uri>http://<replaceable>SERVERNAME</replaceable>/horde/</uri> erreicht werden.
-	  </para>
-
-		<figure id="horde-login">
-		  <title>Anmeldung an Horde</title>
-		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations50/login_de.png"/>
-		</figure>
-
-	  <para>
-		Als <guimenu>Benutzername</guimenu> kann entweder der UCS-Benutzername oder die
-		primäre E-Mail-Adresse eingegeben werden. Das Webmail-Interface kann in
-		verschiedenen Darstellungsvarianten verwendet werden. Die gewünschte Variante
-		kann unter <guimenu>Modus</guimenu> ausgewählt werden. Für
-		Standard-Workstations wird die Verwendung des dynamischen Interfaces
-		empfohlen. Die weitere Dokumentation orientiert sich an dieser Variante.
-		Die Auswahl der <guimenu>Sprache</guimenu> hat bei vielen Browsern keine Auswirkung, da die
-		bevorzugte Spracheinstellung des Browsers Vorrang hat.
-	  </para>
-
-	  <para>
-		In der oberen Bildleiste finden sich mehrere Menüpunkte (z.B. <guimenu>Webmail</guimenu>
-		oder <guimenu>Adressbuch</guimenu>), mit denen zwischen den einzelnen Modulen gewechselt
-		werden kann.
-	  </para>
-
-	  <para>
-		Durch Klick auf das Zahnrad-Symbol kann Horde vom Benutzer personalisiert werden.
-	  </para>
-	</section>
-
-	<section id="mail:Webbasierter_Mailzugriff">
-	  <title>Webbasierter Mailzugriff</title>
-
-	  <para>
-		Horde bietet alle Standardfunktionen eines E-Mail-Clients, wie das Versenden,
-		Weiterleiten oder Löschen von E-Mails. E-Mails können in Ordner einsortiert
-		werden und werden standardmäßig im <guimenu>Posteingang</guimenu> abgelegt.
-		Beim ersten Versenden einer E-Mail wird automatisch ein
-		<emphasis>Gesendet</emphasis>-Ordner erstellt.
-	  </para>
-
-		<figure id="horde-inbox">
-		  <title>Webmail (Posteingang)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations50/inbox_de.png"/>
-		</figure>
-
-	  <para>
-		Horde unterscheidet zwei Arten von Löschungen: Eine mit
-		<guimenu>Löschen</guimenu> entfernte E-Mail wird zuerst in den Ordner
-		<emphasis>Papierkorb</emphasis> verschoben. Sie kann von dort wieder in andere Ordner
-		verschoben werden, solange der Papierkorb nicht mit <guimenu>Leeren</guimenu> geleert wird.
-	  </para>
-	</section>
-
-	<section id="mail:Adressbuch">
-	  <title>Adressbuch</title>
-
-	  <para>
-		In diesem Modul werden E-Mail-Adressen und weitere Kontaktdaten verwaltet. Die
-		hier erfassten Informationen werden in einer Horde-eigenen SQL-Datenbank
-		gespeichert.
-	  </para>
-
-		<figure id="horde-address">
-		  <title>Adressbuch für Webmail</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations50/addressbook_de.png"/>
-		</figure>
-
-	  <para>
-		Mit der einfachen oder erweiterten Suche gefundene Kontaktdaten lassen sich in
-		eigene Adressbücher kopieren und dort bearbeiten. Neue Kontakte können über den
-		Menü-Punkt <guimenu>Neuer Kontakt</guimenu> eingetragen werden. Über
-		<guimenu>Meine Adressbücher</guimenu> können auch zusätzliche persönliche
-		Adressbücher erstellt werden.
-	  </para>
-
-	  <para>
-		Über den Menü-Punkt <guimenu>Liste</guimenu> lässt sich der Inhalt von
-		Adressbüchern anzeigen. Die Listen lassen sich durch Klick auf einen
-		gewünschten Spaltenkopf (Name, Vorname, etc.) alphabetisch sortieren. Ein
-		Klick auf das Lupen-Symbol in der Kopfzeile des jeweiligen Adressbuches (direkt
-		neben dem Adressbuchnamen) öffnet ein Suchfeld, durch das man einfach innerhalb
-		des angezeigten Adressbuchs suchen kann. Aus einer Liste können einzelne
-		Adressen zur anschließenden Verwendung durch ein Kreuz in der ersten Spalte
-		markiert werden, z.B. um sie als Datei in einem bestimmten Dateiformat zu
-		exportieren oder in ein anderes Adressbuch zu kopieren.
-	  </para>
-	</section>
-
-	<section id="mail::horde::filter">
-	  <title>E-Mail-Filter</title>
-
-	  <para>
-		Dovecot unterstützt serverseitige Filterskripte, die in einer eigenen
-		Skriptsprache namens Sieve geschrieben werden. Das Filter-Modul erlaubt die
-		Generierung dieser Filterskripte. Sie gelten allgemein, greifen also auch für
-		Benutzer, die über einen Standard-Mail-Client auf ihre Postfächer zugreifen.
-	  </para>
-
-		<figure id="horde-filter">
-		  <title>Filterverwaltung in Horde</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations50/filter_de.png"/>
-		</figure>
-
-	  <para>
-		Die Regeln lassen sich unter <guimenu>Webmail &ar; Filter</guimenu> bearbeiten
-		und ergänzen. Die Filter werden in der durchnummerierten Reihenfolge auf
-		eingehende E-Mails angewandt. Ihre Position lässt sich sowohl über die Pfeile
-		rechts als auch durch direkte Eingabe einer Nummer in der Spalte
-		<command>Verschieben</command> anpassen. Einzelne Filterregeln können in der
-		Spalte <command>Aktiviert</command> an- und abgeschaltet werden.
-	  </para>
-
-	  <para>
-		Unter <guimenu>Spam</guimenu> kann benutzerbezogen angepasst werden, welcher
-		Spam-Schwellwert gelten soll. Der angegebene <guimenu>Spam-Level</guimenu> ist
-		der SpamAssassin-Schwellwert. Eine E-Mail, die diesen Wert erreicht, wird in
-		den angegebenen Ordner verschoben.
-	  </para>
-
-	  <para>
-		Unter <guimenu>Abwesenheit</guimenu> lässt sich ein Zeitraum
-		festlegen, in dem auf eingehende E-Mails automatisch vom Mailserver mit einer
-		Antwort-E-Mail reagiert wird. Text und Betreff der E-Mail ist frei wählbar.
-	  </para>
-
-	  <para>
-		Über <guimenu>Neue Regel</guimenu> können eigene Regeln erstellt werden,
-		bspw. zur automatischen Sortierung von eingehenden E-Mails in themenbezogene
-		Mailordner.
-	  </para>
-
-	  <para>
-		Ein Klick auf <guimenu>Skript</guimenu> zeigt den Quelltext des generierten
-		Sieve-Skripts an.
-	  </para>
-	</section>
-  </section>
 </chapter>
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
