@@ -123,14 +123,14 @@
 			</para>
 
 			<para>
-				With the &ucsUCRV;<envar>office365/attributes/anonymize</envar>, a comma-separated list of LDAP
+				With the &ucsUCRV; <envar>office365/attributes/anonymize</envar>, a comma-separated list of LDAP
 				attributes can be configured that are created in the Azure Active Directory but filled with random values. The &ucsUCRV;s
 				<envar>office365/attributes/static/.*</envar>  allows the filling of attributes on the Microsoft side
 				with a predefined value.
 			</para>
 
 			<para>
-				The &ucsUCRV;<envar>office365/attributes/never</envar> can be used to specify a comma separated list of LDAP
+				The &ucsUCRV; <envar>office365/attributes/never</envar> can be used to specify a comma separated list of LDAP
 				attributes that should not be synchronized even when they appear in <envar>office365/attributes/sync</envar> or
 				<envar>office365/attributes/anonymize</envar>.
 			</para>
@@ -138,7 +138,7 @@
 			<para>
 				The &ucsUCRV;s <envar>office365/attributes/mapping/.*</envar> define a
 				mapping of UCS LDAP attributes to Azure Attributes. Usually these variables don't need to be changed. The
-				synchronization of the groups of Microsoft 365 user can be enabled with the &ucsUCRV;<envar>office365/groups/sync</envar>.
+				synchronization of the groups of Microsoft 365 user can be enabled with the &ucsUCRV; <envar>office365/groups/sync</envar>.
 			</para>
 
 			<para>
@@ -190,7 +190,7 @@
 			<para>
 				In case of synchronization problems, the log file of the &ucsUDL; should be
 				examined: <filename>/var/log/univention/listener.log</filename>. The
-				&ucsUCRV;<envar>Office365/debug/werror</envar> activates additional debug output.
+				&ucsUCRV; <envar>Office365/debug/werror</envar> activates additional debug output.
 			</para>
 
 		</section>

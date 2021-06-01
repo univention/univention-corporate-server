@@ -986,7 +986,7 @@
 		<title>Collection of list of supported hardware</title>
 		<para>
 			Univention collects information about hardware which is compatible with UCS and in use by customers.
-			The information processed for this is gathered by the UMC module <guimenu>System information</guimenu>.
+			The information processed for this is gathered by the UMC module <guimenu>Hardware information</guimenu>.
 		</para>
 		<para>
 			All files are forwarded to Univention anonymously and only transferred once
@@ -999,14 +999,14 @@
 			adapted and an additional <guimenu>Descriptive comment</guimenu> added.
 		</para>
 		<para>
-			If the system information is transferred as part of a support request, the
+			If the hardware information is transferred as part of a support request, the
 			<guimenu>This is related to a support case</guimenu> option should be
 			activated. A ticket number can be entered in the next field; this facilitates
 			assignment and allows quicker processing.
 		</para>
 		<para>
 			Clicking on <guimenu>Next</guimenu> offers an overview of the transferred
-			system information. In addition, a compressed .tar archive is created, which
+			hardware information. In addition, a compressed .tar archive is created, which
 			contains a list of the hardware components used in the system and can be
 			downloaded via <guimenu>Archive with system information</guimenu>.
 		</para>
@@ -1768,7 +1768,7 @@ auth/sshd/restrict: yes
 				save open files.
 			</para>
 		</section>
-		<section id="computers:modules:diagnostic"><title>System error diagnosis via &ucsUMC; module</title>
+		<section id="computers:modules:diagnostic"><title>System diagnostic via &ucsUMC; module</title>
 			<para>
 				The UMC module <guimenu>System diagnostic</guimenu> offers a
 				corresponding user interface to analyze a UCS system for a

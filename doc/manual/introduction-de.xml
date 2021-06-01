@@ -331,7 +331,6 @@ UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:
 <listitem><simpara>System- und Netzüberwachung</simpara></listitem>
 <listitem><simpara>Druckserver-Funktionalität</simpara></listitem>
 <listitem><simpara>Proxy-Server</simpara></listitem>
-<listitem><simpara>Integriertes Backup</simpara></listitem>
 </itemizedlist>
 <para>
 Unter <biblioref linkend="ucs-dokumentationen"/> und im Univention Wiki

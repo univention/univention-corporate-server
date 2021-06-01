@@ -1691,7 +1691,8 @@ dpkg --get-selections \* > dpkg.selection
 		lässt sich wie folgt erstellen:
 	</para>
 		<programlisting language="sh">
-ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
+dpkg -S /etc/ldap/schema/*.schema \
+  /usr/share/univention-ldap/schema/*.schema
 		</programlisting>
 	<para>
 		Um einfach alle installierten Pakete des &ucsPrimaryDN; auch auf dem &ucsBackupDN; zu installieren,

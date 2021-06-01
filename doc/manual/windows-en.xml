@@ -348,7 +348,7 @@ instanceType: 4
 			  <listitem><simpara>
 				<emphasis>User policies</emphasis> configure a user's settings, e.g., the
 				configuration of the desktop. It is also possible to configure applications via
-				group policies (e.g., the start page of Microsoft Internet Explorer or settings in
+				group policies (e.g., the start page of a browser or settings in
 				LibreOffice).
 			  </simpara></listitem>
 
@@ -960,12 +960,6 @@ ucr set connector/ad/mapping/user/password/kinit=false
   <para>
 	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded to the wizard.
   </para>
-
-  <para>
-	Internet Explorer 6 - which is preinstalled on Windows 2003 systems - is not supported by
-	&ucsWeb;. The browser must be updated before continuing.
-  </para>
-
   <para>
 	In the first dialog window of the set-up wizard, the point <emphasis>Synchronization of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
 	</para>

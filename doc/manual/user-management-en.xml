@@ -1099,7 +1099,7 @@
 						<listitem><simpara>
 							A path to a text file whose content will be used for the body of the verification email.
 							The text can contain the following strings which will be substituted accordingly: <replaceable>{link}</replaceable>, <replaceable>{token}</replaceable>, <replaceable>{tokenlink}</replaceable> and <replaceable>{username}</replaceable>.
-							As default the file <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename>
+							As default the file <filename>/usr/share/univention-self-service/email_bodies/verification_email_body.txt</filename>
 							is used.
 						</simpara></listitem>
 					</varlistentry>
@@ -1189,7 +1189,7 @@
 						<listitem><simpara>
 							A path to a text file whose content will be used for the body of the email.
 							The text can contain the following strings which will be substituted accordingly: <replaceable>{username}</replaceable>.
-							As default the file <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename>
+							As default the file <filename>/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt</filename>
 							is used.
 						</simpara></listitem>
 					</varlistentry>
@@ -1352,8 +1352,9 @@ univention-ldapsearch objectclass=pwdPolicy
 			<para>
 				The following command can be used to block the account after 10 attempts:
 				<programlisting language="sh">
-ldapmodify -x -D cn=admin,$(ucr get ldap/base) -y /etc/ldap.secret &lt;&lt;__EOT__
-dn: cn=default,cn=ppolicy,cn=univention,$(ucr get ldap/base)
+LB="$(ucr get ldap/base)"
+ldapmodify -x -D "cn=admin,$LB" -y /etc/ldap.secret &lt;&lt;__EOT__
+dn: cn=default,cn=ppolicy,cn=univention,$LB
 changetype: modify
 replace: pwdMaxFailure
 pwdMaxFailure: 10

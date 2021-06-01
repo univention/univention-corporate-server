@@ -978,7 +978,7 @@
         <section id="computers:hardware:sysinfo"><title>Erfassung von unterstützter Hardware</title>
             <para>
                 Univention erfasst Informationen über Hardware, die mit UCS kompatibel und bei Kunden im Einsatz ist.
-                Die hierbei verarbeiteten Informationen werden über das UMC-Modul <guimenu>Systeminformationen</guimenu> erfasst.
+                Die hierbei verarbeiteten Informationen werden über das UMC-Modul <guimenu>Hardwareinformationen</guimenu> erfasst.
             </para>
             <para>
                 Alle Daten werden dabei anonymisiert an Univention weitergeleitet und erst nach
@@ -991,7 +991,7 @@
                 ein zusätzlicher <guimenu>Kommentar</guimenu> angegeben werden.
             </para>
             <para>
-                Wenn die Übermittlung der Systeminformationen im Rahmen einer Support-Anfrage
+                Wenn die Übermittlung der Hardwareinformationen im Rahmen einer Support-Anfrage
                 erfolgt, sollte die Option <guimenu>Dies bezieht sich auf einen
                 Supportfall</guimenu> aktiviert werden. Im folgenden Feld kann dann eine Ticketnummer
                 angegeben werden, die die Zuordnung vereinfacht und eine schnellere
@@ -999,9 +999,9 @@
             </para>
             <para>
                 Nach einem Klick auf <guimenu>Weiter</guimenu> wird eine Übersicht der ermittelten
-                Systeminformationen ausgegeben. Außerdem wird ein komprimiertes Tar-Archiv
+                Hardwareinformationen ausgegeben. Außerdem wird ein komprimiertes Tar-Archiv
                 erstellt, das eine Liste mit den im System verwendeten Hardware-Komponenten
-                enthält und über <guimenu>Archiv mit den Systeminformationen</guimenu>
+                enthält und über <guimenu>Archiv mit den Hardwareinformationen</guimenu>
                 heruntergeladen werden kann.
             </para>
             <para>
@@ -1734,10 +1734,10 @@ auth/sshd/restrict: yes
                 </para>
             </section><!-- Prozessübersicht in &ucsUMC; -->
 
-            <section id="computers:modules:diagnostic"><title>System-Fehlerdiagnose über &ucsUMC; Modul</title>
+            <section id="computers:modules:diagnostic"><title>Systemdiagnose über &ucsUMC; Modul</title>
                 <para>
 					Um ein UCS-System auf verschiedene bekannte Probleme hin zu analysieren
-					bietet das UMC-Modul <guimenu>System-Fehlerdiagnose</guimenu> eine
+					bietet das UMC-Modul <guimenu>Systemdiagnose</guimenu> eine
 					entsprechende Benutzerschnittstelle.
 				</para>
 				<para>

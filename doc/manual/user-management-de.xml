@@ -1144,7 +1144,7 @@
 							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
 							<replaceable>{link}</replaceable>, <replaceable>{token}</replaceable>, <replaceable>{tokenlink}</replaceable> und <replaceable>{username}</replaceable>.
 							Als Standard wird die Datei
-							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename> verwendet.
+							<filename>/usr/share/univention-self-service/email_bodies/verification_email_body.txt</filename> verwendet.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1241,7 +1241,7 @@
 							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
 							<replaceable>{username}</replaceable>.
 							Als Standard wird die Datei
-							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename> verwendet.
+							<filename>/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt</filename> verwendet.
 						</simpara></listitem>
 					</varlistentry>
 				</variablelist>
@@ -1415,8 +1415,9 @@ univention-ldapsearch objectclass=pwdPolicy
 			<para>
 				Um den Account erst nach 10 Versuchen zu sperren kann der folgende Befehl verwendet werden:
 				<programlisting language="sh">
-ldapmodify -x -D cn=admin,$(ucr get ldap/base) -y /etc/ldap.secret &lt;&lt;__EOT__
-dn: cn=default,cn=ppolicy,cn=univention,$(ucr get ldap/base)
+LB="$(ucr get ldap/base)"
+ldapmodify -x -D "cn=admin,$LB" -y /etc/ldap.secret &lt;&lt;__EOT__
+dn: cn=default,cn=ppolicy,cn=univention,$LB
 changetype: modify
 replace: pwdMaxFailure
 pwdMaxFailure: 10

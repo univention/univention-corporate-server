@@ -595,6 +595,12 @@ udm settings/ldapacl remove \
 		<itemizedlist>
 			<listitem>
 				<simpara>
+				  <guimenu>LDAP filter</guimenu>:
+				  A LDAP filter expression can be specified here, which an object must match for this policy to get applied.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
 			  <guimenu>Required object classes</guimenu>: Here you can specify LDAP object classes
 			  that an object must possess for the policy to apply to this object. If, for example, a
 			  user policy is only relevant for Windows environments, the
@@ -1362,29 +1368,32 @@ Available Modules are:
 		used on it can be output by specifying the operation name, e.g.,
 	</para>
 	<screen>
-univention-directory-manager users/user move
+# univention-directory-manager users/user move
+[...]
+general options:
+  --binddn                         bind DN
+  --bindpwd                        bind password
+  --bindpwdfile                    file containing bind password
 [...]
 create options:
-  --binddn                         bind DN
-  --bindpwd                        bind password
+  --position                       Set position in tree
+  --set                            Set variable to value, e.g. foo=bar
 [...]
 modify options:
-  --binddn                         bind DN
-  --bindpwd                        bind password
   --dn                             Edit object with DN
+  --set                            Set variable to value, e.g. foo=bar
 [...]
 remove options:
-  --binddn                         bind DN
-  --bindpwd                        bind password
   --dn                             Remove object with DN
-  --arg                            Remove object with ARG
+  --superordinate                  Use superordinate module
 [...]
 list options:
   --filter                         Lookup filter
+  --position                       Search underneath of position in tree
 [...]
 move options:
-  --binddn                         bind DN
-  --bindpwd                        bind password
+  --dn                             Move object with DN
+  --position                       Move to position in tree
 [...]
 	</screen>
 	<para>

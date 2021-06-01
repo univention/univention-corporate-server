@@ -357,7 +357,7 @@ instanceType: 4
 			  <listitem><simpara>
 				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines
 				Benutzers, z.B. die Vorkonfiguration des Desktops. Auch Anwendungen können über Gruppenrichtlinien konfiguriert
-				werden (z.B. die Startseite des Microsoft Internet Explorers oder Einstellungen in LibreOffice).
+				werden (z.B. die Startseite des Browsers oder Einstellungen in LibreOffice).
 			  </simpara></listitem>
 
 			  <listitem><simpara>
@@ -1038,13 +1038,6 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen,
 	  da Dateien auf den AD-Domänencontroller herunter geladen und im Assistenten hochgeladen werden müssen.
 	</para>
-
-	<para>
-	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird von &ucsWeb;n
-	  nicht unterstützt. Hier sollte zuerst eine Aktualisierung des Browsers durchgeführt oder ein
-	  alternativer Browser installiert werden.
-	</para>
-
 	<para>
 	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <mousebutton>Weiter</mousebutton> bestätigt werden.
 	</para>

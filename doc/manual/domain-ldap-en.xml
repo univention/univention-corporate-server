@@ -1655,7 +1655,8 @@ dpkg --get-selections \* &gt;> dpkg.selection
 		are absolutely necessary. The following command executed on the &ucsPrimaryDN; will list all affected packages:
 	</para>
 		<programlisting language="sh">
-ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
+dpkg -S /etc/ldap/schema/*.schema \
+  /usr/share/univention-ldap/schema/*.schema
 		</programlisting>
 	<para>
 		To simply install all packages of the &ucsPrimaryDN; also on the &ucsBackupDN;, use the previously
