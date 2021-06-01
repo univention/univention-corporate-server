@@ -115,6 +115,8 @@
   desc: univention-desktop
   obsolete: "5.0.0"
   vars:
+    - auth/gdm/.*
+    - auth/kdm/.*
     - firefox/prefs/checkdefaultbrowser
     - firefox/prefs/conffile
     - firefox/prefs/homepage
