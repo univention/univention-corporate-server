@@ -15,6 +15,7 @@
 - git: c0ae1f026d93b6a688b0f4c369fb70bf0434e150
   desc: univention-ftp
   vars:
+    - auth/ftp/.*
     - security/packetfilter/package/univention-ftp/tcp/20/all
     - security/packetfilter/package/univention-ftp/tcp/20/all/en
     - security/packetfilter/package/univention-ftp/tcp/21/all

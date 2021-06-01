@@ -1658,7 +1658,6 @@ if configRegistry.get('version/version') and \
                 <para>
 					Anmeldebeschränkungen werden unterstützt für
 					<systemitem class="service">SSH</systemitem> (<literal>sshd</literal>),
-					<systemitem class="service">FTP</systemitem> (<literal>ftp</literal>),
 					die Anmeldung am Login-Manager <systemitem class="service">KDM</systemitem> (<literal>kdm</literal>),
 					Anmeldung an einem <systemitem class="service">tty</systemitem> (<literal>login</literal>),
 					<systemitem class="service">rlogin</systemitem> (<literal>rlogin</literal>),
