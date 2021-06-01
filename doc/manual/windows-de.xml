@@ -146,7 +146,7 @@
 		<para>
 		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
 		  Basis von <systemitem class="filesystem">CIFS</systemitem>/<systemitem class="filesystem">SMB</systemitem> (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
-		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem>)
+		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem>)
 		  sind ACLs auch von Windows-Clients verwendbar.
 		</para>
 

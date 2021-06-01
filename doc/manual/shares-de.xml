@@ -30,7 +30,7 @@
 
   <para>
 	Um auf einer Freigabe Access Control Lists einzusetzen, muss das unterliegende Linux-Dateisystem
-	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem> POSIX-ACLs. Die
+	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem> POSIX-ACLs. Die
 	Samba-Konfiguration erlaubt außerdem die Speicherung von DOS-Datei-Attributen in erweiterten
 	Attributen des Unix-Dateisystems. Um erweiterte Attribute zu nutzen, muss die Partition mit der
 	Mount-Option <option>user_xattr</option> eingebunden werden.
@@ -1086,7 +1086,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
   </para>
 
   <para>
-	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">xfs</systemitem>
+	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">xfs</systemitem>
 	angelegt werden. Bevor Dateisystem-Quota konfiguriert werden, muss der Quota-Support pro
 	Partition aktiviert werden, siehe <xref linkend="shares::quota::umc"/>.
   </para>

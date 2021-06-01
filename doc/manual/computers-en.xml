@@ -418,7 +418,7 @@
 	<section id="computers:Available_kernel_variants">
 		<title>Available kernel variants</title>
 		<para>
-			The standard kernel in UCS 5.0 is based on the Linux kernel 4.19.
+			The standard kernel in UCS 5.0 is based on the Linux kernel <productnumber>4.19</productnumber>.
 			In principle, there are three different types of kernel packages:
 		</para>
 		<itemizedlist>
@@ -449,13 +449,6 @@
 			one kernel image package.
 		</para>
 		<para>
-			The default kernel in UCS for i386-based systems is the so-called
-			<wordasword>bigmem kernel</wordasword> for processors with PAE support, which
-			supports 64 GB RAM. For older i386-based systems a second kernel without PAE
-			support is provided, which only supports up to 4 GB RAM. The standard kernel
-			for amd64 systems has no such limits.
-		</para>
-		<para>
 			Several kernel versions can be installed in parallel. This makes sure
 			that there is always an older version available to which can be reverted in
 			case of an error. So-called meta packages are available which always refer to
@@ -463,31 +456,6 @@
 			kernel version will be installed, making it possible to keep the system up to
 			date at any time.
 		</para>
-		<para>
-			The following meta packages are available under i386 / 32 bit:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-					<package>univention-kernel-image</package> - Standard kernel with support up to 64 GB RAM
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-					<package>univention-kernel-image-486</package> - Kernel for systems without PAE support (max. 4 GB RAM)
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<para>
-			The following meta packages are available under amd64 / 64 bit:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-					<package>univention-kernel-image</package> - Standard kernel
-				</simpara>
-			</listitem>
-		</itemizedlist>
 	</section>
 
 	<section id="computers:Hardware_drivers__kernel_modules">
@@ -526,7 +494,7 @@
 		  DKMS framework (Dynamic Kernel Module Support). This provides a standardized interface for
 		  kernel sources, which are then built automatically for every installed kernel (insofar as
 		  the source package is compatible with the respective kernel). For this to happen, the
-		  kernel header package <package>univention-kernel-headers</package> must be
+		  kernel header package <package>linux-headers-amd64</package> must be
 		  installed in addition to the <package>dkms</package> package. Please note that not all
 		  the external kernel modules are compatible with all kernels.
 		</para>

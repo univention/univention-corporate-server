@@ -27,7 +27,7 @@
 
   <para>
 	To be able to use access control lists on a share, the underlying Linux file system must support
-	POSIX ACLs. In UCS the file systems <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem> support POSIX ACLs. The Samba
+	POSIX ACLs. In UCS the file systems <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem> support POSIX ACLs. The Samba
 	configuration also allows storing DOS file attributes in extended attributes of the Unix file
 	system. To use extended attributes, the partition must be mounted using the mount option
 	<option>user_xattr</option>.
@@ -1040,7 +1040,7 @@ Microsoft Distributed File System Tree'.
   </para>
 
   <para>
-	File system quotas can only be applied on partitions with the file systems <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and
+	File system quotas can only be applied on partitions with the file systems <systemitem class="filesystem">ext4</systemitem> and
 	<systemitem class="filesystem">XFS</systemitem>. Before filesystem quotas can be configured, the use of file system quotas needs to be
 	activated per partition, see <xref linkend="shares::quota::umc"/>.
   </para>

@@ -142,7 +142,7 @@
 		<para>
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see  <xref linkend="shares::general"/>). Insofar as the underlying file system
-		  supports Access Control Lists (ACLs) (can be used with <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem>), the ACLs can
+		  supports Access Control Lists (ACLs) (can be used with <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem>), the ACLs can
 		  also be used by Windows clients.
 		</para>
 
