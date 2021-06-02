@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-portal
+fix: 4.0.5-54A~5.0.0.202106030016
+desc: |
+ This update addresses the following issue(s):
+ * Notifications now autohide
+ * Notifications and tabs now have a counter in the header bar
+ * Fix sizings in mobile mode
+ * Improve portal header in mobile mode
+ * Improved form validations
+ * Edit modals cannot be closed when clicking the background; edit modals do
+   not close before save finished; new layer for loading animation
+ * Removed console.log messages
+ * Added indicator for folders exceeding 9 entries
+ * Manage tabindex for all components
+ * Cookie Banner now better fits the portal layout
+ * Various accessibility fixes, like aria attributes
+ * Various CSS fixes
+bug: [53385]
