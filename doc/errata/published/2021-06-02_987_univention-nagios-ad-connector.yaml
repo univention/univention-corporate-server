@@ -10,3 +10,5 @@ desc: |
    a false positive if multiple ad-connector instances
    were running. This has been fixed.
 bug: [51869]
+erratum: 987
+announced: 2021-06-02
