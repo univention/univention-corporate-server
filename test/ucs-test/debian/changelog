@@ -1,3 +1,9 @@
+ucs-test (9.0.7-37) unstable; urgency=medium
+
+  * Bug #53362: add test for UMC translation file registration
+
+ -- Christian Castens <castens@univention.de>  Tue, 29 Jun 2021 13:23:05 +0200
+
 ucs-test (9.0.7-36) unstable; urgency=medium
 
   * Bug #40709: let pytest write junit files instead of ucs-test

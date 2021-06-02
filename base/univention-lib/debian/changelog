@@ -1,3 +1,9 @@
+univention-lib (8.0.1-43) unstable; urgency=medium
+
+  * Bug #53362: UMC translation file registration 
+
+ -- Christian Castens <castens@univention.de>  Tue, 29 Jun 2021 13:19:58 +0200
+
 univention-lib (8.0.1-42) unstable; urgency=medium
 
   * Bug #37720: touch all HTML/JS/CSS files in postinst via

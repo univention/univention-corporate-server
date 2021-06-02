@@ -1,3 +1,9 @@
+univention-ldap (15.0.3-4) unstable; urgency=medium
+
+  * Bug #53362: UMC translation file registration
+
+ -- Christian Castens <castens@univention.de>  Tue, 29 Jun 2021 13:22:00 +0200
+
 univention-ldap (15.0.3-3) unstable; urgency=medium
 
   * Bug #52696: sha512 hashes for cn=admin and backup
