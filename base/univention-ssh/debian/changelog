@@ -1,3 +1,9 @@
+univention-ssh (11.0.0-2) unstable; urgency=medium
+
+  * Bug #53181: fix lost stdout from ssh
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 02 Jun 2021 11:27:53 +0200
+
 univention-ssh (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
