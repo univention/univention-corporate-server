@@ -41,7 +41,8 @@
       <icon-button
         v-if="editMode"
         icon="edit-2"
-        class="portal-category__edit-button"
+        class="portal-category__edit-button icon-button--admin"
+        :aria-label-prop="ariaLabelEditButton"
         @click="editCategory"
       />
       <div
@@ -66,13 +67,24 @@
         >
           <portal-folder
             v-if="tile.isFolder"
-            v-bind="tile"
+            :id="tile.id"
+            :dn="tile.dn"
             :super-dn="dn"
+            :title="tile.title"
+            :tiles="tile.tiles"
           />
           <portal-tile
             v-else
-            v-bind="tile"
+            :id="tile.id"
+            :dn="tile.dn"
             :super-dn="dn"
+            :title="tile.title"
+            :description="tile.description"
+            :activated="tile.activated"
+            :background-color="tile.backgroundColor"
+            :links="tile.links"
+            :link-target="tile.linkTarget"
+            :path-to-logo="tile.pathToLogo"
           />
         </div>
       </template>
@@ -144,6 +156,9 @@ export default defineComponent({
     hasTiles(): boolean {
       return this.tiles.some((tile) => this.tileMatchesQuery(tile));
     },
+    ariaLabelEditButton(): string {
+      return this.$translateLabel('EDIT_CATEGORY');
+    },
   },
   methods: {
     async tileDropped(evt: DragEvent) {
@@ -175,6 +190,7 @@ export default defineComponent({
     editCategory() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminCategory',
+        stubborn: true,
         props: {
           modelValue: this.$props,
           label: 'EDIT_CATEGORY',
@@ -218,7 +234,6 @@ export default defineComponent({
 
   &__edit-button
     padding 0
-    @extend .icon-button--admin
 
   &__title
     height: var(--button-size)

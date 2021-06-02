@@ -165,7 +165,7 @@ const portalData: PortalModule<PortalDataState> = {
     async saveContent({ commit, dispatch, getters }) {
       const content = getters.portalContent;
       const categories = getters.portalCategories;
-      const puts: Promise<void>[] = [];
+      const puts: Promise<boolean>[] = [];
       categories.forEach((category) => content.forEach(([cat, entries]) => {
         if (cat !== category.dn) {
           return;

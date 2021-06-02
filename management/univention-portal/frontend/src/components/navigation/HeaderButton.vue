@@ -31,14 +31,17 @@ License with the Debian GNU/Linux or Univention distribution in file
     :class="{ 'header-button--is-active': isActiveButton }"
     class="header-button"
     @click="toggleActiveButton"
+    @keyup.esc.stop="emptyActiveButton"
   >
     <span
       :class="'header-button__inner'"
       role="presentation"
     >
-      <button
+      <tabindex-element
         :id="'header-button-' + icon"
         :ref="setRef"
+        tag="button"
+        :active-at="['portal', `header-${icon}`]"
         :aria-expanded="isActiveButton"
         :aria-label="ariaLabelProp"
         :class="['header-button__button', hoverClass]"
@@ -46,7 +49,13 @@ License with the Debian GNU/Linux or Univention distribution in file
         <portal-icon
           :icon="icon"
         />
-      </button>
+        <div
+          v-if="counter"
+          class="header-button__detail"
+        >
+          {{ counter }}
+        </div>
+      </tabindex-element>
     </span>
   </div>
 </template>
@@ -54,11 +63,15 @@ License with the Debian GNU/Linux or Univention distribution in file
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 
 export default defineComponent({
   name: 'HeaderButton',
-  components: { PortalIcon },
+  components: {
+    PortalIcon,
+    TabindexElement,
+  },
   props: {
     icon: {
       type: String,
@@ -71,6 +84,10 @@ export default defineComponent({
     noClick: {
       type: Boolean,
       default: false,
+    },
+    counter: {
+      type: Number,
+      default: 0,
     },
     hoverClass: {
       type: String,
@@ -93,6 +110,11 @@ export default defineComponent({
         } else {
           this.$store.dispatch('navigation/setActiveButton', this.icon);
         }
+      }
+    },
+    emptyActiveButton(): void {
+      if (!this.noClick) {
+        this.$store.dispatch('navigation/setActiveButton', '');
       }
     },
   },
@@ -124,10 +146,13 @@ export default defineComponent({
     justify-content: center
     transition: var(--button-bgc-transition)
     background-color: var(--bgc-state)
-    transition: opacity 250ms
+    transition: opacity var(--portal-transition-duration)
     font-size: var(--button-font-size)
+    width: inherit
+    height: inherit
 
   &__button
+    position: relative
     font-size: var(--font-size-3)
     background: none
     border: none
@@ -138,6 +163,9 @@ export default defineComponent({
     background-color: transparent
     border: 0.2rem solid rgba(0,0,0,0)
     padding: var(--layout-spacing-unit)
+    width: inherit
+    height: inherit
+    border-radius: var(--border-radius-circles)
 
     &:hover,
     &:focus
@@ -163,4 +191,19 @@ export default defineComponent({
 
     &:hover
       cursor: pointer
+
+  &__detail
+    position: absolute
+    color: var(--bgc-content-header)
+    background-color: var(--color-grey62)
+    font-size: var(--font-size-5)
+    width: 1.6em
+    height: 1.6em
+    left: 2em
+    top: -0.5em
+    border-radius: var(--border-radius-circles)
+    display: flex
+    align-items: center
+    justify-content: center
+    pointer-events: none
 </style>

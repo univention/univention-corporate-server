@@ -30,8 +30,30 @@ import { createApp } from 'vue';
 import App from '@/App.vue';
 import { store } from '@/store';
 import localize from '@/plugins/localize';
+import VueDOMPurifyHTML from 'vue-dompurify-html';
+
+import '@/assets/styles/style.styl';
+
+declare global {
+    interface Window {
+        store: any;
+    }
+}
+window.store = store;
 
 createApp(App)
   .use(store)
   .use(localize)
+  .use(VueDOMPurifyHTML, {
+    hooks: {
+      afterSanitizeAttributes: (currentNode) => {
+        // Do something with the node
+        // set all elements owning target to target=_blank
+        if ('target' in currentNode) {
+          currentNode.setAttribute('target', '_blank');
+          currentNode.setAttribute('rel', 'noopener');
+        }
+      },
+    },
+  })
   .mount('#app');

@@ -72,4 +72,9 @@ function setInvalidity(element: any, name: string, invalid: boolean): void {
   }
 }
 
-export { isFQDN, isIPv6Address, isIPv4Address, getCookie, setCookie, setInvalidity };
+function randomId(): string {
+  return Math.random().toString(36)
+    .substr(2);
+}
+
+export { isFQDN, isIPv6Address, isIPv4Address, getCookie, setCookie, setInvalidity, randomId };

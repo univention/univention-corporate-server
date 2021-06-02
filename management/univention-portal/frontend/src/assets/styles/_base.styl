@@ -25,11 +25,12 @@ button
   border: none
   border-radius: var(--button-border-radius)
   background-color: unquote('rgba(var(--color-grey25-rgb), 0.7)')
-  transition: opacity 250ms
+  transition: opacity var(--portal-transition-duration)
   display: flex
   align-items: center
   cursor: pointer
-
+  transition: background-color var(--portal-transition-duration)
+  
   svg + span
     padding-left: var(--layout-spacing-unit-small)
 
@@ -41,10 +42,12 @@ button
 
   &:hover
     background-color: unquote('rgba(var(--color-grey25-rgb), 0.85)')
+    transition: background-color var(--portal-transition-duration)
 
   &:focus,
   &:active
     background-color: unquote('rgba(var(--color-grey25-rgb), 1)')
+    transition: unset;
 
   &.primary
     background-color: unquote('rgba(var(--color-primary-rgb), 0.7)')
@@ -72,7 +75,7 @@ input, select
   border: 1px solid var(--inputfield-bgc)
   border-radius: var(--border-radius-interactable)
   transition: background-color, color, border
-  transition-duration: 250ms
+  transition-duration: var(--portal-transition-duration)
 
   &:hover,
   &:focus
@@ -109,8 +112,9 @@ label, div.label
     padding: 0 !important
     margin: 4px
     margin-right: var(--layout-spacing-unit)
+    margin-left: 0
     border: 2px solid var(--color-grey40)
-    border-radius: var(--border-radius-tooltip)
+    border-radius: 2px
     background-color: var(--color-grey0)
     cursor: pointer
     appearance: none
@@ -124,7 +128,7 @@ label, div.label
         content: '\2713'
         color: var(--color-primary)
         position: absolute
-        left: calc(var(--font-size-3) / 2 - 2px)
+        left: calc(var(--font-size-3) / 2 - 2px - 4px)
     & + span
       vertical-align: top
       cursor: pointer
@@ -156,8 +160,6 @@ label, div.label
   &--admin
     height: calc(2 * var(--button-icon-size))
     user-select: none
-
-    display: inline-block
     margin-right: var(--layout-spacing-unit)
 
     background-color: var(--color-grey0)
@@ -166,15 +168,46 @@ label, div.label
     background-position: center
     border-radius: 50%
     box-shadow: var(--box-shadow)
+    border: 0.2rem solid transparent
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    box-sizing: border-box
+    padding: 0
 
     &:hover
       background-color: var(--color-grey8)
+      border-color: var(--color-focus)
 
     &:focus,
     &:active
       background-color: var(--color-grey25)
+      border-color: var(--color-focus)
 
 
   &--default-cursor,
   &--default-cursor:hover
     cursor: default !important
+
+
+.sr-only
+  position: absolute
+  width: 1px
+  height: 1px
+  padding: 0
+  margin: -1px
+  overflow: hidden
+  clip: rect(0,0,0,0)
+  border: 0
+
+/* this class is needed, because an @extend wouln't work on a @media */
+.sr-only-mobile
+  @media $mqSmartphone
+    position: absolute
+    width: 1px
+    height: 1px
+    padding: 0
+    margin: -1px
+    overflow: hidden
+    clip: rect(0,0,0,0)
+    border: 0

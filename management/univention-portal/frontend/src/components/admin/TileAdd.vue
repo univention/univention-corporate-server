@@ -27,27 +27,27 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
+  <icon-button
+    icon="plus"
+    :aria-label-prop="ariaLabelAddTile"
+    :active-at="activeAt"
     class="tile-add"
-    @click="showMenu()"
     @dragenter="dragenter"
-  >
-    <portal-icon
-      icon="plus"
-      class="tile-add__icon--add"
-    />
-  </div>
+    @click="showMenu()"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import PortalIcon from '@/components/globals/PortalIcon.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 import Draggable from '@/mixins/Draggable.vue';
 
 export default defineComponent({
   name: 'TileAdd',
-  components: { PortalIcon },
+  components: {
+    IconButton,
+  },
   mixins: [
     Draggable,
   ],
@@ -61,6 +61,21 @@ export default defineComponent({
       default: false,
     },
   },
+  computed: {
+    ariaLabelAddTile(): string {
+      return this.$translateLabel('ADD_NEW_TILE');
+    },
+    id(): string {
+      const r = new RegExp(/[^a-z]/g);
+      return `tile-add-${this.superDn.replaceAll(r, '-')}`;
+    },
+    activeAt(): string[] {
+      if (this.forFolder) {
+        return ['modal'];
+      }
+      return ['portal'];
+    },
+  },
   methods: {
     showMenu(): void {
       this.$store.dispatch('modal/setAndShowModal', {
@@ -70,6 +85,7 @@ export default defineComponent({
           forFolder: this.forFolder,
         },
       });
+      this.$store.dispatch('activity/setRegion', 'tile-add-modal');
     },
   },
 });
@@ -89,6 +105,9 @@ export default defineComponent({
 
   &:focus
     border-color: var(--color-focus)
+
+  &:focus, &:hover
+    background-color: transparent
 
   svg
     width: 100%

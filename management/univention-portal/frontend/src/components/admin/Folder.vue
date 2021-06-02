@@ -72,6 +72,11 @@ function getErrors(this: AdminFolderData) {
   const errors: Record<string, string> = {};
   if (!this.name) {
     errors.name = 'ERROR_ENTER_NAME';
+  } else {
+    const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
+    if (!regex.test(this.name)) {
+      errors.name = 'ERROR_WRONG_NAME';
+    }
   }
   if (!this.title.en_US) {
     errors.title = 'ERROR_ENTER_TITLE';
@@ -124,6 +129,7 @@ export default defineComponent({
   methods: {
     cancel() {
       this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
     async remove() {
       this.$store.dispatch('activateLoadingState');
@@ -133,18 +139,22 @@ export default defineComponent({
         entries: category.entries.filter((entryDn) => entryDn !== dn),
       };
       console.info('Removing', dn, 'from', this.superDn);
-      await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_REMOVED_SUCCESS', 'FOLDER_REMOVED_FAILURE');
+      const success = await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_REMOVED_SUCCESS', 'FOLDER_REMOVED_FAILURE');
       this.$store.dispatch('deactivateLoadingState');
+      if (success) {
+        this.cancel();
+      }
     },
     async finish() {
       this.$store.dispatch('activateLoadingState');
+      let success = false;
       const attrs = {
         name: this.name,
         displayName: Object.entries(this.title),
       };
       if (this.modelValue.dn) {
         console.info('Modifying', this.modelValue.dn);
-        await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
+        success = await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
       } else {
         console.info('Adding folder');
         console.info('Then adding it to', this.portalCategories, 'of', this.superDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
@@ -155,10 +165,13 @@ export default defineComponent({
           const categoryAttrs = {
             entries: category.entries.concat([dn]),
           };
-          await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          success = await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
         }
       }
       this.$store.dispatch('deactivateLoadingState');
+      if (success) {
+        this.cancel();
+      }
     },
   },
 });

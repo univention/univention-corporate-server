@@ -28,10 +28,12 @@
  */
 import { translate } from '@/i18n/translations';
 import { changePassword } from '@/jsHelper/umc';
+import { randomId } from '@/jsHelper/tools';
 
 function makeEntry(entryID, availableTiles, defaultLinkTarget) {
   const entry = availableTiles.find((tile) => tile.dn === entryID);
   return {
+    id: `menu-item-${randomId()}`,
     title: entry.name,
     description: entry.description,
     links: entry.links,
@@ -47,15 +49,15 @@ function changePasswordCallback(tileClick) {
     stubborn: true,
   }).then((values) => {
     changePassword(values.oldPassword, values.newPassword).then((response) => {
-      tileClick.$store.dispatch('notificationBubble/addSuccessNotification', {
-        bubbleTitle: translate('CHANGE_PASSWORD'),
-        bubbleDescription: response.data.message,
+      tileClick.$store.dispatch('notifications/addSuccessNotification', {
+        title: translate('CHANGE_PASSWORD'),
+        description: response.data.message,
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
     }, (error) => {
-      tileClick.$store.dispatch('notificationBubble/addErrorNotification', {
-        bubbleTitle: translate('CHANGE_PASSWORD'),
-        bubbleDescription: error.response.data.message,
+      tileClick.$store.dispatch('notifications/addErrorNotification', {
+        title: translate('CHANGE_PASSWORD'),
+        description: error.response.data.message,
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
       return changePasswordCallback(tileClick);
@@ -79,6 +81,7 @@ export default function createUserMenu(portalData) {
 
   if (portalData.username) {
     subMenuItems.unshift({
+      id: `menu-item-${randomId()}`,
       title: {
         en_US: 'Change password',
         de_DE: 'Passwort ändern',
@@ -90,6 +93,7 @@ export default function createUserMenu(portalData) {
   }
 
   const menuElement = {
+    id: `menu-${randomId()}`,
     title: menuTitle,
     linkTarget: 'samewindow',
     subMenu: subMenuItems,

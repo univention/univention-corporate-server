@@ -53,7 +53,7 @@ import { defineComponent } from 'vue';
 import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
 
-import { setInvalidity } from '@/jsHelper/tools';
+import { setInvalidity, randomId } from '@/jsHelper/tools';
 import { put } from '@/jsHelper/admin';
 
 interface ExistingEntryData {
@@ -86,8 +86,7 @@ export default defineComponent({
   },
   data(): ExistingEntryData {
     return {
-      datalistId: `datalist-${Math.random().toString(36)
-        .substr(2, 4)}`,
+      datalistId: `datalist-${randomId()}`,
     };
   },
   computed: {
@@ -98,9 +97,13 @@ export default defineComponent({
       return this.$store.getters[this.objectGetter];
     },
   },
+  mounted() {
+    this.$el.querySelector('input:enabled')?.focus();
+  },
   methods: {
     cancel() {
       this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
     async finish() {
       const input = this.$refs.input as HTMLFormElement;
@@ -118,6 +121,7 @@ export default defineComponent({
       }
       setInvalidity(this, 'input', !dn);
       if (dn) {
+        let success = false;
         this.$store.dispatch('activateLoadingState');
         const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
         const superAttrs = {
@@ -125,11 +129,14 @@ export default defineComponent({
         };
         console.info('Adding', dn, 'to', this.superDn);
         if (this.objectGetter === 'portalData/portalEntries') {
-          await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         } else {
-          await put(this.superDn, superAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          success = await put(this.superDn, superAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
         }
         this.$store.dispatch('deactivateLoadingState');
+        if (success) {
+          this.cancel();
+        }
       }
     },
   },

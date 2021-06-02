@@ -27,15 +27,17 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <header
+  <region
     id="portal-header"
+    role="banner"
     :class="{ 'portal-header__tabs-overflow': tabsOverflow }"
     class="portal-header"
   >
-    <div
-      ref="portalHeaderH1"
+    <tabindex-element
+      id="portal-header-head"
+      tag="div"
+      :active-at="['portal']"
       class="portal-header__left"
-      tabindex="0"
       role="button"
       :aria-label="ariaLabelPortalHeader"
       @click="goHome"
@@ -48,10 +50,17 @@ License with the Debian GNU/Linux or Univention distribution in file
         class="portal-header__left-image"
         alt=""
       >
-      <h1 class="portal-header__portal-name">
+      <div
+        v-else
+        class="portal-header__portal-home-icon"
+      >
+        <PortalIcon icon="home" />
+      </div>
+
+      <h1 class="portal-header__portal-name sr-only-mobile">
         {{ $localized(portalName) }}
       </h1>
-    </div>
+    </tabindex-element>
 
     <div
       ref="tabs"
@@ -60,10 +69,11 @@ License with the Debian GNU/Linux or Univention distribution in file
       <header-tab
         v-for="(item, index) in tabs"
         :key="index"
-        :tab-index="index + 1"
+        :idx="index + 1"
         :tab-label="item.tabLabel"
         :is-active="activeTabIndex == index + 1"
         :logo="item.logo"
+        :hidden="tabsOverflow"
       />
     </div>
 
@@ -75,11 +85,11 @@ License with the Debian GNU/Linux or Univention distribution in file
         {{ ariaLabelEditmode }}
       </div>
       <header-button
-        :aria-label="ariaLabelStartEditMode"
+        :aria-label-prop="ariaLabelStartEditMode"
         icon="settings"
       />
       <header-button
-        :aria-label="ariaLabelStopEditmode"
+        :aria-label-prop="ariaLabelStopEditmode"
         icon="x"
         @click="stopEditMode"
       />
@@ -92,8 +102,9 @@ License with the Debian GNU/Linux or Univention distribution in file
         v-if="showTabButton"
         ref="tabButton"
         data-test="tabbutton"
-        :aria-label="ariaLabelTabs"
+        :aria-label-prop="ariaLabelTabs"
         icon="copy"
+        :counter="numTabs"
         class="portal-header__tab-button"
       />
       <header-button
@@ -101,31 +112,25 @@ License with the Debian GNU/Linux or Univention distribution in file
         data-test="searchbutton"
         :aria-label-prop="ariaLabelSearch"
         icon="search"
-        @click="dismissBubble"
       />
       <header-button
         data-test="bellbutton"
         :aria-label-prop="ariaLabelNotifications"
         icon="bell"
-        @click="dismissBubble"
+        :counter="numNotifications"
+        @keydown.esc="closeNotifications"
       />
       <header-button
         data-test="navigationbutton"
         :aria-label-prop="ariaLabelMenu"
         icon="menu"
-        @click="dismissNotification('menu')"
       />
     </div>
 
-    <notification-bubble>
-      <template #bubble-standalone>
-        <notification-bubble-slot bubble-container="standalone" />
-      </template>
-    </notification-bubble>
     <template v-if="activeButton === 'search'">
       <portal-search />
     </template>
-  </header>
+  </region>
   <choose-tabs
     v-if="activeButton === 'copy'"
   />
@@ -135,13 +140,13 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import Region from '@/components/activity/Region.vue';
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import HeaderTab from '@/components/navigation/HeaderTab.vue';
-import NotificationBubble from '@/components/globals/NotificationBubble.vue';
-import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
 import ChooseTabs from '@/components/ChooseTabs.vue';
-import notificationMixin from '@/mixins/notificationMixin.vue';
+import PortalIcon from '@/components/globals/PortalIcon.vue';
 
 interface PortalHeaderData {
   tabsOverflow: boolean;
@@ -152,14 +157,12 @@ export default defineComponent({
   components: {
     HeaderButton,
     HeaderTab,
-    NotificationBubble,
-    NotificationBubbleSlot,
     PortalSearch,
     ChooseTabs,
+    PortalIcon,
+    Region,
+    TabindexElement,
   },
-  mixins: [
-    notificationMixin,
-  ],
   data(): PortalHeaderData {
     return {
       tabsOverflow: false,
@@ -171,8 +174,11 @@ export default defineComponent({
       portalName: 'portalData/portalName',
       activeTabIndex: 'tabs/activeTabIndex',
       tabs: 'tabs/allTabs',
+      savedScrollPosition: 'tabs/savedScrollPosition',
+      numTabs: 'tabs/numTabs',
       editMode: 'portalData/editMode',
       activeButton: 'navigation/getActiveButton',
+      numNotifications: 'notifications/numNotifications',
     }),
     ariaLabelPortalHeader(): string {
       return `${this.$translateLabel('SHOW_PORTAL')}`;
@@ -199,7 +205,14 @@ export default defineComponent({
       return `${this.$translateLabel('MENU')}`;
     },
     showTabButton(): boolean {
-      return this.tabs.length > 0;
+      return this.numTabs > 0 && this.tabsOverflow;
+    },
+  },
+  watch: {
+    numTabs(): void {
+      this.$nextTick(() => {
+        this.updateOverflow();
+      });
     },
   },
   mounted() {
@@ -210,9 +223,6 @@ export default defineComponent({
   beforeUnmount() {
     window.removeEventListener('resize', this.updateOverflow);
   },
-  updated(): void {
-    this.updateOverflow();
-  },
   methods: {
     updateOverflow() {
       const tabs = this.$refs.tabs as HTMLElement;
@@ -221,6 +231,11 @@ export default defineComponent({
       }
       this.tabsOverflow = tabs.scrollWidth > tabs.clientWidth;
     },
+    closeNotifications(): void {
+      if (this.activeButton === 'bell') {
+        this.$store.dispatch('navigation/setActiveButton', '');
+      }
+    },
     chooseTab(): void {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'ChooseTabs',
@@ -228,6 +243,9 @@ export default defineComponent({
     },
     goHome(): void {
       this.$store.dispatch('tabs/setActiveTab', 0);
+      setTimeout(() => {
+        window.scrollTo(0, this.savedScrollPosition);
+      }, 10);
     },
     stopEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', false);
@@ -253,10 +271,6 @@ export default defineComponent({
   &__portal-name
     font-size: var(--font-size-2);
     white-space: nowrap
-
-    @media mqSmartphone
-      width: 2rem
-      overflow: hidden
 
   &__left
     flex: 0 0 auto;
@@ -292,8 +306,15 @@ export default defineComponent({
   &__edit-mode-label
     white-space: nowrap
 
-  &__bubble-container
-    width: 360px
+  &__portal-home-icon
+    display: none
+    @media $mqSmartphone
+      display: flex
+      align-content: center
+
+      svg
+        width: calc(3* var(--layout-spacing-unit))
+        height: @width
 
 #header-button-copy
     display: none

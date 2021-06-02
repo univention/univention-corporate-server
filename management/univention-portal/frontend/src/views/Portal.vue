@@ -31,9 +31,10 @@
     <portal-background />
     <portal-header />
 
-    <main
+    <region
       v-show="!activeTabIndex"
       id="portalCategories"
+      role="main"
       class="portal-categories"
     >
       <div
@@ -58,15 +59,16 @@
       <h2
         v-if="editMode"
         class="portal-categories__title"
-        @click.prevent="addCategory()"
       >
         <icon-button
           icon="plus"
-          class="portal-categories__add-button"
+          class="portal-categories__add-button icon-button--admin"
+          :aria-label-prop="ariaLabelAddNewTile"
+          @click="addCategory"
         />
         <translate i18n-key="ADD_CATEGORY" />
       </h2>
-    </main>
+    </region>
 
     <div
       v-show="activeTabIndex"
@@ -80,6 +82,8 @@
       />
     </div>
 
+    <notifications :only-visible="true" />
+
     <portal-tool-tip
       v-if="tooltip"
       v-bind="tooltip"
@@ -87,6 +91,7 @@
 
     <portal-sidebar />
     <portal-modal :is-active="false" />
+    <loading-overlay />
   </div>
 </template>
 
@@ -95,7 +100,9 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
 import IconButton from '@/components/globals/IconButton.vue';
+import Region from '@/components/activity/Region.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+import Notifications from 'components/notifications/Notifications.vue';
 import PortalBackground from '@/components/PortalBackground.vue';
 import PortalCategory from 'components/PortalCategory.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
@@ -103,8 +110,8 @@ import PortalIframe from 'components/PortalIframe.vue';
 import PortalModal from 'components/PortalModal.vue';
 import PortalSidebar from '@/components/PortalSidebar.vue';
 import PortalToolTip from 'components/PortalToolTip.vue';
+import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
 
-import notificationMixin from '@/mixins/notificationMixin.vue';
 import Translate from '@/i18n/Translate.vue';
 
 import { Category } from '@/store/modules/portalData/portalData.models';
@@ -114,7 +121,9 @@ export default defineComponent({
   name: 'Portal',
   components: {
     IconButton,
+    LoadingOverlay,
     ModalWrapper,
+    Notifications,
     PortalBackground,
     PortalCategory,
     PortalHeader,
@@ -122,9 +131,9 @@ export default defineComponent({
     PortalModal,
     PortalSidebar,
     PortalToolTip,
+    Region,
     Translate,
   },
-  mixins: [notificationMixin],
   computed: {
     ...mapGetters({
       portalContent: 'portalData/portalContent',
@@ -137,16 +146,13 @@ export default defineComponent({
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
       hasEmptySearchResults: 'search/hasEmptySearchResults',
+      metaData: 'metaData/getMeta',
     }),
     categories(): Category[] {
       return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget, this.editMode);
     },
-    setModalContent() {
-      let ret = '';
-      if (this.currentModal === 'editEntry') {
-        ret = this.tileObject;
-      }
-      return ret;
+    ariaLabelAddNewTile(): string {
+      return this.$translateLabel('ADD_NEW_CATEGORY');
     },
   },
   methods: {
@@ -154,6 +160,7 @@ export default defineComponent({
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'CategoryAddModal',
       });
+      this.$store.dispatch('activity/setRegion', 'category-add-modal');
     },
   },
 });
@@ -164,18 +171,19 @@ export default defineComponent({
   position: relative;
   padding: calc(4 * var(--layout-spacing-unit)) calc(6 * var(--layout-spacing-unit));
 
+  @media $mqSmartphone
+    padding: calc(4 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit));
+
   &__add
     margin-top: -50px;
 
   &__add-button
     vertical-align: top
-    @extend .icon-button--admin
 
     svg
       vertical-align: top
 
   &__title
-    cursor: pointer
     display: inline-block
     margin-top: 0
     margin-bottom: calc(6 * var(--layout-spacing-unit))

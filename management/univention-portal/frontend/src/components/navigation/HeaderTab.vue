@@ -27,20 +27,21 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    :id="`headerTab__${tabIndex}`"
-    :ref="`headerTab__${tabIndex}`"
+  <tabindex-element
+    :id="`headerTab__${idx}`"
+    :ref="`headerTab__${idx}`"
+    tag="div"
+    :active-at="['portal']"
+    :hidden="hidden"
     class="header-tab"
     :class="{ 'header-tab--active': isActive, 'header-tab--focus': hasFocus }"
     @click="focusTab"
+    @keydown.enter="focusTab"
   >
     <div
       ref="tabFocusWrapper"
       class="header-tab__focus-wrapper"
-      tabIndex="0"
       :aria-label="ariaLabelFocus"
-      @keydown.enter="focusTab('setFocusOnIframe')"
-      @focus="setFocusStyleToParent()"
       @blur="removeFocusStyleFromParent()"
     >
       <!-- Alt-Tag should be empty, since it's not necessary for screenreader users -->
@@ -57,27 +58,32 @@ License with the Debian GNU/Linux or Univention distribution in file
         {{ tabLabel }}
       </span>
     </div>
-    <header-button
-      :icon="closeIcon"
-      :aria-label="ariaLabelClose"
-      :no-click="true"
+    <icon-button
+      :id="`close-tab-${idx}`"
+      icon="x"
+      tabindex="0"
+      :aria-label-prop="ariaLabelClose"
       class="header-tab__close-button"
-      @click.stop="closeTab"
-      @keydown.enter.prevent="reManageFocus"
+      :hidden="hidden"
+      @click="closeTab"
     />
-  </div>
+  </tabindex-element>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import HeaderButton from '@/components/navigation/HeaderButton.vue';
+import TabindexElement from '@/components/activity/TabindexElement.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 
 export default defineComponent({
   name: 'HeaderTab',
-  components: { HeaderButton },
+  components: {
+    IconButton,
+    TabindexElement,
+  },
   props: {
-    tabIndex: {
+    idx: {
       type: Number,
       required: true,
     },
@@ -95,6 +101,10 @@ export default defineComponent({
     },
     logo: {
       type: String,
+      required: true,
+    },
+    hidden: {
+      type: Boolean,
       required: true,
     },
   },
@@ -117,19 +127,16 @@ export default defineComponent({
   },
   methods: {
     focusTab(): void {
-      this.$store.dispatch('tabs/setActiveTab', this.tabIndex);
+      this.$store.dispatch('tabs/setActiveTab', this.idx);
     },
     closeTab(): void {
-      this.$store.dispatch('tabs/deleteTab', this.tabIndex);
+      this.$store.dispatch('tabs/deleteTab', this.idx);
     },
     setFocusStyleToParent():void {
       this.hasFocus = true;
     },
     removeFocusStyleFromParent():void {
       this.hasFocus = false;
-    },
-    reManageFocus():void {
-      this.closeTab();
     },
   },
 });
@@ -145,7 +152,7 @@ export default defineComponent({
   position: relative
   z-index: 1
   background-color: var(--tabColor)
-  transition: background-color 250ms;
+  transition: background-color var(--portal-transition-duration);
   flex-basis: auto;
   flex-grow: 1;
   max-width: 15rem;

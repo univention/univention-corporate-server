@@ -28,11 +28,13 @@
 -->
 <template>
   <div class="portal-tile__root-element">
-    <component
-      :is="wrapperTag"
+    <tabindex-element
+      :id="id"
+      :tag="wrapperTag"
+      :active-at="activeAt"
       :href="link"
       :target="anchorTarget"
-      :aria-describedby="createID()"
+      :aria-describedby="tileId"
       :aria-label="ariaLabelPortalTile"
       class="portal-tile"
       :draggable="editMode && !fromFolder"
@@ -40,14 +42,14 @@
       @mouseenter="editMode || showTooltip()"
       @mouseleave="hideTooltip"
       @mousedown="hideTooltip"
-      @click="tileClick($event)"
-      @keydown.tab.exact="setFocus($event, 'forward')"
-      @keydown.shift.tab.exact="setFocus($event, 'backward')"
       @focus="showTooltip()"
+      @focusin="setAriaDescribedBy"
+      @focusout="removeAriaDescribedBy"
       @blur="hideTooltip()"
       @dragstart="dragstart"
       @dragenter="dragenter"
       @dragend="dragend"
+      @click="tileClick($event)"
     >
       <div
         :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
@@ -72,14 +74,17 @@
       <icon-button
         v-if="!minified && editMode"
         icon="edit-2"
-        class="portal-tile__edit-button"
+        :active-at="activeAtEdit"
+        class="portal-tile__edit-button icon-button--admin"
+        :aria-label-prop="ariaLabelEditTile"
+        @click="editTile"
       />
-    </component>
+    </tabindex-element>
     <icon-button
       v-if="!minified && isTouchDevice"
       icon="info"
-      class="portal-tile__info-button"
-      tabindex="-1"
+      class="portal-tile__info-button icon-button--admin"
+      :aria-label-prop="ariaLabelInfoButton"
       @click="toolTipTouchHandler()"
     />
   </div>
@@ -90,22 +95,32 @@ import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 
 import IconButton from '@/components/globals/IconButton.vue';
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 
 import TileClick from '@/mixins/TileClick.vue';
 import Draggable from '@/mixins/Draggable.vue';
 
 import { Title, Description } from '@/store/modules/portalData/portalData.models';
 
+interface PortalTile {
+  tileId: string,
+}
+
 export default defineComponent({
   name: 'PortalTile',
   components: {
     IconButton,
+    TabindexElement,
   },
   mixins: [
     TileClick,
     Draggable,
   ],
   props: {
+    id: {
+      type: String,
+      default: '',
+    },
     dn: {
       type: String,
       required: true,
@@ -126,11 +141,6 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    pathToLogo: {
-      type: String,
-      required: false,
-      default: './questionMark.svg',
-    },
     backgroundColor: {
       type: String,
       default: 'var(--color-grey40)',
@@ -139,24 +149,16 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    hasFocus: {
-      type: Boolean,
-      default: false,
-    },
-    lastElement: {
-      type: Boolean,
-      default: false,
-    },
-    firstElement: {
-      type: Boolean,
-      default: false,
-    },
     fromFolder: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ['keepFocusInFolderModal'],
+  data(): PortalTile {
+    return {
+      tileId: '',
+    };
+  },
   computed: {
     ...mapGetters({
       tooltip: 'tooltip/tooltip',
@@ -170,11 +172,41 @@ export default defineComponent({
     ariaLabelPortalTile(): null | string {
       return (this.minified || this.editMode) ? null : this.$localized(this.title);
     },
+    ariaLabelInfoButton(): string {
+      return `${this.$translateLabel('SHOW_TOOLTIP_BY_TOUCH')}`;
+    },
+    ariaLabelEditTile(): string {
+      return this.$translateLabel('EDIT_TILE');
+    },
+    activeAtEdit(): string[] {
+      if (!this.editMode) {
+        return [];
+      }
+      if (this.fromFolder) {
+        return ['modal'];
+      }
+      return ['portal'];
+    },
+    activeAt(): string[] {
+      if (this.minified) {
+        return [];
+      }
+      if (this.editMode) {
+        return [];
+      }
+      if (this.fromFolder) {
+        return ['modal'];
+      }
+      return ['portal', 'header-search'];
+    },
   },
   mounted() {
     if (this.hasFocus) {
       this.$el.children[0].focus(); // sets focus to first Element in opened Folder
     }
+  },
+  updated() {
+    console.log('updated!');
   },
   methods: {
     hideTooltip(): void {
@@ -192,18 +224,10 @@ export default defineComponent({
         this.$store.dispatch('tooltip/setTooltip', { tooltip });
       }
     },
-    setFocus(event, direction): void {
-      if (this.lastElement && direction === 'forward') {
-        event.preventDefault();
-        this.$emit('keepFocusInFolderModal', 'focusFirst');
-      } else if (this.firstElement && direction === 'backward') {
-        event.preventDefault();
-        this.$emit('keepFocusInFolderModal', 'focusLast');
-      }
-    },
     editTile() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminEntry',
+        stubborn: true,
         props: {
           modelValue: this.$props,
           superDn: this.superDn,
@@ -221,6 +245,12 @@ export default defineComponent({
     },
     createID() {
       return `element-${this.$.uid}`;
+    },
+    setAriaDescribedBy() {
+      this.tileId = this.createID();
+    },
+    removeAriaDescribedBy() {
+      this.tileId = '';
     },
   },
 });
@@ -291,24 +321,11 @@ export default defineComponent({
     top: -0.75em
     right: -0.75em
     z-index: $zindex-1
-    padding: calc(.5 * var(--layout-spacing-unit))
-    border: 0.2rem solid transparent
-    box-sizing: border-box
-    display: flex
-    align-items: center
-    justify-content: center
-
-    &:focus
-      border-color: var(--color-focus)
-
-    @extend .icon-button--admin
 
     &--in-modal
       position relative
 
   &__info-button
-    width: calc(5.5 * var(--layout-spacing-unit))
-    height: @width
     font-size: var(--font-size-2)
 
     svg

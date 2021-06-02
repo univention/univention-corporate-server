@@ -56,6 +56,7 @@ import TileAddModal from '@/components/admin/TileAddModal.vue';
 import CategoryAddModal from '@/components/admin/CategoryAddModal.vue';
 import ChooseTabs from '@/components/ChooseTabs.vue';
 import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
+import CookieBanner from '@/components/globals/CookieBanner.vue';
 
 export default defineComponent({
   name: 'PortalModal',
@@ -75,6 +76,7 @@ export default defineComponent({
     LoadingOverlay,
     TileAddModal,
     CategoryAddModal,
+    CookieBanner,
   },
   props: {
     isActive: {

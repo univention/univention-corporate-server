@@ -54,7 +54,7 @@ import { mapGetters } from 'vuex';
 import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
 
-import { setInvalidity } from '@/jsHelper/tools';
+import { setInvalidity, randomId } from '@/jsHelper/tools';
 import { put } from '@/jsHelper/admin';
 
 interface ExistingEntryData {
@@ -69,8 +69,7 @@ export default defineComponent({
   },
   data(): ExistingEntryData {
     return {
-      datalistId: `datalist-${Math.random().toString(36)
-        .substr(2, 4)}`,
+      datalistId: `datalist-${randomId()}`,
     };
   },
   computed: {
@@ -80,9 +79,13 @@ export default defineComponent({
       items: 'portalData/portalCategories',
     }),
   },
+  mounted() {
+    this.$el.querySelector('input:enabled')?.focus();
+  },
   methods: {
     cancel() {
       this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
     async finish() {
       const input = this.$refs.input as HTMLFormElement;
@@ -105,8 +108,11 @@ export default defineComponent({
           categories: this.categories.concat([dn]),
         };
         console.info('Adding', dn, 'to', this.portalDn);
-        await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
+        const success = await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
         this.$store.dispatch('deactivateLoadingState');
+        if (success) {
+          this.cancel();
+        }
       }
     },
   },

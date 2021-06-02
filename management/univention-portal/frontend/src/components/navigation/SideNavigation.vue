@@ -27,7 +27,12 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <nav class="portal-sidenavigation">
+  <region
+    id="portal-sidenavigation"
+    role="navigation"
+    direction="topdown"
+    class="portal-sidenavigation"
+  >
     <div class="portal-sidenavigation__login-header">
       <div
         v-if="userState.username"
@@ -46,7 +51,6 @@
             ref="loginButton"
             class="portal-sidenavigation__logout-link"
             @click="logout"
-            @keydown.shift.tab.exact="focusOnLastItemInSideMenu($event)"
             @keydown.esc="closeNavigation"
           >
             <translate i18n-key="LOGOUT" />
@@ -59,7 +63,6 @@
         ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
-        @keydown.shift.tab.exact="focusOnLastItemInSideMenu($event)"
         @keydown.esc="closeNavigation"
       >
         <translate i18n-key="LOGIN" />
@@ -68,6 +71,8 @@
 
     <div
       class="portal-sidenavigation__menu"
+      role="toolbar"
+      aria-orientation="vertical"
     >
       <div
         v-for="(item, index) in menuLinks"
@@ -77,51 +82,62 @@
       >
         <menu-item
           v-if="menuVisible"
+          :id="item.id"
           :ref="'menuItem' + index"
-          :links="[]"
-          v-bind="item"
-          :aria-haspopup="hasSubmenu(item)"
+          :title="item.title"
+          :sub-menu="item.subMenu"
+          :links="item.links || []"
+          :link-target="item.linkTarget"
+          :path-to-logo="item.pathToLogo"
+          :internal-function="item.internalFunction"
+          aria-haspopup="true"
           @click="toggleMenu(index)"
-          @keydown.up.exact.prevent="selectPrevious( 'menuItem', index, menuLinks.length)"
-          @keydown.down.exact.prevent="selectNext( 'menuItem', index, menuLinks.length)"
-          @keydown.enter.exact="focusOnChild(index)"
-          @keydown.space.exact.prevent="focusOnChild(index)"
-          @keydown.right.exact="focusOnChild(index)"
-          @keydown.tab.exact="nextElementTab($event, index)"
+          @keydown.enter.exact.prevent="toggleMenu(index)"
+          @keydown.space.exact.prevent="toggleMenu(index)"
+          @keydown.right.exact.prevent="toggleMenu(index)"
           @keydown.esc="closeNavigation"
         />
         <template v-if="item.subMenu && item.subMenu.length > 0">
-          <menu-item
+          <region
             v-if="subMenuVisible & (menuParent === index)"
-            ref="subItemParent"
-            :title="item.title"
-            :is-sub-item="true"
-            :links="[]"
-            class="portal-sidenavigation__menu-subItem portal-sidenavigation__menu-subItem--parent"
-            @click="toggleMenu()"
-            @keydown.enter.exact.prevent="focusOnParent(index)"
-            @keydown.space.exact.prevent="focusOnParent(index)"
-            @keydown.left.exact="focusOnParent(index)"
-            @keydown.up.exact.prevent="selectPrevious('subItemParent',index, item.subMenu.length)"
-            @keydown.down.exact.prevent="selectNext('subItemParent', index)"
-            @keydown.esc="closeNavigation"
-          />
-          <div
-            v-for="(subItem, subindex) in item.subMenu"
-            :key="subindex"
-            :class="subMenuClass"
+            id="portal-sidenavigation-sub"
+            role="navigation"
+            direction="topdown"
+            :aria-label="ariaLabelSubMenuParent"
           >
             <menu-item
-              v-if="subMenuVisible & (menuParent === index)"
-              :ref="`subItem${subindex}`"
-              v-bind="subItem"
-              class="portal-sidenavigation__menu-subItem"
-              @clickAction="closeNavigation"
-              @keydown.up.prevent="selectPrevious('subItem', subindex, item.subMenu.length)"
-              @keydown.down.prevent="selectNext('subItem', subindex, item.subMenu.length)"
+              :id="item.id"
+              ref="subItemParent"
+              :title="item.title"
+              :is-sub-item="true"
+              :links="[]"
+              class="portal-sidenavigation__menu-subItem portal-sidenavigation__menu-subItem--parent"
+              @click="toggleMenu()"
+              @keydown.enter.exact="toggleMenu()"
+              @keydown.space.exact.prevent="toggleMenu()"
+              @keydown.left.exact="toggleMenu()"
               @keydown.esc="closeNavigation"
             />
-          </div>
+            <div
+              v-for="(subItem, subindex) in item.subMenu"
+              :key="subindex"
+              :class="subMenuClass"
+            >
+              <menu-item
+                v-if="subMenuVisible & (menuParent === index)"
+                :id="subItem.id"
+                :ref="`subItem${subindex}`"
+                :title="subItem.title"
+                :links="subItem.links || []"
+                :link-target="subItem.linkTarget"
+                :path-to-logo="subItem.pathToLogo"
+                :internal-function="subItem.internalFunction"
+                class="portal-sidenavigation__menu-subItem"
+                @clickAction="closeNavigation"
+                @keydown.esc="closeNavigation"
+              />
+            </div>
+          </region>
         </template>
       </div>
     </div>
@@ -132,19 +148,20 @@
       class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
-      @keydown.tab.exact.prevent="focusOnLoginButton"
     >
       <translate
         i18n-key="EDIT_PORTAL"
       />
     </button>
-  </nav>
+  </region>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import Region from '@/components/activity/Region.vue';
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 import MenuItem from '@/components/navigation/MenuItem.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 
@@ -169,6 +186,8 @@ export default defineComponent({
     PortalIcon,
     MenuItem,
     Translate,
+    TabindexElement,
+    Region,
   },
   data(): SideNavigationData {
     return {
@@ -194,9 +213,12 @@ export default defineComponent({
       userState: 'user/userState',
       meta: 'metaData/getMeta',
     }),
+    ariaLabelSubMenuParent(): string {
+      return this.$translateLabel('GO_BACK');
+    },
   },
-  mounted() {
-    this.focusOnLoginButton();
+  mounted(): void {
+    this.$store.dispatch('activity/setRegion', 'portal-sidenavigation');
   },
   methods: {
     login(): void {
@@ -207,7 +229,7 @@ export default defineComponent({
     },
     closeNavigation(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
-      document.getElementById('header-button-menu')?.focus();
+      this.$store.dispatch('activity/setRegion', 'portal-header');
     },
     toggleMenu(index = -1): void {
       this.menuVisible = !this.menuVisible;
@@ -215,6 +237,9 @@ export default defineComponent({
       this.subMenuVisible = !this.subMenuVisible;
       this.fade = !this.fade;
       this.init = false;
+
+      const region = index === -1 ? 'portal-sidenavigation' : 'portal-sidenavigation-sub';
+      this.$store.dispatch('activity/setRegion', region);
 
       if (this.subMenuVisible) {
         this.subMenuClass = 'portal-sidenavigation__menu-item--show';
@@ -225,6 +250,11 @@ export default defineComponent({
     async startEditMode(): Promise<void> {
       await this.$store.dispatch('portalData/setEditMode', true);
       this.$store.dispatch('navigation/setActiveButton', 'settings');
+      this.$store.dispatch('activity/saveFocus', {
+        region: 'portal-header',
+        id: 'header-button-settings',
+      });
+      this.$store.dispatch('activity/setRegion', 'portal-header');
     },
     setFadeClass(): string {
       let ret = '';
@@ -237,108 +267,8 @@ export default defineComponent({
       }
       return ret;
     },
-    selectPrevious(menuReference: string, index?: number, numberOfItems?: number): void {
-      // test
-      if (menuReference === 'subItemParent') {
-        // If current is subitem Parent focus last item in list
-        this.$nextTick(() => {
-          const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
-          const firstSubItemChild = (this.$refs[`subItem${lastChildIndex}`] as HTMLFormElement).$el;
-          firstSubItemChild.focus();
-        });
-      } else if (menuReference === 'subItem' || menuReference === 'menuItem') {
-        if (index === 0) {
-          // If current is first submenu item set focus to subItemParent.
-          if (menuReference === 'subItem') {
-            this.focusOnSubItemParent();
-          } else {
-            const lastElementIndex = numberOfItems ? numberOfItems - 1 : null;
-            (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el.focus();
-          }
-        } else {
-          // normal previous behaviour
-          const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
-          const previousElement = currentElement.parentElement.previousElementSibling.children[0];
-          previousElement.focus();
-        }
-      }
-    },
-    selectNext(menuReference: string, index?: number, numberOfItems?: number): void {
-      if (menuReference === 'subItemParent') {
-        this.$nextTick(() => {
-          const firstSubItemChild = (this.$refs.subItem0 as HTMLFormElement).$el;
-          firstSubItemChild.focus();
-        });
-      } else {
-        const currentElement = (this.$refs[menuReference + index] as HTMLFormElement).$el;
-        const lastChildIndex = numberOfItems ? numberOfItems - 1 : null;
-        if (index === lastChildIndex) {
-          if (menuReference === 'subItem') {
-            this.focusOnSubItemParent();
-          } else {
-            (this.$refs.menuItem0 as HTMLFormElement).$el.focus();
-          }
-        } else {
-          const nextElement = currentElement.parentElement.nextElementSibling.children[0];
-          nextElement.focus();
-        }
-      }
-    },
     hasSubmenu(item): boolean {
       return item.subMenu && item.subMenu.length > 0;
-    },
-    focusOnChild(index): void {
-      this.toggleMenu(index);
-      this.$nextTick(() => {
-        this.focusOnSubItemParent();
-      });
-    },
-    focusOnParent(index): void {
-      this.toggleMenu(index);
-      this.$nextTick(() => {
-        const parentMenuItem = (this.$refs[`menuItem${index}`] as HTMLFormElement).$el;
-        parentMenuItem.focus();
-      });
-    },
-    focusOnSubItemParent(): void {
-      (this.$refs.subItemParent as HTMLFormElement).$el.focus();
-    },
-    focusOnLastItemInSideMenu(event): void {
-      // call this to trap user in side navigation
-      event.preventDefault();
-      if (this.userState.mayEditPortal) {
-        this.focusOnEditModeButton();
-      } else {
-        const lastElementIndex = this.menuLinks.length - 1;
-        const lastMenuItem = (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement) ? (this.$refs[`menuItem${lastElementIndex}`] as HTMLFormElement).$el : null;
-        if (lastMenuItem) {
-          // focus to last element of menu
-          lastMenuItem.focus();
-        } else {
-          // if submenu is open the focus should go on last submenuitem
-          const subMenuItems = Object.keys(this.$refs).filter((refTitle) => refTitle.includes('subItem'));
-          const lastSubMenuItemReference = subMenuItems[subMenuItems.length - 1];
-          (this.$refs[lastSubMenuItemReference] as HTMLFormElement).$el.focus();
-        }
-      }
-    },
-    focusOnLoginButton(): void {
-      (this.$refs.loginButton as HTMLFormElement).focus();
-    },
-    focusOnEditModeButton(): void {
-      (this.$refs.editModeButton as HTMLFormElement).focus();
-    },
-    nextElementTab(event, index?: number): void {
-      // only call this on last Menu Item to trap user in side navigation
-      const lastElementIndex = this.menuLinks.length - 1;
-      if (index === lastElementIndex) {
-        event.preventDefault();
-        if (this.userState.mayEditPortal) {
-          this.focusOnEditModeButton();
-        } else {
-          this.focusOnLoginButton();
-        }
-      }
     },
   },
 });
@@ -350,6 +280,9 @@ export default defineComponent({
   display: flex
   flex-direction: column
   align-item: flex-end
+
+  @media $mqSmartphone
+    overflow-y: auto
 
   &__link
     padding: 1em 0 1em 20px
@@ -427,7 +360,15 @@ export default defineComponent({
       padding-left: 4rem;
 
   &__edit-mode
-    border-top: 0.4rem solid var(--color-grey8)
+    border: none
+    border-radius: unset
+    border-top: 0.2rem solid var(--color-grey8)
+
+    span
+      margin: 0.2rem
+
+    &:focus span
+      margin: 0
 
   &__fade-left-right,
   &__fade-right-left

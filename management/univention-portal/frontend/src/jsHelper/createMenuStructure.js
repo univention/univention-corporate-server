@@ -26,10 +26,14 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+
+import { randomId } from '@/jsHelper/tools';
+
 function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget) {
   let entry = availableTiles.find((tile) => tile.dn === entryID);
   if (entry) {
     return {
+      id: `menu-item-${randomId()}`,
       title: entry.name,
       description: entry.description,
       links: entry.links,
@@ -39,6 +43,7 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
   }
   entry = availableFolders.find((folder) => folder.dn === entryID);
   return {
+    id: `menu-${randomId()}`,
     title: entry.name,
     subMenu: entry.entries.map((folderEntryID) => makeEntry(folderEntryID, availableTiles, availableFolders, defaultLinkTarget)),
   };

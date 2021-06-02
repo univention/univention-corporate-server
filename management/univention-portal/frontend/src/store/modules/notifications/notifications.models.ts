@@ -26,3 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+
+export interface Notification {
+  title: string;
+  description?: string;
+  onClick: () => void | null;
+}
+
+export interface WeightedNotification extends Notification {
+  hidingAfter: number;
+  importance: string;
+}
+
+export interface FullNotification extends WeightedNotification {
+  visible: boolean;
+  token: number;
+}

@@ -27,59 +27,72 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div>
-    <transition name="fade">
-      <slot
-        v-if="bubbleStateStandalone || bubbleStateNewBubble"
-        name="bubble-standalone"
-      />
-    </transition>
-
-    <slot
-      name="bubble-embedded"
+  <region
+    :id="`notifications-${onlyVisible ? 'visible' : 'all'}`"
+    direction="topdown"
+    class="notifications"
+    @keydown.esc="closeNotifications"
+  >
+    <notification
+      v-for="notification in notifications"
+      :key="notification.token"
+      v-bind="notification"
     />
-  </div>
+  </region>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import Region from '@/components/activity/Region.vue';
+import Notification from '@/components/notifications/Notification.vue';
+
 export default defineComponent({
-  name: 'NotificationBubble',
+  name: 'Notifications',
+  components: {
+    Notification,
+    Region,
+  },
+  props: {
+    onlyVisible: {
+      type: Boolean,
+      required: true,
+    },
+  },
   computed: {
     ...mapGetters({
-      bubbleState: 'notificationBubble/bubbleState',
-      bubbleStateStandalone: 'notificationBubble/bubbleStateStandalone',
-      bubbleStateNewBubble: 'notificationBubble/bubbleStateNewBubble',
+      allNotifications: 'notifications/allNotifications',
+      visibleNotifications: 'notifications/visibleNotifications',
+      activeButton: 'navigation/getActiveButton',
     }),
+    notifications() {
+      if (this.onlyVisible) {
+        return this.visibleNotifications;
+      }
+      return this.allNotifications;
+    },
+  },
+  methods: {
+    closeNotifications(): void {
+      if (this.activeButton === 'bell') {
+        this.$store.dispatch('navigation/setActiveButton', '');
+      }
+    },
   },
 });
+
 </script>
 
 <style lang="stylus">
-.notification-bubble
-  &__container
-    background-color: rgba(0,0,0,0.4);
-    backdrop-filter: blur(2rem);
-    border-radius: var(--border-radius-notification);
-
-  &__standalone
-    position: absolute
-    right: 2rem
-    top: 0.8rem
-    margin: 0;
-    max-width: 20rem;
-
-  &__embedded
-    position: relative
-
-// animation
-.fade-enter-active,
-.fade-leave-active
-  transition: opacity .5s
-
-.fade-enter,
-.fade-leave-to
-  opacity: 0
+.notifications
+  position: fixed
+  z-index: $zindex-4
+  top: calc(var(--layout-height-header) + 1rem)
+  right: var(--layout-spacing-unit)
+  width: 90vw
+  max-width: 300px
+  max-height: 100%
+  overflow-y: auto
+  padding-right: calc(3 * var(--layout-spacing-unit))
 </style>

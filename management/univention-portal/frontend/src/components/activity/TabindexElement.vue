@@ -27,40 +27,54 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <svg
-    class="portal-icon"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    aria-hidden="true"
+  <component
+    :is="tag"
+    :id="id"
+    :tabindex="tabIndex"
+    @focus="saveFocus"
   >
-    <use :xlink:href="`feather-sprite.svg#${icon}`" />
-  </svg>
+    <slot />
+  </component>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
-  name: 'PortalIcon',
+  name: 'TabindexElement',
   props: {
-    icon: {
+    id: {
       type: String,
       required: true,
+    },
+    tag: {
+      type: String,
+      required: true,
+    },
+    activeAt: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      activityLevel: 'activity/level',
+      activityDirection: 'activity/direction',
+    }),
+    tabIndex(): number {
+      if (this.activeAt.indexOf(this.activityLevel) > -1) {
+        return 0;
+      }
+      return -1;
+    },
+  },
+  methods: {
+    saveFocus(): void {
+      this.$store.dispatch('activity/saveFocus', {
+        id: this.id,
+      });
     },
   },
 });
 </script>
-
-<style lang="stylus">
-.portal-icon
-  font-size: inherit
-  height: var(--button-icon-size)
-  width: var(--button-icon-size)
-  stroke: currentColor
-  stroke-width: 2
-  stroke-linecap: round
-  stroke-linejoin: round
-  color: var(--font-color-contrast-high)
-  fill: none
-  transition: color var(--portal-transition-duration)
-</style>

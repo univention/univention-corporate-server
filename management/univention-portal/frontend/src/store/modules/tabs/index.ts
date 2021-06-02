@@ -32,6 +32,7 @@ import { Tab } from './tabs.models';
 export interface TabState {
   activeTabIndex: number;
   tabs: Tab[];
+  scrollPosition: number;
 }
 
 const tabs: PortalModule<TabState> = {
@@ -39,6 +40,7 @@ const tabs: PortalModule<TabState> = {
   state: {
     activeTabIndex: 0,
     tabs: [],
+    scrollPosition: 0,
   },
 
   mutations: {
@@ -62,15 +64,24 @@ const tabs: PortalModule<TabState> = {
         state.activeTabIndex -= 1;
       }
     },
+    SAVE_SCROLL_POSITION(state, scrollPosition) {
+      state.scrollPosition = scrollPosition;
+    },
   },
 
   getters: {
     allTabs: (state) => state.tabs,
+    numTabs: (state) => state.tabs.length,
     activeTabIndex: (state) => state.activeTabIndex,
+    savedScrollPosition: (state) => state.scrollPosition,
   },
 
   actions: {
-    setActiveTab({ commit }, index: number) {
+    setActiveTab({ commit, dispatch }, index: number) {
+      dispatch('modal/hideAndClearModal', undefined, { root: true });
+      if (index > 0) {
+        commit('SAVE_SCROLL_POSITION', window.scrollY);
+      }
       commit('ACTIVE_TAB', index);
     },
     addTab({ commit }, tab: Tab) {

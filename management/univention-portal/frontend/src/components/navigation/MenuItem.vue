@@ -27,12 +27,13 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <a
-    v-is="isLink ? 'a' : 'div'"
+  <tabindex-element
+    :id="id"
+    :tag="isLink ? 'a' : 'div'"
+    :active-at="['header-menu']"
     class="menu-item"
     :href="link ? link : null"
     :target="anchorTarget"
-    tabindex="0"
     @click="tileClick"
     @keydown.enter="tileClick"
   >
@@ -49,6 +50,9 @@ License with the Debian GNU/Linux or Univention distribution in file
         class="menu-item__counter"
       >
         {{ subMenu.length }}
+        <span class="sr-only sr-only-mobile">
+          {{ itemString }}
+        </span>
       </div>
       <portal-icon
         v-if="!isSubItem"
@@ -56,12 +60,13 @@ License with the Debian GNU/Linux or Univention distribution in file
         class="menu-item__arrow menu-item__arrow--right"
       />
     </template>
-  </a>
+  </tabindex-element>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import TileClick from '@/mixins/TileClick.vue';
 
@@ -69,11 +74,18 @@ import { Locale } from '@/store/modules/locale/locale.models';
 
 export default defineComponent({
   name: 'MenuItem',
-  components: { PortalIcon },
+  components: {
+    PortalIcon,
+    TabindexElement,
+  },
   mixins: [
     TileClick,
   ],
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     title: {
       type: Object as PropType<Record<Locale, string>>,
       required: true,
@@ -86,14 +98,22 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    handlesAppSettings: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     isLink(): boolean {
       return this.link !== null && this.link !== '';
+    },
+    itemString(): string {
+      const numberOfItems = this.subMenu.length;
+      let itemString = '';
+      if (numberOfItems === 0) {
+        itemString = this.$translateLabel('NO_ITEMS');
+      } else if (numberOfItems === 1) {
+        itemString = this.$translateLabel('ITEM');
+      } else {
+        itemString = this.$translateLabel('ITEMS');
+      }
+      return itemString;
     },
   },
 });
@@ -135,7 +155,7 @@ export default defineComponent({
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    transition: color 250ms;
+    transition: color var(--portal-transition-duration);
     &--left
       left: 1.2rem;
     &--right

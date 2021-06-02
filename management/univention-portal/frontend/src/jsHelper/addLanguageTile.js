@@ -26,6 +26,9 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+
+import { randomId } from '@/jsHelper/tools';
+
 export default function addLanguageTile(portalLanguageData) {
   const menuTitle = {
     de_DE: 'Sprache ändern',
@@ -34,6 +37,7 @@ export default function addLanguageTile(portalLanguageData) {
   };
 
   const subMenuItems = portalLanguageData.map((element) => ({
+    id: `menu-item-${randomId()}`,
     title: { en_US: element.label },
     linkTarget: 'internalFunction',
     internalFunction: (tileClick) => {
@@ -44,6 +48,7 @@ export default function addLanguageTile(portalLanguageData) {
   }));
 
   const menuElement = {
+    id: `menu-${randomId()}`,
     title: menuTitle,
     linkTarget: 'samewindow',
     subMenu: subMenuItems,

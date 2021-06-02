@@ -30,7 +30,7 @@ License with the Debian GNU/Linux or Univention distribution in file
   <teleport to="body">
     <div
       class="modal-wrapper"
-      :class="{ 'modal-wrapper--isVisible': isActive }"
+      :class="{ 'modal-wrapper--isVisible': isActive, 'modal-wrapper--isVisibleFullscreen': isActive && full }"
       @click.self="$emit('backgroundClick');"
     >
       <slot />
@@ -47,6 +47,10 @@ export default defineComponent({
     isActive: {
       type: Boolean,
       required: true,
+    },
+    full: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['backgroundClick'],
@@ -74,4 +78,7 @@ export default defineComponent({
       &> *
         position: relative
         z-index: 1
+
+    &--isVisibleFullscreen
+      z-index: $zindex-4
 </style>

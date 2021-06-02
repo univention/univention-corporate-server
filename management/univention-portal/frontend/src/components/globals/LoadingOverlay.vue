@@ -27,28 +27,43 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="loading-overlay">
-    <svg
-      viewBox="0 0 100 100"
-      xmlns="http://www.w3.org/2000/svg"
+  <modal-wrapper
+    :is-active="loadingState"
+  >
+    <div
+      class="loading-overlay"
     >
-      <circle
-        class="loading-overlay__circle"
-        cx="50"
-        cy="50"
-        r="45"
-      />
-    </svg>
-  </div>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          class="loading-overlay__circle"
+          cx="50"
+          cy="50"
+          r="45"
+        />
+      </svg>
+    </div>
+  </modal-wrapper>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+
 export default defineComponent({
   name: 'LoadingOverlay',
-  computed: { ...mapGetters({ loadingState: 'getLoadingState' }) },
+  components: {
+    ModalWrapper,
+  },
+  computed: {
+    ...mapGetters({
+      loadingState: 'getLoadingState',
+    }),
+  },
 });
 </script>
 

@@ -83,9 +83,10 @@ const modal: PortalModule<ModalState> = {
   },
 
   actions: {
-    setAndShowModal({ commit }, payload) {
+    setAndShowModal({ commit, dispatch }, payload) {
       commit('SET_MODAL', payload);
       commit('SHOW_MODAL');
+      dispatch('activity/setLevel', 'modal', { root: true });
     },
     showModal({ commit }) {
       commit('SHOW_MODAL');
@@ -95,7 +96,10 @@ const modal: PortalModule<ModalState> = {
         dispatch('setAndShowModal', { ...payload, resolve, reject });
       });
     },
-    hideAndClearModal({ commit }) {
+    hideAndClearModal({ getters, commit, dispatch }) {
+      if (getters.getModalState) {
+        dispatch('activity/setLevel', 'portal', { root: true });
+      }
       commit('HIDE_MODAL');
       commit('CLEAR_MODAL');
     },

@@ -63,6 +63,9 @@ export default defineComponent({
   transform: translate3d(110%, 0, 0)
   transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
 
+  @media $mqSmartphone
+     max-width: 90vw
+
   &--isVisible
     transform: translate3d(0, 0, 0) scale(1, 1)
     transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s

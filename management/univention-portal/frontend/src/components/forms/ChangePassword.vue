@@ -105,6 +105,9 @@ export default defineComponent({
       newPassword2: '',
     };
   },
+  mounted(): void {
+    (this.$refs.oldPassword as HTMLElement).focus();
+  },
   methods: {
     finish() {
       const oldPasswordSet = !!this.oldPassword;

@@ -42,11 +42,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         <div class="portal-sidebar__title">
           <translate i18n-key="NOTIFICATIONS" />
         </div>
-        <notification-bubble class="portal-sidebar__bubble">
-          <template #bubble-embedded>
-            <notification-bubble-slot bubble-container="embedded" />
-          </template>
-        </notification-bubble>
+        <notifications :only-visible="false" />
       </flyout-wrapper>
       <flyout-wrapper
         v-if="activeMenuButton"
@@ -73,8 +69,7 @@ import { mapGetters } from 'vuex';
 
 import FlyoutWrapper from '@/components/navigation/FlyoutWrapper.vue';
 import ModalWrapper from '@/components/globals/ModalWrapper.vue';
-import NotificationBubble from '@/components/globals/NotificationBubble.vue';
-import NotificationBubbleSlot from '@/components/globals/NotificationBubbleSlot.vue';
+import Notifications from '@/components/notifications/Notifications.vue';
 import SideNavigation from '@/components/navigation/SideNavigation.vue';
 import EditModeSideNavigation from '@/components/navigation/EditModeSideNavigation.vue';
 
@@ -85,8 +80,7 @@ export default defineComponent({
   components: {
     FlyoutWrapper,
     ModalWrapper,
-    NotificationBubble,
-    NotificationBubbleSlot,
+    Notifications,
     SideNavigation,
     EditModeSideNavigation,
     Translate,
@@ -123,7 +117,4 @@ export default defineComponent({
     margin: calc(2 * var(--layout-spacing-unit)) 0
     margin-left: calc(2.5 * var(--layout-spacing-unit))
     font-size: 20px
-
-  &__bubble
-    padding: 0 20px
 </style>

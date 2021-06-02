@@ -1,10 +1,25 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const production = process.env.NODE_ENV === 'production';
 
 const vueConfig = {
   filenameHashing: false,
   pwa: {
     name: 'Univention Portal',
   },
+  // configureWebpack: {
+  //   optimization: {
+  //     minimizer: production ? [
+  //       new UglifyJsPlugin({
+  //         uglifyOptions: {
+  //           compress: {
+  //             drop_console: true
+  //           },
+  //         }
+  //       })
+  //     ] : []
+  //   }
+  // },
   chainWebpack: (config) => {
     config
       .plugin('html')
@@ -12,15 +27,22 @@ const vueConfig = {
         args[0].title = 'Univention Portal';
         return args;
       });
+    config
+      .optimization.minimizer('uglifyjs')
+      .use(UglifyJsPlugin, [{
+        uglifyOptions: {
+          compress: {
+            drop_console: production,
+          },
+        }
+      }]);
   },
   css: {
     sourceMap: true,
     loaderOptions: {
       stylus: {
         import: [
-          path.resolve(__dirname, 'src/assets/styles/_vars.styl'),
           path.resolve(__dirname, 'src/assets/styles/_variables.styl'),
-          path.resolve(__dirname, 'src/assets/styles/_base.styl'),
         ],
       },
     },

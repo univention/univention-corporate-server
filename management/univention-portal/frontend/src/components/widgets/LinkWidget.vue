@@ -60,6 +60,7 @@
       >
         <icon-button
           icon="trash"
+          :aria-label-prop="ariaLabelRemove"
           @click="removeField(index, modelValueData)"
         />
       </span>
@@ -126,6 +127,9 @@ export default defineComponent({
       locales: 'locale/getAvailableLocales',
       currentLocale: 'locale/getLocale',
     }),
+    ariaLabelRemove(): string {
+      return this.$translateLabel('REMOVE');
+    },
   },
   created() {
     this.modelValue.forEach((val) => {

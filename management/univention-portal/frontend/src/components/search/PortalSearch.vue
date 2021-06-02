@@ -42,6 +42,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         data-test="searchInput"
         type="text"
         class="portal-search__input"
+        :aria-label="ariaLabelSearch"
         @input="searchTiles"
         @keyup.esc="closeSearchInput()"
       >
@@ -72,6 +73,9 @@ export default defineComponent({
       searchQuery: 'search/searchQuery',
       emptySearchResults: 'search/emptySearchResults',
     }),
+    ariaLabelSearch() : string {
+      return this.$translateLabel('SEARCH');
+    },
   },
   mounted() {
     this.$nextTick(() => {

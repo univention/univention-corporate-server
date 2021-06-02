@@ -28,11 +28,7 @@
  */
 
 import { BaseTile, Category, LinkTarget, PortalCategory, PortalContent, PortalEntry, PortalFolder, TileOrFolder } from '@/store/modules/portalData/portalData.models';
-
-function randomId(): string {
-  return Math.random().toString(36)
-    .substr(2);
-}
+import { randomId } from '@/jsHelper/tools';
 
 function isBaseTile(value: any): value is BaseTile {
   return (value !== null) && !value.isFolder;

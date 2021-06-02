@@ -33,13 +33,14 @@ import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { getCookie } from '@/jsHelper/tools';
 import { adminState } from '@/jsHelper/admin';
+import activity from './modules/activity';
 import dragndrop from './modules/dragndrop';
 import locale from './modules/locale';
 import menu from './modules/menu';
 import metaData from './modules/metaData';
 import modal from './modules/modal';
 import navigation from './modules/navigation';
-import notificationBubble from './modules/notificationBubble';
+import notifications from './modules/notifications';
 import portalData from './modules/portalData';
 import search from './modules/search';
 import tabs from './modules/tabs';
@@ -55,14 +56,22 @@ const portalMetaPath = process.env.VUE_APP_META_DATA || '/univention/meta.json';
 
 export const key: InjectionKey<Store<RootState>> = Symbol('');
 
-const actions = {
-  activateLoadingState({ dispatch }) {
-    dispatch('modal/setAndShowModal', {
-      name: 'LoadingOverlay',
-    });
+const mutations = {
+  SET_LOADING_STATE(state, active: boolean) {
+    state.loadingState = active;
   },
-  deactivateLoadingState({ dispatch }) {
-    dispatch('modal/hideAndClearModal');
+};
+
+const getters = {
+  getLoadingState: (state) => state.loadingState,
+};
+
+const actions = {
+  activateLoadingState({ commit }) {
+    commit('SET_LOADING_STATE', true);
+  },
+  deactivateLoadingState({ commit }) {
+    commit('SET_LOADING_STATE', false);
   },
   portalJsonRequest: (_, payload) => {
     console.log('Loading Portal...');
@@ -114,15 +123,18 @@ const actions = {
 export const store = createStore<RootState>({
   strict: process.env.NODE_ENV !== 'production',
   state: initialRootState,
+  mutations,
   actions,
+  getters,
   modules: {
+    activity,
     dragndrop,
     locale,
     menu,
     metaData,
     modal,
     navigation,
-    notificationBubble,
+    notifications,
     portalData,
     search,
     tabs,

@@ -156,9 +156,10 @@ export default defineComponent({
         this.$store.dispatch('portalData/setEditMode', false);
         this.$store.dispatch('navigation/setActiveButton', '');
       } catch (error) {
-        this.$store.dispatch('notificationBubble/addErrorNotification', {
-          bubbleTitle: 'Update failed',
-          bubbleDescription: `'Saving the portal failed: ${error}'`,
+        this.$store.dispatch('notifications/addErrorNotification', {
+          title: 'Update failed',
+          description: `'Saving the portal failed: ${error}'`,
+          hidingAfter: -1,
         });
       }
       this.$store.dispatch('deactivateLoadingState');
@@ -176,4 +177,6 @@ export default defineComponent({
 
     input
       width: 18rem
+      &[type=checkbox]
+        margin-left: 0
 </style>

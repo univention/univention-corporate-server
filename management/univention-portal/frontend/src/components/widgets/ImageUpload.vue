@@ -40,6 +40,7 @@
       <img
         v-if="modelValue"
         :src="modelValue"
+        alt=""
       >
       <div
         v-else
