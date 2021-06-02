@@ -115,8 +115,10 @@
 	<systemitem class="domainname">company.intranet</systemitem> DNS domain,
 	<systemitem class="fqdomainname">mailserver.company.intranet</systemitem> should be entered as the fully qualified host
 	name.
-	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
-	only needs to be adjusted in exceptional cases. The root password must be at least eight
+	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and only needs to be adjusted in exceptional cases.
+	For all other systems roles it is normally sufficient to enter the host name only.
+	The domain name will we fetched from the &ucsPrimaryDN; when the domain is joined.
+	The root password must be at least eight
 	characters long and is also set as the password for the user <emphasis>Administrator</emphasis>
 	during the installation of the first UCS system (&ucsPrimaryDN;).
   </para>
@@ -134,6 +136,7 @@
   <para>
 	After confirming the configuration settings the installation is initiated. Once completed, the
 	system must be restarted. The further configuration is made using the &ucsUMC; (UMC).
+	This is described in more detail in the following chapter.
   </para>
 
 </chapter>

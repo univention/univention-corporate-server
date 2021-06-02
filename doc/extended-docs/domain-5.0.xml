@@ -59,7 +59,7 @@ EOF
 ]]></programlisting>
 
             <para>
-			  In the default configuration of UCS only authenticated users can search in the LDAP
+			  By default UCS only authenticated users can search in the LDAP
 			  directory. As such, the Ubuntu client needs an account in the UCS domain
 			  to gain read access to the LDAP directory:
 			</para>
@@ -448,7 +448,8 @@ server backup.example.com
 			  <listitem><simpara>
 				The LDAP server, ports and authentication credentials to be used. The fully
 				qualified domain names of one or more UCS Directory Nodes should be entered
-				here. In the default setting, UCS LDAP servers only allow authenticated LDAP access.
+				here.
+				By default UCS LDAP servers only allow authenticated LDAP access.
 			  </simpara></listitem>
 
 			  <listitem><para>
@@ -681,7 +682,8 @@ univention-certificate new -name fullyqualifiedhostname
 ]]></programlisting>
 			<para>
 			  The fully qualified domain name of the
-			  computer should be given as the name. In the default setting the certificate is valid
+			  computer should be given as the name.
+			  By default the certificate is valid
 			  for five years. The standard value can be changed by setting the &ucsUCRV;
 			  <envar>ssl/default/days</envar>.
 			</para>
@@ -691,17 +693,17 @@ univention-certificate new -name fullyqualifiedhostname
 	  <section id="extdom:ssl:sign">
 		<title>Signing of certificate signing requests by the UCS certificate authority</title>
         <para>
-		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
+		  A certificate signing request (<abbrev>CSR</abbrev>) is a request submitted to a certificate authority (<abbrev>CA</abbrev>)
 		  to create a digital signature. A CSR typically occurs in the form of a file. This section
 		  describes how a CSR is signed by the UCS CA.
 		</para>
 
         <para>
-		  CERTIFICATE is the file name of the certificate to be created.
+		  <filename>CERTIFICATE</filename> is the file name of the certificate to be created.
 		</para>
 
         <para>
-			REQUEST is the file with the CSR in either PEM or DER format.
+			<filename>REQUEST</filename> is the file with the CSR in either PEM or DER format.
 			A file in PEM format is a text file containing a base64 encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
 			A request in binary DER format must be first converted to the PEM format with the following command:
 		</para>
@@ -943,9 +945,9 @@ systemctl start slapd
 		  <envar>ldap/replica/target/uri</envar>:
 
 		  <programlisting language="sh">
-echo -n 'REMOTE_UPDATE_PASSWORD' >  /etc/replica-001.secret
+echo -n 'REMOTE_UPDATE_PASSWORD' >/etc/replica-001.secret
 chmod 600 /etc/replica-001.secret
-univention-config-registry set ldap/replica/target/uri='ldaps://extldap.univention.test/'
+ucr set ldap/replica/target/uri=ldaps://extldap.univention.test/
 ucr commit /etc/ldap/syncrepl-proxy.conf
 systemctl restart slapd
 		  </programlisting>

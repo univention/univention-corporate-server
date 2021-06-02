@@ -80,7 +80,7 @@
 					Alternatively, it can be accessed directly via <uri>https://SERVERNAME-OR-IP/ucs-dashboard/</uri>.
 				</para>
 				<para>
-					In the default setting, access is only granted to users of the
+					By default access is only granted to users of the
 					group <systemitem class="groupname">Domain Admins</systemitem> (e.g. the user Administrator).
 					<!--It is also possible to set the circle of the logon authorized persons to
 					expand.-->
@@ -206,7 +206,7 @@
 							<entry>
 								tests the availability of the monitored UCS system
 								with the command <command>ping</command>.
-								In the default setting, an error status is attained
+								By default an error status is attained
 								if the response time exceeds 50 ms or 100 ms or package
 								package losses of 20% or 40% occur.
 							</entry>
@@ -216,7 +216,7 @@
 							<entry>
 								monitors how full the <filename class="partition">/</filename> partition
 								is. An error status is raised if the remaining free space falls
-								below 25% or 10% in the default setting.
+								below 25% or 10% by default.
 							</entry>
 						</row>
 						<row>
@@ -269,7 +269,7 @@
 							<entry>
 								monitors the utilization of the swap partition.
 								An error status is raised if the remaining free space falls below the
-								threshold (40% or 20% in the default setting).
+								threshold (40% or 20% by default).
 							</entry>
 						</row>
 						<row>

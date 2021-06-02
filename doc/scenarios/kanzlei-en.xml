@@ -188,6 +188,7 @@
       <listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
+	<listitem><simpara><ulink url="https://www.univention.com/appid/self-service/"/> (<application>Self Service</application>)</simpara></listitem>
 	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual-5.0.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>

@@ -767,7 +767,8 @@ slapcat &gt; ldapdata.txt
 			</para>
 
 			<para>
-			  Passwords can be reset via the UMC module <guimenu>Users</guimenu>. In the default setting, the module is
+			  Passwords can be reset via the UMC module <guimenu>Users</guimenu>.
+			  By default the module is
 			  only accessible to the <systemitem class="username">Administrator</systemitem> user.
 			  During the installation a new
 			  <uri>default-user-password-admins</uri> policy is created
@@ -799,7 +800,8 @@ slapcat &gt; ldapdata.txt
 			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> can be used to configure
 			  users and groups. Multiple values must be separated by commas.
 			  After changes to the variables, it is necessary to restart the LDAP server using the
-			  <command>systemctl restart slapd</command> command. In the default setting, the
+			  <command>systemctl restart slapd</command> command.
+			  By default the
 			  members of the <systemitem class="groupname">Domain Admins</systemitem> group are protected against having
 			  theirs password changed.
 			</para>
@@ -1330,7 +1332,7 @@ univention-directory-listener-ctrl resync cups-printers
 		To register the UCS identity provider at an external service provider, the public part of the SAML certificate is required by the service provider.
 		The certificate can be downloaded via a link in the UMC module.
 		Some service providers may require the UCS identity provider XML metadata as a file upload.
-		In the default configuration, the XML file can be downloaded from the URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
+		By default the XML file can be downloaded from the URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
 	</para>
 	<para>
 		The following attributes can be configured when adding a new service provider.

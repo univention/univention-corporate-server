@@ -56,7 +56,7 @@ univention-run-join-scripts
 
 		  <para>
 			If the domain should continue to be provide Active Directory-compatible services, the
-			<package>univention-samba4</package> package must remain installed on the &ucsPrimaryDN;
+			package <package>univention-samba4</package> must remain installed on the &ucsPrimaryDN;
 			or a &ucsBackupDN; system.
 		  </para>
 
@@ -85,11 +85,9 @@ root@backup:~#
 </screen>
 
 			<para>
-			  The Univention S4 connector must be run on the &ucsPrimaryDN; or a &ucsBackupDN; in the
-				domain. After Samba/AD was uninstalled, the join script of the S4 connector
-			  (97univention-s4-connector) script should be re-executed on the &ucsPrimaryDN; or a
-			  another &ucsBackupDN;. This can be done via the &ucsUMC; module <guimenu>Domain
-			  join</guimenu>:
+				The Univention S4 connector must be run on the &ucsPrimaryDN; or a &ucsBackupDN; in the domain.
+				After Samba/AD was uninstalled, the &ucsS4C; join script <filename>97univention-s4-connector</filename> should be re-executed on the &ucsPrimaryDN; or any &ucsBackupDN;.
+				This can be done via the &ucsUMC; module <guimenu>Domain join</guimenu>:
 			</para>
 
 			<figure id="s4connector-rejoin">
@@ -98,7 +96,7 @@ root@backup:~#
 			</figure>
 
 			<para>
-			  The FSMO (Flexible Single Master Operations) roles should be checked. In case the
+			  The <abbrev>FSMO</abbrev> (Flexible Single Master Operations) roles should be checked. In case the
 			  roles were provided by the removed DC, they must be transferred, for example:
 			</para>
 <screen>

@@ -336,7 +336,7 @@
 	  <section id="ip-config:Configuration_of_zone_transfers">
 		<title>Configuration of zone transfers</title>
 		<para>
-		  In the default setting, the UCS name server allows zone transfers of the
+		  By default the UCS name server allows zone transfers of the
 		  DNS data. If the UCS server can be reached from the Internet, a list of all computer names
 		  and IP addresses can be requested. The zone transfer can be deactivated when using the OpenLDAP backend by setting the
 		  &ucsUCRV; <envar>dns/allow/transfer</envar> to <literal>none</literal>.
@@ -2139,7 +2139,8 @@ closest to the object always applies.
 	  UCS installations as standard.
 	</para>
 	<para>
-	  In the default setting, all incoming ports are blocked. Every UCS
+	  By default all incoming ports are blocked.
+	  Every UCS
 	  package provides rules, which free up the ports required by the
 	  package again.
 	</para>

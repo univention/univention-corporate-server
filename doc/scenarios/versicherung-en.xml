@@ -67,6 +67,11 @@
 	  Different international compliance requirements from the insurance
 	  sector must be satisfied.
 	</para>
+
+	<para>
+		A special application for insurance business runs on a Power7 system with IBM AIX.
+		The users on this system should not be maintained twice.
+	</para>
   </section>
 
   <section id="insurance:impl">
@@ -114,7 +119,7 @@
   <section id="insurance:software">
 	<title>Software distribution of UCS systems</title>
 	<para>
-	  Installation profiles have been created for the UCS Directory Nodes
+	  Installation profiles have been created for the UCS Directory Nodes.
 	  These profiles can be used to roll out new systems with
 	  the Univention Net Installer using PXE or, as required, to restore
 	  systems after hardware failure. The installation concludes without
@@ -274,7 +279,7 @@
 	</para>
 
 	<para>
-	  In the past, all users working on the system were maintained doubly in
+	  In the past, all users working on the system were maintained twice in
 	  the local user database of the AIX system. Now only the <systemitem class="service">secldapclntd</systemitem>
 	  service runs on the AIX system; it performs all the authentication
 	  processes against the UCS LDAP directory.
@@ -299,6 +304,7 @@
       both complete systems and data. Special backup agents are available for
       the backup of databases. All data are copied from the standard servers in
       the headquarters and from there saved on tape media.
+		The installation can be performed with a few clicks in the App Center.
 	</para>
   </section>
 

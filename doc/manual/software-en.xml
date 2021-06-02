@@ -463,7 +463,7 @@ univention-app shell demo-docker-app
 	</para>
 
 	<para>
-	  In the default setting, the Univention repository
+	  By default the Univention repository
 	  <uri>updates.software-univention.de</uri> is used for a new installation.
 	</para>
   <para>

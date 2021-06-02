@@ -117,7 +117,7 @@
 		  <itemizedlist>
 			<listitem><simpara>
 			  Synchronization of the system times between the Windows client and domain controller
-			  is essential for functioning Kerberos authentication. In the default setting, the
+			  is essential for functioning Kerberos authentication. By default the
 			  system time is updated via NTP during system startup. This can also be done manually
 			  using the command <command>w32tm /resync</command>.
 			</simpara></listitem>
@@ -361,7 +361,7 @@ instanceType: 4
 		  <para>
 			Computer policies are evaluated for the first time the computer starts up; user policies
 			during login. The policies are also continually evaluated for logged in users / running
-			systems and updated (every 90-120 minutes in the default setting. The period varies at
+			systems and updated (every 90-120 minutes by default. The period varies at
 			random to avoid peak loads.)
 		  </para>
 
@@ -511,7 +511,7 @@ instanceType: 4
 
 			<itemizedlist>
 			  <listitem><simpara>
-				In the default setting, <emphasis>Default Domain Policy</emphasis> settings apply
+				By default <emphasis>Default Domain Policy</emphasis> settings apply
 				for all the users and computers within the domain.
 			  </simpara></listitem>
 
@@ -699,7 +699,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  No roaming profiles are used in the default setting in Samba/AD.
+		  No roaming profiles are used by default in Samba/AD.
 		</para>
 
 		<para>
@@ -860,12 +860,14 @@ END CATEGORY
     To use an encrypted connection between Active Directory and the &ucsPrimaryDN; not only for the authentication, but also for data exchange itself, the root certificate of the certification authority can be exported from the AD domain controller and uploaded via the UMC module. Further information on this topic is available in <xref linkend="ad-connector:ad-zertifikat"/>.
   </para>
 
-  <para>
-    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. Some apps from the Univention App Center require encrypted password data. If an app needs it, a note is shown in the App Center.
-  </para>
+	<para>
+		By default the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service.
+		Some apps from the Univention App Center require encrypted password data.
+		If an app needs it, a note is shown in the App Center.
+	</para>
 
   <para>
-	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorizations of the &ucsPrimaryDN;'s machine account.
+	  In <emphasis>AD member</emphasis> mode the UCS AD Connector exports object data from the AD with the authorizations of the &ucsPrimaryDN;'s machine account by default.
 	  These authorizations are not sufficient for exporting encrypted password data.
 	  In this case, the LDAP DN of a privileged replication user can be adjusted manually in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>.
 	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
@@ -900,7 +902,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </para>
 
   <para>
-    In the default setting, containers, organizational units, users, groups and computers are synchronized.
+    By default containers, organizational units, users, groups and computers are synchronized.
   </para>
 
   <para>

@@ -69,7 +69,7 @@
     </para>
 
     <para>
-	  In the default setting, e-mails to external domains are delivered
+	  By default e-mails to external domains are delivered
 	  directly to the responsible SMTP server of that domain.
 	  Its location is performed via the resolution of the MX record in the
 	  DNS. Mail sending can also be taken over by the relay host, e.g., on the
@@ -245,7 +245,7 @@ doveadm auth cache flush
 		The mailing list is available immediately after its creation.
 	  </para>
 	  <para>
-		In the default settings, everyone can write to the mailing list. To
+		By default everyone can write to the mailing list. To
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
@@ -275,7 +275,7 @@ doveadm auth cache flush
 		must be the same as one of the managed mail domains.
 	  </para>
 	  <para>
-		In the default settings, everyone can write to the mail group. To
+		By default everyone can write to the mail group. To
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
@@ -586,7 +586,7 @@ doveadm auth cache flush
 	  the <emphasis>Ham</emphasis> (<envar>mail/dovecot/folder/ham</envar>) subfolder. This folder is evaluated daily and data
 	  which have not yet been collected or were previously classified
 	  incorrectly are collected in a shared database. This evaluation is
-	  activated in the default setting and can be configured with
+	  activated by default and can be configured with
 	  the &ucsUCRV; <envar>mail/antispam/learndaily</envar>.
 	</para>
 	<para>
@@ -733,7 +733,7 @@ doveadm auth cache flush
 
 			  <row>
 				<entry>Keep mails on the server</entry>
-				<entry>In the default settings, the fetched mails are deleted from the server
+				<entry>By default the fetched mails are deleted from the server
 				following the transfer. If this option is enabled, it can be suppressed.</entry>
 			  </row>
 
@@ -749,7 +749,7 @@ doveadm auth cache flush
 	  <title>Configuration of a relay host for sending the e-mails</title>
 
 	  <para>
-		In the default setting, Postfix creates a direct SMTP connection to
+		By default Postfix creates a direct SMTP connection to
 		the mail server responsible for the domain when an e-mail is sent to
 		a non-local address. This server is determined by querying the MX
 		record in the DNS.

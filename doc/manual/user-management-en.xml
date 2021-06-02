@@ -82,7 +82,7 @@
 			<graphic scalefit="1" width="90%" align="center" fileref="illustrations50/users_self-service_en.png"/>
 		</figure>
         <para>
-		  In the default setting, a simplified wizard for creating a user is shown, which only
+		  By default a simplified wizard for creating a user is shown, which only
 		  requests the most important settings. All attributes can be shown by clicking on
 		  <guimenu>Advanced</guimenu>. The simplified wizard can be deactivated by setting the
 		  &ucsUCRV; <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> to
@@ -137,7 +137,7 @@
                                 name <systemitem class="username">Smith</systemitem> cannot be created.
                             </para>
                             <para>
-							  In the default setting, it is not possible to create a user with the same name as an
+							  By default it is not possible to create a user with the same name as an
 							  existing group. If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
 							  is set to <literal>false</literal>, this check is removed.
 							</para>

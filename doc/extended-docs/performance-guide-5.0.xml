@@ -16,12 +16,8 @@
 <chapter id="intro">
 	<title>Introduction</title>
 	<para>
-		In its default configuration, UCS is suitable for environments with up to
-		5,000 users.
-	</para>
-	<para>
-		This document describes configuration modifications which can increase
-		performance in larger environments.
+		By default UCS is suitable for environments with up to 5,000 users.
+		This document describes configuration modifications which can increase performance in larger environments.
 	</para>
 	</chapter>
 
@@ -35,8 +31,8 @@
 	<section id="slapd:index">
 		<title>Indexes</title>
 		<para>
-			Comparable with other database systems, OpenLDAP runs indexes about commonly
-			requested attributes. For indexed attributes, a search is not performed via the
+			Comparable with other database systems, OpenLDAP uses indexes about commonly
+			requested attributes. For indexed attributes a search is not performed via the
 			full database contents, but over an optimized subsection.
 		</para>
 		<para>
@@ -64,8 +60,8 @@ grep 'not indexed' /var/log/syslog
 	<section id="slapd:bdb">
 		<title>Configuration of the database backend</title>
 		<para>
-			The memory mapped database (MDB) has been used for new installations since UCS
-			4.0. If BDB is still in use, a migration to MDB should be performed for amd64 systems (not i386).
+			The memory mapped database (<abbrev>MDB</abbrev>) has been used for new installations since UCS
+			4.0. If BDB is still in use, a migration to MDB should be performed for amd64 systems.
 			The database backend can be controlled via the UCR variable
 			<envar>ldap/database/type</envar>. A migration can be performed as follows:
 			<programlisting language="sh">
@@ -77,7 +73,7 @@ ucr set ldap/database/type=mdb
 slapadd -l ldif
 systemctl start slapd
 			</programlisting>
-			In the default configuration the memory mapped database needs more I/O operations than
+			By default the memory mapped database needs more I/O operations than
 			the BDB backend. With the &ucsUCRV; <envar>ldap/database/mdb/envflags</envar> this
 			behavior can be configured. The following flags can be set (multiple values are
 			separated by spaces):
@@ -153,7 +149,7 @@ systemctl start slapd
 	<title>Name Service Cache Daemon (NSCD)</title>
 	<para>
 		Name resolutions can be cached by the <emphasis>Name Service Cache
-		Daemon</emphasis> (NSCD) in order to speed up frequently recurring requests for
+		Daemon</emphasis> (<abbrev>NSCD</abbrev>) in order to speed up frequently recurring requests for
 		unchanged data. Thus, if a repeated request occurs, instead of querying the
 		LDAP server, the data are simply drawn directly from the cache.
 	</para>
@@ -216,10 +212,10 @@ systemctl start slapd
 	<title>Local group cache</title>
 
 	<para>
-		In the default setting, the group cache is regenerated every time changes are
+		By default the group cache is regenerated every time changes are
 		made to a group. This avoids cache effects whereby group memberships only
 		become visible for a service after the next scheduled group
-		cache rewrite (in the default setting after 15 minutes and
+		cache rewrite (by default once a day and
 		after 15 seconds of inactivity in the &ucsUDL;. In
 		larger environments with a lot of group changes, this function should be
 		deactivated by setting the &ucsUCRV;
@@ -277,9 +273,9 @@ systemctl start slapd
 		  Set the following &ucsUCRV;s <envar>umc/server/processes</envar> and <envar>umc/http/processes</envar>
 		  and restart the &ucsUMC;:
 		  <programlisting language="sh">
-systemctl restart univention-management-console-web-server
-systemctl restart univention-management-console-server
-systemctl restart apache2
+systemctl restart apache2 \
+    univention-management-console-web-server \
+    univention-management-console-server
 		  </programlisting>
 		  The number of instances to configure depends on the workload and the server system. As a general rule of thumb
 		  these should not be higher as the machines CPU cores. Good throughput values had resulted in tests with the following combinations:

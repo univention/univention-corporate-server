@@ -26,7 +26,7 @@
 
 	<para>
 	  The password for the computer account is generated automatically during the domain join and
-	  saved in the <filename>/etc/machine.secret</filename> file.  In the default setting, the
+	  saved in the <filename>/etc/machine.secret</filename> file.  By default the
 	  password consists of 20 characters (can be configured via the &ucsUCRV;
 	  <envar>machine/password/length</envar>). The password is regenerated
 	  automatically at fixed intervals (default setting: 21 days; can be configured using the
@@ -44,7 +44,7 @@
 	</para>
 
 	<para>
-	  In the default setting, a simplified wizard for creating a computer is shown, which only requests
+	  By default a simplified wizard for creating a computer is shown, which only requests
 	  the most important settings. All attributes can be shown by clicking on
 	  <guimenu>Advanced</guimenu>. If there is a DNS forward zone and/or a DNS reverse zone (see
 	  <xref linkend="networks:dns"/>) assigned to the selected network object (see <xref
@@ -817,7 +817,7 @@
 
 					<listitem><simpara>
 					  When <guimenuitem>active-backup (1)</guimenuitem> is used, only one network card is
-					  active for each bonding interface (in the default setting this is the network
+					  active for each bonding interface (by default this is the network
 					  interface configured in <guimenu>Bond primary</guimenu>). If the primary network card
 					  fails, this is detected by the Linux kernel, which switches to another card in
 					  the bonding. This version increases redundancy. It can be used with
@@ -1551,7 +1551,7 @@ if configRegistry.get('version/version') and \
 			under <guimenu>more</guimenu>.
 		</para>
 		<para>
-			In the default setting, every service is started automatically when the system
+			By default every service is started automatically when the system
 			is started. In some situations, it can be useful not to have the service start
 			directly, but instead only after further configuration. The action
 			<guimenu>Start manually</guimenu> is used so that the service is not started
@@ -1573,7 +1573,7 @@ if configRegistry.get('version/version') and \
 		<section id="computers:Limiting_authentication_to_selected_users">
 			<title>Limiting authentication to selected users</title>
 			<para>
-				In the default setting, only the <systemitem class="username">root</systemitem> user and members of
+				By default only the <systemitem class="username">root</systemitem> user and members of
 				the <systemitem class="groupname">Domain Admins</systemitem> group can login remotely via SSH and
 				locally on a <systemitem class="service">tty</systemitem>.
 			</para>
@@ -1621,7 +1621,7 @@ auth/sshd/restrict: yes
 		</para>
 
 		<para>
-		  In the default setting, only <envar>ldap/server/name</envar> is set following the
+		  By default only <envar>ldap/server/name</envar> is set following the
 		  installation or the domain join. If there is more than one LDAP server available, it is advisable to
 		  assign at least two LDAP servers using the <guimenu>LDAP server</guimenu> policy in order
 		  to improve redundancy. In cases of an environment distributed over several

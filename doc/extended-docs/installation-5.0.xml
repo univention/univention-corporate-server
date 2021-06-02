@@ -285,7 +285,7 @@ generate_appliance -s appliance.qcow2
 				</para>
 
 				<para>
-					In the default setting, three different virtualization images are generated from the qcow2 image.
+					By default three different virtualization images are generated from the qcow2 image.
 					The generation for a type can be suppressed using the respectively given option:
 				</para>
 
@@ -451,7 +451,7 @@ write_files:
 			<section id="appliance:license">
 				<title>License management in cloud instances</title>
 				<para>
-					In the default installation, a UCS installation has a <emphasis>core edition license</emphasis>.
+					By default a UCS installation has a <emphasis>core edition license</emphasis>.
 					An updated license from Univention is required in order to use the App Center.
 					For standard installations it is sent to the user by e-mail and then set up in the &ucsUMC;.
 				</para>

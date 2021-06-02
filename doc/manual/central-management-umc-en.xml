@@ -227,12 +227,10 @@
 			The following describes how to make the UMC module <guimenu>Portal</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group are supposed to be given access to the portal settings.
 		</para>
 		<para>
-			On a <guimenu>&ucsPrimaryDN;</guimenu> an ACL file has to be created first:
-		<screen>
-/opt/62my-portal-acl.acl
-		</screen>
-		This file has to have the following content to allow the necessary ACL changes:
-		<screen>
+			On a <guimenu>&ucsPrimaryDN;</guimenu> an ACL file has to be created first, for example <filename>/opt/62my-portal-acl.acl</filename>.
+			This file has to have the following content to allow the necessary ACL changes:
+		</para>
+		<programlisting>
 access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
@@ -241,23 +239,26 @@ access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@uni
 @univentionPortal,@univentionPortalCategory,children
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
-		</screen>
+		</programlisting>
+		<para>
 		Then execute the following command to create an LDAP object for the LDAP ACLs:
-		<screen>
-udm settings/ldapacl create \
-	--position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
-	--set name=62my-portal-acl \
-	--set filename=62my-portal-acl \
-	--set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
-	--set package="62my-portal-acl" \
-	--set packageversion=1
-		</screen>
-			If the ACL is to be deleted again, the following command can be used:
-		<screen>
-udm settings/ldapacl remove \
-	--dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
-		</screen>
 		</para>
+		<programlisting language="sh">
+udm settings/ldapacl create \
+  --position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
+  --set name=62my-portal-acl \
+  --set filename=62my-portal-acl \
+  --set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
+  --set package="62my-portal-acl" \
+  --set packageversion=1
+		</programlisting>
+		<para>
+			If the ACL is to be deleted again, the following command can be used:
+		</para>
+		<programlisting language="sh">
+udm settings/ldapacl remove \
+  --dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
+		</programlisting>
 		<para>
 			An appropriate UMC policy can now be created via UMC. The following <guimenu>UMC operations</guimenu> must be allowed within the policy: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> and <guimenu>udm-license</guimenu>. How to create a policy is described in <xref linkend="central-management-umc:Creating_a_policy"/>. Now the newly created policy only needs to be assigned to the desired object, in this case the group <guimenu>Portal Admins</guimenu>. This can also be done directly within the UMC. For this example, navigate to the group module and edit the desired group there. In the group settings, existing policies for the group object can be selected under <guimenu>Policies</guimenu>. More detailed information about policy assignment is described under <xref linkend="central:policies:assign"/>.
 		</para>
@@ -400,9 +401,8 @@ udm settings/ldapacl remove \
 					</simpara></listitem>
 
 					<listitem><simpara>
-						Some of the internally used user groups and groups (e.g., for domain joins) are
-						hidden in the default setting. If the <guimenu>Include hidden objects</guimenu>
-						option is enabled, these objects are also shown.
+						Some of the internally used user groups and groups (e.g., for domain joins) are not shown by default.
+						If the <guimenu>Include hidden objects</guimenu> option is enabled, these objects are also shown.
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -1258,7 +1258,7 @@ udm settings/ldapacl remove \
 <section id="delegated-administration">
   <title>Delegated administration for UMC modules</title>
   <para>
-	In the default setting, only the members of the <systemitem class="groupname">Domain Admins</systemitem> group can
+	By default only the members of the <systemitem class="groupname">Domain Admins</systemitem> group can
 	access all UMC modules. Policies can be used to configure the access to UMC modules for
 	groups or individual users. For example, this can be used to assign a helpdesk team the
 	authority to manage printers without giving them complete access to the administration of the
@@ -1276,7 +1276,7 @@ udm settings/ldapacl remove \
 	In addition to the assignment of UMC policies, LDAP access rights need to be taken
 	into account, as well, for modules that manage data in the LDAP directory.
 	All LDAP modifications are applied to the whole UCS domain.
-	Therefore, in the default setting, only members of the <systemitem class="groupname">Domain Admins</systemitem>
+	Therefore by default only members of the <systemitem class="groupname">Domain Admins</systemitem>
 	group and some internally used accounts have full access to the UCS LDAP.
 	If a module is granted via a UMC policy, the LDAP access must also be allowed
 	for the user/group in the LDAP ACLs. Further information on LDAP ACLs can be found in

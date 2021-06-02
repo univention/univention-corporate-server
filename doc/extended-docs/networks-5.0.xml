@@ -26,7 +26,7 @@
 			</para>
 
 			<para>
-			  The superordinate proxy server is referred to as a <emphasis>parent proxy</emphasis>
+			  The superordinate proxy server is referred to as a <emphasis>parent proxy</emphasis>.
 			  The parent proxy can be specified via the &ucsUCR; variables
 			  <envar>squid/parent/host</envar> (IP address or hostname) and
 			  <envar>squid/parent/port</envar> (port number).
@@ -37,7 +37,7 @@
 			  directly and not forwarded to the parent proxy. If additional networks should be
 			  excluded from forwarding to the parent proxy, these can be specified via the
 			  &ucsUCRV; <envar>squid/parent/directnetworks</envar>. When doing so, the CIDR notation
-			  must be used (e.g. 192.0.2.0/24); several networks should be separated by blank spaces.
+			  must be used (e.g. <systemitem class="ipaddress">192.0.2.0</systemitem>/<systemitem class="netmask">24</systemitem>); several networks should be separated by blank spaces.
 			</para>
         </section>
 
@@ -65,8 +65,8 @@
 				<listitem><para>
 				  The proxy server must be configured to use IP forwarding.
 				  <programlisting lang="sh">
-echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
-sysctl -p
+echo "net.ipv4.ip_forward = 1" >/etc/sysctl.d/ip_forward.conf
+sysctl --system
 				  </programlisting>
 				</para></listitem>
 

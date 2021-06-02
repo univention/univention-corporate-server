@@ -71,7 +71,7 @@
 							  include letters, numerals, spaces, hyphens, or dots.
 							</para>
                             <para>
-							  In the default setting, it is not possible to create a group with the same name as an existing user.
+							  By default it is not possible to create a group with the same name as an existing user.
 							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <literal>false</literal>,
 							  this check is removed.
 							</para>
@@ -432,7 +432,8 @@
 	  </para>
 
 	  <para>
-		In the default setting, the user attribute <property>memberOf</property> is shown. The
+		By default the user attribute <property>memberOf</property> is shown.
+		The
 		&ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> can be used to configure
 		a different attribute.
 	  </para>
