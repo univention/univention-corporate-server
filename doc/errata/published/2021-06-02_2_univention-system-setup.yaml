@@ -9,3 +9,5 @@ desc: |
  * The login message (message of the day) showed wrong versions
    of supported browsers
 bug: [53244]
+erratum: 2
+announced: 2021-06-02
