@@ -38,7 +38,7 @@ def check_status(app):
 							utils.fail('ERROR: A package is not uninstalled!')
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages = app.default_packages_master
-			if packages:
+			if packages and app.id != 'fetchmail':
 				try:
 					output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
 				except subprocess.CalledProcessError:

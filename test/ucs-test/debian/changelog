@@ -1,3 +1,10 @@
+ucs-test (9.0.7-35) unstable; urgency=medium
+
+  * Bug #53149: don't check default_packages_master
+    in 25_app_uninstall for fetchmail
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Jun 2021 14:39:44 +0200
+
 ucs-test (9.0.7-34) unstable; urgency=medium
 
   * Bug #52446: Test ms pwpolicy of users/user and users/ldap
