@@ -118,7 +118,6 @@ test_master () {
 		test ${diff#-} -lt 300
 		ucs-winrm domain-user-validate-password --client "$client" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 		ucs-winrm domain-user-validate-password --client "$client" --domainuser "newuser01" --domainpassword "Univention.99"
-		ucs-winrm domain-user-validate-password --client "$client" --domainuser "newuser02" --domainpassword "Univention.99"
 	done
 	for ucs in ucs-master ucs-backup ucs-slave ucs-member; do
 		ucs-winrm run-ps --client "$WIN2012" --cmd "nbtstat -a $ucs" # does not work with $WIN2016
