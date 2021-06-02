@@ -10,3 +10,5 @@ desc: |
    password complexity criteria was configured due to the
    missing displayname. This has been fixed.
 bug: [52446]
+erratum: 986
+announced: 2021-06-02
