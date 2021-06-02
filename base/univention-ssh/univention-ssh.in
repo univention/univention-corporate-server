@@ -36,6 +36,7 @@ import sys
 import shlex
 import signal
 import time
+import subprocess
 
 
 def trim(docstring):
@@ -206,9 +207,18 @@ try:
 				# create new session to force ssh to call SSH_ASKPASS
 				os.setsid()
 
-				os.execvp(command[0], command)
-
-				print('Failed to exec %s' % (' '.join(command),), file=sys.stderr)
+				try:
+					# Bug #53181
+					# For some reason ssh is losing stdout than used on a non interactive tty
+					# while used in a command expansion eg: "output=$(univention-ssh ...)" and SSH_ASKPASS being used.
+					# That results in an empty variable (in the example "output" would be empty).
+					# Not using stdout directly but redirecty it solves this issue
+					# sys.stdout.buffer.write is used to write the output from ssh unchanged back to stdout
+					sys.stdout.buffer.write(subprocess.check_output(command))
+					exit(0)
+				except subprocess.CalledProcessError as exc:
+					sys.stdout.buffer.write(exc.output)
+					exit(exc.returncode)
 			else:  # parent
 				# close all file descriptors
 				max_fd = os.sysconf('SC_OPEN_MAX')
