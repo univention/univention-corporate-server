@@ -178,7 +178,7 @@ def run_join_scripts(
 		cmd = ['/usr/sbin/univention-run-join-scripts']
 		if username and password:
 			# credentials are provided
-			passwordFile.write(password)
+			passwordFile.write(password.encode('UTF-8'))
 			passwordFile.flush()
 			cmd += ['-dcaccount', username, '-dcpwd', passwordFile.name]
 
