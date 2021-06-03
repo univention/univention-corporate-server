@@ -3,20 +3,15 @@
 
 a
 	color: inherit
-	transition: color 250ms
+	transition: color 250ms, text-decoration-thickness 250ms
 	text-decoration: underline
+	text-decoration-thickness: 1px
 
 	&:hover,
 	&:focus
-		color: var(--color-primary)
-
+		text-decoration-thickness: 3px
 	&:active
 		text-decoration: none
-a.sameColorInStates
-	&:hover,
-	&:focus
-		color: inherit
-
 
 p
 	margin-bottom: 0.7rem
