@@ -35,7 +35,10 @@ THEME_DIR="/usr/share/univention-web/themes"
 THEME_SRC="$THEME_DIR/$(ucr get ucs/web/theme).css"
 THEME_DST="/var/www/univention/theme.css"
 
-[ -e "$THEME_SRC" ] || (echo "$THEME_SRC does not exist"; exit 1)
+if [ ! -e "$THEME_SRC" ]; then
+	echo "$THEME_SRC does not exist"
+	exit 1
+fi
 
-[ -e "$THEME_DST" ] && rm "$THEME_DST"
+[ -L "$THEME_DST" ] && rm "$THEME_DST"
 ln -s "$THEME_SRC" "$THEME_DST"
