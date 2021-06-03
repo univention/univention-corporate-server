@@ -20,7 +20,6 @@ def install_python_lmdb():
     ucr.load()
     if not ucr.is_true("repository/online/unmaintained"):
         handler_set(["repository/online/unmaintained=yes"])
-        # subprocess.run(("univention-install", "python-lmdb"), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.call(("univention-install", "python-lmdb"))
 
 
@@ -84,12 +83,18 @@ def sam_ldb_backends_from_tdb_to_mdb(lp):
         os.rename(os.path.join(sam_tdb_backend_dir, "metadata.tdb"), os.path.join(sam_backend_dir, "metadata.tdb"))
 
 
+def open_samdb_raw(lp):
+    # Use options=["modules:"] to keep the attached LDB modules from loading
+    samdb_path = lp.private_path("sam.ldb")
+    return Ldb(url=samdb_path, session_info=system_session(),
+                            lp=lp, options=["modules:"])
+
+
 def activate_mdb(lp):
     print("PROCESS: Switching sam.ldb from TDB to MDB")
-    # We use options=["modules:"] to stop the modules loading
-    samdb_path = lp.private_path("sam.ldb")
-    samdb = Ldb(url=samdb_path, session_info=system_session(),
-                            lp=lp, options=["modules:"])
+
+    # Use options=["modules:"] to keep the attached LDB modules from loading
+    samdb = open_samdb_raw(lp)
 
     samdb.transaction_start()
     try:
@@ -135,11 +140,7 @@ def stopped_samba_and_s4c():
 
 
 def sam_ldb_is_using_mdb(lp):
-    # We use options=["modules:"] to stop the modules loading
-    samdb_path = lp.private_path("sam.ldb")
-    samdb = Ldb(url=samdb_path, session_info=system_session(),
-                            lp=lp, options=["modules:"])
-
+    samdb = open_samdb_raw(lp)
     res = samdb.search(base="@PARTITION", scope=ldb.SCOPE_BASE, attrs=["backendStore"])
     return (res and "backendStore" in res[0] and str(res[0]["backendStore"]) == "mdb")
 
