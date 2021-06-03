@@ -3,8 +3,6 @@
 #include <debian-installer+kernel>
 #include <forcd1>
 
-univention-debootstrap
-
 /* Univention System Setup */
 univention-system-setup
 univention-system-setup-boot
@@ -54,10 +52,13 @@ unzip
 vim
 wget
 zip
+memtest86+
+lvm2
 bridge-utils
 ifenslave
 vlan
 man-db
+gsfonts
 
 /* Role Packages */
 univention-server-master
@@ -124,9 +125,6 @@ univention-antivir-mail
 univention-spamassassin
 libmail-spf-perl
 re2c
-
-/* FIXME # univention-nagios-server  # FIXME */
-/* FIXME # nagios-plugins-contrib  # FIXME */
 
 univention-pkgdb
 
