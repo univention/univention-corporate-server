@@ -92,8 +92,6 @@ def open_samdb_raw(lp):
 
 def activate_mdb(lp):
     print("PROCESS: Switching sam.ldb from TDB to MDB")
-
-    # Use options=["modules:"] to keep the attached LDB modules from loading
     samdb = open_samdb_raw(lp)
 
     samdb.transaction_start()
