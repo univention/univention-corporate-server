@@ -7,6 +7,10 @@ Variables: interfaces/.*/address
 Type: file
 File: etc/apache2/conf-available/univention-web.conf
 
+Type: script
+Script: symlink_web_theme.sh
+Variables: ucs/web/theme
+
 Type: file
 File: usr/share/univention-web/js/umc/hooks.json
 Variables: umc/web/hooks/.*

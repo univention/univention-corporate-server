@@ -1,3 +1,9 @@
+univention-web (4.0.1-30) unstable; urgency=medium
+
+  * Bug #53307: Theme switch script
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Jun 2021 10:24:07 +0200
+
 univention-web (4.0.1-29) unstable; urgency=medium
 
   * Bug #53310: fix regression of saved username being autofilled in firefox
