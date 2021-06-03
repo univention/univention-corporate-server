@@ -40,7 +40,7 @@ trap cleanup EXIT
 # convert the images
 mssh "mkdir /mnt/omar/vmwares/kvm/tmp/joined-templates || true"
 for role in master backup slave member; do
-	qcowimage=/var/lib/libvirt/images/${KVM_USER}_${role}-joined-templates.qcow2
+	qcowimage=/var/lib/libvirt/images/${KVM_USER}_${role}-joined-templates-0.qcow2
 	instance="${KVM_USER}_${role}-joined-templates"
 	mssh "qemu-img convert -p -c -O qcow2 $qcowimage  $tmpdir/$role.qcow2"
 	# remove instanc
