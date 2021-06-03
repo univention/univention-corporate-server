@@ -78,9 +78,8 @@ def sam_ldb_backends_from_tdb_to_mdb(lp):
         os.rename(sam_ldb_bak, sam_ldb)
         raise
 
-    if not os.path.exists(os.path.join(sam_backend_dir, "metadata.tdb")):
-        print("PROCESS: Moving metadata file to new sam.ldb.d directory")
-        os.rename(os.path.join(sam_tdb_backend_dir, "metadata.tdb"), os.path.join(sam_backend_dir, "metadata.tdb"))
+    print("PROCESS: Moving metadata file to new sam.ldb.d directory")
+    os.rename(os.path.join(sam_tdb_backend_dir, "metadata.tdb"), os.path.join(sam_backend_dir, "metadata.tdb"))
 
 
 def open_samdb_raw(lp):
