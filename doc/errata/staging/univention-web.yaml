@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A new UCR variable has been added to configure a theme for all UCS web
+   interfaces: ucs/web/theme. The dark theme is the default.
+bug: [53307]
