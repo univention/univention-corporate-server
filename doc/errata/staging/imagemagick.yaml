@@ -6,7 +6,7 @@ src: imagemagick
 fix: 8:6.9.7.4+dfsg-11+deb9u13
 desc: |
  This update addresses the following issues:
- * integer overflow in MagickCore/quantum-export.c (CVE-2020-27751)
+ * Integer overflow in MagickCore/quantum-export.c (CVE-2020-27751)
  * Division by zero in GetResizeFilterWeight in MagickCore/resize.c
    (CVE-2021-20243)
  * Division by zero in WriteAnimatedWEBPImage() in coders/webp.c
