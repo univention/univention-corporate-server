@@ -1,10 +1,6 @@
 #!/bin/sh
-# -*- coding: utf-8 -*-
 #
-# Univention App Center
-#  join script
-#
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,7 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 THEME_DIR="/usr/share/univention-web/themes"
-THEME_SRC="$THEME_DIR/$(ucr get ucs/web/theme).css"
+THEME_SRC="$THEME_DIR/$(basename "$(ucr get ucs/web/theme)").css"
 THEME_DST="/var/www/univention/theme.css"
 
 if [ ! -e "$THEME_SRC" ]; then

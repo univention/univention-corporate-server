@@ -1,0 +1,6 @@
+[ucs/web/theme]
+Description[de]=Name des Themes, das auf allen Web-Oberflächen (z.B. Login, Portal, UMC) Anwendung finden soll. Beispiel: "dark" oder "light". Eine CSS-Datei gleichen Namens muss im Ordner /usr/share/univention-web/themes/ existieren.
+Description[en]=Name of the theme to be applied to all web interfaces (e.g., login, portal, UMC). Example: "dark" or "light". A CSS file of the same name has to exist in the folder /usr/share/univention-web/themes/.
+Default=dark
+Type=str
+Categories=management-umc

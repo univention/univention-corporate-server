@@ -1,0 +1,4 @@
+Type: script
+Script: symlink-web-theme.sh
+Variables: ucs/web/theme
+

@@ -4,13 +4,6 @@ Description[en]=Variables in the format ucs/server/languages/.* define the avail
 Type=str
 Categories=management-umc
 
-[ucs/web/theme]
-Description[de]=Name des Themes, das auf allen Web-Oberflächen (z.B. Login, Portal, UMC) Anwendung finden soll.
-Description[en]=Name of the theme to be applied to all web interfaces (e.g., login, portal, UMC).
-Default=dark
-Type=str
-Categories=management-umc
-
 [umc/web/hooks/.*]
 Description[de]=Definiert JavaScript-Module, die als sogenannte Hooks in einem Univention-Webfrontend automatisch geladen werden, bspw. um Menüeinträge zu registrieren. Das Format der UCR Variable ist umc/web/hooks/<Paketname>=<JavaScriptDatei> mit der JavaScript-Datei relativ zum Pfad /univention/js/umc/hooks/.
 Description[en]=Defines JavaScript modules which are automatically loaded as so called hooks in a Univention webfrontend. These hooks may be used, e.g., to register menu entries. The format of the UCR variable is umc/web/hooks/<packageName>=<JavaScriptFile> with the JavaScript file relative to the path /univention/js/umc/hooks/.
