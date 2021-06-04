@@ -3,9 +3,9 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
-fix: 9.0.2-47A~5.0.0.202105261442
+fix: 9.0.2-48A~5.0.0.202106041037
 desc: |
  This update addresses the following issue:
- * Installation of certain apps fails, if the applications name exceeds a
+ * Installation of certain apps fails, if the app id exceeds a
    certain limit in length
 bug: [53273]
