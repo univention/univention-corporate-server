@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention SSH
@@ -30,8 +30,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-from __future__ import print_function
 
 import os
 import sys
@@ -187,7 +185,7 @@ try:
 						print('Overwriting %s option' % (arg,), file=sys.stderr)
 						del sys.argv[i:i + 2]
 					elif arg.startswith('--rsh='):
-						print('Overwriting --rsh option' % (arg,), file=sys.stderr)
+						print('Overwriting --rsh %s option' % (arg,), file=sys.stderr)
 						del sys.argv[i]
 					else:
 						i += 1
