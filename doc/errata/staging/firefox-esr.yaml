@@ -7,6 +7,6 @@ fix: 78.11.0esr-1~deb9u1
 desc: |
  This update addresses the following issue:
  * Memory safety bugs fixed (CVE-2021-29967)
- bug: [53395]
+bug: [53395]
 cve:
 - CVE-2021-29967
