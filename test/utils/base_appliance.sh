@@ -649,6 +649,7 @@ appliance_preinstall_common_role ()
 
 appliance_preinstall_non_univention_packages ()
 {
+	exit 1  # This list if out-dated - see Bug #52834
 	declare -a packages=(
 		libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
 		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgnutls-dane0
@@ -796,7 +797,6 @@ setup_appliance ()
 	univention-install -y --force-yes --reinstall univention-system-setup-boot
 
 	# shrink appliance image size
-	appliance_preinstall_non_univention_packages
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /var/cache/univention-system-setup/packages/
 
