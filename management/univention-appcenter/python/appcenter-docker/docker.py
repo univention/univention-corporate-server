@@ -45,7 +45,6 @@ import ssl
 from base64 import b64encode
 from ipaddress import IPv4Network, IPv4Address
 import time
-import pipes
 
 from six.moves import urllib_request, http_client, urllib_error
 import ruamel.yaml as yaml
@@ -70,10 +69,29 @@ class DockerImageVerificationFailedChecksum(Exception):
 		super(DockerImageVerificationFailedChecksum, self).__init__(reason)
 
 
+class DockerInspectCallFailed(Exception):
+	pass
+
+
 def inspect(name):
+	# name can be any value that docker inspect accepts
+	# e.g. container name or id
 	out = check_output(['docker', 'inspect', str(name)])
 	out = out.decode('utf-8')
 	return loads(out)[0]
+
+
+def inspect_with_retry(container, retries=3):
+	# container can be any value that docker inspect accepts
+	# e.g. container name or id
+	for i in range(retries):
+		try:
+			container_inspect = inspect(container)
+			return container_inspect
+		except Exception as e:
+			_logger.warn('Inspect for container {} failed: {}'.format(container, e))
+			time.sleep(5)
+	raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, e))
 
 
 def login(hub, with_license):
@@ -604,31 +622,32 @@ class MultiDocker(Docker):
 			ps = str()
 			for i in range(3):
 				try:
-					# by using a pipe to 'bash -s' COLUMNS is unset and the terminal and the table
-					# is never line-wrapped.
-					ps = check_output(['bash', '-s'], input=' '.join(
-						['echo', 'docker-compose', '-p', pipes.quote(self.app.id), 'ps']
-					).encode('utf-8'), cwd=self.app.get_compose_dir())
+					# docker-compose ps -q gives a list of container IDs, one in each line,
+					# the output is not line-wrapped
+					ps = check_output(['docker-compose', '-p', self.app.id, 'ps', '-q'], cwd=self.app.get_compose_dir())
 					break
 				except Exception as e:
 					_logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
 					time.sleep(5)
-			for line in ps.splitlines():
-				line = line.decode('utf-8')
-				c_name = line.split(' ', 1)[0]
-				if '_{}_'.format(self.app.docker_main_service) in c_name:
-					name = c_name
+			for container_id in ps.splitlines():
+				container_id = container_id.decode('utf-8')
+				try:
+					container_inspect = inspect_with_retry(container_id)
+				except DockerInspectCallFailed as e:
+					_logger.warn('Fail: {}'.format(e))
+					break
+				container_name = container_inspect['Name']
+				if '_{}_'.format(self.app.docker_main_service) in container_name:
+					return container_inspect['Id']
 		# default
 		if name is None:
 			name = '{}_{}_1'.format(self.app.id, self.app.docker_main_service)
 		# get containert id
-		for i in range(3):
-			try:
-				insp = inspect(name)
-				return insp['Id']
-			except Exception as e:
-				_logger.warn('Inspect for main service container {} failed: {}'.format(name, e))
-				time.sleep(5)
+		try:
+			insp = inspect_with_retry(name)
+			return insp['Id']
+		except DockerInspectCallFailed as e:
+			_logger.warn('Fail: {}'.format(e))
 		return None
 
 	def create(self, hostname, env):

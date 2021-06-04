@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-48) unstable; urgency=medium
+
+  * Bug #53273: Use docker-compose ps -q to get all container ids for
+    multicontainer apps to fix line-wrap issue
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 04 Jun 2021 10:33:35 +0200
+
 univention-appcenter (9.0.2-47) unstable; urgency=low
 
   * Bug #53273: A line wrap in the output of `docker-compose ps` breaks the
