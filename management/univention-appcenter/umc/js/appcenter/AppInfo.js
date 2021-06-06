@@ -34,24 +34,18 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dijit/_WidgetBase",
+	"dijit/_Container",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
-	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/Tile",
+	"umc/i18n!umc/modules/appcenter",
 	"umc/widgets/Button"
-], function(declare, lang, array, domClass, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	return declare("umc.modules.appcenter.AppInfo", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+], function(declare, lang, array, domClass, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, Tile, _) {
+	return declare("umc.modules.appcenter.AppInfo", [_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppInfo',
 		templateString: `
 			<div class="appDetailsSidebarElement">
-				<div
-					data-dojo-type="umc/modules/appcenter/Tile"
-					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
-					"
-				></div>
+				<div data-dojo-attach-point="containerNode"></div>
 				<div class="umcAppInfo__description">\${description}</div>
 				<div class="umcAppInfo__buttonWrapper" data-dojo-attach-point="buttonNode">
 					<div class="umcAppSidebarButton ucsPrimaryButton"
@@ -68,6 +62,11 @@ define([
 		`,
 		buildRendering: function() {
 			this.inherited(arguments);
+			this.addChild(new Tile({
+				bgc: this.bgc,
+				logo: this.logo,
+				name: this.name
+			}));
 			if (! this.buttonLabel) {
 				domClass.add(this.buttonNode, 'dijitDisplayNone');
 			}

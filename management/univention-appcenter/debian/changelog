@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-49) unstable; urgency=medium
+
+  * Bug #53384: Handle template error when opening Apps with certain
+    characters in name
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Jun 2021 00:10:09 +0200
+
 univention-appcenter (9.0.2-48) unstable; urgency=medium
 
   * Bug #53273: Use docker-compose ps -q to get all container ids for
