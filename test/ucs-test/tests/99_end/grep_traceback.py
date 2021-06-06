@@ -138,6 +138,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
 	(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
+	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
+	(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
 
 	# during upgrade to UCS 5.0-0
 	('ImportError: No module named client', ['univention-directory-listener/system/faillog.py']),  # Bug #53290
@@ -221,7 +223,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs']),  # Bug #53278
 	('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs']),  # Bug #53277
 	(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns']),  # Bug #53332
-	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{39797a0f-7538-43ea-b46b-7922d2a9eb45\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
+	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
 ])
 
 
@@ -229,6 +231,8 @@ if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument('--ignore-exception', '-i', default='^$')
+	parser.add_argument('-d', '--default-exceptions', action='store_true')
 	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	sys.exit(int(not main(args.filename, ignore_exceptions={re.compile(args.ignore_exception): None})))
+	ignore_exceptions = COMMON_EXCEPTIONS if args.default_exceptions else {re.compile(args.ignore_exception): None}
+	sys.exit(int(not main(args.filename, ignore_exceptions=ignore_exceptions)))
