@@ -107,7 +107,7 @@ def activate_mdb(lp):
         delta.dn = ldb.Dn(samdb, "@SAMBA_DSDB")
         delta["requiredFeatures"] = \
            ldb.MessageElement("lmdbLevelOne",
-                           ldb.FLAG_MOD_REPLACE,
+                           ldb.FLAG_MOD_ADD,
                            "requiredFeatures")
         samdb.modify(delta)
     except ldb.LdbError:
