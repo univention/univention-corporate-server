@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from optparse import OptionParser
 import sys
 import time
@@ -121,45 +122,45 @@ if options.name_edu_server:
 
 result = client.umc_command('schoolinstaller/install', params).result
 if result and not result.get('success', True):  # backwards compatibility
-	print 'ERROR: Failed to run installer!'
-	print 'output: %s' % result
+	print('ERROR: Failed to run installer!')
+	print('output: %s' % result)
 	sys.exit(1)
 
-print '=== INSTALLATION STARTED ==='
+print('=== INSTALLATION STARTED ===')
 status = {'finished': False}
 failcount = 0
 last_message = None
 while not status['finished']:
 	if failcount >= 1200:
-		print 'ERROR: %d failed attempts - committing suicide' % (failcount, )
+		print('ERROR: %d failed attempts - committing suicide' % (failcount, ))
 		sys.exit(1)
 	try:
 		status = client.umc_command('schoolinstaller/progress').result
 		failcount = 0
 	except (HTTPError, ConnectionError) as exc:
 		failcount += 1
-		print 'TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),)
+		print('TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),))
 		time.sleep(1)
 	message = '%(component)s - %(info)s' % status
 	if last_message != message:
 		last_message = message
-		print message
+		print(message)
 	else:
-		print '.',
+		print('.', end=' ')
 
 if len(status['errors']) > 0:
-	print 'ERROR: installation failed!'
-	print 'output: %s' % status
+	print('ERROR: installation failed!')
+	print('output: %s' % status)
 	sys.exit(1)
 
 result = client.umc_command('lib/server/restart').result
 if not result:
-	print 'ERROR: Failed to restart UMC'
-	print 'output: %s' % result
+	print('ERROR: Failed to restart UMC')
+	print('output: %s' % result)
 	sys.exit(1)
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=42305
-print 'UMC will be restarted on the system. Waiting for 20 seconds.'
+print('UMC will be restarted on the system. Waiting for 20 seconds.')
 time.sleep(20)
 
 sys.exit(0)
