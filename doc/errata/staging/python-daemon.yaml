@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: python-daemon
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Standard streams could be set to non inheritable within
+   the daemon context. Which means child process did not have any standard
+   streams. This made it impossible to use the UMC join module to join or
+   rejoin a UCS server.
+bug: [53181]
