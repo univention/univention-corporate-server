@@ -508,6 +508,9 @@ install_ucsschool () {
 		scope|*)
 			activate_ucsschool_devel_scope || rv=$?
 			echo "install_ucsschool - DEBUG1"
+			# workaround until UCS 5.0-0 is published
+			switch_to_test_app_center
+			# workaround end
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
