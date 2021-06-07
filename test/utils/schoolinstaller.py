@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2013-2021 Univention GmbH
@@ -29,7 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from optparse import OptionParser
+from argparse import ArgumentParser
 import sys
 import time
 import traceback
@@ -40,46 +40,46 @@ from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
 
-parser = OptionParser()
-parser.add_option(
-	'-H', '--host', dest='host', default='%s.%s' % (ucr.get('hostname'), ucr.get('domainname')),
+parser = ArgumentParser()
+parser.add_argument(
+	'-H', '--host', default='%s.%s' % (ucr.get('hostname'), ucr.get('domainname')),
 	help='host to connect to', metavar='HOST')
-parser.add_option(
+parser.add_argument(
 	'-u', '--user', dest='username',
 	help='username', metavar='UID', default='Administrator')
-parser.add_option(
-	'-p', '--password', dest='password',
+parser.add_argument(
+	'-p', '--password',
 	help='password', metavar='PASSWORD')
-parser.add_option(
-	'-o', '--ou', dest='ou',
+parser.add_argument(
+	'-o', '--ou',
 	help='ou name of the school', metavar='OU')
-parser.add_option(
+parser.add_argument(
 	'-S', '--single-server', dest='setup',
 	action='store_const', const='singlemaster',
 	help='install a single server setup on a master')
-parser.add_option(
+parser.add_argument(
 	'-M', '--multi-server', dest='setup',
 	action='store_const', const='multiserver',
 	help='install a multi server setup')
-parser.add_option(
+parser.add_argument(
 	'-E', '--educational-server-name', dest='name_edu_server',
 	help='name of the educational server', metavar='NAME_EDU_SLAVE')
-parser.add_option(
+parser.add_argument(
 	'-e', '--educational-server', dest='server_type',
 	action='store_const', const='educational',
 	help='install a dc slave in educational network (DEFAULT)')
-parser.add_option(
+parser.add_argument(
 	'-a', '--administrative-server', dest='server_type',
 	action='store_const', const='administrative',
 	help='install a dc slave in administrative network')
-parser.add_option(
+parser.add_argument(
 	'-m', '--master-host', dest='master', default=ucr['ldap/master'],
 	help='on a slave the master host needs to be specified', metavar='HOST')
-parser.add_option(
+parser.add_argument(
 	'-s', '--samba-version', dest='samba', default='4',
 	help='the version of samba, either 3 or 4', metavar='HOST')
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 
 if ucr['server/role'] == 'domaincontroller_slave' and not options.server_type:
 	parser.error('Please specify the slave type (--educational-server or --administrative-server)!')
@@ -137,7 +137,7 @@ while not status['finished']:
 	try:
 		status = client.umc_command('schoolinstaller/progress').result
 		failcount = 0
-	except (HTTPError, ConnectionError) as exc:
+	except (HTTPError, ConnectionError):
 		failcount += 1
 		print('TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),))
 		time.sleep(1)
