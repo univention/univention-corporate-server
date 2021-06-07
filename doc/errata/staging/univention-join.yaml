@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-join
-fix: 
+fix: 12.0.3-8A~5.0.0.202106071451
 desc: |
  This update addresses the following issue(s):
  * An encoding issues has been fixes, which prevented the UMC join module
