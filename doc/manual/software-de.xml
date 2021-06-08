@@ -27,9 +27,6 @@
 	  Für größere Installationen besteht die Möglichkeit, einen lokalen
 	  Repository-Server einzurichten, von dem aus alle weiteren Aktualisierungen
 	  durchgeführt werden (siehe <xref linkend="software::configrepo"/>).
-	  Dieser Repository-Server bezieht seine Pakete entweder
-	  vom Univention-Online-Repository oder in Umgebungen ohne
-	  Internetzugriff auch durch Offline-Updates in Form von ISO-Images.
 	</para>
 
 	<para>
@@ -357,17 +354,6 @@
 	  </para>
 
 	  <para>
-		In der Grundeinstellung werden die zu aktualisierenden Pakete über das
-		Netz aus einem Repository geladen. Wird ein lokales Repository
-		eingesetzt (siehe <xref linkend="software::createrepo"/>), können
-		Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
-		entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
-		Dazu muss <command>univention-upgrade</command> mit den Parametern
-		<option>--iso=<replaceable>ISOIMAGEDATEI</replaceable></option> oder
-		<option>--cdrom=<replaceable>LAUFWERK</replaceable></option> aufgerufen werden.
-	  </para>
-
-	  <para>
 		Von einer Remote-Aktualisierung über SSH wird abgeraten, da dies zum
 		Abbruch des Update-Vorgangs führen kann. Sollte dennoch eine Aktualisierung
 		über eine Netzverbindung durchgeführt werden, ist
@@ -543,20 +529,8 @@
 		beispielsweise in der Firmenzentrale ein Haupt-Repository gepflegt wird, das dann in
 		lokale Repositorys der einzelnen Standorte synchronisiert wird. Um ein Repository
 		einzurichten, muss der Befehl <command>univention-repository-create</command> als
-		Benutzer <systemitem class="username">root</systemitem> aufgerufen werden. Der initiale Paketbestand wird
-		von einer Installations-DVD eingelesen, mit dem Parameter <option>--iso</option>
-		kann hier auch ein ISO-Image übergeben werden. UCS ist nur als 64 Bit-DVD
-		verfügbar. Das Repository wird von <command>univention-repository-create</command>
-		mit der Architektur des angegebenen Installationsmediums erzeugt.
-	  </para>
-
-	  <para>
-		Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure APT
-		über Signaturen kryptografisch gesichert. Für lokale Repositorys besteht diese
-		Möglichkeit aktuell noch nicht, so dass beim Erstellen eines Repositorys ein Hinweis
-		ausgegeben wird, wie Secure APT mit der &ucsUCRV; <envar>update/secure_apt</envar>
-		deaktiviert werden kann. Diese Einstellung muss auf allen UCS-Systemen gesetzt werden,
-		die auf das Repository zugreifen.
+		Benutzer <systemitem class="username">root</systemitem> aufgerufen werden.
+		Initial ist das Repository leer, bis es geupdated wird.
 	  </para>
 
 	  <para>
