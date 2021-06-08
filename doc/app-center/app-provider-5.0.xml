@@ -224,7 +224,7 @@
 						</listitem>
 						<listitem>
 							<simpara>
-								Select <emphasis>Docker app</emphasis> or <emphasis>Docker app based on UCS <wordasword>AppBox</wordasword></emphasis> for the recommended Docker based app.
+								Select <emphasis>Docker app</emphasis> for the recommended Docker based app.
 								This documentation only covers single and multi container apps.
 							</simpara>
 						</listitem>
