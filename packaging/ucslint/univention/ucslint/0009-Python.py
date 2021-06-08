@@ -32,7 +32,7 @@ import re
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT
-from univention.ucslint.python import Python33 as PythonVer
+from univention.ucslint.python import Python36 as PythonVer
 from univention.ucslint.python import python_files
 
 

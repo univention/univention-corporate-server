@@ -1,3 +1,9 @@
+ucslint (9.0.1-4) unstable; urgency=low
+
+  * Bug #53409: Allow f-strings since Python 3.6
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Jun 2021 13:56:00 +0200
+
 ucslint (9.0.1-3) unstable; urgency=low
 
   * Bug #51375 ucslint: Check for uldap.searchDn()
