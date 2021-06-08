@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-directory-listener
+fix: 14.0.5-3
+desc: |
+ This update addresses the following issue:
+ * Make StdIO unbuffered. Otherwise (error) output from modules is buffered
+   until the 8 KiB buffer becomes full. Only then the previously collected
+   output is flushed and becomes visible en bloc in the log file
+   `/var/log/univention/listener.log`.
+bug: [53071]

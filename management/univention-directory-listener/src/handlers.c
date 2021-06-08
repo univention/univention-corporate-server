@@ -620,6 +620,7 @@ int handlers_init(void) {
 	/* all byte-compiled Univention Python modules are compiled optimized,
 	   so we'll better run handlers optimized as well */
 	Py_OptimizeFlag++;
+	Py_UnbufferedStdioFlag++;
 	Py_Initialize();
 	handlers_load_all_paths();
 	return 0;

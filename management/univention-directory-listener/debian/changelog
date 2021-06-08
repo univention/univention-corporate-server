@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.5-3) unstable; urgency=low
+
+  * Bug #53071: Make StdIO unbuffered
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Jun 2021 12:01:34 +0200
+
 univention-directory-listener (14.0.5-2) unstable; urgency=medium
 
   * Bug #52956: fix dependency on python-univention
