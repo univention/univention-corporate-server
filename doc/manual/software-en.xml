@@ -26,10 +26,7 @@
 	<para>
 	  For larger installations, there is the possibility of establishing a local
 	  repository server from which all further updates can be performed
-	  (see <xref linkend="software::configrepo"/>). This
-	  repository server either procures its packages from the Univention online
-	  repository or, in environments without Internet access, also from offline
-	  updates in the form of ISO images.
+	  (see <xref linkend="software::configrepo"/>).
 	</para>
 
 	<para>
@@ -350,16 +347,6 @@ univention-app shell demo-docker-app
 	  </para>
 
 	  <para>
-		In the basic setting, the packages to be updated are loaded from a repository
-		via the network. If a local repository is used (see <xref linkend="software::createrepo"/>),
-		release updates can alternatively also be installed via update DVD
-		images, which are either imported as ISO files or from a drive.
-		This is done by running <command>univention-upgrade</command> with the
-		parameters <option>--iso=<replaceable>ISOIMAGEFILE</replaceable></option> or
-		<option>--cdrom=<replaceable>DRIVE</replaceable></option>.
-	  </para>
-
-	  <para>
 		Remote updating over SSH is not advisable as this may result in the update
 		procedure being aborted. If updates should occur over a network connection
 		nevertheless, it must be verified that the update continues despite
@@ -539,20 +526,7 @@ univention-app shell demo-docker-app
 
 	  <para>
 		To set up a repository, the <command>univention-repository-create</command> command
-		must be run as the <systemitem class="username">root</systemitem> user. The initial package inventory is
-		imported from an installation DVD. The parameter <option>--iso</option> allows
-		importing from an ISO image. UCS is only available as a 64-bit DVD. The
-		repository is created by <command>univention-repository-create</command> with the
-		architecture of the specified installation medium.
-	  </para>
-
-	  <para>
-		Access to the Univention online repository is cryptographically secured via the
-		use of Secure APT employing signatures. This feature is not currently available
-		for local repositories and so a message appears when creating a repository
-		explaining how Secure APT can be deactivated using the &ucsUCRV;
-		<envar>update/secure_apt</envar>. This setting must be set on all UCS systems
-		that access the repository.
+		must be run as the <systemitem class="username">root</systemitem> user.
 	  </para>
 
 	  <para>
