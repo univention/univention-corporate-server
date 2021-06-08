@@ -110,10 +110,6 @@ def update_net(options: Namespace) -> None:
     if options.sync:
         # only update packages of current repositories
         mirror.run()
-    elif options.security_only:
-        # trigger update to find new security repositories
-        handler_commit(['/etc/apt/mirror.list'])
-        mirror.run()
     elif options.errata_only:
         # trigger update to find new errata repositories
         handler_commit(['/etc/apt/mirror.list'])
@@ -147,9 +143,6 @@ def parse_args() -> Namespace:
         '-s', '--sync-only', action='store_true',
         dest='sync',
         help='if given no new release repositories will be added, just the existing will be updated')
-    parser.add_argument(
-        '-S', '--security-only', action='store_true',
-        help='if given only security repositories will be updated')
     parser.add_argument(
         '-E', '--errata-only', action='store_true',
         help='if given only errata repositories will be updated')
