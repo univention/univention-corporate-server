@@ -134,6 +134,7 @@ def update_net(options: Namespace) -> None:
         if not mirror_run:
             # sync only
             mirror.run()
+    handler_commit(['/etc/apt/sources.list.d/15_ucs-online-version.list'])
 
 
 def parse_args() -> Namespace:
