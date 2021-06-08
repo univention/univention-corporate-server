@@ -7,7 +7,7 @@ Each line of the file consists of a key-value pair which may have the following 
 * `current_version` ==> `UCS_Version` ==> `2.3-1`
 * `next_version` ==> `UCS_Version` ==> `2.3-2`
 * `target_version` ==> `UCS_Version` ==> `2.4-0`
-* `type` ==> `(LOCAL|NET|CDROM)`
+* `type` ==> `(LOCAL|NET)`
 * `status` ==> `(RUNNING|FAILED|DONE)`
 * `phase` ==> `(PREPARATION|PREUP|UPDATE|POSTUP)` ==> only valid if `status=RUNNING`
 * `errorsource` ==> `(SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)`
