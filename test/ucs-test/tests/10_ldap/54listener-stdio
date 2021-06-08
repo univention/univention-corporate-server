@@ -1,0 +1,43 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Check listener Python3 StdIO flush
+## tags:
+##  - basic
+##  - apptest
+##  - replication
+## roles-not: [basesystem]
+## packages:
+##  - univention-directory-listener
+## exposure: careful
+## bugs: [53071]
+
+# shellcheck disable=SC1090
+. "${TESTLIBPATH:?}/base.sh" || exit 137
+. "${TESTLIBPATH:?}/undo.sh" || exit 137
+. "${TESTLIBPATH:?}/random.sh" || exit 137
+
+ucstest="ucstest_$(random_chars)"
+listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
+cat >"$listener" <<__HERE__
+import listener
+import sys
+description = 'Test Python 3 StdIO flush'
+name = 'ucstest'
+filter = '(cn=$ucstest)'
+
+def handler(dn, new, old):
+	sys.stdout.write("STDOUT$ucstest\n")
+	sys.stderr.write("STDERR$ucstest\n")
+__HERE__
+undo systemctl restart univention-directory-listener # Reversed order
+undo rm -f "$listener"
+systemctl restart univention-directory-listener
+
+udm container/cn create --set name="$ucstest"
+undo udm container/cn remove --dn "cn=$ucstest,${ldap_base:?}"
+
+wait_for_replication
+
+grep -Fxqe "STDOUT$ucstest" /var/log/univention/listener.log || fail_test "Missing STDOUT"
+grep -Fxqe "STDERR$ucstest" /var/log/univention/listener.log || fail_test "Missing STDERR"
+:

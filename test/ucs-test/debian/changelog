@@ -1,3 +1,9 @@
+ucs-test (10.0.5-24) unstable; urgency=low
+
+  * Bug #53071: Check Python 3 StdIO flush by UDL
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Jun 2021 13:02:53 +0200
+
 ucs-test (10.0.5-23) unstable; urgency=medium
 
   * Bug #53393: Fix subprocess output
