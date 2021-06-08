@@ -1,5 +1,5 @@
 Source: univention-ldb-modules
-Section: devel
+Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
@@ -40,7 +40,7 @@ Section: libs
 Depends:
  libunivention-ldb-modules (= ${binary:Version}),
  ${misc:Depends},
-Description: Univention LDB modules
+Description: Univention LDB modules debug symbols
  This package provides debugging symbols for UCS specific LDB modules
  .
  This package provides debugging information for the UCS specific
