@@ -162,27 +162,15 @@ def main() -> None:
 
               ucr set repository/online/server="%(hostname)s.%(domainname)s"
 
-            UCS validates the archive integrity through signed Release files (using the
-            secure APT mechanism).  Secure APT is not yet available for local repositories.
-            As such, it must be disabled on this and all other hosts using this
-            repository by setting the UCR variable 'update/secure_apt' to no:
-
-              ucr set update/secure_apt=no
-
-            Both settings are best set in a domain by defining UCR Policies, which
-            set these variables on all hosts using this repository server. For example:
+            The setting is best set in a domain by defining UCR Policies, which
+            set this variable on all hosts using this repository server. For example:
 
               udm policies/repositoryserver create \
                 --position "cn=repository,cn=update,cn=policies,%(ldap/base)s" \
                 --set name="%(hostname)s repository" \
                 --set repositoryServer="%(hostname)s.%(domainname)s"
-              udm policies/registry create \
-                --position "cn=config-registry,cn=policies,%(ldap/base)s" \
-                --set name="global settings" \
-                --set registry="update/secure_apt no"
               udm container/dc modify \
                 --dn "%(ldap/base)s" \
-                --policy-reference "cn=global settings,cn=config-registry,cn=policies,%(ldap/base)s" \
                 --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
             """ % configRegistry))
 
