@@ -55,7 +55,7 @@ un_divert_univention_heimdal_service_cfg() {
 		--remove "$univention_heimdal_service_cfg" || true
 }
 
-if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+if [ "$1" = "remove" ]; then
 
 	eval "$(univention-config-registry shell)"
 

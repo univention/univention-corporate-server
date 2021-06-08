@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+if [ "$1" = "remove" ]; then
     test -x /etc/init.d/univention-ad-connector && /etc/init.d/univention-ad-connector stop
 fi
 
