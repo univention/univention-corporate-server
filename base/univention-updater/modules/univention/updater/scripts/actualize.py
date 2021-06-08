@@ -117,34 +117,6 @@ def getUpdate() -> None:
         sys.exit(res)
 
 
-def deactivateSourcesListMethods(methods: Container[str] = ['cdrom']) -> None:
-    """
-    Remove APT repositories using given scheme.
-
-    :param methods: The list of URI schemes to remove.
-    """
-    FN = '/etc/apt/sources.list'
-    lines = []
-    deactivated_lines = []
-
-    with open(FN, 'r') as f:
-        for line in f:
-            match = RE_APT.match(line)
-            if match and match.group(1) in methods:
-                line = '#' + line
-                deactivated_lines.append('  ' + line)
-
-            lines.append(line)
-
-    if deactivated_lines:
-        with open(FN, 'w') as f:
-            f.write(''.join(lines))
-
-        with open(LOGNAME, 'a+') as debug_file:
-            debug_file.write('Hint: deactivated %d lines in %s:\n' % (len(deactivated_lines), FN))
-            debug_file.write(''.join(deactivated_lines))
-
-
 def check(configRegistry: ConfigRegistry, dist_upgrade: bool = False) -> bool:
     """
     Just probe if there are packages to add or remove
@@ -239,8 +211,6 @@ def run(opt: Namespace) -> int:
         if ldap_hostdn:
             logfile = open(LOGNAME, 'a')
             logfile.write('***** Starting univention-actualise at %s\n' % time.ctime())
-
-            deactivateSourcesListMethods(methods=['cdrom'])
 
             getUpdate()
 

@@ -62,7 +62,7 @@ try:
     from typing import Container, Dict, IO, Iterable, Iterator, List, NoReturn, Optional, Set, Sequence, Tuple  # noqa F401
     from typing_extensions import Literal  # noqa F401
     _ESRC = Literal["SETTINGS", "PREPARATION", "PREUP", "UPDATE", "POSTUP"]
-    _CMDS = Literal["local", "cdrom", "net"]
+    _CMDS = Literal["local", "net"]
 except ImportError:
     pass
 
@@ -129,7 +129,7 @@ def update_status(**kwargs):  # type: (**str) -> None
     - current_version ==> UCS_Version ==> 2.3-1
     - next_version    ==> UCS_Version ==> 2.3-2
     - target_version  ==> UCS_Version ==> 2.4-0
-    - type            ==> (LOCAL|NET|CDROM)
+    - type            ==> (LOCAL|NET)
     - status          ==> (RUNNING|FAILED|DONE)
     - phase           ==> (PREPARATION|PREUP|UPDATE|POSTUP)     ==> only valid if status=RUNNING
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
@@ -172,27 +172,6 @@ def get_status():
     return status
 
 
-def deactivateSourcesListMethods(methods=['cdrom'], apt="/etc/apt/sources.list"):
-    # type: (Container[str], str) -> None
-    """ Rewrite sources.list deactivating all stanzas using any of the specified methods. """
-    lines = []  # type: List[str]
-    deactivated_lines = []  # type: List[str]
-    with open(apt, 'r') as fd:
-        for line in fd:
-            match = RE_APT.match(line)
-            if match and match.group(1) in methods:
-                line = '#%s' % line
-                deactivated_lines.append(line)
-            lines.append(line)
-
-    if deactivated_lines:
-        with open(apt, 'w') as fd:
-            fd.write(''.join(lines))
-
-        log('Hint: deactivated %d lines in %s:\n' % (len(deactivated_lines), apt))
-        log('   %s\n' % '\n   '.join(deactivated_lines))
-
-
 def remove_temporary_sources_list():
     # type: () -> None
     """ Add the temporary sources.list. """
@@ -218,41 +197,14 @@ def update_available(opt, ucr):
     """ Checks if there is an update available.
     Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
 
-    log('--->DBG:update_available(mode={0.mode}, cdrom_mount_point={0.cdrom}, iso={0.iso})'.format(opt))
+    log('--->DBG:update_available(mode={0.mode})'.format(opt))
 
     if opt.mode == 'local':
         return update_local(opt, ucr)
-    elif opt.mode == 'cdrom':
-        return update_cdrom(opt, ucr)
     elif opt.mode == 'net':
         return update_net(opt, ucr)
     else:
         raise ValueError(opt.mode)
-
-
-def update_repo(opt, ucr):
-    # type: (Namespace, ConfigRegistry) -> None
-    if ucr.is_true('local/repository', False):
-        device_name = "ISO image" if opt.iso else "cdrom"
-        log('local/reposity active, copy %s and start local mode' % device_name)
-        cmd1 = [
-            arg for args in [
-                ['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', opt.cdrom],
-                ['--iso', opt.iso] if opt.iso else [],
-                ['--updateto', str(opt.updateto)] if opt.updateto else [],
-            ] for arg in args
-        ]
-        if call(cmd1):
-            raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
-
-        call_local(opt)
-    else:
-        dprint('Error: You are trying to install from a cdrom/dvd image')
-        dprint('       but a local repository was not found. If you want to')
-        dprint('       update via an ISO image you need to create a local')
-        dprint('       repository (/usr/sbin/univention-repository-create)')
-        dprint('       or try to install via "univention-updater net"')
-        sys.exit(1)
 
 
 def update_local(opt, ucr):
@@ -267,50 +219,6 @@ def update_local(opt, ucr):
             'A local repository was not found.\n'
             '       Please check the UCR variable repository/mirror/basepath\n'
             '       or try to install via "univention-updater net"', errorsource='SETTINGS')
-
-    return updater, nextversion
-
-
-def update_cdrom(opt, ucr):
-    # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
-    cmd = ["mount", "-r"]
-    if opt.iso:
-        device_name = "ISO image"
-        cmd += ["-o", "loop", opt.iso, opt.cdrom]
-    else:
-        device_name = "cdrom"
-        cmd += [opt.cdrom]
-
-    dprint('Mounting %s %s' % (device_name, opt.iso))
-    if call(cmd) not in (0, 32) and not os.path.ismount(opt.cdrom):
-        raise UpdateError('Failed to mount cdrom', errorsource='PREPARATION')
-
-    try:
-        # Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
-        if os.path.exists('%s/ucs-updates/' % opt.cdrom):
-            mmp = "%(version/version)s-%(version/patchlevel)s" % ucr
-            try:
-                with open('%s/ucs-updates/ucs_%s.txt' % (opt.cdrom, mmp)) as f:
-                    text = f.read().strip().lower().replace('nextupdate=', '')
-                nextversion = UCS_Version(text)
-            except (EnvironmentError, ValueError):
-                raise UpdateError("%s does not contain an update for version -%s." % (device_name, mmp), errorsource='PREPARATION')
-        else:
-            raise UpdateError("%s is not a valid UCS update medium" % device_name, errorsource='PREPARATION')
-    finally:
-        cmd = ['umount', opt.cdrom]
-        if call(cmd) and os.path.ismount(opt.cdrom):
-            dprint('Warning: Failed to unmount %s' % device_name)
-
-    if nextversion:
-        updater = LocalUpdater()
-
-        failed = set()  # type: Set[Tuple[Component, str]]
-        for comp in updater.get_components(only_current=True):
-            any(comp.repositories(nextversion, nextversion, failed=failed))
-
-        if failed:
-            raise RequiredComponentError(str(nextversion), {comp.name for comp, _ex in failed})
 
     return updater, nextversion
 
@@ -359,10 +267,6 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
     """
     Parse command line arguments.
     """
-    for cdrom_mount_point in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-        if os.path.isdir(cdrom_mount_point):
-            break
-
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--reboot", action="store_true", help=SUPPRESS)  # Deprecated
     parser.add_argument("--updateto", metavar="RELEAASE", type=UCS_Version, help="Upper limit for version")
@@ -378,14 +282,8 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
     group.add_argument("--silent", action="store_true", help="No output to STDOUT")
     group.add_argument("--verbose", "-v", action="count", default=2, help="Increase verbosity")
 
-    group = parser.add_argument_group("CDROM options")
-    group.add_argument("--src", help=SUPPRESS)  # Deprecated
-    group.add_argument("--device", metavar="CDROM", help=SUPPRESS)  # Deprecated
-    group.add_argument("--cdrom", metavar="MOUNT-POINT", help="Path for mounting ISO", default=cdrom_mount_point)
-    group.add_argument("--iso", metavar="PATH", help="Path to ISO image")
-
     parser.add_argument("--check", action="store_true", help="Check if system is up-to-date")
-    parser.add_argument("mode", choices=("local", "net", "cdrom"), help="Update source")
+    parser.add_argument("mode", choices=("local", "net"), help="Update source")
 
     return parser.parse_args(args)
 
@@ -441,8 +339,6 @@ def find(opt, ucr):
         dprint("       /var/lib/univention-updater/univention-updater.status has been removed.")
         sys.exit(1)
 
-    deactivateSourcesListMethods()
-
     update_status(current_version=lastversion, type=opt.mode.upper(), status='RUNNING', phase='PREPARATION')
 
     updater, nextversion = update_available(opt, ucr)
@@ -477,9 +373,6 @@ def run(opt, ucr, updater, nextversion):
         os.environ['update%d%d_ignoressh' % nextversion.mm] = 'yes'
     if opt.ignoreterm:
         os.environ['update%d%d_ignoreterm' % nextversion.mm] = 'yes'
-
-    if opt.mode == 'cdrom':
-        update_repo(opt, ucr)
 
     add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
     try:

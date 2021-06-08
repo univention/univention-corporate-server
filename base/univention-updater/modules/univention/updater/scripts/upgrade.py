@@ -91,7 +91,7 @@ def update_status(**kwargs: str) -> None:
     Keys:
     - current_version ==> UCS_Version ==> 2.3-1
     - next_version    ==> UCS_Version ==> 2.3-2
-    - updatetype      ==> (LOCAL|NET|CDROM)
+    - updatetype      ==> (LOCAL|NET)
     - status          ==> (RUNNING|FAILED|DONE)
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
     '''
@@ -347,13 +347,6 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
         "--noninteractive",
         action="store_true",
         help="Perform a non-interactive update")
-    parser.add_argument(
-        "--iso",
-        help="ISO image for the repository update")
-    parser.add_argument(
-        "--cdrom",
-        default="/dev/cdrom",
-        help="CDROM device for the repository update")
 
     group = parser.add_argument_group("App updates")
     group.add_argument(
@@ -428,11 +421,6 @@ def update_local_repository(options: Namespace) -> None:
                 subprocess.call(('/usr/sbin/univention-repository-update', 'net', '--updateto', options.updateto))
             else:
                 subprocess.call(('/usr/sbin/univention-repository-update', 'net'))
-        elif options.noninteractive or readcontinue('Update the local repository via cdrom [Y|n]?'):
-            if options.iso:
-                subprocess.call(('/usr/sbin/univention-repository-update', 'cdrom', '--iso', options.iso))
-            else:
-                subprocess.call(('/usr/sbin/univention-repository-update', 'cdrom', '--device', options.cdrom))
     else:
         dprint(silent, 'none')
 
