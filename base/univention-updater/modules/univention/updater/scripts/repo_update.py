@@ -36,7 +36,6 @@ from __future__ import print_function
 import os
 import errno
 import shutil
-import subprocess
 import sys
 import time
 from argparse import ArgumentParser, Namespace
@@ -86,52 +85,6 @@ def copy_repository(options: Namespace, source: str, version: UCS_Version) -> No
         if os.path.exists(os.path.join(source, script)):
             shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
     print('Done.')
-
-
-def update_cdrom(options: Namespace) -> None:
-    """ Copy repository from local DVD or ISO image """
-    # try to mount update ISO image or DVD
-    if options.iso_file:
-        ret = subprocess.call(['mount', '-o', 'loop', options.iso_file, options.mount_point])
-    elif options.device:
-        ret = subprocess.call(['mount', options.device, options.mount_point])
-    else:
-        ret = subprocess.call(['mount', options.mount_point])
-
-    # 0 == success, 32 == already mounted
-    if ret not in (0, 32):
-        if options.iso_file:
-            print('Error: Failed to mount ISO image %s' % options.iso_file)
-        else:
-            print('Error: Failed to mount CD-ROM device at %s' % options.mount_point)
-        sys.exit(1)
-
-    try:
-        # check update medium
-        if not os.path.exists(os.path.join(options.mount_point, 'ucs-updates')):
-            print('Error: This is not a valid UCS update medium')
-            sys.exit(1)
-
-        # find UCS version
-        for entry in os.listdir(os.path.join(options.mount_point, 'ucs-updates')):
-            directory = os.path.join(options.mount_point, 'ucs-updates', entry)
-            if os.path.isdir(directory):
-                # copy repository
-                try:
-                    version = UCS_Version(entry)
-                except (NameError, ValueError):
-                    print("Error: Failed to parse %s" % (entry,))
-                    sys.exit(1)
-                try:
-                    copy_repository(options, directory, version)
-                except (IOError, os.error) as why:
-                    print('\nError: while copying %s: %s' % (entry, why))
-                    sys.exit(1)
-    finally:
-        ret = subprocess.call(['umount', options.mount_point])
-        if ret != 0:
-            print('Error: Failed to umount %s' % options.mount_point)
-            sys.exit(ret)
 
 
 def update_net(options: Namespace) -> None:
@@ -188,22 +141,8 @@ def update_net(options: Namespace) -> None:
 
 
 def parse_args() -> Namespace:
-    for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-        if os.path.isdir(mount_point_default):
-            break
 
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument(
-        '-i', '--iso',
-        dest='iso_file',
-        help='define filename of an ISO image')
-    parser.add_argument(
-        '-d', '--device',
-        help='defines the device name of the CD-ROM drive')
-    parser.add_argument(
-        '-c', '--cdrom',
-        dest='mount_point', default=mount_point_default,
-        help='devices mount point for CD-ROM drive')
     parser.add_argument(
         '-s', '--sync-only', action='store_true',
         dest='sync',
@@ -220,7 +159,7 @@ def parse_args() -> Namespace:
         help='if given the repository is updated to the specified version but not higher')
     parser.add_argument(
         "command",
-        choices=("net", "cdrom"),
+        choices=("net", ),
         help="Update command")
 
     return parser.parse_args()
@@ -258,8 +197,6 @@ def main() -> None:
             except UpdaterException as e:
                 print("Error: %s" % e)
                 sys.exit(1)
-        elif options.command == 'cdrom':
-            update_cdrom(options)
 
 
 if __name__ == '__main__':
