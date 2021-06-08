@@ -1,0 +1,11 @@
+#!/bin/sh
+## joinscript api: bindpwdfile
+## joinscript api: nocredentials
+## joinscript api: invalid
+
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+joinscript_save_current_version
+exit 0

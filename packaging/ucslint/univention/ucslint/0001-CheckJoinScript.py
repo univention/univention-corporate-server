@@ -55,7 +55,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-13': (uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'),
 			'0001-14': (uub.RESULT_ERROR, 'join script does not call "joinscript_init"'),
 			'0001-15': (uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'),
-			'0001-16': (uub.RESULT_ERROR, 'join script does not use joinscript api (possible clear text passwords)'),
 			'0001-17': (uub.RESULT_WARN, 'unjoin script seems not to be called in any postrm file'),
 			'0001-18': (uub.RESULT_WARN, 'unjoin script seems not to be copied in any prerm file'),
 			'0001-19': (uub.RESULT_ERROR, 'unjoin script must not call "joinscript_save_current_version"'),
@@ -63,12 +62,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-21': (uub.RESULT_WARN, 'unjoin script does not call "joinscript_init"'),
 			'0001-22': (uub.RESULT_ERROR, '"dh --with univention-join" is used in "debian/rules" without "Build-Depends: univention-join-dev" in "debian/rules"'),
 			'0001-23': (uub.RESULT_STYLE, 'Consider switchting to "univention-join" debhelper sequence'),
+			'0001-24': (uub.RESULT_ERROR, 'Invalid joinscript api'),
 		}
 
 	RE_LINE_ENDS_WITH_TRUE = re.compile(r'\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile(r'\n[\t ]*set -e', re.M)
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b|\bdh\b.*--with\b.*\bumc\b')
 	RE_DH_JOIN = re.compile(r'(?P<old>\bunivention-install-joinscript\b)|\bdh\b.*--with\b.*\bunivention-join\b')
+	RE_JOIN_API = re.compile(r'^## joinscript api: (?!bindpwdfile|nocredentials)(.*)')
 
 	def check_join_script(self, filename: str) -> None:
 		"""Check a single join script."""
@@ -88,15 +89,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'joinscripthelper.lib': 0,
 			'joinscript_init': 0,
 			'joinscript_save_current_version': 0,
-			'joinscript_api': False,
 			'joinscript_remove_script_from_status_file': 0,
 		}
 		for row, line in enumerate(lines, start=1):
 			line = line.strip()
 
 			# check joinscript api
-			if line.startswith('## joinscript api:'):
-				cnt['joinscript_api'] = True
+			match = self.RE_JOIN_API.match(line)
+			if match:
+				self.addmsg('0001-24', 'Invalid joinscript api %r' % match.group(1), filename, row, line=line)
 
 			if not line or line.startswith('#'):
 				continue
@@ -129,9 +130,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			if ' $@ ' in line or ' ${@} ' in line:
 				self.addmsg('0001-11', 'join script contains unquoted $@', filename, row, line=line)
-
-		if not cnt['joinscript_api']:
-			self.addmsg('0001-16', 'join script does not use joinscript api (possible clear text passwords)', filename)
 
 		if cnt['version'] == 0:
 			self.addmsg('0001-3', 'join script does not set VERSION', filename)

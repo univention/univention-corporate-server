@@ -1,0 +1,13 @@
+Source: ucslint
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper-compat (= 12),
+ univention-join-dev,
+Standards-Version: 3.6.1
+
+Package: ucslint
+Architecture: all
+Depends: ${misc:Depends},
+Description: Test join scipt API
