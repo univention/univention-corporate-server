@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
  * Installation of certain apps fails, if the app id exceeds a
    certain limit in length
- * Opening certain Apps resultet in an error due to flawed property handling
+ * An error has been fixed opening certain Apps.
 bug: [53273, 53384]
