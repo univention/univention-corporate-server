@@ -52,7 +52,7 @@
 			--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.16)
 
 .ucsNotificationPreview .ucsNotification
-	background: var(--bgc-content-container)
+	background: var(--bgc-popup)
 	&--warning
 		background: var(--color-error)
 
@@ -110,6 +110,8 @@
 	max-width: 300px
 	opacity: 0
 	transition: opacity 0ms
+	box-shadow: var(--box-shadow)
+	border-radius: var(--border-radius-notification)
 
 	.ucsNotification
 		position: relative
