@@ -1,20 +1,5 @@
 @require "../variables"
 
-@keyframes shake {
-	10%, 90% {
-		transform: translate(-1px, 0);
-	}
-	20%, 40%, 60%, 80% {
-		transform: translate(2px, 0);
-	}
-	30%, 50%, 70% {
-		transform: translate(-2px, 0);
-	}
-}
-
-/* Header elements */
-
-headerHeight = 48px
 .umc .umcHeader
 	background-color: var(--bgc-content-header)
 	height: var(--layout-height-header)
@@ -35,7 +20,6 @@ headerHeight = 48px
 		padding: 0
 		height: 100%
 		--tabColor: transparent
-		--seperatorColor: var(--color-grey8)
 		z-index: 1
 		padding-top: 0.3rem
 		&.contrastDark
@@ -197,8 +181,6 @@ headerHeight = 48px
 		bottom: 0
 		left: 0
 		right: 0
-		border: 0px solid var(--color-grey8)
-		border-top-width: var(--layout-spacing-unit-small)
 		z-index: 31
 		display: flex
 		flex-direction: column
@@ -254,7 +236,7 @@ headerHeight = 48px
 	width: 95%
 	max-width: calc(40 * var(--layout-spacing-unit))
 	position: fixed
-	top: "calc(%s + %s)" % (var(--layout-height-header) var(--layout-height-header-seperator))
+	top: calc(var(--layout-height-header) + var(--layout-height-header-seperator))
 	transition: right 250ms
 	right: calc(-40 * var(--layout-spacing-unit))
 	z-index: 1
@@ -278,16 +260,15 @@ headerHeight = 48px
 	right: 0
 	z-index: 30
 	visibility: hidden
-	transition: background 250ms, backdrop-filter 250ms, visibility 260ms
-	backdrop-filter: blur(0px)
-	background: transparent
+	transition: opacity 250ms, visibility 260ms
+	background: var(--bgc-content-body)
+	opacity: 0
 
 .ucsOverlay--menu,
 .ucsOverlay--notifications,
 .ucsOverlay--tabs
 	#headerButtonsCloseOverlay
 		visibility: visible
-		transition: background 250ms, backdrop-filter 250ms, visibility 0ms
-		background: s('rgba(var(--color-grey8-rgb), 0.5)')
-		backdrop-filter: blur(4px)
+		transition: opacity 250ms, visibility 0ms
+		opacity: 0.5
 // close overlay end

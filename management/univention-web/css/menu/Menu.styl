@@ -6,9 +6,9 @@
 	right: 0
 	width: 80%
 	max-width: 360px
-	border: 0px solid var(--color-grey8)
-	border-top-width: var(--layout-spacing-unit-small)
-	background-color: var(--color-grey0)
+	border: 0px solid var(--bgc-content-body)
+	border-top-width: var(--layout-height-header-seperator)
+	background-color: var(--bgc-content-header)
 	transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
 	z-index: 31
 	transform: translate3d(110%, 0, 0)
@@ -24,7 +24,7 @@
 
 	.menuLoginHeader
 		padding: 8px 0
-		border-bottom: 4px solid var(--color-grey8)
+		border-bottom: var(--layout-spacing-unit-small) solid var(--bgc-content-body)
 
 		&--loggedout
 			height: 100%
@@ -68,11 +68,24 @@
 		&.subMenu
 			cursor: pointer
 
-		&:hover
-			background-color: #272726
-
 		.featherIcon
 			margin-right: 0.5rem
+	.menuSlideHeader
+	.menuSlideItemsContainer .menuItem
+		cursor: pointer
+		padding-left: 20px
+		transition: background 250ms
+
+		&:hover
+			background-color: var(--bgc-user-menu-item-hover)
+		&:active
+			background-color: var(--bgc-user-menu-item-active)
+		&.menuItemActive
+			background-color: var(--bgc-user-menu-item-active)
+
+		&.menuItemActiveTransition
+			$transitionDur = 0.3s
+			transition: background-color $transitionDur
 
 	.menuSlides,
 	.menuSlide
@@ -83,7 +96,6 @@
 	.menuSlides
 		position: relative
 		flex: 1 0 auto
-		// margin-top: 8px
 		overflow: hidden
 
 		.menuSlide
@@ -105,16 +117,6 @@
 					cursor: pointer
 					padding-left: 20px
 
-					&:hover
-						background-color: #272726
-
-					&.menuItemActive
-						background-color: var(--color-grey8)
-
-					&.menuItemActiveTransition
-						$transitionDur = 0.3s
-						transition: background-color $transitionDur
-
 				.popupMenuItem
 					.childItemsCounter
 						position: absolute
@@ -131,12 +133,9 @@
 
 				.separator
 					padding: 0
-					height: 4px
+					height: var(--layout-spacing-unit-small)
 					cursor: default
-					background-color: var(--color-grey8)
-
-					&:hover
-						background-color: @background-color
+					background-color: var(--bgc-content-body)
 
 		&.popupSlideNormalTransition .menuSlide
 			transform: translate3d(100%, 0, 0)
@@ -165,11 +164,13 @@
 
 .ucsMenuButton
 	width: 100%
+	border-radius: 0
 	--bgc: transparent
+	--button-size: auto
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: #272726
+			--bgc-state: var(--bgc-user-menu-item-hover)
 
 	.dijitButtonNode
 		height: auto
@@ -192,5 +193,4 @@
 
 
 .umcMenuFooter
-	border-top: 4px solid var(--color-grey8)
-
+	border-top: var(--layout-spacing-unit-small) solid var(--color-grey8)
