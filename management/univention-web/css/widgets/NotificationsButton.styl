@@ -1,3 +1,4 @@
+@require "../variables.styl"
 @require "../HTMLElements.styl"
 
 
@@ -14,13 +15,13 @@
 	right: 0
 	width: 80%
 	max-width: 360px
-	border: 0px solid var(--color-grey8)
-	border-top-width: var(--layout-spacing-unit-small)
-	background-color: var(--color-grey0)
+	border: 0px solid var(--bgc-content-body)
+	border-top-width: var(--layout-height-header-seperator)
+	background-color: var(--bgc-content-container)
 	transition: transform cubic-bezier(0.4, 0, 0.6, 1) 0.15s
 	z-index: 33
 	transform: translate3d(110%, 0, 0)
-	padding: 0 calc(2 * var(--layout-spacing-unit))
+	padding: 0 spacing(2)
 	display: flex
 	flex-direction: column
 	box-shadow: var(--box-shadow)
@@ -29,7 +30,7 @@
 		transform: translate3d(0, 0, 0)
 
 .ucsNotifications__title
-	margin: calc(2 * var(--layout-spacing-unit)) 0
+	margin: spacing(2) 0
 .ucsNotifications--empty .ucsNotifications__title
 	flex: 1 0 auto
 	display: flex
@@ -37,20 +38,23 @@
 	justify-content: center
 	color: var(--font-color-contrast-middle)
 
-$ucsNotificationBorderRadius = var(--border-radius-notification)
-$ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 .ucsNotification
-	background: $ucsNotificationBgc
-	border-radius: $ucsNotificationBorderRadius
-	padding: 16px
+	background: var(--inputfield-bgc)
+	border-radius: var(--border-radius-notification)
+	padding: spacing(2)
 	font-size: var(--font-size-4)
-	margin-bottom: 16px
+	margin-bottom: spacing(2)
 
 	&--warning
-		background: s('rgba(var(--color-error-rgb), 0.5)')
+		background: var(--color-error)
 		.ucsNotification__closeButton
 			--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.08)
 			--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.16)
+
+.ucsNotificationPreview .ucsNotification
+	background: var(--bgc-content-container)
+	&--warning
+		background: var(--color-error)
 
 .ucsNotification__header
 	display: flex
@@ -70,7 +74,29 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 
 .ucsNotification__closeButton
 	flex: 0 0 auto
-	--button-size: 1.5em
+	--button-size: 1.6em
+	position: relative
+
+.ucsNotification__close-svg
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+	pointer-events: none
+.ucsNotification__close-circle
+	display: block
+	fill: transparent
+	stroke: var(--font-color-contrast-high)
+	stroke-linecap: round
+	stroke-dasharray: 283
+	stroke-dashoffset: 0
+	stroke-width: 10px
+	transform-origin: 50% 50%
+	transform: scale(1, -1) rotate(90deg)
+.ucsNotificationPreview--draining .ucsNotification__close-circle
+	stroke-dashoffset: 283
+	transition: stroke-dashoffset linear 4s
 
 .ucsNotification__content
 	padding: 0 !important
@@ -91,34 +117,3 @@ $ucsNotificationBgc = rgba(0, 0, 0, 0.4)
 
 	&--open
 		opacity: 1
-
-.ucsNotificationPreview__background--drained
-	position: absolute
-	top: 0
-	left: 0
-	bottom: 0
-	right: 0
-	overflow: hidden
-	border-radius: $ucsNotificationBorderRadius
-	background: var(--color-grey8)
-
-.ucsNotificationPreview__background--full
-	height: 100%
-	width: 100%
-	border-radius: $ucsNotificationBorderRadius 0 0 $ucsNotificationBorderRadius
-	background: var(--color-grey0)
-	transition: width 0ms linear
-
-	&.drained
-		width: 0
-
-.ucsNotificationPreview__triangle
-	display: none
-	position: absolute
-	top: -12px
-	right: 72px
-	width: 0
-	height: 0
-	border-left: 8px solid transparent
-	border-right: 8px solid transparent
-	border-bottom: 12px solid $ucsNotificationBgc
