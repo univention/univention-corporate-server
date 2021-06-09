@@ -460,8 +460,8 @@ class LDIFObject(object):
 				(newval, leng) = value
 			else:
 				newval = value
-			newval = newval.encode('ascii')
-		except UnicodeError:
+			newval.decode('ascii')
+		except UnicodeDecodeError:
 			encode = True
 		if encode:
 			pos += 1  # value will be base64 encoded, thus two colons
