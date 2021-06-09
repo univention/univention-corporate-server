@@ -12,6 +12,14 @@
 ## exposure: dangerous
 
 . "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+undo ucr_restore
+ucr set listener/ldap/retries=0
+ucr set	replication/ldap/retries=0
+undo systemctl restart univention-directory-listener
+systemctl restart univention-directory-listener
 
 testldif () {
 	[ -f "$1" ] || return
