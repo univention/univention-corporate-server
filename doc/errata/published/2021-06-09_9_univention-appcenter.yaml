@@ -10,3 +10,5 @@ desc: |
    certain limit in length
  * An error has been fixed opening certain Apps.
 bug: [53273, 53384]
+erratum: 9
+announced: 2021-06-09
