@@ -477,7 +477,7 @@ class LDIFObject(object):
 			if pos == 1:
 				# first column is space
 				self.fp.write(b' ')
-			print(value[0:60 - pos], file=self.fp)
+			self.fp.write(b'%s\n' % (value[0:60 - pos],))
 			value = value[60 - pos:]
 			pos = 1
 
