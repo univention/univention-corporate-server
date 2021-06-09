@@ -460,7 +460,7 @@ class LDIFObject(object):
 				(newval, leng) = value
 			else:
 				newval = value
-			newval = newval.encode('ascii')
+			newval.decode('ascii')
 		except UnicodeError:
 			encode = True
 		if encode:
