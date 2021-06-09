@@ -77,6 +77,7 @@ BACKUP_DIR = '/var/univention-backup/replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
 ROOTPW_FILE = '/etc/ldap/rootpw.conf'
 CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
+MAX_LDAP_RETRIES = int(listener.configRegistry.get('replication/ldap/retries', '30'))
 
 EXCLUDE_ATTRIBUTES = set(attr.lower() for attr in {
 	'subschemaSubentry',
@@ -809,12 +810,12 @@ def handler(dn, new, listener_old, operation):
 	connect_count = 0
 	connected = 0
 
-	while connect_count < 31 and not connected:
+	while connect_count <= MAX_LDAP_RETRIES and not connected:
 		try:
 			lo = connect()
 		except ldap.LDAPError as ex:
 			connect_count += 1
-			if connect_count >= 30:
+			if connect_count > MAX_LDAP_RETRIES:
 				log_ldap(ud.ERROR, 'going into LDIF mode', ex)
 				reconnect = True
 				lo = connect(ldif=True)
