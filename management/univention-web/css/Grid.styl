@@ -77,9 +77,10 @@
 		&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
 			border-top: none
 
-		&:hover,
+		&:hover
+			background-color: var(--bgc-grid-row-hover)
 		&.dgrid-selected
-			background-color: rgba(255, 255, 255, 0.04)
+			background-color: var(--bgc-grid-row-selected)
 
 	.dgrid-header
 		font-size: var(--font-size-3)

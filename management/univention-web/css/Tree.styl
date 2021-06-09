@@ -43,9 +43,10 @@
 		box-sizing: content-box
 		transition: background-color 0.2s
 
-		&:hover,
+		&:hover
+			background-color: var(--bgc-tree-row-hover)
 		&.dgrid-selected
-			background-color: rgba(255, 255, 255, 0.04)
+			background-color: var(--bgc-tree-row-selected)
 
 	.dgrid-cell
 		border: none
