@@ -160,12 +160,6 @@
 	.umcTiles__selectionToggleButton
 		flex: 0 0 auto
 
-.umcTiles__selectionToggleButton
-	&.dijitToggleButtonChecked
-		color: var(--color-primary)
-		.dijitButtonText
-			color: var(--color-primary)
-
 .umcTiles__actionBar__buttons
 	flex: 1 1 auto
 	display: flex
@@ -556,13 +550,14 @@
 
 .imageGallery__navButton
 	position: absolute
-	--bgc: var(--color-black)
+	--bgc: var(--button-bgc)
+	box-shadow: var(--box-shadow)
 	&.dijit
 		&Hover,
-		&Focused,
-		&Active,
-		&Disabled
-			--bgc: var(--color-black)
+		&Focused
+			--bgc: var(--button-bgc-hover)
+		&Active
+			--bgc: var(--button-bgc-active)
 
 	&--left
 		left: 1rem
@@ -577,7 +572,6 @@
 .imageGallery__carouselVideo__playButton
 	--button-size: 3rem
 	--button-icon-size: 1.5rem
-	position: absolute
 
 .imageGallery__dotsWrapper
 	width: 100%
@@ -595,12 +589,12 @@
 	width: 0.5rem
 	height: @width
 	border-radius: var(--border-radius-circles)
-	background-color: rgba(255, 255, 255, 0.2)
+	background-color: var(--font-color-contrast-low)
 	cursor: pointer
 
 .imageGallery__dot--reticle
 	position: absolute
-	background-color: rgba(255, 255, 255, 1)
+	background-color: var(--font-color-contrast-high)
 	left: calc(1.5rem * var(--local-idx))
 	transition: left 250ms
 

@@ -174,7 +174,7 @@ define([
 					var thumbnail = put(wrapper, `img[src=${ytVideoThumbnailURL}]`);
 					var playButton = new Button({
 						iconClass: 'play',
-						class: 'ucsIconButtonHighlighted imageGallery__carouselVideo__playButton',
+						class: 'ucsIconButton imageGallery__navButton imageGallery__carouselVideo__playButton',
 						onClick: () => {
 							tools.toggleVisibility(thumbnail, false);
 							tools.toggleVisibility(playButton, false);
@@ -200,12 +200,12 @@ define([
 
 				const navLeft = new Button({
 					iconClass: 'chevron-left',
-					class: 'ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--left',
+					class: 'ucsIconButton imageGallery__navButton imageGallery__navButton--left',
 					onClick: lang.hitch(this, 'navLeft'),
 				});
 				const navRight = new Button({
 					iconClass: 'chevron-right',
-					class: 'ucsIconButtonHighlighted imageGallery__navButton imageGallery__navButton--right',
+					class: 'ucsIconButton imageGallery__navButton imageGallery__navButton--right',
 					onClick: lang.hitch(this, 'navRight'),
 				});
 				this.own(navLeft);
