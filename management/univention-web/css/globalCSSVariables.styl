@@ -85,24 +85,27 @@
 	--button-font-size: var(--font-size-4)
 	--button-border-radius: var(--border-radius-interactable)
 	--button-icon-border-radius: var(--border-radius-circles)
-	--button-bgc-transition: background-color 250ms
+	--button-bgc-transition: background 250ms
 	--button-icon-bgc: transparent
-	--button-icon-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
-	--button-icon-bgc-overlay-active: rgba(255, 255, 255, 0.12)
-	--button-icon-bgc-overlay-disabled: transparent
-	--button-icon-highlighted-bgc: var(--color-grey0)
-	--button-primary-bgc: var(--color-primary)
-	--button-primary-bgc-overlay-hover: rgba(255, 255, 255, 0.12)
-	--button-primary-bgc-overlay-active: rgba(255, 255, 255, 0.20)
-	--button-primary-bgc-overlay-disabled: var(--color-grey25)
+	--button-icon-bgc-hover: var(--color-grey8)
+	--button-icon-bgc-active: blend(rgba(0, 0, 0, 0.08), @--color-grey8)
+	--button-icon-bgc-disabled: transparent
+	--button-icon-highlighted-bgc: var(--inputfield-dark-bgc)
+	--button-icon-highlighted-bgc-hover: var(--color-grey25)
+	--button-icon-highlighted-bgc-active: blend(rgba(0, 0, 0, 0.08), @--color-grey25)
+	--button-icon-highlighted-bgc-disabled: transparent
+	--button-primary-bgc: #5e881d
+	--button-primary-bgc-hover: blend(rgba(0, 0, 0, 0.08), @--button-primary-bgc)
+	--button-primary-bgc-active: blend(rgba(0, 0, 0, 0.16), @--button-primary-bgc)
+	--button-primary-bgc-disabled: var(--color-grey25)
 	--button-bgc: var(--color-grey25)
-	--button-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
-	--button-bgc-overlay-active: rgba(255, 255, 255, 0.16)
-	--button-bgc-overlay-disabled: var(--color-grey25)
+	--button-bgc-hover: blend(rgba(0, 0, 0, 0.08), @--color-grey25)
+	--button-bgc-active: blend(rgba(0, 0, 0, 0.16), @--color-grey25)
+	--button-bgc-disabled: var(--color-grey25)
 	--button-text-bgc: transparent
-	--button-text-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
-	--button-text-bgc-overlay-active: rgba(255, 255, 255, 0.12)
-	--button-text-bgc-overlay-disabled: var(--color-grey25)
+	--button-text-bgc-hover: var(--color-grey8)
+	--button-text-bgc-active: blend(rgba(0, 0, 0, 0.08), @--color-grey8)
+	--button-text-bgc-disabled: transparent
 
 	// links
 	--link-color: var(--color-primary)

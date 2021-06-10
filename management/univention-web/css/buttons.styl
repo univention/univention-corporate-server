@@ -3,12 +3,11 @@
 //// overarching button styling
 .ucsButton
 	--bgc: transparent
-	--bgc-state: transparent
 	margin: 0
 	font-size: var(--button-font-size)
 	border-radius: var(--button-border-radius)
-	background-color: var(--bgc)
-	transition: opacity 250ms
+	background: var(--bgc)
+	transition: opacity 250ms, var(--button-bgc-transition)
 	color: var(--font-color-contrast-high)
 
 .dijitButtonNode
@@ -17,8 +16,6 @@
 	display: flex
 	align-items: center // mainly for umc/widgets/NumberSpinner arrows
 	justify-content: center
-	transition: var(--button-bgc-transition)
-	background-color: var(--bgc-state)
 
 .dijitButtonContents
 	height: var(--button-size)
@@ -42,28 +39,26 @@
 //// button types
 .ucsNormalButton
 	--bgc: var(--button-bgc)
-	--bgc-state: transparent
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-bgc-overlay-hover)
+			--bgc: var(--button-bgc-hover)
 		&Active
-			--bgc-state: var(--button-bgc-overlay-active)
+			--bgc: var(--button-bgc-active)
 		&Disabled
-			--bgc-state: var(--button-bgc-overlay-disabled)
+			--bgc: var(--button-bgc-disabled)
 			opacity: 0.4
 
 .ucsFillButton
 	--bgc: var(--button-bgc)
-	--bgc-state: transparent
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-bgc-overlay-hover)
+			--bgc: var(--button-bgc-hover)
 		&Active
-			--bgc-state: var(--button-bgc-overlay-active)
+			--bgc: var(--button-bgc-active)
 		&Disabled
-			--bgc-state: var(--button-bgc-overlay-disabled)
+			--bgc: var(--button-bgc-disabled)
 			opacity: 0.4
 
 	&,
@@ -73,28 +68,26 @@
 
 .ucsPrimaryButton
 	--bgc: var(--button-primary-bgc)
-	--bgc-state: transparent
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-primary-bgc-overlay-hover)
+			--bgc: var(--button-primary-bgc-hover)
 		&Active
-			--bgc-state: var(--button-primary-bgc-overlay-active)
+			--bgc: var(--button-primary-bgc-active)
 		&Disabled
-			--bgc-state: var(--button-primary-bgc-overlay-disabled)
+			--bgc: var(--button-primary-bgc-disabled)
 			opacity: 0.4
 
 .ucsTextButton
 	--bgc: var(--button-text-bgc)
-	--bgc-state: transparent
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-text-bgc-overlay-hover)
+			--bgc: var(--button-text-bgc-hover)
 		&Active
-			--bgc-state: var(--button-text-bgc-overlay-active)
+			--bgc: var(--button-text-bgc-active)
 		&Disabled
-			--bgc-state: transparent
+			--bgc: var(--button-text-bgc-disabled)
 			opacity: 0.4
 
 	.dijitButtonContents
@@ -127,35 +120,33 @@
 
 .ucsSimpleIconButton
 	--bgc: transparent
-	--bgc-state: transparent
 	width: var(--button-size)
 	height: var(--button-size)
 	cursor: pointer
 	display: flex
 	align-items: center
 	justify-content: center
-	background-color: var(--bgc-state)
+	background: var(--bgc)
 	border-radius: var(--button-icon-border-radius)
 	transition: var(--button-bgc-transition)
 
 	&:hover,
 	&:focus
-		--bgc-state: var(--button-icon-bgc-overlay-hover)
+		--bgc: var(--button-icon-bgc-hover)
 	&:active
-		--bgc-state: var(--button-icon-bgc-overlay-active)
+		--bgc: var(--button-icon-bgc-active)
 
 .ucsIconButton
 	--bgc: transparent
-	--bgc-state: transparent
 	box-shadow: none
 	&.dijit
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-icon-bgc-overlay-hover)
+			--bgc: var(--button-icon-bgc-hover)
 		&Active
-			--bgc-state: var(--button-icon-bgc-overlay-active)
+			--bgc: var(--button-icon-bgc-active)
 		&Disabled
-			--bgc-state: var(--button-icon-bgc-overlay-disabled)
+			--bgc: var(--button-icon-bgc-disabled)
 			opacity: 0.4
 
 	border-radius: var(--button-icon-border-radius)
@@ -170,10 +161,13 @@
 	--bgc: var(--button-icon-highlighted-bgc)
 	&.dijit
 		&Hover,
-		&Focused,
-		&Active,
+		&Focused
+			--bgc: var(--button-icon-highlighted-bgc-hover)
+		&Active
+			--bgc: var(--button-icon-highlighted-bgc-active)
 		&Disabled
-			--bgc: transparent
+			--bgc: var(--button-icon-highlighted-bgc-disabled)
+			opacity: 0.4
 
 
 .ucsLinkButton
