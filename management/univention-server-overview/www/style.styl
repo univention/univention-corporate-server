@@ -27,7 +27,6 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-$theme-color = rgb(20, 110, 220)
 
 .umc
 	.umcLiveSearch
@@ -48,7 +47,9 @@ $theme-color = rgb(20, 110, 220)
 
 		.umcGalleryItem
 			&:hover
-				background-color: $theme-color
+				background-color: var(--serveroverview-tile-hover-bgc)
+				color: var(--serveroverview-tile-hover-color)
+
 
 	#content
 		h2
