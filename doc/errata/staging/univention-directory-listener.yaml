@@ -7,7 +7,7 @@ fix: 14.0.5-3A~5.0.0.202106081249
 desc: |
  This update addresses the following issue:
  * Make StdIO unbuffered. Otherwise (error) output from modules is buffered
-   until the 8 KiB buffer becomes full. Only then the previously collected
-   output is flushed and becomes visible en bloc in the log file
-   `/var/log/univention/listener.log`.
+   until the 8 KiB buffer becomes full. Only then the buffer is full,
+   the previously collected output will be flushed and becomes visible
+   en bloc in the log file `/var/log/univention/listener.log`.
 bug: [53071]
