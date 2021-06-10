@@ -169,7 +169,6 @@
 			--bgc: var(--button-icon-highlighted-bgc-disabled)
 			opacity: 0.4
 
-
 .ucsLinkButton
 	--button-size: auto
 
@@ -177,6 +176,10 @@
 		text-transform: none
 		@extends a
 
+.dijitToggleButtonChecked
+	--bgc: var(--button-toggle-bgc-checked)
+	.dijitButtonNode
+		box-shadow: 0 0 0 2px var(--color-primary)
 
 .ucsButton--textfieldAligned
 	position: relative
