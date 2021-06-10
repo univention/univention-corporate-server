@@ -99,7 +99,6 @@ body
 
 .umcLoginFormButton
 	--bgc: var(--button-primary-bgc)
-	--bgc-state: transparent
 	position: relative
 	width: 100%
 	padding: 0.75rem 1rem
@@ -107,7 +106,7 @@ body
 	border-radius: var(--border-radius-interactable)
 	color: var(--font-color-contrast-high)
 	background-color: var(--bgc)
-	transition: var(--button-primary-bgc-transition)
+	transition: var(--button-bgc-transition)
 	display: inline-flex
 	align-items: center
 	justify-content: center
@@ -118,19 +117,10 @@ body
 
 	&:hover,
 	&:focus
-		--bgc-state: var(--button-primary-bgc-overlay-hover)
+		--bgc: var(--button-primary-bgc-hover)
 
 	&:active
-		--bgc-state: var(--button-primary-bgc-overlay-active)
-
-.umcLoginFormButton__background
-	position: absolute
-	top: 0
-	left: 0
-	right: 0
-	bottom: 0
-	background-color: var(--bgc-state)
-	transition: var(--button-primary-bgc-transition)
+		--bgc: var(--button-primary-bgc-active)
 
 .umcLoginFormButton__label
 	position: relative

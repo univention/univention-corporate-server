@@ -27,8 +27,11 @@
 
 	.dijitUpArrowButton,
 	.dijitDownArrowButton
+		--bgc: transparent
+		background: var(--bgc)
+		transition: var(--button-bgc-transition)
 		&Hover,
 		&Focused
-			--bgc-state: var(--button-bgc-overlay-hover)
+			--bgc: var(--button-bgc-hover)
 		&Active
-			--bgc-state: var(--button-bgc-overlay-active)
+			--bgc: var(--button-bgc-active)
