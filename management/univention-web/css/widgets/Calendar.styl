@@ -106,7 +106,7 @@
 		/* day label style (monday - sunday) */
 		.dijitCalendarDayLabelTemplate
 			text-align: center
-			border-bottom: 1px solid var(--color-grey40)
+			border-bottom: 1px solid var(--font-color-contrast-low)
 			padding: 0 0 2px
 
 		/* date cells style - basic*/
@@ -144,9 +144,7 @@
 
 		/* Disabled Calendar Style*/
 		.dijitCalendarDisabledDate
-			.dijitCalendarDateLabel
-				color: $disabled-text-color
-				text-decoration: line-through
+			color: var(--font-color-contrast-low)
 
 	/* Styling for year container */
 	.dijitCalendarYearContainer
@@ -166,31 +164,23 @@
 
 			.currentYearInput
 				background-color: transparent
-				border-color: var(--color-grey25)
+				border-color: var(--font-color-contrast-middle)
 
 				.dijitInputInner
 					text-align: center
 
 /* Styling for month drop down list */
 .umc .dijitCalendarMonthMenu
-	border-color: $popup-border-color
-	background-color: $menu-background-color
 	text-align: center
 	background-image: none
 
 	.dijitCalendarMonthLabel
-		border-top: 1px solid $menu-background-color
-		border-bottom: solid 1px $menu-background-color
 		padding: 2px 0
 
 		&Hover
-			border-color: $hovered-border-color
-			border-width: 1px 0
-			background-color: $hovered-background-color
-			color: $text-color-dark-background
-
+			background-color: var(--bgc-popup-item-hover)
 		&Active
-			background-color: $primary-color
+			background-color: var(--bgc-popup-item-active)
 
 /* Styling for the hot keys tootip table */
 .umc .calendarHotKeysTable th
