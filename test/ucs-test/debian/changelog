@@ -1,3 +1,9 @@
+ucs-test (10.0.5-25) unstable; urgency=low
+
+  * Bug #53428: Detect versions: float
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jun 2021 10:50:48 +0200
+
 ucs-test (10.0.5-24) unstable; urgency=low
 
   * Bug #53071: Check Python 3 StdIO flush by UDL

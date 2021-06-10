@@ -50,6 +50,7 @@ RE_PREFIX = re.compile(r'^[0-9]{2,3}_?(.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
+INF = sys.maxsize
 
 
 def setup_environment():  # type: () -> None
@@ -131,69 +132,103 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 	"""
 	UCS version.
 
-	>>> UCSVersion(1) < UCSVersion(2)
+	>>> UCSVersion("1.0") < UCSVersion("2.0")
 	True
-	>>> UCSVersion(1) < UCSVersion(1)
+	>>> UCSVersion("1.0") < UCSVersion("1.0")
 	False
-	>>> UCSVersion(1) <= UCSVersion(1)
+	>>> UCSVersion("1.0") <= UCSVersion("1.0")
 	True
-	>>> UCSVersion(2) <= UCSVersion(1)
+	>>> UCSVersion("2.0") <= UCSVersion("1.0")
 	False
-	>>> UCSVersion(1) == UCSVersion(1)
+	>>> UCSVersion("1.0") == UCSVersion("1.0")
 	True
-	>>> UCSVersion(1) == UCSVersion(2)
+	>>> UCSVersion("1.0") == UCSVersion("2.0")
 	False
-	>>> UCSVersion(1) != UCSVersion(2)
+	>>> UCSVersion("1.0") != UCSVersion("2.0")
 	True
-	>>> UCSVersion(1) != UCSVersion(1)
+	>>> UCSVersion("1.0") != UCSVersion("1.0")
 	False
-	>>> UCSVersion(1) >= UCSVersion(1)
+	>>> UCSVersion("1.0") >= UCSVersion("1.0")
 	True
-	>>> UCSVersion(1) >= UCSVersion(2)
+	>>> UCSVersion("1.0") >= UCSVersion("2.0")
 	False
-	>>> UCSVersion(2) > UCSVersion(1)
+	>>> UCSVersion("2.0") > UCSVersion("1.0")
 	True
-	>>> UCSVersion(1) > UCSVersion(1)
+	>>> UCSVersion("1.0") > UCSVersion("1.0")
 	False
+	>>> UCSVersion("1.0") == UCSVersion((1, 0, INF, INF))
+	True
+	>>> UCSVersion("1.0-0-0") == UCSVersion((1, 0, 0, 0))
+	True
+	>>> UCSVersion("")
+	Traceback (most recent call last):
+	    ...
+	ValueError: Version does not match: ""
+	>>> UCSVersion("0")
+	Traceback (most recent call last):
+	    ...
+	ValueError: Version does not match: "0"
+	>>> UCSVersion("1")
+	Traceback (most recent call last):
+	    ...
+	ValueError: Version does not match: "1"
+	>>> UCSVersion("1.2")
+	UCSVersion('=1.2')
+	>>> UCSVersion("1.2-3")
+	UCSVersion('=1.2-3')
+	>>> UCSVersion("1.2-3-4")
+	UCSVersion('=1.2-3-4')
+	>>> UCSVersion("1.2-3-4-5")
+	Traceback (most recent call last):
+	    ...
+	ValueError: Version does not match: "1.2-3-4-5"
+	>>> UCSVersion(None)
+	Traceback (most recent call last):
+	    ...
+	TypeError: None
+	>>> UCSVersion(1)
+	Traceback (most recent call last):
+	    ...
+	TypeError: 1
+	>>> UCSVersion(1.5)
+	Traceback (most recent call last):
+	    ...
+	TypeError: 1.5
 	"""
 	RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
-	_CONVERTER = {
-		None: lambda _: float('inf'),
-		'': lambda _: float('inf'),
-	}
 
 	@classmethod
-	def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, Union[float, int], Union[float, int]]]
+	def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]
 		"""
 		Parse UCS-version range and return two-tuple (operator, version)
-		>>> UCSVersion._parse('11.22')
-		(<built-in function eq>, (11, 22, inf, inf))
-		>>> UCSVersion._parse('11.22-33')
-		(<built-in function eq>, (11, 22, 33, inf))
+		>>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
+		(<built-in function eq>, (11, 22, ..., ...))
+		>>> UCSVersion._parse('11.22-33')  # doctest: +ELLIPSIS
+		(<built-in function eq>, (11, 22, 33, ...))
 		>>> UCSVersion._parse('11.22-33-44')
 		(<built-in function eq>, (11, 22, 33, 44))
-		>>> UCSVersion._parse('<1.2-3')
-		(<built-in function lt>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('<<1.2-3')
-		(<built-in function lt>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('<=1.2-3')
-		(<built-in function le>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('=1.2-3')
-		(<built-in function eq>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('==1.2-3')
-		(<built-in function eq>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('>=1.2-3')
-		(<built-in function ge>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('>>1.2-3')
-		(<built-in function gt>, (1, 2, 3, inf))
-		>>> UCSVersion._parse('>1.2-3')
-		(<built-in function gt>, (1, 2, 3, inf))
+		>>> UCSVersion._parse('<1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function lt>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('<<1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function lt>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('<=1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function le>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('=1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function eq>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('==1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function eq>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('>=1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function ge>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('>>1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function gt>, (1, 2, 3, ...))
+		>>> UCSVersion._parse('>1.2-3')  # doctest: +ELLIPSIS
+		(<built-in function gt>, (1, 2, 3, ...))
 		"""
 		match = cls.RE_VERSION.match(ver)
 		if not match:
 			raise ValueError('Version does not match: "%s"' % (ver,))
 		rel = match.group(1) or default_op
-		parts = tuple([UCSVersion._CONVERTER.get(_, int)(_) for _ in match.groups()[1:]])  # type: Tuple[int, int, Union[float, int], Union[float, int]] # type: ignore
+		parts = tuple([int(_) if _ else INF for _ in match.groups()[1:]])  # type: Tuple[int, int, int, int] # type: ignore
 		if rel in ('<', '<<'):
 			return (operator.lt, parts)
 		if rel in ('<=',):
@@ -206,12 +241,15 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 			return (operator.gt, parts)
 		raise ValueError('Unknown version match: "%s"' % (ver,))
 
-	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, Union[float, int], Union[float, int]]]) -> None
+	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
 		if isinstance(ver, six.string_types):
 			self.rel, self.ver = self._parse(ver)
-		else:
+		elif isinstance(ver, tuple):
 			self.rel = operator.eq
+			assert all(isinstance(_, int) for _ in ver)
 			self.ver = ver
+		else:
+			raise TypeError(ver)
 
 	def __str__(self):  # type: () -> str
 		rel = {
@@ -225,7 +263,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		skipped = 0
 		for part in self.ver[2:]:
 			skipped += 1
-			if part != float('inf'):
+			if part != INF:
 				ver += '%s%d' % ('-' * skipped, part)
 				skipped = 0
 		return '%s%s' % (rel, ver)
@@ -266,7 +304,8 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		parts = [
 			(other_ver, self_ver)
 			for self_ver, other_ver in zip(self.ver, other.ver)
-			if self_ver != float('inf') and other_ver != float('inf')]
+			if self_ver != INF and other_ver != INF
+		]
 		return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
 
 
