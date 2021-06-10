@@ -255,28 +255,31 @@
 	font-size: var(--font-size-4)
 	text-align: center
 
+.umcTile__inner
+	position: relative
+.umcTile__selectionBox
+	position: absolute
+	width: 100%
+	height: 100%
+	box-sizing: content-box
+	border-radius: calc(2 * var(--border-radius-container))
+	background-color: transparent
+	transition: background-color 150ms, border-color 150ms
+	padding-bottom: calc(2 * var(--layout-spacing-unit))
+	border: 2px solid transparent
+	top: calc(-2px - var(--layout-spacing-unit)) // width of border and half of padding-bottom
+	left: -2px // width of border
 .umcTiles__selectionMode
-	.umcTile__inner
-		position: relative
-	.umcTile__selectionBox
-		position: absolute
-		width: 100%
-		height: 100%
-		box-sizing: content-box
-		border-radius: calc(2 * var(--border-radius-container))
-		background-color: transparent
-		padding-bottom: calc(2 * var(--layout-spacing-unit))
-		border: 2px solid transparent
-		top: calc(-2px - var(--layout-spacing-unit)) // width of border and half of padding-bottom
-		left: -2px // width of border
-
 	.umcTile.selected
 		.umcTile__selectionBox
 			border-color: var(--color-primary)
-			background-color: rgba(255, 255, 255, 0.08)
-	.umcTile:hover
-		.umcTile__selectionBox
-			background-color: rgba(255, 255, 255, 0.08)
+			background-color: var(--bgc-appcenter-app-hover)
+.umcTile:hover
+	.umcTile__selectionBox
+		background-color: var(--bgc-appcenter-app-hover)
+.umcTile:active
+	.umcTile__selectionBox
+		background-color: var(--bgc-appcenter-app-active)
 
 .umcAppChooseHostWizard
 	border-radius: var(--border-radius-container)
