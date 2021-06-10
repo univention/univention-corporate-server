@@ -10,7 +10,7 @@
 }
 
 .stepLabel {
-	display: inline-block;
+	display: block;
 	margin-bottom: var(--layout-spacing-unit)
 }
 
@@ -50,16 +50,12 @@ ol.PasswordOl {
 	}
 
 	a {
-		color: var(--font-color-contrast-low);
-
-		&:hover {
-			color: var(--color-primary);
-		}
+		color: var(--font-color-contrast-middle);
 	}
 
 	* {
 		padding: 0 7px;
-		border-left: solid 1px var(--bgc-content-body);
+		border-left: solid 1px var(--font-color-contrast-low);
 
 		&:first-child {
 			border: none;
@@ -69,20 +65,6 @@ ol.PasswordOl {
 
 .contentDesc {
 	margin-bottom: calc(3 * var(--layout-spacing-unit));
-}
-
-.error {
-	margin: 0 auto;
-	max-width: 500px;
-	padding: 1.3em;
-	background-color: rgb(200, 30, 0);
-}
-
-.success {
-	margin: 0 auto;
-	max-width: 500px
-	padding: 1.3em;
-	background-color: rgb(20, 240, 10);
 }
 
 .PasswordServiceContent
