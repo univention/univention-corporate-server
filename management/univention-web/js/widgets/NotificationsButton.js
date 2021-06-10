@@ -60,15 +60,6 @@ define([
 			<div class="ucsNotification">
 				<div class="ucsNotification__header">
 					<div
-						class="ucsNotification__logoWrapper dijitDisplayNone"
-						data-dojo-attach-point="logoWrapperNode"
-					>
-						<img
-							class="dijitDisplayNone"
-							data-dojo-attach-point="logoNode"
-						>
-					</div>
-					<div
 						class="ucsNotification__title"
 						data-dojo-attach-point="titleNode"
 					></div>
@@ -87,13 +78,6 @@ define([
 			</div>
 		`,
 
-		logoUrl: '',
-		_setLogoUrlAttr: function(logoUrl) {
-			this.logoNode.src = logoUrl;
-			tools.toggleVisibility(this.logoWrapperNode, !!logoUrl);
-			this._set('logoUrl', logoUrl);
-		},
-		
 		title: '',
 		_setTitleAttr: { node: 'titleNode', type: 'innerHTML' },
 
