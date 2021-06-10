@@ -21,9 +21,12 @@
 
 	&Hover,
 	&Focused
-		--border-color: var(--color-grey40)
+		--border-color: var(--font-color-contrast-low)
 	&Disabled
-		--color: var(--font-color-disabled)
+		--color: var(--font-color-contrast-middle)
+		--bgc: transparent
+		border-color: var(--font-color-contrast-low)
+		border-style: dashed
 	&Error
 		--border-color: var(--color-error)
 		--local-icon-color: var(--border-color)
