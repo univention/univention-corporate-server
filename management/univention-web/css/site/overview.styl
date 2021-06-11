@@ -48,52 +48,30 @@
 		white-space: pre-line
 
 
-.warning
-	color: white
-	margin: 0 auto 20px auto
-	max-width: 500px
-	min-height: 165px
-	height: auto
-	vertical-gradient-and-filter($text-color-lighter, $text-color)
-	opacity: 0.8
-	box-shadow: 0 0px 10px rgba(0,0,0,0.3)
-	padding: 20px
-
-	a
-		color: white
-		text-decoration: underline
-		opacity: 0.8
-
-	a:hover
-		opacity: 1
-
-	.title
-		font-size: $font-size-title
-		line-height: 1em
-		font-weight: bold
-		margin-bottom: 1em
-
-	.icon
-		background-image: url(../images/info.svg)
-		background-repeat: no-repeat
-		width: 110px
-		height: 130px
-		margin-right: 15px
-		float: left
-
-.warning.umc_ie
-	min-height: 0px
-	.icon
-		background-image: url(../images/info.gif)
-
-.warningWrapper
+.nojs__warningWrapper
 	position: absolute
-	height: 100%
 	width: 100%
-
-.warningCenterer
-	height: 50%
-	margin-bottom: -156px
+	height: 66%
+	top: 0
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	background: var(--bgc-content-body) // set background again to cover standby anims (e.g. in /var/www/univention/setup)
+.nojs__warning__header
+	margin-bottom: spacing(3)
+.nojs__warning
+	max-width: 500px
+	box-shadow: var(--box-shadow)
+	display: flex
+	align-items: center
+.nojs__warning__icon
+	width: 80px
+	flex: 0 0 auto
+	margin-right: spacing(2)
+	fill: currentColor
+.nojs__warning__title
+	margin-bottom: spacing(2)
 
 /*favorites category fade in/out*/
 .umcCategoryBar .umcCategory-_favorites_

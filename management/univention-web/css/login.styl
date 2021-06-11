@@ -20,7 +20,7 @@ body
 	margin-bottom: 1.5rem
 
 #umcLoginDialog
-	background-color: var(--color-grey0)
+	background-color: var(--bgc-content-container)
 	border-radius: 10px
 	width: 400px
 	min-height: @width
@@ -45,15 +45,16 @@ body
 		width: 100%
 		margin-bottom: 1rem
 		padding: 1.2rem 1rem .3rem 1rem
-		background: var(--inputfield-bgc)
+		background: var(--bgc-inputfield-on-container)
 		border: 1px solid var(--border-color)
 		border-radius: var(--border-radius-interactable)
 		outline: none
 		font-size: var(--font-size-3)
+		transition: border 250ms
 		
 		&:hover,
 		&:focus
-			--border-color: var(--color-grey40)
+			--border-color: var(--font-color-contrast-low)
 
 	label
 		position: absolute
@@ -67,7 +68,7 @@ body
 	input:not(:placeholder-shown) + label,
 	input:focus + label
 		transform: translateY(-0.7rem) scale(0.65)
-		color: var(--font-color-contrast-low)
+		color: var(--font-color-contrast-middle)
 
 .umcLoginFormSelect
 	position: relative
@@ -77,7 +78,7 @@ body
 		width: 100%
 		margin-bottom: 1rem
 		padding: 0.75rem 2rem 0.75rem 1rem
-		background-color: var(--inputfield-bgc)
+		background-color: var(--bgc-inputfield-on-container)
 		background-image: url(/univention/js/dijit/themes/umc/images/chevron-down_white.svg)
 		background-repeat: no-repeat
 		background-position: right 0.5em center
@@ -91,14 +92,13 @@ body
 
 		&:hover,
 		&:focus
-			--border-color: var(--color-grey40)
+			--border-color: var(--font-color-contrast-low)
 
 	label
 		margin-bottom: 0.5rem
 
 .umcLoginFormButton
 	--bgc: var(--button-primary-bgc)
-	--bgc-state: transparent
 	position: relative
 	width: 100%
 	padding: 0.75rem 1rem
@@ -106,7 +106,7 @@ body
 	border-radius: var(--border-radius-interactable)
 	color: var(--font-color-contrast-high)
 	background-color: var(--bgc)
-	transition: var(--button-primary-bgc-transition)
+	transition: var(--button-bgc-transition)
 	display: inline-flex
 	align-items: center
 	justify-content: center
@@ -117,19 +117,10 @@ body
 
 	&:hover,
 	&:focus
-		--bgc-state: var(--button-primary-bgc-overlay-hover)
+		--bgc: var(--button-primary-bgc-hover)
 
 	&:active
-		--bgc-state: var(--button-primary-bgc-overlay-active)
-
-.umcLoginFormButton__background
-	position: absolute
-	top: 0
-	left: 0
-	right: 0
-	bottom: 0
-	background-color: var(--bgc-state)
-	transition: var(--button-primary-bgc-transition)
+		--bgc: var(--button-primary-bgc-active)
 
 .umcLoginFormButton__label
 	position: relative
@@ -143,12 +134,9 @@ body
 
 	a
 		margin: 0 0.5rem
-		&:hover
-			color: inherit
-			text-decoration: none
 
 .umcLoginLinkWarning
-	background-color: var(--color-error)
+	background-color: var(--bgc-error)
 	border-radius: var(--border-radius-tooltip)
 	padding: 0.4em
 

@@ -7,6 +7,7 @@
 		<title>Password Settings</title>
 		<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css"/>
+		<link rel="stylesheet" href="/univention/theme.css"/>
 		<link rel="stylesheet" href="css/self-service.css"/>
 		<link rel="stylesheet" href="css/custom.css"/>
 		<script>
@@ -33,7 +34,7 @@
 	<body class="umc umcOverviewNotShown">
 		<div class="umcHeader">
 			<div class="umcHeaderLeft">
-				<img src="/univention/js/dijit/themes/umc/images/univention_u-white.svg" />
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/univention/js/dijit/themes/umc/images/univention_u.svg#id"/></svg>
 				<h2>UCS</h2>
 			</div>
 			<div class="umcHeaderRight">
@@ -44,14 +45,16 @@
 		<div id="content" class="tab-content"></div>
 		<div data-dojo-type="umc/dialog/NotificationSnackbar"></div>
 		<noscript>
-			<div>
-				<h1 class="no-js">Welcome to Univention Corporate Server</h1>
-			</div>
-			<div class="warning" id="no-js">
-				<div class="icon"></div>
-				<div class="title">JavaScript required</div>
-				<p>A browser with JavaScript enabled is required in order to use this service.</p>
-				<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+			<div class="nojs__warningWrapper">
+				<h1 class="nojs__warning__header">Welcome to Univention Corporate Server</h1>
+				<div class="nojs__warning umcCard2">
+					<svg class="nojs__warning__icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/univention/js/dijit/themes/umc/images/info.svg#info"/></svg>
+					<div>
+						<h2 class="nojs__warning__title">JavaScript required</h2>
+						<p>A browser with JavaScript enabled is required in order to use this service.</p>
+						<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+					</div>
+				</div>
 			</div>
 		</noscript>
 	</body>

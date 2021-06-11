@@ -1,15 +1,13 @@
 .dijitPopup
 	box-shadow: var(--box-shadow)
+	border: var(--popup-border)
 	border-radius: 8px
 	overflow: hidden
-
-.dijitPopup:not(.dijitTooltipDialogPopup)
-	border: 1px solid var(--color-grey40)
 
 .dijitMenu,
 .dijitTimePicker
 	border: none
-	background: var(--bgc-content-container)
+	background: var(--bgc-popup)
 	font-size: var(--font-size-4)
 
 // cell spacing
@@ -31,13 +29,19 @@
 
 
 // state
+.dijitMenuItem,
+.dijitTimePickerItem
+	background-color: transparent
+	transition: background-color 150ms
 .dijitMenuItemHover,
-.dijitMenuItemSelected,
 .dijitTimePickerItemHover
-	background-color: rgba(255, 255, 255, 0.04)
+	background-color: var(--bgc-popup-item-hover)
 	color: inherit
+.dijitMenuItemActive
+	background-color: var(--bgc-popup-item-active)
+.dijitMenuItemSelected,
 .dijitTimePickerItemSelected
-	background-color: var(--color-grey8)
+	background-color: var(--bgc-popup-item-selected)
 
 
 // icons

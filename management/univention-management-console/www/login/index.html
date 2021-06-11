@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="/univention/theme.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/login.css" />
 		<link rel="stylesheet" href="css/custom.css" />
 		<script type="text/javascript" src="/univention/login/config.js"></script>
@@ -16,7 +17,7 @@
 	<body class="umc umcLoginLoading">
 		<div class="umcHeader">
 			<div class="umcHeaderLeft">
-				<img src="/univention/js/dijit/themes/umc/images/univention_u-white.svg" />
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/univention/js/dijit/themes/umc/images/univention_u.svg#id"/></svg>
 				<h2>UCS</h2>
 			</div>
 			<div class="umcHeaderRight">
@@ -51,7 +52,6 @@
 									<label id ="umcLoginPasswordLabel" for="umcLoginPassword"></label>
 								</div>
 								<button class="umcLoginFormButton" type="submit" name="submit">
-									<div class="umcLoginFormButton__background"></div>
 									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 										<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />
 									</svg>
@@ -68,7 +68,6 @@
 									<label id="umcLoginNewPasswordRetypeLabel" for="umcLoginNewPasswordRetype"></label>
 								</div>
 								<button class="umcLoginFormButton" type="submit" name="submit">
-									<div class="umcLoginFormButton__background"></div>
 									<span id="umcNewPasswordSubmitLabel" class="umcLoginFormButton__label"></span>
 								</button>
 							</form>
@@ -78,7 +77,6 @@
 									<label id="umcLoginCustomPromptLabel" for="umcLoginCustomPrompt"></label>
 								</div>
 								<button class="umcLoginFormButton" type="submit" name="submit">
-									<div class="umcLoginFormButton__background"></div>
 									<span class="umcLoginFormButton__label"></span>
 								</button>
 							</form>

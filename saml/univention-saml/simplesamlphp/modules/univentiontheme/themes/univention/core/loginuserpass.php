@@ -106,7 +106,6 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 }
 ?>
 								<button class="umcLoginFormButton" type="submit" name="submit">
-									<div class="umcLoginFormButton__background"></div>
 									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 										<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />
 									</svg>
@@ -129,7 +128,6 @@ if ($PW_EXPIRED) {
 									<label id="umcLoginNewPasswordRetypeLabel" for="umcLoginNewPasswordRetype"><?php echo htmlspecialchars($this->t('{pwchange:new_password_retype}'), ENT_QUOTES); ?></label>
 								</div>
 								<button class="umcLoginFormButton" type="submit" name="submit">
-									<div class="umcLoginFormButton__background"></div>
 									<span class="umcLoginFormButton__label"><?php echo htmlspecialchars($this->t('{pwchange:change_password}'), ENT_QUOTES); ?></span>
 								</button>
 		<?php

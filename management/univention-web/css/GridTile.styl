@@ -33,7 +33,7 @@ $gridItemPadding = spacing(1)
 		position: relative
 		outline: none
 		padding: calc(2 * var(--layout-spacing-unit))
-		background-color: s('rgba(var(--color-grey0-rgb), 0.8)')
+		background-color: var(--bgc-inputfield-on-body)
 		transition: background-color 0.25s, border 0.25s
 		box-shadow: var(--box-shadow)
 		border: 1px solid var(--local-border-color)
@@ -47,7 +47,7 @@ $gridItemPadding = spacing(1)
 		cursor: pointer
 
 		&:hover
-			--local-border-color: var(--color-grey40)
+			--local-border-color: var(--font-color-contrast-low)
 
 		.umcGridTileName
 			font-weight: 600

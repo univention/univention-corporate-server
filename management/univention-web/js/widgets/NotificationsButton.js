@@ -36,6 +36,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/Deferred",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/on",
 	"dijit/popup",
 	"dijit/_WidgetBase",
@@ -50,23 +51,14 @@ define([
 	"put-selector/put",
 	"umc/i18n!"
 ], function(
-	declare, lang, Deferred, domClass, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, ContentPane,
-	ContainerWidget, Button, ToggleButton, headerButtons, tools, put, _
+	declare, lang, Deferred, domClass, domConstruct, on, popup, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
+	ContentPane, ContainerWidget, Button, ToggleButton, headerButtons, tools, put, _
 ) {
 	var Notification = declare("umc.widgets.NotificationsButton.Notification",
 			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
 			<div class="ucsNotification">
 				<div class="ucsNotification__header">
-					<div
-						class="ucsNotification__logoWrapper dijitDisplayNone"
-						data-dojo-attach-point="logoWrapperNode"
-					>
-						<img
-							class="dijitDisplayNone"
-							data-dojo-attach-point="logoNode"
-						>
-					</div>
 					<div
 						class="ucsNotification__title"
 						data-dojo-attach-point="titleNode"
@@ -86,13 +78,6 @@ define([
 			</div>
 		`,
 
-		logoUrl: '',
-		_setLogoUrlAttr: function(logoUrl) {
-			this.logoNode.src = logoUrl;
-			tools.toggleVisibility(this.logoWrapperNode, !!logoUrl);
-			this._set('logoUrl', logoUrl);
-		},
-		
 		title: '',
 		_setTitleAttr: { node: 'titleNode', type: 'innerHTML' },
 
@@ -132,13 +117,6 @@ define([
 			[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		templateString: `
 			<div class="ucsNotificationPreview dijitDisplayNone">
-				<div class="ucsNotificationPreview__triangle"></div>
-				<div class="ucsNotificationPreview__background ucsNotificationPreview__background--drained">
-					<div
-						class="ucsNotificationPreview__background ucsNotificationPreview__background--full"
-						data-dojo-attach-point="drainNode"
-					></div>
-				</div>
 			</div>
 		`,
 
@@ -156,9 +134,7 @@ define([
 			this._mouseenter = on.pausable(this.domNode, 'mouseenter', () => {
 				clearTimeout(this._drainTimeout);
 				clearTimeout(this._fadeOutTimeout);
-				this.drainNode.style.transitionDuration = '';
-				domClass.remove(this.drainNode, 'drained');
-				this.domNode.style.transitionDuration = '';
+				domClass.remove(this.domNode, 'ucsNotificationPreview--draining');
 				domClass.add(this.domNode, 'ucsNotificationPreview--open');
 			});
 
@@ -191,6 +167,7 @@ define([
 				return;
 			}
 			const notification = new Notification(item);
+			put(notification.closeButton.domNode, domConstruct.toDom('<svg class="ucsNotification__close-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle class="ucsNotification__close-circle" cx="50" cy="50" r="45"></circle></svg>'));
 			this._currentNot = notification;
 			this.domNode.appendChild(notification.domNode);
 			notification.startup();
@@ -214,13 +191,12 @@ define([
 		_show: function() {
 			window.requestAnimationFrame(() => {
 				tools.toggleVisibility(this, true);
-				this.drainNode.style.transitionDuration = '';
-				domClass.remove(this.drainNode, 'drained');
+				domClass.remove(this.domNode, 'ucsNotificationPreview--draining');
+
 				window.requestAnimationFrame(() => {
 					this.domNode.style.transitionDuration = `${this._fadeDuration}ms`;
-					this.drainNode.style.transitionDuration = `${this._drainDuration}ms`;
 					domClass.add(this.domNode, 'ucsNotificationPreview--open');
-					domClass.add(this.drainNode, 'drained');
+					domClass.add(this.domNode, 'ucsNotificationPreview--draining');
 				});
 			});
 

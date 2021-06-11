@@ -39,8 +39,7 @@
 	.umcGalleryItem
 		position: relative
 		padding: calc(2 * var(--layout-spacing-unit))
-		background-color: s('rgba(var(--color-grey0-rgb), 0.8)')
-		background-color: var(--color-grey0)
+		background-color: var(--bgc-content-container)
 		box-sizing: content-box
 		transition: box-shadow 250ms, background-color 0.25s
 		box-shadow: var(--box-shadow)
@@ -51,7 +50,8 @@
 		overflow: hidden
 
 		.umcGalleryName,
-		.umcGalleryDescription
+		.umcGalleryDescription,
+		.umcGalleryVersion // server-overview
 			transition: color 0.25s
 
 		.umcGalleryName
@@ -106,8 +106,8 @@
 			top: 10px
 			right: 12px
 			--button-size: 26px
-			--button-icon-bgc-overlay-hover: rgba(0, 0, 0, 0.15)
-			--button-icon-bgc-overlay-active: rgba(0, 0, 0, 0.20)
+			--button-icon-bgc-hover: rgba(0, 0, 0, 0.15)
+			--button-icon-bgc-active: rgba(0, 0, 0, 0.20)
 
 	.umcGalleryItem.touched,
 	.umcGalleryItemActive,
@@ -116,16 +116,6 @@
 
 		.umcFavoriteIconDefault polyline
 			fill: white
-
-		&.umcGalleryCategory--contrastDark
-			.umcGalleryName,
-			.umcGalleryDescription
-				color: var(--font-color-dark)
-			.umcGalleryContextIcon
-				color: var(--font-color-dark)
-
-			.umcFavoriteIconDefault polyline
-				fill: rgba(0, 0, 0, 0.87)
 
 /*
 .umcGalleryPane .umcGalleryItem:active

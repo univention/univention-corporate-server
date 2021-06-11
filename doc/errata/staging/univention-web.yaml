@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A new UCR variable has been added to configure a theme for all UCS web
    interfaces: ucs/web/theme. The dark theme is the default.
-bug: [53307]
+ * A light theme for UCS web interfaces has been implemented.
+bug: [53307, 53390]

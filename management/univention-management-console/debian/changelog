@@ -1,3 +1,9 @@
+univention-management-console (12.0.12-4) unstable; urgency=medium
+
+  * Bug #53390: implement light theme
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Jun 2021 13:32:43 +0200
+
 univention-management-console (12.0.12-3) unstable; urgency=medium
 
   * Bug #53226: remove StartupDialog code

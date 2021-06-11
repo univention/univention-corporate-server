@@ -24,28 +24,21 @@
 .umc-diagnostic-buttonrow {
 	margin-top: calc(2 * var(--layout-spacing-unit));
 }
-.umc-diagnostic h1 {
-	margin-bottom: 0;
-	border-bottom: thin solid #000;
-}
-.umc-diagnostic .dijitButtonText {
-	font-size: 1em;
-}
 .umc-diagnostic .diagnostic-critical span.dijitTitlePaneTextNode::before {
-	color: var(--color-error);
+	color: var(--font-color-error)
 }
 .umc-diagnostic .diagnostic-conflict span.dijitTitlePaneTextNode::before {
-	color: darkorange;
+	color: var(--font-color-warning)
 }
 .umc-diagnostic .diagnostic-warning  span.dijitTitlePaneTextNode::before {
-	color: orange;
+	color: var(--font-color-warning)
 }
 .umc-diagnostic .diagnostic-problemfixed span.dijitTitlePaneTextNode::before {
-	color: var(--color-success);
+	color: var(--font-color-success)
 }
 .umc-diagnostic .diagnostic-success span.dijitTitlePaneTextNode::before {
-	color: var(--color-success);
+	color: var(--font-color-success)
 }
 .umc-diagnostic .diagnostic-problem span.dijitTitlePaneTextNode::before {
-	color: orange;
+	color: var(--font-color-warning)
 }

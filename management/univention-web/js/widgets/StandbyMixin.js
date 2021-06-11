@@ -49,7 +49,7 @@ define([
 
 		standbyOpacity: 0.8,
 
-		standbyColor: 'var(--color-grey8)',
+		standbyColor: 'var(--bgc-content-body)',
 
 		_lastContent: null,
 

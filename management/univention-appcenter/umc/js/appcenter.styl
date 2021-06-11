@@ -160,12 +160,6 @@
 	.umcTiles__selectionToggleButton
 		flex: 0 0 auto
 
-.umcTiles__selectionToggleButton
-	&.dijitToggleButtonChecked
-		color: var(--color-primary)
-		.dijitButtonText
-			color: var(--color-primary)
-
 .umcTiles__actionBar__buttons
 	flex: 1 1 auto
 	display: flex
@@ -220,7 +214,7 @@
 		height: var(--inputfield-size)
 		width: @height
 		flex: 0 0 auto
-		background: var(--color-grey40)
+		background: var(--bgc-appcenter-app-defaultbgc)
 
 	.umcTile__logo
 		width: 80%
@@ -245,7 +239,7 @@
 	display: flex
 	align-items: center
 	justify-content: center
-	background: var(--color-grey40)
+	background: var(--bgc-appcenter-app-defaultbgc)
 	width: 6rem
 	height: @width
 	margin-bottom: var(--layout-spacing-unit)
@@ -261,28 +255,31 @@
 	font-size: var(--font-size-4)
 	text-align: center
 
+.umcTile__inner
+	position: relative
+.umcTile__selectionBox
+	position: absolute
+	width: 100%
+	height: 100%
+	box-sizing: content-box
+	border-radius: calc(2 * var(--border-radius-container))
+	background-color: transparent
+	transition: background-color 150ms, border-color 150ms
+	padding-bottom: calc(2 * var(--layout-spacing-unit))
+	border: 2px solid transparent
+	top: calc(-2px - var(--layout-spacing-unit)) // width of border and half of padding-bottom
+	left: -2px // width of border
 .umcTiles__selectionMode
-	.umcTile__inner
-		position: relative
-	.umcTile__selectionBox
-		position: absolute
-		width: 100%
-		height: 100%
-		box-sizing: content-box
-		border-radius: calc(2 * var(--border-radius-container))
-		background-color: transparent
-		padding-bottom: calc(2 * var(--layout-spacing-unit))
-		border: 2px solid transparent
-		top: calc(-2px - var(--layout-spacing-unit)) // width of border and half of padding-bottom
-		left: -2px // width of border
-
 	.umcTile.selected
 		.umcTile__selectionBox
 			border-color: var(--color-primary)
-			background-color: rgba(255, 255, 255, 0.08)
-	.umcTile:hover
-		.umcTile__selectionBox
-			background-color: rgba(255, 255, 255, 0.08)
+			background-color: var(--bgc-appcenter-app-hover)
+.umcTile:hover
+	.umcTile__selectionBox
+		background-color: var(--bgc-appcenter-app-hover)
+.umcTile:active
+	.umcTile__selectionBox
+		background-color: var(--bgc-appcenter-app-active)
 
 .umcAppChooseHostWizard
 	border-radius: var(--border-radius-container)
@@ -556,13 +553,14 @@
 
 .imageGallery__navButton
 	position: absolute
-	--bgc: var(--color-black)
+	--bgc: var(--button-bgc)
+	box-shadow: var(--box-shadow)
 	&.dijit
 		&Hover,
-		&Focused,
-		&Active,
-		&Disabled
-			--bgc: var(--color-black)
+		&Focused
+			--bgc: var(--button-bgc-hover)
+		&Active
+			--bgc: var(--button-bgc-active)
 
 	&--left
 		left: 1rem
@@ -572,12 +570,10 @@
 .imageGallery__carouselVideo__video
 	width: 100%
 	height: 100%
-	background: var(--color-black)
 		
 .imageGallery__carouselVideo__playButton
 	--button-size: 3rem
 	--button-icon-size: 1.5rem
-	position: absolute
 
 .imageGallery__dotsWrapper
 	width: 100%
@@ -595,12 +591,12 @@
 	width: 0.5rem
 	height: @width
 	border-radius: var(--border-radius-circles)
-	background-color: rgba(255, 255, 255, 0.2)
+	background-color: var(--font-color-contrast-low)
 	cursor: pointer
 
 .imageGallery__dot--reticle
 	position: absolute
-	background-color: rgba(255, 255, 255, 1)
+	background-color: var(--font-color-contrast-high)
 	left: calc(1.5rem * var(--local-idx))
 	transition: left 250ms
 

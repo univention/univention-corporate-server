@@ -47,6 +47,4 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 	deb-systemd-invoke restart apache2.service
 fi
 
-touch /usr/share/univention-web/js/dijit/themes/umc/globalCustom.css
-
 exit 0
