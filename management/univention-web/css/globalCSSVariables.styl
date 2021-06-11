@@ -14,6 +14,9 @@
 	--bgc-content-header:    var(--color-grey0)
 	--bgc-content-container: var(--color-grey0)
 
+	--bgc-inputfield-on-container: var(--bgc-content-body)
+	--bgc-inputfield-on-body:      var(--bgc-content-container)
+
 	--bgc-loading-circle: var(--font-color-contrast-middle)
 
 	--bgc-user-menu-item-hover:  rgba(255, 255, 255, 0.1)
@@ -102,7 +105,7 @@
 	--button-icon-bgc-active:   blend(rgba(0, 0, 0, 0.08), @--color-grey8)
 	--button-icon-bgc-disabled: transparent
 
-	--button-icon-highlighted-bgc:          var(--inputfield-dark-bgc)
+	--button-icon-highlighted-bgc:          var(--bgc-inputfield-on-body)
 	--button-icon-highlighted-bgc-hover:    var(--color-grey25)
 	--button-icon-highlighted-bgc-active:   blend(rgba(0, 0, 0, 0.08), @--color-grey25)
 	--button-icon-highlighted-bgc-disabled: transparent
@@ -125,8 +128,6 @@
 
 	// input fields
 	--inputfield-size: 2.75rem
-	--inputfield-bgc:      var(--bgc-content-body)
-	--inputfield-dark-bgc: var(--bgc-content-container)
 
 
 	// popups
