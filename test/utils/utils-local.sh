@@ -90,6 +90,12 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/setup.log'
 		'/var/log/univention/system-stats.log'
 		'/var/log/univention/ucs-windows-tools.log'
+		'/var/log/univention/ucs-school-import'
+		'/var/log/univention/ucs-school-import.*'=
+		'/var/log/univention/ucs-school-import-*'=
+		'/var/log/univention/ucsschool-apis'
+		'/var/log/univention/ucsschool-id-connector'
+		'/var/log/univention/ucsschool-kelvin-rest-api'
 		'/var/log/univention/updater.log'
 		'/var/log/univention/server_password_change.log'
 		'/var/log/univention/37check-ucr-templates-py3-migration-status.md'
@@ -115,6 +121,9 @@ ACTION="$1"
 shift || exit 1
 
 case "$ACTION" in
+	fetch-files)
+		fetch-files "$@"
+		;;
 	fetch-results|ucsschool-fetch-results)
 		fetch-results "$@" || :
 		;;
