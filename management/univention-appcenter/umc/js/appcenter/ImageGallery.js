@@ -160,19 +160,17 @@ define([
 			this.inherited(arguments);
 			for (const item of this._items) {
 				if (item.type === 'video') {
-					var videoId = item.videoId;
+					const videoId = item.videoId;
 
 					//get the thumbnail for the youtube video via the unique id
-					var ytVideoThumbnailURL = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+					const ytVideoThumbnailURL = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-					var wrapper = put(this.carouselNode, 'div.imageGallery__carouselItem');
+					const wrapper = put(this.carouselNode, 'div.imageGallery__carouselItem');
 
-					var videoNode = put(wrapper, `div#${videoId}.imageGallery__carouselVideo__video.dijitDisplayNone`);
+					const videoNode = put(wrapper, `div#${videoId}.imageGallery__carouselVideo__video.dijitDisplayNone`);
 
-					// var thumbnail = put(wrapper, 'div.imageGallery__carouselVideo__thumbnail');
-					// var thumbnail = wrapper;
-					var thumbnail = put(wrapper, `img[src=${ytVideoThumbnailURL}]`);
-					var playButton = new Button({
+					const thumbnail = put(wrapper, `img[src=${ytVideoThumbnailURL}]`);
+					const playButton = new Button({
 						iconClass: 'play',
 						class: 'ucsIconButton imageGallery__navButton imageGallery__carouselVideo__playButton',
 						onClick: () => {
