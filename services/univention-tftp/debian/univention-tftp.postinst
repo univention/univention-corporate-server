@@ -32,12 +32,11 @@ configure)
 	[ -x /etc/init.d/atftpd ] &&
 		invoke-rc.d atftpd stop
 
-update-inetd --group BOOT --remove "tftp"
+	update-inetd --remove "tftp"
 update-inetd --group BOOT --add "tftp               dgram   udp     wait \
         nobody /usr/sbin/tcpd /usr/sbin/in.tftpd --tftpd-timeout 300 --retry-timeout 5 --maxthread 100 --verbose=5  /var/lib/univention-client-boot/"
 
-	[ -x /etc/init.d/atftpd ] &&
-		invoke-rc.d atftpd start
+	deb-systemd-invoke try-reload-or-restart inetd.service
 
 # configure firewall
 ucr set security/packetfilter/package/univention-tftp/udp/69/all=ACCEPT \

@@ -1,3 +1,9 @@
+univention-tftp (11.0.0-3) unstable; urgency=low
+
+  * Bug #35487: Fix update-inetd invocation
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2021 17:20:53 +0200
+
 univention-tftp (11.0.0-2) unstable; urgency=low
 
   * Bug #35487: Fix package dependencies and maintainer scripts
@@ -50,13 +56,13 @@ univention-tftp (7.0.1-1) unstable; urgency=medium
 
 univention-tftp (6.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36114) 
+  * Update to UCS 4.0 (Bug #36114)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 12:11:17 +0200
 
 univention-tftp (5.0.2-1) unstable; urgency=low
 
-  * added pxelinux configs (Bug #20014) 
+  * added pxelinux configs (Bug #20014)
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 16:30:57 +0200
 
@@ -80,7 +86,7 @@ univention-tftp (5.0.1-1) unstable; urgency=low
 
 univention-tftp (5.0.0-2) unstable; urgency=low
 
-  * Bump version (Bug #22576) 
+  * Bump version (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Aug 2011 11:34:24 +0200
 
@@ -90,7 +96,7 @@ univention-tftp (5.0.0-1) unstable; urgency=low
   * Drop old special case handling for /ha
   * Update the UCR template for the default file to the Squeeze version and move
     it to it's current location (/etc/default/atftpd instead of /etc/default/atftpd.conf)
-    The old template is removed using remove-ucr-template	
+    The old template is removed using remove-ucr-template
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 May 2011 15:17:56 +0200
 
@@ -103,7 +109,7 @@ univention-tftp (4.0.0-1) unstable; urgency=low
 
 univention-tftp (3.0.1-1) unstable; urgency=low
 
-  * updated copyright Bug #16818 
+  * updated copyright Bug #16818
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 11:06:14 +0100
 
@@ -154,4 +160,3 @@ univention-tftp (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Thomas Krebs <krebs@univention.de>  Mon,  5 Nov 2001 13:47:19 +0200
-

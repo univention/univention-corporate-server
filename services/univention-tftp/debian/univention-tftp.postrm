@@ -29,10 +29,8 @@
 
 case "$1" in
 remove)
-	update-inetd --group BOOT --disable tftp
-	;;
-purge)
-	rm -f /etc/atftpd.conf
+	update-inetd --disable tftp
+	deb-systemd-invoke try-reload-or-restart inetd.service
 	;;
 esac
 
