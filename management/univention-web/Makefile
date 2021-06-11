@@ -115,7 +115,7 @@ PNG_IMG_FILES := $(filter-out css/images/login_logo.png css/images/feather-sprit
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES) $(TMP_THEME_DIR)/globalCustom.css
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
@@ -178,9 +178,6 @@ $(TMP_THEME_DIR)/dijit.css: css/dijit.css
 $(TMP_THEME_DIR)/bootstrap.css: css/bootstrap.css
 	mkdir -p $(@D)
 	ln -fs $(CURDIR)/css/bootstrap.css* $(@D)
-
-$(TMP_THEME_DIR)/globalCustom.css:
-	touch $@
 
 STYL_FILES := $(shell find css -name "*.styl")
 
