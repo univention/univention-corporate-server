@@ -1,0 +1,143 @@
+:root
+	// color palette
+	--color-primary:     #7AB51D
+	--color-primary-rgb: red(@--color-primary), green(@--color-primary), blue(@--color-primary)
+	--color-grey0:       #1E1E1D
+	--color-grey8:       #333331
+	--color-grey25:      #5F5F5C
+	--color-grey40:      #868681
+	--color-grey62:      #BDBDBB
+
+
+	// background colors
+	--bgc-content-body:      #FFFFFF
+	--bgc-content-header:    #EFEFEE
+	--bgc-content-container: #EFEFEE
+
+	--bgc-inputfield-on-container: #D7D7D6
+	--bgc-inputfield-on-body:      var(--bgc-content-container)
+
+	--bgc-loading-circle: var(--font-color-contrast-middle)
+
+	--bgc-user-menu-item-hover:  rgba(0, 0, 0, 0.1)
+	--bgc-user-menu-item-active: rgba(0, 0, 0, 0.2)
+
+	--bgc-header-number-circle: var(--color-grey25)
+
+	--bgc-tab-seperator: var(--color-grey40)
+
+	--bgc-popup:               var(--color-grey62)
+	--bgc-popup-item-hover:    rgba(255, 255, 255, 0.15)
+	--bgc-popup-item-active:   rgba(255, 255, 255, 0.3)
+	--bgc-popup-item-selected: rgba(255, 255, 255, 0.3)
+
+	--bgc-grid-row-hover:    rgba(0, 0, 0, 0.04)
+	--bgc-grid-row-selected: var(--bgc-grid-row-hover)
+	--bgc-tree-row-hover:    var(--bgc-grid-row-hover)
+	--bgc-tree-row-selected: rgba(0, 0, 0, 0.2)
+
+	--bgc-appcenter-app-defaultbgc: var(--color-grey40)
+	--bgc-appcenter-app-hover:      rgba(0, 0, 0, 0.08)
+	--bgc-appcenter-app-active:     rgba(0, 0, 0, 0.12)
+
+	--bgc-progressbar-empty:    var(--color-grey62)
+	--bgc-progressbar-progress: var(--bgc-success)
+
+	--bgc-titlepane-hover: rgba(0, 0, 0, 0.04)
+
+	--bgc-error:   #FF8597
+	--bgc-success: #76B413
+
+
+	// font
+	--font-size-1: 1.5rem
+	--font-size-2: 1.25rem
+	--font-size-3: 1rem
+	--font-size-4: 0.875rem
+	--font-size-5: 0.75rem
+
+	--font-size-html: 1rem
+	--font-size-body: var(--font-size-4)
+
+	--font-lineheight-normal: 1.5
+	--font-lineheight-compact: 1.25
+	--font-lineheight-header: 1.3
+	--font-weight-bold: 600
+
+	--font-color-contrast-high:   var(--color-grey0)
+	--font-color-contrast-middle: #4E4E4B
+	--font-color-contrast-low:    #6C6C6C
+	--font-color-error:           #9F3323
+	--font-color-warning:         #976026
+	--font-color-success:         #547321
+
+
+	// cursors
+	--cursor-disabled: not-allowed
+
+
+	// border-radius
+	--border-radius-interactable: 0.25rem
+	--border-radius-container:    0.5rem
+	--border-radius-notification: var(--border-radius-container)
+	--border-radius-tooltip:      0.25rem
+	--border-radius-circles:      50%
+
+
+	// layout
+	--layout-spacing-unit: 0.5rem
+	--layout-spacing-unit-small: calc(var(--layout-spacing-unit) / 2)
+	--layout-height-header: 3rem
+	--layout-height-header-seperator: var(--layout-spacing-unit-small)
+
+
+	// buttons
+	--button-size: 36px
+	--button-icon-size: 16px
+	--button-font-size: var(--font-size-4)
+	--button-border-radius: var(--border-radius-interactable)
+	--button-icon-border-radius: var(--border-radius-circles)
+
+	--button-bgc-transition: background 250ms
+
+	--button-icon-bgc:          transparent
+	--button-icon-bgc-hover:    rgba(0, 0, 0, 0.16)
+	--button-icon-bgc-active:   rgba(0, 0, 0, 0.26)
+	--button-icon-bgc-disabled: transparent
+
+	--button-icon-highlighted-bgc:          var(--bgc-inputfield-on-body)
+	--button-icon-highlighted-bgc-hover:    var(--color-grey62)
+	--button-icon-highlighted-bgc-active:   blend(rgba(255, 255, 255, 0.10), @--color-grey62)
+	--button-icon-highlighted-bgc-disabled: transparent
+
+	--button-primary-bgc:          var(--color-primary)
+	--button-primary-bgc-hover:    blend(rgba(255, 255, 255, 0.08), @--color-primary)
+	--button-primary-bgc-active:   blend(rgba(255, 255, 255, 0.18), @--color-primary)
+	--button-primary-bgc-disabled: var(--color-grey62)
+
+	--button-bgc:          var(--color-grey62)
+	--button-bgc-hover:    blend(rgba(255, 255, 255, 0.16), @--color-grey62)
+	--button-bgc-active:   blend(rgba(255, 255, 255, 0.26), @--color-grey62)
+	--button-bgc-disabled: var(--color-grey62)
+
+	--button-text-bgc:          transparent
+	--button-text-bgc-hover:    rgba(0, 0, 0, 0.16)
+	--button-text-bgc-active:   rgba(0, 0, 0, 0.26)
+	--button-text-bgc-disabled: transparent
+
+
+	// input fields
+	--inputfield-size: 2.75rem
+
+
+	// popups
+	--popup-border: 1px solid var(--color-grey62)
+
+
+	// shadows
+	--box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)
+
+
+	// server overview
+	--serveroverview-tile-hover-bgc:   #00ACB6
+	--serveroverview-tile-hover-color: #1e1e1d

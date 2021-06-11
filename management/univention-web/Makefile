@@ -49,7 +49,7 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 
 .PHONY: build install clean tmp-build tmp-umc-icons build-dev build-live i18n
 
-build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js
+build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js css/themes/dark.css css/themes/light.css
 
 $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
 	# main dojo build process
@@ -88,6 +88,7 @@ build-dev: tmp-build $(TMP_UMC_ICON_FILES)
 		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
 		ucr set umc/web/hooks/univention-web-js?default_menu_entries ;\
 	fi
+	ln -fs "$(CURDIR)/css/themes/$$(ucr get ucs/web/theme).css" /var/www/univention/theme.css
 
 $(TMP_UMC_ICON_FILES): $(TMP_THEME_DIR)/icons/%: $(UMC_ICONS_DIR)/%
 	mkdir -p $(@D)
@@ -115,7 +116,7 @@ PNG_IMG_FILES := $(filter-out css/images/login_logo.png css/images/feather-sprit
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES) css/themes/dark.css css/themes/light.css
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
@@ -187,6 +188,11 @@ css/umc.css: css/umc.styl $(STYL_FILES) $(ALL_IMG_FILES)
 css/login.css: css/login.styl
 	cd $(@D); stylus --sourcemap --resolve-url --hoist-atrules $(<F)
 
+css/themes/dark.css: css/themes/dark.styl
+	stylus "$<"
+css/themes/light.css: css/themes/light.styl
+	stylus "$<"
+
 $(TMP_THEME_DIR): $(TMP_DIR)
 	# link theme files into the tmp dir
 	cp -fsr $(CURDIR)/css $@
@@ -226,4 +232,4 @@ clean:
 		rm $(WWW_JS_DIR) ;\
 		dpkg-divert --package univention-web-make-build-dev --remove --rename "$(WWW_JS_DIR)" ;\
 	fi
-
+	@echo $(shell ucr set ucs/web/theme="$(shell ucr get ucs/web/theme)")
