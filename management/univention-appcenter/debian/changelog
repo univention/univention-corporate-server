@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-50) unstable; urgency=medium
+
+  * Bug #53390: implement light theme
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Jun 2021 13:33:00 +0200
+
 univention-appcenter (9.0.2-49) unstable; urgency=medium
 
   * Bug #53384: Handle template error when opening Apps with certain

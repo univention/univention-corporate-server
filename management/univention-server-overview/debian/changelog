@@ -1,3 +1,9 @@
+univention-server-overview (3.0.1-5) unstable; urgency=medium
+
+  * Bug #53390: implement light theme
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Jun 2021 13:31:57 +0200
+
 univention-server-overview (3.0.1-4) unstable; urgency=medium
 
   * Bug #53209: Fix join script handling (univention-join debhelper)

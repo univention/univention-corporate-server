@@ -1,3 +1,9 @@
+univention-system-activation (5.0.1-2) unstable; urgency=medium
+
+  * Bug #53390: implement light theme
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 Jun 2021 13:37:48 +0200
+
 univention-system-activation (5.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by
