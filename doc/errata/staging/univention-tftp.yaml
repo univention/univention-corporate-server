@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-tftp
-fix: 11.0.0-2A~5.0.0.202106111128
+fix: 11.0.0-3A~5.0.0.202106111729
 desc: |
  This update addresses the following issue:
  * Change package to depends on `syslinux-common` only.
