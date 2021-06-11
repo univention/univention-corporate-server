@@ -172,6 +172,7 @@ def listfilter(attrib):
 
 
 def mail2username(mail):
+	# type: (str) -> str
 	try:
 		ldap = univention.uldap.getMachineConnection(ldap_master=False)
 		user_filter = filter_format(
@@ -181,7 +182,7 @@ def mail2username(mail):
 		user_result = ldap.search(base=options.ldap_base, filter=str(ldap_filter), attr=["uid"])
 		return user_result[0][1]["uid"][0]
 	except Exception as exc:
-		print("Could not parse sasl_username from mail address: {}\n".format(exc))
+		print("Could not parse sasl_username from mail address {}: {}\n".format(mail, exc))
 		sys.exit(1)
 
 
