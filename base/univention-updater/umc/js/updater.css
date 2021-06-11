@@ -42,6 +42,7 @@
 	margin-top: calc(2 * var(--layout-spacing-unit));
 	padding: 0 calc(2 * var(--layout-spacing-unit)) 0 calc(6 * var(--layout-spacing-unit));
 	position: relative;
+	color: var(--font-color-error);
 }
 
 .umc .umcUpdaterWarningTextIcon {
@@ -49,7 +50,6 @@
 	font-size: 1.3rem;
 	top: calc(50% - 0.65rem);
 	left: calc(2 * var(--layout-spacing-unit));
-	color: var(--color-error);
 }
 
 .umc .umcUpdaterLogViewer {
