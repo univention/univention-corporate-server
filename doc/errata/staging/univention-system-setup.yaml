@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-system-setup
-fix: 
+fix: 13.0.3-32A~5.0.0.202106111406
 desc: |
  This update addresses the following issue(s):
  * A light theme for UCS web interfaces has been implemented.
