@@ -1,3 +1,9 @@
+univention-updater (15.0.3-67) unstable; urgency=medium
+
+  * Bug #53429: remove iso from univention-repository-create
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 14 Jun 2021 16:04:45 +0200
+
 univention-updater (15.0.3-66) unstable; urgency=medium
 
   * Bug #53221: Adjust link help.univention.de in preup-check
