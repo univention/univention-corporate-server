@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: lasso
+fix: 2.5.0-5+deb9u1
+desc: |
+ This update addresses the following issue:
+ * XML signature wrapping vulnerability when parsing SAML responses
+   (CVE-2021-28091)
+bug: [53440]
+cve:
+- CVE-2021-28091
