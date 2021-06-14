@@ -18,7 +18,7 @@ desc: |
  * out-of-bounds read in ChunkAssignData() in mux/muxinternal.c
    (CVE-2020-36331)
  * extreme memory allocation when reading a file (CVE-2020-36332)
-bug: [53441, 53443]
+bug: [53441]
 cve:
 - CVE-2018-25009
 - CVE-2018-25010
