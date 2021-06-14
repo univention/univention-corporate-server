@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Change package to depends on `syslinux-common` only.
 bug: [35487]
+maintained: true
