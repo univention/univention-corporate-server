@@ -56,10 +56,6 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR"
 	mkdir -p "$TARGETDIR/selenium"
-	mkdir -p "$TARGETDIR/listener_modules"
-	mkdir -p "$TARGETDIR/ucs-school-import"
-	mkdir -p "$TARGETDIR/ucsschool-id-connector"
-	mkdir -p "$TARGETDIR/ucsschool-kelvin-rest-api"
 	declare -a FILES=(
 		'artifacts'
 		'packages-under-test.log'
@@ -97,6 +93,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/ucs-school-import'
 		'/var/log/univention/ucs-school-import.*'=
 		'/var/log/univention/ucs-school-import-*'=
+		'/var/log/univention/ucsschool-apis'
 		'/var/log/univention/ucsschool-id-connector'
 		'/var/log/univention/ucsschool-kelvin-rest-api'
 		'/var/log/univention/updater.log'
