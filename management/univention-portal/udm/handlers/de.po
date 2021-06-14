@@ -257,7 +257,7 @@ msgstr ""
 
 #: udm/handlers/entry.py:97
 msgid "Only visible if not logged in"
-msgstr "Nur sichtbar wenn nicht angemeldet"
+msgstr "Nur sichtbar, wenn nicht angemeldet"
 
 #: udm/handlers/portal.py:45
 msgid "Portal"
