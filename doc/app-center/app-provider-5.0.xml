@@ -1551,9 +1551,10 @@ cat $MY_APP.json | jq -r .compose > compose
 					For every app a user account is created.
 					The account has read access to the LDAP directory.
 					The username is passed as the environment variable <envar>LDAP_HOSTDN</envar>.
-					The password is written in the file <filename>/etc/machine.secret</filename>.
-					The credentials are not changed when an app is upgraded.
-					But they change if an app is reinstalled.
+					The password is written in the file <filename>/etc/machine.secret</filename>
+					into the apps's main container. The file can be accessed by scripts running
+					in the app's container context. The credentials are not changed when an app is
+					upgraded. But they change if an app is reinstalled.
 				</para>
 			</section>
 
@@ -1813,8 +1814,9 @@ cat $MY_APP.json | jq -r .compose > compose
 					For every app a user account is created.
 					The account has read access to the LDAP directory.
 					The username is passed as the environment variable <envar>LDAP_HOSTDN</envar>.
-					The password is written in the file <filename>/etc/machine.secret</filename>.
-					The credentials are not changed when an app is upgraded.
+					The password is written in the file <filename>/etc/machine.secret</filename> into 
+					the app's main container. The file can be accessed by scripts running in the 
+					app's container context. The credentials are not changed when an app is upgraded.
 					But they change if an app is reinstalled.
 				</para>
 			</section>
