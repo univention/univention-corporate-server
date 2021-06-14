@@ -864,18 +864,15 @@ update_check_samba_tdb_size () {  # Bug #53212
 	for p in $(ldbsearch -H /var/lib/samba/private/sam.ldb  -b '@PARTITION' -s base partition | ldapsearch-wrapper | sed -n 's/partition: //p'); do
 		fpath="/var/lib/samba/private/${p#*:}"
 		if file -b "$fpath" | grep -q "^TDB database" && [ "$(stat -c %s "$fpath")" -gt 1950000000 ]; then
-			echo "WARNING: The Samba SAM database is very large. During update Samba will attempt to convert"
-			echo "         the database to a new index format. For that step Samba requires temporary duplication"
+			echo "WARNING: The Samba SAM database is very large. During update Samba will convert the database"
+			echo "         to a new database and index format. For that step Samba requires temporary duplication"
 			echo "         of the database content, which may result in an overflow of the maximal size of the tdb"
 			echo "         database of 4GB. This may result in Samba not starting after the update."
-			echo "         We are currently researching possible solutions for this technical limitation."
+			echo "         To avoid this and make Samba scale to even larger numbers of accounts re recommend"
+			echo "         to convert the SAM database key-value backend from TDB to LMDB. That's the technology"
+			echo "         that UCS uses for OpenLDAP and has shown an exceptional robustness and performance."
 			echo "         "
-			echo "         Currently we recommend to not update this system without first checking with"
-			echo "         a non-productive clone of the system. Otherwise Samba may need to be reprovisioned manually."
-			echo "         "
-			echo "         A similar situation happend during update from Samba 4.7 to Samba 4.10, so the techically"
-			echo "         demanding workaround described under https://help.univention.com/t/12492 may be an option,"
-			echo "         but it is still untested with Samba 4.13."
+			echo "         The article https://help.univention.com/t/18014 describes the required steps."
 			rc=1
 			break
 		fi
