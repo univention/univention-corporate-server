@@ -498,7 +498,7 @@ install_ucsschool () {
 	ucr set --force dhcpd/authoritative=no
 
 	# Bug #53451: install old python-celery python-celery-common python-kombu
-	echo 'deb https://updates.software-univention.de/4.3/maintained/ 4.3-0/all/' > /etc/apt/sources.list.d/21_ucsschool_workaround
+	echo 'deb https://updates.software-univention.de/4.3/maintained/ 4.3-0/all/' > /etc/apt/sources.list.d/21_ucsschool_workaround.list
 	cat << "EOF" > /etc/apt/preferences.d/ucsschool
 Package: python-celery
 Pin: version 3.1.23-7
