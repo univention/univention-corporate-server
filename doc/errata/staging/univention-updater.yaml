@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-updater
-fix: 
+fix: 15.0.3-67A~5.0.0.202106151102
 desc: |
  This update addresses the following issue(s):
  * Due to the updated repository structure, creating a local repository
