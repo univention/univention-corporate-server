@@ -497,6 +497,9 @@ install_ucsschool () {
 	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks out test environment
 	ucr set --force dhcpd/authoritative=no
 
+	# Bug #53451: install old python-celery python-celery-common python-kombu
+	echo 'deb https://updates.software-univention.de/4.3/maintained/ 4.3-0/all/' > /etc/apt/sources.list.d/21_ucsschool_workaround
+
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center || rv=$?
