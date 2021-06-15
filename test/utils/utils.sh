@@ -499,6 +499,21 @@ install_ucsschool () {
 
 	# Bug #53451: install old python-celery python-celery-common python-kombu
 	echo 'deb https://updates.software-univention.de/4.3/maintained/ 4.3-0/all/' > /etc/apt/sources.list.d/21_ucsschool_workaround
+	cat << "EOF" > /etc/apt/preferences.d/ucsschool
+Package: python-celery
+Pin: version 3.1.23-7
+Pin-Priority: 1001
+
+Package: python-celery-common
+Pin: version 3.1.23-7
+Pin-Priority: 1001
+
+Package: python-kombu
+Pin: version 3.0.35-1.1
+Pin-Priority: 1001
+EOF
+	apt update -qq
+	apt install -y --allow-downgrades python-celery=3.1.23-7 python-celery-common=3.1.23-7 python-kombu=3.0.35-1.1
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
