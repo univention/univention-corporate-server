@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/bin/pytest-3
 ## desc: Containers and Users of the same name may not exist in the same position
-## tags: [udm, SKIP]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## bugs: [53102]
@@ -8,8 +8,11 @@
 
 import pytest
 
+from univention.config_registry import ucr
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
+import univention.uldap
+
 
 @pytest.fixture
 def udm():
@@ -23,7 +26,7 @@ def username():
 
 
 def get_position(dn):
-	return dn.split(',', 1)[1]  # yeah, should actually be something with import ldap.dn
+	return univention.uldap.parentDn(dn)
 
 
 def test_user_creation_fails(udm, username):
@@ -73,10 +76,11 @@ def test_container_move_fails(udm, username):
 		udm.move_object('container/cn', dn=container, position=position)
 
 
-def test_container_rename_fails(udm, username):
-	user = udm.create_user(username=username)[0]
+@pytest.mark.parametrize('container_type', ['container/cn', 'container/ou', 'groups/group', 'computers/windows'])
+def test_container_rename_fails(udm, container_type, username):
+	user = udm.create_user(username=username, position=ucr['ldap/base'])[0]
 	position = get_position(user)
 
-	container = udm.create_object('container/cn', name=username + '-container', position=position)
+	container = udm.create_object(container_type, name=username + '-container', position=position)
 	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
-		udm.modify_object('container/cn', dn=container, name=username)
+		udm.modify_object(container_type, dn=container, name=username)

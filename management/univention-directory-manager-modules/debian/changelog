@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.11-3) unstable; urgency=medium
+
+  * Bug #53102: ensure uniqueness of object names in the same subtree
+    position
+
+ -- Florian Best <best@univention.de>  Fri, 25 Jun 2021 21:13:18 +0200
+
 univention-directory-manager-modules (15.0.11-2) unstable; urgency=medium
 
   * Bug #53339: Fix traceback when creating users/ldap with mspwpolicy

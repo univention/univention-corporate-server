@@ -905,6 +905,7 @@ class simpleLdap(object):
 	def _ldap_pre_create(self):  # type: () -> None
 		"""Hook which is called before the object creation."""
 		self.dn = self._ldap_dn()
+		self.request_lock('cn-uid-position', self.dn)
 
 	def _ldap_dn(self):  # type: () -> Text
 		"""
@@ -938,7 +939,7 @@ class simpleLdap(object):
 
 		:param str newdn: The new distiguished name the object will be renamed to.
 		"""
-		pass
+		self.request_lock('cn-uid-position', newdn)
 
 	def _ldap_post_rename(self, olddn):  # type: (str) -> None
 		"""
@@ -954,7 +955,7 @@ class simpleLdap(object):
 
 		:param str newdn: The new distiguished name the object will be moved to.
 		"""
-		pass
+		self.request_lock('cn-uid-position', newdn)
 
 	def _ldap_post_move(self, olddn):  # type: (str) -> None
 		"""

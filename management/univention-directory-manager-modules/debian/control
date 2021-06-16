@@ -142,6 +142,7 @@ Architecture: all
 Depends:
  python3-univention,
  python3-univention-lib,
+ python3-univention-directory-manager (>= 15.0.11-3),
  shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},

@@ -53,7 +53,8 @@ _type2attr = {
 	'mailPrimaryAddress': 'mailPrimaryAddress',
 	'aRecord': 'aRecord',
 	'mac': 'macAddress',
-	'groupName': 'cn'
+	'groupName': 'cn',
+	'cn-uid-position': 'cn',  # ['cn', 'uid', 'ou']
 }
 _type2scope = {
 	'uidNumber': 'base',
@@ -65,7 +66,8 @@ _type2scope = {
 	'mailPrimaryAddress': 'domain',
 	'aRecord': 'domain',
 	'mac': 'domain',
-	'groupName': 'domain'
+	'groupName': 'domain',
+	'cn-uid-position': 'one',
 }
 
 
@@ -180,6 +182,17 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
+	elif type == 'cn-uid-position':
+		base = lo.parentDn(value)
+		attr, value, __ = ldap.dn.str2dn(value)[0][0]
+		try:
+			attrs = {'cn': ['uid'], 'uid': ['cn', 'ou'], 'ou': ['uid']}[attr]
+		except KeyError:
+			return value
+
+		if not lo.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope):
+			return value
+		raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
 		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
@@ -199,6 +212,8 @@ def request(lo, position, type, value=None):
 def confirm(lo, position, type, value, updateLastUsedValue=True):
 	if type in ('uidNumber', 'gidNumber') and updateLastUsedValue:
 		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', b'1', value.encode('utf-8'))])
+	elif type == 'cn-uid-position':
+		return
 	univention.admin.locking.unlock(lo, position, type, value.encode('utf-8'), _type2scope[type])
 
 
