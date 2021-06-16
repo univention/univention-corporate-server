@@ -61,6 +61,7 @@ Architecture: all
 Depends:
  python-univention (>> 5.0.5),
  python-univention-lib (>= 7.0.0-14),
+ python-univention-directory-manager (>= 14.0.20-17),
  shell-univention-lib,
  ${misc:Depends},
  ${python:Depends},

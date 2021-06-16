@@ -913,6 +913,7 @@ class simpleLdap(object):
 	def _ldap_pre_create(self):  # type: () -> None
 		"""Hook which is called before the object creation."""
 		self.dn = self._ldap_dn()
+		self.request_lock('cn-uid-position', self.dn)
 
 	def _ldap_dn(self):  # type: () -> str
 		"""
@@ -945,7 +946,7 @@ class simpleLdap(object):
 
 		:param str newdn: The new distiguished name the object will be renamed to.
 		"""
-		pass
+		self.request_lock('cn-uid-position', newdn)
 
 	def _ldap_post_rename(self, olddn):  # type: (str) -> None
 		"""
@@ -961,7 +962,7 @@ class simpleLdap(object):
 
 		:param str newdn: The new distiguished name the object will be moved to.
 		"""
-		pass
+		self.request_lock('cn-uid-position', newdn)
 
 	def _ldap_post_move(self, olddn):  # type: (str) -> None
 		"""
@@ -1685,6 +1686,23 @@ class simpleLdap(object):
 			if len(item) > 2:
 				updateLastUsedValue = item[2]
 			univention.admin.allocators.confirm(self.lo, self.position, name, value, updateLastUsedValue=updateLastUsedValue)
+
+	def request_lock(self, name, value=None, updateLastUsedValue=True):
+		"""Request a lock for the given value"""
+		try:
+			if name == 'sid+user':
+				value = univention.admin.allocators.requestUserSid(self.lo, self.position, value)
+				name = 'sid'
+			else:
+				value = univention.admin.allocators.request(self.lo, self.position, name, value)
+		except univention.admin.uexceptions.noLock:
+			self._release_locks()
+			raise
+		if not updateLastUsedValue:  # backwards compatibility: 2er-tuples required!
+			self.alloc.append((name, value, updateLastUsedValue))
+		else:
+			self.alloc.append((name, value))
+		return value
 
 	def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
 		"""Calls checkLdap() method on every property if present.

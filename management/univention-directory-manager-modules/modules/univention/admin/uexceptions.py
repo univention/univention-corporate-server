@@ -418,3 +418,7 @@ class wrongObjectType(base):
 
 class noKerberosRealm(base):
 	message = _('There was no valid kerberos realm found.')
+
+
+class alreadyUsedInSubtree(base):
+	message = _('An object with the name already exists in the subtree position')

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-17) unstable; urgency=medium
+
+  * Bug #53725: ensure uniqueness of object names in the same subtree
+    position
+
+ -- Florian Best <best@univention.de>  Tue, 31 Aug 2021 12:11:52 +0200
+
 univention-directory-manager-modules (14.0.20-16) unstable; urgency=medium
 
   * Bug #53675: New users/user property accountActivationDate
