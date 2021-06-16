@@ -166,6 +166,9 @@ ACTION="$1"
 shift || exit 1
 
 case "$ACTION" in
+	fetch-files)
+		fetch-files "$@"
+		;;
 	fetch-results)
 		fetch-results "$@"
 		;;
