@@ -11,3 +11,5 @@ desc: |
    the previously collected output will be flushed and becomes visible
    en bloc in the log file `/var/log/univention/listener.log`.
 bug: [53071]
+erratum: 13
+announced: 2021-06-16
