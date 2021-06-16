@@ -1,3 +1,10 @@
+univention-python (13.0.2-4) unstable; urgency=medium
+
+  * Bug #53102: introduce _ldap_pre_rename(newdn) and
+    _ldap_post_rename(olddn)
+
+ -- Florian Best <best@univention.de>  Fri, 25 Jun 2021 21:12:51 +0200
+
 univention-python (13.0.2-3) unstable; urgency=medium
 
   * Bug #49898: make univention.password import samba.check_password_quality

@@ -35,7 +35,7 @@ from __future__ import absolute_import
 
 import ldap
 import time
-from typing import Any, Dict, List, Optional, Tuple  # noqa F401
+from typing import Any, Callable, Dict, List, Optional, Tuple  # noqa: F401
 
 import univention.debug as ud
 import univention.uldap
@@ -777,8 +777,8 @@ class access(object):
 			ud.debug(ud.LDAP, ud.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
-		# type: (str, List[Tuple[str, Any, Any]], bool, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> str
+	def modify(self, dn, changes, exceptions=False, ignore_license=False, serverctrls=None, response=None, rename_callback=None):
+		# type: (str, List[Tuple[str, Any, Any]], bool, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict], Optional[Callable]) -> str
 		"""
 		Modify LDAP entry DN with attributes in changes=(attribute-name, old-values, new-values).
 
@@ -798,9 +798,9 @@ class access(object):
 			raise univention.admin.uexceptions.licenseDisableModify()
 		ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s ml=%s' % (dn, changes))
 		if exceptions:
-			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
+			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response, rename_callback=rename_callback)
 		try:
-			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
+			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response, rename_callback=rename_callback)
 		except ldap.NO_SUCH_OBJECT as msg:
 			ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
