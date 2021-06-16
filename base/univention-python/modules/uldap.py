@@ -43,7 +43,7 @@ from ldapurl import isLDAPUrl
 import univention.debug
 from univention.config_registry import ConfigRegistry
 try:
-	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa
+	from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union  # noqa: F401
 except ImportError:
 	pass
 
@@ -703,8 +703,8 @@ class access(object):
 			response['ctrls'] = resp_ctrls
 
 	@_fix_reconnect_handling
-	def modify(self, dn, changes, serverctrls=None, response=None):
-		# type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> str
+	def modify(self, dn, changes, serverctrls=None, response=None, rename_callback=None):
+		# type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict], Optional[Callable]) -> str
 		"""
 		Modify LDAP entry DN with attributes in changes=(attribute-name, old-values, new-values).
 
@@ -749,6 +749,8 @@ class access(object):
 		# check if we need to rename the object
 		new_dn, new_rdn = self.__get_new_dn(dn, ml)
 		if not self.compare_dn(dn, new_dn):
+			if rename_callback:
+				rename_callback(dn, new_dn, ml)
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
 			self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
 			dn = new_dn

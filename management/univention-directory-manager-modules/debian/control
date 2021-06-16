@@ -31,7 +31,7 @@ Depends:
  python-unidecode,
  python-support,
  python-bcrypt,
- python-univention (>= 12.0.1-1),
+ python-univention (>= 12.0.1-3),
  python-univention-directory-manager-cli (= ${binary:Version}),
  python-univention-heimdal (>= 4.0.1-1),
  python-univention-lib (>= 8.0.0-6),

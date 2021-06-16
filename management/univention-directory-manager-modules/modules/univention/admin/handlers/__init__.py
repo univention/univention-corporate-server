@@ -939,6 +939,22 @@ class simpleLdap(object):
 		"""Hook which is called after the object modification."""
 		pass
 
+	def _ldap_pre_rename(self, newdn):  # type: (str) -> None
+		"""
+		Hook which is called before renaming the object.
+
+		:param str newdn: The new distiguished name the object will be renamed to.
+		"""
+		pass
+
+	def _ldap_post_rename(self, olddn):  # type: (str) -> None
+		"""
+		Hook which is called after renaming the object.
+
+		:param str olddn: The old distiguished name the object was renamed from.
+		"""
+		pass
+
 	def _ldap_pre_move(self, newdn):  # type: (str) -> None
 		"""
 		Hook which is called before the object moving.
@@ -1325,9 +1341,19 @@ class simpleLdap(object):
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 		ml = self._ldap_object_classes(ml)
 
+		class wouldRename(Exception):
+			@classmethod
+			def on_rename(cls, dn, new_dn, ml):
+				raise cls(dn, new_dn)
+
 		# FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		ud.debug(ud.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
-		self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+		try:
+			self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
+		except wouldRename as exc:
+			self._ldap_pre_rename(exc.args[1])
+			self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+			self._ldap_post_rename(exc.args[1])
 		if ml:
 			self._write_admin_diary_modify()
 
