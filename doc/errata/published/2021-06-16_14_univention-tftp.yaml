@@ -9,3 +9,5 @@ desc: |
  * Change package to depend only on `syslinux-common`.
 bug: [35487]
 maintained: true
+erratum: 14
+announced: 2021-06-16
