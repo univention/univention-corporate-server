@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/bin/pytest-3
 ## desc: Containers and Users of the same name may not exist in the same position
-## tags: [udm]
+## tags: [udm, SKIP]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## bugs: [53102]
