@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-replication
-fix: 
+fix: 13.0.2-2A~5.0.0.202106160942
 desc: |
  This update addresses the following issue(s):
  * The applying of a failed.ldif has been repaired, it was broken due to the
