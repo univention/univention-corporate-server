@@ -6,6 +6,6 @@ src: univention-tftp
 fix: 11.0.0-3A~5.0.0.202106111729
 desc: |
  This update addresses the following issue:
- * Change package to depends on `syslinux-common` only.
+ * Change package to depend only on `syslinux-common`.
 bug: [35487]
 maintained: true
