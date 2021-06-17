@@ -38,19 +38,24 @@ define([
 	"umc/modules/appcenter/SidebarElement",
 	"umc/widgets/Button"
 ], function(declare, domConstruct, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	var header = _("Vote for App");
-	var message = _("We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you.");
-	var buttonLabel = _("Vote now");
 	return declare("umc.modules.appcenter.Vote", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppVote',
+
+		_header: _("Vote for App"),
+		_message: _("We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you."),
+		_buttonLabel: _("Vote now"),
+
 		templateString: `
 			<div>
-				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
-					header: '${header}',
-					icon: 'check-square'
-				">
+				<div
+					data-dojo-type="umc/modules/appcenter/SidebarElement"
+					data-dojo-props="
+						header: this._header,
+						icon: 'check-square'
+					"
+				>
 					<p>
-						${message}
+						\${_message}
 					</p>
 					<div class="umcAppSidebarButton ucsPrimaryButton"
 						data-dojo-type="umc/widgets/Button"
@@ -58,7 +63,7 @@ define([
 						data-dojo-attach-event="click:_onClick"
 						data-dojo-props="
 							name: 'vote',
-							label: '${buttonLabel}'
+							label: this._buttonLabel
 						"
 					></div>
 				</div>

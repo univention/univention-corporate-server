@@ -42,21 +42,26 @@ define([
 	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/SidebarElement"
 ], function(declare, lang, array, domConstruct, entities, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, Badge, _) {
-	var header = _("App Center Badges");
 	return declare("umc.modules.appcenter.Badges", [_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppBadges',
 		buttonLabel: _("Manage installations"),
+
+		_header: _('App Center Badges'),
+
 		templateString: `
 			<div>
-				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
-					header: '${header}',
-					icon: 'bookmark'
-				">
-					<div data-dojo-attach-point="containerNode">
-					</div>
+				<div
+					data-dojo-type="umc/modules/appcenter/SidebarElement"
+					data-dojo-props="
+						header: this._header,
+						icon: 'bookmark'
+					"
+				>
+					<div data-dojo-attach-point="containerNode"></div>
 				</div>
 			</div>
 		`,
+
 		addBadge: function(name, description) {
 			var badge = new Badge({name: name, description: description});
 			this.addChild(badge);

@@ -44,7 +44,8 @@ define([
 		templateString: `
 			<div>
 				<div class="mainHeader">
-					<svg data-dojo-type="umc/widgets/Icon" data-dojo-props="iconName: '\${icon}'"></svg><span>\${header}</span>
+					<svg data-dojo-type="umc/widgets/Icon" data-dojo-props="iconName: this.icon"></svg>
+					<span>\${header}</span>
 				</div>
 				<div class="mainContent" data-dojo-attach-point="containerNode">
 				</div>

@@ -41,17 +41,21 @@ define([
 	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/appcenter/SidebarElement"
 ], function(declare, lang, array, domConstruct, entities, _WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin, _) {
-	var header = _("More information");
 	return declare("umc.modules.appcenter.AppMoreInfo", [_WidgetBase, _Container, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		baseClass: 'umcAppMoreInfo',
+
+		_header: _("More information"),
+
 		templateString: `
 			<div>
-				<div data-dojo-type="umc/modules/appcenter/SidebarElement" data-dojo-props="
-					header: '${header}',
-					icon: 'info'
-				">
-					<table data-dojo-attach-point="containerNode">
-					</table>
+				<div
+					data-dojo-type="umc/modules/appcenter/SidebarElement"
+					data-dojo-props="
+						header: this._header,
+						icon: 'info'
+					"
+				>
+					<table data-dojo-attach-point="containerNode"></table>
 				</div>
 			</div>
 		`,

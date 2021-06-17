@@ -47,9 +47,9 @@ define([
 				<div
 					data-dojo-type="umc/modules/appcenter/Tile"
 					data-dojo-props="
-						bgc: '\${bgc}',
-						logo: '\${logo}',
-						name: '\${name}'
+						bgc: this.bgc,
+						logo: this.logo,
+						name: this.name
 					"
 				></div>
 				<div class="umcAppInfo__description">\${description}</div>
@@ -59,7 +59,7 @@ define([
 						data-dojo-attach-event="click:_onClick"
 						data-dojo-props="
 							name: 'installations',
-							label: '\${buttonLabel}'
+							label: this.buttonLabel
 						"
 					>
 					</div>
