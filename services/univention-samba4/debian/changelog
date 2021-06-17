@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-2) unstable; urgency=medium
+
+  * Bug #53458: fix Python 3 migration of samba-shares.py listener
+
+ -- Florian Best <best@univention.de>  Thu, 17 Jun 2021 08:00:25 +0200
+
 univention-samba4 (9.0.6-1) unstable; urgency=medium
 
   * Bug #53093: Provide script migrate_legacy_dns_zones.sh
