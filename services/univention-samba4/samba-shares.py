@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import listener
+from listener import SetUID, configRegistry, run
 import os
 import re
 import subprocess
@@ -44,12 +44,10 @@ from six.moves import cPickle as pickle
 from six.moves.urllib_parse import quote
 
 # for the ucr commit below in postrun we need ucr configHandlers
-from univention.config_registry import configHandlers, ConfigRegistry
+from univention.config_registry import configHandlers
 from univention.config_registry.interfaces import Interfaces
 ucr_handlers = configHandlers()
 ucr_handlers.load()
-
-domainname = listener.configRegistry['domainname']
 
 name = 'samba-shares'
 description = 'Create configuration for Samba shares'
@@ -58,6 +56,7 @@ attributes = []
 modrdn = '1'
 
 tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
+RE_ACE = re.compile(r'\(.+?\)')
 
 
 def _validate_smb_share_name(name):
@@ -72,12 +71,11 @@ def _validate_smb_share_name(name):
 
 def handler(dn, new, old, command):
 	# type: (str, dict, dict, str) -> None
-	configRegistry = ConfigRegistry()
 	configRegistry.load()
 	interfaces = Interfaces(configRegistry)
 
 	# dymanic module object filter
-	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
+	current_fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	current_ip = str(interfaces.get_default_ip_address().ip)
 
 	new_univentionShareHost = new.get('univentionShareHost', [b''])[0].decode('ASCII')
@@ -93,15 +91,13 @@ def handler(dn, new, old, command):
 
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
-	listener.setuid(0)
-	try:
-		if not os.path.exists(tmpDir):
-			os.makedirs(tmpDir)
-	except Exception as exc:
-		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
-		return
-	finally:
-		listener.unsetuid()
+	with SetUID(0):
+		try:
+			if not os.path.exists(tmpDir):
+				os.makedirs(tmpDir)
+		except Exception as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
+			return
 
 	# modrdn stuff
 	# 'r'+'a' -> renamed
@@ -110,35 +106,30 @@ def handler(dn, new, old, command):
 
 	# write old object to pickle file
 	oldObject = {}
-	listener.setuid(0)
-	try:
-		# object was renamed -> save old object
-		if command == "r" and old:
-			with open(tmpFile, "w+") as fd:
-				os.chmod(tmpFile, 0o600)
-				pickle.dump({"dn": dn, "old": old}, fd)
-		elif command == "a" and not old and os.path.isfile(tmpFile):
-			with open(tmpFile, "r") as fd:
-				p = pickle.load(fd)
-			oldObject = p.get("old", {})
-			os.remove(tmpFile)
-	except Exception as e:
-		if os.path.isfile(tmpFile):
-			os.remove(tmpFile)
-		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, e))
-	finally:
-		listener.unsetuid()
+	with SetUID(0):
+		try:
+			# object was renamed -> save old object
+			if command == "r" and old:
+				with open(tmpFile, "w+") as fd:
+					os.chmod(tmpFile, 0o600)
+					pickle.dump({"dn": dn, "old": old}, fd)
+			elif command == "a" and not old and os.path.isfile(tmpFile):
+				with open(tmpFile, "r") as fd:
+					p = pickle.load(fd)
+				oldObject = p.get("old", {})
+				os.remove(tmpFile)
+		except Exception as e:
+			if os.path.isfile(tmpFile):
+				os.remove(tmpFile)
+			ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, e))
 
 	if old:
 		share_name = old.get('univentionShareSambaName', [b''])[0].decode('UTF-8', 'ignore')
 		share_name_mapped = quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
-		listener.setuid(0)
-		try:
+		with SetUID(0):
 			if os.path.exists(filename):
 				os.unlink(filename)
-		finally:
-			listener.unsetuid()
 
 	def _quote(arg):
 		if ' ' in arg or '"' in arg or '\\' in arg:
@@ -166,17 +157,13 @@ def handler(dn, new, old, command):
 			# object was renamed
 			if not old and oldObject and command == "a":
 				old = oldObject
-			listener.setuid(0)
-			try:
-				ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
-			finally:
-				listener.unsetuid()
+			with SetUID(0):
+				ret = univention.lib.listenerSharePath.createOrRename(old, new, configRegistry)
 			if ret:
 				ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 				return
 
-		listener.setuid(0)
-		try:
+		with SetUID(0):
 			fp = open(filename, 'w')
 
 			print('[%s]' % (share_name,), file=fp)
@@ -219,7 +206,7 @@ def handler(dn, new, old, command):
 			]
 
 			vfs_objects = []
-			samba4_ntacl_backend = listener.configRegistry.get('samba4/ntacl/backend', 'native')
+			samba4_ntacl_backend = configRegistry.get('samba4/ntacl/backend', 'native')
 			if samba4_ntacl_backend == 'native':
 				vfs_objects.append('acl_xattr')
 			elif samba4_ntacl_backend == 'tdb':
@@ -252,13 +239,9 @@ def handler(dn, new, old, command):
 			# acl and inherit -> map acl inherit (Bug #47850)
 			if '1' in new.get('univentionShareSambaNtAclSupport', []) and '1' in new.get('univentionShareSambaInheritAcls', []):
 				print('map acl inherit = yes', file=fp)
-		finally:
-			listener.unsetuid()
 
 	if (not (new and old)) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
-		global ucr_handlers
-		listener.setuid(0)
-		try:
+		with SetUID(0):
 			run_ucs_commit = False
 			if not os.path.exists('/etc/samba/shares.conf'):
 				run_ucs_commit = True
@@ -270,13 +253,10 @@ def handler(dn, new, old, command):
 			fp.close()
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
-				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		finally:
-			listener.unsetuid()
+				ucr_handlers.commit(configRegistry, ['/etc/samba/smb.conf'])
 
 	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
-		listener.setuid(0)
-		try:
+		with SetUID(0):
 			share_path = new['univentionSharePath'][0].decode('UTF-8')
 			proc = subprocess.Popen(
 				['samba-tool', 'ntacl', 'get', '--as-sddl', share_path],
@@ -287,11 +267,10 @@ def handler(dn, new, old, command):
 			stdout = stdout.decode('UTF-8')
 			prev_aces = set()
 			new_aces = set()
-			re_ace = re.compile(r'\(.+?\)')
 			if 'univentionShareSambaBaseDirAppendACL' in old:
-				prev_aces = set(sum([re.findall(re_ace, acl.decode('UTF-8')) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
+				prev_aces = set(sum([RE_ACE.findall(acl.decode('UTF-8')) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
 			if 'univentionShareSambaBaseDirAppendACL' in new:
-				new_aces = set(sum([re.findall(re_ace, acl.decode('UTF-8')) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
+				new_aces = set(sum([RE_ACE.findall(acl.decode('UTF-8')) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
 
 			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
 				# if old != new -> delete everything from old!
@@ -312,7 +291,7 @@ def handler(dn, new, old, command):
 					owner = res.group(1)
 					old_aces = res.group(2)
 
-					old_aces = re.findall(re_ace, old_aces)
+					old_aces = RE_ACE.findall(old_aces)
 					allow_aces = "".join([ace for ace in old_aces if 'A;' in ace])
 					deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
 					allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
@@ -332,51 +311,34 @@ def handler(dn, new, old, command):
 					stderr = stderr.decode('UTF-8')
 					if stderr:
 						ud.debug(ud.LISTENER, ud.ERROR, "could not set nt acl for dir %s (%s)" % (share_path, stderr))
-		finally:
-			listener.unsetuid()
 
 
+@SetUID(0)
 def initialize():
 	# type: () -> None
 	if not os.path.exists('/etc/samba/shares.conf.d'):
-		listener.setuid(0)
-		try:
-			os.mkdir('/etc/samba/shares.conf.d')
-		finally:
-			listener.unsetuid()
+		os.mkdir('/etc/samba/shares.conf.d')
 
 
+@SetUID(0)
 def prerun():
 	# type: () -> None
 	if not os.path.exists('/etc/samba/shares.conf.d'):
-		listener.setuid(0)
-		try:
-			os.mkdir('/etc/samba/shares.conf.d')
-		finally:
-			listener.unsetuid()
+		os.mkdir('/etc/samba/shares.conf.d')
 
 
+@SetUID(0)
 def clean():
 	# type: () -> None
-	global ucr_handlers
-	listener.setuid(0)
-	try:
-		if os.path.exists('/etc/samba/shares.conf.d'):
-			for f in os.listdir('/etc/samba/shares.conf.d'):
-				os.unlink(os.path.join('/etc/samba/shares.conf.d', f))
-			if os.path.exists('/etc/samba/shares.conf'):
-				os.unlink('/etc/samba/shares.conf')
-				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-			os.rmdir('/etc/samba/shares.conf.d')
-	finally:
-		listener.unsetuid()
+	if os.path.exists('/etc/samba/shares.conf.d'):
+		for f in os.listdir('/etc/samba/shares.conf.d'):
+			os.unlink(os.path.join('/etc/samba/shares.conf.d', f))
+		if os.path.exists('/etc/samba/shares.conf'):
+			os.unlink('/etc/samba/shares.conf')
+			ucr_handlers.commit(configRegistry, ['/etc/samba/smb.conf'])
+		os.rmdir('/etc/samba/shares.conf.d')
 
 
 def postrun():
 	# type: () -> None
-	listener.setuid(0)
-	try:
-		initscript = '/etc/init.d/samba'
-		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
-	finally:
-		listener.unsetuid()
+	run('/etc/init.d/samba', ['samba', 'reload'], uid=0, wait=True)
