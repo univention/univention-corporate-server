@@ -58,7 +58,7 @@ def handler(configRegistry, changes):
 
 	if profiledata_enabled and params['ldap_attributes']:
 		# remove whitespace (split at ',', map str.strip to list, join list with ','
-		params['ldap_attributes'] = ','.join(map(str.strip, params['ldap_attributes'].split(',')))
+		params['ldap_attributes'] = ','.join(x.strip() for x in params['ldap_attributes'].split(','))
 
 		with open(ACL_FILE_PATH, 'w') as acl_file:
 			try:
@@ -72,11 +72,11 @@ def handler(configRegistry, changes):
 			print('Registering ACL in LDAP')
 			subprocess.call(cmd, shell=False)
 		except subprocess.CalledProcessError as e:
-				print('Error registering updated LDAP ACL!\n %s' % e.output)
+			print('Error registering updated LDAP ACL!\n %s' % e.output)
 
 	else:
 		try:
 			cmd = ["/usr/sbin/univention-self-service-register-acl", "unregister", "%s" % ACL_FILE_PATH, "%s" % version_by_date]
 			subprocess.call(cmd, shell=False)
 		except subprocess.CalledProcessError as e:
-				print('Error unregistering updated LDAP ACL!\n %s' % e.output)
+			print('Error unregistering updated LDAP ACL!\n %s' % e.output)

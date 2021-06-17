@@ -7,4 +7,6 @@ fix: 5.0.1-13A~5.0.0.202106111401
 desc: |
  This update addresses the following issue(s):
  * A light theme for UCS web interfaces has been implemented.
-bug: [53390]
+ * The Python 2 compatibility of the UCR module self-service-acl.py has
+   been restored.
+bug: [53390, 53459]
