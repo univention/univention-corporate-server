@@ -2,6 +2,7 @@
 ## desc: "Find traceback on the DC Master"
 ## exposure: dangerous
 ## roles-not: [domaincontroller_master]
+## tags: [apptest]
 
 import univention.testing.utils
 import subprocess
