@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-51) unstable; urgency=medium
+
+  * Bug #53412: use variables in data-dojo-props to prevent syntax errors
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 17 Jun 2021 09:10:44 +0200
+
 univention-appcenter (9.0.2-50) unstable; urgency=medium
 
   * Bug #53390: implement light theme
