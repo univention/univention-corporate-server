@@ -91,6 +91,47 @@
 		</para>
 	</section>
 
+	<section id="central:theming">
+		<title>Switching between dark and light theme for &ucsWeb;s</title>
+		<para>
+			All &ucsWeb;s have a dark and a light theme that can be switched between with the &ucsUCRV;
+			<envar>ucs/web/theme</envar>. The value of <envar>ucs/web/theme</envar> corresponds to a CSS file under
+			<filename>/usr/share/univention-web/themes/</filename> with the same name (without file extension).
+			For example, setting <envar>ucs/web/theme</envar> to <emphasis>'light'</emphasis>
+			will use <filename>/usr/share/univention-web/themes/light.css</filename>
+			as theme for all &ucsWeb;s.
+		</para>
+		<section id="central:theming:custom">
+			<title>Creating a custom theme/Adjusting the design of &ucsWeb;s</title>
+			<para>
+				To create a custom theme it is advised not to edit
+				<filename>/usr/share/univention-web/themes/dark.css</filename> or
+				<filename>/usr/share/univention-web/themes/light.css</filename>
+				since the changes may be overwritten when upgrading UCS.
+				Instead copy one of these files to e.g. <filename>/usr/share/univention-web/themes/mytheme.css</filename>
+				and set the &ucsUCRV; <envar>ucs/web/theme</envar> to <emphasis><literal>'mytheme'</literal></emphasis>.
+			</para>
+			<para>
+				The files <filename>/usr/share/univention-web/themes/dark.css</filename> and
+				<filename>/usr/share/univention-web/themes/light.css</filename> contain the same list of
+				<ulink url="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">CSS variables</ulink>.
+				These variables are used in other CSS files and are the supported layer of configurability
+				for &ucsWeb;s. The names and current use case for these variables will not change between UCS upgrades
+				but new ones may be added.
+			</para>
+			<para>
+				Some &ucsWeb;s import their own local <filename>custom.css</filename> file which can be used to further
+				adjust the design of that page. These are <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
+				(<xref linkend="domain:saml:ssologin"/>), <filename>/usr/share/univention-portal/custom.css</filename> (<xref linkend="central:portal"/>)
+				and <filename>/usr/share/univention-self-service/www/css/custom.css</filename> (<xref linkend="user-management:password-changes-by-users:self-service"/>).
+				The files are empty when installing UCS and are not modified when installing any UCS update.
+				Be aware though that a given
+				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors">CSS selector</ulink>
+				may break when installing any UCS update.
+			</para>
+		</section>
+	</section>
+
 	<section id="central-management-umc:feedback">
 		<title>Feedback on UCS</title>
 		<para>

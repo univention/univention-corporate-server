@@ -94,6 +94,42 @@
 		</para>
 	</section>
 
+	<section id="central:theming">
+		<title>Zwischen dunklem und hellem <foreignphrase>Theme</foreignphrase> für &ucsWeb;n umschalten.</title>
+		<para>
+			Alle &ucsWeb;n haben ein dunkles und ein helles <foreignphrase>Theme</foreignphrase>, zwischen denen mit der &ucsUCRV;
+			<envar>ucs/web/theme</envar> umgeschaltet werden kann.
+			Der Wert von <envar>ucs/web/theme</envar> entspricht einer CSS Datei unter
+			<filename>/usr/share/univention-web/themes/</filename> mit demselben Namen (ohne Dateierweiterung).
+			Wird <envar>ucs/web/theme</envar> z.B. auf <emphasis><literal>'light'</literal></emphasis> gesetzt, wird
+			<filename>/usr/share/univention-web/themes/light.css</filename> als <foreignphrase>Theme</foreignphrase> für alle &ucsWeb;n verwendet. 
+		</para>
+		<section id="central:theming:custom">
+			<title>Erstellen eines eigenen <foreignphrase>Themes</foreignphrase>/Anpassen des Designs von &ucsWeb;n</title>
+			<para>
+				Um ein benutzerdefiniertes Thema zu erstellen, ist es ratsam,
+				<filename>/usr/share/univention-web/themes/dark.css</filename> oder
+				<filename>/usr/share/univention-web/themes/light.css</filename> nicht zu bearbeiten, da die Änderungen
+				bei einem Upgrade von UCS überschrieben werden können.
+				Kopieren Sie stattdessen eine dieser Dateien z.B. nach
+				<filename>/usr/share/univention-web/themes/mytheme.css</filename> und setzen Sie die
+				&ucsUCRV; <envar>ucs/web/theme</envar> auf <emphasis><literal>'mytheme'</literal></emphasis>.
+			</para>
+			<para>
+				Einige &ucsWeb; importieren ihre eigene lokale <filename>custom.css</filename> Datei,
+				mit der das Design der jeweiligen Seite weiter angepasst werden kann.
+				Dies sind <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
+				(<xref linkend="domain:saml:ssologin"/>), <filename>/usr/share/univention-portal/custom.css</filename>
+				(<xref linkend="central:portal"/>) und <filename>/usr/share/univention-self-service/www/css/custom.css</filename>
+				(<xref linkend="user-management:password-changes-by-users:self-service"/>).
+				Die Dateien sind bei der Installation von UCS leer und werden bei einem Upgrade von UCS nicht verändert. 
+				Beachten Sie jedoch, dass ein gegebener
+				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors">CSS Selektor</ulink>
+				bei der Installation eines beliebigen UCS-Updates kaputt gehen kann.
+			</para>
+		</section>
+	</section>
+
 	<section id="central-management-umc:feedback">
 		<title>Feedback zu UCS</title>
 		<para>
