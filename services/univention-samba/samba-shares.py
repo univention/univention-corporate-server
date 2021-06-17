@@ -279,20 +279,21 @@ def handler(dn, new, old, command):
 	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
 		listener.setuid(0)
 		try:
+			share_path = new['univentionSharePath'][0].decode('UTF-8')
 			proc = subprocess.Popen(
-				['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]],
+				['samba-tool', 'ntacl', 'get', '--as-sddl', share_path],
 				stdout=subprocess.PIPE,
 				close_fds=True,
 			)
-			stdout, stderr = proc.communicate()
-			stdout = str(stdout)
+			stdout, _ = proc.communicate()
+			stdout = stdout.decode('UTF-8')
 			prev_aces = set()
 			new_aces = set()
 			re_ace = re.compile(r'\(.+?\)')
 			if 'univentionShareSambaBaseDirAppendACL' in old:
-				prev_aces = set(sum([re.findall(re_ace, acl) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
+				prev_aces = set(sum([re.findall(re_ace, acl.decode('UTF-8')) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
 			if 'univentionShareSambaBaseDirAppendACL' in new:
-				new_aces = set(sum([re.findall(re_ace, acl) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
+				new_aces = set(sum([re.findall(re_ace, acl.decode('UTF-8')) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
 
 			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
 				# if old != new -> delete everything from old!
@@ -323,19 +324,16 @@ def handler(dn, new, old, command):
 					if new_aces:
 						dacl_flags = "PAI"
 					sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
-					ud.debug(
-						ud.LISTENER, ud.PROCESS,
-						"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
+					ud.debug(ud.LISTENER, ud.PROCESS, "Set new nt %s acl for dir %s" % (sddl, share_path))
 					proc = subprocess.Popen(
-						['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]],
-						stdout=subprocess.PIPE,
+						['samba-tool', 'ntacl', 'set', sddl, share_path],
+						stderr=subprocess.PIPE,
 						close_fds=True
 					)
 					_, stderr = proc.communicate()
+					stderr = stderr.decode('UTF-8')
 					if stderr:
-						ud.debug(
-							ud.LISTENER, ud.ERROR,
-							"could not set nt acl for dir %s (%s)" % (new['univentionSharePath'][0], stderr))
+						ud.debug(ud.LISTENER, ud.ERROR, "could not set nt acl for dir %s (%s)" % (share_path, stderr))
 		finally:
 			listener.unsetuid()
 
