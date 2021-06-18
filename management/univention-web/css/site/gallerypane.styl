@@ -36,23 +36,24 @@
 	.umcGalleryWrapperItem
 		padding: var(--layout-spacing-unit)
 
+	$galleryItemColorTransitionDur = 250ms
+	.umcGalleryItem
+		transition: box-shadow 250ms, color $galleryItemColorTransitionDur, background-color $galleryItemColorTransitionDur
+		.umcFavoriteIconDefault polyline
+			transition: fill $galleryItemColorTransitionDur
+		.featherIcon
+			transition: none
 	.umcGalleryItem
 		position: relative
 		padding: calc(2 * var(--layout-spacing-unit))
 		background-color: var(--bgc-content-container)
 		box-sizing: content-box
-		transition: box-shadow 250ms, background-color 0.25s
 		box-shadow: var(--box-shadow)
 		border-radius: var(--border-radius-container)
 
 		// definitions in px instead of em due to size of image in px
 		height: 80px
 		overflow: hidden
-
-		.umcGalleryName,
-		.umcGalleryDescription,
-		.umcGalleryVersion // server-overview
-			transition: color 0.25s
 
 		.umcGalleryName
 			overflow-wrap: break-word
@@ -77,6 +78,7 @@
 			/* make sure to have some spacing for SVG images with the property background-size=contain */
 			border: 5px transparent solid
 
+
 		/* if an icon is present, set a margin to the text elements */
 		.umcGalleryIcon + .umcGalleryName,
 		.umcGalleryIcon + .umcGalleryName + .umcGalleryDescription
@@ -98,9 +100,6 @@
 			height: 10px
 			line-height: 0
 
-			polyline
-				transition: fill 0.25s
-
 		.umcGalleryContextIcon
 			position: absolute
 			top: 10px
@@ -114,8 +113,15 @@
 	.umcGalleryItem:hover
 		cursor: pointer
 
-		.umcFavoriteIconDefault polyline
-			fill: white
+		&.umcGalleryCategory--contrastDark
+			color: #1e1e1d
+			.umcFavoriteIconDefault polyline
+				fill: currentColor
+		&.umcGalleryCategory--contrastLight
+			color: #fff
+			.umcFavoriteIconDefault polyline
+				fill: currentColor
+
 
 /*
 .umcGalleryPane .umcGalleryItem:active
