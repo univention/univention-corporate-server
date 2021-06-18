@@ -474,15 +474,58 @@ define([
 			}));
 			var div = put(wrapperDiv, lang.replace('div.umcGalleryItem', item));
 			var description = this.getItemDescription(item);
-			var iconClass = this.getIconClass(item);
 			if (this._contextMenu) {
 				put(div, Button.simpleIconButtonNode('more-horizontal', 'umcGalleryContextIcon'));
 			}
 			if (item.is_link) {
 				div = domConstruct.create('a', {href: item.url, target: '_blank'}, div);
 			}
-			if (iconClass) {
-				put(div, 'div.umcGalleryIcon.' + iconClass);
+
+			var umc_icons = [
+				'filesystem-quota',
+				'certificate-settings',
+				'language-settings',
+				'network-settings',
+				'system-update',
+				'app-center',
+				'package-management',
+				'repository-settings',
+				'domain-join',
+				'system-diagnostics',
+				'system-services',
+				'process-overview',
+				'ucr',
+				'computers',
+				'contacts',
+				'dhcp',
+				'dns',
+				'groups',
+				'ldap-directory',
+				'mail',
+				'nagios',
+				'networks',
+				'policies',
+				'printers',
+				'shares',
+				'users',
+				'welcome',
+				'portal',
+				'hardware-information',
+				'udm-saml-serviceprovider',
+				'software-monitoring',
+				'print-jobs',
+				'admin-diary',
+				'ad-connector',
+				'ad-takeover'
+			];
+			if (umc_icons.includes(item.icon)) {
+				var icon = domConstruct.toDom(lang.replace('<svg class="umcGalleryIcon umcGalleryIcon--inlineSVG"><use href="/univention/js/dijit/themes/umc/icons/scalable/{0}.svg#{0}"/></svg>', [item.icon]));
+				put(div, icon);
+			} else {
+				var iconClass = this.getIconClass(item);
+				if (iconClass) {
+					put(div, 'div.umcGalleryIcon.umcGalleryIcon--bgi.' + iconClass);
+				}
 			}
 			put(div, 'div.umcGalleryName', this.getItemName(item));
 			put(div, 'div.umcGalleryDescription', description);
