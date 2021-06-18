@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The Caching settings of Univention Management Console have been enhanced
+   and relaxed to fix Caching issues after the upgrade to UCS 5.0.
+bug: [53465]
