@@ -7,6 +7,6 @@ fix: 9.0.2-51A~5.0.0.202106171210
 desc: |
  This update addresses the following issue(s):
  * A light theme for UCS web interfaces has been implemented.
- * An issue with certain strings containing apostrophes causing crashes
-   has been fixed.
+ * An issue has been fixed where certain strings containing apostrophes caused
+   crashes.
 bug: [53390, 53412]
