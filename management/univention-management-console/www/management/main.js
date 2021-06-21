@@ -151,7 +151,7 @@ define([
 
 		_createFavoriteIcon: function(category, parentNode) {
 			var node = domConstruct.create('div', {
-				'class': lang.replace('umcFavoriteIconDefault umcFavoriteIconDefault--{0}', [this.contrastMap[category.id]])
+				'class': 'umcFavoriteIconDefault'
 			}, parentNode);
 			var surface = gfx.createSurface(node, 10, 10);
 			surface.createPolyline([
@@ -1666,9 +1666,8 @@ define([
 
 			var color = this.__getModuleColor(module);
 			var dijitTabColor = dojo.colorFromHex(color);
-			dijitTabColor.a = 0.95;
-			var contrastLight = umc.tools.contrast(dijitTabColor, '#fff', '#6e6e6e');
-			var contrastDark  = umc.tools.contrast(dijitTabColor, 'rgba(0, 0, 0, 0.87)', '#6e6e6e');
+			var contrastLight = umc.tools.contrast(dijitTabColor, '#FFFFFF');
+			var contrastDark  = umc.tools.contrast(dijitTabColor, '#1E1E1D');
 			domClass.add(tab.controlButton.domNode, contrastDark > contrastLight ? 'contrastDark' : 'contrastLight');
 
 			var styleAlreadyInserted = array.some(this._insertedTabStyles, function(id) {
@@ -1685,12 +1684,11 @@ define([
 				lang.replace('.umc .umcMobileTab--selected.color-{0}, .umc .umcMobileTab.color-{0}:hover', [module_flavor_css]),
 				lang.replace('background-color: {0}', [color])
 			);
-			if (contrastDark > contrastLight) {
-				styles.insertCssRule(
-					lang.replace('.umc .umcMobileTab--selected.color-{0}, .umc .umcMobileTab.color-{0}:hover', [module_flavor_css]),
-					'color: rgba(0, 0, 0, 0.87) !important'
-				);
-			}
+			var fontColor = contrastDark > contrastLight ? '#1E1E1D' : '#FFFFFF';
+			styles.insertCssRule(
+				lang.replace('.umc .umcMobileTab--selected.color-{0}, .umc .umcMobileTab.color-{0}:hover', [module_flavor_css]),
+				lang.replace('color: {0} !important', [fontColor])
+			);
 
 			// color module tabs
 			styles.insertCssRule(
