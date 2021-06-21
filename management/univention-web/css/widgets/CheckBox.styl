@@ -45,13 +45,14 @@ $borderWidth = 2px
 		color: var(--local-border-color)
 		stroke-width: 3
 
-	&Checked
-		--local-border-color: var(--color-accent)
-		.icon-check
-			opacity: 1
-	
+	&Checked,
 	&Indeterminate
 		--local-border-color: var(--color-accent)
+
+	&Checked
+		.icon-check
+			opacity: 1
+	&Indeterminate
 		.icon-check
 			opacity: 0
 		.icon-minus
