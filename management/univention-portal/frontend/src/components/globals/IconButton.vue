@@ -36,6 +36,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     :aria-label="ariaLabelProp"
     @click.prevent.stop="$emit('click')"
   >
+    <slot />
     <portal-icon
       :icon="icon"
     />
@@ -80,6 +81,7 @@ export default defineComponent({
 
 <style lang="stylus">
 .icon-button
+  position: relative
   height: calc(2 * var(--button-icon-size))
   width: calc(2 * var(--button-icon-size))
   border-radius: var(--border-radius-circles)

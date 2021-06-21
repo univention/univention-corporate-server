@@ -49,7 +49,7 @@ const navigation: PortalModule<NavigationState> = {
     setActiveButton({ commit, dispatch }, id) {
       dispatch('modal/hideAndClearModal', undefined, { root: true });
       if (id === 'bell') {
-        dispatch('notifications/removeAllNotifications', undefined, { root: true });
+        dispatch('notifications/hideAllNotifications', undefined, { root: true });
       }
       if (id) {
         dispatch('activity/setLevel', `header-${id}`, { root: true });

@@ -25,6 +25,7 @@ const vueConfig = {
       .plugin('html')
       .tap((args) => {
         args[0].title = 'Univention Portal';
+        args[0].theme = process.env.VUE_APP_THEME_PATH;
         return args;
       });
     config

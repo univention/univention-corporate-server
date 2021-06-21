@@ -70,7 +70,7 @@ export default defineComponent({
 
     &--isVisible
       z-index: $zindex-2
-      background-color: rgba(51, 51, 49, 0.5);
+      background-color: var(--bgc-underlay);
       display: flex
       align-items: center
       justify-content: center

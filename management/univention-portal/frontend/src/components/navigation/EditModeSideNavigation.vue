@@ -34,7 +34,7 @@
     >
       <image-upload
         v-model="portalLogoData"
-        label="Portal logo"
+        :label="$translateLabel('PORTAL_LOGO')"
       />
       <locale-input
         v-model="portalNameData"
@@ -44,8 +44,25 @@
       />
       <image-upload
         v-model="portalBackgroundData"
-        label="Background"
+        :label="$translateLabel('BACKGROUND')"
       />
+      <label>
+        <translate i18n-key="DEFAULT_LINK_TARGET" />
+        <select
+          v-model="portalDefaultLinkTargetData"
+        >
+          <option value="samewindow">{{ $translateLabel('SAME_WINDOW') }}</option>
+          <option value="newwindow">{{ $translateLabel('NEW_WINDOW') }}</option>
+          <option value="embedded">{{ $translateLabel('EMBEDDED') }}</option>
+        </select>
+      </label>
+      <label>
+        <input
+          v-model="portalEnsureLoginData"
+          type="checkbox"
+        >
+        <translate i18n-key="ENSURE_LOGIN" />
+      </label>
       <label>
         <input
           v-model="portalShowUmcData"
@@ -53,7 +70,7 @@
         >
         <translate i18n-key="SHOW_UMC" />
       </label>
-      <button class="primary">
+      <button class="primary edit-mode-side-navigation__save-button">
         <portal-icon
           icon="save"
         />
@@ -79,7 +96,9 @@ interface EditModeSideNavigationData {
   portalLogoData: string,
   portalNameData: Record<string, string>,
   portalBackgroundData: string,
+  portalDefaultLinkTargetData: string,
   portalShowUmcData: boolean,
+  portalEnsureLoginData: boolean,
 }
 
 export default defineComponent({
@@ -95,7 +114,9 @@ export default defineComponent({
       portalLogoData: '',
       portalNameData: {},
       portalBackgroundData: '',
+      portalDefaultLinkTargetData: 'embedded',
       portalShowUmcData: false,
+      portalEnsureLoginData: false,
     };
   },
   computed: {
@@ -105,6 +126,8 @@ export default defineComponent({
       portalLogo: 'portalData/portalLogo',
       portalBackground: 'portalData/portalBackground',
       portalShowUmc: 'portalData/portalShowUmc',
+      portalEnsureLogin: 'portalData/portalEnsureLogin',
+      portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
     }),
   },
   updated() {
@@ -116,6 +139,8 @@ export default defineComponent({
     this.portalNameData = this.portalName;
     this.portalBackgroundData = this.portalBackground || '';
     this.portalShowUmcData = this.portalShowUmc;
+    this.portalEnsureLoginData = this.portalEnsureLogin;
+    this.portalDefaultLinkTargetData = this.portalDefaultLinkTarget;
   },
   methods: {
     update() {
@@ -123,7 +148,34 @@ export default defineComponent({
       this.$store.dispatch('portalData/setPortalLogo', this.portalLogoData);
       this.$store.dispatch('portalData/setPortalBackground', this.portalBackgroundData);
     },
+    validate() {
+      const errors: Record<string, string> = {};
+      if (!this.portalNameData.en_US) {
+        errors.name = 'ERROR_ENTER_TITLE';
+      }
+      return errors;
+    },
     async saveChanges() {
+      const errors = this.validate();
+      if (Object.keys(errors).length > 0) {
+        this.$el.querySelectorAll('input').forEach((input) => {
+          if (input.name) {
+            if (input.name in errors) {
+              input.setAttribute('invalid', 'invalid');
+            } else {
+              input.removeAttribute('invalid');
+            }
+          }
+        });
+        const description = Object.values(errors)
+          .map((err) => this.$translateLabel(err))
+          .join('</li><li>');
+        this.$store.dispatch('notifications/addErrorNotification', {
+          title: this.$translateLabel('ERROR_ON_VALIDATION'),
+          description: `<ul><li>${description}</li></ul>`,
+        });
+        return;
+      }
       let logo: string | null = null;
       if (this.portalLogoData.startsWith('data:')) {
         logo = this.portalLogoData.split(',')[1];
@@ -138,8 +190,10 @@ export default defineComponent({
       }
       const displayName = Object.entries(this.portalNameData);
       const showUmc = this.portalShowUmcData;
+      const ensureLogin = this.portalEnsureLoginData;
+      const defaultLinkTarget = this.portalDefaultLinkTargetData;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const attrs: any = { displayName, showUmc };
+      const attrs: any = { displayName, showUmc, ensureLogin, defaultLinkTarget };
       if (logo !== null) {
         attrs.logo = logo;
       }
@@ -159,7 +213,6 @@ export default defineComponent({
         this.$store.dispatch('notifications/addErrorNotification', {
           title: 'Update failed',
           description: `'Saving the portal failed: ${error}'`,
-          hidingAfter: -1,
         });
       }
       this.$store.dispatch('deactivateLoadingState');
@@ -179,4 +232,6 @@ export default defineComponent({
       width: 18rem
       &[type=checkbox]
         margin-left: 0
+  &__save-button
+    margin-top: calc(2 * var(--layout-spacing-unit))
 </style>

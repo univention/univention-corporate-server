@@ -49,6 +49,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 import ModalDialog from '@/components/ModalDialog.vue';
 import Translate from '@/i18n/Translate.vue';
@@ -90,6 +91,11 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters({
+      portalDn: 'portalData/getPortalDn',
+      userLinks: 'portalData/userLinks',
+      menuLinks: 'portalData/menuLinks',
+    }),
     superObjs(): any[] {
       return this.$store.getters[this.superObjectGetter];
     },
@@ -123,15 +129,27 @@ export default defineComponent({
       if (dn) {
         let success = false;
         this.$store.dispatch('activateLoadingState');
-        const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
-        const superAttrs = {
-          entries: superObj.entries.concat([dn]),
-        };
         console.info('Adding', dn, 'to', this.superDn);
-        if (this.objectGetter === 'portalData/portalEntries') {
-          success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+        if (this.superDn === '$$user$$') {
+          const attrs = {
+            userLinks: this.userLinks.concat([dn]),
+          };
+          success = await put(this.portalDn, attrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+        } else if (this.superDn === '$$menu$$') {
+          const attrs = {
+            menuLinks: this.menuLinks.concat([dn]),
+          };
+          success = await put(this.portalDn, attrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         } else {
-          success = await put(this.superDn, superAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
+          const superAttrs = {
+            entries: superObj.entries.concat([dn]),
+          };
+          if (this.objectGetter === 'portalData/portalEntries') {
+            success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          } else {
+            success = await put(this.superDn, superAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          }
         }
         this.$store.dispatch('deactivateLoadingState');
         if (success) {

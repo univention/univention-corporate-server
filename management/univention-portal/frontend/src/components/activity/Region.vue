@@ -30,10 +30,10 @@
   <component
     :is="tag"
     :id="id"
-    @keydown.left.exact="goLeft"
-    @keydown.right.exact="goRight"
-    @keydown.up.exact="goUp"
-    @keydown.down.exact="goDown"
+    @keydown.left.exact.prevent="goLeft"
+    @keydown.right.exact.prevent="goRight"
+    @keydown.up.exact.prevent="goUp"
+    @keydown.down.exact.prevent="goDown"
   >
     <slot />
   </component>

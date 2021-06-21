@@ -296,8 +296,6 @@ export default defineComponent({
     text-transform: uppercase
     background-color: rgba(0,0,0,0)
     border: 0.2rem solid rgba(0,0,0,0)
-    &:hover
-      background-color: #272726
     &:focus
       border: 0.2rem solid var(--color-focus);
       outline: 0
@@ -311,7 +309,6 @@ export default defineComponent({
       fill: currentColor
       height: 4rem
       width: @height
-      background-color: var(--color-grey40)
       margin: 1rem
       border-radius: var(--border-radius-circles)
     &> div
@@ -327,8 +324,6 @@ export default defineComponent({
     font-size: var(--font-size-4)
     border: 0.2rem solid rgba(0,0,0,0);
 
-    &:hover
-      background-color: #272726
     &:focus
       border: 0.2rem solid var(--color-focus);
       outline: 0
@@ -337,7 +332,7 @@ export default defineComponent({
       text-decoration: underline
 
   &__login-header
-    border-bottom: 4px solid var(--color-grey8)
+    border-bottom: 4px solid var(--bgc-content-body)
 
   &__menu
     margin: 0
@@ -362,7 +357,7 @@ export default defineComponent({
   &__edit-mode
     border: none
     border-radius: unset
-    border-top: 0.2rem solid var(--color-grey8)
+    border-top: 0.2rem solid var(--bgc-content-body)
 
     span
       margin: 0.2rem

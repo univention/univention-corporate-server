@@ -69,6 +69,17 @@
         name="links"
       />
     </div>
+    <label>
+      <translate i18n-key="LINK_TARGET" />
+      <select
+        v-model="linkTarget"
+      >
+        <option value="useportaldefault">{{ $translateLabel('PORTAL_DEFAULT') }}</option>
+        <option value="samewindow">{{ $translateLabel('SAME_WINDOW') }}</option>
+        <option value="newwindow">{{ $translateLabel('NEW_WINDOW') }}</option>
+        <option value="embedded">{{ $translateLabel('EMBEDDED') }}</option>
+      </select>
+    </label>
 
     <image-upload
       v-model="pathToLogo"
@@ -81,6 +92,13 @@
         name="backgroundColor"
       >
     </label>
+    <label>
+      <input
+        v-model="anonymous"
+        type="checkbox"
+      >
+      <translate i18n-key="ANONYMOUS" />
+    </label>
   </edit-widget>
 </template>
 
@@ -88,7 +106,7 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import { put, add } from '@/jsHelper/admin';
+import { removeEntryFromSuperObj, addEntryToSuperObj, put, add } from '@/jsHelper/admin';
 import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
@@ -104,6 +122,8 @@ interface AdminEntryData extends ValidatableData {
   title: Record<string, string>,
   description: Record<string, string>,
   links: Array<LocaleAndValue>,
+  linkTarget: string,
+  anonymous: boolean,
 }
 
 function getErrors(this: AdminEntryData) {
@@ -167,6 +187,8 @@ export default defineComponent({
       description: {},
       backgroundColor: null,
       links: [],
+      linkTarget: 'default',
+      anonymous: false,
       getErrors,
     };
   },
@@ -197,6 +219,8 @@ export default defineComponent({
     this.title = { ...(this.modelValue.title || {}) };
     this.description = { ...(this.modelValue.description || {}) };
     this.links.push(...(this.modelValue.links || []));
+    this.linkTarget = this.modelValue.originalLinkTarget;
+    this.anonymous = this.modelValue.anonymous;
   },
   methods: {
     cancel() {
@@ -206,12 +230,8 @@ export default defineComponent({
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
-      const superAttrs = {
-        entries: superObj.entries.filter((entryDn) => entryDn !== dn),
-      };
       console.info('Removing', dn, 'from', this.superDn);
-      const success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
+      const success = await removeEntryFromSuperObj(this.superDn, this.superObjs, dn, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
       this.$store.dispatch('deactivateLoadingState');
       if (success) {
         this.cancel();
@@ -227,6 +247,8 @@ export default defineComponent({
         displayName: Object.entries(this.title),
         description: Object.entries(this.description),
         link: links,
+        linkTarget: this.linkTarget,
+        anonymous: this.anonymous,
         icon: '',
         backgroundColor: this.backgroundColor,
       };
@@ -243,15 +265,10 @@ export default defineComponent({
         success = await put(this.modelValue.dn, attrs, this.$store, 'ENTRY_MODIFIED_SUCCESS', 'ENTRY_MODIFIED_FAILURE');
       } else {
         console.info('Adding entry');
-        console.info('Then adding it to', [...this.superObjs], 'of', this.superDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
         const dn = await add('portals/entry', attrs, this.$store, 'ENTRY_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');
-          const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
-          const superAttrs = {
-            entries: superObj.entries.concat([dn]),
-          };
-          success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          success = await addEntryToSuperObj(this.superDn, this.superObjs, dn, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
         }
       }
       this.$store.dispatch('deactivateLoadingState');

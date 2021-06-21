@@ -72,12 +72,15 @@ const locale: PortalModule<LocaleState> = {
       html.setAttribute('lang', localePrefix);
       return updateLocale(localePrefix);
     },
-    setAvailableLocale({ commit }, payload: LocaleDefinition[]) {
+    setAvailableLocale({ dispatch, commit }, payload: LocaleDefinition[]) {
       const locales = payload.map((loc) => loc.id.replace('-', '_'));
       commit('AVAILABLE_LOCALES', locales);
       // TODO create helper function
       const html = document.documentElement;
       html.setAttribute('lang', 'en'); // setting document lang to en, because it is also set in line 47, 48
+      if (locales.length === 1) {
+        dispatch('setLocale', locales[0]);
+      }
     },
   },
 };

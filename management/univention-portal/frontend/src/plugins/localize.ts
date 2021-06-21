@@ -30,11 +30,12 @@
 import { Locale } from '@/store/modules/locale/locale.models';
 import { App } from 'vue';
 import { catalog } from '@/assets/data/dictionary';
+import translateLabel from '@/jsHelper/translate';
 
 import { store } from '../store';
 
-export type Localized = (input: Record<Locale, string>) => string;
-export type TranslateLabel = (translationLabel: string) => string;
+type Localized = (input: Record<Locale, string>) => string;
+type TranslateLabel = (translationLabel: string) => string;
 
 // expects an object, returns a string
 const localize = {
@@ -50,7 +51,6 @@ const localize = {
       return ret;
     };
     app.config.globalProperties.$localized = localized;
-    const translateLabel: TranslateLabel = (translationLabel: string) => catalog[translationLabel].translated.value;
     app.config.globalProperties.$translateLabel = translateLabel;
   },
 };

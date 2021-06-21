@@ -32,6 +32,9 @@ import { randomId } from '@/jsHelper/tools';
 
 function makeEntry(entryID, availableTiles, defaultLinkTarget) {
   const entry = availableTiles.find((tile) => tile.dn === entryID);
+  if (!entry) {
+    return null;
+  }
   return {
     id: `menu-item-${randomId()}`,
     title: entry.name,
@@ -77,7 +80,9 @@ export default function createUserMenu(portalData) {
   const userLinks = portalData.user_links;
   const availableTiles = portalData.entries;
   const { defaultLinkTarget } = portalData.portal;
-  const subMenuItems = userLinks.map((entryID) => makeEntry(entryID, availableTiles, defaultLinkTarget));
+  const subMenuItems = userLinks
+    .map((entryID) => makeEntry(entryID, availableTiles, defaultLinkTarget))
+    .filter((entry) => !!entry);
 
   if (portalData.username) {
     subMenuItems.unshift({

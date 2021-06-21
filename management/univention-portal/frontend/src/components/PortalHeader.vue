@@ -89,6 +89,13 @@ License with the Debian GNU/Linux or Univention distribution in file
         icon="settings"
       />
       <header-button
+        data-test="bellbutton"
+        :aria-label-prop="ariaLabelNotifications"
+        icon="bell"
+        :counter="numNotifications"
+        @keydown.esc="closeNotifications"
+      />
+      <header-button
         :aria-label-prop="ariaLabelStopEditmode"
         icon="x"
         @click="stopEditMode"

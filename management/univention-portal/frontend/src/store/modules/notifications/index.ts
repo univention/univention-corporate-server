@@ -71,7 +71,7 @@ const notifications: PortalModule<Notifications> = {
       }
     },
     addErrorNotification({ dispatch }: PortalActionContext<Notifications>, item: Notification): void {
-      dispatch('addWeightedNotification', { hidingAfter: 4, ...item, importance: 'warning' });
+      dispatch('addWeightedNotification', { hidingAfter: 4, ...item, importance: 'error' });
     },
     addSuccessNotification({ dispatch }: PortalActionContext<Notifications>, item: Notification): void {
       dispatch('addWeightedNotification', { hidingAfter: 4, ...item, importance: 'success' });
@@ -80,6 +80,12 @@ const notifications: PortalModule<Notifications> = {
       dispatch('addWeightedNotification', { hidingAfter: 4, ...item, importance: 'default' });
     },
     removeAllNotifications({ commit, getters }: PortalActionContext<Notifications>): void {
+      [...getters.allNotifications].forEach((notification) => {
+        console.log('Removing', notification);
+        commit('REMOVE_NOTIFICATION', notification);
+      });
+    },
+    hideAllNotifications({ commit, getters }: PortalActionContext<Notifications>): void {
       getters.visibleNotifications.forEach((notification) => {
         commit('HIDE_NOTIFICATION', notification);
       });

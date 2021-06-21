@@ -30,6 +30,9 @@
 import { randomId } from '@/jsHelper/tools';
 
 export default function addLanguageTile(portalLanguageData) {
+  if (portalLanguageData.length < 2) {
+    return null;
+  }
   const menuTitle = {
     de_DE: 'Sprache ändern',
     en_US: 'Change Language',

@@ -59,7 +59,6 @@ export default defineComponent({
   right: 0
   z-index: 100
   background-color: var(--bgc-content-header)
-  color: var(--color-white)
   transform: translate3d(110%, 0, 0)
   transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
 

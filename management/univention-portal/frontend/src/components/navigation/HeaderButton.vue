@@ -136,7 +136,7 @@ export default defineComponent({
       z-index:1000
 
       svg
-        color: var(--color-primary)
+        color: var(--color-accent)
 
   &__inner
     border: none
@@ -174,28 +174,13 @@ export default defineComponent({
       border: 0.2rem solid var(--color-focus)
       outline: none
 
-    &--success
-      &:hover,
-      &:focus
-        background-color: var(--color-notification-success)
-
-    &--warning
-      &:hover,
-      &:focus
-        background-color: var(--color-notification-warning)
-
-    &--error
-      &:hover,
-      &:focus
-        background-color: var(--notification-error)
-
     &:hover
       cursor: pointer
 
   &__detail
     position: absolute
     color: var(--bgc-content-header)
-    background-color: var(--color-grey62)
+    background-color: var(--bgc-header-number-circle)
     font-size: var(--font-size-5)
     width: 1.6em
     height: 1.6em

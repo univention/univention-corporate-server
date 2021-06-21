@@ -2,6 +2,7 @@
 
 describe('General Tests', () => {
   it('Loads the page', () => {
+    cy.clearCookie('univentionCookieSettingsAccepted');
     cy.setCookie('UMCLang', 'de_DE');
     // stuff selenium can't do #1: mock requests / responses
     cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_out.json' });
@@ -17,7 +18,7 @@ describe('General Tests', () => {
          */
 
     cy.contains('Cookie-Einstellungen');
-    cy.get('.cookie-banner__button-text').click();
+    cy.get('main.cookie-banner + footer button.primary').click();
     cy.getCookie('univentionCookieSettingsAccepted').should('exist');
 
     cy.contains('h2', 'Verwaltung');

@@ -45,11 +45,25 @@ License with the Debian GNU/Linux or Univention distribution in file
       </div>
       <icon-button
         :id="`close-notification-${token}`"
+        class="notification__closing-button"
         tabindex="0"
         icon="x"
         :aria-label-prop="ariaLabelDismissNotification"
         @click="dismissNotification()"
-      />
+      >
+        <svg
+          class="notification__closing-svg"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            ref="closingCircle"
+            cx="50"
+            cy="50"
+            r="45"
+          />
+        </svg>
+      </icon-button>
     </div>
     <!-- eslint-disable vue/no-v-html -->
     <div
@@ -146,7 +160,7 @@ export default defineComponent({
         return;
       }
       setTimeout(() => {
-        this.$el.style = `transition-duration: ${this.hidingAfter}s;`;
+        this.$el.style = `--closing-duration: ${this.hidingAfter}s;`;
         this.$el.classList.add('notification__dismissing');
         this.dismissalTimeout = setTimeout(() => this.dismissNotification(),
           this.hidingAfter * 1000);
@@ -155,7 +169,7 @@ export default defineComponent({
     stopDismissal() {
       if (this.dismissalTimeout) {
         clearTimeout(this.dismissalTimeout);
-        this.$el.style = 'transition-duration: 0s;';
+        this.$el.style = '--closing-duration: 0s;';
         this.$el.classList.remove('notification__dismissing');
       }
     },
@@ -168,19 +182,44 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
+.flyout-wrapper
+  .notification__closing-svg
+    display: none
+
 .notification
   border-radius: var(--border-radius-notification)
   margin-bottom: calc(2 * var(--layout-spacing-unit))
   padding: var(--layout-spacing-unit)
   padding-bottom: var(--layout-spacing-unit)
   padding-left: calc(3 * var(--layout-spacing-unit))
-  transition: background 0s ease-out
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 50%);
-  background-size: 200% 100%;
-  background-position: left bottom;
 
   &.notification__dismissing
-    background-position: right bottom
+    .notification__closing-svg circle
+      stroke-dashoffset: 283
+      transition: stroke-dashoffset linear var(--closing-duration)
+
+  &__closing-button:hover, &__closing-button:focus
+    .notification__closing-svg
+      display: none
+
+  &__closing-svg
+    position: absolute
+    top: -2px
+    left: -2px
+    right: -2px
+    bottom: -2px
+    pointer-events: none
+
+    circle
+      display: block
+      fill: transparent
+      stroke: var(--color-focus)
+      stroke-linecap: round
+      stroke-dasharray: 283
+      stroke-dashoffset: 0
+      stroke-width: 0.2rem
+      transform-origin: 50% 50%
+      transform: scale(1, -1) rotate(90deg)
 
   .icon-button
     border: 0.1rem solid transparent
@@ -190,16 +229,16 @@ export default defineComponent({
       border-color: var(--color-focus)
 
   &--default
-    background-color: rgba(0, 0, 0, 0.6)
+    background-color: var(--bgc-popup)
 
   &--success
-    background-color: var(--color-notification-success)
+    background-color: var(--bgc-success)
 
   &--warning
-    background-color: var(--color-notification-warning)
+    background-color: var(--bgc-warning)
 
   &--error
-    background-color: var(--notification-error)
+    background-color: var(--bgc-error)
 
   &__header
     display: flex

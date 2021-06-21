@@ -39,7 +39,7 @@
       class="portal-tile"
       :draggable="editMode && !fromFolder"
       data-test="tileLink"
-      @mouseenter="editMode || showTooltip()"
+      @mouseenter="showTooltip()"
       @mouseleave="hideTooltip"
       @mousedown="hideTooltip"
       @focus="showTooltip()"
@@ -52,12 +52,11 @@
       @click="tileClick($event)"
     >
       <div
-        :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
+        :style="backgroundColor ? `background: ${backgroundColor}` : ''"
         :class="[
           'portal-tile__box',
-          { 'portal-tile__box--dragable': editMode },
+          { 'portal-tile__box--draggable': editMode },
         ]"
-        class="portal-tile__box"
       >
         <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
         <img
@@ -141,9 +140,17 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+    anonymous: {
+      type: Boolean,
+      required: false,
+    },
     backgroundColor: {
       type: String,
-      default: 'var(--color-grey40)',
+      default: '',
+    },
+    originalLinkTarget: {
+      type: String,
+      required: true,
     },
     minified: {
       type: Boolean,
@@ -213,7 +220,7 @@ export default defineComponent({
       this.$store.dispatch('tooltip/unsetTooltip');
     },
     showTooltip(): void {
-      if (!this.minified) {
+      if (!this.editMode && !this.minified) {
         const tooltip = {
           title: this.$localized(this.title),
           backgroundColor: this.backgroundColor,
@@ -281,7 +288,7 @@ export default defineComponent({
     align-items: center
     justify-content: center
     box-shadow: var(--box-shadow)
-    background: var(--color-grey40)
+    background-color: var(--bgc-apptile-default)
     width: var(--app-tile-side-length)
     height: @width
     margin-bottom: calc(2 * var(--layout-spacing-unit))
@@ -291,7 +298,7 @@ export default defineComponent({
     ~/:focus &
       border-color: var(--color-focus)
 
-    &--dragable
+    &--draggable
       position: relative
 
       &:after

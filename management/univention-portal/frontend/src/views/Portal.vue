@@ -52,6 +52,7 @@
           :key="category.id"
           :title="category.title"
           :dn="category.dn"
+          :virtual="category.virtual"
           :tiles="category.tiles"
         />
       </template>
@@ -209,29 +210,13 @@ export default defineComponent({
     right: 15px
     margin-top: 2px
 
-  &__menu-parent
-    background: var(--color-grey0)
-    padding: 0.3em 0.5em;
-    min-width: var(--app-tile-side-length)
-    font-size: 16px
-
-    &:hover
-      background: #000
-      cursor: pointer
-
-    &:first-of-type
-      border-radius: 8px 8px 0 0
-    &:last-of-type
-      border-radius: 0 0 8px 8px
-
 .portal-iframes
-  position: fixed;
-  top: var(--portal-header-height);
-  border: 0px solid var(--color-grey8);
-  border-top-width: var(--portal-header-to-content-seperator-height);
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: var(--color-white);
+  position: fixed
+  top: var(--portal-header-height)
+  border: 0px solid var(--bgc-tab-separator)
+  border-top-width: var(--layout-height-header-separator)
+  right: 0
+  bottom: 0
+  left: 0
 
 </style>

@@ -30,7 +30,7 @@
 const draggableMixin = {
   computed: {
     isDraggable() {
-      return this.editMode && !this.fromFolder && !this.inModal;
+      return this.editMode && !this.fromFolder && !this.inModal && !this.virtual;
     },
     canDragEnter() {
       if (this.forFolder !== undefined) {

@@ -98,3 +98,16 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="stylus">
+.cookie-banner
+  a
+    color: inherit
+    transition: color var(--portal-transition-duration), text-decoration-thickness var(--portal-transition-duration)
+    text-decoration: underline
+    text-decoration-thickness: 1px
+
+    &:focus
+      color: var(--color-accent)
+      text-decoration-thickness: 3px
+</style>

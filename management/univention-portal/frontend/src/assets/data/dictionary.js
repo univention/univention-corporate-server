@@ -36,6 +36,8 @@ function _(msg) {
 }
 
 const catalog = {
+  PORTAL_MENU: _('Portal Menu'),
+  USER_MENU: _('User Menu'),
   NOTIFICATIONS: _('Notifications'),
   LOGIN: _('Login'),
   LOGOUT: _('Logout'),
@@ -44,7 +46,6 @@ const catalog = {
   STOP_EDIT_PORTAL: _('Stop edit portal'),
   SWITCH_LOCALE: _('Switch locale'),
   COOKIE_SETTINGS: _('Cookie Settings'),
-  COOKIE_DESCRIPTION: _('We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on "Accept", you consent to the collection of information on this portal.'),
   ACCEPT: _('Accept'),
   SUBMIT: _('Submit'),
   DISMISS_NOTIFICATION: _('Dismiss notification'),
@@ -116,7 +117,10 @@ const catalog = {
   MODAL_HINT_RESTRICT_VISIBILITY: _('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
   SELECT_ALL: _('Select all'),
   SELECT_FILE: _('Select file'),
+  PORTAL_LOGO: _('Portal logo'),
+  BACKGROUND: _('Background'),
   BACKGROUND_COLOR: _('Background color'),
+  ANONYMOUS: _('Only visible if not logged in'),
   MODAL_HINT_HEADLINE: _('Headline of the entry. At least one entry; strongly encouraged to have one for en_US'),
   LINK: _('Link'),
   LINKS: _('Links'),
@@ -135,6 +139,13 @@ const catalog = {
   CLOSE_TAB: _('Close'),
   PRESS_ENTER_TO_FOCUS: _('To focus press Enter'),
   SHOW_UMC: _('Show local UMC modules'),
+  ENSURE_LOGIN: _('Users are required to login'),
+  LINK_TARGET: _('Way of opening links'),
+  DEFAULT_LINK_TARGET: _('Default link behaviour for portal entries'),
+  PORTAL_DEFAULT: _('Use default of portal'),
+  EMBEDDED: _('Embedded'),
+  SAME_WINDOW: _('Same tab'),
+  NEW_WINDOW: _('New tab'),
   NO_RESULTS: _('No search results'),
   ERROR_ON_VALIDATION: _('The form data is not valid'),
   ERROR_WRONG_NAME: _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!'),
@@ -154,6 +165,7 @@ const catalog = {
   ITEMS: _('Items'),
   NO_ITEMS: _('No items'),
   GO_BACK: _('Go Back'),
+  REMOVE_ALL_NOTIFICATIONS: _('Remove all notifications'),
 };
 
 export { catalog };

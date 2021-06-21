@@ -50,12 +50,14 @@ function makeEntry(
       title: entry.name,
       isFolder: false,
       activated: entry.activated,
+      anonymous: entry.anonymous,
       allowedGroups: entry.allowedGroups,
       selectedGroups: [], // needed for storing selected groups
       backgroundColor: entry.backgroundColor,
       description: entry.description,
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
+      originalLinkTarget: entry.linkTarget,
       pathToLogo: entry.logo_name || './questionMark.svg',
       key: {
         de_DE: 'de_DE',
@@ -118,6 +120,7 @@ export default function createCategories(
         id: `category-${randomId()}`,
         title: category.display_name,
         dn: category.dn,
+        virtual: !!category.virtual,
         tiles,
       };
       ret.push(categoryItem);

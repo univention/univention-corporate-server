@@ -89,6 +89,13 @@ export default defineComponent({
       activeTab: 'tabs/activeTabIndex',
     }),
   },
+  watch: {
+    activeTab(newIdx: number) {
+      if (newIdx === 0) {
+        this.cancel();
+      }
+    },
+  },
   mounted() {
     this.$store.dispatch('activity/setLevel', 'modal');
     const el = this.$refs.currentTab as HTMLElement;
@@ -128,7 +135,7 @@ export default defineComponent({
 
   &__button
     display: flex
-    background-color: var(--color-grey25)
+    background-color: var(--button-bgc)
     align-items: center
     cursor: pointer
     border: 2px solid transparent

@@ -33,6 +33,18 @@ License with the Debian GNU/Linux or Univention distribution in file
     class="notifications"
     @keydown.esc="closeNotifications"
   >
+    <div class="notifications__close-all">
+      <button
+        v-if="!onlyVisible && notifications.length > 1"
+        type="button"
+        @click.prevent="closeAll"
+      >
+        <portal-icon
+          icon="trash"
+        />
+        <translate i18n-key="REMOVE_ALL_NOTIFICATIONS" />
+      </button>
+    </div>
     <notification
       v-for="notification in notifications"
       :key="notification.token"
@@ -45,14 +57,18 @@ License with the Debian GNU/Linux or Univention distribution in file
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
+import Translate from '@/i18n/Translate.vue';
 import Region from '@/components/activity/Region.vue';
 import Notification from '@/components/notifications/Notification.vue';
+import PortalIcon from '@/components/globals/PortalIcon.vue';
 
 export default defineComponent({
   name: 'Notifications',
   components: {
     Notification,
     Region,
+    Translate,
+    PortalIcon,
   },
   props: {
     onlyVisible: {
@@ -74,6 +90,9 @@ export default defineComponent({
     },
   },
   methods: {
+    closeAll(): void {
+      this.$store.dispatch('notifications/removeAllNotifications');
+    },
     closeNotifications(): void {
       if (this.activeButton === 'bell') {
         this.$store.dispatch('navigation/setActiveButton', '');
@@ -95,4 +114,9 @@ export default defineComponent({
   max-height: 100%
   overflow-y: auto
   padding-right: calc(3 * var(--layout-spacing-unit))
+
+  &__close-all
+    display: flex
+    justify-content: flex-end
+    margin-bottom: calc(4 * var(--layout-spacing-unit))
 </style>

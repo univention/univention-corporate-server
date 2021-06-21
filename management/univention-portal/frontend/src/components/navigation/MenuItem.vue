@@ -126,12 +126,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
   padding: 1em 0 1em 20px;
-  color: var(--color-white);
+  color: inherit;
   text-decoration: none;
   border: 0.2rem solid rgba(0,0,0,0);
 
   &:hover
-    background-color: #272726; //TOTOCOL
     cursor: pointer;
 
   &:focus

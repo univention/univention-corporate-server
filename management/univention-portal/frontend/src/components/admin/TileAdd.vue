@@ -98,7 +98,7 @@ export default defineComponent({
   width: var(--app-tile-side-length)
   height: var(--app-tile-side-length)
   border-radius: var(--border-radius-apptile)
-  border: 0.2rem solid var(--color-grey40)
+  border: 0.2rem solid var(--button-bgc)
   background-color: transparent
   cursor: pointer
   box-sizing: border-box
@@ -112,5 +112,5 @@ export default defineComponent({
   svg
     width: 100%
     height: 100%
-    stroke: var(--color-grey40)
+    stroke: var(--button-bgc)
 </style>

@@ -18,7 +18,7 @@ describe('General Tests', () => {
       cy.get('iframe').should('not.be.visible');
       cy.get('#headerTab__1').click();
       cy.get('iframe').should('be.visible');
-      cy.get('#header-button-x').click();
+      cy.get('#close-tab-1').click();
     });
   });
   // it('shows Iframe Tabs', () => {

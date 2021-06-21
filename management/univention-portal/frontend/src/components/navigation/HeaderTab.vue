@@ -34,7 +34,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     :active-at="['portal']"
     :hidden="hidden"
     class="header-tab"
-    :class="{ 'header-tab--active': isActive, 'header-tab--focus': hasFocus }"
+    :class="{ 'header-tab--active': isActive }"
     @click="focusTab"
     @keydown.enter="focusTab"
   >
@@ -61,7 +61,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     <icon-button
       :id="`close-tab-${idx}`"
       icon="x"
-      tabindex="0"
       :aria-label-prop="ariaLabelClose"
       class="header-tab__close-button"
       :hidden="hidden"
@@ -132,53 +131,39 @@ export default defineComponent({
     closeTab(): void {
       this.$store.dispatch('tabs/deleteTab', this.idx);
     },
-    setFocusStyleToParent():void {
-      this.hasFocus = true;
-    },
-    removeFocusStyleFromParent():void {
-      this.hasFocus = false;
-    },
   },
 });
 </script>
 
 <style lang="stylus">
 .header-tab
-  --tabColor: transparent;
-  outline: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+  outline: 0
+  cursor: pointer
+  display: flex
+  align-items: center
   position: relative
   z-index: 1
-  background-color: var(--tabColor)
-  transition: background-color var(--portal-transition-duration);
-  flex-basis: auto;
-  flex-grow: 1;
-  max-width: 15rem;
+  background-color: transparent
+  transition: background-color var(--portal-transition-duration)
+  flex-basis: auto
+  flex-grow: 1
+  max-width: 15rem
   border: 0.2rem solid rgba(0,0,0,0)
 
-  &:focus
-    --tabColor: var(--color-grey8);
-    outline: 0;
-
-  &:hover
-    --tabColor: #272726;
-
   &__logo
-    width: 20px;
-    margin: 0 10px;
+    width: 20px
+    margin: 0 10px
 
     &--default
-      width: 30px;
-      margin: 0 15px;
+      width: 30px
+      margin: 0 15px
 
   &__title
-    flex: 1 1 auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 2.5rem;
+    flex: 1 1 auto
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    min-width: 2.5rem
 
   &__close-button
     position: relative
@@ -190,15 +175,9 @@ export default defineComponent({
     min-width: 40px
     width: 100%
 
-  &--focus
-    border-color: var(--color-focus);
+  &:focus
+    border-color: var(--color-focus)
 
   &--active
-    --tabColor: var(--color-grey8);
-
-    &:focus
-      --tabColor: var(--color-grey8);
-
-    &:hover
-      --tabColor: var(--color-grey8);
+    background-color: var(--bgc-tab-separator)
 </style>

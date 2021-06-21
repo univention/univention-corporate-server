@@ -33,6 +33,9 @@ import localize from '@/plugins/localize';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 
 import '@/assets/styles/style.styl';
+import addCustomStyles from '@/jsHelper/addCustomStyles';
+
+addCustomStyles();
 
 declare global {
     interface Window {

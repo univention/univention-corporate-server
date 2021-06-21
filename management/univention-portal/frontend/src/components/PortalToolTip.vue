@@ -37,7 +37,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     >
       <div
         class="portal-tooltip__thumbnail"
-        :style="`background: ${backgroundColor || 'var(--color-grey40)'}`"
+        :style="backgroundColor ? `background: ${backgroundColor}` : ''"
       >
         <img
           :src="icon || './questionMark.svg'"
@@ -78,7 +78,7 @@ export default defineComponent({
     },
     backgroundColor: {
       type: String,
-      default: 'var(--color-grey40)',
+      default: '',
     },
     description: {
       type: String,
@@ -97,7 +97,7 @@ export default defineComponent({
   position: fixed
   bottom: calc(2 * var(--layout-spacing-unit))
   right: calc(2 * var(--layout-spacing-unit))
-  background-color: var(--color-grey0)
+  background-color: var(--bgc-content-container)
   border-radius: var(--border-radius-container)
   min-width: calc(20 * 1rem)
   max-width: calc(20 * 1rem)
@@ -105,10 +105,9 @@ export default defineComponent({
   box-shadow: var(--box-shadow)
   pointer-events: none
   z-index: $zindex-3
-  color: var(--color-white)
   display: block;
 
-  @media mqSmartphone
+  @media $mqSmartphone
     bottom: unset;
     top: calc(3 * var(--layout-spacing-unit))
     min-width: 4rem
@@ -130,7 +129,7 @@ export default defineComponent({
     align-items: center
     justify-content: center
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.16)
-    background: var(--color-grey40)
+    background-color: var(--bgc-apptile-default)
 
     .portal-tooltip__header &
       width: calc(3 * 1rem)

@@ -55,7 +55,7 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import { put, add } from '@/jsHelper/admin';
+import { removeEntryFromSuperObj, addEntryToSuperObj, put, add } from '@/jsHelper/admin';
 import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
@@ -134,12 +134,8 @@ export default defineComponent({
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      const category = this.portalCategories.find((cat) => cat.dn === this.superDn);
-      const categoryAttrs = {
-        entries: category.entries.filter((entryDn) => entryDn !== dn),
-      };
       console.info('Removing', dn, 'from', this.superDn);
-      const success = await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_REMOVED_SUCCESS', 'FOLDER_REMOVED_FAILURE');
+      const success = await removeEntryFromSuperObj(this.superDn, this.portalCategories, dn, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
       this.$store.dispatch('deactivateLoadingState');
       if (success) {
         this.cancel();
@@ -157,15 +153,10 @@ export default defineComponent({
         success = await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
       } else {
         console.info('Adding folder');
-        console.info('Then adding it to', this.portalCategories, 'of', this.superDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
         const dn = await add('portals/folder', attrs, this.$store, 'FOLDER_ADDED_FAILURE');
         if (dn) {
           console.info(dn, 'added');
-          const category = this.portalCategories.find((cat) => cat.dn === this.superDn);
-          const categoryAttrs = {
-            entries: category.entries.concat([dn]),
-          };
-          success = await put(this.superDn, categoryAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          success = await addEntryToSuperObj(this.superDn, this.portalCategories, dn, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
         }
       }
       this.$store.dispatch('deactivateLoadingState');

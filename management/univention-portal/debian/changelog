@@ -1,3 +1,9 @@
+univention-portal (4.0.5-55) unstable; urgency=medium
+
+  * Bug #53491: Include patches from Phoenix - Theme
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 21 Jun 2021 18:06:57 +0200
+
 univention-portal (4.0.5-54) unstable; urgency=medium
 
   * Bug #53385: Include patches from Phoenix

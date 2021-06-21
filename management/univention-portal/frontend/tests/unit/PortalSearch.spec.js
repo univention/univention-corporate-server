@@ -1,5 +1,6 @@
 import PortalSearch from '@/components/search/PortalSearch';
 import navigation from '@/store/modules/navigation';
+import localize from '@/plugins/localize';
 import { mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 
@@ -39,7 +40,7 @@ test('Test Portalsearch', async () => {
 
     const wrapper = await mount(PortalSearch, {
         global: {
-            plugins: [store]
+            plugins: [store, localize]
         },
         attachTo: "#root"
     })
@@ -50,7 +51,7 @@ test('Test Portalsearch', async () => {
 
     // ensure search is triggered by typing
     await input.setValue('univention')
-    expect(store.dispatch).toHaveBeenLastCalledWith('search/setSearchQuery', 'univention')
+    expect(store.dispatch).toHaveBeenLastCalledWith('search/setSearchResultsEmpty')
 
     // ensure that after hitting escape the activebutton is set to ''
     await input.trigger('keyup.esc');

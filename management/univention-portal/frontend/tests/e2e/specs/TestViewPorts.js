@@ -7,6 +7,7 @@ describe('Logo', () => {
       // make assertions on the logo using
       // an array of different viewports
       it(`Should display the menubutton on ${size} screen, orientation ${orientation}`, () => {
+        cy.clearCookie('univentionCookieSettingsAccepted');
         cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_out.json' });
         cy.intercept('GET', 'meta.json', { fixture: 'meta.json' });
         cy.intercept('GET', 'de.json', { fixture: 'de.json' });
@@ -14,7 +15,7 @@ describe('Logo', () => {
         cy.viewport(size);
 
         cy.visit('/');
-        cy.get('.cookie-banner__button-text').click();
+        cy.get('main.cookie-banner + footer button.primary').click();
         // reactivate after fix
         // cy.get('[data-test="navigationbutton"]').should('be.visible');
       });

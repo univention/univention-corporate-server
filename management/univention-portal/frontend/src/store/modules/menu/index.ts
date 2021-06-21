@@ -44,7 +44,9 @@ const menu: PortalModule<MenuState> = {
       const menuStructure = createMenuStructure(payload.portal);
       const languageMenuLink = addLanguageTile(payload.availableLocales);
       const userLinks = createUserMenu(payload.portal);
-      menuStructure.unshift(languageMenuLink);
+      if (languageMenuLink) {
+        menuStructure.unshift(languageMenuLink);
+      }
       if (userLinks) {
         menuStructure.unshift(userLinks);
       }
