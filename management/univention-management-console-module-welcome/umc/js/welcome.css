@@ -37,7 +37,7 @@
 }
 .umcBubbleButton:hover {
 	cursor: pointer;
-	border-color: var(--color-primary);
+	border-color: var(--color-accent);
 }
 
 @media (max-width: 767px) {

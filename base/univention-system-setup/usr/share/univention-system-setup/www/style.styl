@@ -41,10 +41,9 @@
 			border-radius: var(--border-radius-container)
 			transition: border-color 100ms
 			padding: calc(2 * var(--layout-spacing-unit))
-			&:not(.umcChooseRoleBox--selected):hover
-				border-color: s('rgba(var(--color-primary-rgb), 0.5)')
-		.umcChooseRoleBox--selected
-			border-color: var(--color-primary)
+			&:hover,
+			&--selected
+				border-color: var(--color-accent)
 		.umcChooseRoleBox__headline
 			font-weight: var(--font-weight-bold)
 			font-size: var(--font-size-3)

@@ -1,13 +1,13 @@
 :root
 	// color palette
-	--color-primary:     #7AB51D
-	--color-primary-rgb: red(@--color-primary), green(@--color-primary), blue(@--color-primary)
 	--color-grey0:       #1E1E1D
 	--color-grey8:       #333331
 	--color-grey25:      #5F5F5C
 	--color-grey40:      #868681
 	--color-grey62:      #BDBDBB
 
+	/* used to accent some elements: checkbox/radiobox, checked toggle buttons/checked input fields */
+	--color-accent:       #659a0d
 
 	// background colors
 	--bgc-content-body:      #FFFFFF
@@ -110,9 +110,9 @@
 	--button-icon-highlighted-bgc-active:   blend(rgba(255, 255, 255, 0.10), @--color-grey62)
 	--button-icon-highlighted-bgc-disabled: transparent
 
-	--button-primary-bgc:          var(--color-primary)
-	--button-primary-bgc-hover:    blend(rgba(255, 255, 255, 0.08), @--color-primary)
-	--button-primary-bgc-active:   blend(rgba(255, 255, 255, 0.18), @--color-primary)
+	--button-primary-bgc:          #7AB51D
+	--button-primary-bgc-hover:    blend(rgba(255, 255, 255, 0.08), @--button-primary-bgc)
+	--button-primary-bgc-active:   blend(rgba(255, 255, 255, 0.18), @--button-primary-bgc)
 	--button-primary-bgc-disabled: var(--color-grey62)
 
 	--button-bgc:          var(--color-grey62)
