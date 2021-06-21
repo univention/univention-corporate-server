@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-33) unstable; urgency=medium
+
+  * Bug #53390: adjust css var usage
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 21 Jun 2021 12:36:15 +0200
+
 univention-system-setup (13.0.3-32) unstable; urgency=medium
 
   * Bug #53390: implement light theme

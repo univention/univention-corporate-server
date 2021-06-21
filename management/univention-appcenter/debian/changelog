@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-52) unstable; urgency=medium
+
+  * Bug #53390: use warning/error css vars
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 21 Jun 2021 12:35:52 +0200
+
 univention-appcenter (9.0.2-51) unstable; urgency=medium
 
   * Bug #53412: use variables in data-dojo-props to prevent syntax errors
