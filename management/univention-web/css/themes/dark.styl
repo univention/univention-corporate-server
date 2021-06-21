@@ -1,18 +1,18 @@
 :root
 	// color palette
-	--color-grey0:       #1E1E1D
-	--color-grey8:       #333331
-	--color-grey25:      #5F5F5C
-	--color-grey40:      #868681
-	--color-grey62:      #BDBDBB
+	$color-grey0  = #1E1E1D
+	$color-grey8  = #333331
+	$color-grey25 = #5F5F5C
+	$color-grey40 = #868681
+	$color-grey62 = #BDBDBB
 
 	/* used to accent some elements: checkbox/radiobox, checked toggle buttons/checked input fields */
 	--color-accent:       #7AB51D
 
 	// background colors
-	--bgc-content-body:      var(--color-grey8)
-	--bgc-content-header:    var(--color-grey0)
-	--bgc-content-container: var(--color-grey0)
+	--bgc-content-body:      $color-grey8
+	--bgc-content-header:    var(--bgc-content-container)
+	--bgc-content-container: $color-grey0
 
 	--bgc-inputfield-on-container: var(--bgc-content-body)
 	--bgc-inputfield-on-body:      var(--bgc-content-container)
@@ -25,11 +25,11 @@
 	--bgc-user-menu-item-hover:  rgba(255, 255, 255, 0.1)
 	--bgc-user-menu-item-active: rgba(255, 255, 255, 0.2)
 
-	--bgc-header-number-circle: var(--color-grey62)
+	--bgc-header-number-circle: $color-grey62
 
-	--bgc-tab-separator: var(--color-grey25)
+	--bgc-tab-separator: $color-grey25
 
-	--bgc-popup:               var(--color-grey25)
+	--bgc-popup:               $color-grey25
 	--bgc-popup-item-hover:    rgba(0, 0, 0, 0.15)
 	--bgc-popup-item-active:   rgba(0, 0, 0, 0.3)
 	--bgc-popup-item-selected: rgba(0, 0, 0, 0.3)
@@ -39,11 +39,11 @@
 	--bgc-tree-row-hover:    var(--bgc-grid-row-hover)
 	--bgc-tree-row-selected: rgba(255, 255, 255, 0.15)
 
-	--bgc-app-defaultbgc: var(--color-grey40)
+	--bgc-app-defaultbgc: $color-grey40
 	--bgc-appcenter-app-hover:      rgba(255, 255, 255, 0.08)
 	--bgc-appcenter-app-active:     rgba(255, 255, 255, 0.12)
 
-	--bgc-progressbar-empty:    var(--color-grey62)
+	--bgc-progressbar-empty:    $color-grey62
 	--bgc-progressbar-progress: var(--bgc-success)
 
 	--bgc-titlepane-hover: rgba(255, 255, 255, 0.04)
@@ -68,8 +68,8 @@
 	--font-weight-bold: 600
 
 	--font-color-contrast-high:   #fff
-	--font-color-contrast-middle: var(--color-grey62)
-	--font-color-contrast-low:    var(--color-grey40)
+	--font-color-contrast-middle: $color-grey62
+	--font-color-contrast-low:    $color-grey40
 	--font-color-error:           #F0758C
 	--font-color-warning:         #FF8C00
 	--font-color-success:         #9CD147
@@ -106,12 +106,12 @@
 	--button-primary-bgc:          #5e881d
 	--button-primary-bgc-hover:    blend(rgba(0, 0, 0, 0.08), @--button-primary-bgc)
 	--button-primary-bgc-active:   blend(rgba(0, 0, 0, 0.16), @--button-primary-bgc)
-	--button-primary-bgc-disabled: var(--color-grey25)
+	--button-primary-bgc-disabled: $color-grey25
 
-	--button-bgc:          var(--color-grey25)
-	--button-bgc-hover:    blend(rgba(0, 0, 0, 0.08), @--color-grey25)
-	--button-bgc-active:   blend(rgba(0, 0, 0, 0.16), @--color-grey25)
-	--button-bgc-disabled: var(--color-grey25)
+	--button-bgc:          $color-grey25
+	--button-bgc-hover:    blend(rgba(0, 0, 0, 0.08), $color-grey25)
+	--button-bgc-active:   blend(rgba(0, 0, 0, 0.16), $color-grey25)
+	--button-bgc-disabled: $color-grey25
 
 	--button-text-bgc:          transparent
 	--button-text-bgc-hover:    var(--button-bgc-hover)
@@ -134,7 +134,7 @@
 
 
 	// popups
-	--popup-border: 1px solid var(--color-grey62)
+	--popup-border: 1px solid $color-grey62
 
 
 	// shadows
