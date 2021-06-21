@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-web
-fix: 4.0.1-33A~5.0.0.202106111434
+fix: 4.0.1-35A~5.0.0.202106211257
 desc: |
  This update addresses the following issue(s):
  * A new UCR variable has been added to configure a theme for all UCS web
