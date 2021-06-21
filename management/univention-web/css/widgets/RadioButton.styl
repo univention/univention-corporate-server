@@ -51,9 +51,11 @@
 			opacity: 1
 
 	&Hover,
-	&Focus,
 	&Active
-		--local-background-color: rgba(255, 255, 255, 0.14)
+		--local-background-color: var(--bgc-checkbox-hover)
+
+	&Focused
+		--local-background-color: var(--bgc-checkbox-focus)
 
 	&Disabled
 		opacity: 0.4
