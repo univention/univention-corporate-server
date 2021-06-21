@@ -1,7 +1,7 @@
 .umcImage
 	width: 100%
 	border-radius: 2px
-	background: url(images/checkerboard-pattern.png)
+	background: var(--bgc-checkerboard)
 	&Empty
 		background: var(--bgc-inputfield-on-container)
 
@@ -13,11 +13,11 @@
 		box-sizing: content-box
 
 	.umcImageEmpty__message
-		min-height: 250px
 		display: flex
 		align-items: center
 
 	.umcImage__styleWrapper
+		min-height: 250px
 		display: flex
 		align-items: center
 		justify-content: center
