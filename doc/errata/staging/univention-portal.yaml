@@ -3,11 +3,13 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-54A~5.0.0.202106030016
+fix: 4.0.5-55A~5.0.0.202106211811
 desc: |
  This update addresses the following issue(s):
  * Notifications now autohide.
  * Notifications and tabs now have a counter in the header bar.
+ * Notifications are shown in edit mode.
+ * All notifications can now be removed at once.
  * Fix sizings in mobile mode.
  * Improve portal header in mobile mode.
  * Improved form validations.
@@ -19,4 +21,9 @@ desc: |
  * Cookie Banner now better fits the portal layout.
  * Various accessibility fixes, like aria attributes.
  * Various CSS fixes.
-bug: [53385]
+ * Added multiple new fields in edit mode.
+ * The menu can now be edited in edit mode.
+ * Language menu is now only available if the portal supports more than one
+   language.
+ * The portal can now be themed.
+bug: [53385, 53491]
