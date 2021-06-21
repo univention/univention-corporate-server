@@ -100,16 +100,6 @@
 
 	--button-bgc-transition: background 250ms
 
-	--button-icon-bgc:          transparent
-	--button-icon-bgc-hover:    rgba(0, 0, 0, 0.16)
-	--button-icon-bgc-active:   rgba(0, 0, 0, 0.26)
-	--button-icon-bgc-disabled: transparent
-
-	--button-icon-highlighted-bgc:          var(--bgc-inputfield-on-body)
-	--button-icon-highlighted-bgc-hover:    var(--color-grey62)
-	--button-icon-highlighted-bgc-active:   blend(rgba(255, 255, 255, 0.10), @--color-grey62)
-	--button-icon-highlighted-bgc-disabled: transparent
-
 	--button-primary-bgc:          #7AB51D
 	--button-primary-bgc-hover:    blend(rgba(255, 255, 255, 0.08), @--button-primary-bgc)
 	--button-primary-bgc-active:   blend(rgba(255, 255, 255, 0.18), @--button-primary-bgc)
@@ -121,9 +111,19 @@
 	--button-bgc-disabled: var(--color-grey62)
 
 	--button-text-bgc:          transparent
-	--button-text-bgc-hover:    rgba(0, 0, 0, 0.16)
-	--button-text-bgc-active:   rgba(0, 0, 0, 0.26)
+	--button-text-bgc-hover:    var(--button-bgc-hover)
+	--button-text-bgc-active:   var(--button-bgc-active)
 	--button-text-bgc-disabled: transparent
+
+	--button-icon-bgc:          transparent
+	--button-icon-bgc-hover:    var(--button-bgc-hover)
+	--button-icon-bgc-active:   var(--button-bgc-active)
+	--button-icon-bgc-disabled: transparent
+
+	--button-icon-highlighted-bgc:          var(--bgc-inputfield-on-body)
+	--button-icon-highlighted-bgc-hover:    var(--button-bgc-hover)
+	--button-icon-highlighted-bgc-active:   var(--button-bgc-active)
+	--button-icon-highlighted-bgc-disabled: transparent
 
 
 	// input fields
