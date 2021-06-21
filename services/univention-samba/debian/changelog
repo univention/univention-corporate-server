@@ -1,3 +1,10 @@
+univention-samba (14.0.4-4) unstable; urgency=medium
+
+  * Bug #53414: prevent listener traceback when removing samba share
+    with NT ACLs
+
+ -- Florian Best <best@univention.de>  Mon, 21 Jun 2021 12:36:44 +0200
+
 univention-samba (14.0.4-3) unstable; urgency=medium
 
   * Bug #53458: fix Python 3 migration of samba-shares.py listener

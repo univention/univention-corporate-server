@@ -257,7 +257,7 @@ def handler(dn, new, old, command):
 			if run_ucs_commit:
 				ucr_handlers.commit(configRegistry, ['/etc/samba/smb.conf'])
 
-	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
+	if new and ('univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old):
 		with SetUID(0):
 			share_path = new['univentionSharePath'][0].decode('UTF-8')
 			proc = subprocess.Popen(
