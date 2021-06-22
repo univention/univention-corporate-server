@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.4-3) unstable; urgency=medium
+
+  * Bug #46176: fix listfilter test with use_sasl_username
+
+ -- Toni Röhmeyer <roehmeyer@univention.de>  Tue, 22 Jun 2021 14:59:04 +0200
+
 univention-mail-postfix (13.0.4-2) unstable; urgency=medium
 
   * Bug #46895: raised postfix compatibility_level to 3
