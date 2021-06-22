@@ -95,11 +95,14 @@ const notifications: PortalModule<Notifications> = {
       if (!notification) {
         return;
       }
-      if (notification.hidingAfter >= 0) {
-        commit('HIDE_NOTIFICATION', notification);
-      } else {
-        commit('REMOVE_NOTIFICATION', notification);
+      commit('REMOVE_NOTIFICATION', notification);
+    },
+    hideNotification({ commit, getters }: PortalActionContext<Notifications>, token: number): void {
+      const notification = getters.allNotifications.find((ntfctn) => ntfctn.token === token);
+      if (!notification) {
+        return;
       }
+      commit('HIDE_NOTIFICATION', notification);
     },
   },
 };

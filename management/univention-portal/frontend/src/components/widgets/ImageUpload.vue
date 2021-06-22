@@ -148,7 +148,7 @@ export default defineComponent({
     width: 10rem
     cursor: pointer
     display: flex
-    background: repeating-conic-gradient(var(--bgc-apptile-default) 0% 25%, transparent 0% 50%) 50% / 20px 20px
+    background: var(--bgc-checkerboard)
     img
       max-height: 10rem
       margin: auto

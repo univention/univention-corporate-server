@@ -1,3 +1,9 @@
+univention-portal (4.0.5-56) unstable; urgency=medium
+
+  * Bug #53491: Fix login button hidden behind another element
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Jun 2021 10:27:17 +0200
+
 univention-portal (4.0.5-55) unstable; urgency=medium
 
   * Bug #53491: Include patches from Phoenix - Theme

@@ -49,7 +49,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         tabindex="0"
         icon="x"
         :aria-label-prop="ariaLabelDismissNotification"
-        @click="dismissNotification()"
+        @click="removeNotification()"
       >
         <svg
           class="notification__closing-svg"
@@ -156,13 +156,13 @@ export default defineComponent({
         return;
       }
       if (this.hidingAfter === 0) {
-        this.dismissNotification();
+        this.hideNotification();
         return;
       }
       setTimeout(() => {
         this.$el.style = `--closing-duration: ${this.hidingAfter}s;`;
         this.$el.classList.add('notification__dismissing');
-        this.dismissalTimeout = setTimeout(() => this.dismissNotification(),
+        this.dismissalTimeout = setTimeout(() => this.hideNotification(),
           this.hidingAfter * 1000);
       }, 50); // $nextTick is still too soon
     },
@@ -173,8 +173,11 @@ export default defineComponent({
         this.$el.classList.remove('notification__dismissing');
       }
     },
-    dismissNotification() {
+    removeNotification() {
       this.$store.dispatch('notifications/removeNotification', this.token);
+    },
+    hideNotification() {
+      this.$store.dispatch('notifications/hideNotification', this.token);
     },
   },
 });

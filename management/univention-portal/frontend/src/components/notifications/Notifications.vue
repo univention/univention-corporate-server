@@ -33,9 +33,11 @@ License with the Debian GNU/Linux or Univention distribution in file
     class="notifications"
     @keydown.esc="closeNotifications"
   >
-    <div class="notifications__close-all">
+    <div
+      v-if="!onlyVisible && notifications.length > 1"
+      class="notifications__close-all"
+    >
       <button
-        v-if="!onlyVisible && notifications.length > 1"
         type="button"
         @click.prevent="closeAll"
       >
