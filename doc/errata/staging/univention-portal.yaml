@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-57A~5.0.0.202106221359
+fix: 4.0.5-58A~5.0.0.202106221649
 desc: |
  This update addresses the following issue(s):
  * Notifications now autohide.
@@ -26,4 +26,5 @@ desc: |
  * Language menu is now only available if the portal supports more than one
    language.
  * The portal can now be themed.
+ * Tabs are now shown with a full tile with background, not just the logo.
 bug: [53385, 53491]
