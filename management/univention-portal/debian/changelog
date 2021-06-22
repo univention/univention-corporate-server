@@ -1,3 +1,9 @@
+univention-portal (4.0.5-61) unstable; urgency=medium
+
+  * Bug #53491: Scale header icons
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Jun 2021 20:21:38 +0200
+
 univention-portal (4.0.5-60) unstable; urgency=medium
 
   * Bug #53491: Lost CSS variables

@@ -162,7 +162,7 @@ export default defineComponent({
   &__logo-wrapper
     background-color: var(--bgc-apptile-default)
     border-radius: var(--border-radius-apptile)
-    height: calc(var(--portal-header-height) * 0.8)
+    height: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
     width: @height
     display: flex
     align-items: center

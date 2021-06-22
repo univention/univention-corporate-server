@@ -294,7 +294,7 @@ export default defineComponent({
 
     &-image
       height: 100%
-      width: var(--portal-header-height)
+      width: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
 
       + h1
         padding-left: var(--layout-spacing-unit)
