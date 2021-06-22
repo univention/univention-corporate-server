@@ -5,7 +5,8 @@ scope: ucs_5.0-0-errata5.0-0
 src: linux
 fix: 4.19.194-1
 desc: |
- This update addresses the following issues:
+ This updates the Linux kernel to version 4.19.194, which addresses (among
+ others) the following security issues:
  * Fragmentation cache not cleared on reconnection (CVE-2020-24586)
  * Reassembling fragments encrypted under different keys (CVE-2020-24587)
  * wifi frame payload being parsed incorrectly as an L2 frame (CVE-2020-24588)
