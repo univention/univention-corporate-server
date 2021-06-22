@@ -1,3 +1,9 @@
+univention-portal (4.0.5-58) unstable; urgency=medium
+
+  * Bug #53491: Changed tab background
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Jun 2021 16:48:12 +0200
+
 univention-portal (4.0.5-57) unstable; urgency=medium
 
   * Bug #53491: Tabs now have a full logo tile, not just the logo
