@@ -537,6 +537,9 @@ EOF
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
 	esac
+	# Bug #53461 install univention-directory-notifier 14.0.4-4A~5.0.0.202106211755
+	apt install -y univention-directory-notifier
+	# /workaround
 	return $rv
 }
 
