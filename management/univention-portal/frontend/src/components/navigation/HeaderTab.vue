@@ -160,7 +160,7 @@ export default defineComponent({
   border: 0.2rem solid rgba(0,0,0,0)
 
   &__logo-wrapper
-    background-color: var(--portal-tab-background)
+    background-color: var(--bgc-apptile-default)
     border-radius: var(--border-radius-apptile)
     height: calc(var(--portal-header-height) * 0.8)
     width: @height
@@ -196,5 +196,5 @@ export default defineComponent({
     border-color: var(--color-focus)
 
   &--active
-    background-color: var(--bgc-apptile-default)
+    background-color: var(--portal-tab-background)
 </style>

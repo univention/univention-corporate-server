@@ -1,3 +1,9 @@
+univention-portal (4.0.5-59) unstable; urgency=medium
+
+  * Bug #53491: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Jun 2021 16:54:37 +0200
+
 univention-portal (4.0.5-58) unstable; urgency=medium
 
   * Bug #53491: Changed tab background
