@@ -13,6 +13,7 @@ import six
 
 from univention.testing.codes import TestCodes
 from univention.testing.data import TestCase, TestFormatInterface, TestResult  # noqa F401
+from univention.testing.format.text import Raw
 
 __all__ = ['Junit']
 
@@ -34,11 +35,19 @@ class Junit(TestFormatInterface):
 		super(Junit, self).__init__(stream)
 		self.outdir = "test-reports"
 		self.now = datetime.today()
+		self.raw = Raw(stream)
 
 	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
 		"""Called before each test."""
 		super(Junit, self).begin_test(case, prefix)
 		self.now = datetime.today().replace(microsecond=0)
+		print('\r', end='', file=self.stream)
+		self.raw.begin_test(case, prefix)
+		self.stream.flush()
+
+	def end_run(self):
+		print('')  # clear \r
+		self.stream.flush()
 
 	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
