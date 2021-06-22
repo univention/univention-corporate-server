@@ -151,7 +151,10 @@ def main() -> None:
         print('Starting mirror download. This can take a long time!')
         print('Check /var/log/univention/repository.log for the current status')
         subprocess.call(['univention-repository-update', 'net'])
-        handler_commit(['/etc/apt/sources.list.d/15_ucs-online-version.list'])
+        handler_commit([
+            '/etc/apt/sources.list.d/15_ucs-online-version.list',
+            '/etc/apt/sources.list.d/20_ucs-online-component.list',
+        ])
 
         print(dedent(
             r"""
