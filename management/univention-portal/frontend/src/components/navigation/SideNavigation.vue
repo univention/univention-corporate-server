@@ -90,6 +90,7 @@
           :link-target="item.linkTarget"
           :path-to-logo="item.pathToLogo"
           :internal-function="item.internalFunction"
+          :background-color="item.backgroundColor"
           aria-haspopup="true"
           @click="toggleMenu(index)"
           @keydown.enter.exact.prevent="toggleMenu(index)"
@@ -107,7 +108,6 @@
           >
             <menu-item
               :id="item.id"
-              ref="subItemParent"
               :title="item.title"
               :is-sub-item="true"
               :links="[]"
@@ -132,6 +132,7 @@
                 :link-target="subItem.linkTarget"
                 :path-to-logo="subItem.pathToLogo"
                 :internal-function="subItem.internalFunction"
+                :background-color="subItem.backgroundColor"
                 class="portal-sidenavigation__menu-subItem"
                 @clickAction="closeNavigation"
                 @keydown.esc="closeNavigation"

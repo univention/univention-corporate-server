@@ -42,6 +42,7 @@ function makeEntry(entryID, availableTiles, defaultLinkTarget) {
     links: entry.links,
     linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
     pathToLogo: entry.logo_name,
+    backgroundColor: entry.backgroundColor,
   };
 }
 

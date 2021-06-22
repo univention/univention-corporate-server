@@ -36,6 +36,10 @@ const tileClickMixin = {
       type: Array,
       required: true,
     },
+    backgroundColor: {
+      type: String,
+      default: '',
+    },
     linkTarget: {
       type: String,
     },
@@ -99,6 +103,7 @@ const tileClickMixin = {
     openEmbedded() {
       const tab = {
         tabLabel: this.$localized(this.title),
+        backgroundColor: this.backgroundColor,
         logo: this.pathToLogo,
         iframeLink: this.link,
       };

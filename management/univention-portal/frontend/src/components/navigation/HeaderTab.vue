@@ -45,12 +45,17 @@ License with the Debian GNU/Linux or Univention distribution in file
       @blur="removeFocusStyleFromParent()"
     >
       <!-- Alt-Tag should be empty, since it's not necessary for screenreader users -->
-      <img
-        :src="logo"
-        onerror="this.src='./questionMark.svg'"
-        alt=""
-        class="header-tab__logo"
+      <div
+        class="header-tab__logo-wrapper"
+        :style="backgroundColor ? `background: ${backgroundColor}` : ''"
       >
+        <img
+          :src="logo"
+          onerror="this.src='./questionMark.svg'"
+          alt=""
+          class="header-tab__logo"
+        >
+      </div>
       <span
         class="header-tab__title"
         :title="tabLabel"
@@ -85,6 +90,10 @@ export default defineComponent({
     idx: {
       type: Number,
       required: true,
+    },
+    backgroundColor: {
+      type: String,
+      default: '',
     },
     tabLabel: {
       type: String,
@@ -150,13 +159,21 @@ export default defineComponent({
   max-width: 15rem
   border: 0.2rem solid rgba(0,0,0,0)
 
-  &__logo
-    width: 20px
-    margin: 0 10px
+  &__logo-wrapper
+    background-color: var(--bgc-apptile-default)
+    border-radius: var(--border-radius-apptile)
+    height: calc(var(--portal-header-height) * 0.8)
+    width: @height
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 0 var(--layout-spacing-unit-small)
 
-    &--default
-      width: 30px
-      margin: 0 15px
+  &__logo
+    width: 80%
+    max-height: 80%
+    vertical-align: middle
+    border: 0
 
   &__title
     flex: 1 1 auto

@@ -39,6 +39,7 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       pathToLogo: entry.logo_name,
+      backgroundColor: entry.backgroundColor,
     };
   }
   entry = availableFolders.find((folder) => folder.dn === entryID);

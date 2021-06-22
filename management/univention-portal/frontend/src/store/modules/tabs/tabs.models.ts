@@ -29,8 +29,7 @@
 
 export interface Tab {
     tabLabel: string,
-    ariaLabel: string,
-    closeIcon: string,
+    backgroundColor: string,
     logo: string,
     iframeLink: string
 }

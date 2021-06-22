@@ -1,3 +1,9 @@
+univention-portal (4.0.5-57) unstable; urgency=medium
+
+  * Bug #53491: Tabs now have a full logo tile, not just the logo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Jun 2021 13:58:20 +0200
+
 univention-portal (4.0.5-56) unstable; urgency=medium
 
   * Bug #53491: Fix login button hidden behind another element

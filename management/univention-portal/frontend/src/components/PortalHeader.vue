@@ -72,6 +72,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         :idx="index + 1"
         :tab-label="item.tabLabel"
         :is-active="activeTabIndex == index + 1"
+        :background-color="item.backgroundColor"
         :logo="item.logo"
         :hidden="tabsOverflow"
       />

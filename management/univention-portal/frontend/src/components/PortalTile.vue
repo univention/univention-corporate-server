@@ -144,10 +144,6 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    backgroundColor: {
-      type: String,
-      default: '',
-    },
     originalLinkTarget: {
       type: String,
       required: true,
