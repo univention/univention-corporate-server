@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-updater
 fix: 15.0.3-67A~5.0.0.202106221307
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Due to the updated repository structure, creating a local repository
    mirror from a UCS 5 DVD has been deprecated. A new local repository will
    now directly be mirrored from the upstream online repository.
