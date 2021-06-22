@@ -1,35 +1,7 @@
+@import "./_ucs-vars.styl"
 @import "./_variables.styl"
 
 :root
-  // cursors
-  --cursor-disabled: not-allowed
-
-
-  // border-radius
-  --border-radius-interactable: 0.25rem
-  --border-radius-container:    0.5rem
-  --border-radius-notification: var(--border-radius-container)
-  --border-radius-tooltip:      0.25rem
-  --border-radius-circles:      50%
-
-  // layout
-  --layout-spacing-unit: 0.5rem
-  --layout-spacing-unit-small: calc(var(--layout-spacing-unit) / 2)
-  --layout-height-header: 3rem
-  --layout-height-header-separator: var(--layout-spacing-unit-small)
-
-  // buttons
-  --button-size: 36px
-  --button-icon-size: 16px
-  --button-font-size: var(--font-size-4)
-  --button-border-radius: var(--border-radius-interactable)
-  --button-icon-border-radius: var(--border-radius-circles)
-
-  --button-bgc-transition: background 250ms
-
-  // input fields
-  --inputfield-size: 2.75rem
-
   // portal
   --portal-header-height: var(--layout-height-header)
   --border-radius-apptile: 12.5% // 20px
@@ -43,6 +15,7 @@
   --portal-folder-tile-width: 33%
   --portal-folder-padding: calc(4 * var(--layout-spacing-unit))
   --portal-tab-background: var(--bgc-apptile-default)
+  --inputfield-width: 20rem
 
 @media $mqSmartphone
   :root

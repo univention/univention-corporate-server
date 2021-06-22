@@ -9,7 +9,6 @@ body
   font-family: 'Open Sans', sans-serif
   font-weight: normal
   line-height: var(--font-lineheight-normal)
-  // font-size: var(--font-size-normal)
   font-size: var(--font-size-body)
   color: var(--font-color-contrast-high)
   margin-top: var(--portal-header-height)
@@ -36,7 +35,7 @@ button
 
   &[disabled],
   &[disabled]:hover
-    background-color: var(--button-bgc-overlay-disabled)
+    background-color: var(--button-bgc-disabled)
     color: var(--font-color-disabled)
     cursor: var(--cursor-disabled)
 
@@ -72,19 +71,14 @@ input, select
     box-shadow: none
 
   &[invalid]
-    border-color: var(--color-error)
+    border-color: var(--bgc-error)
 
   &[disabled]
     cursor: var(--cursor-disabled)
-    color: var(--font-color-disabled)
 
 select
   cursor: pointer
   appearance: none
-
-  option
-    background-color: var(--color-grey0)
-    color: var(--font-color-contrast-high)
 
 label, div.label
   display: block
