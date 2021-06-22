@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-58A~5.0.0.202106221649
+fix: 4.0.5-59A~5.0.0.202106221655
 desc: |
  This update addresses the following issue(s):
  * Notifications now autohide.
