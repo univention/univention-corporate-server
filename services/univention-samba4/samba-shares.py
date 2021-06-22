@@ -261,6 +261,7 @@ def handler(dn, new, old, command):
 			proc = subprocess.Popen(
 				['samba-tool', 'ntacl', 'get', '--as-sddl', share_path],
 				stdout=subprocess.PIPE,
+				stderr=subprocess.PIPE,
 				close_fds=True,
 			)
 			stdout, _ = proc.communicate()
@@ -304,6 +305,7 @@ def handler(dn, new, old, command):
 					ud.debug(ud.LISTENER, ud.PROCESS, "Set new nt %s acl for dir %s" % (sddl, share_path))
 					proc = subprocess.Popen(
 						['samba-tool', 'ntacl', 'set', sddl, share_path],
+						stdout=subprocess.PIPE,
 						stderr=subprocess.PIPE,
 						close_fds=True
 					)
