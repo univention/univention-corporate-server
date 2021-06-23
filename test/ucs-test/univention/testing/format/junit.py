@@ -1,6 +1,8 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as JUnit report."""
 
+from __future__ import print_function
+
 import errno
 import os
 import sys
