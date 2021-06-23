@@ -1,3 +1,10 @@
+univention-management-console (11.0.6-12) unstable; urgency=medium
+
+  * Bug #52353: Login cookie can now be configured to be deleted when browser
+    is closed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Jun 2021 00:10:06 +0200
+
 univention-management-console (11.0.6-11) unstable; urgency=medium
 
   * Bug #37720: set explicit caching control in maintenance mode
