@@ -28,3 +28,5 @@ desc: |
  * The portal can now be themed.
  * Tabs are now shown with a full tile with background, not just the logo.
 bug: [53385, 53491]
+erratum: 21
+announced: 2021-06-23
