@@ -704,14 +704,20 @@ class Ressource(object):
 	def set_cookies(self, *cookies, **kwargs):
 		# TODO: use expiration from session timeout?
 		# set the cookie once during successful authentication
-		# force expiration of cookie in 5 years from now on...
-		# IE does not support max-age
-		expires = kwargs.get('expires') or (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
+		if kwargs.get('expires'):
+			expires = kwargs.get('expires')
+		elif ucr.is_true('umc/http/session/cookie'):
+			# session cookie (will be deleted when browser closes)
+			expires = None
+		else:
+			# force expiration of cookie in 5 years from now on...
+			expires = (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
 		cookie = cherrypy.response.cookie
 		for name, value in cookies:
 			name = self.suffixed_cookie_name(name)
 			cookie[name] = value
-			cookie[name]['expires'] = expires.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+			if expires:
+				cookie[name]['expires'] = expires.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
 			cookie[name]['version'] = 1
 			cookie[name]['path'] = '/univention/'
 

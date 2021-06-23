@@ -16,6 +16,12 @@ Description[en]=The UMC web server is listening on this network interface. If th
 Type=str
 Categories=management-umc
 
+[umc/http/session/cookie]
+Description[de]=Wenn gesetzt, ist der Cookie zur Anmeldung ein Session-Cookie: Das Schließen des Browsers wird ihn löschen und der Benutzer ist effektiv abgemeldet.
+Description[en]=If set, the the login cookie is a session cookie: Closing the browser will delete the cookie, effectively logging out the user.
+Type=bool
+Categories=management-umc
+
 [umc/http/session/timeout]
 Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
 Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
