@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-61A~5.0.0.202106222022
+fix: 4.0.5-62A~5.0.0.202106231040
 desc: |
  This update addresses the following issue(s):
  * Notifications now autohide.
@@ -24,7 +24,7 @@ desc: |
  * Added multiple new fields in edit mode.
  * The menu can now be edited in edit mode.
  * Language menu is now only available if the portal supports more than one
-   language.
+   language; the selected language is disabled in the menu
  * The portal can now be themed.
  * Tabs are now shown with a full tile with background, not just the logo.
 bug: [53385, 53491]
