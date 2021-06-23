@@ -10,3 +10,5 @@ desc: |
  * An issue has been fixed where certain strings containing apostrophes caused
    crashes.
 bug: [53390, 53412]
+erratum: 28
+announced: 2021-06-23
