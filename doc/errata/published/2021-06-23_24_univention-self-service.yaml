@@ -10,3 +10,5 @@ desc: |
  * The Python 2 compatibility of the UCR module self-service-acl.py has
    been restored.
 bug: [53390, 53459]
+erratum: 24
+announced: 2021-06-23
