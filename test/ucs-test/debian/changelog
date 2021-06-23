@@ -1,3 +1,10 @@
+ucs-test (10.0.5-28) unstable; urgency=medium
+
+  * Bug #53495: fix ucs-test crash: TypeError: '<=' not supported
+    between instances of 'NoneType' and 'float'
+
+ -- Florian Best <best@univention.de>  Wed, 23 Jun 2021 08:03:51 +0200
+
 ucs-test (10.0.5-27) unstable; urgency=medium
 
   * Bug #53102: Skip test for now

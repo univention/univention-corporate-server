@@ -590,7 +590,7 @@ class TestCase(object):
 			proc.stderr.fileno(): (proc.stderr, [], u'stderr', stderr, b'()', bytearray()),
 		}
 		combined = []
-		next_kill = next_read = None
+		next_kill = next_read = float('-inf')
 		shutdown = False
 		kill_sequence = self._terminate_proc(proc)
 		while channels:
@@ -598,7 +598,7 @@ class TestCase(object):
 			if self.signaled == signal.SIGALRM:
 				if next_kill <= current:
 					try:
-						next_kill = current + kill_sequence.next()
+						next_kill = current + next(kill_sequence)
 					except StopIteration:
 						shutdown = True
 						next_kill = current + 1.0
@@ -619,7 +619,7 @@ class TestCase(object):
 				raise
 
 			next_read = None
-			for fd in rlist or channels.keys():
+			for fd in rlist or list(channels.keys()):
 				stream, log, name, out, paren, buf = channels[fd]
 
 				if fd in rlist:
