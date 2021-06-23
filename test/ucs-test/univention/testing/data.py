@@ -18,7 +18,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import time
-from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, TypeVar  # noqa F401
+from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, TypeVar  # noqa F401
 
 import apt
 import six
@@ -583,14 +583,16 @@ class TestCase(object):
 		return conditions
 
 	def _run_tee(self, proc, result, stdout=sys.stdout, stderr=sys.stderr):
+		# type: (Popen, TestResult, IO[str], IO[str]) -> None
 		"""Run test collecting and passing through stdout, stderr:"""
-		EOF = b''
+		assert proc.stdout
+		assert proc.stderr
 		channels = {
 			proc.stdout.fileno(): (proc.stdout, [], u'stdout', stdout, b'[]', bytearray()),
 			proc.stderr.fileno(): (proc.stderr, [], u'stderr', stderr, b'()', bytearray()),
-		}
+		}  # type: Dict[int, Tuple[IO[str], List, str, IO[str], bytes, bytearray]]
 		combined = []
-		next_kill = next_read = float('-inf')
+		next_kill = next_read = 0.0
 		shutdown = False
 		kill_sequence = self._terminate_proc(proc)
 		while channels:
@@ -605,37 +607,36 @@ class TestCase(object):
 			elif self.signaled == signal.SIGCHLD:
 				shutdown = True
 				next_kill = current + 1.0
-			try:
-				delay = max(0.0, min(filter(None, (next_kill, next_read))) - current)
-			except ValueError:
-				delay = None
 
+			delays = [max(0.0, t - current) for t in (next_kill, next_read) if t > 0.0]
 			try:
-				rlist, _wlist, _elist = select.select(channels.keys(), [], [], delay)
+				rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
 			except select.error as ex:
 				if ex.args[0] == errno.EINTR:
 					TestCase.logger.debug('select() interrupted by SIG%d rc=%r', self.signaled, proc.poll())
 					continue
 				raise
 
-			next_read = None
-			for fd in rlist or list(channels.keys()):
+			next_read = 0.0
+			for fd in rlist or list(channels):
 				stream, log, name, out, paren, buf = channels[fd]
 
 				if fd in rlist:
 					data = os.read(fd, 1024)
 					if six.PY3:
-						out.buffer.write(data)
+						out.buffer.write(data)  # type: ignore
 					else:
 						out.write(data)
 					buf += data
+					eof = data == b''
 				else:
-					data = EOF if shutdown else None
+					data = b''
+					eof = shutdown
 
 				while buf:
-					if data == EOF:
+					if eof:
 						line = buf
-						buf = None
+						buf = bytearray()
 					else:
 						match = TestCase.RE_NL.search(buf)
 						if not match:
@@ -648,7 +649,7 @@ class TestCase(object):
 					log.append(entry)
 					combined.append(entry)
 
-				if data == EOF:
+				if eof:
 					stream.close()
 					del channels[fd]
 					TestCase._attach(result, name, log)
