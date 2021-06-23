@@ -32,7 +32,7 @@ DIR="$(dirname $0)"
 
 univention-directory-manager portals/entry modify \
 	--dn "cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
-	--set backgroundColor="var(--color-grey0)"
+	--set backgroundColor="var(--bgc-content-body)"
 
 univention-directory-manager portals/category remove --ignore_not_exists \
 	--dn "cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base"
@@ -70,7 +70,7 @@ create_app_entry () {
 	label="$3"
 	description_en="$4"
 	description_de="$5"
-	backgroundColor="${6:-var(--color-grey0)}"
+	backgroundColor="$6"
 	link="/apps/?cn=$cn&catalogID=$catalogID&label=$label"
 	icon="$DIR/app-logo-$1.svg"
 	position="cn=entry,cn=portals,cn=univention,$ldap_base"

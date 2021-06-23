@@ -1,3 +1,10 @@
+:root {
+	--portal-tab-background: var(--bgc-content-body);
+}
+.header-tab__logo-wrapper {
+	height: var(--font-size-2);
+	width: var(--font-size-2);
+}
 .portal-header__left {
 	margin-left: -13px;
 }
@@ -9,11 +16,11 @@
 	background-position: bottom right;
 }
 .portal-folder__name, .portal-tile__name, .portal-category__title {
-	color: var(--color-grey0);
+	color: var(--bgc-content-body);
 }
 .portal-folder__thumbnails--in-modal .portal-tile__name {
 	color: var(--color-white);
 }
 #portalCategories > div[aria-live=assertive] h2 {
-	color: var(--color-grey0);
+	color: var(--bgc-content-body);
 }

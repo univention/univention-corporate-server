@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-8) unstable; urgency=medium
+
+  * Bug #53251: Adjustments to new theming style; better cookie message
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Jun 2021 21:45:50 +0200
+
 univention-demo-configuration (8.0.0-7) unstable; urgency=medium
 
   * Bug #53251: Update background image; add portal logo
