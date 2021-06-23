@@ -164,7 +164,7 @@ export default defineComponent({
     height: 100%
     width: 100%
     display: flex
-    background-color: var(--bgc-content-body)
+    background-color: var(--bgc-inputfield-on-container)
     span
       margin: auto
 </style>

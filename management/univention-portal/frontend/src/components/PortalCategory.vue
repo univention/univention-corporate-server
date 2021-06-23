@@ -30,7 +30,7 @@
   <div
     :class="{'portal-category--empty': (!editMode && !hasTiles) }"
     class="portal-category"
-    @drop="tileDropped"
+    @drop="dropped"
     @dragover.prevent
     @dragenter.prevent
   >
@@ -51,7 +51,6 @@
         @dragstart="dragstart"
         @dragenter="dragenter"
         @dragend="dragend"
-        @drop="categoryDropped"
       >
         {{ $localized(title) }}
       </div>
@@ -168,7 +167,7 @@ export default defineComponent({
     },
   },
   methods: {
-    async tileDropped(evt: DragEvent) {
+    async dropped(evt: DragEvent) {
       evt.preventDefault();
       if (evt.dataTransfer === null) {
         return;
@@ -179,15 +178,7 @@ export default defineComponent({
         this.$store.dispatch('activateLoadingState');
         await this.$store.dispatch('portalData/saveContent');
         this.$store.dispatch('deactivateLoadingState');
-      }
-    },
-    async categoryDropped(evt: DragEvent) {
-      evt.preventDefault();
-      if (evt.dataTransfer === null) {
-        return;
-      }
-      const data = this.dragDropIds;
-      if (!data.superDn) {
+      } else if (!data.superDn) {
         this.$store.dispatch('dragndrop/dropped');
         this.$store.dispatch('activateLoadingState');
         await this.$store.dispatch('portalData/savePortalCategories');

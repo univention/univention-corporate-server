@@ -29,9 +29,10 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <tabindex-element
     :id="id"
-    :tag="isLink ? 'a' : 'div'"
-    :active-at="['header-menu']"
+    :tag="link ? 'a' : 'div'"
+    :active-at="activeAt"
     class="menu-item"
+    :class="{ 'menu-item__disabled': disabled }"
     :href="link ? link : null"
     :target="anchorTarget"
     @click="tileClick"
@@ -65,6 +66,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { mapGetters } from 'vuex';
 
 import TabindexElement from '@/components/activity/TabindexElement.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
@@ -100,8 +102,17 @@ export default defineComponent({
     },
   },
   computed: {
-    isLink(): boolean {
-      return this.link !== null && this.link !== '';
+    ...mapGetters({
+      disabledMenuItems: 'menu/disabledMenuItems',
+    }),
+    disabled(): boolean {
+      return this.disabledMenuItems.includes(this.id);
+    },
+    activeAt(): string[] {
+      if (this.disabled) {
+        return [];
+      }
+      return ['header-menu'];
     },
     itemString(): string {
       const numberOfItems = this.subMenu.length;
@@ -136,6 +147,10 @@ export default defineComponent({
   &:focus
     outline: 0;
     border: 0.2rem solid var(--color-focus);
+
+  &__disabled
+    pointer-events: none
+    color: var(--font-color-contrast-low)
 
   &__counter
     position: absolute;

@@ -1,3 +1,9 @@
+univention-portal (4.0.5-62) unstable; urgency=medium
+
+  * Bug #53491: Last CSS improvements
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Jun 2021 10:38:24 +0200
+
 univention-portal (4.0.5-61) unstable; urgency=medium
 
   * Bug #53491: Scale header icons

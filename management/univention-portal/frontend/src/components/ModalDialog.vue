@@ -114,7 +114,7 @@ export default defineComponent({
     > label:first-child
       margin-top: 0
 
-  footer
+  footer:not(.image-upload__footer)
     margin-top: calc(2 * var(--layout-spacing-unit))
     padding-top: calc(2 * var(--layout-spacing-unit))
     border-top: thin solid var(--bgc-tab-separator)

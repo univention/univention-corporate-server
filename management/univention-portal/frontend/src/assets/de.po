@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-06-21 14:46+0200\n"
+"POT-Creation-Date: 2021-06-22 22:38+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -519,7 +519,7 @@ msgstr "Benutzer-Menü"
 
 #: src/assets/data/dictionary.js:142
 msgid "Users are required to login"
-msgstr "Benutzer müssen angemeldet sein"
+msgstr "Benutzer müssen sich anmelden"
 
 #: src/assets/data/dictionary.js:161
 msgid "Warning"

@@ -191,7 +191,7 @@ const portalData: PortalModule<PortalDataState> = {
       const content = getters.portalContent;
       const portalDn = getters.getPortalDn;
       const attrs = {
-        categories: content.map(([category]) => category),
+        categories: content.map(([category]) => category).filter((category) => !['$$menu$$', '$$user$$'].includes(category)),
       };
       await put(portalDn, attrs, { dispatch }, 'CATEGORY_ORDER_SUCCESS', 'CATEGORY_ORDER_FAILURE');
     },

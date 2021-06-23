@@ -187,4 +187,5 @@ export { LocaleAndValue };
 
   &__remove
     width: 3rem
+    margin-bottom: var(--layout-spacing-unit)
 </style>

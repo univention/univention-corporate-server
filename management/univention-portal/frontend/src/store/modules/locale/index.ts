@@ -63,9 +63,11 @@ const locale: PortalModule<LocaleState> = {
   },
 
   actions: {
-    setLocale({ commit }, payload: Locale) {
+    setLocale({ commit, dispatch }, payload: Locale) {
       commit('NEWLOCALE', payload);
-      setCookie('UMCLang', payload.replace('_', '-'));
+      const lang = payload.replace('_', '-');
+      dispatch('menu/setDisabled', [`menu-item-language-${lang}`], { root: true });
+      setCookie('UMCLang', lang);
       const localePrefix = payload.slice(0, 2);
       // TODO create helper function
       const html = document.documentElement;

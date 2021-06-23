@@ -40,7 +40,7 @@ export default function addLanguageTile(portalLanguageData) {
   };
 
   const subMenuItems = portalLanguageData.map((element) => ({
-    id: `menu-item-${randomId()}`,
+    id: `menu-item-language-${element.id}`,
     title: { en_US: element.label },
     linkTarget: 'internalFunction',
     internalFunction: (tileClick) => {

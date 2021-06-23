@@ -19,12 +19,16 @@
           <datalist
             :id="datalistId"
           >
-            <option
+            <template
               v-for="item in items"
               :key="item.dn"
-              :value="$localized(item.display_name)"
-              :data-value="item.dn"
-            />
+            >
+              <option
+                v-if="!item.virtual"
+                :value="$localized(item.display_name)"
+                :data-value="item.dn"
+              />
+            </template>
           </datalist>
         </label>
       </main>

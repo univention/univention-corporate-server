@@ -271,7 +271,6 @@ export default defineComponent({
 
     button
       text-transform: none
-      cursor: default
 
     .portal-folder__name
       font-size: var(--font-size-1)
@@ -299,7 +298,6 @@ export default defineComponent({
             margin-top: calc(var(--portal-header-height) + var(--layout-spacing-unit));
 
         .portal-tile
-          cursor: pointer
           width: var(--app-tile-side-length)
 
           &__box

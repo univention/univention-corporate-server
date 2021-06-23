@@ -107,12 +107,9 @@ export default defineComponent({
 .portal-search
   &__input
     width: 100%;
-    background-color: transparent;
-    color: var(--color-white);
-    border: 0.1rem solid var(--color-white);
+    border: 0.1rem solid transparent;
     border-radius: var(--border-radius-interactable);
-    background-color: var(--bgc-content-header)
-    __border-radius: var(--border-radius-interactable);
+    background-color: var(--bgc-inputfield-on-body)
     padding: var(--layout-spacing-unit) !important;
     box-sizing: border-box;
     margin-bottom: 0

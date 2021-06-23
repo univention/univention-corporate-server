@@ -33,11 +33,15 @@ import { PortalModule } from '@/store/root.models';
 
 export interface MenuState {
   menu: Array<unknown>;
+  disabled: Array<string>;
 }
 
 const menu: PortalModule<MenuState> = {
   namespaced: true,
-  state: { menu: [] },
+  state: {
+    menu: [],
+    disabled: [],
+  },
 
   mutations: {
     MENU(state, payload) {
@@ -52,13 +56,22 @@ const menu: PortalModule<MenuState> = {
       }
       state.menu = menuStructure;
     },
+    DISABLED(state, payload) {
+      state.disabled = payload;
+    },
   },
 
-  getters: { getMenu: (state) => state.menu },
+  getters: {
+    getMenu: (state) => state.menu,
+    disabledMenuItems: (state) => state.disabled,
+  },
 
   actions: {
     setMenu({ commit }, payload) {
       commit('MENU', payload);
+    },
+    setDisabled({ commit }, payload) {
+      commit('DISABLED', payload);
     },
   },
 };
