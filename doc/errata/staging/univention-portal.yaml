@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
 fix: 4.0.5-62A~5.0.0.202106231040
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Notifications now autohide.
  * Notifications and tabs now have a counter in the header bar.
  * Notifications are shown in edit mode.

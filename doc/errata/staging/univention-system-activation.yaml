@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-system-activation
 fix: 5.0.1-2A~5.0.0.202106111406
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A light theme for UCS web interfaces has been implemented.
 bug: [53390]

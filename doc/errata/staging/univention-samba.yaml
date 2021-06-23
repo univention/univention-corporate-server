@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-samba
 fix: 14.0.4-4A~5.0.0.202106221201
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Errors in the Python 3 migration of the samba-shares.py listener have
    been corrected.
  * An error in the samba-shares.py listener is prevented during the removal

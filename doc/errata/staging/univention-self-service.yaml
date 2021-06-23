@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-self-service
 fix: 5.0.1-14A~5.0.0.202106171037
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * A light theme for UCS web interfaces has been implemented.
  * The Python 2 compatibility of the UCR module self-service-acl.py has
    been restored.
