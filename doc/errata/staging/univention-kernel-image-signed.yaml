@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
-src: linux
-fix: 4.9.272-1A~4.4.0.202106231520
+src: univention-kernel-image-signed
+fix: 5.0.0-17
 desc: |
  This updates the Linux kernel to version 4.9.272, which addresses (among
  others) the following security issues:
@@ -71,7 +71,7 @@ desc: |
    (CVE-2021-33034)
  * i40e network adapters stop forwaring unicase packages after receiving
    certain kinds of short packages, which can be abused for denial of service.
-note: This is the first of three parts.
+note: This is the second of three parts.
 bug: [53505, 53498]
 cve:
 - CVE-2020-24586
