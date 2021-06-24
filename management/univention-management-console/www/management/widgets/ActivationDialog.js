@@ -185,7 +185,7 @@ define([
 				return true;
 			}, lang.hitch(this, function() {
 				emailWidget.set('value', '');
-				dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the user menu in the top right.'));
+				dialog.alert(_('The activation of UCS failed. Please re-try to perform the activation again via the user menu in the top right.'));
 				return false;
 			}));
 		}

@@ -188,7 +188,7 @@ msgstr ""
 
 #: www/management/widgets/ActivationDialog.js:188
 msgid ""
-"The activation of UCS failed. Please re-try to perform the the activation "
+"The activation of UCS failed. Please re-try to perform the activation "
 "again via the user menu in the top right."
 msgstr ""
 
