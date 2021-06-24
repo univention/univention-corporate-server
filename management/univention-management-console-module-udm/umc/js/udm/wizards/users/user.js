@@ -74,6 +74,9 @@ define([
 		},
 
 		postMixInProperties: function() {
+			if (array.some(this.properties, function(prop) { return prop.id === 'mailPrimaryAddress' && prop.required; })) {
+				this.widgetPages[0].widgets.push(['mailPrimaryAddress']);
+			}
 			if (array.some(this.properties, function(prop) { return prop.id === 'PasswordRecoveryEmail'; })) {
 				this.widgetPages[1].widgets.splice(1, 0, 'PasswordRecoveryEmail');
 				this.widgetPages[1].widgets.splice(2, 0, '_invite');
