@@ -1,3 +1,9 @@
+univention-management-console (11.0.6-13) unstable; urgency=medium
+
+  * Bug #52353: Rename UCRV
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Jun 2021 12:00:12 +0200
+
 univention-management-console (11.0.6-12) unstable; urgency=medium
 
   * Bug #52353: Login cookie can now be configured to be deleted when browser
