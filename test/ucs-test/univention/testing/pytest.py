@@ -46,7 +46,7 @@ class PytestRunner(object):
 		"""Add junit and other arguments to pytest"""
 		if getattr(cls.options, 'inside', False):
 			return cmd
-		args = ['--strict']
+		args = []
 		if cls.options.dry:
 			args.append('--collect-only')
 		if cls.options.hold:
@@ -59,6 +59,7 @@ class PytestRunner(object):
 		if cls.options.verbose:
 			args.append('-' + 'v' * cls.options.verbose)
 		args.append('--continue-on-collection-errors')
+		# args.append('--strict')
 		# args.append('--showlocals')
 		# args.append('--full-trace')
 		args.append('--color=auto')
