@@ -3,12 +3,12 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console
-fix: 11.0.6-12A~4.4.0.202106240018
+fix: 11.0.6-13A~4.4.0.202106241201
 desc: |
  This update addresses the following issue(s):
  * The Caching settings of Univention Management Console have been enhanced
    and relaxed to fix Caching issues after the upgrade to UCS 5.0.
- * The new UCR variable umc/http/session/cookie can be set to make the login
-   cookie a session cookie: Closing the browser will delete the cookie,
+ * The new UCR variable umc/http/enforce-session-cookie can be set to make the
+   login cookie a session cookie: Closing the browser will delete the cookie,
    effectively logging out the user.
 bug: [37720, 52353]
