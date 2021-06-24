@@ -21,6 +21,7 @@ Description[de]=Wenn gesetzt, ist der Cookie zur Anmeldung ein Session-Cookie: D
 Description[en]=If set, the the login cookie is a session cookie: Closing the browser will delete the cookie, effectively logging out the user.
 Type=bool
 Categories=management-umc
+Default=false
 
 [umc/http/session/timeout]
 Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
