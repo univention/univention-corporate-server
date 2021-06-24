@@ -686,7 +686,7 @@ class Ressource(object):
 		# set the cookie once during successful authentication
 		if kwargs.get('expires'):
 			expires = kwargs.get('expires')
-		elif ucr.is_true('umc/http/session/cookie'):
+		elif ucr.is_true('umc/http/enforce-session-cookie'):
 			# session cookie (will be deleted when browser closes)
 			expires = None
 		else:

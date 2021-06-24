@@ -16,7 +16,7 @@ Description[en]=The UMC web server is listening on this network interface. If th
 Type=str
 Categories=management-umc
 
-[umc/http/session/cookie]
+[umc/http/enforce-session-cookie]
 Description[de]=Wenn gesetzt, ist der Cookie zur Anmeldung ein Session-Cookie: Das Schließen des Browsers wird ihn löschen und der Benutzer ist effektiv abgemeldet.
 Description[en]=If set, the the login cookie is a session cookie: Closing the browser will delete the cookie, effectively logging out the user.
 Type=bool
