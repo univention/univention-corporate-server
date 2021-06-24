@@ -23,6 +23,13 @@ Type=bool
 Categories=management-umc
 Default=false
 
+[umc/http/enforce-secure-cookie]
+Description[de]=Wenn gesetzt, werden Cookies mit dem Secure-Attribut gesetzt, wenn die Verbindung über HTTPS erfolgt.
+Description[en]=If set, cookies are set with the secure attribute if the connection is using HTTPS.
+Type=bool
+Categories=management-umc
+Default=false
+
 [umc/http/session/timeout]
 Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
 Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
