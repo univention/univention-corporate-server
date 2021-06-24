@@ -363,16 +363,44 @@ define([
 			if (buttons && 0 === iLevel) {
 				// add all buttons that have not been rendered so far to a separate container
 				// and respect their correct order (i.e., using the internal array field $order$)
-				var buttonContainer = new ContainerWidget({
-					'class': 'umcLayoutRow umcButtonRow'
-				});
+
+				var buttonContainer = null;
+				var buttonContainerLeft = null;
+				var buttonContainerRight = null;
+				var createButtonContainer = function() {
+					if (buttonContainer !== null) {
+						return;
+					}
+
+					buttonContainer = new ContainerWidget({
+						'class': 'umcLayoutRow umcLayoutRow--buttons'
+					});
+					buttonContainerLeft = new ContainerWidget({
+						'class': 'umcLayoutRow--buttonsleft'
+					});
+					buttonContainerRight = new ContainerWidget({
+						'class': 'umcLayoutRow--buttonsright'
+					});
+					buttonContainer.addChild(buttonContainerLeft);
+					buttonContainer.addChild(buttonContainerRight);
+				};
+
+				var buttonsAdded = false;
 				array.forEach(buttons.$order$, function(ibutton) {
 					if (!ibutton.$isRendered$) {
-						buttonContainer.addChild(ibutton);
+						createButtonContainer();
+						if (ibutton.align === 'left') {
+							buttonContainerLeft.addChild(ibutton);
+						} else {
+							buttonContainerRight.addChild(ibutton);
+						}
 						ibutton.$isRendered$ = true;
+						buttonsAdded = true;
 					}
 				});
-				if (buttonContainer.hasChildren()) {
+				if (buttonsAdded) {
+					tools.toggleVisibility(buttonContainerLeft, buttonContainerLeft.hasChildren());
+					tools.toggleVisibility(buttonContainerRight, buttonContainerRight.hasChildren());
 					globalContainer.addChild(buttonContainer);
 				}
 			}

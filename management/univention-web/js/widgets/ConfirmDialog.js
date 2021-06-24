@@ -34,15 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/query",
 	"dojo/dom-class",
-	"dijit/Dialog",
 	"dijit/TitlePane",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
+	"umc/widgets/Dialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"put-selector/put"
-], function(declare, lang, array, query, domClass, Dialog, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, StandbyMixin, Text, put) {
+], function(declare, lang, array, query, domClass, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, Dialog, StandbyMixin, Text, put) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
 	// require it explicitly
@@ -111,8 +111,6 @@ define([
 		options: null,
 
 		actionBarTemplate: '<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBar" class="umcDialogActionBar dijitDisplayNone"></div>',
-
-		closable: true,
 
 		_container: null,
 
@@ -199,13 +197,6 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			var closeButton = new Button({
-				iconClass: 'x',
-				'class': 'ucsIconButton',
-				tabindex: -1
-			});
-			this.closeButtonNode.appendChild(closeButton.domNode);
-			closeButton.startup();
 
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
