@@ -45,6 +45,12 @@ define([
 			});
 			this.closeButtonNode.appendChild(closeButton.domNode);
 			closeButton.startup();
+		},
+
+		// public function for dijit/Dialog::_position
+		// reposition the dialog; centers it if not manually dragged; see dijit/Dialog::_position for more info
+		position: function() {
+			this._position();
 		}
 	});
 });
