@@ -1,5 +1,9 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svv --tb=native
 # -*- coding: utf-8 -*-
+## desc: Check Python 2 + 3 compatibility and idempotency of UCR templates
+## tags: [apptest]
+## exposure: safe
+
 from __future__ import print_function
 
 import os
