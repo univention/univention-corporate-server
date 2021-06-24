@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The user creation wizard now shows the mailPrimaryAdress if it is required.
+   The default value and visibility of widgets in the user creation wizard
+   can now be configured via UCR.
+bug: [53514]
