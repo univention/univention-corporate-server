@@ -11,4 +11,6 @@ desc: |
  * The new UCR variable umc/http/enforce-session-cookie can be set to make the
    login cookie a session cookie: Closing the browser will delete the cookie,
    effectively logging out the user.
-bug: [37720, 52353]
+ * The new UCR variable umc/http/enforce-secure-cookie can be set to make cookies
+   secure when using a HTTPS connection.
+bug: [37720, 52353, 53511]
