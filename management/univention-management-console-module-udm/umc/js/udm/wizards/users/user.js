@@ -58,11 +58,6 @@ define([
 
 		startup: function() {
 			this.inherited(arguments);
-			var widget = this.getWidget('page1', 'PasswordRecoveryEmail');
-			var node;
-			if (widget) {
-				node = widget.domNode.parentNode.parentNode.parentNode;
-			}
 			array.forEach(this.pages, function(page) {
 				array.forEach(this.getPage(page.name)._form.widgets, function(widget) {
 					var ucrkey = {'_invite': 'invite'}[widget.id] || widget.id;
@@ -81,9 +76,6 @@ define([
 					}
 				}, this);
 			}, this);
-
-			widget = this.getWidget('page1', 'password');
-			node = widget.domNode.parentNode.parentNode.parentNode;
 		},
 
 		postMixInProperties: function() {
