@@ -64,8 +64,14 @@ Description[en]=Defines if it is searched automatically for substrings.
 Type=bool
 Categories=management-umc
 
-[directory/manager/web/modules/users/user/wizard/property/invite/default]
-Description[de]=Definiert, ob die CheckBox "Benutzer per E-Mail einladen" standardmäßig aktiviert ist.
-Description[en]=Defines if the check box "Invite user via e-mail" is activated by default.
+[directory/manager/web/modules/users/user/wizard/property/.*/default]
+Description[de]=Definiert den Standardwert für das referenzierte Widget im Benutzererstellungsassistenten (Platzhalter sind z.B. invite, overridePWLength oder pwdChangeNextLogin). Achtung: Dies überschreibt den Wert aller Templates!
+Description[en]=Defines the default value for the referenced widget in the user create wizard (placeholder are e.g. invite, overridePWLength or pwdChangeNextLogin). Caution: This overwrites the value of all templates!
+Type=str
+Categories=management-umc
+
+[directory/manager/web/modules/users/user/wizard/property/.*/visible]
+Description[de]=Definiert, ob das referenzierte Widget im Benutzererstellungsassistenten standardmäßig angezeigt wird (Platzhalter sind z.B. invite, overridePWLength oder pwdChangeNextLogin).
+Description[en]=Defines if the referenced widget is shown in the user create wizard by default (placeholder are e.g. invite, overridePWLength or pwdChangeNextLogin).
 Type=bool
 Categories=management-umc

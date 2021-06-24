@@ -58,22 +58,30 @@ define([
 
 		startup: function() {
 			this.inherited(arguments);
-			var widget = this.getWidget('page1', 'PasswordRecoveryEmail');
-			var node;
-			if (widget) {
-				node = widget.domNode.parentNode.parentNode.parentNode;
-			}
-			var inviteWidget = this.getWidget('page1', '_invite');
-			if (inviteWidget) {
-				// FIXME: the initial value setting does not trigger onChange(), therefore we set it here
-				inviteWidget.set('value', tools.isTrue(this.ucr['directory/manager/web/modules/users/user/wizard/property/invite/default'] || 'false'));
-			}
-
-			widget = this.getWidget('page1', 'password');
-			node = widget.domNode.parentNode.parentNode.parentNode;
+			array.forEach(this.pages, function(page) {
+				array.forEach(this.getPage(page.name)._form.widgets, function(widget) {
+					var ucrkey = {'_invite': 'invite'}[widget.id] || widget.id;
+					var wid = this.getWidget(page.name, widget.id);
+					var visibility = this.ucr['directory/manager/web/modules/users/user/wizard/property/' + ucrkey + '/visible'];
+					var defaultValue = this.ucr['directory/manager/web/modules/users/user/wizard/property/' + ucrkey + '/default'];
+					if (visibility) {
+						wid.set('visible', tools.isTrue(visibility));
+					}
+					if (defaultValue) {
+						if (wid.declaredClass === "umc.widgets.CheckBox") {
+							defaultValue = tools.isTrue(defaultValue || 'false');
+						}
+						// FIXME: the initial value setting does not trigger onChange(), therefore we must set "invite" here
+						wid.set('value', defaultValue);
+					}
+				}, this);
+			}, this);
 		},
 
 		postMixInProperties: function() {
+			if (array.some(this.properties, function(prop) { return prop.id === 'mailPrimaryAddress' && prop.required; })) {
+				this.widgetPages[0].widgets.push(['mailPrimaryAddress']);
+			}
 			if (array.some(this.properties, function(prop) { return prop.id === 'PasswordRecoveryEmail'; })) {
 				this.widgetPages[1].widgets.splice(1, 0, 'PasswordRecoveryEmail');
 				this.widgetPages[1].widgets.splice(2, 0, '_invite');
