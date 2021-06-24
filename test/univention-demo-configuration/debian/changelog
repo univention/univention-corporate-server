@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-9) unstable; urgency=medium
+
+  * Bug #53251: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Jun 2021 12:29:37 +0200
+
 univention-demo-configuration (8.0.0-8) unstable; urgency=medium
 
   * Bug #53251: Adjustments to new theming style; better cookie message
