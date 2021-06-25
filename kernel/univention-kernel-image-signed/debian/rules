@@ -35,7 +35,7 @@ SPACE := $(BLANK) $(BLANK)
 KERNEL := $(wildcard vmlinuz-*.efi.signed)
 VERSION := $(patsubst vmlinuz-%-amd64.efi.signed,%,$(KERNEL))
 KVER := $(subst $(SPACE),.,$(wordlist 1,2,$(subst .,$(SPACE),$(VERSION))))
-DEBVER := $(shell perl -e 'open(my $$fh, "<", $$ARGV[0]) or die;seek($$fh,526,0);read($$fh,my $$data,2);my $$off=0x200+unpack "S",$$data;seek($$fh,$$off,0);read($$fh,$$_,0x200);s/(\d+\.\d+\.).* Debian (\1\S+) .*/\2/;print' $(KERNEL))
+DEBVER := $(shell perl -e 'open(my $$fh,"<",$$ARGV[0]) or die;seek($$fh,526,0);read($$fh,my $$data,2);my $$off=0x200+unpack "S",$$data;seek($$fh,$$off,0);read($$fh,$$_,0x200);s/(\d+\.\d+\.).* Debian (\1\S+) .*/\2/s;print' $(KERNEL))
 
 %:
 	dh $@
