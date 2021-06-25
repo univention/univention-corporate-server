@@ -227,10 +227,9 @@ class object(univention.admin.handlers.simpleLdap):
 		if changes:
 			self.lo.modify(self.default_dn, changes)
 
-	def _ldap_pre_modify(self):
-		super(object, self)._ldap_pre_modify()
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+	def _ldap_pre_rename(self, newdn):
+		super(object, self)._ldap_pre_rename(newdn)
+		self.move(newdn)
 
 	def _ldap_post_move(self, olddn):
 		super(object, self)._ldap_post_move(olddn)

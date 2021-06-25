@@ -1713,6 +1713,13 @@ class object(univention.admin.handlers.simpleLdap):
 			if old_sid:
 				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid)
 
+	def _ldap_pre_rename(self, newdn):
+		super(object, self)._ldap_pre_rename(newdn)
+		try:
+			self.move(newdn)
+		finally:
+			univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
+
 	def _ldap_pre_modify(self):
 		super(object, self)._ldap_pre_modify()
 		if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
@@ -1721,13 +1728,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
-
-		if self.hasChanged('username'):
-			username = self['username']
-			try:
-				self.move(self._ldap_dn())
-			finally:
-				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 
 		if self.hasChanged("uidNumber"):
 			# this should never happen, as uidNumber is marked as unchangeable
