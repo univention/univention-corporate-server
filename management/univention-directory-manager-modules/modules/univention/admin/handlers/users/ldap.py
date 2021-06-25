@@ -203,14 +203,12 @@ class object(univention.admin.handlers.simpleLdap):
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
-	def _ldap_pre_modify(self):
-		super(object, self)._ldap_pre_modify()
-		if self.hasChanged('username'):
-			username = self['username']
-			try:
-				self.move(self._ldap_dn())
-			finally:
-				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
+	def _ldap_pre_rename(self, newdn):
+		super(object, self)._ldap_pre_rename(newdn)
+		try:
+			self.move(newdn)
+		finally:
+			univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
