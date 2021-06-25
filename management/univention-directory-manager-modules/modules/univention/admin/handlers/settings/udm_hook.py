@@ -158,6 +158,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]
 		if not diff_keys:  # check for trivial change
 			return

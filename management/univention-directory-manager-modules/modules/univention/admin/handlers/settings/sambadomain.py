@@ -249,6 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.__update_password_properties()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		self.__update_password_properties()
 
 	def __update_password_properties(self):

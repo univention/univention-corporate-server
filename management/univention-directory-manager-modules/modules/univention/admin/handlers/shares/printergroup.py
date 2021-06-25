@@ -119,6 +119,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 	def _ldap_pre_remove(self):  # check for last member in printerclass on same spoolhost
+		super(object, self)._ldap_pre_remove()
 		printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 		rm_attrib = []
 		for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):

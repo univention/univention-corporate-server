@@ -191,18 +191,22 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		self._update_portals_after_portal_change()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		if self.hasChanged('name'):
 			self._update_portals_after_name_change()
 		if self.hasChanged('portal'):
 			self._update_portals_after_portal_change()
 
 	def _ldap_post_move(self, olddn):
+		super(object, self)._ldap_post_move(olddn)
 		self._update_portals_after_name_change()
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
 			self._remove_self_from_portal(portal_obj)
 

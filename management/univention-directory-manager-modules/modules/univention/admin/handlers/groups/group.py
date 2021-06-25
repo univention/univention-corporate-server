@@ -430,6 +430,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self._check_uid_gid_uniqueness()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		self.check_for_group_recursion()
 		self.check_ad_group_type_change()
 
@@ -463,7 +464,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self._exists = 0
 			raise univention.admin.uexceptions.groupNameAlreadyUsed(name)
 
-		al = []
+		al = super(object, self)._ldap_addlist()
 		if 'posix' not in self.options:
 			al.append(['objectClass', b'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
@@ -562,6 +563,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.__update_membership()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		self.__update_membership()
 		if hasattr(self, 'groupSid'):
 			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [b''])[0].decode('ASCII'), self.groupSid)
@@ -611,6 +613,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes(group, members, newmembers)
 
 	def _ldap_post_move(self, olddn):
+		super(object, self)._ldap_post_move(olddn)
 		settings_module = univention.admin.modules.get('settings/default')
 		settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base)
 		settings_object.open()

@@ -91,7 +91,8 @@ class object(DHCPBase):
 		if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
-		return [
+		al = super(object, self)._ldap_addlist()
+		return al + [
 			('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
 		]
 

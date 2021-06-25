@@ -130,6 +130,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
 		if not self.exists() or self.hasChanged('mailAddress'):
 			try:
 				if self['mailAddress']:

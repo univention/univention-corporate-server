@@ -1661,6 +1661,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.__primary_group()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
 			self['mailForwardCopyToSelf'] = None
 

@@ -219,6 +219,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.modify(ignore_license=True)
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
 		for computer in univention.admin.modules.get('computers/computer').lookup(None, self.lo, filter_s=filter_):
 			try:

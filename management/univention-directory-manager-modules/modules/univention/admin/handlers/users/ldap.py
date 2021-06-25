@@ -204,6 +204,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		if self.hasChanged('username'):
 			username = self['username']
 			try:

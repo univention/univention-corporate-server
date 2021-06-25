@@ -177,7 +177,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), self.position.getDn())
 
 	def _ldap_addlist(self):
-		al = []
+		al = super(object, self)._ldap_addlist()
 
 		if self['mailPrimaryAddress']:
 			value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())

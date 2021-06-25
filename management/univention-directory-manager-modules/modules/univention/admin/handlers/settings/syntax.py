@@ -184,6 +184,7 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_create()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		self.__check()
 
 	def _ldap_modlist(self):
