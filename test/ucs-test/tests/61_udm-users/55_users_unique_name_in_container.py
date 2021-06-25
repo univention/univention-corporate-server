@@ -85,3 +85,11 @@ def test_container_rename_fails(udm, container_type, username):
 	container = udm.create_object(container_type, name=username + '-container', position=position)
 	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
 		udm.modify_object(container_type, dn=container, name=username)
+
+
+def test_username_matches_users_cn_can_be_created(udm, username):
+	lastname = uts.random_username()
+	user = udm.create_user(username=username, lastname=lastname, firstname='')[0]
+	udm.verify_ldap_object(user, {'cn': [lastname]})
+	position = get_position(user)
+	udm.create_user(username=lastname, position=position)
