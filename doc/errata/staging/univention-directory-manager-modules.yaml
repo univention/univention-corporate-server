@@ -9,4 +9,6 @@ desc: |
  * It is now possible to set an account activation date for users,
    e.g. via the property accountActivationDate in the UDM users/user
    module.
-bug: [53675]
+ * UDM now enforces uniqueness of the name of objects in the same subtree
+   position.
+bug: [53675, 53725]
