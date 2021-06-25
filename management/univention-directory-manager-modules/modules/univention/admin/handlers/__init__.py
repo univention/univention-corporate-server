@@ -834,7 +834,7 @@ class simpleLdap(object):
 					subobject.open()
 					subobject._move(subnewdn)
 					moved.append((subolddn, subnewdn))
-					return moved
+				return moved
 			except Exception:
 				ud.debug(ud.ADMIN, ud.ERROR, 'move: subtree move failed, try to move back')
 				for subolddn, subnewdn in moved:

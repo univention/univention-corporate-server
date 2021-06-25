@@ -208,8 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('username'):
 			username = self['username']
 			try:
-				newdn = u'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
-				self._move(newdn)
+				self.move(self._ldap_dn())
 			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 
