@@ -124,8 +124,8 @@ class object(univention.admin.handlers.simpleLdap):
 		self.alloc.append(('sid', self.machineSid))
 		acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
-		al = []
-		ocs = ['top', 'person', 'sambaSamAccount']
+		al = super(object, self)._ldap_addlist()
+		ocs = [b'top', b'person', b'sambaSamAccount']
 
 		al.append(('sambaSID', [self.machineSid]))
 		al.append(('sambaAcctFlags', [acctFlags.decode()]))
@@ -144,6 +144,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		if self.hasChanged('password'):
 			if not self['password']:
 				self.modifypassword = 0

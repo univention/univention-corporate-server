@@ -274,13 +274,16 @@ class object(univention.admin.handlers.simpleLdap):
 		self.__update_deprecated_property__portal_entries_order__of__self()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		self.__update_deprecated_property__portal_entries_order__of__self()
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		self.__update_portal_computers()
 		self.__update_deprecated_property__portal__of__portal_entry()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		self.__update_portal_computers()
 		self.__update_deprecated_property__portal__of__portal_entry()
 
@@ -393,12 +396,14 @@ class object(univention.admin.handlers.simpleLdap):
 					entry_obj.modify()
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
 			obj.open()
 			obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
 			obj.modify()
 
 	def _ldap_post_move(self, olddn):
+		super(object, self)._ldap_post_move(olddn)
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [olddn])):
 			obj.open()
 			obj['portal'] = [x for x in obj.info.get('portal', []) + [self.dn] if not self.lo.compare_dn(x, olddn)]

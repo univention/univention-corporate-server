@@ -89,8 +89,9 @@ class object(DHCPBase):
 		if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
-		return [
-			('dhcpServiceDN', self.superordinate.dn),
+		al = super(object, self)._ldap_addlist()
+		return al + [
+			('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
 		]
 
 	def _ldap_post_move(self, olddn):

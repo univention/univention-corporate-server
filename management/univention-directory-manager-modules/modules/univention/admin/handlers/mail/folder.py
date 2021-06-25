@@ -180,7 +180,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 
 	def _ldap_addlist(self):
-		al = []
+		al = super(object, self)._ldap_addlist()
 
 		if self['mailPrimaryAddress']:
 			al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())))

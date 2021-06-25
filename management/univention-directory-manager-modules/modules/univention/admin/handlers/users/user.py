@@ -1714,10 +1714,8 @@ class object(univention.admin.handlers.simpleLdap):
 				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid)
 
 	def _ldap_pre_modify(self):
-
-		if not self.oldattr.get('mailForwardCopyToSelf') \
-				and self['mailForwardCopyToSelf'] == '0' \
-				and not self['mailForwardAddress']:
+		super(object, self)._ldap_pre_modify()
+		if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
 			self['mailForwardCopyToSelf'] = None
 
 		if self.hasChanged('mailPrimaryAddress'):

@@ -128,15 +128,17 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		if self['mailAddress']:
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		if self['mailAddress'] and self.hasChanged('mailAddress'):
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 
 	def _ldap_addlist(self):
-		al = []
+		al = super(object, self)._ldap_addlist()
 		# mail address MUST be unique
 		if self['mailAddress']:
 			try:
@@ -160,7 +162,7 @@ class object(univention.admin.handlers.simpleLdap):
 					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = super(object, self)._ldap_modlist()
 		return ml
 
 

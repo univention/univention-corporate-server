@@ -185,6 +185,7 @@ class object(univention.admin.handlers.simpleLdap):
 		pass
 
 	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
 		# refuse deletion if there is still a reference
 		searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']]), scope='sub')
 		if searchResult:

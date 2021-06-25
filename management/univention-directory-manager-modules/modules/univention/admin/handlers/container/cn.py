@@ -200,6 +200,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_post_create(self):
+		super(object, self)._ldap_post_create()
 		changes = []
 
 		for (prop, attr) in self.PATH_KEYS.items():
@@ -216,10 +217,12 @@ class object(univention.admin.handlers.simpleLdap):
 			self.lo.modify(self.default_dn, changes)
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		if self.hasChanged('name'):
 			self.move(self._ldap_dn())
 
 	def _ldap_post_move(self, olddn):
+		super(object, self)._ldap_post_move(olddn)
 		settings_module = univention.admin.modules.get('settings/directory')
 		settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn=self.default_dn)
 		settings_object.open()
@@ -233,6 +236,7 @@ class object(univention.admin.handlers.simpleLdap):
 			settings_object.modify()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		changes = []
 
 		for prop, attr in self.PATH_KEYS.items():
@@ -245,6 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.lo.modify(self.default_dn, changes)
 
 	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
 		changes = []
 
 		self.open()

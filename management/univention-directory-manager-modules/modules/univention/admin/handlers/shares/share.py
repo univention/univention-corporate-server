@@ -648,7 +648,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
 				raise univention.admin.uexceptions.invalidOperation(_('It is not valid to set %s as a share.') % self['path'])
 
-		return []
+		return super(object, self)._ldap_addlist()
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -656,6 +656,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 	def _ldap_pre_remove(self):
+		super(object, self)._ldap_pre_remove()
 		if not self.options:
 			self.open()
 		if 'nfs' in self.options:

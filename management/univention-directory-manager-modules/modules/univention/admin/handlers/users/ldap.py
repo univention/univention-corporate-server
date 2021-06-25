@@ -201,6 +201,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self._confirm_locks()
 
 	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
 		if self.hasChanged('username'):
 			username = self['username']
 			try:
