@@ -277,12 +277,9 @@ define([
 		_tmpCellHeader: null,
 
 		// ContainerWidget that holds all buttons
-		_toolbar: null,
+		_globalActionButtonsContainer: null,
 
 		hideContextActionsWhenNoSelection: true,
-
-		updateActionsMenuVisibility: true,
-
 
 		_header: null,
 
@@ -517,25 +514,26 @@ define([
 			this._header = new ContainerWidget({
 				baseClass: 'umcGridHeader'
 			});
-			this._toolbar = new ContainerWidget({
-				baseClass: 'umcGrid__toolbar',
-				'class': 'dijitDisplayNone'
+
+			this._actionButtonsWrapper = new ContainerWidget({
+				'class': 'umcGrid__actionButtonsWrapper'
 			});
-			this._contextWrapper = new ContainerWidget({
-				'class': 'umcGrid__contextWrapper'	
+			this._globalActionButtonsContainer = new ContainerWidget({
+				'class': 'umcGrid__globalActionButtonsContainer'
 			});
-			this._contextActionsToolbar = new ContainerWidget({
-				baseClass: 'umcGrid__contextActionsToolbar',
-				'class': 'dijitDisplayNone'
+			this._contextActionButtonsContainer = new ContainerWidget({
+				'class': 'umcGrid__contextActionButtonsContainer'
 			});
-			var statusMessageWrapper = new ContainerWidget({
+
+			// add a wrapper around _statusMessage Text because
+			// text-overflow: ellipsis does not work on direct flex children
+			this.statusMessageContainer = new ContainerWidget({
 				'class': 'umcGridStatusWrapper'
 			});
 			this._statusMessage = new Text({
 				'class': 'umcGridStatus',
 				content: this.initialStatusMessage
 			});
-			statusMessageWrapper.addChild(this._statusMessage);
 			var tooltip = new Tooltip({
 				label: this._statusMessage.content,
 				connectId: [this._statusMessage.domNode]
@@ -544,10 +542,12 @@ define([
 				tooltip.set('label', new_);
 			});
 
-			this._contextWrapper.addChild(this._contextActionsToolbar);
-			this._contextWrapper.addChild(statusMessageWrapper);
-			this._header.addChild(this._toolbar);
-			this._header.addChild(this._contextWrapper);
+			this._header.addChild(this._actionButtonsWrapper);
+			this._actionButtonsWrapper.addChild(this._globalActionButtonsContainer);
+			this._actionButtonsWrapper.addChild(this._contextActionButtonsContainer);
+			this._header.addChild(this.statusMessageContainer);
+			this.statusMessageContainer.addChild(this._statusMessage);
+
 			this.addChild(this._header);
 		},
 
@@ -596,7 +596,7 @@ define([
 				oldButtonClass = 'ucsNormalButton';
 				newButtonClass = 'ucsTextButton';
 			}
-			array.forEach([this._toolbar, this._contextActionsToolbar], function(toolbar) {
+			array.forEach([this._globalActionButtonsContainer, this._contextActionButtonsContainer], function(toolbar) {
 				array.forEach(toolbar.getChildren(), function(button) {
 					domClass.replace(button.domNode, newButtonClass, oldButtonClass);
 				});
@@ -609,7 +609,7 @@ define([
 				if (action.canExecute) {
 					var enabled = action.canExecute(items);
 					this._globalActionsMenuMap[action.name].set('disabled', !enabled);
-					array.forEach(this._toolbar.getChildren(), function(button) {
+					array.forEach(this._globalActionButtonsContainer.getChildren(), function(button) {
 						if (button.name === action.name) {
 							button.set('disabled', !enabled);
 						}
@@ -814,7 +814,7 @@ define([
 			this.actions = actions;
 
 			// clear old actions
-			array.forEach([this._toolbar, this._contextActionsToolbar, this._contextMenu], function(iobj) {
+			array.forEach([this._globalActionButtonsContainer, this._contextActionButtonsContainer, this._contextMenu], function(iobj) {
 				array.forEach(iobj.getChildren(), function(ichild) {
 					iobj.removeChild(ichild);
 					ichild.destroyRecursive();
@@ -824,10 +824,6 @@ define([
 
 			this._setGlobalActions();
 			this._setContextActions();
-
-			domClass.toggle(this._header.domNode, 'dijitDisplayNone', !this.actions.length);
-			domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', this._toolbar.getChildren().length === 0);
-			domClass.add(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
 
 			// redraw the columns
 			if (doSetColumns !== false) {
@@ -846,7 +842,6 @@ define([
 		_setContextActions: function() {
 			this._contextActionsMenu = new Menu({});
 			this.own(this._contextActionsMenu);
-			this._alwaysShowContextActionsMenu = false;
 			this._contextActionsMenuMap = {};
 
 			var contextActions = this._getContextActions();
@@ -856,9 +851,7 @@ define([
 			var contextNonStandard = array.filter(contextActions, function(action) {
 				return !action.isStandardAction;
 			});
-			if (contextNonStandard.length) {
-				this._alwaysShowContextActionsMenu = true;
-			}
+			this._alwaysShowContextActionsMenu = contextNonStandard.length > 0;
 
 			var contextActionsSorted = contextStandard.concat(contextNonStandard);
 			array.forEach(contextActionsSorted, function(iaction) {
@@ -915,7 +908,7 @@ define([
 						btn.own(tooltip);
 						} catch (error) {}
 					}
-					this._contextActionsToolbar.addChild(btn);
+					this._contextActionButtonsContainer.addChild(btn);
 				}
 
 				var menuItem = new MenuItem(lang.mixin({}, props, getCallback('multi-')));
@@ -930,7 +923,7 @@ define([
 				label: _('more'),
 				dropDown: this._contextActionsMenu
 			});
-			this._contextActionsToolbar.addChild(this._contextActionsMenuButton);
+			this._contextActionButtonsContainer.addChild(this._contextActionsMenuButton);
 		},
 
 		_getGlobalActions: function() {
@@ -963,7 +956,7 @@ define([
 
 			var buttons = render.buttons(buttonsCfg);
 			array.forEach(buttons.$order$, function(ibutton) {
-				this._toolbar.addChild(ibutton);
+				this._globalActionButtonsContainer.addChild(ibutton);
 				var menuItem = new MenuItem({
 					iconClass: ibutton.iconClass,
 					label: ibutton.label,
@@ -973,11 +966,11 @@ define([
 				this._globalActionsMenu.addChild(menuItem);
 			}, this);
 			this._globalActionsMenuButton = new _DropDownButton({
-				'class': 'dijitDisplayNone',
-				label: _('more'),
+				'class': 'dijitDisplayNone ucsTextButton',
+				label: _('Actions'),
 				dropDown: this._globalActionsMenu
 			});
-			this._toolbar.addChild(this._globalActionsMenuButton);
+			this._globalActionButtonsContainer.addChild(this._globalActionsMenuButton, 0);
 		},
 
 		_updateActionsVisibilityDeferred: null,
@@ -996,13 +989,13 @@ define([
 		},
 
 		__updateActionsVisibility: function() {
-			domClass.remove(this._toolbar.domNode, 'dijitDisplayNone');
-			domClass.remove(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
+			domClass.remove(this._contextActionButtonsContainer.domNode, 'dijitDisplayNone');
 
-			var globalActionsToCheckForWidth = [];
-			array.forEach(this._toolbar.getChildren(), lang.hitch(this, function(button) {
+			// reset visibility of global actions
+			var visibleGlobalButtons = [];
+			array.forEach(this._globalActionButtonsContainer.getChildren(), lang.hitch(this, function(button) {
 				if (button === this._globalActionsMenuButton) {
-					domClass.remove(this._globalActionsMenuButton.domNode, 'dijitDisplayNone');
+					tools.toggleVisibility(button, false);
 					return;
 				}
 
@@ -1010,116 +1003,62 @@ define([
 					var showButton = typeof button.showAction === 'function' ? button.showAction() : button.showAction;
 					if (!showButton) {
 						button.set('visible', false);
-						domClass.add(this._globalActionsMenuMap[button.name].domNode, 'dijitDisplayNone');
+						tools.toggleVisibility(this._globalActionsMenuMap[button.name].domNode, false);
 						return;
 					}
 				}
 
 				button.set('visible', true);
-				globalActionsToCheckForWidth.push(button);
+				visibleGlobalButtons.push(button);
 			}));
 
-			var contextActionsToCheckForWidth = [];
-			array.forEach(this._contextActionsToolbar.getChildren(), lang.hitch(this, function(button) {
+			// reset visibility of context actions and save 'isStandardAction' buttons in array.
+			// they will be hidden (and displayed in more menu) if there is not enough space
+			var visibleContextButtons = [];
+			array.forEach(this._contextActionButtonsContainer.getChildren(), lang.hitch(this, function(button) {
 				if (button === this._contextActionsMenuButton) {
-					domClass.remove(this._contextActionsMenuButton.domNode, 'dijitDisplayNone');
+					tools.toggleVisibility(button, this._alwaysShowContextActionsMenu);
 					return;
 				}
 
 				button.set('visible', true);
-				contextActionsToCheckForWidth.push(button);
+				tools.toggleVisibility(this._contextActionsMenuMap[button.name], false);
+				visibleContextButtons.push(button);
 			}));
 
 			window.requestAnimationFrame(lang.hitch(this, function() {
-				var headerWidth = geometry.getContentBox(this._header.domNode).w;
-				var statusWidth = geometry.getMarginBox(this._statusMessage.domNode).w;
-				var changeVisibility = [/* [widgetToHide, shouldBeHidden, isButton] */];
-
-				// global actions
-				var toolbarExtents = geometry.getPadExtents(this._toolbar).w + geometry.getMarginExtents(this._toolbar.domNode).w;
-				var widthForGlobalButtons = headerWidth - toolbarExtents;
-				var widthRemainingForGlobalButtons = widthForGlobalButtons;
-
-				// show or hide 'more' button for global actions
-				var widthOfAllGlobalButtons = 0;
-				array.forEach(globalActionsToCheckForWidth, function(button) {
-					widthOfAllGlobalButtons += geometry.getMarginBox(button.domNode).w;
+				var buttonsFit = lang.hitch(this, function() {
+					var buttonsContainerWidth = this._actionButtonsWrapper.domNode.clientWidth + 1;
+					// + 1 to circumvent problems with clientWidth being rounded to the nearest pixel
+					// e.g. buttonsContainerWidth=300.4px wide and usedWidth=300.6px wide.
+					// This problem occurs when the statusMessage shrinks. Even though the ratio for flex-shrink
+					// is 1000 for statusMessage and only 1 for _actionButtonsWrapper, the _actionButtonsWrapper will
+					// shrink a tiny bit.
+					var globalButtonsWidth = this._globalActionButtonsContainer.domNode.clientWidth;
+					var contextButtonsWidth = this._contextActionButtonsContainer.domNode.clientWidth;
+					var usedWidth = globalButtonsWidth + contextButtonsWidth;
+					return usedWidth <= buttonsContainerWidth;
 				});
-				var showGlobalMoreMenu = widthOfAllGlobalButtons > widthForGlobalButtons;
-				if (showGlobalMoreMenu) {
-					widthRemainingForGlobalButtons -= geometry.getMarginBox(this._globalActionsMenuButton.domNode).w;
+
+				if (visibleContextButtons.length > 0 && !buttonsFit()) {
+					//// first we reduce context buttons
+					tools.toggleVisibility(this._contextActionsMenuButton, true); // show the more button in case it wasn't (!this._alwaysShowContextActionsMenu)
+					do {
+						var button = visibleContextButtons.pop();
+						button.set('visible', false);
+						tools.toggleVisibility(this._contextActionsMenuMap[button.name], true);
+					} while (visibleContextButtons.length > 0 && !buttonsFit())
 				}
 
-				// move buttons which do not fit in the 'more' menu
-				var numsOfGlobalStandardButtons = 0;
-				array.forEach(globalActionsToCheckForWidth, lang.hitch(this, function(button) {
-					var buttonWidth = geometry.getMarginBox(button.domNode).w;
-					if (buttonWidth <= widthRemainingForGlobalButtons) {
-						changeVisibility.push([this._globalActionsMenuMap[button.name], true, false]);
-						widthRemainingForGlobalButtons -= buttonWidth;
-						numsOfGlobalStandardButtons++;
-					} else {
-						changeVisibility.push([button, true, true]);
-						changeVisibility.push([this._globalActionsMenuMap[button.name], false, false]);
-					}
-				}));
-
-
-				// context actions
-				var contextActionsToolbarExtents = geometry.getPadExtents(this._contextActionsToolbar).w + geometry.getMarginExtents(this._contextActionsToolbar.domNode).w;
-				var widthForContextButtons = headerWidth - contextActionsToolbarExtents - statusWidth;
-				var widthRemainingForContextButtons = widthForContextButtons;
-
-				// show or hide 'more' button for global actions
-				var showContextMoreMenu = this._alwaysShowContextActionsMenu;
-				if (!showContextMoreMenu) {
-					var widthOfAllContextButtons = 0;
-					array.forEach(contextActionsToCheckForWidth, lang.hitch(this, function(button) {
-						widthOfAllContextButtons += geometry.getMarginBox(button.domNode).w;
-					}));
-					showContextMoreMenu = widthOfAllContextButtons > widthForContextButtons;
-				}
-				if (showContextMoreMenu) {
-					widthRemainingForContextButtons -= geometry.getMarginBox(this._contextActionsMenuButton.domNode).w;
-				}
-
-				// move buttons which do not fit in the 'more' menu
-				var numsOfContextStandardButtons = 0;
-				array.forEach(contextActionsToCheckForWidth, lang.hitch(this, function(button) {
-					var buttonWidth = geometry.getMarginBox(button.domNode).w;
-					if (buttonWidth <= widthRemainingForContextButtons) {
-						changeVisibility.push([this._contextActionsMenuMap[button.name], true, false]);
-						widthRemainingForContextButtons -= buttonWidth;
-						numsOfContextStandardButtons++;
-					} else {
-						changeVisibility.push([button, true, true]);
-						changeVisibility.push([this._contextActionsMenuMap[button.name], false, false]);
-					}
-				}));
-
-
-				if (this.updateActionsMenuVisibility) {
-					array.forEach(changeVisibility, function(i /* [widget, shouldBeHidden, isButton] */) {
-						if (i[2]) {
-							i[0].set('visible', !i[1]);
-						} else {
-							domClass.toggle(i[0].domNode, 'dijitDisplayNone', i[1]);
-						}
+				if (visibleGlobalButtons.length > 1 && !buttonsFit()) {
+					//// swap global buttons with menu button
+					array.forEach(visibleGlobalButtons, function(button) {
+						button.set('visible', false);
 					});
-					domClass.toggle(this._globalActionsMenuButton.domNode, 'dijitDisplayNone', !showGlobalMoreMenu);
-					domClass.toggle(this._contextActionsMenuButton.domNode, 'dijitDisplayNone', !showContextMoreMenu);
-
-					this._globalActionsMenuButton.set('label', numsOfGlobalStandardButtons === 0 ? _('Actions') : _('more'));
-					this._contextActionsMenuButton.set('label', numsOfContextStandardButtons === 0 ? _('Actions') : _('more'));
-				} else {
-					domClass.add(this._globalActionsMenuButton.domNode, 'dijitDisplayNone');
-					domClass.toggle(this._contextActionsMenuButton.domNode, 'dijitDisplayNone', !this._alwaysShowContextActionsMenu);
-
-					this._globalActionsMenuButton.set('label', _('more'));
-					this._contextActionsMenuButton.set('label', _('more'));
+					tools.toggleVisibility(this._globalActionsMenuButton, true);
 				}
 
-				this._updateToolbarVisibility();
+				this._updateContextActionsVisibility();
 			}));
 		},
 
@@ -1130,6 +1069,7 @@ define([
 
 			this._selectionChangedTimeout = setTimeout(lang.hitch(this, function() {
 				this._updateContextActions();
+				this._updateContextActionsVisibility();
 				this._updateFooterContent();
 
 				this._selectionChangedTimeout = null;
@@ -1137,7 +1077,7 @@ define([
 		},
 
 		_getContextActionItems: function() {
-			return this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._contextActionsMenu.getChildren());
+			return this._contextActionButtonsContainer.getChildren().concat(this._contextMenu.getChildren()).concat(this._contextActionsMenu.getChildren());
 		},
 
 		_updateContextActions: function() {
@@ -1161,17 +1101,19 @@ define([
 				}
 			}, this);
 
-			this._updateToolbarVisibility();
+			var disableContextActionsMenuButton = array.every(this._contextActionsMenu.getChildren(), lang.hitch(this, function(item) {
+				return item.get('disabled');
+			}));
+			this._contextActionsMenuButton.set('disabled', disableContextActionsMenuButton);
 		},
 
-		_updateToolbarVisibility: function() {
+		_updateContextActionsVisibility: function() {
 			var itemsSelected = this.getSelectedIDs().length > 0;
 			domClass.toggle(this._header.domNode, 'umcGridHeader--items-selected', itemsSelected);
 			if (this.activeViewMode === 'tile') {
-				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', false);
-				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', true);
+				tools.toggleVisibility(this._contextActionButtonsContainer, false);
 			} else {
-				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected && this.hideContextActionsWhenNoSelection);
+				tools.toggleVisibility(this._contextActionButtonsContainer, itemsSelected || !this.hideContextActionsWhenNoSelection);
 			}
 		},
 
@@ -1228,7 +1170,7 @@ define([
 			//this._updateDisabledItems();
 
 			// disable all actions
-			array.forEach(this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch(this, function(widget) {
+			array.forEach(this._globalActionButtonsContainer.getChildren().concat(this._contextActionButtonsContainer), lang.hitch(this, function(widget) {
 				if (widget instanceof Button || widget instanceof _DropDownButton) {
 					widget.set('disabled', disabled);
 				}

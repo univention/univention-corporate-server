@@ -9,34 +9,37 @@
 	.umcGridHeader
 		flex: 0 0 auto
 		display: flex
-		flex-wrap: wrap
 		padding: spacing(1)
 
-	.umcGridHeader .dijitButton
+	.umcGridHeader .ucsButton:not(:last-child)
 		margin-right: spacing(1)
 
-	.umcGrid__contextWrapper
-		max-width: 100%
-		flex: 1 0 auto
+	.umcGrid__actionButtonsWrapper
+		flex: 0 1 auto
 		display: flex
-		justify-content: flex-end
+		overflow: hidden
+
+	.umcGrid__globalActionButtonsContainer,
+	.umcGrid__contextActionButtonsContainer
+		display: flex
+
+	.umcGrid__contextActionButtonsContainer
+		padding-left: spacing(1)
 
 	.umcGridStatusWrapper
-		flex: 0 1 auto
+		flex: 0 1000 auto
+		margin-left: auto
 		display: flex
 		align-items: center
 		font-size: var(--font-size-5)
 		color: var(--font-color-contrast-middle)
 		padding: spacing(1)
 		overflow: hidden
-
+		min-width: 4rem
 	.umcGridStatus
 		white-space: nowrap
 		overflow: hidden
 		text-overflow: ellipsis
-
-	.umcGrid__contextActionsToolbar
-		flex: 1 0 auto
 
 	.umcGridRowIcon
 		margin-right: 0.5em
