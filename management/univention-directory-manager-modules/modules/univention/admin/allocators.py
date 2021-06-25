@@ -190,7 +190,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		except KeyError:
 			return value
 
-		if not lo.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope):
+		if all(ldap.dn.str2dn(x)[0][0][0] not in attrs for x in lo.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)):
 			return value
 		raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
 	else:
