@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-python
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * UDM now enforces uniqueness of the name of objects in the same subtree
+   position.
+bug: [53102]
