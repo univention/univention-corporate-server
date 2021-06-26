@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-4) unstable; urgency=medium
+
+  * Bug #46080: renamed e-mail related attribute descriptions
+
+ -- Toni Röhmeyer <roehmeyer@univention.de>  Sat, 26 Jun 2021 09:25:59 +0200
+
 univention-directory-manager-modules (15.0.11-3) unstable; urgency=medium
 
   * Bug #53102: ensure uniqueness of object names in the same subtree
