@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: libgcrypt20
+fix: 1.7.6-2+deb9u4
+desc: |
+ This update addresses the following issue:
+ * mishandles ElGamal encryption because it lacks exponent blinding to address
+   a side-channel attack against mpi_powm (CVE-2021-33560)
+bug: [53521]
+cve:
+- CVE-2021-33560
