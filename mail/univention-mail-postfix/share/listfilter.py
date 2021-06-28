@@ -63,7 +63,7 @@ def debug(msg, *args):
 	if _do_debug:
 		msg = "listfilter: {}".format(msg % args)
 		if options.test:
-			sys.stderr.write("{}\n".format(msg))
+			print("{}".format(msg), file=sys.stderr)
 		else:
 			syslog.syslog(syslog.LOG_DEBUG, msg)
 
@@ -189,7 +189,7 @@ if __name__ == '__main__':
 	if options.test:
 		_do_debug = True
 		if not options.sender or not options.recipient:
-			sys.stderr.write("sender and recipient are required\n")
+			print("sender and recipient are required", file=sys.stderr)
 			parser.print_help()
 			sys.exit(1)
 		attr["sender"] = options.sender
@@ -209,10 +209,10 @@ if __name__ == '__main__':
 				if attr.get("request", None) == "smtpd_access_policy":
 					action = listfilter(attr)
 					debug("action=%s", action)
-					sys.stdout.write("action=%s\n\n" % action)
+					print("action=%s\n" % action)
 				else:
-					sys.stderr.write("unknown action in %s\n" % attr)
-					sys.stdout.write("defer_if_permit Service temporarily unavailable\n")
+					print("unknown action in %s" % att, file=sys.stderrr)
+					print("defer_if_permit Service temporarily unavailable")
 					syslog.syslog(syslog.LOG_ERR, "unknown action in '{}', exiting.".format(attr))
 					sys.exit(1)
 				attr = {}
