@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-147) unstable; urgency=medium
+
+  * Bug #53526: Use apt-key verify to verify App Center cache files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Jun 2021 17:18:44 +0200
+
 univention-appcenter (8.0.11-146) unstable; urgency=medium
 
   * Bug #52852: Fix traceback when using App Center once App ini file with install
