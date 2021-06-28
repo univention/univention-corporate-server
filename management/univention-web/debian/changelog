@@ -2,6 +2,7 @@ univention-web (4.0.1-42) unstable; urgency=medium
 
   * Bug #53465: replace Expire-caching with Cache-Control "must-
     revalidate, max-age=..."
+  * Bug #53465: call umc_frontend_new_hash also in univention-web postinst
 
  -- Florian Best <best@univention.de>  Mon, 28 Jun 2021 17:36:34 +0200
 

@@ -1,9 +1,9 @@
 #! /bin/bash
 #
 # Univention Web
-#  postinst file for the univention-web-js debian package
+#  postinst file for the univention-web-style debian package
 #
-# Copyright 2017-2021 Univention GmbH
+# Copyright 2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -34,20 +34,5 @@
 
 . /usr/share/univention-lib/umc.sh
 umc_frontend_new_hash
-
-a2enconf univention-web.conf
-a2enmod expires
-
-ucr set "ucs/server/languages/en_US?English" \
-	"ucs/server/languages/de_DE?Deutsch" \
-	"ucs/server/languages/en_GB?English (United Kingdom)" \
-	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
-	"ucs/server/languages/de_CH?Deutsch (Schweiz)" \
-	"umc/web/hooks/univention-web-js?default_menu_entries"
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	# new installation
-	deb-systemd-invoke restart apache2.service
-fi
 
 exit 0
