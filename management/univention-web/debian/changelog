@@ -1,3 +1,10 @@
+univention-web (3.0.6-4) unstable; urgency=medium
+
+  * Bug #37720: call umc_frontend_new_hash also in univention-web
+    postinst
+
+ -- Florian Best <best@univention.de>  Mon, 28 Jun 2021 17:56:54 +0200
+
 univention-web (3.0.6-3) unstable; urgency=medium
 
   * Bug #37720: replace Expire-caching with Cache-Control "must-
