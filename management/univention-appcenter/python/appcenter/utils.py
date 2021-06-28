@@ -414,40 +414,17 @@ def get_locale():
 	return locale
 
 
-def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileName=None):
+def gpg_verify(filename):
 
-	if not keyringFileName:
-		keyringFileName = '/usr/share/keyrings/univention-archive-key-ucs-4x.gpg'
+	cmd = (
+		'apt-key',
+		'verify',
+		filename + '.gpg',
+		filename,
+	)
 
-	gpg_homedirname = tempfile.mkdtemp()
-	try:
-
-		cmd = (
-			'gpg',
-			'--no-options',
-			'--no-default-keyring', '--keyring', keyringFileName,
-			'--batch', '--quiet', '--no-tty',
-			# '--logger-file', '/dev/null'
-			'--with-colons', '--utf8-strings',
-			'--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
-			'--no-random-seed-file',
-			'--trust-model', 'always',
-			'--homedir', gpg_homedirname,
-			'--verify',
-		)
-
-		if detached_sig_filename:
-			cmd += (detached_sig_filename,)
-
-		cmd += (filename,)
-
-		p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
-		if filename == '-':
-			stdout, stderr = p.communicate(content)
-		else:
-			stdout, stderr = p.communicate()
-	finally:
-		rmdir(gpg_homedirname)
+	p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+	stdout, stderr = p.communicate()
 	return (p.returncode, stderr)
 
 
