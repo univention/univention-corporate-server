@@ -1171,17 +1171,16 @@ univention-system-setup-boot uss/server/role string memberserver
 
 		<section id="profile:netinstaller">
 			<title>Network-based PXE installations with Univention Net Installer</title>
-			<note>
-				<para>
-					This chapter is not up-to-date with UCS 5.
-				</para>
-			</note>
 			<para>
 				Network-based, profile-based installations via PXE are performed with the Univention Net Installer, which can be set up using the package <package>univention-net-installer</package>.
-				In addition, DHCP, TFTP and WWW servers are required.
+				This installs the required TFTP server and WWW server configuration.
+				In addition a DHCP server is required, which is provided by the package <package>univention-dhcp</package>.
 				If the DHCP server and the PXE server of the Univention Net Installer are operated on separate systems, the PXE server must be assigned via a DHCP boot policy.
 			</para>
-			<note>
+			<programlisting language="sh">
+univention-install univention-net-installer univention-dhcp
+			</programlisting>
+			<sidebar>
 				<para>
 					The installation process consists of multiple steps, which contact different services and servers:
 				</para>
@@ -1217,7 +1216,7 @@ univention-system-setup-boot uss/server/role string memberserver
 						</simpara>
 					</listitem>
 				</orderedlist>
-			</note>
+			</sidebar>
 			<para>
 				Univention Net Installer supports both the interactive and profile-based installation.
 				Any questions not answered in the pre-seed file forces the installer to interactive mode.
@@ -1233,28 +1232,34 @@ univention-system-setup-boot uss/server/role string memberserver
 			<section id="profile:netinstaller:local">
 				<title>Local repository</title>
 				<para>
-					The local repository must be initialized using the DVD (image) of the targeted UCS release.
-					This is done by running the command <command>univention-repository-create</command>, which copies the corresponding PXE kernel and installer to <filename class="directory">/var/lib/univention-client-boot/installer/<replaceable>release</replaceable>/</filename>.
+					The local repository must first be initialized once using the command <command>univention-repository-create</command>.
+					Since UCS 5.0-0 the PXE kernel and installer must be copied manually from the ISO image to the correct location in <filename class="directory">/var/lib/univention-client-boot/installer/</filename>.
 				</para>
+				<programlisting language="sh">
+mount /dev/cdrom /media/cdrom0
+install -m644 /media/cdrom0/netboot/linux \
+	/var/lib/univention-client-boot/
+install -m644 /media/cdrom0/netboot/initrd.gz \
+	/var/lib/univention-client-boot/
+umount /media/cdrom0
+				</programlisting>
 				<para>
-					It is safe to run <command>univention-repository-create</command> again, which is for example required to update the installer to a newer version of UCS.
+					Instead of mounting the DVD a downloaded ISO image can also be mounted by using <command>mount -o loop,ro /path/to/UCS.iso /media/cdrom0</command>.
+					Alternatively the files can be downloaded from <ulink url="http://updates.software-univention.de/pxe/5.0-0/amd64/gtk/debian-installer/amd64/"/>:
+				</para>
+				<programlisting language="sh"><![CDATA[
+cd /var/lib/univention-client-boot/
+PXE='http://updates.software-univention.de/pxe/'
+PXE+=$(ucr filter <<<'@%@version/version@%@-@%@version/patchlevel@%@')
+PXE+=/amd64/gtk/debian-installer/amd64
+wget -O linux "$PXE/linux"
+wget -O initrd.gz "$PXE/initrd.gz"
+				]]></programlisting>
+				<para>
+					The procedure should be repeated for each new release.
+					Otherwise new installations will still start with an older release, which might require extra time for updating.
 					For more information on local repositories see the software deployment chapter of the <biblioref linkend="ucs-manual"/>.
 				</para>
-				<important>
-					<para>
-						Afterwards the repository must be updated at least once using the command <command>univention-repository-update net</command>.
-						This is required as the DVD does not contain the <filename>Release</filename> files and their cryptographic signatures.
-					</para>
-					<para>
-						The command will download all previous UCS minor and patch-level releases of the same major branch.
-						Each minor release requires several gigabytes of storage space in <filename class="directory">/var/lib/univention-repository/</filename>.
-					</para>
-					<para>
-						Verify the &ucsUCRV; <envar>repository/mirror/recreate_packages</envar> is set to <literal>no</literal>.
-						Otherwise the <filename>Packages</filename> files will be re-built, which invalidates the cryptographic signatures.
-						Locally re-built index files will also have different package priorities as the <emphasis>overwrite</emphasis> information is not publicly available.
-					</para>
-				</important>
 			</section>
 
 			<section id="profile:netinstaller:public">
@@ -1272,7 +1277,6 @@ univention-system-setup-boot uss/server/role string memberserver
 							Install the <systemitem class="service">HTTP</systemitem> capable boot loader <filename>lpxelinux.0</filename>
 						</para>
 						<programlisting language="sh">
-univention-install univention-dhcp univention-net-installer
 ln -s /usr/lib/PXELINUX/lpxelinux.0 \
 	/var/lib/univention-client-boot/
 						</programlisting>
