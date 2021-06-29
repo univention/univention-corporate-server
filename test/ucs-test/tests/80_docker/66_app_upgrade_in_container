@@ -42,6 +42,13 @@ joinscript_save_current_version
 
 		try:
 			app1.install()
+			cmd_update_apt_keyring = [
+				'univention-app', 'shell', app1.app_name,
+				'curl', 'https://updates.software-univention.de/univention-archive-key-ucs-5x.gpg',
+				'-o', '/etc/apt/trusted.gpg.d/univention-archive-key-ucs-5x.gpg',
+			]
+			print('Add UCS 5 apt key')
+			subprocess.check_call(cmd_update_apt_keyring)
 			app1.verify()
 
 			ucr = ConfigRegistry()
@@ -58,10 +65,16 @@ joinscript_save_current_version
 			# [2019-05-23 04:16:24.077748]          config registry variable update43/checkfilesystems to "no".
 			# [2019-05-23 04:16:24.077952]          But be aware that this is not recommended!
 			# but we are willing to take risk, so ignore
-			cmd = ['univention-app', 'shell', app1.app_name, 'ucr', 'set', 'update43/checkfilesystems=no']
+			cmd_ignore_filesystem = ['univention-app', 'shell', app1.app_name, 'ucr', 'set', 'update43/checkfilesystems=no']
 			print('Ignore "Not enough space" warning')
-			print(cmd)
-			subprocess.call(cmd)
+			print(cmd_ignore_filesystem)
+			subprocess.call(cmd_ignore_filesystem)
+			cmd_clean_apt_cache = [
+				'univention-app', 'shell', app1.app_name,
+				'rm', '-rf', '/var/lib/apt/lists/',
+			]
+			print('Clean apt lists cache')
+			subprocess.check_call(cmd_clean_apt_cache)
 
 			app2.upgrade()
 			app2.verify()
