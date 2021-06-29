@@ -1,3 +1,9 @@
+ucs-test (9.0.7-38) unstable; urgency=medium
+
+  * Bug #53528: added 03_check_release_signature_do_not_ignore_me
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jun 2021 15:42:40 +0200
+
 ucs-test (9.0.7-37) unstable; urgency=medium
 
   * Bug #53362: add test for UMC translation file registration
