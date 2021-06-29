@@ -83,6 +83,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ libfaketime,
  python,
  python-apt,
  python-lxml,

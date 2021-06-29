@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check release file signatures (check if apt-get update still works 5 years into the future)
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+export LC_ALL=C
+
+libfaketime="/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1"
+valid_for='+5y'
+
+test -f $libfaketime || fail_fast 1 "libfaketime ($libfaketime) not found"
+
+# check if apt-get update in now+5y works
+if LD_PRELOAD=$libfaketime FAKETIME="$valid_for" apt-get update 2>&1 | grep '^[WE]:'; then
+	apt-key list
+	fail_fast 110 "warnings/error during apt-get update"
+fi
+
+# check if apt-get update in now+50y fails (just to test the test)
+if ! LD_PRELOAD=$libfaketime FAKETIME="+50y" apt-get update 2>&1 | grep -q '^[WE]:'; then
+	fail_fast 110 "did not fail 50 years into the future, key should have expired by than"
+fi
+
+exit 0
