@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 13.0.4-3A~4.4.0.202106221502
+fix: 15.0.11-4A~5.0.0.202106261717
 desc: |
  This update addresses the following issue:
  * Users/ldap objects could not be created if the mspolicy
@@ -11,5 +11,5 @@ desc: |
    missing displayname. This has been fixed.
  * UDM now enforces uniqueness of the name of objects in the same subtree
    position.
- * This fix improves some descriptions of E-mail-related attributes in the UMC.
+ * The descriptions of email related attributes have been improved.
 bug: [53339, 53102, 46080]
