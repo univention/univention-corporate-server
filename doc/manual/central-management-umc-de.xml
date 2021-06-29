@@ -107,7 +107,7 @@
 		<section id="central:theming:custom">
 			<title>Erstellen eines eigenen <foreignphrase>Themes</foreignphrase>/Anpassen des Designs von &ucsWeb;n</title>
 			<para>
-				Um ein benutzerdefiniertes Thema zu erstellen, ist es ratsam,
+				Um ein benutzerdefiniertes <foreignphrase>Theme</foreignphrase> zu erstellen, ist es ratsam,
 				<filename>/usr/share/univention-web/themes/dark.css</filename> oder
 				<filename>/usr/share/univention-web/themes/light.css</filename> nicht zu bearbeiten, da die Änderungen
 				bei einem Upgrade von UCS überschrieben werden können.
