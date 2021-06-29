@@ -1,3 +1,9 @@
+ucs-test (9.0.7-39) unstable; urgency=medium
+
+  * Bug #53529: fix 80_docker/66_app_upgrade_in_container
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Jun 2021 16:25:15 +0200
+
 ucs-test (9.0.7-38) unstable; urgency=medium
 
   * Bug #53528: added 03_check_release_signature_do_not_ignore_me
