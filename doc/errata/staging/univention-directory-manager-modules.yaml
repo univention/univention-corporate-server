@@ -2,13 +2,11 @@ product: ucs
 release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
-src: univention-lib
-fix: 8.0.1-43A~4.4.0.202106291403 
+src: univention-directory-manager-modules 
+fix: 14.0.20-12A~4.4.0.202106291412
 desc: |
  This update addresses the following issue(s):
- * The Caching settings of Univention Management Console have been enhanced
-   and relaxed to fix Caching issues after the upgrade to UCS 5.0.
  * ucs_registerLDAPExtension from the Univention shell function library
    now allows the option umcmessagecatalog. This option can be used to
    supply translation files in GNU message catalog format for the UMC.
-bug: [37720, 53362]
+bug: [53362]
