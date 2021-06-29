@@ -1,3 +1,9 @@
+univention-web (3.0.6-5) unstable; urgency=medium
+
+  * Bug #37720: restore commented out Expire settings
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jun 2021 14:21:38 +0200
+
 univention-web (3.0.6-4) unstable; urgency=medium
 
   * Bug #37720: call umc_frontend_new_hash also in univention-web
