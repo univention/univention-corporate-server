@@ -91,10 +91,10 @@
 
 
 // headerText/helpText spacing
-.umc .umcPageHeader + .umcPageHelpText
+.umc .umcPageHeader + *
 	margin-top: spacing(1)
-.umc .umcPageHelpText:not(:last-child)
-	margin-bottom: spacing(2)
+.umc .umcPageHelpText + *
+	margin-top: spacing(2)
 .umc .umcPageNavContent:last-child
 	margin-bottom: spacing(2)
 
