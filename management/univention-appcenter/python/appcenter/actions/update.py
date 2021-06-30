@@ -95,10 +95,6 @@ class Update(UniventionAppAction):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
-	def get_app_info(self, app):
-		json_apps = self._load_index_json(app.get_app_cache_obj())
-		return json_apps.get(app.component_id)
-
 	def _appcenter_caches(self, args):
 		if args.appcenter_server:
 			return [AppCenterCache(server=args.appcenter_server)]
@@ -172,11 +168,10 @@ class Update(UniventionAppAction):
 				raise UpdateSignatureVerificationFailed(fname)
 
 	def _download_apps(self, app_cache):
-		filenames = ['index.json.gz']
+		filenames = []
 		if not ucr_is_false('appcenter/index/verify'):
-			filenames.append('index.json.gz.gpg')
-			filenames.append('all.tar.gpg')
-		if self._download_files(app_cache, filenames):
+			filenames = ['all.tar.gpg']
+		if not filenames or self._download_files(app_cache, filenames):
 			appcenter_host = app_cache.get_server()
 			if appcenter_host.startswith('https'):
 				appcenter_host = 'http://%s' % appcenter_host[8:]
@@ -196,7 +191,15 @@ class Update(UniventionAppAction):
 					self._uncompress_archive(app_cache, os.path.join(app_cache.get_cache_dir(), '.all.tar.gz'))
 			finally:
 				os.chdir(cwd)
-			self._verify_file(all_tar_file)
+			try:
+				self._verify_file(all_tar_file)
+			except UpdateSignatureVerificationFailed:
+				# we remove this file
+				# 1. to not "accidentally" use it (although this should not happen, as it is only extracted in the next line)
+				# 2. to signal the app center to download it again in the next run
+				os.unlink(all_tar_file)
+				os.unlink(all_tar_file + '.gpg')
+				raise
 			self._extract_archive(app_cache)
 			return True
 		return False
@@ -204,6 +207,9 @@ class Update(UniventionAppAction):
 	@possible_network_error
 	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
 		url = os.path.join(base_url, 'meta-inf', ucs_version or '', filename)
+		target = os.path.join(cache_dir, '.%s' % filename)
+		if not os.path.exists(target):
+			etag = None
 		self.log('Downloading "%s"...' % url)
 		headers = {}
 		if etag:
@@ -218,7 +224,7 @@ class Update(UniventionAppAction):
 			raise
 		etag = response.headers.get('etag')
 		content = response.read()
-		with open(os.path.join(cache_dir, '.%s' % filename), 'wb') as f:
+		with open(target, 'wb') as f:
 			f.write(content)
 		return etag
 
@@ -282,10 +288,3 @@ class Update(UniventionAppAction):
 		os.chmod(app_cache.get_cache_dir(), 0o755)
 		# `touch all_tar_file` to get a new cache in case it was created in between extraction
 		os.utime(all_tar_file, None)
-
-	def _load_index_json(self, app_cache):
-		index_json_gz_filename = os.path.join(app_cache.get_cache_dir(), '.index.json.gz')
-		self._verify_file(index_json_gz_filename)
-		with gzip_open(index_json_gz_filename, 'rb') as fgzip:
-			content = fgzip.read()
-			return loads(content)

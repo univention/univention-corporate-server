@@ -423,17 +423,15 @@ def get_locale():
 
 
 def gpg_verify(filename):
-
 	cmd = (
 		'apt-key',
 		'verify',
 		filename + '.gpg',
 		filename,
 	)
-
 	p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
 	stdout, stderr = p.communicate()
-	return (p.returncode, stderr)
+	return (p.returncode, stderr.decode('utf-8'))
 
 
 def get_local_fqdn():
