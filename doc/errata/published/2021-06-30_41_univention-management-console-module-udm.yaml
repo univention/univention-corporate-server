@@ -10,3 +10,5 @@ desc: |
    The default value and visibility of widgets in the user creation wizard
    can now be configured via UCR.
 bug: [53456]
+erratum: 41
+announced: 2021-06-30
