@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-saml
-fix: 
+fix: 7.0.4-16A~5.0.0.202106301606
 desc: |
  This update addresses the following issue(s):
  * The Single-Sign-On login page was not affected by the ucs/web/theme
