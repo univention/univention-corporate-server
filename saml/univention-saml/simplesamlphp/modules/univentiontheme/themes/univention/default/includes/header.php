@@ -77,6 +77,7 @@ if ($json != NULL) {
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="/univention/theme.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/login.css" />
 		<link rel="stylesheet" href="/univention/login/css/custom.css"/>
 <?php
