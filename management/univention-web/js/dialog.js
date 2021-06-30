@@ -411,7 +411,6 @@ define([
 					// we need to parse the html code with the dojo parser
 					parser.parse(widget.domNode);
 				}
-				domClass.add(widget.domNode, 'umcPopup');
 				if (button instanceof Array) {
 					dialog.confirm(widget, button, title).then(function(response) {
 						deferred.resolve(response);

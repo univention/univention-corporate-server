@@ -1857,8 +1857,7 @@ define([
 
 			_dialog = new Dialog({
 				title: _('Delete objects'),
-				content: form,
-				'class': 'umcPopup'
+				content: form
 			});
 			_dialog.show();
 		},
