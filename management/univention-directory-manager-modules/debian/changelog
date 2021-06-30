@@ -1,4 +1,4 @@
-univention-directory-manager-modules (14.0.20-12) unstable; urgency=medium
+univention-directory-manager-modules (14.0.20-13) unstable; urgency=medium
 
   * Bug #53362: UMC translation file registration
 

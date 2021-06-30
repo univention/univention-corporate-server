@@ -576,7 +576,7 @@ def remove_umcmessagecatalogs(attrs):
 def _umcmessagecatalog_ldap_attributes(attrs):
 	translationfile_ldap_attribute_and_tag_prefix = "univentionUMCMessageCatalog;entry-"
 	umcmessagecatalogs = {}
-	for ldap_attribute in attrs.keys():
+	for ldap_attribute in attrs:
 		if ldap_attribute.startswith(translationfile_ldap_attribute_and_tag_prefix):
 			filename = ldap_attribute.split(translationfile_ldap_attribute_and_tag_prefix, 1)[1]
 			umcmessagecatalogs[filename] = attrs.get(ldap_attribute)[0]
