@@ -17,8 +17,11 @@ import os
 import glob
 import time
 import subprocess
+
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
+
+from univention.testing.udm import UCSTestUDM
 from univention.testing.ucr import UCSTestConfigRegistry
 import univention.config_registry
 from univention.testing.ucs_samba import wait_for_drs_replication
@@ -87,7 +90,7 @@ def wait_for_ucr(iterations, admin_name, ucr_test):
 
 
 def test_rename_domain_users():
-	with UCSTestConfigRegistry() as ucr_test:
+	with UCSTestConfigRegistry() as ucr_test, UCSTestUDM() as udm:
 		ucr_test.load()
 
 		server_role = ucr_test.get('server/role')
@@ -103,7 +106,13 @@ def test_rename_domain_users():
 			print('##################################################################\n')
 			print(old_admin_dn)
 			print(new_admin_name)
-			subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)])
+			cmd = ['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)]
+			if os.path.exists('/etc/ldap.secret'):
+				cmd.extend(['--binddn', 'cn=admin,%s' % (ldap_base,), '--bindpwdfile', '/etc/ldap.secret'])
+			else:
+				second_admin = udm.create_user(append={'groups': ['cn=Domain Admins,cn=groups,%s' % (ldap_base,)]})[0]
+				cmd.extend(['--binddn', second_admin, '--bindpwd', 'univention'])
+			subprocess.call(cmd)
 			utils.wait_for_replication_and_postrun()
 
 			# Check UCR Variable
