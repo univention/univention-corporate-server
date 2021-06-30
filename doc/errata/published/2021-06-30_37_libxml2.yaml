@@ -24,3 +24,5 @@ cve:
 - CVE-2021-3518
 - CVE-2021-3537
 - CVE-2021-3541
+erratum: 37
+announced: 2021-06-30
