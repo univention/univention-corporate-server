@@ -6,5 +6,6 @@ src: univention-mail-postfix
 fix: 14.0.1-2A~5.0.0.202106300946
 desc: |
  This update addresses the following issue(s):
- * listfilter.py did not respect the UCRV use_sasl_username=yes/no when it is executed with the --test option. This fix resolves that issue.
+ * listfilter.py did not respect the UCRV use_sasl_username=yes/no when
+   it is executed with the --test option. This fix resolves that issue.
 bug: [53463]
