@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The Single-Sign-On login page was not affected by the ucs/web/theme
+   UCR variable. This has been fixed.
+bug: [53533]
