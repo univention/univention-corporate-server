@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.1-2) unstable; urgency=medium
+
+  * Bug #53463: fix listfilter test with use_sasl_username
+
+ -- Tobias Wenzel <wenzel@univention.de>  Wed, 30 Jun 2021 09:35:43 +0200
+
 univention-mail-postfix (14.0.1-1) unstable; urgency=medium
 
   * Bug #52255: Migrate univention-mail-postfix to Python 3

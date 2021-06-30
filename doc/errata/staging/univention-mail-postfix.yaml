@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-mail-postfix
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * <envar>listfilter.py</envar> did not respect the UCRV <envar>use_sasl_username=yes/no</envar> when it is executed with the <envar>--test</envar> option. This fix resolves that issue.
+bug: [53463]
