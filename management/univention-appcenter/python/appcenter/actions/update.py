@@ -165,7 +165,8 @@ class Update(UniventionAppAction):
 
 	def _verify_file(self, fname):
 		if not ucr_is_false('appcenter/index/verify'):
-			(rc, gpg_error) = gpg_verify(fname)
+			detached_sig_path = fname + '.gpg'
+			(rc, gpg_error) = gpg_verify(fname, detached_sig_path)
 			if rc:
 				if gpg_error:
 					self.fatal(gpg_error)
