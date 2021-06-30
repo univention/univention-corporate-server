@@ -86,8 +86,8 @@ class DebianPackage():
 		deb_package = os.path.join(self._package_tempdir, deb_file)
 		return deb_package
 
-	def __create_file_from_buffer(self, path, file_buffer):
-		f = open(path, 'w')
+	def __create_file_from_buffer(self, path, file_buffer, write_mode='w'):
+		f = open(path, write_mode)
 		f.write(file_buffer)
 		f.close()
 
@@ -101,12 +101,12 @@ class DebianPackage():
 		self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer)
 		os.chmod(self.__unjoin_file, 0o755)
 
-	def create_usr_share_file_from_buffer(self, share_filename, schema_buffer):
+	def create_usr_share_file_from_buffer(self, share_filename, schema_buffer, write_mode='w'):
 		share_file = os.path.join(self._package_path, 'usr/share/%s' % self._package_name, share_filename)
 		dirpath = os.path.dirname(share_file)
 		if not os.path.exists(dirpath):
 			os.makedirs(dirpath)
-		self.__create_file_from_buffer(share_file, schema_buffer)
+		self.__create_file_from_buffer(share_file, schema_buffer, write_mode)
 
 	def create_debian_file_from_buffer(self, debian_filename, debian_buffer):
 		deb_file = os.path.join(self._package_debian_path, debian_filename)
