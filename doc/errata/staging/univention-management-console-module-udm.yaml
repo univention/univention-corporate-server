@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console-module-udm
-fix: 
+fix: 9.0.15-9A~4.4.0.202106242222
 desc: |
  This update addresses the following issue(s):
  * The user creation wizard now shows the mailPrimaryAdress if it is required.
