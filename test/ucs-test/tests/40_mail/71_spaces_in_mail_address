@@ -10,7 +10,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address: Not a valid email address!'
+EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address (mailbox): Not a valid email address!'
 
 
 def main():
