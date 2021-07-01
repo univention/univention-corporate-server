@@ -23,7 +23,7 @@ import re
 if __name__ == '__main__':
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
-	with udm_test.UCSTestUDM() as udm:
+	def test__dns_ns_record_check_resolve(self, udm):
 		partentzone = '%(domainname)s' % ucr
 		partentzone = partentzone
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
