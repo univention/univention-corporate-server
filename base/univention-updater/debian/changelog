@@ -1,3 +1,9 @@
+univention-updater (15.0.3-68) unstable; urgency=low
+
+  * Bug #47860: Update UCRV descriptions and move defaults
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 01 Jul 2021 07:17:38 +0200
+
 univention-updater (15.0.3-67) unstable; urgency=medium
 
   * Bug #53429: remove iso from univention-repository-create

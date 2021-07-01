@@ -17,28 +17,32 @@ Type=bool
 Categories=service-software-management
 
 [update/warning]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird bei automatischen Aktualisierungen eine Warnmeldung auf der Konsole ausgegeben (etwa wenn ein Reboot ansteht). Ist die Variable nicht gesetzt, wird keine Warnung ausgegeben.
-Description[en]=If this variable is set to 'yes', a warning message is printed to the console during automatic updates (e.g. if a reboot is pending). If the variable is unset, no warning is printed.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird bei automatischen Aktualisierungen eine Warnmeldung auf der Konsole ausgegeben (etwa wenn ein Reboot ansteht).
+Description[en]=If this variable is set to 'yes', a warning message is printed to the console during automatic updates (e.g. if a reboot is pending).
 Type=str
 Categories=service-software-management
+Default=no
 
 [update/warning/coloured]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Update-Warnmeldung (siehe 'update/warning') farbig ausgegeben. Ist die Variable nicht gesetzt, erfolgt die Ausgabe einfarbig.
-Description[en]=If this Variable is set to 'yes', the update warning '(see 'update/warning') is printed coloured. If the variable is unset, the message is written in monochrome.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Update-Warnmeldung (siehe 'update/warning') farbig ausgegeben.
+Description[en]=If this Variable is set to 'yes', the update warning '(see 'update/warning') is printed coloured.
 Type=str
 Categories=service-software-management
+Default=no
 
 [update/warning/lang]
 Description[de]=Ist diese Variable auf 'de' gesetzt, wird die Update-Warnmeldung (siehe 'update/warning') auf Deutsch ausgegeben. Ist die Variable nicht gesetzt, erfolgt die Ausgabe auf Englisch.
 Description[en]=If this Variable is set to 'yes', the update warning '(see 'update/warning') is printed in German. If the variable is unset, the message is written in English.
 Type=str
 Categories=service-software-management
+Default=default
 
 [update/warning/tty]
-Description[de]=Ist die Update-Warnmeldung aktiviert (siehe 'update/warning'), wird die Update-Warnmeldung auf die hier konfigurierten TTY-Devices ausgegeben.
-Description[en]=If the update warning message is activated (siehe 'update/warning'), the update warning is printed to the TTY devices configured here.
+Description[de]=Ist die Update-Warnmeldung aktiviert (siehe 'update/warning'), wird die Update-Warnmeldung auf die hier konfigurierten Konsolen (Separiert durch Leerzeichen) ausgegeben.
+Description[en]=If the update warning message is activated (siehe 'update/warning'), the update warning is printed to the consoles (separated by spaces) configured here.
 Type=str
 Categories=service-software-management
+Default=/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7
 
 [update/custom/preup]
 Description[de]=Der Dateiname eines Programms/Skripts, welches vor jedem Release-Update ausgeführt wird. Ist die Variable nicht gesetzt, wird kein zusätzliches Programm aufgerufen.
@@ -53,40 +57,46 @@ Type=str
 Categories=service-software-management
 
 [update/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt, so gilt '2'.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-4. If the variable is unset, '2' applies.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-4.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-4.
 Type=int
 Categories=service-software-management
+Default=2
 
 [online/repository/clean]
-Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit dem gespiegelte und nicht mehr benötigte Repository-Inhalte entfernt werden können. Ist die Variable nicht gesetzt, wird das Skript nicht erzeugt.
-Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generated. Executing this shell script removes mirrored repository content, which is no longer used. If the variable is unset, the script is not generated.
+Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit dem gespiegelte und nicht mehr benötigte Repository-Inhalte entfernt werden können.
+Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generated. Executing this shell script removes mirrored repository content, which is no longer used.
 Type=bool
 Categories=service-software-management
+Default=no
 
 [repository/online]
 Description[de]=Ist diese Option aktiviert, wird das Online-Repository verwendet.
 Description[en]=If this option is activated, the online repository is used.
 Type=bool
 Categories=service-software-management
+Default=no
 
 [repository/online/port]
-Description[de]=Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist. Ist die Variable nicht gesetzt, wird '80' verwendet.
-Description[en]=This variable configures the TCP port under which the online repository is reachable. If the variable is unset, '80' is used.
+Description[de]=Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist.
+Description[en]=This variable configures the TCP port under which the online repository is reachable.
 Type=int
 Categories=service-software-management
+Default=80
 
 [repository/online/sources]
-Description[de]=Die apt-Installationsquellen werden basierend auf den Einstellungen repository/online/* generiert. Ist diese Option und die Option 'repository/online/unmaintained' aktiviert, wird neben den Programmpakete auch der Quellcode über apt bereitgestellt (apt-get source QUELLPAKETNAME). Ist die Variable nicht gesetzt, werden keine Quellpakete bereitgestellt.
-Description[en]=The apt installation sources are generated based on the repository/online/* settings. If this option and the option 'repository/online/unmaintained' is activated, the source code is provided through apt in addition to the program packages (apt-get source SOURCEPACKAGENAME). If the variable is unset, no source code is provided.
+Description[de]=Die apt-Installationsquellen werden basierend auf den Einstellungen repository/online/* generiert. Ist diese Option aktiviert, wird neben den Programmpakete auch der Quellcode über apt bereitgestellt ('apt-get source QUELLPAKETNAME').
+Description[en]=The apt installation sources are generated based on the repository/online/* settings. If this option is activated, the source code is provided through apt in addition to the program packages ('apt-get source SOURCEPACKAGENAME').
 Type=bool
 Categories=service-software-management
+Default=no
 
 [repository/online/httpmethod]
-Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
-Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
+Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Falls der Server 'HEAD' nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
+Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the server does not support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
 Type=str
 Categories=service-software-management
+Default=HEAD
 
 [repository/online/component/.*]
 Description[de]=Ergänzend zum Standard-Repository können weitere Komponenten eingebunden werden. Zusätzliche Komponenten werden in der Regel durch das Univention App Center eingebunden, können aber auch manuell in Univention Configuration Registry konfiguriert werden. Zur Einbindung einer Komponente wird die Option 'repository/online/component/KOMPONENTENNAME' aktiviert. Zusätzliche Parameter können nach dem Schema 'repository/online/component/KOMPONENTENNAME/OPTION=WERT' gesetzt werden.
@@ -107,8 +117,8 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/unmaintained]
-Description[de]=Auch für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden (siehe 'repository/online/unmaintained'). Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt. Ist die Variable nicht gesetzt, wird die globale Einstellung verwendet.
-Description[en]=Repository components also differentiate between 'maintained' and 'unmaintained' (see 'repository/online/unmaintained'). Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included. If the variable is unset, the global setting is used.
+Description[de]=Für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden. Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt.
+Description[en]=Repository components differentiate between 'maintained' and 'unmaintained'. Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included.
 Type=bool
 Categories=service-software-management
 
@@ -171,6 +181,7 @@ Description[de]=Ist diese Option aktiviert wird der Inhalt des Online-Repository
 Description[en]=If this option is enabled, the content of the online repository is mirrored to a local repository.
 Type=bool
 Categories=service-software-management
+Default=no
 
 [repository/mirror/server]
 Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier der Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird <https://updates.software-univention.de/> verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
@@ -179,10 +190,11 @@ Type=str
 Categories=service-software-management
 
 [repository/mirror/port]
-Description[de]=Der TCP-Port des Repository-Servers, von dem gespiegelt wird (siehe 'repository/mirror/server') kann hier konfiguriert werden. Ist die Variable nicht gesetzt, wird '80' verwendet.
-Description[en]=The TCP port of the repository server which is mirrored (see 'repository/mirror/server') can be configured here. If the variable is unset, '80' is used.
+Description[de]=Der TCP-Port des Repository-Servers, von dem gespiegelt wird (siehe 'repository/mirror/server') kann hier konfiguriert werden.
+Description[en]=The TCP port of the repository server which is mirrored (see 'repository/mirror/server') can be configured here.
 Type=int
 Categories=service-software-management
+Default=80
 
 [repository/mirror/prefix]
 Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier so ein Pfad für den Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
@@ -197,16 +209,18 @@ Type=bool
 Categories=service-software-management
 
 [repository/mirror/basepath]
-Description[de]=In diesem Verzeichnis wird das lokale Repository gespeichert. Ist die Variable nicht gesetzt, wird /var/lib/univention-repository verwendet.
-Description[en]=This directory contains the local repository. If the variable is unset, /var/lib/univention-repository is used.
+Description[de]=In diesem Verzeichnis wird das lokale Repository gespeichert.
+Description[en]=This directory contains the local repository.
 Type=str
 Categories=service-software-management
+Default=/var/lib/univention-repository
 
 [repository/mirror/threads]
 Description[de]=Die maximale Anzahl der gleichzeitigen Downloads während der Repository-Spiegelung (siehe 'repository/mirror').
 Description[en]=The maximum amount of parallel downloads during repository mirroring (see 'repository/mirror').
 Type=int
 Categories=service-software-management
+Default=10
 
 [repository/mirror/version/start]
 Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die niedrigste UCS-Version, die von dem Mirror bezogen wird.
@@ -222,40 +236,46 @@ Categories=service-software-management
 ReadOnly=yes
 
 [repository/mirror/httpmethod]
-Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit bei der Spiegelung des Repositorys die Verfügbarkeit von Updates getestet wird. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
-Description[en]=This variable configures the HTTP method used during repository mirroring to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
+Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit bei der Spiegelung des Repositorys die Verfügbarkeit von Updates getestet wird. Falls der Server 'HEAD' nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
+Description[en]=This variable configures the HTTP method used during repository mirroring to test for new updates. If the server does not support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
 Type=str
 Categories=service-software-management
+Default=HEAD
 
 [update/check/cron/enabled]
-Description[de]=Ist diese Option aktiviert, wird über einen Cron-Job regelmässig geprüft, ob neue UCS-Updates verfügbar sind. Sind neue Updates verfügbar, wird z.B. in der UMC ein Hinweis angezeigt. Das Prüfintervall wird über die Variable 'update/check/cron/entry' konfiguriert. Ist die Variable nicht gesetzt, wird nicht auf Updates geprüft.
-Description[en]=If this option is activated, continuous checks for new UCS updates are enabled through a cron job. If new updates are available, a note is shown in the UMC. The check interval can be configured using the variable 'update/check/cron/entry'. If the variable is unset, no update checks are made.
+Description[de]=Ist diese Option aktiviert, wird über einen Cron-Job regelmässig geprüft, ob neue UCS-Updates verfügbar sind. Sind neue Updates verfügbar, wird z.B. in der UMC ein Hinweis angezeigt. Das Prüfintervall wird über die Variable 'update/check/cron/entry' konfiguriert.
+Description[en]=If this option is activated, continuous checks for new UCS updates are enabled through a cron job. If new updates are available, a note is shown in the UMC. The check interval can be configured using the variable 'update/check/cron/entry'.
 Type=bool
 Categories=service-software-management
+Default=yes
 
 [update/check/cron/entry]
-Description[de]=Definiert das Intervall, in dem automatisch nach verfügbaren Updates für dieses System gesucht wird. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'. Ist die Variable nicht gesetzt, erfolgt die Prüfung alle fünf Minuten.
-Description[en]=Defines the interval for checking whether updates are available for this system. The configuration is done in Cron syntax, see 'man 5 crontab'. If the variable is unset, the check occurs every five minutes.
+Description[de]=Definiert das Intervall, in dem automatisch nach verfügbaren Updates für dieses System gesucht wird. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
+Description[en]=Defines the interval for checking whether updates are available for this system. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=service-software-management
+Default=5 *  * * *
 
 [update/check/boot/enabled]
-Description[de]=Ist diese Option aktiviert, wird während des Systemstarts geprüft, ob neue UCS-Updates verfügbar sind. Sind neue Updates verfügbar, wird z.B. in der UMC ein Hinweis angezeigt. Ist die Variable nicht gesetzt, wird nicht auf Updates geprüft.
-Description[en]=If this option is activated, it is checked during system boot whether new UCS updates are available. If new updates are available, a note is shown in the UMC. If the variable is unset, no update checks are made.
+Description[de]=Ist diese Option aktiviert, wird während des Systemstarts geprüft, ob neue UCS-Updates verfügbar sind. Sind neue Updates verfügbar, wird z.B. in der UMC ein Hinweis angezeigt.
+Description[en]=If this option is activated, it is checked during system boot whether new UCS updates are available. If new updates are available, a note is shown in the UMC.
 Type=bool
 Categories=service-software-management
+Default=yes
 
 [update/check/cron/debug]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der regelmässigen Update-Prüfung (siehe 'update/check/cron/enabled') ausgegeben.
 Description[en]=If this variable is set to 'yes', debug output during the regular update check (see 'update/check/cron/enabled') is generated.
 Type=bool
 Categories=service-software-management
+Default=no
 
 [update/check/boot/debug]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der Update-Prüfung zum Systemstart (siehe 'update/check/boot/enabled') ausgegeben.
 Description[en]=If this variable is set to 'yes', debug output during the update check during startup (see 'update/check/boot/enabled') is generated.
 Type=str
 Categories=service-software-management
+Default=no
 
 [update/available]
 Description[de]=Diese Variable wird automatisch von verschiedenen UCS-Komponenten gesetzt und ausgewertet. Sie gibt an, ob ein UCS-Update verfügbar ist. Diese Variable sollte nicht manuell gesetzt werden.
@@ -275,104 +295,132 @@ Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet
 Description[en]=This command is used internally by the UCS package management tools to configure remaining packages, which have not be fully configured.
 Type=str
 Categories=service-software-management
+Default=dpkg --configure -a
 
 [update/commands/distupgrade]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Update der installierten Pakete durchzuführen.
 Description[en]=This command is used internally by the UCS package management tools to perform a update of all installed packages.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 dist-upgrade
 
 [update/commands/distupgrade/simulate]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein simuliertes Update der installierten Pakete durchzuführen.
 Description[en]=This command is used internally by the UCS package management tools to perform a simulated update of all installed packages.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s dist-upgrade
 
 [update/commands/install]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket ohne Benutzerinteraktion zu installieren.
 Description[en]=This command is used internally by the UCS package management tools to install a package without user interaction.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install
 
 [update/commands/install/interactive]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket zu installieren.
 Description[en]=This command is used internally by the UCS package management tools to install a package.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir install
 
 [update/commands/remove]
+Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket ohne Benutzerinteraktion zu entfernen.
+Description[en]=This command is used internally by the UCS package management tools to remove a package without user interaction.
+Type=str
+Categories=service-software-management
+Default=apt-get --assume-yes remove
+
+[update/commands/remove/interactive]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket zu entfernen.
 Description[en]=This command is used internally by the UCS package management tools to remove a package.
 Type=str
 Categories=service-software-management
+Default=apt-get remove
 
 [update/commands/show]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um die Metainformationen zu einem Paket abzufragen.
 Description[en]=This command is used internally by the UCS package management tools to gather the meta information on a package.
 Type=str
 Categories=service-software-management
+Default=apt-cache show
 
 [update/commands/update]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um die Liste der verfügbaren Pakete zu aktualisieren.
 Description[en]=This command is used internally by the UCS package management tools to update the list of available packages.
 Type=str
 Categories=service-software-management
+Default=apt-get update
 
 [update/commands/upgrade]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Update der installierten Pakete durchzuführen. Dabei werden keine neuen Pakete hinzugefügt.
 Description[en]=This command is used internally by the UCS package management tools to perform a update of all installed packages. No packages are added during the update.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 upgrade
 
 [update/commands/upgrade/simulate]
 Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein simuliertes Update der installierten Pakete durchzuführen. Dabei werden keine neuen Pakete hinzugefügt.
 Description[en]=This command is used internally by the UCS package management tools to perform a simulated update of all installed packages. No packages are added during the update.
 Type=str
 Categories=service-software-management
+Default=apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -s upgrade
 
 [updater/identify]
-Description[de]=Ein Identifizierungsmerkmal des Updaters. Diese Variable muss im Regelfall nicht angepasst werden.
-Description[en]=An identification property of the updater. This variable doesn't usually need to changed.
+Description[de]=Ein Identifizierungsmerkmal des Updaters. Diese Information ist Teil der statistischen Erhebung von Univention und muss im Regelfall nicht angepasst werden.
+Description[en]=An identification property of the updater. This information is part of the statistic collected by Univention and doesn't usually need to changed.
 Type=str
 Categories=Misc
 
 [uuid/license]
-Description[de]=Die eindeutige ID der installierten UCS-Lizenz. Diese Variable sollte nicht geändert werden.
-Description[en]=The unique ID of the installed UCS license. This variable should not be modified.
+Description[de]=Die eindeutige ID der installierten UCS-Lizenz. Diese Information ist Teil der statistischen Erhebung von Univention und sollte nicht geändert werden.
+Description[en]=The unique ID of the installed UCS license. This information is part of the statistic collected by Univention and should not be modified.
+Type=str
+Categories=Misc
+ReadOnly=yes
+
+[updater/statistics]
+Description[de]=Eine kodierte Liste der installierten Komponenten und Apps. Diese Information ist Teil der statistischen Erhebung von Univention und sollte nicht geändert werden.
+Description[en]=An encoded list of installed components and apps. This information is part of the statistic collected by Univention and should not be modified.
 Type=str
 Categories=Misc
 ReadOnly=yes
 
 [uuid/system]
-Description[de]=Die eindeutige ID des Systems. Diese Variable sollte nicht geändert werden.
-Description[en]=The unique ID of the system. This variable should not be modified.
+Description[de]=Die eindeutige ID des Systems. Diese Information ist Teil der statistischen Erhebung von Univention und sollte nicht geändert werden.
+Description[en]=The unique ID of the system. This information is part of the statistic collected by Univention and should not be modified.
 Type=str
 Categories=Misc
 ReadOnly=yes
 
 [repository/online/verify]
-Description[de]=Ist diese Option aktiviert, werden nur PGP-signierte Updater-Skripte heruntergeladen und verwendet. Ist die Variable nicht gesetzt, wird die Signatur geprüft.
-Description[en]=If this option is activated, only PGP-signed updater scripts are downloaded and used. If the variable is unset, the signature are checked.
+Description[de]=Ist diese Option aktiviert, werden nur PGP-signierte Updater-Skripte heruntergeladen und verwendet.
+Description[en]=If this option is activated, only PGP-signed updater scripts are downloaded and used.
 Type=bool
 Categories=service-software-management
+Default=yes
 
 [repository/mirror/verify]
-Description[de]=Ist diese Option aktiviert, werden nur PGP-signierte Updater-Skripte gespiegelt. Ist die Variable nicht gesetzt, wird die Signatur geprüft.
-Description[en]=If this option is activated, only PGP-signed updater scripts are mirrored. If the variable is unset, the signature are checked.
+Description[de]=Ist diese Option aktiviert, werden nur PGP-signierte Updater-Skripte gespiegelt.
+Description[en]=If this option is activated, only PGP-signed updater scripts are mirrored.
 Type=bool
 Categories=service-software-management
+Default=yes
 
 [repository/online/timeout]
-Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [30s]
-Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [30s]
+Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird.
+Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed.
 Type=int
 Categories=service-software-management
+Default=30
 
 [repository/mirror/timeout]
-Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [30s]
-Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [30s]
+Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird.
+Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed.
 Type=int
 Categories=service-software-management
+Default=30
 
 [repository/credentials/.*/uris]
 Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Diese Variable enthält eine mit Leerzeichen separierte Liste der Hostnamen, für welche diese Credentials gelten. '.*' muß dem 'Realm-Namen' entsprechen.
@@ -393,7 +441,8 @@ Type=string
 Categories=service-software-management
 
 [license/extended_maintenance/disable_warning]
-Description[de]=Deaktiviert die Anzeige von Warnungen, wenn für die aktuelle UCS-Version keine Sicherheitsaktualisierungen mehr veröffentlicht werden. Standardmäßig wird eine Warnung angezeigt.
-Description[en]=Deactivates the display of warnings when no more security updates will be released for the current UCS version. By default, a warning will be shown.
+Description[de]=Deaktiviert die Anzeige von Warnungen, wenn für die aktuelle UCS-Version keine Sicherheitsaktualisierungen mehr veröffentlicht werden.
+Description[en]=Deactivates the display of warnings when no more security updates will be released for the current UCS version.
 Type=bool
 Categories=service-software-management
+Default=no

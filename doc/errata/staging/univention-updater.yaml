@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-updater
+fix: 15.0.3-68
+desc: |
+ This update addresses the following issue:
+ * Most UCR variable descriptions have been updated and the default values
+   were moved to the new UCR Default layer.
+bug: [47860]
