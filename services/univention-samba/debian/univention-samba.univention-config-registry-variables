@@ -407,14 +407,14 @@ Type=str
 Categories=service-samba
 
 [samba/homedirpath]
-Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird, wird mit der Variable 'samba/homedirserver' konfiguriert. Diese Variable konfiguriert das Verzeichnis auf diesem Server, in dem das Heimatverzeichnis des Benutzers angelegt wird. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
-Description[en]=The server from which the home directory of the user is mounted is configured with the variable 'samba/homedirserver'. This variable configures the directory on that server where the home directory of the user resides. With '%U' the current username is expanded and used. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird, wird mit der Variable 'samba/homedirserver' konfiguriert. Diese Variable konfiguriert das Verzeichnis auf diesem Server, in dem das Heimatverzeichnis des Benutzers angelegt wird. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Werden 'samba/homedirserver' und 'samba/homedirpath' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted is configured with the variable 'samba/homedirserver'. This variable configures the directory on that server where the home directory of the user resides. With '%U' the current username is expanded and used. If 'samba/homedirserver' and 'samba/homedirpath' are set to 'local', no home directory is mounted.
 Type=str
 Categories=service-samba
 
 [samba/homedirserver]
-Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
-Description[en]=The server from which the home directory of the user is mounted. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird. Werden 'samba/homedirserver' und 'samba/homedirpath' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted. If 'samba/homedirserver' and 'samba/homedirpath' are set to 'local', no home directory is mounted.
 Type=str
 Categories=service-samba
 
