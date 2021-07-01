@@ -1,3 +1,9 @@
+ucs-test (10.0.6-6) unstable; urgency=medium
+
+  * Bug #53538: migrate 67_udm-dns to pytest
+
+ -- Florian Best <best@univention.de>  Thu, 01 Jul 2021 19:24:31 +0200
+
 ucs-test (10.0.6-5) unstable; urgency=medium
 
   * Bug #53529: rm 80_docker/56_app_nscd_stop
