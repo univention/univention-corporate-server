@@ -28,6 +28,12 @@ if __name__ == '__main__':
 			appcenter.update()
 
 			app.install()
+			cmd_clean_apt_cache = [
+				'univention-app', 'shell', app.app_name,
+				'rm', '-rf', '/var/lib/apt/lists/',
+			]
+			print('Clean apt lists cache')
+			subprocess.check_call(cmd_clean_apt_cache)
 
 			app.verify()
 
