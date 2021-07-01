@@ -347,7 +347,7 @@ define([
 				else if (typeof el == "object" && el.layout) {
 					el.$refTitlePane$ = new TitlePane({
 						title: el.label,
-						'class': 'umcFormLevel' + iLevel,
+						'class': 'umcFormLevel' + iLevel + (el.class ? (' ' + el.class) : ''),
 						toggleable: el.toggleable === undefined ? (iLevel < 1) : el.toggleable,
 						open: undefined === el.open ? true : el.open,
 						content: this.layout(el.layout, widgets, buttons, iLevel + 1)
