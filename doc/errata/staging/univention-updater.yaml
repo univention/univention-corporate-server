@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-updater
-fix: 15.0.3-68
+fix: 15.0.3-68A~5.0.0.202107020820
 desc: |
  This update addresses the following issue:
  * Most UCR variable descriptions have been updated and the default values
