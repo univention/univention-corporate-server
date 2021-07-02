@@ -174,11 +174,6 @@ define([
 			return this._alertDialogDeferred;
 		},
 
-		centerAlertDialog: function() {
-			this._alertDialog._relativePosition = null;
-			this._alertDialog._position();
-		},
-
 		confirm: function(/*String|_WidgetBase*/ message, /*Object[]*/ options, /*String?*/ title) {
 			// summary:
 			//		Popup a confirmation dialog with a given message string and a
