@@ -202,14 +202,6 @@ define([
 			this.addChild(this._container);
 		},
 
-		close: function() {
-			// summary:
-			//		Hides the dialog and destroys it after the fade-out animation.
-			this.hide().then(lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
-		},
-
 		onConfirm: function(/*String*/ choice) {
 			// summary:
 			//		Event that is fired when the user confirms the dialog
