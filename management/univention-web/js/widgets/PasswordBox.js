@@ -59,7 +59,7 @@ define([
 				var revealToggle = new ToggleButton({
 					iconClass: 'eye',
 					checkedIconClass: 'eye-off',
-					'class': 'ucsIconButton',
+					'class': 'ucsIconButton umcPasswordBox__toggleButton',
 					tabindex: '-1'
 				});
 				revealToggle.placeAt(this, 'first');
