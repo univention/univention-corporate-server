@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-11) unstable; urgency=medium
+
+  * Bug #53453: check uniqueness of groupname when renaming a group
+
+ -- Florian Best <best@univention.de>  Thu, 08 Jul 2021 00:36:39 +0200
+
 univention-directory-manager-modules (15.0.11-10) unstable; urgency=medium
 
   * Bug #53553: fix broken LDAP filter generation containing bytestring-

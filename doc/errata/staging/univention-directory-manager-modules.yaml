@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 15.0.11-10
+fix: 15.0.11-11
 desc: |
  This update addresses the following issue:
  * Users/ldap objects could not be created if the mspolicy
@@ -18,4 +18,5 @@ desc: |
  * Since the Python 3 migration broken LDAP filter where generated which
    contained bytestring-representations for UDM property names which are
    used in filters. The values are now correctly decoded.
-bug: [53339, 53102, 46080, 53532, 53553]
+ * The uniqueness of groupnames is now also checked when renaming a group.
+bug: [53339, 53102, 46080, 53532, 53553, 53453]
