@@ -79,6 +79,7 @@ module_search_filter = univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionGroup'),
 ])
 
+
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -240,9 +241,17 @@ layout = [
 	Tab('Apps'),  # not translated!
 ]
 
+
+def unmapSambaRid(oldattr):
+	sid = oldattr.get('sambaSID', [b''])[0].decode('ASCII')
+	sid, has_rid, rid = sid.rpartition(u'-')
+	if has_rid and rid.isdigit():
+		return rid
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString)
+mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -250,6 +259,7 @@ mapping.register('adGroupType', 'univentionGroupType', None, univention.admin.ma
 mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList', encoding='ASCII')
 mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
 mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
+mapping.registerUnmapping('sambaRID', unmapSambaRid)
 
 
 class AgingCache(object):
@@ -308,12 +318,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.cache_uniqueMember.set_timeout(caching_timeout)
 		except Exception:
 			pass
-
-		if 'samba' in self.options:
-			sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
-			sid, has_rid, rid = sid.rpartition(u'-')
-			if has_rid and rid.isdigit():
-				self.info['sambaRID'] = rid
 
 		if self.exists():
 			self['memberOf'] = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(uniqueMember=%s))', [self.dn]))
@@ -424,8 +428,32 @@ class object(univention.admin.handlers.simpleLdap):
 			if user_objects:
 				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber(repr(self["gidNumber"]))
 
+	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
+
+		# get lock for name
+		if not self.exists() or self.hasChanged('name'):
+			try:
+				self.request_lock('groupName', self['name'])
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.groupNameAlreadyUsed(self['name'])
+
+		# get lock for mailPrimaryAddress
+		if self['mailAddress'] and not self.exists() or self.hasChanged('mailAddress'):
+			try:
+				self.request_lock('mailPrimaryAddress', self['mailAddress'])
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
+
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
+
+		if self['gidNumber']:
+			univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
+			self.alloc.append(('gidNumber', self['gidNumber'], False))
+		else:
+			self['gidNumber'] = self.request_lock('gidNumber')
+
 		self.check_for_group_recursion()
 		self._check_uid_gid_uniqueness()
 
@@ -439,45 +467,17 @@ class object(univention.admin.handlers.simpleLdap):
 			self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
-		if self['gidNumber']:
-			self.gidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
-			self.alloc.append(('gidNumber', self.gidNum, False))
-		else:
-			self.gidNum = self.request_lock('gidNumber')
-
-		if self['mailAddress']:
-			try:
-				self.request_lock('mailPrimaryAddress', self['mailAddress'])
-			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
-
-		if 'samba' in self.options and self.gidNum:
-			self.groupSid = self.__generate_group_sid(self.gidNum)
-
-		try:
-			self.request_lock('groupName', self['name'])
-		except univention.admin.uexceptions.noLock:
-			name = self['name']
-			del self.info['name']
-			self.oldinfo = {}
-			self.dn = None
-			self._exists = 0
-			raise univention.admin.uexceptions.groupNameAlreadyUsed(name)
-
 		al = super(object, self)._ldap_addlist()
-		if 'posix' not in self.options:
-			al.append(['objectClass', b'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
-		if {'posix', 'samba'} & set(self.options):
-			al.append(('gidNumber', [self.gidNum.encode('ASCII')]))
-		if 'samba' in self.options:
-			al.append(('sambaSID', [self.groupSid.encode('ASCII')]))
+		if 'posix' not in self.options:
+			al.append(('objectClass', b'organizationalRole'))  # any STRUCTURAL class with 'cn'
 
 		return al
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
+		self._samba_sid = None
 		if 'samba' in self.options:
 			# samba privileges
 			if self.hasChanged('sambaPrivileges'):
@@ -486,20 +486,11 @@ class object(univention.admin.handlers.simpleLdap):
 				if self['sambaPrivileges'] and b'univentionSambaPrivileges' not in o:
 					ml.insert(0, ('objectClass', b'', b'univentionSambaPrivileges'))
 
-			if self.hasChanged('sambaRID') and not hasattr(self, 'groupSid'):
-				self.groupSid = self.__generate_group_sid(self.oldattr['gidNumber'][0].decode('ASCII'))
-				ml.append(('sambaSID', self.oldattr.get('sambaSID', [b'']), [self.groupSid.encode('ASCII')]))
-				self.update_sambaPrimaryGroupSid = True
-
-		if self.hasChanged('mailAddress') and self['mailAddress']:
-			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress':
-					break
-			else:
-				try:
-					self.request_lock('mailPrimaryAddress', self['mailAddress'])
-				except univention.admin.uexceptions.noLock:
-					raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
+			# samba SID
+			if self['gidNumber'] and not self.exists() or self.hasChanged('sambaRID'):
+				sid = self.__generate_group_sid(self['gidNumber'])
+				ml.append(('sambaSID', self.oldattr.get('sambaSID', [b'']), [sid.encode('ASCII')]))
+				self._samba_sid = sid
 
 		old = DN.set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
 		new = DN.set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
@@ -565,8 +556,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_modify(self):
 		super(object, self)._ldap_post_modify()
 		self.__update_membership()
-		if hasattr(self, 'groupSid'):
-			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [b''])[0].decode('ASCII'), self.groupSid)
+		old_sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
+		if self._samba_sid and self._samba_sid != old_sid:
+			for dn, attr in self.lo.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [old_sid]), attr=['sambaPrimaryGroupSID']):
+				self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [self._samba_sid.encode('ASCII')])])
 
 	def _ldap_pre_remove(self):
 		super(object, self)._ldap_pre_remove()
@@ -872,39 +865,39 @@ class object(univention.admin.handlers.simpleLdap):
 			if self._has_universal_member():
 				raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 
+	def __allocate_rid(self, rid):
+		searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+		new_groupType = self.info.get('adGroupType', 0)
+		if self.__is_groupType_local(new_groupType):
+			sid = u'S-1-5-32-' + self['sambaRID']
+		else:
+			domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
+			sid = domainsid + u'-' + rid
+		try:
+			return self.request_lock('sid', sid)
+		except univention.admin.uexceptions.noLock:
+			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
+
 	def __generate_group_sid(self, gidNum):
 		new_groupType = self.info.get('adGroupType', 0)
 
 		ud.debug(ud.ADMIN, ud.INFO, 'groups/group: new_groupType: %s' % new_groupType)
 		if self['sambaRID']:
-			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			if self.__is_groupType_local(new_groupType):
-				sid = u'S-1-5-32-' + self['sambaRID']
-			else:
-				domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
-				sid = domainsid + u'-' + self['sambaRID']
-			return self.request_lock('sid', sid)
+			return self.__allocate_rid(self['sambaRID'])
 		elif self.s4connector_present and not self.__is_groupType_local(new_groupType):
 			# In this case Samba 4 must create the SID, the s4 connector will sync the
 			# new sambaSID back from Samba 4.
-			return u'S-1-4-%s' % (self.gidNum,)
-		else:
-			num = self.gidNum
-			generateDomainLocalSid = self.__is_groupType_local(new_groupType)
-			while True:
-				try:
-					groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, generateDomainLocalSid=generateDomainLocalSid)
-					self.alloc.append(('sid', groupSid))
-					return groupSid
-				except univention.admin.uexceptions.noLock:
-					num = str(int(num) + 1)
+			return u'S-1-4-%s' % (gidNum,)
 
-	def _update_sambaPrimaryGroupSID(self, oldSid, newSid):
-		if hasattr(self, 'update_sambaPrimaryGroupSid') and self.update_sambaPrimaryGroupSid:
-			res = self.lo.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [oldSid]), attr=['sambaPrimaryGroupSID'])
-			for dn, attr in res:
-				self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid.encode('ASCII')])])
-			self.update_sambaPrimaryGroupSid = False
+		num = gidNum
+		generateDomainLocalSid = self.__is_groupType_local(new_groupType)
+		while True:
+			try:
+				groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, generateDomainLocalSid=generateDomainLocalSid)
+				self.alloc.append(('sid', groupSid))
+				return groupSid
+			except univention.admin.uexceptions.noLock:
+				num = str(int(num) + 1)
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
