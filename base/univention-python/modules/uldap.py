@@ -449,7 +449,7 @@ class access(object):
 
 	@_fix_reconnect_handling
 	def getAttr(self, dn, attr, required=False):
-		# type: (str, str, bool) -> List[str]
+		# type: (str, str, bool) -> List[bytes]
 		"""
 		Return a single attribute of a single LDAP object.
 
