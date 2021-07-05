@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-15 19:19+0200\n"
+"POT-Creation-Date: 2021-07-05 11:51+0200\n"
 "PO-Revision-Date: 2021-05-11 12:01+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -34,14 +34,14 @@ msgstr "Name"
 #: portal_category.py:75 portal_entry.py:142 portal_entry.py:143 portal.py:182
 #: printermodel.py:80 printeruri.py:79 prohibited_username.py:78
 #: sambaconfig.py:141 sambadomain.py:184 service.py:70 syntax.py:123
-#: udm_hook.py:122 udm_module.py:133 udm_syntax.py:122 umc_operationset.py:104
+#: udm_hook.py:122 udm_module.py:139 udm_syntax.py:122 umc_operationset.py:104
 #: usertemplate.py:266
 msgid "General"
 msgstr "Allgemein"
 
 #: cn.py:71 default.py:119 directory.py:146 extended_options.py:129
 #: ldapacl.py:115 ldapschema.py:105 sambaconfig.py:141 sambadomain.py:184
-#: service.py:70 syntax.py:123 udm_hook.py:122 udm_module.py:133
+#: service.py:70 syntax.py:123 udm_hook.py:122 udm_module.py:139
 #: udm_syntax.py:122 usertemplate.py:266
 msgid "Basic values"
 msgstr "Grundeinstellungen"
@@ -124,7 +124,7 @@ msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
 #: data.py:125 ldapacl.py:121 ldapschema.py:111 udm_hook.py:129
-#: udm_module.py:142 udm_syntax.py:129
+#: udm_module.py:149 udm_syntax.py:129
 msgid "Metadata"
 msgstr "Metadaten"
 
@@ -870,17 +870,17 @@ msgstr "App-Kennung"
 msgid "General LDAP ACL extension settings"
 msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
 
-#: ldapacl.py:126 udm_hook.py:134 udm_module.py:147 udm_syntax.py:134
+#: ldapacl.py:126 udm_hook.py:134 udm_module.py:154 udm_syntax.py:134
 msgid "UCS Version Dependencies"
 msgstr "UCS-Versionsabhängigkeiten"
 
 #: ldapacl.py:130 ldapschema.py:116 portal_entry.py:122 udm_hook.py:138
-#: udm_module.py:151 udm_syntax.py:138
+#: udm_module.py:158 udm_syntax.py:138
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: ldapacl.py:158 ldapschema.py:142 udm_hook.py:167 udm_module.py:182
-#: udm_syntax.py:167
+#: ldapacl.py:159 ldapschema.py:143 udm_hook.py:168 udm_module.py:195
+#: udm_syntax.py:168
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 
@@ -1904,14 +1904,18 @@ msgid "UDM module data"
 msgstr "UDM Moduldaten"
 
 #: udm_module.py:120
+msgid "GNU message catalog for UMC translations"
+msgstr "GNU Message Catalog für Übersetzungen"
+
+#: udm_module.py:126
 msgid "UMC registration data"
 msgstr "UMC-Registrierungsdaten"
 
-#: udm_module.py:125
+#: udm_module.py:131
 msgid "UMC icon"
 msgstr "UMC-Icon"
 
-#: udm_module.py:134
+#: udm_module.py:140
 msgid "General UDM module settings"
 msgstr "Grundeinstellungen - UDM-Modul"
 
@@ -2155,8 +2159,8 @@ msgid ""
 "of the UCS hosted e-mail domains."
 msgstr ""
 "E-Mail Adresse, die verwendet wird um IMAP/POP3 Mailboxen zu erstellen und "
-"als Login für SMTP/IMAP/POP3 Verbindungen verwendet werden kann. Die "
-"Domäne muss eine der von UCS gehosteten E-Mail Domänen sein"
+"als Login für SMTP/IMAP/POP3 Verbindungen verwendet werden kann. Die Domäne "
+"muss eine der von UCS gehosteten E-Mail Domänen sein"
 
 #: usertemplate.py:233
 msgid "E-mail alias address"
@@ -2168,9 +2172,9 @@ msgid ""
 "\"Primary e-mail address\". The domain must be one of the UCS hosted e-mail "
 "domains."
 msgstr ""
-"Zusätzliche E-Mail Adresse, für die E-Mails zur \"Primären E-Mail-Addresse (Mailbox)\" "
-"gesendet werden. Die Domäne muss eine der von UCS gehosteten E-Mail Domänen "
-"sein."
+"Zusätzliche E-Mail Adresse, für die E-Mails zur \"Primären E-Mail-Addresse "
+"(Mailbox)\" gesendet werden. Die Domäne muss eine der von UCS gehosteten E-"
+"Mail Domänen sein."
 
 #: usertemplate.py:239
 msgid "Delivery office name"
