@@ -1,4 +1,4 @@
-ucs-test (10.0.6-7) unstable; urgency=medium
+ucs-test (10.0.6-8) unstable; urgency=medium
 
   * Bug #53532: add 72_udm-extensions/33_umcmessagecatalog
 
