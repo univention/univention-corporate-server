@@ -1074,6 +1074,22 @@ class Localesubdirname(string):
 		return text
 
 
+class UMCMessageCatalogFilename(string):
+	"""
+	Syntax for a message catalog filename for UMC module translations`.
+
+	Must have a filename like <language code>-<umcmoduleid>`.
+	"""
+
+	@classmethod
+	def parse(self, text):
+		if '-' not in text:
+			raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. Must be the language code and UMCModuleID sperated by - %s') % str(text))
+		if not len(text.split('-')[0]) == 2:
+			raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. Must be the language code and UMCModuleID sperated by - %s') % str(text))
+		return text
+
+
 class Localesubdirname_and_GNUMessageCatalog(complex):
 	"""
 	Syntax for a message catalog and its language.
@@ -1097,6 +1113,19 @@ class Localesubdirname_and_GNUMessageCatalog(complex):
 	subsyntaxes = [(_('Locale subdir name'), Localesubdirname), (_('GNU message catalog'), GNUMessageCatalog)]
 	subsyntax_key_value = True
 	all_required = True
+
+
+class UMCMessageCatalogFilename_and_GNUMessageCatalog(complex):
+	"""
+	Syntax for a message catalog and the corresponding UMCMessageCatalogFilename.
+
+	See :py:class:`GNUMessageCatalog` and :py:class:`UMCMessageCatalogFilename`.
+	"""
+	delimiter = ': '
+	subsyntaxes = [(_('UMCMessageCatalogFilename'), UMCMessageCatalogFilename), (_('GNU message catalog'), GNUMessageCatalog)]
+	subsyntax_key_value = True
+	all_required = True
+	multivalue = True
 
 
 class integer(simple):
