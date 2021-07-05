@@ -187,7 +187,7 @@ class Test_DNSForwardZone(object):
 		"""Remove TXT during dns/forward_zone modification"""
 		# bugs: [15654]
 		txt_records = [uts.random_string(), uts.random_string(), uts.random_string(), uts.random_string()]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'txt': txt_records})
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'txt': txt_records}, nameserver=uts.random_dns_record())
 
 		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'txt': txt_records[2:]})
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': txt_records[:2]})
