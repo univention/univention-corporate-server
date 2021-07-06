@@ -306,6 +306,18 @@ class CheckTags(Check):
 			else:
 				yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(environment.tags_required),), TestCodes.REASON_ROLE_MISMATCH)
 
+	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
+		args = []
+		for tag in (environment.tags_required or []):
+			if tag in ('SKIP', 'WIP'):
+				continue
+			args.extend(['--ucs-test-tags-required', tag])
+		for tag in (environment.tags_prohibited or []):
+			if tag in ('SKIP', 'WIP'):
+				continue
+			args.extend(['--ucs-test-tags-prohibited', tag])
+		return args
+
 
 class CheckRoles(Check):
 
@@ -343,6 +355,14 @@ class CheckRoles(Check):
 
 		if environment.role not in roles:
 			yield Verdict(Verdict.ERROR, 'Wrong role: %s not in (%s)' % (environment.role, ','.join(roles)), TestCodes.REASON_ROLE_MISMATCH)
+
+	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
+		args = []
+		for role in self.roles_required:
+			args.extend(['--ucs-test-role-required', role])
+		for role in self.roles_prohibited:
+			args.extend(['--ucs-test-role-prohibited', role])
+		return args
 
 
 class CheckJoin(Check):
@@ -481,6 +501,17 @@ class CheckExposure(Check):
 			yield Verdict(Verdict.ERROR, 'Too dangerous: %s > %s' % (exposure, environment.exposure), TestCodes.REASON_DANGER)
 		else:
 			yield Verdict(Verdict.INFO, 'Safe enough: %s <= %s' % (exposure, environment.exposure))
+
+	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
+		args = []
+		exposure = 'DANGEROUS'
+		try:
+			exposure, expected_md5 = self.exposure.split(None, 1)
+		except ValueError:
+			exposure = self.exposure
+		if exposure:
+			args.extend(['--ucs-test-exposure', exposure.lower()])
+		return args
 
 
 class TestCase(object):
