@@ -4,6 +4,8 @@ import subprocess
 from univention.testing import ucr as _ucr, udm as _udm, utils, umc, strings
 import univention.lib.umc
 
+pytest_plugins = ["univention.testing.conftest"]
+
 
 @pytest.yield_fixture()
 def ucr():

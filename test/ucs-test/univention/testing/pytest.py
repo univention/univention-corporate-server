@@ -63,6 +63,7 @@ class PytestRunner(object):
 		# args.append('--showlocals')
 		# args.append('--full-trace')
 		args.append('--color=auto')
+		args.append('--confcutdir=/usr/share/ucs-test/')
 		args.extend(('-%s' if len(arg) == 1 else '--%s') % (arg,) for arg in cls.options.pytest_arg)
 		try:
 			cmd.remove('--capture=no')
