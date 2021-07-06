@@ -3,7 +3,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
-## exposure: safe
+## exposure: dangerous
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
@@ -13,6 +13,21 @@ libfaketime="/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1"
 valid_for='+5y'
 
 test -f $libfaketime || fail_fast 1 "libfaketime ($libfaketime) not found"
+
+# check only http to avoid
+#   Err:10 https://updates.software-univention.de ucs500 Release
+#   Certificate verification failed: The certificate is NOT trusted.
+#   The certificate chain uses expired certificate.
+#   Could not handshake: Error in the certificate verification. [IP: 176.9.114.147 443]
+# here we are only interested in the apt key expiry
+eval "$(ucr shell repository/online/server)"
+cleanup () {
+	echo "$repository_online_server"
+	ucr set repository/online/server="$repository_online_server"
+}
+trap cleanup EXIT
+http_repo_server="${repository_online_server/https:/http:}"
+ucr set repository/online/server="$http_repo_server"
 
 # check if apt-get update in now+5y works
 if LD_PRELOAD=$libfaketime FAKETIME="$valid_for" apt-get update 2>&1 | grep '^[WE]:'; then
