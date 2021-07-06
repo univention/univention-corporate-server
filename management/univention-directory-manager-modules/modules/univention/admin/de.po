@@ -28,8 +28,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-05 11:30+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-07-06 09:20+0200\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -212,14 +212,13 @@ msgstr "Keine Base64-kodierten GNU Message Catalog (.mo) Daten: %s"
 msgid "Not a valid locale subdir name: %s"
 msgstr "Kein gültiger Unterverzeichnisname von /usr/share/locale: %s"
 
-#: syntax.py:1087 syntax.py:1089
-#, python-format
+#: syntax.py:1089
 msgid ""
-"Not a valid filename for umcmessagecatalog. Must be the language code and "
-"UMCModuleID sperated by - %s"
+"Not a valid filename for umcmessagecatalog. It must match \"$language-"
+"$moduleid.mo\" (e.g. \"de-udm-foo.mo\")"
 msgstr ""
-"Kein valider Dateiname für umcmessagecatalog. Der Dateiname muss der "
-"Sprachcode sowie die UMCModuleID separiert durch ein - sein %s"
+"Kein valider Dateiname für umcmessagecatalog. Der Dateiname muss dem Schema "
+"\"$sprache-$moduleid.mo\" entsprechen. (z.B \"de-udm-foo.mo\")"
 
 #: syntax.py:1113
 msgid "Locale subdir name"

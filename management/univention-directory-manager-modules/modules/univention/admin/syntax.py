@@ -1083,10 +1083,10 @@ class UMCMessageCatalogFilename(string):
 
 	@classmethod
 	def parse(self, text):
-		if '-' not in text:
-			raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. Must be the language code and UMCModuleID sperated by - %s') % str(text))
-		if not len(text.split('-')[0]) == 2:
-			raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. Must be the language code and UMCModuleID sperated by - %s') % str(text))
+		text = string.parse(text)
+		language_id, dash, module_id = text.partition('-')
+		if not dash:
+			raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. It must match "$language-$moduleid.mo" (e.g. "de-udm-foo.mo")'))
 		return text
 
 
