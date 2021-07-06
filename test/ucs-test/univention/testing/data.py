@@ -232,7 +232,7 @@ class CheckExecutable(Check):
 	def check(self, _environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required executable."""
 		if not os.path.isabs(self.filename):
-			if self.filename.startswith('python'):
+			if self.filename.startswith('python') or self.filename.startswith('pytest') or self.filename.startswith('py.test'):
 				self.filename = '/usr/bin/' + self.filename
 			elif self.filename.endswith('sh'):
 				self.filename = '/bin/' + self.filename
