@@ -213,6 +213,9 @@ class Check(object):
 		"""Check if precondition to run test is met."""
 		raise NotImplementedError()
 
+	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
+		return []
+
 
 class CheckExecutable(Check):
 
@@ -586,6 +589,17 @@ class TestCase(object):
 		conditions += list(self.exposure.check(environment))
 		return conditions
 
+	def pytest_check(self, environment):  # type: (TestEnvironment) -> List[str]
+		args = []
+		args += self.exe.pytest_args(environment)
+		args += self.versions.pytest_args(environment)
+		args += self.tags.pytest_args(environment)
+		args += self.roles.pytest_args(environment)
+		args += self.components.pytest_args(environment)
+		args += self.packages.pytest_args(environment)
+		args += self.exposure.pytest_args(environment)
+		return args
+
 	def _run_tee(self, proc, result, stdout=sys.stdout, stderr=sys.stderr):
 		"""Run test collecting and passing through stdout, stderr:"""
 		EOF = b''
@@ -719,6 +733,7 @@ class TestCase(object):
 
 		if self.is_pytest:
 			cmd = PytestRunner.extend_command(self, cmd)
+			cmd.extend(self.pytest_check(result.environment))
 
 		time_start = datetime.now()
 
