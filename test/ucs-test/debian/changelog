@@ -1,3 +1,9 @@
+ucs-test (9.0.7-42) unstable; urgency=medium
+
+  * Bug #53528: added 03_check_release_signature_do_not_ignore_me
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Jul 2021 12:53:51 +0200
+
 ucs-test (9.0.7-41) unstable; urgency=medium
 
   * Bug #53529: fix 80_docker/56_app_nscd_stop
