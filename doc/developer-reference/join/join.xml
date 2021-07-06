@@ -684,6 +684,16 @@ fi
 									</listitem>
 								</varlistentry>
 								<varlistentry>
+									<term><option>--umcmessagecatalog</option> <filename><replaceable>prefix</replaceable>/<replaceable>language</replaceable>.mo</filename></term>
+									<listitem>
+										<para>
+											The option can be used to supply message translation files in GNU message catalog format for UMC.
+											Similar to the above option these are located under <filename class="directory">/usr/share/univention-management-console/i18n/</filename> and application specific.
+											The corresponding MO files are placed in a subdirectory with the corresponding language short code and must have the applications name as filename.
+										</para>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
 									<term><option>--umcregistration</option> <filename><replaceable>filename</replaceable>.xml</filename></term>
 									<listitem>
 										<para>

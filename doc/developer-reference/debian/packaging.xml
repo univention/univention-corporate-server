@@ -59,7 +59,7 @@
 		</variablelist>
 		<para>
 			These packages must be installed on the development system.
-			For this the <emphasis>unmaaintained</emphasis> repository must be enabled.
+			For this the <emphasis>unmaintained</emphasis> repository must be enabled.
 			After this the missing packages can be installed on the command line using <command>univention-install</command> or through UMC, which is described in the <biblioref linkend="ucs-handbuch"/>.
 		</para>
 	</section>
