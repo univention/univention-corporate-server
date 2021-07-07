@@ -9,3 +9,5 @@ desc: |
  * The Single-Sign-On login page was not affected by the ucs/web/theme
    UCR variable. This has been fixed.
 bug: [53533]
+erratum: 44
+announced: 2021-07-07
