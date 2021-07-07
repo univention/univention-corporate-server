@@ -56,9 +56,20 @@ def pytest_addoption(parser):
 		help="Neither require nor prohibit this tag",
 	)
 	parser.addoption(
+		"--ucs-test-default-tags",
+		action="append",
+		metavar="TAG",
+		help="The tags for the entire test case, if the test function does not specify any",
+	)
+	parser.addoption(
 		"--ucs-test-exposure",
 		choices=('safe', 'careful', 'dangerous'),
 		help="Run more dangerous tests",
+	)
+	parser.addoption(
+		"--ucs-test-default-exposure",
+		choices=('safe', 'careful', 'dangerous'),
+		help="The exposure of the test",
 	)
 
 
@@ -78,7 +89,7 @@ def pytest_runtest_setup(item):
 def check_tags(item):
 	tags_required = set(item.config.getoption("--ucs-test-tags-required") or [])
 	tags_prohibited = set(item.config.getoption("--ucs-test-tags-prohibited") or [])
-	tags = set(mark.args[0] for mark in item.iter_markers(name="tags"))
+	tags = set(tag for mark in item.iter_markers(name="tags") for tag in mark.args) or set(item.config.getoption("--ucs-test-default-tags", []))
 
 	prohibited = tags & tags_prohibited
 	if prohibited:
@@ -108,10 +119,12 @@ def check_roles(item):
 
 def check_exposure(item):
 	from univention.testing.data import CheckExposure
+	required_exposure = item.config.getoption("--ucs-test-exposure")
+	if not required_exposure:
+		return
 	try:
 		exposure = next(mark.args[0] for mark in item.iter_markers(name="exposure"))
 	except StopIteration:
-		exposure = 'safe'
-	required_exposure = item.config.getoption("--ucs-test-exposure")
+		exposure = item.config.getoption("--ucs-test-default-exposure", "safe")
 	if CheckExposure.STATES.index(exposure) > CheckExposure.STATES.index(required_exposure):
 		pytest.skip('Too dangerous: %s > %s' % (exposure, required_exposure))

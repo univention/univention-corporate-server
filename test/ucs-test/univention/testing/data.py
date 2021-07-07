@@ -308,6 +308,8 @@ class CheckTags(Check):
 
 	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
 		args = []
+		for tag in self.tags:
+			args.extend(['--ucs-test-default-tags', tag])
 		for tag in (environment.tags_required or []):
 			if tag in ('SKIP', 'WIP'):
 				continue
@@ -496,13 +498,14 @@ class CheckExposure(Check):
 
 	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
 		args = []
+		args.extend(['--ucs-test-exposure', environment.exposure.lower()])
 		exposure = 'DANGEROUS'
 		try:
 			exposure, expected_md5 = self.exposure.split(None, 1)
 		except ValueError:
 			exposure = self.exposure
 		if exposure:
-			args.extend(['--ucs-test-exposure', exposure.lower()])
+			args.extend(['--ucs-test-default-exposure', exposure.lower()])
 		return args
 
 
