@@ -137,7 +137,7 @@ class Test_UserModification(object):
 
 
 @pytest.mark.tags('apptest')
-def test_validate_that_simpleauthaccount_are_ignore_in_license(self, udm):
+def test_validate_that_simpleauthaccount_are_ignore_in_license(udm):
 	"""Check whether a simple-auth-account appears in the license-check"""
 	# bugs: [13721]
 	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
@@ -149,7 +149,7 @@ def test_validate_that_simpleauthaccount_are_ignore_in_license(self, udm):
 
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
-def test_execute_udm_users_list_as_administrator(self, ucr):
+def test_execute_udm_users_list_as_administrator(ucr):
 	"""Execute "udm users/user list --filter uid=Administrator" as Administrator"""
 	# bugs: [37331]
 
@@ -168,7 +168,7 @@ def test_execute_udm_users_list_as_administrator(self, ucr):
 		utils.fail('Could not find DN of "%s" user in the UDM-CLI output:\n%s' % (admin_username, output))
 
 
-def test_user_removal(self, udm):
+def test_user_removal(udm):
 	"""Remove users/user"""
 	user = udm.create_user()[0]
 	udm.remove_object('users/user', dn=user)
@@ -177,7 +177,7 @@ def test_user_removal(self, udm):
 
 
 @pytest.mark.tags('apptest')
-def test_ignore_user_with_functional_flag(self, stopped_s4_connector, udm):
+def test_ignore_user_with_functional_flag(stopped_s4_connector, udm):
 	"""Create users/user and test "functional" object flag"""
 	# bugs: [34395]
 	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
@@ -221,7 +221,7 @@ def test_ignore_user_with_functional_flag(self, stopped_s4_connector, udm):
 
 
 @pytest.mark.exposure('dangerous')
-def test_script_lock_expired_accounts(self, stopped_s4_connector, udm):  # TODO: parametrize
+def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: parametrize
 	"""Check cron job script lock_expired_accounts"""
 	# bugs: [35088]
 
@@ -300,7 +300,7 @@ def test_script_lock_expired_accounts(self, stopped_s4_connector, udm):  # TODO:
 	[2, '1', 1],
 	[3, '1', 1],
 ])
-def test_script_lock_expired_passwords(self, udm, ucr, delta, disabled, expected):
+def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 	"""Check if ldap auth is denied for expired passwords"""
 	# bugs: [35088]
 	if not ucr.is_true('ldap/shadowbind', True):
@@ -349,7 +349,7 @@ def test_country_names_uptodate(self):  # TODO: move into package unit test
 
 
 @pytest.mark.exposure('dangerous')
-def test_displayName_update(self, stopped_s4_connector, udm):
+def test_displayName_update(stopped_s4_connector, udm):
 	"""Check automatic update of displayName"""
 	# bugs: [38385]
 	print('>>> create user with default settings')
@@ -444,7 +444,7 @@ def test_displayName_update(self, stopped_s4_connector, udm):
 
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_slave')
-def test_simpleauthaccount_authentication(self, udm, ucr):
+def test_simpleauthaccount_authentication(udm, ucr):
 	"""Check whether a simple-auth-account can authenticate against LDAP and UMC"""
 	password = 'univention'
 	dn, username = udm.create_ldap_user(password=password)
@@ -463,7 +463,7 @@ def test_simpleauthaccount_authentication(self, udm, ucr):
 	print('successfully did UMC authentication')
 
 
-def test_check_removal_of_additional_group_membership(self, udm):
+def test_check_removal_of_additional_group_membership(udm):
 	"""Create users/user"""
 	pytest.skip('FIXME??? #45842: git:fdfd446587c')
 
@@ -477,7 +477,7 @@ def test_check_removal_of_additional_group_membership(self, udm):
 	utils.verify_ldap_object(groupdn, {'memberUid': []})
 
 
-def test_check_univentionDefaultGroup_membership_after_create(self, udm):
+def test_check_univentionDefaultGroup_membership_after_create(udm):
 	"""Check default primary group membership after users/user create"""
 	# from users/user: lookup univentionDefaultGroup
 	lo = utils.get_ldap_connection()
@@ -505,7 +505,7 @@ def test_check_univentionDefaultGroup_membership_after_create(self, udm):
 
 
 @pytest.mark.xfail(reason='Bug #27160 git:6d60cb602d7')
-def test_from_primary_group_removal(self, udm):
+def test_from_primary_group_removal(udm):
 	"""Create users/user"""
 
 	lo = utils.get_ldap_connection()
@@ -521,7 +521,7 @@ def test_from_primary_group_removal(self, udm):
 	utils.verify_ldap_object(user, {'sambaPrimaryGroupSID': []})  # This fails, Bug #27160
 
 
-def test_user_creation_password_policy(self, udm):
+def test_user_creation_password_policy(udm):
 	"""Create users/user"""
 	# bugs: [42148]
 
@@ -535,7 +535,7 @@ def test_user_creation_password_policy(self, udm):
 
 
 @pytest.mark.tags('apptest')
-def test_pwdChangeNextLogin_and_password_set(self, udm):
+def test_pwdChangeNextLogin_and_password_set(udm):
 	"""combination of --set pwdChangeNextLogin=0 --set password=foobar"""
 	# bugs: [42015]
 
@@ -545,7 +545,7 @@ def test_pwdChangeNextLogin_and_password_set(self, udm):
 	utils.verify_ldap_object(userdn, {'shadowMax': [], 'krb5PasswordEnd': []})
 
 
-def test_user_univentionLastUsedValue(self, udm, ucr):
+def test_user_univentionLastUsedValue(udm, ucr):
 	"""Create users/user and check univentionLastUsedValue"""
 
 	# Please note: modification of uidNumber is not allowed according to users/user.py --> not tested here
@@ -570,7 +570,7 @@ def test_user_univentionLastUsedValue(self, udm, ucr):
 
 @pytest.mark.exposure('dangerous')
 @pytest.mark.xfail(reason='31317,48956')
-def test_secretary_reference_update(self, udm):
+def test_secretary_reference_update(udm):
 	"""Create users/user"""
 	# bugs: [31317,48956]
 	user = udm.create_user()[0]
@@ -609,7 +609,7 @@ def test_secretary_reference_update(self, udm):
 	utils.verify_ldap_object(sec, {'secretary': []})
 
 
-def test_lookup_with_pagination(self, udm):
+def test_lookup_with_pagination(udm):
 	"""Test serverctrls of ldap server"""
 	pytest.skip('FIXME???  Bug #49638: git:63ba30a2040')
 
@@ -650,7 +650,7 @@ def test_lookup_with_pagination(self, udm):
 
 @pytest.mark.exposure('dangerous')
 @pytest.mark.tags('apptest')
-def test_udm_users_user_bcrypt_password(self, restart_slapd_after_test, udm, ucr):
+def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 	from univention.config_registry import handler_set
 	"""Test users/user and users/ldap bcrypt password handling"""
 	# bugs: [52693]
@@ -730,7 +730,7 @@ def test_udm_users_user_bcrypt_password(self, restart_slapd_after_test, udm, ucr
 @pytest.mark.tags('apptest')
 @pytest.mark.exposure('dangerous')
 @pytest.mark.parametrize('module', ['users/user', 'users/ldap'])
-def test_udm_users_ldap_mspolicy(self, udm, ucr, module):
+def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	# bugs: [52446]
 	"""Test mspolicy password functionality"""
 	from univention.config_registry import handler_set
