@@ -28,6 +28,68 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
+"""
+This module provides fixtures for mocking univention.admin.uldap.access
+(also known as "lo").
+
+The lo fixture creates access to an in-memory LDAP mock, implementing
+methods that univention.admin.uldap.access implements.
+These methods are meant to work (in-memory), but they are rather simple.
+There is no real error handling as there are no checks.
+No ACLs, subtree may or may not exist, no DN syntax check,
+  modify_list is just assumed to contain byte strings, etc.
+
+Every function that takes a lo argument should work with this fixture,
+notably UDM itself.
+
+The database is pre populated by an ldif file that you would need to specify.
+
+The following example needs these LDAP objects:
+
+univention-ldapsearch -LLL -b "$(ucr get ldap/base)" -s base | sed -e "s/$(ucr get ldap/base)/dc=intranet,dc=example,dc=de/gi;s/$(ucr get domainname)/intranet.example.de/gi" > test.ldif
+for query in objectClass=univentionDefault cn=uidNumber cn=gidNumber objectClass=sambaDomain "cn=default containers" "cn=Domain Users"; do
+  univention-ldapsearch -LLL "$query" | sed -e "s/$(ucr get ldap/base)/dc=intranet,dc=example,dc=de/gi" >> test.ldif
+done
+
+Test file:
+
+import pytest
+
+import univention.admin.objects as udm_objects
+import univention.admin.modules as udm_modules
+import univention.admin.uexceptions as udm_exceptions
+
+@pytest.fixture
+def ldap_database_file():
+  return 'test.ldif'
+
+def test_user(lo, pos):
+    udm_modules.update()
+    mod = udm_modules.get('users/user')
+    udm_modules.init(lo, pos, mod)
+    obj = udm_objects.get(mod, None, lo, pos, '')
+    udm_objects.open(obj)
+    obj['username'] = 'graumann'
+    obj['lastname'] = 'Graumann'
+    obj['password'] = 'univention'
+    obj.create()
+    assert obj.dn == 'uid=graumann,dc=intranet,dc=example,dc=de'
+    udm_objs = mod.lookup(None, lo, 'uid=graumann')
+    assert len(udm_objs) == 1
+    obj = udm_objs[0]
+    assert obj['lastname'] == 'Graumann'
+
+    ldap_objs = lo.search('uid=graumann')
+    assert ldap_objs[0][0] == 'uid=graumann,dc=intranet,dc=example,dc=de'
+    assert ldap_objs[0][1]['sn'] == [b'Graumann']
+
+    obj.remove()
+    udm_objs = mod.lookup(None, lo, 'uid=graumann')
+    assert len(udm_objs) == 0
+
+    with pytest.raises(udm_exceptions.noObject):
+        obj.remove()
+"""
 
 import pytest
 
@@ -42,9 +104,9 @@ def pytest_addoption(parser):
 
 def import_udm_module(udm_path):
 	python_module_name = 'univention.admin.{}'.format(udm_path)
-	umc_src_path = 'modules/univention/admin'
+	udm_src_path = 'modules/univention/admin'
 	use_installed = pytest.config.getoption('--installed-udm')
-	return import_module(udm_path, umc_src_path, python_module_name, use_installed)
+	return import_module(udm_path, udm_src_path, python_module_name, use_installed)
 
 
 @pytest.fixture
