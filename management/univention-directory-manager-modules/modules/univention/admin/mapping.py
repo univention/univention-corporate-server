@@ -767,7 +767,7 @@ def mapRewrite(filter, mapping):
 		if not mapping.shouldMap(key):
 			return
 		k = mapping.mapName(key)
-		v = mapping.mapValue(key, filter.value)
+		v = mapping.mapValueDecoded(key, filter.value)
 	except KeyError:
 		return
 	if k:

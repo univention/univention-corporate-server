@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.11-10) unstable; urgency=medium
+
+  * Bug #53553: fix broken LDAP filter generation containing bytestring-
+    representations when UDM property names are used in filters
+
+ -- Florian Best <best@univention.de>  Wed, 07 Jul 2021 23:47:51 +0200
+
 univention-directory-manager-modules (15.0.11-9) unstable; urgency=medium
 
   * Bug #53532: UMC translation file registration
