@@ -1,3 +1,9 @@
+ucs-test (10.0.6-10) unstable; urgency=medium
+
+  * Bug #53528: added 03_check_release_signature_do_not_ignore_me
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Jul 2021 10:34:36 +0200
+
 ucs-test (10.0.6-9) unstable; urgency=medium
 
   * Bug #53528: added 03_check_release_signature_do_not_ignore_me
