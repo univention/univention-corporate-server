@@ -1,0 +1,134 @@
+dn: dc=intranet,dc=example,dc=de
+objectClass: top
+objectClass: krb5Realm
+objectClass: univentionPolicyReference
+objectClass: nisDomainObject
+objectClass: domainRelatedObject
+objectClass: domain
+objectClass: univentionBase
+objectClass: univentionObject
+dc: intranet
+univentionObjectType: container/dc
+krb5RealmName: intranet.example.de
+nisDomain: intranet.example.de
+associatedDomain: intranet.example.de
+univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=intranet,dc=example,dc=de
+
+dn: cn=default,cn=univention,dc=intranet,dc=example,dc=de
+objectClass: top
+objectClass: univentionDefault
+objectClass: univentionObject
+univentionObjectType: settings/default
+cn: default
+univentionDefaultGroup: cn=Domain Users,cn=groups,dc=intranet,dc=example,dc=de
+univentionDefaultComputerGroup: cn=Windows Hosts,cn=groups,dc=intranet,dc=example,dc=de
+univentionDefaultDomainControllerGroup: cn=DC Slave Hosts,cn=groups,dc=intranet,dc=example,dc=de
+univentionDefaultDomainControllerMasterGroup: cn=DC Backup Hosts,cn=groups,dc=intranet,dc=example,dc=de
+univentionDefaultClientGroup: cn=Computers,cn=groups,dc=intranet,dc=example,dc=de
+univentionDefaultMemberserverGroup: cn=Computers,cn=groups,dc=intranet,dc=example,dc=de
+
+dn: cn=uidNumber,cn=temporary,cn=univention,dc=intranet,dc=example,dc=de
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionLastUsed
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: uidNumber
+univentionLastUsedValue: 2022
+
+dn: cn=gidNumber,cn=temporary,cn=univention,dc=intranet,dc=example,dc=de
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionLastUsed
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: gidNumber
+univentionLastUsedValue: 5011
+
+dn: sambaDomainName=INTRANET,cn=samba,dc=intranet,dc=example,dc=de
+sambaDomainName: INTRANET
+sambaSID: S-1-5-21-532256849-3048468579-2014117135
+objectClass: sambaDomain
+objectClass: univentionObject
+univentionObjectType: settings/sambadomain
+sambaNextUserRid: 1000
+sambaNextGroupRid: 1000
+sambaMinPwdLength: 8
+univentionSamba4pwdProperties: 1
+
+dn: cn=default containers,cn=univention,dc=intranet,dc=example,dc=de
+objectClass: top
+objectClass: univentionDirectory
+objectClass: univentionObject
+univentionObjectType: settings/directory
+cn: default containers
+univentionComputersObject: cn=computers,dc=intranet,dc=example,dc=de
+univentionComputersObject: cn=memberserver,cn=computers,dc=intranet,dc=example,dc=de
+univentionComputersObject: cn=dc,cn=computers,dc=intranet,dc=example,dc=de
+univentionDomainControllerComputersObject: cn=dc,cn=computers,dc=intranet,dc=example,dc=de
+univentionDnsObject: cn=dns,dc=intranet,dc=example,dc=de
+univentionDhcpObject: cn=dhcp,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=desktop,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=shares,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=userquota,cn=shares,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=printquota,cn=shares,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=update,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=ldap,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=installation,cn=update,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=packages,cn=update,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=repository,cn=update,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=boot,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=default-settings,cn=boot,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=dns,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=dnsupdate,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=leasetime,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=netbios,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=routing,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=default-settings,cn=routing,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=scope,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=statements,cn=dhcp,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=sound,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=config-registry,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=xfree,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=mail,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=users,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=nfsmounts,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=printservers,cn=policies,dc=intranet,dc=example,dc=de
+univentionPolicyObject: cn=UMC,cn=policies,dc=intranet,dc=example,dc=de
+univentionLicenseObject: cn=license,cn=univention,dc=intranet,dc=example,dc=de
+univentionUsersObject: cn=users,dc=intranet,dc=example,dc=de
+univentionUsersObject: cn=self registered users,dc=intranet,dc=example,dc=de
+univentionGroupsObject: cn=groups,dc=intranet,dc=example,dc=de
+univentionNetworksObject: cn=networks,dc=intranet,dc=example,dc=de
+univentionSharesObject: cn=shares,dc=intranet,dc=example,dc=de
+univentionPrintersObject: cn=printers,dc=intranet,dc=example,dc=de
+univentionMailObject: cn=domain,cn=mail,dc=intranet,dc=example,dc=de
+univentionMailObject: cn=mailinglists,cn=mail,dc=intranet,dc=example,dc=de
+univentionMailObject: cn=folder,cn=mail,dc=intranet,dc=example,dc=de
+
+dn: cn=Domain Users,cn=groups,dc=intranet,dc=example,dc=de
+univentionObjectType: groups/group
+univentionGroupType: -2147483646
+cn: Domain Users
+sambaSID: S-1-5-21-532256849-3048468579-2014117135-513
+sambaGroupType: 2
+gidNumber: 5001
+uniqueMember: uid=Administrator,cn=users,dc=intranet,dc=example,dc=de
+uniqueMember: uid=ucs-sso,cn=users,dc=intranet,dc=example,dc=de
+uniqueMember: uid=samba,cn=users,dc=intranet,dc=example,dc=de
+memberUid: Administrator
+memberUid: ucs-sso
+memberUid: samba
+univentionPolicyReference: cn=default-umc-users,cn=UMC,cn=policies,dc=intranet,dc=example,dc=de
+objectClass: sambaGroupMapping
+objectClass: posixGroup
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionGroup
+objectClass: univentionPolicyReference
+
