@@ -356,14 +356,6 @@ class CheckRoles(Check):
 		if environment.role not in roles:
 			yield Verdict(Verdict.ERROR, 'Wrong role: %s not in (%s)' % (environment.role, ','.join(roles)), TestCodes.REASON_ROLE_MISMATCH)
 
-	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
-		args = []
-		for role in self.roles_required:
-			args.extend(['--ucs-test-role-required', role])
-		for role in self.roles_prohibited:
-			args.extend(['--ucs-test-role-prohibited', role])
-		return args
-
 
 class CheckJoin(Check):
 
