@@ -31,6 +31,8 @@
 
 """conftest plugin for pytest runner in ucs-test"""
 
+from __future__ import absolute_import
+
 import pytest
 
 
