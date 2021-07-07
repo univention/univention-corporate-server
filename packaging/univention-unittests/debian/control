@@ -13,18 +13,37 @@ Build-Depends:
  python3-setuptools,
 Standards-Version: 3.8.2
 
-Package: univention-unittests-python
+Package: python-univentionunittests
 Architecture: all
 Depends:
  python-pytest,
  python-pytest-mock,
  python-mock,
- python3-pytest,
- python3-pytest-mock,
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Recommends:
  univention-unittests,
 Suggests:
  python-pytest-cov,
+Description: Plugins for pytest that go with UCS specific packages.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univentionunittests
+Architecture: all
+Depends:
+ python3-pytest,
+ python3-pytest-mock,
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
+Recommends:
+ univention-unittests,
+Suggests:
  python3-pytest-cov,
 Description: Plugins for pytest that go with UCS specific packages.
  .
@@ -36,8 +55,20 @@ Description: Plugins for pytest that go with UCS specific packages.
 Package: univention-unittests
 Architecture: all
 Depends:
- univention-unittests-python,
+ python-univentionunittests,
+ python3-univentionunittests,
 Description: Unittests for UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-unittests-python
+Architecture: all
+Depends:
+ univention-unittests,
+Description: transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

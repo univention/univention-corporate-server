@@ -1,3 +1,9 @@
+univention-unittests (2.0.1-2) unstable; urgency=medium
+
+  * Bug #53552: split package into separate python packages
+
+ -- Florian Best <best@univention.de>  Wed, 07 Jul 2021 11:09:04 +0200
+
 univention-unittests (2.0.1-1) unstable; urgency=medium
 
   * Bug #51566: Do not compile during dpkg-buildpackage
