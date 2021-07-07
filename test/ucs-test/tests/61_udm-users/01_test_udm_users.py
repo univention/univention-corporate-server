@@ -335,7 +335,7 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 
 
 @pytest.mark.tags('apptest')
-def test_country_names_uptodate(self):  # TODO: move into package unit test
+def test_country_names_uptodate():  # TODO: move into package unit test
 	"""Test is list of country names in univention.admin.syntax.Country.choices is uptodate"""
 
 	import univention.admin.syntax as udm_syntax
