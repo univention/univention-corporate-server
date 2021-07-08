@@ -66,18 +66,6 @@
 		width: 100%
 		height: 100%
 
-.ucsPrimaryButton
-	--bgc: var(--button-primary-bgc)
-	&.dijit
-		&Hover,
-		&Focused
-			--bgc: var(--button-primary-bgc-hover)
-		&Active
-			--bgc: var(--button-primary-bgc-active)
-		&Disabled
-			--bgc: var(--button-primary-bgc-disabled)
-			opacity: 0.4
-
 .ucsTextButton
 	--bgc: var(--button-text-bgc)
 	&.dijit
@@ -92,6 +80,18 @@
 
 	.dijitButtonContents
 		padding: 0 0.5rem
+
+.ucsPrimaryButton
+	--bgc: var(--button-primary-bgc)
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc: var(--button-primary-bgc-hover)
+		&Active
+			--bgc: var(--button-primary-bgc-active)
+		&Disabled
+			--bgc: var(--button-primary-bgc-disabled)
+			opacity: 0.4
 
 .ucsPrimaryButton,
 .ucsNormalButton
