@@ -39,10 +39,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/Dialog",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"put-selector/put"
-], function(declare, lang, array, query, domClass, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, Dialog, StandbyMixin, Text, put) {
+], function(declare, lang, array, query, domClass, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, Dialog, Text, put) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
 	// require it explicitly
@@ -53,7 +52,7 @@ define([
 		registry = _registry;
 	});
 
-	return declare("umc.widgets.ConfirmDialog", [ Dialog, StandbyMixin, _WidgetsInTemplateMixin ], {
+	return declare("umc.widgets.ConfirmDialog", [ Dialog, _WidgetsInTemplateMixin ], {
 		// summary:
 		//		Class that provides a customizable confirmation dialog.
 		//		(For easier access see dialog.confirm().)

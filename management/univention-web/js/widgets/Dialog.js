@@ -33,9 +33,10 @@ define([
 	"dojo/_base/lang",
 	"dojo/aspect",
 	"dijit/Dialog",
-	"umc/widgets/Button"
-], function(declare, lang, aspect, Dialog, Button) {
-	return declare("umc.widgets.Dialog", [Dialog], {
+	"umc/widgets/Button",
+	"umc/widgets/StandbyMixin"
+], function(declare, lang, aspect, Dialog, Button, StandbyMixin) {
+	return declare("umc.widgets.Dialog", [Dialog, StandbyMixin], {
 		//// overwrites
 		closable: true,
 
