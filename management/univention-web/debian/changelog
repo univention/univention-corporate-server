@@ -1,3 +1,9 @@
+univention-web (3.0.6-6) unstable; urgency=medium
+
+  * Bug #37720: enable conditional requests for gzip compressed requests
+
+ -- Florian Best <best@univention.de>  Thu, 08 Jul 2021 17:47:28 +0200
+
 univention-web (3.0.6-5) unstable; urgency=medium
 
   * Bug #37720: restore commented out Expire settings
