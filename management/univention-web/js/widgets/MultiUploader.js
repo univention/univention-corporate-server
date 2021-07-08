@@ -132,16 +132,16 @@ define([
 			this._createProgressBar();
 
 			// prepare remove button and container for upload/remove buttons
-			this._container = new ContainerWidget({});
-			this._container.addChild(new Button({
-				label: this.removeButtonLabel,
-				onClick: lang.hitch(this, '_removeFiles'),
-				style: 'float: right;'
-			}));
+			this._container = new ContainerWidget({
+				'class': 'umcMultiUploader__buttons'
+			});
 			this.addChild(this._container);
-			
 			// add the uploader button
 			this._addUploader();
+			this._container.addChild(new Button({
+				label: this.removeButtonLabel,
+				onClick: lang.hitch(this, '_removeFiles')
+			}));
 
 			this._uploader.setDragAndDrop(this._files.domNode);
 		},
@@ -256,8 +256,7 @@ define([
 				dynamicOptions: this.dynamicOptions,
 				maxSize: this.maxSize,
 				multiFile: this.multiFile,
-				canUpload: this.canUpload,
-				style: 'float: left;'
+				canUpload: this.canUpload
 			});
 			this._container.addChild(this._uploader);
 
