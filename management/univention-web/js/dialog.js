@@ -254,7 +254,8 @@ define([
 			var confirmDialog = new ConfirmDialog({
 				title: title || _('Confirmation'),
 				message: message,
-				options: options
+				options: options,
+				destroyOnCancel: true
 			});
 
 			// connect to 'confirm' event to close the dialog in any case
