@@ -1,8 +1,13 @@
 @require "../variables.styl"
+@require "../buttons.styl"
 
 
-.umcMultiObjectSelect__buttons
+.umcMultiUploader__buttons
 	margin-top: spacing(1)
 
-	.dijitButton:not(:last-child)
+	.umcUploader
 		margin-right: spacing(1)
+		display: inline-block
+
+.umcMultiUploader__progressText
+	width: min-content

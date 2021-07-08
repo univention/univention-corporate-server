@@ -35,15 +35,16 @@ define([
 	"dojo/when",
 	"dojo/on",
 	"dojo/dom-style",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/Button",
 	"umc/widgets/Uploader",
 	"umc/widgets/MultiSelect",
-	"umc/widgets/ProgressInfo",
+	"umc/widgets/Text",
 	"umc/i18n!"
-], function(declare, lang, array, when, on, domStyle, tools, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
+], function(declare, lang, array, when, on, domStyle, entities, tools, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, Text, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
 		baseClass: 'umcMultiUploader',
 
@@ -72,9 +73,6 @@ define([
 		//		A size limit for the uploaded file.
 		maxSize: 524288,
 
-		// make sure that no sizeClass is being set
-		sizeClass: null,
-
 		// this form element should always be valid
 		valid: true,
 
@@ -98,7 +96,7 @@ define([
 		multiFile: false,
 
 		// internal reference to the progress bar
-		_progressBar: null,
+		_progressText: null,
 
 		// button for removing entries
 		_removeButton: null,
@@ -140,7 +138,9 @@ define([
 			this._addUploader();
 			this._container.addChild(new Button({
 				label: this.removeButtonLabel,
-				onClick: lang.hitch(this, '_removeFiles')
+				onClick: lang.hitch(this, '_removeFiles'),
+				'class': 'ucsTextButton',
+				iconClass: 'trash'
 			}));
 
 			this._uploader.setDragAndDrop(this._files.domNode);
@@ -149,9 +149,9 @@ define([
 		destroy: function() {
 			this.inherited(arguments);
 
-			if (this._progressBar) {
+			if (this._progressText) {
 				// destroy the old progress bar
-				this._progressBar.destroyRecursive();
+				this._progressText.destroyRecursive();
 			}
 		},
 
@@ -207,21 +207,19 @@ define([
 		},
 
 		_createProgressBar: function() {
-			if (this._progressBar) {
+			if (this._progressText) {
 				// destroy the old progress bar
-				this._progressBar.destroyRecursive();
+				this._progressText.destroyRecursive();
 			}
 
 			// create progress bar for displaying the upload information
-			this._progressBar = new ProgressInfo({
-				maximum: 1
+			this._progressText = new Text({
+				'class': 'umcMultiUploader__progressText'
 			});
-			this._progressBar._progressBar.set('style', 'min-width: 30em;');
-			this._progressBar.updateTitle(_('No upload in progress'));
 		},
 
 		_updateProgress: function() {
-			if (!this._progressBar) {
+			if (!this._progressText) {
 				return;
 			}
 
@@ -237,13 +235,16 @@ define([
 					}
 				}
 			}));
-			currentVal = Math.min(nDone / this._uploadingFiles.length, 0.99);
-			if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length - 1) {
-				// all uploads are finished
-				this._progressBar.update(1, '', _('Uploads finished'));
-			}
-			else {
-				this._progressBar.update(currentVal, '', _('Uploading... %(current)d of %(total)d files remaining.', {current: this._uploadingFiles.length - nDone, total: this._uploadingFiles.length}));
+			currentVal = (nDone / this._uploadingFiles.length) * 100;
+			if (this._uploadingFiles.length && nDone == this._uploadingFiles.length - 1) {
+				this._progressText.set('content',
+					entities.encode(_('Uploading... %(current)d of %(total)d files remaining.',
+						{
+							current: this._uploadingFiles.length - nDone,
+							total: this._uploadingFiles.length
+						}
+					))
+				);
 			}
 		},
 
@@ -256,9 +257,10 @@ define([
 				dynamicOptions: this.dynamicOptions,
 				maxSize: this.maxSize,
 				multiFile: this.multiFile,
-				canUpload: this.canUpload
+				canUpload: this.canUpload,
+				buttonClass: 'ucsTextButton'
 			});
-			this._container.addChild(this._uploader);
+			this._container.addChild(this._uploader, 0);
 
 			// register events
 			var uploader = this._uploader;
@@ -271,8 +273,7 @@ define([
 				// add current file to the list of uploading items
 				if (!this._uploadingFiles.length) {
 					// first file being uploaded -> show the standby animation
-					//this._createProgressBar();
-					this._files.standby(true, this._progressBar);
+					this._files.standby(true, this._progressText);
 				}
 				// convert to array if single file
 				if (!(file instanceof Array)){
@@ -345,10 +346,7 @@ define([
 				errorSignal = on(uploader, 'error', lang.hitch(this, _done, false));
 
 				// hide uploader widget and add a new one
-				domStyle.set(uploader.domNode, {
-					width: '0',
-					overflow: 'hidden'
-				});
+				uploader.set('visible', false);
 				this._addUploader();
 				//since we create a new uploader we need to setup drag and drop again
 				this._uploader.setDragAndDrop(this._files.domNode);
