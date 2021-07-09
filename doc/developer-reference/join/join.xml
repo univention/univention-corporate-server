@@ -714,6 +714,17 @@ fi
 									</listitem>
 								</varlistentry>
 								<varlistentry>
+									<term><option>--umcmessagecatalog</option> <filename><replaceable>prefix</replaceable>/<replaceable>language</replaceable>-<replaceable>module_id</replaceable>-<replaceable>application_name</replaceable>.mo</filename></term>
+									<listitem>
+										<para>
+											Similar to the option above this option can be used to supply message translation files in GNU message catalog format, but for the <acronym>UMC</acronym>.
+											The filename takes the form <filename>language-moduleid.mo</filename>, e.g. <filename>de-udm.mo</filename>, where <replaceable>language</replaceable> must be a valid language tag, i.e. must correspond to a subdirectory of <filename class="directory">/usr/share/locale/</filename>.
+											The <replaceable>moduleid</replaceable> is specified in the UMC registration file (see <xref linkend="umc:xml"/>).
+											The MO files are then placed under <filename>/usr/share/univention-management-console/i18n/</filename> in a subdirectory with the corresponding language short code.
+										</para>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
 									<term><option>--umcregistration</option> <filename><replaceable>filename</replaceable>.xml</filename></term>
 									<listitem>
 										<para>
