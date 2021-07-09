@@ -41,24 +41,28 @@ def pytest_addoption(parser):
 		"--ucs-test-tags-prohibited",
 		action="append",
 		metavar="TAG",
+		default=[],
 		help="Skip tests with this tag",
 	)
 	parser.addoption(
 		"--ucs-test-tags-required",
 		action="append",
 		metavar="TAG",
+		default=[],
 		help="Only run tests with this tag",
 	)
 	parser.addoption(
 		"--ucs-test-tags-ignore",
 		action="append",
 		metavar="TAG",
+		default=[],
 		help="Neither require nor prohibit this tag",
 	)
 	parser.addoption(
 		"--ucs-test-default-tags",
 		action="append",
 		metavar="TAG",
+		default=[],
 		help="The tags for the entire test case, if the test function does not specify any",
 	)
 	parser.addoption(
