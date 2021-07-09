@@ -45,7 +45,7 @@ strings = {
 	'system_name': 'Host settings',
 	'account_information': 'Account information',
 	'ad_account_information': 'Active Directory join information',
-	'host_settings': 'LDAP base',
+	'host_settings': 'univention',
 	'software_configuration': 'Software configuration',
 	'software_configuration_non_master': 'Select UCS software',
 	'confirm_config': 'Confirm configuration',
