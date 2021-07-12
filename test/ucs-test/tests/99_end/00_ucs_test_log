@@ -22,6 +22,8 @@ if not args.logfile:
 		if pfile.path.startswith('/var/log/univention/test') and pfile.path.endswith('.log'):
 			args.logfile = pfile.path
 			break
+else:
+	args.logfile = os.path.join(ucs_test.cwd(), args.logfile)
 
 if args.logfile and os.path.isfile(args.logfile):
 	if not grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
