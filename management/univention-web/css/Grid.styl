@@ -61,8 +61,8 @@
 		&:last-child
 			padding-right: spacing(2)
 
-	.dgrid-cell:not(.dgrid-selector) *
-		display: inline
+	.dgrid-cell:not(.dgrid-selector) > *:not(.ucsButton)
+		display: inline // for text-overflow ellipsis
 
 	.dgrid__sortIcon
 		margin-right: 0.3em
