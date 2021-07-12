@@ -5,13 +5,40 @@
 
 from __future__ import print_function
 
-import grep_traceback
+import os
+import argparse
 import glob
-import univention.testing.utils
 import subprocess
 import tempfile
 import pipes
+
 import pytest
+import psutil
+import grep_traceback
+
+import univention.testing.utils
+
+
+@pytest.mark.exposure('safe')
+def test_ucs_test_logfile():
+	"""Find traceback in ucs-test logfile"""
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-l', '--logfile')
+
+	ucs_test = psutil.Process(os.getppid())
+	args = parser.parse_known_args(ucs_test.cmdline())[0]
+
+	if not args.logfile:
+		for pfile in ucs_test.open_files():
+			if pfile.path.startswith('/var/log/univention/test') and pfile.path.endswith('.log'):
+				args.logfile = pfile.path
+				break
+	else:
+		args.logfile = os.path.join(ucs_test.cwd(), args.logfile)
+
+	if args.logfile and os.path.isfile(args.logfile):
+		not_found = grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+		assert not_found, 'ucs-test logfile contains tracebacks'
 
 
 @pytest.mark.exposure('safe')
@@ -31,7 +58,7 @@ def test_var_log_tracebacks_gz():
 # @pytest.mark.parametrize('testcase', [
 # 	'test_var_log_tracebacks',
 # 	'test_var_log_tracebacks_gz',
-# ])
+# ])  # FIXME: skip test_ucs_test_logfile
 def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
 	"""Find traceback on the DC Master"""
 	password = univention.testing.utils.UCSTestDomainAdminCredentials().bindpw
