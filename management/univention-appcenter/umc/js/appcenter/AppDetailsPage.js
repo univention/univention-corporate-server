@@ -442,7 +442,7 @@ define([
 				actions: actions,
 				columns: columns,
 				moduleStore: myStore,
-				'class': 'umcGridLight',
+				'class': 'umcGridOnContainer',
 			});
 			parentContainer.addChild(this._installedAppsGrid);
 			parentContainer.own(this._installedAppsGrid);
