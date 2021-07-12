@@ -1,3 +1,9 @@
+ucs-test (9.0.7-46) unstable; urgency=medium
+
+  * Bug #53528: added 03_check_release_signature_do_not_ignore_me
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Jul 2021 12:47:04 +0200
+
 ucs-test (9.0.7-45) unstable; urgency=medium
 
   * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky
