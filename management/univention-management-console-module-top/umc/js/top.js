@@ -155,7 +155,7 @@ define([
 					{id: 'pid', label: _('PID')},
 					{id: 'command', label: _('Command')}
 				],
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}, {
 				type: SearchBox,
 				name: 'pattern',
@@ -164,7 +164,7 @@ define([
 				onSearch: lang.hitch(this, function() {
 					this._searchWidget.submit();
 				}),
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}];
 
 			this._searchWidget = new SearchForm({

@@ -63,7 +63,7 @@ define([
 				hideSubmitButton: true,
 				widgets: [{
 					name: 'key',
-					'class': 'umcTextBoxDark',
+					'class': 'umcTextBoxOnBody',
 					type: ComboBox,
 					label: _("Search for"),
 					staticValues: [
@@ -75,7 +75,7 @@ define([
 				}, {
 					name: 'pattern',
 					type: SearchBox,
-					'class': 'umcTextBoxDark',
+					'class': 'umcTextBoxOnBody',
 					inlineLabel: _('Search...'),
 					value: '',
 					onSearch: lang.hitch(this, function() {

@@ -70,7 +70,7 @@ define([
 			this.inherited(arguments);
 
 			this._searchTextBox = new SearchBox({
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				inlineLabel: this.searchLabel
 			});
 			this.addChild(this._searchTextBox);

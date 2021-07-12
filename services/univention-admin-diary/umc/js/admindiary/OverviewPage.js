@@ -145,7 +145,7 @@ define([
 			var widgets = [{
 				type: DateBox,
 				label: _("From"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				value: new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000),
 				sizeClass: 'Half',
 				onChange: lang.hitch(this, 'autoSearch'),
@@ -153,7 +153,7 @@ define([
 			}, {
 				type: DateBox,
 				label: _("Until"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				value: new Date(),
 				sizeClass: 'Half',
 				onChange: lang.hitch(this, 'autoSearch'),
@@ -161,7 +161,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Tags"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.tags, this.ALL_ID),
 				value: this.ALL_ID,
@@ -171,7 +171,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Event"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.events, this.ALL_ID),
 				value: this.ALL_ID,
@@ -181,7 +181,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Author"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.authors, this.ALL_ID),
 				value: this.ALL_ID,
@@ -191,7 +191,7 @@ define([
 			}, {
 				type: ComboBox,
 				label: _("Source"),
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.sources, this.ALL_ID),
 				value: this.ALL_ID,
@@ -201,7 +201,7 @@ define([
 			}, {
 				type: SearchBox,
 				name: 'message',
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				value: '',
 				sizeClass: 'TwoThirds',
 				inlineLabel: _('Search...'),
