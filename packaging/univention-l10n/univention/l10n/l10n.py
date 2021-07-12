@@ -272,6 +272,8 @@ class MIMEChecker():
 	# resort to libmagic
 	suffixes = {
 		'.js': 'application/javascript',
+		'.ts': 'application/javascript',
+		'.vue': 'application/javascript',
 		'.py': 'text/x-python',
 		'.html': 'text/html',
 		'.sh': 'text/x-shellscript',
