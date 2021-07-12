@@ -23,6 +23,13 @@ test -f $libfaketime || fail_fast 1 "libfaketime ($libfaketime) not found"
 # here we are only interested in the apt key expiry
 apt_options="-o Acquire::https::Verify-Peer=false -o Acquire::https::Verify-Host=false"
 
+eval "$(ucr shell repository/app_center/server)"
+
+# test appcenter has no Release files
+if [[ "$repository_app_center_server" =~ appcenter-test ]]; then
+	exit 77
+fi
+
 # check if apt-get update in now+5y works
 if LD_PRELOAD=$libfaketime FAKETIME="$valid_for" apt-get update $apt_options 2>&1 | grep '^[WE]:'; then
 	apt-key list
