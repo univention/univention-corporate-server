@@ -30,6 +30,7 @@
 @require "../variables.styl"
 @require "../document.styl"
 @require "../Grid.styl"
+@require "../widgets/TitlePane.styl"
 
 // seperation line between module header and content when scrolling
 .umcModuleHeader
@@ -171,11 +172,9 @@
 			overflow: hidden
 
 		.dijitTitlePane
-			background-color: var(--bgc-content-body)
+			@extends .umcTitlePaneOnContainer
 			border-radius: 0
-			border-top: 2px solid var(--bgc-content-body)
 			margin-bottom: 0
-			--bgc-inputfield-on-container: var(--bgc-content-container)
 
-			.dijitTitlePane
-				border-top: 0
+			& + .dijitTitlePane
+				border-top: 2px solid var(--bgc-content-body)
