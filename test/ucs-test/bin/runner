@@ -37,17 +37,17 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
 	common.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
 	common.add_argument("--force", "-f", action="store_true", help="Disable pre-condition check")
 	common.add_argument("--format", "-F", choices=univention.testing.format.FORMATS, default='text', help="Select output format [%(default)s]")
-
-	parser = ArgumentParser(parents=[common])
-	parser.add_argument("interpreter", help="Command interpreter")
-	parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
-	parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
-	parser.add_argument(
+	common.add_argument(
 		"-i", "--interactive",
 		action="store_true",
 		help="Execute commands in an interactive shell",
 		default=(os.isatty(1) and os.isatty(2))
 	)  # The new default is there to fix `Failed to open /dev/tty [...]` in tests
+
+	parser = ArgumentParser(parents=[common])
+	parser.add_argument("interpreter", help="Command interpreter")
+	parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
+	parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
 
 	options = parser.parse_args(args)
 	if options.args:
