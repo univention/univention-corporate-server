@@ -10,7 +10,6 @@
 
 import pytest
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 
 
 @pytest.mark.tags('udm', 'apptest')
