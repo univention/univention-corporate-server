@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Create groups/group with umlaut in name
 ## tags: [udm,apptest,SKIP]
@@ -27,17 +27,21 @@
 # group names, not only when used from python, as done on the AD-Connector.
 # This should not be a problem since they are stored in LDAP as UTF-8.
 
-import sys
+
+import pytest
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		try:
-			group = udm.create_group(name='%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
-			# group = udm.create_group(name='Contrôleurs de domaine d’entreprise')[0]
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
 
-		utils.fail('UDM did not report an error during creation a group with umlaut in name')
+@pytest.mark.tags('udm', 'apptest')
+@pytest.mark.xfail(reason='Bug #35521')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+def test_group_creation_with_umlaut_in_name(udm):
+	"""Create groups/group with umlaut in name"""
+	# packages:
+	#   - univention-config
+	#   - univention-directory-manager-tools
+	with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
+		group = udm.create_group(name='%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
+		# group = udm.create_group(name='Contrôleurs de domaine d’entreprise')[0]
