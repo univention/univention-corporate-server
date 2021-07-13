@@ -17,6 +17,10 @@ import univention.testing.utils as utils
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_group_creation_set_single_letter_name_user(udm):
+	"""Add user with single letter name to groups/group during creation"""
+	# packages:
+	#   - univention-config
+	#   - univention-directory-manager-tools
 	user = udm.create_user(name=uts.random_username(1))
 	group = udm.create_group(users=user[0])[0]
 
