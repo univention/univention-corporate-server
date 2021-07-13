@@ -50,7 +50,7 @@ def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeo
 	curl.setopt(pycurl.URL, url)
 	# curl.setopt(pycurl.VERBOSE, bVerbose)
 
-	buf = io.StringIO()
+	buf = io.BytesIO()
 	curl.setopt(pycurl.WRITEFUNCTION, buf.write)
 	MODULE.process(''.join("Trying to connect to %s via HTTP proxy %s" % (url, proxy)))
 
