@@ -1162,10 +1162,10 @@ def unmapKeyAndValue(old, encoding=()):
 	return [entry.decode(*encoding).split(u'=', 1) for entry in old]
 
 
-def mapWindowsFiletime(old):
+def mapWindowsFiletime(old, encoding=()):  # type: (str) -> List[bytes]
 	if old:
 		if old == "0":
-			return [old]
+			return [old.encode(*encoding)]
 		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
 		d = long(116444736000000000)  # difference between 1601 and 1970
 		windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
@@ -1173,18 +1173,19 @@ def mapWindowsFiletime(old):
 	return []
 
 
-def unmapWindowsFiletime(old):
+def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
 	if old and old[0]:
-		if old[0] == "0":
-			return old[0]
+		password_time = int(old[0].decode(*encoding))
+		if password_time == 0:
+			return u'%d' % (password_time,)
 		d = long(116444736000000000)  # difference between 1601 and 1970
-		unixtime = (int(old[0]) - d) / 10000000
+		unixtime = (password_time - d) // 10000000
 		try:
 			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
 		except ValueError:
-			#already unixtime, happens in environments with Samba3
-			ud.debug(ud.ADMIN, ud.INFO, 'Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s' % old[0])
-			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(int(old[0])))
+			# already unixtime, happens in environments with Samba3
+			ud.debug(ud.ADMIN, ud.INFO, 'Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s' % (password_time,))
+			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(password_time))
 	return u''
 
 
