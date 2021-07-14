@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-52) unstable; urgency=medium
+
+  * Bug #53575: Eliminate system diagnostics false positives when http_proxy is set
+
+ -- Christian Castens <castens@univention.de>  Wed, 14 Jul 2021 09:55:02 +0200
+
 univention-management-console-module-diagnostic (5.0.1-51) unstable; urgency=low
 
   * Bug #51942: Improved usability of univention-run-diagnostic-checks
