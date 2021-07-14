@@ -64,7 +64,7 @@ desc: |
  * race condition for removal of the HCI controller (CVE-2021-32399)
  * use-after-free in net/bluetooth/hci_event.c when destroying an hci_chan
    (CVE-2021-33034)
-note: This is the first of two parts.
+note: This is the first of three parts.
 bug: [53474]
 cve:
 - CVE-2020-24586
