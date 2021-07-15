@@ -6,6 +6,6 @@ src: univention-management-console-module-diagnostic
 fix: 5.0.1-52A~4.4.0.202107141003
 desc: |
  This update addresses the following issue(s):
- * The System Diagnostic check no longer shows false positives when
-   a http-proxy is set.
+ * The system diagnostic check no longer shows false positives when
+   a http-proxy is used.
 bug: [53575]
