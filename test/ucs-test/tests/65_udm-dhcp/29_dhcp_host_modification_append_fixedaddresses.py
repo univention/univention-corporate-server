@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Append fixedaddresses during dhcp/host modification
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -9,12 +9,15 @@
 
 
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPHost(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_host_modification_append_fixedaddresses(self, udm):
+		"""Append fixedaddresses during dhcp/host modification"""
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
 		dhcp_host = udm.create_object('dhcp/host', host=uts.random_name(), hwaddress='ethernet 01:ff:78:38:ab:24', superordinate=dhcp_service)

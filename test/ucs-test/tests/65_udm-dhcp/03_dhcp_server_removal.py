@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Remove dhcp/server
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -8,12 +8,16 @@
 ##   - univention-directory-manager-tools
 
 
+import pytest
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPServer(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_server_removal(self, udm):
+		"""Remove dhcp/server"""
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
 		dhcp_server = udm.create_object('dhcp/server', server=uts.random_name(), superordinate=dhcp_service)

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Set range during dhcp/subnet creation
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -9,11 +9,15 @@
 
 
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPSubnet(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_subnet_creation_set_range(self, udm):
+		"""Set range during dhcp/subnet creation"""
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
 		range = '10.20.10.1 10.20.10.254'

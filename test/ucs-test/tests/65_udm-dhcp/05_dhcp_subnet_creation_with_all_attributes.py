@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Create dhcp/subnet with all attributes set
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -8,12 +8,16 @@
 ##   - univention-directory-manager-tools
 
 
+import pytest
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPSubnet(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_subnet_creation_with_all_attributes(self, udm):
+		"""Create dhcp/subnet with all attributes set"""
 		dhcp_subnet_properties = {
 			'subnet': '10.20.30.0',
 			'subnetmask': '24',

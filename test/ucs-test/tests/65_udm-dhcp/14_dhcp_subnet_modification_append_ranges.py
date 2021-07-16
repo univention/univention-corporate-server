@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Append ranges during dhcp/subnet modification
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -9,11 +9,15 @@
 
 
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPSubnet(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_subnet_modification_append_ranges(self, udm):
+		"""Append ranges during dhcp/subnet modification"""
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
 		dhcp_subnet = udm.create_object('dhcp/subnet', subnet='10.20.0.0', subnetmask='16', superordinate=dhcp_service)

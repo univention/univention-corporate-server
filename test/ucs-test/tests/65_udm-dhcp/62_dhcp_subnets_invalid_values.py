@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Create dhcp/sharedsubnet and dhcp/subnet with invalid values
 ## tags: [udm]
 ## bugs: [44135]
@@ -13,8 +13,13 @@ import pytest
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+class Test_DHCPSubnet(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_dhcp_subnet_invalid_values(self, udm):
+		"""Create dhcp/sharedsubnet and dhcp/subnet with invalid values"""
+		# bugs: [44135]
 		dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
 		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed) as exc:
 			udm.create_object('dhcp/subnet', subnet='10.20.30.0', subnetmask='16', superordinate=dhcpService)
