@@ -136,7 +136,7 @@ class ClientSaml(Client):
 
 		print('SAML message received from %s' % saml_idp_login_ans.url)
 		self._send_saml_response_to_sp(saml_idp_login_ans)
-		self.cookies = self.__samlSession.cookies
+		self.cookies.update(self.__samlSession.cookies.items())
 
 	def _login_at_idp_with_credentials(self, saml_login_page):
 		# type: (Any) -> Any
