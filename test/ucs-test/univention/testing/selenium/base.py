@@ -237,7 +237,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# Wait for the animation to run.
 		time.sleep(1)
 
-	def do_login(self, username=None, password=None, without_navigation=False, language=None):
+	def do_login(self, username=None, password=None, without_navigation=False, language=None, check_successful_login=True):
 		# type: (Optional[str], Optional[str], bool, Optional[str]) -> None
 		if username is None:
 			username = self.umcLoginUsername
@@ -259,6 +259,12 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.enter_input('username', username)
 		self.enter_input('password', password)
 		self.submit_input('password')
+
+		# for testing 'change password on next login'
+		# don't check for available modules etc.
+		if not check_successful_login:
+			return
+
 		self.wait_for_any_text_in_list([
 			_('Users'),
 			_('Devices'),
