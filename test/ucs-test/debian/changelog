@@ -1,3 +1,10 @@
+ucs-test (10.0.6-16) unstable; urgency=medium
+
+  * Bug #53526: Without index.json.gz being downloaded, we need to adjust the
+    signature test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Jul 2021 12:05:25 +0200
+
 ucs-test (10.0.6-15) unstable; urgency=medium
 
   * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky 
