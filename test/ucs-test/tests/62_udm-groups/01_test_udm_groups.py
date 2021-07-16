@@ -244,7 +244,7 @@ def test_indirect_group_user_memberships_file_access(udm):
 
 	# create file as user "file_owner" and change permissions to 060 (read/write group only)
 	test_file = '/var/tmp/%s' % uts.random_string()
-	with tempfile.NamedTemporaryFile(dir='/var/tmp') as fd:
+	with tempfile.NamedTemporaryFile("w+", dir='/var/tmp') as fd:
 		fd.write('foo')
 		fd.flush()
 		subprocess.check_call(['su', file_owner[1], '-c', 'rm -f %(file)s; touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
