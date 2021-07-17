@@ -233,6 +233,7 @@ def test_indirect_group_user_memberships(udm):
 @pytest.mark.exposure('careful')
 def test_indirect_group_user_memberships_file_access(udm):
 	"""Access file as user of nested group of group of files owner"""
+	# TODO: test the opposite, reading is prevented by a user not in those groups
 
 	group = udm.create_group()[0]
 	nested_group = udm.create_group(memberOf=group)[0]
@@ -248,8 +249,9 @@ def test_indirect_group_user_memberships_file_access(udm):
 	with tempfile.NamedTemporaryFile("w+", dir='/var/tmp') as fd:
 		fd.write('foo')
 		fd.flush()
-		os.chmod(fd.name, 0o777)
-		subprocess.check_call(['su', file_owner[1], '-c', 'rm -f %(file)s; touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
+		os.remove(fd.name)
+		assert not os.path.exists(fd.name)
+		subprocess.check_call(['su', file_owner[1], '-c', 'touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
 
 		# test reading as "another_user"
 		subprocess.check_call(['su', another_user[1], '-c', 'cat %s' % test_file])
