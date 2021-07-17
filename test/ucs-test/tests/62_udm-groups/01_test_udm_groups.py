@@ -8,15 +8,16 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import os
 import tempfile
 import subprocess
 import random
-import univention.uldap
 
 import grp
 import pytest
 from ldap.dn import str2dn, dn2str
 
+import univention.uldap
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 
@@ -247,6 +248,7 @@ def test_indirect_group_user_memberships_file_access(udm):
 	with tempfile.NamedTemporaryFile("w+", dir='/var/tmp') as fd:
 		fd.write('foo')
 		fd.flush()
+		os.chmod(fd.name, 0o777)
 		subprocess.check_call(['su', file_owner[1], '-c', 'rm -f %(file)s; touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
 
 		# test reading as "another_user"
