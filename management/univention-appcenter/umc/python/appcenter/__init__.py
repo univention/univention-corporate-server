@@ -227,7 +227,7 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_Error(_('Problems connecting to {} ({}).').format(host, str(exc)))
 		err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})').format(opts['version'], host, response.result.get('version'))
 		# i guess this is kind of bad
-		if response.status is not 200:
+		if response.status != 200:
 			raise umcm.UMC_Error(err_msg)
 		# remote says he is not compatible
 		if response.result.get('compatible', True) is False:
@@ -320,8 +320,9 @@ class Instance(umcm.Base, ProgressMixin):
 			'noninteractive': True,
 			'auto_installed': auto_installed,
 			'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'],
-			'set_vars': settings,
 		}
+		if settings.get(app.id):
+			kwargs['set_vars'] = settings[app.id]
 		if action == 'install':
 			progress.title = _('Installing %s') % (app.name,)
 		elif action == 'remove':
@@ -631,7 +632,7 @@ class Instance(umcm.Base, ProgressMixin):
 						MODULE.process('%s: ... forbidden!' % host)
 						host_version = None
 					except (ConnectionError, HTTPError) as exc:
-						MODULE.warn('%s: Could not get appcenter/version: %s' % (exc,))
+						MODULE.warn('%s: Could not get appcenter/version: %s' % (host, exc))
 						raise
 					except Exception as exc:
 						MODULE.error('%s: Exception: %s' % (host, exc))
