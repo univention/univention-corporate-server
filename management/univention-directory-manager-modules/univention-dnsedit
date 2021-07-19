@@ -148,10 +148,7 @@ def bind():
 		ud.debug(ud.ADMIN, ud.WARN, err)
 		print(err, file=sys.stderr)
 		sys.exit(1)
-	if options.stoptls:
-		start_tls = 0
-	else:
-		start_tls = 2
+	start_tls = 0 if options.stoptls else 2
 	try:
 		if options.binddn and options.bindpwd:
 			lo = uldap.access(
