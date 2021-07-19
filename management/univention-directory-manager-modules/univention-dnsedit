@@ -35,7 +35,7 @@ from __future__ import print_function
 
 import sys
 import time
-from argparse import ArgumentParser, RawTextHelpFormatter
+from argparse import REMAINDER, ArgumentParser, RawTextHelpFormatter
 import univention.debug as ud
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
@@ -58,7 +58,6 @@ import univention.admin.uexceptions  # noqa: E402
 
 def parse():
 	"""Parse command line."""
-	usage = '%(prog)s zone command type [args]'
 	description = '''
 %(prog)s my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn
 %(prog)s my.dns.zone remove srv   ldap tcp 0 100 7389 master.fqdn
@@ -69,7 +68,7 @@ def parse():
 %(prog)s my.dns.zone add	zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn
 '''
 	global parser
-	parser = ArgumentParser(formatter_class=RawTextHelpFormatter, usage=usage, description=description)
+	parser = ArgumentParser(formatter_class=RawTextHelpFormatter, description=description)
 	parser.add_argument(
 		'--ignore-missing-zone',
 		action='store_true', dest='ignore_missing_zone',
@@ -124,8 +123,9 @@ def parse():
 		choices=['srv', 'txt', 'ns', 'ptr', 'cname', 'a', 'zone'],
 		help='dns record type',
 	)
+	parser.add_argument("args", nargs=REMAINDER)
 
-	(options, args) = parser.parse_known_args()
+	options = parser.parse_args()
 	msg = None
 	if options.bindpwdfile:
 		options.bindpwd = open(options.bindpwdfile).read().strip()
@@ -137,7 +137,7 @@ def parse():
 		ud.debug(ud.ADMIN, ud.ERROR, msg)
 		parser.error(msg)
 
-	return options, options.zone, options.command, options.typ, args
+	return options, options.zone, options.command, options.typ, options.args
 
 
 def bind():
@@ -431,8 +431,6 @@ def main():
 				add_a_record(*args)
 			elif typ == 'zone':
 				add_zone(*args)
-			else:
-				parser.error('Unknown type "%s"' % (typ,))
 			print('done')
 		elif command == 'remove':
 			if typ == 'srv':
@@ -441,8 +439,6 @@ def main():
 				remove_ns_record(*args)
 			else:
 				parser.error('Unknown type "%s"' % (typ,))
-		else:
-			parser.error('E: No valid command "%s". See --help.' % (command,))
 	except univention.admin.uexceptions.objectExists as ex:
 		if not options.ignore_exists:
 			print('E: Object "%s" exists' % (ex,), file=sys.stderr)
