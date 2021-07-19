@@ -167,9 +167,9 @@ def bind():
 		ud.debug(ud.ADMIN, ud.WARN, msg)
 		print(msg, file=sys.stderr)
 		sys.exit(1)
-	except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError):
-		msg = '%s: timeout while trying to contact LDAP server %s' % \
-			(sys.argv[0], ucr['ldap/master'])
+	except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError) as ex:
+		msg = '%s: timeout while trying to contact LDAP server %s: %s' % \
+			(sys.argv[0], ucr['ldap/master'], ex)
 		ud.debug(ud.ADMIN, ud.WARN, msg)
 		print(msg, file=sys.stderr)
 		time.sleep(10)
