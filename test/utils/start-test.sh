@@ -91,9 +91,13 @@ usage () {
 	echo "    DOCKER               - use docker container instead if local ucs-ec2-tools (default: false)"
 	echo "    DEBUG                - debug mode (default: false)"
 	echo ""
-	echo "  ???"
-	echo "    BUILD_BRANCH"
-	echo "    BUILD_REPO"
+	echo "  branch tests:"
+	echo "    BUILD_BRANCH         - Name of the git branch to build"
+	echo "    BUILD_REPO           - Repository to build packages from"
+	echo ""
+	echo "  apps"
+	echo "    APP_ID               - An app ID, wekan"
+	echo "    COMBINED_APP_ID      - ???"
 }
 
 die () {
@@ -138,13 +142,18 @@ done
 
 # a list of important env vars that are passed to the docker container
 declare -a env_vars=(
+	# POSIX
+	HOME
+	USER
+	# Jenkins
+	BUILD_URL
+	NODE_NAME
+	# Job
 	BUILD_BRANCH
 	BUILD_REPO
-	CFG
 	CURRENT_AMI
 	ERRATA_UPDATE
 	EXACT_MATCH
-	HOME
 	HALT
 	KVM_BUILD_SERVER
 	KVM_CPUS
@@ -167,7 +176,8 @@ declare -a env_vars=(
 	UCSSCHOOL_RELEASE
 	UCS_TEST_RUN
 	UCS_VERSION
-	USER
+	APP_ID
+	COMBINED_APP_ID
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
@@ -188,12 +198,12 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
-export CFG="$1"
+CFG="$(readlink -f "$1")"
 
 # get image from cfg if not explicitly as env var
 if [ -z "$DIMAGE" ]; then
 	i="$(sed -n 's/^docker_image: //p' "$CFG")"
-	test -n "$i" && image="$i"
+	[ -n "$i" ] && image="$i"
 fi
 
 # TODO, find a better way
@@ -204,7 +214,8 @@ export NETINSTALL_IP1=$(((${release##*-} + 3) * 2 ))
 export NETINSTALL_IP2=$((NETINSTALL_IP1 +1))
 
 # Jenkins defaults
-if [ "$USER" = "jenkins" ]; then
+if [ -n "${JENKINS_HOME:-}" ]
+then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
@@ -227,7 +238,8 @@ if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
 	BUILD_HOST='buildvm.knut.univention.de'
 	REPO_UCS='git@git.knut.univention.de:univention/ucs.git'
 	REPO_UCSSCHOOL='git@git.knut.univention.de:univention/ucsschool.git'
-	if echo "$UCSSCHOOL_BRANCH" | grep -Eq '^[0-9].[0-9]$' ; then
+	if [[ "$UCSSCHOOL_BRANCH" = [0-9].[0-9] ]]
+	then
 		BUILD_BRANCH="$UCS_BRANCH"
 		BUILD_REPO="$REPO_UCS"
 	else
@@ -235,9 +247,7 @@ if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
 		BUILD_REPO="$REPO_UCSSCHOOL"
 	fi
 	# check branch test
-	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 \
-		/home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" \
-		> utils/apt-get-branch-repo.list ||
+	ssh "jenkins@${BUILD_HOST}" /home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" > utils/apt-get-branch-repo.list ||
 		die 'Branch build failed'
 	# replace non deb lines
 	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
@@ -275,6 +285,8 @@ if "$docker"; then
 		-w /test
 		-v "${PWD:-$(pwd)}:/test"
 		-v "$HOME/ec2:$HOME/ec2:ro"
+		-v "$CFG:$CFG:ro"
+		--network host
 		--dns '192.168.0.124'
 		--dns '192.168.0.97'
 		--dns-search 'knut.univention.de'
@@ -300,8 +312,10 @@ if "$docker"; then
 	# the image to start
 	cmd+=("$image")
 fi
-cmd+=("$exe" -c "$CFG")
 
+"$debug" && "$docker" && cmd+=("bash" '-s' '--')
+
+cmd+=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
@@ -313,8 +327,6 @@ for env_var in "${env_vars[@]}"
 do
 	echo "  $env_var=${!env_var}"
 done
-
-"$debug" && exit 0
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
