@@ -447,11 +447,9 @@ def main():
 		if not options.ignore_exists:
 			print('E: Object "%s" exists' % (ex,), file=sys.stderr)
 			raise
-			sys.exit(1)
 	except (ValueError, TypeError, univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueRequired) as ex:
 		print('E: failed %s' % (ex,), file=sys.stderr)
 		raise
-		sys.exit(1)
 
 
 if __name__ == '__main__':
