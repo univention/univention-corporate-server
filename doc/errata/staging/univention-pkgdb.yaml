@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-pkgdb
-fix: 
+fix: 13.0.1-9A~5.0.0.202105262354
 desc: |
  This update addresses the following issue(s):
  * The package univention-pkgdb has been migrated to Python 3.
