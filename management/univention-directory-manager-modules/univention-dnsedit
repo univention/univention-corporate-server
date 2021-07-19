@@ -106,6 +106,9 @@ def parse():
 		'--bindpwdfile',
 		action='store', dest='bindpwdfile',
 		help='bind password file')
+	parser.add_argument(
+		'--timeout', type=int, default=120,
+		help='LDAP connection timeout')
 
 	parser.add_argument(
 		'zone',
@@ -139,39 +142,35 @@ def parse():
 
 def bind():
 	"""Bind to LDAP service."""
-	timeout = time.time() + 120  # 2 minutes from now
-	if time.time() > timeout:
-		err = '%s: LDAP server %s unreachable, aborting' % \
-			(sys.argv[0], ucr['ldap/master'])
-		ud.debug(ud.ADMIN, ud.WARN, err)
-		print(err, file=sys.stderr)
-		sys.exit(1)
 	start_tls = 0 if options.stoptls else 2
-	try:
-		if options.binddn and options.bindpwd:
-			lo = uldap.access(
-				host=ucr['ldap/master'],
-				port=int(ucr.get('ldap/master/port', '7389')),
-				base=ucr['ldap/base'],
-				binddn=options.binddn,
-				bindpw=options.bindpwd,
-				start_tls=start_tls)
-			position = uldap.position(lo.base)
-		else:
-			lo, position = uldap.getAdminConnection(start_tls)
-		return lo, position
-	except univention.admin.uexceptions.authFail as ex:
-		msg = 'authentication error: %s' % (ex,)
-		ud.debug(ud.ADMIN, ud.WARN, msg)
-		print(msg, file=sys.stderr)
-		sys.exit(1)
-	except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError) as ex:
-		msg = '%s: timeout while trying to contact LDAP server %s: %s' % \
-			(sys.argv[0], ucr['ldap/master'], ex)
-		ud.debug(ud.ADMIN, ud.WARN, msg)
-		print(msg, file=sys.stderr)
-		time.sleep(10)
-		return bind()  # recursion
+	timeout = time.time() + options.timeout
+	while True:
+		try:
+			if options.binddn and options.bindpwd:
+				lo = uldap.access(
+					host=ucr['ldap/master'],
+					port=int(ucr.get('ldap/master/port', 7389)),
+					base=ucr['ldap/base'],
+					binddn=options.binddn,
+					bindpw=options.bindpwd,
+					start_tls=start_tls)
+				position = uldap.position(lo.base)
+			else:
+				lo, position = uldap.getAdminConnection(start_tls)
+			return lo, position
+		except univention.admin.uexceptions.authFail as ex:
+			msg = 'authentication error: %s' % (ex,)
+			ud.debug(ud.ADMIN, ud.WARN, msg)
+			sys.exit(msg)
+		except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError) as ex:
+			msg = '%s: timeout while trying to contact LDAP server %s: %s' % \
+				(sys.argv[0], ucr['ldap/master'], ex)
+			ud.debug(ud.ADMIN, ud.WARN, msg)
+			if time.time() < timeout:
+				print(msg, file=sys.stderr)
+				time.sleep(10)
+			else:
+				sys.exit(msg)
 
 
 def lookup_zone(zone_name):
