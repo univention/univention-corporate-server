@@ -37,7 +37,8 @@ set -e -u
 certname="${1:?No certificate name set}"
 dcname="${2:?No dc name set}"
 
-test ! -x /usr/sbin/univention-scp && die "Couldn't download host certificate, univention-scp was not found"
+command -v univention-scp >/dev/null 2>&1 ||
+	die "Couldn't download host certificate, univention-scp was not found"
 
 eval "$(ucr shell domainname server/role hostname)"
 

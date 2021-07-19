@@ -16,3 +16,5 @@
 0010-2: tests/test_sign_req
 0010-2: tests/test_host_expired
 0010-2: tests/test_host_wildcard_valid
+# old checkbashims
+0013-2: univention-fetch-certificate
