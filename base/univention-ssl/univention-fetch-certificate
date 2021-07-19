@@ -44,7 +44,7 @@ echo -n "Download host certificate for $certname:"
 hostpwd="/etc/machine.secret"
 hostaccount="$hostname\$"
 counter=0
-while true
+while [ "$counter" -le 30 ]
 do
 	counter=$((counter+1))
 
@@ -55,16 +55,12 @@ do
 			/etc/univention/ssl/
 	fi
 
-	[ -d "/etc/univention/ssl/$certname" ] && [ -d "/etc/univention/ssl/$certname.$domainname" ] && break
-
-	if [ $counter -gt 30 ] \
-		&& [ -d "/etc/univention/ssl/$certname" ] && [ -d "/etc/univention/ssl/$certname.$domainname" ]; then
-		echo "failed to get host certificate"
-		exit 1
-	fi
+	[ -d "/etc/univention/ssl/$certname" ] &&
+		[ -d "/etc/univention/ssl/$certname.$domainname" ] &&
+		exit 0
 
 	echo -n "."
 	sleep 20
 done
 
-exit 0
+die "failed to get host certificate"

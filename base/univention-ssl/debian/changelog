@@ -1,3 +1,9 @@
+univention-ssl (14.0.2-2) unstable; urgency=low
+
+  * Bug #53810: Timeout SSL certificate download
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 25 Sep 2021 09:22:59 +0200
+
 univention-ssl (13.0.0-7) unstable; urgency=medium
 
   * Bug #51022: make UCR templates compatible to python3
