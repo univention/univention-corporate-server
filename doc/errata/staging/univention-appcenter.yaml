@@ -3,9 +3,11 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
-fix: 9.0.2-54A~5.0.0.202106301148
+fix: 9.0.2-55A~5.0.0.202107191231
 desc: |
  This update addresses the following issues:
  * Cache files are now verified using apt-key verify. This will allow us to
    update signature keys.
-bug: [53526]
+ * App settings were not applied correctly during the installation. This has
+   been fixed.
+bug: [53526,53578]
