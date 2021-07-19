@@ -39,7 +39,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 import univention.debug as ud
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
-import univention.config_registry  # noqa: E402
+from univention.config_registry import ucr
 import univention.admin.uldap as uldap  # noqa: E402
 import univention.admin.config  # noqa: E402
 import univention.admin.modules  # noqa: E402
@@ -139,8 +139,6 @@ def parse():
 
 def bind():
 	"""Bind to LDAP service."""
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
 	timeout = time.time() + 120  # 2 minutes from now
 	if time.time() > timeout:
 		err = '%s: LDAP server %s unreachable, aborting' % \
