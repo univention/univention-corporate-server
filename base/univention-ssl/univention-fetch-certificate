@@ -44,6 +44,9 @@ eval "$(ucr shell domainname server/role hostname)"
 
 echo -n "Download host certificate for $certname:"
 hostpwd="/etc/machine.secret"
+[ -s "$hostpwd" ] ||
+	die "Missing $hostpwd"
+
 hostaccount="${hostname:?}\$"
 counter=0
 while [ "$counter" -le 30 ]
