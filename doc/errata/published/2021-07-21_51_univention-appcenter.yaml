@@ -11,3 +11,5 @@ desc: |
  * App settings were not applied correctly during the installation. This has
    been fixed.
 bug: [53526,53578]
+erratum: 51
+announced: 2021-07-21
