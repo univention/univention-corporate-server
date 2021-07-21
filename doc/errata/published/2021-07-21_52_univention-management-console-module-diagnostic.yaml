@@ -9,3 +9,5 @@ desc: |
  * The system diagnostic check no longer shows false positives when
    a http-proxy is used.
 bug: [50620]
+erratum: 52
+announced: 2021-07-21
