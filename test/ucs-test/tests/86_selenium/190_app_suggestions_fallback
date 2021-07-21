@@ -37,8 +37,6 @@ class UMCTester(object):
 
 	def test_umc(self):
 		self.selenium.do_login()
-		print('checking fallback if no .suggestion.json')
-		self.check()
 		self.write_invalid_json()
 		print('checking fallback for invalid json')
 		self.check()
