@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: linux
+fix: 4.9.272-2
+desc: |
+ This update addresses the following issues:
+ * race condition in net/can/bcm.c leads to local privilege escalation
+   (CVE-2021-3609)
+ * arm: SIGPAGE information disclosure vulnerability (CVE-2021-21781)
+ * size_t-to-int conversion vulnerability in the filesystem layer
+   (CVE-2021-33909)
+ * allows local users to obtain sensitive information from stack memory
+   because of uninitialized data structure in net/can/bcm.c (CVE-2021-34693)
+bug: [53603]
+cve:
+- CVE-2021-3609
+- CVE-2021-21781
+- CVE-2021-33909
+- CVE-2021-34693
