@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-appcenter
+fix: 9.0.2-56A~5.0.0.202107231438
+desc: |
+ This update addresses the following issue(s):
+ * App settings of the scope "outside" are now applied
+   on the system before the apps preinst script.
+bug: [52506]
