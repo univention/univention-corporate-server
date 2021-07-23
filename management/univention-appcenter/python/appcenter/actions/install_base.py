@@ -96,7 +96,7 @@ class InstallRemoveUpgrade(Register):
 		action. The implementation has to be done in each derived class if
 		needed.
 		"""
-		pass;
+		pass
 
 	def _set_outside_settings_in_ucr(self, app, args):
 		pass
@@ -107,7 +107,6 @@ class InstallRemoveUpgrade(Register):
 		better comprehend what is done behind the scenes and test their script
 		folders manually using that tool.
 		"""
-		from os import path
 		if os.path.isdir(directory):
 			(retval, output) = call_process2(["run-parts", directory])
 			# self.log(output) is unnecessary, because call_process2 logs its
@@ -203,7 +202,7 @@ class InstallRemoveUpgrade(Register):
 				if args.send_info:
 					try:
 						# do not send more than 500 char of status_details
-						if isinstance(status_details, basestring):
+						if isinstance(status_details, basestring):  # noqa F821
 							status_details = status_details[-5000:]
 						self._send_information(app, status, status_details)
 					except NetworkError:
@@ -251,7 +250,7 @@ class InstallRemoveUpgrade(Register):
 				if args.noninteractive:
 					return True
 				try:
-					aggreed = raw_input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
+					aggreed = raw_input('Do you want to %s anyway [y/N]? ' % self.get_action_name())   # noqa F821
 				except (KeyboardInterrupt, EOFError):
 					return False
 				else:
@@ -316,10 +315,10 @@ class InstallRemoveUpgrade(Register):
 		if not args.noninteractive:
 			try:
 				if agree:
-					aggreed = raw_input('Do you agree [y/N]? ')
+					aggreed = raw_input('Do you agree [y/N]? ')  # noqa F821
 					return aggreed.lower()[:1] in ['y', 'j']
 				elif confirm:
-					raw_input('Press [ENTER] to continue')
+					raw_input('Press [ENTER] to continue')  # noqa F821
 					return True
 			except (KeyboardInterrupt, EOFError):
 				return False
