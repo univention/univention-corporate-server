@@ -15,6 +15,8 @@ from contextlib import contextmanager
 
 import pytest
 
+import univention.config_registry
+
 from univention.appcenter.actions import get_action, Abort
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.settings import SettingValueError
@@ -65,10 +67,10 @@ def docker_shell(app, command):
 
 
 @contextmanager
-def install_app(app):
+def install_app(app, set_vars=None):
 	username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
 	install = get_action('install')
-	install.call(app=app, username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
+	install.call(app=app, username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True, set_vars=set_vars)
 	yield app
 	remove = get_action('remove')
 	remove.call(app=app, username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
@@ -451,3 +453,126 @@ Description = My Description 8
 		assert setting.get_value(app) is None
 		config.set({setting.name: 'v1'})
 		assert setting.get_value(app) == 'v1'
+
+
+@pytest.fixture(scope='module')
+def outside_test_settings():
+	return '''[test_settings/outside]
+Type = String
+Required = True
+Show = Install, Settings
+Scope = outside
+Description = setting1
+InitialValue = initValue
+
+[test_settings/inside]
+Type = String
+Show = Install
+Scope = inside
+Description = setting2
+
+[test_settings/not_given]
+Type = String
+Show = Install
+Scope = outside
+InitialValue = initValue
+Description = setting3
+
+[test_settings/list]
+Show = Install
+Values = value1, value2, value3
+Labels = Label 1, Label 2, Label 3
+InitialValue = initValue
+Scope = outside
+Description = setting4
+
+[test_settings/bool]
+Type = Bool
+Required = True
+Show = Install, Settings
+Scope = outside
+InitialValue = false
+Description = setting5
+'''
+
+
+@pytest.fixture(scope='module')
+def outside_test_preinst():
+	return '''#!/bin/bash
+eval "$(ucr shell)"
+set -x
+test "$test_settings_outside" = "123" || exit 1
+test "$test_settings_list" = "value2" || exit 1
+test -z "$test_settings_inside" || exit 1
+test -z "$test_settings_not_exists" || exit 1
+test -z "$test_settings_not_given" || exit 1
+test "$test_settings_bool" = "true" || exit 1
+exit 0'''
+
+
+@pytest.fixture(scope='module')
+def docker_app_ini():
+	return '''[Application]
+ID = alpine
+Code = AP
+Name = Alpine
+Version = 3.6
+DockerImage = docker-test.software-univention.de/alpine:3.6
+DockerScriptInit = /sbin/init
+DockerScriptStoreData =
+DockerScriptRestoreDataBeforeSetup =
+DockerScriptRestoreDataAfterSetup =
+DockerScriptSetup =
+DockerScriptUpdateAvailable =
+AutoModProxy = False
+UCSOverviewCategory = False''', 'alpine'
+
+
+@pytest.fixture(scope='module')
+def package_app_ini():
+	return '''[Application]
+ID = ucstest
+Code = TE
+Name = UCS Test App
+Logo = logo.svg
+Version = 1.0
+License = free
+WithoutRepository = True
+DefaultPackages = libcurl4-doc''', 'ucstest'
+
+
+@pytest.fixture(scope='module', params=[package_app_ini, docker_app_ini])
+#@pytest.fixture(scope='module', params=[package_app_ini])
+def outside_test_app(request, local_appcenter, outside_test_preinst, outside_test_settings):
+	ini_file, app_id = request.param()
+	with open('/tmp/app.ini', 'w') as fd:
+		fd.write(ini_file)
+	with open('/tmp/app.settings', 'w') as fd:
+		fd.write(outside_test_settings)
+	with open('/tmp/app.preinst', 'w') as fd:
+		fd.write(outside_test_preinst,)
+	populate = get_action('dev-populate-appcenter')
+	populate.call(new=True, settings='/tmp/app.settings', preinst='/tmp/app.preinst', ini='/tmp/app.ini')
+	return Apps().find(app_id)
+
+
+def test_outside_settings_in_preinst(outside_test_app):
+	settings_unset = [
+		'test_settings/outside',
+		'test_settings/inside',
+		'test_settings/not_given',
+		'test_settings/list',
+		'test_settings/bool',
+	]
+	univention.config_registry.handler_unset(settings_unset)
+	settings = {
+		'test_settings/outside': '123',
+		'test_settings/inside': '123',
+		'test_settings/list': 'value2',
+		'test_settings/bool': True,
+	}
+	is_installed = False
+	with install_app(outside_test_app, settings) as app:
+		is_installed = app.is_installed()
+	univention.config_registry.handler_unset(settings_unset)
+	assert is_installed
