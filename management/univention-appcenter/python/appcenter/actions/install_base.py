@@ -98,6 +98,9 @@ class InstallRemoveUpgrade(Register):
 		"""
 		pass;
 
+	def _set_outside_settings_in_ucr(self, app, args):
+		pass
+
 	def _run_parts(self, directory):
 		"""
 		in order to call hooks we use run-parts, so that administrators can
@@ -127,6 +130,8 @@ class InstallRemoveUpgrade(Register):
 			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
 			if self.needs_credentials(app) and not self.check_user_credentials(args):
 				can_continue = False
+			if self.get_action_name() == 'install':
+				self._set_outside_settings_in_ucr(app, args)
 			if not can_continue or not self._call_prescript(app, args):
 				status = 0
 				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
