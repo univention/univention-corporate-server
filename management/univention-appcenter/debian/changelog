@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-56) unstable; urgency=medium
+
+  * Bug #52506: set outside settings before preinst
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2021 14:31:40 +0200
+
 univention-appcenter (9.0.2-55) unstable; urgency=medium
 
   * Bug #53578: apply app settings

@@ -127,6 +127,30 @@ class Install(InstallRemoveUpgrade):
 	def _install_packages(self, packages):
 		return install_packages(packages)
 
+	def _bool2ucr(self, value):
+		if isinstance(value, bool):
+			value = 'true' if value is True else 'false'
+		return value
+
+	def _set_outside_settings_in_ucr(self, app, args):
+		# set set_vars in UCR if settings has a value and is outside
+		if args.set_vars:
+			user_settings = args.set_vars[app.id] if args.set_vars.get(app.id) else args.set_vars
+			if user_settings:
+				outside_settings = [ setting.name for setting in app.get_settings() if 'outside' in setting.scope]
+				to_set = {}
+				for var in user_settings:
+					if user_settings.get(var) and var in outside_settings:
+						to_set[var] = str(self._bool2ucr(user_settings[var]))
+				if to_set:
+					for k, v in to_set.items():
+						self.log('Apply setting %s=%s' % (k, v))
+					try:
+						ucr_save(to_set)
+					except AttributeError as e:
+						self.log('Failed to apply settings: %s' % e)
+		return
+
 	def _install_master_packages(self, app, unregister_if_uninstalled=False):
 		old_app = Apps().find(app.id)
 		was_installed = old_app.is_installed()

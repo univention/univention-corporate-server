@@ -103,6 +103,9 @@ class InstallRemoveUpgrade(Register):
 		"""
 		pass
 
+	def _set_outside_settings_in_ucr(self, app, args):
+		pass
+
 	def _run_parts(self, directory):
 		"""
 		in order to call hooks we use run-parts, so that administrators can
@@ -198,6 +201,8 @@ class InstallRemoveUpgrade(Register):
 		status_details = None
 		context_id = self._write_start_event(app, args)
 		try:
+			if self.get_action_name() == 'install':
+				self._set_outside_settings_in_ucr(app, args)
 			if not self._call_prescript(app, args):
 				self.fatal('Running prescript of %s failed. Aborting...' % app)
 				status = 0
