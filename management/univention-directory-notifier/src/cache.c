@@ -62,9 +62,6 @@ int notifier_cache_init ( unsigned long max_id)
 		cache[i].command='n';
 	}
 
-	buffer = notify_transcation_get_one_dn(max_id);
-	free(buffer);
-
 	for ( i=max(max_id - (notifier_cache_size-1), 1); i <= max_id; i++) {
 		char *p, *pp;
 
