@@ -126,6 +126,8 @@ class InstallRemoveUpgrade(Register):
 			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
 			if self.needs_credentials(app) and not self.check_user_credentials(args):
 				can_continue = False
+			if can_continue:
+				self._configure(app, args, run_script='no', scope='outside')
 			if not can_continue or not self._call_prescript(app, args):
 				status = 0
 				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
@@ -373,15 +375,16 @@ class InstallRemoveUpgrade(Register):
 		uc = get_action('update-certificates')
 		uc.call(apps=[app])
 
-	def _configure(self, app, args, run_script=None):
+	def _configure(self, app, args, run_script=None, scope=None):
 		if not args.configure:
 			return
 		if run_script is None:
 			run_script = self.get_action_name()
 		configure = get_action('configure')
-		set_vars = (args.set_vars or {}).copy()
-		set_vars.update(self._get_configure_settings(app))
-		configure.call(app=app, run_script=run_script, set_vars=set_vars)
+		set_vars = self._get_configure_settings(app)
+		if args.set_vars:
+			set_vars.update(args.set_vars)
+		configure.call(app=app, run_script=run_script, set_vars=set_vars, scope=scope)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
