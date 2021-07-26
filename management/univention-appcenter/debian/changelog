@@ -1,3 +1,15 @@
+univention-appcenter (8.0.11-148) unstable; urgency=medium
+
+  * Bug #53609: Use existing methods for the implementation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Jul 2021 00:28:35 +0200
+
+univention-appcenter (8.0.11-147) unstable; urgency=medium
+
+  * Bug #53609: set outside settings before preinst
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2021 15:40:10 +0200
+
 univention-appcenter (8.0.11-146) unstable; urgency=medium
 
   * Bug #52852: Fix traceback when using App Center once App ini file with install
