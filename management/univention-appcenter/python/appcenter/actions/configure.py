@@ -33,6 +33,7 @@
 #
 
 from tempfile import NamedTemporaryFile
+from argparse import SUPPRESS
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.exceptions import ConfigureFailed
@@ -53,6 +54,7 @@ class Configure(UniventionAppAction):
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--unset', nargs='+', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
 		parser.add_argument('--run-script', choices=['settings', 'install', 'upgrade', 'remove', 'no'], default='settings', help='Run configuration script to support a specific action - or not at all. Default: %(default)s')
+		parser.add_argument('--scope', choices=['inside', 'outside'], help=SUPPRESS)
 
 	def main(self, args):
 		if args.list:
@@ -96,10 +98,11 @@ class Configure(UniventionAppAction):
 		for key, value in set_vars.items():
 			for setting in settings:
 				if setting.name == key:
-					try:
-						setting.set_value_together(app, value, together_config_settings)
-					except SettingValueError as exc:
-						raise ConfigureFailed(app.name, exc)
+					if not args.scope or args.scope in setting.scope:
+						try:
+							setting.set_value_together(app, value, together_config_settings)
+						except SettingValueError as exc:
+							raise ConfigureFailed(app.name, exc)
 					break
 			else:
 				other_settings[key] = value

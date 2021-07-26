@@ -198,6 +198,7 @@ class InstallRemoveUpgrade(Register):
 		status_details = None
 		context_id = self._write_start_event(app, args)
 		try:
+			self._configure(app, args, run_script='no', scope='outside')
 			if not self._call_prescript(app, args):
 				self.fatal('Running prescript of %s failed. Aborting...' % app)
 				status = 0
@@ -424,13 +425,13 @@ class InstallRemoveUpgrade(Register):
 		uc = get_action('update-certificates')
 		uc.call(apps=[app])
 
-	def _configure(self, app, args, run_script=None):
+	def _configure(self, app, args, run_script=None, scope=None):
 		if not args.configure:
 			return
 		if run_script is None:
 			run_script = self.get_action_name()
 		configure = get_action('configure')
-		set_vars = {}
+		set_vars = self._get_configure_settings(app)
 		if args.set_vars:
 			for setting in app.get_settings():
 				# we only take those settings from the args
@@ -439,8 +440,7 @@ class InstallRemoveUpgrade(Register):
 				# settings correctly
 				if setting.name in args.set_vars:
 					set_vars[setting.name] = args.set_vars[setting.name]
-		set_vars.update(self._get_configure_settings(app))
-		configure.call(app=app, run_script=run_script, set_vars=set_vars)
+		configure.call(app=app, run_script=run_script, set_vars=set_vars, scope=scope)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
