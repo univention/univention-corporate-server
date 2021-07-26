@@ -201,6 +201,10 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID invalid in %s", FILE_NAME_NOTIFIER_PRIV);
 				abort();
 			}
+			if (tmp2->notify_id.id <= notify_last_id.id) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID doesn't increase in %s", FILE_NAME_NOTIFIER_PRIV);
+				abort();
+			}
 			tmp2->command=s[strlen(s)-1];
 			p_tmp1=index(s, ' ');
 			p_tmp2=rindex(s, ' ');
@@ -216,6 +220,10 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 			n = sscanf(s, "%ld", &(tmp->notify_id.id));
 			if (n!=1) {
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID invalid in %s", FILE_NAME_NOTIFIER_PRIV);
+				abort();
+			}
+			if (tmp->notify_id.id <= tmp2->notify_id.id) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID doesn't increase in %s", FILE_NAME_NOTIFIER_PRIV);
 				abort();
 			}
 			tmp->command=s[strlen(s)-1];
