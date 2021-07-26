@@ -1,3 +1,15 @@
+univention-appcenter (9.0.2-57) unstable; urgency=medium
+
+  * Bug #52506: Use existing methods for the implementation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Jul 2021 23:44:15 +0200
+
+univention-appcenter (9.0.2-56) unstable; urgency=medium
+
+  * Bug #52506: set outside settings before preinst
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2021 14:31:40 +0200
+
 univention-appcenter (9.0.2-55) unstable; urgency=medium
 
   * Bug #53578: apply app settings
