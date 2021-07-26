@@ -65,7 +65,7 @@ int notifier_cache_init ( unsigned long max_id)
 	buffer = notify_transcation_get_one_dn(max_id);
 	free(buffer);
 
-	for ( i=max_id - (notifier_cache_size-1); i <= max_id; i++) {
+	for ( i=max(max_id - (notifier_cache_size-1), 1); i <= max_id; i++) {
 		char *p, *pp;
 
 		buffer=notify_transcation_get_one_dn ( i );
