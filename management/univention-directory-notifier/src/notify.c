@@ -178,6 +178,7 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 	NotifyEntry_t *tmp=NULL;
 	NotifyEntry_t *tmp2=NULL;
 
+	int n;
 	int size;
 
 	int start=1;
@@ -195,7 +196,11 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 
 	for ( s=strtok(p,"\n"); s!= NULL; s=strtok(NULL,"\n") ) {
 		if ( start ) {
-			sscanf(s, "%ld", &(tmp2->notify_id.id));
+			n = sscanf(s, "%ld", &(tmp2->notify_id.id));
+			if (n!=1) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID invalid in %s", FILE_NAME_NOTIFIER_PRIV);
+				abort();
+			}
 			tmp2->command=s[strlen(s)-1];
 			p_tmp1=index(s, ' ');
 			p_tmp2=rindex(s, ' ');
@@ -208,7 +213,11 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 		} else {
 			tmp = notify_entry_alloc();
 
-			sscanf(s, "%ld", &(tmp->notify_id.id));
+			n = sscanf(s, "%ld", &(tmp->notify_id.id));
+			if (n!=1) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Transaction ID invalid in %s", FILE_NAME_NOTIFIER_PRIV);
+				abort();
+			}
 			tmp->command=s[strlen(s)-1];
 			p_tmp1=index(s, ' ');
 			p_tmp2=rindex(s, ' ');
