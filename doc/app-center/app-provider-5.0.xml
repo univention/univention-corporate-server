@@ -1942,6 +1942,9 @@ cat $MY_APP.json | jq -r .compose > compose
 					Error messages in the passed error log file will be passed to the UCS management system and thus to the administrator performing the installation.
 					Proper error messages can thus be passed to the administrator.
 				</para>
+				<para>
+					Note that <link linkend="app-settings">App settings</link> with scope <option>outside</option> are already set by the time the script is run and can therefore be checked against.
+				</para>
 			</section>
 			<section id="installation:restore-data-before-setup">
 				<title>Docker script restore_data_before_setup</title>
