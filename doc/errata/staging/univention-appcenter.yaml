@@ -3,9 +3,9 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src:  univention-appcenter
-fix: 8.0.11-147A~4.4.0.202107231544
+fix: 8.0.11-148A~4.4.0.202107270037
 desc: |
  This update addresses the following issue(s):
  * App settings of the scope "outside" are now applied
-   on the system before the apps preinst script.
+   on the system before the App's preinst script.
 bug: [53609]
