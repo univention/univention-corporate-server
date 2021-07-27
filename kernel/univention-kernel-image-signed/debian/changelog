@@ -1,3 +1,9 @@
+univention-kernel-image-signed (5.0.0-18) unstable; urgency=medium
+
+  * Bug #53603: Update to linux-4.9.272-2
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Jul 2021 22:23:28 +0200
+
 univention-kernel-image-signed (5.0.0-17) unstable; urgency=medium
 
   * Bug #53505: Update to linux-4.9.272-1 (linux-image-4.9.0-16)
