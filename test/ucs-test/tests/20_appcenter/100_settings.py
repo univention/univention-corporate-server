@@ -70,6 +70,7 @@ def docker_shell(app, command):
 def install_app(app, set_vars=None):
 	username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
 	install = get_action('install')
+	subprocess.run(['apt-get', 'update'], check=True)
 	install.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True, set_vars=set_vars)
 	yield app
 	remove = get_action('remove')
