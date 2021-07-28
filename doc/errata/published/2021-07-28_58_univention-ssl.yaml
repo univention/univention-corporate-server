@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Timeout SSL certificate download after 10 minutes.
 bug: [51776]
+erratum: 58
+announced: 2021-07-28
