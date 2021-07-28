@@ -9,3 +9,5 @@ desc: |
  * App settings of the scope "outside" are now applied
    on the system before the App's preinst script.
 bug: [52506]
+erratum: 57
+announced: 2021-07-28
