@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: linux
-fix: 4.9.272-2
+fix: 4.9.272-2A~4.4.0.202107271455
 desc: |
  This updates the Linux kernel to version 4.9.272-2, which addresses 
  (among others) the following security issues:
