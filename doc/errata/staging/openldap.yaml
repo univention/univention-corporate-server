@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: openldap
-fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202107262036
+fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202108021020
 desc: |
  This update addresses the following issues:
  * Check "listener/listener" file if getting last_id failed
