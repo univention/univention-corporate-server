@@ -984,6 +984,7 @@ class CheckGeneric(object):
                 exit(1)
 
             self.remove_index()
+        self.log.info('Sorting done')
 
     def fix_fill(self):
         # type: () -> None
@@ -1023,6 +1024,7 @@ class CheckGeneric(object):
             assert not self.needs_fill
 
             self.remove_index()
+        self.log.info('Filling holes done')
 
     def fix_renumber(self):
         # type: () -> None
@@ -1066,6 +1068,7 @@ class CheckGeneric(object):
             self.run(filename=tmp)
 
             assert not self.needs_renum
+        self.log.info('Renumbering done')
 
     def remove_index(self):
         # type: () -> None
