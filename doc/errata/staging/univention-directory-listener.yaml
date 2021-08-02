@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-directory-listener
+fix: 14.0.5-3A~5.0.0.202108021751
+desc: |
+ This update addresses the following issues:
+ * The notifier should abort if the transaction ID issued by the OpenLDAP translog overlay is not a valid integer
+ * The systemd unit should not be restarted forever. The number of automated restarts is now limited to 50 in an
+   observation window of 1000s
+ * The script univention-translog should also check the "listener/listener.priv" file if it exists
+bug: [51911]
