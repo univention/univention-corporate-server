@@ -7,6 +7,7 @@ fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202108021020
 desc: |
  This update addresses the following issues:
  * Check "listener/listener" file if getting last_id failed
+ * Check "listener/listener.priv" file too if getting last_id failed
  * Consistently write "<TransID>" if last_id could not be determined as all
  * Log error if "listener/listener" file cannot be written
  * Update "last_id" file atomically
