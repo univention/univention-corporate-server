@@ -870,7 +870,7 @@ class CheckGeneric(object):
                     except ValueError:
                         dn, command = rest, ''
 
-                    rec = Transaction(tid, command, dn)
+                    rec = Transaction(tid, dn, command)
 
                 if not 0 < rec.tid:
                     self.error("Invalid transaction id", syntax=True)
