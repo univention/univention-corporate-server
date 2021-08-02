@@ -1,0 +1,18 @@
+[Unit]
+Description=Univention Directory Notifier Daemon
+After=network.target slapd.service
+ConditionPathExists=/var/univention-join/joined
+StartLimitBurst=50
+StartLimitIntervalSec=1000
+
+[Service]
+EnvironmentFile=/etc/default/univention-directory-notifier
+ExecStartPre=/usr/share/univention-directory-notifier/import_translog.sh
+ExecStart=/usr/sbin/univention-directory-notifier -F $UDN_OPTS
+Restart=always
+RestartSec=10s
+StandardOutput=append:/var/log/univention/notifier.log
+StandardError=append:/var/log/univention/notifier.log
+
+[Install]
+WantedBy=multi-user.target
