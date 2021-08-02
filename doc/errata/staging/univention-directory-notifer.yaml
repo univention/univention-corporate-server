@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
-src: univention-directory-listener
-fix: 14.0.5-3A~5.0.0.202108021751
+src: univention-directory-notifier
+fix: 14.0.5-1A~5.0.0.202108021759
 desc: |
  This update addresses the following issues:
  * The notifier should abort if the transaction ID issued by the OpenLDAP translog overlay is not a valid integer
