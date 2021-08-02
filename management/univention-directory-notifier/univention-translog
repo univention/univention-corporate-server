@@ -866,24 +866,26 @@ class CheckGeneric(object):
                 try:
                     rec = Translog.parse_line(line)
                 except ValueError:
-                    self.error("Invalid line", syntax=True)
+                    ## Ok let's try to identify the problem
                     try:
                         tid_, rest = line.split(' ', 1)
                     except ValueError:
+                        self.error("Invalid line", syntax=True)
                         continue
                     try:
                         tid = int(tid_)
                     except ValueError:
-                        tid = 0
+                        tid = -1
                     try:
                         dn, command = rest.split(' ', 1)
                     except ValueError:
+                        self.error("Invalid line", syntax=True)
                         dn, command = rest, ''
 
                     rec = Transaction(tid, dn, command)
 
                 if not 0 < rec.tid:
-                    self.error("Invalid transaction id", syntax=True)
+                    self.error("Invalid transaction id", renum=True)
                     continue
 
                 if rec.command not in {'r', 'd', 'a', 'm'}:  # mod_Rdn Delete Add Modify
@@ -929,7 +931,7 @@ class CheckGeneric(object):
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
         """
-        Handle syntax errors.
+        Handle syntax errors. TODO
         """
         self.log.info('Syntax ...')
 
@@ -1040,7 +1042,23 @@ class CheckGeneric(object):
             with open(self.filename, 'r') as old, open(tmp, 'w') as new:
                 for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
                     self.log.debug('Renum %r to %d ...', line, self.last_tid)
-                    rec = Translog.parse_line(line)
+                    try:
+                        rec = Translog.parse_line(line)
+                    except ValueError:
+                        try:
+                            tid_, rest = line.split(' ', 1)
+                        except ValueError:
+                            raise
+                        try:
+                            tid = int(tid_)
+                        except ValueError:
+                            tid = -1
+                        try:
+                            dn, command = rest.split(' ', 1)
+                        except ValueError:
+                            raise
+                        rec = Transaction(tid, dn, command)
+
                     rec = rec._replace(tid=self.last_tid)
                     line = Translog.format_line(rec)
                     new.write(line)
