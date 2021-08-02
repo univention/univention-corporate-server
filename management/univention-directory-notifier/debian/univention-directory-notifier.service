@@ -2,8 +2,8 @@
 Description=Univention Directory Notifier Daemon
 After=network.target slapd.service
 ConditionPathExists=/var/univention-join/joined
-StartLimitBurst=0
-StartLimitIntervalSec=0
+StartLimitBurst=50
+StartLimitIntervalSec=1000
 
 [Service]
 EnvironmentFile=/etc/default/univention-directory-notifier
