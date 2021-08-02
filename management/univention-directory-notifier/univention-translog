@@ -866,7 +866,7 @@ class CheckGeneric(object):
                 try:
                     rec = Translog.parse_line(line)
                 except ValueError:
-                    ## Ok let's try to identify the problem
+                    # Ok let's try to identify the problem
                     try:
                         tid_, rest = line.split(' ', 1)
                     except ValueError:
