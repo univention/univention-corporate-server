@@ -1043,6 +1043,7 @@ class CheckGeneric(object):
         with rewrite(self.filename) as tmp:
             with open(self.filename, 'r') as old, open(tmp, 'w') as new:
                 for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
+                    line = line.rstrip('\n')
                     self.log.debug('Renum %r to %d ...', line, self.last_tid)
                     try:
                         rec = Translog.parse_line(line)
