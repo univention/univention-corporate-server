@@ -6,7 +6,7 @@ src: libsndfile
 fix: 1.0.28-6+deb10u1
 desc: |
  This update addresses the following issue:
- * a heap buffer overflow via crafted WAV file allows a arbitrary code
+ * A heap buffer overflow via crafted WAV file allows a arbitrary code
    execution (CVE-2021-3246)
 bug: [53627]
 cve:
