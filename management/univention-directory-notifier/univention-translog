@@ -142,7 +142,7 @@ class Index(object):
             self.size = size = len(data)
 
         count, reminder = divmod(size - sizeof(IndexHeader), sizeof(IndexEntry))
-        self.log.info("Index of size %d contains %d entries", size, count)
+        self.log.info("Index of size %d, last entry: %d", size, count - 1)
         self.count = count - 1 if count else 0  # transaction 0 is never used
         assert reminder == 0, reminder
 
@@ -301,6 +301,8 @@ class Translog(object):
             self.last = rec.tid
 
             self.translog.seek(0, SEEK_SET)
+
+        self.log.info("Translog of size %d contains %d entries", size, self.last - self.first)
 
         return self
 
@@ -1229,10 +1231,10 @@ def prune_file(opt):
 
         log.info('Purging/keeping %d..%d..%d', translog.first, opt.trans, translog.last)
         if opt.trans <= translog.first:
-            log.fatal('Already purged.')
+            log.info('Already purged, nothing to do.')
             raise Abort()
         if opt.trans >= translog.last:
-            log.fatal('Nothing to purge.')
+            log.info('Nothing to purge.')
             raise Abort()
         assert translog.first < opt.trans < translog.last
 
@@ -1363,7 +1365,7 @@ def parse_args(args=None):
     parser_check.set_defaults(func=check)
 
     parser_prune = subparsers.add_parser("prune", help="Prune transaction files")
-    parser_prune.add_argument("trans", metavar="tid", type=int, help="Oldest transaction number to keep")
+    parser_prune.add_argument("trans", metavar="tid", type=int, help="Oldest transaction number to keep (negative numbers: the number of transactions to keep)")
     parser_prune.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
     parser_prune.set_defaults(func=prune, fix=True)
 
