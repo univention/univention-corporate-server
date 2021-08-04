@@ -3,11 +3,13 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-notifier
-fix: 14.0.5-1A~5.0.0.202108021826
+fix: 14.0.5-2A~5.0.0.202108041138
 desc: |
  This update addresses the following issues:
  * The notifier should abort if the transaction ID issued by the OpenLDAP translog overlay is not a valid integer
  * The systemd unit should not be restarted forever. The number of automated restarts is now limited to 50 in an
    observation window of 1000s
+ * The script univention-translog should recognize special values "<TransID>" and "0" and be able to fix them
  * The script univention-translog should also check the "listener/listener.priv" file if it exists
-bug: [51911]
+ * Improve log messages of univention-translog
+bug: [51911, 49430]
