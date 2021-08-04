@@ -8,3 +8,5 @@ desc: |
   This update addresses the following issue(s):
   * The descriptions of email related attributes have been improved.
 bug: [46080]
+erratum: 65
+announced: 2021-08-04
