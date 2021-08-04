@@ -182,7 +182,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Primary e-mail address</entry>
+                        <entry>Primary e-mail address (mailbox)</entry>
                         <entry>
                             The e-mail address of the user is declared here, see
                             <xref linkend="mail::management::users"/>.

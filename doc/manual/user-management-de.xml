@@ -173,7 +173,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Primäre E-Mail-Adresse</entry>
+                        <entry>Primäre E-Mail-Adresse (Mailbox)</entry>
                         <entry>
                             Hier wird die E-Mail-Adresse des Benutzers eingetragen, siehe
                             <xref linkend="mail::management::users"/>.
