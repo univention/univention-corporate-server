@@ -22,3 +22,5 @@ desc: |
  * The users/user `lockedTime` is now correctly handled in Python 3.
  * Timeout DNS edit operations after 120 seconds.
 bug: [53339, 53102, 46080, 53532, 53553, 53453, 53574, 39539]
+erratum: 61
+announced: 2021-08-04
