@@ -1559,9 +1559,10 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 				if display in obj:
 					label = obj[display]
 				elif display in obj.oldattr and obj.oldattr[display]:
-					label = obj.oldattr[display][0]
+					label = obj.oldattr[display][0].decode(*module.module.mapping.getEncoding(display))
 				else:
-					label = 'Unknown attribute %s' % display
+					MODULE.warn('LDAP_Search syntax %r: defines unknown attribute %r' % (syntax.name, display))
+					label = 'Unknown attribute %r' % (display,)
 
 			# create list entry
 			if syntax.viewonly:

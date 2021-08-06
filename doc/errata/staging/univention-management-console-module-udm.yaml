@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A crash of the UDM UMC module is prevented when a LDAP_Search syntax uses a
+   LDAP attribute as displayed label.
+bug: [53628]
