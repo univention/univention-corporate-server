@@ -46,10 +46,6 @@ define([
 
 		disabled: false,
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
-		},
-
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -68,6 +64,11 @@ define([
 			this.own(aspect.after(this._dateBox, 'closeDropDown', lang.hitch(this, function() {
 				this._dateBox.dropDown.hideTooltip();
 			})));
+		},
+
+		placeHolder: '',
+		_setPlaceHolderAttr: function(placeHolder) {
+			this._dateBox.set('placeHolder', placeHolder);
 		},
 
 		_dateToString: function(dateObj) {
@@ -94,6 +95,10 @@ define([
 				}
 			}
 			return dateObj;
+		},
+
+		reset: function() {
+			this._dateBox.reset();
 		},
 
 		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
