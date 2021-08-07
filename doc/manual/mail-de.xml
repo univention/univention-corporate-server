@@ -794,13 +794,13 @@ zwei Warn-Nachrichten automatisch konfiguriert:
 		in einer Zeile hinterlegt werden:
 	  </para>
 		<programlisting>
-<replaceable>FQDN-Relayhost</replaceable>	<replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
+<replaceable>FQDN-Relayhost</replaceable> <replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
 		</programlisting>
 		<para>
 		Anschließend muss für diese Datei
 		</para>
 		<programlisting language="sh">
-postmap /etc/postfix/smtp_auth
+postmap /etc/postfix/smtp_auth; systemctl restart postfix.service;
 		</programlisting>
 
 	  <para>

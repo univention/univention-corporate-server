@@ -769,13 +769,13 @@ doveadm auth cache flush
 		user name and password must be saved in this file in one line.
 	  </para>
 		<programlisting>
-<replaceable>FQDN-Relayhost</replaceable>	<replaceable>username</replaceable>:<replaceable>password</replaceable>
+<replaceable>FQDN-Relayhost</replaceable> <replaceable>username</replaceable>:<replaceable>password</replaceable>
 		</programlisting>
 	  <para>
 		The command
 	  </para>
 		<programlisting language="sh">
-postmap /etc/postfix/smtp_auth
+postmap /etc/postfix/smtp_auth; systemctl restart postfix.service;
 		</programlisting>
 	  <para>
 		must then be executed for this file to adopt the changes via Postfix.
