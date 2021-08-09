@@ -13,4 +13,6 @@ desc: |
    effectively logging out the user.
  * The new UCR variable umc/http/enforce-secure-cookie can be set to make cookies
    secure when using a HTTPS connection.
-bug: [37720, 52353, 53511]
+ * SAML Logout's which are initiated by another Service Provider are now
+   correctly handled.
+bug: [37720, 52353, 53511, 53638]

@@ -1269,6 +1269,7 @@ class SAML(Ressource):
 				name_id = user.saml.name_id
 				user.saml = None
 			http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
+			self.expire_session()
 			return self.http_response(binding, http_args)
 		else:
 			response = self.sp.parse_logout_request_response(message, binding)
