@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: asterisk
+fix: 1:13.14.1~dfsg-2+deb9u5
+desc: |
+ This update addresses the following issue:
+ * An issue was discovered in Sangoma Asterisk 13.x before 13.38.3, 16.x
+   before 16.19.1, 17.x before 17.9.4, and 18.x before 18.5.1, and Certified
+   Asterisk before 16.8-cert10. If the IAX2 channel driver receives a packet
+   that contains an unsupported media format, a crash can occur.
+   (CVE-2021-32558)
+bug: [53636]
+cve:
+- CVE-2021-32558
