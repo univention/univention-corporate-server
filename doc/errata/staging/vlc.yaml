@@ -6,17 +6,17 @@ src: vlc
 fix: 3.0.11-0+deb9u2
 desc: |
  This update addresses the following issues:
- * A buffer overflow vulnerability in the __Parse_indx component of VideoLAN
-   VLC Media Player 3.0.11 allows attackers to cause an out-of-bounds read via
-   a crafted .avi file. (CVE-2021-25801)
- * A buffer overflow vulnerability in the AVI_ExtractSubtitle component of
-   VideoLAN VLC Media Player 3.0.11 allows attackers to cause an out-of-bounds
-   read via a crafted .avi file. (CVE-2021-25802)
- * A buffer overflow vulnerability in the vlc_input_attachment_New component
-   of VideoLAN VLC Media Player 3.0.11 allows attackers to cause an
-   out-of-bounds read via a crafted .avi file. (CVE-2021-25803)
- * A NULL-pointer dereference in "Open" in avi.c of VideoLAN VLC Media Player
-   3.0.11 can a denial of service (DOS) in the application. (CVE-2021-25804)
+ * A buffer overflow vulnerability in the `__Parse_indx` component allows
+   attackers to cause an out-of-bounds read via a crafted .avi file.
+   (CVE-2021-25801)
+ * A buffer overflow vulnerability in the `AVI_ExtractSubtitle` component
+   allows attackers to cause an out-of-bounds read via a crafted .avi file.
+   (CVE-2021-25802)
+ * A buffer overflow vulnerability in the `vlc_input_attachment_New` component
+   allows attackers to cause an out-of-bounds read via a crafted .avi file.
+   (CVE-2021-25803)
+ * A NULL-pointer dereference in `Open` in avi.c can cause a denial of service
+   (DOS) in the application. (CVE-2021-25804)
 bug: [53635]
 cve:
 - CVE-2021-25801
