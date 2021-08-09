@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Passkey Entry protocol of the Bluetooth Core is vulnerable to an
    impersonation attack (CVE-2020-26558)
- * double free in gatttool client disconnect callback handler in
+ * Double free in gatttool client disconnect callback handler in
    src/shared/att.c could lead to DoS or RCE (CVE-2020-27153)
  * Improper access control in BlueZ may allow information disclosure
    vulnerability. (CVE-2021-0129)
