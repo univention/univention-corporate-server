@@ -48,6 +48,12 @@ def test_var_log_tracebacks():
 
 
 @pytest.mark.exposure('safe')
+def test_var_log_subdirectory_tracebacks():
+	not_found = grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+	assert not_found, 'logfiles contain tracebacks'
+
+
+@pytest.mark.exposure('safe')
 def test_var_log_tracebacks_gz():
 	not_found = grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
 	assert not_found, 'logfiles *.gz contain tracebacks'
