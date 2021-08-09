@@ -1,3 +1,9 @@
+univention-management-console (12.0.12-10) unstable; urgency=medium
+
+  * Bug #53436: fix third party SP initiated SAML Logout
+
+ -- Florian Best <best@univention.de>  Mon, 09 Aug 2021 12:21:46 +0200
+
 univention-management-console (12.0.12-9) unstable; urgency=medium
 
   * Bug #51242: make it possible to set secure cookies
