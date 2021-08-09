@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: a framework to create arbitrary objects with hacking purposes
 ## bugs: [41799]
 ## versions:
@@ -50,7 +50,7 @@ class HackingAttemptAdd(HackingAttempt):
 		for basedn, ml in super(HackingAttemptAdd, self).modlists(basedn):
 			for attr in ['cn', 'krb5PrincipalName', 'SAMLServiceProviderIdentifier', 'sambaDomainName', 'dc', 'univentionAppID', 'relativeDomainName', 'uid', 'ou', 'zoneName', 'univentionVirtualMachineUUID']:
 				if any(x[0] == attr for x in ml):
-					yield ('%s=%s,%s' % (attr, self.uid, basedn), ml + [('uid', '', self.uid), ('cn', '', self.uid)])
+					yield ('%s=%s,%s' % (attr, self.uid, basedn), ml + [('uid', b'', self.uid.encode("UTF-8")), ('cn', b'', self.uid.encode("UTF-8"))])
 
 
 class Hacking(object):
@@ -103,31 +103,31 @@ class Hacking(object):
 # TODO: add shares with write access to /etc/ on the DC master
 _creations = [
 	HackingAttemptAdd([
-		('cn', '', 'hacker'),
-		('objectClass', '', 'organizationalRole'),
-		('objectClass', '', 'posixAccount'),
-		('uidNumber', '', '0'),
-		('gidNumber', '', '0'),
-		('userPassword', '', '{crypt}$6$H.05VD/DuPnyIoNC$yIJwYBZNWU4fkCV8SE0qiP7yDB3IQWnFPR08Ui.MKcHQBZvy7OImU2avb22GTYGlzBg4FjttMYCUz8FWSp0Jl/'),
-		('homeDirectory', '', '/foo/'),
+		('cn', b'', b'hacker'),
+		('objectClass', b'', b'organizationalRole'),
+		('objectClass', b'', b'posixAccount'),
+		('uidNumber', b'', b'0'),
+		('gidNumber', b'', b'0'),
+		('userPassword', b'', b'{crypt}$6$H.05VD/DuPnyIoNC$yIJwYBZNWU4fkCV8SE0qiP7yDB3IQWnFPR08Ui.MKcHQBZvy7OImU2avb22GTYGlzBg4FjttMYCUz8FWSp0Jl/'),
+		('homeDirectory', b'', b'/foo/'),
 	]),
 ]
 _modifications = [
 	# try modify all existing objects and add a user account to existing object
 	HackingAttempt([
-		('objectClass', '', 'posixAccount'),
-		('uid', '', uts.random_username()),
-		('uidNumber', '', '0'),
-		('gidNumber', '', '0'),
-		('userPassword', '', '{crypt}$6$H.05VD/DuPnyIoNC$yIJwYBZNWU4fkCV8SE0qiP7yDB3IQWnFPR08Ui.MKcHQBZvy7OImU2avb22GTYGlzBg4FjttMYCUz8FWSp0Jl/'),
-		('homeDirectory', '', '/foo/'),
+		('objectClass', b'', b'posixAccount'),
+		('uid', b'', uts.random_username().encode("UTF-8")),
+		('uidNumber', b'', b'0'),
+		('gidNumber', b'', b'0'),
+		('userPassword', b'', b'{crypt}$6$H.05VD/DuPnyIoNC$yIJwYBZNWU4fkCV8SE0qiP7yDB3IQWnFPR08Ui.MKcHQBZvy7OImU2avb22GTYGlzBg4FjttMYCUz8FWSp0Jl/'),
+		('homeDirectory', b'', b'/foo/'),
 	]),
 	# upgrade a posixGroup to a posixAccount
 	HackingAttempt(search_filter='objectClass=univentionGroup', ml=[
-		('objectClass', '', 'posixAccount'),
-		('uid', '', uts.random_username()),
-		('uidNumber', '', '0'),
-		('homeDirectory', '', '/foo/'),
+		('objectClass', b'', b'posixAccount'),
+		('uid', b'', uts.random_username().encode("UTF-8")),
+		('uidNumber', b'', b'0'),
+		('homeDirectory', b'', b'/foo/'),
 	]),
 ]
 
