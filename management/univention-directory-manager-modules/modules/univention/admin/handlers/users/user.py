@@ -229,6 +229,15 @@ property_descriptions = {
 		default='0',
 		size='Two',
 	),
+	'accountActivationDate': univention.admin.property(
+		short_description=_('Activate user account starting from'),
+		long_description=_('This disables the account until the specified time.'),
+		syntax=univention.admin.syntax.string,
+		may_change=True,
+		editable=True,
+		show_in_lists=True,
+		dontsearch=True,
+	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
 		long_description=_('This indicates if the account is locked out due to too many authentication failures.'),
@@ -740,6 +749,7 @@ layout = [
 	]),
 	Tab(_('Account'), _('Account settings'), layout=[
 		Group(_('Deactivation'), layout=[
+			['accountActivationDate'],
 			['disabled'],
 			['userexpiry'],
 		]),
@@ -1189,6 +1199,28 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
 	return u''
 
 
+def mapUTCDateTimeToLocaltime(localtime, encoding=()):  # type: (time.struct_time) -> List[bytes]
+	if localtime:
+		epoch_seconds = time.mktime(localtime)
+		utctime = time.gmtime(epoch_seconds)
+		return [utctime.strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
+	return []
+
+
+def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (List[bytes]) -> Union[time.struct_time, None]
+	if attribute_value and attribute_value[0]:
+		generalizedtime = int(attribute_value[0].decode(*encoding))
+		try:
+			utctime = time.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
+		except ValueError:
+			ud.debug(ud.ADMIN, ud.ERROR, 'Value of krb5ValidStart is not in generalizedTime format: %s' % (generalizedtime,))
+			raise
+		epoch_seconds = calendar.timegm(utctime)
+		localtime = time.localtime(epoch_seconds)
+		return localtime
+	return None
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
@@ -1242,6 +1274,7 @@ mapping.register('userCertificate', 'userCertificate;binary', univention.admin.m
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
+mapping.register('accountActivationDate', 'krb5ValidStart', mapLocaltimeToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)

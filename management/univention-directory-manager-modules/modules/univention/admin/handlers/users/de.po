@@ -367,6 +367,14 @@ msgid "Locked state of account"
 msgstr ""
 
 #: user.py:234
+msgid "Activate user account starting from"
+msgstr "Benutzerkonto aktivieren am"
+
+#: user.py:235
+msgid "This disables the account until the specified time."
+msgstr "Dies deaktiviert das Konto bis zum angegebenen Zeitpunkt."
+
+#: user.py:243
 msgid ""
 "This indicates if the account is locked out due to too many authentication "
 "failures."
