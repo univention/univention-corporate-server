@@ -10,7 +10,7 @@ trap "rm -rf '$tmp'" EXIT
 cd "$tmp"
 curl -OOs https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz{,.gpg}
 gpgv \
-  --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
+  --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg \
   univention-system-check.tar.gz.gpg \
   univention-system-check.tar.gz
 tar -xzf  univention-system-check.tar.gz
