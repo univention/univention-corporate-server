@@ -1,3 +1,9 @@
+ucs-test (9.0.7-49) unstable; urgency=medium
+
+  * Bug #53528: Validate signature of univention-system-check with ucs5 keyring
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 10 Aug 2021 08:47:58 +0200
+
 ucs-test (9.0.7-48) unstable; urgency=medium
 
   * Bug #52506: added 20_appcenter/100_settings.py::test_outside_settings_in_preinst
