@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Under certain circumstances renaming a computer object was not possible.
 bug: [53642]
+erratum: 67
+announced: 2021-08-11
