@@ -9,3 +9,5 @@ desc: |
  * The UDM UMC module no longer crashes when a LDAP search syntax uses a LDAP
    attribute as displayed label.
 bug: [53628]
+erratum: 68
+announced: 2021-08-11
