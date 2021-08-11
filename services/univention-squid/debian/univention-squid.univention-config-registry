@@ -50,7 +50,3 @@ Variables: squid/transparentproxy
 Variables: squid/httpport
 Variables: squid/webports
 Variables: interfaces/.*/address
-
-Type: file
-File: etc/default/squid
-Variables: hostname
