@@ -660,7 +660,9 @@ if __name__ == '__main__':
 	# open pipe to squid_kerb_auth for kerberos stuff
 	kerbPipe = None
 	if options.gssSpnego:
-		kerbPipe = subprocess.Popen(['/usr/lib/squid/negotiate_kerberos_auth'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		kerbPipe = subprocess.Popen([
+			'/usr/lib/squid/negotiate_kerberos_auth', '-k', '/var/lib/samba/private/http-proxy-{}.keytab'.format('hostname')
+		], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
 
