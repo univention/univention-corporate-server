@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-squid
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The correct keytab file is now used by squid for kerberos authentication.
+bug: [53648]

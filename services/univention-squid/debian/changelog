@@ -1,3 +1,9 @@
+univention-squid (13.0.3-3) unstable; urgency=medium
+
+  * Bug #53648: Fix squid with kerberos
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 11 Aug 2021 15:24:26 +0200
+
 univention-squid (13.0.3-2) unstable; urgency=medium
 
   * Bug #52122: Fix unjoin script
