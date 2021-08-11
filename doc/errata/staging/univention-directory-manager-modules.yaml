@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 
+fix: 15.0.11-14A~5.0.0.202108111328
 desc: |
  This update addresses the following issue(s):
  * Under certain circumstances renaming a computer object was not possible.
