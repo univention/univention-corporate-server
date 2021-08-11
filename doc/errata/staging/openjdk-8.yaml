@@ -6,12 +6,11 @@ src: openjdk-8
 fix: 8u302-b08-1~deb9u1
 desc: |
  This update addresses the following issues:
- * FTP PASV command response can cause FtpClient to connect to arbitrary host
-   (Networking, 8258432) (CVE-2021-2341)
- * Incorrect verification of JAR files with multiple MANIFEST.MF files
-   (Library, 8260967) (CVE-2021-2369)
- * Incorrect comparison during range check elimination (Hotspot, 8264066)
-   (CVE-2021-2388)
+ * FTP `PASV` command response can cause FtpClient to connect to arbitrary
+   host (CVE-2021-2341)
+ * Incorrect verification of JAR files with multiple `MANIFEST.MF` files
+   (CVE-2021-2369)
+ * Incorrect comparison during range check elimination (CVE-2021-2388)
 bug: [53645]
 cve:
 - CVE-2021-2341
