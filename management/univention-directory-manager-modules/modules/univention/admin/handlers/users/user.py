@@ -232,11 +232,12 @@ property_descriptions = {
 	'accountActivationDate': univention.admin.property(
 		short_description=_('Activate user account starting from'),
 		long_description=_('This disables the account until the specified time.'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.DateTimeTimezone,
 		may_change=True,
 		editable=True,
 		show_in_lists=True,
 		dontsearch=True,
+		default=time.tzname[0],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
