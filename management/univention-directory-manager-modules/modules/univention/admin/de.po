@@ -1429,6 +1429,18 @@ msgstr "Zu viele Managed Client Konten"
 msgid "Too many servers"
 msgstr "Zu viele Serverkonten"
 
+#: modules/univention/admin/syntax.py:5852
+msgid "Date"
+msgstr "Datum"
+
+#: modules/univention/admin/syntax.py:5852
+msgid "Time"
+msgstr "Uhrzeit"
+
+#: modules/univention/admin/syntax.py:5852
+msgid "Timezone"
+msgstr "Zeitzone"
+
 #: modules/univention/admin/uexceptions.py:277
 msgid "Too many user accounts"
 msgstr "Zu viele Benutzerkonten"

@@ -38,6 +38,8 @@ import string
 import re
 import copy
 import time
+from datetime import datetime
+import pytz
 import struct
 import calendar
 import base64
@@ -227,11 +229,12 @@ property_descriptions = {
 	'accountActivationDate': univention.admin.property(
 		short_description=_('Activate user account starting from'),
 		long_description=_('This disables the account until the specified time.'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.DateTimeTimezone,
 		may_change=True,
 		editable=True,
 		show_in_lists=True,
 		dontsearch=True,
+		default=['', '', time.tzname[0]],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
@@ -1172,26 +1175,27 @@ def unmapWindowsFiletime(old):
 	return ''
 
 
-def mapUTCDateTimeToLocaltime(localtime):  # type: (time.struct_time) -> List[bytes]
-	if localtime:
-		epoch_seconds = time.mktime(localtime)
-		utctime = time.gmtime(epoch_seconds)
-		return [utctime.strftime("%Y%m%d%H%M%SZ")]
+def mapLocaltimeToUTCDateTimeString(local_datetimetimezone_tuple):  # type: (List[str]) -> List[bytes]
+	if local_datetimetimezone_tuple:
+		d, t, tz = local_datetimetimezone_tuple
+		# dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
+		naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+		dt = pytz.timezone(tz).localize(naive_dt)
+		return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ")]
 	return []
 
 
-def unmapUTCDateTimeToLocaltime(attribute_value):  # type: (List[bytes]) -> Union[time.struct_time, None]
+def unmapUTCDateTimeToLocaltime(attribute_value):  # type: (List[bytes]) -> List[str]
 	if attribute_value and attribute_value[0]:
-		generalizedtime = int(attribute_value[0])
+		generalizedtime = attribute_value[0]
 		try:
-			utctime = time.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
+			utc_datetime = datetime.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
 		except ValueError:
 			ud.debug(ud.ADMIN, ud.ERROR, 'Value of krb5ValidStart is not in generalizedTime format: %s' % (generalizedtime,))
 			raise
-		epoch_seconds = calendar.timegm(utctime)
-		localtime = time.localtime(epoch_seconds)
-		return localtime
-	return None
+		local_datetimetimezone_tuple = datetime.strftime(utc_datetime, "%Y-%m-%d %H:%M UTC").split()
+		return local_datetimetimezone_tuple
+	return ['', '', time.tzname[0]]
 
 
 mapping = univention.admin.mapping.mapping()
