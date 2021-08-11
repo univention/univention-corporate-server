@@ -2848,7 +2848,7 @@ class simpleComputer(simpleLdap):
 
 		if self.hasChanged('name'):
 			ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name'].encode('UTF-8')))
-			self.__changes['name'] = (self.oldattr.get('sn', [None])[0].decode("UTF-8"), self['name'])
+			self.__changes['name'] = (self.oldattr.get('sn', [b''])[0].decode("UTF-8") or None, self['name'])
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
 			dhcp = [self.__split_dhcp_line(entry) for entry in self.info.get('dhcpEntryZone', [])]
