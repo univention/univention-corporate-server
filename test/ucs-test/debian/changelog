@@ -1,3 +1,9 @@
+ucs-test (10.0.6-21) unstable; urgency=medium
+
+  * Bug #53651: /usr/share/univention-portal/apps.json has been removed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Aug 2021 10:52:11 +0200
+
 ucs-test (10.0.6-20) unstable; urgency=medium
 
   * Bug #53528: Validate signature of univention-system-check with ucs5 keyring
