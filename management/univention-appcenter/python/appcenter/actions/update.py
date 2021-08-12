@@ -235,7 +235,7 @@ class Update(UniventionAppAction):
 		self._update_conffiles()
 
 	def _get_conffiles(self):
-		return ['/usr/share/univention-portal/apps.json']
+		return []
 
 	def _update_conffiles(self):
 		conffiles = self._get_conffiles()

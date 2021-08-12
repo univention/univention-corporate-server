@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-58) unstable; urgency=medium
+
+  * Bug #53651: /usr/share/univention-portal/apps.json was removed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Aug 2021 10:53:14 +0200
+
 univention-appcenter (9.0.2-57) unstable; urgency=medium
 
   * Bug #52506: Use existing methods for the implementation
