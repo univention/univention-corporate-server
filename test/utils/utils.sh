@@ -29,15 +29,11 @@
 
 set -x
 
+FTP_DOM='software-univention.de'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon) ;;
-qemu|kvm) ;;
+qemu|kvm) FTP_DOM='knut.univention.de' ;;
 esac
-
-is_ec2 () {
-	test "$(ucr get updater/identify)" = "UCS (EC2 Test)" && return 0
-	return 1
-}
 
 basic_setup () {
 	# force dpkg not to call "sync" during package installations/updates
@@ -161,11 +157,7 @@ upgrade_to_testing () {
 }
 
 set_repository_to_testing () {
-	if is_ec2; then
-		ucr set repository/online/server=updates-test.software-univention.de
-	else
-		ucr set repository/online/server=updates-test.knut.univention.de
-	fi
+	ucr set repository/online/server="updates-test.${FTP_DOM}"
 }
 
 # This HAS to be executed after basic_setup, in basic_setup the check is done for EC2 env
@@ -295,7 +287,7 @@ wait_for_setup_process () {
 
 switch_to_test_app_center () {
 	local app rv=0
-	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
+	ucr set repository/app_center/server="appcenter-test.${FTP_DOM}" update/secure_apt=no appcenter/index/verify=no
 	[ -x "$(which univention-app)" ] || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
@@ -320,7 +312,7 @@ switch_components_to_test_app_center () {
 	ucr search --brief --value appcenter.software-univention.de |
 		grep 'repository/online/component/.*/server' |
 		awk -F ':' '{print $1}' |
-		xargs -I % ucr set %=appcenter-test.software-univention.de
+		xargs -I % ucr set %="appcenter-test.${FTP_DOM}"
 }
 
 install_apps () {
@@ -471,7 +463,7 @@ activate_ucsschool_devel_scope () {
 	local component="repository/online/component/ucsschool_DEVEL"
 	ucr set "$component"/description="Development version of UCS@school packages" \
 		"$component"/version="$(ucr get version/version)" \
-		"$component"/server=https://updates-test.software-univention.de \
+		"$component"/server="https://updates-test.${FTP_DOM}" \
 		"$component"=enabled
 }
 
@@ -912,7 +904,7 @@ run_app_specific_test () {
 	set_administrator_password_for_ucs_test "$password"
 	univention-app dev-test-setup || rv=$?
 	univention-app dev-test \
-		--appcenter-server http://appcenter-test.software-univention.de \
+		--appcenter-server "http://appcenter-test.${FTP_DOM}" \
 		"$app" \
 		--binddn "$(ucr get tests/domainadmin/account)" \
 		--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || rv=$?
@@ -1127,7 +1119,7 @@ transfer_user="$transfer_user"
 transfer_pwfile="$transfer_pwfile"
 for appcenter_cache in apps_cache.get_appcenter_caches():
     for cache in appcenter_cache.get_app_caches():
-        assert cache.get_server() == 'https://appcenter-test.software-univention.de'
+        assert cache.get_server() == 'https://appcenter-test.${FTP_DOM}'
         app = cache.find(app_id, app_version=None, latest=True)
         if app is not None:
             app_name = '{}/{}={}'.format(cache.get_ucs_version(), app.id, app.version)
