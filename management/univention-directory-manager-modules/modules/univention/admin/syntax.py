@@ -2209,6 +2209,8 @@ class iso8601Date(simple):
 
 	type_class = univention.admin.types.DateType
 
+	size = 'TwoThirds'
+
 	@classmethod
 	def to_datetime(cls, value):
 		value = cls.parse(value)
@@ -2653,6 +2655,8 @@ class TimeString(simple):
 	>>> TimeString.parse('23:59:59')
 	'23:59:59'
 	"""
+	size = 'OneThird'
+
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
@@ -5833,6 +5837,8 @@ class mailinglist_name(gid):
 
 
 class TimeZone(select):
+	size = 'TwoThirds'
+
 	@ClassProperty
 	def choices(cls):
 		return [(x, x) for x in pytz.all_timezones]

@@ -760,6 +760,10 @@ msgstr "Konto-Einstellungen"
 msgid "Deactivation"
 msgstr "Deaktivierung"
 
+#: user.py:743
+msgid "Activation"
+msgstr "Aktivierung"
+
 #: user.py:746
 msgid "Locked login"
 msgstr "Gesperrte Anmeldung"

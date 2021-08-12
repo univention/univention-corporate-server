@@ -235,6 +235,7 @@ property_descriptions = {
 		short_description=_('Activate user account starting from'),
 		long_description=_('This disables the account until the specified time.'),
 		syntax=univention.admin.syntax.DateTimeTimezone,
+		size='Two',
 		may_change=True,
 		editable=True,
 		show_in_lists=True,
@@ -752,7 +753,6 @@ layout = [
 	]),
 	Tab(_('Account'), _('Account settings'), layout=[
 		Group(_('Deactivation'), layout=[
-			['accountActivationDate'],
 			['disabled'],
 			['userexpiry'],
 		]),
@@ -761,6 +761,9 @@ layout = [
 			['passwordexpiry'],
 			['unlock'],
 			['unlockTime'],
+		]),
+		Group(_('Activation'), layout=[
+			['accountActivationDate'],
 		]),
 		Group(_('Windows'), layout=[
 			['homedrive', 'sambahome'],
