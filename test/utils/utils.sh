@@ -31,7 +31,7 @@ set -x
 
 FTP_DOM='software-univention.de' FTP_SCHEME='https'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
-amazon) ;;
+amazon|xen) ;;
 qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' ;;
 esac
 
@@ -43,7 +43,7 @@ basic_setup () {
 		echo "KVM detected"
 		ucr set --force dhclient/linklocal/fallback=false dhclient/options/timeout=30
 		;;
-	amazon)
+	amazon|xen)
 		echo "Assuming Amazon Cloud"
 		# Bug #46993: Remove OpenDNS resolver - use AmazonProvidedDNS
 		sed -i -e '/^nameserver 208.67.22[02].22[02]/d' /etc/resolv.conf
