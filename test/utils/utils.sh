@@ -237,27 +237,6 @@ run_setup_join_on_non_master () {
 	return $rv
 }
 
-wait_until_update_server_is_resolvable () {
-	local i=0
-	local servers=""
-	is_ec2 && servers="updates.software-univention.de updates-test.software-univention.de" || server="updates.knut.univention.de updates-test.knut.univention.de"
-	for server in $servers; do
-		while [ $i -lt 900 ]
-		do
-			host $server >/dev/null && break
-			sleep 1
-			i=$((i + 1))
-		done
-		if [ $i = 900 ]; then
-			echo "WARNING: host $server did not succeed after 900 seconds"
-			return 1
-		else
-			echo "host $server succeeded after $i seconds"
-			continue
-		fi
-	done
-}
-
 wait_for_reboot () {
 	local i=0 rv=0
 	while [ $i -lt 900 ]
@@ -400,11 +379,13 @@ install_with_unmaintained () {
 }
 
 wait_for_repo_server () {
+	local i repository_online_server
 	eval "$(ucr shell 'repository/online/server')"
 	repository_online_server=${repository_online_server#https://}
 	repository_online_server=${repository_online_server#http://}
 	repository_online_server=${repository_online_server%%/*}
-	for i in $(seq 1 300); do
+	for ((i=0; i<300; i++))
+	do
 		ping -c 2 "$repository_online_server" && return 0
 		sleep 1
 	done
