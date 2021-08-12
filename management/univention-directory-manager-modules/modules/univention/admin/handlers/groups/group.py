@@ -439,7 +439,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.groupNameAlreadyUsed(self['name'])
 
 		# get lock for mailPrimaryAddress
-		if self['mailAddress'] and not self.exists() or self.hasChanged('mailAddress'):
+		if self['mailAddress'] and (not self.exists() or self.hasChanged('mailAddress')):
 			try:
 				self.request_lock('mailPrimaryAddress', self['mailAddress'])
 			except univention.admin.uexceptions.noLock:

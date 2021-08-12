@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-15) unstable; urgency=medium
+
+  * Bug #53653: fix modifying groups in certain conditions
+
+ -- Florian Best <best@univention.de>  Thu, 12 Aug 2021 15:39:19 +0200
+
 univention-directory-manager-modules (15.0.11-14) unstable; urgency=medium
 
   * Bug #53642: fix changing computer name
