@@ -1,3 +1,9 @@
+univention-web (3.0.6-8) unstable; urgency=medium
+
+  * Issue #23: add tooltip on hover if text overflows
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 12 Aug 2021 12:13:08 +0200
+
 univention-web (3.0.6-7) unstable; urgency=medium
 
   * Issue #17: forward placeHolder and reset() to dijit/form/DateTextBox
