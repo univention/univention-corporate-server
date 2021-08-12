@@ -230,7 +230,7 @@ run_setup_join_on_non_master () {
 	local admin_password="${1:-univention}" rv=0 nameserver1
 	nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	if [ -n  "$nameserver1" ]; then
-		ucr set nameserver1="$nameserver1"
+		ucr set --forced nameserver1="$nameserver1"
 	fi
 	printf '%s' "$admin_password" >/tmp/univention
 	run_setup_join --dcaccount Administrator --password_file /tmp/univention || rv=$?
@@ -1056,9 +1056,9 @@ basic_setup_ucs_role () {
 	# TODO
 	#   ... recreate ssh keys ...
 	# join non-master systems
-	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
+	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
 		echo -n "$admin_password" > /tmp/univention.txt
-		ucr set nameserver1=$masterip
+		ucr set --forced nameserver1="$masterip"
 		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
 	fi
 	return $rv
@@ -1077,10 +1077,10 @@ basic_setup_ucs_joined () {
 	# TODO
 	#  ... recreate ssh keys ...
 	# fix ip on non-master systems
-	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
+	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
 		if [  "$(ucr get server/role)" = "memberserver" ]; then
-			ucr set nameserver1="$masterip"
+			ucr set --forced nameserver1="$masterip"
 		fi
 		systemctl restart univention-directory-listener || rv=1
 		/usr/sbin/univention-register-network-address || rv=1
