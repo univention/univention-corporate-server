@@ -1,3 +1,10 @@
+univention-portal (4.0.5-64) unstable; urgency=medium
+
+  * Bug #53651: Remove template /usr/share/univention-portal/apps.json
+    completely
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Aug 2021 12:11:42 +0200
+
 univention-portal (4.0.5-63) unstable; urgency=medium
 
   * Bug #53651: Remove template /usr/share/univention-portal/apps.json

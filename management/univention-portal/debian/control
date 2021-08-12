@@ -21,7 +21,6 @@ Depends:
  python3-click,
  python3-requests,
  python3-tornado,
- python3-univention-appcenter,
  univention-config,
  univention-directory-listener,
  univention-directory-manager-tools,
