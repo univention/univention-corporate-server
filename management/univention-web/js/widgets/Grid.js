@@ -43,6 +43,7 @@ define([
 	"dojo/aspect",
 	"dojo/on",
 	"dijit/registry",
+	"dojo/mouse",
 	"dijit/Destroyable",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -65,7 +66,7 @@ define([
 	"../render",
 	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, dijitRegistry, Destroyable, Menu, MenuItem, entities,
+		topic, aspect, on, dijitRegistry, mouse, Destroyable, Menu, MenuItem, entities,
 		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, DropDownButton, CheckBox, Text,
 		ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
@@ -246,6 +247,11 @@ define([
 		//
 		//
 		defaultActionColumn: '',
+
+		// addTitleOnCellHoverIfOverflow: boolean
+		//		If hovering over a cell and the displayed text is cut off (ellipsis are shown)
+		//		then the innerText of the cell is shown via the HTML 'title' attribute
+		addTitleOnCellHoverIfOverflow: false,
 
 		initialStatusMessage: _("Please perform a search"),
 
@@ -508,6 +514,22 @@ define([
 			this.own(on(this._grid, 'scroll', lang.hitch(this, function() {
 				domClass.toggle(this.domNode, 'scrollIsNotAtTop', this._grid.getScrollPosition().y !== 0);
 			})));
+
+			if (this.addTitleOnCellHoverIfOverflow) {
+				// add title attribute to table cell if text overflows (and shows ellipsis)
+				on(this.domNode, on.selector('.dgrid-cell', mouse.enter), lang.hitch(this, function(evt) {
+					var node = evt.target;
+					while (node && !domClass.contains(node, 'dgrid-cell')) {
+						node = node.parentElement;
+					}
+					if (node && node.clientWidth < node.scrollWidth) {
+						node.title = node.innerText;
+						on.once(node, mouse.leave, function() {
+							node.title = '';
+						});
+					}
+				}));
+			}
 		},
 
 		_buildHeader: function() {
