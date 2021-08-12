@@ -388,6 +388,10 @@ msgid "Last name"
 msgstr "Nachname"
 
 #: modules/univention/admin/handlers/users/user.py:772
+msgid "Activation"
+msgstr "Aktivierung"
+
+#: modules/univention/admin/handlers/users/user.py:772
 msgid "Locked login"
 msgstr "Gesperrte Anmeldung"
 
