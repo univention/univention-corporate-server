@@ -45,9 +45,6 @@ basic_setup () {
 		;;
 	amazon|xen)
 		echo "Assuming Amazon Cloud"
-		# Bug #46993: Remove OpenDNS resolver - use AmazonProvidedDNS
-		sed -i -e '/^nameserver 208.67.22[02].22[02]/d' /etc/resolv.conf
-		grep nameserver /etc/resolv.conf|cat -n|sed -re 's,^\s*([0-9]+)\s*(nameserver)\s*(.*),\2\1=\3 dns/forwarder\1=\3,'|xargs ucr set nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
 			/usr/sbin/grub-mkdevicemap
@@ -55,6 +52,12 @@ basic_setup () {
 		fi
 		;;
 	esac
+	# Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove OpenDNS resolver
+	sed -rne 's/^nameserver\s*([.0-9]+|[.0-9:A-Fa-f]+)\s*$/\1/;T;/^208\.67\.22[02]\.22[02]|^2620:0+:0?cc[cd]::0*2$/d;p' /etc/resolv.conf |
+		head -n 3 |
+		cat -n |
+		sed -re 's,^\s*([0-9]+)\s+(.+),nameserver\1=\2 dns/forwarder\1=\2,' |
+		xargs ucr set nameserver/external=false nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 	service cron reload || true
@@ -225,7 +228,7 @@ run_setup_join_on_non_master () {
 	local admin_password="${1:-univention}" rv=0 nameserver1
 	nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	if [ -n  "$nameserver1" ]; then
-		ucr set --forced nameserver1="$nameserver1"
+		ucr set nameserver1="$nameserver1"
 	fi
 	printf '%s' "$admin_password" >/tmp/univention
 	run_setup_join --dcaccount Administrator --password_file /tmp/univention || rv=$?
@@ -1079,7 +1082,7 @@ basic_setup_ucs_role () {
 	# join non-master systems
 	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
 		echo -n "$admin_password" > /tmp/univention.txt
-		ucr set --forced nameserver1="$masterip"
+		ucr set nameserver1="$masterip"
 		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
 	fi
 	return $rv
@@ -1094,8 +1097,8 @@ basic_setup_ucs_joined () {
 	# fix ip on non-master systems
 	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
-		if [  "$(ucr get server/role)" = "memberserver" ]; then
-			ucr set --forced nameserver1="$masterip"
+		if [ "$(ucr get server/role)" = "memberserver" ]; then
+			ucr set nameserver1="$masterip"
 		fi
 		service univention-directory-listener restart || rv=1
 		/usr/sbin/univention-register-network-address || rv=1
