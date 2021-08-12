@@ -29,6 +29,11 @@
 
 set -x
 
+case "${VIRTTECH:=$(systemd-detect-virt)}" in
+amazon) ;;
+qemu|kvm) ;;
+esac
+
 is_ec2 () {
 	test "$(ucr get updater/identify)" = "UCS (EC2 Test)" && return 0
 	return 1
@@ -37,22 +42,24 @@ is_ec2 () {
 basic_setup () {
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
-	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
+	case "$VIRTTECH" in
+	qemu|kvm)
 		echo "KVM detected"
-		ucr set --force updater/identify="UCS (EC2 Test)" dhclient/linklocal/fallback=false dhclient/options/timeout=30
-	elif ip -4 addr show | grep -Fq 'inet 10.210.'
-	then
+		ucr set --force dhclient/linklocal/fallback=false dhclient/options/timeout=30
+		;;
+	amazon)
 		echo "Assuming Amazon Cloud"
 		# Bug #46993: Remove OpenDNS resolver - use AmazonProvidedDNS
 		sed -i -e '/^nameserver 208.67.22[02].22[02]/d' /etc/resolv.conf
 		grep nameserver /etc/resolv.conf|cat -n|sed -re 's,^\s*([0-9]+)\s*(nameserver)\s*(.*),\2\1=\3 dns/forwarder\1=\3,'|xargs ucr set nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
-		ucr set --force updater/identify="UCS (EC2 Test)"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
 			/usr/sbin/grub-mkdevicemap
 			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
 		fi
-	fi
+		;;
+	esac
+	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 	service cron reload || true
 	# wait until Univention System Setup is running and profile file has been moved
