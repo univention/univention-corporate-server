@@ -9,11 +9,6 @@ File: etc/apache2/ucs-sites.conf.d/univention-portal.conf
 Variables: portal/port
 Variables: portal/paths
 
-Type: file
-File: usr/share/univention-portal/apps.json
-Variables: appcenter/apps/.*/status
-Variables: appcenter/apps/.*/version
-
 Type: module
 Module: symlink_portal.py
 Variables: portal/paths
