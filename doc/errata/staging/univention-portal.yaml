@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-63A~5.0.0.202108121102
+fix: 4.0.5-64A~5.0.0.202108121215
 desc: |
  This update addresses the following issue(s):
  * The template /usr/share/univention-portal/apps.json was unused and has now
