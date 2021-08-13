@@ -156,11 +156,12 @@ class InstallRemoveUpgrade(Register):
 						self.warn('Cancelled...')
 						return
 			except Exception as exc:
+				exc = str(exc).split('\n')
 				if apps:
 					for app in apps:
-						self._send_information_on_app(app, 502, str(exc), args)
+						self._send_information_on_app(app, 502, exc, args)
 				else:
-					self._send_information_on_app(None, 502, str(exc), args)
+					self._send_information_on_app(None, 502, exc, args)
 				raise
 			for i, app in enumerate(apps):
 				args.app = app
