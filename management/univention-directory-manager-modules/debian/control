@@ -10,6 +10,8 @@ Build-Depends:
  python2.7-dev,
  python3-all,
  univention-config-dev,
+ python-tzlocal,
+ python3-tzlocal,
 
 Package: python-univention-directory-manager
 Architecture: all
@@ -25,6 +27,7 @@ Depends:
  python-pyasn1-modules,
  python-six,
  python-smbpasswd,
+ python-tzlocal,
  python-unidecode,
  python-support,
  python-bcrypt,
@@ -86,6 +89,7 @@ Depends:
  python3-pyasn1-modules,
  python3-six,
  python3-smbpasswd,
+ python3-tzlocal,
  python3-unidecode,
  python3-univention (>= 10.0.4-2),
  python3-univention-directory-manager-cli (= ${binary:Version}),
