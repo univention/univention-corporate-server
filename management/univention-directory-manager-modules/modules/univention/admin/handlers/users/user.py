@@ -1205,12 +1205,16 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
 	return u''
 
 
-def mapLocaltimeToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
+def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  # type: (List[str]) -> datetime.datetime
+	d, t, tz = local_datetimetimezone_tuple
+	# dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
+	naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+	return pytz.timezone(tz).localize(naive_dt)
+
+
+def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
 	if local_datetimetimezone_tuple:
-		d, t, tz = local_datetimetimezone_tuple
-		# dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
-		naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
-		dt = pytz.timezone(tz).localize(naive_dt)
+		dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
 		return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
 	return []
 
@@ -1281,7 +1285,7 @@ mapping.register('userCertificate', 'userCertificate;binary', univention.admin.m
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
-mapping.register('accountActivationDate', 'krb5ValidStart', mapLocaltimeToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
+mapping.register('accountActivationDate', 'krb5ValidStart', mapDateTimeTimezoneTupleToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1675,6 +1679,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['unlock'] == '1':
 			self['locked'] = u'0'
+		if self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+			self['disabled'] = '1'
 		if self['disabled'] == '1':
 			self['locked'] = u'0'  # Samba/AD behavior
 
