@@ -758,7 +758,9 @@ define([
 				helpText: _('Specify the name of this system.'),
 				layout: [
 					['_hostname', '_domainname'], // for docker only!
-					['_fqdn', 'ldap/base']
+					['_fqdn', 'ldap/base'],
+					['configureExtendedSettings'],
+					['windows/domain']
 				],
 				widgets: [{
 					type: TextBox,
@@ -778,6 +780,7 @@ define([
 					onChange: lang.hitch(this, function(value) {
 						var fqdn = 'dummy.' + value;
 						this._updateLDAPBase(fqdn);
+						this._updateWindowsDomain(fqdn);
 					}),
 					validator: _validateDomainName,
 					invalidMessage: _invalidDomainNameMessage
@@ -786,7 +789,10 @@ define([
 					name: '_fqdn',
 					label: _('Fully qualified domain name'),
 					required: true,
-					onChange: lang.hitch(this, '_updateLDAPBase'),
+					onChange: lang.hitch(this, function(fqdn) {
+						this._updateLDAPBase(fqdn);
+						this._updateWindowsDomain(fqdn);
+					}),
 					validator: _validateFQDN,
 					invalidMessage: _invalidFQDNMessage
 				}, {
@@ -796,6 +802,21 @@ define([
 					required: true,
 					validator: _validateLDAPBase,
 					invalidMessage: _invalidLDAPBase
+				}, {
+					type: Text,
+					name: 'configureExtendedSettings',
+					label: '<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').configureExtendedSettings();">' +
+						_('(configure extended settings)') +
+						'</a>',
+					content: ''
+				}, {
+					type: TextBox,
+					name: 'windows/domain',
+					label: _('NetBIOS domain name') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'windows/domain\');">' +
+						_('more information') +
+						'</a>)',
+					visible: false
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-nonmaster-all',
@@ -1127,6 +1148,11 @@ define([
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
 		},
 
+		configureExtendedSettings: function() {
+			this.getWidget('fqdn-master', 'windows/domain').set('visible', true);
+			this.getWidget('fqdn-master', 'configureExtendedSettings').set('visible', false);
+		},
+
 		showTooltip: function(evt, type) {
 			var msg = '';
 			if (type == 'email') {
@@ -1149,6 +1175,9 @@ define([
 				} else if (this._isRoleNonMaster()) {
 					msg = _('Update system to the UCS release version of the Primary Directory Node and install all available errata and app updates after the setup.');
 				}
+			}
+			else if (type == 'windows/domain') {
+				msg = _('The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname).');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
@@ -1204,6 +1233,8 @@ define([
 					['network', '_renewLease'],
 					['credentials-master', 'email_address'],
 					['fqdn-nonmaster-all', 'hostname'],
+					['fqdn-master', 'configureExtendedSettings'],
+					['fqdn-master', 'windows/domain'],
 					['network', 'proxy/http'],
 					['summary', 'update/system/after/setup']
 				], function(iitem) {
@@ -1558,6 +1589,19 @@ define([
 			ldapBaseWidget.set('value', ldapBase);
 		},
 
+		_updateWindowsDomain: function(fqdn) {
+			fqdn = fqdn.replace(/ /g, '');  // remove all spaces from fqdn
+			var domain = fqdn.split('.', 1)[0].toUpperCase()
+			if (/^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$/.test(domain)) {
+				domain = /^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$/.exec(domain)[1];
+			} else {
+				domain = '';
+			}
+			domain = domain.substring(0, 15) || 'UCSDOMAIN';
+			var windomWidget = this.getWidget('fqdn-master', 'windows/domain');
+			windomWidget.set('value', domain);
+		},
+
 		_updateCityInfo: function(city) {
 			var resultWidget = this.getWidget('welcome', 'result');
 			if (!city || !city.id) {
@@ -1838,6 +1882,9 @@ define([
 				this._newFQDN = _vals.hostname;
 			}
 			_append(_('LDAP base'), vals['ldap/base']);
+			if (this._isRoleMaster() && isFieldShown('windows/domain')) {
+				_append('NetBIOS domain name', vals['windows/domain']);
+			}
 
 			if (isFieldShown('network')) {
 				if (_vals._dhcp) {
