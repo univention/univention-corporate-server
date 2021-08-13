@@ -33,6 +33,8 @@ webframe:
 
 review:
   stage: review
+  rules:
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
   extends: .publish
   script:
     - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
@@ -41,10 +43,6 @@ review:
     url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
     on_stop: stop_review
     auto_stop_in: 1 week
-  only:
-    - branches
-  except:
-    - master
 
 stop_review:
   stage: staging
