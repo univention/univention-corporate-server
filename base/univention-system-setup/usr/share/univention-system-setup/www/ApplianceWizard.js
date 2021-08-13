@@ -760,7 +760,7 @@ define([
 					['_hostname', '_domainname'], // for docker only!
 					['_fqdn', 'ldap/base'],
 					['configureExtendedSettings'],
-					['windows/domain']
+					['windows/domain', 'kerberos/realm']
 				],
 				widgets: [{
 					type: TextBox,
@@ -781,6 +781,7 @@ define([
 						var fqdn = 'dummy.' + value;
 						this._updateLDAPBase(fqdn);
 						this._updateWindowsDomain(fqdn);
+						this._updateKerberosRealm(fqdn);
 					}),
 					validator: _validateDomainName,
 					invalidMessage: _invalidDomainNameMessage
@@ -792,6 +793,7 @@ define([
 					onChange: lang.hitch(this, function(fqdn) {
 						this._updateLDAPBase(fqdn);
 						this._updateWindowsDomain(fqdn);
+						this._updateKerberosRealm(fqdn);
 					}),
 					validator: _validateFQDN,
 					invalidMessage: _invalidFQDNMessage
@@ -814,6 +816,14 @@ define([
 					name: 'windows/domain',
 					label: _('NetBIOS domain name') +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'windows/domain\');">' +
+						_('more information') +
+						'</a>)',
+					visible: false
+				}, {
+					type: TextBox,
+					name: 'kerberos/realm',
+					label: _('Kerberos realm') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'kerberos/realm\');">' +
 						_('more information') +
 						'</a>)',
 					visible: false
@@ -1150,6 +1160,7 @@ define([
 
 		configureExtendedSettings: function() {
 			this.getWidget('fqdn-master', 'windows/domain').set('visible', true);
+			this.getWidget('fqdn-master', 'kerberos/realm').set('visible', true);
 			this.getWidget('fqdn-master', 'configureExtendedSettings').set('visible', false);
 		},
 
@@ -1178,6 +1189,9 @@ define([
 			}
 			else if (type == 'windows/domain') {
 				msg = _('The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname).');
+			}
+			else if (type == 'kerberos/realm') {
+				msg = _('The common Kerberos trust context of a domain is called a Kerberos realm. It cannot be changed later on anymore.');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
@@ -1235,6 +1249,7 @@ define([
 					['fqdn-nonmaster-all', 'hostname'],
 					['fqdn-master', 'configureExtendedSettings'],
 					['fqdn-master', 'windows/domain'],
+					['fqdn-master', 'kerberos/realm'],
 					['network', 'proxy/http'],
 					['summary', 'update/system/after/setup']
 				], function(iitem) {
@@ -1602,6 +1617,12 @@ define([
 			windomWidget.set('value', domain);
 		},
 
+		_updateKerberosRealm: function(fqdn) {
+			var realm = fqdn.toUpperCase();
+			var windomWidget = this.getWidget('fqdn-master', 'kerberos/realm');
+			windomWidget.set('value', realm);
+		},
+
 		_updateCityInfo: function(city) {
 			var resultWidget = this.getWidget('welcome', 'result');
 			if (!city || !city.id) {
@@ -1884,6 +1905,9 @@ define([
 			_append(_('LDAP base'), vals['ldap/base']);
 			if (this._isRoleMaster() && isFieldShown('windows/domain')) {
 				_append('NetBIOS domain name', vals['windows/domain']);
+			}
+			if (this._isRoleMaster() && isFieldShown('kerberos/realm')) {
+				_append('Kerberos realm', vals['kerberos/realm']);
 			}
 
 			if (isFieldShown('network')) {

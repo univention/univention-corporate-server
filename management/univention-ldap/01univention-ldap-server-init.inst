@@ -84,7 +84,8 @@ then
 	else
 		sambadomain=$windows_domain
 	fi
-	realm=$(echo "$domainname" | sed -e 's/dc=//g;s/,/./g;s/[a-z]/\u&/g')
+	realm="$kerberos_realm"
+	[ -z "$realm" ] && realm=$(echo "$domainname" | sed -e 's/dc=//g;s/,/./g;s/[a-z]/\u&/g')
 	sid=$(/usr/sbin/univention-newsid)
 	Domain=$domainname
 	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/core-edition.ldif |

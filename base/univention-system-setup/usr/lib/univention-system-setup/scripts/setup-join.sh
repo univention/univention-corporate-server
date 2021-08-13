@@ -160,7 +160,8 @@ fi
 /usr/lib/univention-system-setup/scripts/10_basis/18root_password
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	realm="$(echo "$domainname" | tr "[:lower:]" "[:upper:]")"
+	realm="$(get_profile_var "kerberos/realm")"
+	[ -z "$realm" ] && realm="$(echo "$domainname" | tr "[:lower:]" "[:upper:]")"
 	univention-config-registry set \
 		ldap/server/name="$hostname.$domainname" \
 		ldap/master="$hostname.$domainname" \

@@ -428,6 +428,10 @@ class Instance(Base, ProgressMixin):
             elif not values.get('hostname'):
                 _append('hostname', _("No hostname has been specified for the system."))
 
+        # kerberos realm
+        _check('kerberos/realm', util.is_domainname, _("Please enter a valid kerberos realm (e.g. example.com)."))
+        _check('kerberos/realm', lambda x: x == x.upper(), _("The kerberos realm can only consist of upper case characters."))
+
         # windows domain
         _check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
         _check('windows/domain', lambda x: len(x) <= 15, _("The windows domain name cannot be longer than 15 characters."))

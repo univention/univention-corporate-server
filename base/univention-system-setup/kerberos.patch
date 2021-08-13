@@ -1,0 +1,50 @@
+--- /usr/lib/python3/dist-packages/samba/provision/__init__.py	2021-05-03 15:56:07.000000000 +0200
++++ /usr/lib/python3/dist-packages/samba/provision/__init__.py	2021-08-13 16:15:31.207066612 +0200
+@@ -202,7 +202,7 @@
+     # NT domain, kerberos realm, root dn, domain dn, domain dns name
+     names.domain = lp.get("workgroup").upper()
+     names.realm = lp.get("realm")
+-    names.dnsdomain = names.realm.lower()
++    names.dnsdomain = 'intranet.' + names.realm.lower()
+     basedn = samba.dn_from_dns_name(names.dnsdomain)
+     names.realm = names.realm.upper()
+     # netbiosname
+@@ -715,6 +715,8 @@
+     names.schemadn = schemadn
+     names.ldapmanagerdn = "CN=Manager," + rootdn
+     names.dnsdomain = dnsdomain
++    if 'intranet.' not in dnsdomain:
++        names.dnsdomain = 'intranet.' + dnsdomain
+     names.domain = domain
+     names.realm = realm
+     names.netbiosname = netbiosname
+@@ -941,6 +943,8 @@
+     if realm is not None:
+         if dnsdomain is None:
+             dnsdomain = realm.lower()
++            if 'intranet.' not in dnsdomain:
++                dnsdomain = 'intranet.' + dnsdomain
+         dnsname = '%s.%s' % (netbiosname.lower(), dnsdomain.lower())
+     else:
+         dnsname = None
+@@ -1632,9 +1636,9 @@
+                  use_ntvfs=use_ntvfs, skip_invalid_chown=skip_invalid_chown,
+                  passdb=passdb, service=service)
+     except NTSTATUSError as error:
+-        err_value = ctypes.c_uint32(error[0]).value
++        err_value = ctypes.c_uint32(error.args[0]).value
+         only_log = err_value == NT_STATUS_OBJECT_NAME_NOT_FOUND
+-        if resume_on_error and logger and only_log:
++        if True and logger and only_log:
+             logger.warning('Unable to set ACL %s on %s' % (sddl, file))
+         else:
+             raise
+@@ -2258,7 +2262,7 @@
+         if not skip_sysvolacl:
+             setsysvolacl(samdb, logger, paths.netlogon, paths.sysvol,
+                          paths.root_uid, paths.root_gid, names.domainsid,
+-                         names.dnsdomain, names.domaindn, lp, use_ntvfs,
++                         names.realm, names.domaindn, lp, use_ntvfs,
+                          resume_on_error=False)
+         else:
+             logger.info("Setting acl on sysvol skipped")

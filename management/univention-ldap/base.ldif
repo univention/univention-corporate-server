@@ -28,7 +28,7 @@ elif dn == 'c':
 print('objectClass: univentionBase')
 print('objectClass: univentionObject')
 print('univentionObjectType: container/dc')
-print('krb5RealmName: %s' % configRegistry['domainname'].upper())
+print('krb5RealmName: %s' % configRegistry['kerberos/realm'])
 print('nisDomain: %s' % configRegistry['domainname'])
 print('associatedDomain: %s' % configRegistry['domainname'])
 print('univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
