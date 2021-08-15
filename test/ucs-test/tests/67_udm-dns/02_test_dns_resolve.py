@@ -60,6 +60,7 @@ class Test_DNSResolve(object):
 			'a': ['%s' % (uts.random_ip())]
 		}
 		udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
+		time.sleep(5)
 		answers = resolve_dns_entry(zone, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zone, 'resolved name "%s" != created ldap-object "%s"' % (answer, zone)
@@ -86,6 +87,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed(subnet)) + ['in-addr', 'arpa', '']
 		)
+		time.sleep(5)
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv4: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
@@ -100,6 +102,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed([nibble for block in subnet for nibble in block])) + ['ip6', 'arpa', '']
 		)
+		time.sleep(5)
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv6: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
@@ -149,6 +152,7 @@ class Test_DNSResolve(object):
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
 		qname = '%s.%s' % (host, zone)
+		time.sleep(5)
 		answers = resolve_dns_entry(qname, 'AAAA')
 		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
 		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
@@ -189,6 +193,7 @@ class Test_DNSResolve(object):
 		udm.create_object('dns/alias', superordinate=forward_zone, name=alias_name, cname=fqhn)
 
 		qname = '%s.%s' % (alias_name, zone)
+		time.sleep(5)
 		answers = resolve_dns_entry(qname, 'CNAME')
 		answer = [rdata.target.to_text() for rdata in answers]
 		assert answer == [fqhn], 'resolved name "%s" != created ldap-object "%s"' % (answer, [fqhn])
@@ -270,6 +275,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed(ipv4)) + ['in-addr', 'arpa', '']
 		)
+		time.sleep(5)
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
@@ -288,6 +294,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', '']
 		)
+		time.slee(5)
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
@@ -311,6 +318,7 @@ class Test_DNSResolve(object):
 			'txt': txt,
 		}
 		udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
+		time.sleep(5)
 		answers = resolve_dns_entry(zone, 'TXT')
 		# FIXME PMH-2017-01-14: returned TXT data is enclosed in "
 		answer = [rdata.to_text().strip('"') for rdata in answers]

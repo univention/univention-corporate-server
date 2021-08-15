@@ -245,19 +245,18 @@ def test_indirect_group_user_memberships_file_access(udm):
 	utils.wait_for_replication_and_postrun()
 
 	# create file as user "file_owner" and change permissions to 060 (read/write group only)
-	test_file = '/var/tmp/%s' % uts.random_string()
 	with tempfile.NamedTemporaryFile("w+", dir='/var/tmp') as fd:
 		fd.write('foo')
 		fd.flush()
 		os.remove(fd.name)
 		assert not os.path.exists(fd.name)
-		subprocess.check_call(['su', file_owner[1], '-c', 'touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
 
+		subprocess.check_call(['su', file_owner[1], '-c', 'touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
 		# test reading as "another_user"
-		subprocess.check_call(['su', another_user[1], '-c', 'cat %s' % test_file])
+		subprocess.check_call(['su', another_user[1], '-c', 'cat %s' % fd.name])
 
 		# test writing as "another_user"
-		subprocess.check_call(['su', another_user[1], '-c', 'touch %s' % test_file])
+		subprocess.check_call(['su', another_user[1], '-c', 'touch %s' % fd.name])
 
 
 @pytest.mark.tags('udm')

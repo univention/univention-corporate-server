@@ -42,7 +42,6 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.lib.misc import custom_groupname
 import sys
-
 RETRY_COUNT = 20
 DELAY = 10
 
@@ -218,7 +217,7 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
 			udm.remove_object('groups/group', dn=dn_grp1, wait_for_replication=with_listener)
 		wait_for_replication()
-		udm.wait_for('groups/group', dn_grp1, wait_for_s4connector=with_listener)
+		udm.wait_for('groups/group', dn_grp1, everything=True)
 		self.print_attributes([dn_user1, dn_user2], 'RESULT')
 		utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 		utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
@@ -243,6 +242,7 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
 			udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
 		wait_for_replication()
+		udm.wait_for('groups/group', dn_grp1, everything=True)
 		self.print_attributes([dn_user1, dn_user2], 'RESULT')
 		utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 		utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)

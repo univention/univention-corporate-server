@@ -1,3 +1,9 @@
+ucs-test (10.0.6-22) unstable; urgency=medium
+
+  * Bug #53538: Wait a little longer for those flaky tests
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 15 Aug 2021 17:48:21 +0200
+
 ucs-test (10.0.6-21) unstable; urgency=medium
 
   * Bug #53651: /usr/share/univention-portal/apps.json has been removed

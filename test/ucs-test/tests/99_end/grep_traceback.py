@@ -121,6 +121,7 @@ def main(filenames, ignore_exceptions={}):
 COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) else z for z in (y or [])]) for x, y in [
 	# Errors from UCS 4.4-5 Jenkins runs:
 	(r'^(ldap\.)?SERVER_DOWN: .*', None),
+	(r'^(ldap\.)?NO_SUCH_OBJECT: .*', None),
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
 	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	('^permissionDenied$', ['_create']),
@@ -140,13 +141,14 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
 	(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
+	('^AssertionError.*', None),  # Already caught by tests itself
 
 	# during upgrade to UCS 5.0-0
+	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository.* Release' is not signed.", None),
 	('ImportError: No module named client', ['univention-directory-listener/system/faillog.py']),  # Bug #53290
 	(re.escape("AttributeError: 'ConfigRegistry' object has no attribute '_walk'"), ['univention-directory-listener/system/nfs-shares.py']),  # Bug #53291
 
 	# updater test cases:
-	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
 	('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
 	('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
 	('ConfigurationError: Configuration error: host is unresolvable', None),
@@ -174,7 +176,6 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-a-tile", ['in refresh']),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("univention.admin.uexceptions.noObject: cn=internal-name-for-a-tile,cn=entry,cn=portals", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
-	(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
