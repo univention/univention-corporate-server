@@ -1,3 +1,9 @@
+ucs-test (9.0.7-50) unstable; urgency=medium
+
+  * Bug #52005: Make cleanup more robust
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 15 Aug 2021 19:24:34 +0200
+
 ucs-test (9.0.7-49) unstable; urgency=medium
 
   * Bug #53528: Validate signature of univention-system-check with ucs5 keyring

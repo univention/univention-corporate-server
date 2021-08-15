@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python2.7
 ## desc: Rename Administrator
 ## tags:
 ##  - basic
@@ -11,91 +11,147 @@
 ##  - memberserver
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/user.sh" || exit 137
-. "$TESTLIBPATH/samba.sh" || exit 137
 
-USERNAME="$(user_randomname)"
+import re
+import os
+import glob
+import time
+import subprocess
 
-# Create Domain Admin
-ADMIN="$(random_chars 5)"
+from ldap.dn import escape_dn_chars
+from ldap.filter import filter_format
 
-udm-test users/user create --position "cn=users,$ldap_base" \
-		--set username="$ADMIN" --set lastname="$ADMIN" \
-		--set password=univention \
-		--set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base"
+from univention.testing.udm import UCSTestUDM
+from univention.testing.ucr import UCSTestConfigRegistry
+import univention.config_registry
+from univention.testing.ucs_samba import wait_for_drs_replication
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+from univention.testing.utils import package_installed
 
-udm-test users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set username="$USERNAME"
 
-# wait a little bit longer since we have to wait for the slapd restart
+def search_templates(old_admin_name, new_admin_name, server_role):
+	templates = glob.glob('/etc/univention/templates/info/*.info')
+	file_content = []
+	file_pattern = re.compile('^(Multifile: |File: )')
 
-cleanup () {
-	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
-	# wait for the initial synchronization to be done. The test case here is not interested
-	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
-	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
-	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
-	if checkpkg 'univention-samba4' ; then
-		wait_for_drs_replication "(sAMAccountName=$USERNAME)"
-	elif checkpkg 'univention-samba' ; then
-		echo "Waiting for S4-Connector"
-		sleep 10
-	fi
-	udm users/user modify --dn "uid=$USERNAME,cn=users,$ldap_base" --set username="Administrator" \
-		--binddn "uid=$ADMIN,cn=users,$ldap_base" --bindpwd univention
-	udm-test users/user remove --dn "uid=$ADMIN,cn=users,$ldap_base"
-	wait_for_replication_and_postrun
-}
+	# find all template files by iterating over all referenced templates in the ucr *.info files
+	for template in templates:
+		with open(template, 'r') as content_file:
+			# find all lines that start with File or Multifile and strip it to get the paths of the template files
+			file_content += ['/' + file_pattern.sub('', l).strip() for l in content_file.readlines() if file_pattern.match(l)]
 
-trap cleanup EXIT
+	# A list of templates which are referencing the Administrator. The new name must be found in them
+	should_contain_admin = [
+		'/etc/ldap/slapd.conf']
+	ignore = [
+		'/etc/simplesamlphp/config.php', '/etc/freeradius/3.0/mods-available/ldap',
+		'/etc/bind/named.conf.samba4', '/var/www/univention/meta.json',
+		'/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf']
+	if server_role != 'domaincontroller_master':
+		should_contain_admin.remove('/etc/ldap/slapd.conf')
 
-# This test is interested in changes to the committed UCR files
-# so we have to wait for OpenLDAP replication and listener module postrun
-wait_for_replication_and_postrun
+	# Check if the name was correctly updated in the templates
+	file_content = list(dict.fromkeys(file_content))
 
-# wait a little bit longer
-sleep 2
+	# Look for alle occurences of "Administrator", excluding "Administrators", which is a group name
+	for file in file_content:
+		if not os.path.isfile(file) or file in ignore:
+			continue
 
-if [ "$(ucr get users/default/administrator)" != "$USERNAME" ]; then
-	echo "UCR variable users/default/administrator is set to $(ucr get users/default/administrator) instead of $USERNAME"
-	exit 1
-fi
+		print('Checking template %s' % (file,))
+		with open(file, 'rb') as content_file:
+			content = content_file.read().decode('UTF-8', 'replace')
 
-# Search templates
-cat /etc/univention/templates/info/*.info | sed -ne 's|^File: ||p;s|^Multifile: ||p' | sort -u  | while read template; do
-	[ "$template" = etc/welcome.msg ] && continue #ignore comment
-	[ "$template" = etc/security/pam_env.conf ] && continue #ignore comment
-	[ "$template" = etc/samba/base.conf ] && continue # Bug #33896 + Bug 33895
-	[ "$template" = etc/samba/smb.conf ] && continue # Bug #33896 + Bug 33895
-	[ "$template" = etc/nagios3/nagios.cfg ] && continue #ignore comment
-	[ "$template" = etc/issue ] && continue #ignore comment
-	[ "$template" = etc/bind/named.conf.samba4 ] && continue # Bug #33892
-	
-	echo -n "Checking $template: "
-	if [[ "$template" == etc/security/access-* ]]; then
-		grep "Administrator," "/$template" && exit 1
-	else
-		grep -i administrator "/$template" && exit 1
-	fi
-	echo "done"
-done
+		if file in should_contain_admin and new_admin_name not in content:
+			utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
 
-for file in /etc/ldap/slapd.conf \
-		/etc/security/access-nagios.conf; do
-	test "$file" = "/etc/ldap/slapd.conf" -a "$server_role" != domaincontroller_master && continue
-	test -e $file || continue
-	echo -n "Checking if new admin username is set to $file: "
-	if grep "$USERNAME" $file; then
-		echo "done"
-	else
-		echo "failed"
-		echo "************** $file ***************"
-		cat $file
-		echo "****************************************"
-		exit 1
-	fi
-done
+		if old_admin_name in content:
+			lines_containing = [l for l in content.splitlines() if old_admin_name in l and 'Administrators' not in l]
+			if lines_containing:
+				print('\n'.join(lines_containing))
+				utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))
 
-exit "$RETVAL"
 
+def wait_for_ucr(iterations, admin_name, ucr_test):
+	success = False
+	for i in range(iterations):
+		ucr_test.load()
+		ucr_name = ucr_test.get('users/default/administrator', 'Administrator')
+		if admin_name != ucr_name:
+			if i == iterations - 1:
+				break
+			time.sleep(15)
+		else:
+			print('UCR variable users/default/administrator is set correctly to %s' % (ucr_name,))
+			success = True
+			break
+	return success, ucr_name
+
+
+def test_rename_domain_users():
+	with UCSTestConfigRegistry() as ucr_test, UCSTestUDM() as udm:
+		ucr_test.load()
+
+		server_role = ucr_test.get('server/role')
+		ldap_base = ucr_test.get('ldap/base')
+		old_admin_name = ucr_test.get('users/default/administrator', 'Administrator')
+		old_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(old_admin_name), ldap_base)
+		if os.path.exists('/etc/ldap.secret'):
+			credentials = ['--binddn', 'cn=admin,%s' % (ldap_base,), '--bindpwdfile', '/etc/ldap.secret']
+		else:
+			second_admin = udm.create_user(append={'groups': ['cn=Domain Admins,cn=groups,%s' % (ldap_base,)]})[0]
+			credentials = ['--binddn', second_admin, '--bindpwd', 'univention']
+
+		new_admin_name = uts.random_name()
+		new_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(new_admin_name), ldap_base)
+		try:
+			print('\n##################################################################')
+			print('Renaming default administrator %s to %s' % (old_admin_name, new_admin_name))
+			print('##################################################################\n')
+			print(old_admin_dn)
+			print(new_admin_name)
+			cmd = ['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)]
+			cmd.extend(credentials)
+			subprocess.call(cmd)
+			utils.wait_for_replication_and_postrun()
+
+			# Check UCR Variable
+			print('\n##################################################################')
+			print('Checking if UCR Variable users/default/administrator is set to %s' % (new_admin_name,))
+			print('##################################################################\n')
+
+			success, ucr_name = wait_for_ucr(3, new_admin_name, ucr_test)
+			if not success:
+				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (old_admin_name, new_admin_name))
+
+			# Search templates
+			print('\n##################################################################')
+			print('Search templates for old and new name of default domainadmins group')
+			print('##################################################################\n')
+			search_templates(old_admin_name, new_admin_name, server_role)
+		finally:
+			try:
+				wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_admin_name,)))
+			except Exception:
+				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
+				time.sleep(10)
+				pass
+
+			if not package_installed('univention-samba4'):
+				time.sleep(20)
+			print('\n##################################################################')
+			print('Cleanup')
+			print('##################################################################\n')
+			subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (new_admin_dn), '--set', 'username=%s' % (old_admin_name), '--binddn=%s' % (new_admin_dn), '--bindpwd=univention'] + credentials)
+
+			# wait until renaming and UCR Variable is set back again
+			utils.wait_for_replication_and_postrun()
+			success, ucr_name = wait_for_ucr(10, old_admin_name, ucr_test)
+			if not success:
+				univention.config_registry.handler_set(['users/default/administrator=Administrator'])
+				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (ucr_name, old_admin_name))
+
+
+if __name__ == '__main__':
+	test_rename_domain_users()
