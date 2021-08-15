@@ -29,10 +29,10 @@
 
 set -x
 
-FTP_DOM='software-univention.de'
+FTP_DOM='software-univention.de' FTP_SCHEME='https'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon) ;;
-qemu|kvm) FTP_DOM='knut.univention.de' ;;
+qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' ;;
 esac
 
 basic_setup () {
@@ -157,7 +157,7 @@ upgrade_to_testing () {
 }
 
 set_repository_to_testing () {
-	ucr set repository/online/server="updates-test.${FTP_DOM}"
+	ucr set repository/online/server="${FTP_SCHEME}://updates-test.${FTP_DOM}/"
 }
 
 # This HAS to be executed after basic_setup, in basic_setup the check is done for EC2 env
@@ -287,7 +287,7 @@ wait_for_setup_process () {
 
 switch_to_test_app_center () {
 	local app rv=0
-	ucr set repository/app_center/server="appcenter-test.${FTP_DOM}" update/secure_apt=no appcenter/index/verify=no
+	ucr set repository/app_center/server="${FTP_SCHEME}://appcenter-test.${FTP_DOM}/" update/secure_apt=no appcenter/index/verify=no
 	[ -x "$(which univention-app)" ] || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
@@ -312,7 +312,7 @@ switch_components_to_test_app_center () {
 	ucr search --brief --value appcenter.software-univention.de |
 		grep 'repository/online/component/.*/server' |
 		awk -F ':' '{print $1}' |
-		xargs -I % ucr set %="appcenter-test.${FTP_DOM}"
+		xargs -I % ucr set %="${FTP_SCHEME}://appcenter-test.${FTP_DOM}/"
 }
 
 install_apps () {
@@ -454,17 +454,17 @@ prevent_ucstest_on_fail () {
 	local rv=0
 	"$@" || rv=$?
 	if [ ! "$rv" = "0" ] ; then
-		create_DONT_START_UCS_TEST "FAILED: prevent_ucstest_on_fail $@"
+		create_DONT_START_UCS_TEST "FAILED: prevent_ucstest_on_fail $*"
 	fi
 	return $rv
 }
 
 activate_ucsschool_devel_scope () {
 	local component="repository/online/component/ucsschool_DEVEL"
-	ucr set "$component"/description="Development version of UCS@school packages" \
-		"$component"/version="$(ucr get version/version)" \
-		"$component"/server="https://updates-test.${FTP_DOM}" \
-		"$component"=enabled
+	ucr set "$component/description=Development version of UCS@school packages" \
+		"$component/version=$(ucr get version/version)" \
+		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$component=enabled"
 }
 
 ucsschool_scope_enabled () {
@@ -904,7 +904,7 @@ run_app_specific_test () {
 	set_administrator_password_for_ucs_test "$password"
 	univention-app dev-test-setup || rv=$?
 	univention-app dev-test \
-		--appcenter-server "http://appcenter-test.${FTP_DOM}" \
+		--appcenter-server "${FTP_SCHEME}://appcenter-test.${FTP_DOM}/" \
 		"$app" \
 		--binddn "$(ucr get tests/domainadmin/account)" \
 		--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || rv=$?
@@ -1119,7 +1119,7 @@ transfer_user="$transfer_user"
 transfer_pwfile="$transfer_pwfile"
 for appcenter_cache in apps_cache.get_appcenter_caches():
     for cache in appcenter_cache.get_app_caches():
-        assert cache.get_server() == 'https://appcenter-test.${FTP_DOM}'
+        assert cache.get_server() == '${FTP_SCHEME}://appcenter-test.${FTP_DOM}'
         app = cache.find(app_id, app_version=None, latest=True)
         if app is not None:
             app_name = '{}/{}={}'.format(cache.get_ucs_version(), app.id, app.version)
