@@ -287,7 +287,6 @@ wait_for_setup_process () {
 
 switch_to_test_app_center () {
 	local app rv=0
-	ucr set repository/app_center/server="${FTP_SCHEME}://appcenter-test.${FTP_DOM}/" update/secure_apt=no appcenter/index/verify=no
 	[ -x "$(which univention-app)" ] || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
@@ -312,7 +311,7 @@ switch_components_to_test_app_center () {
 	ucr search --brief --value appcenter.software-univention.de |
 		grep 'repository/online/component/.*/server' |
 		awk -F ':' '{print $1}' |
-		xargs -I % ucr set %="${FTP_SCHEME}://appcenter-test.${FTP_DOM}/"
+		xargs -I % ucr set %="appcenter-test.software-univention.de/"
 }
 
 install_apps () {
@@ -904,7 +903,7 @@ run_app_specific_test () {
 	set_administrator_password_for_ucs_test "$password"
 	univention-app dev-test-setup || rv=$?
 	univention-app dev-test \
-		--appcenter-server "${FTP_SCHEME}://appcenter-test.${FTP_DOM}/" \
+		--appcenter-server "http://appcenter-test.software-univention.de/" \
 		"$app" \
 		--binddn "$(ucr get tests/domainadmin/account)" \
 		--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || rv=$?
@@ -1119,7 +1118,7 @@ transfer_user="$transfer_user"
 transfer_pwfile="$transfer_pwfile"
 for appcenter_cache in apps_cache.get_appcenter_caches():
     for cache in appcenter_cache.get_app_caches():
-        assert cache.get_server() == '${FTP_SCHEME}://appcenter-test.${FTP_DOM}'
+        assert cache.get_server() == 'https://appcenter-test.software-univention.de'
         app = cache.find(app_id, app_version=None, latest=True)
         if app is not None:
             app_name = '{}/{}={}'.format(cache.get_ucs_version(), app.id, app.version)
