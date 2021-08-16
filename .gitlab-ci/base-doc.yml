@@ -75,9 +75,12 @@ production:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       when: manual
   script:
-    - git clone --branch master --depth 1 --single-branch https://ucs-docs-deployment:$DOCS_TOKEN@git.knut.univention.de/univention/docs.univention.de.git docs
-    - rsync -av public/ docs/
+    - '[ -d docs ] || git clone --branch master --depth 1 --single-branch https://ucs-docs-deployment:$DOCS_TOKEN@git.knut.univention.de/univention/docs.univention.de.git docs'
     - cd docs
+    - git clean -f -d
+    - git fetch --no-tags origin
+    - git reset --hard origin/master
+    - rsync -av ../public/ ./
     - git add -u
     - git commit -m "Automatic doc deployment by GitLab commit $CI_COMMIT_SHA"
     - git push
