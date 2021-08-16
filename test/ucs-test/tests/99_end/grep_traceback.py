@@ -176,6 +176,21 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-a-tile", ['in refresh']),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("univention.admin.uexceptions.noObject: cn=internal-name-for-a-tile,cn=entry,cn=portals", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+	# UCS@school test cases:
+	# ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input']),  # Bug #53564
+	("ValueError: time data '19010203' does not match format '%Y-%m-%d'", ['import_user.py.* in validate']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input']),  # Bug #53564
+	("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
+	("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
+	("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, but must not be higher than UCR variable ucsschool/username/max_length (20).", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: The 'user_deletion' configuration key is deprecated. Please set 'deletion_grace_period'.", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: Thou shalt not import birthdays!", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:.*' must be a string.", ['in prepare_import']),  # Bug #53564
+	("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users']),  # Bug #53564
+	("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py']),  # Bug #53564
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
