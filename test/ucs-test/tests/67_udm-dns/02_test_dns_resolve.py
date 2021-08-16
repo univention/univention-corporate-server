@@ -294,7 +294,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', '']
 		)
-		time.slee(5)
+		time.sleep(5)
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])

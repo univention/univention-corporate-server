@@ -671,6 +671,7 @@ class Test_ContainerCN(object):
 		with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
 			udm.modify_object('container/cn', dn=cn, name=cn_name_new)
 
+		utils.wait_for_replication_and_postrun()
 		new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
 		new_user = 'uid=%s,cn=%s,%s' % (ldap.dn.escape_dn_chars(user_name), ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
 		utils.verify_ldap_object(new_cn, should_exist=True)
