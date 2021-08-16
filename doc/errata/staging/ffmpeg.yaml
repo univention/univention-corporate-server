@@ -6,53 +6,53 @@ src: ffmpeg
 fix: 7:3.2.15-0+deb9u3
 desc: |
  This update addresses the following issues:
- * Buffer Overflow vulnerability exists in FFmpeg 4.1 via
-   apng_do_inverse_blend in libavcodec/pngenc.c, which could let a remote
-   malicious user cause a Denial of Service (CVE-2020-21041)
- * Buffer Overflow vulnerability in FFmpeg 4.2 in mov_write_video_tag due to
-   the out of bounds in libavformat/movenc.c, which could let a remote
-   malicious user obtain sensitive information, cause a Denial of Service, or
-   execute arbitrary code. (CVE-2020-22015)
- * A heap-based Buffer Overflow vulnerability in FFmpeg 4.2 at
-   libavcodec/get_bits.h when writing .mov files, which might lead to memory
-   corruption and other potential consequences. (CVE-2020-22016)
- * Buffer Overflow vulnerability in FFmpeg 4.2 in the build_diff_map function
-   in libavfilter/vf_fieldmatch.c, which could let a remote malicious user
-   cause a Denial of Service. (CVE-2020-22020)
- * Buffer Overflow vulnerability in FFmpeg 4.2 at filter_edges function in
+ * libavcodec/dnxhddec.c does not check the return value of the `init_vlc`
+   function, a similar issue to CVE-2013-0868. (CVE-2021-38114)
+ * Buffer Overflow vulnerability exists via a`png_do_inverse_blend` in
+   libavcodec/pngenc.c, which could let a remote malicious user cause a Denial
+   of Service (CVE-2020-21041)
+ * Buffer Overflow vulnerability in `mov_write_video_tag` due to the out of
+   bounds in libavformat/movenc.c, which could let a remote malicious user
+   obtain sensitive information, cause a Denial of Service, or execute
+   arbitrary code. (CVE-2020-22015)
+ * A heap-based Buffer Overflow vulnerability at libavcodec/get_bits.h when
+   writing `.mov` files, which might lead to memory corruption and other
+   potential consequences. (CVE-2020-22016)
+ * Buffer Overflow vulnerability in the `build_diff_map` function in
+   libavfilter/vf_fieldmatch.c, which could let a remote malicious user cause
+   a Denial of Service. (CVE-2020-22020)
+ * Buffer Overflow vulnerability at `filter_edges` function in
    libavfilter/vf_yadif.c, which could let a remote malicious user cause a
    Denial of Service. (CVE-2020-22021)
- * A heap-based Buffer Overflow vulnerability exists in FFmpeg 4.2 in
-   filter_frame at libavfilter/vf_fieldorder.c, which might lead to memory
-   corruption and other potential consequences. (CVE-2020-22022)
- * A heap-based Buffer Overflow vulnerabililty exists in FFmpeg 4.2 in
-   filter_frame at libavfilter/vf_bitplanenoise.c, which might lead to memory
-   corruption and other potential consequences. (CVE-2020-22023)
- * A heap-based Buffer Overflow vulnerability exists in gaussian_blur at
+ * A heap-based Buffer Overflow vulnerability exists in `filter_frame` at
+   libavfilter/vf_fieldorder.c, which might lead to memory corruption and
+   other potential consequences. (CVE-2020-22022)
+ * A heap-based Buffer Overflow vulnerabililty exists in `filter_frame` at
+   libavfilter/vf_bitplanenoise.c, which might lead to memory corruption and
+   other potential consequences. (CVE-2020-22023)
+ * A heap-based Buffer Overflow vulnerability exists in `gaussian_blur` at
    libavfilter/vf_edgedetect.c, which might lead to memory corruption and
    other potential consequences. (CVE-2020-22025)
- * Buffer Overflow vulnerability exists in FFmpeg 4.2 in the config_input
-   function at libavfilter/af_tremolo.c, which could let a remote malicious
-   user cause a Denial of Service. (CVE-2020-22026)
- * Buffer Overflow vulnerability exists in FFmpeg 4.2 in filter_vertically_8
-   at libavfilter/vf_avgblur.c, which could cause a remote Denial of Service.
+ * Buffer Overflow vulnerability exists in the `config_input` function at
+   libavfilter/af_tremolo.c, which could let a remote malicious user cause a
+   Denial of Service. (CVE-2020-22026)
+ * Buffer Overflow vulnerability exists in `filter_vertically_8` at
+   libavfilter/vf_avgblur.c, which could cause a remote Denial of Service.
    (CVE-2020-22028)
- * A Heap-based Buffer Overflow vulnerability exists in FFmpeg 4.2 at
-   libavfilter/vf_w3fdif.c in filter16_complex_low, which might lead to memory
-   corruption and other potential consequences. (CVE-2020-22031)
- * A heap-based Buffer Overflow vulnerability exists FFmpeg 4.2 at
-   libavfilter/vf_edgedetect.c in gaussian_blur, which might lead to memory
+ * A Heap-based Buffer Overflow vulnerability exists at
+   libavfilter/vf_w3fdif.c in `filter16_complex_low,` which might lead to
+   memory corruption and other potential consequences. (CVE-2020-22031)
+ * A heap-based Buffer Overflow vulnerability exists at
+   libavfilter/vf_edgedetect.c in `gaussian_blur,` which might lead to memory
    corruption and other potential consequences. (CVE-2020-22032)
- * A heap-based Buffer Overflow vulnerability exists in FFmpeg 4.2 in
-   filter_intra at libavfilter/vf_bwdif.c, which might lead to memory
-   corruption and other potential consequences. (CVE-2020-22036)
- * Prior to ffmpeg version 4.3, the tty demuxer did not have a 'read_probe'
-   function assigned to it. By crafting a legitimate "ffconcat" file that
-   references an image, followed by a file the triggers the tty demuxer, the
-   contents of the second file will be copied into the output file verbatim
-   (as long as the `-vcodec copy` option is passed to ffmpeg). (CVE-2021-3566)
- * libavcodec/dnxhddec.c in FFmpeg 4.4 does not check the return value of the
-   init_vlc function, a similar issue to CVE-2013-0868. (CVE-2021-38114)
+ * A heap-based Buffer Overflow vulnerability exists in `filter_intra` at
+   libavfilter/vf_bwdif.c, which might lead to memory corruption and other
+   potential consequences. (CVE-2020-22036)
+ * The tty demuxer did not have a `read_probe` function assigned to it. By
+   crafting a legitimate `ffconcat` file that references an image, followed by
+   a file the triggers the tty demuxer, the contents of the second file will
+   be copied into the output file verbatim (as long as the `-vcodec copy`
+   option is passed to ffmpeg). (CVE-2021-3566)
 bug: [53660]
 cve:
 - CVE-2020-21041
