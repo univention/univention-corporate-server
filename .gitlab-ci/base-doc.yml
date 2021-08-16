@@ -46,10 +46,14 @@ review:
 
 stop_review:
   stage: staging
+  rules:
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: manual
+  needs:
+    - review
   extends: .publish
   script:
     - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
-  when: manual
   environment:
     name: review/$CI_BUILD_REF_NAME
     action: stop
