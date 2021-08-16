@@ -119,7 +119,7 @@ def main(filenames, ignore_exceptions={}):
 
 
 COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) else z for z in (y or [])]) for x, y in [
-	# Errors from UCS 4.4-5 Jenkins runs:
+	# Errors from UCS Jenkins runs:
 	(r'^(ldap\.)?SERVER_DOWN: .*', None),
 	(r'^(ldap\.)?NO_SUCH_OBJECT: .*', None),
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
@@ -141,7 +141,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 	(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
 	(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
-	('^AssertionError.*', None),  # Already caught by tests itself
+	# only happens if tests fails, we need this as overview of all failed pytests: ('^AssertionError.*', None),  # Already caught by tests itself
 
 	# during upgrade to UCS 5.0-0
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository.* Release' is not signed.", None),
