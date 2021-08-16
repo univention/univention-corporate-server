@@ -176,7 +176,7 @@ declare -a env_vars=(
 	UCS_VERSION
 	APP_ID
 	COMBINED_APP_ID
-	JENKINS_WS
+	JOB_URL
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
