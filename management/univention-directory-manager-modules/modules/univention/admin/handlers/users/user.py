@@ -41,6 +41,7 @@ import copy
 import time
 from datetime import datetime
 import pytz
+import tzlocal
 import calendar
 import base64
 
@@ -234,13 +235,14 @@ property_descriptions = {
 	'accountActivationDate': univention.admin.property(
 		short_description=_('Activate user account starting from'),
 		long_description=_('This disables the account until the specified time.'),
-		syntax=univention.admin.syntax.DateTimeTimezone,
+		syntax=univention.admin.syntax.ActivationDateTimeTimezone,
 		size='Two',
 		may_change=True,
 		editable=True,
 		show_in_lists=True,
 		dontsearch=True,
-		default=['', '', time.tzname[0]],
+		# Value None is important in default, since '' triggers the JS-widget to ouput "1971-01-1"
+		default=[[None, '00:00', tzlocal.get_localzone().zone], []],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
@@ -1213,7 +1215,7 @@ def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  #
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
-	if local_datetimetimezone_tuple:
+	if local_datetimetimezone_tuple and local_datetimetimezone_tuple[0]:
 		dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
 		return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
 	return []
@@ -1229,7 +1231,7 @@ def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (List[by
 			raise
 		local_datetimetimezone_tuple = datetime.strftime(utc_datetime, "%Y-%m-%d %H:%M UTC").split()
 		return local_datetimetimezone_tuple
-	return ['', '', time.tzname[0]]
+	return []
 
 
 mapping = univention.admin.mapping.mapping()
@@ -1679,7 +1681,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['unlock'] == '1':
 			self['locked'] = u'0'
-		if self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+		if self['accountActivationDate'] and self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
 			self['disabled'] = '1'
 		if self['disabled'] == '1':
 			self['locked'] = u'0'  # Samba/AD behavior
