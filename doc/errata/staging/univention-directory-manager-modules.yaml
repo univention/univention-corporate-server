@@ -3,10 +3,13 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-manager-modules 
-fix: 14.0.20-13A~4.4.0.202106301804
+fix: 14.0.20-14
 desc: |
  This update addresses the following issue(s):
  * ucs_registerLDAPExtension from the Univention shell function library
    now allows the option umcmessagecatalog. This option can be used to
    supply translation files in GNU message catalog format for the UMC.
-bug: [53362]
+ * The simple UDM API now exposes the "remove_childs" option of UDMs
+   remove() function in the delete() method, to recursively delete
+   objects below the DN of the object that is being deleted.
+bug: [53362, 53620]

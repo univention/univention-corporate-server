@@ -220,10 +220,12 @@ class GenericObject(BaseObject):
 			self.reload()
 		return self
 
-	def delete(self):
+	def delete(self, remove_childs=False):
 		"""
-		Remove the object from the LDAP database.
+		Remove the object (and optionally its child nodes) from the LDAP database.
 
+		:param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
+		    them before removing this object
 		:return: None
 		:raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
 		:raises univention.udm.exceptions.DeletedError: if the operation fails
@@ -234,7 +236,7 @@ class GenericObject(BaseObject):
 		if not self.dn or not self._orig_udm_object:
 			raise NotYetSavedError()
 		try:
-			self._orig_udm_object.remove()
+			self._orig_udm_object.remove(remove_childs)
 		except univention.admin.uexceptions.base as exc:
 			raise DeleteError(
 				'Error deleting {!r} object {!r}: {}'.format(

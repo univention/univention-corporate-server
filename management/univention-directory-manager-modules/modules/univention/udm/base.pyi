@@ -75,7 +75,7 @@ class BaseObject(object):
 	def save(self):  # type: () -> BaseObjectTV
 		...
 
-	def delete(self):  # type: () -> None
+	def delete(self, remove_childs=False):  # type: (Optional[bool]) -> None
 		...
 
 
