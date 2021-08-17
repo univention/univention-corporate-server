@@ -147,7 +147,10 @@ declare -a env_vars=(
 	HOME
 	USER
 	# Jenkins
+	BUILD_NUMBER
 	BUILD_URL
+	JOB_NAME
+	JOB_URL
 	NODE_NAME
 	# Job
 	BUILD_BRANCH
@@ -179,7 +182,6 @@ declare -a env_vars=(
 	UCS_VERSION
 	APP_ID
 	COMBINED_APP_ID
-	JOB_URL
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
