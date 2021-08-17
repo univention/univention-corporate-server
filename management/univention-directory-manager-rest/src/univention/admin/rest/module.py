@@ -74,6 +74,7 @@ import xml.etree.cElementTree as ET
 import xml.dom.minidom
 from genshi import XML
 from genshi.output import HTMLSerializer
+from shared_memory_dict.nested_json_serializer import JsonEncoder
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -90,6 +91,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
 from univention.config_registry import handler_set
+from univention.admin.rest.shared_memory import Manager
 
 import univention.udm
 
@@ -104,10 +106,12 @@ from univention.lib.i18n import Translation
 
 _ = Translation('univention-management-console-module-udm').translate
 
-MAX_WORKERS = 35
+MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 if 422 not in tornado.httputil.responses:
 	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
+
+shared_memory = Manager()
 
 
 def add_sanitizers(type_, sanitizers):
@@ -364,7 +368,8 @@ class ResourceBase(object):
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 	requires_authentication = True
-	authenticated = {}
+	authenticated = shared_memory.dict('authenticated')
+	authenticated_connections = {}
 
 	def force_authorization(self):
 		self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
@@ -392,8 +397,9 @@ class ResourceBase(object):
 			self.sanitize_arguments(RequestSanitizer(self), self)
 
 	def parse_authorization(self, authorization):
-		if authorization in self.authenticated:
-			(self.request.user_dn, self.request.username, self.ldap_connection, self.ldap_position) = self.authenticated[authorization]
+		if authorization in self.authenticated_connections:
+			(self.request.user_dn, self.request.username) = self.authenticated[authorization]
+			(self.ldap_connection, self.ldap_position) = self.authenticated_connections[authorization]
 			if self.ldap_connection.whoami():
 				return  # the ldap connection is still valid and bound
 		try:
@@ -413,7 +419,8 @@ class ResourceBase(object):
 		if username not in ('cn=admin',):
 			self._auth_check_allowed_groups()
 
-		self.authenticated[authorization] = (self.request.user_dn, self.request.username, self.ldap_connection, self.ldap_position)
+		self.authenticated[authorization] = (self.request.user_dn, self.request.username)
+		self.authenticated_connections[authorization] = (self.ldap_connection, self.ldap_position)
 
 	def _auth_check_allowed_groups(self):
 		allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
@@ -529,11 +536,16 @@ class ResourceBase(object):
 
 	def content_negotiation_json(self, response):
 		self.set_header('Content-Type', 'application/json')
-		return json.dumps(response)
+		try:
+			return json.dumps(response, cls=JsonEncoder)
+		except TypeError:
+			MODULE.error('Cannot JSON serialize: %r' % (response,))
+			raise
 
 	def content_negotiation_hal_json(self, response):
+		data = self.content_negotiation_json(response)
 		self.set_header('Content-Type', 'application/hal+json')
-		return json.dumps(response)
+		return data
 
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html; charset=UTF-8')
@@ -2316,7 +2328,7 @@ class FormBase(object):
 
 class Objects(FormBase, ReportingBase):
 
-	search_sessions = {}
+	search_sessions = shared_memory.dict('search_sessions')
 
 	@sanitize_query_string(
 		position=DNSanitizer(required=False, default=None),
@@ -2568,7 +2580,7 @@ class ObjectsMove(Resource):
 			'id': str(uuid.uuid4()),
 			'finished': False,
 			'errors': False,
-			'moved': [],
+			'moved': shared_memory.list(),
 		}
 		queue[status['id']] = status
 		self.set_status(201)
@@ -2578,7 +2590,8 @@ class ObjectsMove(Resource):
 			for i, dn in enumerate(dns, 1):
 				module = get_module(object_type, dn, self.ldap_connection)
 				dn = yield self.pool.submit(module.move, dn, position)
-				status['moved'].append(dn)
+				# status['moved'].append(dn)
+				status['moved'] = status['moved'] + [dn]  # shared_memory!
 				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
 				status['max'] = len(dns)
 				status['value'] = i
@@ -2943,16 +2956,16 @@ class Object(FormBase, Resource):
 	@tornado.gen.coroutine
 	def move(self, module, dn, position):
 		queue = Operations.queue.setdefault(self.request.user_dn, {})
-		status = {
-			'id': str(uuid.uuid4()),
+		status_id = str(uuid.uuid4())
+		status = queue.setdefault(status_id, {
+			'id': status_id,
 			'finished': False,
 			'errors': False,
-		}
-		queue[status['id']] = status
+		})
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
 		self.add_caching(public=False, must_revalidate=True)
-		self.content_negotiation(status)
+		self.content_negotiation(dict(status))
 		try:
 			dn = yield self.pool.submit(module.move, dn, position)
 		except Exception:
@@ -3463,13 +3476,13 @@ class PolicyResultContainer(PolicyResultBase):
 class Operations(Resource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
-	queue = {}
+	queue = shared_memory.dict('queue')
 
 	def get(self, progress):
 		progressbars = self.queue.get(self.request.user_dn, {})
 		if progress not in progressbars:
 			raise NotFound()
-		result = progressbars[progress]
+		result = dict(progressbars[progress])
 		if result.get('uri'):
 			self.set_status(303)
 			self.add_header('Location', result['uri'])
