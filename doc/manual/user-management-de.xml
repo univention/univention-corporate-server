@@ -381,6 +381,16 @@
                         </entry>
                     </row>
                     <row>
+                        <entry>Aktiverungsdatum</entry>
+                        <entry>
+                            Wenn ein Benutzerkonto erst an einem bestimmten, zukünftigen Datum aktiviert werden soll
+                            Dann kann man hier das Datum einstellen. Ein Cron-Job prüft periodisch, ob Benutzerkonten
+                            aktiviert werden müssen. Per Voreinstellung geschieht das alle 15 Minuten. Wird hier
+                            ein Datum eingestellt, das in der Zukunft liegt, dann wird beim Speichern automatisch auch
+                            das Konto als deaktiviert markiert.
+                        </entry>
+                    </row>
+                    <row>
                         <entry>Laufwerk für das Windows-Heimatverzeichnis</entry>
                         <entry>
                             Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
