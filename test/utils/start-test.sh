@@ -65,6 +65,7 @@ usage () {
 	echo "    KVM_BUILD_SERVER     - the KVM build server to use (default: $kvm_build_server)"
 	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
 	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
+	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: None)"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    EXACT_MATCH          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
@@ -157,6 +158,7 @@ declare -a env_vars=(
 	HALT
 	KVM_BUILD_SERVER
 	KVM_CPUS
+	KVM_LABEL_SUFFIX
 	KVM_MEMORY
 	KVM_OLDUCSVERSION
 	KVM_TEMPLATE
@@ -172,6 +174,7 @@ declare -a env_vars=(
 	TERMINATE_ON_SUCCESS
 	UCS_MINORRELEASE
 	UCSSCHOOL_RELEASE
+	TEST_GROUP
 	UCS_TEST_RUN
 	UCS_VERSION
 	APP_ID
