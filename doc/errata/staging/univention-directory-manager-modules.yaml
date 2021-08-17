@@ -3,9 +3,12 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 
+fix:
 desc: |
  This update addresses the following issue(s):
  * Modifying groups objects without mail addresses in certain situations has
    been repaired.
-bug: [53653]
+ * The simple UDM API now exposes the "remove_childs" option of UDMs
+   remove() function in the delete() method, to recursively delete
+   objects below the DN of the object that is being deleted.
+bug: [53653, 53667]

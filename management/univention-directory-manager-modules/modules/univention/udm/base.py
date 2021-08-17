@@ -137,10 +137,12 @@ class BaseObject(object):
 		"""
 		raise NotImplementedError()
 
-	def delete(self):
+	def delete(self, remove_childs=False):
 		"""
-		Remove the object from the LDAP database.
+		Remove the object (and optionally its child nodes) from the LDAP database.
 
+		:param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
+		    them before removing this object
 		:return: None
 		"""
 		raise NotImplementedError()

@@ -80,7 +80,7 @@ class GenericObject(BaseObjectTV):
 	def save(self):  # type: () -> GenericObject
 		...
 
-	def delete(self):  # type: () -> None
+	def delete(self, remove_childs=False):  # type: (Optional[bool]) -> None
 		...
 
 	def _copy_from_udm_obj(self):  # type: () -> None

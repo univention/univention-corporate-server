@@ -1,3 +1,11 @@
+univention-directory-manager-modules (15.0.11-16) unstable; urgency=low
+
+  * Bug #53667: the simple UDM API now exposes the "remove_childs" option
+    of UDMs remove() function in the delete() method, to recursively delete
+    objects below the DN of the object that is being deleted
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 17 Aug 2021 11:57:35 +0200
+
 univention-directory-manager-modules (15.0.11-15) unstable; urgency=medium
 
   * Bug #53653: fix modifying groups in certain conditions
