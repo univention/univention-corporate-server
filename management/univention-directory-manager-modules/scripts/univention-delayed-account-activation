@@ -33,7 +33,7 @@
 ts_utc=$(date --utc +"%Y%m%d%H%M%SZ")
 
 while read -r DN; do
-	ldif=$(univention-ldapsearch -LLL -o ldif-wrap=no -b "$DN" -s base "(krb5ValidEnd<=$ts_utc)" 1.1 | sed -n 's/^dn: //p')
+	ldif=$(ldapsearch -Y EXTERNAL -H LDAPI:// -LLL -o ldif-wrap=no -b "$DN" -s base "(krb5ValidEnd<=$ts_utc)" 1.1 2>/dev/null | sed -n 's/^dn: //p')
 	if [ -n "$ldif" ]; then
 		continue
 	fi
@@ -41,4 +41,4 @@ while read -r DN; do
 	--dn "$DN" \
 	--set disabled=0 \
 	--remove accountActivationDate
-done < <(univention-ldapsearch -LLL -o ldif-wrap=no "(krb5ValidStart<=$ts_utc)" 1.1 | ldapsearch-decode64 | sed -n 's/^dn: //p')
+done < <(ldapsearch -Y EXTERNAL -H LDAPI:// -LLL -o ldif-wrap=no "(krb5ValidStart<=$ts_utc)" 1.1 2>/dev/null | ldapsearch-decode64 | sed -n 's/^dn: //p')
