@@ -470,26 +470,41 @@ ucsschool_scope_enabled () {
 	[ "${UCSSCHOOL_RELEASE:-scope}" = "scope" ]
 }
 
+activate_ucsschool_repositories () {
+	local rv=0
+
+	case "${UCSSCHOOL_RELEASE:-scope}" in
+		appcenter.test)
+			switch_to_test_app_center || rv=$?
+			;;
+		public)
+			;;
+		scope|*)
+			activate_ucsschool_devel_scope || rv=$?
+			# workaround until UCS 5.0-0 is published
+			switch_to_test_app_center || rc=$?
+			# workaround end
+			;;
+	esac
+	return $rv
+}
+
 install_ucsschool () {
 	local rv=0
 
 	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks our test environment
 	ucr set --force dhcpd/authoritative=no
+	activate_ucsschool_repositories || rv=$?
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
-			switch_to_test_app_center || rv=$?
 			install_apps ucsschool || rv=$?
 			;;
 		public)
 			install_apps ucsschool || rv=$?
 			;;
 		scope|*)
-			activate_ucsschool_devel_scope || rv=$?
 			echo "install_ucsschool - DEBUG1"
-			# workaround until UCS 5.0-0 is published
-			switch_to_test_app_center
-			# workaround end
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
