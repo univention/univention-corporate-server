@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-manager-modules 
-fix: 14.0.20-14
+fix: 14.0.20-14A~4.4.0.202108171210
 desc: |
  This update addresses the following issue(s):
  * ucs_registerLDAPExtension from the Univention shell function library
