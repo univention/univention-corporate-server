@@ -39,3 +39,9 @@ Description[de]=Auf diesem Port wartet der UDM-REST-API-Server auf Anfragen. Ist
 Description[en]=The UDM REST API server is listening on this port. If the variable is unset, 9979 applies.
 Type=int
 Categories=service-udm
+
+[directory/manager/rest/processes]
+Description[de]=Anzahl paralleler Prozesse, die gestartet werden. Durch den Wert 0 wird die Anzahl an Prozessorkernen verwendet. Die Voreinstellung ist 1.
+Description[en]=Number of parallel processes that are started. The value 0 starts a processs for each CPU core. The default value is 1.
+Type=int
+Categories=service-udm
