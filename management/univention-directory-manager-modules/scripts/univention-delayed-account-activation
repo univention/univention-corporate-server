@@ -33,12 +33,16 @@
 ts_utc=$(date --utc +"%Y%m%d%H%M%SZ")
 
 while read -r DN; do
-	ldif=$(ldapsearch -Y EXTERNAL -H LDAPI:// -LLL -o ldif-wrap=no -b "$DN" -s base "(krb5ValidEnd<=$ts_utc)" 1.1 2>/dev/null | sed -n 's/^dn: //p')
-	if [ -n "$ldif" ]; then
-		continue
+	ldif=$(ldapsearch -Y EXTERNAL -H LDAPI:// -LLL -o ldif-wrap=no -b "$DN" -s base "(krb5ValidEnd<=$ts_utc)" 1.1 2>/dev/null | ldapsearch-decode64 | sed -n 's/^dn: //p')
+	if [ -z "$ldif" ]; then
+		udm users/user modify \
+		--dn "$DN" \
+		--set disabled=0 \
+		--remove accountActivationDate
+	else
+		## Edge case clean up, account has expired due to krb5ValidEnd, so disabled state must not change, but krb5ValidStart should be unset
+		udm users/user modify \
+		--dn "$DN" \
+		--remove accountActivationDate
 	fi
-	udm users/user modify \
-	--dn "$DN" \
-	--set disabled=0 \
-	--remove accountActivationDate
 done < <(ldapsearch -Y EXTERNAL -H LDAPI:// -LLL -o ldif-wrap=no "(krb5ValidStart<=$ts_utc)" 1.1 2>/dev/null | ldapsearch-decode64 | sed -n 's/^dn: //p')
