@@ -486,6 +486,15 @@ activate_ucsschool_repositories () {
 			# workaround end
 			;;
 	esac
+	univention-app info
+	return $rv
+}
+
+upgrade_ucsschool () {
+	local rv=0
+	univention-app upgrade ucsschool || rv=$?
+	univention-app info
+	wait_for_reboot # TODO is this necessary?
 	return $rv
 }
 
