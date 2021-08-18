@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console
 fix: 12.0.12-10A~5.0.0.202108091234
 desc: |
- This update addresses the following issue(s):
- * SAML Logout's which are initiated by another Service Provider are now
+ This update addresses the following issue:
+ * SAML Logout's which are initiated by another service provider are now
    correctly handled.
 bug: [53436]
