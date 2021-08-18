@@ -1681,6 +1681,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['unlock'] == '1':
 			self['locked'] = u'0'
+		if self.hasChanged('disabled') and self['disabled'] == '0' and not self.hasChanged('accountActivationDate'):
+			self['accountActivationDate'] = self.descriptions['accountActivationDate'].default(self)
 		if self['accountActivationDate'] and self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
 			self['disabled'] = '1'
 		if self['disabled'] == '1':
