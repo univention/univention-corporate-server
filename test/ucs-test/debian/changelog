@@ -1,9 +1,9 @@
-ucs-test (9.0.7-52) unstable; urgency=low
+ucs-test (9.0.7-53) unstable; urgency=low
 
   * Bug #53620: test 'remove_childs' argument to 'delete' operation of simple
     UDM API
 
- -- Daniel Troeder <troeder@univention.de>  Thu, 19 Aug 2021 11:50:12 +0200
+ -- Daniel Troeder <troeder@univention.de>  Thu, 19 Aug 2021 11:50:13 +0200
 
 ucs-test (9.0.7-51) unstable; urgency=medium
 
