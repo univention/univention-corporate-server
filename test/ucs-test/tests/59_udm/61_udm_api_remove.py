@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -slvvx
+#!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test 'remove' operation in UDM API
 ## exposure: dangerous
@@ -14,7 +14,7 @@ from univention.testing.strings import random_username
 from univention.udm.exceptions import DeleteError, NoObject
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.NO_FUNCTION)
 ud.set_level(ud.ADMIN, ud.ALL)
 
 
