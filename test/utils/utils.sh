@@ -902,7 +902,6 @@ assert_app_is_installed_and_latest () {
 }
 
 assert_app_is_installed () {
-	univention-app register --app  # Workaround for Bug #46463. As this call may hide errors in the registration functions of the App installation, it should definitely be removed.
 	univention-app info
 	local rv=0 app
 	for app in "$@"; do
