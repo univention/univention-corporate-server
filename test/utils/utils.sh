@@ -506,8 +506,9 @@ activate_ucsschool_repositories () {
 }
 
 upgrade_ucsschool () {
-	local rv=0
-	univention-app upgrade ucsschool || rv=$?
+	local rv=0 username
+	username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
+	univention-app upgrade ucsschool --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 	univention-app info
 	wait_for_reboot # TODO is this necessary?
 	return $rv
