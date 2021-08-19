@@ -54,6 +54,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	local ADDR="$1"
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR/selenium"
+	mkdir -p "$TARGETDIR/tracebacks"
 	# shellcheck disable=SC2191
 	declare -a FILES=(
 		'artifacts'
@@ -105,6 +106,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	for FILE in "${FILES[@]}"; do
 		fetch-files "root@${ADDR}" "${FILE%=*}" "${TARGETDIR}/${FILE##*[/=]}" || rc=$?
 	done
+	cp "${TARGETDIR}/test-reports/99_end/01_var_log_tracebacks.py.xml" "${TARGETDIR}/tracebacks/" || true
 	return $rc
 }
 
