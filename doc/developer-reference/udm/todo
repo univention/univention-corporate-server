@@ -1,0 +1,79 @@
+commit 12c77c76436964a76e97c5d4df2d8d592f91ca4d
+Author: Florian Best <best@univention.de>
+Date:   Thu Aug 19 13:13:46 2021 +0200
+
+    Bug #53674: add UDM hook _ldap_{pre,post}_{move,rename}
+
+diff --git doc/developer-reference/udm/udm.xml doc/developer-reference/udm/udm.xml
+index 169076b09f..11e4b0ade6 100644
+--- doc/developer-reference/udm/udm.xml
++++ doc/developer-reference/udm/udm.xml
+@@ -841,6 +841,68 @@ udm settings/extended_options create "$@" --ignore_exists \
+ 						</simpara>
+ 					</listitem>
+ 				</varlistentry>
++			</variablelist>
++				<varlistentry>
++					<term>
++						<methodsynopsis>
++							<methodname>hook_ldap_pre_move</methodname>
++							<methodparam><parameter>self</parameter></methodparam>
++							<methodparam><parameter>obj</parameter></methodparam>
++							<methodparam><parameter>new_dn</parameter></methodparam>
++						</methodsynopsis>
++					</term>
++					<listitem>
++						<simpara>
++							This method is called before the object was moved in <acronym>LDAP</acronym>.
++						</simpara>
++					</listitem>
++				</varlistentry>
++			</variablelist>
++				<varlistentry>
++					<term>
++						<methodsynopsis>
++							<methodname>hook_ldap_post_move</methodname>
++							<methodparam><parameter>self</parameter></methodparam>
++							<methodparam><parameter>obj</parameter></methodparam>
++						</methodsynopsis>
++					</term>
++					<listitem>
++						<simpara>
++							This method is called after the object was moved in <acronym>LDAP</acronym>.
++						</simpara>
++					</listitem>
++				</varlistentry>
++			</variablelist>
++				<varlistentry>
++					<term>
++						<methodsynopsis>
++							<methodname>hook_ldap_pre_rename</methodname>
++							<methodparam><parameter>self</parameter></methodparam>
++							<methodparam><parameter>obj</parameter></methodparam>
++							<methodparam><parameter>new_dn</parameter></methodparam>
++						</methodsynopsis>
++					</term>
++					<listitem>
++						<simpara>
++							This method is called before the object was renamed in <acronym>LDAP</acronym>.
++						</simpara>
++					</listitem>
++				</varlistentry>
++			</variablelist>
++				<varlistentry>
++					<term>
++						<methodsynopsis>
++							<methodname>hook_ldap_post_rename</methodname>
++							<methodparam><parameter>self</parameter></methodparam>
++							<methodparam><parameter>obj</parameter></methodparam>
++						</methodsynopsis>
++					</term>
++					<listitem>
++						<simpara>
++							This method is called after the object was renamed in <acronym>LDAP</acronym>.
++						</simpara>
++					</listitem>
++				</varlistentry>
+ 			</variablelist>
+ 			<para>
+ 				The following example implements a hook, which removes the object-class <literal>univentionFreeAttributes</literal> if the property <literal>isSampleUser</literal> is no longer set.

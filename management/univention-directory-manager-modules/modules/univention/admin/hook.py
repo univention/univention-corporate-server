@@ -173,6 +173,42 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
 
+    def hook_ldap_pre_move(self, obj, new_dn):
+        # type: (univention.admin.handlers.simpleLdap, str) -> None
+        """
+        This method is called before an |UDM| object is moved.
+
+        :param obj: The |UDM| object instance.
+        """
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_move called')
+
+    def hook_ldap_post_move(self, obj):
+        # type: (univention.admin.handlers.simpleLdap) -> None
+        """
+        This method is called after the object was moved from |LDAP|.
+
+        :param obj: The |UDM| object instance.
+        """
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_move called')
+
+    def hook_ldap_pre_rename(self, obj, new_dn):
+        # type: (univention.admin.handlers.simpleLdap, str) -> None
+        """
+        This method is called before an |UDM| object is renamed.
+
+        :param obj: The |UDM| object instance.
+        """
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_rename called')
+
+    def hook_ldap_post_rename(self, obj):
+        # type: (univention.admin.handlers.simpleLdap) -> None
+        """
+        This method is called after the object was renamed from |LDAP|.
+
+        :param obj: The |UDM| object instance.
+        """
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_rename called')
+
 
 class AttributeHook(simpleHook):
     """

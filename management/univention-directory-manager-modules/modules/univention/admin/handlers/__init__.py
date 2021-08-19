@@ -1058,9 +1058,9 @@ class simpleLdap(object):
             dn = self.lo.parentDn(dn)
         return False
 
-    def call_udm_property_hook(self, hookname, module, changes=None):  # types: (Text, Text, Dict[str, Tuple]) -> Dict[str, Tuple]
+    def call_udm_property_hook(self, hookname, module, *args, **kwargs):  # types: (Text, Text, Dict[str, Tuple]) -> Dict[str, Tuple]
         """
-        Internal method to call a hook scripts of extended attributes.
+        Internal method to call hook scripts of extended attributes.
 
         :param str hookname: The name of the hook function to call.
         :param str module: The name of the UDM module.
@@ -1068,15 +1068,16 @@ class simpleLdap(object):
         :returns: The (modified) list of changes.
         :rtype: dict or None
         """
+        changes = kwargs.pop('changes', None)
         m = univention.admin.modules.get(module.module)
         if hasattr(m, 'extended_udm_attributes'):
             for prop in m.extended_udm_attributes:
                 if prop.hook is not None:
                     func = getattr(prop.hook, hookname, None)
                     if changes is None:
-                        func(module)
+                        func(module, *args, **kwargs)
                     else:
-                        changes = func(module, changes)
+                        changes = func(module, changes, *args, **kwargs)
         return changes
 
     def open(self):  # type: () -> None
@@ -1267,7 +1268,7 @@ class simpleLdap(object):
         al = self._ldap_addlist()
         al.extend(self._ldap_modlist())
         al = self._ldap_object_classes_add(al)
-        al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
+        al = self.call_udm_property_hook('hook_ldap_addlist', self, changes=al)
 
         # ensure univentionObject is set
         al.append(('objectClass', [b'univentionObject']))
@@ -1351,7 +1352,7 @@ class simpleLdap(object):
         self._call_checkLdap_on_all_property_syntaxes()
 
         ml = self._ldap_modlist()
-        ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
+        ml = self.call_udm_property_hook('hook_ldap_modlist', self, changes=ml)
         ml = self._ldap_object_classes(ml)
 
         class wouldRename(Exception):
@@ -1364,9 +1365,11 @@ class simpleLdap(object):
         try:
             self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
         except wouldRename as exc:
+            self.call_udm_property_hook('hook_ldap_pre_rename', self, exc.args[1])  # must be called before _ldap_pre_rename because users/* call self.move() in there!
             self._ldap_pre_rename(exc.args[1])
             self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
             self._ldap_post_rename(exc.args[0])
+            self.call_udm_property_hook('hook_ldap_post_rename', self)
         if ml:
             self._write_admin_diary_modify()
 
@@ -1517,6 +1520,7 @@ class simpleLdap(object):
     def _move(self, newdn, modify_childs=True, ignore_license=False):  # type: (str, bool, bool) -> str
         """Moves this object to the new DN. Should only be called by :func:`univention.admin.handlers.simpleLdap.move`."""
         self._ldap_pre_move(newdn)
+        self.call_udm_property_hook('hook_ldap_pre_move', self, newdn)
 
         olddn = self.dn
         self.lo.rename(self.dn, newdn)
@@ -1532,6 +1536,8 @@ class simpleLdap(object):
             self.lo.rename(self.dn, olddn)
             self.dn = olddn
             raise
+
+        self.call_udm_property_hook('hook_ldap_post_move', self)
         self._write_admin_diary_move(newdn)
         return self.dn
 
