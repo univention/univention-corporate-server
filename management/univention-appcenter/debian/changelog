@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-60) unstable; urgency=medium
+
+  * Bug #53630: Fix App installation with certain App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 19 Aug 2021 11:22:20 +0200
+
 univention-appcenter (9.0.2-59) unstable; urgency=medium
 
   * Bug #53655: convert traceback message to list

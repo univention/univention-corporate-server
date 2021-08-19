@@ -408,15 +408,16 @@ class InstallRemoveUpgrade(Register):
 
 	def _get_configure_settings(self, app, filter_action=True):
 		set_vars = {}
+		phase = self.get_action_name().title()
 		for setting in app.get_settings():
 			if setting.name in set_vars:
 				continue
-			if filter_action and self.get_action_name().title() not in setting.show:
+			if filter_action and phase not in setting.show:
 				continue
 			try:
 				value = setting.get_value(app)
 			except SettingValueError:
-				value = setting.get_initial_value(app)
+				value = setting.get_initial_value(app, phase=phase)
 			set_vars[setting.name] = value
 		return set_vars
 
