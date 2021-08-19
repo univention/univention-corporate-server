@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-149) unstable; urgency=medium
+
+  * Bug #53677: Fix App installation with certain App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 19 Aug 2021 11:49:28 +0200
+
 univention-appcenter (8.0.11-148) unstable; urgency=medium
 
   * Bug #53609: Use existing methods for the implementation
