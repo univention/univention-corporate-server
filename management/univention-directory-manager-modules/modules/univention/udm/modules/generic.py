@@ -236,7 +236,7 @@ class GenericObject(BaseObject):
 		if not self.dn or not self._orig_udm_object:
 			raise NotYetSavedError()
 		try:
-			self._orig_udm_object.remove(remove_childs)
+			self._orig_udm_object.remove(remove_childs=remove_childs)
 		except univention.admin.uexceptions.base as exc:
 			raise DeleteError(
 				'Error deleting {!r} object {!r}: {}'.format(
