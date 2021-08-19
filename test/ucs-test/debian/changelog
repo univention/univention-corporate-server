@@ -1,3 +1,10 @@
+ucs-test (10.0.6-26) unstable; urgency=low
+
+  * Bug #53667: test 'remove_childs' argument to 'delete' operation of simple
+    UDM API
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 19 Aug 2021 11:50:12 +0200
+
 ucs-test (10.0.6-25) unstable; urgency=medium
 
   * Bug #53631: Test users/user property accountActivationDate
@@ -37,7 +44,7 @@ ucs-test (10.0.6-18) unstable; urgency=medium
 ucs-test (10.0.6-17) unstable; urgency=medium
 
   * Bug #53526: Missing suggestions.json is now downloaded after opening
-    the appcenter module, adjusted test 190_app_suggestions_fallback 
+    the appcenter module, adjusted test 190_app_suggestions_fallback
     accordingly
 
  -- Julia Bremer <bremer@univention.de>  Wed, 21 Jul 2021 10:21:09 +0200
@@ -51,7 +58,7 @@ ucs-test (10.0.6-16) unstable; urgency=medium
 
 ucs-test (10.0.6-15) unstable; urgency=medium
 
-  * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky 
+  * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky
 
  -- Julia Bremer <bremer@univention.de>  Tue, 13 Jul 2021 22:37:14 +0200
 
@@ -69,7 +76,7 @@ ucs-test (10.0.6-13) unstable; urgency=medium
 
 ucs-test (10.0.6-12) unstable; urgency=medium
 
-  * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky 
+  * Bug #53555: Fix 10_ldap/70schema_unregistration_basis is flaky
 
  -- Julia Bremer <bremer@univention.de>  Wed, 07 Jul 2021 15:21:16 +0200
 
