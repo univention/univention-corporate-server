@@ -1741,7 +1741,7 @@ define([
 			var dn_list = this.explodeDn( dn, true ).slice( 1 );
 
 			// format base
-			path = base_list.reverse().join( '.' ) + ':/';
+			path = base_list.join( '.' ) + ':/';
 			if ( dn_list.length ) {
 				path += dn_list.reverse().join( '/' );
 			}

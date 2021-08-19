@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The domain component in a LDAP path is not shown in wrong reversed
+   order anymore.
+bug: [53678]
