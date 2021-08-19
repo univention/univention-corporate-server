@@ -39,6 +39,7 @@ import operator
 import ipaddress
 import inspect
 import time
+import pytz
 import datetime
 import dateutil
 import base64
@@ -367,7 +368,7 @@ class complex(ISyntax):
 		for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
 			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
 			if text is None and i + 1 < minn:
-				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument"))
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc,))
 			s = syn() if inspect.isclass(syn) else syn
 			p = s.parse(text)
 			parsed.append(p)
@@ -2208,6 +2209,8 @@ class iso8601Date(simple):
 
 	type_class = univention.admin.types.DateType
 
+	size = 'TwoThirds'
+
 	@classmethod
 	def to_datetime(cls, value):
 		value = cls.parse(value)
@@ -2652,6 +2655,8 @@ class TimeString(simple):
 	>>> TimeString.parse('23:59:59')
 	'23:59:59'
 	"""
+	size = 'OneThird'
+
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
@@ -5829,6 +5834,34 @@ class mailinglist_name(gid):
 		"A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, "
 		"dashes and dots are allowed."
 	)
+
+
+class TimeZone(select):
+	size = 'TwoThirds'
+
+	@ClassProperty
+	def choices(cls):
+		return [(x, x) for x in pytz.all_timezones]
+
+
+class DateTimeTimezone(complex):
+	"""
+	Syntax for YYYY-mm-dd HH:MM TZNAME
+	"""
+	delimiter = ' '
+	subsyntaxes = [(_('Date'), iso8601Date), (_('Time'), TimeString), (_('Timezone'), TimeZone)]
+	subsyntax_names = ('date', 'time', 'timezone')
+	subsyntax_key_value = True
+	all_required = False
+	min_elements = 0
+
+
+class ActivationDateTimeTimezone(DateTimeTimezone):
+	"""
+	Syntax for YYYY-mm-dd HH:MM TZNAME
+	Subclassed to define representative names as subsyntax_names for REST API
+	"""
+	subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
 
 
 __register_choice_update_function(Country.update_choices)

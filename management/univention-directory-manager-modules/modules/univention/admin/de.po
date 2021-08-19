@@ -136,8 +136,8 @@ msgid "too many arguments"
 msgstr "Zu viele Parameter"
 
 #: syntax.py:370
-msgid "Missing argument"
-msgstr "Fehlendes Argument"
+msgid "Missing argument: %s > %s"
+msgstr "Fehlendes Argument: %s > %s"
 
 #: syntax.py:384
 #, python-format
@@ -1326,6 +1326,18 @@ msgstr ""
 "Ein Mailinglistennname muss mit einem Buchstaben, einer Zahl oder einem "
 "Unterstrich beginnen und enden. Dazwischen sind zusätzlich Freizeichen, "
 "Bindestriche und Punkte erlaubt."
+
+#: syntax.py:5852
+msgid "Date"
+msgstr "Datum"
+
+#: syntax.py:5852
+msgid "Time"
+msgstr "Uhrzeit"
+
+#: syntax.py:5852
+msgid "Timezone"
+msgstr "Zeitzone"
 
 #: types.py:202
 #, python-format

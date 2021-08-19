@@ -1,0 +1,164 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test users/user accountActivationDate
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+
+eval "$(ucr shell ldap/base tests/domainadmin/account tests/domainadmin/pwd)"
+
+uid1="$(user_randomname)"
+uid2="$(user_randomname)"
+uid3="$(user_randomname)"
+DN1="uid=$uid1,cn=users,$ldap_base"
+DN2="uid=$uid2,cn=users,$ldap_base"
+DN3="uid=$uid3,cn=users,$ldap_base"
+password="Univention.1"
+
+cleanup() {
+	udm users/user delete --dn "$DN1" >/dev/null 2>&1
+	udm users/user delete --dn "$DN2" >/dev/null 2>&1
+	udm users/user delete --dn "$DN3" >/dev/null 2>&1
+	ucr unset directory/manager/user/accountactivation/cron
+}
+trap cleanup EXIT
+
+## Disable cron job temporarily to avoid unreliable timing due to concurrency
+ucr set directory/manager/user/accountactivation/cron="# */15 *  * * *"
+
+### 1) Regular usecase, use the Administrator account to create the user and modify the accountActivationDate
+testcase="regular"
+echo "### Testcase $testcase: check that accounts with accountActivationDate behave as expected"
+now=$(date +'%s')
+tz=$(</etc/timezone)
+ts_earlier=$(date -d "@$((now))" +"%Y-%m-%d %H:%M $tz")
+ts_later=$(date -d "@$((now+120))" +"%Y-%m-%d %H:%M $tz")
+
+udm users/user create \
+	--binddn "$tests_domainadmin_account" \
+	--bindpwd "$tests_domainadmin_pwd" \
+	--position "cn=users,$ldap_base" \
+	--set username="$uid1" \
+	--set lastname="name" \
+	--set password="$password" \
+	--set accountActivationDate="$ts_later" || fail_fast 1 "Test user creation failed (testcase: $testcase)"
+
+## Verify initial test object state
+disabled=$(udm users/user list --filter "uid=$uid1" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 1 ] || fail_fast 1 "User is not disabled, despite setting future accountActivationDate (testcase: $testcase)"
+ldapsearch -x -D "$DN1" -w "$password" -s base  >/dev/null 2>&1 && fail_fast 1 "LDAP search was successful with disabled user (testcase: $testcase)"
+
+## Run the cronjob-script
+/usr/share/univention-directory-manager-tools/univention-delayed-account-activation
+
+## Check expectation: User must not be activated yet
+disabled=$(udm users/user list --filter "uid=$uid1" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 1 ] || fail_fast 1 "User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate (testcase: $testcase)"
+
+udm users/user modify \
+	--binddn "$tests_domainadmin_account" \
+	--bindpwd "$tests_domainadmin_pwd" \
+	--dn "$DN1" \
+	--set accountActivationDate="$ts_earlier" \
+	|| fail_fast 1 "accountActivationDate could not be changed (testcase: $testcase)"
+
+## Run the cronjob-script again
+/usr/share/univention-directory-manager-tools/univention-delayed-account-activation
+
+## Check expectation: User now must be activated
+disabled=$(udm users/user list --filter "uid=$uid1" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 0 ] || fail_fast 1 "User is still disabled, after running univention-delayed-account-activation after accountActivationDate (testcase: $testcase)"
+
+## And check that ldapsearch actually works with that account
+ldapsearch -x -D "$DN1" -w "$password" -s base  >/dev/null || fail_fast 1 "LDAP search was not successful with enabled user (testcase: $testcase)"
+
+### 2) Edge case: userexpiry vs accountActivationDate
+testcase="userexpiry"
+echo "### Testcase $testcase: check that accounts with contradicting userexpiry and accountActivationDate don't get activated"
+now=$(date +'%s')
+tz=$(</etc/timezone)
+ts_earlier=$(date -d "@$((now))" +"%Y-%m-%d %H:%M $tz")
+ts_later=$(date -d "@$((now+120))" +"%Y-%m-%d %H:%M $tz")
+date_today_in_utc=$(date --utc -d "@$((now))" +"%Y-%m-%d")
+## Note: If you ask date to show the "now" in localtime (default, without --utc), and you are in Europe/Berlin, for example, then at time "2021-08-17 23:30 UTC" it will output "2021-08-18", because it's already 0:30 (or 1:30 in summertime) in the local (Europe/Berlin) timezone. UDM userexpiry (at least with Bug #46349 open) will be interpreted as UTC and mapped to krb5ValidEnd YYYYmmdd000000Z. Thus, in the Europe/Berlin example it would write 20210818000000Z to krb5ValidEnd instead of 20210817000000Z.
+##
+## The univention-delayed-account-activation takes care not to activate accounts that are already expired at runtime (UTC), and the purpose of following test case is to verify that.
+##
+## Thus, the value of userexpiry needs to be given as UTC, to have:
+##     accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-17"
+## instead of
+##     accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-18"
+
+udm users/user create \
+	--binddn "$tests_domainadmin_account" \
+	--bindpwd "$tests_domainadmin_pwd" \
+	--position "cn=users,$ldap_base" \
+	--set username="$uid2" \
+	--set lastname="name" \
+	--set password="$password" \
+	--set userexpiry="$date_today_in_utc" \
+	--set accountActivationDate="$ts_later" || fail_fast 1 "Test user creation failed (testcase: $testcase)"
+
+## Verify initial test object state
+disabled=$(udm users/user list --filter "uid=$uid2" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 1 ] || fail_fast 1 "User is not disabled, despite setting future accountActivationDate (testcase: $testcase)"
+ldapsearch -x -D "$DN2" -w "$password" -s base  >/dev/null 2>&1 && fail_fast 1 "LDAP search was successful with disabled user (testcase: $testcase)"
+
+## Run the cronjob-script
+/usr/share/univention-directory-manager-tools/univention-delayed-account-activation
+
+## Check expectation: User must not be activated yet
+disabled=$(udm users/user list --filter "uid=$uid2" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 1 ] || fail_fast 1 "User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate (testcase: $testcase)"
+
+udm users/user modify \
+	--binddn "$tests_domainadmin_account" \
+	--bindpwd "$tests_domainadmin_pwd" \
+	--dn "$DN2" \
+	--set accountActivationDate="$ts_earlier" \
+	|| fail_fast 1 "accountActivationDate could not be changed (testcase: $testcase)"
+
+
+## Run the cronjob-script again
+/usr/share/univention-directory-manager-tools/univention-delayed-account-activation
+
+## Check expectation: User must *not* be activated, because it is expired too
+disabled=$(udm users/user list --filter "uid=$uid2" | sed -n 's/^  disabled: //p')
+[ "$disabled" = 1 ] || fail_fast 1 "User has been activated, even though it is set to expired! (testcase: $testcase)"
+
+## Check expectation: accountActivationDate should be cleaned up
+accountActivationDate=$(udm users/user list --filter "uid=$uid2" | sed -n 's/^  accountActivationDate: //p')
+[ "$accountActivationDate" = None ] || fail_fast 1 "accountActivationDate has not been cleaned up on expired account(testcase: $testcase)"
+
+### 3) Check that a non-Admin user cannot change the accountActivationDate
+testcase="userchangenotpermitted"
+echo "### Testcase $testcase: Check that a non-Admin user cannot change the accountActivationDate"
+udm users/user create \
+	--position "cn=users,$ldap_base" \
+	--set username="$uid3" \
+	--set lastname="name" \
+	--set password="$password"
+
+## Attempt to change attribute of own account
+udm users/user modify \
+	--binddn "$DN3" \
+	--bindpwd "$password" \
+	--dn "$DN3" \
+	--set accountActivationDate="$ts_earlier" >/dev/null 2>&1 \
+	&& fail_fast 1 "Non-admin user was able to cahnge accountActivationDate (testcase: $testcase)"
+
+## Attempt to change attribute of other account
+udm users/user modify \
+	--binddn "$DN3" \
+	--bindpwd "$password" \
+	--dn "$DN2" \
+	--set accountActivationDate="$ts_earlier" >/dev/null 2>&1 \
+	&& fail_fast 1 "Non-admin user was able to cahnge accountActivationDate (testcase: $testcase)"
+
+
+exit "$RETVAL"

@@ -39,6 +39,9 @@ import os
 import re
 import copy
 import time
+from datetime import datetime
+import pytz
+import tzlocal
 import calendar
 import base64
 
@@ -228,6 +231,18 @@ property_descriptions = {
 		copyable=True,
 		default='0',
 		size='Two',
+	),
+	'accountActivationDate': univention.admin.property(
+		short_description=_('Activate user account starting from'),
+		long_description=_('This disables the account until the specified time.'),
+		syntax=univention.admin.syntax.ActivationDateTimeTimezone,
+		size='Two',
+		may_change=True,
+		editable=True,
+		show_in_lists=True,
+		dontsearch=True,
+		# Value None is important in default, since '' triggers the JS-widget to ouput "1971-01-1"
+		default=[[None, '00:00', tzlocal.get_localzone().zone], []],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
@@ -749,6 +764,9 @@ layout = [
 			['unlock'],
 			['unlockTime'],
 		]),
+		Group(_('Activation'), layout=[
+			['accountActivationDate'],
+		]),
 		Group(_('Windows'), layout=[
 			['homedrive', 'sambahome'],
 			['scriptpath', 'profilepath'],
@@ -1189,6 +1207,33 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
 	return u''
 
 
+def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  # type: (List[str]) -> datetime.datetime
+	d, t, tz = local_datetimetimezone_tuple
+	# dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
+	naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+	return pytz.timezone(tz).localize(naive_dt)
+
+
+def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
+	if local_datetimetimezone_tuple and local_datetimetimezone_tuple[0]:
+		dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
+		return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
+	return []
+
+
+def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (List[bytes]) -> List[str]
+	if attribute_value and attribute_value[0]:
+		generalizedtime = attribute_value[0].decode(*encoding)
+		try:
+			utc_datetime = datetime.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
+		except ValueError:
+			ud.debug(ud.ADMIN, ud.ERROR, 'Value of krb5ValidStart is not in generalizedTime format: %s' % (generalizedtime,))
+			raise
+		local_datetimetimezone_tuple = datetime.strftime(utc_datetime, "%Y-%m-%d %H:%M UTC").split()
+		return local_datetimetimezone_tuple
+	return []
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
@@ -1242,6 +1287,7 @@ mapping.register('userCertificate', 'userCertificate;binary', univention.admin.m
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
+mapping.register('accountActivationDate', 'krb5ValidStart', mapDateTimeTimezoneTupleToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1635,6 +1681,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['unlock'] == '1':
 			self['locked'] = u'0'
+		if self.hasChanged('disabled') and self['disabled'] == '0' and not self.hasChanged('accountActivationDate'):
+			self['accountActivationDate'] = self.descriptions['accountActivationDate'].default(self)
+		if self['accountActivationDate'] and self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+			self['disabled'] = '1'
 		if self['disabled'] == '1':
 			self['locked'] = u'0'  # Samba/AD behavior
 
