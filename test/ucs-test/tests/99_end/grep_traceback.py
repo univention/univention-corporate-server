@@ -147,6 +147,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository.* Release' is not signed.", None),
 	('ImportError: No module named client', ['univention-directory-listener/system/faillog.py']),  # Bug #53290
 	(re.escape("AttributeError: 'ConfigRegistry' object has no attribute '_walk'"), ['univention-directory-listener/system/nfs-shares.py']),  # Bug #53291
+	("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation']),  # Bug #53670
 
 	# updater test cases:
 	('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
