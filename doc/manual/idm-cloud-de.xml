@@ -34,7 +34,7 @@
   <section id="idmcloud:o365">
 	<title>Microsoft 365 Connector</title>
 	<para>
-		Der Microsoft 365 Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer Azure Active
+		Der Microsoft 365 Connector ermöglicht die Synchronisation der Benutzer, Gruppen und Teams zu einer Azure Active
 		Directory Domäne, welche von Microsoft 365 verwendet wird. Dabei lässt sich steuern, welche der in UCS angelegten
 		Benutzer Microsoft 365 verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die Azure Active
 		Directory Domäne provisioniert. Es kann dabei konfiguriert werden, welche Attribute synchronisiert werden und Attribute
@@ -96,6 +96,12 @@
 			Nach der Einrichtung über den Einrichtungsassistenten kann über das Benutzermodul an jedem Benutzerobjekt auf dem Reiter <guimenu>Microsoft 365</guimenu>
 			konfiguriert werden, dass dieser Benutzer ins Microsoft 365 provisioniert wird. Der Verbrauch und die Zuweisung von
 			Lizenzen ist im <guimenu>Microsoft 365 Admin Center</guimenu> zu erkennen.
+		</para>
+
+		<para>
+			Sollen UCS-Gruppen als Teams in Microsoft 365 angelegt werden, so müssen die Gruppen auf dem Reiter <guimenu>Microsoft 365</guimenu> über
+			die Checkbox <guimenu>Microsoft 365 Team</guimenu> als Team konfiguriert werden. Des Weiteren ist es notwendig auf dem selben Reiter
+			einen Besitzer dieses Teams zu definieren, der für die Nutzung von Microsoft 365 aktiviert ist.
 		</para>
 
 		<para>

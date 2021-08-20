@@ -13,7 +13,7 @@
 	<section id="idmcloud:general">
 		<title>Introduction</title>
 		<para>
-			UCS offers an integrated Identity Management System. Through &ucsUMC;, users and groups among others
+			UCS offers an integrated Identity Management System. Through &ucsUMC;, users and groups and teams among others
 			can easily be administered. Depending on the installed services, these identities are made available through
 			different interfaces e.g. via LDAP.
 		</para>
@@ -96,6 +96,12 @@
 				After the end of the installation through the setup wizard, users can be enabled to use
 				Microsoft 365. This configuration can be done through the user module on each user object on the <guimenu>Microsoft
 				365</guimenu> tab. Usage and allocation of licenses are acknowledged in the <guimenu>Microsoft 365 Admin Center</guimenu>.
+			</para>
+
+			<para>
+				UCS-Groups that shall be provisioned as Teams in Microsoft 365, need to be configured as Teams on the <guimenu>Microsoft 365</guimenu> tab
+				by using the <guimenu>Microsoft Team</guimenu> checkbox.
+				Furthermore, it is necessary to define an owner of this team on the same tab. This owner must be enabled to use Microsoft 365.
 			</para>
 
 			<para>
