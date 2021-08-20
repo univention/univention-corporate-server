@@ -5851,7 +5851,6 @@ class DateTimeTimezone(complex):
 	delimiter = ' '
 	subsyntaxes = [(_('Date'), iso8601Date), (_('Time'), TimeString), (_('Timezone'), TimeZone)]
 	subsyntax_names = ('date', 'time', 'timezone')
-	subsyntax_key_value = True
 	all_required = False
 	min_elements = 0
 
