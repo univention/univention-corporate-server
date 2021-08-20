@@ -192,6 +192,9 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:.*' must be a string.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users']),  # Bug #53564
 	("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py']),  # Bug #53564
+	("ConnectionForced:.*broker forced connection closure with reason .*shutdown", ['celery']),  # Bug #53564
+	(r"error: \[Errno 104\] Connection reset by peer", ['celery']),  # Bug #53564
+	("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn']),  # Bug #53564
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
