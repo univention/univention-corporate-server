@@ -179,7 +179,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	# UCS@school test cases:
 	# ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input']),  # Bug #53564
-	("ValueError: time data '19010203' does not match format '%Y-%m-%d'", ['import_user.py.* in validate']),  # Bug #53564
+	("ValueError: time data '.*' does not match format '%Y-%m-%d'", ['import_user.py.* in validate']),  # Bug #53564
 	("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input']),  # Bug #53564
 	("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
 	("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
