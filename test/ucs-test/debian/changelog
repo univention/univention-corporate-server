@@ -1,3 +1,9 @@
+ucs-test (10.0.6-28) unstable; urgency=medium
+
+  * Bug #53651: ignore obsolete template
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 Aug 2021 11:07:22 +0200
+
 ucs-test (10.0.6-27) unstable; urgency=low
 
   * Bug #53620: ucs-test-pytest currently only handles '-s' safely

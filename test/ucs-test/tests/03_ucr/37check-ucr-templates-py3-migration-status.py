@@ -29,6 +29,7 @@ BASE_DIR = "/etc/univention/templates/files/"
 
 ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
+	'/etc/univention/templates/files/usr/share/univention-portal/apps.json',
 	'/etc/univention/templates/files/etc/aliases',
 	'/etc/univention/templates/files/etc/simplesamlphp/00authsources.php',
 	'/etc/univention/templates/files/etc/univention/directory/reports/config.ini',
