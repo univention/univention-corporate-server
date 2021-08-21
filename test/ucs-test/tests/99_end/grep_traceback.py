@@ -185,7 +185,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
 	("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users']),  # Bug #53564
 	("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main', 'in import_users']),  # Bug #53564
-	("ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, but must not be higher than UCR variable ucsschool/username/max_length (20).", ['in prepare_import']),  # Bug #53564
+	(r"ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, but must not be higher than UCR variable ucsschool/username/max_length \(20\).", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.InitialisationError: The 'user_deletion' configuration key is deprecated. Please set 'deletion_grace_period'.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.InitialisationError: Thou shalt not import birthdays!", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import']),  # Bug #53564
