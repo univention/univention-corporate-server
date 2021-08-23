@@ -1,3 +1,9 @@
+univention-web (3.0.6-9) unstable; urgency=medium
+
+  * Issue #24: make 'radio' selectable for Grid column selector
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 23 Aug 2021 15:09:19 +0200
+
 univention-web (3.0.6-8) unstable; urgency=medium
 
   * Issue #23: add tooltip on hover if text overflows
