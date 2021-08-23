@@ -195,6 +195,7 @@ define([
 
 		// gridOptions: options for the inner grid
 		gridOptions: null,
+		selectorType: 'checkbox',
 
 		baseClass: 'umcGrid',
 
@@ -692,9 +693,9 @@ define([
 
 			if (showCheckboxColumn) {
 				var selectionColumn = {
-					selector: 'checkbox',
-					label: 'Selector',
-					width: '30px'
+					selector: this.selectorType,
+					field: 'selectorType-' + this.selectorType,
+					label: ''
 				};
 				gridColumns.unshift(selectionColumn);
 			}
