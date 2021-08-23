@@ -191,9 +191,23 @@ install_mv_idm_gw_receiver_ext_attrs () {
     --set disableUDMWeb=1
 }
 
-patch_school_pre_join_script_to_install_from_test_appcenter () {
-  # FIXME: why not just register an additional join hook?
-  sed 's#log.info("Installing %s ...", app_string)#log.info("Installing %s ...", app_string)\n        subprocess.call(["/usr/sbin/univention-install", "univention-appcenter-dev"])\n        subprocess.call(["/usr/bin/univention-app", "dev-use-test-appcenter"])\n#' /usr/share/ucs-school-metapackage/ucsschool-join-hook.py > /tmp/ucsschool-join-hook.py
-  package_version="$(univention-ldapsearch -LLL cn=ucsschool-join-hook.py univentionOwnedByPackageVersion | grep univentionOwnedByPackageVersion | cut -f 2 -d ' ')"
- . /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --binddn "cn=admin,$(ucr get ldap/base)" --bindpwdfile=/etc/ldap.secret --packagename ucs-school-master --packageversion "$package_version" --data /tmp/ucsschool-join-hook.py --data_type="join/pre-joinscripts"
+add_pre_join_hook_to_install_from_test_appcenter () {
+	# do not use univention-appcenter-dev, if we have a pending appcenter errata update
+	# this new version is used on the dvd, but at this point we can't install errata-test
+	# packages and so installing univention-appcenter-dev might fail due to compatibility
+	# reasons (dvd: errata-test univention-appcenter vs univention-appcenter-dev from release
+	# errata packages)
+	cat <<-'EOF' >"/tmp/appcenter-test.sh"
+#!/bin/bash
+ucr set repository/app_center/server='appcenter-test.software-univention.de' update/secure_apt='false' appcenter/index/verify='no'
+univention-app update
+exit 0
+EOF
+	. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension \
+		--binddn "cn=admin,$(ucr get ldap/base)" \
+		--bindpwdfile=/etc/ldap.secret \
+		--packagename dummy \
+		--packageversion "1.0" \
+		--data /tmp/appcenter-test.sh \
+		--data_type="join/pre-join"
 }
