@@ -434,7 +434,7 @@ class complex(ISyntax):
 			return self.delimiter.join(texts)
 
 		# FIXME: s/(delimiter)s/\1/
-		return ''.join([s for sub in zip(self.delimiters, texts) for s in sub] + [self.delimiter[-1]])
+		return ''.join([s for sub in zip(self.delimiter, texts) for s in sub] + [self.delimiter[-1]])
 
 	@classmethod
 	def new(self):
@@ -5352,6 +5352,8 @@ class PrinterURI(complex):
 	Syntax to configure printer.
 	>>> PrinterURI.parse(["uri://", "localhost"])
 	['uri://', 'localhost']
+	>>> PrinterURI.parse(["cups-pdf:/", ""])
+	['cups-pdf:/', '']
 	>>> PrinterURI.parse(["uri://", None]) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
@@ -5367,6 +5369,7 @@ class PrinterURI(complex):
 	"""
 	subsyntaxes = ((_('Protocol'), PrinterProtocol), (_('Destination'), string))
 	subsyntax_names = ('protocol', 'destination')
+	all_required = False
 
 	@classmethod
 	def parse(self, texts):
@@ -5383,17 +5386,13 @@ class PrinterURI(complex):
 		if len(texts) > len(self.subsyntaxes):
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
-		for i in range(len(texts)):
-			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
-			if not inspect.isclass(self.subsyntaxes[i][1]):
-				s = self.subsyntaxes[i][1]
-			else:
-				s = self.subsyntaxes[i][1]()
-			if texts[i] is None:
-				if self.min_elements is None or (i + 1) < self.min_elements:
-					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
-			p = s.parse(texts[i])
-			if p:
+		for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
+			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, text=%s' % (i, syn, text))
+			if text is None and (self.min_elements is None or (i + 1) < count):
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc,))
+			s = syn() if inspect.isclass(syn) else syn
+			p = s.parse(text)
+			if p is not None:
 				parsed.append(p)
 		return parsed
 
