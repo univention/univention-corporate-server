@@ -1,3 +1,9 @@
+univention-squid (13.0.3-4) unstable; urgency=medium
+
+  * Bug #53648: squid gsspnego supports stripping of realm by itself
+
+ -- Florian Best <best@univention.de>  Tue, 24 Aug 2021 15:27:14 +0200
+
 univention-squid (13.0.3-3) unstable; urgency=medium
 
   * Bug #53648: Fix squid with kerberos

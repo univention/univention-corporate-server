@@ -660,9 +660,10 @@ if __name__ == '__main__':
 	# open pipe to squid_kerb_auth for kerberos stuff
 	kerbPipe = None
 	if options.gssSpnego:
-		kerbPipe = subprocess.Popen([
-			'/usr/lib/squid/negotiate_kerberos_auth', '-k', '/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr
-		], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		cmd = ['/usr/lib/squid/negotiate_kerberos_auth', '-k', '/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr]
+		if options.gssSpnegoStripRealm:
+			cmd.append('-r')
+		kerbPipe = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
 
@@ -701,15 +702,7 @@ if __name__ == '__main__':
 							kerbPipe.stdin.flush()
 							answer = kerbPipe.stdout.readline()
 							if options.debug:
-								debug("real answer %s" % answer)
-							# remove realm from login
-							if options.gssSpnegoStripRealm:
-								tmp = answer.split()
-								if len(tmp) > 2 and tmp[0] == "AF":
-									login = tmp[2].split("@", 1)[0]
-									answer = "%s %s %s" % (tmp[0], tmp[1], login)
-								if options.debug:
-									debug("fixed answer %s" % answer)
+								debug("answer %s" % answer)
 						# this whole stuff could also be done by
 						# python kerberos
 						#  result, context = kerberos.authGSSServerInit('HTTP')
