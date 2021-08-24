@@ -29,7 +29,9 @@ Univention Directory Notifier Transaction log admin commmand
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
+
 from os import SEEK_SET, fstat, rename, unlink, environ
 from os.path import exists
 from sys import stderr
@@ -677,11 +679,12 @@ def check(opt):
 
         listener = CheckListener(opt, opt.listener_file)
 
-        if exists(opt.listener_file_priv):
-            listener_priv = CheckListener(opt, opt.listener_file_priv)
+        if exists(opt.listener_private_file):
+            listener_priv = CheckListener(opt, opt.listener_private_file)
             listener_priv.first_tid = translog.last_tid
             listener_priv.first_line = translog.last_line
             listener_priv.run()
+
             listener.first_tid = listener_priv.last_tid
             listener.first_line = listener_priv.last_line
         else:
@@ -1357,7 +1360,7 @@ def parse_args(args=None):
     parser_check.add_argument("--base", "-b", metavar="DN", help="LDAP base [%(default)s]", default=ucr['ldap/base'])
     parser_check.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
     parser_check.add_argument("--listener-file", "-L", metavar="FILENAME", help="Listener file [%(default)s]", default="/var/lib/univention-ldap/listener/listener")
-    parser_check.add_argument("--listener-file-priv", "-P", metavar="FILENAME", help="Listener priv file [%(default)s]", default="/var/lib/univention-ldap/listener/listener.priv")
+    parser_check.add_argument("--listener-private-file", "-P", metavar="FILENAME", help="Listener private file [%(default)s]", default="/var/lib/univention-ldap/listener/listener.priv")
     parser_check.add_argument("--last-file", "-I", metavar="FILENAME", help="Last_id file [%(default)s]", default="/var/lib/univention-ldap/last_id")
     parser_check.add_argument("--skip-services", "-S", action="store_true", help="Skip stopping and starting services")
     parser_check.set_defaults(func=check)
