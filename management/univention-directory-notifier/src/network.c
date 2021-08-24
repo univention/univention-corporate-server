@@ -58,8 +58,6 @@ static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
 fd_set readfds;
 
-extern void set_schema_callback ( int sig, siginfo_t *si, void *data);
-extern void set_listener_callback ( int sig, siginfo_t *si, void *data);
 extern int get_schema_callback ();
 extern int get_listener_callback ();
 extern void unset_schema_callback ();
