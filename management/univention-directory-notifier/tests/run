@@ -48,6 +48,7 @@ run () {
 		--base "$base"
 		--role "$role"
 		--listener-file "$test/listener"
+		--listener-private-file "$test/listener.priv"
 		--last-file "$test/last"
 		--skip-services
 	)
