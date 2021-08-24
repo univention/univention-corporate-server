@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2016-2021 Univention GmbH
@@ -71,7 +71,7 @@ def main():
 		sys.exit(3)
 
 	dn_s4 = dn_ol[:len(dn_ol) - len(ldap_base)] + samba4_ldap_base
-	print dn_s4
+	print(dn_s4)
 	if already_exists:
 		sys.exit(4)
 
