@@ -375,7 +375,7 @@
                             A cron job periodically checks if accounts need to be activated.
                             It runs every 15 minutes by default.
                             When saving the changes, den account is autmatically marked as deactivated
-                            in case a date in the future has been sepcified.
+                            in case a date in the future has been specified.
                         </entry>
                     </row>
                     <row>
