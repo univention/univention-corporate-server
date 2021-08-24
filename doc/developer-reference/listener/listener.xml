@@ -642,8 +642,10 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						The &ucsUDN; watches that file, picks up and removes each line it processed.
-						The transaction is appended to the file <filename>/var/lib/univention-ldap/notify/transaction</filename><footnote><simpara>Referred to as <varname>FILE_NAME_TF</varname> in the source code</simpara></footnote>, including the <abbrev>DN</abbrev>.
+						The &ucsUDN; watches that file and waits until it becomes non empty.
+						The file is then renamed to <filename>/var/lib/univention-ldap/listener/listener.priv</filename><footnote><simpara>Referred to as <varname>FILE_NAME_NOTIFIER_PRIV</varname></simpara></footnote> and the original files is re-created empty.
+						The transactions from the renamed file are processed line-by-line and are appended to the file <filename>/var/lib/univention-ldap/notify/transaction</filename><footnote><simpara>Referred to as <varname>FILE_NAME_TF</varname> in the source code</simpara></footnote>, including the <abbrev>DN</abbrev>.
+						After successful processing the renamed file is deleted.
 						For efficient access by transaction ID the index <filename>transaction.index</filename> is updated.
 					</para>
 				</step>
