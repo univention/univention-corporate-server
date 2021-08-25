@@ -1,0 +1,11 @@
+@%@UCRWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+@!@
+script = "/usr/share/univention-directory-manager-tools/univention-delayed-account-activation"
+interval = configRegistry.get("directory/manager/user/accountactivation/cron")
+
+if interval:
+	print("%s       root    %s" % (interval, script))
+@!@

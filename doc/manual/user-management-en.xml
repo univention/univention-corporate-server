@@ -369,6 +369,16 @@
                         </entry>
                     </row>
                     <row>
+                        <entry>Activation date</entry>
+                        <entry>
+                            In a user account shall only become usable at a later date, this can be set here.
+                            A cron job periodically checks if accounts need to be activated.
+                            It runs every 15 minutes by default.
+                            When saving the changes, the account is automatically marked as deactivated
+                            in case a date in the future has been specified.
+                        </entry>
+                    </row>
+                    <row>
                         <entry>Windows home drive</entry>
                         <entry>
                             If the Windows home directory for this user is to show up on a different
