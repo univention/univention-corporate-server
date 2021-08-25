@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-62) unstable; urgency=medium
+
+  * Bug #53655: fixup for returning traceback
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 25 Aug 2021 14:38:05 +0200
+
 univention-appcenter (9.0.2-61) unstable; urgency=medium
 
   * Bug #53630: Typo
