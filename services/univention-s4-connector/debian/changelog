@@ -1,4 +1,4 @@
-univention-s4-connector (14.0.7-3) unstable; urgency=medium
+univention-s4-connector (14.0.7-4) unstable; urgency=medium
 
   * Bug #53705: Add binddn and bindpwdfile option to msgpo.py
 
