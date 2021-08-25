@@ -39,6 +39,8 @@ from getpass import getuser
 import subprocess
 from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
+import traceback
+import sys
 
 from six import string_types
 from six.moves import input
@@ -155,13 +157,16 @@ class InstallRemoveUpgrade(Register):
 					except Abort:
 						self.warn('Cancelled...')
 						return
-			except Exception as exc:
-				exc = str(exc).split('\n')
+			except Exception:
+				_, _, traceback = sys.exc_info()
+				trace = []
+				for line in traceback.format_tb(traceback):
+					trace.extend([el.strip() for el in line.splitlines()])
 				if apps:
 					for app in apps:
-						self._send_information_on_app(app, 502, exc, args)
+						self._send_information_on_app(app, 502, trace, args)
 				else:
-					self._send_information_on_app(None, 502, exc, args)
+					self._send_information_on_app(None, 502, trace, args)
 				raise
 			for i, app in enumerate(apps):
 				args.app = app
