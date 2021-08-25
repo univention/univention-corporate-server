@@ -9,3 +9,5 @@ desc: |
  * The cache settings of Univention Management Console have been enhanced and
    relaxed to fix caching issues after the upgrade to UCS 5.0.
 bug: [37720]
+erratum: 1034
+announced: 2021-08-25
