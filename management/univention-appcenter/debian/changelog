@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-150) unstable; urgency=medium
+
+  * Bug #53677: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 25 Aug 2021 09:56:45 +0200
+
 univention-appcenter (8.0.11-149) unstable; urgency=medium
 
   * Bug #53677: Fix App installation with certain App Settings
