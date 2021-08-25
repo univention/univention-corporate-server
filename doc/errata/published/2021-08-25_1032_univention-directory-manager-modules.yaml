@@ -13,3 +13,5 @@ desc: |
    `remove()` function in the `delete()` method to recursively delete objects
    below the DN of the object that is being deleted.
 bug: [53362, 53620]
+erratum: 1032
+announced: 2021-08-25
