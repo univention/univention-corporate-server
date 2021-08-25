@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-s4-connector
+fix: 14.0.7-3A~5.0.0.202108252057
+desc: |
+ This update addresses the following issue:
+ * Added the option to specify binddn and bindpwdfile
+   to the msgpo.py script
+bug: [53705]
