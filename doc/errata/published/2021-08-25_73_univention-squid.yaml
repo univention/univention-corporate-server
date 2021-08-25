@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The correct keytab file is now used by squid for kerberos authentication.
 bug: [53648]
+erratum: 73
+announced: 2021-08-25
