@@ -37,7 +37,7 @@ amazon|xen) ;;
 qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' ;;
 esac
 
-basic_setup () {
+basic_setup_allow_uss () {
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	case "$VIRTTECH" in
@@ -63,8 +63,13 @@ basic_setup () {
 	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 	service cron reload || true
+}
+
+basic_setup () {
+	basic_setup_allow_uss
 	stop_uss_and_restore_profile
 }
+
 stop_uss_and_restore_profile () {
 	local SRV='univention-system-setup-boot.service' job
 	if [ loaded = "$(systemctl --property LoadState --value show "$SRV")" ]
