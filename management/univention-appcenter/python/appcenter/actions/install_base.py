@@ -415,9 +415,9 @@ class InstallRemoveUpgrade(Register):
 			if filter_action and phase not in setting.show:
 				continue
 			try:
-				value = setting.get_value(app)
+				value = setting.get_value(app, phase=phase)
 			except SettingValueError:
-				value = setting.get_initial_value(app, phase=phase)
+				value = setting.get_initial_value(app)
 			set_vars[setting.name] = value
 		return set_vars
 
