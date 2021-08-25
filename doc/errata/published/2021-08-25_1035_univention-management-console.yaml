@@ -16,3 +16,5 @@ desc: |
  * SAML Logout's which are initiated by another service provider are now
    correctly handled.
 bug: [37720, 52353, 53511, 53638]
+erratum: 1035
+announced: 2021-08-25
