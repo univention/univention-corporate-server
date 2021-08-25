@@ -9,3 +9,5 @@ desc: |
  * Fixed a regression where the App installation failed if the App had certain
    App Settings.
 bug: [53677]
+erratum: 1031
+announced: 2021-08-25
