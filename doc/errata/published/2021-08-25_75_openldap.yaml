@@ -12,3 +12,5 @@ desc: |
  * Log error if "listener/listener" file cannot be written
  * Update "last_id" file atomically
 bug: [51910]
+erratum: 75
+announced: 2021-08-25
