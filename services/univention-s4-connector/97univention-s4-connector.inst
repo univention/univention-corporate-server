@@ -60,7 +60,8 @@ this_host_is_registered_as_s4_connector() {
 this_host_is_not_registered_as_s4_connector() {
 	! this_host_is_registered_as_s4_connector
 }
-
+# parse credentials
+extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args "$@"
 
 if is_domain_in_admember_mode; then
 	echo "ERROR: The domain is in AD Member Mode."
@@ -274,7 +275,7 @@ if [ -z "$s4connector_dc" ] \
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=45439
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=43478
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=26926
-		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty
+		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty "$@"
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then

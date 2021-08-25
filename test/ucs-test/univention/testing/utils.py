@@ -105,9 +105,9 @@ class UCSTestDomainAdminCredentials(object):
 			ucr = UCR
 			ucr.load()
 		self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%(ldap/base)s' % ucr)
-		pwdfile = ucr.get('tests/domainadmin/pwdfile')
-		if pwdfile:
-			with open(pwdfile, 'r') as f:
+		self.pwdfile = ucr.get('tests/domainadmin/pwdfile')
+		if self.pwdfile:
+			with open(self.pwdfile, 'r') as f:
 				self.bindpw = f.read().strip('\n\r')
 		else:
 			self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')

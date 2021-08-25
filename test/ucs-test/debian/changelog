@@ -1,3 +1,9 @@
+ucs-test (10.0.6-29) unstable; urgency=medium
+
+  * Bug #53705: Add pwdfile to UCSTestDomainAdminCredentials
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 25 Aug 2021 18:28:52 +0200
+
 ucs-test (10.0.6-28) unstable; urgency=medium
 
   * Bug #53651: ignore obsolete template

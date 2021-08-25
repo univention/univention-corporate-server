@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.7-3) unstable; urgency=medium
+
+  * Bug #53705: Add binddn and bindpwdfile option to msgpo.py
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 25 Aug 2021 18:25:30 +0200
+
 univention-s4-connector (14.0.7-2) unstable; urgency=medium
 
   * Bug #52043: Adjust log level for paged LDAP search to INFO
