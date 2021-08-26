@@ -506,7 +506,7 @@ test "$test_settings_outside" = "123" || exit 1
 test "$test_settings_list" = "value2" || exit 1
 test -z "$test_settings_inside" || exit 1
 test -z "$test_settings_not_exists" || exit 1
-test -z "$test_settings_not_given" || exit 1
+test "$test_settings_not_given" = "initValue" || exit 1
 test "$test_settings_bool" = "true" || exit 1
 exit 0'''
 
