@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-63) unstable; urgency=medium
+
+  * Bug #53655: changing to fomat_exc method
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 26 Aug 2021 11:26:39 +0200
+
 univention-appcenter (9.0.2-62) unstable; urgency=medium
 
   * Bug #53655: fixup for returning traceback
