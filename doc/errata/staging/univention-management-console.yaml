@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console
-fix: 
+fix: 11.0.6-16A~4.4.0.202108271201
 desc: |
  This update addresses the following issue(s):
  * Access to the Univention Management Console has been repaired if the user
