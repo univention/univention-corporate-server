@@ -1,3 +1,10 @@
+univention-management-console (11.0.6-16) unstable; urgency=medium
+
+  * Bug #53710: fix UMC access if only one module without flavor is
+    allowed to be accessed
+
+ -- Florian Best <best@univention.de>  Fri, 27 Aug 2021 11:59:49 +0200
+
 univention-management-console (11.0.6-15) unstable; urgency=medium
 
   * Bug #53638: fix third party SP initiated SAML Logout

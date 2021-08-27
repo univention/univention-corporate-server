@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Access to the Univention Management Console has been repaired if the user
+   has is allowed to use only one module which does not have a flavor.
+bug: [53710]

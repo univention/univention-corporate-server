@@ -1304,7 +1304,7 @@ define([
 			if (launchableModules.length === 1) {
 				var state = ioQuery.queryToObject(_initialHash);
 				var module = launchableModules[0];
-				state.module = lang.replace('{0}:{1}', [module.id, module.flavor]);
+				state.module = lang.replace('{0}:{1}', [module.id, module.flavor || '']);
 				_initialHash = decodeURIComponent(ioQuery.objectToQuery(state));
 			}
 			this.setupGui();
