@@ -1,0 +1,4 @@
+Type: file
+File: etc/cron.d/univention-delayed-account-activation
+Variables: directory/manager/user/accountactivation/cron
+
