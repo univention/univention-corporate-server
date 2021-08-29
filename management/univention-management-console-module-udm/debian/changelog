@@ -1,3 +1,10 @@
+univention-management-console-module-udm (10.0.1-14) unstable; urgency=medium
+
+  * Bug #53714: prevent altering of original object options through app
+    options
+
+ -- Florian Best <best@univention.de>  Sun, 29 Aug 2021 08:52:45 +0200
+
 univention-management-console-module-udm (10.0.1-13) unstable; urgency=medium
 
   * Bug #53628: prevent crash when a LDAP_Search syntax uses a LDAP
