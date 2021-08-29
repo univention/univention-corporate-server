@@ -960,7 +960,7 @@ class UDM_Module(object):
 				'size': prop.size or prop.syntax.size,
 				'required': bool(prop.required),
 				'editable': bool(prop.may_change),
-				'options': prop.options,
+				'options': copy.deepcopy(prop.options),
 				'readonly': not bool(prop.editable),
 				'searchable': not prop.dontsearch,
 				'multivalue': bool(prop.multivalue),
