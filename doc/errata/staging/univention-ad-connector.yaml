@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-ad-connector
+fix: 
+desc: |
+ This update addresses the following issues:
+ * Invalid values in the LDAP attribute sambaNTPassword are now ignored
+   instead of triggering a traceback.
+bug: [53757]
