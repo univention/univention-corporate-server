@@ -1,3 +1,9 @@
+ucs-test (9.0.7-58) unstable; urgency=low
+
+  * Bug #53717: make import available for unit testing during build
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Aug 2021 10:59:06 +0200
+
 ucs-test (9.0.7-57) unstable; urgency=low
 
   * Bug #53717: support connecting to primary and waiting for replication
