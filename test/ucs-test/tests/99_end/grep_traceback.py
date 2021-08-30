@@ -163,6 +163,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
 	# various test cases:
+	('AssertionError: .*contain.*traceback', ['01_var_log_tracebacks']),
 	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
 	(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 	(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
@@ -191,6 +192,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:.*' must be a string.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users']),  # Bug #53564
+	("ucsschool.importer.exceptions.UniqueIdError: Username '.*' is already in use by .*", ['in create_and_modify_users']),  # Bug #53564
+	('ucsschool.importer.exceptions.UserValidationError: <unprintable UserValidationError object>', ['in create_and_modify_users']),  # Bug #53564
 	("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py']),  # Bug #53564
 	("ConnectionForced:.*broker forced connection closure with reason .*shutdown", ['celery']),  # Bug #53564
 	(r"error: \[Errno 104\] Connection reset by peer", ['celery']),  # Bug #53671 Bug #53564
@@ -244,9 +247,11 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list']),  # Bug #43171
 	(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
 	('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs']),  # Bug #53278
+	('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4']),  # Bug #53278
 	('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs']),  # Bug #53277
 	(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns']),  # Bug #53332
 	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
+	("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist']),  # Bug #53276
 ])
 
 
