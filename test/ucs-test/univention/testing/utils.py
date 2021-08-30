@@ -32,6 +32,7 @@ Common functions used by tests.
 from __future__ import print_function
 
 import functools
+import inspect
 import os
 import socket
 import subprocess
@@ -117,16 +118,21 @@ class UCSTestDomainAdminCredentials(object):
 			self.username = None
 
 
-def get_ldap_connection(admin_uldap=False):  # type: (bool) -> access
+def get_ldap_connection(admin_uldap=False, primary=False):
+	# type: (Optional[bool], Optional[bool]) -> access
 	ucr = UCR
 	ucr.load()
 
-	port = int(ucr.get('ldap/server/port', 7389))
-	ldap_servers = []
-	if ucr['ldap/server/name']:
-		ldap_servers.append(ucr['ldap/server/name'])
-	if ucr['ldap/servers/addition']:
-		ldap_servers.extend(ucr['ldap/server/addition'].split())
+	if primary:
+		port = int(ucr.get('ldap/master/port', 7389))
+		ldap_servers = [ucr['ldap/master']]
+	else:
+		port = int(ucr.get('ldap/server/port', 7389))
+		ldap_servers = []
+		if ucr['ldap/server/name']:
+			ldap_servers.append(ucr['ldap/server/name'])
+		if ucr['ldap/servers/addition']:
+			ldap_servers.extend(ucr['ldap/server/addition'].split())
 
 	creds = UCSTestDomainAdminCredentials()
 
@@ -142,7 +148,7 @@ def get_ldap_connection(admin_uldap=False):  # type: (bool) -> access
 
 
 def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
-	# type: (Callable, Tuple[Type[Exception], ...], int, Union[float, int]) -> Any
+	# type: (Callable[[...], ...], Tuple[Type[Exception], ...], int, Union[float, int]) -> Any
 	"""
 	This function calls the given function `func`.
 	If one of the specified `exceptions` is caught, `func` is called again until
@@ -176,6 +182,9 @@ def verify_ldap_object(
 	should_exist=True,  # type: Optional[bool]
 	retry_count=20,  # type: Optional[int]
 	delay=10,  # type: Optional[float]
+	primary=False,  # type: Optional[bool]
+	pre_check=None,  # type: Optional[Callable[[...], ...]]
+	pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
 ):  # type: (...) -> None
 	"""
 	Verify [non]existence and attributes of LDAP object.
@@ -186,31 +195,42 @@ def verify_ldap_object(
 	:param bool should_exist: whether the object is expected to exist
 	:param int retry_count: how often to retry the verification if it fails before raising an exception
 	:param float delay: waiting time in seconds between retries on verification failures
+	:param bool primary: whether to connect to the primary (DC master) instead of local LDAP (to be
+		exact: ucr[ldap/server/name], ucr['ldap/server/addition'])
+	:param pre_check: function to execute before starting verification. Value should be a function object
+		like `utils.wait_for_replication`.
+	:param dict pre_check_kwargs: dict with kwargs to pass to `pre_check()` call
 	:return: None
 	:raises LDAPObjectNotFound: when no object was found at `baseDn`
 	:raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
 	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
 	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
 		has more values than were listed in `expected_attr`
+	:raises ValueError: if the value of `pre_check` is not a function object
 	"""
 	ucr = UCR
 	ucr.load()
 	retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
 	delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
 
+	if pre_check:
+		if not inspect.isfunction(pre_check) or inspect.ismethod(pre_check):
+			raise ValueError("Value of argument 'pre_check' is not a function: {!r}".format(pre_check))
+		pre_check(**(pre_check_kwargs or {}))
+
 	return retry_on_error(
-		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist),
+		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary),
 		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
 		retry_count,
 		delay)
 
 
-def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
-	# type: (str, Optional[Dict[str, str]], bool, bool) -> None
+def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False):
+	# type: (str, Optional[Dict[str, str]], Optional[bool], Optional[bool], Optional[bool]) -> None
 	if expected_attr is None:
 		expected_attr = {}
 	try:
-		dn, attr = get_ldap_connection().search(
+		dn, attr = get_ldap_connection(primary=primary).search(
 			filter='(objectClass=*)',
 			base=baseDn,
 			scope=ldap.SCOPE_BASE,
@@ -501,10 +521,14 @@ def wait_for(conditions=None, verbose=True):
 				# TODO: search in OpenLDAP with filter=detail
 				pass
 		elif replicationtype == ReplicationType.DRS:
-			from univention.testing.ucs_samba import wait_for_drs_replication
 			if not isinstance(detail, dict):
 				detail = {'ldap_filter': detail}
 			wait_for_drs_replication(verbose=verbose, **detail)
+
+
+def wait_for_drs_replication(*args, **kwargs):
+	from univention.testing.ucs_samba import wait_for_drs_replication
+	return wait_for_drs_replication(*args, **kwargs)
 
 
 def wait_for_listener_replication(verbose=True):
