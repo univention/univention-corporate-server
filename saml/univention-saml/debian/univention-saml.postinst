@@ -56,8 +56,8 @@ configure)
 		fi
 	done
 
-	if dpkg --compare-versions "$2" lt 6.0.2-56; then
-		dpkg-statoverride --remove /var/lib/simplesamlphp/secrets.inc.php
+	if dpkg --compare-versions "$2" lt 7.0.4-17; then
+		univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
 	fi
 
 	if ! dpkg-statoverride --list /var/lib/simplesamlphp/secrets.inc.php >/dev/null 2>&1; then

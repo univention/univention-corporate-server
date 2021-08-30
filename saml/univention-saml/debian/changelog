@@ -1,3 +1,10 @@
+univention-saml (7.0.4-17) unstable; urgency=medium
+
+  * Bug #53723: Add case insensitive comparisons for LDAP attributes to
+    service provider config
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Aug 2021 19:18:14 +0200
+
 univention-saml (7.0.4-16) unstable; urgency=medium
 
   * Bug #53533: import theme.css

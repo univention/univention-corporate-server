@@ -221,6 +221,7 @@ def write_configuration_file(dn, new, filename):
 			fd.write("		10 => array(\n")
 			fd.write("			'class' => 'authorize:Authorize',\n")
 			fd.write("			'regex' => FALSE,\n")
+			fd.write("			'case_insensitive_attributes' => array('memberOf', 'enabledServiceProviderIdentifier'),\n")
 			fd.write("			'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
 			fd.write("			'memberOf' => $memberof,\n")
 			fd.write("		),\n")
