@@ -65,6 +65,10 @@ configure)
 		dpkg-statoverride --remove /var/lib/simplesamlphp/secrets.inc.php
 	fi
 
+	if dpkg --compare-versions "$2" lt 6.0.3-16; then
+		univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
+	fi
+
 	if ! dpkg-statoverride --list /var/lib/simplesamlphp/secrets.inc.php >/dev/null 2>&1; then
 		dpkg-statoverride --update --add samlcgi samlcgi 640 /var/lib/simplesamlphp/secrets.inc.php
 	fi

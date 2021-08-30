@@ -1,3 +1,10 @@
+univention-saml (6.0.3-16) unstable; urgency=medium
+
+  * Bug #53432: Add case insensitive comparisons for LDAP attributes to
+    service provider config
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Aug 2021 16:37:44 +0200
+
 univention-saml (6.0.3-15) unstable; urgency=medium
 
   * Bug #52196: Do not remove memcached.socket after killing the stunnel4
