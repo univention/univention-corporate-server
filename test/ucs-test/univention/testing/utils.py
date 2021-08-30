@@ -32,6 +32,7 @@ from __future__ import print_function
 
 import sys
 import functools
+import inspect
 import subprocess
 import traceback
 import ldap
@@ -115,18 +116,22 @@ class UCSTestDomainAdminCredentials(object):
 			self.username = None
 
 
-def get_ldap_connection(admin_uldap=False):
+def get_ldap_connection(admin_uldap=False, primary=False):
 	global ucr
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	port = int(ucr.get('ldap/server/port', 7389))
-	ldap_servers = []
-	if ucr['ldap/server/name']:
-		ldap_servers.append(ucr['ldap/server/name'])
-	if ucr['ldap/servers/addition']:
-		ldap_servers.extend(ucr['ldap/server/addition'].split())
+	if primary:
+		port = int(ucr.get('ldap/master/port', 7389))
+		ldap_servers = [ucr['ldap/master']]
+	else:
+		port = int(ucr.get('ldap/server/port', 7389))
+		ldap_servers = []
+		if ucr['ldap/server/name']:
+			ldap_servers.append(ucr['ldap/server/name'])
+		if ucr['ldap/servers/addition']:
+			ldap_servers.extend(ucr['ldap/server/addition'].split())
 
 	creds = UCSTestDomainAdminCredentials()
 
@@ -176,6 +181,9 @@ def verify_ldap_object(
 	should_exist=True,  # type: Optional[bool]
 	retry_count=20,  # type: Optional[int]
 	delay=10,  # type: Optional[float]
+	primary=False,  # type: Optional[bool]
+	wait_for="",  # type: Optional[str]
+	wait_for_kwargs=None,  # type: Optional[Dict[str, Any]]
 ):  # type: (...) -> None
 	"""
 	Verify [non]existence and attributes of LDAP object.
@@ -186,12 +194,21 @@ def verify_ldap_object(
 	:param bool should_exist: whether the object is expected to exist
 	:param int retry_count: how often to retry the verification if it fails before raising an exception
 	:param float delay: waiting time in seconds between retries on verification failures
+	:param bool primary: whether to connect to the primary (DC master) instead of local LDAP (to be
+		exact: ucr[ldap/server/name], ucr['ldap/server/addition'])
+	:param str wait_for: execute function `utils.wait_for_<value>()` before starting verification.
+		Value is the remaining name after `wait_for_`, for example 'replication' or
+		'connector_replication'.
+	:param dict wait_for_kwargs: dict with kwargs to pass to `wait_for_..()` call, if `wait_for` is used
 	:return: None
 	:raises LDAPObjectNotFound: when no object was found at `baseDn`
 	:raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
 	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
 	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
 		has more values than were listed in `expected_attr`
+	:raises ValueError: if the value of `wait_for`, appended to `wait_for_`, does not correspond to a
+		function in `univention.testing.utils`.
+	"""
 	global ucr
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -199,18 +216,29 @@ def verify_ldap_object(
 	retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
 	delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
 
+	if wait_for:
+		this = sys.modules[__name__]  # this module (utils.py)
+		func_name = "wait_for_{}".format(wait_for)
+		try:
+			wait_for_func = getattr(this, func_name)
+		except AttributeError:
+			raise ValueError("No function {!r} found in {!r}.".format(func_name, __name__))
+		if not inspect.isfunction(wait_for_func):
+			raise ValueError("Attribute {!r} in module {!r} is not a function.".format(func_name, __name__))
+		wait_for_func(**(wait_for_kwargs or {}))
+
 	return retry_on_error(
-		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist),
+		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary),
 		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
 		retry_count,
 		delay)
 
 
-def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
+def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False):
 	if expected_attr is None:
 		expected_attr = {}
 	try:
-		dn, attr = get_ldap_connection().search(
+		dn, attr = get_ldap_connection(primary=primary).search(
 			filter='(objectClass=*)',
 			base=baseDn,
 			scope=ldap.SCOPE_BASE,
@@ -478,10 +506,14 @@ def wait_for(conditions=None, verbose=True):
 				# TODO: search in OpenLDAP with filter=detail
 				pass
 		elif replicationtype == ReplicationType.DRS:
-			from univention.testing.ucs_samba import wait_for_drs_replication
 			if not isinstance(detail, dict):
 				detail = {'ldap_filter': detail}
 			wait_for_drs_replication(verbose=verbose, **detail)
+
+
+def wait_for_drs_replication(*args, **kwargs):
+	from univention.testing.ucs_samba import wait_for_drs_replication
+	return wait_for_drs_replication(*args, **kwargs)
 
 
 def wait_for_listener_replication(verbose=True):
