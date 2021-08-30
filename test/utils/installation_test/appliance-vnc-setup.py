@@ -76,10 +76,9 @@ class UCSSetup(UCSInstallation):
 			self.connect()
 			self.client.waitForText('Domain and network', timeout=self.timeout)
 		self.screenshot('network-setup.png')
+		self.click('Preferred DNS')
 		if self.args.role in ['admember', 'slave']:
-			self.click('Preferred DNS')
 			self.client.enterText(self.args.dns)
-		#self.next()
 		self.enter()
 		time.sleep(60)
 		# check APIPA warning (automatic private address for eth0 if no dhcp answer)
