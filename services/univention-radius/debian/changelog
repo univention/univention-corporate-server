@@ -1,3 +1,9 @@
+univention-radius (7.0.1-2) unstable; urgency=medium
+
+  * Bug #53712: activate default config (sites-enabled)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Aug 2021 12:17:34 +0200
+
 univention-radius (7.0.1-1) unstable; urgency=medium
 
   * Bug #52286: Migrate univention-radius to Python 3
