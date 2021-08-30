@@ -182,8 +182,8 @@ def verify_ldap_object(
 	retry_count=20,  # type: Optional[int]
 	delay=10,  # type: Optional[float]
 	primary=False,  # type: Optional[bool]
-	wait_for="",  # type: Optional[str]
-	wait_for_kwargs=None,  # type: Optional[Dict[str, Any]]
+	pre_check=None,  # type: Optional[Callable[[...], ...]]
+	pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
 ):  # type: (...) -> None
 	"""
 	Verify [non]existence and attributes of LDAP object.
@@ -196,18 +196,16 @@ def verify_ldap_object(
 	:param float delay: waiting time in seconds between retries on verification failures
 	:param bool primary: whether to connect to the primary (DC master) instead of local LDAP (to be
 		exact: ucr[ldap/server/name], ucr['ldap/server/addition'])
-	:param str wait_for: execute function `utils.wait_for_<value>()` before starting verification.
-		Value is the remaining name after `wait_for_`, for example 'replication' or
-		'connector_replication'.
-	:param dict wait_for_kwargs: dict with kwargs to pass to `wait_for_..()` call, if `wait_for` is used
+	:param pre_check: function to execute before starting verification. Value should be a function object
+		like `utils.wait_for_replication`.
+	:param dict pre_check_kwargs: dict with kwargs to pass to `pre_check()` call
 	:return: None
 	:raises LDAPObjectNotFound: when no object was found at `baseDn`
 	:raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
 	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
 	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
 		has more values than were listed in `expected_attr`
-	:raises ValueError: if the value of `wait_for`, appended to `wait_for_`, does not correspond to a
-		function in `univention.testing.utils`.
+	:raises ValueError: if the value of `pre_check` is not a function object
 	"""
 	global ucr
 	if not ucr:
@@ -216,16 +214,10 @@ def verify_ldap_object(
 	retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
 	delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
 
-	if wait_for:
-		this = sys.modules[__name__]  # this module (utils.py)
-		func_name = "wait_for_{}".format(wait_for)
-		try:
-			wait_for_func = getattr(this, func_name)
-		except AttributeError:
-			raise ValueError("No function {!r} found in {!r}.".format(func_name, __name__))
-		if not inspect.isfunction(wait_for_func):
-			raise ValueError("Attribute {!r} in module {!r} is not a function.".format(func_name, __name__))
-		wait_for_func(**(wait_for_kwargs or {}))
+	if pre_check:
+		if not inspect.isfunction(pre_check) or inspect.ismethod(pre_check):
+			raise ValueError("Value of argument 'pre_check' is not a function: {!r}".format(pre_check))
+		pre_check(**(pre_check_kwargs or {}))
 
 	return retry_on_error(
 		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary),
