@@ -50,6 +50,10 @@ class UCSSetup(UCSInstallation):
 			time.sleep(0.5)
 		self.client.keyPress('enter')
 
+	def enter(self):
+		time.sleep(0.5)
+		self.client.keyPress('enter')
+
 	def language(self, language):
 		if self.text_is_visible('Notification', timeout=self.timeout):
 			self.screenshot('notification.png')
@@ -76,7 +80,7 @@ class UCSSetup(UCSInstallation):
 			self.click('Preferred DNS')
 			self.client.enterText(self.args.dns)
 		#self.next()
-		self.tab_to_next_and_enter(6)
+		self.enter()
 		time.sleep(60)
 		# check APIPA warning (automatic private address for eth0 if no dhcp answer)
 		try:
