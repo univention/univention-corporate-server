@@ -102,6 +102,7 @@ class UCSInstallation(object):
 		if self.args.language == 'eng':
 			self.client.waitForText(self._['configure_clock'], timeout=self.timeout)
 			#self.client.enterText(self._['clock'])
+			time.sleep(1)
 			self.client.keyPress('enter')
 		# hd
 		time.sleep(60)
