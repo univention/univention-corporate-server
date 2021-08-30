@@ -169,8 +169,30 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 		six.reraise(*exc_info)
 
 
-def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, delay=10):
-	# type: (str, Optional[Dict[str, str]], bool, bool, int, float) -> None
+def verify_ldap_object(
+	baseDn,  # type: str
+	expected_attr=None,  # type: Optional[Dict[str, str]]
+	strict=True,  # type: Optional[bool]
+	should_exist=True,  # type: Optional[bool]
+	retry_count=20,  # type: Optional[int]
+	delay=10,  # type: Optional[float]
+):  # type: (...) -> None
+	"""
+	Verify [non]existence and attributes of LDAP object.
+
+	:param str baseDn: DN of object to check
+	:param dict expected_attr: attributes and their values that the LDAP object is expected to have
+	:param bool strict: value lists of multi-value attributes must be complete
+	:param bool should_exist: whether the object is expected to exist
+	:param int retry_count: how often to retry the verification if it fails before raising an exception
+	:param float delay: waiting time in seconds between retries on verification failures
+	:return: None
+	:raises LDAPObjectNotFound: when no object was found at `baseDn`
+	:raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
+	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
+	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
+		has more values than were listed in `expected_attr`
+	"""
 	ucr = UCR
 	ucr.load()
 	retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
