@@ -6,13 +6,13 @@ src: exiv2
 fix: 0.25-3.1+deb9u3
 desc: |
  This update addresses the following issues:
- * infinite loop and hang in Jp2Image::readMetadata() in jp2image.cpp could
+ * Infinite loop and hang in Jp2Image::readMetadata() in jp2image.cpp could
    lead to DoS (CVE-2019-20421)
- * heap-based buffer overflow in Jp2Image::readMetadata() in jp2image.cpp
+ * Heap-based buffer overflow in Jp2Image::readMetadata() in jp2image.cpp
    (CVE-2021-3482)
- * heap-based buffer overflow in Exiv2::Jp2Image::doWriteMetadata
+ * Heap-based buffer overflow in Exiv2::Jp2Image::doWriteMetadata
    (CVE-2021-29457)
- * out-of-bounds read in Exiv2::Jp2Image::doWriteMetadata (CVE-2021-29473)
+ * Out-of-bounds read in Exiv2::Jp2Image::doWriteMetadata (CVE-2021-29473)
  * Integer overflow in CrwMap:encode0x1810 leading to heap-based buffer
    overflow and DoS (CVE-2021-31292)
 bug: [53716]
