@@ -252,6 +252,9 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns']),  # Bug #53332
 	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
 	("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist']),  # Bug #53276
+	("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['python2.7.*sync_from_ucs']),  # Bug #53720
+	('ldap.REFERRAL:.*', ['uldap.py']),  # Bug #53721
+	('ldap.INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs']),  # Bug #53721
 ])
 
 
