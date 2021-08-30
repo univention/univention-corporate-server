@@ -118,30 +118,24 @@ class UCSTestDomainAdminCredentials(object):
 			self.username = None
 
 
-def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admin_uldap=False):
-	if decode_ignorelist is None:
-		decode_ignorelist = []
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+def get_ldap_connection(admin_uldap=False):
+	global ucr
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
 
 	port = int(ucr.get('ldap/server/port', 7389))
-	binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % ucr['ldap/base'])
-	bindpw = None
-	ldapServers = []
+	ldap_servers = []
 	if ucr['ldap/server/name']:
-		ldapServers.append(ucr['ldap/server/name'])
+		ldap_servers.append(ucr['ldap/server/name'])
 	if ucr['ldap/servers/addition']:
-		ldapServers.extend(ucr['ldap/server/addition'].split())
+		ldap_servers.extend(ucr['ldap/server/addition'].split())
 
-	if pwdfile:
-		with open(ucr['tests/domainadmin/pwdfile']) as f:
-			bindpw = f.read().strip('\n')
-	else:
-		bindpw = ucr['tests/domainadmin/pwd']
+	creds = UCSTestDomainAdminCredentials()
 
-	for ldapServer in ldapServers:
+	for ldap_server in ldap_servers:
 		try:
-			lo = uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, follow_referral=True)
+			lo = uldap.access(host=ldap_server, port=port, base=ucr['ldap/base'], binddn=creds.binddn, bindpw=creds.bindpw, start_tls=2, decode_ignorelist=[], follow_referral=True)
 			if admin_uldap:
 				lo = access(lo=lo)
 			return lo
@@ -174,8 +168,6 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 				time.sleep(delay)
 			else:
 				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).' % (exc_info[0], exc_info[1], i, retry_count))
-		else:
-			break
 	else:
 		six.reraise(*exc_info)
 
