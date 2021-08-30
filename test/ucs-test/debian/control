@@ -51,6 +51,7 @@ Depends:
  python-ldap,
  python-psutil,
  python-six,
+ python-typing,
  python-univention (>= 12.0.0-5),
  python-yaml,
  ucs-test-modules-all | ucs-test-module,
