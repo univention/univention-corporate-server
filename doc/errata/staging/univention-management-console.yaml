@@ -7,5 +7,5 @@ fix: 12.0.12-11A~5.0.0.202108271159
 desc: |
  This update addresses the following issue(s):
  * Access to the Univention Management Console has been repaired if the user
-   has is allowed to use only one module which does not have a flavor.
+   is allowed to use only one UMC module which does not have a flavor.
 bug: [51659]
