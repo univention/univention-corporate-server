@@ -274,6 +274,10 @@ define([
 	}
 
 	function setupLoginAndLogoutButton() {
+		if (tools.status('umcMenu/hideLogin')) {
+			return;
+		}
+
 		var loginEntry = menu.addEntry({
 			priority: -1,
 			label: _('Login'),

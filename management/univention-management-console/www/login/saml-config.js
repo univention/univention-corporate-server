@@ -5,9 +5,11 @@ var umcConfig = {
 		"login/dialog",
 		"dojo/_base/array",
 		"dojo/dom-class",
+		"umc/tools",
 		"umc/i18n/tools"
 	],
-	callback: function(dialog, array, domClass, i18nTools) {
+	callback: function(dialog, array, domClass, tools, i18nTools) {
+		tools.status('umcMenu/hideLogin', true);
 		dialog.renderLoginDialog();
 		domClass.remove(document.body, 'umcLoginLoading');
 		i18nTools.availableLanguages = availableLocales;

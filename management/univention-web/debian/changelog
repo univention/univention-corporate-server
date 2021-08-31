@@ -1,3 +1,9 @@
+univention-web (4.0.1-37) unstable; urgency=medium
+
+  * Bug #53728: hide 'Login'/'Logout' menu entry on login site
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Aug 2021 12:31:13 +0200
+
 univention-web (4.0.1-36) unstable; urgency=medium
 
   * Bug #53390: move some css vars out of theme file
