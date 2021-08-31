@@ -744,82 +744,89 @@ class simpleLdap(object):
         if newdn.lower().endswith(self.dn.lower()):
             raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
 
-        if univention.admin.modules.supports(self.module, 'subtree_move'):
-            # check if is subtree:
-            subelements = self.lo.search(base=self.dn, scope='one', attr=[])
-            if subelements:
-                olddn = self.dn
-                ud.debug(ud.ADMIN, ud.INFO, 'move: found subelements, do subtree move: newdn: %s' % newdn)
-                # create copy of myself
-                module = univention.admin.modules.get(self.module)
-                position = univention.admin.uldap.position(self.lo.base)
-                position.setDn(self.lo.parentDn(newdn))
-                copyobject = module.object(None, self.lo, position)
-                copyobject.options = self.options[:]
-                copyobject.open()
-                for key in self.keys():
-                    copyobject[key] = self[key]
-                copyobject.policies = self.policies
-                copyobject.create()
-                to_be_moved = []
-                moved = []
-                pattern = re.compile(u'%s$' % (re.escape(self.dn),), flags=re.I)
-                try:
-                    for subolddn, suboldattrs in subelements:
-                        # Convert the DNs to lowercase before the replacement. The cases might be mixed up if the Python lib is
-                        # used by the connector, for example:
-                        #   subolddn: uid=user_test_h80,ou=TEST_H81,$LDAP_BASE
-                        #   self.dn: ou=test_h81,$LDAP_BASE
-                        #   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
-                        #   -> subnewdn: uid=user_test_h80,OU=TEST_H81,ou=test_h82,$LDAP_BASE
-                        subnew_position = pattern.sub(dn2str(str2dn(self.lo.parentDn(subolddn))), newdn)
-                        subnewdn = dn2str(str2dn(subolddn)[:1] + str2dn(subnew_position))
-                        ud.debug(ud.ADMIN, ud.INFO, 'move: subelement %r to %r' % (subolddn, subnewdn))
+        # subtree move (if necessary and supported)
+        moved_dn = self.__move_subtree(newdn, temporary_ou)
+        if moved_dn:
+            return moved_dn
 
-                        submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
-                        submodule = univention.admin.modules.get(submodule)
-                        subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
-                        if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
-                            subold_rdn = u'+'.join(explode_rdn(subolddn, 1))
-                            type_ = univention.admin.modules.identifyOne(subolddn, suboldattrs)
-                            raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {
-                                'name': subold_rdn,
-                                'type': type_ and type_.module,
-                            })
-                        to_be_moved.append((subobject, subolddn, subnewdn))
+        # normal move (fails on subtrees)
+        res = n(self._move(newdn, ignore_license=ignore_license))
+        self._delete_temporary_ou_if_empty(temporary_ou)
+        return res
 
-                    for subobject, subolddn, subnewdn in to_be_moved:
-                        subobject.open()
-                        subobject.move(subnewdn)
-                        moved.append((subolddn, subnewdn))
+    def __move_subtree(self, newdn, temporary_ou):
+        if not univention.admin.modules.supports(self.module, 'subtree_move'):
+            return False
 
-                    univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, position='', dn=self.dn).remove()
-                    self._delete_temporary_ou_if_empty(temporary_ou)
-                except BaseException:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'move: subtree move failed, trying to move back.')
-                    position = univention.admin.uldap.position(self.lo.base)
-                    position.setDn(self.lo.parentDn(olddn))
-                    for subolddn, subnewdn in moved:
-                        submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
-                        submodule = univention.admin.modules.get(submodule)
-                        subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subnewdn)
-                        subobject.open()
-                        subobject.move(subolddn)
-                    copyobject.remove()
-                    self._delete_temporary_ou_if_empty(temporary_ou)
-                    raise
-                self.dn = newdn
-                return newdn
-            else:
-                # normal move, fails on subtrees
-                res = n(self._move(newdn, ignore_license=ignore_license))
-                self._delete_temporary_ou_if_empty(temporary_ou)
-                return res
+        # check if is subtree:
+        subelements = self.lo.search(base=self.dn, scope='one', attr=[])
+        if not subelements:
+            return False
 
-        else:
-            res = n(self._move(newdn, ignore_license=ignore_license))
+        olddn = self.dn
+        ud.debug(ud.ADMIN, ud.INFO, 'move: found subelements, do subtree move: newdn: %s' % newdn)
+        # create copy of myself
+        module = univention.admin.modules.get(self.module)
+        position = univention.admin.uldap.position(self.lo.base)
+        position.setDn(self.lo.parentDn(newdn))
+        copyobject = module.object(None, self.lo, position)
+        copyobject.options = self.options[:]
+        copyobject.open()
+        for key in self.keys():
+            copyobject[key] = self[key]
+        copyobject.policies = self.policies
+        copyobject.create()
+
+        to_be_moved = []
+        moved = []
+        pattern = re.compile(u'%s$' % (re.escape(self.dn),), flags=re.I)
+        try:
+            for subolddn, suboldattrs in subelements:
+                # Convert the DNs to lowercase before the replacement. The cases might be mixed up if the Python lib is
+                # used by the connector, for example:
+                #   subolddn: uid=user_test_h80,ou=TEST_H81,$LDAP_BASE
+                #   self.dn: ou=test_h81,$LDAP_BASE
+                #   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
+                #   -> subnewdn: uid=user_test_h80,OU=TEST_H81,ou=test_h82,$LDAP_BASE
+                subnew_position = pattern.sub(dn2str(str2dn(self.lo.parentDn(subolddn))), newdn)
+                subnewdn = dn2str(str2dn(subolddn)[:1] + str2dn(subnew_position))
+                ud.debug(ud.ADMIN, ud.INFO, 'move: subelement %r to %r' % (subolddn, subnewdn))
+
+                submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
+                submodule = univention.admin.modules.get(submodule)
+                subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
+                if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
+                    subold_rdn = u'+'.join(explode_rdn(subolddn, 1))
+                    type_ = univention.admin.modules.identifyOne(subolddn, suboldattrs)
+                    raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {
+                        'name': subold_rdn,
+                        'type': type_ and type_.module,
+                    })
+                to_be_moved.append((subobject, subolddn, subnewdn))
+
+            for subobject, subolddn, subnewdn in to_be_moved:
+                subobject.open()
+                subobject.move(subnewdn)
+                moved.append((subolddn, subnewdn))
+
+            univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, position='', dn=self.dn).remove()
             self._delete_temporary_ou_if_empty(temporary_ou)
-            return res
+        except BaseException:
+            ud.debug(ud.ADMIN, ud.ERROR, 'move: subtree move failed, trying to move back.')
+            position = univention.admin.uldap.position(self.lo.base)
+            position.setDn(self.lo.parentDn(olddn))
+            for subolddn, subnewdn in moved:
+                submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
+                submodule = univention.admin.modules.get(submodule)
+                subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subnewdn)
+                subobject.open()
+                subobject.move(subolddn)
+            copyobject.remove()
+            self._delete_temporary_ou_if_empty(temporary_ou)
+            raise
+
+        self.dn = newdn
+        return newdn
 
     def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> Optional[List[Tuple[str, str]]]
         """
