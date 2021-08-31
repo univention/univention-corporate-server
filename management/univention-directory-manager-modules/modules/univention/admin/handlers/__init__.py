@@ -736,10 +736,10 @@ class simpleLdap(object):
             if self.dn == newdn:
                 raise univention.admin.uexceptions.ldapError(_('Moving not possible: old and new DN are identical.'))
             else:
-                # We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
+                # We must use a temporary folder because OpenLDAP does not allow a case rename of an container with subobjects
                 temporary_ou = self._create_temporary_ou()
                 temp_dn = dn2str(str2dn(newdn)[:1] + str2dn(temporary_ou) + str2dn(self.lo.base))
-                self.dn = n(self.move(temp_dn, ignore_license, temporary_ou))
+                self.move(temp_dn, ignore_license, temporary_ou)
 
         if newdn.lower().endswith(self.dn.lower()):
             raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
@@ -752,6 +752,7 @@ class simpleLdap(object):
         # normal move (fails on subtrees)
         res = n(self._move(newdn, ignore_license=ignore_license))
         self._delete_temporary_ou_if_empty(temporary_ou)
+        self.old_dn = res
         return res
 
     def __move_subtree(self, newdn, temporary_ou):

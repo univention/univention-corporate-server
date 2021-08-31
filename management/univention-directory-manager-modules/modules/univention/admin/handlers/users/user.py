@@ -1530,8 +1530,10 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_pre_rename(self, newdn):
         super(object, self)._ldap_pre_rename(newdn)
+        old_dn = self.old_dn
         try:
             self.move(newdn)
+            self.old_dn = old_dn
         finally:
             univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 

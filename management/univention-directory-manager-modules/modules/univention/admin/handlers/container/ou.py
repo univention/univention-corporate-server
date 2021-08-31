@@ -233,7 +233,9 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_rename(self, newdn):
         super(object, self)._ldap_pre_rename(newdn)
+        old_dn = self.old_dn
         self.move(newdn)
+        self.old_dn = old_dn
 
     def _ldap_post_move(self, olddn):
         super(object, self)._ldap_post_move(olddn)
