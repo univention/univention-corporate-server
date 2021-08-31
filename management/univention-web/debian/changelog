@@ -1,3 +1,9 @@
+univention-web (3.0.6-10) unstable; urgency=medium
+
+  * Bug #53617: version bump
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Aug 2021 14:59:27 +0200
+
 univention-web (3.0.6-7) unstable; urgency=medium
 
   * Bug #53617: hide 'Login'/'Logout' menu entry on login site
