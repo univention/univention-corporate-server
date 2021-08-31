@@ -755,6 +755,7 @@ class simpleLdap(object):
         return res
 
     def __move_subtree(self, newdn, temporary_ou):
+        """Move the contents of a subtree if there are subobjects"""
         if not univention.admin.modules.supports(self.module, 'subtree_move'):
             return False
 
@@ -765,6 +766,7 @@ class simpleLdap(object):
 
         olddn = self.dn
         ud.debug(ud.ADMIN, ud.INFO, 'move: found subelements, do subtree move: newdn: %s' % newdn)
+        # caution! this code removes password attributes or other non-mapped LDAP attributes!
         # create copy of myself
         module = univention.admin.modules.get(self.module)
         position = univention.admin.uldap.position(self.lo.base)
@@ -831,6 +833,7 @@ class simpleLdap(object):
     def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> Optional[List[Tuple[str, str]]]
         """
         Internal function to move all children of a container.
+        Must only be used by users/user and users/ldap!
 
         :param str olddn: The old distinguished name of the parent container.
         :param str newdn: The new distinguished name of the parent container.
