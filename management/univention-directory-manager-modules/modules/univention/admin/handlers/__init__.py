@@ -1529,19 +1529,18 @@ class simpleLdap(object):
         self._ldap_pre_move(newdn)
         self.call_udm_property_hook('hook_ldap_pre_move', self, newdn)
 
-        olddn = self.dn
         self.lo.rename(self.dn, newdn)
         self.dn = newdn
 
         try:
-            self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
-            self._move_in_subordinates(olddn)
-            self._ldap_post_move(olddn)
+            self._move_in_groups(self.old_dn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
+            self._move_in_subordinates(self.old_dn)
+            self._ldap_post_move(self.old_dn)
         except Exception:
             # move back
-            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
-            self.lo.rename(self.dn, olddn)
-            self.dn = olddn
+            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % self.old_dn)
+            self.lo.rename(self.dn, self.old_dn)
+            self.dn = self.old_dn
             raise
 
         self.call_udm_property_hook('hook_ldap_post_move', self)
