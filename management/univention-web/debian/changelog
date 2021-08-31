@@ -1,3 +1,9 @@
+univention-web (3.0.6-7) unstable; urgency=medium
+
+  * Bug #53617: hide 'Login'/'Logout' menu entry on login site
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Aug 2021 12:31:13 +0200
+
 univention-web (3.0.6-6) unstable; urgency=medium
 
   * Bug #37720: enable conditional requests for gzip compressed requests

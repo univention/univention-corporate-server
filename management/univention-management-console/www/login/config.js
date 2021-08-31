@@ -11,6 +11,7 @@ var umcConfig = {
 		"dojo/NodeList-html"
 	],
 	callback: function(query, login, dialog, tools, i18nTools, _) {
+		tools.status('umcMenu/hideLogin', true);
 		var _getText = function(name, fallback) {
 			var loginTexts = tools.status('login_texts') || {};
 			var locale = i18nTools.defaultLang().substring(0, 2);
