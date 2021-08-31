@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest
+#!/usr/share/ucs-test/runner /usr/bin/pytest -s -l -v
 ## desc: Containers and Users of the same name may not exist in the same position
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -8,11 +8,9 @@
 
 import pytest
 
-from univention.config_registry import ucr
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.uldap
-
 
 
 @pytest.fixture
@@ -78,7 +76,7 @@ def test_container_move_fails(udm, username):
 
 
 @pytest.mark.parametrize('container_type', ['container/cn', 'container/ou', 'groups/group', 'computers/windows'])
-def test_container_rename_fails(udm, container_type, username):
+def test_container_rename_fails(udm, container_type, username, ucr):
 	user = udm.create_user(username=username, position=ucr['ldap/base'])[0]
 	position = get_position(user)
 
