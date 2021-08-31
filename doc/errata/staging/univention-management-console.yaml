@@ -1,7 +1,7 @@
 product: ucs
-release: "5.0"
-version: [0]
-scope: ucs_5.0-0-errata5.0-0
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console
 fix: 11.0.6-16A~4.4.0.202108271201
 desc: |
