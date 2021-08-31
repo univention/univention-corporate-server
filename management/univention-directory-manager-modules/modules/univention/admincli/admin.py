@@ -733,7 +733,7 @@ class CLI(object):
             rdn = ldap.dn.dn2str([ldap.dn.str2dn(dn)[0]])
             newdn = "%s,%s" % (rdn, position_dn)
             try:
-                object.move(newdn)
+                dn = object.move(newdn)
                 object_modified += 1
             except (univention.admin.uexceptions.noObject, univention.admin.uexceptions.ldapError, univention.admin.uexceptions.nextFreeIp, univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.invalidOperation) as exc:
                 raise OperationFailed('E: %s' % (exc,))
