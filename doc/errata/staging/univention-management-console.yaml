@@ -3,9 +3,10 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console
-fix: 11.0.6-16A~4.4.0.202108271201
+fix: 
 desc: |
  This update addresses the following issue(s):
  * Access to the Univention Management Console has been repaired if the user
    is allowed to use only one module which does not have a flavor.
-bug: [53710]
+ * The login site no longer has the "Login" entry in the menu.
+bug: [53710, 53617]
