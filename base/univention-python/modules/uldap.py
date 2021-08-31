@@ -832,7 +832,7 @@ class access(object):
             response['ctrls'] = resp_ctrls
 
     def rename(self, dn, newdn, serverctrls=None, response=None):
-        # type: (str, str, Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
+        # type: (str, str, Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> str
         """
         Rename a LDAP object.
 
@@ -841,6 +841,8 @@ class access(object):
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
+        :returns: The new distinguished name.
+        :rtype: str
         """
         univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
         oldsdn = self.parentDn(dn)
@@ -856,6 +858,7 @@ class access(object):
         else:
             univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
             self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
+        return newdn
 
     @_fix_reconnect_handling
     def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
