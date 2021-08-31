@@ -40,7 +40,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin._ucr import configRegistry as ucr
 from univention.admin.handlers.users.user import mapHomePostalAddress, unmapHomePostalAddress
 from univention.admin.layout import Group, Tab
@@ -425,20 +424,7 @@ class object(univention.admin.handlers.simpleLdap):
         newdn = self.acquire_unique_dn()
         self.dn = olddn
 
-        self.lo.rename(self.dn, newdn)
-        self.dn = newdn
-
-        try:
-            self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
-            self._move_in_subordinates(olddn)
-            self._ldap_post_move(olddn)
-        except BaseException:
-            # move back
-            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
-            self.lo.rename(self.dn, olddn)
-            self.dn = olddn
-            raise
-        return self.dn
+        return super(object, self)._move(newdn, modify_childs=modify_childs, ignore_license=ignore_license)
 
     @classmethod
     def unmapped_lookup_filter(cls):
