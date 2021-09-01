@@ -11,3 +11,5 @@ desc: |
    an `authorize:Authorize` filter. These attributes will be compared
    case insensitive.
 bug: [53432]
+erratum: 1040
+announced: 2021-09-01
