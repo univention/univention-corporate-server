@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-web
 fix: 4.0.1-37A~5.0.0.202108311526
 desc: |
- This update addresses the following issue(s):
- * The login site no longer has the "Login" entry in the menu.
+ This update addresses the following issue:
+ * The login page no longer has the "Login" entry in the menu.
 bug: [53728]

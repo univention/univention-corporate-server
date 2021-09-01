@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-radius
 fix: 7.0.1-2A~5.0.0.202108301220
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Activate default configuration in
    `/etc/freeradius/3.0/sites-available`.
 bug: [53712]
