@@ -192,8 +192,8 @@ def main(app):
 	def set_appliance_ucr_values():
 		UCR.load()
 		ucr_update(UCR, {
-			'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist,
-			'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist,
+			'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist.replace(', ', ' '),
+			'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist.replace(', ', ' '),
 			'repository/app_center/blacklist': app.appliance_blacklist,
 			'repository/app_center/whitelist': app.appliance_whitelist,
 			'umc/web/appliance/id': app.id,

@@ -1,3 +1,9 @@
+univention-app-appliance (4.0.0-4) unstable; urgency=medium
+
+  * Bug #53733: fixed system/setup/boot/fields|pages/blacklist
+
+ -- Felix Botner <botner@univention.de>  Wed, 01 Sep 2021 13:33:28 +0200
+
 univention-app-appliance (4.0.0-3) unstable; urgency=medium
 
   * Bug #51598: Fix base64 value
