@@ -1,3 +1,9 @@
+ucs-test (10.0.6-35) unstable; urgency=low
+
+  * Bug #52344: Do not pull from hub.docker.com 60 times a day
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Sep 2021 14:57:04 +0200
+
 ucs-test (10.0.6-34) unstable; urgency=low
 
   * Bug #53717: raise TypeError instead of ValueError
