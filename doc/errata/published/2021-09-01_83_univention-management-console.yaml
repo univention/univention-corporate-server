@@ -10,3 +10,5 @@ desc: |
    is allowed to use only one UMC module which does not have a flavor.
  * The login page no longer has the "Login" entry in the menu.
 bug: [51659, 53728]
+erratum: 83
+announced: 2021-09-01
