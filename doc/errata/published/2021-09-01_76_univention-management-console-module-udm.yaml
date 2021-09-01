@@ -9,3 +9,5 @@ desc: |
  * Rewriting properties of apps using App Options changed the original
    options leading to follow up errors especially in the UDM REST API.
 bug: [53714]
+erratum: 76
+announced: 2021-09-01
