@@ -11,3 +11,5 @@ desc: |
    *unset* values might have changed, e.g. `update/check/boot/enabled` and
    `update/check/cron/enabled` are affected.
 bug: [47860]
+erratum: 79
+announced: 2021-09-01
