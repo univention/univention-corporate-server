@@ -9,3 +9,5 @@ desc: |
  * Activate default configuration in
    `/etc/freeradius/3.0/sites-available`.
 bug: [53712]
+erratum: 77
+announced: 2021-09-01
