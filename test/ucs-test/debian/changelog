@@ -1,3 +1,9 @@
+ucs-test (9.0.7-62) unstable; urgency=low
+
+  * Bug #52344: Do not pull from hub.docker.com 60 times a day
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Sep 2021 14:44:51 +0200
+
 ucs-test (9.0.7-61) unstable; urgency=low
 
   * Bug #53725: Tests to prevent containers and users having the same name in

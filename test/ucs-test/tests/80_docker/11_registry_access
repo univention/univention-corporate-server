@@ -1,70 +1,64 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check registry access - Anonymous pull shall succeed, push not
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
-base_image="alpine:3.10"
+set -u
 
-rm ~/.docker/config.json
+# shellcheck source=/dev/null
+. "$TESTLIBPATH/base.sh" || exit 137
 
-hub="docker.software-univention.de"
-image="$hub/$base_image"
-echo "=============="
-echo "TESTING $image"
-docker pull "$image" || exit 1
-docker push "$image" && exit 2
-docker rmi "$image"
-docker login -u ucs -p readonly "$hub" || exit 3
-docker pull "$image" || exit 4
-docker push "$image" && exit 5
-docker rmi "$image"
+IMG="alpine:3.10"
 
-rm ~/.docker/config.json
+main () {
+	local test upload
+	for upload in "" "-upload"
+	do
+		for test in "" "-test"
+		do
+			test_hub "docker${test}${upload}.software-univention.de"
+		done
+	done
+}
+test_hub () {
+	local hub="$1" image="$1/$IMG"
+	section "$image"
+	test_anonymous
+	test_authenticated
+}
+test_anonymous () {
+	log_and_execute docker logout "$hub"
+	test_pull_push
+}
+test_authenticated () {
+	if [ -n "$upload" ]
+	then
+		log_and_execute docker login -u ucs -p readonly "$hub" && { fail_test "Login failed"; return 1; }
+	else
+		log_and_execute docker login -u ucs -p readonly "$hub" || { fail_test "Login failed"; return 1; }
+	fi
+	test_pull_push
+}
+test_pull_push () {
+	test_pull
+	test_push
+}
+test_pull () {
+	if [ -n "$upload" ]
+	then
+		log_and_execute docker pull "$image" && fail_test "Pull should not succeed for '$image'"
+	else
+		log_and_execute docker pull "$image" || fail_test "Pull should succeed"
+	fi
+	docker rmi "$image"
+}
+test_push () {
+	docker import - "$image" </dev/null
+	log_and_execute docker push "$image" && fail_test "Push should never succeed"
+	docker rmi "$image"
+}
 
-hub="docker-test.software-univention.de"
-image="$hub/$base_image"
-echo "=============="
-echo "TESTING $image"
-docker pull "$image" || exit 6
-docker push "$image" && exit 7
-docker rmi "$image"
-docker login -u ucs -p readonly "$hub" || exit 8
-docker pull "$image" || exit 9
-docker push "$image" && exit 10
-docker rmi "$image"
-
-
-
-
-docker pull "$base_image"
-
-rm ~/.docker/config.json
-
-hub="docker-upload.software-univention.de"
-image="$hub/$base_image"
-echo "=============="
-echo "TESTING $image"
-docker pull "$image" && exit 11
-docker tag "$base_image" "$image"
-docker push "$image" && exit 12
-docker rmi "$image"
-docker login -u ucs -p readonly "$hub" && exit 13
-
-rm ~/.docker/config.json
-
-hub="docker-test-upload.software-univention.de"
-image="$hub/$base_image"
-echo "=============="
-echo "TESTING $image"
-docker pull "$image" && exit 14
-docker tag "$base_image" "$image"
-docker push "$image" && exit 15
-docker rmi "$image"
-docker login -u ucs -p readonly "$hub" && exit 16
-
-
-docker rmi "$base_image"
-
-exit 0
+main
