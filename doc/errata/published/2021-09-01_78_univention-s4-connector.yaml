@@ -10,3 +10,5 @@ desc: |
    now supports the arguments --binddn and --bindpwdfile,
    which have been accidently removed in UCS 5.0.
 bug: [53705]
+erratum: 78
+announced: 2021-09-01
