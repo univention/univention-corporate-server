@@ -11,3 +11,5 @@ desc: |
    The check via the `memberOf` attribute for group membership was not
    done case insensitive. This has been fixed.
 bug: [53432]
+erratum: 1041
+announced: 2021-09-01
