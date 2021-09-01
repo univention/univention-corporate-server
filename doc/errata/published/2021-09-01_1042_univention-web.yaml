@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The login page no longer has the "Login" entry in the menu.
 bug: [53617]
+erratum: 1042
+announced: 2021-09-01
