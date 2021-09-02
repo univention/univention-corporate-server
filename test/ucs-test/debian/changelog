@@ -1,3 +1,11 @@
+ucs-test (9.0.7-64) unstable; urgency=medium
+
+  * Bug #40709: allow ucs-test checks to extend pytest arguments
+  * Bug #40709: implement pytest marker for ucs-test exposure,roles,tags
+  * Bug #40709: call pytest with --tb=native
+
+ -- Florian Best <best@univention.de>  Thu, 02 Sep 2021 12:08:47 +0200
+
 ucs-test (9.0.7-63) unstable; urgency=medium
 
   * Bug #53739: adjust selenium test framework for input boxes
