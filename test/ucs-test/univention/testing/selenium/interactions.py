@@ -54,7 +54,7 @@ class Interactions(object):
 	def click_checkbox_of_grid_entry(self, name, **kwargs):
 		logger.info("Clicking the checkbox of the grid entry  %r", name)
 		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
 			% (name,),
 			**kwargs
 		)
@@ -189,7 +189,7 @@ class Interactions(object):
 		else:
 			raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
 
-	def enter_input_combobox(self, inputname, inputvalue):  # type: (str, str) -> None
+	def enter_input_combobox(self, inputname, inputvalue, with_click=True):  # type: (str, str) -> None
 		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
@@ -198,9 +198,20 @@ class Interactions(object):
 			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
 		elems[0].clear()
 		elems[0].send_keys(inputvalue)
-		xpath = expand_path('//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "%s")]' % (inputvalue))
-		self.wait_until_element_visible(xpath)
-		self.click_element(xpath)
+		if with_click:
+			xpath = expand_path('//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "%s")]' % (inputvalue))
+			self.wait_until_element_visible(xpath)
+			self.click_element(xpath)
+
+	def enter_input_date(self, inputname, inputvalue):  # type: (str, str) -> None
+		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.get_all_enabled_elements
+		)
+		if len(elems) != 1:
+			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
+		elems[0].clear()
+		elems[0].send_keys(inputvalue)
 
 	def submit_input(self, inputname):
 		"""
