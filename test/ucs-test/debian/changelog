@@ -1,3 +1,10 @@
+ucs-test (9.0.7-65) unstable; urgency=low
+
+  * Bug #40709: temporarily deactivate feature as Pytest v3 does not have
+    _pytest.main.Node.iter_markers.
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 03 Sep 2021 09:10:49 +0200
+
 ucs-test (9.0.7-64) unstable; urgency=medium
 
   * Bug #40709: allow ucs-test checks to extend pytest arguments

@@ -85,9 +85,12 @@ def pytest_configure(config):
 
 
 def pytest_runtest_setup(item):
-	check_tags(item)
-	check_roles(item)
-	check_exposure(item)
+	# check_tags(item)
+	# check_roles(item)
+	# check_exposure(item)
+
+	# Pytest v3 does not have _pytest.main.Node.iter_markers.
+	pass
 
 
 def check_tags(item):
