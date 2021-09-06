@@ -2285,7 +2285,7 @@ from ldap.schema import AttributeType
 conn = getMachineConnection()
 schema = conn.get_schema()
 attr = schema.get_obj(AttributeType, "gecos")
-print(atttr.syntax)'
+print(attr.syntax)'
 				</programlisting>
 			</para>
 		</section>
