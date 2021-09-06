@@ -124,7 +124,10 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^(ldap\.)?NO_SUCH_OBJECT: .*', None),
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
 	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
-	('^permissionDenied$', ['_create']),
+	("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access'}$", ['uldap.py.* in modify']),  # Bug #53721, ...
+	("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access', 'info': 'no write access to parent'}", ['uldap.py.* in add', 'uldap.py.* in delete']),  # Bug #53721, ...
+	('permissionDenied$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock']),
+	('univention.admin.uexceptions.permissionDenied: Can not modify lock time of .*', ['in sync_to_ucs']),
 	(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	('^ldapError: No such object', ['in _create']),
 	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
@@ -160,6 +163,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ProxyError: Proxy configuration error: credentials not accepted', None),
 	('socket.timeout: timed out', None),
 	(r'socket.gaierror: \[Errno \-2\] Name or service not known', None),
+	('ConfigurationError: Configuration error: Temporary failure in name resolution', ['in access']),
+	(r'socket.gaierror: \[Errno \-3\] Temporary failure in name resolution', ['urllib/request.py']),
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
 	# various test cases:
@@ -167,7 +172,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
 	(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 	(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
-	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
+	('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs']),  # Bug #53748, ...
 	('univention.lib.umc.ConnectionError:.*machine.secret.*', None),
 	('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*', None),
 	(r'^OSError: \[Errno 24\] Too many open files', None),
@@ -194,11 +199,18 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users']),  # Bug #53564
 	("ucsschool.importer.exceptions.UniqueIdError: Username '.*' is already in use by .*", ['in create_and_modify_users']),  # Bug #53564
 	('ucsschool.importer.exceptions.UserValidationError: <unprintable UserValidationError object>', ['in create_and_modify_users']),  # Bug #53564
+	("ucsschool.importer.exceptions.UnknownSchoolName: School '.*' does not exist.", ['in create_and_modify_users']),  # Bug #53564
+	(".*WARNING/ForkPoolWorker.* in create_and_modify_users", []),  # Bug #53564
+	(r"ucsschool.lib.models.attributes.ValidationError: .*is missing in the users 'school\(s\)' attributes", ['in create_and_modify_users']),  # Bug #53564
 	("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py']),  # Bug #53564
 	("ConnectionForced:.*broker forced connection closure with reason .*shutdown", ['celery']),  # Bug #53564
 	(r"error: \[Errno 104\] Connection reset by peer", ['celery']),  # Bug #53671 Bug #53564
 	(r"ConnectionResetError: \[Errno 104\] Connection reset by peer", ['celery']),  # Bug #53671 Bug #53564
 	("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn']),  # Bug #53564
+	("univention.admin.uexceptions.noLock: The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready']),  # Bug #53749
+	("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs']),  # Bug #53749
+	(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/postgres.secret'", ['gunicorn']),  # Bug #53750
+	("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py']),
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
 	(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect']),  # Bug #51671
@@ -247,14 +259,15 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list']),  # Bug #43171
 	(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
 	('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs']),  # Bug #53278
+	('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs']),  # Bug #53278
 	('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4']),  # Bug #53278
 	('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs']),  # Bug #53277
 	(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns']),  # Bug #53332
 	(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs']),  # Bug #53334
 	("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist']),  # Bug #53276
-	("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['python2.7.*sync_from_ucs']),  # Bug #53720
+	("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs']),  # Bug #53720 Bug #53752
 	('ldap.REFERRAL:.*', ['uldap.py']),  # Bug #53721
-	('ldap.INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs']),  # Bug #53721
+	('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs']),  # Bug #53721
 ])
 
 
