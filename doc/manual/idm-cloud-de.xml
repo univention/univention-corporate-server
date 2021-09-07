@@ -98,60 +98,73 @@
 			Lizenzen ist im <guimenu>Microsoft 365 Admin Center</guimenu> zu erkennen.
 		</para>
 
-		<para>
-			Sollen UCS-Gruppen als Teams in Microsoft 365 angelegt werden, so müssen die Gruppen auf dem Reiter <guimenu>Microsoft 365</guimenu> über
-			die Checkbox <guimenu>Microsoft 365 Team</guimenu> als Team konfiguriert werden. Des Weiteren ist es notwendig auf dem selben Reiter
-			einen Besitzer dieses Teams zu definieren, der für die Nutzung von Microsoft 365 aktiviert ist.
-		</para>
+		<section id="idmcloud:o365:users">
+			<title>Benutzer</title>
+			<para>
+				Wird eine Änderung am Benutzer durchgeführt, so werden die Änderungen auch in die Azure Active Directory Domäne repliziert. Es erfolgt
+				keine Synchronisation aus dem Azure Active Directory in das UCS System. Das bedeutet Änderungen, die im Azure Active
+				Directory oder Office Portal vorgenommen, können durch Änderungen an den gleichen Attributen in UCS unter Umständen
+				wieder überschrieben werden.
+			</para>
 
-		<para>
-			Wird eine Änderung am Benutzer durchgeführt, so werden die Änderungen auch in die Azure Active Directory Domäne repliziert. Es erfolgt
-			keine Synchronisation aus dem Azure Active Directory in das UCS System. Das bedeutet Änderungen, die im Azure Active
-			Directory oder Office Portal vorgenommen, können durch Änderungen an den gleichen Attributen in UCS unter Umständen
-			wieder überschrieben werden.
-		</para>
+			<para>
+				Aufgrund von Sicherheitsrichtlinien des Azure Active Directory können Benutzer oder Gruppen im Azure AD
+				während der Synchronisation nicht gelöscht werden. Sie werden lediglich deaktiviert und umbenannt. Die Lizenzen werden im Azure
+				Active Directory entzogen, so dass diese für andere Benutzer zur Verfügung stehen. Benutzer und Gruppen, deren Namen
+				mit <guimenu>ZZZ_deleted</guimenu> anfangen, können im <guimenu>Microsoft 365 Admin Center</guimenu> gelöscht werden.
+			</para>
 
-		<para>
-			Aufgrund von Sicherheitsrichtlinien des Azure Active Directory können Benutzer oder Gruppen im Azure AD
-			während der Synchronisation nicht gelöscht werden. Sie werden lediglich deaktiviert und umbenannt. Die Lizenzen werden im Azure
-			Active Directory entzogen, so dass diese für andere Benutzer zur Verfügung stehen. Benutzer und Gruppen, deren Namen
-			mit <guimenu>ZZZ_deleted</guimenu> anfangen, können im <guimenu>Microsoft 365 Admin Center</guimenu> gelöscht werden.
-		</para>
+			<para>
+				Es ist notwendig in Microsoft 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
+				Landes aus den Kontaktdaten des Benutzers oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
+				<envar>office365/attributes/usageLocation</envar> kann ein 2-Zeichen-Kürzel, bspw. DE vorgegeben werden.
+			</para>
 
-		<para>
-			Es ist notwendig in Microsoft 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
-			Landes aus den Kontaktdaten des Benutzers oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
-			<envar>office365/attributes/usageLocation</envar> kann ein 2-Zeichen-Kürzel, bspw. DE vorgegeben werden.
-		</para>
+			<para>
+				Über die &ucsUCRV; <envar>office365/attributes/sync</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
+				eines Benutzerkontos synchronisiert werden. Es handelt sich um eine kommaseparierte Liste von LDAP Attributen. Somit ist eine
+				Anpassung an die eigenen Bedürfnisse einfach möglich.
+			</para>
 
-		<para>
-			Über die &ucsUCRV; <envar>office365/attributes/sync</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
-			eines Benutzerkontos synchronisiert werden. Es handelt sich um eine kommaseparierte Liste von LDAP Attributen. Somit ist eine
-			Anpassung an die eigenen Bedürfnisse einfach möglich.
-		</para>
+			<para>
+				Mit der &ucsUCRV; <envar>office365/attributes/anonymize</envar> können kommasepariert LDAP Attribute angegeben werden,
+				die zwar im Azure Active Directory angelegt, jedoch mit Zufallswerten gefüllt werden. Die &ucsUCRV;n
+				<envar>office365/attributes/static/.*</envar> erlauben das Füllen von Attributen auf Microsoft Seite mit einem
+				vordefinierten Wert.
+			</para>
 
-		<para>
-			Mit der &ucsUCRV; <envar>office365/attributes/anonymize</envar> können kommasepariert LDAP Attribute angegeben werden,
-			die zwar im Azure Active Directory angelegt, jedoch mit Zufallswerten gefüllt werden. Die &ucsUCRV;n
-			<envar>office365/attributes/static/.*</envar> erlauben das Füllen von Attributen auf Microsoft Seite mit einem
-			vordefinierten Wert.
-		</para>
+			<para>
+				Mit der &ucsUCRV; <envar>office365/attributes/never</envar> können kommasepariert LDAP Attribute angegeben werden, die
+				nicht synchronisiert werden sollen, selbst wenn diese in <envar>office365/attributes/sync</envar> oder
+				<envar>office365/attributes/anonymize</envar> auftauchen.
+			</para>
 
-		<para>
-			Mit der &ucsUCRV; <envar>office365/attributes/never</envar> können kommasepariert LDAP Attribute angegeben werden, die
-			nicht synchronisiert werden sollen, selbst wenn diese in <envar>office365/attributes/sync</envar> oder
-			<envar>office365/attributes/anonymize</envar> auftauchen.
-		</para>
+			<para>
+				Die &ucsUCRV;n <envar>office365/attributes/mapping/.*</envar> definieren eine Abbildung der UCS LDAP Attribute zu Azure
+				Attributen. Diese Variablen müssen normalerweise nicht verändert werden. Die Synchronisation der Gruppen der
+				Microsoft 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> aktiviert werden.
+			</para>
 
-		<para>
-			Die &ucsUCRV;n <envar>office365/attributes/mapping/.*</envar> definieren eine Abbildung der UCS LDAP Attribute zu Azure
-			Attributen. Diese Variablen müssen normalerweise nicht verändert werden. Die Synchronisation der Gruppen der
-			Microsoft 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> aktiviert werden.
-		</para>
+			<para>
+				Änderungen an &ucsUCRV;n werden erst nach dem Neustart des &ucsUDL; umgesetzt.
+			</para>
+		</section>
 
-		<para>
-			Änderungen an &ucsUCRV;n werden erst nach dem Neustart des &ucsUDL; umgesetzt.
-		</para>
+		<section id="idmcloud:o365:Teams">
+			<title>Teams</title>
+			<para>
+				Für die Nutzung von Teams muss die Synchronisation von Gruppen per &ucsUCRV; <envar>office365/groups/sync=yes</envar> aktiviert werden, sofern die Microsoft 365 Connector App vor Version 4.0 installiert wurde.
+				Sollen UCS-Gruppen als Teams in Microsoft 365 angelegt werden, so müssen die Gruppen auf dem Reiter <guimenu>Microsoft 365</guimenu> über die Checkbox <guimenu>Microsoft 365 Team</guimenu> als Team konfiguriert werden.
+				Des Weiteren ist es notwendig auf dem selben Reiter einen Besitzer des Teams zu definieren.
+				Weitere Einstellungen am Team können von den Team Besitzern direkt im Teams Interface vorgenommen werden.
+				Nach der Aktivierung einer Gruppe als Team werden die Gruppenmitglieder dem neuen Team hinzugefügt.
+				Die Provisionierung eines neuen Teams in Microsoft 365 kann einige Minuten in Anspruch nehmen.
+			</para>
+
+			<para>
+				Es muss sichergestellt sein, dass die Benutzer eines Teams in Azure eine Lizenz erhalten, in der die Nutzung von Teams enthalten ist.
+			</para>
+		</section>
 
 	</section>
 	<section id="idmcloud:o365:multipleconnections">
@@ -195,8 +208,10 @@
 
 		<para>
 			Bei Synchronisationsproblemen sollte die Logdatei des &ucsUDL; geprüft werden:
-			<filename>/var/log/univention/listener.log</filename>. Mit Hilfe der &ucsUCRV; <envar>office365/debug/werror</envar>
-			können mehr Debugausgaben aktiviert werden.
+			<filename>/var/log/univention/listener.log</filename>.
+			Einige Aktionen des Connectors verwenden Operationen der Azure Cloud mit langer Laufzeit, insbesondere bei der Verwendung von Teams.
+			Diese Operationen werden in der Logdatei <filename>/var/log/univention/listener_modules/ms-office-async.log</filename> protokolliert.
+			Mit Hilfe der &ucsUCRV; <envar>office365/debug/werror</envar> können mehr Debugausgaben aktiviert werden.
 		</para>
 
 	</section>
