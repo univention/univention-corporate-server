@@ -157,7 +157,8 @@ def handler_set(args, opts=dict(), quiet=False):
 			key = arg[0:sep]
 			value = arg[sep + 1:]
 			key_exists = key in ucr._layer
-			if (not key_exists or sep == sep_set) and validate_key(key):
+			do_set_value = (not key_exists or sep == sep_set)
+			if do_set_value and validate_key(key):
 				if not quiet:
 					if key_exists:
 						print('Setting %s' % key)
@@ -165,6 +166,8 @@ def handler_set(args, opts=dict(), quiet=False):
 						print('Create %s' % key)
 				changes[key] = value
 			else:
+				if do_set_value:
+					opts['exit_code'] = 1
 				if not quiet:
 					if key_exists:
 						print('Not updating %s' % key)
