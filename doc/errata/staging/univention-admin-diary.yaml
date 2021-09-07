@@ -2,10 +2,9 @@ product: ucs
 release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
-src: univention-quota
+src: univention-admin-diary
 fix: 
 desc: |
  This update addresses the following issue(s):
- * The package univention-quota has been migrated to Python 3.
  * The design code was adjusted for the usage in UCS@school.
-bug: [51317, 53665]
+bug: [53665]

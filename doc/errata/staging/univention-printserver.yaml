@@ -7,4 +7,5 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * The package univention-printserver has been migrated to Python 3.
-bug: [51335]
+ * The design code was adjusted for the usage in UCS@school.
+bug: [51335, 53665]
