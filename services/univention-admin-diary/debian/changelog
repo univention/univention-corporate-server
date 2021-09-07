@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.3-2) unstable; urgency=medium
+
+  * Bug #53665: rename css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:05:13 +0200
+
 univention-admin-diary (2.0.3-1) unstable; urgency=low
 
   * Bug #51334: Fix Python 3 compatibility

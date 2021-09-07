@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-15) unstable; urgency=medium
+
+  * Bug #53665: rename css class + remove unused css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:00:11 +0200
+
 univention-management-console-module-udm (10.0.1-14) unstable; urgency=medium
 
   * Bug #53714: prevent altering of original object options through app

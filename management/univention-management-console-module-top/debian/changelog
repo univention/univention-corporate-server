@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-9) unstable; urgency=medium
+
+  * Bug #53665: rename css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:06:14 +0200
+
 univention-management-console-module-top (9.0.0-8) unstable; urgency=medium
 
   * Bug #52941: added new icon design for process overview

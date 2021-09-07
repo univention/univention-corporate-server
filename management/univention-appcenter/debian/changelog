@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-64) unstable; urgency=medium
+
+  * Bug #53665: remove unused css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:01:11 +0200
+
 univention-appcenter (9.0.2-63) unstable; urgency=medium
 
   * Bug #53655: changing to fomat_exc method
