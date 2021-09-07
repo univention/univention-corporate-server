@@ -147,6 +147,11 @@ listener_modules="udm_extension"
 if [ "${server_role:-}" != "memberserver" ]; then
 	listener_modules="$listener_modules ldap_extension"
 fi
+# Bug #53711: "WARNING: The "blocking locks" option is deprecated" caused by shares created in UCS4.4
+if [ -e "/usr/lib/univention-directory-listener/system/samba-shares.py" ]; then
+	listener_modules+=" samba-shares"
+fi
+echo "running univention-directory-listener-ctrl resync $listener_modules"
 # shellcheck disable=SC2086
 /usr/sbin/univention-directory-listener-ctrl resync $listener_modules
 # Wait for listener module resync to finish
@@ -194,6 +199,7 @@ ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9
 # Bug #52923: switch back to old fetchmail/autostart status
 if [ -n "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
 	eval "$(ucr shell fetchmail/autostart/update500)"
+	# shellcheck disable=SC2154
 	if [ -z "$fetchmail_autostart_update500" ] ; then
 		ucr unset fetchmail/autostart >&3 2>&3
 	else
