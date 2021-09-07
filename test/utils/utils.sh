@@ -1093,6 +1093,14 @@ ucs-winrm () {
 	return $?
 }
 
+add_extra_apt_scope () {
+	if [ -n "$SCOPE" ]; then
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
+		apt-get update -y
+	fi
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
