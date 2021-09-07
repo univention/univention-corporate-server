@@ -716,7 +716,7 @@ OPT_COMMANDS = {
 
 
 def main(args):
-	# type: (List[str]) -> None
+	# type: (List[str]) -> int
 	"""Run config registry."""
 	try:
 		# close your eyes ...
@@ -821,9 +821,10 @@ def main(args):
 				missing_parameter(action)
 
 			# if any filter option is set
+			cmd_opts['exit_code'] = 0
 			result = handler_func(args, cmd_opts)
 			if result is None:
-				return
+				return cmd_opts['exit_code']
 
 			results = result
 			# let the filter options do their job
@@ -839,5 +840,6 @@ def main(args):
 		if OPT_ACTIONS['debug'][1]:
 			raise
 		exception_occured()
+	return cmd_opts['exit_code']
 
 # vim:set sw=4 ts=4 noet:
