@@ -1,3 +1,9 @@
+ucs-test (10.0.6-39) unstable; urgency=medium
+
+  * Bug #20064: rename school meta packages
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 Sep 2021 13:24:23 +0200
+
 ucs-test (10.0.6-38) unstable; urgency=medium
 
   * Bug #53665: adjust selenium appcenter lib

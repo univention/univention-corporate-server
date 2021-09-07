@@ -18,7 +18,7 @@ from atexit import register
 
 
 def max_duration():
-	meta_packages = ['ucs-school-master', 'ucs-school-singlemaster', 'ucs-school-slave']
+	meta_packages = ['ucs-school-multiserver', 'ucs-school-singleserver', 'ucs-school-replica']
 	apt_cache = apt.Cache()
 	apt_cache.open()
 	for pkg in meta_packages:
