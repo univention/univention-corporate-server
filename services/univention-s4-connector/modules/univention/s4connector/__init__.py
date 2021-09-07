@@ -1167,6 +1167,14 @@ class ucs(object):
 				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 	def add_in_ucs(self, property_type, object, module, position):
+		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
+		if objectGUID:
+			objectGUID = decode_guid(objectGUID)
+
+		entryUUID = self._get_entryUUID(object['dn'])
+		if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+			ud.debug(ud.LDAP, ud.PROCESS, "add_in_ucs: object %s already deleted in UCS, ignoring create" % object['dn'])
+			return True
 
 		# reload extended attributes  # FIXME: maybe not necessary
 		univention.admin.modules.init(self.lo, univention.admin.uldap.position(self.lo.base), module)
@@ -1276,10 +1284,9 @@ class ucs(object):
 			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
 
-		if property_type in ['ou', 'container']:
-			if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-				ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
-				return True
+		if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+			ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
+			return True
 
 		if property_type == 'windowscomputer':
 			# Special handling for windows computer:
