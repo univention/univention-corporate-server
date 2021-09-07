@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/pytest
 # vim:set fileencoding=utf-8:
 """Unit test for univention.config_registry.misc."""
 
@@ -44,9 +44,14 @@ def test_key_shell_escape_error():
 		ucrm.key_shell_escape("")
 
 
-@pytest.mark.parametrize("key", list(u"""ÄäÖöÜüß[]\r\n!"#$%'()+,;<=>?\\`{}""") + [u": "])
+@pytest.mark.parametrize("key", list(u"""[]\r\n!"#$%'()+,;<=>?\\`{}""") + [u": "])
 def test_validate_key_invalid(key, out):
 	assert not ucrm.validate_key(key, out)
+
+
+@pytest.mark.parametrize("key", list(u"""ÄäÖöÜüß"""))
+def test_validate_key_valid(key, out):
+	assert ucrm.validate_key(key, out)
 
 
 @pytest.mark.parametrize("key", [
