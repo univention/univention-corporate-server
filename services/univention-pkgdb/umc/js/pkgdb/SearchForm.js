@@ -66,7 +66,7 @@ define([
 						this._set_selection_to_first_element('key');
 						this._set_query_pending('key', false);
 					}),
-					'class': 'umcTextBoxDark'
+					'class': 'umcTextBoxOnBody'
 				}, {
 					type: ComboBox,
 					name: 'pattern_list',
@@ -80,12 +80,12 @@ define([
 						this._handle_proposals(values);
 						this._set_query_pending('proposal', false);
 					}),
-					'class': 'umcTextBoxDark'
+					'class': 'umcTextBoxOnBody'
 				}, {
 					type: TextBox,
 					name: 'pattern_text',
 					label: _("Pattern"),
-					'class': 'umcTextBoxDark',
+					'class': 'umcTextBoxOnBody',
 					// inherits from dijit.form.ValidationTextBox, so we can use its
 					// validation abilities
 					regExp: '^[A-Za-z0-9_.*?-]+$'  // [: alnum: ] and these:  _ - . * ?

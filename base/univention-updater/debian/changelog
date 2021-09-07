@@ -1,3 +1,9 @@
+univention-updater (15.0.3-69) unstable; urgency=medium
+
+  * Bug #53665: remove unused css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:01:53 +0200
+
 univention-updater (15.0.3-68) unstable; urgency=low
 
   * Bug #47860: Update UCRV descriptions and move defaults

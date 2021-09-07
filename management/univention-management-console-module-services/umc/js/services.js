@@ -201,7 +201,7 @@ define([
 				onSearch: lang.hitch(this, function() {
 					this._searchWidget.submit();
 				}),
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}];
 
 			this._searchWidget = new SearchForm({

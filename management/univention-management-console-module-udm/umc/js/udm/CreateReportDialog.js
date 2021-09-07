@@ -65,8 +65,6 @@ define([
 
 		_container: null,
 
-		'class' : 'umcPopup',
-
 		// force max-width
 		style: 'max-width: 400px;',
 

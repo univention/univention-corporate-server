@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.1-10) unstable; urgency=medium
+
+  * Bug #53665: rename css class
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 10:04:45 +0200
+
 univention-pkgdb (13.0.1-9) unstable; urgency=medium
 
   * Bug #51337: migrate univention-pkgdb to Python 3

@@ -212,7 +212,7 @@ define([
 				'class': 'privacyStatementOverlayFooter'
 			});
 			var closeButton = new Button({
-				'class': 'privacyStatementOverlayFooterButton umcFlatButton',
+				'class': 'privacyStatementOverlayFooterButton',
 				defaultButton: true,
 				label: _('Close'),
 				callback: function() {

@@ -50,8 +50,7 @@ define([
 		// summary:
 		//		Class that provides the license import Dialog for UCS. It support importing a new license.
 
-		// umcPopup for content styling; umcConfirmDialog for max-width
-		'class': 'umcPopup umcConfirmDialog umcUdmLicenseImportDialog',
+		'class': 'umcUdmLicenseImportDialog',
 
 		closable: true,
 		options: [],

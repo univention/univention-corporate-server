@@ -30,6 +30,7 @@
 @require "../variables.styl"
 @require "../document.styl"
 @require "../Grid.styl"
+@require "../widgets/TitlePane.styl"
 
 // seperation line between module header and content when scrolling
 .umcModuleHeader
@@ -48,6 +49,7 @@
 	align-items: center
 	flex-wrap: wrap
 	gap: spacing(1) 0
+	min-height: var(--button-size)
 
 .umcModuleHeader--withSubTitle .umcModuleHeaderWrapper
 	align-items: flex-start
@@ -91,10 +93,10 @@
 
 
 // headerText/helpText spacing
-.umc .umcPageHeader + .umcPageHelpText
+.umc .umcPageHeader + *
 	margin-top: spacing(1)
-.umc .umcPageHelpText:not(:last-child)
-	margin-bottom: spacing(2)
+.umc .umcPageHelpText + *
+	margin-top: spacing(2)
 .umc .umcPageNavContent:last-child
 	margin-bottom: spacing(2)
 
@@ -126,11 +128,12 @@
 
 		.dijitTitlePane
 			border-top: 0
+			border-radius: var(--border-radius-container)
 
 .umc .umcSetupNetworkPage,
 .umc .umcAppCenterRepositorySettingsPage
 	.umcGrid
-		@extends .umc .umcGridLight
+		@extends .umc .umcGridOnContainer
 
 .umc .umcSetupNetworkPage,
 .umc .umcSetupCertificatePage,
@@ -170,11 +173,9 @@
 			overflow: hidden
 
 		.dijitTitlePane
-			background-color: var(--bgc-content-body)
+			@extends .umcTitlePaneOnContainer
 			border-radius: 0
-			border-top: 2px solid var(--bgc-content-body)
 			margin-bottom: 0
-			--bgc-inputfield-on-container: var(--bgc-content-container)
 
-			.dijitTitlePane
-				border-top: 0
+			& + .dijitTitlePane
+				border-top: 2px solid var(--bgc-content-body)

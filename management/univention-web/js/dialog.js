@@ -174,11 +174,6 @@ define([
 			return this._alertDialogDeferred;
 		},
 
-		centerAlertDialog: function() {
-			this._alertDialog._relativePosition = null;
-			this._alertDialog._position();
-		},
-
 		confirm: function(/*String|_WidgetBase*/ message, /*Object[]*/ options, /*String?*/ title) {
 			// summary:
 			//		Popup a confirmation dialog with a given message string and a
@@ -259,7 +254,8 @@ define([
 			var confirmDialog = new ConfirmDialog({
 				title: title || _('Confirmation'),
 				message: message,
-				options: options
+				options: options,
+				destroyOnCancel: true
 			});
 
 			// connect to 'confirm' event to close the dialog in any case
@@ -383,44 +379,6 @@ define([
 				options.references.showDeferred = showDeferred;
 			}
 
-			return deferred;
-		},
-
-		templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String|Object[]? */ button ) {
-			// summary:
-			//		Popup an alert dialog with a text message based on the given template file. The users needs to
-			//		confirm the dialog by clicking on the 'OK' button. The h1-tag is placed is dialog title.
-			// templateModule:
-			//		The module name where to find the template
-			// templateFile:
-			//		The template file to use
-			// keys:
-			//		An object with values that should be replaced in the template (using lang.replace)
-			// title:
-			//		An optional title for the popup window
-			// button:
-			//		An alternative label for the button or a list of button definition dicts.
-			var deferred = new Deferred();
-			require([lang.replace('dojo/text!{0}/{1}', [templateModule, templateFile])], function(message) {
-				message = lang.replace( message, keys );
-				var reH1 = /<h1>([^<]*)<\/h1>/;
-				title = message.match(reH1)[1] || title || '';
-				message = message.replace(reH1, '');
-				var widget = new Text( {  content : message } );
-				if (message.indexOf('data-dojo-type=') >= 0) {
-					// we need to parse the html code with the dojo parser
-					parser.parse(widget.domNode);
-				}
-				domClass.add(widget.domNode, 'umcPopup');
-				if (button instanceof Array) {
-					dialog.confirm(widget, button, title).then(function(response) {
-						deferred.resolve(response);
-					});
-				} else {
-					deferred.resolve();
-					dialog.alert(widget, title || 'UMC', button);
-				}
-			});
 			return deferred;
 		}
 	});

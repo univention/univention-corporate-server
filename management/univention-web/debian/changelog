@@ -1,3 +1,9 @@
+univention-web (4.0.1-38) unstable; urgency=medium
+
+  * Bug #53665: UCS 5 design adjustments  + changes for ucs-school
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Sep 2021 09:58:54 +0200
+
 univention-web (4.0.1-37) unstable; urgency=medium
 
   * Bug #53728: hide 'Login'/'Logout' menu entry on login site

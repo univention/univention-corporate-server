@@ -34,15 +34,14 @@ define([
 	"dojo/_base/array",
 	"dojo/query",
 	"dojo/dom-class",
-	"dijit/Dialog",
 	"dijit/TitlePane",
 	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
-	"umc/widgets/StandbyMixin",
+	"umc/widgets/Dialog",
 	"umc/widgets/Text",
 	"put-selector/put"
-], function(declare, lang, array, query, domClass, Dialog, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, StandbyMixin, Text, put) {
+], function(declare, lang, array, query, domClass, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, Dialog, Text, put) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
 	// require it explicitly
@@ -53,7 +52,7 @@ define([
 		registry = _registry;
 	});
 
-	return declare("umc.widgets.ConfirmDialog", [ Dialog, StandbyMixin, _WidgetsInTemplateMixin ], {
+	return declare("umc.widgets.ConfirmDialog", [ Dialog, _WidgetsInTemplateMixin ], {
 		// summary:
 		//		Class that provides a customizable confirmation dialog.
 		//		(For easier access see dialog.confirm().)
@@ -112,8 +111,6 @@ define([
 
 		actionBarTemplate: '<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBar" class="umcDialogActionBar dijitDisplayNone"></div>',
 
-		closable: true,
-
 		_container: null,
 
 		_setMessageAttr: function(message) {
@@ -160,9 +157,9 @@ define([
 			this.options = [];
 		},
 
-		_setOptionsAttr: function() {
+		_setOptionsAttr: function(options) {
 			this.actionBar.destroyDescendants();
-			array.forEach(this.options, lang.hitch(this, function(ichoice, idx) {
+			array.forEach(options, lang.hitch(this, function(ichoice, idx) {
 				var props = lang.mixin({}, ichoice, {
 					'class': 'ucsTextButton',
 					defaultButton: !!ichoice['default'],
@@ -184,39 +181,50 @@ define([
 
 				this.actionBar.addChild(new Button(props));
 			}));
-			domClass.toggle(this.actionBar.domNode, 'dijitDisplayNone', !this.options.length);
+			domClass.toggle(this.actionBar.domNode, 'dijitDisplayNone', !options.length);
+			this._set('options', options);
+		},
 
-			// make sure that the default button is focused
-			// var defaultButton = array.filter(this.actionBar.getChildren(), function(button) {
-				// return button.defaultButton;
-			// })[0];
-			// if (defaultButton) {
-				// this.own(this.on('focus', function() {
-					// defaultButton.focus();
-				// }));
-			// }
+		// if the _firstFocusItem is on the 'options' buttons then
+		// we want to focus the default button if it exists
+		_buttonToFocus: function() {
+			var buttons = this.actionBar.getChildren();
+			this._getFocusItems();
+			if (this._firstFocusItem === buttons[0].focusNode) {
+				var defaultButton = array.filter(buttons, function(button) {
+					return button.defaultButton;
+				})[0];
+				if (defaultButton) {
+					return defaultButton;
+				}
+			}
+			return null;
+		},
+
+		focus: function() {
+			var buttonToFocus = this._buttonToFocus();
+			if (buttonToFocus) {
+				buttonToFocus.focus();
+			} else {
+				this.inherited(arguments);
+			}
+		},
+
+		show: function() {
+			var promise = this.inherited(arguments);
+			var buttonToFocus = this._buttonToFocus();
+			if (buttonToFocus) {
+				promise.then(function() {
+					buttonToFocus.focus();
+				});
+			}
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			var closeButton = new Button({
-				iconClass: 'x',
-				'class': 'ucsIconButton',
-				tabindex: -1
-			});
-			this.closeButtonNode.appendChild(closeButton.domNode);
-			closeButton.startup();
 
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
-		},
-
-		close: function() {
-			// summary:
-			//		Hides the dialog and destroys it after the fade-out animation.
-			this.hide().then(lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
 		},
 
 		onConfirm: function(/*String*/ choice) {

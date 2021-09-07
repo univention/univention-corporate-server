@@ -31,6 +31,7 @@
 
 @require "variables.styl"
 @require "HTMLElements.styl"
+@require "widgets/Page.styl"
 
 
 .umc .dijitDialogUnderlay
@@ -66,18 +67,21 @@
 	margin-right: spacing(1)
 
 .umc .dijitDialogPaneContent
-	padding: 0 spacing(2) spacing(2)
+	padding: 0 spacing(2)
+	margin-bottom: spacing(2)
+	overflow: auto
 
 .umc .umcDialogActionBar
-	display: flex
-	flex-wrap: wrap
-	justify-content: space-between
+	@extends .umcPageFooter
 	border-top: thin solid var(--bgc-content-body)
 	padding: spacing(1) spacing(2)
-	// gap: spacing(1) // replace margin with this if supported in all browsers
-	margin: spacing(-1, true)
-	> .ucsButton
-		margin: spacing(1, true)
+	> .ucsButton:only-child
+		margin-left: auto
+.umc .umcDialogActionBarLeft
+	@extends .umcPageFooterLeft
+.umc .umcDialogActionBarRight
+	@extends .umcPageFooterRight
+
 
 
 .umc .dijitDialog .umcPageFooter

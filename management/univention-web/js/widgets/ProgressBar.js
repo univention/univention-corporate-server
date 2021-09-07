@@ -99,10 +99,6 @@ define([
 
 			this._component.set('content', entities.encode(this._initialComponent));
 
-			// make sure that at least a not breakable space is printed
-			// ... this avoids vertical jumping of widgets
-			this._messageNode.innerHTML = "&nbsp;";
-
 			this._progressBar.set('value', 0);
 		},
 

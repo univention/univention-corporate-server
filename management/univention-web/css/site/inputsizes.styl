@@ -28,6 +28,7 @@
  */
 
 @require "../variables.styl"
+@require "../widgets/Page.styl"
 
 $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
 	$_rules = ''
@@ -88,16 +89,15 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
 		padding-bottom: 0
 
 .umc .umcLayoutRow
-	margin: 0 -0.5em 0 -0.5em
-
-	&.umcButtonRow
+	margin: 0 (-($labelpane-padding-left)) 0 (-($labelpane-padding-right))
+	&--buttons
 		margin: 0
-		display: flex
-		flex-wrap: wrap
-		// gap: spacing(2) // replace margin with this if supported in all browsers
-		margin: spacing(-1)
-		> .ucsButton
-			margin: spacing(1)
+.umcLayoutRow--buttons
+	@extends .umcPageFooter
+.umcLayoutRow--buttonsleft
+	@extends .umcPageFooterLeft
+.umcLayoutRow--buttonsright
+	@extends .umcPageFooterRight
 
 
 /* mobile first (width=$xxs-max): default is a one-column layout */

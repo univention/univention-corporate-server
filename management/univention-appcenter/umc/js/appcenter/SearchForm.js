@@ -60,7 +60,7 @@ define([
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
 							}),
-							'class': 'umcTextBoxDark'
+							'class': 'umcTextBoxOnBody'
 						},
 						{
 							name: 'key',
@@ -75,7 +75,7 @@ define([
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
 							}),
-							'class': 'umcTextBoxDark'
+							'class': 'umcTextBoxOnBody'
 						},
 						{
 							name: 'pattern',
@@ -88,7 +88,7 @@ define([
 								this._check_submit_allow();
 							}),
 							onSearch: lang.hitch(this, 'submit'),
-							'class': 'umcTextBoxDark'
+							'class': 'umcTextBoxOnBody'
 						}
 					],
 					layout:

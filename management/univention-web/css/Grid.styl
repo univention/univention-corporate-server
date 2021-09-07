@@ -9,34 +9,38 @@
 	.umcGridHeader
 		flex: 0 0 auto
 		display: flex
-		flex-wrap: wrap
 		padding: spacing(1)
 
-	.umcGridHeader .dijitButton
+	.umcGridHeader .ucsButton:not(:last-child)
 		margin-right: spacing(1)
 
-	.umcGrid__contextWrapper
-		max-width: 100%
-		flex: 1 0 auto
+	.umcGrid__actionButtonsWrapper
+		flex: 0 1 auto
 		display: flex
-		justify-content: flex-end
+		overflow: hidden
+		min-height: var(--button-size)
+
+	.umcGrid__globalActionButtonsContainer,
+	.umcGrid__contextActionButtonsContainer
+		display: flex
+
+	.umcGrid__contextActionButtonsContainer
+		padding-left: spacing(1)
 
 	.umcGridStatusWrapper
-		flex: 0 1 auto
+		flex: 0 1000 auto
+		margin-left: auto
 		display: flex
 		align-items: center
 		font-size: var(--font-size-5)
 		color: var(--font-color-contrast-middle)
 		padding: spacing(1)
 		overflow: hidden
-
+		min-width: 4rem
 	.umcGridStatus
 		white-space: nowrap
 		overflow: hidden
 		text-overflow: ellipsis
-
-	.umcGrid__contextActionsToolbar
-		flex: 1 0 auto
 
 	.umcGridRowIcon
 		margin-right: 0.5em
@@ -57,8 +61,8 @@
 		&:last-child
 			padding-right: spacing(2)
 
-	.dgrid-cell:not(.dgrid-selector) *
-		display: inline
+	.dgrid-cell:not(.dgrid-selector) > *:not(.ucsButton)
+		display: inline // for text-overflow ellipsis
 
 	.dgrid__sortIcon
 		margin-right: 0.3em
@@ -91,8 +95,8 @@
 	.umcGridRowSelectorCheckBox
 		display: block // center the checkbox in the row
 
-	&Light
-		background-color: var(--bgc-content-body)
+	&OnContainer
+		background-color: var(--bgc-inputfield-on-container)
 		.dgrid,
 		.dgrid-row,
 		.dgrid-header

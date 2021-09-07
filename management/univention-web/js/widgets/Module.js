@@ -81,6 +81,10 @@ define([
 					this._addHeaderButtonsToChild(child);
 				})));
 			}), true));
+
+			this.own(this.watch('closable', lang.hitch(this, function() {
+				this._addHeaderButtonsToChild(this.selectedChildWidget);
+			})));
 		},
 
 		resetTitle: function() {

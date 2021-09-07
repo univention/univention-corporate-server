@@ -114,7 +114,8 @@ define([
 				&& !domClass.contains(this.domNode, 'ucsIconButton')
 				&& !domClass.contains(this.domNode, 'ucsIconButtonHighlighted');
 			if (addPrimaryClass) {
-				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsNormalButton');
+				domClass.remove(this.domNode, 'ucsNormalButton ucsTextButton');
+				domClass.add(this.domNode, 'ucsPrimaryButton');
 			}
 
 			if (typeof this.callback === "function") {

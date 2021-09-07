@@ -69,8 +69,7 @@ define([
 			return new Deferred();
 		},
 		notify: function() {},
-		alert: function() {},
-		centerAlertDialog: function() {}
+		alert: function() {}
 	};
 	var dialogLoaded = new Deferred();
 

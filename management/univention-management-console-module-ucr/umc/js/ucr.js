@@ -315,7 +315,7 @@ define([
 				],
 				dynamicValues: 'ucr/categories',
 				size: 'Half',
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}, {
 				type: ComboBox,
 				name: 'key',
@@ -329,7 +329,7 @@ define([
 					{ id: 'description', label: _( 'Description' ) }
 				],
 				size: 'Half',
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}, {
 				type: SearchBox,
 				name: 'pattern',
@@ -338,7 +338,7 @@ define([
 				onSearch: lang.hitch(this, function() {
 					this._searchForm.submit();
 				}),
-				'class': 'umcTextBoxDark'
+				'class': 'umcTextBoxOnBody'
 			}];
 
 			this._searchForm = new SearchForm({

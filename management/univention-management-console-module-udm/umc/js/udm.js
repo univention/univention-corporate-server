@@ -922,7 +922,7 @@ define([
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
-					'class': 'umcTextBoxDark',
+					'class': 'umcTextBoxOnBody',
 					autoHide: true,
 					label: _('Search in:'),
 					value: containers[0].id || containers[0],
@@ -944,7 +944,7 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
@@ -986,7 +986,7 @@ define([
 				type: ComboBox,
 				autoHide: true,
 				name: 'objectProperty',
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				label: _('Property'),
 				staticValues: objProperties,
 				dynamicValues: lang.hitch(this, function(options) {
@@ -1031,7 +1031,7 @@ define([
 				type: MixedInput,
 				name: 'objectPropertyValue',
 				label: '',
-				'class': 'umcTextBoxDark',
+				'class': 'umcTextBoxOnBody',
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
@@ -1454,7 +1454,7 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			var tree = new Tree({
-				'class': 'umcGridTreeLight',
+				'class': 'umcGridTreeOnContainer',
 				model: model,
 				persist: false,
 				style: 'width: 300px; height: 350px; margin-bottom: 20px;', // TODO does not work good on mobile
@@ -1857,8 +1857,7 @@ define([
 
 			_dialog = new Dialog({
 				title: _('Delete objects'),
-				content: form,
-				'class': 'umcPopup'
+				content: form
 			});
 			_dialog.show();
 		},
