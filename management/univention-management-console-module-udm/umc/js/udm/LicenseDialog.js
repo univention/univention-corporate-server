@@ -47,8 +47,7 @@ define([
 		// summary:
 		//		Class that provides the license Dialog for UCS. It shows details about the current license.
 
-		// umcConfirmDialog for max-width
-		'class': 'umcConfirmDialog umcUdmLicenseDialog umcLargeDialog',
+		'class': 'umcUdmLicenseDialog umcLargeDialog',
 
 		_iconWidget: null,
 		_messageWidget: null,

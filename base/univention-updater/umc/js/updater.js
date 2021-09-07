@@ -460,7 +460,6 @@ define([
 							title: _('Update notes'),
 							closable: false,
 							style: "width: 300px",
-							'class': 'umcConfirmDialog'
 						});
 						this._busy_dialog.attr("content",
 							'<p>' + _('The update is being executed.') + '</p>' +
