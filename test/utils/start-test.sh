@@ -83,6 +83,7 @@ usage () {
 	echo "    errata_update        - public, testing or none for errata updates (default: testing)"
 	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
 	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
+	echo "    SCOPE                - defines a extra apt repo/scope that can be included during the test (default: None)"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
@@ -182,6 +183,7 @@ declare -a env_vars=(
 	UCS_VERSION
 	APP_ID
 	COMBINED_APP_ID
+	SCOPE
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
