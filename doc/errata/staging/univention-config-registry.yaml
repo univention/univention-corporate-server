@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-config-registry
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Umlauts in UCR keys are allowed again. Since was broken since UCS 5.0.
+ * UCR now exits with an exit code 1 when setting a UCR variable fails.
+bug: [53742]
