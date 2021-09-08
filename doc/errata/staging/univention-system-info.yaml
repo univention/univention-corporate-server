@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-system-info
 fix: 10.0.0-5A~5.0.0.202105262256
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The package univention-system-info has been migrated to Python 3.
 bug: [51321]
