@@ -384,7 +384,7 @@ def password_sync_ucs(connector, key, object):
 	res = ''
 
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s" % (nt_hash, pwd))
-	if not pwd or pwd.startswith("NO PASSWORD"):
+	if not pwd or pwd.startswith(b'NO PASSWORD'):
 		# There are variations of "NO PASSWORD" in customer environments:
 		# 1. "NO PASSWORD*********************" (password_sync_kinit, see below)
 		# 2. "NO PASSWORDXXXXXX"                (old AD-Connector password service?)
