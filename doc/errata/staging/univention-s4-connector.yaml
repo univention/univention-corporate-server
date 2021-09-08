@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-s4-connector
-fix: 
+fix: 14.0.7-5A~5.0.0.202109081352
 desc: |
  This update addresses the following issue(s):
  * The S4 Connector only deletes/adds objects now if they have the
