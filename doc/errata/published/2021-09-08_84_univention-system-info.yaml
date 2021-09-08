@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package univention-system-info has been migrated to Python 3.
 bug: [51321]
+erratum: 84
+announced: 2021-09-08
