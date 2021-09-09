@@ -1,3 +1,9 @@
+ucs-test (10.0.6-40) unstable; urgency=medium
+
+  * Bug #53665: fix appcenter uninstall
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Sep 2021 10:34:19 +0200
+
 ucs-test (10.0.6-39) unstable; urgency=medium
 
   * Bug #20064: rename school meta packages
