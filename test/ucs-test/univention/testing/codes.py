@@ -36,6 +36,7 @@ class TestCodes(object):
 		139: ('S', 'REASON_DANGER', 'Test skipped (too dangerous)', 'BLUE'),
 		140: ('E', 'REASON_INTERNAL', 'Test failed', 'RED'),
 		141: ('S', 'REASON_ABORT', 'Test failed', 'RED'),
+		142: ('F', 'REASON_INSTALL_FAIL', 'Test failed (missing software)', 'RED'),
 	}
 	MESSAGE = {}
 	MAX_MESSAGE_LEN = 0
