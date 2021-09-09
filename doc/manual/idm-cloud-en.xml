@@ -13,7 +13,7 @@
 	<section id="idmcloud:general">
 		<title>Introduction</title>
 		<para>
-			UCS offers an integrated Identity Management System. Through &ucsUMC;, users and groups and teams among others
+			UCS offers an integrated Identity Management System. Through &ucsUMC;, users and groups among others
 			can easily be administered. Depending on the installed services, these identities are made available through
 			different interfaces e.g. via LDAP.
 		</para>
@@ -38,7 +38,7 @@
 		<title>Microsoft 365 Connector</title>
 
 		<para>
-			The synchronization of users and groups to an Azure Directory Domain, which will then be used by Microsoft 365,
+			The synchronization of users and groups and teams to an Azure Directory Domain, which will then be used by Microsoft 365,
 			is made possible by the Microsoft Office connector. The connector makes it possible to control which of the users created in
 			UCS can use Microsoft 365. The selected users will be provisioned accordingly into the Azure Active Directory
 			domain. It is configurable which user attributes are synchronized and which are anonymized during synchronization.
@@ -98,12 +98,8 @@
 				365</guimenu> tab. Usage and allocation of licenses are acknowledged in the <guimenu>Microsoft 365 Admin Center</guimenu>.
 			</para>
 
-			<para>
-				UCS-Groups that shall be provisioned as Teams in Microsoft 365, need to be configured as Teams on the <guimenu>Microsoft 365</guimenu> tab
-				by using the <guimenu>Microsoft Team</guimenu> checkbox.
-				Furthermore, it is necessary to define an owner of this team on the same tab. This owner must be enabled to use Microsoft 365.
-			</para>
-
+		<section id="idmcloud:o365:users">
+			<title>Benutzer</title>
 			<para>
 				If a change is made to the user, the changes are likewise replicated to the Azure Active Directory
 				domain. There is no synchronization from the Azure Active Directory to the UCS system. This means changes made in Azure
@@ -150,6 +146,23 @@
 			<para>
 				Changes to &ucsUCRV;s are implemented only after restarting the &ucsUDL;.
 			</para>
+		</section>
+
+		<section id="idmcloud:o365:Teams">
+			<title>Teams</title>
+			<para>
+                To use Teams, synchronization of groups must be enabled via &ucsUCRV; <envar>office365/groups/sync=yes</envar>, and then the &ucsUDL; service must be restarted.
+                If UCS groups are to be created as teams in Microsoft 365, the groups must be configured as teams on the <guimenu>Microsoft 365</guimenu> tab via the <guimenu>Microsoft 365 Team</guimenu> checkbox.
+                Furthermore, it is necessary to define an owner of the team on the same tab.
+                Further settings on the team can be made by the team owners directly in the Teams interface.
+                After activating a group as a team, the group members are added to the new team.
+                Provisioning a new team in Microsoft 365 can take a few minutes.
+            </para>
+
+            <para>
+                Ensure that users of a team in Azure are provided with a license that includes the use of Teams.
+            </para>
+		</section>
 
 		</section>
 		<section id="idmcloud:o365:multipleconnections">
@@ -194,9 +207,12 @@
 			</para>
 
 			<para>
-				In case of synchronization problems, the log file of the &ucsUDL; should be
-				examined: <filename>/var/log/univention/listener.log</filename>. The
-				&ucsUCRV;<envar>Office365/debug/werror</envar> activates additional debug output.
+				In case of synchronization problems, the log file of the &ucsUDL; should be	examined:
+				<filename>/var/log/univention/listener.log</filename>
+				Some actions of the Connector use long-running Azure Cloud operations, especially when using Teams.
+				These operations are logged in the log file <filename>/var/log/univention/listener_modules/ms-office-async.log</filename>
+
+				The	&ucsUCRV;<envar>Office365/debug/werror</envar> activates additional debug output.
 			</para>
 
 		</section>
