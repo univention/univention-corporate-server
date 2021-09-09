@@ -2288,7 +2288,7 @@ class TimeString(simple):
 	>>> TimeString.parse('23:59:59')
 	'23:59:59'
 	"""
-	size = 'OneThird'
+	size = 'TwoThirds'
 
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
@@ -5220,6 +5220,7 @@ class mailinglist_name(gid):
 
 class TimeZone(select):
 	size = 'TwoThirds'
+	empty_value = True
 
 	@ClassProperty
 	def choices(cls):

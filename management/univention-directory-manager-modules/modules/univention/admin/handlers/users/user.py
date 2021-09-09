@@ -40,7 +40,6 @@ import copy
 import time
 from datetime import datetime
 import pytz
-import tzlocal
 import struct
 import calendar
 import base64
@@ -236,8 +235,6 @@ property_descriptions = {
 		editable=True,
 		show_in_lists=True,
 		dontsearch=True,
-		# Value None is important in default, since '' triggers the JS-widget to ouput "1971-01-1"
-		default=[[None, '00:00', tzlocal.get_localzone().zone], []],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),

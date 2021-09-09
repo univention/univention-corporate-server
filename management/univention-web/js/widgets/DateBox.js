@@ -71,32 +71,34 @@ define([
 		},
 
 		_dateToString: function(dateObj) {
-			// convert input to ISO8601
-			// input: string or Date object
-			// output: string in ISO format
-			if (dateObj) {
-				if (dateObj instanceof Date) {
-					return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
-				} else if (typeof dateObj == 'string' && dateObj.match(date_de_format)) {
-					var date = dateObj.split('.');
-					var year = date[2];
-					var month = date[1];
-					var day = date[0];
-					if (year.length <= 4){
-						// guessing the century; pretty stupid
-						if (Number(year) > 60) {
-							year = sprintf('19%d', year);
-						} else {
-							year = sprintf('20%02d', year);
-						}
-					}
-					return sprintf('%04d-%02d-%02d', year, month, day);
-				}
+			/* convert input to ISO8601
+			 * input: string or Date object
+			 * output: string in ISO format if dateObj is valid; null otherwise
+			 */
+			if (dateObj instanceof Date) {
+				return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
 			}
-			return dateObj;
+			// special case: transform german 31.01.2020 into 2020-01-31
+			if (typeof dateObj == 'string' && dateObj.match(date_de_format)) {
+				var date = dateObj.split('.');
+				var year = date[2];
+				var month = date[1];
+				var day = date[0];
+				// very special case: support the backend syntax "date", which has no century. guess it.
+				if (year.length === 2){
+					if (Number(year) > 60) {
+						year = sprintf('19%d', year);
+					} else {
+						year = sprintf('20%02d', year);
+					}
+				}
+				return sprintf('%04d-%02d-%02d', year, month, day);
+			}
+			// either already in ISO8601 format, or an empty string which must be transformed to null!
+			return dateObj || null;
 		},
 
-		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
+		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string or null if no date is set
 		_getValueAttr: function() {
 			return this._dateToString(this._dateBox.get('value'));
 		},

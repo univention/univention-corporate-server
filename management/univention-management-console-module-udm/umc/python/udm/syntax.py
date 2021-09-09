@@ -231,8 +231,9 @@ def choices(syntax, udm_property):
 	if isinstance(opts, dict):
 		return opts
 
+	empty_value = [{'id': '', 'label': ''}] if getattr(syntax, 'empty_value', False) else []
 	return {
-		'staticValues': [{'id': _[0], 'label': _[1], } for _ in getattr(syntax, 'choices', [])],
+		'staticValues': empty_value + [{'id': _[0], 'label': _[1], } for _ in getattr(syntax, 'choices', [])],
 	}
 
 

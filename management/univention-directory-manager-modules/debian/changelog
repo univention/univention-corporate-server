@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-18) unstable; urgency=medium
+
+  * Bug #53675: remove default value for accountActivationDate
+
+ -- Florian Best <best@univention.de>  Thu, 09 Sep 2021 13:44:26 +0200
+
 univention-directory-manager-modules (14.0.20-17) unstable; urgency=medium
 
   * Bug #53725: ensure uniqueness of object names in the same subtree
