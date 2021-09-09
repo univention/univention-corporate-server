@@ -42,7 +42,7 @@ define([
 	"put-selector/put"
 ], function(declare, lang, query, TimeTextBox, sprintf, ContainerWidget, _FormWidgetMixin, Button, Icon, tools, put) {
 
-	var _TimeTextBox = declare([TimeTextBox], {
+	var _TimeTextBox = declare([TimeTextBox, _FormWidgetMixin], {
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -127,6 +127,12 @@ define([
 				return this.get('valid');
 			}
 			return this._timeBox.isValid();
+		},
+
+		state: '',
+		setValid: function(isValid, message) {
+			this.inherited(arguments); // for the 'state' handling
+			return this._timeBox.setValid(isValid, message);
 		},
 
 		_setBlockOnChangeAttr: function(/*Boolean*/ value) {

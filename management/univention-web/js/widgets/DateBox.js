@@ -47,7 +47,7 @@ define([
 ], function(declare, lang, query, aspect, sprintf, DateTextBox, Calendar, ContainerWidget, _FormWidgetMixin, Button,
 		Icon, tools, put) {
 
-	var _DateTextBox = declare([DateTextBox], {
+	var _DateTextBox = declare([DateTextBox, _FormWidgetMixin], {
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -141,6 +141,12 @@ define([
 				return this.get('valid');
 			}
 			return this._dateBox.isValid();
+		},
+
+		state: '',
+		setValid: function(isValid, message) {
+			this.inherited(arguments); // for the 'state' handling
+			return this._dateBox.setValid(isValid, message);
 		},
 
 		_setBlockOnChangeAttr: function(/*Boolean*/ value) {
