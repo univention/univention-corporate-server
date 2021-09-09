@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.7-6) unstable; urgency=medium
+
+  * Bug #50593: make sure no users are left over/re-created when they
+    are removed in UCS parallel to the creating during sync_from_ucs
+
+ -- Florian Best <best@univention.de>  Thu, 09 Sep 2021 16:50:21 +0200
+
 univention-s4-connector (14.0.7-5) unstable; urgency=medium
 
   * Bug #50593: do not remove/add users in sync_to_ucs if they were

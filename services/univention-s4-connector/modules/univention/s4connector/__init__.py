@@ -503,7 +503,7 @@ class ucs(object):
 		lockingdbfile = '/etc/univention/%s/lockingdb.sqlite' % self.CONFIGBASENAME
 		self.lockingdb = LockingDB(lockingdbfile)
 
-		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
+		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS added', 'UCS entryCSN']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
@@ -1272,6 +1272,25 @@ class ucs(object):
 			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_deleted_by_ucs: failed to look for objectGUID %r in 'UCS deleted': %s" % (objectGUID, err))
 		return False
 
+	def update_add_cache_after_creation(self, entryUUID, objectGUID):
+		if not entryUUID:
+			return
+		ud.debug(ud.LDAP, ud.INFO, "update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUUID: %r" % (entryUUID, objectGUID))
+		self._set_config_option('UCS added', entryUUID, objectGUID)
+
+	def remove_add_cache_after_removal(self, entryUUID):
+		ud.debug(ud.LDAP, ud.INFO, 'remove_add_cache_after_removal: remove entryUUID %r from "UCS added" cache' % (entryUUID,))
+		self._remove_config_option('UCS added', entryUUID)
+
+	def was_objectGUID_added_by_ucs(self, objectGUID):
+		try:
+			entryUUID = self.config.get_by_value('UCS added', objectGUID)
+			if entryUUID:
+				return True
+		except Exception as err:
+			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_added_by_ucs: failed to look for objectGUID %r in 'UCS added': %s" % (objectGUID, err))
+		return False
+
 	def delete_in_ucs(self, property_type, object, module, position):
 		"""Removes an AD object in UCS-LDAP"""
 
@@ -1316,6 +1335,7 @@ class ucs(object):
 			try:
 				ucs_object.remove()
 				self.update_deleted_cache_after_removal(entryUUID, objectGUID)
+				self.remove_add_cache_after_removal(entryUUID)
 				return True
 			except univention.admin.uexceptions.ldapError as exc:
 				if isinstance(exc.original_exception, ldap.NOT_ALLOWED_ON_NONLEAF):
@@ -1375,11 +1395,16 @@ class ucs(object):
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
 			return True
 
+		guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
+
 		ucs_object_dn = object.get('olddn', object['dn'])
 		old_object = self.get_ucs_object(property_type, ucs_object_dn)
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
+			if self.was_objectGUID_added_by_ucs(guid):
+				ud.debug(ud.LDAP, ud.PROCESS, "sync_to_ucs ignored, object does not exist in UCS but has already been added")
+				return True
 			object['modtype'] = 'add'
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
@@ -1418,8 +1443,6 @@ class ucs(object):
 					return False
 
 		try:
-			guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
-
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:
 				old_s4_object = self.s4cache.get_entry(guid)

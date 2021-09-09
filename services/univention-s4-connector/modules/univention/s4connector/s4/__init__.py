@@ -577,6 +577,10 @@ class s4(univention.s4connector.ucs):
 			self.serverctrls_for_add_and_modify.append(LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0))
 			self.serverctrls_for_add_and_modify.append(LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0))
 
+		# wish list, but AD does not support: ldap.UNAVAILABLE_CRITICAL_EXTENSION: {'desc': 'Critical extension is unavailable'}
+		# from ldap.controls.readentry import PostReadControl
+		# self.serverctrls_for_add_and_modify.append(PostReadControl(True, ['objectGUID']))
+
 		# Save a list of objects just created, this is needed to
 		# prevent the back sync of a password if it was changed just
 		# after the creation
@@ -2146,6 +2150,10 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
 					raise
 
+				# TODO: move the following into a PostReadControl
+				objectGUID = self._get_objectGUID(object['dn'])
+				self.update_add_cache_after_creation(entryUUID, objectGUID)
+
 				if property_type == 'group':
 					self.group_members_cache_con[object['dn'].lower()] = set()
 					ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: {}" % (object['dn'].lower()))
@@ -2356,7 +2364,7 @@ class s4(univention.s4connector.ucs):
 
 	def _get_objectGUID(self, dn):
 		try:
-			ad_object = self.get_object(dn)
+			ad_object = self.get_object(dn, ['objectGUID'])
 			return univention.s4connector.decode_guid(ad_object['objectGUID'][0])
 		except (KeyError, Exception):  # FIXME: catch only necessary exceptions
 			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
@@ -2382,6 +2390,7 @@ class s4(univention.s4connector.ucs):
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "delete_in_s4: Object without entryUUID: %s" % (object['dn'],))
+		self.remove_add_cache_after_removal(objectGUID)
 
 	def _remove_subtree_in_s4(self, parent_ad_object, property_type):
 		if self.property[property_type].con_subtree_delete_objects:
