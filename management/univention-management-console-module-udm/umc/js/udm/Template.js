@@ -126,11 +126,16 @@ define([
 
 		_constructor: function() {
 			var isEmptyValue = function(val) {
+				if (val === undefined || val === null) {
+					return true;
+				}
 				if (typeof val === 'string') {
 					return val === "";
 				}
 				if (val instanceof Array) {
-					return val.length === 0;
+					return array.every(val, function(v) {
+						return isEmptyValue(v);
+					});
 				}
 				return false;
 			};

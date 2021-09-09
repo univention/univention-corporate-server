@@ -1,3 +1,11 @@
+univention-management-console-module-udm (10.0.1-16) unstable; urgency=medium
+
+  * Bug #53631: fix empty_value evaluation for static value definitions
+  * Bug #53631: handle None and arrays in templating mechanism (e.g. for
+    complex syntaxes)
+
+ -- Florian Best <best@univention.de>  Thu, 09 Sep 2021 13:42:55 +0200
+
 univention-management-console-module-udm (10.0.1-15) unstable; urgency=medium
 
   * Bug #53665: rename css class + remove unused css class

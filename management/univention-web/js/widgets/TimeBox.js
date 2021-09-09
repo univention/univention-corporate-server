@@ -91,14 +91,10 @@ define([
 		},
 
 		_dateToTime: function(dateObj) {
-			if (dateObj === null) {
-				return '';
-			}
-			try {
+			if (dateObj instanceof Date) {
 				return sprintf('%02d:%02d', dateObj.getHours(), dateObj.getMinutes());
-			} catch(e) {
-				return '';
 			}
+			return dateObj || null;
 		},
 
 		// return time in the format 'HH:MM'
@@ -107,17 +103,18 @@ define([
 		},
 
 		_setValueAttr: function(newVal) {
-			if (newVal === '') { newVal = null; } // set empty input instead of default value 00:00
-			if (newVal && newVal instanceof Date) {
+			if (newVal instanceof Date) {
 				newVal = this._dateToTime(newVal);
 			}
-			try {
+			if (newVal && typeof newVal === 'string') {
 				var parts = newVal.split(':');
-				this._timeBox.set('value', new Date(1970, 1, 1, parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0));
-			} catch(e) {
-				console.log('ERROR: invalid time format: ' + newVal);
-				this._timeBox.set('value', null);
+				try {
+					newVal = new Date(1970, 1, 1, parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0);
+				} catch(e) {
+					console.error('invalid time format: ' + newVal);
+				}
 			}
+			this._timeBox.set('value', newVal || null);
 		},
 
 		isValid: function() {
