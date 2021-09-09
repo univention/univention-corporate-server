@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
-fix: 9.0.2-64A~5.0.0.202109071046
+fix: 9.0.2-65A~5.0.0.202109091511
 desc: |
  This update addresses the following issue:
  * The template `/usr/share/univention-portal/apps.json` was unused and has
@@ -12,4 +12,6 @@ desc: |
    App settings.
  * The traceback shall be send when an exception arises in install_base.
  * The design code was adjusted for the usage in UCS@school.
-bug: [53651, 53630, 53655, 53665]
+ * The install dialog shows the errors of the installation and messages from 
+   the preinstall script if the installation has failed.
+bug: [53651, 53630, 53655, 53665, 53625]
