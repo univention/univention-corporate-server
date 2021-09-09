@@ -189,8 +189,9 @@ define([
 		// we want to focus the default button if it exists
 		_buttonToFocus: function() {
 			var buttons = this.actionBar.getChildren();
+			var firstButton = buttons[0];
 			this._getFocusItems();
-			if (this._firstFocusItem === buttons[0].focusNode) {
+			if (firstButton && this._firstFocusItem === firstButton.focusNode) {
 				var defaultButton = array.filter(buttons, function(button) {
 					return button.defaultButton;
 				})[0];
@@ -218,6 +219,7 @@ define([
 					buttonToFocus.focus();
 				});
 			}
+			return promise;
 		},
 
 		buildRendering: function() {
