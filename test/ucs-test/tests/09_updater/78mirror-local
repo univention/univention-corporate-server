@@ -15,7 +15,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-. pool.sh || exit 137
+. pool.sh || exit 142
 FIXED_18225=false
 
 # Change repoprefix, because both repositories are hosted on the same server

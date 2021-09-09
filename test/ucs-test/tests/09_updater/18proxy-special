@@ -14,7 +14,7 @@
 
 CHECK_INSTALL=false
 
-. pool.sh || exit 137
+. pool.sh || exit 142
 FIXED_12571=false
 
 setup_apache "${repoprefix}"

@@ -11,7 +11,7 @@ then
 	IFS=: read USER password uid gid gecos HOME shell < <(getent passwd $UID)
 fi
 
-. "${TESTLIBPATH}/base.sh" || exit 137
+. "${TESTLIBPATH}/base.sh" || exit 142
 my_mv () {
 	test -f "$1" && /bin/mv -f "$1" "$2"
 }

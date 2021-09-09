@@ -15,7 +15,7 @@
 CHECK_QUOTED=true
 CHECK_INSTALL=false
 
-. pool.sh || exit 137
+. pool.sh || exit 142
 
 compname="test${RANDOM}"
 

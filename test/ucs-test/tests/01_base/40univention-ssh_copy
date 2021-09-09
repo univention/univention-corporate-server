@@ -5,7 +5,7 @@
 ## packages: [univention-ssh]
 ## exposure: careful
 
-. "${TESTLIBPATH}/base.sh" || exit 137
+. "${TESTLIBPATH}/base.sh" || exit 142
 tmpfile="$(mktemp)"
 trap "rm -f '$tmpfile'" EXIT
 

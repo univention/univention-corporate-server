@@ -8,7 +8,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-. pool.sh || exit 137
+. pool.sh || exit 142
 
 grep -q 'APT::Authentication::TrustCDROM "true";' '/etc/apt/apt.conf.d/00trustcdrom'
 

@@ -12,7 +12,7 @@
 ##  4.0-1: skip
 ##  4.1-3: fixed
 
-. /usr/share/univention-lib/ucr.sh || exit 137
+. /usr/share/univention-lib/ucr.sh || exit 142
 
 rc=0
 if is_ucr_true connector/s4/autostart; then

@@ -393,7 +393,7 @@ def udm_get_windows_computer():
 	if not sed_stdout:
 		print("SKIP: failed to find any Windows Host DN via UDM. Perhaps host "
 			"not joined as a memberserver or does not exist in this setup.")
-		exit(TestCodes.REASON_INSTALL)
+		exit(TestCodes.REASON_INSTALL_FAIL)
 
 	return {'hostdn': sed_stdout, 'hostname': sed_stdout.split(',')[0][3:]}
 
@@ -470,7 +470,7 @@ if __name__ == '__main__':
 	if not all((domain_admin_dn, domain_admin_password, domainname, hostname, ldap_base)):
 		print("\nFailed to obtain settings for the test from UCR. "
 			"Skipping the test.")
-		exit(TestCodes.REASON_INSTALL)
+		exit(TestCodes.REASON_INSTALL_FAIL)
 
 	domain_admin = domain_admin_dn.split(',')[0][len('uid='):]
 	samba_credentials = ("--username=" + domain_admin,

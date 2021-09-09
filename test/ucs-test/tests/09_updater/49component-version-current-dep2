@@ -12,7 +12,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-. pool.sh || exit 137
+. pool.sh || exit 142
 
 compname1="test1${RANDOM}"
 compname2="test2${RANDOM}"

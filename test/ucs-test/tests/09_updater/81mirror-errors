@@ -16,7 +16,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-. pool.sh || exit 137
+. pool.sh || exit 142
 FIXED_12571=false # ucr set proxy/* -> ucr commit /etc/apt/*
 
 compname="test${RANDOM}"

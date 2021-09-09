@@ -12,9 +12,9 @@
 ## bugs: [53071]
 
 # shellcheck disable=SC1090
-. "${TESTLIBPATH:?}/base.sh" || exit 137
-. "${TESTLIBPATH:?}/undo.sh" || exit 137
-. "${TESTLIBPATH:?}/random.sh" || exit 137
+. "${TESTLIBPATH:?}/base.sh" || exit 142
+. "${TESTLIBPATH:?}/undo.sh" || exit 142
+. "${TESTLIBPATH:?}/random.sh" || exit 142
 
 ucstest="ucstest_$(random_chars)"
 listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
