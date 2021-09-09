@@ -291,11 +291,23 @@ define([
 				hosts: backpack.hosts,
 				settings: backpack.appSettings,
 				dry_run: false
-			}).then(function(results) {
-				backpack.result = results;
-				backpack.errors = progressBar.getErrors().errors;
-				return backpack;
-			});
+			}).then(
+				function(results) {
+					backpack.result = results;
+					backpack.errors = progressBar.getErrors().errors;
+					return backpack;
+				},
+				function(errors) {
+					deferred.resolve();
+				},
+				function(updates) {
+					var errors = array.map(updates.intermediate, function(res) {
+						if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+							return res.message;
+						}
+					});
+					progressBar._addErrors(errors)
+				});
 			this.standbyDuring(command, progressBar);
 			return command;
 		},
