@@ -141,22 +141,6 @@ class Interactions(object):
 			**kwargs
 		)
 
-	def click_tile_right_click(self, tilename, **kwargs):
-		# type: (str, **Any) -> None
-		logger.info("Right-Clicking the tile %r", tilename)
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,)
-		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-			self.get_all_enabled_elements
-		)
-
-		if len(elems) != 1:
-			logger.warn(
-				"Found %d module tiles instead of 1. Trying to use the first "
-				"one." % (len(elems),)
-			)
-
-		ActionChains(self.driver).context_click(elems[0]).perform()
-
 	def click_tab(self, tabname, **kwargs):
 		# type: (str, **Any) -> None
 		logger.info("Clicking the tab %r", tabname)
@@ -186,7 +170,7 @@ class Interactions(object):
 		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
 		time.sleep(0.5)
 
-	def click_element(self, xpath, scroll_into_view=False, timeout=60):
+	def click_element(self, xpath, scroll_into_view=False, timeout=60, right_click=False):
 		# type: (str, bool, int) -> None
 		"""
 		Click on the element which is found by the given xpath.
@@ -195,7 +179,7 @@ class Interactions(object):
 		Waits for the element to be clickable before attempting to click.
 		"""
 		elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-			self.get_all_enabled_elements, 'click_element(%r, scroll_into_view=%r, timeout=%r)' % (xpath, scroll_into_view, timeout)
+			self.get_all_enabled_elements, 'click_element(%r, scroll_into_view=%r, timeout=%r, right_click=%r)' % (xpath, scroll_into_view, timeout, right_click)
 		)
 
 		if len(elems) != 1:
@@ -207,15 +191,21 @@ class Interactions(object):
 		if scroll_into_view:
 			self.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
 		limit = timeout
-		while True:
-			try:
-				elems[0].click()
-				break
-			except selenium_exceptions.ElementClickInterceptedException:
-				limit -= 1
-				if limit == 0:
-					raise
-				time.sleep(1)
+		if right_click:
+			# context_click will always work since it triggers the browser context menu
+			# instead of throwing ElementClickInterceptedException.
+			# So we do not need to put it in the loop below
+			ActionChains(self.driver).context_click(elems[0]).perform()
+		else:
+			while True:
+				try:
+					elems[0].click()
+					break
+				except selenium_exceptions.ElementClickInterceptedException:
+					limit -= 1
+					if limit == 0:
+						raise
+					time.sleep(1)
 
 	def enter_input(self, inputname, inputvalue):
 		# type: (str, str) -> None

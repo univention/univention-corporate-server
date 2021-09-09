@@ -105,9 +105,8 @@ class AppCenter(object):
 		self.open_app(app_name)
 		self.selenium.click_buttons([_('Manage installations'), _('Manage installation')], timeout=10)
 		try:
-			self.selenium.click_element("//*[contains(text(), 'this computer')]")
-			self.selenium.click_button(_('Actions'))
-			self.selenium.click_element('//td[contains(@class, "dijitMenuItemLabel")][text() = "Uninstall"]')
+			self.selenium.click_element("//*[contains(text(), 'this computer')]", right_click=True)
+			self.selenium.click_element(expand_path('//td[@containsClass="dijitMenuItemLabel"][text() = "Uninstall"]'))
 		except TimeoutException:
 			self.selenium.click_button(_('Uninstall'))
 		self.selenium.wait_for_text(_('Running tests'))

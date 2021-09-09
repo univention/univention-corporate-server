@@ -18,6 +18,7 @@ from univention.admin import localization
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 from univention.testing import selenium
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -78,7 +79,10 @@ class UMCTester(object):
 		# add a module to favorites via right click from users category
 		self.selenium.click_button(_('Users'))
 		module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryName').text
-		self.selenium.click_tile_right_click(module_name)
+		self.selenium.click_element(
+			expand_path('//*[@containsClass="umcGalleryName"][text() = "%s"]' % (module_name,)),
+			right_click=True
+		)
 		self.selenium.click_text(_('Add to favorites'))
 
 		# check if the flag icon appeared
