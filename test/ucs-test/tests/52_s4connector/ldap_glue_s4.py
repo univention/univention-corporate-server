@@ -1,3 +1,4 @@
+import sys
 import ldap
 import ldap.dn
 from univention.config_registry import ConfigRegistry
@@ -117,9 +118,11 @@ class LDAPConnection:
 	def create(self, dn, attrs):
 		#attrs = dict((key, [value] if isinstance(value, (str, bytes)) else value) for key, value in attrs.items())
 		ldif = modlist.addModlist(attrs)
+		print('Creating %r with %r' % (dn, ldif), file=sys.stderr)
 		self.lo.add_ext_s(dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def delete(self, dn):
+		print('Deleting %r' % (dn,), file=sys.stderr)
 		self.lo.delete_s(dn)
 
 	def move(self, dn, newdn):
@@ -128,11 +131,14 @@ class LDAPConnection:
 		parent2 = get_parent_dn(newdn)
 
 		if parent1 != parent2:
+			print('Moving %r as %r into %r' % (dn, newdn, parent2), file=sys.stderr)
 			self.lo.rename_s(dn, newrdn, parent2)
 		else:
+			print('Renaming %r to %r' % (dn, newrdn), file=sys.stderr)
 			self.lo.modrdn_s(dn, newrdn)
 
 	def set_attribute(self, dn, key, value):
+		print('Replace %r=%r at %r' % (key, value, dn), file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_REPLACE, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attributes(self, dn, **attributes):
@@ -141,6 +147,7 @@ class LDAPConnection:
 		ldif = modlist.modifyModlist(old_attributes, attributes)
 		comp_dn = dn
 		if ldif:
+			print('Modifying %r: %r' % (comp_dn, ldif), file=sys.stderr)
 			self.lo.modify_ext_s(comp_dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
@@ -150,15 +157,19 @@ class LDAPConnection:
 			LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0),
 			LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0),
 		] + self.serverctrls_for_add_and_modify
+		print('Replace %r=%r at %r (with provision control)' % (key, value, dn), file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
 
 	def delete_attribute(self, dn, key):
+		print('Removing %r from %r' % (key, dn), file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_DELETE, key, None)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def append_to_attribute(self, dn, key, value):
+		print('Appending %r=%r to %r' % (key, value, dn), file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_ADD, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def remove_from_attribute(self, dn, key, value):
+		print('Removing %r=%r from %r' % (key, value, dn), file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_DELETE, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 
