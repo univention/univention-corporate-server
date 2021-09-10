@@ -150,11 +150,6 @@ generic-layout-udm-detailpage()
 		.umcUDMDetailForm > div > div > div
 			height: 100%
 
-		.umcPageNavContent,
-		.umcPageMainContent
-			overflow-y: auto
-			overflow-x: hidden
-
 generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__till__umcPage)
 	@media (min-height: 750px) and (min-width: $md-min)
 		flex-page()
@@ -163,11 +158,6 @@ generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__ti
 			$s += ' > *'
 			.umcModuleContentChildWrapper {$s}
 				height: 100%
-
-		.umcPageNavContent,
-		.umcPageMainContent
-			overflow-y: auto
-			overflow-x: hidden
 
 .umcTopContainer--layout-top,
 .umcTopContainer--layout-services,
