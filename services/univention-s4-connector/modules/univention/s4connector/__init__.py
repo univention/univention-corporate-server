@@ -1335,7 +1335,6 @@ class ucs(object):
 			try:
 				ucs_object.remove()
 				self.update_deleted_cache_after_removal(entryUUID, objectGUID)
-				self.remove_add_cache_after_removal(entryUUID)
 				return True
 			except univention.admin.uexceptions.ldapError as exc:
 				if isinstance(exc.original_exception, ldap.NOT_ALLOWED_ON_NONLEAF):
