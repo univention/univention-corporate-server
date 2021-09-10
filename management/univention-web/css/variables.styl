@@ -1,15 +1,4 @@
 //// Google Material Styling
-// grid layout
-$material-grid8 ?= 8px
-$material-grid4 ?= 4px
-material-grid(multiplicant, use4dp=false)
-	if typeof(use4dp) != 'boolean'
-		error('use4dp has to be a boolean')
-	spacing = $material-grid8
-	if use4dp
-		spacing = $material-grid4
-	spacing * multiplicant
-
 $spacing-normal ?= s('var(--layout-spacing-unit)')
 $spacing-small ?= s('var(--layout-spacing-unit-small)')
 spacing(multiplicant, small=false)
@@ -107,7 +96,7 @@ $popup-background-color ?= $container-background-color					// Background for Dia
 
 
 // Buttons
-$material-button-height ?= material-grid(9, true)
+$material-button-height ?= spacing(9, true)
 $button-border-color ?=  $focused-border-color				// Border for (stand-alone) buttons in normal, hovered, or active state
 $button-background-color ?= $unfocused-clickable-color		// Background color for (unhovered) buttons
 $button-hovered-background-color ?= rgba(0, 0, 0, 0.0784)	// Background color for hovered buttons
@@ -127,8 +116,8 @@ $textbox-focused-background-color ?= $textbox-background-color
 $textbox-error-background-color ?= $textbox-background-color
 $textbox-disabled-background-color ?= $disabled-background-color
 $textbox-padding ?= 0 5px	// Padding for Textbox, Textarea, etc.
-$material-textfield-height ?= material-grid(5)
-$material-textfield-text-padding ?= material-grid(3, true)
+$material-textfield-height ?= spacing(5)
+$material-textfield-text-padding ?= spacing(3, true)
 $material-textfield-border-width-base      ?= 1px
 $material-textfield-border-width-inactive  ?= $material-textfield-border-width-base
 // $material-textfield-border-width-hover     ?= $material-textfield-border-width-base
@@ -383,7 +372,7 @@ material-shadow(level)
 	// material-flat-button()
 	// .dijitButtonNode
 		// border: 1px solid #c8c8c8 // TODO
-		// padding: 0 material-grid(2)
+		// padding: 0 spacing(2)
 
 	// .dijitArrowButtonInner
 		// margin-right: material-grid(-1, true)
