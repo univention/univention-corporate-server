@@ -171,3 +171,10 @@
 .umcTopContainer--layout-udm-dns-dns-searchpage .umcUDMSearchForm {
 	margin-bottom: calc(3 * var(--layout-spacing-unit));
 }
+
+.udmNewObjectDialog__successNotification {
+		cursor: pointer;
+		padding: var(--layout-spacing-unit-small) var(--dijit-dialog-pane-content-padding);
+		background-color: var(--bgc-success);
+		margin: 0px calc(-1 * var(--dijit-dialog-pane-content-padding)) calc(2 * var(--layout-spacing-unit));
+}

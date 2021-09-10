@@ -66,8 +66,11 @@
 	@extends h2
 	margin-right: spacing(1)
 
+
+.umc .dijitDialog
+	--dijit-dialog-pane-content-padding: spacing(2)
 .umc .dijitDialogPaneContent
-	padding: 0 spacing(2)
+	padding: 0 var(--dijit-dialog-pane-content-padding)
 	margin-bottom: spacing(2)
 	overflow: auto
 
