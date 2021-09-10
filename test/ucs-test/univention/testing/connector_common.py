@@ -305,10 +305,10 @@ def create_con_group(con, udm_group, wait_for_sync):
 	con_group = map_udm_group_to_con(udm_group.group)
 
 	print("\nCreating CON group {}\n".format(con_group))
-	groupname = udm_group.group.get("name")
+	groupname = to_unicode(udm_group.group.get("name"))
 	con_group_dn = con.group_create(groupname, **con_group)
 	udm_group_dn = ldap.dn.dn2str([
-		[("cn", to_unicode(groupname), ldap.AVA_STRING)],
+		[("cn", groupname, ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
 	wait_for_sync()
 	verify_udm_object("groups/group", udm_group_dn, udm_group.group)
