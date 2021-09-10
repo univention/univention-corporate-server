@@ -2,7 +2,7 @@ product: ucs
 release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
-src: univention-management-console-top
+src: univention-management-console-module-top
 fix: 9.0.0-9A~5.0.0.202109071045
 desc: |
  This update addresses the following issue(s):
