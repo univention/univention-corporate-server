@@ -99,7 +99,7 @@
 			</para>
 
 		<section id="idmcloud:o365:users">
-			<title>Benutzer</title>
+			<title>Users</title>
 			<para>
 				If a change is made to the user, the changes are likewise replicated to the Azure Active Directory
 				domain. There is no synchronization from the Azure Active Directory to the UCS system. This means changes made in Azure
