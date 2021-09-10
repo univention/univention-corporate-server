@@ -132,7 +132,7 @@ def validate_key(key, out=sys.stderr):
 	key = replace_umlaut(key)
 
 	if old != key:
-		print('Please fix invalid umlaut in config variable key "%s" to %s.' % (old, key), file=out)
+		print('Umlauts in config variable key are not recommended. Please consider renaming "%s" to %s.' % (old, key), file=out)
 		# return False  # Bug #53742
 
 	if len(key) > 0:
