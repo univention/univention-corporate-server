@@ -41,3 +41,5 @@ if [ "$USER_UID" != "$WBINFO_UID" ]; then
 	fail_test 3 "wbinfo sid to uidNumber usermapping failed"
 fi
 set +x
+
+exit "$RETVAL"

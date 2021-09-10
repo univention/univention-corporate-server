@@ -44,7 +44,12 @@ find tests -type f -exec grep -F -l '"$TESTLIBPATH/ucr.sh"' {} + |
 issue "Use of 'ucr.sh' without call to 'ucr_restore'."
 
 find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp" || :
-issue "Missing reason for fail_test"
+issue "Missing reason for 'fail_test|fast'."
+
+# shellcheck disable=SC2016,SC2038
+find tests -type f -exec grep -E -l 'fail_test' {} + |
+	xargs grep -E -L '(exit|return) "?\${?RETVAL\>' >"$tmp" || :
+issue "Use of 'fail_test' without 'exit \$RETVAL'."
 
 export UCS_TESTS="tests"
 export PYTHONPATH=".${PYTHONPATH:+:$PYTHONPATH}"

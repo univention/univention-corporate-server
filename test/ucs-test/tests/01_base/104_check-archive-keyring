@@ -36,4 +36,5 @@ then
 	info "GOOD: found no other APT keyrings"
 fi
 
+exit "$RETVAL"
 # vim:set ft=sh:

@@ -40,4 +40,5 @@ wait_for_replication
 
 grep -Fxqe "STDOUT$ucstest" /var/log/univention/listener.log || fail_test "Missing STDOUT"
 grep -Fxqe "STDERR$ucstest" /var/log/univention/listener.log || fail_test "Missing STDERR"
-:
+
+exit "$RETVAL"

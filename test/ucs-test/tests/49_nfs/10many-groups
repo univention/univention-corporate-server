@@ -22,7 +22,7 @@ main () {
 	then
 		test_nfs
 	fi
-	return $RETVAL
+	return "$RETVAL"
 }
 
 check_not_exists () {

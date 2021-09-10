@@ -22,6 +22,7 @@ main () {
 			test_hub "docker${test}${upload}.software-univention.de"
 		done
 	done
+	return "$RETVAL"
 }
 test_hub () {
 	local hub="$1" image="$1/$IMG"
