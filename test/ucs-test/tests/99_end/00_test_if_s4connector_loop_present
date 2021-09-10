@@ -47,8 +47,8 @@ def looping_objects(log):
 	rejected = get_rejected()
 	cleaned_log = []
 	for i in log:
-		if "sync to ucs" in i or 'sync from ucs' in i:
-			i = i.rsplit(']', 1)[1].strip().strip('\'').lower()
+		if "sync AD > UCS" in i or 'sync UCS > AD' in i:
+			i = i.rsplit(']', 1)[1].strip(" '").lower()
 			if i not in cleaned_log and i not in rejected:
 				cleaned_log.append(i)
 	return cleaned_log

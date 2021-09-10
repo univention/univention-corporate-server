@@ -1810,7 +1810,7 @@ class s4(univention.s4connector.ucs):
 		print("Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
 		for change_usn, dn in rejected:
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
+			ud.debug(ud.LDAP, ud.PROCESS, 'sync AD > UCS: Resync rejected dn: %r' % (dn))
 			try:
 				sync_successfull = False
 				elements = self.__search_ad_changeUSN(change_usn, show_deleted=True)
@@ -2049,7 +2049,7 @@ class s4(univention.s4connector.ucs):
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'sync from ucs: [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
+		ud.debug(ud.LDAP, ud.PROCESS, 'sync UCS > AD: [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
 
 		if 'olddn' in object:
 			object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
