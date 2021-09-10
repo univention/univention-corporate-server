@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check user with many groups using /bin/ps and NFS
 ## exposure: dangerous
 ## bugs: [34596,34597]
@@ -9,6 +10,7 @@ set -e -u
 GCOUNT=200
 USER="testuser$$"
 
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
 main () {
@@ -39,7 +41,7 @@ prepare_container () {
 }
 
 on_exit () {
-	[ -t 0 ] && read -p "Hit key to continue with cleanup"
+	[ -t 0 ] && read -rp "Hit key to continue with cleanup"
 	mountpoint -q "${home}/in" && umount -f "${home}/in"
 	exportfs -u -v localhost:"${home}/out" && :
 	udm container/cn remove --recursive --dn "$base" && :
@@ -48,7 +50,7 @@ on_exit () {
 
 create_groups_and_user () {
 	declare -a group_dns=()
-	for ((g=0; g<$GCOUNT; g++))
+	for ((g=0; g<GCOUNT; g++))
 	do
 		gname="testgroup${g}"
 		udm-test groups/group create --position "$base" --set name="$gname" ||
@@ -100,6 +102,7 @@ test_nfs () {
 	install -d -o "$USER" -g "$gname" "${home}/out" "${home}/in"
 	exportfs -i -v -o sync,ro,root_squash,wdelay localhost:"${home}/out"
 	mount -t nfs localhost:"${home}/out" "${home}/in"
+	# shellcheck disable=SC2015
 	timeout 5s su -c "cd '${home}/in'&&ls -al" - "$USER" &&
 		! grep "mountd\[${pid}\]: qword_eol: fflush failed: errno 22" /var/log/daemon.log ||
 		fail_test $? "cd NFS exited with rv=$? (124=TIMEOUT 128+15=SIGSEGV)"
