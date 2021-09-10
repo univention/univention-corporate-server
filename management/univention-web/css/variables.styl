@@ -342,23 +342,6 @@ material-shadow(level)
 		box-shadow: none
 
 
-/*
-// umc-icon-button(side-length=$material-button-height)
-	// .dijitButtonNode
-		// padding: 0
-		// height: side-length
-		// width: side-length
-	// .dijitButtonText,
-	// .dijitArrowButtonInner
-		// display: none
-	// .dijitIcon
-		// margin: 0
-
-// umc-icon-button-aligned-to-textfield()
-	// umc-icon-button($material-textfield-height)
-*/
-
-
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)
 	_iconImage = replace("^(.*)(\.\w*)", "$1" + filesuffix + "$2", $image-icons)
 	_url = dirprefix + _iconImage
