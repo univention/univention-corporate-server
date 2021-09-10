@@ -7,5 +7,5 @@ script = "/usr/share/univention-directory-manager-tools/univention-delayed-accou
 interval = configRegistry.get("directory/manager/user/accountactivation/cron", "*/15 *  * * *")
 
 if interval:
-	print("%s       root    %s" % (interval, script))
+	print("%s       root    [ -x %s ] && %s" % (interval, script, script))
 @!@
