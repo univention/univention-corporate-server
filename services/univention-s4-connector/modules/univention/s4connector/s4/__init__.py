@@ -1040,7 +1040,7 @@ class s4(univention.s4connector.ucs):
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
 			object['dn'] = self.__dn_from_deleted_object(object)
-			ud.debug(ud.LDAP, ud.PROCESS, "object_from_element: DN of removed object: %r" % (object['dn'],))
+			ud.debug(ud.LDAP, ud.INFO, "object_from_element: DN of removed object: %r" % (object['dn'],))
 			# self._remove_GUID(element[1]['objectGUID'][0]) # cache is not needed anymore?
 
 			if not object['dn']:
@@ -2390,7 +2390,7 @@ class s4(univention.s4connector.ucs):
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "delete_in_s4: Object without entryUUID: %s" % (object['dn'],))
-		self.remove_add_cache_after_removal(objectGUID)
+		self.remove_add_cache_after_removal(entryUUID)
 
 	def _remove_subtree_in_s4(self, parent_ad_object, property_type):
 		if self.property[property_type].con_subtree_delete_objects:

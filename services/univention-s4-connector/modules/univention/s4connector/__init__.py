@@ -1403,13 +1403,13 @@ class ucs(object):
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
 			if self.was_objectGUID_added_by_ucs(guid):
-				ud.debug(ud.LDAP, ud.PROCESS, "sync_to_ucs ignored, object does not exist in UCS but has already been added")
+				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: [%14s] [%10s] %r: ignored object, it deos not exist in UCS but has already been added in the past' % (property_type, object['modtype'], object['dn']))
 				return True
 			object['modtype'] = 'add'
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
+		ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
 
 		if object['modtype'] in ('delete', 'move'):
 			try:
@@ -1480,7 +1480,7 @@ class ucs(object):
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
-						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exists, ignore (%r)" % object['dn'])
+						ud.debug(ud.LDAP, ud.WARN, "sync to ucs: [%14s] [%10s] %r: ignore, object to delete doesn't exists" % (property_type, object['modtype'], object['dn']))
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
