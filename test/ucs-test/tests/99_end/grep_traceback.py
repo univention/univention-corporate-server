@@ -268,6 +268,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs']),  # Bug #53720 Bug #53752
 	('ldap.REFERRAL:.*', ['uldap.py']),  # Bug #53721
 	('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs']),  # Bug #53721
+	("ModuleNotFoundError: No module named 'univention.config_registry'", ['/usr/sbin/univention-config-registry']),  # Bug #53765
 ])
 
 
