@@ -688,6 +688,11 @@ class ucs(object):
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
+	def context_log(self, property_type, obj, message='', level=ud.PROCESS, to_ucs=True):
+		direction = 'sync AD > UCS' if to_ucs else 'sync UCS > AD'
+		prefix = '[%14s] [%10s] %r' % (property_type or '?', obj.get('modtype', '?'), obj.get('dn', '?'))
+		ud.debug(ud.LDAP, level, '%s: %s%s' % (direction, prefix, ': %s' % message if message else ''))
+
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		'''
 		sync changes from UCS stored in given file
@@ -982,6 +987,7 @@ class ucs(object):
 		'''
 		# check for changes from ucs ldap directory
 
+		ud.debug(ud.LDAP, ud.INFO, "sync UCS > AD: polling")
 		change_counter = 0
 		MAX_SYNC_IN_ONE_INTERVAL = 50000
 
@@ -1072,7 +1078,7 @@ class ucs(object):
 				ucs_key = attributes.ucs_attribute
 				if ucs_key:
 					value = object['attributes'][attributes.ldap_attribute]
-					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
+					self.context_log(property_type, object, 'set attribute %r as ucs property %r: value=%r' % (attributes.con_attribute, ucs_key, value), level=ud.INFO, to_ucs=True)
 
 					if isinstance(value, list) and len(value) == 1:
 						value = value[0]
@@ -1097,7 +1103,7 @@ class ucs(object):
 							ucs_object[ucs_key] = value
 						ud.debug(ud.LDAP, ud.INFO, "result key in ucs-object %s: %r" % (ucs_key, ucs_object[ucs_key]))
 				else:
-					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
+					ud.debug(ud.LDAP, ud.ALL, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
 				# the value isn't set in the AD directory, but it could be set in UCS, so we should delete it on UCS side
 
@@ -1113,14 +1119,14 @@ class ucs(object):
 							if attributes.con_attribute_encoding:
 								value = [x.decode(attributes.con_attribute_encoding) for x in value] if isinstance(value, list) else value.decode(attributes.con_attribute_encoding)
 							ucs_object[ucs_key] = value
-							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we set the key %r in the ucs-object to con_other_attribute %r' % (object['dn'], ucs_key, attributes.con_other_attribute))
+							ud.debug(ud.LDAP, ud.ALL, '__set_values: no ldap_attribute defined in %r, we set the key %r in the ucs-object to con_other_attribute %r' % (object['dn'], ucs_key, attributes.con_other_attribute))
 						elif ucs_key not in mandatory_attrs:
 							ucs_object[ucs_key] = []
-							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
+							ud.debug(ud.LDAP, ud.ALL, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
 						else:
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 					else:
-						ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
+						ud.debug(ud.LDAP, ud.ALL, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
 
 						if ucs_key not in mandatory_attrs:
 							ucs_object[ucs_key] = []
@@ -1137,7 +1143,7 @@ class ucs(object):
 			con_other_attribute = attributes.con_other_attribute
 
 			if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
-				ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+				ud.debug(ud.LDAP, ud.ALL, '__set_values: Set: %s' % con_attribute)
 				set_values(attributes)
 			else:
 				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
@@ -1146,16 +1152,16 @@ class ucs(object):
 		if not MAPPING.post_attributes:
 			return
 		for attr_key, post_attributes in MAPPING.post_attributes.items():
-			ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
+			ud.debug(ud.LDAP, ud.ALL, '__set_values: mapping for attribute: %s' % attr_key)
 			if post_attributes.sync_mode not in ['read', 'sync']:
-				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip %s mode attribute %s ' % (post_attributes.sync_mode, attr_key))
+				ud.debug(ud.LDAP, ud.ALL, '__set_values: Skip %s mode attribute %s ' % (post_attributes.sync_mode, attr_key))
 				continue
 
 			con_attribute = post_attributes.con_attribute
 			con_other_attribute = post_attributes.con_other_attribute
 
 			if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
-				ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+				ud.debug(ud.LDAP, ud.ALL, '__set_values: Set: %s' % con_attribute)
 				if post_attributes.reverse_attribute_check:
 					if object['attributes'].get(post_attributes.ldap_attribute):
 						set_values(post_attributes)
@@ -1164,7 +1170,7 @@ class ucs(object):
 				else:
 					set_values(post_attributes)
 			else:
-				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
+				ud.debug(ud.LDAP, ud.ALL, '__set_values: Skip: %s' % con_attribute)
 
 	def add_in_ucs(self, property_type, object, module, position):
 		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
@@ -1275,11 +1281,11 @@ class ucs(object):
 	def update_add_cache_after_creation(self, entryUUID, objectGUID):
 		if not entryUUID:
 			return
-		ud.debug(ud.LDAP, ud.INFO, "update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUUID: %r" % (entryUUID, objectGUID))
+		ud.debug(ud.LDAP, ud.ALL, "update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUUID: %r" % (entryUUID, objectGUID))
 		self._set_config_option('UCS added', entryUUID, objectGUID)
 
 	def remove_add_cache_after_removal(self, entryUUID):
-		ud.debug(ud.LDAP, ud.INFO, 'remove_add_cache_after_removal: remove entryUUID %r from "UCS added" cache' % (entryUUID,))
+		ud.debug(ud.LDAP, ud.ALL, 'remove_add_cache_after_removal: remove entryUUID %r from "UCS added" cache' % (entryUUID,))
 		self._remove_config_option('UCS added', entryUUID)
 
 	def was_objectGUID_added_by_ucs(self, objectGUID):
@@ -1389,9 +1395,9 @@ class ucs(object):
 		# if sync is write (sync to AD) or none, there is nothing to do
 		if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
 			if property_type:
-				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+				self.context_log(property_type, object, "sync ignored: sync_mode is %s" % self.property[property_type].sync_mode, level=ud.INFO, to_ucs=True)
 			else:
-				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
+				self.context_log(property_type, object, "sync ignored: no mapping defined", level=ud.INFO, to_ucs=True)
 			return True
 
 		guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
@@ -1402,13 +1408,13 @@ class ucs(object):
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
 			if self.was_objectGUID_added_by_ucs(guid):
-				ud.debug(ud.LDAP, ud.PROCESS, 'sync AD > UCS: [%14s] [%10s] %r: ignored object, it deos not exist in UCS but has already been added in the past' % (property_type, object['modtype'], object['dn']))
+				self.context_log(property_type, object, 'sync ignored: does not exist in UCS but has already been added in the past')
 				return True
 			object['modtype'] = 'add'
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'sync AD > UCS: [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
+		self.context_log(property_type, object)
 
 		if object['modtype'] in ('delete', 'move'):
 			try:
@@ -1479,7 +1485,7 @@ class ucs(object):
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
-						ud.debug(ud.LDAP, ud.WARN, "sync AD > UCS: [%14s] [%10s] %r: ignore, object to delete doesn't exists" % (property_type, object['modtype'], object['dn']))
+						self.context_log(property_type, object, "ignore, object to delete doesn't exists")
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)

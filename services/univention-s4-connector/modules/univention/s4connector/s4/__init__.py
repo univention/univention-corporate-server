@@ -214,7 +214,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (dn_key not in dn_mapping_stored) or (not object[dn_key]):
-			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: not premapped (in first instance)")
+			ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: not premapped (in first instance)")
 			return False
 
 		if object.get('modtype') == 'delete':
@@ -231,26 +231,26 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				if object.get('attributes'):
 					t_samaccount = object['attributes'].get('sAMAccountName', [b''])[0].decode('UTF-8')
 				if rdn_value.lower() == t_samaccount.lower():
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
+					ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
 					return True
 
 		if ucsobject:
 			if connector.get_object(object[dn_key]) is not None:
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped AD object found")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: premapped AD object found")
 				return True
 			else:
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped AD object not found")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: premapped AD object not found")
 				return False
 		else:
 			if connector.get_ucs_ldap_object(object[dn_key]) is not None:
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object found")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: premapped UCS object found")
 				return True
 			else:
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object not found")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: premapped UCS object not found")
 				return False
 
 	for dn_key in ['dn', 'olddn']:
-		ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: check newdn for key %s: %s" % (dn_key, object.get(dn_key)))
+		ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: check newdn for key %s: %s" % (dn_key, object.get(dn_key)))
 		if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
 
 			dn = object[dn_key]
@@ -269,7 +269,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in AD to get corresponding DN, if not found create new
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an UCS-Object")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: got an UCS-Object")
 				filter_parts_ad = [format_escaped('(objectclass={0!e})', ocad), ]
 
 				alternative_samaccountnames = []
@@ -278,11 +278,11 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						if ucsval == u"Printer-Admins":  # Also look for the original name (Bug #42675#c1)
 							alternative_samaccountnames.append(ucsval)
 						value = conval
-						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map %s according to mapping-table" % (propertyattrib,))
+						ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: map %s according to mapping-table" % (propertyattrib,))
 						break
 				else:
 					if propertyattrib in connector.property[propertyname].mapping_table:
-						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: %s not in mapping-table" % (propertyattrib,))
+						ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: %s not in mapping-table" % (propertyattrib,))
 
 				if len(alternative_samaccountnames) == 0:
 					filter_parts_ad.append(format_escaped('(samaccountname={0!e})', value))
@@ -295,7 +295,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					# also look for dn attr (needed to detect modrdn)
 					filter_parts_ad.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
 				filter_ad = u'(&{})'.format(''.join(filter_parts_ad))
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad for %s" % filter_ad)
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: search in ad for %s" % filter_ad)
 				result = connector.s4_search_ext_s(connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_ad, ['sAMAccountName'])
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
@@ -308,11 +308,11 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						newdn = ldap.dn.dn2str([str2dn(result[0][0])[0]] + exploded_dn[1:])
 				else:
 					newdn = ldap.dn.dn2str([[('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]] + exploded_dn[1:])  # new object, don't need to change
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in AD and use it as name
 				# we have no fallback here, the given dn must be found in AD or we've got an error
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an AD-Object")
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: got an AD-Object")
 				i = 0
 
 				while not samaccountname:  # in case of olddn this is already set
@@ -324,7 +324,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 						samaccountname_filter = format_escaped('(objectClass={0!e})', ocad)
 						samaccountname_search_result = connector.s4_search_ext_s(search_dn, ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName'])
 						samaccountname = samaccountname_search_result[0][1]['sAMAccountName'][0].decode('UTF-8')
-						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
+						ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: got samaccountname from AD")
 					except ldap.NO_SUCH_OBJECT:  # AD may need time
 						if i > 5:
 							raise
@@ -333,15 +333,15 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				for ucsval, conval in connector.property[propertyname].mapping_table.get(propertyattrib, []):
 					if samaccountname.lower() == conval.lower():
 						samaccountname = ucsval
-						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
+						ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 						break
 				else:
 					if propertyattrib in connector.property[propertyname].mapping_table:
-						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
+						ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: samaccountname not in mapping-table")
 
 				# search for object with this dn in ucs, needed if it lies in a different container
 				ucsdn = ''
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname is: %r" % (samaccountname,))
+				ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: samaccountname is: %r" % (samaccountname,))
 				ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
 				ucsdn_result = connector.search_ucs(filter=ucsdn_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
@@ -349,7 +349,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
 					newdn = ucsdn
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
+					ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
 					if dn_attr:
 						newdn_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]
@@ -358,9 +358,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 					newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])  # guess the old dn
 
-			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r:" % (dn_key,))
-			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %r" % (dn,))
-			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %r" % (newdn,))
+			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r: olddn=%r newdn=%r" % (dn_key, dn, newdn))
 
 			object[dn_key] = newdn
 	return object
@@ -876,7 +874,7 @@ class s4(univention.s4connector.ucs):
 		if show_deleted:
 			ctrls.append(LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1))
 
-		ud.debug(ud.LDAP, ud.INFO, "Search S4 with filter: %s" % filter)
+		ud.debug(ud.LDAP, ud.ALL, "Search S4 with filter: %s" % filter)
 		msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
 
 		res = []
@@ -1210,7 +1208,7 @@ class s4(univention.s4connector.ucs):
 		"""
 		sync group membership in AD if object was changend in UCS
 		"""
-		ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
+		ud.debug(ud.LDAP, ud.ALL, "object_memberships_sync_from_ucs: object: %s" % object)
 
 		if 'group' in self.property:
 			if getattr(self.property['group'], 'sync_mode', '') in ['read', 'none']:
@@ -1427,7 +1425,7 @@ class s4(univention.s4connector.ucs):
 
 		if 'group' in self.property:
 			if getattr(self.property['group'], 'sync_mode', '') in ['write', 'none']:
-				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to ucs ignored, group sync_mode is write")
+				self.context_log(key, object, "ignored group memberships sync: group sync_mode is write", level=ud.INFO, to_ucs=True)
 				return
 
 		if 'memberOf' in object['attributes']:
@@ -1851,6 +1849,7 @@ class s4(univention.s4connector.ucs):
 		poll for changes in AD
 		'''
 		# search from last_usn for changes
+		ud.debug(ud.LDAP, ud.INFO, "sync AD > UCS: polling")
 		change_count = 0
 		changes = []
 		try:
@@ -1892,7 +1891,7 @@ class s4(univention.s4connector.ucs):
 
 			property_key = self.__identify_s4_type(ad_object)
 			if not property_key:
-				ud.debug(ud.LDAP, ud.INFO, "ignoring not identified object dn: %r" % (ad_object['dn'],))
+				self.context_log(property_key, ad_object, 'ignoring not identified object', level=ud.INFO)
 				newUSN = max(self.__get_change_usn(ad_object), newUSN)
 				print_progress(True)
 				continue
@@ -1946,8 +1945,7 @@ class s4(univention.s4connector.ucs):
 				except Exception:  # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
 			else:
-				ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
-				ud.debug(ud.LDAP, ud.WARN, "object was: %s" % ad_object['dn'])
+				self.context_log(property_key, ad_object, 'sync was not successful, save rejected', level=ud.INFO)
 				self.save_rejected(ad_object)
 				self.__update_lastUSN(ad_object)
 
@@ -2049,7 +2047,7 @@ class s4(univention.s4connector.ucs):
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'sync UCS > AD: [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
+		self.context_log(property_type, object, to_ucs=False)
 
 		if 'olddn' in object:
 			object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions

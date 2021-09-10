@@ -177,7 +177,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ignoring unsupported krb5_keytype: (%d)" % (enctype_id,))
 			continue
 
-		ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: krb5_keytype: %s (%d)" % (enctype, enctype_id))
+		ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: krb5_keytype: %s (%d)" % (enctype, enctype_id))
 		if enctype_id == 18:
 			krb5_aes256 = key_data
 			if not krb_ctr4_salt:
@@ -646,7 +646,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	# TODO: Password History
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12', criticality=0)
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: modlist: %s" % modlist)
+	ud.debug(ud.LDAP, ud.ALL, "password_sync_ucs_to_s4: modlist: %r" % (modlist,))
 	if modlist:
 		s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist, serverctrls=[ctrl_bypass_password_hash])
 
