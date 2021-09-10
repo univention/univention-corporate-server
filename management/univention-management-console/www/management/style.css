@@ -8,10 +8,6 @@
 	display: none;
 }
 
-.umc .umcAppDialogPage .umcLayoutRow:last-child {
-	margin-bottom: -20px;
-}
-
 .umc .umcAppDialogPage .umcPageIcon {
 	height: 150px;
 	background-size: contain;

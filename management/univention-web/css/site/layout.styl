@@ -41,6 +41,7 @@
 	.umcModuleWrapperWrapper
 		min-height: 0
 		height: 100%
+		padding-bottom: spacing(2)
 
 // umcGrid/umcGridTile/umcTree styling. the default is a max-height of $max-grid-height.
 // can be overwritten to have flexible height with flex-grid-height()
@@ -90,10 +91,7 @@ flex-page()
 			flex-direction: column
 
 		.umcPageNav
-			margin-bottom: material-grid(2)
 			flex: 0 0 auto
-		&.umcPage--fullWidth .umcPageNav
-			margin-bottom: material-grid(1)
 
 		.umcPageNavContent
 			min-height: 0%
@@ -104,7 +102,6 @@ flex-page()
 		.umcPageMain
 			display: flex
 			flex-direction: column
-			margin-bottom: material-grid(2)
 
 		.umcPageMainContent
 			min-height: 0%
@@ -150,11 +147,6 @@ generic-layout-udm-detailpage()
 		.umcUDMDetailForm > div > div > div
 			height: 100%
 
-		.umcPageNavContent,
-		.umcPageMainContent
-			overflow-y: auto
-			overflow-x: hidden
-
 generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__till__umcPage)
 	@media (min-height: 750px) and (min-width: $md-min)
 		flex-page()
@@ -163,11 +155,6 @@ generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__ti
 			$s += ' > *'
 			.umcModuleContentChildWrapper {$s}
 				height: 100%
-
-		.umcPageNavContent,
-		.umcPageMainContent
-			overflow-y: auto
-			overflow-x: hidden
 
 .umcTopContainer--layout-top,
 .umcTopContainer--layout-services,

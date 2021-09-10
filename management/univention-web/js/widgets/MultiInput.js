@@ -208,6 +208,8 @@ define([
 					iwidget.dynamicValuesInfo = thresholdHandler;
 				}
 			}, this);
+
+			this._origLabel = this.label;
 		},
 
 		startup: function() {
@@ -679,6 +681,10 @@ define([
 			});
 		},
 
+		_isRequiredButEmpty: function() {
+			return this.required && this.get('value').length === 0;
+		},
+
 		isValid: function() {
 			var areValid = true;
 			var i, j;
@@ -688,6 +694,17 @@ define([
 				}
 			}
 			return areValid;
+		},
+
+		state: '',
+		validate: function() {
+			this.set('state', this._isRequiredButEmpty() ? 'Error' : '');
+			if (this.state === 'Error') {
+				this.set('label', this._origLabel + _(' (required)'))
+			} else {
+				this.set('label', this._origLabel);
+			}
+			return this.isValid();
 		},
 
 		setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {

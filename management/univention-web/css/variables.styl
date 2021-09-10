@@ -1,15 +1,4 @@
 //// Google Material Styling
-// grid layout
-$material-grid8 ?= 8px
-$material-grid4 ?= 4px
-material-grid(multiplicant, use4dp=false)
-	if typeof(use4dp) != 'boolean'
-		error('use4dp has to be a boolean')
-	spacing = $material-grid8
-	if use4dp
-		spacing = $material-grid4
-	spacing * multiplicant
-
 $spacing-normal ?= s('var(--layout-spacing-unit)')
 $spacing-small ?= s('var(--layout-spacing-unit-small)')
 spacing(multiplicant, small=false)
@@ -107,7 +96,7 @@ $popup-background-color ?= $container-background-color					// Background for Dia
 
 
 // Buttons
-$material-button-height ?= material-grid(9, true)
+$material-button-height ?= spacing(9, true)
 $button-border-color ?=  $focused-border-color				// Border for (stand-alone) buttons in normal, hovered, or active state
 $button-background-color ?= $unfocused-clickable-color		// Background color for (unhovered) buttons
 $button-hovered-background-color ?= rgba(0, 0, 0, 0.0784)	// Background color for hovered buttons
@@ -127,8 +116,8 @@ $textbox-focused-background-color ?= $textbox-background-color
 $textbox-error-background-color ?= $textbox-background-color
 $textbox-disabled-background-color ?= $disabled-background-color
 $textbox-padding ?= 0 5px	// Padding for Textbox, Textarea, etc.
-$material-textfield-height ?= material-grid(5)
-$material-textfield-text-padding ?= material-grid(3, true)
+$material-textfield-height ?= spacing(5)
+$material-textfield-text-padding ?= spacing(3, true)
 $material-textfield-border-width-base      ?= 1px
 $material-textfield-border-width-inactive  ?= $material-textfield-border-width-base
 // $material-textfield-border-width-hover     ?= $material-textfield-border-width-base
@@ -351,59 +340,6 @@ material-shadow(level)
 		box-shadow: 0px 14px 45px rgba(0, 0, 0, 0.25), 0px 10px 18px rgba(0, 0, 0, 0.22)
 	else
 		box-shadow: none
-
-
-/*
-// material-flat-button()
-	// .dijitButtonNode
-		// box-shadow: none
-		// background-color: rgba(255, 255, 255, 0)
-		// padding: 0 material-grid(1)
-
-	// &^[-1..-1]Hover,
-	// &^[-1..-1]Focused
-		// .dijitButtonNode
-			// background-color: $button-hovered-background-color
-	// &^[-1..-1]Active
-		// .dijitButtonNode
-			// background-color: $button-pressed-background-color
-	// &^[-1..-1]Disabled
-		// .dijitButtonNode
-			// background-color: rgba(255, 255, 255, 0)
-	// &^[-1..-1]Checked
-		// .dijitButtonNode
-			// background-color: $button-checked-background-color
-
-	// .dijitArrowButtonInner
-		// margin-right: 0
-	// .dijitIcon
-		// margin-left: 0
-
-// material-outlined-button()
-	// material-flat-button()
-	// .dijitButtonNode
-		// border: 1px solid #c8c8c8 // TODO
-		// padding: 0 material-grid(2)
-
-	// .dijitArrowButtonInner
-		// margin-right: material-grid(-1, true)
-	// .dijitIcon
-		// margin-left: material-grid(-1, true)
-
-// umc-icon-button(side-length=$material-button-height)
-	// .dijitButtonNode
-		// padding: 0
-		// height: side-length
-		// width: side-length
-	// .dijitButtonText,
-	// .dijitArrowButtonInner
-		// display: none
-	// .dijitIcon
-		// margin: 0
-
-// umc-icon-button-aligned-to-textfield()
-	// umc-icon-button($material-textfield-height)
-*/
 
 
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)
