@@ -2042,7 +2042,7 @@ define([
 			if (page && !page.$titleOrig$) {
 				// store the original title
 				page.$titleOrig$ = page.title;
-				page.set('title', '<span style="color:red">' + page.title + ' (!)</span>');
+				page.set('title', '<span class="tabLabel tabLabel--error">' + page.title + ' (!)</span>');
 			}
 		},
 
