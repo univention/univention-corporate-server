@@ -1,3 +1,9 @@
+ucs-test (10.0.6-43) unstable; urgency=low
+
+  * Bug #53768: Move samba-common from part-II to Primary
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 10 Sep 2021 18:17:27 +0200
+
 ucs-test (10.0.6-42) unstable; urgency=medium
 
   * Bug #50593: added tests/52_s4connector/516_create_delete_objects_in_ucs_check_sync.py
