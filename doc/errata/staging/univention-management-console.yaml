@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console
+fix: 12.0.12-13A~5.0.0.202109101124
+desc: |
+ This update addresses the following issue(s):
+ * The label of required multi values is now highlighted if no value is set.
+bug: [53665]

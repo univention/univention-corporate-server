@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-web
-fix: 4.0.1-38A~5.0.0.202109071030
+fix: 4.0.1-41A~5.0.0.202109101116
 desc: |
  This update addresses the following issue(s):
  * The design code was adjusted for the usage in UCS@school.
