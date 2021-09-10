@@ -29,6 +29,12 @@ def to_bytes(value):
 	return value
 
 
+def get_first(value):
+	if isinstance(value, (list, tuple)):
+		return value[0]
+	return value
+
+
 class S4Connection(ldap_glue_s4.LDAPConnection):
 	'''helper functions to modify AD-objects'''
 
@@ -54,19 +60,19 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 		Returns the dn of the created user.
 		"""
-		cn = attributes.get('cn', username)
-		sn = attributes.get('sn', 'SomeSurName')
+		cn = to_bytes(attributes.get('cn', username))
+		sn = to_bytes(attributes.get('sn', b'SomeSurName'))
 
 		new_position = position or 'cn=users,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(get_first(cn).decode("UTF-8")), new_position)
 
 		defaults = (
 			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
-			('cn', to_bytes(cn)),
-			('sn', to_bytes(sn)),
+			('cn', cn),
+			('sn', sn),
 			('sAMAccountName', to_bytes(username)),
 			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
-			('displayName', b'%s %s' % (to_bytes(username), to_bytes(sn))))
+			('displayName', b'%s %s' % (to_bytes(username), get_first(sn))))
 		new_attributes = dict(defaults)
 		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
