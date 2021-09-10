@@ -1874,8 +1874,6 @@ class iso8601Date(simple):
 
 	type_class = univention.admin.types.DateType
 
-	size = 'TwoThirds'
-
 	@classmethod
 	def to_datetime(cls, value):
 		value = cls.parse(value)
@@ -2288,7 +2286,6 @@ class TimeString(simple):
 	>>> TimeString.parse('23:59:59')
 	'23:59:59'
 	"""
-	size = 'TwoThirds'
 
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
@@ -5219,7 +5216,6 @@ class mailinglist_name(gid):
 
 
 class TimeZone(select):
-	size = 'TwoThirds'
 	empty_value = True
 
 	@ClassProperty
@@ -5234,6 +5230,7 @@ class DateTimeTimezone(complex):
 	delimiter = ' '
 	subsyntaxes = [(_('Date'), iso8601Date), (_('Time'), TimeString), (_('Timezone'), TimeZone)]
 	subsyntax_names = ('date', 'time', 'timezone')
+	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 	all_required = False
 	min_elements = 0
 
