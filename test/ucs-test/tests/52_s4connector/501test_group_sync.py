@@ -179,7 +179,7 @@ def test_group_sync_from_s4_to_udm_with_nested_user(group_class, nested_class, s
 
 		print("\nModifying S4 group\n")
 		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_user(s4, nested_user, s4connector.wait_for_sync)
-		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn])
+		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn.encode("UTF-8")])
 		s4connector.wait_for_sync()
 		udm_attributes = {"users": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)
@@ -223,7 +223,7 @@ def test_group_sync_from_s4_to_udm_with_nested_group(group_class, nested_class, 
 
 		print("\nModifying S4 group\n")
 		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_group(s4, nested_group, s4connector.wait_for_sync)
-		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn])
+		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn.encode("UTF-8")])
 		s4connector.wait_for_sync()
 		udm_attributes = {"nestedGroup": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)

@@ -35,7 +35,7 @@ def test_user_sync_from_udm_to_s4(user_class, sync_mode):
 		(udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
 		print("\nModifying UDM user\n")
-		udm.modify_object('users/user', dn=udm_user_dn, **udm_user_dn.to_unicode(udm_user.user))
+		udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.user))
 		s4connector.wait_for_sync()
 		s4.verify_object(s4_user_dn, tcommon.map_udm_user_to_con(udm_user.user))
 
@@ -51,7 +51,7 @@ def test_user_sync_from_udm_to_s4_with_rename(user_class, sync_mode):
 		(udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
 		print("\nRename UDM user\n")
-		udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user_dn.to_unicode(udm_user.rename))
+		udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.rename))
 		s4connector.wait_for_sync()
 
 		s4.verify_object(s4_user_dn, None)
