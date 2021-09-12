@@ -56,7 +56,7 @@ def test_user_sync_from_udm_to_s4_with_rename(user_class, sync_mode):
 
 		s4.verify_object(s4_user_dn, None)
 		s4_user_dn = ldap.dn.dn2str([
-			[("CN", udm_user.rename.get("username"), ldap.AVA_STRING)],
+			[("CN", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)],
 			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
 		s4.verify_object(s4_user_dn, tcommon.map_udm_user_to_con(udm_user.rename))
 
