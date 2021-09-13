@@ -1,3 +1,9 @@
+ucs-test (10.0.6-44) unstable; urgency=medium
+
+  * Bug #53761: Add test for reinitializing during configure
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Sep 2021 17:40:42 +0200
+
 ucs-test (10.0.6-43) unstable; urgency=low
 
   * Bug #53768: Move samba-common from part-II to Primary

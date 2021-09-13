@@ -317,10 +317,13 @@ class App(object):
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
 
-		self.ucr.load()
-		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+		self.reload_container_id()
 
 		self.installed = True
+
+	def reload_container_id(self):
+		self.ucr.load()
+		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
 	def file(self, fname):
 		if fname.startswith('/'):
@@ -379,8 +382,7 @@ class App(object):
 			finished = progress.get('finished', False)
 		if not progress['result'].get('success', False) or not progress['result'].get('can_continue', False):
 			raise UCTTest_DockerApp_UMCInstallFailed(progress, errors)
-		self.ucr.load()
-		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+		self.reload_container_id()
 		self.installed = True
 		if errors:
 			raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
@@ -412,8 +414,7 @@ class App(object):
 		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
-		self.ucr.load()
-		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+		self.reload_container_id()
 		self.installed = True
 
 	def verify(self, joined=True):
