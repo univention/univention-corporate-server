@@ -259,14 +259,6 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			if difference:
 				unexpected_values[attribute] = difference
 
-		"""
-		Exception occurred: <class 'univention.testing.utils.LDAPObjectValueMissing'> (DN: uid=uuc4i4w8ux,cn=schueler,cn=users,ou=limbotestou1417,dc=autotest201,dc=local
-		departmentNumber: [b'testou9375'], missing   : 'limbotestou1417'
-		homeDirectory: [b'/home/testou9375/schueler/uuc4i4w8ux'], missing   : '/home/limbotestou1417/schueler/uuc4i4w8ux'
-		departmentNumber: [b'testou9375'], unexpected: 'testou9375'
-		homeDirectory: [b'/home/testou9375/schueler/uuc4i4w8ux'], unexpected: '/home/testou9375/schueler/uuc4i4w8ux'). Retrying in 10.00 seconds (retry 11/20).
-		"""
-
 	mixed = dict((key, (values_missing.get(key), unexpected_values.get(key))) for key in list(values_missing) + list(unexpected_values))
 	msg = u'DN: %s\n%s\n' % (
 		baseDn,
