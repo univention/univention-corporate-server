@@ -166,10 +166,10 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 		except exceptions:
 			exc_info = sys.exc_info()
 			if i != retry_count:
-				print('Exception occurred: %s (%s). Retrying in %.2f seconds (retry %d/%d).' % (exc_info[0], exc_info[1], delay, i, retry_count))
+				print('Exception occurred: %s (%s). Retrying in %.2f seconds (retry %d/%d).\n' % (exc_info[0], exc_info[1], delay, i, retry_count))
 				time.sleep(delay)
 			else:
-				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).' % (exc_info[0], exc_info[1], i, retry_count))
+				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).\n' % (exc_info[0], exc_info[1], i, retry_count))
 	else:
 		six.reraise(*exc_info)
 
@@ -259,9 +259,17 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			if difference:
 				unexpected_values[attribute] = difference
 
-	values_missing = u'\n'.join(u"%s: %r, missing   : '%s'" % (attribute, attr.get(attribute), u"', ".join(x.decode('UTF-8', 'replace') for x in difference)) for attribute, difference in values_missing.items())
-	unexpected_values = u'\n'.join(u"%s: %r, unexpected: '%s'" % (attribute, attr.get(attribute), u"', ".join(x.decode('UTF-8', 'replace') for x in difference)) for attribute, difference in unexpected_values.items())
-	msg = u'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
+	mixed = dict((key, (values_missing.get(key), unexpected_values.get(key))) for key in list(values_missing) + list(unexpected_values))
+	msg = u'DN: %s\n%s\n' % (
+		baseDn,
+		u'\n'.join(
+			u"%s: %r, %s %s" % (
+				attribute,
+				attr.get(attribute),
+				('missing: %r;' % u"', ".join(x.decode('UTF-8', 'replace') for x in difference_missing)) if difference_missing else '',
+				('unexpected: %r' % u"', ".join(x.decode('UTF-8', 'replace') for x in difference_unexpected)) if difference_unexpected else '',
+			) for attribute, (difference_missing, difference_unexpected) in mixed.items())
+	)
 
 	if values_missing:
 		raise LDAPObjectValueMissing(msg)
