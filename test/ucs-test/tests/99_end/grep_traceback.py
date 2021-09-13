@@ -183,6 +183,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-a-tile", ['in refresh']),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("univention.admin.uexceptions.noObject: cn=internal-name-for-a-tile,cn=entry,cn=portals", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 	("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,", None),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+	('univention.testing.utils.LDAPObjectNotFound: DN:', ['test_container_cn_rename_uppercase_rollback_with_special_characters']),  # Bug #53776
 	# UCS@school test cases:
 	# ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import']),  # Bug #53564
 	("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input']),  # Bug #53564
