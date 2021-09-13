@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-66) unstable; urgency=medium
+
+  * Bug #53761: Load new UCR variables during configure; maybe we got a new
+    container variable during configure_host due to a reinitialize
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Sep 2021 12:57:22 +0200
+
 univention-appcenter (9.0.2-65) unstable; urgency=medium
 
   * Bug #53625: show content of error file in Appcenter

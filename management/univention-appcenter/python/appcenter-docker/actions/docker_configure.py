@@ -41,7 +41,7 @@ from univention.config_registry.backend import _ConfigRegistry
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.configure import Configure
 from univention.appcenter.utils import mkdir, app_is_running
-from univention.appcenter.ucr import ucr_save
+from univention.appcenter.ucr import ucr_save, ucr_load
 from univention.appcenter.log import get_logfile_logger
 
 
@@ -131,6 +131,7 @@ class Configure(Configure, DockerActionMixin):
 
 	def _run_configure_script(self, app, action):
 		success = super(Configure, self)._run_configure_script(app, action)
+		ucr_load()  # Bug #53761 - maybe configure_host reinitialized the app, resulting in a new ucrv for the container
 		if success is not False and app.docker and app_is_running(app):
 			success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])
 		return success
