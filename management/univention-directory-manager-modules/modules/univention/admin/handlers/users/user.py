@@ -67,6 +67,23 @@ from univention.lib.s4 import rids_for_well_known_security_identifiers
 import univention.debug as ud
 import univention.password
 
+try:
+	from univention.admin.syntax import ActivationDateTimeTimezone
+except ImportError:
+	# workaround for errors during errata-updates. should be removable with UCS 5.0-1
+	class ActivationDateTimeTimezone(univention.admin.syntax.complex):
+		"""
+		Syntax for YYYY-mm-dd HH:MM TZNAME
+		"""
+		delimiter = ' '
+		subsyntaxes = [('Date', univention.admin.syntax.iso8601Date), ('Time', univention.admin.syntax.TimeString), ('Timezone', univention.admin.syntax.TimeZone)]
+		subsyntax_names = ('date', 'time', 'timezone')
+		subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
+		size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
+		all_required = False
+		min_elements = 0
+	univention.admin.syntax.ActivationDateTimeTimezone = ActivationDateTimeTimezone
+
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
 
