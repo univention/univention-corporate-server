@@ -62,7 +62,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 		fi
 	fi
 
-	info "create user $USERNAME using ${CMD[@]} $@"
+	info "create user $USERNAME using ${CMD[*]} $*"
 
 	[ "${UIDTEST:-}" = true ] && CMD+=(--set uidNumber=1234)
 	[ "${KERBEROS:-}" = true ] && CMD+=(--option=kerberos)

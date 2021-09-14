@@ -34,6 +34,6 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-echo "$0 $@"
+echo "$0 $*"
 sed -ne '1,/^[^#]\|^$/s/^## //p' "$0"
 # vim: set ft=sh :
