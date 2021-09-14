@@ -4,7 +4,8 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api, skip_admember]
-## packages: [python-univention-directory-manager]
+## packages:
+##  - python3-univention-directory-manager (>= 15.0.11-17)
 ## bugs: [53620]
 
 import pytest
