@@ -4,6 +4,7 @@ DEBUGLEVEL=4
 eval "$(univention-config-registry shell)"
 : "${DOMAIN:=$domainname}"
 
+# shellcheck disable=SC2015
 tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
 error () { #DEBUGLEVEL 0
 	echo -e "${_B:-}error${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
@@ -172,7 +173,7 @@ fail_bool () { #This is intended to be called directly after functions that are 
 		fi
 	fi
 
-	if [ $rc -eq 1 -o $rc -eq 0 ]
+	if [ $rc -eq 1 ] || [ $rc -eq 0 ]
 	then
 		if [ $rc -eq "$expected_retval" ]
 		then
@@ -253,10 +254,7 @@ wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and
 }
 
 check_domainadmin_credentials () { # check ldap credentials are available
-	if [ -z "${tests_domainadmin_pwd:-}" -o -z "${tests_domainadmin_pwdfile:-}" -o -z "${tests_domainadmin_account:-}" ]
-	then
-		return 1
-	fi
+	[ -n "${tests_domainadmin_pwd:-}" ] && [ -n "${tests_domainadmin_pwdfile:-}" ] && [ -n "${tests_domainadmin_account:-}" ]
 }
 
 get_domain_admins_dn () { # prints the Domain Admins dn
