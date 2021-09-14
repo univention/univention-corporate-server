@@ -33,8 +33,9 @@ section () { #This is intended to make life easier for readers of test-logs with
 }
 
 check_perm () { # Check file permissions
+	# shellcheck disable=SC2034
 	local check=${1?type} filename=${2?filename} perm=${3?permission} owner=${4?owner} group=${5?group}
-	[ -${check#-} "$filename" ] || return 0
+	eval '[ -${check#-} "$filename" ]' || return 0
 	if [ $(($perm)) -ne $((0$(stat -c "%a" "$filename"))) ] ||
 		[ "$owner" != "$(stat -c "%U" "$filename")" ] ||
 		[ "$group" != "$(stat -c "%G" "$filename")" ]
