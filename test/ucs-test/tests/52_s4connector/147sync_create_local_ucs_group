@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
+# shellcheck shell=bash
 ## desc: "Create local group on ucs-side in sync-mode"
 ## exposure: dangerous
 ## packages:

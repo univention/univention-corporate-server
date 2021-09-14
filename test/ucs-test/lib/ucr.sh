@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 # Wrapper around ucr which saves the original value and (manually) restores them on exit.
 
 # Clear all shell variables starting with a single underscore

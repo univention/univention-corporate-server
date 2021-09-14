@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
+# shellcheck shell=bash
 ## desc: "Use a username with special characters in Samba4"
 ## exposure: dangerous
 ## packages:

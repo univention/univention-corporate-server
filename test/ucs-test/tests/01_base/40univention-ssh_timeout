@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check univention-ssh timeout
 ## bugs: [17697]
 ## tags: [univention]

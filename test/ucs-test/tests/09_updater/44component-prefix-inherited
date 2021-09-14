@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Update localhost component with inherited default prefix
 ##  1. setup local repository for maintained component in inherited prefix

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Das ist ein Test
 ##  ich weiß noch nicht, ob er funktioniert

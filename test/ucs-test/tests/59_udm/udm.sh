@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # vim:set filetype=sh tabstop=4 shiftwidth=4 noexpandtab:
 set -e -u
 

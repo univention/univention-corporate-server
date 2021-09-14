@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check if overview.html links to master only if joined
 ## bugs: [11505]
 ## tags:

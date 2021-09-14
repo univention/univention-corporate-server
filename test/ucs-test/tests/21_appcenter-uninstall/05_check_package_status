@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check package status
 ## tags: [appuninstalltest]
 ## roles-not: [basesystem]

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test userPassword with K5KEY in combination with userexpiry
 ## tags:
 ##  - basic

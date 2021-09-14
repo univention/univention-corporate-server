@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 # Run commands on ldap/master
 eval "$(ucr shell ldap/master '^tests/domainadmin/.*')"
 MASTER_SSH_TIMEOUT=20

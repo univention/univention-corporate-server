@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Mirror local repository and clean obsolete files
 ##  1. Create repository with deprecated and current files

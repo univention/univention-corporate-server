@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test access group for nagios web interface
 ## bugs: [18684]
 ## packages:

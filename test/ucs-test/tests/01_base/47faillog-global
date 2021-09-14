@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test faillog/lock_global via ssh and ldap
 ## roles: [domaincontroller_master]
 ## tags: [basic, univention]

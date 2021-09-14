@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 STRINGLENGTH=8 #length of the username to test
 SIGNOFFSET=4 #which letter the . or - should be in the username (from behind)
 

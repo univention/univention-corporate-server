@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Local UIDs and GIDs must not be in range 1000-29999
 ##  This scripts tests if the local UIDs and GIDs are not in the range 1000-29999, so they will not collide with users from the LDAP.

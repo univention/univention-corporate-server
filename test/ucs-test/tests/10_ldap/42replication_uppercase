@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: LDAP-replication to backup and slave with an object with upper case
 ## tags:
 ##  - replication

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Delete an attribute of an AD-Group in write-mode"
 ## exposure: dangerous
 ## packages:

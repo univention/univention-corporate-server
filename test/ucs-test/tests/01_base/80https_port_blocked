@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Checking if the HTTPS Port gets blocked when apache2 restarts
 ## packages: [apache2 | apache2-mpm-prefork]
 ## exposure: careful

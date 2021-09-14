@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Restart services to test proper daemonize
 ## bugs: [39126, 39148, 37952]
 ## packages:

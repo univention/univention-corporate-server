@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test is_ucr_true is_ucr_false in univention-lib/ucr.sh
 ## bugs: [27701]
 ## tags: [basic]

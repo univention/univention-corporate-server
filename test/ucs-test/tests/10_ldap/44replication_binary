@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check LDAP-replication of binary data
 ## bugs: [25858, 30165, 32025]
 ## versions:

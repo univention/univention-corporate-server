@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Assert bind9 picks up new interfaces on reload
 ## tags:
 ##  - basic

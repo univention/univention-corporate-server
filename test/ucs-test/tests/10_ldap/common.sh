@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=bash
 
 hasPwdAccess () { # has user $1 access to reset password of user $2 ?
 	local adminuser="uid=$1,cn=users,$ldap_base"

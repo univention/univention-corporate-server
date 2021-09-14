@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Test if installed services are running
 ## roles:
 ##  - domaincontroller_master

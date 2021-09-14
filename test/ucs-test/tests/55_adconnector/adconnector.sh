@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 #######################################################
 #
 # Hints for the Active-Directory-Connector-Tests:

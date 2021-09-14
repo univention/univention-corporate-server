@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Checks permissions for /var/lib/samba/ntp_signd"
 ## exposure: safe
 ## bugs:

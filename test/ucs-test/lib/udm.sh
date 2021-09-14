@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/ldap.sh" || exit 137

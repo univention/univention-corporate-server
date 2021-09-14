@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Checking for filesystem permissions on /etc/backup-join.secret
 ## roles: [domaincontroller_master]
 ## exposure: safe

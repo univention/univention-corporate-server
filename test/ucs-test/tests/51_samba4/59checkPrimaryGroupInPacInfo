@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Check that the primary group is listed in the kerberos PAC_LOGON_INFO GROUP_MEMBERSHIP_ARRAY"
 ## exposure: dangerous
 ## tags: [SKIP]

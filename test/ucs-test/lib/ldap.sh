@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 PYTHON=python3
 
 scriptlet_error () {

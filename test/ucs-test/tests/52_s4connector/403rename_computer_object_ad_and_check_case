@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Check case after renaming a windows computer via udm"
 ## exposure: dangerous
 ## packages:

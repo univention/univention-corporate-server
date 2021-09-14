@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 
 LANGUAGE="en"
 

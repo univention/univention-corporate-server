@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 # Run shell snippets in reversed order to undo things
 
 declare -r TEST_undo=$(mktemp -d)

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Checking for the proper remove of the locks for groupname
 ##  Creating a Group, removing it and trying to create it again.

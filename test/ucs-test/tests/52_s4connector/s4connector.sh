@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 #######################################################
 #
 # Hints for the S4 connector tests:

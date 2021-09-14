@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 DEBUGLEVEL=4
 eval "$(univention-config-registry shell)"
 : ${DOMAIN:=$domainname}

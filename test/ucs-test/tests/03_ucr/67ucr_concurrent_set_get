@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-# shellcheck shell=bash shell=bash
+# shellcheck shell=bash
 ## desc: Concurrent setting and getting of UCR variables
 ## bugs: [31725]
 ## tags: [basic]

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Check existence of /etc/krb5.keytab
 ##  This script checks that the file "/etc/krb5.keytab" does exist and is not empty on member servers.

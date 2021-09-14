@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  https-connects are not logged in the /var/log/apache2/access.log
 ##  This script tests, whether https-connects are logged in the /var/log/apache2/access.log

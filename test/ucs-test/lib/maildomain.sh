@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 CONTROLMODE=true
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137

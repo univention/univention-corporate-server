@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Test whether fACL's  set in UDM are working"
 ## exposure: safe
 ## packages:

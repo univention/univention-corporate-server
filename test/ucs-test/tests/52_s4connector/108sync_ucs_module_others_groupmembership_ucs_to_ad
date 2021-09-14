@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Check whether group membership for computer/linux (ucs_module_others) objects are synced to ad"
 ## exposure: dangerous
 ## packages:

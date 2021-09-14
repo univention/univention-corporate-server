@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Verify that SID of native Windows joined is correct in S4 and OpenLDAP"
 ## bugs: [37572, 36570]
 ## tags: [basic, native_win_client]

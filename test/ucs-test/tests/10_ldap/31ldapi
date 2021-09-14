@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Try to bind to ldapi as normal user and as user nobody
 ## bugs: [10529,39811]
 ## tags:

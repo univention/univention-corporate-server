@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: Check if latest app version is installed
 ## tags: [SKIP-UCSSCHOOL, basic, apptest]
 ## roles-not: [basesystem]

@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: "Run smbtorture self test"
 ## exposure: dangerous
 ## packages:

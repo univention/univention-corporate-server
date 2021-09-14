@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 DRS_REPLICATION_TIMEOUT=360
 
 wait_for_LDAP_replication_of_domain_sambaSid () {
