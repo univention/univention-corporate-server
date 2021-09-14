@@ -38,7 +38,8 @@ eval "$(univention-config-registry shell server/role)"
 
 univention-config-registry set "directory/manager/cmd/debug/level"?"0" \
 					"directory/manager/cmd/timeout"?"300" \
-					"directory/manager/cmd/sockettimeout"?"50"
+					"directory/manager/cmd/sockettimeout"?"50" \
+					"directory/manager/user/accountactivation/cron?*/15 * * * *"
 
 create_logfile /var/log/univention/directory-manager-cmd.log "root:adm" 640
 create_logfile /var/log/univention/sync-memberuid.log "root:adm" 640
