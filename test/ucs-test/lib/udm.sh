@@ -386,27 +386,6 @@ udm_get_plain_module_attributes () {
 	        sed "s/ .*$//"
 }
 
-udm_get_tab_entries () {
-	local module="$1"
-	local tabname="$2"
-
-	let local linecount="$(udm-test "$module" | wc -l)"
-	let local tabbeginning="$(udm-test "$module" | grep -n "$tabname:" | sed "s#: *$tabname:##")"
-	let local tailcount="$linecount - $tabbeginning"
-
-	local output="$(udm-test "$module" | tail -n "$tailcount" | egrep -n ".*:\$" | head -n 1 | sed "s#:.*##")"
-	if [ -n "$output" ]; then
-		let local relativetabend="$output - 1"
-	else
-		let local relativetabend="$tailcount + 1"
-	fi
-
-	udm-test "$module" |
-		tail -n "$tailcount" |
-		head -n "$relativetabend" |
-		sed "s/^ *//"
-}
-
 udm_get_ldap_attribute () {
 	local attributename="$1"
 	local module="$2"
