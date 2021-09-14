@@ -37,8 +37,8 @@ else:
 ldap_delete () {
 	local dn=${1?:missing parameter: dn}
 
-	declare -a cmd=(ldapdelete -r -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "$dn")
-	if log_and_execute "${cmd[@]}"; then
+	declare -a cmd_ld=(ldapdelete -r -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "$dn")
+	if log_and_execute "${cmd_ld[@]}"; then
 		info "Successfully deleted ldap object"
 		return 0
 	else
