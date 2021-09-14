@@ -369,7 +369,7 @@ udm_get_ldap_attribute () {
 		local branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base"
 	fi
 
-	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -w '`cat /etc/ldap.secret`' -b '$branch' \
+	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -y /etc/ldap.secret -b '$branch' \
 		'$attributename' |
 		grep '^$attributename' |
 		sed 's/^${attributename}\;//' |
