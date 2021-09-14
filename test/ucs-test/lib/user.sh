@@ -77,7 +77,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	"${CMD[@]}" "$@" >"$err" 2>&1
 	local rc=$?
 	local STOPPTIME=$(date +%s%N)
-	TIMETOCREATEUSER=$(($STOPPTIME - $STARTTIME))
+	TIMETOCREATEUSER=$((STOPPTIME - STARTTIME))
 
 	#Catch Tracebacks
 	cat "$err"

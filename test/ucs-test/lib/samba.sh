@@ -11,8 +11,8 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 	if [ -z "${sambaSID%S-1-4*}" ]; then
 		echo -n "Waiting for S4-Connector and LDAP replication of domain sambaSID for user $username (current: $sambaSID)."
 		while [ -z "${sambaSID%S-1-4*}" ]; do
-			if [ "$(($t-$t0))" -gt 60 ]; then
-				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local LDAP after $(($t-$t0)) seconds"
+			if [ "$((t-t0))" -gt 60 ]; then
+				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local LDAP after $((t-t0)) seconds"
 			fi
 			sleep 1
 			echo -n "."
@@ -27,8 +27,8 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
 		fi
 		while [ -z "$sambaSID" ]; do
-			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
-				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local Samba4 directory after $(($t-$t0)) seconds"
+			if [ "$((t-t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
+				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local Samba4 directory after $((t-t0)) seconds"
 			fi
 			sleep 1
 			echo -n "."
@@ -36,7 +36,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			t=$(date +%s)
 		done
 	fi
-	echo "S4-Connector and LDAP replication of domain sambaSID took $(($t-$t0)) seconds"
+	echo "S4-Connector and LDAP replication of domain sambaSID took $((t-t0)) seconds"
 }
 
 wait_for_drs_replication () {
@@ -66,8 +66,8 @@ wait_for_drs_replication () {
 	if [ -z "$value" ]; then
 		echo -n "Waiting for DRS replication for $ldap_filter: "
 		while [ -z "$value" ]; do
-			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
-				fail_fast 1 "TIMEOUT: Replication timeout to local sam.ldb after $(($t-$t0)) seconds"
+			if [ "$((t-t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
+				fail_fast 1 "TIMEOUT: Replication timeout to local sam.ldb after $((t-t0)) seconds"
 			fi
 			sleep 1
 			echo -n "."
@@ -81,7 +81,7 @@ wait_for_drs_replication () {
 		done
 		echo
 	fi
-	echo "DRS replication took $(($t-$t0)) seconds"
+	echo "DRS replication took $((t-t0)) seconds"
 }
 
 force_drs_replication () {
