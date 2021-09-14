@@ -193,9 +193,9 @@ udm_exists () {
 	fi
 
 	if [ -n "$ldaplocation" ]; then
-		cmd+=" | egrep '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation$'"
+		cmd+=" | grep -E '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation$'"
 	else
-		cmd+=" | egrep '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base$'"
+		cmd+=" | grep -E '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base$'"
 	fi
 
 	if log_and_eval_execute "$cmd"; then
@@ -451,7 +451,7 @@ udm_get_udm_attribute () {
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
-	cmd+=" --filter \"$(udm_get_udm_filter_qualifier "$module")=$objectname\" | egrep '^ *${attribute}: ' | sed 's/^ *${attribute}: //'"
+	cmd+=" --filter \"$(udm_get_udm_filter_qualifier "$module")=$objectname\" | grep -E '^ *${attribute}: ' | sed 's/^ *${attribute}: //'"
 
 	log_and_eval_execute "$cmd"
 }

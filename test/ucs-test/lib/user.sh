@@ -133,7 +133,7 @@ user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexit
 	local USERNAME=${1?:missing parameter: name}
 	info "checking whether the user $USERNAME is really removed"
 
-	if udm-test users/user list --filter uid="$USERNAME" | egrep "^DN:"
+	if udm-test users/user list --filter uid="$USERNAME" | grep "^DN:"
 	then
 		debug "user $USERNAME exists"
 		return 0
