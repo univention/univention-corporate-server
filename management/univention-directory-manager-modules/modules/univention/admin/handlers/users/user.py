@@ -76,7 +76,7 @@ except ImportError:
 		Syntax for YYYY-mm-dd HH:MM TZNAME
 		"""
 		delimiter = ' '
-		subsyntaxes = [('Date', univention.admin.syntax.iso8601Date), ('Time', univention.admin.syntax.TimeString), ('Timezone', univention.admin.syntax.TimeZone)]
+		subsyntaxes = [('Date', univention.admin.syntax.iso8601Date), ('Time', univention.admin.syntax.TimeString), ('Timezone', univention.admin.syntax.string)]
 		subsyntax_names = ('date', 'time', 'timezone')
 		subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
 		size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
