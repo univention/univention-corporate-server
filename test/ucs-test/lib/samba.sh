@@ -108,6 +108,7 @@ force_drs_replication () {
 		return
 	fi
 
+	# shellcheck disable=SC2034
 	hostname=$(ucr get hostname)
 	if [ "$direction" = "in" ]; then
 		samba-tool drs replicate "$destination_dc" "$source_dc" "$partition_dn"

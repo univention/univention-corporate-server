@@ -1,5 +1,8 @@
 #!/bin/bash
 # shellcheck shell=bash
+
+# shellcheck disable=SC2034
+
 STRINGLENGTH=8 #length of the username to test
 SIGNOFFSET=4 #which letter the . or - should be in the username (from behind)
 

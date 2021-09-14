@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck shell=bash
 
+# shellcheck disable=SC2034
 CONTROLMODE=true
 
 # shellcheck source=base.sh

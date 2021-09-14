@@ -6,6 +6,7 @@
 # shellcheck source=ldap.sh
 . "$TESTLIBPATH/ldap.sh" || exit 137
 
+# shellcheck disable=SC2034
 UDM_ALL_COMPUTER_ROLES="computers/domaincontroller_backup
 computers/domaincontroller_master
 computers/domaincontroller_slave

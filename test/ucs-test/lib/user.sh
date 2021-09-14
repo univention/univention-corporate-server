@@ -80,6 +80,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	local rc=$?
 	local STOPPTIME
 	STOPPTIME=$(date +%s%N)
+	# shellcheck disable=SC2034
 	TIMETOCREATEUSER=$((STOPPTIME - STARTTIME))
 
 	#Catch Tracebacks
