@@ -61,13 +61,14 @@ from univention.testing.internal import get_sections, get_tests
 from os.path import basename, splitext
 sections = get_sections()
 tests = get_tests(sections)
+python = ("py.test", "pytest", "python", "selenium")
 for tests in tests.values():
     for fname in tests:
         name, ext = splitext(basename(fname))
         if "." not in name and not ext:
             continue
         line = open(fname).readline()
-        if ext != ".py" or ("py.test" not in line and "pytest" not in line):
+        if ext != ".py" or all(x not in line for x in python):
             print(ext, line)
             print(fname)
 ' >"$tmp" 2>&1 ||
