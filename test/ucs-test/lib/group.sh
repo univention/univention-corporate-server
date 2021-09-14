@@ -143,7 +143,7 @@ group_hasusermember () { # Checks, whether a Group has a specific user as member
 
 group_hascomputermember () { # Checks, whether a Group has a Computer-Member. E.g. group_hascomputermember $GROUPNAME $COMPUTERNAME . Returns 0 it is and 1 if not.
 	local GROUPNAME=${1?:missing parameter: group name}
-	local COMPUTERRNAME=${2?:missing parameter: computer name}
+	local COMPUTERNAME=${2?:missing parameter: computer name}
 
 	# Convert the string from the NAME-Variable to UTF8, because otherwise this part won't work with mutated vowels
 	local tmp1=$(mktemp) tmp2=$(mktemp)
