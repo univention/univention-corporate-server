@@ -55,11 +55,8 @@ wait_for_drs_replication () {
 	attr="${2:-dn}"
 	t0=$(date +%s)
 	t=t0
-	output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr")
-	if [ $? != 0 ]; then
+	output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr") ||
 		fail_fast 1 "ldbsearch failed: $output"
-		return 1
-	fi
 	value=$(sed -n "s/^$attr: //p" <<<"$output")
 
 	i=0
@@ -71,11 +68,8 @@ wait_for_drs_replication () {
 			fi
 			sleep 1
 			echo -n "."
-			output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr")
-			if [ $? != 0 ]; then
+			output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr") ||
 				fail_fast 1 "ldbsearch failed: $output"
-				return 1
-			fi
 			value=$(sed -n "s/^$attr: //p" <<<"$output")
 			t=$(date +%s)
 		done
