@@ -1,3 +1,9 @@
+ucs-test (10.0.6-45) unstable; urgency=low
+
+  * Bug #53768: Disable 01/104_check-archive-keyring
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Sep 2021 12:40:52 +0200
+
 ucs-test (10.0.6-44) unstable; urgency=medium
 
   * Bug #53761: Add test for reinitializing during configure

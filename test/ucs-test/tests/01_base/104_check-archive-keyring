@@ -2,12 +2,16 @@
 ## desc: Check for APT archive keyrings
 ## tags: [apptest]
 ## exposure: safe
+## versions:
+##  4.2-0: found
+##  5.0-1: fixed
+
 . "$TESTLIBPATH/base.sh" || exit 137
 set -e -u
 
 found_ucs=
 found_other=false
-while read pkg status
+while read -r pkg status
 do
 	case "$pkg" in
 	univention-archive-key)
