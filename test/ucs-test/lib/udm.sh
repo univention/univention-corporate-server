@@ -342,48 +342,12 @@ udm_purge () {
 
 udm_get_required_module_attributes () {
 	local module="$1"
-
-	let local linecount="$(udm-test "$module" | wc -l)"
-	let local syntaxbeginning="$(udm-test "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
-	let local tailcount="$linecount-$syntaxbeginning"
-
-
-	local output="$(udm-test "$module" | tail -n2 | grep -n "^$" | head -n 1)"
-	if [ -n "$output" ]; then
-		let local relativesyntaxend="${output/:/}"
-	else
-		let local relativesyntaxend="$tailcount"
-	fi
-
-	udm-test "$module" |
-		tail -n "$tailcount" |
-		head -n "$relativesyntaxend" |
-		egrep -v "^  .*:$" |
-		egrep "\(c\)|\(c,.*\)|\(.*,c\)|\(.*,c,.*\)" |
-		sed "s/^ *//" |
-		sed "s/ .*$//"
+	udm-test "$module" | sed -ne '\#'"$module"' variables:#,${/:$/d;/^\$/d;s/^\t\t\(\S\+\) (\(\S+,\)\?\<c\>\(,\S\+\)\?).*/\1/p}'
 }
 
 udm_get_plain_module_attributes () {
 	local module="$1"
-
-	let local linecount="$(udm-test "$module" | wc -l)"
-	let local syntaxbeginning="$(udm-test "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
-	let local tailcount="$linecount - $syntaxbeginning"
-
-	local output="$(udm-test "$module" | tail -n "$tailcount" | grep -n "^$" | head -n 1)"
-	if [ -n "$output" ]; then
-	        let local relativesyntaxend="${output/:/}"
-	else
-	        let local relativesyntaxend="$tailcount"
-	fi
-
-	udm-test "$module" |
-	        tail -n "$tailcount" |
-	        head -n "$relativesyntaxend" |
-	        egrep -v "^  .*:$" |
-	        sed "s/^ *//" |
-	        sed "s/ .*$//"
+	udm-test "$module" | sed -ne '\#'"$module"' variables:#,${/:$/d;/^\$/d;s/^\t\t\(\S\+\) .*/\1/p}'
 }
 
 udm_get_ldap_attribute () {
