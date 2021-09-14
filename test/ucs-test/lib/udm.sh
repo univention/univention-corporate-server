@@ -1,6 +1,8 @@
 #!/bin/bash
 # shellcheck shell=bash
 
+# shellcheck disable=SC2089,SC2090
+
 # shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=ldap.sh
@@ -189,16 +191,10 @@ udm_exists () {
 	local ldaplocation="${4:-$superordinate}"
 	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	local cmd="udm-test '$module' list"
-	if [ -n "$superordinate" ]; then
-		cmd+=" --superordinate '$superordinate'"
-	fi
-
-	if [ -n "$ldaplocation" ]; then
-		cmd+=" | grep -E '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation$'"
-	else
-		cmd+=" | grep -E '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base$'"
-	fi
+	local dn
+	dn="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
+	# shellcheck disable=SC2016
+	local cmd="udm-test '$module' list ${superordinate:+--superordinate '$superordinate'} | grep -Fx 'DN: $dn'"
 
 	if log_and_eval_execute "$cmd"; then
 		info "$module object $objectname exists"
@@ -221,15 +217,9 @@ udm_create () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="udm-test '$module' create"
-	if [ -n "$superordinate" ]; then
-		cmd+=" --superordinate '$superordinate'"
-	fi
-	if [ -n "$ldaplocation" ]; then
-		cmd+=" --position '$ldaplocation'"
-	else
-		cmd+=" --position \"$(udm_get_ldap_prefix "$module")$ldap_base\""
-	fi
+	# shellcheck disable=SC2016
+	local cmd="udm-test '$module' create ${superordinate:+--superordinate '$superordinate'}"
+	cmd+=" --position '${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}'"
 
 	local params=
 	local var=
@@ -262,15 +252,9 @@ udm_modify () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="udm-test '$module' modify"
-	if [ -n "$superordinate" ]; then
-		cmd+=" --superordinate '$superordinate'"
-	fi
-	if [ -n "$ldaplocation" ]; then
-		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation\""
-	else
-		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
-	fi
+	# shellcheck disable=SC2016
+	local cmd="udm-test '$module' modify ${superordinate:+--superordinate '$superordinate'}"
+	cmd+=" --dn '$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}'"
 
 	# shellcheck disable=SC2068,SC2086
 	if log_and_eval_execute "$cmd $*"; then
@@ -294,15 +278,9 @@ udm_remove () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="udm-test '$module' remove"
-	if [ -n "$superordinate" ]; then
-		cmd+=" --superordinate '$superordinate'"
-	fi
-	if [ -n "$ldaplocation" ]; then
-		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation\""
-	else
-		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
-	fi
+	# shellcheck disable=SC2016
+	local cmd="udm-test '$module' remove ${superordinate:+--superordinate '$superordinate'}"
+	cmd+=" --dn '$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}'"
 
 	# shellcheck disable=SC2068,SC2086
 	if log_and_eval_execute "$cmd $*"; then
@@ -321,11 +299,7 @@ udm_ldap_remove () {
 	local ldaplocation="${4:-$superordinate}"
 	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	if [ -n "$ldaplocation" ]; then
-		ldap_delete "$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation"
-	else
-		ldap_delete "$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base"
-	fi
+	ldap_delete "$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
 }
 
 udm_purge () {
@@ -363,17 +337,11 @@ udm_get_ldap_attribute () {
 	local ldaplocation="${5:-$superordinate}"
 	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	if [ -n "$ldaplocation" ]; then
-		local branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$ldaplocation"
-	else
-		local branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base"
-	fi
+	local branch
+	branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
 
-	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -y /etc/ldap.secret -b '$branch' \
-		'$attributename' |
-		grep '^$attributename' |
-		sed 's/^${attributename}\;//' |
-		sed 's/^${attributename}\: //'"
+	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -y /etc/ldap.secret -b '$branch' '$attributename' |
+		sed -ne 's/^${attributename}\: \?//p'"
 }
 
 udm_has_object_class () {
@@ -455,7 +423,7 @@ udm_get_udm_attribute () {
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
-	cmd+=" --filter \"$(udm_get_udm_filter_qualifier "$module")=$objectname\" | grep -E '^ *${attribute}: ' | sed 's/^ *${attribute}: //'"
+	cmd+=" --filter '$(udm_get_udm_filter_qualifier "$module")=$objectname' | sed -nre 's/^ *${attribute}: //p'"
 
 	log_and_eval_execute "$cmd"
 }
