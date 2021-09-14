@@ -95,7 +95,7 @@ force_drs_replication () {
 
 	source_dc="${1:-}"
 	if [ -z "$source_dc" ]; then
-		s4_connector_hosts=$(univention-ldapsearch -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
+		s4_connector_hosts=$(univention-ldapsearch -b "cn=computers,${ldap_base:?}" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
 		if [ "$(wc -w <<<"$s4_connector_hosts")" -eq 1 ]; then
 			source_dc="$s4_connector_hosts"
 		else

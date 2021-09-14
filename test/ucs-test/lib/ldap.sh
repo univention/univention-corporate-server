@@ -193,7 +193,7 @@ ldap_verify_attribute () {
 	info "${dn}: \"$attribute\" == \"$expected_value\" ??"
 
 	local value
-	value="$(ldap_get_attribute "$dn" "$attribute" "$configbase")"
+	value="$(ldap_get_attribute "$dn" "$attribute" "${configbase:-}")"
 	local rc=$?
 	if [ $rc -ne 0 ]; then
 		info "Unexpected return value ($rc) of ldap_get_attribute in ldap_verify_attribute"
@@ -215,7 +215,7 @@ ldap_verify_multi_value_attribute_contains () {
 	info "${dn}: \"$expected_value\" in \"$attribute\" ??"
 
 	local value
-	value="$(ldap_get_attribute "$dn" "$attribute" "$configbase")"
+	value="$(ldap_get_attribute "$dn" "$attribute" "${configbase:-}")"
 	local rc=$?
 	if [ $rc -ne 0 ]; then
 		info "Unexpected return value ($rc) of ldap_get_attribute in ldap_verify_multi_value_attribute_contains"

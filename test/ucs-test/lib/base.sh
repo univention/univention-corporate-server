@@ -199,7 +199,7 @@ assert () {
 }
 
 get_current_ucs_version_string () {
-	echo "${version_version}-${version_patchlevel}"
+	echo "${version_version:-}-${version_patchlevel:-}"
 }
 ucs_version_string_to_integer () {
 	local IFS=.-
@@ -260,7 +260,7 @@ check_domainadmin_credentials () { # check ldap credentials are available
 get_domain_admins_dn () { # prints the Domain Admins dn
 	eval "$(ucr shell groups/default/domainadmins ldap/base)"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
-	echo "cn=$group_admins,cn=groups,$ldap_base"
+	echo "cn=${group_admins:?},cn=groups,${ldap_base:?}"
 }
 
 # vim:set filetype=sh ts=4:

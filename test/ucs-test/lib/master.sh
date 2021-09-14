@@ -7,7 +7,7 @@ MASTER_SSH_TIMEOUT=20
 on_master () { # Execute command on ldap/master through shell
 	univention-ssh --no-split \
 		-timeout "$MASTER_SSH_TIMEOUT" \
-		"$tests_domainadmin_pwdfile" "root@${ldap_master}" \
+		"${tests_domainadmin_pwdfile:?}" "root@${ldap_master:?}" \
 		"$@"
 }
 on_master_escaped () { # Execute command on ldap/master

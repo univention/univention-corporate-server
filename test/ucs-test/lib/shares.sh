@@ -4,8 +4,8 @@
 # shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-SHARE_HOST="$hostname.$domainname"
-SHARE_POSITION="cn=$hostname.$domainname,cn=shares,$ldap_base"
+SHARE_HOST="${hostname:?}.${domainname:?}"
+SHARE_POSITION="cn=$hostname.${domainname:?},cn=shares,${ldap_base:?}"
 SHARE_UNIX_OWNER=0 #must be number
 SHARE_UNIX_GROUP=0 #must be number
 SHARE_UNIX_DIRECTORYMODE=0755
