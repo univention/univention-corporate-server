@@ -1227,7 +1227,7 @@ def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  #
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
-	if local_datetimetimezone_tuple and local_datetimetimezone_tuple[0]:
+	if local_datetimetimezone_tuple and all(local_datetimetimezone_tuple):
 		dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
 		return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
 	return []
@@ -1695,7 +1695,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self['locked'] = u'0'
 		if self.hasChanged('disabled') and self['disabled'] == '0' and not self.hasChanged('accountActivationDate'):
 			self['accountActivationDate'] = self.descriptions['accountActivationDate'].default(self)
-		if self['accountActivationDate'] and self['accountActivationDate'][0] and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+		if self['accountActivationDate'] and all(self['accountActivationDate']) and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
 			self['disabled'] = '1'
 		if self['disabled'] == '1':
 			self['locked'] = u'0'  # Samba/AD behavior
