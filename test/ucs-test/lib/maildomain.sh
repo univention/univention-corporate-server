@@ -23,7 +23,6 @@ create_mail_domain () { #Creates a mail/domain name like the first argument, sup
 		--position="cn=domain,cn=mail,$ldap_base" \
 		--set name="$domain" \
 		"$@"
-	return $?
 }
 
 delete_mail_domain () { # Deletes a mail/domain name like the first argument, supplied to the function.
@@ -32,7 +31,6 @@ delete_mail_domain () { # Deletes a mail/domain name like the first argument, su
 	# create_mail_domain "$MAILDOMAINNAME"
 	local domain="${1:?mail domain, e.g. \$(maildomain_name_randomname)}"
 	udm-test mail/domain remove --dn "cn=$domain,cn=domain,cn=mail,$ldap_base"
-	return $?
 }
 
 # vim:set filetype=sh ts=4:

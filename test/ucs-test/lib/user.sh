@@ -14,7 +14,6 @@ user_randomname () { #Generates a random string as username an echoes it. Usage:
 
 mail_domain_exists () {
 	univention-ldapsearch "(&(objectClass=univentionMailDomainname)(cn=$1))" | grep -q "^cn: $1"
-	return $?
 }
 
 user_create () { #Creates a user named like the first argument, supplied to the function.

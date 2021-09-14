@@ -711,7 +711,6 @@ udm_check_flag_attribute () {
 
 	udm_check_required_singlevalue_attribute "$attribute" "0" "1" \
 		"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
-	return $?
 }
 
 udm_check_syntax_for_attribute () {
