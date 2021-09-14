@@ -72,11 +72,14 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	[ "${SAMBA:-}" = true ] && CMD+=(--option=samba)
 	[ "${PKI:-}" = true ] && CMD+=(--option=pki)
 
-	local err=$(mktemp)
-	local STARTTIME=$(date +%s%N)
+	local err
+	err=$(mktemp)
+	local STARTTIME
+	STARTTIME=$(date +%s%N)
 	"${CMD[@]}" "$@" >"$err" 2>&1
 	local rc=$?
-	local STOPPTIME=$(date +%s%N)
+	local STOPPTIME
+	STOPPTIME=$(date +%s%N)
 	TIMETOCREATEUSER=$((STOPPTIME - STARTTIME))
 
 	#Catch Tracebacks
@@ -176,7 +179,8 @@ user_set_attr () {
 	local ldap=${3?:missing parameter: ldapAttribute}
 	local value=${4?:missing parameter: value}
 
-	local dn=$(user_dn "$name")
+	local dn
+	dn=$(user_dn "$name")
 
 	udm-test users/user modify --dn="$dn" --set "$attr=$value"
 	wait_for_replication

@@ -2,7 +2,8 @@
 # shellcheck shell=bash
 # Run shell snippets in reversed order to undo things
 
-declare -r TEST_undo=$(mktemp -d)
+TEST_undo=$(mktemp -d)
+declare -r TEST_undo
 declare -i TEST_order=1
 undo () { # collect undo commands in file executed on EXIT
 	# Usage: create_foo ... && undo remove_foo ...
@@ -11,7 +12,8 @@ undo () { # collect undo commands in file executed on EXIT
 	do
 		args+=("$(printf '%q' "$arg")")
 	done
-	local order=$(printf '%s/%08d' "$TEST_undo" "$TEST_order")
+	local order
+	order=$(printf '%s/%08d' "$TEST_undo" "$TEST_order")
 	echo "${args[@]}" >"$order"
 	TEST_order+=1
 }

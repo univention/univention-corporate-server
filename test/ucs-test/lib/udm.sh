@@ -133,7 +133,8 @@ udm_get_identifier_value () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 
-	local idattr=$(udm_get_identifier_attribute "$module")
+	local idattr
+	idattr=$(udm_get_identifier_attribute "$module")
 
 	local a=
 	eval "a=\$$variableprefix${idattr//-/_}"
@@ -382,9 +383,10 @@ udm_has_object_class () {
 	local ldaplocation="$5"
 	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	local objectclasses="$(udm_get_ldap_attribute objectClass "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	local objectclasses
+	objectclasses="$(udm_get_ldap_attribute objectClass "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
 
-	IFS="
+	local IFS="
 "
 	for class in $objectclasses; do
 		if [ "$class" == "$objectclass" ]; then
@@ -406,7 +408,8 @@ udm_verify_ldap_attribute () {
 	local ldaplocation="$6"
 	local objectname="$7"
 
-	local value="$(udm_get_ldap_attribute "$attribute" "$module" "$variableprefix"  "$superordinate" "$ldaplocation" "$objectname")"
+	local value
+	value="$(udm_get_ldap_attribute "$attribute" "$module" "$variableprefix"  "$superordinate" "$ldaplocation" "$objectname")"
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
@@ -465,7 +468,8 @@ udm_verify_udm_attribute () {
 	local ldaplocation="$6"
 	local objectname="$7"
 
-	local value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	local value
+	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
 
 	verify_value "$attribute" "$value" "$expected_value"
 }
@@ -479,7 +483,8 @@ udm_verify_multi_value_udm_attribute_contains_ignore_case () {
 	local ldaplocation="$6"
 	local objectname="$7"
 
-	local value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	local value
+	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
 
 	verify_value_contains_line_ignore_case "$attribute" "$value" "$expected_value"
 }
@@ -493,7 +498,8 @@ udm_verify_multi_value_udm_attribute_contains () {
 	local ldaplocation="$6"
 	local objectname="$7"
 
-	local value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	local value
+	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
 
 	verify_value_contains_line "$attribute" "$value" "$expected_value"
 }
@@ -723,7 +729,8 @@ udm_check_syntax_for_attribute () {
 }
 
 udm_kill_univention_cli_server () {
-	local pids="$(pgrep -f "univention-cli-server")"
+	local pids pid
+	pids="$(pgrep -f "univention-cli-server")"
 	for pid in $pids; do
 		info "Killing univention-cli-server with pid $pid"
 		kill "$pid"

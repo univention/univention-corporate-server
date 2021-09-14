@@ -211,22 +211,22 @@ ucs_version_string_to_integer () {
 	printf "%d%03d%03d\n" "$major" "$minor" "$patchlevel"
 }
 current_ucs_version_in_range () {
-	local version1="$(ucs_version_string_to_integer "$1")"
-	local version2="$(ucs_version_string_to_integer "$2")"
-
-	local ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
+	local version1 version2 ucsversion
+	version1="$(ucs_version_string_to_integer "$1")"
+	version2="$(ucs_version_string_to_integer "$2")"
+	ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
 	[ "$version1" -le "$ucsversion" ] && [ "$ucsversion" -le "$version2" ] && :
 }
 current_ucs_version_greater_equal () {
-	local versionstring="$(ucs_version_string_to_integer "$1")"
-
-	local ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
+	local versionstring ucsversion
+	versionstring="$(ucs_version_string_to_integer "$1")"
+	ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
 	[ "$ucsversion" -ge "$versionstring" ] && :
 }
 current_ucs_version_less_equal () {
-	local versionstring="$(ucs_version_string_to_integer "$1")"
-
-	local ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
+	local versionstring ucsversion
+	versionstring="$(ucs_version_string_to_integer "$1")"
+	ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
 	[ "$ucsversion" -le "$versionstring" ] && :
 }
 

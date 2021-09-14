@@ -28,7 +28,8 @@ group_create () { #Creates a group named like supplied in the first argument of 
 
 	if [ -z "${MAILADDR:-}" ]
 	then
-		local MAILADDR=$(random_mailaddress)
+		local MAILADDR
+		MAILADDR=$(random_mailaddress)
 	fi
 
 	info "create group $GROUPNAME with Mailaddress $MAILADDR"
@@ -150,7 +151,8 @@ group_hascomputermember () { # Checks, whether a Group has a Computer-Member. E.
 	local COMPUTERNAME=${2?:missing parameter: computer name}
 
 	# Convert the string from the NAME-Variable to UTF8, because otherwise this part won't work with mutated vowels
-	local tmp1=$(mktemp) tmp2=$(mktemp)
+	local tmp1 tmp2
+	tmp1=$(mktemp) tmp2=$(mktemp)
 	echo -n "$COMPUTERNAME" >"$tmp1"
 	iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$tmp1" >"$tmp2"
 	COMPUTERNAME=$(cat "$tmp2")
