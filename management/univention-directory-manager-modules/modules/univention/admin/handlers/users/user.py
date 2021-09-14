@@ -32,41 +32,40 @@
 
 from __future__ import absolute_import
 
+import base64
+import calendar
+import copy
 import hashlib
 import os
-import string
 import re
-import copy
+import string
+import struct
 import time
 from datetime import datetime
-import pytz
-import struct
-import calendar
-import base64
 
-from M2Crypto import X509
 import ldap
+import pytz
 import six
 from ldap.filter import filter_format
 import tzlocal
+from M2Crypto import X509
 
 import univention.admin
-from univention.admin.layout import Tab, Group
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.groups.group
+import univention.admin.handlers.settings.prohibited_username
+import univention.admin.localization
 import univention.admin.password
 import univention.admin.samba
-import univention.admin.allocators
-import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.handlers.settings.prohibited_username
-from univention.admin import configRegistry
-from univention.lib.s4 import rids_for_well_known_security_identifiers
-
 import univention.debug as ud
 import univention.password
+from univention.admin import configRegistry
+from univention.admin.layout import Group, Tab
+from univention.lib.s4 import rids_for_well_known_security_identifiers
 
 try:
 	from univention.admin.syntax import ActivationDateTimeTimezone
