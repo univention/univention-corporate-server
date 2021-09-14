@@ -21,7 +21,7 @@ import univention.testing.udm as udm_test
 
 
 ucrv = "directory/manager/user/accountactivation/cron"
-expected_default_ucr_value = "*/15 *  * * *"
+expected_default_ucr_value = "*/15 * * * *"
 
 
 def run_activation_script():
@@ -41,8 +41,7 @@ def test_default_ucr_value(udm, ucr):
 	"""Check default cron value"""
 
 	value = ucr.get(ucrv)
-	if value:
-		utils.fail("The UCR variable %s has an unexpected value: %s" % (ucrv, value))
+	assert value == expected_default_ucr_value
 
 
 @pytest.mark.roles('domaincontroller_master')
