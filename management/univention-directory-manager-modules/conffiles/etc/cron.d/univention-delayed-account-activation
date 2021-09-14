@@ -4,8 +4,8 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 script = "/usr/share/univention-directory-manager-tools/univention-delayed-account-activation"
-interval = configRegistry.get("directory/manager/user/accountactivation/cron", "*/15 *  * * *")
+interval = configRegistry.get("directory/manager/user/accountactivation/cron", "*/15 * * * *")
 
-if interval:
+if interval and configRegistry.get('server/role') == 'domaincontroller_master':
 	print("%s       root    [ -x %s ] && %s" % (interval, script, script))
 @!@
