@@ -198,7 +198,7 @@ udm_exists () {
 		cmd+=" | egrep '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base$'"
 	fi
 
-	if log_and_eval_execute $cmd; then
+	if log_and_eval_execute "$cmd"; then
 		info "$module object $objectname exists"
 		return 0
 	else
@@ -238,7 +238,8 @@ udm_create () {
 		fi
 	done
 
-	if log_and_eval_execute $cmd $params $@; then
+	# shellcheck disable=SC2086,SC2068
+	if log_and_eval_execute "$cmd $params $*"; then
 		info "created $module object $objectname"
 		return 0
 	else
@@ -269,7 +270,8 @@ udm_modify () {
 		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
 	fi
 
-	if log_and_eval_execute $cmd $@; then
+	# shellcheck disable=SC2068,SC2086
+	if log_and_eval_execute "$cmd $*"; then
 		info "$module object $objectname modified"
 		return 0
 	else
@@ -300,7 +302,8 @@ udm_remove () {
 		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
 	fi
 
-	if log_and_eval_execute $cmd $@; then
+	# shellcheck disable=SC2068,SC2086
+	if log_and_eval_execute "$cmd $*"; then
 		info "removed $module object $objectname"
 		return 0
 	else
@@ -450,7 +453,7 @@ udm_get_udm_attribute () {
 	fi
 	cmd+=" --filter \"$(udm_get_udm_filter_qualifier "$module")=$objectname\" | egrep '^ *${attribute}: ' | sed 's/^ *${attribute}: //'"
 
-	log_and_eval_execute $cmd
+	log_and_eval_execute "$cmd"
 }
 
 udm_verify_udm_attribute () {

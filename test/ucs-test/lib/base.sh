@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 DEBUGLEVEL=4
 eval "$(univention-config-registry shell)"
-: ${DOMAIN:=$domainname}
+: "${DOMAIN:=$domainname}"
 
 tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
 error () { #DEBUGLEVEL 0
@@ -151,7 +151,7 @@ fail_test () { #This is intended to make life easier for readers of test-logs wh
 }
 fail_fast () { # Like fail_test "$reason" "$message" but with exit
 	fail_test "$@"
-	exit $RETVAL
+	exit "$RETVAL"
 }
 fail_bool () { #This is intended to be called directly after functions that are supposed to return 0 on successful validation, 1 on failure or anything else in case of an internal error.
 	# Be sure not to use the !-Operator on such functions, as this prohibits to distinguish between check failure and internal test error. 
@@ -192,7 +192,7 @@ assert () {
 	if [ -z "$2" ]; then
 		fail_fast $E_ASSERT_FAILED "not enough parameters passed to assert() - $@"
 	fi
-	if [ ! $1 ]; then
+	if [ ! "$1" ]; then
 		fail_fast $E_ASSERT_FAILED "Assertion \"$1\" failed, line $2"
 	fi
 }
@@ -202,11 +202,12 @@ get_current_ucs_version_string () {
 }
 ucs_version_string_to_integer () {
 	local IFS=.-
-	set -- $1
+	# shellcheck disable=SC2086
+	set -- $1  # IFS
 	local major=${1:-0}
 	local minor=${2:-0}
 	local patchlevel=${3:-0}
-	printf "%d%03d%03d\n" $major $minor $patchlevel
+	printf "%d%03d%03d\n" "$major" "$minor" "$patchlevel"
 }
 current_ucs_version_in_range () {
 	local version1="$(ucs_version_string_to_integer "$1")"
