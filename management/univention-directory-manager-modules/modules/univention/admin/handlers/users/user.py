@@ -48,6 +48,7 @@ from M2Crypto import X509
 import ldap
 import six
 from ldap.filter import filter_format
+import tzlocal
 
 import univention.admin
 from univention.admin.layout import Tab, Group
@@ -248,6 +249,7 @@ property_descriptions = {
 		long_description=_('This disables the account until the specified time.'),
 		syntax=univention.admin.syntax.ActivationDateTimeTimezone,
 		dontsearch=True,
+		default=[[None, None, tzlocal.get_localzone().zone], []],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
