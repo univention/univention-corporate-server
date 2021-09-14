@@ -8,6 +8,7 @@
 ##  - winbind
 ##  - univention-samba
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 RETVAL=100
 

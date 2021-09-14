@@ -10,7 +10,7 @@ set -e -u
 GCOUNT=200
 USER="testuser$$"
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 main () {

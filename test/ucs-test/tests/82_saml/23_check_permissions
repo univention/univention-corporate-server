@@ -10,6 +10,7 @@
 ##   - univention-saml
 ## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 check_perm -e /etc/idp-ldap-user.secret 0640 root "DC Backup Hosts" || RETVAL=110

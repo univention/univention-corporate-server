@@ -8,6 +8,7 @@
 
 delay=10
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" "date +%s ; sleep $delay ; date +%s" | (

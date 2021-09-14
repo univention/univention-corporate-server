@@ -9,6 +9,7 @@
 ##  - univention-config-registry
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 temp_dir=`mktemp -d`

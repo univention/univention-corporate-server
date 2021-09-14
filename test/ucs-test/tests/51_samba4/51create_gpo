@@ -10,7 +10,9 @@
 ## - domaincontroller_slave
 ## tags: [basic]
 
+# shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 gponame="$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")"	## samba RC6 seems to dislike UTF-8 in GPO names

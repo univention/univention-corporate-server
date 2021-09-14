@@ -4,6 +4,7 @@
 ## tags: [basic,apptest]
 ## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 eval "$(ucr shell)"

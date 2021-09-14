@@ -7,6 +7,7 @@
 ## exposure: safe
 set -e -u
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 # EXPORT and LOW(RC4) were removed from DEFAULT as of openssl-1.0.2g

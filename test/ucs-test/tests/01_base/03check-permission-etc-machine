@@ -7,6 +7,7 @@
 ## - apptest
 ## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 check_perm -f /etc/machine.secret 0600 root root
 # vim: set ft=sh :

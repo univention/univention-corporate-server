@@ -10,9 +10,13 @@
 ##  - univention-directory-listener
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/maildomain.sh
 . "$TESTLIBPATH/maildomain.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 tempFile="$(mktemp)"

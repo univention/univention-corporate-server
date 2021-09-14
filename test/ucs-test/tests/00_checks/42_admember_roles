@@ -4,6 +4,7 @@
 ## exposure: safe
 ## bugs: [42538]
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ucr.sh
 

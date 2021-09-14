@@ -8,6 +8,7 @@
 ##  - univention-ssl
 ## exposure: dangerous
 
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
 eval "$(univention-config-registry shell)"
 RETVAL=100

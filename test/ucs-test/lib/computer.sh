@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck shell=bash
+
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 computer_randomname () { # Generate a name for a Computer. E.g. COMPUTERNAME=$(computer_randomname)

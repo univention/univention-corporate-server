@@ -1,5 +1,7 @@
 #!/bin/bash
 # shellcheck shell=bash
+
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 SHARE_HOST="$hostname.$domainname"

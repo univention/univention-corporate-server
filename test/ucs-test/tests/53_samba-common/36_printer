@@ -10,7 +10,9 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## - memberserver
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 #create user

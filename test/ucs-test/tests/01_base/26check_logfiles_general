@@ -8,6 +8,7 @@
 ## versions:
 ##  2.4-0: found
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 dpkg -l univention-samba &> /dev/null

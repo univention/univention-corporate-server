@@ -8,6 +8,7 @@
 ## bugs: [40434]
 ## roles-not: [basesystem]
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 kinit --password-file=/etc/machine.secret "$(hostname)$" ||

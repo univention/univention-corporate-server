@@ -9,7 +9,9 @@
 ##  1.0-0: skip
 ##  2.4-0: fixed
 
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 RETVAL=100

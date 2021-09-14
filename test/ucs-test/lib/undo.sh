@@ -20,6 +20,7 @@ TEST_cleanup () {
 	local arg
 	for arg in $(run-parts --list --reverse "$TEST_undo")
 	do
+		# shellcheck source=/dev/null
 		. "$arg"
 	done
 	rm -rf "$TEST_undo"

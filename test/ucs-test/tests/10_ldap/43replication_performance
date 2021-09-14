@@ -18,12 +18,19 @@
 
 ccount=50 gcount=50 ucount=50 max=60""000000000 # ns
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/container.sh
 . "$TESTLIBPATH/container.sh" || exit 137
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/group.sh
 . "$TESTLIBPATH/group.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/maildomain.sh
 . "$TESTLIBPATH/maildomain.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 set -o errexit #"script bail out when it detects an error (a non-zero exit code).

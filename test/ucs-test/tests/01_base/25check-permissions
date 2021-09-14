@@ -6,6 +6,7 @@
 ## bugs: [25162]
 ## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 # /var/spool/postfix/private should only be accessible by postfix:root. If not, the world-writable

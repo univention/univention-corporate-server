@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck shell=bash
+
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 group_randomname () { #Generates a random string as groupname and echo it. Usage: GROUPNAME=$(group_randomname)

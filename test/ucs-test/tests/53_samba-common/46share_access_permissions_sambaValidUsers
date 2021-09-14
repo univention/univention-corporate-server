@@ -11,9 +11,13 @@
 ## - domaincontroller_slave
 ## - memberserver
 
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/samba.sh
 . "$TESTLIBPATH/samba.sh" || exit 137
 . /usr/share/univention-lib/ldap.sh || exit 137
 

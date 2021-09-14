@@ -1,7 +1,11 @@
 #!/bin/bash
 # shellcheck shell=bash
+
 CONTROLMODE=true
+
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 user_randomname () { #Generates a random string as username an echoes it. Usage: NAME=$(user_randomname)

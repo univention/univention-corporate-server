@@ -1,7 +1,9 @@
 #!/bin/bash
 # shellcheck shell=bash
 
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprintername)

@@ -8,6 +8,7 @@
 ##  - univention-ldap-server
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 f="$(mktemp)"

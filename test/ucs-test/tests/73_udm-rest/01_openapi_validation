@@ -7,6 +7,7 @@
 ## packages:
 ##   - univention-directory-manager-rest
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ldap.sh || exit 137
 

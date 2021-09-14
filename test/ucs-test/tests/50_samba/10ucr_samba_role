@@ -7,7 +7,7 @@
 ##  - winbind
 ##  - univention-samba
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 KEY="samba/role"

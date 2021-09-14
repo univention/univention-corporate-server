@@ -9,7 +9,9 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
 
 RETVAL=100

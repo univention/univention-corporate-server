@@ -6,6 +6,7 @@
 ## packages:
 ## - univention-ad-connector
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 test -n "$connector_ad_ldap_host" || exit 137

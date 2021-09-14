@@ -11,7 +11,9 @@
 ##  - 35334
 
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 udm-test container/cn create \

@@ -13,8 +13,11 @@
 
 eval "$(ucr shell)"
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/master.sh
 . "$TESTLIBPATH/master.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 

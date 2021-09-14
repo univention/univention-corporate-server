@@ -10,6 +10,7 @@
 
 eval "$(ucr shell)"
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 JS_NAME='ucs-test-postponed-joinscripts'

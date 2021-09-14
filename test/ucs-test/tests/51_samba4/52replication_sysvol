@@ -13,7 +13,9 @@
 ##  - basic
 ##  - apptest
 
+# shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 . /usr/share/univention-lib/ldap.sh || exit 137
 

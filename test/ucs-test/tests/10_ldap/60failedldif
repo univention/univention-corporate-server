@@ -12,8 +12,11 @@
 ##  - ldap-utils
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 undo ucr_restore

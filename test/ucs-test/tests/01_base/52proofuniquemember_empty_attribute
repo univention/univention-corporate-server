@@ -10,8 +10,11 @@
 ##  - univention-s4-connector | univention-ad-connector 
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/ldap.sh
 . "$TESTLIBPATH/ldap.sh" || exit 137
 
 username="$(random_chars)"

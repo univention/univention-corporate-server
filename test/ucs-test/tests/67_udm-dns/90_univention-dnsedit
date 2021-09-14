@@ -10,7 +10,9 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 
+# shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 . /usr/share/univention-lib/all.sh || exit 137
 

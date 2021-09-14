@@ -8,7 +8,7 @@
 
 set -u
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 IMG="alpine:3.10"

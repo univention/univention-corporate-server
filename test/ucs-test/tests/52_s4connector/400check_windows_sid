@@ -14,6 +14,7 @@
 ##  4.0-0: skip
 
 # TODO: re-enable the test after Bug #36570 is resolved.
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 RETVAL=100

@@ -6,6 +6,7 @@
 ## packages:
 ##  - univention-samba | univention-samba4
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 if pgrep "nmbd" >/dev/null

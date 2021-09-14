@@ -15,7 +15,7 @@
 
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 SH_LOG="${BASEDIR}/sh.log"

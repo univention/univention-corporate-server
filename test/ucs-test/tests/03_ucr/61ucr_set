@@ -7,8 +7,9 @@
 ##  - apptest
 ## exposure: careful
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 Assert () { # Assert $1 = $2, optional error message $3

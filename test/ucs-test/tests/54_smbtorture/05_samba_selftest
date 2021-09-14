@@ -7,6 +7,7 @@
 
 # Skip test, waiting for https://forge.univention.org/bugzilla/show_bug.cgi?id=49003
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 RETVAL=100

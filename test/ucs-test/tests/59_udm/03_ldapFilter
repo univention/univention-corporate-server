@@ -9,6 +9,7 @@
 
 PROPERTY='ldapFilter'
 PROPVAL='(objectClass=univentionDhcpSubnet)'
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 . udm.sh || exit 137
 

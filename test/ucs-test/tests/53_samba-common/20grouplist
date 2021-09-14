@@ -9,7 +9,9 @@
 ## - memberserver
 ## tags: [basic, skip_admember]
 
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/samba.sh
 . "$TESTLIBPATH/samba.sh" || exit 137
 
 SAMBA="true"

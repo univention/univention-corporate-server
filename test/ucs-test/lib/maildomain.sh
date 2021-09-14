@@ -1,7 +1,11 @@
 #!/bin/bash
 # shellcheck shell=bash
+
 CONTROLMODE=true
+
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 maildomain_name_randomname () { #Generates a random string as maildomain an echoes it. Usage: MAILDOMAINNAME=$(maildomain_name_randomname)

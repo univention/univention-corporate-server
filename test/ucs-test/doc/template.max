@@ -31,6 +31,7 @@
 ## exposure: dangerous
 ## timeout: 0
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 echo "$0 $@"

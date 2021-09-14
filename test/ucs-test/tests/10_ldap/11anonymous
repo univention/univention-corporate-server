@@ -9,7 +9,9 @@
 ##  - domaincontroller_slave
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
 
 trap "ucr_restore;/etc/init.d/slapd restart" EXIT

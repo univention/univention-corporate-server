@@ -13,7 +13,9 @@
 ## tags:
 ##  - basic
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 RETVAL=100

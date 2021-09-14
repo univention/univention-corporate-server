@@ -8,6 +8,7 @@
 ##  - univention-management-console
 ## exposure: dangerous
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 max_open_files=$(ucr get umc/http/max-open-file-descriptors)

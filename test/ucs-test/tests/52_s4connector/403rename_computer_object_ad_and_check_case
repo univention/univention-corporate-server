@@ -10,8 +10,11 @@
 ## bugs:
 ##  - 46741
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 . "s4connector.sh" || exit 137
 

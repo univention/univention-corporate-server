@@ -1,7 +1,9 @@
 #!/bin/bash
 # shellcheck shell=bash
 
+# shellcheck source=base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=ldap.sh
 . "$TESTLIBPATH/ldap.sh" || exit 137
 
 UDM_ALL_COMPUTER_ROLES="computers/domaincontroller_backup

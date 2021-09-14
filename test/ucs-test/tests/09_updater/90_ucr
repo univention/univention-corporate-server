@@ -9,7 +9,7 @@
 ## tags: [basic]
 ## exposure: dangerous
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 tmp_base_conf="$(mktemp)"

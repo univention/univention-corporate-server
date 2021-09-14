@@ -10,6 +10,7 @@
 ##  - domaincontroller_slave
 ## packages: [ldap-utils]
 ## exposure: dangerous
+# shellcheck source=../../lib/group.sh
 . "$TESTLIBPATH/group.sh" || exit 137
 
 group_create

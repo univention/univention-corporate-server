@@ -9,9 +9,13 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/samba.sh
 . "$TESTLIBPATH/samba.sh" || exit 137
 
 ##----create User

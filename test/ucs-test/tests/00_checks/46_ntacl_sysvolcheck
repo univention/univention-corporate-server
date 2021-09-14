@@ -8,6 +8,7 @@
 ## packages:
 ## - univention-samba4
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 echo "DEBUG: 46_ntacl_sysvolcheck"

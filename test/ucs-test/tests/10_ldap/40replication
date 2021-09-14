@@ -17,7 +17,9 @@
 # Modification is done 8 times in rapid succession, then 4 times in 4 seconds, then rapidly 8 times again.
 # Finally this script waits for the container to appear in the local directory and checks that the latest modification was replicated.
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 set -o errexit #"script bail out when it detects an error (a non-zero exit code).

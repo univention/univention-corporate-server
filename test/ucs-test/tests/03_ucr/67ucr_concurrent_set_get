@@ -8,8 +8,9 @@
 ##  3.1-0: skip
 ##  3.1-1: fixed
 
-# shellcheck source=/dev/null
+# shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 RETVAL=0

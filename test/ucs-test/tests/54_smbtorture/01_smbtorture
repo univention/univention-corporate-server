@@ -7,6 +7,7 @@
 ##  - samba-testsuite
 ## bugs: [40558]
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 RETVAL=100

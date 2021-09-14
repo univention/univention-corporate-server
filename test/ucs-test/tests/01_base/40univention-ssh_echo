@@ -6,6 +6,7 @@
 ## packages: [univention-ssh]
 ## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 result="$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo -n | wc -c ; echo "${PIPESTATUS[0]}")" || exit 110 # ERROR

@@ -15,8 +15,11 @@
 ##  - skip_admember
 ## join: true
 
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/group.sh
 . "$TESTLIBPATH/group.sh" || exit 137
 
 username="$(user_randomname)"
