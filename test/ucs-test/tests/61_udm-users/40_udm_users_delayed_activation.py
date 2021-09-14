@@ -7,6 +7,8 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+##   - python3-univention-directory-manager (>= 15.0.11-18)
+## bugs: [53631]
 
 from __future__ import print_function
 
