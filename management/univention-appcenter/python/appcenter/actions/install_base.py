@@ -158,7 +158,6 @@ class InstallRemoveUpgrade(Register):
 						return
 			except Exception:
 				trace = traceback.format_exc()
-				trace = trace.splitlines()
 				if apps:
 					for app in apps:
 						self._send_information_on_app(app, 502, trace, args)
