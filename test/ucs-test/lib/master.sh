@@ -11,7 +11,7 @@ on_master () { # Execute command on ldap/master through shell
 		"$@"
 }
 on_master_escaped () { # Execute command on ldap/master
-	local arg= args=()
+	local arg='' args=()
 	for arg in "$@"
 	do
 		args+=("$(printf "%q" "$arg")")

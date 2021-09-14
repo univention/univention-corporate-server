@@ -11,7 +11,7 @@ _upperletters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _ciphers="0123456789"
 
 random_chars () { # [length [characters]]
-	local prefix= suffix=
+	local prefix='' suffix=''
 	while [ $# -ge 2 ]
 	do
 		case "$1" in
