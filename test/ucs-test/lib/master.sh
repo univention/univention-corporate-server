@@ -66,6 +66,7 @@ master_udm_version () { # gets the version of the UDM on the master system
 	# usage: version="$(master_udm_version)"
 	# return text:
 	#	Version string of the UDM package
+	# shellcheck disable=SC2016
 	on_master_escaped dpkg-query -W -f '${Version}' univention-directory-manager-tools
 }
 
