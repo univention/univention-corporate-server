@@ -5833,7 +5833,6 @@ class mailinglist_name(gid):
 
 
 class TimeZone(select):
-	empty_value = True
 
 	@ClassProperty
 	def choices(cls):
