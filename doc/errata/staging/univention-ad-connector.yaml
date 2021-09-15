@@ -6,6 +6,6 @@ src: univention-ad-connector
 fix: 14.0.8-1A~5.0.0.202109081449
 desc: |
  This update addresses the following issue:
- * Invalid values in the LDAP attribute sambaNTPassword are now ignored
+ * Invalid values in the LDAP attribute `sambaNTPassword` are now ignored
    instead of triggering a traceback.
 bug: [53757]
