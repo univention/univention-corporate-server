@@ -31,11 +31,14 @@ class TestCodes(object):
 		134: ('S', 'REASON_ROLE_MISMATCH', 'Test skipped (role mismatch)', 'BLUE'),
 		135: ('S', 'REASON_JOIN', 'Test skipped (system not joined)', 'BLUE'),
 		136: ('S', 'REASON_JOINED', 'Test skipped (system is joined)', 'BLUE'),
-		137: ('S', 'REASON_INSTALL', 'Test skipped (missing software)', 'BLUE'),
+		137: ('E', 'REASON_MISSING', 'Test skipped (missing test helpers)', 'BLUE'),
+		144: ('S', 'REASON_INSTALL', 'Test skipped (missing software)', 'BLUE'),
 		138: ('S', 'REASON_INSTALLED', 'Test skipped (conflicting software)', 'BLUE'),
 		139: ('S', 'REASON_DANGER', 'Test skipped (too dangerous)', 'BLUE'),
 		140: ('E', 'REASON_INTERNAL', 'Test failed', 'RED'),
 		141: ('S', 'REASON_ABORT', 'Test failed', 'RED'),
+		142: ('E', 'REASON_INSTALL', 'Test skipped (missing software)', 'BLUE'),
+		143: ('S', 'REASON_CONF', 'Test skipped (incomplete or mismatching configuration)', 'BLUE'),
 	}
 	MESSAGE = {}
 	MAX_MESSAGE_LEN = 0

@@ -165,7 +165,7 @@ class UMCTester(object):
 		if not path.exists('FreeForPersonalUseTest.license'):
 			print("Cannot find the 'FreeForPersonalUseTest.license' file, "
 				  "skipping the test...")
-			sys.exit(TestCodes.REASON_INSTALL)
+			sys.exit(TestCodes.REASON_CONF)
 		try:
 			with open('FreeForPersonalUseTest.license', 'r+') as free_license:
 				lines = free_license.readlines()
