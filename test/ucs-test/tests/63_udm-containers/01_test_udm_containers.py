@@ -196,7 +196,7 @@ class Test_ContainerOU(object):
 			user_name = 'X' + uts.random_string()  # test preserving name (case sensitivity)
 
 			ou_name = uts.random_string()
-			ou_name_new = ou_name.upper()
+			ou_name_new = ou_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 			ou = udm.create_object('container/ou', position=parent, name=ou_name, wait_for=True)
 			if add_user:
@@ -250,7 +250,7 @@ class Test_ContainerOU(object):
 			user_name = 'X' + uts.random_string()  # test preserving name (case sensitivity)
 
 			ou_name = uts.random_name_special_characters()
-			ou_name_new = ou_name.upper()
+			ou_name_new = ou_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 			ou = udm.create_object('container/ou', position=parent, name=ou_name, wait_for=True)
 			if add_user:
@@ -522,7 +522,7 @@ class Test_ContainerCN(object):
 			user_name = 'X' + uts.random_string()  # test preserving name (case sensitivity)
 
 			cn_name = uts.random_string()
-			cn_name_new = cn_name.upper()
+			cn_name_new = cn_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 			cn = udm.create_object('container/cn', position=parent, name=cn_name)
 			if add_user:
@@ -587,7 +587,7 @@ class Test_ContainerCN(object):
 			user_name = 'X' + uts.random_string()  # test preserving name (case sensitivity)
 
 			cn_name = uts.random_name_special_characters()
-			cn_name_new = cn_name.upper()
+			cn_name_new = cn_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 			cn = udm.create_object('container/cn', position=parent, name=cn_name)
 			if add_user:
@@ -636,7 +636,7 @@ class Test_ContainerCN(object):
 		network_name = uts.random_string()
 
 		cn_name = uts.random_string()
-		cn_name_new = cn_name.upper()
+		cn_name_new = cn_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 		cn = udm.create_object('container/cn', name=cn_name)
 		wait_for_drs_replication('cn=%s' % cn_name)
@@ -661,7 +661,7 @@ class Test_ContainerCN(object):
 		network_name = uts.random_string()
 
 		cn_name = uts.random_name_special_characters()
-		cn_name_new = cn_name.upper()
+		cn_name_new = cn_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 		cn = udm.create_object('container/cn', name=cn_name)
 		wait_for_drs_replication(ldap.filter.filter_format('cn=%s', [cn_name]))
