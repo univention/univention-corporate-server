@@ -9,3 +9,5 @@ desc: |
  * The template `/usr/share/univention-portal/apps.json` was unused and has
    been removed.
 bug: [53651]
+erratum: 102
+announced: 2021-09-15
