@@ -1906,7 +1906,7 @@ class v4netmask(simple):
 
 class netmask(simple):
 	"""
-	Syntax for a IPv4 network mask.
+	Syntax for a IPv4 or IPv6 network mask.
 	May be entered as a *bit mask* or the number of bits.
 
 	>>> netmask.parse('255.255.255.0')
