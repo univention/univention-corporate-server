@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3
+#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Create container/ou
 ## tags: [udm,apptest]
@@ -297,7 +297,7 @@ class Test_ContainerOU(object):
 		network_name = uts.random_string()
 
 		ou_name = uts.random_string()
-		ou_name_new = ou_name.upper()
+		ou_name_new = ou_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 		ou = udm.create_object('container/ou', name=ou_name)
 		wait_for_drs_replication('ou=%s' % ou_name)
@@ -324,7 +324,7 @@ class Test_ContainerOU(object):
 		network_name = uts.random_string()
 
 		ou_name = uts.random_name_special_characters()
-		ou_name_new = ou_name.upper()
+		ou_name_new = ou_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
 		ou = udm.create_object('container/ou', name=ou_name)
 		wait_for_drs_replication(ldap.filter.filter_format('ou=%s', [ou_name]))
