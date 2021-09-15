@@ -11,3 +11,5 @@ desc: |
  * The UMC-Server is now capable to send responses with mimtetype
    `image/svg+xml`.
 bug: [53665, 53779]
+erratum: 104
+announced: 2021-09-15
