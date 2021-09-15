@@ -178,7 +178,7 @@ class Instance(Base):
 			_shell_command() method
 		"""
 
-		args = ['/usr/bin/cancel', '-U', '%s$' % self._hostname]
+		args = ['/usr/bin/cancel', '-U', '%s$' % ucr.get('hostname')]
 		for job in jobs:
 			args.append(job)
 		args.append(printer)
