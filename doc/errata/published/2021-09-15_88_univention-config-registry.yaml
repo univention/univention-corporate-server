@@ -10,3 +10,5 @@ desc: |
  * UCR now exits with an exit code of 1 when setting at least UCR variable
    fails.
 bug: [53742]
+erratum: 88
+announced: 2021-09-15
