@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-updater
 fix: 15.0.3-69A~5.0.0.202109071036
 desc: |
- This update addresses the following issue(s):
- * The design code was adjusted for the usage in UCS@school.
+ This update addresses the following issue:
+ * The theming has been adjusted for the usage in UCS@school.
 bug: [53665]
