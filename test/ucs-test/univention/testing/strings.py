@@ -134,6 +134,14 @@ def random_ip(ip_iter=iter(range(11, 121))):
 	)
 
 
+def random_domain_name(length=10):
+	# type: (int) -> str
+	return '%s.%s' % (
+		random_string(length=length // 2, alpha=True, numeric=False),
+		random_string(length=length - length // 2, alpha=True, numeric=False),
+	)
+
+
 def random_dns_record():
 	# type: () -> str
 	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot

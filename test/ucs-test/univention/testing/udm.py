@@ -49,6 +49,7 @@ from __future__ import print_function
 import copy
 import os
 import pipes
+import random
 import subprocess
 import sys
 import time
@@ -56,9 +57,9 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text,
 
 import ldap
 import ldap.filter
+import psutil
 import six
 
-import psutil
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
@@ -366,6 +367,119 @@ class UCSTestUDM(object):
 
 		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 		return dn
+
+	def create_with_defaults(self, modulename, **kwargs):
+		# type: (str, **Any) -> Tuple[str, dict]
+		module = univention.admin.modules.get_module(modulename)
+		syntax_classes_mapping = {
+			'string': uts.random_string,
+			'string_numbers_letters_dots': uts.random_string,
+			'string_numbers_letters_dots_spaces': uts.random_string,
+			'string64': lambda: uts.random_string(64),
+			'string6': lambda: uts.random_string(6),
+			'HalfString': uts.random_string,
+			'OneThirdString': uts.random_string,
+			'TwoThirdsString': uts.random_string,
+			'FiveThirdsString': uts.random_string,
+			'IA5string': uts.random_string,
+			'integer': lambda: uts.random_int(0, 100000),
+			'uid': uts.random_username,
+			'gid': uts.random_groupname,
+			'userPasswd': uts.random_string,
+			'passwd': uts.random_string,
+			'Country': lambda: random.choice(univention.admin.syntax.Country.choices)[0],
+			'univentionAdminModules': lambda: random.choice(univention.admin.syntax.univentionAdminModules.choices)[0],
+			'SambaPrivileges': lambda: random.choice(univention.admin.syntax.SambaPrivileges.choices)[0],
+			'sambaGroupType': lambda: random.choice(univention.admin.syntax.sambaGroupType.choices)[0],
+			'adGroupType': lambda: random.choice(univention.admin.syntax.adGroupType.choices)[0],
+			'MAC_Address': uts.random_mac,
+			'ipAddress': uts.random_ip,
+			'absolutePath': lambda: '/' + uts.random_string(),
+			'sharePath': lambda: '/' + uts.random_string(),
+			'BaseFilename': lambda: '%s.%s' % (uts.random_string(), uts.random_string(3)),
+			'PrinterURI': lambda: '%s %s' % (random.choice(['lpd://', 'ipp://', 'http://', 'usb:/', 'socket://', 'parallel:/', 'file:/', 'smb://']), uts.random_string()),
+			'Base64Bzip2Text': lambda: __import__('base64').b64encode(__import__('bz2').compress(uts.random_string().encode())).decode('ASCII'),
+			'emailAddress': lambda: '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'MailHomeServer': uts.random_domain_name,
+			'boolean': lambda: uts.random_int(0, 1),
+			'disabled': lambda: uts.random_int(0, 1),
+			'locked': lambda: uts.random_int(0, 1),
+			'v4netmask': lambda: uts.random_int(1, 31),
+			'netmask': lambda: uts.random_int(1, 31),
+			'IPv4_AddressRange': lambda: '%s.2 %s.254' % tuple([uts.random_ip().rsplit('.', 1)[0]] * 2),
+			'printerName': lambda: uts.random_string(16),
+			'DHCP_HardwareAddress': lambda: 'ethernet %s' % (uts.random_mac(),),
+			'ipv4Address': uts.random_ip,
+			'hostName': uts.random_string,
+			'UNIX_TimeInterval': lambda: '%s %s' % (uts.random_int(), random.choice(univention.admin.syntax.Country.choices)[0]),
+			'policyName': uts.random_string,
+			'LocalizedDescription': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
+			'LocalizedDisplayName': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
+			'reverseLookupSubnet': lambda: uts.random_ip().rsplit('.', 1)[0],
+			'dnsPTR': lambda: uts.random_ip().rsplit('.', 1)[1],
+			'dnsHostname': uts.random_domain_name,
+			'dnsName': uts.random_domain_name,
+			'dnsName_umlauts': uts.random_domain_name,
+			'dnsSRVName': lambda: 'ldap tcp %s' % (uts.random_string(),),
+			'dnsSRVLocation': lambda: '%s %s %s %s' % (uts.random_int(), uts.random_int(), uts.random_int(), uts.random_domain_name()),
+			'mailinglist_name': uts.random_string,
+			'mail_folder_name': uts.random_string,
+			'date': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
+			'date2': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
+			'iso8601Date': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
+			'phone': lambda: '+49 421 %s-%s' % (uts.random_int(10000, 99000), uts.random_int(0, 9)),
+			'postalAddress': lambda: '"%s street 1A" "%s" "%s"' % (uts.random_string(), uts.random_int(10000, 99999), uts.random_string()),
+			'keyAndValue': lambda: '%s %s' % (uts.random_string(), uts.random_string()),
+			'SambaLogonHours': lambda: uts.random_int(0, 167),
+			'DebianPackageVersion': uts.random_version,
+			# 'UCSVersion': uts.random_version,
+
+			# 'GroupDN': uts.random_string,
+			# 'UserDN': uts.random_string,
+			# 'UCS_Server': uts.random_string,
+			# 'ServicePrint_FQDN': uts.random_string,
+			# 'HostDN': uts.random_string,
+			# 'PrinterNames': uts.random_string,
+			# 'network': uts.random_string,
+			# 'LDAP_Search': uts.random_string,
+			# 'PrinterDriverList': uts.random_string,
+			# 'UvmmCloudType': uts.random_string,
+			# 'emailForwardSetting': uts.random_string,
+			# 'jpegPhoto': uts.random_string,
+			# 'WritableShare': uts.random_string,
+			# 'Base64Upload': uts.random_string,
+			# 'ActivationDateTimeTimezone': uts.random_string,
+			# 'emailAddressValidDomain': uts.random_string,
+			# 'primaryEmailAddressValidDomain'
+			# 'dhcpEntry': uts.random_string,
+			# 'Service': uts.random_string,
+			# 'dnsEntryReverse': uts.random_string,
+			# 'nagiosHostsEnabledDn': uts.random_string,
+			# 'nagiosServiceDn': uts.random_string,
+			# 'dnsEntryAlias': uts.random_string,
+			# 'dnsEntry': uts.random_string,
+		}
+		module_property_mapping = {
+			'sambaRID': lambda: uts.random_int(1000, 9999),
+			'mailForwardAddress': None,  # depends on mailPrimaryAddress
+			'preferredDeliveryMethod': lambda: random.choice(["any", "mhs", "physical", "telex", "teletex", "g3fax", "g4fax", "ia5", "videotex", "telephone"]),
+			'shares/share': {
+				'sambaCustomSettings': lambda: random.choice(['"acl xattr update mtime" yes', '"access based share enum" yes', '"follow symlinks" "yes"']),
+			},
+		}
+		for name, prop in module.property_descriptions.items():
+			if not prop.may_change or not prop.editable:
+				continue
+			func = module_property_mapping.get(modulename, {}).get(name, module_property_mapping.get(name, syntax_classes_mapping.get(prop.syntax.name)))
+			if not func:
+				continue
+			value = [func() for i in range(random.randint(int(prop.required), 4))] if prop.multivalue else func()
+			kwargs.setdefault(name, value)
+
+		if 'position' not in kwargs:
+			kwargs['position'] = (module.object.get_default_containers(self._lo) or [self.LDAP_BASE])[0]
+
+		return self.create_object(modulename, **kwargs), kwargs
 
 	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		# type: (str, bool, bool, bool, **Any) -> str
