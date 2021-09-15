@@ -10,3 +10,5 @@ desc: |
    the syntax class requires this.
  * Some colors have been adjusted to use the new UCS 5 colors.
 bug: [53631, 53665]
+erratum: 90
+announced: 2021-09-15
