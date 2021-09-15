@@ -51,6 +51,7 @@ stop_review:
       when: manual
   needs:
     - review
+  allow_failure: true
   extends: .publish
   script:
     - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
