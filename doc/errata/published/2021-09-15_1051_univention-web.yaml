@@ -9,3 +9,5 @@ desc: |
  * The DateBox and TimeBox widgets now handle empty values correctly
    and support the date2 syntax again.
 bug: [53675]
+erratum: 1051
+announced: 2021-09-15
