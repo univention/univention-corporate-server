@@ -9,3 +9,5 @@ desc: |
  * Empty values are now prepended to static values for certain widgets if
    the syntax class requires this.
 bug: [53675]
+erratum: 1048
+announced: 2021-09-15
