@@ -8,7 +8,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ucr.sh
 
-is_ucr_true ad/member || exit 137
+is_ucr_true ad/member || exit 137  # fail or skip?
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	if ! checkpkg univention-ad-connector; then

@@ -19,7 +19,7 @@
 test -n "$connector_s4_ldap_host" || exit 77
 connector_running_on_this_host || exit 77
 
-is_ucr_true connector/s4/mapping/group/grouptype || exit 137
+is_ucr_true connector/s4/mapping/group/grouptype || exit 137  # fail or skip?
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"

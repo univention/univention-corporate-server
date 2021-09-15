@@ -9,7 +9,7 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-wbinfo -p || exit 137
+wbinfo -p || exit 137  # fail or skip?
 
 /etc/init.d/winbind restart
 

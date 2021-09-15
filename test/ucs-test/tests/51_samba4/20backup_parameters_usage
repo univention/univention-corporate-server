@@ -22,7 +22,7 @@ trap "ucr_restore >/dev/null" EXIT
 
 # skip the test if 'CRON_JOB' file does not exist:
 echo "Looking for the samba4 backup cron job: $CRON_JOB"
-[ -f $CRON_JOB ] || exit 137
+[ -f $CRON_JOB ] || exit 137  # fail or skip?
 
 
 # if UCR 'samba4/backup/cron' setting is empty the cron job should be disabled:

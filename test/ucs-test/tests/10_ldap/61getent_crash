@@ -22,7 +22,7 @@
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 # echo "The test case is disabled due to Bug #33904"
-# exit 137
+# exit 137  # fail or skip?
 
 section "Preparing"
 

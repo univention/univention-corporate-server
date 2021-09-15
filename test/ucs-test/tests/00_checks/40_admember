@@ -9,7 +9,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ucr.sh
 
-is_ucr_true ad/member || exit 137
+is_ucr_true ad/member || exit 137  # fail or skip?
 
 if ! univention-adconnector-list-rejected | grep -q 'last synced USN:'
 then

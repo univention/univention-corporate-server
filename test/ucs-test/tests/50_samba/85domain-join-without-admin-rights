@@ -21,7 +21,7 @@ fi
 s4_dcs="$(univention-ldapsearch '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
 if [ -n "$s4_dcs" ]; then
 	echo "This is a S4 domain, skip test"
-	exit 137
+	exit 137  # fail or skip?
 fi
 
 username="$(user_randomname)"

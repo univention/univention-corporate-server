@@ -26,6 +26,6 @@ then
 	exit 101
 else
 	echo "telnet is not present on this system"
-	exit 137
+	exit 137  # fail or skip?
 fi
 # vim: set ft=sh :

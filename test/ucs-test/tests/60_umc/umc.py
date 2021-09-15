@@ -130,7 +130,7 @@ class ServiceModule(UMCBase):
 	def check_service_presence(self, request_result, service_name):
 		"""
 		Check if the service with 'service_name' was listed in the response
-		'request_result'. Returns 'missing software' code 137 when missing.
+		'request_result'.
 		"""
 		for result in request_result:
 			if result['service'] == service_name:
