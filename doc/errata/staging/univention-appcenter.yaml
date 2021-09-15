@@ -7,13 +7,13 @@ fix: 9.0.2-67A~5.0.0.202109141203
 desc: |
  This update addresses the following issue:
  * The template `/usr/share/univention-portal/apps.json` was unused and has
-   now been removed.
+   been removed.
  * Fixed a regression where the App installation failed if the App had certain
    App settings.
  * The traceback shall be send when an exception arises in install_base.
- * The design code was adjusted for the usage in UCS@school.
+ * The theming has been adjusted for the usage in UCS@school.
  * The install dialog shows the errors of the installation and messages from
-   the preinstall script if the installation has failed.
+   the pre-install script if the installation has failed.
  * Configuring an App that shipped with certain configure scripts did not
    work. This has been fixed.
 bug: [53651, 53630, 53655, 53665, 53625, 53761]
