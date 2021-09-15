@@ -15,3 +15,5 @@ desc: |
    the property `accountActivationDate` in the UDM module `users/user`.
  * PDF printers can now be created without specifying a destination.
 bug: [53653, 53667, 53631, 53702]
+erratum: 99
+announced: 2021-09-15
