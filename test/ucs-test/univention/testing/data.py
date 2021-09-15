@@ -240,12 +240,12 @@ class CheckExecutable(Check):
 			elif self.filename.endswith('sh'):
 				self.filename = '/bin/' + self.filename
 			else:
-				yield Verdict(Verdict.ERROR, 'Unknown executable: %s' % (self.filename,), TestCodes.REASON_INSTALL_FAIL)
+				yield Verdict(Verdict.ERROR, 'Unknown executable: %s' % (self.filename,), TestCodes.REASON_INSTALL)
 				return
 		if os.path.isfile(self.filename):
 			yield Verdict(Verdict.INFO, 'Executable: %s' % (self.filename,))
 		else:
-			yield Verdict(Verdict.ERROR, 'Missing executable: %s' % (self.filename,), TestCodes.REASON_INSTALL_FAIL)
+			yield Verdict(Verdict.ERROR, 'Missing executable: %s' % (self.filename,), TestCodes.REASON_INSTALL)
 
 	def __str__(self):  # type: () -> str
 		return self.filename
