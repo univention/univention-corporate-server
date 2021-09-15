@@ -32,7 +32,6 @@ class TestCodes(object):
 		135: ('S', 'REASON_JOIN', 'Test skipped (system not joined)', 'BLUE'),
 		136: ('S', 'REASON_JOINED', 'Test skipped (system is joined)', 'BLUE'),
 		137: ('E', 'REASON_MISSING', 'Test skipped (missing test helpers)', 'BLUE'),
-		144: ('S', 'REASON_INSTALL', 'Test skipped (missing software)', 'BLUE'),
 		138: ('S', 'REASON_INSTALLED', 'Test skipped (conflicting software)', 'BLUE'),
 		139: ('S', 'REASON_DANGER', 'Test skipped (too dangerous)', 'BLUE'),
 		140: ('E', 'REASON_INTERNAL', 'Test failed', 'RED'),
