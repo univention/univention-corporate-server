@@ -9,7 +9,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-. pool.sh || exit 142
+. pool.sh || exit 137
 
 port=81
 

@@ -413,7 +413,7 @@ class TestUMCLicenseManagement(UDMModule):
         except CredentialsMissing as exc:
             print("\nMissing a secret file with password to order a license: "
                   "%r" % exc)
-            sys.exit(TestCodes.REASON_INSTALL_FAIL)
+            sys.exit(TestCodes.REASON_INSTALL)
 
     def get_expired_license(self):
         """
@@ -433,7 +433,7 @@ class TestUMCLicenseManagement(UDMModule):
         except CredentialsMissing as exc:
             print("\nMissing a secret file with password to order a license: "
                   "%r" % exc)
-            sys.exit(TestCodes.REASON_INSTALL_FAIL)
+            sys.exit(TestCodes.REASON_INSTALL)
 
     def modify_free_license_template(self):
         """
@@ -444,7 +444,7 @@ class TestUMCLicenseManagement(UDMModule):
         if not path.exists('FreeForPersonalUseTest.license'):
             print("Cannot find the 'FreeForPersonalUseTest.license' file, "
                   "skipping the test...")
-            sys.exit(TestCodes.REASON_INSTALL_FAIL)
+            sys.exit(TestCodes.REASON_INSTALL)
         try:
             with open('FreeForPersonalUseTest.license', 'r+') as free_license:
                 lines = free_license.readlines()

@@ -137,7 +137,7 @@ class ServiceModule(UMCBase):
 				break
 		else:
 			print("The '%s' service is missing in the UMC response: %s" % (service_name, request_result))
-			sys.exit(TestCodes.REASON_INSTALL_FAIL)
+			sys.exit(TestCodes.REASON_INSTALL)
 
 
 class TopModule(UMCBase):

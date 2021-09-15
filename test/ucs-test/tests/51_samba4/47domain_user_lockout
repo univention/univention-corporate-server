@@ -159,7 +159,7 @@ if __name__ == '__main__':
 
 	if not all((admin_username, admin_password, hostname)):
 		print("Failed to obtain Administrator credentials or a hostname for the test from UCR. Skipping the test.")
-		exit(TestCodes.REASON_INSTALL_FAIL)
+		exit(TestCodes.REASON_INSTALL)
 
 	# extract the 'Administrator' username:
 	admin_username = admin_username.split(',')[0][len('uid='):]
