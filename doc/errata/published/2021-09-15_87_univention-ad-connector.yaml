@@ -9,3 +9,5 @@ desc: |
  * Invalid values in the LDAP attribute `sambaNTPassword` are now ignored
    instead of triggering a traceback.
 bug: [53757]
+erratum: 87
+announced: 2021-09-15
