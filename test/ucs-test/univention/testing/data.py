@@ -240,7 +240,7 @@ class CheckExecutable(Check):
 			elif self.filename.endswith('sh'):
 				self.filename = '/bin/' + self.filename
 			else:
-				yield Verdict(Verdict.ERROR, 'Unknown executable: %s' % (self.filename,), TestCodes.REASON_IMISSING)
+				yield Verdict(Verdict.ERROR, 'Unknown executable: %s' % (self.filename,), TestCodes.REASON_MISSING)
 				return
 		if os.path.isfile(self.filename):
 			yield Verdict(Verdict.INFO, 'Executable: %s' % (self.filename,))
