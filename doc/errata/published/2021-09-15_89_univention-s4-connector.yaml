@@ -11,3 +11,5 @@ desc: |
    same DN as an old one is created, the S4 Connector treats them now
    correctly as different objects.
 bug: [50593]
+erratum: 89
+announced: 2021-09-15
