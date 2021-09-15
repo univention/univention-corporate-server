@@ -9,3 +9,5 @@ desc: |
  * The package `univention-quota` has been migrated to Python 3.
  * The theming has been adjusted for the usage in UCS@school.
 bug: [51317, 53665]
+erratum: 93
+announced: 2021-09-15
