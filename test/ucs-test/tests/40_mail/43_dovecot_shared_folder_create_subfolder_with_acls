@@ -15,6 +15,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
+from univention.testing.codes import TestCodes
 from essential.mail import check_delivery, create_shared_mailfolder, get_dovecot_shared_folder_maildir, random_email, send_mail, ImapMail
 
 TIMEOUT_MAIL = 120
@@ -23,7 +24,7 @@ TIMEOUT_MAIL = 120
 def main():
 	if utils.package_installed('univention-samba4'):
 		print('Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46191')
-		sys.exit(137)
+		sys.exit(TestCodes.REASON_INSTALL)
 
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
