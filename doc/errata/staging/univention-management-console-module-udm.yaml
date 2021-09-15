@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console-module-udm
 fix: 10.0.1-17A~5.0.0.202109101126
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Empty values are now prepended to static values for certain widgets if
    the syntax class requires this.
  * Some colors have been adjusted to use the new UCS 5 colors.
