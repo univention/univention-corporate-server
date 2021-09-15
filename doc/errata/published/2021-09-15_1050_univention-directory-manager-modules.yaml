@@ -12,3 +12,5 @@ desc: |
  * UDM now enforces uniqueness of the name of objects in the same subtree
    position.
 bug: [53675, 53725]
+erratum: 1050
+announced: 2021-09-15
