@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-quota
 fix: 14.0.1-9A~5.0.0.202109071038
 desc: |
- This update addresses the following issue(s):
- * The package univention-quota has been migrated to Python 3.
- * The design code was adjusted for the usage in UCS@school.
+ This update addresses the following issues:
+ * The package `univention-quota` has been migrated to Python 3.
+ * The theming has been adjusted for the usage in UCS@school.
 bug: [51317, 53665]
