@@ -6,8 +6,7 @@ src: firefox-esr
 fix: 78.14.0esr-1~deb10u1
 desc: |
  This update addresses the following issue:
- * Memory safety bugs fixed in Firefox 92, Firefox ESR 78.14 and Firefox ESR
-   91.1 (CVE-2021-38493)
+ * Memory safety bugs fixed (CVE-2021-38493)
 bug: [53772]
 cve:
 - CVE-2021-38493
