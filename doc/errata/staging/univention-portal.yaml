@@ -7,5 +7,5 @@ fix: 4.0.5-64A~5.0.0.202108121215
 desc: |
  This update addresses the following issue:
  * The template `/usr/share/univention-portal/apps.json` was unused and has
-   now been removed.
+   been removed.
 bug: [53651]
