@@ -5,8 +5,8 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-web
 fix: 4.0.1-41A~5.0.0.202109101116
 desc: |
- This update addresses the following issue(s):
- * The design code was adjusted for the usage in UCS@school.
- * The DateBox and TimeBox widgets now handle empty values correctly
-   and support the date2 syntax again.
+ This update addresses the following issues:
+ * The theming has been adjusted for the usage in UCS@school.
+ * The widgets `DateBox` and `TimeBox` now handle empty values correctly and
+   support the syntax `date2` again.
 bug: [53665, 53631]
