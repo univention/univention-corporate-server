@@ -33,8 +33,8 @@ ucr unset "connector/s4/mapping/user/attributes/ignorelist"
 ad_connector_restart || exit 137
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
+test -n "$connector_s4_ldap_host" || exit 77
+connector_running_on_this_host || exit 77
 
 UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"
@@ -157,8 +157,8 @@ fi
 ucr set 'connector/s4/mapping/user/attributes/ignorelist'='preferredDeliveryMethod, employeeNumber,employeeType,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
 
 ad_connector_restart || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
+test -n "$connector_s4_ldap_host" || exit 77
+connector_running_on_this_host || exit 77
 
 UDM_users_user_employeeNumber="b$(random_chars)"
 UDM_users_user_employeeType="b$(random_chars)"

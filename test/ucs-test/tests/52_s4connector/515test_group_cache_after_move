@@ -18,11 +18,9 @@
 
 . "s4connector.sh" || exit 137
 
-if ! connector_running_on_this_host; then
-	exit 137 # aka Missing Software
-fi
+connector_running_on_this_host || exit 77
 
-test -n "$connector_s4_ldap_host" || exit 137
+test -n "$connector_s4_ldap_host" || exit 77
 
 . /usr/share/univention-lib/ucr.sh
 

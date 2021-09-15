@@ -20,7 +20,7 @@
 
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
+test -n "$connector_ad_ldap_host" || exit 77
 
 SYNCMODE="$(ad_get_sync_mode)"
 

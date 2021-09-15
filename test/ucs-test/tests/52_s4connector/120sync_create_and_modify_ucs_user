@@ -46,8 +46,8 @@ echo "$(ucr get connector/s4/mapping/user/attributes/ignorelist)"
 
 ad_connector_restart
 
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
+test -n "$connector_s4_ldap_host" || exit 77
+connector_running_on_this_host || exit 77
 
 # create test user
 UDM_users_user_username="$(random_chars)"
@@ -251,8 +251,8 @@ fi
 ucr set 'connector/s4/mapping/user/attributes/ignorelist'='preferredDeliveryMethod,jpegPhoto,employeeNumber,employeeType,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber,userCertificate,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
 
 ad_connector_restart
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
+test -n "$connector_s4_ldap_host" || exit 77
+connector_running_on_this_host || exit 77
 
 udm_modify "users/user" "" "" "" "" \
 		   --set firstname="" \
