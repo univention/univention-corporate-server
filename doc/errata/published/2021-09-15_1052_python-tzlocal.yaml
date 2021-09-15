@@ -11,3 +11,5 @@ desc: |
    accountActivationDate.
 bug: [53675]
 maintained: true
+erratum: 1052
+announced: 2021-09-15
