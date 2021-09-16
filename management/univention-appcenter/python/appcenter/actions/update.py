@@ -37,7 +37,6 @@ import os.path
 from argparse import SUPPRESS
 from glob import glob
 from gzip import open as gzip_open
-from json import loads
 import zlib
 
 from six.moves.urllib_request import Request
