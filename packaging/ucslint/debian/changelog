@@ -1,3 +1,9 @@
+ucslint (9.0.1-5) unstable; urgency=medium
+
+  * Bug #53804: transform flake8 styling/warning into errors
+
+ -- Florian Best <best@univention.de>  Thu, 16 Sep 2021 22:54:55 +0200
+
 ucslint (9.0.1-4) unstable; urgency=low
 
   * Bug #53409: Allow f-strings since Python 3.6
