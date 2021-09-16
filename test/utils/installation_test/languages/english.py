@@ -53,6 +53,7 @@ strings = {
 	'setup_successful': 'UCS setup successful',
 	'finish': 'FINISH',
 	'error': 'An error occurred',
+	'change_settings': 'Adjust settings',
 
 	'samba4': 'Active Directory-compatible Domain',
 	'samba': 'Memberserver',

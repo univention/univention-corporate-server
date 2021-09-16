@@ -261,7 +261,7 @@ class UCSInstallation(object):
 			self.click(self._['join_domain'])
 			self.move_to_next_and_click()
 			if self.text_is_visible(self._['no_dc_dns']):
-				self.client.keyPress('enter')
+				self.click(self._['change_settings'])
 				self.click(self._['preferred_dns'])
 				self.client.enterText(self.args.dns)
 				self.client.keyPress('enter')

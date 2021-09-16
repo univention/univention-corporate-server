@@ -61,6 +61,7 @@ strings = {
 	'finish': 'Fertigstellen',
 	'role': 'Systemrolle',
 	'error': 'Ein Fehler ist',
+	'change_settings': 'Einstellungen anpassen',
 
 	'school_role': 'Serverrolle in der UCS@school',
 	'school_edu': 'Schulserver im Edukativnetz',
