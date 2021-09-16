@@ -11,6 +11,8 @@
 ## exposure: careful
 
 from ipaddress import ip_address
+import re
+import subprocess
 import time
 
 import dns.resolver as resolver
@@ -323,3 +325,36 @@ class Test_DNSResolve(object):
 		# FIXME PMH-2017-01-14: returned TXT data is enclosed in "
 		answer = [rdata.to_text().strip('"') for rdata in answers]
 		assert answer == [txt], 'resolved name "%s" != created ldap-object "%s"' % (answer, [txt])
+
+	def test__dns_ns_record_check_resolve(self, udm, ucr):
+		"""Create DNS NS record and try to resolve it"""
+		# bugs: [32626]
+		# packages: univention-s4-connector
+		partentzone = '%(domainname)s' % ucr
+		partentzone = partentzone
+		forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
+
+		zonename = uts.random_name()
+		nameserver1 = ".".join([uts.random_name(), partentzone])
+		nameserver2 = ".".join([uts.random_name(), partentzone])
+		nameservers = [nameserver1, nameserver2]
+
+		record_properties = {
+			'zone': zonename,
+			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+			'nameserver': nameservers
+		}
+		udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
+
+		from univention.testing.utils import wait_for_s4connector
+		wait_for_s4connector()
+
+		zone_fqdn = '%s.%s' % (zonename, partentzone)
+		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		stdout, stderr = p1.communicate()
+		stdout = stdout.decode('UTF-8', 'replace')
+		assert p1.returncode != 0, "DNS dig query failed"
+
+		found = [x for x in nameservers if re.search("^%s\\.[ \t][0-9]+[ \t]IN\tNS\t%s\\." % (re.escape(zone_fqdn), re.escape(x)), stdout, re.MULTILINE)]
+
+		assert nameservers == found, "Record not found: %s" % ([set(nameservers) - set(found)],)
