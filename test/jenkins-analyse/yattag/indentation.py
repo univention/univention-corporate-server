@@ -103,7 +103,7 @@ class NamedTagTokenMeta(TokenMeta):
 
     def __new__(cls, name, bases, attrs):
         kls = TokenMeta.__new__(cls, name, bases, attrs)
-        if name not in('NamedTagTokenBase', 'NamedTagToken'):
+        if name not in ('NamedTagTokenBase', 'NamedTagToken'):
             kls.tag_name_key = 'tag_name_%s' % name
             kls.regex = kls.regex_template.format(
                 tag_name_key=kls.tag_name_key,
@@ -141,7 +141,7 @@ class CloseTag(NamedTagToken):
 
 
 class XMLTokenError(Exception):
-        pass
+    pass
 
 
 class Tokenizer(object):

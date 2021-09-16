@@ -25,7 +25,7 @@ def main():
 def umc_cert_fail():
 	sys.path.append("/usr/share/univention-management-console/saml/")
 	try:
-		import sp  # noqa: EF401
+		import sp  # noqa: F401
 	except BaseException as exc:
 		#  Importing the exception would fail as well
 		print(type(exc).__name__)

@@ -1234,7 +1234,7 @@ class EC2(Target):
 		if snapshot.status == 'completed':
 			log('  %s' % (snapshot.id, ))
 		else:
-			log('  Failed (%, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
+			log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
 			return  # abort
 		if ec2.delete_volume(task.volume_id):
 			log('Deleted volume %s' % (task.volume_id, ))
@@ -1263,7 +1263,7 @@ class EC2(Target):
 			if ami.state == 'available':
 				log('Generated "%s" appliance as\n  %s' % (self, ami.id, ))
 			else:
-				log('Could not generate image (%r, %r)' % (self, ami.id, ami.state, ))
+				log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state, ))
 
 
 EC2 = EC2()

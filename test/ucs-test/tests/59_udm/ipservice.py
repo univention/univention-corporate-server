@@ -76,7 +76,7 @@ class object(simpleLdap):
 	module = module
 
 	def description(self):
-		return '%{protocol}s@%{port}s' % self
+		return '%(protocol)s@%(port)s' % self
 
 
 def lookup_filter(filter_s=None, lo=None):

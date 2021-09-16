@@ -284,7 +284,7 @@ set -e
 . /usr/share/univention-lib/ldap.sh
 ucs_unregisterLDAPExtension "$@" --udm_%(extension_type)s %(extension_name)s
 exit 0
-''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
+''' % {'extension_name': extension_name, 'extension_type': extension_type}
 
 
 def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None):

@@ -68,8 +68,6 @@ quit''' % {
 		"domainname": domainname,
 		"zonename": s4_zonename,
 		"test_fqdn": test_fqdn,
-		"ttl": 1200,
-		"location": location,
 	}
 
 	dnstests.nsupdate(nsupdate_del_request)

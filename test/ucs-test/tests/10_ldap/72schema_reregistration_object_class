@@ -40,7 +40,7 @@ VERSION=1
 . /usr/share/univention-lib/ldap.sh
 ucs_unregisterLDAPExtension "$@" --schema %(schema_name)s || die
 exit 0
-''' % {'package_name': package_name, 'schema_name': schema_name}
+''' % {'schema_name': schema_name}
 
 schema_buffer = '''
 objectclass ( 1.3.6.1.4.1.7165.2.2.11 NAME 'sambaShare' SUP top STRUCTURAL

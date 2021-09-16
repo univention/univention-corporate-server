@@ -82,7 +82,7 @@ class LDAPConnection(object):
 				cred_msg = '"%s" with Kerberos password "%s"' % (self.principal, login_pw)
 			else:
 				cred_msg = '"%s" with simplebind password "%s"' % (self.login_dn, login_pw)
-			ex = 'LDAP Bind as %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (self.login_dn, cred_msg, self.host, self.port, not no_starttls, self.ca_file)
+			ex = 'LDAP Bind as %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (cred_msg, self.host, self.port, not no_starttls, self.ca_file)
 			import traceback
 			raise Exception(ex + traceback.format_exc())
 

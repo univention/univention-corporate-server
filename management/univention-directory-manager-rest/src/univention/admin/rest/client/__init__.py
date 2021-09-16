@@ -540,7 +540,7 @@ class Object(Client):
 	def _follow_redirection(self, response, reload=True):
 		location = None
 		# python-requests doesn't follow redirects for 201
-		if response.response.status_code == 201 and 'Location'in response.response.headers:
+		if response.response.status_code == 201 and 'Location' in response.response.headers:
 			location = response.response.headers['Location']
 			response = self.client.make_request('GET', location, allow_redirects=False)
 

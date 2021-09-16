@@ -55,7 +55,7 @@ VERSION=1
 . /usr/share/univention-lib/ldap.sh
 ucs_unregisterLDAPExtension "$@" --acl %(acl_name)s || die
 exit 0
-''' % {'package_name': package_name, 'acl_name': acl_name}
+''' % {'acl_name': acl_name}
 
 	acl_buffer = '''
 access to ="%(container)s" attrs="description"
