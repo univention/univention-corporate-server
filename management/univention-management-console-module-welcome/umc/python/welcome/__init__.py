@@ -29,10 +29,9 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.log import MODULE
+from univention.management.console.modules import Base
 
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import simple_response
 
 _ = Translation('univention-management-console-module-welcome').translate
 
