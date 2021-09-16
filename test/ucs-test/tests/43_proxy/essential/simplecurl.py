@@ -50,7 +50,7 @@ class SimpleCurl(object):
 		cookie=None,
 		user_agent=None,
 	):
-			# Perform basic authentication by default
+		# Perform basic authentication by default
 		self.curl = pycurl.Curl()
 		self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation)
 		self.curl.setopt(pycurl.MAXREDIRS, maxReDirs)

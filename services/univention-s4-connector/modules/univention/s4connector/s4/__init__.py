@@ -1609,17 +1609,17 @@ class s4(univention.s4connector.ucs):
 
 					_mod, k = self.identify_udm_object(member_dn, ucs_object['attributes'])
 					if k and _mod.module in ('users/user', 'groups/group', 'computers/windows_domaincontroller', 'computers/windows'):
-							s4_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
+						s4_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
 
-							if not dn_mapping_ucs_member_to_s4.get(member_dn_lower):
-								dn_mapping_ucs_member_to_s4[member_dn_lower] = s4_dn
+						if not dn_mapping_ucs_member_to_s4.get(member_dn_lower):
+							dn_mapping_ucs_member_to_s4[member_dn_lower] = s4_dn
 
-							ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: search for: %s" % s4_dn)
-							# search only for cn to suppress coding errors
-							if not self.lo_s4.get(s4_dn, attr=['cn']):
-								# member does not exist in S4 but should
-								# stay a member in UCS
-								ucs_members_from_s4[k].append(member_dn_lower)
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: search for: %s" % s4_dn)
+						# search only for cn to suppress coding errors
+						if not self.lo_s4.get(s4_dn, attr=['cn']):
+							# member does not exist in S4 but should
+							# stay a member in UCS
+							ucs_members_from_s4[k].append(member_dn_lower)
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?

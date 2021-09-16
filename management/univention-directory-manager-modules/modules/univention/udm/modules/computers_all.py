@@ -92,8 +92,8 @@ class ComputersMemberModule(ComputersAllModule):
 			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
 			'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
 			self.connection.base in ret:
-				ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
-				ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
+			ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
+			ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
 		return ret
 
 	class Meta:

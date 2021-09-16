@@ -1293,7 +1293,7 @@ class simpleLdap(object):
 	def _ldap_object_classes_add(self, al):
 		m = univention.admin.modules.get(self.module)
 		# evaluate extended attributes
-		ocs = set()  # type: Set[unicode]
+		ocs = set()  # type: Set[str]
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
 			if prop.syntax == 'boolean' and self.info.get(prop.name) == u'0':
@@ -2519,60 +2519,60 @@ class simpleComputer(simpleLdap):
 			self.__add_dns_forward_object_ipv4(name, zoneDn, addr)
 
 	def __add_dns_forward_object_ipv6(self, name, zoneDn, addr):  # type: (str, str, IPv6Address) -> None
-			ip = addr.exploded.encode('ASCII')
-			results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
-			if not results:
-				try:
-					self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
-						('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-						('univentionObjectType', [b'dns/host_record']),
-						('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-						('aAAARecord', [ip]),
-						('relativeDomainName', [name.encode('UTF-8')])
-					])
-				except univention.admin.uexceptions.objectExists as ex:
-					raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
-				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
-				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
-				zone.open()
-				zone.modify()
-			else:
-				for dn, attr in results:
-					if 'aAAARecord' in attr:
-						new_ip_list = copy.deepcopy(attr['aAAARecord'])
-						if ip not in new_ip_list:
-							new_ip_list.append(ip)
-							self.lo.modify(dn, [('aAAARecord', attr['aAAARecord'], new_ip_list)])
-					else:
-						self.lo.modify(dn, [('aAAARecord', b'', ip)])
+		ip = addr.exploded.encode('ASCII')
+		results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
+		if not results:
+			try:
+				self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
+					('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+					('univentionObjectType', [b'dns/host_record']),
+					('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+					('aAAARecord', [ip]),
+					('relativeDomainName', [name.encode('UTF-8')])
+				])
+			except univention.admin.uexceptions.objectExists as ex:
+				raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
+			# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
+			zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
+			zone.open()
+			zone.modify()
+		else:
+			for dn, attr in results:
+				if 'aAAARecord' in attr:
+					new_ip_list = copy.deepcopy(attr['aAAARecord'])
+					if ip not in new_ip_list:
+						new_ip_list.append(ip)
+						self.lo.modify(dn, [('aAAARecord', attr['aAAARecord'], new_ip_list)])
+				else:
+					self.lo.modify(dn, [('aAAARecord', b'', ip)])
 
 	def __add_dns_forward_object_ipv4(self, name, zoneDn, addr):  # type: (str, str, IPv4Address) -> None
-			ip = addr.exploded.encode('ASCII')
-			results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
-			if not results:
-				try:
-					self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
-						('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-						('univentionObjectType', [b'dns/host_record']),
-						('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-						('ARecord', [ip]),
-						('relativeDomainName', [name.encode('UTF-8')])
-					])
-				except univention.admin.uexceptions.objectExists as ex:
-					raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
-				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
-				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
-				zone.open()
-				zone.modify()
-			else:
-				for dn, attr in results:
-					if 'aRecord' in attr:
-						new_ip_list = copy.deepcopy(attr['aRecord'])
-						if ip not in new_ip_list:
-							new_ip_list.append(ip)
-							self.lo.modify(dn, [('aRecord', attr['aRecord'], new_ip_list)])
-					else:
-						self.lo.modify(dn, [('aRecord', b'', ip)])
+		ip = addr.exploded.encode('ASCII')
+		results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
+		if not results:
+			try:
+				self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
+					('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+					('univentionObjectType', [b'dns/host_record']),
+					('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+					('ARecord', [ip]),
+					('relativeDomainName', [name.encode('UTF-8')])
+				])
+			except univention.admin.uexceptions.objectExists as ex:
+				raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
+			# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
+			zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
+			zone.open()
+			zone.modify()
+		else:
+			for dn, attr in results:
+				if 'aRecord' in attr:
+					new_ip_list = copy.deepcopy(attr['aRecord'])
+					if ip not in new_ip_list:
+						new_ip_list.append(ip)
+						self.lo.modify(dn, [('aRecord', attr['aRecord'], new_ip_list)])
+				else:
+					self.lo.modify(dn, [('aRecord', b'', ip)])
 
 	def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):  # type: (str, str, str, str) -> None
 		ud.debug(ud.ADMIN, ud.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))

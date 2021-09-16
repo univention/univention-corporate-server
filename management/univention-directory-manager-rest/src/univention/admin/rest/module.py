@@ -3634,10 +3634,10 @@ univentionObjectType: settings/license
 
 	def import_license(self, fd):
 		try:
-				# check license and write it to LDAP
-				importer = LicenseImporter(fd)
-				importer.check(ucr.get('ldap/base', ''))
-				importer.write(self.ldap_connection)
+			# check license and write it to LDAP
+			importer = LicenseImporter(fd)
+			importer.check(ucr.get('ldap/base', ''))
+			importer.write(self.ldap_connection)
 		except ldap.LDAPError as exc:
 			# LDAPError e.g. LDIF contained non existing attributes
 			raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))

@@ -57,18 +57,18 @@ OIDS = set(replication.BUILTIN_OIDS) | set(('1.3.6.1.4.1.4203.666.11.1.4.2.12.1'
 
 # from replication.py
 def _update_schema(fp, attr):
-		subschema = ldap.schema.SubSchema(attr)
-		for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
-			if oid in OIDS:
-				continue
-			obj = subschema.get_obj(ldap.schema.AttributeType, oid)
-			fp.write('attributetype %s\n' % (obj,))
+	subschema = ldap.schema.SubSchema(attr)
+	for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
+		if oid in OIDS:
+			continue
+		obj = subschema.get_obj(ldap.schema.AttributeType, oid)
+		fp.write('attributetype %s\n' % (obj,))
 
-		for oid in replication.subschema_sort(subschema, ldap.schema.ObjectClass):
-			if oid in OIDS:
-				continue
-			obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
-			fp.write('objectclass %s\n' % (obj,))
+	for oid in replication.subschema_sort(subschema, ldap.schema.ObjectClass):
+		if oid in OIDS:
+			continue
+		obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
+		fp.write('objectclass %s\n' % (obj,))
 
 
 def update_schema(lo):

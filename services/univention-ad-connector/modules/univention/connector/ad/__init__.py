@@ -1596,17 +1596,17 @@ class ad(univention.connector.ucs):
 
 					_mod, k = self.identify_udm_object(member_dn, ucs_object['attributes'])
 					if k and _mod.module in ('users/user', 'groups/group', 'computers/windows_domaincontroller', 'computers/windows'):
-							ad_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
+						ad_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
 
-							if not dn_mapping_ucs_member_to_ad.get(member_dn_lower):
-								dn_mapping_ucs_member_to_ad[member_dn_lower] = ad_dn
+						if not dn_mapping_ucs_member_to_ad.get(member_dn_lower):
+							dn_mapping_ucs_member_to_ad[member_dn_lower] = ad_dn
 
-							ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: search for: %s" % ad_dn)
-							# search only for cn to suppress coding errors
-							if not self.lo_ad.get(ad_dn, attr=['cn']):
-								# member does not exist in AD but should
-								# stay a member in UCS
-								ucs_members_from_ad[k].append(member_dn_lower)
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: search for: %s" % ad_dn)
+						# search only for cn to suppress coding errors
+						if not self.lo_ad.get(ad_dn, attr=['cn']):
+							# member does not exist in AD but should
+							# stay a member in UCS
+							ucs_members_from_ad[k].append(member_dn_lower)
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?

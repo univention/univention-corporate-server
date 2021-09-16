@@ -83,8 +83,8 @@ def add_default(update: bool):
 		else:
 			info("{} already exists".format(default_name))
 	else:
-			_add_default(default_name, json_content)
-			changed = True
+		_add_default(default_name, json_content)
+		changed = True
 
 	if changed:
 		write_portals_json(json_content)
@@ -107,8 +107,8 @@ def add_umc_default(update: bool):
 		else:
 			info("{} already exists".format(umc_name))
 	else:
-			_add_umc(umc_name, json_content)
-			changed = True
+		_add_umc(umc_name, json_content)
+		changed = True
 
 	if changed:
 		write_portals_json(json_content)

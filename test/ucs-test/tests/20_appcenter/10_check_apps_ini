@@ -60,9 +60,9 @@ def check_ini_files():
     test_path = [fname for fname in glob('/var/cache/univention-appcenter/*/*/*.ini') if not path.basename(fname).startswith('.')]
 
     for local in test_locales:
-            for filename in test_path:
-                print("Checking", filename, "in", local, "locale:")
-                check_file(filename, local)
+        for filename in test_path:
+            print("Checking", filename, "in", local, "locale:")
+            check_file(filename, local)
 
     print_all_apps_versions(len(test_path))
 

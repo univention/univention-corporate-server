@@ -55,8 +55,8 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 def wait_for_drs_replication(*args, **kwargs):
 	# type: (*Any, **Any) -> None
 	if six.PY2:
-			process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
-			stdout, stderr = process.communicate(b'''
+		process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
+		stdout, stderr = process.communicate(b'''
 import ldb
 import sys
 from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
@@ -68,12 +68,12 @@ except DRSReplicationFailed as exc:
 except ldb.LdbError as exc:
 	print(repr(exc), file=sys.stderr)
 	sys.exit(3)
-			''' % (repr(args).encode('UTF-8'), repr(kwargs).encode('UTF-8')))
-			if process.returncode == 2:
-				raise DRSReplicationFailed((stderr or b'').decode('UTF-8', 'replace'))
-			elif process.returncode:
-				raise Exception((stderr or b'').decode('UTF-8', 'replace'))
-			return
+		''' % (repr(args).encode('UTF-8'), repr(kwargs).encode('UTF-8')))
+		if process.returncode == 2:
+			raise DRSReplicationFailed((stderr or b'').decode('UTF-8', 'replace'))
+		elif process.returncode:
+			raise Exception((stderr or b'').decode('UTF-8', 'replace'))
+		return
 	return _wait_for_drs_replication(*args, **kwargs)
 
 

@@ -92,7 +92,7 @@ try:
         else:
             break
     else:
-                fail('The attribute was found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
+        fail('The attribute was found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 finally:
     package.remove()
     package.uninstall()
