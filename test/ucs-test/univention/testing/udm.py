@@ -47,6 +47,7 @@ The API is currently under heavy development and may/will change before next UCS
 from __future__ import print_function
 
 import copy
+import functools
 import os
 import pipes
 import random
@@ -67,6 +68,11 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
+
+try:
+	from inspect import getfullargspec as getargspec
+except ImportError:
+	from inspect import getargspec  # python 2
 
 
 class UCSTestUDM_Exception(Exception):
@@ -295,6 +301,9 @@ class UCSTestUDM(object):
 		if action == 'list' and 'policies' in args:
 			cmd.extend(['--policies=%s' % (args.pop('policies'),)])
 
+		if action == 'list' and 'filter' in args:
+			cmd.extend(['--filter=%s' % (args.pop('filter'),)])
+
 		for option in args.pop('options', ()):
 			cmd.extend(['--option', option])
 
@@ -370,7 +379,55 @@ class UCSTestUDM(object):
 
 	def create_with_defaults(self, modulename, **kwargs):
 		# type: (str, **Any) -> Tuple[str, dict]
+		"""Create any object with as maximum as possible prefilled random default values"""
 		module = univention.admin.modules.get_module(modulename)
+
+		if 'position' not in kwargs and not modulename.startswith('settings/portal'):
+			kwargs['position'] = (module.object.get_default_containers(self._lo) or [self.LDAP_BASE])[0]
+
+		superordinate_props = {}
+		if 'superordinate' not in kwargs and getattr(module, 'superordinate', None) not in (None, 'settings/cn'):
+			superordinate_module = random.choice(module.superordinate) if isinstance(module.superordinate, list) else module.superordinate
+			superordinate, superordinate_props = self.create_with_defaults(superordinate_module, position=kwargs['position'])
+			kwargs['superordinate'] = kwargs['position'] = superordinate
+
+		max_recursion = kwargs.pop('max_recursion', 1)
+
+		def ldap_search(prop):
+			m, p = prop.syntax.value.split(': ', 1)
+			if max_recursion <= 0:
+				return  # random.choice(self._cleanup.get(m, [None]))
+			return self.create_with_defaults(m, max_recursion=max_recursion - 1)[1][p]
+
+		def udm_attribute(prop):
+			if max_recursion <= 0:
+				return  # random.choice(self._cleanup.get(prop.syntax.udm_module, [None]))
+			return self.create_with_defaults(prop.syntax.udm_module, max_recursion=max_recursion - 1)[1][prop.syntax.attribute]
+
+		def udm_objects(prop):
+			m = list(reversed(prop.syntax.udm_modules))
+			try:
+				m.remove('computers/computer')
+				m.append('computers/linux')
+				m.append('computers/windows')
+				m.append('computers/ubuntu')
+			except ValueError:
+				pass
+			try:
+				m.remove('computers/domaincontroller_master')
+			except ValueError:
+				pass
+
+			if max_recursion <= 0:
+				if prop.syntax.key == 'dn':
+					return  # random.choice(self._cleanup.get(m[0], [None]))  # warning: would cause circular group memberships for groups/group
+				return
+			_dn, _props = self.create_with_defaults(m[0], max_recursion=max_recursion - 1)
+			p = prop.syntax.key % _props
+			if p == 'dn':
+				return _dn
+			return p
+
 		syntax_classes_mapping = {
 			'string': uts.random_string,
 			'string_numbers_letters_dots': uts.random_string,
@@ -392,6 +449,7 @@ class UCSTestUDM(object):
 			'SambaPrivileges': lambda: random.choice(univention.admin.syntax.SambaPrivileges.choices)[0],
 			'sambaGroupType': lambda: random.choice(univention.admin.syntax.sambaGroupType.choices)[0],
 			'adGroupType': lambda: random.choice(univention.admin.syntax.adGroupType.choices)[0],
+			'ipProtocol': lambda: random.choice(univention.admin.syntax.ipProtocol.choices)[0],
 			'MAC_Address': uts.random_mac,
 			'ipAddress': uts.random_ip,
 			'absolutePath': lambda: '/' + uts.random_string(),
@@ -415,11 +473,12 @@ class UCSTestUDM(object):
 			'policyName': uts.random_string,
 			'LocalizedDescription': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
 			'LocalizedDisplayName': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
+			'LocalizedLink': lambda: '%s %s://%s/%s' % (random.choice(['de_DE', 'en_US']), random.choice(['http', 'https']), uts.random_domain_name(), uts.random_string()),
 			'reverseLookupSubnet': lambda: uts.random_ip().rsplit('.', 1)[0],
 			'dnsPTR': lambda: uts.random_ip().rsplit('.', 1)[1],
 			'dnsHostname': uts.random_domain_name,
 			'dnsName': uts.random_domain_name,
-			'dnsName_umlauts': uts.random_domain_name,
+			'dnsName_umlauts': uts.random_string,
 			'dnsSRVName': lambda: 'ldap tcp %s' % (uts.random_string(),),
 			'dnsSRVLocation': lambda: '%s %s %s %s' % (uts.random_int(), uts.random_int(), uts.random_int(), uts.random_domain_name()),
 			'mailinglist_name': uts.random_string,
@@ -433,16 +492,18 @@ class UCSTestUDM(object):
 			'SambaLogonHours': lambda: uts.random_int(0, 167),
 			'DebianPackageVersion': uts.random_version,
 			# 'UCSVersion': uts.random_version,
-
-			# 'GroupDN': uts.random_string,
-			# 'UserDN': uts.random_string,
-			# 'UCS_Server': uts.random_string,
-			# 'ServicePrint_FQDN': uts.random_string,
-			# 'HostDN': uts.random_string,
-			# 'PrinterNames': uts.random_string,
+			'LDAP_Search': ldap_search,
+			'GroupDN': udm_objects,
+			'UserDN': udm_objects,
+			'HostDN': udm_objects,
+			'UCS_Server': udm_objects,
+			'Windows_Server': udm_objects,
+			'DomainController': udm_objects,
+			'ServicePrint_FQDN': udm_objects,
+			'printerModel': lambda: '"%s" "%s"' % (random.choice(['smb', 'cupsfilters/pxlmono.ppd', 'hp-ppd/HP/HP_LaserJet_6P.ppd', 'cups-pdf/CUPS-PDF_opt.ppd']), uts.random_string()),
+			'PrinterDriverList': udm_attribute,
+			'PrinterNames': udm_objects,
 			# 'network': uts.random_string,
-			# 'LDAP_Search': uts.random_string,
-			# 'PrinterDriverList': uts.random_string,
 			# 'UvmmCloudType': uts.random_string,
 			# 'emailForwardSetting': uts.random_string,
 			# 'jpegPhoto': uts.random_string,
@@ -466,18 +527,67 @@ class UCSTestUDM(object):
 			'shares/share': {
 				'sambaCustomSettings': lambda: random.choice(['"acl xattr update mtime" yes', '"access based share enum" yes', '"follow symlinks" "yes"']),
 			},
+			'dns/reverse_zone': {
+				'contact': syntax_classes_mapping['emailAddress'],  # Bug #53794
+			},
+			'dns/ptr_record': {
+				'ip': None,  # prevent, that a ip is set. instead address is set, which builds the ip from address.$superordinate
+			},
+			'settings/mswmifilter': {
+				'description': None,  # Bug #53797
+				'displayName': None,  # Bug #53797
+			},
 		}
 		for name, prop in module.property_descriptions.items():
-			if not prop.may_change or not prop.editable:
+			if name in kwargs:
+				continue
+			if not prop.editable:  # or (is_modification and not prop.may_change)
 				continue
 			func = module_property_mapping.get(modulename, {}).get(name, module_property_mapping.get(name, syntax_classes_mapping.get(prop.syntax.name)))
 			if not func:
 				continue
-			value = [func() for i in range(random.randint(int(prop.required), 4))] if prop.multivalue else func()
+
+			if 'prop' in getargspec(func).args:
+				func = functools.partial(func, prop)
+
+			value = list(set(func() for i in range(random.randint(int(prop.required or name in ('ip', 'range')), 4)))) if prop.multivalue else func()
+			if value is None or isinstance(value, list) and all(v is None for v in value):
+				continue
 			kwargs.setdefault(name, value)
 
-		if 'position' not in kwargs:
-			kwargs['position'] = (module.object.get_default_containers(self._lo) or [self.LDAP_BASE])[0]
+		if modulename == 'shares/printer':
+			# when creating a shares/printergroup recursion is prevented: circular references aren't created
+			# therefore set some (invalid) values here
+			kwargs.setdefault('spoolHost', 'localhost')
+			kwargs.setdefault('model', 'cups-pdf/CUPS-PDF_noopt.ppd FAKE')
+
+		if modulename in ('dhcp/subnet', 'dhcp/sharedsubnet'):
+			import ipaddress
+			kwargs['subnetmask'] = str(min(29, int(kwargs['subnetmask'])))
+			iface = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % kwargs)
+			kwargs['subnet'] = str(iface.network.network_address)
+		elif modulename in ('dhcp/pool',):
+			import ipaddress
+			iface = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % superordinate_props)
+			if kwargs.get('dynamic_bootp_clients') != 'deny':
+				kwargs.pop('failover_peer')
+		if modulename in ('dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/pool'):
+			hosts = iface.network.hosts()
+			next(hosts)
+			ranges = []
+			for i in range(len(kwargs['range']) if isinstance(kwargs['range'], list) else 1):
+				first = last = None
+				try:
+					first = last = next(hosts)
+					for i in range(random.randrange(20)):
+						last = next(hosts)
+				except StopIteration:
+					pass
+				if first and first != last:
+					ranges.append('%s %s' % (first, last))
+				else:
+					break
+			kwargs['range'] = ranges
 
 		return self.create_object(modulename, **kwargs), kwargs
 
