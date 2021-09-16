@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import socket
 from univention.config_registry import ConfigRegistry
 import sys
@@ -43,7 +45,7 @@ def main():
 
     master = configRegistry.get('ldap/master')
     if not master:
-        print >> sys.stderr, 'Error: ldap/master not set'
+        print('Error: ldap/master not set', file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -56,9 +58,9 @@ def main():
         notifier_result = sock.recv(100)
 
         if notifier_result:
-            print "%s" % notifier_result.splitlines()[1]
+            print("%s" % notifier_result.splitlines()[1])
     except socket.error as ex:
-        print >> sys.stderr, 'Error: %s' % (ex,)
+        print('Error: %s' % (ex,), file=sys.stderr)
         sys.exit(1)
 
 

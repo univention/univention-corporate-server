@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 
 import os
 import csv
@@ -76,19 +77,19 @@ def importRow(row):
 	firstname = row[2]
 	lastname = row[3]
 	displayName = row[4]
-	gender = row[5]
-	birthplace = row[6]
+	# gender = row[5]
+	# birthplace = row[6]
 	birthday = row[7]
-	age = row[8]  # calculated in 2012
-	imageref = row[9]  # always broken
+	# age = row[8]  # calculated in 2012
+	# imageref = row[9]  # always broken
 	# mail = row[10] # broken in csv
 	mail = "%s@%s" % (uid, DOMAIN)
 	office = row[11]  # name of a city
 	organisation = row[12]
 	department = row[13]
 	employeeType = row[14]
-	degree = row[15]
-	manager = row[16]  # LDAP-DN
+	# degree = row[15]
+	# manager = row[16]  # LDAP-DN
 	phone = row[23]  # partly broken, only phone extension (no complete numbers)
 	roomNumber = row[24]
 	employeeNumber = row[28]
@@ -97,7 +98,7 @@ def importRow(row):
 	# print "generate %s %s / %s in %s" % (firstname, lastname, mail, office)
 
 	# check if container for user exists
-	print 'udm container/ou create --ignore_exist --position "ou=People,%s" --set name="%s" --set userPath="1" --set groupPath="1"' % (LDAPBASE, office)  # create OU for User
+	print('udm container/ou create --ignore_exist --position "ou=People,%s" --set name="%s" --set userPath="1" --set groupPath="1"' % (LDAPBASE, office))  # create OU for User
 
 	# generate udm call to create user
 	userSetMap = [
@@ -120,30 +121,30 @@ def importRow(row):
 	callUser = 'udm users/user create --position "ou=%s,ou=People,%s"' % (office, LDAPBASE)
 	for (udmOption, value) in userSetMap:
 		callUser = '%s --set "%s"="%s"' % (callUser, udmOption, value)
-	print callUser
+	print(callUser)
 
 	groups = ["users office %s" % office, "users office %s" % department]
 	for group in groups:
-		print 'udm groups/group create --ignore_exist --position "ou=People,%s" --set name="%s"' % (LDAPBASE, group)  # create group
-		print 'udm groups/group modify --dn "cn=%s,ou=People,%s" --append users="uid=%s,ou=%s,ou=People,%s"' % (group, LDAPBASE, uid, office, LDAPBASE)
+		print('udm groups/group create --ignore_exist --position "ou=People,%s" --set name="%s"' % (LDAPBASE, group))  # create group
+		print('udm groups/group modify --dn "cn=%s,ou=People,%s" --append users="uid=%s,ou=%s,ou=People,%s"' % (group, LDAPBASE, uid, office, LDAPBASE))
 
 	# check if container for computer in this department exists
-	print 'udm container/ou create --ignore_exist --position "ou=Departments,%s" --set name="%s" --set computerPath="1"' % (LDAPBASE, office)
+	print('udm container/ou create --ignore_exist --position "ou=Departments,%s" --set name="%s" --set computerPath="1"' % (LDAPBASE, office))
 
 	# check if DC slave for this department exists
-	print 'udm computers/domaincontroller_slave create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
+	print('udm computers/domaincontroller_slave create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS))
 
 	# generate computer object per user
-	print 'udm %s create  --ignore_exists --position "ou=%s,ou=Departments,%s" --set name="workstation%s" --set network="cn=default,cn=networks,%s"' % (computerType, office, LDAPBASE, roomNumber, LDAPBASE)
+	print('udm %s create  --ignore_exists --position "ou=%s,ou=Departments,%s" --set name="workstation%s" --set network="cn=default,cn=networks,%s"' % (computerType, office, LDAPBASE, roomNumber, LDAPBASE))
 
 # print default commands
 
 
-print 'eval $(ucr shell)'
-print 'udm container/ou create --ignore_exists --set name=People --set description="Employees of this company" --set groupPath="1"'
-print 'udm container/ou create --ignore_exists --set name=Departments --set description="Resources of this company organized by department"'
-print 'udm mail/domain create --ignore_exists --position="cn=domain,cn=mail,%s" --set name="%s"' % (LDAPBASE, DOMAIN)
-print 'udm computers/domaincontroller_backup create --ignore_exist --position "cn=dc,cn=computers,%s" --set name="dcbackup" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
+print('eval $(ucr shell)')
+print('udm container/ou create --ignore_exists --set name=People --set description="Employees of this company" --set groupPath="1"')
+print('udm container/ou create --ignore_exists --set name=Departments --set description="Resources of this company organized by department"')
+print('udm mail/domain create --ignore_exists --position="cn=domain,cn=mail,%s" --set name="%s"' % (LDAPBASE, DOMAIN))
+print('udm computers/domaincontroller_backup create --ignore_exist --position "cn=dc,cn=computers,%s" --set name="dcbackup" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS))
 
 with open(IMPORTFILE, 'rb') as importfile:
 	importreader = csv.reader(importfile, delimiter=',', quotechar='"')
