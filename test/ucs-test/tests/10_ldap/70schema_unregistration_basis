@@ -13,11 +13,9 @@
 from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication_and_postrun
-from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.config_registry import ConfigRegistry
 
 from ldap_extension_utils import call_unjoin_script, call_join_script, get_package_name, get_schema_name, get_schema_attribute_id, fetch_schema_from_ldap_master
-from ldap.filter import filter_format
 from time import sleep
 
 ucr = ConfigRegistry()
