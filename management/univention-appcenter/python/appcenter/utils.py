@@ -45,7 +45,6 @@ import ipaddress
 import ssl
 from hashlib import md5, sha256
 import socket
-import tempfile
 from locale import getlocale
 
 from six.moves.configparser import RawConfigParser, ParsingError
