@@ -108,8 +108,7 @@ class TestEnvironment(object):
 
 	def _load_join(self):  # type: () -> None
 		"""Load join status."""
-		devnull = open(os.path.devnull, 'w+')
-		try:
+		with open(os.path.devnull, 'w+') as devnull:
 			try:
 				ret = call(
 					('/usr/sbin/univention-check-join-status',),
@@ -117,8 +116,6 @@ class TestEnvironment(object):
 				self.joined = ret == 0
 			except OSError:
 				self.joined = False
-		finally:
-			devnull.close()
 		TestEnvironment.logger.debug('Join=%r' % self.joined)
 
 	def _load_apt(self):  # type: () -> None
@@ -535,15 +532,8 @@ class TestCase(object):
 		"""
 		TestCase.logger.info('Loading test %s', self.filename)
 		digest = hashlib.md5()
-		try:
-			tc_file = open(self.filename, 'rb')
-		except IOError as ex:
-			TestCase.logger.critical(
-				'Failed to read "%s": %s',
-				self.filename, ex)
-			raise TestError('Failed to open file')
 
-		try:
+		with open(self.filename, 'rb') as tc_file:
 			firstline = tc_file.readline()
 			if not firstline.startswith(b'#!'):
 				raise TestError('Missing hash-bang')
@@ -565,8 +555,6 @@ class TestCase(object):
 					self.filename, ex,
 					exc_info=True)
 				raise TestError('Invalid test YAML data')
-		finally:
-			tc_file.close()
 
 		try:
 			self.description = header.get('desc', '').strip()
@@ -796,16 +784,13 @@ class TestCase(object):
 					)
 					to_stdout, to_stderr = sys.stdout, sys.stderr
 				else:
-					devnull = open(os.path.devnull, 'rb')
-					try:
+					with open(os.path.devnull, 'rb') as devnull:
 						proc = Popen(
 							cmd, executable=self.exe.filename,
 							shell=False, stdin=devnull,
 							stdout=PIPE, stderr=PIPE, close_fds=True,
 							cwd=dirname, preexec_fn=prepare_child
 						)
-					finally:
-						devnull.close()
 					to_stdout = to_stderr = result.environment.log
 
 				signal.signal(signal.SIGCHLD, self.handle_shutdown)

@@ -78,8 +78,7 @@ class Junit(TestFormatInterface):
 		except OSError as ex:
 			if ex.errno != errno.EEXIST:
 				raise
-		f_report = open(filename, 'w')
-		try:
+		with open(filename, 'w') as f_report:
 			xml = XMLGenerator(f_report, encoding='utf-8')
 			xml.startDocument()
 			xml.startElement('testsuite', {
@@ -177,8 +176,6 @@ class Junit(TestFormatInterface):
 			xml.endElement('testcase')
 			xml.endElement('testsuite')
 			xml.endDocument()
-		finally:
-			f_report.close()
 		super(Junit, self).end_test(result)
 
 	def utf8(self, data):  # type: (Any) -> str
