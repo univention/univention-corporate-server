@@ -44,6 +44,7 @@ from univention.lib.umc import Client, HTTPError, ConnectionError, ServiceUnavai
 ATTEMPTS = 5
 RETRY_DELAY = 5
 
+
 def register_iface(configRegistry, iface, verbose):
 	# is fallback different from current address?
 	for retry in range(ATTEMPTS):
