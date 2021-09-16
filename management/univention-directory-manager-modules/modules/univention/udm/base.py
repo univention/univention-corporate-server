@@ -142,7 +142,7 @@ class BaseObject(object):
 		Remove the object (and optionally its child nodes) from the LDAP database.
 
 		:param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
-		    them before removing this object
+			them before removing this object
 		:return: None
 		"""
 		raise NotImplementedError()

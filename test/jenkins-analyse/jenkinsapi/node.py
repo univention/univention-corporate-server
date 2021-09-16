@@ -228,10 +228,7 @@ class Node(JenkinsBase):
             self.toggle_temporarily_offline(message)
             data = self.poll(tree='offline,temporarilyOffline')
             if not data['offline']:
-                raise AssertionError("The node state is still online:" +
-                                     "offline = %s , temporarilyOffline = %s" %
-                                     (data['offline'],
-                                      data['temporarilyOffline']))
+                raise AssertionError("The node state is still online:offline = %s , temporarilyOffline = %s" % (data['offline'], data['temporarilyOffline']))
 
     def toggle_temporarily_offline(self, message="requested from jenkinsapi"):
         """

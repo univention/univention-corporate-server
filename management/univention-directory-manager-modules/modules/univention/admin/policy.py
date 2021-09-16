@@ -35,7 +35,7 @@ from typing import Any, Dict, Tuple  # noqa F401
 
 import univention.admin.localization
 import univention.admin.syntax
-from univention.admin.mapping import ListToString, mapping  # noqa F401
+from univention.admin.mapping import ListToString, mapping as MappingType  # noqa F401
 from univention.admin.layout import Tab
 
 translation = univention.admin.localization.translation('univention.admin')
@@ -43,7 +43,7 @@ _ = translation.translate
 
 
 def register_policy_mapping(mapping):
-	# type: (mapping) -> None
+	# type: (MappingType) -> None
 	mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 	mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 	mapping.register('fixedAttributes', 'fixedAttributes')

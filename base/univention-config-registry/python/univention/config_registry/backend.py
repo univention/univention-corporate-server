@@ -47,11 +47,11 @@ except ImportError:
 	from collections import Mapping, MutableMapping
 
 import six
-if six.PY2:
-	from io import open
 
 from univention.config_registry.handler import run_filter
 
+if six.PY2:
+	from io import open
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, ItemsView, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa F401

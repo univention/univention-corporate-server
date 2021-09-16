@@ -1119,7 +1119,8 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 		# Signed URL used to delete the stored manifest file.
 		E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
 		# Complex type describing the size and chunking of the volume file.
-		E('import',
+		E(
+			'import',
 			# Exact size of the file to be imported (bytes on disk).
 			E.size('%d' % (vmdk.size(), )),
 			# Rounded size in gigabytes of volume to be imported.
@@ -1316,21 +1317,15 @@ def parse_options():
 	parser.set_defaults(choices=defaults)
 	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
 	parser.add_option('-s', '--source', help='source image (required)')
-	parser.add_option('-m', '--memory-size', default=1024, type='int',
-		help='size of virtual memory (MiB, default: %default)')
-	parser.add_option('-c', '--cpu-count', default=1, type='int',
-		help='virtual CPU count (default: %default)')
+	parser.add_option('-m', '--memory-size', default=1024, type='int', help='size of virtual memory (MiB, default: %default)')
+	parser.add_option('-c', '--cpu-count', default=1, type='int', help='virtual CPU count (default: %default)')
 	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
 	parser.add_option('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
-	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
-		default='Univention Corporate Server (UCS)')
-	parser.add_option('--product-url', help='product URL of appliance (default: %default)',
-		default='https://www.univention.com/products/ucs/')
+	parser.add_option('-p', '--product', help='product name of appliance (default: %default)', default='Univention Corporate Server (UCS)')
+	parser.add_option('--product-url', help='product URL of appliance (default: %default)', default='https://www.univention.com/products/ucs/')
 	parser.add_option('-v', '--version', help='version string of appliance')
-	parser.add_option('--vendor', help='vendor string of appliance (default: %default)',
-		default='Univention GmbH')
-	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)',
-		default='At least 2GB of RAM are required. https://www.univention.com/')
+	parser.add_option('--vendor', help='vendor string of appliance (default: %default)', default='Univention GmbH')
+	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)', default='At least 2GB of RAM are required. https://www.univention.com/')
 	parser.add_option('-t', '--tempdir', help='temporary directory to use')
 	parser.add_option('--region', help='EC2 region to use (default %default)', default='eu-west-1')
 	parser.add_option('--bucket', help='S3 bucket to use (default %default)', default='generate-appliance')

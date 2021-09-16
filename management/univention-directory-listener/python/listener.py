@@ -107,7 +107,7 @@ def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, Text]], in
 	waitp = os.P_WAIT if wait else os.P_NOWAIT
 	try:
 		rc = os.spawnv(waitp, exe, argv)
-	except:
+	except BaseException:
 		rc = 100
 	finally:
 		if uid > -1:

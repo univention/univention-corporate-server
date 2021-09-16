@@ -10,5 +10,6 @@ def main():
     print configRegistry.get('repository/online') not in ('0', 'no', 'false', 'disable', 'disabled', )
     return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
+
 if __name__ == '__main__':
     main()

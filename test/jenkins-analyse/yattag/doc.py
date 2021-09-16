@@ -314,8 +314,7 @@ class Doc(SimpleDoc):
                 )
                 self.doc.current_tag = self.parent_tag
 
-    def __init__(self, defaults=None, errors=None,
-     error_wrapper=('<span class="error">', '</span>'), *args, **kwargs):
+    def __init__(self, defaults=None, errors=None, error_wrapper=('<span class="error">', '</span>'), *args, **kwargs):
         """
         creates a Doc instance
 

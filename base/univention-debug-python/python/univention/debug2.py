@@ -146,10 +146,12 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 	_logfilename = logfile
 
 	# create root logger
-	logging.basicConfig(level=logging.DEBUG,
-						filename='/dev/null',       # disabled
-						format=_outfmt,
-						datefmt=_datefmt)
+	logging.basicConfig(
+		level=logging.DEBUG,
+		filename='/dev/null',  # disabled
+		format=_outfmt,
+		datefmt=_datefmt
+	)
 
 	formatter = logging.Formatter(_outfmt, _datefmt)
 	exit()
@@ -350,7 +352,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
 			_flush()
 			try:
 				ret = f(*args, **kwargs)
-			except:
+			except BaseException:
 				try:
 					(exctype, value) = sys.exc_info()[:2]
 					logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s(%s)', fname, exctype, value)

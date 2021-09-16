@@ -57,6 +57,6 @@ Full tutorial on yattag.org_
 __author__ = "Benjamin Le Forestier (benjamin@leforestier.org)"
 __version__ = '1.5.2'
 
-from yattag.simpledoc import SimpleDoc
-from yattag.doc import Doc
-from yattag.indentation import indent
+from yattag.simpledoc import SimpleDoc  # noqa: F401
+from yattag.doc import Doc  # noqa: F401
+from yattag.indentation import indent  # noqa: F401

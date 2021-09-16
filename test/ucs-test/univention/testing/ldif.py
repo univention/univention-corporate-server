@@ -27,13 +27,12 @@ except ImportError:
 Entry = Dict[str, List[Text]]
 
 USAGE = 'usage: %prog [option] <LDIF1> [[option] <LDIF2>]'
-DESCRIPTION = '''\
+DESCRIPTION = '''
 Compares the LDIF files.
-LDIF can be:
- a local LDIF file
- a hostname whose LDAP will be dumped using slapcat over ssh.
+LDIF can be wither a local LDIF file or
+a hostname whose LDAP will be dumped using slapcat over ssh.
 If LDIF2 is omitted, a local 'slapcat' is used.
-'''
+'''.strip()
 
 
 class LdifError(Exception):
@@ -56,15 +55,15 @@ class Ldif(object):
 	RE = re.compile(r'''
 		^
 		(?:
-		  ([0-9]+(?:\.[0-9]+)*)  # ldap-oid
-		 |([A-Za-z][\-0-9A-Za-z]*)  # AttributeType
+			([0-9]+(?:\.[0-9]+)*)  # ldap-oid
+			|([A-Za-z][\-0-9A-Za-z]*)  # AttributeType
 		)  # AttributeDescription
 		(;[\-0-9A-Za-z]+)*  # OPTIONS
 		:
 		(?:
-		  $  # EMPTY
-		 |:[ ]*([+/0-9=A-Za-z]+)  # BASE64-STRING
-		 |[ ]*([\x01-\x09\x0b-\x0c\x0e-\x1f\x21-\x39\x3b\x3d-\x7f][\x01-\x09\x0b-\x0c\x0e-\x7f]*)  # SAFE-STRING
+			$  # EMPTY
+			|:[ ]*([+/0-9=A-Za-z]+)  # BASE64-STRING
+			|[ ]*([\x01-\x09\x0b-\x0c\x0e-\x1f\x21-\x39\x3b\x3d-\x7f][\x01-\x09\x0b-\x0c\x0e-\x7f]*)  # SAFE-STRING
 		)  # value-spec
 		$
 		''', re.VERBOSE)

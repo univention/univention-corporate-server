@@ -298,8 +298,7 @@ ATTR_NO_VALUE = object()
 
 def dict_to_attrs(dct):
     return ' '.join(
-        (key if value is ATTR_NO_VALUE
-        else '%s="%s"' % (key, attr_escape(value)))
+        (key if value is ATTR_NO_VALUE else '%s="%s"' % (key, attr_escape(value)))
         for key, value in dct.items()
     )
 

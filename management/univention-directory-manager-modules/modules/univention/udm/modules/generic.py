@@ -226,7 +226,7 @@ class GenericObject(BaseObject):
 		Remove the object (and optionally its child nodes) from the LDAP database.
 
 		:param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
-		    them before removing this object
+			them before removing this object
 		:return: None
 		:raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
 		:raises univention.udm.exceptions.DeletedError: if the operation fails

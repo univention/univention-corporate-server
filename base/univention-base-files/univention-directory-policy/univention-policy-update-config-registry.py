@@ -45,9 +45,7 @@ def get_policy(host_dn, verbose=False, server=None):
 		if server:
 			print >> sys.stderr, 'Connecting to LDAP host %s...' % server
 		print >> sys.stderr, 'Retrieving policy for %s...' % (host_dn,)
-	cmd = ['univention_policy_result',
-	'-D', host_dn,
-	'-y', '/etc/machine.secret']
+	cmd = ['univention_policy_result', '-D', host_dn, '-y', '/etc/machine.secret']
 	if server:
 		cmd += ['-h', server]
 	cmd += [host_dn]
@@ -81,15 +79,9 @@ def parse_cmdline():
 	usage = '%prog [options] <host_dn>'
 	epilog = '<host_dn> distinguished LDAP name of the host'
 	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option('-a', '--setall',
-			dest='setall', action='store_true',
-			help='write all variables set by policy')
-	parser.add_option('-s', '--simulate',
-			dest='simulate', action='store_true',
-			help='simulate update and show values to be set')
-	parser.add_option('-v', '--verbose',
-			dest='verbose', action='store_true',
-			help='print verbose information')
+	parser.add_option('-a', '--setall', dest='setall', action='store_true', help='write all variables set by policy')
+	parser.add_option('-s', '--simulate', dest='simulate', action='store_true', help='simulate update and show values to be set')
+	parser.add_option('-v', '--verbose', dest='verbose', action='store_true', help='print verbose information')
 	parser.add_option('-l', '--ldap-server', dest='server', help='connect to this ldap host')
 	options, args = parser.parse_args()
 
@@ -116,8 +108,7 @@ def main():
 	"""Get UCR settings from LDAP policy."""
 	options, host_dn = parse_cmdline()
 
-	confregfn = os.path.join(confreg.ConfigRegistry.PREFIX,
-			confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
+	confregfn = os.path.join(confreg.ConfigRegistry.PREFIX, confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
 	ucr_ldap = confreg.ConfigRegistry(filename=confregfn)
 	ucr_ldap.load()
 

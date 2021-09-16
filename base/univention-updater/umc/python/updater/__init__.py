@@ -56,7 +56,7 @@ from univention.management.console.modules.sanitizers import ChoicesSanitizer, S
 from univention.management.console.protocol.message import Request
 
 from univention.updater.tools import UniventionUpdater
-from univention.updater.errors import RequiredComponentError, UpdaterException
+from univention.updater.errors import RequiredComponentError
 
 _ = Translation('univention-management-console-module-updater').translate
 
@@ -393,7 +393,7 @@ class Instance(Base):
 			result['release_update_blocking_components'] = ' '.join(blocking_components)
 
 			# Component counts are now part of the general 'status' data.
-			what = "counting components"
+			what = "counting components"  # noqa: F841
 			components = [bool(comp) for comp in self.uu.get_components(all=True)]
 			result['components'] = len(components)
 			result['enabled'] = sum(components)

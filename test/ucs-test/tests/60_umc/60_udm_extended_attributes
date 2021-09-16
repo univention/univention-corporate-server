@@ -45,8 +45,7 @@ class TestUMCExtendedAttributes(UDMModule):
             self.modify_object(options, "users/user")
 
             user = self.get_object([user_dn], "users/user")[0]
-            if user[attribute_key] not in new_value:
-                utils.fail("The test user (dn='%s') custom attribute '%s' value was not modified after the object odification request, should be '%s', but in fact '%s'" % (user_dn, attribute_key, new_value, user[attribute_key]))
+            assert user[attribute_key] in new_value
         except KeyError as exc:
             utils.fail("A KeyError exception while trying to check and modify the user attribute '%s' value: '%s'" % (attribute_key, exc))
 
@@ -291,10 +290,7 @@ class TestUMCExtendedAttributes(UDMModule):
                   "modules '%s' at a time and with the default 'string' "
                   "syntax" % (test_attribute_name + '_multi',
                               test_attribute_module))
-            self.create_check_extended_attribute(test_attribute_name +
-                                                 '_multi',
-                                                 test_attribute_module,
-                                                 ldap_map="univentionFreeAttribute15")
+            self.create_check_extended_attribute(test_attribute_name + '_multi', test_attribute_module, ldap_map="univentionFreeAttribute15")
 
             print("\nChecking extended attribute '%s' syntax validation "
                   "with an integer value" % (test_attribute_name + '_int'))

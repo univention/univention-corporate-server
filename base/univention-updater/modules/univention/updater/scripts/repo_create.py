@@ -39,7 +39,7 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 from os import makedirs, symlink
-from os.path import devnull, exists, isdir, join
+from os.path import devnull, exists, join
 from textwrap import dedent
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_commit

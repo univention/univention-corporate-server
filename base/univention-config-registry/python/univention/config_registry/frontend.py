@@ -40,14 +40,14 @@ import re
 import time
 
 import six
-if six.PY2:
-	from io import open
 
 import univention.config_registry_info as cri
 from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
+if six.PY2:
+	from io import open
 try:
 	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa F401
 except ImportError:  # pragma: no cover
