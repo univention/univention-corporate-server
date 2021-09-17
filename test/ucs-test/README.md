@@ -1,7 +1,7 @@
 `ucs-test` is used to check UCS installations for correct working and configuration.
 
 # Structure
-Tests are structured in [sections](#Sections) and [tests](#Single tests).
+Tests are structured in [sections](#sections) and [tests](#single-tests).
 
 ## Sections
 The tests are categorized in sections, which are represented as sub-directories like `/usr/share/ucs-test/00_section/`.
