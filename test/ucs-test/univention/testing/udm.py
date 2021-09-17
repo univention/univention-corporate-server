@@ -620,6 +620,9 @@ class UCSTestUDM(object):
 		"""
 		Automatically removes LDAP objects via UDM CLI that have been created before.
 		"""
+		if not self._cleanup and not self._cleanupLocks:
+			return
+
 		failedObjects = {}
 		print('Performing UCSTestUDM cleanup...')
 		objects = []
