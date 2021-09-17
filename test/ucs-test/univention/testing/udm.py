@@ -521,7 +521,9 @@ class UCSTestUDM(object):
 			# 'dnsEntry': uts.random_string,
 		}
 		module_property_mapping = {
-			'sambaRID': lambda: uts.random_int(1000, 9999),
+			'sambaRID': lambda: None,  # uts.random_int(1000, 9999),  # prevent The relative ID (SAMBA) is already in use: 5608
+			'uidNumber': lambda: None,  # prevent noLock / already used
+			'gidNumber': lambda: None,  # prevent noLock / already used
 			'mailForwardAddress': None,  # depends on mailPrimaryAddress
 			'preferredDeliveryMethod': lambda: random.choice(["any", "mhs", "physical", "telex", "teletex", "g3fax", "g4fax", "ia5", "videotex", "telephone"]),
 			'shares/share': {
