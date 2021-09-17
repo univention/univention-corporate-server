@@ -1007,6 +1007,71 @@ if failed:
 EOF
 }
 
+update_check_python_ucsschool_import_hook_compatibility() {
+	local var="update$VERSION/ignore-python3-compatiblity-ucsschool-import-hooks"
+	ignore_check "$var" && return 100
+
+	/usr/bin/python2.7 - <<EOF
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+
+import os
+import atexit
+import shutil
+import tempfile
+import subprocess
+
+
+def dpkg(files):
+	etc = {}
+	cmd_dpkg = ["dpkg", "-S"] + files
+	proc = subprocess.Popen(cmd_dpkg, stdout=subprocess.PIPE)
+	for line in proc.stdout:
+		pkg, fn = line.decode('UTF-8', 'replace').strip().split(': ')
+		etc[fn] = pkg
+	return etc
+
+
+def uninstalled(package):
+	try:
+		out = subprocess.check_output(['dpkg-query', '-W', '-f', '\${Status}', package], env={'LANG': 'C'})
+	except subprocess.CalledProcessError:
+		return False
+	return out.decode('UTF-8', 'replace').startswith('deinstall ')
+
+
+def get_registered_files():
+	for dir in ('/usr/share/ucs-school-import/checks/', '/usr/share/ucs-school-import/pyhooks/'):
+		for path, directories, files in os.walk(dir):
+			for file in files:
+				if not file.endswith('.py'):
+					continue
+				yield os.path.join(path, file)
+
+
+registered_files = list(get_registered_files())
+failed = []
+for hook in registered_files:
+	ret = subprocess.call(('/usr/bin/python3', '-m', 'py_compile', hook), stdout=open('/dev/null', 'a'), stderr=subprocess.STDOUT, close_fds=True)
+	if ret:
+		failed.append(hook)
+
+if failed:
+	packages = dpkg(failed)
+failed = [p for p in failed if not packages.get(p) or not uninstalled(packages[p])]
+if failed:
+	print('The following UCS@school Import Hooks are not compatible with Python 3:')
+for failed_hook in failed:
+	print('\\t', failed_hook, end='')
+	if failed_hook in packages:
+		print(' (package: %s)' % (packages[failed_hook], ), end='')
+	print('')
+if failed:
+	exit(1)
+EOF
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
