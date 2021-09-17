@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-68) unstable; urgency=medium
+
+  * Bug #53803: fix error handling in docker.inspect_with_retry()
+
+ -- Florian Best <best@univention.de>  Fri, 17 Sep 2021 16:35:41 +0200
+
 univention-appcenter (9.0.2-67) unstable; urgency=medium
 
   * Bug #53655: reverting returnvalue to string

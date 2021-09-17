@@ -85,13 +85,14 @@ def inspect_with_retry(container, retries=3):
 	# container can be any value that docker inspect accepts
 	# e.g. container name or id
 	for i in range(retries):
+		exc = None
 		try:
-			container_inspect = inspect(container)
-			return container_inspect
+			return inspect(container)
 		except Exception as e:
 			_logger.warn('Inspect for container {} failed: {}'.format(container, e))
+			exc = e
 			time.sleep(5)
-	raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, e))
+	raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, exc))
 
 
 def login(hub, with_license):
