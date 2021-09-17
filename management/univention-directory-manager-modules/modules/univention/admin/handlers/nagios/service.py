@@ -46,6 +46,8 @@ from univention.admin import configRegistry
 
 import univention.debug as ud
 
+from typing import List  # noqa: F401
+
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate
 

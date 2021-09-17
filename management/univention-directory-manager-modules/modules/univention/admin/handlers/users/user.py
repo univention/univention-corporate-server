@@ -69,6 +69,8 @@ from univention.admin import configRegistry
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
+from typing import List  # noqa: F401
+
 try:
 	from univention.admin.syntax import ActivationDateTimeTimezone
 except ImportError:
