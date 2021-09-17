@@ -1,3 +1,10 @@
+ucs-test (10.0.6-46) unstable; urgency=medium
+
+  * Bug #53789: univention.testing.udm does not wait_for_replication()
+    anymore in cleanup() if nothing needs to be cleaned up
+
+ -- Florian Best <best@univention.de>  Fri, 17 Sep 2021 20:25:35 +0200
+
 ucs-test (10.0.6-45) unstable; urgency=low
 
   * Bug #53768: Disable 01/104_check-archive-keyring
