@@ -60,7 +60,7 @@ Currently the following libraries are shipped:
 Sections can also include their own helper files, which should have the suffix `.py` or `.sh` to distinguish them from regular tests.
 
 ## Working with LDAP objects
-To allow the creation of LDAP objects on different system roles other than Primary and Backup, `ucs-test` set thefollowing UCR variables during installation:
+To allow the creation of LDAP objects on different system roles other than Primary and Backup, `ucs-test` set the following UCR variables during installation:
 - `tests/domainadmin/account`: Domain administrator LDAP bind DN to be used in test cases
 - `tests/domainadmin/pwd`: Domain administrator password to be used in test cases
 - `tests/domainadmin/pwdfile`: File to read the domain administrator password
@@ -118,7 +118,7 @@ Any other return value is interpreted as a failure.
   This description is included in the output next to the return value.
   The meta data block must be located at the beginning of the file right after the hash-bang line with only comment lines in between.
   All lines must pre prefix by `## `.
-* line 4declares that the test is safe to be run on any system, even systems already in production.
+* line 4 declares that the test is safe to be run on any system, even systems already in production.
 * line 5 implements the tests.
 * line 6 contains the configuration for the editor `vim`.
 
@@ -137,12 +137,12 @@ description is displayed depends on the chosen output format.
 ```
 ## desc: A short text
 ## desc: |
-##  A shot text for displaying.
+##  A short text for displaying.
 ##  A longer text, which describes the test in more detail.
 ```
 
 ### bugs
-A list if bug numbers from [Univention Bugzilla](https://forge.univention.de/bugzilla/).
+A list of bug numbers from [Univention Bugzilla](https://forge.univention.de/bugzilla/).
 Depending on the chosen output format (for example `html`), reports will include links to the referenced bugs.
 ```
 ## bugs: [23527]
@@ -182,7 +182,7 @@ The name for tags can be chosen freely, but the following words have special mea
 In addition to them the following tags are used commonly:
 - `apptest`: execute them only for testing new Apps, but otherwise skip them due to their long run time.
 - `basic`: check that basic functions work on all system roles.
-- `univention`: tests which require special pre-requisites, for exmaple *well known passowrd* `univention` for admin user.
+- `univention`: tests which require special pre-requisites, for exmaple *well known password* `univention` for admin user.
 - `import500`, `import30000`, `import65000`, `performance`: performance tests for importing ½/30/65k users.
 - `rename_default_account`: modifies standard accounts.
 - `replication`: sub-set of tests for replication.
