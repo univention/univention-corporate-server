@@ -1,3 +1,9 @@
+ucs-test (10.0.6-48) unstable; urgency=low
+
+  * Bug #53777: Fix 10/54listener-stdio to use udm-test
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 18 Sep 2021 17:52:09 +0200
+
 ucs-test (10.0.6-47) unstable; urgency=medium
 
   * Bug #53768: fix broken links in appcenter-uninstall
