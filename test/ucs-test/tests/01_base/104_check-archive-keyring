@@ -4,7 +4,7 @@
 ## tags: [apptest]
 ## exposure: safe
 ## versions:
-##  4.2-0: found
+##  4.2-0: skip
 ##  5.0-1: fixed
 
 # shellcheck source=../../lib/base.sh
