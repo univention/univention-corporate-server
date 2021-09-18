@@ -1,3 +1,9 @@
+ucs-test (10.0.6-47) unstable; urgency=medium
+
+  * Bug #53768: fix broken links in appcenter-uninstall
+
+ -- Felix Botner <botner@univention.de>  Sat, 18 Sep 2021 14:13:55 +0200
+
 ucs-test (10.0.6-46) unstable; urgency=medium
 
   * Bug #53789: univention.testing.udm does not wait_for_replication()
