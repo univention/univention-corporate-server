@@ -260,7 +260,7 @@ This mechanism allows the user to still install the full `ucs-test-*` section pa
 By using this mechanism of `ucs-test`, tests still missing some dependent packages are skipped.
 
 ### exposure
-A string consisting of one of the words `safe`, `careful` or `dangerous`, optionally followed by the `md5sum` over the file without the meta data block separated by a blank.
+A string consisting of one of the words `safe`, `careful` or `dangerous`.
 This is used to classify tests in different categories:
 - `safe`: tests of read data and never modify anything on the system.
   These tests can be run on production systems without danger of modifying that system or losing services.
@@ -268,17 +268,6 @@ This is used to classify tests in different categories:
 - `dangerous`: the test has side effects, which might change this and other systems in a way unfit for production systems.
   This includes — for example — creating users and groups in LDAP, re-configuring essential services like LDAP.
 The default is `dangerous`.
-
-As an extra precaution against unwanted modification an optional MD5 checksum can be supplied.
-The test is skipped in case the specified checksum does not match the actual checksum.
-```
-## exposure: careful
-## exposure: safe 25f9fc4bf6e01167a0cc6c84309572b7
-```
-The MD5 checksum can be computed for example by running
-```sh
-sed -e '/^## /d' "/usr/share/ucs-test/tests/00_section/00_test" | md5sum
-```
 
 ## Return value
 In its simplest case a test should return `0` for success and `1` on failure.

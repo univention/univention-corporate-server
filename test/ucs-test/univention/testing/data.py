@@ -6,7 +6,6 @@
 from __future__ import print_function
 
 import errno
-import hashlib
 import logging
 import os
 import re
@@ -158,11 +157,10 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 	Read test case header lines starting with ##.
 	"""
 
-	def __init__(self, stream, digest):  # type: (IO[bytes], hashlib._Hash) -> None
+	def __init__(self, stream):  # type: (IO[bytes]) -> None
 		self.stream = stream
-		self.digest = digest
 
-	def read(self, size=-1):
+	def read(self, size=-1):  # type: (int) -> bytes
 		"""Read next line prefixed by '## '."""
 		while True:
 			line = self.stream.readline(size)
@@ -172,7 +170,6 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 				return line[3:]
 			if not line.startswith(b'#'):
 				while line:
-					self.digest.update(line)
 					line = self.stream.readline(size)
 
 
@@ -467,42 +464,25 @@ class CheckExposure(Check):
 
 	STATES = ['safe', 'careful', 'dangerous']
 
-	def __init__(self, exposure, digest):  # type: (str, hashlib._Hash) -> None
+	def __init__(self, exposure):  # type: (str) -> None
 		super(CheckExposure, self).__init__()
 		self.exposure = exposure
-		self.digest = digest
 
 	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for permitted exposure level."""
-		exposure = 'DANGEROUS'
-		try:
-			exposure, expected_md5 = self.exposure.split(None, 1)
-		except ValueError:
-			exposure = self.exposure
-		else:
-			current_md5 = self.digest.hexdigest()
-			if current_md5 != expected_md5:
-				yield Verdict(Verdict.ERROR, 'MD5 mismatch: %s' % (current_md5,))
-			else:
-				yield Verdict(Verdict.INFO, 'MD5 matched: %s' % (current_md5,))
-		if exposure not in CheckExposure.STATES:
-			yield Verdict(Verdict.WARNING, 'Unknown exposure: %s' % (exposure,))
+		if self.exposure not in CheckExposure.STATES:
+			yield Verdict(Verdict.WARNING, 'Unknown exposure: %s' % (self.exposure,))
 			return
-		if CheckExposure.STATES.index(exposure) > CheckExposure.STATES.index(environment.exposure):
-			yield Verdict(Verdict.ERROR, 'Too dangerous: %s > %s' % (exposure, environment.exposure), TestCodes.REASON_DANGER)
+		if CheckExposure.STATES.index(self.exposure) > CheckExposure.STATES.index(environment.exposure):
+			yield Verdict(Verdict.ERROR, 'Too dangerous: %s > %s' % (self.exposure, environment.exposure), TestCodes.REASON_DANGER)
 		else:
-			yield Verdict(Verdict.INFO, 'Safe enough: %s <= %s' % (exposure, environment.exposure))
+			yield Verdict(Verdict.INFO, 'Safe enough: %s <= %s' % (self.exposure, environment.exposure))
 
 	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
 		args = []
 		args.extend(['--ucs-test-exposure', environment.exposure.lower()])
-		exposure = 'DANGEROUS'
-		try:
-			exposure, expected_md5 = self.exposure.split(None, 1)
-		except ValueError:
-			exposure = self.exposure
-		if exposure:
-			args.extend(['--ucs-test-default-exposure', exposure.lower()])
+		if self.exposure:
+			args.extend(['--ucs-test-default-exposure', self.exposure.lower()])
 		return args
 
 
@@ -530,8 +510,20 @@ class TestCase(object):
 		"""
 		Load test case from stream.
 		"""
+		try:
+			header = self.load_meta()
+		except EnvironmentError as ex:
+			TestCase.logger.critical(
+				'Failed to read "%s": %s',
+				self.filename, ex)
+			raise TestError('Failed to open file')
+
+		self.parse_meta(header)
+
+		return self
+
+	def load_meta(self):  # type: () -> Dict[str, Any]
 		TestCase.logger.info('Loading test %s', self.filename)
-		digest = hashlib.md5()
 
 		with open(self.filename, 'rb') as tc_file:
 			firstline = tc_file.readline()
@@ -545,8 +537,7 @@ class TestCase(object):
 			self.exe = CheckExecutable(lang)
 			self.args = args[2:]
 
-			digest.update(firstline)
-			reader = _TestReader(tc_file, digest)
+			reader = _TestReader(tc_file)
 			try:
 				header = yaml.safe_load(reader) or {}
 			except yaml.scanner.ScannerError as ex:
@@ -556,6 +547,9 @@ class TestCase(object):
 					exc_info=True)
 				raise TestError('Invalid test YAML data')
 
+		return header
+
+	def parse_meta(self, header):  # type: (Dict[str, Any]) -> None
 		try:
 			self.description = header.get('desc', '').strip()
 			self.bugs = checked_set(header.get('bugs', []))
@@ -568,9 +562,7 @@ class TestCase(object):
 			self.join = CheckJoin(header.get('join', None))
 			self.components = CheckComponents(header.get('components', {}))
 			self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
-			self.exposure = CheckExposure(
-				header.get('exposure', 'dangerous'),
-				digest)
+			self.exposure = CheckExposure(header.get('exposure', 'dangerous'))
 			try:
 				self.timeout = int(header['timeout'])
 			except LookupError:
@@ -583,7 +575,6 @@ class TestCase(object):
 			raise TestError(ex)
 
 		self.is_pytest = PytestRunner.is_pytest(self)
-		return self
 
 	def check(self, environment):  # type: (TestEnvironment) -> List[Check]
 		"""
