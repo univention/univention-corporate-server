@@ -27,9 +27,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import json
 import os
 import sys
-import json
 
 
 def _get_path(filename):

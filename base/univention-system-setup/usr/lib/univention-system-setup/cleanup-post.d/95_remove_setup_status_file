@@ -31,11 +31,14 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.config_registry
-import psutil
+
 import os
 import os.path
 import subprocess
+
+import psutil
+
+import univention.config_registry
 
 PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 

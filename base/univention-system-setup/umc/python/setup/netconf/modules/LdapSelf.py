@@ -1,11 +1,17 @@
-from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange, convert_udm_subnet_to_network
-from univention.management.console.modules.setup.netconf.conditions import Executable
-import univention.admin.objects
-import univention.admin.modules as modules
-from univention.admin.uexceptions import base as UniventionBaseException
+import os
+
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
-import os
+
+import univention.admin.modules as modules
+import univention.admin.objects
+from univention.admin.uexceptions import base as UniventionBaseException
+from univention.management.console.modules.setup.netconf.common import (
+	AddressMap,
+	LdapChange,
+	convert_udm_subnet_to_network,
+)
+from univention.management.console.modules.setup.netconf.conditions import Executable
 
 
 class PhaseLdapSelf(AddressMap, LdapChange, Executable):

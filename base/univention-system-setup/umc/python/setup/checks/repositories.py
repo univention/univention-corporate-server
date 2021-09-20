@@ -1,8 +1,8 @@
 import subprocess
 from os import environ
 
-from univention.management.console.log import MODULE
 import univention.config_registry
+from univention.management.console.log import MODULE
 
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()

@@ -1,6 +1,7 @@
+import os
+
 from univention.management.console.modules.setup.netconf import SkipPhase
 from univention.management.console.modules.setup.netconf.common import AddressMap
-import os
 
 
 class PhaseRewriteWins(AddressMap):

@@ -36,13 +36,13 @@ from __future__ import print_function
 import os
 import sys
 import traceback
-from datetime import datetime
 from contextlib import contextmanager
+from datetime import datetime
 
-from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
-from univention.management.console.modules.setup.util import PATH_SETUP_SCRIPTS, PATH_PROFILE
+from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
+from univention.management.console.modules.setup.util import PATH_PROFILE, PATH_SETUP_SCRIPTS
 
 
 def setup_i18n():

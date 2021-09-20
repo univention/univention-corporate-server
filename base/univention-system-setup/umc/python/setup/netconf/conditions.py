@@ -30,11 +30,13 @@ Univention Setup: network configuration conditions
 
 import os
 from abc import ABCMeta
-from univention.management.console.modules.setup.netconf import SkipPhase, Phase
-from univention.uldap import getMachineConnection
+
 from ldap import LDAPError
 from ldap.filter import filter_format
 from six import with_metaclass
+
+from univention.management.console.modules.setup.netconf import Phase, SkipPhase
+from univention.uldap import getMachineConnection
 
 
 class AddressChange(with_metaclass(ABCMeta, Phase)):

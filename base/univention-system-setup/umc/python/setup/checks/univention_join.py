@@ -1,14 +1,13 @@
-from distutils.version import LooseVersion
+import pipes
 import subprocess
 import traceback
-import pipes
+from distutils.version import LooseVersion
 
+import univention.config_registry
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
-from univention.management.console.modules.setup.util import _temporary_password_file
-from univention.management.console.modules.setup.util import get_ucs_domain
-import univention.config_registry
+from univention.management.console.modules.setup.util import _temporary_password_file, get_ucs_domain
 
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()

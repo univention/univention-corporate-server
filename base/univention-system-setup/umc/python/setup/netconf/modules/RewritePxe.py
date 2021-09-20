@@ -1,7 +1,8 @@
-from univention.management.console.modules.setup.netconf import SkipPhase
-from univention.management.console.modules.setup.netconf.common import AddressMap
 import os
 import re
+
+from univention.management.console.modules.setup.netconf import SkipPhase
+from univention.management.console.modules.setup.netconf.common import AddressMap
 
 
 class Mapping(object):

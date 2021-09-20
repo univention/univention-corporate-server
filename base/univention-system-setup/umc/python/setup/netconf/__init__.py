@@ -28,11 +28,13 @@ Univention Setup: network configuration abstract base classes
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from abc import ABCMeta
 import logging
 import subprocess
-from univention.config_registry.interfaces import Interfaces
+from abc import ABCMeta
+
 from six import with_metaclass
+
+from univention.config_registry.interfaces import Interfaces
 
 
 class ChangeSet(object):

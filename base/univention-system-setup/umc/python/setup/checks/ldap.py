@@ -1,8 +1,8 @@
-from univention.management.console.modules.setup.util import _temporary_password_file
-
 import subprocess
 
 from ldap.filter import filter_format
+
+from univention.management.console.modules.setup.util import _temporary_password_file
 
 # do we need to keep this backwards compatible with UCS 4.4?
 _SCRIPT = '''#!/usr/bin/python2.7

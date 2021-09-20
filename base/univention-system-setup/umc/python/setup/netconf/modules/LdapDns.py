@@ -1,6 +1,6 @@
-from univention.management.console.modules.setup.netconf.common import AddressMap
-from univention.management.console.modules.setup.netconf.conditions import Ldap, Executable
 from univention import ipcalc
+from univention.management.console.modules.setup.netconf.common import AddressMap
+from univention.management.console.modules.setup.netconf.conditions import Executable, Ldap
 
 
 class PhaseLdapDns(AddressMap, Ldap, Executable):

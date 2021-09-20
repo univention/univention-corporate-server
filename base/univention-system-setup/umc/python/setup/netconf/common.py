@@ -30,10 +30,16 @@ Univention Setup: network configuration abstract common classes
 
 import os
 from abc import ABCMeta
-from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
-import univention.admin.uldap as uldap
 from ipaddress import IPv4Network, IPv6Network
+
 from six import with_metaclass
+
+import univention.admin.uldap as uldap
+from univention.management.console.modules.setup.netconf.conditions import (
+	AddressChange,
+	Executable,
+	Ldap,
+)
 
 
 class RestartService(with_metaclass(ABCMeta, Executable)):

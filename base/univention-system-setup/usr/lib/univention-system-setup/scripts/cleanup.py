@@ -31,10 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
-import shutil
 import os.path
+import shutil
+import sys
 from tempfile import mkdtemp
+
 from univention.management.console.modules.setup import util
 
 PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'

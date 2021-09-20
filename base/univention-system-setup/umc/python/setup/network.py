@@ -33,14 +33,12 @@
 
 from __future__ import print_function
 
+import ipaddress
 import re
 
-import ipaddress
-
-from univention.lib.i18n import Translation
 from univention.config_registry import ConfigRegistry
+from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
-
 from univention.management.console.modules.setup.util import detect_interfaces
 
 ucr = ConfigRegistry()

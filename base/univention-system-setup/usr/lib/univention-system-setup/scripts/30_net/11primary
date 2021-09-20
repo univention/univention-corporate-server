@@ -30,8 +30,8 @@ Setting primary network interface.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.setup.setup_script import SetupScript, main, _
 from univention.config_registry.interfaces import Interfaces
+from univention.management.console.modules.setup.setup_script import SetupScript, _, main
 
 
 class NoConfiguredInterfaceError(Exception):

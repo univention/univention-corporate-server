@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.setup_script"""
+import os
+from tempfile import NamedTemporaryFile
+
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
-from tempfile import NamedTemporaryFile
-import os
 
 import univention.management.console.modules
+
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.setup_script import Profile  # noqa: E402
 

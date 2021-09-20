@@ -27,10 +27,12 @@ Univention Setup: network configuration abstract base classes
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-import sys
-import os
-import logging
+
 import imp
+import logging
+import os
+import sys
+
 from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 
 

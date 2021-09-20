@@ -1,18 +1,19 @@
 #!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.netconf.ChangeSet"""
+import os
+from ipaddress import IPv4Interface, IPv6Interface
+
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
-import os
 
 import univention.management.console.modules
+
 try:
 	univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 except AttributeError:
 	pass
 from univention.management.console.modules.setup.netconf import ChangeSet  # noqa: E402
 from univention.management.console.modules.setup.netconf.common import AddressMap  # noqa: E402
-
-from ipaddress import IPv6Interface, IPv4Interface
 
 
 class IPv4Network(IPv4Interface):

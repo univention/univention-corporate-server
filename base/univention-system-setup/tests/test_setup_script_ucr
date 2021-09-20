@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.setup_script"""
+import os
+from shutil import rmtree
+from tempfile import mkdtemp
+
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
-from tempfile import mkdtemp
-from shutil import rmtree
-import os
-from univention.config_registry import ConfigRegistry
 
 import univention.management.console.modules
+from univention.config_registry import ConfigRegistry
+
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.setup_script import TransactionalUcr  # noqa: E402
 

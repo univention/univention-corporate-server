@@ -32,8 +32,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import re
 import subprocess
+
 import univention.config_registry
 
 RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')

@@ -29,10 +29,10 @@
 
 from __future__ import print_function
 
-import sys
 import json
-import _util
+import sys
 
+import _util
 
 if __name__ == '__main__':
 	# check argument (action)

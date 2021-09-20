@@ -30,16 +30,16 @@ Configure IPvX network interfaces.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import logging
 import sys
 from argparse import ArgumentParser
-from univention.config_registry.frontend import ucr_update
+
+import univention.debug as ud
 from univention.config_registry import handler_unset
-from univention.management.console.modules.setup.setup_script import SetupScript, main, _
+from univention.config_registry.frontend import ucr_update
 from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.modules import RunPhases
-import logging
-import univention.debug as ud
-
+from univention.management.console.modules.setup.setup_script import SetupScript, _, main
 
 UCR_IFACE_RESTART = "interfaces/restart/auto"
 

@@ -1,7 +1,8 @@
-from univention.management.console.modules.setup.netconf.common import LdapChange
+from ldap import LDAPError
+
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException
-from ldap import LDAPError
+from univention.management.console.modules.setup.netconf.common import LdapChange
 
 
 class PhaseLdapDhcp(LdapChange):

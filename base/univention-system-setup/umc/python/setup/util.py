@@ -32,33 +32,41 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import ipaddress
-import os
-import tempfile
-import subprocess
-import threading
-import univention.config_registry
-import time
-import ldap
-import re
 import csv
-import os.path
+import ipaddress
 import json
+import os
+import os.path
 import random
-import psutil
+import re
 import socket
+import subprocess
+import tempfile
+import threading
+import time
 import traceback
 from contextlib import contextmanager
 
+import dns.exception
 import dns.resolver
 import dns.reversename
-import dns.exception
+import ldap
+import psutil
 
-from univention.lib.i18n import Translation, Locale
+import univention.config_registry
 from univention.lib import atjobs as atjobs
+from univention.lib.admember import (
+	check_ad_account,
+	check_connection,
+	connectionFailed,
+	do_time_sync,
+	failedADConnect,
+	lookup_adds_dc,
+	notDomainAdminInAD,
+)
+from univention.lib.i18n import Locale, Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
-from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for

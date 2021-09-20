@@ -31,11 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.lib import admember
-
-from univention.management.console.modules.setup.setup_script import SetupScript, main, _
-
 import univention.debug as ud
+from univention.lib import admember
+from univention.management.console.modules.setup.setup_script import SetupScript, _, main
 
 
 class AdMemberScript(SetupScript):
