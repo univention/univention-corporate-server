@@ -46,7 +46,7 @@ class PhaseLdapSamba(AddressMap, LdapChange):
 			new_values.discard(None)
 			if old_values == new_values:
 				return
-			obj.info["a"] = list(new_values)
+			obj["a"] = list(new_values)
 			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			if not self.changeset.no_act:
 				obj.modify()

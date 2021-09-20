@@ -54,7 +54,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 	def _rewrite_object(self, obj, udm_property, replace_type):
 		obj.open()
 		try:
-			old_values = obj.info[udm_property]
+			old_values = obj[udm_property]
 			if self._replace_type[replace_type] == "complete_match":
 				new_values = [
 					self.ip_mapping.get(value, value)
@@ -74,7 +74,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 			new_values = [val for val in new_values if val is not None]
 			if old_values == new_values:
 				return
-			obj.info[udm_property] = new_values
+			obj[udm_property] = new_values
 			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
 			if not self.changeset.no_act:
 				obj.modify()

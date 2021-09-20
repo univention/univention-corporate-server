@@ -110,15 +110,15 @@ class PhaseLdapNetwork(LdapChange):
 		network_module = modules.get("networks/network")
 		modules.init(self.ldap, self.position, network_module)
 		network = network_module.object(None, self.ldap, network_position)
-		network.info["name"] = "default"
-		network.info["network"] = str(ipv4.network.network_address)
-		network.info["netmask"] = str(ipv4.network.netmask)
+		network["name"] = "default"
+		network["network"] = str(ipv4.network.network_address)
+		network["netmask"] = str(ipv4.network.netmask)
 		if forward_zone:
-			network.info["dnsEntryZoneForward"] = forward_zone
+			network["dnsEntryZoneForward"] = forward_zone
 		if reverse_zone:
-			network.info["dnsEntryZoneReverse"] = reverse_zone
+			network["dnsEntryZoneReverse"] = reverse_zone
 		if dhcp_service:
-			network.info["dhcpEntryZone"] = dhcp_service
+			network["dhcpEntryZone"] = dhcp_service
 		self.logger.info("Creating '%s' with '%r'...", network.position.getDn(), network.info)
 		if not self.changeset.no_act:
 			network.create()

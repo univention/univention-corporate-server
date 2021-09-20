@@ -91,7 +91,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 
 	def _update_ips(self, computer):
 		all_addr = [str(addr.ip) for addr in (self.changeset.new_ipv4s + self.changeset.new_ipv6s)]
-		computer.info["ip"] = list(set(all_addr))
+		computer["ip"] = list(set(all_addr))
 
 	def _update_reverse_zones(self, computer):
 		reverse_module = modules.get("dns/reverse_zone")
@@ -100,7 +100,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 		for zone in reverse_zones:
 			zone.open()  # may be unneeded
 
-		computer.info["dnsEntryZoneReverse"] = [
+		computer["dnsEntryZoneReverse"] = [
 			[zone.dn, str(addr.ip)]
 			for zone in reverse_zones
 			for addr in (self.changeset.new_ipv4s + self.changeset.new_ipv6s)
@@ -117,4 +117,4 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 					macs.add(mac)
 			except IOError as ex:
 				self.logger.warn("Could not read '%s': %s", filename, ex)
-		computer.info["mac"] = list(macs)
+		computer["mac"] = list(macs)
