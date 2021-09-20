@@ -7,18 +7,18 @@ import re
 class Mapping(object):
 
 	def __init__(self, ipv4_changes):
-		self.mapping = dict((
-			(str(old_ip.ip), str(new_ip.ip))
+		self.mapping = {
+			str(old_ip.ip): str(new_ip.ip)
 			for (old_ip, new_ip) in ipv4_changes.items()
 			if new_ip
-		))
+		}
 		assert self.mapping
 		pattern = '''\
 		(?:^|(?<![0-9]))
 		(%s)
 		(?:$|(?![0-9]))
 		''' % (
-			'|'.join((re.escape(_) for _ in self.mapping.keys())),
+			'|'.join(re.escape(_) for _ in self.mapping.keys()),
 		)
 		self.regexp = re.compile(pattern, re.VERBOSE)
 
@@ -53,7 +53,7 @@ class PhaseRewritePxe(AddressMap):
 
 	def _rewrite_pxe(self, pathname, mapping):
 		self.logger.debug("Processing '%s'...", pathname)
-		with open(pathname, "r") as read_pxe:
+		with open(pathname) as read_pxe:
 			orig = config = read_pxe.read()
 		config = mapping.apply(orig)
 		if orig == config:

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """
 Univention Setup:
 Configure IPvX network interfaces.
@@ -31,7 +31,7 @@ Configure IPvX network interfaces.
 # <https://www.gnu.org/licenses/>.
 
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import handler_unset
 from univention.management.console.modules.setup.setup_script import SetupScript, main, _
@@ -50,7 +50,6 @@ class NetworkSetup(SetupScript):
 	def __init__(self):
 		super(NetworkSetup, self).__init__()
 		self.options = None
-		self.args = None
 		self.changeset = None
 		self.phases = RunPhases()
 		self.logger = logging.getLogger("uss.network")
@@ -64,31 +63,29 @@ class NetworkSetup(SetupScript):
 		self.reconfigure_network()
 
 	def parse_options(self):
-		usage = "%prog [options]"
-		description = sys.modules[__name__].__doc__
-		parser = OptionParser(usage=usage, description=description)
-		parser.add_option(
+		parser = ArgumentParser(description=__doc__)
+		parser.add_argument(
 			"--network-only",
-			action="store_true", dest="network_only",
+			action="store_true",
 			help="Only re-configure network, but don't modify LDAP data")
-		parser.add_option(
+		parser.add_argument(
 			"--appliance-mode",
-			action="store_true", dest="appliance_mode",
+			action="store_true",
 			help="Configure new address as additional virtual address instead of replacing current addresses")
-		parser.add_option(
+		parser.add_argument(
 			"--verbose", "-v",
-			action="count", dest="verbose", default=3,
+			action="count", default=3,
 			help="Log verbose")
-		parser.add_option(
+		parser.add_argument(
 			"--quiet", "-q",
 			action="store_const", dest="verbose", const=0,
 			help="Disable verbose logging")
-		parser.add_option(
+		parser.add_argument(
 			"--no-act", "--dry-run", "-n",
-			action="store_true", dest="no_act",
+			action="store_true",
 			help="Don't run any commands")
 
-		self.options, self.args = parser.parse_args()
+		self.options = parser.parse_args()
 
 	LEVEL = (logging.FATAL, logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG)
 

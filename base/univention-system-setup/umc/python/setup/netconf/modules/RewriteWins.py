@@ -18,7 +18,7 @@ class PhaseRewriteWins(AddressMap):
 
 	def pre(self):
 		tmp_wins = "%s.%d" % (self.filename, os.getpid())
-		with open(self.filename, "r") as read_wins:
+		with open(self.filename) as read_wins:
 			with open(tmp_wins, "w") as write_wins:
 				for line in read_wins:
 					try:

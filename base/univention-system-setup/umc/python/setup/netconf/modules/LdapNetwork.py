@@ -5,6 +5,7 @@ import univention.admin.uldap as uldap
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException, noObject
 from ldap import LDAPError
+from ldap.filter import filter_format
 
 
 class PhaseLdapNetwork(LdapChange):
@@ -47,8 +48,8 @@ class PhaseLdapNetwork(LdapChange):
 
 	def _update_network(self):
 		network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
-		new_default = str(self.changeset.new_interfaces.get_default_ipv4_address().network)
-		changes = [("univentionNetwork", "UNKNOWN", new_default)]
+		new_default = str(self.changeset.new_interfaces.get_default_ipv4_address().network.network_address)
+		changes = [("univentionNetwork", b"UNKNOWN", new_default.encode("UTF-8"))]
 		self.logger.info("Updating '%s' with '%r'...", network_dn, changes)
 		if not self.changeset.no_act:
 			try:
@@ -78,7 +79,7 @@ class PhaseLdapNetwork(LdapChange):
 	def _find_forward_zone(self):
 		forward_module = modules.get("dns/forward_zone")
 		modules.init(self.ldap, self.position, forward_module)
-		forward_zones = forward_module.lookup(None, self.ldap, "zone=%(domainname)s" % self.changeset.ucr)
+		forward_zones = forward_module.lookup(None, self.ldap, filter_format("zone=%s", [self.changeset.ucr['domainname']]))
 		if forward_zones:
 			return forward_zones[0].dn
 
@@ -110,8 +111,8 @@ class PhaseLdapNetwork(LdapChange):
 		modules.init(self.ldap, self.position, network_module)
 		network = network_module.object(None, self.ldap, network_position)
 		network.info["name"] = "default"
-		network.info["network"] = str(ipv4.network)
-		network.info["netmask"] = str(ipv4.netmask)
+		network.info["network"] = str(ipv4.network.network_address)
+		network.info["netmask"] = str(ipv4.network.netmask)
 		if forward_zone:
 			network.info["dnsEntryZoneForward"] = forward_zone
 		if reverse_zone:

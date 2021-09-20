@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.netconf.ChangeSet"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -73,12 +73,12 @@ class TestChangeSetRemoved(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 
 	def test_cs(self):
-		self.assertEqual(set(["eth0"]), self.cs.old_names)
+		self.assertEqual({"eth0"}, self.cs.old_names)
 		self.assertEqual(set(), self.cs.new_names)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False)], self.cs.old_ipv4s)
 		self.assertEqual([], self.cs.new_ipv4s)
@@ -118,7 +118,7 @@ class TestChangeSetAdded(unittest.TestCase):
 
 	def test_cs(self):
 		self.assertEqual(set(), self.cs.old_names)
-		self.assertEqual(set(["eth0"]), self.cs.new_names)
+		self.assertEqual({"eth0"}, self.cs.new_names)
 		self.assertEqual([], self.cs.old_ipv4s)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False)], self.cs.new_ipv4s)
 		self.assertEqual([], self.cs.old_ipv6s)
@@ -146,7 +146,7 @@ class TestChangeSetChanged(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/eth0/type": "static",
 			"interfaces/eth0/start": "true",
@@ -161,8 +161,8 @@ class TestChangeSetChanged(unittest.TestCase):
 		self.cs = ChangeSet(ucr, profile, options)
 
 	def test_cs(self):
-		self.assertEqual(set(["eth0"]), self.cs.old_names)
-		self.assertEqual(set(["eth0"]), self.cs.new_names)
+		self.assertEqual({"eth0"}, self.cs.old_names)
+		self.assertEqual({"eth0"}, self.cs.new_names)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False)], self.cs.old_ipv4s)
 		self.assertEqual([IPv4Network(u"2.3.4.5/24", False)], self.cs.new_ipv4s)
 		self.assertEqual([IPv6Network(u"1111:2222::3333/64", False)], self.cs.old_ipv6s)
@@ -197,7 +197,7 @@ class TestChangeSetMoved(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/br0/type": "static",
 			"interfaces/br0/start": "true",
@@ -212,8 +212,8 @@ class TestChangeSetMoved(unittest.TestCase):
 		self.cs = ChangeSet(ucr, profile, options)
 
 	def test_cs(self):
-		self.assertEqual(set(["eth0"]), self.cs.old_names)
-		self.assertEqual(set(["br0"]), self.cs.new_names)
+		self.assertEqual({"eth0"}, self.cs.old_names)
+		self.assertEqual({"br0"}, self.cs.new_names)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False)], self.cs.old_ipv4s)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False)], self.cs.new_ipv4s)
 		self.assertEqual([IPv6Network(u"1111:2222::3333/64", False)], self.cs.old_ipv6s)
@@ -255,7 +255,7 @@ class TestChangeSetMultipleSameSubnet(unittest.TestCase):
 
 	def test_cs(self):
 		self.assertEqual(set(), self.cs.old_names)
-		self.assertEqual(set(["eth0", "eth1"]), self.cs.new_names)
+		self.assertEqual({"eth0", "eth1"}, self.cs.new_names)
 		self.assertEqual([], self.cs.old_ipv4s)
 		self.assertEqual([IPv4Network(u"1.2.3.4/16", False), IPv4Network(u"1.2.3.5/16", False)], sorted(self.cs.new_ipv4s))
 		self.assertEqual([], self.cs.old_ipv6s)

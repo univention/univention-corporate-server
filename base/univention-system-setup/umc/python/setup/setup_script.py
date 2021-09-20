@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention System Setup
@@ -60,7 +60,7 @@ _ = setup_i18n()
 class Profile(dict):
 
 	def load(self, filename=PATH_PROFILE):
-		with open(filename, 'r') as profile:
+		with open(filename) as profile:
 			for line in profile:
 				line = line.strip()
 				if not line:
@@ -77,7 +77,7 @@ class Profile(dict):
 
 	def hide(self, key):
 		filename = self._filename
-		with open(filename, 'r') as profile:
+		with open(filename) as profile:
 			all_lines = profile.readlines()
 		with open(filename, 'w') as profile:
 			for line in all_lines:
@@ -216,9 +216,9 @@ class SetupScript(object):
 
 		try:
 			self.up(*args, **kwargs)
-		except Exception as e:
+		except Exception as exc:
 			# save caught exception. raise later (in run())
-			self._broken = e
+			self._broken = exc
 		else:
 			self._broken = False
 
@@ -287,7 +287,7 @@ class SetupScript(object):
 		'''Log messages in a log file'''
 		for msg in msgs:
 			print(msg, end=' ')
-		print()
+		print('')
 
 	def run(self):
 		'''Run the SetupScript.
@@ -322,7 +322,7 @@ class SetupScript(object):
 		finally:
 			try:
 				self.down()
-			except:
+			except Exception:
 				success = False
 		return success is not False
 

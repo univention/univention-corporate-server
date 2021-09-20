@@ -15,7 +15,7 @@ class PhaseSaveOldApplianceAddress(AddressChange):
 
 	def pre(self):
 		super(PhaseSaveOldApplianceAddress, self).pre()
-		new_ipv4s = set((iface.ip for iface in self.changeset.new_ipv4s))
+		new_ipv4s = {iface.ip for iface in self.changeset.new_ipv4s}
 		for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
 			if ':' in name:
 				self.logger.info("Skipping %s...", name)
@@ -42,10 +42,10 @@ class PhaseSaveOldApplianceAddress(AddressChange):
 
 	@staticmethod
 	def _prefix_iface(prefix, iface):
-		new_iface = dict((
-			("interfaces/%s/%s" % (prefix, key), value)
+		new_iface = {
+			"interfaces/%s/%s" % (prefix, key): value
 			for key, value in iface.items()
-		))
+		}
 		return new_iface
 
 	def find_next_interface(self, base):

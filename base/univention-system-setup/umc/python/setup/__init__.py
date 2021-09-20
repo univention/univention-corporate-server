@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -64,8 +64,8 @@ from univention.management.console.modules import UMC_Error
 # univention-lib package.
 try:
 	from univention.appcenter.app_cache import AppCache
-except ImportError as e:
-	MODULE.warn('Ignoring import error: %s' % e)
+except ImportError as exc:
+	MODULE.warn('Ignoring import error: %s' % (exc,))
 
 
 from univention.management.console.modules.setup import network
@@ -213,7 +213,7 @@ class Instance(Base, ProgressMixin):
 				restart = False
 				if not run_hooks:
 					MODULE.info('Check whether ip addresses have been changed')
-					for ikey, ival in values.iteritems():
+					for ikey, ival in values.items():
 						if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
 							restart = True
 							break
@@ -371,7 +371,7 @@ class Instance(Base, ProgressMixin):
 
 		# mix original and new values
 		allValues = copy.copy(values)
-		for ikey, ival in orgValues.iteritems():
+		for ikey, ival in orgValues.items():
 			if ikey not in allValues:
 				allValues[ikey] = ival
 
@@ -451,7 +451,7 @@ class Instance(Base, ProgressMixin):
 
 		for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
 			for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
-				_check(ikey, lambda x: not any(map(table, unicode(x))), _('The value for %s contains invalid characters.') % (labels[ikey],))
+				_check(ikey, lambda x: not any(map(table, x)), _('The value for %s contains invalid characters.') % (labels[ikey],))
 
 		_check('ssl/country', lambda x: len(x) == 2, _('Country must be a country code consisting of 2 characters.'))
 		for ikey in ['ssl/email', 'email_address']:
@@ -471,7 +471,7 @@ class Instance(Base, ProgressMixin):
 		# check nameservers
 		for ikey, iname in [('nameserver[1-3]', _('Domain name server')), ('dns/forwarder[1-3]', _('External name server'))]:
 			reg = re.compile('^(%s)$' % ikey)
-			for jkey, jval in values.iteritems():
+			for jkey, jval in values.items():
 				if reg.match(jkey):
 					if not values.get(jkey):
 						# allow empty value
@@ -547,13 +547,13 @@ class Instance(Base, ProgressMixin):
 	def lang_timezones(self, request):
 		'''Return a list of all available time zones.'''
 		try:
-			file = open('/usr/share/univention-system-setup/locale/timezone')
+			fd = open('/usr/share/univention-system-setup/locale/timezone')
 		except EnvironmentError:
 			MODULE.error('Cannot find locale data for timezones in /usr/share/univention-system-setup/locale')
 			self.finished(request.id, None)
 			return
 
-		timezones = [i.strip('\n') for i in file if not i.startswith('#')]
+		timezones = [i.strip('\n') for i in fd if not i.startswith('#')]
 
 		self.finished(request.id, timezones)
 
@@ -617,7 +617,7 @@ class Instance(Base, ProgressMixin):
 			'id': icountry,
 			'label': self._get_localized_label(idata.get('label', {})),
 		}
-			for icountry, idata in country_data.iteritems()
+			for icountry, idata in country_data.items()
 			if idata.get('label')]
 
 		# add the value from ucr value to the list
@@ -705,7 +705,7 @@ class Instance(Base, ProgressMixin):
 		matches = []
 		for icity in city_data:
 			match = None
-			for jlabel in icity.get('label', {}).itervalues():
+			for jlabel in icity.get('label', {}).values():
 				label = jlabel.decode(self.locale.codeset).lower()
 				if pattern in label:
 					# matching score is the overlap if the search pattern and the matched text
@@ -727,7 +727,7 @@ class Instance(Base, ProgressMixin):
 
 		# add additional score w.r.t. the population size of the city
 		# such that the largest city gains additional 0.4 on top
-		max_population = max([imatch['population'] for imatch in matches])
+		max_population = max(imatch['population'] for imatch in matches)
 		weighted_inv_max_population = 0.6 / float(max_population)
 		for imatch in matches:
 			imatch['final_score'] = imatch['match_score'] + weighted_inv_max_population * imatch['population']

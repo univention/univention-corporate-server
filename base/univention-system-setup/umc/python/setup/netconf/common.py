@@ -50,11 +50,11 @@ class RestartService(with_metaclass(ABCMeta, Executable)):
 
 	def pre(self):
 		super(RestartService, self).pre()
-		self.call(["invoke-rc.d", self.service, "stop"])
+		self.call(["systemctl", "stop", self.service])
 
 	def post(self):
 		super(RestartService, self).pre()
-		self.call(["invoke-rc.d", self.service, "start"])
+		self.call(["systemctl", "start", self.service])
 
 
 class AddressMap(with_metaclass(ABCMeta, AddressChange)):
@@ -65,13 +65,13 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 
 	def __init__(self, changeset):
 		super(AddressMap, self).__init__(changeset)
-		self.old_primary, self.new_primary = [
+		self.old_primary, self.new_primary = (
 			iface.get_default_ip_address()
 			for iface in (
 				self.changeset.old_interfaces,
 				self.changeset.new_interfaces,
 			)
-		]
+		)
 		self.net_changes = self._map_ip()
 		self.ip_mapping = self._get_address_mapping()
 
@@ -84,10 +84,10 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 		return net_changes
 
 	def ipv4_changes(self):
-		ipv4s = dict((
-			(name, iface.ipv4_address())
+		ipv4s = {
+			name: iface.ipv4_address()
 			for name, iface in self.changeset.new_interfaces.ipv4_interfaces
-		))
+		}
 		default = self.changeset.new_interfaces.get_default_ipv4_address()
 		mapping = {}
 		for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
@@ -98,10 +98,10 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 		return mapping
 
 	def ipv6_changes(self):
-		ipv6s = dict((
-			((iface.name, name), iface.ipv6_address(name))
+		ipv6s = {
+			(iface.name, name): iface.ipv6_address(name)
 			for (iface, name) in self.changeset.new_interfaces.ipv6_interfaces
-		))
+		}
 		default = self.changeset.new_interfaces.get_default_ipv6_address()
 		mapping = {}
 		for iface, name in self.changeset.old_interfaces.ipv6_interfaces:
@@ -112,10 +112,10 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 		return mapping
 
 	def _get_address_mapping(self):
-		mapping = dict((
-			(str(old_ip.ip), str(new_ip.ip) if new_ip else None)
+		mapping = {
+			str(old_ip.ip): str(new_ip.ip) if new_ip else None
 			for (old_ip, new_ip) in self.net_changes.items()
-		))
+		}
 		return mapping
 
 

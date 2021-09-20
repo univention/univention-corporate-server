@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Copyright 2014-2022 Univention GmbH
 #
@@ -28,9 +28,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
 import json
 import _util
+
 
 if __name__ == '__main__':
 	# check argument (action)
@@ -51,9 +53,9 @@ if __name__ == '__main__':
 		print('loading data for locale %s' % ilocale)
 		city_names = _util.get_localized_names(city_geonameids, ilocale)
 		for iid, ilabel in city_names.items():
-			city_data[iid].setdefault('label', dict())[ilocale] = ilabel
+			city_data[iid].setdefault('label', {})[ilocale] = ilabel
 
-	with open(args[0], 'wb') as outfile:
+	with open(args[0], 'w') as outfile:
 		json.dump(list(city_data.values()), outfile, indent=2)
 
 	print('... done :)')

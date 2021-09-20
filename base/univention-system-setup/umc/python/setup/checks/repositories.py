@@ -30,11 +30,11 @@ def get_unreachable_repository_servers():
 
 
 def start_curl_processes(servers):
-	ENV = dict(
-		(envvar, UCR[ucrvar])
+	ENV = {
+		envvar: UCR[ucrvar]
 		for (envvar, ucrvar) in PROXY_MAP.items()
 		if ucrvar in UCR
-	)
+	}
 	env = dict(environ, **ENV)
 	return [
 		subprocess.Popen(['curl', '--max-time', '10', server], env=env)

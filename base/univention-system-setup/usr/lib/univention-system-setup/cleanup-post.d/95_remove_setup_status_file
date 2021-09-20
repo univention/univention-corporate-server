@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Remove status file of Univention System Setup
 # Stop firefox browser if frontend uses legacy code
@@ -58,8 +58,8 @@ def finish_system_setup_boot():
 	if ucr.is_true('system/setup/boot/legacyfrontend', False):
 		print('Appliance mode: try to shut down the browser')
 		try:
-			fpid = open(PATH_BROWSER_PID)
-			strpid = fpid.readline().strip()
+			with open(PATH_BROWSER_PID) as fpid:
+				strpid = fpid.readline().strip()
 			pid = int(strpid)
 			p = psutil.Process(pid)
 			p.kill()
@@ -70,16 +70,9 @@ def finish_system_setup_boot():
 		except psutil.NoSuchProcess:
 			print('ERROR: cannot kill process with PID: %s' % pid)
 
-		# support psutil 0.9 and 2.0
-		def pname(p):
-			return p.name() if callable(p.name) else p.name
-
-		def pcmdline(p):
-			return p.cmdline() if callable(p.cmdline) else p.cmdline
-
 		# Maybe the system-setup CMD tool was started
 		for p in psutil.process_iter():
-			if pname(p) == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in pcmdline(p):
+			if p.name() == 'python3' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline():
 				p.kill()
 
 		# When the debian installer is not running, stop plymouth

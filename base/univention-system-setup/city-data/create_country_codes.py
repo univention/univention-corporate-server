@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Copyright 2014-2022 Univention GmbH
 #
@@ -28,9 +28,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
 import json
 import _util
+
 
 if __name__ == '__main__':
 	# check argument (action)

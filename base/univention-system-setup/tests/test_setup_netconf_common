@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.netconf.common"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest

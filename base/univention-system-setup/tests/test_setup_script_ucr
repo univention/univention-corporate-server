@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.setup_script"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -29,33 +29,33 @@ class TestProfile(unittest.TestCase):
 
 	def test_same(self):
 		"""Test reading unmodified."""
-		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+		self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
 
 	def test_uncommited(self):
 		"""Test reading uncommitted."""
 		self.wrap.set('foo', 'bar')
-		self.failIfEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+		self.assertNotEqual(self.ucr.get('foo'), self.wrap.get('foo'))
 
 	def test_committed(self):
 		"""Test reading committed."""
 		self.wrap.set('foo', 'bar')
 		self.wrap.commit()
 		self.ucr.load()
-		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+		self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
 
 	def test_revert(self):
 		"""Test reading revert."""
 		self.wrap.set('foo', 'bar')
 		self.wrap.set('foo', None)
 		self.wrap.commit()
-		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+		self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
 
 	def test_transaction(self):
 		"""Test transaction commit."""
 		with self.wrap:
 			self.wrap.set('foo', 'bar')
 		self.ucr.load()
-		self.failUnlessEqual(self.ucr.get('foo'), 'bar')
+		self.assertEqual(self.ucr.get('foo'), 'bar')
 
 	def test_transaction_fail(self):
 		"""Test transaction aborted."""
@@ -68,7 +68,7 @@ class TestProfile(unittest.TestCase):
 		else:
 			self.fail('Failed to propagate exception')
 		self.ucr.load()
-		self.failIfEqual(self.ucr.get('foo'), 'bar')
+		self.assertNotEqual(self.ucr.get('foo'), 'bar')
 
 
 if __name__ == '__main__':

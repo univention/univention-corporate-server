@@ -67,11 +67,11 @@ class ChangeSet(object):
 
 	@property
 	def old_names(self):
-		return set(name for name, _iface in self.old_interfaces.all_interfaces)
+		return {name for name, _iface in self.old_interfaces.all_interfaces}
 
 	@property
 	def new_names(self):
-		return set(name for name, _iface in self.new_interfaces.all_interfaces)
+		return {name for name, _iface in self.new_interfaces.all_interfaces}
 
 	@property
 	def old_ipv4s(self):

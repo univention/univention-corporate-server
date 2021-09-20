@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.setup_script"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -17,7 +17,7 @@ class TestProfile(unittest.TestCase):
 	def setUp(self):
 		"""Create object."""
 		self.profile = Profile()
-		self.temp = NamedTemporaryFile()
+		self.temp = NamedTemporaryFile("w+")
 
 	def load(self, content):
 		self.temp.write(content)
@@ -27,32 +27,32 @@ class TestProfile(unittest.TestCase):
 	def test_empty(self):
 		"""Empty profile."""
 		self.load('')
-		self.failUnlessEqual({}, self.profile)
+		self.assertEqual({}, self.profile)
 
 	def test_comment(self):
 		"""Only one comment."""
 		self.load('#foo=bar')
-		self.failUnlessEqual({}, self.profile)
+		self.assertEqual({}, self.profile)
 
 	def test_comments(self):
 		"""Indented comment."""
 		self.load('  # foo=bar')
-		self.failUnlessEqual({}, self.profile)
+		self.assertEqual({}, self.profile)
 
 	def test_unquoted(self):
 		"""Unquoted setting."""
 		self.load('foo=bar')
-		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+		self.assertEqual({'foo': 'bar'}, self.profile)
 
 	def test_single_quoted(self):
 		"""Single-quoted setting."""
 		self.load("foo='bar'")
-		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+		self.assertEqual({'foo': 'bar'}, self.profile)
 
 	def test_double_quoted(self):
 		"""Double-quoted setting."""
 		self.load('foo="bar"')
-		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+		self.assertEqual({'foo': 'bar'}, self.profile)
 
 	def test_multiple(self):
 		"""Multiple settings."""
@@ -65,7 +65,7 @@ class TestProfile(unittest.TestCase):
 			# end
 			'''
 		)
-		self.failUnlessEqual({
+		self.assertEqual({
 			'foo': 'bar',
 			'bar': 'baz',
 			'baz': 'foo',
@@ -74,22 +74,22 @@ class TestProfile(unittest.TestCase):
 	def test_special(self):
 		"""Shell special setting."""
 		self.load('foo=" a$b\'c"d`e "')
-		self.failUnlessEqual({'foo': ' a$b\'c"d`e '}, self.profile)
+		self.assertEqual({'foo': ' a$b\'c"d`e '}, self.profile)
 
 	def test_empty_list(self):
 		"""Empty list."""
 		self.load('foo=""')
-		self.failUnlessEqual([], self.profile.get_list('foo'))
+		self.assertEqual([], self.profile.get_list('foo'))
 
 	def test_one_list(self):
 		"""List with one element."""
 		self.load('foo="bar"')
-		self.failUnlessEqual(['bar'], self.profile.get_list('foo'))
+		self.assertEqual(['bar'], self.profile.get_list('foo'))
 
 	def test_two_list(self):
 		"""List with two elements."""
 		self.load('foo="bar baz"')
-		self.failUnlessEqual(['bar', 'baz'], self.profile.get_list('foo'))
+		self.assertEqual(['bar', 'baz'], self.profile.get_list('foo'))
 
 
 if __name__ == '__main__':

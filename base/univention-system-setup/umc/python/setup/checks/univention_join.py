@@ -30,7 +30,7 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 			], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 			stdout, stderr = p1.communicate()
 			if p1.returncode != 0:
-				messages = [line[11:] for line in stdout.split('\n') if line.startswith("* Message: ")]
+				messages = [line[11:] for line in stdout.decode("UTF-8", "replace").split('\n') if line.startswith("* Message: ")]
 				raise UMC_Error(_(
 					"univention-join -checkPrerequisites reported a problem. "
 					"Output of check:\n\n"
@@ -84,16 +84,16 @@ def check_domain_has_activated_license(address, username, password):
 			], stderr=subprocess.STDOUT).rstrip()
 		except subprocess.CalledProcessError as exc:
 			valid_license = False
-			error = exc.output
+			error = exc.output.decode("UTF-8")
 		else:
 			valid_license = len(license_uuid) == 36
 			error = _('The license %s is not valid.') % (license_uuid,)
 
 	if not valid_license:
-		raise UMC_Error(
-			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the Primary Directory Node.').format(appliance_name=appliance_name) + ' ' +
+		raise UMC_Error(' '.join(
+			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the Primary Directory Node.').format(appliance_name=appliance_name),
 			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
-		)
+		))
 
 
 def check_domain_is_higher_or_equal_version(address, username, password):
@@ -101,7 +101,7 @@ def check_domain_is_higher_or_equal_version(address, username, password):
 		try:
 			master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
 		except subprocess.CalledProcessError:
-			MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc()))
+			MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
 			return
 		nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
 		if LooseVersion(nonmaster_ucs_version) > LooseVersion(master_ucs_version):

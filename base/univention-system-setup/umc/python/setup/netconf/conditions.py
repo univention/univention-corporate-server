@@ -45,10 +45,10 @@ class AddressChange(with_metaclass(ABCMeta, Phase)):
 
 	def check(self):
 		super(AddressChange, self).check()
-		old_ipv4s = set((_.ip for _ in self.changeset.old_ipv4s))
-		new_ipv4s = set((_.ip for _ in self.changeset.new_ipv4s))
-		old_ipv6s = set((_.ip for _ in self.changeset.old_ipv6s))
-		new_ipv6s = set((_.ip for _ in self.changeset.new_ipv6s))
+		old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
+		new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
+		old_ipv6s = {_.ip for _ in self.changeset.old_ipv6s}
+		new_ipv6s = {_.ip for _ in self.changeset.new_ipv6s}
 		if old_ipv4s == new_ipv4s and old_ipv6s == new_ipv6s:
 			raise SkipPhase("No address change")
 
@@ -161,7 +161,7 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
 	def load_admin_credentials(self):
 		self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
 		try:
-			self.bindpwd = open("/etc/ldap.secret", "r").read()
+			self.bindpwd = open("/etc/ldap.secret").read()
 		except IOError:
 			self.available = False
 

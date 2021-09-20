@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -67,8 +67,8 @@ from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_a
 try:
 	from univention.appcenter.actions import get_action
 	from univention.appcenter.app_cache import AppCache, Apps
-except ImportError as e:
-	MODULE.warn('Ignoring import error: %s' % e)
+except ImportError as exc:
+	MODULE.warn('Ignoring import error: %s' % (exc,))
 _ = Translation('univention-management-console-module-setup').translate
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -131,7 +131,7 @@ def is_system_joined():
 def load_values(lang=None):
 	# load UCR variables
 	ucr.load()
-	values = dict([(ikey, ucr[ikey].decode('utf-8', 'replace') if ucr[ikey] else ucr[ikey]) for ikey in UCR_VARIABLES])
+	values = {ikey: ucr[ikey] if ucr[ikey] else ucr[ikey] for ikey in UCR_VARIABLES}
 
 	# net
 	from univention.management.console.modules.setup.network import Interfaces
@@ -152,7 +152,7 @@ def load_values(lang=None):
 	values['timezone'] = ''
 	if os.path.exists('/etc/timezone'):
 		with open('/etc/timezone') as fd:
-			values['timezone'] = fd.readline().strip().decode('utf-8', 'replace')
+			values['timezone'] = fd.readline().strip()
 
 	# read license agreement for app appliance
 	if lang and ucr.get('umc/web/appliance/data_path'):
@@ -163,7 +163,7 @@ def load_values(lang=None):
 		for ipath in (localized_license_path, license_path, english_license_path):
 			if os.path.exists(ipath):
 				with open(ipath) as license_file:
-					values['license_agreement'] = (''.join(license_file.readlines())).decode('utf-8', 'replace')
+					values['license_agreement'] = license_file.read()
 					break
 
 	# check for installed system activation
@@ -222,7 +222,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 					currentComponents = currentComponents.union(ipackages)
 
 		# set of all available software packages
-		allComponents = set(['univention-ldap-overlay-memberof'])
+		allComponents = {'univention-ldap-overlay-memberof', }
 		for iapp in get_apps():
 			for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
 				allComponents = allComponents.union(ipackages)
@@ -255,7 +255,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['locale'] = newValues.get('locale/default', '')
 	forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
 	if current_locale:
-		forcedLocales.append('{0}:{1}'.format(str(current_locale), current_locale.codeset))
+		forcedLocales.append('{0}:{1}'.format(current_locale, current_locale.codeset))
 	for ilocale in forcedLocales:
 		if ilocale not in newValues['locale']:
 			newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
@@ -272,7 +272,7 @@ def pre_save(newValues):
 		interfaces = Interfaces()
 		interfaces.from_dict(newValues.pop('interfaces'))
 		interfaces.check_consistency()
-		newValues.update(dict((key, value or '') for key, value in interfaces.to_ucr().iteritems()))
+		newValues.update({key: value or '' for key, value in interfaces.to_ucr().items()})
 
 
 def write_profile(values):
@@ -280,7 +280,7 @@ def write_profile(values):
 	old_umask = os.umask(0o177)
 	try:
 		with open(PATH_PROFILE, "w+") as cache_file:
-			for ikey, ival in values.iteritems():
+			for ikey, ival in values.items():
 				if isinstance(ival, bool):
 					ival = str(ival)
 				cache_file.write('%s="%s"\n' % (ikey, ival or ''))
@@ -360,8 +360,9 @@ class ProgressState(object):
 	def __ne__(self, other):
 		return not self.__eq__(other)
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return bool(self.name or self.message or self.percentage or self._join_error or self._misc_error)
+	__nonzero__ = __bool__
 
 
 class ProgressParser(object):
@@ -469,8 +470,8 @@ class ProgressParser(object):
 		match = ProgressParser.JOINERROR.match(line)
 		if match is not None:
 			error = '%s: %s\n' % (self.current.fractionName, match.groups()[0])
-			with open(PATH_JOIN_LOG, 'r') as join_log:
-				log = join_log.read().splitlines(True)
+			with open(PATH_JOIN_LOG, 'rb') as join_log:
+				log = join_log.read().decode('UTF-8', 'replace').splitlines(True)
 			error_log = []
 			for line in reversed(log):
 				error_log.append(line)
@@ -560,7 +561,7 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 		f.write('=== Restart of UMC server and web server (%s) ===\n' % timestamp())
 		f.flush()
 		p = subprocess.Popen(['/usr/bin/at', 'now'], stdin=subprocess.PIPE, stderr=f, stdout=f)
-		p.communicate('''#!/bin/sh
+		p.communicate(b'''#!/bin/sh
 sleep 5;  # leave enough time to display error messages or indicate success
 systemctl restart univention-management-console-server;
 systemctl restart univention-management-console-web-server''')
@@ -572,9 +573,8 @@ systemctl restart univention-management-console-web-server''')
 @contextmanager
 def _temporary_password_file(password):
 	# write password file
-	fp = open(PATH_PASSWORD_FILE, 'w')
-	fp.write('%s' % password)
-	fp.close()
+	with open(PATH_PASSWORD_FILE, 'w') as fp:
+		fp.write('%s' % password)
 	os.chmod(PATH_PASSWORD_FILE, 0o600)
 	try:
 		yield PATH_PASSWORD_FILE
@@ -617,7 +617,7 @@ def run_joinscript(progressParser, values, _username, password, dcname=None, lan
 			'LANG': lang,
 		})
 		while True:
-			line = p.stdout.readline()
+			line = p.stdout.readline().decode("UTF-8", "replace")
 			if not line:
 				break
 			progressParser.parse(line)
@@ -929,9 +929,9 @@ is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', '
 
 def is_ascii(string):
 	try:
-		string.decode("ascii")
+		string.encode("ascii")
 		return True
-	except Exception:
+	except UnicodeEncodeError:
 		return False
 
 

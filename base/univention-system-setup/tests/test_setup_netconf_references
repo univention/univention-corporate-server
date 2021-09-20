@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.netconf.modules.LdapReferences"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -39,7 +39,7 @@ class Testpolicyhanged(unittest.TestCase):
 			"hostname": "mas11",
 			"domainname": "phahn.dev",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/eth0/type": "static",
 			"interfaces/eth0/start": "true",

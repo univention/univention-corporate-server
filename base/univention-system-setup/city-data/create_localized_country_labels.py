@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Copyright 2014-2022 Univention GmbH
 #
@@ -28,9 +28,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
 import json
 import _util
+
 
 if __name__ == '__main__':
 	# check argument (action)
@@ -43,7 +45,7 @@ if __name__ == '__main__':
 	countries = _util.get_country_code_to_geonameid_map(3)
 	country_ids = set(countries.values())
 	labels = _util.get_localized_names(country_ids, args[0])
-	final_lables = dict([(icountry, labels.get(igeonameid, '')) for icountry, igeonameid in countries.items()])
+	final_lables = {icountry: labels.get(igeonameid, '') for icountry, igeonameid in countries.items()}
 	with open(args[1], 'w') as outfile:
 		json.dump(final_lables, outfile)
 	print('... done :)')

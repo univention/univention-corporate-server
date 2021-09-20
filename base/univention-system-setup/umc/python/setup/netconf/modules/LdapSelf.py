@@ -112,7 +112,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 		for name in self.changeset.new_names:
 			filename = os.path.join("/sys/class/net", name, "address")
 			try:
-				with open(filename, "r") as address_file:
+				with open(filename) as address_file:
 					mac = address_file.read().strip()
 					macs.add(mac)
 			except IOError as ex:

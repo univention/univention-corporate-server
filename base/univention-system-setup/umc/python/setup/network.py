@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console Module System-Setup
@@ -94,7 +94,7 @@ class Interfaces(dict):
 		ucr.load()
 
 		# get all available interfaces
-		interfaces = set(_.group(1) for _ in (RE_INTERFACE.match(key) for key in ucr) if _)
+		interfaces = {_.group(1) for _ in (RE_INTERFACE.match(key) for key in ucr) if _}
 		for name in interfaces:
 			device = Device(name, self)
 			device.parse_ucr()
@@ -127,7 +127,7 @@ class Interfaces(dict):
 
 	def to_dict(self):
 		"""Returns a dict structure of all interfaces"""
-		return dict((device.name, device.dict) for device in self.values())
+		return {device.name: device.dict for device in self.values()}
 
 	def check_consistency(self):
 		"""Checks and partly enforces the consistency of all network interfaces"""
@@ -171,15 +171,15 @@ class Interfaces(dict):
 			# we don't need to set the device order
 			return
 
-		devices = dict((device, device.subdevices) for device in self.values())
+		devices = {device: device.subdevices for device in self.values()}
 
 		i = 1
 		while devices:
-			leave = set(device for device, subdevs in devices.iteritems() if not subdevs)
+			leave = {device for device, subdevs in devices.items() if not subdevs}
 			if not leave:
 				if devices:
 					# cyclic dependency
-					raise DeviceError("Cyclic dependency detected: %s" % '; '.join('%s -> %s' % (dev, ', '.join([s.name for s in sd])) for dev, sd in devices.iteritems()))
+					raise DeviceError("Cyclic dependency detected: %s" % '; '.join('%s -> %s' % (dev, ', '.join([s.name for s in sd])) for dev, sd in devices.items()))
 				break
 
 			for device in leave:
@@ -187,7 +187,7 @@ class Interfaces(dict):
 				device.order = i
 				i += 1
 
-			devices = dict((device, (subdevs - leave)) for device, subdevs in devices.iteritems() if device not in leave)
+			devices = {device: (subdevs - leave) for device, subdevs in devices.items() if device not in leave}
 
 
 class Device(object):
@@ -269,7 +269,7 @@ class Device(object):
 	@property
 	def subdevices(self):
 		"""Returns a set of subdevices of this device if there are any, leavong out not existing devices"""
-		return set([self.interfaces[name] for name in self.subdevice_names if name in self.interfaces])
+		return {self.interfaces[name] for name in self.subdevice_names if name in self.interfaces}
 
 	def prepare_consistency(self):
 		self._remove_old_fallback_variables()
@@ -327,7 +327,7 @@ class Device(object):
 			pass
 		elif self.name in ('.', '..'):
 			pass
-		elif any((_ == '/' or _.isspace() for _ in self.name)):
+		elif any(_ == '/' or _.isspace() for _ in self.name):
 			pass
 		else:
 			return
@@ -400,7 +400,7 @@ class Device(object):
 		self.clear()
 
 		pattern = re.compile(r'^interfaces/%s(?:_[0-9]+)?/' % re.escape(name))
-		vals = dict((key, ucr[key]) for key in ucr if pattern.match(key))
+		vals = {key: ucr[key] for key in ucr if pattern.match(key)}
 
 		self.start = ucr.is_true(value=vals.pop('interfaces/%s/start' % (name), None))
 
@@ -448,7 +448,7 @@ class Device(object):
 		name = self.name
 
 		pattern = re.compile('^interfaces/%s(?:_[0-9]+)?/.*' % re.escape(name))
-		vals = dict((key, None) for key in ucr if pattern.match(key))
+		vals = {key: None for key in ucr if pattern.match(key)}
 
 		for key, val in self._leftover:
 			vals[key] = val
@@ -531,7 +531,7 @@ class Device(object):
 		if 'ip6dynamic' not in device:
 			device['ip6dynamic'] = False
 
-		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) - set(['start', 'type', 'order']) if k in device))
+		interface.__dict__.update({k: device[k] for k in set(interface.dict.keys()) - {'start', 'type', 'order'} if k in device})
 		if interface.ip4dynamic:
 			interface.type = 'dhcp'
 
@@ -585,7 +585,7 @@ class VLAN(Device):
 
 	@property
 	def subdevice_names(self):
-		return set([self.parent_device])
+		return {self.parent_device}
 
 	def validate(self):
 		super(VLAN, self).validate()
@@ -652,7 +652,7 @@ class Bond(Device):
 		'balance-tlb': 5,
 		'balance-alb': 6
 	}
-	MODES_R = dict((v, k) for k, v in MODES.items())
+	MODES_R = {v: k for k, v in MODES.items()}
 
 	def clear(self):
 		super(Bond, self).clear()

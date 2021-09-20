@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
+from ldap.filter import filter_format
 
 
 class PhaseLdapSSO(AddressMap, LdapChange):
@@ -37,7 +38,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
 			if not sso_fqdn.endswith(zone):
 				continue
 			sso_name = sso_fqdn[:-(len(zone) + 1)]
-			hosts = host_module.lookup(None, self.ldap, "relativeDomainName=%s" % sso_name, superordinate=forward_zone)
+			hosts = host_module.lookup(None, self.ldap, filter_format("relativeDomainName=%s", (sso_name,)), superordinate=forward_zone)
 			for host in hosts:
 				self._update_host(host)
 
@@ -45,10 +46,10 @@ class PhaseLdapSSO(AddressMap, LdapChange):
 		obj.open()
 		try:
 			old_values = set(obj.info["a"])
-			new_values = set((
+			new_values = {
 				self.ip_mapping.get(value, value)
 				for value in old_values
-			))
+			}
 			new_values.discard(None)
 			if old_values == new_values:
 				return

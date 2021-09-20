@@ -1,5 +1,4 @@
 @!@
-
 if configRegistry.is_true('system/setup/showloginmessage', False):
 	print('session optional pam_motd.so motd=/etc/motd.setup')
 @!@

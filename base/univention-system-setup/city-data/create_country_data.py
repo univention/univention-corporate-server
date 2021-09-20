@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Copyright 2014-2022 Univention GmbH
 #
@@ -28,9 +28,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
 import json
 import _util
+
 
 if __name__ == '__main__':
 	# check argument (action)
@@ -64,9 +66,9 @@ if __name__ == '__main__':
 				continue
 			ilabel = country_names.get(iid)
 			if ilabel:
-				data_set.setdefault('label', dict())[ilocale] = ilabel
+				data_set.setdefault('label', {})[ilocale] = ilabel
 
-	with open(args[0], 'wb') as outfile:
+	with open(args[0], 'w') as outfile:
 		json.dump(country_data, outfile, indent=2)
 
 	print('... done :)')

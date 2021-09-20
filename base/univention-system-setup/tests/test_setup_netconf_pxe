@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """Unit test for univention.management.console.modules.setup.netconf.modules.RewritePxe"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -23,7 +23,7 @@ class TestPxeRewrite(unittest.TestCase):
 			"interfaces/eth0/address": "2.3.4.5",
 			"interfaces/eth0/netmask": "255.255.255.0",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/eth0/address": "2.3.4.100",
 			"interfaces/eth0/netmask": "255.255.255.0",
@@ -61,7 +61,7 @@ class TestPxeRewriteMultiple(unittest.TestCase):
 			"interfaces/eth1/address": "9.8.7.6",
 			"interfaces/eth1/netmask": "255.255.0.0",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/eth0/address": "2.3.4.100",
 			"interfaces/eth0/netmask": "255.255.255.0",
@@ -92,7 +92,7 @@ class TestPxeRewriteRemoved(unittest.TestCase):
 			"interfaces/eth1/address": "9.8.7.6",
 			"interfaces/eth1/netmask": "255.255.0.0",
 		}
-		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
 		profile.update({
 			"interfaces/eth1/address": "9.8.7.100",
 			"interfaces/eth1/netmask": "255.255.0.0",
