@@ -212,7 +212,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn']),  # Bug #53564
 	("univention.admin.uexceptions.noLock: The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready']),  # Bug #53749
 	("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs']),  # Bug #53749
-	(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/postgres.secret'", ['gunicorn']),  # Bug #53750
+	(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/(postgres|django_key).secret'", ['gunicorn']),  # Bug #53750
 	("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py']),
 	# Tracebacks caused by specific bugs:
 	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),  # Bug #52765
