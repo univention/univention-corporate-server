@@ -42,11 +42,11 @@ case "$reason" in
 		#fi
 
 		# silence the kernel printk
-		PRINTK=`cat /proc/sys/kernel/printk`
+		PRINTK=$(cat /proc/sys/kernel/printk)
 		echo "0" >/proc/sys/kernel/printk
 
 		# basic interface setup if it is not already up
-		ifconfig $interface | grep -w UP || ifconfig $interface inet 0 up
+		ip link show "$interface" | grep -w UP || ip link dev "$interface" dynamic off up
 
 		# We need to give the kernel some time to get the interface up.
 		sleep 1
