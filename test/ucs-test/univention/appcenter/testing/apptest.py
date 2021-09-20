@@ -9,9 +9,11 @@ import subprocess
 import sys
 import importlib
 import tempfile
+from shlex import quote
 import shutil
 import requests
 from http.client import HTTPConnection
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-catalog.json'
@@ -77,6 +79,10 @@ def ffmpg_start(capture_video, display):
 
 def ffmpg_stop(pid):
 	subprocess.Popen(['kill', str(pid)])
+
+
+def is_local():
+	return os.path.exists('/usr/sbin/univention-upgrade')
 
 
 class Session(object):
@@ -354,6 +360,8 @@ else:
 			else:
 				logger.warning('$UCS_TEST_HOSTNAME not set')
 				ret = 'localhost'
+		else:
+			ret = urlparse(ret).netloc
 		return ret
 
 	@pytest.fixture(scope='session')
@@ -393,6 +401,18 @@ else:
 		return client
 
 	@pytest.fixture
+	def ucs_call(fqdn):
+		def _run(args):
+			logger.info('Running: %r' % (args,))
+			if is_local():
+				logger.info('... locally')
+				subprocess.run(args, check=True)
+			else:
+				logger.info('... with SSH, hope you have added your SSH keys to %s?', fqdn)
+				subprocess.run(['ssh', fqdn] + [quote(arg) for arg in args], check=True)
+		return _run
+
+	@pytest.fixture
 	def ucr(umc):
 		class UCR(object):
 			def __init__(self, client):
@@ -400,9 +420,11 @@ else:
 				self._old = {}
 
 			def get(self, key):
-				logger.info('Getting UCRV {}', key)
+				logger.info('Getting UCRV %s', key)
 				response = self.client.umc_command('ucr/get', [key])
-				return response.result[0]['value']
+				value = response.result[0]['value']
+				logger.info('Found %r', value)
+				return value
 
 			def set(self, updates, revert_afterwards=True):
 				if revert_afterwards:
