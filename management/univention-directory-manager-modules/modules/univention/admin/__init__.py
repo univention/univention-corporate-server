@@ -42,7 +42,7 @@ import unidecode
 import univention.config_registry
 import univention.debug as ud
 try:
-	from typing import Any, List, Optional, Type, Union  # noqa F401
+	from typing import Any, Callable, List, Optional, Tuple, Type, Union  # noqa F401
 except ImportError:
 	pass
 
@@ -216,7 +216,7 @@ class property:
 		may_change=True,  # type: bool
 		identifies=False,  # type: bool
 		unique=False,  # type: bool
-		default=None,  # type: Optional[Union[str, Union[bool,int], Tuple[str, List[str]], Tuple[Callable, List[str], Any)]]
+		default=None,  # type: Optional[Union[str, Union[bool, int], Tuple[str, List[str]], Tuple[Callable, List[str], Any]]]
 		prevent_umc_default_popup=False,  # type: bool
 		dontsearch=False,  # type: bool
 		show_in_lists=False,  # type: bool
@@ -299,7 +299,7 @@ class property:
 		return pattern_replace(copy.copy(res), object)
 
 	def default(self, object):
-		base_default = copy.copy(self.base_default)  # type: Optional[Union[str, Union[bool,int], Tuple[str, List[str]], Tuple[Callable, List[str], Any)]]
+		base_default = copy.copy(self.base_default)  # type: Optional[Union[str, Union[bool,int], Tuple[str, List[str]], Tuple[Callable, List[str], Any]]]
 		if not object.set_defaults:
 			return [] if self.multivalue else ''
 
