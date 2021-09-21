@@ -36,7 +36,7 @@ from __future__ import absolute_import, print_function
 import copy
 import sys
 import re
-from typing import TYPE_CHECKING, Any, Container, Iterable, List, Match, Optional, Type, Union  # noqa F401
+from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union  # noqa F401
 
 import six
 from ldap.filter import filter_format
@@ -221,7 +221,7 @@ class property:
 		may_change=True,  # type: bool
 		identifies=False,  # type: bool
 		unique=False,  # type: bool
-		default=None,  # type: Optional[Union[str, Union[bool,int]], Tuple[str, List[str]], Tuple[Callable, List[str], Any)]]
+		default=None,  # type: Optional[Union[str, Union[bool, int], Tuple[str, List[str]], Tuple[Callable, List[str], Any]]]
 		prevent_umc_default_popup=False,  # type: bool
 		dontsearch=False,  # type: bool
 		show_in_lists=False,  # type: bool
@@ -305,7 +305,7 @@ class property:
 		return pattern_replace(copy.copy(res), object)
 
 	def default(self, object):
-		base_default = copy.copy(self.base_default)  # type: Optional[Union[str, Union[bool,int]], Tuple[str, List[str]], Tuple[Callable, List[str], Any)]]
+		base_default = copy.copy(self.base_default)  # type: Optional[Union[str, Union[bool,int], Tuple[str, List[str]], Tuple[Callable, List[str], Any]]]
 		if not object.set_defaults:
 			return [] if self.multivalue else ''
 
