@@ -3,9 +3,10 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-samba
-fix: 
+fix: 14.0.4-5A~5.0.0.202109231647
 desc: |
  This update addresses the following issue(s):
- * The UCR module for samba share restrictions did not quote the spaces inside share names like the samba listener does.
+ * The UCR module for samba share restrictions did not quote the spaces inside
+   share names like the samba listener does.
    This fix resolves this issue (Bug #53828)
 bug: [53828]
