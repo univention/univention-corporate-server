@@ -5284,7 +5284,6 @@ class ActivationDateTimeTimezone(DateTimeTimezone):
 
 
 __register_choice_update_function(Country.update_choices)
-Country.update_choices()
 
 
 class UDM_Syntax(combobox):
