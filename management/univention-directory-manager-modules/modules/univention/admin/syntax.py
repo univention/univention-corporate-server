@@ -5867,6 +5867,9 @@ class Country(select):
 		cls.choices.sort(key=itemgetter(1))
 
 
+__register_choice_update_function(Country.update_choices)
+
+
 class RadiusClientType(select):
 	choices = [
 		('other', _('other')),
@@ -5917,9 +5920,6 @@ class ActivationDateTimeTimezone(DateTimeTimezone):
 	Subclassed to define representative names as subsyntax_names for REST API
 	"""
 	subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
-
-
-__register_choice_update_function(Country.update_choices)
 
 
 class UDM_Syntax(combobox):
