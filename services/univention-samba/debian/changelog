@@ -1,3 +1,9 @@
+univention-samba (14.0.4-5) unstable; urgency=medium
+
+  * Bug #53828: fix samba share names with consecutive whitespaces
+
+ -- Tobias Wenzel <wenzel@univention.de>  Thu, 23 Sep 2021 16:18:30 +0200
+
 univention-samba (14.0.4-4) unstable; urgency=medium
 
   * Bug #53414: prevent listener traceback when removing samba share

@@ -35,9 +35,11 @@ from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 
 from six.moves.configparser import ConfigParser
+from six.moves.urllib_parse import quote
 import os
 import re
 import shlex
+import urllib
 
 # defaults
 ucr = ConfigRegistry()
@@ -172,6 +174,7 @@ class ShareConfiguration(object):
 			except IndexError:
 				continue
 
+			share.name = quote(share.name, safe='')
 			if cfg.has_option(share.name, Restrictions.INVALID_USERS):
 				share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS))
 			if cfg.has_option(share.name, Restrictions.HOSTS_DENY):
@@ -350,7 +353,6 @@ class ShareConfiguration(object):
 			# write share conf only if we have ucr settings
 			if not share.ucr:
 				continue
-
 			share_filename = os.path.join(ShareConfiguration.SHARES_DIR, share.name + ShareConfiguration.POSTFIX)
 			with open(share_filename, "w") as fd:
 				fd.write("[" + share.name + "]\n")
