@@ -527,6 +527,8 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 
 	def configure_tinyapp_modproxy(self):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		self.execute_command_in_container('apk update')
+		self.execute_command_in_container('apk upgrade')
 		self.execute_command_in_container('apk add apache2-ssl')
 		self.execute_command_in_container("sed -i 's#/var/www/localhost/htdocs#/web/html#g' /etc/apache2/conf.d/ssl.conf")
 		self.execute_command_in_container("sed -i 's#/var/www/localhost/cgi-bin#/web/cgi-bin#g' /etc/apache2/conf.d/ssl.conf")
