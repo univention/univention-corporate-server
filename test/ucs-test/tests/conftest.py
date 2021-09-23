@@ -1,19 +1,27 @@
-import pytest
-import time
 import subprocess
-from univention.testing import ucr as _ucr, udm as _udm, utils, umc, strings
+import time
+
+import pytest
+
 import univention.lib.umc
+from univention.testing import strings, ucr as _ucr, udm as _udm, umc, utils
 
 pytest_plugins = ["univention.testing.conftest"]
 
 
-@pytest.yield_fixture()
+@pytest.fixture()
 def ucr():  # type: () -> _ucr.UCSTestConfigRegistry
 	with _ucr.UCSTestConfigRegistry() as ucr:
 		yield ucr
 
 
-@pytest.yield_fixture()
+@pytest.fixture(scope='session')
+def ucr_session():  # type: () -> _ucr.UCSTestConfigRegistry
+	with _ucr.UCSTestConfigRegistry() as ucr:
+		yield ucr
+
+
+@pytest.fixture(scope='session')
 def restart_s4connector_if_present():
 	def restart():
 		if utils.s4connector_present():
@@ -22,7 +30,7 @@ def restart_s4connector_if_present():
 	return restart
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def restart_umc_server():
 	def _restart_umc_server():
 		subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service'])
@@ -30,28 +38,28 @@ def restart_umc_server():
 	return _restart_umc_server
 
 
-@pytest.fixture(scope="module")
-def server_role(ucr):
-	return ucr.get('server/role')
+@pytest.fixture(scope='session')
+def server_role(ucr_session):
+	return ucr_session.get('server/role')
 
 
-@pytest.fixture(scope="module")
-def ldap_base(ucr):  # type: () -> str
-	return ucr.get('ldap/base')
+@pytest.fixture(scope='session')
+def ldap_base(ucr_session):  # type: () -> str
+	return ucr_session.get('ldap/base')
 
 
-@pytest.fixture(scope="module")
-def ldap_master(ucr):
-	return ucr.get('ldap/master')
+@pytest.fixture(scope='session')
+def ldap_master(ucr_session):
+	return ucr_session.get('ldap/master')
 
 
-@pytest.yield_fixture()
+@pytest.fixture()
 def udm():
 	with _udm.UCSTestUDM() as udm:
 		yield udm
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='session')
 def Client():
 	return umc.Client
 
@@ -61,51 +69,51 @@ def lo():
 	return utils.get_ldap_connection()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='session')
 def verify_ldap_object():
 	return utils.verify_ldap_object
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='session')
 def verify_udm_object():
 	return _udm.verify_udm_object
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def ServiceUnavailable():
 	return univention.lib.umc.ServiceUnavailable
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def ConnectionError():
 	return univention.lib.umc.ConnectionError
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def Unauthorized():
 	return univention.lib.umc.Unauthorized
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def HTTPError():
 	return univention.lib.umc.HTTPError
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def random_string():
 	return strings.random_string
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def random_name():
 	return strings.random_name
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def random_username():
 	return strings.random_username
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def wait_for_replication():
 	return utils.wait_for_replication
