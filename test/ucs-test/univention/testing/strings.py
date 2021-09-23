@@ -29,7 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import random
+from random import choice, randint
+
 
 STR_NUMERIC = u'0123456789'
 STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
@@ -51,13 +52,13 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 	result = u''
 	for _ in range(length):
 		if charset:
-			result += random.choice(charset)
+			result += choice(charset)
 		elif alpha and numeric:
-			result += random.choice(STR_ALPHANUM)
+			result += choice(STR_ALPHANUM)
 		elif alpha:
-			result += random.choice(STR_ALPHA)
+			result += choice(STR_ALPHA)
 		elif numeric:
-			result += random.choice(STR_NUMERIC)
+			result += choice(STR_NUMERIC)
 	return result.encode(encoding)
 
 
@@ -89,7 +90,7 @@ def random_groupname(length=10):
 
 
 def random_int(bottom_end=0, top_end=9):
-	return str(random.randint(bottom_end, top_end))
+	return str(randint(bottom_end, top_end))
 
 
 def random_version(elements=3):
@@ -105,15 +106,23 @@ def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_
 
 def random_mac():
 	mac = [
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0xff),
-		random.randint(0x00, 0xff)
+		randint(0x00, 0x7f),
+		randint(0x00, 0x7f),
+		randint(0x00, 0x7f),
+		randint(0x00, 0x7f),
+		randint(0x00, 0xff),
+		randint(0x00, 0xff)
 	]
 
 	return ':'.join(map(lambda x: "%02x" % x, mac))
+
+
+def random_domain_name(length=10):
+	# type: (int) -> str
+	return '%s.%s' % (
+		random_string(length=length // 2, alpha=True, numeric=False),
+		random_string(length=length - length // 2, alpha=True, numeric=False),
+	)
 
 
 # Generate 110 different ip addresses in the range 11.x.x.x-120.x.x.x
@@ -130,9 +139,9 @@ class IP_Iter(object):
 		if self.index < self.max_range:
 			ip_list = [
 				self.index,
-				random.randint(1, 254),
-				random.randint(1, 254),
-				random.randint(1, 254)
+				randint(1, 254),
+				randint(1, 254),
+				randint(1, 254)
 			]
 			ip = ".".join(map(str, ip_list))
 			self.index += 1
@@ -150,3 +159,15 @@ def random_ip(ip_iter=IP_Iter()):
 def random_dns_record():
 	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
 	return '%s.' % (random_string(),)
+
+
+def random_date():  # type: () -> str
+	return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
+
+
+def random_time(range_hour=(0, 23)):
+	return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
+
+
+def random_email():  # type: () -> str
+	return '%s@%s' % (random_name(), random_domain_name())
