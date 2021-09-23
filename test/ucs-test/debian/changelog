@@ -1,3 +1,9 @@
+ucs-test (9.0.7-70) unstable; urgency=low
+
+  * Bug #31857: Fix 61_udm-users/27_country_names_uptodate
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Sep 2021 15:49:22 +0200
+
 ucs-test (9.0.7-69) unstable; urgency=low
 
   * Bug #53832: Test sizelimit exposure from simple UDM API

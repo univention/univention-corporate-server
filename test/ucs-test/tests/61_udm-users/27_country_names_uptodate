@@ -16,8 +16,10 @@ import univention.admin.syntax as udm_syntax
 import pycountry
 
 if __name__ == '__main__':
-	current_countries = sorted([(country.alpha2, country.name) for country in pycountry.countries], key=lambda x: x[0])
-	if dict(current_countries) != dict(udm_syntax.Country.choices):
+	udm_syntax.update_choices()
+	udm_choices = dict(udm_syntax.Country.choices)
+	current_countries = {country.alpha2: country.name for country in pycountry.countries}
+	if current_countries != udm_choices:
 		set_cc = set(current_countries)
-		set_choices = set(udm_syntax.Country.choices)
-		utils.fail("List in UDM and Debian differ: %r" % str(set_choices.symmetric_difference(set_cc)))
+		set_choices = set(udm_choices)
+		utils.fail("Missing in UDM: %s\nExtra in UDM: %s" % (' '.join(sorted(set_cc - set_choices)), ' '.join(sorted(set_choices - set_cc))))
