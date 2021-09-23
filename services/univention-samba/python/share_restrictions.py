@@ -37,10 +37,10 @@ from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 
 from ConfigParser import ConfigParser
+from six.moves.urllib_parse import quote
 import os
 import re
 import shlex
-import urllib
 
 # defaults
 ucr = ConfigRegistry()
@@ -175,7 +175,7 @@ class ShareConfiguration(object):
 			except IndexError:
 				continue
 
-			share.name = urllib.quote(share.name, safe='')
+			share.name = quote(share.name, safe='')
 			if cfg.has_option(share.name, Restrictions.INVALID_USERS):
 				share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS))
 			if cfg.has_option(share.name, Restrictions.HOSTS_DENY):
