@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Text  # noqa F401
+from typing import Iterator, Text, Optional, Tuple  # noqa F401
 
 import six
 
@@ -146,3 +146,15 @@ def random_dns_record():
 	# type: () -> str
 	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
 	return '%s.' % (random_string(),)
+
+
+def random_date():  # type: () -> str
+	return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
+
+
+def random_time(range_hour=(0, 24)):  # type: (Optional[Tuple[int]]) -> str
+	return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
+
+
+def random_email():  # type: () -> str
+	return '%s@%s' % (random_name(), random_domain_name())

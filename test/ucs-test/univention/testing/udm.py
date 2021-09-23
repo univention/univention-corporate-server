@@ -46,6 +46,7 @@ The API is currently under heavy development and may/will change before next UCS
 
 from __future__ import print_function
 
+import base64
 import copy
 import functools
 import os
@@ -402,6 +403,11 @@ class UCSTestUDM(object):
 		def udm_attribute(prop):
 			if max_recursion <= 0:
 				return  # random.choice(self._cleanup.get(prop.syntax.udm_module, [None]))
+
+			# TODO: parse udm_filter and set values
+			if prop.syntax.udm_filter:
+				return
+
 			return self.create_with_defaults(prop.syntax.udm_module, max_recursion=max_recursion - 1)[1][prop.syntax.attribute]
 
 		def udm_objects(prop):
@@ -413,20 +419,69 @@ class UCSTestUDM(object):
 				m.append('computers/ubuntu')
 			except ValueError:
 				pass
-			try:
-				m.remove('computers/domaincontroller_master')
-			except ValueError:
-				pass
+			for mod in ('computers/domaincontroller_master', 'container/dc'):
+				try:
+					m.remove(mod)
+				except ValueError:
+					pass
 
 			if max_recursion <= 0:
 				if prop.syntax.key == 'dn':
 					return  # random.choice(self._cleanup.get(m[0], [None]))  # warning: would cause circular group memberships for groups/group
 				return
+
+			# TODO: parse udm_filter and set values
+			if prop.syntax.udm_filter:
+				return
+
 			_dn, _props = self.create_with_defaults(m[0], max_recursion=max_recursion - 1)
 			p = prop.syntax.key % _props
 			if p == 'dn':
 				return _dn
 			return p
+
+		def choices(syntax_name):
+			def func():
+				return random.choice(getattr(univention.admin.syntax, syntax_name).choices)[0]
+			return func
+
+		def complex(syntax_name):
+			def func(prop):
+				syn = getattr(univention.admin.syntax, syntax_name)
+				if not all(s[1].name in syntax_classes_mapping for s in syn.subsyntaxes):
+					# TODO: warning
+					return
+				# TODO: quote if contains "
+				functions = [
+					_func(syntax_classes_mapping[s[1].name], prop)
+					for s in syn.subsyntaxes
+				]
+				return ' '.join(f() for f in functions)
+			return func
+
+		def known_mail_address():
+			email = uts.random_email()
+			domain = email.rsplit('@', 1)[-1]
+			self.create_with_defaults('mail/domain', name=domain)
+			return email
+
+		def default_container(prop):
+			# Bug #53827
+			class DefaultContainer(univention.admin.syntax.UDM_Objects):
+				"""
+				Syntax to select a |UCS| default container from |LDAP|
+				"""
+				udm_modules = ('container/cn', 'container/ou', 'container/dc')
+				regex = None
+				key = '%(name)s'
+				label = '%(name)s'
+				simple = True
+			s = prop.syntax
+			prop.syntax = DefaultContainer()
+			try:
+				return udm_objects(prop)
+			finally:
+				prop.syntax = s
 
 		syntax_classes_mapping = {
 			'string': uts.random_string,
@@ -438,26 +493,59 @@ class UCSTestUDM(object):
 			'OneThirdString': uts.random_string,
 			'TwoThirdsString': uts.random_string,
 			'FiveThirdsString': uts.random_string,
+			'TwoString': uts.random_string,
 			'IA5string': uts.random_string,
 			'integer': lambda: uts.random_int(0, 100000),
 			'uid': uts.random_username,
 			'gid': uts.random_groupname,
 			'userPasswd': uts.random_string,
 			'passwd': uts.random_string,
-			'Country': lambda: random.choice(univention.admin.syntax.Country.choices)[0],
-			'univentionAdminModules': lambda: random.choice(univention.admin.syntax.univentionAdminModules.choices)[0],
-			'SambaPrivileges': lambda: random.choice(univention.admin.syntax.SambaPrivileges.choices)[0],
-			'sambaGroupType': lambda: random.choice(univention.admin.syntax.sambaGroupType.choices)[0],
-			'adGroupType': lambda: random.choice(univention.admin.syntax.adGroupType.choices)[0],
-			'ipProtocol': lambda: random.choice(univention.admin.syntax.ipProtocol.choices)[0],
+			'Country': choices('Country'),
+			'univentionAdminModules': choices('univentionAdminModules'),
+			'SambaPrivileges': choices('SambaPrivileges'),
+			'sambaGroupType': choices('sambaGroupType'),
+			'adGroupType': choices('adGroupType'),
+			'ipProtocol': choices('ipProtocol'),
+			'Hour': choices('Hour'),
+			'Minute': choices('Minute'),
+			'Month': choices('Month'),
+			'Weekday': choices('Weekday'),
+			'Day': choices('Day'),
+			'NewPortalEntryLinkTarget': choices('NewPortalEntryLinkTarget'),
+			'NewPortalDefaultLinkTarget': choices('NewPortalDefaultLinkTarget'),
+			'AllowDeny': choices('AllowDeny'),
+			'timeSpec': choices('timeSpec'),
+			'booleanNone': choices('booleanNone'),
+			'netbiosNodeType': choices('netbiosNodeType'),
+			'ddnsUpdates': choices('ddnsUpdates'),
+			'ddnsUpdateStyle': choices('ddnsUpdateStyle'),
+			'language': choices('language'),
+			'AllowDenyIgnore': choices('AllowDenyIgnore'),
+			'emailForwardSetting': choices('emailForwardSetting'),
+			'UCSServerRole': choices('UCSServerRole'),
+			'PortalFontColor': choices('PortalFontColor'),
+			'PortalDefaultLinkTarget': choices('PortalDefaultLinkTarget'),
+			'PortalCategory': choices('PortalCategory'),
+			'AuthRestriction': choices('AuthRestriction'),
+			'PortalEntryLinkTarget': choices('PortalEntryLinkTarget'),
+			'optionsUsersUser': choices('optionsUsersUser'),
+			'nfssync': choices('nfssync'),
+			'auto_one_zero': choices('auto_one_zero'),
+			'TimeZone': choices('TimeZone'),
 			'MAC_Address': uts.random_mac,
 			'ipAddress': uts.random_ip,
 			'absolutePath': lambda: '/' + uts.random_string(),
 			'sharePath': lambda: '/' + uts.random_string(),
 			'BaseFilename': lambda: '%s.%s' % (uts.random_string(), uts.random_string(3)),
 			'PrinterURI': lambda: '%s %s' % (random.choice(['lpd://', 'ipp://', 'http://', 'usb:/', 'socket://', 'parallel:/', 'file:/', 'smb://']), uts.random_string()),
-			'Base64Bzip2Text': lambda: __import__('base64').b64encode(__import__('bz2').compress(uts.random_string().encode())).decode('ASCII'),
-			'emailAddress': lambda: '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'Base64Bzip2Text': lambda: base64.b64encode(__import__('bz2').compress(uts.random_string().encode())).decode('ASCII'),
+			'Base64Upload': lambda: base64.b64encode(uts.random_string().encode()).decode('ASCII'),
+			'Base64BaseUpload': lambda: base64.b64encode(uts.random_string().encode()).decode('ASCII'),
+			'Base64Bzip2XML': lambda: base64.b64encode(__import__('bz2').compress(('<?xml?><foo>%s</foo>' % (uts.random_string(),)).encode())).decode('ASCII'),
+			'emailAddress': uts.random_email,
+			'emailAddressTemplate': lambda: '<username>@%s' % (uts.random_domain_name(),),
+			'emailAddressValidDomain': known_mail_address,
+			'primaryEmailAddressValidDomain': known_mail_address,
 			'MailHomeServer': uts.random_domain_name,
 			'boolean': lambda: uts.random_int(0, 1),
 			'disabled': lambda: uts.random_int(0, 1),
@@ -483,15 +571,16 @@ class UCSTestUDM(object):
 			'dnsSRVLocation': lambda: '%s %s %s %s' % (uts.random_int(), uts.random_int(), uts.random_int(), uts.random_domain_name()),
 			'mailinglist_name': uts.random_string,
 			'mail_folder_name': uts.random_string,
-			'date': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
-			'date2': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
-			'iso8601Date': lambda: '20%02d-%02d-%02d' % (random.randint(0, 99), random.randint(1, 12), random.randint(1, 27)),
+			'date': uts.random_date,
+			'date2': uts.random_date,
+			'iso8601Date': uts.random_date,
+			'TimeString': lambda: uts.random_time().rsplit(':', 1)[0],  # Bug #53829
 			'phone': lambda: '+49 421 %s-%s' % (uts.random_int(10000, 99000), uts.random_int(0, 9)),
 			'postalAddress': lambda: '"%s street 1A" "%s" "%s"' % (uts.random_string(), uts.random_int(10000, 99999), uts.random_string()),
 			'keyAndValue': lambda: '%s %s' % (uts.random_string(), uts.random_string()),
 			'SambaLogonHours': lambda: uts.random_int(0, 167),
 			'DebianPackageVersion': uts.random_version,
-			# 'UCSVersion': uts.random_version,
+			'UCSVersion': uts.random_ucs_version,
 			'LDAP_Search': ldap_search,
 			'GroupDN': udm_objects,
 			'UserDN': udm_objects,
@@ -500,25 +589,97 @@ class UCSTestUDM(object):
 			'Windows_Server': udm_objects,
 			'DomainController': udm_objects,
 			'ServicePrint_FQDN': udm_objects,
+			'DNS_ForwardZone': udm_objects,
+			'DNS_ReverseZone': udm_objects,
+			'NewPortalEntries': udm_objects,
+			'NewPortalCategoryEntries': udm_objects,
+			'NewPortalCategories': udm_objects,
+			'network': udm_objects,
+			'Service': udm_objects,
+			'nagiosHostsEnabledDn': udm_objects,
+			'nagiosServiceDn': udm_objects,
+			'dhcpService': udm_objects,
+			'UMC_OperationSet': udm_objects,
+			'WritableShare': udm_objects,
+			'PortalComputer': udm_objects,
+			'PortalEntries': udm_objects,
+			'Portals': udm_objects,
+			'GroupDNOrEmpty': udm_objects,
+			'PrinterProducerList': udm_objects,
+			'UserID': udm_objects,
+			'GroupID': udm_objects,
 			'printerModel': lambda: '"%s" "%s"' % (random.choice(['smb', 'cupsfilters/pxlmono.ppd', 'hp-ppd/HP/HP_LaserJet_6P.ppd', 'cups-pdf/CUPS-PDF_opt.ppd']), uts.random_string()),
-			'PrinterDriverList': udm_attribute,
 			'PrinterNames': udm_objects,
-			# 'network': uts.random_string,
-			# 'UvmmCloudType': uts.random_string,
-			# 'emailForwardSetting': uts.random_string,
-			# 'jpegPhoto': uts.random_string,
-			# 'WritableShare': uts.random_string,
-			# 'Base64Upload': uts.random_string,
-			# 'ActivationDateTimeTimezone': uts.random_string,
-			# 'emailAddressValidDomain': uts.random_string,
-			# 'primaryEmailAddressValidDomain'
-			# 'dhcpEntry': uts.random_string,
-			# 'Service': uts.random_string,
-			# 'dnsEntryReverse': uts.random_string,
-			# 'nagiosHostsEnabledDn': uts.random_string,
-			# 'nagiosServiceDn': uts.random_string,
-			# 'dnsEntryAlias': uts.random_string,
-			# 'dnsEntry': uts.random_string,
+			'PrinterDriverList': udm_attribute,
+			'Packages': udm_attribute,
+			'PackagesRemove': udm_attribute,
+			'KDE_Profile': udm_attribute,
+			'TrueFalseUp': lambda: random.choice(['TRUE', 'FALSE']),
+			'TrueFalseUpper': lambda: random.choice(['TRUE', 'FALSE', 'NONE']),
+			'TrueFalse': lambda: random.choice(['true', 'false', 'none']),
+			'TextArea': lambda: '\n'.join([uts.random_string()] * random.randint(2, 5)),
+			'SignedInteger': uts.random_int,
+			'hostOrIP': uts.random_ip,
+			'hostname_or_ipadress_or_network': lambda: random.choice([uts.random_ip(), uts.random_name(), '%s/%s' % (uts.random_ip(), random.randint(1, 31))]),
+			'jpegPhoto': lambda: '/9j/2wBDAP%swAALCAABAAEBAREA/8QAFAABA%s//EABQQAQ%sD/2gAIAQEAAD8AN//Z' % ('/' * 86, 'A' * 20, 'A' * 20),
+			'Base64UMCIcon': lambda: 'AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAD/////AAAAAA==',
+			'SharedFolderUserACL': complex('SharedFolderUserACL'),
+			'SharedFolderGroupACL': complex('SharedFolderGroupACL'),
+			'dnsMX': complex('dnsMX'),
+			'dnsEntry': complex('dnsEntry'),
+			'dnsEntryReverse': complex('dnsEntryReverse'),
+			'dnsEntryAlias': complex('dnsEntryAlias'),
+			'dhcpEntry': complex('dhcpEntry'),
+			'IP_AddressRange': complex('IP_AddressRange'),
+			'UCR_Variable': complex('UCR_Variable'),
+			'nfsMounts': complex('nfsMounts'),
+			'ActivationDateTimeTimezone': complex('ActivationDateTimeTimezone'),
+			'Localesubdirname_and_GNUMessageCatalog': complex('Localesubdirname_and_GNUMessageCatalog'),
+			'translationTupleShortDescription': complex('translationTupleShortDescription'),
+			'translationTupleLongDescription': complex('translationTupleLongDescription'),
+			'translationTupleTabName': complex('translationTupleTabName'),
+			'I18N_GroupName': complex('I18N_GroupName'),
+			'UMCMessageCatalogFilename_and_GNUMessageCatalog': complex('UMCMessageCatalogFilename_and_GNUMessageCatalog'),
+			'LocalizedAnonymousEmpty': complex('LocalizedAnonymousEmpty'),
+			'PortalLinks': complex('PortalLinks'),
+			'SambaMinPwdAge': complex('SambaMinPwdAge'),
+			'SambaMaxPwdAge': complex('SambaMaxPwdAge'),
+			'UMC_CommandPattern': complex('UMC_CommandPattern'),
+			'attributeMapping': complex('attributeMapping'),
+			'adminFixedAttributes': choices('adminFixedAttributes'),
+			'desktopFixedAttributes': choices('desktopFixedAttributes'),
+			'dhcp_dnsFixedAttributes': choices('dhcp_dnsFixedAttributes'),
+			'dhcp_dnsupdateFixedAttributes': choices('dhcp_dnsupdateFixedAttributes'),
+			'dhcp_leasetimeFixedAttributes': choices('dhcp_leasetimeFixedAttributes'),
+			'dhcp_netbiosFixedAttributes': choices('dhcp_netbiosFixedAttributes'),
+			'dhcp_routingFixedAttributes': choices('dhcp_routingFixedAttributes'),
+			'dhcp_scopeFixedAttributes': choices('dhcp_scopeFixedAttributes'),
+			'dhcp_statementsFixedAttributes': choices('dhcp_statementsFixedAttributes'),
+			'dvcp_bootFixedAttributes': choices('dvcp_bootFixedAttributes'),
+			'maintenanceFixedAttributes': choices('maintenanceFixedAttributes'),
+			'masterPackagesFixedAttributes': choices('masterPackagesFixedAttributes'),
+			'memberPackagesFixedAttributes': choices('memberPackagesFixedAttributes'),
+			'pwhistoryFixedAttributes': choices('pwhistoryFixedAttributes'),
+			'registryFixedAttributes': choices('registryFixedAttributes'),
+			'releaseFixedAttributes': choices('releaseFixedAttributes'),
+			'repositorySyncFixedAttributes': choices('repositorySyncFixedAttributes'),
+			'shareUserQuotaFixedAttributes': choices('shareUserQuotaFixedAttributes'),
+			'slavePackagesFixedAttributes': choices('slavePackagesFixedAttributes'),
+			'umcFixedAttributes': choices('umcFixedAttributes'),
+			'updateFixedAttributes': choices('updateFixedAttributes'),
+			'printerACLTypes': choices('printerACLTypes'),
+			'cscPolicy': choices('cscPolicy'),
+			'ldapFilter': lambda: '(objectClass=*)',
+			'UNIX_AccessRight': lambda: oct(random.randint(0, 0o777)).replace('o', ''),
+			'UNIX_AccessRight_extended': lambda: oct(random.randint(0, 0o2777)).replace('o', ''),
+			'timeperiod': lambda: ','.join(
+				'-'.join((uts.random_time((a, b)), uts.random_time((c, d))))
+				for a, b, c, d in random.choices(((0, 2, 4, 6), (8, 10, 10, 12), (24, 16, 18, 20), (20, 21, 22, 23)), k=random.randint(1, 4))
+			),
+			'listAttributes': uts.random_string,
+			'ldapDn': lambda: self.LDAP_BASE,  # only relevant for settings/syntax:base
+			'filesize': lambda: '%d%s%s' % (random.randint(0, 100), random.choice('gGmMkK'), random.choice('bB')),
+			# 'PortalCategorySelection': uts.random_string, kein bock... deprecated
 		}
 		module_property_mapping = {
 			'sambaRID': lambda: None,  # uts.random_int(1000, 9999),  # prevent The relative ID (SAMBA) is already in use: 5608
@@ -526,6 +687,7 @@ class UCSTestUDM(object):
 			'gidNumber': lambda: None,  # prevent noLock / already used
 			'mailForwardAddress': None,  # depends on mailPrimaryAddress
 			'preferredDeliveryMethod': lambda: random.choice(["any", "mhs", "physical", "telex", "teletex", "g3fax", "g4fax", "ia5", "videotex", "telephone"]),
+			'shell': lambda: random.choice(['/bin/false', '/bin/bash', '/bin/sh', '/usr/sbin/nologin']),
 			'shares/share': {
 				'sambaCustomSettings': lambda: random.choice(['"acl xattr update mtime" yes', '"access based share enum" yes', '"follow symlinks" "yes"']),
 			},
@@ -535,11 +697,43 @@ class UCSTestUDM(object):
 			'dns/ptr_record': {
 				'ip': None,  # prevent, that a ip is set. instead address is set, which builds the ip from address.$superordinate
 			},
+			'settings/extended_attribute': {
+				'version': lambda: '2',  # other versions aren't detected as extended attribute!
+			},
+			'computers/windows': {
+				'ntCompatibility': lambda: '0',  # Bug #53819
+			},
 			'settings/mswmifilter': {
 				'description': None,  # Bug #53797
 				'displayName': None,  # Bug #53797
 			},
+			"settings/directory": {
+				"policies": default_container,
+				"dns": default_container,
+				"dhcp": default_container,
+				"users": default_container,
+				"groups": default_container,
+				"computers": default_container,
+				"domaincontroller": default_container,
+				"networks": default_container,
+				"shares": default_container,
+				"printers": default_container,
+				"mail": default_container,
+				"license": default_container,
+				"base": default_container,
+			},
+			'users/user': {
+				'userCertificate': lambda: base64.b64encode(subprocess.check_output(
+					('openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%s/cert.pem' % (self.FQHN.rstrip('.'),), '-outform', 'der', '-out', '-')
+				)).decode('ASCII'),  # expensive!
+			},
 		}
+
+		def _func(func, prop):
+			if 'prop' in getargspec(func).args:
+				func = functools.partial(func, prop)
+			return func
+
 		for name, prop in module.property_descriptions.items():
 			if name in kwargs:
 				continue
@@ -548,9 +742,7 @@ class UCSTestUDM(object):
 			func = module_property_mapping.get(modulename, {}).get(name, module_property_mapping.get(name, syntax_classes_mapping.get(prop.syntax.name)))
 			if not func:
 				continue
-
-			if 'prop' in getargspec(func).args:
-				func = functools.partial(func, prop)
+			func = _func(func, prop)
 
 			value = list(set(func() for i in range(random.randint(int(prop.required or name in ('ip', 'range')), 4)))) if prop.multivalue else func()
 			if value is None or isinstance(value, list) and all(v is None for v in value):
