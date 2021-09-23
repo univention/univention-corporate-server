@@ -1,3 +1,9 @@
+ucs-test (9.0.7-68) unstable; urgency=low
+
+  * Bug #40709: [pytest] share one common conftest.py
+
+ -- Florian Best <best@univention.de>  Thu, 23 Sep 2021 09:21:13 +0200
+
 ucs-test (9.0.7-67) unstable; urgency=low
 
   * Bug #53826: Update APK in nimmis/alpine-apache for apache2-ssl
