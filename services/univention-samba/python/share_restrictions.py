@@ -40,6 +40,7 @@ from ConfigParser import ConfigParser
 import os
 import re
 import shlex
+import urllib
 
 # defaults
 ucr = ConfigRegistry()
@@ -174,6 +175,7 @@ class ShareConfiguration(object):
 			except IndexError:
 				continue
 
+			share.name = urllib.quote(share.name, safe='')
 			if cfg.has_option(share.name, Restrictions.INVALID_USERS):
 				share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS))
 			if cfg.has_option(share.name, Restrictions.HOSTS_DENY):

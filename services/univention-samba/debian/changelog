@@ -1,3 +1,9 @@
+univention-samba (13.0.0-12) unstable; urgency=medium
+
+  * Bug #53799: fix samba share names with consecutive whitespaces
+
+ -- Tobias Wenzel <wenzel@univention.de>  Thu, 23 Sep 2021 16:01:10 +0200
+
 univention-samba (13.0.0-11) unstable; urgency=medium
 
   * Bug #42182: apply additional aces from appendACL on share folders
