@@ -1,3 +1,9 @@
+ucs-test (10.0.6-52) unstable; urgency=low
+
+  * Bug #53832: Test sizelimit exposure from simple UDM API
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Fri, 24 Sep 2021 14:19:00 +0200
+
 ucs-test (10.0.6-51) unstable; urgency=medium
 
   * Bug #40709: [pytest] share one common conftest.py
@@ -1034,7 +1040,7 @@ ucs-test (10.0.1-39) unstable; urgency=medium
 
 ucs-test (10.0.1-38) unstable; urgency=medium
 
-  * Bug #51804: Revert the workaround in 96rename* to test if the 
+  * Bug #51804: Revert the workaround in 96rename* to test if the
     problems root-cause has been resolved
 
  -- Julia Bremer <bremer@univention.de>  Wed, 09 Dec 2020 11:10:46 +0100

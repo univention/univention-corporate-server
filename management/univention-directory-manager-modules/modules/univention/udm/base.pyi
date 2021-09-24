@@ -134,6 +134,6 @@ class BaseModule(with_metaclass(ModuleMeta)):
 	def get_by_id(self, id):  # type: (Text) -> BaseObjectTV
 		...
 
-	def search(self, filter_s='', base='', scope='sub'):
-		# type: (Text, Optional[Text], Optional[Text]) -> Iterator[BaseObjectTV]
+	def search(self, filter_s='', base='', scope='sub', sizelimit=0):
+		# type: (Text, Optional[Text], Optional[Text], int) -> Iterator[BaseObjectTV]
 		...
