@@ -450,6 +450,7 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 				This list can either be static or dynamic.
 				After defining such a new syntax it can be used by referencing its name in the <literal>syntax</literal> property of an Extended Attribute.
 			</para>
+
 			<section id="udm:ea:select:static">
 				<title>Static selections</title>
 				<para>
@@ -473,6 +474,7 @@ class StaticSelection(select):
 	]
 				]]></programlisting>
 			</section>
+
 			<section id="udm:ea:select:dynamic">
 				<title>Dynamic selections</title>
 				<para>
@@ -887,7 +889,6 @@ udm settings/extended_attribute modify \
 
 		<section id="udm:modules:overview">
 			<title>Übersicht</title>
-
 			<para>
 				&ucsUDM; (kurz UDM) verwendet zur Abbildung von LDAP-Objekten eine eigene Modulstruktur.
 				Im Regelfall entspricht eines dieser UDM-Module einem LDAP-Objekt (z.B. einem Benutzer, einer Gruppe oder einem Container).
@@ -899,7 +900,6 @@ udm settings/extended_attribute modify \
 				Die Module für die Verwaltung der verschiedenen Rechnerobjekte befinden sich beispielsweise unterhalb des Ordners '<filename class="directory">computers/</filename>'.
 				Dieses Objekt kann von der Kommandozeilenschnittstelle durch '<classname>computers/windows'</classname> angesprochen werden.
 			</para>
-
 			<para>
 				Eigene Module sollten nach Möglichkeit in einem eigenen Unterverzeichnis abgelegt werden, um Konflikte mit eventuell später in UCS integrierten Standardmodulen zu vermeiden.
 				Damit die Module initialisiert werden können, muss im Verzeichnis eine Datei <filename class="directory">__init__.py</filename> existieren.
@@ -908,7 +908,6 @@ udm settings/extended_attribute modify \
 
 		<section id="udm:modules:structure">
 			<title>Aufbau eines Moduls</title>
-
 			<para>
 				Ein Modul besteht aus der Definition der Modul-Attribute und der Definition einer von <classname>univention.admin.handlers.simpleLdap</classname> abgeleiteten Klasse mit Namen <classname>object</classname>.
 			</para>
@@ -930,88 +929,91 @@ udm settings/extended_attribute modify \
 					Dabei wird zwischen zwingend notwendigen und optionalen Variablen unterschieden.
 					Die folgende Liste enthält die erforderlichen Variablen, die jedes Modul definieren muss:
 				</para>
-				<variablelist>
-					<varlistentry>
-						<term><varname>module</varname></term>
-						<listitem><simpara>
-								Ein String, der dem Namen des UDM-Moduls entsprechen muss, z.B. <classname>computers/computer</classname>
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>operations</varname></term>
-						<listitem><para>
-								Eine Liste von Strings; enthält alle mit diesem Objekt erlaubten LDAP-Operationen.
-								Mögliche Operationen sind: <simplelist type="inline"><member>add</member><member>edit</member><member>remove</member><member>search</member><member>move</member></simplelist>
-						</para></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>short_description</varname></term>
-						<listitem><simpara>
-								Diese Beschreibung wird im Web-Frontend des &ucsUDM; als Name angezeigt.
-								Within the UMC module LDAP navigation wird dieser Text in der Auswahlliste für mögliche Objekttypen angezeigt.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>long_description</varname></term>
-						<listitem><simpara>
-								Eine ausführliche Beschreibung des Moduls.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>childs</varname></term>
-						<listitem><simpara>
-								Gibt an, ob es sich bei diesem LDAP-Objekt um einen Container handelt.
-								In diesem Fall wird diese Variable auf den Wert <literal>1</literal> gesetzt und andernfalls auf <literal>0</literal>.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry id="udm:modules:globals:options">
-						<term><varname>options</varname></term>
-						<listitem>
-							<para>
-								Die Variable <varname>options</varname> ist ein Python-Dictionary und definiert verschiedene Optionen, die für das Modul gesetzt werden können bzw.  standardmäßig gesetzt sind.
-								Diese Optionen können später bspw. über das Web-Interface des UDM über den Reiter <guimenu>(Optionen)</guimenu> aktiviert und deaktiviert werden.
-								Wird eine Option aktiviert, werden ein oder mehrere LDAP-Objektklassen (gegeben durch den Parameter <classname>objectClasses</classname>) dem Objekt hinzugefügt und im Web-UDM weitere Felder und ggf.
-								Reiter freigeschaltet (bspw. die Groupware-Option für Benutzer).
-								Das Dictionary ordnet jeder Option (als <classname>univention.admin.option</classname>-Objekte) eine eindeutigen Zeichenkette zu, die später zur Referenzierung verwendet wird (siehe <xref linkend="udm:modules:globals:property_descriptions"/>).
-								Each instance has the following parameters:
-							</para>
-							<variablelist>
-								<varlistentry>
-									<term><varname>short_description</varname></term>
-									<listitem><simpara>
-											Eine kurze Beschreibung der Option, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>long_description</varname></term>
-									<listitem><simpara>
-											Eine längere Beschreibung der Option.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>default</varname></term>
-									<listitem><simpara>
-											Definiert, ob diese Option standardmäßig aktiviert sein soll.
-											<literal>True</literal> steht dabei für aktiv und <literal>False</literal> für inaktiv.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>editable</varname></term>
-									<listitem><simpara>
-											Definiert, ob diese Option mehrmalig gesetzt und entfernt werden kann, oder ob diese Option nach einmaliger Aktivierung immer gesetzt bleibt.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>objectClasses</varname></term>
-									<listitem><simpara>
-											Eine Menge von LDAP-Objektklassen, die der LDAP-Eintrag haben muß, damit es mit dieser Option assoziiert wird.
-											Damit ist kein Automatismus verbunden, aber diese Information ist bei der späteren Implementierung der Funktion <function>identify()</function> (<xref linkend="udm:modules:functions"/>) ggf. hilfreich.
-									</simpara></listitem>
-								</varlistentry>
-							</variablelist>
-							<para>
-								Beispiel:
-							</para>
+
+				<section id="udm:modules:globals:mandatory">
+					<title>Mandatory variables></title>
+					<variablelist>
+						<varlistentry>
+							<term><varname>module</varname></term>
+							<listitem><simpara>
+									Ein String, der dem Namen des UDM-Moduls entsprechen muss, z.B. <classname>computers/computer</classname>
+							</simpara></listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><varname>operations</varname></term>
+							<listitem><para>
+									Eine Liste von Strings; enthält alle mit diesem Objekt erlaubten LDAP-Operationen.
+									Mögliche Operationen sind: <simplelist type="inline"><member>add</member><member>edit</member><member>remove</member><member>search</member><member>move</member></simplelist>
+							</para></listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><varname>short_description</varname></term>
+							<listitem><simpara>
+									Diese Beschreibung wird im Web-Frontend des &ucsUDM; als Name angezeigt.
+									Within the UMC module LDAP navigation wird dieser Text in der Auswahlliste für mögliche Objekttypen angezeigt.
+							</simpara></listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><varname>long_description</varname></term>
+							<listitem><simpara>
+									Eine ausführliche Beschreibung des Moduls.
+							</simpara></listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><varname>childs</varname></term>
+							<listitem><simpara>
+									Gibt an, ob es sich bei diesem LDAP-Objekt um einen Container handelt.
+									In diesem Fall wird diese Variable auf den Wert <literal>1</literal> gesetzt und andernfalls auf <literal>0</literal>.
+							</simpara></listitem>
+						</varlistentry>
+						<varlistentry id="udm:modules:globals:options">
+							<term><varname>options</varname></term>
+							<listitem>
+								<para>
+									Die Variable <varname>options</varname> ist ein Python-Dictionary und definiert verschiedene Optionen, die für das Modul gesetzt werden können bzw.  standardmäßig gesetzt sind.
+									Diese Optionen können später bspw. über das Web-Interface des UDM über den Reiter <guimenu>(Optionen)</guimenu> aktiviert und deaktiviert werden.
+									Wird eine Option aktiviert, werden ein oder mehrere LDAP-Objektklassen (gegeben durch den Parameter <classname>objectClasses</classname>) dem Objekt hinzugefügt und im Web-UDM weitere Felder und ggf.
+									Reiter freigeschaltet (bspw. die Groupware-Option für Benutzer).
+									Das Dictionary ordnet jeder Option (als <classname>univention.admin.option</classname>-Objekte) eine eindeutigen Zeichenkette zu, die später zur Referenzierung verwendet wird (siehe <xref linkend="udm:modules:globals:property_descriptions"/>).
+									Each instance has the following parameters:
+								</para>
+								<variablelist>
+									<varlistentry>
+										<term><varname>short_description</varname></term>
+										<listitem><simpara>
+												Eine kurze Beschreibung der Option, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>long_description</varname></term>
+										<listitem><simpara>
+												Eine längere Beschreibung der Option.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>default</varname></term>
+										<listitem><simpara>
+												Definiert, ob diese Option standardmäßig aktiviert sein soll.
+												<literal>True</literal> steht dabei für aktiv und <literal>False</literal> für inaktiv.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>editable</varname></term>
+										<listitem><simpara>
+												Definiert, ob diese Option mehrmalig gesetzt und entfernt werden kann, oder ob diese Option nach einmaliger Aktivierung immer gesetzt bleibt.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>objectClasses</varname></term>
+										<listitem><simpara>
+												Eine Menge von LDAP-Objektklassen, die der LDAP-Eintrag haben muß, damit es mit dieser Option assoziiert wird.
+												Damit ist kein Automatismus verbunden, aber diese Information ist bei der späteren Implementierung der Funktion <function>identify()</function> (<xref linkend="udm:modules:functions"/>) ggf. hilfreich.
+										</simpara></listitem>
+									</varlistentry>
+								</variablelist>
+								<para>
+									Beispiel:
+								</para>
 <programlisting language="python"><![CDATA[
 options = {
 	'opt1': univention.admin.option(
@@ -1021,19 +1023,19 @@ options = {
 	),
 }
 ]]></programlisting>
-						</listitem>
-					</varlistentry>
-					<varlistentry id="udm:modules:globals:property_descriptions">
-						<term><varname>property_descriptions</varname></term>
-						<listitem>
-							<para>
-								Dieses Python-Dictionary enthält alle Attribute, die dieses Modul zur Verfügung stellt.
-								Dabei werden die Attribute (diesmal als <classname>univention.admin.property</classname>-Objekte), über eine eindeutige Zeichenkette als Schlüssel referenziert.
-								Ein solches Modul-Attribut entspricht in der Regel einem LDAP-Attribut, kann aber auch aus anderen Quellen stammen oder berechnet werden.
-							</para>
-							<para>
-								Beispiel:
-							</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry id="udm:modules:globals:property_descriptions">
+							<term><varname>property_descriptions</varname></term>
+							<listitem>
+								<para>
+									Dieses Python-Dictionary enthält alle Attribute, die dieses Modul zur Verfügung stellt.
+									Dabei werden die Attribute (diesmal als <classname>univention.admin.property</classname>-Objekte), über eine eindeutige Zeichenkette als Schlüssel referenziert.
+									Ein solches Modul-Attribut entspricht in der Regel einem LDAP-Attribut, kann aber auch aus anderen Quellen stammen oder berechnet werden.
+								</para>
+								<para>
+									Beispiel:
+								</para>
 <programlisting language="python"><![CDATA[
 property_descriptions = {
 	'prop1': univention.admin.property(
@@ -1050,94 +1052,94 @@ property_descriptions = {
 	),
 }
 ]]></programlisting>
-							<para>
-								Die Parameter haben folgende Bedeutung:
-							</para>
-							<variablelist>
-								<varlistentry>
-									<term><varname>short_description</varname>: <type>str</type></term>
-									<listitem><simpara>
-											Eine kurze Beschreibung, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>long_description</varname>: <type>str</type></term>
-									<listitem><simpara>
-											Eine ausführlichere Beschreibung, die im Web-Frontend des &ucsUDM; für die Tooltips genutzt wird.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>syntax</varname>: <type>type</type></term>
-									<listitem><simpara>
-											Dieser Parameter gibt den Typ eines Attributs an.
-											Anhand dieser Typ-Definitionen kann der &ucsUDM; die angegebenen Werte für das Attribut überprüfen und bei ungültigen Werten eine detaillierte Fehlermeldung liefern.
-											A list of syntax classes is available in <xref linkend="udm:syntax:ldap"/>..
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>multivalue</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											kann die Werte <literal>True</literal> oder <literal>False</literal> annehmen. Ist dieser Parameter auf <literal>True</literal> gesetzt handelt es sich bei dem Wert des Attributs um eine Liste.
-											Der Parameter <varname>syntax</varname> gibt in diesem Fall den Typ der Elemente dieser Liste an.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>required</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											Ist dieser Parameter auf <literal>True</literal> gesetzt, muß für dieses Attribut ein Wert angegeben werden.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>may_change</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											Ist dieser Parameter auf <literal>True</literal> gesetzt, kann der Wert dieses Attributs auch nach der Erstellung des Objektes verändert werden, ansonsten nur einmalig bein Anlegen.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>editable</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											Ist dieser Parameter auf <literal>False</literal> gesetzt, dann kann der Wert dieses Attributes schon beim Erstellen nicht angegeben werden. Dies ist i.d.R. nur für automatisch generierte oder berechnete Werte interessant.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>identifies</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											diese Option sollte bei genau einem Attribut eines Moduls auf <literal>True</literal> gesetzt sein, um dasjenige Attribut zu kennzeichnen, anhand dessen das Objekt eindeutig zu identifizieren ist.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>dontsearch</varname>: <type>bool</type></term>
-									<listitem><simpara>
-											Ist dieser Parameter auf <literal>False</literal> gesetzt, kann das Feld nicht als das Feld für die Suche ausgewählt werden.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>default</varname>: <type>Any</type></term>
-									<listitem><simpara>
-											Ein Vorgabewert für das Attribut, wenn das Objekt über das Web-Frontend angelegt wird.
-									</simpara></listitem>
-								</varlistentry>
-								<varlistentry>
-									<term><varname>options</varname>: <type>List[str]</type></term>
-									<listitem><simpara>
-											Eine Liste von Schlüsselwörtern, die Optionen identifizieren mit denen dieses Attribut ein- bzw. ausgeblendet werden kann.
-									</simpara></listitem>
-								</varlistentry>
-							</variablelist>
-						</listitem>
-					</varlistentry>
-					<varlistentry id="udm:modules:globals:layout">
-						<term><varname>layout</varname></term>
-						<listitem>
-							<para>
-								Die Attribute eines Objektes können in Gruppen angeordnet werden.
-								Diese werden beispielsweise im &ucsUDM; als Reiter dargestellt.
-								Für jeden Reiter muß eine Instanz von <classname>univention.admin.tab</classname> im Array <varname>layout</varname> angelegt werden.
-								Als Parameter wird der Name, eine Beschreibung für den Reiter sowie eine Liste der Zeilen erwartet.
-								In jeder Zeile können sich bis zu zwei Attribute befinden, für die jeweils eine Instanz von <classname>univention.admin.field</classname> anzulegen ist.
-								Als Parameter wird jeweils der Name eines UDM-Attributs aus <xref linkend="udm:modules:globals:property_descriptions"/> erwartet.
-								Über den optionalen Parameter <property>colspan=2</property> kann das Widget für ein UDM-Attribut auch über beide Spalten ausgedehnt werden.
-							</para>
+								<para>
+									Die Parameter haben folgende Bedeutung:
+								</para>
+								<variablelist>
+									<varlistentry>
+										<term><varname>short_description</varname>: <type>str</type></term>
+										<listitem><simpara>
+												Eine kurze Beschreibung, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>long_description</varname>: <type>str</type></term>
+										<listitem><simpara>
+												Eine ausführlichere Beschreibung, die im Web-Frontend des &ucsUDM; für die Tooltips genutzt wird.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>syntax</varname>: <type>type</type></term>
+										<listitem><simpara>
+												Dieser Parameter gibt den Typ eines Attributs an.
+												Anhand dieser Typ-Definitionen kann der &ucsUDM; die angegebenen Werte für das Attribut überprüfen und bei ungültigen Werten eine detaillierte Fehlermeldung liefern.
+												A list of syntax classes is available in <xref linkend="udm:syntax:ldap"/>..
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>multivalue</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												kann die Werte <literal>True</literal> oder <literal>False</literal> annehmen. Ist dieser Parameter auf <literal>True</literal> gesetzt handelt es sich bei dem Wert des Attributs um eine Liste.
+												Der Parameter <varname>syntax</varname> gibt in diesem Fall den Typ der Elemente dieser Liste an.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>required</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												Ist dieser Parameter auf <literal>True</literal> gesetzt, muß für dieses Attribut ein Wert angegeben werden.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>may_change</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												Ist dieser Parameter auf <literal>True</literal> gesetzt, kann der Wert dieses Attributs auch nach der Erstellung des Objektes verändert werden, ansonsten nur einmalig bein Anlegen.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>editable</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												Ist dieser Parameter auf <literal>False</literal> gesetzt, dann kann der Wert dieses Attributes schon beim Erstellen nicht angegeben werden. Dies ist i.d.R. nur für automatisch generierte oder berechnete Werte interessant.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>identifies</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												diese Option sollte bei genau einem Attribut eines Moduls auf <literal>True</literal> gesetzt sein, um dasjenige Attribut zu kennzeichnen, anhand dessen das Objekt eindeutig zu identifizieren ist.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>dontsearch</varname>: <type>bool</type></term>
+										<listitem><simpara>
+												Ist dieser Parameter auf <literal>False</literal> gesetzt, kann das Feld nicht als das Feld für die Suche ausgewählt werden.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>default</varname>: <type>Any</type></term>
+										<listitem><simpara>
+												Ein Vorgabewert für das Attribut, wenn das Objekt über das Web-Frontend angelegt wird.
+										</simpara></listitem>
+									</varlistentry>
+									<varlistentry>
+										<term><varname>options</varname>: <type>List[str]</type></term>
+										<listitem><simpara>
+												Eine Liste von Schlüsselwörtern, die Optionen identifizieren mit denen dieses Attribut ein- bzw. ausgeblendet werden kann.
+										</simpara></listitem>
+									</varlistentry>
+								</variablelist>
+							</listitem>
+						</varlistentry>
+						<varlistentry id="udm:modules:globals:layout">
+							<term><varname>layout</varname></term>
+							<listitem>
+								<para>
+									Die Attribute eines Objektes können in Gruppen angeordnet werden.
+									Diese werden beispielsweise im &ucsUDM; als Reiter dargestellt.
+									Für jeden Reiter muß eine Instanz von <classname>univention.admin.tab</classname> im Array <varname>layout</varname> angelegt werden.
+									Als Parameter wird der Name, eine Beschreibung für den Reiter sowie eine Liste der Zeilen erwartet.
+									In jeder Zeile können sich bis zu zwei Attribute befinden, für die jeweils eine Instanz von <classname>univention.admin.field</classname> anzulegen ist.
+									Als Parameter wird jeweils der Name eines UDM-Attributs aus <xref linkend="udm:modules:globals:property_descriptions"/> erwartet.
+									Über den optionalen Parameter <property>colspan=2</property> kann das Widget für ein UDM-Attribut auch über beide Spalten ausgedehnt werden.
+								</para>
 <programlisting language="python"><![CDATA[
 from univention.admin.layout import Tab
 layout = [
@@ -1151,225 +1153,230 @@ layout = [
 	...
 ]
 ]]></programlisting>
-							<para>
-								Über die optionale <property>advanced=True</property> Einstellung kann kontrolliert werden, ob der Reiter standardmäßig auf dem <guimenu>erweiterten Einstellungen</guimenu> angezeigt werden soll.
-							</para>
-						</listitem>
-					</varlistentry>
-					<varlistentry id="udm:modules:globals:mapping">
-						<term><varname>mapping</varname></term>
-						<listitem>
-							<para>
-								Bildet die UDM-Attribute auf LDAP-Attribute ab.
-								Für jedes UDM-Attribut wird i.d.R. eine Abbildung registriert, die den Namen eines UDM-Attributs (<varname>udm_name</varname>) mit dem zugehörigen LDAP-Attribut (<varname>ldap_name</varname>) verknüpft:
-							</para>
+								<para>
+									Über die optionale <property>advanced=True</property> Einstellung kann kontrolliert werden, ob der Reiter standardmäßig auf dem <guimenu>erweiterten Einstellungen</guimenu> angezeigt werden soll.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry id="udm:modules:globals:mapping">
+							<term><varname>mapping</varname></term>
+							<listitem>
+								<para>
+									Bildet die UDM-Attribute auf LDAP-Attribute ab.
+									Für jedes UDM-Attribut wird i.d.R. eine Abbildung registriert, die den Namen eines UDM-Attributs (<varname>udm_name</varname>) mit dem zugehörigen LDAP-Attribut (<varname>ldap_name</varname>) verknüpft:
+								</para>
 <programlisting language="python"><![CDATA[
 mapping.register(udm_name, ldap_name)
 mapping.register(udm_name, ldap_name, map_value, unmap_value)
 ]]></programlisting>
-							<para>
-								Für die Umwandlung der Werte zwischen UDM-Attribut und LDAP-Attribut können zwei Funktionen angegeben werden:
-								<function>map_value</function> ist für die Richtung UDM → LDAP zuständig, <function>unmap_value</function> für die Regenrichtung von LDAP zu UDM.
-								Die zweite Funktion ist insbesondere notwendig für alle einwertige UDM-Attribute, da im LDAP selbst diese immer als null- oder einelementige Liste realisiert sind.
-								Die Standard-Implementierung <function>univention.admin.mapping.ListToString</function> liefert jeweils den ersten Eintrag der Liste zurück und kann daher i.d.R. für alle einwertigen Attribute als <function>unmap_value</function>-Funktion angegeben werden.
-								Für <function>map_value</function> (UDM→LDAP) genügt es <literal>None</literal> anzugeben, das dafür sorgt, das der ggf. vorhandene Wert in eine einelementige Liste konvertiert wird.
-							</para>
-							<warning>
 								<para>
-									Ein UDM-Attribute enthält entweder immer nur eine Zeichenkette (einwertige Attribute) oder eine Liste von Zeichenketten (mehrwertige Attribute), nie nur eine Zahl oder einen anderen Python-Typ!
+									Für die Umwandlung der Werte zwischen UDM-Attribut und LDAP-Attribut können zwei Funktionen angegeben werden:
+									<function>map_value</function> ist für die Richtung UDM → LDAP zuständig, <function>unmap_value</function> für die Regenrichtung von LDAP zu UDM.
+									Die zweite Funktion ist insbesondere notwendig für alle einwertige UDM-Attribute, da im LDAP selbst diese immer als null- oder einelementige Liste realisiert sind.
+									Die Standard-Implementierung <function>univention.admin.mapping.ListToString</function> liefert jeweils den ersten Eintrag der Liste zurück und kann daher i.d.R. für alle einwertigen Attribute als <function>unmap_value</function>-Funktion angegeben werden.
+									Für <function>map_value</function> (UDM→LDAP) genügt es <literal>None</literal> anzugeben, das dafür sorgt, das der ggf. vorhandene Wert in eine einelementige Liste konvertiert wird.
 								</para>
-							</warning>
-						</listitem>
-					</varlistentry>
-				</variablelist>
-				<para>
-					Folgende Angaben sind optional und müssen nur definiert werden, wenn das Modul diese speziellen Attribute besitzt:
-				</para>
-				<variablelist>
-					<varlistentry>
-						<term><varname>virtual</varname></term>
-						<listitem><simpara>
-								Module, die diese Variable auf <literal>1</literal> setzen sind eine Art Hilfsmodul für andere Module, die keine zugehörigen LDAP-Objekte haben.
-								Ein Beispiel hierfür ist das Modul <classname>computers/computer</classname>, das als Hilfsmodul für alle Rechnertypen dient.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>template</varname></term>
-						<listitem><simpara>
-								Ein Modul, das diese Variable auf <literal>1</literal> setzt, bietet die Möglichkeit Vorgabewerte für die Attribute von anderen Modulen zu definieren.
-								Ein Beispiel hierfür ist die Benutzer-Vorlage (das Modul <classname>settings/usertemplate</classname>).
-								Eine solche Vorlage kann dann beispielsweise beim Anlegen eines Benutzers ausgewählt werden und die darin definierten Werte werden als Vorgaben in die Eingabemasken übernommen.
-						</simpara></listitem>
-					</varlistentry>
-				</variablelist>
-			</section>
+								<warning>
+									<para>
+										Ein UDM-Attribute enthält entweder immer nur eine Zeichenkette (einwertige Attribute) oder eine Liste von Zeichenketten (mehrwertige Attribute), nie nur eine Zahl oder einen anderen Python-Typ!
+									</para>
+								</warning>
+							</listitem>
+						</varlistentry>
+					</variablelist>
+				</section>
 
-				<section id="udm:modules:class">
-					<title>The class object</title>
+				<section id="udm:modules:globals:optional">
+					<title>Optional arguments:</title>
 					<para>
-						Die Klasse <classname>object</classname> eines Moduls bildet die Schnittstelle zwischen &ucsUDM; und den LDAP-Operationen, die beim Anlegen, Verändern, Verschieben oder Löschen eines Objekts ausgelöst werden.
-						Diese Klasse unterstützt den &ucsUDM; bei der Abbildung der definierten Attribute des Moduls auf LDAP-Objekte und -Attribute.
-					</para>
-					<para>
-						Dafür ist die vordefinierte API der Klasse einzuhalten.
-						Die Basisklasse <classname>univention.admin.handlers.simpleLdap</classname> bietet für einfache LDAP-Objekte die wesentlichen Funktionalitäten, so dass in der Regel nur noch wenige Anpassungen notwendig sind.
-						Eine Instanz (<varname>self</varname>) kapselt alle Informationen eines Objekts, auf die auf verschiedenen Arten zugegriffen werden kann:
+						Folgende Angaben sind optional und müssen nur definiert werden, wenn das Modul diese speziellen Attribute besitzt:
 					</para>
 					<variablelist>
 						<varlistentry>
-							<term><varname>self.dn</varname> → String</term>
+							<term><varname>virtual</varname></term>
 							<listitem><simpara>
-									Distinguished Name im LDAP-DIT
+									Module, die diese Variable auf <literal>1</literal> setzen sind eine Art Hilfsmodul für andere Module, die keine zugehörigen LDAP-Objekte haben.
+									Ein Beispiel hierfür ist das Modul <classname>computers/computer</classname>, das als Hilfsmodul für alle Rechnertypen dient.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
-							<term><varname>self.position</varname> → univention.admin.uldap#position</term>
+							<term><varname>template</varname></term>
 							<listitem><simpara>
-									Container-Element im LDAP-DIT
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self['UDM-Propertyname']</varname> → [Werte, ...]</term>
-							<listitem><simpara>
-									Wrapper um <varname>self.info</varname>, der zusätzlich bei einer Zuweisung den Wert anhand der Syntax überprüft und Standardwerte beim Lesen liefert.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.info['UDM-Propertyname']</varname> → [Werte, ...]</term>
-							<listitem><simpara>
-									Dictionary mit den aktuell gesetzten Werten der UDM-Properties.
-									Der direkte Zugriff darauf ermöglicht z.B. die Initialisierung von <property>editable=False</property> Properties.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.oldinfo['UDM-Propertyname']</varname> → [Werte, ...]</term>
-							<listitem><simpara>
-									Dictionary der ursprünglich gelesenen Werte, umgewandelt in UDM-Propertynamen.
-									Diese Information wird vor allem intern benötigt, um Änderungen am Python-Objekt zurück auf den zugehörigen Eintrag im LDAP zu übertragen.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.oldattr['LDAP-Attributname']</varname> → [Werte, ...]</term>
-							<listitem><simpara>
-									Dictionary der ursprünglich aus dem LDAP gelesenen Attribute.
-									Wird i.d.R. nur dazu genutzt, um die ''objectClass''es auszulesen.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.oldpolicies</varname> → [Policy-DNs, ...]</term>
-							<listitem><simpara>
-									Kopie der Liste der DNs der referenzierten univentionPolicyReference...
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.policies</varname> → [Policy-DNs, ...]</term>
-							<listitem><simpara>
-									Liste der DNs der referenzierten univentionPolicyReference...
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.policyObjects[Policy-DN]</varname> → univention.admin.handlers#simplePolicy</term>
-							<listitem><simpara>
-									Dictionary der geladenen Policies.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.extended_udm_attributes</varname> → [univention.admin#extended_attribute, ...]</term>
-							<listitem><simpara>
-									Liste aller ''Erweiterten Attribute'' des Objekts.
-							</simpara></listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><varname>self.ldap_extra_objectclasses</varname> → [(objectClass, propertyName, syntax, ldapMapping, deleteValues, deleteObjectClass), ...]</term>
-							<listitem><simpara>
-									interne Liste von Tupeln für ''Erweiterten Attribute'', um automatisch Objektklassen hinzuzufügen bzw. zu entfernen
+									Ein Modul, das diese Variable auf <literal>1</literal> setzt, bietet die Möglichkeit Vorgabewerte für die Attribute von anderen Modulen zu definieren.
+									Ein Beispiel hierfür ist die Benutzer-Vorlage (das Modul <classname>settings/usertemplate</classname>).
+									Eine solche Vorlage kann dann beispielsweise beim Anlegen eines Benutzers ausgewählt werden und die darin definierten Werte werden als Vorgaben in die Eingabemasken übernommen.
 							</simpara></listitem>
 						</varlistentry>
 					</variablelist>
-					<para>
-						Die Klasse <classname>simpleLdap</classname> bietet zudem die weitere Möglichkeit, vor und nach der LDAP-Operation durch den Aufruf von Funktionen weitere Anpassungen vorzunehmen.
-						Beispielsweise wird vor dem Anlegen eines LDAP-Objekte die Funktion ''_ldap_pre_create()'' und nach dem Vorgang die Funktion ''_ldap_post_create()'' aufgerufen.
-						Solche Pre- und Post-Funktionen existieren analog auch für die Operationen <function>modify</function>, <function>move</function> und <function>remove</function>.
-						Die folgende Tabelle listet alle verwendeten Funktionen in der Aufrufreihenfolge von oben nach unten auf:
-					</para>
-					<table>
-						<title>LDAP actions and hooks</title>
-						<tgroup cols="4">
-							<colspec colnum="1" colname="col1" colwidth="3*"/>
-							<colspec colnum="2" colname="col2" colwidth="1*"/>
-							<colspec colnum="3" colname="col3" colwidth="1*"/>
-							<colspec colnum="4" colname="col4" colwidth="1*"/>
-							<thead>
-								<row>
-									<entry>Description</entry>
-									<entry>Create</entry>
-									<entry>Modify</entry>
-									<entry>Remove</entry>
-								</row>
-							</thead>
-							<tbody>
-								<row>
-									<entry>Before validation</entry>
-									<entry namest="col2" nameend="col3" align="center">_ldap_pre_ready()</entry>
-								</row>
-								<row>
-									<entry morerows="1">Validates, that all must attributes are set</entry>
-									<entry namest="col2" nameend="col3" align="center">ready()</entry>
-								</row>
-								<row>
-									<entry>_ldap_pre_create()</entry>
-									<entry>_ldap_pre_modify()</entry>
-									<entry>_ldap_pre_remove()</entry>
-								</row>
-								<row>
-									<entry>Policy Copy-on-Write</entry>
-									<entry>_update_policies()</entry>
-									<entry>_update_policies()</entry>
-								</row>
-								<row>
-									<entry>Extension point for Extended Attribute</entry>
-									<entry>hook_ldap_pre_create()</entry>
-									<entry>hook_ldap_pre_modify()</entry>
-									<entry>hook_ldap_pre_remove()</entry>
-								</row>
-								<row>
-									<entry>Returns initial list of (LDAP-attribute-name, value)- resp. (LDAP-attribute-name, [values]) tuples</entry>
-									<entry>_ldap_addlist()</entry>
-								</row>
-								<row>
-									<entry>Calculates difference between self.oldinfo and self.info</entry>
-									<entry namest="col2" nameend="col3" align="center">_ldap_modlist()</entry>
-								</row>
-								<row>
-									<entry>Extension point for Extended Attribute</entry>
-									<entry>hook_ldap_addlist()</entry>
-									<entry>hook_ldap_modlist()</entry>
-								</row>
-								<row>
-									<entry>Real action</entry>
-									<entry>ADD</entry>
-									<entry>MODIFY</entry>
-									<entry>DELETE</entry>
-								</row>
-								<row>
-									<entry></entry>
-									<entry>_ldap_post_create()</entry>
-									<entry>_ldap_post_modify()</entry>
-									<entry>_ldap_post_remove()</entry>
-								</row>
-								<row>
-									<entry>Extension point for Extended Attribute</entry>
-									<entry>hook_ldap_post_create()</entry>
-									<entry>hook_ldap_post_modify()</entry>
-									<entry>hook_ldap_post_remove()</entry>
-								</row>
-							</tbody>
-						</tgroup>
-					</table>
-					<para>
-						The functions <methodname>hook_ldap_*</methodname> are described in <xref linkend="udm:hook"/>.
-					</para>
 				</section>
+			</section>
+
+			<section id="udm:modules:class">
+				<title>The class object</title>
+				<para>
+					Die Klasse <classname>object</classname> eines Moduls bildet die Schnittstelle zwischen &ucsUDM; und den LDAP-Operationen, die beim Anlegen, Verändern, Verschieben oder Löschen eines Objekts ausgelöst werden.
+					Diese Klasse unterstützt den &ucsUDM; bei der Abbildung der definierten Attribute des Moduls auf LDAP-Objekte und -Attribute.
+				</para>
+				<para>
+					Dafür ist die vordefinierte API der Klasse einzuhalten.
+					Die Basisklasse <classname>univention.admin.handlers.simpleLdap</classname> bietet für einfache LDAP-Objekte die wesentlichen Funktionalitäten, so dass in der Regel nur noch wenige Anpassungen notwendig sind.
+					Eine Instanz (<varname>self</varname>) kapselt alle Informationen eines Objekts, auf die auf verschiedenen Arten zugegriffen werden kann:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><varname>self.dn</varname> → String</term>
+						<listitem><simpara>
+								Distinguished Name im LDAP-DIT
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.position</varname> → univention.admin.uldap#position</term>
+						<listitem><simpara>
+								Container-Element im LDAP-DIT
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<listitem><simpara>
+								Wrapper um <varname>self.info</varname>, der zusätzlich bei einer Zuweisung den Wert anhand der Syntax überprüft und Standardwerte beim Lesen liefert.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.info['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<listitem><simpara>
+								Dictionary mit den aktuell gesetzten Werten der UDM-Properties.
+								Der direkte Zugriff darauf ermöglicht z.B. die Initialisierung von <property>editable=False</property> Properties.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.oldinfo['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<listitem><simpara>
+								Dictionary der ursprünglich gelesenen Werte, umgewandelt in UDM-Propertynamen.
+								Diese Information wird vor allem intern benötigt, um Änderungen am Python-Objekt zurück auf den zugehörigen Eintrag im LDAP zu übertragen.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.oldattr['LDAP-Attributname']</varname> → [Werte, ...]</term>
+						<listitem><simpara>
+								Dictionary der ursprünglich aus dem LDAP gelesenen Attribute.
+								Wird i.d.R. nur dazu genutzt, um die ''objectClass''es auszulesen.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.oldpolicies</varname> → [Policy-DNs, ...]</term>
+						<listitem><simpara>
+								Kopie der Liste der DNs der referenzierten univentionPolicyReference...
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.policies</varname> → [Policy-DNs, ...]</term>
+						<listitem><simpara>
+								Liste der DNs der referenzierten univentionPolicyReference...
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.policyObjects[Policy-DN]</varname> → univention.admin.handlers#simplePolicy</term>
+						<listitem><simpara>
+								Dictionary der geladenen Policies.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.extended_udm_attributes</varname> → [univention.admin#extended_attribute, ...]</term>
+						<listitem><simpara>
+								Liste aller ''Erweiterten Attribute'' des Objekts.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>self.ldap_extra_objectclasses</varname> → [(objectClass, propertyName, syntax, ldapMapping, deleteValues, deleteObjectClass), ...]</term>
+						<listitem><simpara>
+								interne Liste von Tupeln für ''Erweiterten Attribute'', um automatisch Objektklassen hinzuzufügen bzw. zu entfernen
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					Die Klasse <classname>simpleLdap</classname> bietet zudem die weitere Möglichkeit, vor und nach der LDAP-Operation durch den Aufruf von Funktionen weitere Anpassungen vorzunehmen.
+					Beispielsweise wird vor dem Anlegen eines LDAP-Objekte die Funktion ''_ldap_pre_create()'' und nach dem Vorgang die Funktion ''_ldap_post_create()'' aufgerufen.
+					Solche Pre- und Post-Funktionen existieren analog auch für die Operationen <function>modify</function>, <function>move</function> und <function>remove</function>.
+					Die folgende Tabelle listet alle verwendeten Funktionen in der Aufrufreihenfolge von oben nach unten auf:
+				</para>
+				<table>
+					<title>LDAP actions and hooks</title>
+					<tgroup cols="4">
+						<colspec colnum="1" colname="col1" colwidth="3*"/>
+						<colspec colnum="2" colname="col2" colwidth="1*"/>
+						<colspec colnum="3" colname="col3" colwidth="1*"/>
+						<colspec colnum="4" colname="col4" colwidth="1*"/>
+						<thead>
+							<row>
+								<entry>Description</entry>
+								<entry>Create</entry>
+								<entry>Modify</entry>
+								<entry>Remove</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Before validation</entry>
+								<entry namest="col2" nameend="col3" align="center">_ldap_pre_ready()</entry>
+							</row>
+							<row>
+								<entry morerows="1">Validates, that all must attributes are set</entry>
+								<entry namest="col2" nameend="col3" align="center">ready()</entry>
+							</row>
+							<row>
+								<entry>_ldap_pre_create()</entry>
+								<entry>_ldap_pre_modify()</entry>
+								<entry>_ldap_pre_remove()</entry>
+							</row>
+							<row>
+								<entry>Policy Copy-on-Write</entry>
+								<entry>_update_policies()</entry>
+								<entry>_update_policies()</entry>
+							</row>
+							<row>
+								<entry>Extension point for Extended Attribute</entry>
+								<entry>hook_ldap_pre_create()</entry>
+								<entry>hook_ldap_pre_modify()</entry>
+								<entry>hook_ldap_pre_remove()</entry>
+							</row>
+							<row>
+								<entry>Returns initial list of (LDAP-attribute-name, value)- resp. (LDAP-attribute-name, [values]) tuples</entry>
+								<entry>_ldap_addlist()</entry>
+							</row>
+							<row>
+								<entry>Calculates difference between self.oldinfo and self.info</entry>
+								<entry namest="col2" nameend="col3" align="center">_ldap_modlist()</entry>
+							</row>
+							<row>
+								<entry>Extension point for Extended Attribute</entry>
+								<entry>hook_ldap_addlist()</entry>
+								<entry>hook_ldap_modlist()</entry>
+							</row>
+							<row>
+								<entry>Real action</entry>
+								<entry>ADD</entry>
+								<entry>MODIFY</entry>
+								<entry>DELETE</entry>
+							</row>
+							<row>
+								<entry></entry>
+								<entry>_ldap_post_create()</entry>
+								<entry>_ldap_post_modify()</entry>
+								<entry>_ldap_post_remove()</entry>
+							</row>
+							<row>
+								<entry>Extension point for Extended Attribute</entry>
+								<entry>hook_ldap_post_create()</entry>
+								<entry>hook_ldap_post_modify()</entry>
+								<entry>hook_ldap_post_remove()</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<para>
+					The functions <methodname>hook_ldap_*</methodname> are described in <xref linkend="udm:hook"/>.
+				</para>
+			</section>
 
 			<section id="udm:modules:functions">
 				<title>The functions identify and lookup</title>
@@ -2607,6 +2614,7 @@ ucr set directory/manager/rest/authorized-groups/udm-api-users="cn=UDM API Users
 systemctl restart univention-directory-manager-rest
 				</programlisting>
 		</section>
+
 		<section id="udm:rest_api:overview">
 			<title>API overview</title>
 			<para>
@@ -2655,6 +2663,7 @@ systemctl restart univention-directory-manager-rest
 				By visiting <uri>https://<replaceable>FQHN</replaceable>/univention/udm/</uri> with a browser you can navigate and use the API interactively.
 			</para>
 		</section>
+
 		<section id="udm:rest_api:usage_examples">
 			<title>API usage examples</title>
 			<para>
@@ -2669,6 +2678,7 @@ systemctl restart univention-directory-manager-rest
 			<para>
 				For more information on <wordasword>HAL</wordasword> please refer to the <ulink url="https://tools.ietf.org/html/draft-kelly-json-hal-08">Internet Draft for HAL</ulink>.
 			</para>
+
 			<section id="udm:rest_api:usage_examples:post">
 				<title>Create a user via a POST request</title>
 				<para>
@@ -2816,6 +2826,7 @@ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
 					</programlisting>
 				</para>
 			</section>
+
 			<section id="udm:rest_api:usage_examples:get">
 				<title>Search for users via a GET request</title>
 				<para>
@@ -2918,6 +2929,7 @@ curl -X GET -H "Accept: application/json" \
 					</programlisting>
 				</para>
 			</section>
+
 			<section id="udm:rest_api:usage_examples:put">
 				<title>Modify a user via a PUT request</title>
 				<para>
@@ -2953,6 +2965,7 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
 					</note>
 				</para>
 			</section>
+
 			<section id="udm:rest_api:usage_examples:delete">
 				<title>Delete a user via a DELETE request</title>
 				<para>
@@ -3084,6 +3097,7 @@ mapping.register('property', 'attribute', map_function, unmap_function)
 				]]></programlisting>
 			</para>
 		</section>
+
 		<section id="udm:python-migration:mapping-encoding"><title>Mapping Encoding</title>
 			<warning><para>
 				Specifying the mapping encoding is incompatible with UCS 4.4.
