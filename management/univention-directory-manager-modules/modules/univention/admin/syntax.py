@@ -182,6 +182,22 @@ class ISyntax(object):
 	def parse_command_line(self, value):
 		return self.parse(value)
 
+	@classmethod
+	def new(self):
+		# type: () -> Union[str, List[str]]
+		"""
+		Return the initial value.
+		"""
+		return ''
+
+	@classmethod
+	def any(self):
+		# type: () -> Union[str, List[str]]
+		"""
+		Return the default search filter.
+		"""
+		return '*'
+
 
 class simple(ISyntax):
 	"""
@@ -207,20 +223,6 @@ class simple(ISyntax):
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(self.error_message)
-
-	@classmethod
-	def new(self):
-		"""
-		Return the initial value.
-		"""
-		return ''
-
-	@classmethod
-	def any(self):
-		"""
-		Return the default search filter.
-		"""
-		return '*'
 
 	@classmethod
 	def checkLdap(self, lo, value):
@@ -258,14 +260,6 @@ class select(ISyntax):
 
 		if text in map(lambda x: x[0], self.choices) or (not text and select.empty_value):
 			return text
-
-	@classmethod
-	def new(self):
-		return ''
-
-	@classmethod
-	def any(self):
-		return '*'
 
 
 class combobox(select):
@@ -327,8 +321,8 @@ class complex(ISyntax):
 	all_required = True
 	"""All sub-values must contain a value."""
 
-	subsyntaxes = []
-	subsyntax_names = ()
+	subsyntaxes = []  # type: Sequence[Tuple[str, Type[ISyntax]]]
+	subsyntax_names = ()  # type: Tuple[str, ...]
 	subsyntax_key_value = False
 
 	@classmethod
@@ -417,7 +411,7 @@ class complex(ISyntax):
 
 	@classmethod
 	def new(self):
-		# type: () -> List[str]
+		# type: () -> Union[str, List[str]]
 		s = []
 		for desc, syntax in self.subsyntaxes:
 			if not inspect.isclass(syntax):
@@ -426,8 +420,9 @@ class complex(ISyntax):
 				s.append(syntax().new())
 		return s
 
+	@classmethod
 	def any(self):
-		# type: () -> List[str]
+		# type: () -> Union[str, List[str]]
 		s = []
 		for desc, syntax in self.subsyntaxes:
 			if not inspect.isclass(syntax):
@@ -1704,7 +1699,7 @@ class IP_AddressRange(complex):
 	subsyntaxes = (
 		(_('First address'), ipAddress),
 		(_('Last address'), ipAddress),
-	)
+	)  # type: Sequence[Tuple[str, Type[ISyntax]]]
 	subsyntax_names = ('first', 'last')
 
 	@classmethod
@@ -2201,7 +2196,11 @@ class dnsSRVName(complex):
 	"""
 	min_elements = 2
 	all_required = False
-	subsyntaxes = ((_('Service'), string), (_('Protocol'), ipProtocolSRV), (_('Extension'), string))
+	subsyntaxes = [
+		(_('Service'), string),
+		(_('Protocol'), ipProtocolSRV),
+		(_('Extension'), string),
+	]
 	subsyntax_names = ('service', 'protocol', 'extension')
 	size = ('Half', 'Half', 'One')
 
