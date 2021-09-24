@@ -149,7 +149,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		</title>
 		<para>
 			Each <acronym>UDM</acronym> module provides a set of mappings from <acronym>LDAP</acronym> attributes to properties.
-			This set is not complete, because <acronym>LDAP</acronym> objects can be extended with additional <emphasis>auxiliary objectClasses</emphasis>
+			This set is not complete, because <acronym>LDAP</acronym> objects can be extended with additional <emphasis>auxiliary objectClasses</emphasis>.
 			<firstterm>Extended Attributes</firstterm> can be used to extend modules to show additional properties.
 			These properties can be mapped to any already defined <acronym>LDAP</acronym> attribute, but objects can also be extended by adding additional auxiliary object classes, which can provide new attributes.
 		</para>
@@ -695,7 +695,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
 				Normally <acronym>UDM</acronym> properties are stored as-is in <acronym>LDAP</acronym> attributes.
 				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
-				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/hooks.d/</filename>.
+				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/</filename> and <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/hooks.d/</filename>.
 				The file name must end with <filename class="extension">.py</filename>.
 			</para>
 			<para>
@@ -881,138 +881,132 @@ udm settings/extended_attribute modify \
 		</title>
 		<remark>PMH: Bug #29525</remark>
 		<para>
-			&ucsUDM; verwendet zur Verwaltung der Daten des Verzeichnisdienstes eine flexible und erweiterbare Struktur aus Python-Modulen.
-			Zusätzlich einzubindende Module werden nach Ablage im Dateisystem automatisch erkannt und zur Verwendung an Kommandozeile und Web-Interface angeboten.
-
-			Die Entwicklung eigener Module erlaubt es, den &ucsUDM; über den Funktionsumfang von erweiterten Attributen hinaus flexibel zu erweitern.
+			&ucsUDM; uses a flexible and extensible structure of Python modules to manage the directory service data.
+			Additional modules are automatically recognized after being saved to the file system and made available for use at the command line and web interface.
+			The development of custom modules enables the flexible extension of the &ucsUDM; beyond the scope of extended attributes.
 		</para>
 
 		<section id="udm:modules:overview">
-			<title>Übersicht</title>
+			<title>Overview</title>
 			<para>
-				&ucsUDM; (kurz UDM) verwendet zur Abbildung von LDAP-Objekten eine eigene Modulstruktur.
-				Im Regelfall entspricht eines dieser UDM-Module einem LDAP-Objekt (z.B. einem Benutzer, einer Gruppe oder einem Container).
-				Eine recht [https://help.univention.com/t/univention-python-api/646/ kompakte Erläuterung] ist im Univention Forum zu finden.
-			</para>
-
-			<para>
-				Die Module sind nach Aufgabenbereichen strukturiert im Verzeichnis <filename class="directory">usr/lib/python2.7/dist-packages/univention/admin/handlers/</filename> abgelegt.
-				Die Module für die Verwaltung der verschiedenen Rechnerobjekte befinden sich beispielsweise unterhalb des Ordners '<filename class="directory">computers/</filename>'.
-				Dieses Objekt kann von der Kommandozeilenschnittstelle durch '<classname>computers/windows'</classname> angesprochen werden.
+				&ucsUDM; (<acronym>UDM</acronym> for short) uses its own module structure to map <acronym>LDAP</acronym> objects.
+				Usually one of these <acronym>UDM</acronym> modules corresponds to an <acronym>LDAP</acronym> object (e.g. a user, a group or a container).
 			</para>
 			<para>
-				Eigene Module sollten nach Möglichkeit in einem eigenen Unterverzeichnis abgelegt werden, um Konflikte mit eventuell später in UCS integrierten Standardmodulen zu vermeiden.
-				Damit die Module initialisiert werden können, muss im Verzeichnis eine Datei <filename class="directory">__init__.py</filename> existieren.
+				The modules are stored in the <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/handlers/</filename> directory and organized by task.
+				The modules for managing the various computer objects are located below the <filename class="directory">computers/</filename> folder, for example.
+				It can be addressed by the command line interface through <classname>computers/windows</classname>.
+			</para>
+			<para>
+				Custom modules should, if possible, be placed in their own subdirectory to avoid conflicts with any standard modules that may later be integrated into UCS.
+				For the modules to be initialized, a <filename class="directory">__init__.py</filename> file must exist in the directory.
 			</para>
 		</section>
 
 		<section id="udm:modules:structure">
-			<title>Aufbau eines Moduls</title>
+			<title>Structure of a module</title>
 			<para>
-				Ein Modul besteht aus der Definition der Modul-Attribute und der Definition einer von <classname>univention.admin.handlers.simpleLdap</classname> abgeleiteten Klasse mit Namen <classname>object</classname>.
+				Modules contain the definition of the <acronym>UDM</acronym> properties and the definition of a class named <classname>object</classname>, which is derived from <classname>univention.admin.handlers.simpleLdap</classname>.
 			</para>
 			<note>
 				<para>
-					Der vorgegebene Name <classname>object</classname> hat historische Gründe und muß trotz der Namenskollision mit dem <ulink url="http://docs.python.org/library/functions.html#object">Python type object</ulink> beibehalten werden.
+					The default name of the base class <classname>object</classname> has historical reasons. It must be kept despite the name collision with the <ulink url="http://docs.python.org/library/functions.html#object">Python type object</ulink>.
 				</para>
 			</note>
 			<para>
-				Im folgenden wird mit einer ausführlichen Beschreibung der zu definierenden Variablen begonnen.
-				Im <xref linkend="udm:modules:class"/> wird die Klasse <classname>object</classname> genauer betrachtet und notwendige Definitionen und Funktionen in der Klasse aufgelistet.
-				Abschließend werden noch zwei optionale Funktionen definiert und erklärt.
+				This section will begin with a detailed description of the variables to be defined.
+				The <xref linkend="udm:modules:class"/> takes a closer look at the <classname>object</classname> class and lists necessary definitions and functions within the class.
 			</para>
 
 			<section id="udm:modules:globals">
-				<title>Globale Variablen</title>
+				<title>Global variables</title>
 				<para>
-					Im Folgenden werden die globalen Variablen beschrieben, die in einem &ucsUDM;-Modul besondere Bedeutungen haben.
-					Dabei wird zwischen zwingend notwendigen und optionalen Variablen unterschieden.
-					Die folgende Liste enthält die erforderlichen Variablen, die jedes Modul definieren muss:
+					The global variables with specific meanings in a &ucsUDM;module are described below.
+					Mandatory and optional variables are separated into two lists:
 				</para>
 
 				<section id="udm:modules:globals:mandatory">
-					<title>Mandatory variables></title>
+					<title>Mandatory variables</title>
 					<variablelist>
 						<varlistentry>
 							<term><varname>module</varname></term>
 							<listitem><simpara>
-									Ein String, der dem Namen des UDM-Moduls entsprechen muss, z.B. <classname>computers/computer</classname>
+								A string matching the name of the <acronym>UDM</acronym> module, e.g. <classname>computers/computer</classname>.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><varname>operations</varname></term>
 							<listitem><para>
-									Eine Liste von Strings; enthält alle mit diesem Objekt erlaubten LDAP-Operationen.
-									Mögliche Operationen sind: <simplelist type="inline"><member>add</member><member>edit</member><member>remove</member><member>search</member><member>move</member></simplelist>
+								A list of strings which contains all <acronym>LDAP</acronym> operations allowed with this object.
+								Available operations are <simplelist type="inline"><member>add</member><member>edit</member><member>remove</member><member>search</member><member>subtree_move</member><member>copy</member></simplelist>.
 							</para></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><varname>short_description</varname></term>
 							<listitem><simpara>
-									Diese Beschreibung wird im Web-Frontend des &ucsUDM; als Name angezeigt.
-									Within the UMC module LDAP navigation wird dieser Text in der Auswahlliste für mögliche Objekttypen angezeigt.
+								This description is displayed as the name in the &ucsUMC;.
+								Within the UMC module <acronym>LDAP</acronym> navigation it is displayed in the selection list for possible object types.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><varname>long_description</varname></term>
 							<listitem><simpara>
-									Eine ausführliche Beschreibung des Moduls.
+								A detailed description of the module.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><varname>childs</varname></term>
 							<listitem><simpara>
-									Gibt an, ob es sich bei diesem LDAP-Objekt um einen Container handelt.
-									In diesem Fall wird diese Variable auf den Wert <literal>1</literal> gesetzt und andernfalls auf <literal>0</literal>.
+								Indicates whether this <acronym>LDAP</acronym> object is a container.
+								If so, this variable is set to the value <literal>True</literal>, and otherwise to <literal>False</literal>.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry id="udm:modules:globals:options">
 							<term><varname>options</varname></term>
 							<listitem>
 								<para>
-									Die Variable <varname>options</varname> ist ein Python-Dictionary und definiert verschiedene Optionen, die für das Modul gesetzt werden können bzw.  standardmäßig gesetzt sind.
-									Diese Optionen können später bspw. über das Web-Interface des UDM über den Reiter <guimenu>(Optionen)</guimenu> aktiviert und deaktiviert werden.
-									Wird eine Option aktiviert, werden ein oder mehrere LDAP-Objektklassen (gegeben durch den Parameter <classname>objectClasses</classname>) dem Objekt hinzugefügt und im Web-UDM weitere Felder und ggf.
-									Reiter freigeschaltet (bspw. die Groupware-Option für Benutzer).
-									Das Dictionary ordnet jeder Option (als <classname>univention.admin.option</classname>-Objekte) eine eindeutigen Zeichenkette zu, die später zur Referenzierung verwendet wird (siehe <xref linkend="udm:modules:globals:property_descriptions"/>).
+									Variable <varname>options</varname> is a Python dictionary and defines various options that can either be set manually or left at default.
+									These options can be changed later. For example via the web interface of the <acronym>UDM</acronym> using the <guimenu>Options</guimenu> tab.
+									If an option is activated, one or more <acronym>LDAP</acronym> object classes (given by parameter <literal>objectClass</literal>) are added to the object and further fields and/or tabs are activated in the &ucsUMC;.
+									tabs (e.g. the groupware option for users).
+									The dictionary assigns a unique string to each option (as <classname>univention.admin.option</classname>-objects), which is later used for referencing (see <xref linkend="udm:modules:globals:property_descriptions"/>).
 									Each instance has the following parameters:
 								</para>
 								<variablelist>
 									<varlistentry>
 										<term><varname>short_description</varname></term>
 										<listitem><simpara>
-												Eine kurze Beschreibung der Option, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
+											A short description of the option, used for example in the &ucsUMC; as descriptive text about the input fields.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>long_description</varname></term>
 										<listitem><simpara>
-												Eine längere Beschreibung der Option.
+												A longer description of the option.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>default</varname></term>
 										<listitem><simpara>
-												Definiert, ob diese Option standardmäßig aktiviert sein soll.
-												<literal>True</literal> steht dabei für aktiv und <literal>False</literal> für inaktiv.
+											defines whether the option is enabled by default:
+											<literal>True</literal> means active and <literal>False</literal> inactive.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>editable</varname></term>
 										<listitem><simpara>
-												Definiert, ob diese Option mehrmalig gesetzt und entfernt werden kann, oder ob diese Option nach einmaliger Aktivierung immer gesetzt bleibt.
+											Defines whether this option can be set and removed multiple times, or always remains set after having been activated once.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>objectClasses</varname></term>
 										<listitem><simpara>
-												Eine Menge von LDAP-Objektklassen, die der LDAP-Eintrag haben muß, damit es mit dieser Option assoziiert wird.
-												Damit ist kein Automatismus verbunden, aber diese Information ist bei der späteren Implementierung der Funktion <function>identify()</function> (<xref linkend="udm:modules:functions"/>) ggf. hilfreich.
+											A list of <acronym>LDAP</acronym> object classes, which the <acronym>LDAP</acronym> entry must consist of so that the option is enabled for the object.
 										</simpara></listitem>
 									</varlistentry>
 								</variablelist>
 								<para>
-									Beispiel:
+									Example:
 								</para>
 <programlisting language="python"><![CDATA[
 options = {
@@ -1029,12 +1023,12 @@ options = {
 							<term><varname>property_descriptions</varname></term>
 							<listitem>
 								<para>
-									Dieses Python-Dictionary enthält alle Attribute, die dieses Modul zur Verfügung stellt.
-									Dabei werden die Attribute (diesmal als <classname>univention.admin.property</classname>-Objekte), über eine eindeutige Zeichenkette als Schlüssel referenziert.
-									Ein solches Modul-Attribut entspricht in der Regel einem LDAP-Attribut, kann aber auch aus anderen Quellen stammen oder berechnet werden.
+									This Python dictionary contains all <acronym>UDM</acronym> properties provided by the module.
+									They are referenced using a unique string as a key (in this case as <classname>univention.admin.property</classname> objects).
+									Usually, this kind of <acronym>UDM</acronym> property corresponds to an <acronym>LDAP</acronym> attribute, but can also be obtained or calculated from other sources.
 								</para>
 								<para>
-									Beispiel:
+									Example:
 								</para>
 <programlisting language="python"><![CDATA[
 property_descriptions = {
@@ -1053,76 +1047,78 @@ property_descriptions = {
 }
 ]]></programlisting>
 								<para>
-									Die Parameter haben folgende Bedeutung:
+									A short explanation of the parameters seen above:
 								</para>
 								<variablelist>
 									<varlistentry>
 										<term><varname>short_description</varname>: <type>str</type></term>
 										<listitem><simpara>
-												Eine kurze Beschreibung, die beispielsweise im Web-Frontend des &ucsUDM; als beschreibender Text zu den Eingabefeldern genutzt wird.
+											A short description used for instance in the &ucsUMC; as descriptive text to the input fields.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>long_description</varname>: <type>str</type></term>
 										<listitem><simpara>
-												Eine ausführlichere Beschreibung, die im Web-Frontend des &ucsUDM; für die Tooltips genutzt wird.
+											A detailed description used in the &ucsUMC; for the tooltips.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>syntax</varname>: <type>type</type></term>
 										<listitem><simpara>
-												Dieser Parameter gibt den Typ eines Attributs an.
-												Anhand dieser Typ-Definitionen kann der &ucsUDM; die angegebenen Werte für das Attribut überprüfen und bei ungültigen Werten eine detaillierte Fehlermeldung liefern.
-												A list of syntax classes is available in <xref linkend="udm:syntax:ldap"/>..
+											This parameter specifies the property type.
+											Based on these type definitions, the &ucsUDM; can check the specified values for the property and provide a detailed error message in case of invalid values.
+											A list of syntax classes is available in <xref linkend="udm:syntax:ldap"/>.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>multivalue</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												kann die Werte <literal>True</literal> oder <literal>False</literal> annehmen. Ist dieser Parameter auf <literal>True</literal> gesetzt handelt es sich bei dem Wert des Attributs um eine Liste.
-												Der Parameter <varname>syntax</varname> gibt in diesem Fall den Typ der Elemente dieser Liste an.
+											Accepts the values <literal>True</literal> or <literal>False</literal>.
+											If set to <literal>True</literal> the properties value is a list.
+											In this case, the syntax parameter specifies the type of elements within this list.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>required</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												Ist dieser Parameter auf <literal>True</literal> gesetzt, muß für dieses Attribut ein Wert angegeben werden.
+											If this parameter is set to <literal>True</literal>, a value must be specified for this property.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>may_change</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												Ist dieser Parameter auf <literal>True</literal> gesetzt, kann der Wert dieses Attributs auch nach der Erstellung des Objektes verändert werden, ansonsten nur einmalig bein Anlegen.
+											If set to <literal>True</literal>, the properties value can be modified at a later point, if not, it can only be specified once when the object is created.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>editable</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												Ist dieser Parameter auf <literal>False</literal> gesetzt, dann kann der Wert dieses Attributes schon beim Erstellen nicht angegeben werden. Dies ist i.d.R. nur für automatisch generierte oder berechnete Werte interessant.
+											If set to <literal>False</literal>, the properties value can't even be specified when the object is created.
+											This is usually only interesting or useful for automatically generated or calculated values.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>identifies</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												diese Option sollte bei genau einem Attribut eines Moduls auf <literal>True</literal> gesetzt sein, um dasjenige Attribut zu kennzeichnen, anhand dessen das Objekt eindeutig zu identifizieren ist.
+											This option should be set to <literal>True</literal> if the property uniquely identifies the object (via the <acronym>LDAP</acronym> DN). In most cases it should be set for exactly one property of a module.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>dontsearch</varname>: <type>bool</type></term>
 										<listitem><simpara>
-												Ist dieser Parameter auf <literal>False</literal> gesetzt, kann das Feld nicht als das Feld für die Suche ausgewählt werden.
+											If set to <literal>False</literal>, the property is not searchable.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>default</varname>: <type>Any</type></term>
 										<listitem><simpara>
-												Ein Vorgabewert für das Attribut, wenn das Objekt über das Web-Frontend angelegt wird.
+											The default value of a property, when the object is created via the &ucsUMC;.
 										</simpara></listitem>
 									</varlistentry>
 									<varlistentry>
 										<term><varname>options</varname>: <type>List[str]</type></term>
 										<listitem><simpara>
-												Eine Liste von Schlüsselwörtern, die Optionen identifizieren mit denen dieses Attribut ein- bzw. ausgeblendet werden kann.
+											A list of keywords identifying options with which this property can be shown or hidden.
 										</simpara></listitem>
 									</varlistentry>
 								</variablelist>
@@ -1132,16 +1128,15 @@ property_descriptions = {
 							<term><varname>layout</varname></term>
 							<listitem>
 								<para>
-									Die Attribute eines Objektes können in Gruppen angeordnet werden.
-									Diese werden beispielsweise im &ucsUDM; als Reiter dargestellt.
-									Für jeden Reiter muß eine Instanz von <classname>univention.admin.tab</classname> im Array <varname>layout</varname> angelegt werden.
-									Als Parameter wird der Name, eine Beschreibung für den Reiter sowie eine Liste der Zeilen erwartet.
-									In jeder Zeile können sich bis zu zwei Attribute befinden, für die jeweils eine Instanz von <classname>univention.admin.field</classname> anzulegen ist.
-									Als Parameter wird jeweils der Name eines UDM-Attributs aus <xref linkend="udm:modules:globals:property_descriptions"/> erwartet.
-									Über den optionalen Parameter <property>colspan=2</property> kann das Widget für ein UDM-Attribut auch über beide Spalten ausgedehnt werden.
+									The <acronym>UDM</acronym> properties of an object can be arranged in groups.
+									They are represented as tabs in the &ucsUDM; for example.
+									For each tab, an instance of <classname>univention.admin.layout#Tab</classname> must be created in the array <varname>layout</varname>.
+									The name, a description for the tab and a list of rows are expected as parameters.
+									A line can contain up to two properties, for each of which an instance of <classname>univention.admin.layout#Group</classname> must be created.
+									The <acronym>UDM</acronym> property name from <xref linkend="udm:modules:globals:property_descriptions"/> is expected as a parameter for each instance.
 								</para>
 <programlisting language="python"><![CDATA[
-from univention.admin.layout import Tab
+from univention.admin.layout import Tab, Group
 layout = [
 	Tab(_('Tab header'), _('Tab description'), layout=[
 		Group('Group', 'group description', [
@@ -1154,7 +1149,7 @@ layout = [
 ]
 ]]></programlisting>
 								<para>
-									Über die optionale <property>advanced=True</property> Einstellung kann kontrolliert werden, ob der Reiter standardmäßig auf dem <guimenu>erweiterten Einstellungen</guimenu> angezeigt werden soll.
+									The optional <property>advanced=True</property> setting controls whether the tab should be displayed on the <guimenu>Advanced settings</guimenu> by default.
 								</para>
 							</listitem>
 						</varlistentry>
@@ -1162,23 +1157,23 @@ layout = [
 							<term><varname>mapping</varname></term>
 							<listitem>
 								<para>
-									Bildet die UDM-Attribute auf LDAP-Attribute ab.
-									Für jedes UDM-Attribut wird i.d.R. eine Abbildung registriert, die den Namen eines UDM-Attributs (<varname>udm_name</varname>) mit dem zugehörigen LDAP-Attribut (<varname>ldap_name</varname>) verknüpft:
+									Maps the <acronym>UDM</acronym> properties to <acronym>LDAP</acronym> attributes.
+									Usually, a mapping is registered for each property, linking the name of a <acronym>UDM</acronym> property (<varname>udm_name</varname>) to the associated <acronym>LDAP</acronym> attribute (<varname>ldap_name</varname>):
 								</para>
 <programlisting language="python"><![CDATA[
 mapping.register(udm_name, ldap_name)
 mapping.register(udm_name, ldap_name, map_value, unmap_value)
 ]]></programlisting>
 								<para>
-									Für die Umwandlung der Werte zwischen UDM-Attribut und LDAP-Attribut können zwei Funktionen angegeben werden:
-									<function>map_value</function> ist für die Richtung UDM → LDAP zuständig, <function>unmap_value</function> für die Regenrichtung von LDAP zu UDM.
-									Die zweite Funktion ist insbesondere notwendig für alle einwertige UDM-Attribute, da im LDAP selbst diese immer als null- oder einelementige Liste realisiert sind.
-									Die Standard-Implementierung <function>univention.admin.mapping.ListToString</function> liefert jeweils den ersten Eintrag der Liste zurück und kann daher i.d.R. für alle einwertigen Attribute als <function>unmap_value</function>-Funktion angegeben werden.
-									Für <function>map_value</function> (UDM→LDAP) genügt es <literal>None</literal> anzugeben, das dafür sorgt, das der ggf. vorhandene Wert in eine einelementige Liste konvertiert wird.
+									Two functions are available to convert the values between <acronym>UDM</acronym> properties and <acronym>LDAP</acronym> attribute.
+									To convert from <acronym>UDM</acronym> → <acronym>LDAP</acronym>, <function>map_value</function> is used, while <function>unmap_value</function> is used to convert in the opposite direction (LDAP → <acronym>UDM</acronym>).
+									The second function is necessary for all single-valued <acronym>UDM</acronym> properties, since these are always implemented as null or one-element lists within <acronym>LDAP</acronym>.
+									The default implementation <function>univention.admin.mapping.ListToString</function> always returns the first entry of the list and can therefore generally be specified as a <function>unmap_value</function> function for all single-valued attributes.
+									For <function>map_value</function> (<acronym>UDM</acronym> → <acronym>LDAP</acronym>), it is sufficient to specify <literal>None</literal>, which ensures that any existing value, if present, is converted to a single-element list.
 								</para>
 								<warning>
 									<para>
-										Ein UDM-Attribute enthält entweder immer nur eine Zeichenkette (einwertige Attribute) oder eine Liste von Zeichenketten (mehrwertige Attribute), nie nur eine Zahl oder einen anderen Python-Typ!
+										<acronym>UDM</acronym> properties always contain either a string (single-valued attributes) or a list of strings (multi-valued attributes), never just a number or any other Python type!
 									</para>
 								</warning>
 							</listitem>
@@ -1189,22 +1184,22 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 				<section id="udm:modules:globals:optional">
 					<title>Optional arguments:</title>
 					<para>
-						Folgende Angaben sind optional und müssen nur definiert werden, wenn das Modul diese speziellen Attribute besitzt:
+						The following specifications are optional and only need to be defined if a module has these special properties:
 					</para>
 					<variablelist>
 						<varlistentry>
 							<term><varname>virtual</varname></term>
 							<listitem><simpara>
-									Module, die diese Variable auf <literal>1</literal> setzen sind eine Art Hilfsmodul für andere Module, die keine zugehörigen LDAP-Objekte haben.
-									Ein Beispiel hierfür ist das Modul <classname>computers/computer</classname>, das als Hilfsmodul für alle Rechnertypen dient.
+								Modules that set this variable to <literal>True</literal> are a kind of helper module for other modules that have no associated <acronym>LDAP</acronym> objects.
+								An example of this is the <classname>computers/computer</classname> module, which is an auxiliary module for all types of computers.
 							</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><varname>template</varname></term>
 							<listitem><simpara>
-									Ein Modul, das diese Variable auf <literal>1</literal> setzt, bietet die Möglichkeit Vorgabewerte für die Attribute von anderen Modulen zu definieren.
-									Ein Beispiel hierfür ist die Benutzer-Vorlage (das Modul <classname>settings/usertemplate</classname>).
-									Eine solche Vorlage kann dann beispielsweise beim Anlegen eines Benutzers ausgewählt werden und die darin definierten Werte werden als Vorgaben in die Eingabemasken übernommen.
+								A module that sets this variable to another <acronym>UDM</acronym> module (e.g. <literal>settings/usertemplate</literal>), gains the ability to define default values for <acronym>UDM</acronym> properties from other modules.
+								An example of this is the user template (more specifically the <classname>settings/usertemplate</classname> module).
+								Such a template can for example be selected when creating a user so that the values defined in it are taken over as defaults in the input masks.
 							</simpara></listitem>
 						</varlistentry>
 					</variablelist>
@@ -1212,92 +1207,85 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 			</section>
 
 			<section id="udm:modules:class">
-				<title>The class object</title>
+				<title>The Python class <classname>object</classname></title>
 				<para>
-					Die Klasse <classname>object</classname> eines Moduls bildet die Schnittstelle zwischen &ucsUDM; und den LDAP-Operationen, die beim Anlegen, Verändern, Verschieben oder Löschen eines Objekts ausgelöst werden.
-					Diese Klasse unterstützt den &ucsUDM; bei der Abbildung der definierten Attribute des Moduls auf LDAP-Objekte und -Attribute.
+					The Python class <classname>object</classname> of a module provides the interface between &ucsUDM; and the <acronym>LDAP</acronym> operations triggered when an object is created, modified, moved or deleted.
+					It supports the &ucsUDM; in mapping the <acronym>UDM</acronym> module and its properties to <acronym>LDAP</acronym> objects and attributes.
 				</para>
 				<para>
-					Dafür ist die vordefinierte API der Klasse einzuhalten.
-					Die Basisklasse <classname>univention.admin.handlers.simpleLdap</classname> bietet für einfache LDAP-Objekte die wesentlichen Funktionalitäten, so dass in der Regel nur noch wenige Anpassungen notwendig sind.
-					Eine Instanz (<varname>self</varname>) kapselt alle Informationen eines Objekts, auf die auf verschiedenen Arten zugegriffen werden kann:
+					This requires adhering to the predefined API of the class.
+					The base class <classname>univention.admin.handlers.simpleLdap</classname> provides the essential functionality for simple <acronym>LDAP</acronym> objects, so usually only a few adjustments are necessary.
+					An instance (<varname>self</varname>) encapsulates all information of an object, which can be accessed in various ways:
 				</para>
 				<variablelist>
 					<varlistentry>
 						<term><varname>self.dn</varname> → String</term>
 						<listitem><simpara>
-								Distinguished Name im LDAP-DIT
+							Distinguished Name in the LDAP-DIT
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.position</varname> → univention.admin.uldap#position</term>
+						<term><varname>self.position</varname> → univention.admin.uldap#Position</term>
 						<listitem><simpara>
-								Container-Element im LDAP-DIT
+							Container element in the LDAP-DIT
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<term><varname>self['UDM-property-name']</varname> → [values, ...]</term>
 						<listitem><simpara>
-								Wrapper um <varname>self.info</varname>, der zusätzlich bei einer Zuweisung den Wert anhand der Syntax überprüft und Standardwerte beim Lesen liefert.
+							Wrapper around <varname>self.info</varname> which also checks the value against the syntax when assigned and returns default values when read.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.info['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<term><varname>self.info['UDM-property-name']</varname> → [values, ...]</term>
 						<listitem><simpara>
-								Dictionary mit den aktuell gesetzten Werten der UDM-Properties.
-								Der direkte Zugriff darauf ermöglicht z.B. die Initialisierung von <property>editable=False</property> Properties.
+							Dictionary with the currently set values of the <acronym>UDM</acronym> properties.
+							Direct access to it allows the initialization of <property>editable=False</property> properties and skips any syntax checks.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.oldinfo['UDM-Propertyname']</varname> → [Werte, ...]</term>
+						<term><varname>self.oldinfo['UDM-property-name']</varname> → [values, ...]</term>
 						<listitem><simpara>
-								Dictionary der ursprünglich gelesenen Werte, umgewandelt in UDM-Propertynamen.
-								Diese Information wird vor allem intern benötigt, um Änderungen am Python-Objekt zurück auf den zugehörigen Eintrag im LDAP zu übertragen.
+							Dictionary of the originally read values converted to <acronym>UDM</acronym> property names.
+							It is primarily needed to internally propagate changes to the Python object back to the corresponding entry in the <acronym>LDAP</acronym>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.oldattr['LDAP-Attributname']</varname> → [Werte, ...]</term>
+						<term><varname>self.oldattr['LDAP-Attributname']</varname> → [values, ...]</term>
 						<listitem><simpara>
-								Dictionary der ursprünglich aus dem LDAP gelesenen Attribute.
-								Wird i.d.R. nur dazu genutzt, um die ''objectClass''es auszulesen.
+							Dictionary of the attributes originally read from <acronym>LDAP</acronym>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><varname>self.oldpolicies</varname> → [Policy-DNs, ...]</term>
 						<listitem><simpara>
-								Kopie der Liste der DNs der referenzierten univentionPolicyReference...
+							Copy of the list of DNs of the referenced univentionPolicyReference
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><varname>self.policies</varname> → [Policy-DNs, ...]</term>
 						<listitem><simpara>
-								Liste der DNs der referenzierten univentionPolicyReference...
+							List of DNs of the referenced univentionPolicyReference
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.policyObjects[Policy-DN]</varname> → univention.admin.handlers#simplePolicy</term>
+						<term><varname>self.policyObjects[Policy-DN]</varname> → univention.admin.handlers#SimplePolicy</term>
 						<listitem><simpara>
-								Dictionary der geladenen Policies.
+							Dictionary of the loaded policies.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.extended_udm_attributes</varname> → [univention.admin#extended_attribute, ...]</term>
+						<term><varname>self.extended_udm_attributes</varname> → [univention.admin#Extended_attribute, ...]</term>
 						<listitem><simpara>
-								Liste aller ''Erweiterten Attribute'' des Objekts.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>self.ldap_extra_objectclasses</varname> → [(objectClass, propertyName, syntax, ldapMapping, deleteValues, deleteObjectClass), ...]</term>
-						<listitem><simpara>
-								interne Liste von Tupeln für ''Erweiterten Attribute'', um automatisch Objektklassen hinzuzufügen bzw. zu entfernen
+							Complete list of the objects <property>extended attributes</property>
 						</simpara></listitem>
 					</varlistentry>
 				</variablelist>
 				<para>
-					Die Klasse <classname>simpleLdap</classname> bietet zudem die weitere Möglichkeit, vor und nach der LDAP-Operation durch den Aufruf von Funktionen weitere Anpassungen vorzunehmen.
-					Beispielsweise wird vor dem Anlegen eines LDAP-Objekte die Funktion ''_ldap_pre_create()'' und nach dem Vorgang die Funktion ''_ldap_post_create()'' aufgerufen.
-					Solche Pre- und Post-Funktionen existieren analog auch für die Operationen <function>modify</function>, <function>move</function> und <function>remove</function>.
-					Die folgende Tabelle listet alle verwendeten Funktionen in der Aufrufreihenfolge von oben nach unten auf:
+					The <classname>simpleLdap</classname> class also provides the possibility of additional customization before and after the <acronym>LDAP</acronym> operation by calling functions.
+					For example, before creating an <acronym>LDAP</acronym> object the function <function>_ldap_pre_create()</function> is called and after the operation the function <function>_ldap_post_create()</function> is called.
+					Such pre- and post-functions similarly exist for the <function>modify</function>, <function>move</function> and <function>remove</function> functions.
+					The following table lists all used functions in calling order from top to bottom:
 				</para>
 				<table>
 					<title>LDAP actions and hooks</title>
@@ -1320,7 +1308,7 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 								<entry namest="col2" nameend="col3" align="center">_ldap_pre_ready()</entry>
 							</row>
 							<row>
-								<entry morerows="1">Validates, that all must attributes are set</entry>
+								<entry morerows="1">Validates, that all required attributes are set</entry>
 								<entry namest="col2" nameend="col3" align="center">ready()</entry>
 							</row>
 							<row>
@@ -1379,10 +1367,11 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 			</section>
 
 			<section id="udm:modules:functions">
-				<title>The functions identify and lookup</title>
+				<title>The identify() and lookup() functions</title>
 				<para>
-					Diese Funktionen werden genutzt, um bei Suchanfragen aus dem Web-Frontend des &ucsUDM; die dazugehörigen Objekte zu finden (<function>lookup</function>) und um LDAP-Objekte einem &ucsUDM;-Modul zuzuordnen.
-					Später werden Beispielimplementierungen für diese zwei Funktionen vorgestellt, die für einfache LDAP-Objekte nur leicht modifiziert werden müssen.
+					These functions are used to find the corresponding objects for search queries from the &ucsUMC; (<function>lookup</function>) and to assign <acronym>LDAP</acronym> objects to a &ucsUDM; module.
+					For simple <acronym>LDAP</acronym> objects, no modifications are necessary.
+					They can be assigned to the <classname>generic objects</classname> classmethods:
 				</para>
 				<programlisting language="python"><![CDATA[
 lookup = object.lookup
@@ -1395,215 +1384,210 @@ identify = object.identify
 		<section id="udm:modules:example">
 			<title>Example module</title>
 			<para>
-				Im folgenden wird ein Beispiel-Modul für den &ucsUDM; vorgestellt, das auch als Paket ''univention-directory-manager-module-example'' verfügbar ist.
-				The complete source code is available from <u:src>management/univention-directory-manager-module-example/</u:src>.
-				Das Verzeichnis enthält ein Quellpaket im Debian-Format, aus dem bei Paketbau per <command>./debian/rules binary</command> zwei Binärpakete erzeugt werden:
-				Ein Schema-Paket, das auf dem Master installiert werden muss und das Paket mit dem UDM-Modul selbst.
-				Der Beispielcode enthält auch ein Skript <command>ip-phone-tool</command>, das beispielhaft die Verwendung der UDM Python API in einem Python-Skript zeigt.
+				The following is an example module for the &ucsUDM; which is also available as a package. (<package>univention-directory-manager-module-example</package>)
+				The complete source code is available at <u:src>management/univention-directory-manager-module-example/</u:src>.
+				The directory contains a source package in Debian format, from which two binary packages are created during package build via <command>./debian/rules binary</command>:
+				A schema package, which must be installed on the master, and the package containing the <acronym>UDM</acronym> module itself.
+				The sample code also includes a <command>ip-phone-tool</command> script that shows an example of using the <acronym>UDM</acronym> Python API in a Python script.
 			</para>
 			<para>
-				Ein &ucsUDM;-Modul besteht in der Regel immer aus zwei Komponenten: Einmal dem Python-Modul, das die Implementierung der Schnittstelle zum &ucsUDM; enthält und einem LDAP-Schema, das das zu verwaltende LDAP-Objekt definiert.
-				Im folgenden werden beide Teile beschrieben, wobei der Schwerpunkt bei der Erstellung des Python-Moduls liegt.
+				A &ucsUDM; module almost always consists of two components: One is the Python module, which contains the implementation of the interface to the &ucsUDM; the other is an <acronym>LDAP</acronym> schema, which defines the <acronym>LDAP</acronym> object to be managed.
+				Both parts are described below, with the focus lying on the creation of the Python module.
 			</para>
 			<para>
-				Das folgende Modul für den &ucsUDM; demonstriert die rudimentäre Verwaltung von IP-Telefonen.
-				Dabei wird versucht mit einem einfach gehaltenen Beispiel möglichst viele der Möglichkeiten eines &ucsUDM;-Moduls aufzuzeigen.
+				The following module for the &ucsUDM; demonstrates the rudimentary administration of IP telephones.
+				It tries to show as many possibilities of a &ucsUDM; module as possible within a simple example.
 			</para>
 
 			<section id="udm:modules:example:python">
 				<title>Pythode code of the example module</title>
 				<para>
-					Vor der Definition des eigentlichen Modul-Quellcodes müssen einige Basis-Python-Module importiert werden, die auf jeden Fall notwendig sind:
+					Before defining the actual module source code, some basic Python modules need to be imported, which are always necessary:
 				</para>
 				<programlisting language="python"><![CDATA[
-import univention.admin.filter
+import re
+
 import univention.admin.handlers
 import univention.admin.syntax
+import univention.admin.localization
+from univention.admin.layout import Tab
 ]]></programlisting>
 				<para>
-					Diese Liste von Python-Modulen kann natürlich noch erweitert werden.
-					Wie in <xref linkend="udm:modules:globals"/> beschrieben, werden in einem &ucsUDM;-Modul zu Beginn einige notwendige globale Variablen definiert, die eine Beschreibung des Moduls liefern:
+					This list of Python modules can of course be extended.
+					As described in <xref linkend="udm:modules:globals"/>, some necessary global variables are defined at the beginning of a &ucsUDM; module, which provide a description of the module:
 				</para>
 				<programlisting language="python"><![CDATA[
-module = 'test/ip-phone'
+module = 'test/ip_phone'
 childs = False
-short_description = 'IP-Telefon'
-long_description = 'Ein Beispiel-Modul für den Univention Directory Manager zur Verwaltung von IP-Telefonen'
-operations = ['add', 'edit', 'remove', 'search', 'move']
+short_description = _('IP-Phone')
+long_description = _('An example module for the Univention Directory Manager')
+operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 ]]></programlisting>
 				<para>
-					Eine weitere für das Web-Frontend des &ucsUDM; wichtige globale Variable ist <xref linkend="udm:modules:globals:layout"/>:
+					Another global variable important for the &ucsUMC;, is <xref linkend="udm:modules:globals:layout"/>:
 				</para>
 				<programlisting language="python"><![CDATA[
 layout = [
-	Tab('Allgemein', 'Allgemeine Einstellungen', layout=[
+	Tab(_('General'), _('Basic Settings'), layout=[
 		["name", "active"],
 		["ip", "protocol"],
 		["priuser"],
 	]),
-	Tab('Erweiterungen', 'Erweiterte Einstellungen', layout=[
+	Tab(_('Advanced'), _('Advanced Settings'), layout=[
 		["users"],
-		], advanced=True),
+	], advanced=True),
+	Tab(_('Redirect'), _('Redirect Option'), layout=[
+		["redirect_user"],
+	], advanced=True),
 ]
 ]]></programlisting>
 				<para>
-					Sie strukturiert die Anordnung der einzelnen Attribute des Objektes auf die Reiter.
-					Es handelt sich dabei um eine Liste aus Elementen vom Typ <classname>univention.admin.layout.Tab</classname>, die jeweils den Inhalt eines Reiters bestimmen.
-					In diesem Fall gibt es einen Reiter ''Allgemein'' und einen weiteren Reiter ''Erweiterungen''.
-					Als nächstes sollten die Optionen (<xref linkend="udm:modules:globals:options"/>) und Attribute des Moduls definiert werden.
-					In diesem Fall wird eine Option ''extended'' angelegt, deren Funktion später noch erläutert wird.
-					Um die Parameter zu konfigurieren wird dem Objekt <classname>univention.admin.option</classname> der Option <varname>short_description</varname> für eine Kurzbeschreibung übergeben.
-					Mit <varname>default</varname> kann die Vorkonfiguration bestimmt werden, mit <literal>True</literal> ist die Option standardmässig aktiviert, mit <literal>False</literal> deaktiviert.
+					It structures the layout of the objects individual properties on the tabs.
+					The list consists of elements whose type is <classname>univention.admin.layout.Tab</classname>, each determining the content of a tab.
+					In this case there are the <literal>General</literal>, <literal>Advanced</literal> and <literal>Redirect</literal> tabs.
+					Next, the options (<xref linkend="udm:modules:globals:options"/>) and properties (<xref linkend="udm:modules:globals:property_descriptions"/>) of the module should be defined.
+					In this case, the <literal>default</literal> and <literal>redirection</literal> options are created, whose functions will be explained later.
+					To configure the parameters, the <classname>univention.admin.option</classname> object is passed to the <varname>short_description</varname> option for a short description.
+					<varname>default</varname> defines the preconfiguration.
+					<literal>True</literal> activates the option while <literal>False</literal> deactivates it.
 				</para>
 				<programlisting language="python"><![CDATA[
 options = {
-	'extended': univention.admin.option(
-		short_description='Erweiterte Einstellungen',
-		default=True
-	)
+	'default': univention.admin.option(
+		short_description=short_description,
+		default=True,
+		objectClasses=['top', 'testPhone'],
+	),
+	'redirection': univention.admin.option(
+		short_description=_('Call redirect option'),
+		default=True,
+		editable=True,
+		objectClasses=['testPhoneCallRedirect'],
+	),
 }
 ]]></programlisting>
 				<para>
-					Nach den Optionen werden die Attribute des Moduls festgelegt.
-					Dabei werden die Attribute durch textuelle Beschreibungen, Syntaxdefinitionen und Anweisungen für das Web-Frontend des &ucsUDM; definiert.
+					After the modules options, its properties are defined.
+					<acronym>UDM</acronym> properties are defined through textual descriptions, syntax definitions and instructions for the &ucsUMC;.
 				</para>
 				<programlisting language="python"><![CDATA[
 property_descriptions = {
-]]></programlisting>
-				<para>
-					Das Attribut <property>name</property> definiert den "Rechnernamen" des IP-Telefons.
-					Mit dem Parameter <varname>syntax</varname> wird dem &ucsUDM; mitgeteilt, dass gültige Werte für dieses Attribut der Syntax eines Rechnernamen entsprechen müssen.
-					Weitere vordefinierte Syntaxdefinitionen finden sich im Abschnitt <xref linkend="udm:modules:globals:property_descriptions"/>.
-					Eine Besonderheit dieses Attributs ist der Parameter <varname>may_change</varname>, der in diesem Fall auf <literal>False</literal> gesetzt ist.
-					Dadurch wird festgelegt, dass dieses Attribut nach dem Anlegen des Objektes nicht mehr geändert werden kann:
-				</para>
-				<programlisting language="python"><![CDATA[
-	'name': univention.admin.property(
-		short_description='Name',
-		long_description='Name des Telefons',
-		syntax=univention.admin.syntax.hostName,
-		multivalue=False,
-		options=[],
-		required=True,
-		may_change=False,
-		identifies=True
-	),
-]]></programlisting>
-				<para>
-					<property>active</property> ist ein Beispiel für ein boolsches/binäres Attribut, das nur die Werte ''1'' oder ''0'' annehmen kann.
-					In diesem Beispiel definiert es eine Freischaltung/Sperrung des IP-Telefons.
-					Durch dem Parameter ''default=1'' wird das Telefon initial freigeschaltet:
-				</para>
-				<programlisting language="python"><![CDATA[
-	'active': univention.admin.property(
-		short_description='freigeschaltet',
-		long_description='Ein IP-Telefon kann gesperrt werden',
-		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		default='1',
-		may_change=True,
-		identifies=False
-	),
-]]></programlisting>
-				<para>
-					Das Attribut <property>protocol</property> legt fest, welches VoIP-Protokoll von dem Telefon unterstützt wird.
-					Dabei wird für dieses Attribut keine Standard-Syntaxdefinition verwendet, sondern eine eigens dafür deklarierte Klasse <classname>SynVoIP_Protocols</classname>.
-					(Der Quellcode dieser Klasse folgt in einem späteren Abschnitt).
-					Die Syntax der Klasse definiert eine Auswahlliste mit einer vordefinierten Menge an Möglichkeiten.
-					Durch den Parameter <varname>default </varname>wird der Wert mit dem Schlüssel ''sip'' vorausgewählt.
-				</para>
-				<programlisting language="python"><![CDATA[
-	'protocol': univention.admin.property(
-		short_description='Protokoll',
-		long_description='Welches VoIP Protokoll wird von dem Telefon unterstützt',
-		syntax=SynVoIP_Protocols,
-		multivalue=False,
-		options=[],
-		required=False,
-		default='sip',
-		may_change=True,
-		identifies=False
-	),
-]]></programlisting>
-				<para>
-					Das Attribut <property>ip</property> legt die IP-Adresse des Telefons fest.
-					Als Syntaxdefinition wird die vordefinierte Klasse <classname>univention.admin.syntax.ipAddress</classname> angeben.
-					Zusätzlich wird mit dem Parameter <varname>required</varname> erzwungen, dass dieses Attribut zwingend gesetzt sein muss.
-				</para>
-				<programlisting language="python"><![CDATA[
-	'ip': univention.admin.property(
-		short_description='IP-Adresse',
-		long_description='',
-		syntax=univention.admin.syntax.ipAddress,
-		multivalue=False,
-		options=[],
-		required=True,
-		may_change=True,
-		identifies=False
-	),
-]]></programlisting>
-				<para>
-					Das Attribut <property>priuser</property> setzt den primären Benutzer des IP-Telefons.
-					Hierfür wird ebenfalls eine eigene Syntax-Definition verwendet.
-					Zum Einsatz kommt dabei eine Klasse, die die gültigen Werte über einen regulären Ausdruck definiert.
-					(Der Quellcode wird später dargestellt)
-				</para>
-				<programlisting language="python"><![CDATA[
-	'priuser': univention.admin.property(
-		short_description='primärer Benutzer',
-		long_description='Der primäre Benutzer dieses Telefons',
-		syntax=SynVoIP_Address,
-		multivalue=False,
-		options=[],
-		required=True,
-		may_change=True,
-		identifies=False
-	),
-]]></programlisting>
-				<para>
-					Das Attribut <property>users</property> zeigt die Verwendung von Optionen.
-					Mit dem Parameter ''options=['extended']'' wird festgelegt, dass dieses Attribut nur zur Verfügung steht, wenn mindestens eine der aufgelisteten Optionen aktiviert ist.
-					Ist die Liste der angegeben Optionen leer (vordefinierter Wert), wird das Attribut immer angezeigt.
-				</para>
-				<programlisting language="python"><![CDATA[
-	'users': univention.admin.property(
-		short_description='weitere Benutzer',
-		long_description='Benutzer, die an diesem Telefon registriert sein dürfen',
-		syntax=SynVoIP_Address,
-		multivalue=True,
-		options=['extended'],
-		required=False,
-		may_change=True,
-		identifies=False
-	)
+	...
 }
 ]]></programlisting>
 				<para>
-					Die folgenden zwei Klassen sind die Syntaxdefinitionen, die für die Attribute <property>protocols</property>, <property>priuser</property> und <property>users</property> verwendet wurden.
-					<classname>SynVoIP_Protocols</classname> basiert auf der vordefinierten Klasse <classname>univention.admin.syntax.select</classname>, die die Basisfunktionalität für Auswahllisten zur Verfügung stellt.
-					Abgeleitete Klassen müssen, wie in der folgenden Klasse zu sehen ist, nur einen Namen und die Liste der Auswahlmöglichkeiten definieren.
+					The <property>name</property> property defines the <literal>hostname</literal> of the IP phone.
+					The <varname>syntax</varname> parameter tells the &ucsUDM; that valid values for this property must match the syntax of a computer name.
+					Additional predefined syntax definitions can be found in the <xref linkend="udm:modules:globals:property_descriptions"/> section.
 				</para>
+				<programlisting language="python"><![CDATA[
+'name': univention.admin.property(
+	short_description=_('Name'),
+	long_description=_('ID of the IP-phone'),
+	syntax=univention.admin.syntax.hostName,
+	required=True,
+	identifies=True,
+),
+]]></programlisting>
 				<para>
-					Das Attribut <varname>choices</varname> besteht aus einer Liste von Paaren, die aus einem eindeutigen Schlüssel für das Element und dem Text, der angezeigt werden soll, bestehen.
+					The <property>active</property> is an example of a boolean/binary property which can only take the values <literal>True</literal> or <literal>False</literal>.
+					In this example, it defines an activation/blocking of the IP phone.
+					The parameter <option>default=True</option> initially unlocks the phone:
+				</para>
+				<programlisting language="python"><![CDATA[
+'active': univention.admin.property(
+	short_description=_('active'),
+	long_description=_('The IP-phone can be deactivated'),
+	syntax=univention.admin.syntax.TrueFalseUp,
+	default='TRUE',
+),
+]]></programlisting>
+				<para>
+					The <property>protocol</property> property specifies which VoIP protocol is supported by the phone.
+					No standard syntax definition is used for this property, but a specially declared <classname>SynVoIP_Protocols</classname> class.
+					(The source code of this class follows in a later section).
+					The syntax of the class defines a selection list with a predefined set of possibilities.
+					The <varname>default</varname> parameter pre-selects the value with the <literal>sip</literal> key.
+				</para>
+				<programlisting language="python"><![CDATA[
+'protocol': univention.admin.property(
+	short_description=_('Protocol'),
+	long_description=_('Supported VoIP protocols'),
+	syntax=SynVoIP_Protocols
+	default='sip',
+),
+]]></programlisting>
+				<para>
+					The <property>ip</property> property specifies the phones IP address.
+					The predefined class <classname>univention.admin.syntax.ipAddress</classname> is specified as the syntax definition.
+					Additionally, the <varname>required</varname> parameter enforces that setting this property is mandatory.
+				</para>
+				<programlisting language="python"><![CDATA[
+'ip': univention.admin.property(
+	short_description=_('IP-Address'),
+	long_description=_('IP-Address of the IP-phone'),
+	syntax=univention.admin.syntax.ipAddress,
+	required=True,
+),
+]]></programlisting>
+				<para>
+					The <property>priuser</property> property sets the primary user of the IP phone.
+					A separate syntax definition is again used, which in this case is a class that defines the valid values by means of a regular expression.
+					(The source code is shown later)
+				</para>
+				<programlisting language="python"><![CDATA[
+'priuser': univention.admin.property(
+	short_description=_('Primary User'),
+	long_description=_('The primary user of this IP-phone'),
+	syntax=SynVoIP_Address,
+	required=True,
+),
+]]></programlisting>
+				<para>
+					The <property>users</property> property indicates that options are used.
+					Since <option>multivalue=</option> is set to <literal>True</literal> in this example, the <property>users</property> object is a list of addresses.
+				</para>
+				<programlisting language="python"><![CDATA[
+'users': univention.admin.property(
+	short_description=_('Additional Users'),
+	long_description=_('Users, that may register with this phone'),
+	syntax=SynVoIP_Address,
+	multivalue=True,
+),
+]]></programlisting>
+				<para>
+					The <property>redirect_user</property> property is used to redirect incoming calls to a different phone number.
+					It is only shown if the <option>options=['redirection']</option> is set.
+				</para>
+				<programlisting language="python"><![CDATA[
+'redirect_user': univention.admin.property(
+	short_description=_('Redirection User'),
+	long_description=_('Address for call redirection'),
+	syntax=SynVoIP_Address,
+	options=['redirection'],
+),
+]]></programlisting>
+				<para>
+					The following two classes are the syntax definitions used for the <property>protocols</property>, <property>priuser</property> and <property>users</property> properties.
+					<classname>SynVoIP_Protocols</classname> is based on the predefined <classname>univention.admin.syntax.select</classname> class, which provides the basic functionality for select lists.
+					Derived classes, as seen in the following class, only need to define a name and the list of choices.
 				</para>
 				<programlisting language="python"><![CDATA[
 class SynVoIP_Protocols(univention.admin.syntax.select):
-	name = 'VoIP_Protocol'
-	choices = [('sip', 'SIP'), ('h323', 'H.323'), ('skype', 'Skype')]
+	name = _('VoIP_Protocol')
+	choices = [('sip', _('SIP')), ('h323', _('H.323')), ('skype', _('Skype'))]
 ]]></programlisting>
 				<para>
-					Die andere Syntaxdefinition — <classname>SynVoIP_Address</classname> — basiert auf der Klasse <classname>univention.admin.syntax.simple</classname>, die eine Basisfunktionalität für Syntaxdefinitionen bietet, die mit regulären Ausdrücken arbeiten.
-					Wie bei der anderen Definition muss ein Name vergeben werden.
-					Zusätzlich sind noch die Attribute ''min_length'' und ''max_length'' anzugeben, die eine minimale und eine maximale Länge für zulässige Werte festlegen.
-					Wird eines dieser Attribute auf ''0'' gesetzt, entspricht das einer nicht existenten Grenze in die jeweilige Richtung.
-					Außer den genannten Attributen muss noch die Funktion <function>parse()</function> definiert werden, die als Parameter den zu prüfenden Wert übergeben bekommt.
-					Mittels des Python Moduls <package>re</package> wird in diesem Fall geprüft, ob der Wert dem Muster einer VoIP Adresse entspricht, z.B. <literal>sip:hans@mustermann.de</literal>.
+					The other syntax definition (<classname>SynVoIP_Address</classname>) is based on the <classname>univention.admin.syntax.simple</classname> class, which provides basic functionality for syntax definitions utilizing regular expressions.
+					As with the other definition, a name must be assigned.
+					Additionally, the attributes <property>min_length</property> and <property>max_length</property> must be specified.
+					If one of these attributes is set to <literal>0</literal>, it corresponds to a nonexistent limit in the respective direction.
+					In addition to the attributes mentioned, the <function>parse()</function> function must also be defined, which passes the value to be checked as a parameter.
+					By means of the Python module <package>re</package> it is in this case checked whether the value corresponds to the pattern of a VoIP address, e.g. <literal>sip:hans@mustermann.de</literal>.
 				</para>
 				<programlisting language="python"><![CDATA[
 class SynVoIP_Address(univention.admin.syntax.simple):
-	name = 'VoIP_Address'
+	name = _('VoIP_Address')
 	min_length = 4
 	max_length = 256
 	_re = re.compile('((^(sip|h323|skype):)?([a-zA-Z])[a-zA-Z0-9._-]+)@[a-zA-Z0-9._-]+$')
@@ -1611,60 +1595,76 @@ class SynVoIP_Address(univention.admin.syntax.simple):
 	def parse(self, text):
 		if self._re.match(text) is not None:
 			return text
-		raise univention.admin.uexceptions.valueError('Keine gültige VoIP Adresse')
+		raise univention.admin.uexceptions.valueError(_('Not a valid VoIP Address'))
 ]]></programlisting>
 				<para>
-					Anschließend wird die Abbildung von den Modul-Attributen auf die Attribute des zu erzeugenden LDAP-Objektes definiert (<xref linkend="udm:modules:globals:mapping"/>).
-					Dabei wird die Klasse <classname>univention.admin.mapping.mapping</classname> verwendet, die mit der Funktion <function>register()</function> eine einfache Möglichkeit bietet, für die einzelnen Attribute Abbildungen zu registrieren.
-					Das erste Argument der Funktion ist der Name des Modul-Attributs und das zweite der Name des LDAP-Attribute.
-					Mit den folgenden zwei Argument der Funktion <function>register()</function> können Abbildungsfunktionen für die Konvertierung von der Modul-Attributen zum LDAP-Attribute und vice versa angegeben werden.
+					Mapping the <acronym>UDM</acronym> module properties to the Attributes of the to be created <acronym>LDAP</acronym> object is the next step. (<xref linkend="udm:modules:globals:mapping"/>).
+					To do this, the <classname>univention.admin.mapping.mapping</classname> class is used, which provides a simple way to register mappings for the individual <acronym>LDAP</acronym> attributes to <acronym>UDM</acronym> properties with the <function>register()</function> function.
+					This functions first argument is the modules <acronym>UDM</acronym> property name and the second the <acronym>LDAP</acronym> attribute name.
+					The following two arguments of the <function>register()</function> function can be used to specify mapping functions for conversion from the modules <acronym>UDM</acronym> property to the <acronym>LDAP</acronym> attribute and vice versa.
 				</para>
 				<programlisting language="python"><![CDATA[
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('active', 'testPhoneActive', boolToString, stringToBool)
+mapping.register('active', 'testPhoneActive', None, univention.admin.mapping.ListToString)
 mapping.register('protocol', 'testPhoneProtocol', None, univention.admin.mapping.ListToString)
 mapping.register('ip', 'testPhoneIP', None, univention.admin.mapping.ListToString)
 mapping.register('priuser', 'testPhonePrimaryUser', None, univention.admin.mapping.ListToString)
 mapping.register('users', 'testPhoneUsers')
+mapping.register('redirect_user', 'testPhoneRedirectUser', None, univention.admin.mapping.ListToString)
 ]]></programlisting>
 				<para>
-					Abschließend muss für das Modul noch eine Klasse ''object'' (<xref linkend="udm:modules:class"/>) definiert werden, die den in <xref linkend="udm:modules:structure"/> definierten Vorgaben entspricht.
-					Für das IP-Telefon würde die Klasse folgendermaßen aussehen:
+					Finally, an <classname>object</classname> class (<xref linkend="udm:modules:class"/>) must be defined for the module that conforms to the specifications defined in <xref linkend="udm:modules:structure"/>.
+					For the IP phone, the class would look like this:
 				</para>
 				<programlisting language="python"><![CDATA[
 class object(univention.admin.handlers.simpleLdap):
-	module = module
-		def _ldap_addlist(self):
-			return [('objectClass', [b'top', b'testPhone' ])]
-]]></programlisting>
-				<para>
-					Damit auch nach Objekten, die dieses Modul verwaltet, gesucht werden kann gibt es noch zwei Funktionen <function>lookup()</function> und <function>identify()</function> (<xref linkend="udm:modules:functions"/>).
-					Die hier vorgegebenen Funktionen sollten für einfache LDAP-Objekte, die durch eine einzelne <classname>objectClass</classname> identifiziert werden können, ausreichen.
-					Für eigene LDAP-Objekte müsste die Objektklasse <classname>testPhone</classname> ersetzt werden.
-				</para>
-				<programlisting language="python"><![CDATA[
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'testPhone'),])
 
-lookup = object.lookup
+	module = module
+
+	def open(self):
+		super(object, self).open()
+		self.save()
+
+	def _ldap_pre_create(self):
+		return super(object, self)._ldap_pre_create()
+
+	def _ldap_post_create(self):
+		return super(object, self)._ldap_post_create()
+
+	def _ldap_pre_modify(self):
+		return super(object, self)._ldap_pre_modify()
+
+	def _ldap_post_modify(self):
+		return super(object, self)._ldap_post_modify()
+
+	def _ldap_pre_remove(self):
+		return super(object, self)._ldap_pre_remove()
+
+	def _ldap_post_remove(self):
+		return super(object, self)._ldap_post_remove()
+
+	def _ldap_modlist(self):
+		ml = super(object, self)._ldap_modlist()
+		return ml
 ]]></programlisting>
 				<para>
-					Diese Funktion prüft, ob das übergebene LDAP-Objekt zu der von diesem Modul verwalteten Menge gehört.
+					To enable searching for objects managed by this module, two additional functions are available: (<function>lookup()</function> and <function>identify()</function> (<xref linkend="udm:modules:functions"/>).
+					The functions provided here should be sufficient for simple <acronym>LDAP</acronym> objects that can be identified by a single <literal>objectClass</literal>.
 				</para>
 				<programlisting language="python"><![CDATA[
-def identify(dn, attr, canonical=0):
-	return b'testPhone' in attr.get('objectClass', [])
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify
 ]]></programlisting>
 			</section>
 
 			<section id="udm:modules:example:ldap">
 				<title>LDAP schema extension for the example module</title>
 				<para>
-					Bevor das entwickelte Modul für den &ucsUDM; genutzt werden kann, muss dem LDAP-Server erst noch die neue Objektklasse, in diesem Fall <classname>testPhone</classname>, zusammen mit ihren Attributen bekannt gemacht werden.
-					Solche Objektdefinitionen werden bei LDAP über sogenannte Schemata definiert, die in Dateien beschrieben werden, die wie folgt aussehen:
+					Before the developed module can be used within the &ucsUDM;, the new object class, in this case <classname>testPhone</classname>, must be made known to the <acronym>LDAP</acronym> server together with its attributes.
+					Such object definitions are defined via so-called schemas in <acronym>LDAP</acronym>.
+					They are specified in files looking like the following:
 				</para>
 				<programlisting language="ldif"><![CDATA[
 attributetype ( 1.3.6.1.4.1.10176.9999.1.1 NAME 'testPhoneActive'
@@ -1700,41 +1700,37 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 	)
 ]]></programlisting>
 				<para>
-					Eine ausführliche Dokumentation zur Erstellung von LDAP Schema-Dateien ist auf der <ulink url="http://www.openldap.org/">Webseite des OpenLDAP Projektes</ulink> zu finden und ist nicht Schwerpunkt dieser Dokumentation.
+					Detailed documentation on creating <acronym>LDAP</acronym> schema files can be found on the OpenLDAP project's <ulink url="http://www.openldap.org/">website</ulink> and is not the focus of this documentation.
 				</para>
 			</section>
 
 			<section id="udm:modules:example:installation">
 				<title>Installing the module</title>
 				<para>
-					Als letzter Schritt müssen das Python-Modul und das LDAP-Schema installiert werden.
-					Im folgenden werden diese beiden Schritte dokumentiert.
+					The last step is to install the Python module and <acronym>LDAP</acronym> schema, documented in the following.
+					The Python module must be copied to the <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/handlers/</filename> and <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/handlers/</filename> directory for the &ucsUDM; to find it.
+					In this directory a subdirectory has to be created corresponding to the first part of the module name.
+					For example, if the module name is <classname>test/ip-phone</classname>, the directory should be named <filename class="directory">test/</filename>.
+					The Python module must then be copied to this directory.
+					Ideally, a <acronym>UDM</acronym> module is integrated into a seperate <acronym>Debian</acronym> package.
+					Documentation for this can be found in the <xref linkend="pkg:introduction"/> section.
+					The newly created package will now be included in the display when <command>univention-directory-manager modules</command> is called.
 				</para>
 				<para>
-					Das Python-Modul muss in das Verzeichnis ''usr/lib/python2.7/dist-packages/univention/admin/handlers/'' kopiert werden, damit der &ucsUDM; es findet.
-					In diesem Verzeichnis ist ein Unterverzeichnis anzulegen.
-					Es sollte dem ersten Teil des Modulnamens entsprechen.
-					Wenn der Name des Moduls beispielsweise <classname>test/ip-phone</classname> ist, dann sollte das Verzeichnis <filename class="directory">test/</filename> heißen.
-					Das Python-Modul muss dann in dieses Verzeichnis kopiert werden.
-					Idealerweise wird ein UDM-Modul wie in ein eigenes Paket integriert.
-					Eine Dokumentation dazu findet sich im Artikel {{DevRef|Paketierung von Software für UCS|section=chap:packaging}}. <!-- FIXME -->
-					Das neu angelegte Paket wird dann beim Aufruf von <command>univention-directory-manager modules</command> mit angezeigt.
-				</para>
-				<para>
-					Die Datei, die das LDAP-Schema enthält, kann im Prinzip in ein beliebiges Verzeichnis kopiert werden.
-					Die Schema-Definitionen von Univention werden beispielsweise in dem Verzeichnis ''/usr/share/univention-ldap/schema/'' abgelegt.
-					Damit der LDAP-Server dieses Schema findet muss es in die Konfigurationsdatei ''/etc/ldap/slapd.conf'' eingebunden werden.
-					Da diese Datei unter der Kontrolle von Univention Configuration Registry steht, sollte nicht direkt die Datei editiert werden, sondern ein Univention Configuration Registry-Template erstellt werden (siehe {{Handbuch UCS|UCS-Handbuch}}). <!-- FIXME -->
+					In principle, the file containing the <acronym>LDAP</acronym> schema can be copied to any directory.
+					Univentions schema definitions, for example, are stored in the <filename class="directory">/usr/share/univention-ldap/schema/</filename> directory.
+					For the <acronym>LDAP</acronym> server to find this schema, it must be included in the <filename class="directory">/etc/ldap/slapd.conf</filename> configuration file.
+					Since this file is under the control of the Univention Configuration Registry, do not edit the file directly, but create a Univention Configuration Registry template. (see <xref linkend="ucr:conffiles"/>)
 				</para>
 			</section>
 
-				<section id="udm:modules:examples:download">
-				<title>Download des Beispielcodes</title>
+			<section id="udm:modules:examples:download">
+				<title>Downloading the sample code</title>
 				<para>
-					Die aktuelle Version des Beispielcodes ist unter <ulink url="https://github.com/univention/univention-corporate-server/tree/5.0-0/packaging/univention-directory-manager-module-example">univention-directory-manager-module-example</ulink> einsehbar.
-					Das Verzeichnis enthält ein Quellpaket im Debian-Format, aus dem bei Paketbau per <varname>./debian/rules binary</varname> zwei Binärpakete erzeugt werden:
-					Ein Schema-Paket, das auf dem Master installiert werden muss und das Paket mit dem UDM-Modul selbst.
-					Der Beispielcode enthält auch ein Skript ''ip-phone-tool'', das beispielhaft die Verwendung der UDM Python API in einem Python-Skript zeigt.
+					The latest version of the sample code can be found at <u:src>packaging/univention-directory-manager-module-example</u:src>.
+					It contains a source package in Debian format from which two binary packages are created during package building via <varname>./debian/rules binary</varname>:
+					A schema package that needs to be installed on the master and the package containing the <acronym>UDM</acronym> module itself.
+					The sample code also includes a script <command>ip-phone-tool</command>, which exemplifies the use of the <acronym>UDM</acronym> Python API in a Python script.
 				</para>
 			</section>
 		</section>
@@ -1845,7 +1841,7 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 				<term>...</term>
 				<listitem>
 					<simpara>
-						Dynamic classes, which do an <acronym>LDAP</acronym> search to provide a list of selectable values like users, groups and hosts
+						Dynamic classes, which do an <acronym>LDAP</acronym> search to provide a list of selectable values like users, groups and hosts.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1862,7 +1858,7 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 			</varlistentry>
 		</variablelist>
 		<para>
-			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
+			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename> and <filename class="directory">/usr/lib/python3/dist-packages/univention/admin/syntax.d/</filename>.
 			They're automatically imported by <acronym>UDM</acronym>.
 		</para>
 
@@ -2245,14 +2241,14 @@ class MyServers(LDAP_Search):
 							<varlistentry><term><literal>viewonly</literal> (optional)</term>
 								<listitem>
 									<simpara>
-										If set to <literal>1</literal> the values can not be changed.
+										If set to <literal>True</literal> the values can not be changed.
 									</simpara>
 								</listitem>
 							</varlistentry>
 							<varlistentry><term><literal>addEmptyValue</literal> (optional)</term>
 								<listitem>
 									<simpara>
-										If set to <literal>1</literal> the empty value is add to the list of choices.
+										If set to <literal>True</literal> the empty value is add to the list of choices.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -3030,7 +3026,7 @@ ucs_registerLDAPExtension "$@" \
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "4.99-0" \
-	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/foo/bar.py
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "5.0-0" --ucsversionend "5.99-0" \
@@ -3180,7 +3176,7 @@ class object(...):
 identify = object.identify
 				]]></programlisting>
 
-				In most cases the <function>identify()</function> function only checks for the existence of a specific LDAP <classname>objectClass</classname>.
+				In most cases the <function>identify()</function> function only checks for the existence of a specific LDAP <literal>objectClass</literal>.
 				The generic implementation can be used instead, which requires the  <literal>default</literal> UDM option to be set:
 				<programlisting language="python"><![CDATA[
 options = {
