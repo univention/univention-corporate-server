@@ -246,6 +246,8 @@ class select(ISyntax):
 
 		self.choices = [(id, _("Display text"), ...]
 	"""
+	choices = []  # type: Sequence[Tuple[str, str]]
+	"""The list of choices."""
 	empty_value = False
 	"""Allow the empty value."""
 
@@ -280,7 +282,7 @@ class MultiSelect(ISyntax):
 	"""
 	Select multiple items from a list of choices.
 	"""
-	choices = ()  # type: Sequence[Tuple[str, Any]]
+	choices = []  # type: Sequence[Tuple[str, str]]
 	"""The list of choices."""
 	empty_value = True
 	"""Allow the empty value."""
@@ -2266,12 +2268,12 @@ class TimeUnits(select):
 	Syntax to select a time unit.
 	"""
 	size = 'Half'
-	choices = (
+	choices = [
 		('seconds', _('seconds')),
 		('minutes', _('minutes')),
 		('hours', _('hours')),
 		('days', _('days'))
-	)
+	]
 
 
 class TimeString(simple):
@@ -2379,7 +2381,11 @@ class NetworkType(select):
 	"""
 	Syntax to select network technology type.
 	"""
-	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
+	choices = [
+		('ethernet', _('Ethernet')),
+		('fddi', _('FDDI')),
+		('token-ring', _('Token-Ring')),
+	]
 
 
 class MAC_Address(simple):
@@ -2514,24 +2520,24 @@ class IMAP_POP3(select):
 	"""
 	Syntax to select between |IMAP| and POP3.
 	"""
-	choices = (
+	choices = [
 		('IMAP', _('IMAP')),
 		('POP3', _('POP3')),
-	)
+	]
 
 
 class IMAP_Right(select):
 	"""
 	Syntax to select an |IMAP| access control permission.
 	"""
-	choices = (
+	choices = [
 		('none', _('No access')),
 		('read', _('Read')),
 		('post', _('Post')),
 		('append', _('Append')),
 		('write', _('Write')),
 		('all', _('All'))
-	)
+	]
 
 
 class UserMailAddress(UDM_Objects):
@@ -2642,7 +2648,7 @@ class ldapAttribute(combobox):
 	"""
 	Syntax to enter a |LDAP| attribute name.
 	"""
-	choices = []  # type: List[Tuple[str, str]]
+	choices = []  # type: Sequence[Tuple[str, str]]
 
 	@classmethod
 	def fill_choices(cls, attrs):  # type: (Iterable[str]) -> None
@@ -3264,7 +3270,7 @@ class IP_AddressList(ipAddress, select):
 	"""
 	Syntax to select an IP address from the lists of addresses stored with the machine account.
 	"""
-	choices = ()
+	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'ip'
 
 
@@ -3284,7 +3290,7 @@ class MAC_AddressList(MAC_Address, select):
 	"""
 	Syntax to select a MAC address from the lists of addresses stored with the machine account.
 	"""
-	choices = ()
+	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'mac'
 
 
@@ -4173,7 +4179,18 @@ class SambaLogonHours(MultiSelect):
 	"""
 	Syntax to select hour slots per day for Samba login.
 	"""
-	choices = [(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1)) for idx, day in ((0, _('Sun')), (1, _('Mon')), (2, _('Tue')), (3, _('Wed')), (4, _('Thu')), (5, _('Fri')), (6, _('Sat'))) for hour in range(24)]
+	choices = [
+		(str(idx * 24 + hour), '%s %d-%d' % (day, hour, hour + 1))
+		for idx, day in (
+			(0, _('Sun')),
+			(1, _('Mon')),
+			(2, _('Tue')),
+			(3, _('Wed')),
+			(4, _('Thu')),
+			(5, _('Fri')),
+			(6, _('Sat'))
+		) for hour in range(24)
+	]
 
 	type_class = univention.admin.types.SambaLogonHours
 
@@ -5093,7 +5110,7 @@ class Country(select):
 	"""
 	empty_value = True
 
-	choices = []
+	choices = []  # type: List[Tuple[str, str]]
 
 	@classmethod
 	def update_choices(cls):
