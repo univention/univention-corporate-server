@@ -22,9 +22,7 @@ from univention.config_registry import handler_set as hs
 from univention.admin.uldap import getAdminConnection
 from univention.admin.uexceptions import noObject
 
-from univention.testing import selenium as sel
 from univention.testing.ucr import UCSTestConfigRegistry
-from univention.testing.udm import UCSTestUDM
 from test_self_service import capture_mails
 import univention.testing.strings as uts
 import selenium.common.exceptions as selenium_exceptions
@@ -42,25 +40,6 @@ def activate_self_registration():
 		hs(['umc/self-service/account-verification/backend/enabled=true'])
 		hs(['umc/self-service/account-verification/frontend/enabled=true'])
 		yield ucr
-
-
-@pytest.fixture
-def selenium():
-	with sel.UMCSeleniumTest() as s:
-		yield s
-
-
-@pytest.fixture
-def ucr():
-	with UCSTestConfigRegistry() as ucr:
-		setattr(ucr, 'handler_set', hs)
-		yield ucr
-
-
-@pytest.fixture
-def testudm():
-	with UCSTestUDM() as udm:
-		yield udm
 
 
 @pytest.fixture
@@ -223,7 +202,7 @@ def test_user_creation(selenium, mails, get_registration_info, verification_proc
 	})
 
 
-def test_account_verifyaccount_page_errors(selenium, testudm, get_registration_info):
+def test_account_verifyaccount_page_errors(selenium, udm, get_registration_info):
 	_navigate_self_service(selenium, '#page=verifyaccount')
 	_enter_attributes(selenium, {
 		'username': 'not_existing',
@@ -236,7 +215,7 @@ def test_account_verifyaccount_page_errors(selenium, testudm, get_registration_i
 		'token': 'xxxx'
 	}, 'Request new token')
 	selenium.wait_for_text('A verification token could not be sent. Please verify your input.')
-	_, username = testudm.create_user(**{'PasswordRecoveryEmail': None})
+	_, username = udm.create_user(**{'PasswordRecoveryEmail': None})
 	_navigate_self_service(selenium, '#page=verifyaccount')
 	_enter_attributes(selenium, {
 		'username': username,
