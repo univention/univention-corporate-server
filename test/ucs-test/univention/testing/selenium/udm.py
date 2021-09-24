@@ -48,6 +48,8 @@ _ = translator.translate
 
 class UDMBase(object):
 
+	name = None
+
 	def __init__(self, selenium):
 		# type: (Any) -> None
 		self.selenium = selenium
@@ -73,6 +75,9 @@ class UDMBase(object):
 		except TimeoutException:
 			pass
 		return False
+
+	def open_module(self):
+		self.selenium.open_module(self.name)
 
 	def open_details(self, objectname):
 		# type: (str) -> None
@@ -324,6 +329,31 @@ class Users(UDMBase):
 		self.selenium.wait_until_all_dialogues_closed()
 
 		return {'username': username, 'lastname': lastname}
+
+	def copy(self, user, username='', lastname='', password='univention', **kwargs):
+		username = username or uts.random_string()
+		self.search(user)
+		self.selenium.click_checkbox_of_grid_entry(user)
+		self.selenium.click_text(_('more'))
+		self.selenium.click_text(_('Copy'))
+		try:
+			self.selenium.wait_for_any_text_in_list(['Container', 'Template'], timeout=5)
+			self.selenium.click_button('Next')
+		except TimeoutException:
+			pass
+		finally:
+			self.selenium.wait_until_standby_animation_appears_and_disappears()
+
+		self.selenium.enter_input('username', username)
+		self.selenium.enter_input('lastname', lastname or uts.random_string())
+		self.selenium.enter_input('password_1', password)
+		self.selenium.enter_input('password_2', password)
+		for key, value in kwargs.items():
+			self.selenium.enter_input(key, value)
+		self.selenium.click_text(_('Create user'))
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
+		# TODO: check for error
+		return username
 
 	def _get_search_value(self, user):
 		# type: (Mapping[str, str]) -> str

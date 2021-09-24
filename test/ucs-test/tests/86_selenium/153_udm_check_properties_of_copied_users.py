@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest -s -l -v --tb=native
 ## desc: check properties of copied users/user
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -7,13 +7,12 @@
 ## packages:
 ## - univention-management-console-module-udm
 
+import sys
+
 import pytest
 
-import univention.testing.selenium as sel
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
+import univention.testing.selenium.udm as selenium_udm
 from univention.udm import UDM
-import selenium.common.exceptions as selenium_exceptions
 
 
 JPEG = '''
@@ -32,24 +31,6 @@ FgYDVQQDDA93d3cuZXhhbXBsZS5jb20wXDANBgkqhkiG9w0BAQEFAANLADBIAkEAm/xmkHmEQrurE/0r
 PjBop7uLHhnia7lQG/5zDtZIUC3RVpqDSwBuw/NTweGyuP+o8AG98HxqxTBwIDAQABMA0GCSqGSIb3DQEBBQUAA4GB
 ABS2TLuBeTPmcaTaUW/LCB2NYOy8GMdzR1mx8iBIu2H6/E2tiY3RIevV2OW61qY2/XRQg7YPxx3ffeUugX9F4J/iPn
 nu1zAxxyBy2VguKv4SWjRFoRkIfIlHX0qVviMhSlNy2ioFLy7JcPZb+v3ftDGywUqcBiVDoea0Hn+GmxZACg=='''.strip().replace('\n', '')
-
-
-@pytest.fixture(scope="module")
-def ucr():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		yield ucr
-
-
-@pytest.fixture(scope="module")
-def udm():
-	with udm_test.UCSTestUDM() as udm:
-		yield udm
-
-
-@pytest.fixture(scope="module")
-def selenium():
-	with sel.UMCSeleniumTest() as s:
-		yield s
 
 
 @pytest.fixture
@@ -82,51 +63,44 @@ def user_info(udm):
 		user.delete()
 
 
-def _copy_user(selenium, orig_dn, orig_username, copied_username):
-	selenium.do_login()
-	selenium.open_module('Users')
-	selenium.click_checkbox_of_grid_entry(orig_username)
-	selenium.click_button('more')
-	selenium.click_text('Copy')
+def test_copy_user(selenium, user_info):
+	orig_dn = user_info['orig_dn']
+	orig_username = user_info['orig_username']
+	copied_username = user_info['copied_username']
 
+	# copy the user
 	try:
-		selenium.wait_for_any_text_in_list(['Container', 'Template'], timeout=5)
-		selenium.click_button('Next')
-	except selenium_exceptions.TimeoutException:
-		selenium.wait_until_standby_animation_appears_and_disappears()
-	selenium.wait_until_standby_animation_appears_and_disappears()
+		selenium.do_login()
+		users = selenium_udm.Users(selenium)
+		users.open_module()
+		# users.wait_for_main_grid_load()
+		users.copy(orig_username, copied_username, 'testuser')
+	except Exception:  # workaround for pytest fixture
+		selenium.__exit__(*sys.exc_info())
+		raise
 
-	selenium.enter_input('username', copied_username)
-	selenium.enter_input('lastname', 'testuser')
-	selenium.enter_input("password_1", 'univention')
-	selenium.enter_input("password_2", 'univention')
-	selenium.click_button('Create user')
-	selenium.wait_until_standby_animation_appears_and_disappears()
-
-
-def _check_copied_user(orig_dn, copied_username):
+	# verify copying worked
 	attribute_list = [
 		'title', 'initials', 'preferredDeliveryMethod', 'pwdChangeNextLogin', 'employeeNumber',
 		'homePostalAddress', 'mobileTelephoneNumber', 'pagerTelephoneNumber', 'birthday', 'jpegPhoto', 'unixhome',
 		'userCertificate', 'certificateIssuerCountry', 'certificateIssuerState', 'certificateIssuerLocation', 'certificateIssuerOrganisation',
 		'certificateIssuerMail', 'certificateSubjectCountry', 'certificateSubjectState', 'certificateSubjectLocation', 'certificateSubjectOrganisation',
 		'certificateSubjectOrganisationalUnit', 'certificateSubjectCommonName', 'certificateSubjectMail', 'certificateDateNotBefore',
-		'certificateDateNotAfter', 'certificateVersion', 'certificateSerial']
+		'certificateDateNotAfter', 'certificateVersion', 'certificateSerial'
+	]
 
 	users_module = UDM.admin().version(1).get('users/user')
 	orig_user = users_module.get(orig_dn)
-	copied_user = list(users_module.search('username=%s' % (copied_username,)))[0]
+	try:
+		copied_user = users_module.get_by_id(copied_username)
+	except Exception:  # workaround for pytest fixture
+		selenium.__exit__(*sys.exc_info())
+		raise
+
 	orig_user_props = orig_user.props.__dict__
 	copied_user_props = copied_user.props.__dict__
 	for attribute in attribute_list:
-		print("Checking that %s is not copied" % (attribute,))
-		if attribute != 'jpegPhoto':
-			assert orig_user_props[attribute] != copied_user_props[attribute]
-		else:
+		if attribute == 'jpegPhoto':
 			assert copied_user_props[attribute] is None
-	return copied_user.__dict__['dn']
-
-
-def test_copy_user(selenium, user_info):
-	_copy_user(selenium, user_info['orig_dn'], user_info['orig_username'], user_info['copied_username'])
-	_check_copied_user(user_info['orig_dn'], user_info['copied_username'])
+		else:
+			assert orig_user_props[attribute] != copied_user_props[attribute]

@@ -4,7 +4,7 @@ import time
 import pytest
 
 import univention.lib.umc
-from univention.testing import strings, ucr as _ucr, udm as _udm, umc, utils
+from univention.testing import strings, ucr as _ucr, udm as _udm, umc, utils, selenium as _sel
 
 pytest_plugins = ["univention.testing.conftest"]
 
@@ -57,6 +57,12 @@ def ldap_master(ucr_session):
 def udm():
 	with _udm.UCSTestUDM() as udm:
 		yield udm
+
+
+@pytest.fixture
+def selenium():
+	with _sel.UMCSeleniumTest() as s:
+		yield s
 
 
 @pytest.fixture(scope='session')
