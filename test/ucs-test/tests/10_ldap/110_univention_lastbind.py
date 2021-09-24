@@ -13,7 +13,6 @@ import imp
 
 from univention.udm import UDM
 from univention.testing.ucr import UCSTestConfigRegistry
-from univention.testing.udm import UCSTestUDM
 from univention.config_registry import handler_set
 import univention.testing.strings as uts
 
@@ -95,18 +94,6 @@ def failbinddn():
 	return "uid=Administrator,cn=users"
 
 
-@pytest.fixture
-def ucr():
-	with UCSTestConfigRegistry() as ucr:
-		yield ucr
-
-
-@pytest.fixture(scope="module")
-def testudm():
-	with UCSTestUDM() as udm:
-		yield udm
-
-
 @pytest.fixture(scope="module")
 def readudm():
 	return UDM.machine().version(2)
@@ -133,8 +120,8 @@ def bind_for_timestamp(dn, host=None):
 
 
 @pytest.mark.slow
-def test_save_timestamp(testudm, readudm, binddn, bindpwdfile, capsys):
-	dn, _ = testudm.create_user()
+def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys):
+	dn, _ = udm.create_user()
 	o = readudm.obj_by_dn(dn)
 	timestamp = '2020010101Z'
 	capsys.readouterr()  # flush
@@ -156,8 +143,8 @@ def test_save_timestamp(testudm, readudm, binddn, bindpwdfile, capsys):
 
 
 @pytest.mark.slow
-def test_main_single_server(activate_lastbind, binddn, bindpwdfile, testudm, readudm):
-	o = readudm.obj_by_dn(testudm.create_user()[0])
+def test_main_single_server(activate_lastbind, binddn, bindpwdfile, udm, readudm):
+	o = readudm.obj_by_dn(udm.create_user()[0])
 	assert o.props.lastbind is None
 	timestamp = bind_for_timestamp(o.dn)
 	assert timestamp is not None
@@ -169,9 +156,9 @@ def test_main_single_server(activate_lastbind, binddn, bindpwdfile, testudm, rea
 
 @pytest.mark.skipif(not is_multi_domain(), reason="Test only in multi domain")
 @pytest.mark.slow
-def test_main_multi_server(activate_lastbind, binddn, bindpwdfile, testudm, readudm, other_server):
+def test_main_multi_server(activate_lastbind, binddn, bindpwdfile, udm, readudm, other_server):
 	assert other_server is not None
-	o = readudm.obj_by_dn(testudm.create_user()[0])
+	o = readudm.obj_by_dn(udm.create_user()[0])
 	assert o.props.lastbind is None
 	local_timestamp = bind_for_timestamp(o.dn)
 	assert local_timestamp is not None
@@ -196,10 +183,10 @@ def test_main_not_enough_arguments():
 
 
 @pytest.mark.slow
-def test_server_down(ucr, testudm, readudm, capsys):
+def test_server_down(ucr, udm, readudm, capsys):
 	mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
 	comp = mod.get_by_id(ucr.get('hostname'),)
-	slave = testudm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
+	slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
 	slave = readudm.obj_by_dn(slave)
 	capsys.readouterr()  # flush
 	univention_lastbind.get_ldap_connections()
