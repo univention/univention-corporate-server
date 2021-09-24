@@ -59,6 +59,13 @@ def udm():
 		yield udm
 
 
+@pytest.fixture
+def selenium():
+	from univention.testing import selenium as _sel
+	with _sel.UMCSeleniumTest() as s:
+		yield s
+
+
 @pytest.fixture(scope='session')
 def Client():
 	return umc.Client
