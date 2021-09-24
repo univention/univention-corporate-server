@@ -82,7 +82,7 @@ short_description = _('IP-Phone')
 # a detailed description
 long_description = _('An example module for the Univention Directory Manager')
 # the LDAP operations that can be performed on this object
-operations = ['add', 'edit', 'remove', 'search', 'move']
+operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 
 
 # To create your own wizard, which appears in the UDM Web on the left in the navigation bar:

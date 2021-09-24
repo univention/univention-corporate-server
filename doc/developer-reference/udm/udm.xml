@@ -891,11 +891,11 @@ udm settings/extended_attribute modify \
 			<para>
 				&ucsUDM; (kurz UDM) verwendet zur Abbildung von LDAP-Objekten eine eigene Modulstruktur.
 				Im Regelfall entspricht eines dieser UDM-Module einem LDAP-Objekt (z.B. einem Benutzer, einer Gruppe oder einem Container).
-				Eine recht [http://forum.univention.de/viewtopic.php?p=4278#p4278 kompakte Erläuterung] ist im Univention Forum zu finden. <!-- FIXME -->
+				Eine recht [https://help.univention.com/t/univention-python-api/646/ kompakte Erläuterung] ist im Univention Forum zu finden.
 			</para>
 
 			<para>
-				Die Module sind nach Aufgabenbereichen strukturiert im Verzeichnis <filename class="directory">/usr/share/pyshared/univention/admin/handlers/</filename> abgelegt.
+				Die Module sind nach Aufgabenbereichen strukturiert im Verzeichnis <filename class="directory">usr/lib/python2.7/dist-packages/univention/admin/handlers/</filename> abgelegt.
 				Die Module für die Verwaltung der verschiedenen Rechnerobjekte befinden sich beispielsweise unterhalb des Ordners '<filename class="directory">computers/</filename>'.
 				Dieses Objekt kann von der Kommandozeilenschnittstelle durch '<classname>computers/windows'</classname> angesprochen werden.
 			</para>
@@ -910,7 +910,7 @@ udm settings/extended_attribute modify \
 			<title>Aufbau eines Moduls</title>
 
 			<para>
-				Ein Modul besteht aus der Definition der Modul-Attribute und der Definition einer von <classname>univention.admin.simpleLdap</classname> abgeleiteten Klasse mit Namen <classname>object</classname>.
+				Ein Modul besteht aus der Definition der Modul-Attribute und der Definition einer von <classname>univention.admin.handlers.simpleLdap</classname> abgeleiteten Klasse mit Namen <classname>object</classname>.
 			</para>
 			<note>
 				<para>
@@ -1016,7 +1016,9 @@ udm settings/extended_attribute modify \
 options = {
 	'opt1': univention.admin.option(
 		short_description=_('short description'),
-		default=True),
+		default=True,
+		objectClasses=['class1'],
+	),
 }
 ]]></programlisting>
 						</listitem>
@@ -1035,16 +1037,17 @@ options = {
 <programlisting language="python"><![CDATA[
 property_descriptions = {
 	'prop1': univention.admin.property(
-		short_description='name'
-		long_description='long description',
+		short_description=_('name'),
+		long_description=_('long description'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		required=True,
 		may_change=True,
 		identifies=False,
 		dontsearch=True,
-		default='default value',
-		options=['opt1']),
+		default=('default value'),
+		options=['opt1'],
+	),
 }
 ]]></programlisting>
 							<para>
@@ -1136,17 +1139,20 @@ property_descriptions = {
 								Über den optionalen Parameter <property>colspan=2</property> kann das Widget für ein UDM-Attribut auch über beide Spalten ausgedehnt werden.
 							</para>
 <programlisting language="python"><![CDATA[
+from univention.admin.layout import Tab
 layout = [
-	univention.admin.tab(_('Tab header'), _('Tab description'), [
-		[univention.admin.field('prop1'), univention.admin.field('prop3')],
-		[univention.admin.field('prop3', colspan=2), ],
+	Tab(_('Tab header'), _('Tab description'), layout=[
+		Group('Group', 'group description', [
+			['prop1', 'prop2']
+			['prop3', ]
+		]),
 		...
-	], advanced=False),
+	], advanced=True),
 	...
 ]
 ]]></programlisting>
 							<para>
-								Über die optionale <property>advanced=True</property> Einstellung kann kontrolliert werden, ob der Reiter standardmäßig angezeigt werden soll oder nur dann, wenn das Anzeigen der <guimenu>erweiterten Einstellungen</guimenu> aktiviert ist.
+								Über die optionale <property>advanced=True</property> Einstellung kann kontrolliert werden, ob der Reiter standardmäßig auf dem <guimenu>erweiterten Einstellungen</guimenu> angezeigt werden soll.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -1371,6 +1377,11 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 					Diese Funktionen werden genutzt, um bei Suchanfragen aus dem Web-Frontend des &ucsUDM; die dazugehörigen Objekte zu finden (<function>lookup</function>) und um LDAP-Objekte einem &ucsUDM;-Modul zuzuordnen.
 					Später werden Beispielimplementierungen für diese zwei Funktionen vorgestellt, die für einfache LDAP-Objekte nur leicht modifiziert werden müssen.
 				</para>
+				<programlisting language="python"><![CDATA[
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify
+]]></programlisting>
 			</section>
 		</section>
 
@@ -1408,10 +1419,9 @@ import univention.admin.syntax
 				</para>
 				<programlisting language="python"><![CDATA[
 module = 'test/ip-phone'
-childs = 0
-short_description = u'IP-Telefon'
-long_description = u'Ein Beispiel-Modul für den ' + \
-	u'Univention Directory Manager zur Verwaltung von IP-Telefonen'
+childs = False
+short_description = 'IP-Telefon'
+long_description = 'Ein Beispiel-Modul für den Univention Directory Manager zur Verwaltung von IP-Telefonen'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 ]]></programlisting>
 				<para>
@@ -1419,27 +1429,20 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 				</para>
 				<programlisting language="python"><![CDATA[
 layout = [
-	univention.admin.tab('Allgemein', 'Allgemeine Einstellungen', [
-		[univention.admin.field("name"), univention.admin.field("active")],
-		[univention.admin.field("ip"), univention.admin.field("protocol")],
-		[univention.admin.field("priuser")],
+	Tab('Allgemein', 'Allgemeine Einstellungen', layout=[
+		["name", "active"],
+		["ip", "protocol"],
+		["priuser"],
 	]),
-	univention.admin.tab('Erweiterungen', 'Erweiterte Einstellungen', [
-		[univention.admin.field("users")],
-	], advanced=True),
+	Tab('Erweiterungen', 'Erweiterte Einstellungen', layout=[
+		["users"],
+		], advanced=True),
 ]
 ]]></programlisting>
 				<para>
 					Sie strukturiert die Anordnung der einzelnen Attribute des Objektes auf die Reiter.
-					Es handelt sich dabei um eine Liste aus Elementen vom Typ <classname>univention.admin.tab</classname>, die jeweils den Inhalt eines Reiters bestimmen.
+					Es handelt sich dabei um eine Liste aus Elementen vom Typ <classname>univention.admin.layout.Tab</classname>, die jeweils den Inhalt eines Reiters bestimmen.
 					In diesem Fall gibt es einen Reiter ''Allgemein'' und einen weiteren Reiter ''Erweiterungen''.
-				</para>
-				<warning>
-					<para>
-						Es können nicht mehr als zwei Felder nebeneinander angeben werden, d.h. ein Listenelement darf nicht aus mehr als zwei Objekten vom Typ <classname>univention.admin.field</classname> bestehen!
-					</para>
-				</warning>
-				<para>
 					Als nächstes sollten die Optionen (<xref linkend="udm:modules:globals:options"/>) und Attribute des Moduls definiert werden.
 					In diesem Fall wird eine Option ''extended'' angelegt, deren Funktion später noch erläutert wird.
 					Um die Parameter zu konfigurieren wird dem Objekt <classname>univention.admin.option</classname> der Option <varname>short_description</varname> für eine Kurzbeschreibung übergeben.
@@ -1448,7 +1451,7 @@ layout = [
 				<programlisting language="python"><![CDATA[
 options = {
 	'extended': univention.admin.option(
-		short_description=u'Erweiterte Einstellungen',
+		short_description='Erweiterte Einstellungen',
 		default=True
 	)
 }
@@ -1469,8 +1472,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'name': univention.admin.property(
-		short_description=u'Name',
-		long_description=u'Name des Telefons',
+		short_description='Name',
+		long_description='Name des Telefons',
 		syntax=univention.admin.syntax.hostName,
 		multivalue=False,
 		options=[],
@@ -1486,8 +1489,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'active': univention.admin.property(
-		short_description=u'freigeschaltet',
-		long_description=u'Ein IP-Telefon kann gesperrt werden',
+		short_description='freigeschaltet',
+		long_description='Ein IP-Telefon kann gesperrt werden',
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		options=[],
@@ -1506,9 +1509,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'protocol': univention.admin.property(
-		short_description=u'Protokoll',
-		long_description=u'Welches VoIP Protokoll ' + \
-			u'wird von dem Telefon unterstützt',
+		short_description='Protokoll',
+		long_description='Welches VoIP Protokoll wird von dem Telefon unterstützt',
 		syntax=SynVoIP_Protocols,
 		multivalue=False,
 		options=[],
@@ -1525,8 +1527,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'ip': univention.admin.property(
-		short_description=u'IP-Adresse',
-		long_description=u'',
+		short_description='IP-Adresse',
+		long_description='',
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=False,
 		options=[],
@@ -1543,9 +1545,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'priuser': univention.admin.property(
-		short_description=u'primärer Benutzer',
-		long_description=u'Der primäre Benutzer ' + \
-			u'dieses Telefons',
+		short_description='primärer Benutzer',
+		long_description='Der primäre Benutzer dieses Telefons',
 		syntax=SynVoIP_Address,
 		multivalue=False,
 		options=[],
@@ -1561,9 +1562,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 	'users': univention.admin.property(
-		short_description=u'weitere Benutzer',
-		long_description=u'Benutzer, die an diesem ' + \
-			u'Telefon registriert sein dürfen',
+		short_description='weitere Benutzer',
+		long_description='Benutzer, die an diesem Telefon registriert sein dürfen',
 		syntax=SynVoIP_Address,
 		multivalue=True,
 		options=['extended'],
@@ -1583,8 +1583,8 @@ property_descriptions = {
 				</para>
 				<programlisting language="python"><![CDATA[
 class SynVoIP_Protocols(univention.admin.syntax.select):
-	name = u'VoIP_Protocol'
-	choices = [('sip', u'SIP'), ('h323', u'H.323'), ('skype', u'Skype')]
+	name = 'VoIP_Protocol'
+	choices = [('sip', 'SIP'), ('h323', 'H.323'), ('skype', 'Skype')]
 ]]></programlisting>
 				<para>
 					Die andere Syntaxdefinition — <classname>SynVoIP_Address</classname> — basiert auf der Klasse <classname>univention.admin.syntax.simple</classname>, die eine Basisfunktionalität für Syntaxdefinitionen bietet, die mit regulären Ausdrücken arbeiten.
@@ -1604,8 +1604,7 @@ class SynVoIP_Address(univention.admin.syntax.simple):
 	def parse(self, text):
 		if self._re.match(text) is not None:
 			return text
-		raise univention.admin.uexceptions.valueError(
-			u'Keine gültige VoIP Adresse')
+		raise univention.admin.uexceptions.valueError('Keine gültige VoIP Adresse')
 ]]></programlisting>
 				<para>
 					Anschließend wird die Abbildung von den Modul-Attributen auf die Attribute des zu erzeugenden LDAP-Objektes definiert (<xref linkend="udm:modules:globals:mapping"/>).
@@ -1629,9 +1628,8 @@ mapping.register('users', 'testPhoneUsers')
 				<programlisting language="python"><![CDATA[
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
 		def _ldap_addlist(self):
-			return [('objectClass', ['top', 'testPhone' ])]
+			return [('objectClass', [b'top', b'testPhone' ])]
 ]]></programlisting>
 				<para>
 					Damit auch nach Objekten, die dieses Modul verwaltet, gesucht werden kann gibt es noch zwei Funktionen <function>lookup()</function> und <function>identify()</function> (<xref linkend="udm:modules:functions"/>).
@@ -1651,7 +1649,7 @@ lookup = object.lookup
 				</para>
 				<programlisting language="python"><![CDATA[
 def identify(dn, attr, canonical=0):
-	return 'testPhone' in attr.get('objectClass', [])
+	return b'testPhone' in attr.get('objectClass', [])
 ]]></programlisting>
 			</section>
 
@@ -1663,37 +1661,36 @@ def identify(dn, attr, canonical=0):
 				</para>
 				<programlisting language="ldif"><![CDATA[
 attributetype ( 1.3.6.1.4.1.10176.9999.1.1 NAME 'testPhoneActive'
-    DESC 'state of the IP phone'
-    EQUALITY caseIgnoreIA5Match
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	DESC 'state of the IP phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.9999.1.2 NAME 'testPhoneProtocol'
-    DESC 'The supported VoIP protocol'
-    EQUALITY caseExactIA5Match
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	DESC 'The supported VoIP protocol'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.9999.1.3 NAME 'testPhoneIP'
-    DESC 'The IP address of the phone'
-    EQUALITY caseExactIA5Match
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	DESC 'The IP address of the phone'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.9999.1.4 NAME 'testPhonePrimaryUser'
-    DESC 'The primary user of the phone'
-    EQUALITY caseIgnoreIA5Match
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	DESC 'The primary user of the phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.9999.1.5 NAME 'testPhoneUsers'
-    DESC 'A list of other users allowed to use the phone'
-    EQUALITY caseIgnoreIA5Match
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	DESC 'A list of other users allowed to use the phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
-    DESC 'IP Phone'
-    SUP top  STRUCTURAL
-    MUST ( cn $ testPhoneActive $ testPhoneProtocol $ \
-    testPhoneIP $ testPhonePrimaryUser )
-    MAY ( testPhoneUsers )
-    )
+	DESC 'IP Phone'
+	SUP top  STRUCTURAL
+	MUST ( cn $ testPhoneActive $ testPhoneProtocol $ testPhoneIP $ testPhonePrimaryUser )
+	MAY ( testPhoneUsers )
+	)
 ]]></programlisting>
 				<para>
 					Eine ausführliche Dokumentation zur Erstellung von LDAP Schema-Dateien ist auf der <ulink url="http://www.openldap.org/">Webseite des OpenLDAP Projektes</ulink> zu finden und ist nicht Schwerpunkt dieser Dokumentation.
@@ -1707,7 +1704,7 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 					Im folgenden werden diese beiden Schritte dokumentiert.
 				</para>
 				<para>
-					Das Python-Modul muss in das Verzeichnis ''/usr/share/pyshared/univention/admin/handlers/'' kopiert werden, damit der &ucsUDM; es findet.
+					Das Python-Modul muss in das Verzeichnis ''usr/lib/python2.7/dist-packages/univention/admin/handlers/'' kopiert werden, damit der &ucsUDM; es findet.
 					In diesem Verzeichnis ist ein Unterverzeichnis anzulegen.
 					Es sollte dem ersten Teil des Modulnamens entsprechen.
 					Wenn der Name des Moduls beispielsweise <classname>test/ip-phone</classname> ist, dann sollte das Verzeichnis <filename class="directory">test/</filename> heißen.
@@ -1721,6 +1718,16 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 					Die Schema-Definitionen von Univention werden beispielsweise in dem Verzeichnis ''/usr/share/univention-ldap/schema/'' abgelegt.
 					Damit der LDAP-Server dieses Schema findet muss es in die Konfigurationsdatei ''/etc/ldap/slapd.conf'' eingebunden werden.
 					Da diese Datei unter der Kontrolle von Univention Configuration Registry steht, sollte nicht direkt die Datei editiert werden, sondern ein Univention Configuration Registry-Template erstellt werden (siehe {{Handbuch UCS|UCS-Handbuch}}). <!-- FIXME -->
+				</para>
+			</section>
+
+				<section id="udm:modules:examples:download">
+				<title>Download des Beispielcodes</title>
+				<para>
+					Die aktuelle Version des Beispielcodes ist unter <ulink url="https://github.com/univention/univention-corporate-server/tree/5.0-0/packaging/univention-directory-manager-module-example">univention-directory-manager-module-example</ulink> einsehbar.
+					Das Verzeichnis enthält ein Quellpaket im Debian-Format, aus dem bei Paketbau per <varname>./debian/rules binary</varname> zwei Binärpakete erzeugt werden:
+					Ein Schema-Paket, das auf dem Master installiert werden muss und das Paket mit dem UDM-Modul selbst.
+					Der Beispielcode enthält auch ein Skript ''ip-phone-tool'', das beispielhaft die Verwendung der UDM Python API in einem Python-Skript zeigt.
 				</para>
 			</section>
 		</section>
