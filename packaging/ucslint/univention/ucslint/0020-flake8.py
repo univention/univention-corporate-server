@@ -300,6 +300,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-D402': (uub.RESULT_STYLE, 'First line should not be the function\'s "signature"'),
 			'0020-D403': (uub.RESULT_STYLE, 'First word of the first line should be properly capitalized'),
 
+			'0020-I001': (uub.RESULT_STYLE, 'isort found an import in the wrong position'),
+			'0020-I002': (uub.RESULT_STYLE, 'no configuration found (.isort.cfg or [isort] in configs)'),
+			'0020-I003': (uub.RESULT_STYLE, 'isort expected 1 blank line in imports, found 0'),
+			'0020-I004': (uub.RESULT_STYLE, 'isort found an unexpected blank line in imports'),
+			'0020-I005': (uub.RESULT_STYLE, 'isort found an unexpected missing import'),
+
 			'0020-B001': (
 				uub.RESULT_WARN,
 				"Do not use bare `except:`, it also catches unexpected "

@@ -1,3 +1,9 @@
+ucslint (9.0.1-6) unstable; urgency=medium
+
+  * Bug #53804: add flake8-isort error codes
+
+ -- Florian Best <best@univention.de>  Fri, 24 Sep 2021 15:50:03 +0200
+
 ucslint (9.0.1-5) unstable; urgency=medium
 
   * Bug #53804: transform flake8 styling/warning into errors
