@@ -124,6 +124,17 @@ class NoSuperordinate(UdmError):
 		super(NoSuperordinate, self).__init__(msg, dn, module_name)
 
 
+class SearchLimitReached(UdmError):
+	"""Raised when the search results in more objects than specified by the sizelimit."""
+	def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
+		msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
+			search_filter if search_filter else "''", sizelimit if sizelimit else "/"
+		)
+		self.search_filter = search_filter
+		self.sizelimit = sizelimit
+		super(SearchLimitReached, self).__init__(msg, dn, module_name)
+
+
 class MultipleObjects(UdmError):
 	"""
 	Raised when more than one UDM object was found when there should be at

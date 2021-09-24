@@ -325,7 +325,7 @@ class BaseModule(object):
 					self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
 		return res[0]
 
-	def search(self, filter_s='', base='', scope='sub'):
+	def search(self, filter_s='', base='', scope='sub', sizelimit=0):
 		"""
 		Get all |UDM| objects from |LDAP| that match the given filter.
 
@@ -333,6 +333,7 @@ class BaseModule(object):
 			required, `objectClasses` will be set by the |UDM| module)
 		:param str base: |LDAP| search base.
 		:param str scope: |LDAP| search scope, e.g. `base` or `sub` or `one`.
+		:param int sizelimit: |LDAP| size limit for searched results.
 		:return: iterator of :py:class:`BaseObject` objects
 		:rtype: Iterator(BaseObject)
 		"""
