@@ -1,3 +1,9 @@
+univention-samba (13.0.0-14) unstable; urgency=medium
+
+  * Bug #53799: correct samba fix 
+
+ -- Tobias Wenzel <wenzel@univention.de>  Fri, 24 Sep 2021 11:01:03 +0200
+
 univention-samba (13.0.0-13) unstable; urgency=medium
 
   * Bug #53799: make fix closer to ucs 5 solution

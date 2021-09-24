@@ -175,7 +175,6 @@ class ShareConfiguration(object):
 			except IndexError:
 				continue
 
-			share.name = quote(share.name, safe='')
 			if cfg.has_option(share.name, Restrictions.INVALID_USERS):
 				share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS))
 			if cfg.has_option(share.name, Restrictions.HOSTS_DENY):
@@ -361,7 +360,7 @@ class ShareConfiguration(object):
 			if not share.ucr:
 				continue
 
-			share_filename = os.path.join(ShareConfiguration.SHARES_DIR, share.name + ShareConfiguration.POSTFIX)
+			share_filename = os.path.join(ShareConfiguration.SHARES_DIR, quote(share.name, safe='') + ShareConfiguration.POSTFIX)
 			fd = open(share_filename, "w")
 			try:
 				fd.write("[" + share.name + "]\n")
