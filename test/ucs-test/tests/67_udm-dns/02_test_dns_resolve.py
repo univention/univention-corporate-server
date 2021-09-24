@@ -346,7 +346,7 @@ class Test_DNSResolve(object):
 		}
 		udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
 
-		from univention.testing.utils import wait_for_s4connector
+		from univention.testing.ucs_samba import wait_for_s4connector
 		wait_for_s4connector()
 
 		zone_fqdn = '%s.%s' % (zonename, partentzone)
