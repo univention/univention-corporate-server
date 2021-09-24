@@ -285,6 +285,7 @@ class select(ISyntax):
 			return text
 
 
+
 class combobox(select):
 	"""
 	Select item from list of choices but accept all kind of values::
@@ -332,7 +333,7 @@ class complex(ISyntax):
 	Base class for complex syntax classes consisting of multiple sub-items.
 	"""
 
-	delimiter = ' '  # type: Union[str, Sequence[str]]
+	delimiter = ' '  # type: str
 	"""
 	Delimiter to separate the sub-items. Two possibilities:
 
@@ -427,11 +428,7 @@ class complex(ISyntax):
 			if len(self.subsyntaxes) != len(texts) or not all(texts):
 				return ''
 
-		if isinstance(self.delimiter, six.string_types):
-			return self.delimiter.join(texts)
-
-		# FIXME: s/(delimiter)s/\1/
-		return ''.join([s for sub in zip(self.delimiter, texts) for s in sub] + [self.delimiter[-1]])
+		return self.delimiter.join(texts)
 
 	@classmethod
 	def new(self):
