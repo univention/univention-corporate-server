@@ -360,7 +360,7 @@ class Base(signals.Provider, Translation):
 			status = MODULE_ERR_COMMAND_FAILED
 			reason = None
 			if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
-				tb_str = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
+				tb_str = ''.join(['Traceback (most recent call last):\n'] + trace + traceback.format_exception_only(*sys.exc_info()[:2]))
 			else:
 				tb_str = traceback.format_exc()
 			if isinstance(tb_str, bytes):  # Python 2

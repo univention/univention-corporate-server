@@ -1,3 +1,9 @@
+univention-management-console (12.0.12-15) unstable; urgency=medium
+
+  * Bug #53817: fix traceback format of exception occuring in a thread
+
+ -- Florian Best <best@univention.de>  Fri, 24 Sep 2021 15:23:55 +0200
+
 univention-management-console (12.0.12-14) unstable; urgency=medium
 
   * Bug #53779: support + in mimetypes
