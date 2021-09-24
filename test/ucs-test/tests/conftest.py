@@ -9,8 +9,14 @@ from univention.testing import strings, ucr as _ucr, udm as _udm, umc, utils
 pytest_plugins = ["univention.testing.conftest"]
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def ucr():  # type: () -> _ucr.UCSTestConfigRegistry
+	with _ucr.UCSTestConfigRegistry() as ucr:
+		yield ucr
+
+
+@pytest.fixture(scope='session')
+def ucr_session():  # type: () -> _ucr.UCSTestConfigRegistry
 	with _ucr.UCSTestConfigRegistry() as ucr:
 		yield ucr
 
@@ -33,18 +39,18 @@ def restart_umc_server():
 
 
 @pytest.fixture(scope='session')
-def server_role(ucr):
-	return ucr.get('server/role')
+def server_role(ucr_session):
+	return ucr_session.get('server/role')
 
 
 @pytest.fixture(scope='session')
-def ldap_base(ucr):  # type: () -> str
-	return ucr.get('ldap/base')
+def ldap_base(ucr_session):  # type: () -> str
+	return ucr_session.get('ldap/base')
 
 
 @pytest.fixture(scope='session')
-def ldap_master(ucr):
-	return ucr.get('ldap/master')
+def ldap_master(ucr_session):
+	return ucr_session.get('ldap/master')
 
 
 @pytest.fixture()
