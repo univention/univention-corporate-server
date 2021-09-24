@@ -382,6 +382,7 @@ class UCSTestUDM(object):
 		# type: (str, **Any) -> Tuple[str, dict]
 		"""Create any object with as maximum as possible prefilled random default values"""
 		module = univention.admin.modules.get_module(modulename)
+		# TODO: cache objects
 
 		if 'position' not in kwargs and not modulename.startswith('settings/portal'):
 			kwargs['position'] = (module.object.get_default_containers(self._lo) or [self.LDAP_BASE])[0]
@@ -435,14 +436,19 @@ class UCSTestUDM(object):
 				return
 
 			_dn, _props = self.create_with_defaults(m[0], max_recursion=max_recursion - 1)
-			p = prop.syntax.key % _props
+			try:
+				p = prop.syntax.key % _props
+			except KeyError:
+				obj = univention.admin.objects.get(univention.admin.modules.get(m[0]), None, self._lo, None, _dn)
+				# obj.open()
+				p = prop.syntax.key % obj.info
 			if p == 'dn':
 				return _dn
 			return p
 
 		def choices(syntax_name):
-			def func():
-				return random.choice(getattr(univention.admin.syntax, syntax_name).choices)[0]
+			def func(prop):
+				return random.choice(getattr(univention.admin.syntax, syntax_name, prop.syntax).choices)[0]
 			return func
 
 		def complex(syntax_name):
@@ -451,19 +457,25 @@ class UCSTestUDM(object):
 				if not all(s[1].name in syntax_classes_mapping for s in syn.subsyntaxes):
 					# TODO: warning
 					return
-				# TODO: quote if contains "
+
+				def _quote(s):
+					return s if '"' not in s else '"%s"' % (s.replace('\\', '\\\\').replace('"', '\\"'),)
 				functions = [
 					_func(syntax_classes_mapping[s[1].name], prop)
 					for s in syn.subsyntaxes
 				]
-				return ' '.join(f() for f in functions)
+				return ' '.join(_quote(f()) for f in functions)
 			return func
 
 		def known_mail_address():
+			if len(known_mail_address.cache) >= 5:
+				return '%s@%s' % (uts.random_name(), random.choice(known_mail_address.cache))
 			email = uts.random_email()
 			domain = email.rsplit('@', 1)[-1]
 			self.create_with_defaults('mail/domain', name=domain)
+			known_mail_address.cache.append(domain)
 			return email
+		known_mail_address.cache = []
 
 		def default_container(prop):
 			# Bug #53827
@@ -483,6 +495,9 @@ class UCSTestUDM(object):
 			finally:
 				prop.syntax = s
 
+		def random_ip():
+			return uts.random_ip(iter(range(11, 121)))
+
 		syntax_classes_mapping = {
 			'string': uts.random_string,
 			'string_numbers_letters_dots': uts.random_string,
@@ -496,6 +511,7 @@ class UCSTestUDM(object):
 			'TwoString': uts.random_string,
 			'IA5string': uts.random_string,
 			'integer': lambda: uts.random_int(0, 100000),
+			'integerOrEmpty': lambda: uts.random_int(1, 100000),
 			'uid': uts.random_username,
 			'gid': uts.random_groupname,
 			'userPasswd': uts.random_string,
@@ -533,7 +549,9 @@ class UCSTestUDM(object):
 			'auto_one_zero': choices('auto_one_zero'),
 			'TimeZone': choices('TimeZone'),
 			'MAC_Address': uts.random_mac,
-			'ipAddress': uts.random_ip,
+			'ipAddress': random_ip,
+			'IPv4_AddressRange': lambda: '%s.2 %s.254' % tuple([random_ip().rsplit('.', 1)[0]] * 2),
+			'ipv4Address': random_ip,
 			'absolutePath': lambda: '/' + uts.random_string(),
 			'sharePath': lambda: '/' + uts.random_string(),
 			'BaseFilename': lambda: '%s.%s' % (uts.random_string(), uts.random_string(3)),
@@ -552,18 +570,15 @@ class UCSTestUDM(object):
 			'locked': lambda: uts.random_int(0, 1),
 			'v4netmask': lambda: uts.random_int(1, 31),
 			'netmask': lambda: uts.random_int(1, 31),
-			'IPv4_AddressRange': lambda: '%s.2 %s.254' % tuple([uts.random_ip().rsplit('.', 1)[0]] * 2),
 			'printerName': lambda: uts.random_string(16),
 			'DHCP_HardwareAddress': lambda: 'ethernet %s' % (uts.random_mac(),),
-			'ipv4Address': uts.random_ip,
 			'hostName': uts.random_string,
-			'UNIX_TimeInterval': lambda: '%s %s' % (uts.random_int(), random.choice(univention.admin.syntax.Country.choices)[0]),
 			'policyName': uts.random_string,
 			'LocalizedDescription': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
 			'LocalizedDisplayName': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
 			'LocalizedLink': lambda: '%s %s://%s/%s' % (random.choice(['de_DE', 'en_US']), random.choice(['http', 'https']), uts.random_domain_name(), uts.random_string()),
-			'reverseLookupSubnet': lambda: uts.random_ip().rsplit('.', 1)[0],
-			'dnsPTR': lambda: uts.random_ip().rsplit('.', 1)[1],
+			'reverseLookupSubnet': lambda: random_ip().rsplit('.', 1)[0],
+			'dnsPTR': lambda: random_ip().rsplit('.', 1)[1],
 			'dnsHostname': uts.random_domain_name,
 			'dnsName': uts.random_domain_name,
 			'dnsName_umlauts': uts.random_string,
@@ -619,8 +634,8 @@ class UCSTestUDM(object):
 			'TrueFalse': lambda: random.choice(['true', 'false', 'none']),
 			'TextArea': lambda: '\n'.join([uts.random_string()] * random.randint(2, 5)),
 			'SignedInteger': uts.random_int,
-			'hostOrIP': uts.random_ip,
-			'hostname_or_ipadress_or_network': lambda: random.choice([uts.random_ip(), uts.random_name(), '%s/%s' % (uts.random_ip(), random.randint(1, 31))]),
+			'hostOrIP': random_ip,
+			'hostname_or_ipadress_or_network': lambda: random.choice([random_ip(), uts.random_name(), '%s/%s' % (random_ip(), random.randint(1, 31))]),
 			'jpegPhoto': lambda: '/9j/2wBDAP%swAALCAABAAEBAREA/8QAFAABA%s//EABQQAQ%sD/2gAIAQEAAD8AN//Z' % ('/' * 86, 'A' * 20, 'A' * 20),
 			'Base64UMCIcon': lambda: 'AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAD/////AAAAAA==',
 			'SharedFolderUserACL': complex('SharedFolderUserACL'),
@@ -646,6 +661,8 @@ class UCSTestUDM(object):
 			'SambaMaxPwdAge': complex('SambaMaxPwdAge'),
 			'UMC_CommandPattern': complex('UMC_CommandPattern'),
 			'attributeMapping': complex('attributeMapping'),
+			'UNIX_TimeInterval': complex('UNIX_TimeInterval'),
+			'TimeUnits': choices('TimeUnits'),
 			'adminFixedAttributes': choices('adminFixedAttributes'),
 			'desktopFixedAttributes': choices('desktopFixedAttributes'),
 			'dhcp_dnsFixedAttributes': choices('dhcp_dnsFixedAttributes'),
