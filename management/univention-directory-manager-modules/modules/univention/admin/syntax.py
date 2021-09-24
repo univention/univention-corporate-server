@@ -2538,7 +2538,7 @@ class keyAndValue(complex):
 	delimiter = ' = '
 	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
 	subsyntax_key_value = True
-	all_required = 1
+	all_required = True
 
 
 class dnsMX(complex):
@@ -5182,7 +5182,7 @@ class translationTuple(complex):
 	delimiter = ': '
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
 	subsyntax_key_value = True
-	all_required = 1
+	all_required = True
 
 
 class translationTupleShortDescription(translationTuple):
