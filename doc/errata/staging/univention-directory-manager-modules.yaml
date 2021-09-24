@@ -9,4 +9,5 @@ desc: |
  * Add syntax class to select UDM syntax class for Extended Attributes
  * Make options in Extended Attributes selectable
  * Make LDAP Object Class and Attribute names selectable
-bug: [52683, 25054, 31857]
+ * Expose the sizelimit parameter in the simple UDM API
+bug: [52683, 25054, 31857, 53832]
