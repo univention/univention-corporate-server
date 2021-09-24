@@ -49,7 +49,7 @@ from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, Dn
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
-	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType
+	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, SearchLimitReached
 )
 from ..utils import UDebug as ud
 
@@ -534,7 +534,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 		"""
 		return self._load_obj(dn)
 
-	def search(self, filter_s='', base='', scope='sub'):
+	def search(self, filter_s='', base='', scope='sub', sizelimit=0):
 		"""
 		Get all UDM objects from LDAP that match the given filter.
 
@@ -542,15 +542,31 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 			required, objectClasses will be set by the UDM module)
 		:param str base: subtree to search
 		:param str scope: depth to search
+		:param int sizelimit: LDAP size limit for searched results.
 		:return: generator to iterate over GenericObject objects
 		:rtype: Iterator(GenericObject)
 		"""
 		try:
-			udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.connection))
-			dns = self.connection.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope)
-		except AttributeError:
-			# not all modules have 'lookup_filter'
-			dns = (obj.dn for obj in self._orig_udm_module.lookup(None, self.connection, filter_s, base=base, scope=scope))
+			try:
+				udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.connection))
+				dns = self.connection.searchDn(
+					filter=udm_module_lookup_filter,
+					base=base,
+					scope=scope,
+					sizelimit=sizelimit
+				)
+			except AttributeError:
+				# not all modules have 'lookup_filter'
+				dns = (obj.dn for obj in self._orig_udm_module.lookup(
+					None,
+					self.connection,
+					filter_s,
+					base=base,
+					scope=scope,
+					sizelimit=sizelimit
+				))
+		except univention.admin.uexceptions.ldapSizelimitExceeded:
+			raise SearchLimitReached(module_name=self.name, search_filter=filter_s, sizelimit=sizelimit)
 		for dn in dns:
 			yield self.get(dn)
 
