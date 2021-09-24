@@ -313,7 +313,7 @@ class complex(ISyntax):
 	Base class for complex syntax classes consisting of multiple sub-items.
 	"""
 
-	delimiter = ' '  # type: Union[str, Sequence[str]]
+	delimiter = ' '  # type: str
 	"""
 	Delimiter to separate the sub-items. Two possibilities:
 
@@ -407,11 +407,7 @@ class complex(ISyntax):
 			if len(self.subsyntaxes) != len(texts) or not all(texts):
 				return ''
 
-		if isinstance(self.delimiter, basestring):
-			return self.delimiter.join(texts)
-
-		# FIXME: s/(delimiter)s/\1/
-		return ''.join([s for sub in zip(self.delimiters, texts) for s in sub] + [self.delimiter[-1]])
+		return self.delimiter.join(texts)
 
 	@classmethod
 	def new(self):
