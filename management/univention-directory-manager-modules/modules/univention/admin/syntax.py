@@ -154,7 +154,7 @@ class ISyntax(object):
 	"""
 	Base class for all syntax classes.
 	"""
-	size = 'One'
+	size = 'One'  # type: Union[str, Sequence[str]]
 	"""Widget size. See :py:data:`SIZES`."""
 
 	type_class = None
@@ -347,7 +347,7 @@ class complex(ISyntax):
 			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
 			if text is None and i + 1 < minn:
 				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument"))
-			s = syn() if inspect.isclass(syn) else syn
+			s = syn() if inspect.isclass(syn) else syn  # type: simple # type: ignore
 			p = s.parse(text)
 			parsed.append(p)
 		return parsed
@@ -438,9 +438,9 @@ class UDM_Objects(ISyntax):
 	"""A |LDAP| filter string to further restrict the matching |LDAP| objects."""
 	key = 'dn'
 	"""Either 'dn' or the |UDM| property name enclosed in %()s to use as the value for this syntax class."""
-	label = None
+	label = None  # type: Optional[str]
 	"""The |UDM| property name, which is used as the displayed value."""
-	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
+	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')  # type: Optional[Pattern]
 	"""Regular expression for validating the values."""
 	static_values = None  # type: Optional[Sequence[Tuple[str, str]]]
 	"""Sequence of additional static items."""
@@ -488,7 +488,7 @@ class UDM_Attribute(ISyntax):
 	"""When the UDM property is complex: The number of the sub-item, which is used as the value for this syntax class."""
 	label_index = 0
 	"""When the UDM property is complex: The number of the sub-item, which is used as the display value."""
-	label_format = None
+	label_format = None  # type: Optional[str]
 	"""Python format string used to convert the |UDM| properties to the displayed value."""
 	regex = None  # type: Optional[Pattern]
 	"""Regular expression for validating the values."""
@@ -3167,7 +3167,7 @@ class IComputer_FQDN(UDM_Objects):
 	.. seealso::
 		* :py:class:`HostDN`
 	"""
-	udm_modules = ()
+	udm_modules = ()  # type: Sequence[str]
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
 	label = '%(name)s.%(domain)s'  # '%(fqdn)s'
 	regex = re.compile('(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
