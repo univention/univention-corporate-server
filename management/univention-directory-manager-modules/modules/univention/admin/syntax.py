@@ -261,6 +261,8 @@ class select(ISyntax):
 		if text in map(lambda x: x[0], self.choices) or (not text and select.empty_value):
 			return text
 
+		return None
+
 
 class combobox(select):
 	"""
