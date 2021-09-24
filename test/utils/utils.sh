@@ -1145,11 +1145,9 @@ transfer_docker_image () {
 	local transfer_user=automation
 	local transfer_pwfile=/root/automation.secret
 
-	#while pgrep -a -f "univention-app internal-transfer-images.*$appid.*"
-	while pgrep -a -f "univention-app internal-transfer-images"
-	do
-		sleep $(( $RANDOM % 60 ))
-	done
+# lock the  image transfer (update, pull, app update)
+( flock --verbose -w 120 9 || return 1
+
 	ssh root@$docker_host univention-app update || return 1
 cat <<-EOF | ssh root@$docker_host python
 # only whitespaces here, no tabs!
@@ -1187,6 +1185,9 @@ print('found no app for {}'.format(app_id))
 sys.exit(1)
 EOF
 	return $?
+
+) 9>/tmp/mylockfile
+
 }
 
 ################################################################################
