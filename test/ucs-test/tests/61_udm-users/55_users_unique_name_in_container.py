@@ -14,12 +14,6 @@ import univention.uldap
 
 
 @pytest.fixture
-def udm():
-	with udm_test.UCSTestUDM() as udm:
-		yield udm
-
-
-@pytest.fixture
 def username():
 	return uts.random_username()
 
