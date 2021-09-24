@@ -1,3 +1,9 @@
+univention-samba (14.0.4-6) unstable; urgency=medium
+
+  * Bug #53828: correct samba fix 
+
+ -- Tobias Wenzel <wenzel@univention.de>  Fri, 24 Sep 2021 10:40:41 +0200
+
 univention-samba (14.0.4-5) unstable; urgency=medium
 
   * Bug #53828: fix samba share names with consecutive whitespaces
