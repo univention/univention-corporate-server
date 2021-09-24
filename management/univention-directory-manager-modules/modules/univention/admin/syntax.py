@@ -433,24 +433,18 @@ class complex(ISyntax):
 	@classmethod
 	def new(self):
 		# type: () -> Union[str, List[str]]
-		s = []
-		for desc, syntax in self.subsyntaxes:
-			if not inspect.isclass(syntax):
-				s.append(syntax.new())
-			else:
-				s.append(syntax().new())
-		return s
+		return [
+			(syntax() if inspect.isclass(syntax) else syntax).new()  # type: ignore
+			for desc, syntax in self.subsyntaxes
+		]
 
 	@classmethod
 	def any(self):
 		# type: () -> Union[str, List[str]]
-		s = []
-		for desc, syntax in self.subsyntaxes:
-			if not inspect.isclass(syntax):
-				s.append(syntax.any())
-			else:
-				s.append(syntax().any())
-		return s
+		return [
+			(syntax() if inspect.isclass(syntax) else syntax).any()  # type: ignore
+			for desc, syntax in self.subsyntaxes
+		]
 
 
 class UDM_Objects(ISyntax):
@@ -2800,22 +2794,17 @@ class MAC_Address(simple):
 	@classmethod
 	def parse(self, text):
 		if self.regexLinuxFormat.match(text) is not None:
-			return text.lower()
+			text = text.replace(':', '')
 		elif self.regexWindowsFormat.match(text) is not None:
-			return text.replace('-', ':').lower()
+			text = text.replace('-', '')
 		elif self.regexRawFormat.match(text) is not None:
-			temp = []
-			for i in range(0, len(text) - 1, 2):
-				temp.append(text[i:i + 2])
-			return ':'.join(temp).lower()
+			pass
 		elif self.regexCiscoFormat.match(text) is not None:
-			tmpList = []
-			tmpStr = text.replace('.', '')
-			for i in range(0, len(tmpStr) - 1, 2):
-				tmpList.append(tmpStr[i:i + 2])
-			return ':'.join(tmpList).lower()
+			text = text.replace('.', '')
 		else:
 			raise univention.admin.uexceptions.valueError(self.error_message)
+
+		return ':'.join(text[i:i + 2] for i in range(0, len(text), 2)).lower()
 
 
 class DHCP_HardwareAddress(complex):
