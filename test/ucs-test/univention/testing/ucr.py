@@ -1,21 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # UCS test
-"""
-BETA VERSION
-
-Wrapper around Univention Configuration Registry that is able to revert
-the UCR status after usage. For usage examples look at the end of this
-file.
-
-WARNING:
-changes to the ConfigRegistry object will also trigger the evaluation of templates
-and therefore changes in configuration files created by UCR!
-
-WARNING2:
-The API is currently under development and may change before next UCS release!
-"""
-from __future__ import print_function
 #
 # Copyright 2013-2021 Univention GmbH
 #
@@ -44,22 +29,42 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+BETA VERSION
+
+Wrapper around Univention Configuration Registry that is able to revert
+the UCR status after usage. For usage examples look at the end of this
+file.
+
+.. warning::
+	changes to the ConfigRegistry object will also trigger the evaluation of templates
+	and therefore changes in configuration files created by UCR!
+
+.. warning:: The API is currently under development and may change before next UCS release!
+"""
+
+from __future__ import print_function
+
 import copy
+
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
 
 
 class UCSTestConfigRegistry(ConfigRegistry):
-
 	"""
-			Extension to ConfigRegistry to be able to clean up after
-			several changes to UCR variables have been done.
+		Extension to ConfigRegistry to be able to clean up after
+		several changes to UCR variables have been done.
 	"""
 
 	def __init__(self, *args, **kwargs):
 		""" initialise object """
 		ConfigRegistry.__init__(self, *args, **kwargs)
 		self.__original_registry = None
+
+	ucr_update = univention.config_registry.frontend.ucr_update
+	handler_set = univention.config_registry.handler_set
+	handler_unset = univention.config_registry.handler_unset
 
 	def load(self):
 		""" call load() of superclass and save original registry values """
