@@ -1,3 +1,9 @@
+ucslint (9.0.2-1) unstable; urgency=medium
+
+  * Bug #53804: [flake8] ignore styling errors in ucslint test files
+
+ -- Florian Best <best@univention.de>  Sat, 25 Sep 2021 10:43:49 +0200
+
 ucslint (9.0.1-6) unstable; urgency=medium
 
   * Bug #53804: add flake8-isort error codes

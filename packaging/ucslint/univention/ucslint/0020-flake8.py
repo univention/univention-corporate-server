@@ -63,6 +63,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		re.compile(r'univention-ldb-modules/buildtools/'),  # external code
 		re.compile(r'services/univention-printserver/modules/univention/management/console/handlers/cups'),  # UCS 2.4 code
 		re.compile(r'univention-directory-manager-modules/test/'),  # unrelevant, should be removed imho
+		re.compile(r'ucslint/testframework/(?!0020)'),  # ucslint tests may contain error, but not for this module.
 	]
 
 	IGNORE = {
