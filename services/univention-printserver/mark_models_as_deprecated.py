@@ -99,10 +99,10 @@ class UpdatePrinterModels(object):
 				ppd = model[0]
 				ppds.setdefault(ppd, []).append(model)
 
-			duplicated_ppds = [ppd for ppd, model in ppds.items() if len(model) > 1]
+			duplicated_ppds = [_ppd for _ppd, model in ppds.items() if len(model) > 1]
 			replacement_ppds = [
-				[ppd, str(self.get_nickname_from_ppd(ppd))]
-				for ppd in duplicated_ppds
+				[_ppd, str(self.get_nickname_from_ppd(_ppd))]
+				for _ppd in duplicated_ppds
 			]
 
 			if duplicated_ppds:

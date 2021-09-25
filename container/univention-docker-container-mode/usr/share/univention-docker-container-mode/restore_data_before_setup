@@ -49,7 +49,7 @@ def copy_permissions(src, dest):
 	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
 	shutil.copymode(src, dest)
 	shutil.copystat(src, dest)
-	d_stat = os.stat(dest)
+	os.stat(dest)
 
 
 def restore_files(source_dir):

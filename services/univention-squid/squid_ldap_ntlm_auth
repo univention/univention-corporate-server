@@ -199,8 +199,8 @@ def parseNtlmTypeThree(data):
 
 	data = data.replace("KK ", "", 1)
 	data = base64.b64decode(data)
-	signature = data[0:8]
-	type = struct.unpack("<I", data[8:12])[0]
+	# signature = data[0:8]
+	struct.unpack("<I", data[8:12])[0]  # type
 	lmLen = struct.unpack("<h", data[12:14])[0]
 	lmOffset = struct.unpack("<l", data[16:20])[0]
 	ntLen = struct.unpack("<h", data[20:22])[0]

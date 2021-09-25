@@ -52,8 +52,8 @@ class I2O_RAIDCheck:
 		self.str_warning = ['Rebuilding', 'Reconstruct', 'Reconstructing', 'Replaced Drive', 'Expanding', 'Warning', 'Verify']
 		self.str_critical = ['Degraded', 'Dead', 'Failed', 'Error', 'Missing']
 
-		self.re_other = re.compile('^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
-		self.re_controller = re.compile('^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s|%s|%s)\s*$' %
+		self.re_other = re.compile(r'^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
+		self.re_controller = re.compile(r'^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s|%s|%s)\s*$' %
 			('|'.join(self.str_ok), '|'.join(self.str_warning), '|'.join(self.str_critical)))
 
 		self.state = {
