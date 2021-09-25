@@ -28,7 +28,6 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
-import sys
 import six
 
 # use ip_interface for networks for py2 py3 compatability
