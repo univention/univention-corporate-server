@@ -6,9 +6,7 @@ Standards-Version: 3.5.2
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python-ipaddr,
- python-ipaddress,
  python-six,
  python3-all,
  python3-six,
@@ -16,7 +14,7 @@ Build-Depends:
 Package: univention-ipcalc
 Architecture: all
 Depends:
- python-univention-ipcalc (>= 10.0.0-2),
+ python3-univention-ipcalc (>= ${binary:Version}),
 Description: UCS - ipcalc tool for network
  This package contain the ipcalc tool.
  .
@@ -29,7 +27,6 @@ Package: python-univention-ipcalc
 Architecture: all
 Depends:
  python-ipaddr,
- python-ipaddress,
  python-six,
  ${python:Depends},
 Provides:
@@ -51,8 +48,6 @@ Architecture: all
 Depends:
  python3-six,
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Description: UCS - ipcalc tool for network
  This package contain the Python 3 files for the ipcalc tool.
  .

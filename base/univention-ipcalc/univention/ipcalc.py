@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 #

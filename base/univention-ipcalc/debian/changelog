@@ -1,6 +1,7 @@
 univention-ipcalc (11.0.0-2) unstable; urgency=low
 
   * Bug #22511: Remove old univention-ipcalc
+  * Bug #53345: Convert to Python3
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 25 Sep 2021 09:54:17 +0200
 
