@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-manager-modules
+fix: 14.0.20-19A~4.4.0.202109251745
+desc: |
+ This update addresses the following issues:
+ * Add syntax class to select UDM syntax class for Extended Attributes
+ * Make options in Extended Attributes selectable
+ * Make LDAP Object Class and Attribute names selectable
+bug: [52683, 25054, 31857]
