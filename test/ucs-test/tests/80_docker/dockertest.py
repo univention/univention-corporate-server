@@ -30,17 +30,20 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from univention.testing.strings import random_name, random_version
-from univention.testing.debian_package import DebianPackage
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.config_registry import handler_set, ConfigRegistry
-from univention.testing import umc
+
+import json
 import os
 import shutil
 import subprocess
 import threading
+
 import requests
-import json
+
+from univention.config_registry import ConfigRegistry, handler_set
+from univention.testing import umc
+from univention.testing.debian_package import DebianPackage
+from univention.testing.strings import random_name, random_version
+from univention.testing.ucr import UCSTestConfigRegistry
 
 
 class UCSTest_Docker_Exception(Exception):
@@ -653,10 +656,16 @@ Virtualization=Virtualisierung''')
 			if not os.path.isdir(directory):
 				continue
 			print('create_appcenter_json.py for %s' % vv)
-			subprocess.check_call('./create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' %
-				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
-			subprocess.check_call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
-				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+			subprocess.check_call(
+				'./create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' % {
+					'version': vv,
+					'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+				}, shell=True)
+			subprocess.check_call(
+				'zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' % {
+					'version': vv,
+					'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+				}, shell=True)
 		subprocess.check_call('univention-app update', shell=True)
 
 	def cleanup(self):
@@ -907,4 +916,4 @@ def get_dummy_svg():
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
   </g>
-</svg>'''
+</svg>'''  # noqa: E101

@@ -355,7 +355,7 @@ class AutomaticListenerRestart(object):
 	        with ucr_test.UCSTestConfigRegistry() as ucr:
 	            # set some ucr variables, that influence the Univention Directory Listener
 	            univention.config_registry.handler_set(['foo/bar=ding/dong'])
-	"""
+	"""  # noqa: E101
 
 	def __enter__(self):
 		# type: () -> AutomaticListenerRestart
@@ -387,7 +387,7 @@ class AutoCallCommand(object):
 	            exit_cmd=['/etc/init.d/dovecot', 'restart'],
 	            stderr=open('/dev/zero', 'w')) as acc:
 	        pass
-	"""
+	"""  # noqa: E101
 
 	def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
 		# type: (Optional[Sequence[str]], Optional[Sequence[str]], IO[str], IO[str]) -> None
@@ -429,7 +429,7 @@ class FollowLogfile(object):
 	    with FollowLogfile(logfiles=['/var/log/syslog'], always=True):
 	        with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
 	            pass
-	"""
+	"""  # noqa: E101
 
 	def __init__(self, logfiles, always=False):
 		# type: (Iterable[str], bool) -> None
