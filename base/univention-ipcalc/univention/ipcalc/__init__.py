@@ -164,14 +164,3 @@ def calculate_ipv4_pointer(network):
 	prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
 	suffix = network.ip.exploded.split('.')[prefixlen:]
 	return '.'.join(reversed(suffix))
-
-
-def main():
-	"""Run internal test suite."""
-	import doctest
-	res = doctest.testmod()
-	sys.exit(int(bool(res[0])))
-
-
-if __name__ == "__main__":
-	main()

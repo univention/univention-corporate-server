@@ -1,4 +1,4 @@
 # Copyright for internal tests
 0010-2: setup.py
-0010-2: tests/test-univention-ipcalc.sh
-0010-2: tests/test-all.sh
+0010-2: tests/test_main.py
+0010-2: tests/test_ipcalc.py

@@ -1,0 +1,5 @@
+.benchmarks/
+.coverage
+coverage.xml
+pytest.xml
+pytest/

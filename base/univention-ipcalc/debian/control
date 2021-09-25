@@ -8,8 +8,12 @@ Build-Depends:
  dh-python,
  python-all,
  python-ipaddr,
+ python-pytest,
+ python-pytest-cov,
  python-six,
  python3-all,
+ python3-pytest,
+ python3-pytest-cov,
  python3-setuptools,
  python3-six,
 
