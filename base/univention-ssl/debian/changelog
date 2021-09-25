@@ -1,4 +1,4 @@
-univention-ssl (14.0.2-2) unstable; urgency=low
+univention-ssl (13.0.0-8) unstable; urgency=low
 
   * Bug #53810: Timeout SSL certificate download
 
