@@ -1,3 +1,9 @@
+univention-support-info (6.0.0-2) unstable; urgency=medium
+
+  * Bug #53839: upgrade to latest USI + GPG key
+
+ -- Florian Best <best@univention.de>  Sat, 25 Sep 2021 09:54:05 +0200
+
 univention-support-info (6.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
