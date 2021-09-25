@@ -75,8 +75,7 @@ def main():
 		# use ip_interface for networks for py2 py3 compatability
 		network = ipaddress.ip_interface(u'%s/%s' % (options.address, options.netmask))
 	except ValueError as ex:
-		print(ex, file=sys.stderr)
-		sys.exit(1)
+		sys.exit(ex)
 	try:
 		if isinstance(network, ipaddress.IPv6Interface):
 			family = 'ipv6'
@@ -84,8 +83,7 @@ def main():
 			family = 'ipv4'
 		func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
 	except (NameError, AttributeError):
-		print("Unknown address format", file=sys.stderr)
-		sys.exit(1)
+		sys.exit("Unknown address format")
 	else:
 		print(func(network))
 
