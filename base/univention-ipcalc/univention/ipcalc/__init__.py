@@ -28,6 +28,8 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
+from typing import Union  # noqa F401
+
 import six
 
 # use ip_interface for networks for py2 py3 compatability
@@ -36,9 +38,12 @@ if six.PY3:
 else:
 	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface # noqa F401
 
+_Interface = Union[IPv4Interface, IPv6Interface]
+
 
 def _prefixlen(interface):  # PY2 VS PY3
-	return interface.network.prefixlen if not hasattr(interface, 'prefixlen') else interface.prefixlen
+	# type: (_Interface) -> int
+	return interface.prefixlen if hasattr(interface, 'prefixlen') else interface.network.prefixlen  # type: ignore
 
 
 # IPv4: 4.3.                            2.1.                        IN-ADDR.ARPA
@@ -51,6 +56,7 @@ def _prefixlen(interface):  # PY2 VS PY3
 
 
 def calculate_ipv6_reverse(network):
+	# type: (_Interface) -> str
 	"""Return reversed network part of IPv4 network.
 	>>> calculate_ipv6_reverse(IPv6Interface(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
 	'0'
@@ -72,6 +78,7 @@ def calculate_ipv6_reverse(network):
 
 
 def calculate_ipv4_reverse(network):
+	# type: (_Interface) -> str
 	"""Return reversed network part of IPv4 network.
 	>>> calculate_ipv4_reverse(IPv4Interface(u'1.2.3.4/0'))
 	'1'
@@ -91,6 +98,7 @@ def calculate_ipv4_reverse(network):
 
 
 def calculate_ipv6_network(network):
+	# type: (_Interface) -> str
 	"""Return network part of IPv6 network.
 	>>> calculate_ipv6_network(IPv6Interface(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
 	''
@@ -111,6 +119,7 @@ def calculate_ipv6_network(network):
 
 
 def calculate_ipv4_network(network):
+	# type: (_Interface) -> str
 	"""Return network part of IPv4 network.
 	>>> calculate_ipv4_network(IPv4Interface(u'1.2.3.4/0'))
 	''
@@ -129,6 +138,7 @@ def calculate_ipv4_network(network):
 
 
 def calculate_ipv6_pointer(network):
+	# type: (_Interface) -> str
 	"""Return host part of IPv6 network.
 	>>> calculate_ipv6_pointer(IPv6Interface(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
 	'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
@@ -147,6 +157,7 @@ def calculate_ipv6_pointer(network):
 
 
 def calculate_ipv4_pointer(network):
+	# type: (_Interface) -> str
 	"""Return host part of IPv4 network.
 	>>> calculate_ipv4_pointer(IPv4Interface(u'1.2.3.4/0'))
 	'4.3.2'

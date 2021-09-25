@@ -32,12 +32,14 @@ from __future__ import print_function
 
 import ipaddress
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace  # noqa F401
+from typing import Optional, List  # noqa F401
 
 from univention import ipcalc
 
 
 def parse_options(args=None):
+	# type: (Optional[List[str]]) -> Namespace
 	"""Parse command line options."""
 	epilog = 'Calculate network values from network address for DNS records.'
 	parser = ArgumentParser(epilog=epilog)
@@ -72,6 +74,7 @@ def parse_options(args=None):
 
 
 def main(args=None):
+	# type: (Optional[List[str]]) -> None
 	"""Calculate IP address parameters-"""
 	options = parse_options(args)
 

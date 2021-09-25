@@ -11,6 +11,7 @@ Build-Depends:
  python-pytest,
  python-pytest-cov,
  python-six,
+ python-typing,
  python3-all,
  python3-pytest,
  python3-pytest-cov,
@@ -34,6 +35,7 @@ Architecture: all
 Depends:
  python-ipaddr,
  python-six,
+ python-typing,
  ${python:Depends},
 Provides:
  ${python:Provides},
