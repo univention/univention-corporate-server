@@ -1,3 +1,9 @@
+univention-ipcalc (11.0.0-2) unstable; urgency=low
+
+  * Bug #22511: Remove old univention-ipcalc
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 25 Sep 2021 09:54:17 +0200
+
 univention-ipcalc (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
@@ -162,7 +168,3 @@ univention-ipcalc (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 nov 2003 11:09:12 +0200
-
-Local variables:
-mode: debian-changelog
-End:

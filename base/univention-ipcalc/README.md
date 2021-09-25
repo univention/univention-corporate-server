@@ -1,4 +1,4 @@
-`univention-ipcalc{,6} --calcdns` is used to create DNS reverse zones in UDM.
+`univention-ipcalc6 --calcdns` is used to create DNS reverse zones in UDM.
 
 This is often done indirectly via `/usr/share/univention-directory-manager-tools/univention-dnsedit`
 
