@@ -55,26 +55,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	"""Python specific flake8 checks."""
 
-	PYTHON_HASH_BANG = re.compile(r'^#!.*[ /]python[0-9.]*')
-
 	IGNORED_FILES = [
 		re.compile(r'conffiles/[^/]+/'),  # UCR templates with markers contain syntax errors
-		re.compile(r'python-notifier/'),  # external code
 		re.compile(r'univention-ldb-modules/buildtools/'),  # external code
-		re.compile(r'services/univention-printserver/modules/univention/management/console/handlers/cups'),  # UCS 2.4 code
-		re.compile(r'univention-directory-manager-modules/test/'),  # unrelevant, should be removed imho
 		re.compile(r'ucslint/testframework/(?!0020)'),  # ucslint tests may contain error, but not for this module.
 	]
 
-	IGNORE = {
-		re.compile(r'(^|/)__init__.py$'): 'F403',  # some package provide all members of subpackages
+	IGNORED_CODES_FOR_FILES = {
 		re.compile(r'test/ucs-test/tests\/.*'): 'E266',  # UCS-Test headers begin with "## foo: bar"
 		re.compile(r'ucs-test-ucsschool'): 'E266',
-		re.compile(r'(^|/)syntax.d/.*'): 'E821',  # some variables are undefined, as these files are mixins
-		re.compile(r'univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
-	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,D,E501,W191,E265,E266')
+	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'I,N,B,D,E501,W191')
 	DEFAULT_SELECT = None
 	MAX_LINE_LENGTH = 220
 	GRACEFUL = not os.environ.get('UCSLINT_FLAKE8_STRICT')
@@ -467,7 +459,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		ignored = {}  # type: Dict[str, List[str]]
 		for path in files:
-			ignore = ','.join(v for k, v in self.IGNORE.items() if k.search(os.path.abspath(path)))
+			ignore = ','.join(v for k, v in self.IGNORED_CODES_FOR_FILES.items() if k.search(os.path.abspath(path)))
 			ignore = '%s,%s' % (self.DEFAULT_IGNORE, ignore)
 			ignored.setdefault(ignore.rstrip(','), []).append(path)
 
