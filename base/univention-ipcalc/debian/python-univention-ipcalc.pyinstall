@@ -1,2 +1,2 @@
-univention/ipcalc/__init__.py 2.7
+univention/ipcalc/*.py 2.7
 *.egg-info/*
