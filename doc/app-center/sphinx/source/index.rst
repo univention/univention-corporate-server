@@ -8,8 +8,18 @@ Welcome to Univention App Center for App Providers's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :numbered:
+   :caption: Table of Contents:
 
+   introduction
+   get_started
+   lifecycle
+   presentation
+   identity_management
+   configurations
+   appliances
+
+.. section-numbering::
 
 
 Indices and tables
@@ -18,3 +28,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
