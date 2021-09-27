@@ -54,8 +54,10 @@ import dateutil
 import ldap
 import PIL
 import pytz
+import six
 from ldap.filter import filter_format, escape_filter_chars
 from ldap.schema import ObjectClass, AttributeType
+from ldap.schema.subentry import SubSchema  # noqa F401
 
 import univention.admin.modules
 import univention.admin.uexceptions
@@ -2629,58 +2631,72 @@ class ldapDnOrNone(simple):
 		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
 
-class ldapObjectClass(combobox):
+class _ClassChoices(type):
+	"""
+	Make `cls.choices` a property.
+	"""
+	@property
+	def choices(cls):
+		return cls._auto_choices()
+
+
+class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
+	"""
+	Meta-class to lazily fetch |LDAP| schema information on first access.
+	"""
+
+	empty_value = True
+	_cached_choices = []  # type: List[Tuple[str, str]]
+	_class = None
+
+	@property
+	def choices(self):
+		return self._auto_choices()
+
+	@classmethod
+	def _auto_choices(cls):
+		# type: () -> List[Tuple[str, str]]
+		if not cls._cached_choices:
+			try:
+				conn = getMachineConnection()
+				try:
+					subschema = conn.get_schema()
+					cls._update_schema(subschema)
+				finally:
+					conn.unbind()
+			except ldap.LDAPError as ex:
+				ud.debug(ud.ADMIN, ud.WARN, 'syntax.py: Failed LDAP connection: %s' % (ex,))
+
+		return cls._cached_choices
+
+	@classmethod
+	def _update_schema(cls, subschema):
+		# type: (SubSchema) -> None
+		names = set()  # type: Set[str]
+		for oid in subschema.listall(cls._class):
+			obj = subschema.get_obj(cls._class, oid)
+			if obj:
+				names.update(obj.names)
+
+		cls._cached_choices = [(name, name) for name in sorted(names, key=lambda name: name.lower())]
+
+	@classmethod
+	def update_choices(cls):
+		del cls._cached_choices[:]
+
+
+class ldapObjectClass(_CachedLdap):
 	"""
 	Syntax to enter a |LDAP| objectClass name.
 	"""
-	choices = [('top', 'top')]
-	empty_value = True
-
-	@classmethod
-	def fill_choices(cls, ocs):  # type: (Iterable[str]) -> None
-		cls.choices = [(oc, oc) for oc in sorted(ocs, key=lambda oc: oc.lower())]
+	_class = ObjectClass
 
 
-class ldapAttribute(combobox):
+class ldapAttribute(_CachedLdap):
 	"""
 	Syntax to enter a |LDAP| attribute name.
 	"""
-	choices = []  # type: Sequence[Tuple[str, str]]
-	empty_value = True
-
-	@classmethod
-	def fill_choices(cls, attrs):  # type: (Iterable[str]) -> None
-		cls.choices = [(attr, attr) for attr in sorted(attrs, key=lambda oc: oc.lower())]
-
-
-def _update_schema():
-	"""
-	Fetch LDAP schema to update list of objectClasses and attributes.
-	"""
-	try:
-		conn = getMachineConnection()
-		try:
-			subschema = conn.get_schema()
-
-			def lookup(clazz):  # type: (str) -> Set[str]
-				names = set()  # type: Set[str]
-				for oid in subschema.listall(clazz):
-					obj = subschema.get_obj(clazz, oid)
-					if obj:
-						names.update(obj.names)
-
-				return names
-
-			ldapObjectClass.fill_choices(lookup(ObjectClass))
-			ldapAttribute.fill_choices(lookup(AttributeType))
-		finally:
-			conn.unbind()
-	except ldap.LDAPError:
-		pass
-
-
-__register_choice_update_function(_update_schema)
-
+	_class = AttributeType
 
 
 class ldapFilter(simple):
