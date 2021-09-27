@@ -3,3 +3,5 @@
 coverage.xml
 pytest.xml
 pytest/
+build/
+dist/

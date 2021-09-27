@@ -1,3 +1,9 @@
+univention-ipcalc (11.0.0-4) unstable; urgency=low
+
+  * Bug #53345: Convert to Python3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Sep 2021 08:13:36 +0200
+
 univention-ipcalc (11.0.0-3) unstable; urgency=low
 
   * Bug #53345: Convert to Python3
