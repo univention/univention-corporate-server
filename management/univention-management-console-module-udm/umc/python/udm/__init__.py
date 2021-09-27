@@ -940,6 +940,13 @@ class Instance(Base, ProgressMixin):
 	)
 	@simple_response
 	def syntax_choices_key(self, syntax, key):
+		"""If size limit is reached search only for the current value
+		(so that the selected value is valid).
+
+		Bug #26556: git:ce2b2842b7c6728047c4d4e1cd2d7d399c401e4a
+		"""
+		# FIXME: this is a blocking method. At least execute in a thread!
+		# FIXME: remove and replace with a elegant mechanism.
 		lo, po = self.get_ldap_connection()
 		syntax = _get_syntax(syntax)
 		if syntax is None:
@@ -949,6 +956,14 @@ class Instance(Base, ProgressMixin):
 	@sanitize(syntax=StringSanitizer(required=True))
 	@simple_response
 	def syntax_choices_info(self, syntax):
+		"""Fetch meta information about syntax choices.
+		By doing a search query the number of results is returned.
+		Check if the size limit would be reached.
+		If reached, ComboBoxes add a entry with a search bar.
+		Only used by UDM_Objects (and UDM_Attributes).
+		"""
+		# FIXME: this is a blocking method. At least execute in a thread!
+		# FIXME: remove, replace with pagination of syntax choices. Or do it directly in udm/properties
 		lo, po = self.get_ldap_connection()
 		syntax = _get_syntax(syntax)
 		if syntax is None:
