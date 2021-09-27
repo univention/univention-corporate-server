@@ -55,6 +55,7 @@ from typing import TYPE_CHECKING, Any, Callable, Iterable, List, Optional, Patte
 
 import dateutil
 import ldap
+import ldap.dn
 import PIL
 import pytz
 import six
@@ -270,6 +271,11 @@ class select(ISyntax):
 
 	type_class = univention.admin.types.StringType  # type: Optional[Type[univention.admin.types.TypeHint]]
 
+	depends = None  # type: Optional[str]
+	"""The name of another |UDM| property this syntax depends on."""
+	javascript_dependency = False  # type: bool
+	"""Whether dependencies should be resolved via Javascript"""
+
 	@classmethod
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
@@ -283,6 +289,22 @@ class select(ISyntax):
 		if any(text == c[0] for c in choices):
 			return text
 		return None
+
+	@classmethod
+	def get_choices(cls, lo, **dependencies):
+		"""Get the choices w.r.t. dependencies"""
+		if cls.depends not in dependencies:  # pragma: no cover
+			return cls.choices
+
+		if cls.javascript_dependency:
+			# by default return the dependency values!
+			values = []
+			for value in dependencies[cls.depends]:
+				if value not in values:
+					values.append(value)
+			return [(val, val) for val in values]
+
+		return cls.choices
 
 
 class combobox(select):
@@ -3100,6 +3122,19 @@ class ldapAttribute(_CachedLdap):
 	Syntax to enter a |LDAP| attribute name.
 	"""
 	_class = AttributeType
+	depends = 'objectClass'
+
+	@classmethod
+	def get_choices(cls, lo, **dependencies):
+		if cls.depends not in dependencies:  # pragma: no cover
+			return cls.choices
+
+		subschema = lo.get_schema()
+		must, may = subschema.attribute_types([dependencies[cls.depends]])
+		attrs = set()
+		for atype in dict(must, **may).values():
+			attrs.update(atype.names)
+		return [(attr, attr) for attr in sorted(attrs, key=lambda name: name.lower())]
 
 
 class ldapFilter(simple):
@@ -3703,6 +3738,7 @@ class IP_AddressList(ipAddress, select):
 	"""
 	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'ip'
+	javascript_dependency = True
 
 
 class IP_AddressListEmpty(IP_AddressList):
@@ -3723,6 +3759,7 @@ class MAC_AddressList(MAC_Address, select):
 	"""
 	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'mac'
+	javascript_dependency = True
 
 
 class DNS_ForwardZone(UDM_Objects):
@@ -3803,8 +3840,19 @@ class DNS_ForwardZoneList(select):
 	Syntax to select |DNS| forward zone for alias entries.
 	>>> DNS_ForwardZoneList.parse('some name')
 	'some name'
+	>>> DNS_ForwardZoneList.get_choices(None, **{'dnsEntryZoneForward': [["zoneName=example.org,cn=dns,dc=base", "1.2.3.4"]]})
+	[('example.org', 'example.org')]
 	"""
 	depends = 'dnsEntryZoneForward'
+	javascript_dependency = True
+
+	@classmethod
+	def get_choices(cls, lo, **dependencies):
+		choices = [x[0] for x in super(cls, cls).get_choices(lo, **dependencies)]  # type: Sequence[List[List[str, str], List[str, str]]]
+		if cls.depends not in dependencies:  # pragma: no cover
+			return choices
+		values = [ldap.dn.explode_rdn(x[0], True)[0] for x in choices]
+		return [(val, val) for val in values]
 
 
 class dnsEntryAlias(complex):
@@ -4966,13 +5014,22 @@ class allModuleOptions(combobox):
 	Syntax to select options for |UDM| modules.
 	"""
 
+	depends = 'module'
+	javascript_dependency = False
+
 	@classmethod
 	def update_choices(cls):
-		modules = univention.admin.modules.modules.values()
-		cls.choices = [
+		cls.choices = cls.get_choices(None, module=list(univention.admin.modules.modules))
+
+	@classmethod
+	def get_choices(cls, lo, **dependencies):
+		if cls.depends not in dependencies:  # pragma: no cover
+			return cls.choices
+		modules = dependencies[cls.depends]
+		return [
 			(key, opt.short_description)
 			for module in modules
-			for key, opt in getattr(module, 'options', {}).items()
+			for key, opt in getattr(univention.admin.modules.get(module), 'options', {}).items()
 			if key != 'default'
 		]
 

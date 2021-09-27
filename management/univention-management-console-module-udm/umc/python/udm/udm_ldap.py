@@ -1498,6 +1498,8 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 		for dn in result:
 			dn_list = ldap_connection.explodeDn(dn)
 			choices.append((dn, dn_list[0].split('=', 1)[1]))
+	elif issubclass(syn.__class__, udm_syntax.select) and options.get(options.get('$name$')):
+		choices = syn.get_choices(ldap_connection, **{options['$name$']: options[options['$name$']]})
 
 	choices = [{'id': x[0], 'label': x[1]} for x in choices]
 

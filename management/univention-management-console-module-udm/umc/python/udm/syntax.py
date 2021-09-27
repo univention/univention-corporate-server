@@ -214,10 +214,18 @@ def choices(syntax, udm_property):
 		}
 
 	elif issubclass(syntax_class, udm_syntax.select):
-		if getattr(syntax, 'depends', None) is not None:
-			opts = {
-				'dynamicValues': 'javascript:umc/modules/udm/callbacks:setDynamicValues',
-			}
+		if syntax.depends:
+			if syntax.javascript_dependency:
+				opts = {
+					'dynamicValues': 'javascript:umc/modules/udm/callbacks:setDynamicValues',
+				}
+			else:
+				opts = {
+					'dynamicValues': 'udm/syntax/choices',
+					'dynamicOptions': {
+						'syntax': syntax.name,
+					},
+				}
 		if syntax.empty_value and syntax.choices and syntax.choices[0][0] != '':
 			syntax.choices.insert(0, ('', ''))
 
