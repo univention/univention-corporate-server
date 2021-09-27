@@ -2634,6 +2634,7 @@ class ldapObjectClass(combobox):
 	Syntax to enter a |LDAP| objectClass name.
 	"""
 	choices = [('top', 'top')]
+	empty_value = True
 
 	@classmethod
 	def fill_choices(cls, ocs):  # type: (Iterable[str]) -> None
@@ -2645,6 +2646,7 @@ class ldapAttribute(combobox):
 	Syntax to enter a |LDAP| attribute name.
 	"""
 	choices = []  # type: Sequence[Tuple[str, str]]
+	empty_value = True
 
 	@classmethod
 	def fill_choices(cls, attrs):  # type: (Iterable[str]) -> None
@@ -5294,6 +5296,7 @@ class UDM_Syntax(combobox):
 	Syntax class for Extended Attributes.
 	"""
 	choices = []  # type: List[Tuple[str, str]]
+	empty_value = True
 
 	@classmethod
 	def update_choices(cls):
