@@ -31,11 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.modules import Base
-from univention.management.console.error import UMC_Error
-from univention.management.console.modules.decorators import simple_response
 import subprocess
 import sys
+
+from univention.management.console.error import UMC_Error
+from univention.management.console.modules import Base
+from univention.management.console.modules.decorators import simple_response
 
 
 class NonThreadedError(Exception):
@@ -55,7 +56,7 @@ class FakeThread(object):
 
 def joinscript():
 	process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
-	process.communicate('''
+	process.communicate(b'''
 	. /usr/share/univention-lib/umc.sh
 
 	umc_init

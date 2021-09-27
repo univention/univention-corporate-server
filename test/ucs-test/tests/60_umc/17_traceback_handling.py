@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check if requests with tracebacks are handled correctly
 ## roles:
 ##  - domaincontroller_master
@@ -10,20 +10,20 @@
 
 
 from __future__ import print_function
-import re
+
 import json
+import re
 
 import pytest
 
 from univention.lib.umc import HTTPError
-
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
 
 
 @pytest.mark.parametrize('path,expected_trace', [
 	("ucstest/non_threaded_traceback", re.compile("raise NonThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?NonThreadedError", re.M)),
 	("ucstest/threaded_traceback", re.compile("raise ThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
-	("ucstest/traceback_as_thread_result", re.compile("Request: ucstest/traceback_as_thread_result\n\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
+	("ucstest/traceback_as_thread_result", re.compile("(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
 ])
 def test_umc_tracebacks(Client, path, expected_trace):
 	joinscript()
@@ -33,7 +33,8 @@ def test_umc_tracebacks(Client, path, expected_trace):
 		with pytest.raises(HTTPError) as exc:
 			umc_client.umc_command(path)
 		assert exc.value.status == 591, 'Wrong http return code'
-		assert expected_trace.search(json.loads(exc.value.response.body)["traceback"]), (json.loads(exc.value.response.body)["traceback"], expected_trace)
+		traceback = json.loads(exc.value.response.body)["traceback"]
+		assert expected_trace.search(traceback), (traceback, expected_trace)
 	finally:
 		unjoinscript()
 
@@ -50,7 +51,8 @@ def test_umc_errors(Client, path, expected_error):
 		with pytest.raises(HTTPError) as exc:
 			umc_client.umc_command(path)
 		assert exc.value.status == 400, 'Wrong http return code'
-		assert json.loads(exc.value.response.body)["message"] == expected_error, (json.loads(exc.value.response.body)["error"], expected_error)
-		assert json.loads(exc.value.response.body)["traceback"] is None, (json.loads(exc.value.response.body)["traceback"], 'Traceback should be None (null')
+		error = json.loads(exc.value.response.body)
+		assert error["message"] == expected_error, (error["message"], expected_error)
+		assert error["traceback"] is None, (error["traceback"], 'Traceback should be None (null')
 	finally:
 		unjoinscript()

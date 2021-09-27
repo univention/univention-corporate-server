@@ -167,6 +167,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'socket.gaierror: \[Errno \-3\] Temporary failure in name resolution', ['urllib/request.py']),
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
+	('univention.management.console.modules.ucstest.ThreadedError', None),  # 60_umc/17_traceback_handling.py
 	# various test cases:
 	('AssertionError: .*contain.*traceback', ['01_var_log_tracebacks']),
 	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
