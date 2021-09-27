@@ -37,12 +37,12 @@ import logging
 import time
 from typing import Any, List, Union  # noqa F401
 
-import six
-
 import selenium.common.exceptions as selenium_exceptions
+import six
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+
 from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)

@@ -41,13 +41,13 @@ import time
 from types import TracebackType  # noqa F401
 from typing import Optional, Type  # noqa F401
 
-from PIL import Image
-
 import selenium.common.exceptions as selenium_exceptions
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
+
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from univention.admin import localization
 from univention.config_registry import handler_set
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits

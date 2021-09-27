@@ -35,11 +35,12 @@ from __future__ import absolute_import, print_function
 import time
 from typing import Any, Dict, Mapping, Optional  # noqa F401
 
-import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 from univention.admin import localization
 
 translator = localization.translation('ucs-test-framework')

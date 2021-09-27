@@ -38,6 +38,7 @@ from typing import Any, Callable, Iterable, List  # noqa F401
 import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
+
 from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)
