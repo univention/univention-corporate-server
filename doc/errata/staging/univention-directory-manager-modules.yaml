@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-directory-manager-modules
+fix: 15.0.11-20A~5.0.0.202109271137
+desc: |
+ This update addresses the following issue(s):
+ * Expose the sizelimit parameter in the simple UDM API
+bug: [53833]
