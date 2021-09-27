@@ -1,6 +1,12 @@
+univention-directory-manager-modules (15.0.11-22) unstable; urgency=medium
+
+  * Bug #53833: Fix problem with previous build
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Mon, 27 Sep 2021 11:45:00 +0200
+
 univention-directory-manager-modules (15.0.11-21) unstable; urgency=medium
 
-  * Bug #53832: expose sizelimit parameter in simple UDM API
+  * Bug #53833: expose sizelimit parameter in simple UDM API
 
  -- Ole Schwiegert <schwiegert@univention.de>  Mon, 27 Sep 2021 07:23:00 +0200
 
