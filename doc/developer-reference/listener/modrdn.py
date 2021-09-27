@@ -43,7 +43,7 @@ def handler_remove(dn, old):
 	pass  # replace this
 
 
-def handler_move(old_dn, old, new_dn, dn):
+def handler_move(old_dn, old, new_dn, new):
 	"""Handle rename or move of object."""
 	pass  # replace this
 
