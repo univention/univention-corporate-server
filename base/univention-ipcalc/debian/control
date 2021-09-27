@@ -22,6 +22,7 @@ Package: univention-ipcalc
 Architecture: all
 Depends:
  python3-univention-ipcalc (>= ${binary:Version}),
+ ${python3:Depends},
 Description: UCS - ipcalc tool for network
  This package contain the ipcalc tool.
  .
