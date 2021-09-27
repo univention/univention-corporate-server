@@ -991,8 +991,14 @@ class Instance(Base, ProgressMixin):
 			syntax = _get_syntax(request.options['syntax'])
 			if syntax is None:
 				return
+
 			options = request.options
 			options.pop('allow_asterisks', None)  # internal option
+			options['dependencies'] = {}
+			dependency_name = options.get('$name$')
+			if options.get(dependency_name):
+				options['dependencies'] = {dependency_name: options.pop(dependency_name)}
+
 			return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))

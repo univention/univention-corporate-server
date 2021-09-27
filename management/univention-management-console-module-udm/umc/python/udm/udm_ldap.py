@@ -1328,6 +1328,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 	syn = syn() if inspect.isclass(syn) else syn
 
 	options = options or {}
+	options.setdefault('dependencies', {})
 	options['sizelimit'] = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
 	if '$dn$' in options:
 		options['dn'] = options.pop('$dn$')
