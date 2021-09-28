@@ -104,7 +104,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				chrome_options = webdriver.ChromeOptions()
 				chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
 				chrome_options.add_argument('ignore-certificate-errors')
-				self.driver = webdriver.Chrome(chrome_options=chrome_options)
+				self.driver = webdriver.Chrome(options=chrome_options)
 			else:
 				self.driver = webdriver.Firefox()
 
