@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Functionality of some widgets has been adjusted for specific use cases.
+bug: [53847]
