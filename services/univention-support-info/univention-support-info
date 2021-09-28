@@ -1207,7 +1207,7 @@ class Command(object):
 				(self.stdout, self.stderr) = self.process.communicate(input=self.stdin)
 				if str is not bytes:
 					(self.stdout, self.stderr) = (self.stdout.decode('UTF-8', 'replace'), self.stderr.decode('UTF-8', 'replace'))
-			except (OSError, IOError) as ex:
+			except EnvironmentError as ex:
 				self.stdout = "Could not execute %r: %r" % (self.cmd, ' '.join(map(str, ex.args)))
 
 		thread = threading.Thread(target=target)
@@ -1273,7 +1273,7 @@ def addFile(name, size, fileobj):
 	try:
 		logger.debug("adding file '{}'".format(info.name))
 		archive.addfile(info, fileobj)
-	except IOError as ex:
+	except EnvironmentError as ex:
 		print('WARNING: failed to add %r: error=%r' % (fileobj, ex))
 
 
@@ -1283,7 +1283,7 @@ def addFileByPath(filename, flat):
 		tmpf = tempfile.mkstemp(prefix='univention-support-info.')[1]
 		try:
 			shutil.copy(filename, tmpf)
-		except (OSError, IOError) as error:
+		except EnvironmentError as error:
 			error = '\n'.join(map(str, error.args))
 			if flat:
 				addFile('files/' + filename.strip('/').replace('/', '_') + '.ERROR', len(error), StringIO(error))
@@ -1295,12 +1295,12 @@ def addFileByPath(filename, flat):
 	else:
 		try:
 			filesize = os.stat(filename).st_size
-		except (OSError, IOError):
+		except EnvironmentError:
 			filesize = 0
 
 	try:
 		fileobj = open(filename, 'rb')
-	except (OSError, IOError) as error:
+	except EnvironmentError as error:
 		error = '\n'.join(map(str, error.args))
 		if flat:
 			addFile('files/' + filename.strip('/').replace('/', '_') + '.ERROR', len(error), StringIO(error))
@@ -1330,7 +1330,7 @@ def certificateValidity(CertificatePath, flat):
 			addFile('info/ssl/' + CertificatePath.strip('/').replace('/', '_'), len(validity), StringIO(validity))
 		else:
 			addFile('info/ssl/' + CertificatePath.strip('/'), len(validity), StringIO(validity))
-	except (OSError, IOError, M2Crypto.X509.X509Error) as error:
+	except (EnvironmentError, M2Crypto.X509.X509Error) as error:
 		error = '\n'.join(map(str, error.args))
 		if flat:
 			addFile('info/ssl/' + CertificatePath.strip('/').replace('/', '_') + '.ERROR', len(error), StringIO(error))
@@ -1445,7 +1445,7 @@ def checkMaintenance():
 				sys.stdout.flush()
 				print(miMsg, file=tmpf)
 				addFile('info/maintenance', None, tmpf)
-		except (URLError, IOError) as innerex:
+		except (URLError, EnvironmentError) as innerex:
 			tmpf = tempfile.TemporaryFile(prefix='univention-support-info.')
 			print("Warn: Can't reach univention server - product maintenance undetermined [%s]" % (innerex,))
 			sys.stdout.flush()
@@ -1576,7 +1576,7 @@ def checkTransactionFile():
 		addFile('info/transaction-file-check', None, transactionCheck)
 		print('done.')
 
-	except IOError:
+	except EnvironmentError:
 		print('ERROR: NO TRANSACTION FILE!', file=transactionCheck)
 		print('FAIL')
 
@@ -1747,7 +1747,7 @@ def univentionSystemInfo():
 				addFile('info/univention-system-info/' + member.name, member.size, fileobj)
 				fileobj.close()
 		archive.close()
-	except (IOError, tarfile.TarError, ) as error:
+	except (EnvironmentError, tarfile.TarError) as error:
 		error = '\n'.join(map(str, error.args))
 		error += '\nunivention-system-info stdout:\n%s' % stdout
 		addFile('info/univention-system-info.ERROR', len(error), StringIO(error))
@@ -1843,7 +1843,7 @@ def rotatedLogs(regEx, DefaultMaxLineCount, options):
 			if gzipped:
 				try:
 					logfile = open(path + GzipSuffix, 'rb')
-				except (OSError, IOError, ) as error:
+				except EnvironmentError as error:
 					error = '\n'.join(map(str, error.args))
 					if options.flatStruct:
 						addFile('files/' + '%s_%d.stderr' % (logname.strip('/').replace('/', '_'), number, ), len(error), StringIO(error))
@@ -1855,7 +1855,7 @@ def rotatedLogs(regEx, DefaultMaxLineCount, options):
 				# last 4 bytes of a gzip file contain the size of the original (uncompressed) input data modulo 2^32.
 				try:
 					logfile.seek(-4, os.SEEK_END)
-				except IOError as exc:
+				except EnvironmentError as exc:
 					print('\n\nFilename: %s%s: %s' % (path, GzipSuffix, exc), end='')
 					raise
 				fileBytes = U32(gzip.read32(logfile))
@@ -1882,7 +1882,7 @@ def rotatedLogs(regEx, DefaultMaxLineCount, options):
 					logfile = gzip.GzipFile(path + GzipSuffix, 'rb')
 				else:
 					logfile = open(path, 'rb')
-			except (OSError, IOError, ) as error:
+			except EnvironmentError as error:
 				error = '\n'.join(map(str, error.args))
 				if options.flatStruct:
 					addFile('files/' + '%s_%d.stderr' % (logname.strip('/').replace('/', '_'), nonemptyNumber, ), len(error), StringIO(error))
@@ -1929,7 +1929,7 @@ def atJobs():
 	try:
 		for job in at.list(extended=True):
 			jobs += '\n'.join(str(job))
-	except OSError as error:
+	except EnvironmentError as error:
 		error = str(error.message)
 		addFile('info/at-jobs' + '.ERROR', len(error), StringIO(error))
 	addFile('info/at-jobs', len(jobs), StringIO(jobs))
@@ -1938,7 +1938,7 @@ def atJobs():
 def tryDelete(filename):
 	try:
 		os.remove(filename)
-	except (OSError, IOError, ):
+	except EnvironmentError:
 		pass
 
 
@@ -2032,7 +2032,7 @@ def prepareEnvironment():
 		f.write(toprc)
 		f.close()
 		os.mkdir("%s/.gnupg" % (env['HOME'],))
-	except (OSError, IOError, ):
+	except EnvironmentError:
 		pass
 
 
