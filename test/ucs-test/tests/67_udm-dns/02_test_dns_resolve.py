@@ -353,7 +353,7 @@ class Test_DNSResolve(object):
 		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		stdout = stdout.decode('UTF-8', 'replace')
-		assert p1.returncode != 0, "DNS dig query failed"
+		assert p1.returncode == 0, "DNS dig query failed"
 
 		found = [x for x in nameservers if re.search("^%s\\.[ \t][0-9]+[ \t]IN\tNS\t%s\\." % (re.escape(zone_fqdn), re.escape(x)), stdout, re.MULTILINE)]
 
