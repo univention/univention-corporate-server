@@ -1424,7 +1424,7 @@ def licenseObject():
 
 def checkMaintenance():
 	''' Check if UCS-Version is in maintenance '''
-	if ucr.get('server/role') != 'ucc':
+	if True:
 		ucs_ver = ucr.get('version/version') + '-' + ucr.get('version/patchlevel')
 		ucs_lic = ucr.get('license/base')
 		ldap_base = ucr.get('ldap/base')
@@ -1451,13 +1451,6 @@ def checkMaintenance():
 			sys.stdout.flush()
 			print("Failed to check maintenance (%s)\ncurrent UCS Version %s" % (innerex, ucs_ver), file=tmpf)
 			addFile('info/maintenance', None, tmpf)
-	else:
-		ucc_ver = ucr.get('version/version')
-		tmpf = tempfile.TemporaryFile(prefix='univention-support-info.')
-		print("Could NOT determine product maintenance for UCC systems.")
-		sys.stdout.flush()
-		print("Could NOT determine product maintenance for UCC systems.)\ncurrent UCC Version %s" % (ucc_ver,), file=tmpf)
-		addFile('info/maintenance', None, tmpf)
 
 
 def checkEntryUUID():
