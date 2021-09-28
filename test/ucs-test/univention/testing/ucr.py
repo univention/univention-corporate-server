@@ -63,9 +63,14 @@ class UCSTestConfigRegistry(ConfigRegistry):
 		ConfigRegistry.__init__(self, *args, **kwargs)
 		self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
 
-	ucr_update = univention.config_registry.frontend.ucr_update
-	handler_set = univention.config_registry.handler_set
-	handler_unset = univention.config_registry.handler_unset
+	def ucr_update(self, *args):
+		return univention.config_registry.frontend.ucr_update(*args)
+
+	def handler_set(self, *args):
+		return univention.config_registry.handler_set(*args)
+
+	def handler_unset(self, *args):
+		return univention.config_registry.handler_unset(*args)
 
 	def load(self):
 		# type: () -> None
@@ -92,7 +97,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 			# remove new variables
 			keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])
 			if keylist:
-				univention.config_registry.handler_unset(list(keylist), {option: True})
+				self.handler_unset(list(keylist), {option: True})
 
 			# add/revert existing variables
 			changes = [
@@ -101,7 +106,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 				if origval != self._registry[regtype].get(key)
 			]
 			if changes:
-				univention.config_registry.handler_set(changes, {option: True})
+				self.handler_set(changes, {option: True})
 		# load new/original values
 		self.load()
 
@@ -124,9 +129,9 @@ if __name__ == '__main__':
 	ucr = UCSTestConfigRegistry()
 	ucr.load()
 	print('Setting some variables...')
-	univention.config_registry.handler_set(['foo/bar=ding/dong'])
-	univention.config_registry.handler_set(['repository/online/server=ftp.debian.org'])
-	univention.config_registry.handler_unset(['server/role'])
+	ucr.handler_set(['foo/bar=ding/dong'])
+	ucr.handler_set(['repository/online/server=ftp.debian.org'])
+	ucr.handler_unset(['server/role'])
 	print('Waiting for 3 seconds...')
 	time.sleep(3)
 	print('Cleanup...')
@@ -140,9 +145,9 @@ if __name__ == '__main__':
 		print(ucr2.get('repository/online/server', '<unset>'))
 		print(ucr2.get('server/role', '<unset>'))
 		print('Setting some variables...')
-		univention.config_registry.handler_set(['foo/bar=ding/dong'])
-		univention.config_registry.handler_set(['repository/online/server=ftp.debian.org'])
-		univention.config_registry.handler_unset(['server/role'])
+		ucr2.handler_set(['foo/bar=ding/dong'])
+		ucr2.handler_set(['repository/online/server=ftp.debian.org'])
+		ucr2.handler_unset(['server/role'])
 		print('Waiting for 3 seconds...')
 		time.sleep(3)
 		print('Cleanup...')
