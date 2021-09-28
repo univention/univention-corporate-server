@@ -5,7 +5,8 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-support-info
 fix: 6.0.0-2A~5.0.0.202109281139
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The `univention-support-info` script has been upgraded to the latest
    version (67) so that the new GPG key is included.
+maintained: False
 bug: [53839]
