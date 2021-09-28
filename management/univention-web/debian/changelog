@@ -1,3 +1,12 @@
+univention-web (3.0.6-12) unstable; urgency=medium
+
+  * Bug #53874:
+    - add option to show cut off text in Grid in tooltip on hover
+    - forward 'reset()' and 'placeHolder' in DateBox to inner widget
+    - make 'selector' type of Grid selectable (e.g. radio instead of checkbox)
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Sep 2021 11:55:26 +0200
+
 univention-web (3.0.6-11) unstable; urgency=medium
 
   * Bug #53675: fix DateBox/TimeBox to always return NULL for empty
