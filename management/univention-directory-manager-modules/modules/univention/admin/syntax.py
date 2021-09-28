@@ -102,6 +102,63 @@ def import_syntax_files():
 				finally:
 					_ = gettext
 
+	__ucr_overwrite_widgets()
+
+
+def __ucr_overwrite_widgets():
+	"""Setting widget definitions via UCR variables.
+	Do not use this! Only used by one customer. We should remove it.
+
+	.. deprecated:: 5.0-1
+		overwrite syntax class instead
+	"""
+	# FIXME: remove this method completely
+	from univention.admin._ucr import configRegistry as ucr
+	identifier = 'directory/manager/web/widget/'
+	syntaxes = {}
+	for key, val in ucr.items():
+		if not key.startswith(identifier):
+			continue
+		key = key[len(identifier):]
+		try:
+			name, key = key.split('/', 1)
+		except ValueError:
+			continue
+		syntaxes.setdefault(name, {}).setdefault(key, val)
+
+	for name, props in syntaxes.items():
+		try:
+			widget = props['widget']
+		except KeyError:
+			ud.debug(ud.ADMIN, ud.WARN, 'Ignoring syntax-widget overwrite: %s (does not define widget)' % (name,))
+			continue
+
+		default = props.get('default', '')
+		subclasses = ucr.is_true(None, False, props.get('subclasses', 'false').lower())
+		syntax_classes = []
+		for syntax in props.get('syntax', '').split(','):
+			if not syntax:
+				continue
+			syntax = getattr(univention.admin.syntax, syntax)
+			if syntax:
+				syntax_classes.append(syntax)
+
+		for scls in syntax_classes:
+			if getattr(scls, '_ucr_overwritten', False):
+				continue
+			org_get_widget = scls.get_widget
+
+			@classmethod
+			def get_widget(cls, prop):
+				if subclasses or cls is scls:
+					return widget
+				return org_get_widget(cls, prop)
+
+			ud.debug(ud.ADMIN, ud.INFO, 'Found ucr widget definition %r for syntax class %r' % (widget, scls, ))
+			scls.widget_default_search_pattern = default
+			scls.get_widget = get_widget
+			scls._ucr_overwritten = True
+
 
 choice_update_functions = []  # type: List[Callable]
 
@@ -209,6 +266,16 @@ class ISyntax(object):
 		"""
 		return '*'
 
+	widget = None
+	"""The corresponding widget which is used in UMC"""
+
+	widget_default_search_pattern = '*'
+	"""The default search pattern for this syntax. String render as TextBox, lists render as ComboBox with the possible choices, booleans render as CheckBox"""
+
+	@classmethod
+	def get_widget(cls, prop):
+		return cls.widget
+
 
 class simple(ISyntax):
 	"""
@@ -228,6 +295,9 @@ class simple(ISyntax):
 	"""Error message when an invalid item is selected."""
 
 	type_class = univention.admin.types.StringType  # type: Optional[Type[univention.admin.types.TypeHint]]
+
+	widget = 'TextBox'
+	widget_default_search_pattern = '*'
 
 	@classmethod
 	def parse(self, text):
@@ -270,6 +340,9 @@ class select(ISyntax):
 
 	type_class = univention.admin.types.StringType  # type: Optional[Type[univention.admin.types.TypeHint]]
 
+	widget = 'ComboBox'
+	widget_default_search_pattern = []
+
 	@classmethod
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
@@ -292,6 +365,9 @@ class combobox(select):
 		self.choices = [(id, _("Display text"), ...]
 	"""
 
+	widget = 'SuggestionBox'
+	widget_default_search_pattern = []
+
 	@classmethod
 	def parse(cls, text):
 		return super(combobox, cls).parse(text) or text
@@ -309,6 +385,9 @@ class MultiSelect(ISyntax):
 	"""Error message when an invalid item is selected."""
 
 	# FIXME: type_class
+
+	widget = 'MultiSelect'
+	widget_default_search_pattern = []
 
 	@classmethod
 	def parse(self, value):
@@ -347,6 +426,11 @@ class complex(ISyntax):
 	subsyntaxes = []  # type: Sequence[Tuple[str, Type[ISyntax]]]
 	subsyntax_names = ()  # type: Tuple[str, ...]
 	subsyntax_key_value = False
+
+	@classmethod
+	def get_widget(cls, prop):
+		return 'MultiInput' if prop.multivalue else 'ComplexInput'
+	widget_default_search_pattern = None
 
 	@classmethod
 	def parse(self, texts, minn=None):
@@ -487,6 +571,12 @@ class UDM_Objects(ISyntax):
 	use_objects = True
 	"""By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
+	widget_default_search_pattern = ''
+
+	@classmethod
+	def get_widget(cls, prop):
+		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else 'umc/modules/udm/ComboBox'
+
 	@property
 	def type_class(self):
 		if self.key == 'dn':
@@ -534,6 +624,9 @@ class UDM_Attribute(ISyntax):
 	"""The name of another |UDM| property this syntax depends on."""
 	error_message = _('Invalid value')
 	"""Error message when an invalid item is selected."""
+
+	widget = 'ComboBox'
+	widget_default_search_pattern = ''
 
 	@classmethod
 	def parse(self, text):
@@ -655,11 +748,13 @@ class TextArea(string):
 	"""
 	Syntax for a string with an input allowing multi-line input.
 	"""
-	pass
+	widget = 'TextArea'
+	widget_default_search_pattern = ''
 
 
 class Editor(string):
-	pass
+	widget = 'Editor'
+	widget_default_search_pattern = ''
 
 
 class TwoEditor(Editor):
@@ -849,6 +944,9 @@ class Base64Upload(Upload):
 
 	type_class = univention.admin.types.Base64Type
 
+	widget = 'umc/modules/udm/CertificateUploader'
+	widget_default_search_pattern = ''
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -872,6 +970,10 @@ class Base64BaseUpload(Base64Upload):
 	...
 	valueError: Not a valid Base64 string: ...
 	"""
+
+	widget = 'ImageUploader'
+	widget_default_search_pattern = ''
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -905,6 +1007,9 @@ class jpegPhoto(Upload):
 	"""
 
 	type_class = univention.admin.types.Base64Type
+
+	widget = 'ImageUploader'
+	widget_default_search_pattern = ''
 
 	@classmethod
 	def tostring(self, value):
@@ -1224,6 +1329,9 @@ class boolean(simple):
 	error_message = _("Value must be 0 or 1")
 
 	type_class = univention.admin.types.BooleanType
+
+	widget = 'CheckBox'
+	widget_default_search_pattern = False
 
 	@classmethod
 	def parse(self, text):
@@ -1701,6 +1809,9 @@ class passwd(simple):
 
 	type_class = univention.admin.types.PasswordType
 
+	widget = 'PasswordInputBox'
+	widget_default_search_pattern = ''
+
 	@classmethod
 	def parse(self, text):
 		if len(text) >= self.min_length:
@@ -1721,6 +1832,9 @@ class userPasswd(simple):
 	"""
 
 	type_class = univention.admin.types.PasswordType
+
+	widget = 'PasswordInputBox'
+	widget_default_search_pattern = ''
 
 	@classmethod
 	def parse(self, text):
@@ -2200,6 +2314,9 @@ class iso8601Date(simple):
 	regex = re.compile(r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
 	error_message = _('The given date does not conform to iso8601, example: "2009-01-01".')
 
+	widget = 'DateBox'
+	widget_default_search_pattern = '1970-01-01'
+
 	type_class = univention.admin.types.DateType
 
 	@classmethod
@@ -2272,6 +2389,9 @@ class date(simple):
 	max_length = 0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 	_re_de = re.compile(r'^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
+
+	widget = 'DateBox'
+	widget_default_search_pattern = '1970-01-01'
 
 	type_class = univention.admin.types.DateType
 
@@ -2654,6 +2774,9 @@ class TimeString(simple):
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
+	widget = 'TimeBox'
+	widget_default_search_pattern = '00:00'
+
 	type_class = univention.admin.types.TimeType
 
 
@@ -2884,6 +3007,13 @@ class ldapDn(simple):
 
 	type_class = univention.admin.types.DistinguishedNameType
 
+	@classmethod
+	def get_widget(cls, prop):
+		if cls is ldapDn:
+			return 'TextBox'
+		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
+	widget_default_search_pattern = ''
+
 
 class UMC_OperationSet(UDM_Objects):
 	"""
@@ -3029,6 +3159,14 @@ class ldapDnOrNone(simple):
 		Use :py:class:`UDM_Objects`.
 	"""
 	_re = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
+
+	@classmethod
+	def get_widget(cls, prop):
+		if cls is ldapDnOrNone:
+			return 'TextBox'
+		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
+
+	widget_default_search_pattern = ''
 
 	@classmethod
 	def parse(self, text):
@@ -3502,6 +3640,11 @@ class GroupDN(UDM_Objects):
 	udm_modules = ('groups/group', )
 	use_objects = False
 
+	@classmethod
+	def get_widget(cls, prop):
+		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else 'umc/modules/udm/ComboBox'
+	widget_default_search_pattern = []
+
 
 class GroupDNOrEmpty(GroupDN):
 	"""
@@ -3598,6 +3741,13 @@ class PortalComputer(UDM_Objects):
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	use_objects = False
+
+	widget = 'umc/modules/udm/MultiObjectSelect'
+	widget_default_search_pattern = False
+
+	@classmethod
+	def get_widget(cls, prop):
+		return cls.widget
 
 
 class IComputer_FQDN(UDM_Objects):
@@ -3709,6 +3859,8 @@ class IP_AddressList(ipAddress, select):
 	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'ip'
 
+	widget = select.widget
+
 
 class IP_AddressListEmpty(IP_AddressList):
 	"""
@@ -3728,6 +3880,8 @@ class MAC_AddressList(MAC_Address, select):
 	"""
 	choices = []  # type: Sequence[Tuple[str, str]]
 	depends = 'mac'
+
+	widget = select.widget
 
 
 class DNS_ForwardZone(UDM_Objects):
@@ -4057,6 +4211,8 @@ class TrueFalseUp(IStates):
 		(False, ('FALSE', _('False')))
 	)
 	type_class = univention.admin.types.BooleanType
+	widget = 'CheckBox'
+	widget_default_search_pattern = False
 
 
 class AppActivatedTrue(TrueFalseUp):
@@ -4072,6 +4228,8 @@ class OkOrNot(IStates):
 		(False, ('Not', _('Not OK')))
 	)
 	type_class = univention.admin.types.BooleanType
+	widget = 'CheckBox'
+	widget_default_search_pattern = False
 
 
 class AppActivatedOK(OkOrNot):
@@ -4612,6 +4770,9 @@ class UNIX_AccessRight(simple):
 		* :py:class:`UNIX_AccessRight_extended`
 	"""
 
+	widget = 'UnixAccessRights'
+	widget_default_search_pattern = '000'
+
 
 class UNIX_AccessRight_extended(simple):
 	r"""
@@ -4620,7 +4781,8 @@ class UNIX_AccessRight_extended(simple):
 	.. seealso::
 		* :py:class:`UNIX_AccessRight`
 	"""
-	pass
+	widget = 'UnixAccessRightsExtended'
+	widget_default_search_pattern = '0000'
 
 
 class sambaGroupType(select):
@@ -5048,6 +5210,13 @@ class LDAP_Search(select):
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
+	@classmethod
+	def get_widget(cls, prop):
+		if cls is LDAP_Search:
+			return 'umc/modules/udm/LinkList' if getattr(cls, 'viewonly', False) else 'ComboBox'
+		return select.get_widget(prop)
+	widget_default_search_pattern = []
+
 	def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
 		"""Creates an syntax object providing a list of choices defined
 		by a LDAP objects
@@ -5269,6 +5438,10 @@ class locked(boolean):
 	...
 	valueError:
 	"""
+
+	widget = 'umc/modules/udm/LockedCheckBox'
+	widget_default_search_pattern = False
+
 	@classmethod
 	def parse(cls, text):
 		if text in ('all', 'windows', 'posix'):
@@ -5555,6 +5728,13 @@ class PortalEntrySelection(complex):
 	subsyntaxes = [(_('Portal Entry'), PortalEntries)]
 	subsyntax_names = ('portal-entry',)
 
+	@classmethod
+	def get_widget(cls, prop):
+		return cls.widget
+
+	widget = 'umc/modules/udm/PortalContent'
+	widget_default_search_pattern = None
+
 
 class PortalCategorySelection(simple):
 	r"""
@@ -5583,6 +5763,9 @@ class PortalCategorySelection(simple):
 	"""
 	subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
 	subsyntax_names = ('portal-category', 'portal-entry',)
+
+	widget = 'umc/modules/udm/PortalContent'
+	widget_default_search_pattern = None
 
 	@classmethod
 	def parse(self, texts, minn=None):

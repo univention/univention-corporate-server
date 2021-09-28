@@ -459,7 +459,7 @@ class UDM_Module(object):
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
 			if key == property_name:
-				value = default_value(prop.syntax)
+				value = prop.syntax.widget_default_search_pattern
 				if isinstance(value, (list, tuple)):
 					value = read_syntax_choices(prop.syntax, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				return value
