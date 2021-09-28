@@ -59,7 +59,7 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 import univention.admin.mapping as udm_mapping
 
-from univention.management.console.modules.udm.syntax import widget, default_value
+from univention.management.console.modules.udm.syntax import widget
 
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
@@ -1231,12 +1231,6 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 				MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 
 
-def split_module_attr(value):
-	if ': ' in value:
-		return value.split(': ', 1)
-	return (None, value)
-
-
 def _object_property_filter(module, object_property, object_property_value, show_hidden=True):
 	if object_property in [None, 'None'] and module is not None:
 		default_search_attrs = module.default_search_attrs
@@ -1301,9 +1295,8 @@ def _get_syntax(syntax_name):
 def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		if syn.key == 'dn':
-			module_search_options = {'scope': 'base', 'container': key}
 			try:
-				return read_syntax_choices(syn, {}, module_search_options, ldap_connection=ldap_connection, ldap_position=ldap_position)
+				return read_syntax_choices(syn, {'scope': 'base', 'container': key}, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			except udm_errors.base:  # TODO: which exception is raised here exactly?
 				# invalid DN
 				return []
@@ -1320,7 +1313,7 @@ def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
 	return read_syntax_choices(syn, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 
-def info_syntax_choices(syn, options={}, ldap_connection=None, ldap_position=None):
+def info_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=None):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		size = 0
 		if syn.static_values is not None:
@@ -1339,252 +1332,40 @@ def info_syntax_choices(syn, options={}, ldap_connection=None, ldap_position=Non
 	return {'size': 0, 'performs_well': False}
 
 
-def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
+def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=None):
 	syn = syn() if inspect.isclass(syn) else syn
-	syntax_name = syn.name
 
-	choices = getattr(syn, 'choices', [])
+	options = options or {}
+	options['sizelimit'] = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
+	if '$dn$' in options:
+		options['dn'] = options.pop('$dn$')
 
-	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
-		choices = []
-		# try to avoid using the slow udm interface
-		simple = False
-		attr = set()
-		if not syn.use_objects:
-			attr.update(re.findall(r'%\(([^)]+)\)', syn.key))
-			if syn.label:
-				attr.update(re.findall(r'%\(([^)]+)\)', syn.label))
-			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
-				if not module.allows_simple_lookup():
-					break
-				if module is not None:
-					mapping = module.module.mapping
-					if not all([mapping.mapName(att) for att in attr]):
-						break
-			else:
-				simple = True
-			if not simple:
-				MODULE.warn('Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % syntax_name)
-
-		def extract_key_label(syn, dn, info):
-			key = label = None
-			if syn.key == 'dn':
-				key = dn
-			else:
-				try:
-					key = syn.key % info
-				except KeyError:
-					pass
-			if syn.label == 'dn':
-				label = dn
-			elif syn.label is None:
-				pass
-			else:
-				try:
-					label = syn.label % info
-				except KeyError:
-					pass
-			return key, label
-		if not simple:
-			def map_choices(obj_list):
-				result = []
-				for obj in obj_list:
-					# first try it without obj.open() (expensive)
-					key, label = extract_key_label(syn, obj.dn, obj.info)
-					if key is None or label is None:
-						obj.open()
-						key, label = extract_key_label(syn, obj.dn, obj.info)
-						if key is None:
-							# ignore the entry as the key is important for a selection, there
-							# is no sensible fallback for the key (Bug #26994)
-							continue
-						if label is None:
-							# fallback to the default description as this is just what displayed
-							# to the user (Bug #26994)
-							label = udm_objects.description(obj)
-					result.append((key, label))
-				return result
-
-			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
-				if module.module is None:
-					continue
-				filter_s = _create_ldap_filter(syn, options, module)
-				if filter_s is not None:
-					search_options = {'filter': filter_s}
-					search_options.update(module_search_options)
-					choices.extend(map_choices(module.search(**search_options)))
+	try:
+		if isinstance(syn, udm_syntax.LDAP_Search):
+			choices = []
+			for choice in syn.get_umc_choices(ldap_connection, options):
+				module = UDM_Module(choice['objectType'], ldap_connection=ldap_connection, ldap_position=ldap_position)
+				choice.update({
+					'module': 'udm',
+					'flavor': module.flavor,
+					'icon': 'udm-%s' % module.name.replace('/', '-'),
+				})
+				choices.append(choice)
 		else:
-			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
-				if module.module is None:
-					continue
-				filter_s = _create_ldap_filter(syn, options, module)
-				if filter_s is not None:
-					if filter_s and not filter_s.startswith('('):
-						filter_s = '(%s)' % filter_s
-					mapping = module.module.mapping
-					ldap_attr = [mapping.mapName(att) for att in attr]
-					search_options = {'filter': filter_s, 'simple': True}
-					search_options.update(module_search_options)
-					if ldap_attr:
-						search_options['simple_attrs'] = ldap_attr
-						result = module.search(**search_options)
-						for dn, ldap_map in result:
-							info = udm_mapping.mapDict(mapping, ldap_map)
-							key, label = extract_key_label(syn, dn, info)
-							if key is None:
-								continue
-							if label is None:
-								label = ldap_connection.explodeDn(dn, 1)[0]
-							choices.append((key, label))
-					else:
-						keys = module.search(**search_options)
-						if syn.label == 'dn':
-							labels = keys
-						else:
-							labels = [ldap_connection.explodeDn(dn, 1)[0] for dn in keys]
-						choices.extend(zip(keys, labels))
-	elif issubclass(syn.__class__, udm_syntax.UDM_Attribute):
-		choices = []
-
-		def filter_choice(obj):
-			# if attributes does not exist or is empty
-			return syn.attribute in obj.info and obj.info[syn.attribute]
-
-		def map_choice(obj):
-			obj.open()
-			MODULE.info('Loading choices from %s: %s' % (obj.dn, obj.info))
-			try:
-				values = obj.info[syn.attribute]
-			except KeyError:
-				MODULE.warn('Object has no attribute %r' % (syn.attribute,))
-				# this happens for example in PrinterDriverList
-				# if the ldap schema is not installed
-				# and thus no 'printmodel' attribute is known.
-				return []
-			if not isinstance(values, (list, tuple)):  # single value
-				values = [values]
-			if syn.is_complex:
-				return [(x[syn.key_index], x[syn.label_index]) for x in values]
-			if syn.label_format is not None:
-				_choices = []
-				for value in values:
-					obj.info['$attribute$'] = value
-					_choices.append((value, syn.label_format % obj.info))
-				return _choices
-			return [(x, x) for x in values]
-
-		module = UDM_Module(syn.udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
-		if module.module is None:
-			return []
-		MODULE.info('Found syntax %s with udm_module property' % syntax_name)
-		if syn.udm_filter == 'dn':
-			choices = map_choice(module.get(options[syn.depends]))
-		else:
-			filter_s = _create_ldap_filter(syn, options, module)
-			if filter_s is not None:
-				for element in map(map_choice, filter(filter_choice, module.search(filter=filter_s))):
-					for item in element:
-						choices.append(item)
-	elif issubclass(syn.__class__, udm_syntax.ldapDn) and hasattr(syn, 'searchFilter'):
-		try:
-			result = ldap_connection.searchDn(filter=syn.searchFilter)
-		except udm_errors.base:
-			MODULE.process('Failed to initialize syntax class %s' % syntax_name)
-			return []
-		choices = []
-		for dn in result:
-			dn_list = ldap_connection.explodeDn(dn)
-			choices.append((dn, dn_list[0].split('=', 1)[1]))
-
-	choices = [{'id': x[0], 'label': x[1]} for x in choices]
-
-	if issubclass(syn.__class__, udm_syntax.LDAP_Search):
-		options = options.get('options', {})
-		try:
-			syntax = udm_syntax.LDAP_Search(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
-		except KeyError:
-			syntax = syn
-
-		if '$dn$' in options:
-			filter_mod = get_module(None, options['$dn$'], ldap_connection)
-			if filter_mod:
-				obj = filter_mod.get(options['$dn$'])
-				syntax.filter = udm.pattern_replace(syntax.filter, obj)
-
-		syntax._prepare(ldap_connection, syntax.filter)
-
-		choices = []
-		for item in syntax.values:
-			if syntax.viewonly:
-				dn, display_attr = item
-			else:
-				dn, store_pattern, display_attr = item
-
-			if display_attr:
-				# currently we just support one display attribute
-				mod_display, display = split_module_attr(display_attr[0])
-				module = get_module(mod_display, dn, ldap_connection)  # mod_display might be None
-			else:
-				module = get_module(None, dn, ldap_connection)
-				display = None
-			if not module:
-				continue
-			obj = module.get(dn)
-			if not obj:
-				continue
-
-			# find the value to store
-			if not syntax.viewonly:
-				mod_store, store = split_module_attr(store_pattern)
-				if store == 'dn':
-					id = dn
-				elif store in obj:
-					id = obj[store]
-				elif store in obj.oldattr and obj.oldattr[store]:
-					id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
-				else:
-					# no valid store object, ignore
-					MODULE.warn('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (syntax.name, store, dn))
-					continue
-
-			# find the value to display
-			if display == 'dn':
-				label = dn
-			elif display is None:  # if view-only and in case of error
-				label = '%s: %s' % (module.title, obj[module.identifies])
-			else:
-				if display in obj:
-					label = obj[display]
-				elif display in obj.oldattr and obj.oldattr[display]:
-					label = obj.oldattr[display][0].decode(*module.module.mapping.getEncoding(display))
-				else:
-					MODULE.warn('LDAP_Search syntax %r: defines unknown attribute %r' % (syntax.name, display))
-					label = 'Unknown attribute %r' % (display,)
-
-			# create list entry
-			if syntax.viewonly:
-				choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': dn, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
-			else:
-				choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': id, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
-
-	# sort choices before inserting / appending some special items
-	choices = sorted(choices, key=lambda choice: choice['label'])
-
-	if issubclass(syn.__class__, (udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute)):
-		if isinstance(syn.static_values, (tuple, list)):
-			for value in syn.static_values:
-				choices.insert(0, {'id': value[0], 'label': value[1]})
-		if syn.empty_value:
-			choices.insert(0, {'id': '', 'label': ''})
-	elif issubclass(syn.__class__, udm_syntax.LDAP_Search):
-		# then append empty value
-		if syntax.addEmptyValue:
-			choices.insert(0, {'id': '', 'label': ''})
-		elif syntax.appendEmptyValue:
-			choices.append({'id': '', 'label': ''})
+			choices = syn.get_choices(ldap_connection, options)
+			choices = [{'id': x[0], 'label': x[1]} for x in choices]
+	except udm_errors.ldapTimeout:
+		raise SearchTimeoutError()
+	except udm_errors.ldapSizelimitExceeded:
+		raise SearchLimitReached()
+	except (LDAPError, udm_errors.ldapError):
+		raise
+	except udm_errors.base as e:
+		if isinstance(e, udm_errors.noObject):
+			container = options.get('base')
+			if container and not ldap_connection.get(container):
+				raise ObjectDoesNotExist(container)
+		UDM_Error(e).reraise()
 
 	return choices
 

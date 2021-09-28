@@ -74,10 +74,6 @@ class TypeHint(object):
 	_openapi_writeonly = None  # type: Optional[bool]
 	_openapi_nullable = True  # everything which can be removed is nullable
 
-	_umc_widget = None
-	_umc_widget_size = None
-	_umc_widget_search = None
-
 	_html_element = None
 	_html_input_type = None
 
@@ -237,17 +233,12 @@ class TypeHint(object):
 		definition['nullable'] = self._openapi_nullable
 		return definition
 
-	def get_choices(self):
-		pass
+	def get_choices(self, lo, options):
+		return self.syntax.get_choices(lo, options)
 
-	def has_dynamic_choices(self):
-		pass
-
-	def get_dynamic_choices(self):
-		pass
-
-	def reload_dynamic_choices(self):
-		pass
+	def has_choices(self):
+		opts = self.syntax.get_widget_options()
+		return opts.get('dynamicValues') or opts.get('staticValues') or opts.get('type') == 'umc/modules/udm/MultiObjectSelect'
 
 	@classmethod
 	def detect(cls, property, name):

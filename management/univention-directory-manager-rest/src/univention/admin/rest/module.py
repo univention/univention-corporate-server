@@ -79,7 +79,7 @@ from genshi.output import HTMLSerializer
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
+from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft, _object_property_filter
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
 from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
@@ -3421,11 +3421,12 @@ class PropertyChoices(Resource):
 		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		try:
-			syntax = module.module.property_descriptions[property_].syntax
+			prop = module.module.property_descriptions[property_]
 		except KeyError:
 			raise NotFound(object_type, dn)
-		request_body = {'syntax': syntax.name}  # FIXME
-		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+		type_ = udm_types.TypeHint.detect(prop, property_)
+		options = {}  # TODO: implement dependencies
+		choices = yield self.pool.submit(type_.get_choices, self.ldap_connection, options)
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({'choices': choices})
 

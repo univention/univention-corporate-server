@@ -406,7 +406,7 @@ def update_extended_attributes(lo, module, position):
 		if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
 			propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
 		else:
-			if lo.search(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
+			if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
 				propertySyntax = univention.admin.syntax.LDAP_Search(propertySyntaxString)
 			else:
 				propertySyntax = univention.admin.syntax.string()

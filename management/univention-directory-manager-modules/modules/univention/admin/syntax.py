@@ -266,6 +266,12 @@ class ISyntax(object):
 		"""
 		return '*'
 
+	@classmethod
+	def get_choices(cls, lo, options):
+		"""Get all already sorted choices"""
+		choices = getattr(cls, 'choices', [])
+		return sorted(choices, key=lambda choice: choice[1])
+
 	widget = None
 	"""The corresponding widget which is used in UMC"""
 
@@ -356,6 +362,21 @@ class select(ISyntax):
 		if any(text == c[0] for c in choices):
 			return text
 		return None
+
+	@classmethod
+	def get_choices(cls, lo, options):
+		# sort choices before inserting / appending some special items
+		try:
+			class_choices = cls.choices
+		except AttributeError:
+			class_choices = []
+
+		choices = sorted(class_choices, key=lambda choice: choice[1])
+
+		if cls.empty_value and class_choices and class_choices[0][0] != '':
+			choices.insert(0, ('', ''))
+
+		return choices
 
 
 class combobox(select):
@@ -597,6 +618,139 @@ class UDM_Objects(ISyntax):
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
 
+	@classmethod
+	def get_choices(cls, lo, options):
+		choices = []
+
+		# scope/base is no public API and only used by search_syntax_choices_by_key!
+		module_search_options = {}
+		if 'scope' in options:
+			module_search_options['scope'] = options.pop('scope')
+		if 'base' in options:
+			module_search_options['base'] = options.pop('base')
+		if 'sizelimit' in options:
+			module_search_options['sizelimit'] = options.pop('sizelimit')
+
+		# try to avoid using the slow udm interface
+		simple = False
+		attr = set()
+		if not cls.use_objects:
+			attr.update(re.findall(r'%\(([^)]+)\)', cls.key))
+			if cls.label:
+				attr.update(re.findall(r'%\(([^)]+)\)', cls.label))
+			for udm_module in cls.udm_modules:
+				module = univention.admin.modules.get(udm_module)
+				if not hasattr(module, 'lookup_filter'):
+					break
+				if module is not None:
+					mapping = module.mapping
+					if not all([mapping.mapName(att) for att in attr]):
+						break
+			else:
+				simple = True
+			if not simple:
+				ud.debug(ud.ADMIN, ud.WARN, 'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % (cls.name,))
+
+		def extract_key_label(syn, dn, info):
+			key = label = None
+			if syn.key == 'dn':
+				key = dn
+			else:
+				try:
+					key = syn.key % info
+				except KeyError:
+					pass
+			if syn.label == 'dn':
+				label = dn
+			elif syn.label is None:
+				pass
+			else:
+				try:
+					label = syn.label % info
+				except KeyError:
+					pass
+			return key, label
+
+		if not simple:
+			def map_choices(obj_list):
+				result = []
+				for obj in obj_list:
+					# first try it without obj.open() (expensive)
+					key, label = extract_key_label(cls, obj.dn, obj.info)
+					if key is None or label is None:
+						obj.open()
+						key, label = extract_key_label(cls, obj.dn, obj.info)
+						if key is None:
+							# ignore the entry as the key is important for a selection, there
+							# is no sensible fallback for the key (Bug #26994)
+							continue
+						if label is None:
+							# fallback to the default description as this is just what displayed
+							# to the user (Bug #26994)
+							label = univention.admin.objects.description(obj)
+					result.append((key, label))
+				return result
+
+			for udm_module in cls.udm_modules:
+				module = univention.admin.modules.get(udm_module)
+				if not module:
+					continue
+				filter_s = _create_ldap_filter(cls, options, module)
+				if filter_s is not None:
+					objs = module.lookup(None, lo, filter_s, **module_search_options)
+					choices.extend(map_choices(objs))
+		else:
+			for udm_module in cls.udm_modules:
+				module = univention.admin.modules.get(udm_module)
+				if not module:
+					continue
+				filter_s = _create_ldap_filter(cls, options, module)
+				if filter_s is not None:
+					if filter_s and not filter_s.startswith('('):
+						filter_s = '(%s)' % filter_s
+					mapping = module.mapping
+					ldap_attr = [mapping.mapName(att) for att in attr]
+
+					def _search(ldap_attr=None):
+						if hasattr(module, 'lookup_filter'):
+							lookup_filter = module.lookup_filter(filter_s, lo)
+							if lookup_filter is None:
+								return []
+
+							if ldap_attr is not None:
+								return lo.search(filter=six.text_type(lookup_filter), attr=ldap_attr, **module_search_options)
+							else:
+								return lo.searchDn(filter=six.text_type(lookup_filter), **module_search_options)
+						return module.lookup(None, lo, filter_s, **module_search_options)
+
+					if ldap_attr:
+						result = _search(ldap_attr)
+						for dn, ldap_map in result:
+							info = univention.admin.mapping.mapDict(mapping, ldap_map)
+							key, label = extract_key_label(cls, dn, info)
+							if key is None:
+								continue
+							if label is None:
+								label = ldap.dn.explode_rdn(dn, True)[0]
+							choices.append((key, label))
+					else:
+						keys = _search()
+						if cls.label == 'dn':
+							labels = keys
+						else:
+							labels = [ldap.dn.explode_rdn(dn, True)[0] for dn in keys]
+						choices.extend(zip(keys, labels))
+
+		# sort choices before inserting / appending some special items
+		choices = sorted(choices, key=lambda choice: choice[1])
+
+		if isinstance(cls.static_values, (tuple, list)):
+			for value in cls.static_values:
+				choices.insert(0, value)
+		if cls.empty_value:
+			choices.insert(0, ('', ''))
+		return choices
+
 
 class UDM_Attribute(ISyntax):
 	"""
@@ -639,6 +793,64 @@ class UDM_Attribute(ISyntax):
 		if not text or not self.regex or self.regex.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
+
+	@classmethod
+	def get_choices(cls, lo, options):
+		choices = []
+		sizelimit = options.get('sizelimit', 0)
+
+		def filter_choice(obj):
+			# if attributes does not exist or is empty
+			return cls.attribute in obj.info and obj.info[cls.attribute]
+
+		def map_choice(obj):
+			obj.open()
+			ud.debug(ud.ADMIN, ud.INFO, 'Loading choices from %s: %s' % (obj.dn, obj.info))
+			try:
+				values = obj.info[cls.attribute]
+			except KeyError:
+				ud.debug(ud.ADMIN, ud.WARN, 'Object has no attribute %r' % (cls.attribute,))
+				# this happens for example in PrinterDriverList
+				# if the ldap schema is not installed
+				# and thus no 'printmodel' attribute is known.
+				return []
+			if not isinstance(values, (list, tuple)):  # single value
+				values = [values]
+			if cls.is_complex:
+				return [(x[cls.key_index], x[cls.label_index]) for x in values]
+			if cls.label_format is not None:
+				_choices = []
+				for value in values:
+					obj.info['$attribute$'] = value
+					_choices.append((value, cls.label_format % obj.info))
+				return _choices
+			return [(x, x) for x in values]
+
+		module = univention.admin.modules.get(cls.udm_module)
+		if not module:
+			return []
+
+		ud.debug(ud.ADMIN, ud.INFO, 'Found syntax %s with udm_module property' % (cls.name,))
+		if cls.udm_filter == 'dn':
+			obj = module.object(None, lo, None, options[cls.depends])
+			choices = map_choice(obj)
+		else:
+			filter_s = _create_ldap_filter(cls, options, module)
+			if filter_s is not None:
+				objs = module.lookup(None, lo, filter_s, sizelimit=sizelimit)
+				for element in map(map_choice, filter(filter_choice, objs)):
+					for item in element:
+						choices.append(item)
+
+		# sort choices before inserting / appending some special items
+		choices = sorted(choices, key=lambda choice: choice[1])
+
+		if isinstance(cls.static_values, (tuple, list)):
+			for value in cls.static_values:
+				choices.insert(0, value)
+		if cls.empty_value:
+			choices.insert(0, ('', ''))
+		return choices
 
 
 class none(simple):
@@ -3018,6 +3230,22 @@ class ldapDn(simple):
 		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
 	widget_default_search_pattern = ''
 
+	@classmethod
+	def get_choices(cls, lo, options):
+		if not hasattr(cls, 'searchFilter'):
+			return simple.get_choices(lo, options)
+
+		try:
+			result = lo.searchDn(filter=cls.searchFilter)
+		except univention.admin.uexceptions.base:
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Failed to initialize syntax class %s' % (cls.name,))
+			return []
+
+		return sorted([
+			(dn, ldap.dn.explode_rdn(dn, True)[0])
+			for dn in result
+		], key=lambda x: x[1])
+
 
 class UMC_OperationSet(UDM_Objects):
 	"""
@@ -5133,12 +5361,12 @@ class allModuleOptions(combobox):
 	@classmethod
 	def update_choices(cls):
 		modules = univention.admin.modules.modules.values()
-		cls.choices = [
+		cls.choices = sorted([
 			(key, opt.short_description)
 			for module in modules
 			for key, opt in getattr(module, 'options', {}).items()
 			if key != 'default'
-		]
+		], key=lambda x: x[1])
 
 
 __register_choice_update_function(allModuleOptions.update_choices)
@@ -5180,11 +5408,11 @@ class LDAP_Search(select):
 	Searches can be either defined dynamically via a UDM settings/syntax
 	definition and using
 
-		LDAP_Search( syntax_name = '<NAME>' )
+		LDAP_Search(syntax_name='<NAME>')
 
 	or programmatically by directly instantiating
 
-		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
+		LDAP_Search(filter='LDAP-Search-Filter>', attribute=['<LDAP attributes>', ...], value='<LDAP attribute>', base='<LDAP base>')
 
 	>>> from univention.admin.uldap import getMachineConnection
 	>>> from univention.lib.misc import custom_username
@@ -5192,15 +5420,13 @@ class LDAP_Search(select):
 	>>> if os.path.exists('/etc/machine.secret'):
 	...     lo, pos = getMachineConnection()
 	...     syntax._load(lo)
-	...     syntax._prepare(lo)
-	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.values)
+	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.get_choices(lo, {}))
 	... else:
 	...     True
 	True
 	>>> syntax = LDAP_Search('mysyntax2', '(univentionObjectType=fantasy)', ['cn'])
 	>>> if os.path.exists('/etc/machine.secret'):
-	...     syntax._prepare(lo)
-	...     syntax.values
+	...     syntax.get_choices(lo, {})
 	... else:
 	...     []
 	[]
@@ -5276,13 +5502,12 @@ class LDAP_Search(select):
 			return
 
 		if dn:
-			self.__dn = dn  # needed?
 			self.filter = attrs['univentionSyntaxLDAPFilter'][0].decode('utf-8')
 			self.attributes = [x.decode('UTF-8') for x in attrs['univentionSyntaxLDAPAttribute']]
 			if 'univentionSyntaxLDAPBase' in attrs:
 				self.base = attrs['univentionSyntaxLDAPBase'][0].decode('utf-8')
 			else:
-				self.base = self.__base = ''  # unclear what __base is for
+				self.base = ''
 			self.value = attrs.get('univentionSyntaxLDAPValue', [b'dn'])[0].decode('utf-8')
 			if attrs.get('univentionSyntaxViewOnly', [b'FALSE'])[0] == b'TRUE':
 				self.viewonly = True
@@ -5290,17 +5515,104 @@ class LDAP_Search(select):
 			self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
 			self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
 
-	def _prepare(self, lo, filter=None):
-		if filter is None:
-			filter = self.filter
-		self.choices = []
-		self.values = []
-		for dn in lo.searchDn(filter=filter, base=self.base):
-			# self.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
-			if not self.viewonly:
-				self.values.append((dn, self.value, self.attributes))
+	@classmethod
+	def get_choices(cls, lo, options):
+		return [(choice['id'], choice['label']) for choice in cls.get_umc_choices(lo, options)]
+
+	@classmethod
+	def get_umc_choices(cls, lo, options):
+		"""Workaround for UMC - we should get rid of this class at all"""
+		options = options.get('options', {})
+		try:
+			syn = cls(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
+		except KeyError:
+			syn = cls()
+
+		return syn._get_choices(lo, options)
+
+	@classmethod
+	def _get_choices(cls, lo, options):
+		def split_module_attr(value):
+			if ': ' in value:
+				return value.split(': ', 1)
+			return (None, value)
+
+		filter_s = cls.filter
+		if 'dn' in options:
+			filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.get(options['dn']))
+			if filter_mod:
+				obj = univention.admin.objects.get(filter_mod, None, lo, None, options['dn'])
+				filter_s = univention.admin.pattern_replace(filter_s, obj)  # FIXME: LDAP filter is not escaped
+
+		choices = []
+		for dn in lo.searchDn(filter=filter_s, base=cls.base):
+			# cls.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
+			if cls.viewonly:
+				display_attr = cls.attributes
 			else:
-				self.values.append((dn, self.attributes))
+				store_pattern, display_attr = cls.value, cls.attributes
+
+			if display_attr:
+				# currently we just support one display attribute
+				mod_display, display = split_module_attr(display_attr[0])  # mod_display might be None
+				modules = univention.admin.modules.objectType(None, lo, dn)
+			else:
+				modules = univention.admin.modules.objectType(None, lo, dn)
+				display = None
+			try:
+				module = next(univention.admin.modules.get(m) for m in modules)
+			except StopIteration:
+				module = None
+			if not module:
+				continue
+			obj = module.object(None, lo, None, dn)
+			if not obj:
+				continue
+			obj.open()
+
+			# find the value to store
+			id = dn
+			if not cls.viewonly:
+				mod_store, store = split_module_attr(store_pattern)
+				if store == 'dn':
+					id = dn
+				elif store in obj:
+					id = obj[store]
+				elif store in obj.oldattr and obj.oldattr[store]:
+					id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
+				else:
+					# no valid store object, ignore
+					ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (cls.name, store, dn))
+					continue
+
+			# find the value to display
+			if display == 'dn':
+				label = dn
+			elif display is None:  # if view-only and in case of error
+				label = '%s: %s' % (getattr(module, 'short_description', module.module), obj.description())
+			else:
+				if display in obj:
+					label = obj[display]
+				elif display in obj.oldattr and obj.oldattr[display]:
+					label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
+				else:
+					ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: defines unknown attribute %r' % (cls.name, display))
+					label = 'Unknown attribute %r' % (display,)
+
+			# TODO: remove this one day...
+			# choices.append((id, label))
+			choices.append({'objectType': module.module, 'id': id, 'label': label})
+
+		# sort choices before inserting / appending some special items
+		choices = sorted(choices, key=lambda choice: choice['label'])
+
+		# then append empty value
+		if cls.addEmptyValue:
+			choices.insert(0, {'id': '', 'label': ''})
+		elif cls.appendEmptyValue:
+			choices.append({'id': '', 'label': ''})
+
+		return choices
 
 
 class nfsShare(UDM_Objects):
