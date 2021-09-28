@@ -62,7 +62,9 @@ define([
 			})));
 
 			this.own(aspect.after(this._dateBox, 'closeDropDown', lang.hitch(this, function() {
-				this._dateBox.dropDown.hideTooltip();
+				if (this._dateBox.dropDown) {
+					this._dateBox.dropDown.hideTooltip();
+				}
 			})));
 		},
 
