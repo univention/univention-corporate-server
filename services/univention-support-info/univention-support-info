@@ -52,14 +52,14 @@ from distutils.spawn import find_executable
 try:
 	from urllib2 import URLError, urlopen
 except ImportError:
-	from urllib.error import URLError
-	from urllib.request import urlopen
+	from urllib.error import URLError  # type: ignore
+	from urllib.request import urlopen  # type: ignore
 
 try:
 	from cStringIO import StringIO
 	from cStringIO import StringIO as BytesIO
 except ImportError:
-	from io import BytesIO, StringIO
+	from io import BytesIO, StringIO  # type: ignore
 
 usiVersion = '66'
 
