@@ -1436,7 +1436,7 @@ def checkMaintenance():
 		ldap_base = ucr.get('ldap/base')
 		# check depending on License
 		try:
-			maint_url = "http://updates.software-univention.de/download/ucs-maintenance/" + ucs_ver + ".yaml"
+			maint_url = "https://updates.software-univention.de/download/ucs-maintenance/%s.yaml" % (ucs_ver,)
 			data = urlopen(maint_url).read()
 			maint_info = dict((k.strip(), v.strip()) for k, v in (line.split(':', 1) for line in data.split("\n") if line))
 
