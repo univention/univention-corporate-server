@@ -2103,7 +2103,7 @@ def main(options):
 		print("The unencrypted data can be found here:", end='')
 	else:
 		print("The data can be found here:", end='')
-	print("\t%s" % (archiveFileName,), end='')
+	print("\t%s" % (archiveFileName,))
 	sys.stdout.flush()
 	cleanup()
 
