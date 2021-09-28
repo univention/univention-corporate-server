@@ -39,6 +39,15 @@ import univention.admin.syntax as udm_syntax
 from ...log import MODULE
 
 
+def default_syntax_definition(syntax):
+	return {
+		'dynamicValues': 'udm/syntax/choices',
+		'dynamicOptions': {
+			'syntax': syntax.name,
+		},
+	}
+
+
 def choices(syntax, udm_property):
 	"""
 	Returns the choices attribute of the property's syntax as a list
@@ -52,41 +61,25 @@ def choices(syntax, udm_property):
 		if issubclass(syntax_class, udm_syntax.UDM_Objects) and udm_property['multivalue'] and len(syntax.udm_modules) == 1 and not syntax.simple:
 			opts = {'objectType': syntax.udm_modules[0]}
 		else:
-			opts = {
-				'dynamicValues': 'udm/syntax/choices',
-				'dynamicOptions': {
-					'syntax': syntax.name,
-				},
-				'dynamicValuesInfo': 'udm/syntax/choices/info',
-			}
+			opts = default_syntax_definition(syntax)
+			opts['dynamicValuesInfo'] = 'udm/syntax/choices/info'
 		if issubclass(syntax_class, udm_syntax.network):
 			opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
 	elif issubclass(syntax_class, (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn)):
-		opts = {
-			'dynamicValues': 'udm/syntax/choices',
-			'dynamicOptions': {
-				'syntax': syntax.name,
-			},
-		}
+		opts = default_syntax_definition(syntax)
 	elif issubclass(syntax_class, udm_syntax.LDAP_Search):
-		opts = {
-			'dynamicValues': 'udm/syntax/choices',
-			'dynamicOptions': {
-				'syntax': syntax.name,
-				'options': {
-					'syntax': syntax.name,
-					'filter': syntax.filter,
-					'viewonly': syntax.viewonly,
-					'base': getattr(syntax, 'base', ''),
-					'value': syntax.value,
-					'attributes': syntax.attributes,
-					'empty': syntax.addEmptyValue,
-					'empty_end': syntax.appendEmptyValue,
-				},
-			},
-			'sortDynamicValues': not syntax.appendEmptyValue,
+		opts = default_syntax_definition(syntax)
+		opts['dynamicOptions']['options'] = {
+			'syntax': syntax.name,
+			'filter': syntax.filter,
+			'viewonly': syntax.viewonly,
+			'base': getattr(syntax, 'base', ''),
+			'value': syntax.value,
+			'attributes': syntax.attributes,
+			'empty': syntax.addEmptyValue,
+			'empty_end': syntax.appendEmptyValue,
 		}
-
+		opts['sortDynamicValues'] = not syntax.appendEmptyValue
 	elif issubclass(syntax_class, udm_syntax.select):
 		if getattr(syntax, 'depends', None) is not None:
 			opts = {
