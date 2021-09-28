@@ -61,7 +61,7 @@ try:
 except ImportError:
 	from io import BytesIO, StringIO  # type: ignore
 
-usiVersion = '66'
+usiVersion = '67'
 
 fingerprint = '1EB89EEB365A84A65F95FB28CD78CD3C8F91B44F'
 # create with: gpg2 --armor --export --export-options export-minimal $fingerprint
