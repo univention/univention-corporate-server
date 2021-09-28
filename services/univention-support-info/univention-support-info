@@ -1191,6 +1191,12 @@ ucr.load()
 timeString = time.strftime('%Y-%m-%d_%H-%M-%SZ', time.gmtime())
 hostname = socket.gethostname()
 
+try:
+	ucsrel = tuple(int(v) for v in ucr["version/version"].split(".") + [ucr["version/patchlevel"]])
+except (LookupError, ValueError) as ex:
+	logger.fatal("Invalid UCS version in UCR: %s", ex)
+	ucsrel = (0, 0, 0)
+
 
 class Command(object):
 	def __init__(self, cmd, stdin):
@@ -1424,8 +1430,8 @@ def licenseObject():
 
 def checkMaintenance():
 	''' Check if UCS-Version is in maintenance '''
+	ucs_ver = "%d.%d-%d" % ucsrel
 	if True:
-		ucs_ver = ucr.get('version/version') + '-' + ucr.get('version/patchlevel')
 		ucs_lic = ucr.get('license/base')
 		ldap_base = ucr.get('ldap/base')
 		# check depending on License
@@ -1682,16 +1688,16 @@ def collectCommandData():
 					('/usr/share/univention-samba4/scripts/check_essential_samba4_dns_records.sh',),
 			})
 			# >= Samba4 RC (UCS 3.1)
-			if ucr.get('version/version') >= '3.1':
+			if ucsrel >= (3, 1):
 				commands.update({'samba-tool-domain-info': ('samba-tool', 'domain', 'info', '127.0.0.1', ), })
 		else:
 			# Run only on S3 member in S4 domain
 			commands.update({'test-join': ('net', 'ads', 'testjoin', ), })
 	# Commands depending on UCS-Version >= UCS 4.1-3
-	if ((ucr.get('version/version') == '4.1') and (ucr.get('version/patchlevel') >= '3')) or ucr.get('version/version') >= '4.2':
+	if ucsrel >= (4, 1, 3) or ucsrel >= (4, 2, 0):
 		commands.update({'univention-directory-listener-ctrl': ('univention-directory-listener-ctrl', 'status', ), })
 	# Commands depending on UCS-Version → UCS 4.2
-	if ucr.get('version/version') >= '4.2':
+	if ucsrel >= (4, 2):
 		commands.update({'journalctl': ('journalctl', '--since=yesterday', ), 'hostnamectl-status': ('hostnamectl', 'status', ), 'univention-app-info': ('univention-app', 'info', ), })
 
 	print('Collecting command output: ', end='')
