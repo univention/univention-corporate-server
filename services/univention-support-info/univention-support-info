@@ -1431,7 +1431,7 @@ def licenseObject():
 def checkMaintenance():
 	''' Check if UCS-Version is in maintenance '''
 	ucs_ver = "%d.%d-%d" % ucsrel
-	if True:
+	if ucsrel < (5,):
 		ucs_lic = ucr.get('license/base')
 		ldap_base = ucr.get('ldap/base')
 		# check depending on License
@@ -1452,6 +1452,36 @@ def checkMaintenance():
 				print(miMsg, file=tmpf)
 				addFile('info/maintenance', None, tmpf)
 		except (URLError, EnvironmentError) as innerex:
+			tmpf = tempfile.TemporaryFile(prefix='univention-support-info.')
+			print("Warn: Can't reach univention server - product maintenance undetermined [%s]" % (innerex,))
+			sys.stdout.flush()
+			print("Failed to check maintenance (%s)\ncurrent UCS Version %s" % (innerex, ucs_ver), file=tmpf)
+			addFile('info/maintenance', None, tmpf)
+	else:
+		import json
+		try:
+			maint_url = "https://updates.software-univention.de/ucs-releases.json"
+			data = urlopen(maint_url).read()
+			info = json.loads(data)
+			status, = (
+				patch.status
+				for major in info["releases"]
+				if major["major"] == ucsrel[0]
+				for minor in major["minors"]
+				if minor["minor"] == ucsrel[1]
+				for patch in minor["patchlevels"]
+				if patch["patchlevel"] == ucsre[2]
+			)
+			if status == "maintained":
+				print("maintenance ok\ncurrent UCS Version %s" % (ucs_ver,), file=tmpf)
+				addFile('info/maintenance', None, tmpf)
+			else:
+				miMsg = "Please note, system is no longer maintained, security updates are no longer available for current UCS Version %s" % (ucs_ver,)
+				print("\033[93m%s\033[0m" % (miMsg,))
+				sys.stdout.flush()
+				print(miMsg, file=tmpf)
+				addFile('info/maintenance', None, tmpf)
+		except (URLError, EnvironmentError, TypeError, ValueError) as innerex:
 			tmpf = tempfile.TemporaryFile(prefix='univention-support-info.')
 			print("Warn: Can't reach univention server - product maintenance undetermined [%s]" % (innerex,))
 			sys.stdout.flush()
