@@ -651,12 +651,12 @@ def test_lookup_with_pagination(udm):
 @pytest.mark.exposure('dangerous')
 @pytest.mark.tags('apptest')
 def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
-	from univention.config_registry import handler_set
 	"""Test users/user and users/ldap bcrypt password handling"""
 	# bugs: [52693]
-	handler_set(['ldap/pw-bcrypt=true'])
-	handler_set(['password/hashing/bcrypt=true'])
+	ucr.handler_set(['ldap/pw-bcrypt=true'])
+	ucr.handler_set(['password/hashing/bcrypt=true'])
 	utils.restart_slapd()
+	udm.stop_cli_server()
 
 	for module in ['users/user', 'users/ldap']:
 		lo = utils.get_ldap_connection()
@@ -687,7 +687,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 			udm.modify_object(module, dn=dn, password='univention1')
 
 		# mixed password history
-		handler_set(['password/hashing/bcrypt=false'])
+		ucr.handler_set(['password/hashing/bcrypt=false'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention2')
 		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
@@ -703,7 +703,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 			udm.modify_object(module, dn=dn, password='univention2')
 
 		# and back
-		handler_set(['password/hashing/bcrypt=true'])
+		ucr.handler_set(['password/hashing/bcrypt=true'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention4')
 		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
@@ -718,8 +718,8 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 		univention.admin.uldap.access(binddn=dn, bindpw='univention4')
 
 		# 2a variant and cost factor
-		handler_set(['password/hashing/bcrypt/prefix=2a'])
-		handler_set(['password/hashing/bcrypt/cost_factor=7'])
+		ucr.handler_set(['password/hashing/bcrypt/prefix=2a'])
+		ucr.handler_set(['password/hashing/bcrypt/cost_factor=7'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention5')
 		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
@@ -733,8 +733,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	# bugs: [52446]
 	"""Test mspolicy password functionality"""
-	from univention.config_registry import handler_set
-	handler_set(['password/quality/mspolicy=true'])
+	ucr.handler_set(['password/quality/mspolicy=true'])
 	attr = {'name': uts.random_username(), 'pwQualityCheck': 'TRUE'}
 	pol_dn = udm.create_object('policies/pwhistory', wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 	utils.wait_for_replication_and_postrun()
