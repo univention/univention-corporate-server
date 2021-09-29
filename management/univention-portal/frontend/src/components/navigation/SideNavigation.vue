@@ -244,7 +244,7 @@ export default defineComponent({
       login(this.userState);
     },
     logout(): void {
-      logout();
+      logout(this.userState);
     },
     closeNavigation(): void {
       this.$store.dispatch('navigation/setActiveButton', '');

@@ -38,3 +38,7 @@ Variables: hostname
 Variables: domainname
 Variables: umc/web/sso/enabled
 Variables: server/role
+
+Type: file
+File: usr/lib/univention-portal/config/oidc.json
+Variables: portal/oidc/.*

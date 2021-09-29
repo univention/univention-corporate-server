@@ -21,6 +21,7 @@ Depends:
  netcat-openbsd,
  python3-univention-portal (= ${source:Version}),
  python3-click,
+ python3-jwt,
  python3-requests,
  python3-tornado,
  univention-config,

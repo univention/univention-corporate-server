@@ -1,0 +1,45 @@
+@!@
+import json
+
+rawconfig = {}
+for key, value in configRegistry.items():
+	if not key.startswith('portal/oidc/') or key in ('portal/oidc/default-op',):
+		continue
+	try:
+		oidcname, keyname = key[len('portal/oidc/'):].split('/', 1)
+	except ValueError:
+		continue
+	rawconfig.setdefault(oidcname, {})[keyname] = value
+
+config = {}
+for oidcname, oidcconfig in rawconfig.items():
+	try:
+		oidc_server = oidcconfig['server']
+		oidc_client_realm = oidcconfig['client-realm']
+		oidc_client_id = oidcconfig['client-id']
+		client_secret_file = oidcconfig['client-secret-file']
+	except KeyError:
+		continue
+	try:
+		with open(client_secret_file) as fd:
+			oidc_secret = fd.read()
+	except EnvironmentError:
+		continue
+	# TODO: maybe inspire by .well-known structure?
+	config[oidcname] = {
+		"oidc_server": oidc_server,
+		"oidc_client_realm": oidc_client_realm,
+		"oidc_client_id": oidc_client_id,
+		"oidc_secret": oidc_secret,
+		"oidc_authorize_url": oidcconfig.get("authorize-url", "%s/auth/realms/%s/protocol/openid-connect/auth" % (oidc_server, oidc_client_realm)),
+		"oidc_access_token_url": oidcconfig.get("access-token-url", "%s/auth/realms/%s/protocol/openid-connect/token" % (oidc_server, oidc_client_realm)),
+		"oidc_logout_url": oidcconfig.get("logout-url", "%s/auth/realms/%s/protocol/openid-connect/logout" % (oidc_server, oidc_client_realm)),
+		"oidc_userinfo_url": oidcconfig.get("userinfo-url", "%s/auth/realms/%s/protocol/openid-connect/userinfo" % (oidc_server, oidc_client_realm)),
+		"oidc_cert_url": oidcconfig.get("cert-url", '%s/auth/realms/%s/protocol/openid-connect/certs' % (oidc_server, oidc_client_realm)),
+		"oidc_cookie_user": oidcconfig.get("cookie-user", "user"),
+		"oidc_cookie_token": oidcconfig.get("cookie-token", "token"),
+		"oidc_cookie_refresh_token": oidcconfig.get("cookie-refresh-token", "refresh"),
+		"extra_parameters": oidcconfig.get("extra-parameter", ""),
+	}
+print(json.dumps({'oidc': config, 'oidc_default_op': configRegistry.get("portal/oidc/default-op", "default")}, sort_keys=True, indent=2))
+@!@

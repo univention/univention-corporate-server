@@ -137,6 +137,15 @@ def get_portals():
 
 def make_app():
 	portals = get_portals()
+
+	with open('/etc/machine.secret') as fd:
+		settings = {
+			'oidc': config.fetch('oidc'),
+			'oidc_default_op': config.fetch('oidc_default_op'),
+			"cookie_secret": fd.read().strip(),  # TODO: use an own secret?
+			# "xsrf_cookies": True,  # enable?
+			"debug": True,
+		}
 	return tornado.web.Application(
 		[
 			tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login'),

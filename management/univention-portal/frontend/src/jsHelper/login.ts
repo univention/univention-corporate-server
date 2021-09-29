@@ -31,13 +31,19 @@ import { User } from '@/store/modules/user/user.models';
 function login(user: User): void {
   if (user.authMode === 'saml') {
     window.location.href = `/univention/saml/?location=${window.location.pathname}`;
+  } else if (user.authMode === 'oidc') {
+    window.location.href = `/univention/portal/login/?location=${window.location.pathname}`;
   } else {
     window.location.href = `/univention/login/?location=${window.location.pathname}`;
   }
 }
 
-function logout(): void {
-  window.location.href = '/univention/logout';
+function logout(user: User): void {
+  if (user.authMode === 'oidc') {
+    window.location.href = `/univention/portal/logout?location=${window.location.pathname}`;
+  } else {
+    window.location.href = `/univention/logout?location=${window.location.pathname}`;
+  }
 }
 
 export { login, logout };
