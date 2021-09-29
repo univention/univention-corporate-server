@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Functionality of some widgets has been adjusted for specific use cases.
 bug: [53847]
+erratum: 1057
+announced: 2021-09-29
