@@ -33,7 +33,6 @@
 from __future__ import absolute_import
 
 import os
-import sys
 import copy
 import locale
 import importlib
@@ -47,6 +46,7 @@ import univention.debug as ud
 import univention.admin
 import univention.admin.uldap
 import univention.admin.syntax
+import univention.admin.handlers
 import univention.admin.hook
 from univention.admin import localization
 from univention.admin.layout import Tab, Group, ILayoutElement
@@ -118,10 +118,7 @@ def update():
 
 			superordinates.update(superordinate_names(m))
 
-	for handler_directory in sys.path:
-		root = os.path.join(handler_directory, 'univention/admin/handlers')
-		if not os.path.isdir(root):
-			continue
+	for root in univention.admin.handlers.__path__:  # type: ignore
 		for w_root, w_dirs, w_files in os.walk(root):
 			_walk(root, w_root, w_files)
 	modules = _modules

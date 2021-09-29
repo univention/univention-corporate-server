@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-22) unstable; urgency=low
+
+  * Bug #31857: Make LDAP Object Class and Attribute names selectable
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Sep 2021 07:35:10 +0200
+
 univention-directory-manager-modules (14.0.20-21) unstable; urgency=low
 
   * Bug #25054: Make options in extended attributes selectable
