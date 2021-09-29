@@ -91,14 +91,17 @@ class Portal(with_metaclass(Plugin)):
 	def get_cache_id(self):
 		return self.portal_cache.get_id()
 
-	def get_user(self, request):
-		return self.authenticator.get_user(request)
+	async def get_user(self, request):
+		return await self.authenticator.get_user(request)
 
-	def login_user(self, request):
-		return self.authenticator.login_user(request)
+	async def login_user(self, request):
+		return await self.authenticator.login_user(request)
 
-	def login_request(self, request):
-		return self.authenticator.login_request(request)
+	async def login_request(self, request):
+		return await self.authenticator.login_request(request)
+
+	async def logout_user(self, request):
+		return await self.authenticator.logout_user(request)
 
 	def get_visible_content(self, user, admin_mode):
 		entries = self.portal_cache.get_entries()
