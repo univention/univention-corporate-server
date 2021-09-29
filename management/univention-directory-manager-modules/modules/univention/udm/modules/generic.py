@@ -49,9 +49,26 @@ from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, Dn
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
-	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, SearchLimitReached
+	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType
 )
 from ..utils import UDebug as ud
+
+# This try-except exists for the sole purpose of an UCS upgrade from 4.4 to 5.0
+# and the possibility of ImportErrors if this code runs during the update
+# process. In the 5.0 branch this is reverted to a simple Import (Bug #53832).
+try:
+	from ..exceptions import SearchLimitReached
+except ImportError:
+	class SearchLimitReached(UdmError):
+		"""Raised when the search results in more objects than specified by the sizelimit."""
+
+		def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
+			msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
+				search_filter if search_filter else "''", sizelimit if sizelimit else "/"
+			)
+			self.search_filter = search_filter
+			self.sizelimit = sizelimit
+			super(SearchLimitReached, self).__init__(msg, dn, module_name)
 
 
 ucr = univention.config_registry.ConfigRegistry()
