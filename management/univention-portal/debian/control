@@ -18,8 +18,8 @@ Architecture: all
 Depends:
  netcat-openbsd,
  python3-univention-portal (= ${source:Version}),
+ python3-ldap,
  python3-click,
- python3-requests,
  python3-tornado,
  univention-config,
  univention-directory-listener,
@@ -42,6 +42,9 @@ Description: Univention Portal - Central portal web page for a UCS domain
 Package: python3-univention-portal
 Architecture: all
 Depends:
+ python3-ldap,
+ python3-tornado,
+ python3-requests,
  python3-univention-directory-manager,
  ${python:Depends},
 Provides:
