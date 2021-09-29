@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
 fix: 9.0.2-68A~5.0.0.202109171651
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The error handling in case `docker inspect` fails has been repaired.
 bug: [53803]
