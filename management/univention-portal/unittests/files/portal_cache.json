@@ -24,6 +24,7 @@
                 "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine"
             }, 
             "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
+            "in_portal": true,
             "linkTarget": "useportaldefault", 
             "links": [
                 "/univention/server-overview/"
@@ -45,6 +46,7 @@
                 "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
             }, 
             "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
+            "in_portal": true,
             "linkTarget": "useportaldefault", 
             "links": [
                 "/univention/management/"
@@ -69,6 +71,7 @@
                 "fr_FR": "Nouvelles, conseils et bonne pratique"
             }, 
             "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
+            "in_portal": true,
             "linkTarget": "newwindow", 
             "links": [
                 "https://www.univention.com/news/blog-en/"
@@ -91,6 +94,7 @@
         ], 
         "defaultLinkTarget": "embedded", 
         "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
+        "in_portal": true,
         "ensureLogin": false, 
         "fontColor": "black", 
         "logo": null, 

@@ -123,6 +123,7 @@ class TestPortal:
 					"fr_FR": u"Vue d'ensemble de tous les serveurs UCS du domaine",
 				},
 				"dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+				"in_portal": True,
 				"linkTarget": "useportaldefault",
 				"links": ["/univention/server-overview/"],
 				"logo_name": "/univention/portal/icons/entries/server-overview.svg",
@@ -138,6 +139,7 @@ class TestPortal:
 					"fr_FR": u"Console de gestion Univention pour admin\xadis\xadtrer le domaine UCS et le syst\xe8me local",
 				},
 				"dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+				"in_portal": True,
 				"linkTarget": "useportaldefault",
 				"links": ["/univention/management/"],
 				"logo_name": "/univention/portal/icons/entries/umc-domain.svg",
@@ -156,6 +158,7 @@ class TestPortal:
 					"fr_FR": "Nouvelles, conseils et bonne pratique"
 				},
 				"dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+				"in_portal": True,
 				"linkTarget": "newwindow",
 				"links": [
 					"https://www.univention.com/news/blog-en/"
@@ -204,6 +207,7 @@ class TestPortal:
 			],
 			"defaultLinkTarget": u"embedded",
 			"dn": u"cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+			"in_portal": True,
 			"ensureLogin": False,
 			"fontColor": u"black",
 			"logo": None,
