@@ -248,8 +248,6 @@ class select(ISyntax):
 
 		self.choices = [(id, _("Display text"), ...]
 	"""
-	choices = []  # type: Sequence[Tuple[str, str]]
-	"""The list of choices."""
 	empty_value = False
 	"""Allow the empty value."""
 
@@ -259,14 +257,15 @@ class select(ISyntax):
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
 		# for the UDM CLI
-		if not hasattr(self, 'choices'):
+		try:
+			choices = getattr(self, "choices")
+		except AttributeError:
 			return text
-
-		if text in map(lambda x: x[0], self.choices) or (not text and select.empty_value):
+		if not text and select.empty_value:
 			return text
-
+		if any(text == c[0] for c in choices):
+			return text
 		return None
-
 
 class combobox(select):
 	"""
@@ -284,7 +283,7 @@ class MultiSelect(ISyntax):
 	"""
 	Select multiple items from a list of choices.
 	"""
-	choices = []  # type: Sequence[Tuple[str, str]]
+	choices = []  # type: Sequence[Tuple[Any, str]]
 	"""The list of choices."""
 	empty_value = True
 	"""Allow the empty value."""
@@ -4194,7 +4193,7 @@ class SambaLogonHours(MultiSelect):
 	Syntax to select hour slots per day for Samba login.
 	"""
 	choices = [
-		(str(idx * 24 + hour), '%s %d-%d' % (day, hour, hour + 1))
+		(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1))
 		for idx, day in (
 			(0, _('Sun')),
 			(1, _('Mon')),
