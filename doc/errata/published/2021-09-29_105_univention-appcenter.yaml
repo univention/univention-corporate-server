@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The error handling in case `docker inspect` fails has been repaired.
 bug: [53803]
+erratum: 105
+announced: 2021-09-29
