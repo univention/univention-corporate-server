@@ -133,6 +133,27 @@ def get_portals():
 
 def make_app():
 	portals = get_portals()
+
+	oidc_server = config.fetch('OIDC_SERVER')
+	oidc_client_realm = config.fetch('OIDC_CLIENT_REALM')
+	oidc_client_id = config.fetch('OIDC_CLIENT_ID')
+	oidc_secret = config.fetch('OIDC_SECRET')
+	settings = {
+		# "xsrf_cookies": True,
+		"oidc_server": oidc_server,
+		"oidc_client_realm": oidc_client_realm,
+		"oidc_client_id": oidc_client_id,
+		"oidc_secret": oidc_secret,
+		"oidc_authorize_url": "%s/auth/realms/%s/protocol/openid-connect/auth" % (oidc_server, oidc_client_realm),
+		"oidc_access_token_url": "%s/auth/realms/%s/protocol/openid-connect/token" % (oidc_server, oidc_client_realm),
+		"oidc_logout_url": "%s/auth/realms/%s/protocol/openid-connect/logout" % (oidc_server, oidc_client_realm),
+		"oidc_userinfo_url": "%s/auth/realms/%s/protocol/openid-connect/userinfo" % (oidc_server, oidc_client_realm),
+		"oidc_cert_url": '%s/auth/realms/%s/protocol/openid-connect/certs' % (oidc_server, oidc_client_realm),
+		"oidc_cookie_user": "user",
+		"oidc_cookie_token": "token",
+		"cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",  # FIXME
+		"debug": True,
+	}
 	return tornado.web.Application(
 		[
 			tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login'),
@@ -140,6 +161,7 @@ def make_app():
 			tornado.web.url(r"/(.+)/logout/?", LogoutHandler, {"portals": portals}, name='logout'),
 			tornado.web.url(r"/(.+)/", tornado.web.RequestHandler, name='index'),
 		],
+		**settings
 	)
 
 

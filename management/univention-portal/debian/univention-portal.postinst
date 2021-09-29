@@ -48,6 +48,10 @@ if [ "$1" = "configure" ]; then
 	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
+# protect secret files
+touch /etc/portal-oidc.secret /usr/lib/univention-portal/config/oidc.json
+chmod 600 /etc/portal-oidc.secret /usr/lib/univention-portal/config/oidc.json
+
 # we do not ship a custom.css, nor do we alter it
 # admins may do whatever they want with it and we
 # try to keep the DOM stable. but this is only best effort

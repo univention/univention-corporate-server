@@ -38,3 +38,20 @@ Description[en]=If activated, a warning is displayed if the browser version used
 Type=str
 Categories=portal
 
+[portal/oidc/server]
+Description[de]=OIDC Server
+Description[en]=OIDC Server
+Type=str
+Categories=portal
+
+[portal/oidc/client-realm]
+Description[de]=OIDC Client Realm
+Description[en]=OIDC Client RealM
+Type=str
+Categories=portal
+
+[portal/oidc/client-id]
+Description[de]=OIDC Client ID
+Description[en]=OIDC Client ID
+Type=str
+Categories=portal
