@@ -1,11 +1,11 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test sizelimit for UDM API
 ## exposure: safe
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
-## bugs: [53823]
+## bugs: [53832, 53833]
 import pytest
 from univention.udm.exceptions import SearchLimitReached
 
