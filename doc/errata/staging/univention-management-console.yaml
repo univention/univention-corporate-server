@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console
-fix: 
+fix: 12.0.12-15A~5.0.0.202109241526
 desc: |
  This update addresses the following issue(s):
  * The traceback format of exceptions occuring in a thread has been repaired.
