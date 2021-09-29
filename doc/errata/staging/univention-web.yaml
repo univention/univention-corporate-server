@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-8
 src: univention-web
 fix: 3.0.6-12A~4.4.0.202109281205
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Functionality of some widgets has been adjusted for specific use cases.
 bug: [53847]
