@@ -4,7 +4,7 @@ version:
 - 8
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-manager-modules
-fix: 14.0.20-22A~4.4.0.202109291137
+fix: 14.0.20-23A~4.4.0.202109291420
 desc: |
  This update addresses the following issues:
  * Add syntax class to select UDM syntax class for Extended Attributes
