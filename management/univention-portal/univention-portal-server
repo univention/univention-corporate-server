@@ -58,23 +58,33 @@ class PortalHandler(tornado.web.RequestHandler):
 				best_portal = portal
 		return best_portal
 
+	def reverse_abs_url(self, name):
+		return self.request.protocol + "://" + self.request.host + self.reverse_url(name, *self.path_args)
+
 
 class LoginHandler(PortalHandler):
-	def post(self):
+	async def post(self, portal_name):
 		portal = self.find_portal()
-		portal.login_user(self)
+		await portal.login_user(self)
 
-	def get(self):
+	async def get(self, portal_name):
 		portal = self.find_portal()
-		portal.login_request(self)
+		await portal.login_request(self)
+
+
+class LogoutHandler(PortalHandler):
+
+	async def get(self, portal_name):
+		portal = self.find_portal()
+		await portal.logout_user(self)
 
 
 class JsonHandler(PortalHandler):
-	def get(self):
+	async def get(self, portal_name):
 		portal = self.find_portal()
 		if not portal:
 			raise tornado.web.HTTPError(404)
-		user = portal.get_user(self)
+		user = await portal.get_user(self)
 		admin_mode = False
 		if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
 			get_logger("admin").info("Admin mode requested")
@@ -125,9 +135,12 @@ def make_app():
 	portals = get_portals()
 	return tornado.web.Application(
 		[
-			(r"/.+/login/", LoginHandler, {"portals": portals}),
-			(r"/.+/portal.json", JsonHandler, {"portals": portals}),
-		]
+			tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login'),
+			tornado.web.url(r"/(.+)/portal.json", JsonHandler, {"portals": portals}, name='portal'),
+			tornado.web.url(r"/(.+)/logout/?", LogoutHandler, {"portals": portals}, name='logout'),
+			tornado.web.url(r"/(.+)/", tornado.web.RequestHandler, name='index'),
+		],
+		**settings
 	)
 
 
