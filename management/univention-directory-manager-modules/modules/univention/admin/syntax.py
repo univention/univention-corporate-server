@@ -4633,7 +4633,15 @@ class languageCode(combobox):
 	"""
 	Syntax for a language, e.g. `language_COUNTRY`.
 	"""
-	choices = [(key, val) for (key, val) in language.choices if re.match(r"^[a-z][a-z]_[A-Z][A-Z]$", key)]
+	_re = re.compile(r'^[a-z][a-z]_[A-Z][A-Z]$')
+	choices = (lambda m: [kv for kv in language.choices if m(kv[0])])(_re.match)
+
+	@classmethod
+	def parse(self, text):
+		if self._re.match(text) is not None:
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError(_('Language code must be in format "xx_XX"!'))
 
 
 class translationTuple(complex):
