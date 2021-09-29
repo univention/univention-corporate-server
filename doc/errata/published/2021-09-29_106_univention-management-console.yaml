@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The traceback format of exceptions occuring in a thread has been repaired.
 bug: [53817]
+erratum: 106
+announced: 2021-09-29
