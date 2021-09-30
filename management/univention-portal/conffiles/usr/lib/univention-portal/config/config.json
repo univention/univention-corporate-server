@@ -1,7 +1,11 @@
 @!@
 import json
+import ldap.dn
 from univention.lib.misc import custom_groupname
-default_admin_groups = "cn=" + custom_groupname("Domain Admins", configRegistry) + ",cn=groups," + configRegistry.get("ldap/base")
+default_admin_groups = "cn=%s,cn=groups,%s" % (
+	ldap.dn.escape_dn_chars(custom_groupname("Domain Admins", configRegistry)),
+	configRegistry.get("ldap/base")
+)
 admin_groups = configRegistry.get("portal/admin-groups", default_admin_groups).split(", ")
 admin_groups = [group.strip() for group in admin_groups]
 config = {
