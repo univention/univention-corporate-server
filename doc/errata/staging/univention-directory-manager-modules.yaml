@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 15.0.11-23A~5.0.0.202109301506
+fix: 15.0.11-24A~5.0.0.202109301546
 desc: |
  This update addresses the following issue:
  * Add syntax class to select UDM syntax class for Extended Attributes
