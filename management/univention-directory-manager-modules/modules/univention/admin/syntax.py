@@ -274,16 +274,15 @@ class select(ISyntax):
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
 		# for the UDM CLI
-		if not text and select.empty_value:
-			return text
 		try:
 			choices = getattr(self, "choices")
-			if any(text == c[0] for c in choices):
-				return text
-			return None
 		except AttributeError:
 			return text
-
+		if not text and select.empty_value:
+			return text
+		if any(text == c[0] for c in choices):
+			return text
+		return None
 
 class combobox(select):
 	"""
