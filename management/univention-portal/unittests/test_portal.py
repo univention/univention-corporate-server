@@ -30,6 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import asyncio
+
 import pytest
 
 
@@ -67,21 +69,30 @@ class TestPortal:
 
 	@pytest.fixture
 	def mocked_portal(self, dynamic_class, mocker):
+		async def async_magic():
+			return
+
 		Portal = dynamic_class("Portal")
 		scorer = mocker.Mock()
 		portal_cache = mocker.Mock()
 		authenticator = mocker.Mock()
+		mocker.MagicMock.__await__ = lambda x: async_magic().__await__()
+		authenticator.get_user = mocker.MagicMock()
+		authenticator.login_user = mocker.MagicMock()
+		authenticator.login_request = mocker.MagicMock()
 		return Portal(scorer, portal_cache, authenticator)
 
 	def test_user(self, mocked_portal, mocker):
 		request = "request"
-		mocked_portal.get_user(request)
+		loop = asyncio.get_event_loop()
+		loop.run_until_complete(mocked_portal.get_user(request))
 		mocked_portal.authenticator.get_user.assert_called_once_with(request)
 
 	def test_login(self, mocked_portal, mocker):
 		request = "request"
-		mocked_portal.login_user(request)
-		mocked_portal.login_request(request)
+		loop = asyncio.get_event_loop()
+		loop.run_until_complete(mocked_portal.login_user(request))
+		loop.run_until_complete(mocked_portal.login_request(request))
 		mocked_portal.authenticator.login_user.assert_called_once_with(request)
 		mocked_portal.authenticator.login_request.assert_called_once_with(request)
 
