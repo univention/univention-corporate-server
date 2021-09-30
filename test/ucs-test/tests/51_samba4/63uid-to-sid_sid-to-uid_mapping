@@ -34,7 +34,7 @@ wait_for_replication
 wait_for_LDAP_replication_of_domain_sambaSid "$username"
 
 set -x
-SID_FROM_LDAP="$(ldap_get_attribute "uid=$username,cn=users,$ldap_base sambaSID")"
+SID_FROM_LDAP="$(ldap_get_attribute "uid=$username,cn=users,$ldap_base" "sambaSID")"
 SID="$(wbinfo --uid-to-sid=$USER_UID)"
 
 if [ "$SID_FROM_LDAP" != "$SID" ]; then
