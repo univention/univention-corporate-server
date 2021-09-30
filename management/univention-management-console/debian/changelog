@@ -1,4 +1,4 @@
-univention-management-console (12.0.12-18) unstable; urgency=medium
+univention-management-console (12.1.12-18) unstable; urgency=medium
 
   * Bug #53906: fix counter for mobile tabs + close overlay if tabs
     are not visible
