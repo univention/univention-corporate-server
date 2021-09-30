@@ -284,6 +284,7 @@ class select(ISyntax):
 			return text
 		return None
 
+
 class combobox(select):
 	"""
 	Select item from list of choices but accept all kind of values::
