@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Expose the sizelimit parameter in the simple UDM API
 bug: [53833]
+erratum: 109
+announced: 2021-09-30
