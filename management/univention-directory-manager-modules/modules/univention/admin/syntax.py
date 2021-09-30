@@ -285,7 +285,6 @@ class select(ISyntax):
 			return text
 
 
-
 class combobox(select):
 	"""
 	Select item from list of choices but accept all kind of values::
@@ -2977,7 +2976,7 @@ class SharedFolderUserACL(complex):
 	Syntax to assign an |IMAP| access control permission for an user from |LDAP|.
 	"""
 	subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
-	#subsyntax_names = ('user', 'access-right')
+	# subsyntax_names = ('user', 'access-right')
 	subsyntax_key_value = True
 
 
@@ -2986,7 +2985,7 @@ class SharedFolderGroupACL(complex):
 	Syntax to assign an |IMAP| access control permission for a group from |LDAP|.
 	"""
 	subsyntaxes = ((_('Group'), GroupName), (_('Access right'), IMAP_Right))
-	#subsyntax_names = ('group', 'access-right')
+	# subsyntax_names = ('group', 'access-right')
 	subsyntax_key_value = True
 
 
@@ -2995,7 +2994,7 @@ class SharedFolderSimpleUserACL(complex):
 	Syntax to assign an |IMAP| access control permission for any user.
 	"""
 	subsyntaxes = ((_('User'), string), (_('Access right'), IMAP_Right))
-	#subsyntax_names = ('user', 'access-right')
+	# subsyntax_names = ('user', 'access-right')
 	subsyntax_key_value = True
 
 
@@ -3004,7 +3003,7 @@ class SharedFolderSimpleGroupACL(complex):
 	Syntax to assign an |IMAP| access control permission for any group.
 	"""
 	subsyntaxes = ((_('Group'), string), (_('Access right'), IMAP_Right))
-	#subsyntax_names = ('group', 'access-right')
+	# subsyntax_names = ('group', 'access-right')
 	subsyntax_key_value = True
 
 
