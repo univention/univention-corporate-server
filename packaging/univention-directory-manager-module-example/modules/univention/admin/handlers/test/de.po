@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-module-example 2.0.9\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2011-02-18 11:21+0100\n"
-"PO-Revision-Date: 2020-09-05 16:27+0200\n"
+"PO-Revision-Date: 2021-09-30 11:36+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -25,7 +25,7 @@ msgstr "VoIP-Adresse"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:65
 msgid "Not a valid VoIP Address"
-msgstr "Keine gltige VoIP Adresse"
+msgstr "Keine gültige VoIP-Adresse"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:77
 msgid "IP-Phone"
@@ -33,7 +33,7 @@ msgstr "IP-Telefon"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:79
 msgid "An example module for the Univention Directory Manager"
-msgstr "Beispielmodul fr den Univention Directory Manager"
+msgstr "Beispielmodul für den Univention Directory Manager"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:97
 msgid "Call redirect option"
@@ -61,7 +61,7 @@ msgstr "Protokoll"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:133
 msgid "Supported VoIP protocols"
-msgstr "Untersttzte VoIP Protokolle"
+msgstr "Unterstützte VoIP-Protokolle"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:143
 msgid "IP-Address"
@@ -77,7 +77,7 @@ msgstr "Hauptbenutzer"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:154
 msgid "The primary user of this IP-phone"
-msgstr "Primrer Benutzer dieses IP-Telefons"
+msgstr "Primärer Benutzer dieses IP-Telefons"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:163
 msgid "Additional Users"
@@ -85,7 +85,7 @@ msgstr "Weitere Benutzer"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:164
 msgid "Users, that may register with this phone"
-msgstr "Benutzer, die dieses Telefon registrieren drfen"
+msgstr "Benutzer, die dieses Telefon registrieren dürfen"
 
 #: modules/univention/admin/handlers/test/ip_phone.py:173
 msgid "Redirection User"
@@ -138,11 +138,11 @@ msgstr ""
 
 #: scripts/ip-phone-tool:197
 msgid "LDAP Bind DN"
-msgstr "LDAP Bind DN"
+msgstr "LDAP-Bind-DN"
 
 #: scripts/ip-phone-tool:200
 msgid "LDAP Bind Password"
-msgstr "LDAP Bind Password"
+msgstr "LDAP-Bind-Password"
 
 #: scripts/ip-phone-tool:203
 msgid "Prompt for password"
@@ -158,7 +158,7 @@ msgstr "Mehr Information ausgeben"
 
 #: scripts/ip-phone-tool:217
 msgid "Set debug level"
-msgstr "Debug Level setzen"
+msgstr "Debug-Level setzen"
 
 #: scripts/ip-phone-tool:220
 msgid "Username"
