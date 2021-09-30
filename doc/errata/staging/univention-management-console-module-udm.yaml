@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console-module-udm
+fix: 10.0.1-18A~5.0.0.202109301801
+desc: |
+ This update addresses the following issue:
+ * Fixing the user copy template after unix home dir
+   wasn't automatically filled
+bug: [53857]
