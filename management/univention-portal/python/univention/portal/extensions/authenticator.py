@@ -29,8 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import requests
+import json
+
 from six import with_metaclass
+from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
+
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 from univention.portal.user import User
@@ -131,11 +134,16 @@ class UMCAuthenticator(Authenticator):
 
 	async def _ask_umc(self, cookies, headers):
 		try:
-			response = requests.get(self.umc_session_url, cookies=cookies, headers=headers)
-			data = response.json()
+			headers['Cookie'] = '; '.join('='.join(c) for c in cookies.items())
+			req = HTTPRequest(self.umc_session_url, method="GET", headers=headers)
+			http_client = AsyncHTTPClient()
+			response = await http_client.fetch(req)
+			data = json.loads(response.body.decode('UTF-8'))
 			username = data["result"]["username"]
-		except requests.RequestException as e:
-			get_logger("user").error("connection failed: %s" % e)
+		except HTTPError as exc:
+			get_logger("user").error("request failed: %s" % exc)
+		except EnvironmentError as exc:
+			get_logger("user").error("connection failed: %s" % exc)
 		except ValueError:
 			get_logger("user").error("malformed answer!")
 		except KeyError:
