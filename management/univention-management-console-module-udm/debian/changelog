@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-18) unstable; urgency=medium
+
+  * Bug #53857: fixed null value problem in process method
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 30 Sep 2021 17:58:48 +0200
+
 univention-management-console-module-udm (10.0.1-17) unstable; urgency=medium
 
   * Bug #53665: adjust tabcolor for validation errors and color of creation

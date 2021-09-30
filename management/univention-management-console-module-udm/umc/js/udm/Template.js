@@ -192,13 +192,16 @@ define([
 					},
 					process: function(templateStr, vals) {
 						// replace marks in the template string
-						var newStr = lang.replace(templateStr, vals);
+						if (typeof templateStr === 'string') {
+							var newStr = lang.replace(templateStr, vals);
 
-						// apply global modifiers
-						array.forEach(this.globalModifiers, function(imodifier) {
-							newStr = imodifier(newStr);
-						});
-						return newStr;
+							// apply global modifiers
+							array.forEach(this.globalModifiers, function(imodifier) {
+								newStr = imodifier(newStr);
+							});
+							return newStr;
+						}
+						return templateStr;
 					}
 				};
 
