@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-20) unstable; urgency=medium
+
+  * Bug #53857: remodified solution of null value problem in process method
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 01 Oct 2021 11:00:15 +0200
+
 univention-management-console-module-udm (10.0.1-19) unstable; urgency=medium
 
   * Bug #53857: modified solution of null value problem in process method

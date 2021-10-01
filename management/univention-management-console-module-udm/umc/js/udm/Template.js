@@ -171,18 +171,13 @@ define([
 
 						// the value might be a simple string or an array of strings
 						var newVal;
-						if (typeof this.templateVal == "string") {
-							newVal = this.process(this.templateVal, vals);
-						}
-						else if (this.templateVal instanceof Array) {
+						if (this.templateVal instanceof Array) {
 							newVal = [];
 							array.forEach(this.templateVal, function(istr) {
-								if (typeof istr === "string") {
-									newVal.push(this.process(istr, vals));
-								} else {
-									newVal.push(istr);
-								}
+								newVal.push(this.process(istr, vals));
 							}, this);
+						} else {
+							newVal = this.process(this.templateVal, vals);
 						}
 
 						return newVal;
@@ -196,6 +191,9 @@ define([
 					},
 					process: function(templateStr, vals) {
 						// replace marks in the template string
+						if (typeof templateStr !== 'string') {
+							return templateStr;
+						}
 						var newStr = lang.replace(templateStr, vals);
 
 						// apply global modifiers
