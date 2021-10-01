@@ -10,3 +10,5 @@ desc: |
    Addresses issue with Let's Encrypt certificates starting 2021-10-01.
    https://lists.debian.org/debian-lts/2021/09/msg00008.html
 bug: [53863]
+erratum: 1059
+announced: 2021-10-01
