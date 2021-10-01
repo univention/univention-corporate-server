@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.15-12) unstable; urgency=medium
+
+  * Bug #53859: fixing null error in widget creation while user copy
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 01 Oct 2021 11:22:05 +0200
+
 univention-management-console-module-udm (9.0.15-11) unstable; urgency=medium
 
   * Bug #53675: fix empty_value evaluation for static value definitions
