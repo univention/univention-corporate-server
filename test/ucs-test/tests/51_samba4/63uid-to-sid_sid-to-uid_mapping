@@ -7,7 +7,6 @@
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
-## - domaincontroller_slave
 ## tags: [SKIP-UCSSCHOOL,basic,apptest]
 
 # shellcheck source=../../lib/user.sh
