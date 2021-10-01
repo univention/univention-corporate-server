@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: openssl1.0
+fix: 1.0.2u-1~deb9u6
+desc: |
+ This update addresses the following issue:
+ * Read buffer overruns processing ASN.1 strings (CVE-2021-3712)
+bug: [53861]
+cve:
+- CVE-2021-3712
