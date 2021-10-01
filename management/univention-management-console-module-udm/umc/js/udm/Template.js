@@ -177,7 +177,11 @@ define([
 						else if (this.templateVal instanceof Array) {
 							newVal = [];
 							array.forEach(this.templateVal, function(istr) {
-								newVal.push(this.process(istr, vals));
+								if (typeof istr === "string") {
+									newVal.push(this.process(istr, vals));
+								} else {
+									newVal.push(istr);
+								}
 							}, this);
 						}
 
@@ -192,16 +196,13 @@ define([
 					},
 					process: function(templateStr, vals) {
 						// replace marks in the template string
-						if (typeof templateStr === 'string') {
-							var newStr = lang.replace(templateStr, vals);
+						var newStr = lang.replace(templateStr, vals);
 
-							// apply global modifiers
-							array.forEach(this.globalModifiers, function(imodifier) {
-								newStr = imodifier(newStr);
-							});
-							return newStr;
-						}
-						return templateStr;
+						// apply global modifiers
+						array.forEach(this.globalModifiers, function(imodifier) {
+							newStr = imodifier(newStr);
+						});
+						return newStr;
 					}
 				};
 
