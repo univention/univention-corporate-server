@@ -198,28 +198,23 @@ def run_script(script, arg, changes):
 	proc.communicate(u''.join(diff).encode('UTF-8'))
 
 
-def run_module(modpath, arg, ucr, changes):
+def run_module(modpath, fn, ucr, changes):
 	# type: (str, str, _UCR, _CHANGES) -> None
 	"""
 	Load the Python module that MUST be located in :py:const:`MODULE_DIR` or any
 	subdirectory.
 
 	:param modpath: The path to the module relative to :py:const:`MODULE_DIR`.
-	:param arg: Execution mode, e.g. `generate` or `preinst` or `postinst`.
+	:param fn: Execution mode, e.g. `handler` or `preinst` or `postinst`.
 	:param ucr: UCR instance.
 	:param changes: Dictionary of changed UCR variables, mapping UCR variable names to 2-tuple (old-value, new-value).
 	"""
-	arg2meth = {
-		'generate': lambda obj: getattr(obj, 'handler'),
-		'preinst': lambda obj: getattr(obj, 'preinst'),
-		'postinst': lambda obj: getattr(obj, 'postinst'),
-	}
 	# temporarily prepend MODULE_DIR to load path
 	sys.path.insert(0, MODULE_DIR)
 	module_name = os.path.splitext(modpath)[0]
 	try:
 		module = __import__(module_name.replace(os.path.sep, '.'))
-		f = arg2meth[arg](module)
+		f = getattr(module, fn)
 		f(ucr, changes)
 	except (AttributeError, ImportError) as ex:
 		print(ex, file=sys.stderr)
@@ -633,7 +628,7 @@ class ConfigHandlerModule(ConfigHandler):
 		"""Call Python module after change."""
 		ucr, changed = args
 		print('Module: %s' % self.module)
-		run_module(self.module, 'generate', ucr, changed)
+		run_module(self.module, 'handler', ucr, changed)
 
 
 def grep_variables(text):

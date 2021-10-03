@@ -57,19 +57,19 @@ def test_run_script(mocker):
 	Popen.return_value.communicate.assert_called_once_with(b"key@%@old@%@new\n")
 
 
-@pytest.mark.parametrize("arg,funcname", [
-	("generate", "handler"),
-	("preinst", "preinst"),
-	("postinst", "postinst"),
+@pytest.mark.parametrize("funcname", [
+	"handler",
+	"preinst",
+	"postinst",
 ])
-def test_run_module(arg, funcname, mocker):
+def test_run_module(funcname, mocker):
 	mymodule = mocker.MagicMock()
 	mocker.patch.dict(sys.modules, {"pytest": mymodule})
 
 	ucr = {"key": "new"}
 	changes = {"key": ("old", "new")}
 
-	ucrh.run_module("pytest", arg, ucr, changes)
+	ucrh.run_module("pytest", funcname, ucr, changes)
 
 	func = getattr(mymodule, funcname)
 	func.assert_called_once_with(ucr, changes)
@@ -255,7 +255,7 @@ def test_ConfigHandlerModule(mocker):
 	run_module = mocker.patch("univention.config_registry.handler.run_module")
 	ucr, changes = {}, {}
 	h1((ucr, changes))
-	run_module.assert_called_once_with("module1", "generate", ucr, changes)
+	run_module.assert_called_once_with("module1", "handler", ucr, changes)
 
 
 @pytest.mark.parametrize("tmpl,vars", [
