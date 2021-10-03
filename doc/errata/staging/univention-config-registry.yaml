@@ -1,12 +1,14 @@
 product: ucs
 release: "5.0"
-version: [0]
+version:
+- 0
 scope: ucs_5.0-0-errata5.0-0
 src: univention-config-registry
-fix: 15.0.7-10
+fix: 15.0.7-10A~5.0.0.202110032201
 desc: |
  This update addresses the following issue:
  * Always call the UCR module `handler()` function with a dictionary mapping
    variables to a 2-tuple containing the old and new value, even when `ucr
    commit` or `ucr register` are invoked.
-bug: [53424]
+bug:
+- 53424
