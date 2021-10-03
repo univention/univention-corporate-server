@@ -3,6 +3,7 @@
 # pylint: disable-msg=C0103,E0611,R0904
 
 import sys
+from time import sleep
 
 import pytest
 
@@ -38,6 +39,8 @@ def test_autoload(autoload, before, after, ucr0):
 
 	ucr0["baz"] = "BEFORE"
 	ucr0.save()
+
+	sleep(.1)
 
 	ucr = autoload()
 	assert ucr["baz"] == before
