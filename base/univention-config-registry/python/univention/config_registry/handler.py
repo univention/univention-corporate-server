@@ -188,10 +188,11 @@ def run_script(script, arg, changes):
 	:param arg: Execution mode, e.g. `generate` or `postinst`.
 	:param changes: Dictionary of changed UCR variables, mapping UCR variable names to 2-tuple (old-value, new-value).
 	"""
-	diff = []
-	for key, value in changes.items():
-		if value and len(value) > 1 and value[0] and value[1]:
-			diff.append(u'%s@%%@%s@%%@%s\n' % (key, value[0], value[1]))
+	diff = [
+		u'%s@%%@%s@%%@%s\n' % (key, old, new)
+		for (key, (old, new)) in changes.items()
+		if old and new
+	]
 
 	cmd = script + " " + arg
 	proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, close_fds=True)
