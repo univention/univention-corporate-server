@@ -219,7 +219,8 @@ def run_module(modpath, arg, ucr, changes):
 	module_name = os.path.splitext(modpath)[0]
 	try:
 		module = __import__(module_name.replace(os.path.sep, '.'))
-		arg2meth[arg](module)(ucr, changes)
+		f = arg2meth[arg](module)
+		f(ucr, changes)
 	except (AttributeError, ImportError) as ex:
 		print(ex, file=sys.stderr)
 	del sys.path[0]
