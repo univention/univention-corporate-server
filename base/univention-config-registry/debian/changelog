@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-10) unstable; urgency=low
+
+  * Bug #53424: Always call handler() with 2-tuple dict
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 03 Oct 2021 21:56:21 +0200
+
 univention-config-registry (15.0.7-9) unstable; urgency=medium
 
   * Bug #53742: allow umlauts in UCR keys again, which was broken since
