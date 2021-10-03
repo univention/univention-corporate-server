@@ -58,7 +58,7 @@ try:
 	from typing import Any, Dict, IO, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa F401
 	_OPT = Mapping[str, Any]
 	_UCR = Mapping[str, str]
-	_CHANGES = Mapping[str, Union[Tuple[Optional[str], Optional[str]], Optional[str]]]
+	_CHANGES = Mapping[str, Tuple[Optional[str], Optional[str]]]
 	_ARG = Tuple[_UCR, _CHANGES]
 	_INFO = Mapping[str, List[str]]
 except ImportError:
@@ -1134,15 +1134,17 @@ class ConfigHandlers:
 		:param ucr: UCR instance.
 		:param handler: The handler to call.
 		"""
-		values = {}  # type: Dict[str, Optional[str]]
+		values = {}  # type: Dict[str, Tuple[Optional[str], Optional[str]]]
 		for variable in handler.variables:
 			if variable in self._handlers.keys():
 				if ".*" in variable:
 					for i in range(4):
-						val = variable.replace(".*", "%s" % i)
-						values[val] = ucr.get(val)
+						var = variable.replace(".*", "%s" % i)
+						val = ucr.get(var)
+						values[var] = (val, val)
 				else:
-					values[variable] = ucr.get(variable)
+					val = ucr.get(variable)
+					values[variable] = (val, val)
 		handler((ucr, values))
 
 # vim:set sw=4 ts=4 noet:
