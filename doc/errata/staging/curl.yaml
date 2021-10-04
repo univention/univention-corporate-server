@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: curl
+fix: 7.52.1-5+deb9u16
+desc: |
+ This update addresses the following issues:
+ * protocol downgrade required TLS bypassed (CVE-2021-22946)
+ * STARTTLS protocol injection via MITM (CVE-2021-22947)
+bug: [53868]
+cve:
+- CVE-2021-22946
+- CVE-2021-22947
