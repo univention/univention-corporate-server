@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: apache2
+fix: 2.4.25-3+deb9u11A~4.4.8.202110040913
+desc: |
+ This update addresses the following issues:
+ * NULL pointer dereference via malformed requests (CVE-2021-34798)
+ * out-of-bounds write in ap_escape_quotes() via malicious input
+   (CVE-2021-39275)
+ * mod_proxy: SSRF via a crafted request uri-path containing "unix:"
+   (CVE-2021-40438)
+bug: [53865]
+cve:
+- CVE-2021-34798
+- CVE-2021-39275
+- CVE-2021-40438
