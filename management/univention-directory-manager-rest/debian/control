@@ -59,6 +59,7 @@ Depends:
  python3-pycurl,
  python3-setproctitle,
  python3-six,
+ python3-shared-memory-dict,
  python3-tornado,
  python3-univention-directory-manager (>= 14.0.13-14),
  python3-univention-directory-reports,
