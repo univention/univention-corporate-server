@@ -54,9 +54,11 @@ define([
 	"dgrid/Selector",
 	"dstore/legacy/StoreAdapter",
 	"dstore/Memory",
+	"put-selector/put",
 	"./Button",
 	"./DropDownButton",
 	"./CheckBox",
+	"./Icon",
 	"./Text",
 	"./ContainerWidget",
 	"./StandbyMixin",
@@ -67,8 +69,8 @@ define([
 	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
 		topic, aspect, on, dijitRegistry, mouse, Destroyable, Menu, MenuItem, entities,
-		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, DropDownButton, CheckBox, Text,
-		ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
+		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, put, Button, DropDownButton, CheckBox,
+		Icon, Text, ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry], {
 		getItem: function(item) {
@@ -98,68 +100,6 @@ define([
 			this.inherited(arguments);
 			this.selectIDs(selectedIDs);
 		},
-
-		// copy pasted from dgrid/Selector.js
-		_updateRowSelectors: function(value, event) {
-			var rows = event.rows;
-			var lenRows = rows.length;
-			var lenCols = this._selectorColumns.length;
-
-			for (var iRows = 0; iRows < lenRows; iRows++) {
-				for (var iCols = 0; iCols < lenCols; iCols++) {
-					var column = this._selectorColumns[iCols];
-					var element = this.cell(rows[iRows], column.id).element;
-					if (!element) {
-						// Skip if row has been entirely removed
-						continue;
-					}
-					element.$checkbox.set('checked', value);
-				}
-			}
-		},
-		
-		_updateHeaderCheckboxes: function () {
-			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
-			this.allSelected = array.every(this.collection.fetchSync(), function(item) {
-				return this.isSelected(item);
-			}, this);
-
-			/* jshint eqeqeq: false */
-			var lenCols = this._selectorColumns.length;
-			for (var iCols = 0; iCols < lenCols; iCols++) {
-				var column = this._selectorColumns[iCols];
-				var state = 'false';
-				var selection;
-				var mixed;
-				var selectorHeaderCheckbox = column._selectorHeaderCheckbox;
-				if (selectorHeaderCheckbox) {
-					selection = this.selection;
-					mixed = false;
-					// See if the header checkbox needs to be indeterminate
-					for (var i in selection) {
-						// If there is anything in the selection, than it is indeterminate
-						// (Intentionally coerce since selection[i] can be undefined)
-						if (selection[i] != this.allSelected) {
-							mixed = true;
-							break;
-						}
-					}
-
-					selectorHeaderCheckbox.$checkbox.set('indeterminate', mixed);
-					selectorHeaderCheckbox.$checkbox.set('checked', this.allSelected);
-
-					// selectorHeaderCheckbox.indeterminate = mixed;
-					// selectorHeaderCheckbox.checked = this.allSelected;
-					// if (mixed) {
-						// state = 'mixed';
-					// }
-					// else if (this.allSelected) {
-						// state = 'true';
-					// }
-					// selectorHeaderCheckbox.setAttribute('aria-checked', state);
-				}
-			}
-		}
 	});
 
 	var _DropDownButton = declare([DropDownButton], {
@@ -259,6 +199,7 @@ define([
 
 		// gridOptions: options for the inner grid
 		gridOptions: null,
+		selectorType: 'checkbox',
 
 		baseClass: 'umcGrid',
 
@@ -499,10 +440,23 @@ define([
 
 			this.on('filterDone', lang.hitch(this, '_updateGlobalCanExecute'));
 
+			// Render a different checkbox.
+			//
+			// Can't make 'selector' (https://github.com/SitePen/dgrid/blob/v1.2.1/doc/components/mixins/Selector.md)
+			// a function because there is extra logic in dgrid for when selector is either 'checkbox' or 'radio' string.
+			//
+			// Can't overwrite _defaultRenderSelectorInput and get default rendered node with this.inherited(arguments)
+			// because 'this' is window if _defaultRenderSelectorInput with the way it is called by dgrid internals
+			aspect.after(this._grid, '_defaultRenderSelectorInput', function(node) {
+				put(node, '+ div.dijitCheckBox.umcGridRowSelectorCheckBox', Icon.createNode('check'), '+', Icon.createNode('minus'));
+				put(node, '.dijitDisplayNone');
+				return node;
+			});
+
 			this._grid.on('dgrid-refresh-complete', lang.hitch(this, '_cleanupWidgets'));
 
-			// aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
-			// aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
+			aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
+			aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
 
 			if (this.query) {
 				this.filter(this.query);
@@ -779,21 +733,9 @@ define([
 			if (showCheckboxColumn) {
 				var _this = this;
 				var selectionColumn = {
-					selector: function(column, selected, cell, object) {
-						domClass.add(cell, 'dgrid-selector');
-						var checkbox = new CheckBox({
-							'class': 'umcGridRowSelectorCheckBox',
-						});
-						// FIXME since not all entries are rendered at once old rows are destroyed and new rows
-						// are created when scrolling. Atm the checkbox widgets stay in memory until the whole grid is
-						// destroyed
-						_this.own(checkbox);
-						cell.appendChild(checkbox.domNode);
-						cell.$checkbox = checkbox;
-						checkbox.focusNode.$checkbox = checkbox;
-						return checkbox.focusNode;
-					},
-					label: 'Selector'
+					selector: this.selectorType,
+					field: 'selectorType-' + this.selectorType,
+					label: '',
 				};
 				gridColumns.unshift(selectionColumn);
 			}
@@ -1244,6 +1186,13 @@ define([
 				domClass.remove(selectNode, "dgrid-allSelected");
 				return;
 			}
+		},
+
+		_updateAllSelectedStatus: function() {
+			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
+			this._grid.allSelected = array.every(this.getAllItems(), function(item) {
+				return this._grid.isSelected(item);
+			}, this);
 		},
 
 		_refresh: function() {

@@ -1,5 +1,6 @@
 @require "variables.styl"
 @require "icons.styl"
+@require "CheckBox.styl"
 
 .umc .umcGrid
 	background-color: var(--bgc-content-container)
@@ -52,7 +53,8 @@
 		white-space: nowrap
 		text-overflow: ellipsis
 
-		&.dgrid-selector
+		&.field-selectorType-checkbox,
+		&.field-selectorType-radio
 			width: spacing(6)
 			padding-right: spacing(2)
 
@@ -116,3 +118,22 @@
 
 .umc .umcGridFooter
 	display: none
+
+// CheckBox
+.dgrid-selector
+	cursor: pointer
+.dgrid-selector > .dijitCheckBox
+	&:hover
+		@extends .dijitCheckBoxHover
+	&:active
+		@extends .dijitCheckBoxActive
+	&:focus
+		@extends .dijitCheckBoxFocused
+.dgrid-selected .dgrid-selector > .dijitCheckBox
+	@extends .dijitCheckBoxChecked
+// header row checkbox
+.dgrid-selector
+	&.dgrid-allSelected > .dijitCheckBox
+		@extends .dijitCheckBoxChecked
+	&.dgrid-indeterminate > .dijitCheckBox
+		@extends .dijitCheckBoxIndeterminate
