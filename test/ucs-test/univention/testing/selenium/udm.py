@@ -206,7 +206,7 @@ class Portals(UDMBase):
 
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 		self.selenium.enter_input("name", portalname)
-		self.selenium.enter_input('__displayName-0-0', 'en_US')
+		self.selenium.enter_input_combobox('__displayName-0-0', 'en_US', with_click=False)
 		self.selenium.enter_input('__displayName-0-1', uts.random_string())
 
 		if hostname is not None:
