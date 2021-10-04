@@ -1,3 +1,9 @@
+ucs-test (9.0.7-71) unstable; urgency=medium
+
+  * Bug #52862: python3.5 compatible version of jsonschema
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Oct 2021 21:49:02 +0200
+
 ucs-test (9.0.7-70) unstable; urgency=low
 
   * Bug #31857: Fix 61_udm-users/27_country_names_uptodate

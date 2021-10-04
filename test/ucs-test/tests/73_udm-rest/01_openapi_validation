@@ -12,7 +12,7 @@
 set -x
 
 pip3 install openapi-spec-validator
-pip3 install -U jsonschema
+pip3 install -U jsonschema==3.2.0
 
 cleanup() {
 	pip3 uninstall -y openapi-spec-validator
