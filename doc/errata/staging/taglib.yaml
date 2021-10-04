@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: taglib
+fix: 1.11.1+dfsg.1-0.3+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Incorrect cast in rebuildAggregateFrames function (CVE-2017-12678)
+ * heap-based buffer over-read via a crafted audio file (CVE-2018-11439)
+bug: [53869]
+cve:
+- CVE-2017-12678
+- CVE-2018-11439
