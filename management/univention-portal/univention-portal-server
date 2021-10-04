@@ -43,6 +43,10 @@ class PortalHandler(tornado.web.RequestHandler):
 	def initialize(self, portals):
 		self.portals = portals
 
+	def prepare(self):
+		if self.request.headers.get('X-Umc-Https') == 'on':
+			self.request.protocol = 'https'
+
 	def write_error(self, status_code, **kwargs):
 		if "exc_info" in kwargs:
 			get_logger("server").exception("Error during service")
