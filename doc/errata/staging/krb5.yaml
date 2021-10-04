@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: krb5
+fix: 1.15-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * null dereference in kadmind or DN container check bypass by supplying
+   special crafted data (CVE-2018-5729)
+ * DN container check bypass by supplying special crafted data (CVE-2018-5730)
+ * Reachable assertion in the KDC using S4U2Self requests (CVE-2018-20217)
+ * NULL pointer dereference in process_tgs_req() in kdc/do_tgs_req.c via a
+   FAST inner body that lacks server field (CVE-2021-37750)
+bug: [53866]
+cve:
+- CVE-2018-5729
+- CVE-2018-5730
+- CVE-2018-20217
+- CVE-2021-37750
