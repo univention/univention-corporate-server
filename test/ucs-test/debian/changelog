@@ -1,6 +1,7 @@
-ucs-test (10.0.6-54) unstable; urgency=medium
+ucs-test (10.0.6-55) unstable; urgency=medium
 
   * Bug #53768: fix shell quoting of 51_samba4/63uid-to-sid_sid-to-uid_mapping
+  * Ignore /etc/mysql/mariadb.conf.d/60-ucr.cnf in UCR test
 
  -- Julia Bremer <bremer@univention.de>  Thu, 30 Sep 2021 09:28:24 +0200
 

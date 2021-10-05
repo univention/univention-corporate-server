@@ -38,6 +38,7 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/etc/dhcp/dhclient.conf',  # different IP address received, different date
 	'/etc/univention/templates/files/var/lib/dovecot/sieve/default.sieve',  # different date if not commited in the same second
 	'/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
+	'/etc/univention/templates/files/etc/mysql/mariadb.conf.d/60-ucr.cnf',  # not really different, but difference due to dict iteration
 ] + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 IGNORE = {
 }  # type: Dict[str, Set[int]]
