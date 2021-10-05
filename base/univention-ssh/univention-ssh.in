@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention SSH
@@ -139,9 +139,9 @@ try:
 	program = sys.argv.pop(0)
 	if program == UNIVENTION_SSH_ASKPASS_HELPER:
 		try:
-			sys.stdout.write(os.environ[UNIVENTION_SSH_ASKPASS_ENV])
+			print(os.environ[UNIVENTION_SSH_ASKPASS_ENV], end="")
 			sys.exit(0)
-		except Exception:
+		except KeyError:
 			sys.exit(1)
 	cmd = os.path.basename(program)
 	split = True
@@ -161,16 +161,11 @@ try:
 		elif arg == '--no-split':
 			split = False
 		elif arg.startswith('-'):
-			raise IndexError
+			raise IndexError()
 		else:
 			pw_filename = arg
-			pw_file = open(arg, 'r')
-			try:
-				password = pw_file.read()
-				if password[-1] == '\n':
-					password = password[0:-1]
-			finally:
-				pw_file.close()
+			with open(arg) as pw_filehandle:
+				password = pw_filehandle.readline().rstrip('\n')
 
 			command = {
 				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
@@ -187,7 +182,7 @@ try:
 						print('Overwriting %s option' % (arg,), file=sys.stderr)
 						del sys.argv[i:i + 2]
 					elif arg.startswith('--rsh='):
-						print('Overwriting --rsh option' % (arg,), file=sys.stderr)
+						print('Overwriting --rsh option', file=sys.stderr)
 						del sys.argv[i]
 					else:
 						i += 1
@@ -253,8 +248,8 @@ try:
 						sys.exit(rc)
 					elif os.WIFSIGNALED(status):
 						sig = os.WTERMSIG(status)
-						self = os.getpid()
-						os.kill(self, sig)
+						current_pid = os.getpid()
+						os.kill(current_pid, sig)
 				except OSError:
 					print('Signal.', file=sys.stderr)
 					os.kill(pid, signal.SIGTERM)

@@ -13,7 +13,7 @@ Conflicts:
  univention-join (<< 0.2),
 Depends:
  openssh-client,
- python2.7,
+ python3,
  rsync,
  univention-config,
  ${misc:Depends},
