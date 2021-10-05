@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console
-fix: 
+fix: 12.0.12-16A~5.0.0.202110051222
 desc: |
  This update addresses the following issue:
  * The Caching settings of Univention Management Console have been enhanced
