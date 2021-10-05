@@ -1228,7 +1228,8 @@ class SAML(Ressource):
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		user = self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		self.drop_umcp_authentication(user.sessionid)
 
 		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
 		location = urlparse(relay_state)
@@ -1244,9 +1245,16 @@ class SAML(Ressource):
 		saml = SAMLUser(response, message)
 		sessionid = self.create_sessionid()
 		self.set_session(sessionid, saml.username, saml=saml)
+		self.drop_umcp_authentication(sessionid)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		data = {"status": 200, "result": {"username": saml.username}}
 		return b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),)
+
+	def drop_umcp_authentication(self, sessionid):
+		"""Force re-authentication if we get a new SAML message"""
+		client = UMCP_Dispatcher.sessions.get(sessionid)
+		if client:
+			client.authenticated = False
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
