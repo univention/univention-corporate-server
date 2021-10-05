@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Session timeout at UMC
-## tags: [saml, SKIP]
+## tags: [saml]
 ## bugs: [52443, 52888]
 ## join: true
 ## exposure: safe
