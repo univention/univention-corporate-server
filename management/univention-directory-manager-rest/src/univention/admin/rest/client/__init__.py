@@ -339,12 +339,14 @@ class Module(Client):
 		# TODO: use a link relation instead of a search
 		for obj in self.search(position=dn, scope='base'):
 			return obj.open()
+		raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
 	def get_by_entry_uuid(self, uuid):
 		# TODO: use a link relation instead of a search
 		#return self.udm.get_by_uuid(uuid)
 		for obj in self.search(filter={'entryUUID': uuid}, scope='base'):
 			return obj.open()
+		raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
 	def get_by_id(self, dn):
 		# TODO: Needed?
