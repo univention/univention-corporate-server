@@ -2,7 +2,7 @@ univention-management-console (12.0.12-16) unstable; urgency=medium
 
   * Bug #53465: set explicit caching control in maintenance mode
 
- -- Florian Best <best@univention.de>  Mon, 28 Jun 2021 17:36:34 +0200
+ -- Florian Best <best@univention.de>  Tue, 05 Oct 2021 12:17:27 +0200
 
 univention-management-console (12.0.12-15) unstable; urgency=medium
 
