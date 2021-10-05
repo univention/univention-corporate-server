@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-3) unstable; urgency=medium
+
+  * Bug #50050: support multiprocessing and shared memory
+
+ -- Florian Best <best@univention.de>  Sat, 18 Dec 2021 00:32:39 +0100
+
 univention-directory-manager-rest (10.0.2-2) unstable; urgency=medium
 
   * Bug #51721: missing logrotation for directory-manager-rest.log
