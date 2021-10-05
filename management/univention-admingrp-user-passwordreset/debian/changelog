@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (10.0.0-2) unstable; urgency=medium
+
+  * Bug #53354: Migrated univention-admingrp-user-passwordreset to Python 3
+
+ -- Eduardo Ruiz Moreno <moreno@univention.de>  Wed, 06 Oct 2021 11:50:16 +0200
+
 univention-admingrp-user-passwordreset (10.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
