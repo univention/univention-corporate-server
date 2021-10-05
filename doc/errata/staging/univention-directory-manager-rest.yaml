@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-manager-rest
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The UDM REST API now supports multiprocessing via the UCR variable
+   `directory/manager/rest/processes`. Futher details can be found in the
+   performance guide: https://docs.software-univention.de/performance-guide-4.4.html#udm-rest-api.
+bug: [53669]
