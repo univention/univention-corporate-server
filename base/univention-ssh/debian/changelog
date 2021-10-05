@@ -1,3 +1,9 @@
+univention-ssh (11.0.0-3) unstable; urgency=medium
+
+  * Bug #53342: Fix Timeout parameter
+
+ -- Eduardo Ruiz Moreno <moreno@univention.de>  Mon, 11 Oct 2021 15:50:16 +0200
+
 univention-ssh (11.0.0-2) unstable; urgency=medium
 
   * Bug #53342: Migrated univention-ssh to Python 3

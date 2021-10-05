@@ -228,7 +228,7 @@ try:
 				try:
 					# setup timeout
 					def handler(signum, frame):
-						return None
+						raise TimeoutError()
 					sig_alrm = signal.signal(signal.SIGALRM, handler)  # alarm
 					signal.signal(signal.SIGHUP, handler)  # hang up
 					signal.signal(signal.SIGINT, handler)  # interrupt
@@ -250,7 +250,7 @@ try:
 						sig = os.WTERMSIG(status)
 						current_pid = os.getpid()
 						os.kill(current_pid, sig)
-				except OSError:
+				except (OSError, TimeoutError):
 					print('Signal.', file=sys.stderr)
 					os.kill(pid, signal.SIGTERM)
 					cpid, status = os.waitpid(pid, os.WNOHANG)
