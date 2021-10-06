@@ -130,7 +130,7 @@ class ResourceTracker(object):
                 finally:
                     if _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
-            except:
+            except BaseException:
                 os.close(w)
                 raise
             else:
@@ -176,6 +176,7 @@ register = _resource_tracker.register
 unregister = _resource_tracker.unregister
 getfd = _resource_tracker.getfd
 
+
 def main(fd):
     '''Run resource tracker.'''
     # protect the process from ^C and "killall python" etc
@@ -214,7 +215,7 @@ def main(fd):
                 except Exception:
                     try:
                         sys.excepthook(*sys.exc_info())
-                    except:
+                    except BaseException:
                         pass
     finally:
         # all processes have terminated; cleanup any remaining resources
