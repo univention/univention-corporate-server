@@ -10,3 +10,5 @@ desc: |
    filled correctly and therefore saving was not
    possible.
 bug: [53859]
+erratum: 1066
+announced: 2021-10-06
