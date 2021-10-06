@@ -10,3 +10,5 @@ desc: |
    share names like the samba listener does.
    This fix resolves this issue (Bug #53828)
 bug: [53828]
+erratum: 113
+announced: 2021-10-06
