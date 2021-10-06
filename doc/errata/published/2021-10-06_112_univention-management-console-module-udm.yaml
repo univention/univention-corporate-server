@@ -9,3 +9,5 @@ desc: |
  * While copying an user object the entries were
    not filled correctly and saving was not possible.
 bug: [53857]
+erratum: 112
+announced: 2021-10-06
