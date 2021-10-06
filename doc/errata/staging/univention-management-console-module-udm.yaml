@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console-module-udm
 fix: 9.0.15-12A~4.4.0.202110011124
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * While copying an user object entries were not
    filled correctly and therefore saving was not
    possible.

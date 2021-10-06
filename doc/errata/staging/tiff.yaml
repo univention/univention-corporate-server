@@ -6,8 +6,8 @@ src: tiff
 fix: 4.0.8-2+deb9u7
 desc: |
  This update addresses the following issues:
- * a buffer overflow via the "invertImage()" may lead to DoS (CVE-2020-19131)
- * heap-based buffer overflow in _TIFFmemcpy() in tif_unix.c (CVE-2020-19144)
+ * A buffer overflow via the "invertImage()" may lead to DoS (CVE-2020-19131)
+ * Heap-based buffer overflow in _TIFFmemcpy() in tif_unix.c (CVE-2020-19144)
 bug: [53867]
 cve:
 - CVE-2020-19131
