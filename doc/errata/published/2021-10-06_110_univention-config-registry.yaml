@@ -12,3 +12,5 @@ desc: |
    commit` or `ucr register` are invoked.
 bug:
 - 53424
+erratum: 110
+announced: 2021-10-06
