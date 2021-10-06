@@ -32,3 +32,15 @@
 
 %:
 	dh $@ --with python2,python3,ucr --with systemd
+
+override_dh_auto_build:
+	dh_auto_build
+	cd shared_memory; DH_VERBOSE=1 python3 setup.py build --force -b ../build/python3-shared-memory-dict; cd ..
+
+override_dh_auto_install:
+	dh_auto_install
+	cd shared_memory; DH_VERBOSE=1 python3 setup.py install --force --root=../debian/python3-shared-memory-dict --install-layout=deb; cd ..
+
+override_dh_auto_clean:
+	dh_auto_clean
+	cd shared_memory; DH_VERBOSE=1 python3 setup.py clean -b ../build/python3-shared-memory-dict; cd ..

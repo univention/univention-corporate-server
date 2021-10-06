@@ -7,6 +7,7 @@ Build-Depends:
  dh-python,
  python-all,
  python3-all,
+ python3-dev,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.2
 
@@ -66,6 +67,18 @@ Depends:
  ${python:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-shared-memory-dict
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Description: A backport of mulitprocessing.shared_memory and SharedMemoryDict
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
