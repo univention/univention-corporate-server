@@ -9,3 +9,5 @@ desc: |
  * The UCR module for samba share restrictions did not quote the spaces inside
    share names like the samba listener does.
 bug: [53799]
+erratum: 1067
+announced: 2021-10-06
