@@ -8,13 +8,15 @@ documentation for details.
 __all__ = ['SharedMemory']
 
 
+import binascii
 import mmap
 import os
-import secrets
+from random import SystemRandom
 
 import _posixshmem
 _USE_POSIX = True
 
+_sysrand = SystemRandom()
 
 _O_CREX = os.O_CREAT | os.O_EXCL
 
@@ -25,17 +27,21 @@ _SHM_SAFE_NAME_LENGTH = 14
 _SHM_NAME_PREFIX = '/psm_'
 
 
+def token_hex(nbytes):
+    return binascii.hexlify(_sysrand.randbytes(nbytes)).decode('ascii')
+
+
 def _make_filename():
     "Create a random filename for the shared memory object."
     # number of random bytes to use for name
     nbytes = (_SHM_SAFE_NAME_LENGTH - len(_SHM_NAME_PREFIX)) // 2
     assert nbytes >= 2, '_SHM_NAME_PREFIX too long'
-    name = _SHM_NAME_PREFIX + secrets.token_hex(nbytes)
+    name = _SHM_NAME_PREFIX + token_hex(nbytes)
     assert len(name) <= _SHM_SAFE_NAME_LENGTH
     return name
 
 
-class SharedMemory:
+class SharedMemory(object):
     """Creates a new shared memory block or attaches to an existing
     shared memory block.
 
@@ -128,7 +134,7 @@ class SharedMemory:
         )
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name!r}, size={self.size})'
+        return '{}({!r}, size={})'.format(self.__class__.__name__, self.name, self.size)
 
     @property
     def buf(self):
