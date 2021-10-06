@@ -1,36 +1,27 @@
 import json
 import pickle
-from typing import Final, Protocol
 
-NULL_BYTE: Final = b"\x00"
+NULL_BYTE = b"\x00"
 
 
 class SerializationError(ValueError):
-    def __init__(self, data: dict) -> None:
-        super().__init__(f"Failed to serialize data: {data!r}")
+    def __init__(self, data):
+        super(SerializationError, self).__init__("Failed to serialize data: {data!r}".format(data=data))
 
 
 class DeserializationError(ValueError):
-    def __init__(self, data: bytes) -> None:
-        super().__init__(f"Failed to deserialize data: {data!r}")
-
-
-class SharedMemoryDictSerializer(Protocol):
-    def dumps(self, obj: dict) -> bytes:
-        ...
-
-    def loads(self, data: bytes) -> dict:
-        ...
+    def __init__(self, data):
+        super(DeserializationError, self).__init__("Failed to deserialize data: {data!r}".format(data=data))
 
 
 class JSONSerializer:
-    def dumps(self, obj: dict) -> bytes:
+    def dumps(self, obj):
         try:
             return json.dumps(obj).encode() + NULL_BYTE
         except (ValueError, TypeError):
             raise SerializationError(obj)
 
-    def loads(self, data: bytes) -> dict:
+    def loads(self, data):
         data = data.split(NULL_BYTE, 1)[0]
         try:
             return json.loads(data)
@@ -39,13 +30,13 @@ class JSONSerializer:
 
 
 class PickleSerializer:
-    def dumps(self, obj: dict) -> bytes:
+    def dumps(self, obj):
         try:
             return pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)
         except pickle.PicklingError:
             raise SerializationError(obj)
 
-    def loads(self, data: bytes) -> dict:
+    def loads(self, data):
         try:
             return pickle.loads(data)
         except pickle.UnpicklingError:
