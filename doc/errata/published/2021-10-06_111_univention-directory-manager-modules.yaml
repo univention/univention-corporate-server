@@ -10,3 +10,5 @@ desc: |
  * Make options in Extended Attributes selectable
  * Make LDAP Object Class and Attribute names selectable
 bug: [53840]
+erratum: 111
+announced: 2021-10-06
