@@ -70,6 +70,7 @@ from univention.admin import localization
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
+from univention.config_registry import ConfigRegistry
 
 if TYPE_CHECKING:
 	from univention.admin.uldap import access  # noqa F401
@@ -5176,6 +5177,42 @@ class languageCode(combobox):
 			raise univention.admin.uexceptions.valueError(_('Language code must be in format "xx_XX"!'))
 
 
+class languageCodeInstalled(languageCode):
+	"""
+	Syntax for a language, e.g. `language_COUNTRY`.
+	Only the installed locales are in the choices list.
+	>>> languageCode.parse("de_DE")
+	'de_DE'
+	>>> languageCode.parse("en_US")
+	'en_US'
+	>>> languageCode.parse("C") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> languageCode.parse("german") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	"""
+
+	@classmethod
+	def update_choices(cls):
+		ucr = ConfigRegistry()
+		ucr.load()
+
+		choices = []
+
+		installed_locales = ucr.get('locale', '')
+		for locale in installed_locales.split(' '):
+			if '.' in locale:
+				locale = locale.split('.')[0]
+			configured_locale = ucr.get('ucs/server/languages/%s' % locale)
+			choices.append((locale, configured_locale))
+		cls.choices = choices
+
+__register_choice_update_function(languageCodeInstalled.update_choices)
+
+
 class translationTuple(complex):
 	"""
 	Syntax for some translatable text.
@@ -5644,14 +5681,14 @@ class LocalizedDisplayName(translationTuple):
 	"""
 	Syntax for a translated display name of a portal entry.
 	"""
-	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Display Name'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCodeInstalled), (_('Display Name'), string)]
 
 
 class LocalizedDescription(translationTuple):
 	"""
 	Syntax for a translated description of a portal entry.
 	"""
-	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Description'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCodeInstalled), (_('Description'), string)]
 
 
 class LocalizedAnonymousEmpty(translationTuple):
@@ -5659,7 +5696,7 @@ class LocalizedAnonymousEmpty(translationTuple):
 	Syntax for a translated description of a portal entry.
 	In addition to :py:class:`LocalizedDescription` it allows to specify a fallback for anonymous visitors.
 	"""
-	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Message that is shown to anonymous visitors when the portal is empty'), TwoEditor)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCodeInstalled), (_('Message that is shown to anonymous visitors when the portal is empty'), TwoEditor)]
 
 
 class mailHomeServer(LDAP_Search):
