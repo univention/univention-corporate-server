@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention update uniqueMember
 #
@@ -30,11 +30,14 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 from sys import stderr
-import univention.uldap
-import univention.config_registry
+
 from ldap import MOD_REPLACE
 from ldap.filter import filter_format
+
+import univention.config_registry
+import univention.uldap
 
 
 def main():  # type: () -> int

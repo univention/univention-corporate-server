@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (12.0.0-2) unstable; urgency=medium
+
+  * Bug #53356: Migrated univention-ldap-overlay-memberof to Python 3
+
+ -- Eduardo Ruiz Moreno <moreno@univention.de>  Thu, 14 Oct 2021 13:35:12 +0200
+ 
 univention-ldap-overlay-memberof (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
