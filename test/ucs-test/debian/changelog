@@ -1,3 +1,9 @@
+ucs-test (10.0.6-56) unstable; urgency=medium
+
+  * Bug #53538: Fixup, skip test if univention-s4-connector not installed
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 07 Oct 2021 11:08:29 +0200
+
 ucs-test (10.0.6-55) unstable; urgency=medium
 
   * Bug #53768: fix shell quoting of 51_samba4/63uid-to-sid_sid-to-uid_mapping

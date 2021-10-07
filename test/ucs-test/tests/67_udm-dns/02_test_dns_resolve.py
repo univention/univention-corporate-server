@@ -11,6 +11,7 @@
 ## exposure: careful
 
 from ipaddress import ip_address
+import pytest
 import re
 import subprocess
 import time
@@ -21,6 +22,7 @@ from dns.resolver import NXDOMAIN
 from dns.resolver import NoNameservers
 
 import univention.testing.strings as uts
+import univention.testing.utils as utils
 
 
 def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
@@ -326,6 +328,7 @@ class Test_DNSResolve(object):
 		answer = [rdata.to_text().strip('"') for rdata in answers]
 		assert answer == [txt], 'resolved name "%s" != created ldap-object "%s"' % (answer, [txt])
 
+	@pytest.mark.skipif(not utils.package_installed('univention-s4-connector'), reason="Univention S4 Connector is not installed.")
 	def test__dns_ns_record_check_resolve(self, udm, ucr):
 		"""Create DNS NS record and try to resolve it"""
 		# bugs: [32626]
