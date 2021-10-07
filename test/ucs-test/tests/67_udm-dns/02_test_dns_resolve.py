@@ -64,13 +64,14 @@ class Test_DNSResolve(object):
 			'a': ['%s' % (uts.random_ip())]
 		}
 		udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
-		time.sleep(10)
+		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zone, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zone, 'resolved name "%s" != created ldap-object "%s"' % (answer, zone)
 
 	def test__dns_reverse_zone_check_resolve(self, udm):
 		"""Creates DNS reverse zone entry and try to resolve it"""
+		lo = utils.get_ldap_connection()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
 		# IPv4
@@ -91,7 +92,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed(subnet)) + ['in-addr', 'arpa', '']
 		)
-		time.sleep(15)
+		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv4: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
@@ -106,7 +107,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed([nibble for block in subnet for nibble in block])) + ['ip6', 'arpa', '']
 		)
-		time.sleep(5)
+		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv6: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
@@ -154,6 +155,7 @@ class Test_DNSResolve(object):
 			'a': ip,
 		})
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
+		utils.wait_for_replication_and_postrun()
 
 		qname = '%s.%s' % (host, zone)
 		time.sleep(5)
@@ -191,6 +193,7 @@ class Test_DNSResolve(object):
 			'txt': uts.random_string()
 		}
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
+		utils.wait_for_replication_and_postrun()
 
 		alias_name = uts.random_name()
 		fqhn = '%s.%s' % (host, zone)
@@ -232,6 +235,7 @@ class Test_DNSResolve(object):
 			'txt': uts.random_string()
 		}
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
+		utils.wait_for_replication_and_postrun()
 
 		service = uts.random_string()
 		protocol = 'tcp'
@@ -246,6 +250,7 @@ class Test_DNSResolve(object):
 			'zonettl': '128'
 		}
 		udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_properties)
+		utils.wait_for_replication_and_postrun()
 
 		zoneName = '_%s._%s.%s.%s' % (service, protocol, extension, zone)
 		answers = resolve_dns_entry(zoneName, 'SRV')
@@ -275,11 +280,11 @@ class Test_DNSResolve(object):
 		reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
 
 		udm.create_object('dns/ptr_record', address=ipv4[3], superordinate=reverse_zone, ptr_record=ptr_record)
+		utils.wait_for_replication_and_postrun()
 
 		zoneName = '.'.join(
 			list(reversed(ipv4)) + ['in-addr', 'arpa', '']
 		)
-		time.sleep(5)
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
@@ -298,7 +303,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', '']
 		)
-		time.sleep(5)
+		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
@@ -322,7 +327,7 @@ class Test_DNSResolve(object):
 			'txt': txt,
 		}
 		udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
-		time.sleep(5)
+		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zone, 'TXT')
 		# FIXME PMH-2017-01-14: returned TXT data is enclosed in "
 		answer = [rdata.to_text().strip('"') for rdata in answers]
@@ -348,10 +353,7 @@ class Test_DNSResolve(object):
 			'nameserver': nameservers
 		}
 		udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
-
-		from univention.testing.ucs_samba import wait_for_s4connector
-		wait_for_s4connector()
-
+		utils.wait_for_replication_and_postrun()
 		zone_fqdn = '%s.%s' % (zonename, partentzone)
 		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()

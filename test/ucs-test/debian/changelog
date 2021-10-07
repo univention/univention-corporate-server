@@ -1,4 +1,4 @@
-ucs-test (10.0.6-57) unstable; urgency=medium
+ucs-test (10.0.6-58) unstable; urgency=medium
 
   * Bug #53538: Fixup, skip test if univention-s4-connector not installed
 
