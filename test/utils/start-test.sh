@@ -327,5 +327,13 @@ do
 	echo "  $env_var=${!env_var}"
 done
 
+if [ -n "$JOB_URL" ]; then
+    header="$JOB_URL+++++++++++++++++++++++++++++++++++"
+    printf "%${#header}s\n" | tr " " "+"
+    echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
+    echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
+    printf "%${#header}s\n" | tr " " "+"
+fi
+
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
