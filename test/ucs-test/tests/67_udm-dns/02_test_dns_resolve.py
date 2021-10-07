@@ -64,7 +64,7 @@ class Test_DNSResolve(object):
 			'a': ['%s' % (uts.random_ip())]
 		}
 		udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
-		time.sleep(5)
+		time.sleep(10)
 		answers = resolve_dns_entry(zone, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zone, 'resolved name "%s" != created ldap-object "%s"' % (answer, zone)
@@ -91,7 +91,7 @@ class Test_DNSResolve(object):
 		zoneName = '.'.join(
 			list(reversed(subnet)) + ['in-addr', 'arpa', '']
 		)
-		time.sleep(5)
+		time.sleep(15)
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv4: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
