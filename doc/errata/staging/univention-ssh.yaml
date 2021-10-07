@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-ssh
-fix: 
+fix: 11.0.0-2A~5.0.0.202110071638
 desc: |
  This update addresses the following issue:
  * The package `univention-ssh` has been migrated to Python 3.
