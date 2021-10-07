@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # Univention Maintenance Mode
 #  Write progress of univention-updater in JSON file
 #
@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
+
+from __future__ import print_function
 
 import os
 import time
@@ -99,7 +101,7 @@ def add_updater_context(percentage):
 
 
 def write_json(percentage):
-	with open('/var/www/univention/maintenance/updater.json', 'wb') as fd:
+	with open('/var/www/univention/maintenance/updater.json', 'w') as fd:
 		json.dump({'v1': {'percentage': percentage}}, fd)
 
 
@@ -107,24 +109,24 @@ def compute():
 	try:
 		percentage = read_progress()
 	except EnvironmentError as exc:
-		print 'Error while reading progress: %s' % exc
+		print('Error while reading progress: %s' % exc)
 	else:
 		try:
 			percentage = add_updater_context(percentage)
 		except EnvironmentError as exc:
-			print 'Error while adding context: %s' % exc
+			print('Error while adding context: %s' % exc)
 		else:
 			try:
 				write_json(percentage)
 			except EnvironmentError as exc:
-				print 'Error while writing json: %s' % exc
+				print('Error while writing json: %s' % exc)
 
 
 def main():
 	try:
 		os.unlink('/var/www/univention/maintenance/updater.json')
 	except EnvironmentError:
-		print 'Failed to delete the status file /var/www/univention/maintenance/updater.json'
+		print('Failed to delete the status file /var/www/univention/maintenance/updater.json')
 	duration = 2
 	while True:
 		compute()

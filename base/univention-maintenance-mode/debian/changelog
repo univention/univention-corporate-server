@@ -1,3 +1,9 @@
+univention-maintenance-mode (3.0.0-2) unstable; urgency=medium
+
+  * Bug #53346: Migrated univention-maintenance-mode to Python 3
+
+ -- Eduardo Ruiz Moreno <moreno@univention.de>  Thu, 07 Oct 2021 19:00:00 +0200
+
 univention-maintenance-mode (3.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
