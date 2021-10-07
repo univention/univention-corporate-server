@@ -276,6 +276,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	("ModuleNotFoundError: No module named 'univention.config_registry'", ['/usr/sbin/univention-config-registry']),  # Bug #53765
 	("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py']),  # Bug #53754
 	('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr']),  # Bug #53769
+	('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs']),  # Bug #52801
 ])
 
 
