@@ -44,6 +44,7 @@ _ = translation.translate
 class SynVoIP_Protocols(univention.admin.syntax.select):
 
 	"""This class defines a new syntax for a selection list of VoIP protocols"""
+
 	# The text to be written in front of the selection list in the Web frontend.
 	name = _('VoIP_Protocol')
 
@@ -107,7 +108,7 @@ options = {
 		default=True,
 		editable=True,
 		objectClasses=['testPhoneCallRedirect'],
-	)
+	),
 }
 
 # <UDM module properties>

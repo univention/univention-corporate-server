@@ -37,7 +37,7 @@ from argparse import ArgumentParser
 
 from ldap.filter import filter_format
 
-import univention.debug
+import univention.debug as ud
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.modules
@@ -46,7 +46,7 @@ import univention.admin.filter
 import univention.admin.uexceptions
 import univention.admin.localization
 
-univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
+ud.init('/var/log/univention/ip-phone-tool.log', ud.FLUSH, ud.NO_FUNCTION)
 locale.setlocale(locale.LC_ALL, '')
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
@@ -59,8 +59,7 @@ class ipphonetool(object):
 	"""
 
 	def __init__(self, options, ucr=None):
-		"""Initialize an authenticated LDAP connection
-		"""
+		"""Initialize an authenticated LDAP connection"""
 
 		if not ucr:
 			ucr = univention.config_registry.ConfigRegistry()
@@ -82,9 +81,11 @@ class ipphonetool(object):
 				sys.exit(1)
 
 		try:
-			self.lo = univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
+			self.lo = univention.admin.uldap.access(
+				host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2
+			)
 		except Exception as e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % (e,))
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (e,))
 			print('authentication error: %s' % str(e))
 			sys.exit(1)
 
@@ -94,8 +95,7 @@ class ipphonetool(object):
 		univention.admin.modules.init(self.lo, self.position, self.module)
 
 	def set(self, options, name, ip, priuser):
-		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties
-		"""
+		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties"""
 
 		filter = univention.admin.filter.expression('name', name, escape=True)
 
@@ -124,14 +124,14 @@ class ipphonetool(object):
 			try:
 				obj.modify()
 			except univention.admin.uexceptions.ldapError as e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
+				ud.debug(ud.ADMIN, ud.ERROR, 'Could not modify entry: %s' % e)
 				print('Could not modify entry: %s' % name, file=sys.stderr)
 				sys.exit(1)
 		else:
 			try:
 				obj.create()
 			except univention.admin.uexceptions.ldapError as e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not create entry: %s' % e)
+				ud.debug(ud.ADMIN, ud.ERROR, 'Could not create entry: %s' % e)
 				print('Could not create entry: %s' % name, file=sys.stderr)
 				sys.exit(1)
 
@@ -146,7 +146,7 @@ class ipphonetool(object):
 			try:
 				obj.remove()
 			except univention.admin.uexceptions.ldapError as e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not remove entry: %s' % e)
+				ud.debug(ud.ADMIN, ud.ERROR, 'Could not remove entry: %s' % e)
 				print('Could not remove entry: %s' % name, file=sys.stderr)
 				sys.exit(1)
 		else:
@@ -154,8 +154,7 @@ class ipphonetool(object):
 			sys.exit(1)
 
 	def clear_redirect(self, name):
-		"""This example uses a raw LDAP search instead of performing a lookup to determine the dn
-		"""
+		"""This example uses a raw LDAP search instead of performing a lookup to determine the dn"""
 		try:
 			filter = filter_format('(&(cn=%s)(objectClass=testPhoneCallRedirect))', [name])
 			dn = self.lo.searchDn(filter=filter, base=self.ldap_base, unique=True)
@@ -171,26 +170,28 @@ class ipphonetool(object):
 			if 'redirection' in object.options:
 				object.options.remove('redirection')
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: redirect_user cleared, modify object')
+			ud.debug(ud.ADMIN, ud.INFO, 'ip-phone-tool: redirect_user cleared, modify object')
 			dn = object.modify()
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: Redirection deactivated')
+			ud.debug(ud.ADMIN, ud.INFO, 'ip-phone-tool: Redirection deactivated')
 
 		except univention.admin.uexceptions.valueError as e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'error: invalid syntax (%s)' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'error: invalid syntax (%s)' % e)
 			print('Could not modify entry: %s' % name, file=sys.stderr)
 			sys.exit(1)
 		except univention.admin.uexceptions.ldapError as e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'Could not modify entry: %s' % e)
 			print('Could not modify entry: %s' % name, file=sys.stderr)
 			sys.exit(1)
 
 
 if __name__ == '__main__':
-	description = _("""e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
+	description = _(
+		"""e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
 	or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
 	or   ip-phone-tool clear_redirect voip1
-	or   ip-phone-tool remove voip1""")
+	or   ip-phone-tool remove voip1"""
+	)
 
 	parser = ArgumentParser(description=description)
 	parser.add_argument('-D', '--binddn', help=_('LDAP Bind DN'))
@@ -198,7 +199,9 @@ if __name__ == '__main__':
 	parser.add_argument('-W', action='store_true', dest='ask_pass', default=False, help=_('Prompt for password'))
 	parser.add_argument('-y', '--password-file', help=_('Read password from file'))
 	parser.add_argument('-v', '--verbose', action='count', help=_('Print additional information'))
-	parser.add_argument('-d', type=int, dest='debuglevel', default=1, choices=[0, 1, 2, 3, 4], help=_('Set debug level'))
+	parser.add_argument(
+		'-d', type=int, dest='debuglevel', default=1, choices=[0, 1, 2, 3, 4], help=_('Set debug level')
+	)
 	parser.add_argument('-U', '--user', dest='username', help=_('Username'))
 	parser.add_argument('--redirect', help=_('Redirect address'))
 
@@ -220,8 +223,8 @@ if __name__ == '__main__':
 	options = parser.parse_args()
 
 	if options.debuglevel:
-		univention.debug.set_level(univention.debug.LDAP, options.debuglevel)
-		univention.debug.set_level(univention.debug.ADMIN, options.debuglevel)
+		ud.set_level(ud.LDAP, options.debuglevel)
+		ud.set_level(ud.ADMIN, options.debuglevel)
 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
