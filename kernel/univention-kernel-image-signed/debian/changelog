@@ -1,3 +1,9 @@
+univention-kernel-image-signed (5.0.0-19) unstable; urgency=low
+
+  * Bug #51748: Re-sign linux-4.9.272 with Univention 2020 key
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Oct 2021 12:35:36 +0200
+
 univention-kernel-image-signed (5.0.0-18) unstable; urgency=medium
 
   * Bug #53603: Update to linux-4.9.272-2
