@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-server
+fix: 14.0.0-17A~4.4.0.202110081528
+desc: |
+ This update addresses the following issue:
+ * timestamp was added to the logger output of
+   the password change. 
+bug: [53182]

@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-mail-postfix
+fix: 13.0.4-4A~4.4.0.202110081530
+desc: |
+ This update addresses the following issue:
+ * timestamp was added to the logger output of
+   the server password change call. 
+bug: [53182]
