@@ -1,3 +1,9 @@
+univention-server (15.0.4-5) unstable; urgency=medium
+
+  * Bug #53182: added timestamp to echo calls of password change
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 08 Oct 2021 15:11:26 +0200
+
 univention-server (15.0.4-4) unstable; urgency=medium
 
   * Bug #52959: New option --own-ip for univention-fix-ucr-dns
