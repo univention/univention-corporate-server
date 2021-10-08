@@ -1,3 +1,9 @@
+univention-server (14.0.0-17) unstable; urgency=medium
+
+  * Bug #53182: added timestamp to logger output of server password change
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 08 Oct 2021 15:26:43 +0200
+
 univention-server (14.0.0-16) unstable; urgency=medium
 
   * Bug #50708: reverted, because it did not belong here.

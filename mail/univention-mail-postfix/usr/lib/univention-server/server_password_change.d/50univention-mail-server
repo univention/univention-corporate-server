@@ -34,7 +34,7 @@ eval "$(univention-config-registry shell)"
 if [ "$1" = "prechange" ] ; then
 	if /etc/init.d/postfix status | grep -q "is running" ; then
 		univention-config-registry set mail/postfix/stoppedbyserverpasswordchange=yes
-		echo "stopping postfix due to upcoming server password change" | logger -t "server-password-change"
+		echo "($(date '+%F %T.%N')) stopping postfix due to upcoming server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix stop
 	fi
 fi
@@ -46,7 +46,7 @@ if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 	univention-config-registry commit /etc/postfix/ldap.*
 	# start postfix only if it has been stopped by this script
 	if [ "$mail_postfix_stoppedbyserverpasswordchange" = "yes" ] ; then
-		echo "starting postfix after server password change" | logger -t "server-password-change"
+		echo "($(date '+%F %T.%N')) starting postfix after server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix start
 		univention-config-registry unset mail/postfix/stoppedbyserverpasswordchange
 	fi
