@@ -229,6 +229,8 @@ if __name__ == '__main__':
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
+	univention.admin.modules.update()
+
 	udm_ipphone = ipphonetool(options, ucr)
 	if options.action == 'set':
 		udm_ipphone.set(options, options.name, options.ip, options.priuser)
