@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (3.0.0-3) unstable; urgency=low
+
+  * Bug #51748: Upgrade to GRUB 2.02 from Debian 10 Buster
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Oct 2021 12:15:04 +0200
+
 grub-efi-amd64-signed (3.0.0-2) unstable; urgency=low
 
   * Bug #53117: Bump version number for UCS 4.4-8

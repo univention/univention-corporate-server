@@ -4,17 +4,14 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
- grub-efi-amd64-bin (>= 2.02~beta3),
- pesign,
+# pesign,
 Standards-Version: 3.9.4
 
 Package: grub-efi-amd64-signed
 Architecture: amd64
 Depends:
- grub-efi-amd64 (= ${grub2:Version}),
+ grub-efi-amd64 (>= 2.02+dfsg1-20+deb10u4),
  ${misc:Depends},
-Built-Using:
- grub2 (= ${grub2:Version}),
 Description: GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)
  GRUB is a portable, powerful bootloader.  This version of GRUB is based on a
  cleaner design than its predecessors, and provides the following new features:

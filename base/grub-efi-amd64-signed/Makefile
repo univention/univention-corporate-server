@@ -28,7 +28,6 @@
 # <https://www.gnu.org/licenses/>.
 
 ALL := gcdx64.efi.signed grubx64.efi.signed
-ARCH := x86_64-efi
 
 # For sbsign:
 #KEY := shim.rsa
@@ -36,14 +35,7 @@ ARCH := x86_64-efi
 
 # For pesign:
 #TOKEN := Univention GmbH
-#CERT := # Univention 2014
-
-GRUBDIR := /usr/lib/grub/$(ARCH)
-MODULE_FILES := $(wildcard $(GRUBDIR)/*.mod)
-MODULE_NAMES := $(basename $(notdir $(MODULE_FILES)))
-MODULES_SKIP := linux cb%
-MODULES_gcdx64 := $(filter-out $(MODULES_SKIP),$(MODULE_NAMES))
-MODULES_grubx64 := $(shell cat grubx64.lst)
+#CERT := # Univention 2020
 
 .PHONY: all
 all: $(ALL)
@@ -54,9 +46,6 @@ ifneq ($(TOKEN),)
 else ifneq ($(KEY),)
 	sbsign --key "$(KEY)" --cert "$(CERT)" --output "$@" "$<"
 endif
-
-%.efi: %.cfg
-	grub-mkimage -d "$(GRUBDIR)" -o "$@" -O "$(ARCH)" -c "$<" -p /efi/boot $(MODULES_$*)
 
 .PHONY: clean
 clean::
