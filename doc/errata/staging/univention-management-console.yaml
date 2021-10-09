@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * The UMC joinscript won't overwrite the UCR variable
    `umc/saml/idp-server` during execution.
-bug: [55951]
+ * The script `univention-management-console-client` now accesses UMC via the
+   HTTP interface instead of the deprecated UMCP.
+bug: [55951, 55913]

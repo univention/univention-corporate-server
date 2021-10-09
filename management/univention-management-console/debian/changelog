@@ -1,3 +1,10 @@
+univention-management-console (12.0.17-12) unstable; urgency=medium
+
+  * Bug #55913: use HTTP interface in univention-management-console-
+    client
+
+ -- Florian Best <best@univention.de>  Tue, 25 Apr 2023 12:29:49 +0200
+
 univention-management-console (12.0.17-11) unstable; urgency=medium
 
   * Bug #55951: avoid overwritting `umc/saml/idp-server` during joinscript execution
