@@ -125,7 +125,7 @@ class Instance(Base):
 			'value': StringSanitizer(default=''),
 		})
 	}))
-	def add(self, request: 'Request') -> None:
+	def add(self, request) -> None:
 		# does the same as put
 		ucr.load()
 		already_set = set(ucr.keys()) & set(v['object']['key'] for v in request.options)
@@ -140,7 +140,7 @@ class Instance(Base):
 			'value': StringSanitizer(default=''),
 		})
 	}))
-	def put(self, request: 'Request') -> None:
+	def put(self, request) -> None:
 		for _var in request.options:
 			var = _var['object']
 			value = var['value'] or ''
@@ -155,7 +155,7 @@ class Instance(Base):
 				self.__create_variable_info(var)
 		self.finished(request.id, True)
 
-	def remove(self, request: 'Request') -> None:
+	def remove(self, request) -> None:
 		variables = [x for x in [x.get('object') for x in request.options] if x is not None]
 		for var in variables:
 			if self.is_readonly(var):
@@ -164,7 +164,7 @@ class Instance(Base):
 		handler_unset(variables)
 		self.finished(request.id, True)
 
-	def get(self, request: 'Request') -> None:
+	def get(self, request) -> None:
 		ucrReg = ConfigRegistry()
 		ucrReg.load()
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
@@ -187,7 +187,7 @@ class Instance(Base):
 				raise UMC_Error(_('The UCR variable %(key)s could not be found') % {'key': key})
 		self.finished(request.id, results)
 
-	def categories(self, request: 'Request') -> None:
+	def categories(self, request) -> None:
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
 		categories = []
 		for id, obj in ucrInfo.categories.items():
