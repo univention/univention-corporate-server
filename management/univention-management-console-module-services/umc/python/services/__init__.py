@@ -80,19 +80,19 @@ class Instance(Base):
 		return result
 
 	@sanitize(StringSanitizer(required=True))
-	def start(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def start(self, request) -> None:
 		func = notifier.Callback(self._change_services, request.options, 'start')
 		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(StringSanitizer(required=True))
-	def stop(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def stop(self, request) -> None:
 		func = notifier.Callback(self._change_services, request.options, 'stop')
 		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(StringSanitizer(required=True))
-	def restart(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def restart(self, request) -> None:
 		func = notifier.Callback(self._change_services, request.options, 'restart')
 		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
@@ -117,17 +117,17 @@ class Instance(Base):
 		return {'success': True}
 
 	@sanitize(StringSanitizer(required=True))
-	def start_auto(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def start_auto(self, request) -> None:
 		self._change_start_type(request.options, 'yes')
 		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
 	@sanitize(StringSanitizer(required=True))
-	def start_manual(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def start_manual(self, request) -> None:
 		self._change_start_type(request.options, 'manually')
 		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
 	@sanitize(StringSanitizer(required=True))
-	def start_never(self, request: 'univention.management.console.protocol.message.Request') -> None:
+	def start_never(self, request) -> None:
 		self._change_start_type(request.options, 'no')
 		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
