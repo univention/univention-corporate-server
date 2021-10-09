@@ -153,7 +153,7 @@ class SessionClient(object):
 	def __init__(self, ip=None):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.authenticated = False
-		self.client = Client(servername=None, port=None, unix='/var/run/univention-management-console/server.socket', ssl=False)
+		self.client = Client(servername=None, port=None, unix='/run/univention-management-console/server.socket', ssl=False)
 		self.client.signal_connect('authenticated', self._authenticated)
 		self.client.signal_connect('response', self._response)
 		self.client.signal_connect('closed', self._closed)

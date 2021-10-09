@@ -91,7 +91,7 @@ class ModuleProcess(Client):
 
 	def __init__(self, module, debug='0', locale=None):
 		# type: (str, str, str) -> None
-		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
+		socket = '/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
 		# determine locale settings
 		modxmllist = moduleManager[module]
 		python = '/usr/bin/python3' if any(modxml.python_version == 3 for modxml in modxmllist) else '/usr/bin/python2.7'

@@ -107,8 +107,8 @@ if __name__ == '__main__':
 		raise SystemError('socket name is missing')
 
 	# make sure the directory where to place socket files exists
-	if not os.path.exists('/var/run/univention-management-console'):
-		os.mkdir('/var/run/univention-management-console')
+	if not os.path.exists('/run/univention-management-console'):
+		os.mkdir('/run/univention-management-console')
 
 	# get the timeout
 	session_timeout = 300
