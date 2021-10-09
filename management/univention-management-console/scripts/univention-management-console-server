@@ -35,7 +35,6 @@ from __future__ import print_function
 
 import locale
 import os
-import resource
 import signal
 import sys
 import traceback
@@ -99,10 +98,6 @@ class UMC_Daemon(object):
 	def run(self):
 		from univention.management.console.protocol.server import Server
 
-		try:
-			resource.setrlimit(resource.RLIMIT_NOFILE, (64512, 64512))
-		except (ValueError, resource.error) as exc:
-			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 		notifier.init(notifier.GENERIC)
 		notifier.dispatch.MIN_TIMER = get_int('umc/server/dispatch-interval', notifier.dispatch.MIN_TIMER)
 
