@@ -44,11 +44,8 @@ import sys
 
 import six
 from six.moves import input
-import notifier
 
-import univention.management.console.protocol as umcp
-from univention.management.console.protocol.client import Client
-from univention.management.console.log import log_init
+from univention.lib.umc import Client, ConnectionError, HTTPError
 
 try:
 	from typing import NoReturn, Optional, Sequence  # noqa F401
@@ -56,80 +53,38 @@ except ImportError:
 	pass
 
 
-class ClientExit(Exception):
-	pass
+class CLIClient(object):
 
+	def __init__(self, arguments):
+		self.arguments = arguments
 
-class CLI_Client(Client):
+	def execute(self):
+		arguments = self.arguments
+		client = Client(arguments.server, language=(locale.getlocale()[0] or locale.getdefaultlocale()[0] or 'en-US').replace('_', '-'))
 
-	def __init__(self, options):  # type: (Namespace) -> None
-		if options.unix_socket and os.path.exists(options.unix_socket):
-			super(CLI_Client, self).__init__(unix=options.unix_socket, ssl=False)
-		else:
-			super(CLI_Client, self).__init__(servername=options.server, port=options.port)
+		funcs = {
+			'COMMAND': client.umc_command,
+			'SET': lambda p, o, f: client.umc_set(o),
+			'GET': lambda p, o, f: client.umc_get(p, o),
+			'UPLOAD': lambda p, o, f: client.umc_upload(),
+			'AUTH': lambda p, o, f: client.umc_auth(o.get('username'), o.get('password')),
+		}
+		func = funcs[arguments.command.upper()]
 
-		self.__wait = None  # type: Optional[umcp.Request]
-		self._options = options
-		self.__started = None  # type: Optional[datetime]
-		self.language = (locale.getlocale()[0] or locale.getdefaultlocale()[0] or 'en-US').replace('_', '-')
-
-		try:
-			self.connect()
-		except umcp.NoSocketError:
-			print("The UMC server %s could not be contacted." % options.server, file=sys.stderr)
-			sys.exit(1)
-
-		self.signal_connect('response', self._response)
-		self.signal_connect('authenticated', self._authenticated)
-		self.signal_connect('closed', self._closed)
-		self.signal_connect('error', self._error)
-		if options.command:
-			self.__wait = self.create(options.command, options.arguments, options)
-		if options.authenticate:
-			if self._options.timing:
-				self.__started = datetime.now()
-			self.authenticate(options.username, options.password)
-		else:
-			if self.__wait:
-				self.request(self.__wait)
-				self.__wait = None
-		if options.exit:
-			if not self._options.quiet:
-				print('existing without waiting for response', file=sys.stderr)
-			sys.exit(0)
-
-	def authenticate(self, username, password, new_password=None):  # type: (str, str, str) -> None
-		authRequest = umcp.Request('AUTH')
-		authRequest.http_method = 'POST'
-		authRequest.body['username'] = username
-		authRequest.body['password'] = password
-		authRequest.body['new_password'] = new_password
-		authRequest.headers['Accept-Language'] = self.language
-		authRequest.headers['X-Requested-With'] = 'XMLHttpRequest'
-		return super(CLI_Client, self).authenticate(authRequest)
-
-	def create(self, command, args, options, flavor=None):  # type: (str, Sequence[str], Namespace, Optional[str]) -> umcp.Request
-		msg = umcp.Request(command.upper())
-		msg.http_method = 'POST'
-		msg.cookies['Cookie'] = 'UMCSessionId=00000000-0000-0000-0000-000000000000'
-		msg.headers['X-XSRF-Protection'] = '00000000-0000-0000-0000-000000000000'
-		msg.headers['Accept-Language'] = self.language
-		msg.headers['X-Requested-With'] = 'XMLHttpRequest'
-		msg.arguments = args
-		if options.flavor is not None:
-			msg.flavor = options.flavor
-		if options.list_options and not options.eval_option:
-			msg.options = options.options
-		elif options.filename:
-			msg.body = options.filename.read()
-			msg.mimetype = options.mimetype
-		elif options.eval_option:
-			if not options.list_options:
-				msg.options = ast.literal_eval(options.options[0])
+		if arguments.list_options and not arguments.eval_option:
+			options = arguments.options
+		elif arguments.filename:
+			body = arguments.filename.read()
+			mimetype = arguments.mimetype
+			raise NotImplementedError(body, mimetype)
+		elif arguments.eval_option:
+			if not arguments.list_options:
+				options = ast.literal_eval(arguments.options[0])
 			else:
-				msg.options = [ast.literal_eval(x) for x in options.options]
+				options = [ast.literal_eval(x) for x in arguments.options]
 		else:
-			for opt in options.options:
+			options = {}
+			for opt in arguments.options:
 				key, value = opt.split('=', 1)
 				if ':' in key:
 					try:
@@ -137,84 +92,72 @@ class CLI_Client(Client):
 						key = key.split(':', 1)[1]
 					except KeyError:
 						pass
-				msg.options[key] = value
-		return msg
+				options[key] = value
 
-	def _error(self, error):  # type: (umcp.Response) -> NoReturn
-		print("Error: %s" % (error,), file=sys.stderr)
-		sys.exit(1)
+		if arguments.authenticate:
+			client.authenticate(arguments.username, arguments.password)
 
-	def _closed(self):  # type: () -> NoReturn
-		print("Error: The connection to UMC was closed unexpectedly. Make sure the server is running", file=sys.stderr)
-		sys.exit(1)
+		if arguments.timing:
+			self.__started = datetime.now()
 
-	def print_timing(self, response=None):  # type: (Optional[umcp.Response]) -> None
-		if self._options.timing:
-			return
-		if self.__started is not None:
-			finished = datetime.now()
-			diff = finished - self.__started
-			if response is not None:
-				print('>>> Timing:', response.command, ' '.join(response.arguments))
-			else:
-				print('>>> Timing (Authentication):')
-			print(' Request send at', self.__started)
-			print(' Response received at', finished)
-			print(' Elapsed time', diff)
-
-		self.__started = None
-
-	def _authenticated(self, success, response):  # type: (bool, umcp.Response) -> None
-		self.print_timing()
-		if success:
-			if self.__wait:
-				if self._options.timing:
-					self.__started = datetime.now()
-				self.request(self.__wait)
-				self.__wait = None
-		else:
-			print('error: authentication failed', file=sys.stderr)
+		exit_code = 0
+		try:
+			response = func(arguments.path, options, arguments.flavor)
+		except ConnectionError as exc:
+			print("Error: %s" % (exc,), file=sys.stderr)
 			sys.exit(1)
+		except HTTPError as exc:
+			response = exc.response
+			exit_code = 1
 
-	def _response(self, msg):  # type: (umcp.Response) -> NoReturn
-		self.print_timing(msg)
-		if self._options.quiet:
-			raise ClientExit(msg.status)
-		print('Response: %s' % msg.command)
-		print('  data length   : %4d' % len(str(msg)))
-		print('  message length: %4d' % msg._length)
+		#if arguments.quit:
+		#	return exit_code
+
+		self.print_timing()
+
+		print('Response: %s' % arguments.command)
 		print('  ---')
-		if msg.arguments:
-			if self._options.prettyprint:
-				print('  ARGUMENTS: %s' % pprint.pformat(msg.arguments))
-			else:
-				print('  ARGUMENTS: %s' % ' '.join(msg.arguments))
-		print('MIMETYPE   : %s' % msg.mimetype)
-		if msg.mimetype == umcp.MIMETYPE_JSON:
-			print('  STATUS   : %d' % msg.status)
-			if msg.options:
-				if self._options.prettyprint:
-					print('  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2))
+		if arguments.path:
+			print('  ARGUMENTS: %s' % (arguments.path,))
+		mimetype = response.get_header('Content-Type')
+		print('  MIMETYPE   : %s' % (mimetype,))
+		if mimetype.startswith('application/json'):
+			print('  STATUS   : %d' % response.status)
+			if options:
+				if self.arguments.prettyprint:
+					print('  OPTIONS  : %s' % pprint.pformat(options, indent=2))
 				else:
-					if isinstance(msg.options, (list, tuple)):
-						print('  OPTIONS  : %s' % ', '.join(str(x) for x in msg.options))
+					if isinstance(options, (list, tuple)):
+						print('  OPTIONS  : %s' % ', '.join(str(x) for x in options))
 					else:
-						print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()]))
-			print('  MESSAGE  : %s' % msg.message)
-			if msg.error:
-				print('  ERROR    : %r' % (msg.error,))
-			result = msg.result
+						print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in options.items()]))
+			print('  MESSAGE  : %s' % response.message)
+			if isinstance(response.data, dict) and response.data.get('error'):
+				print('  ERROR    : %r' % (response.data['error'],))
+			result = response.result
 			if not result:
-				result = msg.body
-			if self._options.prettyprint:
+				result = response.data
+			if self.arguments.prettyprint:
 				print('  RESULT   : %s' % pprint.pformat(result, indent=2))
 			else:
 				print('  RESULT   : %s' % result)
-			if msg.status is not None:
-				raise ClientExit(msg.status)
 		else:
-			print('BODY    : %s' % str(msg.body))
-		raise ClientExit()
+			print('BODY    : %s' % (response.data,))
+
+		return exit_code
+
+	def print_timing(self):  # type: () -> None
+		if not self.arguments.timing:
+			return
+		finished = datetime.now()
+		diff = finished - self.__started
+		#if response is not None:
+		#	print('>>> Timing:', response.command, ' '.join(response.arguments))
+		#else:
+		#	print('>>> Timing (Authentication):')
+		print(' Request send at', self.__started)
+		print(' Response received at', finished)
+		print(' Elapsed time', diff)
 
 
 def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
@@ -239,8 +182,8 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 		'-n', '--no-auth', action='store_false', dest='authenticate',
 		help='if given the client do not try to authenticate first')
 	group.add_argument(
-		'-p', '--port', type=int, default=6670,
-		help='defines the port to connect to [default: %(default)s]')
+		'-p', '--port', type=int,
+		help='Deprecated')
 	group.add_argument(
 		'-P', '--password',
 		help='set password for authentication')
@@ -248,11 +191,11 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 		'-y', '--password_file', type=FileType("r"),
 		help='read password for authentication from given file')
 	group.add_argument(
-		'-s', '--server', default='localhost',
+		'-s', '--server',
 		help='defines the host of the UMC daemon to connect to [default: %(default)s]')
 	group.add_argument(
 		'-u', '--unix-socket',
-		help='defines the filename of the UNIX socket')
+		help='Deprecated')
 	group.add_argument(
 		'-U', '--username',
 		help='set username for authentication')
@@ -275,7 +218,7 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 		'-l', '--list-options', action='store_true',
 		help='if set all specified options will be assembled in a list')
 	group.add_argument(
-		'-m', '--mimetype', default=umcp.MIMETYPE_JSON,
+		'-m', '--mimetype', default='application/json',
 		help='defines the mime type of the UMCP request body [default: %(default)s].')
 	group.add_argument(
 		'-o', '--option', default=[], action='append', dest='options',
@@ -288,9 +231,9 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 		parser.set_defaults(command=command)
 	else:
 		parser.add_argument('command', help="UMC command")
-	parser.add_argument('arguments', nargs='*', default=[], help="UMC command arguments")
+	parser.add_argument('path', nargs='?', help="UMC command arguments")
 
-	arguments = parser.parse_args()
+	arguments = parser.parse_args(argv[1:])
 
 	return arguments
 
@@ -298,40 +241,22 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 def main():  # type: () -> None
 	arguments = parse_args()
 
-	notifier.init(notifier.GENERIC)
 	try:
 		locale.setlocale(locale.LC_ALL, "")
 	except locale.Error:
 		pass
 
-	log_init('stderr', arguments.debug)
-
 	if arguments.authenticate:
 		if not arguments.username:
-			arguments.username = input('Username:')
+			arguments.username = input('Username: ')
 		if arguments.password_file:
 			arguments.password = arguments.password_file.read().strip()
 		if not arguments.password:
-			arguments.password = getpass('Password:')
+			arguments.password = getpass('Password: ')
 
-	try:
-		CLI_Client(arguments)
-	except Exception as exc:
-		print('An fatal error occurred: %s' % (exc,), file=sys.stderr)
-		sys.exit(1)
-
-	try:
-		notifier.loop()
-	except ClientExit as exit:
-		if exit.args:
-			exitcode = int(exit.args[0])
-			if 200 <= exitcode < 300:
-				exitcode = 0
-			else:
-				exitcode = 1  # dooh, sys.exit returns a short, mapping 400 to 144
-			sys.exit(exitcode)
-		sys.exit(0)
+	client = CLIClient(arguments)
+	return client.execute()
 
 
 if __name__ == '__main__':
-	main()
+	sys.exit(main())
