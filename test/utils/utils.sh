@@ -1098,7 +1098,7 @@ add_extra_apt_scope () {
 	if [ -n "$SCOPE" ]; then
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
-		apt-get update -y
+		apt-get update -y || true  # ignore failure, univention-upgrade will do this as well
 	fi
 }
 
