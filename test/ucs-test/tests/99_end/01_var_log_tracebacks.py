@@ -5,16 +5,16 @@
 
 from __future__ import print_function
 
-import os
 import argparse
 import glob
+import os
+import pipes
 import subprocess
 import tempfile
-import pipes
 
-import pytest
-import psutil
 import grep_traceback
+import psutil
+import pytest
 
 import univention.testing.utils
 
