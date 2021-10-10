@@ -196,7 +196,7 @@ Depends:
  univention-grub,
  univention-join,
  univention-pkgdb-tools,
- univention-policy-tools,
+ univention-policy-tools (>= 11.0.1-2),
  univention-system-setup,
  univention-updater,
  ${misc:Depends},
@@ -273,7 +273,7 @@ Depends:
  univention-config,
  univention-docker-container-mode,
  univention-join,
- univention-policy-tools,
+ univention-policy-tools (>= 11.0.1-2),
  univention-updater,
  ${misc:Depends},
 Description: UCS system role common dependencies and files

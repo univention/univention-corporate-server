@@ -7,4 +7,5 @@ fix: 15.0.4-5A~5.0.0.202110081514
 desc: |
  This update addresses the following issue:
  * Time-stamps were added to the logger output of the password change.
-bug: [53182]
+ * The package `univention-server` has been migrated to Python 3.
+bug: [53182, 53348]

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Server Memberserver
@@ -32,41 +32,39 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
-import subprocess
+
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+from univention.lib.policy_result import policy_result, PolicyResultFailed
 
 configRegistry = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 configRegistry.load()
 
-found = 0
+found = False
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
-
 	for key in ['ldap/server/name', 'ldap/server/addition']:
 		ldap_server_string = configRegistry.get(key)
 		if ldap_server_string:
 			for k in ldap_server_string.split(' '):
-				p1 = subprocess.Popen(['univention_policy_result', '-h', k, '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
-				result = p1.communicate()[0]
-				addition = []
-
-				if p1.returncode != 0:
+				try:
+					results, _policies = policy_result(ldap_hostdn, ldap_server=k)
+				except PolicyResultFailed:
 					continue
 
+				addition = []
 				updates = {}
-				for line in result.split('\n'):
-					line = line.strip(' ').strip('\n')
-					if line.startswith('univentionLDAPServer='):
-						new_ldap_server = line.replace('univentionLDAPServer=', '').replace('"', '')
-						if not found:
-							ldap_server_name = configRegistry.get('ldap/server/name')
-							if not ldap_server_name or new_ldap_server != ldap_server_name:
-								updates['ldap/server/name'] = new_ldap_server
-							found = 1
-						else:
-							addition.append(new_ldap_server)
+
+				ldap_server_name = configRegistry.get('ldap/server/name')
+				results = results.get('univentionLDAPServer', [])
+				for new_ldap_server in results:
+					if not found:
+						if not ldap_server_name or new_ldap_server != ldap_server_name:
+							updates['ldap/server/name'] = new_ldap_server
+						found = True
+					else:
+						addition.append(new_ldap_server)
 
 				old = configRegistry.get('ldap/server/addition', '')
 				new = ' '.join(addition)
