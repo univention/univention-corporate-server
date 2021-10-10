@@ -62,7 +62,11 @@ def getfile(filename, mode):
 		name = getattr(filename, 'name', repr(filename))
 		if isinstance(name, int):
 			name = repr(filename)
-		yield filename, name
+		if name.endswith('.gz'):
+			with gzip.open(name, mode) as fd:
+				yield fd, name
+		else:
+			yield filename, name
 
 
 def main(files, ignore_exceptions={}, out=sys.stdout):
