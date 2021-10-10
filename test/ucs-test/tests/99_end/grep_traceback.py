@@ -31,29 +31,16 @@
 
 from __future__ import print_function
 
+import argparse
+import contextlib
+import gzip
+import io
 import os
 import re
-import gzip
 import sys
 
-RE_BROKEN = re.compile(r'^File "[^"]+", line \d+, in .*')
-"""Match broken setup.log traceback:
-Traceback (most recent call last):
-File "<stdin>", line 8, in <module>
-File "xyz", line 8, in bar
-foo = bar
-IOError: [Errno 2] No such file or directory: '/etc/machine.secret'
-"""  # Bug #51834
-
+RE_BROKEN = re.compile(r'^File "[^"]+", line \d+, in .*')  # Bug #51834
 RE_APPCENTER = re.compile(r'^(\s+\d+ .*[\d \-:]+ \[(    INFO| WARNING|   DEBUG|   ERROR)\]:)')
-"""Match appcenter.log
- 17954 packages                         21-02-14 04:25:09 [ WARNING]: Traceback (most recent call last):
- 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
- 17954 packages                         21-02-14 04:25:09 [ WARNING]:     univention.pkgdb.main()
- 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
- 17954 packages                         21-02-14 04:25:09 [ WARNING]:     cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
- 17954 packages                         21-02-14 04:25:09 [ WARNING]: Exception: foo
-"""  # noqa: E101
 
 
 class Tracebacks(set):
@@ -64,19 +51,38 @@ class Tracebacks(set):
 		self.filenames = set()
 
 
-def main(filenames, ignore_exceptions={}):
+@contextlib.contextmanager
+def getfile(filename, mode):
+	if isinstance(filename, str):
+		fd = gzip.open(filename, mode) if filename.endswith('.gz') else open(filename, mode)
+		with fd:
+			yield fd, filename
+	else:
+		name = getattr(filename, 'name', repr(filename))
+		if isinstance(name, int):
+			name = repr(filename)
+		yield filename, name
+
+
+def main(files, ignore_exceptions={}, out=sys.stdout):
 	tracebacks = {}
-	for filename in filenames:
-		opener = gzip.open if filename.endswith('.gz') else open
-		with opener(filename, 'rt') as fd:
+	for file_ in files:
+		with getfile(file_, 'rt') as (fd, filename):
 			line = True
 			while line:
 				line = fd.readline()
 				if line.endswith('Traceback (most recent call last):\n'):
+					# TODO: refactor: can probably be done easily by just fetching 2 lines until first line doesn't start with '.*File "' and strip the start
+					# please note that tracebacks may leave out the source code of lines in some certain situations
+					num_spaces = None
 					lines = []
 					line = '  '
 					while line.startswith('  ') or RE_BROKEN.match(line) or (RE_APPCENTER.match(line) and 'appcenter' in filename):
 						line = fd.readline()
+						if num_spaces is None and line.strip().startswith('File '):
+							num_spaces = len(line.split('File ', 1)[0]) - 2
+						if num_spaces > 0 and line[:num_spaces].startswith('  '):
+							line = line[num_spaces:]
 						if 'appcenter' in filename and RE_APPCENTER.match(line):
 							line = RE_APPCENTER.sub('', line)
 							lines.append(line[1:])
@@ -94,27 +100,27 @@ def main(filenames, ignore_exceptions={}):
 					tb.occurred += 1
 					tb.filenames.add(filename)
 
-	print('Found %d tracebacks:' % (len(tracebacks),))
+	print('Found %d tracebacks:' % (len(tracebacks),), file=out)
 	found = False
 	for traceback, exceptions in tracebacks.items():
 		ignore = False
 		for ignore_exc, ignore_traceback in ignore_exceptions.items():
 			ignore = any(ignore_exc.search(exc) for exc in exceptions) and (not ignore_traceback or any(tb_pattern.search(traceback) for tb_pattern in ignore_traceback))
 			if ignore:
-				print('\nIgnoring %s\n ' % (ignore_exc.pattern,))
+				print('\nIgnoring %s\n ' % (ignore_exc.pattern,), file=out)
 				break
 		if ignore:
 			continue
 		found = True
-		print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)))
+		print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)), file=out)
 		if os.environ.get('JENKINS_WS'):
 			for fn in exceptions.filenames:
-				print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)))
-		print('Traceback (most recent call last):')
-		print(traceback, end='')
+				print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)), file=out)
+		print('Traceback (most recent call last):', file=out)
+		print(traceback, end='', file=out)
 		for exc in exceptions:
-			print(exc.strip())
-		print('\n ')
+			print(exc.strip(), file=out)
+		print('\n ', file=out)
 	return not found
 
 
@@ -280,12 +286,65 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 ])
 
 
+def test_appcenter():
+	fd = io.StringIO("""Match appcenter.log
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]: Traceback (most recent call last):
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:     univention.pkgdb.main()
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]:     cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
+ 17954 packages                         21-02-14 04:25:09 [ WARNING]: Exception: foo
+""")  # noqa: E101
+	fd.name = '/var/log/univention/appcenter.log'
+	out = io.StringIO('w')
+	assert not main([fd], out=out)
+	assert '''Traceback (most recent call last):
+  File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
+    univention.pkgdb.main()
+  File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
+    cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
+Exception: foo''' in out.getvalue(), out.getvalue()  # noqa: E101
+
+
+def test_broken_setup():
+	fd = io.StringIO("""Match broken setup.log traceback:
+Traceback (most recent call last):
+File "<stdin>", line 8, in <module>
+File "xyz", line 8, in bar
+foo = bar
+Exception: foo
+bar""")
+	out = io.StringIO('w')
+	assert not main([fd], out=out)
+	assert """Traceback (most recent call last):
+  File "<stdin>", line 8, in <module>
+  File "xyz", line 8, in bar
+    foo = bar
+Exception: foo""" in out.getvalue(), out.getvalue()  # noqa: E101
+
+
+def test_journald_indented():
+	fd = io.StringIO("""Match indented journald format
+    Traceback (most recent call last):
+      File "<stdin>", line 8, in <module>
+      File "xyz", line 8, in bar
+        foo = bar
+    Exception: foo
+bar""")  # noqa: E101
+	out = io.StringIO('w')
+	assert not main([fd], out=out)
+	assert """Traceback (most recent call last):
+  File "<stdin>", line 8, in <module>
+  File "xyz", line 8, in bar
+    foo = bar
+Exception: foo""" in out.getvalue(), out.getvalue()  # noqa: E101
+
+
 if __name__ == '__main__':
-	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument('--ignore-exception', '-i', default='^$')
 	parser.add_argument('-d', '--default-exceptions', action='store_true')
-	parser.add_argument('filename', nargs='+')
+	parser.add_argument('files', type=argparse.FileType('r'), nargs='+')
 	args = parser.parse_args()
 	ignore_exceptions = COMMON_EXCEPTIONS if args.default_exceptions else {re.compile(args.ignore_exception): None}
-	sys.exit(int(not main(args.filename, ignore_exceptions=ignore_exceptions)))
+	sys.exit(int(not main(args.files, ignore_exceptions=ignore_exceptions)))

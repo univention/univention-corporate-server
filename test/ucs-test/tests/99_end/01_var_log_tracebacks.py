@@ -59,6 +59,14 @@ def test_var_log_tracebacks_gz():
 	assert not_found, 'logfiles *.gz contain tracebacks'
 
 
+@pytest.mark.exposure('safe')
+def test_journallog_tracebacks():
+	proc = subprocess.Popen(['journalctl', '-o', 'cat'], stdout=subprocess.PIPE, text=True)
+	not_found = grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+	assert proc.wait() == 0
+	assert not_found, 'logfiles journalctl contain tracebacks'
+
+
 @pytest.mark.roles_not('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
 # @pytest.mark.parametrize('testcase', [
