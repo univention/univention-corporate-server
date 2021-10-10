@@ -98,8 +98,8 @@ close_wait=$(get_number_of_close_waits)
 echo "number of close wait connections: $close_wait"
 
 remove_sample_users $MAX_USERS
-if [ "$close_wait" -gt 2 ]; then
-    fail_fast 110 "number of close wait connections > 2"
+if [ "$close_wait" -gt 3 ]; then
+    fail_fast 110 "number of close wait connections > 3"
 fi
 
 # vim: ft=sh

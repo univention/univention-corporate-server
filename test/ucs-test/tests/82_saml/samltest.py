@@ -237,15 +237,14 @@ class SamlTest:
         self.position = "posting SAML message"
         self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
-    def test_logged_in_status(self):
+    def test_logged_in_status(self, expected_auth_type='SAML'):
         """Test login on umc"""
         url = "https://%s/univention/get/session-info" % self.target_sp_hostname
         print("Test login @ %s" % url)
         self.position = "testing login"
         self._request('GET', url, 200, expected_format='json')
         auth_type = self.parsed_page['result']['auth_type']
-        if auth_type != 'SAML':
-            utils.fail("SAML wasn't used for login?")
+        assert auth_type == expected_auth_type, ("SAML wasn't used for login?", self.parsed_page)
         print("Login success")
 
     def test_slapd(self):
