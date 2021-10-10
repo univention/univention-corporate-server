@@ -27,7 +27,7 @@ ucr set umc/http/max-open-file-descriptors=$fd_max
 
 service univention-management-console-web-server restart
 sleep 5
-umc_pid="$(pidof -x /usr/sbin/univention-management-console-web-server)"
+umc_pid="$(pidof -x univention-management-console-server)"
 control=$(cat /proc/$umc_pid/limits | grep "open files" | grep -o "[0-9]*" | head -1)
 echo "Checking how many fds are allowed according to /proc/$umc_pid/limits"
 

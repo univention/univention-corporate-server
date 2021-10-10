@@ -58,7 +58,7 @@ class LogrotateService(object):
 		return stat
 
 	def service_restart(self):
-		call(['invoke-rc.d', os.path.basename(self.service), 'restart'])
+		call(['systemctl', 'restart', os.path.basename(self.service)])
 		sleep(1)  # give time to restart
 
 	def pre(self):
@@ -88,7 +88,6 @@ def logrotate():
 def main():
 	services = [
 		LogrotateService('/usr/sbin/univention-management-console-server', '/var/log/univention/management-console-server.log'),
-		LogrotateService('/usr/sbin/univention-management-console-web-server', '/var/log/univention/management-console-web-server.log'),
 	]
 	try:
 		for service in services:

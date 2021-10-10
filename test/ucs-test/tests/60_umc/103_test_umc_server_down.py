@@ -1,9 +1,8 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test error messages if UMC server is down
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
-import json
 import socket
 import subprocess
 
@@ -13,16 +12,6 @@ from univention.lib.umc import ConnectionError, ServiceUnavailable
 
 
 class Test_ServerDown_Messages(object):
-
-	def test_umc_webserver_down(self, Client):
-		try:
-			subprocess.call(['service', 'univention-management-console-web-server', 'stop'])
-			with pytest.raises(ServiceUnavailable) as exc:
-				Client().umc_get('modules')
-			assert json.loads(exc.value.response.body)['message'] == 'The Univention Management Console Web Server could not be reached. Please restart univention-management-console-web-server or try again later.'
-			assert exc.value.response.reason == 'UMC-Web-Server Unavailable'
-		finally:
-			subprocess.call(['service', 'univention-management-console-web-server', 'start'])
 
 	def test_umc_server_down(self, Client):
 		try:
