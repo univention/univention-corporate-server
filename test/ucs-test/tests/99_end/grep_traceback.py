@@ -86,7 +86,7 @@ def main(files, ignore_exceptions={}, out=sys.stdout):
 						line = fd.readline()
 						if num_spaces is None and line.strip().startswith('File '):
 							num_spaces = len(line.split('File ', 1)[0]) - 2
-						if num_spaces > 0 and line[:num_spaces].startswith('  '):
+						if num_spaces and num_spaces > 0 and line[:num_spaces].startswith('  '):
 							line = line[num_spaces:]
 						if 'appcenter' in filename and RE_APPCENTER.match(line):
 							line = RE_APPCENTER.sub('', line)
