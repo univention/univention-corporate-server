@@ -7,8 +7,7 @@ fix: 78.15.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
  * Use-after-free in MessageTask (CVE-2021-38496)
- * Memory safety bugs fixed in Firefox 93, Firefox ESR 78.15, and Firefox ESR
-   91.2 (CVE-2021-38500)
+ * Memory safety bugs fixed (CVE-2021-38500)
 bug: [53896]
 cve:
 - CVE-2021-38496
