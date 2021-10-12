@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: firefox-esr
+fix: 78.15.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Use-after-free in MessageTask (CVE-2021-38496)
+ * Memory safety bugs fixed in Firefox 93, Firefox ESR 78.15, and Firefox ESR
+   91.2 (CVE-2021-38500)
+bug: [53893]
+cve:
+- CVE-2021-38496
+- CVE-2021-38500
