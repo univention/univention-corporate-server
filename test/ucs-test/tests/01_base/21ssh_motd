@@ -26,47 +26,49 @@ for((i=0;i<20;i++)); do
 done
 /usr/lib/univention-pam/ldap-group-to-file.py
 
-python -c "#BEGIN PYTHON SCRIPT
-import pexpect
+python3 -c "#BEGIN PYTHON SCRIPT
 import sys
 import getpass
 
+import pexpect
+
 host = 'localhost'
 user = '$username'
-password = 'univention'
+password = b'univention'
 
-ex_newkey = 'Are you sure you want to continue connecting'
-ex_password = 'assword: '
+ex_newkey = b'Are you sure you want to continue connecting'
+ex_password = b'assword: '
 
-child = pexpect.spawn('ssh -o UserKnownHostsFile=\"${sshKnownHostsFile}\" %s@%s'%(user, host), timeout=10)
-child.logfile = sys.stderr
+child = pexpect.spawn('ssh -o UserKnownHostsFile=\"${sshKnownHostsFile}\" %s@%s' % (user, host), timeout=10)
+child.logfile = sys.stderr.buffer
 i = child.expect([pexpect.TIMEOUT, ex_newkey, ex_password])
-if i == 0: # Timeout
-	print 'ERROR!'
-	print 'SSH could not login. Here is what SSH said:'
-	print child.before, child.after
+if i == 0:  # Timeout
+	print('ERROR!')
+	print('SSH could not login. Here is what SSH said:')
+	print(child.before, child.after)
 	sys.exit(1)
-if i == 1: # SSH does not have the public key. Just accept it.
-	child.sendline ('yes')
+
+if i == 1:  # SSH does not have the public key. Just accept it.
+	child.sendline(b'yes')
 	i = child.expect([pexpect.TIMEOUT, ex_password])
 	if i == 0: # Timeout
-		print 'ERROR!'
-		print 'SSH could not login. Here is what SSH said:'
-		print child.before, child.after
+		print('ERROR!')
+		print('SSH could not login. Here is what SSH said:')
+		print(child.before, child.after)
 		sys.exit(1)
 child.sendline(password)
-child.sendline('exit')
+child.sendline(b'exit')
 i = child.expect([pexpect.TIMEOUT, pexpect.EOF])
-if i == 0: # Timeout
-	print 'ERROR!'
-	print 'SSH could not login. Here is what SSH said:'
-	print child.before, child.after
+if i == 0:  # Timeout
+	print('ERROR!')
+	print('SSH could not login. Here is what SSH said:')
+	print(child.before, child.after)
 	sys.exit(1)
-if child.before.find('Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY') == -1:
-	print 'MotD is clean'
+if b'Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY' not in child.before:
+	print('MotD is clean')
 	sys.exit(0)
 else:
-	print 'Found Debian message! (This is bad)'
+	print('Found Debian message! (This is bad)')
 	sys.exit(1)
 #END PYTHON SCRIPT"
 ret=$?

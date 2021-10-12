@@ -32,7 +32,7 @@ tests () {
 	done
 }
 _aptget () { "$1" apt-get -qq update; }
-_pyapt () { "$1" python -c 'exit(0 if __import__("apt").Cache().update() else 1)'; }
+_pyapt () { "$1" python3 -c 'exit(0 if __import__("apt").Cache().update() else 1)'; }
 have apt && _apt () { "$1" apt -qq update; }
 have aptitude && _aptitude () {
 	# aptitude does not report unsigned repositories in the return value

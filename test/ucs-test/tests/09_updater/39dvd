@@ -73,7 +73,7 @@ trap 'cleanup2' EXIT
 
 	# Need Bug #45950 fixed:
 	apt -qq update
-	python -c 'exit(0 if __import__("apt").Cache().update() else 1)'
+	python3 -c 'exit(0 if __import__("apt").Cache().update() else 1)'
 	have aptitude && aptitude --no-gui update
 
 	:

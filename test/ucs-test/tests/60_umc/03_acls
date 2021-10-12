@@ -57,7 +57,7 @@ assign_acl ()
 }
 test_acl ()
 {
-	python -c "from univention.testing.umc import Client; data = Client(None, '$USERNAME', 'univention').umc_command('join/scripts/query').result; assert isinstance(data, list), data"
+	python3 -c "from univention.testing.umc import Client; data = Client(None, '$USERNAME', 'univention').umc_command('join/scripts/query').result; assert isinstance(data, list), data"
 }
 
 modify_acl ()

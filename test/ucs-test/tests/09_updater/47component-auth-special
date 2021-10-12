@@ -37,9 +37,9 @@ comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"
 
 quote () { # escape text to basic regular expression
-	python -c 'import sys
+	python3 -c 'import sys
 l = lambda c: "\\(%s\\|%%%02x\\|%%%02X\\)" % (c, ord(c), ord(c))
-print "".join(map(l, sys.argv[1]))' "${1}"
+print("".join(map(l, sys.argv[1])))' "${1}"
 }
 
 run_test () {

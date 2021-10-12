@@ -7,5 +7,5 @@
 ## packages:
 ##  - python-openssl
 ## exposure: safe
-exec python -c 'import OpenSSL.SSL'
+exec python3 -c 'import OpenSSL.SSL'
 # vim: set ft=sh :

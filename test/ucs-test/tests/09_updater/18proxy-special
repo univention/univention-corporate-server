@@ -27,7 +27,7 @@ mkpkg "${DIR}" "${DIR_POOL}"
 config_repo proxy/username= proxy/password= proxy/address=
 
 quote () { # url-escape text
-	python -c 'import urllib,sys;print urllib.quote(sys.argv[1], "")' "${1}"
+	python3 -c 'import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], ""))' "${1}"
 }
 
 run_test () {

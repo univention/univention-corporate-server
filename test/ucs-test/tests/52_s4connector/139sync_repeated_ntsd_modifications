@@ -68,7 +68,7 @@ cleanup2() {
 
 trap cleanup2 EXIT
 
-DELAY=( $(python -c "for i in range(23, 3, -2): print 0.1*i") )
+DELAY=( $(python3 -c "for i in range(23, 3, -2): print(round(0.1 * i, 1))") )
 MOD="${#DELAY[@]}"
 RANDOM="$SECONDS"
 

@@ -205,7 +205,7 @@ for ((i=0;i<num_testusers;i++)); do
 		ldiff ldif.1 ldif.2
 		echo 'DEBUG: object'
 		cat ldif.2
-		python -c "import crypt, univention.uldap; lo = univention.uldap.getMachineConnection(); password = lo.getAttr('${test_userdn}', 'userPassword')[0].replace('{crypt}', ''); print 'Password valid?:', crypt.crypt('univention', password.rsplit('\$', 1)[0]) == password"
+		python3 -c "import crypt, univention.uldap; lo = univention.uldap.getMachineConnection(); password = lo.getAttr('${test_userdn}', 'userPassword')[0].decode('ASCII').replace('{crypt}', ''); print('Password valid?:', crypt.crypt('univention', password.rsplit('\$', 1)[0]) == password)"
 
 		fail_test 1 "Authentication of account '$test_username' failed after unlock"
 	fi
