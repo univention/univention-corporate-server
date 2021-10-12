@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: mariadb-10.3
+fix: 1:10.3.31-0+deb10u1
+desc: |
+ This update addresses the following issues:
+ * InnoDB unspecified vulnerability (CPU Jul 2021) (CVE-2021-2372)
+ * InnoDB unspecified vulnerability (CPU Jul 2021) (CVE-2021-2389)
+bug: [53895]
+cve:
+- CVE-2021-2372
+- CVE-2021-2389
