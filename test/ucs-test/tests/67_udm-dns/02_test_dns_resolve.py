@@ -46,7 +46,7 @@ def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
 
 class Test_DNSResolve(object):
 
-	def test__dns_forward_zone_check_resolve(self, udm):
+	def test_dns_forward_zone_check_resolve(self, udm):
 		"""Creates DNS forward zone entry and try to resolve it"""
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
@@ -69,7 +69,7 @@ class Test_DNSResolve(object):
 		answer = answers.qname.to_text()
 		assert answer == zone, 'resolved name "%s" != created ldap-object "%s"' % (answer, zone)
 
-	def test__dns_reverse_zone_check_resolve(self, udm):
+	def test_dns_reverse_zone_check_resolve(self, udm):
 		"""Creates DNS reverse zone entry and try to resolve it"""
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
@@ -111,7 +111,7 @@ class Test_DNSResolve(object):
 		answer = answers.qname.to_text()
 		assert answer == zoneName, 'IPv6: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
 
-	def test__dns_host_record_check_resolve(self, udm):
+	def test_dns_host_record_check_resolve(self, udm):
 		"""Creates DNS host record entry and try to resolve it"""
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
@@ -162,7 +162,7 @@ class Test_DNSResolve(object):
 		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
 		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
 
-	def test__dns_alias_record_check_resolve(self, udm):
+	def test_dns_alias_record_check_resolve(self, udm):
 		"""Creates DNS alias record and tries to resolve it"""
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
@@ -204,7 +204,7 @@ class Test_DNSResolve(object):
 		answer = [rdata.target.to_text() for rdata in answers]
 		assert answer == [fqhn], 'resolved name "%s" != created ldap-object "%s"' % (answer, [fqhn])
 
-	def test__dns_srv_record_check_resolve(self, udm):
+	def test_dns_srv_record_check_resolve(self, udm):
 		"""Creates DNS srv record and try to resolve it"""
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
@@ -256,7 +256,7 @@ class Test_DNSResolve(object):
 		answer = [rdata.target.to_text() for rdata in answers]
 		assert answer == [fqhn], 'resolved name "%s" != created ldap-object "%s"' % (answer, [fqhn])
 
-	def test__dns_pointer_record_check_resolve(self, udm):
+	def test_dns_pointer_record_check_resolve(self, udm):
 		"""Creates DNS pointer record entry and try to resolve it"""
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
@@ -307,7 +307,7 @@ class Test_DNSResolve(object):
 		answer = [rdata.to_text() for rdata in answers]
 		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
 
-	def test__dns_txt_record_check_resolve(self, udm):
+	def test_dns_txt_record_check_resolve(self, udm):
 		"""Creates DNS pointer record entry and try to resolve it"""
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
@@ -333,7 +333,7 @@ class Test_DNSResolve(object):
 		assert answer == [txt], 'resolved name "%s" != created ldap-object "%s"' % (answer, [txt])
 
 	@pytest.mark.skipif(not utils.package_installed('univention-s4-connector'), reason="Univention S4 Connector is not installed.")
-	def test__dns_ns_record_check_resolve(self, udm, ucr):
+	def test_dns_ns_record_check_resolve(self, udm, ucr):
 		"""Create DNS NS record and try to resolve it"""
 		# bugs: [32626]
 		# packages: univention-s4-connector
