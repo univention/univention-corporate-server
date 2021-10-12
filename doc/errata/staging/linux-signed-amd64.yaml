@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
-src: linux
-fix: 4.19.208-1
+src: linux-signed-amd64
+fix: 4.19.208+1
 desc: |
  This updates the Linux kernel to version 4.19.208, which addresses (among
  others) the following security issues:
@@ -60,7 +60,7 @@ desc: |
    CID-b49a0e69a7b1. This occurs because a certain comparison uses values that
    are not memory sizes. (CVE-2021-42252)
 bug: [53897]
-notes: This is the first of three parts.
+notes: This is the third of three parts.
 cve:
 - CVE-2020-3702
 - CVE-2020-16119
