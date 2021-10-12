@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: postgresql-11
+fix: 11.13-0+deb10u1
+desc: |
+ This update addresses the following issue:
+ * memory disclosure in certain queries (CVE-2021-3677)
+bug: [53898]
+cve:
+- CVE-2021-3677
