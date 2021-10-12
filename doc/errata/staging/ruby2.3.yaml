@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: ruby2.3
+fix: 2.3.3-1+deb9u10
+desc: |
+ This update addresses the following issues:
+ * Command injection vulnerability in RDoc (CVE-2021-31799)
+ * FTP PASV command response can cause Net::FTP to connect to arbitrary host
+   (CVE-2021-31810)
+ * StartTLS stripping vulnerability in Net::IMAP (CVE-2021-32066)
+bug: [53892]
+cve:
+- CVE-2021-31799
+- CVE-2021-31810
+- CVE-2021-32066
