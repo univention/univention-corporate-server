@@ -6,5 +6,5 @@ src: univention-lib
 fix: 9.0.11-7A~5.0.0.202110061720
 desc: |
  This update addresses the following issue:
- * The evaluation of blacklists for shares has been repaired.
+ * The evaluation of deny-lists for shares has been repaired.
 bug: [51650]
