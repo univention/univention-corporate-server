@@ -71,7 +71,6 @@ class Test_DNSResolve(object):
 
 	def test__dns_reverse_zone_check_resolve(self, udm):
 		"""Creates DNS reverse zone entry and try to resolve it"""
-		lo = utils.get_ldap_connection()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
 		# IPv4
