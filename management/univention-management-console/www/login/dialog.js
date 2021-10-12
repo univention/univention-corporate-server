@@ -110,7 +110,34 @@ define([
 			this._addDefaultLinks();
 			this._checkCookiesEnabled();
 			this._watchUsernameField();
+			this._addSingleSignOnLinks();
 			this._loginDialogRenderedDeferred.resolve();
+		},
+
+		_addSingleSignOnLinks: function() {
+			var locale = i18nTools.defaultLang().substring(0, 2);
+			var parentNode = dom.byId('umcLoginFormWrapper');
+			var singleSignOnLinks = tools.status('single_sign_on_links');
+			if (singleSignOnLinks) {
+				domConstruct.place(domConstruct.toDom('<hr style="border-top-color: var(--bgc-inputfield-on-container);"/>'), parentNode);
+			}
+			array.forEach(singleSignOnLinks, lang.hitch(this, function(values) {
+				var label = values['label/' + locale] || values.label;
+				var link = values['link/' + locale] || values.link;
+				var buttonHTML = lang.replace(
+					'<button class="umcLoginFormButton" style="margin-bottom: 1em;">\n' +
+					'	<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n' +
+					'		<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />\n' +
+					'	</svg>\n' +
+					'	<a href="{link}" style="text-decoration: none;"><span class="umcLoginFormButton__label">{label}</span></a>\n' +
+					'</button>\n',
+					{
+						label: entities.encode(label),
+						link: entities.encode(link),
+					}
+				);
+				domConstruct.place(domConstruct.toDom(buttonHTML), parentNode);
+			}));
 		},
 
 		_addDefaultLinks: function() {

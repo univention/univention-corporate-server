@@ -143,6 +143,18 @@ def get_cookie_banner():
 	return banner
 
 
+def get_single_sign_on_links():
+	base = 'umc/single-sign-on/'
+	links = {}
+	for key, value in configRegistry.items():
+		if not key.startswith(base):
+			continue
+		name, keyname = key[len(base):].split('/', 1)
+		links.setdefault(name, {})[keyname] = value
+
+	return sorted(links.values(), key=lambda x: int(x.get('order', 99)))
+
+
 data = dict(
 	serveraddress=get_ec2_address(),
 	piwikDisabled=is_piwik_disabled(),
@@ -153,6 +165,7 @@ data = dict(
 	login_links=get_login_links(),
 	login_texts=get_login_texts(),
 	cookieBanner=get_cookie_banner(),
+	single_sign_on_links=get_single_sign_on_links(),
 )
 
 
