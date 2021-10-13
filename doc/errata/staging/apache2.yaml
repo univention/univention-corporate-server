@@ -11,7 +11,7 @@ desc: |
    (CVE-2021-36160)
  * out-of-bounds write in ap_escape_quotes() via malicious input
    (CVE-2021-39275)
- * mod_proxy: SSRF via a crafted request uri-path containing "unix:"
+ * mod_proxy: SSRF via a crafted request uri-path containing `unix:`
    (CVE-2021-40438)
 bug: [53894]
 cve:
