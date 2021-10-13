@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-management-console-module-adtakeover
+fix: 
+desc: |
+ This update addresses the following issue:
+ * An error in the Python 3 migration has been fixed which causes that the
+   AD takeover was not possible if the AD Domain contained objects with
+   `mail` or `proxyAddresses` atrributes.
+bug: [53466]

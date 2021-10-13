@@ -1329,19 +1329,16 @@ class AD_Takeover(object):
 			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(|(mail=*)(proxyAddresses=*))",
 			attrs=["mail", "proxyAddresses"])
-		maildomains = []
+		maildomains = set()
 		for msg in msgs:
 			for attr in ("mail", "proxyAddresses"):
 				if attr in msg:
 					for address in msg[attr]:
-						address = address.decode('UTF-8').find("@")
-						char_idx = address.find("@")
-						if char_idx != -1:
-							domainpart = address[char_idx + 1:].lower()
-							# if not domainpart.endswith(".local"): ## We need to create all the domains. Alternatively set:
-							# ucr:directory/manager/web/modules/users/user/properties/mailAlternativeAddress/syntax=emailAddress
-							if domainpart not in maildomains:
-								maildomains.append(domainpart)
+						address, _, domainpart = address.decode('UTF-8').lower().rpartition('@')
+						# if not domainpart.endswith(".local"): # We need to create all the domains. Alternatively set:
+						# ucr:directory/manager/web/modules/users/user/properties/mailAlternativeAddress/syntax=emailAddress
+						if domainpart:
+							maildomains.add(domainpart)
 		for maildomain in maildomains:
 			returncode = run_and_output_to_log(["univention-directory-manager", "mail/domain", "create", "--ignore_exists", "--position", "cn=domain,cn=mail,%s" % self.ucr["ldap/base"], "--set", "name=%s" % maildomain], log.debug)
 			if returncode != 0:

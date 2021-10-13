@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (7.0.2-4) unstable; urgency=medium
+
+  * Bug #53466: fix AD takeover if AD contains mail or proxyAddresses
+    attributes
+
+ -- Florian Best <best@univention.de>  Wed, 13 Oct 2021 16:53:23 +0200
+
 univention-management-console-module-adtakeover (7.0.2-3) unstable; urgency=medium
 
   * Bug #52941: added new icon design for AD takeover
