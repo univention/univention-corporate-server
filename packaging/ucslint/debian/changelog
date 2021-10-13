@@ -1,3 +1,9 @@
+ucslint (9.0.2-3) unstable; urgency=low
+
+  * Bug #52211: Strip newline after comment
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 13 Oct 2021 16:36:43 +0200
+
 ucslint (9.0.2-2) unstable; urgency=medium
 
   * Bug #53804: [flake8] remove some old ignore rules

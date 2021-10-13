@@ -1,6 +1,7 @@
 Source: ucslint
 Build-Depends: foo,
  univention-config-dev,
+# comment
  univention-management-console-dev
 Build-Depends-Indep: bar
 

@@ -361,7 +361,7 @@ class ParserDebianControl(object):
 	:param filename: Full path.
 	"""
 
-	RE_COMMENT = re.compile(r'^#.*$', re.MULTILINE)
+	RE_COMMENT = re.compile(r'^#.*$\n?', re.MULTILINE)
 	RE_SECTION = re.compile(r'\n{2,}', re.MULTILINE)
 
 	def __init__(self, filename: str) -> None:
