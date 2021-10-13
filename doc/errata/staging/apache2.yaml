@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: apache2
-fix: 2.4.38-3+deb10u6
+fix: 2.4.38-3+deb10u6A~5.0.0.202110130658
 desc: |
  This update addresses the following issues:
  * NULL pointer dereference via malformed requests (CVE-2021-34798)
