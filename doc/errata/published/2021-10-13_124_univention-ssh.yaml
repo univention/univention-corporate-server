@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-ssh` has been migrated to Python 3.
 bug: [53342]
+erratum: 124
+announced: 2021-10-13
