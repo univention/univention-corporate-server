@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The evaluation of deny-lists for shares has been repaired.
 bug: [51650]
+erratum: 123
+announced: 2021-10-13
