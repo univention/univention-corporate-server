@@ -16,17 +16,14 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 
-SUBNET_IP4 = '10.20.30'
-SUBNET_IP6 = '2011:06f8:13dc:0002:19b7:d592:09dd'
-
 
 class Test_DNSForwardZone(object):
 
 	def test_dns_forward_zone_check_soa_record(self, udm):
 		"""Check dns/forward_zone SOA record"""
 		forward_zone_properties = {
-			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
-			'nameserver': "%s.%s" % (uts.random_name(), uts.random_name()),
+			'zone': '%s.%s' % (uts.random_name(), uts.random_dns_record()),
+			'nameserver': "%s.%s" % (uts.random_name(), uts.random_dns_record()),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
 			'zonettl': '128',
@@ -37,9 +34,8 @@ class Test_DNSForwardZone(object):
 		}
 
 		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
-
 		# Note: UDM automatically appends a dot
-		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s. %s. %s %s %s %s %s' % (
+		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
 			forward_zone_properties['nameserver'],
 			forward_zone_properties['contact'].replace('@', '.'),
 			forward_zone_properties['serial'],
@@ -51,7 +47,7 @@ class Test_DNSForwardZone(object):
 
 	def test_dns_forward_zone_removal(self, udm):
 		"""Remove dns/forward_zone"""
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record())
 
 		udm.remove_object('dns/forward_zone', dn=forward_zone)
 		utils.verify_ldap_object(forward_zone, should_exist=False)
@@ -59,7 +55,7 @@ class Test_DNSForwardZone(object):
 	def test_dns_forward_zone_check_soa_serial_incrementation(self, udm):
 		"""Check dns/forward_zone SOA record serial number incrementation"""
 		forward_zone_properties = {
-			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
+			'zone': '%s.%s' % (uts.random_name(), uts.random_dns_record()),
 			'nameserver': uts.random_dns_record(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
@@ -70,7 +66,7 @@ class Test_DNSForwardZone(object):
 			'retry': '8'
 		}
 
-		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
+		forward_zone = udm.create_object('dns/forward_zone', wait_for=True, **forward_zone_properties)
 		new_ttl = '12'
 		udm.modify_object('dns/forward_zone', dn=forward_zone, ttl=new_ttl, wait_for=True)
 
@@ -89,16 +85,16 @@ class Test_DNSForwardZone(object):
 		# bugs: [15654]
 		ns_record = uts.random_dns_record()
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=ns_record)
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=ns_record)
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record]})
 
 	def test_dns_forward_zone_modification_set_nameserver(self, udm):
 		"""Set nameserver during dns/forward_zone modification"""
 		# bugs: [15654]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record(), wait_for=True)
 
 		ns_record = uts.random_dns_record()
-		udm.modify_object('dns/forward_zone', dn=forward_zone, nameserver=ns_record)
+		udm.modify_object('dns/forward_zone', dn=forward_zone, nameserver=ns_record, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record]})
 
 	def test_dns_forward_zone_creation_append_nameservers(self, udm):
@@ -106,7 +102,7 @@ class Test_DNSForwardZone(object):
 		# bugs: [15654]
 		ns_records = [uts.random_dns_record(), uts.random_dns_record()]
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'nameserver': ns_records})
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), append={'nameserver': ns_records})
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})
 
 	def test_dns_forward_zone_modification_append_nameservers(self, udm):
@@ -114,99 +110,98 @@ class Test_DNSForwardZone(object):
 		# bugs: [15654]
 		ns_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=ns_records[0])
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=ns_records[0], wait_for=True)
 
-		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'nameserver': ns_records[1:]})
+		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'nameserver': ns_records[1:]}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})
 
 	def test_dns_forward_zone_creation_set_mx(self, udm):
 		"""Set MX during dns/forward_zone creation"""
 		# bugs: [15654]
-		mx_record = '40 %s' % uts.random_name()
+		mx_record = '40 %s' % uts.random_dns_record()
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), mx=mx_record, nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), mx=mx_record, nameserver=uts.random_dns_record())
 		utils.verify_ldap_object(forward_zone, {'mXRecord': [mx_record]})
 
 	def test_dns_forward_zone_modification_set_mx(self, udm):
 		"""Set MX during dns/forward_zone modification"""
 		# bugs: [15654]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record(), wait_for=True)
 
 		mx_record = '40 %s' % (uts.random_dns_record(),)
-		udm.modify_object('dns/forward_zone', dn=forward_zone, mx=mx_record)
+		udm.modify_object('dns/forward_zone', dn=forward_zone, mx=mx_record, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'mXRecord': [mx_record]})
 
 	def test_dns_forward_zone_creation_append_mx(self, udm):
 		"""Append MX during dns/forward_zone creation"""
 		# bugs: [15654]
-		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name()]
+		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record()]
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'mx': mx_records}, nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), append={'mx': mx_records}, nameserver=uts.random_dns_record())
 		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records})
 
 	def test_dns_forward_zone_modification_append_mx(self, udm):
 		"""Append MX during dns/forward_zone modification"""
 		# bugs: [15654]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record(), wait_for=True)
 
 		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record()]
-		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'mx': mx_records})
+		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'mx': mx_records}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records})
 
 	def test_dns_forward_zone_creation_set_txt(self, udm):
 		"""Set TXT during dns/forward_zone creation"""
 		txt_record = uts.random_string()
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), txt=txt_record, nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), txt=txt_record, nameserver=uts.random_dns_record())
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': [txt_record]})
 
 	def test_dns_forward_zone_modification_set_txt(self, udm):
 		"""Set TXT during dns/forward_zone modification"""
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record(), wait_for=True)
 
 		txt_record = uts.random_string()
-		udm.modify_object('dns/forward_zone', dn=forward_zone, txt=txt_record)
+		udm.modify_object('dns/forward_zone', dn=forward_zone, txt=txt_record, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': [txt_record]})
 
 	def test_dns_forward_zone_creation_append_txt(self, udm):
 		"""Append TXT during dns/forward_zone creation"""
 		txt_records = [uts.random_string(), uts.random_string()]
 
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'txt': txt_records}, nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), append={'txt': txt_records}, nameserver=uts.random_dns_record())
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': txt_records})
 
 	def test_dns_forward_zone_modification_append_txt(self, udm):
 		"""Append TXT during dns/forward_zone modification"""
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record(), wait_for=True)
 
-		txt_records = [uts.random_string(), uts.random_string()]
-		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'txt': txt_records})
+		txt_records = [uts.random_dns_record(), uts.random_dns_record()]
+		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'txt': txt_records}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': txt_records})
 
 	def test_dns_forward_zone_modification_remove_txt(self, udm):
 		"""Remove TXT during dns/forward_zone modification"""
 		# bugs: [15654]
 		txt_records = [uts.random_string(), uts.random_string(), uts.random_string(), uts.random_string()]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'txt': txt_records}, nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'txt': txt_records}, nameserver=uts.random_dns_record(), wait_for=True)
 
-		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'txt': txt_records[2:]})
+		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'txt': txt_records[2:]}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'tXTRecord': txt_records[:2]})
 
 	def test_dns_forward_zone_modification_remove_nameserver(self, udm):
 		"""Remove nameserver during dns/forward_zone modification"""
 		ns_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'nameserver': ns_records})
-		import time
-		time.sleep(5)
-		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'nameserver': ns_records[2:]})
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'nameserver': ns_records}, wait_for=True)
+
+		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'nameserver': ns_records[2:]}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records[:2]]})
 
 	def test_dns_forward_zone_modification_remove_mx(self, udm):
 		"""Remove MX during dns/forward_zone modification"""
-		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name(), '60 %s' % uts.random_name(), '70 %s' % uts.random_name()]
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record(), append={'mx': mx_records})
+		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record(), '60 %s' % uts.random_dns_record(), '70 %s' % uts.random_dns_record()]
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record(), append={'mx': mx_records}, wait_for=True)
 
-		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'mx': mx_records[:2]})
+		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'mx': mx_records[:2]}, wait_for=True)
 		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records[2:]})
 
 
@@ -218,7 +213,7 @@ class Test_DNSServiceRecord(object):
 
 		srv_record_proprties = {
 			'name': '%s tcp %s' % (uts.random_string(), uts.random_string()),
-			'location': '0 1 2 %s.%s' % (uts.random_name(), uts.random_name()),
+			'location': '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()),
 			'zonettl': '128'
 		}
 
@@ -233,7 +228,7 @@ class Test_DNSServiceRecord(object):
 		"""Set location during dns/srv_record creation"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_name())
+		location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
 		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location=location)
 		utils.verify_ldap_object(srv_record, {'sRVRecord': [location]})
 
@@ -241,17 +236,17 @@ class Test_DNSServiceRecord(object):
 		"""Set location during dns/srv_record modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()))
+		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()), wait_for=True)
 
 		location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
-		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, location=location)
+		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, location=location, wait_for=True)
 		utils.verify_ldap_object(srv_record, {'sRVRecord': [location]})
 
 	def test_dns_srv_record_creation_append_locations(self, udm):
 		"""Append locations during dns/srv_record creation"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_name()), '5 3 9 %s.%s' % (uts.random_name(), uts.random_name())]
+		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()), '5 3 9 %s.%s' % (uts.random_name(), uts.random_dns_record())]
 		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), append={'location': locations})
 		utils.verify_ldap_object(srv_record, {'sRVRecord': locations})
 
@@ -259,17 +254,17 @@ class Test_DNSServiceRecord(object):
 		"""Append locations during dns/srv_record modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_name()), '9 3 5 %s.%s' % (uts.random_name(), uts.random_name()), '6 2 4 %s.%s' % (uts.random_name(), uts.random_name())]
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location=locations[0])
+		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()), '9 3 5 %s.%s' % (uts.random_name(), uts.random_dns_record()), '6 2 4 %s.%s' % (uts.random_name(), uts.random_dns_record())]
+		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location=locations[0], wait_for=True)
 
-		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, append={'location': locations[1:]})
+		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, append={'location': locations[1:]}, wait_for=True)
 		utils.verify_ldap_object(srv_record, {'sRVRecord': locations})
 
 	def test_dns_srv_record_removal(self, udm):
 		"""Remove dns/srv_record"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='0 1 2 %s.%s' % (uts.random_name(), uts.random_name()))
+		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()))
 
 		udm.remove_object('dns/srv_record', dn=srv_record, superordinate=forward_zone)
 		utils.verify_ldap_object(srv_record, should_exist=False)
@@ -279,14 +274,14 @@ class Test_DNSServiceRecord(object):
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
 		locations = [
-			'0 1 2 %s.%s' % (uts.random_name(), uts.random_name()),
-			'3 5 6 %s.%s' % (uts.random_name(), uts.random_name()),
-			'1 4 9 %s.%s' % (uts.random_name(), uts.random_name()),
-			'4 8 2 %s.%s' % (uts.random_name(), uts.random_name())
+			'0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()),
+			'3 5 6 %s.%s' % (uts.random_name(), uts.random_dns_record()),
+			'1 4 9 %s.%s' % (uts.random_name(), uts.random_dns_record()),
+			'4 8 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
 		]
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), append={'location': locations})
+		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), append={'location': locations}, wait_for=True)
 
-		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, remove={'location': locations[:2]})
+		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, remove={'location': locations[:2]}, wait_for=True)
 		utils.verify_ldap_object(srv_record, {'sRVRecord': locations[2:]})
 
 
@@ -294,7 +289,7 @@ class Test_DNSHostRecord(object):
 
 	def test_dns_host_record_creation(self, udm):
 		"""Create dns/host"""
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record())
 
 		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
 		utils.verify_ldap_object(host_record)
@@ -315,7 +310,6 @@ class Test_DNSHostRecord(object):
 			'txt': uts.random_string()
 		}
 		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
-
 		utils.verify_ldap_object(host_record, {
 			'dNSTTL': [host_record_properties['zonettl']],
 			record_attr: [host_record_properties['a']],
@@ -351,9 +345,9 @@ class Test_DNSHostRecord(object):
 		"""Set A and AAAA during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, a=ip)
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, a=ip, wait_for=True)
 		utils.verify_ldap_object(host_record, {record_attr: [ip]})
 
 	@pytest.mark.parametrize('record_attr,ips', [
@@ -375,16 +369,16 @@ class Test_DNSHostRecord(object):
 		"""Append A and AAAA during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'a': ips})
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'a': ips}, wait_for=True)
 		utils.verify_ldap_object(host_record, {record_attr: ips})
 
 	def test_dns_host_record_creation_set_mx(self, udm):
 		"""Set MX during dns/host creation"""
-		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_dns_record()), nameserver=uts.random_dns_record())
 
-		mx_record = '40 %s' % uts.random_name()
+		mx_record = '40 %s' % uts.random_dns_record()
 		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), mx=mx_record)
 		utils.verify_ldap_object(host_record, {'mXRecord': [mx_record]})
 
@@ -392,17 +386,17 @@ class Test_DNSHostRecord(object):
 		"""Set MX during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
-		mx_record = '40 %s' % uts.random_name()
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, mx=mx_record)
+		mx_record = '40 %s' % uts.random_dns_record()
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, mx=mx_record, wait_for=True)
 		utils.verify_ldap_object(host_record, {'mXRecord': [mx_record]})
 
 	def test_dns_host_record_creation_append_mx(self, udm):
 		"""Append MX during dns/host creation"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name()]
+		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record()]
 		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'mx': mx_records})
 		utils.verify_ldap_object(host_record, {'mXRecord': mx_records})
 
@@ -410,17 +404,17 @@ class Test_DNSHostRecord(object):
 		"""Append MX during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
-		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name()]
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'mx': mx_records})
+		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record()]
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'mx': mx_records}, wait_for=True)
 		utils.verify_ldap_object(host_record, {'mXRecord': mx_records})
 
 	def test_dns_host_record_creation_set_txt(self, udm):
 		"""Set TXT during dns/host creation"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		txt_record = '%s' % uts.random_string()
+		txt_record = uts.random_string()
 		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), txt=txt_record)
 		utils.verify_ldap_object(host_record, {'tXTRecord': [txt_record]})
 
@@ -428,10 +422,10 @@ class Test_DNSHostRecord(object):
 		"""Set TXT during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
 		txt_record = uts.random_string()
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, txt=txt_record)
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, txt=txt_record, wait_for=True)
 		utils.verify_ldap_object(host_record, {'tXTRecord': [txt_record]})
 
 	def test_dns_host_record_creation_append_txt(self, udm):
@@ -446,10 +440,10 @@ class Test_DNSHostRecord(object):
 		"""Append TXT during dns/host modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name())
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), wait_for=True)
 
 		txt_records = ['%s' % uts.random_string(), '%s' % uts.random_string()]
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'txt': txt_records})
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, append={'txt': txt_records}, wait_for=True)
 		utils.verify_ldap_object(host_record, {'tXTRecord': txt_records})
 
 	@pytest.mark.parametrize('record_attr,ips', [
@@ -460,9 +454,9 @@ class Test_DNSHostRecord(object):
 		"""Remove A and AAAA during dns/host record modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'a': ips})
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'a': ips}, wait_for=True)
 
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'a': ips[:2]})
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'a': ips[:2]}, wait_for=True)
 		utils.verify_ldap_object(host_record, {record_attr: ips[2:]})
 
 	def test_dns_host_record_modification_remove_mx(self, udm):
@@ -470,9 +464,9 @@ class Test_DNSHostRecord(object):
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
 		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name(), '60 %s' % uts.random_name(), '70 %s' % uts.random_name()]
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'mx': mx_records})
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'mx': mx_records}, wait_for=True)
 
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'mx': mx_records[:2]})
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'mx': mx_records[:2]}, wait_for=True)
 		utils.verify_ldap_object(host_record, {'mXRecord': mx_records[2:]})
 
 	def test_dns_host_record_modification_remove_txt(self, udm):
@@ -480,9 +474,9 @@ class Test_DNSHostRecord(object):
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
 		txt_records = [uts.random_string(), uts.random_string(), uts.random_string(), uts.random_string()]
-		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'txt': txt_records})
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, name=uts.random_name(), append={'txt': txt_records}, wait_for=True)
 
-		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'txt': txt_records[:2]})
+		udm.modify_object('dns/host_record', dn=host_record, superordinate=forward_zone, remove={'txt': txt_records[:2]}, wait_for=True)
 		utils.verify_ldap_object(host_record, {'tXTRecord': txt_records[2:]})
 
 
@@ -517,18 +511,18 @@ class Test_DNSAliasRecord(object):
 		"""Set zonettl during dns/alias modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		dns_alias = udm.create_object('dns/alias', superordinate=forward_zone, name=uts.random_name(), cname=uts.random_name())
+		dns_alias = udm.create_object('dns/alias', superordinate=forward_zone, name=uts.random_name(), cname=uts.random_name(), wait_for=True)
 
 		zonettl = '128'
-		udm.modify_object('dns/alias', dn=dns_alias, superordinate=forward_zone, zonettl=zonettl)
+		udm.modify_object('dns/alias', dn=dns_alias, superordinate=forward_zone, zonettl=zonettl, wait_for=True)
 		utils.verify_ldap_object(dns_alias, {'dNSTTL': [zonettl]})
 
 
 class Test_DNSReverseZone(object):
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_check_soa_record(self, udm, ip):
 		"""Check dns/reverse_zone SOA record"""
@@ -556,17 +550,16 @@ class Test_DNSReverseZone(object):
 		)]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_check_soa_record_serial_incrementation(self, udm, ip):
 		"""Check dns/reverse_zone SOA record serial number incrementation"""
 		import ldap.dn
 		import ldap.filter
-		s4connector_installed = utils.package_installed('univention-s4-connector')
 		reverse_zone_properties = {
 			'subnet': ip,
-			'nameserver': uts.random_string(),
+			'nameserver': uts.random_dns_record(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
 			'zonettl': '128',
@@ -575,15 +568,15 @@ class Test_DNSReverseZone(object):
 			'ttl': '16',
 			'retry': '8'
 		}
-		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
+		reverse_zone = udm.create_object('dns/reverse_zone', wait_for=True, **reverse_zone_properties)
 
 		reverse_zone_properties['ttl'] = '12'
 		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'], wait_for=':' in ip)
 		utils.wait_for_replication_from_master_openldap_to_local_samba(ldap_filter=ldap.filter.filter_format('DC=%s', [ldap.dn.str2dn(reverse_zone)[0][0][1]]))
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
-			reverse_zone_properties['nameserver'] + '.' if s4connector_installed else reverse_zone_properties['nameserver'],
+			reverse_zone_properties['nameserver'],
 			reverse_zone_properties['contact'].replace('@', '.'),
-			'3' if s4connector_installed else '2',
+			'2',
 			reverse_zone_properties['refresh'],
 			reverse_zone_properties['retry'],
 			reverse_zone_properties['expire'],
@@ -591,8 +584,8 @@ class Test_DNSReverseZone(object):
 		)]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_removal(self, udm, ip):
 		"""Remove dns/reverse_zone"""
@@ -602,8 +595,8 @@ class Test_DNSReverseZone(object):
 		utils.verify_ldap_object(reverse_zone, should_exist=False)
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_creation_set_nameserver(self, udm, ip):
 		"""Set nameserver during dns/reverse_zone creation"""
@@ -614,21 +607,21 @@ class Test_DNSReverseZone(object):
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_modification_set_nameserver(self, udm, ip):
 		"""Set nameserver during dns/reverse_zone modification"""
 		ns_record = uts.random_dns_record()
 
-		reverse_zone = udm.create_object('dns/reverse_zone', subnet=SUBNET_IP4, nameserver=uts.random_dns_record())
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet=uts.random_subnet(), nameserver=uts.random_dns_record(), wait_for=True)
 
 		udm.modify_object('dns/reverse_zone', dn=reverse_zone, nameserver=ns_record, wait_for=True)
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_creation_append_nameserver(self, udm, ip):
 		"""Append nameserver during dns/reverse_zone creation"""
@@ -639,115 +632,114 @@ class Test_DNSReverseZone(object):
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_modification_append_nameserver(self, udm, ip):
 		"""Append nameserver during dns/reverse_zone modification"""
 		ns_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
 
-		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=ns_records[0])
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=ns_records[0], wait_for=True)
 
-		udm.modify_object('dns/reverse_zone', dn=reverse_zone, append={'nameserver': ns_records[1:]})
+		udm.modify_object('dns/reverse_zone', dn=reverse_zone, append={'nameserver': ns_records[1:]}, wait_for=True)
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_reverse_zone_modification_remove_nameserver(self, udm, ip):
 		"""Remove nameserver during dns/reverse_zone modification"""
 		ns_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
-		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, append={'nameserver': ns_records})
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, append={'nameserver': ns_records}, wait_for=True)
 
-		udm.modify_object('dns/reverse_zone', dn=reverse_zone, remove={'nameserver': ns_records[2:]})
+		udm.modify_object('dns/reverse_zone', dn=reverse_zone, remove={'nameserver': ns_records[2:]}, wait_for=True)
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records[:2]]})
 
 
 class Test_DNSPointerRecord(object):
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_removal(self, udm, ip):
 		"""Remove DNS PTR"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
-		ptr_record = uts.random_name()
+		ptr_record = uts.random_dns_record()
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
 
 		udm.remove_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone)
 		utils.verify_ldap_object(ptr, should_exist=False)
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_creation_set_record(self, udm, ip):
 		"""Set ptr_record during dns/ptr_record creation"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
-		ptr_record = uts.random_name()
+		ptr_record = uts.random_dns_record()
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
-
 		utils.verify_ldap_object(ptr, {'pTRRecord': [ptr_record]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_modification_set_record(self, udm, ip):
 		"""Set ptr_record during dns/ptr_record modification"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
 		ptr_record = uts.random_dns_record()
-		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
+		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record, wait_for=True)
 
 		ptr_record = uts.random_dns_record()
 		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, ptr_record=ptr_record, wait_for=True)
 		utils.verify_ldap_object(ptr, {'pTRRecord': [ptr_record]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_modification_append_records(self, udm, ip):
 		"""Append ptr_records during dns/ptr_record modification"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
-		ptr_record = uts.random_name() + '.'
-		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
+		ptr_record = uts.random_dns_record()
+		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record, wait_for=True)
 
-		ptr_records = [uts.random_name() + '.', uts.random_name() + '.']
-		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, append={'ptr_record': ptr_records})
+		ptr_records = [uts.random_dns_record(), uts.random_dns_record()]
+		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, append={'ptr_record': ptr_records}, wait_for=True)
 		utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records + [ptr_record]})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_creation_append_records(self, udm, ip):
 		"""Append ptr_records during dns/ptr_record creation"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
-		ptr_records = [uts.random_name(), uts.random_name()]
+		ptr_records = [uts.random_dns_record(), uts.random_dns_record()]
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, append={'ptr_record': ptr_records})
 
 		utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records})
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_ptr_modification_remove_records(self, udm, ip):
 		"""Remove ptr_records during dns/ptr_record modification"""
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet=ip, nameserver=uts.random_dns_record())
 
-		ptr_records = [uts.random_name() + '.', uts.random_name() + '.', uts.random_name() + '.', uts.random_name() + '.']
-		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, append={'ptr_record': ptr_records})
+		ptr_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
+		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, append={'ptr_record': ptr_records}, wait_for=True)
 
-		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, remove={'ptr_record': ptr_records[:2]})
+		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, remove={'ptr_record': ptr_records[:2]}, wait_for=True)
 		utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records[2:]})
 
 
@@ -766,19 +758,19 @@ class Test_DNSWrongSuperordinate(object):
 		'dns/alias',
 	])
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_forward_record_creation_with_wrong_superordinate(self, udm, module, ip):
 		"""Create dns/host record with wrong object type as superordinate"""
 		# bugs: [15660]
 		reverse_zone = udm.create_object('dns/reverse_zone', nameserver=uts.random_dns_record(), subnet=ip)
 		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-			udm.create_object('dns/host_record', name=uts.random_name(), superordinate=reverse_zone)
+			udm.create_object('dns/host_record', name=uts.random_dns_record(), superordinate=reverse_zone)
 
 	@pytest.mark.parametrize('ip', [
-		SUBNET_IP4,
-		SUBNET_IP6,
+		uts.random_subnet(),
+		uts.random_ipv6_subnet(),
 	])
 	def test_dns_srv_record_creation_with_wrong_superordinate(self, udm, ip):
 		reverse_zone = udm.create_object('dns/reverse_zone', nameserver=uts.random_dns_record(), subnet=ip)

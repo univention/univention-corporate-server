@@ -134,6 +134,23 @@ def random_ip(ip_iter=iter(range(11, 121))):
 	)
 
 
+def random_subnet(ip_iter=iter(range(11, 121))):
+	# type: (Iterator[int]) -> str
+	"""Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
+	return '%d.%d.%d' % (
+		next(ip_iter),
+		randint(1, 254),
+		randint(1, 254),
+	)
+
+
+def random_ipv6_subnet():
+	# type: () -> str
+	"""Returns random six blocks of an ipv6 address """
+	m = 16**4
+	return ":".join(("%04x" % randint(0, m) for i in range(6)))
+
+
 def random_domain_name(length=10):
 	# type: (int) -> str
 	return '%s.%s' % (

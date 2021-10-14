@@ -298,12 +298,14 @@ def s4connector_present():
 
 def stop_s4connector():
 	# type: () -> None
-	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'stop'))
+	if package_installed('univention-s4-connector'):
+		subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'stop'))
 
 
 def start_s4connector():
 	# type: () -> None
-	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
+	if package_installed('univention-s4-connector'):
+		subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
 
 
 def restart_s4connector():

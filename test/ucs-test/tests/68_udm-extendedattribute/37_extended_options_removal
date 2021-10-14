@@ -15,6 +15,7 @@ import univention.testing.udm as udm_test
 
 if __name__ == '__main__':
     with udm_test.UCSTestUDM() as udm:
+        utils.stop_s4connector()
         eo_name = uts.random_name()
         eo_properties = {
             'name': eo_name,
@@ -34,3 +35,4 @@ if __name__ == '__main__':
             utils.fail('objectClass was not removed from group %r @ %r' % (group_name, group_dn))
         except utils.LDAPObjectValueMissing:
             pass
+        utils.start_s4connector()
