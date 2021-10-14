@@ -302,6 +302,7 @@ class Server(tornado.web.RequestHandler):
 			logger.info('stopping subprocesses: %r', list(cls.PROCESSES.keys()))
 			for process in cls.PROCESSES.values():
 				cls.safe_kill(process.pid, sig)
+			shared_memory.shutdown()
 		else:
 			logger.info('shutting down')
 
