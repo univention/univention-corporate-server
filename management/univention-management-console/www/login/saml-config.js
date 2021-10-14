@@ -11,6 +11,7 @@ var umcConfig = {
 	callback: function(dialog, array, domClass, tools, i18nTools) {
 		tools.status('umcMenu/hideLogin', true);
 		tools.status('single_sign_on_links', null);
+		tools.status('umc/login/disable-default-login', false);
 		dialog.renderLoginDialog();
 		domClass.remove(document.body, 'umcLoginLoading');
 		i18nTools.availableLanguages = availableLocales;

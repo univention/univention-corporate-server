@@ -136,6 +136,12 @@ Description[en]=Specifies a localized text for password complexity notes used on
 Type=str
 Categories=management-umc
 
+[umc/login/disable-default-login]
+Description[de]=Mit dieser Variable kann die Standardanmeldung an der UMC deaktiviert werden. Dies hat zur Folge, dass auf der Anmeldeseite die Felder für Accountnamen und Passwort sowie der Anmelde-Button deaktiviert und nicht mehr angezeigt werden.
+Description[en]=With this variable the default login of the UMC can be deactivated. As a consequence, the fields for account name and password as well as the login button are disabled and no longer shown.
+Type=bool
+Categories=management-umc
+
 [umc/cookie-banner/show]
 Description[de]=Definiert, ob ein Cookie-Banner im Portal und während des Logins angezeigt wird.
 Description[en]=Defines, whether a cookie banner is shown in the Portal and during the login.

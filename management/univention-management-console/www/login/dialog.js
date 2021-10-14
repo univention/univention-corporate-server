@@ -109,9 +109,17 @@ define([
 			(new CookieBanner()).show();
 			this._addDefaultLinks();
 			this._checkCookiesEnabled();
+			this._checkLoginVariant();
 			this._watchUsernameField();
 			this._addSingleSignOnLinks();
 			this._loginDialogRenderedDeferred.resolve();
+		},
+
+		_checkLoginVariant: function() {
+			var defaultLoginDisabled = tools.status('umc/login/disable-default-login');
+			if (defaultLoginDisabled) {
+				query('#umcLoginForm').style('display', 'none');
+			}
 		},
 
 		_addSingleSignOnLinks: function() {

@@ -200,6 +200,7 @@ ucr_vars = [
 	('umc/self-service/account-deregistration/enabled', None, False, ),
 	('umc/self-service/allow-authenticated-use', None, False, ),
 	('portal/show-outdated-browser-warning', None, False, ),
+	('umc/login/disable-default-login', None, False, ),
 ]
 
 for i in ucr_vars:

@@ -66,6 +66,7 @@ Variables: umc/http/session/timeout
 Variables: umc/web/.*
 Variables: umc/login/links/.*
 Variables: umc/login/texts/.*
+Variables: umc/login/disable-default-login
 Variables: umc/server/upload/max
 Variables: license/base
 Variables: uuid/system
