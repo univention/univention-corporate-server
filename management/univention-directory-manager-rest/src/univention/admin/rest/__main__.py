@@ -155,6 +155,10 @@ class Server(object):
 			CORE.info('stopping children: %r' % (list(self.children.values()),))
 			for pid in self.children.values():
 				self.safe_kill(pid, sig)
+			shared_memory.shutdown()
+
+			from univention.admin.rest.module import shared_memory as sm
+			sm.shutdown()
 		else:
 			CORE.info('shutting down in one second')
 
