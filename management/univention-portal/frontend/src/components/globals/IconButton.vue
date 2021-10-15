@@ -29,11 +29,12 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <tabindex-element
     :id="id"
-    tag="button"
     :active-at="activeAt"
-    type="button"
-    class="icon-button"
     :aria-label="ariaLabelProp"
+    :class="{'icon-button--button-style': hasButtonStyle}"
+    class="icon-button"
+    tag="button"
+    type="button"
     @click.prevent.stop="$emit('click')"
   >
     <slot />
@@ -69,6 +70,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    hasButtonStyle: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['click'],
   computed: {
@@ -86,4 +91,14 @@ export default defineComponent({
   border-radius: var(--border-radius-circles)
   padding: var(--layout-spacing-unit)
   background-color: transparent
+
+  &--button-style
+    background-color: var(--button-bgc)
+    border-radius: var(--button-border-radius)
+    border: 0.1rem solid transparent
+    height: var(--inputfield-size)
+    width: @height
+    display: flex
+    align-items: center
+    justify-content: center
 </style>

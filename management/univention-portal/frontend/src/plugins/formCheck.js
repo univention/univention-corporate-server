@@ -63,8 +63,6 @@ const formCheckPlugin = {
           }
         }
       }
-      console.log('modalError: ', modalError);
-
       return true;
     };
 
@@ -78,5 +76,5 @@ export default formCheckPlugin;
 // @blur="$formChecker(modelValueData, requiredFields, label)"
 // @keyup="$formChecker(modelValueData, requiredFields, label)"
 
-// @blur="$formChecker(modelValueData, currentLocale, $translateLabel('LINK'))"
-// @keyup="$formChecker(modelValueData, currentLocale, $translateLabel('LINK'))"
+// @blur="$formChecker(modelValueData, currentLocale, _('Link'))"
+// @keyup="$formChecker(modelValueData, currentLocale, _('Link'))"

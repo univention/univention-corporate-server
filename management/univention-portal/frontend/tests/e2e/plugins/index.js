@@ -14,6 +14,17 @@ module.exports = (on, config) => {
   //  webpackOptions: require('@vue/cli-service/webpack.config'),
   //  watchOptions: {}
   // }))
+  on('task', {
+    log(message) {
+      console.log(message);
+      return null
+    },
+    table(message) {
+      console.table(message);
+      return null
+    }
+  });
+
 
   return {
     ...config,

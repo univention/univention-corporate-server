@@ -27,46 +27,60 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
-    class="portal-tooltip"
-    role="tooltip"
-    data-test="portal-tooltip"
-  >
+  <teleport to="body">
     <div
-      class="portal-tooltip__header"
+      class="portal-tooltip"
+      role="tooltip"
+      data-test="portal-tooltip"
     >
       <div
-        class="portal-tooltip__thumbnail"
-        :style="backgroundColor ? `background: ${backgroundColor}` : ''"
+        class="portal-tooltip__header"
       >
-        <img
-          :src="icon || './questionMark.svg'"
-          onerror="this.src='./questionMark.svg'"
-          alt=""
-          class="portal-tooltip__logo"
+        <div
+          class="portal-tooltip__thumbnail"
+          :style="backgroundColor ? `background: ${backgroundColor}` : ''"
         >
+          <img
+            :src="icon || './questionMark.svg'"
+            onerror="this.src='./questionMark.svg'"
+            alt=""
+            class="portal-tooltip__logo"
+          >
+        </div>
+        <div class="portal-tooltip__title">
+          {{ title }}
+        </div>
+        <icon-button
+          icon="x"
+          class="portal-tooltip__close-icon"
+          :aria-label-prop="CLOSE_TOOLTIP"
+          @click="closeToolTip()"
+        />
       </div>
-      <div class="portal-tooltip__title">
-        {{ title }}
-      </div>
-    </div>
 
-    <!-- eslint-disable vue/no-v-html -->
-    <div
-      v-if="description"
-      :id="ariaId"
-      class="portal-tooltip__description"
-      v-html="description"
-    />
+      <!-- eslint-disable vue/no-v-html -->
+      <div
+        v-if="description"
+        :id="ariaId"
+        class="portal-tooltip__description"
+        v-html="description"
+      />
     <!-- eslint-enable vue/no-v-html -->
-  </div>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
+
+import IconButton from '@/components/globals/IconButton.vue';
 
 export default defineComponent({
   name: 'PortalToolTip',
+  components: {
+    IconButton,
+  },
   props: {
     title: {
       type: String,
@@ -89,10 +103,20 @@ export default defineComponent({
       default: '',
     },
   },
+  computed: {
+    CLOSE_TOOLTIP(): string {
+      return _('Close Tooltip');
+    },
+  },
+  methods: {
+    closeToolTip() {
+      this.$store.dispatch('tooltip/unsetTooltip');
+    },
+  },
 });
 </script>
 
-<style scoped lang="stylus">
+<style lang="stylus">
 .portal-tooltip
   position: fixed
   bottom: calc(2 * var(--layout-spacing-unit))
@@ -103,7 +127,6 @@ export default defineComponent({
   max-width: calc(20 * 1rem)
   padding: calc(2 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
-  pointer-events: none
   z-index: $zindex-3
   display: block;
 
@@ -111,17 +134,21 @@ export default defineComponent({
     bottom: unset;
     top: calc(3 * var(--layout-spacing-unit))
     min-width: 4rem
-    max-width: calc(20 * 1rem)
+    max-width: 84vw
     width: 90%
     left:0
     right:0
     margin-left:auto
     margin-right:auto
+    font-size: var(--font-size-5)
 
   &__header
     display: flex
     align-items: center
     margin-bottom: 1rem
+
+    @media $mqSmartphone
+      margin-bottom: calc(1 * var(--layout-spacing-unit))
 
   &__thumbnail
     border-radius: var(--border-radius-apptile)
@@ -136,9 +163,21 @@ export default defineComponent({
       height: calc(3 * 1rem)
       margin-right: calc(3 * calc(1rem / 2))
 
+      @media $mqSmartphone
+        height: calc(4 * var(--layout-spacing-unit))
+        width: @height
+        margin-right: calc(1 * var(--layout-spacing-unit))
+
   &__logo
     width: 80%
     max-height: 80%
     vertical-align: middle
     border: 0
+
+  &__close-icon
+    display: none
+
+    @media $mqSmartphone
+      display: block
+      margin-left: auto
 </style>

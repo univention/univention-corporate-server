@@ -117,6 +117,27 @@
       "anonymous": false,
       "backgroundColor": null,
       "description": {
+        "de_DE": "Wikipedia-Eintrag von Univention Corporate Server",
+        "en_US": "Wikipedia article about Univention Corporate Server"
+      },
+      "dn": "cn=ucs-wikipedia,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "linkTarget": "useportaldefault",
+      "links": [
+        {"locale": "en_US", "value": "https://en.wikipedia.org/wiki/Univention_Corporate_Server"},
+        {"locale": "de_DE", "value": "https://de.wikipedia.org/wiki/Univention_Corporate_Server"}
+      ],
+      "logo_name": "./data/icons/owncloud-userdoc.svg",
+      "name": {
+        "de_DE": "UCS auf Wikipedia",
+        "en_US": "UCS at Wikipedia"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
         "de_DE": "Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems",
         "en_US": "Univention Management Console for admin­is­tra­ting the UCS domain and the local system",
         "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
@@ -322,7 +343,8 @@
           "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
           "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
           "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-          "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+          "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+          "cn=ucs-wikipedia,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
         ]
       ]
     ]

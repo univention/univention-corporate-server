@@ -31,6 +31,7 @@
     <label>{{ label }}</label>
     <div
       class="image-upload__canvas"
+      :data-test="`imageUploadCanvas--${label}`"
       @dragenter.prevent=""
       @dragover.prevent=""
       @drop.prevent="drop"
@@ -39,15 +40,16 @@
       <img
         v-if="modelValue"
         :src="modelValue"
+        :data-test="`imagePreview--${label}`"
         alt=""
       >
       <div
         v-else
         class="image-upload__nofile"
       >
-        <translate
-          i18n-key="SELECT_FILE"
-        />
+        <span>
+          {{ SELECT_FILE }}
+        </span>
       </div>
     </div>
     <footer class="image-upload__footer">
@@ -55,29 +57,37 @@
         ref="file_input"
         class="image-upload__file-input"
         type="file"
+        :data-test="`imageUploadFileInput--${label}`"
         @change="upload"
       >
       <button
         type="button"
+        :tabindex="tabindex"
+        :data-test="`imageUploadButton--${label}`"
         @click.prevent="startUpload"
       >
         <portal-icon
           icon="upload"
         />
-        <translate
-          i18n-key="UPLOAD"
-        />
+        {{ UPLOAD }}
+        <span class="sr-only sr-only-mobile">
+          {{ IMAGE_UPLOAD_STATE }}
+        </span>
       </button>
       <button
         type="button"
+        :tabindex="tabindex"
+        :disabled="!modelValue"
+        :data-test="`imageRemoveButton--${label}`"
         @click.prevent="remove"
       >
         <portal-icon
           icon="trash"
         />
-        <translate
-          i18n-key="REMOVE"
-        />
+        {{ REMOVE }}
+        <span class="sr-only sr-only-mobile">
+          {{ label }}
+        </span>
       </button>
     </footer>
   </div>
@@ -85,15 +95,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
-import Translate from '@/i18n/Translate.vue';
+
+interface ImageUploadData {
+  fileName: string,
+}
 
 export default defineComponent({
   name: 'ImageUpload',
   components: {
     PortalIcon,
-    Translate,
   },
   props: {
     label: {
@@ -104,13 +117,39 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    tabindex: {
+      type: Number,
+      default: 0,
+    },
   },
   emits: ['update:modelValue'],
+  data(): ImageUploadData {
+    return {
+      fileName: '',
+    };
+  },
+  computed: {
+    SELECT_FILE(): string {
+      return _('Select file');
+    },
+    UPLOAD(): string {
+      return _('Upload');
+    },
+    REMOVE(): string {
+      return _('Remove');
+    },
+    IMAGE_UPLOAD_STATE(): string {
+      return `${this.label}, ${this.hasImage}`;
+    },
+    hasImage(): string {
+      return this.modelValue ? this.fileName : _('no file selected');
+    },
+  },
   methods: {
     drop(evt: DragEvent) {
       const dt = evt.dataTransfer;
       if (dt && dt.files) {
-        this.handleFiles(dt.files);
+        this.handleFile(dt.files);
       }
     },
     startUpload() {
@@ -119,16 +158,15 @@ export default defineComponent({
     upload(evt: Event) {
       const target = evt.target as HTMLInputElement;
       if (target.files) {
-        this.handleFiles(target.files);
+        this.fileName = target.files[0].name;
+        this.handleFile(target.files[0]);
       }
     },
-    handleFiles(files) {
-      const file = files[0];
+    handleFile(file) {
+      // const file = files[0];
       const reader = new FileReader();
-
       reader.onload = (e) => {
         if (e.target) {
-          console.log('e.target: ', e.target);
           this.$emit('update:modelValue', e.target.result);
         }
       };
@@ -136,6 +174,7 @@ export default defineComponent({
     },
     remove() {
       this.$emit('update:modelValue', '');
+      this.fileName = '';
     },
   },
 });
@@ -152,6 +191,7 @@ export default defineComponent({
     img
       max-height: 10rem
       margin: auto
+      max-width: 100%
   &__footer
     margin: var(--layout-spacing-unit) 0
     display: flex

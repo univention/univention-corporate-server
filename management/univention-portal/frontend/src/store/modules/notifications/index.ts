@@ -81,7 +81,6 @@ const notifications: PortalModule<Notifications> = {
     },
     removeAllNotifications({ commit, getters }: PortalActionContext<Notifications>): void {
       [...getters.allNotifications].forEach((notification) => {
-        console.log('Removing', notification);
         commit('REMOVE_NOTIFICATION', notification);
       });
     },

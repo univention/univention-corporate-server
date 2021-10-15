@@ -43,24 +43,27 @@
       >
         <button
           type="button"
-          @click.prevent="$emit('remove')"
+          :tabindex="tabindex"
+          @click.prevent="openConfirmationDialog"
         >
-          <translate i18n-key="REMOVE_HERE" />
+          {{ REMOVE }}
         </button>
       </footer>
       <footer>
         <button
           type="button"
+          :tabindex="tabindex"
           @click.prevent="cancel"
         >
-          <translate i18n-key="CANCEL" />
+          {{ CANCEL }}
         </button>
         <button
           class="primary"
           type="submit"
+          :tabindex="tabindex"
           @click.prevent="submit"
         >
-          <translate i18n-key="SAVE" />
+          {{ SAVE }}
         </button>
       </footer>
     </form>
@@ -69,9 +72,11 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import ModalDialog from '@/components/ModalDialog.vue';
-import Translate from '@/i18n/Translate.vue';
+import activity from '@/jsHelper/activity';
+import ModalDialog from '@/components/modal/ModalDialog.vue';
 
 export interface ValidatableData {
   getErrors: () => Record<string, string>,
@@ -81,7 +86,6 @@ export default defineComponent({
   name: 'EditWidget',
   components: {
     ModalDialog,
-    Translate,
   },
   props: {
     label: {
@@ -97,7 +101,26 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['remove', 'save'],
+  emits: ['unlink', 'remove', 'save'],
+  computed: {
+    ...mapGetters({
+      activityLevel: 'activity/level',
+      locales: 'locale/getAvailableLocales',
+    }),
+    tabindex(): number {
+      // Sets to tabindex -1 if modalLevel 2 is active
+      return activity(['modal'], this.activityLevel);
+    },
+    SAVE(): string {
+      return _('Save');
+    },
+    CANCEL(): string {
+      return _('Cancel');
+    },
+    REMOVE(): string {
+      return _('Remove');
+    },
+  },
   mounted() {
     this.$el.querySelector('input:enabled')?.focus();
   },
@@ -121,13 +144,29 @@ export default defineComponent({
           }
         });
         const description = Object.values(errors)
-          .map((err) => this.$translateLabel(err))
+          .map((err) => _('%(key1)s', { key1: err }))
           .join('</li><li>');
         this.$store.dispatch('notifications/addErrorNotification', {
-          title: this.$translateLabel('ERROR_ON_VALIDATION'),
+          title: _('The form data is not valid'),
           description: `<ul><li>${description}</li></ul>`,
         });
       }
+    },
+    openConfirmationDialog() {
+      this.$store.dispatch('modal/setShowModalPromise', {
+        level: 2,
+        name: 'ConfirmDialog',
+        stubborn: true,
+      }).then((values) => {
+        this.$store.dispatch('modal/hideAndClearModal', 2);
+        if (values.action === 'remove') {
+          this.$emit('remove');
+        } else if (values.action === 'unlink') {
+          this.$emit('unlink');
+        }
+      }, () => {
+        this.$store.dispatch('modal/hideAndClearModal', 2);
+      });
     },
   },
 });

@@ -30,6 +30,7 @@ License with the Debian GNU/Linux or Univention distribution in file
   <div
     class="notification"
     :class="`notification--${importance}`"
+    :data-test="`notification--${importance}`"
     @mouseenter="stopDismissal"
     @mouseleave="startDismissal"
   >
@@ -48,7 +49,8 @@ License with the Debian GNU/Linux or Univention distribution in file
         class="notification__closing-button"
         tabindex="0"
         icon="x"
-        :aria-label-prop="ariaLabelDismissNotification"
+        :aria-label-prop="DISMISS_NOTIFICATION"
+        :data-test="`closeNotification--${importance}`"
         @click="removeNotification()"
       >
         <svg
@@ -77,6 +79,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
 
@@ -121,27 +124,28 @@ export default defineComponent({
       default: null,
     },
   },
+  emits: ['alertRemovedNotification'],
   data(): NotificationData {
     return {
       dismissalTimeout: null,
     };
   },
   computed: {
-    ariaLabelDismissNotification(): string {
-      return this.$translateLabel('DISMISS_NOTIFICATION');
-    },
     preAccouncement(): string {
-      let preAccouncement = this.$translateLabel('DEFAULT_NOTIFICATION');
+      let preAccouncement = _('Info');
       if (this.importance === 'warning') {
-        preAccouncement = this.$translateLabel('WARNING');
+        preAccouncement = _('Warning');
       }
       if (this.importance === 'success') {
-        preAccouncement = this.$translateLabel('SUCCESS');
+        preAccouncement = _('Success');
       }
       if (this.importance === 'error') {
-        preAccouncement = this.$translateLabel('ERROR');
+        preAccouncement = _('Error');
       }
       return `${preAccouncement}:`;
+    },
+    DISMISS_NOTIFICATION(): string {
+      return `${_('Dismiss notification')}: ${this.title}`;
     },
   },
   mounted() {
@@ -174,6 +178,7 @@ export default defineComponent({
       }
     },
     removeNotification() {
+      this.$emit('alertRemovedNotification');
       this.$store.dispatch('notifications/removeNotification', this.token);
     },
     hideNotification() {
@@ -226,6 +231,7 @@ export default defineComponent({
 
   .icon-button
     border: 0.1rem solid transparent
+    align-self: flex-start;
 
     &:hover, &:focus, &:active
       background-color: transparent
@@ -260,4 +266,11 @@ export default defineComponent({
       color: var(--color-white) !important
       transition: color var(--portal-transition-duration)
       text-decoration: underline
+
+    ul
+      padding-left: calc(2* var(--layout-spacing-unit))
+      margin-top: 0
+
+  svg
+    margin-right: 0!important
 </style>

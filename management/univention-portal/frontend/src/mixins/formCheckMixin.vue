@@ -51,25 +51,17 @@ export default defineComponent({
     for (i; i < props.length; i += 1) {
       errorObject[props[i]] = false;
     }
-    // console.log('errorObject clean: ', errorObject);
   },
   methods: {
     checkFormInput() {
       const props = Object.getOwnPropertyNames(this.modelValueData);
-      // console.log('props: ', props);
       const reqFields = this.requiredFields;
 
       const modalError = this.getModalError;
       let i = 0;
       for (i; i < props.length; i += 1) {
-        // console.log('reqFields: ', reqFields);
-        // console.log('props[i]: ', props[i]);
-        // console.log('this.modelValueData[props[i]]: ', this.modelValueData[props[i]]);
-
         // check if we need to test for errors
         if (reqFields.includes(props[i])) {
-          // console.log('check for error!');
-
           if (this.modelValueData[props[i]] === '') {
             this.error[props[i]] = true;
 
@@ -82,10 +74,10 @@ export default defineComponent({
           }
         }
       }
-
-      // console.log('this.error: ', this.error);
-      // console.log('getModalError: ', this.getModalError);
     },
   },
 });
 </script>
+
+<style>
+</style>

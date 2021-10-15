@@ -26,44 +26,47 @@
   * /usr/share/common-licenses/AGPL-3; if not, see
   * <https://www.gnu.org/licenses/>.
  */
+import { ActionContext, Dispatch } from 'vuex';
 import { updateLocale } from '@/i18n/translations';
-import { setCookie } from '@/jsHelper/tools';
-import { PortalModule } from '@/store/root.models';
-import { Locale } from './locale.models';
-
-interface LocaleDefinition {
-  id: string;
-  label: string;
-}
+import { getCookie, setCookie } from '@/jsHelper/tools';
+import { PortalModule, RootState } from '@/store/root.models';
+import { Locale, ShortLocale, LocaleDefinition } from './locale.models';
 
 export interface LocaleState {
   locale: Locale;
+  defaultLocale: Locale | null;
   availableLocales: Locale[];
 }
+type LocaleActionContext = ActionContext<LocaleState, RootState>;
 
 const locale: PortalModule<LocaleState> = {
   namespaced: true,
   state: {
     locale: 'en_US',
+    defaultLocale: null,
     availableLocales: ['en_US'],
   },
 
   mutations: {
-    NEWLOCALE(state, payload) {
+    NEWLOCALE(state: LocaleState, payload: Locale): void {
       state.locale = payload;
     },
-    AVAILABLE_LOCALES(state, payload) {
+    DEFAULT_LOCALE(state: LocaleState, payload: Locale): void {
+      state.defaultLocale = payload;
+    },
+    AVAILABLE_LOCALES(state: LocaleState, payload: Locale[]): void {
       state.availableLocales = payload;
     },
   },
 
   getters: {
-    getLocale: (state) => state.locale,
-    getAvailableLocales: (state) => state.availableLocales,
+    getLocale: (state: LocaleState) => state.locale,
+    getDefaultLocale: (state: LocaleState) => state.defaultLocale,
+    getAvailableLocales: (state: LocaleState) => state.availableLocales,
   },
 
   actions: {
-    setLocale({ commit, dispatch }, payload: Locale) {
+    setLocale({ commit, dispatch }: LocaleActionContext, payload: Locale): Promise<unknown> {
       commit('NEWLOCALE', payload);
       const lang = payload.replace('_', '-');
       dispatch('menu/setDisabled', [`menu-item-language-${lang}`], { root: true });
@@ -72,17 +75,42 @@ const locale: PortalModule<LocaleState> = {
       // TODO create helper function
       const html = document.documentElement;
       html.setAttribute('lang', localePrefix);
-      return updateLocale(localePrefix);
+      return updateLocale(localePrefix as ShortLocale);
     },
-    setAvailableLocale({ dispatch, commit }, payload: LocaleDefinition[]) {
+    setInitialLocale({ getters, dispatch }: LocaleActionContext): Promise<Dispatch> {
+      if (getters.getAvailableLocales.length === 1) {
+        dispatch('setLocale', getters.getAvailableLocales[0]);
+      }
+      const umcLang = getCookie('UMCLang');
+      if (umcLang) {
+        return dispatch('setLocale', umcLang.replace('-', '_'));
+      }
+      if (getters.getDefaultLocale) {
+        return dispatch('setLocale', getters.getDefaultLocale);
+      }
+      if (window.navigator.languages) {
+        let preferred = null;
+        window.navigator.languages.some((language) => {
+          preferred = getters.getAvailableLocales.find((loc) => loc === language.replace('-', '_') || loc.slice(0, 2) === language);
+          return !!preferred;
+        });
+        if (preferred) {
+          return dispatch('setLocale', preferred);
+        }
+      }
+      return dispatch('setLocale', 'en_US');
+    },
+    setAvailableLocale({ dispatch, commit }: LocaleActionContext, payload: LocaleDefinition[]): Promise<Dispatch> {
       const locales = payload.map((loc) => loc.id.replace('-', '_'));
       commit('AVAILABLE_LOCALES', locales);
+      const defaultLocale = payload.find((loc) => loc.default);
+      if (defaultLocale) {
+        commit('DEFAULT_LOCALE', defaultLocale.id.replace('-', '_'));
+      }
       // TODO create helper function
       const html = document.documentElement;
       html.setAttribute('lang', 'en'); // setting document lang to en, because it is also set in line 47, 48
-      if (locales.length === 1) {
-        dispatch('setLocale', locales[0]);
-      }
+      return dispatch('setInitialLocale');
     },
   },
 };

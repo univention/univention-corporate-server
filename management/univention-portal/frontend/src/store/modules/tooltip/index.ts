@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { Commit } from 'vuex';
 import { PortalModule } from '../../root.models';
 import { Tooltip } from './tooltip.models';
 
@@ -46,10 +47,10 @@ const tooltip: PortalModule<TooltipState> = {
   getters: { tooltip: (state) => state.tooltip },
 
   actions: {
-    setTooltip({ commit }, payload: TooltipState): void {
+    setTooltip({ commit }: { commit: Commit }, payload: TooltipState): void {
       commit('SETTOOLTIP', payload);
     },
-    unsetTooltip({ commit }): void {
+    unsetTooltip({ commit }: { commit: Commit }): void {
       commit('SETTOOLTIP', { tooltip: null });
     },
   },

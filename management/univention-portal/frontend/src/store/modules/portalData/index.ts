@@ -26,11 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { Commit, Dispatch, ActionContext } from 'vuex';
 import { put, getAdminState } from '@/jsHelper/admin';
-import translateLabel from '@/jsHelper/translate';
+import _ from '@/jsHelper/translate';
+import { randomId } from '@/jsHelper/tools';
 
-import { PortalModule } from '../../root.models';
-import { PortalData } from './portalData.models';
+import { PortalModule, RootState } from '../../root.models';
+import { PortalData, PortalImageDataBlob, LocalizedString, PortalContent } from './portalData.models';
 
 function isEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
@@ -48,7 +50,9 @@ export interface PortalDataState {
   portal: PortalData;
   editMode: boolean;
   cacheId: string;
+  errorContentType: number | null;
 }
+type PortalDataActionContext = ActionContext<PortalDataState, RootState>;
 
 const portalData: PortalModule<PortalDataState> = {
   namespaced: true,
@@ -73,32 +77,46 @@ const portalData: PortalModule<PortalDataState> = {
     },
     editMode: getAdminState(),
     cacheId: '',
+    errorContentType: null,
   },
 
   mutations: {
-    PORTALDATA(state, payload) {
+    PORTALDATA(state: PortalDataState, payload): void {
       const portal = payload.portal;
       const adminMode = payload.adminMode;
       state.portal.portal = portal.portal;
-      state.portal.entries = portal.entries;
-      state.portal.folders = portal.folders;
-      state.portal.categories = portal.categories;
+      state.portal.entries = portal.entries.map((e) => {
+        e.id = `entry-${randomId()}`;
+        return e;
+      });
+      state.portal.folders = portal.folders.map((f) => {
+        f.id = `folder-${randomId()}`;
+        return f;
+      });
+      // TODO backend should set virtual
+      state.portal.categories = portal.categories.map((c) => {
+        c.virtual = c.virtual ?? false;
+        c.id = `category-${randomId()}`;
+        return c;
+      });
       state.portal.menuLinks = portal.menu_links;
       state.portal.userLinks = portal.user_links;
       if (adminMode) {
         const menu = {
           display_name: {
-            en_US: translateLabel('PORTAL_MENU'),
+            en_US: _('Portal Menu'),
           },
           virtual: true,
+          id: '$$menu$$',
           dn: '$$menu$$',
           entries: state.portal.menuLinks,
         };
         const userMenu = {
           display_name: {
-            en_US: translateLabel('USER_MENU'),
+            en_US: _('User Menu'),
           },
           virtual: true,
+          id: '$$user$$',
           dn: '$$user$$',
           entries: state.portal.userLinks,
         };
@@ -107,22 +125,29 @@ const portalData: PortalModule<PortalDataState> = {
         state.portal.portal.content.unshift([userMenu.dn, userMenu.entries]);
         state.portal.portal.content.unshift([menu.dn, menu.entries]);
       }
-      console.log(state.portal.portal);
       state.cacheId = portal.cache_id;
     },
-    PORTALNAME(state, name) {
+    PORTALNAME(state: PortalDataState, name: LocalizedString): void {
       state.portal.portal.name = name;
     },
-    PORTALLOGO(state, data) {
+    PORTALLOGO(state: PortalDataState, data: PortalImageDataBlob): void {
       state.portal.portal.logo = data;
     },
-    CONTENT(state, content) {
+    CONTENT(state: PortalDataState, content: PortalContent): void {
       state.portal.portal.content = content;
     },
-    PORTALBACKGROUND(state, data) {
+    PORTALBACKGROUND(state: PortalDataState, data:PortalImageDataBlob): void {
       state.portal.portal.background = data;
     },
-    CHANGE_CATEGORY(state, payload) {
+    CHANGE_FOLDER_ENTRIES(state: PortalDataState, payload): void {
+      state.portal.folders.forEach((folder) => {
+        if (folder.dn !== payload.dn) {
+          return;
+        }
+        folder.entries = payload.entries;
+      });
+    },
+    CHANGE_CATEGORY(state: PortalDataState, payload): void {
       state.portal.categories.forEach((category) => {
         if (category.dn !== payload.category) {
           return;
@@ -130,7 +155,7 @@ const portalData: PortalModule<PortalDataState> = {
         category.entries = payload.entries;
       });
     },
-    RESHUFFLE_CATEGORY(state, payload) {
+    RESHUFFLE_CATEGORY(state: PortalDataState, payload): void {
       state.portal.portal.content = state.portal.portal.content.map(([category, entries]) => {
         if (category === payload.category) {
           return [category, payload.entries];
@@ -138,19 +163,22 @@ const portalData: PortalModule<PortalDataState> = {
         return [category, entries];
       });
     },
-    EDITMODE(state, editMode) {
+    EDITMODE(state: PortalDataState, editMode: boolean): void {
       state.editMode = editMode;
 
       // save state to localstorage if we are in dev mode
       if (process.env.VUE_APP_LOCAL) {
         if (editMode) {
-          console.info('logged into admin mode');
-          localStorage.setItem('UCSAdmin', editMode);
+          // console.info('logged into admin mode');
+          localStorage.setItem('UCSAdmin', editMode.toString());
         } else {
-          console.info('logged out of admin mode');
+          // console.info('logged out of admin mode');
           localStorage.removeItem('UCSAdmin');
         }
       }
+    },
+    PORTAL_DISPLAY_ERROR(state: PortalDataState, payload: number): void {
+      state.errorContentType = payload;
     },
   },
 
@@ -172,50 +200,62 @@ const portalData: PortalModule<PortalDataState> = {
     menuLinks: (state) => state.portal.menuLinks,
     editMode: (state) => state.editMode,
     cacheId: (state) => state.cacheId,
+    errorContentType: (state) => state.errorContentType,
   },
 
   actions: {
-    setPortal({ commit }, payload) {
+    setPortal({ commit }: PortalDataActionContext, payload): void {
       commit('PORTALDATA', payload);
     },
-    setPortalName({ commit }, name) {
+    setPortalName({ commit }: PortalDataActionContext, name: LocalizedString): void {
       commit('PORTALNAME', { ...name });
     },
-    setPortalLogo({ commit }, data: string) {
+    setPortalLogo({ commit }: PortalDataActionContext, data: PortalImageDataBlob): void {
       commit('PORTALLOGO', data);
     },
-    setPortalBackground({ commit }, data: string) {
+    setPortalBackground({ commit }: PortalDataActionContext, data: PortalImageDataBlob): void {
       commit('PORTALBACKGROUND', data);
     },
-    async savePortalCategories({ commit, dispatch, getters }) {
+    async savePortalCategories({ dispatch, getters }: PortalDataActionContext): Promise<void> {
       const content = getters.portalContent;
       const portalDn = getters.getPortalDn;
       const attrs = {
         categories: content.map(([category]) => category).filter((category) => !['$$menu$$', '$$user$$'].includes(category)),
       };
-      await put(portalDn, attrs, { dispatch }, 'CATEGORY_ORDER_SUCCESS', 'CATEGORY_ORDER_FAILURE');
+      await put(portalDn, attrs, { dispatch }, _('Categories could not be re-sorted'), _('Categories successfully re-sorted'));
     },
-    async saveContent({ commit, dispatch, getters }) {
+    async saveFolder({ getters, dispatch }: PortalDataActionContext, payload): Promise<void> {
+      const folder = getters.portalFolders.find((foldr) => foldr.dn === payload.dn);
+      if (!folder) {
+        return;
+      }
+      const attrs = {
+        entries: folder.entries,
+      };
+      // console.info('Rearranging entries for', payload.dn);
+      await put(folder.dn, attrs, { dispatch }, _('Entries could not be re-sorted'), _('Entries successfully re-sorted'));
+    },
+    async saveContent({ dispatch, getters }: PortalDataActionContext): Promise<void> {
       const content = getters.portalContent;
       const categories = getters.portalCategories;
       const portalDn = getters.getPortalDn;
       const puts: Promise<boolean>[] = [];
       content.forEach(([cat, entries]) => {
         if (cat === '$$user$$') {
-          console.info('Rearranging entries for user menu');
+          // console.info('Rearranging entries for user menu');
           const attrs = {
             userLinks: entries,
           };
-          const ret = put(portalDn, attrs, { dispatch }, 'ENTRY_ORDER_SUCCESS', 'ENTRY_ORDER_FAILURE');
+          const ret = put(portalDn, attrs, { dispatch }, _('Entries could not be re-sorted'));
           puts.push(ret);
           return;
         }
         if (cat === '$$menu$$') {
-          console.info('Rearranging entries for portal menu');
+          // console.info('Rearranging entries for portal menu');
           const attrs = {
             menuLinks: entries,
           };
-          const ret = put(portalDn, attrs, { dispatch }, 'ENTRY_ORDER_SUCCESS', 'ENTRY_ORDER_FAILURE');
+          const ret = put(portalDn, attrs, { dispatch }, _('Entries could not be re-sorted'));
           puts.push(ret);
           return;
         }
@@ -229,17 +269,22 @@ const portalData: PortalModule<PortalDataState> = {
           if (isEqual(entries, category.entries)) {
             return;
           }
-          console.info('Rearranging entries for', cat);
-          const ret = put(cat, attrs, { dispatch }, 'ENTRY_ORDER_SUCCESS', 'ENTRY_ORDER_FAILURE');
+          // console.info('Rearranging entries for', cat);
+          const ret = put(cat, attrs, { dispatch }, _('Entries could not be re-sorted'));
           puts.push(ret);
         });
       });
-      await Promise.all(puts);
+      const results = await Promise.all(puts);
+      if (results.every((result) => !!result)) {
+        dispatch('notifications/addSuccessNotification', {
+          title: _('Entries successfully re-sorted'),
+        }, { root: true });
+      }
     },
-    replaceContent({ commit }, content) {
+    replaceContent({ commit }: PortalDataActionContext, content: Array<Record<string, unknown>>): void {
       commit('CONTENT', content);
     },
-    moveContent({ commit, getters }, payload) {
+    moveContent({ commit, getters }: PortalDataActionContext, payload): void {
       const src = payload.src;
       const origin = payload.origin;
       const dst = payload.dst;
@@ -265,7 +310,7 @@ const portalData: PortalModule<PortalDataState> = {
       });
       commit('CONTENT', content);
     },
-    reshuffleContent({ commit, getters }, payload) {
+    reshuffleContent({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload): void {
       const src = payload.src;
       const dst = payload.dst;
       const cat = payload.cat;
@@ -275,7 +320,7 @@ const portalData: PortalModule<PortalDataState> = {
         const newContent: string[][] = [];
         let srcContent: string[] = [];
         let srcIdx = -1;
-        let dstContent: string[] = [];
+        let dstContent: string[] = []; // TODO
         let dstIdx = -1;
         content.forEach(([category, entries], idx) => {
           if (category === src) {
@@ -299,6 +344,52 @@ const portalData: PortalModule<PortalDataState> = {
           newContent.push(...content.slice(srcIdx + 1));
         }
         commit('CONTENT', newContent);
+        return;
+      }
+      const catIsFolder = getters.portalFolders.some((foldr) => foldr.dn === cat);
+      if (catIsFolder) {
+        getters.portalFolders.forEach((folder) => {
+          if (folder.dn !== cat) {
+            return;
+          }
+          const entries: string[] = [];
+          const tiles: Array<Record<string, unknown>> = [];
+          const srcIdx = folder.entries.indexOf(src);
+          let dstIdx = folder.entries.indexOf(dst);
+          const oldTiles = [...rootGetters['modal/getModalProps']('firstLevelModal').tiles];
+          if (dstIdx === -1) {
+            // TileAdd.vue
+            dstIdx = oldTiles.length - 1;
+          }
+          if (srcIdx < dstIdx) {
+            entries.push(...folder.entries.slice(0, srcIdx));
+            entries.push(...folder.entries.slice(srcIdx + 1, dstIdx + 1));
+            entries.push(src);
+            entries.push(...folder.entries.slice(dstIdx + 1));
+            tiles.push(...oldTiles.slice(0, srcIdx));
+            tiles.push(...oldTiles.slice(srcIdx + 1, dstIdx + 1));
+            tiles.push(oldTiles[srcIdx]);
+            tiles.push(...oldTiles.slice(dstIdx + 1));
+          } else {
+            entries.push(...folder.entries.slice(0, dstIdx));
+            entries.push(src);
+            entries.push(...folder.entries.slice(dstIdx, srcIdx));
+            entries.push(...folder.entries.slice(srcIdx + 1));
+            tiles.push(...oldTiles.slice(0, dstIdx));
+            tiles.push(oldTiles[srcIdx]);
+            tiles.push(...oldTiles.slice(dstIdx, srcIdx));
+            tiles.push(...oldTiles.slice(srcIdx + 1));
+          }
+          commit('CHANGE_FOLDER_ENTRIES', {
+            dn: cat,
+            entries,
+          });
+          dispatch('modal/changeModalProps', {
+            props: {
+              tiles,
+            },
+          }, { root: true });
+        });
         return;
       }
       content.forEach(([category, oldEntries]) => {
@@ -331,7 +422,7 @@ const portalData: PortalModule<PortalDataState> = {
         commit('RESHUFFLE_CATEGORY', { category, entries });
       });
     },
-    async waitForChange({ dispatch, getters }, payload: WaitForChangePayload) {
+    async waitForChange({ dispatch, getters }: PortalDataActionContext, payload: WaitForChangePayload): Promise<boolean | void> {
       if (payload.retries <= 0) {
         return false;
       }
@@ -346,9 +437,24 @@ const portalData: PortalModule<PortalDataState> = {
       payload.retries -= 1;
       return dispatch('waitForChange', payload);
     },
-    async setEditMode({ dispatch, commit }, editMode: boolean) {
+    async setEditMode({ dispatch, commit }: { commit: Commit, dispatch: Dispatch }, editMode: boolean): Promise<void> {
       commit('EDITMODE', editMode);
+      dispatch('dragndrop/dropped', null, { root: true });
       await dispatch('loadPortal', { adminMode: editMode }, { root: true });
+      if (editMode) {
+        dispatch('activity/addMessage', {
+          id: 'editmode',
+          msg: _('Entered edit mode'),
+        }, { root: true });
+      } else {
+        dispatch('activity/addMessage', {
+          id: 'editmode',
+          msg: _('Left edit mode'),
+        }, { root: true });
+      }
+    },
+    setPortalErrorDisplay({ commit }: { commit: Commit }, payload: number): void {
+      commit('PORTAL_DISPLAY_ERROR', payload);
     },
   },
 };

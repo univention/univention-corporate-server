@@ -8,13 +8,14 @@
     >
       <main>
         <label>
-          <translate i18n-key="NAME" />
+          {{ NAME }}
           <input
             ref="input"
             type="text"
             autocomplete="off"
             :list="datalistId"
             name="display_name"
+            class="existing-entry__text-input"
           >
           <datalist
             :id="datalistId"
@@ -33,14 +34,14 @@
           type="button"
           @click.prevent="cancel"
         >
-          <translate i18n-key="CANCEL" />
+          {{ CANCEL }}
         </button>
         <button
           class="primary"
           type="submit"
           @click.prevent="finish"
         >
-          <translate i18n-key="ADD" />
+          {{ ADD }}
         </button>
       </footer>
     </form>
@@ -50,9 +51,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import ModalDialog from '@/components/ModalDialog.vue';
-import Translate from '@/i18n/Translate.vue';
+import ModalDialog from '@/components/modal/ModalDialog.vue';
 
 import { setInvalidity, randomId } from '@/jsHelper/tools';
 import { put } from '@/jsHelper/admin';
@@ -65,7 +66,6 @@ export default defineComponent({
   name: 'ExistingEntry',
   components: {
     ModalDialog,
-    Translate,
   },
   props: {
     label: {
@@ -96,11 +96,20 @@ export default defineComponent({
       userLinks: 'portalData/userLinks',
       menuLinks: 'portalData/menuLinks',
     }),
-    superObjs(): any[] {
+    superObjs(): any[] { // eslint-disable-line @typescript-eslint/no-explicit-any
       return this.$store.getters[this.superObjectGetter];
     },
-    items(): any[] {
+    items(): any[] { // eslint-disable-line @typescript-eslint/no-explicit-any
       return this.$store.getters[this.objectGetter];
+    },
+    NAME(): string {
+      return _('Name');
+    },
+    CANCEL(): string {
+      return _('Cancel');
+    },
+    ADD(): string {
+      return _('Add');
     },
   },
   mounted() {
@@ -129,26 +138,26 @@ export default defineComponent({
       if (dn) {
         let success = false;
         this.$store.dispatch('activateLoadingState');
-        console.info('Adding', dn, 'to', this.superDn);
+        // console.info('Adding', dn, 'to', this.superDn);
         if (this.superDn === '$$user$$') {
           const attrs = {
             userLinks: this.userLinks.concat([dn]),
           };
-          success = await put(this.portalDn, attrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          success = await put(this.portalDn, attrs, this.$store, _('Entry could not be added'), _('Entry successfully added'));
         } else if (this.superDn === '$$menu$$') {
           const attrs = {
             menuLinks: this.menuLinks.concat([dn]),
           };
-          success = await put(this.portalDn, attrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          success = await put(this.portalDn, attrs, this.$store, _('Entry could not be added'), _('Entry successfully added'));
         } else {
           const superObj = this.superObjs.find((obj) => obj.dn === this.superDn);
           const superAttrs = {
             entries: superObj.entries.concat([dn]),
           };
           if (this.objectGetter === 'portalData/portalEntries') {
-            success = await put(this.superDn, superAttrs, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+            success = await put(this.superDn, superAttrs, this.$store, _('Entry could not be added'), _('Entry successfully added'));
           } else {
-            success = await put(this.superDn, superAttrs, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+            success = await put(this.superDn, superAttrs, this.$store, _('Folder could not be added'), _('Folder successfully added'));
           }
         }
         this.$store.dispatch('deactivateLoadingState');
@@ -160,3 +169,8 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="stylus">
+.existing-entry
+  &__text-input
+    width: 100%
+</style>

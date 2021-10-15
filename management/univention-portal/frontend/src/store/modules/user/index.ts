@@ -26,12 +26,16 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalModule } from '../../root.models';
-import { User } from './user.models';
+import { ActionContext } from 'vuex';
+import _ from '@/jsHelper/translate';
+import { PortalModule, RootState } from '../../root.models';
+import { User, UserWrapper } from './user.models';
 
 export interface UserState {
   user: User;
 }
+
+type UserActionContext = ActionContext<UserState, RootState>;
 
 const user: PortalModule<UserState> = {
   namespaced: true,
@@ -45,7 +49,7 @@ const user: PortalModule<UserState> = {
   },
 
   mutations: {
-    SETUSER: (state, payload) => {
+    SETUSER: (state: UserState, payload: UserWrapper): void => {
       state.user = payload.user;
     },
   },
@@ -53,8 +57,20 @@ const user: PortalModule<UserState> = {
   getters: { userState: (state) => state.user },
 
   actions: {
-    setUser({ commit }, payload) {
+    setUser({ commit, dispatch }: UserActionContext, payload: UserWrapper): void {
       commit('SETUSER', payload);
+      const username = payload.user.username;
+      if (username) {
+        dispatch('activity/addMessage', {
+          id: 'login',
+          msg: _('Logged in as "%(username)s"', { username }),
+        }, { root: true });
+      } else {
+        dispatch('activity/addMessage', {
+          id: 'login',
+          msg: _('Not logged in'),
+        }, { root: true });
+      }
     },
   },
 };

@@ -33,3 +33,7 @@ export interface User {
     mayEditPortal: boolean;
     authMode: string;
 }
+
+export interface UserWrapper {
+    user: User
+}

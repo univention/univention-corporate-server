@@ -33,38 +33,12 @@ License with the Debian GNU/Linux or Univention distribution in file
     :class="{ 'portal-header__tabs-overflow': tabsOverflow }"
     class="portal-header"
   >
-    <tabindex-element
-      id="portal-header-head"
-      tag="div"
-      :active-at="['portal']"
-      class="portal-header__left"
-      role="button"
-      :aria-label="ariaLabelPortalHeader"
-      @click="goHome"
-      @keydown.enter="goHome"
-    >
-      <img
-        v-if="portalLogo"
-        id="portal-header-logo"
-        :src="portalLogo"
-        class="portal-header__left-image"
-        alt=""
-      >
-      <div
-        v-else
-        class="portal-header__portal-home-icon"
-      >
-        <PortalIcon icon="home" />
-      </div>
-
-      <h1 class="portal-header__portal-name sr-only-mobile">
-        {{ $localized(portalName) }}
-      </h1>
-    </tabindex-element>
+    <portal-title />
 
     <div
       ref="tabs"
       class="portal-header__tabs"
+      data-test="header-tabs"
     >
       <header-tab
         v-for="(item, index) in tabs"
@@ -80,26 +54,30 @@ License with the Debian GNU/Linux or Univention distribution in file
 
     <div
       v-if="editMode"
+      class="portal-header__edit-mode-label"
+    >
+      {{ EDIT_MODE }}
+      <header-button
+        :aria-label-prop="STOP_EDIT_PORTAL"
+        icon="x"
+        @click="stopEditMode"
+      />
+    </div>
+    <div
+      v-if="editMode"
       class="portal-header__right"
     >
-      <div class="portal-header__edit-mode-label">
-        {{ ariaLabelEditmode }}
-      </div>
-      <header-button
-        :aria-label-prop="ariaLabelStartEditMode"
-        icon="settings"
-      />
       <header-button
         data-test="bellbutton"
-        :aria-label-prop="ariaLabelNotifications"
+        :aria-label-prop="NOTIFICATIONS"
         icon="bell"
         :counter="numNotifications"
         @keydown.esc="closeNotifications"
       />
       <header-button
-        :aria-label-prop="ariaLabelStopEditmode"
-        icon="x"
-        @click="stopEditMode"
+        data-test="settingsbutton"
+        :aria-label-prop="OPEN_EDIT_SIDEBAR"
+        icon="settings"
       />
     </div>
     <div
@@ -110,7 +88,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         v-if="showTabButton"
         ref="tabButton"
         data-test="tabbutton"
-        :aria-label-prop="ariaLabelTabs"
+        :aria-label-prop="TABS"
         icon="copy"
         :counter="numTabs"
         class="portal-header__tab-button"
@@ -118,19 +96,19 @@ License with the Debian GNU/Linux or Univention distribution in file
       <header-button
         ref="searchButton"
         data-test="searchbutton"
-        :aria-label-prop="ariaLabelSearch"
+        :aria-label-prop="SEARCH"
         icon="search"
       />
       <header-button
         data-test="bellbutton"
-        :aria-label-prop="ariaLabelNotifications"
+        :aria-label-prop="NOTIFICATIONS"
         icon="bell"
         :counter="numNotifications"
         @keydown.esc="closeNotifications"
       />
       <header-button
+        :aria-label-prop="MENU"
         data-test="navigationbutton"
-        :aria-label-prop="ariaLabelMenu"
         icon="menu"
       />
     </div>
@@ -147,6 +125,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import Region from '@/components/activity/Region.vue';
 import TabindexElement from '@/components/activity/TabindexElement.vue';
@@ -155,6 +134,7 @@ import HeaderTab from '@/components/navigation/HeaderTab.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
 import ChooseTabs from '@/components/ChooseTabs.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
+import PortalTitle from '@/components/header/PortalTitle.vue';
 
 interface PortalHeaderData {
   tabsOverflow: boolean;
@@ -170,6 +150,7 @@ export default defineComponent({
     PortalIcon,
     Region,
     TabindexElement,
+    PortalTitle,
   },
   data(): PortalHeaderData {
     return {
@@ -188,32 +169,32 @@ export default defineComponent({
       activeButton: 'navigation/getActiveButton',
       numNotifications: 'notifications/numNotifications',
     }),
-    ariaLabelPortalHeader(): string {
-      return `${this.$translateLabel('SHOW_PORTAL')}`;
-    },
-    ariaLabelStartEditMode(): string {
-      return `${this.$translateLabel('OPEN_EDIT_SIDEBAR')}`;
-    },
-    ariaLabelStopEditmode(): string {
-      return `${this.$translateLabel('STOP_EDIT_PORTAL')}`;
-    },
-    ariaLabelEditmode(): string {
-      return `${this.$translateLabel('EDIT_MODE')}`;
-    },
-    ariaLabelTabs(): string {
-      return `${this.$translateLabel('TABS')}`;
-    },
-    ariaLabelSearch(): string {
-      return `${this.$translateLabel('SEARCH')}`;
-    },
-    ariaLabelNotifications(): string {
-      return `${this.$translateLabel('NOTIFICATIONS')}`;
-    },
-    ariaLabelMenu(): string {
-      return `${this.$translateLabel('MENU')}`;
-    },
     showTabButton(): boolean {
       return this.numTabs > 0 && this.tabsOverflow;
+    },
+    SHOW_PORTAL(): string {
+      return _('Show portal');
+    },
+    EDIT_MODE(): string {
+      return _('Edit mode');
+    },
+    OPEN_EDIT_SIDEBAR(): string {
+      return _('Open edit sidebar');
+    },
+    STOP_EDIT_PORTAL(): string {
+      return _('Stop edit portal');
+    },
+    TABS(): string {
+      return _('Tabs');
+    },
+    SEARCH(): string {
+      return _('search');
+    },
+    NOTIFICATIONS(): string {
+      return _('Notifications');
+    },
+    MENU(): string {
+      return _('Menu');
     },
   },
   watch: {
@@ -254,6 +235,7 @@ export default defineComponent({
       setTimeout(() => {
         window.scrollTo(0, this.savedScrollPosition);
       }, 10);
+      this.$store.dispatch('navigation/setActiveButton', '');
     },
     stopEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', false);
@@ -276,35 +258,13 @@ export default defineComponent({
   display: flex
   padding: 0 calc(2 * var(--layout-spacing-unit))
 
-  &__portal-name
-    font-size: var(--font-size-2);
-    white-space: nowrap
-
-  &__left
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 0px 10px
-    border: 0.2rem solid rgba(0,0,0,0)
-
-    &:focus
-      border: 0.2rem solid var(--color-focus)
-      outline: 0
-
-    &-image
-      height: 100%
-      width: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
-
-      + h1
-        padding-left: var(--layout-spacing-unit)
-
   &__tabs
     display: flex;
     flex: 1 1 auto;
     margin-left: calc(5 * var(--layout-spacing-unit));
     width: 100%;
     overflow: hidden
+    align-items: center
 
   &__right
     margin-left: auto
@@ -313,16 +273,18 @@ export default defineComponent({
 
   &__edit-mode-label
     white-space: nowrap
+    position: absolute
+    top: var(--layout-height-header)
+    display: flex
+    min-width: 150px
+    right: calc(50% - 75px)
+    background-color: var(--bgc-content-header)
+    align-items: center
+    justify-content: center
+    padding-left: calc(var(--button-size) / 2)
 
-  &__portal-home-icon
-    display: none
     @media $mqSmartphone
-      display: flex
-      align-content: center
-
-      svg
-        width: calc(3* var(--layout-spacing-unit))
-        height: @width
+      top: calc(var(--layout-height-header) - 62%)
 
 #header-button-copy
     display: none

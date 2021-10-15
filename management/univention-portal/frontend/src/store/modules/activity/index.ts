@@ -30,10 +30,16 @@ import { ActionContext } from 'vuex';
 
 import { PortalModule, RootState } from '../../root.models';
 
+interface Message {
+  id: string,
+  msg: string,
+}
+
 export interface Activity {
   level: string,
   focus: Record<string, string>,
   region: string | null,
+  messages: Record<string, Message>,
 }
 
 type ActivityActionContext = ActionContext<Activity, RootState>;
@@ -49,11 +55,11 @@ const activity: PortalModule<Activity> = {
     level: 'portal',
     focus: {},
     region: 'portal-header',
+    messages: {},
   },
 
   mutations: {
     ADD_REGION(state: Activity, region: string): void {
-      console.log('Adding region', region);
       state.focus[region] = state.focus[region] || '';
     },
     SET_REGION(state: Activity, region: string | null): void {
@@ -61,6 +67,12 @@ const activity: PortalModule<Activity> = {
     },
     SET_LEVEL(state: Activity, level: string): void {
       state.level = level;
+    },
+    ADD_MESSAGE(state: Activity, message: Message): void {
+      state.messages[message.id] = message;
+    },
+    REMOVE_MESSAGE(state: Activity, id: string): void {
+      delete state.messages[id];
     },
     SAVE_FOCUS(state: Activity, payload: SaveFocusArgs): void {
       let region = payload.region;
@@ -75,7 +87,7 @@ const activity: PortalModule<Activity> = {
       }
       if (!region) {
         let foundRegion: HTMLElement | null = null;
-        Object.entries(state.focus).forEach(([focusRegion, id]) => {
+        Object.entries(state.focus).forEach(([focusRegion]) => {
           const regionElem = document.getElementById(focusRegion);
           if (regionElem) {
             if (foundRegion && regionElem.contains(foundRegion)) {
@@ -98,6 +110,7 @@ const activity: PortalModule<Activity> = {
     level: (state: Activity) => state.level,
     focus: (state: Activity) => state.focus,
     region: (state: Activity) => state.region,
+    announce: (state: Activity) => Object.values(state.messages),
   },
 
   actions: {
@@ -105,12 +118,17 @@ const activity: PortalModule<Activity> = {
       commit('ADD_REGION', region);
     },
     setRegion({ dispatch, commit }: ActivityActionContext, region: string | null): void {
-      console.log('setRegion', region);
       commit('SET_REGION', region);
       dispatch('focusElement', region);
     },
     setLevel({ commit }: ActivityActionContext, level: string): void {
       commit('SET_LEVEL', level);
+    },
+    addMessage({ commit }: ActivityActionContext, message: Message): void {
+      commit('ADD_MESSAGE', message);
+    },
+    removeMessage({ commit }: ActivityActionContext, id: string): void {
+      commit('REMOVE_MESSAGE', id);
     },
     async focusElement({ getters }: ActivityActionContext, region: string | null): Promise<void> {
       if (!region) {
@@ -126,7 +144,6 @@ const activity: PortalModule<Activity> = {
             elem = document.getElementById(activeElem.id);
           }
         }
-        console.log('focusElement', elem);
         elem?.focus();
       }, 50);
     },

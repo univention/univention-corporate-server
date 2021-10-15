@@ -27,15 +27,28 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <teleport to="body">
+  <teleport
+    v-if="teleportToBody"
+    to="body"
+  >
     <div
-      class="modal-wrapper"
-      :class="{ 'modal-wrapper--isVisible': isActive, 'modal-wrapper--isVisibleFullscreen': isActive && full }"
-      @click.self="$emit('backgroundClick');"
+      :id="setID"
+      :class="{ 'modal-wrapper': !isActive, 'modal-wrapper--isVisible': isActive,
+                'modal-wrapper--isVisibleFullscreen': isActive && full, 'modal-wrapper--isSecondLayer': isSecondModalActive }"
+      @click.self="$emit('backgroundClick', $event);"
     >
       <slot />
     </div>
   </teleport>
+  <div v-else>
+    <div
+      :class="{ 'modal-wrapper': !isActive, 'modal-wrapper--isVisible': isActive,
+                'modal-wrapper--isVisibleFullscreen': isActive && full, 'modal-wrapper--isSecondLayer': isSecondModalActive }"
+      @click.self="$emit('backgroundClick', $event);"
+    >
+      <slot />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,8 +65,24 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    modalLevel: {
+      type: Number,
+      default: 1,
+    },
+    teleportToBody: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['backgroundClick'],
+  computed: {
+    isSecondModalActive(): boolean {
+      return this.modalLevel === 2 && this.isActive;
+    },
+    setID(): string | null {
+      return this.isActive ? 'modal-wrapper--isVisible' : null;
+    },
+  },
 });
 </script>
 
@@ -67,13 +96,31 @@ export default defineComponent({
     bottom: 0;
     left: 0;
     z-index: -999
+    opacity: 0
+    transition: opacity 0.5s ease;
 
     &--isVisible
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       z-index: $zindex-2
       background-color: var(--bgc-underlay);
       display: flex
       align-items: center
       justify-content: center
+      opacity: 1
+      transition: opacity 0.5s ease;
+
+      &> *
+        position: relative
+        z-index: 1
+
+    &--isSecondLayer
+      z-index: $zindex-3
 
       &> *
         position: relative

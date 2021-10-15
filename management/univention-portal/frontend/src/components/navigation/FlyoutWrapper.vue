@@ -51,8 +51,8 @@ export default defineComponent({
 
 <style lang="stylus">
 .flyout-wrapper
-  width: 22rem
-  max-width: 22rem
+  width: 23rem
+  max-width: 23rem
   min-height: 100vh
   position: fixed
   top:  calc(var(--portal-header-height) + 0.5rem)
@@ -63,7 +63,8 @@ export default defineComponent({
   transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
 
   @media $mqSmartphone
-     max-width: 90vw
+    min-height: unset;
+    height: calc(100vh - 4 * var(--portal-header-height));
 
   &--isVisible
     transform: translate3d(0, 0, 0) scale(1, 1)

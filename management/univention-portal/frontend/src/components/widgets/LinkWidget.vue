@@ -33,9 +33,11 @@
       :key="index"
       class="link-widget"
     >
-      <span class="link-widget__select">
+      <div class="link-widget__select">
         <select
           v-model="modelValueData[index].locale"
+          :tabindex="tabindex"
+          :aria-label="localeSelect(index)"
         >
           <option
             v-for="select in locales"
@@ -46,49 +48,53 @@
             {{ select }}
           </option>
         </select>
-      </span>
-      <span class="link-widget__input">
+      </div>
+      <div class="link-widget__input">
         <input
           :ref="`link${index}`"
           v-model="modelValueData[index].value"
           :name="index === 0 ? name : `${name}-${index}`"
+          :tabindex="tabindex"
+          :aria-label="linkInput(index)"
+          autocomplete="off"
         >
-      </span>
-      <span
+      </div>
+      <div
         v-if="modelValueData.length > 1"
         class="link-widget__remove modal-admin__button"
       >
         <icon-button
           icon="trash"
-          :aria-label-prop="ariaLabelRemove"
+          :aria-label-prop="removeLink(index)"
+          :active-at="['modal']"
+          :has-button-style="true"
           @click="removeField(index, modelValueData)"
         />
-      </span>
+      </div>
     </div>
-    <span class="modal-admin__button">
+    <div class="modal-admin__button">
       <button
         type="button"
         class="modal-admin__button--inner"
+        :tabindex="tabindex"
         @click.prevent="addField"
       >
         <portal-icon
           icon="plus"
         />
-        <translate
-          i18n-key="NEW_ENTRY"
-        />
+        {{ ADD_LINK }}
       </button>
-    </span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
-import Translate from '@/i18n/Translate.vue';
 
 interface LinkWidgetData {
   modelValueData: Array<unknown>,
@@ -104,7 +110,6 @@ export default defineComponent({
   components: {
     IconButton,
     PortalIcon,
-    Translate,
   },
   props: {
     modelValue: {
@@ -114,6 +119,10 @@ export default defineComponent({
     name: {
       type: String,
       required: true,
+    },
+    tabindex: {
+      type: Number,
+      default: 0,
     },
   },
   emits: ['update:modelValue'],
@@ -127,8 +136,11 @@ export default defineComponent({
       locales: 'locale/getAvailableLocales',
       currentLocale: 'locale/getLocale',
     }),
-    ariaLabelRemove(): string {
-      return this.$translateLabel('REMOVE');
+    REMOVE(): string {
+      return _('Remove');
+    },
+    ADD_LINK(): string {
+      return _('Add link');
     },
   },
   created() {
@@ -159,6 +171,18 @@ export default defineComponent({
     removeField(index) {
       this.modelValueData.splice(index, 1);
     },
+    LINK(index: number): string {
+      return `${_('Link')} ${index}:`;
+    },
+    localeSelect(index: number): string {
+      return `${this.LINK(index + 1)} ${_('Select locale for Link')}`;
+    },
+    linkInput(index: number): string {
+      return `${this.LINK(index + 1)} ${_('insert valid Link')}`;
+    },
+    removeLink(index: number): string {
+      return `${this.LINK(index + 1)} ${this.REMOVE}`;
+    },
   },
 });
 
@@ -180,10 +204,11 @@ export { LocaleAndValue };
   &__input
     width: 100%
     margin-left: 0.5rem
-    margin-right: 2rem
+    margin-right: var(--layout-spacing-unit)
 
     input
       width: 100%
+      box-sizing: border-box
 
   &__remove
     width: 3rem

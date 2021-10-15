@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { Commit } from 'vuex';
 import addLanguageTile from '@/jsHelper/addLanguageTile';
 import createMenuStructure from '@/jsHelper/createMenuStructure';
 import createUserMenu from '@/jsHelper/createUserMenu';
@@ -44,7 +45,7 @@ const menu: PortalModule<MenuState> = {
   },
 
   mutations: {
-    MENU(state, payload) {
+    MENU(state : MenuState, payload: Record<string, unknown>): void {
       const menuStructure = createMenuStructure(payload.portal);
       const languageMenuLink = addLanguageTile(payload.availableLocales);
       const userLinks = createUserMenu(payload.portal);
@@ -56,21 +57,21 @@ const menu: PortalModule<MenuState> = {
       }
       state.menu = menuStructure;
     },
-    DISABLED(state, payload) {
+    DISABLED(state : MenuState, payload: string[]): void {
       state.disabled = payload;
     },
   },
 
   getters: {
-    getMenu: (state) => state.menu,
-    disabledMenuItems: (state) => state.disabled,
+    getMenu: (state : MenuState) => state.menu,
+    disabledMenuItems: (state : MenuState) => state.disabled,
   },
 
   actions: {
-    setMenu({ commit }, payload) {
+    setMenu({ commit }: { commit: Commit}, payload: Record<string, unknown>): void {
       commit('MENU', payload);
     },
-    setDisabled({ commit }, payload) {
+    setDisabled({ commit } : { commit: Commit}, payload: Record<string, unknown>): void {
       commit('DISABLED', payload);
     },
   },

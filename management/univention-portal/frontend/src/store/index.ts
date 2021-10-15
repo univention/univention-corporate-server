@@ -38,8 +38,8 @@ import dragndrop from './modules/dragndrop';
 import locale from './modules/locale';
 import menu from './modules/menu';
 import metaData from './modules/metaData';
-import modal from './modules/modal';
 import navigation from './modules/navigation';
+import modal from './modules/modal';
 import notifications from './modules/notifications';
 import portalData from './modules/portalData';
 import search from './modules/search';
@@ -74,14 +74,12 @@ const actions = {
     commit('SET_LOADING_STATE', false);
   },
   portalJsonRequest: (_, payload) => {
-    console.log('Loading Portal...');
     const umcLang = getCookie('UMCLang');
     const headers = {
       'X-Requested-With': 'XMLHTTPRequest',
       'Accept-Language': umcLang || 'en-US',
     };
     if (payload.adminMode || getAdminState()) {
-      console.log('... in Admin mode');
       headers['X-Univention-Portal-Admin-Mode'] = 'yes';
 
       if (process.env.VUE_APP_LOCAL) {
@@ -92,31 +90,55 @@ const actions = {
   },
   loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
     // Get portal data
-    const portalRequest = dispatch('portalJsonRequest', payload);
+    const portalRequest = dispatch('portalJsonRequest', payload)
+      .catch((error) => error);
     const portalPromises = [
       `${portalUrl}${portalMetaPath}`, // Get meta data
       `${portalUrl}${languageJsonPath}`, // Get locale data
-    ].map((url) => axios.get(url));
+    ].map((url) => axios.get(url).catch((error) => error));
     portalPromises.push(portalRequest);
 
-    axios.all(portalPromises).then(axios.spread((metaResponse, languageResponse, portalResponse) => {
+    Promise.all(portalPromises).then(async ([metaResponse, languageResponse, portalResponse]) => {
       const [meta, availableLocales, portal] = [metaResponse.data, languageResponse.data, portalResponse.data];
-      dispatch('locale/setAvailableLocale', availableLocales);
-      dispatch('metaData/setMeta', meta);
-      dispatch('menu/setMenu', { portal, availableLocales });
-      dispatch('portalData/setPortal', { portal, adminMode: payload.adminMode || getAdminState() });
-      dispatch('user/setUser', {
-        user: {
-          username: portal.username,
-          displayName: portal.user_displayname,
-          mayEditPortal: portal.may_edit_portal,
-          authMode: portal.auth_mode,
-        },
+      if (languageResponse.isAxiosError) {
+        console.warn(`Failed to fetch ${portalUrl}${languageJsonPath}`);
+      } else {
+        await dispatch('locale/setAvailableLocale', availableLocales);
+      }
+      if (metaResponse.isAxiosError) {
+        console.warn(`Failed to fetch ${portalUrl}${portalMetaPath}`, metaResponse);
+      } else {
+        dispatch('metaData/setMeta', meta);
+      }
+
+      dispatch('menu/setMenu', {
+        portal,
+        availableLocales: availableLocales ?? [],
       });
-      resolve(portal);
-    }), (error) => {
-      reject(error);
-    });
+      if (portalResponse.isAxiosError) {
+        console.warn(`Failed to fetch ${portalUrl}${portalJsonPath}`);
+        dispatch('portalData/setPortalErrorDisplay', 502);
+        dispatch('deactivateLoadingState');
+      } else {
+        dispatch('portalData/setPortal', { portal, adminMode: payload.adminMode || getAdminState() });
+        dispatch('user/setUser', {
+          user: {
+            username: portal.username,
+            displayName: portal.user_displayname,
+            mayEditPortal: portal.may_edit_portal,
+            authMode: portal.auth_mode,
+          },
+        });
+        resolve(portal);
+      }
+    })
+      .catch((error) => {
+        // We won't get here at the moment because we call .catch on
+        // all promises in Promise.all
+        dispatch('portalData/setPortalErrorDisplay', 502);
+        dispatch('deactivateLoadingState');
+        reject(error);
+      });
   }),
 };
 

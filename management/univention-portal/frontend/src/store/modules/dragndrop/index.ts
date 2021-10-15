@@ -26,13 +26,23 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { PortalModule } from '@/store/root.models';
+import { PortalModule, RootState } from '@/store/root.models';
+import { ActionContext } from 'vuex';
 
 export interface DraggedItem {
   dn: string,
   superDn: string,
   originalContent: string[][],
 }
+
+export interface DraggedItemDragCopy {
+  dn: string,
+  superDn: string,
+  original: boolean,
+  originalContent: string[][],
+}
+
+type DragAndDropActionContext = ActionContext<DraggedItem, RootState>;
 
 const dragndrop: PortalModule<DraggedItem> = {
   namespaced: true,
@@ -43,7 +53,7 @@ const dragndrop: PortalModule<DraggedItem> = {
   },
 
   mutations: {
-    SET_IDS(state, payload) {
+    SET_IDS(state: DraggedItem, payload: DraggedItemDragCopy): void {
       state.dn = payload.dn;
       state.superDn = payload.superDn;
       if (payload.originalContent) {
@@ -52,10 +62,13 @@ const dragndrop: PortalModule<DraggedItem> = {
     },
   },
 
-  getters: { getId: (state) => state },
+  getters: {
+    getId: (state) => state,
+    inDragnDropMode: (state) => !!state.dn,
+  },
 
   actions: {
-    startDragging({ commit, rootGetters }, payload) {
+    startDragging({ commit, rootGetters }: DragAndDropActionContext, payload: DraggedItemDragCopy): void {
       let content = null;
       if (payload.original) {
         content = rootGetters['portalData/portalContent'];
@@ -66,14 +79,14 @@ const dragndrop: PortalModule<DraggedItem> = {
         originalContent: content,
       });
     },
-    dropped({ commit }) {
+    dropped({ commit }: DragAndDropActionContext): void {
       commit('SET_IDS', {
         dn: '',
         superDn: '',
         originalContent: [],
       });
     },
-    revert({ dispatch, getters }) {
+    revert({ dispatch, getters }: DragAndDropActionContext): void {
       const content = getters.getId.originalContent;
       if (content.length) {
         dispatch('portalData/replaceContent', content, { root: true });

@@ -27,12 +27,11 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <portal />
-
   <cookie-banner
     v-if="showCookieBanner"
     @dismissed="hideCookieBanner"
   />
+  <portal />
 </template>
 
 <script lang="ts">
@@ -66,20 +65,16 @@ export default defineComponent({
     }),
     showCookieBanner(): boolean {
       const cookieName = this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
-      console.log('showCookieBanner', this.metaData.cookieBanner.show, cookieName, getCookie(cookieName));
       return this.metaData.cookieBanner.show && !getCookie(cookieName) && !this.cookieBannerDismissed;
     },
   },
   async mounted() {
     // Set locale and load portal data from backend
-    const umcLang = getCookie('UMCLang');
-    if (umcLang) {
-      await this.$store.dispatch('locale/setLocale', umcLang.replace('-', '_'));
-    }
     this.$store.dispatch('activateLoadingState');
     const answer = await this.$store.dispatch('loadPortal', {
       adminMode: false,
     });
+
     if (answer.portal && answer.portal.ensureLogin && !this.userState.username) {
       login(this.userState);
     }
@@ -93,3 +88,6 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+</style>

@@ -84,7 +84,7 @@ const tileClickMixin = {
         return false;
       }
       this.$store.dispatch('tooltip/unsetTooltip');
-      this.$store.dispatch('modal/hideAndClearModal');
+      // this.$store.dispatch('modal/hideAndClearModal');
       if (this.linkTarget === 'internalFunction') {
         evt.preventDefault();
         return this.internalFunction(this);
@@ -107,10 +107,14 @@ const tileClickMixin = {
         logo: this.pathToLogo,
         iframeLink: this.link,
       };
+      this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/addTab', tab);
+      this.$store.dispatch('modal/hideAndClearModal');
     },
   },
 };
 
 export default tileClickMixin;
 </script>
+<style>
+</style>

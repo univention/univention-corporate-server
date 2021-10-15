@@ -26,3 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+export type ModalLevel = number | undefined;
+export interface ModalProp {
+  props?: {
+    tiles?: Record<string, unknown>
+  },
+  level?: ModalLevel,
+}
+
+export interface ModalComponentInterface {
+  level?:ModalLevel;
+  name: string;
+  props: ModalProp;
+  stubborn: boolean;
+  resolve: (any) => any;
+  reject: () => any;
+}

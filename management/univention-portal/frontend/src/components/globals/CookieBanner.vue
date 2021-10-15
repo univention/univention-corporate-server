@@ -30,6 +30,7 @@
   <modal-wrapper
     :is-active="true"
     :full="true"
+    :teleport-to-body="false"
   >
     <modal-dialog
       :title="cookieTitle"
@@ -45,7 +46,9 @@
           class="primary"
           @click.stop="setCookies()"
         >
-          <translate i18n-key="ACCEPT" />
+          <span>
+            {{ ACCEPT }}
+          </span>
         </button>
       </footer>
     </modal-dialog>
@@ -55,10 +58,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import Translate from '@/i18n/Translate.vue';
-import ModalDialog from '@/components/ModalDialog.vue';
-import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+import ModalDialog from '@/components/modal/ModalDialog.vue';
+import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 
 import { setCookie } from '@/jsHelper/tools';
 
@@ -67,7 +70,6 @@ export default defineComponent({
   components: {
     ModalWrapper,
     ModalDialog,
-    Translate,
   },
   emits: ['dismissed'],
   computed: {
@@ -76,10 +78,13 @@ export default defineComponent({
       return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
     },
     cookieTitle(): string {
-      return this.$localized(this.metaData.cookieBanner.title) || this.$translateLabel('COOKIE_TITLE');
+      return this.$localized(this.metaData.cookieBanner.title) || _('Cookie Settings');
     },
     cookieText(): string {
-      return this.$localized(this.metaData.cookieBanner.text) || this.$translateLabel('COOKIE_TEXT');
+      return this.$localized(this.metaData.cookieBanner.text) || _('We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on "Accept", you consent to the collection of information on this portal.');
+    },
+    ACCEPT(): string {
+      return _('Accept');
     },
   },
   mounted(): void {

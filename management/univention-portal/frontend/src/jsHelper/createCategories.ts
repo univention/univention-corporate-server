@@ -45,7 +45,7 @@ function makeEntry(
   if (entry) {
     // TODO: remove id once the service is offering the right data.
     return {
-      id: `entry-${randomId()}`,
+      id: entry.id,
       dn: entry.dn,
       title: entry.name,
       isFolder: false,
@@ -67,7 +67,6 @@ function makeEntry(
   }
   const folder = portalFolders.find((data) => data.dn === entryID);
   if (!folder) {
-    console.warn('Entry', entryID, 'not found!');
     return null;
   }
   const tiles: BaseTile[] = [];
@@ -81,7 +80,7 @@ function makeEntry(
   });
   if (tiles.length || editMode) {
     return {
-      id: `folder-${randomId()}`,
+      id: folder.id,
       dn: folder.dn,
       title: folder.name,
       isFolder: true,
@@ -117,10 +116,10 @@ export default function createCategories(
     });
     if (tiles.length || editMode) {
       const categoryItem = {
-        id: `category-${randomId()}`,
+        id: category.id,
         title: category.display_name,
         dn: category.dn,
-        virtual: !!category.virtual,
+        virtual: category.virtual,
         tiles,
       };
       ret.push(categoryItem);

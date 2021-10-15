@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { translate } from '@/i18n/translations';
+import _ from '@/jsHelper/translate';
 import { changePassword } from '@/jsHelper/umc';
 import { randomId } from '@/jsHelper/tools';
 
@@ -54,14 +54,14 @@ function changePasswordCallback(tileClick) {
   }).then((values) => {
     changePassword(values.oldPassword, values.newPassword).then((response) => {
       tileClick.$store.dispatch('notifications/addSuccessNotification', {
-        title: translate('CHANGE_PASSWORD'),
+        title: _('Change password'),
         description: response.data.message,
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
     }, (error) => {
+      console.error('Error while changing password', error);
       tileClick.$store.dispatch('notifications/addErrorNotification', {
-        title: translate('CHANGE_PASSWORD'),
-        description: error.response.data.message,
+        title: _('Change password'),
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
       return changePasswordCallback(tileClick);
@@ -72,6 +72,9 @@ function changePasswordCallback(tileClick) {
 }
 
 export default function createUserMenu(portalData) {
+  if (!portalData) {
+    return [];
+  }
   const menuTitle = {
     de_DE: 'Benutzereinstellungen',
     en_US: 'User settings',

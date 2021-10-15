@@ -26,17 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { reactive } from 'vue';
+
 import axios from 'axios';
+import { ShortLocale } from '@/store/modules/locale/locale.models';
 
-// get default dictionary
-import { catalog } from '@/assets/data/dictionary';
+interface TranslationCatalogDefinition {
+  [key: string]: Record<string, string>;
+}
+const translationCatalogs: TranslationCatalogDefinition = {};
 
-// get env vars
-const portalUrl = process.env.VUE_APP_PORTAL_URL || '';
+const currentCatalog = reactive({});
 
-const translationCatalogs = {};
-
-function getCatalog(locale) {
+function getCatalog(locale: ShortLocale): Promise<Record<string, string>> {
   return new Promise((resolve, reject) => {
     if (locale in translationCatalogs) {
       const translationCatalog = translationCatalogs[locale];
@@ -46,15 +48,13 @@ function getCatalog(locale) {
         reject();
       }
     } else {
-      axios.get(`${portalUrl}i18n/${locale}.json`).then(
+      axios.get(`./i18n/${locale}.json`).then(
         (response) => {
           const translationCatalog = response.data;
           translationCatalogs[locale] = translationCatalog;
           resolve(translationCatalog);
         },
         () => {
-          // no locale found (404?)
-          translationCatalogs[locale] = null;
           reject();
         },
       );
@@ -62,31 +62,25 @@ function getCatalog(locale) {
   });
 }
 
-async function updateLocale(locale) {
+async function updateLocale(locale: ShortLocale): Promise<unknown> {
   return getCatalog(locale).then(
     (translationCatalog) => {
-      Object.keys(catalog).forEach((key) => {
-        const value = catalog[key];
-        if (translationCatalog && value.original in translationCatalog) {
-          const translatedValue = translationCatalog[value.original];
-          value.translated.value = translatedValue;
-        } else {
-          value.translated.value = value.original;
-        }
+      Object.keys(currentCatalog).forEach((key) => delete currentCatalog[key]);
+      Object.entries(translationCatalog).forEach(([key, value]) => {
+        currentCatalog[key] = value;
       });
+      return translationCatalog;
     },
     () => {
+      Object.keys(currentCatalog).forEach((key) => delete currentCatalog[key]);
       // no locale found (404?)
-      Object.keys(catalog).forEach((key) => {
-        const value = catalog[key];
-        value.translated.value = value.original; // Vuex error: Do not mutate store state outside mutation handlers
-      });
+      // console.error('404: No translation file found.');
     },
   );
 }
 
-function translate(key) {
-  return catalog[key].translated.value;
+function getCurrentCatalog(): Record<string, string> {
+  return currentCatalog;
 }
 
-export { catalog, updateLocale, translate };
+export { updateLocale, getCurrentCatalog };

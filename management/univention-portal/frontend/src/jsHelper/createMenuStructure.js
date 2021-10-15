@@ -51,6 +51,9 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
 }
 
 export default function createMenuStructure(portalData) {
+  if (!portalData) {
+    return [];
+  }
   const portalMenuLinks = portalData.menu_links;
   const availableTiles = portalData.entries;
   const availableFolders = portalData.folders;

@@ -37,6 +37,8 @@
     @dragstart="dragstart"
     @dragenter="dragenter"
     @dragend="dragend"
+    @dragover.prevent
+    @drop="dropped"
   >
     <tabindex-element
       :id="id"
@@ -71,6 +73,7 @@
             :anonymous="tile.anonymous"
             :background-color="tile.backgroundColor"
             :links="tile.links"
+            :allowed-groups="tile.allowedGroups"
             :link-target="tile.linkTarget"
             :original-link-target="tile.originalLinkTarget"
             :path-to-logo="tile.pathToLogo"
@@ -101,7 +104,7 @@
       v-if="editMode && !inModal"
       icon="edit-2"
       class="portal-folder__edit-button icon-button--admin"
-      :aria-label-prop="ariaLabelFolderButton"
+      :aria-label-prop="translateEditFolder"
       @click="editFolder()"
     />
   </div>
@@ -118,6 +121,7 @@ import Draggable from '@/mixins/Draggable.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
 import { Title, Tile } from '@/store/modules/portalData/portalData.models';
+import _ from '@/jsHelper/translate';
 
 export default defineComponent({
   name: 'PortalFolder',
@@ -158,7 +162,9 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapGetters({ editMode: 'portalData/editMode' }),
+    ...mapGetters({
+      editMode: 'portalData/editMode',
+    }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
     },
@@ -172,20 +178,20 @@ export default defineComponent({
       const numberOfItems = this.tiles.length;
       let itemString = '';
       if (this.tiles.length === 0) {
-        itemString = this.$translateLabel('NO_ITEMS');
+        itemString = _('No items');
       } else if (this.tiles.length === 1) {
-        itemString = this.$translateLabel('ITEM');
+        itemString = _('Item');
       } else {
-        itemString = this.$translateLabel('ITEMS');
+        itemString = _('Items');
       }
 
-      return !this.inModal ? `${this.$translateLabel('FOLDER')}: ${numberOfItems} ${itemString}` : null;
-    },
-    ariaLabelFolderButton(): string {
-      return `${this.$translateLabel('EDIT_FOLDER')}`;
+      return !this.inModal ? `${this.$localized(this.title)} ${_('Folder')}: ${numberOfItems} ${itemString}` : null;
     },
     isOpened(): string {
       return this.inModal ? 'div' : 'button';
+    },
+    translateEditFolder(): string {
+      return _('Edit folder');
     },
   },
   mounted() {
@@ -197,6 +203,12 @@ export default defineComponent({
     window.removeEventListener('resize', this.updateZoomQuery);
   },
   methods: {
+    async dropped() {
+      if (!this.editMode || !this.inModal) {
+        return;
+      }
+      await this.$store.dispatch('portalData/saveFolder', { dn: this.dn });
+    },
     closeFolder(): void {
       this.$store.dispatch('modal/hideAndClearModal');
       this.$store.dispatch('tooltip/unsetTooltip');
@@ -220,7 +232,7 @@ export default defineComponent({
         props: {
           modelValue: this.$props,
           superDn: this.superDn,
-          label: 'EDIT_FOLDER',
+          label: _('Edit folder'),
         },
       });
     },
@@ -261,13 +273,15 @@ export default defineComponent({
   &__name
     text-align: center
     width: 100%
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
     text-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.3)
+    word-wrap: break-word
+    hyphens: auto
 
   &__in-modal
     cursor: default
+
+    .portal-tile__root-element
+      align-items: flex-start!important;
 
     button
       text-transform: none
@@ -341,8 +355,12 @@ export default defineComponent({
       }
       .portal-folder__thumbnail:nth-child(n+10)
         display: block
+    .portal-tile--minified:focus .portal-tile__box
+      border-color: transparent
+
     .portal-tile
       width: calc(0.25 * var(--app-tile-side-length))
+
       &__box
         width: calc(0.25 * var(--app-tile-side-length))
         height: @width
@@ -417,9 +435,5 @@ export default defineComponent({
           right: 0
           line-height: 300%
           background-color: var(--bgc-content-container)
-
-&:focus
-  border-color: var(--color-focus)
-  outline: none;
 
 </style>

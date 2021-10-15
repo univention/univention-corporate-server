@@ -31,22 +31,28 @@
     :label="label"
     :can-remove="!!modelValue.dn"
     :model="$data"
+    @unlink="unlink"
     @remove="remove"
     @save="finish"
   >
+    <h3 class="sr-only sr-only-mobile">
+      {{ INTERNAL_NAME_SR_ONLY }}
+    </h3>
     <label>
-      <translate i18n-key="INTERNAL_NAME" />
+      {{ INTERNAL_NAME }}
       <span> *</span>
       <input
         v-model="name"
         name="name"
+        :tabindex="tabindex"
         :disabled="modelValue.dn"
       >
     </label>
     <locale-input
       v-model="title"
-      i18n-label="NAME"
+      :i18n-label="NAME"
       name="title"
+      :tabindex="tabindex"
     />
   </edit-widget>
 </template>
@@ -54,11 +60,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import { put, add } from '@/jsHelper/admin';
+import { put, add, remove } from '@/jsHelper/admin';
+import activity from '@/jsHelper/activity';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
 import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
-import Translate from '@/i18n/Translate.vue';
 
 interface AdminCategoryData extends ValidatableData {
   name: string,
@@ -68,15 +75,15 @@ interface AdminCategoryData extends ValidatableData {
 function getErrors(this: AdminCategoryData) {
   const errors: Record<string, string> = {};
   if (!this.name) {
-    errors.name = 'ERROR_ENTER_NAME';
+    errors.name = _('Please enter an internal name');
   } else {
     const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
     if (!regex.test(this.name)) {
-      errors.name = 'ERROR_WRONG_NAME';
+      errors.name = _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!');
     }
   }
   if (!this.title.en_US) {
-    errors.title = 'ERROR_ENTER_TITLE';
+    errors.title = _('Please enter a display name');
   }
   return errors;
 }
@@ -85,7 +92,6 @@ export default defineComponent({
   name: 'FormCategoryEdit',
   components: {
     EditWidget,
-    Translate,
     LocaleInput,
   },
   props: {
@@ -109,7 +115,20 @@ export default defineComponent({
     ...mapGetters({
       portalDn: 'portalData/getPortalDn',
       categories: 'portalData/portalCategoriesOnPortal',
+      activityLevel: 'activity/level',
     }),
+    INTERNAL_NAME(): string {
+      return _('Internal name');
+    },
+    INTERNAL_NAME_SR_ONLY(): string {
+      return `${this.name} ${this.INTERNAL_NAME} ${_('view-only')}`;
+    },
+    NAME(): string {
+      return _('Name');
+    },
+    tabindex(): number {
+      return activity(['modal'], this.activityLevel);
+    },
   },
   created(): void {
     const dn = this.modelValue.dn;
@@ -123,14 +142,24 @@ export default defineComponent({
       this.$store.dispatch('modal/hideAndClearModal');
       this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
-    async remove() {
+    async unlink() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
       const portalAttrs = {
         categories: this.categories.filter((catDn) => catDn !== dn),
       };
-      console.info('Removing', dn, 'from', this.portalDn);
-      const success = put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_REMOVED_SUCCESS', 'CATEGORY_REMOVED_FAILURE');
+      // console.info('Removing', dn, 'from', this.portalDn);
+      const success = await put(this.portalDn, portalAttrs, this.$store, _('Category could not be unlinked'), _('Category successfully unlinked'));
+      this.$store.dispatch('deactivateLoadingState');
+      if (success) {
+        this.cancel();
+      }
+    },
+    async remove() {
+      this.$store.dispatch('activateLoadingState');
+      const dn = this.modelValue.dn;
+      // console.info('Deleting', dn, 'completely');
+      const success = await remove(dn, this.$store, _('Category successfully removed'), _('Category could not be removed'));
       this.$store.dispatch('deactivateLoadingState');
       if (success) {
         this.cancel();
@@ -144,18 +173,18 @@ export default defineComponent({
         displayName: Object.entries(this.title),
       };
       if (this.modelValue.dn) {
-        console.info('Modifying', this.modelValue.dn);
-        success = await put(this.modelValue.dn, attrs, this.$store, 'CATEGORY_MODIFIED_SUCCESS', 'CATEGORY_MODIFIED_FAILURE');
+        // console.info('Modifying', this.modelValue.dn);
+        success = await put(this.modelValue.dn, attrs, this.$store, _('Category could not be modified'), _('Category successfully modified'));
       } else {
-        console.info('Adding category');
-        console.info('Then adding it to', this.categories, 'of', this.portalDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
-        const dn = await add('portals/category', attrs, this.$store, 'CATEGORY_ADDED_FAILURE');
+        // console.info('Adding category');
+        // console.info('Then adding it to', this.categories, 'of', this.portalDn); // Okay, strange. message needs to be here, otherwise "this" seems to forget its props!
+        const dn = await add('portals/category', attrs, this.$store, _('Category could not be added'));
         if (dn) {
-          console.info(dn, 'added');
+          // console.info(dn, 'added');
           const portalAttrs = {
             categories: this.categories.concat([dn]),
           };
-          success = await put(this.portalDn, portalAttrs, this.$store, 'CATEGORY_ADDED_SUCCESS', 'CATEGORY_ADDED_FAILURE');
+          success = await put(this.portalDn, portalAttrs, this.$store, _('Category could not be added'), _('Category successfully added'));
         }
       }
       this.$store.dispatch('deactivateLoadingState');

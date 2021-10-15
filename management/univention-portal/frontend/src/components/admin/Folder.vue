@@ -31,22 +31,33 @@
     :label="label"
     :can-remove="!!modelValue.dn"
     :model="$data"
+    @unlink="unlink"
     @remove="remove"
     @save="finish"
   >
+    <h3 class="sr-only sr-only-mobile">
+      {{ INTERNAL_NAME_SR_ONLY }}
+    </h3>
     <label>
-      <translate i18n-key="INTERNAL_NAME" />
-      <span> *</span>
+      {{ INTERNAL_NAME }}
+      {{ READ_ONLY }}
+      <required-field-label
+        v-if="!modelValue.dn"
+      />
       <input
         v-model="name"
+        :tabindex="tabindex"
+        :readonly="modelValue.dn"
+        class="folder__text-input"
         name="name"
-        :disabled="modelValue.dn"
+        autocomplete="off"
       >
     </label>
     <locale-input
       v-model="title"
-      i18n-label="NAME"
+      :i18n-label="NAME"
       name="title"
+      :tabindex="tabindex"
     />
   </edit-widget>
 </template>
@@ -54,14 +65,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import { removeEntryFromSuperObj, addEntryToSuperObj, put, add } from '@/jsHelper/admin';
+import { removeEntryFromSuperObj, addEntryToSuperObj, put, add, remove } from '@/jsHelper/admin';
+import activity from '@/jsHelper/activity';
 import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
-import LinkWidget from '@/components/widgets/LinkWidget.vue';
-
-import Translate from '@/i18n/Translate.vue';
+import RequiredFieldLabel from '@/components/forms/RequiredFieldLabel.vue';
 
 interface AdminFolderData extends ValidatableData {
   name: string,
@@ -71,15 +82,15 @@ interface AdminFolderData extends ValidatableData {
 function getErrors(this: AdminFolderData) {
   const errors: Record<string, string> = {};
   if (!this.name) {
-    errors.name = 'ERROR_ENTER_NAME';
+    errors.name = _('Please enter an internal name');
   } else {
     const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
     if (!regex.test(this.name)) {
-      errors.name = 'ERROR_WRONG_NAME';
+      errors.name = _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!');
     }
   }
   if (!this.title.en_US) {
-    errors.title = 'ERROR_ENTER_TITLE';
+    errors.title = _('Please enter a display name');
   }
   return errors;
 }
@@ -90,8 +101,7 @@ export default defineComponent({
     ImageUpload,
     EditWidget,
     LocaleInput,
-    LinkWidget,
-    Translate,
+    RequiredFieldLabel,
   },
   props: {
     label: {
@@ -117,7 +127,20 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       portalCategories: 'portalData/portalCategories',
+      activityLevel: 'activity/level',
     }),
+    INTERNAL_NAME(): string {
+      return _('Internal name');
+    },
+    READ_ONLY(): string | null {
+      return this.modelValue.dn ? `(${_('readonly')})` : null;
+    },
+    NAME(): string {
+      return _('Name');
+    },
+    tabindex(): number {
+      return activity(['modal'], this.activityLevel);
+    },
   },
   created(): void {
     const dn = this.modelValue.dn;
@@ -131,11 +154,21 @@ export default defineComponent({
       this.$store.dispatch('modal/hideAndClearModal');
       this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
+    async unlink() {
+      this.$store.dispatch('activateLoadingState');
+      const dn = this.modelValue.dn;
+      // console.info('Removing', dn, 'from', this.superDn);
+      const success = await removeEntryFromSuperObj(this.superDn, this.portalCategories, dn, this.$store, _('Folder successfully unlinked'), _('Folder could not be unlinked'));
+      this.$store.dispatch('deactivateLoadingState');
+      if (success) {
+        this.cancel();
+      }
+    },
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      console.info('Removing', dn, 'from', this.superDn);
-      const success = await removeEntryFromSuperObj(this.superDn, this.portalCategories, dn, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
+      // console.info('Deleting', dn, 'completely');
+      const success = await remove(dn, this.$store, _('Folder successfully removed'), _('Folder could not be removed'));
       this.$store.dispatch('deactivateLoadingState');
       if (success) {
         this.cancel();
@@ -149,14 +182,14 @@ export default defineComponent({
         displayName: Object.entries(this.title),
       };
       if (this.modelValue.dn) {
-        console.info('Modifying', this.modelValue.dn);
-        success = await put(this.modelValue.dn, attrs, this.$store, 'FOLDER_MODIFIED_SUCCESS', 'FOLDER_MODIFIED_FAILURE');
+        // console.info('Modifying', this.modelValue.dn);
+        success = await put(this.modelValue.dn, attrs, this.$store, _('Folder could not be modified'), _('Folder successfully modified'));
       } else {
-        console.info('Adding folder');
-        const dn = await add('portals/folder', attrs, this.$store, 'FOLDER_ADDED_FAILURE');
+        // console.info('Adding folder');
+        const dn = await add('portals/folder', attrs, this.$store, _('Folder could not be added'));
         if (dn) {
-          console.info(dn, 'added');
-          success = await addEntryToSuperObj(this.superDn, this.portalCategories, dn, this.$store, 'FOLDER_ADDED_SUCCESS', 'FOLDER_ADDED_FAILURE');
+          // console.info(dn, 'added');
+          success = await addEntryToSuperObj(this.superDn, this.portalCategories, dn, this.$store, _('Folder successfully added'), _('Folder could not be added'));
         }
       }
       this.$store.dispatch('deactivateLoadingState');
@@ -167,3 +200,8 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="stylus">
+.folder
+  &__text-input
+    width: 100%
+</style>

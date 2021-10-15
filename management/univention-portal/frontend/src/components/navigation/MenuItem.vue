@@ -35,11 +35,14 @@ License with the Debian GNU/Linux or Univention distribution in file
     :class="{ 'menu-item__disabled': disabled }"
     :href="link ? link : null"
     :target="anchorTarget"
-    @click="tileClick"
-    @keydown.enter="tileClick"
+    :role="ariaRole"
+    :aria-disabled="ariaDisabled"
+    @click="setClickIfSubItem"
+    @keydown.enter="setClickIfSubItem"
+    @keydown.space="setClickIfSubItem"
   >
     <portal-icon
-      v-if="isSubItem"
+      v-if="isParentInSubItem"
       icon="chevron-left"
       class="menu-item__arrow menu-item__arrow--left"
     />
@@ -56,7 +59,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         </span>
       </div>
       <portal-icon
-        v-if="!isSubItem"
+        v-if="!isParentInSubItem"
         icon="chevron-right"
         class="menu-item__arrow menu-item__arrow--right"
       />
@@ -66,6 +69,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import _ from '@/jsHelper/translate';
 import { mapGetters } from 'vuex';
 
 import TabindexElement from '@/components/activity/TabindexElement.vue';
@@ -96,7 +100,11 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    isSubItem: {
+    isParentInSubItem: {
+      type: Boolean,
+      default: false,
+    },
+    isSubitem: {
       type: Boolean,
       default: false,
     },
@@ -108,23 +116,34 @@ export default defineComponent({
     disabled(): boolean {
       return this.disabledMenuItems.includes(this.id);
     },
+    ariaDisabled(): boolean {
+      return this.ariaRole === 'button' && this.disabled;
+    },
     activeAt(): string[] {
-      if (this.disabled) {
-        return [];
-      }
       return ['header-menu'];
     },
     itemString(): string {
       const numberOfItems = this.subMenu.length;
       let itemString = '';
       if (numberOfItems === 0) {
-        itemString = this.$translateLabel('NO_ITEMS');
+        itemString = _('No items');
       } else if (numberOfItems === 1) {
-        itemString = this.$translateLabel('ITEM');
+        itemString = _('Item');
       } else {
-        itemString = this.$translateLabel('ITEMS');
+        itemString = _('Items');
       }
       return itemString;
+    },
+    ariaRole(): string {
+      return this.link ? 'link' : 'button';
+    },
+  },
+  methods: {
+    setClickIfSubItem($event) {
+      if (this.isSubitem) {
+        // @ts-ignore
+        this.tileClick($event);
+      }
     },
   },
 });

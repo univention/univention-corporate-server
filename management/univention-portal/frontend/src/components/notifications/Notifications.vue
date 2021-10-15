@@ -28,13 +28,18 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <region
-    :id="`notifications-${onlyVisible ? 'visible' : 'all'}`"
+    :id="`notifications-${!isInNotificationBar ? 'visible' : 'all'}`"
+    :aria-live="ariaLiveStatus"
     direction="topdown"
-    class="notifications"
+    :class="['notifications',
+             {
+               'notifications--in-bar' : isInNotificationBar,
+               'notifications--floating' : !isInNotificationBar,
+             }]"
     @keydown.esc="closeNotifications"
   >
     <div
-      v-if="!onlyVisible && notifications.length > 1"
+      v-if="isInNotificationBar && notifications.length > 1"
       class="notifications__close-all"
     >
       <button
@@ -44,22 +49,31 @@ License with the Debian GNU/Linux or Univention distribution in file
         <portal-icon
           icon="trash"
         />
-        <translate i18n-key="REMOVE_ALL_NOTIFICATIONS" />
+        <span>
+          {{ REMOVE_ALL_NOTIFICATIONS }}
+        </span>
       </button>
     </div>
     <notification
       v-for="notification in notifications"
       :key="notification.token"
       v-bind="notification"
+      @alertRemovedNotification="alertRemovedNotification"
     />
+    <span
+      v-if="isInNotificationBar && notifications.length === 0"
+      class="notifications__no-notifications"
+    >
+      {{ NO_NOTIFICATIONS }}
+    </span>
   </region>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import Translate from '@/i18n/Translate.vue';
 import Region from '@/components/activity/Region.vue';
 import Notification from '@/components/notifications/Notification.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
@@ -69,11 +83,10 @@ export default defineComponent({
   components: {
     Notification,
     Region,
-    Translate,
     PortalIcon,
   },
   props: {
-    onlyVisible: {
+    isInNotificationBar: {
       type: Boolean,
       required: true,
     },
@@ -85,20 +98,50 @@ export default defineComponent({
       activeButton: 'navigation/getActiveButton',
     }),
     notifications() {
-      if (this.onlyVisible) {
+      if (!this.isInNotificationBar) {
         return this.visibleNotifications;
       }
       return this.allNotifications;
     },
+    REMOVE_ALL_NOTIFICATIONS(): string {
+      return _('Remove all');
+    },
+    NO_NOTIFICATIONS(): string {
+      return _('No notifications');
+    },
+    NOTIFICATIONS_REMOVED(): string {
+      return _('Notifications removed');
+    },
+    NOTIFICATION_REMOVED(): string {
+      return _('Notification removed');
+    },
+    ariaLiveStatus(): string {
+      return !this.isInNotificationBar ? 'polite' : 'off';
+    },
+  },
+  created() {
+    if (this.isInNotificationBar) {
+      this.$store.dispatch('modal/disableBodyScrolling');
+    }
   },
   methods: {
     closeAll(): void {
       this.$store.dispatch('notifications/removeAllNotifications');
+      this.$store.dispatch('activity/addMessage', {
+        id: 'notifications',
+        msg: _('Notifications removed'),
+      });
     },
     closeNotifications(): void {
       if (this.activeButton === 'bell') {
         this.$store.dispatch('navigation/setActiveButton', '');
       }
+    },
+    alertRemovedNotification() {
+      this.$store.dispatch('activity/addMessage', {
+        id: 'notifications',
+        msg: _('Notification removed'),
+      });
     },
   },
 });
@@ -117,8 +160,30 @@ export default defineComponent({
   overflow-y: auto
   padding-right: calc(3 * var(--layout-spacing-unit))
 
+  @media $mqSmartphone
+    font-size: var(--font-size-5)
+    width: 73vw
+    padding-right: 0
+
+  &--in-bar
+    @media $mqSmartphone
+      right: 0
+      left: calc(3 * var(--layout-spacing-unit))
+      font-size: var(--font-size-5)
+
+  &--floating
+    @media $mqSmartphone
+      right: var(--layout-spacing-unit)
+
   &__close-all
     display: flex
-    justify-content: flex-end
+    justify-content: flex-start
     margin-bottom: calc(4 * var(--layout-spacing-unit))
+
+  &__no-notifications
+    font-size: var(--font-size-2)
+
+  .flyout-wrapper &
+    top: calc(4 * var(--layout-spacing-unit));
+    height: calc(100vh - var(--layout-height-header) - 10 * var(--layout-spacing-unit))
 </style>

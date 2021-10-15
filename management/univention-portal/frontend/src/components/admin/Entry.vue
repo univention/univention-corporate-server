@@ -31,34 +31,44 @@
     :label="label"
     :can-remove="!!modelValue.dn"
     :model="$data"
+    @unlink="unlink"
     @remove="remove"
     @save="finish"
   >
     <label>
-      <translate i18n-key="INTERNAL_NAME" />
-      <span> *</span>
+      {{ INTERNAL_NAME }}
+      {{ READ_ONLY }}
+      <required-field-label
+        v-if="!modelValue.dn"
+      />
       <input
         v-model="name"
+        :readonly="modelValue.dn"
+        :tabindex="tabindex"
+        class="entry__text-input"
         name="name"
-        :disabled="modelValue.dn"
+        autocomplete="off"
       >
     </label>
     <locale-input
       v-model="title"
       name="title"
-      i18n-label="NAME"
+      :i18n-label="NAME"
+      :tabindex="tabindex"
     />
     <locale-input
       v-model="description"
       name="description"
-      i18n-label="DESCRIPTION"
+      :i18n-label="DESCRIPTION"
+      :tabindex="tabindex"
     />
-    <label>
+    <label class="entry__checkbox">
       <input
         v-model="activated"
         type="checkbox"
+        :tabindex="tabindex"
       >
-      <translate i18n-key="ACTIVATED" />
+      {{ ACTIVATED }}
     </label>
     <div>
       <label>
@@ -67,37 +77,49 @@
       <link-widget
         v-model="links"
         name="links"
+        :tabindex="tabindex"
       />
     </div>
     <label>
-      <translate i18n-key="LINK_TARGET" />
+      {{ WAY_OF_OPENING_LINKS }}
       <select
         v-model="linkTarget"
+        :tabindex="tabindex"
+        class="entry__select"
       >
-        <option value="useportaldefault">{{ $translateLabel('PORTAL_DEFAULT') }}</option>
-        <option value="samewindow">{{ $translateLabel('SAME_WINDOW') }}</option>
-        <option value="newwindow">{{ $translateLabel('NEW_WINDOW') }}</option>
-        <option value="embedded">{{ $translateLabel('EMBEDDED') }}</option>
+        <option value="useportaldefault">{{ PORTAL_DEFAULT }}</option>
+        <option value="samewindow">{{ SAME_TAB }}</option>
+        <option value="newwindow">{{ NEW_TAB }}</option>
+        <option value="embedded">{{ EMBEDDED }}</option>
       </select>
     </label>
 
     <image-upload
       v-model="pathToLogo"
       label="Icon"
+      :tabindex="tabindex"
     />
     <label>
-      <translate i18n-key="BACKGROUND_COLOR" />
+      {{ BACKGROUND_COLOR }}
       <input
         v-model="backgroundColor"
+        :tabindex="tabindex"
         name="backgroundColor"
+        class="entry__text-input"
       >
     </label>
-    <label>
+    <multi-select
+      v-model="allowedGroups"
+      :label="ALLOWED_GROUPS"
+      :tabindex="tabindex"
+    />
+    <label class="entry__checkbox">
       <input
         v-model="anonymous"
         type="checkbox"
+        :tabindex="tabindex"
       >
-      <translate i18n-key="ANONYMOUS" />
+      {{ ONLY_VISIBLE_IF_NOT_LOGGED_IN }}
     </label>
   </edit-widget>
 </template>
@@ -105,14 +127,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import { removeEntryFromSuperObj, addEntryToSuperObj, put, add } from '@/jsHelper/admin';
+import { removeEntryFromSuperObj, addEntryToSuperObj, put, add, remove } from '@/jsHelper/admin';
+import activity from '@/jsHelper/activity';
 import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
+import RequiredFieldLabel from '@/components/forms/RequiredFieldLabel.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
+import MultiSelect from '@/components/widgets/MultiSelect.vue';
 import LinkWidget, { LocaleAndValue } from '@/components/widgets/LinkWidget.vue';
-
-import Translate from '@/i18n/Translate.vue';
 
 interface AdminEntryData extends ValidatableData {
   name: string,
@@ -122,6 +146,7 @@ interface AdminEntryData extends ValidatableData {
   title: Record<string, string>,
   description: Record<string, string>,
   links: Array<LocaleAndValue>,
+  allowedGroups: string[],
   linkTarget: string,
   anonymous: boolean,
 }
@@ -129,24 +154,24 @@ interface AdminEntryData extends ValidatableData {
 function getErrors(this: AdminEntryData) {
   const errors: Record<string, string> = {};
   if (!this.name) {
-    errors.name = 'ERROR_ENTER_NAME';
+    errors.name = _('Please enter an internal name');
   } else {
     const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
     if (!regex.test(this.name)) {
-      errors.name = 'ERROR_WRONG_NAME';
+      errors.name = _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!');
     }
   }
   if (!this.title.en_US) {
-    errors.title = 'ERROR_ENTER_TITLE';
+    errors.title = _('Please enter a display name');
   }
   if (!this.description.en_US) {
-    errors.description = 'ERROR_ENTER_DESCRIPTION';
+    errors.description = _('Please enter a description');
   }
   if (!this.links.some((link) => link.locale === 'en_US' && !!link.value)) {
-    errors.links = 'ERROR_ENTER_LINK';
+    errors.links = _('Please enter at least one English link');
   }
   if (this.links.length === 0) {
-    errors.links = 'ERROR_ENTER_LINK';
+    errors.links = _('Please enter at least one English link');
   }
   return errors;
 }
@@ -157,8 +182,9 @@ export default defineComponent({
     ImageUpload,
     EditWidget,
     LocaleInput,
+    MultiSelect,
     LinkWidget,
-    Translate,
+    RequiredFieldLabel,
   },
   props: {
     label: {
@@ -187,6 +213,7 @@ export default defineComponent({
       description: {},
       backgroundColor: null,
       links: [],
+      allowedGroups: [],
       linkTarget: 'default',
       anonymous: false,
       getErrors,
@@ -196,16 +223,59 @@ export default defineComponent({
     ...mapGetters({
       portalCategories: 'portalData/portalCategories',
       portalFolders: 'portalData/portalFolders',
+      activityLevel: 'activity/level',
     }),
-    superObjs(): any[] {
+    tabindex(): number {
+      return activity(['modal'], this.activityLevel);
+    },
+    superObjs(): any[] { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (this.fromFolder) {
         return this.portalFolders;
       }
       return this.portalCategories;
     },
+    INTERNAL_NAME(): string {
+      return _('Internal name');
+    },
+    READ_ONLY(): string | null {
+      return this.modelValue.dn ? `(${_('readonly')})` : null;
+    },
+    ACTIVATED(): string {
+      return _('Activated');
+    },
+    WAY_OF_OPENING_LINKS(): string {
+      return _('Way of opening links');
+    },
+    PORTAL_DEFAULT(): string {
+      return _('Use default of portal');
+    },
+    SAME_TAB(): string {
+      return _('Same tab');
+    },
+    NEW_TAB(): string {
+      return _('New tab');
+    },
+    EMBEDDED(): string {
+      return _('Embedded');
+    },
+    BACKGROUND_COLOR(): string {
+      return _('Background color');
+    },
+    ONLY_VISIBLE_IF_NOT_LOGGED_IN(): string {
+      return _('Only visible if not logged in');
+    },
+    DESCRIPTION(): string {
+      return _('Description');
+    },
+    NAME(): string {
+      return _('Name');
+    },
+    ALLOWED_GROUPS(): string {
+      return _('Can only be seen by these groups');
+    },
   },
   created(): void {
-    console.info('Edit entry', this.modelValue);
+    // console.info('Edit entry', this.modelValue);
     const dn = this.modelValue.dn;
     const activated = this.modelValue.activated;
     if (dn) {
@@ -219,6 +289,7 @@ export default defineComponent({
     this.title = { ...(this.modelValue.title || {}) };
     this.description = { ...(this.modelValue.description || {}) };
     this.links.push(...(this.modelValue.links || []));
+    this.allowedGroups.push(...(this.modelValue.allowedGroups || []));
     this.linkTarget = this.modelValue.originalLinkTarget;
     this.anonymous = this.modelValue.anonymous;
   },
@@ -227,11 +298,21 @@ export default defineComponent({
       this.$store.dispatch('modal/hideAndClearModal');
       this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
+    async unlink() {
+      this.$store.dispatch('activateLoadingState');
+      const dn = this.modelValue.dn;
+      // console.info('Removing', dn, 'from', this.superDn);
+      const success = await removeEntryFromSuperObj(this.superDn, this.superObjs, dn, this.$store, _('Entry successfully unlinked'), _('Entry could not be unlinked'));
+      this.$store.dispatch('deactivateLoadingState');
+      if (success) {
+        this.cancel();
+      }
+    },
     async remove() {
       this.$store.dispatch('activateLoadingState');
       const dn = this.modelValue.dn;
-      console.info('Removing', dn, 'from', this.superDn);
-      const success = await removeEntryFromSuperObj(this.superDn, this.superObjs, dn, this.$store, 'ENTRY_REMOVED_SUCCESS', 'ENTRY_REMOVED_FAILURE');
+      // console.info('Deleting', dn, 'completely');
+      const success = await remove(dn, this.$store, _('Entry successfully removed'), _('Entry could not be removed'));
       this.$store.dispatch('deactivateLoadingState');
       if (success) {
         this.cancel();
@@ -247,6 +328,7 @@ export default defineComponent({
         displayName: Object.entries(this.title),
         description: Object.entries(this.description),
         link: links,
+        allowedGroups: this.allowedGroups,
         linkTarget: this.linkTarget,
         anonymous: this.anonymous,
         icon: '',
@@ -261,14 +343,14 @@ export default defineComponent({
       }
 
       if (this.modelValue.dn) {
-        console.info('Modifying', this.modelValue.dn);
-        success = await put(this.modelValue.dn, attrs, this.$store, 'ENTRY_MODIFIED_SUCCESS', 'ENTRY_MODIFIED_FAILURE');
+        // console.info('Modifying', this.modelValue.dn);
+        success = await put(this.modelValue.dn, attrs, this.$store, _('Entry could not be modified'), _('Entry successfully modified'));
       } else {
-        console.info('Adding entry');
-        const dn = await add('portals/entry', attrs, this.$store, 'ENTRY_ADDED_FAILURE');
+        // console.info('Adding entry');
+        const dn = await add('portals/entry', attrs, this.$store, _('Entry could not be added'));
         if (dn) {
-          console.info(dn, 'added');
-          success = await addEntryToSuperObj(this.superDn, this.superObjs, dn, this.$store, 'ENTRY_ADDED_SUCCESS', 'ENTRY_ADDED_FAILURE');
+          // console.info(dn, 'added');
+          success = await addEntryToSuperObj(this.superDn, this.superObjs, dn, this.$store, _('Entry successfully added'), _('Entry could not be added'));
         }
       }
       this.$store.dispatch('deactivateLoadingState');
@@ -279,3 +361,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="stylus">
+.entry
+  &__checkbox
+    display: flex
+  &__text-input,
+  &__select
+    width: 100%
+</style>

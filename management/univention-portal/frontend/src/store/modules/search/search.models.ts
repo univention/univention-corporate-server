@@ -26,3 +26,5 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+
+export type SearchQuery = string;

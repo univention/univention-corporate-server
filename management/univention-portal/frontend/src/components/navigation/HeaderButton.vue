@@ -33,7 +33,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     @click="toggleActiveButton"
     @keyup.esc.stop="emptyActiveButton"
   >
-    <span
+    <div
       :class="'header-button__inner'"
       role="presentation"
     >
@@ -43,7 +43,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         tag="button"
         :active-at="['portal', `header-${icon}`]"
         :aria-expanded="isActiveButton"
-        :aria-label="ariaLabelProp"
+        :aria-label="ariaLabel"
         :class="['header-button__button', hoverClass]"
       >
         <portal-icon
@@ -56,12 +56,13 @@ License with the Debian GNU/Linux or Univention distribution in file
           {{ counter }}
         </div>
       </tabindex-element>
-    </span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
 import TabindexElement from '@/components/activity/TabindexElement.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
@@ -87,7 +88,7 @@ export default defineComponent({
     },
     counter: {
       type: Number,
-      default: 0,
+      default: null,
     },
     hoverClass: {
       type: String,
@@ -100,6 +101,17 @@ export default defineComponent({
     },
     setRef(): string {
       return `${this.icon}Reference`;
+    },
+    ariaLabel(): string {
+      let ariaLabel = '';
+      if (this.counter === null) {
+        ariaLabel = this.ariaLabelProp;
+      } else if (this.counter === 1) {
+        ariaLabel = `${this.ariaLabelProp}: ${this.counter} ${_('item')}`;
+      } else {
+        ariaLabel = `${this.ariaLabelProp}: ${this.counter} ${_('items')}`;
+      }
+      return ariaLabel;
     },
   },
   methods: {
@@ -191,4 +203,8 @@ export default defineComponent({
     align-items: center
     justify-content: center
     pointer-events: none
+
+#header-button-bell svg
+#header-button-copy svg
+  margin-right: 0!important
 </style>

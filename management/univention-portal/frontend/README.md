@@ -11,23 +11,6 @@ Written in **Vue.js 3** with **Typescript**. Documentation and guidelines are ma
 - [Tech Stack](https://projects.univention.de/xwiki/wiki/upx/view/UPX%20Portal/Development%20Guidelines/Tech%20Stack/) (Technical decisions about the frameworks, libraries and tools we use)
 - [Workflow](https://projects.univention.de/xwiki/wiki/upx/view/UPX%20Portal/Development%20Guidelines/Workflow/) (Description and suggestions on how we work together, track issues, review code...)
 
-## Have a live look
-
-A version that *should* work can be found here: http://10.200.4.60
-
-`ssh lagan.knut.univention.de virsh start dwiesent_ucs5-vue-portal`
-
-You may as well install our latest packages. Add this to `/etc/apt/sources.list`:
-
-```
-deb http://omar.knut.univention.de/build2/ ucs_5.0-0-vue-frontend/all/
-deb http://omar.knut.univention.de/build2/ ucs_5.0-0-vue-frontend/$(ARCH)/
-```
-
-and install the packages `phoenix-portal univention-portal`
-
-This installs the frontend to /univention/phoenix/.
-
 ## Project setup
 
 Regardless if you want to run it locally on your Linux machine or on a UCS
@@ -44,6 +27,15 @@ npm install --force -g npm@latest  # newer version
 
 Have a look at `.env.local_example`. Copy it to `.env.local`. Or copy
 `.env.production` instead.
+
+### Sync the files to a UCS
+
+In order to build the project on a UCS, you can sync all dev files from your local git:
+
+```
+UCS_MACHINE=10.200.4.80
+~/git/frontend/sync $UCS_MACHINE:frontend/
+```
 
 ### Compiles and hot-reloads for development
 ```
@@ -62,16 +54,69 @@ This creates a static HTML file that may be served by UCS' apache. Everything in
 yarn lint
 ```
 
-## Translation
+### Using a real backend server
+Currently, the dev server just serves a static portal.json (from `public/data`). A full portal server that accepts backend calls like tile reordering and so on can be configured by setting up a reverse proxy *on your laptop*.
 
-We use the UCS tooling. The configuration is in debian/phoenixportal.univention-l10n. Here are some commands how to make the translation files locally (and so that they can be checked in):
+You need:
+
+- A UCS 5.0 machine with a running portal. See our KVM environment. It runs at, say, 10.200.4.80.
+- An alias for localhost, say portal-dev.intranet, added in your local /etc/hosts
+- A reverse proxy on your laptop. We are using nginx
+  - A config for said proxy (you could just append it to `/etc/nginx/sites-enabled/default`):
 
 ```
-# updates de.po
-~/git/ucs/packaging/univention-l10n/univention-l10n-build de
+server {
+        listen 80;
+        listen [::]:80;
+        server_name portal-dev.intranet;
+
+        location /univention/portal/data/portal.json {
+                proxy_pass http://10.200.4.80/univention/portal/portal.json;
+        }
+
+        location /univention/portal/data/meta.json {
+                proxy_pass http://10.200.4.80/univention/meta.json;
+        }
+
+        location /univention/portal/data/languages.json {
+                proxy_pass http://10.200.4.80/univention/languages.json;
+        }
+
+        location /univention/portal/icons/ {
+                proxy_pass http://10.200.4.80/univention/portal/icons/;
+        }
+
+        location /univention/portal/ {
+                proxy_pass http://localhost:8080/;
+        }
+
+        location /univention/ {
+                proxy_pass http://10.200.4.80/univention/;
+        }
+}
+```
+
+Now you can access the development portal like this: `http://portal-dev.intranet/univention/portal`.
+
+(The /univention/ part is important for cookies set by the backend)
+
+To enable hot reloading, you need to do
+
+`yarn serve --host portal-dev.intranet`
+
+## Translation
+
+We use the UCS tooling. The configuration is in `debian/phoenixportal.univention-l10n.` 
+You need to download the ucs repo to call the following commands: https://git.knut.univention.de/univention/ucs
+
+```
+# creates tempprary files for vue and generates/updates de.po
+./process_vue_files.sh && ~/git/ucs/packaging/univention-l10n/univention-l10n-build de
 
 # compiles de.po to de.json
 ~/git/ucs/packaging/univention-l10n/univention-l10n-install de
+
+# copy that json into out public directory
 cp {debian/phoenixportal/,}public/i18n/de.json
 ```
 
@@ -105,7 +150,6 @@ yarn test:e2e
 ```
 
 ## Links and references
-
 - Feather-Sprite Icons: [Overview](https://feathericons.com/)
 
 ## CI/CD Setup Building .debs

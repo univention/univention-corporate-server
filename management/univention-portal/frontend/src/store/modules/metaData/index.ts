@@ -27,6 +27,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 import { PortalModule } from '@/store/root.models';
+import { Commit } from 'vuex';
 
 export interface MetaDataState {
   meta: Record<string, unknown>;
@@ -45,7 +46,7 @@ const metaData: PortalModule<MetaDataState> = {
   },
 
   mutations: {
-    META(state, payload) {
+    META(state: MetaDataState, payload: Record<string, unknown>): void {
       state.meta = payload;
     },
   },
@@ -53,7 +54,7 @@ const metaData: PortalModule<MetaDataState> = {
   getters: { getMeta: (state) => state.meta },
 
   actions: {
-    setMeta({ commit }, payload) {
+    setMeta({ commit }: { commit: Commit }, payload: Record<string, unknown>): void {
       commit('META', payload);
     },
   },

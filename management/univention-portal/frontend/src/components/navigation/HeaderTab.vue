@@ -27,24 +27,20 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <tabindex-element
-    :id="`headerTab__${idx}`"
-    :ref="`headerTab__${idx}`"
-    tag="div"
-    :active-at="['portal']"
-    :hidden="hidden"
-    class="header-tab"
-    :class="{ 'header-tab--active': isActive }"
-    @click="focusTab"
-    @keydown.enter="focusTab"
+  <div
+    class="header-tab__wrapper"
   >
-    <div
-      ref="tabFocusWrapper"
-      class="header-tab__focus-wrapper"
-      :aria-label="ariaLabelFocus"
-      @blur="removeFocusStyleFromParent()"
+    <tabindex-element
+      :id="`headerTab__${idx}`"
+      :ref="`headerTab__${idx}`"
+      tag="div"
+      :active-at="['portal']"
+      :hidden="hidden"
+      class="header-tab header-tab__clickable"
+      :class="{ 'header-tab--active': isActive }"
+      @click="focusTab"
+      @keydown.enter="focusTab"
     >
-      <!-- Alt-Tag should be empty, since it's not necessary for screenreader users -->
       <div
         class="header-tab__logo-wrapper"
         :style="backgroundColor ? `background: ${backgroundColor}` : ''"
@@ -58,24 +54,25 @@ License with the Debian GNU/Linux or Univention distribution in file
       </div>
       <span
         class="header-tab__title"
-        :title="tabLabel"
       >
         {{ tabLabel }}
       </span>
-    </div>
+    </tabindex-element>
     <icon-button
       :id="`close-tab-${idx}`"
       icon="x"
       :aria-label-prop="ariaLabelClose"
       class="header-tab__close-button"
+      :data-test="`close-tab-${idx}`"
       :hidden="hidden"
       @click="closeTab"
     />
-  </tabindex-element>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
 import TabindexElement from '@/components/activity/TabindexElement.vue';
 import IconButton from '@/components/globals/IconButton.vue';
@@ -124,14 +121,18 @@ export default defineComponent({
   },
   computed: {
     ariaLabelClose(): string {
-      return `${this.tabLabel}:  ${this.$translateLabel('CLOSE_TAB')}`;
+      return `${this.tabLabel}:  ${_('Close')}`;
     },
     ariaLabelFocus(): string {
-      return `${this.tabLabel}:  ${this.$translateLabel('SELECT_TAB')}`;
+      return `${this.tabLabel}:  ${_('Select')}`;
     },
   },
   mounted() {
     this.isMounted = true;
+    this.$store.dispatch('activity/saveFocus', {
+      region: 'portal-header',
+      id: `headerTab__${this.idx}`,
+    });
   },
   methods: {
     focusTab(): void {
@@ -150,7 +151,6 @@ export default defineComponent({
   cursor: pointer
   display: flex
   align-items: center
-  position: relative
   z-index: 1
   background-color: transparent
   transition: background-color var(--portal-transition-duration)
@@ -158,6 +158,15 @@ export default defineComponent({
   flex-grow: 1
   max-width: 15rem
   border: 0.2rem solid rgba(0,0,0,0)
+
+  &__wrapper
+    display: flex
+    position: relative
+    align-items: center
+    height: 100%
+
+    &:hover
+      background-color: var(--portal-tab-background)
 
   &__logo-wrapper
     background-color: var(--bgc-apptile-default)
@@ -186,15 +195,35 @@ export default defineComponent({
     position: relative
     z-index: 10
 
-  &__focus-wrapper
-    display: flex
-    align-items: center
-    min-width: 40px
-    width: 100%
+  &__clickable
+    &:before
+      content: ''
+      width: 100%
+      height: 100%
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      border: 0.2rem solid rgba(0,0,0,0)
+      box-sizing: border-box;
+      z-index: -1
 
-  &:focus
-    border-color: var(--color-focus)
+    &:focus:before
+      border-color: var(--color-focus)
 
   &--active
-    background-color: var(--portal-tab-background)
+    &:after
+      content: ''
+      width: 100%
+      height: 100%
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      border: 0.2rem solid rgba(0,0,0,0)
+      box-sizing: border-box;
+      z-index: -1
+      background-color: var(--portal-tab-background)
 </style>

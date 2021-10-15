@@ -28,34 +28,25 @@
 -->
 <template>
   <div class="portal">
+    <screen-reader-announcer />
     <portal-background />
     <portal-header />
-
+    <portal-error v-if="errorContentType" />
     <region
+      v-if="!errorContentType"
       v-show="!activeTabIndex"
       id="portalCategories"
       role="main"
       class="portal-categories"
     >
-      <div
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <h2 v-if="hasEmptySearchResults">
-          <translate i18n-key="NO_RESULTS" />
-        </h2>
-      </div>
-
-      <template v-if="categories">
-        <portal-category
-          v-for="category in categories"
-          :key="category.id"
-          :title="category.title"
-          :dn="category.dn"
-          :virtual="category.virtual"
-          :tiles="category.tiles"
-        />
-      </template>
+      <portal-category
+        v-for="category in categories"
+        :key="category.id"
+        :title="category.title"
+        :dn="category.dn"
+        :virtual="category.virtual"
+        :tiles="category.tiles"
+      />
 
       <h2
         v-if="editMode"
@@ -64,26 +55,29 @@
         <icon-button
           icon="plus"
           class="portal-categories__add-button icon-button--admin"
-          :aria-label-prop="ariaLabelAddNewTile"
+          :aria-label-prop="ADD_CATEGORY"
           @click="addCategory"
         />
-        <translate i18n-key="ADD_CATEGORY" />
+        {{ ADD_CATEGORY }}
       </h2>
     </region>
 
     <div
       v-show="activeTabIndex"
       class="portal-iframes"
+      data-test="portal-iframes"
     >
       <portal-iframe
         v-for="(item, index) in tabs"
         :key="index"
         :link="item.iframeLink"
-        :is-active="activeTabIndex == index + 1"
+        :is-active="activeTabIndex === index + 1"
+        :tab-id="index"
+        :title="item.tabLabel"
       />
     </div>
 
-    <notifications :only-visible="true" />
+    <notifications :is-in-notification-bar="false" />
 
     <portal-tool-tip
       v-if="tooltip"
@@ -91,7 +85,10 @@
     />
 
     <portal-sidebar />
-    <portal-modal :is-active="false" />
+    <portal-modal />
+    <portal-modal
+      :modal-level="2"
+    />
     <loading-overlay />
   </div>
 </template>
@@ -99,21 +96,22 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
 import Region from '@/components/activity/Region.vue';
-import ModalWrapper from '@/components/globals/ModalWrapper.vue';
+import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 import Notifications from 'components/notifications/Notifications.vue';
 import PortalBackground from '@/components/PortalBackground.vue';
 import PortalCategory from 'components/PortalCategory.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
 import PortalIframe from 'components/PortalIframe.vue';
-import PortalModal from 'components/PortalModal.vue';
+import PortalModal from 'components/modal/PortalModal.vue';
 import PortalSidebar from '@/components/PortalSidebar.vue';
 import PortalToolTip from 'components/PortalToolTip.vue';
+import ScreenReaderAnnouncer from '@/components/globals/ScreenReaderAnnouncer.vue';
+import PortalError from '@/components/globals/PortalError.vue';
 import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
-
-import Translate from '@/i18n/Translate.vue';
 
 import { Category } from '@/store/modules/portalData/portalData.models';
 import createCategories from '@/jsHelper/createCategories';
@@ -133,27 +131,33 @@ export default defineComponent({
     PortalSidebar,
     PortalToolTip,
     Region,
-    Translate,
+    ScreenReaderAnnouncer,
+    PortalError,
   },
   computed: {
     ...mapGetters({
       portalContent: 'portalData/portalContent',
       portalEntries: 'portalData/portalEntries',
       portalFolders: 'portalData/portalFolders',
+      errorContentType: 'portalData/errorContentType',
       portalCategories: 'portalData/portalCategories',
       portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
-      hasEmptySearchResults: 'search/hasEmptySearchResults',
       metaData: 'metaData/getMeta',
+      getModalState: 'modal/getModalState',
+      userState: 'user/userState',
     }),
     categories(): Category[] {
       return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget, this.editMode);
     },
-    ariaLabelAddNewTile(): string {
-      return this.$translateLabel('ADD_NEW_CATEGORY');
+    ADD_CATEGORY(): string {
+      return _('Add category');
+    },
+    isSecondModalActive(): boolean {
+      return this.getModalState('secondLevelModal');
     },
   },
   methods: {
@@ -213,7 +217,7 @@ export default defineComponent({
 .portal-iframes
   position: fixed
   top: var(--portal-header-height)
-  border: 0px solid var(--portal-tab-background)
+  border: 0 solid var(--portal-tab-background)
   border-top-width: var(--layout-height-header-separator)
   right: 0
   bottom: 0

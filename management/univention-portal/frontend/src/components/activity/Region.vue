@@ -30,10 +30,10 @@
   <component
     :is="tag"
     :id="id"
-    @keydown.left.exact.prevent="goLeft"
-    @keydown.right.exact.prevent="goRight"
-    @keydown.up.exact.prevent="goUp"
-    @keydown.down.exact.prevent="goDown"
+    @keydown.left.exact="goLeft"
+    @keydown.right.exact="goRight"
+    @keydown.up.exact="goUp"
+    @keydown.down.exact="goDown"
   >
     <slot />
   </component>
@@ -61,6 +61,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
+      inDragnDropMode: 'dragndrop/inDragnDropMode',
       activityLevel: 'activity/level',
       activityRegion: 'activity/region',
       focus: 'activity/focus',
@@ -103,28 +104,44 @@ export default defineComponent({
       }
     },
     goUp(ev: KeyboardEvent): void {
+      if (this.inDragnDropMode) {
+        return;
+      }
       if (this.direction === 'topdown') {
+        ev.preventDefault();
         if (!this.focusPrev(ev)) {
           this.focusLast(ev);
         }
       }
     },
     goDown(ev: KeyboardEvent): void {
+      if (this.inDragnDropMode) {
+        return;
+      }
       if (this.direction === 'topdown') {
+        ev.preventDefault();
         if (!this.focusNext(ev)) {
           this.focusFirst(ev);
         }
       }
     },
     goLeft(ev: KeyboardEvent): void {
+      if (this.inDragnDropMode) {
+        return;
+      }
       if (this.direction === 'leftright') {
+        ev.preventDefault();
         if (!this.focusPrev(ev)) {
           this.focusLast(ev);
         }
       }
     },
     goRight(ev: KeyboardEvent): void {
+      if (this.inDragnDropMode) {
+        return;
+      }
       if (this.direction === 'leftright') {
+        ev.preventDefault();
         if (!this.focusNext(ev)) {
           this.focusFirst(ev);
         }
@@ -138,6 +155,7 @@ export default defineComponent({
         });
         elem.focus();
         ev?.stopPropagation();
+        ev?.preventDefault();
         return true;
       }
       return false;
@@ -195,3 +213,5 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+</style>

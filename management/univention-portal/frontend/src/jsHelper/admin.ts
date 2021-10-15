@@ -26,9 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-
-import { translate } from '@/i18n/translations';
-import { udmPut, udmAdd } from '@/jsHelper/umc';
+import { udmRemove, udmPut, udmAdd } from '@/jsHelper/umc';
 
 async function add(objectType, attrs, store, errorMessage): Promise<string> {
   try {
@@ -40,22 +38,49 @@ async function add(objectType, attrs, store, errorMessage): Promise<string> {
     return result.$dn$;
   } catch (err) {
     store.dispatch('notifications/addErrorNotification', {
-      title: translate(errorMessage),
+      title: errorMessage,
       description: err.message,
     });
   }
   return '';
 }
 
-async function put(dn, attrs, { dispatch }, successMessage, errorMessage): Promise<boolean> {
+async function put(dn, attrs, { dispatch }, errorMessage, successMessage?): Promise<boolean> {
   try {
     const response = await udmPut(dn, attrs);
     const result = response.data.result[0];
     if (!result.success) {
       throw new Error(result.details);
     }
+    if (successMessage) {
+      dispatch('notifications/addSuccessNotification', {
+        title: successMessage,
+      }, { root: true });
+    }
+    await dispatch('portalData/waitForChange', {
+      retries: 10,
+      adminMode: true,
+    }, { root: true });
+    await dispatch('loadPortal', { adminMode: true }, { root: true });
+    return true;
+  } catch (err) {
+    dispatch('notifications/addErrorNotification', {
+      title: errorMessage,
+      description: err.message,
+    }, { root: true });
+    return false;
+  }
+}
+
+async function remove(dn, { dispatch }, successMessage, errorMessage) {
+  try {
+    const response = await udmRemove(dn);
+    const result = response.data.result[0];
+    if (!result.success) {
+      throw new Error(result.details);
+    }
     dispatch('notifications/addSuccessNotification', {
-      title: translate(successMessage),
+      title: successMessage,
     }, { root: true });
     await dispatch('portalData/waitForChange', {
       retries: 10,
@@ -65,7 +90,7 @@ async function put(dn, attrs, { dispatch }, successMessage, errorMessage): Promi
     return true;
   } catch (err) {
     dispatch('notifications/addErrorNotification', {
-      title: translate(errorMessage),
+      title: errorMessage,
       description: err.message,
     }, { root: true });
     return false;
@@ -97,7 +122,7 @@ async function addEntryToSuperObj(superDn, superObjs, dn, { dispatch, getters },
   const attrs = {
     [attrName]: links.concat([dn]),
   };
-  return put(actualSuperDn, attrs, { dispatch }, successMessage, errorMessage);
+  return put(actualSuperDn, attrs, { dispatch }, errorMessage, successMessage);
 }
 
 async function removeEntryFromSuperObj(superDn, superObjs, dn, { dispatch, getters }, successMessage, errorMessage) {
@@ -120,7 +145,7 @@ async function removeEntryFromSuperObj(superDn, superObjs, dn, { dispatch, gette
   const attrs = {
     [attrName]: links.filter((entryDn) => entryDn !== dn),
   };
-  return put(actualSuperDn, attrs, { dispatch }, successMessage, errorMessage);
+  return put(actualSuperDn, attrs, { dispatch }, errorMessage, successMessage);
 }
 
-export { put, add, getAdminState, removeEntryFromSuperObj, addEntryToSuperObj };
+export { put, add, remove, getAdminState, removeEntryFromSuperObj, addEntryToSuperObj };

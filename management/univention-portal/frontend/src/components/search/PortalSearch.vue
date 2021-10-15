@@ -32,27 +32,34 @@ License with the Debian GNU/Linux or Univention distribution in file
     ref="searchInput"
     class="portal-search"
   >
-    <flyout-wrapper
-      :is-visible="activeButton === 'search'"
-      class="portal-search__wrapper"
+    <transition
+      name="slide"
+      appear
     >
-      <input
-        ref="portalSearchInput"
-        v-model="portalSearch"
-        data-test="searchInput"
-        type="text"
-        class="portal-search__input"
-        :aria-label="ariaLabelSearch"
-        @input="searchTiles"
-        @keyup.esc="closeSearchInput()"
+      <flyout-wrapper
+        v-if="activeButton === 'search'"
+        :is-visible="activeButton === 'search'"
+        class="portal-search__wrapper"
       >
-    </flyout-wrapper>
+        <input
+          ref="portalSearchInput"
+          v-model="portalSearch"
+          data-test="searchInput"
+          type="text"
+          class="portal-search__input"
+          :aria-label="SEARCH"
+          @input="searchTiles"
+          @keyup.esc="closeSearchInput()"
+        >
+      </flyout-wrapper>
+    </transition>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import FlyoutWrapper from '@/components/navigation/FlyoutWrapper.vue';
 
@@ -73,8 +80,8 @@ export default defineComponent({
       searchQuery: 'search/searchQuery',
       emptySearchResults: 'search/emptySearchResults',
     }),
-    ariaLabelSearch() : string {
-      return this.$translateLabel('SEARCH');
+    SEARCH(): string {
+      return _('search');
     },
   },
   mounted() {
@@ -89,11 +96,11 @@ export default defineComponent({
     searchTiles(): void {
       this.$store.dispatch('search/setSearchQuery', this.portalSearch.toLowerCase());
       this.$nextTick(() => {
-        if (document.querySelectorAll('.portal-tile').length === 0) {
-          this.$store.dispatch('search/setSearchResultsEmpty');
-        } else {
-          this.$store.dispatch('search/setSearchResultsNotEmpty');
-        }
+        const num = document.querySelectorAll('.portal-tile').length.toString();
+        this.$store.dispatch('activity/addMessage', {
+          id: 'search',
+          msg: _('%(num)s search results', { num }),
+        });
       });
     },
     closeSearchInput(): void {
@@ -119,4 +126,14 @@ export default defineComponent({
       outline: none;
   &__wrapper
     background-color: rgba(0,0,0,0)
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(22rem)
+}
 </style>

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-06-22 22:38+0200\n"
+"POT-Creation-Date: 2021-10-15 15:45+0200\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,318 +12,368 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/assets/data/dictionary.js:49
+#: src/tmp/ts/src/components/widgets/LocaleInput.vue:54
+#: src/tmp/ts/src/components/globals/PortalButton.vue:35
+#: src/tmp/ts/src/components/modal/ModalDialog.vue:33
+#: src/tmp/ts/src/components/admin/EditWidget.vue:74
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:131
+msgid "%(key1)s"
+msgstr "%(key1)s"
+
+#: src/tmp/ts/src/components/widgets/AddObjects.vue:37
+msgid "%(num)s result(s)"
+msgstr "%(num)s Ergebnis(se)"
+
+#: src/tmp/ts/src/components/search/PortalSearch.vue:43
+msgid "%(num)s search results"
+msgstr "%(num)s Suchergebnisse"
+
+#: src/tmp/ts/src/components/globals/CookieBanner.vue:29
 msgid "Accept"
 msgstr "Akzeptieren"
 
-#: src/assets/data/dictionary.js:112
+#: src/tmp/ts/src/components/admin/Entry.vue:117
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: src/assets/data/dictionary.js:63 src/assets/data/dictionary.js:113
+#: src/tmp/ts/src/components/widgets/AddObjects.vue:49
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:37
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:61
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: src/assets/data/dictionary.js:52
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:40
+msgid "Add Groups"
+msgstr "Gruppen hinzufügen"
+
+#: src/tmp/ts/src/views/Portal.vue:61
+#: src/tmp/ts/src/components/admin/CategoryAddModal.vue:29
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: src/assets/data/dictionary.js:55
+#: src/tmp/ts/src/components/admin/TileAddModal.vue:37
 msgid "Add entry"
 msgstr "Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:54
+#: src/tmp/ts/src/components/admin/CategoryAddModal.vue:18
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:40
 msgid "Add existing category"
 msgstr "Bestehende Kategorie hinzufügen"
 
-#: src/assets/data/dictionary.js:58
+#: src/tmp/ts/src/components/admin/TileAddModal.vue:28
 msgid "Add existing entry"
 msgstr "Bestehenden Eintrag hinzufügen"
 
-#: src/assets/data/dictionary.js:59
+#: src/tmp/ts/src/components/admin/TileAddModal.vue:34
 msgid "Add existing folder"
 msgstr "Bestehenden Ordner hinzufügen"
 
-#: src/assets/data/dictionary.js:62
-msgid "Add folder"
-msgstr "Ordner hinzufügen"
+#: src/tmp/ts/src/components/widgets/AddObjects.vue:43
+msgid "Add groups"
+msgstr "Gruppen hinzufügen"
 
-#: src/assets/data/dictionary.js:159
+#: src/tmp/ts/src/components/widgets/LinkWidget.vue:52
+msgid "Add link"
+msgstr "Link hinzufügen"
+
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:37
+msgid "Add more"
+msgstr "Mehr hinzufügen"
+
+#: src/tmp/ts/src/components/admin/TileAdd.vue:37
 msgid "Add new Tile"
 msgstr "Neue Kachel hinzufügen"
 
-#: src/assets/data/dictionary.js:61
+#: src/tmp/ts/src/components/admin/CategoryAddModal.vue:15
 msgid "Add new category"
 msgstr "Neue Kategorie hinzufügen"
 
-#: src/assets/data/dictionary.js:60
-msgid "Add new entry"
-msgstr "Neuen Eintrag hinzufügen"
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:80
+msgid "Added to selection"
+msgstr "Zur Auswahl hinzugefügt"
 
-#: src/assets/data/dictionary.js:114
-msgid "Add objects"
-msgstr "Objekte hinzufügen"
-
-#: src/assets/data/dictionary.js:109
-msgid "Back"
-msgstr "Zurück"
-
-#: src/assets/data/dictionary.js:121
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:52
 msgid "Background"
 msgstr "Hintergrund"
 
-#: src/assets/data/dictionary.js:122
+#: src/tmp/ts/src/components/admin/Entry.vue:135
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-#: src/assets/data/dictionary.js:66
+#: src/tmp/ts/src/components/admin/Entry.vue:147
+msgid "Can only be seen by these groups"
+msgstr "Kann nur von diesen Gruppen gesehen werden"
+
+#: src/tmp/ts/src/components/widgets/AddObjects.vue:46
+#: src/tmp/ts/src/components/modal/ModalDialog.vue:36
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:49
+#: src/tmp/ts/src/components/admin/ConfirmDialog.vue:26
+#: src/tmp/ts/src/components/admin/TranslationEditing.vue:46
+#: src/tmp/ts/src/components/admin/EditWidget.vue:45
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:34
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:58
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/assets/data/dictionary.js:98
+#: src/tmp/ts/src/components/PortalCategory.vue:131
+#: src/tmp/ts/src/components/PortalCategory.vue:157
+msgid "Categories \"%(cat1)s\" and \"%(cat2)s\" changed places"
+msgstr "Kategorien \"%(cat1)s\" und \"%(cat2)s\" wurden getauscht"
+
+#: src/store/modules/portalData/index.ts:225
 msgid "Categories could not be re-sorted"
 msgstr "Kategorien konnten nicht umsortiert werden"
 
-#: src/assets/data/dictionary.js:97
+#: src/store/modules/portalData/index.ts:225
 msgid "Categories successfully re-sorted"
 msgstr "Kategorien erfolgreich umsortiert"
 
-#: src/assets/data/dictionary.js:104
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:121
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:127
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:72
 msgid "Category could not be added"
 msgstr "Kategorie konnte nicht hinzugefügt werden"
 
-#: src/assets/data/dictionary.js:100
-msgid "Category could not be created"
-msgstr "Kategorie konnte nicht erstellt werden"
-
-#: src/assets/data/dictionary.js:102
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:117
 msgid "Category could not be modified"
 msgstr "Kategorie konnte nicht bearbeitet werden"
 
-#: src/assets/data/dictionary.js:106
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:102
 msgid "Category could not be removed"
+msgstr "Kategorie konnte nicht gelöscht werden"
+
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:92
+msgid "Category could not be unlinked"
 msgstr "Kategorie konnte nicht entfernt werden"
 
-#: src/assets/data/dictionary.js:103
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:127
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:72
 msgid "Category successfully added"
 msgstr "Kategorie erfolgreich hinzugefügt"
 
-#: src/assets/data/dictionary.js:99
-msgid "Category successfully created"
-msgstr "Kategorie erfolgreich erstellt"
-
-#: src/assets/data/dictionary.js:101
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:117
 msgid "Category successfully modified"
 msgstr "Kategorie erfolgreich bearbeitet"
 
-#: src/assets/data/dictionary.js:105
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:102
 msgid "Category successfully removed"
+msgstr "Kategorie erfolgreich gelöscht"
+
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:92
+msgid "Category successfully unlinked"
 msgstr "Kategorie erfolgreich entfernt"
 
-#: src/assets/data/dictionary.js:107
+#: src/tmp/ts/src/components/navigation/SideNavigation.vue:67
+msgid "Change language"
+msgstr "Sprache ändern"
+
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:52
+#: src/jsHelper/createUserMenu.ts:57 src/jsHelper/createUserMenu.ts:64
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: src/assets/data/dictionary.js:137
+#: src/tmp/ts/src/components/ChooseTabs.vue:22
 msgid "Choose a tab"
 msgstr "Tab wählen"
 
-#: src/assets/data/dictionary.js:139
+#: src/tmp/ts/src/components/ChooseTabs.vue:45
+#: src/tmp/ts/src/components/navigation/HeaderTab.vue:51
 msgid "Close"
 msgstr "schließen"
 
-#: src/assets/data/dictionary.js:48 src/assets/data/dictionary.js:74
+#: src/tmp/ts/src/components/PortalToolTip.vue:35
+msgid "Close Tooltip"
+msgstr "Tooltip schließen"
+
+#: src/tmp/ts/src/components/globals/CookieBanner.vue:23
 msgid "Cookie Settings"
 msgstr "Cookie-Einstellungen"
 
-#: src/assets/data/dictionary.js:127
+#: src/tmp/ts/src/components/admin/TileAddModal.vue:25
 msgid "Create a new Entry"
 msgstr "Neuen Eintrag erstellen"
 
-#: src/assets/data/dictionary.js:128
+#: src/tmp/ts/src/components/admin/TileAddModal.vue:31
 msgid "Create a new folder"
 msgstr "Neuen Ordner erstellen"
 
-#: src/assets/data/dictionary.js:57
-msgid "Create new entry"
-msgstr "Neuen Eintrag hinzufügen"
-
-#: src/assets/data/dictionary.js:65
-msgid "Create new folder"
-msgstr "Neuen Ordner hinzufügen"
-
-#: src/assets/data/dictionary.js:144
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:55
 msgid "Default link behaviour for portal entries"
 msgstr "Standardverhalten für Links von Portaleinträgen"
 
-#: src/assets/data/dictionary.js:130
+#: src/tmp/ts/src/components/admin/ConfirmDialog.vue:29
+msgid "Delete"
+msgstr "Löschen"
+
+#: src/tmp/ts/src/components/admin/Entry.vue:141
 msgid "Description"
 msgstr "Beschreibung"
 
-#: src/assets/data/dictionary.js:129
-msgid ""
-"Description of the entry. At least one entry; strongly encouraged to have "
-"one for en_US"
-msgstr ""
-"Beschreibung des Eintrags. Mindestens ein Eintrag; dringend empfohlen, eine "
-"für 'en_US' zu haben"
-
-#: src/assets/data/dictionary.js:51
+#: src/tmp/ts/src/components/notifications/Notification.vue:68
 msgid "Dismiss notification"
 msgstr "Benachrichtigung schließen"
 
-#: src/assets/data/dictionary.js:70
-msgid "Display name"
-msgstr "Anzeigename"
-
-#: src/assets/data/dictionary.js:73
+#: src/tmp/ts/src/components/admin/ConfirmDialog.vue:23
 msgid ""
-"Display name of the category. At least one entry; strongly encouraged to "
-"have one for en_US"
+"Do you really want to remove this object? You can completely delete it, or "
+"just remove the link to the object here, so that you can still use it "
+"somewhere else."
 msgstr ""
-"Anzeigename der Kategorie. Mindestens ein Eintrag; dringend empfohlen, eine "
-"für 'en_US' zu haben"
+"Wollen Sie wirklich dieses Objekt entfernen? Sie können es komplett löschen "
+"oder nur die Verbindung des Objektes hierhin entfernen, sodass Sie es noch "
+"anderswo nutzen können."
 
-#: src/assets/data/dictionary.js:53
+#: src/tmp/ts/src/components/widgets/LocaleInput.vue:57
+msgid "Edit Translations"
+msgstr "Übersetzungen bearbeiten"
+
+#: src/tmp/ts/src/components/PortalCategory.vue:74
 msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
-#: src/assets/data/dictionary.js:56
+#: src/tmp/ts/src/components/PortalTile.vue:121
+#: src/tmp/ts/src/components/PortalTile.vue:272
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#: src/assets/data/dictionary.js:64
+#: src/tmp/ts/src/components/PortalFolder.vue:81
+#: src/tmp/ts/src/components/PortalFolder.vue:122
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
-#: src/assets/data/dictionary.js:132
+#: src/tmp/ts/src/components/PortalHeader.vue:54
 msgid "Edit mode"
 msgstr "Editiermodus"
 
-#: src/assets/data/dictionary.js:44
+#: src/tmp/ts/src/components/navigation/SideNavigation.vue:64
 msgid "Edit portal"
 msgstr "Portal bearbeiten"
 
-#: src/assets/data/dictionary.js:158
-msgid "Edit tile"
-msgstr "Kachel editieren"
-
-#: src/assets/data/dictionary.js:146
+#: src/tmp/ts/src/components/admin/Entry.vue:132
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:64
 msgid "Embedded"
 msgstr "Eingebettet"
 
-#: src/assets/data/dictionary.js:80
+#: src/store/modules/portalData/index.ts:447
+msgid "Entered edit mode"
+msgstr "Editiermodus betreten"
+
+#: src/store/modules/portalData/index.ts:236
+#: src/store/modules/portalData/index.ts:249
+#: src/store/modules/portalData/index.ts:258
+#: src/store/modules/portalData/index.ts:273
 msgid "Entries could not be re-sorted"
 msgstr "Einträge konnten nicht umsortiert werden"
 
-#: src/assets/data/dictionary.js:79
+#: src/store/modules/portalData/index.ts:236
+#: src/store/modules/portalData/index.ts:280
 msgid "Entries successfully re-sorted"
 msgstr "Einträge erfolgreich umsortiert"
 
-#: src/assets/data/dictionary.js:86
+#: src/tmp/ts/src/components/admin/Entry.vue:223
+#: src/tmp/ts/src/components/admin/Entry.vue:226
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:95
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:100
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:107
 msgid "Entry could not be added"
 msgstr "Eintrag konnte nicht hinzugefügt werden"
 
-#: src/assets/data/dictionary.js:82
-msgid "Entry could not be created"
-msgstr "Eintrag konnte nicht erstellt werden"
-
-#: src/assets/data/dictionary.js:84
+#: src/tmp/ts/src/components/admin/Entry.vue:220
 msgid "Entry could not be modified"
 msgstr "Eintrag konnte nicht bearbeitet werden"
 
-#: src/assets/data/dictionary.js:88
+#: src/tmp/ts/src/components/admin/Entry.vue:188
 msgid "Entry could not be removed"
+msgstr "Eintrag konnte nicht gelöscht werden"
+
+#: src/tmp/ts/src/components/admin/Entry.vue:178
+msgid "Entry could not be unlinked"
 msgstr "Eintrag konnte nicht entfernt werden"
 
-#: src/assets/data/dictionary.js:85
+#: src/tmp/ts/src/components/admin/Entry.vue:226
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:95
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:100
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:107
 msgid "Entry successfully added"
 msgstr "Eintrag erfolgreich hinzugefügt"
 
-#: src/assets/data/dictionary.js:81
-msgid "Entry successfully created"
-msgstr "Eintrag erfolgreich erstellt"
-
-#: src/assets/data/dictionary.js:83
+#: src/tmp/ts/src/components/admin/Entry.vue:220
 msgid "Entry successfully modified"
 msgstr "Eintrag erfolgreich bearbeitet"
 
-#: src/assets/data/dictionary.js:87
+#: src/tmp/ts/src/components/admin/Entry.vue:188
 msgid "Entry successfully removed"
+msgstr "Eintrag erfolgreich gelöscht"
+
+#: src/tmp/ts/src/components/admin/Entry.vue:178
+msgid "Entry successfully unlinked"
 msgstr "Eintrag erfolgreich entfernt"
 
-#: src/assets/data/dictionary.js:163
+#: src/tmp/ts/src/components/notifications/Notification.vue:63
 msgid "Error"
 msgstr "Fehler"
 
-#: src/assets/data/dictionary.js:156
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:134
+msgid "Error on validation"
+msgstr "Fehler bei der Validierung"
+
+#: src/tmp/ts/src/components/PortalFolder.vue:75
 msgid "Folder"
 msgstr "Ordner"
 
-#: src/assets/data/dictionary.js:94
+#: src/tmp/ts/src/components/admin/Folder.vue:124
+#: src/tmp/ts/src/components/admin/Folder.vue:127
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:109
 msgid "Folder could not be added"
 msgstr "Ordner konnte nicht hinzugefügt werden"
 
-#: src/assets/data/dictionary.js:90
-msgid "Folder could not be created"
-msgstr "Ordner konnte nicht erstellt werden"
-
-#: src/assets/data/dictionary.js:92
+#: src/tmp/ts/src/components/admin/Folder.vue:121
 msgid "Folder could not be modified"
 msgstr "Ordner konnte nicht bearbeitet werden"
 
-#: src/assets/data/dictionary.js:96
+#: src/tmp/ts/src/components/admin/Folder.vue:106
 msgid "Folder could not be removed"
+msgstr "Ordner konnte nicht gelöscht werden"
+
+#: src/tmp/ts/src/components/admin/Folder.vue:96
+msgid "Folder could not be unlinked"
 msgstr "Ordner konnte nicht entfernt werden"
 
-#: src/assets/data/dictionary.js:93
+#: src/tmp/ts/src/components/admin/Folder.vue:127
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:109
 msgid "Folder successfully added"
 msgstr "Ordner erfolgreich hinzugefügt"
 
-#: src/assets/data/dictionary.js:89
-msgid "Folder successfully created"
-msgstr "Ordner erfolgreich erstellt"
-
-#: src/assets/data/dictionary.js:91
+#: src/tmp/ts/src/components/admin/Folder.vue:121
 msgid "Folder successfully modified"
 msgstr "Ordner erfolgreich bearbeitet"
 
-#: src/assets/data/dictionary.js:95
+#: src/tmp/ts/src/components/admin/Folder.vue:106
 msgid "Folder successfully removed"
+msgstr "Ordner erfolgreich gelöscht"
+
+#: src/tmp/ts/src/components/admin/Folder.vue:96
+msgid "Folder successfully unlinked"
 msgstr "Ordner erfolgreich entfernt"
 
-#: src/assets/data/dictionary.js:167
+#: src/tmp/ts/src/components/navigation/SideNavigation.vue:61
+#: src/tmp/ts/src/components/navigation/SubMenuItem.vue:38
 msgid "Go Back"
 msgstr "Gehe zurück"
 
-#: src/assets/data/dictionary.js:124
-msgid ""
-"Headline of the entry. At least one entry; strongly encouraged to have one "
-"for en_US"
-msgstr ""
-"Überschrift des Eintrags. Mindestens ein Eintrag; dringend empfohlen, einen "
-"Eintrag für 'en_US' zu haben"
-
-#: src/assets/data/dictionary.js:117
-msgid ""
-"If one or more groups are selected then the portal entry will only be "
-"visible to logged in users that are in any of the selected groups. If no "
-"groups are selected then the portal entry is always visible."
-msgstr ""
-"Wenn eine oder mehrere Gruppen ausgewählt sind, ist der Portaleintrag nur "
-"für angemeldete Benutzer sichtbar, die sich in einer der ausgewählten "
-"Gruppen befinden. Wenn keine Gruppen ausgewählt sind, ist der Portaleintrag "
-"immer sichtbar."
-
-#: src/assets/data/dictionary.js:160
+#: src/tmp/ts/src/components/notifications/Notification.vue:55
 msgid "Info"
 msgstr "Info"
 
-#: src/assets/data/dictionary.js:69
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:61
+#: src/tmp/ts/src/components/admin/Entry.vue:111
+#: src/tmp/ts/src/components/admin/Folder.vue:68
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: src/assets/data/dictionary.js:151
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:22
+#: src/tmp/ts/src/components/admin/Entry.vue:34
+#: src/tmp/ts/src/components/admin/Folder.vue:24
 msgid ""
 "Internal name must not contain anything other than digits, letters or dots, "
 "must be at least 2 characters long, and start and end with a digit or "
@@ -333,203 +383,277 @@ msgstr ""
 "mindestens 2 Zeichen lang sein, und mit einer Ziffer oder einem Buchstaben "
 "beginnen und enden."
 
-#: src/assets/data/dictionary.js:164
+#: src/tmp/ts/src/components/PortalFolder.vue:70
+#: src/tmp/ts/src/components/navigation/MenuItem.vue:61
 msgid "Item"
 msgstr "Eintrag"
 
-#: src/assets/data/dictionary.js:165
+#: src/tmp/ts/src/components/PortalFolder.vue:72
+#: src/tmp/ts/src/components/navigation/MenuItem.vue:63
 msgid "Items"
 msgstr "Einträge"
 
-#: src/assets/data/dictionary.js:72
-msgid "Language code (e.g. en_US)"
-msgstr "Sprachcode (z. B. en_US)"
+#: src/store/modules/portalData/index.ts:452
+msgid "Left edit mode"
+msgstr "Editiermodus verlassen"
 
-#: src/assets/data/dictionary.js:125
+#: src/tmp/ts/src/components/widgets/LinkWidget.vue:84
 msgid "Link"
 msgstr "Link"
 
-#: src/assets/data/dictionary.js:126
-msgid "Links"
-msgstr "Links"
+#: src/store/modules/user/index.ts:66
+msgid "Logged in as \"%(username)s\""
+msgstr "Angemeldet als \"%(username)s\""
 
-#: src/assets/data/dictionary.js:42
+#: src/tmp/ts/src/components/navigation/SideNavigation.vue:58
 msgid "Login"
 msgstr "Anmelden"
 
-#: src/assets/data/dictionary.js:43
+#: src/tmp/ts/src/components/navigation/SideNavigation.vue:55
 msgid "Logout"
 msgstr "Abmelden"
 
-#: src/assets/data/dictionary.js:135
+#: src/tmp/ts/src/components/PortalHeader.vue:72
 msgid "Menu"
 msgstr "Menü"
 
-#: src/assets/data/dictionary.js:71
+#: src/tmp/ts/src/components/PortalCategory.vue:71
+msgid "Move category"
+msgstr "Kategorie verschieben"
+
+#: src/tmp/ts/src/components/PortalTile.vue:118
+msgid "Move entry"
+msgstr "Eintrag verschieben"
+
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:67
+#: src/tmp/ts/src/components/admin/Entry.vue:144
+#: src/tmp/ts/src/components/admin/Folder.vue:74
+#: src/tmp/ts/src/components/admin/ExistingCategory.vue:31
+#: src/tmp/ts/src/components/admin/ExistingEntry.vue:55
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:76
 msgid "Name"
 msgstr "Name"
 
-#: src/assets/data/dictionary.js:77
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:37
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: src/assets/data/dictionary.js:148
+#: src/tmp/ts/src/components/admin/Entry.vue:129
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:61
 msgid "New tab"
 msgstr "Neuer Tab"
 
-#: src/assets/data/dictionary.js:110
-msgid "Next"
-msgstr "Weiter"
-
-#: src/assets/data/dictionary.js:166
+#: src/tmp/ts/src/components/PortalFolder.vue:68
+#: src/tmp/ts/src/components/navigation/MenuItem.vue:59
 msgid "No items"
 msgstr "Keine Einträge"
 
-#: src/assets/data/dictionary.js:149
-msgid "No search results"
-msgstr "Keine Suchergebnisse"
+#: src/tmp/ts/src/components/notifications/Notifications.vue:38
+msgid "No notifications"
+msgstr "Keine Benachrichtigungen"
 
-#: src/assets/data/dictionary.js:41 src/assets/data/dictionary.js:134
+#: src/store/modules/user/index.ts:71
+msgid "Not logged in"
+msgstr "Nicht angemeldet"
+
+#: src/tmp/ts/src/components/notifications/Notifications.vue:44
+#: src/tmp/ts/src/components/notifications/Notifications.vue:71
+msgid "Notification removed"
+msgstr "Benachrichtigungen gelöscht"
+
+#: src/tmp/ts/src/components/PortalHeader.vue:69
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: src/assets/data/dictionary.js:76
+#: src/tmp/ts/src/components/notifications/Notifications.vue:41
+#: src/tmp/ts/src/components/notifications/Notifications.vue:60
+msgid "Notifications removed"
+msgstr "Benachrichtigungen gelöscht"
+
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:31
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: src/assets/data/dictionary.js:123
+#: src/tmp/ts/src/components/admin/Entry.vue:138
 msgid "Only visible if not logged in"
 msgstr "Nur sichtbar, wenn nicht angemeldet"
 
-#: src/assets/data/dictionary.js:45
+#: src/tmp/ts/src/components/PortalHeader.vue:57
 msgid "Open edit sidebar"
 msgstr "Editierseite öffnen"
 
-#: src/assets/data/dictionary.js:154
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:46
+msgid "Please confirm your new password."
+msgstr "Bitte bestätigen Sie ihr neues Passwort"
+
+#: src/tmp/ts/src/components/admin/Entry.vue:41
 msgid "Please enter a description"
 msgstr "Bitte geben Sie eine Beschreibung ein"
 
-#: src/assets/data/dictionary.js:153
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:26
+#: src/tmp/ts/src/components/admin/Entry.vue:38
+#: src/tmp/ts/src/components/admin/Folder.vue:28
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:114
 msgid "Please enter a display name"
 msgstr "Bitte geben Sie einen Anzeigenamen ein"
 
-#: src/assets/data/dictionary.js:152
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:18
+#: src/tmp/ts/src/components/admin/Entry.vue:30
+#: src/tmp/ts/src/components/admin/Folder.vue:20
 msgid "Please enter an internal name"
 msgstr "Bitte geben Sie einen internen Namen ein"
 
-#: src/assets/data/dictionary.js:155
+#: src/tmp/ts/src/components/admin/Entry.vue:44
+#: src/tmp/ts/src/components/admin/Entry.vue:47
 msgid "Please enter at least one English link"
 msgstr "Bitte geben Sie mindestens einen englischen Link ein"
 
-#: src/assets/data/dictionary.js:39
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:40
+msgid "Please enter your new password"
+msgstr "Bitte geben Sie ein neues Passwort ein"
+
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:34
+msgid "Please enter your old password"
+msgstr "Bitte geben Sie Ihr altes Passwort ein"
+
+#: src/store/modules/portalData/index.ts:107
 msgid "Portal Menu"
 msgstr "Portal-Menü"
 
-#: src/assets/data/dictionary.js:120
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:49
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: src/assets/data/dictionary.js:111
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:79
+msgid "Portal settings"
+msgstr "Portal-Einstellungen"
+
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:43
+#: src/tmp/ts/src/components/widgets/LinkWidget.vue:49
+#: src/tmp/ts/src/components/widgets/ImageUpload.vue:43
+#: src/tmp/ts/src/components/admin/ConfirmDialog.vue:32
+#: src/tmp/ts/src/components/admin/EditWidget.vue:48
 msgid "Remove"
 msgstr "Entfernen"
 
-#: src/assets/data/dictionary.js:168
-msgid "Remove all notifications"
-msgstr "Alle Benachrichtigungen entfernen"
+#: src/tmp/ts/src/components/notifications/Notifications.vue:35
+msgid "Remove all"
+msgstr "Entfernen"
 
-#: src/assets/data/dictionary.js:68
-msgid "Remove here"
-msgstr "Hier entfernen"
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:46
+msgid "Remove selection"
+msgstr "Auswahl entfernen"
 
-#: src/assets/data/dictionary.js:116
-msgid "Restrict visibility to groups"
-msgstr "Beschränkung der Sichtbarkeit auf Gruppen"
+#: src/tmp/ts/src/components/widgets/MultiSelect.vue:89
+msgid "Removed selection"
+msgstr "Auswahl entfernt"
 
-#: src/assets/data/dictionary.js:147
+#: src/tmp/ts/src/components/admin/Entry.vue:126
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:58
 msgid "Same tab"
 msgstr "Gleicher Tab"
 
-#: src/assets/data/dictionary.js:67
+#: src/tmp/ts/src/components/admin/TranslationEditing.vue:49
+#: src/tmp/ts/src/components/admin/EditWidget.vue:42
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:73
 msgid "Save"
 msgstr "Speichern"
 
-#: src/assets/data/dictionary.js:138
+#: src/tmp/ts/src/components/widgets/AddObjects.vue:40
+msgid "Search"
+msgstr "Suchen"
+
+#: src/tmp/ts/src/components/ChooseTabs.vue:42
+#: src/tmp/ts/src/components/navigation/HeaderTab.vue:54
 msgid "Select"
 msgstr "auswählen"
 
-#: src/assets/data/dictionary.js:118
-msgid "Select all"
-msgstr "Alles auswählen"
-
-#: src/assets/data/dictionary.js:119
+#: src/tmp/ts/src/components/widgets/ImageUpload.vue:37
 msgid "Select file"
 msgstr "Datei auswählen"
 
-#: src/assets/data/dictionary.js:141
+#: src/tmp/ts/src/components/widgets/LinkWidget.vue:87
+msgid "Select locale for Link"
+msgstr "Sprache für Link wählen"
+
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:70
 msgid "Show local UMC modules"
 msgstr "UMC-Module anzeigen"
 
-#: src/assets/data/dictionary.js:131
+#: src/tmp/ts/src/components/PortalHeader.vue:51
+#: src/tmp/ts/src/components/header/PortalTitle.vue:22
 msgid "Show portal"
 msgstr "Portal anzeigen"
 
-#: src/assets/data/dictionary.js:157
+#: src/tmp/ts/src/components/PortalTile.vue:124
 msgid "Show tooltip"
 msgstr "Kurzinfo anzeigen"
 
-#: src/assets/data/dictionary.js:46
+#: src/tmp/ts/src/components/globals/PortalError.vue:12
+msgid "Sorry."
+msgstr "Entschuldigung."
+
+#: src/tmp/ts/src/components/PortalHeader.vue:60
 msgid "Stop edit portal"
 msgstr "Bearbeiten abbrechen"
 
-#: src/assets/data/dictionary.js:50
+#: src/tmp/ts/src/components/globals/PortalButton.vue:14
 msgid "Submit"
 msgstr "Abschicken"
 
-#: src/assets/data/dictionary.js:162
+#: src/tmp/ts/src/components/notifications/Notification.vue:60
 msgid "Success"
 msgstr "Aktion erfolgreich"
 
-#: src/assets/data/dictionary.js:47
-msgid "Switch locale"
-msgstr "Sprache ändern"
-
-#: src/assets/data/dictionary.js:136
+#: src/tmp/ts/src/components/PortalHeader.vue:63
 msgid "Tabs"
 msgstr "Tabs"
 
-#: src/assets/data/dictionary.js:150
+#: src/tmp/ts/src/components/admin/EditWidget.vue:77
 msgid "The form data is not valid"
 msgstr "Die Formulardaten sind fehlerhaft"
 
-#: src/assets/data/dictionary.js:140
-msgid "To focus press Enter"
-msgstr "Enter drücken um zu Fokussieren"
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:55
+msgid "The new passwords do not match"
+msgstr "Die Passwörter stimmen nicht überein."
 
-#: src/assets/data/dictionary.js:115
+#: src/tmp/ts/src/components/globals/PortalError.vue:15
+msgid ""
+"The portal is temporarily unavailable. If the problem persists, please "
+"contact your system administrator."
+msgstr ""
+"Das Portal ist momentan nicht verfügbar. Wenn das Problem weiterhin besteht,"
+" wenden Sie sich bitte an Ihren Systemadministrator."
+
+#: src/tmp/ts/src/components/admin/TranslationEditing.vue:43
+msgid "Translation: %(key1)s"
+msgstr "Übersetzung: %(key1)s"
+
+#: src/tmp/ts/src/components/widgets/ImageUpload.vue:40
 msgid "Upload"
 msgstr "Hochladen"
 
-#: src/assets/data/dictionary.js:145
+#: src/tmp/ts/src/components/admin/Entry.vue:123
 msgid "Use default of portal"
 msgstr "Portal-Vorgabe nutzen"
 
-#: src/assets/data/dictionary.js:40
+#: src/store/modules/portalData/index.ts:116
 msgid "User Menu"
 msgstr "Benutzer-Menü"
 
-#: src/assets/data/dictionary.js:142
+#: src/tmp/ts/src/components/navigation/EditModeSideNavigation.vue:67
 msgid "Users are required to login"
 msgstr "Benutzer müssen sich anmelden"
 
-#: src/assets/data/dictionary.js:161
+#: src/tmp/ts/src/components/notifications/Notification.vue:57
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/assets/data/dictionary.js:143
+#: src/tmp/ts/src/components/admin/Entry.vue:120
 msgid "Way of opening links"
 msgstr "Art, wie Links geöffnet werden"
 
-#: src/assets/data/dictionary.js:75
+#: src/tmp/ts/src/components/globals/CookieBanner.vue:26
 msgid ""
 "We use cookies in order to provide you with certain functions and to be able"
 " to guarantee an unrestricted service. By clicking on \"Accept\", you "
@@ -540,14 +664,56 @@ msgstr ""
 " \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
 
-#: src/assets/data/dictionary.js:108
-msgid "You have successfully updated your password"
-msgstr "Das Passwort wurde erfolgreich aktualisiert"
+#: src/tmp/ts/src/components/ChooseTabs.vue:25
+msgid "active"
+msgstr "aktiv"
 
-#: src/assets/data/dictionary.js:78
+#: src/tmp/ts/src/components/widgets/LinkWidget.vue:90
+msgid "insert valid Link"
+msgstr "validen Link einfügen"
+
+#: src/tmp/ts/src/components/navigation/HeaderButton.vue:47
+msgid "item"
+msgstr "Eintrag"
+
+#: src/tmp/ts/src/components/navigation/HeaderButton.vue:49
+msgid "items"
+msgstr "Einträge"
+
+#: src/tmp/ts/src/components/widgets/ImageUpload.vue:49
+msgid "no file selected"
+msgstr "keine Datei ausgewählt"
+
+#: src/tmp/ts/src/components/admin/Entry.vue:114
+#: src/tmp/ts/src/components/admin/Folder.vue:71
+msgid "readonly"
+msgstr "schreibgeschützt"
+
+#: src/tmp/ts/src/components/forms/RequiredFieldLabel.vue:8
+msgid "required"
+msgstr "erforderlich"
+
+#: src/tmp/ts/src/components/forms/ChangePassword.vue:43
 msgid "retype"
 msgstr "Wiederholung"
 
-#: src/assets/data/dictionary.js:133
+#: src/tmp/ts/src/components/PortalHeader.vue:66
+#: src/tmp/ts/src/components/search/PortalSearch.vue:25
 msgid "search"
 msgstr "suche"
+
+#: src/tmp/ts/src/components/admin/FormCategoryEdit.vue:64
+msgid "view-only"
+msgstr "schreibgeschützt"
+
+#~ msgid "Category \"%(cat1)s\" and \"%(cat2)s\" changed places"
+#~ msgstr "Kategorie \"%(cat1)s\" und \"%(cat2)s\" wurden getauscht"
+
+#~ msgid "Portal is in edit mode"
+#~ msgstr "Portal ist im Editiermodus"
+
+#~ msgid "Successfully logged in"
+#~ msgstr "Erfolgreich angemeldet"
+
+#~ msgid "Successfully logged out"
+#~ msgstr "Erfolgreich abgemeldet"

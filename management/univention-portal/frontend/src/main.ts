@@ -44,9 +44,9 @@ declare global {
 }
 window.store = store;
 
-createApp(App)
-  .use(store)
+const app = createApp(App)
   .use(localize)
+  .use(store)
   .use(VueDOMPurifyHTML, {
     hooks: {
       afterSanitizeAttributes: (currentNode) => {
@@ -58,5 +58,6 @@ createApp(App)
         }
       },
     },
-  })
-  .mount('#app');
+  });
+
+const vm = app.mount('#app');

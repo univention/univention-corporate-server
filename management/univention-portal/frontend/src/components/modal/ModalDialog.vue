@@ -27,16 +27,15 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div
+  <section
     class="dialog"
     @keydown.esc="cancel()"
   >
     <header class="dialog__header">
       <h3>
-        <translate
-          v-if="i18nTitleKey"
-          :i18n-key="i18nTitleKey"
-        />
+        <span v-if="i18nTitleKey">
+          {{ I18N_TITLE_KEY }}
+        </span>
         <span v-else>
           {{ title }}
         </span>
@@ -44,24 +43,24 @@ License with the Debian GNU/Linux or Univention distribution in file
       <icon-button
         v-if="cancelAllowed"
         icon="x"
-        :active-at="['modal']"
-        :aria-label-prop="ariaLabelCancel"
+        :aria-label-prop="CANCEL"
+        :active-at="[modalLevel]"
         @click="cancel()"
       />
     </header>
     <slot />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Translate from '@/i18n/Translate.vue';
+import _ from '@/jsHelper/translate';
+
 import IconButton from '@/components/globals/IconButton.vue';
 
 export default defineComponent({
   name: 'ModalDialog',
   components: {
-    Translate,
     IconButton,
   },
   props: {
@@ -73,6 +72,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    modalLevel: {
+      type: String,
+      default: 'modal', // pass 'modal2' if modal is in second Level
+    },
     cancelAllowed: {
       type: Boolean,
       required: false,
@@ -81,8 +84,11 @@ export default defineComponent({
   },
   emits: ['cancel'],
   computed: {
-    ariaLabelCancel(): string {
-      return this.$translateLabel('CANCEL');
+    I18N_TITLE_KEY(): string {
+      return _('%(key1)s', { key1: this.i18nTitleKey });
+    },
+    CANCEL(): string {
+      return _('Cancel');
     },
   },
   methods: {
@@ -103,8 +109,20 @@ export default defineComponent({
   max-width: calc(50 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
 
+  @media $mqSmartphone
+    max-width: calc(100% - 8 * var(--layout-spacing-unit))
+    padding: calc(2 * var(--layout-spacing-unit)) calc(2 * var(--layout-spacing-unit))
+    position: absolute
+    top: 110px
+    max-height: 70vh
+    overflow: auto
+    overflow-x: hidden
+
   form
     width: calc(var(--inputfield-width) + 3rem)
+
+    @media $mqSmartphone
+      max-width: 100%
 
   main
     max-height: 26rem
@@ -114,7 +132,11 @@ export default defineComponent({
     > label:first-child
       margin-top: 0
 
-  footer:not(.image-upload__footer)
+    @media $mqSmartphone
+      max-height: none
+      overflow: unset
+
+  footer:not(.image-upload__footer):not(.multi-select__footer)
     margin-top: calc(2 * var(--layout-spacing-unit))
     padding-top: calc(2 * var(--layout-spacing-unit))
     border-top: thin solid var(--bgc-tab-separator)
@@ -129,6 +151,20 @@ export default defineComponent({
   &__header
     display: flex
     align-items: center
+
+    @media $mqSmartphone
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      background-color: var(--bgc-content-container)
+
+      &:before
+        content: ''
+        width: 100%
+        height: calc(2 * var(--layout-spacing-unit))
+        top: calc(-2 * var(--layout-spacing-unit))
+        position: absolute
+        background-color: var(--bgc-content-container)
 
     button
       margin-left: auto

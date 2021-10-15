@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { Commit, Dispatch } from 'vuex';
 import { PortalModule } from '../../root.models';
 import { NavigationButton } from './navigation.models';
 
@@ -38,7 +39,7 @@ const navigation: PortalModule<NavigationState> = {
   state: { activeButton: '' },
 
   mutations: {
-    ACTIVEBUTTON(state, id) {
+    ACTIVEBUTTON(state: NavigationState, id: NavigationButton): void {
       state.activeButton = id;
     },
   },
@@ -46,8 +47,11 @@ const navigation: PortalModule<NavigationState> = {
   getters: { getActiveButton: (state) => state.activeButton },
 
   actions: {
-    setActiveButton({ commit, dispatch }, id) {
+    setActiveButton({ commit, dispatch } : { commit: Commit, dispatch: Dispatch }, id: NavigationButton): void {
       dispatch('modal/hideAndClearModal', undefined, { root: true });
+      if (id === 'search') {
+        dispatch('tabs/setActiveTab', 0, { root: true });
+      }
       if (id === 'bell') {
         dispatch('notifications/hideAllNotifications', undefined, { root: true });
       }

@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+import { Dispatch, Commit } from 'vuex';
 import { PortalModule } from '@/store/root.models';
 import { Tab } from './tabs.models';
 
@@ -44,10 +45,10 @@ const tabs: PortalModule<TabState> = {
   },
 
   mutations: {
-    ACTIVE_TAB(state, index: number) {
+    ACTIVE_TAB(state:TabState, index: number): void {
       state.activeTabIndex = index;
     },
-    ADD_TAB(state, tab: Tab) {
+    ADD_TAB(state:TabState, tab: Tab): void {
       const index = state.tabs.findIndex((stateTab) => stateTab.tabLabel === tab.tabLabel);
       if (index === -1) {
         state.tabs.push(tab);
@@ -56,7 +57,7 @@ const tabs: PortalModule<TabState> = {
         state.activeTabIndex = index + 1;
       }
     },
-    DELETE_TAB(state, index: number) {
+    DELETE_TAB(state:TabState, index: number): void {
       state.tabs.splice(index - 1, 1);
       if (state.activeTabIndex === index) {
         state.activeTabIndex = 0;
@@ -64,7 +65,7 @@ const tabs: PortalModule<TabState> = {
         state.activeTabIndex -= 1;
       }
     },
-    SAVE_SCROLL_POSITION(state, scrollPosition) {
+    SAVE_SCROLL_POSITION(state:TabState, scrollPosition: number): void {
       state.scrollPosition = scrollPosition;
     },
   },
@@ -77,17 +78,18 @@ const tabs: PortalModule<TabState> = {
   },
 
   actions: {
-    setActiveTab({ commit, dispatch }, index: number) {
+    setActiveTab({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, index: number): void {
       dispatch('modal/hideAndClearModal', undefined, { root: true });
       if (index > 0) {
         commit('SAVE_SCROLL_POSITION', window.scrollY);
       }
       commit('ACTIVE_TAB', index);
     },
-    addTab({ commit }, tab: Tab) {
+    addTab({ commit }: { commit: Commit }, tab: Tab): void {
+      commit('SAVE_SCROLL_POSITION', window.scrollY);
       commit('ADD_TAB', tab);
     },
-    deleteTab({ commit }, index: number) {
+    deleteTab({ commit }: { commit: Commit}, index: number): void {
       commit('DELETE_TAB', index);
     },
   },

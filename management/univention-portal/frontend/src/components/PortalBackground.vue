@@ -45,7 +45,7 @@ export default defineComponent({
       if (!this.portal.portal.background) {
         return 'background-image: none';
       }
-      return `background-image: url('${this.portal.portal.background}`;
+      return `background-image: url('${this.portal.portal.background}')`;
     },
   },
 });

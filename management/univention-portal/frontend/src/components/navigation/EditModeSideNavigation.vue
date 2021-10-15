@@ -27,56 +27,75 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <nav class="portal-sidenavigation">
+  <nav
+    class="portal-sidenavigation"
+    @keydown.esc="closeNavigation"
+  >
+    <h2
+      class="edit-mode-side-navigation__headline"
+    >
+      {{ PORTAL_SETTINGS }}
+    </h2>
     <form
       class="edit-mode-side-navigation__form"
       @submit.prevent="saveChanges"
     >
       <image-upload
         v-model="portalLogoData"
-        :label="$translateLabel('PORTAL_LOGO')"
+        :label="PORTAL_LOGO"
+        :tabindex="tabindex"
       />
       <locale-input
         v-model="portalNameData"
-        i18n-label="NAME"
+        :i18n-label="NAME"
+        :tabindex="tabindex"
         name="name"
         @update:modelValue="update"
       />
       <image-upload
         v-model="portalBackgroundData"
-        :label="$translateLabel('BACKGROUND')"
+        :label="BACKGROUND"
+        :tabindex="tabindex"
       />
       <label>
-        <translate i18n-key="DEFAULT_LINK_TARGET" />
+        {{ DEFAULT_LINK_BEHAVIOUR }}
         <select
           v-model="portalDefaultLinkTargetData"
+          :tabindex="tabindex"
         >
-          <option value="samewindow">{{ $translateLabel('SAME_WINDOW') }}</option>
-          <option value="newwindow">{{ $translateLabel('NEW_WINDOW') }}</option>
-          <option value="embedded">{{ $translateLabel('EMBEDDED') }}</option>
+          <option value="samewindow">{{ SAME_TAB }}</option>
+          <option value="newwindow">{{ NEW_TAB }}</option>
+          <option value="embedded">{{ EMBEDDED }}</option>
         </select>
       </label>
-      <label>
+      <label class="edit-mode-side-navigation__checkbox">
         <input
           v-model="portalEnsureLoginData"
           type="checkbox"
+          :tabindex="tabindex"
         >
-        <translate i18n-key="ENSURE_LOGIN" />
+        {{ USERS_REQUIRED_TO_LOGIN }}
       </label>
-      <label>
+      <label class="edit-mode-side-navigation__checkbox">
         <input
           v-model="portalShowUmcData"
           type="checkbox"
+          :tabindex="tabindex"
         >
-        <translate i18n-key="SHOW_UMC" />
+        {{ SHOW_LOCAL_UMC_MODULES }}
+
       </label>
-      <button class="primary edit-mode-side-navigation__save-button">
+      <button
+        class="primary edit-mode-side-navigation__save-button"
+        data-test="editModeSideNavigation--Save"
+        :tabindex="tabindex"
+      >
         <portal-icon
           icon="save"
         />
-        <translate
-          i18n-key="SAVE"
-        />
+        <span>
+          {{ SAVE }}
+        </span>
       </button>
     </form>
   </nav>
@@ -85,9 +104,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import { udmPut } from '@/jsHelper/umc';
-import Translate from '@/i18n/Translate.vue';
+import activity from '@/jsHelper/activity';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import ImageUpload from '@/components/widgets/ImageUpload.vue';
 import LocaleInput from '@/components/widgets/LocaleInput.vue';
@@ -104,7 +124,6 @@ interface EditModeSideNavigationData {
 export default defineComponent({
   name: 'EditModeSideNavigation',
   components: {
-    Translate,
     PortalIcon,
     ImageUpload,
     LocaleInput,
@@ -128,12 +147,53 @@ export default defineComponent({
       portalShowUmc: 'portalData/portalShowUmc',
       portalEnsureLogin: 'portalData/portalEnsureLogin',
       portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
+      activityLevel: 'activity/level',
     }),
+    PORTAL_LOGO(): string {
+      return _('Portal logo');
+    },
+    BACKGROUND(): string {
+      return _('Background');
+    },
+    DEFAULT_LINK_BEHAVIOUR(): string {
+      return _('Default link behaviour for portal entries');
+    },
+    SAME_TAB(): string {
+      return _('Same tab');
+    },
+    NEW_TAB(): string {
+      return _('New tab');
+    },
+    EMBEDDED(): string {
+      return _('Embedded');
+    },
+    USERS_REQUIRED_TO_LOGIN(): string {
+      return _('Users are required to login');
+    },
+    SHOW_LOCAL_UMC_MODULES(): string {
+      return _('Show local UMC modules');
+    },
+    SAVE(): string {
+      return _('Save');
+    },
+    NAME(): string {
+      return _('Name');
+    },
+    PORTAL_SETTINGS(): string {
+      return _('Portal settings');
+    },
+    tabindex(): number {
+      return activity(['header-settings'], this.activityLevel);
+    },
   },
   updated() {
     this.update();
+    if (this.activityLevel === 'modal') {
+      this.$store.dispatch('activity/setLevel', 'header-settings');
+    }
   },
   created() {
+    this.$store.dispatch('modal/disableBodyScrolling');
     // get initial logo data
     this.portalLogoData = this.portalLogo || '';
     this.portalNameData = this.portalName;
@@ -143,6 +203,10 @@ export default defineComponent({
     this.portalDefaultLinkTargetData = this.portalDefaultLinkTarget;
   },
   methods: {
+    closeNavigation(): void {
+      this.$store.dispatch('navigation/setActiveButton', '');
+      this.$store.dispatch('activity/setRegion', 'portal-header');
+    },
     update() {
       this.$store.dispatch('portalData/setPortalName', this.portalNameData);
       this.$store.dispatch('portalData/setPortalLogo', this.portalLogoData);
@@ -151,7 +215,7 @@ export default defineComponent({
     validate() {
       const errors: Record<string, string> = {};
       if (!this.portalNameData.en_US) {
-        errors.name = 'ERROR_ENTER_TITLE';
+        errors.name = _('Please enter a display name');
       }
       return errors;
     },
@@ -168,10 +232,10 @@ export default defineComponent({
           }
         });
         const description = Object.values(errors)
-          .map((err) => this.$translateLabel(err))
+          .map((err) => _('%(key1)s', { key1: err }))
           .join('</li><li>');
         this.$store.dispatch('notifications/addErrorNotification', {
-          title: this.$translateLabel('ERROR_ON_VALIDATION'),
+          title: _('Error on validation'),
           description: `<ul><li>${description}</li></ul>`,
         });
         return;
@@ -223,6 +287,9 @@ export default defineComponent({
 
 <style lang="stylus">
 .edit-mode-side-navigation
+  &__headline
+    padding: 0 calc(2 * var(--layout-spacing-unit))
+    margin-bottom: 0
   &__form
     height: auto
     overflow: auto
@@ -232,6 +299,11 @@ export default defineComponent({
       width: 18rem
       &[type=checkbox]
         margin-left: 0
+
+    .image-upload:first-child label
+      margin-top: 0
   &__save-button
     margin-top: calc(2 * var(--layout-spacing-unit))
+  &__checkbox
+    display: flex
 </style>

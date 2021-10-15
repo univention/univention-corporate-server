@@ -60,7 +60,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       activityLevel: 'activity/level',
-      activityDirection: 'activity/direction',
     }),
     tabIndex(): number {
       if (this.activeAt.indexOf(this.activityLevel) > -1) {

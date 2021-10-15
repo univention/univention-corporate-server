@@ -25,22 +25,30 @@ button
   border-radius: var(--button-border-radius)
   background-color: var(--button-bgc)
   transition: opacity var(--portal-transition-duration)
-  display: flex
-  align-items: center
   cursor: pointer
   transition: background-color var(--portal-transition-duration)
+  display: flex
+  align-items: center
+  justify-content: center
 
-  svg + span
-    padding-left: var(--layout-spacing-unit-small)
+  @media $mqSmartphone
+    padding: 0 calc(1 * var(--layout-spacing-unit))
+    font-size: var(--button-font-size-mobile)
 
-  &[disabled],
-  &[disabled]:hover
+  svg:not(:only-child)
+    margin-right: var(--layout-spacing-unit-small)
+
+  &[disabled]
     background-color: var(--button-bgc-disabled)
-    color: var(--font-color-disabled)
+    color: var(--font-color-contrast-middle)
     cursor: var(--cursor-disabled)
 
+    svg
+      color: var(--font-color-contrast-middle)
+
   &:focus
-    border: 0.2rem solid var(--color-focus)
+    border-color: var(--color-focus)
+    outline: 0
 
   &.primary
     background-color: var(--button-primary-bgc)
@@ -51,6 +59,7 @@ h2
   font-weight: 600
 
 input, select
+  box-sizing: border-box
   width: var(--inputfield-width)
   height: var(--inputfield-size)
   display: block
@@ -59,10 +68,15 @@ input, select
   font-size: var(--font-size-3)
   color: var(--font-color-contrast-high)
   background-color: var(--bgc-inputfield-on-container)
-  border: 1px solid var(--bgc-inputfield-on-container)
+  border: 0.1rem solid var(--bgc-inputfield-on-container)
   border-radius: var(--border-radius-interactable)
   transition: background-color, color, border
   transition-duration: var(--portal-transition-duration)
+
+  @media $mqSmartphone
+    width: 100%
+    font-size: var(--font-size-4)
+    padding: 0 calc(2 * var(--layout-spacing-unit-small)) !important;
 
   &:hover,
   &:focus
@@ -75,17 +89,28 @@ input, select
 
   &[disabled]
     cursor: var(--cursor-disabled)
+    color: var(--font-color-contrast-low)
+
+fieldset
+  border: 0
+  padding: 0
+  margin-top: calc(3 * var(--layout-spacing-unit))
 
 select
   cursor: pointer
   appearance: none
+  position: relative
 
-label, div.label
+legend, label, div.label
   display: block
   margin-top: calc(3 * var(--layout-spacing-unit))
   color: var(--font-color-contrast-middle)
   font-size: var(--font-size-3)
   position: relative
+
+  @media $mqSmartphone
+    margin-top: calc(1 * var(--layout-spacing-unit))
+    font-size: var(--font-size-4)
 
   input[type=checkbox]
     background-color: var(--bgc-inputfield-on-container)
@@ -101,22 +126,30 @@ label, div.label
     background-color: var(--bgc-inputfield-on-container)
     cursor: pointer
     appearance: none
-    &:focus
+    &:focus,
+    &:focus:checked
       border-color: var(--color-focus)
     &:checked
       border-color: var(--color-accent)
-      & + span::before
-        content: '\2713'
-        color: var(--color-accent)
-        position: absolute
-        left: calc(var(--font-size-3) / 2 - 2px - 4px)
+
     & + span
       vertical-align: top
       cursor: pointer
 
+    &:checked:after
+      content: "✓"
+      display: block
+      width: 100%
+      height: 100%
+      line-height: 111%
+      font-size: 0.7rem
+      font-weight: bold
+      text-align: center
+      color: var(--color-accent)
+
 // --------------
 // global classes
-.body__has-modal
+.body--has-modal
   overflow: hidden
 
 .portal-reset

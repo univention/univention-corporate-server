@@ -1,3 +1,6 @@
+# Project
+src/tmp/
+
 # Stores
 .DS_Store
 *.sqlite3

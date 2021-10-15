@@ -36,8 +36,10 @@
       :target="anchorTarget"
       :aria-describedby="tileId"
       :aria-label="ariaLabelPortalTile"
+      :draggable="editMode && !minified"
+      :disabled="isDisabled"
+      :class="{'portal-tile--minified': minified}"
       class="portal-tile"
-      :draggable="editMode && !fromFolder"
       data-test="tileLink"
       @mouseenter="showTooltip()"
       @mouseleave="hideTooltip"
@@ -55,7 +57,9 @@
         :style="backgroundColor ? `background: ${backgroundColor}` : ''"
         :class="[
           'portal-tile__box',
-          { 'portal-tile__box--draggable': editMode },
+          { 'portal-tile__box--draggable': editMode,
+            'portal-tile__box--dragging': isBeingDragged,
+          }
         ]"
       >
         <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
@@ -70,20 +74,37 @@
         {{ $localized(title) }}
       </span>
 
-      <icon-button
-        v-if="!minified && editMode"
-        icon="edit-2"
-        :active-at="activeAtEdit"
-        class="portal-tile__edit-button icon-button--admin"
-        :aria-label-prop="ariaLabelEditTile"
-        @click="editTile"
-      />
+      <div class="portal-tile__icon-bar">
+        <icon-button
+          v-if="!minified && editMode && !isTouchDevice"
+          ref="mover"
+          icon="move"
+          :active-at="activeAtEdit"
+          class="portal-tile__edit-button icon-button--admin"
+          :aria-label-prop="MOVE_ENTRY"
+          @click="enterMoveMode"
+          @keydown.esc.exact="cancelMoveMode"
+          @keydown.left.exact.prevent="moveLeft"
+          @keydown.right.exact.prevent="moveRight"
+          @keydown.up.exact.prevent="moveUp"
+          @keydown.down.exact.prevent="moveDown"
+          @keydown.tab="handleTabWhileMoving"
+        />
+        <icon-button
+          v-if="!minified && editMode"
+          icon="edit-2"
+          :active-at="activeAtEdit"
+          class="portal-tile__edit-button icon-button--admin"
+          :aria-label-prop="EDIT_ENTRY"
+          @click="editTile"
+        />
+      </div>
     </tabindex-element>
     <icon-button
-      v-if="!minified && isTouchDevice"
+      v-if="!minified && isTouchDevice && !editMode"
       icon="info"
       class="portal-tile__info-button icon-button--admin"
-      :aria-label-prop="ariaLabelInfoButton"
+      :aria-label-prop="SHOW_TOOLTIP"
       @click="toolTipTouchHandler()"
     />
   </div>
@@ -92,6 +113,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
 import TabindexElement from '@/components/activity/TabindexElement.vue';
@@ -144,6 +166,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+    allowedGroups: {
+      type: Array,
+      default: () => [],
+    },
     originalLinkTarget: {
       type: String,
       required: true,
@@ -164,22 +190,21 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
+      inDragnDropMode: 'dragndrop/inDragnDropMode',
+      portalContent: 'portalData/portalContent',
       tooltip: 'tooltip/tooltip',
     }),
     wrapperTag(): string {
       return (this.minified || this.editMode) ? 'div' : 'a';
+    },
+    isDisabled(): boolean {
+      return (this.minified || this.editMode);
     },
     isTouchDevice(): boolean {
       return 'ontouchstart' in document.documentElement;
     },
     ariaLabelPortalTile(): null | string {
       return (this.minified || this.editMode) ? null : this.$localized(this.title);
-    },
-    ariaLabelInfoButton(): string {
-      return `${this.$translateLabel('SHOW_TOOLTIP_BY_TOUCH')}`;
-    },
-    ariaLabelEditTile(): string {
-      return this.$translateLabel('EDIT_TILE');
     },
     activeAtEdit(): string[] {
       if (!this.editMode) {
@@ -202,14 +227,27 @@ export default defineComponent({
       }
       return ['portal', 'header-search'];
     },
+    MOVE_ENTRY(): string {
+      return _('Move entry');
+    },
+    EDIT_ENTRY(): string {
+      return _('Edit entry');
+    },
+    SHOW_TOOLTIP(): string {
+      return _('Show tooltip');
+    },
+    anchorTarget(): string {
+      return this.linkTarget === 'newwindow' ? '_blank' : '';
+    },
   },
   mounted() {
     if (this.hasFocus) {
       this.$el.children[0].focus(); // sets focus to first Element in opened Folder
     }
-  },
-  updated() {
-    console.log('updated!');
+    if (this.isBeingDragged) {
+      // @ts-ignore // TODO
+      (this.$refs.mover.$el as HTMLElement).focus();
+    }
   },
   methods: {
     hideTooltip(): void {
@@ -227,6 +265,115 @@ export default defineComponent({
         this.$store.dispatch('tooltip/setTooltip', { tooltip });
       }
     },
+    async handleTabWhileMoving() {
+      if (this.isBeingDragged) {
+        this.$store.dispatch('dragndrop/dropped');
+        this.$store.dispatch('activateLoadingState');
+        await this.$store.dispatch('portalData/saveContent');
+        this.$store.dispatch('deactivateLoadingState');
+      }
+    },
+    moveLeft(evt) {
+      if (!this.inDragnDropMode) {
+        return;
+      }
+
+      const srcId = this.dn;
+      const srcCategory = this.superDn;
+      const srcEntries = this.portalContent.find(([categoryDn]) => categoryDn === srcCategory)?.[1] ?? [];
+      const srcIndex = srcEntries.indexOf(srcId);
+      if (srcIndex <= 0) {
+        return;
+      }
+
+      const dstId = srcEntries[srcIndex - 1];
+      this.$store.dispatch('portalData/reshuffleContent', {
+        src: srcId,
+        dst: dstId,
+        cat: srcCategory,
+      });
+      this.$nextTick(() => {
+        evt.target.focus();
+      });
+    },
+    moveRight() {
+      if (!this.inDragnDropMode) {
+        return;
+      }
+
+      const srcId = this.dn;
+      const srcCategory = this.superDn;
+      const srcEntries = this.portalContent.find(([categoryDn]) => categoryDn === srcCategory)?.[1] ?? [];
+      const srcIndex = srcEntries.indexOf(srcId);
+      if (srcIndex === srcEntries.length - 1) {
+        return;
+      }
+
+      const dstId = srcEntries[srcIndex + 1];
+      this.$store.dispatch('portalData/reshuffleContent', {
+        src: srcId,
+        dst: dstId,
+        cat: srcCategory,
+      });
+    },
+    moveUp() {
+      if (!this.inDragnDropMode) {
+        return;
+      }
+      const srcId = this.dn;
+      const srcCategory = this.superDn;
+      const srcCategoryIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === srcCategory);
+      if (srcCategoryIdx <= 0) {
+        return;
+      }
+      const dstCategory = this.portalContent[srcCategoryIdx - 1];
+      if (!dstCategory) {
+        return;
+      }
+      const dstId = dstCategory[1][0];
+      this.$store.dispatch('portalData/moveContent', {
+        src: srcId,
+        origin: srcCategory,
+        dst: dstId,
+        cat: dstCategory[0],
+      });
+    },
+    moveDown() {
+      if (!this.inDragnDropMode) {
+        return;
+      }
+      const otherId = this.dn;
+      const otherCategory = this.superDn;
+      const otherIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === otherCategory);
+      const myIdx = otherIdx + 1;
+      const my = this.portalContent[myIdx];
+      if (!my) {
+        return;
+      }
+      const myCategory = my[0];
+      const myId = my[1][0];
+      this.$store.dispatch('portalData/moveContent', {
+        src: otherId,
+        origin: otherCategory,
+        dst: myId,
+        cat: myCategory,
+      });
+    },
+    cancelMoveMode() {
+      this.$store.dispatch('dragndrop/revert');
+      this.$store.dispatch('dragndrop/dropped');
+    },
+    async enterMoveMode() {
+      if (this.isBeingDragged) {
+        this.$store.dispatch('dragndrop/dropped');
+        this.$store.dispatch('activateLoadingState');
+        await this.$store.dispatch('portalData/saveContent');
+        this.$store.dispatch('deactivateLoadingState');
+      } else {
+        // @ts-ignore
+        this.dragstart();
+      }
+    },
     editTile() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminEntry',
@@ -235,7 +382,7 @@ export default defineComponent({
           modelValue: this.$props,
           superDn: this.superDn,
           fromFolder: this.fromFolder,
-          label: 'EDIT_ENTRY',
+          label: _('Edit entry'),
         },
       });
     },
@@ -271,9 +418,6 @@ export default defineComponent({
   color: var(--font-color-contrast-high)
   text-decoration: none
 
-  &:hover
-    color: var(--font-color-contrast-high)
-    text-decoration: none
   &__root-element
     display:flex
     justify-content: center
@@ -294,6 +438,11 @@ export default defineComponent({
     ~/:focus &
       border-color: var(--color-focus)
 
+    &--dragged-line
+      border: 3px solid pink
+
+    &--dragging
+      transform: rotate(-10deg)
     &--draggable
       position: relative
 
@@ -312,14 +461,11 @@ export default defineComponent({
 
   &__name
     text-align: center
-    width: 100%
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
-    text-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.3)
+    word-wrap: break-word
+    hyphens: auto
 
-  &__edit-button,
-  &__info-button
+  &__info-button,
+  &__icon-bar
     position: absolute
     top: -0.75em
     right: -0.75em

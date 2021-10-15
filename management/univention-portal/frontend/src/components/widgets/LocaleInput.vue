@@ -29,37 +29,45 @@
 <template>
   <div class="locale-input">
     <label
-      v-for="locale in locales"
-      :key="locale"
+      class="locale-input__label"
+      :for="`locale-input-${I18N_LABEL}`"
     >
-      <translate
-        :i18n-key="i18nLabel"
-      /> ({{ locale }})
-      <span
-        v-if="locale === 'en_US'"
-      >
-        *
-      </span>
-      <input
-        v-model="modelValueData[locale]"
-        :name="locale === 'en_US' ? name : `${name}-${locale}`"
-        autocomplete="off"
-        tabindex="0"
-      >
+      {{ I18N_LABEL }}
     </label>
+    <div class="locale-input__wrapper">
+      <input
+        :id="`locale-input-${I18N_LABEL}`"
+        v-model="modelValueData.en_US"
+        class="locale-input__text-field"
+        autocomplete="off"
+        :name="name"
+        :tabindex="tabindex"
+        :data-test="`localeInput--${I18N_LABEL}`"
+      >
+      <icon-button
+        :id="`locale-input__icon--${I18N_LABEL}`"
+        icon="globe"
+        :has-button-style="true"
+        :aria-label-prop="TRANSLATE_TEXT_INPUT"
+        :tabindex="tabindex"
+        :data-test="`iconButton--${I18N_LABEL}`"
+        @click="openTranslationEditingDialog"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
-import Translate from '@/i18n/Translate.vue';
+import IconButton from '@/components/globals/IconButton.vue';
 
 export default defineComponent({
   name: 'LocaleInput',
   components: {
-    Translate,
+    IconButton,
   },
   props: {
     modelValue: {
@@ -74,25 +82,50 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    tabindex: {
+      type: Number,
+      default: 0,
+    },
+    isInModal: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: [
     'update:modelValue',
   ],
   data() {
     return {
-      modelValueData: {},
+      modelValueData: {
+        en_US: '',
+      },
+      translations: {
+        en_US: '',
+      },
     };
   },
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
       getModalError: 'modal/getModalError',
+      savedFocus: 'activity/focus',
     }),
+    I18N_LABEL():string {
+      return _('%(key1)s', { key1: this.i18nLabel });
+    },
+    TRANSLATE_TEXT_INPUT(): string {
+      return _('Edit Translations');
+    },
+    hasNewTranslation(): string {
+      return !this.translations.en_US ? this.translations.en_US : this.modelValueData.en_US;
+    },
+    translationEditingDialogLevel(): number {
+      return this.isInModal ? 2 : 1;
+    },
   },
   created() {
     const model = this.modelValue;
     const newModel = {};
-
     if ('locale' in model) {
       newModel[model.locale] = model.value;
       Object.assign(this.modelValueData, newModel);
@@ -103,13 +136,50 @@ export default defineComponent({
   updated() {
     this.$emit('update:modelValue', this.modelValueData);
   },
+  methods: {
+    openTranslationEditingDialog() {
+      this.$store.dispatch('modal/setShowModalPromise', {
+        level: this.translationEditingDialogLevel,
+        name: 'TranslationEditing',
+        stubborn: true,
+        props: {
+          inputValue: this.modelValue,
+          title: this.i18nLabel,
+          modalLevelProp: this.translationEditingDialogLevel,
+        },
+      }).then((data) => {
+        this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
+        this.modelValueData = data.translations;
+        this.translations = data.translations;
+        const clickedButton = document.getElementById(`locale-input__icon--${this.I18N_LABEL}`);
+        clickedButton?.focus();
+      }, () => {
+        this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
+      });
+      this.$store.dispatch('activity/setRegion', 'translation-editing');
+      this.$store.dispatch('activity/setLevel', 'modal2');
+      this.$store.dispatch('activity/saveFocus', {
+        region: 'modal-wrapper--isVisible',
+        id: `locale-input__icon--${this.I18N_LABEL}`,
+      });
+    },
+  },
 });
 </script>
 
 <style lang="stylus">
 .locale-input
   margin-top: calc(3 * var(--layout-spacing-unit))
+  margin-bottom: var(--layout-spacing-unit)
 
   label
     margin-top: 0
+  &__wrapper
+    display: flex
+    align-items: center
+
+  &__text-field
+    margin-bottom: 0
+    margin-right: var(--layout-spacing-unit)
+
 </style>

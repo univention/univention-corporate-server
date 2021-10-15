@@ -42,7 +42,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         icon-width="2rem"
       />
       <span>
-        <translate :i18n-key="buttonLabel" />
+        {{ BUTTON_LABEL }}
       </span>
       <portal-icon
         v-if="iconAfter"
@@ -65,21 +65,19 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
 import PortalIcon from '@/components/globals/PortalIcon.vue';
-
-import Translate from '@/i18n/Translate.vue';
 
 export default defineComponent({
   name: 'PortalButton',
   components: {
     PortalIcon,
-    Translate,
   },
   props: {
     buttonLabel: {
       type: String,
-      default: 'SUBMIT',
+      default: _('Submit'),
     },
     iconBefore: {
       type: String,
@@ -98,7 +96,11 @@ export default defineComponent({
       default: '',
     },
   },
-  methods: {},
+  computed: {
+    BUTTON_LABEL(): string {
+      _('%(key1)s', { key1: buttonLabel });
+    },
+  },
 });
 </script>
 

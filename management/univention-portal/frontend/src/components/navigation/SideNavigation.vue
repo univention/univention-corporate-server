@@ -38,23 +38,29 @@
         v-if="userState.username"
         class="portal-sidenavigation__user-row"
       >
-        <portal-icon
-          icon="user"
-        />
-        <div>
+        <div class="portal-sidenavigation__user-icon">
+          <portal-icon
+            icon="user"
+          />
+        </div>
+        <div class="portal-sidenavigation__user-text-content">
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
-          <!-- as long as this link has no href, this needs to be a button to be focusable -->
-          <button
+          <div
             id="loginButton"
             ref="loginButton"
             class="portal-sidenavigation__logout-link"
+            tabindex="0"
+            role="button"
             @click="logout"
+            @keydown.enter="logout"
             @keydown.esc="closeNavigation"
           >
-            <translate i18n-key="LOGOUT" />
-          </button>
+            <span>
+              {{ LOGOUT }}
+            </span>
+          </div>
         </div>
       </div>
       <button
@@ -63,9 +69,12 @@
         ref="loginButton"
         class="portal-sidenavigation__link"
         @click="login"
+        @keydown.enter="login"
         @keydown.esc="closeNavigation"
       >
-        <translate i18n-key="LOGIN" />
+        <span>
+          {{ LOGIN }}
+        </span>
       </button>
     </div>
 
@@ -91,25 +100,26 @@
           :path-to-logo="item.pathToLogo"
           :internal-function="item.internalFunction"
           :background-color="item.backgroundColor"
-          aria-haspopup="true"
-          @click="toggleMenu(index)"
-          @keydown.enter.exact.prevent="toggleMenu(index)"
-          @keydown.space.exact.prevent="toggleMenu(index)"
-          @keydown.right.exact.prevent="toggleMenu(index)"
+          :aria-haspopup="hasSubmenu(item)"
+          @click="menuClickAction($event, index, item)"
+          @keydown.enter.exact="menuClickAction($event, index, item)"
+          @keydown.space.exact="menuClickAction($event, index, item)"
+          @keydown.right.exact.prevent="hasSubmenu(item) ? toggleMenu(index) : null"
           @keydown.esc="closeNavigation"
         />
-        <template v-if="item.subMenu && item.subMenu.length > 0">
+        <template v-if="hasSubmenu(item)">
           <region
             v-if="subMenuVisible & (menuParent === index)"
             id="portal-sidenavigation-sub"
+            class="portal-sidenavigation__submenu"
             role="navigation"
             direction="topdown"
-            :aria-label="ariaLabelSubMenuParent"
+            :aria-expanded="subMenuVisible"
           >
             <menu-item
-              :id="item.id"
+              :id="`sub-item-${item.id}`"
               :title="item.title"
-              :is-sub-item="true"
+              :is-parent-in-sub-item="true"
               :links="[]"
               class="portal-sidenavigation__menu-subItem portal-sidenavigation__menu-subItem--parent"
               @click="toggleMenu()"
@@ -133,8 +143,8 @@
                 :path-to-logo="subItem.pathToLogo"
                 :internal-function="subItem.internalFunction"
                 :background-color="subItem.backgroundColor"
+                :is-subitem="true"
                 class="portal-sidenavigation__menu-subItem"
-                @clickAction="closeNavigation"
                 @keydown.esc="closeNavigation"
               />
             </div>
@@ -147,12 +157,11 @@
       v-if="userState.mayEditPortal"
       ref="editModeButton"
       class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
+      data-test="openEditmodeButton"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
     >
-      <translate
-        i18n-key="EDIT_PORTAL"
-      />
+      {{ EDIT_PORTAL }}
     </button>
   </region>
 </template>
@@ -160,14 +169,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
+import _ from '@/jsHelper/translate';
 
 import Region from '@/components/activity/Region.vue';
-import TabindexElement from '@/components/activity/TabindexElement.vue';
 import MenuItem from '@/components/navigation/MenuItem.vue';
+import SubMenuItem from '@/components/navigation/SubMenuItem.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
+import TileClick from '@/mixins/TileClick.vue';
 
 import { login, logout } from '@/jsHelper/login';
-import Translate from '@/i18n/Translate.vue';
 
 interface SideNavigationData {
   menuVisible: boolean,
@@ -178,7 +188,6 @@ interface SideNavigationData {
   fade: boolean,
   fadeRightLeft: string,
   fadeLeftRight: string,
-  changeLanguageTranslation: unknown
 }
 
 export default defineComponent({
@@ -186,10 +195,12 @@ export default defineComponent({
   components: {
     PortalIcon,
     MenuItem,
-    Translate,
-    TabindexElement,
+    SubMenuItem,
     Region,
   },
+  mixins: [
+    TileClick,
+  ],
   data(): SideNavigationData {
     return {
       menuVisible: true,
@@ -200,11 +211,6 @@ export default defineComponent({
       fade: false,
       fadeRightLeft: 'portal-sidenavigation__fade-right-left',
       fadeLeftRight: 'portal-sidenavigation__fade-left-right',
-      // TODO: outsource translation
-      changeLanguageTranslation: {
-        de_DE: 'Sprache ändern',
-        en_US: 'Change language',
-      },
     };
   },
   computed: {
@@ -214,8 +220,20 @@ export default defineComponent({
       userState: 'user/userState',
       meta: 'metaData/getMeta',
     }),
-    ariaLabelSubMenuParent(): string {
-      return this.$translateLabel('GO_BACK');
+    LOGOUT(): string {
+      return _('Logout');
+    },
+    LOGIN(): string {
+      return _('Login');
+    },
+    GO_BACK(): string {
+      return _('Go Back');
+    },
+    EDIT_PORTAL(): string {
+      return _('Edit portal');
+    },
+    CHANGE_LANGUAGE(): string {
+      return _('Change language');
     },
   },
   mounted(): void {
@@ -250,12 +268,8 @@ export default defineComponent({
     },
     async startEditMode(): Promise<void> {
       await this.$store.dispatch('portalData/setEditMode', true);
-      this.$store.dispatch('navigation/setActiveButton', 'settings');
-      this.$store.dispatch('activity/saveFocus', {
-        region: 'portal-header',
-        id: 'header-button-settings',
-      });
-      this.$store.dispatch('activity/setRegion', 'portal-header');
+      this.$store.dispatch('navigation/setActiveButton', '');
+      this.$store.dispatch('tabs/setActiveTab', 0);
     },
     setFadeClass(): string {
       let ret = '';
@@ -271,17 +285,36 @@ export default defineComponent({
     hasSubmenu(item): boolean {
       return item.subMenu && item.subMenu.length > 0;
     },
+    menuClickAction($event, index: number, item: Record<string, unknown>): void {
+      if (this.hasSubmenu(item)) {
+        $event.preventDefault();
+        this.toggleMenu(index);
+      } else {
+        const menuItem = this.$refs[`menuItem${index}`] ? this.$refs[`menuItem${index}`] : this.$refs[`subItem${index}`];
+        // @ts-ignore
+        menuItem.tileClick($event);
+        if (item.linkTarget === 'embedded') {
+          this.$store.dispatch('navigation/setActiveButton', '');
+          this.$store.dispatch('activity/saveFocus', {
+            region: 'portal-sidenavigation',
+            id: 'loginButton',
+          });
+        }
+      }
+    },
   },
 });
 </script>
 
 <style lang="stylus">
+$userRow = 6rem
 .portal-sidenavigation
   height: calc(100vh - (var(--portal-header-height) + 0.5rem))
   display: flex
   flex-direction: column
 
   @media $mqSmartphone
+    height: 100%
     overflow-y: auto
 
   &__link
@@ -302,34 +335,55 @@ export default defineComponent({
   &__user-row
     padding-left: var(--layout-spacing-unit)
     display: flex
-    height: 6rem
+    height: $userRow
     font-weight: var(--font-weight-bold)
+  &__user-icon
+    position: relative
+    overflow: hidden;
+    border-radius: 100%
+    margin: 1rem
+    border: 1px solid var(--font-color-contrast-high)
+    width: 4rem
+    height: @width
+    margin: 1rem 1rem 1rem 0
+    padding-left: 0 !important; // remove this line, when weird server caching is fixed
 
     svg
       fill: currentColor
       height: 4rem
       width: @height
-      margin: 1rem
       border-radius: var(--border-radius-circles)
-    &> div
-      margin: auto 0
-      padding-left: var(--layout-spacing-unit)
+      margin: 0
+
+  &__user-text-content
+    margin: auto 0
+    padding: 0 var(--layout-spacing-unit)
+    height: 100%;
+    align-items: flex-start
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding: calc(1rem + var(--layout-spacing-unit)) 0
+    box-sizing: border-box
+
   &--username
-    padding-left: 3px
+    font-weight: bold
 
   &__logout-link
     cursor: pointer
     background-color: rgba(0,0,0,0)
     color: var(--font-color-contrast-high)
     font-size: var(--font-size-4)
-    border: 0.2rem solid rgba(0,0,0,0);
+    border-bottom: 0.2rem solid rgba(0,0,0,0);
+    font-weight: normal
+    width: min-content
 
     &:focus
-      border: 0.2rem solid var(--color-focus);
+      text-decoration: underline
       outline: 0
 
-    span
-      text-decoration: underline
+    &:focus span
+      text-decoration: none
 
   &__login-header
     border-bottom: 4px solid var(--bgc-content-body)
@@ -355,9 +409,9 @@ export default defineComponent({
       padding-left: 4rem;
 
   &__edit-mode
-    border: none
     border-radius: unset
-    border-top: 0.2rem solid var(--bgc-content-body)
+    border: 0.2rem solid var(--bgc-content-container)
+    border-top-color: var(--bgc-content-body)
 
     span
       margin: 0.2rem
@@ -374,6 +428,10 @@ export default defineComponent({
 
   &__fade-left-right
     animation-name: fadeInLeft
+
+  &__submenu
+    height: 'calc(%s - (%s + %s) - %s - %s)' % (100vh var(--portal-header-height) 0.5rem $userRow 3rem)
+    overflow-y: auto
 
 // keyframes
 @keyframes fadeInLeft {

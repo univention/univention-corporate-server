@@ -28,3 +28,11 @@
  */
 
 export type Locale = 'en' | 'en_US' | 'de_DE' | 'fr_FR';
+
+export type ShortLocale = 'en' | 'de' | 'fr';
+
+export interface LocaleDefinition {
+  id: string;
+  label: string;
+  default?: boolean;
+}

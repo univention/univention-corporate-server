@@ -28,7 +28,7 @@
 -->
 <template>
   <modal-dialog
-    i18n-title-key="ADD_ENTRY"
+    :i18n-title-key="ADD_ENTRY"
     @cancel="cancel"
   >
     <region
@@ -41,7 +41,7 @@
         class="tile-add-modal-button"
         @click="openModal('createEntry')"
       >
-        <translate i18n-key="NEW_ENTRY" />
+        {{ CREATE_NEW_ENTRY }}
       </button>
       <button
         id="tile-add-modal-button-existing-entry"
@@ -49,7 +49,7 @@
         class="tile-add-modal-button"
         @click="openModal('addEntry')"
       >
-        <translate i18n-key="ADD_EXISTING_ENTRY" />
+        {{ CREATE_EXISTING_ENTRY }}
       </button>
       <button
         v-if="!forFolder"
@@ -58,7 +58,7 @@
         class="tile-add-modal-button"
         @click="openModal('createFolder')"
       >
-        <translate i18n-key="NEW_FOLDER" />
+        {{ CREATE_NEW_FOLDER }}
       </button>
       <button
         v-if="!forFolder"
@@ -67,7 +67,7 @@
         class="tile-add-modal-button"
         @click="openModal('addFolder')"
       >
-        <translate i18n-key="ADD_EXISTING_FOLDER" />
+        {{ CREATE_EXISTING_FOLDER }}
       </button>
     </region>
   </modal-dialog>
@@ -75,17 +75,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from '@/jsHelper/translate';
 
-import ModalDialog from '@/components/ModalDialog.vue';
+import ModalDialog from '@/components/modal/ModalDialog.vue';
 import Region from '@/components/activity/Region.vue';
-import Translate from '@/i18n/Translate.vue';
 
 export default defineComponent({
   name: 'TileAddModal',
   components: {
     ModalDialog,
     Region,
-    Translate,
   },
   props: {
     superDn: {
@@ -97,8 +96,25 @@ export default defineComponent({
       required: true,
     },
   },
+  computed: {
+    CREATE_NEW_ENTRY(): string {
+      return _('Create a new Entry');
+    },
+    CREATE_EXISTING_ENTRY(): string {
+      return _('Add existing entry');
+    },
+    CREATE_NEW_FOLDER(): string {
+      return _('Create a new folder');
+    },
+    CREATE_EXISTING_FOLDER(): string {
+      return _('Add existing folder');
+    },
+    ADD_ENTRY(): string {
+      return _('Add entry');
+    },
+  },
   methods: {
-    openModal(action): void {
+    openModal(action: string): void {
       if (action === 'createEntry') {
         this.$store.dispatch('modal/setAndShowModal', {
           name: 'AdminEntry',
@@ -106,7 +122,7 @@ export default defineComponent({
           props: {
             modelValue: {},
             superDn: this.superDn,
-            label: 'NEW_ENTRY',
+            label: this.CREATE_NEW_ENTRY,
             fromFolder: this.forFolder,
           },
         });
@@ -120,7 +136,7 @@ export default defineComponent({
           name: 'AdminExistingEntry',
           stubborn: true,
           props: {
-            label: 'ADD_EXISTING_ENTRY',
+            label: this.CREATE_EXISTING_ENTRY,
             objectGetter: 'portalData/portalEntries',
             superObjectGetter,
             superDn: this.superDn,
@@ -134,7 +150,7 @@ export default defineComponent({
           props: {
             modelValue: {},
             superDn: this.superDn,
-            label: 'NEW_FOLDER',
+            label: this.CREATE_NEW_FOLDER,
           },
         });
       }
@@ -143,7 +159,7 @@ export default defineComponent({
           name: 'AdminExistingEntry',
           stubborn: true,
           props: {
-            label: 'ADD_EXISTING_FOLDER',
+            label: this.CREATE_EXISTING_FOLDER,
             objectGetter: 'portalData/portalFolders',
             superObjectGetter: 'portalData/portalCategories',
             superDn: this.superDn,
