@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The encoding of computers displayName allows UTF-8 again, as it has been in UCS 4.4.
+bug: [53927]
