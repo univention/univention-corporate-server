@@ -154,7 +154,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.machineSid = self.getMachineSid(self.lo, self.position, uidNum, self.get('sambaRID'))
 			al.append(('sambaSID', [self.machineSid.encode('ASCII')]))
 			al.append(('sambaAcctFlags', [acctFlags.decode().encode('ASCII')]))
-			al.append(('displayName', self.info['name'].encode('ASCII')))
+			al.append(('displayName', self.info['name'].encode('utf-8')))
 
 		if self.SERVER_ROLE:
 			al.append(('univentionServerRole', self.SERVER_ROLE.encode('ASCII')))
@@ -235,7 +235,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid.encode('UTF-8')))
 
 			if 'samba' in self.options:
-				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name'].encode('UTF-8')))
+				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name'].encode('utf-8')))
 
 			if 'kerberos' in self.options:
 				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal().encode('ASCII')]))
@@ -262,7 +262,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0].decode('ASCII'), self.get('sambaRID'))
 			ml.append(('sambaSID', b'', [self.machineSid.encode('ASCII')]))
 			ml.append(('sambaAcctFlags', b'', [acctFlags.decode().encode('ASCII')]))
-			ml.append(('displayName', b'', self.info['name'].encode('ASCII')))
+			ml.append(('displayName', b'', self.info['name'].encode('utf-8')))
 			sambaPwdLastSetValue = str(int(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue.encode('ASCII')))
 		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
