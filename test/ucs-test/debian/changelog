@@ -1,3 +1,9 @@
+ucs-test (10.0.6-59) unstable; urgency=medium
+
+  *  Bug #53538: Fix 01_test_udm_dns is flaky
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 16 Oct 2021 17:29:49 +0200
+
 ucs-test (10.0.6-58) unstable; urgency=medium
 
   * Bug #53538: Fixup, skip test if univention-s4-connector not installed
