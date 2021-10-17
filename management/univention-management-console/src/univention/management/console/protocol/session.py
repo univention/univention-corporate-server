@@ -77,10 +77,10 @@ from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, SERVER_CONNECTION_TIMEOUT, ucr, get_int
 from ..locales import I18N, I18N_Manager
 from ..base import Base
-from ..error import UMC_Error, Unauthorized, BadRequest, Forbidden, ServiceUnavailable, BadGateway
+from ..error import UMC_Error, BadRequest, Forbidden, ServiceUnavailable, BadGateway
 from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
-from ..modules.sanitizers import StringSanitizer, DictSanitizer
-from ..modules.decorators import sanitize, allow_get_request
+#from ..modules.sanitizers import StringSanitizer, DictSanitizer
+#from ..modules.decorators import sanitize, allow_get_request
 
 try:
 	from html import escape, unescape
@@ -627,10 +627,6 @@ class Resource(RequestHandler):
 	def lo(self):
 		return get_machine_connection(write=False)[0]
 
-	@allow_get_request
-	def handle_request_unauthorized(self, msg):
-		raise Unauthorized(self._('For using this request a login is required.'))
-
 	def load_json(self, body):
 		try:
 			json_ = json.loads(body)
@@ -641,6 +637,7 @@ class Resource(RequestHandler):
 		return json_
 
 	def decode_request_arguments(self):
+		# FIXME / TODO: regression: support query string ?flavor=foo for non-JSON
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
 			body = u'{}'
@@ -972,60 +969,31 @@ class SetLocale(Resource):
 		set language via `Accept-Language` HTTP header
 	"""
 
-	@sanitize(locale=StringSanitizer(required=True))
-	def handle_request_set_locale(self, locale):
-		self.update_language([locale])
+	#@sanitize(locale=StringSanitizer(required=True))
+	def post(self, locale):
+		locale = self.request.body_arguments['locale']
+		# self.update_language([locale])
+		locale
 
 
 class Upload(Resource):
 	"""Handle generic file upload which is not targeted for any module"""
 
-	@allow_get_request
-	@sanitize(DictSanitizer(dict(
-		tmpfile=StringSanitizer(required=True),
-		filename=StringSanitizer(required=True),
-		name=StringSanitizer(required=True),
-	)))
-	def get(self):
-		"""Handles an UPLOAD request. The command is used for the HTTP
-		access to the UMC server. Incoming HTTP requests that send a
-		list of files are passed on to the UMC server by storing the
-		files in temporary files and passing the information about the
-		files to the UMC server in the options of the request. The
-		request options must be a list of dictionaries. Each dictionary
-		must contain the following keys:
-
-		* *filename* -- the original name of the file
-		* *name* -- name of the form field
-		* *tmpfile* -- filename of the temporary file
-
-		:param Request msg: UMCP request
-		"""
+	def post(self):
+		"""Handles a file UPLOAD request, respond with a base64 representation of the content."""
 
 		result = []
-		for file_obj in self.request.body_arguments:
-			tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
+		for name, file_objs in self.request.files.items():
+			for file_obj in file_objs:
+				# don't accept files bigger than umc/server/upload/max
+				max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
+				if len(file_obj['body']) > max_size:
+					raise BadRequest('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
-			# limit files to tmpdir
-			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-				raise BadRequest('invalid file: invalid path')
+				b64buf = base64.b64encode(file_obj['body']).decode('ASCII')
+				result.append({'filename': file_obj['filename'], 'name': name, 'content': b64buf})
 
-			# check if file exists
-			if not os.path.isfile(tmpfilename):
-				raise BadRequest('invalid file: file does not exists')
-
-			# don't accept files bigger than umc/server/upload/max
-			st = os.stat(tmpfilename)
-			max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
-			if st.st_size > max_size:
-				os.remove(tmpfilename)
-				raise BadRequest('filesize is too large, maximum allowed filesize is %d' % (max_size,))
-
-			with open(tmpfilename, 'rb') as buf:
-				b64buf = base64.b64encode(buf.read()).decode('ASCII')
-			result.append({'filename': filename, 'name': name, 'content': b64buf})
-
-		return result
+		self.content_negotiation(result)
 
 
 class IACLs(object):
@@ -1100,7 +1068,6 @@ class Command(Resource):
 			exc.status = 401
 
 	@tornado.gen.coroutine
-	@allow_get_request
 	def get(self, umcp_command, command):
 		"""Handles a COMMAND request. The request must contain a valid
 		and known command that can be accessed by the current user. If
