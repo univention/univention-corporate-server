@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: nghttp2
+fix: 1.18.1-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Null pointer dereference when too large ALTSVC frame is received
+   (CVE-2018-1000168)
+ * overly large SETTINGS frames can lead to DoS (CVE-2020-11080)
+bug: [53929]
+cve:
+- CVE-2018-1000168
+- CVE-2020-11080
