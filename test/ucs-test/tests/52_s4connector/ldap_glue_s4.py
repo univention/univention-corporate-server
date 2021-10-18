@@ -1,9 +1,13 @@
+from __future__ import print_function
+
 import sys
+
 import ldap
 import ldap.dn
-from univention.config_registry import ConfigRegistry
-from ldap.controls import LDAPControl
 import ldap.modlist as modlist
+from ldap.controls import LDAPControl
+
+from univention.config_registry import ConfigRegistry
 
 ucr = ConfigRegistry()
 ucr.load()
