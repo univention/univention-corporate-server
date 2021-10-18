@@ -253,7 +253,7 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 def _case_insensitive_remove_from_list(dn, list):
 	remove_element = None
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		if dn.decode('utf-8').lower() == element.decode('utf-8').lower():
 			remove_element = element
 			break
 	if remove_element:
@@ -368,21 +368,20 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def fast_member_add(self, memberdnlist, uidlist):
 		ml = []
+		uids = set()
+		members = set()
 		searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
 		if searchResult:
-			uids = {uid.decode('utf8').lower() for uid in searchResult.get('memberUid', [])}
-			members = {dn.decode('utf8').lower() for dn in searchResult.get('uniqueMember', [])}
-		else:
-			uids = set()
-			members = set()
+			uids = {x.decode('UTF-8').lower() for x in searchResult.get('memberUid', [])}
+			members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
 
-		add_uidlist = [uid for uid in uidlist if uid.decode('utf8').lower() not in uids]
+		add_uidlist = [uid for uid in uidlist if uid.decode('utf-8').lower() not in uids]
 		if add_uidlist:
-			ml.append(('memberUid', '', add_uidlist))
+			ml.append(('memberUid', b'', add_uidlist))
 
-		add_memberdnlist = [dn for dn in memberdnlist if dn.decode('utf8').lower() not in members]
+		add_memberdnlist = [dn for dn in memberdnlist if dn.decode('utf-8').lower() not in members]
 		if add_memberdnlist:
-			ml.append(('uniqueMember', '', add_memberdnlist))
+			ml.append(('uniqueMember', b'', add_memberdnlist))
 
 		if ml:
 			try:
@@ -392,28 +391,27 @@ class object(univention.admin.handlers.simpleLdap):
 			except ldap.INSUFFICIENT_ACCESS:
 				raise univention.admin.uexceptions.permissionDenied()
 			except ldap.LDAPError as msg:
-				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
+				raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
 
 		# return True if object has been modified
 		return bool(ml)
 
-	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=0):
+	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False):
 		ml = []
+		uids = set()
+		members = set()
 		searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
 		if searchResult:
-			uids = {uid.decode('utf8').lower() for uid in searchResult.get('memberUid', [])}
-			members = {dn.decode('utf8').lower() for dn in searchResult.get('uniqueMember', [])}
-		else:
-			uids = set()
-			members = set()
+			uids = {x.decode('UTF-8').lower() for x in searchResult.get('memberUid', [])}
+			members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
 
-		remove_uidlist = [uid for uid in uidlist if uid.decode('utf8').lower() in uids]
+		remove_uidlist = [uid for uid in uidlist if uid.decode('utf-8').lower() in uids]
 		if remove_uidlist:
-			ml.append(('memberUid', remove_uidlist, ''))
+			ml.append(('memberUid', remove_uidlist, b''))
 
-		remove_memberdnlist = [dn for dn in memberdnlist if dn.decode('utf8').lower() in members]
+		remove_memberdnlist = [dn for dn in memberdnlist if dn.decode('utf-8').lower() in members]
 		if remove_memberdnlist:
-			ml.append(('uniqueMember', remove_memberdnlist, ''))
+			ml.append(('uniqueMember', remove_memberdnlist, b''))
 
 		if ml:
 			try:
@@ -423,7 +421,7 @@ class object(univention.admin.handlers.simpleLdap):
 			except ldap.INSUFFICIENT_ACCESS:
 				raise univention.admin.uexceptions.permissionDenied()
 			except ldap.LDAPError as msg:
-				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
+				raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
 
 		# return True if object has been modified
 		return bool(ml)
@@ -572,7 +570,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# calling keepCase is not necessary as the LDAP server already handles the case when removing elements
 			# TODO: removable?
 			def keepCase(members, oldMembers):
-				mapping = dict((x.lower(), x) for x in oldMembers)
+				mapping = {x.lower(): x for x in oldMembers}
 				return [mapping.get(member.lower(), member) for member in members]
 
 			# create lists for memberUid entries to be added or removed
@@ -649,7 +647,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, 'sid', self.groupSid)
 
 		for group in self.info.get('memberOf', []):
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(self.dn, members):
@@ -670,7 +668,7 @@ class object(univention.admin.handlers.simpleLdap):
 		settings_object.modify()
 
 		for group in self.info.get('memberOf', []):
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(olddn, members):
@@ -753,13 +751,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@staticmethod
 	def __case_insensitive_in_list(dn, members):
-		case_insensitive_list = (m.decode('utf8').lower() for m in members)
-		return dn.decode('utf8').lower() in case_insensitive_list
+		case_insensitive_list = (m.decode('utf-8').lower() for m in members)
+		return dn.decode('utf-8').lower() in case_insensitive_list
 
 	@staticmethod
 	def __case_insensitive_remove_from_list(dn, members):
-		dn_lower = dn.decode('utf8').lower()
-		return [m for m in members if m.decode('utf8').lower() != dn_lower]
+		dn_lower = dn.decode('utf-8').lower()
+		return [m for m in members if m.decode('utf-8').lower() != dn_lower]
 
 	def check_for_group_recursion(self):
 		# perform check only if membership of groups has changed
@@ -783,8 +781,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# test short dependencies: A -> B -> A
 		# ==> intersection of nestedGroup and memberOf is not empty
-		set_nestedGroup = set([x.lower() for x in self.info.get('nestedGroup', [])])
-		set_memberOf = set([x.lower() for x in self.info.get('memberOf', [])])
+		set_nestedGroup = {x.lower() for x in self.info.get('nestedGroup', [])}
+		set_memberOf = {x.lower() for x in self.info.get('memberOf', [])}
 		set_intersection = set_nestedGroup & set_memberOf
 		if set_intersection:
 			childdn = list(set_intersection)[0]
