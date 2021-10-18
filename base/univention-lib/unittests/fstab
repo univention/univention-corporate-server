@@ -4,5 +4,8 @@
 proc	/proc	proc	defaults	0	0	
 UUID=testtest-0cbd-4f72-809e-89c4c9af0c3d	/boot	ext2	defaults,acl,user_xattr	0	2	
 /dev/vda1	/var	ext3	defaults,acl,user_xattr	0	2	
-/dev/vda2	none	swap	sw	#0	1	# foo bar baz
+/dev/vda2	none	swap	sw	0	0	#0	1	# foo bar baz
 192.168.0.81:/home	/home	nfs	defaults,timeo=21,retrans=9,wsize=8192,rsize=8192,nfsvers=3	1	2	# LDAP bind
+
+/dev/vda4	none	swap	sw
+/dev/vda5	none	swap

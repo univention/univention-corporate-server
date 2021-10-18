@@ -1,5 +1,0 @@
-# /etc/fstab: static file system information.
-# <file system> <mount point>   <type>  <options>       <dump>  <pass>
-/dev/vda3	/	ext3	acl,errors=remount-ro	# comment 1
-/dev/vda3	/	ext3	acl,errors=remount-ro	0	# comment 2
-/dev/vda3	/	ext3

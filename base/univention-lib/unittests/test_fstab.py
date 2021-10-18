@@ -35,9 +35,9 @@ from .conftest import import_lib_module
 fstab = import_lib_module('fstab')
 
 
-def test_fstab():
+def test_fstab_parsing():
 	fs = fstab.File('unittests/fstab')
-	assert len(fs.get()) == 5
+	assert len(fs.get()) == 7
 
 	f = fs.get()[0]
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('proc', None, '/proc', 'proc', ['defaults'], 0, 0, '')
@@ -50,15 +50,18 @@ def test_fstab():
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda1', None, '/var', 'ext3', ['defaults', 'acl', 'user_xattr'], 0, 2, '')
 
 	f = fs.get()[3]
-	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda2', None, 'none', 'swap', ['sw'], None, None, '#0\t1\t# foo bar baz')
+	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda2', None, 'none', 'swap', ['sw'], 0, 0, '#0\t1\t# foo bar baz')
 
 	f = fs.get()[4]
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('192.168.0.81:/home', None, '/home', 'nfs', ['defaults', 'timeo=21', 'retrans=9', 'wsize=8192', 'rsize=8192', 'nfsvers=3'], 1, 2, '# LDAP bind')
 
+	f = fs.get()[5]
+	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda4', None, 'none', 'swap', ['sw'], None, None, None)
+
 	f = fs.get('ext3', False)[0]
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda3', None, '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None)
-	assert str(f) == '/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1'
-	assert repr(f) == "univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"
+	assert [str(f)] == ['/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1']
+	assert [repr(f)] == ["univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"]
 
 
 def test_fstab_save(mocker):
@@ -70,12 +73,42 @@ def test_fstab_save(mocker):
 	mocker.patch.object(fstab, 'open', mocker.Mock(return_value=fd))
 	fs.save()
 	write_calls = [args[0] for _, args, _ in fd.write.mock_calls]
-	assert content == ''.join(write_calls)
+	assert [content] == [''.join(write_calls)]
 
 
-def test_fstab_broken():
-	with pytest.raises(fstab.InvalidEntry):
-		fstab.File('unittests/broken_fstab')
+@pytest.mark.parametrize('broken_line', [
+	'/dev/vda3\t/\text3\tacl,errors=remount-ro\t# comment 1',
+	'/dev/vda3\t/\text3\tacl,errors=remount-ro\t0\t# comment 2',
+	'/dev/vda2\tnone\tswap\tsw\t#0\t1\t# foo bar baz',
+])
+def test_parsing_broken_entry(broken_line):
+	fs = fstab.File('unittests/fstab')
+
+	result = fs._File__parse(broken_line)
+	assert [broken_line] == [result]
+
+
+def test_entry_repr():
+	entry = fstab.Entry('/dev/vda3', '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None)
+	assert [repr(entry)] == ["univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"]
+
+
+@pytest.mark.parametrize('args,kwargs,string', [
+	(('/dev/vda3', '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None), {}, '/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1'),
+	(("/dev/vda3", "/", "ext3"), {}, "/dev/vda3\t/\text3"),
+	(("/dev/vda3", "/", "ext3"), {'comment': "#one final comment"}, "/dev/vda3\t/\text3\tdefaults\t0\t0\t#one final comment"),
+	(("/dev/vda3", "/", "ext3", "defaults", None, None), {}, "/dev/vda3\t/\text3\tdefaults"),
+	(("/dev/vda3", "/", "ext3", "defaults", None, 1), {}, "/dev/vda3\t/\text3\tdefaults\t0\t1"),
+	(("/dev/vda3", "/", "ext3"), dict(dump=1, passno=None), "/dev/vda3\t/\text3\tdefaults\t1"),
+	(("/dev/vda3", "/", "ext3"), {'comment': ''}, "/dev/vda3\t/\text3\t"),
+])
+def test_entry_composing(args, kwargs, string):
+	entry = fstab.Entry(*args, **kwargs)
+	assert [str(entry)] == [string]
+
+	# important! everything parsed must be composed equally
+	fs = fstab.File('unittests/fstab')
+	assert [str(fs._File__parse(string))] == [string]
 
 
 def test_fstab_find():
