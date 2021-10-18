@@ -1,13 +1,13 @@
 [
 	{
 		"input_files": [
-			"src/tmp/.*\\.vue",
-			"src/.*\\.js",
-			"src/.*\\.ts"
+			"frontend/src/tmp/.*\\.vue",
+			"frontend/src/.*\\.js",
+			"frontend/src/.*\\.ts"
 		],
-		"po_subdir": "src/assets",
+		"po_subdir": "frontend/src/assets",
 		"target_type": "json",
-		"destination": "public/i18n/{lang}.json"
+		"destination": "usr/share/univention-portal/i18n/{lang}.json"
 	},
 	{
 		"input_files": [
