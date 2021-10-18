@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-portal
-fix: 4.0.5-65A~5.0.0.202110151725
+fix: 4.0.5-67A~5.0.0.202110180319
 desc: |
  This update addresses the following issue(s):
  * Various CSS fixes.
