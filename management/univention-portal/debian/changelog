@@ -1,3 +1,9 @@
+univention-portal (4.0.5-67) unstable; urgency=medium
+
+  * Bug #53565: Fix l10n file creation for frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Oct 2021 03:17:49 +0200
+
 univention-portal (4.0.5-66) unstable; urgency=medium
 
   * Bug #53565: Include patches from Phoenix Q3/21

@@ -1,6 +1,16 @@
 [
 	{
 		"input_files": [
+			"src/tmp/.*\\.vue",
+			"src/.*\\.js",
+			"src/.*\\.ts"
+		],
+		"po_subdir": "src/assets",
+		"target_type": "json",
+		"destination": "public/i18n/{lang}.json"
+	},
+	{
+		"input_files": [
 			"udm/.*/.*\\.py"
 		],
 		"po_subdir": "udm/handlers/",

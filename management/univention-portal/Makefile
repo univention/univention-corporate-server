@@ -30,6 +30,7 @@
 .PRECIOUS: build build-dev
 
 build:
+	./frontend/process_vue_files.sh
 	npm set prefix=$$HOME/.node
 	npm install -g npm@latest
 	$$HOME/.node/bin/npm install -g yarn
