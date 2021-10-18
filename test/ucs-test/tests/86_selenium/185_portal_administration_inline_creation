@@ -32,6 +32,7 @@ def _add_german_text(chrome, text):
     chrome.enter_tab()
     chrome.enter_return()
 
+
 def test_inline_creation(chrome, admin_username, admin_password, udm):
     # chrome.goto_portal()
     chrome.get('/univention/portal')
