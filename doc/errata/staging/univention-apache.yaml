@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-apache
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The package `univention-apache` has been migrated to Python 3.
+bug: [53359]
