@@ -1,3 +1,9 @@
+univention-network-manager (12.0.2-6) unstable; urgency=medium
+
+  * Bug #53347: make univention-network-manager to Python 3
+
+ -- Eduardo Ruiz Moreno <emoreno@univention.de>  Tue, 19 Oct 2021 15:09:45 +0200
+
 univention-network-manager (12.0.2-5) unstable; urgency=medium
 
   * Bug #52959: make univention-network-common retry 4 times with 5 sec delay
