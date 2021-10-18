@@ -1,3 +1,9 @@
+ucs-test (10.0.6-60) unstable; urgency=medium
+
+  * Bug #53565: Fix tests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Oct 2021 21:23:45 +0200
+
 ucs-test (10.0.6-59) unstable; urgency=medium
 
   *  Bug #53538: Fix 01_test_udm_dns is flaky

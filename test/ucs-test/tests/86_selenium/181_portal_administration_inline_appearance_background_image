@@ -29,6 +29,7 @@ def _save(chrome):
 def _change_background(chrome):
     chrome.wait_until_clickable_and_click('#header-button-menu')
     chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
+    chrome.wait_until_clickable_and_click('#header-button-settings')
     chrome.wait_until_clickable('form.edit-mode-side-navigation__form')
     chrome.assert_one('form.edit-mode-side-navigation__form')
     uploaders = chrome.find_all('div.image-upload')
@@ -41,6 +42,7 @@ def _change_background(chrome):
 def _remove_background(chrome):
     chrome.wait_until_clickable_and_click('#header-button-menu')
     chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
+    chrome.wait_until_clickable_and_click('#header-button-settings')
     chrome.wait_until_clickable('form.edit-mode-side-navigation__form')
     chrome.assert_one('form.edit-mode-side-navigation__form')
     uploaders = chrome.find_all('div.image-upload')

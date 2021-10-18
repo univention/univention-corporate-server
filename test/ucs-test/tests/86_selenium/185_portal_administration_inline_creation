@@ -21,14 +21,24 @@ except ImportError:
     sys.exit(1)
 
 
-def test_background(chrome, admin_username, admin_password, udm):
+def _add_german_text(chrome, text):
+    chrome.enter_tab()
+    chrome.enter_return()
+    time.sleep(.1)
+    chrome.enter_tab()
+    chrome.send_keys(text)
+    chrome.enter_tab()
+    chrome.enter_tab()
+    chrome.enter_tab()
+    chrome.enter_return()
+
+def test_inline_creation(chrome, admin_username, admin_password, udm):
     # chrome.goto_portal()
     chrome.get('/univention/portal')
     chrome.portal_login(admin_username, admin_password)
     chrome.wait_until_clickable('#portalCategories')
     chrome.wait_until_clickable_and_click('#header-button-menu')
     chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
-    chrome.wait_until_clickable_and_click('#header-button-settings')
 
     # create category
     chrome.wait_until_clickable_and_click('.portal-categories__add-button')
@@ -40,8 +50,9 @@ def test_background(chrome, admin_username, admin_password, udm):
     chrome.send_keys(cat_name)
     chrome.enter_tab()
     chrome.send_keys(cat_display + ' EN')
+    _add_german_text(chrome, cat_display + ' DE')
     chrome.enter_tab()
-    chrome.send_keys(cat_display + ' DE')
+    chrome.enter_tab()
     chrome.enter_return()
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     categories = udm.get('portals/category')
@@ -62,12 +73,10 @@ def test_background(chrome, admin_username, admin_password, udm):
     chrome.send_keys(tile_name)
     chrome.enter_tab()
     chrome.send_keys(tile_display + ' EN')
-    chrome.enter_tab()
-    chrome.send_keys(tile_display + ' DE')
+    _add_german_text(chrome, tile_display + ' DE')
     chrome.enter_tab()
     chrome.send_keys(tile_description + ' EN')
-    chrome.enter_tab()
-    chrome.send_keys(tile_description + ' DE')
+    _add_german_text(chrome, tile_description + ' DE')
     chrome.enter_tab()
     chrome.enter_tab()
     chrome.enter_return()
@@ -110,8 +119,8 @@ def test_background(chrome, admin_username, admin_password, udm):
     chrome.send_keys(folder_name)
     chrome.enter_tab()
     chrome.send_keys(folder_display + ' EN')
-    chrome.enter_tab()
-    chrome.send_keys(folder_display + ' DE')
+    _add_german_text(chrome, folder_display + ' DE')
+    chrome.enter_shift_tab()
     chrome.enter_return()
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     folders = udm.get('portals/folder')
