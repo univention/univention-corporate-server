@@ -6,5 +6,5 @@ src: univention-maintenance-mode
 fix: 3.0.0-2A~5.0.0.202110181800
 desc: |
  This update addresses the following issue:
- * The package 'univention-maintenance-mode' has been migrated to Python 3.
+ * The package `univention-maintenance-mode` has been migrated to Python 3.
 bug: [53346]
