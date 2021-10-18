@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-26) unstable; urgency=medium
+
+ * Bug #53927: Fixed problem with ASCII encoding of krb5PrincipalName of computers 
+
+ -- Esteban Martinena <martinena@univention.de>  Mon, 18 Oct 2021 12:26:29 +0200
+
 univention-directory-manager-modules (15.0.11-25) unstable; urgency=medium
 
   * Bug #53927: Fixed problem with ASCII encoding of displayName of computers

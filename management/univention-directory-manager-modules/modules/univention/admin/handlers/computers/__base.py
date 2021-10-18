@@ -238,7 +238,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name'].encode('utf-8')))
 
 			if 'kerberos' in self.options:
-				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal().encode('ASCII')]))
+				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal().encode('utf-8')]))
 
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
