@@ -3,10 +3,13 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: amd64-microcode
-fix: 3.20181128.1~deb9u1
+fix: 3.20181128.1~deb9u2
 desc: |
  This update addresses the following issue:
  * cpu: speculative execution branch target injection (CVE-2017-5715)
+
+ * 3.20181128.1~deb9u2 (Sat, 16 Oct 2021 10:24:39 +0530)
+  * No-change rebuild for binary upload.
 bug: [53699]
 cve:
 - CVE-2017-5715
