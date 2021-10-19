@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-8
 src: univention-python
 fix: 12.0.1-3A~4.4.0.202108311259
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * UDM now enforces uniqueness of the name of objects in the same subtree
    position.
 bug: [53725]
