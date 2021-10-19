@@ -33,7 +33,10 @@ UDM_CONTAINER_GROUP_DN="cn=$UDM_groups_group_name,cn=$CONTAINER_NAME,$ldap_base"
 SYNCMODE="$(ad_get_sync_mode)"
 
 ad_set_sync_mode "read"
-
+# temporary debug for test analysis
+ucr set connector/debug/level=5
+invoke-rc.d univention-s4-connector restart
+# temporary debug
 section "Create new container"
 
 ad_container_create "$CONTAINER_NAME" || fail_test 110
@@ -94,5 +97,9 @@ udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 1 110
 ad_delete "CN=$CONTAINER_NAME,$(ad_get_base)" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
+# temporary debug for test analysis
+ucr unset connector/debug/level
+invoke-rc.d univention-s4-connector restart
+# temporary debug
 
 exit "$RETVAL"
