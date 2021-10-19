@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.4-8">
+<book lang="en" id="releasenotes-en-4.4-9">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-8</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-9</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2020 Univention GmbH
+				(c) 2002-2022 Univention GmbH
 			</para>
 
 			<para>
@@ -44,26 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-8, the eighth point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 4.4-9, the ninth point release of &ucsUCS; (UCS) 4.4 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><simpara>
-				The performance of the UMC web server in large environments with many requests has been improved by allowing the web server to be started with multiple processes to use multiple CPU cores.
-				For this purpose, the UMC web server has been changed from single- to multiprocessing.
-				The number of processes is configurable.
-			</simpara></listitem>
-			<listitem><simpara>
-				Various improvements have been made in preparation for UCS 5.0.
-				Among other things, the UCS upgrade is blocked if installed apps are not yet available under UCS 5.0.
-			</simpara></listitem>
-			<listitem><simpara>
-				The S4 Connector now also synchronizes the <envar>gidNumber</envar> attribute for group objects.
-			</simpara></listitem>
-			<listitem><simpara>
-				Various security updates have been integrated into UCS 4.4-8, for example for <application>PostgreSQL</application>, <application>Samba</application>, the <application>Linux Kernel</application> and <application>MariaDB</application>.
+				Various security updates have been integrated into UCS 4.4-9, for example for <application>PostgreSQL</application>, <application>Samba</application>, the <application>Linux Kernel</application> and <application>MariaDB</application>.
 			</simpara></listitem>
 		</itemizedlist>
 	</chapter>
@@ -234,10 +222,10 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-7</wordasword>:
+			Listed are the changes since UCS <wordasword>4.4-8</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-8.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-9.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
