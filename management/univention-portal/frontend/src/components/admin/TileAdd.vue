@@ -56,6 +56,10 @@ export default defineComponent({
     Draggable,
   ],
   props: {
+    superLayoutId: {
+      type: String,
+      required: true,
+    },
     superDn: {
       type: String,
       required: true,
@@ -67,8 +71,7 @@ export default defineComponent({
   },
   computed: {
     id(): string {
-      const r = new RegExp(/[^a-z]/g);
-      return `tile-add-${this.superDn.replaceAll(r, '-')}`;
+      return `addtile-${this.superLayoutId}`;
     },
     activeAt(): string[] {
       if (this.forFolder) {

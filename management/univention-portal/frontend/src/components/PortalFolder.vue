@@ -45,11 +45,14 @@
       :tag="isOpened"
       :active-at="activeAt"
       class="portal-tile__box"
-      :class="[{ 'portal-tile__box--accessible-zoom': inModal && updateZoomQuery() },]"
+      :class="[{
+        'portal-tile__box--accessible-zoom': inModal && updateZoomQuery(),
+        'portal-tile__box--dragging': isBeingDragged,
+      }]"
       :aria-label="ariaLabelFolder"
       @click="openFolder"
       @keypress.enter="openFolder"
-      @keyup.esc.stop="closeFolder()"
+      @keydown.esc.stop="closeFolder"
     >
       <region
         :id="`${id}-content`"
@@ -59,12 +62,13 @@
       >
         <div
           v-for="(tile, index) in tiles"
-          :key="index"
+          :key="tile.id"
           :class="`portal-folder__thumbnail ${isMoreThanFiveOrTen(index)}`"
         >
           <portal-tile
-            :id="`${inModal ? 'folder' : 'modal'}-${tile.id}`"
+            :id="`${inModal ? 'modal-' : 'folder-'}${tile.id}`"
             :ref="'portalFolderChildren' + index"
+            :layout-id="tile.layoutId"
             :dn="tile.dn"
             :super-dn="dn"
             :title="tile.title"
@@ -89,6 +93,7 @@
             <tile-add
               :for-folder="true"
               :super-dn="dn"
+              :super-layout-id="layoutId"
             />
           </div>
         </div>
@@ -100,19 +105,34 @@
     >
       {{ $localized(title) }}
     </span>
-    <icon-button
-      v-if="editMode && !inModal"
-      icon="edit-2"
-      class="portal-folder__edit-button icon-button--admin"
-      :aria-label-prop="translateEditFolder"
-      @click="editFolder()"
-    />
+    <div class="portal-tile__icon-bar">
+      <icon-button
+        v-if="editMode && !inModal"
+        ref="mover"
+        icon="move"
+        class="portal-tile__edit-button icon-button--admin"
+        :aria-label-prop="MOVE_FOLDER"
+        @click="dragKeyboardClick"
+        @keydown.esc="dragend"
+        @keydown.left="dragKeyboardDirection($event, 'left')"
+        @keydown.right="dragKeyboardDirection($event, 'right')"
+        @keydown.up="dragKeyboardDirection($event, 'up')"
+        @keydown.down="dragKeyboardDirection($event, 'down')"
+        @keydown.tab="handleTabWhileMoving"
+      />
+      <icon-button
+        v-if="editMode && !inModal"
+        icon="edit-2"
+        class="portal-folder__edit-button icon-button--admin"
+        :aria-label-prop="translateEditFolder"
+        @click="editFolder"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { mapGetters } from 'vuex';
 
 import Region from '@/components/activity/Region.vue';
 import TabindexElement from '@/components/activity/TabindexElement.vue';
@@ -140,6 +160,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    layoutId: {
+      type: String,
+      required: true,
+    },
     dn: {
       type: String,
       required: true,
@@ -162,9 +186,6 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapGetters({
-      editMode: 'portalData/editMode',
-    }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
     },
@@ -193,11 +214,18 @@ export default defineComponent({
     translateEditFolder(): string {
       return _('Edit folder');
     },
+    MOVE_FOLDER(): string {
+      return _('Move folder');
+    },
   },
   mounted() {
     this.$nextTick(() => {
       window.addEventListener('resize', this.updateZoomQuery);
     });
+    if (this.isBeingDragged) {
+      // @ts-ignore
+      (this.$refs.mover.$el as HTMLElement).focus();
+    }
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.updateZoomQuery);
@@ -207,12 +235,10 @@ export default defineComponent({
       if (!this.editMode || !this.inModal) {
         return;
       }
-      await this.$store.dispatch('portalData/saveFolder', { dn: this.dn });
+      this.$store.dispatch('portalData/saveLayout');
     },
     closeFolder(): void {
-      this.$store.dispatch('modal/hideAndClearModal');
-      this.$store.dispatch('tooltip/unsetTooltip');
-      this.$store.dispatch('activity/setRegion', 'portalCategories');
+      this.$store.dispatch('modal/closeFolder');
     },
     openFolder(ev: Event) {
       if (this.inModal) {
@@ -252,10 +278,7 @@ export default defineComponent({
       // BROWSER ZOOM DEFAULT: 100
       // MOBILE ZOOM DEFAULT: 100 - 150
       // BROWSER ZOOM WCAG2.1 AA: 200
-      if (browserZoomLevel && browserZoomLevel >= 200) {
-        return true;
-      }
-      return false;
+      return !!browserZoomLevel && browserZoomLevel >= 200;
     },
   },
 });
@@ -384,12 +407,6 @@ export default defineComponent({
           width: var(--portal-folder-tile-width)
           max-width: 50%
 
-  &__edit-button
-    position: absolute
-    top: -0.75em
-    right: -0.75em
-    z-index: $zindex-1
-
   .portal-tile__box
     background-color: var(--bgc-content-container)
     padding: 0
@@ -413,7 +430,6 @@ export default defineComponent({
           height: @width
           top: 0
           bottom:0
-          bottom: 0;
           right: 0
           line-height: 300%
           background-color: var(--bgc-content-container)
@@ -431,7 +447,6 @@ export default defineComponent({
           height: @width
           top: 0
           bottom:0
-          bottom: 0;
           right: 0
           line-height: 300%
           background-color: var(--bgc-content-container)

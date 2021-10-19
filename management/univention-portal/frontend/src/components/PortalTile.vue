@@ -80,21 +80,21 @@
           ref="mover"
           icon="move"
           :active-at="activeAtEdit"
-          class="portal-tile__edit-button icon-button--admin"
+          class="icon-button--admin"
           :aria-label-prop="MOVE_ENTRY"
-          @click="enterMoveMode"
-          @keydown.esc.exact="cancelMoveMode"
-          @keydown.left.exact.prevent="moveLeft"
-          @keydown.right.exact.prevent="moveRight"
-          @keydown.up.exact.prevent="moveUp"
-          @keydown.down.exact.prevent="moveDown"
+          @click="dragKeyboardClick"
+          @keydown.esc="dragend"
+          @keydown.left="dragKeyboardDirection($event, 'left')"
+          @keydown.right="dragKeyboardDirection($event, 'right')"
+          @keydown.up="dragKeyboardDirection($event, 'up')"
+          @keydown.down="dragKeyboardDirection($event, 'down')"
           @keydown.tab="handleTabWhileMoving"
         />
         <icon-button
           v-if="!minified && editMode"
           icon="edit-2"
           :active-at="activeAtEdit"
-          class="portal-tile__edit-button icon-button--admin"
+          class="icon-button--admin"
           :aria-label-prop="EDIT_ENTRY"
           @click="editTile"
         />
@@ -141,6 +141,10 @@ export default defineComponent({
     id: {
       type: String,
       default: '',
+    },
+    layoutId: {
+      type: String,
+      required: true,
     },
     dn: {
       type: String,
@@ -190,8 +194,6 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      inDragnDropMode: 'dragndrop/inDragnDropMode',
-      portalContent: 'portalData/portalContent',
       tooltip: 'tooltip/tooltip',
     }),
     wrapperTag(): string {
@@ -245,7 +247,7 @@ export default defineComponent({
       this.$el.children[0].focus(); // sets focus to first Element in opened Folder
     }
     if (this.isBeingDragged) {
-      // @ts-ignore // TODO
+      // @ts-ignore
       (this.$refs.mover.$el as HTMLElement).focus();
     }
   },
@@ -263,115 +265,6 @@ export default defineComponent({
           ariaId: this.createID(),
         };
         this.$store.dispatch('tooltip/setTooltip', { tooltip });
-      }
-    },
-    async handleTabWhileMoving() {
-      if (this.isBeingDragged) {
-        this.$store.dispatch('dragndrop/dropped');
-        this.$store.dispatch('activateLoadingState');
-        await this.$store.dispatch('portalData/saveContent');
-        this.$store.dispatch('deactivateLoadingState');
-      }
-    },
-    moveLeft(evt) {
-      if (!this.inDragnDropMode) {
-        return;
-      }
-
-      const srcId = this.dn;
-      const srcCategory = this.superDn;
-      const srcEntries = this.portalContent.find(([categoryDn]) => categoryDn === srcCategory)?.[1] ?? [];
-      const srcIndex = srcEntries.indexOf(srcId);
-      if (srcIndex <= 0) {
-        return;
-      }
-
-      const dstId = srcEntries[srcIndex - 1];
-      this.$store.dispatch('portalData/reshuffleContent', {
-        src: srcId,
-        dst: dstId,
-        cat: srcCategory,
-      });
-      this.$nextTick(() => {
-        evt.target.focus();
-      });
-    },
-    moveRight() {
-      if (!this.inDragnDropMode) {
-        return;
-      }
-
-      const srcId = this.dn;
-      const srcCategory = this.superDn;
-      const srcEntries = this.portalContent.find(([categoryDn]) => categoryDn === srcCategory)?.[1] ?? [];
-      const srcIndex = srcEntries.indexOf(srcId);
-      if (srcIndex === srcEntries.length - 1) {
-        return;
-      }
-
-      const dstId = srcEntries[srcIndex + 1];
-      this.$store.dispatch('portalData/reshuffleContent', {
-        src: srcId,
-        dst: dstId,
-        cat: srcCategory,
-      });
-    },
-    moveUp() {
-      if (!this.inDragnDropMode) {
-        return;
-      }
-      const srcId = this.dn;
-      const srcCategory = this.superDn;
-      const srcCategoryIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === srcCategory);
-      if (srcCategoryIdx <= 0) {
-        return;
-      }
-      const dstCategory = this.portalContent[srcCategoryIdx - 1];
-      if (!dstCategory) {
-        return;
-      }
-      const dstId = dstCategory[1][0];
-      this.$store.dispatch('portalData/moveContent', {
-        src: srcId,
-        origin: srcCategory,
-        dst: dstId,
-        cat: dstCategory[0],
-      });
-    },
-    moveDown() {
-      if (!this.inDragnDropMode) {
-        return;
-      }
-      const otherId = this.dn;
-      const otherCategory = this.superDn;
-      const otherIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === otherCategory);
-      const myIdx = otherIdx + 1;
-      const my = this.portalContent[myIdx];
-      if (!my) {
-        return;
-      }
-      const myCategory = my[0];
-      const myId = my[1][0];
-      this.$store.dispatch('portalData/moveContent', {
-        src: otherId,
-        origin: otherCategory,
-        dst: myId,
-        cat: myCategory,
-      });
-    },
-    cancelMoveMode() {
-      this.$store.dispatch('dragndrop/revert');
-      this.$store.dispatch('dragndrop/dropped');
-    },
-    async enterMoveMode() {
-      if (this.isBeingDragged) {
-        this.$store.dispatch('dragndrop/dropped');
-        this.$store.dispatch('activateLoadingState');
-        await this.$store.dispatch('portalData/saveContent');
-        this.$store.dispatch('deactivateLoadingState');
-      } else {
-        // @ts-ignore
-        this.dragstart();
       }
     },
     editTile() {

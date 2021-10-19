@@ -76,12 +76,12 @@ const modal: PortalModule<ModalState> = {
 
   mutations: {
     CHANGE_MODAL_PROPS(state: ModalState, payload: ModalProp): void {
-      console.log('CHANGE_MODAL_PROPS', payload);
+      // console.log('CHANGE_MODAL_PROPS', payload);
       const modalLevel = payload.level === 2 ? 'secondLevelModal' : 'firstLevelModal';
-      console.log('modalLevel', payload.level);
-      console.log('BEFORE', state[modalLevel].modalProps);
+      // console.log('modalLevel', payload.level);
+      // console.log('BEFORE', state[modalLevel].modalProps);
       state[modalLevel].modalProps = { ...state[modalLevel].modalProps, ...payload.props };
-      console.log('AFTER', state[modalLevel].modalProps);
+      // console.log('AFTER', state[modalLevel].modalProps);
     },
     SET_MODAL(state: ModalState, payload: ModalComponentInterface): void {
       const modalLevel = payload.level === 2 ? 'secondLevelModal' : 'firstLevelModal';
@@ -106,6 +106,14 @@ const modal: PortalModule<ModalState> = {
     HIDE_MODAL(state: ModalState, payload: ModalLevel): void {
       const modalLevel = payload === 2 ? 'secondLevelModal' : 'firstLevelModal';
       state[modalLevel].modalVisible = false;
+    },
+    RESOLVE(state: ModalState, payload): void {
+      const modalLevel = payload.level === 2 ? 'secondLevelModal' : 'firstLevelModal';
+      state[modalLevel].modalResolve(payload);
+    },
+    REJECT(state: ModalState, payload): void {
+      const modalLevel = payload === 2 ? 'secondLevelModal' : 'firstLevelModal';
+      state[modalLevel].modalReject();
     },
     ENABLE_BODY_SCROLLING(): void {
       document.body.classList.remove('body--has-modal');
@@ -148,20 +156,27 @@ const modal: PortalModule<ModalState> = {
       if (payload !== 2) {
         commit('ENABLE_BODY_SCROLLING');
       }
+
+      dispatch('dragndrop/cancelDragging', null, { root: true });
     },
-    resolve({ state }: { state: ModalState }, payload: ModalComponentInterface): void {
-      const modalLevel = payload.level === 2 ? 'secondLevelModal' : 'firstLevelModal';
-      state[modalLevel].modalResolve(payload);
+    resolve({ state, commit }, payload: ModalComponentInterface): void {
+      commit('RESOLVE', payload);
     },
-    reject({ state }: { state: ModalState }, payload?: ModalLevel): void {
-      const modalLevel = payload === 2 ? 'secondLevelModal' : 'firstLevelModal';
-      state[modalLevel].modalReject();
+    reject({ state, commit }, payload?: ModalLevel): void {
+      commit('REJECT', payload);
     },
     enableBodyScrolling({ commit }: { commit: Commit}): void {
       commit('ENABLE_BODY_SCROLLING');
     },
     disableBodyScrolling({ commit }: { commit: Commit}): void {
       commit('DISABLE_BODY_SCROLLING');
+    },
+    closeFolder({ getters, dispatch }: ModalActionContext): void {
+      if (getters.getModalComponent('firstLevelModal') === 'PortalFolder') {
+        dispatch('modal/hideAndClearModal', null, { root: true });
+        dispatch('tooltip/unsetTooltip', null, { root: true });
+        dispatch('activity/setRegion', 'portalCategories', { root: true });
+      }
     },
   },
 };

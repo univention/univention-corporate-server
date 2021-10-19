@@ -44,10 +44,11 @@
         icon="move"
         class="portal-category__edit-button icon-button--admin"
         :aria-label-prop="MOVE_CATEGORY"
-        @click="enterMoveMode"
-        @keydown.esc="cancelMoveMode"
-        @keydown.up.prevent="moveUp"
-        @keydown.down.prevent="moveDown"
+        @click="dragKeyboardClick"
+        @keydown.esc="dragend"
+        @keydown.up="dragKeyboardDirection($event, 'up')"
+        @keydown.down="dragKeyboardDirection($event, 'down')"
+        @keydown.tab="handleTabWhileMoving"
       />
       <icon-button
         v-if="editMode && !virtual"
@@ -69,41 +70,40 @@
       class="portal-category__tiles"
     >
       <template
-        v-for="tile in tiles"
+        v-for="tile in filteredTiles"
         :key="tile.id"
       >
-        <div
-          v-if="tileMatchesQuery(tile)"
-        >
-          <portal-folder
-            v-if="tile.isFolder"
-            :id="tile.id"
-            :dn="tile.dn"
-            :super-dn="dn"
-            :title="tile.title"
-            :tiles="tile.tiles"
-          />
-          <portal-tile
-            v-else
-            :id="tile.id"
-            :dn="tile.dn"
-            :super-dn="dn"
-            :title="tile.title"
-            :description="tile.description"
-            :activated="tile.activated"
-            :anonymous="tile.anonymous"
-            :background-color="tile.backgroundColor"
-            :links="tile.links"
-            :allowed-groups="tile.allowedGroups"
-            :link-target="tile.linkTarget"
-            :original-link-target="tile.originalLinkTarget"
-            :path-to-logo="tile.pathToLogo"
-          />
-        </div>
+        <portal-folder
+          v-if="tile.isFolder"
+          :id="tile.id"
+          :layout-id="tile.layoutId"
+          :dn="tile.dn"
+          :super-dn="dn"
+          :title="tile.title"
+          :tiles="tile.tiles"
+        />
+        <portal-tile
+          v-else
+          :id="tile.id"
+          :layout-id="tile.layoutId"
+          :dn="tile.dn"
+          :super-dn="dn"
+          :title="tile.title"
+          :description="tile.description"
+          :activated="tile.activated"
+          :anonymous="tile.anonymous"
+          :background-color="tile.backgroundColor"
+          :links="tile.links"
+          :allowed-groups="tile.allowedGroups"
+          :link-target="tile.linkTarget"
+          :original-link-target="tile.originalLinkTarget"
+          :path-to-logo="tile.pathToLogo"
+        />
       </template>
       <tile-add
         v-if="editMode"
         :super-dn="dn"
+        :super-layout-id="layoutId"
       />
     </div>
   </div>
@@ -143,6 +143,10 @@ export default defineComponent({
     Draggable,
   ],
   props: {
+    layoutId: {
+      type: String,
+      required: true,
+    },
     dn: {
       type: String,
       required: true,
@@ -167,11 +171,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      editMode: 'portalData/editMode',
       searchQuery: 'search/searchQuery',
-      dragDropIds: 'dragndrop/getId',
-      inDragnDropMode: 'dragndrop/inDragnDropMode',
-      portalContent: 'portalData/portalContent',
     }),
     isTouchDevice(): boolean {
       return 'ontouchstart' in document.documentElement;
@@ -185,6 +185,9 @@ export default defineComponent({
     EDIT_CATEGORY(): string {
       return _('Edit category');
     },
+    filteredTiles(): Tile[] {
+      return this.tiles.filter((tile) => this.tileMatchesQuery(tile));
+    },
   },
   methods: {
     async dropped(evt: DragEvent) {
@@ -192,52 +195,10 @@ export default defineComponent({
       if (evt.dataTransfer === null) {
         return;
       }
-      const data = this.dragDropIds;
-      if (this.dn === data.superDn) {
-        this.$store.dispatch('dragndrop/dropped');
-        this.$store.dispatch('activateLoadingState');
-        await this.$store.dispatch('portalData/saveContent');
-        this.$store.dispatch('deactivateLoadingState');
-      } else if (!data.superDn) {
-        this.$store.dispatch('dragndrop/dropped');
-        this.$store.dispatch('activateLoadingState');
-        await this.$store.dispatch('portalData/savePortalCategories');
-        this.$store.dispatch('deactivateLoadingState');
-      }
+      await this.$store.dispatch('portalData/saveLayout');
     },
-    cancelMoveMode() {
-      this.$store.dispatch('dragndrop/revert');
-      this.$store.dispatch('dragndrop/dropped');
-    },
-    async enterMoveMode() {
-      if (this.isBeingDragged) {
-        this.$store.dispatch('dragndrop/dropped');
-        this.$store.dispatch('activateLoadingState');
-        await this.$store.dispatch('portalData/savePortalCategories');
-        this.$store.dispatch('deactivateLoadingState');
-      } else {
-        // @ts-ignore
-        this.dragstart();
-      }
-    },
-    moveUp(evt) {
-      if (!this.isBeingDragged) {
-        return;
-      }
-      const otherId = this.dn;
-      const otherIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === otherId);
-      const myIdx = otherIdx - 1;
-      const myId = this.portalContent[myIdx]?.[0];
-      if (!myId || myId === '$$menu$$' || myId === '$$user$$') {
-        return;
-      }
-      this.$store.dispatch('portalData/reshuffleContent', {
-        src: otherId,
-        dst: myId,
-      });
-      this.$nextTick(() => {
-        evt.target.focus();
-      });
+    /*
+    moveDirection(evt, direction) {
       this.$store.dispatch('activity/addMessage', {
         id: 'dnd',
         msg: _('Categories "%(cat1)s" and "%(cat2)s" changed places', {
@@ -246,32 +207,7 @@ export default defineComponent({
         }),
       });
     },
-    moveDown(evt) {
-      if (!this.isBeingDragged) {
-        return;
-      }
-      const otherId = this.dn;
-      const otherIdx = this.portalContent.findIndex(([categoryDn]) => categoryDn === otherId);
-      const myIdx = otherIdx + 1;
-      const myId = this.portalContent[myIdx]?.[0];
-      if (!myId) {
-        return;
-      }
-      this.$store.dispatch('portalData/reshuffleContent', {
-        src: otherId,
-        dst: myId,
-      });
-      this.$nextTick(() => {
-        evt.target.focus();
-      });
-      this.$store.dispatch('activity/addMessage', {
-        id: 'dnd',
-        msg: _('Categories "%(cat1)s" and "%(cat2)s" changed places', {
-          cat1: this.$localized(this.title),
-          cat2: this.$localized(this.title),
-        }),
-      });
-    },
+    */
     editCategory() {
       this.$store.dispatch('modal/setAndShowModal', {
         name: 'AdminCategory',
@@ -308,7 +244,8 @@ export default defineComponent({
     margin-bottom: 0
 
   &--dragging
-    transform: rotate(-1deg)
+    .portal-tile__box
+      transform: rotate(-10deg)
 
   &__tiles
     display: grid

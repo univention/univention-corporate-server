@@ -30,9 +30,10 @@ import { Commit, Dispatch, ActionContext } from 'vuex';
 import { put, getAdminState } from '@/jsHelper/admin';
 import _ from '@/jsHelper/translate';
 import { randomId } from '@/jsHelper/tools';
+import createCategories from '@/jsHelper/createCategories';
 
 import { PortalModule, RootState } from '../../root.models';
-import { PortalData, PortalImageDataBlob, LocalizedString, PortalContent } from './portalData.models';
+import { PortalData, PortalImageDataBlob, LocalizedString, PortalContent, PortalBaseLayout } from './portalData.models';
 
 function isEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
@@ -54,6 +55,125 @@ export interface PortalDataState {
 }
 type PortalDataActionContext = ActionContext<PortalDataState, RootState>;
 
+type Position = {
+  categoryIdx: null | number;
+  folderIdx: null | number;
+  entryIdx: null | number;
+  entryType: null | 'category' | 'tile';
+  contextType: null | 'root' | 'category' | 'folder';
+}
+function getPosition(layout, id: string, targetIdx: null | number = null, fromPosition: null | Position = null): Position {
+  const position: Position = {
+    categoryIdx: null,
+    folderIdx: null,
+    entryIdx: null,
+    entryType: null,
+    contextType: null,
+  };
+  for (let categoryIdx = 0; categoryIdx < layout.length; categoryIdx += 1) {
+    const category = layout[categoryIdx];
+    if (category.id === id) {
+      if (targetIdx !== null) {
+        position.categoryIdx = categoryIdx;
+        position.contextType = 'category';
+        position.entryType = 'tile';
+        if (targetIdx === -1) {
+          if (fromPosition === null) {
+            console.warn('fromPosition expected');
+          } else {
+            // eslint-disable-next-line no-lonely-if
+            if (fromPosition.categoryIdx === position.categoryIdx) {
+              position.entryIdx = category.tiles.length - 1;
+            } else {
+              position.entryIdx = category.tiles.length;
+            }
+          }
+        } else {
+          position.entryIdx = targetIdx;
+        }
+      } else {
+        position.entryIdx = categoryIdx;
+        position.contextType = 'root';
+        position.entryType = 'category';
+      }
+
+      categoryIdx = layout.length;
+      break;
+    }
+    for (let categoryEntryIdx = 0; categoryEntryIdx < category.tiles.length; categoryEntryIdx += 1) {
+      const categoryEntry = category.tiles[categoryEntryIdx];
+      if (categoryEntry.id === id) {
+        position.categoryIdx = categoryIdx;
+        if (targetIdx !== null) {
+          position.folderIdx = categoryEntryIdx;
+          position.contextType = 'folder';
+          position.entryType = 'tile';
+          if (targetIdx === -1) {
+            if (fromPosition === null) {
+              console.warn('fromPosition expected');
+            } else {
+              // eslint-disable-next-line no-lonely-if
+              if (fromPosition.folderIdx === position.folderIdx) {
+                position.entryIdx = categoryEntry.tiles.length - 1;
+              } else {
+                position.entryIdx = categoryEntry.tiles.length;
+              }
+            }
+          } else {
+            position.entryIdx = targetIdx;
+          }
+        } else {
+          position.entryIdx = categoryEntryIdx;
+          position.contextType = 'category';
+          position.entryType = 'tile';
+        }
+
+        categoryEntryIdx = category.tiles.length;
+        categoryIdx = layout.length;
+        break;
+      }
+      if (categoryEntry.tiles) {
+        for (let folderEntryIdx = 0; folderEntryIdx < categoryEntry.tiles.length; folderEntryIdx += 1) {
+          const folder = categoryEntry.tiles[folderEntryIdx];
+          if (folder.id === id) {
+            position.categoryIdx = categoryIdx;
+            position.folderIdx = categoryEntryIdx;
+            position.entryIdx = folderEntryIdx;
+            position.contextType = 'folder';
+            position.entryType = 'tile';
+
+            folderEntryIdx = categoryEntry.tiles.length;
+            categoryEntryIdx = category.tiles.length;
+            categoryIdx = layout.length;
+            break;
+          }
+        }
+      }
+    }
+  }
+  return position;
+}
+
+function getContext(layout, route: Position): any[] {
+  let context = layout;
+
+  if (route.categoryIdx !== null) {
+    context = context[route.categoryIdx].tiles;
+    if (route.folderIdx !== null) {
+      context = context[route.folderIdx].tiles;
+    }
+  }
+  return context;
+}
+
+function getLayoutId(layout, position: Position): string {
+  const context = getContext(layout, position);
+  if (position.entryIdx !== null) {
+    return context[position.entryIdx]?.id ?? '';
+  }
+  return '';
+}
+
 const portalData: PortalModule<PortalDataState> = {
   namespaced: true,
   state: {
@@ -74,6 +194,12 @@ const portalData: PortalModule<PortalDataState> = {
       categories: [],
       menuLinks: [],
       userLinks: [],
+      baseLayout: {
+        layout: [],
+        categories: {},
+        folders: {},
+      },
+      layout: [],
     },
     editMode: getAdminState(),
     cacheId: '',
@@ -85,18 +211,10 @@ const portalData: PortalModule<PortalDataState> = {
       const portal = payload.portal;
       const adminMode = payload.adminMode;
       state.portal.portal = portal.portal;
-      state.portal.entries = portal.entries.map((e) => {
-        e.id = `entry-${randomId()}`;
-        return e;
-      });
-      state.portal.folders = portal.folders.map((f) => {
-        f.id = `folder-${randomId()}`;
-        return f;
-      });
-      // TODO backend should set virtual
+      state.portal.entries = portal.entries;
+      state.portal.folders = portal.folders;
       state.portal.categories = portal.categories.map((c) => {
         c.virtual = c.virtual ?? false;
-        c.id = `category-${randomId()}`;
         return c;
       });
       state.portal.menuLinks = portal.menu_links;
@@ -126,6 +244,38 @@ const portalData: PortalModule<PortalDataState> = {
         state.portal.portal.content.unshift([menu.dn, menu.entries]);
       }
       state.cacheId = portal.cache_id;
+      state.portal.baseLayout = {
+        layout: state.portal.portal.content.map(([categoryDn]) => categoryDn),
+        categories: state.portal.categories.reduce((m, cat) => {
+          m[cat.dn] = cat.entries;
+          return m;
+        }, {}),
+        folders: state.portal.folders.reduce((m, folder) => {
+          m[folder.dn] = folder.entries;
+          return m;
+        }, {}),
+      };
+      state.portal.layout = state.portal.baseLayout.layout.map((categoryDn) => ({
+        id: `category-${randomId()}`,
+        dn: categoryDn,
+        tiles: state.portal.baseLayout.categories[categoryDn].map((entryDn) => {
+          const isFolderDn = entryDn in state.portal.baseLayout.folders;
+          if (isFolderDn) {
+            return {
+              id: `folder-${randomId()}`,
+              dn: entryDn,
+              tiles: state.portal.baseLayout.folders[entryDn].map((folderDn) => ({
+                id: randomId(),
+                dn: folderDn,
+              })),
+            };
+          }
+          return {
+            id: `entry-${randomId()}`,
+            dn: entryDn,
+          };
+        }),
+      }));
     },
     PORTALNAME(state: PortalDataState, name: LocalizedString): void {
       state.portal.portal.name = name;
@@ -139,29 +289,17 @@ const portalData: PortalModule<PortalDataState> = {
     PORTALBACKGROUND(state: PortalDataState, data:PortalImageDataBlob): void {
       state.portal.portal.background = data;
     },
-    CHANGE_FOLDER_ENTRIES(state: PortalDataState, payload): void {
-      state.portal.folders.forEach((folder) => {
-        if (folder.dn !== payload.dn) {
-          return;
-        }
-        folder.entries = payload.entries;
-      });
+    SETLAYOUT(state: PortalDataState, payload): void {
+      state.portal.layout = payload;
     },
-    CHANGE_CATEGORY(state: PortalDataState, payload): void {
-      state.portal.categories.forEach((category) => {
-        if (category.dn !== payload.category) {
-          return;
+    CHANGELAYOUT(state: PortalDataState, payload): void {
+      state.portal.baseLayout.layout = payload.content;
+      [payload.fromChange, payload.toChange].forEach((change) => {
+        if (change.dn) {
+          state.portal.baseLayout[change.type][change.dn] = change.entries;
         }
-        category.entries = payload.entries;
       });
-    },
-    RESHUFFLE_CATEGORY(state: PortalDataState, payload): void {
-      state.portal.portal.content = state.portal.portal.content.map(([category, entries]) => {
-        if (category === payload.category) {
-          return [category, payload.entries];
-        }
-        return [category, entries];
-      });
+      state.portal.layout = payload.layout;
     },
     EDITMODE(state: PortalDataState, editMode: boolean): void {
       state.editMode = editMode;
@@ -201,6 +339,16 @@ const portalData: PortalModule<PortalDataState> = {
     editMode: (state) => state.editMode,
     cacheId: (state) => state.cacheId,
     errorContentType: (state) => state.errorContentType,
+    portalBaseLayout: (state) => state.portal.baseLayout,
+    portalLayout: (state) => state.portal.layout,
+    portalFinalLayout: (state, getters) => createCategories(
+      getters.portalLayout,
+      getters.portalCategories,
+      getters.portalEntries,
+      getters.portalFolders,
+      getters.portalDefaultLinkTarget,
+      getters.editMode,
+    ),
   },
 
   actions: {
@@ -216,211 +364,272 @@ const portalData: PortalModule<PortalDataState> = {
     setPortalBackground({ commit }: PortalDataActionContext, data: PortalImageDataBlob): void {
       commit('PORTALBACKGROUND', data);
     },
-    async savePortalCategories({ dispatch, getters }: PortalDataActionContext): Promise<void> {
-      const content = getters.portalContent;
-      const portalDn = getters.getPortalDn;
-      const attrs = {
-        categories: content.map(([category]) => category).filter((category) => !['$$menu$$', '$$user$$'].includes(category)),
-      };
-      await put(portalDn, attrs, { dispatch }, _('Categories could not be re-sorted'), _('Categories successfully re-sorted'));
+    setLayout({ commit, dispatch }: PortalDataActionContext, layout: PortalBaseLayout): void {
+      commit('SETLAYOUT', layout);
+      dispatch('changeLayoutUpdateFolder');
     },
-    async saveFolder({ getters, dispatch }: PortalDataActionContext, payload): Promise<void> {
-      const folder = getters.portalFolders.find((foldr) => foldr.dn === payload.dn);
-      if (!folder) {
+    changeLayout({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload: { fromId: string, toId: string, position: null | number }) {
+      function move(layout, fromRoute: Position, toRoute: Position): boolean {
+        if (fromRoute.entryIdx === null || toRoute.entryIdx === null) {
+          return false;
+        }
+
+        const fromContext = getContext(layout, fromRoute);
+        const toMove = fromContext.splice(fromRoute.entryIdx, 1)[0];
+
+        const toContext = getContext(layout, toRoute);
+        toContext.splice(toRoute.entryIdx, 0, toMove);
+        return true;
+      }
+
+      function orderChange(layout, position: Position) {
+        const change = {
+          type: '',
+          dn: '',
+          entries: [],
+        };
+
+        if (position.categoryIdx !== null) {
+          const category = layout[position.categoryIdx];
+          change.type = 'categories';
+          change.dn = category.dn;
+          change.entries = category.tiles.map((e) => e.dn);
+          if (position.folderIdx !== null) {
+            const folder = category.tiles[position.folderIdx];
+            change.type = 'folders';
+            change.dn = folder.dn;
+            change.entries = folder.tiles.map((e) => e.dn);
+          }
+        }
+        return change;
+      }
+
+      const fromId = payload.fromId;
+      const toId = payload.toId;
+      if (fromId === toId) {
         return;
       }
-      const attrs = {
-        entries: folder.entries,
-      };
-      // console.info('Rearranging entries for', payload.dn);
-      await put(folder.dn, attrs, { dispatch }, _('Entries could not be re-sorted'), _('Entries successfully re-sorted'));
-    },
-    async saveContent({ dispatch, getters }: PortalDataActionContext): Promise<void> {
-      const content = getters.portalContent;
-      const categories = getters.portalCategories;
-      const portalDn = getters.getPortalDn;
-      const puts: Promise<boolean>[] = [];
-      content.forEach(([cat, entries]) => {
-        if (cat === '$$user$$') {
-          // console.info('Rearranging entries for user menu');
-          const attrs = {
-            userLinks: entries,
-          };
-          const ret = put(portalDn, attrs, { dispatch }, _('Entries could not be re-sorted'));
-          puts.push(ret);
+      if (!fromId || !toId) {
+        return;
+      }
+
+      const layout = JSON.parse(JSON.stringify(getters.portalLayout));
+      const fromPosition = getPosition(layout, fromId, null, null);
+      const toPosition = getPosition(layout, toId, payload.position, fromPosition);
+      if (
+        fromPosition.categoryIdx === toPosition.categoryIdx &&
+        fromPosition.folderIdx === toPosition.folderIdx &&
+        fromPosition.entryIdx === toPosition.entryIdx
+      ) {
+        return;
+      }
+      if (fromPosition.entryType === 'category' && toPosition.entryType === 'category') {
+        const toContext = getContext(layout, toPosition);
+        const to = toContext[(toPosition.entryIdx as number)];
+        if (to.dn === '$$user$$' || to.dn === '$$menu$$') {
           return;
         }
-        if (cat === '$$menu$$') {
-          // console.info('Rearranging entries for portal menu');
-          const attrs = {
-            menuLinks: entries,
-          };
-          const ret = put(portalDn, attrs, { dispatch }, _('Entries could not be re-sorted'));
-          puts.push(ret);
-          return;
-        }
-        categories.forEach((category) => {
-          if (cat !== category.dn) {
-            return;
-          }
-          const attrs = {
-            entries,
-          };
-          if (isEqual(entries, category.entries)) {
-            return;
-          }
-          // console.info('Rearranging entries for', cat);
-          const ret = put(cat, attrs, { dispatch }, _('Entries could not be re-sorted'));
-          puts.push(ret);
-        });
+      }
+
+      move(layout, fromPosition, toPosition);
+
+      // update state
+      const fromChange = orderChange(layout, fromPosition);
+      const toChange = orderChange(layout, toPosition);
+      const content = layout.map((cat) => cat.dn);
+      commit('CHANGELAYOUT', {
+        fromChange,
+        toChange,
+        content,
+        layout,
       });
+
+      dispatch('changeLayoutUpdateFolder');
+    },
+    changeLayoutDirection({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload: { fromId: string, direction: 'left' | 'right' | 'up' | 'down'}) {
+      const fromId = payload.fromId;
+      const direction = payload.direction;
+
+      const layout = getters.portalLayout;
+      const fromPosition = getPosition(layout, fromId);
+      const toPosition = { ...fromPosition };
+      let position: null | number = null;
+
+      switch (fromPosition.entryType) {
+        case 'tile':
+          switch (fromPosition.contextType) {
+            case 'category':
+              switch (direction) {
+                case 'left':
+                  (toPosition.entryIdx as number) -= 1;
+                  break;
+                case 'right':
+                  (toPosition.entryIdx as number) += 1;
+                  break;
+                case 'up':
+                  toPosition.entryIdx = (toPosition.categoryIdx as number) - 1;
+                  toPosition.categoryIdx = null;
+                  position = 0;
+                  break;
+                case 'down':
+                  toPosition.entryIdx = (toPosition.categoryIdx as number) + 1;
+                  toPosition.categoryIdx = null;
+                  position = 0;
+                  break;
+                default:
+                  break;
+              }
+              break;
+            case 'folder':
+              switch (direction) {
+                case 'left':
+                  (toPosition.entryIdx as number) -= 1;
+                  break;
+                case 'right':
+                  (toPosition.entryIdx as number) += 1;
+                  break;
+                case 'up':
+                case 'down':
+                default:
+                  break;
+              }
+              break;
+            default:
+              break;
+          }
+          break;
+        case 'category':
+          switch (direction) {
+            case 'left':
+            case 'right':
+              break;
+            case 'up':
+              (toPosition.entryIdx as number) -= 1;
+              break;
+            case 'down':
+              (toPosition.entryIdx as number) += 1;
+              break;
+            default:
+              break;
+          }
+          break;
+        default:
+          break;
+      }
+
+      const toId = getLayoutId(layout, toPosition);
+      dispatch('changeLayout', {
+        fromId,
+        toId,
+        position,
+      });
+    },
+    async saveLayout({ getters, rootGetters, dispatch }: PortalDataActionContext, payload): Promise<void> {
+      let folderPosition: Position | null = null;
+      if (rootGetters['modal/getModalComponent']('firstLevelModal') === 'PortalFolder') {
+        folderPosition = getPosition(getters.portalLayout, rootGetters['modal/getModalProps']('firstLevelModal').layoutId);
+      }
+      dispatch('dragndrop/dropped', null, { root: true });
+      dispatch('activateLoadingState', null, { root: true });
+
+      const puts: Promise<boolean>[] = [];
+
+      const baseLayout: PortalBaseLayout = getters.portalBaseLayout;
+
+      // folders
+      const folders = getters.portalFolders;
+      folders.forEach((folder) => {
+        const entries = baseLayout.folders[folder.dn];
+        if (!isEqual(folder.entries, entries)) {
+          puts.push(put(
+            folder.dn,
+            { entries },
+            { dispatch },
+            _('Entries could not be re-sorted'),
+          ));
+        }
+      });
+
+      const portalDn = getters.getPortalDn;
+
+      // categories
+      const categories = getters.portalCategories;
+      categories.forEach((category) => {
+        if (category.dn === '$$menu$$' || category.dn === '$$user$$') {
+          const field = {
+            $$menu$$: 'menuLinks',
+            $$user$$: 'userLinks',
+          }[category.dn];
+          const entries = baseLayout.categories[category.dn];
+          if (!isEqual(category.entries, entries)) {
+            puts.push(put(
+              portalDn,
+              { [field]: entries },
+              { dispatch },
+              _('Entries could not be re-sorted'),
+            ));
+          }
+        } else {
+          const entries = baseLayout.categories[category.dn];
+          if (!isEqual(category.entries, entries)) {
+            puts.push(put(
+              category.dn,
+              { entries },
+              { dispatch },
+              _('Entries could not be re-sorted'),
+            ));
+          }
+        }
+      });
+
+      // portal content
+      const content = getters.portalContent;
+      const saved = content.map(([categoryDn]) => categoryDn).filter((categoryDn) => !['$$menu$$', '$$user$$'].includes(categoryDn));
+      const current = baseLayout.layout.filter((categoryDn) => !['$$menu$$', '$$user$$'].includes(categoryDn));
+      if (!isEqual(saved, current)) {
+        puts.push(put(
+          portalDn,
+          { categories: current },
+          { dispatch },
+          _('Categories could not be re-sorted'),
+        ));
+      }
       const results = await Promise.all(puts);
-      if (results.every((result) => !!result)) {
+      dispatch('deactivateLoadingState', null, { root: true });
+      if (results.length && results.every((result) => !!result)) {
         dispatch('notifications/addSuccessNotification', {
           title: _('Entries successfully re-sorted'),
         }, { root: true });
       }
-    },
-    replaceContent({ commit }: PortalDataActionContext, content: Array<Record<string, unknown>>): void {
-      commit('CONTENT', content);
-    },
-    moveContent({ commit, getters }: PortalDataActionContext, payload): void {
-      const src = payload.src;
-      const origin = payload.origin;
-      const dst = payload.dst;
-      const cat = payload.cat;
-      const content = getters.portalContent.map(([category, oldEntries]) => {
-        if (category === origin) {
-          const entries = [...oldEntries];
-          const idx = entries.indexOf(src);
-          entries.splice(idx, 1);
-          return [category, entries];
-        }
-        if (category === cat) {
-          const entries = [...oldEntries];
-          let idx = entries.indexOf(dst);
-          if (idx === -1) {
-            // TileAdd.vue
-            idx = entries.length;
-          }
-          entries.splice(idx, 0, src);
-          return [category, entries];
-        }
-        return [category, oldEntries];
-      });
-      commit('CONTENT', content);
-    },
-    reshuffleContent({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload): void {
-      const src = payload.src;
-      const dst = payload.dst;
-      const cat = payload.cat;
-      const content = getters.portalContent;
-      if (!cat) {
-        // src and dst are categories!
-        const newContent: string[][] = [];
-        let srcContent: string[] = [];
-        let srcIdx = -1;
-        let dstContent: string[] = []; // TODO
-        let dstIdx = -1;
-        content.forEach(([category, entries], idx) => {
-          if (category === src) {
-            srcContent = [category, entries];
-            srcIdx = idx;
-          }
-          if (category === dst) {
-            dstContent = [category, entries];
-            dstIdx = idx;
-          }
-        });
-        if (srcIdx < dstIdx) {
-          newContent.push(...content.slice(0, srcIdx));
-          newContent.push(...content.slice(srcIdx + 1, dstIdx + 1));
-          newContent.push(srcContent);
-          newContent.push(...content.slice(dstIdx + 1));
-        } else {
-          newContent.push(...content.slice(0, dstIdx));
-          newContent.push(srcContent);
-          newContent.push(...content.slice(dstIdx, srcIdx));
-          newContent.push(...content.slice(srcIdx + 1));
-        }
-        commit('CONTENT', newContent);
-        return;
+
+      if (folderPosition !== null && folderPosition.entryIdx !== null) {
+        const folder = getters.portalFinalLayout[folderPosition.categoryIdx as number].tiles[folderPosition.entryIdx as number];
+        dispatch('changeLayoutUpdateFolder', folder.layoutId);
+        dispatch('activity/setRegion', `${folder.id}-modal-content`, { root: true });
       }
-      const catIsFolder = getters.portalFolders.some((foldr) => foldr.dn === cat);
-      if (catIsFolder) {
-        getters.portalFolders.forEach((folder) => {
-          if (folder.dn !== cat) {
-            return;
+    },
+    changeLayoutUpdateFolder({ dispatch, getters, rootGetters }: PortalDataActionContext, folderLayoutId = ''): void {
+      if (rootGetters['modal/getModalComponent']('firstLevelModal') === 'PortalFolder') {
+        const newLayout = getters.portalFinalLayout;
+        const layoutId = folderLayoutId || rootGetters['modal/getModalProps']('firstLevelModal').layoutId;
+        let folder;
+        newLayout.some((category) => category.tiles.some((entry) => {
+          if (entry.layoutId === layoutId) {
+            folder = entry;
+            return true;
           }
-          const entries: string[] = [];
-          const tiles: Array<Record<string, unknown>> = [];
-          const srcIdx = folder.entries.indexOf(src);
-          let dstIdx = folder.entries.indexOf(dst);
-          const oldTiles = [...rootGetters['modal/getModalProps']('firstLevelModal').tiles];
-          if (dstIdx === -1) {
-            // TileAdd.vue
-            dstIdx = oldTiles.length - 1;
-          }
-          if (srcIdx < dstIdx) {
-            entries.push(...folder.entries.slice(0, srcIdx));
-            entries.push(...folder.entries.slice(srcIdx + 1, dstIdx + 1));
-            entries.push(src);
-            entries.push(...folder.entries.slice(dstIdx + 1));
-            tiles.push(...oldTiles.slice(0, srcIdx));
-            tiles.push(...oldTiles.slice(srcIdx + 1, dstIdx + 1));
-            tiles.push(oldTiles[srcIdx]);
-            tiles.push(...oldTiles.slice(dstIdx + 1));
-          } else {
-            entries.push(...folder.entries.slice(0, dstIdx));
-            entries.push(src);
-            entries.push(...folder.entries.slice(dstIdx, srcIdx));
-            entries.push(...folder.entries.slice(srcIdx + 1));
-            tiles.push(...oldTiles.slice(0, dstIdx));
-            tiles.push(oldTiles[srcIdx]);
-            tiles.push(...oldTiles.slice(dstIdx, srcIdx));
-            tiles.push(...oldTiles.slice(srcIdx + 1));
-          }
-          commit('CHANGE_FOLDER_ENTRIES', {
-            dn: cat,
-            entries,
-          });
+          return false;
+        }));
+        if (folder) {
           dispatch('modal/changeModalProps', {
             props: {
-              tiles,
+              tiles: folder.tiles,
+              id: `${folder.id}-modal`,
+              layoutId: folder.layoutId,
             },
           }, { root: true });
-        });
-        return;
+        }
       }
-      content.forEach(([category, oldEntries]) => {
-        if (category !== cat) {
-          return;
-        }
-        const idx1 = oldEntries.indexOf(src);
-        let idx2 = oldEntries.indexOf(dst);
-        if (idx2 === -1) {
-          // TileAdd.vue
-          idx2 = oldEntries.length - 1;
-          if (idx1 === idx2) {
-            // otherwise drop does not work on TileAdd.vue
-            // I do not know exactly why, though
-            return;
-          }
-        }
-        let entries: string[] = [];
-        if (idx1 < idx2) {
-          entries = oldEntries.slice(0, idx1);
-          entries = entries.concat(oldEntries.slice(idx1 + 1, idx2 + 1));
-          entries.push(src);
-          entries = entries.concat(oldEntries.slice(idx2 + 1));
-        } else {
-          entries = oldEntries.slice(0, idx2);
-          entries.push(src);
-          entries = entries.concat(oldEntries.slice(idx2, idx1));
-          entries = entries.concat(oldEntries.slice(idx1 + 1));
-        }
-        commit('RESHUFFLE_CATEGORY', { category, entries });
-      });
     },
     async waitForChange({ dispatch, getters }: PortalDataActionContext, payload: WaitForChangePayload): Promise<boolean | void> {
       if (payload.retries <= 0) {

@@ -27,25 +27,35 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-import { BaseTile, Category, LinkTarget, PortalCategory, PortalContent, PortalEntry, PortalFolder, TileOrFolder } from '@/store/modules/portalData/portalData.models';
-import { randomId } from '@/jsHelper/tools';
+import {
+  BaseTile,
+  Category,
+  LinkTarget,
+  PortalCategory,
+  PortalEntry,
+  PortalFolder,
+  PortalLayout,
+  PortalLayoutEntry,
+  TileOrFolder,
+} from '@/store/modules/portalData/portalData.models';
 
 function isBaseTile(value: any): value is BaseTile {
   return (value !== null) && !value.isFolder;
 }
 
 function makeEntry(
-  entryID: string,
+  entryItem: PortalLayoutEntry,
   portalEntries: PortalEntry[],
   portalFolders: PortalFolder[],
   defaultLinkTarget: LinkTarget,
   editMode: boolean,
 ): TileOrFolder | null {
-  const entry = portalEntries.find((data) => data.dn === entryID);
+  const entry = portalEntries.find((data) => data.dn === entryItem.dn);
   if (entry) {
     // TODO: remove id once the service is offering the right data.
     return {
-      id: entry.id,
+      id: entryItem.id,
+      layoutId: entryItem.id,
       dn: entry.dn,
       title: entry.name,
       isFolder: false,
@@ -65,34 +75,36 @@ function makeEntry(
       },
     };
   }
-  const folder = portalFolders.find((data) => data.dn === entryID);
+  const folder = portalFolders.find((data) => data.dn === entryItem.dn);
   if (!folder) {
     return null;
   }
-  const tiles: BaseTile[] = [];
-  folder.entries.forEach((folderEntryID) => {
-    const entryInFolder = makeEntry(folderEntryID, portalEntries, portalFolders, defaultLinkTarget, editMode);
-    if (isBaseTile(entryInFolder)) {
-      tiles.push(entryInFolder);
-    } else {
-      console.warn('Entry', folderEntryID, 'not found!');
-    }
-  });
+
+  const tiles = (entryItem.tiles as PortalLayoutEntry[])
+    .map((folderEntryItem) => {
+      const entryInFolder = makeEntry(folderEntryItem, portalEntries, portalFolders, defaultLinkTarget, editMode);
+      if (!isBaseTile(entryInFolder)) {
+        console.warn('Entry', folderEntryItem.dn, 'not found!');
+      }
+      return entryInFolder;
+    })
+    .filter((folderEntry) => folderEntry !== null) as BaseTile[];
   if (tiles.length || editMode) {
     return {
-      id: folder.id,
+      id: entryItem.id,
+      layoutId: entryItem.id,
       dn: folder.dn,
       title: folder.name,
       isFolder: true,
       tiles,
     };
   }
-  console.warn('Not showing empty', entryID);
+  console.warn('Not showing empty', entryItem.dn);
   return null;
 }
 
 export default function createCategories(
-  portalContent: PortalContent,
+  portalLayout: PortalLayout,
   portalCategories: PortalCategory[],
   portalEntries: PortalEntry[],
   portalFolders: PortalFolder[],
@@ -100,31 +112,27 @@ export default function createCategories(
   editMode: boolean,
 ): Category[] {
   const ret: Category[] = [];
-  portalContent.forEach(([categoryID, categoryEntries]) => {
-    const category = portalCategories.find((cat) => cat.dn === categoryID);
+  portalLayout.forEach((categoryItem) => {
+    const category = portalCategories.find((cat) => cat.dn === categoryItem.dn);
     if (!category) {
-      console.warn('Category', categoryID, 'not found!');
+      console.warn('Category', categoryItem.dn, 'not found!');
       return;
     }
-    const tiles: TileOrFolder[] = [];
-    categoryEntries.forEach((entryID) => {
-      const entry = makeEntry(entryID, portalEntries, portalFolders, defaultLinkTarget, editMode);
-      if (!entry) {
-        return;
-      }
-      tiles.push(entry);
-    });
+
+    const tiles = categoryItem.tiles
+      .map((entryItem) => makeEntry(entryItem, portalEntries, portalFolders, defaultLinkTarget, editMode))
+      .filter((entry) => entry !== null) as TileOrFolder[];
     if (tiles.length || editMode) {
-      const categoryItem = {
-        id: category.id,
+      ret.push({
+        id: categoryItem.id,
+        layoutId: categoryItem.id,
         title: category.display_name,
         dn: category.dn,
         virtual: category.virtual,
         tiles,
-      };
-      ret.push(categoryItem);
+      });
     } else {
-      console.warn('Not showing empty', categoryID);
+      console.warn('Not showing empty', categoryItem.dn);
     }
   });
   return ret;

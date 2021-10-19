@@ -32,16 +32,31 @@ import { mapGetters } from 'vuex';
 const draggableMixin = {
   computed: {
     ...mapGetters({
+      inDragnDropMode: 'dragndrop/inDragnDropMode',
       dragndropId: 'dragndrop/getId',
+      editMode: 'portalData/editMode',
     }),
     isDraggable() {
-      return this.editMode && !this.minified && !this.inModal && !this.virtual;
+      if (!this.editMode) {
+        return false;
+      }
+      switch (this.$options.name) {
+        case 'PortalTile':
+          return !this.minified;
+        case 'PortalFolder':
+          return !this.inModal;
+        case 'PortalCategory':
+          return !this.virtual;
+        case 'TileAdd':
+        default:
+          return false;
+      }
     },
     isBeingDragged() {
       if (!this.isDraggable) {
         return false;
       }
-      return this.dragndropId.dn === this.dn;
+      return this.dragndropId.layoutId === this.layoutId;
     },
     canDragEnter() {
       if (this.forFolder !== undefined) {
@@ -52,59 +67,86 @@ const draggableMixin = {
     },
   },
   methods: {
+    draggedType() {
+      let draggedType = 'tile';
+      if (this.$options.name === 'PortalCategory') {
+        draggedType = 'category';
+      }
+      return draggedType;
+    },
+    dragKeyboardClick() {
+      if (this.isBeingDragged) {
+        this.$store.dispatch('portalData/saveLayout');
+      } else {
+        this.dragstart();
+      }
+    },
+    dragKeyboardDirection(evt, direction) {
+      if (!this.inDragnDropMode) {
+        return;
+      }
+      evt.preventDefault();
+
+      this.$store.dispatch('portalData/changeLayoutDirection', {
+        fromId: this.layoutId,
+        direction,
+      });
+      // FIXME with scrollIntoView the page jumps to the bottom after
+      // portalData/saveLayout
+      evt.target.scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+      });
+      if (direction === 'left' || direction === 'up') {
+        this.$nextTick(() => {
+          evt.target.focus();
+        });
+      }
+    },
+    handleTabWhileMoving() {
+      if (this.isBeingDragged) {
+        this.$store.dispatch('portalData/saveLayout');
+      }
+    },
     dragstart() {
       if (!this.isDraggable) {
         return;
       }
+
       this.$store.dispatch('dragndrop/startDragging', {
-        dn: this.dn,
-        superDn: this.superDn,
-        original: true,
+        layoutId: this.layoutId,
+        draggedType: this.draggedType(),
+        saveOriginalLayout: true,
       });
     },
-    dragenter(e) {
+    dragenter(evt) {
       if (!this.canDragEnter) {
-        e.preventDefault();
+        evt.preventDefault();
         return;
       }
+
       const data = this.$store.getters['dragndrop/getId'];
-      const myCategory = this.superDn;
-      const otherCategory = data.superDn;
-      const myId = this.dn;
-      const otherId = data.dn;
-      if (myCategory !== otherCategory) {
-        if (!myCategory || !otherCategory) {
-          // dragging category over tile or vice versa
-          return;
-        }
-        this.$store.dispatch('portalData/moveContent', {
-          src: otherId,
-          origin: otherCategory,
-          dst: myId,
-          cat: myCategory,
-        });
-        this.$store.dispatch('dragndrop/startDragging', {
-          dn: otherId,
-          superDn: myCategory,
-          original: false,
-        });
+      if (data.draggedType !== this.draggedType()) {
         return;
       }
-      if (myId === otherId) {
-        return;
-      }
-      this.$store.dispatch('portalData/reshuffleContent', {
-        src: otherId,
-        dst: myId,
-        cat: myCategory,
+
+      const toIsAddTile = this.$options.name === 'TileAdd';
+      const toId = toIsAddTile ? this.superLayoutId : this.layoutId;
+      const position = toIsAddTile ? -1 : null;
+      this.$store.dispatch('portalData/changeLayout', {
+        fromId: data.layoutId,
+        toId,
+        position,
       });
     },
-    dragend(e) {
-      if (!this.isDraggable) {
-        e.preventDefault();
-        return;
+    dragend(evt) {
+      // if dragend is called via esc key we want to stop
+      // the event (if we are in drag mode)
+      if (this.inDragnDropMode) {
+        evt?.preventDefault();
+        evt?.stopImmediatePropagation();
       }
-      this.$store.dispatch('dragndrop/revert');
+      this.$store.dispatch('dragndrop/cancelDragging');
     },
   },
 };

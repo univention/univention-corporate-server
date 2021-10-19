@@ -28,18 +28,19 @@
  */
 import { PortalModule, RootState } from '@/store/root.models';
 import { ActionContext } from 'vuex';
+import { PortalBaseLayout } from '@/store/modules/portalData/portalData.models';
 
 export interface DraggedItem {
-  dn: string,
-  superDn: string,
-  originalContent: string[][],
+  layoutId: string,
+  draggedType: string,
+  originalLayout: null | PortalBaseLayout,
 }
 
 export interface DraggedItemDragCopy {
-  dn: string,
-  superDn: string,
-  original: boolean,
-  originalContent: string[][],
+  layoutId: string,
+  draggedType: undefined | string,
+  saveOriginalLayout: undefined | boolean,
+  originalLayout: undefined | null | PortalBaseLayout,
 }
 
 type DragAndDropActionContext = ActionContext<DraggedItem, RootState>;
@@ -47,50 +48,53 @@ type DragAndDropActionContext = ActionContext<DraggedItem, RootState>;
 const dragndrop: PortalModule<DraggedItem> = {
   namespaced: true,
   state: {
-    dn: '',
-    superDn: '',
-    originalContent: [],
+    layoutId: '',
+    draggedType: '',
+    originalLayout: null,
   },
 
   mutations: {
-    SET_IDS(state: DraggedItem, payload: DraggedItemDragCopy): void {
-      state.dn = payload.dn;
-      state.superDn = payload.superDn;
-      if (payload.originalContent) {
-        state.originalContent = payload.originalContent;
+    SET_IDS(state: DraggedItem, payload: DraggedItem): void {
+      state.layoutId = payload.layoutId;
+      if (payload.draggedType !== undefined) {
+        state.draggedType = payload.draggedType;
+      }
+      if (payload.originalLayout !== undefined) {
+        state.originalLayout = payload.originalLayout;
       }
     },
   },
 
   getters: {
     getId: (state) => state,
-    inDragnDropMode: (state) => !!state.dn,
+    inDragnDropMode: (state) => !!state.layoutId,
   },
 
   actions: {
     startDragging({ commit, rootGetters }: DragAndDropActionContext, payload: DraggedItemDragCopy): void {
-      let content = null;
-      if (payload.original) {
-        content = rootGetters['portalData/portalContent'];
+      let layout;
+      if (payload.saveOriginalLayout) {
+        layout = JSON.parse(JSON.stringify(rootGetters['portalData/portalLayout']));
       }
       commit('SET_IDS', {
-        dn: payload.dn,
-        superDn: payload.superDn,
-        originalContent: content,
+        layoutId: payload.layoutId,
+        draggedType: payload.draggedType,
+        originalLayout: layout,
       });
     },
     dropped({ commit }: DragAndDropActionContext): void {
       commit('SET_IDS', {
-        dn: '',
-        superDn: '',
-        originalContent: [],
+        layoutId: '',
+        draggedType: '',
+        originalLayout: null,
       });
     },
-    revert({ dispatch, getters }: DragAndDropActionContext): void {
-      const content = getters.getId.originalContent;
-      if (content.length) {
-        dispatch('portalData/replaceContent', content, { root: true });
+    cancelDragging({ dispatch, getters }: DragAndDropActionContext): void {
+      const layout = getters.getId.originalLayout;
+      if (layout) {
+        dispatch('portalData/setLayout', layout, { root: true });
       }
+      dispatch('dropped');
     },
   },
 };

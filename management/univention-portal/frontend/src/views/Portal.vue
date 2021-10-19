@@ -40,8 +40,9 @@
       class="portal-categories"
     >
       <portal-category
-        v-for="category in categories"
+        v-for="category in portalFinalLayout"
         :key="category.id"
+        :layout-id="category.layoutId"
         :title="category.title"
         :dn="category.dn"
         :virtual="category.virtual"
@@ -136,12 +137,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalContent: 'portalData/portalContent',
-      portalEntries: 'portalData/portalEntries',
-      portalFolders: 'portalData/portalFolders',
+      portalFinalLayout: 'portalData/portalFinalLayout',
       errorContentType: 'portalData/errorContentType',
-      portalCategories: 'portalData/portalCategories',
-      portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
@@ -150,9 +147,6 @@ export default defineComponent({
       getModalState: 'modal/getModalState',
       userState: 'user/userState',
     }),
-    categories(): Category[] {
-      return createCategories(this.portalContent, this.portalCategories, this.portalEntries, this.portalFolders, this.portalDefaultLinkTarget, this.editMode);
-    },
     ADD_CATEGORY(): string {
       return _('Add category');
     },
