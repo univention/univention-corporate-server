@@ -295,6 +295,15 @@
 					</simplelist>
 				</para>
 			</listitem>
+			<listitem>
+				<para>
+					The following packages from Debian Buster <productnumber>11.1</productnumber> haven been ported back (<u:bug>51748</u:bug>):
+					<simplelist type="inline">
+						<member><package>shim</package></member>
+						<member><package>grub2</package></member>
+					</simplelist>
+				</para>
+			</listitem>
 		</itemizedlist>
 	</section>
 

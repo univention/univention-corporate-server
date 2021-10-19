@@ -51,6 +51,10 @@
 
 		<itemizedlist>
 			<listitem><simpara>
+				All components related to <phrase>UEFI Secure Boot</phrase> have been renewed after a major flaw has been detected in GRUB.
+				This allowed attackers to circumvent the secure boot chain and boot a compromised operating system.
+			</simpara></listitem>
+			<listitem><simpara>
 				Various security updates have been integrated into UCS 4.4-9, for example for <application>PostgreSQL</application>, <application>Samba</application>, the <application>Linux Kernel</application> and <application>MariaDB</application>.
 			</simpara></listitem>
 		</itemizedlist>
@@ -154,6 +158,30 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
+
+		<section id="relnotes:shim">
+			<title>UEFI Secure Boot</title>
+			<para>
+				Secure Boot builds a chain of trust from the UEFI firmware to the Linux kernel.
+				Any modification before the Linux kernel gets started is detected and aborts the boot process.
+				This technique can be used to prevent boot viruses from infecting the system.
+			</para>
+			<para>
+				In <ulink url="https://eclypsium.com/2020/07/29/theres-a-hole-in-the-boot/">July 2020</ulink> a major defect was detected in GRUB and the Linux kernel:
+				Attackers can modify the environment before the Linux kernel is fully loaded and can disable secure boot.
+				This affected nearly all Linux distributions including &ucsUCS;.
+				Microsoft thus revoked all previously signed versions of <package>shim</package>, which breaks the secure boot chain at its earliest stage.
+				As soon as the UEFI firmware is updated or Microsoft Windows runs on the same hardware and updates the list of revoked binaries, UCS before 4.4-9 can no longer be booted.
+			</para>
+			<para>
+				This update contains new versions of <package>shim</package>, <package>grub2</package> and <package>linux-kernel</package>.
+				They use a new certificate for signing.
+				Therefore all three components must be updated <emphasis>at the same time</emphasis> as a old component will not be able to load a new component and vice versa.
+			</para>
+			<para>
+				In case the update fails, make sure to have a working boot medium available or temporarily disable Secure Boot in the firmware as a last resort.
+			</para>
+		</section>
 
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>

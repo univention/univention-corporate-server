@@ -50,6 +50,10 @@
 		</para>
 
 		<itemizedlist>
+			<listitem><simpara>
+				Alle Komponenten von <foreignphrase>UEFI Secure Boot</foreignphrase> wurden erneuert, nachdem eine Sicherheitslücke in GRUB entdeckt wurde.
+				Diese erlaubt es die sichere Kette zu umgehen und ein kompromittiertes Betriebssystem zu starten.
+			</simpara></listitem>
 			<listitem><para>
 				Diverse Security Updates wurden in UCS 4.4-9 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
 			</para></listitem>
@@ -154,6 +158,30 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
+
+		<section id="relnotes:shim">
+			<title>UEFI Secure Boot</title>
+			<para>
+				Secure Boot bildet eine Kette des Vertrauens von der UEFI Firmware bis zum Linux Kernel.
+				Jede Änderung bevor der Linux Kernel läuft wird erkannt und bricht den Boot-Prozess ab.
+				Diese Technik kann benutzt werden, um Boot-Viren daran zu hindern, das System zu infizieren.
+			</para>
+			<para>
+				In <ulink url="https://eclypsium.com/2020/07/29/theres-a-hole-in-the-boot/">Juli 2020</ulink> wurde eine eklatante Sicherheitslücke in GRUB dem dem Linux Kernel entdeckt:
+				Angreifen können die Umgebung modifizieren bevor der Linux Kernel die volle Kontrolle hat und damit Secure Boot deaktivieren.
+				Diese Lücke hat alle Linux Distributionen inklusive &ucsUCS; betroffen.
+				Microsoft hat deshalb alle bisherigen signierten Versionen von <package>shim</package> widerrufen, wodurch Secure Boot an erster Stelle unterbrochen wird.
+				Sobald ein UEFI Firmware Update oder ein auf dem selben System laufendes Microsoft Windows die Liste der widerrufenen Programme aktualisiert, wird UCS vor 4.4-9 nicht mehr gebootet.
+			</para>
+			<para>
+				Dieses Update enthält neue Versionen von <package>shim</package>, <package>grub2</package> and <package>linux-kernel</package>.
+				Diese benutzen ein neues Zertifikat für die Signaturen.
+				Deshalb müssen alle drei Komponenten <emphasis>zur gleichen Zeit</emphasis> aktualisiert werden da alte Komponenten keine neuen Komponenten und umgekehrt laden.
+			</para>
+			<para>
+				Für den Fall dass das Update fehlschlägt, sollten sie ein funktionierendes Boot-Medium vorrätig halten bzw. als letzten Ausweg Secure Boot temporär in der Firmware deaktivieren.
+			</para>
+		</section>
 
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
