@@ -1,0 +1,546 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					All security updates issued for UCS <productnumber>4.4-8</productnumber> are included:
+				</para>
+				<itemizedlist id="_security">
+					<listitem><simpara>
+						<package>apache2</package> (<u:cve>2020-1927</u:cve> <u:cve>2020-1934</u:cve> <u:cve>2020-35452</u:cve> <u:cve>2021-26690</u:cve> <u:cve>2021-26691</u:cve> <u:cve>2021-30641</u:cve> <u:cve>2021-31618</u:cve> <u:cve>2021-34798</u:cve> <u:cve>2021-39275</u:cve> <u:cve>2021-40438</u:cve>) (<u:bug>53560</u:bug> <u:bug>53865</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>aspell</package> (<u:cve>2019-17544</u:cve> <u:cve>2019-25051</u:cve>) (<u:bug>53611</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>asterisk</package> (<u:cve>2021-32558</u:cve>) (<u:bug>53636</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>atftp</package> (<u:cve>2020-6097</u:cve> <u:cve>2021-41054</u:cve>) (<u:bug>54077</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bind9</package> (<u:cve>2021-25214</u:cve> <u:cve>2021-25215</u:cve> <u:cve>2021-25216</u:cve>) (<u:bug>53236</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bluez</package> (<u:cve>2020-26558</u:cve> <u:cve>2021-0129</u:cve>) (<u:bug>53520</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>c-ares</package> (<u:cve>2021-3672</u:cve>) (<u:bug>53646</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ceph</package> (<u:cve>2018-14662</u:cve> <u:cve>2018-16846</u:cve> <u:cve>2020-1760</u:cve> <u:cve>2020-10753</u:cve> <u:cve>2021-3524</u:cve>) (<u:bug>53644</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>curl</package> (<u:cve>2021-22876</u:cve> <u:cve>2021-22898</u:cve> <u:cve>2021-22924</u:cve> <u:cve>2021-22946</u:cve> <u:cve>2021-22947</u:cve>) (<u:bug>53324</u:bug> <u:bug>53658</u:bug> <u:bug>53868</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>djvulibre</package> (<u:cve>2019-15142</u:cve> <u:cve>2019-15143</u:cve> <u:cve>2019-15144</u:cve> <u:cve>2019-15145</u:cve> <u:cve>2019-18804</u:cve> <u:cve>2021-3500</u:cve> <u:cve>2021-3630</u:cve> <u:cve>2021-32490</u:cve> <u:cve>2021-32491</u:cve> <u:cve>2021-32492</u:cve> <u:cve>2021-32493</u:cve>) (<u:bug>53352</u:bug> <u:bug>53547</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>exim4</package> (<u:cve>2020-28007</u:cve> <u:cve>2020-28008</u:cve> <u:cve>2020-28009</u:cve> <u:cve>2020-28011</u:cve> <u:cve>2020-28012</u:cve> <u:cve>2020-28013</u:cve> <u:cve>2020-28014</u:cve> <u:cve>2020-28015</u:cve> <u:cve>2020-28017</u:cve> <u:cve>2020-28019</u:cve> <u:cve>2020-28020</u:cve> <u:cve>2020-28021</u:cve> <u:cve>2020-28022</u:cve> <u:cve>2020-28023</u:cve> <u:cve>2020-28024</u:cve> <u:cve>2020-28025</u:cve> <u:cve>2020-28026</u:cve> <u:cve>2021-27216</u:cve>) (<u:bug>53235</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>exiv2</package> (<u:cve>2019-20421</u:cve> <u:cve>2021-3482</u:cve> <u:cve>2021-29457</u:cve> <u:cve>2021-29473</u:cve> <u:cve>2021-31292</u:cve>) (<u:bug>53716</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>faad2</package> (<u:cve>2018-20199</u:cve> <u:cve>2018-20360</u:cve> <u:cve>2019-6956</u:cve> <u:cve>2021-32274</u:cve> <u:cve>2021-32276</u:cve> <u:cve>2021-32277</u:cve> <u:cve>2021-32278</u:cve>) (<u:bug>53982</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ffmpeg</package> (<u:bug>53660</u:bug>, <u:bug>54057</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-esr</package> (<u:cve>2021-23961</u:cve> <u:cve>2021-23994</u:cve> <u:cve>2021-23995</u:cve> <u:cve>2021-23998</u:cve> <u:cve>2021-23999</u:cve> <u:cve>2021-24002</u:cve> <u:cve>2021-29945</u:cve> <u:cve>2021-29946</u:cve> <u:cve>2021-29967</u:cve> <u:cve>2021-29970</u:cve> <u:cve>2021-29976</u:cve> <u:cve>2021-29980</u:cve> <u:cve>2021-29984</u:cve> <u:cve>2021-29985</u:cve> <u:cve>2021-29986</u:cve> <u:cve>2021-29988</u:cve> <u:cve>2021-29989</u:cve> <u:cve>2021-30547</u:cve> <u:cve>2021-38493</u:cve> <u:cve>2021-38496</u:cve> <u:cve>2021-38500</u:cve>) (<u:bug>53153</u:bug> <u:bug>53395</u:bug> <u:bug>53594</u:bug> <u:bug>53659</u:bug> <u:bug>53774</u:bug> <u:bug>53893</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>fluidsynth</package> (<u:cve>2021-28421</u:cve>) (<u:bug>53546</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>graphviz</package> (<u:cve>2018-10196</u:cve> <u:cve>2020-18032</u:cve>) (<u:bug>53268</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>grilo</package> (<u:cve>2021-39365</u:cve>) (<u:bug>53822</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gst-plugins-base1.0</package> (<u:cve>2021-3522</u:cve>) (<u:bug>53208</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>imagemagick</package> (<u:cve>2020-27751</u:cve> <u:cve>2021-20243</u:cve> <u:cve>2021-20245</u:cve> <u:cve>2021-20309</u:cve> <u:cve>2021-20312</u:cve> <u:cve>2021-20313</u:cve>) (<u:bug>53396</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>intel-microcode</package> (<u:cve>2020-24489</u:cve> <u:cve>2020-24511</u:cve> <u:cve>2020-24512</u:cve> <u:cve>2020-24513</u:cve>) (<u:bug>53561</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>isc-dhcp</package> (<u:bug>53394</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>klibc</package> (<u:cve>2021-31870</u:cve> <u:cve>2021-31871</u:cve> <u:cve>2021-31872</u:cve> <u:cve>2021-31873</u:cve>) (<u:bug>53548</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>krb5</package> (<u:cve>2018-5729</u:cve> <u:cve>2018-5730</u:cve> <u:cve>2018-20217</u:cve> <u:cve>2021-37750</u:cve>) (<u:bug>53866</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>lasso</package> (<u:cve>2021-28091</u:cve>) (<u:bug>53440</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ldb</package> (<u:cve>2016-2124</u:cve> <u:cve>2020-25717</u:cve> <u:cve>2020-25718</u:cve> <u:cve>2020-25719</u:cve> <u:cve>2020-25721</u:cve> <u:cve>2020-25722</u:cve> <u:cve>2021-3738</u:cve> <u:cve>2021-23192</u:cve>) (<u:bug>53068</u:bug> <u:bug>54014</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libgcrypt20</package> (<u:cve>2021-33560</u:cve>) (<u:bug>53521</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libsndfile</package> (<u:cve>2021-3246</u:cve>) (<u:bug>53626</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libwebp</package> (<u:cve>2018-25009</u:cve> <u:cve>2018-25010</u:cve> <u:cve>2018-25011</u:cve> <u:cve>2018-25012</u:cve> <u:cve>2018-25013</u:cve> <u:cve>2018-25014</u:cve> <u:cve>2020-36328</u:cve> <u:cve>2020-36329</u:cve> <u:cve>2020-36330</u:cve> <u:cve>2020-36331</u:cve>) (<u:bug>53410</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libx11</package> (<u:cve>2021-31535</u:cve>) (<u:bug>53325</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libxml2</package> (<u:cve>2021-3516</u:cve> <u:cve>2021-3517</u:cve> <u:cve>2021-3518</u:cve> <u:cve>2021-3537</u:cve> <u:cve>2021-3541</u:cve>) (<u:bug>53269</u:bug> <u:bug>53353</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>2020-24586</u:cve> <u:cve>2020-24587</u:cve> <u:cve>2020-24588</u:cve> <u:cve>2020-25670</u:cve> <u:cve>2020-25671</u:cve> <u:cve>2020-25672</u:cve> <u:cve>2020-26139</u:cve> <u:cve>2020-26147</u:cve> <u:cve>2020-26558</u:cve> <u:cve>2020-29374</u:cve> <u:cve>2020-36322</u:cve> <u:cve>2021-0129</u:cve> <u:cve>2021-0512</u:cve> <u:cve>2021-3428</u:cve> <u:cve>2021-3483</u:cve> <u:cve>2021-3564</u:cve> <u:cve>2021-3573</u:cve> <u:cve>2021-3587</u:cve> <u:cve>2021-3609</u:cve> <u:cve>2021-20292</u:cve> <u:cve>2021-21781</u:cve> <u:cve>2021-23133</u:cve> <u:cve>2021-23134</u:cve> <u:cve>2021-28660</u:cve> <u:cve>2021-28688</u:cve> <u:cve>2021-28950</u:cve> <u:cve>2021-28964</u:cve> <u:cve>2021-28971</u:cve> <u:cve>2021-29154</u:cve> <u:cve>2021-29265</u:cve> <u:cve>2021-29647</u:cve> <u:cve>2021-29650</u:cve> <u:cve>2021-30002</u:cve> <u:cve>2021-31916</u:cve> <u:cve>2021-32399</u:cve> <u:cve>2021-33034</u:cve> <u:cve>2021-33909</u:cve> <u:cve>2021-34693</u:cve>) (<u:bug>53498</u:bug> <u:bug>53505</u:bug> <u:bug>53603</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>lz4</package> (<u:cve>2021-3520</u:cve>) (<u:bug>53267</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>nettle</package> (<u:cve>2021-3580</u:cve> <u:cve>2021-20305</u:cve>) (<u:bug>53809</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ntfs-3g</package> (<u:cve>2021-33285</u:cve> <u:cve>2021-33286</u:cve> <u:cve>2021-33287</u:cve> <u:cve>2021-33289</u:cve> <u:cve>2021-35266</u:cve> <u:cve>2021-35267</u:cve> <u:cve>2021-35268</u:cve> <u:cve>2021-35269</u:cve> <u:cve>2021-39251</u:cve> <u:cve>2021-39252</u:cve> <u:cve>2021-39253</u:cve> <u:cve>2021-39254</u:cve> <u:cve>2021-39255</u:cve> <u:cve>2021-39256</u:cve> <u:cve>2021-39257</u:cve> <u:cve>2021-39258</u:cve> <u:cve>2021-39259</u:cve> <u:cve>2021-39260</u:cve> <u:cve>2021-39261</u:cve> <u:cve>2021-39262</u:cve> <u:cve>2021-39263</u:cve>) (<u:bug>54078</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openexr</package> (<u:cve>2020-16587</u:cve> <u:cve>2021-3474</u:cve> <u:cve>2021-3475</u:cve> <u:cve>2021-3476</u:cve> <u:cve>2021-3477</u:cve> <u:cve>2021-3478</u:cve> <u:cve>2021-3479</u:cve> <u:cve>2021-3598</u:cve> <u:cve>2021-3605</u:cve> <u:cve>2021-20296</u:cve> <u:cve>2021-20299</u:cve> <u:cve>2021-20300</u:cve> <u:cve>2021-20302</u:cve> <u:cve>2021-20303</u:cve> <u:cve>2021-23215</u:cve> <u:cve>2021-26260</u:cve>) (<u:bug>53544</u:bug> <u:bug>53634</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openjdk-8</package> (<u:cve>2021-2161</u:cve> <u:cve>2021-2341</u:cve> <u:cve>2021-2369</u:cve> <u:cve>2021-2388</u:cve> <u:cve>2021-35550</u:cve> <u:cve>2021-35556</u:cve> <u:cve>2021-35559</u:cve> <u:cve>2021-35561</u:cve> <u:cve>2021-35564</u:cve> <u:cve>2021-35565</u:cve> <u:cve>2021-35567</u:cve> <u:cve>2021-35578</u:cve> <u:cve>2021-35586</u:cve> <u:cve>2021-35588</u:cve> <u:cve>2021-35603</u:cve>) (<u:bug>53155</u:bug> <u:bug>53645</u:bug> <u:bug>54044</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2021-3712</u:cve>) (<u:bug>53842</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl1.0</package> (<u:cve>2021-3712</u:cve>) (<u:bug>53861</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php7.0</package> (<u:cve>2019-18218</u:cve> <u:cve>2020-7071</u:cve> <u:cve>2021-21702</u:cve> <u:cve>2021-21704</u:cve> <u:cve>2021-21705</u:cve>) (<u:bug>53593</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>pillow</package> (<u:cve>2020-35653</u:cve> <u:cve>2021-25290</u:cve> <u:cve>2021-28676</u:cve> <u:cve>2021-28677</u:cve> <u:cve>2021-34552</u:cve>) (<u:bug>53607</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>pjproject</package> (<u:cve>2021-21375</u:cve>) (<u:bug>53154</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>postgresql-9.6</package> (<u:cve>2021-3449</u:cve> <u:cve>2021-23214</u:cve> <u:cve>2021-23222</u:cve> <u:cve>2021-32027</u:cve> <u:cve>2021-32028</u:cve>) (<u:bug>53270</u:bug> <u:bug>53722</u:bug> <u:bug>54058</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python3.5</package> (<u:cve>2021-3733</u:cve> <u:cve>2021-3737</u:cve>) (<u:bug>54036</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-babel</package> (<u:cve>2021-42771</u:cve>) (<u:bug>53981</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-django</package> (<u:cve>2021-31542</u:cve> <u:cve>2021-33203</u:cve> <u:cve>2021-33571</u:cve>) (<u:bug>53237</u:bug> <u:bug>53411</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-urllib3</package> (<u:cve>2018-20060</u:cve> <u:cve>2019-11236</u:cve> <u:cve>2019-11324</u:cve> <u:cve>2020-26137</u:cve>) (<u:bug>53467</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qemu</package> (<u:bug>53745</u:bug> <u:bug>53791</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rabbitmq-server</package> (<u:cve>2017-4965</u:cve> <u:cve>2017-4966</u:cve> <u:cve>2017-4967</u:cve> <u:cve>2019-11281</u:cve> <u:cve>2019-11287</u:cve> <u:cve>2021-22116</u:cve>) (<u:bug>53604</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ruby2.3</package> (<u:cve>2021-31799</u:cve> <u:cve>2021-31810</u:cve> <u:cve>2021-32066</u:cve>) (<u:bug>53892</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2016-2124</u:cve> <u:cve>2020-25717</u:cve> <u:cve>2020-25718</u:cve> <u:cve>2020-25719</u:cve> <u:cve>2020-25721</u:cve> <u:cve>2020-25722</u:cve> <u:cve>2021-3738</u:cve> <u:cve>2021-20254</u:cve> <u:cve>2021-23192</u:cve>) (<u:bug>53068</u:bug> <u:bug>54014</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>smarty3</package> (<u:cve>2018-13982</u:cve>) (<u:bug>53985</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sqlalchemy</package> (<u:cve>2019-7164</u:cve> <u:cve>2019-7548</u:cve>) (<u:bug>54035</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>squid3</package> (<u:cve>2021-28651</u:cve> <u:cve>2021-28652</u:cve> <u:cve>2021-31806</u:cve> <u:cve>2021-31807</u:cve> <u:cve>2021-31808</u:cve> <u:cve>2021-33620</u:cve>) (<u:bug>53439</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>subversion</package> (<u:bug>53219</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>systemd</package> (<u:cve>2021-33910</u:cve>) (<u:bug>53602</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>taglib</package> (<u:cve>2017-12678</u:cve> <u:cve>2018-11439</u:cve>) (<u:bug>53869</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tiff</package> (<u:cve>2020-19131</u:cve> <u:cve>2020-19144</u:cve> <u:cve>2020-35523</u:cve> <u:cve>2020-35524</u:cve>) (<u:bug>53545</u:bug> <u:bug>53867</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>udisks2</package> (<u:cve>2021-3802</u:cve>) (<u:bug>54034</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image</package> (<u:cve>2020-24586</u:cve> <u:cve>2020-24587</u:cve> <u:cve>2020-24588</u:cve> <u:cve>2020-25670</u:cve> <u:cve>2020-25671</u:cve> <u:cve>2020-25672</u:cve> <u:cve>2020-26139</u:cve> <u:cve>2020-26147</u:cve> <u:cve>2020-26558</u:cve> <u:cve>2020-29374</u:cve> <u:cve>2020-36322</u:cve> <u:cve>2021-0129</u:cve> <u:cve>2021-0512</u:cve> <u:cve>2021-3428</u:cve> <u:cve>2021-3483</u:cve> <u:cve>2021-3564</u:cve> <u:cve>2021-3573</u:cve> <u:cve>2021-3587</u:cve> <u:cve>2021-20292</u:cve> <u:cve>2021-23133</u:cve> <u:cve>2021-23134</u:cve> <u:cve>2021-28660</u:cve> <u:cve>2021-28688</u:cve> <u:cve>2021-28950</u:cve> <u:cve>2021-28964</u:cve> <u:cve>2021-28971</u:cve> <u:cve>2021-29154</u:cve> <u:cve>2021-29265</u:cve> <u:cve>2021-29647</u:cve> <u:cve>2021-29650</u:cve> <u:cve>2021-30002</u:cve> <u:cve>2021-31916</u:cve> <u:cve>2021-32399</u:cve> <u:cve>2021-33034</u:cve>) (<u:bug>53498</u:bug> <u:bug>53505</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image-signed</package> (<u:cve>2020-24586</u:cve> <u:cve>2020-24587</u:cve> <u:cve>2020-24588</u:cve> <u:cve>2020-25670</u:cve> <u:cve>2020-25671</u:cve> <u:cve>2020-25672</u:cve> <u:cve>2020-26139</u:cve> <u:cve>2020-26147</u:cve> <u:cve>2020-26558</u:cve> <u:cve>2020-29374</u:cve> <u:cve>2020-36322</u:cve> <u:cve>2021-0129</u:cve> <u:cve>2021-0512</u:cve> <u:cve>2021-3428</u:cve> <u:cve>2021-3483</u:cve> <u:cve>2021-3564</u:cve> <u:cve>2021-3573</u:cve> <u:cve>2021-3587</u:cve> <u:cve>2021-3609</u:cve> <u:cve>2021-20292</u:cve> <u:cve>2021-21781</u:cve> <u:cve>2021-23133</u:cve> <u:cve>2021-23134</u:cve> <u:cve>2021-28660</u:cve> <u:cve>2021-28688</u:cve> <u:cve>2021-28950</u:cve> <u:cve>2021-28964</u:cve> <u:cve>2021-28971</u:cve> <u:cve>2021-29154</u:cve> <u:cve>2021-29265</u:cve> <u:cve>2021-29647</u:cve> <u:cve>2021-29650</u:cve> <u:cve>2021-30002</u:cve> <u:cve>2021-31916</u:cve> <u:cve>2021-32399</u:cve> <u:cve>2021-33034</u:cve> <u:cve>2021-33909</u:cve> <u:cve>2021-34693</u:cve>) (<u:bug>53498</u:bug> <u:bug>53505</u:bug> <u:bug>53603</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vlc</package> (<u:bug>53635</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian Stretch <productnumber>10.11</productnumber> are included (<u:bug>53918</u:bug>):
+					<simplelist type="inline" id="_debian">
+						<member><package>btrbk</package></member>
+						<member><package>cgal</package></member>
+						<member><package>commons-io</package></member>
+						<member><package>composer</package></member>
+						<member><package>condor</package></member>
+						<member><package>drupal7</package></member>
+						<member><package>edk2</package></member>
+						<member><package>eterm</package></member>
+						<member><package>fig2dev</package></member>
+						<member><package>gst-libav1.0</package></member>
+						<member><package>gst-plugins-bad1.0</package></member>
+						<member><package>gst-plugins-ugly1.0</package></member>
+						<member><package>gthumb</package></member>
+						<member><package>hivex</package></member>
+						<member><package>htmldoc</package></member>
+						<member><package>ieee-data</package></member>
+						<member><package>ipmitool</package></member>
+						<member><package>ircii</package></member>
+						<member><package>jackson-databind</package></member>
+						<member><package>jetty9</package></member>
+						<member><package>libgetdata</package></member>
+						<member><package>libimage-exiftool-perl</package></member>
+						<member><package>libjdom1-java</package></member>
+						<member><package>libjdom2-java</package></member>
+						<member><package>libpam-tacplus</package></member>
+						<member><package>libspf2</package></member>
+						<member><package>libspring-java</package></member>
+						<member><package>libxml-security-java</package></member>
+						<member><package>libxstream-java</package></member>
+						<member><package>linux-4.19</package></member>
+						<member><package>linux-latest-4.19</package></member>
+						<member><package>linux-latest</package></member>
+						<member><package>linuxptp</package></member>
+						<member><package>lrzip</package></member>
+						<member><package>lynx</package></member>
+						<member><package>mailman</package></member>
+						<member><package>mediawiki</package></member>
+						<member><package>mrxvt</package></member>
+						<member><package>mupdf</package></member>
+						<member><package>neutron</package></member>
+						<member><package>nginx</package></member>
+						<member><package>node-bl</package></member>
+						<member><package>opendmarc</package></member>
+						<member><package>plib</package></member>
+						<member><package>prosody</package></member>
+						<member><package>pywps</package></member>
+						<member><package>pyxdg</package></member>
+						<member><package>rails</package></member>
+						<member><package>redis</package></member>
+						<member><package>redmine</package></member>
+						<member><package>ring</package></member>
+						<member><package>ruby-actionpack-page-caching</package></member>
+						<member><package>ruby-kaminari</package></member>
+						<member><package>ruby-nokogiri</package></member>
+						<member><package>rxvt</package></member>
+						<member><package>rxvt-unicode</package></member>
+						<member><package>scilab</package></member>
+						<member><package>scrollz</package></member>
+						<member><package>shiro</package></member>
+						<member><package>sogo</package></member>
+						<member><package>squashfs-tools</package></member>
+						<member><package>sssd</package></member>
+						<member><package>strongswan</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tnef</package></member>
+						<member><package>tomcat8</package></member>
+						<member><package>unbound1.9</package></member>
+						<member><package>usermode</package></member>
+						<member><package>uwsgi</package></member>
+						<member><package>weechat</package></member>
+						<member><package>wordpress</package></member>
+						<member><package>xmlbeans</package></member>
+						<member><package>zabbix</package></member>
+					</simplelist>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The following packages have been moved to the maintained repository of UCS:
+					<simplelist type="inline" id="_maintained">
+						<member><package>backports.functools-lru-cache</package> (<u:bug>52920</u:bug>)</member>
+						<member><package>python-pathlib</package> (<u:bug>53237</u:bug>)</member>
+						<member><package>python-tzlocal</package> (<u:bug>53675</u:bug>)</member>
+						<member><package>unidecode</package> (<u:bug>52878</u:bug>)</member>
+					</simplelist>
+				</para>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:openldap">
+			<title>OpenLDAP</title>
+			<section id="changelog:domain:openldap:replication">
+				<title>Listener/Notifier domain replication</title>
+				<itemizedlist>
+					<listitem><simpara>
+						Remove unused code leading to problems while updating to UCS 5 (<u:bug>52956</u:bug>).
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+		</section>
+	</section>
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:web">
+			<title>Univention Management Console web interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Functionality of some widgets has been adjusted for specific use cases (<u:bug>53847</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The <classname>DateBox</classname> and <classname>TimeBox</classname> widgets now handle empty values correctly and support the <classname>date2</classname> syntax again (<u:bug>53675</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The login page no longer has the <guimenuitem>Login</guimenuitem> entry in the menu (<u:bug>53617</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The cache settings of &ucsUMC; have been enhanced and relaxed to fix caching issues after the upgrade to UCS 5.0 (<u:bug>37720</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:server">
+			<title>Univention Management Console server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The login page no longer has the <guimenuitem>Login</guimenuitem> entry in the menu (<u:bug>53617</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Access to the &ucsUMC; has been repaired if the user is allowed to use only one module which does not have a flavor (<u:bug>53710</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					SAML logouts which are initiated by another service provider are now correctly handled (<u:bug>53638</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The new &ucsUCRV; <envar>umc/http/enforce-secure-cookie</envar> can be set to make cookies secure when using a HTTPS connection (<u:bug>53511</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The new &ucsUCRV; <envar>umc/http/enforce-session-cookie</envar> can be set to make the login cookie a session cookie: Closing the browser will delete the cookie, effectively logging out the user (<u:bug>52353</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The cache settings of &ucsUMC; have been enhanced and relaxed to fix caching issues after the upgrade to UCS 5.0 (<u:bug>37720</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:appcenter">
+			<title>Univention App Center</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Fixed a regression where the App installation failed if the App had certain App settings (<u:bug>53677</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					App settings of the scope <wordasword>outside</wordasword> are now applied on the system before the App's preinst script (<u:bug>53609</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; UMC modules and command line interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Expose the parameter <property>sizelimit</property> in the simple UDM API (<u:bug>53832</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Make LDAP object classes and attribute names selectable (<u:bug>31857</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Make options in Extended Attributes selectable (<u:bug>25054</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Add syntax class to select UDM syntax class for Extended Attributes (<u:bug>52683</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					UDM now enforces uniqueness of the name of objects in the same subtree position (<u:bug>53725</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It is now possible to set an account activation date for users, e.g. via the property <property>accountActivationDate</property> in the UDM <classname>users/user</classname> module (<u:bug>53675</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The simple UDM API now exposes the option <literal>remove_childs</literal> from the UDM function <function>remove()</function> in the method <function>delete()</function> to recursively delete objects below the DN of the object that is being deleted (<u:bug>53620</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<function>ucs_registerLDAPExtension</function> from the UCS shell function library now allows the option <option>umcmessagecatalog</option>.
+					This option can be used to supply translation files in GNU message catalog format for the UMC (<u:bug>53362</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Users/LDAP objects could not be created if the <classname>mspolicy</classname> password complexity criteria was configured due to the missing <property>displayname</property> (<u:bug>52446</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Turkish umlauts are now correctly converted to ASCII letters (<u:bug>52878</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:diagnostic">
+			<title>System diagnostic module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The system diagnostic check no longer shows false positives when a HTTP proxy is used (<u:bug>53575</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:other">
+			<title>Other modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+					While copying an user object entries were not filled correctly and therefore saving was not possible (<u:bug>53859</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Empty values are now prepended to static values for certain widgets if the syntax class requires this (<u:bug>53675</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Rewriting properties of apps using App Options changed the original options leading to follow up errors especially in the UDM REST API (<u:bug>53715</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The user creation wizard now shows the <property>mailPrimaryAdress</property> if it is required.
+					The default value and visibility of widgets in the user creation wizard can now be configured via UCR (<u:bug>53514</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:lib">
+		<title>Univention base libraries</title>
+		<itemizedlist>
+			<listitem><simpara>
+				UDM now enforces uniqueness of the name of objects in the same subtree position (<u:bug>53725</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+			<function>ucs_registerLDAPExtension</function> from the UCS shell function library now allows the option <option>umcmessagecatalog</option>.
+			This option can be used to supply translation files in GNU message catalog format for the UMC (<u:bug>53362</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The cache settings of &ucsUMC; have been enhanced and relaxed to fix caching issues after the upgrade to UCS 5.0 (<u:bug>37720</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-ldb-modules</package> has been rebuilt to match the new version of package <package>ldb</package> (<u:bug>54014</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:deployment">
+		<title>Software deployment</title>
+		<itemizedlist>
+			<listitem><simpara>
+				Prevent non-blocking components to crash the UMC updater module during the update to UCS 5.0-0 (<u:bug>53228</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:saml">
+			<title>SAML</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Permissions to use a SAML service provider in UCS can be configured on a user object or at group objects for all members of the group.
+					The check via the <property>memberOf</property> attribute for group membership was not done case insensitive (<u:bug>53432</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:postfix">
+			<title>Postfix</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The &ucsUDL; module <filename>listfilter.py</filename> did not respect the &ucsUCRV; <envar>mail/postfix/policy/listfilter/use_sasl_username=yes</envar> when it is executed with the option <option>--test</option> (<u:bug>46176</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:ssl">
+			<title>SSL</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Timeout SSL certificate download after 10 minutes (<u:bug>53810</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The UCR module for samba share restrictions did not quote the spaces inside share names like the samba listener does (<u:bug>53799</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Added <property>username map script</property> for use when samba is configured as domain member (<u:bug>54014</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:adc">
+			<title>Univention Active Directory Connection</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Invalid values in the LDAP attribute <property>sambaNTPassword</property> are now ignored instead of triggering a traceback (<u:bug>49590</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Nagios check for <package>univention-ad-connector</package> reported a false positive if multiple ad-connector instances were running (<u:bug>51869</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+				Fix verification error with alternate chains.
+				Addresses issue with Let's Encrypt certificates starting <ulink url="https://lists.debian.org/debian-lts/2021/09/msg00008.html">2021-10-01</ulink> (<u:bug>53863</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A SAML service provider configuration can now contain an array of attributes in the option <option>case_insensitive_attributes</option> when using an <literal>authorize:Authorize</literal> filter.
+				These attributes will be compared case insensitive (<u:bug>53432</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<function>ucs_registerLDAPExtension</function> from the UCS shell function library now allows the option <option>umcmessagecatalog</option>.
+				This option can be used to supply translation files in GNU message catalog format for the UMC (<u:bug>53362</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->

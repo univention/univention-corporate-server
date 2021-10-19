@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-8">
+<book lang="de" id="releasenotes-de-4.4-9">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-8</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-9</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,26 +44,14 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-8 steht das achte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 4.4-9 steht das neunte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Die Performance des UMC Webservers in großen Umgebungen mit vielen Anfragen wurde verbessert, indem der Webserver mit mehreren Prozessen gestartet werden kann, um mehrere CPU Kerne zu nutzen.
-				Hierfür wurde der UMC Webserver von <foreignphrase>single-</foreignphrase> auf <foreignphrase>multiprocessing</foreignphrase> umgestellt.
-				Die Anzahl der Prozesse ist konfigurierbar.
-			</para></listitem>
-			<listitem><para>
-				Diverse Verbesserungen wurden in Vorbereitung auf UCS 5.0 vorgenommen.
-				Unter anderem wird das UCS Upgrade blockiert, wenn installierte Apps unter UCS 5.0 noch nicht verfügbar sind.
-			</para></listitem>
-			<listitem><para>
-				Der S4 Connector synchronisiert nun auch das Attribut <envar>gidNumber</envar> für Gruppenobjekte.
-			</para></listitem>
-			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.4-8 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
+				Diverse Security Updates wurden in UCS 4.4-9 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -235,10 +223,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-7</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-8</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-8.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-9.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
