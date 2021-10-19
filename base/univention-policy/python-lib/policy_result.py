@@ -41,7 +41,7 @@ class PolicyResultFailed(Exception):
 		self.returncode = returncode
 
 
-def policy_result(dn, binddn="", bindpw="", encoding='UTF-8'):
+def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 	"""
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
@@ -60,7 +60,11 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8'):
 		binddn = cr.get("ldap/hostdn")
 		bindpw = "/etc/machine.secret"
 
-	p = Popen(['univention-policy-result', '-D', binddn, '-y', bindpw, dn], stdout=PIPE, stderr=PIPE)
+	command = ['univention-policy-result', '-D', binddn, '-y', bindpw, ]
+	if ldap_server:
+		command.extend(["-h", ldap_server])
+	command.append(dn)
+	p = Popen(command, stdout=PIPE, stderr=PIPE)
 	stdout, stderr = p.communicate()
 	if p.returncode != 0:
 		raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')}, returncode=p.returncode)
