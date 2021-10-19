@@ -6,7 +6,7 @@ src: univention-saml
 fix: 6.0.3-16A~4.4.0.202108301825
 desc: |
  This update addresses the following issue:
- * Permissons to use a SAML service prodiver in UCS can be configured
+ * Permissions to use a SAML service provider in UCS can be configured
    on a user object or at group objects for all members of the group.
    The check via the `memberOf` attribute for group membership was not
    done case insensitive. This has been fixed.
