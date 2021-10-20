@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-lib
-fix: 
+fix: 9.0.11-8A~5.0.0.202110201422
 desc: |
  This update addresses the following issue:
  * The parsing and generating of `fstab` entries now rejects more
