@@ -1,36 +1,35 @@
 #!/usr/bin/python2.7
 
-import shutil
 import json
 
 from univention.config_registry import ConfigRegistry
-from univention.config_registry.frontend import ucr_update
 from univention.udm import UDM
 from univention.udm.exceptions import CreateError
 
 
-def prepare_setup_BB_API():
-	ucr = ConfigRegistry()
-	ucr.load()
-	ucr_update(ucr, {
-		'bb/http_api/users/django_debug': 'yes',
-		'bb/http_api/users/wsgi_server_capture_output': 'yes',
-		'bb/http_api/users/wsgi_server_loglevel': 'debug',
-		'bb/http_api/users/enable_session_authentication': 'yes',
-	})
-	shutil.copyfile(
-		'/usr/share/ucs-school-import/configs/ucs-school-testuser-http-import.json',
-		'/var/lib/ucs-school-import/configs/user_import.json'
-	)
-	with open('/var/lib/ucs-school-import/configs/user_import.json', 'r+w') as fp:
+MAPPED_UDM_PROPERTIES = [
+	"title",
+	"description",
+	"displayName",
+	"e-mail",
+	"employeeType",
+	"organisation",
+	"phone",
+	"uidNumber",
+	"gidNumber",
+]  # keep in sync with MAPPED_UDM_PROPERTIES in [ucsschool-repo/4.4|5.0]/ucs-test-ucsschool/modules/...
+# .../univention/testing/ucsschool/conftest.py and [ucsschool-repo/feature-kelvin]kelvin-api/tests/..
+# .../conftest.py
+# if changed: check kelvin-api/tests/test_route_user.test_search_filter_udm_properties()
+
+
+def setup_kelvin_traeger():
+	with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
 		config = json.load(fp)
-		config['configuration_checks'] = ['defaults', 'mapped_udm_properties']
-		config['mapped_udm_properties'] = ['phone', 'e-mail', 'organisation']
+		config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
+		config['mapped_udm_properties'] = MAPPED_UDM_PROPERTIES
 		fp.seek(0)
 		json.dump(config, fp, indent=4, sort_keys=True)
-	with open('/etc/apt/sources.list.d/30_BB.list', 'w') as fp:
-		fp.write('deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-min-brandenburg/all/\n')
-		fp.write('deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-min-brandenburg/amd64/')
 
 
 def create_extended_attr():
