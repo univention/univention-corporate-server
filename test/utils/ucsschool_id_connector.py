@@ -7,11 +7,27 @@ from univention.udm import UDM
 from univention.udm.exceptions import CreateError
 
 
+MAPPED_UDM_PROPERTIES = [
+    "title",
+    "description",
+    "displayName",
+    "e-mail",
+    "employeeType",
+    "organisation",
+    "phone",
+    "uidNumber",
+    "gidNumber",
+]  # keep in sync with MAPPED_UDM_PROPERTIES in [ucsschool-repo/4.4|5.0]/ucs-test-ucsschool/modules/...
+# .../univention/testing/ucsschool/conftest.py and [ucsschool-repo/feature-kelvin]kelvin-api/tests/..
+# .../conftest.py
+# if changed: check kelvin-api/tests/test_route_user.test_search_filter_udm_properties()
+
+
 def setup_kelvin_traeger():
 	with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
 		config = json.load(fp)
 		config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
-		config['mapped_udm_properties'] = ['displayName', 'e-mail', 'organisation', 'phone']
+		config['mapped_udm_properties'] = MAPPED_UDM_PROPERTIES
 		fp.seek(0)
 		json.dump(config, fp, indent=4, sort_keys=True)
 
