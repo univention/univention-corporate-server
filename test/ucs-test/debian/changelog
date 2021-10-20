@@ -1,3 +1,9 @@
+ucs-test (10.0.6-62) unstable; urgency=medium
+
+  * Bug #53565: adjust 185_portal_administration_inline_creation
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 Oct 2021 13:00:57 +0200
+
 ucs-test (10.0.6-61) unstable; urgency=medium
 
   * Bug #53565: Fix tests
