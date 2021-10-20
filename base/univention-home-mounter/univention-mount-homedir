@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Home Mounter
 #  mount the homedir
@@ -30,7 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ldap.filter
+from __future__ import print_function
+
+import argparse
+import pipes
+import traceback
 import os
 import pwd
 import socket
@@ -40,79 +44,76 @@ import sys
 import syslog
 import time
 
+import ldap.filter
+
 import univention.uldap
 
 MOUNTS_FILE = '/var/lib/univention-home-mounter/mounts'
 
 NEW_HOME_DIR_MODE = stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH
 
+DEBUG = True
+
 
 def hostname_short():
-	'''return first part of hostname (like "hostname -s")'''
+	"""return first part of hostname (like "hostname -s")"""
 	return socket.gethostname().split('.', 1)[0]
 
 
 def hostname_fqdn():
-	'''return full hostname (like "hostname -f")'''
+	"""return full hostname (like "hostname -f")"""
 	return socket.getfqdn()
 
 
 def get_homeattr(username):
-	'''return automountInformation of <username>, if any'''
+	"""return automountInformation of <username>, if any"""
+	debug("connecting to ldap server...")
 	try:
 		connection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
-	except TypeError:
-		# old version of univention.uldap
-		connection = univention.uldap.getMachineConnection(ldap_master=False)
-	except Exception:
+	except (EnvironmentError, ldap.LDAPError):
+		debug(traceback.format_exc())
 		return
+	debug("searching automount info...")
 	search_filter = ldap.filter.filter_format(
 		"(&(objectClass=posixAccount)(objectClass=automount)(uid=%s))",
 		(username, )
 	)
 	for _, attributes in connection.search(filter=search_filter, attr=['automountInformation'], sizelimit=1):
 		for info in attributes.get('automountInformation', []):
-			return info
+			return info.decode("UTF-8")
 	return None
 
 
-def get_username():
-	'''return the username to use (first argument if exists else USER environment variable)'''
+def get_userinfo(username):
+	"""return passwd information of the user to be used"""
 	try:
-		return sys.argv[1]
-	except IndexError:
-		return os.environ['USER']
-
-
-def get_userinfo():
-	'''return passwd information of the user to be used'''
-	try:
-		return pwd.getpwnam(get_username())
+		return pwd.getpwnam(username)
 	except KeyError:
 		return None
 
 
 def userinfo_is_usable(user):
-	'''test for empty/unusable passwd information'''
+	"""test for empty/unusable passwd information"""
 	return user is not None and user.pw_name and user.pw_dir
 
 
 def is_system(user):
-	'''check UID to see if <user> is a domain user or local/system user'''
+	"""check UID to see if <user> is a domain user or local/system user"""
 	return user.pw_uid < 1000
 
 
 def create_home(owner):
-	'''create home directory for <owner> if not exists'''
+	"""create home directory for <owner> if not exists"""
 	if not os.path.exists(owner.pw_dir):
 		syslog.syslog("Creating home directory %r" % (owner.pw_dir, ))
+		debug("Creating home directory %r" % (owner.pw_dir, ))
 		os.makedirs(owner.pw_dir)
 		os.chown(owner.pw_dir, owner.pw_uid, owner.pw_gid)
 		os.chmod(owner.pw_dir, NEW_HOME_DIR_MODE)
 
 
 def parse_automount(information):
-	'''parse automountInformation string into (flags, host, path)'''
+	"""parse automountInformation string into (flags, host, path)"""
 	if information.startswith('-'):
 		flags, unc = information.split(None, 1)
 	else:
@@ -125,27 +126,45 @@ def parse_automount(information):
 
 
 def mount_nfs_home(host, path, mount_point):
-	'''mount NFS home share <path> from <host> on <mount_point>'''
-	if subprocess.call(('mount', '-t', 'nfs', '%s:%s' % (host, path, ), mount_point, )) == 0:
-		with open(MOUNTS_FILE, 'ab') as mounts:
+	"""mount NFS home share <path> from <host> on <mount_point>"""
+	command = ('mount', '-t', 'nfs', '%s:%s' % (host, path, ), mount_point, )
+	debug("executing %s" % " ".join(pipes.quote(_arg) for _arg in command))
+	if subprocess.call(command) == 0:
+		with open(MOUNTS_FILE, 'a') as mounts:
 			mounts.write('%s %d\n' % (mount_point, time.time(), ))
 		return True
 	return False
 
 
+def debug(message):
+	if DEBUG:
+		print(message, file=sys.stderr)
+
+
 def main():
-	'''main method'''
+	global DEBUG
+	"""main method"""
 	syslog.openlog('univention-mount-homedir')
-	user = get_userinfo()
+	parser = argparse.ArgumentParser()
+	parser.add_argument('username', nargs='?', default=os.environ.get('USER'))
+	parser.add_argument('-v', '--verbose', action='store_true')
+	args = parser.parse_args()
+
+	DEBUG = args.verbose
+	user = get_userinfo(args.username)
+	debug(user)
 	if not userinfo_is_usable(user):
+		debug("no userinfo is available for %s" % (args.username,))
 		sys.exit(1)
 	if is_system(user) or os.path.ismount(user.pw_dir):
+		debug("Invalid user %s or %s is already mounted" % (args.username, user.pw_dir))
 		sys.exit(0)
-	homeattr = get_homeattr(user.pw_name)
-	if not homeattr:
+	home_attr = get_homeattr(user.pw_name)
+	debug("automount info %s" % (home_attr,))
+	if not home_attr:
 		sys.exit(0)
 	else:
-		(_, host, path, ) = parse_automount(homeattr)
+		(_, host, path, ) = parse_automount(home_attr)
 		if not host or not path:
 			syslog.syslog("Bad information in LDAP. Not mounting home directory.")
 			sys.exit(1)

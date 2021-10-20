@@ -1,3 +1,9 @@
+univention-home-mounter (11.0.1-2) unstable; urgency=medium
+
+  * Bug #53344: Migrated univention-home-mounter to Python3
+
+ -- Esteban Martinena <martinena@univention.de>  Tue, 19 Oct 2021 12:06:32 +0200
+
 univention-home-mounter (11.0.1-1) unstable; urgency=medium
 
   * Bug #43211: don't create homedir for users without
