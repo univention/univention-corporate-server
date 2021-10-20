@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-home-mounter
-fix: 
+fix: 11.0.1-2A~5.0.0.202110201114
 desc: |
  This update addresses the following issue:
  *  The package `univention-home-mounter` has been migrated to Python 3.
