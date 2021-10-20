@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-lib
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The parsing and generating of `fstab` entries now rejects more
+   invalid values and generates valid values in certain cases.
+bug: [53902]

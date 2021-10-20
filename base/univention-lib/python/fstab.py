@@ -135,20 +135,20 @@ class File(list):
 		6. `fs_passno`
 
 		:param str line: A line.
-		:returns: The parsed entry.
+		:returns: The parsed entry or a string with the raw contents if the entry is invalid.
 		:rtype: Entry
 		:raises InvalidEntry: if the line cannot be parsed.
 		"""
 		line = line.lstrip().rstrip('\n')
-		if line.startswith('#'):
+		if line.startswith('#') or not line.strip():
 			return line
 
 		line, has_comment, comment = line.partition('#')
 		fields = line.split(None, 5)
-		if len(fields) < 4:
-			return line
+		rem = has_comment + comment if has_comment or line.endswith('\t') else None
+		if len(fields) < 3 or (len(fields) < 6 and rem):
+			return line + has_comment + comment
 
-		rem = has_comment + comment if has_comment or fields[-1].endswith('\t') else None
 		return Entry(*fields, comment=rem)  # type: ignore
 
 
@@ -171,8 +171,8 @@ class Entry(object):
 	_quote_dict = dict([(c, r'\%s' % oct(ord(c))) for c in ' \t\n\r\\'])
 	_quote_re = re.compile(r'\\0([0-7]+)')
 
-	def __init__(self, spec, mount_point, type, options, dump=None, passno=None, comment=None):
-		# type: (str, str, str, str, str, str, str) -> None
+	def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None):
+		# type: (str, str, str, Union[str,list], Optional[str], Optional[str], Optional[str]) -> None
 		self.spec = self.unquote(spec.strip())
 		if self.spec.startswith('UUID='):
 			self.uuid = self.spec[5:]  # type: Optional[str]
@@ -182,35 +182,33 @@ class Entry(object):
 		else:
 			self.uuid = None
 		self.mount_point = self.unquote(mount_point.strip())
-		self.type = self.unquote(type.strip())
-		self.options = self.unquote(options).split(',') if not isinstance(options, list) else options
-		self.dump = int(dump) if dump else None
-		self.passno = int(passno) if passno else None
+		self.type = self.unquote(fs_type.strip())
+		self.options = self.unquote(options).split(',') if options and not isinstance(options, list) else (options or [])
+		self.dump = int(dump) if dump is not None else None
+		self.passno = int(passno) if passno is not None else None
 		self.comment = comment
 
 	def __str__(self, delim='\t'):
 		# type: (str) -> str
 		"""
 		Return the canonical string representation of the object.
+		>>> str(Entry('proc', '/proc', 'proc', comment="#the comment"))
 		>>> str(Entry('proc', '/proc', 'proc', 'defaults', 0, 0))
 		'proc\\t/proc\\tproc\\tdefaults\\t0\\t0'
 		>>> str(Entry('/dev/sda', '/', 'ext2,ext3', 'defaults,rw', 0, 0, '# comment'))
 		'/dev/sda\\t/\\text2,ext3\\tdefaults,rw\\t0\\t0\\t# comment'
 		"""
+		# If a line has a comment or any next field is non-empty, all previous one needs to be set
 		h = [
 			self.quote('UUID=%s' % self.uuid if self.uuid else self.spec),
 			self.quote(self.mount_point),
 			self.quote(self.type),
-			self.quote(','.join(self.options)),
+			self.quote(','.join(self.options or (['defaults'] if any([self.dump, self.passno, self.comment]) else []))) or None,
+			str(self.dump or 0) if isinstance(self.dump, int) or any([self.passno, self.comment]) else self.dump,
+			str(self.passno or 0) if isinstance(self.passno, int) or any([self.comment]) else self.passno,
+			self.comment,
 		]
-		if self.dump is not None:
-			h.append(str(self.dump))
-		if self.passno is not None:
-			h.append(str(self.passno))
-
-		if self.comment is not None:
-			h.append(self.comment)
-		return delim.join(h)
+		return delim.join(e for e in h if e is not None)
 
 	def __repr__(self):
 		# type: () -> str

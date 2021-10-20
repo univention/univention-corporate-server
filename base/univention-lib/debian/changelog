@@ -1,3 +1,9 @@
+univention-lib (9.0.11-8) unstable; urgency=medium
+
+  * Bug #53902: fix default values for dump and passno for str() of Entry
+
+ -- Esteban Martinena <martinena@univention.de>  Tue, 12 Oct 2021 16:40:43 +0200
+
 univention-lib (9.0.11-7) unstable; urgency=medium
 
   * Bug #51650: fix evaluation of share blacklist
