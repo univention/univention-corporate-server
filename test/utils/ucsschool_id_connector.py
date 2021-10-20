@@ -8,15 +8,15 @@ from univention.udm.exceptions import CreateError
 
 
 MAPPED_UDM_PROPERTIES = [
-    "title",
-    "description",
-    "displayName",
-    "e-mail",
-    "employeeType",
-    "organisation",
-    "phone",
-    "uidNumber",
-    "gidNumber",
+	"title",
+	"description",
+	"displayName",
+	"e-mail",
+	"employeeType",
+	"organisation",
+	"phone",
+	"uidNumber",
+	"gidNumber",
 ]  # keep in sync with MAPPED_UDM_PROPERTIES in [ucsschool-repo/4.4|5.0]/ucs-test-ucsschool/modules/...
 # .../univention/testing/ucsschool/conftest.py and [ucsschool-repo/feature-kelvin]kelvin-api/tests/..
 # .../conftest.py
