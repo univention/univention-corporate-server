@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-network-manager` has been migrated to Python 3.
 bug: [53347]
+erratum: 131
+announced: 2021-10-20
