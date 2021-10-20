@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-maintenance-mode` has been migrated to Python 3.
 bug: [53346]
+erratum: 130
+announced: 2021-10-20
