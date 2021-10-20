@@ -9,3 +9,5 @@ desc: |
  * The package `univention-ldap-overlay-memberof` has been migrated to
    Python 3.
 bug: [53356]
+erratum: 129
+announced: 2021-10-20
