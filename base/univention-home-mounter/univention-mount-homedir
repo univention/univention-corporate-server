@@ -33,9 +33,8 @@
 from __future__ import print_function
 
 import argparse
-import pipes
-import traceback
 import os
+import pipes
 import pwd
 import socket
 import stat
@@ -43,6 +42,7 @@ import subprocess
 import sys
 import syslog
 import time
+import traceback
 
 import ldap.filter
 
