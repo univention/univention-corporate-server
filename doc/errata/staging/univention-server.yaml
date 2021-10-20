@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-server
-fix: 15.0.4-5A~5.0.0.202110081514
+fix: 15.0.4-6A~5.0.0.202110201702
 desc: |
  This update addresses the following issue:
  * Time-stamps were added to the logger output of the password change.
