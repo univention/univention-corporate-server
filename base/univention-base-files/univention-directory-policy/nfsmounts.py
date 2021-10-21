@@ -35,7 +35,6 @@ from __future__ import print_function
 
 import argparse
 import os
-import shlex
 import subprocess
 import sys
 
@@ -44,6 +43,7 @@ from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.uldap
+from univention.lib.policy_result import policy_result, PolicyResultFailed
 
 try:
 	from StringIO import StringIO  # for Python 2
@@ -76,22 +76,14 @@ def exit(result, message=None):
 
 def query_policy(host_dn, server=None, password_file="/etc/machine.secret", verbose=False):
 	"""Get NFS shares from LDAP as per policy for dn."""
-	nfsmount = set()
-	debug('Retrieving policy for %s...\n' % host_dn)
+	debug('Retrieving policy for %s...\n' % (host_dn,))
 	try:
-		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', host_dn], shell=False, stdout=subprocess.PIPE)
-		stdout, stderr = p.communicate()
-	except OSError:
-		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % (host_dn,))
-	for line in stdout.splitlines():
-		line = line.rstrip('\n')
-		k, v = line.split('=', 1)
-		debug("Retrieved %s=%s\n" % (k, v))
-		if k == 'univentionNFSMounts':
-			v, = shlex.split(v)
-			debug("Found %s\n" % v)
-			nfsmount.add(v)
-	return nfsmount
+		(results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
+	except PolicyResultFailed as ex:
+		if verbose:
+			print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
+		sys.exit(1)
+	return set(results.get('univentionNFSMounts', []))
 
 
 def main():

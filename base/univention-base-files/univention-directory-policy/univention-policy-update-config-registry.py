@@ -33,46 +33,21 @@ from __future__ import print_function
 
 import argparse
 import os
-import subprocess
 import sys
 
 import univention.config_registry as confreg
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
 def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbose=False):
 	"""Retrieve policy for host_dn."""
-	set_list = {}
-	# get policy result
-	if verbose:
-		if server:
-			print('Connecting to LDAP host %s...' % server, file=sys.stderr)
-		print('Retrieving policy for %s...' % (host_dn,), file=sys.stderr)
-	cmd = ['univention_policy_result', '-D', host_dn, '-y', str(password_file)]
-	if server:
-		cmd += ['-h', server]
-	cmd += [host_dn]
-
-	proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
-	for line in proc.stdout:
-		line = line.decode('utf-8')
-		line = line.rstrip('\n')
-		if line.startswith('Policy: '):
-			key = value = None
-		elif line.startswith(get_policy.ATTR):
-			key = line[len(get_policy.ATTR):]
-			key = bytes.fromhex(key).decode('utf-8')
-		elif line.startswith(get_policy.VALUE) and key:
-			value = line[len(get_policy.VALUE):]
-			set_list[key] = value
-			if verbose:
-				print("Retrieved %s=%s" % (key, value), file=sys.stderr)
-	if proc.wait() != 0:
-		# no output: this script is called by cron and an email sent if any output
-		# print 'WARN: univention_policy_result failed - LDAP server may be down'
+	try:
+		(results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
+	except PolicyResultFailed as ex:
 		if verbose:
-			print('WARN: failed to execute univention_policy_result: %s', file=sys.stderr)
+			print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
 		sys.exit(1)
-	return set_list
+	return results
 
 
 get_policy.ATTR = 'Attribute: univentionRegistry;entry-hex-'
@@ -113,10 +88,11 @@ def main():
 	confregfn = os.path.join(confreg.ConfigRegistry.PREFIX, confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
 	ucr_ldap = confreg.ConfigRegistry(filename=confregfn)
 	ucr_ldap.load()
-	set_list = get_policy(args.hostdn, args.server, args.password_file.name, args.verbose)
+	set_list = get_policy(args.hostdn, args.server, args.password_file.name, verbose=args.verbose)
 	if set_list:
 		new_set_list = []
-		for key, value in set_list.items():
+		for key, values in set_list.items():
+			value = values[0]
 			record = '%s=%s' % (key, value)
 
 			if ucr_ldap.get(key) != value or args.setall:
