@@ -56,6 +56,7 @@ chmod 600 /usr/lib/univention-portal/config/oidc.json
 # try to keep the DOM stable. but this is only best effort
 touch /usr/share/univention-portal/css/custom.css
 
+univention-portal add-default --update  # change from UMC authenticator to OIDCauthenticator
 univention-portal add-umc-default
 univention-portal update
 systemctl restart univention-portal-server
