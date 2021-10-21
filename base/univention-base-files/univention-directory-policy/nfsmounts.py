@@ -100,19 +100,22 @@ def main():
 		parser.error("ldap/hostdn is not set.")
 	debug("Hostdn is %s\n" % args.dn)
 
-	nfsmounts = query_policy(args.dn)
+	to_mount = update_fstab(args, simulate)
+	mount(to_mount)
 
-	lo = univention.uldap.getMachineConnection()
 
-	# remove all nfs mounts from the fstab
+def update_fstab(args, simulate):
+	"""remove all nfs mounts from the fstab"""
 	debug("Rewriting /etc/fstab...\n")
 	current_fstab = fstab.File('/etc/fstab')
-
 	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	to_mount = set()
-	for nfsmount in nfsmounts:
-		debug("NFS Mount: %s ..." % nfsmount)
-		fields = nfsmount.split(' ')  # dn_univentionShareNFS mount_point
+	nfs_mounts = query_policy(args.dn)
+	lo = univention.uldap.getMachineConnection()
+
+	for nfs_mount in nfs_mounts:
+		debug("NFS Mount: %s ..." % nfs_mount)
+		fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
 		dn = fields[0]
 		if not dn:
 			debug('no dn, skipping\n')
@@ -187,8 +190,11 @@ def main():
 	current_mtab = fstab.File('/etc/mtab')
 	for entry in current_mtab.get('nfs'):
 		to_mount.discard(entry.mount_point)
+	return to_mount
 
-	# mount
+
+def mount(to_mount):
+	"""mount new NFS filesystems"""
 	for mp in sorted(to_mount):
 		if not os.path.exists(mp):
 			os.makedirs(mp)
