@@ -31,6 +31,8 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/base.sh
+
 set_machine_secret() {
 	## 1. store password locally in secrets.ldb
 	old_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
@@ -50,7 +52,7 @@ set_machine_secret() {
 	-
 	%EOF
 	if [ "$?" -ne "0" ]; then
-		echo "ERROR: Storing new password in samba secrets.ldb failed."
+		echowithtimestamp "ERROR: Storing new password in samba secrets.ldb failed."
 		install -m 0600 /etc/krb5.keytab.SAVE /etc/krb5.keytab
 		exit 1
 	fi
@@ -64,8 +66,8 @@ if [ "$1" = "localchange" ]; then
 
 	## if samba-tool user setpassword fails, revert changes to secrets.ldb and krb5.keytab
 	if [ "$?" -ne "0" ]; then
-		echo "ERROR: Changing machine password in Samba failed."
-		echo "INFO: Restoring secrets.ldb and krb5.keytab."
+		echowithtimestamp "ERROR: Changing machine password in Samba failed."
+		echowithtimestamp "INFO: Restoring secrets.ldb and krb5.keytab."
 		old_password=$(tail -n 1 /etc/machine.secret.old | sed -n 's/^[0-9]*: //p')
 		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 		dn: flatname=${windows_domain},cn=Primary Domains
@@ -83,5 +85,6 @@ if [ "$1" = "localchange" ]; then
 		exit 1
 	fi
 
+	echowithtimestamp "restart samba after server password change"
 	test -x /etc/init.d/samba && /etc/init.d/samba restart
 fi

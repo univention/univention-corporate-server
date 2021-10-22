@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-4) unstable; urgency=medium
+
+  * Bug #53182: Add timestamps to server_password_change log messages
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Oct 2021 09:22:40 +0200
+
 univention-samba4 (9.0.6-3) unstable; urgency=medium
 
   * Bug #53414: prevent listener traceback when removing samba share
