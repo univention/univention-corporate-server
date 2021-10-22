@@ -43,12 +43,9 @@ from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.uldap
+from univention.lib import fstab
 from univention.lib.policy_result import policy_result, PolicyResultFailed
 
-try:
-	from StringIO import StringIO  # for Python 2
-except ImportError:
-	from io import StringIO  # for Python 3
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -109,41 +106,7 @@ def main():
 
 	# remove all nfs mounts from the fstab
 	debug("Rewriting /etc/fstab...\n")
-	fstab_new = "/etc/fstab.new.%d" % (os.getpid(),)
-	sources = set()
-	mount_points = set()
-	try:
-		f_old = open('/etc/fstab', 'r')
-		if simulate:
-			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
-			f_new = StringIO()
-		else:
-			f_new = open(fstab_new, 'w')
-		for line in f_old:
-			if MAGIC_LDAP not in line:
-				f_new.write(line)
-				debug("= %s" % line)
-			else:
-				debug("- %s" % line)
-			if line.startswith('#'):
-				continue
-
-			line = line.rstrip('\n')
-			fields = line.split(' ')  # source_spec mount_point fs options freq passno
-
-			sp = fields[0]
-			sources.add(sp)
-
-			try:
-				mp = fields[1]
-				if not mp.startswith('#'):
-					mount_points.add(mp)
-			except IndexError:
-				pass
-
-		f_old.close()
-	except IOError as e:
-		exit(1, e)
+	current_fstab = fstab.File('/etc/fstab')
 
 	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	to_mount = set()
@@ -179,12 +142,14 @@ def main():
 
 		mp = fields[-1] or share_path
 		# skip share if target already in fstab
+		mount_points = [entry.mount_point for entry in current_fstab.get()]
 		if mp in mount_points:
 			debug('already mounted on %s, skipping\n' % mp)
 			continue
 
 		nfs_path_fqdn = "%s:%s" % (share_host, share_path)
 		# skip share if the source is already in the fstab
+		sources = [entry.spec for entry in current_fstab.get()]
 		if nfs_path_fqdn in sources:
 			debug('already mounted from %s, skipping\n' % nfs_path_fqdn)
 			continue
@@ -203,23 +168,25 @@ def main():
 			debug('already mounted from %s, skipping\n' % nfs_path_ip)
 			continue
 
-		line = "%s\t%s\tnfs\tdefaults\t0\t0\t%s %s\n" % (nfs_path_ip, mp, MAGIC_LDAP, dn)
-		f_new.write(line)
-		debug("\n+ %s" % line)
+		comment = "%s %s" % (MAGIC_LDAP, dn)
+		nfs_entry = current_fstab.find(comment=comment)
+		if nfs_entry is not None:
+			debug("\n- %s" % (nfs_entry,))
+			current_fstab.remove(nfs_entry)
+		nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment)
+		current_fstab.append(nfs_entry)
+		debug("\n+ %s" % (nfs_entry,))
+
 		to_mount.add(mp)
 
-	f_new.close()
 	debug('Switching /etc/fstab...\n')
 	if not simulate:
-		if os.path.isfile(fstab_new) and os.path.getsize(fstab_new) > 0:
-			os.rename(fstab_new, '/etc/fstab')
+		current_fstab.save()
 
 	# Discard already mounted
-	fp = open('/etc/mtab', 'r')
-	for line in fp:
-		line = line.rstrip('\n')
-		fields = line.split(' ')  # source_spec mount_point fs options freq passno
-		to_mount.discard(fields[1])
+	current_mtab = fstab.File('/etc/mtab')
+	for entry in current_mtab.get('nfs'):
+		to_mount.discard(entry.mount_point)
 
 	# mount
 	for mp in sorted(to_mount):
