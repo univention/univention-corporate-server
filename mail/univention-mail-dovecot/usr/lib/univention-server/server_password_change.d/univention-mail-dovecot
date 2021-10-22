@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/base.sh
+
 case "$1" in
 prechange)
 	# nothing to do before the password is changed
@@ -40,6 +42,7 @@ nochange)
 	;;
 postchange)
 	# change config and make Dovecot reload after password was changed
+	echowithtimestamp "reloading dovecot after server password change"
 	univention-config-registry commit /etc/dovecot/dovecot-ldap.conf.ext
 	deb-systemd-invoke reload dovecot
 	;;

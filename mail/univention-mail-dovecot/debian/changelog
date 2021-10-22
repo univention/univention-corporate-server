@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.3-3) unstable; urgency=medium
+
+  * Bug #53182: Add timestamps to server_password_change log messages
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Oct 2021 09:16:14 +0200
+
 univention-mail-dovecot (6.0.3-2) unstable; urgency=low
 
   * Bug #53111: escape double quotes during SETACL
