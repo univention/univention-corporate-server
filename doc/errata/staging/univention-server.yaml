@@ -3,9 +3,9 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-server
-fix: 15.0.4-6A~5.0.0.202110201702
+fix: 15.0.4-7A~5.0.0.202110220943
 desc: |
  This update addresses the following issue:
- * Time-stamps were added to the logger output of the password change.
+ * Timestamps were added to the log output of the server password change.
  * The package `univention-server` has been migrated to Python 3.
 bug: [53182, 53348]

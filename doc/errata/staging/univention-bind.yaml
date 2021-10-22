@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-bind
+fix: 14.0.1-3A~5.0.0.202110220947
+desc: |
+ This update addresses the following issue:
+ * Server password change now logs timestamps.
+bug: [53182]
