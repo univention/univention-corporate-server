@@ -29,10 +29,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/base.sh
+
 if [ "$1" = "postchange" ]; then
 	eval "$(ucr shell ldap/hostdn connector/ldap/binddn)"
 
 	if [ -n "$connector_ldap_binddn" -a "$connector_ldap_binddn" = "$ldap_hostdn" ]; then
+		echowithtimestamp "restart univention-s4-connector after server password change"
 		test -x /etc/init.d/univention-s4-connector && invoke-rc.d univention-s4-connector restart
 	fi
 fi

@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.7-7) unstable; urgency=medium
+
+  * Bug #53182: Add timestamps to server_password_change log messages
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Oct 2021 09:20:28 +0200
+
 univention-s4-connector (14.0.7-6) unstable; urgency=medium
 
   * Bug #50593: make sure no users are left over/re-created when they
