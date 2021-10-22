@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -31,14 +31,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
+import argparse
 import os
-import univention.config_registry
-import ldap
-import univention.uldap
-import sys
-import subprocess
 import shlex
-import getopt
+import subprocess
+import sys
+
+import ldap
+from ldap.filter import filter_format
+
+import univention.config_registry
+import univention.uldap
+
+try:
+	from StringIO import StringIO  # for Python 2
+except ImportError:
+	from io import StringIO  # for Python 3
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -53,26 +63,26 @@ MAGIC_LDAP = '#LDAP Entry DN:'
 def debug(msg, out=sys.stderr):
 	"""Print verbose information 'msg' to 'out'."""
 	if verbose:
-		print >>out, msg,
+		print(msg, file=out)
 
 
 def exit(result, message=None):
 	"""Exit with optional error message."""
 	script = os.path.basename(sys.argv[0])
 	if message:
-		print >>sys.stderr, '%s: %s' % (script, message)
+		print('%s: %s' % (script, message), file=sys.stderr)
 	sys.exit(result)
 
 
-def query_policy(dn):
+def query_policy(host_dn, server=None, password_file="/etc/machine.secret", verbose=False):
 	"""Get NFS shares from LDAP as per policy for dn."""
 	nfsmount = set()
-	debug('Retrieving policy for %s...\n' % dn)
+	debug('Retrieving policy for %s...\n' % host_dn)
 	try:
-		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', dn], shell=False, stdout=subprocess.PIPE)
+		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', host_dn], shell=False, stdout=subprocess.PIPE)
 		stdout, stderr = p.communicate()
 	except OSError:
-		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % dn)
+		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % (host_dn,))
 	for line in stdout.splitlines():
 		line = line.rstrip('\n')
 		k, v = line.split('=', 1)
@@ -84,58 +94,39 @@ def query_policy(dn):
 	return nfsmount
 
 
-def usage(out=sys.stdout):
-	"""Output usage message."""
-	print >>out, 'syntax: nfsmounts [-h] [-v]'
-	print >>out, '     -h, --help       print this help'
-	print >>out, '     -s, --simulate   simulate update and just show actions'
-	print >>out, '     -v, --verbose    print verbose information'
-	print >>out, ''
-
-
 def main():
 	# parse command line
-	try:
-		opts, pargs = getopt.getopt(sys.argv[1:], 'hsv', ['help', 'simulate', 'verbose'])
-	except:
-		usage(sys.stderr)
-		sys.exit(2)
+	description = "Add NFS mount points from LDAP to /etc/fstab and mount them"
+	parser = argparse.ArgumentParser(description=description)
+	parser.add_argument('--dn', default=configRegistry.get('ldap/hostdn'), help=argparse.SUPPRESS)
+	parser.add_argument('-s', '--simulate', action='store_true', help='simulate and show values to be set')
+	parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
+	args = parser.parse_args()
 
-	# get command line data
-	for option, value in opts:
-		if option == '-h' or option == '--help':
-			usage()
-			sys.exit(0)
-		elif option == '-s' or option == '--simulate':
-			global simulate
-			simulate = True
-		elif option == '-v' or option == '--verbose':
-			global verbose
-			verbose = True
+	global simulate, verbose
+	simulate = args.simulate
+	verbose = args.verbose
 
-	hostdn = configRegistry.get('ldap/hostdn')
-	if not hostdn:
-		print >>sys.stderr, "Error: ldap/hostdn is not set."
-		exit(1)
-	debug("Hostdn is %s\n" % hostdn)
+	if not args.dn:
+		parser.error("ldap/hostdn is not set.")
+	debug("Hostdn is %s\n" % args.dn)
 
-	nfsmounts = query_policy(hostdn)
+	nfsmounts = query_policy(args.dn)
 
 	lo = univention.uldap.getMachineConnection()
 
 	# remove all nfs mounts from the fstab
 	debug("Rewriting /etc/fstab...\n")
-	fstabNew = "/etc/fstab.new.%d" % os.getpid()
+	fstab_new = "/etc/fstab.new.%d" % (os.getpid(),)
 	sources = set()
 	mount_points = set()
 	try:
 		f_old = open('/etc/fstab', 'r')
 		if simulate:
 			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
-			from StringIO import StringIO
 			f_new = StringIO()
 		else:
-			f_new = open(fstabNew, 'w')
+			f_new = open(fstab_new, 'w')
 		for line in f_old:
 			if MAGIC_LDAP not in line:
 				f_new.write(line)
@@ -183,8 +174,8 @@ def main():
 
 		try:
 			attributes = result[0][1]
-			share_host = attributes['univentionShareHost'][0]
-			share_path = attributes['univentionSharePath'][0]
+			share_host = attributes['univentionShareHost'][0].decode('ASCII')
+			share_path = attributes['univentionSharePath'][0].decode('utf-8')
 		except LookupError:
 			debug('not found, skipping\n')
 			continue
@@ -208,7 +199,7 @@ def main():
 
 		# get the ip of the share_host
 		hostname, domain = share_host.split('.', 1)
-		result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(zoneName=%s))' % (hostname, domain), attrlist=['aRecord'])
+		result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
 		try:
 			attributes = result[0][1]
 			nfs_path_ip = "%s:%s" % (attributes['aRecord'][0], share_path)
@@ -228,15 +219,17 @@ def main():
 	f_new.close()
 	debug('Switching /etc/fstab...\n')
 	if not simulate:
-		if os.path.isfile(fstabNew) and os.path.getsize(fstabNew) > 0:
-			os.rename(fstabNew, '/etc/fstab')
+		if os.path.isfile(fstab_new) and os.path.getsize(fstab_new) > 0:
+			os.rename(fstab_new, '/etc/fstab')
 
+	# Discard already mounted
 	fp = open('/etc/mtab', 'r')
 	for line in fp:
 		line = line.rstrip('\n')
 		fields = line.split(' ')  # source_spec mount_point fs options freq passno
 		to_mount.discard(fields[1])
 
+	# mount
 	for mp in sorted(to_mount):
 		if not os.path.exists(mp):
 			os.makedirs(mp)

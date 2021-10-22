@@ -55,9 +55,11 @@ Description: UCS - base packages
 Package: univention-base-files
 Architecture: all
 Depends:
+ python3-univention-lib (>= 9.0.11-8),
  shell-univention-lib (>= 6.0.9-8),
  udev,
  univention-config (>= 15),
+ univention-policy-tools (>= 11.0.1-2),
  ${misc:Depends},
 Provides:
  univention-config-registry,

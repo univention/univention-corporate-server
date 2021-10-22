@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-4) unstable; urgency=medium
+
+  * Bug #53343: Code updated from python 2 to python 3.
+
+ -- Esteban Martinena <martinena@univention.de>  Mon, 04 Oct 2021 07:31:46 +0200
+
 univention-base-files (9.0.3-3) unstable; urgency=medium
 
   * Bug #51579: Remove dpkg-statoverride for /var/log/lastlog,
