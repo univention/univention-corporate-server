@@ -1,3 +1,9 @@
+univention-server (15.0.4-7) unstable; urgency=medium
+
+  * Bug #53182: Add timestamps to server_password_change log messages
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Oct 2021 09:13:04 +0200
+
 univention-server (15.0.4-6) unstable; urgency=medium
 
   * Bug #53348: Migrated univention-server to Python 3

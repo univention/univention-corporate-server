@@ -10,8 +10,8 @@ Standards-Version: 3.5.2
 Package: univention-server-master
 Architecture: all
 Pre-Depends:
- python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 9.0.11-9),
+ shell-univention-lib (>= 9.0.11-9),
  univention-ssl,
 Recommends:
  openssh-server,
@@ -56,8 +56,8 @@ Pre-Depends:
  univention-config (>= 7.0.25),
 Depends:
  nscd,
- python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 9.0.11-9),
+ shell-univention-lib (>= 9.0.11-9),
  univention-directory-manager-rest,
  univention-directory-notifier,
  univention-directory-replication,
@@ -91,8 +91,8 @@ Recommends:
  univention-nagios-client,
 Depends:
  nscd,
- python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 9.0.11-9),
+ shell-univention-lib (>= 9.0.11-9),
  univention-directory-replication,
  univention-heimdal-kdc,
  univention-ldap-acl-slave,
@@ -116,8 +116,8 @@ Recommends:
  univention-management-console,
  univention-nagios-client,
 Depends:
- python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 9.0.11-9),
+ shell-univention-lib (>= 9.0.11-9),
  univention-heimdal-member,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
@@ -186,8 +186,8 @@ Description: UCS system server role common dependencies and files
 Package: univention-role-common
 Architecture: all
 Depends:
- python-univention-lib (>= 1.0.25-1),
- shell-univention-lib (>= 1.0.25-1),
+ python-univention-lib (>= 9.0.11-9),
+ shell-univention-lib (>= 9.0.11-9),
  univention-admin-diary-client,
  univention-appcenter,
  univention-archive-key,
