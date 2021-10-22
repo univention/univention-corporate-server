@@ -1,3 +1,9 @@
+univention-dhcp (14.0.4-2) unstable; urgency=medium
+
+  * Bug #53182: Add timestamps to server_password_change log messages
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Oct 2021 09:19:54 +0200
+
 univention-dhcp (14.0.4-1) unstable; urgency=low
 
   * Bug #53175: Delay DHCP server start until after join
