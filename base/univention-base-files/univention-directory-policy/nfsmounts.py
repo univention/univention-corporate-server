@@ -108,79 +108,24 @@ def update_fstab(args, simulate):
 	"""remove all nfs mounts from the fstab"""
 	debug("Rewriting /etc/fstab...\n")
 	current_fstab = fstab.File('/etc/fstab')
-	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	to_mount = set()
 	nfs_mounts = query_policy(args.dn)
-	lo = univention.uldap.getMachineConnection()
 
 	for nfs_mount in nfs_mounts:
 		debug("NFS Mount: %s ..." % nfs_mount)
-		fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
-		dn = fields[0]
-		if not dn:
-			debug('no dn, skipping\n')
-			continue
 
-		try:
-			result = lo.lo.search_s(
-				dn,
-				ldap.SCOPE_SUBTREE,
-				'objectclass=*',
-				attrlist=['univentionShareHost', 'univentionSharePath'])
-		except ldap.NO_SUCH_OBJECT:
-			continue
-
-		try:
-			attributes = result[0][1]
-			share_host = attributes['univentionShareHost'][0].decode('ASCII')
-			share_path = attributes['univentionSharePath'][0].decode('utf-8')
-		except LookupError:
-			debug('not found, skipping\n')
-			continue
-
-		# skip share if from self
-		if share_host == fqdn:
-			debug('is self, skipping\n')
-			continue
-
-		mp = fields[-1] or share_path
-		# skip share if target already in fstab
-		mount_points = [entry.mount_point for entry in current_fstab.get()]
-		if mp in mount_points:
-			debug('already mounted on %s, skipping\n' % mp)
-			continue
-
-		nfs_path_fqdn = "%s:%s" % (share_host, share_path)
-		# skip share if the source is already in the fstab
-		sources = [entry.spec for entry in current_fstab.get()]
-		if nfs_path_fqdn in sources:
-			debug('already mounted from %s, skipping\n' % nfs_path_fqdn)
-			continue
-
-		# get the ip of the share_host
-		hostname, domain = share_host.split('.', 1)
-		result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
-		try:
-			attributes = result[0][1]
-			nfs_path_ip = "%s:%s" % (attributes['aRecord'][0], share_path)
-		except LookupError:
-			nfs_path_ip = nfs_path_fqdn
-
-		# skip share if the source is already in the fstab
-		if nfs_path_ip in sources:
-			debug('already mounted from %s, skipping\n' % nfs_path_ip)
-			continue
-
-		comment = "%s %s" % (MAGIC_LDAP, dn)
-		nfs_entry = current_fstab.find(comment=comment)
-		if nfs_entry is not None:
-			debug("\n- %s" % (nfs_entry,))
-			current_fstab.remove(nfs_entry)
-		nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment)
-		current_fstab.append(nfs_entry)
-		debug("\n+ %s" % (nfs_entry,))
-
-		to_mount.add(mp)
+		data = get_nfs_data(nfs_mount, current_fstab.get())
+		if data:
+			dn, nfs_path_ip, mp = data
+			comment = "%s %s" % (MAGIC_LDAP, dn)
+			nfs_entry = current_fstab.find(comment=comment)
+			if nfs_entry is not None:
+				debug("\n- %s" % (nfs_entry,))
+				current_fstab.remove(nfs_entry)
+			nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment)
+			current_fstab.append(nfs_entry)
+			debug("\n+ %s" % (nfs_entry,))
+			to_mount.add(mp)
 
 	debug('Switching /etc/fstab...\n')
 	if not simulate:
@@ -191,6 +136,68 @@ def update_fstab(args, simulate):
 	for entry in current_mtab.get('nfs'):
 		to_mount.discard(entry.mount_point)
 	return to_mount
+
+
+def get_nfs_data(nfs_mount, entries):
+	fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
+	dn = fields[0]
+	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
+	lo = univention.uldap.getMachineConnection()
+	if not dn:
+		debug('no dn, skipping\n')
+		return
+	# get univention share host and path for dn
+	try:
+		result = lo.lo.search_s(
+			dn,
+			ldap.SCOPE_SUBTREE,
+			'objectclass=*',
+			attrlist=['univentionShareHost', 'univentionSharePath'])
+	except ldap.NO_SUCH_OBJECT:
+		return
+
+	try:
+		attributes = result[0][1]
+		share_host = attributes['univentionShareHost'][0].decode('ASCII')
+		share_path = attributes['univentionSharePath'][0].decode('utf-8')
+	except LookupError:
+		debug('not found, skipping\n')
+		return
+
+	# skip share if from self
+	if share_host == fqdn:
+		debug('is self, skipping\n')
+		return
+
+	mp = fields[-1] or share_path
+	# skip share if target already in fstab
+	mount_points = [entry.mount_point for entry in entries]
+	if mp in mount_points:
+		debug('already mounted on %s, skipping\n' % mp)
+		return
+
+	nfs_path_fqdn = "%s:%s" % (share_host, share_path)
+	# skip share if the source is already in the fstab
+	sources = [entry.spec for entry in entries]
+	if nfs_path_fqdn in sources:
+		debug('already mounted from %s, skipping\n' % nfs_path_fqdn)
+		return
+
+	# get the ip of the share_host
+	hostname, domain = share_host.split('.', 1)
+	result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
+	try:
+		attributes = result[0][1]
+		nfs_path_ip = "%s:%s" % (attributes['aRecord'][0].decode('ASCII'), share_path)
+	except LookupError:
+		nfs_path_ip = nfs_path_fqdn
+
+	# skip share if the source is already in the fstab
+	if nfs_path_ip in sources:
+		debug('already mounted from %s, skipping\n' % nfs_path_ip)
+		return
+
+	return dn, nfs_path_ip, mp
 
 
 def mount(to_mount):
