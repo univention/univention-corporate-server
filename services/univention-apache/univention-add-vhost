@@ -217,12 +217,9 @@ def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
 	global _forward_zones
 	if not _forward_zones:
 		dns_forward_zone_mod = udm.get("dns/forward_zone")  # type: BaseModule
-
-		def cmp23(x, y):
-			return (x > y) - (x < y)  # py2/3 compatibility
 		_forward_zones = sorted(
 			dns_forward_zone_mod.search(),
-			cmp=lambda x, y: cmp23(len(x.props.zone), len(y.props.zone)),
+			key=lambda x: len(x.props.zone),
 			reverse=True
 		)
 	return _forward_zones
