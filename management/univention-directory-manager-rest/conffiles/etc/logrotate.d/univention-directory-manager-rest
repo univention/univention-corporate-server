@@ -1,0 +1,12 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import univention.lib.ucrLogrotate
+
+name = "directory-manager-rest"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+print("/var/log/univention/directory-manager-rest.log {")
+for setting in sorted(settings):
+	print("\t%s" % settings[setting])
+print("}")
+@!@

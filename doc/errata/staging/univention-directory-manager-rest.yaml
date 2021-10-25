@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-directory-manager-rest
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * missing logrotation for directory-manager-rest.log
+bug: [51721]
