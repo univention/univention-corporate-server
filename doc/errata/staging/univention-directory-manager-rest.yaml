@@ -3,8 +3,8 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-rest
-fix: 
+fix: 10.0.2-2A~5.0.0.202110251530
 desc: |
  This update addresses the following issue(s):
- * missing logrotation for directory-manager-rest.log
+ * The configuration of log rotation for the UDM REST API logfiles has been added.
 bug: [51721]

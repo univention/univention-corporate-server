@@ -1,6 +1,6 @@
 univention-directory-manager-rest (10.0.2-2) unstable; urgency=medium
 
-  * Bug #51721: missing logrotation for directory-manager-rest.log 
+  * Bug #51721: missing logrotation for directory-manager-rest.log
 
  -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 25 Oct 2021 10:17:11 +0200
 
