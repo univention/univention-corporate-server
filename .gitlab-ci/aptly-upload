@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e -u
 
-base="$(dirname "$1")"
+[ -s "$1" ]
+dir="$(dirname "$1")"
+base="$(basename "$1" .changes)"
 pkg="${base%%_*}"
 
 aptly () {
@@ -14,55 +16,49 @@ aptly () {
         esac
     done
     printf '\n=== %s === %s ===\n' "$msg" "$url" >&2
-    curl \
-        --fail \
-        --show-error \
+    "${0%/*}/ht" \
+        --ignore-stdin \
+        --pretty=all \
         "$@"
 }
 
 upload () {
     RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
-    args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
+    args="$(sed -rne "s!${RE}!file@${dir}/\\5!p" "$1")"
     # shellcheck disable=SC2086
     aptly upload \
-        -X POST \
-        $args \
-        "${APTLY}/files/${CI_JOB_ID}"
+        --form \
+        POST "${APTLY}/files/${CI_JOB_ID}" \
+        $args
 }
 
 list () {
     pkgs="$(
     aptly list \
-        --data-urlencode q="\$Source ($pkg)" \
-        --get "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+        --pretty=none \
+        GET "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages" \
+        "q==\$Source ($pkg)"
     )"
+    echo "$pkgs"
 }
 
 delete () {
-    JSON='{"PackageRefs":'"$pkgs"'}'
     aptly delete \
-        -X DELETE \
-        -H 'Content-Type: application/json' \
-        --data "$JSON" \
-        "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+        DELETE "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages" \
+        "PackageRefs:=$pkgs"
 }
 
 replace () {
-    JSON='{"forceReplace":1}'
     aptly replace \
-        -X POST \
-        -H 'Content-Type: application/json' \
-        --data "$JSON" \
-        "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/file/${CI_JOB_ID}"
+        POST "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/file/${CI_JOB_ID}" \
+        'forceReplace:=1'
 }
 
 publish () {
-    JSON='{"AcquireByHash":true,"ForceOverwrite":true}'
     aptly publish \
-        -X PUT \
-        -H 'Content-Type: application/json' \
-        --data "$JSON" \
-        "${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git"
+        PUT "${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git" \
+        'AcquireByHash:=true' \
+        'ForceOverwrite:=true'
 }
 
 upload "$1"

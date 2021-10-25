@@ -1,5 +1,4 @@
 stages:
-  - prepare
   - lint
   - build
 
@@ -20,36 +19,13 @@ stages:
   before_script:
     - echo man-db man-db/auto-update boolean false | debconf-set-selections
     - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
+    - install -m644 .gitlab-ci/git.pref /etc/apt/preferences.d/10git.pref
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - cd $base
     - apt-get -q --assume-yes build-dep .
+    - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
   script:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
-    - apt-get -qq --no-install-recommends install curl
     - .gitlab-ci/aptly-upload ${base}_*.changes
-
-prepare ucslint:
-  stage: prepare
-  extends: .docker
-  script:
-    - docker build --pull -t $LINT_REF -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
-    - docker push $LINT_REF
-  rules:
-    - changes:
-      - packaging/ucslint/**/*
-
-push ucslint:
-  stage: lint
-  extends: .docker
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - docker pull $LINT_REF
-    - docker tag $LINT_REF $LINT_UCS
-    - docker push $LINT_UCS
-  rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^[1-9][0-9]*[.][0-9]+[-][0-9]+$/
-      changes:
-      - packaging/ucslint/**/*

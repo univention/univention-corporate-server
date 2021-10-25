@@ -1,9 +1,13 @@
+stages:
+  - prepare
+  - build
+
 include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
   - local: '/.gitlab-ci/base.yml'
 
 generate-config:
-  stage: build
+  stage: prepare
   rules:
     - when: always
   image:
@@ -29,10 +33,13 @@ generate-config:
       - generated-config-deb.yml
 
 prepare aptly:
-  stage: build
+  stage: prepare
+  interruptible: false
   rules:
     - when: always
-  image: docker-registry.knut.univention.de/curlimages/curl
+  image:
+    name: $BUILD
+    entrypoint: [""]
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
     - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
@@ -43,7 +50,8 @@ prepare aptly:
     auto_stop_in: 6 month
 
 drop aptly:
-  stage: build
+  stage: prepare
+  interruptible: false
   variables:
     GIT_STRATEGY: none
   image: docker-registry.knut.univention.de/curlimages/curl
@@ -57,8 +65,35 @@ drop aptly:
     name: $CI_COMMIT_REF_NAME
     action: stop
 
+prepare ucslint:
+  stage: prepare
+  interruptible: false
+  extends: .docker
+  script:
+    - docker build --pull -t $LINT_REF -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
+    - docker push $LINT_REF
+  rules:
+    - changes:
+      - packaging/ucslint/**/*
+
+push ucslint:
+  stage: prepare
+  extends: .docker
+  needs:
+    - job: prepare ucslint
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - docker pull $LINT_REF
+    - docker tag $LINT_REF $LINT_UCS
+    - docker push $LINT_UCS
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^[1-9][0-9]*[.][0-9]+[-][0-9]+$/
+      changes:
+      - packaging/ucslint/**/*
+
 doc-pipeline:
-  stage: test
+  stage: build
   rules:
     - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
       when: never
@@ -72,7 +107,9 @@ doc-pipeline:
       - "doc/errat[^a]*/**/*"
       - "doc/errata?*/**/*"
   needs:
-    - generate-config
+    - job: generate-config
+  variables:
+    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-doc.yml
@@ -80,7 +117,7 @@ doc-pipeline:
     strategy: depend
 
 deb-pipeline:
-  stage: test
+  stage: build
   rules:
     - if: "$CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/"
       when: never
@@ -100,7 +137,12 @@ deb-pipeline:
       - "test/ucs-test-tools/**/*"
       - "test/univention-demo-configuration/**/*"
   needs:
-    - generate-config
+    - job: generate-config
+    - job: prepare aptly
+    - job: prepare ucslint
+      optional: true
+  variables:
+    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-deb.yml

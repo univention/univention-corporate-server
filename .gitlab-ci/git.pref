@@ -1,0 +1,3 @@
+Package: *
+Pin: release n=git
+Pin-Priority: 1001

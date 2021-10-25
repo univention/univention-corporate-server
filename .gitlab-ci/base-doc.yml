@@ -1,35 +1,95 @@
 stages:
   - build
-  - deploy
+  - review
+  - staging
+  - production
 
 .doc:
   stage: build
   image: $DOC
   script:
-    - make -C $base install DESTDIR=$CI_PROJECT_DIR/public
+    - make -C $base check install DESTDIR=$CI_PROJECT_DIR/public
   artifacts:
     paths:
       - public
+    reports:
+      codequality: $base/codeclimate.json
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
   stage: build
   image: $DOC
   script:
-    - cp -rTu /DocBook//webframe public
+    - cp -rTu /DocBook/webframe public
   artifacts:
     paths:
       - public
 
-pages:
-  stage: deploy
+.publish:
+  interruptible: false
   variables:
     GIT_STRATEGY: none
+  tags:
+    - omar
+
+review:
+  stage: review
+  rules:
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+  extends: .publish
   script:
-    - cd public
-    - echo '<html><head><title>Documentation</title></head><body><ul>' >index.html
-    - ls -1 *.html | sed 's,.*,<li><a href="&">&</a></li>,' >>index.html
-    - echo '</ul></body></html>' >>index.html
-  artifacts:
+    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
+    on_stop: stop_review
+    auto_stop_in: 1 week
+
+stop_review:
+  stage: staging
+  rules:
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: manual
+  needs:
+    - review
+  allow_failure: true
+  extends: .publish
+  script:
+    - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    action: stop
+
+staging:
+  stage: staging
+  extends: .publish
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
+  environment:
+    name: staging
+    url: http://apt.knut.univention.de/download/docs/
+
+production:
+  stage: production
+  extends: .publish
+  cache:
     paths:
-      - public
+      - docs
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  script:
+    - '[ -d docs ] || git clone --branch master --depth 1 --single-branch https://ucs-docs-deployment:$DOCS_TOKEN@git.knut.univention.de/univention/docs.univention.de.git docs'
+    - cd docs
+    - git clean -f -d
+    - git fetch --no-tags origin
+    - git reset --hard origin/master
+    - rsync -av ../public/ ./
+    - git add -u
+    - git commit -m "Automatic doc deployment by GitLab commit $CI_COMMIT_SHA"
+    - git push
+  environment:
+    name: production
+    url: http://updates.knut.univention.de/download/docs/

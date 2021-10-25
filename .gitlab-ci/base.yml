@@ -1,6 +1,14 @@
 default:
   artifacts:
     expire_in: 1 day
+  interruptible: true
+  retry:
+    max: 2
+    when:
+      - script_failure
+      - api_failure
+      - stuck_or_timeout_failure
+      - runner_system_failure
 
 variables:
   ucs: 448
@@ -22,7 +30,6 @@ variables:
       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
   tags:
     - docker
   image: docker-registry.knut.univention.de/docker:stable

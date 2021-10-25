@@ -1,16 +1,9 @@
 #!/bin/sh
 set -e -u
 
-JSON='{
-"Name":"'"$CI_COMMIT_REF_SLUG"'",
-"Comment":"'"$CI_COMMIT_REF_NAME"'",
-"DefaultDistribution":"git",
-"DefaultComponent":"main"
-}'
-exec curl \
-	--silent \
-	--show-error \
-	-X POST \
-	-H 'Content-Type: application/json' \
-	--data "$JSON" \
-	"$APTLY/repos"
+exec "${0%/*}/ht" --ignore-stdin --pretty=all \
+    POST "$APTLY/repos" \
+    "Name=$CI_COMMIT_REF_SLUG" \
+    "Comment=$CI_COMMIT_REF_NAME" \
+    'DefaultDistribution=git' \
+    'DefaultComponent=main'
