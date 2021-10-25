@@ -496,7 +496,7 @@ class GenericModule(BaseModule):
 
 	0.  Get module using::
 
-	        user_mod = UDM.admin/machine/credentials().get('users/user')
+	        user_mod = UDM.admin/machine/credentials().version(2).get('users/user')
 
 	1.  Create fresh, not yet saved GenericObject::
 
