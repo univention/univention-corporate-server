@@ -311,6 +311,7 @@ COMMON_EXCEPTIONS = (
 	E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
 	E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
 	E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
+	E('univention.admin.uexceptions.wrongObjectType: relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
 )
 
 
