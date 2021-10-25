@@ -1,0 +1,42 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: faad2
+fix: 2.8.0~cvs20161113-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * A NULL pointer dereference was discovered in ifilter_bank of
+   libfaad/filtbank.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.8.8. The
+   vulnerability causes a segmentation fault and application crash, which
+   leads to denial of service because adding to windowed output is mishandled
+   in the ONLY_LONG_SEQUENCE case. (CVE-2018-20199)
+ * An invalid memory address dereference was discovered in the
+   sbr_process_channel function of libfaad/sbr_dec.c in Freeware Advanced
+   Audio Decoder 2 (FAAD2) 2.8.8. The vulnerability causes a segmentation
+   fault and application crash, which leads to denial of service.
+   (CVE-2018-20360)
+ * An issue was discovered in Freeware Advanced Audio Decoder 2 (FAAD2) 2.8.8.
+   It is a buffer over-read in ps_mix_phase in libfaad/ps_dec.c.
+   (CVE-2019-6956)
+ * An issue was discovered in faad2 through 2.10.0. A heap-buffer-overflow
+   exists in the function sbr_qmf_synthesis_64 located in sbr_qmf.c. It allows
+   an attacker to cause code Execution. (CVE-2021-32274)
+ * An issue was discovered in faad2 through 2.10.0. A NULL pointer dereference
+   exists in the function get_sample() located in output.c. It allows an
+   attacker to cause Denial of Service. (CVE-2021-32276)
+ * An issue was discovered in faad2 through 2.10.0. A heap-buffer-overflow
+   exists in the function sbr_qmf_analysis_32 located in sbr_qmf.c. It allows
+   an attacker to cause code Execution. (CVE-2021-32277)
+ * An issue was discovered in faad2 through 2.10.0. A heap-buffer-overflow
+   exists in the function lt_prediction located in lt_predict.c. It allows an
+   attacker to cause code Execution. (CVE-2021-32278)
+bug: [53982]
+cve:
+- CVE-2018-20199
+- CVE-2018-20360
+- CVE-2019-6956
+- CVE-2021-32274
+- CVE-2021-32276
+- CVE-2021-32277
+- CVE-2021-32278
