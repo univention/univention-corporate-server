@@ -1,7 +1,7 @@
 default:
   artifacts:
     expire_in: 1 day
-  interruptible: yes
+  interruptible: true
   retry:
     max: 2
     when:
@@ -30,7 +30,6 @@ variables:
       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
   tags:
     - docker
   image: docker-registry.knut.univention.de/docker:stable

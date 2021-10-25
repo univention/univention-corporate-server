@@ -1,5 +1,4 @@
 stages:
-  - prepare
   - lint
   - build
 
@@ -30,28 +29,3 @@ stages:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
     - .gitlab-ci/aptly-upload ${base}_*.changes
-
-prepare ucslint:
-  stage: prepare
-  extends: .docker
-  script:
-    - docker build --pull -t $LINT_REF -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
-    - docker push $LINT_REF
-  rules:
-    - changes:
-      - packaging/ucslint/**/*
-
-push ucslint:
-  stage: lint
-  interruptible: no
-  extends: .docker
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - docker pull $LINT_REF
-    - docker tag $LINT_REF $LINT_UCS
-    - docker push $LINT_UCS
-  rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^[1-9][0-9]*[.][0-9]+[-][0-9]+$/
-      changes:
-      - packaging/ucslint/**/*

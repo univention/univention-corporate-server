@@ -26,6 +26,7 @@ webframe:
       - public
 
 .publish:
+  interruptible: false
   variables:
     GIT_STRATEGY: none
   tags:
