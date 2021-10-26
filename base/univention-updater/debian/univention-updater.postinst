@@ -33,6 +33,7 @@
 REPOSITORY="https://updates.software-univention.de/"
 #REPOSITORY="https://updates-test.software-univention.de/"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -43,7 +44,8 @@ create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 [ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
 
-while IFS='	' read r v u; do releasename=$r; done <<__CODENAMES__
+# shellcheck disable=SC2034
+while IFS='	' read -r r v u; do releasename=$r; done <<__CODENAMES__
 mountain beech	UCS 2.1	https://en.wikipedia.org/wiki/Nothofagus_solandri
 copper beech	UCS 2.2	https://en.wikipedia.org/wiki/European_Beech
 hornbeam	UCS 2.3	https://en.wikipedia.org/wiki/Hornbeam
@@ -98,16 +100,16 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/version?4.4 \
-		version/patchlevel?8 \
+		version/patchlevel?9 \
 		version/erratalevel?0 \
 		version/releasename="$releasename"
 
 	if [ -z "$2" ]; then
 		# enable current errata component
 		eval "$(univention-config-registry shell version/version version/patchlevel)"
-		ucr set repository/online/component/${version_version}-${version_patchlevel}-errata="enabled" \
-				repository/online/component/${version_version}-${version_patchlevel}-errata/description="Errata updates for UCS ${version_version}-${version_patchlevel}" \
-				repository/online/component/${version_version}-${version_patchlevel}-errata/version="${version_version}"
+		ucr set "repository/online/component/${version_version:?}-${version_patchlevel:?}-errata=enabled" \
+				"repository/online/component/${version_version:?}-${version_patchlevel:?}-errata/description=Errata updates for UCS ${version_version}-${version_patchlevel}" \
+				"repository/online/component/${version_version:?}-${version_patchlevel:?}-errata/version=${version_version}"
 	fi
 fi
 

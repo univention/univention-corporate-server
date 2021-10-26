@@ -1,3 +1,9 @@
+univention-updater (14.0.3-13) unstable; urgency=low
+
+  * Bug #53913: Adapt links and components for 4.4-9
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Oct 2021 18:42:52 +0200
+
 univention-updater (14.0.3-12) unstable; urgency=medium
 
   * Bug #53228: Rename to ucs-releases.json
