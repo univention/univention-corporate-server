@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The style of the module tabs when using the overview=false
+   query parameter has been adjusted.
+bug: [53906]
