@@ -1,4 +1,4 @@
-univention-apache (12.0.0-2) unstable; urgency=medium
+univention-apache (12.0.0-3) unstable; urgency=medium
 
   * Bug #53359: Migrated univention-add-vhost to Python 3
 
