@@ -1,5 +1,6 @@
 @require "../variables"
 
+$moduleTabOverhang = 12px
 .umc .umcHeader
 	background-color: var(--bgc-content-header)
 	height: var(--layout-height-header)
@@ -57,8 +58,8 @@
 	.umcModuleTab__background__svg
 		position: absolute
 		bottom: 0
-		height: 12px
-		width: 12px
+		height: $moduleTabOverhang
+		width: $moduleTabOverhang
 		fill: currentColor
 		color: var(--tabColor)
 		transition: color $moduleTabBGCTransitionDur
@@ -152,6 +153,8 @@
 	.umcMainTabController
 		display: flex
 		flex: 1 1 auto
+		&--overviewless
+			margin-left: $moduleTabOverhang
 	.umcHeaderStretch
 		flex: 1 1 auto
 	.umcHeaderRight

@@ -606,9 +606,7 @@ define([
 		_hostMenu: null,
 
 		_resize: function() {
-			if (_overviewVisible) {
-				this._updateMoreTabsVisibility();
-			}
+			this._updateTabsVisibility();
 		},
 
 		setupGui: function() {
@@ -629,8 +627,8 @@ define([
 
 			if (_overviewVisible) {
 				this.setupBackToOverview();
-				this._setupModuleTabs();
 			}
+			this._setupModuleTabs();
 
 			this.addChild(this._headerRight);
 			if (_overviewVisible) {
@@ -677,11 +675,11 @@ define([
 					put(tab, closeButton);
 					put(mobileTabsContainer, tab);
 
-					this._updateMoreTabsVisibility();
+					this._updateTabsVisibility();
 
 					aspectHandlesMap[module.id] = aspect.after(module, '_setTitleAttr', lang.hitch(this, function(label) {
 						labelNode.innerHTML = label;
-						this._updateMoreTabsVisibility();
+						this._updateTabsVisibility();
 					}), true);
 				}
 			}));
@@ -693,19 +691,33 @@ define([
 				if (node) {
 					node.remove();
 				}
-				this._updateMoreTabsVisibility();
+				this._updateTabsVisibility();
 			}));
 
 			this.addChild(this._tabController);
+			domClass.toggle(this._tabController.domNode, 'umcMainTabController--overviewless', !_overviewVisible);
 			this._headerStretch = put(this.domNode, 'div.umcHeaderStretch.dijitDisplayNone');
 		},
 
-		_updateMoreTabsVisibility: function() {
-			this._mobileTabsButton.counterNode.innerHTML = this._tabContainer.getChildren().length - 1; // -1 for hidden overview tab
-			this.set('mobileTabsView', false);
-			window.requestAnimationFrame(lang.hitch(this, function() {
-				this.set('mobileTabsView', this._tabController.domNode.scrollWidth > this._tabController.domNode.clientWidth);
-			}));
+		_getNumOfTabs: function() {
+			return this._tabContainer.getChildren().filter(function(tab) {
+				return !tab.isOverview;
+			}).length;
+		},
+
+		_updateTabsVisibility: function() {
+			var isTabsVisible = _overviewVisible || this._getNumOfTabs() >= 2;
+
+			tools.toggleVisibility(this._tabController, isTabsVisible);
+
+			if (isTabsVisible) {
+				// update mobile tabs
+				this._mobileTabsButton.counterNode.innerHTML = this._getNumOfTabs();
+				this.set('mobileTabsView', false);
+				window.requestAnimationFrame(lang.hitch(this, function() {
+					this.set('mobileTabsView', this._tabController.domNode.scrollWidth > this._tabController.domNode.clientWidth);
+				}));
+			}
 		},
 
 		setupSearchField: function() {
@@ -1494,7 +1506,7 @@ define([
 						this._updateQuery(category);
 
 						this._header._search._searchTextBox._updateInlineLabelVisibility();
-						this._header._updateMoreTabsVisibility();
+						this._header._updateTabsVisibility();
 					}),
 					categoryID: category.id
 				});
@@ -1620,10 +1632,15 @@ define([
 				}
 				if (!tab) {
 					// module is not open yet, open it
+
+					// if ther overview is disabled, the first opened module is not closable.
+					// Modules opened after that are closable
+					var closable = _overviewVisible || this._header._getNumOfTabs() >= 1;
+
 					var params = lang.mixin({
 						title: module.name,
 						//iconClass: tools.getIconClass(module.icon),
-						closable: _overviewVisible,  // closing tabs is only enabled if the overview is visible
+						closable: closable,
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
 						categoryColor: module.category_for_color,
@@ -1641,6 +1658,7 @@ define([
 				}
 				this._tabContainer.selectChild(tab, true);
 				deferred.resolve(tab);
+
 			})).otherwise(function(err) {
 				console.warn('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();
