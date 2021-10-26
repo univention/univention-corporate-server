@@ -1,3 +1,7 @@
 Type: file
 File: etc/apache2/sites-available/univention-udm.conf
 Variables: directory/manager/rest/server/port
+
+Type: file
+File: etc/logrotate.d/univention-directory-manager-rest
+Variables: logrotate/.*

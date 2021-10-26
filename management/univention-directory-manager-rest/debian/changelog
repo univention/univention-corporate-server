@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-15) unstable; urgency=medium
+
+  * Bug #53986: missing logrotation for directory-manager-rest.log
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 26 Oct 2021 05:55:48 +0200
+
 univention-directory-manager-rest (9.0.16-14) unstable; urgency=medium
 
   * Bug #52862: fix OpenAPI schema: remove mutual exclusive "example"

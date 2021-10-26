@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-manager-rest
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The configuration of log rotation for the UDM REST API logfiles has been added.
+bug: [53986]
