@@ -1,3 +1,9 @@
+univention-web (4.0.1-43) unstable; urgency=medium
+
+  * Adjust styling for tabs. 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Oct 2021 09:36:54 +0200
+
 univention-web (4.0.1-42) unstable; urgency=medium
 
   * Bug #53465: replace Expire-caching with Cache-Control "must-

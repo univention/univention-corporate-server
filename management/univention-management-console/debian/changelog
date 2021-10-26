@@ -1,3 +1,10 @@
+univention-management-console (12.0.12-17) unstable; urgency=medium
+
+  * The tabs when using ?overview=false query parameter are only hidden
+    when there is one module open.
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Oct 2021 09:38:45 +0200
+
 univention-management-console (12.0.12-16) unstable; urgency=medium
 
   * Bug #53465: set explicit caching control in maintenance mode
