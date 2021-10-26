@@ -656,15 +656,6 @@ define([
 			var aspectHandlesMap = {};
 			this._tabController.on('addChild', lang.hitch(this, function(module) {
 				if (!module.isOverview) {
-					var closeButton = Button.simpleIconButtonNode('x', 'umcMobileTab__closeButton');
-					on(closeButton, 'click', lang.hitch(this, function(evt) {
-						evt.stopImmediatePropagation();
-						module.closeModule();
-						if (mobileTabsContainer.children.length === 0) {
-							this._mobileTabsButton.set('checked', false);
-						}
-					}));
-
 					var tab = put(`div.umcMobileTab#umcMobileTab_${module.id}`);
 					on(tab, 'click', lang.hitch(this, function(evt) {
 						evt.stopImmediatePropagation();
@@ -672,7 +663,17 @@ define([
 						this._mobileTabsButton.set('checked', false);
 					}));
 					var labelNode = put(tab, 'div.umcMobileTab__label', module.title);
-					put(tab, closeButton);
+					if (module.closable) {
+						var closeButton = Button.simpleIconButtonNode('x', 'umcMobileTab__closeButton');
+						on(closeButton, 'click', lang.hitch(this, function(evt) {
+							evt.stopImmediatePropagation();
+							module.closeModule();
+							if (mobileTabsContainer.children.length === 0) {
+								this._mobileTabsButton.set('checked', false);
+							}
+						}));
+						put(tab, closeButton);
+					}
 					put(mobileTabsContainer, tab);
 
 					this._updateTabsVisibility();
