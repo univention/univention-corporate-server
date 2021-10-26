@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-web
-fix: 
+fix: 4.0.1-43A~5.0.0.202110260951
 desc: |
  This update addresses the following issue(s):
  * The style of the module tabs when using the overview=false
