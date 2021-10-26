@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf8 -*-
 # Univention Squid
 #   basic auth encoding wrapper
@@ -34,41 +34,42 @@
 # This is a wrapper script that tries to login using both utf8 and latin-1 encodings
 # utf8 is used by Chrome and Firefox while IE uses latin-1
 
-import pexpect
 import sys
-import urllib
+
+import pexpect
+from six.moves import input
+from six.moves.urllib_parse import unquote
 
 
 def check_user(input__):
 	basic_ldap_auth.sendline(input__)
-	basic_ldap_auth.expect('.*\r\n')  # The input is mirrored
-	basic_ldap_auth.expect('.*\r\n')  # The actual check result
+	basic_ldap_auth.expect(b'.*\r\n')  # The input is mirrored
+	basic_ldap_auth.expect(b'.*\r\n')  # The actual check result
 
 
 def main():
 	try:
-		raw = raw_input()
+		raw = input()
 	except EOFError:
 		# closed by squid
 		sys.exit(0)
-	check_user(raw)  # maybe it just works
+	check_user(raw.encode('utf-8'))  # maybe it just works
 
-	if basic_ldap_auth.after == 'BH Success\r\n':
-		raw_unquoted = urllib.unquote(raw)
+	if basic_ldap_auth.after == b'BH Success\r\n':
 		try:
 			# "auth_param basic utf8 off" default -> decode is needed for IE
-			decoded = raw_unquoted.decode('iso-8859-1')
-			check_user(decoded)
+			decoded = unquote(raw, encoding='ISO8859-1', errors='strict')
+			check_user(decoded.encode('utf-8'))
 		except UnicodeDecodeError:
 			pass
-	if basic_ldap_auth.after == 'BH Success\r\n':
+	if basic_ldap_auth.after == b'BH Success\r\n':
 		try:
 			# "auth_param basic utf8 on" -> encode is needed for Chrome/Firefox
-			encoded = raw_unquoted.encode('iso-8859-1')
-			check_user(encoded)
+			decoded = unquote(raw, encoding='utf-8', errors='strict')
+			check_user(decoded.encode('ISO8859-1'))
 		except UnicodeDecodeError:
 			pass
-	print(basic_ldap_auth.after)
+	print(basic_ldap_auth.after.decode('ascii'))
 	sys.stdout.flush()  # Squid needs a flush
 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7 -u
+#!/usr/bin/python3 -u
 # -*- coding: utf-8 -*-
 #
 # Univention openldap ntlm squid authenticator
@@ -52,21 +52,27 @@
 # squid/debug/level: ALL,1 29,9
 # /usr/lib/squid/squid_ldap_ntlm_auth --debug
 
+import argparse
+import base64
+import binascii
+import hashlib
+import hmac
+import os
+import random
+import string
+import struct
+import subprocess
 import sys
 import time
-import struct
-import base64
-import random
-import hmac
-import hashlib
-import string
-import Crypto.Cipher.DES
-import optparse
-import os
-import subprocess
+from typing import Dict, List, Tuple
 
-import univention.uldap
+import passlib.crypto.des
+from ldap.filter import filter_format
+
 import univention.config_registry
+import univention.uldap
+
+options = argparse.Namespace(debug=False, debug_file='')
 
 NTLM_NegotiateUnicode = 0x00000001
 NTLM_NegotiateOEM = 0x00000002
@@ -104,18 +110,18 @@ NTLM_Negotiate56 = 0x80000000
 NTLMSSP_CHALLENGE = 2
 
 NTLM_TYPE2_FLAGS = (
-	NTLM_NegotiateUnicode |
-	NTLM_RequestTarget |
-	NTLM_NegotiateNTLM |
-	NTLM_NegotiateExtendedSecurity |
-	NTLM_Negotiate128 |
-	NTLM_NegotiateTargetInfo |
-	NTLM_TargetTypeDomain |
-	NTLM_Negotiate56)
+	NTLM_NegotiateUnicode
+	| NTLM_RequestTarget
+	| NTLM_NegotiateNTLM
+	| NTLM_NegotiateExtendedSecurity
+	| NTLM_Negotiate128
+	| NTLM_NegotiateTargetInfo
+	| NTLM_TargetTypeDomain
+	| NTLM_Negotiate56
+)
 
 
-def dumpNegotiateFlags(NegotiateFlags):
-
+def dumpNegotiateFlags(NegotiateFlags: int) -> List[str]:
 	flags = []
 
 	if NegotiateFlags & NTLM_NegotiateUnicode:
@@ -186,277 +192,214 @@ def dumpNegotiateFlags(NegotiateFlags):
 	return flags
 
 
-def debug(msg):
-
+def debug(msg: str) -> None:
 	if options.debug:
-		fh = open(options.debugFile, "a")
-		os.chmod(options.debugFile, 0o600)
-		fh.write("%s - %s\n" % (time.time(), msg))
-		fh.close()
+		with open(options.debug_file, "a") as fh:
+			os.chmod(options.debug_file, 0o600)
+			fh.write("%s - %s\n" % (time.time(), msg))
 
 
-def parseNtlmTypeThree(data):
-
-	data = data.replace("KK ", "", 1)
+def parseNtlmTypeThree(data: bytes) -> Tuple[str, str, str, bytes, bytes, int]:
+	data = data.replace(b"KK ", b"", 1)
 	data = base64.b64decode(data)
 	# signature = data[0:8]
-	struct.unpack("<I", data[8:12])[0]  # type
-	lmLen = struct.unpack("<h", data[12:14])[0]
-	lmOffset = struct.unpack("<l", data[16:20])[0]
-	ntLen = struct.unpack("<h", data[20:22])[0]
-	ntOffset = struct.unpack("<l", data[24:28])[0]
+	# lm_type = struct.unpack("<I", data[8:12])[0]
+	lm_len = struct.unpack("<h", data[12:14])[0]
+	lm_offset = struct.unpack("<l", data[16:20])[0]
+	nt_len = struct.unpack("<h", data[20:22])[0]
+	nt_offset = struct.unpack("<l", data[24:28])[0]
 
-	domainOffset = struct.unpack("<l", data[32:36])[0]
-	usernameOffset = struct.unpack("<l", data[40:44])[0]
-	hostLength = struct.unpack("<h", data[44:46])[0]
-	hostOffset = struct.unpack("<l", data[48:52])[0]
+	domain_offset = struct.unpack("<l", data[32:36])[0]
+	username_offset = struct.unpack("<l", data[40:44])[0]
+	host_length = struct.unpack("<h", data[44:46])[0]
+	host_offset = struct.unpack("<l", data[48:52])[0]
 	flags = struct.unpack("<I", data[60:64])[0]
 
-	username = data[usernameOffset:hostOffset]
-	domain = data[domainOffset:usernameOffset]
-	host = data[hostOffset:hostOffset + hostLength]
-	lmResp = data[lmOffset:(lmOffset + lmLen)]
-	ntResp = data[ntOffset:(ntOffset + ntLen)]
+	username = data[username_offset:host_offset]
+	domain = data[domain_offset:username_offset]
+	host = data[host_offset:host_offset + host_length]
+	lm_resp = data[lm_offset:(lm_offset + lm_len)]
+	nt_resp = data[nt_offset:(nt_offset + nt_len)]
 
-	if domainOffset == 0:
-		domain = ""
-	if hostOffset == 0:
-		host = ""
-	if usernameOffset == 0:
-		username = ""
+	if domain_offset == 0:
+		domain = b""
+	if host_offset == 0:
+		host = b""
+	if username_offset == 0:
+		username = b""
 
-	if flags & NTLM_NegotiateUnicode:
-		username = username.decode("utf-16")
-		domain = domain.decode("utf-16")
-		host = host.decode("utf-16")
-
-	return (username, domain, host, lmResp, ntResp, flags)
+	encoding = 'utf-16' if flags & NTLM_NegotiateUnicode else 'ASCII'
+	return username.decode(encoding), domain.decode(encoding), host.decode(encoding), lm_resp, nt_resp, flags
 
 
-def convertKey(key):
-	"""
-	Converts a 7-bytes key to an 8-bytes key based on an algorithm.
-	"""
-
-	assert len(key) == 7, "NTLM convertKey needs 7-byte key"
-
-	bytes = [
-		key[0],
-		chr(((ord(key[0]) << 7) & 0xFF) | (ord(key[1]) >> 1)),
-		chr(((ord(key[1]) << 6) & 0xFF) | (ord(key[2]) >> 2)),
-		chr(((ord(key[2]) << 5) & 0xFF) | (ord(key[3]) >> 3)),
-		chr(((ord(key[3]) << 4) & 0xFF) | (ord(key[4]) >> 4)),
-		chr(((ord(key[4]) << 3) & 0xFF) | (ord(key[5]) >> 5)),
-		chr(((ord(key[5]) << 2) & 0xFF) | (ord(key[6]) >> 6)),
-		chr((ord(key[6]) << 1) & 0xFF),
-	]
-
-	return "".join([setOddParity(b) for b in bytes])
+def DesEncrypt(data: bytes, key: bytes) -> bytes:
+	return passlib.crypto.des.des_encrypt_block(key, data)
 
 
-def setOddParity(byte):
-	"""
-	Turns one-byte into odd parity. Odd parity means that a number in
-	binary has odd number of 1's.
-	"""
-
-	assert len(byte) == 1
-
-	parity = 0
-	ordbyte = ord(byte)
-	for dummy in range(8):
-		if (ordbyte & 0x01) != 0:
-			parity += 1
-		ordbyte >>= 1
-	ordbyte = ord(byte)
-	if parity % 2 == 0:
-		if (ordbyte & 0x01) != 0:
-			ordbyte &= 0xFE
-		else:
-			ordbyte |= 0x01
-
-	return chr(ordbyte)
-
-
-def verifyNtlm(key, nonce):
+def verifyNtlm(password_hash: bytes, challenge: bytes) -> bytes:
 	"""
 	Takes a 21 byte array and treats it as 3 56-bit DES keys. The
 	8 byte plaintext is encrypted with each key and the resulting 24
 	bytes are stored in the result array
 	"""
-
-	assert len(key) == 21, "key must be 21 bytes long"
-	assert len(nonce) == 8, "nonce must be 8 bytes long"
-
-	res1 = Crypto.Cipher.DES.new(convertKey(key[0:7])).encrypt(nonce)
-	res2 = Crypto.Cipher.DES.new(convertKey(key[7:14])).encrypt(nonce)
-	res3 = Crypto.Cipher.DES.new(convertKey(key[14:21])).encrypt(nonce)
-
-	return "%s%s%s" % (res1, res2, res3)
+	z_password_hash = password_hash.ljust(21, b"\0")
+	response = DesEncrypt(challenge, z_password_hash[0:7])
+	response += DesEncrypt(challenge, z_password_hash[7:14])
+	response += DesEncrypt(challenge, z_password_hash[14:21])
+	return response
 
 
-def verifyNtlm2(ResponseKeyNT, ServerChallenge, ClientChallenge):
+def verifyNtlm2(ResponseKeyNT: bytes, ServerChallenge: bytes, ClientChallenge: bytes) -> bytes:
 	"""
 	http://davenport.sourceforge.net/ntlm.html#theNtlm2SessionResponse
 	"""
 
 	nonce = ServerChallenge + ClientChallenge
 	sess = hashlib.md5(nonce).digest()[0:8]
-	NtChallengeResponse = verifyNtlm(ResponseKeyNT, sess)
+	nt_challenge_response = verifyNtlm(ResponseKeyNT, sess)
 
-	return NtChallengeResponse
+	return nt_challenge_response
 
 
-def verifyNtlmV2(ntResp, challenge, user, domain, ntHashV1):
+def verifyNtlmV2(ntResp: bytes, challenge: bytes, user: str, domain: str, ntHashV1: bytes) -> bytes:
 	"""
 	http://davenport.sourceforge.net/ntlm.html#theType3Message
 	"""
 
 	# nt v2 hash
-	inf = (user.upper() + domain).encode('utf-16le')
-	ntHashV2 = hmac.new(ntHashV1, inf).digest()
+	inf = (user.upper() + domain).encode("utf-16le")
+	nt_hash_v2 = hmac.new(ntHashV1, inf, digestmod=hashlib.md5).digest()
 
 	# get data from nt resp
-	clientChallenge = ntResp[32:40]
+	client_challenge = ntResp[32:40]
 	timestamp = ntResp[24:32]
-	targetInformation = ntResp[44:]
+	target_information = ntResp[44:]
 
 	# const
-	version = u'\x01' + u'\x01' + u'\x00' * 2
-	reservered = u'\x00' * 4
-	unknown = u'\x00' * 4
+	version = b'\x01' + b'\x01' + b'\x00' * 2
+	reserved = b'\x00' * 4
+	unknown = b'\x00' * 4
 
 	# create blob
-	blob = version.encode("hex") + reservered.encode("hex") + timestamp.encode("hex")
-	blob = blob + clientChallenge.encode("hex") + unknown.encode("hex") + targetInformation.encode("hex")
-	challengeBlob = challenge.encode("hex") + blob
+	blob = version + reserved + timestamp
+	blob += client_challenge + unknown + target_information
+	challenge_blob = challenge + blob
 
 	# secret
-	secret = hmac.new(ntHashV2, challengeBlob.decode("hex")).digest()
+	secret = hmac.new(nt_hash_v2, challenge_blob, digestmod=hashlib.md5).digest()
 
 	# response
-	myResp = secret.encode("hex") + blob
+	my_resp = secret + blob
 
-	return myResp.decode("hex")
+	return my_resp
 
 
-def getNtHash(user):
-
-	global users
+def getNtHash(user: str) -> bytes:
 	user = user.lower()
 
 	# check "cache"
-	cacheHit = users.get(user)
-	if cacheHit:
+	cache_hit = users.get(user)
+	if cache_hit:
 		if options.debug:
 			debug("  found cache entry for %s" % user)
 			debug("  time: %s" % time.time())
-			debug("  cache time: %s" % cacheHit[1])
-			debug("  cache lifetime: %s" % options.cacheLifeTime)
-		if time.time() - cacheHit[1] < options.cacheLifeTime:
-			if options.debug:
-				debug("  cache entry for %s valid" % user)
-			return cacheHit[0]
+			debug("  cache time: %s" % cache_hit[1])
+			debug("  cache lifetime: %s" % options.cache_lifetime)
+		if time.time() - cache_hit[1] < options.cache_lifetime:
+			debug("  cache entry for %s valid" % user)
+			return cache_hit[0]
 		else:
-			if options.debug:
-				debug("  cache entry for %s invalid -> new ldapsearch" % user)
+			debug("  cache entry for %s invalid -> new ldapsearch" % user)
 
 	# search for ntHash and sambaAcctFlags of user
-	ntHash = ""
-	ldapFilter = "(uid=%s)" % user
+	nt_hash = b""
+	ldap_filter = filter_format("(uid=%s)", (user,))
+
 	attr = ["sambaNTPassword", "sambaAcctFlags"]
 	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/squid.secret")
-	result = ldap.search(base=cr["ldap/base"], filter=ldapFilter, attr=attr)
-	if options.debug:
-		debug("  ldapsearch for sambaNTPassword of user %s" % user)
+	result = ldap.search(base=cr["ldap/base"], filter=ldap_filter, attr=attr)
+	debug("  ldapsearch for sambaNTPassword of user %s" % user)
+
 	if len(result) == 1:
-		tmp = result[0][1].get("sambaNTPassword", [""])[0]
-		sambaAcctFlags = result[0][1].get("sambaAcctFlags", [""])[0]
-		if tmp and sambaAcctFlags:
-			if options.debug:
-				debug("  found sambaNTPassword in ldap for user %s with sambaAcctFlags %s" % (user, sambaAcctFlags))
-			ntHash = tmp
-			users[user] = [ntHash, time.time(), sambaAcctFlags]
+		tmp = result[0][1].get("sambaNTPassword", [b""])[0]
+		samba_acct_flags = result[0][1].get("sambaAcctFlags", [b""])[0]
+		if tmp and samba_acct_flags:
+			debug("  found sambaNTPassword in ldap for user %r with sambaAcctFlags %r" % (user, samba_acct_flags))
+			nt_hash = tmp
+			users[user] = (nt_hash, time.time(), samba_acct_flags)
 	else:
-		users[user] = ["", time.time(), ""]
+		users[user] = (b"", time.time(), b"")
+	return nt_hash
 
-	return ntHash
 
-
-def verifyNtlmTypeThree(data, challenge):
-
-	if options.debug:
-		debug("NTLM Type 3 Message: ")
+def verifyNtlmTypeThree(data: bytes, challenge: bytes) -> str:
+	debug("NTLM Type 3 Message: ")
 
 	# parse ntlm 3 message
 	try:
-		username, domain, host, lmResp, ntResp, flags = parseNtlmTypeThree(data)
-	except Exception as e:
-		return "NA could not parse ntlmTypeThree: %s" % e
+		username, domain, host, lm_resp, nt_resp, flags = parseNtlmTypeThree(data)
+	except Exception as exc:
+		return "NA could not parse ntlmTypeThree: %s" % (exc,)
 
 	# get nt hash
-	ntHash = getNtHash(username)
-	if not ntHash:
-		return "NA no ntHash found for user %s" % username
+	nt_hash = getNtHash(username)
+	if not nt_hash:
+		return "NA no ntHash found for user %s" % (username,)
 	else:
-		ntHash = ntHash.decode("hex") + '\x00' * 5
-
-	# nthash is valid, check if user account is disabled/locked
-	global users
-	userflags = users.get(username.lower())[2]
-	if userflags:
-		if "D" in userflags:
+		nt_hash = binascii.unhexlify(nt_hash) + b'\x00\x00\x00\x00\x00'
+	# nt_hash is valid, check if user account is disabled/locked
+	user_flags = users.get(username.lower(), (b"", 0, b""))[2]
+	if user_flags:
+		if b"D" in user_flags:
 			return "NA Account is disabled"
-		elif "L" in userflags:
+		elif b"L" in user_flags:
 			return "NA Account has been auto-locked"
 
 	# debug
 	if options.debug:
-		debug("  server challenge " + challenge.encode("hex"))
-		debug("  user: " + username)
-		debug("  domain: " + domain)
-		debug("  host: " + host)
+		debug("  server challenge %r" % (binascii.hexlify(challenge),))
+		debug("  user: %r" % (username,))
+		debug("  domain: %r" % (domain,))
+		debug("  host: %r" % (host,))
 		debug("  flags:")
 		for i in dumpNegotiateFlags(flags):
-			debug("    %s" % i)
-		debug("  ntHash: " + ntHash.encode("hex"))
-		debug("  lm response: " + lmResp.encode("hex"))
-		debug("  nt response: " + ntResp.encode("hex"))
+			debug("    %s" % (i,))
+		debug("  ntHash: %r" % (binascii.hexlify(nt_hash),))
+		debug("  lm response: %r" % (binascii.hexlify(nt_hash),))
+		debug("  nt response: %r" % (binascii.hexlify(nt_resp),))
 
 	# test domain if specified
 	if options.domain:
-		if not options.domain == domain:
+		if options.domain != domain:
 			return "BH wrong domain"
-
-	myResp = ""
+	my_resp = b""
 	mode = "NTLM"
 	# indicates that the NTLM2/NTLMv2 signing and sealing scheme should be used
 	if flags & NTLM_NegotiateExtendedSecurity:
 		# NTLM2
-		if len(ntResp) == 24:
+		if len(nt_resp) == 24:
 			# if last 16 byte are NULL, then we have NTLM2
 			# otherwise still NTLM
-			if lmResp[8:24] == "\x00" * 16:
-				myResp = verifyNtlm2(ntHash, challenge, lmResp[0:8])
+			if lm_resp[8:24] == b"\x00" * 16:
+				my_resp = verifyNtlm2(nt_hash, challenge, lm_resp[0:8])
 				mode = "NTLM2"
 			else:
-				myResp = verifyNtlm(ntHash, challenge)
+				my_resp = verifyNtlm(nt_hash, challenge)
 				mode = "NTLM"
 		# NTLMv2
 		else:
-			myResp = verifyNtlmV2(ntResp, challenge, username, domain, ntHash)
+			my_resp = verifyNtlmV2(nt_resp, challenge, username, domain, nt_hash)
 			mode = "NTLMv2"
 	else:
 		# NTLM
-		myResp = verifyNtlm(ntHash, challenge)
+		my_resp = verifyNtlm(nt_hash, challenge)
 
-	if options.debug:
-		debug("  mode: " + mode)
-		debug("  my response: " + myResp.encode("hex"))
+	debug("  mode: %r" % (mode,))
+	debug("  my response: %r" % (binascii.hexlify(my_resp),))
 
-	# return username if respones are equal
-	if ntResp == myResp:
-		if options.gssSpnego:
+	# return username if responses are equal
+	if nt_resp == my_resp:
+		if options.gss_spnego:
 			return "AF * %s" % username
 		else:
 			return "AF %s" % username
@@ -465,27 +408,23 @@ def verifyNtlmTypeThree(data, challenge):
 	return "NA end of verifyNtlmTypeThree() and still not authenticated"
 
 
-def parseNtlmTypeTwo(msg):
-
-	msg = base64.decodestring(msg)
+def parseNtlmTypeTwo(msg: bytes) -> None:
+	msg = base64.b64decode(msg)
 
 	signature = msg[0:8]
 	msgtype = struct.unpack("<I", msg[8:12])[0]
 	flags = struct.unpack("<I", msg[20:24])[0]
 	challenge = msg[24:32]
 
-	print challenge
-	print flags
-	print dumpNegotiateFlags(flags)
-	print msgtype
-	print signature
-
-	return
+	print(challenge)
+	print(flags)
+	print(dumpNegotiateFlags(flags))
+	print(msgtype)
+	print(signature)
 
 
-def createNtlmTypeTwo():
-
-	challenge = "".join(random.sample(string.printable + "0123456789", 8))
+def createNtlmTypeTwo() -> Tuple[str, bytes]:
+	challenge = "".join(random.sample(string.printable + "0123456789", 8)).encode('ASCII')
 
 	domain = cr.get("windows/domain", "").upper()
 	domain = domain.encode('utf-16le')
@@ -498,7 +437,7 @@ def createNtlmTypeTwo():
 	fqdn = cr.get("hostname", "") + "." + cr.get("domainname", "")
 	fqdn = fqdn.encode('utf-16le')
 
-	ms = 'NTLMSSP\x00'
+	ms = b'NTLMSSP\x00'
 	# 12 -> l
 	ms += struct.pack("<l", NTLMSSP_CHALLENGE)
 	# 20 Target Name Security Buffer:
@@ -513,9 +452,9 @@ def createNtlmTypeTwo():
 	ms += struct.pack("<l", 0)
 	ms += struct.pack("<l", 0)
 	# 40 Target Information Security Buffer
-	mylen = len(domain) + len(server) + len(dns) + len(fqdn) + 20
-	ms += struct.pack("<H", mylen)
-	ms += struct.pack("<H", mylen)
+	my_len = len(domain) + len(server) + len(dns) + len(fqdn) + 20
+	ms += struct.pack("<H", my_len)
+	ms += struct.pack("<H", my_len)
 	ms += struct.pack("<I", 48 + len(target))
 	# 48 target-type-domain
 	ms += target
@@ -533,13 +472,12 @@ def createNtlmTypeTwo():
 	ms += struct.pack("<H", len(fqdn))
 	ms += fqdn
 
-	ms += '\0' * 4
+	ms += b'\0' * 4
 
-	tt = "TT " + base64.encodestring(ms).replace('\n', '')
-
+	tt = "TT " + base64.b64encode(ms).decode('ASCII')
 	if options.debug:
 		debug("NTLM Type 2 Message:")
-		debug("  challenge: " + challenge.encode("hex"))
+		debug("  challenge: %r" % (challenge,))
 		debug("  flags:")
 		for i in dumpNegotiateFlags(NTLM_TYPE2_FLAGS):
 			debug("    %s" % i)
@@ -547,36 +485,34 @@ def createNtlmTypeTwo():
 	return tt, challenge
 
 
-def ntlmType(data):
+def ntlmType(data: bytes) -> int:
+	debug("Checking NTLM Type: ")
 
-	if options.debug:
-		debug("Checking NTLM Type: ")
+	if data.startswith(b"YR "):
+		data = data.replace(b"YR ", b"", 1)
+	elif data.startswith(b"KK "):
+		data = data.replace(b"KK ", b"", 1)
 
-	if data.startswith("YR "):
-		data = data.replace("YR ", "", 1)
-	elif data.startswith("KK "):
-		data = data.replace("KK ", "", 1)
-
-	signature = ""
-	type = 0
-	flags = ""
+	signature = b""
+	ntlm_type = 0
+	flags = 0
 
 	try:
 		data = base64.b64decode(data)
 		signature = data[0:8]
-		type = struct.unpack("<I", data[8:12])[0]
+		ntlm_type = struct.unpack("<I", data[8:12])[0]
 		flags = struct.unpack("<I", data[12:16])[0]
 		if options.debug:
-			debug("  signature: " + signature)
-			debug("  type: %s" % type)
+			debug("  signature: %r" % (signature,))
+			debug("  type: %s" % (ntlm_type,))
 			debug("  flags:")
 			for i in dumpNegotiateFlags(flags):
-				debug("    %s" % i)
-	except:
-		pass
+				debug("    %s" % (i,))
+	except Exception as exc:
+		debug('ntlmType: silently caught exception: %r' % (exc,))
 
-	if signature.startswith("NTLMSSP") and type:
-		return type
+	if signature.startswith(b"NTLMSSP") and ntlm_type:
+		return ntlm_type
 	return 0
 
 # tests
@@ -584,147 +520,133 @@ def ntlmType(data):
 # test parse ntml msg 3
 
 
-kk = "KK TlRMTVNTUAADAAAAGAAYAHQAAAAYABgAjAAAAAoACgBIAAAAGgAaAFIAAAAIAAgAbAAAAAAAAACkAAAABYKIogUBKAoAAAAPUwBRAFUASQBEAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAVABFAFMAVAAzm2w/FR6FjQAAAAAAAAAAAAAAAAAAAABB+vMG7iLgUM+rJXuo/uwPwWPX84XA64c="
+kk = b"KK TlRMTVNTUAADAAAAGAAYAHQAAAAYABgAjAAAAAoACgBIAAAAGgAaAFIAAAAIAAgAbAAAAAAAAACkAAAABYKIogUBKAoAAAAPUwBRAFUASQBEAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAVABFAFMAVAAzm2w/FR6FjQAAAAAAAAAAAAAAAAAAAABB+vMG7iLgUM+rJXuo/uwPwWPX84XA64c="
 a, b, c, d, e, f = parseNtlmTypeThree(kk)
 assert a == "Administrator"
 assert b == "SQUID"
 assert c == "TEST"
-assert d.encode("hex") == "339b6c3f151e858d00000000000000000000000000000000"
-assert e.encode("hex") == "41faf306ee22e050cfab257ba8feec0fc163d7f385c0eb87"
+assert binascii.hexlify(d) == b"339b6c3f151e858d00000000000000000000000000000000"
+assert binascii.hexlify(e) == b"41faf306ee22e050cfab257ba8feec0fc163d7f385c0eb87"
 assert f == 2726855173
 
 # test NTML
-resp = "1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c"
-assert resp == verifyNtlm("CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00' * 5, "L)eNCnxD").encode("hex")
+assert b"1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c" == binascii.hexlify(verifyNtlm(binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F") + b'\x00' * 5, b"L)eNCnxD"))
 
 # test NTML2
-a = verifyNtlm2(
-	"CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00' * 5,
-	"83219623",
-	"d6e6507e3e5be1e700000000000000000000000000000000".decode("hex")[0:8])
-assert a.encode("hex") == "42f0cfd6fcbb4660dbace7fab6e5d82cff1572ad8fd72b5a"
+g = verifyNtlm2(
+	binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F") + b'\x00' * 5,
+	b"83219623",
+	binascii.unhexlify(b"d6e6507e3e5be1e700000000000000000000000000000000")[0:8])
+assert binascii.hexlify(g) == b"42f0cfd6fcbb4660dbace7fab6e5d82cff1572ad8fd72b5a"
 
 # test NTMLv2
-resp = "96484569c3bb18aa3f4f6ba687dfe5c0010100000000000068b3d5e4e2facc014c5e8784508b1cfc00000000020000000000000000000000"
-assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
-	"11111111", "Administrator", "UNIVENTION", "CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex"))
+resp = binascii.unhexlify(b"96484569c3bb18aa3f4f6ba687dfe5c0010100000000000068b3d5e4e2facc014c5e8784508b1cfc00000000020000000000000000000000")
+assert resp == verifyNtlmV2(resp, b"11111111", "Administrator", "UNIVENTION", binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F"))
 
-resp = "28a9be400eed0d5d362c590616754d320101000000000000a89da1c1e2facc01874554ba437df9fb00000000020000000000000000000000"
-assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
-	"11111111", "Administrator", "UNIVENTION", "CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex"))
+resp = binascii.unhexlify(b"28a9be400eed0d5d362c590616754d320101000000000000a89da1c1e2facc01874554ba437df9fb00000000020000000000000000000000")
+assert resp == verifyNtlmV2(resp, b"11111111", "Administrator", "UNIVENTION", binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F"))
 
-resp = "16bae73559708bcd091f34a43f21bcf30101000000000000a826ec08dcfacc01e45112e4c3192b9a00000000020000000000000000000000"
-assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
-	"11111111", "Administrator", "UNIVENTION", "CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex"))
+resp = binascii.unhexlify(b"16bae73559708bcd091f34a43f21bcf30101000000000000a826ec08dcfacc01e45112e4c3192b9a00000000020000000000000000000000")
+assert resp == verifyNtlmV2(resp, b"11111111", "Administrator", "UNIVENTION", binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F"))
 
 # konquerer
-kk = "TlRMTVNTUAADAAAAGAAYAFgAAAAYABgAQAAAAAgACABwAAAACgAKAHgAAAAWABYAggAAAAAAAAAAAAAABQKJoKjmNy4NeB+jX9LglfZCgLox0goV9JvPzYSVXuDFp+pqwDYcEKPhwLWqOaxk1HGQI0gAQQBOAFMAdABlAHMAdAAxAFcATwBSAEsAUwBUAEEAVABJAE8ATgA="
-challenge = "5e39365709660d4c"
+kk = b"TlRMTVNTUAADAAAAGAAYAFgAAAAYABgAQAAAAAgACABwAAAACgAKAHgAAAAWABYAggAAAAAAAAAAAAAABQKJoKjmNy4NeB+jX9LglfZCgLox0goV9JvPzYSVXuDFp+pqwDYcEKPhwLWqOaxk1HGQI0gAQQBOAFMAdABlAHMAdAAxAFcATwBSAEsAUwBUAEEAVABJAE8ATgA="
+challenge = b"5e39365709660d4c"
 a, b, c, d, e, f = parseNtlmTypeThree(kk)
-assert "test1" == a
-assert "HANS" == b
-assert "WORKSTATION" == c
-assert "84955ee0c5a7ea6ac0361c10a3e1c0b5aa39ac64d4719023".decode("hex") == d
-assert "a8e6372e0d781fa35fd2e095f64280ba31d20a15f49bcfcd".decode("hex") == e
-assert "2693333509" == "%s" % f
+assert a == "test1"
+assert b == "HANS"
+assert c == "WORKSTATION"
+assert d == binascii.unhexlify(b"84955ee0c5a7ea6ac0361c10a3e1c0b5aa39ac64d4719023")
+assert e == binascii.unhexlify(b"a8e6372e0d781fa35fd2e095f64280ba31d20a15f49bcfcd")
+assert f == 2693333509
 
 # ipad
-kk = "TlRMTVNTUAADAAAAGAAYAEAAAAAYABgAWAAAAAAAAAAAAAAAGgAaAHAAAAAIAAgAigAAAAAAAAAAAAAABQIIAJEPdnUglFZTAAAAAAAAAAAAAAAAAAAAADMFtY9sMPhP1jShGSWXgOE2e8gvtwdPAGEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAaQBQAGEAZAA="
+kk = b"TlRMTVNTUAADAAAAGAAYAEAAAAAYABgAWAAAAAAAAAAAAAAAGgAaAHAAAAAIAAgAigAAAAAAAAAAAAAABQIIAJEPdnUglFZTAAAAAAAAAAAAAAAAAAAAADMFtY9sMPhP1jShGSWXgOE2e8gvtwdPAGEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAaQBQAGEAZAA="
 a, b, c, d, e, f = parseNtlmTypeThree(kk)
-assert "3305b58f6c30f84fd634a119259780e1367bc82fb7074f00".decode("hex") == e
+assert binascii.unhexlify(b"3305b58f6c30f84fd634a119259780e1367bc82fb7074f00") == e
 
 # main
 if __name__ == '__main__':
-
-	usage = '%prog [options]'
-	parser = optparse.OptionParser(usage=usage)
-	parser.add_option("-d", "--domain", dest="domain", help="domain in ntlm authentication")
-	parser.add_option("-c", "--cache-lifetime", dest="cacheLifeTime", type="int",
-		default=3600, help="password cache lifetime (3600)")
-	parser.add_option("-t", "--debug", dest="debug", help="debug modus (Attention, cleartext password hashes!)",
-		action="store_true", default=False)
-	parser.add_option("-f", "--debug-file", dest="debugFile", help="debug file (/tmp/squid-ntlm-auth.log)",
-		action="store_true", default="/tmp/squid-ntlm-auth.log")
-	parser.add_option("-g", "--gss-spnego", dest="gssSpnego", help="gss spnego mode for ntlm answer",
-		action="store_true", default=False)
-	parser.add_option("-s", "--gss-spnego-strip-realm", dest="gssSpnegoStripRealm",
-		help="strip realm from login name if gss spnego mode is uses for authentication",
-		action="store_true", default=False)
-	(options, args) = parser.parse_args()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-d", "--domain", help="domain in ntlm authentication")
+	parser.add_argument("-c", "--cache-lifetime", type=int, default=3600, help="password cache lifetime (3600)")
+	parser.add_argument("-t", "--debug", help="debug modus (Attention, cleartext password hashes!)", action="store_true")
+	parser.add_argument("-f", "--debug-file", help="debug file (%(default)s)", default="/tmp/squid-ntlm-auth.log")
+	parser.add_argument("-g", "--gss-spnego", help="gss spnego mode for ntlm answer", action="store_true")
+	parser.add_argument("-s", "--gss-spnego-strip-realm", help="strip realm from login name if gss spnego mode is uses for authentication", action="store_true")
+	options = parser.parse_args()
 
 	cr = univention.config_registry.ConfigRegistry()
 	cr.load()
-	users = {}
-	challenge = ""
+	users = {}  # type: Dict[str, Tuple[bytes, float, bytes]]
+	challenge = b""
 
 	# open pipe to squid_kerb_auth for kerberos stuff
 	kerbPipe = None
-	if options.gssSpnego:
-		cmd = ['/usr/lib/squid/negotiate_kerberos_auth', '-k', '/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr]
-		if options.gssSpnegoStripRealm:
+	if options.gss_spnego:
+		cmd = [
+			'/usr/lib/squid/negotiate_kerberos_auth', '-k',
+			'/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr
+		]
+		if options.gss_spnego_strip_realm:
 			cmd.append('-r')
 		kerbPipe = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
-
-		# python -u is required for unbufferd streams
-		data = sys.stdin.readline()
+		# python3 -u is required for unbuffered streams
+		data = sys.stdin.buffer.readline()
 		data = data.strip()
 		answer = "BH internal error"
 
 		if options.debug:
-			debug("from squid -> " + data)
+			debug("from squid -> %r" % (data,))
 
 		if data:
-			if data.startswith("YR "):
+			if data.startswith(b"YR "):
 				ntype = ntlmType(data)
 				if ntype == 1:
 					try:
 						answer, challenge = createNtlmTypeTwo()
-					except Exception as e:
-						answer = "BH failed to createNtlmTypeTwo(): %s" % e
+					except Exception as exc:
+						answer = "BH failed to createNtlmTypeTwo(): %s" % (exc,)
 				# office 2013 workaround
 				elif ntype == 3:
 					try:
-						data = data.replace("YR ", "", 1)
+						data = data.replace(b"YR ", b"", 1)
 						answer = verifyNtlmTypeThree(data, challenge)
-					except Exception as e:
-						answer = "BH failed to verifyNtlmTypeThree(): %s" % e
+					except Exception as exc:
+						answer = "BH failed to verifyNtlmTypeThree(): %s" % (exc,)
 				# kerberos
 				else:
-					if options.debug:
-						debug("negotiate kerberos authentication" + data)
+					debug("negotiate kerberos authentication: %r" % (data,))
 					try:
 						if kerbPipe:
-							if options.debug:
-								debug("asking kerb tool")
-							kerbPipe.stdin.write(data + "\n")
+							debug("asking kerb tool")
+							kerbPipe.stdin.write(data + b"\n")
 							kerbPipe.stdin.flush()
-							answer = kerbPipe.stdout.readline()
-							if options.debug:
-								debug("answer %s" % answer)
+							answer = kerbPipe.stdout.readline().decode("UTF-8")
+							debug("answer %r" % (answer,))
 						# this whole stuff could also be done by
 						# python kerberos
 						#  result, context = kerberos.authGSSServerInit('HTTP')
-						#  r = kerberos.authGSSServerStep(context, data.replace("YR ", "", 1))
+						#  r = kerberos.authGSSServerStep(context, data.replace(b"YR ", b"", 1))
 						#  gssstring = kerberos.authGSSServerResponse(context)
 						#  login = kerberos.authGSSServerUserName(context)
 						#  login = login.split("@", 1)[0]
 						#  kerberos.authGSSServerClean(context)
 						#  answer = "AF %s %s" % (gssstring, login)
-					except Exception as e:
-						answer = "BH failed doing kerberos: %s" % e
+					except Exception as exc:
+						answer = "BH failed doing kerberos: %s" % (exc,)
 
-			if data.startswith("KK "):
+			if data.startswith(b"KK "):
 				try:
 					answer = verifyNtlmTypeThree(data, challenge)
-				except Exception as e:
-					answer = "BH failed to verifyNtlmTypeThree(): %s" % e
+				except Exception as exc:
+					answer = "BH failed to verifyNtlmTypeThree(): %s" % (exc,)
 		else:
 			answer = "ERR"
 
-		if options.debug:
-			debug("to squid <- " + answer)
+		debug("to squid <- %r" % (answer,))
 		sys.stdout.write(answer + "\n")
 		sys.stdout.flush()
 

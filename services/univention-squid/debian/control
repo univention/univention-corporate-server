@@ -10,16 +10,16 @@ Build-Depends:
 Package: univention-squid
 Architecture: all
 Depends:
- python-crypto,
- python-ipaddress,
- python-pexpect,
- python-univention-lib,
+ python3-crypto,
+ python3-passlib,
+ python3-pexpect,
  squid (>> 3.5.23),
  univention-config (>= 15),
  univention-directory-manager-tools (>> 7.0.147),
  univention-heimdal-common (>>5.0.24-1),
  winbind,
  ${misc:Depends},
+ ${python3:Depends},
 Recommends:
  univention-nagios-squid,
 Suggests:
