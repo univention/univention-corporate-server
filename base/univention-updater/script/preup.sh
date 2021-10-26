@@ -447,6 +447,25 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
+# check if uefi secure boot is used
+check_uefi_secure_boot () {
+	if [ -f "/sys/kernel/security/securelevel" ] && [ "$(</sys/kernel/security/securelevel)" = 1 ]
+	then
+		echo "WARNING: This systems seems to be using UEFI Secure Boot!"
+		echo "With UCS 4.4-9 the signatures of the Linux kernel, GRUB and SHIM changed."
+		echo "These packages must be updated at the same time, or else booting securly won't be possible anymore."
+		echo "See https://help.univention.com/t/uefi-secure-boot-updates/18778 for more information."
+		if is_ucr_true update44/uefi_secure_boot_check; then
+			echo "WARNING: update44/uefi_secure_boot_check is set to true. Skipped as requested."
+		else
+			echo "This check can be skipped by setting the UCR"
+			echo "variable update44/uefi_secure_boot_check to yes."
+			exit 1
+		fi
+	fi
+}
+check_uefi_secure_boot
+
 # ensure that en_US is included in list of available locales (Bug #44150)
 case "$locale" in
 	*en_US*) ;;
