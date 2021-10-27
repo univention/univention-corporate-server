@@ -3,6 +3,7 @@
 # https://github.com/luizalabs/shared-memory-dict/
 
 import logging
+import os
 import sys
 import warnings
 from contextlib import contextmanager
@@ -160,12 +161,31 @@ class SharedMemoryDict(object):
         self, name, size
     ):
         try:
+            self.check_security(name)
             return SharedMemory(name=name)
         except FileNotFoundError:
             shm = SharedMemory(name=name, create=True, size=size)
             data = self._serializer.dumps({})
             shm.buf[: len(data)] = data
             return shm
+
+    def check_security(self, name):
+        """Check if shared memory belongs to and is only read+writeable
+        for the current user"""
+        if os.name == 'nt':
+            return
+
+        if '/' in name:
+            raise TypeError('Name must not contain "/".')
+
+        shm_file = os.path.join('/dev/shm', name)
+        stat = os.stat(shm_file)
+        if (
+            stat.st_uid != os.getuid()
+            or stat.st_gid != os.getgid()
+            or stat.st_mode != 0o100600
+        ):
+            os.unlink(shm_file)
 
     def _save_memory(self, db):
         data = self._serializer.dumps(db)
