@@ -117,7 +117,7 @@ class NetworkRedirector(object):
 
 	CMD_LIST_REDIRECTION = [
 		# redirect localhost-->%(remote_addr)s:%(remote_port)s ==> localhost:%(local_port)s
-		[BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', 'tcp', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to-destination', '127.0.0.1:%(local_port)s'],
+		[BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', '%(family)s', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to-destination', '127.0.0.1:%(local_port)s'],
 	]
 
 	def __init__(self):
@@ -132,7 +132,7 @@ class NetworkRedirector(object):
 		else:
 			raise UCSTestNetworkCannotDetermineExternalAddress
 		self.used_by_with_statement = False
-		self.cleanup_rules = []  # type: List[Union[Tuple[Literal["loop"], str, str], Tuple[Literal["redirection"], str, int, int]]]
+		self.cleanup_rules = []  # type: List[Union[Tuple[Literal["loop"], str, str], Tuple[Literal["redirection"], str, int, int, str]]]
 		# [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
 	def __enter__(self):
@@ -153,7 +153,7 @@ class NetworkRedirector(object):
 			if entry[0] == 'loop':
 				self.remove_loop(entry[1], entry[2], ignore_errors=True)
 			elif entry[0] == 'redirection':
-				self.remove_redirection(entry[1], entry[2], entry[3], ignore_errors=True)
+				self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
 
 	def run_commands(self, cmdlist, argdict, ignore_errors=False):
 		# type: (List[List[str]], Mapping[str, object], bool) -> None
@@ -215,7 +215,7 @@ class NetworkRedirector(object):
 		print('*** Removing network loop (%s <--> %s)' % (addr1, addr2))
 		self.run_commands(self.CMD_LIST_LOOP, args, ignore_errors)
 
-	def add_redirection(self, remote_addr, remote_port, local_port):
+	def add_redirection(self, remote_addr, remote_port, local_port, family='tcp'):
 		# type: (str, int, int) -> None
 		"""
 		Add new connection redirection.
@@ -225,7 +225,7 @@ class NetworkRedirector(object):
 		if not self.used_by_with_statement:
 			raise UCSTestNetworkNoWithStatement
 
-		entry = ('redirection', remote_addr, remote_port, local_port)  # type: Tuple[Literal["redirection"], str, int, int]
+		entry = ('redirection', remote_addr, remote_port, local_port, family)  # type: Tuple[Literal["redirection"], str, int, int, str]
 		if entry not in self.cleanup_rules:
 			self.cleanup_rules.append(entry)
 			args = {
@@ -233,17 +233,18 @@ class NetworkRedirector(object):
 				'remote_port': remote_port,
 				'local_port': local_port,
 				'action': '-A',
+				'family': family,
 			}
-			print('*** Adding network redirection (%s:%s --> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port))
+			print('*** Adding network redirection (%s:%s --> 127.0.0.1:%s with %s)' % (remote_addr, remote_port, local_port, family))
 			self.run_commands(self.CMD_LIST_REDIRECTION, args)
 
-	def remove_redirection(self, remote_addr, remote_port, local_port, ignore_errors=False):
+	def remove_redirection(self, remote_addr, remote_port, local_port, family='tcp', ignore_errors=False):
 		# type: (str, int, int, bool) -> None
 		"""
 		Remove previously defined connection redirection.
 		"""
 		try:
-			self.cleanup_rules.remove(('redirection', remote_addr, remote_port, local_port))
+			self.cleanup_rules.remove(('redirection', remote_addr, remote_port, local_port, family))
 		except ValueError:
 			raise UCSTestNetworkUnknownRedirection('The given redirection has not been established and cannot be removed.')
 
@@ -252,6 +253,7 @@ class NetworkRedirector(object):
 			'remote_port': remote_port,
 			'local_port': local_port,
 			'action': '-D',
+			'family': family,
 		}
 		print('*** Removing network redirection (%s:%s <--> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port))
 		self.run_commands(self.CMD_LIST_REDIRECTION, args, ignore_errors)
