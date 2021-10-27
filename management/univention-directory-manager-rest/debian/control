@@ -67,7 +67,7 @@ Depends:
  python3-uritemplate,
  univention-management-console-module-udm,
  ${misc:Depends},
- ${python:Depends},
+ ${python3:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .
