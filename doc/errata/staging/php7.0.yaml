@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: php7.0
+fix: 7.0.33-0+deb9u12
+desc: |
+ This update addresses the following issue:
+ * Local privilege escalation via PHP-FPM (CVE-2021-21703)
+bug: [53991]
+cve:
+- CVE-2021-21703
