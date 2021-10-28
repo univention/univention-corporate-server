@@ -10,3 +10,5 @@ desc: |
 bug: [53990]
 cve:
 - CVE-2021-21703
+erratum: 133
+announced: 2021-10-28
