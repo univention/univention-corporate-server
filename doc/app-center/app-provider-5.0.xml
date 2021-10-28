@@ -1444,12 +1444,6 @@ cat $MY_APP.json | jq -r .compose > compose
 						The app has been available in the App Center for at least 3 months.
 					</simpara>
 				</listitem>
-				<listitem>
-					<simpara>
-						For the app, there are virtual app appliances that are linked on the app vendor's website for download.
-						This makes commissioning the app on UCS extremely easy.
-					</simpara>
-				</listitem>
 			</itemizedlist>
 		</section>
 
