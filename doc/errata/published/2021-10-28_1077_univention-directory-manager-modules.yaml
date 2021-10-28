@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Adding and removing users to/from large groups is now faster.
 bug: [51233]
+erratum: 1077
+announced: 2021-10-28
