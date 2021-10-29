@@ -444,22 +444,10 @@ Description[en]=SSL ciphers to use. Defaults to "EDH+CAMELLIA:EDH+aRSA:EECDH+aRS
 Type=str
 Categories=service-mail
 
-[mail/dovecot/ssl/dh_parameters_length]
-Description[de]=Zu verwendende Diffie-Hellman-Parameterlänge. Standard ist "2048".
-Description[en]==Diffie Hellman parameters length to use. Defaults to "2048".
-Type=int
-Categories=service-mail
-
 [mail/dovecot/ssl/key]
 Description[de]=Der vollständige Dateiname der SSL-Schlüsseldatei, das von Dovecot für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird der lokale SSL-Host-Schlüssel (/etc/univention/ssl/<FQDN>/private.key) verwendet.
 Description[en]=The full path name of SSL key file that is used by Dovecot to establish SSL connections. If the variable is unset the local host key (/etc/univention/ssl/<FQDN>/private.key) is used.
 Type=str
-Categories=service-mail
-
-[mail/dovecot/ssl/parameters_regenerate]
-Description[de]=Definiert das Intervall in Stunden, nach dessen Ablauf die SSL-Parameter neu erzeugt werden. Der Wert "0" deaktiviert die Wiedererzeugung. Standard ist "168" (einmal pro Woche).
-Description[en]=How often to regenerate the SSL parameters file in hours, 0 disables regeneration. Defaults to "168" (once per week).
-Type=int
 Categories=service-mail
 
 [mail/dovecot/ssl/prefer_server_ciphers]
