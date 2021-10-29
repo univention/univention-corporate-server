@@ -43,6 +43,35 @@
 . /usr/share/univention-lib/ucr.sh
 . /usr/share/univention-lib/base.sh
 
+DH_PARAMS_FILE=/var/lib/dovecot/dh.pem
+DH_PARAMS_SIZE_SMALL=2048
+DH_PARAMS_SIZE_LARGE=4096
+OLD_SSL_PARAMS_FILE=/var/lib/dovecot/ssl-parameters.dat
+DEPRECATED_UCRV_DH=mail/dovecot/ssl/dh_parameters_length
+DEPRECATED_UCRV_REGEN=mail/dovecot/ssl/parameters_regenerate
+
+generate_small_dh_params_in_the_foreground () {
+	echo "Generating small DH parameters ($DH_PARAMS_SIZE_SMALL bit) for a quick start right now:"
+  openssl dhparam $DH_PARAMS_SIZE_SMALL > "$DH_PARAMS_FILE"
+}
+
+generate_large_dh_params_in_the_background () {
+  echo "Generating large DH parameters ($DH_PARAMS_SIZE_LARGE bit) in the background (this takes a lot of time)..."
+  nohup sh -c "openssl dhparam $DH_PARAMS_SIZE_LARGE > /var/lib/dovecot/.dh.pem && \
+    mv /var/lib/dovecot/.dh.pem '$DH_PARAMS_FILE' && \
+    echo 'Generated new DH params ($DH_PARAMS_SIZE_LARGE bit).' && \
+    systemctl restart dovecot.service" | logger --priority mail.info &
+}
+
+cleanup_old_ucrs () {
+  for UCRV in "$DEPRECATED_UCRV_DH" "$DEPRECATED_UCRV_REGEN"; do
+    if [ -n "$(ucr get "$UCRV")" ]; then
+      echo "Deleting now unused UCR variable '$UCRV'. Old value: '$(ucr get "$UCRV")'."
+      ucr unset "$UCRV"
+    fi
+  done
+}
+
 univention-config-registry set \
 	dovecot/autostart?yes \
 	mail/dovecot=yes \
@@ -78,12 +107,30 @@ univention-config-registry set \
 # fresh installation
 if [ "$1" = "configure" -a -z "$2" ] ; then
 	chown -R dovemail:dovemail /var/lib/dovecot /var/spool/dovecot
-	# Set dh_parameters_length=1024 for a quick start (parameter file generation
-	# was already started by debian package) and raise it later.
-	univention-config-registry set \
-		mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh" \
-		mail/dovecot/ssl/dh_parameters_length=1024
+	univention-config-registry set mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh"
 fi
+
+# Bug #53987: fix DH params in UCS 5.0 (fresh installation and update)
+if dpkg --compare-versions "$2" lt-nl 6.0.3-3; then
+	generate_small_dh_params_in_the_foreground
+	generate_large_dh_params_in_the_background
+fi
+
+# update from 4.4, try to convert exising DH params file:
+if [ -e "$OLD_SSL_PARAMS_FILE" ]; then
+	echo "Converting old DH params file ($OLD_SSL_PARAMS_FILE) to new format ($DH_PARAMS_FILE)..."
+	# The conversion can fail, no problem, we'll handle that.
+	dd if="$OLD_SSL_PARAMS_FILE" bs=1 skip=88 | openssl dhparam -inform DER > "$DH_PARAMS_FILE" || true
+	rm -fv "$OLD_SSL_PARAMS_FILE"
+
+	if ! [ -e "$DH_PARAMS_FILE" ]; then
+		echo "Conversion failed, creating new DH parameters file..."
+		generate_small_dh_params_in_the_foreground
+		generate_large_dh_params_in_the_background
+	fi
+fi
+
+cleanup_old_ucrs
 
 # add quota check for Postfix as last (potentially expensive)
 # smtpd/submission_recipient_restrictions, but before a "permit"
@@ -125,30 +172,6 @@ fi
 
 deb-systemd-invoke restart dovecot
 deb-systemd-invoke restart postfix
-
-TIME_RUNNING=0
-TIMEOUT=180
-if [ -e /var/lib/dovecot/ssl-parameters.dat.tmp ]; then
-	echo -n "Waiting for Dovecot ssl-parameters generation (this can take a long time)."
-	while [ -e /var/lib/dovecot/ssl-parameters.dat.tmp -a $TIME_RUNNING != $TIMEOUT ]; do
-		echo -n "."
-		TIME_RUNNING=$(( $TIME_RUNNING + 1 ))
-		sleep 1
-	done
-fi
-if [ $TIME_RUNNING = $TIMEOUT ]; then
-	echo " ERROR: timeout while waiting for ssl-parameters generation."
-else
-	echo "done"
-fi
-
-# fresh installation
-if [ "$1" = "configure" -a -z "$2" ] ; then
-	# Raise dh_parameters_length to 2048. Generation of the parameters file
-	# will run in the background.
-	univention-config-registry unset mail/dovecot/ssl/dh_parameters_length
-	doveadm reload
-fi
 
 chown listener:root /var/spool/univention-mail-dovecot
 

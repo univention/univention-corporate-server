@@ -81,9 +81,7 @@ File: etc/dovecot/conf.d/10-ssl.conf
 Variables: mail/dovecot/ssl/cafile
 Variables: mail/dovecot/ssl/certificate
 Variables: mail/dovecot/ssl/cipher_list
-Variables: mail/dovecot/ssl/dh_parameters_length
 Variables: mail/dovecot/ssl/key
-Variables: mail/dovecot/ssl/parameters_regenerate
 Variables: mail/dovecot/ssl/prefer_server_ciphers
 Variables: mail/dovecot/ssl/protocols
 Variables: mail/dovecot/ssl/sni/.*

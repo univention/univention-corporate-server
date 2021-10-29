@@ -7,4 +7,6 @@ fix: 6.0.3-3A~5.0.0.202110220945
 desc: |
  This update addresses the following issue:
  * Server password change now logs timestamps.
-bug: [53182]
+ * The DH parameters for Dovecot are now correctly created. The
+   Managesieve service could not be used with TLS before.
+bug: [53182, 53994]
