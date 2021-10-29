@@ -2028,4 +2028,19 @@ univention-directory-reports -m users/user -l
 	</section>
 </section>
 
+<section id="central-management-umc:lets-encrypt">
+    <title>Let's Encrypt</title>
+    <para>
+        Let's Encrypt ist eine gemeinnützige Zertifizierungsstelle, die
+        kostenlos X.509 Zertifikate für TLS Verschlüsselung anbietet. Es ist die
+        weltgrößte Zertifizierungsstelle mit dem Ziel, dass alle Webseiten mit
+        HTTPS abgesichert sind.
+    </para>
+    <para>
+        Die Let's Encrypt App in Univention App Center bietet eine weitgehend
+        automatisierte Integration des acme-tiny Let's Encrypt Clients in UCS.
+        Unterstützte Dienste in UCS sind der Apache Webserver, der Postfix SMTP
+        Mailserver und der Dovecot IMAP Mailserver.
+    </para>
+</section>
 </chapter>
