@@ -1256,5 +1256,16 @@ systemctl restart dovecot
 	  </figure>
   </section>
 
+  <section id="mail:ox-connector">
+		<title>OX Connector</title>
+
+		<para>
+      OX Connector ist eine App in Univention App Center. Sie synchronisiert ausgewählte Benutzer
+      und Gruppen zu einer entfernten OX App Suite Installation wie zum Beispiel ein gehostetes OX
+      App Suite. Die App sollte nicht mit der separaten OX App Suite App aus dem App Center
+      verwendet werden, weil sie bereits eine Synchronization enthält.
+		</para>
+  </section>
+
 </chapter>
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
