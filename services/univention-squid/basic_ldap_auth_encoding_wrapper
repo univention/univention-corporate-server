@@ -74,6 +74,6 @@ def main():
 
 
 if __name__ == '__main__':
-	basic_ldap_auth = pexpect.spawn('/usr/lib/squid/basic_ldap_auth' + ' ' + ' '.join(sys.argv[1:]))
+	basic_ldap_auth = pexpect.spawn('/usr/lib/squid/basic_ldap_auth', sys.argv[1:])
 	while True:
 		main()
