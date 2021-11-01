@@ -2,10 +2,10 @@ product: ucs
 release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
-src: univention-directory-manager-modules
-fix: 14.0.20-26A~4.4.0.202111011428
+src: univention-directory-manager-rest
+fix: 9.0.16-15A~4.4.0.202110261034
 desc: |
  This update addresses the following issue:
- * The UDM API does not raise WrongObjectType during the iteration over all
-   found objects in search().
-bug: [54017]
+ * The configuration of log rotation for the UDM REST API logfiles has been
+   added.
+bug: [53986]
