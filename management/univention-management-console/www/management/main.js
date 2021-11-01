@@ -668,7 +668,7 @@ define([
 						on(closeButton, 'click', lang.hitch(this, function(evt) {
 							evt.stopImmediatePropagation();
 							module.closeModule();
-							if (mobileTabsContainer.children.length === 0) {
+							if (mobileTabsContainer.children.length === 0 || !this._areTabsVisible()) {
 								this._mobileTabsButton.set('checked', false);
 							}
 						}));
@@ -706,19 +706,21 @@ define([
 			}).length;
 		},
 
+		_areTabsVisible: function() {
+			return _overviewVisible || this._getNumOfTabs() >= 2;
+		},
+
 		_updateTabsVisibility: function() {
-			var isTabsVisible = _overviewVisible || this._getNumOfTabs() >= 2;
-
-			tools.toggleVisibility(this._tabController, isTabsVisible);
-
-			if (isTabsVisible) {
-				// update mobile tabs
-				this._mobileTabsButton.counterNode.innerHTML = this._getNumOfTabs();
-				this.set('mobileTabsView', false);
+			var areTabsVisible = this._areTabsVisible();
+			// update mobile tabs
+			this._mobileTabsButton.counterNode.innerHTML = this._getNumOfTabs();
+			this.set('mobileTabsView', false);
+			if (areTabsVisible) {
 				window.requestAnimationFrame(lang.hitch(this, function() {
 					this.set('mobileTabsView', this._tabController.domNode.scrollWidth > this._tabController.domNode.clientWidth);
 				}));
 			}
+			tools.toggleVisibility(this._tabController, areTabsVisible);
 		},
 
 		setupSearchField: function() {
