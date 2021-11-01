@@ -584,7 +584,10 @@ class GenericModule(BaseModule):
 		except univention.admin.uexceptions.ldapSizelimitExceeded:
 			raise SearchLimitReached(module_name=self.name, search_filter=filter_s, sizelimit=sizelimit)
 		for dn in dns:
-			yield self.get(dn)
+			try:
+				yield self.get(dn)
+			except WrongObjectType:
+				pass
 
 	def _dn_exists(self, dn):
 		"""

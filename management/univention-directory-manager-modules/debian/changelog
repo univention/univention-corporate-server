@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-26) unstable; urgency=medium
+
+  * Bug #54017: Do not raise WrongObjectType during search()
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 01 Nov 2021 14:27:28 +0100
+
 univention-directory-manager-modules (14.0.20-25) unstable; urgency=low
 
   * Bug #51233: make ucs4 and ucs5 code more alike
