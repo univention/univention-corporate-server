@@ -1,7 +1,14 @@
+univention-management-console (12.0.12-18) unstable; urgency=medium
+
+  * Bug #53906: fix counter for mobile tabs + close overlay if tabs
+    are not visible
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 01 Nov 2021 12:37:21 +0100
+
 univention-management-console (12.0.12-17) unstable; urgency=medium
 
-  * The tabs when using ?overview=false query parameter are only hidden
-    when there is one module open.
+  * Bug #53906: The tabs when using ?overview=false query parameter are
+    only hidden when there is one module open.
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 26 Oct 2021 09:38:45 +0200
 
