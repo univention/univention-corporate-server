@@ -1,0 +1,56 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: opencv
+fix: 2.4.9.1+dfsg1-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Double free vulnerability on crafted image (CVE-2016-1516)
+ * out-of-bounds write error in the function FillColorRow1 (CVE-2017-12597)
+ * out-of-bounds read error in the cv::RBaseStream::readBlock function
+   (CVE-2017-12598)
+ * out-of-bounds read error in the function icvCvt_BGRA2BGR_8u_C4C3R
+   (CVE-2017-12599)
+ * buffer overflow in the cv::BmpDecoder::readData function (CVE-2017-12601)
+ * invalid write in the cv::RLByteStream::getBytes function (CVE-2017-12603)
+ * out-of-bounds write error in the function FillUniColor (CVE-2017-12604)
+ * out-of-bounds write error in the function FillColorRow8 (CVE-2017-12605)
+ * out-of-bounds write error in the function FillColorRow4 (CVE-2017-12606)
+ * Heap-based buffer over-write in modules/imgcodecs/src/grfmt_pxm.cpp
+   (CVE-2017-12862)
+ * Integer overflow in PxMDecoder::readData function in
+   imgcodecs/src/grfmt_pxm.cpp (CVE-2017-12863)
+ * Integer overflow in ReadNumber function in
+   opencv/modules/imgcodecs/src/grfmt_pxm.cpp (CVE-2017-12864)
+ * Buffer Overflow in the cv::PxMDecoder::readData function in grfmt_pxm.cpp
+   (CVE-2017-17760)
+ * out of bounds write in functions FillUniColor and FillUniGray in
+   opencv/modules/imgcodecs/src/utils.cpp (CVE-2017-1000450)
+ * Heap-based buffer overflow in cv::Jpeg2KDecoder::readComponent8u
+   (CVE-2018-5268)
+ * Assertion failure due to incorrect integer cast (CVE-2018-5269)
+ * NULL pointer dereference in function cv::XMLParser::parse() in
+   persistence_xml.cpp leading to DoS (CVE-2019-14493)
+ * division by zero in cv::HOGDescriptor::getDescriptorSize in
+   modules/objdetect/src/hog.cpp (CVE-2019-15939)
+bug: [54009]
+cve:
+- CVE-2016-1516
+- CVE-2017-12597
+- CVE-2017-12598
+- CVE-2017-12599
+- CVE-2017-12601
+- CVE-2017-12603
+- CVE-2017-12604
+- CVE-2017-12605
+- CVE-2017-12606
+- CVE-2017-12862
+- CVE-2017-12863
+- CVE-2017-12864
+- CVE-2017-17760
+- CVE-2017-1000450
+- CVE-2018-5268
+- CVE-2018-5269
+- CVE-2019-14493
+- CVE-2019-15939
