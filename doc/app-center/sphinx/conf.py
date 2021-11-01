@@ -69,3 +69,8 @@ numfig_format = {
     "code-block": _("Listing %s"),
     "section": _("Section %s"),
 }
+
+exclude_patterns = [
+    "_build",
+    "sphinx_univention",
+]
