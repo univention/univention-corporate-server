@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-manager-modules
+fix: 14.0.20-26A~4.4.0.202111011428
+desc: |
+ This update addresses the following issue:
+ * The UDM API does not raise WrongObjectType during the iteration over all
+   found objects in search().
+bug: [54017]
