@@ -31,11 +31,12 @@ import univention.portal.config as config
 
 
 class User(object):
-	def __init__(self, username, display_name, groups, headers):
+	def __init__(self, username, display_name, groups, headers, args=None):
 		self.username = username
 		self.display_name = display_name
 		self.groups = [group.lower() for group in groups]
 		self.headers = headers
+		self.args = args or {}
 
 	def is_admin(self):
 		if self.is_anonymous():
@@ -48,3 +49,23 @@ class User(object):
 
 	def is_member_of(self, group):
 		return group.lower() in self.groups
+
+	def is_authorized(self, auth_info):
+		levels_of_assurance = {"low": 1, "medium": 2, "high": 3}
+		disallow_anonymous = auth_info.get('disallow_anonymous', False)
+		allowed_roles = set(auth_info.get('roles', []))
+		allowed_idps = set(auth_info.get('idps', []))
+		allowed_loa = auth_info.get('loa', "")
+		roles = set(self.args.get('roles', []))
+		idps = set(self.args.get('idps', []))
+		loa = self.args.get('loa', "")
+
+		def conditions():
+			yield not disallow_anonymous or not self.is_anonymous()
+			if allowed_roles:
+				yield allowed_roles & roles
+			if allowed_idps:
+				yield allowed_idps & idps
+			if allowed_loa:
+				yield levels_of_assurance.get(loa, 1) >= levels_of_assurance(allowed_loa, 1)
+		return all(conditions())

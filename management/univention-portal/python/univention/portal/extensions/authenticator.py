@@ -304,7 +304,7 @@ class OpenIDConnectAuthenticator(Authenticator, OAuth2Mixin):
 			except KeyError:
 				get_logger("user").error('No groups were delivered')
 
-			return User(username=user.get('preferred_username', ''), display_name=user.get('name', ''), groups=user.get('groups', []), headers=dict(request.request.headers))
+			return User(username=user.get('preferred_username', ''), display_name=user.get('name', ''), groups=user.get('groups', []), headers=dict(request.request.headers), args=user)
 		return User(None, display_name=None, groups=[], headers=dict(request.request.headers))
 
 	async def get_current_user(self, request):

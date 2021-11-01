@@ -212,6 +212,9 @@ class Portal(with_metaclass(Plugin)):
 							break
 					else:
 						continue
+				if entry['auth_info']:
+					if not user.is_authorized(entry['auth_info']):
+						continue
 			filtered_dns.append(entry_dn)
 		return filtered_dns
 
