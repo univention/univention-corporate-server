@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: bind9
+fix: 1:9.11.5.P4+dfsg-5.1+deb10u6A~5.0.0.202111011209
+desc: |
+ This update addresses the following issue:
+ * Lame cache can be abused to severely degrade resolver performance
+   (CVE-2021-25219)
+bug: [54002]
+cve:
+- CVE-2021-25219
