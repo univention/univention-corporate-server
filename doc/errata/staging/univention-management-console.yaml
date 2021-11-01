@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console
-fix: 
+fix: 12.0.12-18A~5.0.0.202111011244
 desc: |
  This update addresses the following issue(s):
  * The behavior for multiple module tabs has been adjusted when using the
