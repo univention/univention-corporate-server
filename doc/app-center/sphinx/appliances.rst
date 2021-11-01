@@ -117,7 +117,7 @@ Boot loader
 The background color can be configured for the boot loader. Please
 define in the Primary color setting.
 
-.. figure:: ../../illustrations50/Appliance_Branding_Bootloader.png
+.. figure:: ../illustrations50/Appliance_Branding_Bootloader.png
    :alt: Boot loader
 
    Boot loader
@@ -138,7 +138,7 @@ simply define ``#000000``. A gradient can for example be defined with
 information on how to use a gradient, see `CSS linear-gradient()
 function on w3schools <https://www.w3schools.com/csSref/func_linear-gradient.asp>`__.
 
-.. figure:: ../../illustrations50/Appliance_Branding_Bootsplash.png
+.. figure:: ../illustrations50/Appliance_Branding_Bootsplash.png
    :alt: Boot splash
 
    Boot splash
@@ -163,7 +163,7 @@ throughout the setup wizard (see :ref:`appliance:branding:umc-branding-figure`).
 
 .. _appliance:branding:setup-wizard-figure:
 
-.. figure:: ../../illustrations50/Appliance_Branding_Setup_Wizard.png
+.. figure:: ../illustrations50/Appliance_Branding_Setup_Wizard.png
    :alt: System setup first screen
 
    System setup first screen
@@ -171,7 +171,7 @@ throughout the setup wizard (see :ref:`appliance:branding:umc-branding-figure`).
 
 .. _appliance:branding:umc-branding-figure:
 
-.. figure:: ../../illustrations50/Appliance_Branding_UMC.png
+.. figure:: ../illustrations50/Appliance_Branding_UMC.png
    :alt: System setup summary screen
 
    System setup summary screen
@@ -206,7 +206,7 @@ on the portal page. The background can either consist of a background
 image or a background color or a background color gradient as described
 in :ref:`Boot splash <appliance:branding:bootsplash>`.
 
-.. figure:: ../../illustrations50/Appliance_Branding_Portal_Page.png
+.. figure:: ../illustrations50/Appliance_Branding_Portal_Page.png
    :alt: Appliance portal page
 
    Appliance portal page

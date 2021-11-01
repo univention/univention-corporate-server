@@ -61,7 +61,7 @@ for all the settings around the app.
 4. After the login, the :guilabel:`Apps` module needs to be opened to work on the
    app.
 
-.. figure:: ../../illustrations50/app_portal_overview.png
+.. figure:: ../illustrations50/app_portal_overview.png
    :alt: App Provider Portal overview with "Apps" module selected
 
    App Provider Portal overview with "Apps" module selected
@@ -87,7 +87,7 @@ and use a Docker image. It focuses on a single container setup. For a
 setup with multiple containers with Docker Compose please see :ref:`Create a
 Multi Container App <create-app-with-docker:compose>`.
 
-.. figure:: ../../illustrations50/app_portal_new_app.png
+.. figure:: ../illustrations50/app_portal_new_app.png
    :alt: Add new App
    :scale: 75%
 

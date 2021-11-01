@@ -108,7 +108,7 @@ The app can be installed via the UCSUMC. UMC consists of several modules
 and one of them is called App Center. Open this module and install the
 app from there.
 
-.. figure:: ../../illustrations50/umc-module-app-center.png
+.. figure:: ../illustrations50/umc-module-app-center.png
    :scale: 80%
    :alt: Univention Management Console overview with App Center Module
 
@@ -368,13 +368,13 @@ follow these steps:
    the scripts and maybe the integration. Texts and logos should be
    checked if they are still up to date.
 
-.. figure:: ../../illustrations50/app_portal_create_new_version.png
+.. figure:: ../illustrations50/app_portal_create_new_version.png
    :scale: 80%
    :alt: Menu to add a new App
 
    Menu to add a new App
 
-.. figure:: ../../illustrations50/app_portal_new_version.png
+.. figure:: ../illustrations50/app_portal_new_version.png
    :scale: 80%
    :alt: Add a new App version
 

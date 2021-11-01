@@ -31,7 +31,7 @@ see the overview below about of the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
 
-.. figure:: ../../illustrations50/app-flow-install.png
+.. figure:: ../illustrations50/app-flow-install.png
    :alt: App workflow for installation
 
    App workflow for installation
@@ -262,7 +262,7 @@ see the overview below about the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
 
-.. figure:: ../../illustrations50/app-flow-remove.png
+.. figure:: ../illustrations50/app-flow-remove.png
    :alt: App workflow for Removal
 
    App workflow for Removal
@@ -345,7 +345,7 @@ purpose. Please see an overview of the involved scripts and the
 parameters they are called with in the figure below. More information on
 the scripts themselves can be found in the following sections.
 
-.. figure:: ../../illustrations50/app-flow-update.png
+.. figure:: ../illustrations50/app-flow-update.png
    :alt: App workflow for upgrade
 
    App workflow for upgrade
@@ -467,7 +467,7 @@ settings in the app configuration, see
 
 .. _app-configurations:app-settings:button:
 
-.. figure:: ../../illustrations50/Appcenter-settings-button.png
+.. figure:: ../illustrations50/Appcenter-settings-button.png
    :alt: App settings button
 
    App settings button
@@ -477,7 +477,7 @@ An example for an App settings dialog is in
 
 .. _app-configurations:app-settings:example:
 
-.. figure:: ../../illustrations50/Appcenter-settings-example.png
+.. figure:: ../illustrations50/Appcenter-settings-example.png
    :alt: App settings example
 
    App settings example
