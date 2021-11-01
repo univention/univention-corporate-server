@@ -59,8 +59,11 @@ language = 'en'
 #html_theme_path = ["../",]
 #html_theme = 'sphinx_univention'
 
-#html_theme = "sphinx_book_theme"
-html_theme = "furo"
+html_theme = "sphinx_book_theme"
+html_theme_options = {
+    "extra_navbar": "",
+}
+#html_theme = "furo"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
