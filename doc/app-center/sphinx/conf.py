@@ -13,14 +13,14 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
+from datetime import date
 from sphinx.locale import _
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'Univention App Center for App Providers'
-copyright = '2021, Univention GmbH'
+copyright = '{}, Univention GmbH'.format(date.today().year)
 author = 'Univention GmbH'
 
 
