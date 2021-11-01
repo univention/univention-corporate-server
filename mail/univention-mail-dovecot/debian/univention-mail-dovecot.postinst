@@ -110,8 +110,8 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 	univention-config-registry set mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh"
 fi
 
-# Bug #53987: fix DH params in UCS 5.0 (fresh installation and update)
-if dpkg --compare-versions "$2" lt-nl 6.0.3-3; then
+# Bug #53987: fix DH params in UCS 5.0
+if ! [ -e "$DH_PARAMS_FILE" ]; then
 	generate_small_dh_params_in_the_foreground
 	generate_large_dh_params_in_the_background
 fi

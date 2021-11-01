@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.3-5) unstable; urgency=low
+
+  * Bug #53994: fix typo preventing generation of DH parameter
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Nov 2021 11:58:47 +0100
+
 univention-mail-dovecot (6.0.3-4) unstable; urgency=low
 
   * Bug #53994: fix UCR template and DH parameter generation
