@@ -1154,7 +1154,7 @@ transfer_docker_image () {
 	local transfer_pwfile=/root/automation.secret
 
 # lock the  image transfer (update, pull, app update)
-( flock --verbose -w 300 9 || return 1
+( flock --verbose -w 600 9 || return 1
 
 	ssh root@$docker_host univention-app update || return 1
 cat <<-EOF | ssh root@$docker_host python
