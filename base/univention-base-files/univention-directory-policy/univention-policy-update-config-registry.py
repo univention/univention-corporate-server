@@ -36,22 +36,18 @@ import os
 import sys
 
 import univention.config_registry as confreg
-from univention.lib.policy_result import PolicyResultFailed, policy_result
+from univention.lib.policy_result import PolicyResultFailed, ucr_policy_result
 
 
 def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbose=False):
 	"""Retrieve policy for host_dn."""
 	try:
-		(results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
+		(results, _) = ucr_policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
 	except PolicyResultFailed as ex:
 		if verbose:
 			print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
 		sys.exit(1)
 	return results
-
-
-get_policy.ATTR = 'Attribute: univentionRegistry;entry-hex-'
-get_policy.VALUE = 'Value: '
 
 
 def parse_cmdline():

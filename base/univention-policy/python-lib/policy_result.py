@@ -52,7 +52,32 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 	results['univentionDhcpDomainNameServers']
 	['192.168.0.111']
 	"""
+	results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
+	return (
+		{_replace_ucr_key(key, encoding): value for key, value in results.items()},
+		{_replace_ucr_key(key, encoding): value for key, value in policies.items()}
+	)
 
+
+def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
+	"""
+	Return a tuple of hash-lists, mapping attributes to a list of values and
+	mapping attributes to the matching Policy-DN.
+	"""
+	results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
+	return (
+		{_replace_ucr_key(key, encoding): value for key, value in results.items() if key.startswith('univentionRegistry;entry-hex-')},
+		{_replace_ucr_key(key, encoding): value for key, value in policies.items() if key.startswith('univentionRegistry;entry-hex-')}
+	)
+
+
+def _replace_ucr_key(current_attribute, encoding):
+	if current_attribute.startswith('univentionRegistry;entry-hex-'):
+		current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex').decode(encoding)
+	return current_attribute
+
+
+def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 	if not binddn:
 		import univention.config_registry
 		cr = univention.config_registry.ConfigRegistry()
@@ -73,11 +98,10 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 	policies = {}  # Attribute -> Policy-DN
 	current_attribute = None
 	policy = None
+
 	for line in stdout.decode(encoding, 'replace').splitlines():
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
-			if current_attribute.startswith('univentionRegistry;entry-hex-'):
-				current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex').decode(encoding)
 			policies[current_attribute] = policy
 			current_values = results.setdefault(current_attribute, [])
 		elif line.startswith('Value: '):

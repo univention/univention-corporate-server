@@ -1,3 +1,9 @@
+univention-policy (11.0.1-3) unstable; urgency=medium
+
+  * Bug #53343: Add univention.lib.policy_result.ucr_policy_result()
+
+ -- Esteban Martinena <martinena@univention.de>  Tue, 02 Nov 2021 19:09:27 +0100
+
 univention-policy (11.0.1-2) unstable; urgency=low
 
   * Bug #53943: Add possibility to select LDAP server in python_result library.
