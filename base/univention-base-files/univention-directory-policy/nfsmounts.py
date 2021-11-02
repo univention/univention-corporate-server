@@ -207,7 +207,7 @@ def mount(to_mount):
 			os.makedirs(mp)
 		debug('Mounting %s...\n' % mp)
 		if not simulate:
-			subprocess.Popen(['mount', mp])
+			subprocess.call(['mount', mp])
 
 
 if __name__ == '__main__':

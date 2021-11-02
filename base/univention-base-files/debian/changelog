@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-5) unstable; urgency=medium
+
+  * Bug #53343: Replace of subprocess.Popen with subprocess.call in nfsmounts.py
+
+ -- Esteban Martinena <martinena@univention.de>  Tue, 02 Nov 2021 14:47:35 +0100
+
 univention-base-files (9.0.3-4) unstable; urgency=medium
 
   * Bug #53343: Code updated from python 2 to python 3.
