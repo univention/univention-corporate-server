@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-config-registry 
+fix: 
+desc: |
+ This update addresses the following issue:
+ * `ucr commit` now prints a warning if a file is specified for which no template is
+   registered.
+bug: [50010]

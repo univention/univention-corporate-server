@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-11) unstable; urgency=medium
+
+  * Bug 50010 - ucr commit prints a warning if there is no template registered
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 27 Oct 2021 07:37:43 +0200
+
 univention-config-registry (15.0.7-10) unstable; urgency=low
 
   * Bug #53424: Always call handler() with 2-tuple dict
