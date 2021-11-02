@@ -1072,6 +1072,48 @@ if failed:
 EOF
 }
 
+update_check_ucsschool_computerroom_compatibility() {
+	local var="update$VERSION/ignore-ucsschool-computerroom-compatibility"
+	ignore_check "$var" && return 100
+  	/usr/bin/python2.7 - <<EOF
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+
+import univention.admin.uldap
+import univention.config_registry
+
+try:
+	from ucsschool.lib.models.school import School
+	from ucsschool.lib.models.group import ComputerRoom
+except ImportError:
+	# import error means no ucsschool is installed
+	exit(0)
+
+lo, po = univention.admin.uldap.getMachineConnection()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+edu_dc_dns = lo.getAttr("cn=DC-Edukativnetz,cn=ucsschool,cn=groups,{}".format(ucr["ldap/base"]), "uniqueMember")
+host_dn = ucr['ldap/hostdn']
+if ucr.is_true("ucsschool/singlemaster", False) or (host_dn in edu_dc_dns):
+	# host is replica in a multi-server environment or a single server
+	computerroom_dns = []
+	for school in School.get_all(lo):
+			rooms = ComputerRoom.get_all(lo, school.name)
+			computerroom_dns.extend([room.dn for room in rooms])
+
+	if computerroom_dns:
+		print("Updating to UCS@school 5.0 with computer rooms is not yet supported. An update, which enables this, will follow.")
+		print("The following UCS@school computer room objects prevent the upgrade to UCS@school 5.0:\n")
+		for dn in computerroom_dns:
+			print("\t\t{}".format(dn))
+		print("\nINFO: In preparation for this upgrade, all computer rooms, which are configured to have iTALC as it's backend, should be migrated to Veyon.")
+		print("iTALC computer rooms will still be usable in mixed environments with the primary upgraded to UCS@school 5.0 with school replica nodes running UCS@school 4.4. iTALC computer rooms won't be usable in UCS@school 5.0 replica nodes.")
+		print("Please visit https://help.univention.com/t/16937 for more information.")
+		exit(1)
+EOF
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
