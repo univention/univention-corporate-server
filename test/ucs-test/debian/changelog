@@ -1,3 +1,9 @@
+ucs-test (10.0.6-64) unstable; urgency=medium
+
+  * Bug #53906: make 18_overview_false.py executable
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 02 Nov 2021 08:32:07 +0100
+
 ucs-test (10.0.6-63) unstable; urgency=medium
 
   * Bug #53906: added 18_overview_false.py
