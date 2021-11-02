@@ -184,12 +184,15 @@ def get_nfs_data(nfs_mount, entries):
 		return
 
 	# get the ip of the share_host
-	hostname, domain = share_host.split('.', 1)
-	result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
-	try:
-		attributes = result[0][1]
-		nfs_path_ip = "%s:%s" % (attributes['aRecord'][0].decode('ASCII'), share_path)
-	except LookupError:
+	hostname, _, domain = share_host.partition('.')
+	if hostname and _ and domain:
+		result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
+		try:
+			attributes = result[0][1]
+			nfs_path_ip = "%s:%s" % (attributes['aRecord'][0].decode('ASCII'), share_path)
+		except LookupError:
+			nfs_path_ip = nfs_path_fqdn
+	else:
 		nfs_path_ip = nfs_path_fqdn
 
 	# skip share if the source is already in the fstab
