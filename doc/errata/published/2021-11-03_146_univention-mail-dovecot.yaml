@@ -10,3 +10,5 @@ desc: |
  * The DH parameters for Dovecot are now correctly created. The
    Managesieve service could not be used with TLS before.
 bug: [53182, 53994]
+erratum: 146
+announced: 2021-11-03
