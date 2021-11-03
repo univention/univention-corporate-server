@@ -10,3 +10,5 @@ desc: |
    AD takeover was not possible if the AD Domain contained objects with
    `mail` or `proxyAddresses` attributes.
 bug: [53466]
+erratum: 138
+announced: 2021-11-03
