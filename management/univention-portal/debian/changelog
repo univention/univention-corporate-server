@@ -1,3 +1,9 @@
+univention-portal (4.0.5-70) unstable; urgency=medium
+
+  * Bug #53565: Include patches from Phoenix Q3/21
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 03 Nov 2021 10:35:02 +0100
+
 univention-portal (4.0.5-69) unstable; urgency=medium
 
   * Bug #53565: Include patches from Phoenix Q3/21
