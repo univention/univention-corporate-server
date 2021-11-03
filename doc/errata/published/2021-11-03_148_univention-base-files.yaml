@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-base-files` has been migrated to Python 3.
 bug: [53343]
+erratum: 148
+announced: 2021-11-03
