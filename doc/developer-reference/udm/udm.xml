@@ -1385,7 +1385,7 @@ identify = object.identify
 			<title>Example module</title>
 			<para>
 				The following is an example module for the &ucsUDM; which is also available as a package. (<package>univention-directory-manager-module-example</package>)
-				The complete source code is available at <u:src>management/univention-directory-manager-module-example/</u:src>.
+				The complete source code is available at <u:src>packaging/univention-directory-manager-module-example</u:src>.
 				The directory contains a source package in Debian format, from which two binary packages are created during package build via <command>./debian/rules binary</command>:
 				A schema package, which must be installed on the master, and the package containing the <acronym>UDM</acronym> module itself.
 				The sample code also includes a <command>ip-phone-tool</command> script that shows an example of using the <acronym>UDM</acronym> Python API in a Python script.
