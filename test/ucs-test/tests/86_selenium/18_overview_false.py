@@ -9,8 +9,8 @@
 
 
 def test_overview_false(selenium):
-	selenium.do_login()
 	selenium.driver.get(selenium.base_url + 'univention/management/?overview=false#module=udm:users/user')
+	selenium.do_login(without_navigation=True)
 	selenium.wait_for_text('Administrator')
 
 	# The tabs should not be visible as long as only one tab is open
@@ -18,7 +18,9 @@ def test_overview_false(selenium):
 	assert not users_tab.is_displayed()
 
 	selenium.click_grid_entry('Administrator')
+	selenium.wait_until_standby_animation_appears_and_disappears()
 	selenium.click_text('Policies')  # Policies tab
+	selenium.wait_until_standby_animation_appears_and_disappears()
 	selenium.click_text('Policy: Desktop')  # TitlePane
 	selenium.click_button('Create new policy')
 	selenium.wait_for_text('Desktop settings')  # content in the Policies module
