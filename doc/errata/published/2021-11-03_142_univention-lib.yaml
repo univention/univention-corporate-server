@@ -10,3 +10,5 @@ desc: |
    invalid values and generates valid values in certain cases.
  * Added new shell library function `echowithtimestamp`.
 bug: [53902,53182]
+erratum: 142
+announced: 2021-11-03
