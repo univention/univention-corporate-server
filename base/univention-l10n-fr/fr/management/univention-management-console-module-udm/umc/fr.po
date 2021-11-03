@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 14 Apr 2017 00:29:17 +0200\n"
+"POT-Creation-Date: Wed, 03 Nov 2021 17:54:30 +0100\n"
 "PO-Revision-Date: 2016-07-09 18:50+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -35,6 +35,9 @@ msgstr "Configuration des réglages Nagios au sein du domaine"
 msgid "Configuration of network settings in the domain"
 msgstr "Configuration des réglages réseau au sein du domaine"
 
+msgid "Contacts"
+msgstr ""
+
 msgid "DHCP"
 msgstr "DHCP"
 
@@ -55,6 +58,10 @@ msgstr "Courriel"
 
 msgid "Management of computers in the domain"
 msgstr "Gestion des ordinateurs au sein du domaine"
+
+#, fuzzy
+msgid "Management of contacts"
+msgstr "Gestion des utilisateurs au sein du domaine"
 
 msgid "Management of directory shares in the domain"
 msgstr "Gestion des répertoires partagés au sein du domaine"
@@ -90,10 +97,18 @@ msgstr "Stratégies"
 msgid "Printers"
 msgstr "Imprimantes"
 
+#, fuzzy
+msgid "Request new license"
+msgstr "Importer la nouvelle licence"
+
 msgid "Shares"
 msgstr "Partages"
 
 msgid "UCS license import"
+msgstr "Importation de licence UCS"
+
+#, fuzzy
+msgid "UCS license request"
 msgstr "Importation de licence UCS"
 
 msgid "Univention Directory Manager"
@@ -103,4 +118,54 @@ msgid "User settings"
 msgstr "Réglages utilisateur"
 
 msgid "Users"
+msgstr "Utilisateurs"
+
+#, fuzzy
+msgid "computers"
+msgstr "Ordinateurs"
+
+msgid "contacts"
+msgstr ""
+
+msgid "dhcp"
+msgstr ""
+
+msgid "dns"
+msgstr ""
+
+#, fuzzy
+msgid "groups"
+msgstr "Groupes"
+
+msgid "ldap,directory,udm"
+msgstr ""
+
+msgid "mail,e-mail,email"
+msgstr ""
+
+#, fuzzy
+msgid "nagios"
+msgstr "Nagios"
+
+#, fuzzy
+msgid "networks"
+msgstr "Réseaux"
+
+#, fuzzy
+msgid "policy,policies"
+msgstr "Stratégies"
+
+#, fuzzy
+msgid "printers"
+msgstr "Imprimantes"
+
+#, fuzzy
+msgid "shares"
+msgstr "Partages"
+
+msgid "user,password"
+msgstr ""
+
+#, fuzzy
+msgid "users"
 msgstr "Utilisateurs"

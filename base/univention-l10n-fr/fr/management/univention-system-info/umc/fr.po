@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-sysinfo\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 14 Apr 2017 00:29:18 +0200\n"
+"POT-Creation-Date: Wed, 03 Nov 2021 17:54:30 +0100\n"
 "PO-Revision-Date: 2016-07-04 20:35+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -19,3 +19,7 @@ msgstr "Informations sur le matériel"
 
 msgid "Overview of local systems hardware information"
 msgstr "Aperçu des informations sur le matériel des systèmes locaux"
+
+#, fuzzy
+msgid "system,information"
+msgstr "Informations sur le matériel"

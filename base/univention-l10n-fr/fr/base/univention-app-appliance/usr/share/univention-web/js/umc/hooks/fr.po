@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-app-appliance\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 17:18+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,26 +14,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: usr/share/univention-web/js/umc/hooks/appliance.js:199
-#, python-format
+#: usr/share/univention-web/js/umc/hooks/appliance.js:136
+#, javascript-format
+msgid "%s Appliance"
+msgstr ""
+
+#: usr/share/univention-web/js/umc/hooks/appliance.js:195
+#, javascript-format
 msgid "%s web interface"
 msgstr "Interface web %s"
 
-#: usr/share/univention-web/js/umc/hooks/appliance.js:204
+#: usr/share/univention-web/js/umc/hooks/appliance.js:200
 msgid "Display this information again via <i>Help</i> in the user menu"
 msgstr ""
 "Afficher à nouveau cette information à travers l'<i>Aide</i> du menu "
 "utilisateur"
 
-#: usr/share/univention-web/js/umc/hooks/appliance.js:235
+#: usr/share/univention-web/js/umc/hooks/appliance.js:231
 msgid "First steps help"
 msgstr "Aide aux premiers pas"
 
-#: usr/share/univention-web/js/umc/hooks/appliance.js:194
+#: usr/share/univention-web/js/umc/hooks/appliance.js:190
 msgid ""
-"Univention Management Console (UMC) for administrating users, computers, "
-"etc."
+"Univention Management Console (UMC) for administrating users, computers, etc."
 msgstr ""
-"Console Univention Management Console (UMC) pour la gestion des utilisateurs, "
-"des ordinateurs, etc."
-
+"Console Univention Management Console (UMC) pour la gestion des "
+"utilisateurs, des ordinateurs, etc."

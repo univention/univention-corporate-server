@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup-boot\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 18:20+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -35,9 +35,9 @@ msgid ""
 "If a password for <i>root</i> has been set, <a href='/univention/setup/?"
 "username=root'>start the setup wizard</a>."
 msgstr ""
-"Si un mot de passe a déjà été défini pour l'utilisateur <i>root</i>, "
-"<a href='/univention/setup/?username=root'>lancez l'assistant de "
-"configuration</a>."
+"Si un mot de passe a déjà été défini pour l'utilisateur <i>root</i>, <a "
+"href='/univention/setup/?username=root'>lancez l'assistant de configuration</"
+"a>."
 
 #: usr/share/univention-system-setup-boot/www/main.js:53
 msgid ""
@@ -51,8 +51,6 @@ msgid "Welcome to UCS initial configuration"
 msgstr "Bienvenue dans la configuration initiale d'UCS"
 
 #: usr/share/univention-system-setup-boot/www/main.js:55
-#, python-format
 msgid "ssh -ti &lt;path/to/privatekey&gt; root@%(serveraddress)s passwd"
 msgstr ""
 "ssh -ti &lt;chemin/vers/la/clé_privée&gt; root@%(serveraddress)s passwd"
-

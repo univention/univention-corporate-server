@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-23 22:18+0100\n"
 "Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -16,73 +16,72 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: modules/univention/admin/handlers/container/msgpo.py:175
+#: modules/univention/admin/handlers/container/msgpo.py:119
 msgid "Basic settings"
 msgstr "Réglages de base"
 
-#: modules/univention/admin/handlers/container/msgpo.py:47
+#: modules/univention/admin/handlers/container/msgpo.py:44
 msgid "Container: MS Group Policy"
 msgstr "Conteneur : stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:63
+#: modules/univention/admin/handlers/container/msgpo.py:62
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/handlers/container/msgpo.py:73
+#: modules/univention/admin/handlers/container/msgpo.py:67
 msgid "Display name"
 msgstr "Nom à l'affichage"
 
-#: modules/univention/admin/handlers/container/msgpo.py:181
-#: modules/univention/admin/handlers/container/msgpo.py:182
+#: modules/univention/admin/handlers/container/msgpo.py:125
+#: modules/univention/admin/handlers/container/msgpo.py:126
 msgid "GPO settings"
 msgstr "Réglages GPO"
 
-#: modules/univention/admin/handlers/container/msgpo.py:175
-#: modules/univention/admin/handlers/container/msgpo.py:176
+#: modules/univention/admin/handlers/container/msgpo.py:119
+#: modules/univention/admin/handlers/container/msgpo.py:120
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/container/msgpo.py:181
+#: modules/univention/admin/handlers/container/msgpo.py:125
 msgid "MS GPO settings"
 msgstr "Réglages GPO MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:123
+#: modules/univention/admin/handlers/container/msgpo.py:92
 msgid "MS Group Policy File Sys Path"
 msgstr "Emplacement système des fichiers de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:83
+#: modules/univention/admin/handlers/container/msgpo.py:72
 msgid "MS Group Policy Flags"
 msgstr "Drapeaux de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:113
+#: modules/univention/admin/handlers/container/msgpo.py:87
 msgid "MS Group Policy Functionality Version"
 msgstr "Version de la fonctionnalité de stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:143
+#: modules/univention/admin/handlers/container/msgpo.py:102
 msgid "MS Group Policy Machine Extension Names"
 msgstr "Noms des extensions machine de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:103
+#: modules/univention/admin/handlers/container/msgpo.py:82
 msgid "MS Group Policy System Flags"
 msgstr "Drapeaux système de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:133
+#: modules/univention/admin/handlers/container/msgpo.py:97
 msgid "MS Group Policy User Extension Names"
 msgstr "Noms des extensions utilisateur de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:93
+#: modules/univention/admin/handlers/container/msgpo.py:77
 msgid "MS Group Policy Version Number"
 msgstr "Numéro de version de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:153
+#: modules/univention/admin/handlers/container/msgpo.py:107
 msgid "MS Group Policy WQL Filter"
 msgstr "Drapeaux de la stratégie de groupe MS"
 
-#: modules/univention/admin/handlers/container/msgpo.py:163
+#: modules/univention/admin/handlers/container/msgpo.py:112
 msgid "MS NT Security Descriptor"
 msgstr "Descripteur de sécurité MS NT"
 
-#: modules/univention/admin/handlers/container/msgpo.py:53
+#: modules/univention/admin/handlers/container/msgpo.py:55
 msgid "Name"
 msgstr "Nom"
-

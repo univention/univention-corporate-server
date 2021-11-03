@@ -1,0 +1,630 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucs-test-selenium\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: tests/86_selenium/110_product_test_do_rejoin:51
+msgid "A reboot of the server is recommended"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:177
+msgid "Account"
+msgstr ""
+
+#: tests/86_selenium/15_favorite_modules:86
+msgid "Add to favorites"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:26
+#: tests/86_selenium/180_portal_entries:29
+#: tests/86_selenium/180_portal_entries:30
+#: tests/86_selenium/180_portal_entries:33
+#: tests/86_selenium/180_portal_entries:34
+#: tests/86_selenium/180_portal_entries:37
+#: tests/86_selenium/180_portal_entries:38
+#: tests/86_selenium/180_portal_entries:41
+#: tests/86_selenium/180_portal_entries:42
+msgid "Administration"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:36
+msgid "All"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:57
+#: tests/86_selenium/131_miscellaneous_module_availability:99
+#: tests/86_selenium/131_miscellaneous_module_availability:127
+#: tests/86_selenium/131_miscellaneous_module_availability:155
+#: tests/86_selenium/132_miscellaneous_open_all_modules:38
+msgid "App Center"
+msgstr ""
+
+#: tests/86_selenium/12_product_test_ucr:144
+msgid "Base Settings"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:52
+msgid "Cancel"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:38
+#: tests/86_selenium/180_portal_entries:42
+msgid "Central portal web page for the UCS domain"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:49
+#: tests/86_selenium/131_miscellaneous_module_availability:65
+msgid "Certificate settings"
+msgstr ""
+
+#: tests/86_selenium/134_side_menu:24
+#: tests/86_selenium/14_password_self-service:85
+#: tests/86_selenium/14_password_self-service:102
+#: tests/86_selenium/14_password_self-service:112
+#: tests/86_selenium/14_password_self-service:127
+#: tests/86_selenium/10_product_test_password_change:241
+#: tests/86_selenium/10_product_test_password_change:250
+msgid "Change password"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:242
+msgid "Change the password of"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:104
+msgid "Change your (expired) password."
+msgstr ""
+
+#: tests/86_selenium/132_miscellaneous_open_all_modules:42
+msgid "Close"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:44
+msgid "Command"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:37
+#: tests/86_selenium/131_miscellaneous_module_availability:80
+msgid "Computers"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:46
+msgid "Confirmation"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:40
+#: tests/86_selenium/131_miscellaneous_module_availability:83
+msgid "DHCP"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:41
+#: tests/86_selenium/131_miscellaneous_module_availability:84
+msgid "DNS"
+msgstr ""
+
+#: tests/86_selenium/151_udm_users:117
+msgid "Domain Admins"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:42
+#: tests/86_selenium/111_product_test_execute_join_script:68
+#: tests/86_selenium/131_miscellaneous_module_availability:42
+#: tests/86_selenium/131_miscellaneous_module_availability:64
+#: tests/86_selenium/131_miscellaneous_module_availability:85
+#: tests/86_selenium/131_miscellaneous_module_availability:106
+#: tests/86_selenium/131_miscellaneous_module_availability:119
+#: tests/86_selenium/131_miscellaneous_module_availability:134
+#: tests/86_selenium/131_miscellaneous_module_availability:147
+#: tests/86_selenium/131_miscellaneous_module_availability:162
+msgid "Domain join"
+msgstr ""
+
+#: tests/86_selenium/184_portal_administration_inline_order:106
+msgid "Edit Portal"
+msgstr ""
+
+#: tests/86_selenium/12_product_test_ucr:129
+msgid "Edit UCR variable"
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:79
+msgid "Execute"
+msgstr ""
+
+#: tests/86_selenium/15_favorite_modules:53
+#: tests/86_selenium/15_favorite_modules:98
+#: tests/86_selenium/10_product_test_password_change:228
+msgid "Favorites"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:34
+#: tests/86_selenium/131_miscellaneous_module_availability:63
+#: tests/86_selenium/131_miscellaneous_module_availability:77
+#: tests/86_selenium/131_miscellaneous_module_availability:105
+#: tests/86_selenium/131_miscellaneous_module_availability:118
+#: tests/86_selenium/131_miscellaneous_module_availability:133
+#: tests/86_selenium/131_miscellaneous_module_availability:146
+#: tests/86_selenium/131_miscellaneous_module_availability:161
+msgid "Filesystem quotas"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:71
+msgid "Force termination"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:129
+msgid "Forgot your password"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:35
+#: tests/86_selenium/131_miscellaneous_module_availability:78
+#: tests/86_selenium/151_udm_users:116
+msgid "Groups"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:50
+#: tests/86_selenium/131_miscellaneous_module_availability:66
+#: tests/86_selenium/131_miscellaneous_module_availability:92
+#: tests/86_selenium/131_miscellaneous_module_availability:107
+#: tests/86_selenium/131_miscellaneous_module_availability:120
+#: tests/86_selenium/131_miscellaneous_module_availability:135
+#: tests/86_selenium/131_miscellaneous_module_availability:148
+#: tests/86_selenium/131_miscellaneous_module_availability:163
+msgid "Hardware information"
+msgstr ""
+
+#: tests/86_selenium/135_upload_license:82
+#: tests/86_selenium/135_upload_license:83
+msgid "Import new license"
+msgstr ""
+
+#: tests/86_selenium/135_upload_license:74
+msgid "Information about the current UCS license"
+msgstr ""
+
+#: tests/86_selenium/136_packages:57
+msgid "Install"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:43
+#: tests/86_selenium/131_miscellaneous_module_availability:86
+msgid "LDAP directory"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:51
+#: tests/86_selenium/131_miscellaneous_module_availability:67
+#: tests/86_selenium/131_miscellaneous_module_availability:93
+#: tests/86_selenium/131_miscellaneous_module_availability:108
+#: tests/86_selenium/131_miscellaneous_module_availability:121
+#: tests/86_selenium/131_miscellaneous_module_availability:136
+#: tests/86_selenium/131_miscellaneous_module_availability:149
+#: tests/86_selenium/131_miscellaneous_module_availability:164
+msgid "Language settings"
+msgstr ""
+
+#: tests/86_selenium/135_upload_license:70
+#: tests/86_selenium/135_upload_license:71
+#: tests/86_selenium/135_upload_license:80
+#: tests/86_selenium/135_upload_license:81
+msgid "License"
+msgstr ""
+
+#: tests/86_selenium/135_upload_license:72
+#: tests/86_selenium/135_upload_license:73
+msgid "License information"
+msgstr ""
+
+#: tests/86_selenium/130_miscellaneous:51
+#: tests/86_selenium/130_miscellaneous:53
+msgid "Logout"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:44
+#: tests/86_selenium/131_miscellaneous_module_availability:87
+msgid "Mail"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:117
+msgid "Manually"
+msgstr ""
+
+#: tests/86_selenium/151_udm_users:127
+msgid "Move to..."
+msgstr ""
+
+#: tests/86_selenium/151_udm_users:129
+msgid "Move user"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:38
+#: tests/86_selenium/131_miscellaneous_module_availability:81
+msgid "Nagios"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:52
+#: tests/86_selenium/131_miscellaneous_module_availability:68
+#: tests/86_selenium/131_miscellaneous_module_availability:94
+#: tests/86_selenium/131_miscellaneous_module_availability:109
+#: tests/86_selenium/131_miscellaneous_module_availability:122
+#: tests/86_selenium/131_miscellaneous_module_availability:137
+#: tests/86_selenium/131_miscellaneous_module_availability:150
+#: tests/86_selenium/131_miscellaneous_module_availability:165
+msgid "Network settings"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:45
+#: tests/86_selenium/131_miscellaneous_module_availability:88
+msgid "Networks"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:118
+msgid "Never"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:91
+#: tests/86_selenium/14_password_self-service:131
+#: tests/86_selenium/14_password_self-service:133
+msgid "Next"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:73
+#: tests/86_selenium/170_system_services_module:41
+#: tests/86_selenium/170_system_services_module:58
+#: tests/86_selenium/170_system_services_module:64
+#: tests/86_selenium/170_system_services_module:112
+msgid "OK"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:233
+#: tests/86_selenium/10_product_test_password_change:272
+msgid "Ok"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:43
+#: tests/86_selenium/160_process_overview_module:68
+msgid "PID"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:58
+#: tests/86_selenium/131_miscellaneous_module_availability:100
+#: tests/86_selenium/131_miscellaneous_module_availability:128
+#: tests/86_selenium/131_miscellaneous_module_availability:156
+msgid "Package Management"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:103
+msgid "Password change"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:128
+msgid "Password forgotten"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:132
+msgid "Please choose an option"
+msgstr ""
+
+#: tests/86_selenium/138_reboot_server:26
+msgid "Please confirm to reboot this server."
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:82
+msgid "Please enter credentials"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:46
+#: tests/86_selenium/131_miscellaneous_module_availability:89
+msgid "Policies"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:39
+#: tests/86_selenium/131_miscellaneous_module_availability:82
+msgid "Printers"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:53
+#: tests/86_selenium/131_miscellaneous_module_availability:69
+#: tests/86_selenium/131_miscellaneous_module_availability:95
+#: tests/86_selenium/131_miscellaneous_module_availability:110
+#: tests/86_selenium/131_miscellaneous_module_availability:123
+#: tests/86_selenium/131_miscellaneous_module_availability:138
+#: tests/86_selenium/131_miscellaneous_module_availability:151
+#: tests/86_selenium/131_miscellaneous_module_availability:166
+#: tests/86_selenium/160_process_overview_module:34
+#: tests/86_selenium/130_miscellaneous:63
+#: tests/86_selenium/130_miscellaneous:132
+msgid "Process overview"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:86
+msgid "Protect account"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:30
+#: tests/86_selenium/180_portal_entries:34
+msgid "Provide an overview of all UCS server in the domain"
+msgstr ""
+
+#: tests/86_selenium/138_reboot_server:27
+msgid "Reboot"
+msgstr ""
+
+#: tests/86_selenium/138_reboot_server:24
+#: tests/86_selenium/138_reboot_server:25
+msgid "Reboot server"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:44
+msgid "Rejoin"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:49
+msgid "Rejoin system"
+msgstr ""
+
+#: tests/86_selenium/15_favorite_modules:69
+#: tests/86_selenium/15_favorite_modules:106
+msgid "Remove from favorites"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:59
+#: tests/86_selenium/131_miscellaneous_module_availability:101
+#: tests/86_selenium/131_miscellaneous_module_availability:129
+#: tests/86_selenium/131_miscellaneous_module_availability:157
+msgid "Repository Settings"
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:92
+#: tests/86_selenium/170_system_services_module:151
+msgid "Restart"
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:88
+msgid "Run"
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:84
+msgid "Run join scripts"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:48
+#: tests/86_selenium/131_miscellaneous_module_availability:91
+msgid "SAML identity provider"
+msgstr ""
+
+#: tests/86_selenium/14_password_self-service:97
+#: tests/86_selenium/150_udm_create_modify_delete_objects:59
+#: tests/86_selenium/12_product_test_ucr:132
+msgid "Save"
+msgstr ""
+
+#: tests/86_selenium/138_reboot_server:23
+msgid "Server"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:30
+#: tests/86_selenium/180_portal_entries:34
+msgid "Server overview"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:47
+#: tests/86_selenium/131_miscellaneous_module_availability:90
+msgid "Shares"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:75
+#, python-format
+msgid "Signal (%s) sent successfully"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:60
+#: tests/86_selenium/131_miscellaneous_module_availability:72
+#: tests/86_selenium/131_miscellaneous_module_availability:102
+#: tests/86_selenium/131_miscellaneous_module_availability:113
+#: tests/86_selenium/131_miscellaneous_module_availability:130
+#: tests/86_selenium/131_miscellaneous_module_availability:141
+#: tests/86_selenium/131_miscellaneous_module_availability:158
+#: tests/86_selenium/131_miscellaneous_module_availability:169
+msgid "Software update"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:63
+#: tests/86_selenium/170_system_services_module:150
+msgid "Start"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:57
+msgid "Start automatically"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:109
+msgid "Start manually"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:110
+msgid "Start never"
+msgstr ""
+
+#: tests/86_selenium/170_system_services_module:102
+#: tests/86_selenium/170_system_services_module:149
+msgid "Stop"
+msgstr ""
+
+#: tests/86_selenium/130_miscellaneous:166
+#: tests/86_selenium/130_miscellaneous:168
+msgid "Switch language"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:26
+#: tests/86_selenium/180_portal_entries:29
+#: tests/86_selenium/180_portal_entries:33
+msgid "System and domain settings"
+msgstr ""
+
+#: tests/86_selenium/133_system_diagnostics:59
+#: tests/86_selenium/131_miscellaneous_module_availability:56
+#: tests/86_selenium/131_miscellaneous_module_availability:98
+#: tests/86_selenium/131_miscellaneous_module_availability:126
+#: tests/86_selenium/131_miscellaneous_module_availability:154
+msgid "System diagnostic"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:54
+#: tests/86_selenium/131_miscellaneous_module_availability:70
+#: tests/86_selenium/131_miscellaneous_module_availability:96
+#: tests/86_selenium/131_miscellaneous_module_availability:111
+#: tests/86_selenium/131_miscellaneous_module_availability:124
+#: tests/86_selenium/131_miscellaneous_module_availability:139
+#: tests/86_selenium/131_miscellaneous_module_availability:152
+#: tests/86_selenium/131_miscellaneous_module_availability:167
+#: tests/86_selenium/170_system_services_module:48
+msgid "System services"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:37
+#: tests/86_selenium/180_portal_entries:41
+msgid "System settings"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:71
+msgid "Terminate"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:43
+msgid "This page shows the status of"
+msgstr ""
+
+#: tests/86_selenium/135_upload_license:84
+msgid "UCS license import"
+msgstr ""
+
+#: tests/86_selenium/136_packages:57
+msgid "Uninstall"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:55
+#: tests/86_selenium/131_miscellaneous_module_availability:71
+#: tests/86_selenium/131_miscellaneous_module_availability:97
+#: tests/86_selenium/131_miscellaneous_module_availability:112
+#: tests/86_selenium/131_miscellaneous_module_availability:125
+#: tests/86_selenium/131_miscellaneous_module_availability:140
+#: tests/86_selenium/131_miscellaneous_module_availability:153
+#: tests/86_selenium/131_miscellaneous_module_availability:168
+#: tests/86_selenium/130_miscellaneous:61
+#: tests/86_selenium/130_miscellaneous:131
+#: tests/86_selenium/12_product_test_ucr:101
+msgid "Univention Configuration Registry"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:26
+#: tests/86_selenium/180_portal_entries:29
+#: tests/86_selenium/180_portal_entries:33
+msgid ""
+"Univention Management Console for admin­is­tra­ting the UCS domain and the "
+"local system"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:37
+#: tests/86_selenium/180_portal_entries:41
+msgid "Univention Management Console for admin­is­tra­ting the local system"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:38
+#: tests/86_selenium/180_portal_entries:42
+#: tests/86_selenium/14_password_self-service:98
+#: tests/86_selenium/14_password_self-service:113
+msgid "Univention Portal"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:39
+msgid "User"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:178
+#: tests/86_selenium/10_product_test_password_change:179
+msgid "User has to change password on next login"
+msgstr ""
+
+#: tests/86_selenium/134_side_menu:23 tests/86_selenium/134_side_menu:26
+#: tests/86_selenium/10_product_test_password_change:240
+msgid "User settings"
+msgstr ""
+
+#: tests/86_selenium/131_miscellaneous_module_availability:36
+#: tests/86_selenium/131_miscellaneous_module_availability:79
+#: tests/86_selenium/15_favorite_modules:80
+#: tests/86_selenium/10_product_test_password_change:133
+#: tests/86_selenium/10_product_test_password_change:171
+msgid "Users"
+msgstr ""
+
+#: tests/86_selenium/12_product_test_ucr:102
+msgid "apache"
+msgstr ""
+
+#: tests/86_selenium/130_miscellaneous:64
+msgid "generates an overview"
+msgstr ""
+
+#: tests/86_selenium/136_packages:58
+msgid "installed"
+msgstr ""
+
+#: tests/86_selenium/151_udm_users:126
+#: tests/86_selenium/170_system_services_module:56
+#: tests/86_selenium/170_system_services_module:107
+msgid "more"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:229
+#: tests/86_selenium/10_product_test_password_change:232
+msgid "no module available"
+msgstr ""
+
+#: tests/86_selenium/136_packages:58
+msgid "not installed"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:252
+msgid "password has been changed"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:187
+msgid "password has expired and must be renewed"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:254
+#: tests/86_selenium/10_product_test_password_change:268
+msgid "password is too short"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:255
+#: tests/86_selenium/10_product_test_password_change:263
+msgid "password is too simple"
+msgstr ""
+
+#: tests/86_selenium/10_product_test_password_change:253
+#: tests/86_selenium/10_product_test_password_change:258
+msgid "password was already used"
+msgstr ""
+
+#: tests/86_selenium/130_miscellaneous:52
+msgid "really want to logout"
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:91
+msgid "restart of the UMC server"
+msgstr ""
+
+#: tests/86_selenium/12_product_test_ucr:131
+msgid "value"
+msgstr ""

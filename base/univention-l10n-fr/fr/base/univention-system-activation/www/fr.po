@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-activation\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2019-09-20 14:15+0200\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,111 +14,108 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: www/ActivationWizard.js:123
-#, python-format
+#: www/ActivationWizard.js:120
 msgid ""
 "%(appliance_name)s Appliance is now activated. Click \"Finish\" to access "
 "the management interface (which may take a while)."
 msgstr ""
-"L'appareil %(appliance_name)s est maintenant activé. Cliquez sur « Terminer » "
-"pour accéder à l'interface de gestion (cela peut prendre un certain temps)."
+"L'appareil %(appliance_name)s est maintenant activé. Cliquez sur "
+"« Terminer » pour accéder à l'interface de gestion (cela peut prendre un "
+"certain temps)."
 
-#: www/ActivationWizard.js:96
-#, python-format
+#: www/ActivationWizard.js:93
+#, javascript-format
 msgid ""
-"A license file has been sent to <strong class=\"email-address\">%s</strong>."
-" This file is necessary to activate the system. For this, please carry out "
+"A license file has been sent to <strong class=\"email-address\">%s</strong>. "
+"This file is necessary to activate the system. For this, please carry out "
 "the following steps: <ol><li>Open the email.</li><li>Save the attachment "
 "(ucs.license) on your computer.</li><li>Click the button 'Upload license "
-"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm"
-" the selection.</li></ol>Once the activation has been finished your email "
+"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm "
+"the selection.</li></ol>Once the activation has been finished your email "
 "address will be sent to the app provider. The app provider may contact you."
 msgstr ""
-"Un fichier de licence a été envoyé à <strong class=\"email-address\">%s<"
-"/strong>."
-"Ce fichier est nécessaire pour activer le système. Pour cela, veuillez "
-"effectuer les actions suivantes : <ol>"
-"<li>Ouvrez le courriel.</li>"
-"<li>Enregistrez la pièce jointe (ucs.license) sur votre ordinateur.</li>"
-"<li>Cliquez sur le bouton « Envoyer un fichier de licence ».</li>"
-"<li>Choisissez le fichier que vous venez d'enregistrer (ucs.license).</li>"
-"<li>Confirmez l'envoi.</li></ol>"
-"Une fois l'activation terminée, "
-"votre adresse électronique sera transmise au fournisseur d'apps. Le "
-"fournisseur d'apps pourra être amené à vous contacter."
+"Un fichier de licence a été envoyé à <strong class=\"email-address\">%s</"
+"strong>.Ce fichier est nécessaire pour activer le système. Pour cela, "
+"veuillez effectuer les actions suivantes : <ol><li>Ouvrez le courriel.</"
+"li><li>Enregistrez la pièce jointe (ucs.license) sur votre ordinateur.</"
+"li><li>Cliquez sur le bouton « Envoyer un fichier de licence ».</"
+"li><li>Choisissez le fichier que vous venez d'enregistrer (ucs.license).</"
+"li><li>Confirmez l'envoi.</li></ol>Une fois l'activation terminée, votre "
+"adresse électronique sera transmise au fournisseur d'apps. Le fournisseur "
+"d'apps pourra être amené à vous contacter."
 
-#: www/main.js:98
-#, python-format
+#: www/ActivationWizard.js:90
 msgid "Activation of %(appliance_name)s Appliance"
 msgstr "Activation de l'appareil %(appliance_name)s"
 
-#: www/ActivationWizard.js:122
+#: www/ActivationWizard.js:119
 msgid "Activation successful!"
 msgstr "Activation réussie !"
 
-#: www/ActivationWizard.js:167 www/ActivationWizard.js:171
+#: www/ActivationWizard.js:277
+msgid ""
+"An error has occurred. More information on how to avoid this error can be "
+"found <a href=\"https://help.univention.com/t/14544\" target=\"_blank\" rel="
+"\"noreferrer noopener\">in our support database</a>."
+msgstr ""
+
+#: www/ActivationWizard.js:164 www/ActivationWizard.js:168
 msgid "An unknown error has occurred."
 msgstr "Une erreur inconnue s'est produite."
 
-#: www/ActivationWizard.js:262
-msgid "An unknown error occured. Please try it again later!"
-msgstr "Une erreur inconnue s'est produite. Veuillez réessayer ultérieurement."
+#: www/ActivationWizard.js:268
+msgid ""
+"An unknown error occurred. It is possible that a browser addon blocks "
+"sending the request to \"license.univention.de\". More information how to "
+"avoid this error can be found <a href=\"https://help.univention.com/t/7698\" "
+"target=\"_blank\" rel=\"noreferrer noopener\">in our support database</a>."
+msgstr ""
 
-#: www/ActivationWizard.js:70
+#: www/ActivationWizard.js:67
 msgid "E-mail address"
 msgstr "Adresse électronique"
 
-#: www/ActivationWizard.js:264
+#: www/ActivationWizard.js:270
 msgid "Error "
 msgstr "Erreur"
 
-#: www/ActivationWizard.js:81
+#: www/ActivationWizard.js:78
 msgid ""
 "If you already have a license file you can <a href=\"#upload\">skip this "
 "step and upload the license</a>."
 msgstr ""
-"Si vous disposez déjà d'un fichier de licence, vous pouvez "
-"<a href=\"#upload\">sauter cette étape et transférer la licence</a>."
+"Si vous disposez déjà d'un fichier de licence, vous pouvez <a href=\"#upload"
+"\">sauter cette étape et transférer la licence</a>."
 
-#: www/ActivationWizard.js:100
+#: www/ActivationWizard.js:97
 msgid ""
-"If you did not receive an email, please check your SPAM directory or <a "
-"href=\"#register\"> request the email again</a>."
+"If you did not receive an email, please check your SPAM directory or <a href="
+"\"#register\"> request the email again</a>."
 msgstr ""
 "Si vous n'avez pas reçu le courriel, veuillez vérifier votre dossier de "
 "pourriels ou <a href=\"#register\">demander à renvoyer le courriel</a>."
 
-#: www/ActivationWizard.js:271
-msgid ""
-"If you encounter problems during the activation, please send an email to: "
-"<strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
-msgstr ""
-"Si vous rencontrez des problèmes durant l'activation, veuillez envoyer un "
-"courriel à : <strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
+#: www/ActivationWizard.js:60
+#, fuzzy
+msgid "License request for %(appliance_name)s Appliance"
+msgstr "Activation de l'appareil %(appliance_name)s"
 
-#: www/ActivationWizard.js:63
-msgid "License request."
-msgstr "Demande de licence."
-
-#: www/ActivationWizard.js:77
+#: www/ActivationWizard.js:74
 #, javascript-format
 msgid ""
-"More details about the activation can be found in the <a "
-"href=\"https://docs.software-univention.de/manual-%s.html#central:license\" "
-"target=\"_blank\">UCS manual</a>."
+"More details about the activation can be found in the <a href=\"https://docs."
+"software-univention.de/manual-%s.html#central:license\" target=\"_blank"
+"\">UCS manual</a>."
 msgstr ""
-"Vous pouvez trouver davantage d'informations sur l'activation dans le "
-"<a href=\"https://docs.software-univention.de/manual-%s.html#central:license\" "
+"Vous pouvez trouver davantage d'informations sur l'activation dans le <a "
+"href=\"https://docs.software-univention.de/manual-%s.html#central:license\" "
 "target=\"_blank\">Manuel UCS</a>."
 
-#: www/ActivationWizard.js:72
+#: www/ActivationWizard.js:69
 msgid "No valid email address."
 msgstr "Aucune adresse électronique valide."
 
-#: www/ActivationWizard.js:66
-#, python-format
+#: www/ActivationWizard.js:63
 msgid ""
 "Please enter a valid email address in order to activate %(appliance_name)s "
 "Appliance. The activation is mandatory to deploy the system. In the next "
@@ -126,11 +123,11 @@ msgid ""
 "address."
 msgstr ""
 "Veuillez saisir une adresse électronique valide pour activer l'appareil "
-"%(appliance_name)s. L'activation est obligatoire pour déployer le système. "
-"À l'étape suivante, vous pourrez transférer le fichier de licence qui aura "
-"été envoyé à votre adresse électronique."
+"%(appliance_name)s. L'activation est obligatoire pour déployer le système. À "
+"l'étape suivante, vous pourrez transférer le fichier de licence qui aura été "
+"envoyé à votre adresse électronique."
 
-#: www/ActivationWizard.js:137
+#: www/ActivationWizard.js:134
 msgid "Request activation"
 msgstr "Demander l'activation"
 
@@ -138,23 +135,42 @@ msgstr "Demander l'activation"
 msgid "Switch language"
 msgstr "Changer de langue"
 
-#: www/ActivationWizard.js:270
+#: www/ActivationWizard.js:276
 msgid "The following error occurred:"
 msgstr "L'erreur suivante s'est produite :"
 
-#: www/ActivationWizard.js:292
+#: www/ActivationWizard.js:303
 msgid "The server is not responding. Please restart the system."
 msgstr "Le serveur ne répond pas. Veuillez redémarrer le système."
 
-#: www/ActivationWizard.js:106
+#: www/ActivationWizard.js:103
 msgid "Upload license file"
 msgstr "Envoyer le fichier de licence"
 
-#: www/ActivationWizard.js:93
-msgid "You have received a license file by email!"
-msgstr "Vous avez reçu un fichier de licence par courriel !"
+#: www/ActivationWizard.js:259
+#, fuzzy
+msgid "[%(appliance_name)s Appliance] Activation Error"
+msgstr "Activation de l'appareil %(appliance_name)s"
 
-#: www/ActivationWizard.js:96
+#: www/ActivationWizard.js:93
 msgid "your email address"
 msgstr "votre adresse électronique"
 
+#~ msgid "An unknown error occured. Please try it again later!"
+#~ msgstr ""
+#~ "Une erreur inconnue s'est produite. Veuillez réessayer ultérieurement."
+
+#~ msgid ""
+#~ "If you encounter problems during the activation, please send an email to: "
+#~ "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+#~ "#000\">feedback@univention.de</a></strong>"
+#~ msgstr ""
+#~ "Si vous rencontrez des problèmes durant l'activation, veuillez envoyer un "
+#~ "courriel à : <strong><a href=\"mailto:feedback@univention.de\" style="
+#~ "\"color:#000\">feedback@univention.de</a></strong>"
+
+#~ msgid "License request."
+#~ msgstr "Demande de licence."
+
+#~ msgid "You have received a license file by email!"
+#~ msgstr "Vous avez reçu un fichier de licence par courriel !"

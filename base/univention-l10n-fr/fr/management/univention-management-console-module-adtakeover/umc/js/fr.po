@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-09 18:48+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/js/adtakeover.js:107
+#: umc/js/adtakeover.js:102
 msgid ""
 "<p>A <i>{ad_os}</i> Active Directory domain with the domainname "
 "<i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> "
@@ -31,7 +31,7 @@ msgstr ""
 "<li>ordinateurs {computers}</li></ul>Cliquez sur « Suivant » pour démarrer "
 "la migration.</p>"
 
-#: umc/js/adtakeover.js:75
+#: umc/js/adtakeover.js:70
 msgid ""
 "<p>A previous Active Directory takeover was detected.</p><p>In order to "
 "start another takeover process, click \"Next\".</p>"
@@ -40,7 +40,7 @@ msgstr ""
 "<p>Pour démarrer un nouveau processus de prise de contrôle, cliquez sur "
 "« Suivant ».</p>"
 
-#: umc/js/adtakeover.js:118
+#: umc/js/adtakeover.js:113
 msgid ""
 "<p>All Windows domain accounts have been successfully transferred.</p><p>As "
 "next step, group policies must be copied from the Active Directory SYSVOL "
@@ -53,7 +53,7 @@ msgstr ""
 "recommandons d'utiliser robocopy depuis un client ou un serveur Windows "
 "faisant partie du domaine :</p>"
 
-#: umc/js/adtakeover.js:136
+#: umc/js/adtakeover.js:131
 msgid ""
 "<p>Congratulations, the Active Directory Takeover wizard has been "
 "successfully completed and all Windows domain accounts have been transferred "
@@ -65,7 +65,7 @@ msgstr ""
 "ont été transférés vers Univention Corporate Server.</p><p>Le domaine est "
 "maintenant prêt à être utilisé sans autre modification.</p>"
 
-#: umc/js/adtakeover.js:127
+#: umc/js/adtakeover.js:122
 msgid ""
 "<p>The group policies have been transferred successfully.</p><p>In order to "
 "complete the takeover process, all previous Active Directory Domain "
@@ -77,35 +77,35 @@ msgstr ""
 "Active Directory doivent maintenant être éteints. Cliquez sur « Suivant » "
 "dès que les contrôleurs de domaine sont intégralement éteints.</p>"
 
-#: umc/js/adtakeover.js:91
+#: umc/js/adtakeover.js:86
 msgid "Active Directory Administrator account"
 msgstr "Compte Administrateur Active Directory"
 
-#: umc/js/adtakeover.js:97
+#: umc/js/adtakeover.js:92
 msgid "Active Directory Administrator password"
 msgstr "Mot de passe Administrateur Active Directory"
 
-#: umc/js/adtakeover.js:132
+#: umc/js/adtakeover.js:127
 msgid "Completion of the Active Directory Takeover"
 msgstr "Avancement d'Active Directory Takeover"
 
-#: umc/js/adtakeover.js:102
+#: umc/js/adtakeover.js:97
 msgid "Import statistics"
 msgstr "Statistiques d'importation"
 
-#: umc/js/adtakeover.js:86
+#: umc/js/adtakeover.js:81
 msgid "Name or address of the Domain Controller"
 msgstr "Nom ou adresse du contrôleur de domaine"
 
-#: umc/js/adtakeover.js:71
+#: umc/js/adtakeover.js:66
 msgid "Previous takeover detected"
 msgstr "Prise de contrôle précédente détectée"
 
-#: umc/js/adtakeover.js:123
+#: umc/js/adtakeover.js:118
 msgid "Takeover of the Windows domain"
 msgstr "Prise de contrôle du domaine Windows"
 
-#: umc/js/adtakeover.js:81
+#: umc/js/adtakeover.js:76
 msgid ""
 "This module guides through the migration from a Windows Active Directory "
 "domain to Univention Corporate Server. All user, group and computer accounts "
@@ -119,10 +119,10 @@ msgstr ""
 "sont transférés. Après la migration, les clients Windows peuvent fonctionner "
 "directement sans qu'ils soit nécessaire de leur faire rejoindre le domaine."
 
-#: umc/js/adtakeover.js:113
+#: umc/js/adtakeover.js:108
 msgid "Transfer of group policies"
 msgstr "Transfert des stratégies de groupes"
 
-#: umc/js/adtakeover.js:80
+#: umc/js/adtakeover.js:75
 msgid "Windows domain authentication"
 msgstr "Authentification sur un domaine Windows"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 14 Apr 2017 00:29:17 +0200\n"
+"POT-Creation-Date: Wed, 03 Nov 2021 17:54:30 +0100\n"
 "PO-Revision-Date: 2016-07-05 21:52+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -18,4 +18,8 @@ msgid "Overview and configuration of services on the local system"
 msgstr "Aperçu et configuration des services du système local"
 
 msgid "System services"
+msgstr "Services du système"
+
+#, fuzzy
+msgid "system,services,daemon"
 msgstr "Services du système"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 20:40+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -24,7 +24,7 @@ msgstr "Tous"
 msgid "CPU (%)"
 msgstr "Processeur (%)"
 
-#: umc/js/top.js:76
+#: umc/js/top.js:68
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -44,7 +44,7 @@ msgstr "Forcer l'arrêt"
 msgid "Memory (%)"
 msgstr "Mémoire (%)"
 
-#: umc/js/top.js:67
+#: umc/js/top.js:70
 msgid "OK"
 msgstr "OK"
 
@@ -64,11 +64,11 @@ msgstr ""
 msgid "Please confirm sending %s to the selected process!"
 msgstr "Veuillez confirmer l'envoi de %s au processus sélectionné."
 
-#: umc/js/top.js:162
+#: umc/js/top.js:163
 msgid "Search..."
 msgstr "Rechercher..."
 
-#: umc/js/top.js:70
+#: umc/js/top.js:73
 #, javascript-format
 msgid "Signal (%s) sent successfully"
 msgstr "Signal (%s) envoyé avec succès"
@@ -93,4 +93,3 @@ msgstr ""
 #: umc/js/top.js:109 umc/js/top.js:154
 msgid "User"
 msgstr "Utilisateur"
-

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-printers\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-04 20:04+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -14,101 +14,53 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: umc/js/printers/OverviewPage.js:139 umc/js/printers/DetailPage.js:74
+#: umc/js/printers/DetailPage.js:75 umc/js/printers/OverviewPage.js:133
 msgid "Activate"
 msgstr "Activer"
 
-#: umc/js/printers/DetailPage.js:75
+#: umc/js/printers/DetailPage.js:76
 msgid "Activate this printer"
 msgstr "Activer cette imprimante"
 
-#: umc/js/printers/QuotaPage.js:115
-msgid "Add new record"
-msgstr "Ajouter un nouvel enregistrement"
-
-#: umc/js/printers/QuotaPage.js:231
-msgid "Add quota entry"
-msgstr "Ajouter une entrée de quota"
-
-#: umc/js/printers/QuotaPage.js:101
-msgid "Back"
-msgstr "Retour"
-
-#: umc/js/printers/DetailPage.js:150
+#: umc/js/printers/DetailPage.js:130
 msgid "Back to overview"
 msgstr "Retour vers la vue globale"
 
-#: umc/js/printers/QuotaDialog.js:58 umc/js/printers/DetailPage.js:129
+#: umc/js/printers/DetailPage.js:119
 msgid "Cancel"
 msgstr "Annuler"
 
-#: umc/js/printers/DetailPage.js:130
+#: umc/js/printers/DetailPage.js:120
 msgid "Cancel this job/these jobs"
 msgstr "Annuler cet(s) tâche(s)"
 
-#: umc/js/printers/QuotaPage.js:49
-msgid "Current quota records for printer"
-msgstr "Enregistrements de quota actuel pour l'imprimante"
-
-#: umc/js/printers/OverviewPage.js:157 umc/js/printers/DetailPage.js:85
+#: umc/js/printers/DetailPage.js:84 umc/js/printers/OverviewPage.js:149
 msgid "Deactivate"
 msgstr "Désactiver"
 
-#: umc/js/printers/DetailPage.js:86
+#: umc/js/printers/DetailPage.js:85
 msgid "Deactivate this printer"
 msgstr "Désactiver l'imprimante"
 
-#: umc/js/printers/OverviewPage.js:68 umc/js/printers/OverviewPage.js:126
-#: umc/js/printers/DetailPage.js:223
+#: umc/js/printers/DetailPage.js:196 umc/js/printers/OverviewPage.js:71
+#: umc/js/printers/OverviewPage.js:120
 msgid "Description"
 msgstr "Description"
 
-#: umc/js/printers/DetailPage.js:214
-msgid "Details for printer <b>{printer}</b>"
-msgstr "Détails de l'imprimante <b>{printer}</b>"
-
-#: umc/js/printers/QuotaPage.js:93
-msgid "Edit"
-msgstr "Modifier"
-
-#: umc/js/printers/OverviewPage.js:175 umc/js/printers/DetailPage.js:96
-msgid "Edit quota"
-msgstr "Modifier le quota"
-
-#: umc/js/printers/QuotaPage.js:243
-msgid "Edit quota entry"
-msgstr "Modifier l'entrée de quota"
-
-#: umc/js/printers/DetailPage.js:97
-msgid "Edit quota related to this printer"
-msgstr "Modifier le quota associé à cette imprimante"
-
-#: umc/js/printers/QuotaPage.js:77 umc/js/printers/QuotaDialog.js:93
-msgid "Hard limit"
-msgstr "Limite dure"
-
-#: umc/js/printers/DetailPage.js:115
+#: umc/js/printers/DetailPage.js:105
 msgid "Job"
 msgstr "Tâche"
 
-#: umc/js/printers/QuotaPage.js:80
-msgid "Lifetime page counter"
-msgstr "Compteur global des pages"
-
-#: umc/js/printers/OverviewPage.js:69 umc/js/printers/OverviewPage.js:123
-#: umc/js/printers/DetailPage.js:222
+#: umc/js/printers/DetailPage.js:195 umc/js/printers/OverviewPage.js:72
+#: umc/js/printers/OverviewPage.js:117
 msgid "Location"
 msgstr "Emplacement"
 
-#: umc/js/printers/DetailPage.js:118
+#: umc/js/printers/DetailPage.js:108
 msgid "Owner"
 msgstr "Propriétaire"
 
-#: umc/js/printers/QuotaPage.js:71
-msgid "Pages used"
-msgstr "Pages utilisées"
-
-#: umc/js/printers/OverviewPage.js:96
+#: umc/js/printers/OverviewPage.js:100
 msgid "Printer"
 msgstr "Imprimante"
 
@@ -116,71 +68,43 @@ msgstr "Imprimante"
 msgid "Printer administration"
 msgstr "Administration des imprimantes"
 
-#: umc/js/printers/DetailPage.js:51
+#: umc/js/printers/DetailPage.js:52
 msgid "Printer details"
 msgstr "Détails de l'imprimante"
 
-#: umc/js/printers/QuotaDialog.js:71 umc/js/printers/OverviewPage.js:67
+#: umc/js/printers/OverviewPage.js:70
 msgid "Printer name"
 msgstr "Nom de l'imprimante"
 
-#: umc/js/printers/QuotaPage.js:50
-msgid "Printer quota"
-msgstr "Quota de l'imprimante"
-
-#: umc/js/printers/OverviewPage.js:113 umc/js/printers/DetailPage.js:220
-msgid "Quota"
-msgstr "Quota"
-
-#: umc/js/printers/QuotaPage.js:154
-msgid "Quota entries for printer <b>{printer}</b>"
-msgstr "Entrées de quota de l'imprimante <b>{printer}</b>"
-
-#: umc/js/printers/QuotaPage.js:108
-msgid "Refresh"
-msgstr "Actualiser"
-
-#: umc/js/printers/DetailPage.js:157
+#: umc/js/printers/DetailPage.js:137
 msgid "Refresh job list"
 msgstr "Actualiser la liste de tâches"
 
-#: umc/js/printers/OverviewPage.js:185
+#: umc/js/printers/OverviewPage.js:165
 msgid "Refresh printer list"
 msgstr "Actualiser la liste des imprimantes"
 
-#: umc/js/printers/QuotaPage.js:85
-msgid "Reset user quota"
-msgstr "Réinitialiser le quota de l'utilisateur"
-
-#: umc/js/printers/QuotaDialog.js:51
-msgid "Save changes"
-msgstr "Enregistrer les modifications"
-
-#: umc/js/printers/OverviewPage.js:65
+#: umc/js/printers/OverviewPage.js:68
 msgid "Search for"
 msgstr "Chercher la clé"
 
-#: umc/js/printers/OverviewPage.js:75
+#: umc/js/printers/OverviewPage.js:79
 msgid "Search..."
 msgstr "Chercher..."
 
-#: umc/js/printers/OverviewPage.js:93 umc/js/printers/DetailPage.js:216
+#: umc/js/printers/DetailPage.js:193 umc/js/printers/OverviewPage.js:97
 msgid "Server"
 msgstr "Serveur"
 
-#: umc/js/printers/DetailPage.js:121
+#: umc/js/printers/DetailPage.js:111
 msgid "Size"
 msgstr "Taille"
 
-#: umc/js/printers/QuotaPage.js:74 umc/js/printers/QuotaDialog.js:86
-msgid "Soft limit"
-msgstr "Limite douce"
-
-#: umc/js/printers/OverviewPage.js:99 umc/js/printers/DetailPage.js:217
+#: umc/js/printers/DetailPage.js:194 umc/js/printers/OverviewPage.js:103
 msgid "Status"
 msgstr "État"
 
-#: umc/js/printers/DetailPage.js:124
+#: umc/js/printers/DetailPage.js:114
 msgid "Submitted at"
 msgstr "Envoyée à"
 
@@ -191,39 +115,91 @@ msgstr ""
 "Ce module permet de gérer les tâches d'impression des imprimantes de votre "
 "machine locale."
 
-#: umc/js/printers/QuotaPage.js:68
-msgid "User"
-msgstr "Utilisateur"
-
-#: umc/js/printers/QuotaDialog.js:77
-msgid "User name"
-msgstr "Nom d'utilisateur"
-
-#: umc/js/printers/OverviewPage.js:131
+#: umc/js/printers/OverviewPage.js:125
 msgid "View details"
 msgstr "Afficher les détails"
 
-#: umc/js/printers/DetailPage.js:50
+#: umc/js/printers/DetailPage.js:51
+#, fuzzy
 msgid ""
 "You see the details of this printer and its print jobs. You can activate/"
-"deactivate the printer, edit its quota definitions if quota is enabled, and "
-"cancel print jobs."
+"deactivate the printer and cancel print jobs."
 msgstr ""
 "Vous consultez les détails de cette imprimante, ainsi que ses tâches "
 "d'impression. Vous pouvez activer / désactiver une imprimante, modifier son "
 "quota si celui-ci est activé, et annuler des tâches d'impression."
 
-#: umc/js/printers/OverviewPage.js:106 umc/js/printers/OverviewPage.js:117
-#: umc/js/printers/DetailPage.js:210 umc/js/printers/DetailPage.js:220
+#: umc/js/printers/DetailPage.js:187 umc/js/printers/OverviewPage.js:110
 msgid "active"
 msgstr "active"
 
-#: umc/js/printers/OverviewPage.js:107 umc/js/printers/OverviewPage.js:119
-#: umc/js/printers/DetailPage.js:211
+#: umc/js/printers/DetailPage.js:188 umc/js/printers/OverviewPage.js:111
 msgid "inactive"
 msgstr "inactive"
 
-#: umc/js/printers/OverviewPage.js:109 umc/js/printers/DetailPage.js:208
+#: umc/js/printers/DetailPage.js:185 umc/js/printers/OverviewPage.js:113
 msgid "unknown"
 msgstr "inconnu"
 
+#~ msgid "Add new record"
+#~ msgstr "Ajouter un nouvel enregistrement"
+
+#~ msgid "Add quota entry"
+#~ msgstr "Ajouter une entrée de quota"
+
+#~ msgid "Back"
+#~ msgstr "Retour"
+
+#~ msgid "Current quota records for printer"
+#~ msgstr "Enregistrements de quota actuel pour l'imprimante"
+
+#~ msgid "Details for printer <b>{printer}</b>"
+#~ msgstr "Détails de l'imprimante <b>{printer}</b>"
+
+#~ msgid "Edit"
+#~ msgstr "Modifier"
+
+#~ msgid "Edit quota"
+#~ msgstr "Modifier le quota"
+
+#~ msgid "Edit quota entry"
+#~ msgstr "Modifier l'entrée de quota"
+
+#~ msgid "Edit quota related to this printer"
+#~ msgstr "Modifier le quota associé à cette imprimante"
+
+#~ msgid "Hard limit"
+#~ msgstr "Limite dure"
+
+#~ msgid "Lifetime page counter"
+#~ msgstr "Compteur global des pages"
+
+#~ msgid "Pages used"
+#~ msgstr "Pages utilisées"
+
+#~ msgid "Printer quota"
+#~ msgstr "Quota de l'imprimante"
+
+#~ msgid "Quota"
+#~ msgstr "Quota"
+
+#~ msgid "Quota entries for printer <b>{printer}</b>"
+#~ msgstr "Entrées de quota de l'imprimante <b>{printer}</b>"
+
+#~ msgid "Refresh"
+#~ msgstr "Actualiser"
+
+#~ msgid "Reset user quota"
+#~ msgstr "Réinitialiser le quota de l'utilisateur"
+
+#~ msgid "Save changes"
+#~ msgstr "Enregistrer les modifications"
+
+#~ msgid "Soft limit"
+#~ msgstr "Limite douce"
+
+#~ msgid "User"
+#~ msgstr "Utilisateur"
+
+#~ msgid "User name"
+#~ msgstr "Nom d'utilisateur"

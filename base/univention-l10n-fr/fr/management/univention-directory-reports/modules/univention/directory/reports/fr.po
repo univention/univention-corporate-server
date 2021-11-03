@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-06 20:05+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -14,25 +14,57 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: modules/univention/directory/reports/filter.py:80
+#: modules/univention/directory/reports/document.py:84
+#, python-format
+msgid "Configuration error: File %r could not be opened."
+msgstr ""
+
+#: modules/univention/directory/reports/filter.py:81
 msgid "Domain Group"
 msgstr "Groupe du domaine"
 
-#: modules/univention/directory/reports/filter.py:81
+#: modules/univention/directory/reports/document.py:151
+msgid "Failed creating PDF file."
+msgstr ""
+
+#: modules/univention/directory/reports/filter.py:82
 msgid "Local Group"
 msgstr "Groupe local"
 
+#: modules/univention/directory/reports/interpreter.py:158
 #: modules/univention/directory/reports/filter.py:61
-#: modules/univention/directory/reports/interpreter.py:154
 msgid "No"
 msgstr "Non"
 
-#: modules/univention/directory/reports/filter.py:82
+#: modules/univention/directory/reports/report.py:62
+#, python-format
+msgid "No %r report exists for the module %r."
+msgstr ""
+
+#: modules/univention/directory/reports/report.py:59
+#, python-format
+msgid "No report for the specified module %r exists."
+msgstr ""
+
+#: modules/univention/directory/reports/report.py:57
+msgid "Please specify a module."
+msgstr ""
+
+#: modules/univention/directory/reports/report.py:61
+#, python-format
+msgid "The report %r does not exists or is misconfigured."
+msgstr ""
+
+#: modules/univention/directory/reports/report.py:75
+msgid "The report could not be created."
+msgstr ""
+
+#: modules/univention/directory/reports/filter.py:83
 msgid "Well-Known Group"
 msgstr "Groupe bien connu"
 
+#: modules/univention/directory/reports/interpreter.py:160
+#: modules/univention/directory/reports/interpreter.py:162
 #: modules/univention/directory/reports/filter.py:58
-#: modules/univention/directory/reports/interpreter.py:156
-#: modules/univention/directory/reports/interpreter.py:158
 msgid "Yes"
 msgstr "Oui"

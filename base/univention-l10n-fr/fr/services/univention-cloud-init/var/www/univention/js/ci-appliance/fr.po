@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-cloud-init\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-23 22:17+0100\n"
 "Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../../cloud-init-setup.html:63
+#: ../../cloud-init-setup.html:63
 msgid ""
 "After the setup has finished, you will be redirected. Alternatively, after "
 "setup is finished, you can <a href='/univention/'>use this link to reach the "
@@ -24,28 +24,27 @@ msgstr ""
 "également utiliser <a href='/univention/'>ce lien pour accéder à la page "
 "d'aperçu général</a> une fois la configuration terminée."
 
-#: ../../../cloud-init-setup.html:60
+#: ../../cloud-init-setup.html:60
 msgid ""
 "The configuration you selected is applied and the Univention Corporate "
 "Server installation is finished."
 msgstr ""
-"La configuration que vous avez choisie est appliquée et l'installation d'"
-"Univention Corporate Server est terminée."
+"La configuration que vous avez choisie est appliquée et l'installation "
+"d'Univention Corporate Server est terminée."
 
-#: ../../../cloud-init-setup.html:59
+#: ../../cloud-init-setup.html:59
 msgid "This machine is currently being configured by cloud-init."
 msgstr "La machine est en cours de configuration par « cloud-init »."
 
-#: ../../../cloud-init-setup.html:58
+#: ../../cloud-init-setup.html:58
 msgid "Welcome to UCS initial configuration"
 msgstr "Bienvenue dans la configuration initiale d'UCS"
 
-#: ../../../cloud-init-setup.html:38
+#: ../../cloud-init-setup.html:38
 msgid "Welcome to Univention Corporate Server"
 msgstr "Bienvenue dans Univention Corporate Server"
 
-#: ../../../cloud-init-setup.html:62
+#: ../../cloud-init-setup.html:62
 msgid "ssh -i &lt;path/to/privatekey&gt; root@{serveraddress} passwd"
 msgstr ""
 "ssh -i &lt;emplacement/dela/cleprivee&gt; root@{adresseserveur} motdepasse"
-

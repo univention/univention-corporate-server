@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 14 Apr 2017 00:29:16 +0200\n"
+"POT-Creation-Date: Wed, 03 Nov 2021 17:54:30 +0100\n"
 "PO-Revision-Date: 2017-05-23 22:15+0100\n"
 "Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -21,6 +21,8 @@ msgstr ""
 "Gestion des configurations du fournisseur de service de la fonctionnalité "
 "d'authentification unique du fournisseur d'identité SAML"
 
+msgid "SAML"
+msgstr ""
+
 msgid "SAML identity provider"
 msgstr "Fournisseur d'identité SAML"
-

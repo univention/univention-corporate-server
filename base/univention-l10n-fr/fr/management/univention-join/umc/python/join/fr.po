@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-10 10:42+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -14,20 +14,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/python/join/__init__.py:399 umc/python/join/__init__.py:450
+#: umc/python/join/__init__.py:411 umc/python/join/__init__.py:461
 msgid "A join process is already running."
 msgstr "Un processus de jonction est déjà en cours d'exécution."
 
-#: umc/python/join/__init__.py:430 umc/python/join/__init__.py:483
+#: umc/python/join/__init__.py:442 umc/python/join/__init__.py:494
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Une erreur inattendue s'est produite : %s"
 
-#: umc/python/join/__init__.py:464
+#: umc/python/join/__init__.py:475
 msgid "Authentication"
 msgstr "Authentification"
 
-#: umc/python/join/__init__.py:407 umc/python/join/__init__.py:454
+#: umc/python/join/__init__.py:419 umc/python/join/__init__.py:465
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
@@ -35,45 +35,46 @@ msgstr ""
 "Un logiciel est actuellement en cours d'installation ou de désinstallation. "
 "Ce n'est pas le bon moment pour exécuter des scripts de jonction."
 
-#: umc/python/join/__init__.py:411
+#: umc/python/join/__init__.py:423
 msgid "Domain join"
 msgstr "Jonction de domaine"
 
-#: umc/python/join/__init__.py:324
+#: umc/python/join/__init__.py:336
 #, python-format
 msgid "Error: %s"
 msgstr "Erreur : %s"
 
-#: umc/python/join/__init__.py:231
+#: umc/python/join/__init__.py:243
 #, python-format
 msgid "Executing join script %s"
 msgstr "Exécution du script de jonction %s"
 
-#: umc/python/join/__init__.py:230
+#: umc/python/join/__init__.py:242
 msgid "Executing join scripts"
 msgstr "Exécution de scripts de jonction en cours"
 
-#: umc/python/join/__init__.py:107
+#: umc/python/join/__init__.py:111
 msgid "Initializing"
 msgstr "Initialisation en cours"
 
-#: umc/python/join/__init__.py:403
-msgid "Invalid server role! A Primary Directory Node can not be joined."
+#: umc/python/join/__init__.py:415
+#, fuzzy
+msgid "Invalid server role! A Primary Directory Node cannot be joined."
 msgstr ""
-"Rôle serveur non valide ! Un Primary Directory Node ne peut pas "
-"rejoindre un domaine."
+"Rôle serveur non valide ! Un Primary Directory Node ne peut pas rejoindre un "
+"domaine."
 
-#: umc/python/join/__init__.py:75
+#: umc/python/join/__init__.py:79
 msgid ""
 "No DNS record for the Primary Directory Node was found. This might be a "
 "problem with the configured DNS server. Please make sure the DNS settings "
 "are correct."
 msgstr ""
-"Aucun enregistrement DNS n'a été trouvé pour le Primary Directory Node. "
-"Cela peut être dû à un problème avec le serveur DNS configuré. "
-"Veuillez vous assurer que les réglages DNS sont corrects."
+"Aucun enregistrement DNS n'a été trouvé pour le Primary Directory Node. Cela "
+"peut être dû à un problème avec le serveur DNS configuré. Veuillez vous "
+"assurer que les réglages DNS sont corrects."
 
-#: umc/python/join/__init__.py:258
+#: umc/python/join/__init__.py:270
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
 "log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
@@ -84,24 +85,24 @@ msgstr ""
 "join.log</i>. <br/>Veuillez tenter d'exécuter à nouveau les scripts de "
 "jonction après avoir résolu tout conflit."
 
-#: umc/python/join/__init__.py:95
+#: umc/python/join/__init__.py:99
 msgid "The entered FQDN is not a valid value"
 msgstr ""
 "La valeur saisie pour le nom de domaine pleinement qualifié (FQDN) n'est pas "
 "valide."
 
-#: umc/python/join/__init__.py:78
+#: umc/python/join/__init__.py:82
 msgid ""
 "The lookup of the Primary Directory Node record timed out. There might be a "
 "problem with the configured DNS server. Make sure the DNS server is up and "
 "running or check the DNS settings."
 msgstr ""
-"Expiration du délai pour la recherche de l'enregistrement du Primary Directory Node. "
-"Il se peut qu'il y ait un problème avec le serveur DNS "
+"Expiration du délai pour la recherche de l'enregistrement du Primary "
+"Directory Node. Il se peut qu'il y ait un problème avec le serveur DNS "
 "configuré. Assurez-vous que le serveur DNS fonctionne correctement ou "
 "vérifiez les réglages DNS."
 
-#: umc/python/join/__init__.py:219
+#: umc/python/join/__init__.py:231
 #, python-format
 msgid ""
 "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
@@ -113,6 +114,6 @@ msgstr ""
 "fichier journal <i>/var/log/univention/join.log</i>. <br/>Veuillez réessayer "
 "après avoir résolu tout conflit."
 
-#: umc/python/join/__init__.py:425 umc/python/join/__init__.py:478
+#: umc/python/join/__init__.py:437 umc/python/join/__init__.py:489
 msgid "finished..."
 msgstr "terminé..."

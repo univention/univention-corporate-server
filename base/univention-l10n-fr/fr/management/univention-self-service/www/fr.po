@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 21:01+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,27 +14,71 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: www/ProtectAccountAccess.js:245
+#: www/ProtectAccountAccess.js:254
 msgid " (retype)"
 msgstr " (vérification)"
 
-#: www/ProtectAccountAccess.js:216
+#: www/VerifyAccount.js:204
+msgid "A verification token could not be sent. Please verify your input."
+msgstr ""
+
+#: www/VerifyAccount.js:53
+msgid "Account verification"
+msgstr ""
+
+#: www/ProtectAccountAccess.js:226
 msgid "Activate renew options."
 msgstr "Activer les options de renouvellement."
 
-#: www/ProtectAccountAccess.js:264
+#: www/CreateAccount.js:156
+#, javascript-format
+msgid ""
+"An error occurred while sending the verification token for your account. "
+"Please <a href=\"#page=verifyaccount&username=%s\">request a new one</a>."
+msgstr ""
+
+#: www/ProtectAccountAccess.js:272 www/UserAttributes.js:247
 msgid "Cancel"
 msgstr "Annuler"
 
-#: www/PasswordChange.js:189 www/NewPassword.js:240
+#: www/PasswordChange.js:198 www/NewPassword.js:249
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: www/PasswordChange.js:52
+#: www/PasswordChange.js:58
 msgid "Change your (expired) password."
 msgstr "Changer le mot de passe (expiré)."
 
-#: www/ProtectAccountAccess.js:49
+#: www/PasswordChange.js:283
+msgid ""
+"Changing password failed. The username and/or the old password is not "
+"correct."
+msgstr ""
+
+#: www/CreateAccount.js:88
+#, fuzzy
+msgid "Create account"
+msgstr "Protéger le compte"
+
+#: www/CreateAccount.js:52
+#, fuzzy
+msgid "Create an account"
+msgstr "Protéger le compte"
+
+#: www/UserAttributes.js:62 www/UserAttributes.js:222
+msgid "Customize your profile"
+msgstr ""
+
+#: www/UserAttributes.js:241 www/UserAttributes.js:362
+#, fuzzy
+msgid "Delete my account"
+msgstr "Protéger le compte"
+
+#: www/UserAttributes.js:357
+msgid "Do you really want to delete your account?"
+msgstr ""
+
+#: www/ProtectAccountAccess.js:54
 msgid ""
 "Everyone forgets his password now and then. Protect yourself and activate "
 "the opportunity to set a new password."
@@ -43,7 +87,6 @@ msgstr ""
 "activez la possibilité de réinitialiser le mot de passe."
 
 #: www/lib.js:54
-#, python-brace-format
 msgid ""
 "Forbidden redirect to: {0}\n"
 " The url has to start with (only) one \"/\"."
@@ -51,94 +94,138 @@ msgstr ""
 "Redirection interdite vers : {0}\n"
 " L'URL doit débuter avec un seul \"/\"."
 
-#: www/PasswordForgotten.js:51
+#: www/PasswordForgotten.js:56
 msgid "Forgot your password? Set a new one: "
 msgstr "Mot de passe oublié ? Définir un nouveau mot de passe :"
 
-#: www/PasswordForgotten.js:267
+#: www/CreateAccount.js:154
+#, javascript-format
+msgid ""
+"Hello <b>%s</b>, we have sent you an email to <b>%s</b>. Please follow the "
+"instructions in the email to verify your account."
+msgstr ""
+
+#: www/VerifyAccount.js:210
+#, javascript-format
+msgid ""
+"Hello <b>%s</b>, we have sent you an email to your registered address. "
+"Please follow the instructions in the email to verify your account."
+msgstr ""
+
+#: www/PasswordForgotten.js:274
 msgid ""
 "If you did not received an e-mail please check your spam directory or use "
 "this link to go back to step 2."
 msgstr ""
 "Si vous n'avez pas reçu le courriel, veuillez vérifier votre dossier de "
-"pourriels ou "
-"utiliser ce lien pour revenir à l'étape 2."
+"pourriels ou utiliser ce lien pour revenir à l'étape 2."
 
-#: www/PasswordChange.js:253
-msgid "Invalid credentials. Password change failed."
-msgstr "Identifiants invalides. Le changement de mot de passe a échoué."
-
-#: www/PasswordChange.js:156 www/NewPassword.js:197
+#: www/PasswordChange.js:164 www/NewPassword.js:205
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: www/PasswordChange.js:166 www/NewPassword.js:212
+#: www/PasswordChange.js:174 www/NewPassword.js:220
 msgid "New Password (retype)"
 msgstr "Nouveau mot de passe (saisir à nouveau)"
 
-#: www/PasswordForgotten.js:127 www/PasswordForgotten.js:173
-#: www/ProtectAccountAccess.js:160
+#: www/PasswordForgotten.js:134 www/PasswordForgotten.js:180
+#: www/ProtectAccountAccess.js:170 www/UserAttributes.js:171
 msgid "Next"
 msgstr "Suivant"
 
-#: www/PasswordChange.js:136
+#: www/PasswordChange.js:302 www/NewPassword.js:271
+#: www/ProtectAccountAccess.js:311
+msgid "OK"
+msgstr ""
+
+#: www/PasswordChange.js:144
 msgid "Old Password"
 msgstr "Ancien mot de passe"
 
-#: www/ProtectAccountAccess.js:138
+#: www/PageNotFound.js:41
+msgid "Page Not Found"
+msgstr ""
+
+#: www/ProtectAccountAccess.js:146 www/UserAttributes.js:161
 msgid "Password"
 msgstr "Mot de passe"
 
-#: www/PasswordChange.js:51
+#: www/PasswordChange.js:57
 msgid "Password change"
 msgstr "Changer le mot de passe"
 
-#: www/PasswordForgotten.js:50
+#: www/PasswordForgotten.js:55
 msgid "Password forgotten"
 msgstr "Mot de passe oublié"
 
-#: www/PasswordForgotten.js:168
+#: www/PasswordForgotten.js:175
 msgid "Please choose an option to renew your password."
 msgstr "Veuillez choisir une option pour renouveler votre mot de passe."
 
-#: www/ProtectAccountAccess.js:48
+#: www/ProtectAccountAccess.js:53
 msgid "Protect account"
 msgstr "Protéger le compte"
 
-#: www/ProtectAccountAccess.js:259
+#: www/VerifyAccount.js:157
+msgid "Request new token"
+msgstr ""
+
+#: www/ProtectAccountAccess.js:267 www/UserAttributes.js:234
 msgid "Save"
 msgstr "Enregistrer"
 
-#: www/PasswordForgotten.js:52
+#: www/PasswordForgotten.js:57
 msgid "Set a new password!"
 msgstr "Définir un nouveau mot de passe !"
 
-#: www/NewPassword.js:47
+#: www/NewPassword.js:53
 msgid "Set a new password: "
 msgstr "Définir un nouveau mot de passe :"
 
-#: www/NewPassword.js:46
+#: www/NewPassword.js:52
 msgid "Set new password"
 msgstr "Définir un nouveau mot de passe"
 
-#: www/ProtectAccountAccess.js:230
+#: www/VerifyAccount.js:175
+msgid "The account could not be verified. Please verify your input."
+msgstr ""
+
+#: www/ProtectAccountAccess.js:239
 msgid "The entries do not match, please retype again."
 msgstr "Les entrées ne correspondent pas, veuillez les saisir à nouveau."
 
-#: www/PasswordChange.js:175 www/NewPassword.js:221
+#: www/PageNotFound.js:42
+msgid "The page is deactivated or does not exist."
+msgstr ""
+
+#: www/PasswordChange.js:302
+msgid "The password has been changed successfully."
+msgstr ""
+
+#: www/PasswordChange.js:183 www/NewPassword.js:229
 msgid "The passwords do not match, please retype again."
 msgstr "Les mots de passe ne correspondent pas, veuillez les saisir à nouveau."
 
-#: www/NewPassword.js:172
+#: www/UserAttributes.js:220
+msgid "There is no profile data data defined that you can edit"
+msgstr ""
+
+#: www/NewPassword.js:180 www/VerifyAccount.js:149
 msgid "Token"
 msgstr "Jeton"
 
-#: www/PasswordForgotten.js:109 www/PasswordChange.js:113
-#: www/NewPassword.js:147 www/ProtectAccountAccess.js:110
+#: www/PasswordForgotten.js:116 www/PasswordChange.js:121
+#: www/NewPassword.js:155 www/ProtectAccountAccess.js:117
+#: www/UserAttributes.js:142 www/VerifyAccount.js:136
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: www/PasswordForgotten.js:265
+#: www/VerifyAccount.js:164
+#, fuzzy
+msgid "Verify account"
+msgstr "Protéger le compte"
+
+#: www/PasswordForgotten.js:272
 msgid ""
 "We have send you an e-mail to your alternative e-mail address, that you have "
 "provided on the page \"Protect Account Access\". Please check your mails and "
@@ -149,7 +236,50 @@ msgstr ""
 "vérifier vos courriers et ouvrir le lien fourni pour changer votre mot de "
 "passe."
 
-#: www/PasswordForgotten.js:263
+#: www/VerifyAccount.js:191
+#, javascript-format
+msgid "Welcome <b>%s</b>, %s."
+msgstr ""
+
+#: www/PasswordForgotten.js:270
 msgid "You have mail!"
 msgstr "Vous avez du courrier !"
 
+#: www/UserAttributes.js:369
+msgid "Your account has been successfully deleted."
+msgstr ""
+
+#: www/ProtectAccountAccess.js:307
+#, javascript-format
+msgid ""
+"Your account has to be verified again after changing your email. We have "
+"sent you an email to <b>%s</b>. Please follow the instructions in the email "
+"to verify your account."
+msgstr ""
+
+#: www/VerifyAccount.js:240
+msgid "Your account is being verified."
+msgstr ""
+
+#: www/ProtectAccountAccess.js:305
+msgid "Your contact data has been successfully changed."
+msgstr ""
+
+#: www/UserAttributes.js:61
+msgid "Your profile"
+msgstr ""
+
+#: www/UserAttributes.js:301
+msgid "Your profile data is up to date"
+msgstr ""
+
+#: www/VerifyAccount.js:187
+msgid "your account has already been verified"
+msgstr ""
+
+#: www/VerifyAccount.js:184
+msgid "your account has been successfully verified"
+msgstr ""
+
+#~ msgid "Invalid credentials. Password change failed."
+#~ msgstr "Identifiants invalides. Le changement de mot de passe a échoué."

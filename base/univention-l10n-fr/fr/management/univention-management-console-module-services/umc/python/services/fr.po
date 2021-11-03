@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-10 16:16+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -15,39 +15,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/python/services/__init__.py:187
-msgid "Could not change start type"
+#: umc/python/services/__init__.py:141
+#, fuzzy
+msgid "Could not change start type of the following services:"
 msgstr "Impossible de modifier le type de démarrage"
 
-#: umc/python/services/__init__.py:139
-msgid "Restarting the following services failed:"
+#: umc/python/services/__init__.py:112
+#, fuzzy, python-format
+msgid "Restarting the service %s failed:"
 msgstr "Échec du redémarrage des services suivants :"
 
 #: umc/python/services/__init__.py:110
-msgid "Starting the following services failed:"
+#, fuzzy, python-format
+msgid "Starting the service %s failed:"
 msgstr "Échec du démarrage des services suivants :"
 
-#: umc/python/services/__init__.py:124
-msgid "Stopping the following services failed:"
+#: umc/python/services/__init__.py:111
+#, fuzzy, python-format
+msgid "Stopping the service %s failed:"
 msgstr "Échec de l'arrêt des services suivants :"
 
-#: umc/python/services/__init__.py:194
+#: umc/python/services/__init__.py:122 umc/python/services/__init__.py:127
+#: umc/python/services/__init__.py:132
 msgid "Successfully changed start type"
 msgstr "Le type de démarrage a été modifié avec succès"
 
-#: umc/python/services/__init__.py:138
-msgid "Successfully restarted"
-msgstr "Redémarré avec succès"
+#~ msgid "Successfully restarted"
+#~ msgstr "Redémarré avec succès"
 
-#: umc/python/services/__init__.py:109
-msgid "Successfully started"
-msgstr "Démarré avec succès"
+#~ msgid "Successfully started"
+#~ msgstr "Démarré avec succès"
 
-#: umc/python/services/__init__.py:123
-msgid "Successfully stopped"
-msgstr "Arrêté avec succès"
+#~ msgid "Successfully stopped"
+#~ msgstr "Arrêté avec succès"
 
-#: umc/python/services/__init__.py:116 umc/python/services/__init__.py:130
-#: umc/python/services/__init__.py:145
-msgid "You are not permitted to run this command."
-msgstr "Vous n'avez pas le droit d'exécuter cette commande."
+#~ msgid "You are not permitted to run this command."
+#~ msgstr "Vous n'avez pas le droit d'exécuter cette commande."

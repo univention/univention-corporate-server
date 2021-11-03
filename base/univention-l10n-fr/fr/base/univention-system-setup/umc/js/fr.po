@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2020-07-21 11:52+0200\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/js/setup/InterfaceWizard.js:94 umc/js/setup/InterfaceWizard.js:388
+#: umc/js/setup/InterfaceWizard.js:95 umc/js/setup/InterfaceWizard.js:393
 msgid ""
 "<i>Bond</i> interfaces allows two or more physical network interfaces to be "
 "coupled."
@@ -22,7 +22,7 @@ msgstr ""
 "Un <i>agrégat</i> (<i>bond</i>) permet de coupler deux interfaces réseaux "
 "physiques (ou davantage)."
 
-#: umc/js/setup/InterfaceWizard.js:93 umc/js/setup/InterfaceWizard.js:353
+#: umc/js/setup/InterfaceWizard.js:94 umc/js/setup/InterfaceWizard.js:358
 msgid ""
 "<i>Bridge</i> interfaces allows a physical network interface to be shared to "
 "connect one or more network segments."
@@ -30,11 +30,11 @@ msgstr ""
 "Un <i>pont</i> (<i>bridge</i>) permet à une interface réseau physique d'être "
 "partagée pour connecter un ou plusieurs segments de réseaux."
 
-#: umc/js/setup/InterfaceWizard.js:91
+#: umc/js/setup/InterfaceWizard.js:92
 msgid "<i>Ethernet</i> is a standard physical interface."
 msgstr "<i>Ethernet</i> est une interface physique standard."
 
-#: umc/js/setup/InterfaceWizard.js:92
+#: umc/js/setup/InterfaceWizard.js:93
 msgid ""
 "<i>VLAN</i> interfaces can be used to separate network traffic logically "
 "while using only one or more physical network interfaces."
@@ -43,51 +43,51 @@ msgstr ""
 "le trafic réseau, tout en n'utilisant qu'une seule ou plusieurs interfaces "
 "réseau physiques."
 
-#: umc/js/setup/InterfaceGrid.js:91
+#: umc/js/setup/InterfaceGrid.js:90
 msgid "Add"
 msgstr "Ajouter"
 
-#: umc/js/setup/InterfaceWizard.js:445
+#: umc/js/setup/InterfaceWizard.js:450
 msgid "Additional bonding options"
 msgstr "Options d'agrégation supplémentaires"
 
-#: umc/js/setup/InterfaceWizard.js:371
+#: umc/js/setup/InterfaceWizard.js:376
 msgid "Additional bridge options"
 msgstr "Options de pont supplémentaires"
 
-#: umc/js/setup/InterfaceWizard.js:372 umc/js/setup/InterfaceWizard.js:446
+#: umc/js/setup/InterfaceWizard.js:377 umc/js/setup/InterfaceWizard.js:451
 msgid "Additional options for this network interface"
 msgstr "Options supplémentaires pour cette interface réseau"
 
-#: umc/js/setup/InterfaceWizard.js:459
+#: umc/js/setup/InterfaceWizard.js:464
 msgid "Advanced configuration"
 msgstr "Configuration avancée"
 
-#: umc/js/setup.js:147 umc/js/setup.js:375
+#: umc/js/setup.js:138 umc/js/setup.js:358
 msgid "Apply changes"
 msgstr "Appliquer les modifications"
 
-#: umc/js/setup/InterfaceWizard.js:312 umc/js/setup/Interfaces.js:119
+#: umc/js/setup/Interfaces.js:120 umc/js/setup/InterfaceWizard.js:317
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Configuration automatique (SLAAC)"
 
-#: umc/js/setup/InterfaceGrid.js:352
+#: umc/js/setup/InterfaceGrid.js:351
 msgid "Back to overview"
 msgstr "Retour à la vue d'ensemble"
 
-#: umc/js/setup/InterfaceWizard.js:387
+#: umc/js/setup/InterfaceWizard.js:392
 msgid "Bond configuration"
 msgstr "Configuration de l'agrégat"
 
-#: umc/js/setup/InterfaceWizard.js:456
+#: umc/js/setup/InterfaceWizard.js:461
 msgid "Bond interface configuration"
 msgstr "Configuration de l'interface d'agrégation"
 
-#: umc/js/setup/InterfaceWizard.js:404
+#: umc/js/setup/InterfaceWizard.js:409
 msgid "Bond primary"
 msgstr "Maître de l'agrégat"
 
-#: umc/js/setup/InterfaceWizard.js:391 umc/js/setup/Interfaces.js:167
+#: umc/js/setup/Interfaces.js:168 umc/js/setup/InterfaceWizard.js:396
 msgid "Bond slaves"
 msgstr "Esclaves de l'agrégat"
 
@@ -99,31 +99,31 @@ msgstr "Agrégation"
 msgid "Bridge"
 msgstr "Pont"
 
-#: umc/js/setup/InterfaceWizard.js:352
+#: umc/js/setup/InterfaceWizard.js:357
 msgid "Bridge configuration"
 msgstr "Configuration du pont"
 
-#: umc/js/setup/InterfaceWizard.js:382
+#: umc/js/setup/InterfaceWizard.js:387
 msgid "Bridge interface configuration"
 msgstr "Configuration de l'interface du pont"
 
-#: umc/js/setup/InterfaceWizard.js:356 umc/js/setup/Interfaces.js:189
+#: umc/js/setup/Interfaces.js:190 umc/js/setup/InterfaceWizard.js:361
 msgid "Bridge ports"
 msgstr "Ports du pont"
 
-#: umc/js/setup/CertificatePage.js:101
+#: umc/js/setup/CertificatePage.js:103
 msgid "Business unit"
 msgstr "Division opérationnelle (BU)"
 
-#: umc/js/setup.js:372 umc/js/setup/InterfaceGrid.js:131
+#: umc/js/setup.js:355 umc/js/setup/InterfaceGrid.js:130
 msgid "Cancel"
 msgstr "Annuler"
 
-#: umc/js/setup/LanguagePage.js:117
+#: umc/js/setup/LanguagePage.js:120
 msgid "Category"
 msgstr "Catégorie"
 
-#: umc/js/setup/CertificatePage.js:145
+#: umc/js/setup/CertificatePage.js:147
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
 "SSL certificates. Note that this will require an update of all host "
@@ -138,7 +138,7 @@ msgstr ""
 "d'informations à ce sujet dans la <a href=\"http://sdb.univention.de/1183\" "
 "target=\"_blank\">Base de données d'assistance Univention</a>."
 
-#: umc/js/setup/NetworkPage.js:232
+#: umc/js/setup/NetworkPage.js:234
 msgid ""
 "Changing IP address configurations may result in restarting or stopping "
 "services. This can have severe side-effects when the system is in productive "
@@ -148,83 +148,75 @@ msgstr ""
 "redémarrer ou d'arrêter des services. Cela peut avoir de graves effets "
 "collatéraux lorsque le système est en cours d'utilisation."
 
-#: umc/js/setup.js:193
-msgid ""
-"Changing network settings is disabled. It can be re enabled by unsetting the "
-"UCR variable \"umc/modules/setup/network/disabled/by\"."
-msgstr ""
-"Le réglage des paramètres réseau est désactivé. Vous pouvez le réactiver en "
-"réinitialisant la variable UCR \"umc/modules/setup/network/disabled/by\"."
-
-#: umc/js/setup/InterfaceWizard.js:89
+#: umc/js/setup/InterfaceWizard.js:90
 msgid "Choose interface type"
 msgstr "Choisissez le type d'interface"
 
-#: umc/js/setup/CertificatePage.js:73
+#: umc/js/setup/CertificatePage.js:75
 msgid "Common name for the root SSL certificate"
 msgstr "Nom courant pour le certificat SSL racine"
 
-#: umc/js/setup/InterfaceGrid.js:74
+#: umc/js/setup/InterfaceGrid.js:73
 msgid "Configuration"
 msgstr "Configuration"
 
-#: umc/js/setup.js:445
+#: umc/js/setup.js:428
 msgid "Configuration finished"
 msgstr "Configuration terminée"
 
-#: umc/js/setup/InterfaceWizard.js:250
+#: umc/js/setup/InterfaceWizard.js:255
 msgid "Configuration of IPv4 and IPv6 addresses"
 msgstr "Configuration des adresses IPv4 et IPv6"
 
-#: umc/js/setup/CertificatePage.js:79
+#: umc/js/setup/CertificatePage.js:81
 msgid "Country"
 msgstr "Pays"
 
-#: umc/js/setup/LanguagePage.js:123
+#: umc/js/setup/LanguagePage.js:126
 msgid "Country code"
 msgstr "Code pays"
 
-#: umc/js/setup/NetworkPage.js:337
+#: umc/js/setup/NetworkPage.js:340
 msgid "Created:"
 msgstr "Créé :"
 
-#: umc/js/setup/InterfaceWizard.js:616 umc/js/setup/InterfaceWizard.js:642
+#: umc/js/setup/InterfaceWizard.js:622 umc/js/setup/InterfaceWizard.js:648
 msgid "DHCP query failed."
 msgstr "La requête DHCP a échoué."
 
-#: umc/js/setup/InterfaceWizard.js:339
+#: umc/js/setup/InterfaceWizard.js:344
 msgid "DHCP-Query"
 msgstr "Requête DHCP"
 
-#: umc/js/setup/LanguagePage.js:149 umc/js/setup/LanguagePage.js:229
+#: umc/js/setup/LanguagePage.js:152 umc/js/setup/LanguagePage.js:232
 msgid "Default system locale"
 msgstr "Paramètres locaux par défaut"
 
-#: umc/js/setup/InterfaceGrid.js:97 umc/js/setup/InterfaceGrid.js:135
+#: umc/js/setup/InterfaceGrid.js:96 umc/js/setup/InterfaceGrid.js:134
 msgid "Delete"
 msgstr "Supprimer"
 
-#: umc/js/setup/NetworkPage.js:287
+#: umc/js/setup/NetworkPage.js:289
 msgid "Domain name server"
 msgstr "Serveur de noms du domaine"
 
-#: umc/js/setup/NetworkPage.js:114
+#: umc/js/setup/NetworkPage.js:116
 msgid "Domain name server (max. 3)"
 msgstr "Serveurs de noms du domaine (max. 3)"
 
-#: umc/js/setup/InterfaceWizard.js:280 umc/js/setup/Interfaces.js:116
+#: umc/js/setup/Interfaces.js:117 umc/js/setup/InterfaceWizard.js:285
 msgid "Dynamic (DHCP)"
 msgstr "Dynamique (DHCP)"
 
-#: umc/js/setup/InterfaceWizard.js:530
+#: umc/js/setup/InterfaceWizard.js:536
 msgid "Each IPv6 interface must have an identifier"
 msgstr "Chaque interface IPv6 doit avoir un identifiant"
 
-#: umc/js/setup/InterfaceGrid.js:83
+#: umc/js/setup/InterfaceGrid.js:82
 msgid "Edit"
 msgstr "Modifier"
 
-#: umc/js/setup/CertificatePage.js:106
+#: umc/js/setup/CertificatePage.js:108
 msgid "Email address"
 msgstr "Adresse électronique"
 
@@ -232,15 +224,15 @@ msgstr "Adresse électronique"
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: umc/js/setup/NetworkPage.js:291
+#: umc/js/setup/NetworkPage.js:293
 msgid "External name server"
 msgstr "Serveur de noms externe"
 
-#: umc/js/setup/NetworkPage.js:120
+#: umc/js/setup/NetworkPage.js:122
 msgid "External name server (max. 3)"
 msgstr "Serveurs de noms externes (max. 3)"
 
-#: umc/js/setup/CertificatePage.js:62
+#: umc/js/setup/CertificatePage.js:63
 msgid ""
 "Following the <i>certificate settings</i>, a new root certificate will be "
 "created for the domain."
@@ -248,268 +240,260 @@ msgstr ""
 "Un nouveau certificat racine va être créé pour le domaine suivant les "
 "<i>réglages des certificats</i>."
 
-#: umc/js/setup/InterfaceWizard.js:364
+#: umc/js/setup/InterfaceWizard.js:369
 msgid "Forwarding delay"
 msgstr "Délai de transmission"
 
-#: umc/js/setup/InterfaceWizard.js:95
+#: umc/js/setup/InterfaceWizard.js:96
 #, javascript-format
 msgid ""
-"Further information can be found in the <a href=\"https://docs.software-univention.de/"
-"manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
-"documentation</a>."
+"Further information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual-%s.html#computers:networkcomplex\" target=\"_blank"
+"\">UCS documentation</a>."
 msgstr ""
 "Vous pouvez trouver davantage d'informations dans la <a href=\"http://docs."
 "univention.de/ manual-%s.html#computers:networkcomplex\" target=\"_blank\"> "
 "documentation UCS</a>."
 
-#: umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/InterfaceWizard.js:633
 msgid "Gateway"
 msgstr "Passerelle"
 
-#: umc/js/setup/NetworkPage.js:105 umc/js/setup/NetworkPage.js:279
+#: umc/js/setup/NetworkPage.js:107 umc/js/setup/NetworkPage.js:281
 msgid "Gateway (IPv4)"
 msgstr "Passerelle (IPv4)"
 
-#: umc/js/setup/NetworkPage.js:109 umc/js/setup/NetworkPage.js:283
+#: umc/js/setup/NetworkPage.js:111 umc/js/setup/NetworkPage.js:285
 msgid "Gateway (IPv6)"
 msgstr "Passerelle (IPv6)"
 
-#: umc/js/setup/CertificatePage.js:110
+#: umc/js/setup/CertificatePage.js:112
 msgid "General settings"
 msgstr "Réglages généraux"
 
-#: umc/js/setup/NetworkPage.js:132
+#: umc/js/setup/NetworkPage.js:134
 msgid "Global network settings"
 msgstr "Réglages réseau globaux"
 
-#: umc/js/setup/NetworkPage.js:125 umc/js/setup/NetworkPage.js:295
+#: umc/js/setup/NetworkPage.js:127 umc/js/setup/NetworkPage.js:297
 msgid "HTTP proxy"
 msgstr "Serveur mandataire HTTP"
 
-#: umc/js/setup/NetworkPage.js:129
+#: umc/js/setup/NetworkPage.js:131
 msgid "IP network interfaces"
 msgstr "Interfaces réseau IP"
 
-#: umc/js/setup/InterfaceWizard.js:259
+#: umc/js/setup/InterfaceWizard.js:264
 msgid "IPv4 address"
 msgstr "Adresse IPv4"
 
-#: umc/js/setup/InterfaceWizard.js:343
+#: umc/js/setup/InterfaceWizard.js:348
 msgid "IPv4 network interface configuration"
 msgstr "Configuration de l'interface réseau IPv4"
 
-#: umc/js/setup/InterfaceWizard.js:288
+#: umc/js/setup/InterfaceWizard.js:293
 msgid "IPv6 address"
 msgstr "Adresse IPv6"
 
-#: umc/js/setup/InterfaceWizard.js:346
+#: umc/js/setup/InterfaceWizard.js:351
 msgid "IPv6 network interface configuration"
 msgstr "Configuration de l'interface réseau IPv6"
 
-#: umc/js/setup/InterfaceWizard.js:295
+#: umc/js/setup/InterfaceWizard.js:300
 msgid "IPv6 prefix"
 msgstr "Préfixe IPv6"
 
-#: umc/js/setup/InterfaceWizard.js:303
+#: umc/js/setup/InterfaceWizard.js:308
 msgid "Identifier"
 msgstr "Identifiant"
 
-#: umc/js/setup.js:433
+#: umc/js/setup.js:416
 msgid "Initialize the configuration process ..."
 msgstr "Initialiser le processus de configuration..."
 
-#: umc/js/setup/LanguagePage.js:108 umc/js/setup/LanguagePage.js:225
+#: umc/js/setup/LanguagePage.js:111 umc/js/setup/LanguagePage.js:228
 msgid "Installed system locales"
 msgstr "Données locales système installées"
 
-#: umc/js/setup/InterfaceWizard.js:192
+#: umc/js/setup/InterfaceWizard.js:196
 msgid "Interface"
 msgstr "Interface"
 
-#: umc/js/setup/InterfaceGrid.js:290
+#: umc/js/setup/InterfaceGrid.js:289
 #, javascript-format
 msgid "Interface \"%s\" already exists."
 msgstr "L'interface « %s » existe déjà."
 
-#: umc/js/setup/InterfaceWizard.js:105
+#: umc/js/setup/InterfaceWizard.js:106
 msgid "Interface type"
 msgstr "Type d'interface"
 
-#: umc/js/setup/LanguagePage.js:88 umc/js/setup/LanguagePage.js:217
+#: umc/js/setup/LanguagePage.js:91 umc/js/setup/LanguagePage.js:220
 msgid "Keyboard layout"
 msgstr "Disposition du clavier"
 
-#: umc/js/setup/LanguagePage.js:82 umc/js/setup/LanguagePage.js:213
+#: umc/js/setup/LanguagePage.js:85 umc/js/setup/LanguagePage.js:216
 msgid "Keyboard model"
 msgstr "Modèle de clavier"
 
-#: umc/js/setup/LanguagePage.js:94 umc/js/setup/LanguagePage.js:221
+#: umc/js/setup/LanguagePage.js:97 umc/js/setup/LanguagePage.js:224
 msgid "Keyboard variant"
 msgstr "Variante de clavier"
 
-#: umc/js/setup/LanguagePage.js:121
+#: umc/js/setup/LanguagePage.js:124
 msgid "Language"
 msgstr "Langue"
 
-#: umc/js/setup/LanguagePage.js:120
+#: umc/js/setup/LanguagePage.js:123
 msgid "Language (english)"
 msgstr "Langue (anglais)"
 
-#: umc/js/setup/LanguagePage.js:122
+#: umc/js/setup/LanguagePage.js:125
 msgid "Language code"
 msgstr "Code de langue"
 
-#: umc/js/setup/LanguagePage.js:161
+#: umc/js/setup/LanguagePage.js:164
 msgid "Language settings"
 msgstr "Réglages de langue"
 
-#: umc/js/setup/CertificatePage.js:91
+#: umc/js/setup/CertificatePage.js:93
 msgid "Location"
 msgstr "Lieu"
 
-#: umc/js/setup/CertificatePage.js:113
+#: umc/js/setup/CertificatePage.js:115
 msgid "Location settings"
 msgstr "Réglages de lieu"
 
-#: umc/js/setup/InterfaceWizard.js:438
+#: umc/js/setup/InterfaceWizard.js:443
 msgid "MII link monitoring frequency"
 msgstr "Fréquence de surveillance de liens par MII"
 
-#: umc/js/setup/InterfaceWizard.js:412
+#: umc/js/setup/InterfaceWizard.js:417
 msgid "Mode"
 msgstr "Mode"
 
-#: umc/js/setup/NetworkPage.js:347
+#: umc/js/setup/NetworkPage.js:350
 msgid "Modified:"
 msgstr "Modifié :"
 
-#: umc/js/setup/LanguagePage.js:129
+#: umc/js/setup/LanguagePage.js:132
 msgid "Name"
 msgstr "Nom"
 
-#: umc/js/setup/InterfaceWizard.js:158
+#: umc/js/setup/InterfaceWizard.js:159
 msgid "Name of new bonding interface"
 msgstr "Nom de la nouvelle interface agrégée"
 
-#: umc/js/setup/InterfaceWizard.js:156
+#: umc/js/setup/InterfaceWizard.js:157
 msgid "Name of new bridge interface"
 msgstr "Nom de la nouvelle interface de pont"
 
-#: umc/js/setup/InterfaceWizard.js:174
-msgid "Name of new interface"
-msgstr "Nom de la nouvelle interface"
-
-#: umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/InterfaceWizard.js:633
 msgid "Nameserver"
 msgstr "Serveur de noms"
 
-#: umc/js/setup/InterfaceWizard.js:266
+#: umc/js/setup/InterfaceWizard.js:271
 msgid "Netmask"
 msgstr "Masque de réseau"
 
-#: umc/js/setup/InterfaceGrid.js:63
+#: umc/js/setup/InterfaceGrid.js:62
 msgid "Network interface"
 msgstr "Interface réseau"
 
-#: umc/js/setup/InterfaceWizard.js:249
+#: umc/js/setup/InterfaceWizard.js:254
 msgid "Network interface configuration"
 msgstr "Configuration de l'interface réseau"
 
-#: umc/js/setup/NetworkPage.js:299
+#: umc/js/setup/NetworkPage.js:301
 msgid "Network interfaces"
 msgstr "Interfaces réseau"
 
-#: umc/js/setup.js:312
+#: umc/js/setup.js:291
 msgid "No changes have been made."
 msgstr "Aucun changement n'a été apporté."
 
-#: umc/js/setup/NetworkPage.js:98 umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/NetworkPage.js:100 umc/js/setup/InterfaceWizard.js:633
 msgid "None"
 msgstr "Aucun"
 
-#: umc/js/setup.js:466
+#: umc/js/setup.js:449
 msgid "Not all changes could be applied successfully:"
 msgstr "Certains changements n'ont pas pu être appliqués avec succès :"
 
-#: umc/js/setup.js:470
+#: umc/js/setup.js:453
 msgid "Ok"
 msgstr "OK"
 
-#: umc/js/setup/CertificatePage.js:96
+#: umc/js/setup/CertificatePage.js:98
 msgid "Organization"
 msgstr "Organisation"
 
-#: umc/js/setup/CertificatePage.js:116
+#: umc/js/setup/CertificatePage.js:118
 msgid "Organization settings"
 msgstr "Réglages de l'organisation"
 
-#: umc/js/setup/InterfaceWizard.js:206
+#: umc/js/setup/InterfaceWizard.js:210
 msgid "Parent interface"
 msgstr "Interface parente"
 
-#: umc/js/setup/InterfaceWizard.js:604
+#: umc/js/setup/InterfaceWizard.js:610
 msgid "Please choose a network interface before querying a DHCP address."
 msgstr ""
 "Veuillez choisir une interface réseau avant de demander une adresse DHCP."
 
-#: umc/js/setup.js:367
+#: umc/js/setup.js:350
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Veuillez confirmer l'application de ces modifications au système. Cela peut "
 "prendre un certain temps."
 
-#: umc/js/setup/InterfaceGrid.js:139
+#: umc/js/setup/InterfaceGrid.js:138
 msgid "Please confirm to delete the following interfaces:"
 msgstr "Veuillez confirmer la suppression des interfaces suivantes :"
 
-#: umc/js/setup/InterfaceWizard.js:357
+#: umc/js/setup/InterfaceWizard.js:362
 msgid "Please specify the ports which will be added to the bridge."
 msgstr "Veuillez indiquer les ports à ajouter au pont."
 
-#: umc/js/setup/NetworkPage.js:101 umc/js/setup/NetworkPage.js:303
+#: umc/js/setup/NetworkPage.js:103 umc/js/setup/NetworkPage.js:306
 msgid "Primary network interface"
 msgstr "Interface réseau primaire"
 
-#: umc/js/setup/NetworkPage.js:357
+#: umc/js/setup/NetworkPage.js:360
 msgid "Removed:"
 msgstr "Supprimé :"
 
-#: umc/js/setup/CertificatePage.js:169
+#: umc/js/setup/CertificatePage.js:171
 msgid "SSL root certificate"
 msgstr "Certificat SSL racine"
 
-#: umc/js/setup.js:188
-msgid "Setup for UCS Virtual Machine Manager"
-msgstr "Installation d'UCS Virtual Machine Manager"
-
-#: umc/js/setup/InterfaceWizard.js:90
+#: umc/js/setup/InterfaceWizard.js:91
 msgid "Several network types can be chosen."
 msgstr "Vous pouvez choisir plusieurs types de réseaux."
 
-#: umc/js/setup/InterfaceWizard.js:629
+#: umc/js/setup/InterfaceWizard.js:635
 #, javascript-format
 msgid "Should the nameserver and gateway be set: %s"
 msgstr "Le serveur de noms et la passerelle doivent-ils être définis : %s"
 
-#: umc/js/setup/CertificatePage.js:86
+#: umc/js/setup/CertificatePage.js:88
 msgid "State"
 msgstr "État"
 
-#: umc/js/setup/Interfaces.js:123
+#: umc/js/setup/Interfaces.js:124
 msgid "Static"
 msgstr "Statique"
 
-#: umc/js/setup/Interfaces.js:126
+#: umc/js/setup/Interfaces.js:127
 msgid "Static (IPv6)"
 msgstr "Statique (IPv6)"
 
-#: umc/js/setup.js:454 umc/js/setup.js:460
+#: umc/js/setup.js:437 umc/js/setup.js:443
 msgid "The changes have been applied successfully."
 msgstr "Les modifications ont été appliquées avec succès."
 
-#: umc/js/setup.js:440
+#: umc/js/setup.js:423
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -521,15 +505,15 @@ msgstr ""
 "veuillez vous reconnecter à la console Univention Management Console à la "
 "{linkStart}nouvelle adresse{linkEnd}."
 
-#: umc/js/setup.js:361
+#: umc/js/setup.js:340
 msgid "The following changes will be applied to the system:"
 msgstr "Les modifications suivantes seront appliquées au système :"
 
-#: umc/js/setup.js:334 umc/js/setup.js:410
+#: umc/js/setup.js:313 umc/js/setup.js:393
 msgid "The following entries could not be validated:"
 msgstr "Les éléments suivants n'ont pas pu être validés :"
 
-#: umc/js/setup/InterfaceGrid.js:143
+#: umc/js/setup/InterfaceGrid.js:142
 msgid ""
 "The following interfaces are already used by other interfaces and can not be "
 "deleted:"
@@ -537,27 +521,27 @@ msgstr ""
 "Les interfaces suivantes sont déjà utilisées par d'autres interfaces et ne "
 "peuvent donc pas être supprimées :"
 
-#: umc/js/setup/InterfaceGrid.js:308
+#: umc/js/setup/InterfaceGrid.js:307
 msgid "There are no more physical interfaces to create."
 msgstr "Il n'y a plus d'interface physique à créer."
 
-#: umc/js/setup/LanguagePage.js:76 umc/js/setup/LanguagePage.js:209
+#: umc/js/setup/LanguagePage.js:79 umc/js/setup/LanguagePage.js:212
 msgid "Time zone"
 msgstr "Fuseau horaire"
 
-#: umc/js/setup/LanguagePage.js:158
+#: umc/js/setup/LanguagePage.js:161
 msgid "Time zone and keyboard settings"
 msgstr "Réglages de fuseau horaire et de clavier"
 
-#: umc/js/setup/InterfaceGrid.js:67
+#: umc/js/setup/InterfaceGrid.js:66
 msgid "Type"
 msgstr "Type"
 
-#: umc/js/setup/Interfaces.js:136
+#: umc/js/setup/Interfaces.js:137
 msgid "Unconfigured"
 msgstr "Non configuré"
 
-#: umc/js/setup/InterfaceWizard.js:228
+#: umc/js/setup/InterfaceWizard.js:232
 msgid "VLAN ID"
 msgstr "ID VLAN"
 
@@ -569,11 +553,24 @@ msgstr "Erreur de validation"
 msgid "Virtual LAN"
 msgstr "LAN virtuel"
 
-#: umc/js/setup/InterfaceWizard.js:631
+#: umc/js/setup/InterfaceWizard.js:636
 msgid "don't set"
 msgstr "ne pas définir"
 
-#: umc/js/setup/InterfaceWizard.js:630
+#: umc/js/setup/InterfaceWizard.js:637
 msgid "set"
 msgstr "définir"
 
+#~ msgid ""
+#~ "Changing network settings is disabled. It can be re enabled by unsetting "
+#~ "the UCR variable \"umc/modules/setup/network/disabled/by\"."
+#~ msgstr ""
+#~ "Le réglage des paramètres réseau est désactivé. Vous pouvez le réactiver "
+#~ "en réinitialisant la variable UCR \"umc/modules/setup/network/disabled/by"
+#~ "\"."
+
+#~ msgid "Name of new interface"
+#~ msgstr "Nom de la nouvelle interface"
+
+#~ msgid "Setup for UCS Virtual Machine Manager"
+#~ msgstr "Installation d'UCS Virtual Machine Manager"

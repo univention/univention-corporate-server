@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 20:53+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,11 +14,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: hook/passwordreset.js:66 hook/passwordreset.js:82
+#: hook/passwordreset.js:70 hook/passwordreset.js:87
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
 
-#: hook/passwordreset.js:57
+#: hook/passwordreset.js:58
 msgid "Protect your account"
 msgstr "Protégez votre compte"
-

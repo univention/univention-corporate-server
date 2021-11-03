@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-web-js\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2019-09-20 15:14+0200\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,52 +14,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: js/tools.js:1711
-#, python-brace-format
+#: js/widgets/MultiInput.js:703
+#, fuzzy
+msgid " (required)"
+msgstr "Rechargement d'UMC nécessaire"
+
+#: js/tools.js:1938
 msgid "\"${moduleName}\" module"
 msgstr "Module « ${moduleName} »"
 
 #: js/widgets/PasswordInputBox.js:71
-#, python-format
 msgid "%(label)s (retype)"
 msgstr "%(label)s (saisir à nouveau)"
 
-#: js/widgets/Form.js:620
-#, python-format
+#: js/widgets/Form.js:662
 msgid "%(label)s: %(message)s"
 msgstr "%(label)s : %(message)s"
 
-#: js/widgets/Grid.js:893
-#, python-format
+#: js/widgets/Grid.js:1189
 msgid "%(num)d entries of %(total)d selected"
 msgstr "%(num)d entrées sur %(total)d sélectionnées"
 
-#: js/widgets/Form.js:612
+#: js/widgets/Grid.js:1194
+#, fuzzy, javascript-format
+msgid "%d entries found"
+msgstr "Aucune entrée n'a été trouvée"
+
+#: js/widgets/Form.js:654
 msgid "%s (%.1f%)"
 msgstr "%s (%.1f%)"
 
-#: js/widgets/Form.js:600 js/widgets/Form.js:616
-#, python-format
+#: js/widgets/Form.js:642 js/widgets/Form.js:658
+#, javascript-format
 msgid "%s loaded"
 msgstr "%s chargé"
 
-#: js/widgets/Grid.js:898
-#, python-format
+#: js/widgets/Grid.js:1191
+#, javascript-format
 msgid "1 entry of %d selected"
 msgstr "1 entrée sur %d sélectionnées"
 
-#: js/hooks/default_menu_entries.js:124
+#: js/hooks/default_menu_entries.js:157
 msgid ""
 "<b>Warning</b>: The current session with all opened modules and unsaved "
 "settings gets lost and a page reload is done when switching the language."
 msgstr ""
 "<b>Avertissement </b>: la session en cours, y compris tous les modules "
-"ouverts "
-"et les réglages non enregistrés, sera perdue et un rafraîchissement de page a "
-"lieu "
-"lorsque vous changez de langue."
+"ouverts et les réglages non enregistrés, sera perdue et un rafraîchissement "
+"de page a lieu lorsque vous changez de langue."
 
-#: js/tools.js:268
+#: js/tools.js:303
 msgid ""
 "A reload of the Univention Management Console is required to use new modules."
 "<br>Currently opened modules may not work properly.<br>Do you want to reload "
@@ -69,39 +73,56 @@ msgstr ""
 "modules.<br>Les modules ouverts actuellement peuvent ne pas fonctionner "
 "convenablement.<br>Voulez-vous recharger la page ?"
 
-#: js/widgets/UnixAccessRightsExtended.js:98 js/widgets/UnixAccessRights.js:98
+#: js/widgets/CookieBanner.js:58
+#, fuzzy
+msgid "Accept"
+msgstr "Accès"
+
+#: js/widgets/UnixAccessRights.js:98 js/widgets/UnixAccessRightsExtended.js:98
 msgid "Access"
 msgstr "Accès"
 
-#: js/widgets/MultiObjectSelect.js:120 js/widgets/MultiObjectSelect.js:298
+#: js/widgets/Calendar.js:205
+msgid "Action"
+msgstr ""
+
+#: js/widgets/Grid.js:970
+msgid "Actions"
+msgstr ""
+
+#: js/widgets/MultiObjectSelect.js:98 js/widgets/MultiObjectSelect.js:324
 msgid "Add"
 msgstr "Ajouter"
 
-#: js/widgets/MultiObjectSelect.js:79
+#: js/widgets/MultiObjectSelect.js:257
 msgid "Add objects"
 msgstr "Ajouter les objets"
 
-#: js/tools.js:1084
+#: js/hooks/default_menu_entries.js:374
+msgid "Advantages of the Enterprise Edition"
+msgstr ""
+
+#: js/tools.js:1188
 msgid "An assert statement failed"
 msgstr "Échec d'un assert (vérification)"
 
-#: js/tools.js:638 js/tools.js:920
+#: js/tools.js:684 js/tools.js:986
 msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
-#: js/tools.js:644
+#: js/tools.js:690
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Une erreur inconnue est survenue en se connectant au serveur, veuillez "
 "réessayer plus tard."
 
-#: js/widgets/ProgressBar.js:175
+#: js/widgets/ProgressBar.js:182
 msgid "An error occurred: "
 msgstr "Une erreur est survenue :"
 
-#: js/tools.js:641
-#, python-format
+#: js/tools.js:687
+#, javascript-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
@@ -109,116 +130,119 @@ msgstr ""
 "Une erreur inconnue avec le code d'état %s est survenue en se connectant au "
 "serveur, veuillez réessayer plus tard."
 
-#: js/widgets/Wizard.js:159
+#: js/widgets/Wizard.js:163
 msgid "Back"
 msgstr "Retour"
 
-#: js/hooks/default_menu_entries.js:192
+#: js/hooks/default_menu_entries.js:267
 msgid "Back to start site"
 msgstr "Retour vers page d'accueil"
 
-#: js/dialog.js:254 js/tools.js:270 js/widgets/Wizard.js:174
-#: js/widgets/MultiObjectSelect.js:138 js/hooks/default_menu_entries.js:132
+#: js/hooks/default_menu_entries.js:353
+msgid "Buy support package"
+msgstr ""
+
+#: js/tools.js:305 js/dialog.js:302 js/hooks/default_menu_entries.js:159
+#: js/widgets/Wizard.js:178 js/widgets/MultiObjectSelect.js:86
 msgid "Cancel"
 msgstr "Annuler"
 
-#: js/hooks/default_menu_entries.js:90
+#: js/hooks/default_menu_entries.js:107
 msgid "Certificate revocation list"
 msgstr "Liste de révocation de certificats"
 
-#: js/hooks/default_menu_entries.js:75
+#: js/hooks/default_menu_entries.js:81
 msgid "Certificates"
 msgstr "Certificats"
 
-#: js/hooks/default_menu_entries.js:133
+#: js/hooks/default_menu_entries.js:166
 msgid "Changing language"
 msgstr "Changer langue"
 
-#: js/widgets/Uploader.js:121
-msgid "Clear data"
-msgstr "Effacer les données"
-
-#: js/widgets/ImageUploader.js:51
-msgid "Clear image data"
-msgstr "Effacer les données de l'image"
-
-#: js/menu/Button.js:55
-msgid "Click for menu options"
-msgstr "Cliquez pour les options des menus"
-
-#: js/widgets/LoginButton.js:52 js/widgets/LoginButton.js:63
-msgid "Click to login"
-msgstr "Cliquez pour vous connecter"
-
-#: js/tools.js:897 js/widgets/Module.js:230
+#: js/tools.js:955 js/hooks/default_menu_entries.js:384
+#: js/widgets/Module.js:180
 msgid "Close"
 msgstr "Fermer"
 
-#: js/dialog.js:208 js/dialog.js:263
+#: js/dialog.js:255 js/dialog.js:311
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: js/tools.js:729
+#: js/widgets/CookieBanner.js:54
+#, fuzzy
+msgid "Cookie Settings"
+msgstr "Réglages utilisateur"
+
+#: js/tools.js:779
 msgid "Could not fulfill the request."
 msgstr "Impossible de satisfaire la requête."
 
-#: js/widgets/Grid.js:990
+#: js/widgets/Grid.js:1296
 msgid "Could not load search results"
 msgstr "Impossible de charger les résultats de recherche"
 
-#: js/tools.js:749
+#: js/tools.js:799
 msgid "Could not process the request."
 msgstr "Impossible de traiter la requête."
 
-#: js/hooks/default_menu_entries.js:175
+#: js/hooks/default_menu_entries.js:396
+msgid "Do not show this notification again"
+msgstr ""
+
+#: js/widgets/Calendar.js:186
+msgid "End"
+msgstr ""
+
+#: js/widgets/Calendar.js:189
+msgid "Enter"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:230
 msgid "Feedback"
 msgstr "Impressions"
 
-#: js/widgets/ProgressBar.js:147
+#: js/widgets/ProgressBar.js:154
 msgid "Fetching information from the server failed!"
 msgstr "Échec en obtenant les informations sur le serveur !"
 
-#: js/widgets/Wizard.js:170
+#: js/widgets/Wizard.js:174
 msgid "Finish"
 msgstr "Terminer"
 
-#: js/widgets/UnixAccessRightsExtended.js:78 js/widgets/UnixAccessRights.js:78
+#: js/widgets/UnixAccessRights.js:78 js/widgets/UnixAccessRightsExtended.js:78
 msgid "Group"
 msgstr "Groupe"
 
-#: js/i18n.js:128
-#, python-format
-msgid "Hello %(last)s, %(first)s!"
-msgstr "Bonjour %(last)s, %(first)s !"
+#: js/tools.js:897
+#, javascript-format
+msgid "HTTP Error %s"
+msgstr ""
 
-#: js/i18n.js:127
-#, python-format
-msgid "Hello %s!"
-msgstr "Bonjour %s !"
+#: js/hooks/default_menu_entries.js:369
+msgid "Hard- and software certifications"
+msgstr ""
 
-#: js/widgets/Module.js:220 js/hooks/default_menu_entries.js:150
+#: js/hooks/default_menu_entries.js:185
 msgid "Help"
 msgstr "Aide"
 
-#: js/tools.js:876
+#: js/tools.js:934
 msgid "Hide server error message"
 msgstr "Masquer le message d'erreur du serveur"
 
-#: js/i18n.js:133
-msgid "In directory %2$s: removed one file."
-msgid_plural "In directory %2$s: removed %1$d files."
-msgstr[0] "Dans le dossier %2$s : un fichier supprimé."
-msgstr[1] "Dans le dossier %2$s : %1$d fichiers supprimés."
+#: js/widgets/Calendar.js:183
+msgid "Home"
+msgstr ""
 
-#: js/tools.js:911
+#: js/tools.js:976
 msgid "Inform vendor"
 msgstr "Informer le vendeur"
 
-#: js/tools.js:368
+#: js/tools.js:411
 msgid "Information"
 msgstr "Informations"
 
-#: js/tools.js:931
+#: js/tools.js:997
 msgid ""
 "Information about the error will be sent to the vendor along with some data "
 "about the operating system."
@@ -226,43 +250,43 @@ msgstr ""
 "Les informations concernant l'erreur seront envoyées au vendeur avec "
 "quelques données concernant le système d'exploitation."
 
-#: js/tools.js:746
+#: js/tools.js:796
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Erreur du protocole interne UMC : impossible d'analyser le corps du message "
 "UMCP."
 
-#: js/tools.js:745
+#: js/tools.js:795
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Erreur du protocole interne UMC : impossible d'analyser l'entête du message "
 "UMCP."
 
-#: js/tools.js:748
+#: js/tools.js:798
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 "Erreur interne du module : une erreur est survenue lors du traitement de la "
 "commande."
 
-#: js/tools.js:750
+#: js/tools.js:800
 msgid ""
 "Internal module error: The initialization of the module caused a fatal error."
 msgstr ""
 "Erreur interne du module : l'initialisation du module a provoqué une erreur "
 "fatale."
 
-#: js/tools.js:739
+#: js/tools.js:789
 msgid "Internal server error."
 msgstr "Erreur interne du serveur."
 
-#: js/tools.js:742
+#: js/tools.js:792
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Erreur interne du serveur : impossible de se connecter au processus du "
 "module."
 
-#: js/tools.js:743
+#: js/tools.js:793
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -270,132 +294,181 @@ msgstr ""
 "Erreur interne du serveur : le certificat SSL du serveur n'est pas digne de "
 "confiance. Veuillez vérifier vos réglages SSL."
 
-#: js/tools.js:741
+#: js/tools.js:791
 msgid "Internal server error: The module process died unexpectedly."
 msgstr ""
 "Erreur interne du serveur : le processus du module s'est arrêté de façon "
 "inattendue."
 
-#: js/tools.js:740
+#: js/tools.js:790
 msgid "Internal server error: The service is temporarily not available."
 msgstr ""
 "Erreur interne du serveur : le service est temporairement indisponible."
 
-#: js/widgets/LoginButton.js:60
-#, python-format
-msgid "Logged in as <i>%(username)s</i>"
-msgstr "Connecté en tant que <i>%(username)s</i>"
+#: js/widgets/Calendar.js:204
+msgid "Key"
+msgstr ""
 
-#: js/hooks/default_menu_entries.js:204
+#: js/menu/Menu.js:117 js/hooks/default_menu_entries.js:283
+#: js/widgets/LoginButton.js:41 js/widgets/LoginButton.js:54
 msgid "Login"
 msgstr "Connexion"
 
-#: js/hooks/default_menu_entries.js:216
+#: js/menu/Menu.js:118 js/hooks/default_menu_entries.js:295
+#: js/widgets/LoginButton.js:54
 msgid "Logout"
 msgstr "Se déconnecter"
 
-#: js/menu/Menu.js:141
+#: js/hooks/default_menu_entries.js:370
+msgid "Manufacturer warranty with product liability"
+msgstr ""
+
+#: js/menu/Menu.js:202
 msgid "Menu"
 msgstr "Menu"
 
-#: js/widgets/MultiInput.js:439
+#: js/widgets/Calendar.js:169
+msgid "Move between date cells"
+msgstr ""
+
+#: js/widgets/Calendar.js:184
+msgid "Move to first day in month"
+msgstr ""
+
+#: js/widgets/Calendar.js:187
+msgid "Move to last day in month"
+msgstr ""
+
+#: js/widgets/Calendar.js:172
+msgid "Move to same day in next month"
+msgstr ""
+
+#: js/widgets/Calendar.js:178
+msgid "Move to same day in next year"
+msgstr ""
+
+#: js/widgets/Calendar.js:175
+msgid "Move to same day in previous month"
+msgstr ""
+
+#: js/widgets/Calendar.js:181
+msgid "Move to same day in previous year"
+msgstr ""
+
+#: js/widgets/MultiInput.js:78
 msgid "New entry"
 msgstr "Nouvelle entrée"
 
-#: js/widgets/Wizard.js:165
+#: js/widgets/Wizard.js:169
 msgid "Next"
 msgstr "Suivant"
 
-#: js/widgets/Grid.js:895
+#: js/widgets/Grid.js:1198
 msgid "No entries could be found"
 msgstr "Aucune entrée n'a été trouvée"
 
-#: js/dialog/NotificationContainer.js:55
-msgid "No message"
-msgstr "Pas de message"
+#: js/widgets/NotificationsButton.js:261
+#, fuzzy
+msgid "No notifications"
+msgstr "Notifications"
 
-#: js/widgets/MultiUploader.js:218
-msgid "No upload in progress"
-msgstr "Pas d'envoi en cours"
-
-#: js/dialog.js:67 js/dialog.js:96 js/dialog.js:120
-#: js/dialog/NotificationContainer.js:54
-#: js/dialog/NotificationContainer.js:204
+#: js/dialog.js:98 js/dialog.js:145 js/dialog.js:171
 msgid "Notification"
 msgstr "Notifications"
 
-#: js/dialog.js:99
+#: js/widgets/NotificationsButton.js:238 js/widgets/NotificationsButton.js:263
+#, fuzzy
+msgid "Notifications"
+msgstr "Notifications"
+
+#: js/dialog.js:148
 msgid "Ok"
 msgstr "Valider"
 
-#: js/i18n.js:131
-#, python-format
-msgid "One file removed from directory %s"
-msgid_plural "%d files removed from directory %s"
-msgstr[0] "Un fichier supprimé du dossier %s"
-msgstr[1] "%d fichiers supprimés du répertoire %s"
-
-#: js/widgets/UnixAccessRightsExtended.js:79 js/widgets/UnixAccessRights.js:79
+#: js/widgets/UnixAccessRights.js:79 js/widgets/UnixAccessRightsExtended.js:79
 msgid "Others"
 msgstr "Autres"
 
-#: js/widgets/UnixAccessRightsExtended.js:77 js/widgets/UnixAccessRights.js:77
+#: js/widgets/UnixAccessRights.js:77 js/widgets/UnixAccessRightsExtended.js:77
 msgid "Owner"
 msgstr "Propriétaire"
 
-#: js/widgets/Grid.js:164
+#: js/widgets/Calendar.js:171 js/widgets/Calendar.js:174
+#: js/widgets/Calendar.js:177 js/widgets/Calendar.js:180
+msgid "Page"
+msgstr ""
+
+#: js/widgets/Grid.js:250
 msgid "Please perform a search"
 msgstr "Veuillez effectuer une recherche"
 
-#: js/tools.js:859
+#: js/tools.js:917
 msgid "Please take a second to provide the following information:"
 msgstr "Veuillez prendre une seconde pour fournir les informations suivantes :"
 
-#: js/widgets/UnixAccessRightsExtended.js:90 js/widgets/UnixAccessRights.js:90
+#: js/hooks/default_menu_entries.js:375
+msgid "Prices and support"
+msgstr ""
+
+#: js/widgets/UnixAccessRights.js:90 js/widgets/UnixAccessRightsExtended.js:90
 msgid "Read"
 msgstr "Lecture"
 
-#: js/tools.js:276
+#: js/tools.js:311
 msgid "Reload"
 msgstr "Recharger"
 
-#: js/tools.js:943
+#: js/tools.js:1009
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr "Remarques (ex. : étapes pour reproduire le problème) (facultatif)"
 
-#: js/widgets/MultiUploader.js:135 js/widgets/MultiObjectSelect.js:321
+#: js/widgets/Uploader.js:115 js/widgets/MultiObjectSelect.js:349
+#: js/widgets/MultiUploader.js:66
 msgid "Remove"
 msgstr "Supprimer"
 
-#: js/hooks/default_menu_entries.js:81
+#: js/widgets/MultiInput.js:561
+#, fuzzy
+msgid "Remove entry"
+msgstr "Nouvelle entrée"
+
+#: js/hooks/default_menu_entries.js:93
 msgid "Root certificate"
 msgstr "Certificat racine"
 
-#: js/widgets/SearchForm.js:86
-msgid "Search"
-msgstr "Rechercher"
-
-#: js/widgets/MultiObjectSelect.js:111
+#: js/widgets/MultiObjectSelect.js:164
 msgid "Search results:"
 msgstr "Résultats de la recherche :"
 
-#: js/widgets/LiveSearch.js:66
+#: js/widgets/LiveSearch.js:45
 msgid "Search term"
 msgstr "Chercher un terme"
 
-#: js/tools.js:872
+#: js/widgets/MultiSelect.js:67
+msgid "Select all"
+msgstr ""
+
+#: js/widgets/ImageUploader.js:66
+msgid "Select file"
+msgstr ""
+
+#: js/widgets/Calendar.js:190
+msgid "Select the date"
+msgstr ""
+
+#: js/tools.js:930
 msgid "Send as email"
 msgstr "Envoyer par courriel"
 
-#: js/tools.js:927
+#: js/tools.js:993
 msgid "Send to vendor"
 msgstr "Envoyer au vendeur"
 
-#: js/tools.js:954
+#: js/tools.js:1020
 msgid "Sending the information to the vendor failed"
 msgstr "Échec de l'envoi des informations au vendeur"
 
-#: js/tools.js:638
+#: js/tools.js:684
 msgid "Server error message:"
 msgstr "Message d'erreur du serveur :"
 
@@ -403,16 +476,15 @@ msgstr "Message d'erreur du serveur :"
 msgid "Setgid"
 msgstr "Setgid"
 
-#: js/tools.js:935
+#: js/tools.js:1001
 msgid "Show error message"
 msgstr "Afficher le message d'erreur"
 
-#: js/tools.js:877
+#: js/tools.js:935
 msgid "Show server error message"
 msgstr "Afficher le message d'erreur du serveur"
 
-#: js/tools.js:353
-#, python-brace-format
+#: js/tools.js:396
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -422,27 +494,42 @@ msgstr ""
 "secondes. Ce comportement est parfois normal. Dans tous les cas, le "
 "processus va continuer à établir la connexion."
 
-#: js/tools.js:737
+#: js/widgets/Calendar.js:189
+msgid "Space"
+msgstr ""
+
+#: js/tools.js:787
 msgid "Specified locale is not available."
 msgstr "Les données de localisation demandées ne sot pas disponibles."
+
+#: js/hooks/default_menu_entries.js:372
+msgid ""
+"Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
+"Edition. This license allows you to benefit from basic support services as "
+"well as individually bookable, additional support and professional services."
+msgstr ""
 
 #: js/widgets/UnixAccessRightsExtended.js:105
 msgid "Sticky bit"
 msgstr "Sticky bit"
 
-#: js/dialog.js:258
+#: js/dialog.js:306
 msgid "Submit"
 msgstr "Soumettre"
 
-#: js/hooks/default_menu_entries.js:113 js/hooks/default_menu_entries.js:126
+#: js/hooks/default_menu_entries.js:367
+msgid "Support and Professional Services"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:139 js/hooks/default_menu_entries.js:162
 msgid "Switch language"
 msgstr "Changer langue"
 
-#: js/tools.js:952
+#: js/tools.js:1018
 msgid "Thank you for your help"
 msgstr "Merci pour votre aide"
 
-#: js/widgets/Uploader.js:184
+#: js/widgets/Uploader.js:234
 msgid ""
 "The following files cannot be uploaded because they exceed the maximum file "
 "size:"
@@ -450,8 +537,8 @@ msgstr ""
 "Impossible d'envoyer les fichiers suivants, ils dépassent la taille maximale "
 "des fichiers :"
 
-#: js/widgets/Uploader.js:186
-#, python-format
+#: js/widgets/Uploader.js:236
+#, javascript-format
 msgid "The maximum size of a file is %.1f MB."
 msgstr "La taille maximale d'un fichier est de %.1f Mo."
 
@@ -459,69 +546,61 @@ msgstr "La taille maximale d'un fichier est de %.1f Mo."
 msgid "The passwords do not match, please retype again."
 msgstr "Les mots de passe ne correspondent pas, veuillez les saisir à nouveau."
 
-#: js/i18n.js:126
-#, python-format
-msgid "The total cost was %.2f EUR!"
-msgstr "Le coût total était de %.2f euros !"
-
-#: js/i18n.js:130
-#, python-format
-msgid "There is one foo."
-msgid_plural "There are %d foos."
-msgstr[0] "Il y a un truc."
-msgstr[1] "Il y a %d trucs."
-
-#: js/i18n.js:125
-msgid "Translate me!"
-msgstr "Traduisez-moi !"
-
-#: js/tools.js:267
+#: js/tools.js:302
 msgid "UMC reload required"
 msgstr "Rechargement d'UMC nécessaire"
 
-#: js/hooks/default_menu_entries.js:169
-msgid "Univention Help"
+#: js/hooks/default_menu_entries.js:252
+#, fuzzy
+msgid "Univention Blog"
 msgstr "Aide Univention"
 
-#: js/hooks/default_menu_entries.js:163
+#: js/hooks/default_menu_entries.js:217
+#, fuzzy
+msgid "Univention Forum \"Help\""
+msgstr "Aide Univention"
+
+#: js/hooks/default_menu_entries.js:204
 msgid "Univention Website"
 msgstr "Site Internet Univention"
 
-#: js/widgets/MultiUploader.js:110 js/widgets/Uploader.js:120
+#: js/hooks/default_menu_entries.js:368
+msgid "Up to 7 years of maintenance (LTS)"
+msgstr ""
+
+#: js/widgets/Uploader.js:99 js/widgets/MultiUploader.js:63
 #: js/widgets/InfoUploader.js:43
 msgid "Upload"
 msgstr "Envoyer"
 
-#: js/widgets/ImageUploader.js:50
-msgid "Upload new image"
-msgstr "Envoyer une nouvelle image"
-
-#: js/widgets/Uploader.js:321
+#: js/widgets/Uploader.js:372
 msgid "Uploading..."
 msgstr "Envoi..."
 
-#: js/widgets/MultiUploader.js:244
-#, python-format
+#: js/widgets/MultiUploader.js:241
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr "Envoi en cours... %(current)d sur %(total)d fichiers restants."
 
-#: js/widgets/MultiUploader.js:241
-msgid "Uploads finished"
-msgstr "Fin des envois"
-
-#: js/hooks/default_menu_entries.js:58
+#: js/hooks/default_menu_entries.js:64
 msgid "User settings"
 msgstr "Réglages utilisateur"
 
-#: js/tools.js:736
+#: js/tools.js:786
 msgid "Validation error"
 msgstr "Erreur de validation"
 
-#: js/dialog.js:77
+#: js/dialog.js:113
 msgid "Warning"
 msgstr "Avertissement"
 
-#: js/tools.js:734
+#: js/widgets/CookieBanner.js:55
+msgid ""
+"We use cookies in order to provide you with certain functions and to be able "
+"to guarantee an unrestricted service. By clicking on \"Accept\", you consent "
+"to the collection of information on this portal."
+msgstr ""
+
+#: js/tools.js:784
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -529,7 +608,7 @@ msgstr ""
 "Erreur de l'interface Web : les arguments de la commande UMCP de la requête "
 "sont invalides."
 
-#: js/tools.js:735
+#: js/tools.js:785
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
@@ -537,60 +616,139 @@ msgstr ""
 "Erreur de l'interface Web : les arguments de la méthode du module UMCP "
 "manquent ou sont invalides."
 
-#: js/tools.js:733
+#: js/tools.js:783
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Erreur de l'interface Web : le type de requête est inconnu."
 
-#: js/widgets/UnixAccessRightsExtended.js:94 js/widgets/UnixAccessRights.js:94
+#: js/widgets/UnixAccessRights.js:94 js/widgets/UnixAccessRightsExtended.js:94
 msgid "Write"
 msgstr "Écriture"
 
-#: js/tools.js:731
+#: js/tools.js:781
 msgid "You are not authorized to perform this action."
 msgstr "Vous ne pouvez pas effectuer cette action."
 
-#: js/tools.js:956
+#: js/tools.js:1022
 msgid "You can also send the information via mail:"
 msgstr "Vous pouvez également envoyer les informations par courriel :"
 
-#: js/tools.js:947
+#: js/hooks/default_menu_entries.js:373
+msgid ""
+"You can extend the maintenance for your UCS version to up to 7 years and "
+"thanks to certifications and manufacturer warranty you are legally secured "
+"when operating your IT infrastructure."
+msgstr ""
+
+#: js/tools.js:2151
+msgid ""
+"Your browser is outdated! You may experience performance issues and other "
+"problems when using this site. The supported Browsers are Firefox (>=60), "
+"Chrome (>=71), Edge (>=18), Safari (>=12)."
+msgstr ""
+
+#: js/tools.js:1013
 msgid "Your email address (optional)"
 msgstr "Votre adresse de courriel (facultatif)"
 
-#: js/tools.js:730
+#: js/tools.js:780
 msgid "Your session has expired, please login again."
 msgstr "Votre session a expiré, veuillez vous identifier à nouveau."
 
-#: js/tools.js:862
+#: js/tools.js:920
 msgid "actual result"
 msgstr "résultat obtenu"
 
-#: js/tools.js:861
+#: js/tools.js:919
 msgid "expected result"
 msgstr "résultat attendu"
 
-#: js/hooks/default_menu_entries.js:171
+#: js/hooks/default_menu_entries.js:218
 msgid "https://help.univention.com/"
 msgstr "https://help.univention.com/"
 
-#: js/hooks/default_menu_entries.js:165
+#: js/hooks/default_menu_entries.js:205
 msgid "https://www.univention.com/"
 msgstr "https://www.univention.com/"
 
-#: js/hooks/default_menu_entries.js:185
+#: js/hooks/default_menu_entries.js:239
 msgid "https://www.univention.com/feedback/"
 msgstr "https://www.univention.com/feedback/"
 
-#: js/widgets/Grid.js:735
+#: js/hooks/default_menu_entries.js:253
+#, fuzzy
+msgid "https://www.univention.com/news/blog-en/"
+msgstr "https://www.univention.com/"
+
+#: js/hooks/default_menu_entries.js:357 js/hooks/default_menu_entries.js:401
+#, fuzzy
+msgid "https://www.univention.com/products/prices-and-subscriptions/"
+msgstr "https://www.univention.com/feedback/"
+
+#: js/widgets/Grid.js:923
 msgid "more"
 msgstr "plus"
 
-#: js/tools.js:860
+#: js/tools.js:918
 msgid "steps to reproduce the failure"
 msgstr "étapes pour reproduire l'erreur"
 
-#: js/widgets/ProgressBar.js:177
-#, python-brace-format
+#: js/widgets/ProgressBar.js:184
 msgid "{number} errors occurred: "
 msgstr "{number} erreurs survenues : "
 
+#~ msgid "Clear data"
+#~ msgstr "Effacer les données"
+
+#~ msgid "Clear image data"
+#~ msgstr "Effacer les données de l'image"
+
+#~ msgid "Click for menu options"
+#~ msgstr "Cliquez pour les options des menus"
+
+#~ msgid "Click to login"
+#~ msgstr "Cliquez pour vous connecter"
+
+#~ msgid "Hello %(last)s, %(first)s!"
+#~ msgstr "Bonjour %(last)s, %(first)s !"
+
+#~ msgid "Hello %s!"
+#~ msgstr "Bonjour %s !"
+
+#~ msgid "In directory %2$s: removed one file."
+#~ msgid_plural "In directory %2$s: removed %1$d files."
+#~ msgstr[0] "Dans le dossier %2$s : un fichier supprimé."
+#~ msgstr[1] "Dans le dossier %2$s : %1$d fichiers supprimés."
+
+#~ msgid "Logged in as <i>%(username)s</i>"
+#~ msgstr "Connecté en tant que <i>%(username)s</i>"
+
+#~ msgid "No message"
+#~ msgstr "Pas de message"
+
+#~ msgid "No upload in progress"
+#~ msgstr "Pas d'envoi en cours"
+
+#~ msgid "One file removed from directory %s"
+#~ msgid_plural "%d files removed from directory %s"
+#~ msgstr[0] "Un fichier supprimé du dossier %s"
+#~ msgstr[1] "%d fichiers supprimés du répertoire %s"
+
+#~ msgid "Search"
+#~ msgstr "Rechercher"
+
+#~ msgid "The total cost was %.2f EUR!"
+#~ msgstr "Le coût total était de %.2f euros !"
+
+#~ msgid "There is one foo."
+#~ msgid_plural "There are %d foos."
+#~ msgstr[0] "Il y a un truc."
+#~ msgstr[1] "Il y a %d trucs."
+
+#~ msgid "Translate me!"
+#~ msgstr "Traduisez-moi !"
+
+#~ msgid "Upload new image"
+#~ msgstr "Envoyer une nouvelle image"
+
+#~ msgid "Uploads finished"
+#~ msgstr "Fin des envois"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 14 Apr 2017 00:29:16 +0200\n"
+"POT-Creation-Date: Wed, 03 Nov 2021 17:54:31 +0100\n"
 "PO-Revision-Date: 2016-07-03 16:36+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -19,4 +19,8 @@ msgid "Configuration of disk space limitations on the local system"
 msgstr "Configuration des quotas d'espace disque sur le système local"
 
 msgid "Filesystem quotas"
+msgstr "Quotas du système de fichiers"
+
+#, fuzzy
+msgid "filesystem,quota,partition"
 msgstr "Quotas du système de fichiers"

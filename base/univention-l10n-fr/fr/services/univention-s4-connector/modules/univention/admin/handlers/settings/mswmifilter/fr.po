@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-07 20:36+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -15,80 +15,80 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:215
+#: modules/univention/admin/handlers/settings/mswmifilter.py:142
 msgid "Basic settings"
 msgstr "Réglages de base"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:63
+#: modules/univention/admin/handlers/settings/mswmifilter.py:64
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:73
+#: modules/univention/admin/handlers/settings/mswmifilter.py:69
 msgid "Display name"
 msgstr "Nom d'affichage"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:215
-#: modules/univention/admin/handlers/settings/mswmifilter.py:216
+#: modules/univention/admin/handlers/settings/mswmifilter.py:142
+#: modules/univention/admin/handlers/settings/mswmifilter.py:143
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:93
+#: modules/univention/admin/handlers/settings/mswmifilter.py:80
 msgid "MS WMI Author"
 msgstr "Auteur MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:113
+#: modules/univention/admin/handlers/settings/mswmifilter.py:90
 msgid "MS WMI Change Date"
 msgstr "Date de modification MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:103
+#: modules/univention/admin/handlers/settings/mswmifilter.py:85
 msgid "MS WMI Creation Date"
 msgstr "Date de création MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:163
+#: modules/univention/admin/handlers/settings/mswmifilter.py:115
 msgid "MS WMI Flags1"
 msgstr "Drapeaux1 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:173
+#: modules/univention/admin/handlers/settings/mswmifilter.py:120
 msgid "MS WMI Flags2"
 msgstr "Drapeaux2 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:183
+#: modules/univention/admin/handlers/settings/mswmifilter.py:125
 msgid "MS WMI Flags3"
 msgstr "Drapeaux3 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:193
+#: modules/univention/admin/handlers/settings/mswmifilter.py:130
 msgid "MS WMI Flags4"
 msgstr "Drapeaux4 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:83
+#: modules/univention/admin/handlers/settings/mswmifilter.py:74
 msgid "MS WMI ID"
 msgstr "Id. MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:123
+#: modules/univention/admin/handlers/settings/mswmifilter.py:95
 msgid "MS WMI Parameter1"
 msgstr "Paramètre1 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:133
+#: modules/univention/admin/handlers/settings/mswmifilter.py:100
 msgid "MS WMI Parameter2"
 msgstr "Paramètre2 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:143
+#: modules/univention/admin/handlers/settings/mswmifilter.py:105
 msgid "MS WMI Parameter3"
 msgstr "Paramètre3 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:153
+#: modules/univention/admin/handlers/settings/mswmifilter.py:110
 msgid "MS WMI Parameter4"
 msgstr "Paramètre4 MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:203
+#: modules/univention/admin/handlers/settings/mswmifilter.py:135
 msgid "MS WMI Source Organization"
 msgstr "Organisation source MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:221
+#: modules/univention/admin/handlers/settings/mswmifilter.py:148
 msgid "MS WMI filter"
 msgstr "Filtre MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:53
+#: modules/univention/admin/handlers/settings/mswmifilter.py:58
 msgid "Name"
 msgstr "Nom"
 
@@ -96,7 +96,7 @@ msgstr "Nom"
 msgid "Settings: MS WMI Filter"
 msgstr "Réglages : filtre MS WMI"
 
-#: modules/univention/admin/handlers/settings/mswmifilter.py:221
-#: modules/univention/admin/handlers/settings/mswmifilter.py:222
+#: modules/univention/admin/handlers/settings/mswmifilter.py:148
+#: modules/univention/admin/handlers/settings/mswmifilter.py:149
 msgid "WMI filter"
 msgstr "Filtre WMI"
