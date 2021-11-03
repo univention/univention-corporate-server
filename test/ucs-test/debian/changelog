@@ -1,3 +1,9 @@
+ucs-test (10.0.6-66) unstable; urgency=medium
+
+  * Bug #53906: adjust 18_overview_false.py
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 03 Nov 2021 14:35:01 +0100
+
 ucs-test (10.0.6-65) unstable; urgency=medium
 
   * Bug #53343: New test 59_udm/15_test_univention_base_files_scripts.py
