@@ -6,28 +6,28 @@ src: libsdl1.2
 fix: 1.2.15+dfsg1-4+deb9u1
 desc: |
  This update addresses the following issues:
- * Buffer over-read in IMA_ADPCM_nibble in audio/SDL_wave.c (CVE-2019-7572)
- * heap-based buffer over-read in InitMS_ADPCM in audio/SDL_wave.c
+ * Buffer over-read in `IMA_ADPCM_nibble` in audio/SDL_wave.c (CVE-2019-7572)
+ * Heap-based buffer over-read in `InitMS_ADPCM` in audio/SDL_wave.c
    (CVE-2019-7573)
- * heap-based buffer over-read in IMA_ADPCM_decode in audio/SDL_wave.c
+ * Heap-based buffer over-read in `IMA_ADPCM_decode` in audio/SDL_wave.c
    (CVE-2019-7574)
- * Heap based buffer overflow in function MS_ADPCM_decode in audio/SDL_wave.c
-   (CVE-2019-7575)
- * heap-based buffer over-read in InitMS_ADPCM in audio/SDL_wave.c
+ * Heap based buffer overflow in function `MS_ADPCM_decode` in
+   audio/SDL_wave.c (CVE-2019-7575)
+ * Heap-based buffer over-read in `InitMS_ADPCM` in audio/SDL_wave.c
    (CVE-2019-7576)
- * Buffer over-read in function SDL_LoadWAV_RW in audio/SDL_wave.c
+ * Buffer over-read in function `SDL_LoadWAV_RW` in audio/SDL_wave.c
    (CVE-2019-7577)
- * heap-based buffer over-read in InitIMA_ADPCM in audio/SDL_wave.c
+ * Heap-based buffer over-read in `InitIMA_ADPCM` in audio/SDL_wave.c
    (CVE-2019-7578)
- * heap-based buffer over-read in Blit1to4 in video/SDL_blit_1.c
+ * Heap-based buffer over-read in `Blit1to4` in video/SDL_blit_1.c
    (CVE-2019-7635)
- * heap-based buffer over-read in SDL_GetRGB in video/SDL_pixels.c
+ * Heap-based buffer over-read in `SDL_GetRGB` in video/SDL_pixels.c
    (CVE-2019-7636)
- * heap-based buffer overflow in SDL_FillRect in video/SDL_surface.c
+ * Heap-based buffer overflow in `SDL_FillRect` in video/SDL_surface.c
    (CVE-2019-7637)
- * heap-based buffer over-read in Map1toN in video/SDL_pixels.c
+ * Heap-based buffer over-read in `Map1toN` in video/SDL_pixels.c
    (CVE-2019-7638)
- * heap-based buffer overflow in SDL blit functions in video/SDL_blit*.c
+ * Heap-based buffer overflow in SDL functions `blit` in video/SDL_blit*.c
    (CVE-2019-13616)
 bug: [54010]
 cve:
