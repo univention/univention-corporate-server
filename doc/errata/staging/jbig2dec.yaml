@@ -6,8 +6,8 @@ src: jbig2dec
 fix: 0.13-4.1+deb9u1
 desc: |
  This update addresses the following issues:
- * Null pointer dereference in jbig2_huffman_get() (CVE-2017-9216)
- * heap-based buffer overflow in jbig2_image_compose in jbig2_image.c
+ * NULL pointer dereference in jbig2_huffman_get() (CVE-2017-9216)
+ * Heap-based buffer overflow in jbig2_image_compose in jbig2_image.c
    (CVE-2020-12268)
 bug: [54006]
 cve:
