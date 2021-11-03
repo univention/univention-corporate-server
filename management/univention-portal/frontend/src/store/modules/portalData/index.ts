@@ -33,7 +33,7 @@ import { randomId } from '@/jsHelper/tools';
 import createCategories from '@/jsHelper/createCategories';
 
 import { PortalModule, RootState } from '../../root.models';
-import { PortalData, PortalImageDataBlob, LocalizedString, PortalContent, PortalBaseLayout } from './portalData.models';
+import { PortalData, PortalImageDataBlob, LocalizedString, PortalContent, PortalBaseLayout, PortalLayout } from './portalData.models';
 
 function isEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
@@ -265,7 +265,7 @@ const portalData: PortalModule<PortalDataState> = {
               id: `folder-${randomId()}`,
               dn: entryDn,
               tiles: state.portal.baseLayout.folders[entryDn].map((folderDn) => ({
-                id: randomId(),
+                id: `entry-${randomId()}`,
                 dn: folderDn,
               })),
             };
@@ -289,8 +289,9 @@ const portalData: PortalModule<PortalDataState> = {
     PORTALBACKGROUND(state: PortalDataState, data:PortalImageDataBlob): void {
       state.portal.portal.background = data;
     },
-    SETLAYOUT(state: PortalDataState, payload): void {
-      state.portal.layout = payload;
+    SETLAYOUT(state: PortalDataState, payload: {layout: PortalLayout, baseLayout: PortalBaseLayout}): void {
+      state.portal.baseLayout = payload.baseLayout;
+      state.portal.layout = payload.layout;
     },
     CHANGELAYOUT(state: PortalDataState, payload): void {
       state.portal.baseLayout.layout = payload.content;
@@ -364,7 +365,7 @@ const portalData: PortalModule<PortalDataState> = {
     setPortalBackground({ commit }: PortalDataActionContext, data: PortalImageDataBlob): void {
       commit('PORTALBACKGROUND', data);
     },
-    setLayout({ commit, dispatch }: PortalDataActionContext, layout: PortalBaseLayout): void {
+    setLayout({ commit, dispatch }: PortalDataActionContext, layout: {layout: PortalLayout, baseLayout: PortalBaseLayout}): void {
       commit('SETLAYOUT', layout);
       dispatch('changeLayoutUpdateFolder');
     },

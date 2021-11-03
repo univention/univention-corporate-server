@@ -58,6 +58,10 @@ export default defineComponent({
     TabindexElement,
   },
   props: {
+    id: {
+      type: String,
+      default: () => `icon-button-${randomId()}`,
+    },
     icon: {
       type: String,
       required: true,
@@ -76,11 +80,6 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  computed: {
-    id(): string {
-      return `icon-button-${randomId()}`;
-    },
-  },
 });
 </script>
 

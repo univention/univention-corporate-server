@@ -62,6 +62,12 @@ const navigation: PortalModule<NavigationState> = {
       }
       commit('ACTIVEBUTTON', id);
     },
+    closeNotificationsSidebar({ dispatch, getters }: { dispatch: Dispatch, getters: any }): void {
+      if (getters.getActiveButton === 'bell') {
+        dispatch('setActiveButton', '');
+        dispatch('activity/setRegion', 'portal-header', { root: true });
+      }
+    },
   },
 };
 

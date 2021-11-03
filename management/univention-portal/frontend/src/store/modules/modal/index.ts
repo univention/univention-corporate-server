@@ -156,8 +156,6 @@ const modal: PortalModule<ModalState> = {
       if (payload !== 2) {
         commit('ENABLE_BODY_SCROLLING');
       }
-
-      dispatch('dragndrop/cancelDragging', null, { root: true });
     },
     resolve({ state, commit }, payload: ModalComponentInterface): void {
       commit('RESOLVE', payload);

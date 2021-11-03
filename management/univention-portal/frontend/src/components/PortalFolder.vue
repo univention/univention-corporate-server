@@ -107,7 +107,15 @@
     </span>
     <div class="portal-tile__icon-bar">
       <icon-button
-        v-if="editMode && !inModal"
+        v-if="editMode && !inModal && showEditButtonWhileDragging"
+        icon="edit-2"
+        class="portal-folder__edit-button icon-button--admin"
+        :aria-label-prop="translateEditFolder"
+        @click="editFolder"
+      />
+      <icon-button
+        v-if="editMode && !inModal && showMoveButtonWhileDragging"
+        :id="`${layoutId}-move-button`"
         ref="mover"
         icon="move"
         class="portal-tile__edit-button icon-button--admin"
@@ -119,13 +127,6 @@
         @keydown.up="dragKeyboardDirection($event, 'up')"
         @keydown.down="dragKeyboardDirection($event, 'down')"
         @keydown.tab="handleTabWhileMoving"
-      />
-      <icon-button
-        v-if="editMode && !inModal"
-        icon="edit-2"
-        class="portal-folder__edit-button icon-button--admin"
-        :aria-label-prop="translateEditFolder"
-        @click="editFolder"
       />
     </div>
   </div>
@@ -142,6 +143,7 @@ import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
 import { Title, Tile } from '@/store/modules/portalData/portalData.models';
 import _ from '@/jsHelper/translate';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'PortalFolder',
@@ -186,6 +188,9 @@ export default defineComponent({
     },
   },
   computed: {
+    ...mapGetters({
+      lastDir: 'dragndrop/getLastDir',
+    }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
     },
@@ -222,9 +227,9 @@ export default defineComponent({
     this.$nextTick(() => {
       window.addEventListener('resize', this.updateZoomQuery);
     });
-    if (this.isBeingDragged) {
+    if (this.$refs.mover) {
       // @ts-ignore
-      (this.$refs.mover.$el as HTMLElement).focus();
+      this.handleDragFocus(this.$refs.mover.$el, this.lastDir);
     }
   },
   beforeUnmount() {

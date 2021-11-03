@@ -38,13 +38,14 @@
         v-for="locale in locales"
         :key="locale"
       >
-        {{ locale }}
+        {{ localeLabel(locale) }}
         <template
           v-if="locale === 'en_US'"
         >
           <required-field-label />
         </template>
         <input
+          :ref="'ref_input_' + locale"
           v-model="translationObject[locale]"
           :placeholder="hasValue(locale)"
           class="translation-editing__text-input"
@@ -77,6 +78,8 @@ import RequiredFieldLabel from '@/components/forms/RequiredFieldLabel.vue';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
 import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 
+import { Locale } from '@/store/modules/locale/locale.models';
+
 export default defineComponent({
   name: 'TranslationEditing',
   components: {
@@ -107,6 +110,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
+      localeLabels: 'locale/getLocaleLabels',
       getModalError: 'modal/getModalError',
       savedFocus: 'activity/focus',
     }),
@@ -131,6 +135,10 @@ export default defineComponent({
       }
     });
     this.id = 'translation-editing';
+
+    setTimeout(() => {
+      (this.$refs.ref_input_en_US as HTMLElement).focus();
+    }, 100);
   },
   methods: {
     cancel(): void {
@@ -151,6 +159,9 @@ export default defineComponent({
     },
     isUserInput(locale): boolean {
       return this.inputValue[locale];
+    },
+    localeLabel(locale: Locale): string {
+      return this.localeLabels[locale] || locale;
     },
   },
 });

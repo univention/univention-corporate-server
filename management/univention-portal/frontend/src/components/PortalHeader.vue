@@ -72,7 +72,9 @@ License with the Debian GNU/Linux or Univention distribution in file
         :aria-label-prop="NOTIFICATIONS"
         icon="bell"
         :counter="numNotifications"
-        @keydown.esc="closeNotifications"
+        @keydown.esc="closeNotificationsSidebar"
+        @keydown.right="closeNotificationsSidebar"
+        @keydown.left="closeNotificationsSidebar"
       />
       <header-button
         data-test="settingsbutton"
@@ -104,7 +106,9 @@ License with the Debian GNU/Linux or Univention distribution in file
         :aria-label-prop="NOTIFICATIONS"
         icon="bell"
         :counter="numNotifications"
-        @keydown.esc="closeNotifications"
+        @keydown.esc="closeNotificationsSidebar"
+        @keydown.right="closeNotificationsSidebar"
+        @keydown.left="closeNotificationsSidebar"
       />
       <header-button
         :aria-label-prop="MENU"
@@ -220,10 +224,8 @@ export default defineComponent({
       }
       this.tabsOverflow = tabs.scrollWidth > tabs.clientWidth;
     },
-    closeNotifications(): void {
-      if (this.activeButton === 'bell') {
-        this.$store.dispatch('navigation/setActiveButton', '');
-      }
+    closeNotificationsSidebar(): void {
+      this.$store.dispatch('navigation/closeNotificationsSidebar');
     },
     chooseTab(): void {
       this.$store.dispatch('modal/setAndShowModal', {

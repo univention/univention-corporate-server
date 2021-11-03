@@ -124,7 +124,7 @@ export default defineComponent({
       default: null,
     },
   },
-  emits: ['alertRemovedNotification'],
+  emits: ['notificationRemoved'],
   data(): NotificationData {
     return {
       dismissalTimeout: null,
@@ -178,8 +178,9 @@ export default defineComponent({
       }
     },
     removeNotification() {
-      this.$emit('alertRemovedNotification');
+      // this.$emit('notificationRemovedBefore');
       this.$store.dispatch('notifications/removeNotification', this.token);
+      this.$emit('notificationRemoved');
     },
     hideNotification() {
       this.$store.dispatch('notifications/hideNotification', this.token);

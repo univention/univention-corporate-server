@@ -43,6 +43,7 @@
       </main>
       <footer>
         <button
+          ref="acceptButton"
           class="primary"
           @click.stop="setCookies()"
         >
@@ -89,6 +90,8 @@ export default defineComponent({
   },
   mounted(): void {
     this.$store.dispatch('activity/setLevel', 'cookies');
+    // @ts-ignore
+    this.$refs.acceptButton.focus();
   },
   methods: {
     setCookies(): void {

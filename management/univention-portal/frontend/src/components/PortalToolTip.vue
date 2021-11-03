@@ -128,7 +128,8 @@ export default defineComponent({
   padding: calc(2 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
   z-index: $zindex-3
-  display: block;
+  display: block
+  pointer-events: none
 
   @media $mqSmartphone
     bottom: unset;
@@ -141,6 +142,7 @@ export default defineComponent({
     margin-left:auto
     margin-right:auto
     font-size: var(--font-size-5)
+    pointer-events: auto
 
   &__header
     display: flex

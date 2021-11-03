@@ -38,7 +38,9 @@
       :aria-label="ariaLabelPortalTile"
       :draggable="editMode && !minified"
       :disabled="isDisabled"
-      :class="{'portal-tile--minified': minified}"
+      :class="{
+        'portal-tile--minified': minified,
+      }"
       class="portal-tile"
       data-test="tileLink"
       @mouseenter="showTooltip()"
@@ -76,7 +78,16 @@
 
       <div class="portal-tile__icon-bar">
         <icon-button
-          v-if="!minified && editMode && !isTouchDevice"
+          v-if="!minified && editMode && showEditButtonWhileDragging"
+          icon="edit-2"
+          :active-at="activeAtEdit"
+          class="icon-button--admin"
+          :aria-label-prop="EDIT_ENTRY"
+          @click="editTile"
+        />
+        <icon-button
+          v-if="!minified && editMode && !isTouchDevice && showMoveButtonWhileDragging"
+          :id="`${layoutId}-move-button`"
           ref="mover"
           icon="move"
           :active-at="activeAtEdit"
@@ -89,14 +100,6 @@
           @keydown.up="dragKeyboardDirection($event, 'up')"
           @keydown.down="dragKeyboardDirection($event, 'down')"
           @keydown.tab="handleTabWhileMoving"
-        />
-        <icon-button
-          v-if="!minified && editMode"
-          icon="edit-2"
-          :active-at="activeAtEdit"
-          class="icon-button--admin"
-          :aria-label-prop="EDIT_ENTRY"
-          @click="editTile"
         />
       </div>
     </tabindex-element>
@@ -195,6 +198,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       tooltip: 'tooltip/tooltip',
+      lastDir: 'dragndrop/getLastDir',
     }),
     wrapperTag(): string {
       return (this.minified || this.editMode) ? 'div' : 'a';
@@ -246,9 +250,9 @@ export default defineComponent({
     if (this.hasFocus) {
       this.$el.children[0].focus(); // sets focus to first Element in opened Folder
     }
-    if (this.isBeingDragged) {
+    if (this.$refs.mover) {
       // @ts-ignore
-      (this.$refs.mover.$el as HTMLElement).focus();
+      this.handleDragFocus(this.$refs.mover.$el, this.lastDir);
     }
   },
   methods: {
@@ -280,7 +284,7 @@ export default defineComponent({
       });
     },
     toolTipTouchHandler() {
-      if (this.tooltip) {
+      if (this.tooltip && this.tooltip.description === this.$localized(this.description)) {
         this.hideTooltip();
       } else {
         this.showTooltip();

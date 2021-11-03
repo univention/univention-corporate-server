@@ -104,6 +104,7 @@ export default defineComponent({
       });
     },
     closeSearchInput(): void {
+      this.$store.dispatch('activity/setRegion', 'portal-header');
       this.$store.dispatch('navigation/setActiveButton', '');
     },
   },
@@ -126,6 +127,7 @@ export default defineComponent({
       outline: none;
   &__wrapper
     background-color: rgba(0,0,0,0)
+    min-height: auto
 
 .slide-enter-active,
 .slide-leave-active {

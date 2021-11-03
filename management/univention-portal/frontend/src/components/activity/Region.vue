@@ -103,45 +103,45 @@ export default defineComponent({
         this.focusFirst();
       }
     },
-    goUp(ev: KeyboardEvent): void {
+    goUp(ev?: KeyboardEvent): void {
       if (this.inDragnDropMode) {
         return;
       }
       if (this.direction === 'topdown') {
-        ev.preventDefault();
+        ev?.preventDefault();
         if (!this.focusPrev(ev)) {
           this.focusLast(ev);
         }
       }
     },
-    goDown(ev: KeyboardEvent): void {
+    goDown(ev?: KeyboardEvent): void {
       if (this.inDragnDropMode) {
         return;
       }
       if (this.direction === 'topdown') {
-        ev.preventDefault();
+        ev?.preventDefault();
         if (!this.focusNext(ev)) {
           this.focusFirst(ev);
         }
       }
     },
-    goLeft(ev: KeyboardEvent): void {
+    goLeft(ev?: KeyboardEvent): void {
       if (this.inDragnDropMode) {
         return;
       }
       if (this.direction === 'leftright') {
-        ev.preventDefault();
+        ev?.preventDefault();
         if (!this.focusPrev(ev)) {
           this.focusLast(ev);
         }
       }
     },
-    goRight(ev: KeyboardEvent): void {
+    goRight(ev?: KeyboardEvent): void {
       if (this.inDragnDropMode) {
         return;
       }
       if (this.direction === 'leftright') {
-        ev.preventDefault();
+        ev?.preventDefault();
         if (!this.focusNext(ev)) {
           this.focusFirst(ev);
         }
@@ -165,17 +165,17 @@ export default defineComponent({
       const elem = document.getElementById(activeElem?.id);
       return this.focusElem(elem, ev);
     },
-    focusLast(ev: KeyboardEvent): boolean {
+    focusLast(ev?: KeyboardEvent): boolean {
       const activeElements = this.$el.querySelectorAll('[tabindex="0"][id]');
       const activeElem = activeElements[activeElements.length - 1];
       const elem = document.getElementById(activeElem?.id);
       return this.focusElem(elem, ev);
     },
-    focusNext(ev: KeyboardEvent): boolean {
+    focusNext(ev?: KeyboardEvent): boolean {
       const elem = this.findNext();
       return this.focusElem(elem, ev);
     },
-    focusPrev(ev: KeyboardEvent): boolean {
+    focusPrev(ev?: KeyboardEvent): boolean {
       const elem = this.findPrev();
       return this.focusElem(elem, ev);
     },

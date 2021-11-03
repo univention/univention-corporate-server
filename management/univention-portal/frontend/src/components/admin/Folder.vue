@@ -132,6 +132,9 @@ export default defineComponent({
     INTERNAL_NAME(): string {
       return _('Internal name');
     },
+    INTERNAL_NAME_SR_ONLY(): string {
+      return `${this.name} ${this.INTERNAL_NAME} ${_('view-only')}`;
+    },
     READ_ONLY(): string | null {
       return this.modelValue.dn ? `(${_('readonly')})` : null;
     },

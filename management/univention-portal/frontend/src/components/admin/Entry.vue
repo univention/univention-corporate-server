@@ -147,7 +147,7 @@ interface AdminEntryData extends ValidatableData {
   description: Record<string, string>,
   links: Array<LocaleAndValue>,
   allowedGroups: string[],
-  linkTarget: string,
+  linkTarget: 'useportaldefault' | 'samewindow' | 'newwindow' | 'embedded',
   anonymous: boolean,
 }
 
@@ -214,7 +214,7 @@ export default defineComponent({
       backgroundColor: null,
       links: [],
       allowedGroups: [],
-      linkTarget: 'default',
+      linkTarget: 'useportaldefault',
       anonymous: false,
       getErrors,
     };
@@ -290,7 +290,7 @@ export default defineComponent({
     this.description = { ...(this.modelValue.description || {}) };
     this.links.push(...(this.modelValue.links || []));
     this.allowedGroups.push(...(this.modelValue.allowedGroups || []));
-    this.linkTarget = this.modelValue.originalLinkTarget;
+    this.linkTarget = this.modelValue.originalLinkTarget || 'useportaldefault';
     this.anonymous = this.modelValue.anonymous;
   },
   methods: {

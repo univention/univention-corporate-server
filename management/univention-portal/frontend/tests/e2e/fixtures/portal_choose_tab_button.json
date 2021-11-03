@@ -389,7 +389,6 @@
      "dn": "cn=test-category,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
      "entries": [
        "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-       "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
        "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
        "cn=wiki3,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
        "cn=wiki4,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",

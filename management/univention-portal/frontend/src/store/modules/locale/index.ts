@@ -32,10 +32,12 @@ import { getCookie, setCookie } from '@/jsHelper/tools';
 import { PortalModule, RootState } from '@/store/root.models';
 import { Locale, ShortLocale, LocaleDefinition } from './locale.models';
 
+type LocaleLabels = Partial<Record<Locale, string>>;
 export interface LocaleState {
   locale: Locale;
   defaultLocale: Locale | null;
   availableLocales: Locale[];
+  localeLabels: LocaleLabels;
 }
 type LocaleActionContext = ActionContext<LocaleState, RootState>;
 
@@ -45,6 +47,7 @@ const locale: PortalModule<LocaleState> = {
     locale: 'en_US',
     defaultLocale: null,
     availableLocales: ['en_US'],
+    localeLabels: {},
   },
 
   mutations: {
@@ -57,12 +60,16 @@ const locale: PortalModule<LocaleState> = {
     AVAILABLE_LOCALES(state: LocaleState, payload: Locale[]): void {
       state.availableLocales = payload;
     },
+    LOCALE_LABELS(state: LocaleState, payload: LocaleLabels): void {
+      state.localeLabels = payload;
+    },
   },
 
   getters: {
     getLocale: (state: LocaleState) => state.locale,
     getDefaultLocale: (state: LocaleState) => state.defaultLocale,
     getAvailableLocales: (state: LocaleState) => state.availableLocales,
+    getLocaleLabels: (state: LocaleState) => state.localeLabels,
   },
 
   actions: {
@@ -101,8 +108,27 @@ const locale: PortalModule<LocaleState> = {
       return dispatch('setLocale', 'en_US');
     },
     setAvailableLocale({ dispatch, commit }: LocaleActionContext, payload: LocaleDefinition[]): Promise<Dispatch> {
-      const locales = payload.map((loc) => loc.id.replace('-', '_'));
+      const locales = payload
+        .map((loc) => loc.id.replace('-', '_'))
+        // sort locales alphabetically but put en_US at the front
+        .sort((a, b) => {
+          if (a === 'en_US') {
+            return -1;
+          }
+          if (b === 'en_US') {
+            return 1;
+          }
+          return a < b ? -1 : 1;
+        });
       commit('AVAILABLE_LOCALES', locales);
+
+      const localeLabels = payload.reduce((dict: LocaleLabels, loc) => {
+        const lang = loc.id.replace('-', '_');
+        dict[lang] = `${loc.label} (${lang})`;
+        return dict;
+      }, {});
+      commit('LOCALE_LABELS', localeLabels);
+
       const defaultLocale = payload.find((loc) => loc.default);
       if (defaultLocale) {
         commit('DEFAULT_LOCALE', defaultLocale.id.replace('-', '_'));

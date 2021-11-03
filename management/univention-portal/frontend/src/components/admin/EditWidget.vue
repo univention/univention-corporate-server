@@ -105,7 +105,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       activityLevel: 'activity/level',
-      locales: 'locale/getAvailableLocales',
     }),
     tabindex(): number {
       // Sets to tabindex -1 if modalLevel 2 is active

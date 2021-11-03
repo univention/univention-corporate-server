@@ -28,11 +28,13 @@
 -->
 <script>
 import { mapGetters } from 'vuex';
+import { DragType } from '@/store/modules/dragndrop';
 
 const draggableMixin = {
   computed: {
     ...mapGetters({
       inDragnDropMode: 'dragndrop/inDragnDropMode',
+      inKeyboardDragnDropMode: 'dragndrop/inKeyboardDragnDropMode',
       dragndropId: 'dragndrop/getId',
       editMode: 'portalData/editMode',
     }),
@@ -58,6 +60,12 @@ const draggableMixin = {
       }
       return this.dragndropId.layoutId === this.layoutId;
     },
+    showMoveButtonWhileDragging() {
+      return this.inKeyboardDragnDropMode ? this.isBeingDragged : true;
+    },
+    showEditButtonWhileDragging() {
+      return !this.inKeyboardDragnDropMode;
+    },
     canDragEnter() {
       if (this.forFolder !== undefined) {
         // TileAdd
@@ -78,7 +86,7 @@ const draggableMixin = {
       if (this.isBeingDragged) {
         this.$store.dispatch('portalData/saveLayout');
       } else {
-        this.dragstart();
+        this.dragstart(null, 'keyboard');
       }
     },
     dragKeyboardDirection(evt, direction) {
@@ -87,20 +95,33 @@ const draggableMixin = {
       }
       evt.preventDefault();
 
+      this.$store.dispatch('dragndrop/lastDir', direction);
       this.$store.dispatch('portalData/changeLayoutDirection', {
         fromId: this.layoutId,
         direction,
       });
-      // FIXME with scrollIntoView the page jumps to the bottom after
-      // portalData/saveLayout
-      evt.target.scrollIntoView({
-        behavior: 'auto',
-        block: 'center',
+      this.$nextTick(() => {
+        this.handleDragFocus(evt.target, direction);
       });
-      if (direction === 'left' || direction === 'up') {
-        this.$nextTick(() => {
-          evt.target.focus();
-        });
+    },
+    handleDragFocus(elem, direction) {
+      if (this.isBeingDragged) {
+        const rect = elem.getBoundingClientRect();
+        const offset = 200;
+        if (rect.top !== 0) {
+          if (direction === 'down' || direction === 'right') {
+            if (rect.top + offset > window.innerHeight) {
+              window.scrollBy(0, rect.top - window.innerHeight + offset);
+            }
+          }
+          if (direction === 'up' || direction === 'left') {
+            if (rect.top - offset < 0) {
+              window.scrollBy(0, rect.top - offset);
+            }
+          }
+        }
+        // @ts-ignore
+        elem.focus();
       }
     },
     handleTabWhileMoving() {
@@ -108,7 +129,7 @@ const draggableMixin = {
         this.$store.dispatch('portalData/saveLayout');
       }
     },
-    dragstart() {
+    dragstart(evt, dragType) {
       if (!this.isDraggable) {
         return;
       }
@@ -116,6 +137,7 @@ const draggableMixin = {
       this.$store.dispatch('dragndrop/startDragging', {
         layoutId: this.layoutId,
         draggedType: this.draggedType(),
+        dragType,
         saveOriginalLayout: true,
       });
     },

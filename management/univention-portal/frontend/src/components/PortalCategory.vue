@@ -40,7 +40,15 @@
       :class="{'portal-category__title-virtual': virtual }"
     >
       <icon-button
-        v-if="editMode && !virtual && !isTouchDevice"
+        v-if="editMode && !virtual && showEditButtonWhileDragging"
+        icon="edit-2"
+        class="portal-category__edit-button icon-button--admin"
+        :aria-label-prop="EDIT_CATEGORY"
+        @click="editCategory"
+      />
+      <icon-button
+        v-if="editMode && !virtual && !isTouchDevice && showMoveButtonWhileDragging"
+        :id="`${layoutId}-move-button`"
         icon="move"
         class="portal-category__edit-button icon-button--admin"
         :aria-label-prop="MOVE_CATEGORY"
@@ -49,13 +57,6 @@
         @keydown.up="dragKeyboardDirection($event, 'up')"
         @keydown.down="dragKeyboardDirection($event, 'down')"
         @keydown.tab="handleTabWhileMoving"
-      />
-      <icon-button
-        v-if="editMode && !virtual"
-        icon="edit-2"
-        class="portal-category__edit-button icon-button--admin"
-        :aria-label-prop="EDIT_CATEGORY"
-        @click="editCategory"
       />
       <span
         :draggable="editMode && !virtual"
@@ -244,8 +245,11 @@ export default defineComponent({
     margin-bottom: 0
 
   &--dragging
-    .portal-tile__box
+    .portal-tile__box,
+    .tile-add__button
       transform: rotate(-10deg)
+    .portal-tile--minified .portal-tile__box
+      transform: none
 
   &__tiles
     display: grid
