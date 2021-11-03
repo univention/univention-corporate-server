@@ -6,7 +6,7 @@ src: bind9
 fix: 1:9.10.3.dfsg.P4-12.3+deb9u10A~4.4.8.202111030617
 desc: |
  This update addresses the following issues:
- * processing of certain records when "deny-answer-aliases" is in use may
+ * Processing of certain records when `deny-answer-aliases` is in use may
    trigger an assert leading to a denial of service (CVE-2018-5740)
  * Lame cache can be abused to severely degrade resolver performance
    (CVE-2021-25219)
