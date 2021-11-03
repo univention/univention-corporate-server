@@ -29,3 +29,5 @@ desc: |
    is made.
  * Improved performance during drag and drop.
 bug: [53565]
+erratum: 139
+announced: 2021-11-03
