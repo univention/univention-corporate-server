@@ -9,3 +9,5 @@ desc: |
  * Time-stamps have been added to the log output of the server password change
    call.
 bug: [53182]
+erratum: 147
+announced: 2021-11-03
