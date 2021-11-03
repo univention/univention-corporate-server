@@ -6,6 +6,6 @@ src: univention-server
 fix: 14.0.0-17A~4.4.0.202110081528
 desc: |
  This update addresses the following issue:
- * timestamp was added to the logger output of
-   the password change. 
+ * Time-stamps have been added to the log output of the server password change
+   call.
 bug: [53182]
