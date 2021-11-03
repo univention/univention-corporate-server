@@ -13,3 +13,5 @@ bug: [54006]
 cve:
 - CVE-2017-9216
 - CVE-2020-12268
+erratum: 1083
+announced: 2021-11-03
