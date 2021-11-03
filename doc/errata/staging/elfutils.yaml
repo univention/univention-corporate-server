@@ -10,13 +10,13 @@ desc: |
    via crafted file (CVE-2018-16062)
  * Double-free due to double decompression of sections in crafted ELF causes
    crash (CVE-2018-16402)
- * invalid memory address dereference was discovered in
+ * Invalid memory address dereference was discovered in
    dwfl_segment_report_module.c in libdwfl (CVE-2018-18310)
  * eu-size cannot handle recursive ar files (CVE-2018-18520)
  * Divide-by-zero in arlib_add_symbols function in arlib.c (CVE-2018-18521)
- * segmentation fault in elf64_xlatetom in libelf/elf32_xlatetom.c
+ * Segmentation fault in elf64_xlatetom in libelf/elf32_xlatetom.c
    (CVE-2019-7150)
- * heap-based buffer over-read in function elf32_xlatetom in elf32_xlatetom.c
+ * Heap-based buffer over-read in function elf32_xlatetom in elf32_xlatetom.c
    (CVE-2019-7665)
 bug: [54008]
 cve:
