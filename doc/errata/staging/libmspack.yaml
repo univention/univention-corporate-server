@@ -6,19 +6,20 @@ src: libmspack
 fix: 0.5-1.A~4.4.8.202111011209
 desc: |
  This update addresses the following issues:
- * heap-based buffer overflow in mspack/lzxd.c (CVE-2017-6419)
- * Stack-based buffer over-read in cabd_read_string function (CVE-2017-11423)
- * off-by-one error in the CHM PMGI/PMGL chunk number validity checks
+ * Heap-based buffer overflow in mspack/lzxd.c (CVE-2017-6419)
+ * Stack-based buffer over-read in function `cabd_read_string`
+   (CVE-2017-11423)
+ * Off-by-one error in the CHM PMGI/PMGL chunk number validity checks
    (CVE-2018-14679)
- * off-by-one error in the CHM chunk number validity checks (CVE-2018-14680)
- * Out-of-bounds Write in kwajd_read_headers in mspack/kwajd.c
+ * Off-by-one error in the CHM chunk number validity checks (CVE-2018-14680)
+ * Out-of-bounds Write in `kwajd_read_headers()` in mspack/kwajd.c
    (CVE-2018-14681)
- * off-by-one error in the TOLOWER() macro for CHM decompression
+ * Off-by-one error in the macro `TOLOWER()` for CHM decompression
    (CVE-2018-14682)
  * Out-of-bounds write in mspack/cab.h (CVE-2018-18584)
- * chmd_read_headers() fails to reject filenames containing NULL bytes
+ * `chmd_read_headers()` fails to reject filenames containing NULL bytes
    (CVE-2018-18585)
- * buffer overflow in function chmd_read_headers() (CVE-2019-1010305)
+ * Buffer overflow in function `chmd_read_headers()` (CVE-2019-1010305)
 bug: [54004]
 cve:
 - CVE-2017-6419
