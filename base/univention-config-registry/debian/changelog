@@ -1,6 +1,12 @@
+univention-config-registry (15.0.7-12) unstable; urgency=medium
+
+  * Bug #53811: UCR leaks open files
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 03 Nov 2021 05:09:24 +0100
+
 univention-config-registry (15.0.7-11) unstable; urgency=medium
 
-  * Bug 50010 - ucr commit prints a warning if there is no template
+  * Bug #50010: - ucr commit prints a warning if there is no template
     registered
 
  -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 27 Oct 2021 07:37:43 +0200

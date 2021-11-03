@@ -787,7 +787,8 @@ class ConfigHandlers:
 		from_path = os.path.join(FILE_DIR, name)
 		handler = ConfigHandlerFile(from_path, name)
 		if os.path.exists(from_path):
-			handler.variables = grep_variables(open(from_path, 'r', encoding='utf-8').read())
+			with open(from_path, 'r', encoding='utf-8') as fd:
+				handler.variables = grep_variables(fd.read())
 
 		self._parse_common_file_handler(handler, entry)
 
@@ -905,10 +906,11 @@ class ConfigHandlers:
 		for info in directory_files(INFO_DIR):
 			if not info.endswith('.info'):
 				continue
-			for section in parseRfc822(open(info, 'r', encoding='utf-8').read()):
-				handler = self.get_handler(section)
-				if handler:
-					handlers.add(handler)
+			with open(info, 'r', encoding='utf-8') as fd:
+				for section in parseRfc822(fd.read()):
+					handler = self.get_handler(section)
+					if handler:
+						handlers.add(handler)
 		for handler in handlers:
 			for variable in handler.variables:
 				v2h = self._handlers.setdefault(variable, set())
@@ -979,10 +981,11 @@ class ConfigHandlers:
 		"""
 		handlers = set()  # type: Set[ConfigHandler]
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
-		for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
-			handler = self.get_handler(section)
-			if handler:
-				handlers.add(handler)
+		with open(fname, 'r', encoding='utf-8') as fd:
+			for section in parseRfc822(fd.read()):
+				handler = self.get_handler(section)
+				if handler:
+					handlers.add(handler)
 
 		for handler in handlers:
 			if isinstance(handler, ConfigHandlerDiverting):
@@ -1017,35 +1020,36 @@ class ConfigHandlers:
 		obsolete_handlers = set()  # type: Set[ConfigHandler]
 		mf_handlers = set()  # type: Set[ConfigHandler] # Remaining Multifile handlers
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
-		for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
-			try:
-				typ = section['Type'][0]
-			except LookupError:
-				continue
-			if typ == 'file':
-				handler = self.get_handler(section)
-			elif typ == 'subfile':
-				mfile = section['Multifile'][0]
-				sfile = section['Subfile'][0]
+		with open(fname, 'r', encoding='utf-8') as fd:
+			for section in parseRfc822(fd.read()):
 				try:
+					typ = section['Type'][0]
+				except LookupError:
+					continue
+				if typ == 'file':
+					handler = self.get_handler(section)
+				elif typ == 'subfile':
+					mfile = section['Multifile'][0]
+					sfile = section['Subfile'][0]
+					try:
+						handler = self._multifiles[mfile]
+					except KeyError:
+						continue  # skip SubFile w/o MultiFile
+					name = os.path.join(FILE_DIR, sfile)
+					handler.remove_subfile(name)
+					mf_handlers.add(handler)
+				elif typ == 'multifile':
+					mfile = section['Multifile'][0]
 					handler = self._multifiles[mfile]
-				except KeyError:
-					continue  # skip SubFile w/o MultiFile
-				name = os.path.join(FILE_DIR, sfile)
-				handler.remove_subfile(name)
-				mf_handlers.add(handler)
-			elif typ == 'multifile':
-				mfile = section['Multifile'][0]
-				handler = self._multifiles[mfile]
-				handler.def_count -= 1
-				mf_handlers.add(handler)
-			else:
-				continue
-			if not handler:  # Bug #17913
-				print(("Skipping internal error: no handler for %r in %s" % (section, package)), file=sys.stderr)
-				continue
-			if isinstance(handler, ConfigHandlerDiverting) and handler.uninstall_divert():
-				obsolete_handlers.add(handler)
+					handler.def_count -= 1
+					mf_handlers.add(handler)
+				else:
+					continue
+				if not handler:  # Bug #17913
+					print(("Skipping internal error: no handler for %r in %s" % (section, package)), file=sys.stderr)
+					continue
+				if isinstance(handler, ConfigHandlerDiverting) and handler.uninstall_divert():
+					obsolete_handlers.add(handler)
 
 		for handler in mf_handlers - obsolete_handlers:
 			self.call_handler(ucr, handler)
@@ -1103,25 +1107,26 @@ class ConfigHandlers:
 		for fname in directory_files(INFO_DIR):
 			if not fname.endswith('.info'):
 				continue
-			for section in parseRfc822(open(fname, 'r', encoding='utf-8').read()):
-				if not section.get('Type'):
-					continue
-				handler = None
-				if _filelist:
-					files = section.get('File') or section.get('Multifile') or ()
-					for filename in files:
-						if not os.path.isabs(filename):
-							filename = '/%s' % filename
-						if filename in _filelist:
-							handler = self.get_handler(section)
-							break
-					else:
+			with open(fname, 'r', encoding='utf-8') as fd:
+				for section in parseRfc822(fd.read()):
+					if not section.get('Type'):
 						continue
-				else:
-					handler = self.get_handler(section)
+					handler = None
+					if _filelist:
+						files = section.get('File') or section.get('Multifile') or ()
+						for filename in files:
+							if not os.path.isabs(filename):
+								filename = '/%s' % filename
+							if filename in _filelist:
+								handler = self.get_handler(section)
+								break
+						else:
+							continue
+					else:
+						handler = self.get_handler(section)
 
-				if handler:
-					pending_handlers.add(handler)
+					if handler:
+						pending_handlers.add(handler)
 
 		# print missing files
 		for fname in set(_filelist).difference(set(h.to_file for h in pending_handlers)):
