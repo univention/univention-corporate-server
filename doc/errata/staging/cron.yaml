@@ -6,13 +6,13 @@ src: cron
 fix: 3.0pl1-128+deb9u2
 desc: |
  This update addresses the following issues:
- * In the cron package through 3.0pl1-128 on Debian, and through
-   3.0pl1-128ubuntu2 on Ubuntu, the postinst maintainer script allows for
+ * In the cron package the postinst maintainer script allows for
    group-crontab-to-root privilege escalation via symlink attacks against
-   unsafe usage of the chown and chmod programs. (CVE-2017-9525)
- * calloc return value resulting in remote dos (CVE-2019-9704)
- * dos(memory consumption) via a large crontab file (CVE-2019-9705)
- * use-after-free resulting in dos (CVE-2019-9706)
+   unsafe usage of the `chown` and `chmod` programs. (CVE-2017-9525)
+ * `calloc()` return value resulting in remote dos (CVE-2019-9704)
+ * Denial-of-service memory consumption via a large crontab file
+   (CVE-2019-9705)
+ * Use-after-free resulting in dos (CVE-2019-9706)
 bug: [54007]
 cve:
 - CVE-2017-9525
