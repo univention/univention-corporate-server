@@ -7,7 +7,7 @@ fix: 2.0.5+dfsg1-2+deb9u2
 desc: |
  This update addresses the following issues:
  * Integer overflow while creating a new RGB surface (CVE-2017-2888)
- * heap-based buffer overflow in SDL_FillRect in video/SDL_surface.c
+ * Heap-based buffer overflow in `SDL_FillRect` in video/SDL_surface.c
    (CVE-2019-7637)
 bug: [54005]
 cve:
