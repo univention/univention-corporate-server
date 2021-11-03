@@ -6,6 +6,6 @@ src: univention-policy
 fix: 11.0.1-2A~5.0.0.202110191744
 desc: |
  This update addresses the following issue:
- * It's now possible to select the LDAP server in the `policy_result`
-   python library.
+ * It's now possible to select the LDAP server in the `policy_result` Python
+   library.
 bug: [53943]
