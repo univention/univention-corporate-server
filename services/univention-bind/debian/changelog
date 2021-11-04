@@ -1,3 +1,9 @@
+univention-bind (13.0.1-12) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 08:23:19 +0100
+
 univention-bind (13.0.1-11) unstable; urgency=medium
 
   * Bug #50501: Correct ucv description.

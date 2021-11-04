@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-14) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 08:33:01 +0100
+
 univention-mail-dovecot (5.0.1-13) unstable; urgency=medium
 
   * Bug #51147: make UCR templates compatible to python3

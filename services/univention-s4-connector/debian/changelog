@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-89) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 07:40:41 +0100
+
 univention-s4-connector (13.0.2-88) unstable; urgency=medium
 
   * Bug #50766: Synchronize gidNumber for groups. Set gidNumber to readmode

@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-36) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 07:37:03 +0100
+
 univention-samba4 (8.0.0-35) unstable; urgency=medium
 
   * Bug #51835: fixed ucr description

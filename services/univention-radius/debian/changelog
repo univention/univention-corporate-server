@@ -1,3 +1,9 @@
+univention-radius (6.0.2-27) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 07:46:47 +0100
+
 univention-radius (6.0.2-26) unstable; urgency=medium
 
   * Bug #52427: As preparation to the UCS-5 release the UDM extensions,

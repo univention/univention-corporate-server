@@ -1,3 +1,10 @@
+univention-lib (8.0.1-44) unstable; urgency=medium
+
+  * Bug #54019: Add lib function echowithtimestamp to base.sh and
+    add timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 08:26:53 +0100
+
 univention-lib (8.0.1-43) unstable; urgency=medium
 
   * Bug #53362: UMC translation file registration 
