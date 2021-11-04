@@ -1,6 +1,13 @@
+univention-config-registry (15.0.7-13) unstable; urgency=medium
+
+  * Bug #53811: ConfigHandlers class implement method for parsing RFC822
+    files so to prevent leaking open files in more uniform manner
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 03 Nov 2021 13:31:26 +0100
+
 univention-config-registry (15.0.7-12) unstable; urgency=medium
 
-  * Bug #53811: UCR leaks open files
+  * Bug #53811: UCR stop leaking open files
 
  -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 03 Nov 2021 05:09:24 +0100
 
