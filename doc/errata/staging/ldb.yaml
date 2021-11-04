@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: ldb
+fix: 2:2.2.2-1A~5.0.0.202111040911 ## test build of Samba 4.13.13
+desc: |
+ This update addresses the following issues:
+ * Update ldb for samba 4.13.13
+bug: [54013]
