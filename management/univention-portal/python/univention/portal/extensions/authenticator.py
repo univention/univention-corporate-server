@@ -169,7 +169,7 @@ class OpenIDConnectAuthenticator(Authenticator, OAuth2Mixin):
 			raise HTTPError(404, 'OP not available')
 		self.cookie_name_token = settings['oidc_cookie_token']
 		self.cookie_name_user = settings['oidc_cookie_user']
-		self.cookie_name_refresh_token = settings['oidc_cookie_refresh_token']
+		# self.cookie_name_refresh_token = settings['oidc_cookie_refresh_token']
 		# oidc_server = settings['oidc_server']
 		# oidc_client_realm = settings['oidc_client_realm']
 		self.oidc_client_id = settings['oidc_client_id']
@@ -217,7 +217,7 @@ class OpenIDConnectAuthenticator(Authenticator, OAuth2Mixin):
 			if not access_token:
 				raise web.HTTPError(400, "Could no receive access token")
 
-			refresh_token = access['refresh_token']
+			# refresh_token = access['refresh_token']
 
 			user_info_req = HTTPRequest(
 				self._OAUTH_USERINFO_URL,
@@ -232,7 +232,7 @@ class OpenIDConnectAuthenticator(Authenticator, OAuth2Mixin):
 			user_info_res_json = json.loads(user_info_res.body.decode('utf-8'))
 			request.set_secure_cookie(self.cookie_name_user, user_info_res_json['preferred_username'])
 			request.set_secure_cookie(self.cookie_name_token, access_token)
-			request.set_secure_cookie(self.cookie_name_refresh_token, refresh_token)
+			# request.set_secure_cookie(self.cookie_name_refresh_token, refresh_token)
 			get_logger("user").info('OIDC-Login: User-Info: %r' % (user_info_res_json,))
 			self.sessions[access_token.encode('ASCII')] = user_info_res_json
 			# currently not required, all infos are in the first userinfo request
@@ -265,34 +265,14 @@ class OpenIDConnectAuthenticator(Authenticator, OAuth2Mixin):
 		if not access_token:
 			raise web.HTTPError(400, "Not logged in")
 		access_token = access_token.decode('UTF-8')
-		refresh_token = request.get_secure_cookie(self.cookie_name_refresh_token)
-		if refresh_token:
-			refresh_token = refresh_token.decode("UTF-8")
 
-		body = urlencode({
-			"client_id": self.oidc_client_id,
-			"client_secret": self.oidc_secret,
-			"refresh_token": refresh_token,
-		})
-
-		logout_req = HTTPRequest(
-			self._OAUTH_LOGOUT_URL,
-			method="POST",
-			headers={
-				"Authorization": "Bearer {}".format(access_token),
-			},
-			body=body,
-		)
-
-		http_client = self.get_auth_http_client()
-		logout_res = await http_client.fetch(logout_req)
-		assert 200 <= logout_res.code < 300, "Logout failed"  # actually 204
 		self.sessions.pop(access_token.encode('ASCII'), None)
 		request.clear_cookie('oidc-op')
 		request.clear_cookie(self.cookie_name_user)
 		request.clear_cookie(self.cookie_name_token)
-		request.clear_cookie(self.cookie_name_refresh_token)
-		request.redirect(request.reverse_abs_url('index'))
+		# request.clear_cookie(self.cookie_name_refresh_token)
+		logout_url = '%s?%s' % (self._OAUTH_LOGOUT_URL, urlencode({'redirect_uri': request.reverse_abs_url('index')}))
+		request.redirect(logout_url)
 
 	async def get_user(self, request):
 		self.prepare(request)
