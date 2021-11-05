@@ -14,7 +14,7 @@ Pre-Depends:
 Depends:
  isc-dhcp-server-ldap,
  python-univention-lib (>= 1.0.25-1),
- shell-univention-lib (>= 1.0.3-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-base-files,
  univention-config (>= 7),
  univention-directory-listener,

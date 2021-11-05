@@ -21,7 +21,7 @@ Depends:
  libpam-univentionmailcyrus,
  python-univention,
  python-univention-lib (>= 3.0.4-1),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 8.0.1-44),
  sieve-connect (>= 0.87),
  univention-base-files,
  univention-config (>= 8.0.2),

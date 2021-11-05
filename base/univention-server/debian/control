@@ -11,7 +11,7 @@ Package: univention-server-master
 Architecture: all
 Pre-Depends:
  python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-ssl,
 Recommends:
  openssh-server,
@@ -56,7 +56,7 @@ Pre-Depends:
 Depends:
  nscd,
  python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-directory-manager-rest,
  univention-directory-notifier,
  univention-directory-replication,
@@ -91,7 +91,7 @@ Recommends:
 Depends:
  nscd,
  python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-directory-replication,
  univention-heimdal-kdc,
  univention-ldap-acl-slave,
@@ -116,7 +116,7 @@ Recommends:
  univention-nagios-client,
 Depends:
  python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-heimdal-member,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
@@ -182,7 +182,7 @@ Package: univention-role-common
 Architecture: all
 Depends:
  python-univention-lib (>= 1.0.25-1),
- shell-univention-lib (>= 1.0.25-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-admin-diary-client,
  univention-appcenter,
  univention-archive-key,
@@ -220,7 +220,7 @@ Package: univention-container-role-common
 Architecture: all
 Depends:
  python-univention-lib (>= 1.0.25-1),
- shell-univention-lib (>= 1.0.25-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-admin-diary-client,
  univention-appcenter,
  univention-archive-key,

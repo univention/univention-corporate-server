@@ -23,7 +23,7 @@ Depends:
  python-univention-lib (>= 1.0.45),
  samba (>= 2:4.7.3+dfsg-1A~4.3.0.201712181832),
  samba-vfs-modules,
- shell-univention-lib (>= 6.0.9-8),
+ shell-univention-lib (>= 8.0.1-44),
  univention-config (>= 8.0.2-1),
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-join (>= 10.0.0-12),

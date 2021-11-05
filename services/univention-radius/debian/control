@@ -19,7 +19,7 @@ Depends:
  freeradius-ldap,
  freeradius-utils,
  python-univention-radius,
- shell-univention-lib (>= 2.0.17-1),
+ shell-univention-lib (>= 8.0.1-44),
  univention-config,
  univention-directory-listener (>= 13.0.0-2),
  univention-join (>= 5.0.20-1),

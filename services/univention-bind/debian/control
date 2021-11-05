@@ -11,7 +11,7 @@ Package: univention-bind
 Architecture: all
 Depends:
  bind9 (>= 1:9.8.0.P4),
- shell-univention-lib (>= 1.0.23),
+ shell-univention-lib (>= 8.0.1-44),
  univention-base-files,
  univention-config (>= 7.0.25),
  univention-directory-manager-tools (>> 7.0.147),

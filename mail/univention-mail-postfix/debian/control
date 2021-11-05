@@ -17,7 +17,7 @@ Depends:
  python-univention-directory-manager,
  python-univention-lib (>= 3.0.4-1),
  sasl2-bin,
- shell-univention-lib (>> 1.0.16),
+ shell-univention-lib (>> 8.0.1-44),
  univention-base-files,
  univention-config (>= 7.0.31-1),
  ${misc:Depends},
