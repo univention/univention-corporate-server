@@ -37,6 +37,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
+import random
 import time
 import locale
 import signal
@@ -44,6 +45,7 @@ from functools import partial
 import argparse
 import traceback
 import logging
+from multiprocessing import Array
 
 import tornado.log
 import tornado.ioloop
@@ -67,6 +69,9 @@ class Server(object):
 	def run(self, args):
 		# locale must be set before importing UDM!
 		log_init('/dev/stdout', args.debug)
+		CORE.error('**** [{!r}] Server.run() main process ****'.format(os.getpid()))
+		arr = Array('i', [0] * args.cpus)
+		CORE.error('**** [{!r}] Created array: {!r}'.format(os.getpid(), arr[:]))
 		language = str(Locale(args.language))
 		locale.setlocale(locale.LC_MESSAGES, language)
 		os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
@@ -86,6 +91,17 @@ class Server(object):
 		if args.port:
 			server.bind(args.port)
 		server.start(args.cpus)
+
+		for _ in range(5):
+			index = random.randint(0, args.cpus - 1)
+			val = random.randint(0, 9)
+			sleep = random.uniform(0.0, 0.3)
+			CORE.error('**** [{!r}] found {!r}, writing {!r} to position {!r} and sleeping {:0.2f}s...'.format(
+				os.getpid(), arr[:], val, index, sleep
+			))
+			arr[index] = val
+			time.sleep(sleep)
+		CORE.error('**** [{!r}] done. Result: arr={!r}'.format(os.getpid(), arr[:]))
 
 		if args.unix_socket:
 			socket = bind_unix_socket(args.unix_socket)
