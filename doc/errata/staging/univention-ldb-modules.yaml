@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-ldb-modules
+fix: 8.0.0-5A~5.0.0.202111051239
+desc: |
+ This update addresses the following issues:
+ * Rebuilt for ldb update to version 2.2.2
+bug: [54013]
+cve:
+ - CVE-2020-17049
