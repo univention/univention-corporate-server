@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Update Samba to 4.13.13
 bug: [54013]
+cve:
+ - CVE-2020-17049
