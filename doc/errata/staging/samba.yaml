@@ -3,10 +3,10 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: samba
-fix: 2:4.13.13-1A~5.0.0.202111041012 ## test build of Samba 4.13.13
+fix: 2:4.13.13-1A~5.0.0.202111061336
 desc: |
  This update addresses the following issues:
- * Update Samba to 4.13.13
+ * Update Samba to 4.13.14 (effectively)
 bug: [54013]
 cve:
  - CVE-2020-17049
