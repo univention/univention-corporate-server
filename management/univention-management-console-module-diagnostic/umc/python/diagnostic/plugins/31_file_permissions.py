@@ -159,9 +159,6 @@ def file_and_permission_checks():
 		cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
 		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0o755, False),
 		cf_type('/etc/freeradius/ssl', 'root', 'freerad', 0o2755, False),
-		cf_type('/dev/shm/sm_univention-directory-manager-rest', 'root', 'root', 0o100600, False),
-		cf_type('/dev/shm/sm_univention-directory-manager-rest-server', 'root', 'root', 0o100600, False),
-		cf_type('/dev/shm/sm_univention-directory-manager-rest-gateway', 'root', 'root', 0o100600, False),
 	]
 
 	iglob_paths = [

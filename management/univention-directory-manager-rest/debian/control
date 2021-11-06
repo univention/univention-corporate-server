@@ -59,7 +59,6 @@ Depends:
  python3-pycurl,
  python3-setproctitle,
  python3-six,
- python3-shared-memory-dict,
  python3-tornado,
  python3-univention-directory-manager (>= 14.0.13-14),
  python3-univention-directory-reports,
@@ -70,18 +69,6 @@ Depends:
  ${python3:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python3-shared-memory-dict
-Architecture: all
-Depends:
- ${misc:Depends},
- ${python3:Depends},
-Description: A backport of mulitprocessing.shared_memory and SharedMemoryDict
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

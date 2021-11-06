@@ -27,31 +27,3 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-from shared_memory_dict.nested_json_serializer import NestedSharedMemoryDict
-
-
-class Manager(object):
-
-	def __init__(self, parent='univention-directory-manager-rest', size=5 * 1024 * 1024):
-		self.parent = parent
-		self.size = size
-		self.shared_memory = None
-
-	list = list
-
-	def dict(self, name):
-		if self.shared_memory is None:
-			self.shared_memory = NestedSharedMemoryDict(self.parent, self.size)
-		self.shared_memory.setdefault(name, {})  # don't return directly!
-		return self.shared_memory[name]
-
-	def shutdown(self):
-		if self.shared_memory is None:
-			return
-		try:
-			self.shared_memory.shm.close()
-			self.shared_memory.shm.unlink()
-		except (EnvironmentError, RuntimeError):
-			pass
-		self.shared_memory = None
