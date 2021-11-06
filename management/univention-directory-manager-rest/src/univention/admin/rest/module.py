@@ -74,7 +74,6 @@ import xml.etree.cElementTree as ET
 import xml.dom.minidom
 from genshi import XML
 from genshi.output import HTMLSerializer
-from shared_memory_dict.nested_json_serializer import JsonEncoder
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
