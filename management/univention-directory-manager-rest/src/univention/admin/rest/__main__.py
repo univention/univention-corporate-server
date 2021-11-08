@@ -37,7 +37,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import atexit
-import ctypes
 import os
 import time
 import locale
@@ -47,7 +46,7 @@ import argparse
 import random
 import traceback
 import logging
-from multiprocessing import Array, current_process
+from multiprocessing import current_process
 from multiprocessing.managers import BaseManager, DictProxy, SyncManager
 from multiprocessing.util import _exit_function
 
@@ -97,11 +96,10 @@ class Server(object):
 
 		main_pid = os.getpid()
 		CORE.error("**** [{!r}] Server.run() main process ****".format(main_pid))
-		access_manager_address = Array(ctypes.c_char, MAX_SOCKET_PATH_LENGTH)
 		CORE.error("**** [{!r}] I am starting the manager...".format(main_pid))
 		manager_data = SyncManager()
 		manager_data.start()
-		CORE.error("**** [{!r}] Started the data manager at address {!r}.".format(main_pid, access_manager_address.value))
+		CORE.error("**** [{!r}] Started the data manager at address {!r}.".format(main_pid, manager_data.address))
 		the_dict_proxy_main_proc = manager_data.dict()
 		the_dict_proxy_main_proc["creator"] = main_pid
 		CORE.error("**** [{!r}] the_dict_proxy_main_proc: {}".format(main_pid, sorted_dict_s(the_dict_proxy_main_proc)))
@@ -110,10 +108,8 @@ class Server(object):
 		DictAccessManager.register(str("get_the_dict"), callable=lambda: the_dict_proxy_main_proc, proxytype=DictProxy)
 		manager_access = DictAccessManager()
 		manager_access.start()
-		if len(manager_access.address) > MAX_SOCKET_PATH_LENGTH:
-			raise ValueError("Path to socket is longer than {}: {!r}".format(MAX_SOCKET_PATH_LENGTH, manager_access.address))
-		access_manager_address.value = manager_access.address
-		CORE.error("**** [{!r}] Started the access manager at address {!r}.".format(main_pid, access_manager_address.value))
+		access_manager_address = manager_access.address
+		CORE.error("**** [{!r}] Started the access manager at address {!r}.".format(main_pid, access_manager_address))
 
 		server = HTTPServer(application)
 		if args.port:
@@ -133,7 +129,7 @@ class Server(object):
 		class DictManager2(SyncManager): pass
 		DictManager2.register(str("get_the_dict"), proxytype=DictProxy)
 		# the authkey is the same for all processes, as they were forked()
-		manager2 = DictManager2(address=access_manager_address.value, authkey=current_process().authkey)
+		manager2 = DictManager2(address=access_manager_address, authkey=current_process().authkey)
 		manager2.connect()
 		CORE.error("**** [{!r}] Connected to manager.".format(my_pid))
 		the_dict_proxy = manager2.get_the_dict()
