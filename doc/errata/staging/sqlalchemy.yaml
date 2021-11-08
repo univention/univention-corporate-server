@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: sqlalchemy
+fix: 1.0.15+ds1-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * SQL Injection when the order_by parameter can be controlled (CVE-2019-7164)
+ * SQL Injection when the group_by parameter can be controlled (CVE-2019-7548)
+bug: [54035]
+cve:
+- CVE-2019-7164
+- CVE-2019-7548
