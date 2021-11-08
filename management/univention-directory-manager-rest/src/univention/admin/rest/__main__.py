@@ -126,10 +126,8 @@ class Server(object):
 				CORE.error("**** [{!r}] Removing MP.utils._exit_function() from atexit handlers.".format(my_pid))
 				atexit._exithandlers.remove((func, targs, kargs))
 
-		class DictManager2(SyncManager): pass
-		DictManager2.register(str("get_the_dict"), proxytype=DictProxy)
 		# the authkey is the same for all processes, as they were forked()
-		manager2 = DictManager2(address=access_manager_address, authkey=current_process().authkey)
+		manager2 = DictAccessManager(address=access_manager_address, authkey=current_process().authkey)
 		manager2.connect()
 		CORE.error("**** [{!r}] Connected to manager.".format(my_pid))
 		the_dict_proxy = manager2.get_the_dict()
