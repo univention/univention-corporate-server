@@ -36,6 +36,10 @@ die () {
 	exit 1
 }
 
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
 FTP_DOM='software-univention.de' FTP_SCHEME='https'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon|xen) ;;
@@ -54,7 +58,7 @@ basic_setup_allow_uss () {
 		echo "Assuming Amazon Cloud"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
-			/usr/sbin/grub-mkdevicemap
+			grub-mkdevicemap
 			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
 		fi
 		;;
@@ -99,7 +103,8 @@ stop_uss_and_restore_profile () {
 }
 
 rotate_logfiles () {
-	test -x /usr/sbin/logrotate && logrotate -f /etc/logrotate.conf
+	have logrotate &&
+		logrotate -f /etc/logrotate.conf
 }
 
 jenkins_updates () {
@@ -109,9 +114,9 @@ jenkins_updates () {
 	# Update UCS@school instances always to latest patchlevel version
 	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,^UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
 
-	test -n "${TARGET_VERSION:-}" && target="$TARGET_VERSION"
-	test -n "${RELEASE_UPDATE:-}" && release_update="$RELEASE_UPDATE"
-	test -n "${ERRATA_UPDATE:-}" && errata_update="$ERRATA_UPDATE"
+	[ -n "${TARGET_VERSION:-}" ] && target="$TARGET_VERSION"
+	[ -n "${RELEASE_UPDATE:-}" ] && release_update="$RELEASE_UPDATE"
+	[ -n "${ERRATA_UPDATE:-}" ] && errata_update="$ERRATA_UPDATE"
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
@@ -324,9 +329,8 @@ wait_for_setup_process () {
 	local setup_file="/var/www/ucs_setup_process_status.json"
 	sleep 10
 	for i in $(seq 1 1200); do
-		if [ ! -e "$setup_file" ]; then
+		[ -e "$setup_file" ] ||
 			return 0
-		fi
 		sleep 3
 	done
 	echo "setup did not finish after 3600s, timeout"
@@ -335,7 +339,7 @@ wait_for_setup_process () {
 
 switch_to_test_app_center () {
 	local app rv=0
-	[ -x "$(which univention-app)" ] || return 1
+	have univention-app || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
 	if [ -e /var/cache/appcenter-installed.txt ]; then
@@ -499,10 +503,10 @@ create_DONT_START_UCS_TEST () {
 
 prevent_ucstest_on_fail () {
 	local rv=0
-	"$@" || rv=$?
-	if [ ! "$rv" = "0" ] ; then
+	"$@" || {
+		rv=$?
 		create_DONT_START_UCS_TEST "FAILED: prevent_ucstest_on_fail $*"
-	fi
+	}
 	return $rv
 }
 
@@ -842,8 +846,7 @@ set_windows_localadmin_password_for_ucs_test () {
 		tests/windows/localadmin/pwd="$password"
 }
 
-set_userpassword_for_administrator ()
-{
+set_userpassword_for_administrator () {
 	local password="$1"
 	local user="${2:-Administrator}"
 	local lb
@@ -909,7 +912,7 @@ umc_apps () {
 install_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
 	shift 2 || return $?
-	test -e /var/cache/appcenter-installed.txt && rm /var/cache/appcenter-installed.txt
+	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
 		umc_apps -U "$username" -p "$password" -a $app || rv=$?
 		echo "$app" >>/var/cache/appcenter-installed.txt
@@ -1060,8 +1063,7 @@ dump_systemd_journal () {
 	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
 }
 
-add_hostname_to_juint_results ()
-{
+add_hostname_to_juint_results () {
 	local HOSTNAME
 	: "${HOSTNAME:=$(hostname)}"
 	sed -i "s|<testsuite\>[^<>]*\<name=\"|&${HOSTNAME}.|g;s|<testcase\>[^<>]*\<classname=\"|&${HOSTNAME}.|g" test-reports/*/*.xml
@@ -1082,26 +1084,22 @@ add_branch_repository () {
 	fi
 }
 
-restart_services_bug_47762 ()
-{
+restart_services_bug_47762 () {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47762
 	# The services needs to be restart otherwise they wouldn't bind
 	# to the new IP address
-	if [ -x /etc/init.d/samba ]; then
+	[ -x /etc/init.d/samba ] &&  # FYI: Bug#44237
 		/etc/init.d/samba restart
-	fi
 	sleep 15
 }
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
-restart_umc_bug_48157 ()
-{
+restart_umc_bug_48157 () {
 	sleep 30
 	systemctl restart univention-management-console-server || true
 }
 
-run_workarounds_before_starting_the_tests ()
-{
+run_workarounds_before_starting_the_tests () {
 	restart_services_bug_47762
 	#restart_umc_bug_48157 # Bug is verified for now. Code can be removed if bug is closed.
 }
@@ -1152,8 +1150,8 @@ basic_setup_ucs_role () {
 }
 
 ucs-winrm () {
-    local image="docker.software-univention.de/ucs-winrm"
-    docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
+	local image="docker.software-univention.de/ucs-winrm"
+	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
 	return $?
 }
 
@@ -1189,7 +1187,7 @@ basic_setup_ucs_joined () {
 			ucr set nameserver1="$masterip"
 		fi
 		systemctl restart univention-directory-listener || rv=1
-		/usr/sbin/univention-register-network-address || rv=1
+		univention-register-network-address || rv=1
 		service nscd restart || rv=1
 	fi
 
