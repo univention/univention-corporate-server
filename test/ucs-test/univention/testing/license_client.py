@@ -138,7 +138,7 @@ class TestLicenseClient(object):
 		to the 'self.license_server_url'
 		"""
 		self.log.debug("In 'create_connection'")
-		self.connection = HTTPSConnection(self.license_server_url)
+		self.connection = HTTPSConnection(self.license_server_url, timeout=60)
 
 	def close_connection(self):
 		# type: () -> None
@@ -152,6 +152,8 @@ class TestLicenseClient(object):
 				self.connection.close()
 			except HTTPException as exc:
 				self.log.exception("An HTTP Exception occurred while closing the connection: '%s'", exc)
+			finally:
+				self.connection = None
 
 	def get_server_password(self, secret_file='/etc/license.secret'):
 		# type: (str) -> None
@@ -194,7 +196,7 @@ class TestLicenseClient(object):
 		self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
 
 		self.cookie = response.getheader('set-cookie')
-		if not ('sessionid' in self.cookie):
+		if 'sessionid' not in self.cookie:
 			self.log.critical("The 'sessionid' field was not found in the received cookie: '%s'", self.cookie)
 			exit(1)
 		# extracting only the 'sessionid' part of the cookie:
@@ -276,7 +278,7 @@ class TestLicenseClient(object):
 		# type: (str) -> None
 		"""
 		Downloads the license located at `filename` and saves it
-		to the file with a 'self.license_filename'
+		to the file 'self.license_filename'
 		"""
 		self.log.debug("In 'download_license_file' method")
 		headers = {
