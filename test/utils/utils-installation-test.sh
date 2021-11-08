@@ -1,16 +1,19 @@
 # shellcheck shell=bash
 # Takes the IP or host name of the domaincontroller to check.
 wait_for_domaincontroller_to_be_online () {
-	local i
+	local i=60
 	# shellcheck disable=SC2034
-	for i in  $(seq 1 60); do
+	while [ "$i" -ge 0 ]
+	do
 		echo "Waiting for domaincontroller $1 to be online."
 		sleep 60
-		if curl "http://$1/univention/management/" &> /dev/null; then
+		if curl --fail --silent "http://$1/univention/management/" >/dev/null 2>&1
+		then
 			sleep 500
 			echo "Domaincontroller $1 is now online."
 			return 0
 		fi
+		i=$((i - 1))
 	done
 	return 1
 }

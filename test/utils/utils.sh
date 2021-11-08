@@ -31,6 +31,11 @@
 
 set -x
 
+die () {
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
 FTP_DOM='software-univention.de' FTP_SCHEME='https'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon|xen) ;;
@@ -98,7 +103,7 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
-	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no 'update50/ignore_legacy_objects=yes' 'update50/ignore_old_packages=yes'
+	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no update50/ignore_legacy_objects=yes update50/ignore_old_packages=yes
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	# Update UCS@school instances always to latest patchlevel version
@@ -608,11 +613,12 @@ run_apptests () {
 	for app in $(< /var/cache/appcenter-installed.txt); do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			# shellcheck disable=SC2016
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_server_name" && ucr set --force ldap/server/name="$ldap_server_name"'
-			# shellcheck disable=SC2016
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_master" && ucr set --force ldap/master="$ldap_master"'
-			# shellcheck disable=SC2016
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$kerberos_adminserver" && ucr set --force kerberos/adminserver="$kerberos_adminserver"'
+			univention-app shell "$app" bash -c '
+			eval "$(ucr shell)"
+			[ -n "${ldap_server_name:-}" && ucr set --force ldap/server/name="$ldap_server_name"
+			[ -n "${ldap_master:-}" ] && ucr set --force ldap/master="$ldap_master"
+			[ -n "${kerberos_adminserver:-}" ] && ucr set --force kerberos/adminserver="$kerberos_adminserver"
+			'
 		fi
 	done
 
@@ -809,7 +815,7 @@ assert_packages () {
 
 set_administrator_dn_for_ucs_test () {
 	local dn
-	dn="$(univention-ldapsearch sambaSid=*-500 -LLL dn | sed -ne 's|dn: ||p')"
+	dn="$(univention-ldapsearch -LLL '(sambaSid=*-500)' 1.1 | sed -ne 's|dn: ||p')"
 	ucr set tests/domainadmin/account="$dn"
 }
 
@@ -866,15 +872,16 @@ monkeypatch () {
 
 import_license () {
 	# wait for server
+	local server="license.univention.de" i
 	for i in $(seq 1 100); do
-		nc -w 3 -z license.univention.de 443 && break
+		nc -w 3 -z "$server" 443 && break
 		sleep 1
 	done
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+6 month' '+%d.%m.%Y')"
 	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
 	# the static variante (Bug #46448)
 	if [ ! -e ./ValidTest.license ]; then
-		ucr set hosts/static/85.184.250.151=license.univention.de
+		ucr set "hosts/static/85.184.250.151=$server"
 		nscd -i hosts
 		python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+6 month' '+%d.%m.%Y')"
 		ucr unset hosts/static/85.184.250.151
@@ -952,7 +959,7 @@ assert_app_is_installed_and_latest () {
 	univention-app info
 	local rv=0 app latest
 	for app in "$@"; do
-		latest="$(python -m shared-utils/app-info -a $app -v)"
+		latest="$(python -m shared-utils/app-info -a "$app" -v)"
 		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
 	return $rv
@@ -1012,7 +1019,7 @@ add_tech_key_authorized_keys() {
 }
 
 assert_admember_mode () {
-	# shellcheck disable=SC1091
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/admember.sh
 	is_localhost_in_admember_mode
 }
