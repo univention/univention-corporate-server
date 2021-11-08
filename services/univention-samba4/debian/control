@@ -23,7 +23,7 @@ Depends:
  python-univention (>= 6.0.9-3),
  python3-univention,
  python3-univention-heimdal,
- samba (>= 2:4.13.0-1),
+ samba (>= 2:4.13.13-1),
  samba-dsdb-modules,
  samba-vfs-modules,
  python-univention-lib (>= 9.0.11-9),

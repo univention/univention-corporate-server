@@ -429,6 +429,14 @@ secret: $machine_secret
 		if dpkg --compare-versions "$2" lt-nl "8.0.0-17"; then
 			chmod go-w /var/lib/samba/private/*_update_list
 		fi
+
+		if dpkg --compare-versions "$2" lt-nl "9.0.6-5"; then
+			/etc/init.d/samba stop
+			/etc/init.d/samba start
+			if [ -x /etc/init.d/bind9 ]; then
+				/etc/init.d/bind9 restart
+			fi
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'

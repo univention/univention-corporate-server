@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-5) unstable; urgency=medium
+
+  * Bug #54013: Depend on Samba 4.13.13 and restart samba+bind9 on update
+
+ -- Arvid <requate@univention.de>  Mon, 08 Nov 2021 19:40:36 +0100
+
 univention-samba4 (9.0.6-4) unstable; urgency=medium
 
   * Bug #53182: Add timestamps to server_password_change log messages
