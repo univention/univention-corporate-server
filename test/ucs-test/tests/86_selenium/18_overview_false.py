@@ -8,16 +8,17 @@
 ## - univention-management-console-module-udm
 
 
-def test_overview_false(selenium):
+def test_overview_false(udm, selenium):
+	_, username = udm.create_user()
 	selenium.driver.get(selenium.base_url + 'univention/management/?overview=false#module=udm:users/user')
 	selenium.do_login(without_navigation=True)
-	selenium.wait_for_text('Administrator')
+	selenium.wait_for_text(username)
 
 	# The tabs should not be visible as long as only one tab is open
 	users_tab = selenium.driver.find_element_by_xpath('//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_0"]//span[text() = "Users"]')
 	assert not users_tab.is_displayed()
 
-	selenium.click_grid_entry('Administrator')
+	selenium.click_grid_entry(username)
 	selenium.wait_until_standby_animation_appears_and_disappears()
 	selenium.click_text('Policies')  # Policies tab
 	selenium.wait_until_standby_animation_appears_and_disappears()
