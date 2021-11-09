@@ -1,3 +1,9 @@
+ucs-test (10.0.6-68) unstable; urgency=medium
+
+  * Bug #54013: Adjust to changed samba error code
+
+ -- Arvid <requate@univention.de>  Tue, 09 Nov 2021 21:20:23 +0100
+
 ucs-test (10.0.6-67) unstable; urgency=medium
 
   * Bug #53906: adjust 18_overview_false.py
