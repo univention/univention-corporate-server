@@ -1094,7 +1094,7 @@ lo, po = univention.admin.uldap.getMachineConnection()
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 edu_dc_dns = lo.getAttr("cn=DC-Edukativnetz,cn=ucsschool,cn=groups,{}".format(ucr["ldap/base"]), "uniqueMember")
-host_dn = lo.searchDn(filter="(cn={})".format(ucr["hostname"]))[0]
+host_dn = ucr['ldap/hostdn']
 if ucr.is_true("ucsschool/singlemaster", False) or (host_dn in edu_dc_dns):
 	# host is replica in a multi-server environment or a single server
 	computerroom_dns = []
