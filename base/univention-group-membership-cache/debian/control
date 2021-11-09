@@ -5,6 +5,9 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
+ dh-python,
+ python-all,
+ python3-all,
 
 Package: univention-group-membership-cache
 Architecture: all
@@ -13,6 +16,40 @@ Depends:
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
  groups) so that software does not need to query the LDAP database.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-group-membership-cache
+Architecture: all
+Depends:
+  ${python:Depends},
+Provides:
+  ${python:Provides}
+Description: UCS - Group cache
+ This package holds a cache for user and group membership (including nested
+ groups) so that software does not need to query the LDAP database.
+ .
+ This package provides the Python library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-group-membership-cache
+Architecture: all
+Depends:
+  ${python3:Depends},
+Provides:
+  ${python3:Provides}
+Description: UCS - Group cache
+ This package holds a cache for user and group membership (including nested
+ groups) so that software does not need to query the LDAP database.
+ .
+ This package provides the Python library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

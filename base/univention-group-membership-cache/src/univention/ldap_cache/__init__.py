@@ -1,4 +1,5 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Copyright 2021 Univention GmbH
 #
@@ -26,6 +27,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+#
 
-%:
-	dh $@ --with python3,python2
+
+def groups_for_user(user_dn, consider_groups_in_groups=True):
+	return []
+
+
+def users_in_group(group_dn, consider_groups_in_groups=True):
+	return []
