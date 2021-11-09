@@ -6,4 +6,5 @@ scripts/kerberize_user usr/share/univention-samba/
 scripts/addmachine.sh usr/share/univention-samba/
 scripts/mount_extfs_with_user_xattr.py usr/share/univention-samba/
 scripts/password_check usr/share/univention-samba/
+scripts/mapusers.sh usr/share/univention-samba/
 server_password_change.d/univention-samba usr/lib/univention-server/server_password_change.d/
