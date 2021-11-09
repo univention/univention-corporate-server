@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
-src: samba
-fix: 2:4.10.18-1A~4.4.0.202111091249
+src: univention-ldb-modules
+fix: 7.0.0-6A~4.4.0.202111091247
 desc: |
  This update addresses the following issues:
  * TODO
