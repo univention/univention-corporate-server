@@ -1,8 +1,0 @@
-
-#include "version.h"
-
-CHAR8 shim_version[] = 
-	"UEFI SHIM\n"
-	"$Version: @@VERSION@@ $\n"
-	"$BuildMachine: @@UNAME@@ $\n"
-	"$Commit: @@COMMIT@@ $\n";
