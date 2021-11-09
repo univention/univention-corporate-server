@@ -11,6 +11,8 @@ desc: |
  * SMB1 client connections could be downgraded to plaintext authentication
    (CVE-2016-2124).
    See https://www.samba.org/samba/security/CVE-2016-2124.html for details.
+ * Samba was susceptible to the 'Bronze bit' S4U2Proxy Constrained Delegation
+   bypass (CVE-2020-17049).
  * A user in an AD Domain could become root on domain members (CVE-2020-25717).
    See https://www.samba.org/samba/security/CVE-2020-25717.html for details.
  * Samba AD DC did not correctly sandbox Kerberos tickets issued by an RODC
