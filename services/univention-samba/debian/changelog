@@ -1,3 +1,9 @@
+univention-samba (13.0.0-15) unstable; urgency=medium
+
+  * Bug #54014: Configure username map script for nss_ldap
+
+ -- Arvid <requate@univention.de>  Tue, 09 Nov 2021 20:41:09 +0100
+
 univention-samba (13.0.0-14) unstable; urgency=medium
 
   * Bug #53799: correct samba fix 
