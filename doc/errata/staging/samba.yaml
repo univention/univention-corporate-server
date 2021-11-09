@@ -6,7 +6,37 @@ src: samba
 fix: 2:4.13.13-1A~5.0.0.202111061336
 desc: |
  This update addresses the following issues:
- * Update Samba to 4.13.14 (effectively)
+ * Update Samba to 4.13.14 (effectively), which fixes the security issues
+   listed below.
+ * SMB1 client connections could be downgraded to plaintext authentication
+   (CVE-2016-2124).
+   See https://www.samba.org/samba/security/CVE-2016-2124.html for details.
+ * A user in an AD Domain could become root on domain members (CVE-2020-25717).
+   See https://www.samba.org/samba/security/CVE-2020-25717.html for details.
+ * Samba AD DC did not correctly sandbox Kerberos tickets issued by an RODC
+   (CVE-2020-25718).
+   See https://www.samba.org/samba/security/CVE-2020-25718.html for details.
+ * Samba AD DC did not always rely on the SID and PAC in Kerberos tickets
+   (CVE-2020-25719).
+   See https://www.samba.org/samba/security/CVE-2020-25719.html for details.
+ * Kerberos acceptors need easy access to stable AD identifiers (eg objectSid)
+   (CVE-2020-25721).
+   See https://www.samba.org/samba/security/CVE-2020-25721.html for details.
+ * Samba AD DC did not do suffienct access and conformance checking of data
+   stored (CVE-2020-25722).
+   See https://www.samba.org/samba/security/CVE-2020-25722.html for details.
+ * Use after free in Samba AD DC RPC server (CVE-2021-3738).
+   See https://www.samba.org/samba/security/CVE-2021-3738.html for details.
+ * Subsequent DCE/RPC fragment injection vulnerability (CVE-2021-23192).
+   See https://www.samba.org/samba/security/CVE-2021-23192.html for details.
 bug: [54013]
 cve:
+ - CVE-2016-2124
  - CVE-2020-17049
+ - CVE-2020-25717
+ - CVE-2020-25718
+ - CVE-2020-25719
+ - CVE-2020-25721
+ - CVE-2020-25722
+ - CVE-2021-3738
+ - CVE-2021-23192

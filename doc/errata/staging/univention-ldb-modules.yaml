@@ -6,7 +6,5 @@ src: univention-ldb-modules
 fix: 8.0.0-5A~5.0.0.202111071307
 desc: |
  This update addresses the following issues:
- * Rebuilt for ldb update to version 2.2.2
+ * Rebuilt for ldb update to version 2.2.3
 bug: [54013]
-cve:
- - CVE-2020-17049

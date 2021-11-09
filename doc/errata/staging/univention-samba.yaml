@@ -7,4 +7,6 @@ fix: 14.0.5-1A~5.0.0.202111092044
 desc: |
  This update addresses the following issues:
  * Update Samba to 4.13.14 (effectively)
+ * Add "username map script" for use when samba is configured as
+   domain member.
 bug: [54013]
