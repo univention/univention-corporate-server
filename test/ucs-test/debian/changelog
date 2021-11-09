@@ -1,3 +1,9 @@
+ucs-test (9.0.7-72) unstable; urgency=medium
+
+  * Bug #54014: Adjust to changed samba error code
+
+ -- Arvid <requate@univention.de>  Tue, 09 Nov 2021 21:18:54 +0100
+
 ucs-test (9.0.7-71) unstable; urgency=medium
 
   * Bug #52862: python3.5 compatible version of jsonschema

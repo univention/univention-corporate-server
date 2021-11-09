@@ -76,9 +76,9 @@ done
 
 echo "## access share"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" 2>&1)"
-echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
+echo "$output" | grep -q "NT_STATUS_LOGON_FAILURE"
 if [ "$?" != 0 ]; then
-	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+	fail_test 1 "Expected return value NT_STATUS_LOGON_FAILURE, but received: $output"
 fi
 
 
