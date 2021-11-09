@@ -6,5 +6,6 @@ src: univention-samba
 fix: 13.0.0-15A~4.4.0.202111092110
 desc: |
  This update addresses the following issues:
- * TODO
+ * Add "username map script" for use when samba is configured as
+   domain member.
 bug: [54014]

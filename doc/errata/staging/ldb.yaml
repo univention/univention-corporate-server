@@ -6,5 +6,5 @@ src: ldb
 fix: 2:1.5.8-1A~4.4.0.202111091243
 desc: |
  This update addresses the following issues:
- * TODO
+ * Ldb source code has been adjusted to support new samba security patches.
 bug: [54014]

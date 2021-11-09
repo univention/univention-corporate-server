@@ -6,5 +6,5 @@ src: univention-ldb-modules
 fix: 7.0.0-6A~4.4.0.202111091247
 desc: |
  This update addresses the following issues:
- * TODO
+ * Rebuilt to match the new ldb package version.
 bug: [54014]
