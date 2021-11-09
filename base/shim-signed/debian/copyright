@@ -1,11 +1,11 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: shim
-Upstream-Contact: Matthew Garrett <mjg@redhat.com>
-Source: https://github.com/mjg59/shim.git
+Upstream-Contact: Peter Jones <pjones@redhat.com>
+Source: https://github.com/rhboot/shim
 
 Files: *
-Copyright: 2012 Red Hat, Inc
-	2009-2012 Intel Corporation
+Copyright: 2012-2021 Red Hat, Inc
+ 	2009-2016 Intel Corporation
 License: BSD-2-Clause
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions

@@ -1,3 +1,9 @@
+shim-signed (2.0.0-2) unstable; urgency=low
+
+  * Bug #51748: New shim for UCS-4.4-9
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Nov 2021 12:36:51 +0100
+
 shim-signed (2.0.0-1) unstable; urgency=medium
 
   * Bug #46325: Adapto to new GRUB in UCS-4.3
