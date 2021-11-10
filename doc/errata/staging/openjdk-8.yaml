@@ -6,26 +6,20 @@ src: openjdk-8
 fix: 8u312-b07-1~deb9u1
 desc: |
  This update addresses the following issues:
- * Weak ciphers preferred over stronger ones for TLS (JSSE, 8264210)
-   (CVE-2021-35550)
- * Excessive memory allocation in RTFParser (Swing, 8265167) (CVE-2021-35556)
- * Excessive memory allocation in RTFReader (Swing, 8265580) (CVE-2021-35559)
- * Excessive memory allocation in HashMap and HashSet (Utility, 8266097)
-   (CVE-2021-35561)
+ * Weak ciphers preferred over stronger ones for TLS (CVE-2021-35550)
+ * Excessive memory allocation in RTFParser (CVE-2021-35556)
+ * Excessive memory allocation in RTFReader (CVE-2021-35559)
+ * Excessive memory allocation in HashMap and HashSet (CVE-2021-35561)
  * Certificates with end dates too far in the future can corrupt keystore
-   (Keytool, 8266137) (CVE-2021-35564)
- * Loop in HttpsServer triggered during TLS session close (JSSE, 8254967)
-   (CVE-2021-35565)
+   (CVE-2021-35564)
+ * Loop in HttpsServer triggered during TLS session close (CVE-2021-35565)
  * Incorrect principal selection when using Kerberos Constrained Delegation
-   (Libraries, 8266689) (CVE-2021-35567)
- * Unexpected exception raised during TLS handshake (JSSE, 8267729)
-   (CVE-2021-35578)
- * Excessive memory allocation in BMPImageReader (ImageIO, 8267735)
-   (CVE-2021-35586)
+   (CVE-2021-35567)
+ * Unexpected exception raised during TLS handshake (CVE-2021-35578)
+ * Excessive memory allocation in BMPImageReader (CVE-2021-35586)
  * Incomplete validation of inner class references in ClassFileParser
-   (Hotspot, 8268071) (CVE-2021-35588)
- * Non-constant comparison during TLS handshakes (JSSE, 8269618)
-   (CVE-2021-35603)
+   (CVE-2021-35588)
+ * Non-constant comparison during TLS handshakes (CVE-2021-35603)
 bug: [54044]
 cve:
 - CVE-2021-35550
