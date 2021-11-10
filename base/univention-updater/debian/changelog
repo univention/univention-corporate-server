@@ -1,3 +1,9 @@
+univention-updater (15.0.3-71) unstable; urgency=medium
+
+  * Bug #53954: prevent UCS@school upgrade with computerrooms
+
+ -- Tobias Wenzel <wenzel@univention.de>  Wed, 10 Nov 2021 16:49:53 +0100
+
 univention-updater (15.0.3-70) unstable; urgency=medium
 
   * Bug #54045: check UCS@school lib hooks for Python 3 compatibility during preup.sh
