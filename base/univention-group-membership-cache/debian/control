@@ -25,6 +25,7 @@ Description: UCS - Group cache
 Package: python-univention-group-membership-cache
 Architecture: all
 Depends:
+  python-lmdb,
   ${python:Depends},
 Provides:
   ${python:Provides}
@@ -42,6 +43,7 @@ Description: UCS - Group cache
 Package: python3-univention-group-membership-cache
 Architecture: all
 Depends:
+  python3-lmdb,
   ${python3:Depends},
 Provides:
   ${python3:Provides}
