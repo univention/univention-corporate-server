@@ -1,3 +1,9 @@
+ucs-test (10.0.6-69) unstable; urgency=medium
+
+  * Bug #54013: Revert: Adjust to changed samba error code
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 10 Nov 2021 14:01:02 +0100
+
 ucs-test (10.0.6-68) unstable; urgency=medium
 
   * Bug #54013: Adjust to changed samba error code
