@@ -32,11 +32,12 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
 import re
 import stat
 import univention.debug
+
+from listener import SetUID, configRegistry, run
 
 name = 'nagios-client'
 description = 'Create configuration for Nagios nrpe server'
@@ -60,8 +61,7 @@ def readPluginConfig():
 
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: updating plugin config')
 
-		listener.setuid(0)
-		try:
+		with SetUID(0):
 			for fn in os.listdir(__pluginconfdir):
 				with open(os.path.join(__pluginconfdir, fn), 'rb') as fp:
 					content = fp.read().decode('UTF-8', 'replace')
@@ -71,8 +71,6 @@ def readPluginConfig():
 					if mcmdname and mcmdline:
 						__pluginconfig[mcmdname.group(1)] = mcmdline.group(1)
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
-		finally:
-			listener.unsetuid()
 
 
 def replaceArguments(cmdline, args):
@@ -103,10 +101,8 @@ def writeConfig(fqdn, new):
 	cmdline = re.sub(r'\$HOSTADDRESS\$', fqdn, cmdline)
 	cmdline = re.sub(r'\$HOSTNAME\$', fqdn, cmdline)
 
-	listener.setuid(0)
-	try:
-		filename = os.path.join(__confdir, "%s.cfg" % name)
-		fp = open(filename, 'w')
+	filename = os.path.join(__confdir, "%s.cfg" % name)
+	with SetUID(0), open(filename, 'w') as fp:
 		fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
 		fp.write('#          Please use univention-directory-manager instead.\n')
 		fp.write('# Warnung: Diese Datei wurde automatisch generiert und wird\n')
@@ -114,22 +110,15 @@ def writeConfig(fqdn, new):
 		fp.write('#          stattdessen den Univention Directory Manager.\n')
 		fp.write('\n')
 		fp.write('command[%s]=%s\n' % (name, cmdline))
-		fp.close()
-
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: service %s written' % name)
-	finally:
-		listener.unsetuid()
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: service %s written' % name)
 
 
 def removeConfig(name):
 	# type: (str) -> None
 	filename = os.path.join(__confdir, "%s.cfg" % name)
-	listener.setuid(0)
-	try:
+	with SetUID(0):
 		if os.path.exists(filename):
 			os.unlink(filename)
-	finally:
-		listener.unsetuid()
 
 
 def handler(dn, new, old):
@@ -138,7 +127,7 @@ def handler(dn, new, old):
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
 
-	fqdn = '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
+	fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 	fqdn = fqdn.encode('UTF-8')
 
 	if old and not new:
@@ -174,16 +163,13 @@ def handler(dn, new, old):
 			writeConfig(fqdn.decode('UTF-8'), new)
 
 
+@SetUID(0)
 def initialize():
 	# type: () -> None
 	dirname = '/etc/nagios/nrpe.univention.d'
 
 	if not os.path.exists(dirname):
-		listener.setuid(0)
-		try:
-			os.mkdir(dirname)
-		finally:
-			listener.unsetuid()
+		os.mkdir(dirname)
 
 
 def deleteTree(dirname):
@@ -199,25 +185,18 @@ def deleteTree(dirname):
 		os.rmdir(dirname)
 
 
+@SetUID(0)
 def clean():
 	# type: () -> None
 	dirname = '/etc/nagios/nrpe.univention.d'
 	if os.path.exists(dirname):
-		listener.setuid(0)
-		try:
-			deleteTree(dirname)
-		finally:
-			listener.unsetuid()
+		deleteTree(dirname)
 
 
 def postrun():
 	# type: () -> None
 	global __initscript
 	initscript = __initscript
-	if listener.configRegistry.is_true("nagios/client/autostart"):
+	if configRegistry.is_true("nagios/client/autostart"):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NRPED: Restarting server')
-		listener.setuid(0)
-		try:
-			listener.run(initscript, ['nagios-nrpe-server', 'restart'], uid=0)
-		finally:
-			listener.unsetuid()
+		run(initscript, ['nagios-nrpe-server', 'restart'], uid=0)
