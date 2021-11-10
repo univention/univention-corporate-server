@@ -1007,8 +1007,8 @@ if failed:
 EOF
 }
 
-update_check_python_ucsschool_import_hook_compatibility() {
-	local var="update$VERSION/ignore-python3-compatiblity-ucsschool-import-hooks"
+update_check_python_ucsschool_hooks_compatibility() {
+	local var="update$VERSION/ignore-python3-compatiblity-ucsschool-hooks"
 	ignore_check "$var" && return 100
 
 	/usr/bin/python2.7 - <<EOF
@@ -1042,7 +1042,7 @@ def uninstalled(package):
 
 
 def get_registered_files():
-	for dir in ('/usr/share/ucs-school-import/checks/', '/usr/share/ucs-school-import/pyhooks/'):
+	for dir in ('/usr/share/ucs-school-import/checks/', '/usr/share/ucs-school-import/pyhooks/', '/var/lib/ucs-school-lib/hooks/'):
 		for path, directories, files in os.walk(dir):
 			for file in files:
 				if not file.endswith('.py'):
@@ -1061,7 +1061,7 @@ if failed:
 	packages = dpkg(failed)
 failed = [p for p in failed if not packages.get(p) or not uninstalled(packages[p])]
 if failed:
-	print('The following UCS@school Import Hooks are not compatible with Python 3:')
+	print('The following UCS@school Hooks are not compatible with Python 3:')
 for failed_hook in failed:
 	print('\\t', failed_hook, end='')
 	if failed_hook in packages:
