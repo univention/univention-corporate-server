@@ -1,0 +1,132 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Copyright 2021 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+import os
+from pwd import getpwnam
+from contextlib import contextmanager
+import json
+
+import gdbm
+
+from univention.ldap_cache.base_cache import Caches, LdapCache, Shard
+
+
+
+class GdbmCaches(Caches):
+	def add_cache_class(self, cache_class):
+		return self.add_cache(cache_class, cache_class.__name__)
+
+	def add_cache(self, cache_class, name):
+		name = os.path.join(self._directory, '%s.db' % name)
+		cache = cache_class(name)
+		self._caches[name] = cache
+		return cache
+
+	def add_full_shard(self, shard_class):
+		cache = self.add_cache(GdbmCache, shard_class.__name__)
+		cache.single_value = getattr(shard_class, 'single_value', False)
+		cache.add_shard(shard_class)
+		return cache
+
+
+class GdbmCache(LdapCache):
+	def _fix_permissions(self, db_file):
+		listener_uid = getpwnam('listener').pw_uid
+		os.chown(db_file, listener_uid, -1)
+
+	@contextmanager
+	def writing(self, writer=None):
+		if writer is not None:
+			yield writer
+		else:
+			writer = gdbm.open(self.name, 'csu')
+			self._fix_permissions(self.name)
+			try:
+				yield writer
+			finally:
+				writer.close()
+
+	def save(self, key, values):
+		with self.writing() as writer:
+			self.delete(key, writer)
+			if not values:
+				return
+			if self.single_value:
+				writer[key] = values[0]
+			else:
+				writer[key] = json.dumps(values)
+
+	def clear(self):
+		db = gdbm.open(self.name, 'n')
+		self._fix_permissions(self.name)
+		db.close()
+
+	def delete(self, key, writer=None):
+		with self.writing(writer) as writer:
+			try:
+				del writer[key]
+			except KeyError:
+				pass
+
+	@contextmanager
+	def reading(self, reader=None):
+		if reader is not None:
+			yield reader
+		else:
+			reader = gdbm.open(self.name, 'csu')
+			self._fix_permissions(self.name)
+			try:
+				yield reader
+			finally:
+				reader.close()
+
+
+	def __iter__(self):
+		with self.reading() as reader:
+			key = reader.firstkey()
+			while key is not None:
+				yield key, reader.get(key, reader)
+				key = reader.nextkey(key)
+
+	def get(self, key, reader=None):
+		with self.reading(reader) as reader:
+			value = reader.get(key)
+			if self.single_value:
+				return value
+			elif value:
+				return json.loads(value)
+
+	def load(self):
+		with self.reading() as reader:
+			return dict(reader)
+
+
+class GdbmShard(Shard):
+	key = 'dn'
