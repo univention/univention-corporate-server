@@ -7,11 +7,12 @@ Build-Depends:
  debhelper,
  dh-python,
  python-all,
- python3-all,
+# python3-all,
 
 Package: univention-group-membership-cache
 Architecture: all
 Depends:
+ python-univention-group-membership-cache (= ${source:Version}),
  ${misc:Depends},
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
@@ -25,10 +26,10 @@ Description: UCS - Group cache
 Package: python-univention-group-membership-cache
 Architecture: all
 Depends:
-  python-lmdb,
-  ${python:Depends},
-Provides:
-  ${python:Provides}
+ python-lmdb,
+ python-ldap,
+ python-univention,
+ ${python:Depends},
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
  groups) so that software does not need to query the LDAP database.
@@ -40,20 +41,19 @@ Description: UCS - Group cache
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python3-univention-group-membership-cache
-Architecture: all
-Depends:
-  python3-lmdb,
-  ${python3:Depends},
-Provides:
-  ${python3:Provides}
-Description: UCS - Group cache
- This package holds a cache for user and group membership (including nested
- groups) so that software does not need to query the LDAP database.
- .
- This package provides the Python library.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+#Package: python3-univention-group-membership-cache
+#Architecture: all
+#Depends:
+# python3-lmdb,
+# python3-univention,
+# ${python3:Depends},
+#Description: UCS - Group cache
+# This package holds a cache for user and group membership (including nested
+# groups) so that software does not need to query the LDAP database.
+# .
+# This package provides the Python3 library.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
