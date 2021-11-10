@@ -1108,7 +1108,7 @@ if ucr.is_true("ucsschool/singlemaster", False) or (host_dn in edu_dc_dns):
 		for dn in computerroom_dns:
 			print("\t\t{}".format(dn))
 		print("\nINFO: In preparation for this upgrade, all computer rooms, which are configured to have iTALC as it's backend, should be migrated to Veyon.")
-		print("iTALC computer rooms will still be usable in mixed environments with on school replica nodes with UCS@school 4.4, but not on UCS@school 5.0 systems.")
+		print("iTALC computer rooms will still be usable in mixed environments with the primary upgraded to UCS@school 5.0 with school replica nodes running UCS@school 4.4. iTALC computer rooms won't be usable in UCS@school 5.0 replica nodes.")
 		print("Please visit https://help.univention.com/t/16937 for more information.")
 		exit(1)
 EOF
