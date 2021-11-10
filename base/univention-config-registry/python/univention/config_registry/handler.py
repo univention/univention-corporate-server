@@ -1137,7 +1137,7 @@ class ConfigHandlers:
 					pending_handlers.add(handler)
 
 		# print missing files
-		for fname in set(_filelist).difference(set(h.to_file for h in pending_handlers)):
+		for fname in set(_filelist) - {h.to_file for h in pending_handlers if isinstance(h, ConfigHandlerDiverting)}:
 			print('Warning: The file %r is not registered as an UCR template.' % (fname,), file=sys.stderr)
 
 		# call handlers
