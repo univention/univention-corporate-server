@@ -1,3 +1,9 @@
+univention-updater (15.0.3-70) unstable; urgency=medium
+
+  * Bug #54045: check UCS@school lib hooks for Python 3 compatibility during preup.sh
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 10 Nov 2021 09:56:16 +0100
+
 univention-updater (15.0.3-69) unstable; urgency=medium
 
   * Bug #53665: remove unused css class
