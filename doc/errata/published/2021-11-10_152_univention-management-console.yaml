@@ -9,3 +9,5 @@ desc: |
  * The behavior for multiple module tabs has been adjusted when using the
    query parameter `overview=false`.
 bug: [53906]
+erratum: 152
+announced: 2021-11-10
