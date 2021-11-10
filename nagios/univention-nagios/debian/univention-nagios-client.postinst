@@ -68,4 +68,9 @@ fi
 . /usr/share/univention-lib/base.sh
 call_joinscript 30univention-nagios-client.inst
 
+# rewrite broken configuration files
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 13.0.2-6; then
+	univention-directory-listener-ctrl resync nagios-client
+fi
+
 exit 0
