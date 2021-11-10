@@ -67,5 +67,5 @@ class User(object):
 			if allowed_idps:
 				yield allowed_idps & idps
 			if allowed_loa:
-				yield levels_of_assurance.get(loa, 1) >= levels_of_assurance(allowed_loa, 1)
+				yield levels_of_assurance.get(loa, 1) >= levels_of_assurance.get(allowed_loa, 1)
 		return all(conditions())
