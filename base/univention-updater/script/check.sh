@@ -1075,7 +1075,7 @@ EOF
 update_check_ucsschool_computerroom_compatibility() {
 	local var="update$VERSION/ignore-ucsschool-computerroom-compatibility"
 	ignore_check "$var" && return 100
-  	/usr/bin/python2.7 - <<EOF
+	/usr/bin/python2.7 - <<EOF
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 from __future__ import print_function
