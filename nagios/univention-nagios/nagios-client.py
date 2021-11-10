@@ -64,13 +64,13 @@ def readPluginConfig():
 		try:
 			for fn in os.listdir(__pluginconfdir):
 				with open(os.path.join(__pluginconfdir, fn), 'rb') as fp:
-					content = fp.read()
-				for cmddef in re.split(r'\s*define\s+command\s*\{'.encode('ASCII'), content):
-					mcmdname = re.search(r'^\s+command_name\s+(.*?)\s*$'.encode('ASCII'), cmddef, re.MULTILINE)
-					mcmdline = re.search(r'^\s+command_line\s+(.*?)\s*$'.encode('ASCII'), cmddef, re.MULTILINE)
+					content = fp.read().decode('UTF-8', 'replace')
+				for cmddef in re.split(r'\s*define\s+command\s*\{', content):
+					mcmdname = re.search(r'^\s+command_name\s+(.*?)\s*$', cmddef, re.MULTILINE)
+					mcmdline = re.search(r'^\s+command_line\s+(.*?)\s*$', cmddef, re.MULTILINE)
 					if mcmdname and mcmdline:
 						__pluginconfig[mcmdname.group(1)] = mcmdline.group(1)
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: read configline for plugin %s ==> %s' % (mcmdname.group(1), mcmdline.group(1)))
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
 		finally:
 			listener.unsetuid()
 
@@ -79,9 +79,9 @@ def replaceArguments(cmdline, args):
 	# type: (str, list) -> str
 	for i in range(9):
 		if i < len(args):
-			cmdline = re.sub(r'\$ARG%d\$'.encode('ASCII') % (i + 1), args[i], cmdline)
+			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), args[i], cmdline)
 		else:
-			cmdline = re.sub(r'\$ARG%d\$'.encode('ASCII') % (i + 1), b'', cmdline)
+			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), b'', cmdline)
 	return cmdline
 
 
@@ -90,22 +90,18 @@ def writeConfig(fqdn, new):
 	readPluginConfig()
 
 	name = new['cn'][0].decode('UTF-8')
-	cmdline = b'PluginNameNotFoundError'
+	cmdline = 'PluginNameNotFoundError'
 
 	# if no univentionNagiosHostname is present or current host is no member then quit
-	if 'univentionNagiosHostname' in new and new['univentionNagiosHostname']:
-		if fqdn not in new['univentionNagiosHostname']:
-			return
-	else:
+	if fqdn.encode('UTF-8') not in new.get('univentionNagiosHostname', []):
 		return
 
-	if 'univentionNagiosCheckCommand' in new and new['univentionNagiosCheckCommand'] and new['univentionNagiosCheckCommand'][0]:
-		if new['univentionNagiosCheckCommand'][0] in __pluginconfig:
-			cmdline = __pluginconfig[new['univentionNagiosCheckCommand'][0]]
-	if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
-		cmdline = replaceArguments(cmdline, new['univentionNagiosCheckArgs'][0].split(b'!'))
-	cmdline = re.sub(r'\$HOSTADDRESS\$'.encode('ASCII'), fqdn, cmdline)
-	cmdline = re.sub(r'\$HOSTNAME\$'.encode('ASCII'), fqdn, cmdline)
+	nagios_check_command = new.get('univentionNagiosCheckCommand', [b''])[0].decode('UTF-8')
+	cmdline = __pluginconfig.get(nagios_check_command, cmdline)
+	if new.get('univentionNagiosCheckArgs', [b''])[0]:
+		cmdline = replaceArguments(cmdline, new['univentionNagiosCheckArgs'][0].decode('UTF-8').split('!'))
+	cmdline = re.sub(r'\$HOSTADDRESS\$', fqdn, cmdline)
+	cmdline = re.sub(r'\$HOSTNAME\$', fqdn, cmdline)
 
 	listener.setuid(0)
 	try:
@@ -175,7 +171,7 @@ def handler(dn, new, old):
 		# - this object is new
 		if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == b'1'):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: writing service %r' % (new['cn'][0],))
-			writeConfig(fqdn, new)
+			writeConfig(fqdn.decode('UTF-8'), new)
 
 
 def initialize():
