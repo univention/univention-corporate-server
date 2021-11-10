@@ -9,3 +9,5 @@ desc: |
  * The style of the module tabs when using the query parameter
    `overview=false` has been adjusted.
 bug: [53906]
+erratum: 151
+announced: 2021-11-10
