@@ -921,7 +921,7 @@ udm settings/extended_attribute modify \
 			<section id="udm:modules:globals">
 				<title>Global variables</title>
 				<para>
-					The global variables with specific meanings in a &ucsUDM;module are described below.
+					The global variables with specific meanings in a &ucsUDM; module are described below.
 					Mandatory and optional variables are separated into two lists:
 				</para>
 
@@ -1221,13 +1221,13 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 					<varlistentry>
 						<term><varname>self.dn</varname> → String</term>
 						<listitem><simpara>
-							Distinguished Name in the LDAP-DIT
+							Distinguished Name in the LDAP DIT
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.position</varname> → univention.admin.uldap#Position</term>
+						<term><varname>self.position</varname> → <varname>univention.admin.uldap#Position</varname></term>
 						<listitem><simpara>
-							Container element in the LDAP-DIT
+							Container element in the LDAP DIT
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1257,25 +1257,25 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.oldpolicies</varname> → [Policy-DNs, ...]</term>
+						<term><varname>self.oldpolicies</varname> → [<uri>Policy-DNs</uri>, ...]</term>
 						<listitem><simpara>
-							Copy of the list of DNs of the referenced univentionPolicyReference
+							Copy of the list of DNs of the referenced <varname>univentionPolicyReference</varname>
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.policies</varname> → [Policy-DNs, ...]</term>
+						<term><varname>self.policies</varname> → [<uri>Policy-DNs</uri>, ...]</term>
 						<listitem><simpara>
-							List of DNs of the referenced univentionPolicyReference
+							List of DNs of the referenced <varname>univentionPolicyReference</varname>
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.policyObjects[Policy-DN]</varname> → univention.admin.handlers#SimplePolicy</term>
+						<term><varname>self.policyObjects[Policy-DN]</varname> → <classname>univention.admin.handlers#SimplePolicy</classname></term>
 						<listitem><simpara>
 							Dictionary of the loaded policies.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><varname>self.extended_udm_attributes</varname> → [univention.admin#Extended_attribute, ...]</term>
+						<term><varname>self.extended_udm_attributes</varname> → [<classname>univention.admin#Extended_attribute</classname>, ...]</term>
 						<listitem><simpara>
 							Complete list of the objects <property>extended attributes</property>
 						</simpara></listitem>
@@ -1305,40 +1305,40 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 						<tbody>
 							<row>
 								<entry>Before validation</entry>
-								<entry namest="col2" nameend="col3" align="center">_ldap_pre_ready()</entry>
+								<entry namest="col2" nameend="col3" align="center"><function>_ldap_pre_ready()</function></entry>
 							</row>
 							<row>
 								<entry morerows="1">Validates, that all required attributes are set</entry>
 								<entry namest="col2" nameend="col3" align="center">ready()</entry>
 							</row>
 							<row>
-								<entry>_ldap_pre_create()</entry>
-								<entry>_ldap_pre_modify()</entry>
-								<entry>_ldap_pre_remove()</entry>
+								<entry><function>_ldap_pre_create()</function></entry>
+								<entry><function>_ldap_pre_modify()</function></entry>
+								<entry><function>_ldap_pre_remove()</function></entry>
 							</row>
 							<row>
 								<entry>Policy Copy-on-Write</entry>
-								<entry>_update_policies()</entry>
-								<entry>_update_policies()</entry>
+								<entry><function>_update_policies()</function></entry>
+								<entry><function>_update_policies()</function></entry>
 							</row>
 							<row>
 								<entry>Extension point for Extended Attribute</entry>
-								<entry>hook_ldap_pre_create()</entry>
-								<entry>hook_ldap_pre_modify()</entry>
-								<entry>hook_ldap_pre_remove()</entry>
+								<entry><function>hook_ldap_pre_create()</function></entry>
+								<entry><function>hook_ldap_pre_modify()</function></entry>
+								<entry><function>hook_ldap_pre_remove()</function></entry>
 							</row>
 							<row>
-								<entry>Returns initial list of (LDAP-attribute-name, value)- resp. (LDAP-attribute-name, [values]) tuples</entry>
-								<entry>_ldap_addlist()</entry>
+								<entry>Returns initial list of (<property>LDAP-attribute-name</property>, value)- resp. (<property>LDAP-attribute-name</property>, [values]) tuples</entry>
+								<entry><function>_ldap_addlist()</function></entry>
 							</row>
 							<row>
-								<entry>Calculates difference between self.oldinfo and self.info</entry>
-								<entry namest="col2" nameend="col3" align="center">_ldap_modlist()</entry>
+								<entry>Calculates difference between <varname>self.oldinfo</varname> and <varname>self.info</varname></entry>
+								<entry namest="col2" nameend="col3" align="center"><function>_ldap_modlist()</function></entry>
 							</row>
 							<row>
 								<entry>Extension point for Extended Attribute</entry>
-								<entry>hook_ldap_addlist()</entry>
-								<entry>hook_ldap_modlist()</entry>
+								<entry><function>hook_ldap_addlist()</function></entry>
+								<entry><function>hook_ldap_modlist()</function></entry>
 							</row>
 							<row>
 								<entry>Real action</entry>
@@ -1348,15 +1348,15 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 							</row>
 							<row>
 								<entry></entry>
-								<entry>_ldap_post_create()</entry>
-								<entry>_ldap_post_modify()</entry>
-								<entry>_ldap_post_remove()</entry>
+								<entry><function>_ldap_post_create()</function></entry>
+								<entry><function>_ldap_post_modify()</function></entry>
+								<entry><function>_ldap_post_remove()</function></entry>
 							</row>
 							<row>
 								<entry>Extension point for Extended Attribute</entry>
-								<entry>hook_ldap_post_create()</entry>
-								<entry>hook_ldap_post_modify()</entry>
-								<entry>hook_ldap_post_remove()</entry>
+								<entry><function>hook_ldap_post_create()</function></entry>
+								<entry><function>hook_ldap_post_modify()</function></entry>
+								<entry><function>hook_ldap_post_remove()</function></entry>
 							</row>
 						</tbody>
 					</tgroup>
@@ -1371,7 +1371,7 @@ mapping.register(udm_name, ldap_name, map_value, unmap_value)
 				<para>
 					These functions are used to find the corresponding objects for search queries from the &ucsUMC; (<function>lookup</function>) and to assign <acronym>LDAP</acronym> objects to a &ucsUDM; module.
 					For simple <acronym>LDAP</acronym> objects, no modifications are necessary.
-					They can be assigned to the <classname>generic objects</classname> classmethods:
+					They can be assigned to the <classname>generic objects</classname> class methods:
 				</para>
 				<programlisting language="python"><![CDATA[
 lookup = object.lookup
@@ -1400,7 +1400,7 @@ identify = object.identify
 			</para>
 
 			<section id="udm:modules:example:python">
-				<title>Pythode code of the example module</title>
+				<title>Python code of the example module</title>
 				<para>
 					Before defining the actual module source code, some basic Python modules need to be imported, which are always necessary:
 				</para>
@@ -1507,7 +1507,7 @@ property_descriptions = {
 					No standard syntax definition is used for this property, but a specially declared <classname>SynVoIP_Protocols</classname> class.
 					(The source code of this class follows in a later section).
 					The syntax of the class defines a selection list with a predefined set of possibilities.
-					The <varname>default</varname> parameter pre-selects the value with the <literal>sip</literal> key.
+					The <varname>default</varname> parameter preselects the value with the <literal>sip</literal> key.
 				</para>
 				<programlisting language="python"><![CDATA[
 'protocol': univention.admin.property(
@@ -1712,13 +1712,13 @@ objectclass ( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 					In this directory a subdirectory has to be created corresponding to the first part of the module name.
 					For example, if the module name is <classname>test/ip-phone</classname>, the directory should be named <filename class="directory">test/</filename>.
 					The Python module must then be copied to this directory.
-					Ideally, a <acronym>UDM</acronym> module is integrated into a seperate <acronym>Debian</acronym> package.
+					Ideally, a <acronym>UDM</acronym> module is integrated into a separate <acronym>Debian</acronym> package.
 					Documentation for this can be found in the <xref linkend="pkg:introduction"/> section.
 					The newly created package will now be included in the display when <command>univention-directory-manager modules</command> is called.
 				</para>
 				<para>
 					In principle, the file containing the <acronym>LDAP</acronym> schema can be copied to any directory.
-					Univentions schema definitions, for example, are stored in the <filename class="directory">/usr/share/univention-ldap/schema/</filename> directory.
+					Univention schema definitions, for example, are stored in the <filename class="directory">/usr/share/univention-ldap/schema/</filename> directory.
 					For the <acronym>LDAP</acronym> server to find this schema, it must be included in the <filename class="directory">/etc/ldap/slapd.conf</filename> configuration file.
 					Since this file is under the control of the Univention Configuration Registry, do not edit the file directly, but create a Univention Configuration Registry template. (see <xref linkend="ucr:conffiles"/>)
 				</para>
