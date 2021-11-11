@@ -1,11 +1,11 @@
 product: ucs
-release: "5.0"
-version: [0]
-scope: ucs_5.0-0-errata5.0-0
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-listener
 fix: 14.0.5-4
 desc: |
  This update addresses the following issue:
  * Make module execution order configurable by explicitly specifying a
    `priority`.
-bug: [26089]
+bug: [54061]

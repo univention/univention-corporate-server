@@ -145,6 +145,16 @@ modrdn = "1"
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term><varname>priority</varname> (<type>float</type>, optional)</term>
+				<listitem>
+					<para>
+						This variable can be used to explicitly overwrite the default order in which the modules are executed.
+						By default modules are executed in random order.
+						<filename>replication.py</filename> defaults to <literal>0.0</literal> as it must be executed first, all other modules default to <literal>50.0</literal>.
+					</para>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 
 		<para>
