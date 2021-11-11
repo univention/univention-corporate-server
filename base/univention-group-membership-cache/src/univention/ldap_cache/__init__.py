@@ -30,7 +30,6 @@
 #
 
 
-
 def groups_for_user(user_dn, consider_groups_in_groups=True):
 	return []
 

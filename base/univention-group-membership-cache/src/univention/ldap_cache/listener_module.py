@@ -32,6 +32,7 @@
 from univention.ldap_cache.cache import get_cache
 from univention.listener.handler import ListenerModuleHandler
 
+
 class LdapCacheHandler(ListenerModuleHandler):
 	def create(self, dn, new):
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):

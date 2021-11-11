@@ -38,7 +38,6 @@ import gdbm
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 
 
-
 class GdbmCaches(Caches):
 	def add_sub_cache(self, name, single_value):
 		db_file = os.path.join(self._directory, '%s.db' % name)
@@ -97,7 +96,6 @@ class GdbmCache(LdapCache):
 				yield reader
 			finally:
 				reader.close()
-
 
 	def __iter__(self):
 		with self.reading() as reader:

@@ -37,6 +37,7 @@ import lmdb
 
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 
+
 class LmdbCaches(Caches):
 	def __init__(self, *args, **kwargs):
 		super(LmdbCaches, self).__init__(*args, **kwargs)
@@ -85,7 +86,6 @@ class LmdbCache(LdapCache):
 		with self.env.begin(self.sub_db) as txn:
 			with txn.cursor() as cursor:
 				yield cursor
-
 
 	def __iter__(self):
 		with self.reading() as reader:
