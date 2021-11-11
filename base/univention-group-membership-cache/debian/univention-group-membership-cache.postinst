@@ -29,5 +29,4 @@
 
 #DEBHELPER#
 
-mkdir -p /usr/share/univention-group-membership-cache/caches/
-chown listener:root /usr/share/univention-group-membership-cache/caches
+/usr/share/univention-group-membership-cache/univention-ldap-cache create-listeners

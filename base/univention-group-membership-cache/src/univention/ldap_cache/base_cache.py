@@ -30,7 +30,7 @@
 #
 
 from univention.uldap import getMachineConnection
-DB_DIRECTORY = '/usr/share/univention-group-membership-cache'
+DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
 class Caches(object):

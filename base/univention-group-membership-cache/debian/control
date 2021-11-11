@@ -27,6 +27,7 @@ Package: python-univention-group-membership-cache
 Architecture: all
 Depends:
  python-lmdb,
+ python-gdbm,
  python-ldap,
  python-univention,
  ${python:Depends},

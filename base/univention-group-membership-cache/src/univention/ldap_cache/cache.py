@@ -40,6 +40,10 @@ class LowerValuesShard(Shard):
 		return [value.lower() for value in values]
 
 
+class EntryUUID(Cache):
+	single_value = True
+
+
 class EntryUUIDShard(LowerValuesShard):
 	value = 'dn'
 
