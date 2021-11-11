@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Copyright 2021 Univention GmbH
 #
@@ -26,14 +27,28 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+#
 
-#DEBHELPER#
 
-mkdir -p /usr/share/univention-group-membership-cache/caches/
-chown listener:root /usr/share/univention-group-membership-cache/caches
+import logging
 
-touch /var/log/univention/ldap-cache.log
-chown root:adm /var/log/univention/ldap-cache.log
-chmod 640 /var/log/univention/ldap-cache.log
 
-exit 0
+LOG_FILE = '/var/log/univention/ldap-cache.log'
+
+
+logger = logging.getLogger('univention.ldap_cache')
+log_format = '%(process)6d %(asctime)s [%(levelname)8s]: %(message)s'
+log_format_time = '%y-%m-%d %H:%M:%S'
+formatter = logging.Formatter(log_format, log_format_time)
+handler = logging.FileHandler(LOG_FILE)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
+
+def log(*msgs):
+	logger.info(*msgs)
+
+
+def debug(*msgs):
+	logger.debug(*msgs)

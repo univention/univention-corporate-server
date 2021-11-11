@@ -34,6 +34,7 @@ DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
 from univention.ldap_cache.cache.plugins import Plugin
+from univention.ldap_cache.log import log, debug
 
 
 class Caches(object):
@@ -66,6 +67,7 @@ class Caches(object):
 		return queries
 
 	def rebuild(self, cache_names=None):
+		log('Rebuilding...')
 		for name, cache in self._caches.items():
 			if cache_names is None or name in cache_names:
 				cache.clear()
@@ -77,6 +79,7 @@ class Caches(object):
 
 	def _query_objects(self, query, attrs):
 		lo = getMachineConnection()
+		log('Querying %s with %r', query, attrs)
 		return lo.search(query, attr=attrs)
 
 	def get_sub_cache(self, name):
@@ -85,6 +88,7 @@ class Caches(object):
 	def add(self, klass):
 		if not klass.ldap_filter or not klass.value:
 			return
+		debug('Adding %r', klass)
 		name = klass.db_name or klass.__name__
 		cache = self.get_sub_cache(name)
 		if cache is None:
@@ -110,6 +114,7 @@ class Shard(object):
 			key = self.get_key(obj)
 		except ValueError:
 			return
+		debug('Adding %s', key)
 		values = self.get_values(obj)
 		if values:
 			self._cache.save(key, values)

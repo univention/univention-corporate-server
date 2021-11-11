@@ -36,28 +36,31 @@ import json
 import gdbm
 
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
+from univention.ldap_cache.log import log, debug
 
 
 class GdbmCaches(Caches):
 	def add_sub_cache(self, name, single_value):
 		db_file = os.path.join(self._directory, '%s.db' % name)
-		cache = GdbmCache(db_file, single_value)
+		debug('Using GDBM %s', name)
+		cache = GdbmCache(name, single_value)
+		cache.db_file = db_file
 		self._caches[name] = cache
 		return cache
 
 
 class GdbmCache(LdapCache):
-	def _fix_permissions(self, db_file):
+	def _fix_permissions(self):
 		listener_uid = getpwnam('listener').pw_uid
-		os.chown(db_file, listener_uid, -1)
+		os.chown(self.db_file, listener_uid, -1)
 
 	@contextmanager
 	def writing(self, writer=None):
 		if writer is not None:
 			yield writer
 		else:
-			writer = gdbm.open(self.name, 'csu')
-			self._fix_permissions(self.name)
+			writer = gdbm.open(self.db_file, 'csu')
+			self._fix_permissions()
 			try:
 				yield writer
 			finally:
@@ -68,17 +71,20 @@ class GdbmCache(LdapCache):
 			self.delete(key, writer)
 			if not values:
 				return
+			debug('%s - Saving %s %r', self.name, key, values)
 			if self.single_value:
 				writer[key] = values[0]
 			else:
 				writer[key] = json.dumps(values)
 
 	def clear(self):
-		db = gdbm.open(self.name, 'n')
-		self._fix_permissions(self.name)
+		log('%s - Clearing whole DB!', self.name)
+		db = gdbm.open(self.db_file, 'n')
+		self._fix_permissions()
 		db.close()
 
 	def delete(self, key, writer=None):
+		debug('%s - Delete %s', self.name, key)
 		with self.writing(writer) as writer:
 			try:
 				del writer[key]
@@ -90,8 +96,8 @@ class GdbmCache(LdapCache):
 		if reader is not None:
 			yield reader
 		else:
-			reader = gdbm.open(self.name, 'csu')
-			self._fix_permissions(self.name)
+			reader = gdbm.open(self.db_file, 'csu')
+			self._fix_permissions()
 			try:
 				yield reader
 			finally:
@@ -113,6 +119,7 @@ class GdbmCache(LdapCache):
 				return json.loads(value)
 
 	def load(self):
+		debug('%s - Loading %s', self.name)
 		with self.reading() as reader:
 			return dict(reader)
 

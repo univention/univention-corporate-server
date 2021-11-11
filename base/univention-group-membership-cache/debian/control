@@ -6,6 +6,7 @@ Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
  dh-python,
+ univention-config-dev,
  python-all,
 # python3-all,
 
