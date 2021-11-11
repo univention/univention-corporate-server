@@ -183,7 +183,7 @@ and not in / .
 		]]></screen>
 		<para>
 			Since this example is created from scratch, the missing <filename>Makefile</filename> is normal and this warning can be ignored.
-			Instead of writing a Makefile to install the single executable, <command>dh_install</command> will be used later to install the file.
+			Instead of writing a <filename>Makefile</filename> to install the single executable, <command>dh_install</command> will be used later to install the file.
 		</para>
 		<para>
 			Since the command completed successfully, several files were created in the <filename class="directory">debian/</filename> directory.

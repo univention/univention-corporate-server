@@ -216,7 +216,7 @@ or add --createorig to create one.
 			<varlistentry><term><filename>rules</filename></term>
 				<listitem>
 					<para>
-						This is a Makefile style file, which controls the package build process.
+						This is a <filename>Makefile</filename> style file, which controls the package build process.
 						See <xref linkend="deb:rules"/> below for more information.
 					</para>
 				</listitem>
@@ -318,7 +318,7 @@ or add --createorig to create one.
 				<term><filename><replaceable>package</replaceable>.manpage.sgml</filename></term>
 				<listitem>
 					<para>
-						Manual page for programs, library functions or file formats, either directly in <acronym>troff</acronym> or <acronym>SGML</acronym>.
+						Manual page for programs, library functions or file formats, either directly in <command>troff</command> or <acronym>SGML</acronym>.
 						See <citerefentry><refentrytitle>dh_installman</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
