@@ -29,4 +29,4 @@
 
 #DEBHELPER#
 
-/usr/share/univention-group-membership-cache/univention-ldap-cache create-listeners
+/usr/share/univention-group-membership-cache/univention-ldap-cache create-listener-modules

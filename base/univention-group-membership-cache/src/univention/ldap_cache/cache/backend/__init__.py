@@ -51,9 +51,11 @@ class Caches(object):
 					ret.append(shard)
 		return ret
 
-	def get_queries(self):
+	def get_queries(self, cache_names=None):
 		queries = {}
 		for name, cache in self._caches.items():
+			if cache_names is not None and name not in cache_names:
+				continue
 			for shard in cache.shards:
 				queries.setdefault(shard.ldap_filter, ([], set()))
 				caches, attrs = queries[shard.ldap_filter]
@@ -63,12 +65,11 @@ class Caches(object):
 				attrs.update(shard.attributes)
 		return queries
 
-	def rebuild(self, class_names=None):
-		if class_names is None:
-			class_names = sorted(self._caches)
-		for cache in self._caches.values():
-			cache.clear()
-		for query, (caches, attrs) in self.get_queries().items():
+	def rebuild(self, cache_names=None):
+		for name, cache in self._caches.items():
+			if cache_names is None or name in cache_names:
+				cache.clear()
+		for query, (caches, attrs) in self.get_queries(cache_names).items():
 			attrs.discard('dn')
 			for obj in self._query_objects(query, attrs):
 				for shard in caches:

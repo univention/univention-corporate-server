@@ -36,6 +36,7 @@ from univention.ldap_cache.cache import LowerValuesShard
 class EntryUUIDShard(LowerValuesShard):
 	db_name = 'EntryUUID'
 	single_value = True
+	key = 'entryUUID'
 	value = 'dn'
 
 
