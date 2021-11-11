@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.3-4) unstable; urgency=low
+
+  * Bug #26089: Add priority for module execution order
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Nov 2021 13:03:33 +0100
+
 univention-directory-listener (13.0.3-3) unstable; urgency=low
 
   * Bug #52956: remove use of univention.misc
