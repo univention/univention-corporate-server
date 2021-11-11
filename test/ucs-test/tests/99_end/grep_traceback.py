@@ -162,7 +162,7 @@ COMMON_EXCEPTIONS = (
 	E('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access'}$", ['uldap.py.* in modify'], 53721),
 	E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access', 'info': 'no write access to parent'}", ['uldap.py.* in add', 'uldap.py.* in delete'], 53721),
-	E('permissionDenied$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock']),
+	E('permissionDenied$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock', 'in __primary_group']),
 	E('univention.admin.uexceptions.permissionDenied: Can not modify lock time of .*', ['in sync_to_ucs']),
 	E(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	E('^ldapError: No such object', ['in _create']),
