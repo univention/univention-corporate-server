@@ -55,10 +55,10 @@ class User(object):
 		disallow_anonymous = auth_info.get('disallow_anonymous', False)
 		allowed_roles = set(auth_info.get('roles', []))
 		allowed_idps = set(auth_info.get('idps', []))
-		allowed_loa = auth_info.get('loa', "")
+		allowed_loa = auth_info.get('loa')
 		roles = set(self.args.get('roles', []))
 		idps = set(self.args.get('idps', []))
-		loa = self.args.get('loa', "")
+		loa = self.args.get('loa', 'low')
 
 		def conditions():
 			yield not disallow_anonymous or not self.is_anonymous()

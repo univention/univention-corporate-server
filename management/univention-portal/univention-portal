@@ -452,9 +452,9 @@ def list_extensions():
 @cli.command('update-authinfo')
 @click.argument("entry_dn")
 @click.option('--idps', '-i', multiple=True, default=[], help='List of IDPs to which the user has to belong in order to see the UCS Portal tile.')
-@click.option('--loa', '-l', default="", type=click.Choice(['low', 'medium', 'high', '']), help='"Level of Assurance" the user has to use in order to see the UCS Portal tile. "LoA" is derived from the login mechanism used by the user')
-@click.option('--roles', '-r', multiple=True, default=[], type=click.Choice(['default', 'student', 'teacher', '']), help='List of roles to which the user has to belong in order to see the UCS Portal tile.')
-@click.option('--allow-anonymous/--disallow-anonymous', '-a/-d', default=True, help='Control over visibility of the UCS Portal tile for anonymous users.')
+@click.option('--loa', '-l', type=click.Choice(['low', 'medium', 'high']), help='"Level of Assurance" the user has to use in order to see the UCS Portal tile. "LoA" is derived from the login mechanism used by the user')
+@click.option('--roles', '-r', multiple=True, default=[], type=click.Choice(['default', 'student', 'teacher']), help='List of roles to which the user has to belong in order to see the UCS Portal tile.')
+@click.option('--allow-anonymous/--disallow-anonymous', '-a/-d', help='Control over visibility of the UCS Portal tile for anonymous users.')
 @click.option('--remove', '-R', is_flag=True, help='Remove the entry for the specified dn.')
 def update_authinfo(entry_dn, roles, idps, loa, allow_anonymous, remove):
 	try:
@@ -465,10 +465,10 @@ def update_authinfo(entry_dn, roles, idps, loa, allow_anonymous, remove):
 
 	if not remove:
 		auth_info[entry_dn] = {
-			"roles": roles,
-			"idps": idps,
-			"loa": loa,
-			"disallow_anonymous": not allow_anonymous,
+			"roles": roles if roles else auth_info.get(entry_dn, {}).get("roles", []),
+			"idps": idps if idps else auth_info.get(entry_dn, {}).get("idps", []),
+			"loa": loa if loa else auth_info.get(entry_dn, {}).get("loa"),
+			"disallow_anonymous": not allow_anonymous if allow_anonymous is not None else auth_info.get(entry_dn, {}).get("disallow_anonymous", False),
 		}
 	else:
 		auth_info.pop(entry_dn, None)
