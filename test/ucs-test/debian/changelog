@@ -1,3 +1,9 @@
+ucs-test (10.0.6-71) unstable; urgency=medium
+
+  * Bug #42080: Ignore tracebacks in logs from this bug
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 11 Nov 2021 11:16:19 +0100
+
 ucs-test (10.0.6-70) unstable; urgency=medium
 
   * Bug #54013: Add testcase for homeshare access
