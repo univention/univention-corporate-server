@@ -175,6 +175,18 @@ error0:
 }
 
 
+/* Insert handler in sorted order */
+static void insert_handler(Handler *handler) {
+	Handler **ptr = &handlers;
+
+	while (*ptr && (*ptr)->priority <= handler->priority)
+		ptr = &((*ptr)->next);
+
+	handler->next = *ptr;
+	*ptr = handler;
+}
+
+
 /* load handler and insert it into list of handlers */
 static int handler_import(char *filename) {
 	char *filter, *error_msg = NULL;
@@ -210,6 +222,16 @@ static int handler_import(char *filename) {
 		}
 	}
 	PyErr_Clear();  // Silent error when attribute is not set
+
+	do { /* optional */
+		handler->priority = strcmp(filename, "replication.py") ? PRIORITY_DEFAULT : PRIORITY_MINIMUM;
+		PyObject *var = PyObject_GetAttrString(handler->module, "priority");
+		if (!var)
+			break;
+		handler->priority = PyFloat_AsDouble(var);
+		Py_XDECREF(var);
+	} while(0);
+	PyErr_Clear(); // Silent error when attribute is not set
 
 	do { /* optional */
 		PyObject *var = PyObject_GetAttrString(handler->module, "handle_every_delete");
@@ -272,19 +294,7 @@ static int handler_import(char *filename) {
 		fclose(state_fp);
 	}
 
-	/* insert into list */
-	if (handlers == NULL) {
-		handler->next = handlers;
-		handlers = handler;
-	} else {
-		Handler *tmp = handlers;
-
-		while (tmp->next != NULL) {
-			tmp = tmp->next;
-		}
-		tmp->next = handler;
-		handler->next = NULL;
-	}
+	insert_handler(handler);
 
 	return 0;
 error:
@@ -473,29 +483,8 @@ int handlers_load_path(char *path) {
 		DIR *dir;
 		struct dirent *de;
 
-		/* Load replication.py before any other module, so that it
-		   gets considered first when initializing modules and stuff.
-		   I don't think this is the right place, and it should
-		   rather be done when actually initializing the modules,
-		   but I'll leave it like this for now (RB). Anyway, we do
-		   this so that other handler modules can rely on LDAP being
-		   there */
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
-			if (strcmp(de->d_name, "replication.py") == 0) {
-				char filename[PATH_MAX];
-				rv = snprintf(filename, PATH_MAX, "%s/%s", path, de->d_name);
-				if (rv < 0 || rv >= PATH_MAX)
-					abort();
-				rv = handler_import(filename);
-			}
-		}
-		closedir(dir);
-
-		dir = opendir(path);
-		while ((de = readdir(dir))) {
-			/* Don't load replication.py twice, of course */
-			if (strcmp(de->d_name, "replication.py") != 0) {
 				char *s = strrchr(de->d_name, '.');
 				/* Only load *.py files */
 				if ((s != NULL) && (strcmp(s, ".py") == 0)) {
@@ -505,7 +494,6 @@ int handlers_load_path(char *path) {
 						abort();
 					rv = handler_import(filename);
 				}
-			}
 		}
 		closedir(dir);
 	} else if (S_ISREG(st.st_mode)) {
