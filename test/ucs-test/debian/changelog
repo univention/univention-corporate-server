@@ -1,3 +1,9 @@
+ucs-test (9.0.7-74) unstable; urgency=medium
+
+  * Bug #54014: Add testcase for homeshare access
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 11 Nov 2021 11:10:47 +0100
+
 ucs-test (9.0.7-73) unstable; urgency=medium
 
   * Bug #54014: Revert: Adjust to changed samba error code
