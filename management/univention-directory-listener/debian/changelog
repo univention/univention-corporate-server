@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.5-4) unstable; urgency=low
+
+  * Bug #26089: Add priority for module execution order
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Nov 2021 13:31:25 +0100
+
 univention-directory-listener (14.0.5-3) unstable; urgency=low
 
   * Bug #53071: Make StdIO unbuffered
