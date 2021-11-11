@@ -49,7 +49,6 @@
 enum state {
 	HANDLER_INITIALIZED = 1 << 0,
 	HANDLER_READY = 1 << 1,
-	HANDLER_PREPARED = 1 << 2,
 };
 
 struct filter {
