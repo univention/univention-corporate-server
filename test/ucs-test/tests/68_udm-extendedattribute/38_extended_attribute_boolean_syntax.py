@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: settings/extended_attribute with boolean syntax
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -13,10 +13,19 @@
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	@pytest.mark.xfail(reason='wrong version')
+	def test_extended_attribute_boolean_syntax(self, udm):
+		"""settings/extended_attribute with boolean syntax"""
+		# versions:
+		#  4.1-2: skip
+		#  4.1-3: fixed
 		properties = {
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),

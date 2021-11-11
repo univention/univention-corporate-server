@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Append multivalue settings/extended_attribute values to object
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -10,10 +10,15 @@
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_multivalue_append_during_object_creation(self, udm):
+		"""Append multivalue settings/extended_attribute values to object"""
 		properties = {
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),

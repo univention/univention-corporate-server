@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: settings/extented_attribute LDAP modlist hook
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -12,14 +12,32 @@ import univention.testing.utils as utils
 import univention.testing.strings as uts
 import pytest
 
-if __name__ == '__main__':
-	hook_name = uts.random_name()
-	cli_name = uts.random_string()
-	attr_name = 'univentionFreeAttribute15'
 
-	fn_hook = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/{}.py'.format(hook_name)
+@pytest.fixture
+def hook_name():
+	return uts.random_name()
+
+
+@pytest.fixture
+def fn_hook():
+	return '/usr/lib/python3/dist-packages/univention/admin/hooks.d/{}.py'.format(hook_name)
+
+
+@pytest.fixture
+def acc(fn_hook):
 	exit_cmd = ['/bin/rm', '-f', fn_hook]
-	with utils.AutoCallCommand(exit_cmd=exit_cmd) as acc:
+	with utils.AutoCallCommand(exit_cmd=exit_cmd) as acc_:
+		yield acc_
+
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm', 'apptest')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_attributehook_value_mapping(self, udm, acc, hook_name, fn_hook):
+		"""settings/extented_attribute LDAP modlist hook"""
+		cli_name = uts.random_string()
+		attr_name = 'univentionFreeAttribute15'
 		with udm_test.UCSTestUDM() as udm:
 			with open(fn_hook, 'w') as hook_module:
 				hook_module.write("""

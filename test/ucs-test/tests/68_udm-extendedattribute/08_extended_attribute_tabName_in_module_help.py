@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Find settings/extended_attribute tabName in module help
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -11,10 +11,15 @@
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_tabName_in_module_help(self, udm):
+		"""Find settings/extended_attribute tabName in module help"""
 		properties = {
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),
@@ -28,5 +33,4 @@ if __name__ == '__main__':
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8')
-		if not properties['tabName'] in module_help_text:
-			utils.fail('Could not find tab name of created settings/extended_attribute in module help')
+		assert properties['tabName'] in module_help_text, 'Could not find tab name of created settings/extended_attribute in module help'
