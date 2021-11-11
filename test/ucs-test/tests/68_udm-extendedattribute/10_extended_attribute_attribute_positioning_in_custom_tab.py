@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Positioning in custom tabs
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -11,10 +11,15 @@
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_attribute_positioning_in_custom_tab(self, udm):
+		"""Positioning in custom tabs"""
 		tab = uts.random_name()
 		extended_attributes = {}
 
@@ -41,9 +46,7 @@ if __name__ == '__main__':
 				continue
 
 			if cli_name in extended_attributes:
-				if extended_attributes[cli_name] != tab_position:
-					utils.fail('Detected mistake in appearance order of attribute CLI names under tab')
+				assert extended_attributes[cli_name] == tab_position, 'Detected mistake in appearance order of attribute CLI names under tab'
 				tab_position += 1
 
-		if tab_position < 4:
-			utils.fail('Not all created attributes found in module')
+		assert tab_position >= 4, 'Not all created attributes found in module'

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Check that required=True is enforced for singlevalue extended attributes
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -10,10 +10,15 @@
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
+import pytest
 
 
-def main():
-	with udm_test.UCSTestUDM() as udm:
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm', 'apptest')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_remove_required_singlevalue_1(self, udm):
+		"""Check that required=True is enforced for singlevalue extended attributes"""
 		udm.create_object(
 			'settings/extended_attribute',
 			position=udm.UNIVENTION_CONTAINER,
@@ -27,13 +32,5 @@ def main():
 		)
 
 		# try creating an udm object without the just created extended attribute given (expected to fail)
-		try:
+		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, message='UDM did not report an error while trying to create an object a required single value extended attribute was not given'):
 			udm.create_group()
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			return
-
-		utils.fail('UDM did not report an error while trying to create an object a required single value extended attribute was not given')
-
-
-if __name__ == '__main__':
-	main()

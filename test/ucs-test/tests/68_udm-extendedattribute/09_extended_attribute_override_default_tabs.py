@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Override default tab with settings/extended_attribute
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -12,11 +12,15 @@ from __future__ import print_function
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
 
-def main():
-	with udm_test.UCSTestUDM() as udm:
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_override_default_tabs(self, udm):
+		"""Override default tab with settings/extended_attribute"""
 		properties = {
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),
@@ -34,19 +38,11 @@ def main():
 
 		for i in range(0, len(module_help_text)):
 			if module_help_text[i] == '  %s:' % properties['tabName']:
-				if not properties['CLIName'] in module_help_text[i + 1]:
-					utils.fail('Could not find attribute CLI name under tab')
+				assert properties['CLIName'] in module_help_text[i + 1], 'Could not find attribute CLI name under tab'
 				try:
-					if not module_help_text[i + 2].endswith(':'):
-						print('--> ', module_help_text[i + 2])
-						utils.fail('Tab not overridden')
+					assert module_help_text[i + 2].endswith(':'), ' '.join(['-->', module_help_text[i + 2], '\nTab not overriden'])
 				except IndexError:
 					# no more help, tab is overwritten
 					pass
 				return
-
-		utils.fail('Tab not found')
-
-
-if __name__ == '__main__':
-	main()
+		pytest.fail('Tab not found')

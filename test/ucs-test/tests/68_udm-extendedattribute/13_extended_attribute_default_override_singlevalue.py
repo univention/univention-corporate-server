@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Default value of single value settings/extended_attribute is overridden by explicitly given value
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -10,10 +10,15 @@
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import pytest
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
+
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_default_override_singlevalue(self, udm):
+		"""Default value of single value settings/extended_attribute is overridden by explicitly given value"""
 		properties = {
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),

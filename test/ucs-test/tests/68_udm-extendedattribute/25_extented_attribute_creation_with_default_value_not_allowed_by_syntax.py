@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Create settings/extented_attribute with a value for it's default which is not valid for it's syntax value
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -12,11 +12,19 @@
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
+import pytest
 
 
-def main():
-	with udm_test.UCSTestUDM() as udm:
-		try:
+class Test_UDMExtension(object):
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	@pytest.mark.xfail(reason='wrong version')
+	def test_extented_attribute_creation_with_default_value_not_allowed_by_syntax(self, udm):
+		"""Create settings/extented_attribute with a value for it's default which is not valid for it's syntax value"""
+		# versions:
+		#   3.2-0: skip
+		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
 			udm.create_object(
 				'settings/extended_attribute',
 				position=udm.UNIVENTION_CONTAINER,
@@ -29,11 +37,3 @@ def main():
 				syntax='integer',
 				default='notaninteger'
 			)
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			return
-
-		utils.fail('Successfully created a settings/extented_attribute object with a value for it\'s default which is not valid for it\'s syntax value')
-
-
-if __name__ == '__main__':
-	main()
