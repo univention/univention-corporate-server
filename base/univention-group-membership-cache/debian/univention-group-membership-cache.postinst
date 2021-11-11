@@ -30,3 +30,5 @@
 #DEBHELPER#
 
 /usr/share/univention-group-membership-cache/univention-ldap-cache create-listener-modules
+
+exit 0

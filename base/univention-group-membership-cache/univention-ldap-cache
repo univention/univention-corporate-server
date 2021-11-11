@@ -105,8 +105,12 @@ def query(args):
         return
     data = cache.load()
     regex = None
-    if args.query:
-        regex = re.compile(args.query)
+    if args.pattern:
+        try:
+            regex = re.compile(args.pattern)
+        except re.error:
+            print('Broken pattern')
+            return
     for key in sorted(data):
         if regex is None or regex.search(key):
             print(key, '=>', data[key])
@@ -120,7 +124,7 @@ def main():
 
     subparser = subparsers.add_parser('query', description='Queries a sub cache and shows the value(s). Mainly for test purposes, this tool is not meant for real applications', help='Query the cache')
     subparser.add_argument('cache_name', help='The name of the sub cache. See "list"')
-    subparser.add_argument('query', nargs='?', help='Queries the key with this regexp')
+    subparser.add_argument('pattern', nargs='?', help='Queries the key with this regexp')
     subparser.set_defaults(func=query)
 
     subparser = subparsers.add_parser('list', description='Lists all sub caches of the cache. Each sub cache may be fed from multiple sources', help='List all parts of the cache')
