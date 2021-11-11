@@ -72,11 +72,16 @@ struct _Handler {
 	PyObject *postrun;
 	PyObject *prerun;
 	PyObject *setdata;
+	double priority;
 	struct _Handler *next;
 
 	enum state state;
 	int prepared : 1;
 } typedef Handler;
+
+#define PRIORITY_MINIMUM 0.0
+#define PRIORITY_DEFAULT 50.0
+#define PRIORITY_MAXIMUM 100.0
 
 int handlers_init(void);
 int handlers_free_all(void);
