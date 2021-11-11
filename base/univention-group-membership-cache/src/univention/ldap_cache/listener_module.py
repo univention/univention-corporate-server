@@ -29,22 +29,22 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.ldap_cache.cache import caches
+from univention.ldap_cache.cache import get_cache
 from univention.listener.handler import ListenerModuleHandler
 
 class LdapCacheHandler(ListenerModuleHandler):
 	def create(self, dn, new):
-		for shard in caches.get_shards_for_query(self._get_configuration().get_ldap_filter()):
+		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			shard.add_object((dn, new))
 
 	def modify(self, dn, old, new, old_dn):
-		for shard in caches.get_shards_for_query(self._get_configuration().get_ldap_filter()):
+		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			if old_dn:
 				shard.delete((old_dn, old))
 			shard.add_object((dn, new))
 
 	def remove(self, dn, old):
-		for shard in caches.get_shards_for_query(self._get_configuration().get_ldap_filter()):
+		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			shard.delete((dn, old))
 
 	class Configuration(ListenerModuleHandler.Configuration):

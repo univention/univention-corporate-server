@@ -29,31 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+
 from ldap import explode_dn
 
-from univention.ldap_cache.gdbm_cache import GdbmCaches as Caches, GdbmCache as Cache, GdbmShard as Shard
-#from univention.ldap_cache.lmdb_cache import LmdbCaches as Caches, LmdbCache as Cache, LmdbShard as Shard
-
-class LowerValuesShard(Shard):
-	def get_values(self, obj):
-		values = super(LowerValuesShard, self).get_values(obj)
-		return [value.lower() for value in values]
-
-
-class EntryUUID(Cache):
-	single_value = True
-
-
-class EntryUUIDShard(LowerValuesShard):
-	value = 'dn'
-
-
-class UserEntryUUIDShard(EntryUUIDShard):
-	ldap_filter = '(univentionObjectType=users/user)'
-
-
-class GroupEntryUUIDShard(EntryUUIDShard):
-	ldap_filter = '(univentionObjectType=groups/group)'
+from univention.ldap_cache.cache import LowerValuesShard
 
 
 class UsersInGroup(LowerValuesShard):
@@ -80,38 +59,3 @@ class GroupsInGroup(UsersInGroup):
 				continue
 			ret.append(value)
 		return ret
-
-
-#class UserAzureConnections(Shard):
-#	single_value = True
-#	ldap_filter = '(univentionObjectType=users/user)'
-#	value = 'univentionOffice365ADConnectionAlias'
-#	attributes = ['univentionOffice365Enabled']
-#
-#	def get_values(self, obj):
-#		if obj[1].get('univentionOffice365Enabled', [b'0'])[0] == b'0':
-#			return []
-#		return super(UserAzureConnections, self).get_values(obj)
-
-
-caches = Caches()
-cache0 = caches.add_cache_class(EntryUUID)
-cache0.add_shard(UserEntryUUIDShard)
-cache0.add_shard(GroupEntryUUIDShard)
-cache1 = caches.add_full_shard(UsersInGroup)
-cache2 = caches.add_full_shard(GroupsInGroup)
-#cache3 = caches.add_full_shard(UserAzureConnections)
-#caches.rebuild()
-
-
-def dn_to_entry_uuid(dn):
-	cache = caches.get_cache('EntryUUID')
-	dn = dn.lower()
-	for key, value in cache:
-		if value == dn:
-			return key
-
-
-def entry_uuid_to_dn(entry_uuid):
-	cache = caches.get_cache('EntryUUID')
-	return cache.get(entry_uuid)

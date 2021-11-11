@@ -33,7 +33,12 @@ from univention.uldap import getMachineConnection
 DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
+from univention.ldap_cache.cache.plugins import Plugin
+
+
 class Caches(object):
+	__metaclass__ = Plugin
+
 	def __init__(self, db_directory=DB_DIRECTORY):
 		self._directory = db_directory
 		self._caches = {}
@@ -73,12 +78,27 @@ class Caches(object):
 		lo = getMachineConnection()
 		return lo.search(query, attr=attrs)
 
-	def get_cache(self, name):
-		return self._caches[name]
+	def get_sub_cache(self, name):
+		return self._caches.get(name)
+
+	def add(self, klass):
+		if not klass.ldap_filter or not klass.value:
+			return
+		name = klass.db_name or klass.__name__
+		cache = self.get_sub_cache(name)
+		if cache is None:
+			cache = self.add_sub_cache(name, klass.single_value)
+		cache.add_shard(klass)
 
 
 class Shard(object):
+	__metaclass__ = Plugin
+
+	ldap_filter = None
+	db_name = None
+	single_value = False
 	key = 'entryUUID'
+	value = None
 	attributes = []
 
 	def __init__(self, cache):
@@ -111,10 +131,11 @@ class Shard(object):
 
 
 class LdapCache(object):
-	single_value = False
+	__metaclass__ = Plugin
 
-	def __init__(self, name=None):
+	def __init__(self, name, single_value):
 		self.name = name
+		self.single_value = single_value
 		self.shards = []
 
 	def add_shard(self, shard_class):

@@ -35,11 +35,11 @@ from contextlib import contextmanager
 
 import lmdb
 
-from univention.ldap_cache.base_cache import Caches, LdapCache, Shard
+from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 
 class LmdbCaches(Caches):
-	def __init__(self, db_directory=DB_DIRECTORY):
-		super(LmdbCaches, self).__init__(db_directory=db_directory)
+	def __init__(self, *args, **kwargs):
+		super(LmdbCaches, self).__init__(*args, **kwargs)
 		self.env = lmdb.open(self._directory, 2 ** 32 - 1, max_dbs=128)
 		self._fix_permissions(self._directory)
 
@@ -48,25 +48,12 @@ class LmdbCaches(Caches):
 		os.chown(os.path.join(db_directory, 'data.mdb'), listener_uid, -1)
 		os.chown(os.path.join(db_directory, 'lock.mdb'), listener_uid, -1)
 
-	def add_cache_class(self, cache_class):
-		return self.add_cache(cache_class, cache_class.__name__, cache_class.single_value)
-
-	def add_cache(self, cache_class, name, single_value):
+	def add_sub_cache(self, name, single_value):
 		sub_db = self.env.open_db(name, dupsort=not single_value)
-		cache = cache_class(name)
+		cache = LmdbCache(name, single_value)
 		cache.env = self.env
 		cache.sub_db = sub_db
 		self._caches[name] = cache
-		return cache
-
-	def add_full_shard(self, shard_class):
-		try:
-			single_value = shard_class.single_value
-		except AttributeError:
-			single_value = False
-		cache = self.add_cache(LmdbCache, shard_class.__name__, single_value)
-		cache.single_value = single_value
-		cache.add_shard(shard_class)
 		return cache
 
 

@@ -30,10 +30,18 @@
 #
 
 
-
-def groups_for_user(user_dn, consider_groups_in_groups=True):
-	return []
+from univention.ldap_cache.cache import LowerValuesShard
 
 
-def users_in_group(group_dn, consider_groups_in_groups=True):
-	return []
+class EntryUUIDShard(LowerValuesShard):
+	db_name = 'EntryUUID'
+	single_value = True
+	value = 'dn'
+
+
+class UserEntryUUIDShard(EntryUUIDShard):
+	ldap_filter = '(univentionObjectType=users/user)'
+
+
+class GroupEntryUUIDShard(EntryUUIDShard):
+	ldap_filter = '(univentionObjectType=groups/group)'

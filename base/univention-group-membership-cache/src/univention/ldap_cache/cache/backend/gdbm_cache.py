@@ -35,24 +35,15 @@ import json
 
 import gdbm
 
-from univention.ldap_cache.base_cache import Caches, LdapCache, Shard
+from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 
 
 
 class GdbmCaches(Caches):
-	def add_cache_class(self, cache_class):
-		return self.add_cache(cache_class, cache_class.__name__)
-
-	def add_cache(self, cache_class, name):
-		name = os.path.join(self._directory, '%s.db' % name)
-		cache = cache_class(name)
+	def add_sub_cache(self, name, single_value):
+		db_file = os.path.join(self._directory, '%s.db' % name)
+		cache = GdbmCache(db_file, single_value)
 		self._caches[name] = cache
-		return cache
-
-	def add_full_shard(self, shard_class):
-		cache = self.add_cache(GdbmCache, shard_class.__name__)
-		cache.single_value = getattr(shard_class, 'single_value', False)
-		cache.add_shard(shard_class)
 		return cache
 
 

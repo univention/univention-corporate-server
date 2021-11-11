@@ -30,10 +30,16 @@
 #
 
 
-
-def groups_for_user(user_dn, consider_groups_in_groups=True):
-	return []
-
-
-def users_in_group(group_dn, consider_groups_in_groups=True):
-	return []
+#from univention.ldap_cache.cache import Shard
+#
+#
+#class UserAzureConnections(Shard):
+#	single_value = True
+#	ldap_filter = '(univentionObjectType=users/user)'
+#	value = 'univentionOffice365ADConnectionAlias'
+#	attributes = ['univentionOffice365Enabled']
+#
+#	def get_values(self, obj):
+#		if obj[1].get('univentionOffice365Enabled', [b'0'])[0] == b'0':
+#			return []
+#		return super(UserAzureConnections, self).get_values(obj)

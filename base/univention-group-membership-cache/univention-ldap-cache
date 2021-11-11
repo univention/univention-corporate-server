@@ -36,7 +36,7 @@ from hashlib import md5
 from glob import glob
 import subprocess
 
-from univention.ldap_cache.cache import caches
+from univention.ldap_cache.cache import get_cache
 
 listener_template = '''#!/usr/bin/python2.7
 from univention.ldap_cache.listener_module import LdapCacheHandler
@@ -61,13 +61,13 @@ def _md5sum(value):
 
 
 def rebuild(names):
-    caches.rebuild(names)
+    get_cache().rebuild(names)
 
 
 def create_listener_modules():
     listener_dir = '/usr/lib/univention-directory-listener/system/'
     existing_listeners = set(glob(os.path.join(listener_dir, 'ldap-cache-*')))
-    for query, (_caches, attrs) in caches.get_queries().items():
+    for query, (_caches, attrs) in get_cache().get_queries().items():
         attrs.discard('dn')
         attrs.discard('entryUUID')
         listener_name = 'ldap-cache-%s' % _md5sum(query)
