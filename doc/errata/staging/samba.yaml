@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: samba
-fix: 2:4.13.13-1A~5.0.0.202111100959
+fix: 2:4.13.13-1A~5.0.0.202111121222
 desc: |
  This update addresses the following issues:
  * Update Samba to 4.13.14 (effectively), which fixes the security issues
