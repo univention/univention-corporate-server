@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-samba
-fix: 14.0.5-1A~5.0.0.202111101057
+fix: 14.0.5-2A~5.0.0.202111121233
 desc: |
  This update addresses the following issues:
  * Update Samba to 4.13.14 (effectively)
