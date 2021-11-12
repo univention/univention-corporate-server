@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-samba
-fix: 13.0.0-15A~4.4.0.202111101059
+fix: 13.0.0-16A~4.4.0.202111121257
 desc: |
  This update addresses the following issues:
  * Add "username map script" for use when samba is configured as
