@@ -38,6 +38,7 @@ if configRegistry.get('windows/domain'):
 	# </idmap config v6 for Samba 3.6.0>
 
 print('\tusername map script = /usr/share/univention-samba/mapusers.sh')
+print('\tlocal nt token from nss:* = no')
 
 if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
 	print('\twinbind trusted domains only = yes')  # deprecated legacy setting
