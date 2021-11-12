@@ -1,4 +1,4 @@
-univention-samba (13.0.0-15) unstable; urgency=medium
+univention-samba (13.0.0-16) unstable; urgency=medium
 
   * Bug #54014: Configure username map script for nss_ldap
 
