@@ -119,7 +119,7 @@ class GdbmCache(LdapCache):
 				return json.loads(value)
 
 	def load(self):
-		debug('%s - Loading %s', self.name)
+		debug('%s - Loading', self.name)
 		with self.reading() as reader:
 			return dict(reader)
 

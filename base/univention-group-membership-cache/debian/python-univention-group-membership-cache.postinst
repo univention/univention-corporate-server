@@ -33,7 +33,7 @@ mkdir -p /usr/share/univention-group-membership-cache/caches/
 chown listener:root /usr/share/univention-group-membership-cache/caches
 
 touch /var/log/univention/ldap-cache.log
-chown root:adm /var/log/univention/ldap-cache.log
+chown listener:adm /var/log/univention/ldap-cache.log
 chmod 640 /var/log/univention/ldap-cache.log
 
 exit 0
