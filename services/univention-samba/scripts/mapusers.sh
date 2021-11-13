@@ -1,5 +1,4 @@
 #!/bin/bash
-# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  helper script: map domainname\username to username
