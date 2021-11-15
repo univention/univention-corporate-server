@@ -31,6 +31,7 @@ desc: |
  * Subsequent DCE/RPC fragment injection vulnerability (CVE-2021-23192).
    See https://www.samba.org/samba/security/CVE-2021-23192.html for details.
 bug: [54014]
+note: Additional information available at https://help.univention.com/t/18857
 cve:
  - CVE-2016-2124
  - CVE-2020-25717
