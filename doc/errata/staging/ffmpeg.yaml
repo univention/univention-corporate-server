@@ -1,0 +1,56 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: ffmpeg
+fix: 7:3.2.16-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * FFmpeg 4.2 is affected by a Divide By Zero issue via libavcodec/lpc.h,
+   which allows a remote malicious user to cause a Denial of Service.
+   (CVE-2020-20445)
+ * FFmpeg 4.2 is affected by a Divide By Zero issue via libavcodec/aacpsy.c,
+   which allows a remote malicious user to cause a Denial of Service.
+   (CVE-2020-20446)
+ * Denial of Service issue in FFmpeg 4.2 due to resource management errors via
+   fftools/cmdutils.c. (CVE-2020-20451)
+ * FFmpeg 4.2 is affected by a Divide By Zero issue via libavcodec/aaccoder,
+   which allows a remote malicious user to cause a Denial of Service
+   (CVE-2020-20453)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in avcodec_alloc_context3 at options.c. (CVE-2020-22037)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the av_buffersrc_add_frame_flags function in buffersrc. (CVE-2020-22041)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the url_open_dyn_buf_internal function in libavformat/aviobuf.c.
+   (CVE-2020-22044)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the avpriv_float_dsp_allocl function in libavutil/float_dsp.c.
+   (CVE-2020-22046)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the ff_frame_pool_get function in framepool.c. (CVE-2020-22048)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the wtvfile_open_sector function in wtvdec.c. (CVE-2020-22049)
+ * A Denial of Service vulnerability exists in FFmpeg 4.2 due to a memory leak
+   in the av_dict_set function in dict.c. (CVE-2020-22054)
+ * adts_decode_extradata in libavformat/adtsenc.c in FFmpeg 4.4 does not check
+   the init_get_bits return value, which is a necessary step because the
+   second argument to init_get_bits can be crafted. (CVE-2021-38171)
+ * FFmpeg version (git commit de8e6e67e7523e48bb27ac224a0b446df05e1640)
+   suffers from a an assertion failure at src/libavutil/mathematics.c.
+   (CVE-2021-38291)
+bug: [54057]
+cve:
+- CVE-2020-20445
+- CVE-2020-20446
+- CVE-2020-20451
+- CVE-2020-20453
+- CVE-2020-22037
+- CVE-2020-22041
+- CVE-2020-22044
+- CVE-2020-22046
+- CVE-2020-22048
+- CVE-2020-22049
+- CVE-2020-22054
+- CVE-2021-38171
+- CVE-2021-38291
