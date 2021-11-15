@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Update ldb for samba 4.13.14
 bug: [54013]
+erratum: 154
+announced: 2021-11-15
