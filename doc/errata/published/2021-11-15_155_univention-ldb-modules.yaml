@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Rebuilt for ldb update to version 2.2.3
 bug: [54013]
+erratum: 155
+announced: 2021-11-15
