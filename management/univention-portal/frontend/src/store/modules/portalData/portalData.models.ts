@@ -32,6 +32,8 @@ export type Title = Record<Locale, string>;
 
 export type Description = Record<Locale, string>;
 
+export type Keywords = Record<Locale, string>;
+
 export type LinkTarget = 'newwindow' | 'samewindow' | 'embedded' | 'function';
 
 export type LinkTargetOrDefault = 'newwindow' | 'samewindow' | 'embedded' | 'function' | 'useportaldefault';
@@ -56,6 +58,7 @@ export interface BaseTile extends Tile {
   selectedGroups: string[],
   backgroundColor: string | null,
   description: Description,
+  keywords: Keywords,
   linkTarget: LinkTarget,
   originalLinkTarget: LinkTargetOrDefault,
   links: Link[],
@@ -90,6 +93,7 @@ export interface PortalEntry {
   anonymous: boolean,
   backgroundColor: string | null,
   description: Description,
+  keywords: Keywords,
   linkTarget: LinkTargetOrDefault,
   links: Link[],
   logo_name: string | null,

@@ -125,6 +125,7 @@ import {
   Tile,
   FolderTile,
   Description,
+  Keywords,
   BaseTile,
 } from '@/store/modules/portalData/portalData.models';
 
@@ -227,11 +228,16 @@ export default defineComponent({
       return this.$localized(description).toLowerCase()
         .includes(this.searchQuery.toLowerCase());
     },
+    keywordsMatchesQuery(keywords: Keywords): boolean {
+      return this.$localized(keywords).toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    },
     tileMatchesQuery(tile: Tile): boolean {
       const titleMatch = this.titleMatchesQuery(tile.title);
       const descriptionMatch = (tile as BaseTile).description ? this.descriptionMatchesQuery((tile as BaseTile).description as Description) : false;
+      const keywordsMatch = (tile as BaseTile).keywords ? this.keywordsMatchesQuery((tile as BaseTile).keywords as Description) : false;
       const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title));
-      return titleMatch || folderMatch || descriptionMatch;
+      return titleMatch || folderMatch || descriptionMatch || keywordsMatch;
     },
   },
 });

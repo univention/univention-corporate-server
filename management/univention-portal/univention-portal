@@ -34,6 +34,7 @@ import json
 import datetime
 import ast
 import inspect
+import shlex
 from textwrap import dedent
 from typing import Dict, Union
 
@@ -475,6 +476,29 @@ def update_authinfo(entry_dn, roles, idps, loa, allow_anonymous, remove):
 
 	with open('/var/cache/univention-portal/portal_authinfo.json', 'w') as fd:
 		json.dump(auth_info, fd)
+
+
+@cli.command('update-keywords')
+@click.argument("entry_dn")
+@click.option('--keywords', '-k', multiple=True, default=[], help='List of keywords the UCS Portal tile can be found with via search.')
+@click.option('--remove', '-R', is_flag=True, help='Remove the entry for the specified dn.')
+def update_keywords(entry_dn, keywords, remove):
+	try:
+		with open('/var/cache/univention-portal/portal_keywords.json') as fd:
+			keywords_items = json.load(fd)
+	except (EnvironmentError, ValueError):
+		keywords_items = {}
+
+	if remove:
+		keywords_items.pop(entry_dn, None)
+	else:
+		keywords_items[entry_dn] = dict(
+			shlex.split(keyword)
+			for keyword in keywords
+		)
+
+	with open('/var/cache/univention-portal/portal_keywords.json', 'w') as fd:
+		json.dump(keywords_items, fd)
 
 
 class SomeObj(object):

@@ -46,6 +46,7 @@ function makeEntry(entryID: string, portalEntries: PortalEntry[], portalFolders:
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       pathToLogo: entry.logo_name || './questionMark.svg',
+      keywords: entry.keywords,
     };
   }
   const folder = portalFolders.find((data) => data.dn === entryID);

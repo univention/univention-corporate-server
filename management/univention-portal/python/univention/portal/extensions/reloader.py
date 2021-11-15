@@ -138,6 +138,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		super(PortalReloaderUDM, self).__init__(cache_file)
 		self._portal_dn = portal_dn
 		self._auth_info = None
+		self._keywords = None
 
 	def _check_reason(self, reason, content=None):
 		if super(PortalReloaderUDM, self)._check_reason(reason, content):
@@ -233,6 +234,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 					"linkTarget": entry.props.linkTarget,
 					"backgroundColor": entry.props.backgroundColor,
 					"auth_info": self._get_authorization_info(entry),
+					'keywords': self._get_keywords(entry),
 				}
 
 		for obj in udm.get("portals/entry").search():
@@ -260,6 +262,15 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			except (ValueError, EnvironmentError):
 				self._auth_info = {}
 		return self._auth_info.get(entry.dn, {})
+
+	def _get_keywords(self, entry):
+		if self._keywords is None:
+			try:
+				with open('/var/cache/univention-portal/portal_keywords.json') as fd:
+					self._keywords = json.load(fd)
+			except (ValueError, EnvironmentError):
+				self._keywords = {}
+		return self._keywords.get(entry.dn, {})
 
 	def _extract_folders(self, udm, portal, categories):
 		ret = {}
