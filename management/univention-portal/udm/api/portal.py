@@ -115,6 +115,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'anonymous': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'description': ListOfListOflTextToDictPropertyEncoder,
+		'keywords': ListOfListOflTextToDictPropertyEncoder,
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
 		'link': ListOfListOflTextToListofDictPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,

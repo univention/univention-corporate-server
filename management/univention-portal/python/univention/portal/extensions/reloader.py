@@ -223,6 +223,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 					"in_portal": in_portal,
 					"name": entry.props.displayName,
 					"description": entry.props.description,
+					'keywords': entry.props.keywords,
 					"logo_name": self._save_image(portal, entry),
 					"activated": entry.props.activated,
 					"anonymous": entry.props.anonymous,

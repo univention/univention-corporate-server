@@ -293,6 +293,7 @@ class UMCPortal(Portal):
 	def get_entries(self, content):
 		entries = []
 		colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
+		locale = 'en_US'
 		for module in content["umc_modules"]:
 			if "apps" in module["categories"]:
 				continue
@@ -307,18 +308,22 @@ class UMCPortal(Portal):
 			entries.append({
 				"dn": self._entry_id(module),
 				"name": {
-					"en_US": module["name"],
+					locale: module["name"],
 				},
 				"description": {
-					"en_US": module["description"],
+					locale: module["description"],
+				},
+				"keywords": {
+					locale: ' '.join(module["keywords"]),
 				},
 				"linkTarget": "embedded",
 				"logo_name": logo_name,
 				"backgroundColor": color,
 				"links": [{
-					"locale": "en_US",
+					"locale": locale,
 					"value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))
 				}],
+				# TODO: missing: in_portal, anonymous, activated, allowedGroups
 			})
 		return entries
 

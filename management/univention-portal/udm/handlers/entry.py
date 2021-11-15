@@ -75,6 +75,12 @@ property_descriptions = {
 		multivalue=True,
 		required=True,
 	),
+	'keywords': univention.admin.property(
+		short_description=_('Keywords'),
+		long_description=_('Keywords of the entry used during search.'),
+		syntax=getattr(univention.admin.syntax, 'LocalizedKeywords', univention.admin.syntax.LocalizedDescription),
+		multivalue=True,
+	),
 	'link': univention.admin.property(
 		short_description=_('Links (best pick based on locale / protocol / hostname)'),
 		long_description='',
@@ -132,6 +138,9 @@ layout = [
 		Group(_('Description'), layout=[
 			["description"],
 		]),
+		Group(_('Keywords'), layout=[
+			["keywords"],
+		]),
 		Group(_('Link'), layout=[
 			["linkTarget"],
 			["link"],
@@ -156,6 +165,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'univentionNewPortalEntryDisplayName', mapTranslationValue, unmapTranslationValue)
 mapping.register('description', 'univentionNewPortalEntryDescription', mapTranslationValue, unmapTranslationValue)
+mapping.register('keywords', 'univentionNewPortalEntryKeywords', mapTranslationValue, unmapTranslationValue)
 mapping.register('link', 'univentionNewPortalEntryLink', mapTranslationValue, unmapTranslationValue)
 mapping.register('linkTarget', 'univentionNewPortalEntryLinkTarget', None, univention.admin.mapping.ListToString)
 mapping.register('activated', 'univentionNewPortalEntryActivate', None, univention.admin.mapping.ListToString)
