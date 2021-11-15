@@ -50,6 +50,8 @@ def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
 				if member not in found:
 					found.add(member)
 					search_for_dns.append(member)
+		if not consider_nested_groups:
+			break
 	return sorted(found)
 
 
