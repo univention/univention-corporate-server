@@ -1,5 +1,5 @@
 univention-group-membership-cache (1.0.0-1) unstable; urgency=low
 
-  * Initial Release.
+  * Bug #54068: Initial Release
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Nov 2021 14:57:48 +0100
