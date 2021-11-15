@@ -40,7 +40,7 @@ class LowerValuesShard(Shard):
 		values = super(LowerValuesShard, self).get_values(obj)
 		return [value.lower() for value in values]
 
-
+# Singleton pattern
 def get_cache():
 	if get_cache._cache is None:
 		debug('Creating the Caches instance')

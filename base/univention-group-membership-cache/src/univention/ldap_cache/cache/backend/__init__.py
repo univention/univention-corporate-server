@@ -98,6 +98,9 @@ class Caches(object):
 			cache = self.add_sub_cache(name, klass.single_value)
 		cache.add_shard(klass)
 
+	def add_sub_cache(self, name, single_value):
+		raise NotImplementedError
+
 
 class Shard(object):
 	ldap_filter = None
