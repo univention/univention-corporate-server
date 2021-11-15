@@ -10,12 +10,15 @@ provisioning/configuration.
   - base template for standard test, basically a UCS appliance, not provisioned/joined
 - ucs-master|ucs-backup|ucs-slave|ucs-member - based on generic-unsafe
   - master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
+  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-master-backup.cfg
 - ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
   - master, backup, slave and member, all DHCP, domain: autotest.local, all systems joined
+  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-master-backup-joined.cfg
 - ucs-school-singleserver-joined TODO - based on generic-unsafe
 - ucs-samba-primary|ucs-samba-replica - based on generic-unsafe
   - primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
-
+  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-samba-primary-replica.cfg
+  
 ## Usage
 
 ### Interactive
