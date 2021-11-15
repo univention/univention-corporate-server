@@ -8,7 +8,6 @@ Build-Depends:
  dh-python,
  python-ldap,
  python-univention,
- python-six,
  python-all,
 # python3-all,
 
