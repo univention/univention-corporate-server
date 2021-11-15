@@ -55,16 +55,3 @@ def get_cache():
 
 
 get_cache._cache = None
-
-
-def dn_to_entry_uuid(dn):
-	cache = get_cache().get_sub_cache('EntryUUID')
-	dn = dn.lower()
-	for key, value in cache:
-		if value == dn:
-			return key
-
-
-def entry_uuid_to_dn(entry_uuid):
-	cache = get_cache().get_sub_cache('EntryUUID')
-	return cache.get(entry_uuid)

@@ -63,7 +63,7 @@ def shards_from_config():
 @contextmanager
 def _writing_config():
 	try:
-		with open(CONFIG_FILE, 'w') as fd:
+		with open(CONFIG_FILE) as fd:
 			shards = json.load(fd)
 	except EnvironmentError:
 		shards = []

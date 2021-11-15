@@ -28,11 +28,3 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
-
-
-def groups_for_user(user_dn, consider_groups_in_groups=True):
-	return []
-
-
-def users_in_group(group_dn, consider_groups_in_groups=True):
-	return []

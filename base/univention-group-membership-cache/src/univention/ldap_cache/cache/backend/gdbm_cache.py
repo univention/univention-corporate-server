@@ -66,6 +66,8 @@ class GdbmCache(LdapCache):
 			finally:
 				writer.close()
 
+	reading = writing
+
 	def save(self, key, values):
 		with self.writing() as writer:
 			self.delete(key, writer)
@@ -91,28 +93,20 @@ class GdbmCache(LdapCache):
 			except KeyError:
 				pass
 
-	@contextmanager
-	def reading(self, reader=None):
-		if reader is not None:
-			yield reader
-		else:
-			reader = gdbm.open(self.db_file, 'csu')
-			self._fix_permissions()
-			try:
-				yield reader
-			finally:
-				reader.close()
-
 	def __iter__(self):
 		with self.reading() as reader:
 			key = reader.firstkey()
 			while key is not None:
-				yield key, reader.get(key, reader)
+				yield key, self.get(key, reader)
 				key = reader.nextkey(key)
 
 	def get(self, key, reader=None):
+		print('get', key, reader)
 		with self.reading(reader) as reader:
-			value = reader.get(key)
+			try:
+				value = reader[key]
+			except KeyError:
+				return None
 			if self.single_value:
 				return value
 			elif value:
@@ -120,8 +114,7 @@ class GdbmCache(LdapCache):
 
 	def load(self):
 		debug('%s - Loading', self.name)
-		with self.reading() as reader:
-			return dict(reader)
+		return dict(self)
 
 
 class GdbmShard(Shard):

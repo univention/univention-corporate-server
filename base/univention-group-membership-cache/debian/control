@@ -6,6 +6,8 @@ Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
  dh-python,
+ python-ldap,
+ python-univention,
  python-six,
  python-all,
 # python3-all,
@@ -27,7 +29,6 @@ Description: UCS - Group cache
 Package: python-univention-group-membership-cache
 Architecture: all
 Depends:
- python-lmdb,
  python-gdbm,
  python-ldap,
  python-univention,

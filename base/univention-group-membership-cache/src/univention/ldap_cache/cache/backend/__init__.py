@@ -85,6 +85,12 @@ class Caches(object):
 	def get_sub_cache(self, name):
 		return self._caches.get(name)
 
+	def load(self, name):
+		cache = self.get_sub_cache(name)
+		if cache:
+			return cache.load()
+		return {}
+
 	def add(self, klass):
 		if not klass.ldap_filter or not klass.value:
 			return
