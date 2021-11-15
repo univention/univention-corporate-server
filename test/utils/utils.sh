@@ -1102,6 +1102,17 @@ add_extra_apt_scope () {
 	fi
 }
 
+create_version_file_tmp_ucsver () {
+	local testing="${1:?missing testing parameter}"
+	if [ "x$testing" = "xtrue" ]; then
+		echo "ucsver=@%@version/version@%@-@%@version/patchlevel@%@+$(date +%Y-%m-%d)" | ucr filter>/tmp/ucs.ver
+	elif [ "x$testing" = "xfalse" ]; then
+		echo 'ucsver=@%@version/version@%@-@%@version/patchlevel@%@+e@%@version/erratalevel@%@' | ucr filter>/tmp/ucs.ver
+	else
+		return 1
+	fi
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
