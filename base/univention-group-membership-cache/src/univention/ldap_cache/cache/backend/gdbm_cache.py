@@ -101,7 +101,6 @@ class GdbmCache(LdapCache):
 				key = reader.nextkey(key)
 
 	def get(self, key, reader=None):
-		print('get', key, reader)
 		with self.reading(reader) as reader:
 			try:
 				value = reader[key]

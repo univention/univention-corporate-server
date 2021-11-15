@@ -29,6 +29,8 @@
 
 #DEBHELPER#
 
+/usr/share/univention-group-membership-cache/univention-ldap-cache add-cache memberUids dn memberUid "(univentionObjectType=groups/group)"
+/usr/share/univention-group-membership-cache/univention-ldap-cache add-cache uniqueMembers dn uniqueMember "(univentionObjectType=groups/group)"
 /usr/share/univention-group-membership-cache/univention-ldap-cache create-listener-modules
 
 exit 0

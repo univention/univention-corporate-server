@@ -74,13 +74,15 @@ def _writing_config():
 
 def add_shard_to_config(db_name, single_value, key, value, ldap_filter):
 	with _writing_config() as shards:
-		shards.append({
+		shard_config = {
 			'db_name': db_name,
 			'single_value': single_value,
 			'key': key,
 			'value': value,
 			'ldap_filter': ldap_filter,
-		})
+		}
+		if shard_config not in shards:
+			shards.append(shard_config)
 
 
 def rm_shard_from_config(db_name, single_value, key, value, ldap_filter):
