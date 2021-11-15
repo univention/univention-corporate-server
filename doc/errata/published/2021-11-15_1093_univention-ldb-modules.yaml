@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Rebuilt to match the new ldb package version.
 bug: [54014]
+erratum: 1093
+announced: 2021-11-15
